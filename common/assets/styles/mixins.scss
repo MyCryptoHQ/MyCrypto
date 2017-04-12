@@ -1,0 +1,51 @@
+// mixin for responsive grid, but I'm sure it's far from the best solution;
+// Extra small screen / phone
+$xs: 0; // Small screen / phone
+$sm: 480px; // Medium screen / tablet
+$md: 768px; // Large screen / desktop
+$lg: 1024px; // // Extra large screen / wide desktop
+$xl: 1200px;
+@mixin respond-to($media...) {
+  @for $i from 1 through length($media) {
+    @include privat-respond-to(nth($media, $i)) {
+      @content;
+    }
+  ;
+  }
+}
+
+@mixin privat-respond-to($current-media) {
+  @if $current-media == 'xs' {
+    @media only screen and (max-width: $sm) {
+      @content;
+    }
+  } @else if $current-media == 'sm' {
+    @media only screen and (min-width: $sm + 1) {
+      @content;
+    }
+  } @else if $current-media == 'only-sm' {
+    @media only screen and (min-width: $sm + 1) and (max-width: $md) {
+      @content;
+    }
+  } @else if $current-media == 'md' {
+    @media only screen and (min-width: $md + 1) {
+      @content;
+    }
+  } @else if $current-media == 'only-md' {
+    @media only screen and (min-width: $md + 1) and (max-width: $lg + 1) {
+      @content;
+    }
+  } @else if $current-media == 'lg' {
+    @media only screen and (min-width: $lg + 1) {
+      @content;
+    }
+  } @else if $current-media == 'only-lg' {
+    @media only screen and (min-width: $lg + 1) and (max-width: $xl - 1) {
+      @content;
+    }
+  } @else if $current-media == 'xl' {
+    @media only screen and (min-width: $xl) {
+      @content;
+    }
+  }
+}
