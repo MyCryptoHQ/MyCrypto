@@ -73,6 +73,5 @@
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "dev": "node webpack_config/server.js",
     "flow": "flow"
-  },
-
+  }
 }
