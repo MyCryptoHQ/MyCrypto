@@ -36,6 +36,7 @@ npm run test # run tests with Jest
 │   ├── styles - styles folder with scss vars, mixins, etc.
 │   ├── index.jsx - entry
 │   ├── index.html
+├── static
 ├── webpack_config - Webpack configuration
 ├── jest_config - Jest configuration
 ```
