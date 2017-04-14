@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import {Card, Loader, Grid} from 'semantic-ui-react'
 import GenerateWalletPasswordComponent from './GenerateWalletPasswordComponent'
+import PropTypes from 'prop-types';
 
 export default class GenerateWalletComponent extends Component {
     constructor(props) {
@@ -8,7 +8,7 @@ export default class GenerateWalletComponent extends Component {
     }
 
     static propTypes = {
-        statistics: React.PropTypes.array
+        statistics: PropTypes.array
     }
 
     render() {

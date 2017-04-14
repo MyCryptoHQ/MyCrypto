@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 export default class GenerateWalletPasswordComponent extends Component {
     constructor(props) {
@@ -6,10 +7,10 @@ export default class GenerateWalletPasswordComponent extends Component {
     }
 
     static propTypes = {
-        title: React.PropTypes.string,
-        body: React.PropTypes.string,
-        userId: React.PropTypes.number,
-        id: React.PropTypes.number
+        title: PropTypes.string,
+        body: PropTypes.string,
+        userId: PropTypes.number,
+        id: PropTypes.number
     };
 
     render() {
