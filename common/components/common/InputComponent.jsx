@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Input, Form, Label} from 'semantic-ui-react';
 import {omit} from 'lodash';
+import PropTypes from 'prop-types';
 
 //
 export default class InputComponent extends Component {
@@ -13,17 +14,17 @@ export default class InputComponent extends Component {
     }
 
     static propTypes = {
-        validate: React.PropTypes.func,
-        connectToParent: React.PropTypes.func,
-        value: React.PropTypes.any,
-        error: React.PropTypes.string,
-        labelText: React.PropTypes.string,
-        label: React.PropTypes.string,
-        placeholder: React.PropTypes.string,
-        name: React.PropTypes.string,
-        type: React.PropTypes.string,
-        as: React.PropTypes.node,
-        action: React.PropTypes.any
+        validate: PropTypes.func,
+        connectToParent: PropTypes.func,
+        value: PropTypes.any,
+        error: PropTypes.string,
+        labelText: PropTypes.string,
+        label: PropTypes.string,
+        placeholder: PropTypes.string,
+        name: PropTypes.string,
+        type: PropTypes.string,
+        as: PropTypes.node,
+        action: PropTypes.any
     }
 
     handleChange(event) {
