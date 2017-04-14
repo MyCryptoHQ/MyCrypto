@@ -1,2 +1,2 @@
 export App from './App'
-export Dashboard from './Dashboard'
+export Tabs from './Tabs'

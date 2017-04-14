@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import DashboardComponent from './components'
+import GenerateWallet from './GenerateWallet/components'
 import {GET_STATISTICS} from 'actions/dashboard'
 
-class Dashboard extends Component {
+class Tabs extends Component {
     constructor(props) {
         super(props)
     }
@@ -23,7 +23,7 @@ class Dashboard extends Component {
         let props = {statistics}
 
         return (
-            <DashboardComponent {...props}/>
+            <GenerateWallet {...props}/>
         )
     }
 }
@@ -41,4 +41,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Tabs)
