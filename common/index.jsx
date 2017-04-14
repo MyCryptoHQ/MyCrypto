@@ -8,18 +8,30 @@ import thunk from 'redux-thunk'
 import RootReducer from './reducers'
 import {Root} from 'components'
 import {Routing, history} from './routing'
+import {createLogger} from 'redux-logger'
+
 // application styles
 import 'assets/styles/etherwallet-master.less'
 
 
 const configureStore = () => {
-    let middleware = applyMiddleware(routerMiddleware(history));
-    let thunkApplied = applyMiddleware(thunk)
+    let thunkApplied = applyMiddleware(thunk);
+    let store;
+    let middleware;
+
     if (process.env.NODE_ENV !== 'production') {
-        window.Perf = Perf
-        thunkApplied = composeWithDevTools(thunkApplied)
+        window.Perf = Perf;
+        thunkApplied = composeWithDevTools(thunkApplied);
+        const logger = createLogger({
+            collapsed: true
+        });
+        middleware = applyMiddleware(routerMiddleware(history), logger);
+    } else {
+        middleware = applyMiddleware(routerMiddleware(history));
     }
-    let store = createStore(RootReducer, thunkApplied, middleware);
+
+    store = createStore(RootReducer, thunkApplied, middleware);
+
     return store
 };
 
@@ -27,7 +39,9 @@ const renderRoot = (Root) => {
     let store = configureStore();
     let syncedHistory = syncHistoryWithStore(history, store);
     render(
-        <Root key={Math.random()} routes={Routing} history={syncedHistory}
+        <Root key={Math.random()}
+              routes={Routing}
+              history={syncedHistory}
               store={store}/>, document.getElementById('app'))
 };
 
