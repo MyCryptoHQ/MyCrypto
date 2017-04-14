@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {Card, Loader, Grid} from 'semantic-ui-react'
-import DashboardCardComponent from './DashboardCardComponent'
-export default class DashboardComponent extends Component {
+import GenerateWalletPasswordComponent from './GenerateWalletPasswordComponent'
+
+export default class GenerateWalletComponent extends Component {
     constructor(props) {
         super(props)
     }
@@ -11,11 +12,9 @@ export default class DashboardComponent extends Component {
     }
 
     render() {
-        let {statistics} = this.props
-
         return (
             <div>
-                <DashboardCardComponent/>
+                <GenerateWalletPasswordComponent/>
             </div>
         )
     }
