@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import GenerateWallet from './GenerateWallet/components'
 import {GET_STATISTICS} from 'actions/dashboard'
+import PropTypes from 'prop-types';
 
 class Tabs extends Component {
     constructor(props) {
@@ -9,12 +10,12 @@ class Tabs extends Component {
     }
 
     static propTypes = {
-        statistics: React.PropTypes.array,
-        getStatistics: React.PropTypes.func.isRequired
+        statistics: PropTypes.array,
+        getStatistics: PropTypes.func.isRequired
     }
 
     componentDidMount() {
-        this.props.getStatistics()
+        // this.props.getStatistics()
     }
 
     render() {
