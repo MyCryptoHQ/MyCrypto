@@ -1,11 +1,18 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Dimmer, Sidebar as SidebarSemantic, Container} from 'semantic-ui-react'
-import {Header, Sidebar, Footer} from 'components'
-import {CLOSE_SIDEBAR, OPEN_SIDEBAR, WINDOW_RESIZE} from 'actions/layout'
-import {LOGOUT_AUTH} from 'actions/auth'
+import {Header, Footer} from 'components'
 import {push} from 'react-router-redux'
 import {sidebarRouting} from 'routing'
+import PropTypes from 'prop-types';
+import {Container} from 'semantic-ui-react'
+
+import {
+    CHANGE_LANGUAGE,
+    TOGGLE_LANGUAGE_DROPDOWN,
+    CHANGE_NODE,
+    TOGGLE_NODE_DROPDOWN
+} from 'actions/config'
+
 
 class App extends Component {
     constructor(props) {
@@ -13,79 +20,72 @@ class App extends Component {
     }
 
     static propTypes = {
-        children: React.PropTypes.node.isRequired,
-        location: React.PropTypes.object,
-        sidebarOpened: React.PropTypes.bool,
-        closeSidebar: React.PropTypes.func,
-        isLoggedIn: React.PropTypes.bool,
-        handleWindowResize: React.PropTypes.func,
-        logout: React.PropTypes.func,
-        checkAuthLogic: React.PropTypes.func,
-        toggleSidebar: React.PropTypes.func,
-        onHeaderRightButtonClick: React.PropTypes.func,
-        router: React.PropTypes.object,
-        isMobile: React.PropTypes.bool
+        children: PropTypes.node.isRequired,
+        location: PropTypes.object,
+        sidebarOpened: PropTypes.bool,
+        closeSidebar: PropTypes.func,
+        isLoggedIn: PropTypes.bool,
+        handleWindowResize: PropTypes.func,
+        logout: PropTypes.func,
+        checkAuthLogic: PropTypes.func,
+        toggleSidebar: PropTypes.func,
+        onHeaderRightButtonClick: PropTypes.func,
+        router: PropTypes.object,
+        isMobile: PropTypes.bool,
+
+        // BEGIN ACTUAL
+        languageSelection: PropTypes.number,
+        languageToggle: PropTypes.bool,
+        changeLanguage: PropTypes.func,
+        toggleLanguageDropdown: PropTypes.func,
+
+        changeNode: PropTypes.func,
+        toggleNodeDropdown: PropTypes.func,
+        nodeSelection: PropTypes.number,
+        nodeToggle: PropTypes.bool,
     }
 
 
     componentWillMount() {
         let {handleWindowResize, isLoggedIn} = this.props
         window.addEventListener('resize', handleWindowResize)
-        this.checkAppAuthLogic(isLoggedIn)
     }
 
-    /**
-     * Call checkAuthLogic
-     * @param  {Bool} loggedIn state.auth.loggedIn, current prop
-     * @return {Bool} Nothing
-     */
-    checkAppAuthLogic(loggedIn) {
-        let {router, checkAuthLogic} = this.props
-        let path = router.getCurrentLocation().pathname
-        checkAuthLogic(path, loggedIn)
-        return false
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.checkAppAuthLogic(nextProps.isLoggedIn)
-    }
 
     render() {
         let {
             children,
-            sidebarOpened,
-            closeSidebar,
-            isLoggedIn,
-            logout,
-            onHeaderRightButtonClick,
-            toggleSidebar,
-            isMobile
-        } = this.props
 
-        let title = children.props.route.name
+            // ACTUAL
+            languageSelection,
+            changeLanguage,
+            languageToggle,
+            toggleLanguageDropdown,
+            changeNode,
+            toggleNodeDropdown,
+            nodeSelection,
+            nodeToggle,
+        } = this.props;
 
-        let sidebarProps = {
-            isMobile,
-            logout,
-            open: sidebarOpened,
-            routing: sidebarRouting
-        }
+        let title = children.props.route.name;
+
 
         let headerProps = {
-            toggleSidebar,
             title,
-            isLoggedIn,
-            onHeaderRightButtonClick
-        }
 
-        let dimmerProps = {
-            active: sidebarOpened,
-            onClick: closeSidebar
+            changeLanguage,
+            toggleLanguageDropdown,
+            languageSelection,
+            languageToggle,
+
+            changeNode,
+            toggleNodeDropdown,
+            nodeSelection,
+            nodeToggle,
         }
 
         return (
             <div className="page-layout">
-
                 <main>
                     <Header {...headerProps}/>
                     <div className="main-content">
@@ -103,46 +103,26 @@ class App extends Component {
 
 function mapStateToProps(state) {
     return {
-        sidebarOpened: state.layout.sidebarOpened,
-        isMobile: state.layout.isMobile,
-        isLoggedIn: state.auth.loggedIn
+        nodeSelection: state.config.nodeSelection,
+        nodeToggle: state.config.nodeToggle,
+        languageSelection: state.config.languageSelection,
+        languageToggle: state.config.languageToggle
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    let resizer
     return {
-        closeSidebar: () => {
-            dispatch(CLOSE_SIDEBAR())
+        changeNode: (i) => {
+            dispatch(CHANGE_NODE(i))
         },
-        logout: () => {
-            dispatch(LOGOUT_AUTH())
-            dispatch(push('/auth'))
+        toggleNodeDropdown: () => {
+            dispatch(TOGGLE_NODE_DROPDOWN())
         },
-        toggleSidebar: () => {
-            dispatch(OPEN_SIDEBAR())
+        changeLanguage: (i) => {
+            dispatch(CHANGE_LANGUAGE(i))
         },
-        onHeaderRightButtonClick: () => {
-        },
-        /**
-         * Immediately push to homePath('/'), if user is logged.
-         * Can be used for other auth logic checks.
-         * Useful, because we don't need to dispatch `push(homePath)` action
-         * from `Login` container after LOGIN_AUTH_SUCCESS action
-         * @param  {String}  path       [current location path]
-         * @param  {Boolean} isLoggedIn [is user logged in?]
-         * @return {[type]}             [description]
-         */
-        checkAuthLogic: (path, isLoggedIn) => {
-            let authPath = '/auth'
-            let homePath = '/'
-            if (isLoggedIn && path === authPath) {
-                dispatch(push(homePath))
-            }
-        },
-        handleWindowResize: () => {
-            clearTimeout(resizer)
-            resizer = setTimeout((() => dispatch(WINDOW_RESIZE())), 100)
+        toggleLanguageDropdown: () => {
+            dispatch(TOGGLE_LANGUAGE_DROPDOWN())
         }
     }
 }
