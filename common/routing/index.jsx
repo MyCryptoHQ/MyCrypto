@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Redirect, browserHistory, IndexRoute} from 'react-router';
 import {useBasename} from 'history'
-import {App, Dashboard} from 'containers';
+import {App, Tabs} from 'containers';
 
 export const history = getHistory()
 
@@ -14,7 +14,7 @@ export const Routing = (AuthCheck) => (
         {/*<IndexRoute name="Login" component={Login}/>*/}
         {/*<Route name="Login" path="/auth" component={Login}/>*/}
         {/*<Route name="Inbox" path="/inbox"  component={Inbox}/>*/}
-        <Route name="Dashboard" path="/" component={Dashboard}/>
+        <Route name="Tabs" path="/" component={Tabs}/>
         <Redirect from="/*" to="/"/>
     </Route>
 )
