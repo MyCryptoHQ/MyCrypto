@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import NodeDropdownComponent from './components/NodeDropdownComponent'
 import LanguageDropDownComponent from './components/LanguageDropdownComponent'
+import PropTypes from 'prop-types';
 
 export default class Header extends Component {
     constructor(props) {
@@ -8,17 +9,48 @@ export default class Header extends Component {
     }
 
     static propTypes = {
-        title: React.PropTypes.string,
-        toggleSidebar: React.PropTypes.func,
-        onHeaderRightButtonClick: React.PropTypes.func,
-        isLoggedIn: React.PropTypes.bool
+        // LanguageDropDownComponentProps
+        changeLanguage: PropTypes.func,
+        toggleLanguageDropdown: PropTypes.func,
+        languageSelection: PropTypes.number,
+        languageToggle: PropTypes.bool,
+        // NodeDropdownComponentProps
+        changeNode: PropTypes.func,
+        toggleNodeDropdown: PropTypes.func,
+        nodeSelection: PropTypes.number,
+        nodeToggle: PropTypes.bool
     };
 
     render() {
+        let {
+            languageSelection,
+            changeLanguage,
+            toggleLanguageDropdown,
+            languageToggle,
+            changeNode,
+            toggleNodeDropdown,
+            nodeSelection,
+            nodeToggle
+        } = this.props;
+
+        let LanguageDropDownComponentProps = {
+            languageSelection,
+            changeLanguage,
+            toggleLanguageDropdown,
+            languageToggle,
+        }
+
+        let NodeDropdownComponentProps = {
+            changeNode,
+            toggleNodeDropdown,
+            nodeSelection,
+            nodeToggle
+        }
+
         return (
             <section className="bg-gradient header-branding">
                 <section className="container">
-                    <a className="brand" href="https://www.myetherwallet.com/" aria-label="Go to homepage">
+                    <a className="brand" href="/" aria-label="Go to homepage">
                         {/* TODO - don't hardcode image path*/}
                         <img
                             src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"} height="64px"
@@ -30,9 +62,9 @@ export default class Header extends Component {
                             Open-Source &amp; Client-Side Ether Wallet · v3.6.0
                         </span>
                         &nbsp;&nbsp;&nbsp;
-                        <LanguageDropDownComponent/>
+                        <LanguageDropDownComponent {...LanguageDropDownComponentProps}/>
                         &nbsp;&nbsp;&nbsp;
-                        <NodeDropdownComponent/>
+                        <NodeDropdownComponent {...NodeDropdownComponentProps}/>
                     </div>
                 </section>
             </section>
