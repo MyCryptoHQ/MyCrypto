@@ -32,7 +32,6 @@ module.exports = {
             containers: `${config.srcPath}/containers/`,
             styles: `${config.srcPath}/styles/`,
             less_vars: `${config.srcPath}/styles/etherwallet-variables.less`,
-            scss_vars: `${config.srcPath}/styles/vars.scss`,
             config: `${config.srcPath}/config/` + process.env.REACT_WEBPACK_ENV
         },
         modules: [
