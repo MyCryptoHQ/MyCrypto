@@ -1,83 +1,45 @@
 import React, {Component} from 'react'
+import {languages} from 'reducers/config'
+import PropTypes from 'prop-types';
 
-const languages = [
-    {
-        'sign': 'en',
-        'name': 'English'
-    },
-    {
-        'sign': 'de',
-        'name': 'Deutsch'
-    },
-    {
-        'sign': 'el',
-        'name': 'Ελληνικά'
-    },
-    // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
-    // },
-    // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
-    // },
-    // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
-    // },
-    // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
-    // },
-    // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
-    // },
-
-]
 
 export default class LanguageDropdownComponent extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            languageToggle: false,
-            languageSelection: 0
-        }
     }
 
-    languageToggle() {
-        let nextState = this.state;
-        nextState['languageToggle'] = !nextState['languageToggle'];
-        this.setState(nextState)
-    }
-
-
-    changeLanguage(i) {
-        let nextState = this.state;
-        nextState["languageSelection"] = i;
-        nextState['languageToggle'] = false;
-        this.setState(nextState);
-    }
+    static propTypes = {
+        changeLanguage: PropTypes.func,
+        languageSelection: PropTypes.number,
+        languageToggle: PropTypes.bool,
+        toggleLanguageDropdown: PropTypes.func
+    };
 
     render() {
+        let {
+            languageSelection,
+            changeLanguage,
+            toggleLanguageDropdown,
+            languageToggle
+        } = this.props;
+
         return (
             <span className="dropdown">
               <a tabIndex="0" aria-haspopup="true" aria-expanded="false"
                  aria-label="change language. current language English"
                  className="dropdown-toggle"
-                 onClick={() => this.languageToggle()}>
-                  {languages[this.state.languageSelection].name}
+                 onClick={() => toggleLanguageDropdown()}>
+                  {languages[languageSelection].name}
                   <i className="caret"/>
               </a>
                 {
-                    this.state.languageToggle &&
+                    languageToggle &&
                     <ul className="dropdown-menu">
                         {languages.map((object, i) => {
                             return (
                                 <li key={i}>
-                                    <a className={i === this.state.languageSelection ? 'active' : ''}
-                                       onClick={() => this.changeLanguage(i)}>
+                                    <a className={i === languageSelection ? 'active' : ''}
+                                       onClick={() => changeLanguage(i)}>
                                         {object.name}
                                     </a>
                                 </li>
