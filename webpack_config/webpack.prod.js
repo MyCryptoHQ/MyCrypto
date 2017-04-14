@@ -15,15 +15,30 @@ exec('rm -rf dist/')
 base.devtool = 'cheap-source-map'
 base.module.loaders.push(
     {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
-    }, {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']}),
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract(
+            {
+                fallback: 'style-loader',
+                use: ['css-loader','less-loader']
+            }
+        )
     },
     {
-        test: /\.less$/,
-        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']})
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract(
+            {
+                fallback: 'style-loader',
+                use: 'css-loader'
+            }
+        )
+    }, {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract(
+            {
+                fallback: 'style-loader',
+                use: ['css-loader', 'sass-loader']
+            }
+        ),
     }
 )
 // a white list to add dependencies to vendor chunk
