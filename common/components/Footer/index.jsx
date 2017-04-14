@@ -17,17 +17,20 @@ export default class Footer extends Component {
                         <section className="row">
                             <div className="col-sm-3 footer-1">
                                 <p aria-hidden="true">
-                                    <a href="https://www.myetherwallet.com/">
+                                    <a href="/">
                                         {/* TODO - don't hardcode image path*/}
-                                        <img
-                                            src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"}
-                                            height="55px" width="auto" alt="Ether Wallet"/></a>
+                                        <img src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"}
+                                             height="55px" width="auto" alt="Ether Wallet"/>
+                                    </a>
                                 </p>
-                                <p><span >Open-Source, client-side tool for easily & securely interacting with the Ethereum network.</span>
-                                    <span >Created by</span> <a aria-label="kvhnuke's github"
-                                                                href="https://github.com/kvhnuke"
-                                                                target="_blank">kvhnuke</a> & <a
-                                        aria-label="tayvano's github" href="https://github.com/tayvano" target="_blank">tayvano</a>.
+                                <p><span>Open-Source, client-side tool for easily & securely interacting with the Ethereum network.</span>
+                                    <span>Created by</span>
+                                    <a aria-label="kvhnuke's github"
+                                       href="https://github.com/kvhnuke"
+                                       target="_blank">kvhnuke</a> &
+                                    <a aria-label="tayvano's github"
+                                       href="https://github.com/tayvano"
+                                       target="_blank">tayvano</a>.
                                 </p>
                                 <br/>
                             </div>
