@@ -32,7 +32,8 @@ export default class NodeDropdownComponent extends Component {
               <a tabIndex="0"
                  aria-haspopup="true"
                  aria-label="change node. current node ETH node by MyEtherWallet"
-                 className="dropdown-toggle" onClick={() => toggleNodeDropdown()}>
+                 className="dropdown-toggle"
+                 onClick={() => toggleNodeDropdown()}>
                   {nodeList[nodeSelection].name}
                   <small>{' '} ({nodeList[nodeSelection].service})</small>
                   <i className="caret"/>
