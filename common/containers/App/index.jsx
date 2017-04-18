@@ -1,17 +1,11 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {Header, Footer} from 'components'
-import {push} from 'react-router-redux'
-import {sidebarRouting} from 'routing'
-import PropTypes from 'prop-types';
-import {Container} from 'semantic-ui-react'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Footer, Header} from "components";
+import {sidebarRouting} from "routing";
+import PropTypes from "prop-types";
+import {Container} from "semantic-ui-react";
 
-import {
-    CHANGE_LANGUAGE,
-    TOGGLE_LANGUAGE_DROPDOWN,
-    CHANGE_NODE,
-    TOGGLE_NODE_DROPDOWN
-} from 'actions/config'
+import {CHANGE_LANGUAGE, CHANGE_NODE, TOGGLE_LANGUAGE_DROPDOWN, TOGGLE_NODE_DROPDOWN} from "actions/config";
 
 
 class App extends Component {
