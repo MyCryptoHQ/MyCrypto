@@ -1,8 +1,9 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import GenerateWallet from './GenerateWallet/components'
-import {GET_STATISTICS} from 'actions/dashboard'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import GenerateWallet from "./GenerateWallet/components";
+import {GET_STATISTICS} from "actions/dashboard";
+import {SHOW_GENERATE_WALLET_PASSWORD_ACTION, GENERATE_WALLET_FILE_ACTION} from "actions/generateWallet";
+import PropTypes from "prop-types";
 
 class Tabs extends Component {
     constructor(props) {
@@ -11,7 +12,11 @@ class Tabs extends Component {
 
     static propTypes = {
         statistics: PropTypes.array,
-        getStatistics: PropTypes.func.isRequired
+        generateWalletPassword: PropTypes.object,
+        showPassword: PropTypes.bool,
+        showGenerateWalletPasswordAction: PropTypes.func,
+        generateWalletFileAction: PropTypes.func,
+        generateWalletFile: PropTypes.bool
     }
 
     componentDidMount() {
@@ -20,8 +25,21 @@ class Tabs extends Component {
 
     render() {
 
-        let {statistics} = this.props
-        let props = {statistics}
+        let {
+            generateWalletPassword,
+            showPassword,
+            showGenerateWalletPasswordAction,
+            generateWalletFileAction,
+            generateWalletFile
+        } = this.props;
+
+        let props = {
+            generateWalletPassword,
+            showPassword,
+            showGenerateWalletPasswordAction,
+            generateWalletFileAction,
+            generateWalletFile
+        }
 
         return (
             <GenerateWallet {...props}/>
@@ -30,14 +48,21 @@ class Tabs extends Component {
 }
 
 function mapStateToProps(state) {
-    return {statistics: state.dashboard.statistics}
+    return {
+        statistics: state.dashboard.statistics,
+        generateWalletPassword: state.form.generateWalletPassword,
+        generateWalletFile: state.generateWallet.generateWalletFile,
+        showPassword: state.generateWallet.showPassword
+    }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getStatistics: async () => {
-            let result = await dispatch(GET_STATISTICS)
-            dispatch(result)
+        showGenerateWalletPasswordAction: () => {
+            dispatch(SHOW_GENERATE_WALLET_PASSWORD_ACTION())
+        },
+        generateWalletFileAction: () => {
+            dispatch(GENERATE_WALLET_FILE_ACTION())
         }
     }
 }
