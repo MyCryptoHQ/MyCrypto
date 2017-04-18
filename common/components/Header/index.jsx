@@ -1,7 +1,9 @@
-import React, {Component} from 'react'
-import NodeDropdownComponent from './components/NodeDropdownComponent'
-import LanguageDropDownComponent from './components/LanguageDropdownComponent'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import NodeDropdownComponent from "./components/NodeDropdownComponent";
+import LanguageDropDownComponent from "./components/LanguageDropdownComponent";
+import PropTypes from "prop-types";
+import TabsOptions from "./components/TabsOptions";
+
 
 export default class Header extends Component {
     constructor(props) {
@@ -14,6 +16,7 @@ export default class Header extends Component {
         toggleLanguageDropdown: PropTypes.func,
         languageSelection: PropTypes.number,
         languageToggle: PropTypes.bool,
+
         // NodeDropdownComponentProps
         changeNode: PropTypes.func,
         toggleNodeDropdown: PropTypes.func,
@@ -37,7 +40,7 @@ export default class Header extends Component {
             languageSelection,
             changeLanguage,
             toggleLanguageDropdown,
-            languageToggle,
+            languageToggle
         }
 
         let NodeDropdownComponentProps = {
@@ -48,26 +51,32 @@ export default class Header extends Component {
         }
 
         return (
-            <section className="bg-gradient header-branding">
-                <section className="container">
-                    <a className="brand" href="/" aria-label="Go to homepage">
-                        {/* TODO - don't hardcode image path*/}
-                        <img
-                            src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"} height="64px"
-                            width="245px"
-                            alt="MyEtherWallet"/>
-                    </a>
-                    <div className="tagline">
+            <div>
+                <section className="bg-gradient header-branding">
+                    <section className="container">
+                        <a className="brand" href="/" aria-label="Go to homepage">
+                            {/* TODO - don't hardcode image path*/}
+                            <img
+                                src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"} height="64px"
+                                width="245px"
+                                alt="MyEtherWallet"/>
+                        </a>
+                        <div className="tagline">
                         <span style={{maxWidth: '395px'}}>
                             Open-Source &amp; Client-Side Ether Wallet · v3.6.0
                         </span>
-                        &nbsp;&nbsp;&nbsp;
-                        <LanguageDropDownComponent {...LanguageDropDownComponentProps}/>
-                        &nbsp;&nbsp;&nbsp;
-                        <NodeDropdownComponent {...NodeDropdownComponentProps}/>
-                    </div>
+                            &nbsp;&nbsp;&nbsp;
+                            <LanguageDropDownComponent {...LanguageDropDownComponentProps}/>
+                            &nbsp;&nbsp;&nbsp;
+                            <NodeDropdownComponent {...NodeDropdownComponentProps}/>
+                        </div>
+                    </section>
                 </section>
-            </section>
+
+                {/*{TODO - Re-enable for tab options}*/}
+                {/*<TabsOptions {...{}}/>*/}
+
+            </div>
         )
     }
 }
