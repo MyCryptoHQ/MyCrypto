@@ -8,13 +8,17 @@ export default class GenerateWalletComponent extends Component {
     }
 
     static propTypes = {
-        statistics: PropTypes.array
+        generateWalletPassword: PropTypes.object,
+        showPassword: PropTypes.bool,
+        showGenerateWalletPasswordAction: PropTypes.func,
+        generateWalletFileAction: PropTypes.func,
+        generateWalletFile: PropTypes.bool
     }
 
     render() {
         return (
             <div>
-                <GenerateWalletPasswordComponent/>
+                <GenerateWalletPasswordComponent {...this.props}/>
             </div>
         )
     }
