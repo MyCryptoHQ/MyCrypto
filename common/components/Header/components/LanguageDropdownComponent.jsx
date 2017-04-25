@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {languages} from 'reducers/config'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import {languages} from "reducers/config";
+import PropTypes from "prop-types";
 
 
 export default class LanguageDropdownComponent extends Component {
@@ -35,16 +35,18 @@ export default class LanguageDropdownComponent extends Component {
                 {
                     languageToggle &&
                     <ul className="dropdown-menu">
-                        {languages.map((object, i) => {
-                            return (
-                                <li key={i}>
-                                    <a className={i === languageSelection ? 'active' : ''}
-                                       onClick={() => changeLanguage(i)}>
-                                        {object.name}
-                                    </a>
-                                </li>
-                            )
-                        })}
+                        {
+                            languages.map((object, i) => {
+                                return (
+                                    <li key={i}>
+                                        <a className={i === languageSelection ? 'active' : ''}
+                                           onClick={() => changeLanguage(i)}>
+                                            {object.name}
+                                        </a>
+                                    </li>
+                                )
+                            })
+                        }
                         <li role="separator" className="divider"/>
                         <li>
                             <a data-toggle="modal" data-target="#disclaimerModal">

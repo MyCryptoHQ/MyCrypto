@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {nodeList} from 'reducers/config'
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import {nodeList} from "reducers/config";
+import PropTypes from "prop-types";
 
 
 export default class NodeDropdownComponent extends Component {
@@ -29,8 +29,7 @@ export default class NodeDropdownComponent extends Component {
 
         return (
             <span className="dropdown">
-              <a tabIndex="0"
-                 aria-haspopup="true"
+              <a aria-haspopup="true"
                  aria-label="change node. current node ETH node by MyEtherWallet"
                  className="dropdown-toggle"
                  onClick={() => toggleNodeDropdown()}>
