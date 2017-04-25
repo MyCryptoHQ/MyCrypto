@@ -1,13 +1,15 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 
-import {Field, reduxForm} from "redux-form"; // ES6
+import {Field, reduxForm} from "redux-form";
 import GenerateWalletPasswordInputComponent from "./GenerateWalletPasswordInputComponent";
-const minLength = min => value =>
-    value && value.length < min ? `Must be ${min} characters or more` : undefined
+
+
+// VALIDATORS
+const minLength = min => value => {
+    return value && value.length < min ? `Must be ${min} characters or more` : undefined
+}
 const minLength9 = minLength(9)
-
-
 const required = value => value ? undefined : 'Required'
 
 
@@ -27,14 +29,6 @@ class GenerateWalletPasswordComponent extends Component {
         generateWalletFileAction: PropTypes.func,
         generateWalletFile: PropTypes.bool
     };
-
-    generateWallet() {
-        console.log("got here")
-    }
-
-    showPassword() {
-
-    }
 
     render() {
         const {
@@ -71,15 +65,15 @@ class GenerateWalletPasswordComponent extends Component {
                                         className="btn btn-primary btn-block">
                                     Generate Wallet
                                 </button>
-
                                 {
                                     generateWalletFile && (
                                         <div>
                                             <br/>
-                                            <p style={{color: 'red'}}> Now you need to confirm that you copied your seed!</p>
+                                            <p style={{color: 'red'}}> Now you need to confirm that you copied your
+                                                seed!</p>
                                         </div>)
 
-                                    }
+                                }
                             </div>
                         </section>
                     </main>
