@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Footer, Header} from "components";
-import {sidebarRouting} from "routing";
 import PropTypes from "prop-types";
-import {Container} from "semantic-ui-react";
 
 import {CHANGE_LANGUAGE, CHANGE_NODE, TOGGLE_LANGUAGE_DROPDOWN, TOGGLE_NODE_DROPDOWN} from "actions/config";
 
@@ -16,14 +14,8 @@ class App extends Component {
     static propTypes = {
         children: PropTypes.node.isRequired,
         location: PropTypes.object,
-        sidebarOpened: PropTypes.bool,
-        closeSidebar: PropTypes.func,
-        isLoggedIn: PropTypes.bool,
         handleWindowResize: PropTypes.func,
-        logout: PropTypes.func,
-        checkAuthLogic: PropTypes.func,
-        toggleSidebar: PropTypes.func,
-        onHeaderRightButtonClick: PropTypes.func,
+
         router: PropTypes.object,
         isMobile: PropTypes.bool,
 
@@ -41,7 +33,7 @@ class App extends Component {
 
 
     componentWillMount() {
-        let {handleWindowResize, isLoggedIn} = this.props
+        let {handleWindowResize} = this.props
         window.addEventListener('resize', handleWindowResize)
     }
 
@@ -49,8 +41,7 @@ class App extends Component {
     render() {
         let {
             children,
-
-            // ACTUAL
+            // APP
             languageSelection,
             changeLanguage,
             languageToggle,
@@ -58,15 +49,12 @@ class App extends Component {
             changeNode,
             toggleNodeDropdown,
             nodeSelection,
-            nodeToggle,
+            nodeToggle
         } = this.props;
 
-        let title = children.props.route.name;
-
+        // let title = children.props.route.name;
 
         let headerProps = {
-            title,
-
             changeLanguage,
             toggleLanguageDropdown,
             languageSelection,
@@ -75,7 +63,7 @@ class App extends Component {
             changeNode,
             toggleNodeDropdown,
             nodeSelection,
-            nodeToggle,
+            nodeToggle
         }
 
         return (
@@ -83,9 +71,7 @@ class App extends Component {
                 <main>
                     <Header {...headerProps}/>
                     <div className="main-content">
-                        <Container>
-                            { children}
-                        </Container>
+                        { children}
                     </div>
                     <Footer/>
                 </main>
@@ -106,13 +92,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeNode: (i) => {
+        changeNode: (i: number) => {
             dispatch(CHANGE_NODE(i))
         },
         toggleNodeDropdown: () => {
             dispatch(TOGGLE_NODE_DROPDOWN())
         },
-        changeLanguage: (i) => {
+        changeLanguage: (i: number) => {
             dispatch(CHANGE_LANGUAGE(i))
         },
         toggleLanguageDropdown: () => {
