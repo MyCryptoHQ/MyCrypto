@@ -14,8 +14,6 @@ export const Routing = () => (
 
 
 function getHistory() {
-    const basename = process.env.BUILD_GH_PAGES
-        ? '/react-semantic.ui-starter'
-        : ''
+    const basename =  ''
     return useBasename(() => browserHistory)({basename})
 }
