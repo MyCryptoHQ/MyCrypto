@@ -1,12 +1,14 @@
 import React, {Component} from "react";
+import {Link} from "react-router";
+
 
 const tabs = [
-    {"name": "Generate Wallet"},
+    {"name": "Generate Wallet", "link": "/"},
     {"name": "Send Ether & Tokens"},
     {"name": "Swap"},
     {"name": "Send Offline"},
     {"name": "Contracts"},
-    {"name": "View Wallet"},
+    {"name": "View Wallet", "link": "view-wallet"},
     {"name": "Help"}
 
 ]
@@ -40,13 +42,16 @@ export default class TabsOptions extends Component {
                         <ul className="nav-inner">
                             {tabs.map((object, i) => {
                                     return (
-                                        <li className="nav-item"
-                                            key={i}
-                                            onClick={this.tabClick(i)}>
-                                            <a tabIndex="0" aria-label="nav item: {{tab.name | translate}}">
-                                                {object.name}
-                                            </a>
-                                        </li>
+                                        <Link to={object.link}>
+                                            <li className="nav-item"
+                                                key={i}
+                                                onClick={this.tabClick(i)}>
+                                                <a tabIndex="0" aria-label="nav item: {{tab.name | translate}}">
+                                                    {object.name}
+                                                </a>
+                                            </li>
+                                        </Link>
+
                                     )
                                 }
                             )}
