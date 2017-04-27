@@ -26,14 +26,13 @@ npm run test # run tests with Jest
 ```
 │
 ├── common - Your App
-│   └── actions - application actions
+│   ├── actions - application actions
 │   ├── api - Services and XHR utils(also custom form validation, see InputComponent from components/common)
 │   ├── components - components according to "Redux philosophy"
 │   ├── config - frontend config depending on REACT_WEBPACK_ENV
 │   ├── containers - containers according to "Redux philosophy"
 │   ├── reducers - application reducers
 │   ├── routing - application routing
-│   ├── styles - styles folder with scss vars, mixins, etc.
 │   ├── index.jsx - entry
 │   ├── index.html
 ├── static
