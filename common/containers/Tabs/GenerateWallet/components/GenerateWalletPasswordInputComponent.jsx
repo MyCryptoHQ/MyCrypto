@@ -18,7 +18,6 @@ export default class GenerateWalletPasswordInputComponent extends Component {
     render() {
         return (
             <div>
-
                 <div>
                     <div className="input-group" style={{width: '100%'}}>
                         <input {...this.props.input}
