@@ -1,7 +1,12 @@
 import GenerateWalletPasswordComponent from "./components/GenerateWalletPasswordComponent";
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {GENERATE_WALLET_FILE_ACTION, SHOW_GENERATE_WALLET_PASSWORD_ACTION} from "actions/generateWallet";
+import {
+    GENERATE_WALLET_FILE_ACTION,
+    GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION,
+    SHOW_GENERATE_WALLET_PASSWORD_ACTION,
+    GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION
+} from "actions/generateWallet";
 import PropTypes from "prop-types";
 
 class GenerateWallet extends Component {
@@ -12,31 +17,18 @@ class GenerateWallet extends Component {
     static propTypes = {
         generateWalletPassword: PropTypes.object,
         showPassword: PropTypes.bool,
+        hasDownloadedWalletFile: PropTypes.bool,
         showGenerateWalletPasswordAction: PropTypes.func,
         generateWalletFileAction: PropTypes.func,
-        generateWalletFile: PropTypes.bool
+        generateWalletHasDownloadedFileAction: PropTypes.func,
+        generateWalletFile: PropTypes.bool,
+        generateWalletContinueToPaperAction: PropTypes.func,
+        canProceedToPaper: PropTypes.bool
     }
 
     render() {
-
-        let {
-            generateWalletPassword,
-            showPassword,
-            showGenerateWalletPasswordAction,
-            generateWalletFileAction,
-            generateWalletFile
-        } = this.props;
-
-        let props = {
-            generateWalletPassword,
-            showPassword,
-            showGenerateWalletPasswordAction,
-            generateWalletFileAction,
-            generateWalletFile
-        }
-
         return (
-            <GenerateWalletPasswordComponent {...props}/>
+            <GenerateWalletPasswordComponent {...this.props}/>
         )
     }
 }
@@ -45,7 +37,9 @@ function mapStateToProps(state) {
     return {
         generateWalletPassword: state.form.generateWalletPassword,
         generateWalletFile: state.generateWallet.generateWalletFile,
-        showPassword: state.generateWallet.showPassword
+        showPassword: state.generateWallet.showPassword,
+        hasDownloadedWalletFile: state.generateWallet.hasDownloadedWalletFile,
+        canProceedToPaper: state.generateWallet.canProceedToPaper
     }
 }
 
@@ -56,6 +50,12 @@ function mapDispatchToProps(dispatch) {
         },
         generateWalletFileAction: () => {
             dispatch(GENERATE_WALLET_FILE_ACTION())
+        },
+        generateWalletHasDownloadedFileAction: () => {
+            dispatch(GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION())
+        },
+        generateWalletContinueToPaperAction: () => {
+            dispatch(GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION())
         }
     }
 }
