@@ -3,6 +3,7 @@ import NodeDropdownComponent from "./components/NodeDropdownComponent";
 import LanguageDropDownComponent from "./components/LanguageDropdownComponent";
 import PropTypes from "prop-types";
 import TabsOptions from "./components/TabsOptions";
+import {Link} from "react-router";
 
 
 export default class Header extends Component {
@@ -54,13 +55,14 @@ export default class Header extends Component {
             <div>
                 <section className="bg-gradient header-branding">
                     <section className="container">
-                        <a className="brand" href="/" aria-label="Go to homepage">
+                        <Link to={'/'} className="brand" aria-label="Go to homepage">
                             {/* TODO - don't hardcode image path*/}
                             <img
-                                src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"} height="64px"
+                                src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"}
+                                height="64px"
                                 width="245px"
                                 alt="MyEtherWallet"/>
-                        </a>
+                        </Link>
                         <div className="tagline">
                         <span style={{maxWidth: '395px'}}>
                             Open-Source &amp; Client-Side Ether Wallet · v3.6.0
