@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import {Field, reduxForm} from "redux-form";
 import GenerateWalletPasswordInputComponent from "./GenerateWalletPasswordInputComponent";
+import LedgerTrezorWarning from "./LedgerTrezorWarning";
 
 
 // VALIDATORS
@@ -16,9 +17,6 @@ const required = value => value ? undefined : 'Required'
 class GenerateWalletPasswordComponent extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            hasDownloaded: false
-        }
     }
 
     static propTypes = {
@@ -30,7 +28,11 @@ class GenerateWalletPasswordComponent extends Component {
         showPassword: PropTypes.bool,
         showGenerateWalletPasswordAction: PropTypes.func,
         generateWalletFileAction: PropTypes.func,
-        generateWalletFile: PropTypes.bool
+        generateWalletHasDownloadedFileAction: PropTypes.func,
+        generateWalletFile: PropTypes.bool,
+        hasDownloadedWalletFile: PropTypes.bool,
+        generateWalletContinueToPaperAction: PropTypes.func,
+        canProceedToPaper: PropTypes.bool
     };
 
 
@@ -39,7 +41,7 @@ class GenerateWalletPasswordComponent extends Component {
 
     downloaded() {
         let nextState = this.state
-        nextState.hasDownloaded = true
+        nextState.hasDownloadedWalletFile = true
         this.setState(nextState)
     }
 
@@ -54,7 +56,11 @@ class GenerateWalletPasswordComponent extends Component {
             showPassword,
             showGenerateWalletPasswordAction,
             generateWalletFileAction,
-            generateWalletFile
+            generateWalletFile,
+            hasDownloadedWalletFile,
+            generateWalletHasDownloadedFileAction,
+            generateWalletContinueToPaperAction,
+            canProceedToPaper
 
         } = this.props;
 
@@ -64,25 +70,29 @@ class GenerateWalletPasswordComponent extends Component {
                     <main className="tab-pane active text-center" role="main">
                         <br/>
                         {
-                            !generateWalletFile && (<section className="row">
-                                    <h1 aria-live="polite">Generate Wallet</h1>
-                                    <div className="col-sm-8 col-sm-offset-2">
-                                        <h4>Enter a strong password (at least 9 characters)</h4>
-                                        <Field
-                                            validate={[required, minLength9]}
-                                            component={GenerateWalletPasswordInputComponent}
-                                            showPassword={showPassword}
-                                            showGenerateWalletPasswordAction={showGenerateWalletPasswordAction}
-                                            name="password"
-                                            type="text"/>
-                                        <br/>
-                                        <button onClick={() => generateWalletFileAction()}
-                                                disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
-                                                className="btn btn-primary btn-block">
-                                            Generate Wallet
-                                        </button>
-                                    </div>
-                                </section>
+                            !generateWalletFile && (
+                                <div>
+                                    <section className="row">
+                                        <h1 aria-live="polite">Generate Wallet</h1>
+                                        <div className="col-sm-8 col-sm-offset-2">
+                                            <h4>Enter a strong password (at least 9 characters)</h4>
+                                            <Field
+                                                validate={[required, minLength9]}
+                                                component={GenerateWalletPasswordInputComponent}
+                                                showPassword={showPassword}
+                                                showGenerateWalletPasswordAction={showGenerateWalletPasswordAction}
+                                                name="password"
+                                                type="text"/>
+                                            <br/>
+                                            <button onClick={() => generateWalletFileAction()}
+                                                    disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
+                                                    className="btn btn-primary btn-block">
+                                                Generate Wallet
+                                            </button>
+                                        </div>
+                                    </section>
+                                    <LedgerTrezorWarning/>
+                                </div>
                             )
                         }
                         {
@@ -103,7 +113,7 @@ class GenerateWalletPasswordComponent extends Component {
                                            download="UTC--2017-04-26T23-07-03.538Z--c5b7fff4e1669e38e8d6bc8fffe7e562b2b70f43"
                                            aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
                                            aria-describedby="x_KeystoreDesc"
-                                           onClick={() => this.downloaded()}>Download</a>
+                                           onClick={() => generateWalletHasDownloadedFileAction()}>Download</a>
                                         <p className="sr-only" id="x_KeystoreDesc">This Keystore file matches
                                             the format used by Mist so you can easily import it in the future. It is the
                                             recommended file to download and back up.</p>
@@ -116,8 +126,8 @@ class GenerateWalletPasswordComponent extends Component {
                                       Save your wallet file now &amp; back it up in a second location (not on your computer).
                                       <br/><br/>
                                       <a role="button"
-                                         className={`btn btn-info ${this.state.hasDownloaded ? '' : 'disabled'}`}
-                                         onClick={() => this.continueToPaper()}> I understand. Continue. </a>
+                                         className={`btn btn-info ${hasDownloadedWalletFile ? '' : 'disabled'}`}
+                                         onClick={() => generateWalletContinueToPaperAction()}> I understand. Continue. </a>
                                     </span>
                                     </div>
                                 </section>
