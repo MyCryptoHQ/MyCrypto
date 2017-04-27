@@ -1,2 +1,2 @@
-export ViewWallet from './ViewWallet/index'
-export GenerateWallet from './GenerateWallet/index'
+export ViewWallet from './ViewWallet'
+export GenerateWallet from './GenerateWallet'
