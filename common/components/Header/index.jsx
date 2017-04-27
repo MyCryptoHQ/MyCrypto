@@ -73,8 +73,7 @@ export default class Header extends Component {
                     </section>
                 </section>
 
-                {/*{TODO - Re-enable for tab options}*/}
-                {/*<TabsOptions {...{}}/>*/}
+                <TabsOptions {...{}}/>
 
             </div>
         )
