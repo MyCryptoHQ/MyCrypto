@@ -38,7 +38,7 @@ export function config(state = initialState, action) {
         case CONFIG_NODE_DROPDOWN_TOGGLE: {
             return {
                 ...state,
-                nodeToggle: !state.languageToggle
+                nodeToggle: !state.nodeToggle
             }
         }
         default:
@@ -59,27 +59,78 @@ export const languages = [
         'sign': 'el',
         'name': 'Ελληνικά'
     },
+    {
+        'sign': 'es',
+        'name': 'Español'
+    },
+    {
+        'sign': 'fi',
+        'name': 'Suomi'
+    },
+    {
+        'sign': 'fr',
+        'name': 'Français'
+    },
+    {
+        'sign': 'hu',
+        'name': 'Magyar'
+    },
+    {
+        'sign': 'id',
+        'name': 'Indonesian'
+    },
+    {
+        'sign': 'it',
+        'name': 'Italiano'
+    },
+    {
+        'sign': 'ja',
+        'name': '日本語'
+    }, {
+        'sign': 'nl',
+        'name': 'Nederlands'
+    }, {
+        'sign': 'no',
+        'name': 'Norsk Bokmål'
+    }, {
+        'sign': 'pl',
+        'name': 'Polski'
+    }, {
+        'sign': 'pt',
+        'name': 'Português'
+    },
+    {
+        'sign': 'ru',
+        'name': 'Русский'
+    },
     // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
+    //     'sign': 'sk',
+    //     'name': 'Slovenčina'
     // },
     // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
+    //     'sign': 'sl',
+    //     'name': 'Slovenščina'
     // },
     // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
+    //     'sign': 'sv',
+    //     'name': 'Svenska'
     // },
-    // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
-    // },
-    // {
-    //     "sign": 'el',
-    //     "name": 'Ελληνικά'
-    // },
-
+    {
+        'sign': 'tr',
+        'name': 'Türkçe'
+    },
+    {
+        'sign': 'vi',
+        'name': 'Tiếng Việt'
+    },
+    {
+        'sign': 'zhcn',
+        'name': '简体中文'
+    },
+    {
+        'sign': 'zhtw',
+        'name': '繁體中文'
+    }
 ];
 
 
