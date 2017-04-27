@@ -1,19 +1,25 @@
 import React from "react";
 import {browserHistory, Redirect, Route} from "react-router";
 import {useBasename} from "history";
-import {App, Tabs} from "containers";
+import {App} from "containers";
+import GenerateWallet from "containers/Tabs/GenerateWallet"
+import ViewWallet from "containers/Tabs/ViewWallet"
+
+console.log(GenerateWallet)
 
 export const history = getHistory()
 
 export const Routing = () => (
     <Route name="App" path='' component={App}>
-        <Route name="Tabs" path="/" component={Tabs}/>
+        <Route name="GenerateWallet" path="/" component={GenerateWallet}/>
+        <Route name="ViewWallet" path="/view-wallet" component={ViewWallet}/>
+
         <Redirect from="/*" to="/"/>
     </Route>
 )
 
 
 function getHistory() {
-    const basename =  ''
+    const basename = ''
     return useBasename(() => browserHistory)({basename})
 }
