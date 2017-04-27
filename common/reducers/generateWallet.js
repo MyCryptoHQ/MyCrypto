@@ -1,10 +1,17 @@
-import {GENERATE_WALLET_SHOW_PASSWORD, GENERATE_WALLET_FILE} from "actions/generateWallet";
+import {
+    GENERATE_WALLET_SHOW_PASSWORD,
+    GENERATE_WALLET_FILE,
+    GENERATE_WALLET_HAS_DOWNLOADED_FILE,
+    GENERATE_WALLET_CONTINUE_TO_PAPER
+
+} from "actions/generateWallet";
 
 
 const initialState = {
     showPassword: false,
     generateWalletFile: false,
-    generateWalletFileConfirm: false
+    hasDownloadedWalletFile: false,
+    canProceedToPaper: false
 }
 
 export function generateWallet(state = initialState, action) {
@@ -20,6 +27,20 @@ export function generateWallet(state = initialState, action) {
             return {
                 ...state,
                 generateWalletFile: true
+            }
+        }
+
+        case GENERATE_WALLET_HAS_DOWNLOADED_FILE: {
+            return {
+                ...state,
+                hasDownloadedWalletFile: true
+            }
+        }
+
+        case GENERATE_WALLET_CONTINUE_TO_PAPER: {
+            return {
+                ...state,
+                canProceedToPaper: true
             }
         }
 
