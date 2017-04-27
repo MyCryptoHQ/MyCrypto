@@ -1,10 +1,10 @@
+import GenerateWalletPasswordComponent from "./components/GenerateWalletPasswordComponent";
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import GenerateWallet from "./GenerateWallet/components";
-import {SHOW_GENERATE_WALLET_PASSWORD_ACTION, GENERATE_WALLET_FILE_ACTION} from "actions/generateWallet";
+import {GENERATE_WALLET_FILE_ACTION, SHOW_GENERATE_WALLET_PASSWORD_ACTION} from "actions/generateWallet";
 import PropTypes from "prop-types";
 
-class Tabs extends Component {
+class GenerateWallet extends Component {
     constructor(props) {
         super(props)
     }
@@ -36,7 +36,7 @@ class Tabs extends Component {
         }
 
         return (
-            <GenerateWallet {...props}/>
+            <GenerateWalletPasswordComponent {...props}/>
         )
     }
 }
@@ -60,4 +60,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tabs)
+export default connect(mapStateToProps, mapDispatchToProps)(GenerateWallet)
