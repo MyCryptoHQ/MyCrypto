@@ -1,8 +1,8 @@
-import React, {Component} from"react";
-import PropTypes from"prop-types";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 
-import {Field, reduxForm} from"redux-form";
-import GenerateWalletPasswordInputComponent from"./GenerateWalletPasswordInputComponent";
+import {Field, reduxForm} from "redux-form";
+import GenerateWalletPasswordInputComponent from "./GenerateWalletPasswordInputComponent";
 
 
 // VALIDATORS
@@ -63,29 +63,28 @@ class GenerateWalletPasswordComponent extends Component {
                 <div className="tab-content">
                     <main className="tab-pane active text-center" role="main">
                         <br/>
-
                         {
                             !generateWalletFile && (<section className="row">
-                                <h1 aria-live="polite">Generate Wallet</h1>
-                                <div className="col-sm-8 col-sm-offset-2">
-                                    <h4>Enter a strong password (at least 9 characters)</h4>
-                                    <Field
-                                        validate={[required, minLength9]}
-                                        component={GenerateWalletPasswordInputComponent}
-                                        showPassword={showPassword}
-                                        showGenerateWalletPasswordAction={showGenerateWalletPasswordAction}
-                                        name="password"
-                                        type="text"/>
-                                    <br/>
-                                    <button onClick={() => generateWalletFileAction()}
-                                            disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
-                                            className="btn btn-primary btn-block">
-                                        Generate Wallet
-                                    </button>
-                                </div>
-                            </section>)
+                                    <h1 aria-live="polite">Generate Wallet</h1>
+                                    <div className="col-sm-8 col-sm-offset-2">
+                                        <h4>Enter a strong password (at least 9 characters)</h4>
+                                        <Field
+                                            validate={[required, minLength9]}
+                                            component={GenerateWalletPasswordInputComponent}
+                                            showPassword={showPassword}
+                                            showGenerateWalletPasswordAction={showGenerateWalletPasswordAction}
+                                            name="password"
+                                            type="text"/>
+                                        <br/>
+                                        <button onClick={() => generateWalletFileAction()}
+                                                disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
+                                                className="btn btn-primary btn-block">
+                                            Generate Wallet
+                                        </button>
+                                    </div>
+                                </section>
+                            )
                         }
-
                         {
                             generateWalletFile && (
                                 <section role="main" className="row">
@@ -116,7 +115,8 @@ class GenerateWalletPasswordComponent extends Component {
                                       <strong>If you do not save your wallet file and password, we cannot recover them.</strong><br/>
                                       Save your wallet file now &amp; back it up in a second location (not on your computer).
                                       <br/><br/>
-                                      <a role="button" className={`btn btn-info ${this.state.hasDownloaded ? '': 'disabled'}`}
+                                      <a role="button"
+                                         className={`btn btn-info ${this.state.hasDownloaded ? '' : 'disabled'}`}
                                          onClick={() => this.continueToPaper()}> I understand. Continue. </a>
                                     </span>
                                     </div>
