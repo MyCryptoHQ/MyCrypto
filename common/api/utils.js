@@ -2,7 +2,6 @@
 // feel free to replace with your code
 // (get, post are used in ApiServices)
 
-
 import {getLocalToken} from 'api/AuthSvc';
 import config from 'config'
 
