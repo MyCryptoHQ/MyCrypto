@@ -1,14 +1,13 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Footer, Header} from "components";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Footer, Header } from 'components';
+import PropTypes from 'prop-types';
 
-import {CHANGE_LANGUAGE, CHANGE_NODE, TOGGLE_LANGUAGE_DROPDOWN, TOGGLE_NODE_DROPDOWN} from "actions/config";
-
+import { CHANGE_LANGUAGE, CHANGE_NODE } from 'actions/config';
 
 class App extends Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     static propTypes = {
@@ -20,23 +19,17 @@ class App extends Component {
         isMobile: PropTypes.bool,
 
         // BEGIN ACTUAL
-        languageSelection: PropTypes.number,
-        languageToggle: PropTypes.bool,
+        languageSelection: PropTypes.object,
         changeLanguage: PropTypes.func,
-        toggleLanguageDropdown: PropTypes.func,
 
         changeNode: PropTypes.func,
-        toggleNodeDropdown: PropTypes.func,
-        nodeSelection: PropTypes.number,
-        nodeToggle: PropTypes.bool,
-    }
-
+        nodeSelection: PropTypes.object
+    };
 
     componentWillMount() {
-        let {handleWindowResize} = this.props
-        window.addEventListener('resize', handleWindowResize)
+        let { handleWindowResize } = this.props;
+        window.addEventListener('resize', handleWindowResize);
     }
-
 
     render() {
         let {
@@ -44,40 +37,32 @@ class App extends Component {
             // APP
             languageSelection,
             changeLanguage,
-            languageToggle,
-            toggleLanguageDropdown,
             changeNode,
-            toggleNodeDropdown,
-            nodeSelection,
-            nodeToggle
+            nodeSelection
         } = this.props;
 
         // let title = children.props.route.name;
 
         let headerProps = {
             changeLanguage,
-            toggleLanguageDropdown,
             languageSelection,
-            languageToggle,
 
             changeNode,
-            toggleNodeDropdown,
-            nodeSelection,
-            nodeToggle
-        }
+            nodeSelection
+        };
 
         return (
             <div className="page-layout">
                 <main>
-                    <Header {...headerProps}/>
+                    <Header {...headerProps} />
                     <div className="main-content">
-                        { children}
+                        {children}
                     </div>
-                    <Footer/>
+                    <Footer />
                 </main>
 
             </div>
-        )
+        );
     }
 }
 
@@ -87,24 +72,18 @@ function mapStateToProps(state) {
         nodeToggle: state.config.nodeToggle,
         languageSelection: state.config.languageSelection,
         languageToggle: state.config.languageToggle
-    }
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         changeNode: (i: number) => {
-            dispatch(CHANGE_NODE(i))
-        },
-        toggleNodeDropdown: () => {
-            dispatch(TOGGLE_NODE_DROPDOWN())
+            dispatch(CHANGE_NODE(i));
         },
         changeLanguage: (i: number) => {
-            dispatch(CHANGE_LANGUAGE(i))
-        },
-        toggleLanguageDropdown: () => {
-            dispatch(TOGGLE_LANGUAGE_DROPDOWN())
+            dispatch(CHANGE_LANGUAGE(i));
         }
-    }
+    };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App);

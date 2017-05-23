@@ -1,55 +1,24 @@
-import React, {Component} from "react";
-import NodeDropdownComponent from "./components/NodeDropdownComponent";
-import LanguageDropDownComponent from "./components/LanguageDropdownComponent";
-import PropTypes from "prop-types";
-import TabsOptions from "./components/TabsOptions";
-import {Link} from "react-router";
-
+// @flow
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import TabsOptions from './components/TabsOptions';
+import { Link } from 'react-router';
+import Dropdown from '../ui/Dropdown';
+import { languages, nodeList } from '../../config/data';
 
 export default class Header extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     static propTypes = {
-        // LanguageDropDownComponentProps
+        // Language DropDown
         changeLanguage: PropTypes.func,
-        toggleLanguageDropdown: PropTypes.func,
-        languageSelection: PropTypes.number,
-        languageToggle: PropTypes.bool,
+        languageSelection: PropTypes.object,
 
-        // NodeDropdownComponentProps
+        // Node Dropdown
         changeNode: PropTypes.func,
-        toggleNodeDropdown: PropTypes.func,
-        nodeSelection: PropTypes.number,
-        nodeToggle: PropTypes.bool
+        nodeSelection: PropTypes.object
     };
 
     render() {
-        let {
-            languageSelection,
-            changeLanguage,
-            toggleLanguageDropdown,
-            languageToggle,
-            changeNode,
-            toggleNodeDropdown,
-            nodeSelection,
-            nodeToggle
-        } = this.props;
-
-        let LanguageDropDownComponentProps = {
-            languageSelection,
-            changeLanguage,
-            toggleLanguageDropdown,
-            languageToggle
-        }
-
-        let NodeDropdownComponentProps = {
-            changeNode,
-            toggleNodeDropdown,
-            nodeSelection,
-            nodeToggle
-        }
+        const { languageSelection, changeLanguage, changeNode, nodeSelection } = this.props;
 
         return (
             <div>
@@ -58,26 +27,58 @@ export default class Header extends Component {
                         <Link to={'/'} className="brand" aria-label="Go to homepage">
                             {/* TODO - don't hardcode image path*/}
                             <img
-                                src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"}
+                                src={'https://www.myetherwallet.com/images/logo-myetherwallet.svg'}
                                 height="64px"
                                 width="245px"
-                                alt="MyEtherWallet"/>
+                                alt="MyEtherWallet"
+                            />
                         </Link>
                         <div className="tagline">
-                        <span style={{maxWidth: '395px'}}>
-                            Open-Source &amp; Client-Side Ether Wallet · v3.6.0
-                        </span>
+                            <span style={{ maxWidth: '395px' }}>
+                                Open-Source & Client-Side Ether Wallet · v3.6.0
+                            </span>
                             &nbsp;&nbsp;&nbsp;
-                            <LanguageDropDownComponent {...LanguageDropDownComponentProps}/>
+                            <Dropdown
+                                ariaLabel={`change language. current language ${languageSelection.name}`}
+                                options={languages}
+                                formatTitle={o => o.name}
+                                value={languageSelection}
+                                extra={[
+                                    <li key={'separator'} role="separator" className="divider" />,
+                                    <li key={'disclaimer'}>
+                                        <a data-toggle="modal" data-target="#disclaimerModal">
+                                            Disclaimer
+                                        </a>
+                                    </li>
+                                ]}
+                                onChange={changeLanguage}
+                            />
                             &nbsp;&nbsp;&nbsp;
-                            <NodeDropdownComponent {...NodeDropdownComponentProps}/>
+                            <Dropdown
+                                ariaLabel={`change node. current node ${nodeSelection.name} node by ${nodeSelection.service}`}
+                                options={nodeList}
+                                formatTitle={o => [
+                                    o.name,
+                                    ' ',
+                                    <small key="service">({o.service})</small>
+                                ]}
+                                value={nodeSelection}
+                                extra={
+                                    <li>
+                                        <a onClick={() => {}}>
+                                            Add Custom Node
+                                        </a>
+                                    </li>
+                                }
+                                onChange={changeNode}
+                            />
                         </div>
                     </section>
                 </section>
 
-                <TabsOptions {...{}}/>
+                <TabsOptions {...{}} />
 
             </div>
-        )
+        );
     }
 }
