@@ -77,10 +77,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeNode: (i: number) => {
+        // FIXME replace with actual types
+        changeNode: (i: any) => {
             dispatch(CHANGE_NODE(i));
         },
-        changeLanguage: (i: number) => {
+        changeLanguage: (i: any) => {
             dispatch(CHANGE_LANGUAGE(i));
         }
     };
