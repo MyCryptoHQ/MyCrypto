@@ -116,7 +116,7 @@ export default {
         SEND_addr                   : 'An Adresse ',
         SEND_amount                 : 'Zu sendender Betrag ',
         SEND_amount_short           : 'Betrag ',
-        SEND_custom                 : 'Benutzerdefiniert ',
+        // SEND_custom                 : 'Benutzerdefiniert ',
         SEND_gas                    : 'Gas ',
         SEND_TransferTotal          : 'Gesamten verfügbaren Saldo übertragen ',
         SEND_generate               : 'Erzeuge Transaktion ',

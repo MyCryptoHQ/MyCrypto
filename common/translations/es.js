@@ -116,7 +116,7 @@ export default {
         SEND_addr                   : 'Dirección de destino ',
         SEND_amount                 : 'Cantidad a enviar ',
         SEND_amount_short           : 'Cantidad ',
-        SEND_custom                 : 'Personalizado ',
+        // SEND_custom                 : 'Personalizado ',
         SEND_gas                    : 'Gas ',
         SEND_TransferTotal          : 'Enviar todo el saldo ',
         SEND_generate               : 'Generar transacción ',

@@ -120,7 +120,7 @@ export default {
         SEND_addr                   : 'Bu Adrese gönder ',
         SEND_amount                 : 'Gönderilecek miktar ',
         SEND_amount_short           : 'Miktar ',
-        SEND_custom                 : 'Kullaniciya özel ', /*maybe another word here too */
+        // SEND_custom                 : 'Kullaniciya özel ', /*maybe another word here too */
         SEND_gas                    : 'Gas ',
         SEND_TransferTotal          : 'Tüm dengeyi gönder ',
         SEND_generate               : 'Generate Transaction ',

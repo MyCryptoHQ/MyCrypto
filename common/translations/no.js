@@ -129,7 +129,7 @@ export default {
         SEND_addr                   : 'Til-adresse ',
         SEND_amount                 : 'Beløp som skal sendes ',
         SEND_amount_short           : 'Beløp ',
-        SEND_custom                 : 'Tilpasning ',
+        //SEND_custom                 : 'Tilpasning ',
         SEND_gas                    : 'Gas ',
         SEND_TransferTotal          : 'Overfør total tilgjengelig saldo ',  // updated to read 'Send Entire Balance'
         SEND_generate               : 'Generer transaksjon ',

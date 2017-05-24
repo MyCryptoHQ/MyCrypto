@@ -186,7 +186,7 @@ export default {
         SEND_addr                   : 'To Address ',
         SEND_amount                 : 'Amount to Send ',
         SEND_amount_short           : 'Amount ',
-        SEND_custom                 : 'Custom ',
+        // SEND_custom                 : 'Custom ',
         SEND_gas                    : 'Gas ',
         SEND_TransferTotal          : 'Send Entire Balance ',
         SEND_generate               : 'Generate Signed Transaction ',

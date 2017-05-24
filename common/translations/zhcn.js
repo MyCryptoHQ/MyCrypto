@@ -115,7 +115,7 @@ export default {
         SEND_addr                   : '发送至地址： ',
         SEND_amount                 : '转账数额： ',
         SEND_amount_short           : '数额 ',
-        SEND_custom                 : 'Custom ',
+        // SEND_custom                 : 'Custom ',
         SEND_gas                    : 'Gas ',
         SEND_TransferTotal          : '发送所有余额 ',
         SEND_generate               : '生成交易 ',

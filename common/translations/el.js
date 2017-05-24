@@ -114,13 +114,13 @@ export default {
         SEND_addr                   : 'Προς Διεύθυνση ',
         SEND_amount                 : 'Ποσό για αποστολή ',
         SEND_amount_short           : 'Ποσό ',
-        SEND_custom                 : 'Custom ',
+        // SEND_custom                 : 'Custom ',
         SEND_gas                    : 'Gas ',
         SEND_generate               : 'Δημιουργία Υπογεγραμμένης Συναλλαγής ',
         SEND_raw                    : 'Ακατέργαστη Συναλλαγή ',
         SEND_signed                 : 'Υπογεγραμμένη Συναλλαγή ',
         SEND_trans                  : 'Αποστολή Συναλλαγής ',
-        SEND_TransferTotal          : 'Μεταφορά συνολικού διαθέσιμου υπολοίπου ',
+        // SEND_TransferTotal          : 'Μεταφορά συνολικού διαθέσιμου υπολοίπου ',
         SEND_custom                 : 'Add Custom Token ',
         SENDModal_Title             : 'Προσοχή! ',
         /* full sentence reads "You are about to send "10 ETH" to address "0x1234". Are you sure you want to do this? " */
@@ -184,7 +184,7 @@ export default {
         MYWAL_Nick                  : 'Ψευδώνυμο Πορτοφολιού ',
         MYWAL_Address               : 'Διεύθυνση Πορτοφολιού ',
         MYWAL_Bal                   : 'Υπόλοιπο ',
-        MYWAL_Edit                  : 'Επεξεργασία ',
+        // MYWAL_Edit                  : 'Επεξεργασία ',
         MYWAL_View                  : 'Προβολή ',
         MYWAL_Remove                : 'Αφαίρεση ',
         MYWAL_RemoveWal             : 'Αφαίρεση Πορτοφολιού: ',
@@ -328,8 +328,6 @@ export default {
         GETH_IntrinsicGas           : 'Intrinsic gas too low ',
         GETH_GasLimit               : 'Exceeds block gas limit ',
         GETH_NegativeValue          : 'Negative value ',
-        HELP_12_Desc_15b            : 'If you are on a PC: ',
-        SUCCESS_5                   : 'File Selected ',
         FOOTER_4                    : 'Disclaimer ',
 
         /* Parity Error Messages */

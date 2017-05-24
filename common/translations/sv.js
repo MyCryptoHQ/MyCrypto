@@ -43,7 +43,7 @@ export default {
         x_PrintShort                : 'Skriv Ut ',
         x_PrivKey                   : 'Privat Nyckel (okrypterad) ',
         x_PrivKey2                  : 'Privat Nyckel ',
-        x_PrivKey2                  : 'Private Key ',
+        // x_PrivKey2                  : 'Private Key ',
         x_PrivKeyDesc               : 'Det här är en okrypterad variant av din privata nyckel, vilket betyder att ett lösenord inte är nödvändigt. Om någon skulle hitta din okrypterade privata nyckel, så kan dom få tillgång till din plånbok utan lösenord. Av den anledningen så rekomenderas en krypterad variant av plånboken istället. ',
         x_Save                      : 'Spara ',
         x_TXT                       : 'TXT fil (okrypterad) ',

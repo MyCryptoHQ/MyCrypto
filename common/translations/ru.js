@@ -116,7 +116,6 @@ export default {
         SEND_addr                   : 'Адрес получателя ',
         SEND_amount                 : 'Сумма перевода ',
         SEND_amount_short           : 'Сумма ',
-        SEND_custom                 : 'Другое ',
         SEND_gas                    : 'Газ ',
         SEND_TransferTotal          : 'Перевести весь доступный баланс ', // updated to be shorter
         SEND_generate               : 'Сформировать транзакцию ',

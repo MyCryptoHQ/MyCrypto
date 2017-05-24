@@ -139,7 +139,7 @@ export default {
         SEND_addr                   : '宛先アドレス： ',
         SEND_amount                 : '送出数量： ',
         SEND_amount_short           : '数量 ',
-        SEND_custom                 : 'カスタム ',
+        //SEND_custom                 : 'カスタム ',
         SEND_gas                    : 'ガス ',
         SEND_TransferTotal          : '残高をすべて送出する ',
         SEND_generate               : 'トランザクションを生成 ',
