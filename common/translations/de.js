@@ -122,6 +122,7 @@ export default {
         SEND_generate               : 'Erzeuge Transaktion ',
         SEND_raw                    : 'Transaktion (Binärformat) ',
         SEND_signed                 : 'Signierte Transaktion ',
+        SEND_custom                 : 'Add Custom Token ',
         SEND_trans                  : 'Sende Transaktion ',
         SENDModal_Title             : 'Achtung! ',
         /* full sentence reads "You are about to send "10 ETH" to address "0x1234". Are you sure you want to do this? " */
