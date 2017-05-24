@@ -23,7 +23,8 @@ const tabs = [
         link: 'view-wallet'
     },
     {
-        name: 'Help'
+        name: 'Help',
+        link: 'help'
     }
 ]
 
