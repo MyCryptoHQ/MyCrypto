@@ -1,6 +1,5 @@
 'use strict'
 process.env.NODE_ENV = 'production'
-process.env.REACT_WEBPACK_ENV = 'dist'
 
 const exec = require('child_process').execSync
 const webpack = require('webpack')

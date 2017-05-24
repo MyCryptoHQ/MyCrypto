@@ -1,6 +1,5 @@
 'use strict'
 process.env.NODE_ENV = 'development'
-process.env.REACT_WEBPACK_ENV = 'dev'
 
 const webpack = require('webpack')
 const base = require('./webpack.base')
