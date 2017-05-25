@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Hungarian
-export default {
+module.exports =  {
     code: 'hu',
     data: {
         /* Navigation*/
@@ -583,5 +583,3 @@ export default {
         HELP_Contact_Title          : 'Ways to Get in Touch'
     }
 };
-
-module.exports = hu;

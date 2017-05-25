@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Polish
-export default {
+module.exports = {
     code: 'pl',
     data: {
         /* Navigation*/

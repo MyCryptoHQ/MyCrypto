@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Greek
-export default {
+module.exports = {
     code: 'el',
     data: {
         /* Navigation*/

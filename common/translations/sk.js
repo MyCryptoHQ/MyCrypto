@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Slovak
-export default {
+module.exports = {
     code: 'sk',
     data: {
         /* Navigation*/

@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Japanese
-export default {
+module.exports = {
     code: 'ja',
     data: {
         /* Navigation*/

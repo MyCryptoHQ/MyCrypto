@@ -1,29 +1,30 @@
-import React, {Component} from "react";
-import {Link} from "react-router";
+import React, {Component} from 'react';
+import {Link} from 'react-router';
+import translate from 'translations';
 
 const tabs = [
     {
-        name: 'Generate Wallet',
+        name: 'NAV_GenerateWallet',
         link: '/'
     },
     {
-        name: 'Send Ether & Tokens'
+        name: 'NAV_SendEther'
     },
     {
-        name: 'Swap'
+        name: 'NAV_Swap'
     },
     {
-        name: 'Send Offline'
+        name: 'NAV_Offline'
     },
     {
-        name: 'Contracts'
+        name: 'NAV_Contracts'
     },
     {
-        name: 'View Wallet Info',
+        name: 'NAV_ViewWallet',
         link: 'view-wallet'
     },
     {
-        name: 'Help'
+        name: 'NAV_Help'
     }
 ]
 
@@ -64,8 +65,8 @@ export default class TabsOptions extends Component {
                                                 key={i}
                                                 onClick={this.tabClick(i)}>
                                                 <Link to={object.link} key={i}
-                                                      aria-label='nav item: {{tab.name | translate}}'>
-                                                    {object.name}
+                                                      aria-label={`nav item: ${translate(object.name)}`}>
+                                                    {translate(object.name)}
                                                 </Link>
                                             </li>
                                         )

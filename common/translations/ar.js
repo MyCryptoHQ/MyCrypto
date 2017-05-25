@@ -1,9 +1,9 @@
 /* eslint-disable quotes*/
 
 // Arabic
-export default {
+module.exports =  {
     code: 'ar',
-    strings: {
+    data: {
         /* Navigation*/
         NAV_AddWallet               : 'إضافة محفظة ',
         NAV_BulkGenerate            : 'Générer des portefeuilles par lots ',

@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Slovenian
-export default {
+module.exports = {
     code: 'sl',
     data: {
         /* Navigation*/

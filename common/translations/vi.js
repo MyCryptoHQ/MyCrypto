@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Vietnamese
-export default {
+module.exports = {
     code: 'vi',
     data: {
         /* Navigation*/

@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Turkish
-export default {
+module.exports =  {
     code: 'tr',
     data: {
         /* Navigation*/

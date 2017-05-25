@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // French
-export default {
+module.exports = {
     code: 'fr',
     data: {
         /* Navigation*/

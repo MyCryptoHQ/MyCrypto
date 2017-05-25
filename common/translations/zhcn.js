@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // simplified Chinese, zh-CN, 简体中文
-export default {
+module.exports = {
     code: 'zhcn',
     data: {
         /* Navigation*/

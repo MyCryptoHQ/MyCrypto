@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Traditional Chinese 繁體中文 - zh-tw.js
-export default {
+module.exports =  {
     code: 'zhtw',
     data: {
         /* Navigation*/

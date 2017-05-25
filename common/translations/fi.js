@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Finnish
-export default {
+module.exports =  {
     code: 'fi',
     data: {
         /* Navigation*/

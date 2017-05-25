@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Swedish
-export default {
+module.exports =  {
     code: 'sv',
     data: {
         /* Navigation*/

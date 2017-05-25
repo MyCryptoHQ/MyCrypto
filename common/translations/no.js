@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Norwegian
-export default {
+module.exports = {
     code: 'no',
     data: {
         /* Navigation*/

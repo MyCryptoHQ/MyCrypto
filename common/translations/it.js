@@ -2,7 +2,7 @@
 
 // Italian
 // Last sync with en.js     : commit 459ba23623e1fa13c3d468277ef5dad5070542d2
-export default {
+module.exports = {
     code: 'it',
     data: {
         /* Navigation*/
@@ -578,5 +578,3 @@ export default {
         HELP_Contact_Title          : 'Modi per contattarci (in Inglese)'
     }
 };
-
-module.exports = it;

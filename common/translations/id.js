@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Indonesian
-export default {
+module.exports = {
     code: 'id',
     data: {
         /* Navigation*/

@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // German
-export default {
+module.exports = {
     code: 'de',
     data: {
         /* Navigation*/

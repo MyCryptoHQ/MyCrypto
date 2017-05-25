@@ -1,7 +1,7 @@
 /* eslint-disable quotes*/
 
 // Russian
-export default {
+module.exports =  {
     code: 'ru',
     data: {
         /* Navigation*/
