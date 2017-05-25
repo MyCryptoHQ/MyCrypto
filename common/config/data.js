@@ -59,6 +59,10 @@ export const languages = [
         sign: 'ru',
         name: 'Русский'
     },
+    {
+        sign: 'ko',
+        name: 'Korean'
+    },
     // {
     //     'sign': 'sk',
     //     'name': 'Slovenčina'
@@ -88,7 +92,6 @@ export const languages = [
         name: '繁體中文'
     }
 ];
-
 
 export const nodeList = [
     {
@@ -156,4 +159,4 @@ export const nodeList = [
         service: 'Epool.io'
         // 'lib': new nodes.customNode('https://mewapi.epool.io', '')
     }
-]
+];
