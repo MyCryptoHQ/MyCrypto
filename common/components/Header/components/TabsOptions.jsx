@@ -24,7 +24,8 @@ const tabs = [
         link: 'view-wallet'
     },
     {
-        name: 'NAV_Help'
+        name: 'NAV_Help',
+        link: 'help'
     }
 ]
 
