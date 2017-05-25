@@ -1,5 +1,5 @@
 // @flow
-
+import { markupToReact } from './markup';
 let activeLanguage = 'en';
 let fallbackLanguage = 'en';
 let repository = {};
@@ -36,5 +36,7 @@ export function setLanguage(code: string) {
 }
 
 export default function translate(key: string) {
-    return repository[activeLanguage][key] || repository[fallbackLanguage][key] || key;
+    return markupToReact(
+        repository[activeLanguage][key] || repository[fallbackLanguage][key] || key
+    );
 }
