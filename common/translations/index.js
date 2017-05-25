@@ -20,6 +20,7 @@ const languages = [
     require('./pl'),
     require('./pt'),
     require('./ru') /*sk, sl, sv */,
+    require('./ko'),
     require('./tr'),
     require('./vi'),
     require('./zhcn'),
