@@ -10,6 +10,6 @@
         "^routing": "<rootDir>/common/routing",
         "^components$": "<rootDir>/common/components",
         "^containers$": "<rootDir>/common/containers",
-        "^config$": "<rootDir>/common/config/test.js"
+        "^translations(.*)": "<rootDir>/common/translations$1"
     }
 }

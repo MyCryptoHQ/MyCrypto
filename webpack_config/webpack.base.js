@@ -31,9 +31,9 @@ module.exports = {
             components: `${config.srcPath}/components/`,
             containers: `${config.srcPath}/containers/`,
             styles: `${config.srcPath}/styles/`,
-            less_vars: `${config.srcPath}/styles/etherwallet-variables.less`,
-            config: `${config.srcPath}/config/` + process.env.REACT_WEBPACK_ENV
+            less_vars: `${config.srcPath}/styles/etherwallet-variables.less`
         },
+        // FIXME why aliases then?
         modules: [
             // places where to search for required modules
             _.cwd('common'),
