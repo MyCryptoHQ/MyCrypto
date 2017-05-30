@@ -56,7 +56,7 @@ module.exports =  {
         MEW_Warning_1               : 'Always check the URL before accessing your wallet or creating a new wallet. Beware of phishing sites! ',
 
         /* Footer */
-        FOOTER_1                    : 'Open-Source, client-side tool for easily &amp; securely interacting with the Ethereum network. ',
+        FOOTER_1                    : 'Open-Source, client-side tool for easily & securely interacting with the Ethereum network. ',
         FOOTER_1b                   : 'Created by ',
         FOOTER_2                    : 'Donations greatly appreciated ',
         FOOTER_3                    : 'Client-side wallet generation by ',
