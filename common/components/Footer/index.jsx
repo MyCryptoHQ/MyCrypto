@@ -19,7 +19,7 @@ export default class Footer extends Component {
                                 <p aria-hidden="true">
                                     <a href="/">
                                         {/* TODO - don't hardcode image path*/}
-                                        <img src={"https://www.myetherwallet.com/images/logo-myetherwallet.svg"}
+                                        <img src={'https://www.myetherwallet.com/images/logo-myetherwallet.svg'}
                                              height="55px" width="auto" alt="Ether Wallet"/>
                                     </a>
                                 </p>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Help = () => (
     <section className="container" style={{minHeight: '50%'}}>

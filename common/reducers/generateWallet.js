@@ -4,7 +4,7 @@ import {
     GENERATE_WALLET_HAS_DOWNLOADED_FILE,
     GENERATE_WALLET_CONTINUE_TO_PAPER
 
-} from "actions/generateWallet";
+} from 'actions/generateWallet';
 
 
 const initialState = {

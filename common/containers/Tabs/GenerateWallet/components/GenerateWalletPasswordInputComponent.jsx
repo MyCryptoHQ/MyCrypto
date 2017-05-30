@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 
 export default class GenerateWalletPasswordInputComponent extends Component {
@@ -22,7 +22,7 @@ export default class GenerateWalletPasswordInputComponent extends Component {
                     <div className="input-group" style={{width: '100%'}}>
                         <input {...this.props.input}
                                name="password"
-                               className={this.props.meta.error ? 'form-control is-invalid' : "form-control"}
+                               className={this.props.meta.error ? 'form-control is-invalid' : 'form-control'}
                                type={this.props.showPassword ? 'text' : 'password'}
                                placeholder="Do NOT forget to save this!"
                                aria-label="Enter a strong password (at least 9 characters)"/>
@@ -46,5 +46,3 @@ export default class GenerateWalletPasswordInputComponent extends Component {
     }
 
 }
-
-
