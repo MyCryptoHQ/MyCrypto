@@ -76,7 +76,7 @@ class GenerateWalletPasswordComponent extends Component {
                                     <section className="row">
                                         <h1 aria-live="polite">{translate('NAV_GenerateWallet')}</h1>
                                         <div className="col-sm-8 col-sm-offset-2">
-                                            <h4>Enter a strong password (at least 9 characters)</h4>
+                                            <h4>{translate('HELP_1_Desc_3')}</h4>
                                             <Field
                                                 validate={[required, minLength9]}
                                                 component={GenerateWalletPasswordInputComponent}
@@ -88,7 +88,7 @@ class GenerateWalletPasswordComponent extends Component {
                                             <button onClick={() => generateWalletFileAction()}
                                                     disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
                                                     className="btn btn-primary btn-block">
-                                                Generate Wallet
+                                                {translate('NAV_GenerateWallet')}
                                             </button>
                                         </div>
                                     </section>
@@ -104,20 +104,16 @@ class GenerateWalletPasswordComponent extends Component {
                                     <div className="col-sm-8 col-sm-offset-2">
                                         <div aria-hidden="true" className="account-help-icon"><img
                                             src="https://myetherwallet.com/images/icon-help.svg" className="help-icon"/>
-                                            <p className="account-help-text">This Keystore file matches the
-                                                format used by Mist so you can easily import it in the future. It is the
-                                                recommended file to download and back up.</p>
-                                            <h4>Keystore File (UTC / JSON)</h4>
+                                            <p className="account-help-text">{translate('x_KeystoreDesc')}</p>
+                                            <h4>{translate('x_Keystore2')}</h4>
                                         </div>
                                         <a role="button" className="btn btn-primary btn-block"
                                            href="blob:https://myetherwallet.com/2455ae32-916f-4224-a806-414bbe680168"
                                            download="UTC--2017-04-26T23-07-03.538Z--c5b7fff4e1669e38e8d6bc8fffe7e562b2b70f43"
                                            aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
                                            aria-describedby="x_KeystoreDesc"
-                                           onClick={() => generateWalletHasDownloadedFileAction()}>Download</a>
-                                        <p className="sr-only" id="x_KeystoreDesc">This Keystore file matches
-                                            the format used by Mist so you can easily import it in the future. It is the
-                                            recommended file to download and back up.</p>
+                                           onClick={() => generateWalletHasDownloadedFileAction()}>{translate('x_Download')}</a>
+                                        <p className="sr-only" id="x_KeystoreDesc">{translate('x_KeystoreDesc')}</p>
                                         <br/><br/><br/><br/>
                                     </div>
                                     <div className="col-xs-12 alert alert-danger">
