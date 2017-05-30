@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
-import {Field, reduxForm} from "redux-form";
-import GenerateWalletPasswordInputComponent from "./GenerateWalletPasswordInputComponent";
-import LedgerTrezorWarning from "./LedgerTrezorWarning";
+import {Field, reduxForm} from 'redux-form';
+import GenerateWalletPasswordInputComponent from './GenerateWalletPasswordInputComponent';
+import LedgerTrezorWarning from './LedgerTrezorWarning';
 import translate from "translations";
 
 
@@ -60,8 +60,8 @@ class GenerateWalletPasswordComponent extends Component {
             generateWalletFile,
             hasDownloadedWalletFile,
             generateWalletHasDownloadedFileAction,
-            generateWalletContinueToPaperAction,
-            canProceedToPaper
+            generateWalletContinueToPaperAction
+            // canProceedToPaper
 
         } = this.props;
 

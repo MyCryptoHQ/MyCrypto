@@ -1,13 +1,13 @@
-import GenerateWalletPasswordComponent from "./components/GenerateWalletPasswordComponent";
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import GenerateWalletPasswordComponent from './components/GenerateWalletPasswordComponent';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {
     GENERATE_WALLET_FILE_ACTION,
     GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION,
     SHOW_GENERATE_WALLET_PASSWORD_ACTION,
     GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION
-} from "actions/generateWallet";
-import PropTypes from "prop-types";
+} from 'actions/generateWallet';
+import PropTypes from 'prop-types';
 
 class GenerateWallet extends Component {
     constructor(props) {
