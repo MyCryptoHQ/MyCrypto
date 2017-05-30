@@ -29,6 +29,8 @@ const tabs = [
     }
 ]
 
+
+
 export default class TabsOptions extends Component {
     constructor(props) {
         super(props)
@@ -62,7 +64,8 @@ export default class TabsOptions extends Component {
                             {
                                 tabs.map((object, i) => {
                                         return (
-                                            <li className='nav-item' key={i} onClick={this.tabClick(i)}>
+                                            <li className={`nav-item ${(window.location.pathname === object.link || window.location.pathname.substring(1) === object.link) ? 'active': ''}`}
+                                                key={i} onClick={this.tabClick(i)}>
                                                 <Link to={object.link} key={i}
                                                       aria-label={`nav item: ${translate(object.name)}`}>
                                                     {translate(object.name)}
