@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {Field, reduxForm} from "redux-form";
 import GenerateWalletPasswordInputComponent from "./GenerateWalletPasswordInputComponent";
 import LedgerTrezorWarning from "./LedgerTrezorWarning";
+import translate from "translations";
 
 
 // VALIDATORS
@@ -73,7 +74,7 @@ class GenerateWalletPasswordComponent extends Component {
                             !generateWalletFile && (
                                 <div>
                                     <section className="row">
-                                        <h1 aria-live="polite">Generate Wallet</h1>
+                                        <h1 aria-live="polite">{translate('NAV_GenerateWallet')}</h1>
                                         <div className="col-sm-8 col-sm-offset-2">
                                             <h4>Enter a strong password (at least 9 characters)</h4>
                                             <Field
@@ -98,7 +99,7 @@ class GenerateWalletPasswordComponent extends Component {
                         {
                             generateWalletFile && (
                                 <section role="main" className="row">
-                                    <h1>Save your Wallet File. Don't forget your password.</h1>
+                                    <h1>{translate('GEN_Label_2')}</h1>
                                     <br/>
                                     <div className="col-sm-8 col-sm-offset-2">
                                         <div aria-hidden="true" className="account-help-icon"><img

@@ -1,12 +1,10 @@
-import React, {Component} from 'react'
+import React, {Component} from "react";
+import translate from "translations";
+
 
 export default class Footer extends Component {
     constructor(props) {
         super(props)
-    }
-
-    shouldComponentUpdate() {
-        return false
     }
 
     render() {
@@ -23,8 +21,8 @@ export default class Footer extends Component {
                                              height="55px" width="auto" alt="Ether Wallet"/>
                                     </a>
                                 </p>
-                                <p><span>Open-Source, client-side tool for easily & securely interacting with the Ethereum network.</span>
-                                    <span>Created by</span>
+                                <p><span>{translate('FOOTER_1')}</span>
+                                    <span>{translate('FOOTER_1b')}</span>
                                     <a aria-label="kvhnuke's github"
                                        href="https://github.com/kvhnuke"
                                        target="_blank">kvhnuke</a> &
@@ -35,7 +33,7 @@ export default class Footer extends Component {
                                 <br/>
                             </div>
                             <div className="col-sm-6 footer-2">
-                                <h5><i aria-hidden="true">💝</i> Donations are always appreciated!</h5>
+                                <h5><i aria-hidden="true">💝</i>{translate('FOOTER_2')}</h5>
                                 <ul>
                                     <li> ETH: <span
                                         className="mono wrap">0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8</span>
@@ -43,8 +41,7 @@ export default class Footer extends Component {
                                     <li> BTC: <span className="mono wrap">1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6</span></li>
                                 </ul>
 
-                                <h5><i aria-hidden="true">👫</i> You can also support us by supporting our
-                                    blockchain-family.</h5>
+                                <h5><i aria-hidden="true">👫</i>{translate('ADD_Warning_1')}</h5>
                                 <p>Consider using our affiliate links to...</p>
                                 <ul>
                                     <li><a aria-label="Swap Ether or Bitcoin via Bity.com"
@@ -55,15 +52,6 @@ export default class Footer extends Component {
                                         Ledger Nano S</a></li>
                                     <li><a href="https://trezor.io/?a=myetherwallet.com" target="_blank">Buy a
                                         TREZOR</a>
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li>
-                                        {/*<span translate="TranslatorName_1"></span>*/}
-                                        {/*<span translate="TranslatorName_2"></span>*/}
-                                        {/*<span translate="TranslatorName_3"></span>*/}
-                                        {/*<span translate="TranslatorName_4"></span>*/}
-                                        {/*<span translate="TranslatorName_5"></span>*/}
                                     </li>
                                 </ul>
                             </div>

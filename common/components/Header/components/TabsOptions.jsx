@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router';
-import translate from 'translations';
+import React, {Component} from "react";
+import {Link} from "react-router";
+import translate from "translations";
 
 const tabs = [
     {
@@ -62,9 +62,7 @@ export default class TabsOptions extends Component {
                             {
                                 tabs.map((object, i) => {
                                         return (
-                                            <li className='nav-item'
-                                                key={i}
-                                                onClick={this.tabClick(i)}>
+                                            <li className='nav-item' key={i} onClick={this.tabClick(i)}>
                                                 <Link to={object.link} key={i}
                                                       aria-label={`nav item: ${translate(object.name)}`}>
                                                     {translate(object.name)}
@@ -80,9 +78,9 @@ export default class TabsOptions extends Component {
                         this.state.showRightArrow &&
                         <a aria-hidden='true'
                            className='nav-arrow-right'
-                           onClick={() => this.scrollRight(100)}
-                           ng-mouseover='scrollHoverIn(false,2);' ng-mouseleave='scrollHoverOut()'>&#187;</a
-                        >}
+                           onClick={() => this.scrollRight(100)}>&#187;</a
+                        >
+                    }
                 </nav>
             </div>
 
