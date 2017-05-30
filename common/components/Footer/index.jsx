@@ -25,7 +25,8 @@ export default class Footer extends Component {
                                     <span>{translate('FOOTER_1b')}</span>
                                     <a aria-label="kvhnuke's github"
                                        href="https://github.com/kvhnuke"
-                                       target="_blank">kvhnuke</a> &
+                                       target="_blank">kvhnuke</a>
+                                    {' & '}
                                     <a aria-label="tayvano's github"
                                        href="https://github.com/tayvano"
                                        target="_blank">tayvano</a>.
