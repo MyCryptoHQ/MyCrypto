@@ -62,7 +62,7 @@ export default class TabsOptions extends Component {
                             {
                                 tabs.map((object, i) => {
                                         // if the window pathname is the same or similar to the tab objects name, set the active toggle
-                                        let activeOrNot = (window.location.pathname === object.name || window.location.pathname.substring(1) === object.name) ? 'active' : '';
+                                        const activeOrNot = (window.location.pathname === object.name || window.location.pathname.substring(1) === object.name) ? 'active' : '';
                                         return (
                                             <li className={`nav-item ${activeOrNot}`}
                                                 key={i} onClick={this.tabClick(i)}>
