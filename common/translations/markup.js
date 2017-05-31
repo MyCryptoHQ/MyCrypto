@@ -22,7 +22,7 @@ function linkify(mdString: string) {
     let i = 0;
     while (i + 1 < parts.length) {
         result.push(decodeHTMLEntities(parts[i]));
-        result.push(<a href={parts[i + 2]} target="_blank">{parts[i + 1]}</a>);
+        result.push(<a key={'linkify-' + i} href={parts[i + 2]} target="_blank">{parts[i + 1]}</a>);
         i += 3;
     }
     result.push(decodeHTMLEntities(parts[parts.length - 1]));
