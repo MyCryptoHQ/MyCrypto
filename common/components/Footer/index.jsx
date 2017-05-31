@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import translate from "translations";
+import React, {Component} from 'react';
+import translate from 'translations';
 
 
 export default class Footer extends Component {

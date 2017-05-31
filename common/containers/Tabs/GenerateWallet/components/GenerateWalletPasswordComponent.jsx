@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
 import {Field, reduxForm} from 'redux-form';
 import GenerateWalletPasswordInputComponent from './GenerateWalletPasswordInputComponent';
 import LedgerTrezorWarning from './LedgerTrezorWarning';
-import translate from "translations";
+import translate from 'translations';
 
 
 // VALIDATORS
 const minLength = min => value => {
     return value && value.length < min ? `Must be ${min} characters or more` : undefined
-}
-const minLength9 = minLength(9)
-const required = value => value ? undefined : 'Required'
+};
+const minLength9 = minLength(9);
+const required = value => value ? undefined : 'Required';
 
 
 class GenerateWalletPasswordComponent extends Component {
@@ -41,8 +40,8 @@ class GenerateWalletPasswordComponent extends Component {
     }
 
     downloaded() {
-        let nextState = this.state
-        nextState.hasDownloadedWalletFile = true
+        let nextState = this.state;
+        nextState.hasDownloadedWalletFile = true;
         this.setState(nextState)
     }
 
