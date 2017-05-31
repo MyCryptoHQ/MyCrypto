@@ -1,10 +1,10 @@
-import React from "react";
-import {browserHistory, Redirect, Route} from "react-router";
-import {useBasename} from "history";
-import {App} from "containers";
-import GenerateWallet from "containers/Tabs/GenerateWallet"
-import ViewWallet from "containers/Tabs/ViewWallet"
-import Help from "containers/Tabs/Help"
+import React from 'react';
+import {browserHistory, Redirect, Route} from 'react-router';
+import {useBasename} from 'history';
+import {App} from 'containers';
+import GenerateWallet from 'containers/Tabs/GenerateWallet'
+import ViewWallet from 'containers/Tabs/ViewWallet'
+import Help from 'containers/Tabs/Help'
 
 export const history = getHistory()
 
