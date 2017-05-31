@@ -27,11 +27,12 @@ const tabs = [
         name: 'NAV_Help',
         link: 'help'
     }
-]
+];
+
 
 export default class TabsOptions extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             showLeftArrow: false,
             showRightArrow: false
@@ -47,7 +48,6 @@ export default class TabsOptions extends Component {
     scrollRight() {
     }
 
-
     render() {
         return (
             <div>
@@ -61,11 +61,12 @@ export default class TabsOptions extends Component {
                         <ul className='nav-inner'>
                             {
                                 tabs.map((object, i) => {
+                                        // if the window pathname is the same or similar to the tab objects name, set the active toggle
+                                        const activeOrNot = (window.location.pathname === object.name || window.location.pathname.substring(1) === object.name) ? 'active' : '';
                                         return (
-                                            <li className='nav-item'
-                                                key={i}
-                                                onClick={this.tabClick(i)}>
-                                                <Link to={object.link} key={i}
+                                            <li className={`nav-item ${activeOrNot}`}
+                                                key={i} onClick={this.tabClick(i)}>
+                                                <Link to={object.link}
                                                       aria-label={`nav item: ${translate(object.name)}`}>
                                                     {translate(object.name)}
                                                 </Link>
@@ -80,9 +81,8 @@ export default class TabsOptions extends Component {
                         this.state.showRightArrow &&
                         <a aria-hidden='true'
                            className='nav-arrow-right'
-                           onClick={() => this.scrollRight(100)}
-                           ng-mouseover='scrollHoverIn(false,2);' ng-mouseleave='scrollHoverOut()'>&#187;</a
-                        >}
+                           onClick={() => this.scrollRight(100)}>&#187;</a>
+                    }
                 </nav>
             </div>
 
