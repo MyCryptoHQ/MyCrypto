@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import translate from 'translations';
+import KeystoreDecrypt from './KeystoreDecrypt';
 
 
 export default class WalletDecrypt extends Component {
@@ -106,6 +107,8 @@ export default class WalletDecrypt extends Component {
                                             </span>
                                         </label>
                                     </section>
+
+                                    <KeystoreDecrypt />
                                 </article>
                             </div>
                         </article>
