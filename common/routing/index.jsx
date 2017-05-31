@@ -12,7 +12,7 @@ export const history = getHistory()
 export const Routing = () => (
     <Route name="App" path='' component={App}>
         <Route name="GenerateWallet" path="/" component={GenerateWallet}/>
-        <Route name="WalletDecrypt" path="/view-wallet" component={WalletDecrypt}/>
+        <Route name="ViewWallet" path="/view-wallet" component={WalletDecrypt}/>
         <Route name="Help" path="/help" component={Help}/>
         <Route name="Swap" path="/swap" component={Swap}/>
 
