@@ -66,4 +66,10 @@ describe('markupToReact', () => {
         ];
         expect(markupToReact(value)).toEqual(expected);
     });
+
+    it('converts html entities', () => {
+        let value = '&amp;&amp;';
+        let expected = '&&';
+        expect(markupToReact(value)).toEqual(expected);
+    })
 });

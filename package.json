@@ -73,6 +73,7 @@
     "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "dev": "node webpack_config/server.js",
-    "flow": "flow"
+    "flow": "flow",
+    "start": "npm run dev"
   }
 }
