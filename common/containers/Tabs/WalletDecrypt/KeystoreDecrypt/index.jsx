@@ -3,10 +3,6 @@ import translate from 'translations';
 
 
 export default class KeystoreDecrypt extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <section className="col-md-4 col-sm-6">

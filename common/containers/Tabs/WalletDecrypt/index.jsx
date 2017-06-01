@@ -4,10 +4,6 @@ import KeystoreDecrypt from './KeystoreDecrypt';
 
 
 export default class WalletDecrypt extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <section className="container">
