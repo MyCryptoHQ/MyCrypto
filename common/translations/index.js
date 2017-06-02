@@ -40,3 +40,19 @@ export default function translate(key: string) {
         repository[activeLanguage][key] || repository[fallbackLanguage][key] || key
     );
 }
+
+export function getTranslators() {
+    return [
+        'TranslatorName_1',
+        'TranslatorName_2',
+        'TranslatorName_3',
+        'TranslatorName_4',
+        'TranslatorName_5'
+    ].filter(x => {
+        const translated = translate(x);
+        if (typeof translated === 'string') {
+            return !!translated.trim();
+        }
+        return !!translated;
+    });
+}

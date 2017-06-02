@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-import translate from 'translations';
+import translate, {getTranslators} from 'translations';
 
 
 export default class Footer extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
+        const translators = getTranslators()
         return (
             <footer role="contentinfo" aria-label="footer">
                 <div className="container">
@@ -55,6 +52,15 @@ export default class Footer extends Component {
                                         TREZOR</a>
                                     </li>
                                 </ul>
+
+                                {!!translators.length &&
+                                    <h5> <i>🏅</i> <span>{translate('Translator_Desc')}</span></h5>
+                                }
+                                {!!translators.length &&
+                                    <ul>
+                                        <li>{translators.map(key => <span key={key}>{translate(key)}</span>)}</li>
+                                    </ul>
+                                }
                             </div>
                             <div className="col-sm-3 footer-3">
                                 <h5><i aria-hidden="true">🌎</i> On the Web</h5>
