@@ -1,9 +1,63 @@
 import React, {Component} from 'react';
 import translate from 'translations';
-import KeystoreDecrypt from './KeystoreDecrypt';
-
+/*import KeystoreDecrypt from './KeystoreDecrypt';
+import PrivateKeyDecrypt from './PrivateKeyDecrypt';
+import MnemonicDecrypt from './MnemonicDecrypt';
+import LedgerNanoSDecrypt from './LedgerNanoSDecrypt';
+import TrezorDecrypt from './TrezorDecrypt';
+import ViewOnlyDecrypt from './ViewOnlyDecrypt';*/
 
 export default class WalletDecrypt extends Component {
+    buildDecryptionChoices() {
+        const decryptionChoices = [
+            {
+                name: 'keystore-file',
+                lid: 'x_Keystore2',
+                // component: KeystoreDecrypt
+            },
+            {
+                name: 'private-key',
+                lid: 'x_PrivKey2',
+                // component: PrivateKeyDecrypt
+            },
+            {
+                name: 'mnemonic-phrase',
+                lid: 'x_Mnemonic',
+                // component: MnemonicDecrypt
+            },
+            {
+                name: 'ledger-nano-s',
+                lid: 'x_Ledger',
+                // component: LedgerNanoSDecrypt
+            },
+            {
+                name: 'trezor',
+                lid: 'x_Trezor',
+                // component: TrezorDecrypt
+            },
+            {
+                name: 'view-only',
+                lid: 'View with Address Only',
+                // component: ViewOnlyDecrypt
+            }
+        ];
+
+        return decryptionChoices.map((decryptionChoice, idx) => {
+            return (
+                <label className="radio">
+                    <input
+                        aria-flowto={`aria${idx}`}
+                        aria-labelledby={`${decryptionChoice.name}-label`}
+                        type="radio"
+                    />
+                    <span id={`${decryptionChoice.name}-label`}>
+                        {translate(decryptionChoice.lid)}
+                    </span>
+                </label>
+            );
+        });
+    }
+
     render() {
         return (
             <section className="container">
@@ -18,93 +72,9 @@ export default class WalletDecrypt extends Component {
                                 <article className="well decrypt-drtv row">
                                     <section className="col-md-4 col-sm-6">
                                         <h4>{translate('decrypt_Access')}</h4>
-                                        <label className="radio">
-                                            <input
-                                                aria-flowto="aria1"
-                                                aria-labelledby="keystore-file-label"
-                                                type="radio"
-                                                value="fileupload"
-                                                name="133"
-                                            />
-                                            <span id="keystore-file-label">
-                                                {translate('x_Keystore2')}
-                                            </span>
-                                        </label>
-                                        <label className="radio">
-                                            <input
-                                                aria-flowto="aria2"
-                                                aria-labelledby="private-key-label"
-                                                type="radio"
-                                                value="pasteprivkey"
-                                                name="135"
-                                            />
-                                            <span id="private-key-label">
-                                                {translate('x_PrivKey2')}
-                                            </span>
-                                        </label>
-                                        <label className="radio">
-                                            <input
-                                                aria-flowto="aria3"
-                                                aria-labelledby="mnemonic-phrase-label"
-                                                type="radio"
-                                                value="pastemnemonic"
-                                                name="137"
-                                            />
-                                            <span id="mnemonic-phrase-label">
-                                                {translate('x_Mnemonic')}
-                                            </span>
-                                        </label>
-                                        <label className="radio">
-                                            <input
-                                                aria-flowto="aria4"
-                                                aria-labelledby="parity-phrase-label"
-                                                type="radio"
-                                                value="parityBWallet"
-                                                name="139"
-                                            />
-                                            <span id="parity-phrase-label">
-                                                {translate('x_ParityPhrase')}
-                                            </span>
-                                        </label>
-                                        <label className="radio">
-                                            <input
-                                                aria-flowto="aria5"
-                                                aria-labelledby="ledger-nano-s-label"
-                                                type="radio"
-                                                value="ledger"
-                                                name="141"
-                                            />
-                                            <span id="ledger-nano-s-label">
-                                                {translate('x_Ledger')}
-                                            </span>
-                                        </label>
-                                        <label className="radio">
-                                            <input
-                                                aria-flowto="aria6"
-                                                aria-labelledby="trezor-label"
-                                                type="radio"
-                                                value="trezor"
-                                                name="142"
-                                            />
-                                            <span id="trezor-label">
-                                                {translate('x_Trezor')}
-                                            </span>
-                                        </label>
-                                        <label className="radio">
-                                            <input
-                                                aria-flowto="aria7"
-                                                aria-labelledby="view-only-label"
-                                                type="radio"
-                                                value="addressOnly"
-                                                name="143"
-                                            />
-                                            <span id="view-only-label">
-                                                View with Address Only
-                                            </span>
-                                        </label>
-                                    </section>
 
-                                    <KeystoreDecrypt />
+                                        {this.buildDecryptionChoices()}
+                                    </section>
                                 </article>
                             </div>
                         </article>
