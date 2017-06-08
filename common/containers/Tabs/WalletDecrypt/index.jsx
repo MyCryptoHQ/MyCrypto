@@ -44,6 +44,10 @@ export default class WalletDecrypt extends Component {
     constructor(props) {
         super(props);
 
+        // functions called by things like onChange need to be bound in this way.
+        // https://github.com/goatslacker/alt/issues/283#issuecomment-107463147
+        this.handleDecryptionChoiceChange = this.handleDecryptionChoiceChange.bind(this);
+
         this.state = {
             decryptionComponent: null
         };
@@ -59,7 +63,7 @@ export default class WalletDecrypt extends Component {
                         type="radio"
                         name="decryption-choice-radio-group"
                         value={decryptionChoice.name}
-                        onChange={this.handleDecryptionChoiceChange.bind(this)}
+                        onChange={this.handleDecryptionChoiceChange}
                     />
                     <span id={`${decryptionChoice.name}-label`}>
                         {translate(decryptionChoice.lid)}
