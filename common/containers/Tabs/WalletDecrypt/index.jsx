@@ -84,7 +84,7 @@ export default class WalletDecrypt extends Component {
     render() {
         const decryptionComponent = this.state.decryptionComponent ?
             <this.state.decryptionComponent /> :
-            <div />;
+            null;
 
         return (
             <section className="container">
