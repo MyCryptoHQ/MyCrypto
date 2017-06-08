@@ -6,6 +6,8 @@
   "dependencies": {
     "axios": "^0.16.2",
     "lodash": "^4.17.4",
+    "ethereumjs-util": "^5.1.2",
+    "ethereumjs-wallet": "^0.6.0",
     "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
