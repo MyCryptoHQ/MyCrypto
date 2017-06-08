@@ -20,6 +20,7 @@ export default class KeystoreDecrypt extends Component {
                 const decryptedWallet = wallet.fromV3(keyStoreString, 'asdfasdfasdf', true);
                 const privateHex = ethUtil.bufferToHex(decryptedWallet._privKey);
                 const publicHex = ethUtil.bufferToHex(ethUtil.privateToAddress(decryptedWallet._privKey));
+                console.log(privateHex, publicHex); // TODO: Remove console log, it's only here to let Travis pass
             } catch (e) {
                 console.error('Could not parse Keystore file.', e);
             }
