@@ -6,11 +6,9 @@ import ethUtil from 'ethereumjs-util';
 export default class KeystoreDecrypt extends Component {
     constructor(props) {
         super(props);
-
-        this.handleFileSelection = this.handleFileSelection.bind(this);
     }
 
-    handleFileSelection(event) {
+    handleFileSelection = (event) => {
         const fileReader = new FileReader();
         const inputFile = event.target.files[0];
 
