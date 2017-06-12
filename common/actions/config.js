@@ -1,5 +1,5 @@
 // @flow
-import { setLanguage } from 'translations';
+import {setLanguage} from '../../common/translations/index';
 export const CONFIG_LANGUAGE_CHANGE = 'CONFIG_LANGUAGE_CHANGE';
 export const CONFIG_NODE_CHANGE = 'CONFIG_NODE_CHANGE';
 
