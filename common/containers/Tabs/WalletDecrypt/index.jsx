@@ -54,7 +54,11 @@ export default class WalletDecrypt extends Component {
             return this.state.decryptionChoice === decryptionChoice.name;
         });
 
-        return selectedDecryptionChoice.component;
+        if (!selectedDecryptionChoice) {
+            return null;
+        }
+
+        return <selectedDecryptionChoice.component />;
     }
 
     buildDecryptionChoices() {
@@ -93,7 +97,7 @@ export default class WalletDecrypt extends Component {
     }
 
     render() {
-        const DecryptionComponent = this.getDecryptionComponent();
+        const decryptionComponent = this.getDecryptionComponent();
 
         return (
             <section className="container">
@@ -113,7 +117,7 @@ export default class WalletDecrypt extends Component {
 
                                     </section>
 
-                                    <DecryptionComponent />
+                                    {decryptionComponent}
                                 </article>
                             </div>
                         </article>
