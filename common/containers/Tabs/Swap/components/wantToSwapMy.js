@@ -79,7 +79,7 @@ export default class WantToSwapMy extends Component {
     }
 
     render() {
-        let {
+        const {
             originAmount,
             destinationAmount,
             originKind,
@@ -90,7 +90,7 @@ export default class WantToSwapMy extends Component {
 
         return (
             <article className="swap-panel">
-                <h1 className="ng-scope">{translate('SWAP_init_1')}</h1>
+                <h1>{translate('SWAP_init_1')}</h1>
 
                 <input
                     className={`form-control ${(this.props.originAmount !== '' && this.props.originAmount > 0) ? 'is-valid' : 'is-invalid'}`}

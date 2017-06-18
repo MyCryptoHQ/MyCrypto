@@ -27,11 +27,6 @@ class App extends Component {
         nodeSelection: PropTypes.object
     };
 
-    componentWillMount() {
-        let { handleWindowResize } = this.props;
-        window.addEventListener('resize', handleWindowResize);
-    }
-
     render() {
         let {
             children,
@@ -41,11 +36,11 @@ class App extends Component {
             changeNode,
             nodeSelection
         } = this.props;
-        
+
         let headerProps = {
             changeLanguage,
             languageSelection,
-
+            location,
             changeNode,
             nodeSelection
         };

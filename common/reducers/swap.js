@@ -6,7 +6,7 @@ import {
     SWAP_UPDATE_BITY_RATES
 } from 'actions/swap';
 
-import {without} from 'lodash';
+import without from 'lodash/without';
 const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 
 const initialState = {
