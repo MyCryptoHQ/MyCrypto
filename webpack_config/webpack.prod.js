@@ -1,16 +1,19 @@
 'use strict'
 process.env.NODE_ENV = 'production'
 
-const exec = require('child_process').execSync
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const ProgressPlugin = require('webpack/lib/ProgressPlugin')
 // const OfflinePlugin = require('offline-plugin')
 const base = require('./webpack.base')
 const config = require('./config')
+const fs = require('fs')
+const distFolder = 'dist/';
 
 
-exec('rm -rf dist/')
+if (fs.existsSync(distFolder))
+    fs.rmdirSync(distFolder)
+
 base.devtool = 'cheap-source-map'
 base.module.loaders.push(
     {
