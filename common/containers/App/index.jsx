@@ -41,9 +41,7 @@ class App extends Component {
             changeNode,
             nodeSelection
         } = this.props;
-
-        // let title = children.props.route.name;
-
+        
         let headerProps = {
             changeLanguage,
             languageSelection,
