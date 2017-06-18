@@ -8,6 +8,8 @@ import { languages, nodeList } from '../../config/data';
 
 export default class Header extends Component {
     static propTypes = {
+        location: PropTypes.object,
+
         // Language DropDown
         changeLanguage: PropTypes.func,
         languageSelection: PropTypes.object,
@@ -76,7 +78,7 @@ export default class Header extends Component {
                     </section>
                 </section>
 
-                <TabsOptions {...{}} />
+                <TabsOptions {...this.props} />
 
             </div>
         );

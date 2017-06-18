@@ -38,6 +38,7 @@ class App extends Component {
         } = this.props;
 
         let headerProps = {
+            location,
             changeLanguage,
             languageSelection,
             location,
