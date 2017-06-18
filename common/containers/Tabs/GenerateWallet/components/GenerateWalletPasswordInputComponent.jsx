@@ -33,14 +33,6 @@ export default class GenerateWalletPasswordInputComponent extends Component {
                             className="input-group-addon eye"/>
                     </div>
                 </div>
-
-                {/*TODO - if we want descriptive errors we could re-enable this*/}
-                {/*{this.props.meta.touched && this.props.meta.error &&*/}
-                {/*<div>*/}
-                    {/*<p className="error">{this.props.meta.error}</p>*/}
-                {/*</div>*/}
-                {/*}*/}
-
             </div>
         )
     }
