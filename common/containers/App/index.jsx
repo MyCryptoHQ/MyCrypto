@@ -41,7 +41,6 @@ class App extends Component {
             location,
             changeLanguage,
             languageSelection,
-            location,
             changeNode,
             nodeSelection
         };
