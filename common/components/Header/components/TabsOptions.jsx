@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import translate from 'translations';
+import PropTypes from 'prop-types';
 
 const tabs = [
     {
@@ -40,6 +41,10 @@ export default class TabsOptions extends Component {
         }
     }
 
+    static propTypes = {
+        location: PropTypes.object
+    };
+
     tabClick() {
     }
 
@@ -50,6 +55,7 @@ export default class TabsOptions extends Component {
     }
 
     render() {
+        const {location} = this.props;
         return (
             <div>
                 <nav role='navigation' aria-label='main navigation' className='container nav-container overflowing'>
@@ -63,7 +69,7 @@ export default class TabsOptions extends Component {
                             {
                                 tabs.map((object, i) => {
                                         // if the window pathname is the same or similar to the tab objects name, set the active toggle
-                                        const activeOrNot = (window.location.pathname === object.link || window.location.pathname.substring(1) === object.link) ? 'active' : '';
+                                        const activeOrNot = (location.pathname === object.link || location.pathname.substring(1) === object.link) ? 'active' : '';
                                         return (
                                             <li className={`nav-item ${activeOrNot}`}
                                                 key={i} onClick={this.tabClick(i)}>

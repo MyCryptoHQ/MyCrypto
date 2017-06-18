@@ -41,8 +41,9 @@ class App extends Component {
             changeNode,
             nodeSelection
         } = this.props;
-        
+
         let headerProps = {
+            location,
             changeLanguage,
             languageSelection,
 
