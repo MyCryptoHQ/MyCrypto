@@ -37,7 +37,6 @@ const configureStore = () => {
 
 const renderRoot = (Root) => {
     let store = configureStore();
-    window.store = store;
     let syncedHistory = syncHistoryWithStore(history, store);
     render(
         <Root key={Math.random()}
