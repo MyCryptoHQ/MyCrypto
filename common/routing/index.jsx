@@ -5,6 +5,7 @@ import {App} from 'containers';
 import GenerateWallet from 'containers/Tabs/GenerateWallet'
 import ViewWallet from 'containers/Tabs/ViewWallet'
 import Help from 'containers/Tabs/Help'
+import Swap from 'containers/Tabs/Swap'
 
 export const history = getHistory()
 
@@ -13,6 +14,7 @@ export const Routing = () => (
         <Route name="GenerateWallet" path="/" component={GenerateWallet}/>
         <Route name="ViewWallet" path="/view-wallet" component={ViewWallet}/>
         <Route name="Help" path="/help" component={Help}/>
+        <Route name="Swap" path="/swap" component={Swap}/>
 
         <Redirect from="/*" to="/"/>
     </Route>
