@@ -47,8 +47,7 @@ export default class WantToSwapMy extends Component {
     SWAP_ORIGIN_KIND_TO: PropTypes.func,
     SWAP_DESTINATION_KIND_TO: PropTypes.func,
     SWAP_ORIGIN_AMOUNT_TO: PropTypes.func,
-    SWAP_DESTINATION_AMOUNT_TO: PropTypes.func,
-    swapOriginKindAndDestinationKindAndDestinationOptionsTo: PropTypes.func
+    SWAP_DESTINATION_AMOUNT_TO: PropTypes.func
   };
 
   onClickStartSwap() {}
