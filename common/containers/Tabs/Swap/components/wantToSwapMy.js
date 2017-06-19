@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 import translate from 'translations';
 import {combineAndUpper} from 'api/bity';
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 
 class CoinTypeDropDown extends Component {
-    constructor(props) {
-        super(props)
+    constructor(props, context) {
+        super(props, context)
     }
 
     static propTypes = {
@@ -37,8 +33,8 @@ class CoinTypeDropDown extends Component {
 }
 
 export default class WantToSwapMy extends Component {
-    constructor(props) {
-        super(props)
+    constructor(props, context) {
+        super(props, context)
     }
 
     static propTypes = {
@@ -52,7 +48,9 @@ export default class WantToSwapMy extends Component {
         swapOriginKindTo: PropTypes.func,
         swapDestinationKindTo: PropTypes.func,
         swapOriginAmountTo: PropTypes.func,
-        swapDestinationAmountTo: PropTypes.func
+        swapDestinationAmountTo: PropTypes.func,
+        swapOriginKindAndDestinationKindAndDestinationOptionsTo: PropTypes.func
+
     };
 
     onClickStartSwap() {
@@ -86,23 +84,19 @@ export default class WantToSwapMy extends Component {
     }
 
     async onChangeDestinationKind(event) {
-        let toKind = event.target.value;
-        this.props.swapDestinationKindTo(toKind);
-        // TODO - can't find a way around this without bringing in annoying deps. Even though redux action is sync,
-        // it seems it happens in the background and values don't get updated in time
-        await sleep(100);
-        let pairName = combineAndUpper(this.props.destinationKind, this.props.originKind);
+        let newDestinationKind = event.target.value;
+        this.props.swapDestinationKindTo(newDestinationKind);
+        let pairName = combineAndUpper(this.props.originKind, newDestinationKind);
         let bityRate = this.props.bityRates[pairName];
-        this.props.swapOriginAmountTo(parseFloat(this.props.destinationAmount) * bityRate)
+        this.props.swapDestinationAmountTo(parseFloat(this.props.originAmount) * bityRate)
     }
 
     async onChangeOriginKind(event) {
-        let toKind = event.target.value;
-        this.props.swapOriginKindTo(toKind);
-        // TODO - can't find a way around this without bringing in annoying deps. Even though redux action is sync,
-        // it seems it happens in the background and values don't get updated in time
-        await sleep(100);
-        let pairName = combineAndUpper(this.props.originKind, this.props.destinationKind);
+        let newOriginKind = event.target.value;
+        this.props.swapOriginKindTo(newOriginKind);
+        // https://github.com/reactjs/redux/issues/1543#issuecomment-201399259
+        let destinationKind = store.getState().swap.destinationKind;
+        let pairName = combineAndUpper(newOriginKind, destinationKind);
         let bityRate = this.props.bityRates[pairName];
         this.props.swapDestinationAmountTo(parseFloat(this.props.originAmount) * bityRate)
     }
@@ -126,7 +120,9 @@ export default class WantToSwapMy extends Component {
                     placeholder="Amount"
                     onChange={(e) => this.onChangeOriginAmount(e.target.value)}
                     value={originAmount}/>
-                <CoinTypeDropDown type={originKind} onChange={this.onChangeOriginKind.bind(this)}
+
+                <CoinTypeDropDown kind={originKind}
+                                  onChange={this.onChangeOriginKind.bind(this)}
                                   kindOptions={originKindOptions}/>
 
                 <h1>{translate('SWAP_init_2')}</h1>
@@ -137,7 +133,9 @@ export default class WantToSwapMy extends Component {
                     placeholder="Amount"
                     value={destinationAmount}
                     onChange={(e) => this.onChangeDestinationAmount(e.target.value)}/>
-                <CoinTypeDropDown type={destinationKind} onChange={this.onChangeDestinationKind.bind(this)}
+
+                <CoinTypeDropDown kind={destinationKind}
+                                  onChange={this.onChangeDestinationKind.bind(this)}
                                   kindOptions={destinationKindOptions}/>
 
                 <div className="col-xs-12 clearfix text-center">

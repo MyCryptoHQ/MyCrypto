@@ -6,16 +6,16 @@ import {
     SWAP_UPDATE_BITY_RATES
 } from 'actions/swap';
 
-import without from 'lodash/without';
-const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
+export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
+
 
 const initialState = {
     originAmount: 0,
     destinationAmount: 0,
     originKind: 'BTC',
     destinationKind: 'ETH',
-    destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'BTC'),
-    originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
+    destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => element !== 'BTC'),
+    originKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => element !== 'REP'),
     bityRates: {}
 };
 
@@ -26,8 +26,8 @@ export function swap(state = initialState, action) {
             return {
                 ...state,
                 originKind: action.value,
-                destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, action.value),
-                destinationKind: without(ALL_CRYPTO_KIND_OPTIONS, action.value)[0]
+                destinationKind: action.value === state.destinationKind ? ALL_CRYPTO_KIND_OPTIONS.filter(element => element !== action.value)[0] : state.destinationKind,
+                destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => element !== action.value)
             };
         }
         case SWAP_DESTINATION_KIND: {
