@@ -86,15 +86,12 @@ export default class WantToSwapMy extends Component {
 
   async onChangeDestinationKind(event) {
     let newDestinationKind = event.target.value;
-    this.props.SWAP_DESTINATION_KIND_TO(
-      newDestinationKind,
-      this.props.bityRates
-    );
+    this.props.SWAP_DESTINATION_KIND_TO(newDestinationKind);
   }
 
   async onChangeOriginKind(event) {
     let newOriginKind = event.target.value;
-    this.props.SWAP_ORIGIN_KIND_TO(newOriginKind, this.props.bityRates);
+    this.props.SWAP_ORIGIN_KIND_TO(newOriginKind);
   }
 
   render() {

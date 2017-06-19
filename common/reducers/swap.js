@@ -46,33 +46,33 @@ export function swap(state = initialState, action) {
   switch (action.type) {
     case SWAP_ORIGIN_KIND: {
       const newDestinationKind = buildDestinationKind(
-        action.payload.originKind,
+        action.value,
         state.destinationKind
       );
       return {
         ...state,
-        originKind: action.payload.originKind,
+        originKind: action.value,
         destinationKind: newDestinationKind,
         destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(
-          element => element !== action.payload.originKind
+          element => element !== action.value
         ),
         destinationAmount: buildDestinationAmount(
           state.originAmount,
-          action.payload.originKind,
+          action.value,
           newDestinationKind,
-          action.payload.bityRates
+          state.bityRates
         )
       };
     }
     case SWAP_DESTINATION_KIND: {
       return {
         ...state,
-        destinationKind: action.payload.destinationKind,
+        destinationKind: action.value,
         destinationAmount: buildDestinationAmount(
           state.originAmount,
           state.originKind,
-          action.payload.destinationKind,
-          action.payload.bityRates
+          action.value,
+          state.bityRates
         )
       };
     }
