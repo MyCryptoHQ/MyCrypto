@@ -20,20 +20,20 @@ class CoinTypeDropDown extends Component {
     };
 
     render() {
-        return (<span className="dropdown">
-                      <select value={this.props.kind}
-                              className="btn btn-default"
-                              onChange={this.props.onChange.bind(this)}>
-                          {
-                              this.props.kindOptions.map((obj, i) => {
-                                  return <option value={obj} key={i}>{obj}</option>
-                              })
-                          }
-                        </select>
-                </span>)
+        return (
+            <span className="dropdown">
+                  <select value={this.props.kind}
+                          className="btn btn-default"
+                          onChange={this.props.onChange.bind(this)}>
+                      {
+                          this.props.kindOptions.map((obj, i) => {
+                              return <option value={obj} key={i}>{obj}</option>
+                          })
+                      }
+                  </select>
+            </span>
+        )
     }
-
-
 }
 
 export default class WantToSwapMy extends Component {
@@ -126,7 +126,8 @@ export default class WantToSwapMy extends Component {
                     placeholder="Amount"
                     onChange={(e) => this.onChangeOriginAmount(e.target.value)}
                     value={originAmount}/>
-                <CoinTypeDropDown type={originKind} onChange={this.onChangeOriginKind.bind(this)} kindOptions={originKindOptions}/>
+                <CoinTypeDropDown type={originKind} onChange={this.onChangeOriginKind.bind(this)}
+                                  kindOptions={originKindOptions}/>
 
                 <h1>{translate('SWAP_init_2')}</h1>
 
@@ -136,7 +137,8 @@ export default class WantToSwapMy extends Component {
                     placeholder="Amount"
                     value={destinationAmount}
                     onChange={(e) => this.onChangeDestinationAmount(e.target.value)}/>
-                <CoinTypeDropDown type={destinationKind} onChange={this.onChangeDestinationKind.bind(this)} kindOptions={destinationKindOptions}/>
+                <CoinTypeDropDown type={destinationKind} onChange={this.onChangeDestinationKind.bind(this)}
+                                  kindOptions={destinationKindOptions}/>
 
                 <div className="col-xs-12 clearfix text-center">
                     <a onClick={this.onClickStartSwap} className="btn btn-info btn-lg">
