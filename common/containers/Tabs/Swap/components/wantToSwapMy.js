@@ -7,6 +7,35 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+class CoinTypeDropDown extends Component {
+    constructor(props) {
+        super(props)
+    }
+
+    static propTypes = {
+        kind: PropTypes.any,
+        onChange: PropTypes.any,
+        kindOptions: PropTypes.any
+    };
+
+    render() {
+        return (<span className="dropdown">
+                      <select value={this.props.kind}
+                              className="btn btn-default"
+                              onChange={this.props.onChange.bind(this)}>
+                          {
+                              this.props.kindOptions.map((obj, i) => {
+                                  return <option value={obj} key={i}>{obj}</option>
+                              })
+                          }
+                        </select>
+                </span>)
+    }
+
+
+}
+
 export default class WantToSwapMy extends Component {
     constructor(props) {
         super(props)
@@ -91,25 +120,14 @@ export default class WantToSwapMy extends Component {
         return (
             <article className="swap-panel">
                 <h1>{translate('SWAP_init_1')}</h1>
-
                 <input
                     className={`form-control ${(this.props.originAmount !== '' && this.props.originAmount > 0) ? 'is-valid' : 'is-invalid'}`}
                     type="number"
                     placeholder="Amount"
                     onChange={(e) => this.onChangeOriginAmount(e.target.value)}
                     value={originAmount}/>
+                <CoinTypeDropDown type={originKind} onChange={this.onChangeOriginKind.bind(this)} kindOptions={originKindOptions}/>
 
-                <span className="dropdown">
-                  <select value={originKind}
-                          className="btn btn-default"
-                          onChange={this.onChangeOriginKind.bind(this)}>
-                      {
-                          originKindOptions.map((obj, i) => {
-                              return <option value={obj} key={i}>{obj}</option>
-                          })
-                      }
-                    </select>
-            </span>
                 <h1>{translate('SWAP_init_2')}</h1>
 
                 <input
@@ -118,18 +136,7 @@ export default class WantToSwapMy extends Component {
                     placeholder="Amount"
                     value={destinationAmount}
                     onChange={(e) => this.onChangeDestinationAmount(e.target.value)}/>
-
-                <span className="dropdown">
-                      <select value={destinationKind}
-                              className="btn btn-default"
-                              onChange={this.onChangeDestinationKind.bind(this)}>
-                          {
-                              destinationKindOptions.map((obj, i) => {
-                                  return <option value={obj} key={i}>{obj}</option>
-                              })
-                          }
-                        </select>
-                </span>
+                <CoinTypeDropDown type={destinationKind} onChange={this.onChangeDestinationKind.bind(this)} kindOptions={destinationKindOptions}/>
 
                 <div className="col-xs-12 clearfix text-center">
                     <a onClick={this.onClickStartSwap} className="btn btn-info btn-lg">

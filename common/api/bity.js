@@ -1,4 +1,5 @@
 import axios from 'axios';
+import bityConfig from 'config/bity';
 
 // https://stackoverflow.com/questions/9828684/how-to-get-all-arguments-of-a-callback-function
 export function combineAndUpper() {
@@ -12,25 +13,6 @@ export function combineAndUpper() {
 }
 
 export default class Bity {
-    constructor() {
-        this.SERVERURL = 'https://myetherapi.com';
-        this.bityAPI = 'https://bity.com/api';
-        this.decimals = 6;
-        this.ethExplorer = 'https://etherscan.io/tx/[[txHash]]';
-        this.btcExplorer = 'https://blockchain.info/tx/[[txHash]]';
-        this.validStatus = ['RCVE', 'FILL', 'CONF', 'EXEC'];
-        this.invalidStatus = ['CANC'];
-        this.mainPairs = ['REP', 'ETH'];
-        this.min = 0.01;
-        this.max = 3;
-        this.priceLoaded = false;
-        this.postConfig = {
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8'
-            }
-        };
-    }
-
     findRateFromBityRateList(rateObjects, pairName) {
         return rateObjects.find(x => x.pair === pairName);
     }
@@ -76,7 +58,7 @@ export default class Bity {
 
     requestAllRates() {
         const path = '/v1/rate2/';
-        const bityURL = this.bityAPI + path;
+        const bityURL = bityConfig.bityAPI + path;
         return axios.get(bityURL)
     }
 }
