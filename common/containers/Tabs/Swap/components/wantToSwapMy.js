@@ -99,6 +99,7 @@ export default class WantToSwapMy extends Component {
     let newOriginKind = event.target.value;
     this.props.swapOriginKindTo(newOriginKind);
     // https://github.com/reactjs/redux/issues/1543#issuecomment-201399259
+    let store = window.store;
     let destinationKind = store.getState().swap.destinationKind;
     let pairName = combineAndUpper(newOriginKind, destinationKind);
     let bityRate = this.props.bityRates[pairName];
