@@ -6,7 +6,6 @@ import {
   SWAP_DESTINATION_AMOUNT_TO,
   SWAP_DESTINATION_KIND_TO,
   SWAP_ORIGIN_AMOUNT_TO,
-  SWAP_ORIGIN_KIND_AND_DESTINATION_KIND_AND_DESTINATION_OPTIONS_TO,
   SWAP_ORIGIN_KIND_TO,
   SWAP_UPDATE_BITY_RATES_TO
 } from 'actions/swap';
@@ -32,8 +31,7 @@ class Swap extends Component {
     swapDestinationKindTo: PropTypes.func,
     swapOriginAmountTo: PropTypes.func,
     swapDestinationAmountTo: PropTypes.func,
-    swapUpdateBityRatesTo: PropTypes.func,
-    swapOriginKindAndDestinationKindAndDestinationOptionsTo: PropTypes.func
+    swapUpdateBityRatesTo: PropTypes.func
   };
 
   componentDidMount() {
@@ -63,8 +61,7 @@ class Swap extends Component {
       swapOriginKindTo,
       swapDestinationKindTo,
       swapOriginAmountTo,
-      swapDestinationAmountTo,
-      swapOriginKindAndDestinationKindAndDestinationOptionsTo
+      swapDestinationAmountTo
     } = this.props;
 
     let wantToSwapMyProps = {
@@ -78,8 +75,7 @@ class Swap extends Component {
       swapOriginKindTo,
       swapDestinationKindTo,
       swapOriginAmountTo,
-      swapDestinationAmountTo,
-      swapOriginKindAndDestinationKindAndDestinationOptionsTo
+      swapDestinationAmountTo
     };
 
     return (
@@ -123,17 +119,6 @@ function mapDispatchToProps(dispatch) {
     },
     swapUpdateBityRatesTo: bityRates => {
       dispatch(SWAP_UPDATE_BITY_RATES_TO(bityRates));
-    },
-    swapOriginKindAndDestinationKindAndDestinationOptionsTo: (
-      originKind,
-      destinationKind
-    ) => {
-      dispatch(
-        SWAP_ORIGIN_KIND_AND_DESTINATION_KIND_AND_DESTINATION_OPTIONS_TO(
-          originKind,
-          destinationKind
-        )
-      );
     }
   };
 }
