@@ -1,20 +1,28 @@
-export const SWAP_ORIGIN_KIND = 'SWAP_ORIGIN_KIND';
-export const SWAP_DESTINATION_KIND = 'SWAP_DESTINATION_KIND';
-export const SWAP_ORIGIN_AMOUNT = 'SWAP_ORIGIN_AMOUNT';
-export const SWAP_DESTINATION_AMOUNT = 'SWAP_DESTINATION_AMOUNT';
-export const SWAP_UPDATE_BITY_RATES = 'SWAP_UPDATE_BITY_RATES';
+import {
+  SWAP_DESTINATION_AMOUNT,
+  SWAP_DESTINATION_KIND,
+  SWAP_ORIGIN_AMOUNT,
+  SWAP_ORIGIN_KIND,
+  SWAP_UPDATE_BITY_RATES
+} from './swapConstants';
 
-export const SWAP_ORIGIN_KIND_TO = value => {
+export const SWAP_ORIGIN_KIND_TO = (originKind, bityRates) => {
   return {
     type: SWAP_ORIGIN_KIND,
-    value
+    payload: {
+      originKind,
+      bityRates
+    }
   };
 };
 
-export const SWAP_DESTINATION_KIND_TO = value => {
+export const SWAP_DESTINATION_KIND_TO = (destinationKind, bityRates) => {
   return {
     type: SWAP_DESTINATION_KIND,
-    value
+    payload: {
+      destinationKind,
+      bityRates
+    }
   };
 };
 

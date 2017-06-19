@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import WantToSwapMy from './components/wantToSwapMy';
 import CurrentRates from './components/currentRates';
 import { connect } from 'react-redux';
-import {
-  SWAP_DESTINATION_AMOUNT_TO,
-  SWAP_DESTINATION_KIND_TO,
-  SWAP_ORIGIN_AMOUNT_TO,
-  SWAP_ORIGIN_KIND_TO,
-  SWAP_UPDATE_BITY_RATES_TO
-} from 'actions/swap';
+import * as swapActions from 'actions/swap';
 
 import PropTypes from 'prop-types';
 import Bity from 'api/bity';
@@ -27,11 +21,11 @@ class Swap extends Component {
     destinationKind: PropTypes.string,
     destinationKindOptions: PropTypes.array,
     originKindOptions: PropTypes.array,
-    swapOriginKindTo: PropTypes.func,
-    swapDestinationKindTo: PropTypes.func,
-    swapOriginAmountTo: PropTypes.func,
-    swapDestinationAmountTo: PropTypes.func,
-    swapUpdateBityRatesTo: PropTypes.func
+    SWAP_ORIGIN_KIND_TO: PropTypes.func,
+    SWAP_DESTINATION_KIND_TO: PropTypes.func,
+    SWAP_ORIGIN_AMOUNT_TO: PropTypes.func,
+    SWAP_DESTINATION_AMOUNT_TO: PropTypes.func,
+    SWAP_UPDATE_BITY_RATES_TO: PropTypes.func
   };
 
   componentDidMount() {
@@ -44,7 +38,7 @@ class Swap extends Component {
       !bityRates.BTCREP
     ) {
       this.bity.getAllRates().then(data => {
-        this.props.swapUpdateBityRatesTo(data);
+        this.props.SWAP_UPDATE_BITY_RATES_TO(data);
       });
     }
   }
@@ -58,10 +52,10 @@ class Swap extends Component {
       destinationKind,
       destinationKindOptions,
       originKindOptions,
-      swapOriginKindTo,
-      swapDestinationKindTo,
-      swapOriginAmountTo,
-      swapDestinationAmountTo
+      SWAP_ORIGIN_KIND_TO,
+      SWAP_DESTINATION_KIND_TO,
+      SWAP_ORIGIN_AMOUNT_TO,
+      SWAP_DESTINATION_AMOUNT_TO
     } = this.props;
 
     let wantToSwapMyProps = {
@@ -72,10 +66,10 @@ class Swap extends Component {
       destinationKind,
       destinationKindOptions,
       originKindOptions,
-      swapOriginKindTo,
-      swapDestinationKindTo,
-      swapOriginAmountTo,
-      swapDestinationAmountTo
+      SWAP_ORIGIN_KIND_TO,
+      SWAP_DESTINATION_KIND_TO,
+      SWAP_ORIGIN_AMOUNT_TO,
+      SWAP_DESTINATION_AMOUNT_TO
     };
 
     return (
@@ -103,24 +97,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    swapOriginKindTo: originValue => {
-      dispatch(SWAP_ORIGIN_KIND_TO(originValue));
-    },
-    swapDestinationKindTo: destinationValue => {
-      dispatch(SWAP_DESTINATION_KIND_TO(destinationValue));
-    },
-    swapOriginAmountTo: originAmount => {
-      dispatch(SWAP_ORIGIN_AMOUNT_TO(originAmount));
-    },
-    swapDestinationAmountTo: destinationValue => {
-      dispatch(SWAP_DESTINATION_AMOUNT_TO(destinationValue));
-    },
-    swapUpdateBityRatesTo: bityRates => {
-      dispatch(SWAP_UPDATE_BITY_RATES_TO(bityRates));
-    }
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Swap);
+export default connect(mapStateToProps, swapActions)(Swap);

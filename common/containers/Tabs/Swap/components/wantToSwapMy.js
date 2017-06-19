@@ -44,10 +44,10 @@ export default class WantToSwapMy extends Component {
     destinationKind: PropTypes.string,
     destinationKindOptions: PropTypes.array,
     originKindOptions: PropTypes.array,
-    swapOriginKindTo: PropTypes.func,
-    swapDestinationKindTo: PropTypes.func,
-    swapOriginAmountTo: PropTypes.func,
-    swapDestinationAmountTo: PropTypes.func,
+    SWAP_ORIGIN_KIND_TO: PropTypes.func,
+    SWAP_DESTINATION_KIND_TO: PropTypes.func,
+    SWAP_ORIGIN_AMOUNT_TO: PropTypes.func,
+    SWAP_DESTINATION_AMOUNT_TO: PropTypes.func,
     swapOriginKindAndDestinationKindAndDestinationOptionsTo: PropTypes.func
   };
 
@@ -61,51 +61,41 @@ export default class WantToSwapMy extends Component {
         this.props.destinationKind
       );
       let bityRate = this.props.bityRates[pairName];
-      this.props.swapOriginAmountTo(originAmountAsNumber);
-      this.props.swapDestinationAmountTo(originAmountAsNumber * bityRate);
+      this.props.SWAP_ORIGIN_AMOUNT_TO(originAmountAsNumber);
+      this.props.SWAP_DESTINATION_AMOUNT_TO(originAmountAsNumber * bityRate);
     } else {
-      this.props.swapOriginAmountTo('');
-      this.props.swapDestinationAmountTo('');
+      this.props.SWAP_ORIGIN_AMOUNT_TO('');
+      this.props.SWAP_DESTINATION_AMOUNT_TO('');
     }
   };
 
   onChangeDestinationAmount(amount) {
     let destinationAmountAsNumber = parseFloat(amount);
     if (destinationAmountAsNumber) {
-      this.props.swapDestinationAmountTo(destinationAmountAsNumber);
+      this.props.SWAP_DESTINATION_AMOUNT_TO(destinationAmountAsNumber);
       let pairName = combineAndUpper(
         this.props.destinationKind,
         this.props.originKind
       );
       let bityRate = this.props.bityRates[pairName];
-      this.props.swapOriginAmountTo(destinationAmountAsNumber * bityRate);
+      this.props.SWAP_ORIGIN_AMOUNT_TO(destinationAmountAsNumber * bityRate);
     } else {
-      this.props.swapOriginAmountTo('');
-      this.props.swapDestinationAmountTo('');
+      this.props.SWAP_ORIGIN_AMOUNT_TO('');
+      this.props.SWAP_DESTINATION_AMOUNT_TO('');
     }
   }
 
   async onChangeDestinationKind(event) {
     let newDestinationKind = event.target.value;
-    this.props.swapDestinationKindTo(newDestinationKind);
-    let pairName = combineAndUpper(this.props.originKind, newDestinationKind);
-    let bityRate = this.props.bityRates[pairName];
-    this.props.swapDestinationAmountTo(
-      parseFloat(this.props.originAmount) * bityRate
+    this.props.SWAP_DESTINATION_KIND_TO(
+      newDestinationKind,
+      this.props.bityRates
     );
   }
 
   async onChangeOriginKind(event) {
     let newOriginKind = event.target.value;
-    this.props.swapOriginKindTo(newOriginKind);
-    // https://github.com/reactjs/redux/issues/1543#issuecomment-201399259
-    let store = window.store;
-    let destinationKind = store.getState().swap.destinationKind;
-    let pairName = combineAndUpper(newOriginKind, destinationKind);
-    let bityRate = this.props.bityRates[pairName];
-    this.props.swapDestinationAmountTo(
-      parseFloat(this.props.originAmount) * bityRate
-    );
+    this.props.SWAP_ORIGIN_KIND_TO(newOriginKind, this.props.bityRates);
   }
 
   render() {
