@@ -6,9 +6,9 @@ import {
     SWAP_DESTINATION_AMOUNT_TO,
     SWAP_DESTINATION_KIND_TO,
     SWAP_ORIGIN_AMOUNT_TO,
+    SWAP_ORIGIN_KIND_AND_DESTINATION_KIND_AND_DESTINATION_OPTIONS_TO,
     SWAP_ORIGIN_KIND_TO,
-    SWAP_UPDATE_BITY_RATES_TO,
-    SWAP_ORIGIN_KIND_AND_DESTINATION_KIND_AND_DESTINATION_OPTIONS_TO
+    SWAP_UPDATE_BITY_RATES_TO
 } from 'actions/swap';
 
 import PropTypes from 'prop-types';
@@ -35,6 +35,17 @@ class Swap extends Component {
         swapUpdateBityRatesTo: PropTypes.func,
         swapOriginKindAndDestinationKindAndDestinationOptionsTo: PropTypes.func
     };
+
+    componentDidMount() {
+        let {bityRates} = this.props;
+
+        if (!bityRates.ETHBTC || !bityRates.ETHREP || !bityRates.BTCETH || !bityRates.BTCREP) {
+            this.bity.getAllRates()
+                .then((data) => {
+                    this.props.swapUpdateBityRatesTo(data);
+                })
+        }
+    }
 
     render() {
         let {
@@ -66,14 +77,6 @@ class Swap extends Component {
             swapDestinationAmountTo,
             swapOriginKindAndDestinationKindAndDestinationOptionsTo
         };
-
-
-        if (!bityRates.ETHBTC || !bityRates.ETHREP || !bityRates.BTCETH || !bityRates.BTCREP) {
-            this.bity.getAllRates()
-                .then((data) => {
-                    this.props.swapUpdateBityRatesTo(data);
-                })
-        }
 
         return (
             <section className="container" style={{minHeight: '50%'}}>
