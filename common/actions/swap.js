@@ -6,35 +6,35 @@ import {
   SWAP_UPDATE_BITY_RATES
 } from './swapConstants';
 
-export const swapOriginKind = value => {
+export const originKindSwap = value => {
   return {
     type: SWAP_ORIGIN_KIND,
     value
   };
 };
 
-export const swapDestinationKind = value => {
+export const destinationKindSwap = value => {
   return {
     type: SWAP_DESTINATION_KIND,
     value
   };
 };
 
-export const swapOriginAmount = value => {
+export const originAmountSwap = value => {
   return {
     type: SWAP_ORIGIN_AMOUNT,
     value
   };
 };
 
-export const swapDestinationAmount = value => {
+export const destinationAmountSwap = value => {
   return {
     type: SWAP_DESTINATION_AMOUNT,
     value
   };
 };
 
-export const swapUpdateBityRates = value => {
+export const updateBityRatesSwap = value => {
   return {
     type: SWAP_UPDATE_BITY_RATES,
     value

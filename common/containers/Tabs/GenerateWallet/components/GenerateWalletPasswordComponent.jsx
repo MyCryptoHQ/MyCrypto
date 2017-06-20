@@ -31,10 +31,10 @@ class GenerateWalletPasswordComponent extends Component {
     hasDownloadedWalletFile: PropTypes.bool,
     canProceedToPaper: PropTypes.bool,
     // actions
-    generateWalletShowPassword: PropTypes.func,
-    generateWalletGenerateFile: PropTypes.func,
-    generateWalletDownloadFile: PropTypes.func,
-    generateWalletConfirmContinueToPaper: PropTypes.func
+    showPasswordGenerateWallet: PropTypes.func,
+    generateFileGenerateWallet: PropTypes.func,
+    downloadFileGenerateWallet: PropTypes.func,
+    confirmContinueToPaperGenerateWallet: PropTypes.func
   };
 
   continueToPaper() {}
@@ -51,10 +51,10 @@ class GenerateWalletPasswordComponent extends Component {
       showPassword,
       generateWalletFile,
       hasDownloadedWalletFile,
-      generateWalletShowPassword,
-      generateWalletGenerateFile,
-      generateWalletDownloadFile,
-      generateWalletConfirmContinueToPaper
+      showPasswordGenerateWallet,
+      generateFileGenerateWallet,
+      downloadFileGenerateWallet,
+      confirmContinueToPaperGenerateWallet
     } = this.props;
 
     return (
@@ -72,13 +72,13 @@ class GenerateWalletPasswordComponent extends Component {
                       validate={[required, minLength9]}
                       component={GenerateWalletPasswordInputComponent}
                       showPassword={showPassword}
-                      generateWalletShowPassword={generateWalletShowPassword}
+                      showPasswordGenerateWallet={showPasswordGenerateWallet}
                       name="password"
                       type="text"
                     />
                     <br />
                     <button
-                      onClick={() => generateWalletGenerateFile()}
+                      onClick={() => generateFileGenerateWallet()}
                       disabled={
                         generateWalletPassword
                           ? generateWalletPassword.syncErrors
@@ -114,7 +114,7 @@ class GenerateWalletPasswordComponent extends Component {
                     download="UTC--2017-04-26T23-07-03.538Z--c5b7fff4e1669e38e8d6bc8fffe7e562b2b70f43"
                     aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
                     aria-describedby="x_KeystoreDesc"
-                    onClick={() => generateWalletDownloadFile()}
+                    onClick={() => downloadFileGenerateWallet()}
                   >
                     {translate('x_Download')}
                   </a>
@@ -140,7 +140,7 @@ class GenerateWalletPasswordComponent extends Component {
                       className={`btn btn-info ${hasDownloadedWalletFile
                         ? ''
                         : 'disabled'}`}
-                      onClick={() => generateWalletConfirmContinueToPaper()}
+                      onClick={() => confirmContinueToPaperGenerateWallet()}
                     >
                       {' '}I understand. Continue.{' '}
                     </a>

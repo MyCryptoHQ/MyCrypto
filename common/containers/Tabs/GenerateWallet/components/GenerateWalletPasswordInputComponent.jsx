@@ -7,7 +7,7 @@ export default class GenerateWalletPasswordInputComponent extends Component {
   }
 
   static propTypes = {
-    generateWalletShowPassword: PropTypes.func,
+    showPasswordGenerateWallet: PropTypes.func,
     showPassword: PropTypes.bool,
     input: PropTypes.object,
     meta: PropTypes.object
@@ -31,7 +31,7 @@ export default class GenerateWalletPasswordInputComponent extends Component {
               aria-label="Enter a strong password (at least 9 characters)"
             />
             <span
-              onClick={() => this.props.generateWalletShowPassword()}
+              onClick={() => this.props.showPasswordGenerateWallet()}
               aria-label="make password visible"
               role="button"
               className="input-group-addon eye"

@@ -17,10 +17,10 @@ class GenerateWallet extends Component {
     generateWalletFile: PropTypes.bool,
     canProceedToPaper: PropTypes.bool,
     // actions
-    generateWalletShowPassword: PropTypes.func,
-    generateWalletGenerateFile: PropTypes.func,
-    generateWalletDownloadFile: PropTypes.func,
-    generateWalletConfirmContinueToPaper: PropTypes.func
+    showPasswordGenerateWallet: PropTypes.func,
+    generateFileGenerateWallet: PropTypes.func,
+    downloadFileGenerateWallet: PropTypes.func,
+    confirmContinueToPaperGenerateWallet: PropTypes.func
   };
 
   render() {
