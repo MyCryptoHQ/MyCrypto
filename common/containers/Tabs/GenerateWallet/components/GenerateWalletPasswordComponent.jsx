@@ -5,7 +5,6 @@ import GenerateWalletPasswordInputComponent from './GenerateWalletPasswordInputC
 import LedgerTrezorWarning from './LedgerTrezorWarning';
 import translate from 'translations';
 
-
 // VALIDATORS
 const minLength = min => value => {
     return value && value.length < min ? `Must be ${min} characters or more` : undefined
