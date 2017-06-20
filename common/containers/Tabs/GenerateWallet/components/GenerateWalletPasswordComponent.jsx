@@ -20,19 +20,21 @@ class GenerateWalletPasswordComponent extends Component {
     }
 
     static propTypes = {
+        // state
         title: PropTypes.string,
         body: PropTypes.string,
         userId: PropTypes.number,
         id: PropTypes.number,
         generateWalletPassword: PropTypes.object,
         showPassword: PropTypes.bool,
-        showGenerateWalletPasswordAction: PropTypes.func,
-        generateWalletFileAction: PropTypes.func,
-        generateWalletHasDownloadedFileAction: PropTypes.func,
         generateWalletFile: PropTypes.bool,
         hasDownloadedWalletFile: PropTypes.bool,
-        generateWalletContinueToPaperAction: PropTypes.func,
-        canProceedToPaper: PropTypes.bool
+        canProceedToPaper: PropTypes.bool,
+        // actions
+        SHOW_GENERATE_WALLET_PASSWORD_ACTION: PropTypes.func,
+        GENERATE_WALLET_FILE_ACTION: PropTypes.func,
+        GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION: PropTypes.func,
+        GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION: PropTypes.func
     };
 
 
@@ -48,19 +50,14 @@ class GenerateWalletPasswordComponent extends Component {
 
     render() {
         const {
-            // handleSubmit,
-            // pristine,
-            // reset,
-            // submitting,
             generateWalletPassword,
             showPassword,
-            showGenerateWalletPasswordAction,
-            generateWalletFileAction,
             generateWalletFile,
             hasDownloadedWalletFile,
-            generateWalletHasDownloadedFileAction,
-            generateWalletContinueToPaperAction
-            // canProceedToPaper
+            SHOW_GENERATE_WALLET_PASSWORD_ACTION,
+            GENERATE_WALLET_FILE_ACTION,
+            GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION,
+            GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION
 
         } = this.props;
 
@@ -80,11 +77,11 @@ class GenerateWalletPasswordComponent extends Component {
                                                 validate={[required, minLength9]}
                                                 component={GenerateWalletPasswordInputComponent}
                                                 showPassword={showPassword}
-                                                showGenerateWalletPasswordAction={showGenerateWalletPasswordAction}
+                                                SHOW_GENERATE_WALLET_PASSWORD_ACTION={SHOW_GENERATE_WALLET_PASSWORD_ACTION}
                                                 name="password"
                                                 type="text"/>
                                             <br/>
-                                            <button onClick={() => generateWalletFileAction()}
+                                            <button onClick={() => GENERATE_WALLET_FILE_ACTION()}
                                                     disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
                                                     className="btn btn-primary btn-block">
                                                 {translate('NAV_GenerateWallet')}
@@ -111,7 +108,7 @@ class GenerateWalletPasswordComponent extends Component {
                                            download="UTC--2017-04-26T23-07-03.538Z--c5b7fff4e1669e38e8d6bc8fffe7e562b2b70f43"
                                            aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
                                            aria-describedby="x_KeystoreDesc"
-                                           onClick={() => generateWalletHasDownloadedFileAction()}>{translate('x_Download')}</a>
+                                           onClick={() => GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION()}>{translate('x_Download')}</a>
                                         <p className="sr-only" id="x_KeystoreDesc">{translate('x_KeystoreDesc')}</p>
                                         <br/><br/><br/><br/>
                                     </div>
@@ -123,7 +120,7 @@ class GenerateWalletPasswordComponent extends Component {
                                       <br/><br/>
                                       <a role="button"
                                          className={`btn btn-info ${hasDownloadedWalletFile ? '' : 'disabled'}`}
-                                         onClick={() => generateWalletContinueToPaperAction()}> I understand. Continue. </a>
+                                         onClick={() => GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION()}> I understand. Continue. </a>
                                     </span>
                                     </div>
                                 </section>
