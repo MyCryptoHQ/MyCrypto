@@ -21,11 +21,11 @@ class Swap extends Component {
     destinationKind: PropTypes.string,
     destinationKindOptions: PropTypes.array,
     originKindOptions: PropTypes.array,
-    SWAP_ORIGIN_KIND_TO: PropTypes.func,
-    SWAP_DESTINATION_KIND_TO: PropTypes.func,
-    SWAP_ORIGIN_AMOUNT_TO: PropTypes.func,
-    SWAP_DESTINATION_AMOUNT_TO: PropTypes.func,
-    SWAP_UPDATE_BITY_RATES_TO: PropTypes.func
+    originKindSwap: PropTypes.func,
+    destinationKindSwap: PropTypes.func,
+    originAmountSwap: PropTypes.func,
+    destinationAmountSwap: PropTypes.func,
+    updateBityRatesSwap: PropTypes.func
   };
 
   componentDidMount() {
@@ -38,7 +38,7 @@ class Swap extends Component {
       !bityRates.BTCREP
     ) {
       this.bity.getAllRates().then(data => {
-        this.props.SWAP_UPDATE_BITY_RATES_TO(data);
+        this.props.updateBityRatesSwap(data);
       });
     }
   }
@@ -52,10 +52,10 @@ class Swap extends Component {
       destinationKind,
       destinationKindOptions,
       originKindOptions,
-      SWAP_ORIGIN_KIND_TO,
-      SWAP_DESTINATION_KIND_TO,
-      SWAP_ORIGIN_AMOUNT_TO,
-      SWAP_DESTINATION_AMOUNT_TO
+      originKindSwap,
+      destinationKindSwap,
+      originAmountSwap,
+      destinationAmountSwap
     } = this.props;
 
     let wantToSwapMyProps = {
@@ -66,10 +66,10 @@ class Swap extends Component {
       destinationKind,
       destinationKindOptions,
       originKindOptions,
-      SWAP_ORIGIN_KIND_TO,
-      SWAP_DESTINATION_KIND_TO,
-      SWAP_ORIGIN_AMOUNT_TO,
-      SWAP_DESTINATION_AMOUNT_TO
+      originKindSwap,
+      destinationKindSwap,
+      originAmountSwap,
+      destinationAmountSwap
     };
 
     return (
