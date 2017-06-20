@@ -31,10 +31,10 @@ class GenerateWalletPasswordComponent extends Component {
         hasDownloadedWalletFile: PropTypes.bool,
         canProceedToPaper: PropTypes.bool,
         // actions
-        SHOW_GENERATE_WALLET_PASSWORD_ACTION: PropTypes.func,
-        GENERATE_WALLET_FILE_ACTION: PropTypes.func,
-        GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION: PropTypes.func,
-        GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION: PropTypes.func
+        generateWalletShowPassword: PropTypes.func,
+        generateWalletGenerateFile: PropTypes.func,
+        generateWalletDownloadFile: PropTypes.func,
+        generateWalletConfirmContinueToPaper: PropTypes.func
     };
 
 
@@ -54,10 +54,10 @@ class GenerateWalletPasswordComponent extends Component {
             showPassword,
             generateWalletFile,
             hasDownloadedWalletFile,
-            SHOW_GENERATE_WALLET_PASSWORD_ACTION,
-            GENERATE_WALLET_FILE_ACTION,
-            GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION,
-            GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION
+            generateWalletShowPassword,
+            generateWalletGenerateFile,
+            generateWalletDownloadFile,
+            generateWalletConfirmContinueToPaper
 
         } = this.props;
 
@@ -77,11 +77,11 @@ class GenerateWalletPasswordComponent extends Component {
                                                 validate={[required, minLength9]}
                                                 component={GenerateWalletPasswordInputComponent}
                                                 showPassword={showPassword}
-                                                SHOW_GENERATE_WALLET_PASSWORD_ACTION={SHOW_GENERATE_WALLET_PASSWORD_ACTION}
+                                                generateWalletShowPassword={generateWalletShowPassword}
                                                 name="password"
                                                 type="text"/>
                                             <br/>
-                                            <button onClick={() => GENERATE_WALLET_FILE_ACTION()}
+                                            <button onClick={() => generateWalletGenerateFile()}
                                                     disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
                                                     className="btn btn-primary btn-block">
                                                 {translate('NAV_GenerateWallet')}
@@ -108,7 +108,7 @@ class GenerateWalletPasswordComponent extends Component {
                                            download="UTC--2017-04-26T23-07-03.538Z--c5b7fff4e1669e38e8d6bc8fffe7e562b2b70f43"
                                            aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
                                            aria-describedby="x_KeystoreDesc"
-                                           onClick={() => GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION()}>{translate('x_Download')}</a>
+                                           onClick={() => generateWalletDownloadFile()}>{translate('x_Download')}</a>
                                         <p className="sr-only" id="x_KeystoreDesc">{translate('x_KeystoreDesc')}</p>
                                         <br/><br/><br/><br/>
                                     </div>
@@ -120,7 +120,7 @@ class GenerateWalletPasswordComponent extends Component {
                                       <br/><br/>
                                       <a role="button"
                                          className={`btn btn-info ${hasDownloadedWalletFile ? '' : 'disabled'}`}
-                                         onClick={() => GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION()}> I understand. Continue. </a>
+                                         onClick={() => generateWalletConfirmContinueToPaper()}> I understand. Continue. </a>
                                     </span>
                                     </div>
                                 </section>

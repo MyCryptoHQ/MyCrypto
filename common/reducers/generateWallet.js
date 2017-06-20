@@ -1,8 +1,8 @@
 import {
   GENERATE_WALLET_SHOW_PASSWORD,
   GENERATE_WALLET_FILE,
-  GENERATE_WALLET_HAS_DOWNLOADED_FILE,
-  GENERATE_WALLET_CONTINUE_TO_PAPER
+  GENERATE_WALLET_DOWNLOAD_FILE,
+  GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER
 } from 'actions/generateWalletConstants';
 
 const initialState = {
@@ -28,14 +28,14 @@ export function generateWallet(state = initialState, action) {
       };
     }
 
-    case GENERATE_WALLET_HAS_DOWNLOADED_FILE: {
+    case GENERATE_WALLET_DOWNLOAD_FILE: {
       return {
         ...state,
         hasDownloadedWalletFile: true
       };
     }
 
-    case GENERATE_WALLET_CONTINUE_TO_PAPER: {
+    case GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER: {
       return {
         ...state,
         canProceedToPaper: true

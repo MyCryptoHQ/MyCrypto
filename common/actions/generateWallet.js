@@ -1,22 +1,22 @@
 import {
-  GENERATE_WALLET_CONTINUE_TO_PAPER,
+  GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
   GENERATE_WALLET_FILE,
-  GENERATE_WALLET_HAS_DOWNLOADED_FILE,
+  GENERATE_WALLET_DOWNLOAD_FILE,
   GENERATE_WALLET_SHOW_PASSWORD
 } from 'actions/generateWalletConstants';
 
-export const SHOW_GENERATE_WALLET_PASSWORD_ACTION = () => {
+export const generateWalletShowPassword = () => {
   return { type: GENERATE_WALLET_SHOW_PASSWORD };
 };
 
-export const GENERATE_WALLET_FILE_ACTION = () => {
+export const generateWalletGenerateFile = () => {
   return { type: GENERATE_WALLET_FILE };
 };
 
-export const GENERATE_WALLET_HAS_DOWNLOADED_FILE_ACTION = () => {
-  return { type: GENERATE_WALLET_HAS_DOWNLOADED_FILE };
+export const generateWalletDownloadFile = () => {
+  return { type: GENERATE_WALLET_DOWNLOAD_FILE };
 };
 
-export const GENERATE_WALLET_CONTINUE_TO_PAPER_ACTION = () => {
-  return { type: GENERATE_WALLET_CONTINUE_TO_PAPER };
+export const generateWalletConfirmContinueToPaper = () => {
+  return { type: GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER };
 };

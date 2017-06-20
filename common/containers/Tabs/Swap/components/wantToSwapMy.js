@@ -44,10 +44,10 @@ export default class WantToSwapMy extends Component {
     destinationKind: PropTypes.string,
     destinationKindOptions: PropTypes.array,
     originKindOptions: PropTypes.array,
-    SWAP_ORIGIN_KIND_TO: PropTypes.func,
-    SWAP_DESTINATION_KIND_TO: PropTypes.func,
-    SWAP_ORIGIN_AMOUNT_TO: PropTypes.func,
-    SWAP_DESTINATION_AMOUNT_TO: PropTypes.func
+    swapOriginKind: PropTypes.func,
+    swapDestinationKind: PropTypes.func,
+    swapOriginAmount: PropTypes.func,
+    swapDestinationAmount: PropTypes.func
   };
 
   onClickStartSwap() {}
@@ -60,38 +60,38 @@ export default class WantToSwapMy extends Component {
         this.props.destinationKind
       );
       let bityRate = this.props.bityRates[pairName];
-      this.props.SWAP_ORIGIN_AMOUNT_TO(originAmountAsNumber);
-      this.props.SWAP_DESTINATION_AMOUNT_TO(originAmountAsNumber * bityRate);
+      this.props.swapOriginAmount(originAmountAsNumber);
+      this.props.swapDestinationAmount(originAmountAsNumber * bityRate);
     } else {
-      this.props.SWAP_ORIGIN_AMOUNT_TO('');
-      this.props.SWAP_DESTINATION_AMOUNT_TO('');
+      this.props.swapOriginAmount('');
+      this.props.swapDestinationAmount('');
     }
   };
 
   onChangeDestinationAmount(amount) {
     let destinationAmountAsNumber = parseFloat(amount);
     if (destinationAmountAsNumber) {
-      this.props.SWAP_DESTINATION_AMOUNT_TO(destinationAmountAsNumber);
+      this.props.swapDestinationAmount(destinationAmountAsNumber);
       let pairName = combineAndUpper(
         this.props.destinationKind,
         this.props.originKind
       );
       let bityRate = this.props.bityRates[pairName];
-      this.props.SWAP_ORIGIN_AMOUNT_TO(destinationAmountAsNumber * bityRate);
+      this.props.swapOriginAmount(destinationAmountAsNumber * bityRate);
     } else {
-      this.props.SWAP_ORIGIN_AMOUNT_TO('');
-      this.props.SWAP_DESTINATION_AMOUNT_TO('');
+      this.props.swapOriginAmount('');
+      this.props.swapDestinationAmount('');
     }
   }
 
   async onChangeDestinationKind(event) {
     let newDestinationKind = event.target.value;
-    this.props.SWAP_DESTINATION_KIND_TO(newDestinationKind);
+    this.props.swapDestinationKind(newDestinationKind);
   }
 
   async onChangeOriginKind(event) {
     let newOriginKind = event.target.value;
-    this.props.SWAP_ORIGIN_KIND_TO(newOriginKind);
+    this.props.swapOriginKind(newOriginKind);
   }
 
   render() {
