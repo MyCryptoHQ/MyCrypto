@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Footer, Header } from 'components';
 import PropTypes from 'prop-types';
+import Notifications from './Notifications';
 
 import { CHANGE_LANGUAGE, CHANGE_NODE } from 'actions/config';
+import {showNotification} from 'actions/notifications'
 
 class App extends Component {
     constructor(props) {
@@ -24,8 +26,18 @@ class App extends Component {
         changeLanguage: PropTypes.func,
 
         changeNode: PropTypes.func,
-        nodeSelection: PropTypes.object
+        nodeSelection: PropTypes.object,
+
+        showNotification: PropTypes.func
     };
+
+    componentDidMount() {
+        // 0 is forever
+        this.props.showNotification('info', 'I am in  <b>App/index</b>', 0)
+        this.props.showNotification('danger', 'Danger', 5000)
+        this.props.showNotification('warning', 'Warning', 6000)
+        this.props.showNotification('success', 'Success', 7000)
+    }
 
     render() {
         let {
@@ -54,7 +66,7 @@ class App extends Component {
                     </div>
                     <Footer />
                 </main>
-
+                <Notifications />
             </div>
         );
     }
@@ -77,6 +89,9 @@ function mapDispatchToProps(dispatch) {
         },
         changeLanguage: (i: any) => {
             dispatch(CHANGE_LANGUAGE(i));
+        },
+        showNotification: (level, msg, duration) => {
+            dispatch(showNotification(level, msg, duration))
         }
     };
 }
