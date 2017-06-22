@@ -13,7 +13,7 @@ export type ShowNotificationAction = {
     payload: Notification
 };
 
-type CloseNotificationAction = {
+export type CloseNotificationAction = {
     type: 'CLOSE_NOTIFICATION',
     payload: Notification
 };

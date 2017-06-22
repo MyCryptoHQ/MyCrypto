@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import Notifications from './Notifications';
 
 import { CHANGE_LANGUAGE, CHANGE_NODE } from 'actions/config';
-import {showNotification} from 'actions/notifications'
 
 class App extends Component {
     constructor(props) {
@@ -30,14 +29,6 @@ class App extends Component {
 
         showNotification: PropTypes.func
     };
-
-    componentDidMount() {
-        // 0 is forever
-        this.props.showNotification('info', 'I am in  <b>App/index</b>', 0)
-        this.props.showNotification('danger', 'Danger', 5000)
-        this.props.showNotification('warning', 'Warning', 6000)
-        this.props.showNotification('success', 'Success', 7000)
-    }
 
     render() {
         let {
@@ -89,9 +80,6 @@ function mapDispatchToProps(dispatch) {
         },
         changeLanguage: (i: any) => {
             dispatch(CHANGE_LANGUAGE(i));
-        },
-        showNotification: (level, msg, duration) => {
-            dispatch(showNotification(level, msg, duration))
         }
     };
 }

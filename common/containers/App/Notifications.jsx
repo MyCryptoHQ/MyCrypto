@@ -4,37 +4,48 @@ import { connect } from 'react-redux';
 import { closeNotification } from 'actions/notifications';
 import type { Notification } from 'actions/notifications';
 
-function NotificationRow(props: {
-    notification: Notification,
-    onClose: (n: Notification) => void
-}) {
-    const { msg, level } = props.notification;
-    let klass = '';
+class NotificationRow extends React.Component {
+    props: {
+        notification: Notification,
+        onClose: (n: Notification) => void
+    };
+    render() {
+        const { msg, level } = this.props.notification;
+        let className = '';
 
-    switch (level) {
-        case 'danger':
-            klass = 'alert-danger';
-            break;
-        case 'success':
-            klass = 'alert-success';
-            break;
-        case 'warning':
-            klass = 'alert-warning';
-            break;
+        switch (level) {
+            case 'danger':
+                className = 'alert-danger';
+                break;
+            case 'success':
+                className = 'alert-success';
+                break;
+            case 'warning':
+                className = 'alert-warning';
+                break;
+        }
+
+        return (
+            <div
+                className={`alert popup ${className} animated-show-hide`}
+                role="alert"
+                aria-live="assertive"
+            >
+                <span className="sr-only">{level}</span>
+                <div className="container" dangerouslySetInnerHTML={{ __html: msg }} />
+                <i
+                    tabIndex="0"
+                    aria-label="dismiss"
+                    className="icon-close"
+                    onClick={this.onClose}
+                />
+            </div>
+        );
     }
 
-    return (
-        <div className={`alert popup ${klass} animated-show-hide`} role="alert" aria-live="assertive">
-            <span className="sr-only">{level}</span>
-            <div className="container" dangerouslySetInnerHTML={{ __html: msg }} />
-            <i
-                tabIndex="0"
-                aria-label="dismiss"
-                className="icon-close"
-                onClick={() => props.onClose(props.notification)}
-            />
-        </div>
-    );
+    onClose = () => {
+        this.props.onClose(this.props.notification);
+    };
 }
 
 export class Notifications extends React.Component {
@@ -49,7 +60,11 @@ export class Notifications extends React.Component {
         return (
             <div className="alerts-container">
                 {this.props.notifications.map((n, i) =>
-                    <NotificationRow key={`${n.level}-${i}`} notification={n} onClose={this.props.closeNotification} />
+                    <NotificationRow
+                        key={`${n.level}-${i}`}
+                        notification={n}
+                        onClose={this.props.closeNotification}
+                    />
                 )}
             </div>
         );
