@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Footer, Header } from 'components';
 import PropTypes from 'prop-types';
+import Notifications from './Notifications';
 
 import { CHANGE_LANGUAGE, CHANGE_NODE } from 'actions/config';
 
@@ -24,7 +25,9 @@ class App extends Component {
         changeLanguage: PropTypes.func,
 
         changeNode: PropTypes.func,
-        nodeSelection: PropTypes.object
+        nodeSelection: PropTypes.object,
+
+        showNotification: PropTypes.func
     };
 
     render() {
@@ -54,7 +57,7 @@ class App extends Component {
                     </div>
                     <Footer />
                 </main>
-
+                <Notifications />
             </div>
         );
     }
