@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { toFixedIfLarger } from 'utils/formatters';
 
 export default class YourInformation extends Component {
   constructor(props) {
@@ -49,19 +50,19 @@ export default class YourInformation extends Component {
         <section className="order-info-wrap row">
           <div className="col-sm-4 order-info">
             <h4>
-              {' '}{originAmount.toFixedIfLarger(6)} {originKind}{' '}
+              {' '}{toFixedIfLarger(originAmount, 6)} {originKind}{' '}
             </h4>
             <p>Amount to send</p>
           </div>
           <div className="col-sm-4 order-info">
             <h4>
-              {' '}{destinationAmount.toFixedIfLarger(6)} {destinationKind}{' '}
+              {' '}{toFixedIfLarger(destinationAmount, 6)} {destinationKind}{' '}
             </h4>
             <p>Amount to receive</p>
           </div>
           <div className="col-sm-4 order-info">
             <h4>
-              {' '}{this.computedOriginDestinationRatio().toFixedIfLarger(6)}{' '}
+              {' '}{toFixedIfLarger(this.computedOriginDestinationRatio(), 6)}{' '}
               {originKind}/{destinationKind}{' '}
             </h4>
             <p>Your rate</p>

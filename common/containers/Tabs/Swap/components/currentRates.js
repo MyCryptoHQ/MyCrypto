@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import PropTypes from 'prop-types';
+import { toFixedIfLarger } from 'utils/formatters';
 
 export default class CurrentRates extends Component {
   constructor(props) {
@@ -48,7 +49,9 @@ export default class CurrentRates extends Component {
                 name="ETHBTCAmount"
               />
               <span>
-                ETH = {(this.state.ETHBTCAmount * this.props.ETHBTC).toFixed(
+                ETH ={' '}
+                {toFixedIfLarger(
+                  this.state.ETHBTCAmount * this.props.ETHBTC,
                   6
                 )}{' '}
                 BTC
@@ -62,7 +65,9 @@ export default class CurrentRates extends Component {
                 name="ETHREPAmount"
               />
               <span>
-                ETH = {(this.state.ETHREPAmount * this.props.ETHREP).toFixed(
+                ETH ={' '}
+                {toFixedIfLarger(
+                  this.state.ETHREPAmount * this.props.ETHREP,
                   6
                 )}{' '}
                 REP
@@ -78,7 +83,9 @@ export default class CurrentRates extends Component {
                 name="BTCETHAmount"
               />
               <span>
-                BTC = {(this.state.BTCETHAmount * this.props.BTCETH).toFixed(
+                BTC ={' '}
+                {toFixedIfLarger(
+                  this.state.BTCETHAmount * this.props.BTCETH,
                   6
                 )}{' '}
                 ETH
@@ -92,7 +99,9 @@ export default class CurrentRates extends Component {
                 name="BTCREPAmount"
               />
               <span>
-                BTC = {(this.state.BTCREPAmount * this.props.BTCREP).toFixed(
+                BTC ={' '}
+                {toFixedIfLarger(
+                  this.state.BTCREPAmount * this.props.BTCREP,
                   6
                 )}{' '}
                 REP
