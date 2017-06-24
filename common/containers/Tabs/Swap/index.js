@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import WantToSwapMy from './components/wantToSwapMy';
+import YourInformation from './components/yourInformation';
 import CurrentRates from './components/currentRates';
+import YourReceiving from './components/yourReceiving';
+
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
 
@@ -18,6 +21,7 @@ class Swap extends Component {
     originAmount: PropTypes.any,
     destinationAmount: PropTypes.any,
     originKind: PropTypes.string,
+    partOneComplete: PropTypes.bool,
     destinationKind: PropTypes.string,
     destinationKindOptions: PropTypes.array,
     originKindOptions: PropTypes.array,
@@ -25,7 +29,8 @@ class Swap extends Component {
     destinationKindSwap: PropTypes.func,
     originAmountSwap: PropTypes.func,
     destinationAmountSwap: PropTypes.func,
-    updateBityRatesSwap: PropTypes.func
+    updateBityRatesSwap: PropTypes.func,
+    partOneCompleteSwap: PropTypes.func
   };
 
   componentDidMount() {
@@ -55,7 +60,9 @@ class Swap extends Component {
       originKindSwap,
       destinationKindSwap,
       originAmountSwap,
-      destinationAmountSwap
+      destinationAmountSwap,
+      partOneComplete,
+      partOneCompleteSwap
     } = this.props;
 
     let wantToSwapMyProps = {
@@ -69,15 +76,31 @@ class Swap extends Component {
       originKindSwap,
       destinationKindSwap,
       originAmountSwap,
-      destinationAmountSwap
+      destinationAmountSwap,
+      partOneCompleteSwap
+    };
+
+    let yourInformationProps = {
+      originAmount,
+      destinationAmount,
+      originKind,
+      destinationKind
     };
 
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
           <main className="tab-pane swap-tab">
-            <CurrentRates {...bityRates} />
-            <WantToSwapMy {...wantToSwapMyProps} />
+            {!partOneComplete &&
+              <div>
+                <CurrentRates {...bityRates} />
+                <WantToSwapMy {...wantToSwapMyProps} />
+              </div>}
+            {partOneComplete &&
+              <div>
+                <YourInformation {...yourInformationProps} />
+                <YourReceiving destinationKind={destinationKind} />
+              </div>}
           </main>
         </div>
       </section>
@@ -87,6 +110,7 @@ class Swap extends Component {
 
 function mapStateToProps(state) {
   return {
+    partOneComplete: state.swap.partOneComplete,
     originAmount: state.swap.originAmount,
     destinationAmount: state.swap.destinationAmount,
     originKind: state.swap.originKind,
