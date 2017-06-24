@@ -3,7 +3,8 @@ import {
   SWAP_DESTINATION_KIND,
   SWAP_ORIGIN_AMOUNT,
   SWAP_ORIGIN_KIND,
-  SWAP_UPDATE_BITY_RATES
+  SWAP_UPDATE_BITY_RATES,
+  SWAP_PART_ONE_COMPLETE
 } from './swapConstants';
 
 export const originKindSwap = value => {
@@ -37,6 +38,13 @@ export const destinationAmountSwap = value => {
 export const updateBityRatesSwap = value => {
   return {
     type: SWAP_UPDATE_BITY_RATES,
+    value
+  };
+};
+
+export const partOneCompleteSwap = (value: boolean) => {
+  return {
+    type: SWAP_PART_ONE_COMPLETE,
     value
   };
 };

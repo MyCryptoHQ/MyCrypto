@@ -3,15 +3,16 @@ import {
   SWAP_DESTINATION_KIND,
   SWAP_ORIGIN_AMOUNT,
   SWAP_ORIGIN_KIND,
-  SWAP_UPDATE_BITY_RATES
+  SWAP_UPDATE_BITY_RATES,
+  SWAP_PART_ONE_COMPLETE
 } from 'actions/swapConstants';
 import { combineAndUpper } from 'api/bity';
 
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 
 const initialState = {
-  originAmount: 0,
-  destinationAmount: 0,
+  originAmount: '',
+  destinationAmount: '',
   originKind: 'BTC',
   destinationKind: 'ETH',
   destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(
@@ -20,6 +21,7 @@ const initialState = {
   originKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(
     element => element !== 'REP'
   ),
+  partOneComplete: false,
   bityRates: {}
 };
 
@@ -93,6 +95,11 @@ export function swap(state = initialState, action) {
           ...state.bityRates,
           ...action.value
         }
+      };
+    case SWAP_PART_ONE_COMPLETE:
+      return {
+        ...state,
+        partOneComplete: action.value
       };
     default:
       return state;
