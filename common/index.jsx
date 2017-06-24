@@ -56,11 +56,3 @@ renderRoot(Root);
 if (module.hot) {
   module.hot.accept();
 }
-
-Number.prototype.toFixedIfLarger = function(fixedAmount: number) {
-  if (this > fixedAmount) {
-    return this.toFixed(fixedAmount);
-  } else {
-    return this;
-  }
-};
