@@ -25,12 +25,14 @@ class Swap extends Component {
     destinationKind: PropTypes.string,
     destinationKindOptions: PropTypes.array,
     originKindOptions: PropTypes.array,
+    receivingAddress: PropTypes.string,
     originKindSwap: PropTypes.func,
     destinationKindSwap: PropTypes.func,
     originAmountSwap: PropTypes.func,
     destinationAmountSwap: PropTypes.func,
     updateBityRatesSwap: PropTypes.func,
-    partOneCompleteSwap: PropTypes.func
+    partOneCompleteSwap: PropTypes.func,
+    receivingAddressSwap: PropTypes.func
   };
 
   componentDidMount() {
@@ -62,7 +64,9 @@ class Swap extends Component {
       originAmountSwap,
       destinationAmountSwap,
       partOneComplete,
-      partOneCompleteSwap
+      partOneCompleteSwap,
+      receivingAddressSwap,
+      receivingAddress
     } = this.props;
 
     let wantToSwapMyProps = {
@@ -87,6 +91,12 @@ class Swap extends Component {
       destinationKind
     };
 
+    let yourReceivingProps = {
+      destinationKind,
+      receivingAddressSwap,
+      receivingAddress
+    };
+
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
@@ -99,7 +109,7 @@ class Swap extends Component {
             {partOneComplete &&
               <div>
                 <YourInformation {...yourInformationProps} />
-                <YourReceiving destinationKind={destinationKind} />
+                <YourReceiving {...yourReceivingProps} />
               </div>}
           </main>
         </div>
@@ -110,6 +120,7 @@ class Swap extends Component {
 
 function mapStateToProps(state) {
   return {
+    receivingAddress: state.swap.receivingAddress,
     partOneComplete: state.swap.partOneComplete,
     originAmount: state.swap.originAmount,
     destinationAmount: state.swap.destinationAmount,
