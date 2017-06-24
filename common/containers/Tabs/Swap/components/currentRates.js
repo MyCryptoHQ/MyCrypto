@@ -49,12 +49,10 @@ export default class CurrentRates extends Component {
                 name="ETHBTCAmount"
               />
               <span>
-                ETH ={' '}
-                {toFixedIfLarger(
+                {` ETH = ${toFixedIfLarger(
                   this.state.ETHBTCAmount * this.props.ETHBTC,
                   6
-                )}{' '}
-                BTC
+                )} BTC`}
               </span>
             </p>
             <p className="mono">
@@ -65,12 +63,10 @@ export default class CurrentRates extends Component {
                 name="ETHREPAmount"
               />
               <span>
-                ETH ={' '}
-                {toFixedIfLarger(
+                {` ETH = ${toFixedIfLarger(
                   this.state.ETHREPAmount * this.props.ETHREP,
                   6
-                )}{' '}
-                REP
+                )} REP`}
               </span>
             </p>
           </div>
@@ -83,12 +79,10 @@ export default class CurrentRates extends Component {
                 name="BTCETHAmount"
               />
               <span>
-                BTC ={' '}
-                {toFixedIfLarger(
+                {` BTC = ${toFixedIfLarger(
                   this.state.BTCETHAmount * this.props.BTCETH,
                   6
-                )}{' '}
-                ETH
+                )} ETH`}
               </span>
             </p>
             <p className="mono">
@@ -99,12 +93,10 @@ export default class CurrentRates extends Component {
                 name="BTCREPAmount"
               />
               <span>
-                BTC ={' '}
-                {toFixedIfLarger(
+                {` BTC = ${toFixedIfLarger(
                   this.state.BTCREPAmount * this.props.BTCREP,
                   6
-                )}{' '}
-                REP
+                )} REP`}
               </span>
             </p>
           </div>

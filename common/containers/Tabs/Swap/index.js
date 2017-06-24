@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import WantToSwapMy from './components/wantToSwapMy';
-import YourInformation from './components/yourInformation';
+import CurrencySwap from './components/currencySwap';
+import SwapInformation from './components/swapInformation';
 import CurrentRates from './components/currentRates';
-import YourReceiving from './components/yourReceiving';
+import ReceivingAddress from './components/receivingAddress';
 
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
@@ -104,12 +104,12 @@ class Swap extends Component {
             {!partOneComplete &&
               <div>
                 <CurrentRates {...bityRates} />
-                <WantToSwapMy {...wantToSwapMyProps} />
+                <CurrencySwap {...wantToSwapMyProps} />
               </div>}
             {partOneComplete &&
               <div>
-                <YourInformation {...yourInformationProps} />
-                <YourReceiving {...yourReceivingProps} />
+                <SwapInformation {...yourInformationProps} />
+                <ReceivingAddress {...yourReceivingProps} />
               </div>}
           </main>
         </div>

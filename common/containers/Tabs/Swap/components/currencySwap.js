@@ -31,9 +31,9 @@ class CoinTypeDropDown extends Component {
   }
 }
 
-export default class WantToSwapMy extends Component {
-  constructor(props, context) {
-    super(props, context);
+export default class CurrencySwap extends Component {
+  constructor(props) {
+    super(props);
   }
 
   static propTypes = {

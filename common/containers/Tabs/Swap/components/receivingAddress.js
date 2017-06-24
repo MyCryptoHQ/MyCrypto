@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DONATION_ADDRESSES_MAP } from 'config/data';
 import Validator from 'libs/validator';
 
-export default class YourReceiving extends Component {
+export default class ReceivingAddress extends Component {
   constructor(props) {
     super(props);
     this.validator = new Validator();
