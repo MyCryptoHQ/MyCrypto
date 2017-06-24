@@ -20,7 +20,7 @@ export default class YourReceiving extends Component {
             <div className="col-sm-8 col-sm-offset-2 col-xs-12">
               <label>
                 <span>Your Receiving Address</span>
-                <strong className="ng-binding"> ({destinationKind})</strong>
+                <strong> ({destinationKind})</strong>
               </label>
               <input
                 className="form-control"
