@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { toFixedIfLarger } from 'utils/formatters';
+import translate from 'translations';
 
 export default class SwapInformation extends Component {
   constructor(props) {
@@ -29,7 +30,9 @@ export default class SwapInformation extends Component {
     return (
       <article className="swap-start">
         <section className="row">
-          <h5 className="col-xs-6 col-xs-offset-3">Your Information</h5>
+          <h5 className="col-xs-6 col-xs-offset-3">
+            {translate('SWAP_information')}
+          </h5>
           <div className="col-xs-3">
             <a
               className="link"
@@ -52,13 +55,13 @@ export default class SwapInformation extends Component {
             <h4>
               {` ${toFixedIfLarger(originAmount, 6)} ${originKind}`}
             </h4>
-            <p>Amount to send</p>
+            <p>{translate('SEND_amount')}</p>
           </div>
           <div className="col-sm-4 order-info">
             <h4>
               {` ${toFixedIfLarger(destinationAmount, 6)} ${destinationKind}`}
             </h4>
-            <p>Amount to receive</p>
+            <p>{translate('SWAP_rec_amt')}</p>
           </div>
           <div className="col-sm-4 order-info">
             <h4>
@@ -67,7 +70,7 @@ export default class SwapInformation extends Component {
                 6
               )} ${originKind}/${destinationKind} `}
             </h4>
-            <p>Your rate</p>
+            <p>{translate('SWAP_your_rate')}</p>
           </div>
         </section>
       </article>

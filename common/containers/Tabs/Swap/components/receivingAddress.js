@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DONATION_ADDRESSES_MAP } from 'config/data';
 import Validator from 'libs/validator';
+import translate from 'translations';
 
 export default class ReceivingAddress extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ export default class ReceivingAddress extends Component {
           <section className="row">
             <div className="col-sm-8 col-sm-offset-2 col-xs-12">
               <label>
-                <span>Your Receiving Address</span>
+                <span>{translate('SWAP_rec_add')}</span>
                 <strong> ({destinationKind})</strong>
               </label>
               <input
@@ -56,7 +57,7 @@ export default class ReceivingAddress extends Component {
           </section>
           <section className="row text-center">
             <button disabled={!validAddress} className="btn btn-primary btn-lg">
-              <span>Start Swap</span>
+              <span>{translate('SWAP_start_CTA')}</span>
             </button>
           </section>
         </section>
