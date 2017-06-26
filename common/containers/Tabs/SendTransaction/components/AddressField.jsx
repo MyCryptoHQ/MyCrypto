@@ -22,7 +22,6 @@ export class AddressField extends React.Component {
     render() {
         const { placeholder, value, ensAddress } = this.props;
         const isReadonly = !this.props.onChange;
-        // FIXME identicon is passed address only if valid
         return (
             <div className="row form-group">
                 <div className="col-xs-11">
