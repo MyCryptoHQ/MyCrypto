@@ -31,9 +31,9 @@ class CoinTypeDropDown extends Component {
   }
 }
 
-export default class WantToSwapMy extends Component {
-  constructor(props, context) {
-    super(props, context);
+export default class CurrencySwap extends Component {
+  constructor(props) {
+    super(props);
   }
 
   static propTypes = {
@@ -47,10 +47,13 @@ export default class WantToSwapMy extends Component {
     originKindSwap: PropTypes.func,
     destinationKindSwap: PropTypes.func,
     originAmountSwap: PropTypes.func,
-    destinationAmountSwap: PropTypes.func
+    destinationAmountSwap: PropTypes.func,
+    partOneCompleteSwap: PropTypes.func
   };
 
-  onClickStartSwap() {}
+  onClickStartSwap = () => {
+    this.props.partOneCompleteSwap(true);
+  };
 
   onChangeOriginAmount = amount => {
     let originAmountAsNumber = parseFloat(amount);
