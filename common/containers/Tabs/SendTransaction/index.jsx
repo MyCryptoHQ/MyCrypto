@@ -17,6 +17,7 @@ import pickBy from 'lodash/pickBy';
 import customMessages from './messages';
 
 type State = {
+    hasQueryString: boolean,
     readOnly: boolean,
     to: string,
     value: string,
@@ -244,8 +245,7 @@ export class SendTransaction extends React.Component {
         });
     };
 
-    onDataChange = (e: SyntheticInputEvent) => {
-        const value = e.target.value;
+    onDataChange = (value: string) => {
         if (this.state.unit !== 'ether') {
             return;
         }
