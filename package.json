@@ -20,6 +20,7 @@
     "redux-logger": "^3.0.1",
     "redux-saga": "^0.15.3",
     "store2": "^2.5.0",
+    "wallet-address-validator": "^0.1.0",
     "whatwg-fetch": "^2.0.2"
   },
   "devDependencies": {
