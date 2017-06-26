@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import translate from 'translations';
-import { isValidHex } from 'eth/validators';
+import { isValidHex } from 'libs/validators';
 
 export default class DataField extends React.Component {
     props: {

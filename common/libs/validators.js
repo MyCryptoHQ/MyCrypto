@@ -1,6 +1,19 @@
 // @flow
+import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { toChecksumAddress } from 'ethereumjs-util';
+
+export function isValidETHAddress(address: string): boolean {
+    if (!address) {
+        return false;
+    }
+    if (address == '0x0000000000000000000000000000000000000000') return false;
+    return validateEtherAddress(address);
+}
+
+export function isValidBTCAddress(address: string): boolean {
+    return WalletAddressValidator.validate(address, 'BTC');
+}
 
 export function isValidHex(str: string): boolean {
     if (typeof str !== 'string') {
@@ -13,7 +26,7 @@ export function isValidHex(str: string): boolean {
 }
 
 export function isValidENSorEtherAddress(address: string): boolean {
-    return isValidAddress(address) || isValidENSAddress(address);
+    return isValidETHAddress(address) || isValidENSAddress(address);
 }
 
 export function isValidENSName(str: string) {
@@ -44,19 +57,11 @@ function isChecksumAddress(address: string): boolean {
     return address == toChecksumAddress(address);
 }
 
+// FIXME we probably want to do checksum checks sideways
 function validateEtherAddress(address: string): boolean {
     if (address.substring(0, 2) != '0x') return false;
     else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) return false;
     else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address))
         return true;
     else return isChecksumAddress(address);
-}
-
-// FIXME already in swap PR somewhere
-export function isValidAddress(address: string): boolean {
-    if (!address) {
-        return false;
-    }
-    if (address == '0x0000000000000000000000000000000000000000') return false;
-    return validateEtherAddress(address);
 }

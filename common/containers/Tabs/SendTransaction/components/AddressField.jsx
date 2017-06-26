@@ -4,7 +4,7 @@ import { Identicon } from 'components/ui';
 import { getEnsAddress } from 'selectors/ens';
 import { connect } from 'react-redux';
 import type { State } from 'reducers';
-import { isValidENSorEtherAddress, isValidENSAddress } from 'eth/validators';
+import { isValidENSorEtherAddress, isValidENSAddress } from 'libs/validators';
 import { resolveEnsName } from 'actions/ens';
 
 type PublicProps = {
