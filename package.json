@@ -5,6 +5,9 @@
   "description": "MyEtherWallet v4",
   "dependencies": {
     "axios": "^0.16.2",
+    "ethereum-blockies": "https://github.com/MyEtherWallet/blockies.git",
+    "ethereumjs-util": "^5.1.2",
+    "idna-uts46": "^1.1.0",
     "lodash": "^4.17.4",
     "ethereumjs-util": "^5.1.2",
     "ethereumjs-wallet": "^0.6.0",
@@ -17,8 +20,9 @@
     "redux": "^3.6.0",
     "redux-form": "^6.6.3",
     "redux-logger": "^3.0.1",
-    "redux-thunk": "^2.2.0",
+    "redux-saga": "^0.15.3",
     "store2": "^2.5.0",
+    "wallet-address-validator": "^0.1.0",
     "whatwg-fetch": "^2.0.2"
   },
   "devDependencies": {

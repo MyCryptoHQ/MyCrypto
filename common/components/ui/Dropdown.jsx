@@ -19,7 +19,7 @@ export default class DropdownComponent extends Component {
         ariaLabel: string,
         formatTitle: (option: any) => any,
         extra?: any,
-        onChange: () => void
+        onChange: (value: any) => void
     };
 
     state = {

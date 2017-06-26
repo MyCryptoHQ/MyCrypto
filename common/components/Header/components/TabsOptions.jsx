@@ -9,7 +9,8 @@ const tabs = [
         link: '/'
     },
     {
-        name: 'NAV_SendEther'
+        name: 'NAV_SendEther',
+        link: 'send-transaction'
     },
     {
         name: 'NAV_Swap',

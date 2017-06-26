@@ -52,7 +52,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 loaders: ['babel-loader'],
-                exclude: [/node_modules/]
+                exclude: [/node_modules\/(?!ethereum-blockies)/]
             },
             {
                 test: /\.(ico|jpg|png|gif|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,

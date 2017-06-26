@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TabsOptions from './components/TabsOptions';
 import { Link } from 'react-router';
-import Dropdown from '../ui/Dropdown';
+import { Dropdown } from 'components/ui';
 import { languages, nodeList } from '../../config/data';
 
 export default class Header extends Component {

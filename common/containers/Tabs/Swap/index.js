@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import WantToSwapMy from './components/wantToSwapMy';
+import CurrencySwap from './components/currencySwap';
+import SwapInformation from './components/swapInformation';
 import CurrentRates from './components/currentRates';
+import ReceivingAddress from './components/receivingAddress';
+
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
 
@@ -18,14 +21,18 @@ class Swap extends Component {
     originAmount: PropTypes.any,
     destinationAmount: PropTypes.any,
     originKind: PropTypes.string,
+    partOneComplete: PropTypes.bool,
     destinationKind: PropTypes.string,
     destinationKindOptions: PropTypes.array,
     originKindOptions: PropTypes.array,
-    SWAP_ORIGIN_KIND_TO: PropTypes.func,
-    SWAP_DESTINATION_KIND_TO: PropTypes.func,
-    SWAP_ORIGIN_AMOUNT_TO: PropTypes.func,
-    SWAP_DESTINATION_AMOUNT_TO: PropTypes.func,
-    SWAP_UPDATE_BITY_RATES_TO: PropTypes.func
+    receivingAddress: PropTypes.string,
+    originKindSwap: PropTypes.func,
+    destinationKindSwap: PropTypes.func,
+    originAmountSwap: PropTypes.func,
+    destinationAmountSwap: PropTypes.func,
+    updateBityRatesSwap: PropTypes.func,
+    partOneCompleteSwap: PropTypes.func,
+    receivingAddressSwap: PropTypes.func
   };
 
   componentDidMount() {
@@ -38,7 +45,7 @@ class Swap extends Component {
       !bityRates.BTCREP
     ) {
       this.bity.getAllRates().then(data => {
-        this.props.SWAP_UPDATE_BITY_RATES_TO(data);
+        this.props.updateBityRatesSwap(data);
       });
     }
   }
@@ -52,10 +59,14 @@ class Swap extends Component {
       destinationKind,
       destinationKindOptions,
       originKindOptions,
-      SWAP_ORIGIN_KIND_TO,
-      SWAP_DESTINATION_KIND_TO,
-      SWAP_ORIGIN_AMOUNT_TO,
-      SWAP_DESTINATION_AMOUNT_TO
+      originKindSwap,
+      destinationKindSwap,
+      originAmountSwap,
+      destinationAmountSwap,
+      partOneComplete,
+      partOneCompleteSwap,
+      receivingAddressSwap,
+      receivingAddress
     } = this.props;
 
     let wantToSwapMyProps = {
@@ -66,18 +77,40 @@ class Swap extends Component {
       destinationKind,
       destinationKindOptions,
       originKindOptions,
-      SWAP_ORIGIN_KIND_TO,
-      SWAP_DESTINATION_KIND_TO,
-      SWAP_ORIGIN_AMOUNT_TO,
-      SWAP_DESTINATION_AMOUNT_TO
+      originKindSwap,
+      destinationKindSwap,
+      originAmountSwap,
+      destinationAmountSwap,
+      partOneCompleteSwap
+    };
+
+    let yourInformationProps = {
+      originAmount,
+      destinationAmount,
+      originKind,
+      destinationKind
+    };
+
+    let yourReceivingProps = {
+      destinationKind,
+      receivingAddressSwap,
+      receivingAddress
     };
 
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
           <main className="tab-pane swap-tab">
-            <CurrentRates {...bityRates} />
-            <WantToSwapMy {...wantToSwapMyProps} />
+            {!partOneComplete &&
+              <div>
+                <CurrentRates {...bityRates} />
+                <CurrencySwap {...wantToSwapMyProps} />
+              </div>}
+            {partOneComplete &&
+              <div>
+                <SwapInformation {...yourInformationProps} />
+                <ReceivingAddress {...yourReceivingProps} />
+              </div>}
           </main>
         </div>
       </section>
@@ -87,6 +120,8 @@ class Swap extends Component {
 
 function mapStateToProps(state) {
   return {
+    receivingAddress: state.swap.receivingAddress,
+    partOneComplete: state.swap.partOneComplete,
     originAmount: state.swap.originAmount,
     destinationAmount: state.swap.destinationAmount,
     originKind: state.swap.originKind,
