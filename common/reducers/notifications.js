@@ -6,7 +6,7 @@ import type {
     CloseNotificationAction
 } from 'actions/notifications';
 
-type State = Notification[];
+export type State = Notification[];
 
 const initialState: State = [];
 

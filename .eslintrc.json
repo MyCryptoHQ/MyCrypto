@@ -30,5 +30,8 @@
     "no-unreachable": 1,
     "no-alert": 0,
     "react/jsx-uses-react": 1
+  },
+  "globals": {
+    "SyntheticInputEvent": false
   }
 }
