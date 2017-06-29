@@ -11,31 +11,32 @@ import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';
 import ensSaga from './sagas/ens';
+import walletSaga from './sagas/wallet';
 
 // application styles
 import 'assets/styles/etherwallet-master.less';
 
-const sagaMiddleware = createSagaMiddleware();
-
 const configureStore = () => {
-    let sagaApplied = applyMiddleware(sagaMiddleware);
+    const logger = createLogger({
+        collapsed: true
+    });
+    const sagaMiddleware = createSagaMiddleware();
     let store;
     let middleware;
 
     if (process.env.NODE_ENV !== 'production') {
         window.Perf = Perf;
-        sagaApplied = composeWithDevTools(sagaApplied);
-        const logger = createLogger({
-            collapsed: true
-        });
-        middleware = applyMiddleware(routerMiddleware(history), logger);
+        middleware = composeWithDevTools(
+            applyMiddleware(sagaMiddleware, logger, routerMiddleware(history))
+        );
     } else {
-        middleware = applyMiddleware(routerMiddleware(history));
+        middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
     }
 
-    store = createStore(RootReducer, sagaApplied, middleware);
+    store = createStore(RootReducer, void 0, middleware);
     sagaMiddleware.run(notificationsSaga);
     sagaMiddleware.run(ensSaga);
+    sagaMiddleware.run(walletSaga);
     return store;
 };
 
