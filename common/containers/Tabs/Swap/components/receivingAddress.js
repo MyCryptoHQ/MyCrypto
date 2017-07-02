@@ -1,18 +1,11 @@
+// @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DONATION_ADDRESSES_MAP } from 'config/data';
-import Validator from 'libs/validator';
+import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 
 export default class ReceivingAddress extends Component {
-  constructor(props) {
-    super(props);
-    this.validator = new Validator();
-    this.state = {
-      validAddress: false
-    };
-  }
-
   static propTypes = {
     destinationKind: PropTypes.string.isRequired,
     destinationAddressSwap: PropTypes.func.isRequired,
@@ -20,17 +13,9 @@ export default class ReceivingAddress extends Component {
     partTwoCompleteSwap: PropTypes.func
   };
 
-  onChangeDestinationAddress = event => {
+  onChangeDestinationAddress = (event: SyntheticInputEvent) => {
     const value = event.target.value;
     this.props.destinationAddressSwap(value);
-    let validAddress;
-    // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
-    if (this.props.destinationKind === 'BTC') {
-      validAddress = this.validator.isValidBTCAddress(value);
-    } else {
-      validAddress = this.validator.isValidETHAddress(value);
-    }
-    this.setState({ validAddress });
   };
 
   onClickPartTwoComplete = () => {
@@ -39,7 +24,14 @@ export default class ReceivingAddress extends Component {
 
   render() {
     const { destinationKind, destinationAddress } = this.props;
-    const { validAddress } = this.state;
+    let validAddress;
+    // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
+    if (this.props.destinationKind === 'BTC') {
+      validAddress = isValidBTCAddress(destinationAddress);
+    } else {
+      validAddress = isValidETHAddress(destinationAddress);
+    }
+
     return (
       <article className="swap-start">
         <section className="swap-address block">

@@ -5,7 +5,9 @@
   "description": "MyEtherWallet v4",
   "dependencies": {
     "axios": "^0.16.2",
+    "ethereum-blockies": "https://github.com/MyEtherWallet/blockies.git",
     "ethereumjs-util": "^5.1.2",
+    "idna-uts46": "^1.1.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
     "react": "^15.4.2",

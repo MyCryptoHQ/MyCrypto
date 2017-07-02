@@ -10,6 +10,7 @@ import { Routing, history } from './routing';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';
+import ensSaga from './sagas/ens';
 
 // application styles
 import 'assets/styles/etherwallet-master.less';
@@ -34,6 +35,7 @@ const configureStore = () => {
 
   store = createStore(RootReducer, sagaApplied, middleware);
   sagaMiddleware.run(notificationsSaga);
+  sagaMiddleware.run(ensSaga);
   return store;
 };
 
