@@ -15,13 +15,14 @@ export default class ReceivingAddress extends Component {
 
   static propTypes = {
     destinationKind: PropTypes.string.isRequired,
-    receivingAddressSwap: PropTypes.func.isRequired,
-    receivingAddress: PropTypes.string
+    destinationAddressSwap: PropTypes.func.isRequired,
+    destinationAddress: PropTypes.string,
+    partTwoCompleteSwap: PropTypes.func
   };
 
-  onChangeReceivingAddress = event => {
+  onChangeDestinationAddress = event => {
     const value = event.target.value;
-    this.props.receivingAddressSwap(value);
+    this.props.destinationAddressSwap(value);
     let validAddress;
     // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
     if (this.props.destinationKind === 'BTC') {
@@ -32,8 +33,12 @@ export default class ReceivingAddress extends Component {
     this.setState({ validAddress });
   };
 
+  onClickPartTwoComplete = () => {
+    this.props.partTwoCompleteSwap(true);
+  };
+
   render() {
-    const { destinationKind, receivingAddress } = this.props;
+    const { destinationKind, destinationAddress } = this.props;
     const { validAddress } = this.state;
     return (
       <article className="swap-start">
@@ -49,14 +54,18 @@ export default class ReceivingAddress extends Component {
                   ? 'is-valid'
                   : 'is-invalid'}`}
                 type="text"
-                value={receivingAddress}
-                onChange={this.onChangeReceivingAddress}
+                value={destinationAddress}
+                onChange={this.onChangeDestinationAddress}
                 placeholder={DONATION_ADDRESSES_MAP[destinationKind]}
               />
             </div>
           </section>
           <section className="row text-center">
-            <button disabled={!validAddress} className="btn btn-primary btn-lg">
+            <button
+              disabled={!validAddress}
+              onClick={this.onClickPartTwoComplete}
+              className="btn btn-primary btn-lg"
+            >
               <span>{translate('SWAP_start_CTA')}</span>
             </button>
           </section>

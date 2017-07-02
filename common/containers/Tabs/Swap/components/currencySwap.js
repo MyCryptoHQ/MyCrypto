@@ -4,8 +4,8 @@ import translate from 'translations';
 import { combineAndUpper } from 'api/bity';
 
 class CoinTypeDropDown extends Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
   }
 
   static propTypes = {
@@ -34,6 +34,9 @@ class CoinTypeDropDown extends Component {
 export default class CurrencySwap extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      disabled: false
+    };
   }
 
   static propTypes = {
@@ -146,9 +149,13 @@ export default class CurrencySwap extends Component {
         />
 
         <div className="col-xs-12 clearfix text-center">
-          <a onClick={this.onClickStartSwap} className="btn btn-info btn-lg">
+          <button
+            disabled={this.state.disabled}
+            onClick={this.onClickStartSwap}
+            className="btn btn-info btn-lg"
+          >
             <span>{translate('SWAP_init_CTA')}</span>
-          </a>
+          </button>
         </div>
       </article>
     );
