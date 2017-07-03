@@ -1,3 +1,4 @@
+// @flow
 import {
   GENERATE_WALLET_SHOW_PASSWORD,
   GENERATE_WALLET_FILE,
@@ -5,14 +6,21 @@ import {
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER
 } from 'actions/generateWalletConstants';
 
-const initialState = {
+export type State = {
+    showPassword: boolean,
+    generateWalletFile: boolean,
+    hasDownloadedWalletFile: boolean,
+    canProceedToPaper: boolean
+}
+
+const initialState: State = {
   showPassword: false,
   generateWalletFile: false,
   hasDownloadedWalletFile: false,
   canProceedToPaper: false
 };
 
-export function generateWallet(state = initialState, action) {
+export function generateWallet(state: State = initialState, action): State {
   switch (action.type) {
     case GENERATE_WALLET_SHOW_PASSWORD: {
       return {

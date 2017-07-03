@@ -10,6 +10,7 @@ import { Routing, history } from './routing';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';
+import ensSaga from './sagas/ens';
 
 // application styles
 import 'assets/styles/etherwallet-master.less';
@@ -18,43 +19,39 @@ const sagaMiddleware = createSagaMiddleware();
 let store;
 
 const configureStore = () => {
-  let sagaApplied = applyMiddleware(sagaMiddleware);
-  let middleware;
+    let sagaApplied = applyMiddleware(sagaMiddleware);
+    let middleware;
 
-  if (process.env.NODE_ENV !== 'production') {
-    window.Perf = Perf;
-    sagaApplied = composeWithDevTools(sagaApplied);
-    const logger = createLogger({
-      collapsed: true
-    });
-    middleware = applyMiddleware(routerMiddleware(history), logger);
-  } else {
-    middleware = applyMiddleware(routerMiddleware(history));
-  }
+    if (process.env.NODE_ENV !== 'production') {
+        window.Perf = Perf;
+        sagaApplied = composeWithDevTools(sagaApplied);
+        const logger = createLogger({
+            collapsed: true
+        });
+        middleware = applyMiddleware(routerMiddleware(history), logger);
+    } else {
+        middleware = applyMiddleware(routerMiddleware(history));
+    }
 
-  store = createStore(RootReducer, sagaApplied, middleware);
-  sagaMiddleware.run(notificationsSaga);
-  return store;
+    store = createStore(RootReducer, sagaApplied, middleware);
+    sagaMiddleware.run(notificationsSaga);
+    sagaMiddleware.run(ensSaga);
+    return store;
 };
 
 const renderRoot = Root => {
-  let store = configureStore();
-  let syncedHistory = syncHistoryWithStore(history, store);
-  render(
-    <Root
-      key={Math.random()}
-      routes={Routing}
-      history={syncedHistory}
-      store={store}
-    />,
-    document.getElementById('app')
-  );
+    let store = configureStore();
+    let syncedHistory = syncHistoryWithStore(history, store);
+    render(
+        <Root key={Math.random()} routes={Routing} history={syncedHistory} store={store} />,
+        document.getElementById('app')
+    );
 };
 
 renderRoot(Root);
 
 if (module.hot) {
-  module.hot.accept('reducers/index', () =>
-    store.replaceReducer(require('reducers/index').default)
+    module.hot.accept('reducers/index', () =>
+      store.replaceReducer(require('reducers/index').default)
   );
 }
