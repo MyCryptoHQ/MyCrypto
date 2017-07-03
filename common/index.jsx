@@ -16,10 +16,10 @@ import ensSaga from './sagas/ens';
 import 'assets/styles/etherwallet-master.less';
 
 const sagaMiddleware = createSagaMiddleware();
+let store;
 
 const configureStore = () => {
     let sagaApplied = applyMiddleware(sagaMiddleware);
-    let store;
     let middleware;
 
     if (process.env.NODE_ENV !== 'production') {
@@ -51,5 +51,7 @@ const renderRoot = Root => {
 renderRoot(Root);
 
 if (module.hot) {
-    module.hot.accept();
+    module.hot.accept('reducers/index', () =>
+      store.replaceReducer(require('reducers/index').default)
+  );
 }
