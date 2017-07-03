@@ -270,7 +270,7 @@ export class SendTransaction extends React.Component {
 
 function mapStateToProps(state: AppState) {
     return {
-        wallet: state.wallet
+        wallet: state.wallet.inst
     };
 }
 

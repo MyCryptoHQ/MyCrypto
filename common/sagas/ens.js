@@ -1,11 +1,13 @@
 // @flow
 import { takeEvery, call, put, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import type { Effect } from 'redux-saga/effects';
 import { cacheEnsAddress } from 'actions/ens';
 import type { ResolveEnsNameAction } from 'actions/ens';
 import { getEnsAddress } from 'selectors/ens';
 
-function* resolveEns(action: ResolveEnsNameAction) {
+function* resolveEns(action?: ResolveEnsNameAction) {
+    if (!action) return;
     const ensName = action.payload;
     // FIXME Add resolve logic
     ////                     _ens.getAddress(scope.addressDrtv.ensAddressField, function(data) {
@@ -28,6 +30,6 @@ function* resolveEns(action: ResolveEnsNameAction) {
     yield put(cacheEnsAddress(ensName, '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8'));
 }
 
-export default function* notificationsSaga() {
+export default function* notificationsSaga(): Generator<Effect, void, any> {
     yield takeEvery('ENS_RESOLVE', resolveEns);
 }

@@ -12,7 +12,11 @@ export type SaveWalletAction = {
     payload: BaseWallet
 };
 
-export type WalletAction = UnlockPrivateKeyAction | SaveWalletAction;
+export type InitWalletAction = {
+    type: 'WALLET_INIT'
+};
+
+export type WalletAction = UnlockPrivateKeyAction | SaveWalletAction | InitWalletAction;
 
 export function unlockPrivateKey(value: PrivateKeyUnlockParams): UnlockPrivateKeyAction {
     return {
@@ -25,5 +29,11 @@ export function saveWallet(value: BaseWallet): SaveWalletAction {
     return {
         type: 'WALLET_SAVE',
         payload: value
+    };
+}
+
+export function initWallet(): InitWalletAction {
+    return {
+        type: 'WALLET_INIT'
     };
 }
