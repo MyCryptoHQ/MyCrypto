@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // import { toFixedIfLarger } from 'utils/formatters';
-// import translate from 'translations';
+import translate from 'translations';
 
 export default class SwapProgress extends Component {
   constructor(props) {
@@ -22,25 +22,25 @@ export default class SwapProgress extends Component {
         <div className="sep" />
         <div className="progress-item  progress-true">
           <div className="progress-circle"><i>1</i></div>
-          <p className="ng-scope">Order Initiated</p>
+          <p>{translate('SWAP_progress_1')}</p>
         </div>
         <div className="progress-item progress-true">
           <div className="progress-circle"><i>2</i></div>
           <p>
-            <span className="ng-scope">Waiting for your </span>{originKind}...
+            <span>{translate('SWAP_progress_2')}</span>{originKind}...
           </p>
         </div>
         <div className="progress-item progress-active">
           <div className="progress-circle"><i>3</i></div>
           <p>
-            ETH <span className="ng-scope">Received!</span>
+            {originKind} <span>{translate('SWAP_progress_3')}</span>
           </p>
         </div>
         <div className="progress-item">
           <div className="progress-circle"><i>4</i></div>
           <p>
-            <span className="ng-scope">destination your</span>{' '}
-            {destinationKind} <br />
+            <span>Sending your </span>{destinationKind}
+            <br />
             <small>
               Waiting for {numberOfConfirmations} confirmations...
             </small>
@@ -48,7 +48,7 @@ export default class SwapProgress extends Component {
         </div>
         <div className="progress-item">
           <div className="progress-circle"><i>5</i></div>
-          <p className="ng-scope">Order Complete</p>
+          <p>Order Complete</p>
         </div>
       </section>
     );
