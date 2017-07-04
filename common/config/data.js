@@ -7,6 +7,8 @@ export const DONATION_ADDRESSES_MAP = {
     REP: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8'
 };
 
+export const donationAddressMap = DONATION_ADDRESSES_MAP;
+
 export const languages = [
     {
         sign: 'en',

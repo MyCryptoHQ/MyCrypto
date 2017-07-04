@@ -6,6 +6,7 @@ import { cacheEnsAddress } from 'actions/ens';
 import type { ResolveEnsNameAction } from 'actions/ens';
 import { getEnsAddress } from 'selectors/ens';
 import { donationAddressMap } from 'config/data';
+
 function* resolveEns(action?: ResolveEnsNameAction) {
     if (!action) return;
     const ensName = action.payload;
@@ -32,8 +33,4 @@ function* resolveEns(action?: ResolveEnsNameAction) {
 
 export default function* notificationsSaga(): Generator<Effect, void, any> {
     yield takeEvery('ENS_RESOLVE', resolveEns);
-export default function* notificationsSaga() {
-    yield takeEvery('ENS_RESOLVE', resolveEns);
-export default function* notificationsSaga() {
-  yield takeEvery('ENS_RESOLVE', resolveEns);
 }
