@@ -1,8 +1,8 @@
 // @flow
 import type {
   WalletAction,
-  SaveWalletAction,
-  InitWalletAction
+  SaveWalletAction
+  // InitWalletAction
 } from 'actions/wallet';
 import BaseWallet from 'libs/wallet/base';
 
@@ -28,10 +28,7 @@ function initWallet(state: State): State {
   return { ...state, balance: 0, tokens: {} };
 }
 
-export function wallet(
-  state: State = initialState,
-  action: WalletAction
-): State {
+export function wallet(state: State = initialState, action: WalletAction): State {
   switch (action.type) {
     case 'WALLET_SAVE':
       return saveWallet(state, action);

@@ -4,7 +4,9 @@ import type { Effect } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { saveWallet, initWallet } from 'actions/wallet';
 import type { UnlockPrivateKeyAction } from 'actions/wallet';
+import { showNotification } from 'actions/notifications';
 import PrivKeyWallet from 'libs/wallet/privkey';
+import translate from 'translations';
 
 function* init() {
   yield put(initWallet());
@@ -15,9 +17,16 @@ function* init() {
   yield delay(100);
 }
 
-function* unlockPrivateKey(action?: UnlockPrivateKeyAction) {
+export function* unlockPrivateKey(action?: UnlockPrivateKeyAction): Generator<Effect, void, any> {
   if (!action) return;
-  yield put(saveWallet(new PrivKeyWallet(action.payload)));
+  let wallet = null;
+  try {
+    wallet = new PrivKeyWallet(action.payload);
+  } catch (e) {
+    yield put(showNotification('danger', translate('INVALID_PKEY')));
+    return;
+  }
+  yield put(saveWallet(wallet));
   yield call(init);
 }
 
