@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import BaseWallet from 'libs/wallet/base';
 // import type { Transaction } from './types';
 import customMessages from './messages';
+import { donationAddressMap } from 'config/data';
 
 type State = {
     hasQueryString: boolean,
@@ -72,8 +73,6 @@ export class SendTransaction extends React.Component {
         if (Object.keys(queryPresets).length) {
             this.setState({ ...queryPresets, hasQueryString: true });
         }
-
-        this.setState(pickBy(queryPresets));
     }
 
     render() {
@@ -131,7 +130,7 @@ export class SendTransaction extends React.Component {
                                         </h4>
                                     </div>
                                     <AddressField
-                                        placeholder="0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
+                                        placeholder={donationAddressMap.ETH}
                                         value={this.state.to}
                                         onChange={readOnly ? null : this.onAddressChange}
                                     />
