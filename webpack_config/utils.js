@@ -1,28 +1,28 @@
-'use strict'
-const path = require('path')
-const config = require('./config')
+'use strict';
+const path = require('path');
+const config = require('./config');
 
-const _ = module.exports = {}
+const _ = (module.exports = {});
 
-_.cwd = (file) => {
-    return path.join(process.cwd(), file || '')
-}
+_.cwd = file => {
+  return path.join(process.cwd(), file || '');
+};
 
-_.outputPath = path.join(__dirname, '../dist')
+_.outputPath = path.join(__dirname, '../dist');
 
-_.outputIndexPath = path.join(__dirname, '../dist/index.html')
+_.outputIndexPath = path.join(__dirname, '../dist/index.html');
 
-_.target = 'web'
+_.target = 'web';
 
 _.loadersOptions = () => {
-    const isProd = process.env.NODE_ENV === 'production'
+  const isProd = process.env.NODE_ENV === 'production';
 
-    return {
-        minimize: isProd,
-        options: {
-            // css-loader relies on context
-            context: process.cwd(),
-            babel: config.babel
-        }
+  return {
+    minimize: isProd,
+    options: {
+      // css-loader relies on context
+      context: process.cwd(),
+      babel: config.babel
     }
-}
+  };
+};

@@ -15,7 +15,8 @@ export default class GasField extends React.Component {
     return (
       <div className="row form-group">
         <div className="col-sm-11 clearfix">
-          <label>{translate('TRANS_gas')}{' '}
+          <label>
+            {translate('TRANS_gas')}{' '}
           </label>
           <input
             className={`form-control ${isFinite(parseFloat(value)) &&
