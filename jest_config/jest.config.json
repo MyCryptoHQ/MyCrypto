@@ -10,6 +10,7 @@
         "^routing": "<rootDir>/common/routing",
         "^components$": "<rootDir>/common/components",
         "^containers$": "<rootDir>/common/containers",
-        "^translations(.*)": "<rootDir>/common/translations$1"
+        "^translations(.*)": "<rootDir>/common/translations$1",
+        "^libs(.*)": "<rootDir>/common/libs$1"
     }
 }
