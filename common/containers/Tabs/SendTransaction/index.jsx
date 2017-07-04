@@ -15,6 +15,7 @@ import {
 import pickBy from 'lodash/pickBy';
 // import type { Transaction } from './types';
 import customMessages from './messages';
+import { donationAddressMap } from 'config/data';
 
 type State = {
   hasQueryString: boolean,
@@ -94,7 +95,7 @@ export class SendTransaction extends React.Component {
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
-          <main className="tab-pane active" ng-controller="sendTxCtrl">
+          <main className="tab-pane active">
 
             {hasQueryString &&
               <div className="alert alert-info">
@@ -137,7 +138,7 @@ export class SendTransaction extends React.Component {
                     </h4>
                   </div>
                   <AddressField
-                    placeholder="0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
+                    placeholder={donationAddressMap.ETH}
                     value={this.state.to}
                     onChange={readOnly ? null : this.onAddressChange}
                   />

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import translate from 'translations';
+import { donationAddressMap } from 'config/data';
 
 export default class Donate extends React.Component {
   props: {
@@ -31,11 +32,7 @@ export default class Donate extends React.Component {
 
   onClick = () => {
     // FIXME move to config
-    this.props.onDonate(
-      '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
-      '1',
-      'ETH'
-    );
+    this.props.onDonate(donationAddressMap.ETH, '1', 'ETH');
 
     this.setState({ clicked: true });
   };
