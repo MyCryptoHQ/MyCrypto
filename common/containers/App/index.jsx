@@ -2,32 +2,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Footer, Header } from 'components';
-import PropTypes from 'prop-types';
 import Notifications from './Notifications';
-
-import { CHANGE_LANGUAGE, CHANGE_NODE } from 'actions/config';
+import * as actions from 'actions/config';
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+    props: {
+        // FIXME
+        children: any,
+        location: any,
+        router: any,
+        isMobile: boolean,
 
-    static propTypes = {
-        children: PropTypes.node.isRequired,
-        location: PropTypes.object,
-        handleWindowResize: PropTypes.func,
+        languageSelection: string,
+        nodeSelection: string,
 
-        router: PropTypes.object,
-        isMobile: PropTypes.bool,
-
-        // BEGIN ACTUAL
-        languageSelection: PropTypes.object,
-        changeLanguage: PropTypes.func,
-
-        changeNode: PropTypes.func,
-        nodeSelection: PropTypes.object,
-
-        showNotification: PropTypes.func
+        changeLanguage: typeof actions.changeLanguage,
+        changeNode: typeof actions.changeNode,
+        handleWindowResize: () => void
     };
 
     render() {
@@ -72,16 +63,4 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        // FIXME replace with actual types
-        changeNode: (i: any) => {
-            dispatch(CHANGE_NODE(i));
-        },
-        changeLanguage: (i: any) => {
-            dispatch(CHANGE_LANGUAGE(i));
-        }
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, actions)(App);

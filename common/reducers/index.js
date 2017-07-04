@@ -22,7 +22,7 @@ import { routerReducer } from 'react-router-redux';
 
 export type State = {
     generateWallet: GenerateWalletState,
-    conig: ConfigState,
+    config: ConfigState,
     notifications: NotificationsState,
     ens: EnsState,
     wallet: WalletState

@@ -1,26 +1,21 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
-export default class DropdownComponent extends Component {
-    static propTypes = {
-        value: PropTypes.object.isRequired,
-        options: PropTypes.arrayOf(PropTypes.object).isRequired,
-        ariaLabel: PropTypes.string.isRequired,
-        formatTitle: PropTypes.func.isRequired,
-        extra: PropTypes.node,
-        onChange: PropTypes.func.isRequired
-    };
+type Props<T> = {
+    value: T,
+    options: T[],
+    ariaLabel: string,
+    formatTitle: (option: T) => any,
+    extra?: any,
+    onChange: (value: T) => void
+}
 
-    // FIXME
-    props: {
-        value: any,
-        options: any[],
-        ariaLabel: string,
-        formatTitle: (option: any) => any,
-        extra?: any,
-        onChange: (value: any) => void
-    };
+type State = {
+    expanded: boolean
+}
+
+export default class DropdownComponent<T: *> extends Component<void, Props<T>, State> {
+    props: Props<T>
 
     state = {
         expanded: false

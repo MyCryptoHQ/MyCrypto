@@ -37,7 +37,9 @@ export function setLanguage(code: string) {
 
 export default function translate(key: string) {
     return markupToReact(
-        repository[activeLanguage][key] || repository[fallbackLanguage][key] || key
+        (repository[activeLanguage] && repository[activeLanguage][key]) ||
+            repository[fallbackLanguage][key] ||
+            key
     );
 }
 

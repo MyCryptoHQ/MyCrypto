@@ -8,7 +8,7 @@ import PrivKeyWallet from 'libs/wallet/privkey';
 
 function* init() {
     yield put(initWallet());
-    // const node = select(node);
+    // const node = select(getNode);
     // yield call();
     // fetch balance,
     // fetch tokens
