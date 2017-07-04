@@ -2,86 +2,65 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Footer, Header } from 'components';
-import PropTypes from 'prop-types';
 import Notifications from './Notifications';
-
-import { CHANGE_LANGUAGE, CHANGE_NODE } from 'actions/config';
+import * as actions from 'actions/config';
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-    }
+  props: {
+    // FIXME
+    children: any,
+    location: any,
+    router: any,
+    isMobile: boolean,
 
-    static propTypes = {
-        children: PropTypes.node.isRequired,
-        location: PropTypes.object,
-        handleWindowResize: PropTypes.func,
+    languageSelection: string,
+    nodeSelection: string,
 
-        router: PropTypes.object,
-        isMobile: PropTypes.bool,
+    changeLanguage: typeof actions.changeLanguage,
+    changeNode: typeof actions.changeNode,
+    handleWindowResize: () => void
+  };
 
-        // BEGIN ACTUAL
-        languageSelection: PropTypes.object,
-        changeLanguage: PropTypes.func,
+  render() {
+    let {
+      children,
+      // APP
+      languageSelection,
+      changeLanguage,
+      changeNode,
+      nodeSelection
+    } = this.props;
 
-        changeNode: PropTypes.func,
-        nodeSelection: PropTypes.object,
-
-        showNotification: PropTypes.func
+    let headerProps = {
+      location,
+      changeLanguage,
+      languageSelection,
+      changeNode,
+      nodeSelection
     };
 
-    render() {
-        let {
-            children,
-            // APP
-            languageSelection,
-            changeLanguage,
-            changeNode,
-            nodeSelection
-        } = this.props;
-
-        let headerProps = {
-            location,
-            changeLanguage,
-            languageSelection,
-            changeNode,
-            nodeSelection
-        };
-
-        return (
-            <div className="page-layout">
-                <main>
-                    <Header {...headerProps} />
-                    <div className="main-content">
-                        {React.cloneElement(children, { languageSelection })}
-                    </div>
-                    <Footer />
-                </main>
-                <Notifications />
-            </div>
-        );
-    }
+    return (
+      <div className="page-layout">
+        <main>
+          <Header {...headerProps} />
+          <div className="main-content">
+            {React.cloneElement(children, { languageSelection })}
+          </div>
+          <Footer />
+        </main>
+        <Notifications />
+      </div>
+    );
+  }
 }
 
 function mapStateToProps(state) {
-    return {
-        nodeSelection: state.config.nodeSelection,
-        nodeToggle: state.config.nodeToggle,
-        languageSelection: state.config.languageSelection,
-        languageToggle: state.config.languageToggle
-    };
+  return {
+    nodeSelection: state.config.nodeSelection,
+    nodeToggle: state.config.nodeToggle,
+    languageSelection: state.config.languageSelection,
+    languageToggle: state.config.languageToggle
+  };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        // FIXME replace with actual types
-        changeNode: (i: any) => {
-            dispatch(CHANGE_NODE(i));
-        },
-        changeLanguage: (i: any) => {
-            dispatch(CHANGE_LANGUAGE(i));
-        }
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, actions)(App);

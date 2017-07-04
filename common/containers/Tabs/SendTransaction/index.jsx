@@ -13,6 +13,9 @@ import {
   AddressField
 } from './components';
 import pickBy from 'lodash/pickBy';
+import type { State as AppState } from 'reducers';
+import { connect } from 'react-redux';
+import BaseWallet from 'libs/wallet/base';
 // import type { Transaction } from './types';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
@@ -50,7 +53,8 @@ export class SendTransaction extends React.Component {
       query: {
         [string]: string
       }
-    }
+    },
+    wallet: BaseWallet
   };
   state: State = {
     hasQueryString: false,
@@ -69,12 +73,10 @@ export class SendTransaction extends React.Component {
     if (Object.keys(queryPresets).length) {
       this.setState({ ...queryPresets, hasQueryString: true });
     }
-
-    this.setState(pickBy(queryPresets));
   }
 
   render() {
-    const unlocked = true; //wallet != null
+    const unlocked = !!this.props.wallet;
     const unitReadable = 'UNITREADABLE';
     const nodeUnit = 'NODEUNIT';
     const hasEnoughBalance = false;
@@ -95,8 +97,7 @@ export class SendTransaction extends React.Component {
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
-          <main className="tab-pane active">
-
+          <main className="tab-pane active" ng-controller="sendTxCtrl">
             {hasQueryString &&
               <div className="alert alert-info">
                 <p>
@@ -125,8 +126,7 @@ export class SendTransaction extends React.Component {
                         <strong>
                           Warning! You do not have enough funds to
                           complete this swap.
-                        </strong>
-                        {' '}
+                        </strong>{' '}
                         <br />
                         Please add more funds or access a different wallet.
                       </div>
@@ -196,7 +196,6 @@ export class SendTransaction extends React.Component {
                       {' '}Send Transaction{' '}
                     </a>
                   </div>
-
                 </section>
                 {'' /* <!-- / Content --> */}
                 {
@@ -275,5 +274,11 @@ export class SendTransaction extends React.Component {
     });
   };
 }
-// export connected version
-export default SendTransaction;
+
+function mapStateToProps(state: AppState) {
+  return {
+    wallet: state.wallet.inst
+  };
+}
+
+export default connect(mapStateToProps)(SendTransaction);

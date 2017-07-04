@@ -1,2 +1,2 @@
-export ViewWallet from './ViewWallet'
-export GenerateWallet from './GenerateWallet'
+export WalletDecrypt from './WalletDecrypt';
+export GenerateWallet from './GenerateWallet';

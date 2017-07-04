@@ -1,6 +1,10 @@
 // @flow
-import { CONFIG_LANGUAGE_CHANGE, CONFIG_NODE_CHANGE } from 'actions/config';
-import { languages, nodeList } from '../config/data';
+import type {
+  ConfigAction,
+  ChangeNodeAction,
+  ChangeLanguageAction
+} from 'actions/config';
+import { languages, NODES } from '../config/data';
 
 export type State = {
   // FIXME
@@ -8,25 +12,34 @@ export type State = {
   nodeSelection: string
 };
 
-const initialState = {
-  languageSelection: languages[0],
-  nodeSelection: nodeList[0]
+const initialState: State = {
+  languageSelection: languages[0].sign,
+  nodeSelection: Object.keys(NODES)[0]
 };
 
-export function config(state: State = initialState, action): State {
+function changeLanguage(state: State, action: ChangeLanguageAction): State {
+  return {
+    ...state,
+    languageSelection: action.value
+  };
+}
+
+function changeNode(state: State, action: ChangeNodeAction): State {
+  return {
+    ...state,
+    nodeSelection: action.value
+  };
+}
+
+export function config(
+  state: State = initialState,
+  action: ConfigAction
+): State {
   switch (action.type) {
-    case CONFIG_LANGUAGE_CHANGE: {
-      return {
-        ...state,
-        languageSelection: action.value
-      };
-    }
-    case CONFIG_NODE_CHANGE: {
-      return {
-        ...state,
-        nodeSelection: action.value
-      };
-    }
+    case 'CONFIG_LANGUAGE_CHANGE':
+      return changeLanguage(state, action);
+    case 'CONFIG_NODE_CHANGE':
+      return changeNode(state, action);
     default:
       return state;
   }

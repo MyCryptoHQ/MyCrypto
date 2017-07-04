@@ -1,18 +1,30 @@
 // @flow
 import { setLanguage } from 'translations';
-export const CONFIG_LANGUAGE_CHANGE = 'CONFIG_LANGUAGE_CHANGE';
-export const CONFIG_NODE_CHANGE = 'CONFIG_NODE_CHANGE';
 
-export const CHANGE_LANGUAGE = (value: any) => {
-    setLanguage(value.sign);
-    return {
-        type: CONFIG_LANGUAGE_CHANGE,
-        value
-    };
+export type ChangeNodeAction = {
+  type: 'CONFIG_NODE_CHANGE',
+  // FIXME $keyof?
+  value: string
 };
 
-export const CHANGE_NODE = (value: any) =>
-    Object({
-        type: CONFIG_NODE_CHANGE,
-        value
-    });
+export type ChangeLanguageAction = {
+  type: 'CONFIG_LANGUAGE_CHANGE',
+  value: string
+};
+
+export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
+
+export function changeLanguage(sign: string) {
+  setLanguage(sign);
+  return {
+    type: 'CONFIG_LANGUAGE_CHANGE',
+    value: sign
+  };
+}
+
+export function changeNode(value: string): ChangeNodeAction {
+  return {
+    type: 'CONFIG_NODE_CHANGE',
+    value
+  };
+}

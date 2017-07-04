@@ -1,10 +1,9 @@
 // @flow
-import { donationAddressMap } from 'config/data';
 
 export default [
   {
     // donation address example
-    to: donationAddressMap.ETH,
+    to: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
     gasLimit: 21000,
     data: '',
     msg: 'Thank you for donating to MyEtherWallet. TO THE MOON!'

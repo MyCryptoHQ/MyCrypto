@@ -13,15 +13,19 @@ import type { State as NotificationsState } from './notifications';
 import * as ens from './ens';
 import type { State as EnsState } from './ens';
 
+import * as wallet from './wallet';
+import type { State as WalletState } from './wallet';
+
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 export type State = {
   generateWallet: GenerateWalletState,
-  conig: ConfigState,
+  config: ConfigState,
   notifications: NotificationsState,
-  ens: EnsState
+  ens: EnsState,
+  wallet: WalletState
 };
 
 export default combineReducers({
@@ -30,6 +34,7 @@ export default combineReducers({
   ...swap,
   ...notifications,
   ...ens,
+  ...wallet,
   form: formReducer,
   routing: routerReducer
 });

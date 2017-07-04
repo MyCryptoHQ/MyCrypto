@@ -1,31 +1,24 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import TabsOptions from './components/TabsOptions';
 import { Link } from 'react-router';
 import { Dropdown } from 'components/ui';
-import { languages, nodeList } from '../../config/data';
+import { languages, NODES } from '../../config/data';
 
 export default class Header extends Component {
-  static propTypes = {
-    location: PropTypes.object,
+  props: {
+    languageSelection: string,
+    nodeSelection: string,
 
-    // Language DropDown
-    changeLanguage: PropTypes.func,
-    languageSelection: PropTypes.object,
-
-    // Node Dropdown
-    changeNode: PropTypes.func,
-    nodeSelection: PropTypes.object
+    changeLanguage: (sign: string) => any,
+    changeNode: (key: string) => any
   };
 
   render() {
-    const {
-      languageSelection,
-      changeLanguage,
-      changeNode,
-      nodeSelection
-    } = this.props;
+    const { languageSelection, changeNode, nodeSelection } = this.props;
+    const selectedLanguage =
+      languages.find(l => l.sign === languageSelection) || languages[0];
+    const selectedNode = NODES[nodeSelection];
 
     return (
       <div>
@@ -48,10 +41,10 @@ export default class Header extends Component {
               </span>
               &nbsp;&nbsp;&nbsp;
               <Dropdown
-                ariaLabel={`change language. current language ${languageSelection.name}`}
+                ariaLabel={`change language. current language ${selectedLanguage.name}`}
                 options={languages}
                 formatTitle={o => o.name}
-                value={languageSelection}
+                value={selectedLanguage}
                 extra={[
                   <li key={'separator'} role="separator" className="divider" />,
                   <li key={'disclaimer'}>
@@ -60,23 +53,23 @@ export default class Header extends Component {
                     </a>
                   </li>
                 ]}
-                onChange={changeLanguage}
+                onChange={this.changeLanguage}
               />
               &nbsp;&nbsp;&nbsp;
               <Dropdown
-                ariaLabel={`change node. current node ${nodeSelection.name} node by ${nodeSelection.service}`}
-                options={nodeList}
+                ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
+                options={Object.keys(NODES)}
                 formatTitle={o => [
-                  o.name,
+                  NODES[o].network,
                   ' ',
-                  <small key="service">({o.service})</small>
+                  <small key="service">
+                    ({NODES[o].service})
+                  </small>
                 ]}
                 value={nodeSelection}
                 extra={
                   <li>
-                    <a onClick={() => {}}>
-                      Add Custom Node
-                    </a>
+                    <a onClick={() => {}}>Add Custom Node</a>
                   </li>
                 }
                 onChange={changeNode}
@@ -86,8 +79,11 @@ export default class Header extends Component {
         </section>
 
         <TabsOptions {...this.props} />
-
       </div>
     );
   }
+
+  changeLanguage = (value: { sign: string }) => {
+    this.props.changeLanguage(value.sign);
+  };
 }
