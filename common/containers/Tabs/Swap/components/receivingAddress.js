@@ -1,30 +1,35 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DONATION_ADDRESSES_MAP } from 'config/data';
-import {isValidBTCAddress, isValidETHAddress} from 'libs/validators';
+import { donationAddressMap } from 'config/data';
+import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 
 export default class ReceivingAddress extends Component {
   static propTypes = {
     destinationKind: PropTypes.string.isRequired,
-    receivingAddressSwap: PropTypes.func.isRequired,
-    receivingAddress: PropTypes.string
+    destinationAddressSwap: PropTypes.func.isRequired,
+    destinationAddress: PropTypes.string,
+    partTwoCompleteSwap: PropTypes.func
   };
 
-  onChangeReceivingAddress = (event: SyntheticInputEvent) => {
+  onChangeDestinationAddress = (event: SyntheticInputEvent) => {
     const value = event.target.value;
-    this.props.receivingAddressSwap(value);
+    this.props.destinationAddressSwap(value);
+  };
+
+  onClickPartTwoComplete = () => {
+    this.props.partTwoCompleteSwap(true);
   };
 
   render() {
-    const { destinationKind, receivingAddress } = this.props;
+    const { destinationKind, destinationAddress } = this.props;
     let validAddress;
     // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
     if (this.props.destinationKind === 'BTC') {
-      validAddress = isValidBTCAddress(receivingAddress);
+      validAddress = isValidBTCAddress(destinationAddress);
     } else {
-      validAddress = isValidETHAddress(receivingAddress);
+      validAddress = isValidETHAddress(destinationAddress);
     }
 
     return (
@@ -41,14 +46,18 @@ export default class ReceivingAddress extends Component {
                   ? 'is-valid'
                   : 'is-invalid'}`}
                 type="text"
-                value={receivingAddress}
-                onChange={this.onChangeReceivingAddress}
-                placeholder={DONATION_ADDRESSES_MAP[destinationKind]}
+                value={destinationAddress}
+                onChange={this.onChangeDestinationAddress}
+                placeholder={donationAddressMap[destinationKind]}
               />
             </div>
           </section>
           <section className="row text-center">
-            <button disabled={!validAddress} className="btn btn-primary btn-lg">
+            <button
+              disabled={!validAddress}
+              onClick={this.onClickPartTwoComplete}
+              className="btn btn-primary btn-lg"
+            >
               <span>{translate('SWAP_start_CTA')}</span>
             </button>
           </section>

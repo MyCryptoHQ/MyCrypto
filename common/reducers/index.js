@@ -21,20 +21,20 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 export type State = {
-    generateWallet: GenerateWalletState,
-    config: ConfigState,
-    notifications: NotificationsState,
-    ens: EnsState,
-    wallet: WalletState
+  generateWallet: GenerateWalletState,
+  config: ConfigState,
+  notifications: NotificationsState,
+  ens: EnsState,
+  wallet: WalletState
 };
 
 export default combineReducers({
-    ...generateWallet,
-    ...config,
-    ...swap,
-    ...notifications,
-    ...ens,
-    ...wallet,
-    form: formReducer,
-    routing: routerReducer
+  ...generateWallet,
+  ...config,
+  ...swap,
+  ...notifications,
+  ...ens,
+  ...wallet,
+  form: formReducer,
+  routing: routerReducer
 });

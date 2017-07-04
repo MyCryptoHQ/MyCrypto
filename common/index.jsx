@@ -19,41 +19,46 @@ import 'assets/styles/etherwallet-master.less';
 let store;
 
 const configureStore = () => {
-    const logger = createLogger({
-        collapsed: true
-    });
-    const sagaMiddleware = createSagaMiddleware();
-    let middleware;
+  const logger = createLogger({
+    collapsed: true
+  });
+  const sagaMiddleware = createSagaMiddleware();
+  let middleware;
 
-    if (process.env.NODE_ENV !== 'production') {
-        window.Perf = Perf;
-        middleware = composeWithDevTools(
-            applyMiddleware(sagaMiddleware, logger, routerMiddleware(history))
-        );
-    } else {
-        middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
-    }
+  if (process.env.NODE_ENV !== 'production') {
+    window.Perf = Perf;
+    middleware = composeWithDevTools(
+      applyMiddleware(sagaMiddleware, logger, routerMiddleware(history))
+    );
+  } else {
+    middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
+  }
 
-    store = createStore(RootReducer, void 0, middleware);
-    sagaMiddleware.run(notificationsSaga);
-    sagaMiddleware.run(ensSaga);
-    sagaMiddleware.run(walletSaga);
-    return store;
+  store = createStore(RootReducer, void 0, middleware);
+  sagaMiddleware.run(notificationsSaga);
+  sagaMiddleware.run(ensSaga);
+  sagaMiddleware.run(walletSaga);
+  return store;
 };
 
 const renderRoot = Root => {
-    let store = configureStore();
-    let syncedHistory = syncHistoryWithStore(history, store);
-    render(
-        <Root key={Math.random()} routes={Routing} history={syncedHistory} store={store} />,
-        document.getElementById('app')
-    );
+  let store = configureStore();
+  let syncedHistory = syncHistoryWithStore(history, store);
+  render(
+    <Root
+      key={Math.random()}
+      routes={Routing}
+      history={syncedHistory}
+      store={store}
+    />,
+    document.getElementById('app')
+  );
 };
 
 renderRoot(Root);
 
 if (module.hot) {
-    module.hot.accept('reducers/index', () =>
-        store.replaceReducer(require('reducers/index').default)
-    );
+  module.hot.accept('reducers/index', () =>
+    store.replaceReducer(require('reducers/index').default)
+  );
 }

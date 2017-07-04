@@ -10,17 +10,17 @@ import SendTransaction from 'containers/Tabs/SendTransaction';
 export const history = getHistory();
 
 export const Routing = () =>
-    <Route name="App" path="" component={App}>
-        <Route name="GenerateWallet" path="/" component={GenerateWallet} />
-        <Route name="ViewWallet" path="/view-wallet" component={ViewWallet} />
-        <Route name="Help" path="/help" component={Help} />
-        <Route name="Swap" path="/swap" component={Swap} />
-        <Route name="Send" path="/send-transaction" component={SendTransaction} />
+  <Route name="App" path="" component={App}>
+    <Route name="GenerateWallet" path="/" component={GenerateWallet} />
+    <Route name="ViewWallet" path="/view-wallet" component={ViewWallet} />
+    <Route name="Help" path="/help" component={Help} />
+    <Route name="Swap" path="/swap" component={Swap} />
+    <Route name="Send" path="/send-transaction" component={SendTransaction} />
 
-        <Redirect from="/*" to="/" />
-    </Route>;
+    <Redirect from="/*" to="/" />
+  </Route>;
 
 function getHistory() {
-    const basename = '';
-    return useBasename(() => browserHistory)({ basename });
+  const basename = '';
+  return useBasename(() => browserHistory)({ basename });
 }

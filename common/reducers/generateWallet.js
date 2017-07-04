@@ -7,11 +7,11 @@ import {
 } from 'actions/generateWalletConstants';
 
 export type State = {
-    showPassword: boolean,
-    generateWalletFile: boolean,
-    hasDownloadedWalletFile: boolean,
-    canProceedToPaper: boolean
-}
+  showPassword: boolean,
+  generateWalletFile: boolean,
+  hasDownloadedWalletFile: boolean,
+  canProceedToPaper: boolean
+};
 
 const initialState: State = {
   showPassword: false,

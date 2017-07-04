@@ -8,19 +8,19 @@ import { getEnsAddress } from 'selectors/ens';
 import { donationAddressMap } from 'config/data';
 
 function* resolveEns(action?: ResolveEnsNameAction) {
-    if (!action) return;
-    const ensName = action.payload;
-    // FIXME Add resolve logic
-    ////                     _ens.getAddress(scope.addressDrtv.ensAddressField, function(data) {
-    //                         if (data.error) uiFuncs.notifier.danger(data.msg);
-    //                         else if (data.data == '0x0000000000000000000000000000000000000000' || data.data == '0x') {
-    //                             setValue('0x0000000000000000000000000000000000000000');
-    //                             scope.addressDrtv.derivedAddress = '0x0000000000000000000000000000000000000000';
-    //                             scope.addressDrtv.showDerivedAddress = true;
-    //                         } else {
-    //                             setValue(data.data);
-    //                             scope.addressDrtv.derivedAddress = ethUtil.toChecksumAddress(data.data);
-    //                             scope.addressDrtv.showDerivedAddress = true;
+  if (!action) return;
+  const ensName = action.payload;
+  // FIXME Add resolve logic
+  ////                     _ens.getAddress(scope.addressDrtv.ensAddressField, function(data) {
+  //                         if (data.error) uiFuncs.notifier.danger(data.msg);
+  //                         else if (data.data == '0x0000000000000000000000000000000000000000' || data.data == '0x') {
+  //                             setValue('0x0000000000000000000000000000000000000000');
+  //                             scope.addressDrtv.derivedAddress = '0x0000000000000000000000000000000000000000';
+  //                             scope.addressDrtv.showDerivedAddress = true;
+  //                         } else {
+  //                             setValue(data.data);
+  //                             scope.addressDrtv.derivedAddress = ethUtil.toChecksumAddress(data.data);
+  //                             scope.addressDrtv.showDerivedAddress = true;
 
   const cachedEnsAddress = yield select(getEnsAddress, ensName);
 
@@ -32,5 +32,5 @@ function* resolveEns(action?: ResolveEnsNameAction) {
 }
 
 export default function* notificationsSaga(): Generator<Effect, void, any> {
-    yield takeEvery('ENS_RESOLVE', resolveEns);
+  yield takeEvery('ENS_RESOLVE', resolveEns);
 }

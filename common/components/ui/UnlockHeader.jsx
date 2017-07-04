@@ -8,69 +8,69 @@ import { connect } from 'react-redux';
 import type { State } from 'reducers';
 
 type Props = {
-    title: string,
-    wallet: BaseWallet
+  title: string,
+  wallet: BaseWallet
 };
 
 export class UnlockHeader extends React.Component {
-    props: Props;
-    static propTypes = {
-        title: PropTypes.string.isRequired
-    };
+  props: Props;
+  static propTypes = {
+    title: PropTypes.string.isRequired
+  };
 
-    state: {
-        expanded: boolean
-    } = {
-        expanded: true
-    };
+  state: {
+    expanded: boolean
+  } = {
+    expanded: true
+  };
 
-    componentDidUpdate(prevProps: Props) {
-        if (this.props.wallet && this.props.wallet !== prevProps.wallet) {
-            this.setState({ expanded: false });
-        }
-
-        // not sure if could happen
-        if (!this.props.wallet && this.props.wallet !== prevProps.wallet) {
-            this.setState({ expanded: true });
-        }
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.wallet && this.props.wallet !== prevProps.wallet) {
+      this.setState({ expanded: false });
     }
 
-    render() {
-        return (
-            <article className="collapse-container">
-                <div onClick={this.toggleExpanded}>
-                    <a className="collapse-button">
-                        <span>
-                            {this.state.expanded ? '-' : '+'}
-                        </span>
-                    </a>
-                    <h1>
-                        {translate(this.props.title)}
-                    </h1>
-                </div>
-                {this.state.expanded &&
-                    <div>
-                        <WalletDecrypt />
-                        {/* @@if (site === 'cx' )  {  <cx-wallet-decrypt-drtv></cx-wallet-decrypt-drtv>   }
+    // not sure if could happen
+    if (!this.props.wallet && this.props.wallet !== prevProps.wallet) {
+      this.setState({ expanded: true });
+    }
+  }
+
+  render() {
+    return (
+      <article className="collapse-container">
+        <div onClick={this.toggleExpanded}>
+          <a className="collapse-button">
+            <span>
+              {this.state.expanded ? '-' : '+'}
+            </span>
+          </a>
+          <h1>
+            {translate(this.props.title)}
+          </h1>
+        </div>
+        {this.state.expanded &&
+          <div>
+            <WalletDecrypt />
+            {/* @@if (site === 'cx' )  {  <cx-wallet-decrypt-drtv></cx-wallet-decrypt-drtv>   }
     @@if (site === 'mew' ) {  <wallet-decrypt-drtv></wallet-decrypt-drtv>         } */}
-                    </div>}
+          </div>}
 
-                {this.state.expanded && <hr />}
-            </article>
-        );
-    }
+        {this.state.expanded && <hr />}
+      </article>
+    );
+  }
 
-    toggleExpanded = () => {
-        this.setState(state => {
-            return { expanded: !state.expanded };
-        });
-    };
+  toggleExpanded = () => {
+    this.setState(state => {
+      return { expanded: !state.expanded };
+    });
+  };
 }
 
 function mapStateToProps(state: State) {
-    return {
-        wallet: state.wallet
-    };
+  return {
+    wallet: state.wallet
+  };
 }
 
 export default connect(mapStateToProps)(UnlockHeader);

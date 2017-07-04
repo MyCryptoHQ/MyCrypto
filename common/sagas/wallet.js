@@ -7,20 +7,20 @@ import type { UnlockPrivateKeyAction } from 'actions/wallet';
 import PrivKeyWallet from 'libs/wallet/privkey';
 
 function* init() {
-    yield put(initWallet());
-    // const node = select(getNode);
-    // yield call();
-    // fetch balance,
-    // fetch tokens
-    yield delay(100);
+  yield put(initWallet());
+  // const node = select(getNode);
+  // yield call();
+  // fetch balance,
+  // fetch tokens
+  yield delay(100);
 }
 
 function* unlockPrivateKey(action?: UnlockPrivateKeyAction) {
-    if (!action) return;
-    yield put(saveWallet(new PrivKeyWallet(action.payload)));
-    yield call(init);
+  if (!action) return;
+  yield put(saveWallet(new PrivKeyWallet(action.payload)));
+  yield call(init);
 }
 
 export default function* notificationsSaga(): Generator<Effect, void, any> {
-    yield takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey);
+  yield takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey);
 }

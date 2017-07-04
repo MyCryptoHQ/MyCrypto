@@ -5,7 +5,9 @@ import {
   SWAP_ORIGIN_KIND,
   SWAP_UPDATE_BITY_RATES,
   SWAP_PART_ONE_COMPLETE,
-  SWAP_RECEIVING_ADDRESS
+  SWAP_PART_TWO_COMPLETE,
+  SWAP_DESTINATION_ADDRESS,
+  SWAP_RESTART
 } from './swapConstants';
 
 export const originKindSwap = value => {
@@ -50,9 +52,22 @@ export const partOneCompleteSwap = (value: boolean) => {
   };
 };
 
-export const receivingAddressSwap = value => {
+export const partTwoCompleteSwap = (value: boolean) => {
   return {
-    type: SWAP_RECEIVING_ADDRESS,
+    type: SWAP_PART_TWO_COMPLETE,
     value
+  };
+};
+
+export const destinationAddressSwap = value => {
+  return {
+    type: SWAP_DESTINATION_ADDRESS,
+    value
+  };
+};
+
+export const restartSwap = () => {
+  return {
+    type: SWAP_RESTART
   };
 };

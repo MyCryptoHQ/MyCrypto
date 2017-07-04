@@ -13,149 +13,151 @@ import { unlockPrivateKey } from 'actions/wallet';
 import { connect } from 'react-redux';
 
 const WALLETS = {
-    'keystore-file': {
-        lid: 'x_Keystore2',
-        component: KeystoreDecrypt,
-        initialParams: {}
+  'keystore-file': {
+    lid: 'x_Keystore2',
+    component: KeystoreDecrypt,
+    initialParams: {}
+  },
+  'private-key': {
+    lid: 'x_PrivKey2',
+    component: PrivateKeyDecrypt,
+    initialParams: {
+      key: '',
+      password: ''
     },
-    'private-key': {
-        lid: 'x_PrivKey2',
-        component: PrivateKeyDecrypt,
-        initialParams: {
-            key: '',
-            password: ''
-        },
-        unlock: unlockPrivateKey
-    },
-    'mnemonic-phrase': {
-        lid: 'x_Mnemonic',
-        component: MnemonicDecrypt
-    },
-    'ledger-nano-s': {
-        lid: 'x_Ledger',
-        component: LedgerNanoSDecrypt
-    },
-    trezor: {
-        lid: 'x_Trezor',
-        component: TrezorDecrypt
-    },
-    'view-only': {
-        lid: 'View with Address Only',
-        component: ViewOnlyDecrypt
-    }
+    unlock: unlockPrivateKey
+  },
+  'mnemonic-phrase': {
+    lid: 'x_Mnemonic',
+    component: MnemonicDecrypt
+  },
+  'ledger-nano-s': {
+    lid: 'x_Ledger',
+    component: LedgerNanoSDecrypt
+  },
+  trezor: {
+    lid: 'x_Trezor',
+    component: TrezorDecrypt
+  },
+  'view-only': {
+    lid: 'View with Address Only',
+    component: ViewOnlyDecrypt
+  }
 };
 
 type UnlockParams = {} | PrivateKeyValue;
 
 type State = {
-    selectedWalletKey: string,
-    value: UnlockParams
+  selectedWalletKey: string,
+  value: UnlockParams
 };
 
 export class WalletDecrypt extends Component {
-    props: {
-        // FIXME
-        dispatch: (action: any) => void
-    };
-    state: State = {
-        selectedWalletKey: 'keystore-file',
-        value: WALLETS['keystore-file'].initialParams
-    };
+  props: {
+    // FIXME
+    dispatch: (action: any) => void
+  };
+  state: State = {
+    selectedWalletKey: 'keystore-file',
+    value: WALLETS['keystore-file'].initialParams
+  };
 
-    getDecryptionComponent() {
-        const { selectedWalletKey, value } = this.state;
-        const selectedWallet = WALLETS[selectedWalletKey];
+  getDecryptionComponent() {
+    const { selectedWalletKey, value } = this.state;
+    const selectedWallet = WALLETS[selectedWalletKey];
 
-        if (!selectedWallet) {
-            return null;
-        }
-
-        return (
-            <selectedWallet.component
-                value={value}
-                onChange={this.onChange}
-                onUnlock={this.onUnlock}
-            />
-        );
+    if (!selectedWallet) {
+      return null;
     }
 
-    buildWalletOptions() {
-        return map(WALLETS, (wallet, key) => {
-            const isSelected = this.state.selectedWalletKey === key;
+    return (
+      <selectedWallet.component
+        value={value}
+        onChange={this.onChange}
+        onUnlock={this.onUnlock}
+      />
+    );
+  }
 
-            return (
-                <label className="radio" key={key}>
-                    <input
-                        aria-flowto={`aria-${key}`}
-                        aria-labelledby={`${key}-label`}
-                        type="radio"
-                        name="decryption-choice-radio-group"
-                        value={key}
-                        checked={isSelected}
-                        onChange={this.handleDecryptionChoiceChange}
-                    />
-                    <span id={`${key}-label`}>
-                        {translate(wallet.lid)}
-                    </span>
-                </label>
-            );
-        });
+  buildWalletOptions() {
+    return map(WALLETS, (wallet, key) => {
+      const isSelected = this.state.selectedWalletKey === key;
+
+      return (
+        <label className="radio" key={key}>
+          <input
+            aria-flowto={`aria-${key}`}
+            aria-labelledby={`${key}-label`}
+            type="radio"
+            name="decryption-choice-radio-group"
+            value={key}
+            checked={isSelected}
+            onChange={this.handleDecryptionChoiceChange}
+          />
+          <span id={`${key}-label`}>
+            {translate(wallet.lid)}
+          </span>
+        </label>
+      );
+    });
+  }
+
+  handleDecryptionChoiceChange = (event: SyntheticInputEvent) => {
+    const wallet = WALLETS[event.target.value];
+
+    if (!wallet) {
+      return;
     }
 
-    handleDecryptionChoiceChange = (event: SyntheticInputEvent) => {
-        const wallet = WALLETS[event.target.value];
+    this.setState({
+      selectedWalletKey: event.target.value,
+      value: wallet.initialParams
+    });
+  };
 
-        if (!wallet) {
-            return;
-        }
+  render() {
+    const decryptionComponent = this.getDecryptionComponent();
 
-        this.setState({
-            selectedWalletKey: event.target.value,
-            value: wallet.initialParams
-        });
-    };
+    return (
+      <article className="well decrypt-drtv row">
+        <section className="col-md-4 col-sm-6">
+          <h4>
+            {translate('decrypt_Access')}
+          </h4>
 
-    render() {
-        const decryptionComponent = this.getDecryptionComponent();
+          {this.buildWalletOptions()}
+        </section>
 
-        return (
-            <article className="well decrypt-drtv row">
-                <section className="col-md-4 col-sm-6">
-                    <h4>
-                        {translate('decrypt_Access')}
-                    </h4>
+        {decryptionComponent}
+        {!!this.state.value.valid &&
+          <section className="col-md-4 col-sm-6">
+            <h4 id="uploadbtntxt-wallet">
+              {translate('ADD_Label_6')}
+            </h4>
+            <div className="form-group">
+              <a
+                tabIndex="0"
+                role="button"
+                className="btn btn-primary btn-block"
+                onClick={this.onUnlock}
+              >
+                {translate('ADD_Label_6_short')}
+              </a>
+            </div>
+          </section>}
+      </article>
+    );
+  }
 
-                    {this.buildWalletOptions()}
-                </section>
+  onChange = (value: UnlockParams) => {
+    this.setState({ value });
+  };
 
-                {decryptionComponent}
-                {!!this.state.value.valid &&
-                    <section className="col-md-4 col-sm-6">
-                        <h4 id="uploadbtntxt-wallet">
-                            {translate('ADD_Label_6')}
-                        </h4>
-                        <div className="form-group">
-                            <a
-                                tabIndex="0"
-                                role="button"
-                                className="btn btn-primary btn-block"
-                                onClick={this.onUnlock}
-                            >
-                                {translate('ADD_Label_6_short')}
-                            </a>
-                        </div>
-                    </section>}
-            </article>
-        );
-    }
-
-    onChange = (value: UnlockParams) => {
-        this.setState({ value });
-    };
-
-    onUnlock = () => {
-        this.props.dispatch(WALLETS[this.state.selectedWalletKey].unlock(this.state.value));
-    };
+  onUnlock = () => {
+    this.props.dispatch(
+      WALLETS[this.state.selectedWalletKey].unlock(this.state.value)
+    );
+  };
 }
 
 export default connect()(WalletDecrypt);

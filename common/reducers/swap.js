@@ -5,7 +5,9 @@ import {
   SWAP_ORIGIN_KIND,
   SWAP_UPDATE_BITY_RATES,
   SWAP_PART_ONE_COMPLETE,
-  SWAP_RECEIVING_ADDRESS
+  SWAP_DESTINATION_ADDRESS,
+  SWAP_RESTART,
+  SWAP_PART_TWO_COMPLETE
 } from 'actions/swapConstants';
 import { combineAndUpper } from 'api/bity';
 
@@ -23,8 +25,9 @@ const initialState = {
     element => element !== 'REP'
   ),
   partOneComplete: false,
+  partTwoComplete: false,
   bityRates: {},
-  receivingAddress: ''
+  destinationAddress: ''
 };
 
 const buildDestinationAmount = (
@@ -103,10 +106,21 @@ export function swap(state = initialState, action) {
         ...state,
         partOneComplete: action.value
       };
-    case SWAP_RECEIVING_ADDRESS:
+    case SWAP_PART_TWO_COMPLETE:
       return {
         ...state,
-        receivingAddress: action.value
+        partTwoComplete: action.value
+      };
+    case SWAP_DESTINATION_ADDRESS:
+      return {
+        ...state,
+        destinationAddress: action.value
+      };
+    case SWAP_RESTART:
+      return {
+        ...state,
+        ...initialState,
+        bityRates: state.bityRates
       };
     default:
       return state;

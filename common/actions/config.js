@@ -2,29 +2,29 @@
 import { setLanguage } from 'translations';
 
 export type ChangeNodeAction = {
-    type: 'CONFIG_NODE_CHANGE',
-    // FIXME $keyof?
-    value: string
+  type: 'CONFIG_NODE_CHANGE',
+  // FIXME $keyof?
+  value: string
 };
 
 export type ChangeLanguageAction = {
-    type: 'CONFIG_LANGUAGE_CHANGE',
-    value: string
+  type: 'CONFIG_LANGUAGE_CHANGE',
+  value: string
 };
 
 export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
 
 export function changeLanguage(sign: string) {
-    setLanguage(sign);
-    return {
-        type: 'CONFIG_LANGUAGE_CHANGE',
-        value: sign
-    };
+  setLanguage(sign);
+  return {
+    type: 'CONFIG_LANGUAGE_CHANGE',
+    value: sign
+  };
 }
 
 export function changeNode(value: string): ChangeNodeAction {
-    return {
-        type: 'CONFIG_NODE_CHANGE',
-        value
-    };
+  return {
+    type: 'CONFIG_NODE_CHANGE',
+    value
+  };
 }
