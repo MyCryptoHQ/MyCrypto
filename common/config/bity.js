@@ -1,5 +1,5 @@
 export default {
-  SERVERURL: 'https://myetherapi.com',
+  serverURL: 'https://bity.myetherapi.com',
   bityAPI: 'https://bity.com/api',
   decimals: 6,
   ethExplorer: 'https://etherscan.io/tx/[[txHash]]',

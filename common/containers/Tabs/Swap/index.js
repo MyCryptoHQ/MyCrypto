@@ -7,14 +7,12 @@ import SwapProgress from './components/swapProgress';
 import OnGoingSwapInformation from './components/onGoingSwapInformation';
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
-
 import PropTypes from 'prop-types';
-import Bity from 'api/bity';
+import { getAllRates } from 'api/bity';
 
 class Swap extends Component {
   constructor(props) {
     super(props);
-    this.bity = new Bity();
   }
 
   static propTypes = {
@@ -48,7 +46,7 @@ class Swap extends Component {
       !bityRates.BTCETH ||
       !bityRates.BTCREP
     ) {
-      this.bity.getAllRates().then(data => {
+      getAllRates().then(data => {
         this.props.updateBityRatesSwap(data);
       });
     }
@@ -112,12 +110,13 @@ class Swap extends Component {
       // from bity
       referenceNumber: referenceNumber,
       timeRemaining: timeRemaining,
-
       originAmount,
       originKind,
       destinationKind,
       destinationAmount,
-      restartSwap
+      restartSwap,
+      numberOfConfirmations: 3,
+      activeStep: 2
     };
 
     return (
