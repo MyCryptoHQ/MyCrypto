@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import translate, { getTranslators } from 'translations';
-import { DONATION_ADDRESSES_MAP } from 'config/data';
+import { donationAddressMap } from 'config/data';
 
 export default class Footer extends Component {
   render() {
@@ -51,13 +51,13 @@ export default class Footer extends Component {
                   <li>
                     {' '}ETH:{' '}
                     <span className="mono wrap">
-                      {DONATION_ADDRESSES_MAP.ETH}
+                      {donationAddressMap.ETH}
                     </span>
                   </li>
                   <li>
                     {' '}BTC:{' '}
                     <span className="mono wrap">
-                      {DONATION_ADDRESSES_MAP.BTC}
+                      {donationAddressMap.BTC}
                     </span>
                   </li>
                 </ul>

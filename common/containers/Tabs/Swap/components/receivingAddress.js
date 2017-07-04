@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DONATION_ADDRESSES_MAP } from 'config/data';
+import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 
@@ -48,7 +48,7 @@ export default class ReceivingAddress extends Component {
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
-                placeholder={DONATION_ADDRESSES_MAP[destinationKind]}
+                placeholder={donationAddressMap[destinationKind]}
               />
             </div>
           </section>
