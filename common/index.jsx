@@ -12,9 +12,11 @@ import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';
 import ensSaga from './sagas/ens';
 import walletSaga from './sagas/wallet';
-
+import { initialState as configInitialState } from 'reducers/config';
+import throttle from 'lodash/throttle';
 // application styles
 import 'assets/styles/etherwallet-master.less';
+import { saveState, loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 
 let store;
 
@@ -34,10 +36,32 @@ const configureStore = () => {
     middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
   }
 
-  store = createStore(RootReducer, void 0, middleware);
+  const persistedConfigInitialState = {
+    config: {
+      ...configInitialState,
+      ...loadStatePropertyOrEmptyObject('config')
+    }
+  };
+
+  const completePersistedInitialState = {
+    ...persistedConfigInitialState
+  };
+
+  store = createStore(RootReducer, completePersistedInitialState, middleware);
   sagaMiddleware.run(notificationsSaga);
   sagaMiddleware.run(ensSaga);
   sagaMiddleware.run(walletSaga);
+
+  store.subscribe(
+    throttle(() => {
+      saveState({
+        config: {
+          languageSelection: store.getState().config.languageSelection
+        }
+      });
+    }),
+    1000
+  );
   return store;
 };
 
