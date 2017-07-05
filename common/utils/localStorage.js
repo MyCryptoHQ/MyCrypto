@@ -9,7 +9,7 @@ export const loadState = () => {
     }
     return JSON.parse(serializedState);
   } catch (err) {
-    // TODO - log warning? or bubble?
+    console.warn(' Warning: corrupted local storage');
   }
 };
 
@@ -18,7 +18,7 @@ export const saveState = (state: Object) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(REDUX_STATE, serializedState);
   } catch (err) {
-    // TODO - log warning? or bubble?
+    console.warn(' Warning: corrupted local storage');
   }
 };
 
