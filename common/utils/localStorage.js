@@ -1,3 +1,4 @@
+// @flow
 export const REDUX_STATE = 'REDUX_STATE';
 
 export const loadState = () => {
@@ -12,7 +13,7 @@ export const loadState = () => {
   }
 };
 
-export const saveState = state => {
+export const saveState = (state: Object) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(REDUX_STATE, serializedState);
@@ -26,8 +27,7 @@ export const loadStatePropertyOrEmptyObject = (key: string): Object => {
   if (localStorageState) {
     if (localStorageState.hasOwnProperty(key)) {
       return localStorageState[key];
-    } else {
-      return {};
     }
   }
+  return {};
 };
