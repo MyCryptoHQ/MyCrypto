@@ -12,7 +12,7 @@ export type State = {
   nodeSelection: string
 };
 
-const initialState: State = {
+export const initialState: State = {
   languageSelection: languages[0].sign,
   nodeSelection: Object.keys(NODES)[0]
 };
