@@ -1,6 +1,6 @@
 // @flow
 import { markupToReact } from './markup';
-let activeLanguage = 'en';
+import { store } from '../store';
 let fallbackLanguage = 'en';
 let repository = {};
 
@@ -31,11 +31,8 @@ languages.forEach(l => {
   repository[l.code] = l.data;
 });
 
-export function setLanguage(code: string) {
-  activeLanguage = code;
-}
-
 export default function translate(key: string) {
+  let activeLanguage = store.getState().config.languageSelection;
   return markupToReact(
     (repository[activeLanguage] && repository[activeLanguage][key]) ||
       repository[fallbackLanguage][key] ||

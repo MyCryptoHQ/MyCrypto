@@ -1,5 +1,4 @@
 // @flow
-import { setLanguage } from 'translations';
 
 export type ChangeNodeAction = {
   type: 'CONFIG_NODE_CHANGE',
@@ -15,7 +14,6 @@ export type ChangeLanguageAction = {
 export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
 
 export function changeLanguage(sign: string) {
-  setLanguage(sign);
   return {
     type: 'CONFIG_LANGUAGE_CHANGE',
     value: sign
