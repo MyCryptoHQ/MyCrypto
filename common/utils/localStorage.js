@@ -18,7 +18,7 @@ export const saveState = (state: Object) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(REDUX_STATE, serializedState);
   } catch (err) {
-    console.warn(' Warning: corrupted local storage');
+    console.warn(' Warning: failed to set to local storage', state);
   }
 };
 
