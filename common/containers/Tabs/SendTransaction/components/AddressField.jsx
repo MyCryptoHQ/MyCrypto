@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import type { State } from 'reducers';
 import { isValidENSorEtherAddress, isValidENSAddress } from 'libs/validators';
 import { resolveEnsName } from 'actions/ens';
+import translate from 'translations';
 
 type PublicProps = {
   placeholder: string,
@@ -25,7 +26,7 @@ export class AddressField extends React.Component {
     return (
       <div className="row form-group">
         <div className="col-xs-11">
-          <label translate="SEND_addr"> To Address: </label>
+          <label>{translate('SEND_addr')}:</label>
           <input
             className={`form-control ${isValidENSorEtherAddress(value)
               ? 'is-valid'

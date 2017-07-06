@@ -97,7 +97,7 @@ export class SendTransaction extends React.Component {
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
-          <main className="tab-pane active" ng-controller="sendTxCtrl">
+          <main className="tab-pane active">
             {hasQueryString &&
               <div className="alert alert-info">
                 <p>
@@ -169,16 +169,16 @@ export class SendTransaction extends React.Component {
                     </div>
                   </div>
 
-                  <div className="row form-group" ng-show="showRaw">
+                  <div className="row form-group">
                     <div className="col-sm-6">
-                      <label translate="SEND_raw"> Raw Transaction </label>
+                      <label> {translate('SEND_raw')} </label>
                       <textarea className="form-control" rows="4" readOnly>
                         {'' /*rawTx*/}
                       </textarea>
                     </div>
                     <div className="col-sm-6">
-                      <label translate="SEND_signed">
-                        {' '}Signed Transaction{' '}
+                      <label>
+                        {translate('SEND_signed')}
                       </label>
                       <textarea className="form-control" rows="4" readOnly>
                         {'' /*signedTx*/}
@@ -186,14 +186,13 @@ export class SendTransaction extends React.Component {
                     </div>
                   </div>
 
-                  <div className="form-group" ng-show="showRaw">
+                  <div className="form-group">
                     <a
                       className="btn btn-primary btn-block col-sm-11"
                       data-toggle="modal"
                       data-target="#sendTransaction"
-                      translate="SEND_trans"
                     >
-                      {' '}Send Transaction{' '}
+                      {translate('SEND_trans')}
                     </a>
                   </div>
                 </section>
