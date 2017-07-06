@@ -171,7 +171,7 @@ export class SendTransaction extends React.Component {
 
                   <div className="row form-group">
                     <div className="col-sm-6">
-                      <label> Raw Transaction </label>
+                      <label> {translate('SEND_raw')} </label>
                       <textarea className="form-control" rows="4" readOnly>
                         {'' /*rawTx*/}
                       </textarea>
