@@ -23,7 +23,7 @@
     "no-extra-semi": 1,
     "no-underscore-dangle": 0,
     "no-console": 0,
-    "no-unused-vars": 1,
+    "no-unused-vars": 0,
     "no-trailing-spaces": [1, { "skipBlankLines": true }],
     "no-unreachable": 1,
     "no-alert": 0,
