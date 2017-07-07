@@ -272,17 +272,17 @@ module.exports = {
     DEP_interface: 'Generated Interface ',
 
     /* Swap / Exchange */
-    SWAP_rates: 'Current Rates ',
-    SWAP_init_1: 'I want to swap my ',
-    SWAP_init_2: ' for ', // "I want to swap my X ETH for X BTC"
+    SWAP_rates: 'Τρέχουσες ισοτιμίες ',
+    SWAP_init_1: 'Θέλω να ανταλλάξω ',
+    SWAP_init_2: ' με ', // "I want to swap my X ETH for X BTC"
     SWAP_init_CTA: "Let's do this! ", // or "Continue"
-    SWAP_information: 'Your Information ',
+    SWAP_information: 'Οι πληροφορίες σας ',
     SWAP_send_amt: 'Ποσό προς αποστολή ',
     SWAP_rec_amt: 'Ποσό για λήψη ',
-    SWAP_your_rate: 'Your rate ',
-    SWAP_rec_add: 'Your Receiving Address ',
-    SWAP_start_CTA: 'Start Swap ',
-    SWAP_ref_num: 'Your reference number ',
+    SWAP_your_rate: 'Η ισοτιμία σας ',
+    SWAP_rec_add: 'Η διεύθυνση παραλαβής σας ',
+    SWAP_start_CTA: 'Έναρξη ανταλλαγής ',
+    SWAP_ref_num: 'Ο αριθμός αναφοράς σας ',
     SWAP_time: 'Χρόνος που απομένει για αποστολή ',
     SWAP_progress_1: 'Order Initiated ',
     SWAP_progress_2: 'Waiting for your ', // Waiting for your BTC...
@@ -291,7 +291,7 @@ module.exports = {
     SWAP_progress_5: 'Order Complete ',
     SWAP_order_CTA: 'Παρακαλούμε αποστείλετε ', // Please send 1 ETH...
     SWAP_unlock:
-      'Unlock your wallet to send ETH or Tokens directly from this page. ',
+      'Ξεκλειδώστε το πορτοφόλι σας για να αποστείλετε ETH ή Tokens απευθείας από αυτήν τη σελίδα. ',
 
     /* Sign Message */
     MSG_message: 'Μήνυμα ',
@@ -314,7 +314,7 @@ module.exports = {
 
     /* Hardware wallets */
     x_Ledger: 'Ledger Nano S ',
-    ADD_Ledger_1: 'Connect your Ledger Nano S ',
+    ADD_Ledger_1: 'Συνδέστε το Ledger Nano S σας ',
     ADD_Ledger_2: 'Open the Ethereum application (or a contract application) ',
     ADD_Ledger_3: 'Verify that Browser Support is enabled in Settings ',
     ADD_Ledger_4:
@@ -322,20 +322,20 @@ module.exports = {
     ADD_Ledger_0a: 'Re-open MyEtherWallet on a secure (SSL) connection ',
     ADD_Ledger_0b:
       'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ',
-    ADD_Ledger_scan: 'Connect to Ledger Nano S ',
+    ADD_Ledger_scan: 'Σύνδεση στο Ledger Nano S ',
     x_Trezor: 'TREZOR ',
-    ADD_Trezor_scan: 'Connect to TREZOR ',
+    ADD_Trezor_scan: 'Σύνδεση στο TREZOR ',
     ADD_Trezor_select: 'This is a TREZOR seed ',
 
     /* Error Messages */
-    ERROR_0: 'Παρακαλώ εισάγετε έγκυρο ποσό. ',
+    ERROR_0: 'Παρακαλούμε εισαγάγετε έγκυρο ποσό. ',
     ERROR_1:
-      'Ο κωδικός σας πρέπει να αποτελείται απο τουλάχιστον 9 χαρακτήρες. Παρακαλώ σιγουρευτείτε ότι είναι ισχυρός κωδικός. ',
-    ERROR_2: 'Συγγνώμη! Δεν αναγνωρίζουμε αυτού του είδους αρχεία πορτοφολιού ',
+      'Ο κωδικός σας πρέπει να αποτελείται από τουλάχιστον 9 χαρακτήρες. Παρακαλούμε σιγουρευτείτε ότι είναι ισχυρός κωδικός. ',
+    ERROR_2: 'Λυπούμαστε! Δεν αναγνωρίζουμε αυτού του είδους αρχεία πορτοφολιού ',
     ERROR_3: 'Αυτό δεν είναι έγκυρο αρχείο πορτοφολιού. ',
     ERROR_4:
-      'Αυτή η μονάδα δεν υπάρχει, παρακαλώ χρησιμοποιήστε μία απο τις ακόλουθες μονάδες: ',
-    ERROR_5: 'Λάθος Διεύθυνση. ',
+      'Αυτή η μονάδα δεν υπάρχει, παρακαλούμε χρησιμοποιήστε μία απο τις ακόλουθες μονάδες: ',
+    ERROR_5: 'Λάθος διεύθυνση. ',
     ERROR_6: 'Λάθος κωδικός. ',
     ERROR_7: 'Λάθος ποσό. ',
     ERROR_8: 'Λάθος όριο gas. ',
@@ -346,29 +346,29 @@ module.exports = {
     ERROR_13: 'Υπάρχει ήδη πορτοφόλι με αυτό το ψευδώνυμο. ',
     ERROR_14: 'Δεν βρέθηκε πορτοφόλι. ',
     ERROR_15:
-      'Φαίνετα να μην υπάρχει ακόμη πρόταση με αυτό το ID ή υπήρξε σφάλμα κατά την ανάγνωση της πρότασης αυτής. ',
+      'Φαίνετα να μην υπάρχει ακόμη πρόταση με αυτό το αναγνωριστικό ή υπήρξε σφάλμα κατά την ανάγνωση της πρότασης αυτής. ',
     ERROR_16:
-      'Υπάρχει ήδη αποθηκευμένο πορτοφόλι με αυτή την διεύθυνση. Παρακαλώ ελέγξτε την σελίδα πορτοφολιών σας. ',
+      'Υπάρχει ήδη αποθηκευμένο πορτοφόλι με αυτήν τη διεύθυνση. Παρακαλούμε ελέγξτε τη σελίδα πορτοφολιών σας. ',
     ERROR_17:
-      'Πρέπει να έχετε τουλάχιστον 0.01 ETH στον λογαριασμό σας για να καλύψετε το κόστος του gas. Παρακαλώ προσθέστε μερικά ether και δοκιμάστε ξανά. ',
+      'Πρέπει να έχετε τουλάχιστον 0.01 ETH στον λογαριασμό σας για να καλύψετε το κόστος του gas. Παρακαλούμε προσθέστε μερικά ether και δοκιμάστε ξανά. ',
     ERROR_18:
       'Όλο το gas θα είχε δαπανηθεί στην συναλλαγή αυτή. Αυτό σημαίνει ότι έχετε ήδη ψηφίσει στην πρόταση αυτή ή ότι η περίοδος συζήτησης έχει λήξει. ',
     ERROR_19: 'Λάθος σύμβολο ',
-    ERROR_20: 'Not a valid ERC-20 token ',
+    ERROR_20: 'Μη έγκυρο ERC-20 token ',
     ERROR_21:
       'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative. ',
-    ERROR_22: 'Please enter valid node name ',
+    ERROR_22: 'Παρακαλούμε εισαγάγετε έγκυρο όνομα κόμβου ',
     ERROR_23:
-      'Please enter valid URL. If you are connecting via HTTPS, your node must be over HTTPS ',
-    ERROR_24: 'Please enter valid port ',
-    ERROR_25: 'Please enter valid chain ID ',
-    ERROR_26: 'Please enter valid ABI ',
-    ERROR_27: 'Minimum amount: 0.01. Maximum Amount: ',
+      'Παρακαλούμε εισαγάγετε έγκυρη διεύθυνση URL. Αν συνδέεστε μέσω HTTPS, ο κόμβος σας πρέπει να είναι πάνω σε HTTPS ',
+    ERROR_24: 'Παρακαλούμε εισαγάγετε έγκυρη θύρα ',
+    ERROR_25: 'Παρακαλούμε εισαγάγετε έγκυρο αναγνωριστικό αλυσίδας ',
+    ERROR_26: 'Παρακαλούμε εισαγάγετε έγκυρο ABI ',
+    ERROR_27: 'Ελάχιστο ποσό: 0.01. Μέγιστο ποσό: ',
     ERROR_28:
       'Προκειμένου να έχετε πρόσβαση σε αυτό το πορτοφόλι στο μέλλον **είναι απαραίτητο το αρχείο Keystore/JSON & ο κωδικός ή το Ιδιωτικό Κλειδί σας**. Παρακαλούμε κρατήστε ένα εξωτερικό αντίγραφο ασφαλείας! Δεν υπάρχει τρόπος ανάκτησης ενός πορτοφολιού άν δεν το αποθηκέυσετε. Διαβάστε την σελίδα [Βοήθειας](https://www.myetherwallet.com/#help) για οδηγίες. ',
-    ERROR_29: 'Please enter valid user and password ',
-    ERROR_30: 'Please enter valid ENS name ',
-    ERROR_31: 'Invalid secret phrase ',
+    ERROR_29: 'Παρακαλούμε εισαγάγετε έγκυρο χρήστη και συνθηματικό ',
+    ERROR_30: 'Παρακαλούμε εισαγάγετε έγκυρο όνομα ENS ',
+    ERROR_31: 'Μη έγκυρη μυστική φράση ',
     ERROR_32:
       'Could not connect to the node. Please refresh the page, or see the help page for more troubleshooting suggestions. ',
     SUCCESS_1: 'Έγκυρη διεύθυνση ',
@@ -389,8 +389,8 @@ module.exports = {
     GETH_InsufficientFunds: 'Insufficient funds for gas * price + value ',
     GETH_IntrinsicGas: 'Intrinsic gas too low ',
     GETH_GasLimit: 'Exceeds block gas limit ',
-    GETH_NegativeValue: 'Negative value ',
-    FOOTER_4: 'Disclaimer ',
+    GETH_NegativeValue: 'Αρνητική αξία ',
+    FOOTER_4: 'Αποποίηση ',
 
     /* Parity Error Messages */
     PARITY_AlreadyImported:
@@ -425,7 +425,7 @@ module.exports = {
       '[Nikos Vavoulas](https://www.myetherwallet.com/?gaslimit=21000&to=0x062711C89Bd46E9765CfF0b743Cb83a9dBA2d2d2&value=1.0#send-transaction) · ',
     TranslatorAddr_3: '0x062711C89Bd46E9765CfF0b743Cb83a9dBA2d2d2 ',
     /* Translator 3             : Insert Comments Here */
-    TranslatorName_4: '',
+    TranslatorName_4: 'Ιωάννης Πρωτονοτάριος',
     TranslatorAddr_4: '',
     /* Translator 4             : Insert Comments Here */
     TranslatorName_5: '',
@@ -445,7 +445,7 @@ module.exports = {
     HELP_Remind_Desc_3:
       'If you do not save your private key & password, there is no way to recover access to your wallet or the funds it holds.  Back them up in multiple physical locations &ndash; not just on your computer! ',
 
-    HELP_0_Title: '0) Είμαι νέος χρήστης. Τι κάνω? ',
+    HELP_0_Title: '0) Είμαι νέος χρήστης. Τι κάνω; ',
     HELP_0_Desc_1:
       "Το MyEtherWallet σας δίνει την δυνατότητα να δημιουργήσετε νέα πορτοφόλια ώστε να μπορείτε να αποθηκεύσετε το Ether σας μόνοι σας, και όχι σε κάποιο ανταλλακτήριο (exchange provider). Αυτή η διαδικασία συμβαίνει εξ'ολοκλήρου στον υπολογιστή σας, και όχι στους servers μας. Γι'αυτό, όταν δημιουργείτε ένα νέο πορτοφόλι, **εσείς είστε υπεύθυνοι να κρατήσετε αντίγραφα ασφαλείας**. ",
     HELP_0_Desc_2: 'Δημιουργήστε ένα νέο πορτοφόλι. ',
@@ -454,13 +454,13 @@ module.exports = {
       'Επιβεβαιώστε ότι έχετε πρόσβαση στο νέο αυτό πορτοφόλι και ότι αποθηκεύσατε σωστά όλες τις απαραίτητες πληροφορίες. ',
     HELP_0_Desc_5: 'Μεταφέρετε Ether στο νέο αυτό πορτοφόλι. ',
 
-    HELP_1_Title: '1) Πως φτιάχνω ένα νέο πορτοφόλι? ',
-    HELP_1_Desc_1: 'Πηγαίνετε στην σελίδα "Δημιουργία Πορτοφολιού". ',
+    HELP_1_Title: '1) Πώς φτιάχνω ένα νέο πορτοφόλι; ',
+    HELP_1_Desc_1: 'Πηγαίνετε στην σελίδα «Δημιουργία πορτοφολιού». ',
     HELP_1_Desc_2:
-      'Πηγαίνετε στην σελίδα "Προσθήκη Πορτοφολιού" & επιλέξτε "Δημιουργία Νέου Πορτοφολιού" ',
+      'Πηγαίνετε στην σελίδα «Προσθήκη πορτοφολιού» & επιλέξτε «Δημιουργία νέου πορτοφολιού» ',
     HELP_1_Desc_3:
-      'Οληκτρολογήστε ένα δυνατό συνθηματικό (password). Αν νομίζετε ότι μπορεί να το ξεχάσετε, αποθηκεύστε το κάπου που να είναι ασφαλές. Θα χρειαστείτε αυτό το password για τις εξερχόμενες συναλλαγές σας. ',
-    HELP_1_Desc_4: 'Κάντε κλικ στο "ΔΗΜΙΟΥΡΓΙΑ". ',
+      'Πληκτρολογήστε ένα ισχυρό συνθηματικό. Αν νομίζετε ότι μπορεί να το ξεχάσετε, αποθηκεύστε το κάπου που να είναι ασφαλές. Θα χρειαστείτε αυτό το συνθηματικό για τις εξερχόμενες συναλλαγές σας. ',
+    HELP_1_Desc_4: 'Κάντε κλικ στο «ΔΗΜΙΟΥΡΓΙΑ». ',
     HELP_1_Desc_5: 'Το πορτοφόλι σας δημιοθργήθηκε με επιτυχία. ',
 
     HELP_2a_Title: '2a) How do I save/backup my wallet? ',
