@@ -8,7 +8,6 @@ import OnGoingSwapInformation from './components/onGoingSwapInformation';
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
 import PropTypes from 'prop-types';
-import { getAllRates } from 'api/bity';
 
 class Swap extends Component {
   constructor(props) {
@@ -29,7 +28,7 @@ class Swap extends Component {
     destinationKindSwap: PropTypes.func,
     originAmountSwap: PropTypes.func,
     destinationAmountSwap: PropTypes.func,
-    updateBityRatesSwap: PropTypes.func,
+    loadBityRates: PropTypes.func,
     partOneCompleteSwap: PropTypes.func,
     destinationAddressSwap: PropTypes.func,
     restartSwap: PropTypes.func,
@@ -38,18 +37,7 @@ class Swap extends Component {
   };
 
   componentDidMount() {
-    let { bityRates } = this.props;
-
-    if (
-      !bityRates.ETHBTC ||
-      !bityRates.ETHREP ||
-      !bityRates.BTCETH ||
-      !bityRates.BTCREP
-    ) {
-      getAllRates().then(data => {
-        this.props.updateBityRatesSwap(data);
-      });
-    }
+    this.props.loadBityRates();
   }
 
   render() {

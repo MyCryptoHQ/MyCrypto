@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';
 import ensSaga from './sagas/ens';
 import walletSaga from './sagas/wallet';
+import bitySaga from './sagas/bity';
 import { initialState as configInitialState } from 'reducers/config';
 import throttle from 'lodash/throttle';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -44,6 +45,7 @@ const configureStore = () => {
   sagaMiddleware.run(notificationsSaga);
   sagaMiddleware.run(ensSaga);
   sagaMiddleware.run(walletSaga);
+  sagaMiddleware.run(bitySaga);
 
   store.subscribe(
     throttle(() => {
