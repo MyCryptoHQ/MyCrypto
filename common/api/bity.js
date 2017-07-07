@@ -12,7 +12,7 @@ function findRateFromBityRateList(rateObjects, pairName) {
 // FIXME better types
 function _getRate(bityRates, origin: string, destination: string) {
   const pairName = combineAndUpper(origin, destination);
-  const rateObjects = bityRates.data.objects;
+  const rateObjects = bityRates.objects;
   return findRateFromBityRateList(rateObjects, pairName);
 }
 
