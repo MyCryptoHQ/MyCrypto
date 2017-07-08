@@ -1,24 +1,18 @@
-import axios from 'axios';
+// @flow
 import bityConfig from 'config/bity';
 
-// https://stackoverflow.com/questions/9828684/how-to-get-all-arguments-of-a-callback-function
-export function combineAndUpper() {
-  const args = [];
-  let newString = '';
-  for (let i = 0; i < arguments.length; ++i) args[i] = arguments[i];
-  args.forEach(each => {
-    newString = newString.concat(each.toUpperCase());
-  });
-  return newString;
+export function combineAndUpper(...args: string[]) {
+  return args.reduce((acc, item) => acc.concat(item.toUpperCase()), '');
 }
 
 function findRateFromBityRateList(rateObjects, pairName) {
   return rateObjects.find(x => x.pair === pairName);
 }
 
-function _getRate(bityRates, origin, destination) {
+// FIXME better types
+function _getRate(bityRates, origin: string, destination: string) {
   const pairName = combineAndUpper(origin, destination);
-  const rateObjects = bityRates.data.objects;
+  const rateObjects = bityRates.objects;
   return findRateFromBityRateList(rateObjects, pairName);
 }
 
@@ -44,7 +38,7 @@ function getMultipleRates(arrayOfOriginAndDestinationDicts) {
 export function getAllRates() {
   const mappedRates = {};
   return _getAllRates().then(bityRates => {
-    bityRates.data.objects.forEach(each => {
+    bityRates.objects.forEach(each => {
       const pairName = each.pair;
       mappedRates[pairName] = parseFloat(each.rate_we_sell);
     });
@@ -54,9 +48,7 @@ export function getAllRates() {
 }
 
 function _getAllRates() {
-  const path = '/v1/rate2/';
-  const bityURL = bityConfig.bityAPI + path;
-  return axios.get(bityURL);
+  return fetch(`${bityConfig.bityAPI}/v1/rate2/`).then(r => r.json());
 }
 
 function requestStatus() {}
