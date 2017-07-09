@@ -14,7 +14,7 @@ const minLength = min => value => {
 const minLength9 = minLength(9);
 const required = value => (value ? undefined : 'Required');
 
-import { getBlob, kdf, scrypt } from 'libs/globalFuncs';
+import { kdf, scrypt } from 'libs/globalFuncs';
 import Wallet from 'libs/wallet/myetherwallet';
 
 class GenerateWalletPasswordComponent extends Component {
@@ -46,7 +46,7 @@ class GenerateWalletPasswordComponent extends Component {
 
   genNewWallet = password => {
     const wallet = Wallet.generate(false);
-    let blobEnc = Wallet.getBlob(password);
+    let blobEnc = wallet.getBlob(password);
     const encFileName = wallet.getV3Filename();
     this.setState({
       downloadName: encFileName,
@@ -67,10 +67,6 @@ class GenerateWalletPasswordComponent extends Component {
     this.props.generateFileGenerateWallet();
   };
 
-  onClickGenerateWallet = () => {
-    this.props.downloadFileGenerateWallet();
-  };
-
   render() {
     const {
       generateWalletPassword,
@@ -78,7 +74,8 @@ class GenerateWalletPasswordComponent extends Component {
       generateWalletFile,
       hasDownloadedWalletFile,
       showPasswordGenerateWallet,
-      confirmContinueToPaperGenerateWallet
+      confirmContinueToPaperGenerateWallet,
+      downloadFileGenerateWallet
     } = this.props;
 
     return (
@@ -138,7 +135,7 @@ class GenerateWalletPasswordComponent extends Component {
                     aria-describedby="x_KeystoreDesc"
                     download={this.state.downloadName}
                     href={this.state.blobURI}
-                    onClick={this.onClickGenerateWallet}
+                    onClick={downloadFileGenerateWallet}
                   >
                     {translate('x_Download')}
                   </a>

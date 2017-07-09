@@ -6,7 +6,6 @@ import {
   sha3
 } from 'ethereumjs-util';
 import crypto from 'crypto';
-import { errorMsgs } from 'config/data';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
 import { makeBlob, kdf, scryptSettings } from 'libs/globalFuncs';
