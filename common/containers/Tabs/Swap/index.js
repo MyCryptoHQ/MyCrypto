@@ -33,7 +33,8 @@ class Swap extends Component {
     destinationAddressSwap: PropTypes.func,
     restartSwap: PropTypes.func,
     partTwoCompleteSwap: PropTypes.func,
-    partTwoComplete: PropTypes.bool
+    partTwoComplete: PropTypes.bool,
+    stopLoadBityRates: PropTypes.func
   };
 
   componentDidMount() {
@@ -59,7 +60,8 @@ class Swap extends Component {
       destinationAddress,
       restartSwap,
       partTwoCompleteSwap,
-      partTwoComplete
+      partTwoComplete,
+      stopLoadBityRates
     } = this.props;
 
     let wantToSwapMyProps = {
@@ -88,7 +90,8 @@ class Swap extends Component {
       destinationKind,
       destinationAddressSwap,
       destinationAddress,
-      partTwoCompleteSwap
+      partTwoCompleteSwap,
+      stopLoadBityRates
     };
 
     const referenceNumber = '2341asdfads';

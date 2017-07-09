@@ -10,7 +10,8 @@ export default class ReceivingAddress extends Component {
     destinationKind: PropTypes.string.isRequired,
     destinationAddressSwap: PropTypes.func.isRequired,
     destinationAddress: PropTypes.string,
-    partTwoCompleteSwap: PropTypes.func
+    partTwoCompleteSwap: PropTypes.func,
+    stopLoadBityRates: PropTypes.func
   };
 
   onChangeDestinationAddress = (event: SyntheticInputEvent) => {
@@ -19,6 +20,7 @@ export default class ReceivingAddress extends Component {
   };
 
   onClickPartTwoComplete = () => {
+    this.props.stopLoadBityRates();
     this.props.partTwoCompleteSwap(true);
   };
 
