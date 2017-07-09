@@ -8,7 +8,8 @@ import {
   SWAP_PART_TWO_COMPLETE,
   SWAP_DESTINATION_ADDRESS,
   SWAP_RESTART,
-  SWAP_LOAD_BITY_RATES
+  SWAP_LOAD_BITY_RATES,
+  SWAP_STOP_LOAD_BITY_RATES
 } from './swapConstants';
 
 export const originKindSwap = value => {
@@ -76,5 +77,11 @@ export const restartSwap = () => {
 export const loadBityRates = () => {
   return {
     type: SWAP_LOAD_BITY_RATES
+  };
+};
+
+export const stopLoadBityRates = () => {
+  return {
+    type: SWAP_STOP_LOAD_BITY_RATES
   };
 };
