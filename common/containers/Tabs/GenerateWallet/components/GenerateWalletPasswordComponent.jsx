@@ -4,7 +4,6 @@ import { Field, reduxForm } from 'redux-form';
 import GenerateWalletPasswordInputComponent from './GenerateWalletPasswordInputComponent';
 import LedgerTrezorWarning from './LedgerTrezorWarning';
 import translate from 'translations';
-import { kdf, scrypt } from 'libs/globalFuncs';
 import BaseWallet from 'libs/wallet/base';
 
 // VALIDATORS
