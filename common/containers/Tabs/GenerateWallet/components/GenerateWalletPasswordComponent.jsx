@@ -4,6 +4,8 @@ import { Field, reduxForm } from 'redux-form';
 import GenerateWalletPasswordInputComponent from './GenerateWalletPasswordInputComponent';
 import LedgerTrezorWarning from './LedgerTrezorWarning';
 import translate from 'translations';
+import { kdf, scrypt } from 'libs/globalFuncs';
+import BaseWallet from 'libs/wallet/base';
 
 // VALIDATORS
 const minLength = min => value => {
@@ -14,14 +16,27 @@ const minLength = min => value => {
 const minLength9 = minLength(9);
 const required = value => (value ? undefined : 'Required');
 
-import { kdf, scrypt } from 'libs/globalFuncs';
-import Wallet from 'libs/wallet/myetherwallet';
+export type WalletFile = {
+  fileName: string,
+  blobURI: string
+};
+
+// TODO - move outside of component
+function genNewWalletFile(password: string): WalletFile {
+  const wallet = BaseWallet.generate(false);
+  let blobEnc = wallet.getBlob(password);
+  const encFileName = wallet.getV3Filename();
+  return {
+    fileName: encFileName,
+    blobURI: blobEnc
+  };
+}
 
 class GenerateWalletPasswordComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      downloadName: null,
+      fileName: null,
       blobURI: null
     };
   }
@@ -44,13 +59,11 @@ class GenerateWalletPasswordComponent extends Component {
     confirmContinueToPaperGenerateWallet: PropTypes.func
   };
 
-  genNewWallet = password => {
-    const wallet = Wallet.generate(false);
-    let blobEnc = wallet.getBlob(password);
-    const encFileName = wallet.getV3Filename();
+  genNewWalletAndSetState = (password: string) => {
+    const { fileName, blobURI } = genNewWalletFile(password);
     this.setState({
-      downloadName: encFileName,
-      blobURI: blobEnc
+      fileName: fileName,
+      blobURI: blobURI
     });
   };
 
@@ -62,8 +75,10 @@ class GenerateWalletPasswordComponent extends Component {
     this.setState(nextState);
   }
 
-  onClickGenerateFileGenerateWallet = () => {
-    this.genNewWallet(this.props.generateWalletPassword.values.password);
+  onClickGenerateFile = () => {
+    this.genNewWalletAndSetState(
+      this.props.generateWalletPassword.values.password
+    );
     this.props.generateFileGenerateWallet();
   };
 
@@ -99,7 +114,7 @@ class GenerateWalletPasswordComponent extends Component {
                     />
                     <br />
                     <button
-                      onClick={this.onClickGenerateFileGenerateWallet}
+                      onClick={this.onClickGenerateFile}
                       disabled={
                         generateWalletPassword
                           ? generateWalletPassword.syncErrors
@@ -133,7 +148,7 @@ class GenerateWalletPasswordComponent extends Component {
                     className="btn btn-primary btn-block"
                     aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
                     aria-describedby="x_KeystoreDesc"
-                    download={this.state.downloadName}
+                    download={this.state.fileName}
                     href={this.state.blobURI}
                     onClick={downloadFileGenerateWallet}
                   >
