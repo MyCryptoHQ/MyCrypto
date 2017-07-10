@@ -1,3 +1,4 @@
+// @flow
 import { privateToAddress, publicToAddress, sha3 } from 'ethereumjs-util';
 import crypto from 'crypto';
 import scrypt from 'scryptsy';
@@ -5,7 +6,22 @@ import uuid from 'uuid';
 import { makeBlob, kdf, scryptSettings } from 'libs/globalFuncs';
 import BaseWallet from './base';
 
-export default class Wallet extends BaseWallet {
+export type WalletFile = {
+  fileName: string,
+  blobURI: string
+};
+
+export function genNewWalletFile(password: string): WalletFile {
+  const wallet = Wallet.generate(false);
+  let blobEnc = wallet.getBlob(password);
+  const encFileName = wallet.getV3Filename();
+  return {
+    fileName: encFileName,
+    blobURI: blobEnc
+  };
+}
+
+export class Wallet extends BaseWallet {
   constructor(priv, pub, path, hwType, hwTransport) {
     super();
     if (typeof priv !== 'undefined') {

@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import GenerateWalletPasswordInputComponent from './GenerateWalletPasswordInputComponent';
 import LedgerTrezorWarning from './LedgerTrezorWarning';
 import translate from 'translations';
-import Wallet from 'libs/wallet';
+import { genNewWalletFile } from 'libs/wallet';
 
 // VALIDATORS
 const minLength = min => value => {
@@ -14,22 +14,6 @@ const minLength = min => value => {
 };
 const minLength9 = minLength(9);
 const required = value => (value ? undefined : 'Required');
-
-export type WalletFile = {
-  fileName: string,
-  blobURI: string
-};
-
-// TODO - move outside of component
-function genNewWalletFile(password: string): WalletFile {
-  const wallet = Wallet.generate(false);
-  let blobEnc = wallet.getBlob(password);
-  const encFileName = wallet.getV3Filename();
-  return {
-    fileName: encFileName,
-    blobURI: blobEnc
-  };
-}
 
 class GenerateWalletPasswordComponent extends Component {
   constructor(props) {
