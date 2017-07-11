@@ -39,3 +39,10 @@ npm run test # run tests with Jest
 ├── webpack_config - Webpack configuration
 ├── jest_config - Jest configuration
 ```
+
+## Docker setup
+You should already have docker and docker-compose setup for your platform as a pre-req.
+
+```bash
+docker-compose up
+```
