@@ -8,21 +8,16 @@ import { genNewWalletFile } from 'libs/wallet';
 
 // VALIDATORS
 const minLength = min => value => {
-  return value && value.length < min
-    ? `Must be ${min} characters or more`
-    : undefined;
+  return value && value.length < min ? `Must be ${min} characters or more` : undefined;
 };
 const minLength9 = minLength(9);
 const required = value => (value ? undefined : 'Required');
 
 class GenerateWalletPasswordComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fileName: null,
-      blobURI: null
-    };
-  }
+  state = {
+    fileName: null,
+    blobURI: null
+  };
 
   static propTypes = {
     // state
@@ -59,9 +54,7 @@ class GenerateWalletPasswordComponent extends Component {
   }
 
   onClickGenerateFile = () => {
-    this.genNewWalletAndSetState(
-      this.props.generateWalletPassword.values.password
-    );
+    this.genNewWalletAndSetState(this.props.generateWalletPassword.values.password);
     this.props.generateFileGenerateWallet();
   };
 
@@ -84,9 +77,13 @@ class GenerateWalletPasswordComponent extends Component {
             {!generateWalletFile &&
               <div>
                 <section className="row">
-                  <h1 aria-live="polite">{translate('NAV_GenerateWallet')}</h1>
+                  <h1 aria-live="polite">
+                    {translate('NAV_GenerateWallet')}
+                  </h1>
                   <div className="col-sm-8 col-sm-offset-2">
-                    <h4>{translate('HELP_1_Desc_3')}</h4>
+                    <h4>
+                      {translate('HELP_1_Desc_3')}
+                    </h4>
                     <Field
                       validate={[required, minLength9]}
                       component={GenerateWalletPasswordInputComponent}
@@ -98,11 +95,7 @@ class GenerateWalletPasswordComponent extends Component {
                     <br />
                     <button
                       onClick={this.onClickGenerateFile}
-                      disabled={
-                        generateWalletPassword
-                          ? generateWalletPassword.syncErrors
-                          : true
-                      }
+                      disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
                       className="btn btn-primary btn-block"
                     >
                       {translate('NAV_GenerateWallet')}
@@ -113,7 +106,9 @@ class GenerateWalletPasswordComponent extends Component {
               </div>}
             {generateWalletFile &&
               <section role="main" className="row">
-                <h1>{translate('GEN_Label_2')}</h1>
+                <h1>
+                  {translate('GEN_Label_2')}
+                </h1>
                 <br />
                 <div className="col-sm-8 col-sm-offset-2">
                   <div aria-hidden="true" className="account-help-icon">
@@ -124,7 +119,9 @@ class GenerateWalletPasswordComponent extends Component {
                     <p className="account-help-text">
                       {translate('x_KeystoreDesc')}
                     </p>
-                    <h4>{translate('x_Keystore2')}</h4>
+                    <h4>
+                      {translate('x_Keystore2')}
+                    </h4>
                   </div>
                   <a
                     role="button"
@@ -140,25 +137,26 @@ class GenerateWalletPasswordComponent extends Component {
                   <p className="sr-only" id="x_KeystoreDesc">
                     {translate('x_KeystoreDesc')}
                   </p>
-                  <br /><br /><br /><br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
                 </div>
                 <div className="col-xs-12 alert alert-danger">
                   <span>
-                    MyEtherWallet.com is not a web wallet &amp; does not store
-                    or transmit this secret information at any time. <br />
+                    MyEtherWallet.com is not a web wallet &amp; does not store or transmit this
+                    secret information at any time. <br />
                     <strong>
-                      If you do not save your wallet file and password, we
-                      cannot recover them.
+                      If you do not save your wallet file and password, we cannot recover them.
                     </strong>
                     <br />
-                    Save your wallet file now &amp; back it up in a second
-                    location (not on your computer).
-                    <br /><br />
+                    Save your wallet file now &amp; back it up in a second location (not on your
+                    computer).
+                    <br />
+                    <br />
                     <a
                       role="button"
-                      className={`btn btn-info ${hasDownloadedWalletFile
-                        ? ''
-                        : 'disabled'}`}
+                      className={`btn btn-info ${hasDownloadedWalletFile ? '' : 'disabled'}`}
                       onClick={() => confirmContinueToPaperGenerateWallet()}
                     >
                       {' '}I understand. Continue.{' '}

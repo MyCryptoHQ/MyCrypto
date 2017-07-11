@@ -1,4 +1,5 @@
-export function makeBlob(mime, str) {
+// @flow
+export function makeBlob(mime: string, str: string | Object) {
   str = typeof str === 'object' ? JSON.stringify(str) : str;
   if (str === null) return '';
   const blob = new Blob([str], {
@@ -6,9 +7,3 @@ export function makeBlob(mime, str) {
   });
   return window.URL.createObjectURL(blob);
 }
-
-export const scryptSettings = {
-  n: 1024
-};
-
-export const kdf = 'scrypt';
