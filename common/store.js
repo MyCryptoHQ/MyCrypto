@@ -36,7 +36,7 @@ const configureStore = () => {
       ...configInitialState,
       ...loadStatePropertyOrEmptyObject('config')
     },
-    customTokens: loadState().customTokens || customTokensInitialState
+    customTokens: (loadState() || {}).customTokens || customTokensInitialState
   };
 
   store = createStore(RootReducer, persistedInitialState, middleware);
