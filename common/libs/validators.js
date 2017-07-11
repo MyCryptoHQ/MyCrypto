@@ -20,9 +20,7 @@ export function isValidHex(str: string): boolean {
     return false;
   }
   if (str === '') return true;
-  str = str.substring(0, 2) == '0x'
-    ? str.substring(2).toUpperCase()
-    : str.toUpperCase();
+  str = str.substring(0, 2) == '0x' ? str.substring(2).toUpperCase() : str.toUpperCase();
   var re = /^[0-9A-F]+$/g;
   return re.test(str);
 }
@@ -33,9 +31,7 @@ export function isValidENSorEtherAddress(address: string): boolean {
 
 export function isValidENSName(str: string) {
   try {
-    return (
-      str.length > 6 && normalise(str) != '' && str.substring(0, 2) != '0x'
-    );
+    return str.length > 6 && normalise(str) != '' && str.substring(0, 2) != '0x';
   } catch (e) {
     return false;
   }
@@ -65,14 +61,17 @@ function isChecksumAddress(address: string): boolean {
 function validateEtherAddress(address: string): boolean {
   if (address.substring(0, 2) != '0x') return false;
   else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) return false;
-  else if (
-    /^(0x)?[0-9a-f]{40}$/.test(address) ||
-    /^(0x)?[0-9A-F]{40}$/.test(address)
-  )
-    return true;
+  else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) return true;
   else return isChecksumAddress(address);
 }
 
 export function isValidPrivKey(length: number): boolean {
   return length === 64 || length === 128 || length === 132;
+}
+
+export function isPositiveIntegerOrZero(number: number): boolean {
+  if (isNaN(number) || !isFinite(number)) {
+    return false;
+  }
+  return number >= 0 && parseInt(number) === number;
 }

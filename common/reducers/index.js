@@ -16,6 +16,9 @@ import type { State as EnsState } from './ens';
 import * as wallet from './wallet';
 import type { State as WalletState } from './wallet';
 
+import * as customTokens from './customTokens';
+import type { State as CustomTokensState } from './customTokens';
+
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
@@ -25,7 +28,8 @@ export type State = {
   config: ConfigState,
   notifications: NotificationsState,
   ens: EnsState,
-  wallet: WalletState
+  wallet: WalletState,
+  customTokens: CustomTokensState
 };
 
 export default combineReducers({
@@ -35,6 +39,7 @@ export default combineReducers({
   ...notifications,
   ...ens,
   ...wallet,
+  ...customTokens,
   form: formReducer,
   routing: routerReducer
 });
