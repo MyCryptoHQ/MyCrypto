@@ -54,11 +54,29 @@ export default class AddCustomTokenForm extends React.Component {
           value={this.state.decimals}
           onChange={this.onFieldChange}
         />
-        <div className="btn btn-primary btn-sm" onClick={this.onSave}>
+        <div
+          className={`btn btn-primary btn-sm ${this.isValid() ? '' : 'disabled'}`}
+          onClick={this.onSave}
+        >
           {translate('x_Save')}
         </div>
       </div>
     );
+  }
+
+  isValid() {
+    const { contract, symbol, decimals } = this.state;
+    if (!isPositiveIntegerOrZero(parseInt(decimals))) {
+      return false;
+    }
+    if (!isValidETHAddress(contract)) {
+      return false;
+    }
+    if (this.state.symbol === '') {
+      return false;
+    }
+
+    return true;
   }
 
   onFieldChange = (e: SyntheticInputEvent) => {
@@ -73,7 +91,7 @@ export default class AddCustomTokenForm extends React.Component {
 
   onSave = () => {
     const { contract, symbol, decimals } = this.state;
-    if (!isPositiveIntegerOrZero(parseInt(decimals))) {
+    if (!this.isValid()) {
       return;
     }
     this.props.onSave({ address: contract, symbol, decimal: parseInt(this.state.decimals) });
