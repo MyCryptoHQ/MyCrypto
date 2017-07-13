@@ -8,9 +8,9 @@ export default class AddCustomTokenForm extends React.Component {
     onSave: ({ address: string, symbol: string, decimal: number }) => void
   };
   state = {
-    contract: '',
+    address: '',
     symbol: '',
-    decimals: ''
+    decimal: ''
   };
 
   render() {
@@ -22,11 +22,11 @@ export default class AddCustomTokenForm extends React.Component {
         <input
           className={
             'form-control input-sm ' +
-            (isValidETHAddress(this.state.contract) ? 'is-valid' : 'is-invalid')
+            (isValidETHAddress(this.state.address) ? 'is-valid' : 'is-invalid')
           }
           type="text"
-          name="contract"
-          value={this.state.contract}
+          name="address"
+          value={this.state.address}
           onChange={this.onFieldChange}
         />
         <label>
@@ -47,11 +47,11 @@ export default class AddCustomTokenForm extends React.Component {
         <input
           className={
             'form-control input-sm ' +
-            (isPositiveIntegerOrZero(parseInt(this.state.decimals)) ? 'is-valid' : 'is-invalid')
+            (isPositiveIntegerOrZero(parseInt(this.state.decimal)) ? 'is-valid' : 'is-invalid')
           }
           type="text"
-          name="decimals"
-          value={this.state.decimals}
+          name="decimal"
+          value={this.state.decimal}
           onChange={this.onFieldChange}
         />
         <div
@@ -65,11 +65,11 @@ export default class AddCustomTokenForm extends React.Component {
   }
 
   isValid() {
-    const { contract, symbol, decimals } = this.state;
-    if (!isPositiveIntegerOrZero(parseInt(decimals))) {
+    const { address, symbol, decimal } = this.state;
+    if (!isPositiveIntegerOrZero(parseInt(decimal))) {
       return false;
     }
-    if (!isValidETHAddress(contract)) {
+    if (!isValidETHAddress(address)) {
       return false;
     }
     if (this.state.symbol === '') {
@@ -90,10 +90,11 @@ export default class AddCustomTokenForm extends React.Component {
   };
 
   onSave = () => {
-    const { contract, symbol, decimals } = this.state;
     if (!this.isValid()) {
       return;
     }
-    this.props.onSave({ address: contract, symbol, decimal: parseInt(this.state.decimals) });
+    const { address, symbol, decimal } = this.state;
+
+    this.props.onSave({ address, symbol, decimal: parseInt(decimal) });
   };
 }

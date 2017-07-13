@@ -6,12 +6,14 @@ import AddCustomTokenForm from './AddCustomTokenForm';
 import type { TokenBalance } from 'selectors/wallet';
 import type { Token } from 'config/data';
 
+type Props = {
+  tokens: TokenBalance[],
+  onAddCustomToken: (token: Token) => any,
+  onRemoveCustomToken: (symbol: string) => any
+};
+
 export default class TokenBalances extends React.Component {
-  props: {
-    tokens: TokenBalance[],
-    onAddCustomToken: (token: Token) => any,
-    onRemoveCustomToken: (symbol: string) => any
-  };
+  props: Props;
   state = {
     showAllTokens: false,
     showCustomTokenForm: false
@@ -21,14 +23,16 @@ export default class TokenBalances extends React.Component {
     const { tokens } = this.props;
     return (
       <section className="token-balances">
-        <h5>{translate('sidebar_TokenBal')}</h5>
+        <h5>
+          {translate('sidebar_TokenBal')}
+        </h5>
         <table className="account-info">
           <tbody>
             {tokens
               .filter(token => !token.balance.eq(0) || token.custom || this.state.showAllTokens)
               .map(token =>
                 <TokenRow
-                  key={`${token.symbol}`}
+                  key={token.symbol}
                   balance={token.balance}
                   symbol={token.symbol}
                   custom={token.custom}
@@ -37,14 +41,9 @@ export default class TokenBalances extends React.Component {
               )}
           </tbody>
         </table>
-        {!this.state.showAllTokens &&
-          <a className="btn btn-default btn-sm" onClick={this.toggleShowAllTokens}>
-            Show All Tokens
-          </a>}
-        {this.state.showAllTokens &&
-          <a className="btn btn-default btn-sm" onClick={this.toggleShowAllTokens}>
-            Hide Tokens
-          </a>}{' '}
+        <a className="btn btn-default btn-sm" onClick={this.toggleShowAllTokens}>
+          {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}{' '}
+        </a>
         <a className="btn btn-default btn-sm" onClick={this.toggleShowCustomTokenForm}>
           <span>
             {translate('SEND_custom')}
