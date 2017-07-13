@@ -4,19 +4,22 @@ import translate from 'translations';
 
 export default class PaperWallet extends Component {
   static propTypes = {
+    // State
     privateKey: PropTypes.node,
+    // Actions
+    continueToUnlockWallet: PropTypes.func
   };
 
   showPaperWallet = () => {
-    alert("Implement me!");
+    alert('Implement me!');
   };
 
   continue = () => {
-    alert("Implement me!");
+    alert('Implement me!');
   };
 
   render() {
-    const { privateKey } = this.props;
+    const { privateKey, continueToUnlockWallet } = this.props;
 
     return (
       <div>
@@ -31,7 +34,7 @@ export default class PaperWallet extends Component {
           className="form-control"
           type="text"
           readOnly="readonly"
-          style={{ maxWidth: "50em", margin: "0 auto" }}
+          style={{ maxWidth: '50em', margin: '0 auto' }}
         />
         <br />
 
@@ -53,7 +56,7 @@ export default class PaperWallet extends Component {
         <br />
 
         {/* Continue button */}
-        <button className="btn btn-default" onClick={this.continue}>
+        <button className="btn btn-default" onClick={continueToUnlockWallet}>
           {translate('GEN_Label_3')} →
         </button>
       </div>

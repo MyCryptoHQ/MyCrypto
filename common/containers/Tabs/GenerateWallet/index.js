@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import EnterPassword from './components/EnterPassword';
 import SaveWallet from './components/SaveWallet';
 import PaperWallet from './components/PaperWallet';
+import UnlockWallet from './components/UnlockWallet';
 
 class GenerateWallet extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class GenerateWallet extends Component {
     showPasswordGenerateWallet: PropTypes.func,
     generateFileGenerateWallet: PropTypes.func,
     downloadFileGenerateWallet: PropTypes.func,
-    confirmContinueToPaperGenerateWallet: PropTypes.func
+    confirmContinueToPaperGenerateWallet: PropTypes.func,
+    continueToUnlockWallet: PropTypes.func
   };
 
   render() {
@@ -41,6 +43,10 @@ class GenerateWallet extends Component {
 
       case 'paper':
         content = <PaperWallet {...this.props} privateKey="Implement me" />;
+        break;
+
+      case 'unlock':
+        content = <UnlockWallet {...this.props} />;
         break;
 
       default:

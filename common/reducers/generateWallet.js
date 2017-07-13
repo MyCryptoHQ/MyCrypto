@@ -3,7 +3,8 @@ import {
   GENERATE_WALLET_SHOW_PASSWORD,
   GENERATE_WALLET_FILE,
   GENERATE_WALLET_DOWNLOAD_FILE,
-  GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER
+  GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
+  GENERATE_WALLET_CONTINUE_TO_UNLOCK
 } from 'actions/generateWalletConstants';
 
 export type State = {
@@ -49,6 +50,13 @@ export function generateWallet(state: State = initialState, action): State {
       return {
         ...state,
         activeStep: 'paper'
+      };
+    }
+
+    case GENERATE_WALLET_CONTINUE_TO_UNLOCK: {
+      return {
+        ...state,
+        activeStep: 'unlock'
       };
     }
 
