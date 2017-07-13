@@ -158,6 +158,7 @@ module.exports = {
     GEN_Label_2: "Save your Wallet File. Don't forget your password. ",
     GEN_Label_3: 'Save Your Address. ',
     GEN_Label_4: 'Optional: Print your paper wallet or store a QR code. ',
+    GEN_Label_5: 'Save Your `Private Key`. ',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Number of Wallets To Generate ',

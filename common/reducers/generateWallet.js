@@ -7,14 +7,14 @@ import {
 } from 'actions/generateWalletConstants';
 
 export type State = {
-  showPassword: boolean,
+  activeStep: string,
   generateWalletFile: boolean,
   hasDownloadedWalletFile: boolean,
   canProceedToPaper: boolean
 };
 
 const initialState: State = {
-  showPassword: false,
+  activeStep: 'password',
   generateWalletFile: false,
   hasDownloadedWalletFile: false,
   canProceedToPaper: false
@@ -25,14 +25,14 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_SHOW_PASSWORD: {
       return {
         ...state,
-        showPassword: !state.showPassword
+        activeStep: 'password'
       };
     }
 
     case GENERATE_WALLET_FILE: {
       return {
         ...state,
-        generateWalletFile: true
+        activeStep: 'download'
       };
     }
 
@@ -46,7 +46,7 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER: {
       return {
         ...state,
-        canProceedToPaper: true
+        activeStep: 'paper'
       };
     }
 
