@@ -31,7 +31,7 @@ export default class PasswordInput extends Component {
               aria-label="Enter a strong password (at least 9 characters)"
             />
             <span
-              onClick={() => this.props.showPasswordGenerateWallet()}
+              onClick={this.props.showPasswordGenerateWallet}
               aria-label="make password visible"
               role="button"
               className="input-group-addon eye"

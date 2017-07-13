@@ -8,7 +8,7 @@ export default class SaveWallet extends Component {
     keyStore: PropTypes.object.isRequired,
     hasDownloadedWalletFile: PropTypes.bool,
     // actions
-    downloadFileGenerateWallet: PropTypes.func,
+    downloadUTCGenerateWallet: PropTypes.func,
     confirmContinueToPaperGenerateWallet: PropTypes.func
   };
 
@@ -16,7 +16,7 @@ export default class SaveWallet extends Component {
     const {
       keyStore,
       hasDownloadedWalletFile,
-      downloadFileGenerateWallet,
+      downloadUTCGenerateWallet,
       confirmContinueToPaperGenerateWallet
     } = this.props;
 
@@ -46,7 +46,7 @@ export default class SaveWallet extends Component {
             aria-describedby="x_KeystoreDesc"
             download={keyStore.fileName}
             href={keyStore.blobURI}
-            onClick={downloadFileGenerateWallet}
+            onClick={downloadUTCGenerateWallet}
           >
             {translate('x_Download')}
           </a>
@@ -78,7 +78,7 @@ export default class SaveWallet extends Component {
                 : 'disabled'}`}
               onClick={() => confirmContinueToPaperGenerateWallet()}
             >
-              {' '}I understand. Continue.{' '}
+              I understand. Continue.
             </a>
           </span>
         </div>
