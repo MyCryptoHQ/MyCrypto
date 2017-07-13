@@ -21,7 +21,7 @@ class EnterPassword extends Component {
     showPassword: PropTypes.bool,
     // actions
     showPasswordGenerateWallet: PropTypes.func,
-    generateFileGenerateWallet: PropTypes.func
+    generateUTCGenerateWallet: PropTypes.func
   };
 
   state = {
@@ -31,15 +31,14 @@ class EnterPassword extends Component {
 
   onClickGenerateFile = () => {
     const form = this.props.generateWalletPassword;
-    this.props.generateFileGenerateWallet(form.values.password);
+    this.props.generateUTCGenerateWallet(form.values.password);
   };
 
   render() {
     const {
       generateWalletPassword,
       showPassword,
-      showPasswordGenerateWallet,
-      generateFileGenerateWallet
+      showPasswordGenerateWallet
     } = this.props;
 
     return (
@@ -71,17 +70,6 @@ class EnterPassword extends Component {
             {translate('NAV_GenerateWallet')}
           </button>
 
-          <br />
-          <br />
-          <br />
-          <p className="strong">
-            Ledger &amp; TREZOR users: Do not generate a new wallet—your
-            hardware device <em> is </em> your wallet.<br />
-            <a>
-              You can connect to your device, see your addresses, or send ETH or
-              Tokens here.
-            </a>
-          </p>
         </div>
       </div>
     );

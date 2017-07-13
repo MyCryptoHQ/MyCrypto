@@ -12,14 +12,14 @@ export const showPasswordGenerateWallet = () => {
   return { type: GENERATE_WALLET_SHOW_PASSWORD };
 };
 
-export const generateFileGenerateWallet = password => {
+export const generateUTCGenerateWallet = password => {
   return {
     type: GENERATE_WALLET_FILE,
     keyStore: genNewKeystore(password)
   };
 };
 
-export const downloadFileGenerateWallet = () => {
+export const downloadUTCGenerateWallet = () => {
   return { type: GENERATE_WALLET_DOWNLOAD_FILE };
 };
 

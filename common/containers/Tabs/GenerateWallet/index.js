@@ -22,8 +22,8 @@ class GenerateWallet extends Component {
     keyStore: PropTypes.object,
     // actions
     showPasswordGenerateWallet: PropTypes.func,
-    generateFileGenerateWallet: PropTypes.func,
-    downloadFileGenerateWallet: PropTypes.func,
+    generateUTCGenerateWallet: PropTypes.func,
+    downloadUTCGenerateWallet: PropTypes.func,
     confirmContinueToPaperGenerateWallet: PropTypes.func,
     continueToUnlockWallet: PropTypes.func
   };
