@@ -20,6 +20,7 @@ type Props = {
   balance: Big,
   network: NetworkConfig,
   tokenBalances: TokenBalance[],
+  rates: { [string]: number },
   addCustomToken: typeof customTokenActions.addCustomToken,
   removeCustomToken: typeof customTokenActions.removeCustomToken
 };
@@ -31,12 +32,11 @@ export class BalanceSidebar extends React.Component {
   };
 
   render() {
-    const { wallet, balance, network, tokenBalances } = this.props;
+    const { wallet, balance, network, tokenBalances, rates } = this.props;
     const { blockExplorer, tokenExplorer } = network;
     if (!wallet) {
       return null;
     }
-    const ajaxReq = {};
 
     return (
       <aside>
@@ -106,34 +106,56 @@ export class BalanceSidebar extends React.Component {
             </ul>
           </div>}
         <hr />
-        {false &&
-          ajaxReq.type == 'ETH' &&
+        {!!Object.keys(rates).length &&
           <section>
             <h5>
               {translate('sidebar_Equiv')}
             </h5>
-            {/* <ul className="account-info">
-              <li>
-                <span className="mono wrap">{filters.number(wallet.btcBalance)}</span> BTC
-              </li>
-              <li>
-                <span className="mono wrap">{filters.number(wallet.repBalance)}</span> REP
-              </li>
-              <li>
-                <span className="mono wrap">{filters.currency(wallet.eurBalance, '€')}</span> EUR
-              </li>
-              <li>
-                <span className="mono wrap">{filters.currency(wallet.usdBalance, '$')}</span> USD
-              </li>
-              <li>
-                <span className="mono wrap">{filters.currency(wallet.chfBalance, ' ')}</span> CHF
-              </li>
-            </ul> */}
-            <Link
-              to={'swap'}
-              className="btn btn-primary btn-sm"
-              target="_blank"
-            >
+            <ul className="account-info">
+              {rates['BTC'] &&
+                <li>
+                  <span className="mono wrap">
+                    {formatNumber(balance.times(rates['BTC']))}
+                  </span>{' '}
+                  BTC
+                </li>}
+              {rates['REP'] &&
+                <li>
+                  <span className="mono wrap">
+                    {formatNumber(balance.times(rates['REP']))}
+                  </span>{' '}
+                  REP
+                </li>}
+              {rates['EUR'] &&
+                <li>
+                  <span className="mono wrap">
+                    €{formatNumber(balance.times(rates['EUR']))}
+                  </span>
+                  {' EUR'}
+                </li>}
+              {rates['USD'] &&
+                <li>
+                  <span className="mono wrap">
+                    ${formatNumber(balance.times(rates['USD']))}
+                  </span>
+                  {' USD'}
+                </li>}
+              {rates['GBP'] &&
+                <li>
+                  <span className="mono wrap">
+                    £{formatNumber(balance.times(rates['GBP']))}
+                  </span>
+                  {' GBP'}
+                </li>}
+              {rates['CHF'] &&
+                <li>
+                  <span className="mono wrap">
+                    {formatNumber(balance.times(rates['CHF']))}
+                  </span>{' '}
+                  CHF
+                </li>}
+            </ul>
+            <Link to={'swap'} className="btn btn-primary btn-sm">
               Swap via bity
             </Link>
           </section>}
@@ -156,7 +178,8 @@ function mapStateToProps(state: State, props: Props) {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
-    network: getNetworkConfig(state)
+    network: getNetworkConfig(state),
+    rates: state.rates
   };
 }
 
