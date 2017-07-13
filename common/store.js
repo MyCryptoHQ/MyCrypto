@@ -1,4 +1,8 @@
-import { saveState, loadStatePropertyOrEmptyObject } from 'utils/localStorage';
+import {
+  saveState,
+  loadState,
+  loadStatePropertyOrEmptyObject
+} from 'utils/localStorage';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';
@@ -6,6 +10,7 @@ import ensSaga from './sagas/ens';
 import walletSaga from './sagas/wallet';
 import bitySaga from './sagas/bity';
 import { initialState as configInitialState } from 'reducers/config';
+import { initialState as customTokensInitialState } from 'reducers/customTokens';
 import throttle from 'lodash/throttle';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import Perf from 'react-addons-perf';
@@ -30,18 +35,15 @@ const configureStore = () => {
     middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
   }
 
-  const persistedConfigInitialState = {
+  const persistedInitialState = {
     config: {
       ...configInitialState,
       ...loadStatePropertyOrEmptyObject('config')
-    }
+    },
+    customTokens: (loadState() || {}).customTokens || customTokensInitialState
   };
 
-  const completePersistedInitialState = {
-    ...persistedConfigInitialState
-  };
-
-  store = createStore(RootReducer, completePersistedInitialState, middleware);
+  store = createStore(RootReducer, persistedInitialState, middleware);
   sagaMiddleware.run(notificationsSaga);
   sagaMiddleware.run(ensSaga);
   sagaMiddleware.run(walletSaga);
@@ -52,7 +54,8 @@ const configureStore = () => {
       saveState({
         config: {
           languageSelection: store.getState().config.languageSelection
-        }
+        },
+        customTokens: store.getState().customTokens
       });
     }),
     1000

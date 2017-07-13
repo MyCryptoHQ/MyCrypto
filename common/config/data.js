@@ -104,12 +104,44 @@ export const languages = [
   }
 ];
 
-export const NETWORKS = {
+export type Token = {
+  address: string,
+  symbol: string,
+  decimal: number
+};
+
+export type NetworkConfig = {
+  name: string,
+  // unit: string,
+  blockExplorer?: {
+    name: string,
+    tx: string,
+    address: string
+  },
+  tokenExplorer?: {
+    name: string,
+    address: string
+  },
+  chainId: number,
+  tokens: Token[]
+};
+
+export const NETWORKS: { [key: string]: NetworkConfig } = {
   ETH: {
     name: 'ETH',
-    blockExplorerTX: 'https://etherscan.io/tx/[[txHash]]',
-    blockExplorerAddr: 'https://etherscan.io/address/[[address]]',
-    chainId: 1
+    // unit: 'ETH',
+    chainId: 1,
+    blockExplorer: {
+      name: 'https://etherscan.io',
+      tx: 'https://etherscan.io/tx/[[txHash]]',
+      address: 'https://etherscan.io/address/[[address]]'
+    },
+    tokenExplorer: {
+      name: 'Ethplorer.io',
+      address: 'https://ethplorer.io/address/[[address]]'
+    },
+    tokens: require('./tokens/eth').default
+    // 'abiList': require('./abiDefinitions/ethAbi.json'),
   }
 };
 
@@ -118,9 +150,6 @@ export const NODES = {
     network: 'ETH',
     lib: new RPCNode('https://api.myetherapi.com/eth'),
     service: 'MyEtherWallet',
-    estimateGas: true,
-    eip155: true
-    // 'tokenList': require('./tokens/ethTokens.json'),
-    // 'abiList': require('./abiDefinitions/ethAbi.json'),
+    estimateGas: true
   }
 };

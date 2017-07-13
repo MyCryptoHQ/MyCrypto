@@ -76,3 +76,10 @@ function validateEtherAddress(address: string): boolean {
 export function isValidPrivKey(length: number): boolean {
   return length === 64 || length === 128 || length === 132;
 }
+
+export function isPositiveIntegerOrZero(number: number): boolean {
+  if (isNaN(number) || !isFinite(number)) {
+    return false;
+  }
+  return number >= 0 && parseInt(number) === number;
+}

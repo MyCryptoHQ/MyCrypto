@@ -1,8 +1,8 @@
 // @flow
+import Big from 'big.js';
 
 export default class BaseNode {
-  // FIXME bignumber?
-  queryBalance(address: string): Promise<number> {
-    throw 'Implement me';
+  async getBalance(address: string): Promise<Big> {
+    throw new Error('Implement me');
   }
 }

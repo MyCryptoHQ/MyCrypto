@@ -33,6 +33,8 @@
   "globals": {
     "SyntheticInputEvent": false,
     "SyntheticKeyboardEvent": false,
-    "Generator": false
+    "Generator": false,
+    "$Keys": false,
+    "SyntheticMouseEvent": false
   }
 }

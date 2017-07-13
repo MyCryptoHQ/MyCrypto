@@ -12,6 +12,7 @@ import {
   AmountField,
   AddressField
 } from './components';
+import { BalanceSidebar } from 'components';
 import pickBy from 'lodash/pickBy';
 import type { State as AppState } from 'reducers';
 import { connect } from 'react-redux';
@@ -19,6 +20,7 @@ import BaseWallet from 'libs/wallet/base';
 // import type { Transaction } from './types';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
+import Big from 'big.js';
 
 type State = {
   hasQueryString: boolean,
@@ -45,16 +47,14 @@ function getParam(query: { [string]: string }, key: string) {
 // TODO how to handle DATA?
 
 export class SendTransaction extends React.Component {
-  static propTypes = {
-    location: PropTypes.object.isRequired
-  };
   props: {
     location: {
       query: {
         [string]: string
       }
     },
-    wallet: BaseWallet
+    wallet: BaseWallet,
+    balance: Big
   };
   state: State = {
     hasQueryString: false,
@@ -112,7 +112,7 @@ export class SendTransaction extends React.Component {
                 {'' /* <!-- Sidebar --> */}
                 <section className="col-sm-4">
                   <div style={{ maxWidth: 350 }}>
-                    {'' /* <wallet-balance-drtv /> */}
+                    <BalanceSidebar />
                     <hr />
                     <Donate onDonate={this.onNewTx} />
                   </div>
@@ -124,9 +124,9 @@ export class SendTransaction extends React.Component {
                     <div className="row form-group">
                       <div className="alert alert-danger col-xs-12 clearfix">
                         <strong>
-                          Warning! You do not have enough funds to
-                          complete this swap.
-                        </strong>{' '}
+                          Warning! You do not have enough funds to complete this
+                          swap.
+                        </strong>
                         <br />
                         Please add more funds or access a different wallet.
                       </div>
@@ -171,7 +171,9 @@ export class SendTransaction extends React.Component {
 
                   <div className="row form-group">
                     <div className="col-sm-6">
-                      <label> {translate('SEND_raw')} </label>
+                      <label>
+                        {translate('SEND_raw')}
+                      </label>
                       <textarea className="form-control" rows="4" readOnly>
                         {'' /*rawTx*/}
                       </textarea>
@@ -267,6 +269,10 @@ export class SendTransaction extends React.Component {
   };
 
   onAmountChange = (value: string, unit: string) => {
+    // TODO: tokens
+    if (value === 'everything') {
+      value = this.props.balance.toString();
+    }
     this.setState({
       value,
       unit
@@ -276,7 +282,8 @@ export class SendTransaction extends React.Component {
 
 function mapStateToProps(state: AppState) {
   return {
-    wallet: state.wallet.inst
+    wallet: state.wallet.inst,
+    balance: state.wallet.balance
   };
 }
 

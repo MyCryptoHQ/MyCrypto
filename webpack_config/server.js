@@ -35,6 +35,10 @@ const devMiddleWare = require('webpack-dev-middleware')(compiler, {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': '*',
     'Access-Control-Allow-Headers': '*'
+  },
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: true
   }
 });
 app.use(devMiddleWare);
