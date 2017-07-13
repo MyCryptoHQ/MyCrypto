@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
 
-class SaveWallet extends Component {
+export default class SaveWallet extends Component {
   static propTypes = {
     // state
     hasDownloadedWalletFile: PropTypes.bool,
@@ -84,5 +84,3 @@ class SaveWallet extends Component {
     );
   }
 }
-
-export default SaveWallet;

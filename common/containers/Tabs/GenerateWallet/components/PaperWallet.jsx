@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
 
-class PaperWallet extends Component {
+export default class PaperWallet extends Component {
   static propTypes = {};
 
   render() {
@@ -48,5 +48,3 @@ class PaperWallet extends Component {
     );
   }
 }
-
-export default PaperWallet;

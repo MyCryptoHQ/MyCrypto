@@ -4,7 +4,6 @@ import { Field, reduxForm } from 'redux-form';
 import translate from 'translations';
 import { genNewKeystore } from 'libs/keystore';
 import PasswordInput from './PasswordInput';
-import LedgerTrezorWarning from './LedgerTrezorWarning';
 
 // VALIDATORS
 const minLength = min => value => {
