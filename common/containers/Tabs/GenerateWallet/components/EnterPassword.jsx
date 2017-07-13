@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import translate from 'translations';
+import { genNewKeystore } from 'libs/keystore';
 import PasswordInput from './PasswordInput';
 import LedgerTrezorWarning from './LedgerTrezorWarning';
 
@@ -24,6 +25,21 @@ class EnterPassword extends Component {
     generateFileGenerateWallet: PropTypes.func
   };
 
+  genNewKeystoreAndSetState = (password: string) => {
+    const { fileName, blobURI } = genNewKeystore(password);
+    this.setState({
+      fileName: fileName,
+      blobURI: blobURI
+    });
+  };
+
+  onClickGenerateFile = () => {
+    this.genNewKeystoreAndSetState(
+      this.props.generateWalletPassword.values.password
+    );
+    this.props.generateFileGenerateWallet();
+  };
+
   render() {
     const {
       generateWalletPassword,
@@ -34,37 +50,45 @@ class EnterPassword extends Component {
 
     return (
       <div>
-        <section className="row">
-          <h1 aria-live="polite">
+        <h1 aria-live="polite">
+          {translate('NAV_GenerateWallet')}
+        </h1>
+
+        <div className="col-sm-8 col-sm-offset-2">
+          <h4>
+            {translate('HELP_1_Desc_3')}
+          </h4>
+          <Field
+            validate={[required, minLength9]}
+            component={PasswordInput}
+            showPassword={showPassword}
+            showPasswordGenerateWallet={showPasswordGenerateWallet}
+            name="password"
+            type="text"
+          />
+          <br />
+          <button
+            onClick={this.onClickGenerateFile}
+            disabled={
+              generateWalletPassword ? generateWalletPassword.syncErrors : true
+            }
+            className="btn btn-primary btn-block"
+          >
             {translate('NAV_GenerateWallet')}
-          </h1>
-          <div className="col-sm-8 col-sm-offset-2">
-            <h4>
-              {translate('HELP_1_Desc_3')}
-            </h4>
-            <Field
-              validate={[required, minLength9]}
-              component={PasswordInput}
-              showPassword={showPassword}
-              showPasswordGenerateWallet={showPasswordGenerateWallet}
-              name="password"
-              type="text"
-            />
-            <br />
-            <button
-              onClick={() => generateFileGenerateWallet()}
-              disabled={
-                generateWalletPassword
-                  ? generateWalletPassword.syncErrors
-                  : true
-              }
-              className="btn btn-primary btn-block"
-            >
-              {translate('NAV_GenerateWallet')}
-            </button>
-          </div>
-        </section>
-        <LedgerTrezorWarning />
+          </button>
+
+          <br />
+          <br />
+          <br />
+          <p className="strong">
+            Ledger &amp; TREZOR users: Do not generate a new wallet—your
+            hardware device <em> is </em> your wallet.<br />
+            <a>
+              You can connect to your device, see your addresses, or send ETH or
+              Tokens here.
+            </a>
+          </p>
+        </div>
       </div>
     );
   }

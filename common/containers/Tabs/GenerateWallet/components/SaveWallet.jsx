@@ -40,11 +40,11 @@ class SaveWallet extends Component {
           <a
             role="button"
             className="btn btn-primary btn-block"
-            href="blob:https://myetherwallet.com/2455ae32-916f-4224-a806-414bbe680168"
-            download="UTC--2017-04-26T23-07-03.538Z--c5b7fff4e1669e38e8d6bc8fffe7e562b2b70f43"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
             aria-describedby="x_KeystoreDesc"
-            onClick={() => downloadFileGenerateWallet()}
+            download={this.state.fileName}
+            href={this.state.blobURI}
+            onClick={downloadFileGenerateWallet}
           >
             {translate('x_Download')}
           </a>

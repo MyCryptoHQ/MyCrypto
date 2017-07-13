@@ -7,7 +7,7 @@ export const loadState = () => {
     if (serializedState === null) {
       return undefined;
     }
-    return JSON.parse(serializedState);
+    return JSON.parse(serializedState || '');
   } catch (err) {
     console.warn(' Warning: corrupted local storage');
   }
