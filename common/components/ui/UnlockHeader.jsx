@@ -21,7 +21,7 @@ export class UnlockHeader extends React.Component {
   state: {
     expanded: boolean
   } = {
-    expanded: true
+    expanded: !this.props.wallet
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -69,7 +69,7 @@ export class UnlockHeader extends React.Component {
 
 function mapStateToProps(state: State) {
   return {
-    wallet: state.wallet
+    wallet: state.wallet.inst
   };
 }
 

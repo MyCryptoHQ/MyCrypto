@@ -1,39 +1,50 @@
 // @flow
 import type {
   WalletAction,
-  SaveWalletAction
-  // InitWalletAction
+  SetWalletAction,
+  SetBalanceAction,
+  SetTokenBalancesAction
 } from 'actions/wallet';
-import BaseWallet from 'libs/wallet/base';
+import { BaseWallet } from 'libs/wallet';
+import { toEther } from 'libs/units';
+import Big from 'big.js';
 
 export type State = {
   inst: ?BaseWallet,
-  balance: number,
+  // in ETH
+  balance: Big,
   tokens: {
-    [string]: number
+    [string]: Big
   }
 };
 
 const initialState: State = {
   inst: null,
-  balance: 0,
+  balance: new Big(0),
   tokens: {}
 };
 
-function saveWallet(state: State, action: SaveWalletAction): State {
-  return { ...state, inst: action.payload };
+function setWallet(state: State, action: SetWalletAction): State {
+  return { ...state, inst: action.payload, balance: new Big(0), tokens: {} };
 }
 
-function initWallet(state: State): State {
-  return { ...state, balance: 0, tokens: {} };
+function setBalance(state: State, action: SetBalanceAction): State {
+  const ethBalance = toEther(action.payload, 'wei');
+  return { ...state, balance: ethBalance };
+}
+
+function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
+  return { ...state, tokens: { ...state.tokens, ...action.payload } };
 }
 
 export function wallet(state: State = initialState, action: WalletAction): State {
   switch (action.type) {
-    case 'WALLET_SAVE':
-      return saveWallet(state, action);
-    case 'WALLET_INIT':
-      return initWallet(state);
+    case 'WALLET_SET':
+      return setWallet(state, action);
+    case 'WALLET_SET_BALANCE':
+      return setBalance(state, action);
+    case 'WALLET_SET_TOKEN_BALANCES':
+      return setTokenBalances(state, action);
     default:
       return state;
   }

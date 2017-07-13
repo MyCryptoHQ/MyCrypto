@@ -1,3 +1,5 @@
+// break dep cycle, we have to fix it for good somehow
+import translate from 'translations';
 import { unlockPrivateKey } from 'sagas/wallet';
 
 describe('Wallet saga', () => {
