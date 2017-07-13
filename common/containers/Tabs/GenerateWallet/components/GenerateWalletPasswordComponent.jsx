@@ -4,11 +4,13 @@ import { Field, reduxForm } from 'redux-form';
 import GenerateWalletPasswordInputComponent from './GenerateWalletPasswordInputComponent';
 import LedgerTrezorWarning from './LedgerTrezorWarning';
 import translate from 'translations';
-import { genNewWalletFile } from 'libs/wallet';
+import { genNewKeystore } from 'libs/keystore';
 
 // VALIDATORS
 const minLength = min => value => {
-  return value && value.length < min ? `Must be ${min} characters or more` : undefined;
+  return value && value.length < min
+    ? `Must be ${min} characters or more`
+    : undefined;
 };
 const minLength9 = minLength(9);
 const required = value => (value ? undefined : 'Required');
@@ -37,8 +39,8 @@ class GenerateWalletPasswordComponent extends Component {
     confirmContinueToPaperGenerateWallet: PropTypes.func
   };
 
-  genNewWalletAndSetState = (password: string) => {
-    const { fileName, blobURI } = genNewWalletFile(password);
+  genNewKeystoreAndSetState = (password: string) => {
+    const { fileName, blobURI } = genNewKeystore(password);
     this.setState({
       fileName: fileName,
       blobURI: blobURI
@@ -54,7 +56,9 @@ class GenerateWalletPasswordComponent extends Component {
   }
 
   onClickGenerateFile = () => {
-    this.genNewWalletAndSetState(this.props.generateWalletPassword.values.password);
+    this.genNewKeystoreAndSetState(
+      this.props.generateWalletPassword.values.password
+    );
     this.props.generateFileGenerateWallet();
   };
 
@@ -95,7 +99,11 @@ class GenerateWalletPasswordComponent extends Component {
                     <br />
                     <button
                       onClick={this.onClickGenerateFile}
-                      disabled={generateWalletPassword ? generateWalletPassword.syncErrors : true}
+                      disabled={
+                        generateWalletPassword
+                          ? generateWalletPassword.syncErrors
+                          : true
+                      }
                       className="btn btn-primary btn-block"
                     >
                       {translate('NAV_GenerateWallet')}
@@ -144,19 +152,24 @@ class GenerateWalletPasswordComponent extends Component {
                 </div>
                 <div className="col-xs-12 alert alert-danger">
                   <span>
-                    MyEtherWallet.com is not a web wallet &amp; does not store or transmit this
+                    MyEtherWallet.com is not a web wallet &amp; does not store
+                    or transmit this
                     secret information at any time. <br />
                     <strong>
-                      If you do not save your wallet file and password, we cannot recover them.
+                      If you do not save your wallet file and password, we
+                      cannot recover them.
                     </strong>
                     <br />
-                    Save your wallet file now &amp; back it up in a second location (not on your
+                    Save your wallet file now &amp; back it up in a second
+                    location (not on your
                     computer).
                     <br />
                     <br />
                     <a
                       role="button"
-                      className={`btn btn-info ${hasDownloadedWalletFile ? '' : 'disabled'}`}
+                      className={`btn btn-info ${hasDownloadedWalletFile
+                        ? ''
+                        : 'disabled'}`}
                       onClick={() => confirmContinueToPaperGenerateWallet()}
                     >
                       {' '}I understand. Continue.{' '}

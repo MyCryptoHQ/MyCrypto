@@ -3,6 +3,7 @@ import { randomBytes, createCipheriv } from 'crypto';
 import { privateToPublic, publicToAddress, sha3 } from 'ethereumjs-util';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
+import { makeBlob } from 'libs/globalFuncs';
 
 export const scryptSettings = {
   n: 1024
@@ -39,7 +40,9 @@ export function pkeyToKeystore(pkey: Buffer, password: string) {
     throw new Error('Unsupported cipher');
   }
   const ciphertext = Buffer.concat([cipher.update(pkey), cipher.final()]);
-  const mac = sha3(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
+  const mac = sha3(
+    Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')])
+  );
   return {
     version: 3,
     id: uuid.v4({
@@ -67,4 +70,22 @@ export function getV3Filename(pkey: Buffer) {
     '--',
     publicToAddress(privateToPublic(pkey)).toString('hex')
   ].join('');
+}
+
+export type WalletFile = {
+  fileName: string,
+  blobURI: string
+};
+
+export function genNewKeystore(password: string): WalletFile {
+  let pkey = randomBytes(32);
+  let blobEnc = makeBlob(
+    'text/json;charset=UTF-8',
+    pkeyToKeystore(pkey, password)
+  );
+  const encFileName = getV3Filename(pkey);
+  return {
+    fileName: encFileName,
+    blobURI: blobEnc
+  };
 }
