@@ -5,51 +5,51 @@ module.exports = {
   code: 'el',
   data: {
     /* Navigation*/
-    NAV_AddWallet: 'Προσθήκη Πορτοφολιού ',
-    NAV_BulkGenerate: 'Δημιουργία Πολλών Πορτοφολιών ',
+    NAV_AddWallet: 'Προσθήκη πορτοφολιού ',
+    NAV_BulkGenerate: 'Δημιουργία πολλών πορτοφολιών ',
     NAV_Contact: 'Επικοινωνία ',
     NAV_Contracts: 'Contracts ',
     NAV_DeployContract: 'Deploy Contract ',
     NAV_ENS: 'ENS',
-    NAV_GenerateWallet: 'Δημηουργία Πορτοφολιού ',
+    NAV_GenerateWallet: 'Δημιουργία πορτοφολιού ',
     NAV_Help: 'Βοήθεια ',
     NAV_InteractContract: 'Interact with Contract ',
     NAV_Multisig: 'Multisig ',
-    NAV_MyWallets: 'Τα Πορτοφόλια μου ',
-    NAV_Offline: 'Αποστολή εκτός Σύνδεσης ',
+    NAV_MyWallets: 'Τα πορτοφόλια μου ',
+    NAV_Offline: 'Αποστολή εκτός σύνδεσης ',
     NAV_SendEther: 'Αποστολή Ether και Tokens ',
     NAV_SendTokens: 'Αποστολή Tokens ',
-    NAV_SignMsg: 'Sign Message ',
-    NAV_Swap: 'Swap ',
-    NAV_ViewWallet: 'Προβολή Πληροφοριών Πορτοφολιού ',
-    NAV_YourWallets: 'Τα Πορτοφόλια σας ',
+    NAV_SignMsg: 'Υπογραφή μηνύματος ',
+    NAV_Swap: 'Εναλλαγή ',
+    NAV_ViewWallet: 'Προβολή πληροφοριών πορτοφολιού ',
+    NAV_YourWallets: 'Τα πορτοφόλια σας ',
 
     /* General */
-    x_Access: 'Access ',
+    x_Access: 'Πρόσβαση ',
     x_AddessDesc:
-      'Γνωστή και ως "Αριθμός Λογαριασμού" σας ή "Δημόσιο Κλειδί" σας. Αυτή δίνετε σε όσους επιθυμούν να σας στείλουν ether. Το εικονίδιο είναι ένας εύκολος τρόπος αναγνώρισης της διεύθυνσής σας. ',
-    x_Address: 'Η Διεύθυνσή σας ',
+      'Γνωστή και ως «αριθμός λογαριασμού» σας ή «δημόσιο κλειδί» σας. Αυτή δίνεται σε όσους επιθυμούν να σας στείλουν ether. Το εικονίδιο είναι ένας εύκολος τρόπος αναγνώρισης της διεύθυνσής σας. ',
+    x_Address: 'Η διεύθυνσή σας ',
     x_Cancel: 'Ακύρωση ',
     x_CSV: 'Αρχείο CSV (μη κρυπτογραφημένο) ',
     x_Download: 'Λήψη ',
     x_Json: 'Αρχείο JSON (μη κρυπτογραφημένο) ',
     x_JsonDesc:
-      'Αυτή είναι η μη κρυπτογραφημένη, JSON μορφή του Ιδιωτικού Κλειδιού σας. Αυτό σημαίνει ότι δεν απαιτείται κωδικός όμως οποιοσδήποτε βρει το JSON σας έχει πρόσβαση στο πορτοφόλι και τα Ether σας χωρίς κωδικό. ',
+      'Αυτή είναι η μη κρυπτογραφημένη, JSON μορφή του ιδιωτικού κλειδιού σας. Αυτό σημαίνει ότι δεν απαιτείται κωδικός όμως οποιοσδήποτε βρει το JSON σας έχει πρόσβαση στο πορτοφόλι και τα Ether σας χωρίς κωδικό. ',
     x_Keystore: 'Αρχείο Keystore (UTC / JSON · Συνιστάται · Κρυπτογραφημένο) ',
     x_Keystore2: 'Αρχείο Keystore (UTC / JSON) ',
     x_KeystoreDesc:
-      'Αυτό το Αρχείο Keystore έχει την ίδια μορφή που χρησιμοποιείται από το Mist ώστε να μπορείτε εύκολα να το εισάγετε στο μέλλον. Είναι το συνιστώμενο αρχείο για λήψη και δημιουργία αντιγράφου ασφαλείας. ',
-    x_Mnemonic: 'Mnemonic Phrase ',
+      'Αυτό το αρχείο Keystore έχει την ίδια μορφή που χρησιμοποιείται από το Mist ώστε να μπορείτε εύκολα να το εισάγετε στο μέλλον. Είναι το συνιστώμενο αρχείο για λήψη και δημιουργία αντιγράφου ασφαλείας. ',
+    x_Mnemonic: 'Μνημονική φράση ',
     x_ParityPhrase: 'Parity Phrase ',
     x_Password: 'Κωδικός ',
-    x_Print: 'Εκτύπωση Χάρτινου Πορτοφολιού ',
+    x_Print: 'Εκτύπωση χάρτινου πορτοφολιού ',
     x_PrintDesc:
-      'Συμβουλή: Κλικάρετε "Εκτύπωση και Αποθήκευση ως PDF" ακόμη κι αν δεν έχετε εκτυπωτή! ',
+      'Συμβουλή: Κάντε κλικ στο «Εκτύπωση και αποθήκευση ως PDF» ακόμη κι αν δεν έχετε εκτυπωτή! ',
     x_PrintShort: 'Εκτύπωση ',
-    x_PrivKey: 'Ιδιωτικό Κλειδί (μη κρυπτογραφημένο) ',
-    x_PrivKey2: 'Ιδιωτικό Κλειδί ',
+    x_PrivKey: 'Ιδιωτικό κλειδί (μη κρυπτογραφημένο) ',
+    x_PrivKey2: 'Ιδιωτικό κλειδί ',
     x_PrivKeyDesc:
-      'Αυτό το κείμενο είναι η μη κρυπτογραφημένη εκδοχή του Ιδιωτικού Κλειδιού σας που σημαίνει ότι δεν απαιτείται κωδικός. Στην περίπτωση που κάποιος βρει το μη κρυπτογραφημένο Ιδιωτικό Κλειδί σας, έχει πρόσβαση στο πορτοφόλι σας χωρίς κωδικό. Για αυτόν τον λόγο, συνήθως συνιστώνται οι κρυπτογραφημένες εκδοχές. ',
+      'Αυτό το κείμενο είναι η μη κρυπτογραφημένη εκδοχή του ιδιωτικού κλειδιού σας που σημαίνει ότι δεν απαιτείται κωδικός. Στην περίπτωση που κάποιος βρει το μη κρυπτογραφημένο ιδιωτικό κλειδί σας, έχει πρόσβαση στο πορτοφόλι σας χωρίς κωδικό. Για αυτόν τον λόγο, συνήθως συνιστώνται οι κρυπτογραφημένες εκδοχές. ',
     x_Save: 'Αποθήκευση ',
     x_TXT: 'Αρχείο TXT (μη κρυπτογραφημένο) ',
     x_Wallet: 'Πορτοφόλι ',
@@ -60,82 +60,82 @@ module.exports = {
     CX_Warning_1:
       'Σιγουρευτείτε ότι έχετε **εξωτερικά αντίγραφα ασφαλείας** όλων των πορτοφολιών που αποθηκεύετε εδώ. Μπορούν να συμβούν διάφορα που θα προκαλούσαν απώλεια των δεδομένων σας σε αυτήν την επέκταση Chrome, συμπεριλαμβανομένης απεγκατάστασης και επανεγκατάστασης της επέκτασης. Αυτή η επέκταση είναι ένας τρόπος εύκολης πρόσβασης στα πορτοφόλια σας και **όχι** ένας τρόπος να δημηιουργήσετε αντίγραφα ασφαλείας τους. ',
     MEW_Tagline:
-      'Ασφαλές Πορτοφόλι Ether Ανοιχτού Κώδικα JavaScript από την πλευρά του Πελάτη ',
+      'Ασφαλές πορτοφόλι Ether ανοιχτού κώδικα JavaScript από την πλευρά του πελάτη ',
     CX_Tagline:
-      'Επέκταση Chrome για Ασφαλές Πορτοφόλι Ether Ανοιχτού Κώδικα JavaScript από την πλευρά του Πελάτη ',
+      'Επέκταση Chrome για ασφαλές πορτοφόλι Ether ανοιχτού κώδικα JavaScript από την πλευρά του πελάτη ',
 
     /* Footer */
     FOOTER_1:
-      'Ένα εργαλείο ανοιχτού κώδικα, javascript, από πλευράς πελάτη για την δημιουργία Πορτοφολιών Ethereum & αποστολή συναλλαγών. ',
+      'Ένα εργαλείο ανοιχτού κώδικα, javascript, από πλευράς πελάτη για τη δημιουργία πορτοφολιών Ethereum & αποστολή συναλλαγών. ',
     FOOTER_1b: 'Δημιουργήθηκε από ',
     FOOTER_2: 'Εκτιμούμε πολύ τις δωρεές σας: ',
-    FOOTER_3: 'Δημιουργία Πορτοφολιών από πλευράς πελάτη από ',
+    FOOTER_3: 'Δημιουργία πορτοφολιών από πλευράς πελάτη από ',
 
     /* Sidebar */
-    sidebar_AccountInfo: 'Πληροφορίες Λογαριασμού ',
-    sidebar_AccountAddr: 'Διεύθυνση Λογαριασμού ',
-    sidebar_AccountBal: 'Υπόλοιπο Λογαριασμού ',
+    sidebar_AccountInfo: 'Πληροφορίες λογαριασμού ',
+    sidebar_AccountAddr: 'Διεύθυνση λογαριασμού ',
+    sidebar_AccountBal: 'Υπόλοιπο λογαριασμού ',
     sidebar_TokenBal: 'Υπόλοιπο Token ',
-    sidebar_Equiv: 'Ισότιμες Αξίες ',
-    sidebar_TransHistory: 'Ιστορικό Συναλλαγών ',
+    sidebar_Equiv: 'Ισότιμες αξίες ',
+    sidebar_TransHistory: 'Ιστορικό συναλλαγών ',
     sidebar_donation:
-      'Το MyEtherWallet είναι μία δωρεάν υπηρεσία ανοιχτού κώδικα αφοσιωμένη στην ιδιωτικότητα και την ασφάλεια σας. Όσο περισσότερες δωρεές λαμβάνουμε, τόσο περισσότερο χρόνο αφιερώνουμε στη δημιουργία νέων χαρακτηριστικών καθώς και την αξιολόγηση και εφαρμογή όσων μας προτείνετε. Είμαστε απλά δύο άνθρωποι που προσπαθούν να αλλάξουν τον κόσμο. Θα μας βοηθήσετε; ',
+      'Το MyEtherWallet είναι μία δωρεάν υπηρεσία ανοιχτού κώδικα αφιερωμένη στην ιδιωτικότητα και την ασφάλεια σας. Όσο περισσότερες δωρεές λαμβάνουμε, τόσο περισσότερο χρόνο αφιερώνουμε στη δημιουργία νέων χαρακτηριστικών καθώς και την αξιολόγηση και εφαρμογή όσων μας προτείνετε. Είμαστε απλά δύο άνθρωποι που προσπαθούν να αλλάξουν τον κόσμο. Θα μας βοηθήσετε; ',
     sidebar_donate: 'Δωρεά ',
     sidebar_thanks: 'ΣΑΣ ΕΥΧΑΡΙΣΤΟΥΜΕ!!! ',
 
     /* Decrypt Panel */
-    decrypt_Access: 'Πώς θα θέλατε να έχετε πρόσβαση στο Πορτοφόλι σας; ',
-    decrypt_Title: 'Επιλέξτε την μορφή του Ιδιωτικού Κλειδιού σας: ',
-    decrypt_Select: 'Επιλέξτε Πορτοφόλι: ',
+    decrypt_Access: 'Πώς θα θέλατε να έχετε πρόσβαση στο πορτοφόλι σας; ',
+    decrypt_Title: 'Επιλέξτε την μορφή του ιδιωτικού κλειδιού σας: ',
+    decrypt_Select: 'Επιλέξτε πορτοφόλι: ',
 
     /* Add Wallet */
     ADD_Label_1: 'Τι θα θέλατε να κάνετε; ',
-    ADD_Radio_1: 'Δημιουργία Νέου Πορτοφολιού ',
-    ADD_Radio_2: 'Επιλέξτε το αρχείο Πορτοφολιού σας (Keystore / JSON) ',
+    ADD_Radio_1: 'Δημιουργία νέου πορτοφολιού ',
+    ADD_Radio_2: 'Επιλογή του αρχείού πορτοφολιού σας (Keystore / JSON) ',
     ADD_Radio_2_short: 'ΕΠΙΛΕΞΤΕ ΑΡΧΕΙΟ ΠΟΡΤΟΦΟΛΙΟΥ... ',
-    ADD_Radio_3: 'Επικολλήστε/Πληκτρολογήστε το Ιδιωτικό Κλειδί σας ',
-    ADD_Radio_4: 'Προσθήκη Λογαριασμού προς Παρακολούθηση ',
-    ADD_Radio_5: 'Paste/Type Your Mnemonic ',
+    ADD_Radio_3: 'Επικόλληση/πληκτρολόγηση του ιδιωτικού κλειδιού σας ',
+    ADD_Radio_4: 'Προσθήκη λογαριασμού προς παρακολούθηση ',
+    ADD_Radio_5: 'Επικόλληση/πληκτρολόγηση του μνημονικού σας ',
     ADD_Radio_5_Path: 'Select HD derivation path ',
     ADD_Radio_5_PathCustom: 'Custom',
-    ADD_Label_2: 'Δημιουργία Ψευδωνύμου: ',
+    ADD_Label_2: 'Δημιουργία ψευδωνύμου: ',
     ADD_Label_3:
-      'Το πορτοφόλι σας είναι κρυπτογραφημένο. Παρακαλώ εισάγετε τον κωδικό ',
-    ADD_Label_4: 'Προσθήκη Λογαριασμού προς Παρακολούθηση ',
+      'Το πορτοφόλι σας είναι κρυπτογραφημένο. Παρακαλούμε εισαγάγετε τον κωδικό ',
+    ADD_Label_4: 'Προσθήκη λογαριασμού προς παρακολούθηση ',
     ADD_Warning_1:
-      'Μπορείτε να προσθέσετε έναν λογαριασμό προς "παρακολούθηση" στην καρτέλα πορτοφολιών χωρίς να ανεβάσετε ιδιωτικό κλειδί. Αυτό ** δεν ** σημαίνει ότι έχετε πρόσβαση στο πορτοφόλι, ούτε ότι μπορείτε να μεταφέρετε Ether από αυτό. ',
-    ADD_Label_5: 'Εισάγετε την Διεύθυνση ',
-    ADD_Label_6: 'Ξεκλειδώστε το Πορτοφόλι σας ',
+      'Μπορείτε να προσθέσετε έναν λογαριασμό προς «παρακολούθηση» στην καρτέλα πορτοφολιών χωρίς να ανεβάσετε ιδιωτικό κλειδί. Αυτό ** δεν ** σημαίνει ότι έχετε πρόσβαση στο πορτοφόλι, ούτε ότι μπορείτε να μεταφέρετε Ether από αυτό. ',
+    ADD_Label_5: 'Εισαγάγετε τη διεύθυνση ',
+    ADD_Label_6: 'Ξεκλειδώστε το πορτοφόλι σας ',
     ADD_Label_6_short: 'Ξεκλείδωμα ',
-    ADD_Label_7: 'Προσθήκη Λογαριασμού ',
+    ADD_Label_7: 'Προσθήκη λογαριασμού ',
 
     /* Generate Wallets */
     GEN_desc:
       'Αν επιθυμείτε να δημιουργήσετε πολλά πορτοφόλια, μπορείτε να το κάνετε εδώ: ',
-    GEN_Label_1: 'Εισάγετε ισχυρό κωδικό (τουλάχιστον 9 χαρακτήρες) ',
+    GEN_Label_1: 'Εισαγάγετε ισχυρό κωδικό (τουλάχιστον 9 χαρακτήρες) ',
     GEN_Placeholder_1: 'ΜΗΝ ξεχάσετε να τον αποθηκεύσετε! ',
     GEN_SuccessMsg: 'Επιτυχία! Το πορτοφόλι σας δημιουργήθηκε. ',
     GEN_Label_2:
-      'Αποθηκεύστε το αρχέιο Keystore/JSON ή το Ιδιωτικό Κλειδί. Μην ξεχάσετε τον παραπάνω κωδικό. ',
-    GEN_Label_3: 'Αποθηκέυστε την Διεύθυνση σας. ',
+      'Αποθηκεύστε το αρχέιο Keystore/JSON ή το ιδιωτικό κλειδί. Μην ξεχάσετε τον παραπάνω κωδικό. ',
+    GEN_Label_3: 'Αποθηκέυστε τη διεύθυνση σας. ',
     GEN_Label_4:
-      'Εκτυπώστε το χάρτινο Πορτοφόλι σας ή αποθηκέυστε την εκδοχή με QR code. (προαιρετικό) ',
+      'Εκτυπώστε το χάρτινο πορτοφόλι σας ή αποθηκεύστε την εκδοχή με κώδικα QR. (προαιρετικό) ',
 
     /* Bulk Generate Wallets */
-    BULK_Label_1: 'Αριθμός Πορτοφολιών για Δημιουργία ',
-    BULK_Label_2: 'Δημιουργία Πορτοφολιών ',
+    BULK_Label_1: 'Αριθμός πορτοφολιών για δημιουργία ',
+    BULK_Label_2: 'Δημιουργία πορτοφολιών ',
     BULK_SuccessMsg: 'Επιτυχία! Τα πορτοφόλια σας δημιουργήθηκαν. ',
 
     /* Sending Ether and Tokens */
-    SEND_addr: 'Προς Διεύθυνση ',
+    SEND_addr: 'Προς διεύθυνση ',
     SEND_amount: 'Ποσό για αποστολή ',
     SEND_amount_short: 'Ποσό ',
     // SEND_custom                 : 'Custom ',
     SEND_gas: 'Gas ',
-    SEND_generate: 'Δημιουργία Υπογεγραμμένης Συναλλαγής ',
-    SEND_raw: 'Ακατέργαστη Συναλλαγή ',
-    SEND_signed: 'Υπογεγραμμένη Συναλλαγή ',
-    SEND_trans: 'Αποστολή Συναλλαγής ',
+    SEND_generate: 'Δημιουργία υπογεγραμμένης συναλλαγής ',
+    SEND_raw: 'Ακατέργαστη συναλλαγή ',
+    SEND_signed: 'Υπογεγραμμένη συναλλαγή ',
+    SEND_trans: 'Αποστολή συναλλαγής ',
     // SEND_TransferTotal          : 'Μεταφορά συνολικού διαθέσιμου υπολοίπου ',
     SEND_custom: 'Add Custom Token ',
     SENDModal_Title: 'Προσοχή! ',
@@ -153,22 +153,22 @@ module.exports = {
     TOKEN_Addr: 'Διεύθυνση ',
     TOKEN_Symbol: 'Σύμβολο Token ',
     TOKEN_Dec: 'Δεκαδικά ',
-    TOKEN_hide: 'Hide Tokens ',
-    TOKEN_show: 'Show All Tokens ',
+    TOKEN_hide: 'Απόκρυψη Tokens ',
+    TOKEN_show: 'Εμφάνιση όλων των Tokens ',
 
     /* Send Transaction */
     TRANS_desc:
-      'Άν επιθυμείτε να στείλετε Tokens, παρακαλώ χρησιμοποιήστε την σελίδα "Αποστολή Token". ',
+      'Άν επιθυμείτε να στείλετε Tokens, παρακαλούμε χρησιμοποιήστε τη σελίδα «Αποστολή Token». ',
     TRANS_warning:
-      'Άν χρησιμοποιείτε τις λειτουργίες "Μόνο ETH" ή "Μόνο ETC", η αποστολή γίνεται μέσω contracts. Ορισμένες υπηρεσίες παρουσιάζουν προβλήματα με την αποδοχή τέτοιων συναλλαγών. Διαβάστε περισσότερα. ',
-    TRANS_advanced: '+Για προχωρημένους: Προσθήκη Data ',
-    TRANS_data: 'Data ',
-    TRANS_gas: 'Gas Limit ',
+      'Άν χρησιμοποιείτε τις λειτουργίες «Μόνο ETH» ή «Μόνο ETC», η αποστολή γίνεται μέσω συμβολαίων. Ορισμένες υπηρεσίες παρουσιάζουν προβλήματα με την αποδοχή τέτοιων συναλλαγών. Διαβάστε περισσότερα. ',
+    TRANS_advanced: '+Για προχωρημένους: Προσθήκη δεδομένων ',
+    TRANS_data: 'Δεδομένα ',
+    TRANS_gas: 'Όριο Gas ',
     TRANS_sendInfo:
-      'Μία standard συναλλαγή που χρησιμοποιεί 21000 gas θα κοστίσει 0,000441 ETH. Χρησιμοποιούμε για τιμή gas 0.000000021 ETH που είναι λίγο πάνω απο την ελάχιστη ώστε διασφαλίσουμε οτι θα επικυρωθεί γρήγορα. Δεν παίρνουμε προμήθεια για την συναλλαγή. ',
+      'Μία τυπική συναλλαγή που χρησιμοποιεί 21000 gas θα κοστίσει 0,000441 ETH. Χρησιμοποιούμε για τιμή gas 0.000000021 ETH που είναι λίγο πάνω απο την ελάχιστη ώστε διασφαλίσουμε οτι θα επικυρωθεί γρήγορα. Δεν παίρνουμε προμήθεια για την συναλλαγή. ',
 
     /* Send Transaction Modals */
-    TRANSModal_Title: 'Συναλλαγές "Μόνο ETH" και "Μόνο ETC" ',
+    TRANSModal_Title: 'Συναλλαγές «Μόνο ETH» και «Μόνο ETC» ',
     TRANSModal_Content_0:
       'Μια σημείωση για τις διάφορετικές συναλλαγές και διαφορετικές υπηρεσίες συναλλαγών: ',
     TRANSModal_Content_1:
@@ -182,62 +182,62 @@ module.exports = {
     TRANSModal_Content_5:
       '**Kraken & Poloniex:** Δεν υπάρχουν γνωστά προβλήματα. Αποστέλλετε με οποιαδήποτε μέθοδο. ',
     TRANSModal_Yes: 'Τέλεια, το κατάλαβα. ',
-    TRANSModal_No: 'Πωπω, μπερδεύτηκα ακόμη περισσότερο. Βοηθήστε με. ',
+    TRANSModal_No: 'Ωχ, μπερδεύτηκα ακόμη περισσότερο. Βοηθήστε με. ',
 
     /* Offline Transaction */
-    OFFLINE_Title: 'Δημιουργία και Αποστολή Συναλλαγής εκτός Σύνδεσης ',
+    OFFLINE_Title: 'Δημιουργία και αποστολή συναλλαγής εκτός σύνδεσης ',
     OFFLINE_Desc:
-      'Η δημιουργία συναλλαγών εκτός σύνδεσης μπορεί να γίνει σε τρία βήματα. Θα προβείτε στα βήματα 1 και 3 σε έναν συνδεδεμένο υπολογιστή και το βήμα 2 σε έναν εκτός σύνδεσης/αποκομμένο υπολογιστή. Αυτό εξασφαλίζει ότι τα ιδιωτικά κλειδιά σας δεν έρχονται σε επαφή με συσκευή συνδεδεμένη στο διαδίκτυο. ',
+      'Η δημιουργία συναλλαγών εκτός σύνδεσης μπορεί να γίνει σε τρία βήματα. Θα προβείτε στα βήματα 1 και 3 σε έναν συνδεδεμένο υπολογιστή και το βήμα 2 σε έναν εκτός σύνδεσης/αποκομμένο υπολογιστή. Αυτό εξασφαλίζει ότι τα ιδιωτικά κλειδιά σας δεν έρχονται σε επαφή με συσκευή συνδεδεμένη στο Διαδίκτυο. ',
     OFFLLINE_Step1_Title:
-      'Βήμα 1: Δημιουργία Πληροφοριών (Συνδεδεμένος Υπολογιστής) ',
-    OFFLINE_Step1_Button: 'Δημιουργία Πληροφοριών ',
-    OFFLINE_Step1_Label_1: 'Από Διεύθυνση: ',
+      'Βήμα 1: Δημιουργία πληροφοριών (συνδεδεμένος υπολογιστής) ',
+    OFFLINE_Step1_Button: 'Δημιουργία πληροφοριών ',
+    OFFLINE_Step1_Label_1: 'Από διεύθυνση: ',
     OFFLINE_Step1_Label_2:
-      'Σημείωση: Αυτή είναι η Διεύθυνση ΑΠΟΣΤΟΛΕΑ, ΟΧΙ η Διεύθυνση. Το nonce δημιουργείται απο τον λογαριασμό προέλευσης. Αν χρησιμοποιείται αποκομμένο υπολογιστή, πρόκειται για την διεύθυνση του λογαριασμού σε cold-storage. ',
+      'Σημείωση: Αυτή είναι η διεύθυνση ΑΠΟΣΤΟΛΕΑ, ΟΧΙ η διεύθυνση. Το nonce δημιουργείται απο τον λογαριασμό προέλευσης. Αν χρησιμοποιείτε αποκομμένο υπολογιστή, πρόκειται για την διεύθυνση του λογαριασμού σε cold-storage. ',
     OFFLINE_Step2_Title:
-      'Step 2: Δημιουργία Συναλλαγής (εκτός Σύνδεσης Υπολογιστής) ',
-    OFFLINE_Step2_Label_1: 'Προς Διεύθυνση ',
-    OFFLINE_Step2_Label_2: 'Αξία / Ποσό για Αποστολή ',
+      'Step 2: Δημιουργία συναλλαγής (υπολογιστής εκτός σύνδεσης) ',
+    OFFLINE_Step2_Label_1: 'Προς διεύθυνση ',
+    OFFLINE_Step2_Label_2: 'Αξία / ποσό για αποστολή ',
     OFFLINE_Step2_Label_3: 'Τιμή Gas ',
     OFFLINE_Step2_Label_3b:
-      'Εμφανίστηκε στο Βήμα 1 στον συνδεδεμένο υπολογιστή σας. ',
+      'Εμφανίστηκε στο βήμα 1 στον συνδεδεμένο υπολογιστή σας. ',
     OFFLINE_Step2_Label_4: 'Όριο Gas ',
     OFFLINE_Step2_Label_4b:
       "21000 είναι το προεπιλεγμένο όριο gas. When you send contracts or add'l data, this may need to be different. Any unused gas will be returned to you. ",
     OFFLINE_Step2_Label_5: 'Nonce ',
     OFFLINE_Step2_Label_5b:
-      'Εμφανίστηκε στο Βήμα 1 στον συνδεδεμένο υπολογιστή σας. ',
-    OFFLINE_Step2_Label_6: 'Data ',
+      'Εμφανίστηκε στο βήμα 1 στον συνδεδεμένο υπολογιστή σας. ',
+    OFFLINE_Step2_Label_6: 'Δεδομένα ',
     OFFLINE_Step2_Label_6b:
-      'Αυτό είναι προαιρετικό. Data συνήθως χρησιμοποιούνται όταν αποστέλλονται συναλλαγές σε contracts. ',
-    OFFLINE_Step2_Label_7: 'Εισαγωγή / Επιλογή του Ιδιωτικού Κλειδιού / JSON. ',
+      'Αυτό είναι προαιρετικό. Τα δεδμένα συνήθως χρησιμοποιούνται όταν αποστέλλονται συναλλαγές σε συμβόλαια. ',
+    OFFLINE_Step2_Label_7: 'Εισαγωγή / επιλογή του ιδιωτικού κλειδιού / JSON. ',
     OFFLINE_Step3_Title:
-      'Βήμα 3: Δημοσίευση Συναλλαγής (Συνδεδεμένος Υπολογιστής) ',
+      'Βήμα 3: Δημοσίευση συναλλαγής (συνδεδεμένος υπολογιστής) ',
     OFFLINE_Step3_Label_1:
-      'Επικολλήστε την υπογεγραμμένη συναλλαγή εδώ και πατήστε το κουμπί "ΑΠΟΣΤΟΛΗ ΣΥΝΑΛΛΑΓΗΣ". ',
+      'Επικολλήστε την υπογεγραμμένη συναλλαγή εδώ και πατήστε το κουμπί «ΑΠΟΣΤΟΛΗ ΣΥΝΑΛΛΑΓΗΣ». ',
 
     /* My Wallet */
-    MYWAL_Nick: 'Ψευδώνυμο Πορτοφολιού ',
-    MYWAL_Address: 'Διεύθυνση Πορτοφολιού ',
+    MYWAL_Nick: 'Ψευδώνυμο πορτοφολιού ',
+    MYWAL_Address: 'Διεύθυνση πορτοφολιού ',
     MYWAL_Bal: 'Υπόλοιπο ',
     // MYWAL_Edit                  : 'Επεξεργασία ',
     MYWAL_View: 'Προβολή ',
     MYWAL_Remove: 'Αφαίρεση ',
-    MYWAL_RemoveWal: 'Αφαίρεση Πορτοφολιού: ',
-    MYWAL_WatchOnly: 'Οι Μόνο-προς-παρακολούθηση-Λογαριασμοί ',
+    MYWAL_RemoveWal: 'Αφαίρεση πορτοφολιού: ',
+    MYWAL_WatchOnly: 'Οι λογαριασμοί μόνο-προς-παρακολούθηση ',
     MYWAL_Viewing: 'Προβάλλεται το Πορτοφόλι ',
-    MYWAL_Hide: 'Απόκρυψη Πληροφοριών Πορτοφολιού ',
-    MYWAL_Edit: 'Επεξεργασία Πορτοφολιού ',
-    MYWAL_Name: 'Όνομα Πορτοφολιού ',
+    MYWAL_Hide: 'Απόκρυψη πληροφοριών πορτοφολιού ',
+    MYWAL_Edit: 'Επεξεργασία πορτοφολιού ',
+    MYWAL_Name: 'Όνομα πορτοφολιού ',
     MYWAL_Content_1: 'Προσοχή! Πρόκειται να αφαιρέσετε το πορτοφόλι σας. ',
     MYWAL_Content_2:
       'Σιγουρευτείτε ότι έχετε **αποθηκεύσει το αρχέιο Keystore/JSON και τον κωδικό** του πορτοφολιού αυτού πριν το αφαιρέσετε. ',
     MYWAL_Content_3:
-      'Αν θέλετε να χρησιμοποιήσετε το ποροτοφόλι αυτό με το MyEtherWalletCX στο μέλλον, θα χρειαστεί να το ξαναπροσθέσετε χειροκίνητα χρησιμοποιώντας το Ιδιωτικό Κλειδί/JSON και τον κωδικό. ',
+      'Αν θέλετε να χρησιμοποιήσετε το ποροτοφόλι αυτό με το MyEtherWalletCX στο μέλλον, θα χρειαστεί να το ξαναπροσθέσετε με το χέρι χρησιμοποιώντας το ιδιωτικό κλειδί/JSON και τον κωδικό. ',
 
     /* View Wallet Details */
     VIEWWALLET_Subtitle:
-      'Αυτό σας επιτρέπει να κατεβάσετε διαφορετικές εκδοχές των ιδιωτικών κλειδιών σας και να επανεκτυπώσετε το χάρτινο πορτοφόλι σας. Ίσως επιθυμείτε να το κάνετε προκειμένου να [εισάγετε τον Λογαριασμό σας στο Geth/Mist](http://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/). Αν επιθυμείτε να ελέγξετε το υπόλοιπό σας, συνιστούμε να χρησιμοποιήσετε ένα εργαλείο εξερεύνησης blockchain όπως το [etherscan.io](http://etherscan.io/). ',
+      'Αυτό σας επιτρέπει να κατεβάσετε διαφορετικές εκδοχές των ιδιωτικών κλειδιών σας και να επανεκτυπώσετε το χάρτινο πορτοφόλι σας. Ίσως επιθυμείτε να το κάνετε προκειμένου να [εισαγάγετε τον λογαριασμό σας στο Geth/Mist](http://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/). Αν επιθυμείτε να ελέγξετε το υπόλοιπό σας, συνιστούμε να χρησιμοποιήσετε ένα εργαλείο εξερεύνησης blockchain όπως το [etherscan.io](http://etherscan.io/). ',
     VIEWWALLET_Subtitle_Short:
       'Αυτό σας επιτρέπει να κατεβάσετε διαφορετικές εκδοχές των ιδιωτικών κλειδιών σας και να επανεκτυπώσετε το χάρτινο πορτοφόλι σας. ',
     VIEWWALLET_SuccessMsg:
@@ -245,59 +245,59 @@ module.exports = {
 
     /* CX */
     CX_error_1:
-      'Δεν έχετε αποθηκευμένα πορτοφόλια. Κάντε κλικ στο ["Προσθήκη Πορτοφολιού"](/cx-wallet.html#add-wallet) για να προσθεσετε ένα! ',
-    CX_quicksend: 'ΤαχυΑποστολή ',
+      'Δεν έχετε αποθηκευμένα πορτοφόλια. Κάντε κλικ στο [«Προσθήκη πορτοφολιού»](/cx-wallet.html#add-wallet) για να προσθεσετε ένα! ',
+    CX_quicksend: 'Ταχυαποστολή ',
 
     /* Node Switcher */
     NODE_Title: 'Set Up Your Custom Node',
     NODE_Subtitle: 'To connect to a local node...',
     NODE_Warning:
       'Your node must be HTTPS in order to connect to it via MyEtherWallet.com. You can [download the MyEtherWallet repo & run it locally](https://github.com/kvhnuke/etherwallet/releases/latest) to connect to any node. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)',
-    NODE_Name: 'Node Name',
-    NODE_Port: 'Node Port',
-    NODE_CTA: 'Save & Use Custom Node',
+    NODE_Name: 'Όνομα κόμβου',
+    NODE_Port: 'Θύρα κόμβου',
+    NODE_CTA: 'Αποθήκευση και χρήση προσαρμοσμένου κόμβου',
 
     /* Contracts */
-    CONTRACT_Title: 'Contract Address ',
-    CONTRACT_Title_2: 'Select Existing Contract ',
-    CONTRACT_Json: 'ABI / JSON Interface ',
-    CONTRACT_Interact_Title: 'Read / Write Contract ',
-    CONTRACT_Interact_CTA: 'Select a function ',
+    CONTRACT_Title: 'Διεύθυνση συμβολαίου ',
+    CONTRACT_Title_2: 'Επιλογή υπάρχοντος συμβολαίου ',
+    CONTRACT_Json: 'Διεπαφή ABI / JSON ',
+    CONTRACT_Interact_Title: 'Ανάγνωση / εγγραφή συμβολαίου ',
+    CONTRACT_Interact_CTA: 'Επιλογή λειτουργίας ',
     CONTRACT_ByteCode: 'Byte Code ',
-    CONTRACT_Read: 'READ ',
-    CONTRACT_Write: 'WRITE ',
+    CONTRACT_Read: 'ΑΝΑΓΝΩΣΗ ',
+    CONTRACT_Write: 'ΕΓΓΡΑΦΗ ',
     DEP_generate: 'Generate Bytecode ',
     DEP_generated: 'Generated Bytecode ',
-    DEP_signtx: 'Sign Transaction ',
+    DEP_signtx: 'Υπογραφή συναλλαγής ',
     DEP_interface: 'Generated Interface ',
 
     /* Swap / Exchange */
-    SWAP_rates: 'Current Rates ',
-    SWAP_init_1: 'I want to swap my ',
-    SWAP_init_2: ' for ', // "I want to swap my X ETH for X BTC"
+    SWAP_rates: 'Τρέχουσες ισοτιμίες ',
+    SWAP_init_1: 'Θέλω να ανταλλάξω ',
+    SWAP_init_2: ' με ', // "I want to swap my X ETH for X BTC"
     SWAP_init_CTA: "Let's do this! ", // or "Continue"
-    SWAP_information: 'Your Information ',
-    SWAP_send_amt: 'Amount to send ',
-    SWAP_rec_amt: 'Amount to receive ',
-    SWAP_your_rate: 'Your rate ',
-    SWAP_rec_add: 'Your Receiving Address ',
-    SWAP_start_CTA: 'Start Swap ',
-    SWAP_ref_num: 'Your reference number ',
-    SWAP_time: 'Time remaining to send ',
+    SWAP_information: 'Οι πληροφορίες σας ',
+    SWAP_send_amt: 'Ποσό προς αποστολή ',
+    SWAP_rec_amt: 'Ποσό για λήψη ',
+    SWAP_your_rate: 'Η ισοτιμία σας ',
+    SWAP_rec_add: 'Η διεύθυνση παραλαβής σας ',
+    SWAP_start_CTA: 'Έναρξη ανταλλαγής ',
+    SWAP_ref_num: 'Ο αριθμός αναφοράς σας ',
+    SWAP_time: 'Χρόνος που απομένει για αποστολή ',
     SWAP_progress_1: 'Order Initiated ',
     SWAP_progress_2: 'Waiting for your ', // Waiting for your BTC...
-    SWAP_progress_3: 'Received! ', // ETH Received!
+    SWAP_progress_3: 'Ελήφθη! ', // ETH Received!
     SWAP_progress_4: 'Sending your {{orderResult.output.currency}} ',
     SWAP_progress_5: 'Order Complete ',
-    SWAP_order_CTA: 'Please send ', // Please send 1 ETH...
+    SWAP_order_CTA: 'Παρακαλούμε αποστείλετε ', // Please send 1 ETH...
     SWAP_unlock:
-      'Unlock your wallet to send ETH or Tokens directly from this page. ',
+      'Ξεκλειδώστε το πορτοφόλι σας για να αποστείλετε ETH ή Tokens απευθείας από αυτήν τη σελίδα. ',
 
     /* Sign Message */
-    MSG_message: 'Message ',
-    MSG_date: 'Date ',
-    MSG_signature: 'Signature ',
-    MSG_verify: 'Verify Message ',
+    MSG_message: 'Μήνυμα ',
+    MSG_date: 'Ημερομηνία ',
+    MSG_signature: 'Υπογραφή ',
+    MSG_verify: 'Επαλήθευση μηνύματος ',
     MSG_info1:
       'Include the current date so the signature cannot be reused on a different date. ',
     MSG_info2:
@@ -314,7 +314,7 @@ module.exports = {
 
     /* Hardware wallets */
     x_Ledger: 'Ledger Nano S ',
-    ADD_Ledger_1: 'Connect your Ledger Nano S ',
+    ADD_Ledger_1: 'Συνδέστε το Ledger Nano S σας ',
     ADD_Ledger_2: 'Open the Ethereum application (or a contract application) ',
     ADD_Ledger_3: 'Verify that Browser Support is enabled in Settings ',
     ADD_Ledger_4:
@@ -322,20 +322,20 @@ module.exports = {
     ADD_Ledger_0a: 'Re-open MyEtherWallet on a secure (SSL) connection ',
     ADD_Ledger_0b:
       'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ',
-    ADD_Ledger_scan: 'Connect to Ledger Nano S ',
+    ADD_Ledger_scan: 'Σύνδεση στο Ledger Nano S ',
     x_Trezor: 'TREZOR ',
-    ADD_Trezor_scan: 'Connect to TREZOR ',
+    ADD_Trezor_scan: 'Σύνδεση στο TREZOR ',
     ADD_Trezor_select: 'This is a TREZOR seed ',
 
     /* Error Messages */
-    ERROR_0: 'Παρακαλώ εισάγετε έγκυρο ποσό. ',
+    ERROR_0: 'Παρακαλούμε εισαγάγετε έγκυρο ποσό. ',
     ERROR_1:
-      'Ο κωδικός σας πρέπει να αποτελείται απο τουλάχιστον 9 χαρακτήρες. Παρακαλώ σιγουρευτείτε ότι είναι ισχυρός κωδικός. ',
-    ERROR_2: 'Συγγνώμη! Δεν αναγνωρίζουμε αυτού του είδους αρχεία πορτοφολιού ',
+      'Ο κωδικός σας πρέπει να αποτελείται από τουλάχιστον 9 χαρακτήρες. Παρακαλούμε σιγουρευτείτε ότι είναι ισχυρός κωδικός. ',
+    ERROR_2: 'Λυπούμαστε! Δεν αναγνωρίζουμε αυτού του είδους αρχεία πορτοφολιού ',
     ERROR_3: 'Αυτό δεν είναι έγκυρο αρχείο πορτοφολιού. ',
     ERROR_4:
-      'Αυτή η μονάδα δεν υπάρχει, παρακαλώ χρησιμοποιήστε μία απο τις ακόλουθες μονάδες: ',
-    ERROR_5: 'Λάθος Διεύθυνση. ',
+      'Αυτή η μονάδα δεν υπάρχει, παρακαλούμε χρησιμοποιήστε μία απο τις ακόλουθες μονάδες: ',
+    ERROR_5: 'Λάθος διεύθυνση. ',
     ERROR_6: 'Λάθος κωδικός. ',
     ERROR_7: 'Λάθος ποσό. ',
     ERROR_8: 'Λάθος όριο gas. ',
@@ -346,29 +346,29 @@ module.exports = {
     ERROR_13: 'Υπάρχει ήδη πορτοφόλι με αυτό το ψευδώνυμο. ',
     ERROR_14: 'Δεν βρέθηκε πορτοφόλι. ',
     ERROR_15:
-      'Φαίνετα να μην υπάρχει ακόμη πρόταση με αυτό το ID ή υπήρξε σφάλμα κατά την ανάγνωση της πρότασης αυτής. ',
+      'Φαίνετα να μην υπάρχει ακόμη πρόταση με αυτό το αναγνωριστικό ή υπήρξε σφάλμα κατά την ανάγνωση της πρότασης αυτής. ',
     ERROR_16:
-      'Υπάρχει ήδη αποθηκευμένο πορτοφόλι με αυτή την διεύθυνση. Παρακαλώ ελέγξτε την σελίδα πορτοφολιών σας. ',
+      'Υπάρχει ήδη αποθηκευμένο πορτοφόλι με αυτήν τη διεύθυνση. Παρακαλούμε ελέγξτε τη σελίδα πορτοφολιών σας. ',
     ERROR_17:
-      'Πρέπει να έχετε τουλάχιστον 0.01 ETH στον λογαριασμό σας για να καλύψετε το κόστος του gas. Παρακαλώ προσθέστε μερικά ether και δοκιμάστε ξανά. ',
+      'Πρέπει να έχετε τουλάχιστον 0.01 ETH στον λογαριασμό σας για να καλύψετε το κόστος του gas. Παρακαλούμε προσθέστε μερικά ether και δοκιμάστε ξανά. ',
     ERROR_18:
       'Όλο το gas θα είχε δαπανηθεί στην συναλλαγή αυτή. Αυτό σημαίνει ότι έχετε ήδη ψηφίσει στην πρόταση αυτή ή ότι η περίοδος συζήτησης έχει λήξει. ',
     ERROR_19: 'Λάθος σύμβολο ',
-    ERROR_20: 'Not a valid ERC-20 token ',
+    ERROR_20: 'Μη έγκυρο ERC-20 token ',
     ERROR_21:
       'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative. ',
-    ERROR_22: 'Please enter valid node name ',
+    ERROR_22: 'Παρακαλούμε εισαγάγετε έγκυρο όνομα κόμβου ',
     ERROR_23:
-      'Please enter valid URL. If you are connecting via HTTPS, your node must be over HTTPS ',
-    ERROR_24: 'Please enter valid port ',
-    ERROR_25: 'Please enter valid chain ID ',
-    ERROR_26: 'Please enter valid ABI ',
-    ERROR_27: 'Minimum amount: 0.01. Maximum Amount: ',
+      'Παρακαλούμε εισαγάγετε έγκυρη διεύθυνση URL. Αν συνδέεστε μέσω HTTPS, ο κόμβος σας πρέπει να είναι πάνω σε HTTPS ',
+    ERROR_24: 'Παρακαλούμε εισαγάγετε έγκυρη θύρα ',
+    ERROR_25: 'Παρακαλούμε εισαγάγετε έγκυρο αναγνωριστικό αλυσίδας ',
+    ERROR_26: 'Παρακαλούμε εισαγάγετε έγκυρο ABI ',
+    ERROR_27: 'Ελάχιστο ποσό: 0.01. Μέγιστο ποσό: ',
     ERROR_28:
       'Προκειμένου να έχετε πρόσβαση σε αυτό το πορτοφόλι στο μέλλον **είναι απαραίτητο το αρχείο Keystore/JSON & ο κωδικός ή το Ιδιωτικό Κλειδί σας**. Παρακαλούμε κρατήστε ένα εξωτερικό αντίγραφο ασφαλείας! Δεν υπάρχει τρόπος ανάκτησης ενός πορτοφολιού άν δεν το αποθηκέυσετε. Διαβάστε την σελίδα [Βοήθειας](https://www.myetherwallet.com/#help) για οδηγίες. ',
-    ERROR_29: 'Please enter valid user and password ',
-    ERROR_30: 'Please enter valid ENS name ',
-    ERROR_31: 'Invalid secret phrase ',
+    ERROR_29: 'Παρακαλούμε εισαγάγετε έγκυρο χρήστη και συνθηματικό ',
+    ERROR_30: 'Παρακαλούμε εισαγάγετε έγκυρο όνομα ENS ',
+    ERROR_31: 'Μη έγκυρη μυστική φράση ',
     ERROR_32:
       'Could not connect to the node. Please refresh the page, or see the help page for more troubleshooting suggestions. ',
     SUCCESS_1: 'Έγκυρη διεύθυνση ',
@@ -389,8 +389,8 @@ module.exports = {
     GETH_InsufficientFunds: 'Insufficient funds for gas * price + value ',
     GETH_IntrinsicGas: 'Intrinsic gas too low ',
     GETH_GasLimit: 'Exceeds block gas limit ',
-    GETH_NegativeValue: 'Negative value ',
-    FOOTER_4: 'Disclaimer ',
+    GETH_NegativeValue: 'Αρνητική αξία ',
+    FOOTER_4: 'Αποποίηση ',
 
     /* Parity Error Messages */
     PARITY_AlreadyImported:
@@ -425,7 +425,7 @@ module.exports = {
       '[Nikos Vavoulas](https://www.myetherwallet.com/?gaslimit=21000&to=0x062711C89Bd46E9765CfF0b743Cb83a9dBA2d2d2&value=1.0#send-transaction) · ',
     TranslatorAddr_3: '0x062711C89Bd46E9765CfF0b743Cb83a9dBA2d2d2 ',
     /* Translator 3             : Insert Comments Here */
-    TranslatorName_4: '',
+    TranslatorName_4: 'Ιωάννης Πρωτονοτάριος',
     TranslatorAddr_4: '',
     /* Translator 4             : Insert Comments Here */
     TranslatorName_5: '',
@@ -445,7 +445,7 @@ module.exports = {
     HELP_Remind_Desc_3:
       'If you do not save your private key & password, there is no way to recover access to your wallet or the funds it holds.  Back them up in multiple physical locations &ndash; not just on your computer! ',
 
-    HELP_0_Title: '0) Είμαι νέος χρήστης. Τι κάνω? ',
+    HELP_0_Title: '0) Είμαι νέος χρήστης. Τι κάνω; ',
     HELP_0_Desc_1:
       "Το MyEtherWallet σας δίνει την δυνατότητα να δημιουργήσετε νέα πορτοφόλια ώστε να μπορείτε να αποθηκεύσετε το Ether σας μόνοι σας, και όχι σε κάποιο ανταλλακτήριο (exchange provider). Αυτή η διαδικασία συμβαίνει εξ'ολοκλήρου στον υπολογιστή σας, και όχι στους servers μας. Γι'αυτό, όταν δημιουργείτε ένα νέο πορτοφόλι, **εσείς είστε υπεύθυνοι να κρατήσετε αντίγραφα ασφαλείας**. ",
     HELP_0_Desc_2: 'Δημιουργήστε ένα νέο πορτοφόλι. ',
@@ -454,13 +454,13 @@ module.exports = {
       'Επιβεβαιώστε ότι έχετε πρόσβαση στο νέο αυτό πορτοφόλι και ότι αποθηκεύσατε σωστά όλες τις απαραίτητες πληροφορίες. ',
     HELP_0_Desc_5: 'Μεταφέρετε Ether στο νέο αυτό πορτοφόλι. ',
 
-    HELP_1_Title: '1) Πως φτιάχνω ένα νέο πορτοφόλι? ',
-    HELP_1_Desc_1: 'Πηγαίνετε στην σελίδα "Δημιουργία Πορτοφολιού". ',
+    HELP_1_Title: '1) Πώς φτιάχνω ένα νέο πορτοφόλι; ',
+    HELP_1_Desc_1: 'Πηγαίνετε στην σελίδα «Δημιουργία πορτοφολιού». ',
     HELP_1_Desc_2:
-      'Πηγαίνετε στην σελίδα "Προσθήκη Πορτοφολιού" & επιλέξτε "Δημιουργία Νέου Πορτοφολιού" ',
+      'Πηγαίνετε στην σελίδα «Προσθήκη πορτοφολιού» & επιλέξτε «Δημιουργία νέου πορτοφολιού» ',
     HELP_1_Desc_3:
-      'Οληκτρολογήστε ένα δυνατό συνθηματικό (password). Αν νομίζετε ότι μπορεί να το ξεχάσετε, αποθηκεύστε το κάπου που να είναι ασφαλές. Θα χρειαστείτε αυτό το password για τις εξερχόμενες συναλλαγές σας. ',
-    HELP_1_Desc_4: 'Κάντε κλικ στο "ΔΗΜΙΟΥΡΓΙΑ". ',
+      'Πληκτρολογήστε ένα ισχυρό συνθηματικό. Αν νομίζετε ότι μπορεί να το ξεχάσετε, αποθηκεύστε το κάπου που να είναι ασφαλές. Θα χρειαστείτε αυτό το συνθηματικό για τις εξερχόμενες συναλλαγές σας. ',
+    HELP_1_Desc_4: 'Κάντε κλικ στο «ΔΗΜΙΟΥΡΓΙΑ». ',
     HELP_1_Desc_5: 'Το πορτοφόλι σας δημιοθργήθηκε με επιτυχία. ',
 
     HELP_2a_Title: '2a) How do I save/backup my wallet? ',
