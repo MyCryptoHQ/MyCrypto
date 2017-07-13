@@ -40,7 +40,7 @@ class GenerateWallet extends Component {
         break;
 
       case 'paper':
-        content = <PaperWallet {...this.props} />;
+        content = <PaperWallet {...this.props} privateKey="Implement me" />;
         break;
 
       default:

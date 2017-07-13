@@ -3,10 +3,20 @@ import PropTypes from 'prop-types';
 import translate from 'translations';
 
 export default class PaperWallet extends Component {
-  static propTypes = {};
+  static propTypes = {
+    privateKey: PropTypes.node,
+  };
+
+  showPaperWallet = () => {
+    alert("Implement me!");
+  };
+
+  continue = () => {
+    alert("Implement me!");
+  };
 
   render() {
-    const privateKey = 'Make this work';
+    const { privateKey } = this.props;
 
     return (
       <div>
@@ -21,6 +31,7 @@ export default class PaperWallet extends Component {
           className="form-control"
           type="text"
           readOnly="readonly"
+          style={{ maxWidth: "50em", margin: "0 auto" }}
         />
         <br />
 
@@ -33,7 +44,8 @@ export default class PaperWallet extends Component {
           aria-label={translate('x_Print')}
           aria-describedby="x_PrintDesc"
           role="button"
-          className="btn btn-primary ng-scope"
+          className="btn btn-lg btn-primary"
+          onClick={this.showPaperWallet}
         >
           {translate('x_Print')}
         </a>
@@ -41,7 +53,7 @@ export default class PaperWallet extends Component {
         <br />
 
         {/* Continue button */}
-        <button className="btn btn-default btn-sm">
+        <button className="btn btn-default" onClick={this.continue}>
           {translate('GEN_Label_3')} →
         </button>
       </div>
