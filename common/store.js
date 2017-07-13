@@ -5,6 +5,7 @@ import notificationsSaga from './sagas/notifications';
 import ensSaga from './sagas/ens';
 import walletSaga from './sagas/wallet';
 import bitySaga from './sagas/bity';
+import ratesSaga from './sagas/rates';
 import { initialState as configInitialState } from 'reducers/config';
 import { initialState as customTokensInitialState } from 'reducers/customTokens';
 import throttle from 'lodash/throttle';
@@ -44,6 +45,7 @@ const configureStore = () => {
   sagaMiddleware.run(ensSaga);
   sagaMiddleware.run(walletSaga);
   sagaMiddleware.run(bitySaga);
+  sagaMiddleware.run(ratesSaga);
 
   store.subscribe(
     throttle(() => {
