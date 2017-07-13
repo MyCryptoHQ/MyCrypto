@@ -17,7 +17,8 @@ const initialState: State = {
   activeStep: 'password',
   generateWalletFile: false,
   hasDownloadedWalletFile: false,
-  canProceedToPaper: false
+  canProceedToPaper: false,
+  keyStore: null
 };
 
 export function generateWallet(state: State = initialState, action): State {
@@ -32,6 +33,7 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_FILE: {
       return {
         ...state,
+        keyStore: action.keyStore,
         activeStep: 'download'
       };
     }

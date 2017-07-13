@@ -18,6 +18,7 @@ class GenerateWallet extends Component {
     hasDownloadedWalletFile: PropTypes.bool,
     generateWalletFile: PropTypes.bool,
     canProceedToPaper: PropTypes.bool,
+    keyStore: PropTypes.object,
     // actions
     showPasswordGenerateWallet: PropTypes.func,
     generateFileGenerateWallet: PropTypes.func,
@@ -67,7 +68,8 @@ function mapStateToProps(state) {
     activeStep: state.generateWallet.activeStep,
     generateWalletFile: state.generateWallet.generateWalletFile,
     hasDownloadedWalletFile: state.generateWallet.hasDownloadedWalletFile,
-    canProceedToPaper: state.generateWallet.canProceedToPaper
+    canProceedToPaper: state.generateWallet.canProceedToPaper,
+    keyStore: state.generateWallet.keyStore
   };
 }
 

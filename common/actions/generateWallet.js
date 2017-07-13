@@ -1,3 +1,5 @@
+import { genNewKeystore } from 'libs/keystore';
+
 import {
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
   GENERATE_WALLET_FILE,
@@ -9,8 +11,11 @@ export const showPasswordGenerateWallet = () => {
   return { type: GENERATE_WALLET_SHOW_PASSWORD };
 };
 
-export const generateFileGenerateWallet = () => {
-  return { type: GENERATE_WALLET_FILE };
+export const generateFileGenerateWallet = password => {
+  return {
+    type: GENERATE_WALLET_FILE,
+    keyStore: genNewKeystore(password)
+  };
 };
 
 export const downloadFileGenerateWallet = () => {

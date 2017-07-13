@@ -24,19 +24,14 @@ class EnterPassword extends Component {
     generateFileGenerateWallet: PropTypes.func
   };
 
-  genNewKeystoreAndSetState = (password: string) => {
-    const { fileName, blobURI } = genNewKeystore(password);
-    this.setState({
-      fileName: fileName,
-      blobURI: blobURI
-    });
+  state = {
+    fileName: null,
+    blobURI: null
   };
 
   onClickGenerateFile = () => {
-    this.genNewKeystoreAndSetState(
-      this.props.generateWalletPassword.values.password
-    );
-    this.props.generateFileGenerateWallet();
+    const form = this.props.generateWalletPassword;
+    this.props.generateFileGenerateWallet(form.values.password);
   };
 
   render() {
