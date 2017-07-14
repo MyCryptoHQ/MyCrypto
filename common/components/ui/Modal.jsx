@@ -29,9 +29,31 @@ export default class Modal extends Component {
     handleClose: PropTypes.func.isRequired
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    document.addEventListener('keydown', this._escapeListner);
+  }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._escapeListner);
+  }
+
+  _escapeListner = ev => {
+    // Don't trigger if they hit escape while on an input
+    if (ev.target) {
+      if (
+        ev.target.tagName === 'INPUT' ||
+        ev.target.tagName === 'SELECT' ||
+        ev.target.tagName === 'TEXTAREA' ||
+        ev.target.isContentEditable
+      ) {
+        return;
+      }
+    }
+
+    if (ev.key === 'Escape' || ev.keyCode === 27) {
+      this.props.handleClose();
+    }
+  };
 
   _renderButtons() {
     let idx = 0;
@@ -58,7 +80,10 @@ export default class Modal extends Component {
 
     return (
       <div>
-        <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
+        <div
+          className={`Modalshade ${isOpen ? 'is-open' : ''}`}
+          onClick={handleClose}
+        />
         <div className={`Modal is-${size} ${isOpen ? 'is-open' : ''}`}>
           <div className="Modal-header">
             <h2 className="Modal-header-title">

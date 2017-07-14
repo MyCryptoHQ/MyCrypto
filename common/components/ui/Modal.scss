@@ -24,7 +24,7 @@ $m-anim-speed: 400ms;
   0%,
   30% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translate(-50%, -50%) scale(0.88);
   }
   100% {
     opacity: 1;
@@ -42,6 +42,7 @@ $m-anim-speed: 400ms;
   z-index: $zindex-modal-background;
   display: none;
   animation: modalshade-open $m-anim-speed ease 1;
+  cursor: pointer;
 
   &.is-open {
     display: block;
