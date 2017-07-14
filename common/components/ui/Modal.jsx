@@ -96,7 +96,7 @@ export default class Modal extends Component {
             </button>
           </div>
           <div className={`Modal-content ${hasButtons ? 'has-buttons' : ''}`}>
-            {children}
+            {isOpen && children}
           </div>
           {hasButtons &&
             <div className="Modal-footer">
