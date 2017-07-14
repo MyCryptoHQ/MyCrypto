@@ -2,7 +2,6 @@
 @import "common/sass/mixins";
 
 $m-background: #fff;
-$m-width-map: (small: 440px, medium: 540px, large: 640px, xlarge: 740px);
 $m-window-padding: 20px;
 $m-header-padding: 15px;
 $m-header-height: 62px;
@@ -52,9 +51,8 @@ $m-anim-speed: 400ms;
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 95%;
-  width: calc(100% - #{$m-window-padding * 2});
-  max-width: map-get($m-width-map, "medium");
+  max-width: 95%;
+  max-width: calc(100% - #{$m-window-padding * 2});
   max-height: 95%;
   max-height: calc(100% - #{$m-window-padding * 2});
   background: $m-background;
@@ -68,12 +66,6 @@ $m-anim-speed: 400ms;
 
   &.is-open {
     display: flex;
-  }
-
-  @each $size, $width in $m-width-map {
-    &.is-#{$size} {
-      max-width: $width;
-    }
   }
 
   &-header {
@@ -110,6 +102,9 @@ $m-anim-speed: 400ms;
   }
 
   &-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     padding: $m-content-padding;
     overflow: auto;
   }

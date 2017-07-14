@@ -8,7 +8,6 @@ import './Modal.scss';
 export default class Modal extends Component {
   static propTypes = {
     isOpen: PropTypes.bool,
-    size: PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
     title: PropTypes.node.isRequired,
     children: PropTypes.node,
     buttons: PropTypes.arrayOf(
@@ -81,12 +80,11 @@ export default class Modal extends Component {
   render() {
     const { isOpen, title, children, buttons, handleClose } = this.props;
     const hasButtons = buttons && buttons.length;
-    const size = this.props.size || 'medium';
 
     return (
       <div>
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
-        <div className={`Modal is-${size} ${isOpen ? 'is-open' : ''}`}>
+        <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
           <div className="Modal-header">
             <h2 className="Modal-header-title">
               {title}
