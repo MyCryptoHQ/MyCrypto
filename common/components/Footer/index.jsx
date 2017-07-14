@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import translate, { getTranslators } from 'translations';
 import { donationAddressMap } from 'config/data';
+import logo from 'assets/images/logo-myetherwallet.svg';
 
 import './index.scss';
 
@@ -15,15 +16,12 @@ export default class Footer extends Component {
               <div className="Footer-about col-sm-3">
                 <p aria-hidden="true">
                   <a href="/">
-                    {/* TODO - don't hardcode image path*/}
                     <img
                       className="Footer-about-logo"
-                      src={
-                        'https://www.myetherwallet.com/images/logo-myetherwallet.svg'
-                      }
+                      src={logo}
                       height="55px"
                       width="auto"
-                      alt="Ether Wallet"
+                      alt="MyEtherWallet"
                     />
                   </a>
                 </p>
@@ -48,6 +46,7 @@ export default class Footer extends Component {
                 </p>
                 <br />
               </div>
+
               <div className="Footer-info col-sm-6">
                 <h5>
                   <i aria-hidden="true">💝</i>
@@ -112,6 +111,7 @@ export default class Footer extends Component {
                     </li>
                   </ul>}
               </div>
+
               <div className="Footer-links col-sm-3">
                 <h5>
                   <i aria-hidden="true">🌎</i> On the Web

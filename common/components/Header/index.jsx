@@ -4,6 +4,7 @@ import Navigation from './components/Navigation';
 import { Link } from 'react-router';
 import { Dropdown } from 'components/ui';
 import { languages, NODES } from '../../config/data';
+import logo from 'assets/images/logo-myetherwallet.svg';
 
 import './index.scss';
 
@@ -35,9 +36,7 @@ export default class Header extends Component {
               {/* TODO - don't hardcode image path*/}
               <img
                 className="Header-branding-title-logo"
-                src={
-                  'https://www.myetherwallet.com/images/logo-myetherwallet.svg'
-                }
+                src={logo}
                 height="64px"
                 width="245px"
                 alt="MyEtherWallet"
