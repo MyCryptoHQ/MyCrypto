@@ -47,7 +47,11 @@ You should already have docker and docker-compose setup for your platform as a p
 docker-compose up
 ```
 
-## Styling
+## Style Guides and Philosophies
+
+The following are guides for developers to follow for writing compliant code.
+
+### Styling
 
 Legacy styles are housed under `common/assets/styles` and written with LESS.
 However, going forward, each styled component should create a a `.scss` file of
@@ -97,3 +101,16 @@ code {
 	color: $code-color;
 }
 ```
+
+#### Converting Styles
+
+When working on a module that has styling in Less, try to do the following:
+
+* Screenshot the component in question
+* Create a new SCSS file in the same directory
+* Remove styling from LESS file, convert it to the SCSS file (Mostly s/@/$)
+* Convert class names to SuitCSS naming convention
+* Convert any utility classes from `etherewallet-utilities.less` into mixins
+* Convert as many element selectors to class name selectors as possible
+* Convert as many `<br/>` tags or `&nbsp;`s to margins
+* Ensure that there has been little to no deviation from screenshot
