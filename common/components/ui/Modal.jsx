@@ -5,7 +5,21 @@ import closeIcon from 'assets/images/icon-x.svg';
 
 import './Modal.scss';
 
+type Props = {
+  isOpen?: boolean,
+  size?: 'small' | 'medium' | 'large' | 'xlarge',
+  title: string,
+  buttons: {
+    text: string,
+    type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link',
+    onClick: () => void
+  }[],
+  handleClose: () => void,
+  children: any
+};
+
 export default class Modal extends Component {
+  props: Props;
   static propTypes = {
     isOpen: PropTypes.bool,
     title: PropTypes.node.isRequired,
@@ -28,22 +42,27 @@ export default class Modal extends Component {
     handleClose: PropTypes.func.isRequired
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isOpen !== this.props.isOpen) {
-      document.body.classList.toggle('no-scroll', !!nextProps.isOpen);
-    }
+  componentDidMount() {
+    this.updateBodyClass();
+    document.addEventListener('keydown', this._escapeListner);
   }
 
-  componentDidMount() {
-    document.addEventListener('keydown', this._escapeListner);
+  componentDidUpdate() {
+    this.updateBodyClass();
+  }
+
+  updateBodyClass() {
+    // $FlowFixMe
+    document.body.classList.toggle('no-scroll', !!this.props.isOpen);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this._escapeListner);
+    // $FlowFixMe
     document.body.classList.remove('no-scroll');
   }
 
-  _escapeListner = ev => {
+  _escapeListner = (ev: KeyboardEvent) => {
     // Don't trigger if they hit escape while on an input
     if (ev.target) {
       if (
