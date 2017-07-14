@@ -7,7 +7,6 @@ import './Modal.scss';
 
 type Props = {
   isOpen?: boolean,
-  size?: 'small' | 'medium' | 'large' | 'xlarge',
   title: string,
   buttons: {
     text: string,
