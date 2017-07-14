@@ -52,19 +52,22 @@ $m-anim-speed: 400ms;
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 100%;
+  width: 95%;
   width: calc(100% - #{$m-window-padding * 2});
   max-width: map-get($m-width-map, "medium");
+  max-height: 95%;
+  max-height: calc(100% - #{$m-window-padding * 2});
   background: $m-background;
   border-radius: 4px;
   transform: translate(-50%, -50%);
   z-index: $zindex-modal;
   overflow: hidden;
   display: none;
+  flex-direction: column;
   animation: modal-open $m-anim-speed ease 1;
 
   &.is-open {
-    display: block;
+    display: flex;
   }
 
   @each $size, $width in $m-width-map {
@@ -108,21 +111,10 @@ $m-anim-speed: 400ms;
 
   &-content {
     padding: $m-content-padding;
-    max-height: calc(
-      100vh - #{$m-window-padding * 2 + $m-footer-height + $m-header-height}
-    );
     overflow: auto;
-
-    &.has-buttons {
-      margin-bottom: $m-footer-height;
-    }
   }
 
   &-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     height: $m-footer-height;
     padding: 7px 10px;
     border-top: 1px solid $gray-lighter;

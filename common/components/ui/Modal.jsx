@@ -95,7 +95,7 @@ export default class Modal extends Component {
               <img className="Modal-header-close-icon" src={closeIcon} />
             </button>
           </div>
-          <div className={`Modal-content ${hasButtons ? 'has-buttons' : ''}`}>
+          <div className="Modal-content">
             {isOpen && children}
           </div>
           {hasButtons &&
