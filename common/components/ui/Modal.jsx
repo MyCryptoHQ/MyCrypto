@@ -63,9 +63,7 @@ export default class Modal extends Component {
   };
 
   _renderButtons() {
-    let idx = 0;
-
-    return this.props.buttons.map(btn => {
+    return this.props.buttons.map((btn, idx) => {
       let btnClass = 'Modal-footer-btn btn';
 
       if (btn.type) {
@@ -73,7 +71,7 @@ export default class Modal extends Component {
       }
 
       return (
-        <button className={btnClass} onClick={btn.onClick} key={idx++}>
+        <button className={btnClass} onClick={btn.onClick} key={idx}>
           {btn.text}
         </button>
       );
