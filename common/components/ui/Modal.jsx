@@ -29,12 +29,19 @@ export default class Modal extends Component {
     handleClose: PropTypes.func.isRequired
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isOpen !== this.props.isOpen) {
+      document.body.classList.toggle('no-scroll', !!nextProps.isOpen);
+    }
+  }
+
   componentDidMount() {
     document.addEventListener('keydown', this._escapeListner);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this._escapeListner);
+    document.body.classList.remove('no-scroll');
   }
 
   _escapeListner = ev => {
