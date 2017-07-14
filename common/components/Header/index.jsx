@@ -1,12 +1,15 @@
 // @flow
 import React, { Component } from 'react';
-import TabsOptions from './components/TabsOptions';
+import Navigation from './components/Navigation';
 import { Link } from 'react-router';
 import { Dropdown } from 'components/ui';
 import { languages, NODES } from '../../config/data';
 
+import './index.scss';
+
 export default class Header extends Component {
   props: {
+    location: {},
     languageSelection: string,
     nodeSelection: string,
 
@@ -21,12 +24,17 @@ export default class Header extends Component {
     const selectedNode = NODES[nodeSelection];
 
     return (
-      <div>
-        <section className="bg-gradient header-branding">
-          <section className="container">
-            <Link to={'/'} className="brand" aria-label="Go to homepage">
+      <div className="Header">
+        <section className="Header-branding">
+          <section className="Header-branding-inner container">
+            <Link
+              to={'/'}
+              className="Header-branding-title"
+              aria-label="Go to homepage"
+            >
               {/* TODO - don't hardcode image path*/}
               <img
+                className="Header-branding-title-logo"
                 src={
                   'https://www.myetherwallet.com/images/logo-myetherwallet.svg'
                 }
@@ -35,11 +43,11 @@ export default class Header extends Component {
                 alt="MyEtherWallet"
               />
             </Link>
-            <div className="tagline">
+            <div className="Header-branding-title-tagline">
               <span style={{ maxWidth: '395px' }}>
                 Open-Source & Client-Side Ether Wallet · v3.6.0
               </span>
-              &nbsp;&nbsp;&nbsp;
+
               <Dropdown
                 ariaLabel={`change language. current language ${selectedLanguage.name}`}
                 options={languages}
@@ -55,7 +63,7 @@ export default class Header extends Component {
                 ]}
                 onChange={this.changeLanguage}
               />
-              &nbsp;&nbsp;&nbsp;
+
               <Dropdown
                 ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
                 options={Object.keys(NODES)}
@@ -78,7 +86,7 @@ export default class Header extends Component {
           </section>
         </section>
 
-        <TabsOptions {...this.props} />
+        <Navigation location={this.props.location} />
       </div>
     );
   }

@@ -7,60 +7,6 @@ textarea {
   resize: vertical;
 }
 
-// footer
-footer {
-  background-color: @ether-navy;
-  color: white;
-  margin-top: 100px;
-  padding-top: @space-xs;
-  padding-bottom: @space-sm;
-  img {
-    width: 100%;
-    height: auto;
-    max-width: 20rem;
-  }
-  p {
-    margin: @space-xs 0 @space-sm;
-  }
-  a {
-    color: #4ac8ed;
-    &:hover,
-    &:focus {
-      color: darken(#4ac8ed, 5%);
-    }
-  }
-  .modal,
-  .modal p {
-    color: @text-color;
-  }
-  h5 {
-    font-size: @font-size-bump;
-    margin: @font-size-small 0 0;
-    i {
-      margin-left: -1.5em;
-      margin-right: .25em;
-    }
-  }
-  ul {
-    list-style: none;
-    padding-left: @space-sm;
-    margin: 0 0 @space-xs 0;
-  }
-  li, p {
-    font-size: @font-size-small;
-    margin: @space-sm 0;
-  }
-  .footer-2, .footer-3 {
-    padding-left: 3rem;
-  }
-  @media screen and (max-width: @grid-float-breakpoint) {
-    .row {
-      margin-left: -.5rem;
-      margin-right: -.5rem;
-    }
-  }
-}
-
 // anouncement bars
 .announcement {
   padding: 3px 10px;
@@ -91,7 +37,8 @@ footer {
   &:hover,
   &:focus {
     background-color: darken(@brand-danger, 5%);
-    a, a:hover {
+    a,
+    a:hover {
       text-decoration: none;
     }
   }
@@ -102,7 +49,8 @@ footer {
   a:hover,
   a:focus {
     color: darken(white, 5%);
-    a, a:hover {
+    a,
+    a:hover {
       text-decoration: none;
     }
   }
@@ -145,7 +93,8 @@ footer {
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 50%;
-  box-shadow: inset rgba(255, 255, 255, 0.5) 0 2px 2px, inset rgba(0, 0, 0, 0.6) 0 -1px 8px;
+  box-shadow: inset rgba(255, 255, 255, 0.5) 0 2px 2px,
+    inset rgba(0, 0, 0, 0.6) 0 -1px 8px;
 }
 
 .addressIdenticon.med {
@@ -187,7 +136,11 @@ footer {
 }
 
 .account-help-icon {
-  h3, h4, h5, h6, img {
+  h3,
+  h4,
+  h5,
+  h6,
+  img {
     display: inline-block;
   }
   img:hover + .account-help-text {
@@ -202,13 +155,13 @@ footer {
 .account-help-text {
   background: white;
   border-radius: @border-radius;
-  border: 1px solid #CDCDCD;
+  border: 1px solid #cdcdcd;
   box-shadow: 0 0 @space-sm rgba(100, 100, 100, .2);
   display: none;
   font-size: @font-size-xs;
   font-weight: 400;
   padding: @space-xs;
-  position: absolute;;
+  position: absolute;
   width: 18rem;
   z-index: 999;
   ul& {
@@ -318,7 +271,8 @@ input[type="password"] + .eye {
 
 // collapsable containers
 .collapse-container {
-  h2, h4 {
+  h2,
+  h4 {
     cursor: pointer;
   }
   .collapse-button {
@@ -395,7 +349,7 @@ h2 a.isActive {
 }
 
 label small {
-  color: @gray-light
+  color: @gray-light;
 }
 
 .write-address {
@@ -507,7 +461,8 @@ label small {
   }
 
   @keyframes opacity {
-    from, to {
+    from,
+    to {
       opacity: 0;
     }
     50% {

@@ -1,0 +1,6 @@
+@import "./variables";
+
+@mixin bg-gradient {
+  background: $ether-navy;
+  background: linear-gradient(149deg, #132a45, #143a56, #21a4ce, #19b4ad);
+}
