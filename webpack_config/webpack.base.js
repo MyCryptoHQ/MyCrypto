@@ -67,27 +67,7 @@ module.exports = {
           },
           {
             loader: 'image-webpack-loader',
-            query: {
-              optipng: {
-                optimizationLevel: 4
-              },
-              gifsicle: {
-                interlaced: false
-              },
-              mozjpeg: {
-                quality: 80
-              },
-              svgo: {
-                plugins: [
-                  {
-                    removeViewBox: true
-                  },
-                  {
-                    removeEmptyAttrs: false
-                  }
-                ]
-              }
-            }
+            query: config.imageCompressionOptions
           }
         ]
       },
