@@ -23,7 +23,7 @@ export default class Header extends Component {
 
     return (
       <div>
-        <section className="bg-gradient header-branding">
+        <section className="bg-gradient header-branding {selectedNode.network}">
           <section className="container">
             <Link to={'/'} className="brand" aria-label="Go to homepage">
               <img src={logo} height="64px" width="245px" alt="MyEtherWallet" />
