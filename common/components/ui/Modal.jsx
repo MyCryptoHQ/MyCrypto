@@ -58,8 +58,8 @@ export default class Modal extends Component {
 
     return (
       <div>
-        <div className="Modalshade" />
-        <div className={`Modal is-${size}`}>
+        <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
+        <div className={`Modal is-${size} ${isOpen ? 'is-open' : ''}`}>
           <div className="Modal-header">
             <h2 className="Modal-header-title">
               {title}

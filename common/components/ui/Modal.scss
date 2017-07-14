@@ -8,6 +8,29 @@ $m-header-padding: 15px;
 $m-header-height: 62px;
 $m-content-padding: 20px;
 $m-footer-height: 58px;
+$m-anim-speed: 400ms;
+
+@keyframes modalshade-open {
+  0% {
+    opacity: 0;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-open {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
 
 .Modalshade {
   position: fixed;
@@ -17,6 +40,12 @@ $m-footer-height: 58px;
   bottom: 0;
   background-color: rgba(#000, 0.82);
   z-index: $zindex-modal-background;
+  display: none;
+  animation: modalshade-open $m-anim-speed ease 1;
+
+  &.is-open {
+    display: block;
+  }
 }
 
 .Modal {
@@ -31,6 +60,12 @@ $m-footer-height: 58px;
   transform: translate(-50%, -50%);
   z-index: $zindex-modal;
   overflow: hidden;
+  display: none;
+  animation: modal-open $m-anim-speed ease 1;
+
+  &.is-open {
+    display: block;
+  }
 
   @each $size, $width in $m-width-map {
     &.is-#{$size} {
