@@ -9,15 +9,15 @@ base.devtool = 'source-map';
 base.module.loaders.push(
   {
     test: /\.css$/,
-    loaders: ['style-loader', 'css-loader', 'resolve-url-loader']
+    loaders: ['style-loader', 'css-loader']
   },
   {
     test: /\.scss$/,
-    loaders: ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader']
+    loaders: ['style-loader', 'css-loader', 'sass-loader']
   },
   {
     test: /\.less$/,
-    loaders: ['style-loader', 'css-loader', 'resolve-url-loader', 'less-loader']
+    loaders: ['style-loader', 'css-loader', 'less-loader']
   }
 );
 
