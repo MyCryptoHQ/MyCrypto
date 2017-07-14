@@ -20,5 +20,23 @@ module.exports = {
   babel: {
     babelrc: true
   },
-  cssModules: false
+  // Settings for webpack-image-loader image compression
+  imageCompressionOptions: {
+    optipng: {
+      optimizationLevel: 4
+    },
+    gifsicle: {
+      interlaced: false
+    },
+    mozjpeg: {
+      quality: 80
+    },
+    svgo: {
+      plugins: [
+        { removeViewBox: true },
+        { removeEmptyAttrs: false },
+        { sortAttrs: true }
+      ]
+    }
+  }
 };

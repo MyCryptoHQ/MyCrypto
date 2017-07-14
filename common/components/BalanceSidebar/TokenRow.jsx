@@ -3,6 +3,7 @@ import React from 'react';
 import Big from 'big.js';
 import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
+import removeIcon from 'assets/images/icon-remove.svg';
 
 export default class TokenRow extends React.Component {
   props: {
@@ -17,6 +18,7 @@ export default class TokenRow extends React.Component {
   };
   render() {
     const { balance, symbol, custom } = this.props;
+    const { showLongBalance } = this.state;
     return (
       <tr>
         <td
@@ -26,13 +28,13 @@ export default class TokenRow extends React.Component {
         >
           {!!custom &&
             <img
-              src="images/icon-remove.svg"
+              src={removeIcon}
               className="token-remove"
               title="Remove Token"
               onClick={this.onRemove}
             />}
           <span>
-            {this.state.showLongBalance ? balance.toString() : formatNumber(balance)}
+            {showLongBalance ? balance.toString() : formatNumber(balance)}
           </span>
         </td>
         <td>

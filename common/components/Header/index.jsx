@@ -4,6 +4,7 @@ import TabsOptions from './components/TabsOptions';
 import { Link } from 'react-router';
 import { Dropdown } from 'components/ui';
 import { languages, NODES } from '../../config/data';
+import logo from 'assets/images/logo-myetherwallet.svg';
 
 export default class Header extends Component {
   props: {
@@ -25,15 +26,7 @@ export default class Header extends Component {
         <section className="bg-gradient header-branding">
           <section className="container">
             <Link to={'/'} className="brand" aria-label="Go to homepage">
-              {/* TODO - don't hardcode image path*/}
-              <img
-                src={
-                  'https://www.myetherwallet.com/images/logo-myetherwallet.svg'
-                }
-                height="64px"
-                width="245px"
-                alt="MyEtherWallet"
-              />
+              <img src={logo} height="64px" width="245px" alt="MyEtherWallet" />
             </Link>
             <div className="tagline">
               <span style={{ maxWidth: '395px' }}>

@@ -51,12 +51,29 @@ module.exports = {
         exclude: [/node_modules\/(?!ethereum-blockies)/]
       },
       {
-        test: /\.(ico|jpg|png|gif|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
+        test: /\.(ico|webp|eot|otf|ttf|woff|woff2)(\?.*)?$/,
         loader: 'file-loader?limit=100000'
       },
       {
-        test: /\.svg$/,
-        loader: 'file-loader'
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        loaders: [
+          {
+            loader: 'file-loader',
+            query: {
+              hash: 'sha512',
+              digest: 'hex',
+              name: '[path][name].[ext]?[hash:6]'
+            }
+          },
+          {
+            loader: 'image-webpack-loader',
+            query: config.imageCompressionOptions
+          }
+        ]
+      },
+      {
+        test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
+        loader: 'file-loader?limit=100000'
       }
     ]
   },
