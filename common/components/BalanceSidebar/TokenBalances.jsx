@@ -23,9 +23,7 @@ export default class TokenBalances extends React.Component {
     const { tokens } = this.props;
     return (
       <section className="token-balances">
-        <h5>
-          {translate('sidebar_TokenBal')}
-        </h5>
+        <h5>{translate('sidebar_TokenBal')}</h5>
         <table className="account-info">
           <tbody>
             {tokens
@@ -42,8 +40,8 @@ export default class TokenBalances extends React.Component {
           </tbody>
         </table>
         <a className="btn btn-default btn-sm" onClick={this.toggleShowAllTokens}>
-          {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}{' '}
-        </a>
+          {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
+        </a>{' '}
         <a className="btn btn-default btn-sm" onClick={this.toggleShowCustomTokenForm}>
           <span>
             {translate('SEND_custom')}

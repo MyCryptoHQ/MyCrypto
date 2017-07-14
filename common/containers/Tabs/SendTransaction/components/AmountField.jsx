@@ -6,6 +6,7 @@ import UnitDropdown from './UnitDropdown';
 type Props = {
   value: string,
   unit: string,
+  tokens: string[],
   onChange?: (value: string, unit: string) => void
 };
 
@@ -17,11 +18,12 @@ export default class AmountField extends React.Component {
     const isReadonly = !onChange;
     return (
       <div>
-        <label>{translate('SEND_amount')}</label>
+        <label>
+          {translate('SEND_amount')}
+        </label>
         <div className="input-group col-sm-11">
           <input
-            className={`form-control ${isFinite(Number(value)) &&
-              Number(value) > 0
+            className={`form-control ${isFinite(Number(value)) && Number(value) > 0
               ? 'is-valid'
               : 'is-invalid'}`}
             type="text"
@@ -32,7 +34,7 @@ export default class AmountField extends React.Component {
           />
           <UnitDropdown
             value={unit}
-            options={['ether']}
+            options={['ether'].concat(this.props.tokens)}
             onChange={isReadonly ? void 0 : this.onUnitChange}
           />
         </div>
