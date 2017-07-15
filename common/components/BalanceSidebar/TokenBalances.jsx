@@ -1,10 +1,10 @@
 // @flow
-import React from 'react';
-import translate from 'translations';
-import TokenRow from './TokenRow';
-import AddCustomTokenForm from './AddCustomTokenForm';
-import type { TokenBalance } from 'selectors/wallet';
-import type { Token } from 'config/data';
+import React from "react";
+import translate from "translations";
+import TokenRow from "./TokenRow";
+import AddCustomTokenForm from "./AddCustomTokenForm";
+import type { TokenBalance } from "selectors/wallet";
+import type { Token } from "config/data";
 
 type Props = {
   tokens: TokenBalance[],
@@ -23,7 +23,7 @@ export default class TokenBalances extends React.Component {
     const { tokens } = this.props;
     return (
       <section className="token-balances">
-        <h5>{translate('sidebar_TokenBal')}</h5>
+        <h5>{translate("sidebar_TokenBal")}</h5>
         <table className="account-info">
           <tbody>
             {tokens
@@ -48,14 +48,14 @@ export default class TokenBalances extends React.Component {
           className="btn btn-default btn-sm"
           onClick={this.toggleShowAllTokens}
         >
-          {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
-        </a>{' '}
+          {!this.state.showAllTokens ? "Show All Tokens" : "Hide Tokens"}
+        </a>{" "}
         <a
           className="btn btn-default btn-sm"
           onClick={this.toggleShowCustomTokenForm}
         >
           <span>
-            {translate('SEND_custom')}
+            {translate("SEND_custom")}
           </span>
         </a>
         {this.state.showCustomTokenForm &&

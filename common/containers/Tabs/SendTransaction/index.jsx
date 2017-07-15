@@ -1,9 +1,9 @@
 // @flow
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import translate from 'translations';
-import { UnlockHeader } from 'components/ui';
+import React from "react";
+import PropTypes from "prop-types";
+import translate from "translations";
+import { UnlockHeader } from "components/ui";
 import {
   Donate,
   DataField,
@@ -11,18 +11,18 @@ import {
   GasField,
   AmountField,
   AddressField
-} from './components';
-import { BalanceSidebar } from 'components';
-import pickBy from 'lodash/pickBy';
-import type { State as AppState } from 'reducers';
-import { connect } from 'react-redux';
-import BaseWallet from 'libs/wallet/base';
+} from "./components";
+import { BalanceSidebar } from "components";
+import pickBy from "lodash/pickBy";
+import type { State as AppState } from "reducers";
+import { connect } from "react-redux";
+import BaseWallet from "libs/wallet/base";
 // import type { Transaction } from './types';
-import customMessages from './messages';
-import { donationAddressMap } from 'config/data';
-import Big from 'big.js';
-import type { TokenBalance } from 'selectors/wallet';
-import { getTokenBalances } from 'selectors/wallet';
+import customMessages from "./messages";
+import { donationAddressMap } from "config/data";
+import Big from "big.js";
+import type { TokenBalance } from "selectors/wallet";
+import { getTokenBalances } from "selectors/wallet";
 
 type State = {
   hasQueryString: boolean,
@@ -65,11 +65,11 @@ export class SendTransaction extends React.Component {
     hasQueryString: false,
     readOnly: false,
     // FIXME use correct defaults
-    to: '',
-    value: '',
-    unit: 'ether',
-    gasLimit: '21000',
-    data: '',
+    to: "",
+    value: "",
+    unit: "ether",
+    gasLimit: "21000",
+    data: "",
     gasChanged: false
   };
 
@@ -82,8 +82,8 @@ export class SendTransaction extends React.Component {
 
   render() {
     const unlocked = !!this.props.wallet;
-    const unitReadable = 'UNITREADABLE';
-    const nodeUnit = 'NODEUNIT';
+    const unitReadable = "UNITREADABLE";
+    const nodeUnit = "NODEUNIT";
     const hasEnoughBalance = false;
     const {
       to,
@@ -100,21 +100,21 @@ export class SendTransaction extends React.Component {
     // ng-show="token.balance!=0 && token.balance!='loading' || token.type!=='default' || tokenVisibility=='shown'"
 
     return (
-      <section className="container" style={{ minHeight: '50%' }}>
+      <section className="container" style={{ minHeight: "50%" }}>
         <div className="tab-content">
           <main className="tab-pane active">
             {hasQueryString &&
               <div className="alert alert-info">
                 <p>
-                  {translate('WARN_Send_Link')}
+                  {translate("WARN_Send_Link")}
                 </p>
               </div>}
 
-            <UnlockHeader title={'NAV_SendEther'} />
+            <UnlockHeader title={"NAV_SendEther"} />
 
             {unlocked &&
               <article className="row">
-                {'' /* <!-- Sidebar --> */}
+                {"" /* <!-- Sidebar --> */}
                 <section className="col-sm-4">
                   <div style={{ maxWidth: 350 }}>
                     <BalanceSidebar />
@@ -139,7 +139,7 @@ export class SendTransaction extends React.Component {
 
                   <div className="row form-group">
                     <h4 className="col-xs-12">
-                      {translate('SEND_trans')}
+                      {translate("SEND_trans")}
                     </h4>
                   </div>
                   <AddressField
@@ -160,7 +160,7 @@ export class SendTransaction extends React.Component {
                     value={gasLimit}
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
-                  {unit === 'ether' &&
+                  {unit === "ether" &&
                     <DataField
                       value={data}
                       onChange={readOnly ? void 0 : this.onDataChange}
@@ -173,7 +173,7 @@ export class SendTransaction extends React.Component {
                         className="btn btn-info btn-block"
                         onClick={this.generateTx}
                       >
-                        {translate('SEND_generate')}
+                        {translate("SEND_generate")}
                       </a>
                     </div>
                   </div>
@@ -181,18 +181,18 @@ export class SendTransaction extends React.Component {
                   <div className="row form-group">
                     <div className="col-sm-6">
                       <label>
-                        {translate('SEND_raw')}
+                        {translate("SEND_raw")}
                       </label>
                       <textarea className="form-control" rows="4" readOnly>
-                        {'' /*rawTx*/}
+                        {"" /*rawTx*/}
                       </textarea>
                     </div>
                     <div className="col-sm-6">
                       <label>
-                        {translate('SEND_signed')}
+                        {translate("SEND_signed")}
                       </label>
                       <textarea className="form-control" rows="4" readOnly>
-                        {'' /*signedTx*/}
+                        {"" /*signedTx*/}
                       </textarea>
                     </div>
                   </div>
@@ -203,13 +203,13 @@ export class SendTransaction extends React.Component {
                       data-toggle="modal"
                       data-target="#sendTransaction"
                     >
-                      {translate('SEND_trans')}
+                      {translate("SEND_trans")}
                     </a>
                   </div>
                 </section>
-                {'' /* <!-- / Content --> */}
+                {"" /* <!-- / Content --> */}
                 {
-                  '' /* @@if (site === 'mew' ) { @@include( './sendTx-content.tpl', { "site": "mew" } ) }
+                  "" /* @@if (site === 'mew' ) { @@include( './sendTx-content.tpl', { "site": "mew" } ) }
             @@if (site === 'cx'  ) { @@include( './sendTx-content.tpl', { "site": "cx"  } ) }
 
             @@if (site === 'mew' ) { @@include( './sendTx-modal.tpl',   { "site": "mew" } ) }
@@ -224,16 +224,16 @@ export class SendTransaction extends React.Component {
 
   parseQuery() {
     const query = this.props.location.query;
-    const to = getParam(query, 'to');
-    const data = getParam(query, 'data');
+    const to = getParam(query, "to");
+    const data = getParam(query, "data");
     // FIXME validate token against presets
-    const unit = getParam(query, 'tokenSymbol');
-    const value = getParam(query, 'value');
-    let gasLimit = getParam(query, 'gas');
+    const unit = getParam(query, "tokenSymbol");
+    const value = getParam(query, "value");
+    let gasLimit = getParam(query, "gas");
     if (gasLimit === null) {
-      gasLimit = getParam(query, 'limit');
+      gasLimit = getParam(query, "limit");
     }
-    const readOnly = getParam(query, 'readOnly') == null ? false : true;
+    const readOnly = getParam(query, "readOnly") == null ? false : true;
 
     return { to, data, value, unit, gasLimit, readOnly };
   }
@@ -244,8 +244,8 @@ export class SendTransaction extends React.Component {
     address: string,
     amount: string,
     unit: string,
-    data: string = '',
-    gasLimit: string = '21000'
+    data: string = "",
+    gasLimit: string = "21000"
   ) => {
     this.setState({
       to: address,
@@ -264,7 +264,7 @@ export class SendTransaction extends React.Component {
   };
 
   onDataChange = (value: string) => {
-    if (this.state.unit !== 'ether') {
+    if (this.state.unit !== "ether") {
       return;
     }
     this.setState({
@@ -279,8 +279,8 @@ export class SendTransaction extends React.Component {
 
   onAmountChange = (value: string, unit: string) => {
     // TODO sub gas for eth
-    if (value === 'everything') {
-      if (unit === 'ether') {
+    if (value === "everything") {
+      if (unit === "ether") {
         value = this.props.balance.toString();
       }
       const token = this.props.tokenBalances.find(
