@@ -43,7 +43,7 @@ export default class PrintableWallet extends Component {
     const popup = window.open(
       'about:blank',
       'printWalletWindow',
-      'width=680,height=280,scrollbars=no'
+      'width=740,height=340,scrollbars=no'
     );
 
     // We'll save ourselves from re-rendering by just using a ref for the html
@@ -98,7 +98,7 @@ export default class PrintableWallet extends Component {
       },
       ethLogo: {
         position: 'absolute',
-        left: '100px',
+        left: '86px',
         height: '100%',
         width: 'auto'
       },
@@ -135,7 +135,7 @@ export default class PrintableWallet extends Component {
       infoContainer: {
         float: 'left',
         width: '85%',
-        padding: '0 25px'
+        padding: '0 20px'
       },
       infoText: {
         margin: '0 0 8px',
@@ -150,13 +150,13 @@ export default class PrintableWallet extends Component {
 
       identiconContainer: {
         position: 'absolute',
-        right: '20px',
+        right: '15px',
         bottom: '45px'
       },
       identiconImg: {
         float: 'left',
-        width: '48px',
-        height: '48px',
+        width: '42px',
+        height: '42px',
         backgroundImage: `url('${makeIdenticon(address)}')`,
         backgroundSize: '100%',
         borderRadius: '50%',
@@ -191,7 +191,7 @@ export default class PrintableWallet extends Component {
         <img src={ethLogo} style={styles.ethLogo} />
 
         <div style={styles.block}>
-          <div style={styles.qrCodePkey} />
+          <div style={styles.qrCodeAddress} />
           <p style={styles.blockText}>YOUR ADDRESS</p>
         </div>
 
@@ -201,7 +201,7 @@ export default class PrintableWallet extends Component {
         </div>
 
         <div style={styles.block}>
-          <div style={styles.qrCodeAddress} />
+          <div style={styles.qrCodePkey} />
           <p style={styles.blockText}>YOUR PRIVATE KEY</p>
         </div>
 

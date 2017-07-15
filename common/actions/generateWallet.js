@@ -20,7 +20,7 @@ export const generateUTCGenerateWallet = password => {
   return {
     type: GENERATE_WALLET_FILE,
     privateKey: privateKey.toString('hex'),
-    address,
+    address: `0x${address}`,
     walletFile
   };
 };
