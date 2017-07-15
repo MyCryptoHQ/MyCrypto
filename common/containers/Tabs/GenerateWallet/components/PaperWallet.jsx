@@ -16,7 +16,7 @@ export default class PaperWallet extends Component {
     const { privateKey, address, continueToUnlockWallet } = this.props;
 
     return (
-      <div>
+      <div className="col-sm-8 col-sm-offset-2">
         {/* Private Key */}
         <h1>
           {translate('GEN_Label_5')}
@@ -28,7 +28,6 @@ export default class PaperWallet extends Component {
           className="form-control"
           type="text"
           readOnly="readonly"
-          style={{ maxWidth: '42em', margin: '0 auto' }}
         />
         <br />
 

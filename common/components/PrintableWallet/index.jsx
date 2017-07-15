@@ -9,6 +9,9 @@ import ethLogo from 'assets/images/logo-ethereum-1.png';
 import sidebarImg from 'assets/images/print-sidebar.png';
 import notesBg from 'assets/images/notes-bg.png';
 
+const walletWidth = 680;
+const walletHeight = 280;
+
 export default class PrintableWallet extends Component {
   static propTypes = {
     privateKey: PropTypes.string,
@@ -44,7 +47,7 @@ export default class PrintableWallet extends Component {
     const popup = window.open(
       'about:blank',
       'printWalletWindow',
-      'width=740,height=340,scrollbars=no'
+      `width=${walletWidth + 60},height=${walletHeight + 60},scrollbars=no`
     );
 
     // We'll save ourselves from re-rendering by just using a ref for the html
@@ -85,8 +88,8 @@ export default class PrintableWallet extends Component {
       container: {
         position: 'relative',
         margin: '0 auto',
-        width: '680px',
-        height: '280px',
+        width: `${walletWidth}px`,
+        height: `${walletHeight}px`,
         border: '1px solid #163151',
         userSelect: 'none',
         cursor: 'default'
@@ -223,6 +226,7 @@ export default class PrintableWallet extends Component {
   render() {
     const qrCodesReady = this.state.qrCodePkey && this.state.qrCodeAddress;
     const btnDisabled = qrCodesReady ? '' : 'btn-disabled';
+    const walletContainerStyle = {};
 
     return (
       <div>
