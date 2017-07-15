@@ -7,6 +7,7 @@ import { toDataUrl as makeIdenticon } from 'ethereum-blockies';
 
 import ethLogo from 'assets/images/logo-ethereum-1.png';
 import sidebarImg from 'assets/images/print-sidebar.png';
+import notesBg from 'assets/images/notes-bg.png';
 
 export default class PrintableWallet extends Component {
   static propTypes = {
@@ -129,7 +130,6 @@ export default class PrintableWallet extends Component {
       qrCode: {
         width: '150px',
         height: '150px',
-        backgroundColor: '#d8d8d8',
         backgroundSize: '100%'
       },
 
@@ -177,33 +177,23 @@ export default class PrintableWallet extends Component {
       }
     };
 
-    styles.qrCodePkey = {
-      ...styles.qrCode,
-      backgroundImage: qrCodePkey ? `url('${qrCodePkey}')` : null
-    };
-
-    styles.qrCodeAddress = {
-      ...styles.qrCode,
-      backgroundImage: qrCodeAddress ? `url('${qrCodeAddress}')` : null
-    };
-
     return (
       <div style={styles.container} ref={el => (this._wallet = el)}>
         <img src={sidebarImg} style={styles.sidebar} />
         <img src={ethLogo} style={styles.ethLogo} />
 
         <div style={styles.block}>
-          <div style={styles.qrCodeAddress} />
+          <img src={qrCodeAddress} style={styles.qrCode} />
           <p style={styles.blockText}>YOUR ADDRESS</p>
         </div>
 
         <div style={styles.block}>
-          <div style={styles.qrCode} />
+          <img src={notesBg} style={styles.qrCode} />
           <p style={styles.blockText}>AMOUNT / NOTES</p>
         </div>
 
         <div style={styles.block}>
-          <div style={styles.qrCodePkey} />
+          <img src={qrCodePkey} style={styles.qrCode} />
           <p style={styles.blockText}>YOUR PRIVATE KEY</p>
         </div>
 
