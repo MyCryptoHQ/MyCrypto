@@ -5,7 +5,8 @@ import translate from 'translations';
 export default class PaperWallet extends Component {
   static propTypes = {
     // State
-    privateKey: PropTypes.node,
+    privateKey: PropTypes.string,
+    address: PropTypes.string,
     // Actions
     continueToUnlockWallet: PropTypes.func
   };
@@ -34,7 +35,7 @@ export default class PaperWallet extends Component {
           className="form-control"
           type="text"
           readOnly="readonly"
-          style={{ maxWidth: '50em', margin: '0 auto' }}
+          style={{ maxWidth: '42em', margin: '0 auto' }}
         />
         <br />
 

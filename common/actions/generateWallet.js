@@ -1,4 +1,4 @@
-import { genNewKeystore } from 'libs/keystore';
+import { genNewPkey, pkeyToAddress, genNewKeystore } from 'libs/keystore';
 
 import {
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
@@ -13,9 +13,15 @@ export const showPasswordGenerateWallet = () => {
 };
 
 export const generateUTCGenerateWallet = password => {
+  const privateKey = genNewPkey();
+  const address = pkeyToAddress(privateKey);
+  const walletFile = genNewKeystore(privateKey, password);
+
   return {
     type: GENERATE_WALLET_FILE,
-    keyStore: genNewKeystore(password)
+    privateKey: privateKey.toString('hex'),
+    address,
+    walletFile
   };
 };
 
