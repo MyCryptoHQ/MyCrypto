@@ -11,7 +11,7 @@ export const scryptSettings = {
 
 export const kdf = 'scrypt';
 
-export function genNewPkey(password: string): Buffer {
+export function genNewPkey(): Buffer {
   return randomBytes(32);
 }
 
