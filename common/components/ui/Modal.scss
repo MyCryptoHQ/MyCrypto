@@ -1,0 +1,125 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+$m-background: #fff;
+$m-window-padding: 20px;
+$m-header-padding: 15px;
+$m-header-height: 62px;
+$m-content-padding: 20px;
+$m-footer-height: 58px;
+$m-anim-speed: 400ms;
+
+@keyframes modalshade-open {
+  0% {
+    opacity: 0;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-open {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.Modalshade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(#000, 0.82);
+  z-index: $zindex-modal-background;
+  display: none;
+  animation: modalshade-open $m-anim-speed ease 1;
+
+  &.is-open {
+    display: block;
+  }
+}
+
+.Modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: 95%;
+  max-width: calc(100% - #{$m-window-padding * 2});
+  max-height: 95%;
+  max-height: calc(100% - #{$m-window-padding * 2});
+  background: $m-background;
+  border-radius: 4px;
+  transform: translate(-50%, -50%);
+  z-index: $zindex-modal;
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  animation: modal-open $m-anim-speed ease 1;
+
+  &.is-open {
+    display: flex;
+  }
+
+  &-header {
+    position: relative;
+    padding: 0 $m-header-padding;
+    height: $m-header-height;
+    border-bottom: 1px solid $gray-lighter;
+    background: $m-background;
+
+    &-title {
+      margin: 0;
+      font-size: $font-size-large;
+      line-height: $m-header-height;
+    }
+
+    &-close {
+      @include reset-button;
+      position: absolute;
+      top: 50%;
+      right: $m-header-padding;
+      height: 26px;
+      width: 26px;
+      opacity: 0.8;
+      transform: translateY(-50%) translateZ(0);
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &-icon {
+        width: 100%;
+      }
+    }
+  }
+
+  &-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: $m-content-padding;
+    overflow: auto;
+  }
+
+  &-footer {
+    height: $m-footer-height;
+    padding: 7px 10px;
+    border-top: 1px solid $gray-lighter;
+    background: $m-background;
+
+    // Selector needs a little extra oomph to override bootstrap
+    &-btn.btn {
+      float: right;
+      margin: 0 0 0 8px;
+      min-width: 100px;
+    }
+  }
+}
