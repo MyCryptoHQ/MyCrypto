@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
 import translate, { getTranslators } from 'translations';
 import { donationAddressMap } from 'config/data';
+import logo from 'assets/images/logo-myetherwallet.svg';
+
+import './index.scss';
 
 export default class Footer extends Component {
   render() {
     const translators = getTranslators();
     return (
-      <footer role="contentinfo" aria-label="footer">
+      <footer className="Footer" role="contentinfo" aria-label="footer">
         <div className="container">
           <section className="row">
             <section className="row">
-              <div className="col-sm-3 footer-1">
+              <div className="Footer-about col-sm-3">
                 <p aria-hidden="true">
                   <a href="/">
-                    {/* TODO - don't hardcode image path*/}
                     <img
-                      src={
-                        'https://www.myetherwallet.com/images/logo-myetherwallet.svg'
-                      }
+                      className="Footer-about-logo"
+                      src={logo}
                       height="55px"
                       width="auto"
-                      alt="Ether Wallet"
+                      alt="MyEtherWallet"
                     />
                   </a>
                 </p>
@@ -45,25 +46,26 @@ export default class Footer extends Component {
                 </p>
                 <br />
               </div>
-              <div className="col-sm-6 footer-2">
-                <h5><i aria-hidden="true">💝</i>{translate('FOOTER_2')}</h5>
+
+              <div className="Footer-info col-sm-6">
+                <h5>
+                  <i aria-hidden="true">💝</i>
+                  {translate('FOOTER_2')}
+                </h5>
                 <ul>
                   <li>
                     {' '}ETH:{' '}
-                    <span className="mono wrap">
-                      {donationAddressMap.ETH}
-                    </span>
+                    <span className="mono wrap">{donationAddressMap.ETH}</span>
                   </li>
                   <li>
                     {' '}BTC:{' '}
-                    <span className="mono wrap">
-                      {donationAddressMap.BTC}
-                    </span>
+                    <span className="mono wrap">{donationAddressMap.BTC}</span>
                   </li>
                 </ul>
 
                 <h5>
-                  <i aria-hidden="true">👫</i>{translate('ADD_Warning_1')}
+                  <i aria-hidden="true">👫</i>
+                  {translate('ADD_Warning_1')}
                 </h5>
                 <p>Consider using our affiliate links to...</p>
                 <ul>
@@ -73,8 +75,7 @@ export default class Footer extends Component {
                       href="https://bity.com/af/jshkb37v"
                       target="_blank"
                     >
-                      Swap ETH/BTC/EUR/CHF via
-                      Bity.com
+                      Swap ETH/BTC/EUR/CHF via Bity.com
                     </a>
                   </li>
                   <li>
@@ -82,9 +83,7 @@ export default class Footer extends Component {
                       href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
                       target="_blank"
                     >
-                      Buy
-                      a
-                      Ledger Nano S
+                      Buy a Ledger Nano S
                     </a>
                   </li>
                   <li>
@@ -92,8 +91,7 @@ export default class Footer extends Component {
                       href="https://trezor.io/?a=myetherwallet.com"
                       target="_blank"
                     >
-                      Buy a
-                      TREZOR
+                      Buy a TREZOR
                     </a>
                   </li>
                 </ul>
@@ -106,13 +104,18 @@ export default class Footer extends Component {
                   <ul>
                     <li>
                       {translators.map(key =>
-                        <span key={key}>{translate(key)}</span>
+                        <span key={key}>
+                          {translate(key)}
+                        </span>
                       )}
                     </li>
                   </ul>}
               </div>
-              <div className="col-sm-3 footer-3">
-                <h5><i aria-hidden="true">🌎</i> On the Web</h5>
+
+              <div className="Footer-links col-sm-3">
+                <h5>
+                  <i aria-hidden="true">🌎</i> On the Web
+                </h5>
                 <ul>
                   <li>
                     <a
@@ -170,7 +173,9 @@ export default class Footer extends Component {
                   </li>
                 </ul>
 
-                <h5><i aria-hidden="true">🙏</i> Support</h5>
+                <h5>
+                  <i aria-hidden="true">🙏</i> Support
+                </h5>
                 <ul>
                   <li>
                     <a
@@ -187,8 +192,7 @@ export default class Footer extends Component {
                       href="https://github.com/kvhnuke/etherwallet/issues"
                       target="_blank"
                     >
-                      Github
-                      Issue
+                      Github Issue
                     </a>
                   </li>
                 </ul>

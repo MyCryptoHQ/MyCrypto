@@ -20,19 +20,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.json', '.scss', '.less'],
-    alias: {
-      actions: `${config.srcPath}/actions/`,
-      api: `${config.srcPath}/api/`,
-      reducers: `${config.srcPath}/reducers/`,
-      components: `${config.srcPath}/components/`,
-      containers: `${config.srcPath}/containers/`,
-      styles: `${config.srcPath}/styles/`,
-      less_vars: `${config.srcPath}/styles/etherwallet-variables.less`
-    },
-    // FIXME why aliases then?
     modules: [
       // places where to search for required modules
-      _.cwd('common'),
+      config.srcPath,
       _.cwd('node_modules'),
       _.cwd('./')
     ]
@@ -51,12 +41,29 @@ module.exports = {
         exclude: [/node_modules\/(?!ethereum-blockies)/]
       },
       {
-        test: /\.(ico|jpg|png|gif|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
+        test: /\.(ico|webp|eot|otf|ttf|woff|woff2)(\?.*)?$/,
         loader: 'file-loader?limit=100000'
       },
       {
-        test: /\.svg$/,
-        loader: 'file-loader'
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        loaders: [
+          {
+            loader: 'file-loader',
+            query: {
+              hash: 'sha512',
+              digest: 'hex',
+              name: '[path][name].[ext]?[hash:6]'
+            }
+          },
+          {
+            loader: 'image-webpack-loader',
+            query: config.imageCompressionOptions
+          }
+        ]
+      },
+      {
+        test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
+        loader: 'file-loader?limit=100000'
       }
     ]
   },
