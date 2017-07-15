@@ -87,7 +87,8 @@ export default class PrintableWallet extends Component {
         width: '680px',
         height: '280px',
         border: '1px solid #163151',
-        fontFamily: ''
+        userSelect: 'none',
+        cursor: 'default'
       },
 
       // Images
@@ -100,7 +101,8 @@ export default class PrintableWallet extends Component {
         position: 'absolute',
         left: '86px',
         height: '100%',
-        width: 'auto'
+        width: 'auto',
+        zIndex: '-1'
       },
 
       // Blocks / QR Codes
