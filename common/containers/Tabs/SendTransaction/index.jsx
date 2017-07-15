@@ -21,6 +21,8 @@ import BaseWallet from 'libs/wallet/base';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
 import Big from 'big.js';
+import type { TokenBalance } from 'selectors/wallet';
+import { getTokenBalances } from 'selectors/wallet';
 
 type State = {
   hasQueryString: boolean,
@@ -46,22 +48,25 @@ function getParam(query: { [string]: string }, key: string) {
 // TODO query string
 // TODO how to handle DATA?
 
+type Props = {
+  location: {
+    query: {
+      [string]: string
+    }
+  },
+  wallet: BaseWallet,
+  balance: Big,
+  tokenBalances: TokenBalance[]
+};
+
 export class SendTransaction extends React.Component {
-  props: {
-    location: {
-      query: {
-        [string]: string
-      }
-    },
-    wallet: BaseWallet,
-    balance: Big
-  };
+  props: Props;
   state: State = {
     hasQueryString: false,
     readOnly: false,
     // FIXME use correct defaults
     to: '',
-    value: '999.11',
+    value: '',
     unit: 'ether',
     gasLimit: '21000',
     data: '',
@@ -136,6 +141,10 @@ export class SendTransaction extends React.Component {
                   <AmountField
                     value={value}
                     unit={unit}
+                    tokens={this.props.tokenBalances
+                      .filter(token => !token.balance.eq(0))
+                      .map(token => token.symbol)
+                      .sort()}
                     onChange={readOnly ? void 0 : this.onAmountChange}
                   />
                   <GasField value={gasLimit} onChange={readOnly ? void 0 : this.onGasChange} />
@@ -251,9 +260,16 @@ export class SendTransaction extends React.Component {
   };
 
   onAmountChange = (value: string, unit: string) => {
-    // TODO: tokens
+    // TODO sub gas for eth
     if (value === 'everything') {
-      value = this.props.balance.toString();
+      if (unit === 'ether') {
+        value = this.props.balance.toString();
+      }
+      const token = this.props.tokenBalances.find(token => token.symbol === unit);
+      if (!token) {
+        return;
+      }
+      value = token.balance.toString();
     }
     this.setState({
       value,
@@ -265,7 +281,8 @@ export class SendTransaction extends React.Component {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-    balance: state.wallet.balance
+    balance: state.wallet.balance,
+    tokenBalances: getTokenBalances(state)
   };
 }
 
