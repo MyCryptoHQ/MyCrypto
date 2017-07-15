@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
+import PrintableWallet from 'components/PrintableWallet';
 
 export default class PaperWallet extends Component {
   static propTypes = {
     // State
-    privateKey: PropTypes.node,
+    privateKey: PropTypes.string,
+    address: PropTypes.string,
     // Actions
     continueToUnlockWallet: PropTypes.func
   };
 
-  showPaperWallet = () => {
-    alert('Implement me!');
-  };
-
-  continue = () => {
-    alert('Implement me!');
-  };
-
   render() {
-    const { privateKey, continueToUnlockWallet } = this.props;
+    const { privateKey, address, continueToUnlockWallet } = this.props;
 
     return (
-      <div>
+      <div className="col-sm-8 col-sm-offset-2">
         {/* Private Key */}
         <h1>
           {translate('GEN_Label_5')}
@@ -34,7 +28,6 @@ export default class PaperWallet extends Component {
           className="form-control"
           type="text"
           readOnly="readonly"
-          style={{ maxWidth: '50em', margin: '0 auto' }}
         />
         <br />
 
@@ -42,16 +35,7 @@ export default class PaperWallet extends Component {
         <h1>
           {translate('x_Print')}
         </h1>
-        <a
-          tabIndex="0"
-          aria-label={translate('x_Print')}
-          aria-describedby="x_PrintDesc"
-          role="button"
-          className="btn btn-lg btn-primary"
-          onClick={this.showPaperWallet}
-        >
-          {translate('x_Print')}
-        </a>
+        <PrintableWallet privateKey={privateKey} address={address} />
         <br />
         <br />
 

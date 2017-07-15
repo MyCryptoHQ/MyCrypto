@@ -15,11 +15,9 @@ class GenerateWallet extends Component {
   static propTypes = {
     // state
     activeStep: PropTypes.string,
-    generateWalletPassword: PropTypes.object,
-    hasDownloadedWalletFile: PropTypes.bool,
-    generateWalletFile: PropTypes.bool,
-    canProceedToPaper: PropTypes.bool,
-    keyStore: PropTypes.object,
+    walletFile: PropTypes.object,
+    privateKey: PropTypes.string,
+    address: PropTypes.string,
     // actions
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func,
@@ -42,7 +40,7 @@ class GenerateWallet extends Component {
         break;
 
       case 'paper':
-        content = <PaperWallet {...this.props} privateKey="Implement me" />;
+        content = <PaperWallet {...this.props} />;
         break;
 
       case 'unlock':
@@ -72,10 +70,10 @@ function mapStateToProps(state) {
   return {
     generateWalletPassword: state.form.generateWalletPassword,
     activeStep: state.generateWallet.activeStep,
-    generateWalletFile: state.generateWallet.generateWalletFile,
     hasDownloadedWalletFile: state.generateWallet.hasDownloadedWalletFile,
-    canProceedToPaper: state.generateWallet.canProceedToPaper,
-    keyStore: state.generateWallet.keyStore
+    privateKey: state.generateWallet.privateKey,
+    address: state.generateWallet.address,
+    walletFile: state.generateWallet.walletFile
   };
 }
 

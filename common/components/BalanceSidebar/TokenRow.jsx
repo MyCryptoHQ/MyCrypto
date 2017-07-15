@@ -34,7 +34,9 @@ export default class TokenRow extends React.Component {
               onClick={this.onRemove}
             />}
           <span>
-            {showLongBalance ? balance.toString() : formatNumber(balance)}
+            {showLongBalance
+              ? balance.toString()
+              : formatNumber(balance)}
           </span>
         </td>
         <td>
