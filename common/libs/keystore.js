@@ -11,6 +11,14 @@ export const scryptSettings = {
 
 export const kdf = 'scrypt';
 
+export function genNewPkey(): Buffer {
+  return randomBytes(32);
+}
+
+export function pkeyToAddress(pkey: Buffer): string {
+  return publicToAddress(privateToPublic(pkey)).toString('hex');
+}
+
 export function pkeyToKeystore(pkey: Buffer, password: string) {
   const salt = randomBytes(32);
   const iv = randomBytes(16);
@@ -48,7 +56,7 @@ export function pkeyToKeystore(pkey: Buffer, password: string) {
     id: uuid.v4({
       random: randomBytes(16)
     }),
-    address: publicToAddress(privateToPublic(pkey)).toString('hex'),
+    address: pkeyToAddress(pkey),
     Crypto: {
       ciphertext: ciphertext.toString('hex'),
       cipherparams: {
@@ -68,7 +76,7 @@ export function getV3Filename(pkey: Buffer) {
     'UTC--',
     ts.toJSON().replace(/:/g, '-'),
     '--',
-    publicToAddress(privateToPublic(pkey)).toString('hex')
+    pkeyToAddress(pkey)
   ].join('');
 }
 
@@ -77,8 +85,7 @@ export type WalletFile = {
   blobURI: string
 };
 
-export function genNewKeystore(password: string): WalletFile {
-  let pkey = randomBytes(32);
+export function genNewKeystore(pkey: Buffer, password: string): WalletFile {
   let blobEnc = makeBlob(
     'text/json;charset=UTF-8',
     pkeyToKeystore(pkey, password)

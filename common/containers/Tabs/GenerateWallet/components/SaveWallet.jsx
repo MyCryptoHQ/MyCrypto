@@ -5,7 +5,7 @@ import translate from 'translations';
 export default class SaveWallet extends Component {
   static propTypes = {
     // state
-    keyStore: PropTypes.object.isRequired,
+    walletFile: PropTypes.object.isRequired,
     hasDownloadedWalletFile: PropTypes.bool,
     // actions
     downloadUTCGenerateWallet: PropTypes.func,
@@ -14,7 +14,7 @@ export default class SaveWallet extends Component {
 
   render() {
     const {
-      keyStore,
+      walletFile,
       hasDownloadedWalletFile,
       downloadUTCGenerateWallet,
       confirmContinueToPaperGenerateWallet
@@ -44,8 +44,8 @@ export default class SaveWallet extends Component {
             className="btn btn-primary btn-block"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
             aria-describedby="x_KeystoreDesc"
-            download={keyStore.fileName}
-            href={keyStore.blobURI}
+            download={walletFile.fileName}
+            href={walletFile.blobURI}
             onClick={downloadUTCGenerateWallet}
           >
             {translate('x_Download')}
