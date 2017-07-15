@@ -159,7 +159,6 @@ export default class PrintableWallet extends Component {
         float: 'left',
         width: '42px',
         height: '42px',
-        backgroundImage: `url('${makeIdenticon(address)}')`,
         backgroundSize: '100%',
         borderRadius: '50%',
         boxShadow: `
@@ -211,7 +210,7 @@ export default class PrintableWallet extends Component {
         </div>
 
         <div style={styles.identiconContainer}>
-          <div style={styles.identiconImg} />
+          <img src={makeIdenticon(address)} style={styles.identiconImg} />
           <p style={styles.identiconText}>
             Always look for this icon when sending to this wallet
           </p>
