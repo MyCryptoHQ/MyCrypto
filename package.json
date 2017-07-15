@@ -54,15 +54,18 @@
     "friendly-errors-webpack-plugin": "^1.4.0",
     "glob": "^7.1.1",
     "html-webpack-plugin": "^2.28.0",
+    "husky": "^0.14.3",
     "image-webpack-loader": "^3.3.1",
     "isomorphic-style-loader": "^1.1.0",
     "jest": "^19.0.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
+    "lint-staged": "^4.0.1",
     "minimist": "^1.2.0",
     "node-sass": "^4.5.0",
     "nodemon": "^1.11.0",
     "null-loader": "^0.1.1",
+    "prettier": "^1.5.3",
     "react-addons-perf": "^15.4.2",
     "react-hot-loader": "^3.0.0-beta.6",
     "redux-devtools-extension": "^2.13.0",
@@ -82,6 +85,13 @@
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "dev": "node webpack_config/server.js",
     "flow": "flow",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
