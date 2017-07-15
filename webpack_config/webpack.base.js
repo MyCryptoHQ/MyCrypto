@@ -20,19 +20,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.json', '.scss', '.less'],
-    alias: {
-      actions: `${config.srcPath}/actions/`,
-      api: `${config.srcPath}/api/`,
-      reducers: `${config.srcPath}/reducers/`,
-      components: `${config.srcPath}/components/`,
-      containers: `${config.srcPath}/containers/`,
-      styles: `${config.srcPath}/styles/`,
-      less_vars: `${config.srcPath}/styles/etherwallet-variables.less`
-    },
-    // FIXME why aliases then?
     modules: [
       // places where to search for required modules
-      _.cwd('common'),
+      config.srcPath,
       _.cwd('node_modules'),
       _.cwd('./')
     ]

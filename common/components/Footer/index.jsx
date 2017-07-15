@@ -3,18 +3,21 @@ import translate, { getTranslators } from 'translations';
 import { donationAddressMap } from 'config/data';
 import logo from 'assets/images/logo-myetherwallet.svg';
 
+import './index.scss';
+
 export default class Footer extends Component {
   render() {
     const translators = getTranslators();
     return (
-      <footer role="contentinfo" aria-label="footer">
+      <footer className="Footer" role="contentinfo" aria-label="footer">
         <div className="container">
           <section className="row">
             <section className="row">
-              <div className="col-sm-3 footer-1">
+              <div className="Footer-about col-sm-3">
                 <p aria-hidden="true">
                   <a href="/">
                     <img
+                      className="Footer-about-logo"
                       src={logo}
                       height="55px"
                       width="auto"
@@ -43,7 +46,8 @@ export default class Footer extends Component {
                 </p>
                 <br />
               </div>
-              <div className="col-sm-6 footer-2">
+
+              <div className="Footer-info col-sm-6">
                 <h5>
                   <i aria-hidden="true">💝</i>
                   {translate('FOOTER_2')}
@@ -107,7 +111,8 @@ export default class Footer extends Component {
                     </li>
                   </ul>}
               </div>
-              <div className="col-sm-3 footer-3">
+
+              <div className="Footer-links col-sm-3">
                 <h5>
                   <i aria-hidden="true">🌎</i> On the Web
                 </h5>
