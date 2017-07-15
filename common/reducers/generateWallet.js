@@ -11,7 +11,7 @@ import { WalletFile } from 'libs/keystore';
 export type State = {
   activeStep: string,
   hasDownloadedWalletFile: boolean,
-  privateKey: Buffer,
+  privateKey: string,
   address: string,
   walletFile: WalletFile
 };
