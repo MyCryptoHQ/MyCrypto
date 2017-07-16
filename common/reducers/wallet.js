@@ -37,7 +37,10 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
   return { ...state, tokens: { ...state.tokens, ...action.payload } };
 }
 
-export function wallet(state: State = initialState, action: WalletAction): State {
+export function wallet(
+  state: State = initialState,
+  action: WalletAction
+): State {
   switch (action.type) {
     case 'WALLET_SET':
       return setWallet(state, action);

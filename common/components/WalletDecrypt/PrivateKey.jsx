@@ -2,9 +2,10 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import { isValidPrivKey } from 'libs/validators';
-import type { PrivateKeyUnlockParams } from 'libs/wallet/privkey';
 
-export type PrivateKeyValue = PrivateKeyUnlockParams & {
+export type PrivateKeyValue = {
+  key: string,
+  password: string,
   valid: boolean
 };
 
@@ -17,8 +18,8 @@ function fixPkey(key) {
 
 export default class PrivateKeyDecrypt extends Component {
   props: {
-    value: PrivateKeyUnlockParams,
-    onChange: (value: PrivateKeyUnlockParams) => void,
+    value: PrivateKeyValue,
+    onChange: (value: PrivateKeyValue) => void,
     onUnlock: () => void
   };
 

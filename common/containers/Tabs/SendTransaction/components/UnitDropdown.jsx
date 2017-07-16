@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React from "react";
 
 class Option extends React.Component {
   props: {
@@ -11,7 +11,7 @@ class Option extends React.Component {
     const { value, active } = this.props;
     return (
       <li>
-        <a className={active ? 'active' : ''} onClick={this.onChange}>
+        <a className={active ? "active" : ""} onClick={this.onChange}>
           {value}
         </a>
       </li>
@@ -55,7 +55,12 @@ export default class UnitDropdown extends React.Component {
           !isReadonly &&
           <ul className="dropdown-menu dropdown-menu-right">
             {options.map(o =>
-              <Option key={o} active={value === o} value={o} onChange={this.onChange} />
+              <Option
+                key={o}
+                active={value === o}
+                value={o}
+                onChange={this.onChange}
+              />
             )}
           </ul>}
       </div>

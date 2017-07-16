@@ -34,7 +34,8 @@ export default class AddCustomTokenForm extends React.Component {
         </label>
         <input
           className={
-            'form-control input-sm ' + (this.state.symbol !== '' ? 'is-valid' : 'is-invalid')
+            'form-control input-sm ' +
+            (this.state.symbol !== '' ? 'is-valid' : 'is-invalid')
           }
           type="text"
           name="symbol"
@@ -47,7 +48,9 @@ export default class AddCustomTokenForm extends React.Component {
         <input
           className={
             'form-control input-sm ' +
-            (isPositiveIntegerOrZero(parseInt(this.state.decimal)) ? 'is-valid' : 'is-invalid')
+            (isPositiveIntegerOrZero(parseInt(this.state.decimal))
+              ? 'is-valid'
+              : 'is-invalid')
           }
           type="text"
           name="decimal"
@@ -55,7 +58,9 @@ export default class AddCustomTokenForm extends React.Component {
           onChange={this.onFieldChange}
         />
         <div
-          className={`btn btn-primary btn-sm ${this.isValid() ? '' : 'disabled'}`}
+          className={`btn btn-primary btn-sm ${this.isValid()
+            ? ''
+            : 'disabled'}`}
           onClick={this.onSave}
         >
           {translate('x_Save')}
@@ -72,7 +77,7 @@ export default class AddCustomTokenForm extends React.Component {
     if (!isValidETHAddress(address)) {
       return false;
     }
-    if (this.state.symbol === '') {
+    if (symbol === '') {
       return false;
     }
 

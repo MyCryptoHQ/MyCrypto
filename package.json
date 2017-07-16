@@ -11,6 +11,7 @@
     "idna-uts46": "^1.1.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
+    "qrcode": "^0.8.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
@@ -20,7 +21,9 @@
     "redux-form": "^6.6.3",
     "redux-logger": "^3.0.1",
     "redux-saga": "^0.15.3",
+    "scryptsy": "^2.0.0",
     "store2": "^2.5.0",
+    "uuid": "^3.1.0",
     "wallet-address-validator": "^0.1.0",
     "whatwg-fetch": "^2.0.2"
   },

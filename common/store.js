@@ -1,4 +1,8 @@
-import { saveState, loadState, loadStatePropertyOrEmptyObject } from 'utils/localStorage';
+import {
+  saveState,
+  loadState,
+  loadStatePropertyOrEmptyObject
+} from 'utils/localStorage';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';

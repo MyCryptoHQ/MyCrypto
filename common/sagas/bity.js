@@ -9,10 +9,9 @@ import {
   SWAP_LOAD_BITY_RATES,
   SWAP_STOP_LOAD_BITY_RATES
 } from 'actions/swapConstants';
-import type { UnlockPrivateKeyAction } from 'actions/wallet';
 import { getAllRates } from 'api/bity';
 
-export function* loadBityRates(action?: any): Generator<Effect, void, any> {
+export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
   try {
     while (true) {
       // TODO - yield put(actions.requestStart()) if we want to display swap refresh status

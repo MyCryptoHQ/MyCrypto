@@ -60,7 +60,9 @@ export class BalanceSidebar extends React.Component {
         >
           <li>
             <span className="mono wrap">
-              {this.state.showLongBalance ? balance.toString() : formatNumber(balance)}
+              {this.state.showLongBalance
+                ? balance.toString()
+                : formatNumber(balance)}
             </span>
             {` ${network.name}`}
           </li>
@@ -80,7 +82,10 @@ export class BalanceSidebar extends React.Component {
               {!!blockExplorer &&
                 <li>
                   <a
-                    href={blockExplorer.address.replace('[[address]]', wallet.getAddress())}
+                    href={blockExplorer.address.replace(
+                      '[[address]]',
+                      wallet.getAddress()
+                    )}
                     target="_blank"
                   >
                     {`${network.name} (${blockExplorer.name})`}
@@ -89,7 +94,10 @@ export class BalanceSidebar extends React.Component {
               {!!tokenExplorer &&
                 <li>
                   <a
-                    href={tokenExplorer.address.replace('[[address]]', wallet.getAddress())}
+                    href={tokenExplorer.address.replace(
+                      '[[address]]',
+                      wallet.getAddress()
+                    )}
                     target="_blank"
                   >
                     {`Tokens (${tokenExplorer.name})`}
@@ -106,11 +114,17 @@ export class BalanceSidebar extends React.Component {
             <ul className="account-info">
               {rates['BTC'] &&
                 <li>
-                  <span className="mono wrap">{formatNumber(balance.times(rates['BTC']))}</span> BTC
+                  <span className="mono wrap">
+                    {formatNumber(balance.times(rates['BTC']))}
+                  </span>{' '}
+                  BTC
                 </li>}
               {rates['REP'] &&
                 <li>
-                  <span className="mono wrap">{formatNumber(balance.times(rates['REP']))}</span> REP
+                  <span className="mono wrap">
+                    {formatNumber(balance.times(rates['REP']))}
+                  </span>{' '}
+                  REP
                 </li>}
               {rates['EUR'] &&
                 <li>
@@ -135,7 +149,10 @@ export class BalanceSidebar extends React.Component {
                 </li>}
               {rates['CHF'] &&
                 <li>
-                  <span className="mono wrap">{formatNumber(balance.times(rates['CHF']))}</span> CHF
+                  <span className="mono wrap">
+                    {formatNumber(balance.times(rates['CHF']))}
+                  </span>{' '}
+                  CHF
                 </li>}
             </ul>
             <Link to={'swap'} className="btn btn-primary btn-sm">

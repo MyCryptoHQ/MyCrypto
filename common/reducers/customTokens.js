@@ -17,11 +17,17 @@ function addCustomToken(state: State, action: AddCustomTokenAction): State {
   return [...state, action.payload];
 }
 
-function removeCustomToken(state: State, action: RemoveCustomTokenAction): State {
+function removeCustomToken(
+  state: State,
+  action: RemoveCustomTokenAction
+): State {
   return state.filter(token => token.symbol !== action.payload);
 }
 
-export function customTokens(state: State = initialState, action: CustomTokenAction): State {
+export function customTokens(
+  state: State = initialState,
+  action: CustomTokenAction
+): State {
   switch (action.type) {
     case 'CUSTOM_TOKEN_ADD':
       return addCustomToken(state, action);

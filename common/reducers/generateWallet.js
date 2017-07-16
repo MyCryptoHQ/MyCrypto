@@ -3,21 +3,23 @@ import {
   GENERATE_WALLET_SHOW_PASSWORD,
   GENERATE_WALLET_FILE,
   GENERATE_WALLET_DOWNLOAD_FILE,
-  GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER
+  GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
+  RESET_GENERATE_WALLET
 } from 'actions/generateWalletConstants';
+import type PrivateKeyWallet from 'libs/wallet/privkey';
 
 export type State = {
-  showPassword: boolean,
-  generateWalletFile: boolean,
+  activeStep: string,
   hasDownloadedWalletFile: boolean,
-  canProceedToPaper: boolean
+  wallet: ?PrivateKeyWallet,
+  password: ?string
 };
 
 const initialState: State = {
-  showPassword: false,
-  generateWalletFile: false,
+  activeStep: 'password',
   hasDownloadedWalletFile: false,
-  canProceedToPaper: false
+  wallet: null,
+  password: null
 };
 
 export function generateWallet(state: State = initialState, action): State {
@@ -25,14 +27,16 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_SHOW_PASSWORD: {
       return {
         ...state,
-        showPassword: !state.showPassword
+        activeStep: 'password'
       };
     }
 
     case GENERATE_WALLET_FILE: {
       return {
         ...state,
-        generateWalletFile: true
+        wallet: action.wallet,
+        password: action.password,
+        activeStep: 'download'
       };
     }
 
@@ -46,7 +50,14 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER: {
       return {
         ...state,
-        canProceedToPaper: true
+        activeStep: 'paper'
+      };
+    }
+
+    case RESET_GENERATE_WALLET: {
+      return {
+        ...state,
+        ...initialState
       };
     }
 

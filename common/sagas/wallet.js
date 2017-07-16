@@ -52,7 +52,9 @@ function* updateTokenBalances() {
         if (tokenBalances[i].error || tokenBalances[i].result === '0x') {
           return acc;
         }
-        let balance = Big(Number(tokenBalances[i].result)).div(Big(10).pow(t.decimal)); // definitely not safe
+        let balance = Big(Number(tokenBalances[i].result)).div(
+          Big(10).pow(t.decimal)
+        ); // definitely not safe
         acc[t.symbol] = balance;
         return acc;
       }, {})
@@ -65,12 +67,14 @@ function* updateBalances() {
   yield fork(updateTokenBalances);
 }
 
-export function* unlockPrivateKey(action?: UnlockPrivateKeyAction): Generator<Effect, void, any> {
+export function* unlockPrivateKey(
+  action?: UnlockPrivateKeyAction
+): Generator<Effect, void, any> {
   if (!action) return;
   let wallet = null;
 
   try {
-    wallet = new PrivKeyWallet(action.payload);
+    wallet = new PrivKeyWallet(Buffer.from(action.payload.key, 'hex'));
   } catch (e) {
     yield put(showNotification('danger', translate('INVALID_PKEY')));
     return;

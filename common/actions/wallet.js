@@ -1,7 +1,11 @@
 // @flow
-import type { PrivateKeyUnlockParams } from 'libs/wallet/privkey';
 import BaseWallet from 'libs/wallet/base';
 import Big from 'big.js';
+
+export type PrivateKeyUnlockParams = {
+  key: string,
+  password: string
+};
 
 export type UnlockPrivateKeyAction = {
   type: 'WALLET_UNLOCK_PRIVATE_KEY',
@@ -31,7 +35,9 @@ export type WalletAction =
   | SetBalanceAction
   | SetTokenBalancesAction;
 
-export function unlockPrivateKey(value: PrivateKeyUnlockParams): UnlockPrivateKeyAction {
+export function unlockPrivateKey(
+  value: PrivateKeyUnlockParams
+): UnlockPrivateKeyAction {
   return {
     type: 'WALLET_UNLOCK_PRIVATE_KEY',
     payload: value
@@ -52,7 +58,9 @@ export function setBalance(value: Big): SetBalanceAction {
   };
 }
 
-export function setTokenBalances(payload: { [string]: Big }): SetTokenBalancesAction {
+export function setTokenBalances(payload: {
+  [string]: Big
+}): SetTokenBalancesAction {
   return {
     type: 'WALLET_SET_TOKEN_BALANCES',
     payload

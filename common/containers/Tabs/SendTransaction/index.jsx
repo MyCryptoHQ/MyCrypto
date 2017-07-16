@@ -85,7 +85,15 @@ export class SendTransaction extends React.Component {
     const unitReadable = 'UNITREADABLE';
     const nodeUnit = 'NODEUNIT';
     const hasEnoughBalance = false;
-    const { to, value, unit, gasLimit, data, readOnly, hasQueryString } = this.state;
+    const {
+      to,
+      value,
+      unit,
+      gasLimit,
+      data,
+      readOnly,
+      hasQueryString
+    } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
 
     // tokens
@@ -121,7 +129,8 @@ export class SendTransaction extends React.Component {
                     <div className="row form-group">
                       <div className="alert alert-danger col-xs-12 clearfix">
                         <strong>
-                          Warning! You do not have enough funds to complete this swap.
+                          Warning! You do not have enough funds to complete this
+                          swap.
                         </strong>
                         <br />
                         Please add more funds or access a different wallet.
@@ -147,14 +156,23 @@ export class SendTransaction extends React.Component {
                       .sort()}
                     onChange={readOnly ? void 0 : this.onAmountChange}
                   />
-                  <GasField value={gasLimit} onChange={readOnly ? void 0 : this.onGasChange} />
+                  <GasField
+                    value={gasLimit}
+                    onChange={readOnly ? void 0 : this.onGasChange}
+                  />
                   {unit === 'ether' &&
-                    <DataField value={data} onChange={readOnly ? void 0 : this.onDataChange} />}
+                    <DataField
+                      value={data}
+                      onChange={readOnly ? void 0 : this.onDataChange}
+                    />}
                   <CustomMessage message={customMessage} />
 
                   <div className="row form-group">
                     <div className="col-xs-12 clearfix">
-                      <a className="btn btn-info btn-block" onClick={this.generateTx}>
+                      <a
+                        className="btn btn-info btn-block"
+                        onClick={this.generateTx}
+                      >
                         {translate('SEND_generate')}
                       </a>
                     </div>
@@ -265,7 +283,9 @@ export class SendTransaction extends React.Component {
       if (unit === 'ether') {
         value = this.props.balance.toString();
       }
-      const token = this.props.tokenBalances.find(token => token.symbol === unit);
+      const token = this.props.tokenBalances.find(
+        token => token.symbol === unit
+      );
       if (!token) {
         return;
       }

@@ -10,7 +10,14 @@ type Props = {
   title: string,
   buttons: {
     text: string,
-    type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link',
+    type?:
+      | 'default'
+      | 'primary'
+      | 'success'
+      | 'info'
+      | 'warning'
+      | 'danger'
+      | 'link',
     onClick: () => void
   }[],
   handleClose: () => void,

@@ -27,7 +27,12 @@ export default class TokenBalances extends React.Component {
         <table className="account-info">
           <tbody>
             {tokens
-              .filter(token => !token.balance.eq(0) || token.custom || this.state.showAllTokens)
+              .filter(
+                token =>
+                  !token.balance.eq(0) ||
+                  token.custom ||
+                  this.state.showAllTokens
+              )
               .map(token =>
                 <TokenRow
                   key={token.symbol}
@@ -39,15 +44,22 @@ export default class TokenBalances extends React.Component {
               )}
           </tbody>
         </table>
-        <a className="btn btn-default btn-sm" onClick={this.toggleShowAllTokens}>
+        <a
+          className="btn btn-default btn-sm"
+          onClick={this.toggleShowAllTokens}
+        >
           {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
         </a>{' '}
-        <a className="btn btn-default btn-sm" onClick={this.toggleShowCustomTokenForm}>
+        <a
+          className="btn btn-default btn-sm"
+          onClick={this.toggleShowCustomTokenForm}
+        >
           <span>
             {translate('SEND_custom')}
           </span>
         </a>
-        {this.state.showCustomTokenForm && <AddCustomTokenForm onSave={this.addCustomToken} />}
+        {this.state.showCustomTokenForm &&
+          <AddCustomTokenForm onSave={this.addCustomToken} />}
       </section>
     );
   }
