@@ -13,12 +13,12 @@ class GenerateWallet extends Component {
   }
 
   static propTypes = {
-    // state
+    // Store state
     activeStep: PropTypes.string,
     walletFile: PropTypes.object,
     privateKey: PropTypes.string,
     address: PropTypes.string,
-    // actions
+    // Actions
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func,
     downloadUTCGenerateWallet: PropTypes.func,

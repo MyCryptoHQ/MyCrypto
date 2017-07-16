@@ -16,10 +16,10 @@ const required = value => (value ? undefined : 'Required');
 
 class EnterPassword extends Component {
   static propTypes = {
-    // state
+    // Store state
     generateWalletPassword: PropTypes.object,
     showPassword: PropTypes.bool,
-    // actions
+    // Actions
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func
   };
@@ -69,7 +69,6 @@ class EnterPassword extends Component {
           >
             {translate('NAV_GenerateWallet')}
           </button>
-
         </div>
       </div>
     );

@@ -5,7 +5,7 @@ import PrintableWallet from 'components/PrintableWallet';
 
 export default class PaperWallet extends Component {
   static propTypes = {
-    // State
+    // Store state
     privateKey: PropTypes.string,
     address: PropTypes.string,
     // Actions

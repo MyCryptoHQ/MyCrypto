@@ -4,10 +4,10 @@ import translate from 'translations';
 
 export default class SaveWallet extends Component {
   static propTypes = {
-    // state
+    // Store state
     walletFile: PropTypes.object.isRequired,
     hasDownloadedWalletFile: PropTypes.bool,
-    // actions
+    // Actions
     downloadUTCGenerateWallet: PropTypes.func,
     confirmContinueToPaperGenerateWallet: PropTypes.func
   };
