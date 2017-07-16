@@ -1,7 +1,7 @@
 // @flow
-import BaseNode from './base';
-import { randomBytes } from 'crypto';
-import Big from 'big.js';
+import BaseNode from "./base";
+import { randomBytes } from "crypto";
+import Big from "big.js";
 
 type JsonRpcSuccess = {|
   id: string,
@@ -21,8 +21,6 @@ type JsonRpcResponse = JsonRpcSuccess | JsonRpcError;
 // FIXME
 type EthCall = any;
 
-function isError(response) {}
-
 export default class RPCNode extends BaseNode {
   endpoint: string;
   constructor(endpoint: string) {
@@ -31,7 +29,7 @@ export default class RPCNode extends BaseNode {
   }
 
   async getBalance(address: string): Promise<Big> {
-    return this.post('eth_getBalance', [address, 'pending']).then(response => {
+    return this.post("eth_getBalance", [address, "pending"]).then(response => {
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -45,10 +43,10 @@ export default class RPCNode extends BaseNode {
     return this.batchPost(
       calls.map(params => {
         return {
-          id: randomBytes(16).toString('hex'),
-          jsonrpc: '2.0',
-          method: 'eth_call',
-          params: [params, 'pending']
+          id: randomBytes(16).toString("hex"),
+          jsonrpc: "2.0",
+          method: "eth_call",
+          params: [params, "pending"]
         };
       })
     );
@@ -56,13 +54,13 @@ export default class RPCNode extends BaseNode {
 
   async post(method: string, params: string[]): Promise<JsonRpcResponse> {
     return fetch(this.endpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        id: randomBytes(16).toString('hex'),
-        jsonrpc: '2.0',
+        id: randomBytes(16).toString("hex"),
+        jsonrpc: "2.0",
         method,
         params
       })
@@ -72,9 +70,9 @@ export default class RPCNode extends BaseNode {
   // FIXME
   async batchPost(requests: any[]): Promise<JsonRpcResponse[]> {
     return fetch(this.endpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(requests)
     }).then(r => r.json());

@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import PropTypes from 'prop-types';
-import translate from 'translations';
-import QRCode from 'qrcode';
-import { toDataUrl as makeIdenticon } from 'ethereum-blockies';
-import printElement from 'utils/printElement';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import translate from "translations";
+import QRCode from "qrcode";
+import { toDataUrl as makeIdenticon } from "ethereum-blockies";
+import printElement from "utils/printElement";
 
-import ethLogo from 'assets/images/logo-ethereum-1.png';
-import sidebarImg from 'assets/images/print-sidebar.png';
-import notesBg from 'assets/images/notes-bg.png';
+import ethLogo from "assets/images/logo-ethereum-1.png";
+import sidebarImg from "assets/images/print-sidebar.png";
+import notesBg from "assets/images/notes-bg.png";
 
 const walletWidth = 680;
 const walletHeight = 280;
@@ -26,17 +25,17 @@ export default class PrintableWallet extends Component {
 
   componentDidMount() {
     // Start generating QR codes immediately
-    this._generateQrCode(this.props.privateKey, 'qrCodePkey');
-    this._generateQrCode(this.props.address, 'qrCodeAddress');
+    this._generateQrCode(this.props.privateKey, "qrCodePkey");
+    this._generateQrCode(this.props.address, "qrCodeAddress");
   }
 
   componentWillReceiveProps(nextProps) {
     // Regenerate QR codes if props change
     if (nextProps.privateKey !== this.props.privateKey) {
-      this._generateQrCode(nextProps.privateKey, 'qrCodePkey');
+      this._generateQrCode(nextProps.privateKey, "qrCodePkey");
     }
     if (nextProps.address !== this.props.address) {
-      this._generateQrCode(nextProps.address, 'qrCodeAddress');
+      this._generateQrCode(nextProps.address, "qrCodeAddress");
     }
   }
 
@@ -45,11 +44,11 @@ export default class PrintableWallet extends Component {
       value,
       {
         color: {
-          dark: '#000',
-          light: '#fff'
+          dark: "#000",
+          light: "#fff"
         },
         margin: 0,
-        errorCorrectionLevel: 'H'
+        errorCorrectionLevel: "H"
       },
       (err, url) => {
         this.setState({ [stateKey]: url });
@@ -62,7 +61,7 @@ export default class PrintableWallet extends Component {
       popupFeatures: {
         width: walletWidth + 60,
         height: walletHeight + 60,
-        scrollbars: 'no'
+        scrollbars: "no"
       },
       styles: `
         * {
@@ -84,66 +83,66 @@ export default class PrintableWallet extends Component {
     const { qrCodePkey, qrCodeAddress } = this.state;
     const styles = {
       container: {
-        position: 'relative',
-        margin: '0 auto',
+        position: "relative",
+        margin: "0 auto",
         width: `${walletWidth}px`,
         height: `${walletHeight}px`,
-        border: '1px solid #163151',
-        userSelect: 'none',
-        cursor: 'default'
+        border: "1px solid #163151",
+        userSelect: "none",
+        cursor: "default"
       },
 
       // Images
       sidebar: {
-        float: 'left',
-        height: '100%',
-        width: 'auto'
+        float: "left",
+        height: "100%",
+        width: "auto"
       },
       ethLogo: {
-        position: 'absolute',
-        left: '86px',
-        height: '100%',
-        width: 'auto',
-        zIndex: '-1'
+        position: "absolute",
+        left: "86px",
+        height: "100%",
+        width: "auto",
+        zIndex: "-1"
       },
 
       // Blocks / QR Codes
       block: {
-        position: 'relative',
-        float: 'left',
-        width: '27.5%',
-        padding: '20px'
+        position: "relative",
+        float: "left",
+        width: "27.5%",
+        padding: "20px"
       },
       blockText: {
-        position: 'absolute',
-        top: '50%',
-        left: '100%',
-        width: '100%',
+        position: "absolute",
+        top: "50%",
+        left: "100%",
+        width: "100%",
         margin: 0,
-        transform: 'translate(-50%, -50%) rotate(-90deg)',
-        fontSize: '13px',
-        fontWeight: '600',
-        color: '#0b7290',
-        textAlign: 'center',
-        textTransform: 'uppercase',
-        letterSpacing: '1px'
+        transform: "translate(-50%, -50%) rotate(-90deg)",
+        fontSize: "13px",
+        fontWeight: "600",
+        color: "#0b7290",
+        textAlign: "center",
+        textTransform: "uppercase",
+        letterSpacing: "1px"
       },
       qrCode: {
-        width: '150px',
-        height: '150px',
-        backgroundSize: '100%'
+        width: "150px",
+        height: "150px",
+        backgroundSize: "100%"
       },
 
       // Address / private key info
       infoContainer: {
-        float: 'left',
-        width: '85%',
-        padding: '0 20px'
+        float: "left",
+        width: "85%",
+        padding: "0 20px"
       },
       infoText: {
-        margin: '0 0 8px',
-        textAlign: 'left',
-        fontSize: '14px',
+        margin: "0 0 8px",
+        textAlign: "left",
+        fontSize: "14px",
         fontFamily: 'Menlo, Monaco, Consolas, "Courier New", monospace',
         fontWeight: 300
       },
@@ -152,28 +151,28 @@ export default class PrintableWallet extends Component {
       },
 
       identiconContainer: {
-        position: 'absolute',
-        right: '15px',
-        bottom: '45px'
+        position: "absolute",
+        right: "15px",
+        bottom: "45px"
       },
       identiconImg: {
-        float: 'left',
-        width: '42px',
-        height: '42px',
-        backgroundSize: '100%',
-        borderRadius: '50%',
+        float: "left",
+        width: "42px",
+        height: "42px",
+        backgroundSize: "100%",
+        borderRadius: "50%",
         boxShadow: `
           inset rgba(255, 255, 255, 0.5) 0 2px 2px,
           inset rgba(0, 0, 0, 0.6) 0 -1px 8px
         `
       },
       identiconText: {
-        float: 'left',
-        width: '130px',
-        padding: '0 5px',
-        margin: '12px 0 0',
-        fontSize: '9px',
-        textAlign: 'center'
+        float: "left",
+        width: "130px",
+        padding: "0 5px",
+        margin: "12px 0 0",
+        fontSize: "9px",
+        textAlign: "center"
       }
     };
 
@@ -223,20 +222,19 @@ export default class PrintableWallet extends Component {
 
   render() {
     const qrCodesReady = this.state.qrCodePkey && this.state.qrCodeAddress;
-    const btnDisabled = qrCodesReady ? '' : 'btn-disabled';
-    const walletContainerStyle = {};
+    const btnDisabled = qrCodesReady ? "" : "btn-disabled";
 
     return (
       <div>
         {this._renderPaperWallet()}
         <a
           role="button"
-          aria-label={translate('x_Print')}
+          aria-label={translate("x_Print")}
           aria-describedby="x_PrintDesc"
           className={`btn btn-lg btn-primary ${btnDisabled}`}
           onClick={this.print}
         >
-          {translate('x_Print')}
+          {translate("x_Print")}
         </a>
       </div>
     );

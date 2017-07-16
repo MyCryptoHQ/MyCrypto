@@ -1,18 +1,17 @@
 // @flow
 
-import { call, put, fork, take, cancel, cancelled } from 'redux-saga/effects';
+import { call, put, fork, take, cancel, cancelled } from "redux-saga/effects";
 
-import type { Effect } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
-import { updateBityRatesSwap } from 'actions/swap';
+import type { Effect } from "redux-saga/effects";
+import { delay } from "redux-saga";
+import { updateBityRatesSwap } from "actions/swap";
 import {
   SWAP_LOAD_BITY_RATES,
   SWAP_STOP_LOAD_BITY_RATES
-} from 'actions/swapConstants';
-import type { UnlockPrivateKeyAction } from 'actions/wallet';
-import { getAllRates } from 'api/bity';
+} from "actions/swapConstants";
+import { getAllRates } from "api/bity";
 
-export function* loadBityRates(action?: any): Generator<Effect, void, any> {
+export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
   try {
     while (true) {
       // TODO - yield put(actions.requestStart()) if we want to display swap refresh status

@@ -1,28 +1,28 @@
 // @flow
-import React from 'react';
-import { isValidETHAddress, isPositiveIntegerOrZero } from 'libs/validators';
-import translate from 'translations';
+import React from "react";
+import { isValidETHAddress, isPositiveIntegerOrZero } from "libs/validators";
+import translate from "translations";
 
 export default class AddCustomTokenForm extends React.Component {
   props: {
     onSave: ({ address: string, symbol: string, decimal: number }) => void
   };
   state = {
-    address: '',
-    symbol: '',
-    decimal: ''
+    address: "",
+    symbol: "",
+    decimal: ""
   };
 
   render() {
     return (
       <div className="custom-token-fields">
         <label>
-          {translate('TOKEN_Addr')}
+          {translate("TOKEN_Addr")}
         </label>
         <input
           className={
-            'form-control input-sm ' +
-            (isValidETHAddress(this.state.address) ? 'is-valid' : 'is-invalid')
+            "form-control input-sm " +
+            (isValidETHAddress(this.state.address) ? "is-valid" : "is-invalid")
           }
           type="text"
           name="address"
@@ -30,12 +30,12 @@ export default class AddCustomTokenForm extends React.Component {
           onChange={this.onFieldChange}
         />
         <label>
-          {translate('TOKEN_Symbol')}
+          {translate("TOKEN_Symbol")}
         </label>
         <input
           className={
-            'form-control input-sm ' +
-            (this.state.symbol !== '' ? 'is-valid' : 'is-invalid')
+            "form-control input-sm " +
+            (this.state.symbol !== "" ? "is-valid" : "is-invalid")
           }
           type="text"
           name="symbol"
@@ -43,14 +43,14 @@ export default class AddCustomTokenForm extends React.Component {
           onChange={this.onFieldChange}
         />
         <label>
-          {translate('TOKEN_Dec')}
+          {translate("TOKEN_Dec")}
         </label>
         <input
           className={
-            'form-control input-sm ' +
+            "form-control input-sm " +
             (isPositiveIntegerOrZero(parseInt(this.state.decimal))
-              ? 'is-valid'
-              : 'is-invalid')
+              ? "is-valid"
+              : "is-invalid")
           }
           type="text"
           name="decimal"
@@ -59,11 +59,11 @@ export default class AddCustomTokenForm extends React.Component {
         />
         <div
           className={`btn btn-primary btn-sm ${this.isValid()
-            ? ''
-            : 'disabled'}`}
+            ? ""
+            : "disabled"}`}
           onClick={this.onSave}
         >
-          {translate('x_Save')}
+          {translate("x_Save")}
         </div>
       </div>
     );
@@ -77,7 +77,7 @@ export default class AddCustomTokenForm extends React.Component {
     if (!isValidETHAddress(address)) {
       return false;
     }
-    if (this.state.symbol === '') {
+    if (symbol === "") {
       return false;
     }
 
