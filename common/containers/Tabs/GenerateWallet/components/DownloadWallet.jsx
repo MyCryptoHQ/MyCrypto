@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
 import type PrivKeyWallet from 'libs/wallet/privkey';
-import { makeBlob } from 'libs/globalFuncs';
+import { makeBlob } from 'utils/blob';
 
 type Props = {
   wallet: PrivKeyWallet,
