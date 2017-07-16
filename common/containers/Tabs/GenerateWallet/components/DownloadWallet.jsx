@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import translate from 'translations';
 import type PrivKeyWallet from 'libs/wallet/privkey';
 import { makeBlob } from 'utils/blob';
+import { getV3Filename } from 'libs/keystore';
 
 type Props = {
   wallet: PrivKeyWallet,
@@ -112,12 +113,6 @@ export default class DownloadWallet extends Component {
   }
 
   getFilename() {
-    const ts = new Date();
-    return [
-      'UTC--',
-      ts.toJSON().replace(/:/g, '-'),
-      '--',
-      this.props.wallet.getAddress()
-    ].join('');
+    return getV3Filename(this.props.wallet.getAddress());
   }
 }

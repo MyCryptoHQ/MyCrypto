@@ -64,3 +64,8 @@ export function pkeyToKeystore(
     }
   };
 }
+
+export function getV3Filename(address) {
+  const ts = new Date();
+  return ['UTC--', ts.toJSON().replace(/:/g, '-'), '--', address].join('');
+}
