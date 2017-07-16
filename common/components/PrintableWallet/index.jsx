@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import translate from 'translations';
 import QRCode from 'qrcode';
 import { toDataUrl as makeIdenticon } from 'ethereum-blockies';
+import printElement from 'utils/printElement';
 
 import ethLogo from 'assets/images/logo-ethereum-1.png';
 import sidebarImg from 'assets/images/print-sidebar.png';
@@ -44,41 +45,25 @@ export default class PrintableWallet extends Component {
   }
 
   print = () => {
-    const popup = window.open(
-      'about:blank',
-      'printWalletWindow',
-      `width=${walletWidth + 60},height=${walletHeight + 60},scrollbars=no`
-    );
+    printElement(this._renderPaperWallet(), {
+      popupFeatures: {
+        width: walletWidth + 60,
+        height: walletHeight + 60,
+        scrollbars: 'no'
+      },
+      styles: `
+        * {
+          box-sizing: border-box;
+        }
 
-    // We'll save ourselves from re-rendering by just using a ref for the html
-    focus();
-    popup.document.open();
-    popup.document.write(`
-			<html>
-				<head>
-					<style>
-						* {
-							box-sizing: border-box;
-						}
-
-						body {
-							font-family: Lato, sans-serif;
-							font-size: 1rem;
-							line-height: 1.4;
-							margin: 0;
-						}
-					</style>
-					<script>
-						setTimeout(function() {
-							window.print();
-						}, 500);
-					</script>
-				</head>
-				<body>
-					${this._wallet.outerHTML}
-				</body>
-			</html>
-		`);
+        body {
+          font-family: Lato, sans-serif;
+          font-size: 1rem;
+          line-height: 1.4;
+          margin: 0;
+        }
+      `
+    });
   };
 
   _renderPaperWallet() {
