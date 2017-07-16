@@ -165,7 +165,7 @@ export default class PrintableWallet extends Component {
     };
 
     return (
-      <div style={styles.container} ref={el => (this._wallet = el)}>
+      <div style={styles.container}>
         <img src={sidebarImg} style={styles.sidebar} />
         <img src={ethLogo} style={styles.ethLogo} />
 
