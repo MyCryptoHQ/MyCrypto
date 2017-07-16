@@ -163,9 +163,9 @@ export default class PrintableWallet extends Component {
         backgroundSize: '100%',
         borderRadius: '50%',
         boxShadow: `
-					inset rgba(255, 255, 255, 0.5) 0 2px 2px,
-					inset rgba(0, 0, 0, 0.6) 0 -1px 8px
-				`
+          inset rgba(255, 255, 255, 0.5) 0 2px 2px,
+          inset rgba(0, 0, 0, 0.6) 0 -1px 8px
+        `
       },
       identiconText: {
         float: 'left',
