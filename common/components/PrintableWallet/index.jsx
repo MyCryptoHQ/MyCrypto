@@ -25,23 +25,36 @@ export default class PrintableWallet extends Component {
   };
 
   componentDidMount() {
-    // Start generating QR Codes as soon as component is ready
-    const opts = {
-      color: {
-        dark: '#000',
-        light: '#fff'
+    // Start generating QR codes immediately
+    this._generateQrCode(this.props.privateKey, 'qrCodePkey');
+    this._generateQrCode(this.props.address, 'qrCodeAddress');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Regenerate QR codes if props change
+    if (nextProps.privateKey !== this.props.privateKey) {
+      this._generateQrCode(nextProps.privateKey, 'qrCodePkey');
+    }
+    if (nextProps.address !== this.props.address) {
+      this._generateQrCode(nextProps.address, 'qrCodeAddress');
+    }
+  }
+
+  _generateQrCode(value, stateKey) {
+    QRCode.toDataURL(
+      value,
+      {
+        color: {
+          dark: '#000',
+          light: '#fff'
+        },
+        margin: 0,
+        errorCorrectionLevel: 'H'
       },
-      margin: 0,
-      errorCorrectionLevel: 'H'
-    };
-
-    QRCode.toDataURL(this.props.privateKey, opts, (err, url) => {
-      this.setState({ qrCodePkey: url });
-    });
-
-    QRCode.toDataURL(this.props.address, opts, (err, url) => {
-      this.setState({ qrCodeAddress: url });
-    });
+      (err, url) => {
+        this.setState({ [stateKey]: url });
+      }
+    );
   }
 
   print = () => {
