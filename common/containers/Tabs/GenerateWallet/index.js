@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import EnterPassword from './components/EnterPassword';
 import DownloadWallet from './components/DownloadWallet';
 import PaperWallet from './components/PaperWallet';
-import UnlockWallet from './components/UnlockWallet';
 import type PrivKeyWallet from 'libs/wallet/privkey';
 import type { State } from 'reducers';
 
@@ -30,8 +29,7 @@ class GenerateWallet extends Component {
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func,
     downloadUTCGenerateWallet: PropTypes.func,
-    confirmContinueToPaperGenerateWallet: PropTypes.func,
-    continueToUnlockWallet: PropTypes.func
+    confirmContinueToPaperGenerateWallet: PropTypes.func
   };
 
   render() {
@@ -61,19 +59,10 @@ class GenerateWallet extends Component {
 
       case 'paper':
         if (wallet) {
-          content = (
-            <PaperWallet
-              wallet={wallet}
-              continueToUnlockWallet={this.props.continueToUnlockWallet}
-            />
-          );
+          content = <PaperWallet wallet={wallet} />;
         } else {
           content = <h1>Uh oh. Not sure how you got here.</h1>;
         }
-        break;
-
-      case 'unlock':
-        content = <UnlockWallet {...this.props} />;
         break;
 
       default:

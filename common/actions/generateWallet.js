@@ -3,8 +3,7 @@ import {
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
   GENERATE_WALLET_FILE,
   GENERATE_WALLET_DOWNLOAD_FILE,
-  GENERATE_WALLET_SHOW_PASSWORD,
-  GENERATE_WALLET_CONTINUE_TO_UNLOCK
+  GENERATE_WALLET_SHOW_PASSWORD
 } from 'actions/generateWalletConstants';
 import { PrivKeyWallet } from 'libs/wallet';
 
@@ -26,8 +25,4 @@ export const downloadUTCGenerateWallet = () => {
 
 export const confirmContinueToPaperGenerateWallet = () => {
   return { type: GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER };
-};
-
-export const continueToUnlockWallet = () => {
-  return { type: GENERATE_WALLET_CONTINUE_TO_UNLOCK };
 };

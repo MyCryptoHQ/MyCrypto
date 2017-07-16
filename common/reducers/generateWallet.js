@@ -54,13 +54,6 @@ export function generateWallet(state: State = initialState, action): State {
       };
     }
 
-    case GENERATE_WALLET_CONTINUE_TO_UNLOCK: {
-      return {
-        ...state,
-        activeStep: 'unlock'
-      };
-    }
-
     default:
       return state;
   }
