@@ -1,6 +1,6 @@
 // @flow
-import React from "react";
-import { renderToString } from "react-dom/server";
+import React from 'react';
+import { renderToString } from 'react-dom/server';
 
 type PrintOptions = {
   styles?: string,
@@ -10,7 +10,7 @@ type PrintOptions = {
 
 export default function(element: React.Element<*>, opts: PrintOptions = {}) {
   const options = {
-    styles: "",
+    styles: '',
     printTimeout: 500,
     popupFeatures: {},
     ...opts
@@ -21,9 +21,9 @@ export default function(element: React.Element<*>, opts: PrintOptions = {}) {
   // for more information.
   const featuresStr = Object.keys(options.popupFeatures)
     .map(key => `${key}=${options.popupFeatures[key]}`)
-    .join(",");
+    .join(',');
 
-  const popup = window.open("about:blank", "printWindow", featuresStr);
+  const popup = window.open('about:blank', 'printWindow', featuresStr);
   popup.document.open();
   popup.document.write(`
   <html>

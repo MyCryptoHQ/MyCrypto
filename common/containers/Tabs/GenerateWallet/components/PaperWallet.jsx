@@ -1,9 +1,9 @@
 // @flow
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import translate from "translations";
-import PrintableWallet from "components/PrintableWallet";
-import type PrivKeyWallet from "libs/wallet/privkey";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import translate from 'translations';
+import PrintableWallet from 'components/PrintableWallet';
+import type PrivKeyWallet from 'libs/wallet/privkey';
 
 type Props = {
   wallet: PrivKeyWallet,
@@ -26,11 +26,11 @@ export default class PaperWallet extends Component {
       <div className="col-sm-8 col-sm-offset-2">
         {/* Private Key */}
         <h1>
-          {translate("GEN_Label_5")}
+          {translate('GEN_Label_5')}
         </h1>
         <input
           value={wallet.getPrivateKey()}
-          aria-label={translate("x_PrivKey")}
+          aria-label={translate('x_PrivKey')}
           aria-describedby="x_PrivKeyDesc"
           className="form-control"
           type="text"
@@ -40,7 +40,7 @@ export default class PaperWallet extends Component {
 
         {/* Download Paper Wallet */}
         <h1>
-          {translate("x_Print")}
+          {translate('x_Print')}
         </h1>
         <PrintableWallet wallet={wallet} />
         <br />
@@ -48,7 +48,7 @@ export default class PaperWallet extends Component {
 
         {/* Continue button */}
         <button className="btn btn-default" onClick={continueToUnlockWallet}>
-          {translate("GEN_Label_3")} →
+          {translate('GEN_Label_3')} →
         </button>
       </div>
     );

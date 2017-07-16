@@ -1,10 +1,10 @@
 // @flow
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import translate from "translations";
-import printElement from "utils/printElement";
-import { PaperWallet } from "components";
-import type PrivKeyWallet from "libs/wallet/privkey";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import translate from 'translations';
+import printElement from 'utils/printElement';
+import { PaperWallet } from 'components';
+import type PrivKeyWallet from 'libs/wallet/privkey';
 
 type Props = {
   wallet: PrivKeyWallet
@@ -19,7 +19,7 @@ export default class PrintableWallet extends Component {
   print = () => {
     printElement(<PaperWallet wallet={this.props.wallet} />, {
       popupFeatures: {
-        scrollbars: "no"
+        scrollbars: 'no'
       },
       styles: `
         * {
@@ -42,12 +42,12 @@ export default class PrintableWallet extends Component {
         <PaperWallet wallet={this.props.wallet} />
         <a
           role="button"
-          aria-label={translate("x_Print")}
+          aria-label={translate('x_Print')}
           aria-describedby="x_PrintDesc"
-          className={"btn btn-lg btn-primary"}
+          className={'btn btn-lg btn-primary'}
           onClick={this.print}
         >
-          {translate("x_Print")}
+          {translate('x_Print')}
         </a>
       </div>
     );

@@ -1,6 +1,6 @@
 // @flow
-import React from "react";
-import QRCodeLib from "qrcode";
+import React from 'react';
+import QRCodeLib from 'qrcode';
 
 // FIXME should store limited amount if history
 // data -> qr cache
@@ -39,11 +39,11 @@ export default class QRCode extends React.Component {
       value,
       {
         color: {
-          dark: "#000",
-          light: "#fff"
+          dark: '#000',
+          light: '#fff'
         },
         margin: 0,
-        errorCorrectionLevel: "H"
+        errorCorrectionLevel: 'H'
       },
       (err, qr) => {
         if (err) return;
@@ -62,8 +62,8 @@ export default class QRCode extends React.Component {
       <img
         src={qr}
         style={{
-          width: "100%",
-          height: "100%"
+          width: '100%',
+          height: '100%'
         }}
       />
     );

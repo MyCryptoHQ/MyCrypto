@@ -1,9 +1,9 @@
 // @flow
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import translate from "translations";
-import PasswordInput from "./PasswordInput";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Field, reduxForm } from 'redux-form';
+import translate from 'translations';
+import PasswordInput from './PasswordInput';
 
 // VALIDATORS
 const minLength = min => value => {
@@ -12,7 +12,7 @@ const minLength = min => value => {
     : undefined;
 };
 const minLength9 = minLength(9);
-const required = value => (value ? undefined : "Required");
+const required = value => (value ? undefined : 'Required');
 
 class EnterPassword extends Component {
   static propTypes = {
@@ -44,12 +44,12 @@ class EnterPassword extends Component {
     return (
       <div>
         <h1 aria-live="polite">
-          {translate("NAV_GenerateWallet")}
+          {translate('NAV_GenerateWallet')}
         </h1>
 
         <div className="col-sm-8 col-sm-offset-2">
           <h4>
-            {translate("HELP_1_Desc_3")}
+            {translate('HELP_1_Desc_3')}
           </h4>
           <Field
             validate={[required, minLength9]}
@@ -67,7 +67,7 @@ class EnterPassword extends Component {
             }
             className="btn btn-primary btn-block"
           >
-            {translate("NAV_GenerateWallet")}
+            {translate('NAV_GenerateWallet')}
           </button>
         </div>
       </div>
@@ -76,5 +76,5 @@ class EnterPassword extends Component {
 }
 
 export default reduxForm({
-  form: "generateWalletPassword" // a unique name for this form
+  form: 'generateWalletPassword' // a unique name for this form
 })(EnterPassword);

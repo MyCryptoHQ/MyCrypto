@@ -1,7 +1,7 @@
 // @flow
-import React, { Component } from "react";
-import translate from "translations";
-import { isValidPrivKey } from "libs/validators";
+import React, { Component } from 'react';
+import translate from 'translations';
+import { isValidPrivKey } from 'libs/validators';
 
 export type PrivateKeyValue = {
   key: string,
@@ -10,7 +10,7 @@ export type PrivateKeyValue = {
 };
 
 function fixPkey(key) {
-  if (key.indexOf("0x") === 0) {
+  if (key.indexOf('0x') === 0) {
     return key.slice(2);
   }
   return key;
@@ -33,16 +33,16 @@ export default class PrivateKeyDecrypt extends Component {
       <section className="col-md-4 col-sm-6">
         <div id="selectedTypeKey">
           <h4>
-            {translate("ADD_Radio_3")}
+            {translate('ADD_Radio_3')}
           </h4>
           <div className="form-group">
             <textarea
               id="aria-private-key"
-              className={`form-control ${isValid ? "is-valid" : "is-invalid"}`}
+              className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
               value={key}
               onChange={this.onPkeyChange}
               onKeyDown={this.onKeyDown}
-              placeholder={translate("x_PrivKey2")}
+              placeholder={translate('x_PrivKey2')}
               rows="4"
             />
           </div>
@@ -50,16 +50,16 @@ export default class PrivateKeyDecrypt extends Component {
             isPassRequired &&
             <div className="form-group">
               <p>
-                {translate("ADD_Label_3")}
+                {translate('ADD_Label_3')}
               </p>
               <input
                 className={`form-control ${password.length > 0
-                  ? "is-valid"
-                  : "is-invalid"}`}
+                  ? 'is-valid'
+                  : 'is-invalid'}`}
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}
-                placeholder={translate("x_Password")}
+                placeholder={translate('x_Password')}
                 type="password"
               />
             </div>}

@@ -1,18 +1,18 @@
 // @flow
-import { takeEvery, call, apply, put, select, fork } from "redux-saga/effects";
-import type { Effect } from "redux-saga/effects";
-import { setWallet, setBalance, setTokenBalances } from "actions/wallet";
-import type { UnlockPrivateKeyAction } from "actions/wallet";
-import { showNotification } from "actions/notifications";
-import translate from "translations";
-import { PrivKeyWallet, BaseWallet } from "libs/wallet";
-import { BaseNode } from "libs/nodes";
-import { getNodeLib } from "selectors/config";
-import { getWalletInst, getTokens } from "selectors/wallet";
-import Big from "big.js";
+import { takeEvery, call, apply, put, select, fork } from 'redux-saga/effects';
+import type { Effect } from 'redux-saga/effects';
+import { setWallet, setBalance, setTokenBalances } from 'actions/wallet';
+import type { UnlockPrivateKeyAction } from 'actions/wallet';
+import { showNotification } from 'actions/notifications';
+import translate from 'translations';
+import { PrivKeyWallet, BaseWallet } from 'libs/wallet';
+import { BaseNode } from 'libs/nodes';
+import { getNodeLib } from 'selectors/config';
+import { getWalletInst, getTokens } from 'selectors/wallet';
+import Big from 'big.js';
 
 // FIXME MOVE ME
-function padLeft(n: string, width: number, z: string = "0"): string {
+function padLeft(n: string, width: number, z: string = '0'): string {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
@@ -41,7 +41,7 @@ function* updateTokenBalances() {
     return;
   }
   const requests = tokens.map(token =>
-    getEthCallData(token.address, "0x70a08231", [wallet.getNakedAddress()])
+    getEthCallData(token.address, '0x70a08231', [wallet.getNakedAddress()])
   );
   // FIXME handle errors
   const tokenBalances = yield apply(node, node.ethCall, [requests]);
@@ -49,7 +49,7 @@ function* updateTokenBalances() {
     setTokenBalances(
       tokens.reduce((acc, t, i) => {
         // FIXME
-        if (tokenBalances[i].error || tokenBalances[i].result === "0x") {
+        if (tokenBalances[i].error || tokenBalances[i].result === '0x') {
           return acc;
         }
         let balance = Big(Number(tokenBalances[i].result)).div(
@@ -74,9 +74,9 @@ export function* unlockPrivateKey(
   let wallet = null;
 
   try {
-    wallet = new PrivKeyWallet(Buffer.from(action.payload.key, "hex"));
+    wallet = new PrivKeyWallet(Buffer.from(action.payload.key, 'hex'));
   } catch (e) {
-    yield put(showNotification("danger", translate("INVALID_PKEY")));
+    yield put(showNotification('danger', translate('INVALID_PKEY')));
     return;
   }
   yield put(setWallet(wallet));
@@ -87,7 +87,7 @@ export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
   // useful for development
   yield call(updateBalances);
   yield [
-    takeEvery("WALLET_UNLOCK_PRIVATE_KEY", unlockPrivateKey),
-    takeEvery("CUSTOM_TOKEN_ADD", updateTokenBalances)
+    takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
+    takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances)
   ];
 }

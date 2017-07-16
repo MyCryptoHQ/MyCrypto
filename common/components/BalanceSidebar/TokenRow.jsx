@@ -1,8 +1,8 @@
 // @flow
-import React from "react";
-import Big from "big.js";
-import { formatNumber } from "utils/formatters";
-import removeIcon from "assets/images/icon-remove.svg";
+import React from 'react';
+import Big from 'big.js';
+import { formatNumber } from 'utils/formatters';
+import removeIcon from 'assets/images/icon-remove.svg';
 
 export default class TokenRow extends React.Component {
   props: {

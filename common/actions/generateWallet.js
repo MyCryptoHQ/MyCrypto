@@ -5,8 +5,8 @@ import {
   GENERATE_WALLET_DOWNLOAD_FILE,
   GENERATE_WALLET_SHOW_PASSWORD,
   GENERATE_WALLET_CONTINUE_TO_UNLOCK
-} from "actions/generateWalletConstants";
-import { PrivKeyWallet } from "libs/wallet";
+} from 'actions/generateWalletConstants';
+import { PrivKeyWallet } from 'libs/wallet';
 
 export const showPasswordGenerateWallet = () => {
   return { type: GENERATE_WALLET_SHOW_PASSWORD };

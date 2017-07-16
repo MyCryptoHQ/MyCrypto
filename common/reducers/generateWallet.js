@@ -5,8 +5,8 @@ import {
   GENERATE_WALLET_DOWNLOAD_FILE,
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
   GENERATE_WALLET_CONTINUE_TO_UNLOCK
-} from "actions/generateWalletConstants";
-import type PrivateKeyWallet from "libs/wallet/privkey";
+} from 'actions/generateWalletConstants';
+import type PrivateKeyWallet from 'libs/wallet/privkey';
 
 export type State = {
   activeStep: string,
@@ -16,7 +16,7 @@ export type State = {
 };
 
 const initialState: State = {
-  activeStep: "password",
+  activeStep: 'password',
   hasDownloadedWalletFile: false,
   wallet: null,
   password: null
@@ -27,7 +27,7 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_SHOW_PASSWORD: {
       return {
         ...state,
-        activeStep: "password"
+        activeStep: 'password'
       };
     }
 
@@ -36,7 +36,7 @@ export function generateWallet(state: State = initialState, action): State {
         ...state,
         wallet: action.wallet,
         password: action.password,
-        activeStep: "download"
+        activeStep: 'download'
       };
     }
 
@@ -50,14 +50,14 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER: {
       return {
         ...state,
-        activeStep: "paper"
+        activeStep: 'paper'
       };
     }
 
     case GENERATE_WALLET_CONTINUE_TO_UNLOCK: {
       return {
         ...state,
-        activeStep: "unlock"
+        activeStep: 'unlock'
       };
     }
 

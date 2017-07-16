@@ -1,71 +1,71 @@
 // @flow
-import React from "react";
-import { QRCode, Identicon } from "components/ui";
-import type PrivKeyWallet from "libs/wallet/privkey";
+import React from 'react';
+import { QRCode, Identicon } from 'components/ui';
+import type PrivKeyWallet from 'libs/wallet/privkey';
 
-import ethLogo from "assets/images/logo-ethereum-1.png";
-import sidebarImg from "assets/images/print-sidebar.png";
-import notesBg from "assets/images/notes-bg.png";
+import ethLogo from 'assets/images/logo-ethereum-1.png';
+import sidebarImg from 'assets/images/print-sidebar.png';
+import notesBg from 'assets/images/notes-bg.png';
 
 const walletWidth = 680;
 const walletHeight = 280;
 
 const styles = {
   container: {
-    position: "relative",
-    margin: "0 auto",
+    position: 'relative',
+    margin: '0 auto',
     width: `${walletWidth}px`,
     height: `${walletHeight}px`,
-    border: "1px solid #163151",
-    userSelect: "none",
-    cursor: "default"
+    border: '1px solid #163151',
+    userSelect: 'none',
+    cursor: 'default'
   },
 
   // Images
   sidebar: {
-    float: "left",
-    height: "100%",
-    width: "auto"
+    float: 'left',
+    height: '100%',
+    width: 'auto'
   },
   ethLogo: {
-    position: "absolute",
-    left: "86px",
-    height: "100%",
-    width: "auto",
-    zIndex: "-1"
+    position: 'absolute',
+    left: '86px',
+    height: '100%',
+    width: 'auto',
+    zIndex: '-1'
   },
 
   // Blocks / QR Codes
   block: {
-    position: "relative",
-    float: "left",
-    width: "27.5%",
-    padding: "20px"
+    position: 'relative',
+    float: 'left',
+    width: '27.5%',
+    padding: '20px'
   },
   blockText: {
-    position: "absolute",
-    top: "50%",
-    left: "100%",
-    width: "100%",
+    position: 'absolute',
+    top: '50%',
+    left: '100%',
+    width: '100%',
     margin: 0,
-    transform: "translate(-50%, -50%) rotate(-90deg)",
-    fontSize: "13px",
-    fontWeight: "600",
-    color: "#0b7290",
-    textAlign: "center",
-    textTransform: "uppercase",
-    letterSpacing: "1px"
+    transform: 'translate(-50%, -50%) rotate(-90deg)',
+    fontSize: '13px',
+    fontWeight: '600',
+    color: '#0b7290',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: '1px'
   },
   // Address / private key info
   infoContainer: {
-    float: "left",
-    width: "85%",
-    padding: "0 20px"
+    float: 'left',
+    width: '85%',
+    padding: '0 20px'
   },
   infoText: {
-    margin: "0 0 8px",
-    textAlign: "left",
-    fontSize: "14px",
+    margin: '0 0 8px',
+    textAlign: 'left',
+    fontSize: '14px',
     fontFamily: 'Menlo, Monaco, Consolas, "Courier New", monospace',
     fontWeight: 300
   },
@@ -74,29 +74,29 @@ const styles = {
   },
 
   identiconContainer: {
-    position: "absolute",
-    right: "15px",
-    bottom: "45px"
+    position: 'absolute',
+    right: '15px',
+    bottom: '45px'
   },
   identiconWrapper: {
-    float: "left",
-    width: "42px",
-    height: "42px",
-    overflow: "hidden",
-    backgroundSize: "100%",
-    borderRadius: "50%",
+    float: 'left',
+    width: '42px',
+    height: '42px',
+    overflow: 'hidden',
+    backgroundSize: '100%',
+    borderRadius: '50%',
     boxShadow: `
       inset rgba(255, 255, 255, 0.5) 0 2px 2px,
       inset rgba(0, 0, 0, 0.6) 0 -1px 8px
     `
   },
   identiconText: {
-    float: "left",
-    width: "130px",
-    padding: "0 5px",
-    margin: "12px 0 0",
-    fontSize: "9px",
-    textAlign: "center"
+    float: 'left',
+    width: '130px',
+    padding: '0 5px',
+    margin: '12px 0 0',
+    fontSize: '9px',
+    textAlign: 'center'
   },
   box: {
     width: 150,

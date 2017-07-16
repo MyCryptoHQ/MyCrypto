@@ -1,12 +1,12 @@
 // @flow
-import BaseWallet from "./base";
+import BaseWallet from './base';
 import {
   privateToPublic,
   publicToAddress,
   toChecksumAddress
-} from "ethereumjs-util";
-import { randomBytes } from "crypto";
-import { pkeyToKeystore } from "libs/keystore";
+} from 'ethereumjs-util';
+import { randomBytes } from 'crypto';
+import { pkeyToKeystore } from 'libs/keystore';
 
 export default class PrivKeyWallet extends BaseWallet {
   privKey: Buffer;
@@ -20,11 +20,11 @@ export default class PrivKeyWallet extends BaseWallet {
   }
 
   getAddress() {
-    return toChecksumAddress(`0x${this.address.toString("hex")}`);
+    return toChecksumAddress(`0x${this.address.toString('hex')}`);
   }
 
   getPrivateKey() {
-    return this.privKey.toString("hex");
+    return this.privKey.toString('hex');
   }
 
   static generate() {

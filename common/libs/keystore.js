@@ -1,14 +1,14 @@
 // @flow
-import { randomBytes, createCipheriv } from "crypto";
-import { sha3 } from "ethereumjs-util";
-import scrypt from "scryptsy";
-import uuid from "uuid";
+import { randomBytes, createCipheriv } from 'crypto';
+import { sha3 } from 'ethereumjs-util';
+import scrypt from 'scryptsy';
+import uuid from 'uuid';
 
 export const scryptSettings = {
   n: 1024
 };
 
-export const kdf = "scrypt";
+export const kdf = 'scrypt';
 
 export function pkeyToKeystore(
   pkey: Buffer,
@@ -20,9 +20,9 @@ export function pkeyToKeystore(
   let derivedKey;
   const kdfparams: Object = {
     dklen: 32,
-    salt: salt.toString("hex")
+    salt: salt.toString('hex')
   };
-  if (kdf === "scrypt") {
+  if (kdf === 'scrypt') {
     // FIXME: support progress reporting callback
     kdfparams.n = 1024;
     kdfparams.r = 8;
@@ -36,15 +36,15 @@ export function pkeyToKeystore(
       kdfparams.dklen
     );
   } else {
-    throw new Error("Unsupported kdf");
+    throw new Error('Unsupported kdf');
   }
-  const cipher = createCipheriv("aes-128-ctr", derivedKey.slice(0, 16), iv);
+  const cipher = createCipheriv('aes-128-ctr', derivedKey.slice(0, 16), iv);
   if (!cipher) {
-    throw new Error("Unsupported cipher");
+    throw new Error('Unsupported cipher');
   }
   const ciphertext = Buffer.concat([cipher.update(pkey), cipher.final()]);
   const mac = sha3(
-    Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, "hex")])
+    Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')])
   );
   return {
     version: 3,
@@ -53,14 +53,14 @@ export function pkeyToKeystore(
     }),
     address,
     Crypto: {
-      ciphertext: ciphertext.toString("hex"),
+      ciphertext: ciphertext.toString('hex'),
       cipherparams: {
-        iv: iv.toString("hex")
+        iv: iv.toString('hex')
       },
-      cipher: "aes-128-ctr",
+      cipher: 'aes-128-ctr',
       kdf,
       kdfparams,
-      mac: mac.toString("hex")
+      mac: mac.toString('hex')
     }
   };
 }

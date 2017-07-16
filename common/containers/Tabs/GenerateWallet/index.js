@@ -1,14 +1,14 @@
 // @flow
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as generateWalletActions from "actions/generateWallet";
-import PropTypes from "prop-types";
-import EnterPassword from "./components/EnterPassword";
-import SaveWallet from "./components/SaveWallet";
-import PaperWallet from "./components/PaperWallet";
-import UnlockWallet from "./components/UnlockWallet";
-import type PrivKeyWallet from "libs/wallet/privkey";
-import type { State } from "reducers";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as generateWalletActions from 'actions/generateWallet';
+import PropTypes from 'prop-types';
+import EnterPassword from './components/EnterPassword';
+import SaveWallet from './components/SaveWallet';
+import PaperWallet from './components/PaperWallet';
+import UnlockWallet from './components/UnlockWallet';
+import type PrivKeyWallet from 'libs/wallet/privkey';
+import type { State } from 'reducers';
 
 type Props = {
   // FIXME union actual steps
@@ -39,11 +39,11 @@ class GenerateWallet extends Component {
     let content;
 
     switch (activeStep) {
-      case "password":
+      case 'password':
         content = <EnterPassword {...this.props} />;
         break;
 
-      case "download":
+      case 'download':
         if (wallet) {
           content = (
             <SaveWallet
@@ -59,7 +59,7 @@ class GenerateWallet extends Component {
         }
         break;
 
-      case "paper":
+      case 'paper':
         if (wallet) {
           content = (
             <PaperWallet
@@ -72,7 +72,7 @@ class GenerateWallet extends Component {
         }
         break;
 
-      case "unlock":
+      case 'unlock':
         content = <UnlockWallet {...this.props} />;
         break;
 
@@ -81,7 +81,7 @@ class GenerateWallet extends Component {
     }
 
     return (
-      <section className="container" style={{ minHeight: "50%" }}>
+      <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
           <main className="tab-pane active text-center" role="main">
             <section role="main" className="row">
