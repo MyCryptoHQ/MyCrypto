@@ -29,8 +29,13 @@ class GenerateWallet extends Component {
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func,
     downloadUTCGenerateWallet: PropTypes.func,
-    confirmContinueToPaperGenerateWallet: PropTypes.func
+    confirmContinueToPaperGenerateWallet: PropTypes.func,
+    resetGenerateWallet: PropTypes.func
   };
+
+  componentWillUnmount() {
+    this.props.resetGenerateWallet();
+  }
 
   render() {
     const { activeStep, wallet, password } = this.props;

@@ -4,7 +4,7 @@ import {
   GENERATE_WALLET_FILE,
   GENERATE_WALLET_DOWNLOAD_FILE,
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
-  GENERATE_WALLET_CONTINUE_TO_UNLOCK
+  RESET_GENERATE_WALLET
 } from 'actions/generateWalletConstants';
 import type PrivateKeyWallet from 'libs/wallet/privkey';
 
@@ -51,6 +51,13 @@ export function generateWallet(state: State = initialState, action): State {
       return {
         ...state,
         activeStep: 'paper'
+      };
+    }
+
+    case RESET_GENERATE_WALLET: {
+      return {
+        ...state,
+        ...initialState
       };
     }
 
