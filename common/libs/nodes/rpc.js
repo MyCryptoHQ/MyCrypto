@@ -21,8 +21,6 @@ type JsonRpcResponse = JsonRpcSuccess | JsonRpcError;
 // FIXME
 type EthCall = any;
 
-function isError(response) {}
-
 export default class RPCNode extends BaseNode {
   endpoint: string;
   constructor(endpoint: string) {

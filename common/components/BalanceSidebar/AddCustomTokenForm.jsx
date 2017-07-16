@@ -77,7 +77,7 @@ export default class AddCustomTokenForm extends React.Component {
     if (!isValidETHAddress(address)) {
       return false;
     }
-    if (this.state.symbol === '') {
+    if (symbol === '') {
       return false;
     }
 

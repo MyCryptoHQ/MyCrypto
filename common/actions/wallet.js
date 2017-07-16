@@ -1,7 +1,11 @@
 // @flow
-import type { PrivateKeyUnlockParams } from 'libs/wallet/privkey';
 import BaseWallet from 'libs/wallet/base';
 import Big from 'big.js';
+
+export type PrivateKeyUnlockParams = {
+  key: string,
+  password: string
+};
 
 export type UnlockPrivateKeyAction = {
   type: 'WALLET_UNLOCK_PRIVATE_KEY',

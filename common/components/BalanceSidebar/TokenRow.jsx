@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import Big from 'big.js';
-import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
 import removeIcon from 'assets/images/icon-remove.svg';
 
@@ -34,9 +33,7 @@ export default class TokenRow extends React.Component {
               onClick={this.onRemove}
             />}
           <span>
-            {showLongBalance
-              ? balance.toString()
-              : formatNumber(balance)}
+            {showLongBalance ? balance.toString() : formatNumber(balance)}
           </span>
         </td>
         <td>

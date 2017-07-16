@@ -1,20 +1,41 @@
+// @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
+import type PrivKeyWallet from 'libs/wallet/privkey';
+import { makeBlob } from 'libs/globalFuncs';
+
+type Props = {
+  wallet: PrivKeyWallet,
+  password: string,
+  hasDownloadedWalletFile: boolean,
+  downloadUTCGenerateWallet: () => any,
+  confirmContinueToPaperGenerateWallet: () => any
+};
 
 export default class SaveWallet extends Component {
+  props: Props;
+  keystore: Object;
   static propTypes = {
-    // state
-    walletFile: PropTypes.object.isRequired,
+    // Store state
+    wallet: PropTypes.object.isRequired,
+    password: PropTypes.string.isRequired,
     hasDownloadedWalletFile: PropTypes.bool,
-    // actions
+    // Actions
     downloadUTCGenerateWallet: PropTypes.func,
     confirmContinueToPaperGenerateWallet: PropTypes.func
   };
+  componentWillMount() {
+    this.keystore = this.props.wallet.toKeystore(this.props.password);
+  }
+  componentWillUpdate(nextProps: Props) {
+    if (this.props.wallet !== nextProps.wallet) {
+      this.keystore = nextProps.wallet.toKeystore(nextProps.password);
+    }
+  }
 
   render() {
     const {
-      walletFile,
       hasDownloadedWalletFile,
       downloadUTCGenerateWallet,
       confirmContinueToPaperGenerateWallet
@@ -44,8 +65,8 @@ export default class SaveWallet extends Component {
             className="btn btn-primary btn-block"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
             aria-describedby="x_KeystoreDesc"
-            download={walletFile.fileName}
-            href={walletFile.blobURI}
+            download={this.getFilename()}
+            href={this.getBlob()}
             onClick={downloadUTCGenerateWallet}
           >
             {translate('x_Download')}
@@ -76,7 +97,7 @@ export default class SaveWallet extends Component {
               className={`btn btn-info ${hasDownloadedWalletFile
                 ? ''
                 : 'disabled'}`}
-              onClick={() => confirmContinueToPaperGenerateWallet()}
+              onClick={confirmContinueToPaperGenerateWallet}
             >
               I understand. Continue.
             </a>
@@ -84,5 +105,19 @@ export default class SaveWallet extends Component {
         </div>
       </div>
     );
+  }
+
+  getBlob() {
+    return makeBlob('text/json;charset=UTF-8', this.keystore);
+  }
+
+  getFilename() {
+    const ts = new Date();
+    return [
+      'UTC--',
+      ts.toJSON().replace(/:/g, '-'),
+      '--',
+      this.props.wallet.getAddress()
+    ].join('');
   }
 }

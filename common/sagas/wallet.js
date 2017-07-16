@@ -74,7 +74,7 @@ export function* unlockPrivateKey(
   let wallet = null;
 
   try {
-    wallet = new PrivKeyWallet(action.payload);
+    wallet = new PrivKeyWallet(Buffer.from(action.payload.key, 'hex'));
   } catch (e) {
     yield put(showNotification('danger', translate('INVALID_PKEY')));
     return;

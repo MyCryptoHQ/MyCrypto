@@ -1,9 +1,8 @@
 // @flow
 import { randomBytes, createCipheriv } from 'crypto';
-import { privateToPublic, publicToAddress, sha3 } from 'ethereumjs-util';
+import { sha3 } from 'ethereumjs-util';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
-import { makeBlob } from 'libs/globalFuncs';
 
 export const scryptSettings = {
   n: 1024
@@ -11,15 +10,11 @@ export const scryptSettings = {
 
 export const kdf = 'scrypt';
 
-export function genNewPkey(): Buffer {
-  return randomBytes(32);
-}
-
-export function pkeyToAddress(pkey: Buffer): string {
-  return publicToAddress(privateToPublic(pkey)).toString('hex');
-}
-
-export function pkeyToKeystore(pkey: Buffer, password: string) {
+export function pkeyToKeystore(
+  pkey: Buffer,
+  address: string,
+  password: string
+) {
   const salt = randomBytes(32);
   const iv = randomBytes(16);
   let derivedKey;
@@ -56,7 +51,7 @@ export function pkeyToKeystore(pkey: Buffer, password: string) {
     id: uuid.v4({
       random: randomBytes(16)
     }),
-    address: pkeyToAddress(pkey),
+    address,
     Crypto: {
       ciphertext: ciphertext.toString('hex'),
       cipherparams: {
@@ -67,32 +62,5 @@ export function pkeyToKeystore(pkey: Buffer, password: string) {
       kdfparams,
       mac: mac.toString('hex')
     }
-  };
-}
-
-export function getV3Filename(pkey: Buffer) {
-  const ts = new Date();
-  return [
-    'UTC--',
-    ts.toJSON().replace(/:/g, '-'),
-    '--',
-    pkeyToAddress(pkey)
-  ].join('');
-}
-
-export type WalletFile = {
-  fileName: string,
-  blobURI: string
-};
-
-export function genNewKeystore(pkey: Buffer, password: string): WalletFile {
-  let blobEnc = makeBlob(
-    'text/json;charset=UTF-8',
-    pkeyToKeystore(pkey, password)
-  );
-  const encFileName = getV3Filename(pkey);
-  return {
-    fileName: encFileName,
-    blobURI: blobEnc
   };
 }

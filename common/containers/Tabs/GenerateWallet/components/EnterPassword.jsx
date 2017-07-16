@@ -1,8 +1,8 @@
+// @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import translate from 'translations';
-import { genNewKeystore } from 'libs/keystore';
 import PasswordInput from './PasswordInput';
 
 // VALIDATORS
@@ -16,10 +16,10 @@ const required = value => (value ? undefined : 'Required');
 
 class EnterPassword extends Component {
   static propTypes = {
-    // state
+    // Store state
     generateWalletPassword: PropTypes.object,
     showPassword: PropTypes.bool,
-    // actions
+    // Actions
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func
   };
@@ -69,7 +69,6 @@ class EnterPassword extends Component {
           >
             {translate('NAV_GenerateWallet')}
           </button>
-
         </div>
       </div>
     );

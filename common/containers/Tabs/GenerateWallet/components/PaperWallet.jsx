@@ -1,19 +1,26 @@
+// @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
 import PrintableWallet from 'components/PrintableWallet';
+import type PrivKeyWallet from 'libs/wallet/privkey';
+
+type Props = {
+  wallet: PrivKeyWallet,
+  continueToUnlockWallet: () => any
+};
 
 export default class PaperWallet extends Component {
+  props: Props;
   static propTypes = {
-    // State
-    privateKey: PropTypes.string,
-    address: PropTypes.string,
+    // Store state
+    wallet: PropTypes.object.isRequired,
     // Actions
     continueToUnlockWallet: PropTypes.func
   };
 
   render() {
-    const { privateKey, address, continueToUnlockWallet } = this.props;
+    const { wallet, continueToUnlockWallet } = this.props;
 
     return (
       <div className="col-sm-8 col-sm-offset-2">
@@ -22,7 +29,7 @@ export default class PaperWallet extends Component {
           {translate('GEN_Label_5')}
         </h1>
         <input
-          value={privateKey}
+          value={wallet.getPrivateKey()}
           aria-label={translate('x_PrivKey')}
           aria-describedby="x_PrivKeyDesc"
           className="form-control"
@@ -35,7 +42,7 @@ export default class PaperWallet extends Component {
         <h1>
           {translate('x_Print')}
         </h1>
-        <PrintableWallet privateKey={privateKey} address={address} />
+        <PrintableWallet wallet={wallet} />
         <br />
         <br />
 

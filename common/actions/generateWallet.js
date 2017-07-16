@@ -1,5 +1,4 @@
-import { genNewPkey, pkeyToAddress, genNewKeystore } from 'libs/keystore';
-
+// @flow
 import {
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
   GENERATE_WALLET_FILE,
@@ -7,21 +6,17 @@ import {
   GENERATE_WALLET_SHOW_PASSWORD,
   GENERATE_WALLET_CONTINUE_TO_UNLOCK
 } from 'actions/generateWalletConstants';
+import { PrivKeyWallet } from 'libs/wallet';
 
 export const showPasswordGenerateWallet = () => {
   return { type: GENERATE_WALLET_SHOW_PASSWORD };
 };
 
-export const generateUTCGenerateWallet = password => {
-  const privateKey = genNewPkey();
-  const address = pkeyToAddress(privateKey);
-  const walletFile = genNewKeystore(privateKey, password);
-
+export const generateUTCGenerateWallet = (password: string) => {
   return {
     type: GENERATE_WALLET_FILE,
-    privateKey: privateKey.toString('hex'),
-    address: `0x${address}`,
-    walletFile
+    wallet: PrivKeyWallet.generate(),
+    password
   };
 };
 
