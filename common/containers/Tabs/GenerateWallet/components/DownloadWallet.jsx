@@ -13,7 +13,7 @@ type Props = {
   confirmContinueToPaperGenerateWallet: () => any
 };
 
-export default class SaveWallet extends Component {
+export default class DownloadWallet extends Component {
   props: Props;
   keystore: Object;
   static propTypes = {

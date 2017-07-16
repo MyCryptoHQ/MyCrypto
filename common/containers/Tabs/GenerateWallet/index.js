@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as generateWalletActions from 'actions/generateWallet';
 import PropTypes from 'prop-types';
 import EnterPassword from './components/EnterPassword';
-import SaveWallet from './components/SaveWallet';
+import DownloadWallet from './components/DownloadWallet';
 import PaperWallet from './components/PaperWallet';
 import UnlockWallet from './components/UnlockWallet';
 import type PrivKeyWallet from 'libs/wallet/privkey';
@@ -46,7 +46,7 @@ class GenerateWallet extends Component {
       case 'download':
         if (wallet) {
           content = (
-            <SaveWallet
+            <DownloadWallet
               hasDownloadedWalletFile={this.props.hasDownloadedWalletFile}
               wallet={wallet}
               password={password}
