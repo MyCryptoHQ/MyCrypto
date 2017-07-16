@@ -5,8 +5,8 @@ import {
   GENERATE_WALLET_DOWNLOAD_FILE,
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
   GENERATE_WALLET_CONTINUE_TO_UNLOCK
-} from 'actions/generateWalletConstants';
-import { WalletFile } from 'libs/keystore';
+} from "actions/generateWalletConstants";
+import type { WalletFile } from "libs/keystore";
 
 export type State = {
   activeStep: string,
@@ -17,7 +17,7 @@ export type State = {
 };
 
 const initialState: State = {
-  activeStep: 'password',
+  activeStep: "password",
   hasDownloadedWalletFile: false,
   privateKey: null,
   address: null,
@@ -29,7 +29,7 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_SHOW_PASSWORD: {
       return {
         ...state,
-        activeStep: 'password'
+        activeStep: "password"
       };
     }
 
@@ -39,7 +39,7 @@ export function generateWallet(state: State = initialState, action): State {
         privateKey: action.privateKey,
         address: action.address,
         walletFile: action.walletFile,
-        activeStep: 'download'
+        activeStep: "download"
       };
     }
 
@@ -53,14 +53,14 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER: {
       return {
         ...state,
-        activeStep: 'paper'
+        activeStep: "paper"
       };
     }
 
     case GENERATE_WALLET_CONTINUE_TO_UNLOCK: {
       return {
         ...state,
-        activeStep: 'unlock'
+        activeStep: "unlock"
       };
     }
 

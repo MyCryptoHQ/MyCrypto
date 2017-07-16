@@ -1,15 +1,16 @@
-import React from 'react';
-import { renderToString } from 'react-dom/server';
+// @flow
+import React from "react";
+import { renderToString } from "react-dom/server";
 
 type PrintOptions = {
-  styles: string,
-  printTimeout: number,
-  popupFeatures: Object
+  styles?: string,
+  printTimeout?: number,
+  popupFeatures?: Object
 };
 
-export default function(element: React.Element, opts: PrintOptions = {}) {
+export default function(element: React.Element<*>, opts: PrintOptions = {}) {
   const options = {
-    styles: '',
+    styles: "",
     printTimeout: 500,
     popupFeatures: {},
     ...opts
@@ -20,24 +21,23 @@ export default function(element: React.Element, opts: PrintOptions = {}) {
   // for more information.
   const featuresStr = Object.keys(options.popupFeatures)
     .map(key => `${key}=${options.popupFeatures[key]}`)
-    .join(',');
+    .join(",");
 
-  console.log(featuresStr);
-  const popup = window.open('about:blank', 'printWindow', featuresStr);
+  const popup = window.open("about:blank", "printWindow", featuresStr);
   popup.document.open();
   popup.document.write(`
-		<html>
-			<head>
-				<style>${options.styles}</style>
-				<script>
-					setTimeout(function() {
-						window.print();
-					}, ${options.printTimeout});
-				</script>
-			</head>
-			<body>
-				${renderToString(element)}
-			</body>
-		</html>
+  <html>
+    <head>
+      <style>${options.styles}</style>
+      <script>
+        setTimeout(function() {
+          window.print();
+        }, ${options.printTimeout});
+      </script>
+    </head>
+    <body>
+      ${renderToString(element)}
+    </body>
+    </html>
 	`);
 }
