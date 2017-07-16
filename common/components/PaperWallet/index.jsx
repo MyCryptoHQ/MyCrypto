@@ -72,23 +72,10 @@ const styles = {
   infoLabel: {
     fontWeight: 600
   },
-
   identiconContainer: {
     position: 'absolute',
     right: '15px',
     bottom: '45px'
-  },
-  identiconWrapper: {
-    float: 'left',
-    width: '42px',
-    height: '42px',
-    overflow: 'hidden',
-    backgroundSize: '100%',
-    borderRadius: '50%',
-    boxShadow: `
-      inset rgba(255, 255, 255, 0.5) 0 2px 2px,
-      inset rgba(0, 0, 0, 0.6) 0 -1px 8px
-    `
   },
   identiconText: {
     float: 'left',
@@ -152,8 +139,8 @@ export default class PaperWallet extends React.Component {
         </div>
 
         <div style={styles.identiconContainer}>
-          <div style={styles.identiconWrapper}>
-            <Identicon address={address} forPrinting />
+          <div style={{ float: 'left' }}>
+            <Identicon address={address} size={'42px'} />
           </div>
           <p style={styles.identiconText}>
             Always look for this icon when sending to this wallet
