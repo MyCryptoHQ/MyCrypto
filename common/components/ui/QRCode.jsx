@@ -7,7 +7,6 @@ import QRCodeLib from "qrcode";
 const cache: { [key: string]: string } = {};
 
 type Props = {
-  size: number,
   data: string
 };
 
@@ -26,10 +25,7 @@ export default class QRCode extends React.Component {
 
   componentWillReceiveProps(nextProps: Props) {
     // Regenerate QR codes if props change
-    if (
-      nextProps.data !== this.props.data ||
-      nextProps.size !== this.props.size
-    ) {
+    if (nextProps.data !== this.props.data) {
       this._generateQrCode(nextProps.data);
     }
   }
@@ -66,9 +62,8 @@ export default class QRCode extends React.Component {
       <img
         src={qr}
         style={{
-          width: this.props.size,
-          height: this.props.size,
-          backgroundSize: "100%"
+          width: "100%",
+          height: "100%"
         }}
       />
     );

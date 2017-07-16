@@ -135,6 +135,10 @@ export default class PrintableWallet extends Component {
         margin: "12px 0 0",
         fontSize: "9px",
         textAlign: "center"
+      },
+      box: {
+        width: 150,
+        height: 150
       }
     };
 
@@ -144,17 +148,21 @@ export default class PrintableWallet extends Component {
         <img src={ethLogo} style={styles.ethLogo} />
 
         <div style={styles.block}>
-          <QRCode data={this.props.address} size={150} />
+          <div style={styles.box}>
+            <QRCode data={this.props.address} />
+          </div>
           <p style={styles.blockText}>YOUR ADDRESS</p>
         </div>
 
         <div style={styles.block}>
-          <img src={notesBg} style={{ width: 150, hight: 150 }} />
+          <img src={notesBg} style={styles.box} />
           <p style={styles.blockText}>AMOUNT / NOTES</p>
         </div>
 
         <div style={styles.block}>
-          <QRCode data={this.props.privateKey} size={150} />
+          <div style={styles.box}>
+            <QRCode data={this.props.privateKey} />
+          </div>
           <p style={styles.blockText}>YOUR PRIVATE KEY</p>
         </div>
 
