@@ -6,22 +6,20 @@ import {
   GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
   GENERATE_WALLET_CONTINUE_TO_UNLOCK
 } from "actions/generateWalletConstants";
-import type { WalletFile } from "libs/keystore";
+import type PrivateKeyWallet from "libs/wallet/privkey";
 
 export type State = {
   activeStep: string,
   hasDownloadedWalletFile: boolean,
-  privateKey: string,
-  address: string,
-  walletFile: WalletFile
+  wallet: ?PrivateKeyWallet,
+  password: ?string
 };
 
 const initialState: State = {
   activeStep: "password",
   hasDownloadedWalletFile: false,
-  privateKey: null,
-  address: null,
-  walletFile: null
+  wallet: null,
+  password: null
 };
 
 export function generateWallet(state: State = initialState, action): State {
@@ -36,9 +34,8 @@ export function generateWallet(state: State = initialState, action): State {
     case GENERATE_WALLET_FILE: {
       return {
         ...state,
-        privateKey: action.privateKey,
-        address: action.address,
-        walletFile: action.walletFile,
+        wallet: action.wallet,
+        password: action.password,
         activeStep: "download"
       };
     }

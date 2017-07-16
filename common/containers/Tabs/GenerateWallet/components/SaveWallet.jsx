@@ -1,20 +1,41 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import translate from 'translations';
+// @flow
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import translate from "translations";
+import type PrivKeyWallet from "libs/wallet/privkey";
+import { makeBlob } from "libs/globalFuncs";
+
+type Props = {
+  wallet: PrivKeyWallet,
+  password: string,
+  hasDownloadedWalletFile: boolean,
+  downloadUTCGenerateWallet: () => any,
+  confirmContinueToPaperGenerateWallet: () => any
+};
 
 export default class SaveWallet extends Component {
+  props: Props;
+  keystore: Object;
   static propTypes = {
     // Store state
-    walletFile: PropTypes.object.isRequired,
+    wallet: PropTypes.object.isRequired,
+    password: PropTypes.string.isRequired,
     hasDownloadedWalletFile: PropTypes.bool,
     // Actions
     downloadUTCGenerateWallet: PropTypes.func,
     confirmContinueToPaperGenerateWallet: PropTypes.func
   };
+  componentWillMount() {
+    this.keystore = this.props.wallet.toKeystore(this.props.password);
+  }
+  componentWillUpdate(nextProps: Props) {
+    if (this.props.wallet !== nextProps.wallet) {
+      this.keystore = nextProps.wallet.toKeystore(nextProps.password);
+    }
+  }
 
   render() {
     const {
-      walletFile,
       hasDownloadedWalletFile,
       downloadUTCGenerateWallet,
       confirmContinueToPaperGenerateWallet
@@ -23,7 +44,7 @@ export default class SaveWallet extends Component {
     return (
       <div>
         <h1>
-          {translate('GEN_Label_2')}
+          {translate("GEN_Label_2")}
         </h1>
         <br />
         <div className="col-sm-8 col-sm-offset-2">
@@ -33,10 +54,10 @@ export default class SaveWallet extends Component {
               className="help-icon"
             />
             <p className="account-help-text">
-              {translate('x_KeystoreDesc')}
+              {translate("x_KeystoreDesc")}
             </p>
             <h4>
-              {translate('x_Keystore2')}
+              {translate("x_Keystore2")}
             </h4>
           </div>
           <a
@@ -44,14 +65,14 @@ export default class SaveWallet extends Component {
             className="btn btn-primary btn-block"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
             aria-describedby="x_KeystoreDesc"
-            download={walletFile.fileName}
-            href={walletFile.blobURI}
+            download={this.getFilename()}
+            href={this.getBlob()}
             onClick={downloadUTCGenerateWallet}
           >
-            {translate('x_Download')}
+            {translate("x_Download")}
           </a>
           <p className="sr-only" id="x_KeystoreDesc">
-            {translate('x_KeystoreDesc')}
+            {translate("x_KeystoreDesc")}
           </p>
           <br />
           <br />
@@ -74,9 +95,9 @@ export default class SaveWallet extends Component {
             <a
               role="button"
               className={`btn btn-info ${hasDownloadedWalletFile
-                ? ''
-                : 'disabled'}`}
-              onClick={() => confirmContinueToPaperGenerateWallet()}
+                ? ""
+                : "disabled"}`}
+              onClick={confirmContinueToPaperGenerateWallet}
             >
               I understand. Continue.
             </a>
@@ -84,5 +105,19 @@ export default class SaveWallet extends Component {
         </div>
       </div>
     );
+  }
+
+  getBlob() {
+    return makeBlob("text/json;charset=UTF-8", this.keystore);
+  }
+
+  getFilename() {
+    const ts = new Date();
+    return [
+      "UTC--",
+      ts.toJSON().replace(/:/g, "-"),
+      "--",
+      this.props.wallet.getAddress()
+    ].join("");
   }
 }

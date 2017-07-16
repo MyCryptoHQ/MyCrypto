@@ -1,23 +1,31 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as generateWalletActions from 'actions/generateWallet';
-import PropTypes from 'prop-types';
-import EnterPassword from './components/EnterPassword';
-import SaveWallet from './components/SaveWallet';
-import PaperWallet from './components/PaperWallet';
-import UnlockWallet from './components/UnlockWallet';
+// @flow
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as generateWalletActions from "actions/generateWallet";
+import PropTypes from "prop-types";
+import EnterPassword from "./components/EnterPassword";
+import SaveWallet from "./components/SaveWallet";
+import PaperWallet from "./components/PaperWallet";
+import UnlockWallet from "./components/UnlockWallet";
+import type PrivKeyWallet from "libs/wallet/privkey";
+import type { State } from "reducers";
+
+type Props = {
+  // FIXME union actual steps
+  activeStep: string,
+  password: string,
+  hasDownloadedWalletFile: boolean,
+  wallet: ?PrivKeyWallet
+} & typeof generateWalletActions;
 
 class GenerateWallet extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+  props: Props;
   static propTypes = {
     // Store state
     activeStep: PropTypes.string,
-    walletFile: PropTypes.object,
-    privateKey: PropTypes.string,
-    address: PropTypes.string,
+    wallet: PropTypes.object,
+    password: PropTypes.string,
+    hasDownloadedWalletFile: PropTypes.boolean,
     // Actions
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func,
@@ -27,23 +35,44 @@ class GenerateWallet extends Component {
   };
 
   render() {
-    const { activeStep } = this.props;
+    const { activeStep, wallet, password } = this.props;
     let content;
 
     switch (activeStep) {
-      case 'password':
+      case "password":
         content = <EnterPassword {...this.props} />;
         break;
 
-      case 'download':
-        content = <SaveWallet {...this.props} />;
+      case "download":
+        if (wallet) {
+          content = (
+            <SaveWallet
+              hasDownloadedWalletFile={this.props.hasDownloadedWalletFile}
+              wallet={wallet}
+              password={password}
+              downloadUTCGenerateWallet={this.props.downloadUTCGenerateWallet}
+              confirmContinueToPaperGenerateWallet={
+                this.props.confirmContinueToPaperGenerateWallet
+              }
+            />
+          );
+        }
         break;
 
-      case 'paper':
-        content = <PaperWallet {...this.props} />;
+      case "paper":
+        if (wallet) {
+          content = (
+            <PaperWallet
+              wallet={wallet}
+              continueToUnlockWallet={this.props.continueToUnlockWallet}
+            />
+          );
+        } else {
+          content = <h1>Uh oh. Not sure how you got here.</h1>;
+        }
         break;
 
-      case 'unlock':
+      case "unlock":
         content = <UnlockWallet {...this.props} />;
         break;
 
@@ -52,7 +81,7 @@ class GenerateWallet extends Component {
     }
 
     return (
-      <section className="container" style={{ minHeight: '50%' }}>
+      <section className="container" style={{ minHeight: "50%" }}>
         <div className="tab-content">
           <main className="tab-pane active text-center" role="main">
             <section role="main" className="row">
@@ -66,13 +95,13 @@ class GenerateWallet extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: State) {
   return {
     generateWalletPassword: state.form.generateWalletPassword,
     activeStep: state.generateWallet.activeStep,
+    password: state.generateWallet.password,
     hasDownloadedWalletFile: state.generateWallet.hasDownloadedWalletFile,
-    privateKey: state.generateWallet.privateKey,
-    address: state.generateWallet.address,
+    wallet: state.generateWallet.wallet,
     walletFile: state.generateWallet.walletFile
   };
 }

@@ -37,6 +37,14 @@ export default function(element: React.Element<*>, opts: PrintOptions = {}) {
     </head>
     <body>
       ${renderToString(element)}
+      <script>
+        // FIXME consider if we REALLY want it
+        var width = document.body.children[0].offsetWidth;
+        var height = document.body.children[0].offsetHeight;
+        window.moveTo(0, 0);
+        // FIXME Chrome could be larger (i guess?)
+        window.resizeTo(width + 60, height + 60);
+      </script>
     </body>
     </html>
 	`);
