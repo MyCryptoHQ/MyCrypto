@@ -16,8 +16,14 @@ class App extends Component {
     languageSelection: string,
     nodeSelection: string,
 
+    gasPriceGwei: number,
+    gasPriceMinGwei: number,
+    gasPriceMaxGwei: number,
+
+
     changeLanguage: typeof actions.changeLanguage,
     changeNode: typeof actions.changeNode,
+    changeGasPrice: typeof actions.changeGasPrice,
     handleWindowResize: () => void
   };
 
@@ -25,18 +31,28 @@ class App extends Component {
     let {
       children,
       // APP
+      nodeSelection,
       languageSelection,
+      gasPriceGwei,
+      gasPriceMinGwei,
+      gasPriceMaxGwei,
+
       changeLanguage,
       changeNode,
-      nodeSelection
+      changeGasPrice
     } = this.props;
 
     let headerProps = {
       location,
-      changeLanguage,
       languageSelection,
+      nodeSelection,
+      gasPriceGwei,
+      gasPriceMinGwei,
+      gasPriceMaxGwei,
+
+      changeLanguage,
       changeNode,
-      nodeSelection
+      changeGasPrice
     };
 
     return (
@@ -59,7 +75,11 @@ function mapStateToProps(state) {
     nodeSelection: state.config.nodeSelection,
     nodeToggle: state.config.nodeToggle,
     languageSelection: state.config.languageSelection,
-    languageToggle: state.config.languageToggle
+    languageToggle: state.config.languageToggle,
+
+    gasPriceGwei: state.config.gasPriceGwei,
+    gasPriceMaxGwei: state.config.gasPriceMaxGwei,
+    gasPriceMinGwei: state.config.gasPriceMinGwei
   };
 }
 
