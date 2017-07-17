@@ -49,8 +49,8 @@ export default class Guide extends React.Component {
                   {idx + 1}. {step.title}
                 </div>
                 <ul className="GuideStep-notes">
-                  {step.notes.map(note =>
-                    <li className="GuideStep-notes-note">
+                  {step.notes.map((note, noteIdx) =>
+                    <li className="GuideStep-notes-note" key={noteIdx}>
                       {note}
                     </li>
                   )}

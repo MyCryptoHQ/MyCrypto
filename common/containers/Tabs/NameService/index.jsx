@@ -4,6 +4,7 @@ import * as ensActions from 'actions/ens';
 import PropTypes from 'prop-types';
 import RegisterName from './components/RegisterName';
 import Guide from './components/Guide';
+import './index.scss';
 
 const ensHref = 'http://ens.readthedocs.io/en/latest/introduction.html';
 const ensLink = (
@@ -26,8 +27,8 @@ class NameService extends Component {
         <div className="tab-content">
           <main className="tab-pane active">
             <div className="NameService">
-              <h1 className="NameService-title">ENS</h1>
-              <p className="NameService-desc">
+              <h1 className="NameService-title">Ethereum Name Service</h1>
+              <p className="NameService-description">
                 The {ensLink} is a distributed, open, and extensible naming
                 system based on the Ethereum blockchain. Once you have a name,
                 you can tell your friends to send ETH to{' '}
