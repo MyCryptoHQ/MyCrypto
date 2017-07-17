@@ -1,18 +1,19 @@
 // @flow
-import React from "react";
+import React from 'react';
 
 class Option extends React.Component {
   props: {
     value: string,
+    title?: string,
     active: boolean,
     onChange: (value: string) => void
   };
   render() {
-    const { value, active } = this.props;
+    const { value, active, title } = this.props;
     return (
       <li>
-        <a className={active ? "active" : ""} onClick={this.onChange}>
-          {value}
+        <a className={active ? 'active' : ''} onClick={this.onChange}>
+          {title ? title : value}
         </a>
       </li>
     );
@@ -27,6 +28,7 @@ export default class UnitDropdown extends React.Component {
   props: {
     value: string,
     options: string[],
+    etherName: string,
     onChange?: (value: string) => void
   };
   state: {
@@ -36,7 +38,7 @@ export default class UnitDropdown extends React.Component {
   };
 
   render() {
-    const { value, options, onChange } = this.props;
+    const { value, options, etherName, onChange } = this.props;
     const isReadonly = !onChange;
 
     return (
@@ -47,7 +49,7 @@ export default class UnitDropdown extends React.Component {
           onClick={this.onToggleExpand}
         >
           <strong>
-            {value}
+            {value === 'ether' ? etherName : value}
             <i className="caret" />
           </strong>
         </a>
@@ -58,6 +60,7 @@ export default class UnitDropdown extends React.Component {
               <Option
                 key={o}
                 active={value === o}
+                title={o === 'ether' ? etherName : void 0}
                 value={o}
                 onChange={this.onChange}
               />
@@ -79,6 +82,8 @@ export default class UnitDropdown extends React.Component {
     this.setState({
       expanded: false
     });
-    this.props.onChange(value);
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
   };
 }

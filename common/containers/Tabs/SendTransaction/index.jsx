@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 import { UnlockHeader } from 'components/ui';
 import {
@@ -21,8 +20,6 @@ import BaseWallet from 'libs/wallet/base';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
 import Big from 'big.js';
-import type { TokenBalance } from 'selectors/wallet';
-import { getTokenBalances } from 'selectors/wallet';
 
 type State = {
   hasQueryString: boolean,
@@ -55,8 +52,7 @@ type Props = {
     }
   },
   wallet: BaseWallet,
-  balance: Big,
-  tokenBalances: TokenBalance[]
+  balance: Big
 };
 
 export class SendTransaction extends React.Component {
@@ -82,8 +78,6 @@ export class SendTransaction extends React.Component {
 
   render() {
     const unlocked = !!this.props.wallet;
-    const unitReadable = 'UNITREADABLE';
-    const nodeUnit = 'NODEUNIT';
     const hasEnoughBalance = false;
     const {
       to,
@@ -150,10 +144,6 @@ export class SendTransaction extends React.Component {
                   <AmountField
                     value={value}
                     unit={unit}
-                    tokens={this.props.tokenBalances
-                      .filter(token => !token.balance.eq(0))
-                      .map(token => token.symbol)
-                      .sort()}
                     onChange={readOnly ? void 0 : this.onAmountChange}
                   />
                   <GasField
@@ -278,19 +268,6 @@ export class SendTransaction extends React.Component {
   };
 
   onAmountChange = (value: string, unit: string) => {
-    // TODO sub gas for eth
-    if (value === 'everything') {
-      if (unit === 'ether') {
-        value = this.props.balance.toString();
-      }
-      const token = this.props.tokenBalances.find(
-        token => token.symbol === unit
-      );
-      if (!token) {
-        return;
-      }
-      value = token.balance.toString();
-    }
     this.setState({
       value,
       unit
@@ -301,8 +278,7 @@ export class SendTransaction extends React.Component {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-    balance: state.wallet.balance,
-    tokenBalances: getTokenBalances(state)
+    balance: state.wallet.balance
   };
 }
 

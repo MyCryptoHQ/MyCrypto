@@ -173,7 +173,7 @@ export class BalanceSidebar extends React.Component {
   };
 }
 
-function mapStateToProps(state: State, props: Props) {
+function mapStateToProps(state: State, _props: Props) {
   return {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,
