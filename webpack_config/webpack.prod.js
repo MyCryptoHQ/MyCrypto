@@ -7,10 +7,11 @@ const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 // const OfflinePlugin = require('offline-plugin')
 const base = require('./webpack.base');
 const config = require('./config');
-const fs = require('fs');
+const rimraf = require('rimraf');
 const distFolder = 'dist/';
 
-if (fs.existsSync(distFolder)) fs.rmdirSync(distFolder);
+// Clear out build folder
+rimraf.sync(distFolder, {'rmdirSync': true});
 
 base.devtool = 'cheap-source-map';
 base.module.loaders.push(
