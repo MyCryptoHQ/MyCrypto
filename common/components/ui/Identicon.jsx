@@ -17,6 +17,7 @@ export default function Identicon(props: Props) {
     : '';
   return (
     <div
+      className="Identicon"
       style={{ position: 'relative', width: size, height: size }}
       title="Address Indenticon"
     >
