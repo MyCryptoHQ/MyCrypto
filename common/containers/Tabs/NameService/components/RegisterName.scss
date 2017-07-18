@@ -1,7 +1,19 @@
 .RegisterName {
   &-nameform {
-    &-inputs {
-      display: inline-block;
+    max-width: 40rem;
+    margin: 1.5rem auto 0;
+    display: flex;
+
+    &-submit {
+      margin: 0 0 0 10px;
+    }
+
+    @media screen and (max-width: 640px) {
+      flex-direction: column;
+
+      &-submit {
+        margin: 10px 0 0;
+      }
     }
   }
 }
