@@ -19,7 +19,14 @@ import BaseWallet from 'libs/wallet/base';
 // import type { Transaction } from './types';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
+import { isValidETHAddress } from 'libs/validators';
+import { getNodeLib } from 'selectors/config';
+import { getTokens } from 'selectors/wallet';
+import type { BaseNode } from 'libs/nodes';
+import { toWei } from 'libs/units';
+import type { Token } from 'config/data';
 import Big from 'big.js';
+import { padLeft, toHex, stripHex } from 'libs/values';
 
 type State = {
   hasQueryString: boolean,
@@ -52,7 +59,9 @@ type Props = {
     }
   },
   wallet: BaseWallet,
-  balance: Big
+  balance: Big,
+  node: BaseNode,
+  tokens: Token[]
 };
 
 export class SendTransaction extends React.Component {
@@ -73,6 +82,25 @@ export class SendTransaction extends React.Component {
     const queryPresets = pickBy(this.parseQuery());
     if (Object.keys(queryPresets).length) {
       this.setState({ ...queryPresets, hasQueryString: true });
+    }
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    // if gas is not changed
+    // and we have valid tx
+    // and relevant fields changed
+    // estimate gas
+    // TODO we might want to listen to gas price changes here
+    // TODO debunce the call
+    if (
+      !this.state.gasChanged &&
+      this.isValid() &&
+      (this.state.to !== prevState.to ||
+        this.state.value !== prevState.value ||
+        this.state.unit !== prevState.unit ||
+        this.state.data !== prevState.data)
+    ) {
+      this.estimateGas(this.state);
     }
   }
 
@@ -228,8 +256,61 @@ export class SendTransaction extends React.Component {
     return { to, data, value, unit, gasLimit, readOnly };
   }
 
+  isValid() {
+    return (
+      isValidETHAddress(this.state.to) &&
+      this.state.value &&
+      !isNaN(Number(this.state.value)) &&
+      isFinite(Number(this.state.value))
+    );
+  }
+
+  // FIXME MOVE ME
+  getTransactionFromState() {
+    // FIXME add gas price
+    if (this.state.unit === 'ether') {
+      return {
+        to: this.state.to,
+        from: this.props.wallet.getAddress(),
+        // gasPrice: `0x${new Number(50 * 1000000000).toString(16)}`,
+        value: '0x' + toHex(toWei(Big(this.state.value), 'ether'))
+      };
+    }
+    const token = this.props.tokens.find(x => x.symbol === this.state.unit);
+    if (!token) {
+      return;
+    }
+
+    return {
+      to: token.address,
+      from: this.props.wallet.getAddress(),
+      // gasPrice: `0x${new Number(50 * 1000000000).toString(16)}`,
+      value: '0x0',
+      data: `0xa9059cbb${padLeft(stripHex(this.state.to), 64)}${padLeft(
+        toHex(Big(this.state.value)),
+        64
+      )}`
+    };
+  }
+
+  estimateGas(state: State) {
+    this.props.node
+      .estimateGas(this.getTransactionFromState())
+      .then(gasLimit => {
+        if (this.state === state) {
+          let gasLimitString = gasLimit.toString();
+          if (gasLimitString === '21001' && state.unit === 'ether') {
+            gasLimitString = '21000';
+          }
+          if (gasLimit.gte(4000000)) {
+            gasLimitString = '-1';
+          }
+          this.setState({ gasLimit: gasLimitString });
+        }
+      });
+  }
+
   // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
-  // FIXME also should it reset gasChanged?
   onNewTx = (
     address: string,
     amount: string,
@@ -278,7 +359,9 @@ export class SendTransaction extends React.Component {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-    balance: state.wallet.balance
+    balance: state.wallet.balance,
+    node: getNodeLib(state),
+    tokens: getTokens(state)
   };
 }
 

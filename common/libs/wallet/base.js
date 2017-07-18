@@ -1,4 +1,5 @@
 // @flow
+import { stripHex } from 'libs/values';
 
 export default class BaseWallet {
   getAddress(): string {
@@ -6,6 +7,6 @@ export default class BaseWallet {
   }
 
   getNakedAddress(): string {
-    return this.getAddress().replace('0x', '').toLowerCase();
+    return stripHex(this.getAddress());
   }
 }

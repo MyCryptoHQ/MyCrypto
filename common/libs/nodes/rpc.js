@@ -1,6 +1,7 @@
 // @flow
 import BaseNode from './base';
 import { randomBytes } from 'crypto';
+import type { TransactionWithoutGas } from 'libs/transaction';
 import Big from 'big.js';
 
 type JsonRpcSuccess = {|
@@ -19,7 +20,14 @@ type JsonRpcError = {|
 type JsonRpcResponse = JsonRpcSuccess | JsonRpcError;
 
 // FIXME
-type EthCall = any;
+type EthCall = {
+  from?: string,
+  to: string,
+  gas?: string,
+  gasPrice?: string,
+  value?: string,
+  data?: string
+};
 
 export default class RPCNode extends BaseNode {
   endpoint: string;
@@ -38,6 +46,16 @@ export default class RPCNode extends BaseNode {
     });
   }
 
+  async estimateGas(transaction: TransactionWithoutGas): Promise<Big> {
+    return this.post('eth_estimateGas', [transaction]).then(response => {
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+
+      return new Big(Number(response.result));
+    });
+  }
+
   // FIXME extract batching
   async ethCall(calls: EthCall[]) {
     return this.batchPost(
@@ -52,7 +70,8 @@ export default class RPCNode extends BaseNode {
     );
   }
 
-  async post(method: string, params: string[]): Promise<JsonRpcResponse> {
+  // FIXME
+  async post(method: string, params: any[]): Promise<JsonRpcResponse> {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {

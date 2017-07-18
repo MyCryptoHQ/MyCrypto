@@ -9,12 +9,10 @@ import { PrivKeyWallet, BaseWallet } from 'libs/wallet';
 import { BaseNode } from 'libs/nodes';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
+import { padLeft } from 'libs/values';
 import Big from 'big.js';
 
 // FIXME MOVE ME
-function padLeft(n: string, width: number, z: string = '0'): string {
-  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-}
 
 function getEthCallData(to: string, method: string, args: string[]) {
   return {
