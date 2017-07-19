@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import Navigation from './components/Navigation';
-import GasPriceDropdown from './components/gasPriceDropdown.jsx';
+import GasPriceDropdown from './components/GasPriceDropdown.jsx';
 import { Link } from 'react-router';
 import { Dropdown } from 'components/ui';
 import { languages, NODES } from '../../config/data';

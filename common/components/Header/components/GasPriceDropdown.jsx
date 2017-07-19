@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import './GasPriceDropdown.scss';
 
-export default class gasPriceDropdown extends Component {
+export default class GasPriceDropdown extends Component {
   constructor(props) {
     super(props);
 
