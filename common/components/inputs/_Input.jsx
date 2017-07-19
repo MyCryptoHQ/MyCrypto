@@ -29,16 +29,18 @@ export const inputPropTypes = {
   rows: PropTypes.number,
   // Custom props
   label: PropTypes.node,
-  rootClass: PropTypes.string.isRequired,
-  preInput: PropTypes.node,
-  postInput: PropTypes.node,
-  validator: PropTypes.func,
   onChange: PropTypes.func.isRequired
 };
 
 export default class ByteCodeInput extends React.Component {
   props: InputProps;
-  static propTypes = inputPropTypes;
+  static propTypes = {
+    ...inputPropTypes,
+    rootClass: PropTypes.string.isRequired,
+    preInput: PropTypes.node,
+    postInput: PropTypes.node,
+    validator: PropTypes.func
+  };
 
   state = {
     isValid: null

@@ -2,16 +2,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { accessContract, deployContract } from 'actions/contracts';
+import { State } from 'reducers/contracts';
 import translate from 'translations';
 import Interact from './components/Interact';
 import Deploy from './components/Deploy';
 import './index.scss';
 
-type Props = {};
+type Props = {
+  nodeContracts: Array,
+  selectedAddress: ?string,
+  selectedABIJson: ?string,
+  selectedABIFunctions: ?Array,
+  accessError: ?string,
+  accessContract: Function,
+  deployContract: Function
+};
 
 class Contracts extends Component {
   props: Props;
-  static propTypes = {};
+  static propTypes = {
+    // Store state
+    nodeContracts: PropTypes.array.isRequired,
+    selectedAddress: PropTypes.string,
+    selectedABIJson: PropTypes.string,
+    selectedABIFunctions: PropTypes.array,
+    accessError: PropTypes.string,
+    // Actions
+    accessContract: PropTypes.func.isRequired,
+    deployContract: PropTypes.func.isRequired
+  };
 
   state = {
     activeTab: 'interact'
@@ -22,14 +42,30 @@ class Contracts extends Component {
   }
 
   render() {
+    const {
+      nodeContracts,
+      selectedAddress,
+      selectedABIJson,
+      selectedABIFunctions,
+      accessContract,
+      deployContract
+    } = this.props;
     const { activeTab } = this.state;
     let content, interactActive, deployActive;
 
     if (activeTab === 'interact') {
-      content = <Interact />;
+      content = (
+        <Interact
+          nodeContracts={nodeContracts}
+          selectedAddress={selectedAddress}
+          selectedABIJson={selectedABIJson}
+          selectedABIFunctions={selectedABIFunctions}
+          accessContract={accessContract}
+        />
+      );
       interactActive = 'is-active';
     } else {
-      content = <Deploy />;
+      content = <Deploy deployContract={deployContract} />;
       deployActive = 'is-active';
     }
 
@@ -66,7 +102,16 @@ class Contracts extends Component {
 }
 
 function mapStateToProps(state: State) {
-  return {};
+  return {
+    nodeContracts: state.contracts.nodeContracts,
+    selectedAddress: state.contracts.selectedAddress,
+    selectedABIJson: state.contracts.selectedABIJson,
+    selectedABIFunctions: state.contracts.selectedABIFunctions,
+    accessError: state.contracts.accessError
+  };
 }
 
-export default connect(mapStateToProps)(Contracts);
+export default connect(mapStateToProps, {
+  accessContract,
+  deployContract
+})(Contracts);

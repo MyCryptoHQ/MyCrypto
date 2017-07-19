@@ -22,6 +22,9 @@ import type { State as CustomTokensState } from './customTokens';
 import * as rates from './rates';
 import type { State as RatesState } from './rates';
 
+import * as contracts from './contracts';
+import type { State as ContractsState } from './contracts';
+
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
@@ -33,7 +36,8 @@ export type State = {
   ens: EnsState,
   wallet: WalletState,
   customTokens: CustomTokensState,
-  rates: RatesState
+  rates: RatesState,
+  contracts: ContractsState
 };
 
 export default combineReducers({
@@ -45,6 +49,7 @@ export default combineReducers({
   ...wallet,
   ...customTokens,
   ...rates,
+  ...contracts,
   form: formReducer,
   routing: routerReducer
 });

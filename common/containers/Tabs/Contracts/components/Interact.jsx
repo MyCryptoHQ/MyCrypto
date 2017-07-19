@@ -6,19 +6,39 @@ import AddressInput from 'components/inputs/AddressInput';
 import ABIInput from 'components/inputs/ABIInput';
 import './Interact.scss';
 
-type Props = {};
+type Props = {
+  nodeContracts: Array,
+  selectedAddress: ?string,
+  selectedABIJson: ?string,
+  selectedABIFunctions: ?Array,
+  accessError: ?string,
+  accessContract: Function
+};
 
 export default class Interact extends Component {
   props: Props;
-  static propTypes = {};
+  static propTypes = {
+    // Store state
+    nodeContracts: PropTypes.array.isRequired,
+    selectedAddress: PropTypes.string,
+    selectedABIJson: PropTypes.string,
+    selectedABIFunctions: PropTypes.array,
+    accessError: PropTypes.string,
+    // Actions
+    accessContract: PropTypes.func.isRequired
+  };
 
   state = {
     address: '',
-    abi: ''
+    abiJson: ''
   };
 
   _handleInputChange = ev => {
     this.setState({ [ev.target.name]: ev.target.value });
+  };
+
+  _accessContract = () => {
+    this.accessContract(this.state.address, this.state.abiJson);
   };
 
   render() {
@@ -38,13 +58,16 @@ export default class Interact extends Component {
         <div className="Interact-interface">
           <ABIInput
             label={translate('CONTRACT_Json')}
-            name="abi"
+            name="abiJson"
             value={abi}
             onChange={this._handleInputChange}
           />
         </div>
 
-        <button className="Contracts-submit btn btn-primary">
+        <button
+          className="Contracts-submit btn btn-primary"
+          onClick={this._accessContract}
+        >
           {translate('x_Access')}
         </button>
       </div>
