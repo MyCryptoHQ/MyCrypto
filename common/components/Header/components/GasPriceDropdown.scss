@@ -1,0 +1,17 @@
+@import "../../../../common/sass/variables";
+
+.GasPrice {
+
+  &-header {
+    max-width: 26rem;
+    color: $text-color;
+    p {
+      font-weight: 400;
+      margin: $space-sm 0 0;
+    }
+
+    a, a:hover, a:focus, a:visited {
+      color: $brand-primary !important;
+    }
+  }
+}
