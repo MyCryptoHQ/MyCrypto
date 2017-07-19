@@ -6,8 +6,6 @@ import type {
   ChangeGasPriceAction
 } from 'actions/config';
 import { languages, NODES } from '../config/data';
-import Big from 'big.js';
-
 
 export type State = {
   // FIXME
@@ -43,7 +41,6 @@ function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
     gasPriceGwei: action.value
   };
 }
-
 
 export function config(
   state: State = initialState,
