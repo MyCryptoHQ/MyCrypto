@@ -1,3 +1,9 @@
+// Application styles
+import 'assets/styles/etherwallet-master.less';
+
+// Static icons
+import 'assets/images/icons/icon16.png';
+
 import React from 'react';
 import { render } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -5,8 +11,6 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { Root } from 'components';
 import { Routing, history } from './routing';
 import { store } from './store';
-// application styles
-import 'assets/styles/etherwallet-master.less';
 
 const renderRoot = Root => {
   let syncedHistory = syncHistoryWithStore(history, store);
