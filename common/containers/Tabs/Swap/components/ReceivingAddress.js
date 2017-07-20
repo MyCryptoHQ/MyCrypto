@@ -5,14 +5,19 @@ import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 
+export type ReduxStateProps = {
+  destinationKind: PropTypes.string.isRequired,
+  destinationAddress: PropTypes.string.isRequired
+};
+
+export type ReduxActionProps = {
+  destinationAddressSwap: PropTypes.func.isRequired,
+  partTwoCompleteSwap: PropTypes.func.isRequired,
+  stopLoadBityRates: PropTypes.func.isRequired
+};
+
 export default class ReceivingAddress extends Component {
-  static propTypes = {
-    destinationKind: PropTypes.string.isRequired,
-    destinationAddressSwap: PropTypes.func.isRequired,
-    destinationAddress: PropTypes.string,
-    partTwoCompleteSwap: PropTypes.func,
-    stopLoadBityRates: PropTypes.func
-  };
+  props: ReduxStateProps & ReduxActionProps;
 
   onChangeDestinationAddress = (event: SyntheticInputEvent) => {
     const value = event.target.value;
@@ -40,8 +45,12 @@ export default class ReceivingAddress extends Component {
           <section className="row">
             <div className="col-sm-8 col-sm-offset-2 col-xs-12">
               <label>
-                <span>{translate('SWAP_rec_add')}</span>
-                <strong> ({destinationKind})</strong>
+                <span>
+                  {translate('SWAP_rec_add')}
+                </span>
+                <strong>
+                  {' '}({destinationKind})
+                </strong>
               </label>
               <input
                 className={`form-control ${validAddress
@@ -60,7 +69,9 @@ export default class ReceivingAddress extends Component {
               onClick={this.onClickPartTwoComplete}
               className="btn btn-primary btn-lg"
             >
-              <span>{translate('SWAP_start_CTA')}</span>
+              <span>
+                {translate('SWAP_start_CTA')}
+              </span>
             </button>
           </section>
         </section>

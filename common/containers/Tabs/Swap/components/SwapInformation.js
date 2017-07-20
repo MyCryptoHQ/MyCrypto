@@ -3,17 +3,15 @@ import PropTypes from 'prop-types';
 import { toFixedIfLarger } from 'utils/formatters';
 import translate from 'translations';
 
-export default class SwapInformation extends Component {
-  constructor(props) {
-    super(props);
-  }
+export type ReduxStateProps = {
+  originAmount: PropTypes.number.isRequired,
+  destinationAmount: PropTypes.number.isRequired,
+  originKind: PropTypes.string.isRequired,
+  destinationKind: PropTypes.string.isRequired
+};
 
-  static propTypes = {
-    originAmount: PropTypes.number.isRequired,
-    destinationAmount: PropTypes.number.isRequired,
-    originKind: PropTypes.string.isRequired,
-    destinationKind: PropTypes.string.isRequired
-  };
+export default class SwapInformation extends Component {
+  props: ReduxStateProps;
 
   computedOriginDestinationRatio = () => {
     return this.props.destinationAmount / this.props.originAmount;
@@ -42,7 +40,6 @@ export default class SwapInformation extends Component {
             >
               {/* Todo - fix*/}
               <img
-                className="pull-right"
                 src={'https://www.myetherwallet.com/images/logo-bity.svg'}
                 width={100}
                 height={38}
@@ -55,13 +52,17 @@ export default class SwapInformation extends Component {
             <h4>
               {` ${toFixedIfLarger(originAmount, 6)} ${originKind}`}
             </h4>
-            <p>{translate('SEND_amount')}</p>
+            <p>
+              {translate('SEND_amount')}
+            </p>
           </div>
           <div className="col-sm-4 order-info">
             <h4>
               {` ${toFixedIfLarger(destinationAmount, 6)} ${destinationKind}`}
             </h4>
-            <p>{translate('SWAP_rec_amt')}</p>
+            <p>
+              {translate('SWAP_rec_amt')}
+            </p>
           </div>
           <div className="col-sm-4 order-info">
             <h4>
@@ -70,7 +71,9 @@ export default class SwapInformation extends Component {
                 6
               )} ${originKind}/${destinationKind} `}
             </h4>
-            <p>{translate('SWAP_your_rate')}</p>
+            <p>
+              {translate('SWAP_your_rate')}
+            </p>
           </div>
         </section>
       </article>

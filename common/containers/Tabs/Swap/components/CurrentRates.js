@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import PropTypes from 'prop-types';
 import { toFixedIfLarger } from 'utils/formatters';
+import PropTypes from 'prop-types';
+
+type ReduxStateProps = {
+  ETHBTC: PropTypes.number.isRequired,
+  ETHREP: PropTypes.number.isRequired,
+  BTCETH: PropTypes.number.isRequired,
+  BTCREP: PropTypes.number.isRequired
+};
 
 export default class CurrentRates extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ETHBTCAmount: 1,
-      ETHREPAmount: 1,
-      BTCETHAmount: 1,
-      BTCREPAmount: 1
-    };
-  }
+  props: ReduxStateProps;
 
-  static propTypes = {
-    ETHBTC: PropTypes.number,
-    ETHREP: PropTypes.number,
-    BTCETH: PropTypes.number,
-    BTCREP: PropTypes.number
+  state = {
+    ETHBTCAmount: 1,
+    ETHREPAmount: 1,
+    BTCETHAmount: 1,
+    BTCREPAmount: 1
   };
 
   onChange = event => {
@@ -30,7 +29,6 @@ export default class CurrentRates extends Component {
     });
   };
 
-  // TODO - A little code duplication here, but simple enough to where it doesn't seem worth the time to fix.
   render() {
     return (
       <article className="swap-rates">

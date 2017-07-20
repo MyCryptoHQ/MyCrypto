@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import { toFixedIfLarger } from 'utils/formatters';
 import translate from 'translations';
 
-export default class OnGoingSwapInformation extends Component {
-  constructor(props) {
-    super(props);
-  }
+export type ReduxStateProps = {
+  referenceNumber: PropTypes.string.isRequired,
+  timeRemaining: PropTypes.string,
+  originAmount: PropTypes.number.isRequired,
+  originKind: PropTypes.string.isRequired,
+  destinationKind: PropTypes.string.isRequired,
+  destinationAmount: PropTypes.number.isRequired
+};
 
-  static propTypes = {
-    referenceNumber: PropTypes.string.isRequired,
-    timeRemaining: PropTypes.any, // FIXME
-    originAmount: PropTypes.number.isRequired,
-    originKind: PropTypes.string.isRequired,
-    destinationKind: PropTypes.string.isRequired,
-    destinationAmount: PropTypes.number.isRequired,
-    restartSwap: PropTypes.func.isRequired
-  };
+export type ReduxActionProps = {
+  restartSwap: PropTypes.func.isRequired
+};
+
+export default class YourSwapInformation extends Component {
+  props: ReduxStateProps & ReduxActionProps;
 
   computedOriginDestinationRatio = () => {
     return toFixedIfLarger(
@@ -42,7 +43,9 @@ export default class OnGoingSwapInformation extends Component {
               Start New Swap
             </button>
           </div>
-          <h5 className="col-xs-6 ng-scope">{translate('SWAP_information')}</h5>
+          <h5 className="col-xs-6">
+            {translate('SWAP_information')}
+          </h5>
           <div className="col-xs-3">
             <a
               className="link"
@@ -61,24 +64,36 @@ export default class OnGoingSwapInformation extends Component {
         </section>
         <section className="row order-info-wrap">
           <div className="col-sm-3 order-info">
-            <h4>{referenceNumber}</h4>
-            <p>{translate('SWAP_ref_num')}</p>
+            <h4>
+              {referenceNumber}
+            </h4>
+            <p>
+              {translate('SWAP_ref_num')}
+            </p>
           </div>
           <div className="col-sm-3 order-info">
-            <h4>{timeRemaining}</h4>
+            <h4>
+              {timeRemaining}
+            </h4>
             <p>
               {translate('SWAP_time')}
             </p>
           </div>
           <div className="col-sm-3 order-info">
-            <h4>{originAmount} {originKind}</h4>
-            <p>{translate('SWAP_rec_amt')}</p>
+            <h4>
+              {originAmount} {originKind}
+            </h4>
+            <p>
+              {translate('SWAP_rec_amt')}
+            </p>
           </div>
           <div className="col-sm-3 order-info">
             <h4>
               {`${this.computedOriginDestinationRatio()} ${destinationKind}/${originKind}`}
             </h4>
-            <p>{translate('SWAP_your_rate')}</p>
+            <p>
+              {translate('SWAP_your_rate')}
+            </p>
           </div>
         </section>
       </div>

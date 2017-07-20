@@ -1,44 +1,49 @@
 import React, { Component } from 'react';
-import CurrencySwap from './components/currencySwap';
-import SwapInformation from './components/swapInformation';
-import CurrentRates from './components/currentRates';
-import ReceivingAddress from './components/receivingAddress';
-import SwapProgress from './components/swapProgress';
-import OnGoingSwapInformation from './components/onGoingSwapInformation';
+import CurrencySwap from './components/CurrencySwap';
+import SwapInformation from './components/SwapInformation';
+import CurrentRates from './components/CurrentRates';
+import ReceivingAddress from './components/ReceivingAddress';
+import SwapProgress from './components/SwapProgress';
+import YourSwapInformation from './components/YourSwapInformation';
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
 import PropTypes from 'prop-types';
 
-class Swap extends Component {
-  constructor(props) {
-    super(props);
-  }
+type ReduxStateProps = {
+  partTwoComplete: PropTypes.bool,
+  destinationAddress: PropTypes.string,
+  destinationKind: PropTypes.string,
+  partOneComplete: PropTypes.bool,
+  originKind: PropTypes.string,
+  destinationKindOptions: String[],
+  originKindOptions: String[],
+  bityRates: PropTypes.bool,
+  originAmount: string | number,
+  destinationAmount: string | number
+};
 
-  static propTypes = {
-    bityRates: PropTypes.any,
-    originAmount: PropTypes.any,
-    destinationAmount: PropTypes.any,
-    originKind: PropTypes.string,
-    partOneComplete: PropTypes.bool,
-    destinationKind: PropTypes.string,
-    destinationKindOptions: PropTypes.array,
-    originKindOptions: PropTypes.array,
-    destinationAddress: PropTypes.string,
-    originKindSwap: PropTypes.func,
-    destinationKindSwap: PropTypes.func,
-    originAmountSwap: PropTypes.func,
-    destinationAmountSwap: PropTypes.func,
-    loadBityRates: PropTypes.func,
-    partOneCompleteSwap: PropTypes.func,
-    destinationAddressSwap: PropTypes.func,
-    restartSwap: PropTypes.func,
-    partTwoCompleteSwap: PropTypes.func,
-    partTwoComplete: PropTypes.bool,
-    stopLoadBityRates: PropTypes.func
-  };
+type ReduxActionProps = {
+  originKindSwap: PropTypes.func,
+  destinationKindSwap: PropTypes.func,
+  originAmountSwap: PropTypes.func,
+  destinationAmountSwap: PropTypes.func,
+  loadBityRates: PropTypes.func,
+  partOneCompleteSwap: PropTypes.func,
+  destinationAddressSwap: PropTypes.func,
+  restartSwap: PropTypes.func,
+  partTwoCompleteSwap: PropTypes.func,
+  stopLoadBityRates: PropTypes.func
+};
+
+class Swap extends Component {
+  props: ReduxActionProps & ReduxStateProps;
 
   componentDidMount() {
     this.props.loadBityRates();
+  }
+
+  componentWillUnmount() {
+    this.props.stopLoadBityRates();
   }
 
   render() {
@@ -96,18 +101,20 @@ class Swap extends Component {
 
     const referenceNumber = '2341asdfads';
     const timeRemaining = '2:30';
+    const numberOfConfirmations = 3;
+    const activeStep = 2;
 
-    let onGoingSwapInformationProps = {
+    let YourSwapInformationProps = {
       // from bity
-      referenceNumber: referenceNumber,
-      timeRemaining: timeRemaining,
+      referenceNumber,
+      timeRemaining,
       originAmount,
       originKind,
       destinationKind,
       destinationAmount,
       restartSwap,
-      numberOfConfirmations: 3,
-      activeStep: 2
+      numberOfConfirmations,
+      activeStep
     };
 
     return (
@@ -129,8 +136,8 @@ class Swap extends Component {
             {partOneComplete &&
               partTwoComplete &&
               <div>
-                <OnGoingSwapInformation {...onGoingSwapInformationProps} />
-                <SwapProgress {...onGoingSwapInformationProps} />
+                <YourSwapInformation {...YourSwapInformationProps} />
+                <SwapProgress {...YourSwapInformationProps} />
               </div>}
           </main>
         </div>
