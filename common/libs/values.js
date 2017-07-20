@@ -1,10 +1,6 @@
 // @flow
 import type Big from 'big.js';
 
-export function padLeft(n: string, width: number, z: string = '0'): string {
-  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-}
-
 // FIXME does this even makes sense
 export function toHex(n: Big): string {
   let reminder = n;

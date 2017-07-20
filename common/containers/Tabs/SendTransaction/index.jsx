@@ -26,7 +26,8 @@ import type { BaseNode } from 'libs/nodes';
 import { toWei } from 'libs/units';
 import type { Token } from 'config/data';
 import Big from 'big.js';
-import { padLeft, toHex, stripHex } from 'libs/values';
+import { toHex } from 'libs/values';
+import ERC20 from 'libs/erc20';
 
 type State = {
   hasQueryString: boolean,
@@ -286,10 +287,10 @@ export class SendTransaction extends React.Component {
       from: this.props.wallet.getAddress(),
       // gasPrice: `0x${new Number(50 * 1000000000).toString(16)}`,
       value: '0x0',
-      data: `0xa9059cbb${padLeft(stripHex(this.state.to), 64)}${padLeft(
-        toHex(Big(this.state.value)),
-        64
-      )}`
+      data: ERC20.transfer(
+        this.state.to,
+        Big(this.state.value).times(Big(10).pow(token.decimal))
+      )
     };
   }
 
