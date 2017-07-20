@@ -11,6 +11,11 @@ export type ChangeLanguageAction = {
   value: string
 };
 
+export type ChangeGasPriceAction = {
+  type: 'CONFIG_GAS_PRICE',
+  value: number
+}
+
 export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
 
 export function changeLanguage(sign: string) {
@@ -26,3 +31,11 @@ export function changeNode(value: string): ChangeNodeAction {
     value
   };
 }
+
+export function changeGasPrice(value: number): ChangeGasPriceAction {
+  return {
+    type: 'CONFIG_GAS_PRICE',
+    value
+  }
+}
+

@@ -9,6 +9,11 @@ export const DONATION_ADDRESSES_MAP = {
 
 export const donationAddressMap = DONATION_ADDRESSES_MAP;
 
+export const gasPriceDefaults = {
+  gasPriceMinGwei: 1,
+  gasPriceMaxGwei: 60
+};
+
 export const languages = [
   {
     sign: 'en',
