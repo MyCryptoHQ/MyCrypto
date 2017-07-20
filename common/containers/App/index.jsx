@@ -17,9 +17,6 @@ class App extends Component {
     nodeSelection: string,
 
     gasPriceGwei: number,
-    gasPriceMinGwei: number,
-    gasPriceMaxGwei: number,
-
 
     changeLanguage: typeof actions.changeLanguage,
     changeNode: typeof actions.changeNode,
@@ -34,8 +31,6 @@ class App extends Component {
       nodeSelection,
       languageSelection,
       gasPriceGwei,
-      gasPriceMinGwei,
-      gasPriceMaxGwei,
 
       changeLanguage,
       changeNode,
@@ -47,8 +42,6 @@ class App extends Component {
       languageSelection,
       nodeSelection,
       gasPriceGwei,
-      gasPriceMinGwei,
-      gasPriceMaxGwei,
 
       changeLanguage,
       changeNode,
@@ -77,9 +70,7 @@ function mapStateToProps(state) {
     languageSelection: state.config.languageSelection,
     languageToggle: state.config.languageToggle,
 
-    gasPriceGwei: state.config.gasPriceGwei,
-    gasPriceMaxGwei: state.config.gasPriceMaxGwei,
-    gasPriceMinGwei: state.config.gasPriceMinGwei
+    gasPriceGwei: state.config.gasPriceGwei
   };
 }
 

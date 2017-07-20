@@ -15,12 +15,13 @@ export default class GasPriceDropdown extends Component {
 
   static propTypes = {
     gasPriceGwei: PropTypes.number,
-    gasPriceMinGwei: PropTypes.number,
-    gasPriceMaxGwei: PropTypes.number,
     changeGasPrice: PropTypes.func
   };
 
   render() {
+    const gasPriceMinGwei = 1;
+    const gasPriceMaxGwei = 60;
+
     // col-xs-4 applies padding not observed in MEWv3, this overrides
     const paddingReset = { paddingLeft: '0px', paddingRight: '0px' };
 
@@ -45,8 +46,8 @@ export default class GasPriceDropdown extends Component {
               <input
                 type="range"
                 value={this.props.gasPriceGwei}
-                min={this.props.gasPriceMinGwei}
-                max={this.props.gasPriceMaxGwei}
+                min={gasPriceMinGwei}
+                max={gasPriceMaxGwei}
                 onChange={this.updateGasPrice}
               />
               <p style={paddingReset} className="small col-xs-4 text-left">

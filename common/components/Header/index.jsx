@@ -15,8 +15,6 @@ export default class Header extends Component {
     languageSelection: string,
     nodeSelection: string,
     gasPriceGwei: number,
-    gasPriceMinGwei: number,
-    gasPriceMaxGwei: number,
 
     changeLanguage: (sign: string) => any,
     changeNode: (key: string) => any,
@@ -54,8 +52,6 @@ export default class Header extends Component {
 
               <GasPriceDropdown
                 gasPriceGwei={this.props.gasPriceGwei}
-                gasPriceMinGwei={this.props.gasPriceMinGwei}
-                gasPriceMaxGwei={this.props.gasPriceMaxGwei}
                 changeGasPrice={this.props.changeGasPrice}
               />
 
