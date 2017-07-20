@@ -10,7 +10,8 @@ import { languages, NODES } from '../config/data';
 export type State = {
   // FIXME
   languageSelection: string,
-  nodeSelection: string
+  nodeSelection: string,
+  gasPriceGwei: number
 };
 
 export const initialState: State = {
