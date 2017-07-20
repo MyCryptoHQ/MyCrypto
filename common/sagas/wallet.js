@@ -24,7 +24,7 @@ function* updateTokenBalances() {
   const node: BaseNode = yield select(getNodeLib);
   const wallet: ?BaseWallet = yield select(getWalletInst);
   const tokens = yield select(getTokens);
-  if (!wallet || !node) {
+  if (!wallet) {
     return;
   }
   // FIXME handle errors
