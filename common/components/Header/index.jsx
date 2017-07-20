@@ -51,8 +51,8 @@ export default class Header extends Component {
               </span>
 
               <GasPriceDropdown
-                gasPriceGwei={this.props.gasPriceGwei}
-                changeGasPrice={this.props.changeGasPrice}
+                value={this.props.gasPriceGwei}
+                onChange={this.props.changeGasPrice}
               />
 
               <Dropdown
