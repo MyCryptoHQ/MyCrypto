@@ -5,17 +5,11 @@ import PropTypes from 'prop-types';
 import './GasPriceDropdown.scss';
 
 export default class GasPriceDropdown extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      expanded: false
-    };
-  }
+  state = { expanded: false };
 
   static propTypes = {
     gasPriceGwei: PropTypes.number,
-    changeGasPrice: PropTypes.func
+    changeGasPrice: PropTypes.func.isRequired
   };
 
   render() {
