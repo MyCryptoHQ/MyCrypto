@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Identicon from 'components/ui/Identicon';
 import { isValidETHAddress } from 'libs/validators';
 import Input, { inputPropTypes } from './_Input';
+import './AddressInput.scss';
 
 export default class AddressInput extends React.Component {
   static propTypes = {
@@ -26,6 +27,15 @@ export default class AddressInput extends React.Component {
       onChange
     } = this.props;
 
+    let identicon;
+    if (showIdenticon) {
+      identicon = (
+        <div className="AddressInput-identicon">
+          <Identicon size="100%" address={value} />
+        </div>
+      );
+    }
+
     return (
       <Input
         name={name}
@@ -35,7 +45,7 @@ export default class AddressInput extends React.Component {
         label={label}
         validator={isValidETHAddress}
         onChange={onChange}
-        postInput={showIdenticon && <Identicon address={value} />}
+        postInput={identicon}
         rootClass="AddressInput"
       />
     );

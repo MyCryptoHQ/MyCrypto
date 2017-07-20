@@ -1,0 +1,10 @@
+@import "common/sass/variables";
+
+.AddressInput {
+  &-identicon {
+    height: $input-height-base !important;
+    width: $input-height-base !important;
+    margin-top: $space-sm;
+    margin-left: 6px;
+  }
+}

@@ -54,6 +54,14 @@ export default class Interact extends Component {
             onChange={this._handleInputChange}
             showIdenticon={true}
           />
+          <label className="Interact-address-contract">
+            <h4>
+              {translate('CONTRACT_Title_2')}
+            </h4>
+            <select className="form-control">
+              <option>Select a contract...</option>
+            </select>
+          </label>
         </div>
         <div className="Interact-interface">
           <ABIInput

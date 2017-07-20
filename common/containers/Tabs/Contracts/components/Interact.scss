@@ -1,5 +1,11 @@
 .Interact {
   &-address {
+    display: flex;
+
+    > * {
+      width: 50%;
+      vertical-align: top;
+    }
   }
 
   &-interface {
