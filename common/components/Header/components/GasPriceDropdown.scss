@@ -1,6 +1,11 @@
-@import "../../../../common/sass/variables";
+@import "common/sass/variables";
 
 .GasPrice {
+
+  &-dropdown-menu {
+    padding: 0.5rem !important;
+    min-width: 300px !important;
+  }
 
   &-header {
     max-width: 26rem;
@@ -13,5 +18,16 @@
     a, a:hover, a:focus, a:visited {
       color: $brand-primary !important;
     }
+  }
+
+  &-padding-reset {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  &-description {
+    white-space: normal;
+    font-weight: 300 !important;
+    margin: 2rem 0 0;
   }
 }

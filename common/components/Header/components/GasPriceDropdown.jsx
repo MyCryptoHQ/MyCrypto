@@ -16,9 +16,6 @@ export default class GasPriceDropdown extends Component {
     const gasPriceMinGwei = 1;
     const gasPriceMaxGwei = 60;
 
-    // col-xs-4 applies padding not observed in MEWv3, this overrides
-    const paddingReset = { paddingLeft: '0px', paddingRight: '0px' };
-
     return (
       <span className="dropdown">
         <a
@@ -31,10 +28,7 @@ export default class GasPriceDropdown extends Component {
           <i className="caret" />
         </a>
         {this.state.expanded &&
-          <ul
-            className="dropdown-menu"
-            style={{ padding: '.5rem', minWidth: '300px' }}
-          >
+          <ul className="dropdown-menu GasPrice-dropdown-menu">
             <div className="GasPrice-header">
               <span>Gas Price</span>: {this.props.gasPriceGwei} Gwei
               <input
@@ -44,23 +38,16 @@ export default class GasPriceDropdown extends Component {
                 max={gasPriceMaxGwei}
                 onChange={this.updateGasPrice}
               />
-              <p style={paddingReset} className="small col-xs-4 text-left">
+              <p className="small col-xs-4 text-left GasPrice-padding-reset">
                 Not So Fast
               </p>
-              <p style={paddingReset} className="small col-xs-4 text-center">
+              <p className="small col-xs-4 text-center GasPrice-padding-reset">
                 Fast
               </p>
-              <p style={paddingReset} className="small col-xs-4 text-right">
+              <p className="small col-xs-4 text-right GasPrice-padding-reset">
                 Fast AF
               </p>
-              <p
-                className="small"
-                style={{
-                  whiteSpace: 'normal',
-                  fontWeight: '300',
-                  margin: '2rem 0 0'
-                }}
-              >
+              <p className="small GasPrice-description">
                 Gas Price is the amount you pay per unit of gas.{' '}
                 <code>TX fee = gas price * gas limit</code> & is paid to miners
                 for including your TX in a block. Higher the gas price = faster
