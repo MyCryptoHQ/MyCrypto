@@ -7,18 +7,18 @@ export type ReduxStateProps = {
   numberOfConfirmations: PropTypes.number.isRequired,
   destinationKind: PropTypes.string.isRequired,
   originKind: PropTypes.string.isRequired,
-  activeStep: PropTypes.number.isRequired
+  orderStep: PropTypes.number.isRequired
 };
 
 export default class SwapProgress extends Component {
   props: ReduxStateProps;
 
   computedClass(i: number) {
-    const { activeStep } = this.props;
+    const { orderStep } = this.props;
     let cssClass = 'progress-item';
-    if (activeStep > i) {
+    if (orderStep > i) {
       cssClass += ' progress-true';
-    } else if (i === activeStep) {
+    } else if (i === orderStep) {
       cssClass += ' progress-active';
     }
     return cssClass;

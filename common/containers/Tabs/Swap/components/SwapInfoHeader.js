@@ -4,7 +4,7 @@ import { toFixedIfLarger } from 'utils/formatters';
 import translate from 'translations';
 
 export type ReduxStateProps = {
-  referenceNumber: PropTypes.string.isRequired,
+  referenceNumber: PropTypes.string,
   timeRemaining: PropTypes.string,
   originAmount: PropTypes.number.isRequired,
   originKind: PropTypes.string.isRequired,
@@ -13,10 +13,10 @@ export type ReduxStateProps = {
 };
 
 export type ReduxActionProps = {
-  restartSwap: PropTypes.func.isRequired
+  restartSwap: PropTypes.func
 };
 
-export default class YourSwapInformation extends Component {
+export default class SwapInfoHeader extends Component {
   props: ReduxStateProps & ReduxActionProps;
 
   computedOriginDestinationRatio = () => {
@@ -26,11 +26,25 @@ export default class YourSwapInformation extends Component {
     );
   };
 
+  isExpanded = () => {
+    const { referenceNumber, timeRemaining, restartSwap } = this.props;
+    return referenceNumber && timeRemaining && restartSwap;
+  };
+
+  computedClass = () => {
+    if (this.isExpanded()) {
+      return 'col-sm-3 order-info';
+    } else {
+      return 'col-sm-4 order-info';
+    }
+  };
+
   render() {
     const {
       referenceNumber,
       timeRemaining,
       originAmount,
+      destinationAmount,
       originKind,
       destinationKind,
       restartSwap
@@ -63,33 +77,56 @@ export default class YourSwapInformation extends Component {
           </div>
         </section>
         <section className="row order-info-wrap">
-          <div className="col-sm-3 order-info">
+          {/*Amount to send */}
+          {!this.isExpanded() &&
+            <div className={this.computedClass()}>
+              <h4>
+                {` ${toFixedIfLarger(originAmount, 6)} ${originKind}`}
+              </h4>
+              <p>
+                {translate('SEND_amount')}
+              </p>
+            </div>}
+
+          {/* Reference Number*/}
+          {this.isExpanded() &&
+          <div className={this.computedClass()}>
+              <h4>
+                {referenceNumber}
+              </h4>
+              <p>
+                {translate('SWAP_ref_num')}
+              </p>
+            </div>}
+
+          {/*Time remaining*/}
+          {this.isExpanded() &&
+          <div className={this.computedClass()}>
+              <h4>
+                {timeRemaining}
+              </h4>
+              <p>
+                {translate('SWAP_time')}
+              </p>
+            </div>}
+
+          {/*Amount to Receive*/}
+          <div className={this.computedClass()}>
             <h4>
-              {referenceNumber}
-            </h4>
-            <p>
-              {translate('SWAP_ref_num')}
-            </p>
-          </div>
-          <div className="col-sm-3 order-info">
-            <h4>
-              {timeRemaining}
-            </h4>
-            <p>
-              {translate('SWAP_time')}
-            </p>
-          </div>
-          <div className="col-sm-3 order-info">
-            <h4>
-              {originAmount} {originKind}
+              {` ${toFixedIfLarger(destinationAmount, 6)} ${destinationKind}`}
             </h4>
             <p>
               {translate('SWAP_rec_amt')}
             </p>
           </div>
-          <div className="col-sm-3 order-info">
+
+          {/*Your rate*/}
+          <div className={this.computedClass()}>
             <h4>
-              {`${this.computedOriginDestinationRatio()} ${destinationKind}/${originKind}`}
+              {` ${toFixedIfLarger(
+                this.computedOriginDestinationRatio(),
+                6
+              )} ${originKind}/${destinationKind} `}
             </h4>
             <p>
               {translate('SWAP_your_rate')}

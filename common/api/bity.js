@@ -1,9 +1,7 @@
 // @flow
 import bityConfig from 'config/bity';
+import {combineAndUpper} from 'utils/formatters'
 
-export function combineAndUpper(...args: string[]) {
-  return args.reduce((acc, item) => acc.concat(item.toUpperCase()), '');
-}
 
 function findRateFromBityRateList(rateObjects, pairName) {
   return rateObjects.find(x => x.pair === pairName);

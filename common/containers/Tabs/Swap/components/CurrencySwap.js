@@ -1,29 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
-import { combineAndUpper } from 'api/bity';
+import { combineAndUpper } from 'utils/formatters';
 
-type CoinTypeDropDownReduxStateProps = {
-  kind: PropTypes.string,
-  kindOptions: String[]
+type SimpleDropDownReduxStateProps<T> = {
+  value: T,
+  options: Array<T>
 };
 
-type CoinTypeDropDownReduxActionProps = {
+type SimpleDropDownReduxActionProps = {
   onChange: PropTypes.func
 };
 
-class CoinTypeDropDown extends Component {
-  props: CoinTypeDropDownReduxStateProps & CoinTypeDropDownReduxActionProps;
+
+class SimpleDropDown extends Component {
+  props: SimpleDropDownReduxStateProps & SimpleDropDownReduxActionProps;
 
   render() {
     return (
       <span className="dropdown">
         <select
-          value={this.props.kind}
+          value={this.props.value}
           className="btn btn-default"
-          onChange={this.props.onChange.bind(this)}
+          onChange={this.props.onChange}
         >
-          {this.props.kindOptions.map((obj, i) => {
+          {this.props.options.map((obj, i) => {
             return (
               <option value={obj} key={i}>
                 {obj}
@@ -36,7 +37,7 @@ class CoinTypeDropDown extends Component {
   }
 }
 
-type CurrencySwapReduxStateProps = {
+export type CurrencySwapReduxStateProps = {
   bityRates: PropTypes.object,
   originAmount: string | number,
   destinationAmount: string | number,
@@ -46,15 +47,15 @@ type CurrencySwapReduxStateProps = {
   originKindOptions: PropTypes.array
 };
 
-type CurrencySwapReduxActionProps = {
+export type CurrencySwapReduxActionProps = {
   originKindSwap: PropTypes.func,
   destinationKindSwap: PropTypes.func,
   originAmountSwap: PropTypes.func,
   destinationAmountSwap: PropTypes.func,
-  partOneCompleteSwap: PropTypes.func
+  changeStepSwap: PropTypes.func
 };
 
-export default class CurrencySwap extends Component {
+export class CurrencySwap extends Component {
   props: CurrencySwapReduxStateProps & CurrencySwapReduxActionProps;
 
   state = {
@@ -62,7 +63,7 @@ export default class CurrencySwap extends Component {
   };
 
   onClickStartSwap = () => {
-    this.props.partOneCompleteSwap(true);
+    this.props.changeStepSwap(2);
   };
 
   onChangeOriginAmount = (event: SyntheticInputEvent) => {
@@ -138,10 +139,10 @@ export default class CurrencySwap extends Component {
           value={originAmount}
         />
 
-        <CoinTypeDropDown
-          kind={originKind}
+        <SimpleDropDown
+          value={originKind}
           onChange={this.onChangeOriginKind.bind(this)}
-          kindOptions={originKindOptions}
+          options={originKindOptions}
         />
 
         <h1>
@@ -158,10 +159,10 @@ export default class CurrencySwap extends Component {
           value={destinationAmount}
           onChange={this.onChangeDestinationAmount}
         />
-        <CoinTypeDropDown
-          kind={destinationKind}
+        <SimpleDropDown
+          value={destinationKind}
           onChange={this.onChangeDestinationKind.bind(this)}
-          kindOptions={destinationKindOptions}
+          options={destinationKindOptions}
         />
 
         <div className="col-xs-12 clearfix text-center">

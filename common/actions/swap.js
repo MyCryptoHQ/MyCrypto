@@ -4,13 +4,32 @@ import {
   SWAP_ORIGIN_AMOUNT,
   SWAP_ORIGIN_KIND,
   SWAP_UPDATE_BITY_RATES,
-  SWAP_PART_ONE_COMPLETE,
-  SWAP_PART_TWO_COMPLETE,
   SWAP_DESTINATION_ADDRESS,
   SWAP_RESTART,
   SWAP_LOAD_BITY_RATES,
-  SWAP_STOP_LOAD_BITY_RATES
+  SWAP_STOP_LOAD_BITY_RATES,
+  SWAP_STEP,
+  SWAP_REFERENCE_NUMBER
 } from './swapConstants';
+
+export type ChangeStepAction = {
+  type: SWAP_STEP,
+  value: number
+};
+
+export function changeStepSwap(value: number): ChangeStepAction {
+  return {
+    type: SWAP_STEP,
+    value
+  };
+}
+
+export const referenceNumberSwap = value => {
+  return {
+    type: SWAP_REFERENCE_NUMBER,
+    value
+  };
+};
 
 export const originKindSwap = value => {
   return {
@@ -47,20 +66,6 @@ export const updateBityRatesSwap = value => {
   };
 };
 
-export const partOneCompleteSwap = (value: boolean) => {
-  return {
-    type: SWAP_PART_ONE_COMPLETE,
-    value
-  };
-};
-
-export const partTwoCompleteSwap = (value: boolean) => {
-  return {
-    type: SWAP_PART_TWO_COMPLETE,
-    value
-  };
-};
-
 export const destinationAddressSwap = value => {
   return {
     type: SWAP_DESTINATION_ADDRESS,
@@ -74,13 +79,13 @@ export const restartSwap = () => {
   };
 };
 
-export const loadBityRates = () => {
+export const loadBityRatesSwap = () => {
   return {
     type: SWAP_LOAD_BITY_RATES
   };
 };
 
-export const stopLoadBityRates = () => {
+export const stopLoadBityRatesSwap = () => {
   return {
     type: SWAP_STOP_LOAD_BITY_RATES
   };

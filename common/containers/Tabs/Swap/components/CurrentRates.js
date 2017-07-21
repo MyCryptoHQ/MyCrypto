@@ -3,14 +3,14 @@ import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 import PropTypes from 'prop-types';
 
-type ReduxStateProps = {
+export type ReduxStateProps = {
   ETHBTC: PropTypes.number.isRequired,
   ETHREP: PropTypes.number.isRequired,
   BTCETH: PropTypes.number.isRequired,
   BTCREP: PropTypes.number.isRequired
 };
 
-export default class CurrentRates extends Component {
+export class CurrentRates extends Component {
   props: ReduxStateProps;
 
   state = {
@@ -30,6 +30,8 @@ export default class CurrentRates extends Component {
   };
 
   render() {
+    const { ETHBTC, ETHREP, BTCETH, BTCREP } = this.props;
+
     return (
       <article className="swap-rates">
         <section className="row">
@@ -48,7 +50,7 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` ETH = ${toFixedIfLarger(
-                  this.state.ETHBTCAmount * this.props.ETHBTC,
+                  this.state.ETHBTCAmount * ETHBTC,
                   6
                 )} BTC`}
               </span>
@@ -62,7 +64,7 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` ETH = ${toFixedIfLarger(
-                  this.state.ETHREPAmount * this.props.ETHREP,
+                  this.state.ETHREPAmount * ETHREP,
                   6
                 )} REP`}
               </span>
@@ -78,7 +80,7 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` BTC = ${toFixedIfLarger(
-                  this.state.BTCETHAmount * this.props.BTCETH,
+                  this.state.BTCETHAmount * BTCETH,
                   6
                 )} ETH`}
               </span>
@@ -92,7 +94,7 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` BTC = ${toFixedIfLarger(
-                  this.state.BTCREPAmount * this.props.BTCREP,
+                  this.state.BTCREPAmount * BTCREP,
                   6
                 )} REP`}
               </span>

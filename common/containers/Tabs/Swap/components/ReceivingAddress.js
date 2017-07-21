@@ -12,8 +12,8 @@ export type ReduxStateProps = {
 
 export type ReduxActionProps = {
   destinationAddressSwap: PropTypes.func.isRequired,
-  partTwoCompleteSwap: PropTypes.func.isRequired,
-  stopLoadBityRates: PropTypes.func.isRequired
+  changeStepSwap: PropTypes.func.isRequired,
+  stopLoadBityRatesSwap: PropTypes.func.isRequired
 };
 
 export default class ReceivingAddress extends Component {
@@ -25,8 +25,9 @@ export default class ReceivingAddress extends Component {
   };
 
   onClickPartTwoComplete = () => {
-    this.props.stopLoadBityRates();
-    this.props.partTwoCompleteSwap(true);
+    this.props.stopLoadBityRatesSwap();
+    this.props.referenceNumberSwap('2342423442');
+    this.props.changeStepSwap(3);
   };
 
   render() {
