@@ -10,7 +10,7 @@ export type ReduxStateProps = {
   orderStep: PropTypes.number.isRequired
 };
 
-export default class SwapProgress extends Component {
+export class SwapProgress extends Component {
   props: ReduxStateProps;
 
   computedClass(i: number) {

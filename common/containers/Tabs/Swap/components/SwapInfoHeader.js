@@ -16,7 +16,7 @@ export type ReduxActionProps = {
   restartSwap: PropTypes.func
 };
 
-export default class SwapInfoHeader extends Component {
+export class SwapInfoHeader extends Component {
   props: ReduxStateProps & ReduxActionProps;
 
   computedOriginDestinationRatio = () => {

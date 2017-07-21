@@ -16,7 +16,7 @@ export type ReduxActionProps = {
   stopLoadBityRatesSwap: PropTypes.func.isRequired
 };
 
-export default class ReceivingAddress extends Component {
+export class ReceivingAddress extends Component {
   props: ReduxStateProps & ReduxActionProps;
 
   onChangeDestinationAddress = (event: SyntheticInputEvent) => {

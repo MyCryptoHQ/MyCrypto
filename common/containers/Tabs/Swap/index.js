@@ -2,42 +2,48 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
 import PropTypes from 'prop-types';
-import PartOne from './PartOne';
-import ReceivingAddress from './components/ReceivingAddress';
-import SwapInfoHeader from './components/SwapInfoHeader';
-import SwapProgress from './components/SwapProgress';
+import {
+  CurrencySwap,
+  CurrencySwapReduxActionProps,
+  CurrencySwapReduxStateProps
+} from './components/CurrencySwap';
+import {
+  CurrentRates,
+  ReduxStateProps as CurrentRatesReduxStateProps
+} from './components/CurrentRates';
 
-type ReduxStateProps = {
-  step: PropTypes.string,
-  destinationAddress: PropTypes.string,
-  destinationKind: PropTypes.string,
-  originKind: PropTypes.string,
-  destinationKindOptions: String[],
-  originKindOptions: String[],
-  bityRates: PropTypes.bool,
-  originAmount: string | number,
-  destinationAmount: string | number,
-  // PART 3
-  referenceNumber: string,
-  timeRemaining: string,
-  numberOfConfirmation: number,
-  orderStep: number,
-  orderStarted: boolean
-};
+import {
+  ReceivingAddress,
+  ReduxStateProps as ReceivingAddressReduxStateProps,
+  ReduxActionProps as ReceivingAddressReduxActionProps
+} from './components/ReceivingAddress';
+import {
+  SwapInfoHeader,
+  ReduxStateProps as SwapInfoHeaderReduxStateProps,
+  ReduxActionProps as SwapInfoHeaderReduxActionProps
+} from './components/SwapInfoHeader';
 
-type ReduxActionProps = {
-  changeStepSwap: PropTypes.func,
-  originKindSwap: PropTypes.func,
-  destinationKindSwap: PropTypes.func,
-  originAmountSwap: PropTypes.func,
-  destinationAmountSwap: PropTypes.func,
+import {
+  SwapProgress,
+  ReduxStateProps as SwapProgressReduxStateProps
+} from './components/SwapProgress';
+
+type SwapReduxActionProps = {
   loadBityRatesSwap: PropTypes.func,
-  destinationAddressSwap: PropTypes.func,
-  restartSwap: PropTypes.func,
-  stopLoadBityRatesSwap: PropTypes.func.isRequired,
-  // PART 3
-  referenceNumberSwap: PropTypes.func
 };
+
+type ReduxActionProps =
+  CurrencySwapReduxActionProps &
+  ReceivingAddressReduxActionProps &
+  SwapInfoHeaderReduxActionProps &
+  SwapReduxActionProps;
+
+type ReduxStateProps =
+  ReceivingAddressReduxStateProps &
+  SwapInfoHeaderReduxStateProps &
+  SwapProgressReduxStateProps &
+  CurrentRatesReduxStateProps &
+  CurrencySwapReduxStateProps;
 
 class Swap extends Component {
   props: ReduxActionProps & ReduxStateProps;
@@ -78,22 +84,6 @@ class Swap extends Component {
       referenceNumberSwap
     } = this.props;
 
-    let PartOneProps = {
-      ...bityRates,
-      bityRates,
-      originAmount,
-      destinationAmount,
-      originKind,
-      destinationKind,
-      destinationKindOptions,
-      originKindOptions,
-      originKindSwap,
-      destinationKindSwap,
-      originAmountSwap,
-      destinationAmountSwap,
-      changeStepSwap
-    };
-
     let ReceivingAddressProps = {
       destinationKind,
       destinationAddressSwap,
@@ -115,11 +105,34 @@ class Swap extends Component {
       orderStep
     };
 
+    const { ETHBTC, ETHREP, BTCETH, BTCREP } = bityRates;
+
+    const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
+
+    const CurrencySwapProps = {
+      bityRates,
+      originAmount,
+      destinationAmount,
+      originKind,
+      destinationKind,
+      destinationKindOptions,
+      originKindOptions,
+      originKindSwap,
+      destinationKindSwap,
+      originAmountSwap,
+      destinationAmountSwap,
+      changeStepSwap
+    };
+
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
           <main className="tab-pane swap-tab">
-            {step === 1 && <PartOne {...PartOneProps} />}
+            {step === 1 &&
+              <div>
+                <CurrentRates {...CurrentRatesProps} />
+                <CurrencySwap {...CurrencySwapProps} />
+              </div>}
             {(step === 2 || step === 3) &&
               <SwapInfoHeader {...SwapInfoHeaderProps} />}
             {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
