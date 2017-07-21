@@ -5,7 +5,7 @@ import { methodID, rawEncode, rawDecode } from 'ethereumjs-abi';
 import { toHex } from 'libs/values';
 import Big from 'big.js';
 
-type ABIType = 'address' | 'uint256' | 'bool' | 'bytes32';
+type ABIType = 'address' | 'uint256' | 'bool' | 'bytes32' | 'uint8';
 
 type ABITypedSlot = {
   name: string,
@@ -35,7 +35,7 @@ export default class Contract {
     const method = this.abi.find(x => x.name === name);
     // FIXME
     if (!method) {
-      throw new Error('Unknown method');
+      throw new Error(`Unknown method ${name}`);
     }
     if (method.type !== 'function') {
       throw new Error('Not a function');

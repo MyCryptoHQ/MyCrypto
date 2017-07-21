@@ -1,34 +1,51 @@
 // @flow
-import { takeEvery, call, put, select } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { takeEvery, put, select, apply } from 'redux-saga/effects';
 import type { Effect } from 'redux-saga/effects';
 import { cacheEnsAddress } from 'actions/ens';
 import type { ResolveEnsNameAction } from 'actions/ens';
 import { getEnsAddress } from 'selectors/ens';
-import { donationAddressMap } from 'config/data';
+import { getNetworkConfig, getNodeLib } from 'selectors/config';
+import type { NetworkConfig } from 'config/data';
+import { RegistryContract, ResolverContract } from 'libs/ens';
+import type { BaseNode } from 'libs/nodes';
+import { toChecksumAddress } from 'ethereumjs-util';
 
 function* resolveEns(action?: ResolveEnsNameAction) {
   if (!action) return;
+
+  const node: BaseNode = yield select(getNodeLib);
+  const network: NetworkConfig = yield select(getNetworkConfig);
+  const chainId: number = network.chainId;
+  const ens = network.ens;
   const ensName = action.payload;
-  // FIXME Add resolve logic
-  ////                     _ens.getAddress(scope.addressDrtv.ensAddressField, function(data) {
-  //                         if (data.error) uiFuncs.notifier.danger(data.msg);
-  //                         else if (data.data == '0x0000000000000000000000000000000000000000' || data.data == '0x') {
-  //                             setValue('0x0000000000000000000000000000000000000000');
-  //                             scope.addressDrtv.derivedAddress = '0x0000000000000000000000000000000000000000';
-  //                             scope.addressDrtv.showDerivedAddress = true;
-  //                         } else {
-  //                             setValue(data.data);
-  //                             scope.addressDrtv.derivedAddress = ethUtil.toChecksumAddress(data.data);
-  //                             scope.addressDrtv.showDerivedAddress = true;
+
+  if (!ens) {
+    return;
+  }
 
   const cachedEnsAddress = yield select(getEnsAddress, ensName);
-
   if (cachedEnsAddress) {
     return;
   }
-  yield call(delay, 1000);
-  yield put(cacheEnsAddress(ensName, donationAddressMap.ETH));
+
+  const resolver = yield apply(node, node.call, [
+    ens.registry,
+    RegistryContract.resolver(ensName)
+  ]);
+  const resolverAddress = RegistryContract.$resolver(resolver);
+  if (resolverAddress === '0x0000000000000000000000000000000000000000') {
+    yield put(cacheEnsAddress(chainId, ensName, resolverAddress));
+    return;
+  }
+
+  const address = yield apply(node, node.call, [
+    resolverAddress,
+    ResolverContract.addr(ensName)
+  ]);
+  const resolvedAddress = ResolverContract.$addr(address);
+  yield put(
+    cacheEnsAddress(chainId, ensName, toChecksumAddress(resolvedAddress))
+  );
 }
 
 export default function* notificationsSaga(): Generator<Effect, void, any> {
