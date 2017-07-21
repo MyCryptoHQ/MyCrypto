@@ -296,7 +296,8 @@ export class SendTransaction extends React.Component {
 
   estimateGas(state: State) {
     this.props.node
-      .estimateGas(this.getTransactionFromState())
+      // $flowfixme
+      .estimateGas((this.getTransactionFromState(): any))
       .then(gasLimit => {
         if (this.state === state) {
           let gasLimitString = gasLimit.toString();
@@ -310,6 +311,8 @@ export class SendTransaction extends React.Component {
         }
       });
   }
+
+  generateTx = () => {};
 
   // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
   onNewTx = (

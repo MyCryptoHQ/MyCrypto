@@ -8,11 +8,42 @@ import {
 } from 'actions/generateWalletConstants';
 import { PrivKeyWallet } from 'libs/wallet';
 
-export const showPasswordGenerateWallet = () => {
+type ShowPasswordAction = {
+  type: 'GENERATE_WALLET_SHOW_PASSWORD'
+};
+
+export type GenerateUTCAction = {
+  type: 'GENERATE_WALLET_FILE',
+  wallet: PrivKeyWallet,
+  password: string
+};
+
+type DownloadFileAction = {
+  type: 'GENERATE_WALLET_DOWNLOAD_FILE'
+};
+
+type ConfirmContinueToPaperWalletAction = {
+  type: 'GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER'
+};
+
+type ResetGenerateWalletAction = {
+  type: 'RESET_GENERATE_WALLET'
+};
+
+export type GenerateWalletAction =
+  | ShowPasswordAction
+  | GenerateUTCAction
+  | DownloadFileAction
+  | ConfirmContinueToPaperWalletAction
+  | ResetGenerateWalletAction;
+
+export const showPasswordGenerateWallet = (): ShowPasswordAction => {
   return { type: GENERATE_WALLET_SHOW_PASSWORD };
 };
 
-export const generateUTCGenerateWallet = (password: string) => {
+export const generateUTCGenerateWallet = (
+  password: string
+): GenerateUTCAction => {
   return {
     type: GENERATE_WALLET_FILE,
     wallet: PrivKeyWallet.generate(),
@@ -20,14 +51,14 @@ export const generateUTCGenerateWallet = (password: string) => {
   };
 };
 
-export const downloadUTCGenerateWallet = () => {
+export const downloadUTCGenerateWallet = (): DownloadFileAction => {
   return { type: GENERATE_WALLET_DOWNLOAD_FILE };
 };
 
-export const confirmContinueToPaperGenerateWallet = () => {
+export const confirmContinueToPaperGenerateWallet = (): ConfirmContinueToPaperWalletAction => {
   return { type: GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER };
 };
 
-export const resetGenerateWallet = () => {
+export const resetGenerateWallet = (): ResetGenerateWalletAction => {
   return { type: RESET_GENERATE_WALLET };
 };
