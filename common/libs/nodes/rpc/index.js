@@ -49,9 +49,19 @@ export default class RpcNode extends BaseNode {
           if (item.error) {
             return Big(0);
           }
-          // FIXME hexdec
-          return Big(Number(item.result)).div(Big(10).pow(tokens[idx].decimal));
+          return ERC20.$balanceOf(item.result).div(
+            Big(10).pow(tokens[idx].decimal)
+          );
         });
       });
+  }
+
+  async call(address: string, data: string): Promise<string> {
+    return this.client.call(ethCall({ to: address, data })).then(response => {
+      if (response.error) {
+        throw new Error('estimateGas error');
+      }
+      return response.result;
+    });
   }
 }

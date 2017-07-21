@@ -1,10 +1,11 @@
 // @flow
 // TODO support events, constructors, fallbacks, array slots, types
-import { sha3, setLengthLeft, toBuffer } from 'ethereumjs-util';
+import { toBuffer } from 'ethereumjs-util';
+import { methodID, rawEncode, rawDecode } from 'ethereumjs-abi';
 import { toHex } from 'libs/values';
 import Big from 'big.js';
 
-type ABIType = 'address' | 'uint256' | 'bool';
+type ABIType = 'address' | 'uint256' | 'bool' | 'bytes32';
 
 type ABITypedSlot = {
   name: string,
@@ -22,12 +23,6 @@ type ABIMethod = {
 };
 
 export type ABI = ABIMethod[];
-
-function assertString(arg: any) {
-  if (typeof arg !== 'string') {
-    throw new Error('Expected string');
-  }
-}
 
 // Contract helper, returns data for given call
 export default class Contract {
@@ -50,41 +45,29 @@ export default class Contract {
 
   call(name: string, args: any[]): string {
     const method = this.getMethodAbi(name);
-    const selector = sha3(
-      `${name}(${method.inputs.map(i => i.type).join(',')})`
-    );
+    const selector = methodID(name, method.inputs.map(i => i.type));
 
     return (
       '0x' +
       selector.toString('hex').slice(0, 8) +
-      this.encodeArgs(method, args)
+      this.encodeArgs(method, args).toString('hex')
     );
   }
 
-  encodeArgs(method: ABIMethod, args: any[]): string {
+  decodeCallResult(name: string, data: string): any[] {
+    const method = this.getMethodAbi(name);
+    // FIXME figure out what could go wrong
+    return rawDecode(method.outputs.map(o => o.type), toBuffer(data));
+  }
+
+  encodeArgs(method: ABIMethod, args: any[]): Buffer {
     if (method.inputs.length !== args.length) {
       throw new Error('Invalid number of arguments');
     }
 
-    return method.inputs
-      .map((input, idx) => this.encodeArg(input, args[idx]))
-      .join('');
-  }
-
-  encodeArg(input: ABITypedSlot, arg: any): string {
-    switch (input.type) {
-      case 'address':
-      case 'uint160':
-        assertString(arg);
-        return setLengthLeft(toBuffer(arg), 32).toString('hex');
-      case 'uint256':
-        if (arg instanceof Big) {
-          arg = '0x' + toHex(arg);
-        }
-        assertString(arg);
-        return setLengthLeft(toBuffer(arg), 32).toString('hex');
-      default:
-        throw new Error(`Dont know how to handle abi type ${input.type}`);
-    }
+    return rawEncode(
+      method.inputs.map(i => i.type),
+      args.map(a => (a instanceof Big ? '0x' + toHex(a) : a))
+    );
   }
 }

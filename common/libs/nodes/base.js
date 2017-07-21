@@ -15,4 +15,8 @@ export default class BaseNode {
   async estimateGas(_tx: TransactionWithoutGas): Promise<Big> {
     throw new Error('Implement me');
   }
+
+  async call(_address: string, _data: string): Promise<string> {
+    throw new Error('Implement me');
+  }
 }
