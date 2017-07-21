@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
-import PropTypes from 'prop-types';
+import { Pairs } from 'actions/swapTypes';
 
-export type ReduxStateProps = {
-  ETHBTC: PropTypes.number.isRequired,
-  ETHREP: PropTypes.number.isRequired,
-  BTCETH: PropTypes.number.isRequired,
-  BTCREP: PropTypes.number.isRequired
-};
-
-export class CurrentRates extends Component {
-  props: ReduxStateProps;
+export default class CurrentRates extends Component {
+  props: Pairs;
 
   state = {
     ETHBTCAmount: 1,

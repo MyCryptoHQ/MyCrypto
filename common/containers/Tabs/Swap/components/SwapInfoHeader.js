@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { toFixedIfLarger } from 'utils/formatters';
 import translate from 'translations';
+import * as swapTypes from 'actions/swapTypes';
 
 export type ReduxStateProps = {
-  referenceNumber: PropTypes.string,
-  timeRemaining: PropTypes.string,
-  originAmount: PropTypes.number.isRequired,
-  originKind: PropTypes.string.isRequired,
-  destinationKind: PropTypes.string.isRequired,
-  destinationAmount: PropTypes.number.isRequired
+  timeRemaining: string,
+  originAmount: string | string,
+  originKind: string,
+  destinationKind: string,
+  destinationAmount: string | number,
+  referenceNumber: string
 };
 
 export type ReduxActionProps = {
-  restartSwap: PropTypes.func
+  restartSwap: () => swapTypes.RestartSwapAction
 };
 
-export class SwapInfoHeader extends Component {
+export default class SwapInfoHeader extends Component {
   props: ReduxStateProps & ReduxActionProps;
 
   computedOriginDestinationRatio = () => {
@@ -90,7 +90,7 @@ export class SwapInfoHeader extends Component {
 
           {/* Reference Number*/}
           {this.isExpanded() &&
-          <div className={this.computedClass()}>
+            <div className={this.computedClass()}>
               <h4>
                 {referenceNumber}
               </h4>
@@ -101,7 +101,7 @@ export class SwapInfoHeader extends Component {
 
           {/*Time remaining*/}
           {this.isExpanded() &&
-          <div className={this.computedClass()}>
+            <div className={this.computedClass()}>
               <h4>
                 {timeRemaining}
               </h4>

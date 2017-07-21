@@ -1,49 +1,50 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
-import PropTypes from 'prop-types';
-import {
-  CurrencySwap,
-  CurrencySwapReduxActionProps,
-  CurrencySwapReduxStateProps
-} from './components/CurrencySwap';
-import {
-  CurrentRates,
-  ReduxStateProps as CurrentRatesReduxStateProps
-} from './components/CurrentRates';
+import * as swapTypes from 'actions/swapTypes';
+import CurrencySwap from './components/CurrencySwap';
+import CurrentRates from './components/CurrentRates';
+import ReceivingAddress from './components/ReceivingAddress';
+import SwapInfoHeader from './components/SwapInfoHeader';
+import SwapProgress from './components/SwapProgress';
 
-import {
-  ReceivingAddress,
-  ReduxStateProps as ReceivingAddressReduxStateProps,
-  ReduxActionProps as ReceivingAddressReduxActionProps
-} from './components/ReceivingAddress';
-import {
-  SwapInfoHeader,
-  ReduxStateProps as SwapInfoHeaderReduxStateProps,
-  ReduxActionProps as SwapInfoHeaderReduxActionProps
-} from './components/SwapInfoHeader';
-
-import {
-  SwapProgress,
-  ReduxStateProps as SwapProgressReduxStateProps
-} from './components/SwapProgress';
-
-type SwapReduxActionProps = {
-  loadBityRatesSwap: PropTypes.func,
+type ReduxStateProps = {
+  step: string,
+  destinationAddress: string,
+  destinationKind: string,
+  originKind: string,
+  destinationKindOptions: String[],
+  originKindOptions: String[],
+  bityRates: boolean,
+  originAmount: string | number,
+  destinationAmount: string | number,
+  // PART 3
+  referenceNumber: string,
+  timeRemaining: string,
+  numberOfConfirmation: number,
+  orderStep: number,
+  orderStarted: boolean
 };
 
-type ReduxActionProps =
-  CurrencySwapReduxActionProps &
-  ReceivingAddressReduxActionProps &
-  SwapInfoHeaderReduxActionProps &
-  SwapReduxActionProps;
-
-type ReduxStateProps =
-  ReceivingAddressReduxStateProps &
-  SwapInfoHeaderReduxStateProps &
-  SwapProgressReduxStateProps &
-  CurrentRatesReduxStateProps &
-  CurrencySwapReduxStateProps;
+type ReduxActionProps = {
+  changeStepSwap: (value: number) => swapTypes.ChangeStepSwapAction,
+  originKindSwap: (value: string) => swapTypes.OriginKindSwapAction,
+  destinationKindSwap: (value: string) => swapTypes.DestinationKindSwapAction,
+  originAmountSwap: (
+    value: string | number
+  ) => swapTypes.OriginAmountSwapAction,
+  destinationAmountSwap: (
+    value: string | number
+  ) => swapTypes.DestinationAmountSwapAction,
+  loadBityRatesSwap: () => swapTypes.LoadBityRatesSwapAction,
+  destinationAddressSwap: (
+    value: string | number
+  ) => swapTypes.DestinationAddressSwapAction,
+  restartSwap: () => swapTypes.RestartSwapAction,
+  stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction,
+  // PART 3 (IGNORE FOR NOW)
+  referenceNumberSwap: typeof swapActions.referenceNumberSwap
+};
 
 class Swap extends Component {
   props: ReduxActionProps & ReduxStateProps;

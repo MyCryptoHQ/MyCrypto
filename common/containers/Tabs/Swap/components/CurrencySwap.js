@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
+import * as swapTypes from 'actions/swapTypes';
 
 type SimpleDropDownReduxStateProps<T> = {
   value: T,
@@ -11,7 +12,6 @@ type SimpleDropDownReduxStateProps<T> = {
 type SimpleDropDownReduxActionProps = {
   onChange: PropTypes.func
 };
-
 
 class SimpleDropDown extends Component {
   props: SimpleDropDownReduxStateProps & SimpleDropDownReduxActionProps;
@@ -38,24 +38,28 @@ class SimpleDropDown extends Component {
 }
 
 export type CurrencySwapReduxStateProps = {
-  bityRates: PropTypes.object,
+  bityRates: {},
   originAmount: string | number,
   destinationAmount: string | number,
-  originKind: PropTypes.string,
-  destinationKind: PropTypes.string,
-  destinationKindOptions: PropTypes.array,
-  originKindOptions: PropTypes.array
+  originKind: string,
+  destinationKind: string,
+  destinationKindOptions: String[],
+  originKindOptions: String[]
 };
 
 export type CurrencySwapReduxActionProps = {
-  originKindSwap: PropTypes.func,
-  destinationKindSwap: PropTypes.func,
-  originAmountSwap: PropTypes.func,
-  destinationAmountSwap: PropTypes.func,
-  changeStepSwap: PropTypes.func
+  originKindSwap: (value: string) => swapTypes.OriginKindSwapAction,
+  destinationKindSwap: (value: string) => swapTypes.DestinationKindSwapAction,
+  originAmountSwap: (
+    value: string | number
+  ) => swapTypes.OriginAmountSwapAction,
+  destinationAmountSwap: (
+    value: string | number
+  ) => swapTypes.DestinationAmountSwapAction,
+  changeStepSwap: () => swapTypes.ChangeStepSwapAction
 };
 
-export class CurrencySwap extends Component {
+export default class CurrencySwap extends Component {
   props: CurrencySwapReduxStateProps & CurrencySwapReduxActionProps;
 
   state = {

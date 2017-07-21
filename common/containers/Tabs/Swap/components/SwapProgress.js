@@ -1,16 +1,15 @@
 //flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 
 export type ReduxStateProps = {
-  numberOfConfirmations: PropTypes.number.isRequired,
-  destinationKind: PropTypes.string.isRequired,
-  originKind: PropTypes.string.isRequired,
-  orderStep: PropTypes.number.isRequired
+  numberOfConfirmations: number,
+  destinationKind: string,
+  originKind: string,
+  orderStep: number
 };
 
-export class SwapProgress extends Component {
+export default class SwapProgress extends Component {
   props: ReduxStateProps;
 
   computedClass(i: number) {

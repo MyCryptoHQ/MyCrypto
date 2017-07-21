@@ -1,3 +1,4 @@
+// @flow
 import {
   SWAP_DESTINATION_AMOUNT,
   SWAP_DESTINATION_KIND,
@@ -12,80 +13,91 @@ import {
   SWAP_REFERENCE_NUMBER
 } from './swapConstants';
 
-export type ChangeStepAction = {
-  type: SWAP_STEP,
-  value: number
-};
+import * as swapTypes from './swapTypes';
 
-export function changeStepSwap(value: number): ChangeStepAction {
+export function changeStepSwap(value: number): swapTypes.ChangeStepSwapAction {
   return {
     type: SWAP_STEP,
     value
   };
 }
 
-export const referenceNumberSwap = value => {
+export const referenceNumberSwap = (
+  value: string
+): swapTypes.ReferenceNumberSwapAction => {
   return {
     type: SWAP_REFERENCE_NUMBER,
     value
   };
 };
 
-export const originKindSwap = value => {
+export const originKindSwap = (
+  value: string
+): swapTypes.OriginKindSwapAction => {
   return {
     type: SWAP_ORIGIN_KIND,
     value
   };
 };
 
-export const destinationKindSwap = value => {
+export const destinationKindSwap = (
+  value: string
+): swapTypes.DestinationKindSwapAction => {
   return {
     type: SWAP_DESTINATION_KIND,
     value
   };
 };
 
-export const originAmountSwap = value => {
+export const originAmountSwap = (
+  value: string | number
+): swapTypes.OriginAmountSwapAction => {
   return {
     type: SWAP_ORIGIN_AMOUNT,
     value
   };
 };
 
-export const destinationAmountSwap = value => {
+export const destinationAmountSwap = (
+  value: string | number
+): swapTypes.DestinationAmountSwapAction => {
   return {
     type: SWAP_DESTINATION_AMOUNT,
     value
   };
 };
 
-export const updateBityRatesSwap = value => {
+export const updateBityRatesSwap = (
+  value: swapTypes.Pairs
+): swapTypes.BityRatesSwapAction => {
   return {
     type: SWAP_UPDATE_BITY_RATES,
     value
   };
 };
 
-export const destinationAddressSwap = value => {
+export const destinationAddressSwap = (
+  value: string
+): swapTypes.DestinationAddressSwapAction => {
   return {
     type: SWAP_DESTINATION_ADDRESS,
     value
   };
 };
 
-export const restartSwap = () => {
+export const restartSwap = (): swapTypes.RestartSwapAction => {
   return {
     type: SWAP_RESTART
   };
 };
 
-export const loadBityRatesSwap = () => {
+export const loadBityRatesSwap = (): swapTypes.LoadBityRatesSwapAction => {
   return {
     type: SWAP_LOAD_BITY_RATES
   };
 };
 
-export const stopLoadBityRatesSwap = () => {
+export const stopLoadBityRatesSwap = (): swapTypes.StopLoadBityRatesSwapAction => {
   return {
     type: SWAP_STOP_LOAD_BITY_RATES
   };

@@ -1,22 +1,24 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as swapTypes from 'actions/swapTypes';
 import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 
 export type ReduxStateProps = {
-  destinationKind: PropTypes.string.isRequired,
-  destinationAddress: PropTypes.string.isRequired
+  destinationKind: string,
+  destinationAddress: string
 };
 
 export type ReduxActionProps = {
-  destinationAddressSwap: PropTypes.func.isRequired,
-  changeStepSwap: PropTypes.func.isRequired,
-  stopLoadBityRatesSwap: PropTypes.func.isRequired
+  destinationAddressSwap: (
+    value: string | number
+  ) => swapTypes.DestinationAddressSwapAction,
+  changeStepSwap: (value: number) => swapTypes.ChangeStepSwapAction,
+  stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction
 };
 
-export class ReceivingAddress extends Component {
+export default class ReceivingAddress extends Component {
   props: ReduxStateProps & ReduxActionProps;
 
   onChangeDestinationAddress = (event: SyntheticInputEvent) => {
@@ -26,7 +28,8 @@ export class ReceivingAddress extends Component {
 
   onClickPartTwoComplete = () => {
     this.props.stopLoadBityRatesSwap();
-    this.props.referenceNumberSwap('2342423442');
+    // temporarily here for testing purposes. will live in saga
+    this.props.referenceNumberSwap('');
     this.props.changeStepSwap(3);
   };
 
