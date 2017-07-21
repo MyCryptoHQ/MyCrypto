@@ -2,19 +2,22 @@
 import type {
   ConfigAction,
   ChangeNodeAction,
-  ChangeLanguageAction
+  ChangeLanguageAction,
+  ChangeGasPriceAction
 } from 'actions/config';
 import { languages, NODES } from '../config/data';
 
 export type State = {
   // FIXME
   languageSelection: string,
-  nodeSelection: string
+  nodeSelection: string,
+  gasPriceGwei: number
 };
 
 export const initialState: State = {
   languageSelection: languages[0].sign,
-  nodeSelection: Object.keys(NODES)[0]
+  nodeSelection: Object.keys(NODES)[0],
+  gasPriceGwei: 21
 };
 
 function changeLanguage(state: State, action: ChangeLanguageAction): State {
@@ -31,6 +34,13 @@ function changeNode(state: State, action: ChangeNodeAction): State {
   };
 }
 
+function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
+  return {
+    ...state,
+    gasPriceGwei: action.value
+  };
+}
+
 export function config(
   state: State = initialState,
   action: ConfigAction
@@ -40,6 +50,8 @@ export function config(
       return changeLanguage(state, action);
     case 'CONFIG_NODE_CHANGE':
       return changeNode(state, action);
+    case 'CONFIG_GAS_PRICE':
+      return changeGasPrice(state, action);
     default:
       return state;
   }

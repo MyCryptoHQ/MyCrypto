@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import Navigation from './components/Navigation';
+import GasPriceDropdown from './components/GasPriceDropdown';
 import { Link } from 'react-router';
 import { Dropdown } from 'components/ui';
 import { languages, NODES } from '../../config/data';
@@ -13,9 +14,11 @@ export default class Header extends Component {
     location: {},
     languageSelection: string,
     nodeSelection: string,
+    gasPriceGwei: number,
 
     changeLanguage: (sign: string) => any,
-    changeNode: (key: string) => any
+    changeNode: (key: string) => any,
+    changeGasPrice: (price: number) => any
   };
 
   render() {
@@ -46,6 +49,11 @@ export default class Header extends Component {
               <span style={{ maxWidth: '395px' }}>
                 Open-Source & Client-Side Ether Wallet · v3.6.0
               </span>
+
+              <GasPriceDropdown
+                value={this.props.gasPriceGwei}
+                onChange={this.props.changeGasPrice}
+              />
 
               <Dropdown
                 ariaLabel={`change language. current language ${selectedLanguage.name}`}

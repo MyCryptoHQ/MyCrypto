@@ -24,7 +24,7 @@ class GenerateWallet extends Component {
     activeStep: PropTypes.string,
     wallet: PropTypes.object,
     password: PropTypes.string,
-    hasDownloadedWalletFile: PropTypes.boolean,
+    hasDownloadedWalletFile: PropTypes.bool,
     // Actions
     showPasswordGenerateWallet: PropTypes.func,
     generateUTCGenerateWallet: PropTypes.func,
