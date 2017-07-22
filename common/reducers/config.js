@@ -5,6 +5,11 @@ import type {
   ChangeLanguageAction,
   ChangeGasPriceAction
 } from 'actions/config';
+import {
+  NODE_CHANGE,
+  LANGUAGE_CHANGE,
+  GAS_PRICE_CHANGE
+} from 'actions/configConstants';
 import { languages, NODES } from '../config/data';
 
 export type State = {
@@ -46,11 +51,11 @@ export function config(
   action: ConfigAction
 ): State {
   switch (action.type) {
-    case 'CONFIG_LANGUAGE_CHANGE':
+    case LANGUAGE_CHANGE:
       return changeLanguage(state, action);
-    case 'CONFIG_NODE_CHANGE':
+    case NODE_CHANGE:
       return changeNode(state, action);
-    case 'CONFIG_GAS_PRICE':
+    case GAS_PRICE_CHANGE:
       return changeGasPrice(state, action);
     default:
       return state;

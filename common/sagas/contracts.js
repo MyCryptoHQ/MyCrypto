@@ -6,6 +6,7 @@ import {
   DEPLOY_CONTRACT,
   DeployContractAction
 } from 'actions/contracts';
+import { NODE_CHANGE } from 'actions/configConstants';
 import CONTRACTS from 'config/contracts';
 import { NODES } from 'config/data';
 import { getNode } from 'selectors/config';
@@ -31,5 +32,8 @@ function* handleFetchNodeContracts() {
 export default function* contractsSaga(): Generator<Effect, void, any> {
   // yield takeEvery(ACCESS_CONTRACT, handleAccessContract);
   // yield takeEvery(DEPLOY_CONTRACT, handleDeployContract);
-  yield takeEvery(FETCH_NODE_CONTRACTS, handleFetchNodeContracts);
+  yield takeEvery(
+    [FETCH_NODE_CONTRACTS, NODE_CHANGE],
+    handleFetchNodeContracts
+  );
 }
