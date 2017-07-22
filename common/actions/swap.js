@@ -22,14 +22,14 @@ export function changeStepSwap(value: number): swapTypes.ChangeStepSwapAction {
   };
 }
 
-export const referenceNumberSwap = (
+export function referenceNumberSwap(
   value: string
-): swapTypes.ReferenceNumberSwapAction => {
+): swapTypes.ReferenceNumberSwapAction {
   return {
     type: SWAP_REFERENCE_NUMBER,
     value
   };
-};
+}
 
 export const originKindSwap = (
   value: string

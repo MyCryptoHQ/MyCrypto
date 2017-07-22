@@ -1,17 +1,14 @@
 // @flow
 import React, { Component } from 'react';
 
-type ReduxStateProps<T> = {
+type Props<T> = {
   value?: T,
-  options: Array<T>
-};
-
-type ReduxActionProps = {
+  options: Array<T>,
   onChange: (event: SyntheticInputEvent) => void
 };
 
 export default class SimpleDropDown<T: *> extends Component {
-  props: ReduxStateProps<T> & ReduxActionProps;
+  props: Props<T>;
 
   render() {
     return (

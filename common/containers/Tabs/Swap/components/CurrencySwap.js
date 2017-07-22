@@ -132,7 +132,7 @@ export default class CurrencySwap extends Component {
         />
         <SimpleDropDown
           value={destinationKind}
-          onChange={this.onChangeDestinationKind.bind(this)}
+          onChange={this.onChangeDestinationKind}
           options={destinationKindOptions}
         />
 

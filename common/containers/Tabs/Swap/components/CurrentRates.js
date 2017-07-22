@@ -1,7 +1,9 @@
+// @flow
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 import { Pairs } from 'actions/swapTypes';
+import { bityReferralURL } from 'config/data';
 
 export default class CurrentRates extends Component {
   props: Pairs;
@@ -13,7 +15,7 @@ export default class CurrentRates extends Component {
     BTCREPAmount: 1
   };
 
-  onChange = event => {
+  onChange = (event: SyntheticInputEvent) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -93,11 +95,7 @@ export default class CurrentRates extends Component {
               </span>
             </p>
           </div>
-          <a
-            className="link bity-logo"
-            href="https://bity.com/af/jshkb37v"
-            target="_blank"
-          >
+          <a className="link bity-logo" href={bityReferralURL} target="_blank">
             <img
               src={'https://www.myetherwallet.com/images/logo-bity-white.svg'}
               width={120}

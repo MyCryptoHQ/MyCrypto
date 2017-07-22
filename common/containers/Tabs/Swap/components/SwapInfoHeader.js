@@ -1,7 +1,10 @@
+// @flow
 import React, { Component } from 'react';
 import { toFixedIfLarger } from 'utils/formatters';
 import translate from 'translations';
 import * as swapTypes from 'actions/swapTypes';
+import bityLogo from 'assets/images/logo-bity.svg';
+import { bityReferralURL } from 'config/data';
 
 export type ReduxStateProps = {
   timeRemaining: string,
@@ -63,13 +66,13 @@ export default class SwapInfoHeader extends Component {
           <div className="col-xs-3">
             <a
               className="link"
-              href="https://bity.com/af/jshkb37v"
+              href={bityReferralURL}
               target="_blank"
               rel="noopener"
             >
               <img
                 className="pull-right"
-                src={'https://www.myetherwallet.com/images/logo-bity.svg'}
+                src={bityLogo}
                 width={100}
                 height={38}
               />

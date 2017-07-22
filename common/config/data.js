@@ -14,6 +14,8 @@ export const gasPriceDefaults = {
   gasPriceMaxGwei: 60
 };
 
+export const bityReferralURL = 'https://bity.com/af/jshkb37v';
+
 export const languages = [
   {
     sign: 'en',
