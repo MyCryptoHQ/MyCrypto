@@ -1,18 +1,25 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as swapTypes from 'actions/swapTypes';
 import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 
+export type StateProps = {
+  destinationKind: string,
+  destinationAddress: string
+};
+
+export type ActionProps = {
+  destinationAddressSwap: (
+    value: ?string
+  ) => swapTypes.DestinationAddressSwapAction,
+  changeStepSwap: (value: number) => swapTypes.ChangeStepSwapAction,
+  stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction
+};
+
 export default class ReceivingAddress extends Component {
-  static propTypes = {
-    destinationKind: PropTypes.string.isRequired,
-    destinationAddressSwap: PropTypes.func.isRequired,
-    destinationAddress: PropTypes.string,
-    partTwoCompleteSwap: PropTypes.func,
-    stopLoadBityRates: PropTypes.func
-  };
+  props: StateProps & ActionProps;
 
   onChangeDestinationAddress = (event: SyntheticInputEvent) => {
     const value = event.target.value;
@@ -20,8 +27,10 @@ export default class ReceivingAddress extends Component {
   };
 
   onClickPartTwoComplete = () => {
-    this.props.stopLoadBityRates();
-    this.props.partTwoCompleteSwap(true);
+    this.props.stopLoadBityRatesSwap();
+    // temporarily here for testing purposes. will live in saga
+    this.props.referenceNumberSwap('');
+    this.props.changeStepSwap(3);
   };
 
   render() {
@@ -40,8 +49,12 @@ export default class ReceivingAddress extends Component {
           <section className="row">
             <div className="col-sm-8 col-sm-offset-2 col-xs-12">
               <label>
-                <span>{translate('SWAP_rec_add')}</span>
-                <strong> ({destinationKind})</strong>
+                <span>
+                  {translate('SWAP_rec_add')}
+                </span>
+                <strong>
+                  {' '}({destinationKind})
+                </strong>
               </label>
               <input
                 className={`form-control ${validAddress
@@ -60,7 +73,9 @@ export default class ReceivingAddress extends Component {
               onClick={this.onClickPartTwoComplete}
               className="btn btn-primary btn-lg"
             >
-              <span>{translate('SWAP_start_CTA')}</span>
+              <span>
+                {translate('SWAP_start_CTA')}
+              </span>
             </button>
           </section>
         </section>

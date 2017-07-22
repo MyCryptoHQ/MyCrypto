@@ -1,27 +1,22 @@
+// @flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import PropTypes from 'prop-types';
 import { toFixedIfLarger } from 'utils/formatters';
+import { Pairs } from 'actions/swapTypes';
+import { bityReferralURL } from 'config/data';
+import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 
 export default class CurrentRates extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ETHBTCAmount: 1,
-      ETHREPAmount: 1,
-      BTCETHAmount: 1,
-      BTCREPAmount: 1
-    };
-  }
+  props: Pairs;
 
-  static propTypes = {
-    ETHBTC: PropTypes.number,
-    ETHREP: PropTypes.number,
-    BTCETH: PropTypes.number,
-    BTCREP: PropTypes.number
+  state = {
+    ETHBTCAmount: 1,
+    ETHREPAmount: 1,
+    BTCETHAmount: 1,
+    BTCREPAmount: 1
   };
 
-  onChange = event => {
+  onChange = (event: SyntheticInputEvent) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -30,8 +25,9 @@ export default class CurrentRates extends Component {
     });
   };
 
-  // TODO - A little code duplication here, but simple enough to where it doesn't seem worth the time to fix.
   render() {
+    const { ETHBTC, ETHREP, BTCETH, BTCREP } = this.props;
+
     return (
       <article className="swap-rates">
         <section className="row">
@@ -50,7 +46,7 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` ETH = ${toFixedIfLarger(
-                  this.state.ETHBTCAmount * this.props.ETHBTC,
+                  this.state.ETHBTCAmount * ETHBTC,
                   6
                 )} BTC`}
               </span>
@@ -64,7 +60,7 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` ETH = ${toFixedIfLarger(
-                  this.state.ETHREPAmount * this.props.ETHREP,
+                  this.state.ETHREPAmount * ETHREP,
                   6
                 )} REP`}
               </span>
@@ -80,7 +76,7 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` BTC = ${toFixedIfLarger(
-                  this.state.BTCETHAmount * this.props.BTCETH,
+                  this.state.BTCETHAmount * BTCETH,
                   6
                 )} ETH`}
               </span>
@@ -94,22 +90,14 @@ export default class CurrentRates extends Component {
               />
               <span>
                 {` BTC = ${toFixedIfLarger(
-                  this.state.BTCREPAmount * this.props.BTCREP,
+                  this.state.BTCREPAmount * BTCREP,
                   6
                 )} REP`}
               </span>
             </p>
           </div>
-          <a
-            className="link bity-logo"
-            href="https://bity.com/af/jshkb37v"
-            target="_blank"
-          >
-            <img
-              src={'https://www.myetherwallet.com/images/logo-bity-white.svg'}
-              width={120}
-              height={49}
-            />
+          <a className="link bity-logo" href={bityReferralURL} target="_blank">
+            <img src={bityLogoWhite} width={120} height={49} />
           </a>
         </section>
       </article>

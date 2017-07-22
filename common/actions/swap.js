@@ -1,86 +1,103 @@
+// @flow
 import {
   SWAP_DESTINATION_AMOUNT,
   SWAP_DESTINATION_KIND,
   SWAP_ORIGIN_AMOUNT,
   SWAP_ORIGIN_KIND,
   SWAP_UPDATE_BITY_RATES,
-  SWAP_PART_ONE_COMPLETE,
-  SWAP_PART_TWO_COMPLETE,
   SWAP_DESTINATION_ADDRESS,
   SWAP_RESTART,
   SWAP_LOAD_BITY_RATES,
-  SWAP_STOP_LOAD_BITY_RATES
+  SWAP_STOP_LOAD_BITY_RATES,
+  SWAP_STEP,
+  SWAP_REFERENCE_NUMBER
 } from './swapConstants';
 
-export const originKindSwap = value => {
+import * as swapTypes from './swapTypes';
+
+export function changeStepSwap(value: number): swapTypes.ChangeStepSwapAction {
+  return {
+    type: SWAP_STEP,
+    value
+  };
+}
+
+export function referenceNumberSwap(
+  value: string
+): swapTypes.ReferenceNumberSwapAction {
+  return {
+    type: SWAP_REFERENCE_NUMBER,
+    value
+  };
+}
+
+export const originKindSwap = (
+  value: string
+): swapTypes.OriginKindSwapAction => {
   return {
     type: SWAP_ORIGIN_KIND,
     value
   };
 };
 
-export const destinationKindSwap = value => {
+export const destinationKindSwap = (
+  value: string
+): swapTypes.DestinationKindSwapAction => {
   return {
     type: SWAP_DESTINATION_KIND,
     value
   };
 };
 
-export const originAmountSwap = value => {
+export const originAmountSwap = (
+  value: ?number
+): swapTypes.OriginAmountSwapAction => {
   return {
     type: SWAP_ORIGIN_AMOUNT,
     value
   };
 };
 
-export const destinationAmountSwap = value => {
+export const destinationAmountSwap = (
+  value: ?number
+): swapTypes.DestinationAmountSwapAction => {
   return {
     type: SWAP_DESTINATION_AMOUNT,
     value
   };
 };
 
-export const updateBityRatesSwap = value => {
+export const updateBityRatesSwap = (
+  value: swapTypes.Pairs
+): swapTypes.BityRatesSwapAction => {
   return {
     type: SWAP_UPDATE_BITY_RATES,
     value
   };
 };
 
-export const partOneCompleteSwap = (value: boolean) => {
-  return {
-    type: SWAP_PART_ONE_COMPLETE,
-    value
-  };
-};
-
-export const partTwoCompleteSwap = (value: boolean) => {
-  return {
-    type: SWAP_PART_TWO_COMPLETE,
-    value
-  };
-};
-
-export const destinationAddressSwap = value => {
+export const destinationAddressSwap = (
+  value: ?string
+): swapTypes.DestinationAddressSwapAction => {
   return {
     type: SWAP_DESTINATION_ADDRESS,
     value
   };
 };
 
-export const restartSwap = () => {
+export const restartSwap = (): swapTypes.RestartSwapAction => {
   return {
     type: SWAP_RESTART
   };
 };
 
-export const loadBityRates = () => {
+export const loadBityRatesSwap = (): swapTypes.LoadBityRatesSwapAction => {
   return {
     type: SWAP_LOAD_BITY_RATES
   };
 };
 
-export const stopLoadBityRates = () => {
+export const stopLoadBityRatesSwap = (): swapTypes.StopLoadBityRatesSwapAction => {
   return {
     type: SWAP_STOP_LOAD_BITY_RATES
   };

@@ -4,12 +4,12 @@ import {
   SWAP_ORIGIN_AMOUNT,
   SWAP_ORIGIN_KIND,
   SWAP_UPDATE_BITY_RATES,
-  SWAP_PART_ONE_COMPLETE,
   SWAP_DESTINATION_ADDRESS,
   SWAP_RESTART,
-  SWAP_PART_TWO_COMPLETE
+  SWAP_STEP,
+  SWAP_REFERENCE_NUMBER
 } from 'actions/swapConstants';
-import { combineAndUpper } from 'api/bity';
+import { combineAndUpper } from 'utils/formatters';
 
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 
@@ -24,10 +24,13 @@ const initialState = {
   originKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(
     element => element !== 'REP'
   ),
-  partOneComplete: false,
-  partTwoComplete: false,
+  step: 1,
   bityRates: {},
-  destinationAddress: ''
+  destinationAddress: '',
+  referenceNumber: '',
+  timeRemaining: '',
+  numberOfConfirmations: null,
+  orderStep: null
 };
 
 const buildDestinationAmount = (
@@ -101,16 +104,12 @@ export function swap(state = initialState, action) {
           ...action.value
         }
       };
-    case SWAP_PART_ONE_COMPLETE:
+    case SWAP_STEP: {
       return {
         ...state,
-        partOneComplete: action.value
+        step: action.value
       };
-    case SWAP_PART_TWO_COMPLETE:
-      return {
-        ...state,
-        partTwoComplete: action.value
-      };
+    }
     case SWAP_DESTINATION_ADDRESS:
       return {
         ...state,
@@ -121,6 +120,14 @@ export function swap(state = initialState, action) {
         ...state,
         ...initialState,
         bityRates: state.bityRates
+      };
+    case SWAP_REFERENCE_NUMBER:
+      return {
+        ...state,
+        referenceNumber: '2341asdfads',
+        timeRemaining: '2:30',
+        numberOfConfirmations: 3,
+        orderStep: 2
       };
     default:
       return state;
