@@ -16,8 +16,8 @@ type ReduxStateProps = {
   destinationKindOptions: String[],
   originKindOptions: String[],
   bityRates: boolean,
-  originAmount: string | number,
-  destinationAmount: string | number,
+  originAmount: ?number,
+  destinationAmount: ?number,
   // PART 3
   referenceNumber: string,
   timeRemaining: string,
@@ -30,15 +30,13 @@ type ReduxActionProps = {
   changeStepSwap: (value: number) => swapTypes.ChangeStepSwapAction,
   originKindSwap: (value: string) => swapTypes.OriginKindSwapAction,
   destinationKindSwap: (value: string) => swapTypes.DestinationKindSwapAction,
-  originAmountSwap: (
-    value: string | number
-  ) => swapTypes.OriginAmountSwapAction,
+  originAmountSwap: (value: ?number) => swapTypes.OriginAmountSwapAction,
   destinationAmountSwap: (
-    value: string | number
+    value: ?number
   ) => swapTypes.DestinationAmountSwapAction,
   loadBityRatesSwap: () => swapTypes.LoadBityRatesSwapAction,
   destinationAddressSwap: (
-    value: string | number
+    value: ?string
   ) => swapTypes.DestinationAddressSwapAction,
   restartSwap: () => swapTypes.RestartSwapAction,
   stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction,

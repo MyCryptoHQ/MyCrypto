@@ -6,8 +6,8 @@ import SimpleDropDown from 'components/ui/SimpleDropdown';
 
 export type CurrencySwapReduxStateProps = {
   bityRates: {},
-  originAmount: string | number,
-  destinationAmount: string | number,
+  originAmount: ?number,
+  destinationAmount: ?number,
   originKind: string,
   destinationKind: string,
   destinationKindOptions: String[],
@@ -17,11 +17,9 @@ export type CurrencySwapReduxStateProps = {
 export type CurrencySwapReduxActionProps = {
   originKindSwap: (value: string) => swapTypes.OriginKindSwapAction,
   destinationKindSwap: (value: string) => swapTypes.DestinationKindSwapAction,
-  originAmountSwap: (
-    value: string | number
-  ) => swapTypes.OriginAmountSwapAction,
+  originAmountSwap: (value: ?number) => swapTypes.OriginAmountSwapAction,
   destinationAmountSwap: (
-    value: string | number
+    value: ?number
   ) => swapTypes.DestinationAmountSwapAction,
   changeStepSwap: () => swapTypes.ChangeStepSwapAction
 };
@@ -37,6 +35,11 @@ export default class CurrencySwap extends Component {
     this.props.changeStepSwap(2);
   };
 
+  setOriginAndDestinationToNull = () => {
+    this.props.originAmountSwap(null);
+    this.props.destinationAmountSwap(null);
+  };
+
   onChangeOriginAmount = (event: SyntheticInputEvent) => {
     const amount = event.target.value;
     let originAmountAsNumber = parseFloat(amount);
@@ -49,13 +52,8 @@ export default class CurrencySwap extends Component {
       this.props.originAmountSwap(originAmountAsNumber);
       this.props.destinationAmountSwap(originAmountAsNumber * bityRate);
     } else {
-      this.setOriginAndDestinationToEmptyString();
+      this.setOriginAndDestinationToNull();
     }
-  };
-
-  setOriginAndDestinationToEmptyString = () => {
-    this.props.originAmountSwap('');
-    this.props.destinationAmountSwap('');
   };
 
   onChangeDestinationAmount = (event: SyntheticInputEvent) => {
@@ -70,7 +68,7 @@ export default class CurrencySwap extends Component {
       let bityRate = this.props.bityRates[pairName];
       this.props.originAmountSwap(destinationAmountAsNumber * bityRate);
     } else {
-      this.setOriginAndDestinationToEmptyString();
+      this.setOriginAndDestinationToNull();
     }
   };
 
@@ -106,8 +104,8 @@ export default class CurrencySwap extends Component {
             : 'is-invalid'}`}
           type="number"
           placeholder="Amount"
+          value={originAmount || ''}
           onChange={this.onChangeOriginAmount}
-          value={originAmount}
         />
 
         <SimpleDropDown
@@ -127,7 +125,7 @@ export default class CurrencySwap extends Component {
             : 'is-invalid'}`}
           type="number"
           placeholder="Amount"
-          value={destinationAmount}
+          value={destinationAmount || ''}
           onChange={this.onChangeDestinationAmount}
         />
         <SimpleDropDown

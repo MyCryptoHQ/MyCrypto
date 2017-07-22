@@ -8,10 +8,10 @@ import { bityReferralURL } from 'config/data';
 
 export type ReduxStateProps = {
   timeRemaining: string,
-  originAmount: string | string,
+  originAmount: number,
   originKind: string,
   destinationKind: string,
-  destinationAmount: string | number,
+  destinationAmount: number,
   referenceNumber: string
 };
 

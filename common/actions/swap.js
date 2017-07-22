@@ -50,7 +50,7 @@ export const destinationKindSwap = (
 };
 
 export const originAmountSwap = (
-  value: string | number
+  value: ?number
 ): swapTypes.OriginAmountSwapAction => {
   return {
     type: SWAP_ORIGIN_AMOUNT,
@@ -59,7 +59,7 @@ export const originAmountSwap = (
 };
 
 export const destinationAmountSwap = (
-  value: string | number
+  value: ?number
 ): swapTypes.DestinationAmountSwapAction => {
   return {
     type: SWAP_DESTINATION_AMOUNT,
@@ -77,7 +77,7 @@ export const updateBityRatesSwap = (
 };
 
 export const destinationAddressSwap = (
-  value: string
+  value: ?string
 ): swapTypes.DestinationAddressSwapAction => {
   return {
     type: SWAP_DESTINATION_ADDRESS,

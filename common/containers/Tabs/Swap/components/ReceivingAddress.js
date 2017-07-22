@@ -12,7 +12,7 @@ export type ReduxStateProps = {
 
 export type ReduxActionProps = {
   destinationAddressSwap: (
-    value: string | number
+    value: ?string
   ) => swapTypes.DestinationAddressSwapAction,
   changeStepSwap: (value: number) => swapTypes.ChangeStepSwapAction,
   stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction

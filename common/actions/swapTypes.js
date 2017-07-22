@@ -33,11 +33,11 @@ export type DestinationKindSwapAction = {
 };
 export type OriginAmountSwapAction = {
   type: SWAP_ORIGIN_AMOUNT,
-  value: string | number
+  value: ?number
 };
 export type DestinationAmountSwapAction = {
   type: SWAP_DESTINATION_AMOUNT,
-  value: string | number
+  value: ?number
 };
 export type BityRatesSwapAction = {
   type: SWAP_UPDATE_BITY_RATES,
@@ -45,7 +45,7 @@ export type BityRatesSwapAction = {
 };
 export type DestinationAddressSwapAction = {
   type: SWAP_DESTINATION_ADDRESS,
-  value: string | number
+  value: ?number
 };
 
 export type RestartSwapAction = {
