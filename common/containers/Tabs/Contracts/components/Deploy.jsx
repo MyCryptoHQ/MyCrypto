@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
-import ByteCodeInput from 'components/inputs/ByteCodeInput';
-import GasInput from 'components/inputs/GasInput';
 import './Deploy.scss';
 
 type Props = {};
@@ -25,21 +23,33 @@ export default class Deploy extends Component {
     const { byteCode, gasLimit } = this.state;
 
     return (
-      <div className="Interact">
-        <ByteCodeInput
-          label={translate('CONTRACT_ByteCode')}
-          name="byteCode"
-          value={byteCode}
-          onChange={this._handleInput}
-          isTextarea={true}
-        />
+      <div className="Deploy">
+        <label className="Deploy-field form-group">
+          <h4 className="Deploy-field-label">
+            {translate('CONTRACT_ByteCode')}
+          </h4>
+          <textarea
+            name="byteCode"
+            placeholder="0x8f87a973e..."
+            rows={6}
+            onChange={this._handleInput}
+            className="Deploy-field-input form-control"
+          >
+            {byteCode}
+          </textarea>
+        </label>
 
-        <GasInput
-          label={translate('TRANS_gas')}
-          name="gasLimit"
-          value={gasLimit}
-          onChange={this._handleInput}
-        />
+        <label className="Deploy-field form-group">
+          <h4 className="Deploy-field-label">
+            {translate('CONTRACT_ByteCode')}
+          </h4>
+          <input
+            name="gasLimit"
+            value={gasLimit}
+            onChange={this._handleInput}
+            className="Deploy-field-input form-control"
+          />
+        </label>
       </div>
     );
   }

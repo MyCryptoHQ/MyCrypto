@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
-import AddressInput from 'components/inputs/AddressInput';
-import ABIInput from 'components/inputs/ABIInput';
+import InteractForm from './InteractForm';
+import InteractExplorer from './InteractExplorer';
 import './Interact.scss';
 
 type Props = {
@@ -28,56 +28,26 @@ export default class Interact extends Component {
     accessContract: PropTypes.func.isRequired
   };
 
-  state = {
-    address: '',
-    abiJson: ''
-  };
-
-  _handleInputChange = ev => {
-    this.setState({ [ev.target.name]: ev.target.value });
-  };
-
-  _accessContract = () => {
-    this.accessContract(this.state.address, this.state.abiJson);
-  };
-
   render() {
-    const { address, abi } = this.state;
+    const {
+      nodeContracts,
+      selectedAddress,
+      selectedABIJson,
+      selectedABIFunctions,
+      accessContract
+    } = this.props;
 
+    // TODO: Use common components for address, abi json
     return (
       <div className="Interact">
-        <div className="Interact-address">
-          <AddressInput
-            label={translate('CONTRACT_Title')}
-            value={address}
-            name="address"
-            onChange={this._handleInputChange}
-            showIdenticon={true}
-          />
-          <label className="Interact-address-contract">
-            <h4>
-              {translate('CONTRACT_Title_2')}
-            </h4>
-            <select className="form-control">
-              <option>Select a contract...</option>
-            </select>
-          </label>
-        </div>
-        <div className="Interact-interface">
-          <ABIInput
-            label={translate('CONTRACT_Json')}
-            name="abiJson"
-            value={abi}
-            onChange={this._handleInputChange}
-          />
-        </div>
-
-        <button
-          className="Contracts-submit btn btn-primary"
-          onClick={this._accessContract}
-        >
-          {translate('x_Access')}
-        </button>
+        <InteractForm
+          contracts={nodeContracts}
+          address={selectedAddress}
+          abiJson={selectedABIJson}
+          accessContract={accessContract}
+        />
+        <hr />
+        <InteractExplorer selectedABIFunctions={selectedABIFunctions} />
       </div>
     );
   }
