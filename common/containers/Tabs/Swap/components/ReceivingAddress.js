@@ -5,12 +5,12 @@ import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 
-export type ReduxStateProps = {
+export type StateProps = {
   destinationKind: string,
   destinationAddress: string
 };
 
-export type ReduxActionProps = {
+export type ActionProps = {
   destinationAddressSwap: (
     value: ?string
   ) => swapTypes.DestinationAddressSwapAction,
@@ -19,7 +19,7 @@ export type ReduxActionProps = {
 };
 
 export default class ReceivingAddress extends Component {
-  props: ReduxStateProps & ReduxActionProps;
+  props: StateProps & ActionProps;
 
   onChangeDestinationAddress = (event: SyntheticInputEvent) => {
     const value = event.target.value;

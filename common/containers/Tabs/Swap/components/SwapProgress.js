@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 
-export type ReduxStateProps = {
+export type StateProps = {
   numberOfConfirmations: number,
   destinationKind: string,
   originKind: string,
@@ -10,7 +10,7 @@ export type ReduxStateProps = {
 };
 
 export default class SwapProgress extends Component {
-  props: ReduxStateProps;
+  props: StateProps;
 
   computedClass(i: number) {
     const { orderStep } = this.props;

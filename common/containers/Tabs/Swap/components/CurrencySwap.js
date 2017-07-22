@@ -4,7 +4,7 @@ import { combineAndUpper } from 'utils/formatters';
 import * as swapTypes from 'actions/swapTypes';
 import SimpleDropDown from 'components/ui/SimpleDropdown';
 
-export type CurrencySwapReduxStateProps = {
+export type StateProps = {
   bityRates: {},
   originAmount: ?number,
   destinationAmount: ?number,
@@ -14,7 +14,7 @@ export type CurrencySwapReduxStateProps = {
   originKindOptions: String[]
 };
 
-export type CurrencySwapReduxActionProps = {
+export type ActionProps = {
   originKindSwap: (value: string) => swapTypes.OriginKindSwapAction,
   destinationKindSwap: (value: string) => swapTypes.DestinationKindSwapAction,
   originAmountSwap: (value: ?number) => swapTypes.OriginAmountSwapAction,
@@ -25,7 +25,7 @@ export type CurrencySwapReduxActionProps = {
 };
 
 export default class CurrencySwap extends Component {
-  props: CurrencySwapReduxStateProps & CurrencySwapReduxActionProps;
+  props: StateProps & ActionProps;
 
   state = {
     disabled: false

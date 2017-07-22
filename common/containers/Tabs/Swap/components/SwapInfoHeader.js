@@ -6,7 +6,7 @@ import * as swapTypes from 'actions/swapTypes';
 import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
 
-export type ReduxStateProps = {
+export type StateProps = {
   timeRemaining: string,
   originAmount: number,
   originKind: string,
@@ -15,12 +15,12 @@ export type ReduxStateProps = {
   referenceNumber: string
 };
 
-export type ReduxActionProps = {
+export type ActionProps = {
   restartSwap: () => swapTypes.RestartSwapAction
 };
 
 export default class SwapInfoHeader extends Component {
-  props: ReduxStateProps & ReduxActionProps;
+  props: StateProps & ActionProps;
 
   computedOriginDestinationRatio = () => {
     return toFixedIfLarger(
