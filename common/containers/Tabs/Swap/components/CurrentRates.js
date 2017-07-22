@@ -4,6 +4,7 @@ import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 import { Pairs } from 'actions/swapTypes';
 import { bityReferralURL } from 'config/data';
+import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 
 export default class CurrentRates extends Component {
   props: Pairs;
@@ -96,11 +97,7 @@ export default class CurrentRates extends Component {
             </p>
           </div>
           <a className="link bity-logo" href={bityReferralURL} target="_blank">
-            <img
-              src={'https://www.myetherwallet.com/images/logo-bity-white.svg'}
-              width={120}
-              height={49}
-            />
+            <img src={bityLogoWhite} width={120} height={49} />
           </a>
         </section>
       </article>
