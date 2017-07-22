@@ -32,7 +32,15 @@ export default class InteractForm extends Component {
   };
 
   _handleSelectContract = ev => {
-    console.log(ev);
+    const addr = ev.target.value;
+    const contract = this.props.contracts.reduce((prev, contract) => {
+      return contract.address === addr ? contract : prev;
+    });
+
+    this.setState({
+      address: contract.address,
+      abiJson: contract.abi
+    });
   };
 
   _accessContract = () => {
@@ -40,13 +48,34 @@ export default class InteractForm extends Component {
   };
 
   render() {
+    const { contracts } = this.props;
     const { address, abiJson } = this.state;
+
+    const contractOptions = [];
+    if (contracts && contracts.length) {
+      contractOptions.push({
+        name: 'Select a contract...',
+        value: null
+      });
+
+      contracts.forEach(contract => {
+        contractOptions.push({
+          name: `${contract.name} (${contract.address.substr(0, 10)}...)`,
+          value: contract.address
+        });
+      });
+    } else {
+      contractOptions.push({
+        name: 'No contracts available',
+        value: null
+      });
+    }
 
     // TODO: Use common components for address, abi json
     return (
       <div className="Interact-form">
         <div className="Interact-form-address">
-          <label className="Interact-form-address-field">
+          <label className="Interact-form-address-field form-group">
             <h4>
               {translate('CONTRACT_Title_2')}
             </h4>
@@ -58,21 +87,26 @@ export default class InteractForm extends Component {
             />
           </label>
 
-          <label className="Interact-form-address-contract">
+          <label className="Interact-form-address-contract form-group">
             <h4>
               {translate('CONTRACT_Title_2')}
             </h4>
             <select
               className="Interact-form-address-field-input form-control"
               onChange={this._handleSelectContract}
+              disabled={!contracts || !contracts.length}
             >
-              <option>Select a contract...</option>
+              {contractOptions.map(opt =>
+                <option key={opt.value} value={opt.value}>
+                  {opt.name}
+                </option>
+              )}
             </select>
           </label>
         </div>
 
         <div className="Interact-form-interface">
-          <label className="Interact-form-interface-field">
+          <label className="Interact-form-interface-field form-group">
             <h4 className="Interact-form-interface-field-label">
               {translate('CONTRACT_Json')}
             </h4>
@@ -80,9 +114,9 @@ export default class InteractForm extends Component {
               name="abiJson"
               className="Interact-form-interface-field-input form-control"
               onChange={this._handleInput}
-            >
-              {abiJson}
-            </textarea>
+              value={abiJson}
+              rows={6}
+            />
           </label>
         </div>
 

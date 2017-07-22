@@ -1,4 +1,5 @@
 import {
+  SET_NODE_CONTRACTS,
   ACCESS_CONTRACT,
   ACCESS_CONTRACT_SUCCESS,
   ACCESS_CONTRACT_FAILURE,
@@ -26,6 +27,12 @@ export const initialState: State = {
 
 export function contracts(state: State = initialState, action: Object) {
   switch (action.type) {
+    case SET_NODE_CONTRACTS:
+      return {
+        ...state,
+        nodeContracts: action.contracts
+      };
+
     case ACCESS_CONTRACT:
     case ACCESS_CONTRACT_SUCCESS:
     case ACCESS_CONTRACT_FAILURE:

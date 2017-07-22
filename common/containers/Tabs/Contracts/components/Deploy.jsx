@@ -34,9 +34,8 @@ export default class Deploy extends Component {
             rows={6}
             onChange={this._handleInput}
             className="Deploy-field-input form-control"
-          >
-            {byteCode}
-          </textarea>
+            value={byteCode}
+          />
         </label>
 
         <label className="Deploy-field form-group">

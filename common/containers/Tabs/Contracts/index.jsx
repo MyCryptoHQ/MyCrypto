@@ -2,7 +2,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { accessContract, deployContract } from 'actions/contracts';
+import {
+  accessContract,
+  deployContract,
+  fetchNodeContracts
+} from 'actions/contracts';
 import { State } from 'reducers/contracts';
 import translate from 'translations';
 import Interact from './components/Interact';
@@ -29,6 +33,7 @@ class Contracts extends Component {
     selectedABIFunctions: PropTypes.array,
     accessError: PropTypes.string,
     // Actions
+    fetchNodeContracts: PropTypes.func.isRequired,
     accessContract: PropTypes.func.isRequired,
     deployContract: PropTypes.func.isRequired
   };
@@ -36,6 +41,12 @@ class Contracts extends Component {
   state = {
     activeTab: 'interact'
   };
+
+  constructor(props) {
+    super(props);
+
+    this.props.fetchNodeContracts();
+  }
 
   changeTab(activeTab) {
     this.setState({ activeTab });
@@ -112,6 +123,7 @@ function mapStateToProps(state: State) {
 }
 
 export default connect(mapStateToProps, {
+  fetchNodeContracts,
   accessContract,
   deployContract
 })(Contracts);

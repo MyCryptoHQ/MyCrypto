@@ -1,13 +1,17 @@
 .Interact {
-  &-address {
-    display: flex;
+  &-form {
+    &-address {
+      display: flex;
 
-    > * {
-      width: 50%;
-      vertical-align: top;
+      > * {
+        width: 50%;
+        vertical-align: top;
+        margin-right: 10px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
-  }
-
-  &-interface {
   }
 }

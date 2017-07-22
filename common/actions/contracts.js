@@ -1,6 +1,32 @@
 // @flow
 
-/***** Fetch Contracts *****/
+/***** Fetch Node Contracts *****/
+export const FETCH_NODE_CONTRACTS = 'CONTRACTS_FETCH_NODE_CONTRACTS';
+
+export type FetchNodeContractsAction = {
+  type: FETCH_NODE_CONTRACTS
+};
+
+export function fetchNodeContracts(): FetchNodeContractsAction {
+  return { type: FETCH_NODE_CONTRACTS };
+}
+
+/***** Set Node Contracts *****/
+export const SET_NODE_CONTRACTS = 'CONTRACTS_SET_NODE_CONTRACTS';
+
+export type SetNodeContractsAction = {
+  type: SET_NODE_CONTRACTS,
+  contracts: Array
+};
+
+export function setNodeContracts(contracts: Array): SetNodeContractsAction {
+  return {
+    type: SET_NODE_CONTRACTS,
+    contracts: contracts
+  };
+}
+
+/***** Access Contracts *****/
 export const ACCESS_CONTRACT = 'CONTRACTS_ACCESS_CONTRACT';
 export const ACCESS_CONTRACT_SUCCESS = 'CONTRACTS_ACCESS_CONTRACT_SUCCESS';
 export const ACCESS_CONTRACT_FAILURE = 'CONTRACTS_ACCESS_CONTRACT_FAILURE';

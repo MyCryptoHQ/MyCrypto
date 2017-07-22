@@ -1,13 +1,11 @@
-import etc from './etc.json';
-import eth from './eth.json';
-import kovan from './kovan.json';
-import rinkeby from './rinkeby.json';
-import ropsten from './ropsten.json';
+import ETC from './ETC.json';
+import ETH from './ETH.json';
+import Rinkeby from './Rinkeby.json';
+import Ropsten from './Ropsten.json';
 
 export default {
-  etc,
-  eth,
-  kovan,
-  rinkeby,
-  ropsten
+  ETC,
+  ETH,
+  Rinkeby,
+  Ropsten
 };
