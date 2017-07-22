@@ -2,7 +2,7 @@
 import Big from 'big.js';
 
 export function toFixedIfLarger(number: number, fixedSize: number = 6): string {
-  return parseFloat(number).toFixed(fixedSize).toString();
+  return parseFloat(number.toFixed(fixedSize)).toString();
 }
 
 export function combineAndUpper(...args: string[]) {
