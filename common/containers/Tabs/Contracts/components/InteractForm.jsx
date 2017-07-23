@@ -1,26 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 
 type Props = {
   contracts: Array,
   address: ?string,
   abiJson: ?string,
+  accessError: ?string,
   accessContract: Function
 };
 
 export default class InteractForm extends Component {
   props: Props;
-  static propTypes = {
-    // Store state
-    contracts: PropTypes.array.isRequired,
-    address: PropTypes.string,
-    abiJson: PropTypes.string,
-    accessError: PropTypes.string,
-    // Actions
-    accessContract: PropTypes.func.isRequired
-  };
 
   state = {
     address: '',
@@ -44,7 +35,7 @@ export default class InteractForm extends Component {
   };
 
   _accessContract = () => {
-    this.accessContract(this.state.address, this.state.abiJson);
+    this.props.accessContract(this.state.address, this.state.abiJson);
   };
 
   render() {

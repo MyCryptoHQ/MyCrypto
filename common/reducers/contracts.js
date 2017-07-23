@@ -1,8 +1,8 @@
 import {
   SET_NODE_CONTRACTS,
+  SET_INTERACTIVE_CONTRACT,
   ACCESS_CONTRACT,
-  ACCESS_CONTRACT_SUCCESS,
-  ACCESS_CONTRACT_FAILURE,
+  ACCESS_CONTRACT_ERROR,
   DEPLOY_CONTRACT,
   DEPLOY_CONTRACT_SUCCESS,
   DEPLOY_CONTRACT_FAILURE
@@ -34,10 +34,23 @@ export function contracts(state: State = initialState, action: Object) {
       };
 
     case ACCESS_CONTRACT:
-    case ACCESS_CONTRACT_SUCCESS:
-    case ACCESS_CONTRACT_FAILURE:
-      console.log(action);
-      return state;
+      return {
+        ...state,
+        selectedAddress: action.address,
+        selectedABIJson: action.abiJson
+      };
+
+    case ACCESS_CONTRACT_ERROR:
+      return {
+        ...state,
+        accessError: action.error.message
+      };
+
+    case SET_INTERACTIVE_CONTRACT:
+      return {
+        ...state,
+        selectedABIFunctions: action.functions
+      };
 
     case DEPLOY_CONTRACT:
     case DEPLOY_CONTRACT_SUCCESS:

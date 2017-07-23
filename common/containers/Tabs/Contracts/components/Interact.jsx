@@ -1,7 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import translate from 'translations';
 import InteractForm from './InteractForm';
 import InteractExplorer from './InteractExplorer';
 import './Interact.scss';
@@ -17,16 +15,6 @@ type Props = {
 
 export default class Interact extends Component {
   props: Props;
-  static propTypes = {
-    // Store state
-    nodeContracts: PropTypes.array.isRequired,
-    selectedAddress: PropTypes.string,
-    selectedABIJson: PropTypes.string,
-    selectedABIFunctions: PropTypes.array,
-    accessError: PropTypes.string,
-    // Actions
-    accessContract: PropTypes.func.isRequired
-  };
 
   render() {
     const {
@@ -47,7 +35,10 @@ export default class Interact extends Component {
           accessContract={accessContract}
         />
         <hr />
-        <InteractExplorer selectedABIFunctions={selectedABIFunctions} />
+        <InteractExplorer
+          address={selectedAddress}
+          functions={selectedABIFunctions}
+        />
       </div>
     );
   }

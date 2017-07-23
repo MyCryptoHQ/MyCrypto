@@ -26,25 +26,52 @@ export function setNodeContracts(contracts: Array): SetNodeContractsAction {
   };
 }
 
-/***** Access Contracts *****/
+/***** Access Contract *****/
 export const ACCESS_CONTRACT = 'CONTRACTS_ACCESS_CONTRACT';
-export const ACCESS_CONTRACT_SUCCESS = 'CONTRACTS_ACCESS_CONTRACT_SUCCESS';
-export const ACCESS_CONTRACT_FAILURE = 'CONTRACTS_ACCESS_CONTRACT_FAILURE';
+export const ACCESS_CONTRACT_ERROR = 'CONTRACTS_ACCESS_CONTRACT_ERROR';
 
-export type FetchContractAction = {
+export type AccessContractAction = {
   type: ACCESS_CONTRACT,
   address: string,
   abiJson: string
+};
+export type AccessContractErrorAction = {
+  type: ACCESS_CONTRACT_ERROR,
+  error: Error
 };
 
 export function accessContract(
   address: string,
   abiJson: string
-): FetchContractAction {
+): AccessContractAction {
   return {
     type: ACCESS_CONTRACT,
     address,
     abiJson
+  };
+}
+
+export function accessContractError(error: Error): AccessContractErrorAction {
+  return {
+    type: ACCESS_CONTRACT_ERROR,
+    error
+  };
+}
+
+/***** Set Interactive Contract *****/
+export const SET_INTERACTIVE_CONTRACT = 'CONTRACTS_SET_INTERACTIVE_CONTRACT';
+
+export type SetInteractiveContractAction = {
+  type: ACCESS_CONTRACT,
+  abiFunctions: Array
+};
+
+export function setInteractiveContract(
+  functions: string
+): SetInteractiveContractAction {
+  return {
+    type: SET_INTERACTIVE_CONTRACT,
+    functions
   };
 }
 

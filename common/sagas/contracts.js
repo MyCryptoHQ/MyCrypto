@@ -3,6 +3,8 @@ import {
   setNodeContracts,
   ACCESS_CONTRACT,
   AccessContractAction,
+  accessContractError,
+  setInteractiveContract,
   DEPLOY_CONTRACT,
   DeployContractAction
 } from 'actions/contracts';
@@ -21,16 +23,34 @@ function* handleFetchNodeContracts() {
   yield put(setNodeContracts(contracts));
 }
 
-// function handleAccessContract(action: AccessContractAction) {
-//   console.log(action);
-// }
+function* handleAccessContract(action: AccessContractAction) {
+  const contractFunctions = [];
+
+  try {
+    const abi = JSON.parse(action.abiJson);
+    if (abi.constructor !== Array) {
+      throw new Error('ABI JSON was not an array!');
+    }
+
+    abi.forEach(instruction => {
+      if (instruction.type === 'function') {
+        contractFunctions.push(instruction);
+      }
+    });
+
+    yield put(setInteractiveContract(contractFunctions));
+  } catch (err) {
+    console.error('Error parsing contract ABI JSON', err);
+    yield put(accessContractError(err));
+  }
+}
 
 // function handleDeployContract(action: DeployContractAction) {
 //   console.log(action);
 // }
 
 export default function* contractsSaga(): Generator<Effect, void, any> {
-  // yield takeEvery(ACCESS_CONTRACT, handleAccessContract);
+  yield takeEvery(ACCESS_CONTRACT, handleAccessContract);
   // yield takeEvery(DEPLOY_CONTRACT, handleDeployContract);
   yield takeEvery(
     [FETCH_NODE_CONTRACTS, NODE_CHANGE],
