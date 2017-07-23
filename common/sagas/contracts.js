@@ -52,10 +52,6 @@ function* handleAccessContract(action: AccessContractAction) {
   }
 }
 
-// function handleDeployContract(action: DeployContractAction) {
-//   console.log(action);
-// }
-
 export default function* contractsSaga(): Generator<Effect, void, any> {
   yield takeEvery(ACCESS_CONTRACT, handleAccessContract);
   yield takeEvery(

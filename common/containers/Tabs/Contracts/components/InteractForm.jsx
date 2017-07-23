@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import translate from 'translations';
+import './InteractForm.scss';
 
 type Props = {
   contracts: Array,
@@ -63,26 +64,26 @@ export default class InteractForm extends Component {
 
     // TODO: Use common components for address, abi json
     return (
-      <div className="Interact-form">
-        <div className="Interact-form-address">
-          <label className="Interact-form-address-field form-group">
+      <div className="InteractForm">
+        <div className="InteractForm-address">
+          <label className="InteractForm-address-field form-group">
             <h4>
               {translate('CONTRACT_Title_2')}
             </h4>
             <input
               name="address"
               value={address}
-              className="Interact-form-address-field-input form-control"
+              className="InteractForm-address-field-input form-control"
               onChange={this._handleInput}
             />
           </label>
 
-          <label className="Interact-form-address-contract form-group">
+          <label className="InteractForm-address-contract form-group">
             <h4>
               {translate('CONTRACT_Title_2')}
             </h4>
             <select
-              className="Interact-form-address-field-input form-control"
+              className="InteractForm-address-field-input form-control"
               onChange={this._handleSelectContract}
               disabled={!contracts || !contracts.length}
             >
@@ -95,14 +96,14 @@ export default class InteractForm extends Component {
           </label>
         </div>
 
-        <div className="Interact-form-interface">
-          <label className="Interact-form-interface-field form-group">
-            <h4 className="Interact-form-interface-field-label">
+        <div className="InteractForm-interface">
+          <label className="InteractForm-interface-field form-group">
+            <h4 className="InteractForm-interface-field-label">
               {translate('CONTRACT_Json')}
             </h4>
             <textarea
               name="abiJson"
-              className="Interact-form-interface-field-input form-control"
+              className="InteractForm-interface-field-input form-control"
               onChange={this._handleInput}
               value={abiJson}
               rows={6}
@@ -111,7 +112,7 @@ export default class InteractForm extends Component {
         </div>
 
         <button
-          className="Interact-form-submit btn btn-primary"
+          className="InteractForm-submit btn btn-primary"
           onClick={this._accessContract}
         >
           {translate('x_Access')}

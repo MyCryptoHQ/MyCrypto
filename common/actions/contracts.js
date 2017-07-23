@@ -60,23 +60,3 @@ export function setInteractiveContract(
     functions
   };
 }
-
-/***** Deploy Contracts *****/
-export const DEPLOY_CONTRACT = 'CONTRACTS_DEPLOY_CONTRACT';
-
-export type DeployContractAction = {
-  type: DEPLOY_CONTRACT,
-  byteCode: string,
-  gasLimit: number
-};
-
-export function deployContract(
-  byteCode: string,
-  gasLimit: number
-): DeployContractAction {
-  return {
-    type: DEPLOY_CONTRACT,
-    byteCode,
-    gasLimit
-  };
-}

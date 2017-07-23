@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import InteractForm from './InteractForm';
 import InteractExplorer from './InteractExplorer';
-import './Interact.scss';
 
 type Props = {
   nodeContracts: Array,

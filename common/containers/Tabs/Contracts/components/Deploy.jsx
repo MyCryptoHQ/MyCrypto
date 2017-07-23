@@ -1,14 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
-import './Deploy.scss';
 
 type Props = {};
 
 export default class Deploy extends Component {
   props: Props;
-  static propTypes = {};
 
   state = {
     byteCode: '',
