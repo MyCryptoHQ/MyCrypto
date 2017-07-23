@@ -1,19 +1,14 @@
 import {
   SET_NODE_CONTRACTS,
   SET_INTERACTIVE_CONTRACT,
-  ACCESS_CONTRACT,
-  ACCESS_CONTRACT_ERROR,
-  DEPLOY_CONTRACT,
-  DEPLOY_CONTRACT_SUCCESS,
-  DEPLOY_CONTRACT_FAILURE
-} from 'actions/contracts';
+  ACCESS_CONTRACT
+} from 'actions/contractsConstants';
 
 export type State = {
   nodeContracts: Array,
   selectedAddress: ?string,
   selectedABIJson: ?string,
-  selectedABIFunctions: ?Array,
-  accessError: ?string
+  selectedABIFunctions: ?Array
 };
 
 export const initialState: State = {
@@ -21,8 +16,7 @@ export const initialState: State = {
   nodeContracts: [],
   selectedAddress: null,
   selectedABIJson: null,
-  selectedABIFunctions: null,
-  accessError: null
+  selectedABIFunctions: null
 };
 
 export function contracts(state: State = initialState, action: Object) {
@@ -40,23 +34,11 @@ export function contracts(state: State = initialState, action: Object) {
         selectedABIJson: action.abiJson
       };
 
-    case ACCESS_CONTRACT_ERROR:
-      return {
-        ...state,
-        accessError: action.error.message
-      };
-
     case SET_INTERACTIVE_CONTRACT:
       return {
         ...state,
         selectedABIFunctions: action.functions
       };
-
-    case DEPLOY_CONTRACT:
-    case DEPLOY_CONTRACT_SUCCESS:
-    case DEPLOY_CONTRACT_FAILURE:
-      console.log(action);
-      return state;
 
     default:
       return state;

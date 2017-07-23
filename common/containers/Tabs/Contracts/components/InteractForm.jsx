@@ -6,7 +6,6 @@ type Props = {
   contracts: Array,
   address: ?string,
   abiJson: ?string,
-  accessError: ?string,
   accessContract: Function
 };
 

@@ -1,8 +1,12 @@
 // @flow
+import {
+  FETCH_NODE_CONTRACTS,
+  SET_NODE_CONTRACTS,
+  ACCESS_CONTRACT,
+  SET_INTERACTIVE_CONTRACT
+} from './contractsConstants';
 
 /***** Fetch Node Contracts *****/
-export const FETCH_NODE_CONTRACTS = 'CONTRACTS_FETCH_NODE_CONTRACTS';
-
 export type FetchNodeContractsAction = {
   type: FETCH_NODE_CONTRACTS
 };
@@ -12,8 +16,6 @@ export function fetchNodeContracts(): FetchNodeContractsAction {
 }
 
 /***** Set Node Contracts *****/
-export const SET_NODE_CONTRACTS = 'CONTRACTS_SET_NODE_CONTRACTS';
-
 export type SetNodeContractsAction = {
   type: SET_NODE_CONTRACTS,
   contracts: Array
@@ -27,17 +29,10 @@ export function setNodeContracts(contracts: Array): SetNodeContractsAction {
 }
 
 /***** Access Contract *****/
-export const ACCESS_CONTRACT = 'CONTRACTS_ACCESS_CONTRACT';
-export const ACCESS_CONTRACT_ERROR = 'CONTRACTS_ACCESS_CONTRACT_ERROR';
-
 export type AccessContractAction = {
   type: ACCESS_CONTRACT,
   address: string,
   abiJson: string
-};
-export type AccessContractErrorAction = {
-  type: ACCESS_CONTRACT_ERROR,
-  error: Error
 };
 
 export function accessContract(
@@ -51,16 +46,7 @@ export function accessContract(
   };
 }
 
-export function accessContractError(error: Error): AccessContractErrorAction {
-  return {
-    type: ACCESS_CONTRACT_ERROR,
-    error
-  };
-}
-
 /***** Set Interactive Contract *****/
-export const SET_INTERACTIVE_CONTRACT = 'CONTRACTS_SET_INTERACTIVE_CONTRACT';
-
 export type SetInteractiveContractAction = {
   type: ACCESS_CONTRACT,
   abiFunctions: Array
@@ -77,8 +63,6 @@ export function setInteractiveContract(
 
 /***** Deploy Contracts *****/
 export const DEPLOY_CONTRACT = 'CONTRACTS_DEPLOY_CONTRACT';
-export const DEPLOY_CONTRACT_SUCCESS = 'CONTRACTS_DEPLOY_CONTRACT_SUCCESS';
-export const DEPLOY_CONTRACT_FAILURE = 'CONTRACTS_DEPLOY_CONTRACT_FAILURE';
 
 export type DeployContractAction = {
   type: DEPLOY_CONTRACT,

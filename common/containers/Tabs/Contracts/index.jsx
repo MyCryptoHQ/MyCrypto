@@ -18,7 +18,6 @@ type Props = {
   selectedAddress: ?string,
   selectedABIJson: ?string,
   selectedABIFunctions: ?Array,
-  accessError: ?string,
   accessContract: Function,
   deployContract: Function
 };
@@ -31,7 +30,6 @@ class Contracts extends Component {
     selectedAddress: PropTypes.string,
     selectedABIJson: PropTypes.string,
     selectedABIFunctions: PropTypes.array,
-    accessError: PropTypes.string,
     // Actions
     fetchNodeContracts: PropTypes.func.isRequired,
     accessContract: PropTypes.func.isRequired,
@@ -117,8 +115,7 @@ function mapStateToProps(state: State) {
     nodeContracts: state.contracts.nodeContracts,
     selectedAddress: state.contracts.selectedAddress,
     selectedABIJson: state.contracts.selectedABIJson,
-    selectedABIFunctions: state.contracts.selectedABIFunctions,
-    accessError: state.contracts.accessError
+    selectedABIFunctions: state.contracts.selectedABIFunctions
   };
 }
 

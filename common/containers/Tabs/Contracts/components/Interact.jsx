@@ -9,7 +9,6 @@ type Props = {
   selectedAddress: ?string,
   selectedABIJson: ?string,
   selectedABIFunctions: ?Array,
-  accessError: ?string,
   accessContract: Function
 };
 

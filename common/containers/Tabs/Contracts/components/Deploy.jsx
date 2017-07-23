@@ -22,6 +22,7 @@ export default class Deploy extends Component {
   render() {
     const { byteCode, gasLimit } = this.state;
 
+    // TODO: Use common components for byte code / gas price
     return (
       <div className="Deploy">
         <label className="Deploy-field form-group">
@@ -49,6 +50,8 @@ export default class Deploy extends Component {
             className="Deploy-field-input form-control"
           />
         </label>
+
+        <button className="Deploy-submit btn btn-primary">Implement Me</button>
       </div>
     );
   }
