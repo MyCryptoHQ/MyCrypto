@@ -1,10 +1,4 @@
 // @flow
-import type {
-  ConfigAction,
-  ChangeNodeAction,
-  ChangeLanguageAction,
-  ChangeGasPriceAction
-} from 'actions/config';
 import {
   NODE_CHANGE,
   LANGUAGE_CHANGE,
@@ -25,38 +19,26 @@ export const initialState: State = {
   gasPriceGwei: 21
 };
 
-function changeLanguage(state: State, action: ChangeLanguageAction): State {
-  return {
-    ...state,
-    languageSelection: action.value
-  };
-}
-
-function changeNode(state: State, action: ChangeNodeAction): State {
-  return {
-    ...state,
-    nodeSelection: action.value
-  };
-}
-
-function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
-  return {
-    ...state,
-    gasPriceGwei: action.value
-  };
-}
-
-export function config(
-  state: State = initialState,
-  action: ConfigAction
-): State {
+export function config(state: State = initialState, action: Object): State {
   switch (action.type) {
     case LANGUAGE_CHANGE:
-      return changeLanguage(state, action);
+      return {
+        ...state,
+        languageSelection: action.language
+      };
+
     case NODE_CHANGE:
-      return changeNode(state, action);
+      return {
+        ...state,
+        nodeSelection: action.node
+      };
+
     case GAS_PRICE_CHANGE:
-      return changeGasPrice(state, action);
+      return {
+        ...state,
+        gasPriceGwei: action.gasPrice
+      };
+
     default:
       return state;
   }

@@ -2,9 +2,10 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractForm.scss';
+import type { NodeContract } from 'actions/contracts';
 
 type Props = {
-  contracts: Array,
+  contracts: Array<NodeContract>,
   address: ?string,
   abiJson: ?string,
   accessContract: Function
@@ -18,11 +19,11 @@ export default class InteractForm extends Component {
     abiJson: ''
   };
 
-  _handleInput = ev => {
+  _handleInput = (ev: SyntheticInputEvent) => {
     this.setState({ [ev.target.name]: ev.target.value });
   };
 
-  _handleSelectContract = ev => {
+  _handleSelectContract = (ev: SyntheticInputEvent) => {
     const addr = ev.target.value;
     const contract = this.props.contracts.reduce((prev, contract) => {
       return contract.address === addr ? contract : prev;

@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import InteractForm from './InteractForm';
 import InteractExplorer from './InteractExplorer';
+import type { NodeContract, ABIFunction } from 'actions/contracts';
 
 type Props = {
-  nodeContracts: Array,
+  nodeContracts: Array<NodeContract>,
   selectedAddress: ?string,
   selectedABIJson: ?string,
-  selectedABIFunctions: ?Array,
+  selectedABIFunctions: ?Array<ABIFunction>,
   accessContract: Function
 };
 

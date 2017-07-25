@@ -8,38 +8,41 @@ import {
 export type ChangeNodeAction = {
   type: NODE_CHANGE,
   // FIXME $keyof?
-  value: string
+  node: string
 };
 
 export type ChangeLanguageAction = {
   type: LANGUAGE_CHANGE,
-  value: string
+  language: string
 };
 
 export type ChangeGasPriceAction = {
   type: GAS_PRICE_CHANGE,
-  value: number
+  gasPrice: number
 };
 
-export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
+export type ConfigAction =
+  | ChangeNodeAction
+  | ChangeLanguageAction
+  | ChangeGasPriceAction;
 
-export function changeLanguage(sign: string) {
+export function changeLanguage(language: string) {
   return {
     type: LANGUAGE_CHANGE,
-    value: sign
+    language
   };
 }
 
-export function changeNode(value: string): ChangeNodeAction {
+export function changeNode(node: string): ChangeNodeAction {
   return {
     type: NODE_CHANGE,
-    value
+    node
   };
 }
 
-export function changeGasPrice(value: number): ChangeGasPriceAction {
+export function changeGasPrice(gasPrice: number): ChangeGasPriceAction {
   return {
     type: GAS_PRICE_CHANGE,
-    value
+    gasPrice
   };
 }

@@ -12,7 +12,7 @@ export default class Deploy extends Component {
     gasLimit: ''
   };
 
-  _handleInput = ev => {
+  _handleInput = (ev: SyntheticInputEvent) => {
     this.setState({ [ev.target.name]: ev.target.value });
   };
 

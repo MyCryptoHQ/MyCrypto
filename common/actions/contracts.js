@@ -16,12 +16,20 @@ export function fetchNodeContracts(): FetchNodeContractsAction {
 }
 
 /***** Set Node Contracts *****/
-export type SetNodeContractsAction = {
-  type: SET_NODE_CONTRACTS,
-  contracts: Array
+export type NodeContract = {
+  name: string,
+  address: string,
+  abi: string
 };
 
-export function setNodeContracts(contracts: Array): SetNodeContractsAction {
+export type SetNodeContractsAction = {
+  type: SET_NODE_CONTRACTS,
+  contracts: Array<NodeContract>
+};
+
+export function setNodeContracts(
+  contracts: Array<NodeContract>
+): SetNodeContractsAction {
   return {
     type: SET_NODE_CONTRACTS,
     contracts: contracts
@@ -47,13 +55,26 @@ export function accessContract(
 }
 
 /***** Set Interactive Contract *****/
+export type ABIFunctionField = {
+  name: string,
+  type: string
+};
+
+export type ABIFunction = {
+  name: string,
+  type: string,
+  constant: boolean,
+  inputs: Array<ABIFunctionField>,
+  outputs: Array<ABIFunctionField>
+};
+
 export type SetInteractiveContractAction = {
   type: ACCESS_CONTRACT,
-  abiFunctions: Array
+  functions: Array<ABIFunction>
 };
 
 export function setInteractiveContract(
-  functions: string
+  functions: Array<ABIFunction>
 ): SetInteractiveContractAction {
   return {
     type: SET_INTERACTIVE_CONTRACT,
