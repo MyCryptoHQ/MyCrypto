@@ -119,7 +119,7 @@ export type Token = {
 
 export type NetworkConfig = {
   name: string,
-  // unit: string,
+  unit: string,
   blockExplorer?: {
     name: string,
     tx: string,
@@ -130,13 +130,16 @@ export type NetworkConfig = {
     address: string
   },
   chainId: number,
-  tokens: Token[]
+  tokens: Token[],
+  ens?: {
+    registry: string
+  }
 };
 
 export const NETWORKS: { [key: string]: NetworkConfig } = {
   ETH: {
     name: 'ETH',
-    // unit: 'ETH',
+    unit: 'ETH',
     chainId: 1,
     blockExplorer: {
       name: 'https://etherscan.io',
@@ -147,7 +150,10 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
       name: 'Ethplorer.io',
       address: 'https://ethplorer.io/address/[[address]]'
     },
-    tokens: require('./tokens/eth').default
+    tokens: require('./tokens/eth').default,
+    ens: {
+      registry: '0x314159265dd8dbb310642f98f50c066173c1259b'
+    }
     // 'abiList': require('./abiDefinitions/ethAbi.json'),
   }
 };

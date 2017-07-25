@@ -33,7 +33,9 @@ export type State = {
   ens: EnsState,
   wallet: WalletState,
   customTokens: CustomTokensState,
-  rates: RatesState
+  rates: RatesState,
+  // FIXME type redux-form
+  form: any
 };
 
 export default combineReducers({

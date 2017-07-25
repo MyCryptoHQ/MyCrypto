@@ -95,8 +95,7 @@ function mapStateToProps(state: State) {
     activeStep: state.generateWallet.activeStep,
     password: state.generateWallet.password,
     hasDownloadedWalletFile: state.generateWallet.hasDownloadedWalletFile,
-    wallet: state.generateWallet.wallet,
-    walletFile: state.generateWallet.walletFile
+    wallet: state.generateWallet.wallet
   };
 }
 

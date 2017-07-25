@@ -11,3 +11,7 @@ export function getNodeLib(state: State): BaseNode {
 export function getNetworkConfig(state: State): NetworkConfig {
   return NETWORKS[NODES[state.config.nodeSelection].network];
 }
+
+export function getChainId(state: State): number {
+  return getNetworkConfig(state).chainId;
+}
