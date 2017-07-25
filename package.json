@@ -51,6 +51,7 @@
     "check-node-version": "^2.1.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
+    "empty": "^0.10.1",
     "enzyme": "^2.8.0",
     "eslint": "^3.16.1",
     "eslint-loader": "^1.7.1",
