@@ -84,12 +84,3 @@ export function isPositiveIntegerOrZero(number: number): boolean {
   }
   return number >= 0 && parseInt(number) === number;
 }
-
-export function isValidABIJson(str) {
-  try {
-    const json = JSON.parse(str);
-    return json && json.constructor === Array;
-  } catch (e) {
-    return false;
-  }
-}
