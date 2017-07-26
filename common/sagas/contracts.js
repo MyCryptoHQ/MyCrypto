@@ -1,24 +1,13 @@
-import { takeEvery, select, put } from 'redux-saga/effects';
+import { takeEvery, put } from 'redux-saga/effects';
 import type { Effect } from 'redux-saga/effects';
 import translate from 'translations';
 
 import {
-  setNodeContracts,
   AccessContractAction,
   setInteractiveContract
 } from 'actions/contracts';
 import { showNotification } from 'actions/notifications';
-import CONTRACTS from 'config/contracts';
-import { NODES } from 'config/data';
-import { getNode } from 'selectors/config';
 import { isValidETHAddress } from 'libs/validators';
-
-function* handleFetchNodeContracts() {
-  const nodeKey = yield select(getNode);
-  const node = NODES[nodeKey] || {};
-  const contracts = CONTRACTS[node.network] || [];
-  yield put(setNodeContracts(contracts));
-}
 
 function* handleAccessContract(action: AccessContractAction) {
   const contractFunctions = [];
@@ -49,8 +38,4 @@ function* handleAccessContract(action: AccessContractAction) {
 
 export default function* contractsSaga(): Generator<Effect, void, any> {
   yield takeEvery('ACCESS_CONTRACT', handleAccessContract);
-  yield takeEvery(
-    ['FETCH_NODE_CONTRACTS', 'CONFIG_NODE_CHANGE'],
-    handleFetchNodeContracts
-  );
 }

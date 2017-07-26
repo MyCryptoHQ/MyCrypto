@@ -2,10 +2,11 @@
 import React, { Component } from 'react';
 import InteractForm from './InteractForm';
 import InteractExplorer from './InteractExplorer';
-import type { NodeContract, ABIFunction } from 'actions/contracts';
+import type { ABIFunction } from 'actions/contracts';
+import type { NetworkContract } from 'config/data';
 
 type Props = {
-  nodeContracts: Array<NodeContract>,
+  NetworkContracts: Array<NetworkContract>,
   selectedAddress: ?string,
   selectedABIJson: ?string,
   selectedABIFunctions: ?Array<ABIFunction>,
@@ -17,7 +18,7 @@ export default class Interact extends Component {
 
   render() {
     const {
-      nodeContracts,
+      NetworkContracts,
       selectedAddress,
       selectedABIJson,
       selectedABIFunctions,
@@ -28,7 +29,7 @@ export default class Interact extends Component {
     return (
       <div className="Interact">
         <InteractForm
-          contracts={nodeContracts}
+          contracts={NetworkContracts}
           address={selectedAddress}
           abiJson={selectedABIJson}
           accessContract={accessContract}

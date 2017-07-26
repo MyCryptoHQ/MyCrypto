@@ -1,8 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { accessContract, fetchNodeContracts } from 'actions/contracts';
-import type { ABIFunction, NodeContract } from 'actions/contracts';
+import { accessContract } from 'actions/contracts';
+import type { ABIFunction } from 'actions/contracts';
+import { getNetworkContracts } from 'selectors/config';
+import type { NetworkContract } from 'config/data';
 import { State } from 'reducers/contracts';
 import translate from 'translations';
 import Interact from './components/Interact';
@@ -10,11 +12,10 @@ import Deploy from './components/Deploy';
 import './index.scss';
 
 type Props = {
-  nodeContracts: Array<NodeContract>,
+  NetworkContracts: Array<NetworkContract>,
   selectedAddress: ?string,
   selectedABIJson: ?string,
   selectedABIFunctions: ?Array<ABIFunction>,
-  fetchNodeContracts: Function,
   accessContract: Function
 };
 
@@ -25,19 +26,13 @@ class Contracts extends Component {
     activeTab: 'interact'
   };
 
-  constructor(props) {
-    super(props);
-
-    this.props.fetchNodeContracts();
-  }
-
   changeTab(activeTab) {
     this.setState({ activeTab });
   }
 
   render() {
     const {
-      nodeContracts,
+      NetworkContracts,
       selectedAddress,
       selectedABIJson,
       selectedABIFunctions,
@@ -51,7 +46,7 @@ class Contracts extends Component {
     if (activeTab === 'interact') {
       content = (
         <Interact
-          nodeContracts={nodeContracts}
+          NetworkContracts={NetworkContracts}
           selectedAddress={selectedAddress}
           selectedABIJson={selectedABIJson}
           selectedABIFunctions={selectedABIFunctions}
@@ -98,14 +93,11 @@ class Contracts extends Component {
 
 function mapStateToProps(state: State) {
   return {
-    nodeContracts: state.contracts.nodeContracts,
+    NetworkContracts: getNetworkContracts(state),
     selectedAddress: state.contracts.selectedAddress,
     selectedABIJson: state.contracts.selectedABIJson,
     selectedABIFunctions: state.contracts.selectedABIFunctions
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchNodeContracts,
-  accessContract
-})(Contracts);
+export default connect(mapStateToProps, { accessContract })(Contracts);

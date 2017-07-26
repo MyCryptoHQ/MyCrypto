@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractForm.scss';
-import type { NodeContract } from 'actions/contracts';
+import type { NetworkContract } from 'config/data';
 
 type Props = {
-  contracts: Array<NodeContract>,
+  contracts: Array<NetworkContract>,
   address: ?string,
   abiJson: ?string,
   accessContract: Function
