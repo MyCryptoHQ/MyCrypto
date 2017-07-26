@@ -14,7 +14,7 @@ export type State = {
   gasPriceGwei: number
 };
 
-export const initialState: State = {
+export const INITIAL_STATE: State = {
   languageSelection: languages[0].sign,
   nodeSelection: Object.keys(NODES)[0],
   gasPriceGwei: 21
@@ -42,7 +42,7 @@ function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
 }
 
 export function config(
-  state: State = initialState,
+  state: State = INITIAL_STATE,
   action: ConfigAction
 ): State {
   switch (action.type) {

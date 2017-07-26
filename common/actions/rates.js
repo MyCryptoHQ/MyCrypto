@@ -1,11 +1,10 @@
 // @flow
 
+/*** Set rates ***/
 export type SetRatesAction = {
   type: 'RATES_SET',
   payload: { [string]: number }
 };
-
-export type RatesAction = SetRatesAction;
 
 export function setRates(payload: { [string]: number }): SetRatesAction {
   return {
@@ -13,3 +12,6 @@ export function setRates(payload: { [string]: number }): SetRatesAction {
     payload
   };
 }
+
+/*** Union Type ***/
+export type RatesAction = SetRatesAction;

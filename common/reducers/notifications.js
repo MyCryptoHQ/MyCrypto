@@ -8,7 +8,7 @@ import type {
 
 export type State = Notification[];
 
-const initialState: State = [];
+export const INITIAL_STATE: State = [];
 
 function showNotification(state: State, action: ShowNotificationAction): State {
   return state.concat(action.payload);
@@ -21,7 +21,7 @@ function closeNotification(state, action: CloseNotificationAction): State {
 }
 
 export function notifications(
-  state: State = initialState,
+  state: State = INITIAL_STATE,
   action: NotificationsAction
 ): State {
   switch (action.type) {

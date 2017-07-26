@@ -8,7 +8,7 @@ import type { Token } from 'config/data';
 
 export type State = Token[];
 
-const initialState: State = [];
+export const INITIAL_STATE: State = [];
 
 function addCustomToken(state: State, action: AddCustomTokenAction): State {
   if (state.find(token => token.symbol === action.payload.symbol)) {
@@ -25,7 +25,7 @@ function removeCustomToken(
 }
 
 export function customTokens(
-  state: State = initialState,
+  state: State = INITIAL_STATE,
   action: CustomTokenAction
 ): State {
   switch (action.type) {

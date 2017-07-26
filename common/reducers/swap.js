@@ -21,7 +21,7 @@ type State = {
   isFetchingRates: boolean
 };
 
-const initialState: State = {
+export const INITIAL_STATE: State = {
   originAmount: 0,
   destinationAmount: 0,
   originKind: 'BTC',
@@ -64,7 +64,7 @@ const buildDestinationKind = (
   }
 };
 
-export function swap(state: State = initialState, action: SwapAction) {
+export function swap(state: State = INITIAL_STATE, action: SwapAction) {
   switch (action.type) {
     case 'SWAP_ORIGIN_KIND': {
       const newDestinationKind = buildDestinationKind(
@@ -131,8 +131,7 @@ export function swap(state: State = initialState, action: SwapAction) {
       };
     case 'SWAP_RESTART':
       return {
-        ...state,
-        ...initialState,
+        ...INITIAL_STATE,
         bityRates: state.bityRates
       };
     case 'SWAP_REFERENCE_NUMBER':

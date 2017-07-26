@@ -8,14 +8,14 @@ export type State = {
   password: ?string
 };
 
-const initialState: State = {
+export const INITIAL_STATE: State = {
   activeStep: 'password',
   wallet: null,
   password: null
 };
 
 export function generateWallet(
-  state: State = initialState,
+  state: State = INITIAL_STATE,
   action: GenerateWalletAction
 ): State {
   switch (action.type) {
@@ -36,10 +36,7 @@ export function generateWallet(
     }
 
     case 'GENERATE_WALLET_RESET': {
-      return {
-        ...state,
-        ...initialState
-      };
+      return INITIAL_STATE;
     }
 
     default:
