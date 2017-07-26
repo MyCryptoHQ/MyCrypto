@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as generateWalletActions from 'actions/generateWallet';
 import type {
-  GenerateWalletAction,
+  GenerateNewWalletAction,
   ContinueToPaperAction,
   ResetGenerateWalletAction
 } from 'actions/generateWallet';
@@ -21,7 +21,7 @@ type Props = {
   wallet: ?PrivKeyWallet,
   walletPasswordForm: Object,
   // Actions
-  generateWallet: (pw: string) => GenerateWalletAction,
+  generateNewWallet: (pw: string) => GenerateNewWalletAction,
   continueToPaper: () => ContinueToPaperAction,
   resetGenerateWallet: () => ResetGenerateWalletAction
 };
@@ -42,7 +42,7 @@ class GenerateWallet extends Component {
         content = (
           <EnterPassword
             walletPasswordForm={this.props.walletPasswordForm}
-            generateWallet={this.props.generateWallet}
+            generateNewWallet={this.props.generateNewWallet}
           />
         );
         break;

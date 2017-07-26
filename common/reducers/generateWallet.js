@@ -1,10 +1,6 @@
 // @flow
 import type PrivateKeyWallet from 'libs/wallet/privkey';
-import type {
-  GenerateWalletAction,
-  ContinueToPaperAction,
-  ResetGenerateWalletAction
-} from 'actions/generateWallet';
+import type { GenerateWalletAction } from 'actions/generateWallet';
 
 export type State = {
   activeStep: string,
@@ -18,14 +14,9 @@ const initialState: State = {
   password: null
 };
 
-type Action =
-  | GenerateWalletAction
-  | ContinueToPaperAction
-  | ResetGenerateWalletAction;
-
 export function generateWallet(
   state: State = initialState,
-  action: Action
+  action: GenerateWalletAction
 ): State {
   switch (action.type) {
     case 'GENERATE_WALLET_GENERATE_WALLET': {

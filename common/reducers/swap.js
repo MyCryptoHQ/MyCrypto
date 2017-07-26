@@ -1,16 +1,6 @@
 // @flow
 import { combineAndUpper } from 'utils/formatters';
-import type {
-  OriginKindSwapAction,
-  DestinationKindSwapAction,
-  OriginAmountSwapAction,
-  DestinationAmountSwapAction,
-  BityRatesSwapAction,
-  ChangeStepSwapAction,
-  ReferenceNumberSwapAction,
-  DestinationAddressSwapAction,
-  RestartSwapAction
-} from 'actions/swap';
+import type { SwapAction } from 'actions/swap';
 
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 
@@ -72,18 +62,7 @@ const buildDestinationKind = (
   }
 };
 
-type Action =
-  | OriginKindSwapAction
-  | DestinationKindSwapAction
-  | OriginAmountSwapAction
-  | DestinationAmountSwapAction
-  | BityRatesSwapAction
-  | ChangeStepSwapAction
-  | ReferenceNumberSwapAction
-  | DestinationAddressSwapAction
-  | RestartSwapAction;
-
-export function swap(state: State = initialState, action: Action) {
+export function swap(state: State = initialState, action: SwapAction) {
   switch (action.type) {
     case 'SWAP_ORIGIN_KIND': {
       const newDestinationKind = buildDestinationKind(

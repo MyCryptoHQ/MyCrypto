@@ -32,12 +32,12 @@ export type OriginKindSwapAction = {
   value: string
 };
 
-export const originKindSwap = (value: string): OriginKindSwapAction => {
+export function originKindSwap(value: string): OriginKindSwapAction {
   return {
     type: 'SWAP_ORIGIN_KIND',
     value
   };
-};
+}
 
 /*** Change Destination Kind ***/
 export type DestinationKindSwapAction = {
@@ -45,14 +45,12 @@ export type DestinationKindSwapAction = {
   value: string
 };
 
-export const destinationKindSwap = (
-  value: string
-): DestinationKindSwapAction => {
+export function destinationKindSwap(value: string): DestinationKindSwapAction {
   return {
     type: 'SWAP_DESTINATION_KIND',
     value
   };
-};
+}
 
 /*** Change Origin Amount ***/
 export type OriginAmountSwapAction = {
@@ -60,12 +58,12 @@ export type OriginAmountSwapAction = {
   value: ?number
 };
 
-export const originAmountSwap = (value: ?number): OriginAmountSwapAction => {
+export function originAmountSwap(value: ?number): OriginAmountSwapAction {
   return {
     type: 'SWAP_ORIGIN_AMOUNT',
     value
   };
-};
+}
 
 /*** Change Destination Amount ***/
 export type DestinationAmountSwapAction = {
@@ -73,14 +71,14 @@ export type DestinationAmountSwapAction = {
   value: ?number
 };
 
-export const destinationAmountSwap = (
+export function destinationAmountSwap(
   value: ?number
-): DestinationAmountSwapAction => {
+): DestinationAmountSwapAction {
   return {
     type: 'SWAP_DESTINATION_AMOUNT',
     value
   };
-};
+}
 
 /*** Update Bity Rates ***/
 export type Pairs = {
@@ -95,12 +93,12 @@ export type BityRatesSwapAction = {
   value: Pairs
 };
 
-export const updateBityRatesSwap = (value: Pairs): BityRatesSwapAction => {
+export function updateBityRatesSwap(value: Pairs): BityRatesSwapAction {
   return {
     type: 'SWAP_UPDATE_BITY_RATES',
     value
   };
-};
+}
 
 /*** Change Destination Address ***/
 export type DestinationAddressSwapAction = {
@@ -108,44 +106,58 @@ export type DestinationAddressSwapAction = {
   value: ?string
 };
 
-export const destinationAddressSwap = (
+export function destinationAddressSwap(
   value: ?string
-): DestinationAddressSwapAction => {
+): DestinationAddressSwapAction {
   return {
     type: 'SWAP_DESTINATION_ADDRESS',
     value
   };
-};
+}
 
 /*** Restart ***/
 export type RestartSwapAction = {
   type: 'SWAP_RESTART'
 };
 
-export const restartSwap = (): RestartSwapAction => {
+export function restartSwap(): RestartSwapAction {
   return {
     type: 'SWAP_RESTART'
   };
-};
+}
 
 /*** Load Bity Rates ***/
 export type LoadBityRatesSwapAction = {
   type: 'SWAP_LOAD_BITY_RATES'
 };
 
-export const loadBityRatesSwap = (): LoadBityRatesSwapAction => {
+export function loadBityRatesSwap(): LoadBityRatesSwapAction {
   return {
     type: 'SWAP_LOAD_BITY_RATES'
   };
-};
+}
 
 /*** Stop Loading Bity Rates ***/
 export type StopLoadBityRatesSwapAction = {
   type: 'SWAP_STOP_LOAD_BITY_RATES'
 };
 
-export const stopLoadBityRatesSwap = (): StopLoadBityRatesSwapAction => {
+export function stopLoadBityRatesSwap(): StopLoadBityRatesSwapAction {
   return {
     type: 'SWAP_STOP_LOAD_BITY_RATES'
   };
-};
+}
+
+/*** Action Type Union ***/
+export type SwapAction =
+  | ChangeStepSwapAction
+  | ReferenceNumberSwapAction
+  | OriginKindSwapAction
+  | DestinationKindSwapAction
+  | OriginAmountSwapAction
+  | DestinationAmountSwapAction
+  | BityRatesSwapAction
+  | DestinationAddressSwapAction
+  | RestartSwapAction
+  | LoadBityRatesSwapAction
+  | StopLoadBityRatesSwapAction;

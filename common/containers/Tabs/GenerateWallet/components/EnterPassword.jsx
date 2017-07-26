@@ -16,7 +16,7 @@ const required = value => (value ? undefined : 'Required');
 type Props = {
   walletPasswordForm: Object,
   showWalletPassword: Function,
-  generateWallet: Function
+  generateNewWallet: Function
 };
 
 class EnterPassword extends Component {
@@ -28,9 +28,9 @@ class EnterPassword extends Component {
     isPasswordVisible: false
   };
 
-  onClickGenerateFile = () => {
+  _onClickGenerateFile = () => {
     const form = this.props.walletPasswordForm;
-    this.props.generateWallet(form.values.password);
+    this.props.generateNewWallet(form.values.password);
   };
 
   _togglePassword = () => {
@@ -61,7 +61,7 @@ class EnterPassword extends Component {
           />
           <br />
           <button
-            onClick={this.onClickGenerateFile}
+            onClick={this._onClickGenerateFile}
             disabled={walletPasswordForm ? walletPasswordForm.syncErrors : true}
             className="btn btn-primary btn-block"
           >

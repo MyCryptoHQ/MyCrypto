@@ -2,13 +2,13 @@
 import { PrivKeyWallet } from 'libs/wallet';
 
 /*** Generate Wallet File ***/
-export type GenerateWalletAction = {
+export type GenerateNewWalletAction = {
   type: 'GENERATE_WALLET_GENERATE_WALLET',
   wallet: PrivKeyWallet,
   password: string
 };
 
-export function generateWallet(password: string): GenerateWalletAction {
+export function generateNewWallet(password: string): GenerateNewWalletAction {
   return {
     type: 'GENERATE_WALLET_GENERATE_WALLET',
     wallet: PrivKeyWallet.generate(),
@@ -33,3 +33,6 @@ export type ResetGenerateWalletAction = {
 export function resetGenerateWallet(): ResetGenerateWalletAction {
   return { type: 'GENERATE_WALLET_RESET' };
 }
+
+/*** Action Union ***/
+export type GenerateWalletAction = GenerateWalletAction;
