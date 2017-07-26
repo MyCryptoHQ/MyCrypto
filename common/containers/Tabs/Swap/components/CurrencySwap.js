@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
-import * as swapTypes from 'actions/swapTypes';
 import SimpleDropDown from 'components/ui/SimpleDropdown';
+import type {
+  OriginKindSwapAction,
+  DestinationKindSwapAction,
+  OriginAmountSwapAction,
+  DestinationAmountSwapAction,
+  ChangeStepSwapAction
+} from 'actions/swap';
 
 export type StateProps = {
   bityRates: {},
@@ -15,13 +21,11 @@ export type StateProps = {
 };
 
 export type ActionProps = {
-  originKindSwap: (value: string) => swapTypes.OriginKindSwapAction,
-  destinationKindSwap: (value: string) => swapTypes.DestinationKindSwapAction,
-  originAmountSwap: (value: ?number) => swapTypes.OriginAmountSwapAction,
-  destinationAmountSwap: (
-    value: ?number
-  ) => swapTypes.DestinationAmountSwapAction,
-  changeStepSwap: () => swapTypes.ChangeStepSwapAction
+  originKindSwap: (value: string) => OriginKindSwapAction,
+  destinationKindSwap: (value: string) => DestinationKindSwapAction,
+  originAmountSwap: (value: ?number) => OriginAmountSwapAction,
+  destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
+  changeStepSwap: () => ChangeStepSwapAction
 };
 
 export default class CurrencySwap extends Component {

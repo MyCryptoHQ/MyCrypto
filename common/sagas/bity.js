@@ -1,14 +1,9 @@
 // @flow
-
 import { call, put, fork, take, cancel, cancelled } from 'redux-saga/effects';
 
 import type { Effect } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { updateBityRatesSwap } from 'actions/swap';
-import {
-  SWAP_LOAD_BITY_RATES,
-  SWAP_STOP_LOAD_BITY_RATES
-} from 'actions/swapConstants';
 import { getAllRates } from 'api/bity';
 
 export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
@@ -31,12 +26,12 @@ export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
 }
 
 export default function* bitySaga(): Generator<Effect, void, any> {
-  while (yield take(SWAP_LOAD_BITY_RATES)) {
+  while (yield take('SWAP_LOAD_BITY_RATES')) {
     // starts the task in the background
     const loadBityRatesTask = yield fork(loadBityRates);
 
     // wait for the user to get to point where refresh is no longer needed
-    yield take(SWAP_STOP_LOAD_BITY_RATES);
+    yield take('SWAP_STOP_LOAD_BITY_RATES');
     // cancel the background task
     // this will cause the forked loadBityRates task to jump into its finally block
     yield cancel(loadBityRatesTask);

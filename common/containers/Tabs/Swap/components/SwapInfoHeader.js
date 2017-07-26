@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { toFixedIfLarger } from 'utils/formatters';
 import translate from 'translations';
-import * as swapTypes from 'actions/swapTypes';
+import type { RestartSwapAction } from 'actions/swap';
 import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
 
@@ -16,7 +16,7 @@ export type StateProps = {
 };
 
 export type ActionProps = {
-  restartSwap: () => swapTypes.RestartSwapAction
+  restartSwap: () => RestartSwapAction
 };
 
 export default class SwapInfoHeader extends Component {
@@ -126,10 +126,7 @@ export default class SwapInfoHeader extends Component {
           {/*Your rate*/}
           <div className={this.computedClass()}>
             <h4>
-              {` ${toFixedIfLarger(
-                this.computedOriginDestinationRatio(),
-                6
-              )} ${originKind}/${destinationKind} `}
+              {` ${this.computedOriginDestinationRatio()} ${originKind}/${destinationKind} `}
             </h4>
             <p>
               {translate('SWAP_your_rate')}
