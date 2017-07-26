@@ -1,11 +1,10 @@
 // @flow
+import { languages, NODES } from '../config/data';
 import type {
-  ConfigAction,
   ChangeNodeAction,
   ChangeLanguageAction,
   ChangeGasPriceAction
 } from 'actions/config';
-import { languages, NODES } from '../config/data';
 
 export type State = {
   // FIXME
@@ -20,38 +19,28 @@ export const initialState: State = {
   gasPriceGwei: 21
 };
 
-function changeLanguage(state: State, action: ChangeLanguageAction): State {
-  return {
-    ...state,
-    languageSelection: action.value
-  };
-}
+type Action = ChangeNodeAction | ChangeLanguageAction | ChangeGasPriceAction;
 
-function changeNode(state: State, action: ChangeNodeAction): State {
-  return {
-    ...state,
-    nodeSelection: action.value
-  };
-}
-
-function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
-  return {
-    ...state,
-    gasPriceGwei: action.value
-  };
-}
-
-export function config(
-  state: State = initialState,
-  action: ConfigAction
-): State {
+export function config(state: State = initialState, action: Action): State {
   switch (action.type) {
     case 'CONFIG_LANGUAGE_CHANGE':
-      return changeLanguage(state, action);
+      return {
+        ...state,
+        languageSelection: action.language
+      };
+
     case 'CONFIG_NODE_CHANGE':
-      return changeNode(state, action);
-    case 'CONFIG_GAS_PRICE':
-      return changeGasPrice(state, action);
+      return {
+        ...state,
+        nodeSelection: action.node
+      };
+
+    case 'CONFIG_GAS_PRICE_CHANGE':
+      return {
+        ...state,
+        gasPriceGwei: action.gasPrice
+      };
+
     default:
       return state;
   }

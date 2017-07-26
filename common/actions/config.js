@@ -1,41 +1,37 @@
 // @flow
-
 export type ChangeNodeAction = {
   type: 'CONFIG_NODE_CHANGE',
   // FIXME $keyof?
-  value: string
+  node: string
 };
 
 export type ChangeLanguageAction = {
   type: 'CONFIG_LANGUAGE_CHANGE',
-  value: string
+  language: string
 };
 
 export type ChangeGasPriceAction = {
-  type: 'CONFIG_GAS_PRICE',
-  value: number
-}
+  type: 'CONFIG_GAS_PRICE_CHANGE',
+  gasPrice: number
+};
 
-export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
-
-export function changeLanguage(sign: string) {
+export function changeLanguage(language: string) {
   return {
     type: 'CONFIG_LANGUAGE_CHANGE',
-    value: sign
+    language
   };
 }
 
-export function changeNode(value: string): ChangeNodeAction {
+export function changeNode(node: string): ChangeNodeAction {
   return {
     type: 'CONFIG_NODE_CHANGE',
-    value
+    node
   };
 }
 
-export function changeGasPrice(value: number): ChangeGasPriceAction {
+export function changeGasPrice(gasPrice: number): ChangeGasPriceAction {
   return {
-    type: 'CONFIG_GAS_PRICE',
-    value
-  }
+    type: 'CONFIG_GAS_PRICE_CHANGE',
+    gasPrice
+  };
 }
-

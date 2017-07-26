@@ -7,3 +7,4 @@
 [options]
 module.system.node.resolve_dirname=node_modules
 module.system.node.resolve_dirname=common
+module.name_mapper='.*\(.sass|scss|less|css\)' -> 'empty/object'
