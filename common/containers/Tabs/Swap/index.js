@@ -28,6 +28,7 @@ type ReduxStateProps = {
   bityRates: boolean,
   originAmount: ?number,
   destinationAmount: ?number,
+  isFetchingRates: boolean,
   // PART 3
   referenceNumber: string,
   timeRemaining: string,
@@ -54,6 +55,7 @@ class Swap extends Component {
   props: ReduxActionProps & ReduxStateProps;
 
   componentDidMount() {
+    // TODO: Use `isFetchingRates` to show a loader
     this.props.loadBityRatesSwap();
   }
 
@@ -164,7 +166,8 @@ function mapStateToProps(state) {
     timeRemaining: state.swap.timeRemaining,
     numberOfConfirmations: state.swap.numberOfConfirmations,
     orderStep: state.swap.orderStep,
-    orderStarted: state.swap.orderStarted
+    orderStarted: state.swap.orderStarted,
+    isFetchingRates: state.swap.isFetchingRates
   };
 }
 

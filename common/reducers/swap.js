@@ -17,7 +17,8 @@ type State = {
   referenceNumber: string,
   timeRemaining: string,
   numberOfConfirmations: ?number,
-  orderStep: ?number
+  orderStep: ?number,
+  isFetchingRates: boolean
 };
 
 const initialState: State = {
@@ -37,7 +38,8 @@ const initialState: State = {
   referenceNumber: '',
   timeRemaining: '',
   numberOfConfirmations: null,
-  orderStep: null
+  orderStep: null,
+  isFetchingRates: false
 };
 
 const buildDestinationAmount = (
@@ -113,7 +115,8 @@ export function swap(state: State = initialState, action: SwapAction) {
         bityRates: {
           ...state.bityRates,
           ...action.value
-        }
+        },
+        isFetchingRates: false
       };
     case 'SWAP_STEP': {
       return {
@@ -140,6 +143,19 @@ export function swap(state: State = initialState, action: SwapAction) {
         numberOfConfirmations: 3,
         orderStep: 2
       };
+
+    case 'SWAP_LOAD_BITY_RATES':
+      return {
+        ...state,
+        isFetchingRates: true
+      };
+
+    case 'SWAP_STOP_LOAD_BITY_RATES':
+      return {
+        ...state,
+        isFetchingRates: false
+      };
+
     default:
       (action: empty);
       return state;
