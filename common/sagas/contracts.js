@@ -8,11 +8,6 @@ import {
   setInteractiveContract
 } from 'actions/contracts';
 import { showNotification } from 'actions/notifications';
-import {
-  FETCH_NODE_CONTRACTS,
-  ACCESS_CONTRACT
-} from 'actions/contractsConstants';
-import { NODE_CHANGE } from 'actions/configConstants';
 import CONTRACTS from 'config/contracts';
 import { NODES } from 'config/data';
 import { getNode } from 'selectors/config';
@@ -53,9 +48,9 @@ function* handleAccessContract(action: AccessContractAction) {
 }
 
 export default function* contractsSaga(): Generator<Effect, void, any> {
-  yield takeEvery(ACCESS_CONTRACT, handleAccessContract);
+  yield takeEvery('ACCESS_CONTRACT', handleAccessContract);
   yield takeEvery(
-    [FETCH_NODE_CONTRACTS, NODE_CHANGE],
+    ['FETCH_NODE_CONTRACTS', 'CONFIG_NODE_CHANGE'],
     handleFetchNodeContracts
   );
 }
