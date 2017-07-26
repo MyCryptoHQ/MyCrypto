@@ -77,10 +77,17 @@ import type { NamespaceAction } from "actions/namespace";
 export type State = { /* Flowtype definition for state object */ };
 export const INITIAL_STATE = { /* Initial state shape */ };
 
-export function namespace(state: State, action: NameAction) {
+export function namespace(
+	state: State = INITIAL_STATE,
+	action: NamespaceAction
+): State {
 	switch (action.type) {
 		case 'NAMESPACE_NAME_OF_ACTION':
-			// Return state...
+			return {
+				...state,
+				// Alterations to state
+			};
+
 		case 'NAMESPACE_NAME_OF_SAGA_ACTION':
 		default:
 			// Ensures every action was handled in reducer
