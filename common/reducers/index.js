@@ -27,13 +27,17 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 export type State = {
+  // Custom reducers
   generateWallet: GenerateWalletState,
   config: ConfigState,
   notifications: NotificationsState,
   ens: EnsState,
   wallet: WalletState,
   customTokens: CustomTokensState,
-  rates: RatesState
+  rates: RatesState,
+  // Third party reducers (TODO: Fill these out)
+  form: Object,
+  routing: Object
 };
 
 export default combineReducers({
