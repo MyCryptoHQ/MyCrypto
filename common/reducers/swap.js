@@ -162,6 +162,7 @@ export function swap(state: State = initialState, action: Action) {
         orderStep: 2
       };
     default:
+      (action: empty);
       return state;
   }
 }
