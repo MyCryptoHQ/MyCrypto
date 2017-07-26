@@ -1,8 +1,9 @@
-import {
-  SET_NODE_CONTRACTS,
-  SET_INTERACTIVE_CONTRACT,
-  ACCESS_CONTRACT
-} from 'actions/contractsConstants';
+import type {
+  FetchNodeContractsAction,
+  SetNodeContractsAction,
+  AccessContractAction,
+  SetInteractiveContractAction
+} from 'actions/contracts';
 
 export type State = {
   nodeContracts: Array,
@@ -19,22 +20,28 @@ export const initialState: State = {
   selectedABIFunctions: null
 };
 
-export function contracts(state: State = initialState, action: Object) {
+type Action =
+  | FetchNodeContractsAction
+  | SetNodeContractsAction
+  | AccessContractAction
+  | SetInteractiveContractAction;
+
+export function contracts(state: State = initialState, action: Action) {
   switch (action.type) {
-    case SET_NODE_CONTRACTS:
+    case 'SET_NODE_CONTRACTS':
       return {
         ...state,
         nodeContracts: action.contracts
       };
 
-    case ACCESS_CONTRACT:
+    case 'ACCESS_CONTRACT':
       return {
         ...state,
         selectedAddress: action.address,
         selectedABIJson: action.abiJson
       };
 
-    case SET_INTERACTIVE_CONTRACT:
+    case 'SET_INTERACTIVE_CONTRACT':
       return {
         ...state,
         selectedABIFunctions: action.functions

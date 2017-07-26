@@ -4,7 +4,7 @@ import { BaseNode } from 'libs/nodes';
 import { NODES, NETWORKS } from 'config/data';
 import type { NetworkConfig } from 'config/data';
 
-export function getNode(state: State): State.nodeSelection {
+export function getNode(state: State): string {
   return state.config.nodeSelection;
 }
 

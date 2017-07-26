@@ -1,12 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import {
-  accessContract,
-  deployContract,
-  fetchNodeContracts
-} from 'actions/contracts';
+import { accessContract, fetchNodeContracts } from 'actions/contracts';
+import type { ABIFunction, NodeContract } from 'actions/contracts';
 import { State } from 'reducers/contracts';
 import translate from 'translations';
 import Interact from './components/Interact';
@@ -14,27 +10,16 @@ import Deploy from './components/Deploy';
 import './index.scss';
 
 type Props = {
-  nodeContracts: Array,
+  nodeContracts: Array<NodeContract>,
   selectedAddress: ?string,
   selectedABIJson: ?string,
-  selectedABIFunctions: ?Array,
-  accessContract: Function,
-  deployContract: Function
+  selectedABIFunctions: ?Array<ABIFunction>,
+  fetchNodeContracts: Function,
+  accessContract: Function
 };
 
 class Contracts extends Component {
   props: Props;
-  static propTypes = {
-    // Store state
-    nodeContracts: PropTypes.array.isRequired,
-    selectedAddress: PropTypes.string,
-    selectedABIJson: PropTypes.string,
-    selectedABIFunctions: PropTypes.array,
-    // Actions
-    fetchNodeContracts: PropTypes.func.isRequired,
-    accessContract: PropTypes.func.isRequired,
-    deployContract: PropTypes.func.isRequired
-  };
 
   state = {
     activeTab: 'interact'
@@ -56,11 +41,12 @@ class Contracts extends Component {
       selectedAddress,
       selectedABIJson,
       selectedABIFunctions,
-      accessContract,
-      deployContract
+      accessContract
     } = this.props;
     const { activeTab } = this.state;
-    let content, interactActive, deployActive;
+    let content = '';
+    let interactActive = '';
+    let deployActive = '';
 
     if (activeTab === 'interact') {
       content = (
@@ -74,7 +60,7 @@ class Contracts extends Component {
       );
       interactActive = 'is-active';
     } else {
-      content = <Deploy deployContract={deployContract} />;
+      content = <Deploy />;
       deployActive = 'is-active';
     }
 
@@ -121,6 +107,5 @@ function mapStateToProps(state: State) {
 
 export default connect(mapStateToProps, {
   fetchNodeContracts,
-  accessContract,
-  deployContract
+  accessContract
 })(Contracts);

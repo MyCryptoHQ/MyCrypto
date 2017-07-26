@@ -1,33 +1,47 @@
 // @flow
 import React, { Component } from 'react';
 import translate from 'translations';
+import type { ABIFunction } from 'actions/contracts';
 import './InteractExplorer.scss';
 
 type Props = {
-  address: string,
-  functions: Array
+  address: ?string,
+  functions: ?Array<ABIFunction>
+};
+
+type State = {
+  selectedFunction: ?ABIFunction,
+  inputs: Object,
+  outputs: Object
 };
 
 export default class InteractExplorer extends Component {
   props: Props;
 
-  state = {
-    selectedFunction: '',
+  state: State = {
+    selectedFunction: null,
     inputs: {},
     outputs: {}
   };
 
-  _handleFunctionSelect = ev => {
-    const selectedFunction = this.props.functions.reduce((prev, fn) => {
+  _handleFunctionSelect = (ev: SyntheticInputEvent) => {
+    const { functions } = this.props;
+
+    if (!functions) {
+      return;
+    }
+
+    const selectedFunction = functions.reduce((prev, fn) => {
       return ev.target.value === fn.name ? fn : prev;
     });
+
     this.setState({
       selectedFunction,
       inputs: {}
     });
   };
 
-  _handleInputChange = ev => {
+  _handleInputChange = (ev: SyntheticInputEvent) => {
     this.setState({
       inputs: {
         ...this.state.inputs,

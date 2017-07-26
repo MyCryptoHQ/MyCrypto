@@ -1,45 +1,37 @@
 // @flow
-import {
-  NODE_CHANGE,
-  LANGUAGE_CHANGE,
-  GAS_PRICE_CHANGE
-} from './configConstants';
-
 export type ChangeNodeAction = {
-  type: NODE_CHANGE,
+  type: 'CONFIG_NODE_CHANGE',
   // FIXME $keyof?
-  value: string
+  node: string
 };
 
 export type ChangeLanguageAction = {
-  type: LANGUAGE_CHANGE,
-  value: string
+  type: 'CONFIG_LANGUAGE_CHANGE',
+  language: string
 };
 
 export type ChangeGasPriceAction = {
-  type: GAS_PRICE_CHANGE,
-  value: number
+  type: 'CONFIG_GAS_PRICE_CHANGE',
+  gasPrice: number
 };
 
-export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
-
-export function changeLanguage(sign: string) {
+export function changeLanguage(language: string) {
   return {
-    type: LANGUAGE_CHANGE,
-    value: sign
+    type: 'CONFIG_LANGUAGE_CHANGE',
+    language
   };
 }
 
-export function changeNode(value: string): ChangeNodeAction {
+export function changeNode(node: string): ChangeNodeAction {
   return {
-    type: NODE_CHANGE,
-    value
+    type: 'CONFIG_NODE_CHANGE',
+    node
   };
 }
 
-export function changeGasPrice(value: number): ChangeGasPriceAction {
+export function changeGasPrice(gasPrice: number): ChangeGasPriceAction {
   return {
-    type: GAS_PRICE_CHANGE,
-    value
+    type: 'CONFIG_GAS_PRICE_CHANGE',
+    gasPrice
   };
 }
