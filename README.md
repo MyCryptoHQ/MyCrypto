@@ -72,10 +72,11 @@ as a result of an action (Because it merely kicks off side-effects in saga) then
 define the case above default, and have it fall through.
 
 ```js
+// @flow
 import type { NamespaceAction } from "actions/namespace";
 
 export type State = { /* Flowtype definition for state object */ };
-export const INITIAL_STATE = { /* Initial state shape */ };
+export const INITIAL_STATE: State = { /* Initial state shape */ };
 
 export function namespace(
 	state: State = INITIAL_STATE,
