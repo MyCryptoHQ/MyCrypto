@@ -8,7 +8,12 @@ import createSagaMiddleware from 'redux-saga';
 import notificationsSaga from './sagas/notifications';
 import ensSaga from './sagas/ens';
 import walletSaga from './sagas/wallet';
-import bitySaga from './sagas/bity';
+import {
+  postBityOrderSaga,
+  bityTimeRemaining,
+  pollBityOrderStatusSaga
+} from './sagas/swap/orders';
+import { getBityRatesSaga } from './sagas/swap/rates';
 import ratesSaga from './sagas/rates';
 import { initialState as configInitialState } from 'reducers/config';
 import { initialState as customTokensInitialState } from 'reducers/customTokens';
@@ -48,8 +53,11 @@ const configureStore = () => {
   sagaMiddleware.run(notificationsSaga);
   sagaMiddleware.run(ensSaga);
   sagaMiddleware.run(walletSaga);
-  sagaMiddleware.run(bitySaga);
+  sagaMiddleware.run(getBityRatesSaga);
+  sagaMiddleware.run(postBityOrderSaga);
+  sagaMiddleware.run(bityTimeRemaining);
   sagaMiddleware.run(ratesSaga);
+  sagaMiddleware.run(pollBityOrderStatusSaga);
 
   store.subscribe(
     throttle(() => {

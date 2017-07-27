@@ -7,6 +7,7 @@ import { Routing, history } from './routing';
 import { store } from './store';
 // application styles
 import 'assets/styles/etherwallet-master.less';
+import 'font-awesome/scss/font-awesome.scss';
 
 const renderRoot = Root => {
   let syncedHistory = syncHistoryWithStore(history, store);

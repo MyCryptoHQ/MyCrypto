@@ -1,44 +1,86 @@
 // @flow
-
-import { call, put, fork, take, cancel, cancelled } from 'redux-saga/effects';
-
-import type { Effect } from 'redux-saga/effects';
+import { showNotification } from 'actions/notifications';
 import { delay } from 'redux-saga';
-import { updateBityRatesSwap } from 'actions/swap';
+import { postOrder } from 'api/bity';
 import {
-  SWAP_LOAD_BITY_RATES,
-  SWAP_STOP_LOAD_BITY_RATES
-} from 'actions/swapConstants';
-import { getAllRates } from 'api/bity';
+  call,
+  put,
+  fork,
+  take,
+  cancel,
+  select,
+  cancelled,
+  takeEvery,
+  Effect
+} from 'redux-saga/effects';
+import {
+  orderTimeTickSwap,
+  orderCreateSucceededSwap,
+  stopLoadBityRatesSwap,
+  changeStepSwap,
+  getOrderStatus
+} from 'actions/swap';
 
-export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
-  try {
+export const getSwap = state => state.swap;
+const ONE_SECOND = 1000;
+const TEN_SECONDS = ONE_SECOND * 10;
+const BITY_TIMEOUT_MESSAGE = `
+    Time has run out. 
+    If you have already sent, please wait 1 hour. 
+    If your order has not be processed after 1 hour, 
+    please press the orange 'Issue with your Swap?' button.
+`;
+
+export function* bityTimeRemaining() {
+  while (yield take('SWAP_ORDER_START_TIMER')) {
     while (true) {
-      // TODO - yield put(actions.requestStart()) if we want to display swap refresh status
-      // network request
-      const data = yield call(getAllRates);
-      // action
-      yield put(updateBityRatesSwap(data));
-      // wait 5 seconds before refreshing rates
-      yield call(delay, 5000);
-    }
-  } finally {
-    if (yield cancelled()) {
-      // TODO - implement request cancel if needed
-      // yield put(actions.requestFailure('Request cancelled!'))
+      yield call(delay, ONE_SECOND);
+      const swap = yield select(getSwap);
+      if (swap.bityOrder.status === 'OPEN') {
+        if (swap.secondsRemaining > 0) {
+          yield put(orderTimeTickSwap());
+        } else {
+          yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
+          break;
+        }
+      } else {
+        // stop dispatching time tick
+        break;
+      }
     }
   }
 }
 
-export default function* bitySaga(): Generator<Effect, void, any> {
-  while (yield take(SWAP_LOAD_BITY_RATES)) {
-    // starts the task in the background
-    const loadBityRatesTask = yield fork(loadBityRates);
-
-    // wait for the user to get to point where refresh is no longer needed
-    yield take(SWAP_STOP_LOAD_BITY_RATES);
-    // cancel the background task
-    // this will cause the forked loadBityRates task to jump into its finally block
-    yield cancel(loadBityRatesTask);
-  }
-}
+// let myFirstPromise = new Promise((resolve, reject) => {
+//   setTimeout(function() {
+//     resolve({
+//       error: false,
+//       msg: '',
+//       data: {
+//         id:
+//           '826c9803a20e97a1d2b6362bfbaa487e3d69f5240d9c97c597b8d03041a8385d9404a3c74cba74c8c046347d4916f64eWpm51ZOYaguoa0nbnZti6w==',
+//         amount: '1',
+//         amount_mode: 0,
+//         pair: 'ETHBTC',
+//         payment_address: '0x60d9fb9e284947c8cb2e415109886390be796f1d',
+//         payment_amount: '1',
+//         reference: 'BITYVPNOIP',
+//         status: 'OPEN',
+//         validFor: 600,
+//         timestamp_created: '2017-07-23T17:44:06.505520Z',
+//         input: {
+//           amount: '1.00000000',
+//           currency: 'ETH',
+//           reference: 'BITYVPNOIP',
+//           status: 'OPEN'
+//         },
+//         output: {
+//           amount: '0.08074200',
+//           currency: 'BTC',
+//           reference: '',
+//           status: 'OPEN'
+//         }
+//       }
+//     });
+//   }, 250);
+// });

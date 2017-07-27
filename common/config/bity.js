@@ -1,18 +1,17 @@
 export default {
   serverURL: 'https://bity.myetherapi.com',
   bityAPI: 'https://bity.com/api',
-  decimals: 6,
   ethExplorer: 'https://etherscan.io/tx/[[txHash]]',
   btcExplorer: 'https://blockchain.info/tx/[[txHash]]',
   validStatus: ['RCVE', 'FILL', 'CONF', 'EXEC'],
   invalidStatus: ['CANC'],
   mainPairs: ['REP', 'ETH'],
-  min: 0.01,
-  max: 3,
+  BTCMin: 0.01,
+  BTCMax: 3,
   priceLoaded: false,
   postConfig: {
     headers: {
-      'Content-Type': 'application/json; charse:UTF-8'
+      'Content-Type': 'application/json; charset:UTF-8'
     }
   }
 };

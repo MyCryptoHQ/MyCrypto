@@ -7,6 +7,7 @@ import CurrentRates from './components/CurrentRates';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
 import SwapProgress from './components/SwapProgress';
+import PaymentInfo from './components/PaymentInfo';
 
 type ReduxStateProps = {
   step: string,
@@ -18,12 +19,13 @@ type ReduxStateProps = {
   bityRates: boolean,
   originAmount: ?number,
   destinationAmount: ?number,
+  isPostingOrder: boolean,
   // PART 3
-  referenceNumber: string,
-  timeRemaining: string,
+  bityOrder: {},
+  secondsRemaining: number,
   numberOfConfirmation: number,
-  orderStep: number,
-  orderStarted: boolean
+  paymentAddress: string,
+  orderStatus: string
 };
 
 type ReduxActionProps = {
@@ -41,7 +43,7 @@ type ReduxActionProps = {
   restartSwap: () => swapTypes.RestartSwapAction,
   stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction,
   // PART 3 (IGNORE FOR NOW)
-  referenceNumberSwap: typeof swapActions.referenceNumberSwap
+  orderCreateRequestedSwap: any
 };
 
 class Swap extends Component {
@@ -67,10 +69,11 @@ class Swap extends Component {
       originKindOptions,
       destinationAddress,
       step,
-      referenceNumber,
-      timeRemaining,
-      numberOfConfirmations,
-      orderStep,
+      bityOrder,
+      secondsRemaining,
+      paymentAddress,
+      orderStatus,
+      isPostingOrder,
       // ACTIONS
       restartSwap,
       stopLoadBityRatesSwap,
@@ -80,32 +83,36 @@ class Swap extends Component {
       originAmountSwap,
       destinationAmountSwap,
       destinationAddressSwap,
-      referenceNumberSwap
+      orderCreateRequestedSwap
     } = this.props;
 
+    const { reference, numberOfConfirmations } = bityOrder;
+
     let ReceivingAddressProps = {
+      isPostingOrder,
+      originAmount,
+      originKind,
       destinationKind,
       destinationAddressSwap,
       destinationAddress,
       stopLoadBityRatesSwap,
       changeStepSwap,
-      referenceNumberSwap
+      orderCreateRequestedSwap
     };
 
     let SwapInfoHeaderProps = {
-      referenceNumber,
-      timeRemaining,
+      reference,
+      secondsRemaining,
       originAmount,
       originKind,
       destinationKind,
       destinationAmount,
       restartSwap,
       numberOfConfirmations,
-      orderStep
+      orderStatus
     };
 
     const { ETHBTC, ETHREP, BTCETH, BTCREP } = bityRates;
-
     const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
 
     const CurrencySwapProps = {
@@ -123,6 +130,12 @@ class Swap extends Component {
       changeStepSwap
     };
 
+    const PaymentInfoProps = {
+      originKind,
+      originAmount,
+      paymentAddress
+    };
+
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
@@ -135,7 +148,11 @@ class Swap extends Component {
             {(step === 2 || step === 3) &&
               <SwapInfoHeader {...SwapInfoHeaderProps} />}
             {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
-            {step === 3 && <SwapProgress {...SwapInfoHeaderProps} />}
+            {step === 3 &&
+              <div>
+                <SwapProgress {...SwapInfoHeaderProps} />
+                <PaymentInfo {...PaymentInfoProps} />
+              </div>}
           </main>
         </div>
       </section>
@@ -145,6 +162,9 @@ class Swap extends Component {
 
 function mapStateToProps(state) {
   return {
+    isPostingOrder: state.swap.isPostingOrder,
+    orderStatus: state.swap.orderStatus,
+    paymentAddress: state.swap.paymentAddress,
     step: state.swap.step,
     destinationAddress: state.swap.destinationAddress,
     originAmount: state.swap.originAmount,
@@ -154,11 +174,9 @@ function mapStateToProps(state) {
     destinationKindOptions: state.swap.destinationKindOptions,
     originKindOptions: state.swap.originKindOptions,
     bityRates: state.swap.bityRates,
-    referenceNumber: state.swap.referenceNumber,
-    timeRemaining: state.swap.timeRemaining,
-    numberOfConfirmations: state.swap.numberOfConfirmations,
-    orderStep: state.swap.orderStep,
-    orderStarted: state.swap.orderStarted
+    bityOrder: state.swap.bityOrder,
+    secondsRemaining: state.swap.secondsRemaining,
+    numberOfConfirmations: state.swap.numberOfConfirmations
   };
 }
 

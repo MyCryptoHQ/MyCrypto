@@ -6,21 +6,45 @@ export type StateProps = {
   numberOfConfirmations: number,
   destinationKind: string,
   originKind: string,
-  orderStep: number
+  orderStatus: string
 };
 
 export default class SwapProgress extends Component {
   props: StateProps;
 
-  computedClass(i: number) {
-    const { orderStep } = this.props;
+  computedClass(step: number) {
+    const { orderStatus } = this.props;
     let cssClass = 'progress-item';
-    if (orderStep > i) {
-      cssClass += ' progress-true';
-    } else if (i === orderStep) {
-      cssClass += ' progress-active';
+    switch (orderStatus) {
+      case 'OPEN':
+        if (step === 1) {
+          return cssClass + ' progress-true';
+        } else if (step === 2) {
+          return cssClass + ' progress-active';
+        } else {
+          return cssClass;
+        }
+      case 'RCVE':
+        if (step < 3) {
+          return cssClass + ' progress-true';
+        } else if (step === 3) {
+          return cssClass + ' progress-active';
+        } else {
+          return cssClass;
+        }
+      case 'CANC':
+        return cssClass;
+      case 'FILL':
+        if (step < 4) {
+          return cssClass + ' progress-true';
+        } else if (step === 4) {
+          return cssClass + ' progress-active';
+        } else {
+          return cssClass;
+        }
+      default:
+        return cssClass;
     }
-    return cssClass;
   }
 
   render() {

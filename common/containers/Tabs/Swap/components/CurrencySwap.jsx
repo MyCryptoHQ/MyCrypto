@@ -3,6 +3,7 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import * as swapTypes from 'actions/swapTypes';
 import SimpleDropDown from 'components/ui/SimpleDropdown';
+import SimpleButton from 'components/ui/SimpleButton';
 
 export type StateProps = {
   bityRates: {},
@@ -28,8 +29,17 @@ export default class CurrencySwap extends Component {
   props: StateProps & ActionProps;
 
   state = {
-    disabled: false
+    disabled: true
   };
+
+  componentWillUpdate(nextProps, nextState) {
+    const disabled = !(nextProps.originAmount && nextProps.destinationAmount);
+    if (nextState.disabled !== disabled) {
+      this.setState({
+        disabled: disabled
+      });
+    }
+  }
 
   onClickStartSwap = () => {
     this.props.changeStepSwap(2);
@@ -43,7 +53,7 @@ export default class CurrencySwap extends Component {
   onChangeOriginAmount = (event: SyntheticInputEvent) => {
     const amount = event.target.value;
     let originAmountAsNumber = parseFloat(amount);
-    if (originAmountAsNumber) {
+    if (originAmountAsNumber || originAmountAsNumber === 0) {
       let pairName = combineAndUpper(
         this.props.originKind,
         this.props.destinationKind
@@ -59,7 +69,7 @@ export default class CurrencySwap extends Component {
   onChangeDestinationAmount = (event: SyntheticInputEvent) => {
     const amount = event.target.value;
     let destinationAmountAsNumber = parseFloat(amount);
-    if (destinationAmountAsNumber) {
+    if (destinationAmountAsNumber || destinationAmountAsNumber === 0) {
       this.props.destinationAmountSwap(destinationAmountAsNumber);
       let pairName = combineAndUpper(
         this.props.destinationKind,
@@ -104,7 +114,9 @@ export default class CurrencySwap extends Component {
             : 'is-invalid'}`}
           type="number"
           placeholder="Amount"
-          value={originAmount || ''}
+          value={
+            parseFloat(originAmount) === 0 ? originAmount : originAmount || ''
+          }
           onChange={this.onChangeOriginAmount}
         />
 
@@ -125,9 +137,14 @@ export default class CurrencySwap extends Component {
             : 'is-invalid'}`}
           type="number"
           placeholder="Amount"
-          value={destinationAmount || ''}
+          value={
+            parseFloat(destinationAmount) === 0
+              ? destinationAmount
+              : destinationAmount || ''
+          }
           onChange={this.onChangeDestinationAmount}
         />
+
         <SimpleDropDown
           value={destinationKind}
           onChange={this.onChangeDestinationKind}
@@ -135,15 +152,11 @@ export default class CurrencySwap extends Component {
         />
 
         <div className="col-xs-12 clearfix text-center">
-          <button
-            disabled={this.state.disabled}
+          <SimpleButton
             onClick={this.onClickStartSwap}
-            className="btn btn-info btn-lg"
-          >
-            <span>
-              {translate('SWAP_init_CTA')}
-            </span>
-          </button>
+            text={translate('SWAP_init_CTA')}
+            disabled={this.state.disabled}
+          />
         </div>
       </article>
     );
