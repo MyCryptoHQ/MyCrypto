@@ -6,8 +6,8 @@ import {
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import sagas from './sagas';
-import { initialState as configInitialState } from 'reducers/config';
-import { initialState as customTokensInitialState } from 'reducers/customTokens';
+import { INITIAL_STATE as configInitialState } from 'reducers/config';
+import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
 import throttle from 'lodash/throttle';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import Perf from 'react-addons-perf';
