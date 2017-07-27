@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import translate from 'translations';
 import PasswordInput from './PasswordInput';
@@ -14,32 +13,33 @@ const minLength = min => value => {
 const minLength9 = minLength(9);
 const required = value => (value ? undefined : 'Required');
 
+type Props = {
+  walletPasswordForm: Object,
+  showWalletPassword: Function,
+  generateNewWallet: Function
+};
+
 class EnterPassword extends Component {
-  static propTypes = {
-    // Store state
-    generateWalletPassword: PropTypes.object,
-    showPassword: PropTypes.bool,
-    // Actions
-    showPasswordGenerateWallet: PropTypes.func,
-    generateUTCGenerateWallet: PropTypes.func
-  };
+  props: Props;
 
   state = {
     fileName: null,
-    blobURI: null
+    blobURI: null,
+    isPasswordVisible: false
   };
 
-  onClickGenerateFile = () => {
-    const form = this.props.generateWalletPassword;
-    this.props.generateUTCGenerateWallet(form.values.password);
+  _onClickGenerateFile = () => {
+    const form = this.props.walletPasswordForm;
+    this.props.generateNewWallet(form.values.password);
+  };
+
+  _togglePassword = () => {
+    this.setState({ isPasswordVisible: !this.state.isPasswordVisible });
   };
 
   render() {
-    const {
-      generateWalletPassword,
-      showPassword,
-      showPasswordGenerateWallet
-    } = this.props;
+    const { walletPasswordForm } = this.props;
+    const { isPasswordVisible } = this.state;
 
     return (
       <div>
@@ -54,17 +54,15 @@ class EnterPassword extends Component {
           <Field
             validate={[required, minLength9]}
             component={PasswordInput}
-            showPassword={showPassword}
-            showPasswordGenerateWallet={showPasswordGenerateWallet}
+            isPasswordVisible={isPasswordVisible}
+            togglePassword={this._togglePassword}
             name="password"
             type="text"
           />
           <br />
           <button
-            onClick={this.onClickGenerateFile}
-            disabled={
-              generateWalletPassword ? generateWalletPassword.syncErrors : true
-            }
+            onClick={this._onClickGenerateFile}
+            disabled={walletPasswordForm ? walletPasswordForm.syncErrors : true}
             className="btn btn-primary btn-block"
           >
             {translate('NAV_GenerateWallet')}
@@ -76,5 +74,5 @@ class EnterPassword extends Component {
 }
 
 export default reduxForm({
-  form: 'generateWalletPassword' // a unique name for this form
+  form: 'walletPasswordForm' // a unique name for this form
 })(EnterPassword);

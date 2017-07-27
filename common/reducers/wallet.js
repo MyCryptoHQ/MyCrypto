@@ -18,7 +18,7 @@ export type State = {
   }
 };
 
-const initialState: State = {
+export const INITIAL_STATE: State = {
   inst: null,
   balance: new Big(0),
   tokens: {}
@@ -38,7 +38,7 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
 }
 
 export function wallet(
-  state: State = initialState,
+  state: State = INITIAL_STATE,
   action: WalletAction
 ): State {
   switch (action.type) {

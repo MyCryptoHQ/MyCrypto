@@ -1,6 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import * as swapTypes from 'actions/swapTypes';
+import type {
+  DestinationAddressSwapAction,
+  ChangeStepSwapAction,
+  StopLoadBityRatesSwapAction,
+  ReferenceNumberSwapAction
+} from 'actions/swap';
 import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
@@ -11,11 +16,10 @@ export type StateProps = {
 };
 
 export type ActionProps = {
-  destinationAddressSwap: (
-    value: ?string
-  ) => swapTypes.DestinationAddressSwapAction,
-  changeStepSwap: (value: number) => swapTypes.ChangeStepSwapAction,
-  stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction
+  destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
+  changeStepSwap: (value: number) => ChangeStepSwapAction,
+  stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
+  referenceNumberSwap: (value: string) => ReferenceNumberSwapAction
 };
 
 export default class ReceivingAddress extends Component {

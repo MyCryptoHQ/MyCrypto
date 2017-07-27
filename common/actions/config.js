@@ -1,29 +1,24 @@
 // @flow
 
-export type ChangeNodeAction = {
-  type: 'CONFIG_NODE_CHANGE',
-  // FIXME $keyof?
-  value: string
-};
-
+/*** Change Language ***/
 export type ChangeLanguageAction = {
   type: 'CONFIG_LANGUAGE_CHANGE',
   value: string
 };
 
-export type ChangeGasPriceAction = {
-  type: 'CONFIG_GAS_PRICE',
-  value: number
-}
-
-export type ConfigAction = ChangeNodeAction | ChangeLanguageAction;
-
-export function changeLanguage(sign: string) {
+export function changeLanguage(sign: string): ChangeLanguageAction {
   return {
     type: 'CONFIG_LANGUAGE_CHANGE',
     value: sign
   };
 }
+
+/*** Change Node ***/
+export type ChangeNodeAction = {
+  type: 'CONFIG_NODE_CHANGE',
+  // FIXME $keyof?
+  value: string
+};
 
 export function changeNode(value: string): ChangeNodeAction {
   return {
@@ -32,10 +27,21 @@ export function changeNode(value: string): ChangeNodeAction {
   };
 }
 
+/*** Change gas price ***/
+export type ChangeGasPriceAction = {
+  type: 'CONFIG_GAS_PRICE',
+  value: number
+};
+
 export function changeGasPrice(value: number): ChangeGasPriceAction {
   return {
     type: 'CONFIG_GAS_PRICE',
     value
-  }
+  };
 }
 
+/*** Union Type ***/
+export type ConfigAction =
+  | ChangeNodeAction
+  | ChangeLanguageAction
+  | ChangeGasPriceAction;

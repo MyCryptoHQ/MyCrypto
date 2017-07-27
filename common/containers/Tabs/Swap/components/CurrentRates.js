@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
-import { Pairs } from 'actions/swapTypes';
+import type { Pairs } from 'actions/swap';
 import { bityReferralURL } from 'config/data';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 

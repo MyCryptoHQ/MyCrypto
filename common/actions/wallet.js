@@ -2,6 +2,7 @@
 import BaseWallet from 'libs/wallet/base';
 import Big from 'big.js';
 
+/*** Unlock Private Key ***/
 export type PrivateKeyUnlockParams = {
   key: string,
   password: string
@@ -12,29 +13,6 @@ export type UnlockPrivateKeyAction = {
   payload: PrivateKeyUnlockParams
 };
 
-export type SetWalletAction = {
-  type: 'WALLET_SET',
-  payload: BaseWallet
-};
-
-export type SetBalanceAction = {
-  type: 'WALLET_SET_BALANCE',
-  payload: Big
-};
-
-export type SetTokenBalancesAction = {
-  type: 'WALLET_SET_TOKEN_BALANCES',
-  payload: {
-    [string]: Big
-  }
-};
-
-export type WalletAction =
-  | UnlockPrivateKeyAction
-  | SetWalletAction
-  | SetBalanceAction
-  | SetTokenBalancesAction;
-
 export function unlockPrivateKey(
   value: PrivateKeyUnlockParams
 ): UnlockPrivateKeyAction {
@@ -44,6 +22,12 @@ export function unlockPrivateKey(
   };
 }
 
+/*** Set Wallet ***/
+export type SetWalletAction = {
+  type: 'WALLET_SET',
+  payload: BaseWallet
+};
+
 export function setWallet(value: BaseWallet): SetWalletAction {
   return {
     type: 'WALLET_SET',
@@ -51,12 +35,26 @@ export function setWallet(value: BaseWallet): SetWalletAction {
   };
 }
 
+/*** Set Balance ***/
+export type SetBalanceAction = {
+  type: 'WALLET_SET_BALANCE',
+  payload: Big
+};
+
 export function setBalance(value: Big): SetBalanceAction {
   return {
     type: 'WALLET_SET_BALANCE',
     payload: value
   };
 }
+
+/*** Set Token Balance ***/
+export type SetTokenBalancesAction = {
+  type: 'WALLET_SET_TOKEN_BALANCES',
+  payload: {
+    [string]: Big
+  }
+};
 
 export function setTokenBalances(payload: {
   [string]: Big
@@ -66,3 +64,10 @@ export function setTokenBalances(payload: {
     payload
   };
 }
+
+/*** Union Type ***/
+export type WalletAction =
+  | UnlockPrivateKeyAction
+  | SetWalletAction
+  | SetBalanceAction
+  | SetTokenBalancesAction;
