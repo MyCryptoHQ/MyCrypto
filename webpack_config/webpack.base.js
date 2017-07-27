@@ -38,7 +38,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         loaders: ['babel-loader'],
-        exclude: [/node_modules\/(?!ethereum-blockies)/]
+        exclude: [/node_modules\/(?!ethereum-blockies|idna-uts46)/]
       },
       {
         test: /\.(ico|webp|eot|otf|ttf|woff|woff2)(\?.*)?$/,

@@ -1,33 +1,38 @@
 // @flow
-import {
-  GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER,
-  GENERATE_WALLET_FILE,
-  GENERATE_WALLET_DOWNLOAD_FILE,
-  GENERATE_WALLET_SHOW_PASSWORD,
-  RESET_GENERATE_WALLET
-} from 'actions/generateWalletConstants';
 import { PrivKeyWallet } from 'libs/wallet';
 
-export const showPasswordGenerateWallet = () => {
-  return { type: GENERATE_WALLET_SHOW_PASSWORD };
+/*** Generate Wallet File ***/
+export type GenerateNewWalletAction = {
+  type: 'GENERATE_WALLET_GENERATE_WALLET',
+  wallet: PrivKeyWallet,
+  password: string
 };
 
-export const generateUTCGenerateWallet = (password: string) => {
+export function generateNewWallet(password: string): GenerateNewWalletAction {
   return {
-    type: GENERATE_WALLET_FILE,
+    type: 'GENERATE_WALLET_GENERATE_WALLET',
     wallet: PrivKeyWallet.generate(),
     password
   };
+}
+
+/*** Confirm Continue To Paper ***/
+export type ContinueToPaperAction = {
+  type: 'GENERATE_WALLET_CONTINUE_TO_PAPER'
 };
 
-export const downloadUTCGenerateWallet = () => {
-  return { type: GENERATE_WALLET_DOWNLOAD_FILE };
+export function continueToPaper(): ContinueToPaperAction {
+  return { type: 'GENERATE_WALLET_CONTINUE_TO_PAPER' };
+}
+
+/*** Reset Generate Wallet ***/
+export type ResetGenerateWalletAction = {
+  type: 'GENERATE_WALLET_RESET'
 };
 
-export const confirmContinueToPaperGenerateWallet = () => {
-  return { type: GENERATE_WALLET_CONFIRM_CONTINUE_TO_PAPER };
-};
+export function resetGenerateWallet(): ResetGenerateWalletAction {
+  return { type: 'GENERATE_WALLET_RESET' };
+}
 
-export const resetGenerateWallet = () => {
-  return { type: RESET_GENERATE_WALLET };
-};
+/*** Action Union ***/
+export type GenerateWalletAction = GenerateWalletAction;

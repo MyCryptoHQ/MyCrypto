@@ -1,33 +1,45 @@
-import {
-  SWAP_DESTINATION_AMOUNT,
-  SWAP_DESTINATION_KIND,
-  SWAP_ORIGIN_AMOUNT,
-  SWAP_ORIGIN_KIND,
-  SWAP_UPDATE_BITY_RATES,
-  SWAP_PART_ONE_COMPLETE,
-  SWAP_DESTINATION_ADDRESS,
-  SWAP_RESTART,
-  SWAP_PART_TWO_COMPLETE
-} from 'actions/swapConstants';
-import { combineAndUpper } from 'api/bity';
+// @flow
+import { combineAndUpper } from 'utils/formatters';
+import type { SwapAction } from 'actions/swap';
 
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 
-const initialState = {
-  originAmount: '',
-  destinationAmount: '',
+type State = {
+  originAmount: number,
+  destinationAmount: number,
+  originKind: string,
+  destinationKind: string,
+  destinationKindOptions: Array<string>,
+  originKindOptions: Array<string>,
+  step: number,
+  bityRates: Object,
+  destinationAddress: string,
+  referenceNumber: string,
+  timeRemaining: string,
+  numberOfConfirmations: ?number,
+  orderStep: ?number,
+  isFetchingRates: boolean
+};
+
+export const INITIAL_STATE: State = {
+  originAmount: 0,
+  destinationAmount: 0,
   originKind: 'BTC',
   destinationKind: 'ETH',
-  destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(
-    element => element !== 'BTC'
-  ),
-  originKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(
-    element => element !== 'REP'
-  ),
-  partOneComplete: false,
-  partTwoComplete: false,
+  destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
+    return element !== 'BTC';
+  }),
+  originKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
+    return element !== 'REP';
+  }),
+  step: 1,
   bityRates: {},
-  destinationAddress: ''
+  destinationAddress: '',
+  referenceNumber: '',
+  timeRemaining: '',
+  numberOfConfirmations: null,
+  orderStep: null,
+  isFetchingRates: false
 };
 
 const buildDestinationAmount = (
@@ -41,7 +53,10 @@ const buildDestinationAmount = (
   return originAmount * bityRate;
 };
 
-const buildDestinationKind = (originKind, destinationKind) => {
+const buildDestinationKind = (
+  originKind: string,
+  destinationKind: string
+): string => {
   if (originKind === destinationKind) {
     return ALL_CRYPTO_KIND_OPTIONS.filter(element => element !== originKind)[0];
   } else {
@@ -49,9 +64,9 @@ const buildDestinationKind = (originKind, destinationKind) => {
   }
 };
 
-export function swap(state = initialState, action) {
+export function swap(state: State = INITIAL_STATE, action: SwapAction) {
   switch (action.type) {
-    case SWAP_ORIGIN_KIND: {
+    case 'SWAP_ORIGIN_KIND': {
       const newDestinationKind = buildDestinationKind(
         action.value,
         state.destinationKind
@@ -60,9 +75,10 @@ export function swap(state = initialState, action) {
         ...state,
         originKind: action.value,
         destinationKind: newDestinationKind,
-        destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(
-          element => element !== action.value
-        ),
+        destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
+          // $FlowFixMe
+          return element !== action.value;
+        }),
         destinationAmount: buildDestinationAmount(
           state.originAmount,
           action.value,
@@ -71,7 +87,7 @@ export function swap(state = initialState, action) {
         )
       };
     }
-    case SWAP_DESTINATION_KIND: {
+    case 'SWAP_DESTINATION_KIND': {
       return {
         ...state,
         destinationKind: action.value,
@@ -83,46 +99,64 @@ export function swap(state = initialState, action) {
         )
       };
     }
-    case SWAP_ORIGIN_AMOUNT:
+    case 'SWAP_ORIGIN_AMOUNT':
       return {
         ...state,
         originAmount: action.value
       };
-    case SWAP_DESTINATION_AMOUNT:
+    case 'SWAP_DESTINATION_AMOUNT':
       return {
         ...state,
         destinationAmount: action.value
       };
-    case SWAP_UPDATE_BITY_RATES:
+    case 'SWAP_UPDATE_BITY_RATES':
       return {
         ...state,
         bityRates: {
           ...state.bityRates,
           ...action.value
-        }
+        },
+        isFetchingRates: false
       };
-    case SWAP_PART_ONE_COMPLETE:
+    case 'SWAP_STEP': {
       return {
         ...state,
-        partOneComplete: action.value
+        step: action.value
       };
-    case SWAP_PART_TWO_COMPLETE:
-      return {
-        ...state,
-        partTwoComplete: action.value
-      };
-    case SWAP_DESTINATION_ADDRESS:
+    }
+    case 'SWAP_DESTINATION_ADDRESS':
       return {
         ...state,
         destinationAddress: action.value
       };
-    case SWAP_RESTART:
+    case 'SWAP_RESTART':
       return {
-        ...state,
-        ...initialState,
+        ...INITIAL_STATE,
         bityRates: state.bityRates
       };
+    case 'SWAP_REFERENCE_NUMBER':
+      return {
+        ...state,
+        referenceNumber: '2341asdfads',
+        timeRemaining: '2:30',
+        numberOfConfirmations: 3,
+        orderStep: 2
+      };
+
+    case 'SWAP_LOAD_BITY_RATES':
+      return {
+        ...state,
+        isFetchingRates: true
+      };
+
+    case 'SWAP_STOP_LOAD_BITY_RATES':
+      return {
+        ...state,
+        isFetchingRates: false
+      };
+
     default:
+      (action: empty);
       return state;
   }
 }

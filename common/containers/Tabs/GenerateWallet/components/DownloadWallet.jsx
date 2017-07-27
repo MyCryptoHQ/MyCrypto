@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 import type PrivKeyWallet from 'libs/wallet/privkey';
 import { makeBlob } from 'utils/blob';
@@ -9,23 +8,16 @@ import { getV3Filename } from 'libs/keystore';
 type Props = {
   wallet: PrivKeyWallet,
   password: string,
-  hasDownloadedWalletFile: boolean,
-  downloadUTCGenerateWallet: () => any,
-  confirmContinueToPaperGenerateWallet: () => any
+  continueToPaper: Function
 };
 
 export default class DownloadWallet extends Component {
   props: Props;
   keystore: Object;
-  static propTypes = {
-    // Store state
-    wallet: PropTypes.object.isRequired,
-    password: PropTypes.string.isRequired,
-    hasDownloadedWalletFile: PropTypes.bool,
-    // Actions
-    downloadUTCGenerateWallet: PropTypes.func,
-    confirmContinueToPaperGenerateWallet: PropTypes.func
+  state = {
+    hasDownloadedWallet: false
   };
+
   componentWillMount() {
     this.keystore = this.props.wallet.toKeystore(this.props.password);
   }
@@ -35,12 +27,18 @@ export default class DownloadWallet extends Component {
     }
   }
 
+  _markDownloaded = () => {
+    this.setState({ hasDownloadedWallet: true });
+  };
+
+  _handleContinue = () => {
+    if (this.state.hasDownloadedWallet) {
+      this.props.continueToPaper();
+    }
+  };
+
   render() {
-    const {
-      hasDownloadedWalletFile,
-      downloadUTCGenerateWallet,
-      confirmContinueToPaperGenerateWallet
-    } = this.props;
+    const { hasDownloadedWallet } = this.state;
 
     return (
       <div>
@@ -68,7 +66,7 @@ export default class DownloadWallet extends Component {
             aria-describedby="x_KeystoreDesc"
             download={this.getFilename()}
             href={this.getBlob()}
-            onClick={downloadUTCGenerateWallet}
+            onClick={this._markDownloaded}
           >
             {translate('x_Download')}
           </a>
@@ -95,10 +93,10 @@ export default class DownloadWallet extends Component {
             <br />
             <a
               role="button"
-              className={`btn btn-info ${hasDownloadedWalletFile
+              className={`btn btn-info ${hasDownloadedWallet
                 ? ''
                 : 'disabled'}`}
-              onClick={confirmContinueToPaperGenerateWallet}
+              onClick={this._handleContinue}
             >
               I understand. Continue.
             </a>

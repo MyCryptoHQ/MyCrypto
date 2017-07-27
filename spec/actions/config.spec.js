@@ -2,11 +2,11 @@ import { changeLanguage } from '../../common/actions/config';
 
 describe('actions', () => {
   it('should create an action to change language to index', () => {
-    const language = 'en';
+    const value = 'en';
     const expectedAction = {
       type: 'CONFIG_LANGUAGE_CHANGE',
-      language
+      value
     };
-    expect(changeLanguage(language)).toEqual(expectedAction);
+    expect(changeLanguage(value)).toEqual(expectedAction);
   });
 });

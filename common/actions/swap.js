@@ -1,87 +1,163 @@
-import {
-  SWAP_DESTINATION_AMOUNT,
-  SWAP_DESTINATION_KIND,
-  SWAP_ORIGIN_AMOUNT,
-  SWAP_ORIGIN_KIND,
-  SWAP_UPDATE_BITY_RATES,
-  SWAP_PART_ONE_COMPLETE,
-  SWAP_PART_TWO_COMPLETE,
-  SWAP_DESTINATION_ADDRESS,
-  SWAP_RESTART,
-  SWAP_LOAD_BITY_RATES,
-  SWAP_STOP_LOAD_BITY_RATES
-} from './swapConstants';
+// @flow
 
-export const originKindSwap = value => {
+/*** Change Step ***/
+export type ChangeStepSwapAction = {
+  type: 'SWAP_STEP',
+  value: number
+};
+
+export function changeStepSwap(value: number): ChangeStepSwapAction {
   return {
-    type: SWAP_ORIGIN_KIND,
+    type: 'SWAP_STEP',
     value
   };
+}
+
+/*** Change Reference Number ***/
+export type ReferenceNumberSwapAction = {
+  type: 'SWAP_REFERENCE_NUMBER',
+  value: string
 };
 
-export const destinationKindSwap = value => {
+export function referenceNumberSwap(value: string): ReferenceNumberSwapAction {
   return {
-    type: SWAP_DESTINATION_KIND,
+    type: 'SWAP_REFERENCE_NUMBER',
     value
   };
+}
+
+/*** Change Origin Kind ***/
+export type OriginKindSwapAction = {
+  type: 'SWAP_ORIGIN_KIND',
+  value: string
 };
 
-export const originAmountSwap = value => {
+export function originKindSwap(value: string): OriginKindSwapAction {
   return {
-    type: SWAP_ORIGIN_AMOUNT,
+    type: 'SWAP_ORIGIN_KIND',
     value
   };
+}
+
+/*** Change Destination Kind ***/
+export type DestinationKindSwapAction = {
+  type: 'SWAP_DESTINATION_KIND',
+  value: string
 };
 
-export const destinationAmountSwap = value => {
+export function destinationKindSwap(value: string): DestinationKindSwapAction {
   return {
-    type: SWAP_DESTINATION_AMOUNT,
+    type: 'SWAP_DESTINATION_KIND',
     value
   };
+}
+
+/*** Change Origin Amount ***/
+export type OriginAmountSwapAction = {
+  type: 'SWAP_ORIGIN_AMOUNT',
+  value: ?number
 };
 
-export const updateBityRatesSwap = value => {
+export function originAmountSwap(value: ?number): OriginAmountSwapAction {
   return {
-    type: SWAP_UPDATE_BITY_RATES,
+    type: 'SWAP_ORIGIN_AMOUNT',
     value
   };
+}
+
+/*** Change Destination Amount ***/
+export type DestinationAmountSwapAction = {
+  type: 'SWAP_DESTINATION_AMOUNT',
+  value: ?number
 };
 
-export const partOneCompleteSwap = (value: boolean) => {
+export function destinationAmountSwap(
+  value: ?number
+): DestinationAmountSwapAction {
   return {
-    type: SWAP_PART_ONE_COMPLETE,
+    type: 'SWAP_DESTINATION_AMOUNT',
     value
   };
+}
+
+/*** Update Bity Rates ***/
+export type Pairs = {
+  ETHBTC: number,
+  ETHREP: number,
+  BTCETH: number,
+  BTCREP: number
 };
 
-export const partTwoCompleteSwap = (value: boolean) => {
+export type BityRatesSwapAction = {
+  type: 'SWAP_UPDATE_BITY_RATES',
+  value: Pairs
+};
+
+export function updateBityRatesSwap(value: Pairs): BityRatesSwapAction {
   return {
-    type: SWAP_PART_TWO_COMPLETE,
+    type: 'SWAP_UPDATE_BITY_RATES',
     value
   };
+}
+
+/*** Change Destination Address ***/
+export type DestinationAddressSwapAction = {
+  type: 'SWAP_DESTINATION_ADDRESS',
+  value: ?string
 };
 
-export const destinationAddressSwap = value => {
+export function destinationAddressSwap(
+  value: ?string
+): DestinationAddressSwapAction {
   return {
-    type: SWAP_DESTINATION_ADDRESS,
+    type: 'SWAP_DESTINATION_ADDRESS',
     value
   };
+}
+
+/*** Restart ***/
+export type RestartSwapAction = {
+  type: 'SWAP_RESTART'
 };
 
-export const restartSwap = () => {
+export function restartSwap(): RestartSwapAction {
   return {
-    type: SWAP_RESTART
+    type: 'SWAP_RESTART'
   };
+}
+
+/*** Load Bity Rates ***/
+export type LoadBityRatesSwapAction = {
+  type: 'SWAP_LOAD_BITY_RATES'
 };
 
-export const loadBityRates = () => {
+export function loadBityRatesSwap(): LoadBityRatesSwapAction {
   return {
-    type: SWAP_LOAD_BITY_RATES
+    type: 'SWAP_LOAD_BITY_RATES'
   };
+}
+
+/*** Stop Loading Bity Rates ***/
+export type StopLoadBityRatesSwapAction = {
+  type: 'SWAP_STOP_LOAD_BITY_RATES'
 };
 
-export const stopLoadBityRates = () => {
+export function stopLoadBityRatesSwap(): StopLoadBityRatesSwapAction {
   return {
-    type: SWAP_STOP_LOAD_BITY_RATES
+    type: 'SWAP_STOP_LOAD_BITY_RATES'
   };
-};
+}
+
+/*** Action Type Union ***/
+export type SwapAction =
+  | ChangeStepSwapAction
+  | ReferenceNumberSwapAction
+  | OriginKindSwapAction
+  | DestinationKindSwapAction
+  | OriginAmountSwapAction
+  | DestinationAmountSwapAction
+  | BityRatesSwapAction
+  | DestinationAddressSwapAction
+  | RestartSwapAction
+  | LoadBityRatesSwapAction
+  | StopLoadBityRatesSwapAction;

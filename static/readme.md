@@ -1,1 +1,0 @@
-* static goes here!

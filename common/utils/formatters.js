@@ -5,6 +5,10 @@ export function toFixedIfLarger(number: number, fixedSize: number = 6): string {
   return parseFloat(number.toFixed(fixedSize)).toString();
 }
 
+export function combineAndUpper(...args: string[]) {
+  return args.reduce((acc, item) => acc.concat(item.toUpperCase()), '');
+}
+
 // Use in place of angular number filter
 export function formatNumber(number: Big, digits: number = 3): string {
   let parts = number.toFixed(digits).split('.');

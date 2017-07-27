@@ -13,7 +13,7 @@ module.exports = {
     'react-router',
     'redux',
     'react-router-redux',
-    'redux-thunk',
+    'redux-saga',
     'whatwg-fetch'
   ],
   // enable babelrc
