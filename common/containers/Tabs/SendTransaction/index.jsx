@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 import { UnlockHeader } from 'components/ui';
 import {
@@ -23,16 +22,22 @@ import { donationAddressMap } from 'config/data';
 import Big from 'big.js';
 import type { TokenBalance } from 'selectors/wallet';
 import { getTokenBalances } from 'selectors/wallet';
+import type { RPCNode } from 'libs/nodes';
+import type { Transaction } from 'libs/nodes/rpc';
+import { getNodeLib } from 'selectors/config';
+import type { UNIT } from 'libs/units';
 
 type State = {
   hasQueryString: boolean,
   readOnly: boolean,
   to: string,
   value: string,
-  unit: string,
+  // $FlowFixMe - Comes from getParam not validating unit
+  unit: UNIT,
   gasLimit: string,
   data: string,
-  gasChanged: boolean
+  gasChanged: boolean,
+  transaction: ?Transaction
 };
 
 function getParam(query: { [string]: string }, key: string) {
@@ -56,7 +61,8 @@ type Props = {
   },
   wallet: BaseWallet,
   balance: Big,
-  tokenBalances: TokenBalance[]
+  tokenBalances: TokenBalance[],
+  nodeLib: RPCNode
 };
 
 export class SendTransaction extends React.Component {
@@ -70,7 +76,8 @@ export class SendTransaction extends React.Component {
     unit: 'ether',
     gasLimit: '21000',
     data: '',
-    gasChanged: false
+    gasChanged: false,
+    transaction: null
   };
 
   componentDidMount() {
@@ -80,10 +87,27 @@ export class SendTransaction extends React.Component {
     }
   }
 
+  generateTx = async () => {
+    const { nodeLib, wallet } = this.props;
+
+    // TODO: Handle generate transaction failure
+    const transaction = await nodeLib.generateTransaction({
+      to: this.state.to,
+      from: wallet.getAddress(),
+      value: this.state.value,
+      unit: this.state.unit,
+      gasLimit: this.state.gasLimit,
+      data: this.state.data,
+      // TODO: Handle hardware wallets?
+      // $FlowFixMe
+      pkey: wallet.getPrivateKey ? wallet.getPrivateKey() : ''
+    });
+
+    this.setState({ transaction });
+  };
+
   render() {
     const unlocked = !!this.props.wallet;
-    const unitReadable = 'UNITREADABLE';
-    const nodeUnit = 'NODEUNIT';
     const hasEnoughBalance = false;
     const {
       to,
@@ -92,7 +116,8 @@ export class SendTransaction extends React.Component {
       gasLimit,
       data,
       readOnly,
-      hasQueryString
+      hasQueryString,
+      transaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
 
@@ -183,17 +208,23 @@ export class SendTransaction extends React.Component {
                       <label>
                         {translate('SEND_raw')}
                       </label>
-                      <textarea className="form-control" rows="4" readOnly>
-                        {'' /*rawTx*/}
-                      </textarea>
+                      <textarea
+                        className="form-control"
+                        value={transaction ? transaction.rawTx : ''}
+                        rows="4"
+                        readOnly
+                      />
                     </div>
                     <div className="col-sm-6">
                       <label>
                         {translate('SEND_signed')}
                       </label>
-                      <textarea className="form-control" rows="4" readOnly>
-                        {'' /*signedTx*/}
-                      </textarea>
+                      <textarea
+                        className="form-control"
+                        value={transaction ? transaction.signedTx : ''}
+                        rows="4"
+                        readOnly
+                      />
                     </div>
                   </div>
 
@@ -302,7 +333,8 @@ function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
     balance: state.wallet.balance,
-    tokenBalances: getTokenBalances(state)
+    tokenBalances: getTokenBalances(state),
+    nodeLib: getNodeLib(state)
   };
 }
 

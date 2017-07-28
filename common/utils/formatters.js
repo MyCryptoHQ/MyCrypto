@@ -28,3 +28,19 @@ export function formatNumber(number: Big, digits: number = 3): string {
 
   return parts.join('.');
 }
+
+export function padLeftEven(hex: string): string {
+  hex = hex.length % 2 != 0 ? '0' + hex : hex;
+  return hex;
+}
+
+export function sanitizeHex(hex: string): string {
+  hex = hex.substring(0, 2) == '0x' ? hex.substring(2) : hex;
+  if (hex == '') return '';
+  return '0x' + padLeftEven(hex);
+}
+
+// TODO: Handle big properly, maybe with BigNumber instead?
+export function decimalToHex(dec: number | string | Big): string {
+  return parseInt(dec, 10).toString(16);
+}
