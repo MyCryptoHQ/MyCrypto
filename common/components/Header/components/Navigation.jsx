@@ -22,7 +22,8 @@ const tabs = [
     name: 'NAV_Offline'
   },
   {
-    name: 'NAV_Contracts'
+    name: 'NAV_Contracts',
+    link: 'contracts'
   },
   {
     name: 'NAV_ViewWallet',

@@ -5,11 +5,7 @@ import {
 } from 'utils/localStorage';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-import notificationsSaga from './sagas/notifications';
-import ensSaga from './sagas/ens';
-import walletSaga from './sagas/wallet';
-import bitySaga from './sagas/bity';
-import ratesSaga from './sagas/rates';
+import sagas from './sagas';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
 import throttle from 'lodash/throttle';
@@ -45,11 +41,11 @@ const configureStore = () => {
   };
 
   store = createStore(RootReducer, persistedInitialState, middleware);
-  sagaMiddleware.run(notificationsSaga);
-  sagaMiddleware.run(ensSaga);
-  sagaMiddleware.run(walletSaga);
-  sagaMiddleware.run(bitySaga);
-  sagaMiddleware.run(ratesSaga);
+
+  // Add all of the sagas to the middleware
+  Object.keys(sagas).forEach(saga => {
+    sagaMiddleware.run(sagas[saga]);
+  });
 
   store.subscribe(
     throttle(() => {
