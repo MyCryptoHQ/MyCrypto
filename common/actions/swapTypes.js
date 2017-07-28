@@ -21,8 +21,8 @@ export type DestinationAmountSwapAction = {
   type: 'SWAP_DESTINATION_AMOUNT',
   value: ?number
 };
-export type BityRatesSwapAction = {
-  type: 'SWAP_UPDATE_BITY_RATES',
+export type LoadBityRatesSucceededSwapAction = {
+  type: 'SWAP_LOAD_BITY_RATES_SUCCEEDED',
   value: Pairs
 };
 export type DestinationAddressSwapAction = {
@@ -34,8 +34,8 @@ export type RestartSwapAction = {
   type: 'SWAP_RESTART'
 };
 
-export type LoadBityRatesSwapAction = {
-  type: 'SWAP_LOAD_BITY_RATES'
+export type LoadBityRatesRequestedSwapAction = {
+  type: 'SWAP_LOAD_BITY_RATES_REQUESTED'
 };
 
 export type ChangeStepSwapAction = {
@@ -93,10 +93,10 @@ export type SwapAction =
   | DestinationKindSwapAction
   | OriginAmountSwapAction
   | DestinationAmountSwapAction
-  | BityRatesSwapAction
+  | LoadBityRatesSucceededSwapAction
   | DestinationAddressSwapAction
   | RestartSwapAction
-  | LoadBityRatesSwapAction
+  | LoadBityRatesRequestedSwapAction
   | StopLoadBityRatesSwapAction
   | OrderCreateRequestedSwapAction
   | OrderCreateSucceededSwapAction

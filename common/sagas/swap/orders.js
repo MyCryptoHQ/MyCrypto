@@ -33,21 +33,21 @@ const BITY_TIMEOUT_MESSAGE = `
 
 export function* pollBityOrderStatus(): Generator<Effect, void, any> {
   try {
+    let swap = yield select(getSwap);
     while (true) {
-      const swap = yield select(getSwap);
-      if (swap.orderId) {
-        yield put(orderStatusRequestedSwap());
-        const orderStatus = yield call(getOrderStatus, swap.orderId);
-        if (orderStatus.error) {
-          yield put(
-            showNotification('danger', `Bity Error: ${orderStatus.msg}`, 10000)
-          );
-        } else {
-          yield put(orderStatusSucceededSwap(orderStatus.data));
-          yield call(delay, ONE_SECOND * 5);
-        }
+      yield put(orderStatusRequestedSwap());
+      const orderStatus = yield call(getOrderStatus, swap.orderId);
+      if (orderStatus.error) {
+        yield put(
+          showNotification('danger', `Bity Error: ${orderStatus.msg}`, 10000)
+        );
       } else {
-        break;
+        yield put(orderStatusSucceededSwap(orderStatus.data));
+        yield call(delay, ONE_SECOND * 5);
+        swap = yield select(getSwap);
+        if (swap === 'CANC') {
+          break;
+        }
       }
     }
   } finally {

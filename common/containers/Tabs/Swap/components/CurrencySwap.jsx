@@ -10,6 +10,7 @@ import type {
   DestinationAmountSwapAction,
   ChangeStepSwapAction
 } from 'actions/swap';
+import bityConfig from 'config/bity';
 
 export type StateProps = {
   bityRates: {},
@@ -26,7 +27,8 @@ export type ActionProps = {
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
   originAmountSwap: (value: ?number) => OriginAmountSwapAction,
   destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
-  changeStepSwap: () => ChangeStepSwapAction
+  changeStepSwap: () => ChangeStepSwapAction,
+  showNotification: any
 };
 
 export default class CurrencySwap extends Component {
@@ -36,9 +38,51 @@ export default class CurrencySwap extends Component {
     disabled: true
   };
 
+  isMinMaxValid = (originAmount, originKind) => {
+    const rates = this.props.bityRates;
+    const BTCMin = bityConfig.BTCMin;
+    const BTCMax = bityConfig.BTCMax;
+    if (originKind === 'BTC') {
+      return originAmount >= BTCMin && originAmount <= BTCMax;
+    } else {
+      const originToBTCPair = combineAndUpper(originKind, 'BTC');
+      const originAmountToBTCAmount =
+        parseFloat(rates[originToBTCPair]) * parseFloat(originAmount);
+      return (
+        originAmountToBTCAmount >= BTCMin && originAmountToBTCAmount <= BTCMax
+      );
+    }
+  };
+
+  isDisabled = (originAmount, originKind, destinationAmount) => {
+    const hasOriginAmountAndDestinationAmount =
+      originAmount && destinationAmount;
+    const minMaxIsValid = this.isMinMaxValid(originAmount, originKind);
+    return !(hasOriginAmountAndDestinationAmount && minMaxIsValid);
+  };
+
   componentWillUpdate(nextProps, nextState) {
-    const disabled = !(nextProps.originAmount && nextProps.destinationAmount);
+    const disabled = this.isDisabled(
+      nextProps.originAmount,
+      nextProps.originKind,
+      nextProps.destinationAmount
+    );
     if (nextState.disabled !== disabled) {
+      if (disabled) {
+        const rates = this.props.bityRates;
+
+        // TODO - if not notification already showing
+        this.props.showNotification(
+          'danger',
+          translate('ERROR_27') +
+            bityConfig.BTCMax +
+            ' BTC, ' +
+            (bityConfig.BTCMax / rates['ETHBTC']).toFixed(3) +
+            ' ETH, or ' +
+            (bityConfig.BTCMax / rates['REPBTC']).toFixed(3) +
+            ' REP'
+        );
+      }
       this.setState({
         disabled: disabled
       });
@@ -55,32 +99,30 @@ export default class CurrencySwap extends Component {
   };
 
   onChangeOriginAmount = (event: SyntheticInputEvent) => {
+    const { destinationKind, originKind } = this.props;
     const amount = event.target.value;
     let originAmountAsNumber = parseFloat(amount);
     if (originAmountAsNumber || originAmountAsNumber === 0) {
-      let pairName = combineAndUpper(
-        this.props.originKind,
-        this.props.destinationKind
-      );
+      let pairName = combineAndUpper(originKind, destinationKind);
       let bityRate = this.props.bityRates[pairName];
       this.props.originAmountSwap(originAmountAsNumber);
-      this.props.destinationAmountSwap(originAmountAsNumber * bityRate);
+      let destinationAmount = originAmountAsNumber * bityRate;
+      this.props.destinationAmountSwap(destinationAmount);
     } else {
       this.setOriginAndDestinationToNull();
     }
   };
 
   onChangeDestinationAmount = (event: SyntheticInputEvent) => {
+    const { destinationKind, originKind } = this.props;
     const amount = event.target.value;
     let destinationAmountAsNumber = parseFloat(amount);
     if (destinationAmountAsNumber || destinationAmountAsNumber === 0) {
       this.props.destinationAmountSwap(destinationAmountAsNumber);
-      let pairName = combineAndUpper(
-        this.props.destinationKind,
-        this.props.originKind
-      );
-      let bityRate = this.props.bityRates[pairName];
-      this.props.originAmountSwap(destinationAmountAsNumber * bityRate);
+      let pairNameReversed = combineAndUpper(destinationKind, originKind);
+      let bityRate = this.props.bityRates[pairNameReversed];
+      let originAmount = destinationAmountAsNumber * bityRate;
+      this.props.originAmountSwap(originAmount, originKind);
     } else {
       this.setOriginAndDestinationToNull();
     }
@@ -112,8 +154,8 @@ export default class CurrencySwap extends Component {
           {translate('SWAP_init_1')}
         </h1>
         <input
-          className={`form-control ${this.props.originAmount !== '' &&
-          this.props.originAmount > 0
+          className={`form-control ${originAmount !== '' &&
+          this.isMinMaxValid(originAmount, originKind)
             ? 'is-valid'
             : 'is-invalid'}`}
           type="number"
@@ -135,8 +177,8 @@ export default class CurrencySwap extends Component {
         </h1>
 
         <input
-          className={`form-control ${this.props.destinationAmount !== '' &&
-          this.props.destinationAmount > 0
+          className={`form-control ${destinationAmount !== '' &&
+          this.isMinMaxValid(originAmount, originKind)
             ? 'is-valid'
             : 'is-invalid'}`}
           type="number"

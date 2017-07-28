@@ -108,7 +108,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...state,
         destinationAmount: action.value
       };
-    case 'SWAP_UPDATE_BITY_RATES':
+    case 'SWAP_LOAD_BITY_RATES_SUCCEEDED':
       return {
         ...state,
         bityRates: {
@@ -170,7 +170,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
           : state.secondsRemaining
       };
 
-    case 'SWAP_LOAD_BITY_RATES':
+    case 'SWAP_LOAD_BITY_RATES_REQUESTED':
       return {
         ...state,
         isFetchingRates: true

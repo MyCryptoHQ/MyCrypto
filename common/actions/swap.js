@@ -4,7 +4,7 @@ import type {
   DestinationKindSwapAction,
   OriginAmountSwapAction,
   DestinationAmountSwapAction,
-  BityRatesSwapAction,
+  LoadBityRatesSucceededSwapAction,
   DestinationAddressSwapAction,
   OrderCreateSucceededSwapAction,
   OrderCreateRequestedSwapAction,
@@ -12,7 +12,7 @@ import type {
   ChangeStepSwapAction,
   Pairs,
   RestartSwapAction,
-  LoadBityRatesSwapAction,
+  LoadBityRatesRequestedSwapAction,
   StopLoadBityRatesSwapAction,
   BityOrderResponse,
   BityOrderPostResponse
@@ -55,9 +55,11 @@ export function destinationAmountSwap(
   };
 }
 
-export function updateBityRatesSwap(value: Pairs): BityRatesSwapAction {
+export function loadBityRatesSucceededSwap(
+  value: Pairs
+): LoadBityRatesSucceededSwapAction {
   return {
-    type: 'SWAP_UPDATE_BITY_RATES',
+    type: 'SWAP_LOAD_BITY_RATES_SUCCEEDED',
     value
   };
 }
@@ -77,15 +79,21 @@ export function restartSwap(): RestartSwapAction {
   };
 }
 
-export function loadBityRatesSwap(): LoadBityRatesSwapAction {
+export function loadBityRatesRequestedSwap(): LoadBityRatesRequestedSwapAction {
   return {
-    type: 'SWAP_LOAD_BITY_RATES'
+    type: 'SWAP_LOAD_BITY_RATES_REQUESTED'
   };
 }
 
 export function stopLoadBityRatesSwap(): StopLoadBityRatesSwapAction {
   return {
     type: 'SWAP_STOP_LOAD_BITY_RATES'
+  };
+}
+
+export function orderTimeTickSwap() {
+  return {
+    type: 'SWAP_ORDER_TIME_TICK'
   };
 }
 
@@ -112,12 +120,6 @@ export function orderCreateRequestedSwap(
       pair,
       mode
     }
-  };
-}
-
-export function orderTimeTickSwap() {
-  return {
-    type: 'SWAP_ORDER_TIME_TICK'
   };
 }
 
