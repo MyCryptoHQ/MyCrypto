@@ -3,13 +3,11 @@ import bityConfig from 'config/bity';
 import { checkHttpStatus, parseJSON } from './utils';
 import { combineAndUpper } from 'utils/formatters';
 
-// FIXME better types
-function findRateFromBityRateList(rateObjects: any, pairName: string) {
+function findRateFromBityRateList(rateObjects, pairName: string) {
   return rateObjects.find(x => x.pair === pairName);
 }
 
-// FIXME better types
-function _getRate(bityRates: any, originKind: string, destinationKind: string) {
+function _getRate(bityRates, originKind: string, destinationKind: string) {
   const pairName = combineAndUpper(originKind, destinationKind);
   const rateObjects = bityRates.objects;
   return findRateFromBityRateList(rateObjects, pairName);
@@ -23,12 +21,10 @@ export type TransactionPair = {
   originKind: string,
   destinationKind: string
 };
-function getMultipleRates(
-  arrayOfOriginAndDestinationObjects: TransactionPair[]
-) {
+function getMultipleRates(transactionPairs: TransactionPair[]) {
   const mappedRates = {};
   return _getAllRates().then(bityRates => {
-    arrayOfOriginAndDestinationObjects.forEach(each => {
+    transactionPairs.forEach(each => {
       const originKind = each.originKind;
       const destinationKind = each.destinationKind;
       const pairName = combineAndUpper(originKind, destinationKind);
