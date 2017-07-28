@@ -43,24 +43,30 @@ export default class InteractForm extends Component {
     const { contracts } = this.props;
     const { address, abiJson } = this.state;
 
-    const contractOptions = [];
+    let contractOptions;
     if (contracts && contracts.length) {
-      contractOptions.push({
-        name: 'Select a contract...',
-        value: null
-      });
+      contractOptions = [
+        {
+          name: 'Select a contract...',
+          value: null
+        }
+      ];
 
-      contracts.forEach(contract => {
-        contractOptions.push({
-          name: `${contract.name} (${contract.address.substr(0, 10)}...)`,
-          value: contract.address
-        });
-      });
+      contractOptions = contractOptions.concat(
+        contracts.map(contract => {
+          return {
+            name: `${contract.name} (${contract.address.substr(0, 10)}...)`,
+            value: contract.address
+          };
+        })
+      );
     } else {
-      contractOptions.push({
-        name: 'No contracts available',
-        value: null
-      });
+      contractOptions = [
+        {
+          name: 'No contracts available',
+          value: null
+        }
+      ];
     }
 
     // TODO: Use common components for address, abi json
