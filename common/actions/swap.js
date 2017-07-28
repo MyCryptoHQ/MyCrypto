@@ -25,71 +25,69 @@ export function changeStepSwap(value: number): ChangeStepSwapAction {
   };
 }
 
-export const originKindSwap = (value: string): OriginKindSwapAction => {
+export function originKindSwap(value: string): OriginKindSwapAction {
   return {
     type: 'SWAP_ORIGIN_KIND',
     value
   };
-};
+}
 
-export const destinationKindSwap = (
-  value: string
-): DestinationKindSwapAction => {
+export function destinationKindSwap(value: string): DestinationKindSwapAction {
   return {
     type: 'SWAP_DESTINATION_KIND',
     value
   };
-};
+}
 
-export const originAmountSwap = (value: ?number): OriginAmountSwapAction => {
+export function originAmountSwap(value: ?number): OriginAmountSwapAction {
   return {
     type: 'SWAP_ORIGIN_AMOUNT',
     value
   };
-};
+}
 
-export const destinationAmountSwap = (
+export function destinationAmountSwap(
   value: ?number
-): DestinationAmountSwapAction => {
+): DestinationAmountSwapAction {
   return {
     type: 'SWAP_DESTINATION_AMOUNT',
     value
   };
-};
+}
 
-export const updateBityRatesSwap = (value: Pairs): BityRatesSwapAction => {
+export function updateBityRatesSwap(value: Pairs): BityRatesSwapAction {
   return {
     type: 'SWAP_UPDATE_BITY_RATES',
     value
   };
-};
+}
 
-export const destinationAddressSwap = (
+export function destinationAddressSwap(
   value: ?string
-): DestinationAddressSwapAction => {
+): DestinationAddressSwapAction {
   return {
     type: 'SWAP_DESTINATION_ADDRESS',
     value
   };
-};
+}
 
-export const restartSwap = (): RestartSwapAction => {
+export function restartSwap(): RestartSwapAction {
   return {
     type: 'SWAP_RESTART'
   };
-};
+}
 
-export const loadBityRatesSwap = (): LoadBityRatesSwapAction => {
+export function loadBityRatesSwap(): LoadBityRatesSwapAction {
   return {
     type: 'SWAP_LOAD_BITY_RATES'
   };
-};
+}
 
-export const stopLoadBityRatesSwap = (): StopLoadBityRatesSwapAction => {
+export function stopLoadBityRatesSwap(): StopLoadBityRatesSwapAction {
   return {
     type: 'SWAP_STOP_LOAD_BITY_RATES'
   };
-};
+}
 
 export function orderCreateSucceededSwap(
   payload: BityOrderPostResponse
