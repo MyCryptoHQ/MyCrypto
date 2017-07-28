@@ -15,7 +15,7 @@ function _getRate(bityRates, originKind: string, destinationKind: string) {
 
 /**
  * Gives you multiple rates from Bitys API without making multiple API calls
- * @param arrayOfOriginAndDestinationObjects - [{origin: 'BTC', destination: 'ETH'}, {origin: 'BTC', destination: 'REP}]
+ * @param transactionPairs - [{origin: 'BTC', destination: 'ETH'}, {origin: 'BTC', destination: 'REP}]
  */
 export type TransactionPair = {
   originKind: string,
