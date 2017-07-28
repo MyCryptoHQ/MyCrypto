@@ -4,8 +4,8 @@ import type {
   DestinationAddressSwapAction,
   ChangeStepSwapAction,
   StopLoadBityRatesSwapAction,
-  ReferenceNumberSwapAction
-} from 'actions/swap';
+  OrderCreateRequestedSwapAction
+} from 'actions/swapTypes';
 import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
@@ -24,7 +24,12 @@ export type ActionProps = {
   destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
   changeStepSwap: (value: number) => ChangeStepSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
-  orderCreateRequestedSwap: () => any
+  orderCreateRequestedSwap: (
+    amount: number,
+    destinationAddress: string,
+    pair: string,
+    mode: ?number
+  ) => OrderCreateRequestedSwapAction
 };
 
 export default class ReceivingAddress extends Component {

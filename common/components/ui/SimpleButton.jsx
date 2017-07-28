@@ -13,18 +13,18 @@ type buttonType =
   | 'danger';
 type buttonSize = 'lg' | 'sm' | 'xs';
 
-type Props = {
-  onClick: () => any,
-  loading: boolean,
-  disabled: boolean,
-  text: string,
-  loadingText: string,
-  size: buttonSize,
-  type: buttonType
-};
-
 const Spinner = () => {
   return <i className="fa fa-spinner fa-spin fa-fw" />;
+};
+
+type Props = {
+  onClick: () => any,
+  text: string,
+  loading: ?boolean,
+  disabled: ?boolean,
+  loadingText: ?string,
+  size: ?buttonSize,
+  type: ?buttonType
 };
 
 export default class SimpleButton extends Component {

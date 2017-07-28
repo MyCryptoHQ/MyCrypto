@@ -1,14 +1,14 @@
 // @flow
 import { combineAndUpper } from 'utils/formatters';
-import type { SwapAction } from 'actions/swap';
+import type { SwapAction } from 'actions/swapTypes';
 import without from 'lodash/without';
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
 
 type State = {
-  originAmount: number,
-  destinationAmount: number,
+  originAmount: ?number,
+  destinationAmount: ?number,
   originKind: string,
   destinationKind: string,
   destinationKindOptions: Array<string>,
@@ -16,18 +16,17 @@ type State = {
   step: number,
   bityRates: Object,
   destinationAddress: string,
-  referenceNumber: string,
-  timeRemaining: string,
   numberOfConfirmations: ?number,
-  orderStep: ?number,
-  isFetchingRates: boolean
+  step: ?number,
+  isFetchingRates: ?boolean,
+  secondsRemaining: ?number
 };
 
 export const INITIAL_STATE: State = {
   originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
-  originAmount: '',
+  originAmount: null,
   originKind: DEFAULT_ORIGIN_KIND,
-  destinationAmount: '',
+  destinationAmount: null,
   destinationKind: DEFAULT_DESTINATION_KIND,
   destinationAddress: '',
   destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, DEFAULT_ORIGIN_KIND),
@@ -38,7 +37,9 @@ export const INITIAL_STATE: State = {
   secondsRemaining: null,
   orderStatus: null,
   paymentAddress: null,
-  orderId: null
+  orderId: null,
+  isFetchingRates: null,
+  numberOfConfirmations: null
 };
 
 const buildDestinationAmount = (
@@ -49,7 +50,7 @@ const buildDestinationAmount = (
 ) => {
   let pairName = combineAndUpper(originKind, destinationKind);
   let bityRate = bityRates[pairName];
-  return originAmount * bityRate;
+  return originAmount ? originAmount * bityRate : 0;
 };
 
 const buildDestinationKind = (
@@ -75,7 +76,6 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         originKind: action.value,
         destinationKind: newDestinationKind,
         destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
-          // $FlowFixMe
           return element !== action.value;
         }),
         destinationAmount: buildDestinationAmount(
@@ -165,7 +165,9 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
     case 'SWAP_ORDER_TIME_TICK':
       return {
         ...state,
-        secondsRemaining: state.secondsRemaining - 1
+        secondsRemaining: state.secondsRemaining
+          ? state.secondsRemaining - 1
+          : state.secondsRemaining
       };
 
     case 'SWAP_LOAD_BITY_RATES':

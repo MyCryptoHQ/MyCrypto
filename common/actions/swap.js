@@ -92,7 +92,7 @@ export function orderCreateRequestedSwap(
   destinationAddress: string,
   pair: string,
   mode: number = 0
-) {
+): swapTypes.OrderCreateRequestedSwapAction {
   return {
     type: 'SWAP_ORDER_CREATE_REQUESTED',
     payload: {

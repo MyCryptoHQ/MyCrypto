@@ -1,25 +1,16 @@
 // @flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import type { RestartSwapAction } from 'actions/swap';
+import type { RestartSwapAction } from 'actions/swapTypes';
 import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
 
-export type StateProps = {
-  secondsRemaining: string,
-  originAmount: number,
-  originKind: string,
-  destinationKind: string,
-  destinationAmount: number,
-  reference: string
-};
-
-export type ActionProps = {
+export type SwapInfoHeaderTitleProps = {
   restartSwap: () => RestartSwapAction
 };
 
 class SwapInfoHeaderTitle extends Component {
-  props: ActionProps;
+  props: SwapInfoHeaderTitleProps;
 
   render() {
     return (
@@ -55,8 +46,18 @@ class SwapInfoHeaderTitle extends Component {
   }
 }
 
+export type SwapInfoHeaderProps = {
+  originAmount: number,
+  originKind: string,
+  destinationKind: string,
+  destinationAmount: number,
+  reference: string,
+  secondsRemaining: ?number,
+  restartSwap: () => RestartSwapAction
+};
+
 export default class SwapInfoHeader extends Component {
-  props: StateProps & ActionProps;
+  props: SwapInfoHeaderProps;
 
   computedOriginDestinationRatio = () => {
     return this.props.destinationAmount / this.props.originAmount;
@@ -76,11 +77,16 @@ export default class SwapInfoHeader extends Component {
   };
 
   formattedTime = () => {
-    let minutes = Math.floor(this.props.secondsRemaining / 60);
-    let seconds = this.props.secondsRemaining - minutes * 60;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-    return minutes + ':' + seconds;
+    const { secondsRemaining } = this.props;
+    if (secondsRemaining || secondsRemaining === 0) {
+      let minutes = Math.floor(secondsRemaining / 60);
+      let seconds = secondsRemaining - minutes * 60;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      return minutes + ':' + seconds;
+    } else {
+      throw Error('secondsRemaining not be a number');
+    }
   };
 
   render() {

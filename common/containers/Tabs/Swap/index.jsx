@@ -33,10 +33,10 @@ type ReduxStateProps = {
   isFetchingRates: boolean,
   // PART 3
   bityOrder: {},
-  secondsRemaining: number,
-  numberOfConfirmation: number,
-  paymentAddress: string,
-  orderStatus: string
+  secondsRemaining: ?number,
+  numberOfConfirmations: ?number,
+  paymentAddress: ?string,
+  orderStatus: ?string
 };
 
 type ReduxActionProps = {

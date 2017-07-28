@@ -1,15 +1,8 @@
 // @flow
 import { delay } from 'redux-saga';
 import { getAllRates } from 'api/bity';
-import {
-  call,
-  put,
-  fork,
-  take,
-  cancel,
-  cancelled,
-  Effect
-} from 'redux-saga/effects';
+import { call, put, fork, take, cancel, cancelled } from 'redux-saga/effects';
+import type { Effect } from 'redux-saga/effects';
 import { updateBityRatesSwap } from 'actions/swap';
 
 export function* loadBityRates(_action?: any): Generator<Effect, void, any> {

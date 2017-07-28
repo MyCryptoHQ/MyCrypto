@@ -47,6 +47,16 @@ export type StopLoadBityRatesSwapAction = {
   type: 'SWAP_STOP_LOAD_BITY_RATES'
 };
 
+export type OrderCreateRequestedSwapAction = {
+  type: 'SWAP_ORDER_CREATE_REQUESTEDSWAP_ORDER_CREATE_REQUESTED',
+  payload: {
+    amount: number,
+    destinationAddress: string,
+    pair: string,
+    mode: number
+  }
+};
+
 /*** Action Type Union ***/
 export type SwapAction =
   | ChangeStepSwapAction
@@ -58,4 +68,5 @@ export type SwapAction =
   | DestinationAddressSwapAction
   | RestartSwapAction
   | LoadBityRatesSwapAction
-  | StopLoadBityRatesSwapAction;
+  | StopLoadBityRatesSwapAction
+  | OrderCreateRequestedSwapAction;
