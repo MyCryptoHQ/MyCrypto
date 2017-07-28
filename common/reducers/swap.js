@@ -23,13 +23,13 @@ type State = {
 };
 
 export const INITIAL_STATE: State = {
-  originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
   originAmount: null,
   originKind: DEFAULT_ORIGIN_KIND,
   destinationAmount: null,
   destinationKind: DEFAULT_DESTINATION_KIND,
   destinationAddress: '',
   destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, DEFAULT_ORIGIN_KIND),
+  originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
   step: 1,
   bityRates: {},
   bityOrder: {},
