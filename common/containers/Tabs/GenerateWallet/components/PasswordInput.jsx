@@ -1,37 +1,33 @@
+// @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+
+type Props = {
+  togglePassword: Function,
+  isPasswordVisible: ?boolean,
+  input: Object,
+  meta: Object
+};
 
 export default class PasswordInput extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  static propTypes = {
-    showPasswordGenerateWallet: PropTypes.func,
-    showPassword: PropTypes.bool,
-    input: PropTypes.object,
-    meta: PropTypes.object
-  };
+  props: Props;
 
   render() {
+    const { input, meta, isPasswordVisible, togglePassword } = this.props;
+
     return (
       <div>
         <div>
           <div className="input-group" style={{ width: '100%' }}>
             <input
-              {...this.props.input}
+              {...input}
               name="password"
-              className={
-                this.props.meta.error
-                  ? 'form-control is-invalid'
-                  : 'form-control'
-              }
-              type={this.props.showPassword ? 'text' : 'password'}
+              className={`form-control ${meta.error ? 'is-invalid' : ''}`}
+              type={isPasswordVisible ? 'text' : 'password'}
               placeholder="Do NOT forget to save this!"
               aria-label="Enter a strong password (at least 9 characters)"
             />
             <span
-              onClick={this.props.showPasswordGenerateWallet}
+              onClick={togglePassword}
               aria-label="make password visible"
               role="button"
               className="input-group-addon eye"

@@ -22,7 +22,8 @@ const tabs = [
     name: 'NAV_Offline'
   },
   {
-    name: 'NAV_Contracts'
+    name: 'NAV_Contracts',
+    link: 'contracts'
   },
   {
     name: 'NAV_ViewWallet',
@@ -73,10 +74,11 @@ export default class TabsOptions extends Component {
           <ul className="Navigation-links">
             {tabs.map((object, i) => {
               // if the window pathname is the same or similar to the tab objects name, set the active toggle
-              const activeOrNot = location.pathname === object.link ||
+              const activeOrNot =
+                location.pathname === object.link ||
                 location.pathname.substring(1) === object.link
-                ? 'is-active'
-                : '';
+                  ? 'is-active'
+                  : '';
               return (
                 <li
                   className={'Navigation-links-item'}

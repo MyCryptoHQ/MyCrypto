@@ -20,9 +20,10 @@ export function isValidHex(str: string): boolean {
     return false;
   }
   if (str === '') return true;
-  str = str.substring(0, 2) == '0x'
-    ? str.substring(2).toUpperCase()
-    : str.toUpperCase();
+  str =
+    str.substring(0, 2) == '0x'
+      ? str.substring(2).toUpperCase()
+      : str.toUpperCase();
   var re = /^[0-9A-F]+$/g;
   return re.test(str);
 }

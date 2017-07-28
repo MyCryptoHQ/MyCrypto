@@ -117,6 +117,12 @@ export type Token = {
   decimal: number
 };
 
+export type NetworkContract = {
+  name: string,
+  address: string,
+  abi: string
+};
+
 export type NetworkConfig = {
   name: string,
   // unit: string,
@@ -130,7 +136,8 @@ export type NetworkConfig = {
     address: string
   },
   chainId: number,
-  tokens: Token[]
+  tokens: Token[],
+  contracts: ?Array<NetworkContract>
 };
 
 export const NETWORKS: { [key: string]: NetworkConfig } = {
@@ -147,8 +154,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
       name: 'Ethplorer.io',
       address: 'https://ethplorer.io/address/[[address]]'
     },
-    tokens: require('./tokens/eth').default
-    // 'abiList': require('./abiDefinitions/ethAbi.json'),
+    tokens: require('./tokens/eth').default,
+    contracts: require('./contracts/eth.json')
   }
 };
 

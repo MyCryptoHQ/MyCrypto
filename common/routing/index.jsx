@@ -7,6 +7,7 @@ import ViewWallet from 'containers/Tabs/ViewWallet';
 import Help from 'containers/Tabs/Help';
 import Swap from 'containers/Tabs/Swap';
 import SendTransaction from 'containers/Tabs/SendTransaction';
+import Contracts from 'containers/Tabs/Contracts';
 export const history = getHistory();
 
 export const Routing = () =>
@@ -16,6 +17,7 @@ export const Routing = () =>
     <Route name="Help" path="/help" component={Help} />
     <Route name="Swap" path="/swap" component={Swap} />
     <Route name="Send" path="/send-transaction" component={SendTransaction} />
+    <Route name="Contracts" path="/contracts" component={Contracts} />
 
     <Redirect from="/*" to="/" />
   </Route>;

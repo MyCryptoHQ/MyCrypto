@@ -5,18 +5,9 @@ import {
 } from 'utils/localStorage';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-import notificationsSaga from './sagas/notifications';
-import ensSaga from './sagas/ens';
-import walletSaga from './sagas/wallet';
-import {
-  postBityOrderSaga,
-  bityTimeRemaining,
-  pollBityOrderStatusSaga
-} from './sagas/swap/orders';
-import { getBityRatesSaga } from './sagas/swap/rates';
-import ratesSaga from './sagas/rates';
-import { initialState as configInitialState } from 'reducers/config';
-import { initialState as customTokensInitialState } from 'reducers/customTokens';
+import sagas from './sagas';
+import { INITIAL_STATE as configInitialState } from 'reducers/config';
+import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
 import throttle from 'lodash/throttle';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import Perf from 'react-addons-perf';
@@ -50,14 +41,11 @@ const configureStore = () => {
   };
 
   store = createStore(RootReducer, persistedInitialState, middleware);
-  sagaMiddleware.run(notificationsSaga);
-  sagaMiddleware.run(ensSaga);
-  sagaMiddleware.run(walletSaga);
-  sagaMiddleware.run(getBityRatesSaga);
-  sagaMiddleware.run(postBityOrderSaga);
-  sagaMiddleware.run(bityTimeRemaining);
-  sagaMiddleware.run(ratesSaga);
-  sagaMiddleware.run(pollBityOrderStatusSaga);
+
+  // Add all of the sagas to the middleware
+  Object.keys(sagas).forEach(saga => {
+    sagaMiddleware.run(sagas[saga]);
+  });
 
   store.subscribe(
     throttle(() => {

@@ -1,3 +1,7 @@
+// Application styles must come first in order, to allow for overrides
+import 'assets/styles/etherwallet-master.less';
+import 'font-awesome/scss/font-awesome.scss';
+
 import React from 'react';
 import { render } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -5,9 +9,6 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { Root } from 'components';
 import { Routing, history } from './routing';
 import { store } from './store';
-// application styles
-import 'assets/styles/etherwallet-master.less';
-import 'font-awesome/scss/font-awesome.scss';
 
 const renderRoot = Root => {
   let syncedHistory = syncHistoryWithStore(history, store);

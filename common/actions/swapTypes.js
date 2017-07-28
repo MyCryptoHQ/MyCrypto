@@ -46,3 +46,16 @@ export type ChangeStepSwapAction = {
 export type StopLoadBityRatesSwapAction = {
   type: 'SWAP_STOP_LOAD_BITY_RATES'
 };
+
+/*** Action Type Union ***/
+export type SwapAction =
+  | ChangeStepSwapAction
+  | OriginKindSwapAction
+  | DestinationKindSwapAction
+  | OriginAmountSwapAction
+  | DestinationAmountSwapAction
+  | BityRatesSwapAction
+  | DestinationAddressSwapAction
+  | RestartSwapAction
+  | LoadBityRatesSwapAction
+  | StopLoadBityRatesSwapAction;

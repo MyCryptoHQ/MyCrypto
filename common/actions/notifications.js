@@ -1,5 +1,6 @@
 // @flow
 
+/*** Shared types ***/
 export type NOTIFICATION_LEVEL = 'danger' | 'warning' | 'success' | 'info';
 
 export type Notification = {
@@ -8,19 +9,11 @@ export type Notification = {
   duration?: number
 };
 
+/*** Show Notification ***/
 export type ShowNotificationAction = {
   type: 'SHOW_NOTIFICATION',
   payload: Notification
 };
-
-export type CloseNotificationAction = {
-  type: 'CLOSE_NOTIFICATION',
-  payload: Notification
-};
-
-export type NotificationsAction =
-  | ShowNotificationAction
-  | CloseNotificationAction;
 
 export function showNotification(
   level: NOTIFICATION_LEVEL = 'info',
@@ -37,6 +30,12 @@ export function showNotification(
   };
 }
 
+/*** Close notification ***/
+export type CloseNotificationAction = {
+  type: 'CLOSE_NOTIFICATION',
+  payload: Notification
+};
+
 export function closeNotification(
   notification: Notification
 ): CloseNotificationAction {
@@ -45,3 +44,8 @@ export function closeNotification(
     payload: notification
   };
 }
+
+/*** Union Type ***/
+export type NotificationsAction =
+  | ShowNotificationAction
+  | CloseNotificationAction;

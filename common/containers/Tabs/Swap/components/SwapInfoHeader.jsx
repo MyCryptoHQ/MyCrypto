@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import * as swapTypes from 'actions/swapTypes';
+import type { RestartSwapAction } from 'actions/swap';
 import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
 
@@ -15,7 +15,7 @@ export type StateProps = {
 };
 
 export type ActionProps = {
-  restartSwap: () => swapTypes.RestartSwapAction
+  restartSwap: () => RestartSwapAction
 };
 
 class SwapInfoHeaderTitle extends Component {

@@ -6,13 +6,16 @@ export type State = {
   [key: string]: number
 };
 
-const initialState: State = {};
+export const INITIAL_STATE: State = {};
 
 function setRates(state: State, action: SetRatesAction): State {
   return action.payload;
 }
 
-export function rates(state: State = initialState, action: RatesAction): State {
+export function rates(
+  state: State = INITIAL_STATE,
+  action: RatesAction
+): State {
   switch (action.type) {
     case 'RATES_SET':
       return setRates(state, action);

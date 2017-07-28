@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as swapActions from 'actions/swap';
-import * as swapTypes from 'actions/swapTypes';
+import type {
+  ChangeStepSwapAction,
+  OriginKindSwapAction,
+  DestinationKindSwapAction,
+  OriginAmountSwapAction,
+  DestinationAmountSwapAction,
+  LoadBityRatesSwapAction,
+  DestinationAddressSwapAction,
+  RestartSwapAction,
+  StopLoadBityRatesSwapAction
+} from 'actions/swap';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import ReceivingAddress from './components/ReceivingAddress';
@@ -20,6 +30,7 @@ type ReduxStateProps = {
   originAmount: ?number,
   destinationAmount: ?number,
   isPostingOrder: boolean,
+  isFetchingRates: boolean,
   // PART 3
   bityOrder: {},
   secondsRemaining: number,
@@ -29,19 +40,15 @@ type ReduxStateProps = {
 };
 
 type ReduxActionProps = {
-  changeStepSwap: (value: number) => swapTypes.ChangeStepSwapAction,
-  originKindSwap: (value: string) => swapTypes.OriginKindSwapAction,
-  destinationKindSwap: (value: string) => swapTypes.DestinationKindSwapAction,
-  originAmountSwap: (value: ?number) => swapTypes.OriginAmountSwapAction,
-  destinationAmountSwap: (
-    value: ?number
-  ) => swapTypes.DestinationAmountSwapAction,
-  loadBityRatesSwap: () => swapTypes.LoadBityRatesSwapAction,
-  destinationAddressSwap: (
-    value: ?string
-  ) => swapTypes.DestinationAddressSwapAction,
-  restartSwap: () => swapTypes.RestartSwapAction,
-  stopLoadBityRatesSwap: () => swapTypes.StopLoadBityRatesSwapAction,
+  changeStepSwap: (value: number) => ChangeStepSwapAction,
+  originKindSwap: (value: string) => OriginKindSwapAction,
+  destinationKindSwap: (value: string) => DestinationKindSwapAction,
+  originAmountSwap: (value: ?number) => OriginAmountSwapAction,
+  destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
+  loadBityRatesSwap: () => LoadBityRatesSwapAction,
+  destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
+  restartSwap: () => RestartSwapAction,
+  stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
   // PART 3 (IGNORE FOR NOW)
   orderCreateRequestedSwap: any
 };
@@ -50,6 +57,7 @@ class Swap extends Component {
   props: ReduxActionProps & ReduxStateProps;
 
   componentDidMount() {
+    // TODO: Use `isFetchingRates` to show a loader
     this.props.loadBityRatesSwap();
   }
 
@@ -176,7 +184,8 @@ function mapStateToProps(state) {
     bityRates: state.swap.bityRates,
     bityOrder: state.swap.bityOrder,
     secondsRemaining: state.swap.secondsRemaining,
-    numberOfConfirmations: state.swap.numberOfConfirmations
+    numberOfConfirmations: state.swap.numberOfConfirmations,
+    isFetchingRates: state.swap.isFetchingRates
   };
 }
 

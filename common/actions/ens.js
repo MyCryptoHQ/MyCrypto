@@ -1,19 +1,10 @@
 // @flow
 
+/*** Resolve ENS name ***/
 export type ResolveEnsNameAction = {
   type: 'ENS_RESOLVE',
   payload: string
 };
-
-export type CacheEnsAddressAction = {
-  type: 'ENS_CACHE',
-  payload: {
-    ensName: string,
-    address: string
-  }
-};
-
-export type EnsAction = ResolveEnsNameAction | CacheEnsAddressAction;
 
 export function resolveEnsName(name: string): ResolveEnsNameAction {
   return {
@@ -21,6 +12,15 @@ export function resolveEnsName(name: string): ResolveEnsNameAction {
     payload: name
   };
 }
+
+/*** Cache ENS address ***/
+export type CacheEnsAddressAction = {
+  type: 'ENS_CACHE',
+  payload: {
+    ensName: string,
+    address: string
+  }
+};
 
 export function cacheEnsAddress(
   ensName: string,
@@ -34,3 +34,6 @@ export function cacheEnsAddress(
     }
   };
 }
+
+/*** Union Type ***/
+export type EnsAction = ResolveEnsNameAction | CacheEnsAddressAction;
