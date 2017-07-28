@@ -80,7 +80,9 @@ export const stopLoadBityRatesSwap = (): swapTypes.StopLoadBityRatesSwapAction =
   };
 };
 
-export function orderCreateSucceededSwap(payload) {
+export function orderCreateSucceededSwap(
+  payload: swapTypes.BityOrderPostResponse
+): swapTypes.OrderCreateSucceededSwapAction {
   return {
     type: 'SWAP_ORDER_CREATE_SUCCEEDED',
     payload
@@ -110,7 +112,9 @@ export function orderTimeTickSwap() {
   };
 }
 
-export function orderStatusSucceededSwap(payload) {
+export function orderStatusSucceededSwap(
+  payload: swapTypes.BityOrderResponse
+): swapTypes.OrderStatusSucceededSwapAction {
   return {
     type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
     payload

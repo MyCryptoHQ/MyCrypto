@@ -4,27 +4,27 @@ import React, { Component } from 'react';
 const DEFAULT_BUTTON_TYPE = 'primary';
 const DEFAULT_BUTTON_SIZE = 'lg';
 
-type buttonType =
+const Spinner = () => {
+  return <i className="fa fa-spinner fa-spin fa-fw" />;
+};
+
+type ButtonType =
   | 'default'
   | 'primary'
   | 'success'
   | 'info'
   | 'warning'
   | 'danger';
-type buttonSize = 'lg' | 'sm' | 'xs';
-
-const Spinner = () => {
-  return <i className="fa fa-spinner fa-spin fa-fw" />;
-};
+type ButtonSize = 'lg' | 'sm' | 'xs';
 
 type Props = {
   onClick: () => any,
   text: string,
-  loading: ?boolean,
-  disabled: ?boolean,
-  loadingText: ?string,
-  size: ?buttonSize,
-  type: ?buttonType
+  loading?: boolean,
+  disabled?: boolean,
+  loadingText?: string,
+  size?: ButtonSize,
+  type?: ButtonType
 };
 
 export default class SimpleButton extends Component {

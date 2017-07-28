@@ -48,13 +48,42 @@ export type StopLoadBityRatesSwapAction = {
 };
 
 export type OrderCreateRequestedSwapAction = {
-  type: 'SWAP_ORDER_CREATE_REQUESTEDSWAP_ORDER_CREATE_REQUESTED',
+  type: 'SWAP_ORDER_CREATE_REQUESTED',
   payload: {
     amount: number,
     destinationAddress: string,
     pair: string,
     mode: number
   }
+};
+
+type BityOrderInput = {
+  amount: string
+};
+
+type BityOrderOutput = {
+  amount: string
+};
+
+export type BityOrderResponse = {
+  status: string
+};
+
+export type BityOrderPostResponse = BityOrderResponse & {
+  payment_address: string,
+  status: string,
+  input: BityOrderInput,
+  output: BityOrderOutput
+};
+
+export type OrderCreateSucceededSwapAction = {
+  type: 'SWAP_ORDER_CREATE_SUCCEEDED',
+  payload: BityOrderPostResponse
+};
+
+export type OrderStatusSucceededSwapAction = {
+  type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
+  payload: BityOrderResponse
 };
 
 /*** Action Type Union ***/
@@ -69,4 +98,7 @@ export type SwapAction =
   | RestartSwapAction
   | LoadBityRatesSwapAction
   | StopLoadBityRatesSwapAction
-  | OrderCreateRequestedSwapAction;
+  | OrderCreateRequestedSwapAction
+  | OrderCreateSucceededSwapAction
+  | BityOrderResponse
+  | OrderStatusSucceededSwapAction;
