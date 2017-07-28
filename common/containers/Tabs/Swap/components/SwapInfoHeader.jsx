@@ -85,7 +85,7 @@ export default class SwapInfoHeader extends Component {
       seconds = seconds < 10 ? '0' + seconds : seconds;
       return minutes + ':' + seconds;
     } else {
-      throw Error('secondsRemaining not be a number');
+      throw Error('secondsRemaining must be a number');
     }
   };
 
@@ -96,8 +96,7 @@ export default class SwapInfoHeader extends Component {
       destinationAmount,
       originKind,
       destinationKind,
-      restartSwap,
-      secondsRemaining
+      restartSwap
     } = this.props;
     return (
       <div>
