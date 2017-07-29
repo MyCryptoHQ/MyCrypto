@@ -16,7 +16,6 @@ type State = {
   step: number,
   bityRates: Object,
   destinationAddress: string,
-  numberOfConfirmations: ?number,
   step: ?number,
   isFetchingRates: ?boolean,
   secondsRemaining: ?number
@@ -38,8 +37,7 @@ export const INITIAL_STATE: State = {
   orderStatus: null,
   paymentAddress: null,
   orderId: null,
-  isFetchingRates: null,
-  numberOfConfirmations: null
+  isFetchingRates: null
 };
 
 const buildDestinationAmount = (
@@ -75,9 +73,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...state,
         originKind: action.value,
         destinationKind: newDestinationKind,
-        destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
-          return element !== action.value;
-        }),
+        destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, action.value),
         destinationAmount: buildDestinationAmount(
           state.originAmount,
           action.value,
@@ -183,7 +179,6 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
       };
 
     default:
-      (action: empty);
       return state;
   }
 }

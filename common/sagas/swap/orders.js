@@ -18,7 +18,9 @@ import {
   stopLoadBityRatesSwap,
   changeStepSwap,
   orderStatusRequestedSwap,
-  orderStatusSucceededSwap
+  orderStatusSucceededSwap,
+  startOrderTimerSwap,
+  startPollBityOrderStatus
 } from 'actions/swap';
 
 export const getSwap = state => state.swap;
@@ -59,7 +61,7 @@ export function* pollBityOrderStatus(): Generator<Effect, void, any> {
 }
 
 export function* pollBityOrderStatusSaga(): Generator<Effect, void, any> {
-  while (yield take('SWAP_POLL_BITY_ORDER_STATUS')) {
+  while (yield take('SWAP_START_POLL_BITY_ORDER_STATUS')) {
     // starts the task in the background
     const pollBityOrderStatusTask = yield fork(pollBityOrderStatus);
     // wait for the user to get to point where refresh is no longer needed
@@ -89,9 +91,9 @@ function* postOrderCreate(action) {
       yield put(orderCreateSucceededSwap(order.data));
       yield put(changeStepSwap(3));
       // start countdown
-      yield put({ type: 'SWAP_ORDER_START_TIMER' });
+      yield put(startOrderTimerSwap());
       // start bity order status polling
-      yield put({ type: 'SWAP_POLL_BITY_ORDER_STATUS' });
+      yield put(startPollBityOrderStatus());
     }
   } catch (e) {
     const message =

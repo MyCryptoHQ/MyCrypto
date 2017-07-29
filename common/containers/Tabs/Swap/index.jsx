@@ -17,8 +17,7 @@ import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
-import SwapProgress from './components/SwapProgress';
-import PaymentInfo from './components/PaymentInfo';
+import PartThree from './components/PartThree';
 
 type ReduxStateProps = {
   step: string,
@@ -32,10 +31,8 @@ type ReduxStateProps = {
   destinationAmount: ?number,
   isPostingOrder: boolean,
   isFetchingRates: boolean,
-  // PART 3
   bityOrder: {},
   secondsRemaining: ?number,
-  numberOfConfirmations: ?number,
   paymentAddress: ?string,
   orderStatus: ?string
 };
@@ -96,7 +93,7 @@ class Swap extends Component {
       showNotification
     } = this.props;
 
-    const { reference, numberOfConfirmations } = bityOrder;
+    const { reference } = bityOrder;
 
     let ReceivingAddressProps = {
       isPostingOrder,
@@ -118,7 +115,6 @@ class Swap extends Component {
       destinationKind,
       destinationAmount,
       restartSwap,
-      numberOfConfirmations,
       orderStatus
     };
 
@@ -147,6 +143,12 @@ class Swap extends Component {
       paymentAddress
     };
 
+    const PartThreeProps = {
+      ...SwapInfoHeaderProps,
+      ...PaymentInfoProps,
+      reference
+    };
+
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
@@ -159,11 +161,7 @@ class Swap extends Component {
             {(step === 2 || step === 3) &&
               <SwapInfoHeader {...SwapInfoHeaderProps} />}
             {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
-            {step === 3 &&
-              <div>
-                <SwapProgress {...SwapInfoHeaderProps} />
-                <PaymentInfo {...PaymentInfoProps} />
-              </div>}
+            {step === 3 && <PartThree {...PartThreeProps} />}
           </main>
         </div>
       </section>
@@ -187,7 +185,6 @@ function mapStateToProps(state) {
     bityRates: state.swap.bityRates,
     bityOrder: state.swap.bityOrder,
     secondsRemaining: state.swap.secondsRemaining,
-    numberOfConfirmations: state.swap.numberOfConfirmations,
     isFetchingRates: state.swap.isFetchingRates
   };
 }

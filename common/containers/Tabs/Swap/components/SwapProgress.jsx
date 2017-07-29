@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import translate from 'translations';
 
 export type StateProps = {
-  numberOfConfirmations: number,
   destinationKind: string,
   originKind: string,
   orderStatus: string
@@ -17,7 +16,7 @@ export default class SwapProgress extends Component {
     let cssClass = 'progress-item';
     switch (orderStatus) {
       case 'OPEN':
-        if (step === 1) {
+        if (step < 2) {
           return cssClass + ' progress-true';
         } else if (step === 2) {
           return cssClass + ' progress-active';
@@ -25,16 +24,6 @@ export default class SwapProgress extends Component {
           return cssClass;
         }
       case 'RCVE':
-        if (step < 3) {
-          return cssClass + ' progress-true';
-        } else if (step === 3) {
-          return cssClass + ' progress-active';
-        } else {
-          return cssClass;
-        }
-      case 'CANC':
-        return cssClass;
-      case 'FILL':
         if (step < 4) {
           return cssClass + ' progress-true';
         } else if (step === 4) {
@@ -42,13 +31,24 @@ export default class SwapProgress extends Component {
         } else {
           return cssClass;
         }
+      case 'FILL':
+        if (step < 5) {
+          return cssClass + ' progress-true';
+        } else if (step === 5) {
+          return cssClass + ' progress-active';
+        } else {
+          return cssClass;
+        }
+      case 'CANC':
+        return cssClass;
       default:
         return cssClass;
     }
   }
 
   render() {
-    const { numberOfConfirmations, destinationKind, originKind } = this.props;
+    const { destinationKind, originKind } = this.props;
+    const numberOfConfirmations = originKind === 'BTC' ? '3' : '10';
     return (
       <section className="row swap-progress">
         <div className="sep" />

@@ -137,3 +137,15 @@ export function orderStatusRequestedSwap() {
     type: 'SWAP_BITY_ORDER_STATUS_REQUESTED'
   };
 }
+
+export function startOrderTimerSwap() {
+  return {
+    type: 'SWAP_ORDER_START_TIMER'
+  };
+}
+
+export function startPollBityOrderStatus() {
+  return {
+    type: 'SWAP_START_POLL_BITY_ORDER_STATUS'
+  };
+}
