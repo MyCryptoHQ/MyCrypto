@@ -11,7 +11,6 @@ import type {
   ChangeStepSwapAction
 } from 'actions/swap';
 import bityConfig from 'config/bity';
-import { showNotification } from 'actions/notifications';
 
 export type StateProps = {
   bityRates: {},
@@ -28,7 +27,8 @@ export type ActionProps = {
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
   originAmountSwap: (value: ?number) => OriginAmountSwapAction,
   destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
-  changeStepSwap: () => ChangeStepSwapAction
+  changeStepSwap: () => ChangeStepSwapAction,
+  showNotification: any
 };
 
 export default class CurrencySwap extends Component {
@@ -77,7 +77,7 @@ export default class CurrencySwap extends Component {
           showedMinMaxError: true
         },
         () => {
-          showNotification(
+          this.props.showNotification(
             'danger',
             translate('ERROR_27') +
               bityConfig.BTCMax +

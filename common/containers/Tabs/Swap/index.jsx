@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { showNotification } from 'actions/notifications';
 import * as swapActions from 'actions/swap';
 import type {
   ChangeStepSwapAction,
@@ -91,7 +92,8 @@ class Swap extends Component {
       originAmountSwap,
       destinationAmountSwap,
       destinationAddressSwap,
-      orderCreateRequestedSwap
+      orderCreateRequestedSwap,
+      showNotification
     } = this.props;
 
     const { reference, numberOfConfirmations } = bityOrder;
@@ -124,6 +126,7 @@ class Swap extends Component {
     const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
 
     const CurrencySwapProps = {
+      showNotification,
       bityRates,
       originAmount,
       destinationAmount,
@@ -189,4 +192,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { swapActions })(Swap);
+export default connect(mapStateToProps, { ...swapActions, showNotification })(
+  Swap
+);
