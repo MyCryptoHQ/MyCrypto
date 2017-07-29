@@ -91,9 +91,10 @@ export function stopLoadBityRatesSwap(): StopLoadBityRatesSwapAction {
   };
 }
 
-export function orderTimeTickSwap() {
+export function orderTimeSwap(value: number) {
   return {
-    type: 'SWAP_ORDER_TIME_TICK'
+    type: 'SWAP_ORDER_TIME',
+    value
   };
 }
 
@@ -144,8 +145,20 @@ export function startOrderTimerSwap() {
   };
 }
 
+export function stopOrderTimerSwap() {
+  return {
+    type: 'SWAP_ORDER_STOP_TIMER'
+  };
+}
+
 export function startPollBityOrderStatus() {
   return {
     type: 'SWAP_START_POLL_BITY_ORDER_STATUS'
+  };
+}
+
+export function stopPollBityOrderStatus() {
+  return {
+    type: 'SWAP_STOP_POLL_BITY_ORDER_STATUS'
   };
 }

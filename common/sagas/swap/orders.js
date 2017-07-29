@@ -13,15 +13,17 @@ import {
   Effect
 } from 'redux-saga/effects';
 import {
-  orderTimeTickSwap,
+  orderTimeSwap,
   orderCreateSucceededSwap,
   stopLoadBityRatesSwap,
   changeStepSwap,
   orderStatusRequestedSwap,
   orderStatusSucceededSwap,
   startOrderTimerSwap,
-  startPollBityOrderStatus
+  startPollBityOrderStatus,
+  stopPollBityOrderStatus
 } from 'actions/swap';
+import moment from 'moment';
 
 export const getSwap = state => state.swap;
 const ONE_SECOND = 1000;
@@ -113,9 +115,19 @@ export function* bityTimeRemaining() {
       yield call(delay, ONE_SECOND);
       const swap = yield select(getSwap);
       if (swap.bityOrder.status === 'OPEN') {
-        if (swap.secondsRemaining > 0) {
-          yield put(orderTimeTickSwap());
+        const createdTimeStampMoment = moment(
+          swap.orderTimestampCreatedISOString
+        );
+        let validUntil = moment(createdTimeStampMoment).add(swap.validFor, 's');
+        let now = moment();
+        if (validUntil.isAfter(now)) {
+          let duration = moment.duration(validUntil.diff(now));
+          let seconds = duration.asSeconds();
+          yield put(orderTimeSwap(parseInt(seconds)));
         } else {
+          yield put(orderTimeSwap(0));
+          yield put(stopPollBityOrderStatus());
+          yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
           yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
           break;
         }

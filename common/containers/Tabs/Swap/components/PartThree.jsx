@@ -23,20 +23,25 @@ type ReduxStateProps = {
 type ReduxActionProps = {
   loadBityRatesRequestedSwap: () => LoadBityRatesRequestedSwapAction,
   restartSwap: () => RestartSwapAction,
-  stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction
+  stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
+  startOrderTimerSwap: any,
+  startPollBityOrderStatus: any,
+  stopOrderTimerSwap: any,
+  stopPollBityOrderStatus: any
 };
 
 export default class PartThree extends Component {
   props: ReduxActionProps & ReduxStateProps;
 
-  // componentDidMount() {
-  //   // TODO: Use `isFetchingRates` to show a loader
-  //   this.props.loadBityRatesRequestedSwap();
-  // }
-  //
-  // componentWillUnmount() {
-  //   this.props.stopLoadBityRatesSwap();
-  // }
+  componentDidMount() {
+    this.props.startPollBityOrderStatus();
+    this.props.startOrderTimerSwap();
+  }
+
+  componentWillUnmount() {
+    this.props.stopOrderTimerSwap();
+    this.props.stopPollBityOrderStatus();
+  }
 
   render() {
     let {

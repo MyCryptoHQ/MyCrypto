@@ -48,7 +48,10 @@ type ReduxActionProps = {
   restartSwap: () => RestartSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
   // PART 3 (IGNORE FOR NOW)
-  orderCreateRequestedSwap: any
+  orderCreateRequestedSwap: any,
+  startPollBityOrderStatus: any,
+  stopOrderTimerSwap: any,
+  stopPollBityOrderStatus: any
 };
 
 class Swap extends Component {
@@ -90,7 +93,11 @@ class Swap extends Component {
       destinationAmountSwap,
       destinationAddressSwap,
       orderCreateRequestedSwap,
-      showNotification
+      showNotification,
+      startOrderTimerSwap,
+      startPollBityOrderStatus,
+      stopOrderTimerSwap,
+      stopPollBityOrderStatus
     } = this.props;
 
     const { reference } = bityOrder;
@@ -146,7 +153,11 @@ class Swap extends Component {
     const PartThreeProps = {
       ...SwapInfoHeaderProps,
       ...PaymentInfoProps,
-      reference
+      reference,
+      startOrderTimerSwap,
+      startPollBityOrderStatus,
+      stopOrderTimerSwap,
+      stopPollBityOrderStatus
     };
 
     return (

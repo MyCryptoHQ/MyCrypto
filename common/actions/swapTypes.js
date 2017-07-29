@@ -73,7 +73,9 @@ export type BityOrderPostResponse = BityOrderResponse & {
   payment_address: string,
   status: string,
   input: BityOrderInput,
-  output: BityOrderOutput
+  output: BityOrderOutput,
+  timestamp_created: string,
+  validFor: number
 };
 
 export type OrderCreateSucceededSwapAction = {

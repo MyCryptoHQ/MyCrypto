@@ -35,8 +35,10 @@ export const INITIAL_STATE: State = {
   isPostingOrder: false,
   secondsRemaining: null,
   orderStatus: null,
+  orderTimestampCreatedISOString: null,
   paymentAddress: null,
   orderId: null,
+  validFor: null,
   isFetchingRates: null
 };
 
@@ -148,7 +150,9 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         isPostingOrder: false,
         originAmount: parseFloat(action.payload.input.amount),
         destinationAmount: parseFloat(action.payload.output.amount),
-        secondsRemaining: action.payload.validFor,
+        secondsRemaining: action.payload.validFor, // will get update
+        validFor: action.payload.validFor, // to build from local storage
+        orderTimestampCreatedISOString: action.payload.timestamp_created,
         paymentAddress: action.payload.payment_address,
         orderStatus: action.payload.status,
         orderId: action.payload.id
@@ -158,12 +162,10 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...state,
         orderStatus: action.payload.status
       };
-    case 'SWAP_ORDER_TIME_TICK':
+    case 'SWAP_ORDER_TIME':
       return {
         ...state,
-        secondsRemaining: state.secondsRemaining
-          ? state.secondsRemaining - 1
-          : state.secondsRemaining
+        secondsRemaining: action.value
       };
 
     case 'SWAP_LOAD_BITY_RATES_REQUESTED':
