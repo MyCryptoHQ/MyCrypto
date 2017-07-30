@@ -9,7 +9,7 @@ function* handleNotification(action?: ShowNotificationAction) {
   if (!action) return;
   const { duration } = action.payload;
   // show forever
-  if (duration === 0) {
+  if (duration === 0 || duration === 'infinity') {
     return;
   }
 

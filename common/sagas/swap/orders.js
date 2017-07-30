@@ -141,7 +141,9 @@ export function* bityTimeRemaining() {
 
             if (!hasShownNotification) {
               hasShownNotification = true;
-              yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
+              yield put(
+                showNotification('danger', BITY_TIMEOUT_MESSAGE, 'infinity')
+              );
             }
             break;
           case 'CANC':
@@ -150,14 +152,18 @@ export function* bityTimeRemaining() {
             yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
             if (!hasShownNotification) {
               hasShownNotification = true;
-              yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
+              yield put(
+                showNotification('danger', BITY_TIMEOUT_MESSAGE, 'infinity')
+              );
             }
             break;
           case 'RCVE':
             yield put(orderTimeSwap(0));
             if (!hasShownNotification) {
               hasShownNotification = true;
-              yield put(showNotification('warning', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
+              yield put(
+                showNotification('warning', BITY_TIMEOUT_MESSAGE, 'infinity')
+              );
             }
             break;
           case 'FILL':
