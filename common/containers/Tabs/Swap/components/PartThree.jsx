@@ -53,6 +53,7 @@ export default class PartThree extends Component {
       paymentAddress,
       orderStatus,
       destinationAddress,
+      outputTx,
       // ACTIONS
       showNotification
     } = this.props;
@@ -62,7 +63,8 @@ export default class PartThree extends Component {
       destinationKind,
       orderStatus,
       showNotification,
-      destinationAddress
+      destinationAddress,
+      outputTx
     };
 
     const PaymentInfoProps = {

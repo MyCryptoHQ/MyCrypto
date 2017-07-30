@@ -16,30 +16,37 @@ type State = {
   step: number,
   bityRates: Object,
   destinationAddress: string,
-  step: ?number,
   isFetchingRates: ?boolean,
-  secondsRemaining: ?number
+  secondsRemaining: ?number,
+  outputTx: ?string,
+  isPostingOrder: ?boolean,
+  orderStatus: ?string,
+  orderTimestampCreatedISOString: ?string,
+  paymentAddress: ?string,
+  validFor: ?number,
+  orderId: string
 };
 
 export const INITIAL_STATE: State = {
   originAmount: null,
-  originKind: DEFAULT_ORIGIN_KIND,
   destinationAmount: null,
+  originKind: DEFAULT_ORIGIN_KIND,
   destinationKind: DEFAULT_DESTINATION_KIND,
-  destinationAddress: '',
   destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, DEFAULT_ORIGIN_KIND),
   originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
   step: 1,
   bityRates: {},
+  destinationAddress: '',
   bityOrder: {},
-  isPostingOrder: false,
+  isFetchingRates: null,
   secondsRemaining: null,
+  outputTx: null,
+  isPostingOrder: false,
   orderStatus: null,
   orderTimestampCreatedISOString: null,
   paymentAddress: null,
-  orderId: null,
   validFor: null,
-  isFetchingRates: null
+  orderId: null
 };
 
 const buildDestinationAmount = (
@@ -160,7 +167,11 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
     case 'SWAP_BITY_ORDER_STATUS_SUCCEEDED':
       return {
         ...state,
-        orderStatus: action.payload.input.status
+        outputTx: action.payload.output.reference,
+        orderStatus:
+          action.payload.output.status === 'FILL'
+            ? action.payload.output.status
+            : action.payload.input.status
       };
     case 'SWAP_ORDER_TIME':
       return {

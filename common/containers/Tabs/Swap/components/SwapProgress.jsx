@@ -1,11 +1,12 @@
 //flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import { bityConfig } from 'config/bity';
+import bityConfig from 'config/bity';
 
 export type Props = {
   destinationKind: string,
   destinationAddress: string,
+  outputTx: string,
   originKind: string,
   orderStatus: string,
   // actions
@@ -13,19 +14,50 @@ export type Props = {
 };
 
 export default class SwapProgress extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasShownViewTx: false
+    };
+  }
+
   props: Props;
 
-  state: {
-    hasShownViewTx: false
+  componentDidMount() {
+    this.showNotification();
+  }
+
+  showNotification = () => {
+    const { hasShownViewTx } = this.state;
+    const {
+      destinationKind,
+      outputTx,
+      showNotification,
+      orderStatus
+    } = this.props;
+
+    if (orderStatus === 'FILL') {
+      if (!hasShownViewTx) {
+        let linkElement;
+        let link;
+        // everything but BTC is a token
+        if (destinationKind !== 'BTC') {
+          link = bityConfig.ethExplorer.replace('[[txHash]]', outputTx);
+          linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+          // BTC uses a different explorer
+        } else {
+          link = bityConfig.btcExplorer.replace('[[txHash]]', outputTx);
+          linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+        }
+        this.setState({ hasShownViewTx: true }, () => {
+          showNotification('success', linkElement);
+        });
+      }
+    }
   };
 
-  computedClass(step: number) {
-    const {
-      orderStatus,
-      destinationKind,
-      showNotification,
-      destinationAddress
-    } = this.props;
+  computedClass = (step: number) => {
+    const { orderStatus } = this.props;
 
     let cssClass = 'progress-item';
 
@@ -47,45 +79,18 @@ export default class SwapProgress extends Component {
           return cssClass;
         }
       case 'FILL':
-        if (step < 5) {
-          cssClass += ' progress-true';
-        } else if (step === 5) {
-          cssClass += ' progress-active';
-        }
-
-        if (!this.state.hasShownViewTx) {
-          let linkElement;
-          let link;
-          // everything but BTC is a token
-          if (destinationKind !== 'BTC') {
-            link = bityConfig.ethExplorer.replace(
-              '[[txHash]]',
-              destinationAddress
-            );
-            linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
-            // BTC uses a different explorer
-          } else {
-            link = link = bityConfig.btcExplorer.replace(
-              '[[txHash]]',
-              destinationAddress
-            );
-            linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
-          }
-
-          this.setState({ hasShownViewTx: true }, () => {
-            showNotification('success', linkElement);
-          });
-        }
+        cssClass += ' progress-true';
         return cssClass;
       case 'CANC':
         return cssClass;
       default:
         return cssClass;
     }
-  }
+  };
 
   render() {
     const { destinationKind, originKind } = this.props;
+
     const numberOfConfirmations = originKind === 'BTC' ? '3' : '10';
     return (
       <section className="row swap-progress">

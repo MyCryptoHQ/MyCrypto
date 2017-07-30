@@ -34,7 +34,8 @@ type ReduxStateProps = {
   bityOrder: {},
   secondsRemaining: ?number,
   paymentAddress: ?string,
-  orderStatus: ?string
+  orderStatus: ?string,
+  outputTx: ?string
 };
 
 type ReduxActionProps = {
@@ -83,6 +84,7 @@ class Swap extends Component {
       paymentAddress,
       orderStatus,
       isPostingOrder,
+      outputTx,
       // ACTIONS
       restartSwap,
       stopLoadBityRatesSwap,
@@ -159,7 +161,8 @@ class Swap extends Component {
       stopOrderTimerSwap,
       stopPollBityOrderStatus,
       showNotification,
-      destinationAddress
+      destinationAddress,
+      outputTx
     };
 
     return (
@@ -184,6 +187,7 @@ class Swap extends Component {
 
 function mapStateToProps(state) {
   return {
+    outputTx: state.swap.outputTx,
     isPostingOrder: state.swap.isPostingOrder,
     orderStatus: state.swap.orderStatus,
     paymentAddress: state.swap.paymentAddress,
