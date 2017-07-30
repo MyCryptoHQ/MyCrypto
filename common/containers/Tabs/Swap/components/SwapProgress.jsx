@@ -1,7 +1,7 @@
 //flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import { bityConfig } from 'api/bity';
+import { bityConfig } from 'config/bity';
 
 export type Props = {
   destinationKind: string,

@@ -48,27 +48,18 @@ export default class PartThree extends Component {
     let {
       // STATE
       originAmount,
-      destinationAmount,
       originKind,
       destinationKind,
-      secondsRemaining,
       paymentAddress,
       orderStatus,
-      reference,
       destinationAddress,
       // ACTIONS
-      restartSwap,
       showNotification
     } = this.props;
 
-    let SwapProgress = {
-      reference,
-      secondsRemaining,
-      originAmount,
+    let SwapProgressProps = {
       originKind,
       destinationKind,
-      destinationAmount,
-      restartSwap,
       orderStatus,
       showNotification,
       destinationAddress
@@ -82,7 +73,7 @@ export default class PartThree extends Component {
 
     return (
       <div>
-        <SwapProgress {...SwapProgress} />
+        <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
       </div>
     );
