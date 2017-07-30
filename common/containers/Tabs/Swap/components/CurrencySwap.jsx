@@ -44,16 +44,15 @@ export default class CurrencySwap extends Component {
     let bityMin;
     let bityMax;
     if (kind !== 'BTC') {
-      bityMin = bityConfig[kind + 'Min'](this.props.bityRates['BTC' + kind]);
-      bityMax = bityConfig[kind + 'Max'](this.props.bityRates['BTC' + kind]);
+      const bityPairRate = this.props.bityRates['BTC' + kind];
+      bityMin = bityConfig[kind + 'Min'](bityPairRate);
+      bityMax = bityConfig[kind + 'Max'](bityPairRate);
     } else {
       bityMin = bityConfig.BTCMin;
       bityMax = bityConfig.BTCMax;
     }
-
     let higherThanMin = amount >= bityMin;
     let lowerThanMax = amount <= bityMax;
-
     return higherThanMin && lowerThanMax;
   };
 
