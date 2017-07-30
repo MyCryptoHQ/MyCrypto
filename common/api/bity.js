@@ -13,28 +13,6 @@ function _getRate(bityRates, originKind: string, destinationKind: string) {
   return findRateFromBityRateList(rateObjects, pairName);
 }
 
-/**
- * Gives you multiple rates from Bitys API without making multiple API calls
- * @param transactionPairs - [{origin: 'BTC', destination: 'ETH'}, {origin: 'BTC', destination: 'REP}]
- */
-export type TransactionPair = {
-  originKind: string,
-  destinationKind: string
-};
-function getMultipleRates(transactionPairs: TransactionPair[]) {
-  const mappedRates = {};
-  return _getAllRates().then(bityRates => {
-    transactionPairs.forEach(each => {
-      const originKind = each.originKind;
-      const destinationKind = each.destinationKind;
-      const pairName = combineAndUpper(originKind, destinationKind);
-      const rate = _getRate(bityRates, originKind, destinationKind);
-      mappedRates[pairName] = parseFloat(rate.rate_we_sell);
-    });
-    return mappedRates;
-  });
-}
-
 export function getAllRates() {
   const mappedRates = {};
   return _getAllRates().then(bityRates => {

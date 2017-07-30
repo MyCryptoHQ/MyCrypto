@@ -6,8 +6,8 @@ import type {
   DestinationAmountSwapAction,
   LoadBityRatesSucceededSwapAction,
   DestinationAddressSwapAction,
-  OrderCreateSucceededSwapAction,
-  OrderCreateRequestedSwapAction,
+  BityOrderCreateSucceededSwapAction,
+  BityOrderCreateRequestedSwapAction,
   OrderStatusSucceededSwapAction,
   ChangeStepSwapAction,
   Pairs,
@@ -15,7 +15,12 @@ import type {
   LoadBityRatesRequestedSwapAction,
   StopLoadBityRatesSwapAction,
   BityOrderResponse,
-  BityOrderPostResponse
+  BityOrderPostResponse,
+  OrderStatusRequestedSwapAction,
+  StopOrderTimerSwapAction,
+  StartOrderTimerSwapAction,
+  StartPollBityOrderStatusAction,
+  StopPollBityOrderStatusAction
 } from './swapTypes';
 
 export function changeStepSwap(value: number): ChangeStepSwapAction {
@@ -98,21 +103,21 @@ export function orderTimeSwap(value: number) {
   };
 }
 
-export function orderCreateSucceededSwap(
+export function bityOrderCreateSucceededSwap(
   payload: BityOrderPostResponse
-): OrderCreateSucceededSwapAction {
+): BityOrderCreateSucceededSwapAction {
   return {
-    type: 'SWAP_ORDER_CREATE_SUCCEEDED',
+    type: 'SWAP_BITY_ORDER_CREATE_SUCCEEDED',
     payload
   };
 }
 
-export function orderCreateRequestedSwap(
+export function bityOrderCreateRequestedSwap(
   amount: number,
   destinationAddress: string,
   pair: string,
   mode: number = 0
-): OrderCreateRequestedSwapAction {
+): BityOrderCreateRequestedSwapAction {
   return {
     type: 'SWAP_ORDER_CREATE_REQUESTED',
     payload: {
@@ -133,31 +138,31 @@ export function orderStatusSucceededSwap(
   };
 }
 
-export function orderStatusRequestedSwap() {
+export function orderStatusRequestedSwap(): OrderStatusRequestedSwapAction {
   return {
     type: 'SWAP_BITY_ORDER_STATUS_REQUESTED'
   };
 }
 
-export function startOrderTimerSwap() {
+export function startOrderTimerSwap(): StartOrderTimerSwapAction {
   return {
     type: 'SWAP_ORDER_START_TIMER'
   };
 }
 
-export function stopOrderTimerSwap() {
+export function stopOrderTimerSwap(): StopOrderTimerSwapAction {
   return {
     type: 'SWAP_ORDER_STOP_TIMER'
   };
 }
 
-export function startPollBityOrderStatus() {
+export function startPollBityOrderStatus(): StartPollBityOrderStatusAction {
   return {
     type: 'SWAP_START_POLL_BITY_ORDER_STATUS'
   };
 }
 
-export function stopPollBityOrderStatus() {
+export function stopPollBityOrderStatus(): StopPollBityOrderStatusAction {
   return {
     type: 'SWAP_STOP_POLL_BITY_ORDER_STATUS'
   };

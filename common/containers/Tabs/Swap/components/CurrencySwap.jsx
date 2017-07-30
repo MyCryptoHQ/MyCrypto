@@ -9,7 +9,7 @@ import type {
   OriginAmountSwapAction,
   DestinationAmountSwapAction,
   ChangeStepSwapAction
-} from 'actions/swap';
+} from 'actions/swapTypes';
 import bityConfig from 'config/bity';
 import { toFixedIfLarger } from 'utils/formatters';
 

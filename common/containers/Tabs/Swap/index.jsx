@@ -11,7 +11,11 @@ import type {
   LoadBityRatesRequestedSwapAction,
   DestinationAddressSwapAction,
   RestartSwapAction,
-  StopLoadBityRatesSwapAction
+  StopLoadBityRatesSwapAction,
+  BityOrderCreateRequestedSwapAction,
+  StartPollBityOrderStatusAction,
+  StopOrderTimerSwapAction,
+  StopPollBityOrderStatusAction
 } from 'actions/swap';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
@@ -48,11 +52,15 @@ type ReduxActionProps = {
   destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
   restartSwap: () => RestartSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
-  // PART 3 (IGNORE FOR NOW)
-  orderCreateRequestedSwap: any,
-  startPollBityOrderStatus: any,
-  stopOrderTimerSwap: any,
-  stopPollBityOrderStatus: any
+  bityOrderCreateRequestedSwap: (
+    amount: number,
+    destinationAddress: string,
+    pair: string,
+    mode: number
+  ) => BityOrderCreateRequestedSwapAction,
+  startPollBityOrderStatus: () => StartPollBityOrderStatusAction,
+  stopOrderTimerSwap: () => StopOrderTimerSwapAction,
+  stopPollBityOrderStatus: () => StopPollBityOrderStatusAction
 };
 
 class Swap extends Component {
@@ -94,7 +102,7 @@ class Swap extends Component {
       originAmountSwap,
       destinationAmountSwap,
       destinationAddressSwap,
-      orderCreateRequestedSwap,
+      bityOrderCreateRequestedSwap,
       showNotification,
       startOrderTimerSwap,
       startPollBityOrderStatus,
@@ -113,7 +121,7 @@ class Swap extends Component {
       destinationAddress,
       stopLoadBityRatesSwap,
       changeStepSwap,
-      orderCreateRequestedSwap
+      bityOrderCreateRequestedSwap
     };
 
     let SwapInfoHeaderProps = {

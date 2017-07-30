@@ -14,7 +14,7 @@ import {
 } from 'redux-saga/effects';
 import {
   orderTimeSwap,
-  orderCreateSucceededSwap,
+  bityOrderCreateSucceededSwap,
   stopLoadBityRatesSwap,
   changeStepSwap,
   orderStatusRequestedSwap,
@@ -43,7 +43,11 @@ export function* pollBityOrderStatus(): Generator<Effect, void, any> {
       const orderStatus = yield call(getOrderStatus, swap.orderId);
       if (orderStatus.error) {
         yield put(
-          showNotification('danger', `Bity Error: ${orderStatus.msg}`, 10000)
+          showNotification(
+            'danger',
+            `Bity Error: ${orderStatus.msg}`,
+            TEN_SECONDS
+          )
         );
       } else {
         yield put(orderStatusSucceededSwap(orderStatus.data));
@@ -74,7 +78,7 @@ export function* pollBityOrderStatusSaga(): Generator<Effect, void, any> {
   }
 }
 
-function* postOrderCreate(action) {
+function* postBityOrderCreate(action) {
   const payload = action.payload;
   try {
     yield put(stopLoadBityRatesSwap());
@@ -87,10 +91,12 @@ function* postOrderCreate(action) {
     );
     if (order.error) {
       // TODO - handle better / like existing site?
-      yield put(showNotification('danger', `Bity Error: ${order.msg}`, 10000));
+      yield put(
+        showNotification('danger', `Bity Error: ${order.msg}`, TEN_SECONDS)
+      );
       yield put({ type: 'SWAP_ORDER_CREATE_FAILED' });
     } else {
-      yield put(orderCreateSucceededSwap(order.data));
+      yield put(bityOrderCreateSucceededSwap(order.data));
       yield put(changeStepSwap(3));
       // start countdown
       yield put(startOrderTimerSwap());
@@ -106,7 +112,7 @@ function* postOrderCreate(action) {
 }
 
 export function* postBityOrderSaga(): Generator<Effect, void, any> {
-  yield takeEvery('SWAP_ORDER_CREATE_REQUESTED', postOrderCreate);
+  yield takeEvery('SWAP_ORDER_CREATE_REQUESTED', postBityOrderCreate);
 }
 
 export function* bityTimeRemaining() {

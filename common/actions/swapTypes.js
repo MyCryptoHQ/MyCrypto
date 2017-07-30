@@ -47,7 +47,7 @@ export type StopLoadBityRatesSwapAction = {
   type: 'SWAP_STOP_LOAD_BITY_RATES'
 };
 
-export type OrderCreateRequestedSwapAction = {
+export type BityOrderCreateRequestedSwapAction = {
   type: 'SWAP_ORDER_CREATE_REQUESTED',
   payload: {
     amount: number,
@@ -78,14 +78,35 @@ export type BityOrderPostResponse = BityOrderResponse & {
   validFor: number
 };
 
-export type OrderCreateSucceededSwapAction = {
-  type: 'SWAP_ORDER_CREATE_SUCCEEDED',
+export type BityOrderCreateSucceededSwapAction = {
+  type: 'SWAP_BITY_ORDER_CREATE_SUCCEEDED',
   payload: BityOrderPostResponse
+};
+
+export type OrderStatusRequestedSwapAction = {
+  type: 'SWAP_BITY_ORDER_STATUS_REQUESTED',
+  payload: BityOrderResponse
 };
 
 export type OrderStatusSucceededSwapAction = {
   type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
   payload: BityOrderResponse
+};
+
+export type StartOrderTimerSwapAction = {
+  type: 'SWAP_ORDER_START_TIMER'
+};
+
+export type StopOrderTimerSwapAction = {
+  type: 'SWAP_ORDER_STOP_TIMER'
+};
+
+export type StartPollBityOrderStatusAction = {
+  type: 'SWAP_START_POLL_BITY_ORDER_STATUS'
+};
+
+export type StopPollBityOrderStatusAction = {
+  type: 'SWAP_STOP_POLL_BITY_ORDER_STATUS'
 };
 
 /*** Action Type Union ***/
@@ -100,7 +121,8 @@ export type SwapAction =
   | RestartSwapAction
   | LoadBityRatesRequestedSwapAction
   | StopLoadBityRatesSwapAction
-  | OrderCreateRequestedSwapAction
-  | OrderCreateSucceededSwapAction
+  | BityOrderCreateRequestedSwapAction
+  | BityOrderCreateSucceededSwapAction
   | BityOrderResponse
-  | OrderStatusSucceededSwapAction;
+  | OrderStatusSucceededSwapAction
+  | StartPollBityOrderStatusAction;

@@ -4,7 +4,7 @@ import type {
   DestinationAddressSwapAction,
   ChangeStepSwapAction,
   StopLoadBityRatesSwapAction,
-  OrderCreateRequestedSwapAction
+  BityOrderCreateRequestedSwapAction
 } from 'actions/swapTypes';
 import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
@@ -24,12 +24,12 @@ export type ActionProps = {
   destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
   changeStepSwap: (value: number) => ChangeStepSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
-  orderCreateRequestedSwap: (
+  bityOrderCreateRequestedSwap: (
     amount: number,
     destinationAddress: string,
     pair: string,
     mode: ?number
-  ) => OrderCreateRequestedSwapAction
+  ) => BityOrderCreateRequestedSwapAction
 };
 
 export default class ReceivingAddress extends Component {
@@ -41,7 +41,7 @@ export default class ReceivingAddress extends Component {
   };
 
   onClickPartTwoComplete = () => {
-    this.props.orderCreateRequestedSwap(
+    this.props.bityOrderCreateRequestedSwap(
       this.props.originAmount,
       this.props.destinationAddress,
       combineAndUpper(this.props.originKind, this.props.destinationKind)

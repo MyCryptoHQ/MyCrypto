@@ -148,7 +148,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...state,
         isPostingOrder: false
       };
-    case 'SWAP_ORDER_CREATE_SUCCEEDED':
+    case 'SWAP_BITY_ORDER_CREATE_SUCCEEDED':
       return {
         ...state,
         bityOrder: {
