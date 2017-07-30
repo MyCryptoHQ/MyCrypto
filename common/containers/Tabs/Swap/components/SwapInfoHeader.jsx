@@ -4,6 +4,7 @@ import translate from 'translations';
 import type { RestartSwapAction } from 'actions/swapTypes';
 import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
+import { toFixedIfLarger } from 'utils/formatters';
 
 export type SwapInfoHeaderTitleProps = {
   restartSwap: () => RestartSwapAction
@@ -148,7 +149,9 @@ export default class SwapInfoHeader extends Component {
           {/*Your rate*/}
           <div className={this.computedClass()}>
             <h4>
-              {` ${this.computedOriginDestinationRatio()} ${originKind}/${destinationKind} `}
+              {` ${toFixedIfLarger(
+                this.computedOriginDestinationRatio()
+              )} ${originKind}/${destinationKind} `}
             </h4>
             <p>
               {translate('SWAP_your_rate')}

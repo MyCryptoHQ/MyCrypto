@@ -11,6 +11,7 @@ import type {
   ChangeStepSwapAction
 } from 'actions/swap';
 import bityConfig from 'config/bity';
+import { toFixedIfLarger } from 'utils/formatters';
 
 export type StateProps = {
   bityRates: {},
@@ -39,20 +40,21 @@ export default class CurrencySwap extends Component {
     showedMinMaxError: false
   };
 
-  isMinMaxValid = (originAmount, originKind) => {
-    const rates = this.props.bityRates;
-    const BTCMin = bityConfig.BTCMin;
-    const BTCMax = bityConfig.BTCMax;
-    if (originKind === 'BTC') {
-      return originAmount >= BTCMin && originAmount <= BTCMax;
+  isMinMaxValid = (amount, kind) => {
+    let bityMin;
+    let bityMax;
+    if (kind !== 'BTC') {
+      bityMin = bityConfig[kind + 'Min'](this.props.bityRates['BTC' + kind]);
+      bityMax = bityConfig[kind + 'Max'](this.props.bityRates['BTC' + kind]);
     } else {
-      const originToBTCPair = combineAndUpper(originKind, 'BTC');
-      const originAmountToBTCAmount =
-        parseFloat(rates[originToBTCPair]) * parseFloat(originAmount);
-      return (
-        originAmountToBTCAmount >= BTCMin && originAmountToBTCAmount <= BTCMax
-      );
+      bityMin = bityConfig.BTCMin;
+      bityMax = bityConfig.BTCMax;
     }
+
+    let higherThanMin = amount >= bityMin;
+    let lowerThanMax = amount <= bityMax;
+
+    return higherThanMin && lowerThanMax;
   };
 
   isDisabled = (originAmount, originKind, destinationAmount) => {
@@ -70,23 +72,26 @@ export default class CurrencySwap extends Component {
     );
 
     if (disabled && originAmount && !this.state.showedMinMaxError) {
-      const rates = this.props.bityRates;
+      const { bityRates } = this.props;
+      const ETHMin = bityConfig.ETHMin(bityRates.BTCETH);
+      const ETHMax = bityConfig.ETHMax(bityRates.BTCETH);
+      const REPMin = bityConfig.REPMax(bityRates.BTCREP);
+
+      const notificationMessage = `
+        Minimum amount ${bityConfig.BTCMin} BTC, 
+        ${toFixedIfLarger(ETHMin, 3)} ETH. 
+        Max amount ${bityConfig.BTCMax} BTC, 
+        ${toFixedIfLarger(ETHMax, 3)} ETH, or 
+        ${toFixedIfLarger(REPMin, 3)} REP
+      `;
+
       this.setState(
         {
           disabled: disabled,
           showedMinMaxError: true
         },
         () => {
-          this.props.showNotification(
-            'danger',
-            translate('ERROR_27') +
-              bityConfig.BTCMax +
-              ' BTC, ' +
-              (bityConfig.BTCMax / rates['ETHBTC']).toFixed(3) +
-              ' ETH, or ' +
-              (bityConfig.BTCMax / rates['REPBTC']).toFixed(3) +
-              ' REP'
-          );
+          this.props.showNotification('danger', notificationMessage, 10000);
         }
       );
     } else {

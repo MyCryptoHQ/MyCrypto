@@ -1,19 +1,34 @@
 //flow
 import React, { Component } from 'react';
 import translate from 'translations';
+import { bityConfig } from 'api/bity';
 
-export type StateProps = {
+export type Props = {
   destinationKind: string,
+  destinationAddress: string,
   originKind: string,
-  orderStatus: string
+  orderStatus: string,
+  // actions
+  showNotification: any
 };
 
 export default class SwapProgress extends Component {
-  props: StateProps;
+  props: Props;
+
+  state: {
+    hasShownViewTx: false
+  };
 
   computedClass(step: number) {
-    const { orderStatus } = this.props;
+    const {
+      orderStatus,
+      destinationKind,
+      showNotification,
+      destinationAddress
+    } = this.props;
+
     let cssClass = 'progress-item';
+
     switch (orderStatus) {
       case 'OPEN':
         if (step < 2) {
@@ -33,12 +48,37 @@ export default class SwapProgress extends Component {
         }
       case 'FILL':
         if (step < 5) {
-          return cssClass + ' progress-true';
+          cssClass += ' progress-true';
         } else if (step === 5) {
-          return cssClass + ' progress-active';
-        } else {
-          return cssClass;
+          cssClass += ' progress-active';
         }
+
+        if (!this.state.hasShownViewTx) {
+          let linkElement;
+          let link;
+          // everything but BTC is a token
+          if (destinationKind !== 'BTC') {
+            link = bityConfig.ethExplorer.replace(
+              '[[txHash]]',
+              destinationAddress
+            );
+            linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+            // BTC uses a different explorer
+          } else {
+            link = link = bityConfig.btcExplorer.replace(
+              '[[txHash]]',
+              destinationAddress
+            );
+            linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+          }
+
+          this.setState({ hasShownViewTx: true }, () => {
+            showNotification('success', linkElement);
+          });
+        }
+
+        return cssClass;
+
       case 'CANC':
         return cssClass;
       default:

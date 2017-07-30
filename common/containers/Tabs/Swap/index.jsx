@@ -26,7 +26,7 @@ type ReduxStateProps = {
   originKind: string,
   destinationKindOptions: String[],
   originKindOptions: String[],
-  bityRates: boolean,
+  bityRates: {},
   originAmount: ?number,
   destinationAmount: ?number,
   isPostingOrder: boolean,
@@ -157,7 +157,9 @@ class Swap extends Component {
       startOrderTimerSwap,
       startPollBityOrderStatus,
       stopOrderTimerSwap,
-      stopPollBityOrderStatus
+      stopPollBityOrderStatus,
+      showNotification,
+      destinationAddress
     };
 
     return (

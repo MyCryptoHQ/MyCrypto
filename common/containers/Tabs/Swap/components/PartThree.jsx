@@ -27,7 +27,8 @@ type ReduxActionProps = {
   startOrderTimerSwap: any,
   startPollBityOrderStatus: any,
   stopOrderTimerSwap: any,
-  stopPollBityOrderStatus: any
+  stopPollBityOrderStatus: any,
+  showNotification: any
 };
 
 export default class PartThree extends Component {
@@ -54,11 +55,13 @@ export default class PartThree extends Component {
       paymentAddress,
       orderStatus,
       reference,
+      destinationAddress,
       // ACTIONS
-      restartSwap
+      restartSwap,
+      showNotification
     } = this.props;
 
-    let SwapInfoHeaderProps = {
+    let SwapProgress = {
       reference,
       secondsRemaining,
       originAmount,
@@ -66,7 +69,9 @@ export default class PartThree extends Component {
       destinationKind,
       destinationAmount,
       restartSwap,
-      orderStatus
+      orderStatus,
+      showNotification,
+      destinationAddress
     };
 
     const PaymentInfoProps = {
@@ -77,7 +82,7 @@ export default class PartThree extends Component {
 
     return (
       <div>
-        <SwapProgress {...SwapInfoHeaderProps} />
+        <SwapProgress {...SwapProgress} />
         <PaymentInfo {...PaymentInfoProps} />
       </div>
     );

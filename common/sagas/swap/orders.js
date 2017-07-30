@@ -46,6 +46,7 @@ export function* pollBityOrderStatus(): Generator<Effect, void, any> {
           showNotification('danger', `Bity Error: ${orderStatus.msg}`, 10000)
         );
       } else {
+        console.log(orderStatus.data);
         yield put(orderStatusSucceededSwap(orderStatus.data));
         yield call(delay, ONE_SECOND * 5);
         swap = yield select(getSwap);
