@@ -9,7 +9,7 @@ export type Props = {
   originKind: string,
   orderStatus: string,
   // actions
-  showNotification: any
+  showNotification: Function
 };
 
 export default class SwapProgress extends Component {
@@ -76,9 +76,7 @@ export default class SwapProgress extends Component {
             showNotification('success', linkElement);
           });
         }
-
         return cssClass;
-
       case 'CANC':
         return cssClass;
       default:

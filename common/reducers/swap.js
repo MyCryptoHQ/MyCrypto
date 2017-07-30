@@ -160,7 +160,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
     case 'SWAP_BITY_ORDER_STATUS_SUCCEEDED':
       return {
         ...state,
-        orderStatus: action.payload.status
+        orderStatus: action.payload.input.status
       };
     case 'SWAP_ORDER_TIME':
       return {

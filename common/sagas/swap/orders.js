@@ -46,7 +46,6 @@ export function* pollBityOrderStatus(): Generator<Effect, void, any> {
           showNotification('danger', `Bity Error: ${orderStatus.msg}`, 10000)
         );
       } else {
-        console.log(orderStatus.data);
         yield put(orderStatusSucceededSwap(orderStatus.data));
         yield call(delay, ONE_SECOND * 5);
         swap = yield select(getSwap);
@@ -112,29 +111,55 @@ export function* postBityOrderSaga(): Generator<Effect, void, any> {
 
 export function* bityTimeRemaining() {
   while (yield take('SWAP_ORDER_START_TIMER')) {
+    let hasShownNotification = false;
     while (true) {
       yield call(delay, ONE_SECOND);
       const swap = yield select(getSwap);
-      if (swap.bityOrder.status === 'OPEN') {
-        const createdTimeStampMoment = moment(
-          swap.orderTimestampCreatedISOString
-        );
-        let validUntil = moment(createdTimeStampMoment).add(swap.validFor, 's');
-        let now = moment();
-        if (validUntil.isAfter(now)) {
-          let duration = moment.duration(validUntil.diff(now));
-          let seconds = duration.asSeconds();
-          yield put(orderTimeSwap(parseInt(seconds)));
-        } else {
-          yield put(orderTimeSwap(0));
-          yield put(stopPollBityOrderStatus());
-          yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
-          yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
-          break;
-        }
+      // if (swap.bityOrder.status === 'OPEN') {
+      const createdTimeStampMoment = moment(
+        swap.orderTimestampCreatedISOString
+      );
+      let validUntil = moment(createdTimeStampMoment).add(swap.validFor, 's');
+      let now = moment();
+      if (validUntil.isAfter(now)) {
+        let duration = moment.duration(validUntil.diff(now));
+        let seconds = duration.asSeconds();
+        yield put(orderTimeSwap(parseInt(seconds)));
+        // TODO (!Important) - check orderStatus here and stop polling / show notifications based on status
       } else {
-        // stop dispatching time tick
-        break;
+        switch (swap.orderStatus) {
+          case 'OPEN':
+            yield put(orderTimeSwap(0));
+            yield put(stopPollBityOrderStatus());
+            yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
+
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
+            }
+            break;
+          case 'CANC':
+            yield put(orderTimeSwap(0));
+            yield put(stopPollBityOrderStatus());
+            yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
+            }
+            break;
+          case 'RCVE':
+            yield put(orderTimeSwap(0));
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('warning', BITY_TIMEOUT_MESSAGE, 0)); // 0 is forever
+            }
+            break;
+          case 'FILL':
+            yield put(orderTimeSwap(0));
+            yield put(stopPollBityOrderStatus());
+            yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
+            break;
+        }
       }
     }
   }

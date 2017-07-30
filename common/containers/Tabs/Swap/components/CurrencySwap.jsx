@@ -29,7 +29,7 @@ export type ActionProps = {
   originAmountSwap: (value: ?number) => OriginAmountSwapAction,
   destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
   changeStepSwap: () => ChangeStepSwapAction,
-  showNotification: any
+  showNotification: Function
 };
 
 export default class CurrencySwap extends Component {

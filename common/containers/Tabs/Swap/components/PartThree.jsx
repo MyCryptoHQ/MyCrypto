@@ -24,11 +24,11 @@ type ReduxActionProps = {
   loadBityRatesRequestedSwap: () => LoadBityRatesRequestedSwapAction,
   restartSwap: () => RestartSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
-  startOrderTimerSwap: any,
-  startPollBityOrderStatus: any,
-  stopOrderTimerSwap: any,
-  stopPollBityOrderStatus: any,
-  showNotification: any
+  startOrderTimerSwap: Function,
+  startPollBityOrderStatus: Function,
+  stopOrderTimerSwap: Function,
+  stopPollBityOrderStatus: Function,
+  showNotification: Function
 };
 
 export default class PartThree extends Component {
