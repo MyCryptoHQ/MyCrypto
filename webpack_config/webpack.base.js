@@ -41,10 +41,6 @@ module.exports = {
         exclude: [/node_modules\/(?!ethereum-blockies|idna-uts46)/]
       },
       {
-        test: /\.(ico|webp|eot|otf|ttf|woff|woff2)(\?.*)?$/,
-        loader: 'file-loader?limit=100000'
-      },
-      {
         test: /\.(gif|png|jpe?g|svg)$/i,
         loaders: [
           {

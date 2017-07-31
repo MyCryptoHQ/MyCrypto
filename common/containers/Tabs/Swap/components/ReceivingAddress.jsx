@@ -4,13 +4,18 @@ import type {
   DestinationAddressSwapAction,
   ChangeStepSwapAction,
   StopLoadBityRatesSwapAction,
-  ReferenceNumberSwapAction
-} from 'actions/swap';
+  BityOrderCreateRequestedSwapAction
+} from 'actions/swapTypes';
 import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
+import { combineAndUpper } from 'utils/formatters';
+import SimpleButton from 'components/ui/SimpleButton';
 
 export type StateProps = {
+  isPostingOrder: boolean,
+  originAmount: number,
+  originKind: string,
   destinationKind: string,
   destinationAddress: string
 };
@@ -19,7 +24,12 @@ export type ActionProps = {
   destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
   changeStepSwap: (value: number) => ChangeStepSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
-  referenceNumberSwap: (value: string) => ReferenceNumberSwapAction
+  bityOrderCreateRequestedSwap: (
+    amount: number,
+    destinationAddress: string,
+    pair: string,
+    mode: ?number
+  ) => BityOrderCreateRequestedSwapAction
 };
 
 export default class ReceivingAddress extends Component {
@@ -31,14 +41,15 @@ export default class ReceivingAddress extends Component {
   };
 
   onClickPartTwoComplete = () => {
-    this.props.stopLoadBityRatesSwap();
-    // temporarily here for testing purposes. will live in saga
-    this.props.referenceNumberSwap('');
-    this.props.changeStepSwap(3);
+    this.props.bityOrderCreateRequestedSwap(
+      this.props.originAmount,
+      this.props.destinationAddress,
+      combineAndUpper(this.props.originKind, this.props.destinationKind)
+    );
   };
 
   render() {
-    const { destinationKind, destinationAddress } = this.props;
+    const { destinationKind, destinationAddress, isPostingOrder } = this.props;
     let validAddress;
     // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
     if (this.props.destinationKind === 'BTC') {
@@ -72,15 +83,12 @@ export default class ReceivingAddress extends Component {
             </div>
           </section>
           <section className="row text-center">
-            <button
-              disabled={!validAddress}
+            <SimpleButton
+              text={translate('SWAP_start_CTA')}
               onClick={this.onClickPartTwoComplete}
-              className="btn btn-primary btn-lg"
-            >
-              <span>
-                {translate('SWAP_start_CTA')}
-              </span>
-            </button>
+              disabled={!validAddress}
+              loading={isPostingOrder}
+            />
           </section>
         </section>
       </article>

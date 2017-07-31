@@ -1,36 +1,16 @@
 // @flow
 import bityConfig from 'config/bity';
-import {combineAndUpper} from 'utils/formatters'
+import { checkHttpStatus, parseJSON } from './utils';
+import { combineAndUpper } from 'utils/formatters';
 
-
-function findRateFromBityRateList(rateObjects, pairName) {
+function findRateFromBityRateList(rateObjects, pairName: string) {
   return rateObjects.find(x => x.pair === pairName);
 }
 
-// FIXME better types
-function _getRate(bityRates, origin: string, destination: string) {
-  const pairName = combineAndUpper(origin, destination);
+function _getRate(bityRates, originKind: string, destinationKind: string) {
+  const pairName = combineAndUpper(originKind, destinationKind);
   const rateObjects = bityRates.objects;
   return findRateFromBityRateList(rateObjects, pairName);
-}
-
-/**
- * Gives you multiple rates from Bitys API without making multiple API calls
- * @param arrayOfOriginAndDestinationDicts - [{origin: 'BTC', destination: 'ETH'}, {origin: 'BTC', destination: 'REP}]
- */
-function getMultipleRates(arrayOfOriginAndDestinationDicts) {
-  const mappedRates = {};
-  return _getAllRates().then(bityRates => {
-    arrayOfOriginAndDestinationDicts.forEach(each => {
-      const origin = each.origin;
-      const destination = each.destination;
-      const pairName = combineAndUpper(origin, destination);
-      const rate = _getRate(bityRates, origin, destination);
-      mappedRates[pairName] = parseFloat(rate.rate_we_sell);
-    });
-    return mappedRates;
-  });
-  // TODO - catch errors
 }
 
 export function getAllRates() {
@@ -42,11 +22,44 @@ export function getAllRates() {
     });
     return mappedRates;
   });
-  // TODO - catch errors
+}
+
+export function postOrder(
+  amount: number,
+  destAddress: string,
+  mode: number,
+  pair: string
+) {
+  return fetch(`${bityConfig.serverURL}/order`, {
+    method: 'post',
+    body: JSON.stringify({
+      amount,
+      destAddress,
+      mode,
+      pair
+    }),
+    headers: bityConfig.postConfig.headers
+  })
+    .then(checkHttpStatus)
+    .then(parseJSON);
+}
+
+export function getOrderStatus(orderid: string) {
+  return fetch(`${bityConfig.serverURL}/status`, {
+    method: 'POST',
+    body: JSON.stringify({
+      orderid
+    }),
+    headers: bityConfig.postConfig.headers
+  })
+    .then(checkHttpStatus)
+    .then(parseJSON);
 }
 
 function _getAllRates() {
-  return fetch(`${bityConfig.bityAPI}/v1/rate2/`).then(r => r.json());
+  return fetch(`${bityConfig.bityAPI}/v1/rate2/`)
+    .then(checkHttpStatus)
+    .then(parseJSON);
 }
 
-function requestStatus() {}
+function requestOrderStatus() {}

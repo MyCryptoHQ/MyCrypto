@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import sagas from './sagas';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
+import { INITIAL_STATE as swapInitialState } from 'reducers/swap';
 import throttle from 'lodash/throttle';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import Perf from 'react-addons-perf';
@@ -37,7 +38,15 @@ const configureStore = () => {
       ...configInitialState,
       ...loadStatePropertyOrEmptyObject('config')
     },
-    customTokens: (loadState() || {}).customTokens || customTokensInitialState
+    customTokens: (loadState() || {}).customTokens || customTokensInitialState,
+    // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
+    swap:
+      loadStatePropertyOrEmptyObject('swap').step === 3
+        ? {
+            ...swapInitialState,
+            ...loadStatePropertyOrEmptyObject('swap')
+          }
+        : { ...swapInitialState }
   };
 
   store = createStore(RootReducer, persistedInitialState, middleware);
@@ -53,6 +62,7 @@ const configureStore = () => {
         config: {
           languageSelection: store.getState().config.languageSelection
         },
+        swap: store.getState().swap,
         customTokens: store.getState().customTokens
       });
     }),

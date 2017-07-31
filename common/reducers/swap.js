@@ -1,12 +1,14 @@
 // @flow
 import { combineAndUpper } from 'utils/formatters';
-import type { SwapAction } from 'actions/swap';
-
+import type { SwapAction } from 'actions/swapTypes';
+import without from 'lodash/without';
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
+const DEFAULT_ORIGIN_KIND = 'BTC';
+const DEFAULT_DESTINATION_KIND = 'ETH';
 
 type State = {
-  originAmount: number,
-  destinationAmount: number,
+  originAmount: ?number,
+  destinationAmount: ?number,
   originKind: string,
   destinationKind: string,
   destinationKindOptions: Array<string>,
@@ -14,32 +16,37 @@ type State = {
   step: number,
   bityRates: Object,
   destinationAddress: string,
-  referenceNumber: string,
-  timeRemaining: string,
-  numberOfConfirmations: ?number,
-  orderStep: ?number,
-  isFetchingRates: boolean
+  isFetchingRates: ?boolean,
+  secondsRemaining: ?number,
+  outputTx: ?string,
+  isPostingOrder: ?boolean,
+  orderStatus: ?string,
+  orderTimestampCreatedISOString: ?string,
+  paymentAddress: ?string,
+  validFor: ?number,
+  orderId: string
 };
 
 export const INITIAL_STATE: State = {
-  originAmount: 0,
-  destinationAmount: 0,
-  originKind: 'BTC',
-  destinationKind: 'ETH',
-  destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
-    return element !== 'BTC';
-  }),
-  originKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
-    return element !== 'REP';
-  }),
+  originAmount: null,
+  destinationAmount: null,
+  originKind: DEFAULT_ORIGIN_KIND,
+  destinationKind: DEFAULT_DESTINATION_KIND,
+  destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, DEFAULT_ORIGIN_KIND),
+  originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
   step: 1,
   bityRates: {},
   destinationAddress: '',
-  referenceNumber: '',
-  timeRemaining: '',
-  numberOfConfirmations: null,
-  orderStep: null,
-  isFetchingRates: false
+  bityOrder: {},
+  isFetchingRates: null,
+  secondsRemaining: null,
+  outputTx: null,
+  isPostingOrder: false,
+  orderStatus: null,
+  orderTimestampCreatedISOString: null,
+  paymentAddress: null,
+  validFor: null,
+  orderId: null
 };
 
 const buildDestinationAmount = (
@@ -50,7 +57,7 @@ const buildDestinationAmount = (
 ) => {
   let pairName = combineAndUpper(originKind, destinationKind);
   let bityRate = bityRates[pairName];
-  return originAmount * bityRate;
+  return originAmount ? originAmount * bityRate : 0;
 };
 
 const buildDestinationKind = (
@@ -58,7 +65,7 @@ const buildDestinationKind = (
   destinationKind: string
 ): string => {
   if (originKind === destinationKind) {
-    return ALL_CRYPTO_KIND_OPTIONS.filter(element => element !== originKind)[0];
+    return without(ALL_CRYPTO_KIND_OPTIONS, originKind)[0];
   } else {
     return destinationKind;
   }
@@ -75,10 +82,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...state,
         originKind: action.value,
         destinationKind: newDestinationKind,
-        destinationKindOptions: ALL_CRYPTO_KIND_OPTIONS.filter(element => {
-          // $FlowFixMe
-          return element !== action.value;
-        }),
+        destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, action.value),
         destinationAmount: buildDestinationAmount(
           state.originAmount,
           action.value,
@@ -109,7 +113,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...state,
         destinationAmount: action.value
       };
-    case 'SWAP_UPDATE_BITY_RATES':
+    case 'SWAP_LOAD_BITY_RATES_SUCCEEDED':
       return {
         ...state,
         bityRates: {
@@ -134,16 +138,48 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...INITIAL_STATE,
         bityRates: state.bityRates
       };
-    case 'SWAP_REFERENCE_NUMBER':
+    case 'SWAP_ORDER_CREATE_REQUESTED':
       return {
         ...state,
-        referenceNumber: '2341asdfads',
-        timeRemaining: '2:30',
-        numberOfConfirmations: 3,
-        orderStep: 2
+        isPostingOrder: true
+      };
+    case 'SWAP_ORDER_CREATE_FAILED':
+      return {
+        ...state,
+        isPostingOrder: false
+      };
+    case 'SWAP_BITY_ORDER_CREATE_SUCCEEDED':
+      return {
+        ...state,
+        bityOrder: {
+          ...action.payload
+        },
+        isPostingOrder: false,
+        originAmount: parseFloat(action.payload.input.amount),
+        destinationAmount: parseFloat(action.payload.output.amount),
+        secondsRemaining: action.payload.validFor, // will get update
+        validFor: action.payload.validFor, // to build from local storage
+        orderTimestampCreatedISOString: action.payload.timestamp_created,
+        paymentAddress: action.payload.payment_address,
+        orderStatus: action.payload.status,
+        orderId: action.payload.id
+      };
+    case 'SWAP_BITY_ORDER_STATUS_SUCCEEDED':
+      return {
+        ...state,
+        outputTx: action.payload.output.reference,
+        orderStatus:
+          action.payload.output.status === 'FILL'
+            ? action.payload.output.status
+            : action.payload.input.status
+      };
+    case 'SWAP_ORDER_TIME':
+      return {
+        ...state,
+        secondsRemaining: action.value
       };
 
-    case 'SWAP_LOAD_BITY_RATES':
+    case 'SWAP_LOAD_BITY_RATES_REQUESTED':
       return {
         ...state,
         isFetchingRates: true
@@ -156,7 +192,6 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
       };
 
     default:
-      (action: empty);
       return state;
   }
 }
