@@ -268,11 +268,13 @@ export class SendTransaction extends React.Component {
   }
 
   isValid() {
+    const { to, value } = this.state;
     return (
-      isValidETHAddress(this.state.to) &&
-      this.state.value &&
-      !isNaN(Number(this.state.value)) &&
-      isFinite(Number(this.state.value))
+      isValidETHAddress(to) &&
+      value &&
+      Number(value) > 0 &&
+      !isNaN(Number(value)) &&
+      isFinite(Number(value))
     );
   }
 
