@@ -1,6 +1,6 @@
 // @flow
 import { randomBytes } from 'crypto';
-import { encodeData } from './utils';
+import { hexEncodeData } from './utils';
 import type {
   RPCRequest,
   JsonRpcResponse,
@@ -9,8 +9,8 @@ import type {
   EstimateGasRequest
 } from './types';
 
-// FIXME is it safe to generat that much entropy?
-function id() {
+// FIXME is it safe to generate that much entropy?
+function id(): string {
   return randomBytes(16).toString('hex');
 }
 
@@ -28,7 +28,7 @@ export function getBalance(address: string): GetBalanceRequest {
     id: id(),
     jsonrpc: '2.0',
     method: 'eth_getBalance',
-    params: [encodeData(address), 'pending']
+    params: [hexEncodeData(address), 'pending']
   };
 }
 
