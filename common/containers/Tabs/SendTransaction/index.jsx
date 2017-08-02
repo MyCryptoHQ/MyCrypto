@@ -24,13 +24,13 @@ import { isValidETHAddress } from 'libs/validators';
 import { getNodeLib } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 import type { BaseNode } from 'libs/nodes';
-import { toWei } from 'libs/units';
 import type { Token } from 'config/data';
 import Big from 'big.js';
-import { toHex } from 'libs/values';
+import { valueToHex } from 'libs/values';
 import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
 import { getTokenBalances } from 'selectors/wallet';
+import type { TransactionWithoutGas } from 'libs/transaction';
 
 type State = {
   hasQueryString: boolean,
@@ -78,7 +78,7 @@ export class SendTransaction extends React.Component {
     to: '',
     value: '',
     unit: 'ether',
-    gasLimit: '21000',
+    gasLimit: '1000',
     data: '',
     gasChanged: false
   };
@@ -279,14 +279,14 @@ export class SendTransaction extends React.Component {
   }
 
   // FIXME MOVE ME
-  getTransactionFromState() {
+  getTransactionFromState(): ?TransactionWithoutGas {
     // FIXME add gas price
     if (this.state.unit === 'ether') {
       return {
         to: this.state.to,
         from: this.props.wallet.getAddress(),
         // gasPrice: `0x${new Number(50 * 1000000000).toString(16)}`,
-        value: '0x' + toHex(toWei(Big(this.state.value), 'ether'))
+        value: valueToHex(this.state.value)
       };
     }
     const token = this.props.tokens.find(x => x.symbol === this.state.unit);
@@ -307,20 +307,23 @@ export class SendTransaction extends React.Component {
   }
 
   estimateGas(state: State) {
-    this.props.node
-      .estimateGas(this.getTransactionFromState())
-      .then(gasLimit => {
-        if (this.state === state) {
-          let gasLimitString = gasLimit.toString();
-          if (gasLimitString === '21001' && state.unit === 'ether') {
-            gasLimitString = '21000';
-          }
-          if (gasLimit.gte(4000000)) {
-            gasLimitString = '-1';
-          }
-          this.setState({ gasLimit: gasLimitString });
+    const trans = this.getTransactionFromState();
+    if (!trans) {
+      return;
+    }
+
+    this.props.node.estimateGas(trans).then(gasLimit => {
+      if (this.state === state) {
+        let gasLimitString = gasLimit.toString();
+        if (gasLimitString === '21001' && state.unit === 'ether') {
+          gasLimitString = '21000';
         }
-      });
+        if (gasLimit.gte(4000000)) {
+          gasLimitString = '-1';
+        }
+        this.setState({ gasLimit: gasLimitString });
+      }
+    });
   }
 
   // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
@@ -329,7 +332,7 @@ export class SendTransaction extends React.Component {
     amount: string,
     unit: string,
     data: string = '',
-    gasLimit: string = '21000'
+    gasLimit: string = '1000'
   ) => {
     this.setState({
       to: address,

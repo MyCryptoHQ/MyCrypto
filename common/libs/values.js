@@ -1,5 +1,6 @@
 // @flow
-import type Big from 'big.js';
+import Big from 'big.js';
+import { toWei } from 'libs/units';
 
 // FIXME does this even makes sense
 export function toHex(n: Big): string {
@@ -16,4 +17,13 @@ export function toHex(n: Big): string {
 
 export function stripHex(address: string): string {
   return address.replace('0x', '').toLowerCase();
+}
+
+export function valueToHex(n: number | string): string {
+  // Convert it to a Big to handle fine values
+  const big = new Big(n);
+  // Values are in ether, so convert to wei for RPC calls
+  const wei = toWei(big, 'ether');
+  // Finally, hex it up!
+  return toHex(wei);
 }
