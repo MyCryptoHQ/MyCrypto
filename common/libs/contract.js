@@ -38,7 +38,6 @@ export default class Contract {
 
   getMethodAbi(name: string): ABIMethod {
     const method = this.abi.find(x => x.name === name);
-    // FIXME
     if (!method) {
       throw new Error('Unknown method');
     }
