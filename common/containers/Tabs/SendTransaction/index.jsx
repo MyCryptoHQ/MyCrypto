@@ -31,6 +31,7 @@ import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
 import { getTokenBalances } from 'selectors/wallet';
 import type { TransactionWithoutGas } from 'libs/transaction';
+import { formatGasLimit } from 'utils/formatters';
 
 type State = {
   hasQueryString: boolean,
@@ -78,7 +79,7 @@ export class SendTransaction extends React.Component {
     to: '',
     value: '',
     unit: 'ether',
-    gasLimit: '1000',
+    gasLimit: '21000',
     data: '',
     gasChanged: false
   };
@@ -105,7 +106,7 @@ export class SendTransaction extends React.Component {
         this.state.unit !== prevState.unit ||
         this.state.data !== prevState.data)
     ) {
-      this.estimateGas(this.state);
+      this.estimateGas();
     }
   }
 
@@ -306,22 +307,19 @@ export class SendTransaction extends React.Component {
     };
   }
 
-  estimateGas(state: State) {
+  estimateGas() {
     const trans = this.getTransactionFromState();
     if (!trans) {
       return;
     }
 
+    // Grab a reference to state. If it has changed by the time the estimateGas
+    // call comes back, we don't want to replace the gasLimit in state.
+    const state = this.state;
+
     this.props.node.estimateGas(trans).then(gasLimit => {
       if (this.state === state) {
-        let gasLimitString = gasLimit.toString();
-        if (gasLimitString === '21001' && state.unit === 'ether') {
-          gasLimitString = '21000';
-        }
-        if (gasLimit.gte(4000000)) {
-          gasLimitString = '-1';
-        }
-        this.setState({ gasLimit: gasLimitString });
+        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
       }
     });
   }
@@ -332,7 +330,7 @@ export class SendTransaction extends React.Component {
     amount: string,
     unit: string,
     data: string = '',
-    gasLimit: string = '1000'
+    gasLimit: string = '21000'
   ) => {
     this.setState({
       to: address,
