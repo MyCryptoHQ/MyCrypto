@@ -1,11 +1,15 @@
 // @flow
 
 export default class BaseWallet {
-  getAddress(): string {
+  getAddress(): Promise<any> {
     throw 'Implement me';
   }
 
-  getNakedAddress(): string {
-    return this.getAddress().replace('0x', '').toLowerCase();
+  getNakedAddress(): Promise<any> {
+    return new Promise(resolve => {
+      this.getAddress.then(address => {
+        resolve(address.replace('0x', '').toLowerCase());
+      });
+    });
   }
 }

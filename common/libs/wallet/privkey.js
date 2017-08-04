@@ -7,6 +7,7 @@ import {
 } from 'ethereumjs-util';
 import { randomBytes } from 'crypto';
 import { pkeyToKeystore } from 'libs/keystore';
+import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
 
 export default class PrivKeyWallet extends BaseWallet {
   privKey: Buffer;
@@ -19,8 +20,10 @@ export default class PrivKeyWallet extends BaseWallet {
     this.address = publicToAddress(this.pubKey);
   }
 
-  getAddress() {
-    return toChecksumAddress(`0x${this.address.toString('hex')}`);
+  getAddress(): Promise<any> {
+    return new Promise(resolve => {
+      resolve(toChecksumAddress(`0x${this.address.toString('hex')}`));
+    });
   }
 
   getPrivateKey() {
@@ -31,7 +34,37 @@ export default class PrivKeyWallet extends BaseWallet {
     return new PrivKeyWallet(randomBytes(32));
   }
 
-  toKeystore(password: string): Object {
-    return pkeyToKeystore(this.privKey, this.getNakedAddress(), password);
+  toKeystore(password: string): Promise<any> {
+    return new Promise(resolve => {
+      this.getNakedAddress().then(address => {
+        resolve(pkeyToKeystore(this.privKey, address, password));
+      });
+    });
+  }
+
+  unlock(): Promise<any> {
+    return new Promise(resolve => {
+      resolve();
+    });
+  }
+
+  signRawTransaction(rawTx: Object): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        resolve(signRawTxWithPrivKey(this.privKey, rawTx));
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  signMessage(msg: string, address: string, date: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        resolve(signMessageWithPrivKey(this.privKey, msg, address, date));
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 }
