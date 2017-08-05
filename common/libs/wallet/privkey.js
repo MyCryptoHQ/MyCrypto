@@ -44,9 +44,7 @@ export default class PrivKeyWallet extends BaseWallet {
   }
 
   unlock(): Promise<any> {
-    return new Promise(resolve => {
-      resolve();
-    });
+    return Promise.resolve();
   }
 
   signRawTransaction(rawTx: RawTx): Promise<any> {

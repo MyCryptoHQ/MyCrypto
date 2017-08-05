@@ -2,7 +2,7 @@
 
 export default class BaseWallet {
   getAddress(): Promise<any> {
-    throw 'Implement me';
+    return Promise.reject('Implement me');
   }
 
   getNakedAddress(): Promise<any> {
