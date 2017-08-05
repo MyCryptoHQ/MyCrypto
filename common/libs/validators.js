@@ -95,7 +95,6 @@ export function isValidRawTx(rawTx: Object): boolean {
     { name: 'data', type: 'string', lenReq: false },
     { name: 'chainId', type: 'number' }
   ];
-  let valid = true;
 
   //ensure rawTx has above properties
   //ensure all specified types match
@@ -105,24 +104,23 @@ export function isValidRawTx(rawTx: Object): boolean {
   //ensure valid address for 'to' prop
   //ensure rawTx only has above properties
 
-  propReqs.forEach(prop => {
-    if (!valid) return;
-
+  for (let i = 0; i < propReqs.length; i++) {
+    const prop = propReqs[i];
     const value = rawTx[prop.name];
 
-    if (!rawTx.hasOwnProperty(prop.name)) valid = false;
-    if (typeof value !== prop.type) valid = false;
+    if (!rawTx.hasOwnProperty(prop.name)) return false;
+    if (typeof value !== prop.type) return false;
     if (prop.type === 'string') {
-      if (prop.lenReq && value.length === 0) valid = false;
+      if (prop.lenReq && value.length === 0) return false;
       if (value.length && value.substring(0, 2) !== '0x') {
-        valid = false;
+        return false;
       }
-      if (!isValidHex(value)) valid = false;
+      if (!isValidHex(value)) return false;
     }
-  });
+  }
 
-  if (!isValidETHAddress(rawTx.to)) valid = false;
-  if (Object.keys(rawTx).length !== propReqs.length) valid = false;
+  if (!isValidETHAddress(rawTx.to)) return false;
+  if (Object.keys(rawTx).length !== propReqs.length) return false;
 
-  return valid;
+  return true;
 }
