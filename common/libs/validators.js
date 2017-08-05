@@ -85,7 +85,17 @@ export function isPositiveIntegerOrZero(number: number): boolean {
   return number >= 0 && parseInt(number) === number;
 }
 
-export function isValidRawTx(rawTx: Object): boolean {
+export type RawTx = {
+  nonce: string,
+  gasPrice: string,
+  gasLimit: string,
+  to: string,
+  value: string,
+  data: string,
+  chainId: number
+};
+
+export function isValidRawTx(rawTx: RawTx): boolean {
   const propReqs = [
     { name: 'nonce', type: 'string', lenReq: true },
     { name: 'gasPrice', type: 'string', lenReq: true },

@@ -3,8 +3,9 @@
 import EthTx from 'ethereumjs-tx';
 import { sha3, ecsign } from 'ethereumjs-util';
 import { isValidRawTx } from 'libs/validators';
+import type { RawTx } from 'libs/validators';
 
-export function signRawTxWithPrivKey(privKey: Buffer, rawTx: Object): string {
+export function signRawTxWithPrivKey(privKey: Buffer, rawTx: RawTx): string {
   if (!isValidRawTx(rawTx)) {
     throw new Error('Invalid raw transaction');
   }

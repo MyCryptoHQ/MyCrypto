@@ -8,6 +8,7 @@ import {
 import { randomBytes } from 'crypto';
 import { pkeyToKeystore } from 'libs/keystore';
 import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
+import type { RawTx } from 'libs/validators';
 
 export default class PrivKeyWallet extends BaseWallet {
   privKey: Buffer;
@@ -48,7 +49,7 @@ export default class PrivKeyWallet extends BaseWallet {
     });
   }
 
-  signRawTransaction(rawTx: Object): Promise<any> {
+  signRawTransaction(rawTx: RawTx): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
         resolve(signRawTxWithPrivKey(this.privKey, rawTx));
