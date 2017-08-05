@@ -25,7 +25,7 @@ import { getNodeLib } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 import type { BaseNode } from 'libs/nodes';
 import type { Token } from 'config/data';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import { valueToHex } from 'libs/values';
 import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
@@ -302,7 +302,7 @@ export class SendTransaction extends React.Component {
       value: '0x0',
       data: ERC20.transfer(
         this.state.to,
-        Big(this.state.value).times(Big(10).pow(token.decimal))
+        new Big(this.state.value).times(new Big(10).pow(token.decimal))
       )
     };
   }

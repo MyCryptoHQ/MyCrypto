@@ -1,5 +1,5 @@
 // @flow
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import BaseNode from '../base';
 import type { TransactionWithoutGas } from 'libs/transaction';
 import RPCClient, { getBalance, estimateGas, ethCall } from './client';
@@ -27,7 +27,6 @@ export default class RpcNode extends BaseNode {
       if (response.error) {
         throw new Error('estimateGas error');
       }
-      // FIXME hexdec
       return new Big(Number(response.result));
     });
   }
@@ -47,10 +46,9 @@ export default class RpcNode extends BaseNode {
         return response.map((item, idx) => {
           // FIXME wrap in maybe-like
           if (item.error) {
-            return Big(0);
+            return new Big(0);
           }
-          // FIXME hexdec
-          return Big(Number(item.result)).div(Big(10).pow(tokens[idx].decimal));
+          return new Big(Number(item.result)).div(new Big(10).pow(tokens[idx].decimal));
         });
       });
   }

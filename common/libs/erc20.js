@@ -1,7 +1,7 @@
 // @flow
 import Contract from 'libs/contract';
 import type { ABI } from 'libs/contract';
-import type Big from 'big.js';
+import type Big from 'bignumber.js';
 
 const erc20Abi: ABI = [
   {

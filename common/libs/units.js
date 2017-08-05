@@ -1,6 +1,6 @@
 // @flow
 
-import Big from 'big.js';
+import Big from 'bignumber.js';
 
 const UNITS = {
   wei: '1',

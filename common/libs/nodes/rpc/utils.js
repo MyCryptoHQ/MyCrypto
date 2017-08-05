@@ -1,13 +1,12 @@
 // @flow
 // Ref: https://github.com/ethereum/wiki/wiki/JSON-RPC
 
-import type Big from 'big.js';
-import { toHex } from 'libs/values';
+import type Big from 'bignumber.js';
 import { toBuffer } from 'ethereumjs-util';
 
 // When encoding QUANTITIES (integers, numbers): encode as hex, prefix with "0x", the most compact representation (slight exception: zero should be represented as "0x0").
 export function hexEncodeQuantity(value: Big): string {
-  return '0x' + (toHex(value) || '0');
+  return '0x' + (value.toString(16) || '0');
 }
 
 // When encoding UNFORMATTED DATA (byte arrays, account addresses, hashes, bytecode arrays): encode as hex, prefix with "0x", two hex digits per byte.

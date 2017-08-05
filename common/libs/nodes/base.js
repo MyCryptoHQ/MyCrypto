@@ -1,5 +1,5 @@
 // @flow
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import type { TransactionWithoutGas } from 'libs/transaction';
 import type { Token } from 'config/data';
 

@@ -1,4 +1,4 @@
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import {
   toFixedIfLarger,
   formatNumber,
@@ -57,14 +57,14 @@ describe('formatNumber', () => {
 
 describe('formatGasLimit', () => {
   it('should fix transaction gas limit off-by-one errors', () => {
-    expect(formatGasLimit(Big(21001), 'ether')).toEqual('21000');
+    expect(formatGasLimit(new Big(21001), 'ether')).toEqual('21000');
   });
 
   it('should mark the gas limit `-1` if you exceed the limit per block', () => {
-    expect(formatGasLimit(Big(999999999999999), 'ether')).toEqual('-1');
+    expect(formatGasLimit(new Big(999999999999999), 'ether')).toEqual('-1');
   });
 
   it('should not alter a valid gas limit', () => {
-    expect(formatGasLimit(Big(1234))).toEqual('1234');
+    expect(formatGasLimit(new Big(1234))).toEqual('1234');
   });
 });

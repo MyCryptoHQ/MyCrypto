@@ -1,8 +1,7 @@
 // @flow
 // TODO support events, constructors, fallbacks, array slots, types
 import { sha3, setLengthLeft, toBuffer } from 'ethereumjs-util';
-import { toHex } from 'libs/values';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 
 type ABIType = 'address' | 'uint256' | 'bool';
 
@@ -78,7 +77,7 @@ export default class Contract {
         return setLengthLeft(toBuffer(arg), 32).toString('hex');
       case 'uint256':
         if (arg instanceof Big) {
-          arg = '0x' + toHex(arg);
+          arg = '0x' + arg.toString(16);
         }
         assertString(arg);
         return setLengthLeft(toBuffer(arg), 32).toString('hex');
