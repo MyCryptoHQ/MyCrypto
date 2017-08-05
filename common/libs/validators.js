@@ -110,14 +110,14 @@ export function isValidRawTx(rawTx: Object): boolean {
 
     const value = rawTx[prop.name];
 
-    if (!rawTx.hasOwnProperty(prop.name)) return (valid = false);
-    if (typeof value !== prop.type) return (valid = false);
+    if (!rawTx.hasOwnProperty(prop.name)) valid = false;
+    if (typeof value !== prop.type) valid = false;
     if (prop.type === 'string') {
-      if (prop.lenReq && value.length === 0) return (valid = false);
+      if (prop.lenReq && value.length === 0) valid = false;
       if (value.length && value.substring(0, 2) !== '0x') {
-        return (valid = false);
+        valid = false;
       }
-      if (!isValidHex(value)) return (valid = false);
+      if (!isValidHex(value)) valid = false;
     }
   });
 
