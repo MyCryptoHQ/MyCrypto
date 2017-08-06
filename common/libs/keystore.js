@@ -1,5 +1,10 @@
 // @flow
-import { randomBytes, createCipheriv } from 'crypto';
+import {
+  randomBytes,
+  createCipheriv,
+  pbkdf2Sync,
+  createDecipheriv
+} from 'crypto';
 import { sha3 } from 'ethereumjs-util';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
@@ -68,4 +73,65 @@ export function pkeyToKeystore(
 export function getV3Filename(address) {
   const ts = new Date();
   return ['UTC--', ts.toJSON().replace(/:/g, '-'), '--', address].join('');
+}
+
+//ported from v3 file 'myetherwallet.js', Wallet.fromV3, line 242
+//https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js
+//
+//WIP - still need to add flow types, create new flow type 'v3Keystore', etc
+export function fromV3KeystoreToPkey(input, password, nonStrict) {
+  let json =
+    typeof input === 'object'
+      ? input
+      : JSON.parse(nonStrict ? input.toLowerCase() : input);
+  if (json.version !== 3) {
+    throw new Error('Not a V3 wallet');
+  }
+  let derivedKey, kdfparams;
+
+  if (json.crypto.kdf === 'scrypt') {
+    kdfparams = json.crypto.kdfparams;
+    derivedKey = scrypt(
+      new Buffer(password),
+      new Buffer(kdfparams.salt, 'hex'),
+      kdfparams.n,
+      kdfparams.r,
+      kdfparams.p,
+      kdfparams.dklen
+    );
+  } else if (json.crypto.kdf === 'pbkdf2') {
+    kdfparams = json.crypto.kdfparams;
+    if (kdfparams.prf !== 'hmac-sha256') {
+      throw new Error('Unsupported parameters to PBKDF2');
+    }
+    derivedKey = pbkdf2Sync(
+      new Buffer(password),
+      new Buffer(kdfparams.salt, 'hex'),
+      kdfparams.c,
+      kdfparams.dklen,
+      'sha256'
+    );
+  } else {
+    throw new Error('Unsupported key derivation scheme');
+  }
+  let ciphertext = new Buffer(json.crypto.ciphertext, 'hex');
+  let mac = sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]));
+  if (mac.toString('hex') !== json.crypto.mac) {
+    throw new Error('Key derivation failed - possibly wrong passphrase');
+  }
+  let decipher = createDecipheriv(
+    json.crypto.cipher,
+    derivedKey.slice(0, 16),
+    new Buffer(json.crypto.cipherparams.iv, 'hex')
+  );
+  let seed = decipherBuffer(decipher, ciphertext, 'hex');
+  while (seed.length < 32) {
+    let nullBuff = new Buffer([0x00]);
+    seed = Buffer.concat([nullBuff, seed]);
+  }
+  return seed;
+}
+
+function decipherBuffer(decipher, data) {
+  return Buffer.concat([decipher.update(data), decipher.final()]);
 }
