@@ -40,14 +40,18 @@ export default class SwapProgress extends Component {
       if (!hasShownViewTx) {
         let linkElement;
         let link;
+        const notificationMessage = `
+           Your TX has been broadcast to the network. 
+           It is waiting to be mined & confirmed. During ICOs, it may take 3+ hours to confirm. 
+           Use the Verify & Check buttons below to see. TX Hash: ${outputTx}`;
         // everything but BTC is a token
         if (destinationKind !== 'BTC') {
           link = bityConfig.ethExplorer.replace('[[txHash]]', outputTx);
-          linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+          linkElement = `<a href="${link}" target='_blank' rel='noopener'>${notificationMessage}</a>`;
           // BTC uses a different explorer
         } else {
           link = bityConfig.btcExplorer.replace('[[txHash]]', outputTx);
-          linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+          linkElement = `<a href="${link}" target='_blank' rel='noopener'>${notificationMessage}</a>`;
         }
         this.setState({ hasShownViewTx: true }, () => {
           showNotification('success', linkElement);
