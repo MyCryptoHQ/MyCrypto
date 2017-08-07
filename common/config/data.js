@@ -140,6 +140,13 @@ export type NetworkConfig = {
   contracts: ?Array<NetworkContract>
 };
 
+export type NodeConfig = {
+  network: string,
+  lib: RPCNode,
+  service: string,
+  estimateGas: ?boolean
+};
+
 export const NETWORKS: { [key: string]: NetworkConfig } = {
   ETH: {
     name: 'ETH',
@@ -159,7 +166,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
   }
 };
 
-export const NODES = {
+export const NODES: { [key: string]: NodeConfig } = {
   eth_mew: {
     network: 'ETH',
     lib: new RPCNode('https://api.myetherapi.com/eth'),

@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 import { UnlockHeader } from 'components/ui';
 import {
@@ -10,7 +9,8 @@ import {
   CustomMessage,
   GasField,
   AmountField,
-  AddressField
+  AddressField,
+  ConfirmationModal
 } from './components';
 import { BalanceSidebar } from 'components';
 import pickBy from 'lodash/pickBy';
@@ -23,6 +23,8 @@ import { donationAddressMap } from 'config/data';
 import Big from 'big.js';
 import type { TokenBalance } from 'selectors/wallet';
 import { getTokenBalances } from 'selectors/wallet';
+import type { NodeConfig } from 'config/data';
+import { getNodeConfig } from 'selectors/config';
 
 type State = {
   hasQueryString: boolean,
@@ -32,7 +34,8 @@ type State = {
   unit: string,
   gasLimit: string,
   data: string,
-  gasChanged: boolean
+  gasChanged: boolean,
+  showTxConfirm: boolean
 };
 
 function getParam(query: { [string]: string }, key: string) {
@@ -56,7 +59,8 @@ type Props = {
   },
   wallet: BaseWallet,
   balance: Big,
-  tokenBalances: TokenBalance[]
+  tokenBalances: TokenBalance[],
+  node: NodeConfig
 };
 
 export class SendTransaction extends React.Component {
@@ -70,7 +74,8 @@ export class SendTransaction extends React.Component {
     unit: 'ether',
     gasLimit: '21000',
     data: '',
-    gasChanged: false
+    gasChanged: false,
+    showTxConfirm: false
   };
 
   componentDidMount() {
@@ -82,8 +87,6 @@ export class SendTransaction extends React.Component {
 
   render() {
     const unlocked = !!this.props.wallet;
-    const unitReadable = 'UNITREADABLE';
-    const nodeUnit = 'NODEUNIT';
     const hasEnoughBalance = false;
     const {
       to,
@@ -92,9 +95,13 @@ export class SendTransaction extends React.Component {
       gasLimit,
       data,
       readOnly,
-      hasQueryString
+      hasQueryString,
+      showTxConfirm
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
+
+    // TODO: Figure out if this is in state or props, replace with real thing
+    const rawTransaction = {};
 
     // tokens
     // ng-show="token.balance!=0 && token.balance!='loading' || token.type!=='default' || tokenVisibility=='shown'"
@@ -218,6 +225,14 @@ export class SendTransaction extends React.Component {
               </article>}
           </main>
         </div>
+        {showTxConfirm &&
+          <ConfirmationModal
+            wallet={this.props.wallet}
+            node={this.props.node}
+            rawTransaction={rawTransaction}
+            onCancel={this.cancelTx}
+            onConfirm={this.confirmTx}
+          />}
       </section>
     );
   }
@@ -296,13 +311,28 @@ export class SendTransaction extends React.Component {
       unit
     });
   };
+
+  generateTx() {
+    // TODO: Generate transaction
+  }
+
+  cancelTx() {
+    this.setState({ showTxConfirm: false });
+  }
+
+  // TODO: Flow type me with shared raw transaction type
+  confirmTx(rawTx: any) {
+    // TODO: Broadcast transaction
+    console.log(rawTx);
+  }
 }
 
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
     balance: state.wallet.balance,
-    tokenBalances: getTokenBalances(state)
+    tokenBalances: getTokenBalances(state),
+    node: getNodeConfig(state)
   };
 }
 

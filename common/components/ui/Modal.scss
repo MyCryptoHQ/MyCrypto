@@ -49,7 +49,7 @@ $m-anim-speed: 400ms;
 
 .Modal {
   position: fixed;
-  top: 50%;
+  top: 30px;
   left: 50%;
   max-width: 95%;
   max-width: calc(100% - #{$m-window-padding * 2});
