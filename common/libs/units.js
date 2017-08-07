@@ -35,10 +35,10 @@ function getValueOfUnit(unit: UNIT) {
   return new Big(UNITS[unit]);
 }
 
-export function toEther(number: Big, unit: UNIT) {
-  return toWei(number, unit).div(getValueOfUnit('ether'));
-}
-
 export function toWei(number: Big, unit: UNIT): Big {
   return number.times(getValueOfUnit(unit));
+}
+
+export function toUnit(number: Big, fromUnit: UNIT, toUnit: UNIT): Big {
+  return toWei(number, fromUnit).div(getValueOfUnit(toUnit));
 }
