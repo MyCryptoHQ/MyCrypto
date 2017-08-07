@@ -135,9 +135,10 @@ export default class ConfirmationModal extends React.Component {
             </li>
             <li className="ConfModal-details-detail">
               {rawTransaction.data
-                ? <code>
-                    {rawTransaction.data}
-                  </code>
+                ? <span>
+                    You are sending the following data:{' '}
+                    <code>{rawTransaction.data}</code>
+                  </span>
                 : 'There is no data attached to this transaction'}
             </li>
           </ul>
