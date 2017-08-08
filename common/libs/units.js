@@ -40,6 +40,5 @@ export function toEther(number: Big, unit: UNIT) {
 }
 
 export function toWei(number: Big, unit: UNIT): Big {
-  console.log(number);
   return number.times(getValueOfUnit(unit));
 }
