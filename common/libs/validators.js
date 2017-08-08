@@ -84,3 +84,53 @@ export function isPositiveIntegerOrZero(number: number): boolean {
   }
   return number >= 0 && parseInt(number) === number;
 }
+
+export type RawTx = {
+  nonce: string,
+  gasPrice: string,
+  gasLimit: string,
+  to: string,
+  value: string,
+  data: string,
+  chainId: number
+};
+
+export function isValidRawTx(rawTx: RawTx): boolean {
+  const propReqs = [
+    { name: 'nonce', type: 'string', lenReq: true },
+    { name: 'gasPrice', type: 'string', lenReq: true },
+    { name: 'gasLimit', type: 'string', lenReq: true },
+    { name: 'to', type: 'string', lenReq: true },
+    { name: 'value', type: 'string', lenReq: true },
+    { name: 'data', type: 'string', lenReq: false },
+    { name: 'chainId', type: 'number' }
+  ];
+
+  //ensure rawTx has above properties
+  //ensure all specified types match
+  //ensure length !0 for strings where length is required
+  //ensure valid hex for strings
+  //ensure all strings begin with '0x'
+  //ensure valid address for 'to' prop
+  //ensure rawTx only has above properties
+
+  for (let i = 0; i < propReqs.length; i++) {
+    const prop = propReqs[i];
+    const value = rawTx[prop.name];
+
+    if (!rawTx.hasOwnProperty(prop.name)) return false;
+    if (typeof value !== prop.type) return false;
+    if (prop.type === 'string') {
+      if (prop.lenReq && value.length === 0) return false;
+      if (value.length && value.substring(0, 2) !== '0x') {
+        return false;
+      }
+      if (!isValidHex(value)) return false;
+    }
+  }
+
+  if (!isValidETHAddress(rawTx.to)) return false;
+  if (Object.keys(rawTx).length !== propReqs.length) return false;
+
+  return true;
+}

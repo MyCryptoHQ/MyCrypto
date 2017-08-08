@@ -2,11 +2,15 @@
 import { stripHex } from 'libs/values';
 
 export default class BaseWallet {
-  getAddress(): string {
-    throw 'Implement me';
+  getAddress(): Promise<any> {
+    return Promise.reject('Implement me');
   }
 
-  getNakedAddress(): string {
-    return stripHex(this.getAddress());
+  getNakedAddress(): Promise<any> {
+    return new Promise(resolve => {
+      this.getAddress.then(address => {
+        resolve(stripHex(address));
+      });
+    });
   }
 }
