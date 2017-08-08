@@ -75,22 +75,15 @@ export function getV3Filename(address) {
   return ['UTC--', ts.toJSON().replace(/:/g, '-'), '--', address].join('');
 }
 
-export function fromV3KeystoreToPkey(
-  input: string | Object,
-  password: string,
-  nonStrict: boolean
-): Buffer {
-  let json =
-    typeof input === 'object'
-      ? input
-      : JSON.parse(nonStrict ? input.toLowerCase() : input);
-  if (json.version !== 3) {
+export function fromV3KeystoreToPkey(input: string, password: string): Buffer {
+  let kstore = JSON.parse(input.toLowerCase());
+  if (kstore.version !== 3) {
     throw new Error('Not a V3 wallet');
   }
   let derivedKey, kdfparams;
 
-  if (json.crypto.kdf === 'scrypt') {
-    kdfparams = json.crypto.kdfparams;
+  if (kstore.crypto.kdf === 'scrypt') {
+    kdfparams = kstore.crypto.kdfparams;
     derivedKey = scrypt(
       new Buffer(password),
       new Buffer(kdfparams.salt, 'hex'),
@@ -99,8 +92,8 @@ export function fromV3KeystoreToPkey(
       kdfparams.p,
       kdfparams.dklen
     );
-  } else if (json.crypto.kdf === 'pbkdf2') {
-    kdfparams = json.crypto.kdfparams;
+  } else if (kstore.crypto.kdf === 'pbkdf2') {
+    kdfparams = kstore.crypto.kdfparams;
     if (kdfparams.prf !== 'hmac-sha256') {
       throw new Error('Unsupported parameters to PBKDF2');
     }
@@ -114,15 +107,15 @@ export function fromV3KeystoreToPkey(
   } else {
     throw new Error('Unsupported key derivation scheme');
   }
-  let ciphertext = new Buffer(json.crypto.ciphertext, 'hex');
+  let ciphertext = new Buffer(kstore.crypto.ciphertext, 'hex');
   let mac = sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]));
-  if (mac.toString('hex') !== json.crypto.mac) {
+  if (mac.toString('hex') !== kstore.crypto.mac) {
     throw new Error('Key derivation failed - possibly wrong passphrase');
   }
   let decipher = createDecipheriv(
-    json.crypto.cipher,
+    kstore.crypto.cipher,
     derivedKey.slice(0, 16),
-    new Buffer(json.crypto.cipherparams.iv, 'hex')
+    new Buffer(kstore.crypto.cipherparams.iv, 'hex')
   );
   let seed = decipherBuffer(decipher, ciphertext, 'hex');
   while (seed.length < 32) {
