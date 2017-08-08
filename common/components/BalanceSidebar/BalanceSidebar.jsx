@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import { BaseWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import type { State } from 'reducers';

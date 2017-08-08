@@ -1,5 +1,9 @@
-import Big from 'big.js';
-import { toFixedIfLarger, formatNumber } from '../../common/utils/formatters';
+import Big from 'bignumber.js';
+import {
+  toFixedIfLarger,
+  formatNumber,
+  formatGasLimit
+} from '../../common/utils/formatters';
 
 describe('toFixedIfLarger', () => {
   it('should return same value if decimal isnt longer than default', () => {
@@ -48,5 +52,19 @@ describe('formatNumber', () => {
     it(`should convert ${pair.input.toString()} to ${pair.output} when using ${digits} digits`, () => {
       expect(formatNumber(pair.input, pair.digits)).toEqual(pair.output);
     });
+  });
+});
+
+describe('formatGasLimit', () => {
+  it('should fix transaction gas limit off-by-one errors', () => {
+    expect(formatGasLimit(new Big(21001), 'ether')).toEqual('21000');
+  });
+
+  it('should mark the gas limit `-1` if you exceed the limit per block', () => {
+    expect(formatGasLimit(new Big(999999999999999), 'ether')).toEqual('-1');
+  });
+
+  it('should not alter a valid gas limit', () => {
+    expect(formatGasLimit(new Big(1234))).toEqual('1234');
   });
 });

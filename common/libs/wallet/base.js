@@ -1,4 +1,5 @@
 // @flow
+import { stripHex } from 'libs/values';
 
 export default class BaseWallet {
   getAddress(): Promise<any> {
@@ -8,7 +9,7 @@ export default class BaseWallet {
   getNakedAddress(): Promise<any> {
     return new Promise(resolve => {
       this.getAddress.then(address => {
-        resolve(address.replace('0x', '').toLowerCase());
+        resolve(stripHex(address));
       });
     });
   }

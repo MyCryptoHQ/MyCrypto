@@ -65,7 +65,7 @@ export function pkeyToKeystore(
   };
 }
 
-export function getV3Filename(address) {
+export function getV3Filename(address: string) {
   const ts = new Date();
   return ['UTC--', ts.toJSON().replace(/:/g, '-'), '--', address].join('');
 }
