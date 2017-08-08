@@ -52,6 +52,7 @@ export default class Contract {
       `${name}(${method.inputs.map(i => i.type).join(',')})`
     );
 
+    // TODO: Add explanation, why slice the first 8?
     return (
       '0x' +
       selector.toString('hex').slice(0, 8) +
