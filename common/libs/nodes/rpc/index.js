@@ -93,8 +93,7 @@ export default class RpcNode extends BaseNode {
         to: addHexPrefix(tx.to),
         value: addHexPrefix(valueWei.toString(16)),
         data: tx.data ? addHexPrefix(tx.data) : '',
-        // TODO: Figure out where this comes from?
-        chainId: 1
+        chainId: tx.chainId || 1
       };
 
       const rawTxJson = JSON.stringify(rawTx);

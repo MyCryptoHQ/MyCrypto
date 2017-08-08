@@ -5,7 +5,8 @@ export type TransactionWithoutGas = {|
   to: string,
   gasLimit?: string | number,
   value: string | number,
-  data?: string
+  data?: string,
+  chainId?: number
 |};
 
 export type Transaction = {|

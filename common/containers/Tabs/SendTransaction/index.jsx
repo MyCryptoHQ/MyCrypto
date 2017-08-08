@@ -20,9 +20,13 @@ import BaseWallet from 'libs/wallet/base';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
 import { isValidETHAddress } from 'libs/validators';
-import { getNodeLib, getGasPriceGwei } from 'selectors/config';
+import {
+  getNodeLib,
+  getNetworkConfig,
+  getGasPriceGwei
+} from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
-import type { Token } from 'config/data';
+import type { Token, NetworkConfig } from 'config/data';
 import Big from 'bignumber.js';
 import { valueToHex } from 'libs/values';
 import ERC20 from 'libs/erc20';
@@ -72,6 +76,7 @@ type Props = {
   wallet: BaseWallet,
   balance: Big,
   nodeLib: RPCNode,
+  network: NetworkConfig,
   tokens: Token[],
   tokenBalances: TokenBalance[],
   gasPrice: number
@@ -405,7 +410,8 @@ export class SendTransaction extends React.Component {
         value: this.state.value,
         gasLimit: this.state.gasLimit,
         gasPrice: this.props.gasPrice,
-        data: this.state.data
+        data: this.state.data,
+        chainId: this.props.network.chainId
       },
       wallet
     );
@@ -420,6 +426,7 @@ function mapStateToProps(state: AppState) {
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
     nodeLib: getNodeLib(state),
+    network: getNetworkConfig(state),
     tokens: getTokens(state),
     gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei')
   };
