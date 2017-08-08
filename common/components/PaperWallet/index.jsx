@@ -97,8 +97,22 @@ type Props = {
 
 export default class PaperWallet extends React.Component {
   props: Props;
+  state = { address: '' };
+
+  componentDidMount() {
+    if (!this.props.wallet) return;
+    this.props.wallet
+      .getAddress()
+      .then(addr => {
+        this.setState({ address: addr });
+      })
+      .catch(err => {
+        //TODO: communicate error in UI
+        console.log(err);
+      });
+  }
+
   render() {
-    const address = this.props.wallet.getAddress();
     const privateKey = this.props.wallet.getPrivateKey();
 
     return (
@@ -108,7 +122,7 @@ export default class PaperWallet extends React.Component {
 
         <div style={styles.block}>
           <div style={styles.box}>
-            <QRCode data={address} />
+            <QRCode data={this.state.address} />
           </div>
           <p style={styles.blockText}>YOUR ADDRESS</p>
         </div>
@@ -129,7 +143,7 @@ export default class PaperWallet extends React.Component {
           <p style={styles.infoText}>
             <strong style={styles.infoLabel}>Your Address:</strong>
             <br />
-            {address}
+            {this.state.address}
           </p>
           <p style={styles.infoText}>
             <strong style={styles.infoLabel}>Your Private Key:</strong>
@@ -140,7 +154,7 @@ export default class PaperWallet extends React.Component {
 
         <div style={styles.identiconContainer}>
           <div style={{ float: 'left' }}>
-            <Identicon address={address} size={'42px'} />
+            <Identicon address={this.state.address} size={'42px'} />
           </div>
           <p style={styles.identiconText}>
             Always look for this icon when sending to this wallet
