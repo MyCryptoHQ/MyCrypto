@@ -40,6 +40,8 @@ import type {
 import type { UNIT } from 'libs/units';
 import { toWei } from 'libs/units';
 import { formatGasLimit } from 'utils/formatters';
+import { showNotification } from 'actions/notifications';
+import type { ShowNotificationAction } from 'actions/notifications';
 
 type State = {
   hasQueryString: boolean,
@@ -79,7 +81,12 @@ type Props = {
   network: NetworkConfig,
   tokens: Token[],
   tokenBalances: TokenBalance[],
-  gasPrice: number
+  gasPrice: number,
+  showNotification: (
+    level: string,
+    msg: string,
+    duration?: number
+  ) => ShowNotificationAction
 };
 
 export class SendTransaction extends React.Component {
@@ -402,21 +409,24 @@ export class SendTransaction extends React.Component {
     const { nodeLib, wallet } = this.props;
     const address = await wallet.getAddress();
 
-    // TODO: Handle generate transaction failure
-    const transaction = await nodeLib.generateTransaction(
-      {
-        to: this.state.to,
-        from: address,
-        value: this.state.value,
-        gasLimit: this.state.gasLimit,
-        gasPrice: this.props.gasPrice,
-        data: this.state.data,
-        chainId: this.props.network.chainId
-      },
-      wallet
-    );
+    try {
+      const transaction = await nodeLib.generateTransaction(
+        {
+          to: this.state.to,
+          from: address,
+          value: this.state.value,
+          gasLimit: this.state.gasLimit,
+          gasPrice: this.props.gasPrice,
+          data: this.state.data,
+          chainId: this.props.network.chainId
+        },
+        wallet
+      );
 
-    this.setState({ transaction });
+      this.setState({ transaction });
+    } catch (err) {
+      this.props.showNotification('danger', err.message, 5000);
+    }
   };
 }
 
@@ -432,4 +442,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(SendTransaction);
+export default connect(mapStateToProps, { showNotification })(SendTransaction);

@@ -86,9 +86,14 @@ export default class RpcNode extends BaseNode {
 
       // TODO: Handle token values
       const valueWei = new Big(toWei(new Big(tx.value), 'ether'));
+      const balanceWei = new Big(balance.result);
+      if (valueWei.gte(balanceWei)) {
+        throw new Error('Insufficient funds for that transaction');
+      }
+
       const rawTx = {
         nonce: addHexPrefix(txCount.result),
-        gasPrice: addHexPrefix(balance.result),
+        gasPrice: addHexPrefix(new Big(tx.gasPrice).toString(16)),
         gasLimit: addHexPrefix(new Big(tx.gasLimit).toString(16)),
         to: addHexPrefix(tx.to),
         value: addHexPrefix(valueWei.toString(16)),
