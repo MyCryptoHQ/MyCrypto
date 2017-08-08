@@ -1,6 +1,7 @@
 // @flow
 import Big from 'bignumber.js';
 import { addHexPrefix } from 'ethereumjs-util';
+import translate from 'translations';
 import BaseNode from '../base';
 import type {
   TransactionWithoutGas,
@@ -17,6 +18,7 @@ import type { Token } from 'config/data';
 import ERC20 from 'libs/erc20';
 import type { BaseWallet } from 'libs/wallet';
 import { toWei } from 'libs/units';
+import { isValidETHAddress } from 'libs/validators';
 
 export default class RpcNode extends BaseNode {
   client: RPCClient;
@@ -71,6 +73,11 @@ export default class RpcNode extends BaseNode {
     tx: Transaction,
     wallet: BaseWallet
   ): Promise<BroadcastTransaction> {
+    // First check whatever we can synchronously
+    if (!isValidETHAddress(tx.to)) {
+      return Promise.reject(new Error(translate('ERROR_5')));
+    }
+
     const calls = [getBalance(tx.from), getTransactionCount(tx.from)];
 
     return this.client.batch(calls).then(async results => {
@@ -88,7 +95,7 @@ export default class RpcNode extends BaseNode {
       const valueWei = new Big(toWei(new Big(tx.value), 'ether'));
       const balanceWei = new Big(balance.result);
       if (valueWei.gte(balanceWei)) {
-        throw new Error('Insufficient funds for that transaction');
+        throw new Error(translate('GETH_Balance'));
       }
 
       const rawTx = {
