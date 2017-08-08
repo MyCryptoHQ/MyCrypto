@@ -75,11 +75,11 @@ export function getV3Filename(address) {
   return ['UTC--', ts.toJSON().replace(/:/g, '-'), '--', address].join('');
 }
 
-//ported from v3 file 'myetherwallet.js', Wallet.fromV3, line 242
-//https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js
-//
-//WIP - still need to add flow types, create new flow type 'v3Keystore', etc
-export function fromV3KeystoreToPkey(input, password, nonStrict) {
+export function fromV3KeystoreToPkey(
+  input: string | Object,
+  password: string,
+  nonStrict: boolean
+): Buffer {
   let json =
     typeof input === 'object'
       ? input
