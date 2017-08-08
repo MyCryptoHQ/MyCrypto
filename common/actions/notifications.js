@@ -2,11 +2,12 @@
 
 /*** Shared types ***/
 export type NOTIFICATION_LEVEL = 'danger' | 'warning' | 'success' | 'info';
+export type INFINITY = 'infinity';
 
 export type Notification = {
   level: NOTIFICATION_LEVEL,
   msg: string,
-  duration?: number
+  duration?: number | INFINITY
 };
 
 /*** Show Notification ***/

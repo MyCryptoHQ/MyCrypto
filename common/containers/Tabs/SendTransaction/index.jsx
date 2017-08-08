@@ -19,13 +19,23 @@ import BaseWallet from 'libs/wallet/base';
 // import type { Transaction } from './types';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
-import Big from 'big.js';
+import { isValidETHAddress } from 'libs/validators';
+import { getNodeLib, getGasPriceGwei } from 'selectors/config';
+import { getTokens } from 'selectors/wallet';
+import type { Token } from 'config/data';
+import Big from 'bignumber.js';
+import { valueToHex } from 'libs/values';
+import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
 import { getTokenBalances } from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
-import type { Transaction } from 'libs/nodes/rpc';
-import { getNodeLib } from 'selectors/config';
+import type {
+  TransactionWithoutGas,
+  BroadcastTransaction
+} from 'libs/transaction';
 import type { UNIT } from 'libs/units';
+import { toWei } from 'libs/units';
+import { formatGasLimit } from 'utils/formatters';
 
 type State = {
   hasQueryString: boolean,
@@ -37,7 +47,7 @@ type State = {
   gasLimit: string,
   data: string,
   gasChanged: boolean,
-  transaction: ?Transaction
+  transaction: ?BroadcastTransaction
 };
 
 function getParam(query: { [string]: string }, key: string) {
@@ -61,8 +71,10 @@ type Props = {
   },
   wallet: BaseWallet,
   balance: Big,
+  nodeLib: RPCNode,
+  tokens: Token[],
   tokenBalances: TokenBalance[],
-  nodeLib: RPCNode
+  gasPrice: number
 };
 
 export class SendTransaction extends React.Component {
@@ -87,24 +99,24 @@ export class SendTransaction extends React.Component {
     }
   }
 
-  generateTx = async () => {
-    const { nodeLib, wallet } = this.props;
-
-    // TODO: Handle generate transaction failure
-    const transaction = await nodeLib.generateTransaction({
-      to: this.state.to,
-      from: wallet.getAddress(),
-      value: this.state.value,
-      unit: this.state.unit,
-      gasLimit: this.state.gasLimit,
-      data: this.state.data,
-      // TODO: Handle hardware wallets?
-      // $FlowFixMe
-      pkey: wallet.getPrivateKey ? wallet.getPrivateKey() : ''
-    });
-
-    this.setState({ transaction });
-  };
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    // if gas is not changed
+    // and we have valid tx
+    // and relevant fields changed
+    // estimate gas
+    // TODO we might want to listen to gas price changes here
+    // TODO debunce the call
+    if (
+      !this.state.gasChanged &&
+      this.isValid() &&
+      (this.state.to !== prevState.to ||
+        this.state.value !== prevState.value ||
+        this.state.unit !== prevState.unit ||
+        this.state.data !== prevState.data)
+    ) {
+      this.estimateGas();
+    }
+  }
 
   render() {
     const unlocked = !!this.props.wallet;
@@ -269,8 +281,61 @@ export class SendTransaction extends React.Component {
     return { to, data, value, unit, gasLimit, readOnly };
   }
 
+  isValid() {
+    const { to, value } = this.state;
+    return (
+      isValidETHAddress(to) &&
+      value &&
+      Number(value) > 0 &&
+      !isNaN(Number(value)) &&
+      isFinite(Number(value))
+    );
+  }
+
+  async getTransactionFromState(): Promise<TransactionWithoutGas> {
+    const { wallet } = this.props;
+
+    if (this.state.unit === 'ether') {
+      return {
+        to: this.state.to,
+        from: await wallet.getAddress(),
+        value: valueToHex(this.state.value)
+      };
+    }
+    const token = this.props.tokens.find(x => x.symbol === this.state.unit);
+    if (!token) {
+      throw new Error('No matching token');
+    }
+
+    return {
+      to: token.address,
+      from: await wallet.getAddress(),
+      value: '0x0',
+      data: ERC20.transfer(
+        this.state.to,
+        new Big(this.state.value).times(new Big(10).pow(token.decimal))
+      )
+    };
+  }
+
+  async estimateGas() {
+    const trans = await this.getTransactionFromState();
+    if (!trans) {
+      return;
+    }
+
+    // Grab a reference to state. If it has changed by the time the estimateGas
+    // call comes back, we don't want to replace the gasLimit in state.
+    const state = this.state;
+
+    this.props.nodeLib.estimateGas(trans).then(gasLimit => {
+      if (this.state === state) {
+        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+      }
+    });
+  }
+
   // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
-  // FIXME also should it reset gasChanged?
   onNewTx = (
     address: string,
     amount: string,
@@ -327,6 +392,26 @@ export class SendTransaction extends React.Component {
       unit
     });
   };
+
+  generateTx = async () => {
+    const { nodeLib, wallet } = this.props;
+    const address = await wallet.getAddress();
+
+    // TODO: Handle generate transaction failure
+    const transaction = await nodeLib.generateTransaction(
+      {
+        to: this.state.to,
+        from: address,
+        value: this.state.value,
+        gasLimit: this.state.gasLimit,
+        gasPrice: this.props.gasPrice,
+        data: this.state.data
+      },
+      wallet
+    );
+
+    this.setState({ transaction });
+  };
 }
 
 function mapStateToProps(state: AppState) {
@@ -334,7 +419,9 @@ function mapStateToProps(state: AppState) {
     wallet: state.wallet.inst,
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
-    nodeLib: getNodeLib(state)
+    nodeLib: getNodeLib(state),
+    tokens: getTokens(state),
+    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei')
   };
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { showNotification } from 'actions/notifications';
 import * as swapActions from 'actions/swap';
 import type {
   ChangeStepSwapAction,
@@ -7,16 +8,20 @@ import type {
   DestinationKindSwapAction,
   OriginAmountSwapAction,
   DestinationAmountSwapAction,
-  LoadBityRatesSwapAction,
+  LoadBityRatesRequestedSwapAction,
   DestinationAddressSwapAction,
   RestartSwapAction,
-  StopLoadBityRatesSwapAction
+  StopLoadBityRatesSwapAction,
+  BityOrderCreateRequestedSwapAction,
+  StartPollBityOrderStatusAction,
+  StopOrderTimerSwapAction,
+  StopPollBityOrderStatusAction
 } from 'actions/swap';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
-import SwapProgress from './components/SwapProgress';
+import PartThree from './components/PartThree';
 
 type ReduxStateProps = {
   step: string,
@@ -25,16 +30,16 @@ type ReduxStateProps = {
   originKind: string,
   destinationKindOptions: String[],
   originKindOptions: String[],
-  bityRates: boolean,
+  bityRates: {},
   originAmount: ?number,
   destinationAmount: ?number,
+  isPostingOrder: boolean,
   isFetchingRates: boolean,
-  // PART 3
-  referenceNumber: string,
-  timeRemaining: string,
-  numberOfConfirmation: number,
-  orderStep: number,
-  orderStarted: boolean
+  bityOrder: {},
+  secondsRemaining: ?number,
+  paymentAddress: ?string,
+  orderStatus: ?string,
+  outputTx: ?string
 };
 
 type ReduxActionProps = {
@@ -43,12 +48,19 @@ type ReduxActionProps = {
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
   originAmountSwap: (value: ?number) => OriginAmountSwapAction,
   destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
-  loadBityRatesSwap: () => LoadBityRatesSwapAction,
+  loadBityRatesRequestedSwap: () => LoadBityRatesRequestedSwapAction,
   destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
   restartSwap: () => RestartSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
-  // PART 3 (IGNORE FOR NOW)
-  referenceNumberSwap: typeof swapActions.referenceNumberSwap
+  bityOrderCreateRequestedSwap: (
+    amount: number,
+    destinationAddress: string,
+    pair: string,
+    mode: number
+  ) => BityOrderCreateRequestedSwapAction,
+  startPollBityOrderStatus: () => StartPollBityOrderStatusAction,
+  stopOrderTimerSwap: () => StopOrderTimerSwapAction,
+  stopPollBityOrderStatus: () => StopPollBityOrderStatusAction
 };
 
 class Swap extends Component {
@@ -56,7 +68,7 @@ class Swap extends Component {
 
   componentDidMount() {
     // TODO: Use `isFetchingRates` to show a loader
-    this.props.loadBityRatesSwap();
+    this.props.loadBityRatesRequestedSwap();
   }
 
   componentWillUnmount() {
@@ -75,10 +87,12 @@ class Swap extends Component {
       originKindOptions,
       destinationAddress,
       step,
-      referenceNumber,
-      timeRemaining,
-      numberOfConfirmations,
-      orderStep,
+      bityOrder,
+      secondsRemaining,
+      paymentAddress,
+      orderStatus,
+      isPostingOrder,
+      outputTx,
       // ACTIONS
       restartSwap,
       stopLoadBityRatesSwap,
@@ -88,35 +102,44 @@ class Swap extends Component {
       originAmountSwap,
       destinationAmountSwap,
       destinationAddressSwap,
-      referenceNumberSwap
+      bityOrderCreateRequestedSwap,
+      showNotification,
+      startOrderTimerSwap,
+      startPollBityOrderStatus,
+      stopOrderTimerSwap,
+      stopPollBityOrderStatus
     } = this.props;
 
+    const { reference } = bityOrder;
+
     let ReceivingAddressProps = {
+      isPostingOrder,
+      originAmount,
+      originKind,
       destinationKind,
       destinationAddressSwap,
       destinationAddress,
       stopLoadBityRatesSwap,
       changeStepSwap,
-      referenceNumberSwap
+      bityOrderCreateRequestedSwap
     };
 
     let SwapInfoHeaderProps = {
-      referenceNumber,
-      timeRemaining,
+      reference,
+      secondsRemaining,
       originAmount,
       originKind,
       destinationKind,
       destinationAmount,
       restartSwap,
-      numberOfConfirmations,
-      orderStep
+      orderStatus
     };
 
     const { ETHBTC, ETHREP, BTCETH, BTCREP } = bityRates;
-
     const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
 
     const CurrencySwapProps = {
+      showNotification,
       bityRates,
       originAmount,
       destinationAmount,
@@ -131,6 +154,25 @@ class Swap extends Component {
       changeStepSwap
     };
 
+    const PaymentInfoProps = {
+      originKind,
+      originAmount,
+      paymentAddress
+    };
+
+    const PartThreeProps = {
+      ...SwapInfoHeaderProps,
+      ...PaymentInfoProps,
+      reference,
+      startOrderTimerSwap,
+      startPollBityOrderStatus,
+      stopOrderTimerSwap,
+      stopPollBityOrderStatus,
+      showNotification,
+      destinationAddress,
+      outputTx
+    };
+
     return (
       <section className="container" style={{ minHeight: '50%' }}>
         <div className="tab-content">
@@ -143,7 +185,7 @@ class Swap extends Component {
             {(step === 2 || step === 3) &&
               <SwapInfoHeader {...SwapInfoHeaderProps} />}
             {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
-            {step === 3 && <SwapProgress {...SwapInfoHeaderProps} />}
+            {step === 3 && <PartThree {...PartThreeProps} />}
           </main>
         </div>
       </section>
@@ -153,6 +195,10 @@ class Swap extends Component {
 
 function mapStateToProps(state) {
   return {
+    outputTx: state.swap.outputTx,
+    isPostingOrder: state.swap.isPostingOrder,
+    orderStatus: state.swap.orderStatus,
+    paymentAddress: state.swap.paymentAddress,
     step: state.swap.step,
     destinationAddress: state.swap.destinationAddress,
     originAmount: state.swap.originAmount,
@@ -162,13 +208,12 @@ function mapStateToProps(state) {
     destinationKindOptions: state.swap.destinationKindOptions,
     originKindOptions: state.swap.originKindOptions,
     bityRates: state.swap.bityRates,
-    referenceNumber: state.swap.referenceNumber,
-    timeRemaining: state.swap.timeRemaining,
-    numberOfConfirmations: state.swap.numberOfConfirmations,
-    orderStep: state.swap.orderStep,
-    orderStarted: state.swap.orderStarted,
+    bityOrder: state.swap.bityOrder,
+    secondsRemaining: state.swap.secondsRemaining,
     isFetchingRates: state.swap.isFetchingRates
   };
 }
 
-export default connect(mapStateToProps, swapActions)(Swap);
+export default connect(mapStateToProps, { ...swapActions, showNotification })(
+  Swap
+);

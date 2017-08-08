@@ -7,7 +7,7 @@ import type {
 } from 'actions/wallet';
 import { BaseWallet } from 'libs/wallet';
 import { toEther } from 'libs/units';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 
 export type State = {
   inst: ?BaseWallet,

@@ -1,5 +1,6 @@
 // Application styles must come first in order, to allow for overrides
 import 'assets/styles/etherwallet-master.less';
+import 'font-awesome/scss/font-awesome.scss';
 
 import React from 'react';
 import { render } from 'react-dom';

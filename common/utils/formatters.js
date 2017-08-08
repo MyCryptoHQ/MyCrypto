@@ -1,5 +1,5 @@
 // @flow
-import Big from 'big.js';
+import Big from 'bignumber.js';
 
 export function toFixedIfLarger(number: number, fixedSize: number = 6): string {
   return parseFloat(number.toFixed(fixedSize)).toString();
@@ -29,18 +29,25 @@ export function formatNumber(number: Big, digits: number = 3): string {
   return parts.join('.');
 }
 
-export function padLeftEven(hex: string): string {
-  hex = hex.length % 2 != 0 ? '0' + hex : hex;
-  return hex;
-}
+// TODO: Comment up this function to make it clear what's happening here.
+export function formatGasLimit(limit: Big, transactionUnit: string = 'ether') {
+  let limitStr = limit.toString();
 
-export function sanitizeHex(hex: string): string {
-  hex = hex.substring(0, 2) == '0x' ? hex.substring(2) : hex;
-  if (hex == '') return '';
-  return '0x' + padLeftEven(hex);
-}
+  // I'm guessing this is some known off-by-one-error from the node?
+  // 21k is only the limit for ethereum though, so make sure they're
+  // sending ether if we're going to fix it for them.
+  if (limitStr === '21001' && transactionUnit === 'ether') {
+    limitStr = '21000';
+  }
 
-// TODO: Handle big properly, maybe with BigNumber instead?
-export function decimalToHex(dec: number | string | Big): string {
-  return parseInt(dec, 10).toString(16);
+  // If they've exceeded the gas limit per block, make it -1
+  // TODO: Explain why not cap at limit?
+  // TODO: Make this dynamic, potentially. Would require promisifying this fn.
+  // TODO: Figure out if this is only true for ether. Do other currencies have
+  //       this limit?
+  if (limit.gte(4000000)) {
+    limitStr = '-1';
+  }
+
+  return limitStr;
 }

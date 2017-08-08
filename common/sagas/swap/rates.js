@@ -1,19 +1,26 @@
 // @flow
-import { call, put, fork, take, cancel, cancelled } from 'redux-saga/effects';
-
-import type { Effect } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { updateBityRatesSwap } from 'actions/swap';
 import { getAllRates } from 'api/bity';
+import {
+  call,
+  put,
+  fork,
+  take,
+  cancel,
+  cancelled,
+  takeLatest
+} from 'redux-saga/effects';
+import type { Effect } from 'redux-saga/effects';
+import { loadBityRatesSucceededSwap } from 'actions/swap';
 
 export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
   try {
     while (true) {
-      // TODO - yield put(actions.requestStart()) if we want to display swap refresh status
+      // TODO - BITY_RATE_REQUESTED
       // network request
       const data = yield call(getAllRates);
       // action
-      yield put(updateBityRatesSwap(data));
+      yield put(loadBityRatesSucceededSwap(data));
       // wait 5 seconds before refreshing rates
       yield call(delay, 5000);
     }
@@ -25,11 +32,10 @@ export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
   }
 }
 
-export default function* bitySaga(): Generator<Effect, void, any> {
-  while (yield take('SWAP_LOAD_BITY_RATES')) {
+export function* getBityRatesSaga(): Generator<Effect, void, any> {
+  while (yield take('SWAP_LOAD_BITY_RATES_REQUESTED')) {
     // starts the task in the background
     const loadBityRatesTask = yield fork(loadBityRates);
-
     // wait for the user to get to point where refresh is no longer needed
     yield take('SWAP_STOP_LOAD_BITY_RATES');
     // cancel the background task

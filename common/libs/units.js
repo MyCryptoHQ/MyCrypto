@@ -1,6 +1,6 @@
 // @flow
 
-import Big from 'big.js';
+import Big from 'bignumber.js';
 
 const UNITS = {
   wei: '1',
@@ -40,5 +40,6 @@ export function toEther(number: Big, unit: UNIT) {
 }
 
 export function toWei(number: Big, unit: UNIT): Big {
+  console.log(number);
   return number.times(getValueOfUnit(unit));
 }
