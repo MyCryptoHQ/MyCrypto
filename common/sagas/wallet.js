@@ -16,7 +16,8 @@ function* updateAccountBalance() {
   if (!wallet) {
     return;
   }
-  let balance = yield apply(node, node.getBalance, [wallet.getAddress()]);
+  const address = yield wallet.getAddress();
+  let balance = yield apply(node, node.getBalance, [address]);
   yield put(setBalance(balance));
 }
 
@@ -28,8 +29,9 @@ function* updateTokenBalances() {
     return;
   }
   // FIXME handle errors
+  const address = yield wallet.getAddress();
   const tokenBalances = yield apply(node, node.getTokenBalances, [
-    wallet.getAddress(),
+    address,
     tokens
   ]);
   yield put(
