@@ -8,7 +8,7 @@ export default class BaseWallet {
 
   getNakedAddress(): Promise<any> {
     return new Promise(resolve => {
-      this.getAddress.then(address => {
+      this.getAddress().then(address => {
         resolve(stripHex(address));
       });
     });

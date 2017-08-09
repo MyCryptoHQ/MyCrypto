@@ -28,8 +28,22 @@ type Props = {
 export class BalanceSidebar extends React.Component {
   props: Props;
   state = {
-    showLongBalance: false
+    showLongBalance: false,
+    address: ''
   };
+
+  componentDidMount() {
+    if (!this.props.wallet) return;
+    this.props.wallet
+      .getAddress()
+      .then(addr => {
+        this.setState({ address: addr });
+      })
+      .catch(err => {
+        //TODO: communicate error in UI
+        console.log(err);
+      });
+  }
 
   render() {
     const { wallet, balance, network, tokenBalances, rates } = this.props;
@@ -44,9 +58,9 @@ export class BalanceSidebar extends React.Component {
           {translate('sidebar_AccountAddr')}
         </h5>
         <ul className="account-info">
-          <Identicon address={wallet.getAddress()} />
+          <Identicon address={this.state.address} />
           <span className="mono wrap">
-            {wallet.getAddress()}
+            {this.state.address}
           </span>
         </ul>
         <hr />
@@ -84,7 +98,7 @@ export class BalanceSidebar extends React.Component {
                   <a
                     href={blockExplorer.address.replace(
                       '[[address]]',
-                      wallet.getAddress()
+                      this.state.address
                     )}
                     target="_blank"
                   >
@@ -96,7 +110,7 @@ export class BalanceSidebar extends React.Component {
                   <a
                     href={tokenExplorer.address.replace(
                       '[[address]]',
-                      wallet.getAddress()
+                      this.state.address
                     )}
                     target="_blank"
                   >
