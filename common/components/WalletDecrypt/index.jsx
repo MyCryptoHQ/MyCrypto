@@ -29,19 +29,23 @@ const WALLETS = {
   },
   'mnemonic-phrase': {
     lid: 'x_Mnemonic',
-    component: MnemonicDecrypt
+    component: MnemonicDecrypt,
+    initialParams: {}
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
-    component: LedgerNanoSDecrypt
+    component: LedgerNanoSDecrypt,
+    initialParams: {}
   },
   trezor: {
     lid: 'x_Trezor',
-    component: TrezorDecrypt
+    component: TrezorDecrypt,
+    initialParams: {}
   },
   'view-only': {
     lid: 'View with Address Only',
-    component: ViewOnlyDecrypt
+    component: ViewOnlyDecrypt,
+    initialParams: {}
   }
 };
 
