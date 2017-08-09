@@ -1,5 +1,10 @@
 // @flow
-import { randomBytes, createCipheriv } from 'crypto';
+import {
+  randomBytes,
+  createCipheriv,
+  pbkdf2Sync,
+  createDecipheriv
+} from 'crypto';
 import { sha3 } from 'ethereumjs-util';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
@@ -68,4 +73,58 @@ export function pkeyToKeystore(
 export function getV3Filename(address: string) {
   const ts = new Date();
   return ['UTC--', ts.toJSON().replace(/:/g, '-'), '--', address].join('');
+}
+
+export function fromV3KeystoreToPkey(input: string, password: string): Buffer {
+  let kstore = JSON.parse(input.toLowerCase());
+  if (kstore.version !== 3) {
+    throw new Error('Not a V3 wallet');
+  }
+  let derivedKey, kdfparams;
+
+  if (kstore.crypto.kdf === 'scrypt') {
+    kdfparams = kstore.crypto.kdfparams;
+    derivedKey = scrypt(
+      new Buffer(password),
+      new Buffer(kdfparams.salt, 'hex'),
+      kdfparams.n,
+      kdfparams.r,
+      kdfparams.p,
+      kdfparams.dklen
+    );
+  } else if (kstore.crypto.kdf === 'pbkdf2') {
+    kdfparams = kstore.crypto.kdfparams;
+    if (kdfparams.prf !== 'hmac-sha256') {
+      throw new Error('Unsupported parameters to PBKDF2');
+    }
+    derivedKey = pbkdf2Sync(
+      new Buffer(password),
+      new Buffer(kdfparams.salt, 'hex'),
+      kdfparams.c,
+      kdfparams.dklen,
+      'sha256'
+    );
+  } else {
+    throw new Error('Unsupported key derivation scheme');
+  }
+  let ciphertext = new Buffer(kstore.crypto.ciphertext, 'hex');
+  let mac = sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]));
+  if (mac.toString('hex') !== kstore.crypto.mac) {
+    throw new Error('Key derivation failed - possibly wrong passphrase');
+  }
+  let decipher = createDecipheriv(
+    kstore.crypto.cipher,
+    derivedKey.slice(0, 16),
+    new Buffer(kstore.crypto.cipherparams.iv, 'hex')
+  );
+  let seed = decipherBuffer(decipher, ciphertext, 'hex');
+  while (seed.length < 32) {
+    let nullBuff = new Buffer([0x00]);
+    seed = Buffer.concat([nullBuff, seed]);
+  }
+  return seed;
+}
+
+function decipherBuffer(decipher, data) {
+  return Buffer.concat([decipher.update(data), decipher.final()]);
 }
