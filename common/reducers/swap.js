@@ -24,7 +24,7 @@ type State = {
   orderTimestampCreatedISOString: ?string,
   paymentAddress: ?string,
   validFor: ?number,
-  orderId: string
+  orderId: ?string
 };
 
 export const INITIAL_STATE: State = {

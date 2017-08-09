@@ -117,7 +117,7 @@ export function fromV3KeystoreToPkey(input: string, password: string): Buffer {
     derivedKey.slice(0, 16),
     new Buffer(kstore.crypto.cipherparams.iv, 'hex')
   );
-  let seed = decipherBuffer(decipher, ciphertext, 'hex');
+  let seed = decipherBuffer(decipher, ciphertext);
   while (seed.length < 32) {
     let nullBuff = new Buffer([0x00]);
     seed = Buffer.concat([nullBuff, seed]);
