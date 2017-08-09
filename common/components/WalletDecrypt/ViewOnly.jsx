@@ -2,25 +2,39 @@ import React from 'react';
 import translate from 'translations';
 import PropTypes from 'prop-types';
 
-const ViewOnlyDecrypt = ({ value, onChange, onUnlock }) =>
-  <section className="col-md-4 col-sm-6">
-    <div id="selectedUploadKey">
-      <h4>
-        {translate('ADD_Radio_2_alt')}
-      </h4>
+const ViewOnlyDecrypt = ({ value, onChange, onUnlock }) => {
+  const onKeyDown = (e: SyntheticKeyboardEvent) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      e.stopPropagation();
+      onUnlock();
+    }
+  };
 
-      <div className="form-group">
-        <input type="file" id="fselector" />
+  return (
+    <section className="col-md-4 col-sm-6">
+      <div id="selectedTypeKey">
+        <h4>
+          {translate('ADD_Label_5')}
+        </h4>
 
-        <a className="btn-file marg-v-sm" id="aria1" tabIndex="0" role="button">
-          {translate('ADD_Radio_2_short')}
-        </a>
+        <div className="form-group">
+          <textarea
+            id="address-label"
+            className="form-control"
+            onChange={e => onChange(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder={translate('x_Address')}
+            rows="2"
+          />
+        </div>
       </div>
-    </div>
-  </section>;
+    </section>
+  );
+};
 
 ViewOnlyDecrypt.propTypes = {
-  value: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   onUnlock: PropTypes.func.isRequired
 };

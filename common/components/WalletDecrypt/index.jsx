@@ -9,7 +9,7 @@ import LedgerNanoSDecrypt from './LedgerNano';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
 import map from 'lodash/map';
-import { unlockPrivateKey } from 'actions/wallet';
+import { unlockPrivateKey, setWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 
 const WALLETS = {
@@ -45,7 +45,8 @@ const WALLETS = {
   'view-only': {
     lid: 'View with Address Only',
     component: ViewOnlyDecrypt,
-    initialParams: {}
+    initialParams: '',
+    unlock: setWallet
   }
 };
 
