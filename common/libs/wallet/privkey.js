@@ -22,9 +22,9 @@ export default class PrivKeyWallet extends BaseWallet {
   }
 
   getAddress(): Promise<string> {
-    return new Promise(resolve => {
-      resolve(toChecksumAddress(`0x${this.address.toString('hex')}`));
-    });
+    return Promise.resolve(
+      toChecksumAddress(`0x${this.address.toString('hex')}`)
+    );
   }
 
   getPrivateKey() {

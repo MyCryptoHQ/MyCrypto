@@ -33,9 +33,15 @@ export class BalanceSidebar extends React.Component {
   };
 
   componentDidMount() {
-    this.props.wallet.getAddress().then(address => {
-      this.setState({ address });
-    });
+    this.props.wallet
+      .getAddress()
+      .then(addr => {
+        this.setState({ address: addr });
+      })
+      .catch(err => {
+        //TODO: communicate error in UI
+        console.log(err);
+      });
   }
 
   render() {
