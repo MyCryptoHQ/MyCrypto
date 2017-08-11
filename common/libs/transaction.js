@@ -1,14 +1,31 @@
 // @flow
 
 export type TransactionWithoutGas = {|
-  from?: string,
+  from: string,
   to: string,
-  gasPrice?: string,
-  value?: string,
-  data?: string
+  gasLimit?: string | number,
+  value: string | number,
+  data?: string,
+  chainId?: number
 |};
 
 export type Transaction = {|
   ...TransactionWithoutGas,
-  gas: string
+  gasPrice: string | number
+|};
+
+export type RawTransaction = {|
+  nonce: string,
+  gasPrice: string,
+  gasLimit: string,
+  to: string,
+  value: string,
+  data: string,
+  chainId: number
+|};
+
+export type BroadcastTransaction = {|
+  ...RawTransaction,
+  rawTx: string,
+  signedTx: string
 |};

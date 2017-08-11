@@ -29,7 +29,7 @@ const UNITS = {
   tether: '1000000000000000000000000000000'
 };
 
-type UNIT = $Keys<typeof UNITS>;
+export type UNIT = $Keys<typeof UNITS>;
 
 function getValueOfUnit(unit: UNIT) {
   return new Big(UNITS[unit]);

@@ -59,4 +59,13 @@ export type EstimateGasRequest = RPCRequestBase & {
   ]
 };
 
-export type RPCRequest = GetBalanceRequest | CallRequest | EstimateGasRequest;
+export type GetTransactionCountRequest = RPCRequestBase & {
+  method: 'eth_getTransactionCount',
+  params: [DATA, DEFAULT_BLOCK]
+};
+
+export type RPCRequest =
+  | GetBalanceRequest
+  | CallRequest
+  | EstimateGasRequest
+  | GetTransactionCountRequest;

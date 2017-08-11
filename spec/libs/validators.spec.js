@@ -2,24 +2,26 @@ import {
   isValidBTCAddress,
   isValidETHAddress
 } from '../../common/libs/validators';
-import { donationAddressMap } from '../../common/config/data';
+
+const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
+const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 
 describe('Validator', () => {
   it('should validate correct BTC address as true', () => {
-    expect(isValidBTCAddress(donationAddressMap.BTC)).toBeTruthy();
+    expect(isValidBTCAddress(VALID_BTC_ADDRESS)).toBeTruthy();
   });
   it('should validate incorrect BTC address as false', () => {
     expect(
-      isValidBTCAddress('nonsense' + donationAddressMap.BTC + 'nonsense')
+      isValidBTCAddress('nonsense' + VALID_BTC_ADDRESS + 'nonsense')
     ).toBeFalsy();
   });
 
   it('should validate correct ETH address as true', () => {
-    expect(isValidETHAddress(donationAddressMap.ETH)).toBeTruthy();
+    expect(isValidETHAddress(VALID_ETH_ADDRESS)).toBeTruthy();
   });
   it('should validate incorrect ETH address as false', () => {
     expect(
-      isValidETHAddress('nonsense' + donationAddressMap.ETH + 'nonsense')
+      isValidETHAddress('nonsense' + VALID_ETH_ADDRESS + 'nonsense')
     ).toBeFalsy();
   });
 });
