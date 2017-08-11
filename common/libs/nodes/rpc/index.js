@@ -73,9 +73,35 @@ export default class RpcNode extends BaseNode {
     tx: Transaction,
     wallet: BaseWallet
   ): Promise<BroadcastTransaction> {
-    // First check whatever we can synchronously
+    // Reject bad addresses
     if (!isValidETHAddress(tx.to)) {
       return Promise.reject(new Error(translate('ERROR_5')));
+    }
+
+    // Reject gas limit under 21000 (Minimum for transaction)
+    // Reject if limit over 5000000
+    // TODO: Make this dynamic, the limit shifts
+    const limitBig = new Big(tx.gasLimit);
+    if (limitBig.lessThan(21000)) {
+      return Promise.reject(
+        new Error(
+          translate('Gas limit must be at least 21000 for transactions')
+        )
+      );
+    }
+
+    if (limitBig.greaterThan(5000000)) {
+      return Promise.reject(new Error(translate('GETH_GasLimit')));
+    }
+
+    // Reject gas over 1000gwei (1000000000000)
+    const priceBig = new Big(tx.gasPrice);
+    if (priceBig.greaterThan(new Big('1000000000000'))) {
+      return Promise.reject(
+        new Error(
+          'Gas price too high. Please contact support if this was not a mistake.'
+        )
+      );
     }
 
     const calls = [getBalance(tx.from), getTransactionCount(tx.from)];
