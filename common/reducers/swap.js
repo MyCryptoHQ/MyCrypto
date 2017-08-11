@@ -57,7 +57,7 @@ const buildDestinationAmount = (
 ) => {
   let pairName = combineAndUpper(originKind, destinationKind);
   let bityRate = bityRates[pairName];
-  return originAmount ? originAmount * bityRate : 0;
+  return originAmount !== null ? originAmount * bityRate : null;
 };
 
 const buildDestinationKind = (
