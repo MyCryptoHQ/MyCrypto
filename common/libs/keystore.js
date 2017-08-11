@@ -5,6 +5,7 @@ import {
   pbkdf2Sync,
   createDecipheriv
 } from 'crypto';
+import { decipherBuffer } from './decrypt';
 import { sha3 } from 'ethereumjs-util';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
@@ -123,8 +124,4 @@ export function fromV3KeystoreToPkey(input: string, password: string): Buffer {
     seed = Buffer.concat([nullBuff, seed]);
   }
   return seed;
-}
-
-function decipherBuffer(decipher, data) {
-  return Buffer.concat([decipher.update(data), decipher.final()]);
 }

@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import { isValidPrivKey } from 'libs/validators';
+import { isValidPrivKey, isValidEncryptedPrivKey } from 'libs/validators';
 
 export type PrivateKeyValue = {
   key: string,
@@ -26,7 +26,9 @@ export default class PrivateKeyDecrypt extends Component {
   render() {
     const { key, password } = this.props.value;
     const fixedPkey = fixPkey(key);
-    const isValid = isValidPrivKey(fixedPkey.length);
+    const isValid =
+      isValidPrivKey(fixedPkey.length) ||
+      isValidEncryptedPrivKey(fixedPkey.length);
     const isPassRequired = fixedPkey.length > 64;
 
     return (
@@ -70,7 +72,9 @@ export default class PrivateKeyDecrypt extends Component {
 
   onPkeyChange = (e: SyntheticInputEvent) => {
     const fixedPkey = fixPkey(e.target.value);
-    const isValid = isValidPrivKey(fixedPkey.length);
+    const isValid =
+      isValidPrivKey(fixedPkey.length) ||
+      isValidEncryptedPrivKey(fixedPkey.length);
     const isPassRequired = fixedPkey.length > 64;
     const valid =
       isValid && (isPassRequired ? this.props.value.password.length > 0 : true);
@@ -80,7 +84,9 @@ export default class PrivateKeyDecrypt extends Component {
 
   onPasswordChange = (e: SyntheticInputEvent) => {
     const fixedPkey = fixPkey(this.props.value.key);
-    const isValid = isValidPrivKey(fixedPkey.length);
+    const isValid =
+      isValidPrivKey(fixedPkey.length) ||
+      isValidEncryptedPrivKey(fixedPkey.length);
     const isPassRequired = fixedPkey.length > 64;
     const valid =
       isValid && (isPassRequired ? e.target.value.length > 0 : true);

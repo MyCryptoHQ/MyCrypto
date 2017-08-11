@@ -75,7 +75,11 @@ function validateEtherAddress(address: string): boolean {
 }
 
 export function isValidPrivKey(length: number): boolean {
-  return length === 64 || length === 128 || length === 132;
+  return length === 64;
+}
+
+export function isValidEncryptedPrivKey(length: number): boolean {
+  return length === 128 || length === 132;
 }
 
 export function isPositiveIntegerOrZero(number: number): boolean {

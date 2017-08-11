@@ -8,7 +8,12 @@ import type {
 } from 'actions/wallet';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
-import { KeystoreWallet, PrivKeyWallet, BaseWallet } from 'libs/wallet';
+import {
+  KeystoreWallet,
+  EncryptedPrivKeyWallet,
+  PrivKeyWallet,
+  BaseWallet
+} from 'libs/wallet';
 import { BaseNode } from 'libs/nodes';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
@@ -59,7 +64,14 @@ export function* unlockPrivateKey(
   let wallet = null;
 
   try {
-    wallet = new PrivKeyWallet(Buffer.from(action.payload.key, 'hex'));
+    if (action.payload.key.length === 64) {
+      wallet = new PrivKeyWallet(Buffer.from(action.payload.key, 'hex'));
+    } else {
+      wallet = new EncryptedPrivKeyWallet(
+        action.payload.key,
+        action.payload.password
+      );
+    }
   } catch (e) {
     yield put(showNotification('danger', translate('INVALID_PKEY')));
     return;
