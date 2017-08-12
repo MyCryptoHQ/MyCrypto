@@ -15,6 +15,9 @@ export default class PrivKeyWallet extends BaseWallet {
   pubKey: Buffer;
   address: Buffer;
   constructor(privkey: Buffer) {
+    if (privkey.length !== 32) {
+      throw new Error('Invalid private key length');
+    }
     super();
     this.privKey = privkey;
     this.pubKey = privateToPublic(this.privKey);
