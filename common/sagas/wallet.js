@@ -9,7 +9,9 @@ import type {
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
 import {
-  KeystoreWallet,
+  PresaleWallet,
+  MewV1Wallet,
+  UtcWallet,
   EncryptedPrivKeyWallet,
   PrivKeyWallet,
   BaseWallet
@@ -17,6 +19,8 @@ import {
 import { BaseNode } from 'libs/nodes';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
+
+import { determineKeystoreType } from 'libs/keystore';
 
 function* updateAccountBalance() {
   const node: BaseNode = yield select(getNodeLib);
@@ -84,14 +88,41 @@ export function* unlockKeystore(
   action?: UnlockKeystoreAction
 ): Generator<Effect, void, any> {
   if (!action) return;
+
+  const file = action.payload.file;
+  const pass = action.payload.password;
   let wallet = null;
 
   try {
-    wallet = new KeystoreWallet(action.payload.file, action.payload.password);
+    const parsed = JSON.parse(file);
+
+    switch (determineKeystoreType(file)) {
+      case 'presale':
+        wallet = new PresaleWallet(file, pass);
+        break;
+      case 'v1-unencrypted':
+        wallet = new PrivKeyWallet(Buffer.from(parsed.private, 'hex'));
+        break;
+      case 'v1-encrypted':
+        wallet = new MewV1Wallet(file, pass);
+        break;
+      case 'v2-unencrypted':
+        wallet = new PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
+        break;
+      case 'v2-v3-utc':
+        wallet = new UtcWallet(file, pass);
+        break;
+      default:
+        //TODO: provide more descriptive error, currently 'invalid password' message
+        yield put(showNotification('danger', translate('ERROR_6')));
+        return;
+    }
   } catch (e) {
-    yield put(showNotification('danger', translate('ERROR_6'))); //invalid password message
+    //TODO: provide more descriptive error, currently 'invalid password' message
+    yield put(showNotification('danger', translate('ERROR_6')));
     return;
   }
+
   yield put(setWallet(wallet));
   yield call(updateBalances);
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import translate from 'translations';
+import { isKeystorePassRequired } from 'libs/keystore';
 
 export type KeystoreValue = {
   file: string,
@@ -12,6 +13,10 @@ export default class KeystoreDecrypt extends Component {
     value: KeystoreValue,
     onChange: (value: KeystoreValue) => void,
     onUnlock: () => void
+  };
+
+  state = {
+    isPassRequired: false
   };
 
   render() {
@@ -41,7 +46,11 @@ export default class KeystoreDecrypt extends Component {
                 {translate('ADD_Radio_2_short')}
               </a>
             </label>
-            <div className={file.length ? '' : 'hidden'}>
+            <div
+              className={
+                file.length && this.state.isPassRequired ? '' : 'hidden'
+              }
+            >
               <p>
                 {translate('ADD_Label_3')}
               </p>
@@ -85,9 +94,19 @@ export default class KeystoreDecrypt extends Component {
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
+      let isPassRequired = false;
+
+      try {
+        isPassRequired = isKeystorePassRequired(keystore);
+      } catch (e) {
+        //TODO: communicate invalid file to user
+      }
+      this.setState({ isPassRequired: isPassRequired });
+
       this.props.onChange({
         ...this.props.value,
-        file: keystore
+        file: keystore,
+        valid: keystore.length && !isPassRequired
       });
     };
 

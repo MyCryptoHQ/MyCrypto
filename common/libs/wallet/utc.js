@@ -1,9 +1,9 @@
 // @flow
 import PrivKeyWallet from './privkey';
-import { fromV3KeystoreToPkey } from 'libs/keystore';
+import { decryptUtcKeystoreToPkey } from 'libs/keystore';
 
-export default class KeystoreWallet extends PrivKeyWallet {
+export default class UtcWallet extends PrivKeyWallet {
   constructor(keystore: string, password: string) {
-    super(fromV3KeystoreToPkey(keystore, password));
+    super(decryptUtcKeystoreToPkey(keystore, password));
   }
 }
