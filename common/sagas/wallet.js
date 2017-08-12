@@ -113,15 +113,15 @@ export function* unlockKeystore(
         wallet = new UtcWallet(file, pass);
         break;
       default:
-        //TODO: provide more descriptive error, currently 'invalid password' message
         yield put(showNotification('danger', translate('ERROR_6')));
         return;
     }
   } catch (e) {
-    //TODO: provide more descriptive error, currently 'invalid password' message
     yield put(showNotification('danger', translate('ERROR_6')));
     return;
   }
+
+  // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
 
   yield put(setWallet(wallet));
   yield call(updateBalances);
