@@ -1,11 +1,21 @@
 // @flow
+import { stripHex } from 'libs/values';
+import type { RawTransaction } from 'libs/transaction';
 
 export default class BaseWallet {
-  getAddress(): string {
-    throw 'Implement me';
+  getAddress(): Promise<string> {
+    return Promise.reject('Implement me');
   }
 
-  getNakedAddress(): string {
-    return this.getAddress().replace('0x', '').toLowerCase();
+  getNakedAddress(): Promise<string> {
+    return new Promise(resolve => {
+      this.getAddress().then(address => {
+        resolve(stripHex(address));
+      });
+    });
+  }
+
+  signRawTransaction(_tx: RawTransaction): Promise<string> {
+    return Promise.reject('Implement me');
   }
 }

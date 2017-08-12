@@ -125,7 +125,7 @@ export type NetworkContract = {
 
 export type NetworkConfig = {
   name: string,
-  // unit: string,
+  unit: string,
   blockExplorer?: {
     name: string,
     tx: string,
@@ -143,7 +143,7 @@ export type NetworkConfig = {
 export const NETWORKS: { [key: string]: NetworkConfig } = {
   ETH: {
     name: 'ETH',
-    // unit: 'ETH',
+    unit: 'ETH',
     chainId: 1,
     blockExplorer: {
       name: 'https://etherscan.io',
