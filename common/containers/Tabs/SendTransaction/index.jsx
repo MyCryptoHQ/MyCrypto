@@ -456,10 +456,9 @@ export class SendTransaction extends React.Component {
     this.setState({ showTxConfirm: false });
   };
 
-  // TODO: Flow type me with shared raw transaction type
-  confirmTx = (rawTx: any) => {
+  confirmTx = () => {
     // TODO: Broadcast transaction
-    console.log(rawTx);
+    console.log(this.state.transaction);
   };
 }
 
