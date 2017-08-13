@@ -238,48 +238,43 @@ export class SendTransaction extends React.Component {
                     </div>
                   </div>
 
-                  <div className="row form-group">
-                    <div className="col-sm-6">
-                      <label>
-                        {translate('SEND_raw')}
-                      </label>
-                      <textarea
-                        className="form-control"
-                        value={transaction ? transaction.rawTx : ''}
-                        rows="4"
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-sm-6">
-                      <label>
-                        {translate('SEND_signed')}
-                      </label>
-                      <textarea
-                        className="form-control"
-                        value={transaction ? transaction.signedTx : ''}
-                        rows="4"
-                        readOnly
-                      />
-                    </div>
-                  </div>
+                  {transaction &&
+                    <div>
+                      <div className="row form-group">
+                        <div className="col-sm-6">
+                          <label>
+                            {translate('SEND_raw')}
+                          </label>
+                          <textarea
+                            className="form-control"
+                            value={transaction.rawTx}
+                            rows="4"
+                            readOnly
+                          />
+                        </div>
+                        <div className="col-sm-6">
+                          <label>
+                            {translate('SEND_signed')}
+                          </label>
+                          <textarea
+                            className="form-control"
+                            value={transaction.signedTx}
+                            rows="4"
+                            readOnly
+                          />
+                        </div>
+                      </div>
 
-                  <div className="form-group">
-                    <a
-                      className="btn btn-primary btn-block col-sm-11"
-                      onClick={this.openTxModal}
-                    >
-                      {translate('SEND_trans')}
-                    </a>
-                  </div>
+                      <div className="form-group">
+                        <a
+                          className="btn btn-primary btn-block col-sm-11"
+                          onClick={this.openTxModal}
+                        >
+                          {translate('SEND_trans')}
+                        </a>
+                      </div>
+                    </div>}
                 </section>
-                {'' /* <!-- / Content --> */}
-                {
-                  '' /* @@if (site === 'mew' ) { @@include( './sendTx-content.tpl', { "site": "mew" } ) }
-            @@if (site === 'cx'  ) { @@include( './sendTx-content.tpl', { "site": "cx"  } ) }
-
-            @@if (site === 'mew' ) { @@include( './sendTx-modal.tpl',   { "site": "mew" } ) }
-            @@if (site === 'cx'  ) { @@include( './sendTx-modal.tpl',   { "site": "cx"  } ) } */
-                }
               </article>}
           </main>
         </div>
