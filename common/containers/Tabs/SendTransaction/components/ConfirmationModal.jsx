@@ -125,7 +125,7 @@ export default class ConfirmationModal extends React.Component {
               <strong>{gasPrice} gwei</strong>
             </li>
             <li className="ConfModal-details-detail">
-              You are transmitting on the <strong>{node.network}</strong>{' '}
+              You are interacting with the <strong>{node.network}</strong>{' '}
               network provided by <strong>{node.service}</strong>
             </li>
             <li className="ConfModal-details-detail">
