@@ -7,6 +7,7 @@ $m-header-padding: 15px;
 $m-header-height: 62px;
 $m-content-padding: 20px;
 $m-footer-height: 58px;
+$m-close-size: 26px;
 $m-anim-speed: 400ms;
 
 @keyframes modalshade-open {
@@ -77,8 +78,13 @@ $m-anim-speed: 400ms;
 
     &-title {
       margin: 0;
+      padding-right: $m-close-size;
       font-size: $font-size-large;
       line-height: $m-header-height;
+      height: $m-header-height;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &-close {
@@ -86,8 +92,8 @@ $m-anim-speed: 400ms;
       position: absolute;
       top: 50%;
       right: $m-header-padding;
-      height: 26px;
-      width: 26px;
+      height: $m-close-size;
+      width: $m-close-size;
       opacity: 0.8;
       transform: translateY(-50%) translateZ(0);
 

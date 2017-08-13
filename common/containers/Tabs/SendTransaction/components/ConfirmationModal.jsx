@@ -115,6 +115,9 @@ export default class ConfirmationModal extends React.Component {
 
           <ul className="ConfModal-details">
             <li className="ConfModal-details-detail">
+              You are sending from <code>{address}</code>
+            </li>
+            <li className="ConfModal-details-detail">
               You are sending to <code>{rawTransaction.to}</code>
             </li>
             <li className="ConfModal-details-detail">
