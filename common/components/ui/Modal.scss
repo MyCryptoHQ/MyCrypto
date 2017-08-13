@@ -23,11 +23,11 @@ $m-anim-speed: 400ms;
   0%,
   30% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.88);
+    transform: translateX(-50%) scale(0.88);
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateX(-50%) scale(1);
   }
 }
 
@@ -57,7 +57,7 @@ $m-anim-speed: 400ms;
   max-height: calc(100% - #{$m-window-padding * 2});
   background: $m-background;
   border-radius: 4px;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   z-index: $zindex-modal;
   overflow: hidden;
   display: none;
