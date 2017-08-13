@@ -36,6 +36,7 @@ import { getTokenBalances } from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
 import type {
   TransactionWithoutGas,
+  RawTransaction,
   BroadcastTransaction
 } from 'libs/transaction';
 import type { UNIT } from 'libs/units';
@@ -57,6 +58,7 @@ type State = {
   data: string,
   gasChanged: boolean,
   transaction: ?BroadcastTransaction,
+  rawTransaction: ?RawTransaction,
   showTxConfirm: boolean
 };
 
@@ -107,7 +109,8 @@ export class SendTransaction extends React.Component {
     data: '',
     gasChanged: false,
     showTxConfirm: false,
-    transaction: null
+    transaction: null,
+    rawTransaction: null
   };
 
   componentDidMount() {
@@ -148,12 +151,10 @@ export class SendTransaction extends React.Component {
       readOnly,
       hasQueryString,
       showTxConfirm,
-      transaction
+      transaction,
+      rawTransaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
-
-    // TODO: Figure out if this is in state or props, replace with real thing
-    const rawTransaction = {};
 
     // tokens
     // ng-show="token.balance!=0 && token.balance!='loading' || token.type!=='default' || tokenVisibility=='shown'"
@@ -265,8 +266,7 @@ export class SendTransaction extends React.Component {
                   <div className="form-group">
                     <a
                       className="btn btn-primary btn-block col-sm-11"
-                      data-toggle="modal"
-                      data-target="#sendTransaction"
+                      onClick={this.openTxModal}
                     >
                       {translate('SEND_trans')}
                     </a>
@@ -283,7 +283,8 @@ export class SendTransaction extends React.Component {
               </article>}
           </main>
         </div>
-        {showTxConfirm &&
+        {rawTransaction &&
+          showTxConfirm &&
           <ConfirmationModal
             wallet={this.props.wallet}
             node={this.props.node}
@@ -441,9 +442,18 @@ export class SendTransaction extends React.Component {
         wallet
       );
 
-      this.setState({ transaction });
+      this.setState({
+        transaction,
+        rawTransaction: JSON.parse(transaction.rawTx)
+      });
     } catch (err) {
       this.props.showNotification('danger', err.message, 5000);
+    }
+  };
+
+  openTxModal = () => {
+    if (this.state.transaction) {
+      this.setState({ showTxConfirm: true });
     }
   };
 

@@ -6,24 +6,13 @@ import Big from 'bignumber.js';
 import BaseWallet from 'libs/wallet/base';
 import { toUnit } from 'libs/units';
 import type { NodeConfig } from 'config/data';
+import type { RawTransaction } from 'libs/transaction';
 
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 
-// TODO: Replace me with a shared type defined somewhere
-type RawTransaction = {
-  to: string,
-  value: string,
-  data: string,
-  gasPrice: string,
-  gasLimit: string,
-  chainId: number,
-  nonce: string
-};
-
 // TODO: Handle other token types?
 type Props = {
-  // $FlowFixMe - Tx is stubbed out while transactions are incomplete
   rawTransaction: RawTransaction,
   wallet: BaseWallet,
   node: NodeConfig,
@@ -47,9 +36,8 @@ export default class ConfirmationModal extends React.Component {
     super(props);
     const { value, gasPrice, nonce } = props.rawTransaction;
 
-    // TODO: Fix with wallet address promise
     this.state = {
-      address: props.wallet.getAddress(),
+      address: '',
       value: toUnit(new Big(value, 16), 'wei', 'ether').toString(),
       gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
       nonce: new Big(nonce, 16).toString(),
@@ -67,6 +55,10 @@ export default class ConfirmationModal extends React.Component {
         clearTimeout(this.readTimer);
       }
     }, 1000);
+
+    this.props.wallet.getAddress().then(address => {
+      this.setState({ address });
+    });
   }
 
   componentWillUnmount() {
