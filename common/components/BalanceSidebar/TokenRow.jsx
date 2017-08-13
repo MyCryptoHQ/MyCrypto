@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import { formatNumber } from 'utils/formatters';
 import removeIcon from 'assets/images/icon-remove.svg';
 

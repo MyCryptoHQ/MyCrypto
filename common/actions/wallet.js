@@ -1,6 +1,6 @@
 // @flow
 import BaseWallet from 'libs/wallet/base';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 
 /*** Unlock Private Key ***/
 export type PrivateKeyUnlockParams = {

@@ -2,7 +2,7 @@
 import type { State } from 'reducers';
 import { BaseWallet } from 'libs/wallet';
 import { getNetworkConfig } from 'selectors/config';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import type { Token } from 'config/data';
 
 export function getWalletInst(state: State): ?BaseWallet {

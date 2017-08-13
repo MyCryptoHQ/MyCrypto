@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Big from 'big.js';
+import Big from 'bignumber.js';
 import { BaseWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import type { State } from 'reducers';
@@ -28,12 +28,26 @@ type Props = {
 export class BalanceSidebar extends React.Component {
   props: Props;
   state = {
-    showLongBalance: false
+    showLongBalance: false,
+    address: ''
   };
+
+  componentDidMount() {
+    this.props.wallet
+      .getAddress()
+      .then(addr => {
+        this.setState({ address: addr });
+      })
+      .catch(err => {
+        //TODO: communicate error in UI
+        console.log(err);
+      });
+  }
 
   render() {
     const { wallet, balance, network, tokenBalances, rates } = this.props;
     const { blockExplorer, tokenExplorer } = network;
+    const { address } = this.state;
     if (!wallet) {
       return null;
     }
@@ -44,9 +58,9 @@ export class BalanceSidebar extends React.Component {
           {translate('sidebar_AccountAddr')}
         </h5>
         <ul className="account-info">
-          <Identicon address={wallet.getAddress()} />
+          <Identicon address={address} />
           <span className="mono wrap">
-            {wallet.getAddress()}
+            {address}
           </span>
         </ul>
         <hr />
@@ -82,10 +96,7 @@ export class BalanceSidebar extends React.Component {
               {!!blockExplorer &&
                 <li>
                   <a
-                    href={blockExplorer.address.replace(
-                      '[[address]]',
-                      wallet.getAddress()
-                    )}
+                    href={blockExplorer.address.replace('[[address]]', address)}
                     target="_blank"
                   >
                     {`${network.name} (${blockExplorer.name})`}
@@ -94,10 +105,7 @@ export class BalanceSidebar extends React.Component {
               {!!tokenExplorer &&
                 <li>
                   <a
-                    href={tokenExplorer.address.replace(
-                      '[[address]]',
-                      wallet.getAddress()
-                    )}
+                    href={tokenExplorer.address.replace('[[address]]', address)}
                     target="_blank"
                   >
                     {`Tokens (${tokenExplorer.name})`}
@@ -173,7 +181,7 @@ export class BalanceSidebar extends React.Component {
   };
 }
 
-function mapStateToProps(state: State, props: Props) {
+function mapStateToProps(state: State) {
   return {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,

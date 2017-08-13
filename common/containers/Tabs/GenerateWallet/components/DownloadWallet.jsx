@@ -15,8 +15,16 @@ export default class DownloadWallet extends Component {
   props: Props;
   keystore: Object;
   state = {
-    hasDownloadedWallet: false
+    hasDownloadedWallet: false,
+    address: ''
   };
+
+  componentDidMount() {
+    if (!this.props.wallet) return;
+    this.props.wallet.getAddress().then(addr => {
+      this.setState({ address: addr });
+    });
+  }
 
   componentWillMount() {
     this.keystore = this.props.wallet.toKeystore(this.props.password);
@@ -111,6 +119,6 @@ export default class DownloadWallet extends Component {
   }
 
   getFilename() {
-    return getV3Filename(this.props.wallet.getAddress());
+    return getV3Filename(this.state.address);
   }
 }

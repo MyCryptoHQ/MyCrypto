@@ -79,6 +79,9 @@ export default class UnitDropdown extends React.Component {
     this.setState({
       expanded: false
     });
-    this.props.onChange(value);
+
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
   };
 }

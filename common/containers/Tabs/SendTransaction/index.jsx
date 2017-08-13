@@ -20,9 +20,29 @@ import BaseWallet from 'libs/wallet/base';
 // import type { Transaction } from './types';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
-import Big from 'big.js';
+import { isValidETHAddress } from 'libs/validators';
+import {
+  getNodeLib,
+  getNetworkConfig,
+  getGasPriceGwei
+} from 'selectors/config';
+import { getTokens } from 'selectors/wallet';
+import type { Token, NetworkConfig } from 'config/data';
+import Big from 'bignumber.js';
+import { valueToHex } from 'libs/values';
+import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
 import { getTokenBalances } from 'selectors/wallet';
+import type { RPCNode } from 'libs/nodes';
+import type {
+  TransactionWithoutGas,
+  BroadcastTransaction
+} from 'libs/transaction';
+import type { UNIT } from 'libs/units';
+import { toWei } from 'libs/units';
+import { formatGasLimit } from 'utils/formatters';
+import { showNotification } from 'actions/notifications';
+import type { ShowNotificationAction } from 'actions/notifications';
 import type { NodeConfig } from 'config/data';
 import { getNodeConfig } from 'selectors/config';
 
@@ -31,10 +51,12 @@ type State = {
   readOnly: boolean,
   to: string,
   value: string,
-  unit: string,
+  // $FlowFixMe - Comes from getParam not validating unit
+  unit: UNIT,
   gasLimit: string,
   data: string,
   gasChanged: boolean,
+  transaction: ?BroadcastTransaction,
   showTxConfirm: boolean
 };
 
@@ -59,8 +81,17 @@ type Props = {
   },
   wallet: BaseWallet,
   balance: Big,
+  node: NodeConfig,
+  nodeLib: RPCNode,
+  network: NetworkConfig,
+  tokens: Token[],
   tokenBalances: TokenBalance[],
-  node: NodeConfig
+  gasPrice: number,
+  showNotification: (
+    level: string,
+    msg: string,
+    duration?: number
+  ) => ShowNotificationAction
 };
 
 export class SendTransaction extends React.Component {
@@ -75,13 +106,33 @@ export class SendTransaction extends React.Component {
     gasLimit: '21000',
     data: '',
     gasChanged: false,
-    showTxConfirm: false
+    showTxConfirm: false,
+    transaction: null
   };
 
   componentDidMount() {
     const queryPresets = pickBy(this.parseQuery());
     if (Object.keys(queryPresets).length) {
       this.setState({ ...queryPresets, hasQueryString: true });
+    }
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    // if gas is not changed
+    // and we have valid tx
+    // and relevant fields changed
+    // estimate gas
+    // TODO we might want to listen to gas price changes here
+    // TODO debunce the call
+    if (
+      !this.state.gasChanged &&
+      this.isValid() &&
+      (this.state.to !== prevState.to ||
+        this.state.value !== prevState.value ||
+        this.state.unit !== prevState.unit ||
+        this.state.data !== prevState.data)
+    ) {
+      this.estimateGas();
     }
   }
 
@@ -96,7 +147,8 @@ export class SendTransaction extends React.Component {
       data,
       readOnly,
       hasQueryString,
-      showTxConfirm
+      showTxConfirm,
+      transaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
 
@@ -190,17 +242,23 @@ export class SendTransaction extends React.Component {
                       <label>
                         {translate('SEND_raw')}
                       </label>
-                      <textarea className="form-control" rows="4" readOnly>
-                        {'' /*rawTx*/}
-                      </textarea>
+                      <textarea
+                        className="form-control"
+                        value={transaction ? transaction.rawTx : ''}
+                        rows="4"
+                        readOnly
+                      />
                     </div>
                     <div className="col-sm-6">
                       <label>
                         {translate('SEND_signed')}
                       </label>
-                      <textarea className="form-control" rows="4" readOnly>
-                        {'' /*signedTx*/}
-                      </textarea>
+                      <textarea
+                        className="form-control"
+                        value={transaction ? transaction.signedTx : ''}
+                        rows="4"
+                        readOnly
+                      />
                     </div>
                   </div>
 
@@ -253,8 +311,61 @@ export class SendTransaction extends React.Component {
     return { to, data, value, unit, gasLimit, readOnly };
   }
 
+  isValid() {
+    const { to, value } = this.state;
+    return (
+      isValidETHAddress(to) &&
+      value &&
+      Number(value) > 0 &&
+      !isNaN(Number(value)) &&
+      isFinite(Number(value))
+    );
+  }
+
+  async getTransactionFromState(): Promise<TransactionWithoutGas> {
+    const { wallet } = this.props;
+
+    if (this.state.unit === 'ether') {
+      return {
+        to: this.state.to,
+        from: await wallet.getAddress(),
+        value: valueToHex(this.state.value)
+      };
+    }
+    const token = this.props.tokens.find(x => x.symbol === this.state.unit);
+    if (!token) {
+      throw new Error('No matching token');
+    }
+
+    return {
+      to: token.address,
+      from: await wallet.getAddress(),
+      value: '0x0',
+      data: ERC20.transfer(
+        this.state.to,
+        new Big(this.state.value).times(new Big(10).pow(token.decimal))
+      )
+    };
+  }
+
+  async estimateGas() {
+    const trans = await this.getTransactionFromState();
+    if (!trans) {
+      return;
+    }
+
+    // Grab a reference to state. If it has changed by the time the estimateGas
+    // call comes back, we don't want to replace the gasLimit in state.
+    const state = this.state;
+
+    this.props.nodeLib.estimateGas(trans).then(gasLimit => {
+      if (this.state === state) {
+        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+      }
+    });
+  }
+
   // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
-  // FIXME also should it reset gasChanged?
   onNewTx = (
     address: string,
     amount: string,
@@ -312,19 +423,39 @@ export class SendTransaction extends React.Component {
     });
   };
 
-  generateTx() {
-    // TODO: Generate transaction
-  }
+  generateTx = async () => {
+    const { nodeLib, wallet } = this.props;
+    const address = await wallet.getAddress();
 
-  cancelTx() {
+    try {
+      const transaction = await nodeLib.generateTransaction(
+        {
+          to: this.state.to,
+          from: address,
+          value: this.state.value,
+          gasLimit: this.state.gasLimit,
+          gasPrice: this.props.gasPrice,
+          data: this.state.data,
+          chainId: this.props.network.chainId
+        },
+        wallet
+      );
+
+      this.setState({ transaction });
+    } catch (err) {
+      this.props.showNotification('danger', err.message, 5000);
+    }
+  };
+
+  cancelTx = () => {
     this.setState({ showTxConfirm: false });
-  }
+  };
 
   // TODO: Flow type me with shared raw transaction type
-  confirmTx(rawTx: any) {
+  confirmTx = (rawTx: any) => {
     // TODO: Broadcast transaction
     console.log(rawTx);
-  }
+  };
 }
 
 function mapStateToProps(state: AppState) {
@@ -332,8 +463,12 @@ function mapStateToProps(state: AppState) {
     wallet: state.wallet.inst,
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
-    node: getNodeConfig(state)
+    node: getNodeConfig(state),
+    nodeLib: getNodeLib(state),
+    network: getNetworkConfig(state),
+    tokens: getTokens(state),
+    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei')
   };
 }
 
-export default connect(mapStateToProps)(SendTransaction);
+export default connect(mapStateToProps, { showNotification })(SendTransaction);
