@@ -54,6 +54,7 @@ type State = {
   value: string,
   // $FlowFixMe - Comes from getParam not validating unit
   unit: UNIT,
+  token: ?Token,
   gasLimit: string,
   data: string,
   gasChanged: boolean,
@@ -105,6 +106,7 @@ export class SendTransaction extends React.Component {
     to: '',
     value: '',
     unit: 'ether',
+    token: null,
     gasLimit: '21000',
     data: '',
     gasChanged: false,
@@ -146,6 +148,7 @@ export class SendTransaction extends React.Component {
       to,
       value,
       unit,
+      token,
       gasLimit,
       data,
       readOnly,
@@ -155,9 +158,6 @@ export class SendTransaction extends React.Component {
       rawTransaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
-
-    // tokens
-    // ng-show="token.balance!=0 && token.balance!='loading' || token.type!=='default' || tokenVisibility=='shown'"
 
     return (
       <section className="container" style={{ minHeight: '50%' }}>
@@ -284,6 +284,7 @@ export class SendTransaction extends React.Component {
             wallet={this.props.wallet}
             node={this.props.node}
             rawTransaction={rawTransaction}
+            token={token}
             onCancel={this.cancelTx}
             onConfirm={this.confirmTx}
           />}
@@ -318,34 +319,36 @@ export class SendTransaction extends React.Component {
     );
   }
 
-  async getTransactionFromState(): Promise<TransactionWithoutGas> {
+  async getTransactionInfoFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
+    const { token } = this.state;
 
     if (this.state.unit === 'ether') {
       return {
         to: this.state.to,
         from: await wallet.getAddress(),
-        value: valueToHex(this.state.value)
+        value: valueToHex(this.state.value),
+        data: this.state.data
+      };
+    } else {
+      if (!token) {
+        throw new Error('No matching token');
+      }
+
+      return {
+        to: token.address,
+        from: await wallet.getAddress(),
+        value: '0x0',
+        data: ERC20.transfer(
+          this.state.to,
+          new Big(this.state.value).times(new Big(10).pow(token.decimal))
+        )
       };
     }
-    const token = this.props.tokens.find(x => x.symbol === this.state.unit);
-    if (!token) {
-      throw new Error('No matching token');
-    }
-
-    return {
-      to: token.address,
-      from: await wallet.getAddress(),
-      value: '0x0',
-      data: ERC20.transfer(
-        this.state.to,
-        new Big(this.state.value).times(new Big(10).pow(token.decimal))
-      )
-    };
   }
 
   async estimateGas() {
-    const trans = await this.getTransactionFromState();
+    const trans = await this.getTransactionInfoFromState();
     if (!trans) {
       return;
     }
@@ -413,28 +416,31 @@ export class SendTransaction extends React.Component {
       }
       value = token.balance.toString();
     }
+
+    let token = this.props.tokens.find(x => x.symbol === unit);
+
     this.setState({
       value,
-      unit
+      unit,
+      token
     });
   };
 
   generateTx = async () => {
     const { nodeLib, wallet } = this.props;
-    const address = await wallet.getAddress();
+    const { token } = this.state;
+    const stateTxInfo = await this.getTransactionInfoFromState();
 
     try {
       const transaction = await nodeLib.generateTransaction(
         {
-          to: this.state.to,
-          from: address,
-          value: this.state.value,
+          ...stateTxInfo,
           gasLimit: this.state.gasLimit,
           gasPrice: this.props.gasPrice,
-          data: this.state.data,
           chainId: this.props.network.chainId
         },
-        wallet
+        wallet,
+        token
       );
 
       this.setState({

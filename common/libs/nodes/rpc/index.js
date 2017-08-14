@@ -11,11 +11,10 @@ import type {
 import RPCClient, {
   getBalance,
   estimateGas,
-  ethCall,
-  getTransactionCount
+  getTransactionCount,
+  getTokenBalance
 } from './client';
 import type { Token } from 'config/data';
-import ERC20 from 'libs/erc20';
 import type { BaseWallet } from 'libs/wallet';
 import { toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
@@ -46,16 +45,8 @@ export default class RpcNode extends BaseNode {
   }
 
   async getTokenBalances(address: string, tokens: Token[]): Promise<Big[]> {
-    const data = ERC20.balanceOf(address);
     return this.client
-      .batch(
-        tokens.map(t =>
-          ethCall({
-            to: t.address,
-            data
-          })
-        )
-      )
+      .batch(tokens.map(t => getTokenBalance(address, t)))
       .then(response => {
         return response.map((item, idx) => {
           // FIXME wrap in maybe-like
@@ -71,7 +62,8 @@ export default class RpcNode extends BaseNode {
 
   async generateTransaction(
     tx: Transaction,
-    wallet: BaseWallet
+    wallet: BaseWallet,
+    token: ?Token
   ): Promise<BroadcastTransaction> {
     // Reject bad addresses
     if (!isValidETHAddress(tx.to)) {
@@ -104,7 +96,11 @@ export default class RpcNode extends BaseNode {
       );
     }
 
-    const calls = [getBalance(tx.from), getTransactionCount(tx.from)];
+    // Tokens have a different balance lookup, so do that conditionally
+    const calls = [
+      token ? getTokenBalance(tx.from, token) : getBalance(tx.from),
+      getTransactionCount(tx.from)
+    ];
 
     return this.client.batch(calls).then(async results => {
       const [balance, txCount] = results;
@@ -120,6 +116,8 @@ export default class RpcNode extends BaseNode {
       // TODO: Handle token values
       const valueWei = new Big(toWei(new Big(tx.value), 'ether'));
       const balanceWei = new Big(balance.result);
+      console.log(valueWei.toString(10));
+      console.log(balanceWei.toString(10));
       if (valueWei.gte(balanceWei)) {
         throw new Error(translate('GETH_Balance'));
       }

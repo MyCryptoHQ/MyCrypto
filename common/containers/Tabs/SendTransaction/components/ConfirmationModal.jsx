@@ -7,6 +7,7 @@ import BaseWallet from 'libs/wallet/base';
 import { toUnit } from 'libs/units';
 import type { NodeConfig } from 'config/data';
 import type { RawTransaction } from 'libs/transaction';
+import type { Token } from 'config/data';
 
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
@@ -16,6 +17,7 @@ type Props = {
   rawTransaction: RawTransaction,
   wallet: BaseWallet,
   node: NodeConfig,
+  token: ?Token,
   onConfirm: RawTransaction => void,
   onCancel: () => void
 };
@@ -72,7 +74,7 @@ export default class ConfirmationModal extends React.Component {
   }
 
   render() {
-    const { node, rawTransaction, onCancel } = this.props;
+    const { node, token, rawTransaction, onCancel } = this.props;
     const { address, value, gasPrice, timeToRead } = this.state;
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
@@ -90,6 +92,8 @@ export default class ConfirmationModal extends React.Component {
       }
     ];
 
+    const symbol = token ? token.symbol : 'ETH';
+
     return (
       <Modal
         title="Confirm Your Transaction"
@@ -105,7 +109,7 @@ export default class ConfirmationModal extends React.Component {
             <div className="ConfModal-summary-amount">
               <div className="ConfModal-summary-amount-arrow" />
               <div className="ConfModal-summary-amount-currency">
-                {value} ETH
+                {value} {symbol}
               </div>
             </div>
             <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
@@ -121,21 +125,30 @@ export default class ConfirmationModal extends React.Component {
               You are sending to <code>{rawTransaction.to}</code>
             </li>
             <li className="ConfModal-details-detail">
-              You are sending <strong>{value} ETH</strong> with a gas price of{' '}
-              <strong>{gasPrice} gwei</strong>
+              You are sending{' '}
+              <strong>
+                {value} {symbol}
+              </strong>{' '}
+              with a gas price of <strong>{gasPrice} gwei</strong>
             </li>
             <li className="ConfModal-details-detail">
               You are interacting with the <strong>{node.network}</strong>{' '}
               network provided by <strong>{node.service}</strong>
             </li>
-            <li className="ConfModal-details-detail">
-              {rawTransaction.data
-                ? <span>
-                    You are sending the following data:{' '}
-                    <code>{rawTransaction.data}</code>
-                  </span>
-                : 'There is no data attached to this transaction'}
-            </li>
+            {!token &&
+              <li className="ConfModal-details-detail">
+                {rawTransaction.data
+                  ? <span>
+                      You are sending the following data:{' '}
+                      <textarea
+                        className="form-control"
+                        value={rawTransaction.data}
+                        rows="3"
+                        disabled
+                      />
+                    </span>
+                  : 'There is no data attached to this transaction'}
+              </li>}
           </ul>
 
           <div className="ConfModal-confirm">

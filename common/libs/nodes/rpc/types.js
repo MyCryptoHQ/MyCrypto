@@ -30,6 +30,17 @@ export type GetBalanceRequest = RPCRequestBase & {
   params: [DATA, DEFAULT_BLOCK]
 };
 
+export type GetTokenBalanceRequest = RPCRequestBase & {
+  method: 'eth_call',
+  params: [
+    {
+      to: string,
+      data: string
+    },
+    DEFAULT_BLOCK
+  ]
+};
+
 export type CallRequest = RPCRequestBase & {
   method: 'eth_call',
   params: [
@@ -66,6 +77,7 @@ export type GetTransactionCountRequest = RPCRequestBase & {
 
 export type RPCRequest =
   | GetBalanceRequest
+  | GetTokenBalanceRequest
   | CallRequest
   | EstimateGasRequest
   | GetTransactionCountRequest;
