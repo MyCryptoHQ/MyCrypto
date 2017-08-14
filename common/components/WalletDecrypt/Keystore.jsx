@@ -88,7 +88,7 @@ export default class KeystoreDecrypt extends Component {
     });
   };
 
-  handleFileSelection = event => {
+  handleFileSelection = (e: SyntheticInputEvent) => {
     const fileReader = new FileReader();
     const inputFile = event.target.files[0];
 
