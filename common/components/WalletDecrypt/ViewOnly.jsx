@@ -2,13 +2,27 @@ import React from 'react';
 import translate from 'translations';
 import PropTypes from 'prop-types';
 
+export type AddressValue = {
+  address: string
+};
+
 const ViewOnlyDecrypt = ({ value, onChange, onUnlock }) => {
+  const { address } = value;
+
   const onKeyDown = (e: SyntheticKeyboardEvent) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();
       onUnlock();
     }
+  };
+
+  const onAddressChange = (e: SyntheticInputEvent) => {
+    // need to validate here
+    onChange({
+      ...value,
+      address: e.target.value
+    });
   };
 
   return (
@@ -22,7 +36,8 @@ const ViewOnlyDecrypt = ({ value, onChange, onUnlock }) => {
           <textarea
             id="address-label"
             className="form-control"
-            onChange={e => onChange(e.target.value)}
+            value={address}
+            onChange={onAddressChange}
             onKeyDown={onKeyDown}
             placeholder={translate('x_Address')}
             rows="2"
@@ -34,7 +49,7 @@ const ViewOnlyDecrypt = ({ value, onChange, onUnlock }) => {
 };
 
 ViewOnlyDecrypt.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   onUnlock: PropTypes.func.isRequired
 };

@@ -45,7 +45,9 @@ const WALLETS = {
   'view-only': {
     lid: 'View with Address Only',
     component: ViewOnlyDecrypt,
-    initialParams: '',
+    initialParams: {
+      address: ''
+    },
     unlock: setWallet
   }
 };
