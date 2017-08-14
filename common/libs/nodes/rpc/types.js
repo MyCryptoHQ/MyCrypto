@@ -1,4 +1,5 @@
 // @flow
+import type { TransactionWithoutGas } from 'libs/transaction';
 
 type DATA = string;
 type QUANTITY = string;
@@ -58,16 +59,7 @@ export type CallRequest = RPCRequestBase & {
 
 export type EstimateGasRequest = RPCRequestBase & {
   method: 'eth_estimateGas',
-  params: [
-    {
-      from?: DATA,
-      to?: DATA,
-      gas?: QUANTITY,
-      gasPrice?: QUANTITY,
-      value?: QUANTITY,
-      data?: DATA
-    }
-  ]
+  params: [TransactionWithoutGas]
 };
 
 export type GetTransactionCountRequest = RPCRequestBase & {
