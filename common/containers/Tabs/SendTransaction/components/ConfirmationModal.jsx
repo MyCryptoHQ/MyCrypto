@@ -24,7 +24,8 @@ type Props = {
 };
 
 type State = {
-  address: string,
+  toAddress: string,
+  fromAddress: string,
   value: string,
   gasPrice: string,
   nonce: string,
@@ -40,17 +41,23 @@ export default class ConfirmationModal extends React.Component {
 
     this.state = {
       ...this._getStateFromProps(props),
-      address: '',
+      fromAddress: '',
       timeToRead: 5
     };
   }
 
   componentWillReceiveProps(newProps: Props) {
+    // Recalculate transaction if it or the token changes
     if (
       newProps.rawTransaction !== this.props.rawTransaction ||
       newProps.token !== this.props.token
     ) {
       this.setState(this._getStateFromProps(newProps));
+    }
+
+    // Reload address if the wallet changes
+    if (newProps.wallet !== this.props.wallet) {
+      this._setWalletAddress(this.props.wallet);
     }
   }
 
@@ -65,9 +72,7 @@ export default class ConfirmationModal extends React.Component {
       }
     }, 1000);
 
-    this.props.wallet.getAddress().then(address => {
-      this.setState({ address });
-    });
+    this._setWalletAddress(this.props.wallet);
   }
 
   componentWillUnmount() {
@@ -76,21 +81,31 @@ export default class ConfirmationModal extends React.Component {
 
   _getStateFromProps(props: Props) {
     const { rawTransaction, token } = props;
-    const { value, gasPrice, nonce } = rawTransaction;
+    const { value, gasPrice, nonce, to } = rawTransaction;
     let fixedValue;
+    let toAddress;
 
     if (token) {
       const tokenData = ERC20.decodeTransfer(rawTransaction.data);
       fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
+      toAddress = tokenData.to;
     } else {
       fixedValue = toUnit(new Big(value, 16), 'wei', 'ether').toString();
+      toAddress = to;
     }
 
     return {
       value: fixedValue,
       gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
-      nonce: new Big(nonce, 16).toString()
+      nonce: new Big(nonce, 16).toString(),
+      toAddress
     };
+  }
+
+  _setWalletAddress(wallet) {
+    wallet.getAddress().then(fromAddress => {
+      this.setState({ fromAddress });
+    });
   }
 
   _confirm() {
@@ -101,7 +116,7 @@ export default class ConfirmationModal extends React.Component {
 
   render() {
     const { node, token, rawTransaction, onCancel } = this.props;
-    const { address, value, gasPrice, timeToRead } = this.state;
+    const { toAddress, fromAddress, value, gasPrice, timeToRead } = this.state;
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons = [
@@ -130,7 +145,7 @@ export default class ConfirmationModal extends React.Component {
         <div className="ConfModal">
           <div className="ConfModal-summary">
             <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
-              <Identicon size="100%" address={address} />
+              <Identicon size="100%" address={fromAddress} />
             </div>
             <div className="ConfModal-summary-amount">
               <div className="ConfModal-summary-amount-arrow" />
@@ -139,16 +154,16 @@ export default class ConfirmationModal extends React.Component {
               </div>
             </div>
             <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
-              <Identicon size="100%" address={rawTransaction.to} />
+              <Identicon size="100%" address={toAddress} />
             </div>
           </div>
 
           <ul className="ConfModal-details">
             <li className="ConfModal-details-detail">
-              You are sending from <code>{address}</code>
+              You are sending from <code>{fromAddress}</code>
             </li>
             <li className="ConfModal-details-detail">
-              You are sending to <code>{rawTransaction.to}</code>
+              You are sending to <code>{toAddress}</code>
             </li>
             <li className="ConfModal-details-detail">
               You are sending{' '}
