@@ -46,3 +46,7 @@ export function toUnit(number: Big, fromUnit: UNIT, toUnit: UNIT): Big {
 export function toTokenUnit(number: Big, token: Token): Big {
   return number.times(new Big(10).pow(token.decimal));
 }
+
+export function toTokenDisplay(number: Big, token: Token): Big {
+  return number.times(new Big(10).pow(-token.decimal));
+}

@@ -1,5 +1,6 @@
 // @flow
 
+// TODO: Enforce more bigs, or find better way to avoid ether vs wei for value
 export type TransactionWithoutGas = {|
   from: string,
   to: string,

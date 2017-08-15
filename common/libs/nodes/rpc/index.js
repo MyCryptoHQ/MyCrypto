@@ -18,6 +18,7 @@ import type { Token } from 'config/data';
 import type { BaseWallet } from 'libs/wallet';
 import { toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
+import ERC20 from 'libs/erc20';
 
 export default class RpcNode extends BaseNode {
   client: RPCClient;
@@ -70,6 +71,11 @@ export default class RpcNode extends BaseNode {
       return Promise.reject(new Error(translate('ERROR_5')));
     }
 
+    // Reject token transactions without data
+    if (token && !tx.data) {
+      return Promise.reject(new Error('Tokens must be sent with data'));
+    }
+
     // Reject gas limit under 21000 (Minimum for transaction)
     // Reject if limit over 5000000
     // TODO: Make this dynamic, the limit shifts
@@ -103,31 +109,42 @@ export default class RpcNode extends BaseNode {
     ];
 
     return this.client.batch(calls).then(async results => {
-      const [balance, txCount] = results;
+      const [balanceRes, txCountRes] = results;
 
-      if (balance.error) {
+      // Catch any RPC errors
+      if (balanceRes.error) {
         throw new Error(`Failed to retrieve balance for ${tx.from}`);
       }
 
-      if (txCount.error) {
+      if (txCountRes.error) {
         throw new Error(`Failed to retrieve transaction count for ${tx.from}`);
       }
 
-      // TODO: Handle token values
-      const valueWei = new Big(toWei(new Big(tx.value), 'ether'));
-      const balanceWei = new Big(balance.result);
-      console.log(valueWei.toString(10));
-      console.log(balanceWei.toString(10));
-      if (valueWei.gte(balanceWei)) {
+      // Ensure they have a balance larger than what they're sending
+      const balance = new Big(balanceRes.result);
+      let value;
+
+      if (token) {
+        // $FlowFixMe - We reject above if tx has no data for token
+        const transferData = ERC20.decodeTransfer(tx.data);
+        value = new Big(transferData.value);
+      } else {
+        value = new Big(tx.value);
+      }
+
+      console.log(value.toString());
+      console.log(balance.toString());
+      if (value.gte(balance)) {
         throw new Error(translate('GETH_Balance'));
       }
 
+      // Build the transaction, sign it
       const rawTx = {
-        nonce: addHexPrefix(txCount.result),
+        nonce: addHexPrefix(txCountRes.result),
         gasPrice: addHexPrefix(new Big(tx.gasPrice).toString(16)),
         gasLimit: addHexPrefix(new Big(tx.gasLimit).toString(16)),
         to: addHexPrefix(tx.to),
-        value: addHexPrefix(valueWei.toString(16)),
+        value: token ? '0x0' : addHexPrefix(value.toString(16)),
         data: tx.data ? addHexPrefix(tx.data) : '',
         chainId: tx.chainId || 1
       };

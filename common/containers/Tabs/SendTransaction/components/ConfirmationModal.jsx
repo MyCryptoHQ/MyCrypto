@@ -4,10 +4,11 @@ import React from 'react';
 import translate from 'translations';
 import Big from 'bignumber.js';
 import BaseWallet from 'libs/wallet/base';
-import { toUnit, toTokenUnit } from 'libs/units';
+import { toUnit, toTokenDisplay } from 'libs/units';
 import type { NodeConfig } from 'config/data';
 import type { RawTransaction } from 'libs/transaction';
 import type { Token } from 'config/data';
+import ERC20 from 'libs/erc20';
 
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
@@ -79,7 +80,8 @@ export default class ConfirmationModal extends React.Component {
     let fixedValue;
 
     if (token) {
-      fixedValue = toTokenUnit(new Big(value, 16), token).toString();
+      const tokenData = ERC20.decodeTransfer(rawTransaction.data);
+      fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
     } else {
       fixedValue = toUnit(new Big(value, 16), 'wei', 'ether').toString();
     }
