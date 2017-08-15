@@ -4,7 +4,7 @@ import React from 'react';
 import translate from 'translations';
 import Big from 'bignumber.js';
 import BaseWallet from 'libs/wallet/base';
-import { toUnit } from 'libs/units';
+import { toUnit, toTokenUnit } from 'libs/units';
 import type { NodeConfig } from 'config/data';
 import type { RawTransaction } from 'libs/transaction';
 import type { Token } from 'config/data';
@@ -36,15 +36,21 @@ export default class ConfirmationModal extends React.Component {
 
   constructor(props: Props) {
     super(props);
-    const { value, gasPrice, nonce } = props.rawTransaction;
 
     this.state = {
+      ...this._getStateFromProps(props),
       address: '',
-      value: toUnit(new Big(value, 16), 'wei', 'ether').toString(),
-      gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
-      nonce: new Big(nonce, 16).toString(),
       timeToRead: 5
     };
+  }
+
+  componentWillReceiveProps(newProps: Props) {
+    if (
+      newProps.rawTransaction !== this.props.rawTransaction ||
+      newProps.token !== this.props.token
+    ) {
+      this.setState(this._getStateFromProps(newProps));
+    }
   }
 
   // Count down 5 seconds before allowing them to confirm
@@ -65,6 +71,24 @@ export default class ConfirmationModal extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.readTimer);
+  }
+
+  _getStateFromProps(props: Props) {
+    const { rawTransaction, token } = props;
+    const { value, gasPrice, nonce } = rawTransaction;
+    let fixedValue;
+
+    if (token) {
+      fixedValue = toTokenUnit(new Big(value, 16), token).toString();
+    } else {
+      fixedValue = toUnit(new Big(value, 16), 'wei', 'ether').toString();
+    }
+
+    return {
+      value: fixedValue,
+      gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
+      nonce: new Big(nonce, 16).toString()
+    };
   }
 
   _confirm() {

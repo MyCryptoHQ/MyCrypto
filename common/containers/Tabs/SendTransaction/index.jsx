@@ -40,7 +40,7 @@ import type {
   BroadcastTransaction
 } from 'libs/transaction';
 import type { UNIT } from 'libs/units';
-import { toWei } from 'libs/units';
+import { toWei, toTokenUnit } from 'libs/units';
 import { formatGasLimit } from 'utils/formatters';
 import { showNotification } from 'actions/notifications';
 import type { ShowNotificationAction } from 'actions/notifications';
@@ -341,7 +341,7 @@ export class SendTransaction extends React.Component {
         value: '0x0',
         data: ERC20.transfer(
           this.state.to,
-          new Big(this.state.value).times(new Big(10).pow(token.decimal))
+          toTokenUnit(new Big(this.state.value), token)
         )
       };
     }
