@@ -102,7 +102,7 @@ export default class ConfirmationModal extends React.Component {
     };
   }
 
-  _setWalletAddress(wallet) {
+  _setWalletAddress(wallet: BaseWallet) {
     wallet.getAddress().then(fromAddress => {
       this.setState({ fromAddress });
     });
