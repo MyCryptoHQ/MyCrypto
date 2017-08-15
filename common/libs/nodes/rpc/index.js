@@ -138,6 +138,8 @@ export default class RpcNode extends BaseNode {
         throw new Error(translate('GETH_Balance'));
       }
 
+      // TODO: Throw error if they lack the balance for the gas costs
+
       // Build the transaction, sign it
       const rawTx = {
         nonce: addHexPrefix(txCountRes.result),
