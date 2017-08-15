@@ -51,11 +51,11 @@ class ERC20 extends Contract {
     super(erc20Abi);
   }
 
-  balanceOf(address: string) {
+  balanceOf(address: string): string {
     return this.call('balanceOf', [address]);
   }
 
-  transfer(to: string, value: Big) {
+  transfer(to: string, value: Big): string {
     return this.call('transfer', [to, value]);
   }
 }

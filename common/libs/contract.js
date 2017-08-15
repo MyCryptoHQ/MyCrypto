@@ -24,7 +24,9 @@ export type ABI = ABIMethod[];
 
 function assertString(arg: any) {
   if (typeof arg !== 'string') {
-    throw new Error('Expected string');
+    throw new Error(
+      `Contract method expected string, got ${typeof arg} ${arg}' instead`
+    );
   }
 }
 
@@ -32,6 +34,7 @@ function assertString(arg: any) {
 export default class Contract {
   abi: ABI;
   constructor(abi: ABI) {
+    // TODO: Check ABI, throw if it's malformed
     this.abi = abi;
   }
 
