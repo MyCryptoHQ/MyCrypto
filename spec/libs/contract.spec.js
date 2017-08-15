@@ -1,4 +1,5 @@
 import Contract from 'libs/contract';
+import Big from 'bignumber.js';
 
 describe('Contract', () => {
   // From the ABI docs
@@ -54,11 +55,11 @@ describe('Contract', () => {
 
   // ----------------------------------------------------------------------
 
-  describe('call / encodeArgs / encodeArg', () => {
+  describe('call / encodeArgs', () => {
     it('should return hex data for the method', () => {
       const result = testContract.call('foo', ['1337']);
       expect(result).toBe(
-        '0x2fbebd380000000000000000000000000000000000000000000000000000000031333337'
+        '0x2fbebd380000000000000000000000000000000000000000000000000000000000000539'
       );
     });
 

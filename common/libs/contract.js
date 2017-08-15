@@ -1,9 +1,11 @@
 // @flow
 // TODO support events, constructors, fallbacks, array slots, types
-import { sha3, setLengthLeft, toBuffer } from 'ethereumjs-util';
-import Big from 'bignumber.js';
+import { sha3 } from 'ethereumjs-util';
+import abi from 'ethereumjs-abi';
 
-type ABIType = 'address' | 'uint256' | 'bool';
+// There are too many to enumerate since they're somewhat dynamic, list here
+// https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI#types
+type ABIType = string;
 
 type ABITypedSlot = {
   name: string,
@@ -21,14 +23,6 @@ type ABIMethod = {
 };
 
 export type ABI = ABIMethod[];
-
-function assertString(arg: any) {
-  if (typeof arg !== 'string') {
-    throw new Error(
-      `Contract method expected string, got ${typeof arg} ${arg}' instead`
-    );
-  }
-}
 
 // Contract helper, returns data for given call
 export default class Contract {
@@ -68,25 +62,16 @@ export default class Contract {
       throw new Error('Invalid number of arguments');
     }
 
-    return method.inputs
-      .map((input, idx) => this.encodeArg(input, args[idx]))
-      .join('');
+    const inputTypes = method.inputs.map(input => input.type);
+    return abi.rawEncode(inputTypes, args).toString('hex');
   }
 
-  encodeArg(input: ABITypedSlot, arg: any): string {
-    switch (input.type) {
-      case 'address':
-      case 'uint160':
-        assertString(arg);
-        return setLengthLeft(toBuffer(arg), 32).toString('hex');
-      case 'uint256':
-        if (arg instanceof Big) {
-          arg = '0x' + arg.toString(16);
-        }
-        assertString(arg);
-        return setLengthLeft(toBuffer(arg), 32).toString('hex');
-      default:
-        throw new Error(`Dont know how to handle abi type ${input.type}`);
+  decodeArgs(method: ABIMethod, args: string) {
+    if (method.inputs.length !== args.length) {
+      throw new Error('Invalid number of arguments');
     }
+
+    const inputTypes = method.inputs.map(input => input.type);
+    return abi.rawDecode(inputTypes, args);
   }
 }

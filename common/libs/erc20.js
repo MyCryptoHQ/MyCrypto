@@ -1,7 +1,7 @@
 // @flow
 import Contract from 'libs/contract';
 import type { ABI } from 'libs/contract';
-import type Big from 'bignumber.js';
+import Big from 'bignumber.js';
 
 const erc20Abi: ABI = [
   {
@@ -55,8 +55,8 @@ class ERC20 extends Contract {
     return this.call('balanceOf', [address]);
   }
 
-  transfer(to: string, value: Big): string {
-    return this.call('transfer', [to, value]);
+  transfer(to: string, value: string | number | Big): string {
+    return this.call('transfer', [to, new Big(value).toString()]);
   }
 }
 
