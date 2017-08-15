@@ -43,17 +43,24 @@ export default class Contract {
     return method;
   }
 
-  call(name: string, args: any[]): string {
-    const method = this.getMethodAbi(name);
+  getMethodTypes(method: ABIMethod) {
+    return method.inputs.map(i => i.type);
+  }
+
+  getMethodSelector(method: ABIMethod) {
     const selector = sha3(
-      `${name}(${method.inputs.map(i => i.type).join(',')})`
+      `${method.name}(${this.getMethodTypes(method).join(',')})`
     );
 
     // TODO: Add explanation, why slice the first 8?
+    return selector.toString('hex').slice(0, 8);
+  }
+
+  call(name: string, args: any[]): string {
+    const method = this.getMethodAbi(name);
+
     return (
-      '0x' +
-      selector.toString('hex').slice(0, 8) +
-      this.encodeArgs(method, args)
+      '0x' + this.getMethodSelector(method) + this.encodeArgs(method, args)
     );
   }
 
@@ -66,12 +73,12 @@ export default class Contract {
     return abi.rawEncode(inputTypes, args).toString('hex');
   }
 
-  decodeArgs(method: ABIMethod, args: string) {
-    if (method.inputs.length !== args.length) {
-      throw new Error('Invalid number of arguments');
-    }
-
-    const inputTypes = method.inputs.map(input => input.type);
-    return abi.rawDecode(inputTypes, args);
+  decodeArgs(method: ABIMethod, argData: string) {
+    // Remove method selector from data, if present
+    argData = argData.replace(`0x${this.getMethodSelector(method)}`, '');
+    // Convert argdata to a hex buffer for ethereumjs-abi
+    const argBuffer = new Buffer(argData, 'hex');
+    // Decode!
+    return abi.rawDecode(this.getMethodTypes(method), argBuffer);
   }
 }
