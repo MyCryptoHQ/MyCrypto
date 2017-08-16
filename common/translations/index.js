@@ -34,11 +34,11 @@ languages.forEach(l => {
 
 export default function translate(key: string) {
   let activeLanguage = store.getState().config.languageSelection;
-  return markupToReact(
+  const source =
     (repository[activeLanguage] && repository[activeLanguage][key]) ||
-      repository[fallbackLanguage][key] ||
-      key
-  );
+    repository[fallbackLanguage][key] ||
+    key;
+  return markupToReact(source, key);
 }
 
 export function getTranslators() {
