@@ -5,26 +5,27 @@ let fallbackLanguage = 'en';
 let repository = {};
 
 const languages = [
-  require('./de'),
-  require('./el'),
-  require('./en'),
-  require('./es'),
-  require('./fi'),
-  require('./fr'),
-  require('./hu'),
-  require('./id'),
-  require('./it'),
-  require('./ja'),
-  require('./nl'),
-  require('./no'),
-  require('./pl'),
-  require('./pt'),
-  require('./ru') /*sk, sl, sv */,
-  require('./ko'),
-  require('./tr'),
-  require('./vi'),
-  require('./zhcn'),
-  require('./zhtw')
+  require('./lang/de'),
+  require('./lang/el'),
+  require('./lang/en'),
+  require('./lang/es'),
+  require('./lang/fi'),
+  require('./lang/fr'),
+  require('./lang/ht'),
+  require('./lang/hu'),
+  require('./lang/id'),
+  require('./lang/it'),
+  require('./lang/ja'),
+  require('./lang/nl'),
+  require('./lang/no'),
+  require('./lang/pl'),
+  require('./lang/pt'),
+  require('./lang/ru') /*sk, sl, sv */,
+  require('./lang/ko'),
+  require('./lang/tr'),
+  require('./lang/vi'),
+  require('./lang/zhcn'),
+  require('./lang/zhtw')
 ];
 
 languages.forEach(l => {
