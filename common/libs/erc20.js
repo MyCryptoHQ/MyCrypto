@@ -61,8 +61,8 @@ class ERC20 extends Contract {
     return this.call('balanceOf', [address]);
   }
 
-  transfer(to: string, value: string | number | Big): string {
-    return this.call('transfer', [to, new Big(value).toString()]);
+  transfer(to: string, value: Big): string {
+    return this.call('transfer', [to, value.toString()]);
   }
 
   decodeTransfer(data: string): Transfer {
