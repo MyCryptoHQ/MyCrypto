@@ -1,3 +1,5 @@
+// @flow
+
 export type Pairs = {
   ETHBTC: number,
   ETHREP: number,

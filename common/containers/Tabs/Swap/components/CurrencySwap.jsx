@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
@@ -77,10 +78,10 @@ export default class CurrencySwap extends Component {
       const REPMin = bityConfig.REPMax(bityRates.BTCREP);
 
       const notificationMessage = `
-        Minimum amount ${bityConfig.BTCMin} BTC, 
-        ${toFixedIfLarger(ETHMin, 3)} ETH. 
-        Max amount ${bityConfig.BTCMax} BTC, 
-        ${toFixedIfLarger(ETHMax, 3)} ETH, or 
+        Minimum amount ${bityConfig.BTCMin} BTC,
+        ${toFixedIfLarger(ETHMin, 3)} ETH.
+        Max amount ${bityConfig.BTCMax} BTC,
+        ${toFixedIfLarger(ETHMax, 3)} ETH, or
         ${toFixedIfLarger(REPMin, 3)} REP
       `;
 

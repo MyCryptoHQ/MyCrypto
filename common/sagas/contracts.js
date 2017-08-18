@@ -1,3 +1,4 @@
+// @flow
 import { takeEvery, put } from 'redux-saga/effects';
 import type { Effect } from 'redux-saga/effects';
 import translate from 'translations';

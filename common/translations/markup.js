@@ -1,3 +1,4 @@
+// @flow
 // ad-hoc parser for translation strings
 import React from 'react';
 
@@ -48,7 +49,11 @@ export function markupToReact(mdString: string) {
   let i = 0;
   while (i + 1 < parts.length) {
     result = result.concat(linkify(parts[i]));
-    result.push(<b key={'boldify-' + key}>{parts[i + 2]}</b>);
+    result.push(
+      <b key={'boldify-' + key}>
+        {parts[i + 2]}
+      </b>
+    );
     key++;
     i += 3;
   }

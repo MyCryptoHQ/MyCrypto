@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import translate from 'translations';
@@ -34,10 +35,12 @@ const tabs = [
   }
 ];
 
+type Props = {
+  location: mixed
+};
+
 export default class TabsOptions extends Component {
-  props: {
-    location: mixed
-  };
+  props: Props;
 
   constructor(props) {
     super(props);

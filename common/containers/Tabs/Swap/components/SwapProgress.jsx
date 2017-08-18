@@ -1,4 +1,4 @@
-//flow
+// @flow
 import React, { Component } from 'react';
 import translate from 'translations';
 import bityConfig from 'config/bity';

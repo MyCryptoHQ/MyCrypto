@@ -1,3 +1,4 @@
+// @flow
 export default {
   serverURL: 'https://bity.myetherapi.com',
   bityAPI: 'https://bity.com/api',

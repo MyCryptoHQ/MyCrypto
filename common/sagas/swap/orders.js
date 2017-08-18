@@ -1,3 +1,4 @@
+// @flow
 import { showNotification } from 'actions/notifications';
 import { delay } from 'redux-saga';
 import { postOrder, getOrderStatus } from 'api/bity';
@@ -29,9 +30,9 @@ export const getSwap = state => state.swap;
 const ONE_SECOND = 1000;
 const TEN_SECONDS = ONE_SECOND * 10;
 const BITY_TIMEOUT_MESSAGE = `
-    Time has run out. 
-    If you have already sent, please wait 1 hour. 
-    If your order has not be processed after 1 hour, 
+    Time has run out.
+    If you have already sent, please wait 1 hour.
+    If your order has not be processed after 1 hour,
     please press the orange 'Issue with your Swap?' button.
 `;
 
