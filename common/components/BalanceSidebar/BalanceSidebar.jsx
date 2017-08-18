@@ -1,9 +1,10 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import Big from 'bignumber.js';
+
 import { BaseWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
-import type { State } from 'reducers';
+import type { State as ReduxState } from 'reducers';
 import { connect } from 'react-redux';
 import { getWalletInst, getTokenBalances } from 'selectors/wallet';
 import type { TokenBalance } from 'selectors/wallet';
@@ -25,7 +26,12 @@ type Props = {
   removeCustomToken: typeof customTokenActions.removeCustomToken
 };
 
-export class BalanceSidebar extends React.Component {
+type State = {
+  showLongBalance: boolean,
+  address: string
+};
+
+export class BalanceSidebar extends Component<Props, State> {
   props: Props;
   state = {
     showLongBalance: false,
@@ -171,7 +177,7 @@ export class BalanceSidebar extends React.Component {
     );
   }
 
-  toggleShowLongBalance = (e: SyntheticMouseEvent) => {
+  toggleShowLongBalance = (e: SyntheticMouseEvent<*>) => {
     e.preventDefault();
     this.setState(state => {
       return {
@@ -181,7 +187,7 @@ export class BalanceSidebar extends React.Component {
   };
 }
 
-function mapStateToProps(state: State) {
+function mapStateToProps(state: ReduxState) {
   return {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,
