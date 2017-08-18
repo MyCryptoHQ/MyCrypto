@@ -5,7 +5,7 @@ import './GasPriceDropdown.scss';
 import { gasPriceDefaults } from 'config/data';
 
 type Dropdown = {
-  value?: number,
+  value: ?number,
   onChange: (price: number) => number
 };
 

@@ -57,6 +57,7 @@ export class WalletDecrypt extends Component {
     // FIXME
     dispatch: (action: any) => void
   };
+
   state: State = {
     selectedWalletKey: 'keystore-file',
     value: WALLETS['keystore-file'].initialParams

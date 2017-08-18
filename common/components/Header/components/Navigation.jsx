@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import translate from 'translations';
-import PropTypes from 'prop-types';
 
 import './Navigation.scss';
 
@@ -36,6 +35,10 @@ const tabs = [
 ];
 
 export default class TabsOptions extends Component {
+  props: {
+    location: mixed
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -43,10 +46,6 @@ export default class TabsOptions extends Component {
       showRightArrow: false
     };
   }
-
-  static propTypes = {
-    location: PropTypes.object
-  };
 
   tabClick() {}
 

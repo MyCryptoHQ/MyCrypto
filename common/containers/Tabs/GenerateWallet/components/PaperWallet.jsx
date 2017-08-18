@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 import PrintableWallet from 'components/PrintableWallet';
 import type PrivKeyWallet from 'libs/wallet/privkey';
@@ -12,11 +11,6 @@ type Props = {
 
 export default class PaperWallet extends Component {
   props: Props;
-
-  static propTypes = {
-    // Store state
-    wallet: PropTypes.object.isRequired
-  };
 
   render() {
     const { wallet } = this.props;

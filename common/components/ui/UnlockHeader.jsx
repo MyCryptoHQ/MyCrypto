@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
 import BaseWallet from 'libs/wallet/base';
@@ -14,9 +13,6 @@ type Props = {
 
 export class UnlockHeader extends React.Component {
   props: Props;
-  static propTypes = {
-    title: PropTypes.string.isRequired
-  };
 
   state: {
     expanded: boolean

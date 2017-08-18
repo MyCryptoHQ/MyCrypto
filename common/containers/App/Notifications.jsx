@@ -9,6 +9,7 @@ class NotificationRow extends React.Component {
     notification: Notification,
     onClose: (n: Notification) => void
   };
+
   render() {
     const { msg, level } = this.props.notification;
     let className = '';
@@ -31,7 +32,9 @@ class NotificationRow extends React.Component {
         role="alert"
         aria-live="assertive"
       >
-        <span className="sr-only">{level}</span>
+        <span className="sr-only">
+          {level}
+        </span>
         <div className="container" dangerouslySetInnerHTML={{ __html: msg }} />
         <i
           tabIndex="0"

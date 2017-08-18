@@ -97,6 +97,7 @@ type Props = {
 
 export default class PaperWallet extends React.Component {
   props: Props;
+
   state = { address: '' };
 
   componentDidMount() {
