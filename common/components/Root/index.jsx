@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
@@ -14,7 +15,6 @@ export default class Root extends Component {
 
   render() {
     const { store, history, routes } = this.props;
-    console.log(store, history, routes);
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
     return (
       <Provider store={store} key={Math.random()}>

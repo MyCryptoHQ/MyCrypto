@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import './GasPriceDropdown.scss';
 import { gasPriceDefaults } from 'config/data';
 
-type Dropdown = {
+type Props = {
   value: ?number,
   onChange: (price: number) => number
 };
@@ -12,7 +12,7 @@ type Dropdown = {
 export default class GasPriceDropdown extends Component {
   state = { expanded: false };
 
-  props: Dropdown;
+  props: Props;
 
   render() {
     return (
