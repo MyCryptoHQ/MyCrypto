@@ -1,17 +1,18 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import './GasPriceDropdown.scss';
 import { gasPriceDefaults } from 'config/data';
 
+type Dropdown = {
+  value?: number,
+  onChange: (price: number) => number
+};
+
 export default class GasPriceDropdown extends Component {
   state = { expanded: false };
 
-  static propTypes = {
-    value: PropTypes.number,
-    onChange: PropTypes.func.isRequired
-  };
+  props: Dropdown;
 
   render() {
     return (
