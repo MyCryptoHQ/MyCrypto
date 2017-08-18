@@ -29,7 +29,7 @@ export type LoadBityRatesSucceededSwapAction = {
 };
 export type DestinationAddressSwapAction = {
   type: 'SWAP_DESTINATION_ADDRESS',
-  value: ?number
+  value: ?string
 };
 
 export type RestartSwapAction = {

@@ -138,9 +138,12 @@ export function orderStatusSucceededSwap(
   };
 }
 
-export function orderStatusRequestedSwap(): OrderStatusRequestedSwapAction {
+export function orderStatusRequestedSwap(
+  payload: BityOrderResponse
+): OrderStatusRequestedSwapAction {
   return {
-    type: 'SWAP_BITY_ORDER_STATUS_REQUESTED'
+    type: 'SWAP_BITY_ORDER_STATUS_REQUESTED',
+    payload
   };
 }
 

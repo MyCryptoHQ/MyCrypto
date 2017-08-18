@@ -29,6 +29,7 @@
     "no-unreachable": 1,
     "no-alert": 0,
     "react/jsx-uses-react": 1,
+    "react/prop-types": [0],
     "no-unused-vars": [1, { "argsIgnorePattern": "^_" }],
     "no-restricted-globals": ["error", "event"],
     "flowtype/no-types-missing-file-annotation": 2
