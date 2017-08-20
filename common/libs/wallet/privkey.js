@@ -8,8 +8,9 @@ import {
 import { randomBytes } from 'crypto';
 import { pkeyToKeystore } from 'libs/keystore';
 import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
+
 import { isValidPrivKey } from 'libs/validators';
-import type { RawTx } from 'libs/validators';
+import type { RawTransaction } from 'libs/transaction';
 
 export default class PrivKeyWallet extends BaseWallet {
   privKey: Buffer;
@@ -25,7 +26,7 @@ export default class PrivKeyWallet extends BaseWallet {
     this.address = publicToAddress(this.pubKey);
   }
 
-  getAddress(): Promise<any> {
+  getAddress(): Promise<string> {
     return Promise.resolve(
       toChecksumAddress(`0x${this.address.toString('hex')}`)
     );
@@ -51,7 +52,7 @@ export default class PrivKeyWallet extends BaseWallet {
     return Promise.resolve();
   }
 
-  signRawTransaction(rawTx: RawTx): Promise<any> {
+  signRawTransaction(rawTx: RawTransaction): Promise<string> {
     return new Promise((resolve, reject) => {
       try {
         resolve(signRawTxWithPrivKey(this.privKey, rawTx));

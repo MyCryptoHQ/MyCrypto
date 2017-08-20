@@ -6,7 +6,8 @@ import type {
   JsonRpcResponse,
   CallRequest,
   GetBalanceRequest,
-  EstimateGasRequest
+  EstimateGasRequest,
+  GetTransactionCountRequest
 } from './types';
 
 // FIXME is it safe to generate that much entropy?
@@ -38,6 +39,17 @@ export function ethCall<T: *>(transaction: T): CallRequest {
     jsonrpc: '2.0',
     method: 'eth_call',
     params: [transaction, 'pending']
+  };
+}
+
+export function getTransactionCount(
+  address: string
+): GetTransactionCountRequest {
+  return {
+    id: id(),
+    jsonrpc: '2.0',
+    method: 'eth_getTransactionCount',
+    params: [address, 'pending']
   };
 }
 
