@@ -27,11 +27,16 @@ export default class DownloadWallet extends Component {
   }
 
   componentWillMount() {
-    this.keystore = this.props.wallet.toKeystore(this.props.password);
+    if (!this.props.wallet) return;
+    this.props.wallet.toKeystore(this.props.password).then(file => {
+      this.keystore = file;
+    });
   }
   componentWillUpdate(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
-      this.keystore = nextProps.wallet.toKeystore(nextProps.password);
+      nextProps.wallet.toKeystore(nextProps.password).then(file => {
+        this.keystore = file;
+      });
     }
   }
 
