@@ -43,11 +43,19 @@ export default class SwapProgress extends Component {
         // everything but BTC is a token
         if (destinationKind !== 'BTC') {
           link = bityConfig.ethExplorer.replace('[[txHash]]', outputTx);
-          linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+          linkElement = (
+            <a href={link} target="_blank" rel="noopener">
+              {' '}View your transaction{' '}
+            </a>
+          );
           // BTC uses a different explorer
         } else {
           link = bityConfig.btcExplorer.replace('[[txHash]]', outputTx);
-          linkElement = `<a href="${link}" target='_blank' rel='noopener'> View your transaction </a>`;
+          linkElement = (
+            <a href={link} target="_blank" rel="noopener">
+              {' '}View your transaction{' '}
+            </a>
+          );
         }
         this.setState({ hasShownViewTx: true }, () => {
           showNotification('success', linkElement);
