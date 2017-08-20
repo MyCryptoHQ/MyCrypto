@@ -1,6 +1,5 @@
 // @flow
 // TODO support events, constructors, fallbacks, array slots, types
-import { sha3 } from 'ethereumjs-util';
 import abi from 'ethereumjs-abi';
 
 // There are too many to enumerate since they're somewhat dynamic, list here
@@ -48,12 +47,9 @@ export default class Contract {
   }
 
   getMethodSelector(method: ABIMethod) {
-    const selector = sha3(
-      `${method.name}(${this.getMethodTypes(method).join(',')})`
-    );
-
-    // TODO: Add explanation, why slice the first 8?
-    return selector.toString('hex').slice(0, 8);
+    return abi
+      .methodID(method.name, this.getMethodTypes(method))
+      .toString('hex');
   }
 
   call(name: string, args: any[]): string {
