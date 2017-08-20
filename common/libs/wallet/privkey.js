@@ -6,9 +6,9 @@ import {
   toChecksumAddress
 } from 'ethereumjs-util';
 import { randomBytes } from 'crypto';
-import { pkeyToKeystore } from 'libs/keystore';
-import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
-import type { RawTransaction } from 'libs/transaction';
+import { pkeyToKeystore } from '../keystore';
+import { signRawTxWithPrivKey, signMessageWithPrivKey } from '../signing';
+import type { RawTransaction } from '../transaction';
 
 export default class PrivKeyWallet extends BaseWallet {
   privKey: Buffer;

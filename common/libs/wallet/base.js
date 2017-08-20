@@ -1,6 +1,6 @@
 // @flow
-import { stripHex } from 'libs/values';
-import type { RawTransaction } from 'libs/transaction';
+import { stripHex } from '../values';
+import type { RawTransaction } from '../transaction';
 
 export default class BaseWallet {
   getAddress(): Promise<string> {

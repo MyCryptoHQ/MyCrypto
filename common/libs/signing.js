@@ -2,8 +2,8 @@
 
 import EthTx from 'ethereumjs-tx';
 import { sha3, ecsign } from 'ethereumjs-util';
-import { isValidRawTx } from 'libs/validators';
-import type { RawTransaction } from 'libs/transaction';
+import { isValidRawTx } from './validators';
+import type { RawTransaction } from './transaction';
 
 export function signRawTxWithPrivKey(
   privKey: Buffer,
