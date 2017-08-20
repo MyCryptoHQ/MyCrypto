@@ -8,6 +8,16 @@ export type KeystoreValue = {
   valid: boolean
 };
 
+function isPassRequired(file: string): boolean {
+  let passReq = false;
+  try {
+    passReq = isKeystorePassRequired(file);
+  } catch (e) {
+    //TODO: communicate invalid file to user
+  }
+  return passReq;
+}
+
 export default class KeystoreDecrypt extends Component {
   props: {
     value: KeystoreValue,
@@ -15,12 +25,9 @@ export default class KeystoreDecrypt extends Component {
     onUnlock: () => void
   };
 
-  state = {
-    isPassRequired: false
-  };
-
   render() {
     const { file, password } = this.props.value;
+    let passReq = isPassRequired(file);
 
     return (
       <section className="col-md-4 col-sm-6">
@@ -46,11 +53,7 @@ export default class KeystoreDecrypt extends Component {
                 {translate('ADD_Radio_2_short')}
               </a>
             </label>
-            <div
-              className={
-                file.length && this.state.isPassRequired ? '' : 'hidden'
-              }
-            >
+            <div className={file.length && passReq ? '' : 'hidden'}>
               <p>
                 {translate('ADD_Label_3')}
               </p>
@@ -94,19 +97,12 @@ export default class KeystoreDecrypt extends Component {
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
-      let isPassRequired = false;
-
-      try {
-        isPassRequired = isKeystorePassRequired(keystore);
-      } catch (e) {
-        //TODO: communicate invalid file to user
-      }
-      this.setState({ isPassRequired: isPassRequired });
+      let passReq = isPassRequired(keystore);
 
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !isPassRequired
+        valid: keystore.length && !passReq
       });
     };
 
