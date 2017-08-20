@@ -16,7 +16,6 @@ import RPCClient, {
 } from './client';
 import type { Token } from 'config/data';
 import type { BaseWallet } from 'libs/wallet';
-import { toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import ERC20 from 'libs/erc20';
 
@@ -132,8 +131,6 @@ export default class RpcNode extends BaseNode {
         value = new Big(tx.value);
       }
 
-      console.log(value.toString());
-      console.log(balance.toString());
       if (value.gte(balance)) {
         throw new Error(translate('GETH_Balance'));
       }
