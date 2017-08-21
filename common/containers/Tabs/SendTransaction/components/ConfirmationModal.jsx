@@ -51,13 +51,13 @@ class ConfirmationModal extends React.Component {
   }
 
   // Count down 5 seconds before allowing them to confirm
-  readTimer = null;
+  readTimer = 0;
   componentDidMount() {
     this.readTimer = setInterval(() => {
       if (this.state.timeToRead > 0) {
         this.setState({ timeToRead: this.state.timeToRead - 1 });
       } else {
-        clearTimeout(this.readTimer);
+        clearInterval(this.readTimer);
       }
     }, 1000);
 
@@ -65,7 +65,7 @@ class ConfirmationModal extends React.Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.readTimer);
+    clearInterval(this.readTimer);
   }
 
   _setWalletAddress(wallet: BaseWallet) {
