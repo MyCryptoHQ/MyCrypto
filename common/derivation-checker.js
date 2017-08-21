@@ -1,8 +1,9 @@
 import PrivKeyWallet from './libs/wallet/privkey';
-
-const assert = require('assert');
+import assert from 'assert';
 const { exec } = require('child_process');
-const n = 5000;
+
+// FIXME pick a less magic number
+const derivationRounds = 5000;
 
 function wait(ms) {
   const start = new Date().getTime();
@@ -12,37 +13,22 @@ function wait(ms) {
   }
 }
 
-function keyToDockerCommand(key) {
-  return `docker run -e key=${key} dternyak/eth-priv-to-addr:1.0`;
-}
-
-// or at least different 2 times
-const testPrivateKeysAreRandom = () => {
-  const privKeyWallet1 = PrivKeyWallet.generate();
-  assert.ok(privKeyWallet1.getPrivateKey());
-  const privKeyWallet2 = PrivKeyWallet.generate();
-  assert.ok(privKeyWallet2.getPrivateKey());
-  assert.notDeepEqual(
-    privKeyWallet2.getPrivateKey(),
-    privKeyWallet1.getPrivateKey()
-  );
-};
-
-const testDerivation = n => {
-  for (let i = 0; i < n; i++) {
+const testDerivation = numberOfTimes => {
+  for (let i = 0; i < numberOfTimes; i++) {
     const privKeyWallet = PrivKeyWallet.generate();
-    privKeyWallet.getAddress().then(data => {
-      const privKeyWalletAddress = data;
-      assert.ok(privKeyWallet.getPrivateKey());
-      const command = keyToDockerCommand(privKeyWallet.getPrivateKey());
-      exec(command, (err, stdout, stderr) => {
+    const command = `docker run -e key=${privKeyWallet.getPrivateKey()} dternyak/eth-priv-to-addr:1.0`;
+    privKeyWallet.getAddress().then(privKeyWalletAddress => {
+      exec(command, (err, stdout) => {
         const newlineStrippedDockerOutput = stdout.replace(
           /(\r\n|\n|\r)/gm,
           ''
         );
+        // strip the checksum
+        const lowerCasedPrivKeyWalletAddress = privKeyWalletAddress.toLowerCase();
+        // ensure that pyethereum privToAddr derivation matches our (js) derivation
         assert.strictEqual(
           newlineStrippedDockerOutput,
-          privKeyWalletAddress.toLowerCase()
+          lowerCasedPrivKeyWalletAddress
         );
       });
     });
@@ -52,8 +38,7 @@ const testDerivation = n => {
 
 console.log('Starting testing...');
 console.time('testDerivation');
-testPrivateKeysAreRandom();
-testDerivation(n);
+testDerivation(derivationRounds);
 console.timeEnd('testDerivation');
-console.log(`Succeeded testing derivation ${n} times :)`);
+console.log(`Succeeded testing derivation ${derivationRounds} times :)`);
 process.exit(0);
