@@ -48,12 +48,12 @@ export async function generateTransaction(
 ): Promise<BroadcastTransaction> {
   // Reject bad addresses
   if (!isValidETHAddress(tx.to)) {
-    return Promise.reject(new Error(translate('ERROR_5')));
+    throw new Error(translate('ERROR_5'));
   }
 
   // Reject token transactions without data
   if (token && !tx.data) {
-    return Promise.reject(new Error('Tokens must be sent with data'));
+    throw new Error('Tokens must be sent with data');
   }
 
   // Reject gas limit under 21000 (Minimum for transaction)
@@ -61,22 +61,20 @@ export async function generateTransaction(
   // TODO: Make this dynamic, the limit shifts
   const limitBig = new Big(tx.gasLimit);
   if (limitBig.lessThan(21000)) {
-    return Promise.reject(
-      new Error(translate('Gas limit must be at least 21000 for transactions'))
+    throw new Error(
+      translate('Gas limit must be at least 21000 for transactions')
     );
   }
 
   if (limitBig.greaterThan(5000000)) {
-    return Promise.reject(new Error(translate('GETH_GasLimit')));
+    throw new Error(translate('GETH_GasLimit'));
   }
 
   // Reject gas over 1000gwei (1000000000000)
   const gasPriceBig = new Big(tx.gasPrice);
   if (gasPriceBig.greaterThan(new Big('1000000000000'))) {
-    return Promise.reject(
-      new Error(
-        'Gas price too high. Please contact support if this was not a mistake.'
-      )
+    throw new Error(
+      'Gas price too high. Please contact support if this was not a mistake.'
     );
   }
 
