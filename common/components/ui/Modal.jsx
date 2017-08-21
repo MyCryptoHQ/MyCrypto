@@ -23,9 +23,7 @@ type Props = {
   children: any
 };
 
-export default class Modal extends Component {
-  props: Props;
-
+export default class Modal extends Component<Props> {
   componentDidMount() {
     this.updateBodyClass();
     document.addEventListener('keydown', this._escapeListner);

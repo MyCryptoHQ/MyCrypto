@@ -4,21 +4,25 @@ import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
 import BaseWallet from 'libs/wallet/base';
 import { connect } from 'react-redux';
-import type { State } from 'reducers';
+import type { State as ReduxState } from 'reducers';
 
 type Props = {
   title: string,
   wallet: BaseWallet
 };
 
-export class UnlockHeader extends React.Component {
-  props: Props;
+type State = {
+  expanded: boolean
+};
 
-  state: {
-    expanded: boolean
-  } = {
-    expanded: !this.props.wallet
-  };
+const mapStateToProps = (state: ReduxState) => ({
+  wallet: state.wallet.inst
+});
+
+export class UnlockHeader extends React.Component<Props, State> {
+  componentDidMount() {
+    this.setState({ expanded: !this.props.wallet });
+  }
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.wallet && this.props.wallet !== prevProps.wallet) {
@@ -60,12 +64,6 @@ export class UnlockHeader extends React.Component {
     this.setState(state => {
       return { expanded: !state.expanded };
     });
-  };
-}
-
-function mapStateToProps(state: State) {
-  return {
-    wallet: state.wallet.inst
   };
 }
 
