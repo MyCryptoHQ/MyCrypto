@@ -46,6 +46,7 @@ import { showNotification } from 'actions/notifications';
 import type { ShowNotificationAction } from 'actions/notifications';
 import type { NodeConfig } from 'config/data';
 import { getNodeConfig } from 'selectors/config';
+import { generateTransaction } from 'libs/transaction';
 
 type State = {
   hasQueryString: boolean,
@@ -430,7 +431,8 @@ export class SendTransaction extends React.Component {
     const stateTxInfo = await this.getTransactionInfoFromState();
 
     try {
-      const transaction = await nodeLib.generateTransaction(
+      const transaction = await generateTransaction(
+        nodeLib,
         {
           ...stateTxInfo,
           gasLimit: this.state.gasLimit,
