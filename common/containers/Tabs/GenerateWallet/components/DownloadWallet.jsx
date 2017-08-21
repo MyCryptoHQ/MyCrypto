@@ -4,6 +4,7 @@ import translate from 'translations';
 import type PrivKeyWallet from 'libs/wallet/privkey';
 import { makeBlob } from 'utils/blob';
 import { getV3Filename } from 'libs/keystore';
+import type { UtcKeystore } from 'libs/keystore';
 
 type Props = {
   wallet: PrivKeyWallet,
@@ -11,12 +12,18 @@ type Props = {
   continueToPaper: Function
 };
 
+type State = {
+  hasDownloadedWallet: boolean,
+  address: string,
+  keystore: UtcKeystore | null
+};
+
 export default class DownloadWallet extends Component {
   props: Props;
-  keystore: Object;
-  state = {
+  state: State = {
     hasDownloadedWallet: false,
-    address: ''
+    address: '',
+    keystore: null
   };
 
   componentDidMount() {
@@ -28,20 +35,22 @@ export default class DownloadWallet extends Component {
 
   componentWillMount() {
     if (!this.props.wallet) return;
-    this.props.wallet.toKeystore(this.props.password).then(file => {
-      this.keystore = file;
+    this.props.wallet.toKeystore(this.props.password).then(utcKeystore => {
+      this.setState({ keystore: utcKeystore });
     });
   }
   componentWillUpdate(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
-      nextProps.wallet.toKeystore(nextProps.password).then(file => {
-        this.keystore = file;
+      nextProps.wallet.toKeystore(nextProps.password).then(utcKeystore => {
+        this.setState({ keystore: utcKeystore });
       });
     }
   }
 
   _markDownloaded = () => {
-    this.setState({ hasDownloadedWallet: true });
+    if (this.state.keystore) {
+      this.setState({ hasDownloadedWallet: true });
+    }
   };
 
   _handleContinue = () => {
@@ -77,6 +86,7 @@ export default class DownloadWallet extends Component {
             className="btn btn-primary btn-block"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
             aria-describedby="x_KeystoreDesc"
+            disabled={!this.state.keystore}
             download={this.getFilename()}
             href={this.getBlob()}
             onClick={this._markDownloaded}
@@ -120,7 +130,9 @@ export default class DownloadWallet extends Component {
   }
 
   getBlob() {
-    return makeBlob('text/json;charset=UTF-8', this.keystore);
+    if (this.state.keystore) {
+      return makeBlob('text/json;charset=UTF-8', this.state.keystore);
+    }
   }
 
   getFilename() {
