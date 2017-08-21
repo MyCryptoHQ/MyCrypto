@@ -13,8 +13,8 @@ import ERC20 from 'libs/erc20';
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 
-// TODO: Handle other token types?
 type Props = {
+  // TODO: Use signed transaction, not raw transaction.
   rawTransaction: RawTransaction,
   wallet: BaseWallet,
   node: NodeConfig,
@@ -24,11 +24,7 @@ type Props = {
 };
 
 type State = {
-  toAddress: string,
   fromAddress: string,
-  value: string,
-  gasPrice: string,
-  nonce: string,
   timeToRead: number
 };
 
@@ -40,21 +36,12 @@ export default class ConfirmationModal extends React.Component {
     super(props);
 
     this.state = {
-      ...this._getStateFromProps(props),
       fromAddress: '',
       timeToRead: 5
     };
   }
 
   componentWillReceiveProps(newProps: Props) {
-    // Recalculate transaction if it or the token changes
-    if (
-      newProps.rawTransaction !== this.props.rawTransaction ||
-      newProps.token !== this.props.token
-    ) {
-      this.setState(this._getStateFromProps(newProps));
-    }
-
     // Reload address if the wallet changes
     if (newProps.wallet !== this.props.wallet) {
       this._setWalletAddress(this.props.wallet);
@@ -79,9 +66,16 @@ export default class ConfirmationModal extends React.Component {
     clearTimeout(this.readTimer);
   }
 
-  _getStateFromProps(props: Props) {
-    const { rawTransaction, token } = props;
-    const { value, gasPrice, nonce, to } = rawTransaction;
+  _setWalletAddress(wallet: BaseWallet) {
+    wallet.getAddress().then(fromAddress => {
+      this.setState({ fromAddress });
+    });
+  }
+
+  // TODO: Use signed transaction, not raw transaction.
+  _decodeTransaction() {
+    const { rawTransaction, token } = this.props;
+    const { value, gasPrice, to } = rawTransaction;
     let fixedValue;
     let toAddress;
 
@@ -97,15 +91,8 @@ export default class ConfirmationModal extends React.Component {
     return {
       value: fixedValue,
       gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
-      nonce: new Big(nonce, 16).toString(),
       toAddress
     };
-  }
-
-  _setWalletAddress(wallet: BaseWallet) {
-    wallet.getAddress().then(fromAddress => {
-      this.setState({ fromAddress });
-    });
   }
 
   _confirm() {
@@ -116,7 +103,8 @@ export default class ConfirmationModal extends React.Component {
 
   render() {
     const { node, token, rawTransaction, onCancel } = this.props;
-    const { toAddress, fromAddress, value, gasPrice, timeToRead } = this.state;
+    const { fromAddress, timeToRead } = this.state;
+    const { toAddress, value, gasPrice } = this._decodeTransaction();
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons = [
