@@ -89,9 +89,8 @@ type Props = {
   ) => ShowNotificationAction
 };
 
-export class SendTransaction extends React.Component {
-  props: Props;
-  state: State = {
+export class SendTransaction extends React.Component<Props, State> {
+  state = {
     hasQueryString: false,
     readOnly: false,
     // FIXME use correct defaults

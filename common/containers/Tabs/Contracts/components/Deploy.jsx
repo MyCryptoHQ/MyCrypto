@@ -4,15 +4,18 @@ import translate from 'translations';
 
 type Props = {};
 
-export default class Deploy extends Component {
-  props: Props;
+type State = {
+  byteCode: string,
+  gasLimit: string
+};
 
+export default class Deploy extends Component<Props, State> {
   state = {
     byteCode: '',
     gasLimit: ''
   };
 
-  _handleInput = (ev: SyntheticInputEvent) => {
+  _handleInput = (ev: SyntheticInputEvent<*>) => {
     this.setState({ [ev.target.name]: ev.target.value });
   };
 

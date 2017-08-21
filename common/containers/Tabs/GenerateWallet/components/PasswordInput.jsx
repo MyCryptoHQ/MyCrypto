@@ -8,9 +8,7 @@ type Props = {
   meta: Object
 };
 
-export default class PasswordInput extends Component {
-  props: Props;
-
+export default class PasswordInput extends Component<Props> {
   render() {
     const { input, meta, isPasswordVisible, togglePassword } = this.props;
 

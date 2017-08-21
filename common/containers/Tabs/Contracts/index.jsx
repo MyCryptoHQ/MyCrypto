@@ -5,7 +5,7 @@ import { accessContract } from 'actions/contracts';
 import type { ABIFunction } from 'actions/contracts';
 import { getNetworkContracts } from 'selectors/config';
 import type { NetworkContract } from 'config/data';
-import { State } from 'reducers/contracts';
+import type { State as ReduxState } from 'reducers';
 import translate from 'translations';
 import Interact from './components/Interact';
 import Deploy from './components/Deploy';
@@ -19,9 +19,18 @@ type Props = {
   accessContract: Function
 };
 
-class Contracts extends Component {
-  props: Props;
+type State = {
+  activeTab: string
+};
 
+const mapStateToProps = (state: ReduxState) => ({
+  NetworkContracts: getNetworkContracts(state),
+  selectedAddress: state.contracts.selectedAddress,
+  selectedABIJson: state.contracts.selectedABIJson,
+  selectedABIFunctions: state.contracts.selectedABIFunctions
+});
+
+class Contracts extends Component<Props, State> {
   state = {
     activeTab: 'interact'
   };
@@ -89,15 +98,6 @@ class Contracts extends Component {
       </section>
     );
   }
-}
-
-function mapStateToProps(state: State) {
-  return {
-    NetworkContracts: getNetworkContracts(state),
-    selectedAddress: state.contracts.selectedAddress,
-    selectedABIJson: state.contracts.selectedABIJson,
-    selectedABIFunctions: state.contracts.selectedABIFunctions
-  };
 }
 
 export default connect(mapStateToProps, { accessContract })(Contracts);

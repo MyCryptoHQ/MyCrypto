@@ -17,7 +17,7 @@ import type {
   StartPollBityOrderStatusAction,
   StopOrderTimerSwapAction,
   StopPollBityOrderStatusAction
-} from 'actions/swap';
+} from 'actions/swapTypes';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import ReceivingAddress from './components/ReceivingAddress';
@@ -64,9 +64,9 @@ type ReduxActionProps = {
   stopPollBityOrderStatus: () => StopPollBityOrderStatusAction
 };
 
-class Swap extends Component {
-  props: ReduxActionProps & ReduxStateProps;
+type Props = ReduxActionProps & ReduxStateProps;
 
+class Swap extends Component<Props> {
   componentDidMount() {
     // TODO: Use `isFetchingRates` to show a loader
     this.props.loadBityRatesRequestedSwap();

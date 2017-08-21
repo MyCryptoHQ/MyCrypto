@@ -3,11 +3,12 @@
 import React from 'react';
 import translate from 'translations';
 
-export default class GasField extends React.Component {
-  props: {
-    value: string,
-    onChange?: (value: string) => void | null
-  };
+type Props = {
+  value: string,
+  onChange?: (value: string) => void | null
+};
+
+export default class GasField extends React.Component<Props> {
   render() {
     const { value, onChange } = this.props;
     const isReadonly = !onChange;
@@ -20,7 +21,7 @@ export default class GasField extends React.Component {
           </label>
           <input
             className={`form-control ${isFinite(parseFloat(value)) &&
-              parseFloat(value) > 0
+            parseFloat(value) > 0
               ? 'is-valid'
               : 'is-invalid'}`}
             type="text"
@@ -34,7 +35,7 @@ export default class GasField extends React.Component {
     );
   }
 
-  onChange = (e: SyntheticInputEvent) => {
+  onChange = (e: SyntheticInputEvent<*>) => {
     if (this.props.onChange) {
       this.props.onChange(e.target.value);
     }

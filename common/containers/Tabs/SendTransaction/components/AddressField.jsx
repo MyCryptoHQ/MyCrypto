@@ -8,25 +8,35 @@ import { isValidENSorEtherAddress, isValidENSAddress } from 'libs/validators';
 import { resolveEnsName } from 'actions/ens';
 import translate from 'translations';
 
-type PublicProps = {
+type StoreProps = {
   placeholder: string,
   value: string,
   onChange?: (value: string) => void
 };
 
-export class AddressField extends React.Component {
-  props: PublicProps & {
-    ensAddress: ?string,
-    resolveEnsName: typeof resolveEnsName
-  };
+type Props = StoreProps & {
+  ensAddress: ?string,
+  resolveEnsName: typeof resolveEnsName
+};
 
+const mapStateToProps = (state: State, props: StoreProps) => ({
+  ensAddress: getEnsAddress(state, props.value)
+});
+
+const mapDispatchToProps = {
+  resolveEnsName
+};
+
+export class AddressField extends React.Component<Props> {
   render() {
     const { placeholder, value, ensAddress } = this.props;
     const isReadonly = !this.props.onChange;
     return (
       <div className="row form-group">
         <div className="col-xs-11">
-          <label>{translate('SEND_addr')}:</label>
+          <label>
+            {translate('SEND_addr')}:
+          </label>
           <input
             className={`form-control ${isValidENSorEtherAddress(value)
               ? 'is-valid'
@@ -39,9 +49,7 @@ export class AddressField extends React.Component {
           {!!ensAddress &&
             <p className="ens-response">
               ↳
-              <span className="mono">
-                {ensAddress}
-              </span>
+              <span className="mono">{ensAddress}</span>
             </p>}
         </div>
         <div className="col-xs-1 address-identicon-container">
@@ -51,7 +59,7 @@ export class AddressField extends React.Component {
     );
   }
 
-  onChange = (e: SyntheticInputEvent) => {
+  onChange = (e: SyntheticInputEvent<*>) => {
     const newValue = e.target.value;
     const { onChange } = this.props;
     if (!onChange) {
@@ -65,10 +73,4 @@ export class AddressField extends React.Component {
   };
 }
 
-function mapStateToProps(state: State, props: PublicProps) {
-  return {
-    ensAddress: getEnsAddress(state, props.value)
-  };
-}
-
-export default connect(mapStateToProps, { resolveEnsName })(AddressField);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressField);

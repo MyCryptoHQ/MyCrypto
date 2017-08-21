@@ -15,16 +15,14 @@ type State = {
   outputs: Object
 };
 
-export default class InteractExplorer extends Component {
-  props: Props;
-
-  state: State = {
+export default class InteractExplorer extends Component<Props, State> {
+  state = {
     selectedFunction: null,
     inputs: {},
     outputs: {}
   };
 
-  _handleFunctionSelect = (ev: SyntheticInputEvent) => {
+  _handleFunctionSelect = (ev: SyntheticInputEvent<*>) => {
     const { functions } = this.props;
 
     if (!functions) {
@@ -41,7 +39,7 @@ export default class InteractExplorer extends Component {
     });
   };
 
-  _handleInputChange = (ev: SyntheticInputEvent) => {
+  _handleInputChange = (ev: SyntheticInputEvent<*>) => {
     this.setState({
       inputs: {
         ...this.state.inputs,

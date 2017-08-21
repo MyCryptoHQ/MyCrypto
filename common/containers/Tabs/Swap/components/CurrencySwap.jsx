@@ -33,9 +33,14 @@ export type ActionProps = {
   showNotification: Function
 };
 
-export default class CurrencySwap extends Component {
-  props: StateProps & ActionProps;
+type Props = StateProps & ActionProps;
 
+type State = {
+  disabled: boolean,
+  showedMinMaxError: boolean
+};
+
+export default class CurrencySwap extends Component<Props, State> {
   state = {
     disabled: true,
     showedMinMaxError: false

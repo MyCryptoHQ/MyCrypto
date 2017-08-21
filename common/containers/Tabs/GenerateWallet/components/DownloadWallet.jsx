@@ -11,8 +11,12 @@ type Props = {
   continueToPaper: Function
 };
 
-export default class DownloadWallet extends Component {
-  props: Props;
+type State = {
+  hasDownloadedWallet: boolean,
+  address: string
+};
+
+export default class DownloadWallet extends Component<Props, State> {
   keystore: Object;
   state = {
     hasDownloadedWallet: false,

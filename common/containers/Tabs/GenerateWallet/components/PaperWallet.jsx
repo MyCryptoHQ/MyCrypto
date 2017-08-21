@@ -9,9 +9,7 @@ type Props = {
   wallet: PrivKeyWallet
 };
 
-export default class PaperWallet extends Component {
-  props: Props;
-
+export default class PaperWallet extends Component<Props> {
   render() {
     const { wallet } = this.props;
 

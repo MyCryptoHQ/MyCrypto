@@ -19,9 +19,13 @@ type Props = {
   generateNewWallet: Function
 };
 
-class EnterPassword extends Component {
-  props: Props;
+type State = {
+  fileName: ?string,
+  blobURI: ?string,
+  isPasswordVisible: boolean
+};
 
+class EnterPassword extends Component<Props, State> {
   state = {
     fileName: null,
     blobURI: null,

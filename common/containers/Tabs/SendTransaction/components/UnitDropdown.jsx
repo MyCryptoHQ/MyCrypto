@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
 
-class Option extends React.Component {
-  props: {
-    value: string,
-    active: boolean,
-    onChange: (value: string) => void
-  };
+type OptionProps = {
+  value: string,
+  active: boolean,
+  onChange: (value: string) => void
+};
+
+class Option extends React.Component<OptionProps> {
   render() {
     const { value, active } = this.props;
     return (
@@ -23,15 +24,21 @@ class Option extends React.Component {
   };
 }
 
-export default class UnitDropdown extends React.Component {
-  props: {
-    value: string,
-    options: string[],
-    onChange?: (value: string) => void
-  };
-  state: {
-    expanded: boolean
-  } = {
+type UnitDropdownProps = {
+  value: string,
+  options: string[],
+  onChange?: (value: string) => void
+};
+
+type UnitDropdownState = {
+  expanded: boolean
+};
+
+export default class UnitDropdown extends React.Component<
+  UnitDropdownProps,
+  UnitDropdownState
+> {
+  state = {
     expanded: false
   };
 

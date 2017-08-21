@@ -1,18 +1,22 @@
 // @flow
-
 import React from 'react';
 import translate from 'translations';
+
 import { donationAddressMap } from 'config/data';
 
-export default class Donate extends React.Component {
-  props: {
-    onDonate: (address: string, amount: string, unit: string) => void
-  };
-  state: {
-    clicked: boolean
-  } = {
+type Props = {
+  onDonate: (address: string, amount: string, unit: string) => void
+};
+
+type State = {
+  clicked: boolean
+};
+
+export default class Donate extends React.Component<Props, State> {
+  state = {
     clicked: false
   };
+
   render() {
     return (
       <div className="well">
