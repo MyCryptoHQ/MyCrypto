@@ -10,6 +10,13 @@ import { sha3, privateToAddress } from 'ethereumjs-util';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
 
+export type UtcKeystore = {
+  version: number,
+  id: string,
+  address: string,
+  Crypto: Object
+};
+
 //adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L342
 export function determineKeystoreType(file: string): string {
   const parsed = JSON.parse(file);
@@ -106,7 +113,7 @@ export function pkeyToKeystore(
   pkey: Buffer,
   address: string,
   password: string
-) {
+): UtcKeystore {
   const salt = randomBytes(32);
   const iv = randomBytes(16);
   let derivedKey;
