@@ -148,7 +148,6 @@ export class SendTransaction extends React.Component {
       to,
       value,
       unit,
-      token,
       gasLimit,
       data,
       readOnly,
@@ -284,7 +283,6 @@ export class SendTransaction extends React.Component {
             wallet={this.props.wallet}
             node={this.props.node}
             rawTransaction={rawTransaction}
-            token={token}
             onCancel={this.cancelTx}
             onConfirm={this.confirmTx}
           />}

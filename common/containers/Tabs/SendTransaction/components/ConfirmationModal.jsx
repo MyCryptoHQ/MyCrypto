@@ -3,12 +3,14 @@ import './ConfirmationModal.scss';
 import React from 'react';
 import translate from 'translations';
 import Big from 'bignumber.js';
+import { connect } from 'react-redux';
 import BaseWallet from 'libs/wallet/base';
 import { toUnit, toTokenDisplay } from 'libs/units';
 import type { NodeConfig } from 'config/data';
 import type { RawTransaction } from 'libs/transaction';
 import type { Token } from 'config/data';
 import ERC20 from 'libs/erc20';
+import { getTokens } from 'selectors/wallet';
 
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
@@ -28,7 +30,7 @@ type State = {
   timeToRead: number
 };
 
-export default class ConfirmationModal extends React.Component {
+class ConfirmationModal extends React.Component {
   props: Props;
   state: State;
 
@@ -188,3 +190,14 @@ export default class ConfirmationModal extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state, props) {
+  // Determine if we're sending to a token from the transaction to address
+  const { to } = props.rawTransaction;
+  const tokens = getTokens(state);
+  const token = tokens.find(t => t.address === to);
+
+  return { token };
+}
+
+export default connect(mapStateToProps)(ConfirmationModal);
