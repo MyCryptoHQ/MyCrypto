@@ -2,7 +2,10 @@
 import { takeEvery, call, apply, put, select, fork } from 'redux-saga/effects';
 import type { Effect } from 'redux-saga/effects';
 import { setWallet, setBalance, setTokenBalances } from 'actions/wallet';
-import type { UnlockPrivateKeyAction } from 'actions/wallet';
+import type {
+  UnlockPrivateKeyAction,
+  GetDerivedWalletsAction
+} from 'actions/wallet';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
 import { PrivKeyWallet, BaseWallet } from 'libs/wallet';
@@ -65,11 +68,18 @@ export function* unlockPrivateKey(
   yield call(updateBalances);
 }
 
+function* getDerivedWallets(
+  action: GetDerivedWalletsAction
+): Generator<Effect, void, any> {
+  console.log(action);
+}
+
 export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
   // useful for development
   yield call(updateBalances);
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
+    takeEvery('WALLET_GET_DERIVED_WALLETS', getDerivedWallets),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances)
   ];
 }

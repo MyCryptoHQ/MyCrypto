@@ -1,0 +1,17 @@
+.TrezorDecrypt {
+  text-align: center;
+  padding-top: 20px;
+
+  &-decrypt {
+    width: 100%;
+  }
+
+  &-help {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  &-buy {
+    margin-top: 40px;
+  }
+}

@@ -37,7 +37,8 @@ const WALLETS = {
   },
   trezor: {
     lid: 'x_Trezor',
-    component: TrezorDecrypt
+    component: TrezorDecrypt,
+    initialParams: {}
   },
   'view-only': {
     lid: 'View with Address Only',
