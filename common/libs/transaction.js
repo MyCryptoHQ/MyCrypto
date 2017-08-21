@@ -92,9 +92,6 @@ export async function generateTransaction(
     balance = await node.getBalance(tx.from);
   }
 
-  console.log(value.toString());
-  console.log(balance.toString());
-
   if (value.gte(balance)) {
     throw new Error(translate('GETH_Balance'));
   }

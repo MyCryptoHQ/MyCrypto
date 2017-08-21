@@ -6,11 +6,12 @@ import Big from 'bignumber.js';
 import { connect } from 'react-redux';
 import BaseWallet from 'libs/wallet/base';
 import { toUnit, toTokenDisplay } from 'libs/units';
-import type { NodeConfig } from 'config/data';
-import type { RawTransaction } from 'libs/transaction';
-import type { Token } from 'config/data';
 import ERC20 from 'libs/erc20';
 import { getTokens } from 'selectors/wallet';
+import { getNetworkConfig } from 'selectors/config';
+import type { NodeConfig } from 'config/data';
+import type { RawTransaction } from 'libs/transaction';
+import type { Token, NetworkConfig } from 'config/data';
 
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
@@ -21,6 +22,7 @@ type Props = {
   wallet: BaseWallet,
   node: NodeConfig,
   token: ?Token,
+  network: NetworkConfig,
   onConfirm: RawTransaction => void,
   onCancel: () => void
 };
@@ -104,7 +106,7 @@ class ConfirmationModal extends React.Component {
   }
 
   render() {
-    const { node, token, rawTransaction, onCancel } = this.props;
+    const { node, token, network, rawTransaction, onCancel } = this.props;
     const { fromAddress, timeToRead } = this.state;
     const { toAddress, value, gasPrice } = this._decodeTransaction();
 
@@ -123,7 +125,7 @@ class ConfirmationModal extends React.Component {
       }
     ];
 
-    const symbol = token ? token.symbol : 'ETH';
+    const symbol = token ? token.symbol : network.unit;
 
     return (
       <Modal
@@ -192,12 +194,16 @@ class ConfirmationModal extends React.Component {
 }
 
 function mapStateToProps(state, props) {
+  const network = getNetworkConfig(state);
   // Determine if we're sending to a token from the transaction to address
   const { to } = props.rawTransaction;
   const tokens = getTokens(state);
   const token = tokens.find(t => t.address === to);
 
-  return { token };
+  return {
+    token,
+    network
+  };
 }
 
 export default connect(mapStateToProps)(ConfirmationModal);
