@@ -1,15 +1,14 @@
 // @flow
 import Big from 'bignumber.js';
-import type {
-  TransactionWithoutGas,
-  Transaction,
-  BroadcastTransaction
-} from 'libs/transaction';
+import type { TransactionWithoutGas } from 'libs/transaction';
 import type { Token } from 'config/data';
-import type { BaseWallet } from 'libs/wallet';
 
 export default class BaseNode {
   async getBalance(_address: string): Promise<Big> {
+    throw new Error('Implement me');
+  }
+
+  async getTokenBalance(_address: string, _token: Token): Promise<Big> {
     throw new Error('Implement me');
   }
 
@@ -21,10 +20,7 @@ export default class BaseNode {
     throw new Error('Implement me');
   }
 
-  async generateTransaction(
-    _tx: Transaction,
-    _wallet: BaseWallet
-  ): Promise<BroadcastTransaction> {
+  async getTransactionCount(_address: string): Promise<string> {
     throw new Error('Implement me');
   }
 }

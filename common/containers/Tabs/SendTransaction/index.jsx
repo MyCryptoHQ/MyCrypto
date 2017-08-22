@@ -36,16 +36,16 @@ import { getTokenBalances } from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
 import type {
   TransactionWithoutGas,
-  RawTransaction,
   BroadcastTransaction
 } from 'libs/transaction';
 import type { UNIT } from 'libs/units';
-import { toWei } from 'libs/units';
+import { toWei, toTokenUnit } from 'libs/units';
 import { formatGasLimit } from 'utils/formatters';
 import { showNotification } from 'actions/notifications';
 import type { ShowNotificationAction } from 'actions/notifications';
 import type { NodeConfig } from 'config/data';
 import { getNodeConfig } from 'selectors/config';
+import { generateTransaction } from 'libs/transaction';
 
 type State = {
   hasQueryString: boolean,
@@ -54,11 +54,11 @@ type State = {
   value: string,
   // $FlowFixMe - Comes from getParam not validating unit
   unit: UNIT,
+  token: ?Token,
   gasLimit: string,
   data: string,
   gasChanged: boolean,
   transaction: ?BroadcastTransaction,
-  rawTransaction: ?RawTransaction,
   showTxConfirm: boolean
 };
 
@@ -105,12 +105,12 @@ export class SendTransaction extends React.Component {
     to: '',
     value: '',
     unit: 'ether',
+    token: null,
     gasLimit: '21000',
     data: '',
     gasChanged: false,
     showTxConfirm: false,
-    transaction: null,
-    rawTransaction: null
+    transaction: null
   };
 
   componentDidMount() {
@@ -151,13 +151,9 @@ export class SendTransaction extends React.Component {
       readOnly,
       hasQueryString,
       showTxConfirm,
-      transaction,
-      rawTransaction
+      transaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
-
-    // tokens
-    // ng-show="token.balance!=0 && token.balance!='loading' || token.type!=='default' || tokenVisibility=='shown'"
 
     return (
       <section className="container" style={{ minHeight: '50%' }}>
@@ -278,12 +274,12 @@ export class SendTransaction extends React.Component {
               </article>}
           </main>
         </div>
-        {rawTransaction &&
+        {transaction &&
           showTxConfirm &&
           <ConfirmationModal
             wallet={this.props.wallet}
             node={this.props.node}
-            rawTransaction={rawTransaction}
+            signedTransaction={transaction.signedTx}
             onCancel={this.cancelTx}
             onConfirm={this.confirmTx}
           />}
@@ -318,34 +314,36 @@ export class SendTransaction extends React.Component {
     );
   }
 
-  async getTransactionFromState(): Promise<TransactionWithoutGas> {
+  async getTransactionInfoFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
+    const { token } = this.state;
 
     if (this.state.unit === 'ether') {
       return {
         to: this.state.to,
         from: await wallet.getAddress(),
-        value: valueToHex(this.state.value)
+        value: valueToHex(this.state.value),
+        data: this.state.data
+      };
+    } else {
+      if (!token) {
+        throw new Error('No matching token');
+      }
+
+      return {
+        to: token.address,
+        from: await wallet.getAddress(),
+        value: '0x0',
+        data: ERC20.transfer(
+          this.state.to,
+          toTokenUnit(new Big(this.state.value), token)
+        )
       };
     }
-    const token = this.props.tokens.find(x => x.symbol === this.state.unit);
-    if (!token) {
-      throw new Error('No matching token');
-    }
-
-    return {
-      to: token.address,
-      from: await wallet.getAddress(),
-      value: '0x0',
-      data: ERC20.transfer(
-        this.state.to,
-        new Big(this.state.value).times(new Big(10).pow(token.decimal))
-      )
-    };
   }
 
   async estimateGas() {
-    const trans = await this.getTransactionFromState();
+    const trans = await this.getTransactionInfoFromState();
     if (!trans) {
       return;
     }
@@ -413,34 +411,35 @@ export class SendTransaction extends React.Component {
       }
       value = token.balance.toString();
     }
+
+    let token = this.props.tokens.find(x => x.symbol === unit);
+
     this.setState({
       value,
-      unit
+      unit,
+      token
     });
   };
 
   generateTx = async () => {
     const { nodeLib, wallet } = this.props;
-    const address = await wallet.getAddress();
+    const { token } = this.state;
+    const stateTxInfo = await this.getTransactionInfoFromState();
 
     try {
-      const transaction = await nodeLib.generateTransaction(
+      const transaction = await generateTransaction(
+        nodeLib,
         {
-          to: this.state.to,
-          from: address,
-          value: this.state.value,
+          ...stateTxInfo,
           gasLimit: this.state.gasLimit,
           gasPrice: this.props.gasPrice,
-          data: this.state.data,
           chainId: this.props.network.chainId
         },
-        wallet
+        wallet,
+        token
       );
 
-      this.setState({
-        transaction,
-        rawTransaction: JSON.parse(transaction.rawTx)
-      });
+      this.setState({ transaction });
     } catch (err) {
       this.props.showNotification('danger', err.message, 5000);
     }

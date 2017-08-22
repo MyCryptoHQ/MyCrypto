@@ -3,77 +3,115 @@ import './ConfirmationModal.scss';
 import React from 'react';
 import translate from 'translations';
 import Big from 'bignumber.js';
+import EthTx from 'ethereumjs-tx';
+import { connect } from 'react-redux';
 import BaseWallet from 'libs/wallet/base';
-import { toUnit } from 'libs/units';
+import { toUnit, toTokenDisplay } from 'libs/units';
+import ERC20 from 'libs/erc20';
+import { getTransactionFields } from 'libs/transaction';
+import { getTokens } from 'selectors/wallet';
+import { getNetworkConfig } from 'selectors/config';
 import type { NodeConfig } from 'config/data';
-import type { RawTransaction } from 'libs/transaction';
+import type { Token, NetworkConfig } from 'config/data';
 
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 
-// TODO: Handle other token types?
 type Props = {
-  rawTransaction: RawTransaction,
+  signedTransaction: string,
+  transaction: EthTx,
   wallet: BaseWallet,
   node: NodeConfig,
-  onConfirm: RawTransaction => void,
+  token: ?Token,
+  network: NetworkConfig,
+  onConfirm: (string, EthTx) => void,
   onCancel: () => void
 };
 
 type State = {
-  address: string,
-  value: string,
-  gasPrice: string,
-  nonce: string,
+  fromAddress: string,
   timeToRead: number
 };
 
-export default class ConfirmationModal extends React.Component {
+class ConfirmationModal extends React.Component {
   props: Props;
   state: State;
 
   constructor(props: Props) {
     super(props);
-    const { value, gasPrice, nonce } = props.rawTransaction;
 
     this.state = {
-      address: '',
-      value: toUnit(new Big(value, 16), 'wei', 'ether').toString(),
-      gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
-      nonce: new Big(nonce, 16).toString(),
+      fromAddress: '',
       timeToRead: 5
     };
   }
 
+  componentWillReceiveProps(newProps: Props) {
+    // Reload address if the wallet changes
+    if (newProps.wallet !== this.props.wallet) {
+      this._setWalletAddress(this.props.wallet);
+    }
+  }
+
   // Count down 5 seconds before allowing them to confirm
-  readTimer = null;
+  readTimer = 0;
   componentDidMount() {
     this.readTimer = setInterval(() => {
       if (this.state.timeToRead > 0) {
         this.setState({ timeToRead: this.state.timeToRead - 1 });
       } else {
-        clearTimeout(this.readTimer);
+        clearInterval(this.readTimer);
       }
     }, 1000);
 
-    this.props.wallet.getAddress().then(address => {
-      this.setState({ address });
-    });
+    this._setWalletAddress(this.props.wallet);
   }
 
   componentWillUnmount() {
-    clearTimeout(this.readTimer);
+    clearInterval(this.readTimer);
+  }
+
+  _setWalletAddress(wallet: BaseWallet) {
+    wallet.getAddress().then(fromAddress => {
+      this.setState({ fromAddress });
+    });
+  }
+
+  _decodeTransaction() {
+    const { transaction, token } = this.props;
+    const { to, value, data, gasPrice } = getTransactionFields(transaction);
+    let fixedValue;
+    let toAddress;
+
+    if (token) {
+      // $FlowFixMe - If you have a token prop, you have data
+      const tokenData = ERC20.$transfer(data);
+      fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
+      toAddress = tokenData.to;
+    } else {
+      fixedValue = toUnit(new Big(value, 16), 'wei', 'ether').toString();
+      toAddress = to;
+    }
+
+    return {
+      value: fixedValue,
+      gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
+      data,
+      toAddress
+    };
   }
 
   _confirm() {
     if (this.state.timeToRead < 1) {
-      this.props.onConfirm(this.props.rawTransaction);
+      const { signedTransaction, transaction } = this.props;
+      this.props.onConfirm(signedTransaction, transaction);
     }
   }
 
   render() {
-    const { node, rawTransaction, onCancel } = this.props;
-    const { address, value, gasPrice, timeToRead } = this.state;
+    const { node, token, network, onCancel } = this.props;
+    const { fromAddress, timeToRead } = this.state;
+    const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons = [
@@ -90,6 +128,8 @@ export default class ConfirmationModal extends React.Component {
       }
     ];
 
+    const symbol = token ? token.symbol : network.unit;
+
     return (
       <Modal
         title="Confirm Your Transaction"
@@ -100,42 +140,51 @@ export default class ConfirmationModal extends React.Component {
         <div className="ConfModal">
           <div className="ConfModal-summary">
             <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
-              <Identicon size="100%" address={address} />
+              <Identicon size="100%" address={fromAddress} />
             </div>
             <div className="ConfModal-summary-amount">
               <div className="ConfModal-summary-amount-arrow" />
               <div className="ConfModal-summary-amount-currency">
-                {value} ETH
+                {value} {symbol}
               </div>
             </div>
             <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
-              <Identicon size="100%" address={rawTransaction.to} />
+              <Identicon size="100%" address={toAddress} />
             </div>
           </div>
 
           <ul className="ConfModal-details">
             <li className="ConfModal-details-detail">
-              You are sending from <code>{address}</code>
+              You are sending from <code>{fromAddress}</code>
             </li>
             <li className="ConfModal-details-detail">
-              You are sending to <code>{rawTransaction.to}</code>
+              You are sending to <code>{toAddress}</code>
             </li>
             <li className="ConfModal-details-detail">
-              You are sending <strong>{value} ETH</strong> with a gas price of{' '}
-              <strong>{gasPrice} gwei</strong>
+              You are sending{' '}
+              <strong>
+                {value} {symbol}
+              </strong>{' '}
+              with a gas price of <strong>{gasPrice} gwei</strong>
             </li>
             <li className="ConfModal-details-detail">
               You are interacting with the <strong>{node.network}</strong>{' '}
               network provided by <strong>{node.service}</strong>
             </li>
-            <li className="ConfModal-details-detail">
-              {rawTransaction.data
-                ? <span>
-                    You are sending the following data:{' '}
-                    <code>{rawTransaction.data}</code>
-                  </span>
-                : 'There is no data attached to this transaction'}
-            </li>
+            {!token &&
+              <li className="ConfModal-details-detail">
+                {data
+                  ? <span>
+                      You are sending the following data:{' '}
+                      <textarea
+                        className="form-control"
+                        value={data}
+                        rows="3"
+                        disabled
+                      />
+                    </span>
+                  : 'There is no data attached to this transaction'}
+              </li>}
           </ul>
 
           <div className="ConfModal-confirm">
@@ -146,3 +195,24 @@ export default class ConfirmationModal extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state, props) {
+  // Convert the signedTransaction to an EthTx transaction
+  const transaction = new EthTx(props.signedTransaction);
+
+  // Network config for defaults
+  const network = getNetworkConfig(state);
+
+  // Determine if we're sending to a token from the transaction to address
+  const { to, data } = getTransactionFields(transaction);
+  const tokens = getTokens(state);
+  const token = data && tokens.find(t => t.address === to);
+
+  return {
+    transaction,
+    token,
+    network
+  };
+}
+
+export default connect(mapStateToProps)(ConfirmationModal);
