@@ -3,27 +3,28 @@ import './ConfirmationModal.scss';
 import React from 'react';
 import translate from 'translations';
 import Big from 'bignumber.js';
+import EthTx from 'ethereumjs-tx';
 import { connect } from 'react-redux';
 import BaseWallet from 'libs/wallet/base';
 import { toUnit, toTokenDisplay } from 'libs/units';
 import ERC20 from 'libs/erc20';
+import { getTransactionFields } from 'libs/transaction';
 import { getTokens } from 'selectors/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import type { NodeConfig } from 'config/data';
-import type { RawTransaction } from 'libs/transaction';
 import type { Token, NetworkConfig } from 'config/data';
 
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 
 type Props = {
-  // TODO: Use signed transaction, not raw transaction.
-  rawTransaction: RawTransaction,
+  signedTransaction: string,
+  transaction: EthTx,
   wallet: BaseWallet,
   node: NodeConfig,
   token: ?Token,
   network: NetworkConfig,
-  onConfirm: RawTransaction => void,
+  onConfirm: (string, EthTx) => void,
   onCancel: () => void
 };
 
@@ -76,15 +77,15 @@ class ConfirmationModal extends React.Component {
     });
   }
 
-  // TODO: Use signed transaction, not raw transaction.
   _decodeTransaction() {
-    const { rawTransaction, token } = this.props;
-    const { value, gasPrice, to } = rawTransaction;
+    const { transaction, token } = this.props;
+    const { to, value, data, gasPrice } = getTransactionFields(transaction);
     let fixedValue;
     let toAddress;
 
     if (token) {
-      const tokenData = ERC20.$transfer(rawTransaction.data);
+      // $FlowFixMe - If you have a token prop, you have data
+      const tokenData = ERC20.$transfer(data);
       fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
       toAddress = tokenData.to;
     } else {
@@ -95,20 +96,22 @@ class ConfirmationModal extends React.Component {
     return {
       value: fixedValue,
       gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
+      data,
       toAddress
     };
   }
 
   _confirm() {
     if (this.state.timeToRead < 1) {
-      this.props.onConfirm(this.props.rawTransaction);
+      const { signedTransaction } = this.props;
+      this.props.onConfirm(signedTransaction, new EthTx(signedTransaction));
     }
   }
 
   render() {
-    const { node, token, network, rawTransaction, onCancel } = this.props;
+    const { node, token, network, onCancel } = this.props;
     const { fromAddress, timeToRead } = this.state;
-    const { toAddress, value, gasPrice } = this._decodeTransaction();
+    const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons = [
@@ -170,12 +173,12 @@ class ConfirmationModal extends React.Component {
             </li>
             {!token &&
               <li className="ConfModal-details-detail">
-                {rawTransaction.data
+                {data
                   ? <span>
                       You are sending the following data:{' '}
                       <textarea
                         className="form-control"
-                        value={rawTransaction.data}
+                        value={data}
                         rows="3"
                         disabled
                       />
@@ -194,13 +197,19 @@ class ConfirmationModal extends React.Component {
 }
 
 function mapStateToProps(state, props) {
+  // Convert the signedTransaction to an EthTx transaction
+  const transaction = new EthTx(props.signedTransaction);
+
+  // Network config for defaults
   const network = getNetworkConfig(state);
+
   // Determine if we're sending to a token from the transaction to address
-  const { to } = props.rawTransaction;
+  const { to, data } = getTransactionFields(transaction);
   const tokens = getTokens(state);
-  const token = tokens.find(t => t.address === to);
+  const token = data && tokens.find(t => t.address === to);
 
   return {
+    transaction,
     token,
     network
   };

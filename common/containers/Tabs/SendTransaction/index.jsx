@@ -36,7 +36,6 @@ import { getTokenBalances } from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
 import type {
   TransactionWithoutGas,
-  RawTransaction,
   BroadcastTransaction
 } from 'libs/transaction';
 import type { UNIT } from 'libs/units';
@@ -60,7 +59,6 @@ type State = {
   data: string,
   gasChanged: boolean,
   transaction: ?BroadcastTransaction,
-  rawTransaction: ?RawTransaction,
   showTxConfirm: boolean
 };
 
@@ -112,8 +110,7 @@ export class SendTransaction extends React.Component {
     data: '',
     gasChanged: false,
     showTxConfirm: false,
-    transaction: null,
-    rawTransaction: null
+    transaction: null
   };
 
   componentDidMount() {
@@ -154,8 +151,7 @@ export class SendTransaction extends React.Component {
       readOnly,
       hasQueryString,
       showTxConfirm,
-      transaction,
-      rawTransaction
+      transaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
 
@@ -278,12 +274,12 @@ export class SendTransaction extends React.Component {
               </article>}
           </main>
         </div>
-        {rawTransaction &&
+        {transaction &&
           showTxConfirm &&
           <ConfirmationModal
             wallet={this.props.wallet}
             node={this.props.node}
-            rawTransaction={rawTransaction}
+            signedTransaction={transaction.signedTx}
             onCancel={this.cancelTx}
             onConfirm={this.confirmTx}
           />}
@@ -443,10 +439,7 @@ export class SendTransaction extends React.Component {
         token
       );
 
-      this.setState({
-        transaction,
-        rawTransaction: JSON.parse(transaction.rawTx)
-      });
+      this.setState({ transaction });
     } catch (err) {
       this.props.showNotification('danger', err.message, 5000);
     }

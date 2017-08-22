@@ -1,13 +1,14 @@
 // @flow
 import Big from 'bignumber.js';
 import translate from 'translations';
-import { addHexPrefix } from 'ethereumjs-util';
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { isValidETHAddress } from 'libs/validators';
 import ERC20 from 'libs/erc20';
 import { toTokenUnit } from 'libs/units';
 import type BaseNode from 'libs/nodes/base';
 import type { BaseWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
+import type EthTx from 'ethereumjs-tx';
 
 // TODO: Enforce more bigs, or find better way to avoid ether vs wei for value
 export type TransactionWithoutGas = {|
@@ -39,6 +40,28 @@ export type BroadcastTransaction = {|
   rawTx: string,
   signedTx: string
 |};
+
+// Get useable fields from an EthTx object.
+export function getTransactionFields(tx: EthTx) {
+  // For some crazy reason, toJSON spits out an array, not keyed values.
+  const [nonce, gasPrice, gasLimit, to, value, data, v, r, s] = tx.toJSON();
+
+  return {
+    // No value comes back as '0x', but most things expect '0x0'
+    value: value === '0x' ? '0x0' : value,
+    // If data is 0x, it might as well not be there
+    data: data === '0x' ? null : data,
+    // To address is unchecksummed, which could cause mismatches in comparisons
+    to: toChecksumAddress(to),
+    // Everything else is as-is
+    nonce,
+    gasPrice,
+    gasLimit,
+    v,
+    r,
+    s
+  };
+}
 
 export async function generateTransaction(
   node: BaseNode,
