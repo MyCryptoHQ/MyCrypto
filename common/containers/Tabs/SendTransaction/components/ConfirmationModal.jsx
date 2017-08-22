@@ -103,8 +103,8 @@ class ConfirmationModal extends React.Component {
 
   _confirm() {
     if (this.state.timeToRead < 1) {
-      const { signedTransaction } = this.props;
-      this.props.onConfirm(signedTransaction, new EthTx(signedTransaction));
+      const { signedTransaction, transaction } = this.props;
+      this.props.onConfirm(signedTransaction, transaction);
     }
   }
 
