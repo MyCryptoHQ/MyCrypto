@@ -23,6 +23,12 @@ type ABIMethod = {
 
 export type ABI = ABIMethod[];
 
+export type DecodedCall = {
+  method: ABIMethod,
+  // TODO: Type this to be an array of BNs when we switch
+  args: Array<any>
+};
+
 // Contract helper, returns data for given call
 export default class Contract {
   abi: ABI;
@@ -42,11 +48,11 @@ export default class Contract {
     return method;
   }
 
-  getMethodTypes(method: ABIMethod) {
+  getMethodTypes(method: ABIMethod): string[] {
     return method.inputs.map(i => i.type);
   }
 
-  getMethodSelector(method: ABIMethod) {
+  getMethodSelector(method: ABIMethod): string {
     return abi
       .methodID(method.name, this.getMethodTypes(method))
       .toString('hex');
@@ -60,6 +66,21 @@ export default class Contract {
     );
   }
 
+  $call(data: string): DecodedCall {
+    const method = this.abi.find(
+      mth => data.indexOf(this.getMethodSelector(mth)) !== -1
+    );
+
+    if (!method) {
+      throw new Error('Unknown method');
+    }
+
+    return {
+      method,
+      args: this.decodeArgs(method, data)
+    };
+  }
+
   encodeArgs(method: ABIMethod, args: any[]): string {
     if (method.inputs.length !== args.length) {
       throw new Error('Invalid number of arguments');
@@ -69,7 +90,8 @@ export default class Contract {
     return abi.rawEncode(inputTypes, args).toString('hex');
   }
 
-  decodeArgs(method: ABIMethod, argData: string) {
+  // TODO: Type this return to be an array of BNs when we switch
+  decodeArgs(method: ABIMethod, argData: string): Array<any> {
     // Remove method selector from data, if present
     argData = argData.replace(`0x${this.getMethodSelector(method)}`, '');
     // Convert argdata to a hex buffer for ethereumjs-abi

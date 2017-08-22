@@ -65,7 +65,7 @@ class ERC20 extends Contract {
     return this.call('transfer', [to, value.toString()]);
   }
 
-  decodeTransfer(data: string): Transfer {
+  $transfer(data: string): Transfer {
     const decodedArgs = this.decodeArgs(this.getMethodAbi('transfer'), data);
     return {
       to: toChecksumAddress(`0x${decodedArgs[0].toString(16)}`),

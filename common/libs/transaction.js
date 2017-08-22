@@ -85,7 +85,7 @@ export async function generateTransaction(
 
   if (token) {
     // $FlowFixMe - We reject above if tx has no data for token
-    value = new Big(ERC20.decodeTransfer(tx.data).value);
+    value = new Big(ERC20.$transfer(tx.data).value);
     balance = toTokenUnit(await node.getTokenBalance(tx.from, token), token);
   } else {
     value = new Big(tx.value);

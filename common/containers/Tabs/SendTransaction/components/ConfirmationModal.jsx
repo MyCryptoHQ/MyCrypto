@@ -84,7 +84,7 @@ class ConfirmationModal extends React.Component {
     let toAddress;
 
     if (token) {
-      const tokenData = ERC20.decodeTransfer(rawTransaction.data);
+      const tokenData = ERC20.$transfer(rawTransaction.data);
       fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
       toAddress = tokenData.to;
     } else {

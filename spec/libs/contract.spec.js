@@ -81,4 +81,42 @@ describe('Contract', () => {
       }).toThrow();
     });
   });
+
+  // ----------------------------------------------------------------------
+
+  describe('$call / decodeArgs', () => {
+    it('should decode some data', () => {
+      const decoded = testContract.$call(
+        '0x2fbebd380000000000000000000000000000000000000000000000000000000000000539'
+      );
+      expect(decoded.method.name).toBe('foo');
+      expect(decoded.args[0].toString(10)).toBe('1337');
+    });
+
+    it('should return identical data from a call return', () => {
+      const callMethod = 'foo';
+      const callArgs = ['42891048912084012480129'];
+      const callData = testContract.call(callMethod, callArgs);
+      const decoded = testContract.$call(callData);
+
+      expect(decoded.method.name).toBe(callMethod);
+      expect(decoded.args[0].toString(10)).toBe(callArgs[0]);
+    });
+
+    it('should throw, if given invalid data', () => {
+      expect(() => {
+        // ETH address
+        testContract.$call('0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8');
+      }).toThrow();
+    });
+
+    it('should throw, if given an unknown method’s data', () => {
+      expect(() => {
+        // GNT token send data
+        testContract.$call(
+          '0xa9059cbb0000000000000000000000007cb57b5a97eabe94205c07890be4c1ad31e486a8000000000000000000000000000000000000000000000000130d2a539ba80000'
+        );
+      }).toThrow();
+    });
+  });
 });
