@@ -1,7 +1,6 @@
 import { wallet, INITIAL_STATE } from 'reducers/wallet';
 import * as walletActions from 'actions/wallet';
 import Big from 'bignumber.js';
-import { toEther } from 'libs/units';
 
 describe('wallet reducer', () => {
   it('should return the initial state', () => {
