@@ -1,6 +1,6 @@
 // @flow
-import { markupToReact } from './markup';
-import { store } from '../store';
+import React from 'react';
+import Translate from 'components/Translate';
 let fallbackLanguage = 'en';
 let repository = {};
 
@@ -32,15 +32,6 @@ languages.forEach(l => {
   repository[l.code] = l.data;
 });
 
-export default function translate(key: string) {
-  let activeLanguage = store.getState().config.languageSelection;
-  const source =
-    (repository[activeLanguage] && repository[activeLanguage][key]) ||
-    repository[fallbackLanguage][key] ||
-    key;
-  return markupToReact(source, key);
-}
-
 export function getTranslators() {
   return [
     'TranslatorName_1',
@@ -55,4 +46,16 @@ export function getTranslators() {
     }
     return !!translated;
   });
+}
+
+export default function translate(key: string) {
+  return <Translate translationKey={key} />;
+}
+
+export function translateRaw(key: string, lang: string) {
+  return (
+    (repository[lang] && repository[lang][key]) ||
+    repository[fallbackLanguage][key] ||
+    key
+  );
 }
