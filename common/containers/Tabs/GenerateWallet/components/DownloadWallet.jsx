@@ -27,14 +27,12 @@ export default class DownloadWallet extends Component {
   };
 
   componentDidMount() {
-    if (!this.props.wallet) return;
     this.props.wallet.getAddress().then(addr => {
       this.setState({ address: addr });
     });
   }
 
   componentWillMount() {
-    if (!this.props.wallet) return;
     this.props.wallet.toKeystore(this.props.password).then(utcKeystore => {
       this.setState({ keystore: utcKeystore });
     });
