@@ -27,9 +27,8 @@ npm run test # run tests with Jest
 
 ##### Docker setup instructions:
 1. Install docker (on macOS, I suggest [Docker for Mac](https://docs.docker.com/docker-for-mac/))
-2. ```bash
-   docker pull dternyak/eth-priv-to-addr
-   ```
+2. `docker pull dternyak/eth-priv-to-addr`
+   
 ##### Run Derivation Checker
 ```bash
 npm run derivation-checker
