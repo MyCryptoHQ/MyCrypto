@@ -6,7 +6,7 @@ import type {
   SetTokenBalancesAction
 } from 'actions/wallet';
 import { BaseWallet } from 'libs/wallet';
-import { toEther } from 'libs/units';
+import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
 
 export type State = {
@@ -29,7 +29,7 @@ function setWallet(state: State, action: SetWalletAction): State {
 }
 
 function setBalance(state: State, action: SetBalanceAction): State {
-  const ethBalance = toEther(action.payload, 'wei');
+  const ethBalance = toUnit(action.payload, 'wei', 'ether');
   return { ...state, balance: ethBalance };
 }
 
