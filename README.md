@@ -1,5 +1,4 @@
-# MyEtherWallet
-MyEtherWallet (v4+)
+# MyEtherWallet V4+ (ALPHA - VISIT [V3](https://github.com/kvhnuke/etherwallet) for the production site)
 
 #### Run:
 

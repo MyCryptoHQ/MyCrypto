@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React from 'react';
 
 class Option extends React.Component {
   props: {
@@ -11,7 +11,7 @@ class Option extends React.Component {
     const { value, active } = this.props;
     return (
       <li>
-        <a className={active ? "active" : ""} onClick={this.onChange}>
+        <a className={active ? 'active' : ''} onClick={this.onChange}>
           {value}
         </a>
       </li>

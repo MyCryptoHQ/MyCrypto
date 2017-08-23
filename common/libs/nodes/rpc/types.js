@@ -1,4 +1,5 @@
 // @flow
+import type { TransactionWithoutGas } from 'libs/transaction';
 
 type DATA = string;
 type QUANTITY = string;
@@ -30,6 +31,17 @@ export type GetBalanceRequest = RPCRequestBase & {
   params: [DATA, DEFAULT_BLOCK]
 };
 
+export type GetTokenBalanceRequest = RPCRequestBase & {
+  method: 'eth_call',
+  params: [
+    {
+      to: string,
+      data: string
+    },
+    DEFAULT_BLOCK
+  ]
+};
+
 export type CallRequest = RPCRequestBase & {
   method: 'eth_call',
   params: [
@@ -47,16 +59,7 @@ export type CallRequest = RPCRequestBase & {
 
 export type EstimateGasRequest = RPCRequestBase & {
   method: 'eth_estimateGas',
-  params: [
-    {
-      from?: DATA,
-      to?: DATA,
-      gas?: QUANTITY,
-      gasPrice?: QUANTITY,
-      value?: QUANTITY,
-      data?: DATA
-    }
-  ]
+  params: [TransactionWithoutGas]
 };
 
 export type GetTransactionCountRequest = RPCRequestBase & {
@@ -66,6 +69,7 @@ export type GetTransactionCountRequest = RPCRequestBase & {
 
 export type RPCRequest =
   | GetBalanceRequest
+  | GetTokenBalanceRequest
   | CallRequest
   | EstimateGasRequest
   | GetTransactionCountRequest;

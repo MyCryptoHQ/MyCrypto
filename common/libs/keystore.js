@@ -5,9 +5,96 @@ import {
   pbkdf2Sync,
   createDecipheriv
 } from 'crypto';
-import { sha3 } from 'ethereumjs-util';
+import { decipherBuffer, decodeCryptojsSalt, evp_kdf } from './decrypt';
+import { sha3, privateToAddress } from 'ethereumjs-util';
 import scrypt from 'scryptsy';
 import uuid from 'uuid';
+
+//adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L342
+export function determineKeystoreType(file: string): string {
+  const parsed = JSON.parse(file);
+
+  if (parsed.encseed) return 'presale';
+  else if (parsed.Crypto || parsed.crypto) return 'v2-v3-utc';
+  else if (parsed.hash && parsed.locked === true) return 'v1-encrypted';
+  else if (parsed.hash && parsed.locked === false) return 'v1-unencrypted';
+  else if (parsed.publisher === 'MyEtherWallet') return 'v2-unencrypted';
+  else throw new Error('Invalid keystore');
+}
+
+export function isKeystorePassRequired(file: string): boolean {
+  switch (determineKeystoreType(file)) {
+    case 'presale':
+      return true;
+    case 'v1-unencrypted':
+      return false;
+    case 'v1-encrypted':
+      return true;
+    case 'v2-unencrypted':
+      return false;
+    case 'v2-v3-utc':
+      return true;
+    default:
+      return false;
+  }
+}
+
+//adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L218
+export function decryptPresaleToPrivKey(
+  file: string,
+  password: string
+): Buffer {
+  let json = JSON.parse(file);
+  let encseed = new Buffer(json.encseed, 'hex');
+  let derivedKey = pbkdf2Sync(
+    new Buffer(password),
+    new Buffer(password),
+    2000,
+    32,
+    'sha256'
+  ).slice(0, 16);
+  let decipher = createDecipheriv(
+    'aes-128-cbc',
+    derivedKey,
+    encseed.slice(0, 16)
+  );
+  let seed = decipherBuffer(decipher, encseed.slice(16));
+  let privkey = sha3(seed);
+  let address = privateToAddress(privkey);
+
+  if (address.toString('hex') !== json.ethaddr) {
+    throw new Error('Decoded key mismatch - possibly wrong passphrase');
+  }
+  return privkey;
+}
+
+//adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L179
+export function decryptMewV1ToPrivKey(file: string, password: string): Buffer {
+  let json = JSON.parse(file);
+  let privkey, address;
+
+  if (typeof password !== 'string') {
+    throw new Error('Password required');
+  }
+  if (password.length < 7) {
+    throw new Error('Password must be at least 7 characters');
+  }
+  let cipher = json.encrypted ? json.private.slice(0, 128) : json.private;
+  cipher = decodeCryptojsSalt(cipher);
+  let evp = evp_kdf(new Buffer(password), cipher.salt, {
+    keysize: 32,
+    ivsize: 16
+  });
+  let decipher = createDecipheriv('aes-256-cbc', evp.key, evp.iv);
+  privkey = decipherBuffer(decipher, new Buffer(cipher.ciphertext));
+  privkey = new Buffer(privkey.toString(), 'hex');
+  address = '0x' + privateToAddress(privkey).toString('hex');
+
+  if (address !== json.address) {
+    throw new Error('Invalid private key or address');
+  }
+  return privkey;
+}
 
 export const scryptSettings = {
   n: 1024
@@ -75,7 +162,10 @@ export function getV3Filename(address: string) {
   return ['UTC--', ts.toJSON().replace(/:/g, '-'), '--', address].join('');
 }
 
-export function fromV3KeystoreToPkey(input: string, password: string): Buffer {
+export function decryptUtcKeystoreToPkey(
+  input: string,
+  password: string
+): Buffer {
   let kstore = JSON.parse(input.toLowerCase());
   if (kstore.version !== 3) {
     throw new Error('Not a V3 wallet');
@@ -123,8 +213,4 @@ export function fromV3KeystoreToPkey(input: string, password: string): Buffer {
     seed = Buffer.concat([nullBuff, seed]);
   }
   return seed;
-}
-
-function decipherBuffer(decipher, data) {
-  return Buffer.concat([decipher.update(data), decipher.final()]);
 }

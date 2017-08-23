@@ -75,8 +75,22 @@ function validateEtherAddress(address: string): boolean {
   else return isChecksumAddress(address);
 }
 
-export function isValidPrivKey(length: number): boolean {
-  return length === 64 || length === 128 || length === 132;
+export function isValidPrivKey(privkey: string | Buffer): boolean {
+  if (typeof privkey === 'string') {
+    return privkey.length === 64;
+  } else if (privkey instanceof Buffer) {
+    return privkey.length === 32;
+  } else {
+    return false;
+  }
+}
+
+export function isValidEncryptedPrivKey(privkey: string): boolean {
+  if (typeof privkey === 'string') {
+    return privkey.length === 128 || privkey.length === 132;
+  } else {
+    return false;
+  }
 }
 
 export function isPositiveIntegerOrZero(number: number): boolean {
