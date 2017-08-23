@@ -1,9 +1,10 @@
 // @flow
 // TODO support events, constructors, fallbacks, array slots, types
-import { sha3, setLengthLeft, toBuffer } from 'ethereumjs-util';
-import Big from 'bignumber.js';
+import abi from 'ethereumjs-abi';
 
-type ABIType = 'address' | 'uint256' | 'bool';
+// There are too many to enumerate since they're somewhat dynamic, list here
+// https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI#types
+type ABIType = string;
 
 type ABITypedSlot = {
   name: string,
@@ -22,16 +23,17 @@ type ABIMethod = {
 
 export type ABI = ABIMethod[];
 
-function assertString(arg: any) {
-  if (typeof arg !== 'string') {
-    throw new Error('Expected string');
-  }
-}
+export type DecodedCall = {
+  method: ABIMethod,
+  // TODO: Type this to be an array of BNs when we switch
+  args: Array<any>
+};
 
 // Contract helper, returns data for given call
 export default class Contract {
   abi: ABI;
   constructor(abi: ABI) {
+    // TODO: Check ABI, throw if it's malformed
     this.abi = abi;
   }
 
@@ -46,18 +48,37 @@ export default class Contract {
     return method;
   }
 
+  getMethodTypes(method: ABIMethod): string[] {
+    return method.inputs.map(i => i.type);
+  }
+
+  getMethodSelector(method: ABIMethod): string {
+    return abi
+      .methodID(method.name, this.getMethodTypes(method))
+      .toString('hex');
+  }
+
   call(name: string, args: any[]): string {
     const method = this.getMethodAbi(name);
-    const selector = sha3(
-      `${name}(${method.inputs.map(i => i.type).join(',')})`
+
+    return (
+      '0x' + this.getMethodSelector(method) + this.encodeArgs(method, args)
+    );
+  }
+
+  $call(data: string): DecodedCall {
+    const method = this.abi.find(
+      mth => data.indexOf(this.getMethodSelector(mth)) !== -1
     );
 
-    // TODO: Add explanation, why slice the first 8?
-    return (
-      '0x' +
-      selector.toString('hex').slice(0, 8) +
-      this.encodeArgs(method, args)
-    );
+    if (!method) {
+      throw new Error('Unknown method');
+    }
+
+    return {
+      method,
+      args: this.decodeArgs(method, data)
+    };
   }
 
   encodeArgs(method: ABIMethod, args: any[]): string {
@@ -65,25 +86,17 @@ export default class Contract {
       throw new Error('Invalid number of arguments');
     }
 
-    return method.inputs
-      .map((input, idx) => this.encodeArg(input, args[idx]))
-      .join('');
+    const inputTypes = method.inputs.map(input => input.type);
+    return abi.rawEncode(inputTypes, args).toString('hex');
   }
 
-  encodeArg(input: ABITypedSlot, arg: any): string {
-    switch (input.type) {
-      case 'address':
-      case 'uint160':
-        assertString(arg);
-        return setLengthLeft(toBuffer(arg), 32).toString('hex');
-      case 'uint256':
-        if (arg instanceof Big) {
-          arg = '0x' + arg.toString(16);
-        }
-        assertString(arg);
-        return setLengthLeft(toBuffer(arg), 32).toString('hex');
-      default:
-        throw new Error(`Dont know how to handle abi type ${input.type}`);
-    }
+  // TODO: Type this return to be an array of BNs when we switch
+  decodeArgs(method: ABIMethod, argData: string): Array<any> {
+    // Remove method selector from data, if present
+    argData = argData.replace(`0x${this.getMethodSelector(method)}`, '');
+    // Convert argdata to a hex buffer for ethereumjs-abi
+    const argBuffer = new Buffer(argData, 'hex');
+    // Decode!
+    return abi.rawDecode(this.getMethodTypes(method), argBuffer);
   }
 }

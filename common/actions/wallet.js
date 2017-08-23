@@ -22,6 +22,26 @@ export function unlockPrivateKey(
   };
 }
 
+/*** Unlock Keystore File ***/
+export type KeystoreUnlockParams = {
+  file: string,
+  password: string
+};
+
+export type UnlockKeystoreAction = {
+  type: 'WALLET_UNLOCK_KEYSTORE',
+  payload: KeystoreUnlockParams
+};
+
+export function unlockKeystore(
+  value: KeystoreUnlockParams
+): UnlockKeystoreAction {
+  return {
+    type: 'WALLET_UNLOCK_KEYSTORE',
+    payload: value
+  };
+}
+
 /*** Set Wallet ***/
 export type SetWalletAction = {
   type: 'WALLET_SET',

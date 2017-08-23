@@ -29,7 +29,8 @@
     "no-unreachable": 1,
     "no-alert": 0,
     "react/jsx-uses-react": 1,
-    "no-unused-vars": [1, { "argsIgnorePattern": "^_" }]
+    "no-unused-vars": [1, { "argsIgnorePattern": "^_" }],
+    "no-restricted-globals": ["error", "event"]
   },
   "globals": {
     "SyntheticInputEvent": false,

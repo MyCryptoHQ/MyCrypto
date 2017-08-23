@@ -9,14 +9,18 @@ import LedgerNanoSDecrypt from './LedgerNano';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
 import map from 'lodash/map';
-import { unlockPrivateKey } from 'actions/wallet';
+import { unlockPrivateKey, unlockKeystore } from 'actions/wallet';
 import { connect } from 'react-redux';
 
 const WALLETS = {
   'keystore-file': {
     lid: 'x_Keystore2',
     component: KeystoreDecrypt,
-    initialParams: {}
+    initialParams: {
+      file: '',
+      password: ''
+    },
+    unlock: unlockKeystore
   },
   'private-key': {
     lid: 'x_PrivKey2',

@@ -1,7 +1,13 @@
 // @flow
 import Contract from 'libs/contract';
 import type { ABI } from 'libs/contract';
-import type Big from 'bignumber.js';
+import Big from 'bignumber.js';
+import { toChecksumAddress } from 'ethereumjs-util';
+
+type Transfer = {
+  to: string,
+  value: string
+};
 
 const erc20Abi: ABI = [
   {
@@ -51,12 +57,20 @@ class ERC20 extends Contract {
     super(erc20Abi);
   }
 
-  balanceOf(address: string) {
+  balanceOf(address: string): string {
     return this.call('balanceOf', [address]);
   }
 
-  transfer(to: string, value: Big) {
-    return this.call('transfer', [to, value]);
+  transfer(to: string, value: Big): string {
+    return this.call('transfer', [to, value.toString()]);
+  }
+
+  $transfer(data: string): Transfer {
+    const decodedArgs = this.decodeArgs(this.getMethodAbi('transfer'), data);
+    return {
+      to: toChecksumAddress(`0x${decodedArgs[0].toString(16)}`),
+      value: decodedArgs[1].toString(10)
+    };
   }
 }
 

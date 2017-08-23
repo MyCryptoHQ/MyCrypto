@@ -8,6 +8,7 @@ import {
 import { randomBytes } from 'crypto';
 import { pkeyToKeystore } from '../keystore';
 import { signRawTxWithPrivKey, signMessageWithPrivKey } from '../signing';
+import { isValidPrivKey } from '../validators';
 import type { RawTransaction } from '../transaction';
 
 export default class PrivKeyWallet extends BaseWallet {
@@ -15,6 +16,9 @@ export default class PrivKeyWallet extends BaseWallet {
   pubKey: Buffer;
   address: Buffer;
   constructor(privkey: Buffer) {
+    if (!isValidPrivKey(privkey)) {
+      throw new Error('Invalid private key');
+    }
     super();
     this.privKey = privkey;
     this.pubKey = privateToPublic(this.privKey);

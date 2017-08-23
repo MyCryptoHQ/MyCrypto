@@ -1,14 +1,17 @@
 // @flow
 import { randomBytes } from 'crypto';
+import ERC20 from 'libs/erc20';
 import { hexEncodeData } from './utils';
 import type {
   RPCRequest,
   JsonRpcResponse,
   CallRequest,
   GetBalanceRequest,
+  GetTokenBalanceRequest,
   EstimateGasRequest,
   GetTransactionCountRequest
 } from './types';
+import type { Token } from 'config/data';
 
 // FIXME is it safe to generate that much entropy?
 function id(): string {
@@ -50,6 +53,24 @@ export function getTransactionCount(
     jsonrpc: '2.0',
     method: 'eth_getTransactionCount',
     params: [address, 'pending']
+  };
+}
+
+export function getTokenBalance(
+  address: string,
+  token: Token
+): GetTokenBalanceRequest {
+  return {
+    id: id(),
+    jsonrpc: '2.0',
+    method: 'eth_call',
+    params: [
+      {
+        to: token.address,
+        data: ERC20.balanceOf(address)
+      },
+      'pending'
+    ]
   };
 }
 
