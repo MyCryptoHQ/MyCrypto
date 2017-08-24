@@ -1,6 +1,18 @@
 // @flow
 import { RPCNode } from 'libs/nodes';
 
+// Displays in the header
+export const VERSION = '4.0.0';
+
+// Displays at the top of the site, make message empty string to remove.
+// Type can be primary, warning, danger, success, or info.
+// HTML is allowed inside of the message.
+export const ANNOUNCEMENT_TYPE = 'warning';
+export const ANNOUNCEMENT_MESSAGE = `
+  This is an Alpha build of MyEtherWallet v4. Please only use for testing,
+  or use v3 at <a href='https://myetherwallet.com'>https://myetherwallet.com</a>.
+`;
+
 export const DONATION_ADDRESSES_MAP = {
   BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
   ETH: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',

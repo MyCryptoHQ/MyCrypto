@@ -1,6 +1,6 @@
 {
   "name": "MyEtherWallet",
-  "version": "0.0.1",
+  "version": "4.0.0-alpha.1",
   "main": "common/index.jsx",
   "description": "MyEtherWallet v4",
   "engines": {
@@ -106,9 +106,6 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write --single-quote",
-      "git add"
-    ]
+    "*.{js,jsx}": ["prettier --write --single-quote", "git add"]
   }
 }

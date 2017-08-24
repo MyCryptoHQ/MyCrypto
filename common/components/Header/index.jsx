@@ -4,7 +4,13 @@ import Navigation from './components/Navigation';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import { Link } from 'react-router';
 import { Dropdown } from 'components/ui';
-import { languages, NODES } from '../../config/data';
+import {
+  languages,
+  NODES,
+  VERSION,
+  ANNOUNCEMENT_TYPE,
+  ANNOUNCEMENT_MESSAGE
+} from '../../config/data';
 import logo from 'assets/images/logo-myetherwallet.svg';
 
 import './index.scss';
@@ -29,6 +35,14 @@ export default class Header extends Component {
 
     return (
       <div className="Header">
+        {ANNOUNCEMENT_MESSAGE &&
+          <div
+            className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}
+            dangerouslySetInnerHTML={{
+              __html: ANNOUNCEMENT_MESSAGE
+            }}
+          />}
+
         <section className="Header-branding">
           <section className="Header-branding-inner container">
             <Link
@@ -46,8 +60,8 @@ export default class Header extends Component {
               />
             </Link>
             <div className="Header-branding-title-tagline">
-              <span style={{ maxWidth: '395px' }}>
-                Open-Source & Client-Side Ether Wallet · v3.6.0
+              <span className="Header-branding-title-tagline-version">
+                Open-Source & Client-Side Ether Wallet · v{VERSION}
               </span>
 
               <GasPriceDropdown
