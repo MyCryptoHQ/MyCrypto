@@ -1,7 +1,11 @@
 // @flow
-import { combineAndUpper } from 'utils/formatters';
 import type { SwapAction } from 'actions/swapTypes';
 import without from 'lodash/without';
+import {
+  buildDestinationAmount,
+  buildDestinationKind,
+  buildOriginKind
+} from './helpers';
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
@@ -49,28 +53,6 @@ export const INITIAL_STATE: State = {
   orderId: null
 };
 
-const buildDestinationAmount = (
-  originAmount,
-  originKind,
-  destinationKind,
-  bityRates
-) => {
-  let pairName = combineAndUpper(originKind, destinationKind);
-  let bityRate = bityRates[pairName];
-  return originAmount ? originAmount * bityRate : 0;
-};
-
-const buildDestinationKind = (
-  originKind: string,
-  destinationKind: string
-): string => {
-  if (originKind === destinationKind) {
-    return without(ALL_CRYPTO_KIND_OPTIONS, originKind)[0];
-  } else {
-    return destinationKind;
-  }
-};
-
 export function swap(state: State = INITIAL_STATE, action: SwapAction) {
   switch (action.type) {
     case 'SWAP_ORIGIN_KIND': {
@@ -92,8 +74,10 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
       };
     }
     case 'SWAP_DESTINATION_KIND': {
+      const newOriginKind = buildOriginKind(state.originKind, action.value);
       return {
         ...state,
+        originKind: newOriginKind,
         destinationKind: action.value,
         destinationAmount: buildDestinationAmount(
           state.originAmount,
@@ -148,6 +132,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
         ...state,
         isPostingOrder: false
       };
+    // TODO - fix bad naming
     case 'SWAP_BITY_ORDER_CREATE_SUCCEEDED':
       return {
         ...state,

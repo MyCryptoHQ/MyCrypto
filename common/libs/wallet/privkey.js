@@ -6,10 +6,12 @@ import {
   toChecksumAddress
 } from 'ethereumjs-util';
 import { randomBytes } from 'crypto';
-import { pkeyToKeystore } from '../keystore';
-import { signRawTxWithPrivKey, signMessageWithPrivKey } from '../signing';
-import { isValidPrivKey } from '../validators';
-import type { RawTransaction } from '../transaction';
+import { pkeyToKeystore } from 'libs/keystore';
+import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
+
+import { isValidPrivKey } from 'libs/validators';
+import type { RawTransaction } from 'libs/transaction';
+import type { UtcKeystore } from 'libs/keystore';
 
 export default class PrivKeyWallet extends BaseWallet {
   privKey: Buffer;
@@ -39,7 +41,7 @@ export default class PrivKeyWallet extends BaseWallet {
     return new PrivKeyWallet(randomBytes(32));
   }
 
-  toKeystore(password: string): Promise<any> {
+  toKeystore(password: string): Promise<UtcKeystore> {
     return new Promise(resolve => {
       this.getNakedAddress().then(address => {
         resolve(pkeyToKeystore(this.privKey, address, password));
