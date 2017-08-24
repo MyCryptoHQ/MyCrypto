@@ -1,6 +1,6 @@
 // @flow
 import Big from 'bignumber.js';
-import { toWei } from './units';
+import { toWei } from 'libs/units';
 
 export function stripHex(address: string): string {
   return address.replace('0x', '').toLowerCase();
