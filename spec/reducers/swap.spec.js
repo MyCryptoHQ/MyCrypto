@@ -3,7 +3,7 @@ import {
   buildDestinationAmount,
   buildDestinationKind,
   buildOriginKind
-} from 'reducers/swapHelpers';
+} from 'reducers/swap/helpers';
 import * as swapActions from 'actions/swap';
 import without from 'lodash/without';
 
@@ -104,7 +104,6 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_DESTINATION_ADDRESS', () => {
-    // TODO - should reducer throw if address is not in correct format?
     const destinationAddress = '341a0sdf83';
     expect(
       swap(undefined, swapActions.destinationAddressSwap(destinationAddress))
@@ -115,7 +114,6 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_RESTART', () => {
-    // TODO - should reducer throw if address is not in correct format?
     const bityRates = {
       BTCETH: 0.01,
       ETHREP: 10

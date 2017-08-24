@@ -1,6 +1,6 @@
 import { combineAndUpper } from 'utils/formatters';
 import without from 'lodash/without';
-import { ALL_CRYPTO_KIND_OPTIONS } from './swap';
+import { ALL_CRYPTO_KIND_OPTIONS } from '.';
 
 export const buildDestinationAmount = (
   originAmount,

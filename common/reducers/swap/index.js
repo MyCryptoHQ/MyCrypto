@@ -5,7 +5,7 @@ import {
   buildDestinationAmount,
   buildDestinationKind,
   buildOriginKind
-} from './swapHelpers';
+} from './helpers';
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
