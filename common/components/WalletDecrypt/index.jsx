@@ -33,19 +33,23 @@ const WALLETS = {
   },
   'mnemonic-phrase': {
     lid: 'x_Mnemonic',
-    component: MnemonicDecrypt
+    component: MnemonicDecrypt,
+    disabled: true
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
-    component: LedgerNanoSDecrypt
+    component: LedgerNanoSDecrypt,
+    disabled: true
   },
   trezor: {
     lid: 'x_Trezor',
-    component: TrezorDecrypt
+    component: TrezorDecrypt,
+    disabled: true
   },
   'view-only': {
     lid: 'View with Address Only',
-    component: ViewOnlyDecrypt
+    component: ViewOnlyDecrypt,
+    disabled: true
   }
 };
 
@@ -97,6 +101,7 @@ export class WalletDecrypt extends Component {
             value={key}
             checked={isSelected}
             onChange={this.handleDecryptionChoiceChange}
+            disabled={wallet.disabled}
           />
           <span id={`${key}-label`}>
             {translate(wallet.lid)}
