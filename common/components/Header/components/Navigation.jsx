@@ -25,8 +25,8 @@ const tabs = [
     to: 'contracts'
   },
   {
-    name: 'NAV_ViewWallet',
-    to: 'view-wallet'
+    name: 'NAV_ViewWallet'
+    // to: 'view-wallet'
   },
   {
     name: 'NAV_Help',
