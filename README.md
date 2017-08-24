@@ -20,6 +20,20 @@ It generates app in `dist` folder.
 npm run test # run tests with Jest
 ```
 
+#### Derivation Check:
+##### The derivation checker utility assumes that you have:
+1. Docker installed/available
+2. [dternyak/eth-priv-to-addr](https://hub.docker.com/r/dternyak/eth-priv-to-addr/) pulled from DockerHub
+
+##### Docker setup instructions:
+1. Install docker (on macOS, I suggest [Docker for Mac](https://docs.docker.com/docker-for-mac/))
+2. `docker pull dternyak/eth-priv-to-addr`
+   
+##### Run Derivation Checker
+```bash
+npm run derivation-checker
+```
+
 ## Folder structure:
 
 ```
