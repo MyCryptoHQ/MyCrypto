@@ -1,27 +1,56 @@
-import React, { Component } from 'react';
+// @flow
+import React from 'react';
 import translate from 'translations';
 
-export default class ViewOnlyDecrypt extends Component {
-  render() {
-    return (
-      <section className="col-md-4 col-sm-6">
-        <div id="selectedUploadKey">
-          <h4>{translate('ADD_Radio_2_alt')}</h4>
+export type AddressValue = {
+  address: string
+};
 
-          <div className="form-group">
-            <input type="file" id="fselector" />
+export type ViewOnlyProps = {
+  value: AddressValue,
+  onChange: (value: AddressValue) => void,
+  onUnlock: () => void
+};
 
-            <a
-              className="btn-file marg-v-sm"
-              id="aria1"
-              tabIndex="0"
-              role="button"
-            >
-              {translate('ADD_Radio_2_short')}
-            </a>
-          </div>
+const ViewOnlyDecrypt = ({ value, onChange, onUnlock }: ViewOnlyProps) => {
+  const { address } = value;
+
+  const onAddressChange = (e: SyntheticInputEvent) => {
+    // need to validate here
+    onChange({
+      ...value,
+      address: e.target.value
+    });
+  };
+
+  const onKeyDown = (e: SyntheticKeyboardEvent) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      e.stopPropagation();
+      onUnlock();
+    }
+  };
+
+  return (
+    <section className="col-md-4 col-sm-6">
+      <div id="selectedTypeKey">
+        <h4>
+          {translate('ADD_Label_5')}
+        </h4>
+        <div className="form-group">
+          <textarea
+            id="address-label"
+            className="form-control"
+            value={address}
+            onChange={onAddressChange}
+            onKeyDown={onKeyDown}
+            placeholder={translate('x_Address')}
+            rows="2"
+          />
         </div>
-      </section>
-    );
-  }
-}
+      </div>
+    </section>
+  );
+};
+
+export default ViewOnlyDecrypt;

@@ -9,7 +9,7 @@ import LedgerNanoSDecrypt from './LedgerNano';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
 import map from 'lodash/map';
-import { unlockPrivateKey, unlockKeystore } from 'actions/wallet';
+import { unlockPrivateKey, unlockKeystore, setWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 
 const WALLETS = {
@@ -33,19 +33,26 @@ const WALLETS = {
   },
   'mnemonic-phrase': {
     lid: 'x_Mnemonic',
-    component: MnemonicDecrypt
+    component: MnemonicDecrypt,
+    initialParams: {}
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
-    component: LedgerNanoSDecrypt
+    component: LedgerNanoSDecrypt,
+    initialParams: {}
   },
   trezor: {
     lid: 'x_Trezor',
-    component: TrezorDecrypt
+    component: TrezorDecrypt,
+    initialParams: {}
   },
   'view-only': {
     lid: 'View with Address Only',
-    component: ViewOnlyDecrypt
+    component: ViewOnlyDecrypt,
+    initialParams: {
+      address: ''
+    },
+    unlock: setWallet
   }
 };
 
