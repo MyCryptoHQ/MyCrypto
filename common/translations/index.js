@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import Translate from 'components/Translate';
+import { getLanguageSelection } from 'selectors/config';
+import { store } from 'store';
 let fallbackLanguage = 'en';
 let repository = {};
 
@@ -58,4 +60,10 @@ export function translateRaw(key: string, lang: string) {
     repository[fallbackLanguage][key] ||
     key
   );
+}
+
+export function translateRawFromState(key: string) {
+  const state = store.getState();
+  const lang = getLanguageSelection(state);
+  return translateRaw(key, lang);
 }

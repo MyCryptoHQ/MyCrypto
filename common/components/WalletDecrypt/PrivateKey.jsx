@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateRawFromState } from 'translations';
 import { isValidPrivKey, isValidEncryptedPrivKey } from 'libs/validators';
 
 export type PrivateKeyValue = {
@@ -71,7 +71,7 @@ export default class PrivateKeyDecrypt extends Component {
               value={key}
               onChange={this.onPkeyChange}
               onKeyDown={this.onKeyDown}
-              placeholder={translate('x_PrivKey2')}
+              placeholder={translateRawFromState('x_PrivKey2')}
               rows="4"
             />
           </div>
@@ -88,7 +88,7 @@ export default class PrivateKeyDecrypt extends Component {
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}
-                placeholder={translate('x_Password')}
+                placeholder={translateRawFromState('x_Password')}
                 type="password"
               />
             </div>}
