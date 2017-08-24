@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import { isValidPrivKey } from 'libs/validators';
+import { isValidPrivKey, isValidEncryptedPrivKey } from 'libs/validators';
 
 export type PrivateKeyValue = {
   key: string,
@@ -16,6 +16,35 @@ function fixPkey(key) {
   return key;
 }
 
+type validated = {
+  fixedPkey: string,
+  isValidPkey: boolean,
+  isPassRequired: boolean,
+  valid: boolean
+};
+
+function validatePkeyAndPass(pkey: string, pass: string): validated {
+  const fixedPkey = fixPkey(pkey);
+  const validPkey = isValidPrivKey(fixedPkey);
+  const validEncPkey = isValidEncryptedPrivKey(fixedPkey);
+  const isValidPkey = validPkey || validEncPkey;
+
+  let isValidPass = false;
+
+  if (validPkey) {
+    isValidPass = true;
+  } else if (validEncPkey) {
+    isValidPass = pass.length > 0;
+  }
+
+  return {
+    fixedPkey,
+    isValidPkey,
+    isPassRequired: validEncPkey,
+    valid: isValidPkey && isValidPass
+  };
+}
+
 export default class PrivateKeyDecrypt extends Component {
   props: {
     value: PrivateKeyValue,
@@ -25,9 +54,7 @@ export default class PrivateKeyDecrypt extends Component {
 
   render() {
     const { key, password } = this.props.value;
-    const fixedPkey = fixPkey(key);
-    const isValid = isValidPrivKey(fixedPkey.length);
-    const isPassRequired = fixedPkey.length > 64;
+    const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
 
     return (
       <section className="col-md-4 col-sm-6">
@@ -38,7 +65,9 @@ export default class PrivateKeyDecrypt extends Component {
           <div className="form-group">
             <textarea
               id="aria-private-key"
-              className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
+              className={`form-control ${isValidPkey
+                ? 'is-valid'
+                : 'is-invalid'}`}
               value={key}
               onChange={this.onPkeyChange}
               onKeyDown={this.onKeyDown}
@@ -46,7 +75,7 @@ export default class PrivateKeyDecrypt extends Component {
               rows="4"
             />
           </div>
-          {isValid &&
+          {isValidPkey &&
             isPassRequired &&
             <div className="form-group">
               <p>
@@ -69,25 +98,21 @@ export default class PrivateKeyDecrypt extends Component {
   }
 
   onPkeyChange = (e: SyntheticInputEvent) => {
-    const fixedPkey = fixPkey(e.target.value);
-    const isValid = isValidPrivKey(fixedPkey.length);
-    const isPassRequired = fixedPkey.length > 64;
-    const valid =
-      isValid && (isPassRequired ? this.props.value.password.length > 0 : true);
+    const pkey = e.target.value;
+    const pass = this.props.value.password;
+    const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
 
-    this.props.onChange({ ...this.props.value, key: e.target.value, valid });
+    this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
   };
 
   onPasswordChange = (e: SyntheticInputEvent) => {
-    const fixedPkey = fixPkey(this.props.value.key);
-    const isValid = isValidPrivKey(fixedPkey.length);
-    const isPassRequired = fixedPkey.length > 64;
-    const valid =
-      isValid && (isPassRequired ? e.target.value.length > 0 : true);
+    const pkey = this.props.value.key;
+    const pass = e.target.value;
+    const { valid } = validatePkeyAndPass(pkey, pass);
 
     this.props.onChange({
       ...this.props.value,
-      password: e.target.value,
+      password: pass,
       valid
     });
   };

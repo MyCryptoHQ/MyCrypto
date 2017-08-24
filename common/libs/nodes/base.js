@@ -8,11 +8,19 @@ export default class BaseNode {
     throw new Error('Implement me');
   }
 
+  async getTokenBalance(_address: string, _token: Token): Promise<Big> {
+    throw new Error('Implement me');
+  }
+
   async getTokenBalances(_address: string, _tokens: Token[]): Promise<Big[]> {
     throw new Error('Implement me');
   }
 
   async estimateGas(_tx: TransactionWithoutGas): Promise<Big> {
+    throw new Error('Implement me');
+  }
+
+  async getTransactionCount(_address: string): Promise<string> {
     throw new Error('Implement me');
   }
 }
