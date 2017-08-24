@@ -5,6 +5,57 @@ import logo from 'assets/images/logo-myetherwallet.svg';
 import { bityReferralURL } from 'config/data';
 import './index.scss';
 
+const onTheWebLinks = [
+  {
+    ariaLabel: 'my ether wallet.com',
+    href: 'https://www.MyEtherWallet.com',
+    content: 'www.MyEtherWallet.com'
+  },
+  {
+    ariaLabel: 'my ether wallet github',
+    href: 'https://github.com/kvhnuke/etherwallet',
+    content: 'Github: MyEtherWallet.com & CX'
+  },
+  {
+    ariaLabel: 'our organization on github',
+    href: 'https://github.com/MyEtherWallet',
+    content: 'Github: MyEtherWallet (Org)'
+  },
+  {
+    ariaLabel: 'join our slack',
+    href: 'https://myetherwallet.herokuapp.com/',
+    content: 'Join Our Slack'
+  },
+  {
+    ariaLabel: 'twitter',
+    href: 'https://twitter.com/myetherwallet',
+    content: 'Twitter'
+  },
+  {
+    ariaLabel: 'facebook',
+    href: 'https://www.facebook.com/MyEtherWallet',
+    content: 'Facebook'
+  }
+];
+
+const affiliateLinks = [
+  {
+    ariaLabel: 'Swap Ether or Bitcoin via Bity.com',
+    href: bityReferralURL,
+    content: 'Swap ETH/BTC/EUR/CHF via Bity.com'
+  },
+  {
+    ariaLabel: '',
+    href: 'https://www.ledgerwallet.com/r/fa4b?path=/products',
+    content: 'Buy a Ledger Nano S'
+  },
+  {
+    ariaLabel: '',
+    href: 'https://trezor.io/?a=myetherwallet.com',
+    content: 'Buy a TREZOR'
+  }
+];
+
 const Footer = () => {
   const translators = getTranslators();
   return (
@@ -68,31 +119,17 @@ const Footer = () => {
               </h5>
               <p>Consider using our affiliate links to...</p>
               <ul>
-                <li>
-                  <a
-                    aria-label="Swap Ether or Bitcoin via Bity.com"
-                    href={bityReferralURL}
-                    target="_blank"
-                  >
-                    Swap ETH/BTC/EUR/CHF via Bity.com
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
-                    target="_blank"
-                  >
-                    Buy a Ledger Nano S
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://trezor.io/?a=myetherwallet.com"
-                    target="_blank"
-                  >
-                    Buy a TREZOR
-                  </a>
-                </li>
+                {affiliateLinks.map(link =>
+                  <li>
+                    <a
+                      aria-label={link.ariaLabel}
+                      href={link.href}
+                      target="_blank"
+                    >
+                      {link.content}
+                    </a>
+                  </li>
+                )}
               </ul>
 
               {!!translators.length &&
@@ -116,60 +153,17 @@ const Footer = () => {
                 <i aria-hidden="true">🌎</i> On the Web
               </h5>
               <ul>
-                <li>
-                  <a
-                    aria-label="my ether wallet.com"
-                    href="https://www.MyEtherWallet.com"
-                    target="_blank"
-                  >
-                    www.MyEtherWallet.com
-                  </a>
-                </li>
-                <li>
-                  <a
-                    aria-label="my ether wallet github"
-                    href="https://github.com/kvhnuke/etherwallet"
-                    target="_blank"
-                  >
-                    Github: MyEtherWallet.com & CX
-                  </a>
-                </li>
-                <li>
-                  <a
-                    aria-label="our organization on github"
-                    href="https://github.com/MyEtherWallet"
-                    target="_blank"
-                  >
-                    Github: MyEtherWallet (Org)
-                  </a>
-                </li>
-                <li>
-                  <a
-                    aria-label="join our slack"
-                    href="https://myetherwallet.herokuapp.com/"
-                    target="_blank"
-                  >
-                    Join Our Slack
-                  </a>
-                </li>
-                <li>
-                  <a
-                    aria-label="twitter"
-                    href="https://twitter.com/myetherwallet"
-                    target="_blank"
-                  >
-                    Twitter
-                  </a>
-                </li>
-                <li>
-                  <a
-                    aria-label="facebook"
-                    href="https://www.facebook.com/MyEtherWallet/"
-                    target="_blank"
-                  >
-                    Facebook
-                  </a>
-                </li>
+                {onTheWebLinks.map(link =>
+                  <li>
+                    <a
+                      aria-label={link.ariaLabel}
+                      href={link.href}
+                      target="_blank"
+                    >
+                      {link.content}
+                    </a>
+                  </li>
+                )}
               </ul>
 
               <h5>
