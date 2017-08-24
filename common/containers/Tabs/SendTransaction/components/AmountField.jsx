@@ -1,20 +1,23 @@
 // @flow
 import React from 'react';
-import translate from 'translations';
 import UnitDropdown from './UnitDropdown';
+import { connect } from 'react-redux';
+import { getLanguageSelection } from 'selectors/config';
+import translate, { translateRaw } from 'translations';
 
 type Props = {
   value: string,
   unit: string,
   tokens: string[],
-  onChange?: (value: string, unit: string) => void
+  onChange?: (value: string, unit: string) => void,
+  lang: string
 };
 
-export default class AmountField extends React.Component {
+class AmountField extends React.Component {
   props: Props;
 
   render() {
-    const { value, unit, onChange } = this.props;
+    const { value, unit, onChange, lang } = this.props;
     const isReadonly = !onChange;
     return (
       <div>
@@ -28,7 +31,7 @@ export default class AmountField extends React.Component {
               ? 'is-valid'
               : 'is-invalid'}`}
             type="text"
-            placeholder={translate('SEND_amount_short')}
+            placeholder={translateRaw('SEND_amount_short', lang)}
             value={value}
             disabled={isReadonly}
             onChange={isReadonly ? void 0 : this.onValueChange}
@@ -69,3 +72,9 @@ export default class AmountField extends React.Component {
     }
   };
 }
+
+function mapStateToProps(state) {
+  return { lang: getLanguageSelection(state) };
+}
+
+export default connect(mapStateToProps)(AmountField);
