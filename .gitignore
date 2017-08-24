@@ -41,6 +41,3 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
-
-v8-compile-cache-0
-
