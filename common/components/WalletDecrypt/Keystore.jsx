@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
+import translate from 'translations';
 import { isKeystorePassRequired } from 'libs/keystore';
-import { connect } from 'react-redux';
-import { getLanguageSelection } from 'selectors/config';
-import translate, { translateRaw } from 'translations';
 
 export type KeystoreValue = {
   file: string,
@@ -20,16 +18,14 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
-class KeystoreDecrypt extends Component {
+export default class KeystoreDecrypt extends Component {
   props: {
     value: KeystoreValue,
     onChange: (value: KeystoreValue) => void,
-    onUnlock: () => void,
-    lang: string
+    onUnlock: () => void
   };
 
   render() {
-    const { lang } = this.props;
     const { file, password } = this.props.value;
     let passReq = isPassRequired(file);
 
@@ -68,7 +64,7 @@ class KeystoreDecrypt extends Component {
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}
-                placeholder={translateRaw('x_Password', lang)}
+                placeholder={translate('x_Password')}
                 type="password"
               />
             </div>
@@ -113,9 +109,3 @@ class KeystoreDecrypt extends Component {
     fileReader.readAsText(inputFile, 'utf-8');
   };
 }
-
-function mapStateToProps(state) {
-  return { lang: getLanguageSelection(state) };
-}
-
-export default connect(mapStateToProps)(KeystoreDecrypt);

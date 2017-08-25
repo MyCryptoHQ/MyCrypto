@@ -1,9 +1,7 @@
 // @flow
 import React, { Component } from 'react';
+import translate from 'translations';
 import { isValidPrivKey, isValidEncryptedPrivKey } from 'libs/validators';
-import { connect } from 'react-redux';
-import { getLanguageSelection } from 'selectors/config';
-import translate, { translateRaw } from 'translations';
 
 export type PrivateKeyValue = {
   key: string,
@@ -47,16 +45,14 @@ function validatePkeyAndPass(pkey: string, pass: string): validated {
   };
 }
 
-class PrivateKeyDecrypt extends Component {
+export default class PrivateKeyDecrypt extends Component {
   props: {
     value: PrivateKeyValue,
     onChange: (value: PrivateKeyValue) => void,
-    onUnlock: () => void,
-    lang: string
+    onUnlock: () => void
   };
 
   render() {
-    const { lang } = this.props;
     const { key, password } = this.props.value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
 
@@ -75,7 +71,7 @@ class PrivateKeyDecrypt extends Component {
               value={key}
               onChange={this.onPkeyChange}
               onKeyDown={this.onKeyDown}
-              placeholder={translateRaw('x_PrivKey2', lang)}
+              placeholder={translate('x_PrivKey2')}
               rows="4"
             />
           </div>
@@ -92,7 +88,7 @@ class PrivateKeyDecrypt extends Component {
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}
-                placeholder={translateRaw('x_Password', lang)}
+                placeholder={translate('x_Password')}
                 type="password"
               />
             </div>}
@@ -129,9 +125,3 @@ class PrivateKeyDecrypt extends Component {
     }
   };
 }
-
-function mapStateToProps(state) {
-  return { lang: getLanguageSelection(state) };
-}
-
-export default connect(mapStateToProps)(PrivateKeyDecrypt);
