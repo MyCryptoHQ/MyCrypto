@@ -12,3 +12,7 @@ notifications:
   email:
     on_success: never
     on_failure: never
+
+script:
+- npm run test
+- npm run flow

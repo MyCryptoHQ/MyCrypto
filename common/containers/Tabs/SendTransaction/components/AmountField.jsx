@@ -1,7 +1,7 @@
 // @flow
-import React from "react";
-import translate from "translations";
-import UnitDropdown from "./UnitDropdown";
+import React from 'react';
+import translate from 'translations';
+import UnitDropdown from './UnitDropdown';
 
 type Props = {
   value: string,
@@ -19,23 +19,23 @@ export default class AmountField extends React.Component {
     return (
       <div>
         <label>
-          {translate("SEND_amount")}
+          {translate('SEND_amount')}
         </label>
         <div className="input-group col-sm-11">
           <input
             className={`form-control ${isFinite(Number(value)) &&
             Number(value) > 0
-              ? "is-valid"
-              : "is-invalid"}`}
+              ? 'is-valid'
+              : 'is-invalid'}`}
             type="text"
-            placeholder={translate("SEND_amount_short")}
+            placeholder={translate('SEND_amount_short')}
             value={value}
             disabled={isReadonly}
             onChange={isReadonly ? void 0 : this.onValueChange}
           />
           <UnitDropdown
             value={unit}
-            options={["ether"].concat(this.props.tokens)}
+            options={['ether'].concat(this.props.tokens)}
             onChange={isReadonly ? void 0 : this.onUnitChange}
           />
         </div>
@@ -43,7 +43,7 @@ export default class AmountField extends React.Component {
           <p>
             <a onClick={this.onSendEverything}>
               <span className="strong">
-                {translate("SEND_TransferTotal")}
+                {translate('SEND_TransferTotal')}
               </span>
             </a>
           </p>}
@@ -65,7 +65,7 @@ export default class AmountField extends React.Component {
 
   onSendEverything = () => {
     if (this.props.onChange) {
-      this.props.onChange("everything", this.props.unit);
+      this.props.onChange('everything', this.props.unit);
     }
   };
 }

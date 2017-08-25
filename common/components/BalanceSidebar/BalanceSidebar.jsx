@@ -33,7 +33,6 @@ export class BalanceSidebar extends React.Component {
   };
 
   componentDidMount() {
-    if (!this.props.wallet) return;
     this.props.wallet
       .getAddress()
       .then(addr => {
@@ -48,6 +47,7 @@ export class BalanceSidebar extends React.Component {
   render() {
     const { wallet, balance, network, tokenBalances, rates } = this.props;
     const { blockExplorer, tokenExplorer } = network;
+    const { address } = this.state;
     if (!wallet) {
       return null;
     }
@@ -58,9 +58,9 @@ export class BalanceSidebar extends React.Component {
           {translate('sidebar_AccountAddr')}
         </h5>
         <ul className="account-info">
-          <Identicon address={this.state.address} />
+          <Identicon address={address} />
           <span className="mono wrap">
-            {this.state.address}
+            {address}
           </span>
         </ul>
         <hr />
@@ -96,10 +96,7 @@ export class BalanceSidebar extends React.Component {
               {!!blockExplorer &&
                 <li>
                   <a
-                    href={blockExplorer.address.replace(
-                      '[[address]]',
-                      this.state.address
-                    )}
+                    href={blockExplorer.address.replace('[[address]]', address)}
                     target="_blank"
                   >
                     {`${network.name} (${blockExplorer.name})`}
@@ -108,10 +105,7 @@ export class BalanceSidebar extends React.Component {
               {!!tokenExplorer &&
                 <li>
                   <a
-                    href={tokenExplorer.address.replace(
-                      '[[address]]',
-                      this.state.address
-                    )}
+                    href={tokenExplorer.address.replace('[[address]]', address)}
                     target="_blank"
                   >
                     {`Tokens (${tokenExplorer.name})`}
@@ -187,7 +181,7 @@ export class BalanceSidebar extends React.Component {
   };
 }
 
-function mapStateToProps(state: State, props: Props) {
+function mapStateToProps(state: State) {
   return {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,

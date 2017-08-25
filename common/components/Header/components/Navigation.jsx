@@ -1,37 +1,37 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import translate from 'translations';
 import PropTypes from 'prop-types';
+import NavigationLink from './NavigationLink';
 
 import './Navigation.scss';
 
 const tabs = [
   {
     name: 'NAV_GenerateWallet',
-    link: '/'
+    to: '/'
   },
   {
     name: 'NAV_SendEther',
-    link: 'send-transaction'
+    to: 'send-transaction'
   },
   {
     name: 'NAV_Swap',
-    link: 'swap'
+    to: 'swap'
   },
   {
     name: 'NAV_Offline'
   },
   {
     name: 'NAV_Contracts',
-    link: 'contracts'
+    to: 'contracts'
   },
   {
-    name: 'NAV_ViewWallet',
-    link: 'view-wallet'
+    name: 'NAV_ViewWallet'
+    // to: 'view-wallet'
   },
   {
     name: 'NAV_Help',
-    link: 'help'
+    to: 'https://myetherwallet.groovehq.com/help_center',
+    external: true
   }
 ];
 
@@ -47,8 +47,6 @@ export default class TabsOptions extends Component {
   static propTypes = {
     location: PropTypes.object
   };
-
-  tabClick() {}
 
   scrollLeft() {}
 
@@ -70,33 +68,21 @@ export default class TabsOptions extends Component {
           >
             &#171;
           </a>}
+
         <div className="Navigation-scroll">
           <ul className="Navigation-links">
-            {tabs.map((object, i) => {
-              // if the window pathname is the same or similar to the tab objects name, set the active toggle
-              const activeOrNot =
-                location.pathname === object.link ||
-                location.pathname.substring(1) === object.link
-                  ? 'is-active'
-                  : '';
+            {tabs.map(link => {
               return (
-                <li
-                  className={'Navigation-links-item'}
-                  key={i}
-                  onClick={this.tabClick(i)}
-                >
-                  <Link
-                    className={`Navigation-links-item-link ${activeOrNot}`}
-                    to={object.link}
-                    aria-label={`nav item: ${translate(object.name)}`}
-                  >
-                    {translate(object.name)}
-                  </Link>
-                </li>
+                <NavigationLink
+                  key={link.name}
+                  link={link}
+                  location={location}
+                />
               );
             })}
           </ul>
         </div>
+
         {this.state.showRightArrow &&
           <a
             aria-hidden="true"

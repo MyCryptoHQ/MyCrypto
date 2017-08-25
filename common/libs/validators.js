@@ -2,6 +2,7 @@
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { toChecksumAddress } from 'ethereumjs-util';
+import type { RawTransaction } from 'libs/transaction';
 
 export function isValidETHAddress(address: string): boolean {
   if (!address) {
@@ -74,8 +75,22 @@ function validateEtherAddress(address: string): boolean {
   else return isChecksumAddress(address);
 }
 
-export function isValidPrivKey(length: number): boolean {
-  return length === 64 || length === 128 || length === 132;
+export function isValidPrivKey(privkey: string | Buffer): boolean {
+  if (typeof privkey === 'string') {
+    return privkey.length === 64;
+  } else if (privkey instanceof Buffer) {
+    return privkey.length === 32;
+  } else {
+    return false;
+  }
+}
+
+export function isValidEncryptedPrivKey(privkey: string): boolean {
+  if (typeof privkey === 'string') {
+    return privkey.length === 128 || privkey.length === 132;
+  } else {
+    return false;
+  }
 }
 
 export function isPositiveIntegerOrZero(number: number): boolean {
@@ -85,17 +100,7 @@ export function isPositiveIntegerOrZero(number: number): boolean {
   return number >= 0 && parseInt(number) === number;
 }
 
-export type RawTx = {
-  nonce: string,
-  gasPrice: string,
-  gasLimit: string,
-  to: string,
-  value: string,
-  data: string,
-  chainId: number
-};
-
-export function isValidRawTx(rawTx: RawTx): boolean {
+export function isValidRawTx(rawTx: RawTransaction): boolean {
   const propReqs = [
     { name: 'nonce', type: 'string', lenReq: true },
     { name: 'gasPrice', type: 'string', lenReq: true },
