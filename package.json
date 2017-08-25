@@ -1,6 +1,6 @@
 {
   "name": "MyEtherWallet",
-  "version": "0.0.1",
+  "version": "4.0.0-alpha.1",
   "main": "common/index.jsx",
   "description": "MyEtherWallet v4",
   "engines": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "bignumber.js": "^4.0.2",
+    "classnames": "^2.2.5",
     "ethereum-blockies": "git+https://github.com/MyEtherWallet/blockies.git",
     "ethereumjs-abi": "^0.6.4",
     "ethereumjs-tx": "^1.3.3",
