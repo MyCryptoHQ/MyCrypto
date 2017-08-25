@@ -1,7 +1,6 @@
 // @flow
 import BaseWallet from 'libs/wallet/base';
 import Big from 'bignumber.js';
-import type { HDKey } from 'hdkey';
 
 /*** Unlock Private Key ***/
 export type PrivateKeyUnlockParams = {
@@ -66,31 +65,9 @@ export function setTokenBalances(payload: {
   };
 }
 
-/*** Get derived wallets ***/
-export type GetDerivedWalletsAction = {
-  type: 'WALLET_GET_DERIVED_WALLETS',
-  payload: {
-    dPath: string,
-    publicKey: string,
-    chainCode: string
-  }
-};
-
-export function getDerivedWallets(
-  dPath: string,
-  publicKey: string,
-  chainCode: string
-) {
-  return {
-    type: 'WALLET_GET_DERIVED_WALLETS',
-    payload: { dPath, publicKey, chainCode }
-  };
-}
-
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
   | SetBalanceAction
-  | SetTokenBalancesAction
-  | GetDerivedWalletsAction;
+  | SetTokenBalancesAction;

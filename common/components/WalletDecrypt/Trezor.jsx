@@ -1,18 +1,35 @@
+// @flow
 /* eslint-disable quotes */
+import './Trezor.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
-import './Trezor.scss';
+import DerivedKeyModal from './DerivedKeyModal';
+
+const DEFAULT_PATH = "m/44'/60'/0'/0";
+
+type State = {
+  publicKey: string,
+  chainCode: string,
+  dPath: string,
+  error: ?string
+};
 
 export default class TrezorDecrypt extends Component {
-  state = {
-    publicKey: null,
-    chainCode: null,
-    dPath: "m/44'/60'/0'/0",
+  state: State = {
+    publicKey: '',
+    chainCode: '',
+    dPath: DEFAULT_PATH,
     error: null
   };
 
-  _handleConnect() {
+  _handlePathChange = (dPath: string) => {
+    this.setState({ dPath }, () => {
+      this._handleConnect();
+    });
+  };
+
+  _handleConnect = () => {
     TrezorConnect.getXPubKey(
       this.state.dPath,
       res => {
@@ -30,9 +47,19 @@ export default class TrezorDecrypt extends Component {
       },
       '1.5.2'
     );
-  }
+  };
+
+  _handleCancel = () => {
+    this.setState({
+      publicKey: '',
+      chainCode: '',
+      dPath: DEFAULT_PATH
+    });
+  };
 
   render() {
+    const { dPath, publicKey, chainCode } = this.state;
+
     return (
       <section className="TrezorDecrypt col-md-4 col-sm-6">
         <button
@@ -61,6 +88,17 @@ export default class TrezorDecrypt extends Component {
         >
           {translate('Don’t have a TREZOR? Order one now!')}
         </a>
+
+        <DerivedKeyModal
+          isOpen={!!publicKey && !!chainCode}
+          publicKey={publicKey}
+          chainCode={chainCode}
+          dPath={dPath}
+          onCancel={this._handleCancel}
+          onConfirmAddress={addr => console.log(addr)}
+          onPathChange={this._handlePathChange}
+          walletType={translate('x_Trezor')}
+        />
       </section>
     );
   }

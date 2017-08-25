@@ -1,0 +1,38 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.DKModal {
+  width: 580px;
+
+  &-path {
+    display: block;
+    margin-bottom: 20px;
+    font-size: $font-size-medium;
+
+    &-label {
+      margin-right: 6px;
+    }
+  }
+
+  &-addresses {
+    &-table {
+      width: 100%;
+    }
+
+    &-nav {
+      @include clearfix;
+
+      &-btn {
+        margin: 0;
+
+        &--prev {
+          float: left;
+        }
+
+        &--next {
+          float: right;
+        }
+      }
+    }
+  }
+}
