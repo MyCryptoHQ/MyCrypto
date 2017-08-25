@@ -7,6 +7,8 @@ export type ChangeLanguageAction = {
 };
 
 export function changeLanguage(sign: string): ChangeLanguageAction {
+  // TODO - this should actually go in a saga
+  setTimeout(() => location.reload(), 1500);
   return {
     type: 'CONFIG_LANGUAGE_CHANGE',
     value: sign

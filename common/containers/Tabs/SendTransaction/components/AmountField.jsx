@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
 
 type Props = {
@@ -28,7 +28,7 @@ export default class AmountField extends React.Component {
               ? 'is-valid'
               : 'is-invalid'}`}
             type="text"
-            placeholder={translate('SEND_amount_short')}
+            placeholder={translateRaw('SEND_amount_short')}
             value={value}
             disabled={isReadonly}
             onChange={isReadonly ? void 0 : this.onValueChange}

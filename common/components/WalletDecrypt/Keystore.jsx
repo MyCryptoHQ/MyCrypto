@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { isKeystorePassRequired } from 'libs/keystore';
 
 export type KeystoreValue = {
@@ -64,7 +64,7 @@ export default class KeystoreDecrypt extends Component {
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}
-                placeholder={translate('x_Password')}
+                placeholder={translateRaw('x_Password')}
                 type="password"
               />
             </div>
