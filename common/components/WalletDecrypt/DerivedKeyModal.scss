@@ -2,7 +2,7 @@
 @import "common/sass/mixins";
 
 .DKModal {
-  width: 660px;
+  width: 690px;
 
   &-path {
     display: block;
@@ -11,6 +11,10 @@
 
     &-label {
       margin-right: 6px;
+    }
+
+    &-select {
+      font-size: $font-size-bump-more;
     }
   }
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/ui/Modal';
 import { getDerivedWallets, setDesiredToken } from 'actions/derivedWallets';
-import { toUnit, toTokenUnit } from 'libs/units';
+import { toUnit } from 'libs/units';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 
@@ -33,6 +33,7 @@ type Props = {
   isOpen?: boolean,
   walletType: ?string,
   dPath: string,
+  dPaths: { label: string, value: string }[],
   publicKey: string,
   chainCode: string,
   onCancel: () => void,
@@ -82,7 +83,7 @@ class DerivedKeyModal extends React.Component {
     }
   }
 
-  _handlePathChange = (ev: SyntheticInputEvent) => {
+  _handleChangePath = (ev: SyntheticInputEvent) => {
     this.props.onPathChange(ev.target.value);
   };
 
@@ -112,18 +113,16 @@ class DerivedKeyModal extends React.Component {
   };
 
   _renderWalletRow(wallet) {
-    const { desiredToken, tokens } = this.props;
+    const { desiredToken, network } = this.props;
     const { selectedAddress } = this.state;
-    const token = tokens.find(t => t.symbol === desiredToken);
 
     // Get renderable values, but keep 'em short
     const value = wallet.value
       ? toUnit(wallet.value, 'wei', 'ether').toPrecision(4)
-      : '0';
-    const tokenValue =
-      token && wallet.tokenValues[desiredToken]
-        ? wallet.tokenValues[desiredToken].toPrecision(4)
-        : '';
+      : '';
+    const tokenValue = wallet.tokenValues[desiredToken]
+      ? wallet.tokenValues[desiredToken].toPrecision(4)
+      : '';
 
     return (
       <tr
@@ -143,10 +142,10 @@ class DerivedKeyModal extends React.Component {
           {wallet.address}
         </td>
         <td>
-          {value}
+          {value} {network.unit}
         </td>
         <td>
-          {tokenValue}
+          {tokenValue} {desiredToken}
         </td>
         <td>
           <a
@@ -166,6 +165,8 @@ class DerivedKeyModal extends React.Component {
       desiredToken,
       network,
       tokens,
+      dPath,
+      dPaths,
       onCancel,
       walletType
     } = this.props;
@@ -197,10 +198,15 @@ class DerivedKeyModal extends React.Component {
             <span className="DKModal-path-label">Addresses for</span>
             <select
               className="DKModal-path-select"
-              onChange={this._handlePathChange}
-              value=""
+              onChange={this._handleChangePath}
+              value={dPath}
             >
-              <option>Trezor (ETH)</option>
+              {dPaths.map(dp =>
+                <option key={dp.value} value={dp.value}>
+                  {dp.label}
+                </option>
+              )}
+              <option value="custom">Custom...</option>
             </select>
           </label>
 

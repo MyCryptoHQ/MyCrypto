@@ -1,18 +1,34 @@
 // @flow
-/* eslint-disable quotes */
 import './Trezor.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DerivedKeyModal from './DerivedKeyModal';
 
-const DEFAULT_PATH = "m/44'/60'/0'/0";
+/* eslint-disable quotes */
+const TREZOR_PATHS = [
+  {
+    label: 'TREZOR (ETH)',
+    value: "m/44'/60'/0'/0"
+  },
+  {
+    label: 'TREZOR (ETC)',
+    value: "m/44'/61'/0'/0"
+  },
+  {
+    label: 'Testnet',
+    value: "m/44'/1'/0'/0"
+  }
+];
+const DEFAULT_PATH = TREZOR_PATHS[0].value;
+/* eslint-enable quotes */
 
 type State = {
   publicKey: string,
   chainCode: string,
   dPath: string,
-  error: ?string
+  error: ?string,
+  isLoading: boolean
 };
 
 export default class TrezorDecrypt extends Component {
@@ -20,7 +36,8 @@ export default class TrezorDecrypt extends Component {
     publicKey: '',
     chainCode: '',
     dPath: DEFAULT_PATH,
-    error: null
+    error: null,
+    isLoading: false
   };
 
   _handlePathChange = (dPath: string) => {
@@ -30,20 +47,26 @@ export default class TrezorDecrypt extends Component {
   };
 
   _handleConnect = () => {
+    this.setState({
+      isLoading: true,
+      error: null
+    });
+
     TrezorConnect.getXPubKey(
       this.state.dPath,
       res => {
         if (res.success) {
           this.setState({
             publicKey: res.publicKey,
-            chainCode: res.chainCode
+            chainCode: res.chainCode,
+            isLoading: false
           });
         } else {
           this.setState({
-            error: res.error
+            error: res.error,
+            isLoading: false
           });
         }
-        console.log(res);
       },
       '1.5.2'
     );
@@ -58,15 +81,17 @@ export default class TrezorDecrypt extends Component {
   };
 
   render() {
-    const { dPath, publicKey, chainCode } = this.state;
+    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
+    const showErr = error ? 'is-showing' : '';
 
     return (
       <section className="TrezorDecrypt col-md-4 col-sm-6">
         <button
           className="TrezorDecrypt-decrypt btn btn-primary btn-lg"
           onClick={this._handleConnect}
+          disabled={isLoading}
         >
-          {translate('ADD_Trezor_scan')}
+          {isLoading ? 'Unlocking...' : translate('ADD_Trezor_scan')}
         </button>
 
         <div className="TrezorDecrypt-help">
@@ -78,6 +103,10 @@ export default class TrezorDecrypt extends Component {
           >
             How to use TREZOR with MyEtherWallet
           </a>
+        </div>
+
+        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
+          {error || '-'}
         </div>
 
         <a
@@ -94,6 +123,7 @@ export default class TrezorDecrypt extends Component {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
+          dPaths={TREZOR_PATHS}
           onCancel={this._handleCancel}
           onConfirmAddress={addr => console.log(addr)}
           onPathChange={this._handlePathChange}
