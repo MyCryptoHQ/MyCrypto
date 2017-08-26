@@ -2,7 +2,7 @@
 @import "common/sass/mixins";
 
 .DKModal {
-  width: 580px;
+  width: 640px;
 
   &-path {
     display: block;
@@ -17,6 +17,34 @@
   &-addresses {
     &-table {
       width: 100%;
+
+      &-token {
+        width: 82px;
+      }
+
+      &-address {
+        font-size: 13px;
+        text-align: left;
+        font-family: $font-family-monospace;
+      }
+
+      &-more {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url('~assets/images/icon-external-link.svg');
+      }
+
+      tbody {
+        tr {
+          cursor: pointer;
+        }
+
+        td {
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
     }
 
     &-nav {

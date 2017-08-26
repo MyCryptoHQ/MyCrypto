@@ -6,13 +6,13 @@ import type {
 export type State = {
   cache: { [string]: DerivedWallet },
   wallets: DerivedWallet[],
-  desiredToken: ?string
+  desiredToken: string
 };
 
 export const INITIAL_STATE: State = {
   cache: {},
   wallets: [],
-  desiredToken: null
+  desiredToken: ''
 };
 
 export function derivedWallets(

@@ -64,10 +64,10 @@ export function setDerivedWallets(
 /*** Set desired token ***/
 export type SetDesiredTokenAction = {
   type: 'DERIVED_WALLETS_SET_DESIRED_TOKEN',
-  payload: string
+  payload: ?string
 };
 
-export function setDesiredToken(token: string): SetDesiredTokenAction {
+export function setDesiredToken(token: ?string): SetDesiredTokenAction {
   return {
     type: 'DERIVED_WALLETS_SET_DESIRED_TOKEN',
     payload: token

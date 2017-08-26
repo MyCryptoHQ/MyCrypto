@@ -13,6 +13,7 @@ import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import { setDerivedWallets, updateDerivedWallet } from 'actions/derivedWallets';
 import { getWallets, getDesiredToken } from 'selectors/derivedWallets';
 import { getNodeLib } from 'selectors/config';
+import { getTokens } from 'selectors/wallet';
 
 import type {
   DerivedWallet,
@@ -20,7 +21,9 @@ import type {
 } from 'actions/derivedWallets';
 import type { Effect } from 'redux-saga/effects';
 import type { BaseNode } from 'libs/nodes';
+import type { Token } from 'config/data';
 
+// TODO: BIP39 for mnemonic wallets?
 function* getDerivedWallets(
   action?: GetDerivedWalletsAction
 ): Generator<Effect, void, any> {
@@ -70,15 +73,17 @@ function* updateWalletTokenValues() {
   const desiredToken: string = yield select(getDesiredToken);
   if (!desiredToken) return;
 
+  const tokens: Token[] = yield select(getTokens);
+  const token = tokens.find(t => t.symbol === desiredToken);
+  if (!token) return;
+
   const node: BaseNode = yield select(getNodeLib);
   const wallets: DerivedWallet[] = yield select(getWallets);
-  const calls = wallets.map(w =>
-    // $FlowFixMe
-    apply(node, node.getTokenBalances, [w.desiredToken])
-  );
+  const calls = wallets.map(w => {
+    return apply(node, node.getTokenBalance, [w.address, token]);
+  });
   const tokenBalances = yield all(calls);
 
-  console.log(tokenBalances, 'tokenBalances');
   for (let i = 0; i < wallets.length; i++) {
     yield put(
       updateDerivedWallet({

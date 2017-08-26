@@ -3,27 +3,31 @@ import './DerivedKeyModal.scss';
 import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/ui/Modal';
-import { getDerivedWallets } from 'actions/derivedWallets';
-import { toEther } from 'libs/units';
+import { getDerivedWallets, setDesiredToken } from 'actions/derivedWallets';
+import { toUnit, toTokenUnit } from 'libs/units';
 import { getNetworkConfig } from 'selectors/config';
+import { getTokens } from 'selectors/wallet';
 
 import type {
   DerivedWallet,
   GetDerivedWalletsArgs,
-  GetDerivedWalletsAction
+  GetDerivedWalletsAction,
+  SetDesiredTokenAction
 } from 'actions/derivedWallets';
-import type { NetworkConfig } from 'config/data';
+import type { NetworkConfig, Token } from 'config/data';
 
 const WALLETS_PER_PAGE = 5;
 
 type Props = {
   // Redux state
-  network: NetworkConfig,
   wallets: DerivedWallet[],
   desiredToken: string,
+  network: NetworkConfig,
+  tokens: Token[],
 
   // Redux actions
   getDerivedWallets: GetDerivedWalletsArgs => GetDerivedWalletsAction,
+  setDesiredToken: (tkn: ?string) => SetDesiredTokenAction,
 
   // Passed props
   isOpen?: boolean,
@@ -82,8 +86,8 @@ class DerivedKeyModal extends React.Component {
     this.props.onPathChange(ev.target.value);
   };
 
-  _handleSelectAddress = ev => {
-    this.setState({ selectedAddress: ev.target.value });
+  _handleChangeToken = (ev: SyntheticInputEvent) => {
+    this.props.setDesiredToken(ev.target.value || null);
   };
 
   _handleConfirmAddress = () => {
@@ -92,9 +96,68 @@ class DerivedKeyModal extends React.Component {
     }
   };
 
-  render() {
-    const { wallets, desiredToken, network, onCancel, walletType } = this.props;
+  _selectAddress(selectedAddress) {
+    this.setState({ selectedAddress });
+  }
+
+  _renderWalletRow(wallet) {
+    const { desiredToken, tokens } = this.props;
     const { selectedAddress } = this.state;
+    const token = tokens.find(t => t.symbol === desiredToken);
+
+    // Get renderable values, but keep 'em short
+    const value = wallet.value
+      ? toUnit(wallet.value, 'wei', 'ether').toPrecision(4)
+      : '0';
+    const tokenValue =
+      token && wallet.tokenValues[desiredToken]
+        ? wallet.tokenValues[desiredToken].toPrecision(4)
+        : '';
+
+    return (
+      <tr
+        key={wallet.address}
+        onClick={this._selectAddress.bind(this, wallet.address)}
+      >
+        <td>
+          {wallet.index + 1}
+        </td>
+        <td className="DKModal-addresses-table-address">
+          <input
+            type="radio"
+            name="selectedAddress"
+            selected={wallet.address === selectedAddress}
+            value={wallet.address}
+          />
+          {wallet.address}
+        </td>
+        <td>
+          {value}
+        </td>
+        <td>
+          {tokenValue}
+        </td>
+        <td>
+          <a
+            target="_blank"
+            href={`https://ethplorer.io/address/${wallet.address}`}
+          >
+            <i className="DKModal-addresses-table-more" />
+          </a>
+        </td>
+      </tr>
+    );
+  }
+
+  render() {
+    const {
+      wallets,
+      desiredToken,
+      network,
+      tokens,
+      onCancel,
+      walletType
+    } = this.props;
 
     const buttons = [
       {
@@ -122,50 +185,40 @@ class DerivedKeyModal extends React.Component {
             <select
               className="DKModal-path-select"
               onChange={this._handlePathChange}
+              value=""
             >
               <option>Trezor (ETH)</option>
             </select>
           </label>
 
           <div className="DKModal-addresses">
-            <table className="DKModal-addresses-table">
+            <table className="DKModal-addresses-table table table-striped table-hover">
               <thead>
                 <tr>
                   <td>#</td>
                   <td>Address</td>
-                  <td>Balance</td>
+                  <td>
+                    {network.unit}
+                  </td>
+                  <td>
+                    <select
+                      className="DKModal-addresses-table-token"
+                      value={desiredToken}
+                      onChange={this._handleChangeToken}
+                    >
+                      <option>-Token-</option>
+                      {tokens.map(t =>
+                        <option key={t.symbol} value={t.symbol}>
+                          {t.symbol}
+                        </option>
+                      )}
+                    </select>
+                  </td>
                   <td>More info</td>
                 </tr>
               </thead>
               <tbody>
-                {wallets.map(wallet => {
-                  return (
-                    <tr key={wallet.address}>
-                      <td>
-                        {wallet.index + 1}
-                      </td>
-                      <td>
-                        <label>
-                          <input
-                            type="radio"
-                            name="selectedAddress"
-                            selected={wallet.address === selectedAddress}
-                            onChange={this._handleSelectAddress}
-                            value={wallet.address}
-                          />
-                          {wallet.address}
-                        </label>
-                      </td>
-                      <td>
-                        {wallet.value && toEther(wallet.value, 'wei')}{' '}
-                        {network.unit}
-                      </td>
-                      <td>
-                        {wallet.tokenValues[desiredToken]}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {wallets.map(wallet => this._renderWalletRow(wallet))}
               </tbody>
             </table>
 
@@ -186,10 +239,14 @@ class DerivedKeyModal extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    network: getNetworkConfig(state),
     wallets: state.derivedWallets.wallets,
-    desiredToken: state.derivedWallets.desiredToken
+    desiredToken: state.derivedWallets.desiredToken,
+    network: getNetworkConfig(state),
+    tokens: getTokens(state)
   };
 }
 
-export default connect(mapStateToProps, { getDerivedWallets })(DerivedKeyModal);
+export default connect(mapStateToProps, {
+  getDerivedWallets,
+  setDesiredToken
+})(DerivedKeyModal);
