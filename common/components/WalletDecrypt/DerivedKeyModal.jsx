@@ -54,7 +54,7 @@ class DerivedKeyModal extends React.Component {
   };
 
   componentDidMount() {
-    this._getAddresses(this.props);
+    this._getAddresses();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,7 +68,7 @@ class DerivedKeyModal extends React.Component {
     }
   }
 
-  _getAddresses(props: Props) {
+  _getAddresses(props: Props = this.props) {
     const { dPath, publicKey, chainCode } = props;
 
     if (dPath && publicKey && chainCode) {
@@ -100,6 +100,17 @@ class DerivedKeyModal extends React.Component {
     this.setState({ selectedAddress });
   }
 
+  _nextPage = () => {
+    this.setState({ page: this.state.page + 1 }, this._getAddresses);
+  };
+
+  _prevPage = () => {
+    this.setState(
+      { page: Math.max(this.state.page - 1, 0) },
+      this._getAddresses
+    );
+  };
+
   _renderWalletRow(wallet) {
     const { desiredToken, tokens } = this.props;
     const { selectedAddress } = this.state;
@@ -126,7 +137,7 @@ class DerivedKeyModal extends React.Component {
           <input
             type="radio"
             name="selectedAddress"
-            selected={wallet.address === selectedAddress}
+            checked={selectedAddress === wallet.address}
             value={wallet.address}
           />
           {wallet.address}
@@ -158,12 +169,14 @@ class DerivedKeyModal extends React.Component {
       onCancel,
       walletType
     } = this.props;
+    const { selectedAddress, page } = this.state;
 
     const buttons = [
       {
         text: 'Unlock this Address',
         type: 'primary',
-        onClick: this._handleConfirmAddress
+        onClick: this._handleConfirmAddress,
+        disabled: !selectedAddress
       },
       {
         text: 'Cancel',
@@ -214,7 +227,7 @@ class DerivedKeyModal extends React.Component {
                       )}
                     </select>
                   </td>
-                  <td>More info</td>
+                  <td>More</td>
                 </tr>
               </thead>
               <tbody>
@@ -223,11 +236,18 @@ class DerivedKeyModal extends React.Component {
             </table>
 
             <div className="DKModal-addresses-nav">
-              <button className="DKModal-addresses-nav-btn DKModal-addresses-nav-btn--prev btn btn-info">
-                Back
+              <button
+                className="DKModal-addresses-nav-btn btn btn-sm btn-default"
+                disabled={page === 0}
+                onClick={this._prevPage}
+              >
+                ← Back
               </button>
-              <button className="DKModal-addresses-nav-btn DKModal-addresses-nav-btn--next btn btn-info">
-                More
+              <button
+                className="DKModal-addresses-nav-btn btn btn-sm btn-default"
+                onClick={this._nextPage}
+              >
+                More →
               </button>
             </div>
           </div>

@@ -2,7 +2,7 @@
 @import "common/sass/mixins";
 
 .DKModal {
-  width: 640px;
+  width: 660px;
 
   &-path {
     display: block;
@@ -17,6 +17,7 @@
   &-addresses {
     &-table {
       width: 100%;
+      text-align: center;
 
       &-token {
         width: 82px;
@@ -41,24 +42,24 @@
         }
 
         td {
-          text-align: center;
           vertical-align: middle;
         }
       }
     }
 
     &-nav {
-      @include clearfix;
-
       &-btn {
+        display: inline-block;
         margin: 0;
+        width: 49.9%;
+        width: calc(50% - 5px);
+        margin: 0 5px;
 
-        &--prev {
-          float: left;
+        &:first-child {
+          margin-left: 0;
         }
-
-        &--next {
-          float: right;
+        &:last-child {
+          margin-right: 0;
         }
       }
     }
