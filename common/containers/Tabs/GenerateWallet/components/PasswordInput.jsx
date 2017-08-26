@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import translate from 'translations';
 
 type Props = {
   togglePassword: Function,
@@ -8,7 +9,7 @@ type Props = {
   meta: Object
 };
 
-export default class PasswordInput extends Component {
+export default class PasswordInput extends Component<Props> {
   props: Props;
 
   render() {
@@ -23,7 +24,7 @@ export default class PasswordInput extends Component {
               name="password"
               className={`form-control ${meta.error ? 'is-invalid' : ''}`}
               type={isPasswordVisible ? 'text' : 'password'}
-              placeholder="Do NOT forget to save this!"
+              placeholder={translate('GEN_Placeholder_1', true)}
               aria-label="Enter a strong password (at least 9 characters)"
             />
             <span

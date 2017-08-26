@@ -50,12 +50,11 @@ export function getTranslators() {
   });
 }
 
-export default function translate(key: string) {
-  return <Translate translationKey={key} />;
+export default function translate(key: string, textOnly: boolean = false) {
+  return textOnly ? translateRaw(key) : <Translate translationKey={key} />;
 }
 
 export function translateRaw(key: string) {
-  console.log(store.getState());
   const lang = getLanguageSelection(store.getState());
 
   return (
