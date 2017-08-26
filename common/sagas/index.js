@@ -9,7 +9,7 @@ import ens from './ens';
 import notifications from './notifications';
 import rates from './rates';
 import wallet from './wallet';
-import derivedWallets from './derivedWallets';
+import deterministicWallets from './deterministicWallets';
 
 export default {
   bityTimeRemaining,
@@ -21,5 +21,5 @@ export default {
   notifications,
   rates,
   wallet,
-  derivedWallets
+  deterministicWallets
 };

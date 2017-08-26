@@ -1,38 +1,36 @@
 import type {
-  DerivedWallet,
-  DerivedWalletAction
-} from 'actions/derivedWallets';
+  DeterministicWalletData,
+  DeterministicWalletAction
+} from 'actions/deterministicWallets';
 
 export type State = {
-  cache: { [string]: DerivedWallet },
-  wallets: DerivedWallet[],
+  wallets: DeterministicWalletData[],
   desiredToken: string
 };
 
 export const INITIAL_STATE: State = {
-  cache: {},
   wallets: [],
   desiredToken: ''
 };
 
-export function derivedWallets(
+export function deterministicWallets(
   state: State = INITIAL_STATE,
-  action: DerivedWalletAction
+  action: DeterministicWalletAction
 ): State {
   switch (action.type) {
-    case 'DERIVED_WALLETS_SET_WALLETS':
+    case 'DW_SET_WALLETS':
       return {
         ...state,
         wallets: action.payload
       };
 
-    case 'DERIVED_WALLETS_SET_DESIRED_TOKEN':
+    case 'DW_SET_DESIRED_TOKEN':
       return {
         ...state,
         desiredToken: action.payload
       };
 
-    case 'DERIVED_WALLETS_UPDATE_WALLET':
+    case 'DW_UPDATE_WALLET':
       return {
         ...state,
         wallets: updateWalletValues(state.wallets, action.payload)

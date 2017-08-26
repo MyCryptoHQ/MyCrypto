@@ -1,32 +1,35 @@
 // @flow
-import './DerivedKeyModal.scss';
+import './DeterministicWalletsModal.scss';
 import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/ui/Modal';
-import { getDerivedWallets, setDesiredToken } from 'actions/derivedWallets';
+import {
+  getDeterministicWallets,
+  setDesiredToken
+} from 'actions/deterministicWallets';
 import { toUnit } from 'libs/units';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 
 import type {
-  DerivedWallet,
-  GetDerivedWalletsArgs,
-  GetDerivedWalletsAction,
+  DeterministicWalletData,
+  GetDeterministicWalletsArgs,
+  GetDeterministicWalletsAction,
   SetDesiredTokenAction
-} from 'actions/derivedWallets';
+} from 'actions/deterministicWallets';
 import type { NetworkConfig, Token } from 'config/data';
 
 const WALLETS_PER_PAGE = 5;
 
 type Props = {
   // Redux state
-  wallets: DerivedWallet[],
+  wallets: DeterministicWalletData[],
   desiredToken: string,
   network: NetworkConfig,
   tokens: Token[],
 
   // Redux actions
-  getDerivedWallets: GetDerivedWalletsArgs => GetDerivedWalletsAction,
+  getDeterministicWallets: GetDeterministicWalletsArgs => GetDeterministicWalletsAction,
   setDesiredToken: (tkn: ?string) => SetDesiredTokenAction,
 
   // Passed props
@@ -46,7 +49,7 @@ type State = {
   page: number
 };
 
-class DerivedKeyModal extends React.Component {
+class DeterministicWalletsModal extends React.Component {
   props: Props;
   state: State = {
     selectedAddress: '',
@@ -73,7 +76,7 @@ class DerivedKeyModal extends React.Component {
     const { dPath, publicKey, chainCode } = props;
 
     if (dPath && publicKey && chainCode) {
-      this.props.getDerivedWallets({
+      this.props.getDeterministicWallets({
         dPath,
         publicKey,
         chainCode,
@@ -132,7 +135,7 @@ class DerivedKeyModal extends React.Component {
         <td>
           {wallet.index + 1}
         </td>
-        <td className="DKModal-addresses-table-address">
+        <td className="DWModal-addresses-table-address">
           <input
             type="radio"
             name="selectedAddress"
@@ -152,7 +155,7 @@ class DerivedKeyModal extends React.Component {
             target="_blank"
             href={`https://ethplorer.io/address/${wallet.address}`}
           >
-            <i className="DKModal-addresses-table-more" />
+            <i className="DWModal-addresses-table-more" />
           </a>
         </td>
       </tr>
@@ -193,11 +196,11 @@ class DerivedKeyModal extends React.Component {
         buttons={buttons}
         handleClose={onCancel}
       >
-        <div className="DKModal">
-          <label className="DKModal-path">
-            <span className="DKModal-path-label">Addresses for</span>
+        <div className="DWModal">
+          <label className="DWModal-path">
+            <span className="DWModal-path-label">Addresses for</span>
             <select
-              className="DKModal-path-select"
+              className="DWModal-path-select"
               onChange={this._handleChangePath}
               value={dPath}
             >
@@ -210,8 +213,8 @@ class DerivedKeyModal extends React.Component {
             </select>
           </label>
 
-          <div className="DKModal-addresses">
-            <table className="DKModal-addresses-table table table-striped table-hover">
+          <div className="DWModal-addresses">
+            <table className="DWModal-addresses-table table table-striped table-hover">
               <thead>
                 <tr>
                   <td>#</td>
@@ -221,7 +224,7 @@ class DerivedKeyModal extends React.Component {
                   </td>
                   <td>
                     <select
-                      className="DKModal-addresses-table-token"
+                      className="DWModal-addresses-table-token"
                       value={desiredToken}
                       onChange={this._handleChangeToken}
                     >
@@ -241,16 +244,16 @@ class DerivedKeyModal extends React.Component {
               </tbody>
             </table>
 
-            <div className="DKModal-addresses-nav">
+            <div className="DWModal-addresses-nav">
               <button
-                className="DKModal-addresses-nav-btn btn btn-sm btn-default"
+                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
                 disabled={page === 0}
                 onClick={this._prevPage}
               >
                 ← Back
               </button>
               <button
-                className="DKModal-addresses-nav-btn btn btn-sm btn-default"
+                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
                 onClick={this._nextPage}
               >
                 More →
@@ -265,14 +268,14 @@ class DerivedKeyModal extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    wallets: state.derivedWallets.wallets,
-    desiredToken: state.derivedWallets.desiredToken,
+    wallets: state.deterministicWallets.wallets,
+    desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),
     tokens: getTokens(state)
   };
 }
 
 export default connect(mapStateToProps, {
-  getDerivedWallets,
+  getDeterministicWallets,
   setDesiredToken
-})(DerivedKeyModal);
+})(DeterministicWalletsModal);

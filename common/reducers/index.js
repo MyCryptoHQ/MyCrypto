@@ -25,8 +25,8 @@ import type { State as RatesState } from './rates';
 import * as contracts from './contracts';
 import type { State as ContractsState } from './contracts';
 
-import * as derivedWallets from './derivedWallets';
-import type { State as DerivedWalletsState } from './derivedWallets';
+import * as deterministicWallets from './deterministicWallets';
+import type { State as DeterministicWalletsState } from './deterministicWallets';
 
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers } from 'redux';
@@ -42,7 +42,7 @@ export type State = {
   customTokens: CustomTokensState,
   rates: RatesState,
   contracts: ContractsState,
-  derivedWallets: DerivedWalletsState,
+  deterministicWallets: DeterministicWalletsState,
   // Third party reducers (TODO: Fill these out)
   form: Object,
   routing: Object
@@ -58,7 +58,7 @@ export default combineReducers({
   ...customTokens,
   ...rates,
   ...contracts,
-  ...derivedWallets,
+  ...deterministicWallets,
   form: formReducer,
   routing: routerReducer
 });

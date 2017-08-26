@@ -6,26 +6,30 @@ import {
   put,
   apply,
   fork,
+  // $FlowFixMe - I guarantee you ,it's in there.
   all
 } from 'redux-saga/effects';
 import HDKey from 'hdkey';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
-import { setDerivedWallets, updateDerivedWallet } from 'actions/derivedWallets';
-import { getWallets, getDesiredToken } from 'selectors/derivedWallets';
+import {
+  setDeterministicWallets,
+  updateDeterministicWallet
+} from 'actions/deterministicWallets';
+import { getWallets, getDesiredToken } from 'selectors/deterministicWallets';
 import { getNodeLib } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 
 import type {
-  DerivedWallet,
-  GetDerivedWalletsAction
-} from 'actions/derivedWallets';
+  DeterministicWalletData,
+  GetDeterministicWalletsAction
+} from 'actions/deterministicWallets';
 import type { Effect } from 'redux-saga/effects';
 import type { BaseNode } from 'libs/nodes';
 import type { Token } from 'config/data';
 
 // TODO: BIP39 for mnemonic wallets?
-function* getDerivedWallets(
-  action?: GetDerivedWalletsAction
+function* getDeterministicWallets(
+  action?: GetDeterministicWalletsAction
 ): Generator<Effect, void, any> {
   if (!action) return;
 
@@ -46,7 +50,7 @@ function* getDerivedWallets(
     });
   }
 
-  yield put(setDerivedWallets(wallets));
+  yield put(setDeterministicWallets(wallets));
   yield fork(updateWalletValues);
   yield fork(updateWalletTokenValues);
 }
@@ -54,13 +58,13 @@ function* getDerivedWallets(
 // Grab each wallet's main network token, and update it with it
 function* updateWalletValues() {
   const node: BaseNode = yield select(getNodeLib);
-  const wallets: DerivedWallet[] = yield select(getWallets);
+  const wallets: DeterministicWalletData[] = yield select(getWallets);
   const calls = wallets.map(w => apply(node, node.getBalance, [w.address]));
   const balances = yield all(calls);
 
   for (let i = 0; i < wallets.length; i++) {
     yield put(
-      updateDerivedWallet({
+      updateDeterministicWallet({
         ...wallets[i],
         value: balances[i]
       })
@@ -78,7 +82,7 @@ function* updateWalletTokenValues() {
   if (!token) return;
 
   const node: BaseNode = yield select(getNodeLib);
-  const wallets: DerivedWallet[] = yield select(getWallets);
+  const wallets: DeterministicWalletData[] = yield select(getWallets);
   const calls = wallets.map(w => {
     return apply(node, node.getTokenBalance, [w.address, token]);
   });
@@ -86,7 +90,7 @@ function* updateWalletTokenValues() {
 
   for (let i = 0; i < wallets.length; i++) {
     yield put(
-      updateDerivedWallet({
+      updateDeterministicWallet({
         ...wallets[i],
         tokenValues: {
           ...wallets[i].tokenValues,
@@ -97,7 +101,11 @@ function* updateWalletTokenValues() {
   }
 }
 
-export default function* derivedWalletsSaga(): Generator<Effect, void, any> {
-  yield takeLatest('DERIVED_WALLETS_GET_WALLETS', getDerivedWallets);
-  yield takeEvery('DERIVED_WALLETS_SET_DESIRED_TOKEN', updateWalletTokenValues);
+export default function* deterministicWalletsSaga(): Generator<
+  Effect,
+  void,
+  any
+> {
+  yield takeLatest('DW_GET_WALLETS', getDeterministicWallets);
+  yield takeEvery('DW_SET_DESIRED_TOKEN', updateWalletTokenValues);
 }

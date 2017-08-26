@@ -3,7 +3,7 @@ import './Trezor.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
-import DerivedKeyModal from './DerivedKeyModal';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 
 /* eslint-disable quotes */
 const TREZOR_PATHS = [
@@ -118,7 +118,7 @@ export default class TrezorDecrypt extends Component {
           {translate('Don’t have a TREZOR? Order one now!')}
         </a>
 
-        <DerivedKeyModal
+        <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
           chainCode={chainCode}
