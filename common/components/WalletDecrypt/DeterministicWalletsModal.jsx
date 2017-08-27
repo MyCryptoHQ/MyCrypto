@@ -10,6 +10,7 @@ import {
 import { toUnit } from 'libs/units';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
+import { isValidPath } from 'libs/validators';
 
 import type {
   DeterministicWalletData,
@@ -46,6 +47,8 @@ type Props = {
 
 type State = {
   selectedAddress: string,
+  isCustomPath: boolean,
+  customPath: string,
   page: number
 };
 
@@ -53,7 +56,8 @@ class DeterministicWalletsModal extends React.Component {
   props: Props;
   state: State = {
     selectedAddress: '',
-    selectedPath: '',
+    isCustomPath: false,
+    customPath: '',
     page: 0
   };
 
@@ -62,9 +66,8 @@ class DeterministicWalletsModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dPath, publicKey, chainCode } = this.props;
+    const { publicKey, chainCode } = this.props;
     if (
-      nextProps.dPath !== dPath ||
       nextProps.publicKey !== publicKey ||
       nextProps.chainCode !== chainCode
     ) {
@@ -75,7 +78,7 @@ class DeterministicWalletsModal extends React.Component {
   _getAddresses(props: Props = this.props) {
     const { dPath, publicKey, chainCode } = props;
 
-    if (dPath && publicKey && chainCode) {
+    if (dPath && publicKey && chainCode && isValidPath(dPath)) {
       this.props.getDeterministicWallets({
         dPath,
         publicKey,
@@ -87,7 +90,26 @@ class DeterministicWalletsModal extends React.Component {
   }
 
   _handleChangePath = (ev: SyntheticInputEvent) => {
-    this.props.onPathChange(ev.target.value);
+    const { value } = ev.target;
+
+    if (value === 'custom') {
+      this.setState({ isCustomPath: true });
+    } else {
+      this.setState({ isCustomPath: false });
+      if (this.props.dPath !== value) {
+        this.props.onPathChange(value);
+      }
+    }
+  };
+
+  _handleChangeCustomPath = (ev: SyntheticInputEvent) => {
+    this.setState({ customPath: ev.target.value });
+  };
+
+  _handleSubmitCustomPath = (ev: SyntheticInputEvent) => {
+    ev.preventDefault();
+    if (!isValidPath(this.state.customPath)) return;
+    this.props.onPathChange(this.state.customPath);
   };
 
   _handleChangeToken = (ev: SyntheticInputEvent) => {
@@ -173,7 +195,8 @@ class DeterministicWalletsModal extends React.Component {
       onCancel,
       walletType
     } = this.props;
-    const { selectedAddress, page } = this.state;
+    const { selectedAddress, isCustomPath, customPath, page } = this.state;
+    const validPathClass = isValidPath(customPath) ? 'is-valid' : 'is-invalid';
 
     const buttons = [
       {
@@ -197,21 +220,31 @@ class DeterministicWalletsModal extends React.Component {
         handleClose={onCancel}
       >
         <div className="DWModal">
-          <label className="DWModal-path">
+          <form
+            className="DWModal-path form-group-sm"
+            onSubmit={this._handleSubmitCustomPath}
+          >
             <span className="DWModal-path-label">Addresses for</span>
             <select
-              className="DWModal-path-select"
+              className="form-control"
               onChange={this._handleChangePath}
-              value={dPath}
+              value={isCustomPath ? 'custom' : dPath}
             >
               {dPaths.map(dp =>
                 <option key={dp.value} value={dp.value}>
                   {dp.label}
                 </option>
               )}
-              <option value="custom">Custom...</option>
+              <option value="custom">Custom path...</option>
             </select>
-          </label>
+            {isCustomPath &&
+              <input
+                className={`form-control ${validPathClass}`}
+                value={customPath}
+                placeholder="m/44'/60'/0'/0"
+                onChange={this._handleChangeCustomPath}
+              />}
+          </form>
 
           <div className="DWModal-addresses">
             <table className="DWModal-addresses-table table table-striped table-hover">

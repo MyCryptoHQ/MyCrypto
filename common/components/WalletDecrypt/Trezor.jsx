@@ -43,22 +43,21 @@ export default class TrezorDecrypt extends Component {
   };
 
   _handlePathChange = (dPath: string) => {
-    this.setState({ dPath }, () => {
-      this._handleConnect();
-    });
+    this._handleConnect(dPath);
   };
 
-  _handleConnect = () => {
+  _handleConnect = (dPath: string = this.state.dPath) => {
     this.setState({
       isLoading: true,
       error: null
     });
 
     TrezorConnect.getXPubKey(
-      this.state.dPath,
+      dPath,
       res => {
         if (res.success) {
           this.setState({
+            dPath,
             publicKey: res.publicKey,
             chainCode: res.chainCode,
             isLoading: false
@@ -94,7 +93,7 @@ export default class TrezorDecrypt extends Component {
       <section className="TrezorDecrypt col-md-4 col-sm-6">
         <button
           className="TrezorDecrypt-decrypt btn btn-primary btn-lg"
-          onClick={this._handleConnect}
+          onClick={() => this._handleConnect()}
           disabled={isLoading}
         >
           {isLoading ? 'Unlocking...' : translate('ADD_Trezor_scan')}

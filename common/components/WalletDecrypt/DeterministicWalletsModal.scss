@@ -7,14 +7,15 @@
   &-path {
     display: block;
     margin-bottom: 20px;
-    font-size: $font-size-medium;
 
     &-label {
-      margin-right: 6px;
+      font-size: $font-size-medium;
     }
 
-    &-select {
-      font-size: $font-size-bump-more;
+    .form-control {
+      display: inline-block;
+      width: auto;
+      margin: 0 0 0 10px;
     }
   }
 

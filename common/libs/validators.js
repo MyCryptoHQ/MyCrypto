@@ -139,3 +139,7 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
 
   return true;
 }
+
+export function isValidPath(dPath: string) {
+  return dPath.split('\'/').length === 4;
+}
