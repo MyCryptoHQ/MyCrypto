@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
+import TrezorWallet from 'libs/wallet/trezor';
 
 /* eslint-disable quotes */
 const TREZOR_PATHS = [
@@ -32,6 +33,7 @@ type State = {
 };
 
 export default class TrezorDecrypt extends Component {
+  props: { onUnlock: any => void };
   state: State = {
     publicKey: '',
     chainCode: '',
@@ -80,6 +82,10 @@ export default class TrezorDecrypt extends Component {
     });
   };
 
+  _handleUnlock = (address: string) => {
+    this.props.onUnlock(new TrezorWallet(address));
+  };
+
   render() {
     const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
@@ -125,7 +131,7 @@ export default class TrezorDecrypt extends Component {
           dPath={dPath}
           dPaths={TREZOR_PATHS}
           onCancel={this._handleCancel}
-          onConfirmAddress={addr => console.log(addr)}
+          onConfirmAddress={this._handleUnlock}
           onPathChange={this._handlePathChange}
           walletType={translate('x_Trezor')}
         />
