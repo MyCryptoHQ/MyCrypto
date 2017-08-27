@@ -252,6 +252,8 @@ module.exports = {
     GEN_Label_3: 'Sla je adres op. ',
     GEN_Label_4:
       'Optioneel: Druk je papieren wallet af, of bewaar hem als QR code.',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Aantal te genereren wallets ',

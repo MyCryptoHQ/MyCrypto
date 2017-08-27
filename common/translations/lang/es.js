@@ -203,6 +203,8 @@ module.exports = {
     GEN_Label_3: 'Guarda tu dirección. ',
     GEN_Label_4:
       'Opcional: Imprime tu cartera en papel o guarda una versión en código QR. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Cantidad de carteras a generar ',

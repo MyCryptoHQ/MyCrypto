@@ -202,6 +202,8 @@ module.exports = {
     GEN_Label_2: 'Salva il file `Keystore`. ',
     GEN_Label_3: 'Salva il tuo indirizzo. ',
     GEN_Label_4: 'Stampa il portafoglio cartaceo o un QR code. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Numero di portafogli da generare ',

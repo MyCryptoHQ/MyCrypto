@@ -25,11 +25,11 @@ export default class PasswordInput extends Component<Props> {
               className={`form-control ${meta.error ? 'is-invalid' : ''}`}
               type={isPasswordVisible ? 'text' : 'password'}
               placeholder={translate('GEN_Placeholder_1', true)}
-              aria-label="Enter a strong password (at least 9 characters)"
+              aria-label={translate('GEN_Aria_1', true)}
             />
             <span
               onClick={togglePassword}
-              aria-label="make password visible"
+              aria-label={translate('GEN_Aria_2', true)}
               role="button"
               className="input-group-addon eye"
             />

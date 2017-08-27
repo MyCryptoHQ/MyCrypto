@@ -198,6 +198,8 @@ module.exports = {
     GEN_Label_2: '保存你的Keystore或者私钥。不要忘记你的密码。 ',
     GEN_Label_3: '保存你的地址。 ',
     GEN_Label_4: '打印你的纸钱包，或者存储二维码。（可选） ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: '打算生成的钱包数量 ',

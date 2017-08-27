@@ -203,6 +203,8 @@ module.exports = {
     GEN_Label_3: 'Zapisz swój adres. ',
     GEN_Label_4:
       'Opcjonalnie: Wydrukuj swój Portfel Papierowy, lub zachowaj obrazek z kodem QR. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Ilość Portfeli do Wygenerowania ',

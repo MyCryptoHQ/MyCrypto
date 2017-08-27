@@ -207,6 +207,8 @@ module.exports = {
     GEN_Label_3: 'Сохраните Ваш адрес. ',
     GEN_Label_4:
       'Напечатайте бумажный кошелёк или сохраните QR код. (по желанию) ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Сколько кошельков создать ',

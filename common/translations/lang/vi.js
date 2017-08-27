@@ -206,6 +206,8 @@ module.exports = {
       'Lưu lại tập tin chứa định dạng Keystore/JSON hoặc Private Key. Đừng quên mật khẩu mà bạn đã tạo phía trên. ',
     GEN_Label_3: 'Địa Chỉ Ví (bạn cần lưu lại cho việc sử dụng). ',
     GEN_Label_4: 'Bạn có thể in ví giấy hoặc lưu giữ mã QR một cách cẩn thận. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Số Lượng Ví Cần Tạo ',

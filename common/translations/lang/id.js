@@ -239,6 +239,8 @@ module.exports = {
     GEN_Label_3: 'Simpan alamat dompet Anda. ',
     GEN_Label_4:
       'Opsional: Print Dompet Kertas Anda, atau simpan versi QR code-nya. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Jumlah Dompet yang akan dibuat ',

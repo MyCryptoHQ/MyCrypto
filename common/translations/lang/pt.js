@@ -208,6 +208,8 @@ module.exports = {
     GEN_Label_3: 'Salve Seu Enderço. ',
     GEN_Label_4:
       'Opcional: Imprima sua carteira de papel, ou guarde a versão do código QR. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Número de Carteiras a gerar ',

@@ -233,6 +233,8 @@ module.exports = {
     GEN_Label_2: 'Save your Wallet File.   ',
     GEN_Label_3: 'Save Your Address. ',
     GEN_Label_4: 'Print paper wallet or a QR code.',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Antal Plånböcker att Generera ',

@@ -207,6 +207,8 @@ module.exports = {
     GEN_Label_3: 'Adresini kaydet. ',
     GEN_Label_4:
       'Isteye bagli: Cüzdanin kağıt versiyonunu yazdir veya QR code versiyonunu sakla.',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Oluşturulacak cüzdan sayısı ',

@@ -245,6 +245,8 @@ module.exports = {
     GEN_Label_2: '당신의 지갑 파일을 저장해주세요. 비밀번호를 잃어버리면 안됩니다. ',
     GEN_Label_3: '지갑 주소를 저장해주세요 ',
     GEN_Label_4: '선택: 종이 지갑을 인쇄하거나 QR 코드를 저장해주세요. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: '생성할 지갑 개수 ',

@@ -205,6 +205,8 @@ module.exports = {
     GEN_Label_3: 'Mentsd el a címed. ',
     GEN_Label_4:
       'Választható: Nyomtasd ki a papír tárcádat vagy tárold a QR kód változatot. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Generálni kívánt tárcák száma ',

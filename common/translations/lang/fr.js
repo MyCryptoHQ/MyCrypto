@@ -207,6 +207,8 @@ module.exports = {
     GEN_Label_3: 'Sauvegarder votre portefeuille. ',
     GEN_Label_4:
       'Optionnel: Imprimer votre portefeuille papier, ou conserver une version QR code. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Nombre de portefeuilles à générer ',

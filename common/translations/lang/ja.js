@@ -231,6 +231,8 @@ module.exports = {
     GEN_Label_2: 'Keystore/JSON あるいは秘密鍵を保存してください。パスワードを絶対に忘れないようにしてください。 ',
     GEN_Label_3: 'アドレスを保存してください。 ',
     GEN_Label_4: '必要であれば、お財布紙情報、あるいはQRコードを印刷してください。 ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: '作成するお財布の数 ',

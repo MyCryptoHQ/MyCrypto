@@ -204,6 +204,8 @@ module.exports = {
     GEN_Label_3: 'Tallenna Osoitteesi. ',
     GEN_Label_4:
       'Valinnainen: Tulosta paperi lompakkosi, tai säilö QR koodi versio. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Kuinka Monta Lompakkoa Luodaan ',

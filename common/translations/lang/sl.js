@@ -295,6 +295,8 @@ module.exports = {
     GEN_Label_3: 'Shranite Vaš Naslov. ',
     GEN_Label_4:
       'Neobvezno: Natisnite svojo papirnato denarnico, ali shranite QR kodo vaše denarnice.',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Number of Wallets To Generate ',

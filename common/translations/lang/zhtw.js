@@ -239,6 +239,8 @@ module.exports = {
     GEN_Label_2: '存下你的Keystore檔。 別忘記上方的密碼。 ',
     GEN_Label_3: '記下你的地址。 ',
     GEN_Label_4: '印出你的紙錢包，或存下QR碼版本的資料。（可選的） ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: '要產生的錢包數量 ',

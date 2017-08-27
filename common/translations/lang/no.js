@@ -230,6 +230,8 @@ module.exports = {
     GEN_Label_3: 'Lagre adressen din. ',
     GEN_Label_4:
       'Valgfritt: Skriv ut din papir-lommebok, eller lagre en QR-kode-versjon.',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Antall lommebøker som skal opprettes ',

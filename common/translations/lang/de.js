@@ -205,6 +205,8 @@ module.exports = {
     GEN_Label_3: 'Sichere deine Kontoadresse. ',
     GEN_Label_4:
       'Optional: Drucke dein Papier-Wallet oder speichere einen QR-Code. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Anzahl zu generierender Wallets ',
