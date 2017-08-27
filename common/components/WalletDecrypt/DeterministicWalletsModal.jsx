@@ -261,7 +261,7 @@ class DeterministicWalletsModal extends React.Component {
                       value={desiredToken}
                       onChange={this._handleChangeToken}
                     >
-                      <option>-Token-</option>
+                      <option value="">-Token-</option>
                       {tokens.map(t =>
                         <option key={t.symbol} value={t.symbol}>
                           {t.symbol}
