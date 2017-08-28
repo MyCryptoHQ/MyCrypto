@@ -1,0 +1,72 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.DWModal {
+  width: 690px;
+
+  &-path {
+    display: block;
+    margin-bottom: 20px;
+
+    &-label {
+      font-size: $font-size-medium;
+    }
+
+    .form-control {
+      display: inline-block;
+      width: auto;
+      margin: 0 0 0 10px;
+    }
+  }
+
+  &-addresses {
+    &-table {
+      width: 100%;
+      text-align: center;
+
+      &-token {
+        width: 82px;
+      }
+
+      &-address {
+        font-size: 13px;
+        text-align: left;
+        font-family: $font-family-monospace;
+      }
+
+      &-more {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url('~assets/images/icon-external-link.svg');
+      }
+
+      tbody {
+        tr {
+          cursor: pointer;
+        }
+
+        td {
+          vertical-align: middle;
+        }
+      }
+    }
+
+    &-nav {
+      &-btn {
+        display: inline-block;
+        margin: 0;
+        width: 49.9%;
+        width: calc(50% - 5px);
+        margin: 0 5px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

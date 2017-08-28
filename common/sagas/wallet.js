@@ -80,7 +80,6 @@ export function* unlockPrivateKey(
     return;
   }
   yield put(setWallet(wallet));
-  yield call(updateBalances);
 }
 
 export function* unlockKeystore(
@@ -123,7 +122,6 @@ export function* unlockKeystore(
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
 
   yield put(setWallet(wallet));
-  yield call(updateBalances);
 }
 
 function* broadcastTx(action) {
@@ -146,6 +144,7 @@ export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
+    takeEvery('WALLET_SET', updateBalances),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances)
   ];
 }

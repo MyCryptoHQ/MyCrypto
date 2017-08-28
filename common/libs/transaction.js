@@ -1,10 +1,11 @@
 // @flow
 import Big from 'bignumber.js';
 import translate from 'translations';
-import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
+import { padToEven, addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { isValidETHAddress } from 'libs/validators';
 import ERC20 from 'libs/erc20';
 import { toTokenUnit } from 'libs/units';
+import { stripHex } from 'libs/values';
 import type BaseNode from 'libs/nodes/base';
 import type { BaseWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
@@ -47,8 +48,8 @@ export function getTransactionFields(tx: EthTx) {
   const [nonce, gasPrice, gasLimit, to, value, data, v, r, s] = tx.toJSON();
 
   return {
-    // No value comes back as '0x', but most things expect '0x0'
-    value: value === '0x' ? '0x0' : value,
+    // No value comes back as '0x', but most things expect '0x00'
+    value: value === '0x' ? '0x00' : value,
     // If data is 0x, it might as well not be there
     data: data === '0x' ? null : data,
     // To address is unchecksummed, which could cause mismatches in comparisons
@@ -119,15 +120,19 @@ export async function generateTransaction(
     throw new Error(translate('GETH_Balance'));
   }
 
+  // Taken from v3's `sanitizeHex`, ensures that the value is a %2 === 0
+  // prefix'd hex value.
+  const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
+
   // Generate the raw transaction
   const txCount = await node.getTransactionCount(tx.from);
   const rawTx = {
-    nonce: addHexPrefix(txCount),
-    gasPrice: addHexPrefix(new Big(tx.gasPrice).toString(16)),
-    gasLimit: addHexPrefix(new Big(tx.gasLimit).toString(16)),
-    to: addHexPrefix(tx.to),
-    value: token ? '0x0' : addHexPrefix(value.toString(16)),
-    data: tx.data ? addHexPrefix(tx.data) : '',
+    nonce: cleanHex(txCount),
+    gasPrice: cleanHex(new Big(tx.gasPrice).toString(16)),
+    gasLimit: cleanHex(new Big(tx.gasLimit).toString(16)),
+    to: cleanHex(tx.to),
+    value: token ? '0x00' : cleanHex(value.toString(16)),
+    data: tx.data ? cleanHex(tx.data) : '',
     chainId: tx.chainId || 1
   };
 
