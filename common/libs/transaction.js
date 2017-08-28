@@ -120,9 +120,12 @@ export async function generateTransaction(
     throw new Error(translate('GETH_Balance'));
   }
 
+  // Taken from v3's `sanitizeHex`, ensures that the value is a %2 === 0
+  // prefix'd hex value.
+  const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
+
   // Generate the raw transaction
   const txCount = await node.getTransactionCount(tx.from);
-  const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
   const rawTx = {
     nonce: cleanHex(txCount),
     gasPrice: cleanHex(new Big(tx.gasPrice).toString(16)),
