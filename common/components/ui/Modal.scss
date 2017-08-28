@@ -64,6 +64,7 @@ $m-anim-speed: 400ms;
   display: none;
   flex-direction: column;
   animation: modal-open $m-anim-speed ease 1;
+  text-align: left;
 
   &.is-open {
     display: flex;

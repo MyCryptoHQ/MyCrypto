@@ -8,7 +8,6 @@ import {
 import { randomBytes } from 'crypto';
 import { pkeyToKeystore } from 'libs/keystore';
 import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
-
 import { isValidPrivKey } from 'libs/validators';
 import type { RawTransaction } from 'libs/transaction';
 import type { UtcKeystore } from 'libs/keystore';

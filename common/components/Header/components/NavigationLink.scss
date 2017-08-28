@@ -1,0 +1,46 @@
+@import "common/sass/variables";
+
+.NavigationLink {
+  display: inline-block;
+
+  &-link {
+    color: darken($link-color, 15%);
+    display: block;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 10px;
+    white-space: nowrap;
+    position: relative;
+    min-height: 2.75rem;
+
+    &:after {
+      content: "";
+      background: $brand-primary;
+      height: 2px;
+      width: 100%;
+      left: 0px;
+      position: absolute;
+      bottom: -1px;
+      transition: all 250ms ease 0s;
+      transform: scaleX(0);
+    }
+
+    &.is-active,
+    &:hover,
+    &:focus {
+      color: $brand-primary;
+      text-decoration: none;
+      transition: all 250ms ease 0s;
+
+      &:after {
+        transform: scaleX(1);
+        transition: all 250ms ease 0s;
+      }
+    }
+
+    &.is-disabled {
+      pointer-events: none;
+      opacity: 0.3;
+    }
+  }
+}

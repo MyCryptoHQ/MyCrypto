@@ -17,6 +17,50 @@ $small-size: 900px;
 
 // Header
 .Header {
+  &-announcement {
+    padding: 2px 10px;
+    line-height: 22px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 300;
+    color: #fff;
+    transition: background-color 80ms ease;
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+      transition: none;
+
+      &:hover,
+      &:focus {
+        opacity: 0.7;
+      }
+    }
+
+    // Colors
+    &,
+    &.is-primary {
+      background: $brand-primary;
+    }
+
+    &.is-warning {
+      background: $brand-warning;
+    }
+
+    &.is-danger {
+      background: $brand-danger;
+    }
+
+    &.is-success {
+      background: $brand-success;
+    }
+
+    &.is-info {
+      background: $brand-info;
+      border-bottom: 1px solid rgba(#fff, 0.6);
+    }
+  }
+
   &-branding {
     color: white;
     padding: 0;
@@ -60,6 +104,10 @@ $small-size: 900px;
         > * {
           display: inline;
           vertical-align: middle;
+        }
+
+        &-version {
+          max-width: 395px;
         }
       }
     }

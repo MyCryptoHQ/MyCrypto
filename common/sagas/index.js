@@ -10,6 +10,8 @@ import notifications from './notifications';
 import rates from './rates';
 import wallet from './wallet';
 import handleConfigChanges from './config';
+import deterministicWallets from './deterministicWallets';
+
 
 export default {
   bityTimeRemaining,
@@ -21,5 +23,6 @@ export default {
   ens,
   notifications,
   rates,
-  wallet
+  wallet,
+  deterministicWallets
 };
