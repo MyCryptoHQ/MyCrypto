@@ -298,8 +298,7 @@ export class SendTransaction extends React.Component {
     if (gasLimit === null) {
       gasLimit = getParam(query, 'limit');
     }
-    const readOnly = getParam(query, 'readOnly') == null ? false : true;
-
+    const readOnly = getParam(query, 'readOnly') != null;
     return { to, data, value, unit, gasLimit, readOnly };
   }
 
@@ -457,7 +456,7 @@ export class SendTransaction extends React.Component {
 
   confirmTx = () => {
     // TODO: Broadcast transaction
-    console.log(this.state.transaction);
+    console.log(this.state.transaction.signedTx);
   };
 }
 

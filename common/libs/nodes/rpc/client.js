@@ -18,6 +18,15 @@ function id(): string {
   return randomBytes(16).toString('hex');
 }
 
+export function sendRawTx(rawTx) {
+  return {
+    id: id(),
+    jsonrpc: '2.0',
+    method: 'eth_sendRawTransaction',
+    params: [rawTx]
+  };
+}
+
 export function estimateGas<T: *>(transaction: T): EstimateGasRequest {
   return {
     id: id(),

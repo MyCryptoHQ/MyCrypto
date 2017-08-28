@@ -19,7 +19,6 @@ import {
 import { BaseNode } from 'libs/nodes';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
-
 import { determineKeystoreType } from 'libs/keystore';
 
 function* updateAccountBalance() {
@@ -125,6 +124,20 @@ export function* unlockKeystore(
 
   yield put(setWallet(wallet));
   yield call(updateBalances);
+}
+
+function* broadcastTx(action) {
+  const rawTx = action.value;
+  yield call(updateBalances);
+
+  // const node: BaseNode = yield select(getNodeLib);
+  // const wallet: ?BaseWallet = yield select(getWalletInst);
+  // if (!wallet) {
+  //   return;
+  // }
+  // const address = yield wallet.getAddress();
+  // let balance = yield apply(node, node.getBalance, [address]);
+  // yield put(setBalance(balance));
 }
 
 export default function* walletSaga(): Generator<Effect | Effect[], void, any> {

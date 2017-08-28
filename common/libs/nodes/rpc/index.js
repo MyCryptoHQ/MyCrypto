@@ -6,7 +6,8 @@ import RPCClient, {
   getBalance,
   estimateGas,
   getTransactionCount,
-  getTokenBalance
+  getTokenBalance,
+  sendRawTx
 } from './client';
 import type { Token } from 'config/data';
 
@@ -22,7 +23,7 @@ export default class RpcNode extends BaseNode {
       if (response.error) {
         throw new Error('getBalance error');
       }
-      return new Big(Number(response.result));
+      return new Big(String(response.result));
     });
   }
 
@@ -31,7 +32,7 @@ export default class RpcNode extends BaseNode {
       if (response.error) {
         throw new Error('estimateGas error');
       }
-      return new Big(Number(response.result));
+      return new Big(String(response.result));
     });
   }
 
@@ -40,7 +41,7 @@ export default class RpcNode extends BaseNode {
       if (response.error) {
         return Big(0);
       }
-      return new Big(Number(response.result)).div(
+      return new Big(String(response.result)).div(
         new Big(10).pow(token.decimal)
       );
     });
@@ -55,7 +56,7 @@ export default class RpcNode extends BaseNode {
           if (item.error) {
             return new Big(0);
           }
-          return new Big(Number(item.result)).div(
+          return new Big(String(item.result)).div(
             new Big(10).pow(tokens[idx].decimal)
           );
         });
@@ -66,6 +67,15 @@ export default class RpcNode extends BaseNode {
     return this.client.call(getTransactionCount(address)).then(response => {
       if (response.error) {
         throw new Error('getTransactionCount error');
+      }
+      return response.result;
+    });
+  }
+
+  async sendRawTx(rawTx): Promise<string> {
+    return this.client.call(sendRawTx(rawTx)).then(response => {
+      if (response.error) {
+        throw new Error('sendRawTx error');
       }
       return response.result;
     });

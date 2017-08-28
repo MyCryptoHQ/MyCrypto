@@ -149,3 +149,8 @@ export async function generateTransaction(
     signedTx: signedTx
   };
 }
+
+export async function broadCastTransaction(
+  node: BaseNode,
+  tx: BroadcastTransaction
+): Promise<BroadcastTransaction> {}

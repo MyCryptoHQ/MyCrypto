@@ -130,35 +130,35 @@ export class BalanceSidebar extends React.Component {
               {rates['REP'] &&
                 <li>
                   <span className="mono wrap">
-                    {formatNumber(balance.times(rates['REP']))}
+                    {formatNumber(balance.times(rates['REP']), 2)}
                   </span>{' '}
                   REP
                 </li>}
               {rates['EUR'] &&
                 <li>
                   <span className="mono wrap">
-                    €{formatNumber(balance.times(rates['EUR']))}
+                    €{formatNumber(balance.times(rates['EUR']), 2)}
                   </span>
                   {' EUR'}
                 </li>}
               {rates['USD'] &&
                 <li>
                   <span className="mono wrap">
-                    ${formatNumber(balance.times(rates['USD']))}
+                    ${formatNumber(balance.times(rates['USD']), 2)}
                   </span>
                   {' USD'}
                 </li>}
               {rates['GBP'] &&
                 <li>
                   <span className="mono wrap">
-                    £{formatNumber(balance.times(rates['GBP']))}
+                    £{formatNumber(balance.times(rates['GBP']), 2)}
                   </span>
                   {' GBP'}
                 </li>}
               {rates['CHF'] &&
                 <li>
                   <span className="mono wrap">
-                    {formatNumber(balance.times(rates['CHF']))}
+                    {formatNumber(balance.times(rates['CHF']), 2)}
                   </span>{' '}
                   CHF
                 </li>}
