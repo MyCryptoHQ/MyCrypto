@@ -26,7 +26,8 @@ export default class NavigationLink extends React.Component {
         location.pathname === link.to ||
         location.pathname.substring(1) === link.to
     });
-    const linkLabel = `nav item: ${translate(link.name)}`;
+    // $FlowFixMe flow is wrong, this isn't an element
+    const linkLabel = `nav item: ${translate(link.name, true)}`;
 
     const linkEl = link.external
       ? <a
