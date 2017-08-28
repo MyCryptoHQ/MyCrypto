@@ -1,5 +1,5 @@
 // @flow
-import type React from 'react';
+import type { Element } from 'react';
 
 /*** Shared types ***/
 export type NOTIFICATION_LEVEL = 'danger' | 'warning' | 'success' | 'info';
@@ -7,7 +7,7 @@ export type INFINITY = 'infinity';
 
 export type Notification = {
   level: NOTIFICATION_LEVEL,
-  msg: React.Element<*>,
+  msg: Element<*> | string,
   duration?: number | INFINITY
 };
 
@@ -19,7 +19,7 @@ export type ShowNotificationAction = {
 
 export function showNotification(
   level: NOTIFICATION_LEVEL = 'info',
-  msg: React.Element<*>,
+  msg: Element<*> | string,
   duration?: number
 ): ShowNotificationAction {
   return {

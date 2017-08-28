@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+// import React from 'react';
+import type { Element } from 'react';
 import { renderToString } from 'react-dom/server';
 
 type PrintOptions = {
@@ -8,7 +9,7 @@ type PrintOptions = {
   popupFeatures?: Object
 };
 
-export default function(element: React.Element<*>, opts: PrintOptions = {}) {
+export default function(element: Element<*>, opts: PrintOptions = {}) {
   const options = {
     styles: '',
     printTimeout: 500,

@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Element } from 'react';
 import Translate from 'components/Translate';
 import { store } from 'store';
 import { getLanguageSelection } from 'selectors/config';
@@ -50,7 +51,12 @@ export function getTranslators() {
   });
 }
 
-export default function translate(key: string, textOnly: boolean = false) {
+type TranslateType = Element<*> | string;
+
+export default function translate(
+  key: string,
+  textOnly: boolean = false
+): TranslateType {
   return textOnly ? translateRaw(key) : <Translate translationKey={key} />;
 }
 

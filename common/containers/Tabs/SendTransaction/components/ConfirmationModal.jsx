@@ -110,20 +110,20 @@ class ConfirmationModal extends React.Component {
   }
 
   render() {
-    const { node, token, network, onCancel, lang } = this.props;
+    const { node, token, network, onCancel } = this.props;
     const { fromAddress, timeToRead } = this.state;
     const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons = [
       {
-        text: buttonPrefix + translateRaw('SENDModal_Yes', lang),
+        text: buttonPrefix + translateRaw('SENDModal_Yes'),
         type: 'primary',
         disabled: timeToRead > 0,
         onClick: this._confirm()
       },
       {
-        text: translateRaw('SENDModal_No', lang),
+        text: translateRaw('SENDModal_No'),
         type: 'default',
         onClick: onCancel
       }

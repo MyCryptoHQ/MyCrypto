@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import type { Element } from 'react';
 
 const DEFAULT_BUTTON_TYPE = 'primary';
 const DEFAULT_BUTTON_SIZE = 'lg';
@@ -19,7 +20,7 @@ type ButtonSize = 'lg' | 'sm' | 'xs';
 
 type Props = {
   onClick: () => any,
-  text: React.Element<*>,
+  text: Element<*> | string,
   loading?: boolean,
   disabled?: boolean,
   loadingText?: string,

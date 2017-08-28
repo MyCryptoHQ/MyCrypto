@@ -9,7 +9,7 @@ type Props = {
   meta: Object
 };
 
-export default class PasswordInput extends Component<Props> {
+export default class PasswordInput extends Component {
   props: Props;
 
   render() {
