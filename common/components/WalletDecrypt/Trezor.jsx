@@ -5,24 +5,8 @@ import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import TrezorWallet from 'libs/wallet/trezor';
-
-/* eslint-disable quotes */
-const TREZOR_PATHS = [
-  {
-    label: 'TREZOR (ETH)',
-    value: "m/44'/60'/0'/0"
-  },
-  {
-    label: 'TREZOR (ETC)',
-    value: "m/44'/61'/0'/0"
-  },
-  {
-    label: 'Testnet',
-    value: "m/44'/1'/0'/0"
-  }
-];
-const DEFAULT_PATH = TREZOR_PATHS[0].value;
-/* eslint-enable quotes */
+import DPATHS from 'config/dpaths.json';
+const DEFAULT_PATH = DPATHS.TREZOR[0].value;
 
 type State = {
   publicKey: string,
@@ -128,7 +112,7 @@ export default class TrezorDecrypt extends Component {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={TREZOR_PATHS}
+          dPaths={DPATHS.TREZOR}
           onCancel={this._handleCancel}
           onConfirmAddress={this._handleUnlock}
           onPathChange={this._handlePathChange}
