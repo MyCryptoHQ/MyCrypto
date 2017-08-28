@@ -9,9 +9,11 @@ import ens from './ens';
 import notifications from './notifications';
 import rates from './rates';
 import wallet from './wallet';
+import handleConfigChanges from './config';
 
 export default {
   bityTimeRemaining,
+  handleConfigChanges,
   postBityOrderSaga,
   pollBityOrderStatusSaga,
   getBityRatesSaga,
