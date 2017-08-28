@@ -1,432 +1,525 @@
 /* eslint-disable quotes*/
 
-// Finnish
+// Indonesian
 module.exports = {
-  code: 'fi',
+  code: 'id',
   data: {
+    HELP_2a_Title: 'How do I save/backup my wallet? ',
+
+    /* New Generics */
+    x_CancelReplaceTx: 'Cancel or Replace Transaction',
+    x_CancelTx: 'Cancel Transaction',
+    x_PasswordDesc:
+      'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
+    x_ReadMore: 'Read More',
+    x_ReplaceTx: 'Replace Transaction',
+    x_TransHash: 'Transaction Hash',
+    x_TXFee: 'TX Fee',
+    x_TxHash: 'TX Hash',
+
+    /* Check TX Status */
+    NAV_CheckTxStatus: 'Check TX Status',
+    NAV_TxStatus: 'TX Status',
+    tx_Details: 'Transaction Details',
+    tx_Summary:
+      'During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs. ** This is not typically something you can do. It should not be relied upon & will only work when the TX Pools are full. [Please, read about this tool here.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**',
+    tx_notFound: 'Transaction Not Found',
+    tx_notFound_1:
+      'This TX cannot be found in the TX Pool of the node you are connected to.',
+    tx_notFound_2:
+      'If you just sent the transaction, please wait 15 seconds and press the "Check TX Status" button again. ',
+    tx_notFound_3:
+      'It could still be in the TX Pool of a different node, waiting to be mined.',
+    tx_notFound_4:
+      'Please use the dropdown in the top-right & select a different ETH node (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyEtherWallet)`) and check again.',
+    tx_foundInPending: 'Pending Transaction Found',
+    tx_foundInPending_1:
+      'Your transaction was located in the TX Pool of the node you are connected to. ',
+    tx_foundInPending_2: 'It is currently pending (waiting to be mined). ',
+    tx_foundInPending_3:
+      'There is a chance you can "cancel" or replace this transaction. Unlock your wallet below.',
+    tx_FoundOnChain: 'Transaction Found',
+    tx_FoundOnChain_1:
+      'Your transaction was successfully mined and is on the blockchain.',
+    tx_FoundOnChain_2:
+      '**If you see a red `( ! )`, a `BAD INSTRUCTION` or `OUT OF GAS` error message**, it means that the transaction was not successfully *sent*. You cannot cancel or replace this transaction. Instead, send a new transaction. If you received an "Out of Gas" error, you should double the gas limit you specified originally.',
+    tx_FoundOnChain_3:
+      '**If you do not see any errors, your transaction was successfully sent.** Your ETH or Tokens are where you sent them. If you cannot see this ETH or Tokens credited in your other wallet / exchange account, and it has been 24+ hours since you sent, please [contact that service](https://myetherwallet.groovehq.com/knowledge_base/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Send them the *link* to your transaction and ask them, nicely, to look into your situation.',
+
+    /* Gen Wallet Updates */
+    GEN_Help_1: 'Use your',
+    GEN_Help_2: 'to access your account.',
+    GEN_Help_3: 'Your device * is * your wallet.',
+    GEN_Help_4: 'Guides & FAQ',
+    GEN_Help_5: 'How to Create a Wallet',
+    GEN_Help_6: 'Getting Started',
+    GEN_Help_7:
+      "Keep it safe · Make a backup · Don't share it with anyone · Don't lose it · It cannot be recovered if you lose it.",
+    GEN_Help_8: 'Not Downloading a File? ',
+    GEN_Help_9: 'Try using Google Chrome ',
+    GEN_Help_10: 'Right click & save file as. Filename: ',
+    GEN_Help_11: "Don't open this file on your computer ",
+    GEN_Help_12:
+      'Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity and other wallet clients.) ',
+    GEN_Help_13: 'How to Back Up Your Keystore File ',
+    GEN_Help_14: 'What are these Different Formats? ',
+    GEN_Help_15: 'Preventing loss &amp; theft of your funds.',
+    GEN_Help_16: 'What are these Different Formats?',
+    GEN_Help_17: 'Why Should I?',
+    GEN_Help_18: 'To have a secondary backup.',
+    GEN_Help_19: 'In case you ever forget your password.',
+    GEN_Help_20: 'Cold Storage',
+    GET_ConfButton: 'I understand. Continue.',
+    GEN_Label_5: 'Save Your `Private Key`. ',
+    GEN_Unlock: 'Unlock your wallet to see your address',
+    GAS_PRICE_Desc:
+      'Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.',
+    GAS_LIMIT_Desc:
+      'Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.',
+    NONCE_Desc:
+      'The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.',
+    TXFEE_Desc:
+      'The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)',
+
     /* Navigation*/
-    NAV_AddWallet: 'Lisää Lompakko ',
-    NAV_BulkGenerate: 'Massa Generoi ',
-    NAV_Contact: 'Yhteystiedot ',
+    NAV_AddWallet: 'Tambahkan Dompet ',
+    NAV_BulkGenerate: 'Pembuatan Multiple Dompet ',
+    NAV_Contact: 'Kontak ',
     NAV_Contracts: 'Contracts ',
-    // NAV_DeployContract          : 'Deploy Contract ',
-    NAV_DeployContract: 'Ota Käyttöön Sopimus ',
+    NAV_DeployContract: 'Buat Contract ',
     NAV_ENS: 'ENS',
-    NAV_GenerateWallet: 'Luo Lompakko ',
-    NAV_Help: 'Apua ',
+    NAV_GenerateWallet_alt: 'New Wallet ',
+    NAV_GenerateWallet: 'Buat Dompet ',
+    NAV_Help: 'Bantuan ',
     NAV_InteractContract: 'Interact with Contract ',
     NAV_Multisig: 'Multisig ',
-    NAV_MyWallets: 'Minun Lompakkoni ',
-    NAV_Offline: 'Lähetä Offlinena ',
-    NAV_SendEther: 'Lähetä Etheriä ja Tokeneita ',
-    NAV_SendTokens: 'Lähetä Tokeneita ',
-    NAV_SignMsg: 'Sign Message ',
-    NAV_Swap: 'Swap ',
-    NAV_ViewWallet: 'Tarkastele Lompakon Tietoja ',
-    NAV_YourWallets: 'Sinun Lompakkosi ',
+    NAV_MyWallets: 'Dompet Saya ',
+    NAV_Offline: 'Kirim Offline ',
+    NAV_SendEther: 'Kirim Ether dan Tokens ',
+    NAV_SendTokens: 'Kirim Token ',
+    NAV_SignMsg: 'Penandaan Pesan ',
+    NAV_Swap: 'Tukarkan ',
+    NAV_ViewWallet: 'Lihat Info Dompet ',
+    NAV_YourWallets: 'Dompet Anda ',
 
     /* General */
-    x_Access: 'Access ',
+    x_Access: 'Akses ',
     x_AddessDesc:
-      'Saatat tuntea tämän "Tilinumeronasi" tai "Julkisena Salausavaimenasi". Tämä on se jonka jaat ihmisille, jotta he voivat lähettää sinulle ETHiä. Tuo kuvake on helppo tapa tunnistaa sinun osoitteesi. ',
-    x_Address: 'Sinun osoitteesi ',
-    x_Cancel: 'Peruuta ',
-    x_CSV: 'CSV tiedosto (salaamaton) ',
-    x_Download: 'Lataa ',
-    x_Json: 'JSON Tiedosto (salaamaton) ',
+      'Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere. Biasa dikenal dengan "Account #" atau "Public Key". Berikan alamat ini kepada yang ingin mengirim ether ke Anda. Icon yang ditampilkan di sampingnya memudahkan mengenal alamat Anda. ',
+    x_Address: 'Alamat Anda ',
+    x_Cancel: 'Batal ',
+    x_CSV: 'File CSV (tidak ter-enkripsi) ',
+    x_Download: 'Unduh ',
+    x_Json: 'File JSON (tidak ter-enkripsi) ',
     x_JsonDesc:
-      'Tämä on salaamaton JSON tiedosto yksityisestä salausavaimestasi. Tämä tarkoittaa että et tarvitse salasanaa mutta kuka tahansa joka löytää JSON tiedostosi saa pääsyn lompakkoosi ja sen sisältämään Etheriin ilman salasanaa. ',
-    x_Keystore: 'Avainsäilö Tiedosto (UTC / JSON · Suositeltu · Salattu) ',
-    x_Keystore2: 'Avainsäilö Tiedosto (UTC / JSON) ',
+      'Ini adalah "Private Key" Anda dalam format JSON yang tidak ter-enkripsi. Tidak diperlukan password dan siapapun yang memiliki JSON Anda dapat mengakses dompet dan Ether Anda tanpa password. ',
+    x_Keystore:
+      'File Keystore (UTC / JSON · Format yang direkomendasikan · Ter-enkripsi) ',
+    x_Keystore2: 'File Keystore (UTC / JSON) ',
     x_KeystoreDesc:
-      'Tämä Avainsäilö tiedosto vastaa sitä tiedostoformaattia jota Mist käyttävät, joten voit helposti importata sen tulevaisuudessa. Se on suositeltu tiedostomuoto ladata ja varmuuskopioida. ',
-    x_Mnemonic: 'Mnemonic Phrase ',
+      'File Keystore ini sesuai dengan format yang dipakai Mist sehingga memudahkan untuk diimpor di kemudian hari. File ini yang disarankan untuk di unduh dan di backup. ',
+    x_Ledger: 'Ledger Wallet ',
+    x_MetaMask: 'Metamask / Mist ',
+    x_Mnemonic: '"Mnemonic Phrase" ',
     x_ParityPhrase: 'Parity Phrase ',
-    x_Password: 'Salasana ',
-    x_Print: 'Tulosta Paperi Lompakko ',
+    x_Password: 'Password ',
+    x_Print: 'Print Dompet Kertas ',
     x_PrintDesc:
-      'ProTip: Klikkaa Tulosta ja tallenna tämä PDF:nä, vaikka et omistaisikaan tulostinta! ',
-    x_PrintShort: 'Tulosta ',
-    x_PrivKey: 'Yksityinen salausavain (salaamaton) ',
-    x_PrivKey2: 'Yksityinen salausavain ',
+      'ProTip: klik print dan simpan sebagai PDF jika Anda tidak memiliki printer! ',
+    x_PrintShort: 'Print ',
+    x_PrivKey: 'Private Key (Tidak ter-enkripsi) ',
+    x_PrivKey2: 'Private Key ',
     x_PrivKeyDesc:
-      'Tämä on salaamaton versio sinun yksityisestä salausavaimestasi, tarkoittaen että salasanaa ei tarvita. Jos joku sattuisi löytämään sinun salaamattoman yksityisen salausavaimesi, he pääsisivät käsiksi sinun lompakkoosi ilman salasanaa. Tästä syystä salatut versiot ovat yleensä suositeltuja. ',
-    x_Save: 'Tallenna ',
-    x_TXT: 'TXT tiedosto (salaamaton) ',
-    // x_Wallet                    : 'Lompakko ',
-    x_Wallet: 'Wallet ',
+      'Ini adalah versi text yang tidak ter-enkripsi dan tidak memerlukan password. Jika file yang tidak ter-enkripsi ini sampai didapatkan orang lain, mereka dapat mengakses dompet Anda tanpa password. Oleh karenanya, sangat direkomendasikan untuk selalu memakai versi yang ter-enkripsi. ',
+    x_Save: 'Simpan ',
+    x_TXT: 'File TXT file (Tidak ter-enkripsi) ',
+    x_Wallet: 'Dompet ',
 
     /* Header */
     MEW_Warning_1:
-      'Tarkista URL aina ennen kuin avaat lompakkosi tai luot uuden lompakon. Varo tietojen-kalastelu sivustoja! ',
+      'Pastikan menggunakan URL yang benar sebelum mengakses Dompet Anda atau sebelum membuat dompet baru. Waspadai situs phishing! ',
     CX_Warning_1:
-      'Varmista että sinulla on **ulkoiset varmuuskopiot** kaikista lompakoista joita säilytät täällä. Monia asioita voi tapahtua joiden seurauksena voit menettää tietoja tässä Chrome Laajennuksessa, mukaan lukien laajennuksen asennuksen poistaminen tai uudelleenasennus. Tämä laajennus on keino jolla saat helpon pääsyn lompakkoosi, **ei** keino varmuuskopioida niitä. ',
-    MEW_Tagline: 'Avoimen Lähdekoodin JavaScript Ether Lompakko ',
-    CX_Tagline: 'Avoimen Lähdekoodin JavaScript Chrome Laajennus ',
+      'Pastikan membuat **backup eksternal** dari semua dompet yang ada. Banyak hal bisa terjadi yang bisa membuat data di Chrome Extension hilang, termasuk saat menginstall maupun menguninstall extension ini. Extension ini hanya untuk memudahkan mengakses dompet Anda, **BUKAN** untuk membackup. ',
+    MEW_Tagline: 'Open Source JavaScript Client-Side Ether Wallet ',
+    CX_Tagline:
+      'Open Source JavaScript Client-Side Ether Wallet Chrome Extension ',
 
     /* Footer */
     FOOTER_1:
-      'Avoimen lähdekoodin, javascript työkalu Ethereum lompakkojen luomista & varojen siirtoja varten. ',
-    FOOTER_1b: 'Luonut ',
-    FOOTER_2: 'Lahjoituksia arvostetaan suuresti: ',
-    FOOTER_3: 'Lompakon luomisen tarjoaa ',
-    FOOTER_4: 'Vastuuvapauslauseke / Disclaimer ',
+      'Client-side tool open source berbasis javascript untuk membuat Dompet dan transaksi Ethereum. ',
+    FOOTER_1b: 'Oleh ',
+    FOOTER_2: 'Donasi Anda akan sangat dihargai: ',
+    FOOTER_3: 'Pembuatan Dompet Client-side wallet oleh ',
+    FOOTER_4: 'Disclaimer ',
 
     /* Sidebar */
-    sidebar_AccountInfo: 'Tilin Tiedot ',
-    sidebar_AccountAddr: 'Tilin Osoite ',
-    sidebar_AccountBal: 'Tilin Saldo ',
-    sidebar_TokenBal: 'Tokenien Saldo ',
-    sidebar_Equiv: 'Vastaavat Arvot ',
-    sidebar_TransHistory: 'Siirto Historia ',
+    sidebar_AccountInfo: 'Informasi Akun ',
+    sidebar_AccountAddr: 'Alamat Akun ',
+    sidebar_AccountBal: 'Saldo Akun ',
+    sidebar_TokenBal: 'Saldo Token ',
+    sidebar_Equiv: 'Nilai Ekuivalent ',
+    sidebar_TransHistory: 'Sejarah Transaksi ',
     sidebar_donation:
-      'MyEtherWallet on ilmainen, avoimen lähdekoodin palvelu joka on omistautunut sinun yksityisyyteesi ja turvallisuuteesi. Mitä enemmän lahjoituksia me vastaanotamme, sitä enemmän aikaa me käytämme uusien toimintojen luomiseksi, kuunnellen teidän palautettanne ja antaen teille juuri sitä mitä te tahdotte. Me olemme vain kaksi ihmistä jotka koittavat muuttaa maailmaa. Auta meitä? ',
-    sidebar_donate: 'Lahjoita ',
-    sidebar_thanks: 'KIITOS!!! ',
+      'MyEtherWallet dapat dipergunakan secara cuma-cuma berdasarkan prinsip open source dengan tetap menjaga privasi dan keamanan. Semakin banyak donasi yang kami terima, semakin banyak waktu yang kami dapat luangkan untuk membuat fitur-fitur baru dan mewujudkan usulan dan keinginan para penggunanya. Tim kami yang terdiri dari hanya dua orang sangat membutuhkan dukungan Anda untuk mewujudkan cita-cita kami dalam membuat dunia yang semakin baik ',
+    sidebar_donate: 'Kirim Donasi ',
+    sidebar_thanks: 'Terima Kasih!!! ',
+    sidebar_DisplayOnTrezor: 'Display address on TREZOR',
+    sidebar_DisplayOnLedger: 'Display address on Ledger',
 
     /* Decrypt Panel */
-    decrypt_Access: 'Kuinka haluaisit saada pääsyn lompakkoosi? ',
-    decrypt_Title: 'Valitse yksityisen salausavaimesi muoto: ',
-    decrypt_Select: 'Valitse Lompakko: ',
+    decrypt_Access: 'Pilihan cara mengakses dompet Anda? ',
+    decrypt_Title: 'Pilih format private key: ',
+    decrypt_Select: 'Pilih dompet: ',
 
     /* Add Wallet */
-    ADD_Label_1: 'Mitä tahtoisit tehdä? ',
-    ADD_Radio_1: 'Luo Uusi Lompakko ',
-    ADD_Radio_2: 'Valitse Lompakko Tiedostosi (Avainsäilö / JSON) ',
-    ADD_Radio_2_alt: 'Valitse Lompakko Tiedostosi ',
-    ADD_Radio_2_short: 'VALITSE LOMPAKKO TIEDOSTO... ',
-    ADD_Radio_3: 'Liitä/Kirjoita Yksityinen Salausavaimesi ',
-    ADD_Radio_4: 'Lisää Tili Jota Seurata ',
-    ADD_Radio_5: 'Paste/Type Your Mnemonic ',
+    ADD_Label_1: 'Pilihan cara membuat dompet ',
+    ADD_Radio_1: 'Buat dompet baru ',
+    ADD_Radio_2: 'Pilih file dompet (Keystore/JSON) ',
+    ADD_Radio_2_alt: 'Pilih file dompet ',
+    ADD_Radio_2_short: 'PILIH FILE DOMPET... ',
+    ADD_Radio_3: 'Paste/Ketik Private Key Anda ',
+    ADD_Radio_4: 'Tambah akun untuk dilihat ',
+    ADD_Radio_5: 'Paste/Ketik Mnemonic Anda ',
     ADD_Radio_5_Path: 'Select HD derivation path ',
+    ADD_Radio_5_woTrezor: '(Jaxx, Metamask, Exodus, imToken)',
+    ADD_Radio_5_withTrezor: '(Jaxx, Metamask, Exodus, imToken, TREZOR)',
+    ADD_Radio_5_PathAlternative: '(Ledger)',
+    ADD_Radio_5_PathTrezor: '(TREZOR)',
     ADD_Radio_5_PathCustom: 'Custom',
-    ADD_Label_2: 'Luo Kutsumanimi: ',
-    ADD_Label_3: 'Lompakkosi on salattu, ole hyvä ja syötä salasanasi ',
-    ADD_Label_4: 'Lisää Tili Jota Seurata ',
+    ADD_Label_2: 'Buat Alias: ',
+    ADD_Label_3: 'File Dompet anda ter-enkripsi. Masukkan password ',
+    ADD_Label_4: 'Tambah akun untuk dilihat ',
     ADD_Warning_1:
-      'Voit lisätä minkä tahansa tilin jota "seurata" lompakkojen välilehdessä ilman yksityisen salausavaimesi lähettämistä. Tämä ** ei ** tarkoita että sinulla olisi pääsy tähän lompakkoon, tai että voit siirtää Etheriä siitä. ',
-    ADD_Label_5: 'Syötä Osoite ',
-    ADD_Label_6: 'Avaa Sinun Lompakkosi ',
-    ADD_Label_6_short: 'Avaa ',
-    ADD_Label_7: 'Lisää Tili ',
+      'Akun untuk "dilihat" dapat ditambahkan tanpa menggunakan private key. Namun berarti tidak ada akses ke dompet tersebut dan transfer Ether tidak bisa dilakukan. ',
+    ADD_Label_5: 'Masukkan alamat ',
+    ADD_Label_6: 'Unlock dompet ',
+    ADD_Label_6_short: 'Unlock ',
+    ADD_Label_7: 'Tambah Akun ',
+    ADD_Label_8: 'Password (optional): ',
+
+    /* Mnemonic */
+    MNEM_1: 'Pilih alamat yang Anda inginkan untuk berinteraksi. ',
+    MNEM_2:
+      'Satu frasa "HD mnemonic" dapat mengakses beberapa  dompet / alamat. Pilih alamat yang Anda inginkan untuk dipakai. ',
+    MNEM_more: 'Tampilkan Alamat berikutnya ',
+    MNEM_prev: 'Tampilkan Alamat sebelumnya ',
+
+    /* Hardware wallets */
+    ADD_Ledger_1: 'Hubungkan ke Ledger Wallet Anda ',
+    ADD_Ledger_2: 'Buka Aplikasi Ethereum (atau aplikasi kontrak) ',
+    ADD_Ledger_3:
+      'Periksa bahwa "Browser Support" sudah di aktifkan di "Settings" ',
+    ADD_Ledger_4:
+      'Jika "Browser Support" tidak ditemukan di "Settings", pastikan sudah mengupdate ke [Firmware >1.2](https://www.ledgerwallet.com/apps/manager) ',
+    ADD_Ledger_0a:
+      'Buka kembali MyEtherWallet melalui koneksi (SSL) yang aman ',
+    ADD_Ledger_0b:
+      'Buka kembali MyEtherWallet menggunakan [Chrome](https://www.google.com/chrome/browser/desktop/) atau [Opera](https://www.opera.com/) ',
+    ADD_Ledger_scan: 'Hubungkan ke Ledger Wallet ',
+
+    ADD_MetaMask: 'Connect to MetaMask ',
+
+    x_Trezor: 'TREZOR ',
+    ADD_Trezor_scan: 'Hubungkan ke TREZOR ',
+    ADD_Trezor_select: 'Ini adalah TREZOR seed ',
+    x_DigitalBitbox: 'Digital Bitbox ',
+    ADD_DigitalBitbox_0a:
+      'Buka kembali MyEtherWallet melalui koneksi (SSL) yang aman ',
+    ADD_DigitalBitbox_0b:
+      'Buka kembali MyEtherWallet menggunakan [Chrome](https://www.google.com/chrome/browser/desktop/) atau [Opera](https://www.opera.com/) ',
+    ADD_DigitalBitbox_scan: 'Hubungkan ke Digital Bitbox ',
 
     /* Generate Wallets */
-    GEN_desc: 'Jos tahdot luoda useita lompakoita, voit tehdä sen täältä ',
-    GEN_Label_1: 'Syötä vahva salasana (vähintään 9 merkkiä) ',
-    GEN_Placeholder_1: 'ÄLÄ unohda tallentaa tätä! ',
-    GEN_SuccessMsg: 'Onnistui! Sinun lompakkosi on luotu. ',
-    GEN_Label_2:
-      'Tallenna Avainsäilö tai Yksityinen salausavaimesi. Älä unohda yllä olevaa salasanaasi. ',
-    GEN_Label_3: 'Tallenna Osoitteesi. ',
+    GEN_desc:
+      'Jika Anda memerlukan lebih dari satu dompet, Anda dapat memakai fitur ',
+    GEN_Label_1: 'Masukkan password yang kuat (setidaknya 9 karakter) ',
+    GEN_Placeholder_1: 'JANGAN LUPA untuk mengingat dan menyimpannya! ',
+    GEN_SuccessMsg: 'Berhasil! Dompet Anda sudah dibuat. ',
+    GEN_Label_2: 'Simpan Keystore atau Private Key. Jangan lupa Password-nya. ',
+    GEN_Label_3: 'Simpan alamat dompet Anda. ',
     GEN_Label_4:
-      'Valinnainen: Tulosta paperi lompakkosi, tai säilö QR koodi versio. ',
+      'Opsional: Print Dompet Kertas Anda, atau simpan versi QR code-nya. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
-    BULK_Label_1: 'Kuinka Monta Lompakkoa Luodaan ',
-    BULK_Label_2: 'Luo Lompakot ',
-    BULK_SuccessMsg: 'Onnistui! Sinun lompakkosi on luotu. ',
+    BULK_Label_1: 'Jumlah Dompet yang akan dibuat ',
+    BULK_Label_2: 'Buat Dompet ',
+    BULK_SuccessMsg: 'Sukses! Dompet sudah berhasil dibuat. ',
 
     /* Sending Ether and Tokens */
-    SEND_addr: 'Osoitteeseen ',
-    SEND_amount: 'Summa Joka Lähetetään ',
-    SEND_amount_short: 'Summa ',
-    // SEND_custom                 : 'Mukautettu ',
+    SEND_addr: 'Alamat tujuan ',
+    SEND_amount: 'Jumlah untuk dikirim ',
+    SEND_amount_short: 'Jumlah ',
+    SEND_custom: 'Tambahkan "Custom Token" ',
     SEND_gas: 'Gas ',
-    SEND_TransferTotal: 'Lähetä Koko Saldo ',
-    SEND_generate: 'Luo Allekirjoitettu Siirto ',
-    SEND_raw: 'Käsittelemätön Siirto ',
-    SEND_signed: 'Allekirjoitettu Siirto ',
-    SEND_trans: 'Lähetä Siirto ',
-    SEND_custom: 'Add Custom Token ',
-    SENDModal_Title: 'Varoitus! ',
+    SEND_TransferTotal: 'Kirim seluruh Saldo ',
+    SEND_generate: 'Laksanakan Transaksi ',
+    SEND_raw: 'Transaksi Raw ',
+    SEND_signed: '"Signed Transaction" ',
+    SEND_trans: 'Kirim Transaksi ',
+    SENDModal_Title: 'PERINGATAN! ',
     /* full sentence reads "You are about to send "10 ETH" to address "0x1234". Are you sure you want to do this? " */
-    SENDModal_Content_1: 'Olet lähettämässä ',
-    SENDModal_Content_2: 'osoitteeseen ',
-    SENDModal_Content_3: 'Oletko varma että haluat tehdä tämän? ',
+    SENDModal_Content_1: 'Anda akan mengirim ',
+    SENDModal_Content_2: 'ke alamat ',
+    SENDModal_Content_3: 'Apakah ini benar? ',
     SENDModal_Content_4:
-      'HUOMAUTUS: Jos kohtaat virheen, sinun täytyy todennäköisesti lisätä ETHiä tilillesi kattaaksesi siirron vaatiman gasin hinnan. Gas maksetaan ETHeinä. ',
-    SENDModal_No: 'En, vie minut pois täältä! ',
-    SENDModal_Yes: 'Kyllä, olen varma! Toteuta siirto. ',
+      'CATATAN: Jika terjadi Error, kemungkinan Anda harus menambah Ether ke akun Anda untuk menutup biaya gas dan pengiriman. Gas dibayar dalam Ether. ',
+    SENDModal_No: 'Batalkan! ',
+    SENDModal_Yes: 'Ya! Laksanakan Transaksi-nya. ',
 
     /* Tokens */
-    TOKEN_Addr: 'Osoite ',
-    TOKEN_Symbol: 'Token Tunnus ',
-    TOKEN_Dec: 'Desimaalit ',
-    TOKEN_hide: 'Hide Tokens ',
-    TOKEN_show: 'Show All Tokens ',
+    TOKEN_Addr: 'Alamat ',
+    TOKEN_Symbol: 'Simbol Token ',
+    TOKEN_Dec: 'Desimal ',
+    TOKEN_show: 'Tampilkan Semua Token ',
+    TOKEN_hide: 'Jangan tampilkan Token ',
 
     /* Send Transaction */
-    TRANS_desc:
-      'Jos haluat lähettää Tokeneita, ole hyvä ja käytä "Lähetä Tokeneita" sivua. ',
+    TRANS_desc: 'Untuk pengiriman Token, gunakan halaman "Kirim Token". ',
     TRANS_warning:
-      'Jos käytät "Vain ETH" tai "Vain ETC" Toimintoja, niin lähetät sopimuksen kautta. Joillakin palveluilla on vaikeuksia hyväksyä näitä siirtoja. Lue lisää. ',
-    TRANS_advanced: '+Edistynyt: Lisää Tietoja ',
-    TRANS_data: 'Tiedot ',
+      'Penggunaan fitur "Hanya ETH" atau "Hanya ETC" memakai pengiriman melalui Kontrak. Beberapa layanan tidak menerima transaksi jenis ini. Baca lebih lanjut. ',
+    TRANS_advanced: '+Advanced: Tambah Data ',
+    TRANS_data: 'Data ',
     TRANS_gas: 'Gas Limit ',
     TRANS_sendInfo:
-      'Tavallinen siirto käyttäen 21000 gasia maksaa 0.000441 ETHiä. Me käytämme hieman-yli-minimin gasin hintaa 0.000000021 ETHiä varmistaaksemme että se louhitaan nopeasti. Me emme veloita siirto maksua. ',
+      'Transaksi standar menggunakan 21000 gas membutuhkan 0.000441 ETH. Kami memakai harga gas sedikit-diatas-harga-gas-minimum senilai 0.000000021 ETH untuk mempercepat. Kami tidak mengambil biaya atas transaksi. ',
 
     /* Send Transaction Modals */
-    TRANSModal_Title: '"Vain ETH" ja "Vain ETC" Siirrot ',
-    TRANSModal_Content_0:
-      'Huomautus erilaisista siirroista ja eri palveluista: ',
+    TRANSModal_Title: 'Transaksi "Hanya ETH" dan "Hanya ETC" ',
+    TRANSModal_Content_0: 'Catatan terkait jenis transaksi dan layanan: ',
     TRANSModal_Content_1:
-      '**ETH (Tavallinen Siirto): ** Tämä luo oletusarvoisen siirron osoitteesta toiseen. Siinä on oletus gasina 21000. On todennäköistä että kaikki ETH joka lähetetään tällä tavalla, toistetaan ETC ketjussa. ',
+      '**ETH (Transaksi Standar): ** Transaksi default ini melakukan pengiriman langsung dari alamat pengirim ke alamat tujuan. Nilai Gas 21000. Besar kemungkinan ETH yang dikirim dengan metode ini akan di "replay" di rantai ETC. ',
     TRANSModal_Content_2:
-      '**Vain ETH: ** Tämä lähettää [Timon Rappin toiston suojaus sopimuksen kautta (kuten VB on suositellut)](https://blog.ethereum.org/2016/07/26/onward_from_the_hard_fork/) niin että sinä lähetät vain **ETH** ketjussa. ',
+      '**Hanya ETH: ** Pengiriman melalui [kontrak penangkal "replay" oleh Timon Rapp (direkomendasikan oleh VB)](https://blog.ethereum.org/2016/07/26/onward_from_the_hard_fork/) sehingga hanya dilaksanakan di rantai **ETH** saja. ',
     TRANSModal_Content_3:
-      '**Only ETC: ** Tämä lähettää [Timon Rappin toiston suojaus sopimuksen kautta (kuten VB on suositellut)](https://blog.ethereum.org/2016/07/26/onward_from_the_hard_fork/) niin että sinä lähetät vain **ETC** ketjussa. ',
+      '**Hanya ETC: ** Pengiriman melalui [kontrak penangkal "replay" oleh Timon Rapp (direkomendasikan oleh VB)](https://blog.ethereum.org/2016/07/26/onward_from_the_hard_fork/) sehingga hanya dilaksanakan di rantai **ETC** saja. ',
     TRANSModal_Content_4:
-      '**Coinbase & ShapeShift: ** Lähetä ainoastaan käyttäen Tavallista Siirtoa. Jos lähetät käyttäen "Vain" sopimuksia, sinun täytyy olla yhteydessä heidän asiakastukensa henkilöstöön jotta he joko manuaalisesti lisäävät sinun saldosi tai palauttavat rahasi. [Voit kokeilla myös ShapeShiftin "split" työkalua.](https://split.shapeshift.io/) ',
+      '**Coinbase & ShapeShift: ** Hanya melakukan pengiriman melalui Transaksi Standar saja. Jika Anda mengirim menggunakan "Hanya ETH" atau "Hanya ETC", hubungi layanan konsumen mereka untuk menambahkan saldo Anda secara manual atau membatalkan transaksinya. [Bisa juga dicoba fasilitas "split" dari Shapeshift.](https://split.shapeshift.io/) ',
     TRANSModal_Content_5:
-      '**Kraken & Poloniex:** Ei tunnettuja ongelmia. Käytä mitä vain. ',
-    TRANSModal_Yes: 'Siistiä, nyt ymmärrän. ',
-    TRANSModal_No: 'Voi ei, olen entistä enemmän hämilläni. Auttakaa minua. ',
+      '**Kraken & Poloniex:** Tidak ada masalah dengan tipe pengiriman. Anda bisa memilih metode yang mana saja. ',
+    TRANSModal_Yes: 'Baik, saya sudah paham sekarang. ',
+    TRANSModal_No: 'Waduh, saya jadi tambah bingung. Bantu saya. ',
 
     /* Offline Transaction */
-    OFFLINE_Title: 'Luo ja Lähetä Offline Siirto ',
+    OFFLINE_Title: 'Penyiapan & Pengiriman Transaksi Offline ',
     OFFLINE_Desc:
-      'Offline siirtojen luonti voidaan tehdä kolmella eri vaiheella. Teet vaiheet 1 ja 3 käyttäen verkkoon yhdistettyä (online) tietokonetta, ja vaiheen 2 käyttäen offline/airgappattua tietokonetta. Tämä varmistaa ettei sinun yksityinen salausavaimesi ole kosketuksissa internettiin yhdistetyn laitteen kanssa. ',
-    OFFLLINE_Step1_Title: 'Vaihe 1: Luo Tiedot (Online Tietokone) ',
-    OFFLINE_Step1_Button: 'Luo Tiedot ',
-    OFFLINE_Step1_Label_1: 'Osoitteesta ',
+      'Penyiapan Transaksi Offline memerlukan tiga langkah. Langkah 1 & 3 dilakukan menggunakan komputer "online", sementara langkah 2 menggunakan komputer yang "offline/airgapped". Ini untuk menjaga agar private key Anda tidak menyentuh perangkat yang terkoneksi dengan internet. ',
+    OFFLLINE_Step1_Title: 'Langkah 1: Pelengkapan Informasi (komputer Online) ',
+    OFFLINE_Step1_Button: 'Buat Informasi ',
+    OFFLINE_Step1_Label_1: 'Alamat Pengirim ',
     OFFLINE_Step1_Label_2:
-      'Huomautus: Tämä on MISTÄ osoitteesta, ei MIHIN osoitteeseen. Nonce luodaan osoitteesta josta siirto on peräisin. Jos käytetään airgappattua tietokonetta, se olisi kylmä-varasto tilin osoite. ',
-    OFFLINE_Step2_Title: 'Vaihe 2: Luo Siirto (Offline Tietokone) ',
-    OFFLINE_Step2_Label_1: 'Osoitteeseen ',
-    OFFLINE_Step2_Label_2: 'Arvo / Määrä Joka Lähetetään ',
-    OFFLINE_Step2_Label_3: 'Gasin hinta ',
+      'Catatan: Ini adalah alamat PENGIRIM, bukan alamat TUJUAN. "Nonce" dibuat oleh akun pengirim. Jika memakai komputer yang "airgapped", ini adalah alamat akun "cold-storage". ',
+    OFFLINE_Step2_Title: 'Langkah 2: Pelengkapan Transaksi (komputer Offline) ',
+    OFFLINE_Step2_Label_1: 'Alamat Tujuan ',
+    OFFLINE_Step2_Label_2: 'Nilai/Jumlah untuk dikirim ',
+    OFFLINE_Step2_Label_3: 'Harga Gas ',
     OFFLINE_Step2_Label_3b:
-      'Tämä näytettiin kohdassa Vaihe 1 sinun verkkoon yhdistetyssä tietokoneessasi. ',
-    OFFLINE_Step2_Label_4: 'Gas Raja ',
+      'Nilai ini dihasilkan/ditunjukkan dari Langkah 1 yang dilakukan melalui komputer online di atas. ',
+    OFFLINE_Step2_Label_4: 'Limit Gas ',
     OFFLINE_Step2_Label_4b:
-      '21000 on oletusarvoinen gas raja. Kun lähetät sopimuksiin tai lisäät tietoa, saattaa tämä määrä joutua olemaan eri. Kaikki käyttämätön gas palautetaan sinulle. ',
+      'Limit Gas di set pada 21000. Jika ada data tambahan atau pengiriman melalui kontrak, nilainya bisa berbeda. Gas yang tidak terpakai akan dikembalikan. ',
     OFFLINE_Step2_Label_5: 'Nonce ',
     OFFLINE_Step2_Label_5b:
-      'Tämä näytettiin kohdassa Vaihe 1 sinun verkkoon yhdistetyssä tietokoneessasi. ',
-    OFFLINE_Step2_Label_6: 'Tiedot ',
+      'Ini ditunjukkan dari Langkah 1 di komputer online di atas. ',
+    OFFLINE_Step2_Label_6: 'Data ',
     OFFLINE_Step2_Label_6b:
-      'Tämä on valinnainen. Tietoja käytetään usein kun varoja lähetetään sopimuksiin. ',
-    OFFLINE_Step2_Label_7: 'Syötä / Valitse Yksityinen salausavaimesi / JSON. ',
+      'Ini opsional/tidak harus diisi. Data biasanya diperlukan jika bertransaksi melalui kontrak. ',
+    OFFLINE_Step2_Label_7: 'Masukkan/Pilih "Private Key"/JSON Anda. ',
     OFFLINE_Step3_Title:
-      'Vaihe 3: Lähetä / Julkaise Siirto (Verkkoon yhdistetty (online) tietokone) ',
+      'Langkah 3: Kirim/Publikasikan Transaksi (komputer Online) ',
     OFFLINE_Step3_Label_1:
-      'Liitä allekirjoitettu siirto Vaiheesta 2 tähän ja paina "LÄHETÄ SIIRTO" nappia. ',
+      '"Paste" data "Signed Transaction" dari Langkah 2 di atas dan klik tombol "Kirim Transaksi". ',
 
-    /* Deploy Contracts */
-    DEP_generate: 'Generoi Bytecode ',
-    DEP_generated: 'Generoitu Bytecode ',
-    DEP_signtx: 'Allekirjoita Siirto ',
-    DEP_interface: 'Generoitu Rajapinta ',
+    /* Sign Message */
+    MSG_message: 'Pesan ',
+    MSG_date: 'Tanggal ',
+    MSG_signature: 'Signature ',
+    MSG_verify: 'Verifikasi Pesan ',
+    MSG_info1:
+      'Cantumkan tanggal hari ini sehingga "Signature" tidak dapat dipakai ulang pada tanggal yang berbeda. ',
+    MSG_info2:
+      'Cantumkan nama atau "nickname" Anda dan dimana "nickname" tersebut dipakai sehingga pihak lain tidak dapat memakainya. ',
+    MSG_info3:
+      'Cantumkan alasan yang spesifik untuk pesan ini sehingga pesan yang ditandai ini tidak dapat dipakai ulang untuk keperluan lain. ',
 
     /* My Wallet */
-    MYWAL_Nick: 'Lompakon Kutsumanimi ',
-    MYWAL_Address: 'Lompakon Osoite ',
+    MYWAL_Nick: 'Dompet Alias ',
+    MYWAL_Address: 'Alamat Dompet ',
     MYWAL_Bal: 'Saldo ',
-    MYWAL_Edit: 'Muokkaa ',
-    MYWAL_View: 'Katso ',
-    MYWAL_Remove: 'Poista ',
-    MYWAL_RemoveWal: 'Poista Lompakko: ',
-    MYWAL_WatchOnly: 'Sinun Seuraa-Ainoastaan Tilisi ',
-    MYWAL_Viewing: 'Tarkastellaan Lompakkoa ',
-    MYWAL_Hide: 'Piilota Lompakon Tiedot ',
-    MYWAL_Edit_2: 'Muokkaa Lompakkoa ',
-    MYWAL_Name: 'Lompakon Nimi ',
-    MYWAL_Content_1: 'Varoitus! Olet poistamassa lompakkoasi. ',
+    MYWAL_Edit: 'Edit ',
+    MYWAL_View: 'Tampilkan ',
+    MYWAL_Remove: 'Hapus ',
+    MYWAL_RemoveWal: 'Hapus Dompet: ',
+    MYWAL_WatchOnly: 'Akun Untuk-Dilihat-Saja Anda ',
+    MYWAL_Viewing: 'Viewing Wallet ',
+    MYWAL_Hide: 'Sembunyikan Informasi Dompet ',
+    MYWAL_Edit_2: 'Edit Dompet ',
+    MYWAL_Name: 'Nama Dompet ',
+    MYWAL_Content_1: 'Peringatan! Anda akan menghapus Dompet ',
     MYWAL_Content_2:
-      'Varmista että olet **tallentanut tähän lompakkoon liittyvät yksityisen salausavaimesi/JSON tiedostosi ja salasanasi** ennen kuin poistat sen. ',
+      'Pastkan Anda telah **menyimpan private key dan/atau File Keystore File dan password** sebelum menghapus Dompet. ',
     MYWAL_Content_3:
-      'Jos tahdot käyttää tätä lompakkoa MyEtherWallet CX:si kanssa tulevaisuudessa, sinun täytyy manuaalisesti uudelleen-lisätä se käyttäen yksityistä salausavaintasi/JSONia ja salasanaa. ',
+      'Jika Anda akan memakai dompet ini dengan MyEtherWallet CX Anda ke depan, private key/JSON dan password harus ditambahkan lagi secara manual. ',
 
     /* View Wallet Details */
     VIEWWALLET_Subtitle:
-      'Tämä antaa sinun ladata eri versiota yksityisistä salausavaimistasi ja uudelleen-tulostaa paperi lompakkosi. Saatat tahtoa tehdä tämän [tuodaksesi sinun tilisi Gethiin/Mistiin](http://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/). Jos haluat tarkistaa saldosi, me suosittelemme käyttämään blockchain exploreria kuten [etherscan.io](http://etherscan.io/). ',
+      'Memungkinkan Anda untuk mencetak Dompet Kertas dari berbagai format atau versi "private key". Hal ini diperlukan pada saat anda ingin [mengimpor akun Anda ke Geth/Mist](http://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/). Jika Anda hanya ingin pengecekan saldo, pakailah salah satu layanan blockchain explorer seperti [etherscan.io](http://etherscan.io/). ',
     VIEWWALLET_Subtitle_Short:
-      'Tämä antaa sinun ladata eri versiota yksityisistä salausavaimistasi ja uudelleen-tulostaa paperi lompakkosi. ',
-    VIEWWALLET_SuccessMsg: 'Onnistui! Tässä ovat lompakkosi yksityiskohdat. ',
+      'Untuk pencetakan Dompet Kertas dari berbagai format "private key". ',
+    VIEWWALLET_SuccessMsg: 'Berhasil! Berikut detil dari dompet Anda. ',
+    VIEWWALLET_ShowPrivKey: '(show)',
+    VIEWWALLET_HidePrivKey: '(hide)',
 
     /* Chrome Extension */
     CX_error_1:
-      'Sinulla ei ole lompakkoja tallennettuna. Klikkaa ["Lisää Lompakko"](/cx-wallet.html#add-wallet) lisätäksesi! ',
-    CX_quicksend: 'PikaLähetä ', // if no appropriate translation, just use "Send"
+      'Anda tidak memiliki Dompet yang disimpan sebelumnya. Klik ["Buat Dompet"](/cx-wallet.html#add-wallet) untuk membuatnya! ',
+    CX_quicksend: 'QuickSend ', // if no appropriate translation, just use "Send"
 
     /* Node Switcher */
-    NODE_Title: 'Set Up Your Custom Node',
-    NODE_Subtitle: 'To connect to a local node...',
+    NODE_Title: 'Set Up Node Custom Anda',
+    NODE_Subtitle: 'Untuk terhubung ke node lokal...',
     NODE_Warning:
-      'Your node must be HTTPS in order to connect to it via MyEtherWallet.com. You can [download the MyEtherWallet repo & run it locally](https://github.com/kvhnuke/etherwallet/releases/latest) to connect to any node. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)',
-    NODE_Name: 'Node Name',
-    NODE_Port: 'Node Port',
-    NODE_CTA: 'Save & Use Custom Node',
+      'Node Anda harus berupa HTTPS untuk dapat terhubung melalui MyEtherWallet.com. Anda dapat [mengunduh MyEtherWallet repo & menjalankannya secara lokal](https://github.com/kvhnuke/etherwallet/releases/latest) untuk terhubung ke node apa saja. Atau, dapatkan SSL certificate gratis melalui [LetsEncrypt](https://letsencrypt.org/)',
+    NODE_Name: 'Nama Node',
+    NODE_Port: 'Port Node',
+    NODE_CTA: 'Simpan & Pakai Node Custom',
 
     /* Contracts */
-    CONTRACT_Title: 'Contract Address ',
-    CONTRACT_Title_2: 'Select Existing Contract ',
-    CONTRACT_Json: 'ABI / JSON Interface ',
-    CONTRACT_Interact_Title: 'Read / Write Contract ',
-    CONTRACT_Interact_CTA: 'Select a function ',
+    CONTRACT_Title: 'Alamat Kontrak ',
+    CONTRACT_Title_2: 'Pilih kontrak yang ada ',
+    CONTRACT_Json: 'Interface ABI / JSON ',
+    CONTRACT_Interact_Title: 'Kontrak Read / Write ',
+    CONTRACT_Interact_CTA: 'Pilih fungsi ',
     CONTRACT_ByteCode: 'Byte Code ',
     CONTRACT_Read: 'READ ',
     CONTRACT_Write: 'WRITE ',
-    // DEP_generate                : 'Generate Bytecode ',
-    // DEP_generated               : 'Generated Bytecode ',
-    // DEP_signtx                  : 'Sign Transaction ',
-    // DEP_interface               : 'Generated Interface ',
+    DEP_generate: 'Buat Bytecode ',
+    DEP_generated: 'Bytecode yang dibuat ',
+    DEP_signtx: 'Laksanakan Transaksi ',
+    DEP_interface: 'Interface yang dibuat ',
 
     /* Swap / Exchange */
-    SWAP_rates: 'Current Rates ',
-    SWAP_init_1: 'I want to swap my ',
-    SWAP_init_2: ' for ', // "I want to swap my X ETH for X BTC"
-    SWAP_init_CTA: "Let's do this! ", // or "Continue"
-    SWAP_information: 'Your Information ',
-    SWAP_send_amt: 'Amount to send ',
-    SWAP_rec_amt: 'Amount to receive ',
-    SWAP_your_rate: 'Your rate ',
-    SWAP_rec_add: 'Your Receiving Address ',
-    SWAP_start_CTA: 'Start Swap ',
-    SWAP_ref_num: 'Your reference number ',
-    SWAP_time: 'Time remaining to send ',
-    SWAP_progress_1: 'Order Initiated ',
-    SWAP_progress_2: 'Waiting for your ', // Waiting for your BTC...
-    SWAP_progress_3: 'Received! ', // ETH Received!
-    SWAP_progress_4: 'Sending your {{orderResult.output.currency}} ',
-    SWAP_progress_5: 'Order Complete ',
-    SWAP_order_CTA: 'Please send ', // Please send 1 ETH...
+    SWAP_rates: 'Nilai Tukar yang berlaku ',
+    SWAP_init_1: 'Saya ingin menukar ',
+    SWAP_init_2: ' menjadi ', // "I want to swap my X ETH for X BTC"
+    SWAP_init_CTA: 'Lanjutkan! ', // or "Continue"
+    SWAP_information: 'Informasi Anda ',
+    SWAP_send_amt: 'Jumlah untuk dikirim ',
+    SWAP_rec_amt: 'Jumlah untuk diterima ',
+    SWAP_your_rate: 'Nilai tukar Anda ',
+    SWAP_rec_add: 'Alamat penerima Anda ',
+    SWAP_start_CTA: 'Tukarkan ',
+    SWAP_ref_num: 'Nomor referensi Anda ',
+    SWAP_time: 'Sisa waktu untuk mengirim ',
+    SWAP_elapsed: 'Time elapsed since sent ',
+    SWAP_progress_1: 'Perintah Dijalankan ',
+    SWAP_progress_2: 'Menunggu ', // Waiting for your BTC...
+    SWAP_progress_3: 'Diterima! ', // ETH Received!
+    SWAP_progress_4: 'Mengirim {{orderResult.output.currency}} ',
+    SWAP_progress_5: 'Perintah Selesai ',
+    SWAP_order_CTA: 'Kirimkan ', // Please send 1 ETH...
     SWAP_unlock:
-      'Unlock your wallet to send ETH or Tokens directly from this page. ',
-
-    /* Sign Message */
-    MSG_message: 'Message ',
-    MSG_date: 'Date ',
-    MSG_signature: 'Signature ',
-    MSG_verify: 'Verify Message ',
-    MSG_info1:
-      'Include the current date so the signature cannot be reused on a different date. ',
-    MSG_info2:
-      'Include your nickname and where you use the nickname so someone else cannot use it. ',
-    MSG_info3:
-      'Include a specific reason for the message so it cannot be reused for a different purpose. ',
-
-    /* Mnemonic */
-    MNEM_1: 'Please select the address you would like to interact with. ',
-    MNEM_2:
-      'Your single HD mnemonic phrase can access a number of wallets / addresses. Please select the address you would like to interact with at this time. ',
-    MNEM_more: 'More Addresses ',
-    MNEM_prev: 'Previous Addresses ',
-
-    /* Hardware wallets */
-    x_Ledger: 'Ledger Nano S ',
-    ADD_Ledger_1: 'Connect your Ledger Nano S ',
-    ADD_Ledger_2: 'Open the Ethereum application (or a contract application) ',
-    ADD_Ledger_3: 'Verify that Browser Support is enabled in Settings ',
-    ADD_Ledger_4:
-      'If no Browser Support is found in settings, verify that you have [Firmware >1.2](https://www.ledgerwallet.com/apps/manager) ',
-    ADD_Ledger_0a: 'Re-open MyEtherWallet on a secure (SSL) connection ',
-    ADD_Ledger_0b:
-      'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ',
-    ADD_Ledger_scan: 'Connect to Ledger Nano S ',
-    x_Trezor: 'TREZOR ',
-    ADD_Trezor_scan: 'Connect to TREZOR ',
-    ADD_Trezor_select: 'This is a TREZOR seed ',
-
-    /* Chrome Extension */
-    // CX_error_1                  : 'You don\'t have any wallets saved. Click ["Add Wallet"](/cx-wallet.html#add-wallet) to add one! ',
-    // CX_quicksend                : 'QuickSend ', // if no appropriate translation, just use "Send"
-
-    /* Misc */
-    // FOOTER_1b                   : 'Created by ',
-    // FOOTER_4                    : 'Disclaimer ',
+      'Unlock wallet Anda untuk mengirim ETH atau Token langsung dari halaman ini. ',
 
     /* Error Messages */
-    ERROR_0: 'Ole hyvä ja syötä kelpaava summa. ',
+    ERROR_0: 'Masukkan jumlah yang valid. ',
     ERROR_1:
-      'Salasanasi pitää olla vähintään 9 merkkiä pitkä. Ole hyvä ja varmista että käytät vahvaa salasanaa. ',
-    ERROR_2: 'Pahoittelut! Emme tunnista tämänlaista lompakko tiedostoa. ',
-    ERROR_3: 'Tämä ei ole validi lompakko tiedosto. ',
-    ERROR_4:
-      'Tätä yksikköä ei ole olemassa, ole hyvä ja käytä jotain seuraavista yksiköistä ',
-    ERROR_5: 'Virheellinen osoite. ',
-    ERROR_6: 'Virheellinen salasana. ',
-    ERROR_7: 'Virheellinen summa. ',
-    ERROR_8: 'Virheellinen gas raja. ',
-    ERROR_9: 'Virheellinen tieto arvo. ',
-    ERROR_10: 'Virheellinen gasin määrä. ',
-    ERROR_11: 'Virheellinen nonce. ',
-    ERROR_12: 'Virheellinen allekirjoitettu siirto. ',
-    ERROR_13: 'Lompakko tällä kutsumanimellä on jo olemassa. ',
-    ERROR_14: 'Lompakkoa ei löytynyt. ',
+      'Password minimal terdiri dari 9 huruf. Pastikan password Anda kuat. ',
+    ERROR_2: 'Maaf! tipe dompet ini tidak dikenal. ',
+    ERROR_3: 'Ini bukan file dompet yang valid. ',
+    ERROR_4: 'Unit tidak valid, gunakan salah satu dari unit berikut ',
+    ERROR_5: 'Alamat tidak valid. ',
+    ERROR_6: 'Password tidak valid. ',
+    ERROR_7: 'Jumlah tidak valid. (Must be integer. Try 0-18.) ', // 7
+    ERROR_8: 'Gas limit tidak valid. (Must be integer. Try 21000-4000000.) ', // 8
+    ERROR_9: 'Nilai data tidak valid. (Must be hex.) ', // 9
+    ERROR_10:
+      'Jumlah Gas tidak valid. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ',
+    ERROR_11: 'Nonce tidak valid. (Must be integer.) ', // 11
+    ERROR_12: 'Signed transaction tidak valid. ',
+    ERROR_13: 'Sudah ada Dompet dengan nickname ini. ',
+    ERROR_14: 'Dompet tidak ditemukan. ',
     ERROR_15:
-      'Ei näytä että ehdotusta tällä ID:llä olisi vielä olemassa tai tapahtui virhe ehdotusta luettaessa. ',
+      'Tidak ditemukan proposal dengan ID ini atau terjadi error saat membaca proposal ini. ',
     ERROR_16:
-      'Lompakko jolla on tämä osoite on jo muistissa. Ole hyvä ja tarkista oma lompakko sivusi. ',
+      'Terdapat dompet dengan alamat yang sama di storage. Cek kembali halaman dompet Anda. ',
     ERROR_17:
-      'Sinulla täytyy olla vähintään 0.01 ETHiä tililläsi kattaaksesi gasin hinnan. Ole hyvä ja lisää hieman ETHiä ja kokeile uudelleen. ',
+      'Dana tidak mencukupi. Akun yang dipakai untuk mengirim tidak memiliki dana yang cukup. Minimal harus ada **0.01 ETH** di akun untuk menutup biaya gas. Tambahkan ether dan coba lagi. ',
     ERROR_18:
-      'Kaikki gas käytettäisiin tässä siirrossa. Tämä tarkoittaa että olet jo äänestänyt tässä ehdotuksessa tai debaatti aika on jo päättynyt. ',
-    ERROR_19: 'Virheellinen merkki ',
-    ERROR_20: 'Not a valid ERC-20 token ',
+      'Semua gas akan digunakan pada transaksi ini. Ini berarti Anda telah memberikan suara pada proposal ini atau periode perdebatan telah berakhir. ',
+    ERROR_19: 'Simbol tidak valid ',
+    ERROR_20: 'Bukan ERC-20 token yang valid.',
     ERROR_21:
-      'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative. ',
-    ERROR_22: 'Please enter valid node name ',
+      'Tidak dapat memperkirakan gas. Saldo di akun tidak cukup, atau alamat kontrak penerima bisa mengeluarkan error. Cobalah untuk secara manual mengatur gas dan melanjutkan. Keterangan Error saat pengiriman mungkin lebih informatif. ',
+    ERROR_22: 'Please enter a valid node name', // 22
     ERROR_23:
-      'Please enter valid URL. If you are connecting via HTTPS, your node must be over HTTPS ',
-    ERROR_24: 'Please enter valid port ',
-    ERROR_25: 'Please enter valid chain ID ',
-    ERROR_26: 'Please enter valid ABI ',
-    ERROR_27: 'Minimum amount: 0.01. Maximum Amount: ',
+      'Please enter a valid URL. If you are on https, your URL must be https', // 23
+    ERROR_24: 'Please enter a valid port. ', // 24
+    ERROR_25: 'Please enter a valid chain ID. ', // 25
+    ERROR_26: 'Please enter a valid ABI. ', // 26
+    ERROR_27: 'Minimum amount: 0.01. Max amount: ', // 27
     ERROR_28:
-      '**Tarvitset Avainsäilö Tiedostosi & salasanan tai Yksityisen salausavaimesi** saadaksesi pääsyn tähän lompakkoon tulevaisuudessa. Ole hyvä ja tallenna sekä varmuuskopioi se ulkoisesti! Ei ole mitään keinoa palauttaa sitä jos et tallenna sitä. Voit lukea ohjeet [Apua sivulta](https://www.myetherwallet.com/#help). ',
-    ERROR_29: 'Please enter valid user and password ',
-    ERROR_30: 'Please enter valid ENS name ',
-    ERROR_31: 'Invalid secret phrase ',
+      '**DIPERLUKAN File Keystore & password** (atau Private Key) untuk mengakses dompet Anda. Simpan dan backup dengan baik file ini! Tidak ada mekanisme untuk me-recover dompet jika file-nya hilang. Baca instruksi lengkapnya [di sini](https://www.myetherwallet.com/#help). ',
+    ERROR_29: 'Please enter a valid user and password. ', // 29
+    ERROR_30: 'Please enter a valid name (7+ characters, limited punctuation) ', // 30
+    ERROR_31: 'Please enter a valid secret phrase. ', // 31
     ERROR_32:
-      'Could not connect to the node. Please refresh the page, or see the help page for more troubleshooting suggestions. ',
-    SUCCESS_1: 'Validi osoite ',
-    SUCCESS_2: 'Lompakon salaus onnistuneesti purettu ',
+      'Could not connect to the node. Refresh your page, try a different node (upper right corner), check your firewall settings. If custom node, check your configs.', // 32
+    ERROR_33:
+      "The wallet you have unlocked does not match the owner's address. ", // 33
+    ERROR_34:
+      'The name you are attempting to reveal does not match the name you have entered. ', // 34
+    ERROR_35:
+      'Input address is not checksummed. <a href="https://myetherwallet.groovehq.com/knowledge_base/topics/not-checksummed-shows-when-i-enter-an-address" target="_blank" rel="noopener"> More info</a>', // 35
+    ERROR_36: 'Enter valid TX hash', // 36
+    ERROR_37: 'Enter valid hex string (0-9, a-f)', // 37
+
+    SUCCESS_1: 'Alamat valid ',
+    SUCCESS_2: 'Dompet telah ter-dekripsi ',
     SUCCESS_3:
-      'TX was broadcast to the blockchain. Click to see your transaction & verify it was mined and does not have any out of gas or contract execution errors.  TX ID:  ', //'Siirto lähetetty. TX ID ',
-    SUCCESS_4: 'Lompakkosi lisätty onnistuneesti ',
-    SUCCESS_5: 'Valittu Tiedosto ',
+      'Your TX has been broadcast to the network. It is waiting to be mined & confirmed. During ICOs, it may take 3+ hours to confirm. Use the Verify & Check buttons below to see. TX Hash:   ', //'Transaksi diajukan. TX Hash ',
+    SUCCESS_4: 'Dompet Anda telah ditambahkan ',
+    SUCCESS_5: 'File Terpilih ',
     SUCCESS_6: 'You are successfully connected ',
     SUCCESS_7: 'Message Signature Verified',
     WARN_Send_Link:
-      'You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started. ',
+      'Alamat, jumlah, gas atau informasi telah diisikan untuk Anda. Informasi tersebut dapat Anda rubah sebelum pengiriman. Buka kunci dompet Anda Untuk memulai. ',
 
     /* Geth Error Messages */
-    GETH_InvalidSender: 'Virheellinen lähettäjä ',
-    GETH_Nonce: 'Nonce liian pieni ',
-    GETH_Cheap: 'Gasin hinta liian matala hyväksyttäväksi ',
-    GETH_Balance: 'Riittämätön saldo ',
-    GETH_NonExistentAccount:
-      'Tiliä ei ole olemassa tai tilin saldo liian pieni ',
-    GETH_InsufficientFunds: 'Riittämätön saldo gas * hinta + arvo ',
-    GETH_IntrinsicGas: 'Olennainen gas liian pieni ',
-    GETH_GasLimit: 'Ylittää blockin gas rajan ',
-    GETH_NegativeValue: 'Negatiivinen arvo ',
+    GETH_InvalidSender: 'Pengirim tidak valid ',
+    GETH_Nonce: 'Nonce terlalu rendah ',
+    GETH_Cheap: 'Harga Gas terlalu kecil untuk dapat diterima ',
+    GETH_Balance: 'Saldo tidak mencukupi ',
+    GETH_NonExistentAccount: 'Akun tidak ditemukan atau saldo terlalu rendah ',
+    GETH_InsufficientFunds: 'Tidak cukup saldo untuk gas * harga + nilai ',
+    GETH_IntrinsicGas: 'Gas intrinsik terlalu rendah ',
+    GETH_GasLimit: 'Melebihi limit blok gas ',
+    GETH_NegativeValue: 'Nilai negatif ',
 
     /* Parity Error Messages */
     PARITY_AlreadyImported:
-      'Transaction with the same hash was already imported.',
-    PARITY_Old: 'Transaction nonce is too low. Try incrementing the nonce.',
+      'Transaksi dengan hash yang sama sudah pernah di-impor sebelumnya.',
+    PARITY_Old: 'Nonce transaksi terlalu kecil. Coba naikkan nilai Nonce-nya.',
     PARITY_TooCheapToReplace:
-      'Transaction fee is too low. There is another transaction with same nonce in the queue. Try increasing the fee or incrementing the nonce.',
+      'Biaya transaksi terlalu rendah. Ada transaksi lain dengan nonce yang sama dalam antrian. Coba naikkan biaya transaksi atau naikkan nonce-nya.',
     PARITY_LimitReached:
-      'There are too many transactions in the queue. Your transaction was dropped due to limit. Try increasing the fee.',
+      'Terlalu banyak transaksi dalam antrian. Transaksi Anda gugur karena melampaui batas. Coba naikkan biaya transaksi',
     PARITY_InsufficientGasPrice:
-      "Transaction fee is too low. It does not satisfy your node's minimal fee (minimal: {}, got: {}). Try increasing the fee.",
+      'Biaya transaksi terlalu rendah. Tidak memenuhi nilai biaya minimal untuk node Anda(minimal: {}, got: {}). Coba naikkan biaya transaksi.',
     PARITY_InsufficientBalance:
-      'Insufficient funds. Account you try to send transaction from does not have enough funds. Required {} and got: {}.',
+      'Dana tidak mencukupi. Akun yang dipakai untuk mengirim tidak memiliki dana yang cukup. Diperlukan {} dan hanya tersedia: {}.',
     PARITY_GasLimitExceeded:
-      'Transaction cost exceeds current gas limit. Limit: {}, got: {}. Try decreasing supplied gas.',
-    PARITY_InvalidGasLimit: 'Supplied gas is beyond limit.',
+      'Biaya transaksi melebihi limit gas yang berlaku. Limit: {}, tersedia: {}. Coba turunkan gas yang disediakan.',
+    PARITY_InvalidGasLimit: 'Gas yang disediakan nilainya diatas limit.',
 
     /* Tranlsation Info */
-    translate_version: '0.4 ',
-    Translator_Desc: 'Kiitos kääntäjillemme... ',
+    translate_version: '0.3 ',
+    Translator_Desc: 'Thank you to our translators ',
     TranslatorName_1:
-      '[Smokyish](https://www.myetherwallet.com/?gaslimit=21000&to=0xac9a2c1dd946da64c0dc8e70cec2cfb14304fd4f&value=1.0#send-transaction)',
-    TranslatorAddr_1: '',
-    /* Translator 1             : Insert Comments Here */
+      '[Yos Ginting](https://www.myetherwallet.com/?gaslimit=21000&to=0x8F646C5c215be6E0163f02Bd2eB97AFC2DF70e5c&value=1.0#send-transaction) ',
+    TranslatorAddr_1: '0x8F646C5c215be6E0163f02Bd2eB97AFC2DF70e5c ',
+    /* Translator 1             : 05 Sep 2016: Translation completed (except HELP texts); 09 Sep 2016: Revisions on some words and phrases */
     TranslatorName_2: '',
     TranslatorAddr_2: '',
     /* Translator 2             : Insert Comments Here */
@@ -471,7 +564,6 @@ module.exports = {
     HELP_1_Desc_4: 'Click "GENERATE". ',
     HELP_1_Desc_5: 'Your wallet has now been generated. ',
 
-    HELP_2a_Title: '2a) How do I save/backup my wallet? ',
     HELP_2a_Desc_1:
       'You should always back up your wallet externally and in multiple physical locations - like on a USB drive and/or a piece of paper. ',
     HELP_2a_Desc_2:
@@ -489,7 +581,7 @@ module.exports = {
       '2b) How do I safely / offline / cold storage with MyEtherWallet? ',
     HELP_2b_Desc_1:
       'Go to [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ',
-    HELP_2b_Desc_2: 'Click on `dist-vX.X.X.X.zip`. ',
+    HELP_2b_Desc_2: 'Click on `etherwallet-vX.X.X.X.zip`. ',
     HELP_2b_Desc_3: 'Move zip to an airgapped computer. ',
     HELP_2b_Desc_4: 'Unzip it and double-click `index.html`. ',
     HELP_2b_Desc_5: 'Generate a wallet with a strong password. ',
@@ -519,7 +611,7 @@ module.exports = {
     HELP_4_Title: '4) How do I send Ether from one wallet to another? ',
     HELP_4_Desc_1:
       'If you plan to move a large amount of ether, you should test sending a small amount to your wallet first to ensure everything goes as planned. ',
-    HELP_4_Desc_2: 'Navigate to the "Lähetä Etheriä ja Tokeneita" page. ',
+    HELP_4_Desc_2: 'Navigate to the "Kirim Ether dan Tokens" page. ',
     HELP_4_Desc_3:
       'Select your wallet file -or- your private key and unlock your wallet. ',
     HELP_4_Desc_4:
@@ -536,11 +628,11 @@ module.exports = {
     HELP_4_Desc_12:
       'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button. ',
     HELP_4_Desc_13:
-      'The transaction will be submitted. The TX ID will display. You can click that TX ID to see it on the blockchain. ',
+      'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain. ',
 
     HELP_4CX_Title: '4) How do I send Ether using MyEtherWallet CX? ',
     HELP_4CX_Desc_1:
-      'First, you need to add a wallet. Once you have done that, you have 2 options: the "QuickSend" functionality from the Chrome Extension icon or the "Lähetä Etheriä ja Tokeneita" page. ',
+      'First, you need to add a wallet. Once you have done that, you have 2 options: the "QuickSend" functionality from the Chrome Extension icon or the "Kirim Ether dan Tokens" page. ',
     HELP_4CX_Desc_2: 'QuickSend: ',
     HELP_4CX_Desc_3: 'Click the Chrome Extension Icon. ',
     HELP_4CX_Desc_4: 'Click the "QuickSend" button. ',
@@ -554,7 +646,7 @@ module.exports = {
       'Verify the address and the amount you are sending is correct. ',
     HELP_4CX_Desc_10: 'Enter the password for that wallet. ',
     HELP_4CX_Desc_11: 'Click "Send Transaction." ',
-    HELP_4CX_Desc_12: 'Using "Lähetä Etheriä ja Tokeneita" Page ',
+    HELP_4CX_Desc_12: 'Using "Kirim Ether dan Tokens" Page ',
 
     HELP_5_Title: '5) How do I run MyEtherWallet.com offline/locally? ',
     HELP_5_Desc_1:
@@ -583,7 +675,7 @@ module.exports = {
     HELP_7_Title: '7) How do I send Tokens & add custom tokens? ',
     HELP_7_Desc_0:
       '[Ethplorer.io](https://ethplorer.io/) is a great way to explore tokens and find the decimals of a token. ',
-    HELP_7_Desc_1: 'Navigate to the "Lähetä Etheriä ja Tokeneita" page. ',
+    HELP_7_Desc_1: 'Navigate to the "Send Token" page. ',
     HELP_7_Desc_2: 'Unlock your wallet. ',
     HELP_7_Desc_3:
       'Enter the address you would like to send to in the "To Address:" field. ',
@@ -603,7 +695,7 @@ module.exports = {
     HELP_7_Desc_14:
       'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button. ',
     HELP_7_Desc_15:
-      'The transaction will be submitted. The TX ID will display. You can click that TX ID to see it on the blockchain. ',
+      'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain. ',
 
     HELP_8_Title: '8) What happens if your site goes down? ',
     HELP_8_Desc_1:
@@ -623,7 +715,7 @@ module.exports = {
     HELP_8CX_Desc_3:
       'If for some reason MyEtherWallet CX disappears from the Chrome Store, you can find the source on Github and load it manually. See #5 above. ',
 
-    HELP_9_Title: '9) Is the "Lähetä Etheriä ja Tokeneita" page offline? ',
+    HELP_9_Title: '9) Is the "Kirim Ether dan Tokens" page offline? ',
     HELP_9_Desc_1:
       'No. It needs the internet in order to get the current gas price, nonce of your account, and broadcast the transaction (aka "send"). However, it only sends the signed transaction. Your private key safely stays with you. We also now provide an "Offline Transaction" page so that you can ensure your private keys are on an offline/airgapped computer at all times. ',
 

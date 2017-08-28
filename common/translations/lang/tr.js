@@ -4,6 +4,83 @@
 module.exports = {
   code: 'tr',
   data: {
+    HELP_2a_Title: 'How do I save/backup my wallet? ',
+
+    /* New Generics */
+    x_CancelReplaceTx: 'Cancel or Replace Transaction',
+    x_CancelTx: 'Cancel Transaction',
+    x_PasswordDesc:
+      'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
+    x_ReadMore: 'Read More',
+    x_ReplaceTx: 'Replace Transaction',
+    x_TransHash: 'Transaction Hash',
+    x_TXFee: 'TX Fee',
+    x_TxHash: 'TX Hash',
+
+    /* Check TX Status */
+    NAV_CheckTxStatus: 'Check TX Status',
+    NAV_TxStatus: 'TX Status',
+    tx_Details: 'Transaction Details',
+    tx_Summary:
+      'During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs. ** This is not typically something you can do. It should not be relied upon & will only work when the TX Pools are full. [Please, read about this tool here.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**',
+    tx_notFound: 'Transaction Not Found',
+    tx_notFound_1:
+      'This TX cannot be found in the TX Pool of the node you are connected to.',
+    tx_notFound_2:
+      'If you just sent the transaction, please wait 15 seconds and press the "Check TX Status" button again. ',
+    tx_notFound_3:
+      'It could still be in the TX Pool of a different node, waiting to be mined.',
+    tx_notFound_4:
+      'Please use the dropdown in the top-right & select a different ETH node (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyEtherWallet)`) and check again.',
+    tx_foundInPending: 'Pending Transaction Found',
+    tx_foundInPending_1:
+      'Your transaction was located in the TX Pool of the node you are connected to. ',
+    tx_foundInPending_2: 'It is currently pending (waiting to be mined). ',
+    tx_foundInPending_3:
+      'There is a chance you can "cancel" or replace this transaction. Unlock your wallet below.',
+    tx_FoundOnChain: 'Transaction Found',
+    tx_FoundOnChain_1:
+      'Your transaction was successfully mined and is on the blockchain.',
+    tx_FoundOnChain_2:
+      '**If you see a red `( ! )`, a `BAD INSTRUCTION` or `OUT OF GAS` error message**, it means that the transaction was not successfully *sent*. You cannot cancel or replace this transaction. Instead, send a new transaction. If you received an "Out of Gas" error, you should double the gas limit you specified originally.',
+    tx_FoundOnChain_3:
+      '**If you do not see any errors, your transaction was successfully sent.** Your ETH or Tokens are where you sent them. If you cannot see this ETH or Tokens credited in your other wallet / exchange account, and it has been 24+ hours since you sent, please [contact that service](https://myetherwallet.groovehq.com/knowledge_base/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Send them the *link* to your transaction and ask them, nicely, to look into your situation.',
+
+    /* Gen Wallet Updates */
+    GEN_Help_1: 'Use your',
+    GEN_Help_2: 'to access your account.',
+    GEN_Help_3: 'Your device * is * your wallet.',
+    GEN_Help_4: 'Guides & FAQ',
+    GEN_Help_5: 'How to Create a Wallet',
+    GEN_Help_6: 'Getting Started',
+    GEN_Help_7:
+      "Keep it safe · Make a backup · Don't share it with anyone · Don't lose it · It cannot be recovered if you lose it.",
+    GEN_Help_8: 'Not Downloading a File? ',
+    GEN_Help_9: 'Try using Google Chrome ',
+    GEN_Help_10: 'Right click & save file as. Filename: ',
+    GEN_Help_11: "Don't open this file on your computer ",
+    GEN_Help_12:
+      'Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity and other wallet clients.) ',
+    GEN_Help_13: 'How to Back Up Your Keystore File ',
+    GEN_Help_14: 'What are these Different Formats? ',
+    GEN_Help_15: 'Preventing loss &amp; theft of your funds.',
+    GEN_Help_16: 'What are these Different Formats?',
+    GEN_Help_17: 'Why Should I?',
+    GEN_Help_18: 'To have a secondary backup.',
+    GEN_Help_19: 'In case you ever forget your password.',
+    GEN_Help_20: 'Cold Storage',
+    GET_ConfButton: 'I understand. Continue.',
+    GEN_Label_5: 'Save Your `Private Key`. ',
+    GEN_Unlock: 'Unlock your wallet to see your address',
+    GAS_PRICE_Desc:
+      'Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.',
+    GAS_LIMIT_Desc:
+      'Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.',
+    NONCE_Desc:
+      'The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.',
+    TXFEE_Desc:
+      'The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)',
+
     /* Navigation*/
     NAV_AddWallet: 'Cüzdan ekle ',
     NAV_BulkGenerate: 'Birkaç Cüzdan oluştur ',
@@ -11,6 +88,7 @@ module.exports = {
     NAV_Contracts: 'Sözleşmeler ',
     NAV_DeployContract: 'Sözleşme kur ',
     NAV_ENS: 'ENS',
+    NAV_GenerateWallet_alt: 'New Wallet ',
     NAV_GenerateWallet: 'Cüzdan oluştur ',
     NAV_Help: 'Yardim et ',
     NAV_InteractContract: 'Interact with Contract ',
@@ -27,7 +105,7 @@ module.exports = {
     /* General */
     x_Access: 'Erişim ',
     x_AddessDesc:
-      'Bu "hesap numarası" veya "genel anahtar" dir. Birisi ether göndermek istiyorsa bu adresi kullanmasi gerekir. Ikon adresini kontrol etmek kolay bir yoldur ',
+      'Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere. Bu "hesap numarası" veya "genel anahtar" dir. Birisi ether göndermek istiyorsa bu adresi kullanmasi gerekir. Ikon adresini kontrol etmek kolay bir yoldur ',
     x_Address: 'Adresin ',
     x_Cancel: 'Iptal et ',
     x_CSV: 'CSV dosya (şifrelenmemis) ',
@@ -39,6 +117,7 @@ module.exports = {
     x_Keystore2: 'Keystore dosya (UTC / JSON) ',
     x_KeystoreDesc:
       'This Keystore file matches the format used by Mist so you can easily import it in the future. It is the recommended file to download and back up. ',
+    x_MetaMask: 'Metamask / Mist ',
     x_Mnemonic: 'Mnemonic Phrase ',
     x_ParityPhrase: 'Parity Phrase ',
     x_Password: 'Parola ',
@@ -82,6 +161,8 @@ module.exports = {
       'MyEtherWallet gizlilik ve güvenlike adanmış ücretsiz ve açık kaynak kodlu bir hizmettir. Ne kadar cok bagis edilirse o kadar cok yeni özellik programlamaya, görüşlerinizi işlemeye yatitim yapabiliriz. Biz sadece dünyayı değiştirmek isteyen iki kişiyiz. Bize yardım edermisin? ',
     sidebar_donate: 'Bağışta bulun ',
     sidebar_thanks: 'TEŞEKKÜRLER!!! ',
+    sidebar_DisplayOnTrezor: 'Display address on TREZOR',
+    sidebar_DisplayOnLedger: 'Display address on Ledger',
 
     /* Decrypt Panel */
     decrypt_Access: 'Cüzdanını nasıl acmak istersin? ',
@@ -89,8 +170,8 @@ module.exports = {
     decrypt_Select: 'Bir cüzdan sec: ',
 
     /* Add Wallet */
-    ADD_Label_1: 'Ne yapmak istiyorsun? ',
-    ADD_Radio_1: 'Yeni cüzdan olustur ',
+    ADD_Label_1: 'Ne yapmak istiyorsunuz? ',
+    ADD_Radio_1: 'Yeni cüzdan olusturun ',
     ADD_Radio_2: 'Cüzdan dosyayi sec (Keystore / JSON) ',
     ADD_Radio_2_alt: 'Cüzdan dosyayi sec ',
     ADD_Radio_2_short: 'CÜZDAN DOSYAYI SEC... ',
@@ -113,6 +194,7 @@ module.exports = {
     ADD_Label_6: 'Cüzdani ac ',
     ADD_Label_6_short: 'Ac ',
     ADD_Label_7: 'Hesap ekle ',
+    ADD_Label_8: 'Password (optional): ',
 
     /* Generate Wallets */
     GEN_desc:
@@ -125,6 +207,8 @@ module.exports = {
     GEN_Label_3: 'Adresini kaydet. ',
     GEN_Label_4:
       'Isteye bagli: Cüzdanin kağıt versiyonunu yazdir veya QR code versiyonunu sakla.',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Oluşturulacak cüzdan sayısı ',
@@ -135,7 +219,7 @@ module.exports = {
     SEND_addr: 'Bu Adrese gönder ',
     SEND_amount: 'Gönderilecek miktar ',
     SEND_amount_short: 'Miktar ',
-    // SEND_custom                 : 'Kullaniciya özel ', /*maybe another word here too */
+    SEND_custom: 'Özel Token Ekle ',
     SEND_gas: 'Gas ',
     SEND_TransferTotal: 'Tüm dengeyi gönder ',
     SEND_generate: 'Generate Transaction ',
@@ -143,12 +227,13 @@ module.exports = {
     SEND_signed: 'Imzali İşlem ',
     SEND_trans: 'Islemi gönder ',
     SENDModal_Title: 'Uyarı! ',
-    SEND_custom: 'Özel Token Ekle ',
 
     /* full sentence reads "You are about to send "10 ETH" to address "0x1234". Are you sure you want to do this? " */
     SENDModal_Content_1: 'şu an ',
     SENDModal_Content_2: 'bu adresse ',
     SENDModal_Content_3: 'Göndermek üzeresin. Emin misin? ',
+    SENDModal_Content_4:
+      'NOTE: If you encounter an error, you most likely need to add ether to your account to cover the gas cost of sending tokens. Gas is paid in ether. ',
     SENDModal_No: 'Hayir, cikar beni burdan! ',
     SENDModal_Yes: 'Evet, eminim! Islemi tamamla. ',
 
@@ -272,6 +357,7 @@ module.exports = {
     SWAP_start_CTA: 'Start Swap ',
     SWAP_ref_num: 'Your reference number ',
     SWAP_time: 'Time remaining to send ',
+    SWAP_elapsed: 'Time elapsed since sent ',
     SWAP_progress_1: 'Order Initiated ',
     SWAP_progress_2: 'Waiting for your ', // Waiting for your BTC...
     SWAP_progress_3: 'Received! ', // ETH Received!
@@ -301,19 +387,26 @@ module.exports = {
     MNEM_prev: 'Önceki Adresler ',
 
     /* Hardware wallets */
-    x_Ledger: 'Ledger Nano S ',
-    ADD_Ledger_1: 'Connect your Ledger Nano S ',
+    x_Ledger: 'Ledger Wallet ',
+    ADD_Ledger_1: 'Connect your Ledger Wallet ',
     ADD_Ledger_2: 'Open the Ethereum application (or a contract application) ',
     ADD_Ledger_3: 'Verify that Browser Support is enabled in Settings ',
     ADD_Ledger_4:
       'If no Browser Support is found in settings, verify that you have [Firmware >1.2](https://www.ledgerwallet.com/apps/manager) ',
-    ADD_Ledger_0a: 'Re-open MyEtherWallet on a secure (SSL) connection ',
+    ADD_Ledger_0a:
+      'You must access MyEtherWallet via a secure (SSL / HTTPS) connection to connect. ',
     ADD_Ledger_0b:
       'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ',
-    ADD_Ledger_scan: "Ledger Nano S'e bağlan ",
+    ADD_Ledger_scan: "Ledger Wallet'e bağlan ",
+    ADD_MetaMask: 'Connect to MetaMask ',
     x_Trezor: 'TREZOR ',
     ADD_Trezor_scan: "TREZOR'a bağlan ",
     ADD_Trezor_select: 'This is a TREZOR seed ',
+    x_DigitalBitbox: 'Digital Bitbox ',
+    ADD_DigitalBitbox_0a: 'Re-open MyEtherWallet on a secure (SSL) connection ',
+    ADD_DigitalBitbox_0b:
+      'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ',
+    ADD_DigitalBitbox_scan: 'Connect your Digital Bitbox ',
 
     /* View Wallet Details */
     VIEWWALLET_Subtitle:
@@ -321,6 +414,8 @@ module.exports = {
     VIEWWALLET_Subtitle_Short:
       'This allows you to download different versions of private keys and re-print your paper wallet. ',
     VIEWWALLET_SuccessMsg: 'Success! Here are your wallet details. ',
+    VIEWWALLET_ShowPrivKey: '(show)',
+    VIEWWALLET_HidePrivKey: '(hide)',
 
     /* Chrome Extension */
     CX_error_1:
@@ -333,28 +428,28 @@ module.exports = {
       "Sifren en az 9 sembol'dan olusmasi lazim. Güçlü bir parola sectiginden emin ol. ",
     ERROR_2: "Sorry! We don't recognize this type of wallet file. ",
     ERROR_3: 'Geçerli bir cüzdan dosyası değil. ',
-    ERROR_4:
-      "This unit doesn't exists, please use the one of the following units Var olmayan bir birim, bu birimlerden birini kullan lütfen ",
+    ERROR_4: 'Var olmayan bir birim, bu birimlerden birini kullan lütfen ',
     ERROR_5: 'Geçersiz adres. ',
     ERROR_6: 'Geçersiz parola. ',
-    ERROR_7: 'Yetersiz bakiye. ' /* yetersiz bakiye */,
-    ERROR_8: 'Geçersiz gas limit. ',
-    ERROR_9: 'Geçersiz data value. ',
-    ERROR_10: 'Yetersiz gas. ' /* yetersiz gas */,
-    ERROR_11: 'Geçersiz veri. ',
+    ERROR_7: 'Yetersiz bakiye. (Must be integer. Try 0-18.) ', // 7
+    ERROR_8: 'Geçersiz gas limit. (Must be integer. Try 21000-4000000.) ', // 8
+    ERROR_9: 'Geçersiz data value. (Must be hex.) ', // 9
+    ERROR_10:
+      'Yetersiz gas. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ',
+    ERROR_11: 'Geçersiz veri. (Must be integer.) ', // 11
     ERROR_12: 'Geçersiz imzali isleme. ',
     ERROR_13: 'Secdigin Nickname baska bir cüzdanda kullaniliyor. ',
     ERROR_14: 'Cüzdan bulunmadi. ',
     ERROR_15:
-      'It doesnt look like a proposal with this ID exists yet or there is an error reading this proposal. ',
+      "Whoops. It doesn't look like a proposal with this ID exists yet or there is an error reading this proposal. ", // 15 - NOT USED
     ERROR_16:
-      'A wallet with this address already exists in storage. Please check your wallets page. ',
+      'Bu adrese sahip bir cüzdan zaten depolama alanında mevcut. Lütfen cüzdan sayfanızı kontrol edin. ',
     ERROR_17:
-      'You need to have **0.01 ETH** in your account to cover the cost of gas. Please add some ether and try again. ',
+      'Account you are sending from does not have enough funds. If sending tokens, you must have 0.01 ETH in your account to cover the cost of gas. ', // 17
     ERROR_18:
-      'All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended. ',
+      'All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended.', // 18
     ERROR_19: 'Geçersiz sembol ',
-    ERROR_20: "Geçerli bir ERC-20 token'i değil ",
+    ERROR_20: "Geçersiz ERC-20 token'i ",
     ERROR_21:
       'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative. ',
     ERROR_22: 'Please enter valid node name ',
@@ -363,27 +458,36 @@ module.exports = {
     ERROR_24: 'Lütfen geçerli port numarası yaz ',
     ERROR_25: 'Lütfen geçerli zincir kimliği (ID) yaz ',
     ERROR_26: 'Lütfen geçerli bir ABI yaz ',
-    ERROR_27: 'Minimum amount: 0.01. Maximum Amount: ',
+    ERROR_27: 'Minimum miktar: 0.01. Maximum miktar: ',
     ERROR_28:
       'Ilerde cüzdanini acmak icin **Keystore dosyan ve parolan veya özel anahtarin** lazim olacak. Lütfen kaydet ve dista yedekle! Kaydedilmemiş cüzdanini kurtarmanin hiçbir yolu yoktur. Talimatlar icin yardim [help page](https://www.myetherwallet.com/#help) sayfasini oku ',
     ERROR_29: 'Lütfen geçerli kullanıcı ve şifreyi yaz ',
     ERROR_30: 'Lütfen geçerli ENS isim yaz ',
     ERROR_31: 'Geçersiz gizli cümle (phrase) ',
     ERROR_32:
-      'Could not connect to the node. Please refresh the page, or see the help page for more troubleshooting suggestions. ',
+      'Düğüme bağlanılamadı. Refresh your page, try a different node (upper right corner), check your firewall settings. If custom node, check your configs.', // 32
+    ERROR_33:
+      "The wallet you have unlocked does not match the owner's address. ", // 33
+    ERROR_34:
+      'The name you are attempting to reveal does not match the name you have entered. ', // 34
+    ERROR_35:
+      'Input address is not checksummed. <a href="https://myetherwallet.groovehq.com/knowledge_base/topics/not-checksummed-shows-when-i-enter-an-address" target="_blank"  rel="noopener"> More info</a>', // 35
+    ERROR_36: 'Enter valid TX hash', // 36
+    ERROR_37: 'Enter valid hex string (0-9, a-f)', // 37
+
     SUCCESS_1: 'Geçerli adres ',
     SUCCESS_2: 'Cüzdan basariyla desifre edildi ',
     SUCCESS_3:
-      'TX was broadcast to the blockchain. Click to see your transaction & verify it was mined and does not have any out of gas or contract execution errors.  TX ID:  ', //'İşlem teslim edildi TX ID ',
+      "TX blockchain'e yayınlandı. İşleminizi görmek ve mayınlandığını doğrulamak veya herhangi bir gaz veya sözleşme yürütme hatası bulunmadığını görmek için tıklayın. TX Kimliği: ", //'İşlem teslim edildi TX Hash ',
     SUCCESS_4: 'Cüzdanın başarıyla eklendi ',
     SUCCESS_5: 'Dosya secildi ',
-    SUCCESS_6: 'You are successfully connected ',
-    SUCCESS_7: 'Message Signature Verified',
+    SUCCESS_6: 'Başarıyla bağlandı ',
+    SUCCESS_7: 'Mesaj imzası doğrulandi ',
     WARN_Send_Link:
-      'You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started. ',
+      "Işlem türü (gönderme modu), adres, miktar, gaz ve veri alanları sizin için doldurulmus olan bir bağlantı'ile geldiniz. Göndermeden önce herhangi bir bilgiyi değiştirebilirsiniz. Başlamak için cüzdanınızı açın. ",
 
     /* Geth Error Messages */
-    GETH_InvalidSender: 'Invalid sender ',
+    GETH_InvalidSender: 'Geçersiz gönderici ',
     GETH_Nonce: 'Nonce too low ',
     GETH_Cheap: 'Gas price too low for acceptance ',
     GETH_Balance: 'Insufficient balance ',
@@ -391,8 +495,8 @@ module.exports = {
       'Account does not exist or account balance too low ',
     GETH_InsufficientFunds: 'Insufficient funds for gas * price + value ',
     GETH_IntrinsicGas: 'Intrinsic gas too low ',
-    GETH_GasLimit: 'Exceeds block gas limit ',
-    GETH_NegativeValue: 'Negative value ',
+    GETH_GasLimit: 'Gaz block sınırını aşıyor ',
+    GETH_NegativeValue: 'Negatif değer ',
 
     /* Parity Error Messages */
     PARITY_AlreadyImported:
@@ -405,7 +509,7 @@ module.exports = {
     PARITY_InsufficientGasPrice:
       "Transaction fee is too low. It does not satisfy your node's minimal fee (minimal: {}, got: {}). Try increasing the fee.",
     PARITY_InsufficientBalance:
-      'Insufficient funds. Account you try to send transaction from does not have enough funds. Required {} and got: {}.',
+      'Insufficient funds. Account you try to send transaction from does not have enough funds. Required {} wei and got: {} wei.',
     PARITY_GasLimitExceeded:
       'Transaction cost exceeds current gas limit. Limit: {}, got: {}. Try decreasing supplied gas.',
     PARITY_InvalidGasLimit: 'Supplied gas is beyond limit.',
@@ -461,7 +565,6 @@ module.exports = {
     HELP_1_Desc_4: 'Click "GENERATE". ',
     HELP_1_Desc_5: 'Your wallet has now been generated. ',
 
-    HELP_2a_Title: '2a) How do I save/backup my wallet? ',
     HELP_2a_Desc_1:
       'You should always back up your wallet externally and in multiple physical locations - like on a USB drive and/or a piece of paper. ',
     HELP_2a_Desc_2:
@@ -479,7 +582,7 @@ module.exports = {
       '2b) How do I safely / offline / cold storage with MyEtherWallet? ',
     HELP_2b_Desc_1:
       'Go to [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ',
-    HELP_2b_Desc_2: 'Click on `dist-vX.X.X.X.zip`. ',
+    HELP_2b_Desc_2: 'Click on `etherwallet-vX.X.X.X.zip`. ',
     HELP_2b_Desc_3: 'Move zip to an airgapped computer. ',
     HELP_2b_Desc_4: 'Unzip it and double-click `index.html`. ',
     HELP_2b_Desc_5: 'Generate a wallet with a strong password. ',
@@ -526,7 +629,7 @@ module.exports = {
     HELP_4_Desc_12:
       'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button. ',
     HELP_4_Desc_13:
-      'The transaction will be submitted. The TX ID will display. You can click that TX ID to see it on the blockchain. ',
+      'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain. ',
 
     HELP_4CX_Title: '4) How do I send Ether using MyEtherWallet CX? ',
     HELP_4CX_Desc_1:
@@ -593,7 +696,7 @@ module.exports = {
     HELP_7_Desc_14:
       'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button. ',
     HELP_7_Desc_15:
-      'The transaction will be submitted. The TX ID will display. You can click that TX ID to see it on the blockchain. ',
+      'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain. ',
 
     HELP_8_Title: '8) What happens if your site goes down? ',
     HELP_8_Desc_1:

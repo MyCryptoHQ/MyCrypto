@@ -4,6 +4,81 @@
 module.exports = {
   code: 'vi',
   data: {
+    /* New Generics */
+    x_CancelReplaceTx: 'Cancel or Replace Transaction',
+    x_CancelTx: 'Cancel Transaction',
+    x_PasswordDesc:
+      'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
+    x_ReadMore: 'Read More',
+    x_ReplaceTx: 'Replace Transaction',
+    x_TransHash: 'Transaction Hash',
+    x_TXFee: 'TX Fee',
+    x_TxHash: 'TX Hash',
+
+    /* Check TX Status */
+    NAV_CheckTxStatus: 'Check TX Status',
+    NAV_TxStatus: 'TX Status',
+    tx_Details: 'Transaction Details',
+    tx_Summary:
+      'During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs. ** This is not typically something you can do. It should not be relied upon & will only work when the TX Pools are full. [Please, read about this tool here.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**',
+    tx_notFound: 'Transaction Not Found',
+    tx_notFound_1:
+      'This TX cannot be found in the TX Pool of the node you are connected to.',
+    tx_notFound_2:
+      'If you just sent the transaction, please wait 15 seconds and press the "Check TX Status" button again. ',
+    tx_notFound_3:
+      'It could still be in the TX Pool of a different node, waiting to be mined.',
+    tx_notFound_4:
+      'Please use the dropdown in the top-right & select a different ETH node (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyEtherWallet)`) and check again.',
+    tx_foundInPending: 'Pending Transaction Found',
+    tx_foundInPending_1:
+      'Your transaction was located in the TX Pool of the node you are connected to. ',
+    tx_foundInPending_2: 'It is currently pending (waiting to be mined). ',
+    tx_foundInPending_3:
+      'There is a chance you can "cancel" or replace this transaction. Unlock your wallet below.',
+    tx_FoundOnChain: 'Transaction Found',
+    tx_FoundOnChain_1:
+      'Your transaction was successfully mined and is on the blockchain.',
+    tx_FoundOnChain_2:
+      '**If you see a red `( ! )`, a `BAD INSTRUCTION` or `OUT OF GAS` error message**, it means that the transaction was not successfully *sent*. You cannot cancel or replace this transaction. Instead, send a new transaction. If you received an "Out of Gas" error, you should double the gas limit you specified originally.',
+    tx_FoundOnChain_3:
+      '**If you do not see any errors, your transaction was successfully sent.** Your ETH or Tokens are where you sent them. If you cannot see this ETH or Tokens credited in your other wallet / exchange account, and it has been 24+ hours since you sent, please [contact that service](https://myetherwallet.groovehq.com/knowledge_base/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Send them the *link* to your transaction and ask them, nicely, to look into your situation.',
+
+    /* Gen Wallet Updates */
+    GEN_Help_1: 'Use your',
+    GEN_Help_2: 'to access your account.',
+    GEN_Help_3: 'Your device * is * your wallet.',
+    GEN_Help_4: 'Guides & FAQ',
+    GEN_Help_5: 'How to Create a Wallet',
+    GEN_Help_6: 'Getting Started',
+    GEN_Help_7:
+      "Keep it safe · Make a backup · Don't share it with anyone · Don't lose it · It cannot be recovered if you lose it.",
+    GEN_Help_8: 'Not Downloading a File? ',
+    GEN_Help_9: 'Try using Google Chrome ',
+    GEN_Help_10: 'Right click & save file as. Filename: ',
+    GEN_Help_11: "Don't open this file on your computer ",
+    GEN_Help_12:
+      'Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity and other wallet clients.) ',
+    GEN_Help_13: 'How to Back Up Your Keystore File ',
+    GEN_Help_14: 'What are these Different Formats? ',
+    GEN_Help_15: 'Preventing loss &amp; theft of your funds.',
+    GEN_Help_16: 'What are these Different Formats?',
+    GEN_Help_17: 'Why Should I?',
+    GEN_Help_18: 'To have a secondary backup.',
+    GEN_Help_19: 'In case you ever forget your password.',
+    GEN_Help_20: 'Cold Storage',
+    GET_ConfButton: 'I understand. Continue.',
+    GEN_Label_5: 'Save Your `Private Key`. ',
+    GEN_Unlock: 'Unlock your wallet to see your address',
+    GAS_PRICE_Desc:
+      'Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.',
+    GAS_LIMIT_Desc:
+      'Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.',
+    NONCE_Desc:
+      'The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.',
+    TXFEE_Desc:
+      'The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)',
+
     /* Navigation*/
     NAV_AddWallet: 'Thêm Ví ',
     NAV_BulkGenerate: 'Tạo Nhiều Ví ',
@@ -11,6 +86,7 @@ module.exports = {
     NAV_Contracts: 'Hợp Đồng ',
     NAV_DeployContract: 'Phát Triển Hợp Đồng ',
     NAV_ENS: 'ENS',
+    NAV_GenerateWallet_alt: 'New Wallet ',
     NAV_GenerateWallet: 'Tạo Ví ',
     NAV_Help: 'Trợ Giúp ',
     NAV_InteractContract: 'Interact with Contract ',
@@ -27,7 +103,7 @@ module.exports = {
     /* General */
     x_Access: 'Access ',
     x_AddessDesc:
-      'Bạn có thể xem đây là Địa chỉ ví cá nhân của bạn. Bạn có thể gửi "Địa chỉ ví" này đến người mà bạn muốn nhận ETH từ họ. Biểu tượng bên cạnh giúp việc nhận dạng "Địa chỉ ví" của bạn dễ dàng hơn. ',
+      'Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere. Bạn có thể xem đây là Địa chỉ ví cá nhân của bạn. Bạn có thể gửi "Địa chỉ ví" này đến người mà bạn muốn nhận ETH từ họ. Biểu tượng bên cạnh giúp việc nhận dạng "Địa chỉ ví" của bạn dễ dàng hơn. ',
     x_Address: 'Địa Chỉ Của Bạn ',
     x_Cancel: 'Huỷ ',
     x_CSV: 'Định Dạng CSV (Không mã hoá) ',
@@ -40,6 +116,7 @@ module.exports = {
     x_Keystore2: 'Định Dạng Keystore (UTC / JSON) ',
     x_KeystoreDesc:
       'Định dạng Keystore là tập một tin chứa dữ liệu ví đã được mã hoá của Private Key và sử dụng cho Mist. Do đó bạn có thể dễ dàng bỏ nó vào bên trong Mist và tiếp tục sử dụng ví của bạn. Đây là một tập tin được đề xuất nhằm sao lưu dữ liệu ví cá nhân. ',
+    x_MetaMask: 'Metamask / Mist ',
     x_Mnemonic: 'Cụm từ dễ nhớ ',
     x_ParityPhrase: 'Parity Phrase ',
     x_Password: 'Mật Khẩu ',
@@ -66,7 +143,7 @@ module.exports = {
 
     /* Footer */
     FOOTER_1:
-      'Open-Source, client-side tool for easily &amp; securely interacting with the Ethereum network. ',
+      'Free, open-source, client-side interface for generating Ethereum wallets &amp; more. Interact with the Ethereum blockchain easily &amp; securely. Double-check the URL ( .com ) before unlocking your wallet.',
     FOOTER_1b: 'Nhà Phát Triển: ',
     FOOTER_2:
       'Quyên Góp & Ủng Hộ Vào "Quỹ Phát Triển" Từ Bạn Là Một Hành Động Đáng Trân Trọng: ',
@@ -84,6 +161,8 @@ module.exports = {
       'MyEtherWallet là một ứng dụng miễn phí được xây dựng trên mã nguồn mở nhằm bảo vệ quyền riêng tư và sự bảo mật của người sử dụng. các khoản quyên góp mà chúng tôi nhận được sẽ giúp chúng tôi có cơ hội dành nhiều thơi gian hơn cho việc lắng nghe những phản hồi từ người sử dụng nhằm tạo ra những ứng dụng mới nhằm đáp ứng những mong muốn từ người sử dụng. Chúng tôi hiện tại là hai cá nhân đang cố gắng làm cho thế giới ngày một tốt hơn. Hãy cùng chung giúp chúng tôi ',
     sidebar_donate: 'Quyên Góp ',
     sidebar_thanks: 'Xin Chân Thành Cảm Ơn!!! ',
+    sidebar_DisplayOnTrezor: 'Display address on TREZOR',
+    sidebar_DisplayOnLedger: 'Display address on Ledger',
 
     /* Decrypt Panel */
     decrypt_Access: 'Làm thế nào đễ truy cập vào ví của bạn? ',
@@ -100,6 +179,10 @@ module.exports = {
     ADD_Radio_4: 'Thêm Tài Khoản đễ Theo Dõi ',
     ADD_Radio_5: 'Dán/Điền ký tự dễ nhớ của bạn ',
     ADD_Radio_5_Path: 'Select HD derivation path ',
+    ADD_Radio_5_woTrezor: '(Jaxx, Metamask, Exodus, imToken)',
+    ADD_Radio_5_withTrezor: '(Jaxx, Metamask, Exodus, imToken, TREZOR)',
+    ADD_Radio_5_PathAlternative: '(Ledger)',
+    ADD_Radio_5_PathTrezor: '(TREZOR)',
     ADD_Radio_5_PathCustom: 'Custom',
     ADD_Label_2: 'Tạo Tên Gọi: ',
     ADD_Label_3: 'Ví của bạn sẽ được giải mã. Xin vui lòng điền mật khẩu ',
@@ -110,6 +193,7 @@ module.exports = {
     ADD_Label_6: 'Mở Khoá Cho Ví Của Bạn ',
     ADD_Label_6_short: 'Mở Khoá ',
     ADD_Label_7: 'Thêm Tài Khoản ',
+    ADD_Label_8: 'Password (optional): ',
 
     /* Generate Wallets */
     GEN_desc:
@@ -122,6 +206,8 @@ module.exports = {
       'Lưu lại tập tin chứa định dạng Keystore/JSON hoặc Private Key. Đừng quên mật khẩu mà bạn đã tạo phía trên. ',
     GEN_Label_3: 'Địa Chỉ Ví (bạn cần lưu lại cho việc sử dụng). ',
     GEN_Label_4: 'Bạn có thể in ví giấy hoặc lưu giữ mã QR một cách cẩn thận. ',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
     BULK_Label_1: 'Số Lượng Ví Cần Tạo ',
@@ -247,6 +333,7 @@ module.exports = {
     SWAP_start_CTA: 'Start Swap ',
     SWAP_ref_num: 'Your reference number ',
     SWAP_time: 'Time remaining to send ',
+    SWAP_elapsed: 'Time elapsed since sent ',
     SWAP_progress_1: 'Order Initiated ',
     SWAP_progress_2: 'Waiting for your ', // Waiting for your BTC...
     SWAP_progress_3: 'Received! ', // ETH Received!
@@ -272,8 +359,8 @@ module.exports = {
     x_Trezor: 'TREZOR ',
     ADD_Trezor_scan: 'Connect to TREZOR ',
     ADD_Trezor_select: 'This is a TREZOR seed ',
-    x_Ledger: 'Ledger Nano S ',
-    ADD_Ledger_1: 'Kết Nối Với Ledger Nano S Của Bạn ',
+    x_Ledger: 'Ledger Wallet ',
+    ADD_Ledger_1: 'Kết Nối Với Ledger Wallet Của Bạn ',
     ADD_Ledger_2:
       'Mở Lên Ứng Dụng Của Ethereum (Hoặc một ứng dụng của Hợp Đồng) ',
     ADD_Ledger_3:
@@ -285,6 +372,13 @@ module.exports = {
     ADD_Ledger_0b:
       'Sử dụng [Chrome](https://www.google.com/chrome/browser/desktop/) hoặc [Opera](https://www.opera.com/) Để mở lại trang MyEtherWallet ',
     ADD_Ledger_scan: 'Kết nối với Ledger Nano S ',
+    ADD_MetaMask: 'Connect to MetaMask ',
+    x_DigitalBitbox: 'Digital Bitbox ',
+    ADD_DigitalBitbox_0a:
+      'Hảy mở lại trang MyEtherWallet trên một kết nối có tính bảo mật (SSL) ',
+    ADD_DigitalBitbox_0b:
+      'Sử dụng [Chrome](https://www.google.com/chrome/browser/desktop/) hoặc [Opera](https://www.opera.com/) Để mở lại trang MyEtherWallet ',
+    ADD_DigitalBitbox_scan: 'Kết nối với Digital Bitbox ',
 
     /* Deploy Contracts */
     DEP_generate: 'Tạo Bytecode ',
@@ -318,6 +412,8 @@ module.exports = {
       'Việc này cho phép bạn tải về các phiên bản khác nhau của Private Key và in lại ví giấy của bạn. ',
     VIEWWALLET_SuccessMsg:
       'Đã Thành Công! Đây là thông tin chi tiết về Ví của bạn. ',
+    VIEWWALLET_ShowPrivKey: '(show)',
+    VIEWWALLET_HidePrivKey: '(hide)',
 
     /* Mnemonic */
     MNEM_1: 'Xin vui lòng, Chọn địa chỉ mà bạn muốn tương tác. ',
@@ -342,11 +438,13 @@ module.exports = {
       'Đơn vị này không tồn tại, xin vui lòng sử dụng một trong những đơn vị sau đây ',
     ERROR_5: 'Địa chỉ không hợp lệ. ',
     ERROR_6: 'Mật khẩu không hợp lệ. ',
-    ERROR_7: 'Tổng số không hợp lệ. ',
-    ERROR_8: 'Giới hạn gas không hợp lệ. ',
-    ERROR_9: 'Dữ liệu không hợp lệ. ',
-    ERROR_10: 'Tổng số gas không hợp lệ. ',
-    ERROR_11: 'Nonce không hợp lệ. ',
+    ERROR_7: 'Tổng số không hợp lệ. (Must be integer. Try 0-18.) ', // 7
+    ERROR_8:
+      'Giới hạn gas không hợp lệ. (Must be integer. Try 21000-4000000.) ', // 8
+    ERROR_9: 'Dữ liệu không hợp lệ. (Must be hex.) ', // 9
+    ERROR_10:
+      'Tổng số gas không hợp lệ. (Must be integer. Try 20 GWEI / 20000000000 WEI.) ',
+    ERROR_11: 'Nonce không hợp lệ. (Must be integer.) ', // 11
     ERROR_12: 'Chữ ký giao dịch không hợp lệ. ',
     ERROR_13: 'Tên gọi này đã được sữ dụng. ',
     ERROR_14: 'Không tìm thấy Ví. ',
@@ -362,25 +460,34 @@ module.exports = {
     ERROR_20:
       'Không tồn tại trên hệ thống ERC-20 token. Nếu bạn phải chờ lâu. Xin vui lòng thử lại lần nữa!. ',
     ERROR_21:
-      'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative. ',
-    ERROR_22: 'Please enter valid node name ',
+      'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative.', // 21
+    ERROR_22: 'Please enter a valid node name', // 22
     ERROR_23:
-      'Please enter valid URL. If you are connecting via HTTPS, your node must be over HTTPS ',
-    ERROR_24: 'Please enter valid port ',
-    ERROR_25: 'Please enter valid chain ID ',
-    ERROR_26: 'Please enter valid ABI ',
-    ERROR_27: 'Minimum amount: 0.01. Maximum Amount: ',
+      'Please enter a valid URL. If you are on https, your URL must be https', // 23
+    ERROR_24: 'Please enter a valid port. ', // 24
+    ERROR_25: 'Please enter a valid chain ID. ', // 25
+    ERROR_26: 'Please enter a valid ABI. ', // 26
+    ERROR_27: 'Minimum amount: 0.01. Max amount: ', // 27
     ERROR_28:
       '**Bạn cần sử dụng tập tin chứa định dạng Keystore/JSON cùng với Mật khẩu hoặc Private Key của bạn** cho việc đăng nhập vào ví này trong tương lai. Hãy sao lưu và cất giữ nó cẩn thận tại kho lưu trữ của bạn! Không có cách nào đễ khôi phục Ví của bạn nếu bạn không sao lưu dữ liệu ví lại. Đọc Thêm [trang trợ giúp] (https://www.myetherwallet.com/#help) đễ được hướng dẫn cụ thể. ',
-    ERROR_29: 'Please enter valid user and password ',
-    ERROR_30: 'Please enter valid ENS name ',
-    ERROR_31: 'Invalid secret phrase ',
+    ERROR_29: 'Please enter a valid user and password. ', // 29
+    ERROR_30: 'Please enter a valid name (7+ characters, limited punctuation) ', // 30
+    ERROR_31: 'Please enter a valid secret phrase. ', // 31
     ERROR_32:
-      'Could not connect to the node. Please refresh the page, or see the help page for more troubleshooting suggestions. ',
+      'Could not connect to the node. Refresh your page, try a different node (upper right corner), check your firewall settings. If custom node, check your configs.', // 32
+    ERROR_33:
+      "The wallet you have unlocked does not match the owner's address. ", // 33
+    ERROR_34:
+      'The name you are attempting to reveal does not match the name you have entered. ', // 34
+    ERROR_35:
+      'Input address is not checksummed. <a href="https://myetherwallet.groovehq.com/knowledge_base/topics/not-checksummed-shows-when-i-enter-an-address" target="_blank" rel="noopener"> More info</a>', // 35
+    ERROR_36: 'Enter valid TX hash', // 36
+    ERROR_37: 'Enter valid hex string (0-9, a-f)', // 37
+
     SUCCESS_1: 'Địa Chỉ Hợp Lệ ',
     SUCCESS_2: 'Ví đã được giải mã thành công ',
     SUCCESS_3:
-      'TX was broadcast to the blockchain. Click to see your transaction & verify it was mined and does not have any out of gas or contract execution errors.  TX ID:  ', //'Giao dịch đã gửi đi, TX ID: ',
+      'Your TX has been broadcast to the network. It is waiting to be mined & confirmed. During ICOs, it may take 3+ hours to confirm. Use the Verify & Check buttons below to see. TX Hash:   ',
     SUCCESS_4: 'Ví của bạn đã được thêm thành công: ',
     SUCCESS_5: 'Tập Tin Được Chọn ',
     SUCCESS_6: 'You are successfully connected ',
@@ -467,7 +574,7 @@ module.exports = {
     HELP_1_Desc_4: 'Chọn "Tạo Ví". ',
     HELP_1_Desc_5: 'Ví của bạn sẽ được tạo ngay bây giờ. ',
 
-    HELP_2a_Title: '2a) Làm thế nào dễ sao lưu Ví? ',
+    HELP_2a_Title: 'Làm thế nào dễ sao lưu Ví? ',
     HELP_2a_Desc_1:
       'Bạn nên sao lưu tập tin Ví của bạn bên ngoài máy tính và tại nhiều nơi khác nhau - như trên USB hoặc/và một tờ giấy. ',
     HELP_2a_Desc_2:
@@ -485,7 +592,7 @@ module.exports = {
       '2b) Làm thế nào dễ bảo mật Ví / offline / lưu trữ lạnh cùng với MyEtherWallet? ',
     HELP_2b_Desc_1:
       'Đến trang github của chúng tôi: [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ',
-    HELP_2b_Desc_2: 'Chọn vào ô `dist-vX.X.X.X.zip`. ',
+    HELP_2b_Desc_2: 'Chọn vào ô `etherwallet-vX.X.X.X.zip`. ',
     HELP_2b_Desc_3: 'Chuyển tiếp tập tin zip đi đến máy tính airgapped. ',
     HELP_2b_Desc_4:
       'Giải nén tập tin Zip và nhấn kép chuột vào tập tin `index.html`. ',
@@ -534,7 +641,7 @@ module.exports = {
     HELP_4_Desc_12:
       'Một cửa sổ yêu cầu sẽ xuất hiện. Xác nhận lại số lượng cần gửi và địa chỉ đến. Sau đó chọn vào ô "Có, tôi chắc chắn! Hãy thực hiện giao dịch.". ',
     HELP_4_Desc_13:
-      'Giao dịch của bạn sẽ được gửi đi. TX ID sẽ xuất hiện trên màn hình. Bạn có thể chọn vào TX ID dễ xem nó trên blockchain. ',
+      'Giao dịch của bạn sẽ được gửi đi. TX Hash sẽ xuất hiện trên màn hình. Bạn có thể chọn vào TX Hash dễ xem nó trên blockchain. ',
 
     HELP_4CX_Title:
       '4) Làm thế nào dễ gửi đi Ether bằng cách sử dụng MyEtherWallet CX? ',

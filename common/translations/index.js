@@ -1,44 +1,39 @@
 // @flow
-import { markupToReact } from './markup';
-import { store } from '../store';
+import React from 'react';
+import type { Element } from 'react';
+import Translate from 'components/Translate';
+import { store } from 'store';
+import { getLanguageSelection } from 'selectors/config';
 let fallbackLanguage = 'en';
 let repository = {};
 
 const languages = [
-  require('./de'),
-  require('./el'),
-  require('./en'),
-  require('./es'),
-  require('./fi'),
-  require('./fr'),
-  require('./hu'),
-  require('./id'),
-  require('./it'),
-  require('./ja'),
-  require('./nl'),
-  require('./no'),
-  require('./pl'),
-  require('./pt'),
-  require('./ru') /*sk, sl, sv */,
-  require('./ko'),
-  require('./tr'),
-  require('./vi'),
-  require('./zhcn'),
-  require('./zhtw')
+  require('./lang/de'),
+  require('./lang/el'),
+  require('./lang/en'),
+  require('./lang/es'),
+  require('./lang/fi'),
+  require('./lang/fr'),
+  require('./lang/ht'),
+  require('./lang/hu'),
+  require('./lang/id'),
+  require('./lang/it'),
+  require('./lang/ja'),
+  require('./lang/nl'),
+  require('./lang/no'),
+  require('./lang/pl'),
+  require('./lang/pt'),
+  require('./lang/ru') /*sk, sl, sv */,
+  require('./lang/ko'),
+  require('./lang/tr'),
+  require('./lang/vi'),
+  require('./lang/zhcn'),
+  require('./lang/zhtw')
 ];
 
 languages.forEach(l => {
   repository[l.code] = l.data;
 });
-
-export default function translate(key: string) {
-  let activeLanguage = store.getState().config.languageSelection;
-  return markupToReact(
-    (repository[activeLanguage] && repository[activeLanguage][key]) ||
-      repository[fallbackLanguage][key] ||
-      key
-  );
-}
 
 export function getTranslators() {
   return [
@@ -54,4 +49,23 @@ export function getTranslators() {
     }
     return !!translated;
   });
+}
+
+type TranslateType = Element<*> | string;
+
+export default function translate(
+  key: string,
+  textOnly: boolean = false
+): TranslateType {
+  return textOnly ? translateRaw(key) : <Translate translationKey={key} />;
+}
+
+export function translateRaw(key: string) {
+  const lang = getLanguageSelection(store.getState());
+
+  return (
+    (repository[lang] && repository[lang][key]) ||
+    repository[fallbackLanguage][key] ||
+    key
+  );
 }

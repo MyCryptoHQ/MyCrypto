@@ -1,365 +1,507 @@
 /* eslint-disable quotes*/
 
-// Traditional Chinese 繁體中文 - zh-tw.js
+// Swedish
 module.exports = {
-  code: 'zhtw',
+  code: 'sv',
   data: {
+    HELP_2a_Title: 'How do I save/backup my wallet? ',
+
+    /* New Generics */
+    x_CancelReplaceTx: 'Cancel or Replace Transaction',
+    x_CancelTx: 'Cancel Transaction',
+    x_PasswordDesc:
+      'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
+    x_ReadMore: 'Read More',
+    x_ReplaceTx: 'Replace Transaction',
+    x_TransHash: 'Transaction Hash',
+    x_TXFee: 'TX Fee',
+    x_TxHash: 'TX Hash',
+
+    /* Check TX Status */
+    NAV_CheckTxStatus: 'Check TX Status',
+    NAV_TxStatus: 'TX Status',
+    tx_Details: 'Transaction Details',
+    tx_Summary:
+      'During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs. ** This is not typically something you can do. It should not be relied upon & will only work when the TX Pools are full. [Please, read about this tool here.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**',
+    tx_notFound: 'Transaction Not Found',
+    tx_notFound_1:
+      'This TX cannot be found in the TX Pool of the node you are connected to.',
+    tx_notFound_2:
+      'If you just sent the transaction, please wait 15 seconds and press the "Check TX Status" button again. ',
+    tx_notFound_3:
+      'It could still be in the TX Pool of a different node, waiting to be mined.',
+    tx_notFound_4:
+      'Please use the dropdown in the top-right & select a different ETH node (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyEtherWallet)`) and check again.',
+    tx_foundInPending: 'Pending Transaction Found',
+    tx_foundInPending_1:
+      'Your transaction was located in the TX Pool of the node you are connected to. ',
+    tx_foundInPending_2: 'It is currently pending (waiting to be mined). ',
+    tx_foundInPending_3:
+      'There is a chance you can "cancel" or replace this transaction. Unlock your wallet below.',
+    tx_FoundOnChain: 'Transaction Found',
+    tx_FoundOnChain_1:
+      'Your transaction was successfully mined and is on the blockchain.',
+    tx_FoundOnChain_2:
+      '**If you see a red `( ! )`, a `BAD INSTRUCTION` or `OUT OF GAS` error message**, it means that the transaction was not successfully *sent*. You cannot cancel or replace this transaction. Instead, send a new transaction. If you received an "Out of Gas" error, you should double the gas limit you specified originally.',
+    tx_FoundOnChain_3:
+      '**If you do not see any errors, your transaction was successfully sent.** Your ETH or Tokens are where you sent them. If you cannot see this ETH or Tokens credited in your other wallet / exchange account, and it has been 24+ hours since you sent, please [contact that service](https://myetherwallet.groovehq.com/knowledge_base/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Send them the *link* to your transaction and ask them, nicely, to look into your situation.',
+
+    /* Gen Wallet Updates */
+    GEN_Help_1: 'Use your',
+    GEN_Help_2: 'to access your account.',
+    GEN_Help_3: 'Your device * is * your wallet.',
+    GEN_Help_4: 'Guides & FAQ',
+    GEN_Help_5: 'How to Create a Wallet',
+    GEN_Help_6: 'Getting Started',
+    GEN_Help_7:
+      "Keep it safe · Make a backup · Don't share it with anyone · Don't lose it · It cannot be recovered if you lose it.",
+    GEN_Help_8: 'Not Downloading a File? ',
+    GEN_Help_9: 'Try using Google Chrome ',
+    GEN_Help_10: 'Right click & save file as. Filename: ',
+    GEN_Help_11: "Don't open this file on your computer ",
+    GEN_Help_12:
+      'Use it to unlock your wallet via MyEtherWallet (or Mist, Geth, Parity and other wallet clients.) ',
+    GEN_Help_13: 'How to Back Up Your Keystore File ',
+    GEN_Help_14: 'What are these Different Formats? ',
+    GEN_Help_15: 'Preventing loss &amp; theft of your funds.',
+    GEN_Help_16: 'What are these Different Formats?',
+    GEN_Help_17: 'Why Should I?',
+    GEN_Help_18: 'To have a secondary backup.',
+    GEN_Help_19: 'In case you ever forget your password.',
+    GEN_Help_20: 'Cold Storage',
+    GET_ConfButton: 'I understand. Continue.',
+    GEN_Label_5: 'Save Your `Private Key`. ',
+    GEN_Unlock: 'Unlock your wallet to see your address',
+    GAS_PRICE_Desc:
+      'Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.',
+    GAS_LIMIT_Desc:
+      'Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.',
+    NONCE_Desc:
+      'The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.',
+    TXFEE_Desc:
+      'The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)',
+
     /* Navigation*/
-    NAV_AddWallet: '新增錢包 ',
-    NAV_BulkGenerate: '批量產生 ',
-    NAV_Contact: '聯繫我們 ',
-    NAV_Contracts: '合約 ',
-    NAV_DeployContract: '部署合約 ',
+    NAV_AddWallet: 'Lägg till Plånbok ',
+    NAV_BulkGenerate: 'Mass Generera ',
+    NAV_Contact: 'Kontakt ',
+    NAV_Contracts: 'Contracts ',
+    NAV_DeployContract: 'Deploy Contract ',
     NAV_ENS: 'ENS',
-    NAV_GenerateWallet: '產生錢包 ',
-    NAV_Help: '幫助 ',
-    NAV_InteractContract: '和合約互動 ',
-    NAV_Multisig: '多重簽署 ',
-    NAV_MyWallets: '我的錢包 ',
-    NAV_Offline: '離線發送 ',
-    NAV_SendEther: '發送乙太幣 / 代幣 ',
-    NAV_SendTokens: '發送代幣 ',
-    NAV_SignMsg: '對訊息做簽名 ',
+    NAV_GenerateWallet_alt: 'New Wallet ',
+    NAV_GenerateWallet: 'Generera Plånbok ',
+    NAV_Help: 'Hjälp ',
+    NAV_InteractContract: 'Interact with Contract ',
+    NAV_Multisig: 'Multisig ',
+    NAV_MyWallets: 'Mina Plånböcker ',
+    NAV_Offline: 'Skicka Offline ',
+    NAV_SendEther: 'Skicka Ether och Tokens ',
+    NAV_SendTokens: 'Skicka Token ' /*Översätt token?*/,
+    NAV_SignMsg: 'Sign Message ',
     NAV_Swap: 'Swap ',
-    NAV_ViewWallet: '查看錢包 ',
-    NAV_YourWallets: '你的錢包 ',
+    NAV_ViewWallet: 'Visa Plånboks Info ',
+    NAV_YourWallets: 'Dina Plånböcker ',
 
     /* General */
-    x_Access: '存取合約 ',
-    x_AddessDesc: '你可以把地址當作是你的"帳號"或者"公鑰"。將地址告訴他人，他人就能發送乙太幣給你。這個圖標能幫助你判別地址。 ',
-    x_Address: '你的地址 ',
-    x_Cancel: '取消 ',
-    x_CSV: 'CSV 檔 (未加密) ',
-    x_Download: '下載 ',
-    x_Json: 'JSON 檔 (未加密) ',
+    x_Access: 'Access ',
+    x_AddessDesc:
+      'Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere. Det här är vad som ibland kallas "Publik Nyckel", "Adress" eller "Konto nr". Det är vad du ger människor så att de kan skicka dig ether. Den här ikonen är ett enkelt sätt att känna igen din adress. ',
+    x_Address: 'Din Adress ',
+    x_Cancel: 'Avbryt ',
+    x_CSV: 'CSV fil (okrypterad) ',
+    x_Download: 'Ladda Ner ',
+    x_Json: 'JSON Fil (okrypterad) ',
     x_JsonDesc:
-      '這是未加密的JSON格式私鑰檔。這表示你不需要密碼就可以控制錢包，但任何持有此JSON文件的人也都無須密碼便能控制你的錢包和乙太幣。 ',
-    x_Keystore: 'Keystore 檔 (UTC / JSON · 推薦 · 經過加密) ',
-    x_Keystore2: 'Keystore 檔 (UTC / JSON) ',
-    x_KeystoreDesc: '此Keystore檔和Mist錢包相容，因此你可以輕鬆地匯入錢包。我們推薦你下載並備份此檔案。 ',
-    x_Mnemonic: '助憶口令 ',
-    x_ParityPhrase: 'Parity口令 ',
-    x_Password: '密碼 ',
-    x_Print: '列印紙錢包 ',
-    x_PrintDesc: '小技巧: 按下列印並保存為PDF檔，儘管你沒有印表機！ ',
-    x_PrintShort: '列印 ',
-    x_PrivKey: '私鑰 (未加密) ',
-    x_PrivKey2: '私鑰 ',
+      'Det här är din okrypterade privata nyckel i JSON format. Det här betyder att du inte behöver ditt lösenord men vem som helst som hittar din JSON kan få tillgång till din plånbok och Ether utan ditt lösenord. ',
+    x_Keystore: 'Keystore Fil (UTC / JSON · Rekomenderad · Krypterad) ',
+    x_Keystore2: 'Keystore Fil (UTC / JSON) ',
+    x_KeystoreDesc:
+      'Den här Keystore filen matchar formatet som används av Mist så du kan enkelt importera det i framtiden. Det är det rekommenderade format att hämta för backup. ',
+    x_MetaMask: 'Metamask / Mist ',
+    x_Mnemonic: 'Mnemonic Phrase ',
+    x_Password: 'Lösenord ',
+    x_Print: 'Skriv Ut Pappers Plånbok ',
+    x_PrintDesc:
+      'Tips: Klicka på skriv ut och spara som PDF, även om du inte har en skrivare! ',
+    x_PrintShort: 'Skriv Ut ',
+    x_PrivKey: 'Privat Nyckel (okrypterad) ',
+    x_PrivKey2: 'Privat Nyckel ',
     x_PrivKeyDesc:
-      '這是你未加密的私鑰，這表示你不需要密碼就可以控制錢包。如果有人取得此私鑰，他們也無須密碼便能可以控制你的錢包。因此，我們推薦加密過的私鑰檔。 ',
-    x_Save: '保存 ',
-    x_TXT: 'TXT 檔 (未加密) ',
-    x_Wallet: '錢包 ',
+      'Det här är en okrypterad variant av din privata nyckel, vilket betyder att ett lösenord inte är nödvändigt. Om någon skulle hitta din okrypterade privata nyckel, så kan dom få tillgång till din plånbok utan lösenord. Av den anledningen så rekomenderas en krypterad variant av plånboken istället. ',
+    x_Save: 'Spara ',
+    x_TXT: 'TXT fil (okrypterad) ',
+    x_Wallet: 'Plånbok ',
+    x_ParityPhrase: 'Parity Phrase ',
 
     /* Header */
-    CX_Tagline: '開源的JavaScript客戶端乙太錢包Chrome擴充功能 ',
+    CX_Tagline:
+      'Open Source JavaScript Client-Side Ether Wallet Chrome Extension ',
     CX_Warning_1:
-      '確保你存在這裡的所有錢包皆有**額外的備份**。導致此擴充功能資料喪失的可能很多，這包括移除和重新安裝此擴充功能。此擴充功能讓你輕鬆操作錢包，而**不是**備份錢包。 ',
-    MEW_Tagline: '開源的JavaScript客戶端乙太錢包 ',
-    MEW_Warning_1: '每次存取和產生錢包時都要檢查上方的網址。小心釣魚網站！ ',
+      'Make sure you have **external backups** of any wallets you store here. Many things could happen that would cause you to lose the data in this Chrome Extension, including uninstalling and reinstalling the extension. This extension is a way to easily access your wallets, **not** a way to back them up. ',
+    MEW_Tagline: 'Open Source JavaScript Client-Side Ether Wallet ',
+    MEW_Warning_1:
+      'Always check the URL before accessing your wallet or creating a new wallet. Beware of phishing sites! ',
 
     /* Footer */
-    FOOTER_1: '讓你輕鬆、安全地和乙太坊互動的開源客戶端工具。 ',
-    FOOTER_1b: '開發者 ',
-    FOOTER_2: '歡迎捐贈給我們 ',
+    FOOTER_1:
+      'Free, open-source, client-side interface for generating Ethereum wallets &amp; more. Interact with the Ethereum blockchain easily &amp; securely. Double-check the URL ( .com ) before unlocking your wallet.',
+    FOOTER_1b: 'Created by ',
+    FOOTER_2: 'Donations greatly appreciated ',
     FOOTER_3: 'Client-side wallet generation by ',
-    FOOTER_4: '免責聲明 ',
+    FOOTER_4: 'Disclaimer ',
 
     /* Sidebar */
-    sidebar_AccountInfo: '帳戶資訊 ',
-    sidebar_AccountAddr: '帳戶地址 ',
-    sidebar_AccountBal: '帳戶餘額 ',
-    sidebar_TokenBal: '代幣餘額 ',
-    sidebar_Equiv: '價值 ',
-    sidebar_TransHistory: '交易歷史 ',
+    sidebar_AccountAddr: 'Konto Adress ',
+    sidebar_AccountBal: 'Konto Saldo ',
+    sidebar_AccountInfo: 'Kontoinformation ',
+    sidebar_donate: 'Donera ',
     sidebar_donation:
-      'MyEtherWallet是注重你的隱私和安全的免費、開源服務。如果有更多捐贈，我們就能花更多時間開發新功能、聽取你的建議並且滿足你的需要。我們只是兩個想要改變世界的人。幫助我們？ ',
-    sidebar_donate: '捐贈 ',
-    sidebar_thanks: '謝謝你!!! ',
+      'MyEtherWallet är en gratis service, med öppen källkod inriktade på din integritet och säkerhet. Ju fler donationer vi får, desto mer tid lägger vi på att skapa nya funktioner, lyssna på feedback, och ge dig vad du vill. Vi är bara två personer som försöker förändra världen. Hjälp oss? ',
+    sidebar_Equiv: 'Motsvarande Värden ',
+    sidebar_thanks: 'TACK!!! ',
+    sidebar_TokenBal: 'Token Saldon ',
+    sidebar_TransHistory: 'Transaktionshistorik ',
+    sidebar_DisplayOnTrezor: 'Display address on TREZOR',
+    sidebar_DisplayOnLedger: 'Display address on Ledger',
 
     /* Decrypt Panel */
-    decrypt_Access: '你想要如何存取你的錢包？ ',
-    decrypt_Title: '選擇你的私鑰格式 ',
-    decrypt_Select: '選擇一個錢包 ',
+    decrypt_Access: 'How would you like to access your wallet? ',
+    decrypt_Title: 'Select the format of your private key ',
+    decrypt_Select: 'Select a Wallet ',
 
     /* Mnemonic */
-    MNEM_1: '選擇你要互動的地址。 ',
+    MNEM_1: 'Please select the address you would like to interact with. ',
     MNEM_2:
       'Your single HD mnemonic phrase can access a number of wallets / addresses. Please select the address you would like to interact with at this time. ',
-    MNEM_more: '更多地址 ',
-    MNEM_prev: '之前的地址 ',
+    MNEM_more: 'More Addresses ',
+    MNEM_prev: 'Previous Addresses ',
 
     /* Hardware wallets */
-    x_Ledger: 'Ledger Nano S 錢包',
-    ADD_Ledger_1: '連接至你的 Ledger Nano S ',
-    ADD_Ledger_2: '開啟基於以太坊開發的應用程式（或一個寫成合約的應用程式） ',
-    ADD_Ledger_3: '確認已經開啟設定選項中的瀏覽器支援選項',
+    x_Ledger: 'Ledger Wallet ',
+    ADD_Ledger_1: 'Connect your Ledger Wallet ',
+    ADD_Ledger_2: 'Open the Ethereum application (or a contract application) ',
+    ADD_Ledger_3: 'Verify that Browser Support is enabled in Settings ',
     ADD_Ledger_4:
-      '如果在設定選項中找不到瀏覽器支援選項，請確認你的韌體版本新於[1.2版](https://www.ledgerwallet.com/apps/manager)',
+      'If no Browser Support is found in settings, verify that you have [Firmware >1.2](https://www.ledgerwallet.com/apps/manager) ',
+    ADD_Ledger_0a:
+      'You must access MyEtherWallet via a secure (SSL / HTTPS) connection to connect. ',
     ADD_Ledger_0b:
-      '以 [Chrome](https://www.google.com/chrome/browser/desktop/) 或 [Opera](https://www.opera.com/) 瀏覽器重新開啟MyEtherWallet',
-    ADD_Ledger_scan: '連接至 Ledger Nano S ',
-    x_Trezor: 'TREZOR 錢包 ',
-    ADD_Trezor_scan: '連接至 TREZOR ',
+      'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ',
+    ADD_Ledger_scan: 'Connect to Ledger Wallet ',
+
+    ADD_MetaMask: 'Connect to MetaMask ',
+
+    x_Trezor: 'TREZOR ',
+    ADD_Trezor_scan: 'Connect to TREZOR ',
+    x_DigitalBitbox: 'Digital Bitbox ',
+    ADD_DigitalBitbox_0a: 'Re-open MyEtherWallet on a secure (SSL) connection ',
+    ADD_DigitalBitbox_0b:
+      'Re-open MyEtherWallet using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ',
+    ADD_DigitalBitbox_scan: 'Connect your Digital Bitbox ',
 
     /* Add Wallet */
-    ADD_Label_1: '你想要做什麼？ ',
-    ADD_Radio_1: '產生新錢包 ',
-    ADD_Radio_2: '選擇你的錢包檔 (Keystore / JSON) ',
-    ADD_Radio_2_alt: '選擇你的錢包檔 ',
-    ADD_Radio_2_short: '選擇錢包檔... ',
-    ADD_Radio_3: '貼上/輸入 你的私鑰 ',
-    ADD_Radio_4: '監視一個帳戶 ',
-    ADD_Radio_5: '貼上/輸入 你的助憶口令 ',
+    ADD_Label_1: 'What would you like to do? ',
+    ADD_Radio_1: 'Generate New Wallet ',
+    ADD_Radio_2: 'Select Your Wallet File (Keystore / JSON) ',
+    ADD_Radio_2_alt: 'Select Your Wallet File ',
+    ADD_Radio_2_short: 'SELECT WALLET FILE... ',
+    ADD_Radio_3: 'Paste/Type Your Private Key ',
+    ADD_Radio_4: 'Add an Account to Watch ',
+    ADD_Radio_5: 'Paste/Type Your Mnemonic ',
     ADD_Radio_5_Path: 'Select HD derivation path ',
+    ADD_Radio_5_woTrezor: '(Jaxx, Metamask, Exodus, imToken)',
+    ADD_Radio_5_withTrezor: '(Jaxx, Metamask, Exodus, imToken, TREZOR)',
+    ADD_Radio_5_PathAlternative: '(Ledger)',
+    ADD_Radio_5_PathTrezor: '(TREZOR)',
     ADD_Radio_5_PathCustom: 'Custom',
-    ADD_Label_2: '新增一個暱稱 ',
-    ADD_Label_3: '你的錢包經過加密。請輸入密碼。 ',
-    ADD_Label_4: '監視一個帳戶 ',
-    ADD_Warning_1: '你可以在錢包頁面監視任何帳戶，而且不需要匯入該帳戶的私鑰。這並不表示你能存取該帳戶或透過該帳戶傳送乙太幣。 ',
-    ADD_Label_5: '輸入地址 ',
-    ADD_Label_6: '解鎖你的錢包 ',
-    ADD_Label_6_short: '解鎖 ',
-    ADD_Label_7: '新增帳戶 ',
-
-    /* My Wallet */
-    MYWAL_Nick: '錢包暱稱 ',
-    MYWAL_Address: '錢包地址 ',
-    MYWAL_Bal: '餘額 ',
-    MYWAL_Edit: '編輯 ',
-    MYWAL_View: '檢視 ',
-    MYWAL_Remove: '移除 ',
-    MYWAL_RemoveWal: '移除錢包 ',
-    MYWAL_WatchOnly: '你正在監視的錢包 ',
-    MYWAL_Viewing: '查看錢包 ',
-    MYWAL_Hide: '隱藏錢包資訊 ',
-    MYWAL_Edit_2: '編輯錢包 ',
-    MYWAL_Name: '錢包名字 ',
-    MYWAL_Content_1: '警告！ 你即將移除你的錢包 ',
-    MYWAL_Content_2: '確保你在移除錢包前，已經**保存了私鑰和Keystore檔，並記住了密碼**。 ',
-    MYWAL_Content_3:
-      '如果你在未來還想在MyEtherWallet擴充功能上操作此錢包，你必須使用私鑰或JSON檔和密碼來重新新增它。 ',
+    ADD_Label_2: 'Create a Nickname ',
+    ADD_Label_3: 'Your wallet is encrypted. Please enter the password. ',
+    ADD_Label_4: 'Add an Account to Watch ',
+    ADD_Warning_1:
+      'You can add any account to "watch" on the wallets tab without uploading a private key. This does ** not ** mean you have access to this wallet, nor can you transfer Ether from it. ',
+    ADD_Label_5: 'Enter the Address ',
+    ADD_Label_6: 'Unlock your Wallet ',
+    ADD_Label_6_short: 'Unlock ',
+    ADD_Label_7: 'Add Account ',
+    ADD_Label_8: 'Password (optional): ',
 
     /* Generate Wallets */
-    GEN_desc: '你可以在這裡新增多個錢包 ',
-    GEN_Label_1: '輸入一個夠安全的密碼（至少九個字元） ',
-    GEN_Placeholder_1: '別忘記將密碼記下！ ',
-    GEN_SuccessMsg: '成功！ 你的錢包已被產生。 ',
-    GEN_Label_2: '存下你的Keystore檔。 別忘記上方的密碼。 ',
-    GEN_Label_3: '記下你的地址。 ',
-    GEN_Label_4: '印出你的紙錢包，或存下QR碼版本的資料。（可選的） ',
+    GEN_desc: 'If you want to generate multiple wallets, you can do so here ',
+    GEN_Label_1: 'Enter a strong password (at least 9 characters) ',
+    GEN_Placeholder_1: 'Do NOT forget to save this! ',
+    GEN_SuccessMsg: 'Success! Your wallet has been generated. ',
+    GEN_Label_2: 'Save your Wallet File.   ',
+    GEN_Label_3: 'Save Your Address. ',
+    GEN_Label_4: 'Print paper wallet or a QR code.',
+    GEN_Aria_1: '',
+    GEN_Aria_2: '',
 
     /* Bulk Generate Wallets */
-    BULK_Label_1: '要產生的錢包數量 ',
-    BULK_Label_2: '產生多個錢包 ',
-    BULK_SuccessMsg: '成功！ 你的所有錢包皆已被產生。 ',
+    BULK_Label_1: 'Antal Plånböcker att Generera ',
+    BULK_Label_2: 'Generera Plånböcker ',
+    BULK_SuccessMsg: 'Dina plånböcker har genererats. ',
 
     /* Sending Ether and Tokens */
-    SEND_addr: '給地址 ',
-    SEND_amount: '要發送的數量 ',
-    SEND_amount_short: '數量 ',
-    SEND_custom: '新增其他代幣 ',
+    SEND_addr: 'To Address ',
+    SEND_amount: 'Amount to Send ',
+    SEND_amount_short: 'Amount ',
+    SEND_custom: 'Add Custom Token ',
     SEND_gas: 'Gas ',
-    SEND_TransferTotal: '送出所有餘額 ',
-    SEND_generate: '產生交易訊息 ',
-    SEND_raw: '交易訊息 ',
-    SEND_signed: '已簽署的交易訊息 ',
-    SEND_trans: '送出交易 ',
-    SENDModal_Title: '注意！ ',
+    SEND_TransferTotal: 'Send Entire Balance ',
+    SEND_generate: 'Generate Transaction ',
+    SEND_raw: 'Raw Transaction ',
+    SEND_signed: 'Signed Transaction ',
+    SEND_trans: 'Send Transaction ',
+    SENDModal_Title: 'Warning! ',
     /* full sentence reads "You are about to send "10 ETH" to address "0x1234". Are you sure you want to do this? " */
-    SENDModal_Content_1: '你將要送出 ',
-    SENDModal_Content_2: '到 ',
-    SENDModal_Content_3: '確定要繼續嗎？ ',
-    SENDModal_Content_4: '提醒：如果你遇到了問題，解決方法通常是傳入乙太幣到帳戶中來支付交易所需的gas。Gas由乙太幣支付。 ',
-    SENDModal_No: '不，帶我離開這裡！ ',
-    SENDModal_Yes: '好，我確定！進行交易。 ',
+    SENDModal_Content_1: 'You are about to send ',
+    SENDModal_Content_2: 'to address ',
+    SENDModal_Content_3: 'Are you sure you want to do this? ',
+    SENDModal_Content_4:
+      'NOTE: If you encounter an error, you most likely need to add ether to your account to cover the gas cost of sending tokens. Gas is paid in ether. ',
+    SENDModal_No: 'No, get me out of here! ',
+    SENDModal_Yes: 'Yes, I am sure! Make transaction. ',
 
     /* Tokens */
-    TOKEN_Addr: '地址 ',
-    TOKEN_Symbol: '代幣縮寫 ',
-    TOKEN_Dec: '小數點 ',
-    TOKEN_show: '顯示所有代幣 ',
-    TOKEN_hide: '隱藏代幣 ',
+    TOKEN_Addr: 'Address ',
+    TOKEN_Symbol: 'Token Symbol ',
+    TOKEN_Dec: 'Decimals ',
+    TOKEN_show: 'Show All Tokens ',
+    TOKEN_hide: 'Hide Tokens ',
 
     /* Send Transaction */
-    TRANS_desc: '如果你是要傳送代幣(Token)，請使用“傳送代幣”功能',
+    TRANS_desc:
+      'If you want to send Tokens, please use the "Send Token" page instead. ',
     TRANS_warning:
-      '"Only ETH" 或 "Only ETC" 功能是透過一個合約來傳送，並非單純的轉錢。有些服務可能沒辦法接受這兩種功能。 了解更多。Functions you are sending via a contract. Some services have issues accepting these transactions. Read more. ',
-    TRANS_advanced: '進階功能：為交易新增Data',
-    TRANS_data: '交易的Data ',
-    TRANS_gas: 'Gas 總量 ',
+      'If you are using the "Only ETH" or "Only ETC" Functions you are sending via a contract. Some services have issues accepting these transactions. Read more. ',
+    TRANS_advanced: '+Advanced: Add Data ',
+    TRANS_data: 'Data ',
+    TRANS_gas: 'Gas Limit ',
     TRANS_sendInfo:
-      '我們使用比平均手續費略高的gas價格（每單位0.000000021 ETH）確保交易能快速被確認。我們並不收取任何手續費。',
+      'A standard transaction using 21000 gas will cost 0.000441 ETH. We use a slightly-above-minimum gas price of 0.000000021 ETH to ensure it gets mined quickly. We do not take a transaction fee. ',
 
     /* Offline Transaction */
-    OFFLINE_Title: '以離線的方式製作交易',
-    OFFLINE_Desc: '離線製作交易的方式包含三步驟。步驟一及三需要使用連網裝置，步驟二則使用離線的電腦以確保你的私鑰不會被連網裝置存取。',
-    OFFLLINE_Step1_Title: '步驟一： 產生交易相關訊息（在連網裝置上） ',
-    OFFLINE_Step1_Button: '產生交易相關訊息 ',
-    OFFLINE_Step1_Label_1: '交易發起方的地址 ',
+    OFFLINE_Title: 'Generate & Send Offline Transaction ',
+    OFFLINE_Desc:
+      'Generating offline transactions can be done in three steps. You will complete steps 1 and 3 on an online computer, and step 2 on an offline/airgapped computer. This ensures your private keys do not touch an internet-connected device. ',
+    OFFLLINE_Step1_Title: 'Step 1: Generate Information (Online Computer) ',
+    OFFLINE_Step1_Button: 'Generate Information ',
+    OFFLINE_Step1_Label_1: 'From Address ',
     OFFLINE_Step1_Label_2:
-      '注意： 這是交易發起方的地址，不是交易接受方的地址。Nonce值是看交易發起方來決定。如果是使用離線裝置，則這個地址是離線儲存裝置的帳號地址。 ',
-    OFFLINE_Step2_Title: '步驟二： 製作交易（在離線裝置上） ',
-    OFFLINE_Step2_Label_1: '交易接收方的地址 ',
-    OFFLINE_Step2_Label_2: '送給交易接收方的金額',
-    OFFLINE_Step2_Label_3: '每單位gas的費用',
-    OFFLINE_Step2_Label_3b: '這會顯示於你步驟一連網裝置上。',
-    OFFLINE_Step2_Label_4: 'Gas 總量 ',
+      'Note: This is the FROM address, not the TO address. Nonce is generated from the originating account. If using an airgapped computer, it would be the address of the cold-storage account. ',
+    OFFLINE_Step2_Title: 'Step 2: Generate Transaction (Offline Computer) ',
+    OFFLINE_Step2_Label_1: 'To Address ',
+    OFFLINE_Step2_Label_2: 'Value / Amount to Send ',
+    OFFLINE_Step2_Label_3: 'Gas Price ',
+    OFFLINE_Step2_Label_3b:
+      'This was displayed in Step 1 on your online computer. ',
+    OFFLINE_Step2_Label_4: 'Gas Limit ',
     OFFLINE_Step2_Label_4b:
-      '21000 是預設的gas總量（單純轉錢）。如果你是要執行合約，則會不一樣。多給的gas如果沒有用完會退還給你。',
-    OFFLINE_Step2_Label_5b: '這會顯示於你步驟一連網裝置上。',
-    OFFLINE_Step2_Label_6: '交易的Data ',
-    OFFLINE_Step2_Label_6b: '並非必需的，Data通常只有在你執行合約的時候才需要。 ',
-    OFFLINE_Step2_Label_7: '輸入/選擇 你的私鑰/JSON檔。 ',
-    OFFLINE_Step3_Title: '步驟三： 送出交易（在連網裝置上） ',
-    OFFLINE_Step3_Label_1: '將步驟二經過簽名的交易複製並貼上到這，最後按下送出交易的按鈕。',
+      "21000 is the default gas limit. When you send contracts or add'l data, this may need to be different. Any unused gas will be returned to you. ",
+    OFFLINE_Step2_Label_5: 'Nonce ',
+    OFFLINE_Step2_Label_5b:
+      'This was displayed in Step 1 on your online computer. ',
+    OFFLINE_Step2_Label_6: 'Data ',
+    OFFLINE_Step2_Label_6b:
+      'This is optional. Data is often used when you send transactions to contracts. ',
+    OFFLINE_Step2_Label_7: 'Enter / Select your Private Key / JSON. ',
+    OFFLINE_Step3_Title:
+      'Step 3: Send / Publish Transaction (Online Computer) ',
+    OFFLINE_Step3_Label_1:
+      'Paste the signed transaction from Step 2 here and press the "SEND TRANSACTION" button. ',
 
-    /* Contracts */
-    CONTRACT_Title: '合約地址 ',
-    CONTRACT_Title_2: '選擇已經存在的合約 ',
-    CONTRACT_Json: '合約的 ABI / JSON 介面 ',
-    CONTRACT_Interact_Title: '讀取/寫入 合約',
-    CONTRACT_Interact_CTA: '選擇一個動作',
-    CONTRACT_ByteCode: '合約的程式碼 ',
-    CONTRACT_Read: '讀取 ',
-    CONTRACT_Write: '寫入 ',
-    DEP_generate: '產生程式碼 ',
-    DEP_generated: '已產生的程式碼 ',
-    DEP_signtx: '對交易做簽名 ',
-    DEP_interface: '已產生的合約介面 ',
-
-    /* Node Switcher */
-    NODE_Title: '設定你的客製節點',
-    NODE_Subtitle: '連線至一個區域/私人節點...',
-    NODE_Warning:
-      '你的節點必須使用HTTPS安全連線的方式才能夠由MyEtherWallet.com連接到它。 你可以下載[MyEtherWallet repo](https://github.com/kvhnuke/etherwallet/releases/latest)並建立起一個你的節點來連接至其他的節點。或著從[LetsEncrypt](https://letsencrypt.org/)獲取免費的SSL憑證',
-    NODE_Name: '節點名稱',
-    NODE_Port: '節點連線的端口號碼',
-    NODE_CTA: '儲存設定並使用客製節點',
-
-    /* Swap / Exchange */
-    SWAP_rates: '當前的匯率 ',
-    SWAP_init_1: '我想要用我的 ',
-    SWAP_init_2: ' 換 ', // "I want to swap my X ETH for X BTC"
-    SWAP_init_CTA: '下一步 ', // or "Continue"
-    SWAP_information: '你的相關資料 ',
-    SWAP_send_amt: '送出多少金額 ',
-    SWAP_rec_amt: '收入多少金額 ',
-    SWAP_your_rate: '你的匯率 ',
-    SWAP_rec_add: '你收錢的地址 ',
-    SWAP_start_CTA: '開始交換 ',
-    SWAP_ref_num: '你的交易編號 ',
-    SWAP_time: '剩餘多少時間可送出交易 ',
-    SWAP_elapsed: '送出交易後已經經過了 ',
-    SWAP_progress_1: '訂單已產生 ',
-    SWAP_progress_2: '正在等待你的 ', // Waiting for your BTC...
-    SWAP_progress_3: '收到了! ', // ETH Received!
-    SWAP_progress_4: '正在傳送你的 {{orderResult.output.currency}} ',
-    SWAP_progress_5: '訂單完成 ',
-    SWAP_order_CTA: '請傳送 ', // Please send 1 ETH...
-    SWAP_unlock: '解鎖你的錢包來從這個頁面轉錢或轉代幣 ',
-
-    /* Sign Message */
-    MSG_message: '訊息 ',
-    MSG_date: '日期 ',
-    MSG_signature: '簽名 ',
-    MSG_verify: '驗證訊息 ',
-    MSG_info1: '填入當前時間來避免簽名在其他不同時間被重複利用。 ',
-    MSG_info2: '填入你的暱稱及你使用該暱稱的場合來避免其他人使用',
-    MSG_info3: '填入這個訊息的源由來避免被用在其他目的。 ',
+    /* My Wallet */
+    MYWAL_Nick: 'Plånboks Namn ',
+    MYWAL_Address: 'Plånboks Adress ',
+    MYWAL_Bal: 'Saldo ',
+    MYWAL_Edit: 'Ändra ',
+    MYWAL_View: 'Visa ',
+    MYWAL_Remove: 'Ta Bort ',
+    MYWAL_RemoveWal: 'Ta Bort Plånbok: ',
+    MYWAL_WatchOnly: 'Dina Bevakade Konton ' /*Any better translation?*/,
+    MYWAL_Viewing: 'Visar Plånbok ',
+    MYWAL_Hide: 'Dölj Plånboks Info ',
+    MYWAL_Edit_2: 'Ändra Plånbok ',
+    MYWAL_Name: 'Plånboks Namn ',
+    MYWAL_Content_1: 'Varning! Du är på väg att ta bort din plånbok ',
+    MYWAL_Content_2:
+      'Kontrollera att du har **sparat den privata nyckeln / Keystore filen och lösenordet** som tillhör den här plånboken innan du tar bort den. ',
+    MYWAL_Content_3:
+      'Om du vill använda plånboken med MyEtherWallet CX i framtiden, måste du manuellt lägga till den med hjälp av den privata nyckeln / JSON filen och lösenordet. ',
 
     /* View Wallet Details */
     VIEWWALLET_Subtitle:
-      '這可以讓你下載不同版本的私鑰並且重新印製出你的紙錢包。你可能會需要這個功能來將你的帳戶[讀入Geth/Mist](http://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/)。 如果你想要檢查你的帳號餘額，我們建議你使用區塊鏈瀏覽網頁像是[etherscan.io](http://etherscan.io/)。 ',
-    VIEWWALLET_Subtitle_Short: '這可以讓你下載不同版本的私鑰並且重新印製出你的紙錢包。 ',
-    VIEWWALLET_SuccessMsg: '成功！這些是你的錢包內容。 ',
+      'This allows you to download different versions of private keys and re-print your paper wallet. You may want to do this in order to [import your account into Geth/Mist](http://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/). If you want to check your balance, we recommend using a blockchain explorer like [etherscan.io](http://etherscan.io/). ',
+    VIEWWALLET_Subtitle_Short:
+      'This allows you to download different versions of private keys and re-print your paper wallet. ',
+    VIEWWALLET_SuccessMsg: 'Success! Here are your wallet details. ',
+    VIEWWALLET_ShowPrivKey: '(show)',
+    VIEWWALLET_HidePrivKey: '(hide)',
+
+    /* Contracts */
+    CONTRACT_Title: 'Contract Address ',
+    CONTRACT_Title_2: 'Select Existing Contract ',
+    CONTRACT_Json: 'ABI / JSON Interface ',
+    CONTRACT_Interact_Title: 'Read / Write Contract ',
+    CONTRACT_Interact_CTA: 'Select a function ',
+    CONTRACT_ByteCode: 'Byte Code ',
+    CONTRACT_Read: 'READ ',
+    CONTRACT_Write: 'WRITE ',
+    DEP_generate: 'Generate Bytecode ',
+    DEP_generated: 'Generated Bytecode ',
+    DEP_signtx: 'Sign Transaction ',
+    DEP_interface: 'Generated Interface ',
+
+    /* Node Switcher */
+    NODE_Title: 'Set Up Your Custom Node',
+    NODE_Subtitle: 'To connect to a local node...',
+    NODE_Warning:
+      'Your node must be HTTPS in order to connect to it via MyEtherWallet.com. You can [download the MyEtherWallet repo & run it locally](https://github.com/kvhnuke/etherwallet/releases/latest) to connect to any node. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)',
+    NODE_Name: 'Node Name',
+    NODE_Port: 'Node Port',
+    NODE_CTA: 'Save & Use Custom Node',
+
+    /* Swap / Exchange */
+    SWAP_rates: 'Current Rates ',
+    SWAP_init_1: 'I want to swap my ',
+    SWAP_init_2: ' for ', // "I want to swap my X ETH for X BTC"
+    SWAP_init_CTA: "Let's do this! ", // or "Continue"
+    SWAP_information: 'Your Information ',
+    SWAP_send_amt: 'Amount to send ',
+    SWAP_rec_amt: 'Amount to receive ',
+    SWAP_your_rate: 'Your rate ',
+    SWAP_rec_add: 'Your Receiving Address ',
+    SWAP_start_CTA: 'Start Swap ',
+    SWAP_ref_num: 'Your reference number ',
+    SWAP_time: 'Time remaining to send ',
+    SWAP_elapsed: 'Time elapsed since sent ',
+    SWAP_progress_1: 'Order Initiated ',
+    SWAP_progress_2: 'Waiting for your ', // Waiting for your BTC...
+    SWAP_progress_3: 'Received! ', // ETH Received!
+    SWAP_progress_4: 'Sending your {{orderResult.output.currency}} ',
+    SWAP_progress_5: 'Order Complete ',
+    SWAP_order_CTA: 'Please send ', // Please send 1 ETH...
+    SWAP_unlock:
+      'Unlock your wallet to send ETH or Tokens directly from this page. ',
+
+    /* Sign Message */
+    MSG_message: 'Message ',
+    MSG_date: 'Date ',
+    MSG_signature: 'Signature ',
+    MSG_verify: 'Verify Message ',
+    MSG_info1:
+      'Include the current date so the signature cannot be reused on a different date. ',
+    MSG_info2:
+      'Include your nickname and where you use the nickname so someone else cannot use it. ',
+    MSG_info3:
+      'Include a specific reason for the message so it cannot be reused for a different purpose. ',
 
     /* Chrome Extension */
-    CX_error_1: '你沒有儲存過任何錢包。 點擊["新增錢包"](/cx-wallet.html#add-wallet)來新增一個錢包！ ',
-    CX_quicksend: '傳送 ', // if no appropriate translation, just use "Send"
+    CX_error_1:
+      'You don\'t have any wallets saved. Click ["Add Wallet"](/cx-wallet.html#add-wallet) to add one! ',
+    CX_quicksend: 'QuickSend ', // if no appropriate translation, just use "Send"
 
     /* Error Messages */
-    ERROR_0: '請輸入有效的數量。 ',
-    ERROR_1: '你的密碼至少需要9個字元。請確保你的密碼強度夠強。 ',
-    ERROR_2: '抱歉，我們無法識別這個錢包檔案。 ',
-    ERROR_3: '這不是一個有效的錢包檔案。 ',
-    ERROR_4: '這個單位並不存在，請使用以下的單位 ',
-    ERROR_5: '無效的地址。 ',
-    ERROR_6: '無效的密碼。 ',
-    ERROR_7: '無效的數量。 ',
-    ERROR_8: '無效的gas上限。 ',
-    ERROR_9: '無效的data。 ',
-    ERROR_10: '無效的gas數量。 ',
-    ERROR_11: '無效的nonce值。 ',
-    ERROR_12: '無效的已簽名交易。 ',
-    ERROR_13: '已經有一個使用相同暱稱的錢包存在。 ',
-    ERROR_14: '找不到錢包。 ',
+    ERROR_0: 'Please enter a valid amount.', // 0
+    ERROR_1:
+      'Your password must be at least 9 characters. Please ensure it is a strong password. ', // 1
+    ERROR_2: "Sorry! We don't recognize this type of wallet file. ", // 2
+    ERROR_3: 'This is not a valid wallet file. ', // 3
+    ERROR_4:
+      "This unit doesn't exists, please use the one of the following units ", // 4
+    ERROR_5: 'Please enter a valid address. ', // 5
+    ERROR_6: 'Please enter a valid password. ', // 6
+    ERROR_7: 'Please enter valid decimals     (Must be integer, 0-18). ', // 7
+    ERROR_8:
+      'Please enter a valid gas limit  (Must be integer. Try 21000-4000000). ', // 8
+    ERROR_9: 'Please enter a valid data value (Must be hex). ', // 9
+    ERROR_10:
+      'Please enter a valid gas price. (Must be integer. Try 20 GWEI (20000000000 WEI)',
+    ERROR_11: 'Please enter a valid nonce      (Must be integer).', // 11
+    ERROR_12: 'Invalid signed transaction. ', // 12
+    ERROR_13: 'A wallet with this nickname already exists. ', // 13
+    ERROR_14: 'Wallet not found. ', // 14
     ERROR_15:
-      "It doesn't look like a proposal with this ID exists yet or there is an error reading this proposal. ",
-    ERROR_16: '儲存裝置中已經有一個包含這個地址的錢包存在。 請見錢包頁面。 ',
-    ERROR_17: '你帳戶中必須有至少 **0.01 ETH** 來支付gas的成本。 請添加一些 ETH 並重試。 ',
+      "Whoops. It doesn't look like a proposal with this ID exists yet or there is an error reading this proposal. ", // 15 - NOT USED
+    ERROR_16:
+      'A wallet with this address already exists in storage. Please check your wallets page. ', // 16
+    ERROR_17:
+      'Account you are sending from does not have enough funds. If sending tokens, you must have 0.01 ETH in your account to cover the cost of gas. ', // 17
     ERROR_18:
-      'All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended. ',
-    ERROR_19: '無效的符號 ',
-    ERROR_20: '並不是一個有效的 ERC-20 代幣 ',
+      'All gas would be used on this transaction. This means you have already voted on this proposal or the debate period has ended.', // 18
+    ERROR_19: 'Please enter a valid symbol', // 19
+    ERROR_20: 'Not a valid ERC-20 token', // 20
     ERROR_21:
-      '無法估計花費的gas。 這個帳戶沒有足夠餘額，或是接收的合約丟出錯誤訊息。 你可以自己手動設定gas並執行。 傳送後的錯誤訊息可能會提供更多訊息。 ',
-    ERROR_22: '請輸入有效的節點名稱',
-    ERROR_23: '輸入有效的url，如果你使用https請確保url也是使用https。 ',
-    ERROR_24: '請輸入有效的連線端口號碼 ',
-    ERROR_25: '請輸入有效的鏈ID',
-    ERROR_26: '請輸入有效的ABI ',
-    ERROR_27: '最少數量 0.01 及最大',
+      'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative.', // 21
+    ERROR_22: 'Please enter a valid node name', // 22
+    ERROR_23:
+      'Please enter a valid URL. If you are on https, your URL must be https', // 23
+    ERROR_24: 'Please enter a valid port. ', // 24
+    ERROR_25: 'Please enter a valid chain ID. ', // 25
+    ERROR_26: 'Please enter a valid ABI. ', // 26
+    ERROR_27: 'Minimum amount: 0.01. Max amount: ', // 27
     ERROR_28:
-      '**以後你會需要密碼和Keystore檔案** (或私鑰)來存取你的錢包。請儲存並備份在額外的地方！如果沒有儲存你是沒有機會找回這個錢包的。 詳見[幫助頁面](https://www.myetherwallet.com/#help)來獲取更多資訊。 ',
-    ERROR_29: '請輸入有效的使用者及密碼 ',
-    ERROR_30: 'Please enter valid ENS name ',
-    ERROR_31: 'Invalid secret phrase ',
+      'You need this `Keystore File + Password` or the `Private Key` (next page) to access this wallet in the future. ', // 28
+    ERROR_29: 'Please enter a valid user and password. ', // 29
+    ERROR_30: 'Please enter a valid name (7+ characters, limited punctuation) ', // 30
+    ERROR_31: 'Please enter a valid secret phrase. ', // 31
     ERROR_32:
-      'Could not connect to the node. Please refresh the page, or see the help page for more troubleshooting suggestions. ',
-    SUCCESS_1: '有效的地址 ',
-    SUCCESS_2: '成功解密錢包 ',
+      'Could not connect to the node. Refresh your page, try a different node (upper right corner), check your firewall settings. If custom node, check your configs.', // 32
+    ERROR_33:
+      "The wallet you have unlocked does not match the owner's address. ", // 33
+    ERROR_34:
+      'The name you are attempting to reveal does not match the name you have entered. ', // 34
+    ERROR_35:
+      'Input address is not checksummed. <a href="https://myetherwallet.groovehq.com/knowledge_base/topics/not-checksummed-shows-when-i-enter-an-address" target="_blank" rel="noopener"> More info</a>', // 35
+    ERROR_36: 'Enter valid TX hash', // 36
+    ERROR_37: 'Enter valid hex string (0-9, a-f)', // 37
+
+    SUCCESS_1: 'Valid address ',
+    SUCCESS_2: 'Wallet successfully decrypted ',
     SUCCESS_3:
-      'TX was broadcast to the blockchain. Click to see your transaction & verify it was mined and does not have any out of gas or contract execution errors.  TX ID:  ', //'交易已傳送。 交易的ID ',
-    SUCCESS_4: '成功新增你的錢包 ',
-    SUCCESS_5: '已選擇檔案 ',
+      'Your TX has been broadcast to the network. It is waiting to be mined & confirmed. During ICOs, it may take 3+ hours to confirm. Use the Verify & Check buttons below to see. TX Hash:  ', //'Your TX has been broadcast to the network. It is waiting to be mined & confirmed. During ICOs, it may take 3+ hours to confirm. Use the Verify & Check buttons below to see. TX Hash:   ', //
+    SUCCESS_4: 'Your wallet was successfully added ',
+    SUCCESS_5: 'File Selected ',
     SUCCESS_6: 'You are successfully connected ',
     SUCCESS_7: 'Message Signature Verified',
     WARN_Send_Link:
-      '你藉由一條連結到達此頁面，且該連結已幫你將地址、金額、gas和data欄位或交易類別(傳送模式)填好。 送出前你可以自由更改其中的值。 首先先解鎖你的錢包。 ',
+      'You arrived via a link that has the address, value, gas, data fields, or transaction type (send mode) filled in for you. You can change any information before sending. Unlock your wallet to get started. ',
 
     /* Geth Error Messages */
-    GETH_InvalidSender: '無效的傳送者 ',
-    GETH_Nonce: 'Nonce值太低 ',
-    GETH_Cheap: 'Gas價格太低以致不會被礦工接受 ',
-    GETH_Balance: '餘額不足 ',
-    GETH_NonExistentAccount: '帳戶不存在或是帳戶餘額不足 ',
-    GETH_InsufficientFunds: '提供的金額不足以支付gas成本的錢加上你要轉的錢 ',
-    GETH_IntrinsicGas: '提供的gas量不足 ',
-    GETH_GasLimit: 'gas量超過每單位區塊的gas上限 ',
-    GETH_NegativeValue: '負數的值 ',
+    GETH_InvalidSender: 'Invalid sender ',
+    GETH_Nonce: 'Nonce too low ',
+    GETH_Cheap: 'Gas price too low for acceptance ',
+    GETH_Balance: 'Insufficient balance ',
+    GETH_NonExistentAccount:
+      'Account does not exist or account balance too low ',
+    GETH_InsufficientFunds: 'Insufficient funds for gas * price + value ',
+    GETH_IntrinsicGas: 'Intrinsic gas too low ',
+    GETH_GasLimit: 'Exceeds block gas limit ',
+    GETH_NegativeValue: 'Negative value ',
 
     /* Parity Error Messages */
-    PARITY_AlreadyImported: '已經有輸入一筆有同樣雜湊值的交易了。',
-    PARITY_Old: '交易的nonce值太低。請增加nonce值。',
+    PARITY_AlreadyImported:
+      'Transaction with the same hash was already imported.',
+    PARITY_Old: 'Transaction nonce is too low. Try incrementing the nonce.',
     PARITY_TooCheapToReplace:
-      '交易手續費太低。已經有另外一筆有同樣nonce值的交易被加入排程。 請增加交易費用來取代該筆交易或增加nonce值來接續在該筆交易之後。',
-    PARITY_LimitReached: '目前排程中有太多交易。你的交易因為超過排程容量上限而被拒絕。請增加交易手續費。',
+      'Transaction fee is too low. There is another transaction with same nonce in the queue. Try increasing the fee or incrementing the nonce.',
+    PARITY_LimitReached:
+      'There are too many transactions in the queue. Your transaction was dropped due to limit. Try increasing the fee.',
     PARITY_InsufficientGasPrice:
-      '交易手續費太低。達不到你節點所要求的最低手續費(最低: {}, 收到: {}). 請增加交易手續費。',
+      "Transaction fee is too low. It does not satisfy your node's minimal fee (minimal: {}, got: {}). Try increasing the fee.",
     PARITY_InsufficientBalance:
-      '提供金額不足。你嘗試送出交易的帳戶並沒有足夠的金額。 需要 {} wei 但只有: {} wei.',
+      'Insufficient funds. Account you try to send transaction from does not have enough funds. Required {} wei and got: {} wei.',
     PARITY_GasLimitExceeded:
-      '交易提供的gas量超過每單位的區塊gas上限 上限: {}, 收到: {}. 請減少提供的gas量。',
-    PARITY_InvalidGasLimit: '提供的gas量超過上限。',
+      'Transaction cost exceeds current gas limit. Limit: {}, got: {}. Try decreasing supplied gas.',
+    PARITY_InvalidGasLimit: 'Supplied gas is beyond limit.',
 
     /* Tranlsation Info */
     translate_version: '0.5 ',
-    Translator_Desc: '譯者: ',
-    TranslatorName_1: 'Dymnz ',
-    TranslatorAddr_1: '0x0065F744bCb5393aA538cfb0688CBb0Ae0bFa741 ',
+    Translator_Desc: ' ',
+    TranslatorName_1: ' ',
+    TranslatorAddr_1: ' ',
     /* Translator 1             : Insert Comments Here */
-    TranslatorName_2: 'NIC',
+    TranslatorName_2: ' ',
     TranslatorAddr_2: ' ',
     /* Translator 2             : Insert Comments Here */
     TranslatorName_3: ' ',
@@ -403,7 +545,6 @@ module.exports = {
     HELP_1_Desc_4: 'Click "GENERATE". ',
     HELP_1_Desc_5: 'Your wallet has now been generated. ',
 
-    HELP_2a_Title: '2a) How do I save/backup my wallet? ',
     HELP_2a_Desc_1:
       'You should always back up your wallet externally and in multiple physical locations - like on a USB drive and/or a piece of paper. ',
     HELP_2a_Desc_2:
@@ -421,7 +562,7 @@ module.exports = {
       '2b) How do I safely / offline / cold storage with MyEtherWallet? ',
     HELP_2b_Desc_1:
       'Go to [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ',
-    HELP_2b_Desc_2: 'Click on `dist-vX.X.X.X.zip`. ',
+    HELP_2b_Desc_2: 'Click on `etherwallet-vX.X.X.X.zip`. ',
     HELP_2b_Desc_3: 'Move zip to an airgapped computer. ',
     HELP_2b_Desc_4: 'Unzip it and double-click `index.html`. ',
     HELP_2b_Desc_5: 'Generate a wallet with a strong password. ',
@@ -468,7 +609,7 @@ module.exports = {
     HELP_4_Desc_12:
       'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button. ',
     HELP_4_Desc_13:
-      'The transaction will be submitted. The TX ID will display. You can click that TX ID to see it on the blockchain. ',
+      'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain. ',
 
     HELP_4CX_Title: '4) How do I send Ether using MyEtherWallet CX? ',
     HELP_4CX_Desc_1:
@@ -535,7 +676,7 @@ module.exports = {
     HELP_7_Desc_14:
       'A pop-up will appear. Verify that the amount and the address you are sending to are correct. Then click "Yes, I am sure! Make transaction." button. ',
     HELP_7_Desc_15:
-      'The transaction will be submitted. The TX ID will display. You can click that TX ID to see it on the blockchain. ',
+      'The transaction will be submitted. The TX Hash will display. You can click that TX Hash to see it on the blockchain. ',
 
     HELP_8_Title: '8) What happens if your site goes down? ',
     HELP_8_Desc_1:
