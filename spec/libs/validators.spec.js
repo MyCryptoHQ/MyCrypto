@@ -1,6 +1,7 @@
 import {
   isValidBTCAddress,
-  isValidETHAddress
+  isValidETHAddress,
+  isValidPath
 } from '../../common/libs/validators';
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
@@ -23,5 +24,12 @@ describe('Validator', () => {
     expect(
       isValidETHAddress('nonsense' + VALID_ETH_ADDRESS + 'nonsense')
     ).toBeFalsy();
+  });
+
+  it('should validate a correct DPath as true', () => {
+    expect(isValidPath('m/44\'/60\'/0\'/0')).toBeTruthy();
+  });
+  it('should validate an incorrect DPath as false', () => {
+    expect(isValidPath('m/44/60/0/0')).toBeFalsy();
   });
 });
