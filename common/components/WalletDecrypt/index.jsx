@@ -129,7 +129,7 @@ export class WalletDecrypt extends Component {
     const decryptionComponent = this.getDecryptionComponent();
 
     return (
-      <article className="well decrypt-drtv row">
+      <article className="Tab-content-pane row">
         <section className="col-md-4 col-sm-6">
           <h4>
             {translate('decrypt_Access')}

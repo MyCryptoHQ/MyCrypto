@@ -69,7 +69,7 @@ export default class TabsOptions extends Component {
             &#171;
           </a>}
 
-        <div className="Navigation-scroll container-fluid">
+        <div className="Navigation-scroll container">
           <ul className="Navigation-links">
             {tabs.map(link => {
               return (

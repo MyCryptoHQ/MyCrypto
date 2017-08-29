@@ -156,124 +156,125 @@ export class SendTransaction extends React.Component {
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
-      <section className="container" style={{ minHeight: '50%' }}>
-        <div className="tab-content">
-          <main className="tab-pane active">
-            {hasQueryString &&
-              <div className="alert alert-info">
-                <p>
-                  {translate('WARN_Send_Link')}
-                </p>
-              </div>}
+      <section className="Tab-content">
+        <UnlockHeader title={'NAV_SendEther'} />
 
-            <UnlockHeader title={'NAV_SendEther'} />
+        <div className="row">
+          {/* Send Form */}
+          {unlocked &&
+            <main className="col-sm-8" role="main">
+              <div className="Tab-content-pane">
+                {hasQueryString &&
+                  <div className="alert alert-info">
+                    <p>
+                      {translate('WARN_Send_Link')}
+                    </p>
+                  </div>}
 
-            {unlocked &&
-              <article className="row">
-                {'' /* <!-- Sidebar --> */}
-                <section className="col-sm-4">
-                  <div style={{ maxWidth: 350 }}>
-                    <BalanceSidebar />
-                    <hr />
-                    <Donate onDonate={this.onNewTx} />
+                {readOnly &&
+                  !hasEnoughBalance &&
+                  <div className="row form-group">
+                    <div className="alert alert-danger col-xs-12 clearfix">
+                      <strong>
+                        Warning! You do not have enough funds to complete this
+                        swap.
+                      </strong>
+                      <br />
+                      Please add more funds or access a different wallet.
+                    </div>
+                  </div>}
+
+                <div className="row form-group">
+                  <h4 className="col-xs-12">
+                    {translate('SEND_trans')}
+                  </h4>
+                </div>
+                <AddressField
+                  placeholder={donationAddressMap.ETH}
+                  value={this.state.to}
+                  onChange={readOnly ? null : this.onAddressChange}
+                />
+                <AmountField
+                  value={value}
+                  unit={unit}
+                  tokens={this.props.tokenBalances
+                    .filter(token => !token.balance.eq(0))
+                    .map(token => token.symbol)
+                    .sort()}
+                  onChange={readOnly ? void 0 : this.onAmountChange}
+                />
+                <GasField
+                  value={gasLimit}
+                  onChange={readOnly ? void 0 : this.onGasChange}
+                />
+                {unit === 'ether' &&
+                  <DataField
+                    value={data}
+                    onChange={readOnly ? void 0 : this.onDataChange}
+                  />}
+                <CustomMessage message={customMessage} />
+
+                <div className="row form-group">
+                  <div className="col-xs-12 clearfix">
+                    <a
+                      className="btn btn-info btn-block"
+                      onClick={this.generateTx}
+                    >
+                      {translate('SEND_generate')}
+                    </a>
                   </div>
-                </section>
+                </div>
 
-                <section className="col-sm-8">
-                  {readOnly &&
-                    !hasEnoughBalance &&
+                {transaction &&
+                  <div>
                     <div className="row form-group">
-                      <div className="alert alert-danger col-xs-12 clearfix">
-                        <strong>
-                          Warning! You do not have enough funds to complete this
-                          swap.
-                        </strong>
-                        <br />
-                        Please add more funds or access a different wallet.
+                      <div className="col-sm-6">
+                        <label>
+                          {translate('SEND_raw')}
+                        </label>
+                        <textarea
+                          className="form-control"
+                          value={transaction.rawTx}
+                          rows="4"
+                          readOnly
+                        />
                       </div>
-                    </div>}
+                      <div className="col-sm-6">
+                        <label>
+                          {translate('SEND_signed')}
+                        </label>
+                        <textarea
+                          className="form-control"
+                          value={transaction.signedTx}
+                          rows="4"
+                          readOnly
+                        />
+                      </div>
+                    </div>
 
-                  <div className="row form-group">
-                    <h4 className="col-xs-12">
-                      {translate('SEND_trans')}
-                    </h4>
-                  </div>
-                  <AddressField
-                    placeholder={donationAddressMap.ETH}
-                    value={this.state.to}
-                    onChange={readOnly ? null : this.onAddressChange}
-                  />
-                  <AmountField
-                    value={value}
-                    unit={unit}
-                    tokens={this.props.tokenBalances
-                      .filter(token => !token.balance.eq(0))
-                      .map(token => token.symbol)
-                      .sort()}
-                    onChange={readOnly ? void 0 : this.onAmountChange}
-                  />
-                  <GasField
-                    value={gasLimit}
-                    onChange={readOnly ? void 0 : this.onGasChange}
-                  />
-                  {unit === 'ether' &&
-                    <DataField
-                      value={data}
-                      onChange={readOnly ? void 0 : this.onDataChange}
-                    />}
-                  <CustomMessage message={customMessage} />
-
-                  <div className="row form-group">
-                    <div className="col-xs-12 clearfix">
+                    <div className="form-group">
                       <a
-                        className="btn btn-info btn-block"
-                        onClick={this.generateTx}
+                        className="btn btn-primary btn-block col-sm-11"
+                        onClick={this.openTxModal}
                       >
-                        {translate('SEND_generate')}
+                        {translate('SEND_trans')}
                       </a>
                     </div>
-                  </div>
+                  </div>}
+              </div>
+            </main>}
 
-                  {transaction &&
-                    <div>
-                      <div className="row form-group">
-                        <div className="col-sm-6">
-                          <label>
-                            {translate('SEND_raw')}
-                          </label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.rawTx}
-                            rows="4"
-                            readOnly
-                          />
-                        </div>
-                        <div className="col-sm-6">
-                          <label>
-                            {translate('SEND_signed')}
-                          </label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.signedTx}
-                            rows="4"
-                            readOnly
-                          />
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <a
-                          className="btn btn-primary btn-block col-sm-11"
-                          onClick={this.openTxModal}
-                        >
-                          {translate('SEND_trans')}
-                        </a>
-                      </div>
-                    </div>}
-                </section>
-              </article>}
-          </main>
+          {/* Sidebar */}
+          {unlocked &&
+            <aside className="col-sm-4">
+              <div className="Tab-content-pane">
+                <BalanceSidebar />
+                <hr />
+                <Donate onDonate={this.onNewTx} />
+              </div>
+            </aside>}
         </div>
+
         {transaction &&
           showTxConfirm &&
           <ConfirmationModal

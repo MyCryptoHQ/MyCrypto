@@ -2,29 +2,29 @@
 @import "common/sass/mixins";
 
 .Contracts {
-	&-header {
-		text-align: center;
-		margin: 2rem 0;
+  &-header {
+    margin: 0;
+    text-align: center;
 
-		&-tab {
-			@include reset-button;
-			color: $ether-blue;
+    &-tab {
+      @include reset-button;
+      color: $ether-blue;
 
-			&:hover,
-			&:active {
-				opacity: 0.8;
-			}
+      &:hover,
+      &:active {
+        opacity: 0.8;
+      }
 
-			&.is-active {
-				&,
-				&:hover,
-				&:active {
-					color: $text-color;
-					cursor: default;
-					opacity: 1;
-					font-weight: 500;
-				}
-			}
-		}
-	}
+      &.is-active {
+        &,
+        &:hover,
+        &:active {
+          color: $text-color;
+          cursor: default;
+          opacity: 1;
+          font-weight: 500;
+        }
+      }
+    }
+  }
 }

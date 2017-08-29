@@ -72,15 +72,13 @@ class GenerateWallet extends Component {
     }
 
     return (
-      <section className="container" style={{ minHeight: '50%' }}>
-        <div className="tab-content">
-          <main className="tab-pane active text-center" role="main">
-            <section role="main" className="row">
-              <br />
-              {content}
-            </section>
-          </main>
-        </div>
+      <section className="Tab-content">
+        <main className="Tab-content-pane text-center" role="main">
+          <section role="main" className="row">
+            <br />
+            {content}
+          </section>
+        </main>
       </section>
     );
   }
