@@ -89,15 +89,19 @@ export function setTokenBalances(payload: {
 /*** Broadcast Tx ***/
 export type BroadcastTxRequestedAction = {
   type: 'WALLET_BROADCAST_TX_REQUESTED',
-  payload: BroadcastTransaction
+  payload: {
+    rawTx: BroadcastTransaction
+  }
 };
 
 export function broadcastTx(
-  payload: BroadcastTransaction
+  rawTx: BroadcastTransaction
 ): BroadcastTxRequestedAction {
   return {
     type: 'WALLET_BROADCAST_TX_REQUESTED',
-    payload
+    payload: {
+      rawTx
+    }
   };
 }
 

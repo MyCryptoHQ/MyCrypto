@@ -32,7 +32,7 @@ import Big from 'bignumber.js';
 import { valueToHex } from 'libs/values';
 import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
-import { getTokenBalances } from 'selectors/wallet';
+import { getTokenBalances, getTxFromTransactionsReal } from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
 import { broadcastTx, BroadcastTxAction } from 'actions/wallet';
 import type {
@@ -97,7 +97,8 @@ type Props = {
     level: string,
     msg: string,
     duration?: number
-  ) => ShowNotificationAction
+  ) => ShowNotificationAction,
+  transactions: any
 };
 
 const initialState = {
@@ -146,6 +147,22 @@ export class SendTransaction extends React.Component {
     }
     if (this.state.disabled !== !this.isValid()) {
       this.setState({ disabled: !this.isValid() });
+    }
+
+    if (this.state.transaction && this.state.transaction.signedTx) {
+      const currentTxFromState = getTxFromTransactionsReal(
+        this.props.transactions,
+        this.state.transaction.signedTx
+      );
+      if (
+        this.state.transaction &&
+        currentTxFromState &&
+        this.state.transaction.signedTx === currentTxFromState.tx
+      ) {
+        if (currentTxFromState.successfullyBroadcast) {
+          this.resetState();
+        }
+      }
     }
   }
 
@@ -472,13 +489,16 @@ export class SendTransaction extends React.Component {
   resetState = () => {
     this.setState({
       to: '',
-      value: ''
+      value: '',
+      transaction: {
+        signedTx: '',
+        rawTx: ''
+      }
     });
   };
 
   confirmTx = () => {
     this.props.broadcastTx(this.state.transaction.signedTx);
-    // this.resetState();
   };
 }
 
@@ -492,7 +512,7 @@ function mapStateToProps(state: AppState) {
     network: getNetworkConfig(state),
     tokens: getTokens(state),
     gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei'),
-    isBroadcasting: state.wallet.isBroadcasting
+    transactions: state.wallet.transactions
   };
 }
 

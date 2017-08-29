@@ -11,9 +11,9 @@ import ERC20 from 'libs/erc20';
 import { getTransactionFields } from 'libs/transaction';
 import { getTokens } from 'selectors/wallet';
 import { getNetworkConfig, getLanguageSelection } from 'selectors/config';
+import { getTxFromTransactionsByRawTxRoot } from 'selectors/wallet';
 import type { NodeConfig } from 'config/data';
 import type { Token, NetworkConfig } from 'config/data';
-import { getIsWalletBroadcasting } from 'selectors/wallet';
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 import Spinner from 'components/ui/Spinner';
@@ -28,7 +28,8 @@ type Props = {
   onConfirm: (string, EthTx) => void,
   onClose: () => void,
   lang: string,
-  isBroadcasting: boolean
+  transactions: any,
+  stateSignedTx: any
 };
 
 type State = {
@@ -59,7 +60,8 @@ class ConfirmationModal extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.hasBroadCasted && !this.props.isBroadcasting) {
+    console.log('Confirmation Modal signed tx', this.props.stateSignedTx);
+    if (this.state.hasBroadCasted && !this.props.stateSignedTx.isBroadcasting) {
       this.props.onClose();
     }
   }
@@ -82,10 +84,9 @@ class ConfirmationModal extends React.Component {
     clearInterval(this.readTimer);
   }
 
-  _setWalletAddress(wallet: BaseWallet) {
-    wallet.getAddress().then(fromAddress => {
-      this.setState({ fromAddress });
-    });
+  async _setWalletAddress(wallet: BaseWallet) {
+    const fromAddress = await wallet.getAddress();
+    this.setState({ fromAddress });
   }
 
   _decodeTransaction() {
@@ -114,14 +115,13 @@ class ConfirmationModal extends React.Component {
 
   _confirm = () => {
     if (this.state.timeToRead < 1) {
-      const { signedTransaction, transaction } = this.props;
-      this.props.onConfirm(signedTransaction, transaction);
+      this.props.onConfirm();
       this.setState({ hasBroadCasted: true });
     }
   };
 
   render() {
-    const { node, token, network, onClose, isBroadcasting } = this.props;
+    const { node, token, network, onClose, transactions } = this.props;
     const { fromAddress, timeToRead } = this.state;
     const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
@@ -149,7 +149,7 @@ class ConfirmationModal extends React.Component {
         handleClose={onClose}
         isOpen={true}
       >
-        {isBroadcasting
+        {this.props.stateSignedTx && this.props.stateSignedTx.isBroadcasting
           ? <div className="text-center" style={{ fontSize: '150px' }}>
               <Spinner />
             </div>
@@ -221,7 +221,12 @@ function mapStateToProps(state, props) {
 
   const lang = getLanguageSelection(state);
 
-  const isBroadcasting = getIsWalletBroadcasting(state);
+  const transactions = state.wallet.transactions;
+
+  const stateSignedTx = getTxFromTransactionsByRawTxRoot(
+    state,
+    props.signedTransaction
+  );
 
   // Determine if we're sending to a token from the transaction to address
   const { to, data } = getTransactionFields(transaction);
@@ -229,11 +234,12 @@ function mapStateToProps(state, props) {
   const token = data && tokens.find(t => t.address === to);
 
   return {
-    isBroadcasting,
+    stateSignedTx,
     transaction,
     token,
     network,
-    lang
+    lang,
+    transactions
   };
 }
 

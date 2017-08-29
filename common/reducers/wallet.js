@@ -9,10 +9,12 @@ import { BaseWallet } from 'libs/wallet';
 import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
 import { BroadcastTransaction } from 'libs/transaction';
+import { getTxFromTransactionsByRawTx } from 'selectors/wallet';
 
 type Transaction = {
   isBroadcasting: boolean,
-  tx: BroadcastTransaction
+  tx: BroadcastTransaction,
+  successfullyBroadcast: boolean
 };
 
 export type State = {
@@ -46,6 +48,58 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
   return { ...state, tokens: { ...state.tokens, ...action.payload } };
 }
 
+function handleUpdateTxArray(
+  transactions,
+  tx,
+  isBroadcasting,
+  successfullyBroadcast
+) {
+  return transactions.map(item => {
+    if (item === tx) {
+      return { ...item, isBroadcasting, successfullyBroadcast };
+    } else {
+      return { ...item };
+    }
+  });
+}
+
+function handleTxBroadcastCompleted(
+  state,
+  rawTx,
+  successfullyBroadcast
+): State {
+  const existingTx = getTxFromTransactionsByRawTx(state, rawTx);
+  const isBroadcasting = false;
+  return handleUpdateTxArray(
+    state.transactions,
+    existingTx,
+    isBroadcasting,
+    successfullyBroadcast
+  );
+}
+
+function handleBroadcastTxRequested(state, rawTx) {
+  const existingTx = getTxFromTransactionsByRawTx(state, rawTx);
+  const isBroadcasting = true;
+  const successfullyBroadcast = false;
+  if (!existingTx) {
+    return state.transactions.concat([
+      {
+        tx: rawTx,
+        isBroadcasting,
+        successfullyBroadcast
+      }
+    ]);
+  } else {
+    return handleUpdateTxArray(
+      state.transaction,
+      existingTx,
+      isBroadcasting,
+      successfullyBroadcast
+    );
+  }
+}
+
 export function wallet(
   state: State = INITIAL_STATE,
   action: WalletAction
@@ -60,17 +114,26 @@ export function wallet(
     case 'WALLET_BROADCAST_TX_REQUESTED':
       return {
         ...state,
-        isBroadcasting: true
+        isBroadcasting: true,
+        transactions: handleBroadcastTxRequested(state, action.payload.rawTx)
       };
     case 'WALLET_BROADCAST_TX_SUCCEEDED':
       return {
         ...state,
-        isBroadcasting: false
+        transactions: handleTxBroadcastCompleted(
+          state,
+          action.payload.rawTx,
+          true
+        )
       };
     case 'WALLET_BROADCAST_TX_FAILED':
       return {
         ...state,
-        isBroadcasting: false
+        transactions: handleTxBroadcastCompleted(
+          state,
+          action.payload.rawTx,
+          false
+        )
       };
     default:
       return state;

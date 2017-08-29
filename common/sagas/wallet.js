@@ -1,4 +1,5 @@
 // @flow
+import React from 'react';
 import { takeEvery, call, apply, put, select, fork } from 'redux-saga/effects';
 import type { Effect } from 'redux-saga/effects';
 import { setWallet, setBalance, setTokenBalances } from 'actions/wallet';
@@ -20,6 +21,7 @@ import { BaseNode } from 'libs/nodes';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
 import { determineKeystoreType } from 'libs/keystore';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 
 function* updateAccountBalance() {
   try {
@@ -134,11 +136,13 @@ export function* unlockKeystore(
 }
 
 function* broadcastTx(action) {
+  const rawTx = action.payload.rawTx;
   try {
     const node: BaseNode = yield select(getNodeLib);
-    const rawTx = action.payload;
     const txHash = yield apply(node, node.sendRawTx, [rawTx]);
-    yield put(showNotification('success', txHash));
+    yield put(
+      showNotification('success', <TransactionSucceeded txHash={txHash} />, 0)
+    );
     yield put({
       type: 'WALLET_BROADCAST_TX_SUCCEEDED',
       payload: {
@@ -148,7 +152,12 @@ function* broadcastTx(action) {
     });
   } catch (error) {
     yield put(showNotification('danger', String(error)));
-    yield put({ type: 'WALLET_BROADCAST_TX_FAILED', error: error });
+    yield put({
+      type: 'WALLET_BROADCAST_TX_FAILED',
+      payload: {
+        rawTx: rawTx
+      }
+    });
   }
 }
 

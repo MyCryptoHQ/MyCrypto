@@ -40,6 +40,24 @@ export function getTokenBalances(state: State): TokenBalance[] {
   }));
 }
 
-export function getIsWalletBroadcasting(state): boolean {
-  return state.wallet.isBroadcasting;
+export function getTxFromTransactionsByRawTxRoot(
+  state: State,
+  signedTransaction
+) {
+  return getTxFromTransactionsByRawTx(state.wallet, signedTransaction);
+}
+
+export function getTxFromTransactionsByRawTx(walletState, signedTransaction) {
+  const transactions = walletState.transactions;
+  const matchingTxs = transactions.filter(function(obj) {
+    return obj.tx === signedTransaction;
+  });
+  return matchingTxs ? matchingTxs[0] : null;
+}
+
+export function getTxFromTransactionsReal(transactions, signedTransaction) {
+  const matchingTxs = transactions.filter(function(obj) {
+    return obj.tx === signedTransaction;
+  });
+  return matchingTxs ? matchingTxs[0] : null;
 }
