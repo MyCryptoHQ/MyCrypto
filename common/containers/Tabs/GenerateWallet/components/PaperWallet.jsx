@@ -5,6 +5,7 @@ import translate from 'translations';
 import PrintableWallet from 'components/PrintableWallet';
 import type PrivKeyWallet from 'libs/wallet/privkey';
 import { Link } from 'react-router';
+import Template from './Template';
 
 type Props = {
   wallet: PrivKeyWallet
@@ -21,8 +22,8 @@ export default class PaperWallet extends Component {
   render() {
     const { wallet } = this.props;
 
-    return (
-      <div className="col-sm-8 col-sm-offset-2">
+    const content = (
+      <div>
         {/* Private Key */}
         <h1>
           {translate('GEN_Label_5')}
@@ -51,5 +52,75 @@ export default class PaperWallet extends Component {
         </Link>
       </div>
     );
+
+    const help = (
+      <div>
+        <h4>
+          {translate('GEN_Help_4')}
+        </h4>
+        <ul>
+          <li>
+            <a
+              href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-save-slash-backup-my-wallet"
+              target="_blank"
+              rel="noopener"
+            >
+              <strong>
+                {translate('HELP_2a_Title')}
+              </strong>
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://myetherwallet.groovehq.com/knowledge_base/topics/protecting-yourself-and-your-funds"
+              target="_blank"
+              rel="noopener"
+            >
+              <strong>
+                {translate('GEN_Help_15')}
+              </strong>
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://myetherwallet.groovehq.com/knowledge_base/topics/what-are-the-different-formats-of-a-private-key"
+              target="_blank"
+              rel="noopener"
+            >
+              <strong>
+                {translate('GEN_Help_16')}
+              </strong>
+            </a>
+          </li>
+        </ul>
+
+        <h4>
+          {translate('GEN_Help_17')}
+        </h4>
+        <ul>
+          <li>
+            {translate('GEN_Help_18')}
+          </li>
+          <li>
+            {translate('GEN_Help_19')}
+          </li>
+          <li>
+            <a
+              href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-safely-slash-offline-slash-cold-storage-with-myetherwallet"
+              target="_blank"
+              rel="noopener"
+            >
+              {translate('GEN_Help_20')}
+            </a>
+          </li>
+        </ul>
+
+        <h4>
+          {translate('x_PrintDesc')}
+        </h4>
+      </div>
+    );
+
+    return <Template content={content} help={help} />;
   }
 }
