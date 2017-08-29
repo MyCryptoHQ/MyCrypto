@@ -165,7 +165,7 @@ export class WalletDecrypt extends Component {
 
   onUnlock = (payload: any) => {
     this.props.dispatch(
-      WALLETS[this.state.selectedWalletKey].unlock(payload || this.state.value)
+      WALLETS[this.state.selectedWalletKey].unlock(this.state.value || payload)
     );
   };
 }

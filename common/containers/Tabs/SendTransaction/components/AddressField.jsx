@@ -25,8 +25,10 @@ export class AddressField extends React.Component {
     const isReadonly = !this.props.onChange;
     return (
       <div className="row form-group">
-        <div className="col-xs-11">
-          <label>{translate('SEND_addr')}:</label>
+        <div className="col-xs-10">
+          <label>
+            {translate('SEND_addr')}
+          </label>
           <input
             className={`form-control ${isValidENSorEtherAddress(value)
               ? 'is-valid'
@@ -39,12 +41,10 @@ export class AddressField extends React.Component {
           {!!ensAddress &&
             <p className="ens-response">
               ↳
-              <span className="mono">
-                {ensAddress}
-              </span>
+              <span className="mono">{ensAddress}</span>
             </p>}
         </div>
-        <div className="col-xs-1 address-identicon-container">
+        <div className="col-xs-1" style={{ padding: 0 }}>
           <Identicon address={ensAddress || value} />
         </div>
       </div>

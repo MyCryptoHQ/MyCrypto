@@ -184,11 +184,6 @@ export class SendTransaction extends React.Component {
                     </div>
                   </div>}
 
-                <div className="row form-group">
-                  <h4 className="col-xs-12">
-                    {translate('SEND_trans')}
-                  </h4>
-                </div>
                 <AddressField
                   placeholder={donationAddressMap.ETH}
                   value={this.state.to}
