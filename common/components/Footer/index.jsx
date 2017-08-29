@@ -176,7 +176,7 @@ export default class Footer extends Component {
           <p>
             {LINKS_SOCIAL.map((link, i) => {
               return (
-                <span>
+                <span key={link.href}>
                   <a key={link.href} href={link.href} target="_blank">
                     {link.text}
                   </a>
