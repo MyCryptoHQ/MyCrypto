@@ -1,0 +1,21 @@
+$input-bg: #fff;
+$input-bg-disabled: $gray-lightest;
+
+$input-color: $gray;
+$input-border: $gray-lighter;
+
+$input-border-focus: $brand-primary;
+
+$input-color-placeholder: darken($gray-lighter, 10%);
+
+$input-height-base: 2.55rem;
+$input-height-large: 4rem;
+$input-height-small: 2rem;
+
+$form-group-margin-bottom: $space-sm;
+
+$legend-color: $gray-dark;
+$legend-border-color: #e5e5e5;
+
+$input-group-addon-bg: $gray-lighter;
+$input-group-addon-border-color: $input-border;

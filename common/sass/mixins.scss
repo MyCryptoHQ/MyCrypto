@@ -1,4 +1,5 @@
 @import "./variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
 
 @mixin bg-gradient {
   background: $ether-navy;

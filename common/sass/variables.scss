@@ -1,77 +1,12 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
 @import "./variables/colors";
 @import "./variables/spacing";
 @import "./variables/typography";
-
-// Transitions
-$transition: 500ms all ease-in-out;
-
-// Links
-$link-color: $brand-primary;
-$link-hover-color: darken($link-color, 5%);
-$link-hover-decoration: none;
-
-// Tables
-$table-cell-padding: $space-sm;
-$table-condensed-cell-padding: $space-xs;
-
-$table-bg: transparent;
-$table-bg-accent: #f9f9f9;
-$table-bg-hover: $gray-lightest;
-$table-bg-active: $table-bg-hover;
-
-$table-border-color: #ddd;
-
-// Buttons
-$btn-font-weight: normal;
-
-$btn-default-color: #333;
-$btn-default-bg: #ececec;
-$btn-default-border: $gray-lighter;
-
-$btn-primary-color: #fff;
-$btn-primary-bg: $brand-primary;
-$btn-primary-border: darken($btn-primary-bg, 5%);
-
-$btn-success-color: #fff;
-$btn-success-bg: $brand-success;
-$btn-success-border: darken($btn-success-bg, 5%);
-
-$btn-info-color: #fff;
-$btn-info-bg: $brand-info;
-$btn-info-border: darken($btn-info-bg, 5%);
-
-$btn-warning-color: #fff;
-$btn-warning-bg: $brand-warning;
-$btn-warning-border: darken($btn-warning-bg, 5%);
-
-$btn-danger-color: #fff;
-$btn-danger-bg: $brand-danger;
-$btn-danger-border: darken($btn-danger-bg, 5%);
-
-$btn-link-disabled-color: $gray-light;
-
-// Forms
-$input-bg: #fff;
-$input-bg-disabled: $gray-lightest;
-
-$input-color: $gray;
-$input-border: $gray-lighter;
-
-$input-border-focus: $brand-primary;
-
-$input-color-placeholder: darken($gray-lighter, 10%);
-
-$input-height-base: 2.55rem;
-$input-height-large: 4rem;
-$input-height-small: 2rem;
-
-$form-group-margin-bottom: $space-sm;
-
-$legend-color: $gray-dark;
-$legend-border-color: #e5e5e5;
-
-$input-group-addon-bg: $gray-lighter;
-$input-group-addon-border-color: $input-border;
+@import "./variables/transitions";
+@import "./variables/links";
+@import "./variables/tables";
+@import "./variables/buttons";
+@import "./variables/forms";
 
 // Misc.
 $cursor-disabled: default;
