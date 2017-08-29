@@ -14,6 +14,10 @@ function fetchRates(symbols) {
 }
 
 export default function* ratesSaga(): Generator<Effect, void, any> {
-  const rates = yield call(fetchRates, symbols);
-  yield put(setRates(rates));
+  try {
+    const rates = yield call(fetchRates, symbols);
+    yield put(setRates(rates));
+  } catch (error) {
+    yield put({ type: 'fetchRates_error', error });
+  }
 }

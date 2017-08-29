@@ -22,37 +22,47 @@ import { getWalletInst, getTokens } from 'selectors/wallet';
 import { determineKeystoreType } from 'libs/keystore';
 
 function* updateAccountBalance() {
-  const node: BaseNode = yield select(getNodeLib);
-  const wallet: ?BaseWallet = yield select(getWalletInst);
-  if (!wallet) {
-    return;
+  try {
+    const node: BaseNode = yield select(getNodeLib);
+    const wallet: ?BaseWallet = yield select(getWalletInst);
+    if (!wallet) {
+      return;
+    }
+    const address = yield wallet.getAddress();
+    // network request
+    let balance = yield apply(node, node.getBalance, [address]);
+    yield put(setBalance(balance));
+  } catch (error) {
+    yield put({ type: 'updateAccountBalance_error', error });
   }
-  const address = yield wallet.getAddress();
-  let balance = yield apply(node, node.getBalance, [address]);
-  yield put(setBalance(balance));
 }
 
 function* updateTokenBalances() {
-  const node: BaseNode = yield select(getNodeLib);
-  const wallet: ?BaseWallet = yield select(getWalletInst);
-  const tokens = yield select(getTokens);
-  if (!wallet || !node) {
-    return;
+  try {
+    const node: BaseNode = yield select(getNodeLib);
+    const wallet: ?BaseWallet = yield select(getWalletInst);
+    const tokens = yield select(getTokens);
+    if (!wallet || !node) {
+      return;
+    }
+    // FIXME handle errors
+    const address = yield wallet.getAddress();
+    // network request
+    const tokenBalances = yield apply(node, node.getTokenBalances, [
+      address,
+      tokens
+    ]);
+    yield put(
+      setTokenBalances(
+        tokens.reduce((acc, t, i) => {
+          acc[t.symbol] = tokenBalances[i];
+          return acc;
+        }, {})
+      )
+    );
+  } catch (error) {
+    yield put({ type: 'updateTokenBalances_error', error });
   }
-  // FIXME handle errors
-  const address = yield wallet.getAddress();
-  const tokenBalances = yield apply(node, node.getTokenBalances, [
-    address,
-    tokens
-  ]);
-  yield put(
-    setTokenBalances(
-      tokens.reduce((acc, t, i) => {
-        acc[t.symbol] = tokenBalances[i];
-        return acc;
-      }, {})
-    )
-  );
 }
 
 function* updateBalances() {
@@ -120,22 +130,26 @@ export function* unlockKeystore(
   }
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
-
   yield put(setWallet(wallet));
 }
 
 function* broadcastTx(action) {
-  const rawTx = action.value;
-  yield call(updateBalances);
-
-  // const node: BaseNode = yield select(getNodeLib);
-  // const wallet: ?BaseWallet = yield select(getWalletInst);
-  // if (!wallet) {
-  //   return;
-  // }
-  // const address = yield wallet.getAddress();
-  // let balance = yield apply(node, node.getBalance, [address]);
-  // yield put(setBalance(balance));
+  try {
+    const node: BaseNode = yield select(getNodeLib);
+    const rawTx = action.payload;
+    const txHash = yield apply(node, node.sendRawTx, [rawTx]);
+    yield put(showNotification('success', txHash));
+    yield put({
+      type: 'WALLET_BROADCAST_TX_SUCCEEDED',
+      payload: {
+        txHash,
+        rawTx
+      }
+    });
+  } catch (error) {
+    yield put(showNotification('danger', String(error)));
+    yield put({ type: 'WALLET_BROADCAST_TX_FAILED', error: error });
+  }
 }
 
 export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
@@ -145,6 +159,7 @@ export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
     takeEvery('WALLET_SET', updateBalances),
-    takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances)
+    takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
+    takeEvery('WALLET_BROADCAST_TX_REQUESTED', broadcastTx)
   ];
 }

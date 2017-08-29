@@ -34,6 +34,7 @@ import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
 import { getTokenBalances } from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
+import { broadcastTx, BroadcastTxAction } from 'actions/wallet';
 import type {
   TransactionWithoutGas,
   BroadcastTransaction
@@ -51,6 +52,7 @@ type State = {
   hasQueryString: boolean,
   readOnly: boolean,
   to: string,
+  // amount value
   value: string,
   // $FlowFixMe - Comes from getParam not validating unit
   unit: UNIT,
@@ -81,6 +83,7 @@ type Props = {
       [string]: string
     }
   },
+  latestTx: any,
   wallet: BaseWallet,
   balance: Big,
   node: NodeConfig,
@@ -89,6 +92,7 @@ type Props = {
   tokens: Token[],
   tokenBalances: TokenBalance[],
   gasPrice: number,
+  broadcastTx: (payload: BroadcastTransaction) => BroadcastTxAction,
   showNotification: (
     level: string,
     msg: string,
@@ -96,22 +100,25 @@ type Props = {
   ) => ShowNotificationAction
 };
 
+const initialState = {
+  hasQueryString: false,
+  readOnly: false,
+  // FIXME use correct defaults
+  to: '',
+  value: '',
+  unit: 'ether',
+  token: null,
+  gasLimit: '21000',
+  data: '',
+  gasChanged: false,
+  showTxConfirm: false,
+  transaction: null,
+  disabled: true
+};
+
 export class SendTransaction extends React.Component {
   props: Props;
-  state: State = {
-    hasQueryString: false,
-    readOnly: false,
-    // FIXME use correct defaults
-    to: '',
-    value: '',
-    unit: 'ether',
-    token: null,
-    gasLimit: '21000',
-    data: '',
-    gasChanged: false,
-    showTxConfirm: false,
-    transaction: null
-  };
+  state: State = initialState;
 
   componentDidMount() {
     const queryPresets = pickBy(this.parseQuery());
@@ -121,10 +128,10 @@ export class SendTransaction extends React.Component {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    // if gas is not changed
-    // and we have valid tx
-    // and relevant fields changed
-    // estimate gas
+    // if gas has not changed
+    // and if we have valid tx
+    // and if any relevant fields changed
+    // then estimate gas
     // TODO we might want to listen to gas price changes here
     // TODO debunce the call
     if (
@@ -136,6 +143,9 @@ export class SendTransaction extends React.Component {
         this.state.data !== prevState.data)
     ) {
       this.estimateGas();
+    }
+    if (this.state.disabled !== !this.isValid()) {
+      this.setState({ disabled: !this.isValid() });
     }
   }
 
@@ -225,12 +235,13 @@ export class SendTransaction extends React.Component {
 
                   <div className="row form-group">
                     <div className="col-xs-12 clearfix">
-                      <a
+                      <button
+                        disabled={this.state.disabled}
                         className="btn btn-info btn-block"
                         onClick={this.generateTx}
                       >
                         {translate('SEND_generate')}
-                      </a>
+                      </button>
                     </div>
                   </div>
 
@@ -262,12 +273,12 @@ export class SendTransaction extends React.Component {
                       </div>
 
                       <div className="form-group">
-                        <a
+                        <button
                           className="btn btn-primary btn-block col-sm-11"
                           onClick={this.openTxModal}
                         >
                           {translate('SEND_trans')}
-                        </a>
+                        </button>
                       </div>
                     </div>}
                 </section>
@@ -280,7 +291,7 @@ export class SendTransaction extends React.Component {
             wallet={this.props.wallet}
             node={this.props.node}
             signedTransaction={transaction.signedTx}
-            onCancel={this.cancelTx}
+            onClose={this.hideConfirmTx}
             onConfirm={this.confirmTx}
           />}
       </section>
@@ -303,13 +314,15 @@ export class SendTransaction extends React.Component {
   }
 
   isValid() {
-    const { to, value } = this.state;
+    const { to, value, gasLimit } = this.state;
     return (
       isValidETHAddress(to) &&
       value &&
       Number(value) > 0 &&
       !isNaN(Number(value)) &&
-      isFinite(Number(value))
+      isFinite(Number(value)) &&
+      !isNaN(parseInt(gasLimit)) &&
+      isFinite(parseInt(gasLimit))
     );
   }
 
@@ -342,20 +355,20 @@ export class SendTransaction extends React.Component {
   }
 
   async estimateGas() {
-    const trans = await this.getTransactionInfoFromState();
-    if (!trans) {
-      return;
-    }
-
-    // Grab a reference to state. If it has changed by the time the estimateGas
-    // call comes back, we don't want to replace the gasLimit in state.
-    const state = this.state;
-
-    this.props.nodeLib.estimateGas(trans).then(gasLimit => {
+    try {
+      const transaction = await this.getTransactionInfoFromState();
+      // Grab a reference to state. If it has changed by the time the estimateGas
+      // call comes back, we don't want to replace the gasLimit in state.
+      const state = this.state;
+      const gasLimit = await this.props.nodeLib.estimateGas(transaction);
       if (this.state === state) {
         this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+      } else {
+        this.estimateGas();
       }
-    });
+    } catch (error) {
+      this.props.showNotification('danger', error.message, 5000);
+    }
   }
 
   // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
@@ -398,8 +411,10 @@ export class SendTransaction extends React.Component {
 
   onAmountChange = (value: string, unit: string) => {
     // TODO sub gas for eth
+    console.log(value);
     if (value === 'everything') {
       if (unit === 'ether') {
+        // TODO - why do we never use this?
         value = this.props.balance.toString();
       }
       const token = this.props.tokenBalances.find(
@@ -437,9 +452,9 @@ export class SendTransaction extends React.Component {
         wallet,
         token
       );
-
       this.setState({ transaction });
     } catch (err) {
+      console.log(err);
       this.props.showNotification('danger', err.message, 5000);
     }
   };
@@ -450,13 +465,20 @@ export class SendTransaction extends React.Component {
     }
   };
 
-  cancelTx = () => {
+  hideConfirmTx = () => {
     this.setState({ showTxConfirm: false });
   };
 
+  resetState = () => {
+    this.setState({
+      to: '',
+      value: ''
+    });
+  };
+
   confirmTx = () => {
-    // TODO: Broadcast transaction
-    console.log(this.state.transaction.signedTx);
+    this.props.broadcastTx(this.state.transaction.signedTx);
+    // this.resetState();
   };
 }
 
@@ -469,8 +491,11 @@ function mapStateToProps(state: AppState) {
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),
-    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei')
+    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei'),
+    isBroadcasting: state.wallet.isBroadcasting
   };
 }
 
-export default connect(mapStateToProps, { showNotification })(SendTransaction);
+export default connect(mapStateToProps, { showNotification, broadcastTx })(
+  SendTransaction
+);

@@ -24,5 +24,7 @@ export default class BaseNode {
     throw new Error('Implement me');
   }
 
-  async sendRawTx() {}
+  async sendRawTx(_tx): Promise<string> {
+    throw new Error('Implement me');
+  }
 }

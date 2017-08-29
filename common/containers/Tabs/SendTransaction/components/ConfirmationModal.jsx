@@ -13,9 +13,10 @@ import { getTokens } from 'selectors/wallet';
 import { getNetworkConfig, getLanguageSelection } from 'selectors/config';
 import type { NodeConfig } from 'config/data';
 import type { Token, NetworkConfig } from 'config/data';
-
+import { getIsWalletBroadcasting } from 'selectors/wallet';
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
+import Spinner from 'components/ui/Spinner';
 
 type Props = {
   signedTransaction: string,
@@ -25,13 +26,15 @@ type Props = {
   token: ?Token,
   network: NetworkConfig,
   onConfirm: (string, EthTx) => void,
-  onCancel: () => void,
-  lang: string
+  onClose: () => void,
+  lang: string,
+  isBroadcasting: boolean
 };
 
 type State = {
   fromAddress: string,
-  timeToRead: number
+  timeToRead: number,
+  hasBroadCasted: boolean
 };
 
 class ConfirmationModal extends React.Component {
@@ -43,7 +46,8 @@ class ConfirmationModal extends React.Component {
 
     this.state = {
       fromAddress: '',
-      timeToRead: 5
+      timeToRead: 5,
+      hasBroadCasted: false
     };
   }
 
@@ -51,6 +55,12 @@ class ConfirmationModal extends React.Component {
     // Reload address if the wallet changes
     if (newProps.wallet !== this.props.wallet) {
       this._setWalletAddress(this.props.wallet);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.hasBroadCasted && !this.props.isBroadcasting) {
+      this.props.onClose();
     }
   }
 
@@ -102,15 +112,16 @@ class ConfirmationModal extends React.Component {
     };
   }
 
-  _confirm() {
+  _confirm = () => {
     if (this.state.timeToRead < 1) {
       const { signedTransaction, transaction } = this.props;
       this.props.onConfirm(signedTransaction, transaction);
+      this.setState({ hasBroadCasted: true });
     }
-  }
+  };
 
   render() {
-    const { node, token, network, onCancel } = this.props;
+    const { node, token, network, onClose, isBroadcasting } = this.props;
     const { fromAddress, timeToRead } = this.state;
     const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
@@ -120,12 +131,12 @@ class ConfirmationModal extends React.Component {
         text: buttonPrefix + translateRaw('SENDModal_Yes'),
         type: 'primary',
         disabled: timeToRead > 0,
-        onClick: this._confirm()
+        onClick: this._confirm
       },
       {
         text: translateRaw('SENDModal_No'),
         type: 'default',
-        onClick: onCancel
+        onClick: onClose
       }
     ];
 
@@ -135,63 +146,67 @@ class ConfirmationModal extends React.Component {
       <Modal
         title="Confirm Your Transaction"
         buttons={buttons}
-        handleClose={onCancel}
+        handleClose={onClose}
         isOpen={true}
       >
-        <div className="ConfModal">
-          <div className="ConfModal-summary">
-            <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
-              <Identicon size="100%" address={fromAddress} />
+        {isBroadcasting
+          ? <div className="text-center" style={{ fontSize: '150px' }}>
+              <Spinner />
             </div>
-            <div className="ConfModal-summary-amount">
-              <div className="ConfModal-summary-amount-arrow" />
-              <div className="ConfModal-summary-amount-currency">
-                {value} {symbol}
+          : <div className="ConfModal">
+              <div className="ConfModal-summary">
+                <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
+                  <Identicon size="100%" address={fromAddress} />
+                </div>
+                <div className="ConfModal-summary-amount">
+                  <div className="ConfModal-summary-amount-arrow" />
+                  <div className="ConfModal-summary-amount-currency">
+                    {value} {symbol}
+                  </div>
+                </div>
+                <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
+                  <Identicon size="100%" address={toAddress} />
+                </div>
               </div>
-            </div>
-            <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
-              <Identicon size="100%" address={toAddress} />
-            </div>
-          </div>
 
-          <ul className="ConfModal-details">
-            <li className="ConfModal-details-detail">
-              You are sending from <code>{fromAddress}</code>
-            </li>
-            <li className="ConfModal-details-detail">
-              You are sending to <code>{toAddress}</code>
-            </li>
-            <li className="ConfModal-details-detail">
-              You are sending{' '}
-              <strong>
-                {value} {symbol}
-              </strong>{' '}
-              with a gas price of <strong>{gasPrice} gwei</strong>
-            </li>
-            <li className="ConfModal-details-detail">
-              You are interacting with the <strong>{node.network}</strong>{' '}
-              network provided by <strong>{node.service}</strong>
-            </li>
-            {!token &&
-              <li className="ConfModal-details-detail">
-                {data
-                  ? <span>
-                      You are sending the following data:{' '}
-                      <textarea
-                        className="form-control"
-                        value={data}
-                        rows="3"
-                        disabled
-                      />
-                    </span>
-                  : 'There is no data attached to this transaction'}
-              </li>}
-          </ul>
+              <ul className="ConfModal-details">
+                <li className="ConfModal-details-detail">
+                  You are sending from <code>{fromAddress}</code>
+                </li>
+                <li className="ConfModal-details-detail">
+                  You are sending to <code>{toAddress}</code>
+                </li>
+                <li className="ConfModal-details-detail">
+                  You are sending{' '}
+                  <strong>
+                    {value} {symbol}
+                  </strong>{' '}
+                  with a gas price of <strong>{gasPrice} gwei</strong>
+                </li>
+                <li className="ConfModal-details-detail">
+                  You are interacting with the <strong>{node.network}</strong>{' '}
+                  network provided by <strong>{node.service}</strong>
+                </li>
+                {!token &&
+                  <li className="ConfModal-details-detail">
+                    {data
+                      ? <span>
+                          You are sending the following data:{' '}
+                          <textarea
+                            className="form-control"
+                            value={data}
+                            rows="3"
+                            disabled
+                          />
+                        </span>
+                      : 'There is no data attached to this transaction'}
+                  </li>}
+              </ul>
 
-          <div className="ConfModal-confirm">
-            {translate('SENDModal_Content_3')}
-          </div>
-        </div>
+              <div className="ConfModal-confirm">
+                {translate('SENDModal_Content_3')}
+              </div>
+            </div>}
       </Modal>
     );
   }
@@ -206,12 +221,15 @@ function mapStateToProps(state, props) {
 
   const lang = getLanguageSelection(state);
 
+  const isBroadcasting = getIsWalletBroadcasting(state);
+
   // Determine if we're sending to a token from the transaction to address
   const { to, data } = getTransactionFields(transaction);
   const tokens = getTokens(state);
   const token = data && tokens.find(t => t.address === to);
 
   return {
+    isBroadcasting,
     transaction,
     token,
     network,

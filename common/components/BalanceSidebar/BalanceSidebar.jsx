@@ -14,6 +14,7 @@ import { formatNumber } from 'utils/formatters';
 import { Identicon } from 'components/ui';
 import translate from 'translations';
 import * as customTokenActions from 'actions/customTokens';
+import { showNotification } from 'actions/notifications';
 
 type Props = {
   wallet: BaseWallet,
@@ -21,6 +22,7 @@ type Props = {
   network: NetworkConfig,
   tokenBalances: TokenBalance[],
   rates: { [string]: number },
+  showNotification: any,
   addCustomToken: typeof customTokenActions.addCustomToken,
   removeCustomToken: typeof customTokenActions.removeCustomToken
 };
@@ -39,7 +41,7 @@ export class BalanceSidebar extends React.Component {
         this.setState({ address: addr });
       })
       .catch(err => {
-        //TODO: communicate error in UI
+        this.props.showNotification('danger', err);
         console.log(err);
       });
   }
@@ -191,4 +193,7 @@ function mapStateToProps(state: State) {
   };
 }
 
-export default connect(mapStateToProps, customTokenActions)(BalanceSidebar);
+export default connect(mapStateToProps, {
+  ...customTokenActions,
+  showNotification
+})(BalanceSidebar);

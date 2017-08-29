@@ -39,3 +39,7 @@ export function getTokenBalances(state: State): TokenBalance[] {
     custom: t.custom
   }));
 }
+
+export function getIsWalletBroadcasting(state): boolean {
+  return state.wallet.isBroadcasting;
+}

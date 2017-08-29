@@ -8,6 +8,12 @@ import type {
 import { BaseWallet } from 'libs/wallet';
 import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
+import { BroadcastTransaction } from 'libs/transaction';
+
+type Transaction = {
+  isBroadcasting: boolean,
+  tx: BroadcastTransaction
+};
 
 export type State = {
   inst: ?BaseWallet,
@@ -15,13 +21,16 @@ export type State = {
   balance: Big,
   tokens: {
     [string]: Big
-  }
+  },
+  transactions: Array<Transaction>
 };
 
 export const INITIAL_STATE: State = {
   inst: null,
   balance: new Big(0),
-  tokens: {}
+  tokens: {},
+  isBroadcasting: false,
+  transactions: []
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
@@ -48,6 +57,21 @@ export function wallet(
       return setBalance(state, action);
     case 'WALLET_SET_TOKEN_BALANCES':
       return setTokenBalances(state, action);
+    case 'WALLET_BROADCAST_TX_REQUESTED':
+      return {
+        ...state,
+        isBroadcasting: true
+      };
+    case 'WALLET_BROADCAST_TX_SUCCEEDED':
+      return {
+        ...state,
+        isBroadcasting: false
+      };
+    case 'WALLET_BROADCAST_TX_FAILED':
+      return {
+        ...state,
+        isBroadcasting: false
+      };
     default:
       return state;
   }
