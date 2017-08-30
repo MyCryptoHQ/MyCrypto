@@ -22,7 +22,7 @@ type Props = {
   network: NetworkConfig,
   tokenBalances: TokenBalance[],
   rates: { [string]: number },
-  showNotification: any,
+  showNotification: Function,
   addCustomToken: typeof customTokenActions.addCustomToken,
   removeCustomToken: typeof customTokenActions.removeCustomToken
 };
