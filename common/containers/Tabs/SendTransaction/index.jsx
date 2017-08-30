@@ -158,7 +158,7 @@ export class SendTransaction extends React.Component {
       // lives in redux state
       const currentTxAsBroadcastTransaction = getTxFromBroadcastStatusTransactions(
         this.props.transactions,
-        this.state.transaction.signedTx
+        componentStateTransaction.signedTx
       );
       // if there is a matching tx in redux state
       if (currentTxAsBroadcastTransaction) {
