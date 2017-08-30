@@ -67,7 +67,7 @@ type State = {
   gasChanged: boolean,
   transaction: ?BroadcastTransaction,
   showTxConfirm: boolean,
-  disabled: boolean
+  generateDisabled: boolean
 };
 
 function getParam(query: { [string]: string }, key: string) {
@@ -119,7 +119,7 @@ const initialState = {
   gasChanged: false,
   showTxConfirm: false,
   transaction: null,
-  disabled: true
+  generateDisabled: true
 };
 
 export class SendTransaction extends React.Component {
@@ -134,15 +134,14 @@ export class SendTransaction extends React.Component {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    // if gas has not changed
-    // and if we have valid tx
-    // and if any relevant fields changed
-    // then estimate gas
-    // TODO we might want to listen to gas price changes here
-    // TODO debunce the call
+    // TODO listen to gas price changes here
+    // TODO debounce the call
     if (
+      // if gas has not changed
       !this.state.gasChanged &&
+      // if we have valid tx
       this.isValid() &&
+      // if any relevant fields changed
       (this.state.to !== prevState.to ||
         this.state.value !== prevState.value ||
         this.state.unit !== prevState.unit ||
@@ -150,8 +149,8 @@ export class SendTransaction extends React.Component {
     ) {
       this.estimateGas();
     }
-    if (this.state.disabled !== !this.isValid()) {
-      this.setState({ disabled: !this.isValid() });
+    if (this.state.generateDisabled !== !this.isValid()) {
+      this.setState({ generateDisabled: !this.isValid() });
     }
 
     const componentStateTransaction = this.state.transaction;
@@ -258,7 +257,7 @@ export class SendTransaction extends React.Component {
                   <div className="row form-group">
                     <div className="col-xs-12 clearfix">
                       <button
-                        disabled={this.state.disabled}
+                        disabled={this.state.generateDisabled}
                         className="btn btn-info btn-block"
                         onClick={this.generateTx}
                       >
@@ -448,7 +447,6 @@ export class SendTransaction extends React.Component {
     }
 
     let token = this.props.tokens.find(x => x.symbol === unit);
-
     this.setState({
       value,
       unit,
