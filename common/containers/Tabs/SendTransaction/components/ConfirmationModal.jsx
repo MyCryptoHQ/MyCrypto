@@ -148,6 +148,11 @@ class ConfirmationModal extends React.Component {
         title="Confirm Your Transaction"
         buttons={buttons}
         handleClose={onClose}
+        hideButtons={
+          this.props.broadCastStatusTx
+            ? this.props.broadCastStatusTx.isBroadcasting
+            : false
+        }
         isOpen={true}
       >
         {this.props.broadCastStatusTx &&

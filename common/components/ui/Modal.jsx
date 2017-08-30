@@ -21,6 +21,7 @@ type Props = {
     onClick?: () => void
   }[],
   handleClose: () => void,
+  hideButtons?: boolean,
   children: any
 };
 
@@ -87,7 +88,14 @@ export default class Modal extends Component {
   }
 
   render() {
-    const { isOpen, title, children, buttons, handleClose } = this.props;
+    const {
+      isOpen,
+      title,
+      children,
+      buttons,
+      handleClose,
+      hideButtons
+    } = this.props;
     const hasButtons = buttons && buttons.length;
 
     return (
@@ -106,6 +114,7 @@ export default class Modal extends Component {
             {isOpen && children}
           </div>
           {hasButtons &&
+            !hideButtons &&
             <div className="Modal-footer">
               {this._renderButtons()}
             </div>}
