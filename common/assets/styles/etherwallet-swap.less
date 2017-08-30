@@ -13,59 +13,6 @@
     vertical-align: middle;
   }
 
-  .swap-rates {
-    text-align: center;
-    .order-panel {
-      background: linear-gradient(150deg, @ether-blue, @ether-navy);
-      position: relative;
-      .bity-logo {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-      @media screen and (max-width: @screen-sm) {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        .order-info {
-          text-align: left;
-          padding: 0 0 0 22%;
-        }
-
-        .bity-logo {
-          left: -1rem;
-          top: 40%;
-          transform: rotate(-90deg);
-        }
-      }
-    }
-    .form-control.input-sm {
-      width: 16%;
-      min-width: 3.5rem;
-      display: inline-block;
-      margin-right: @space;
-      text-align: right;
-      background-color: transparent;
-      color: white;
-      box-shadow: 0 0 0 white;
-      border: 0 solid white;
-      border-bottom: 2px solid white;
-    }
-    p {
-      margin: 0;
-      span {
-        opacity: .9;
-      }
-    }
-    .order-info {
-      &:nth-child(4n+1),
-      &:nth-child(4n+2),
-      &:nth-child(4n+3) {
-        background: transparent;
-      }
-    }
-  }
-
   .swap-panel {
     padding-top: @space*5;
     text-align: center;

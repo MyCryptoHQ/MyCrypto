@@ -1,4 +1,5 @@
 // @flow
+import './CurrentRates.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
@@ -29,74 +30,80 @@ export default class CurrentRates extends Component {
     const { ETHBTC, ETHREP, BTCETH, BTCREP } = this.props;
 
     return (
-      <article className="swap-rates">
-        <section className="row">
-          <h5 className="col-xs-6 col-xs-offset-3">
-            {translate('SWAP_rates')}
-          </h5>
-        </section>
-        <section className="row order-panel">
-          <div className="col-sm-6 order-info">
-            <p className="mono">
+      <article className="SwapRates">
+        <h3 className="SwapRates-title">
+          {translate('SWAP_rates')}
+        </h3>
+
+        <section className="SwapRates-panel row">
+          <div className="SwapRates-panel-side col-sm-6">
+            <div className="SwapRates-panel-rate">
               <input
-                className="form-control input-sm"
+                className="SwapRates-panel-rate-input"
                 onChange={this.onChange}
                 value={this.state.ETHBTCAmount}
                 name="ETHBTCAmount"
               />
-              <span>
+              <span className="SwapRates-panel-rate-amount">
                 {` ETH = ${toFixedIfLarger(
                   this.state.ETHBTCAmount * ETHBTC,
                   6
                 )} BTC`}
               </span>
-            </p>
-            <p className="mono">
+            </div>
+
+            <div className="SwapRates-panel-rate">
               <input
-                className="form-control input-sm"
+                className="SwapRates-panel-rate-input"
                 onChange={this.onChange}
                 value={this.state.ETHREPAmount}
                 name="ETHREPAmount"
               />
-              <span>
+              <span className="SwapRates-panel-rate-amount">
                 {` ETH = ${toFixedIfLarger(
                   this.state.ETHREPAmount * ETHREP,
                   6
                 )} REP`}
               </span>
-            </p>
+            </div>
           </div>
-          <div className="col-sm-6 order-info">
-            <p className="mono">
+
+          <div className="SwapRates-panel-side col-sm-6">
+            <div className="SwapRates-panel-rate">
               <input
-                className="form-control input-sm"
+                className="SwapRates-panel-rate-input"
                 onChange={this.onChange}
                 value={this.state.BTCETHAmount}
                 name="BTCETHAmount"
               />
-              <span>
+              <span className="SwapRates-panel-rate-amount">
                 {` BTC = ${toFixedIfLarger(
                   this.state.BTCETHAmount * BTCETH,
                   6
                 )} ETH`}
               </span>
-            </p>
-            <p className="mono">
+            </div>
+
+            <div className="SwapRates-panel-rate">
               <input
-                className="form-control input-sm"
+                className="SwapRates-panel-rate-input"
                 onChange={this.onChange}
                 value={this.state.BTCREPAmount}
                 name="BTCREPAmount"
               />
-              <span>
+              <span className="SwapRates-panel-rate-amount">
                 {` BTC = ${toFixedIfLarger(
                   this.state.BTCREPAmount * BTCREP,
                   6
                 )} REP`}
               </span>
-            </p>
+            </div>
           </div>
-          <a className="link bity-logo" href={bityReferralURL} target="_blank">
+          <a
+            className="SwapRates-panel-logo"
+            href={bityReferralURL}
+            target="_blank"
+          >
             <img src={bityLogoWhite} width={120} height={49} />
           </a>
         </section>
