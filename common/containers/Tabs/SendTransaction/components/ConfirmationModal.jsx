@@ -11,7 +11,7 @@ import ERC20 from 'libs/erc20';
 import { getTransactionFields } from 'libs/transaction';
 import { getTokens } from 'selectors/wallet';
 import { getNetworkConfig, getLanguageSelection } from 'selectors/config';
-import { getTxFromTransactionsByRawTxRoot } from 'selectors/wallet';
+import { getTxFromTransactionsBySignedTx } from 'selectors/wallet';
 import type { NodeConfig } from 'config/data';
 import type { Token, NetworkConfig } from 'config/data';
 import Modal from 'components/ui/Modal';
@@ -19,7 +19,7 @@ import Identicon from 'components/ui/Identicon';
 import Spinner from 'components/ui/Spinner';
 
 type Props = {
-  signedTransaction: string,
+  signedTx: string,
   transaction: EthTx,
   wallet: BaseWallet,
   node: NodeConfig,
@@ -28,7 +28,6 @@ type Props = {
   onConfirm: (string, EthTx) => void,
   onClose: () => void,
   lang: string,
-  transactions: any,
   stateSignedTx: any
 };
 
@@ -60,7 +59,6 @@ class ConfirmationModal extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('Confirmation Modal signed tx', this.props.stateSignedTx);
     if (this.state.hasBroadCasted && !this.props.stateSignedTx.isBroadcasting) {
       this.props.onClose();
     }
@@ -115,13 +113,13 @@ class ConfirmationModal extends React.Component {
 
   _confirm = () => {
     if (this.state.timeToRead < 1) {
-      this.props.onConfirm();
+      this.props.onConfirm(this.props.signedTx);
       this.setState({ hasBroadCasted: true });
     }
   };
 
   render() {
-    const { node, token, network, onClose, transactions } = this.props;
+    const { node, token, network, onClose } = this.props;
     const { fromAddress, timeToRead } = this.state;
     const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
@@ -213,20 +211,15 @@ class ConfirmationModal extends React.Component {
 }
 
 function mapStateToProps(state, props) {
-  // Convert the signedTransaction to an EthTx transaction
-  const transaction = new EthTx(props.signedTransaction);
+  // Convert the signedTx to an EthTx transaction
+  const transaction = new EthTx(props.signedTx);
 
   // Network config for defaults
   const network = getNetworkConfig(state);
 
   const lang = getLanguageSelection(state);
 
-  const transactions = state.wallet.transactions;
-
-  const stateSignedTx = getTxFromTransactionsByRawTxRoot(
-    state,
-    props.signedTransaction
-  );
+  const stateSignedTx = getTxFromTransactionsBySignedTx(state, props.signedTx);
 
   // Determine if we're sending to a token from the transaction to address
   const { to, data } = getTransactionFields(transaction);
@@ -238,8 +231,7 @@ function mapStateToProps(state, props) {
     transaction,
     token,
     network,
-    lang,
-    transactions
+    lang
   };
 }
 

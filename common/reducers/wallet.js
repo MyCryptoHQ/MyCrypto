@@ -8,12 +8,11 @@ import type {
 import { BaseWallet } from 'libs/wallet';
 import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
-import { BroadcastTransaction } from 'libs/transaction';
-import { getTxFromTransactionsByRawTx } from 'selectors/wallet';
+import { getTxFromBroadcastStatusTransactions } from 'selectors/wallet';
 
-type Transaction = {
+export type BroadcastStatusTransaction = {
   isBroadcasting: boolean,
-  tx: BroadcastTransaction,
+  signedTx: string,
   successfullyBroadcast: boolean
 };
 
@@ -24,7 +23,7 @@ export type State = {
   tokens: {
     [string]: Big
   },
-  transactions: Array<Transaction>
+  transactions: Array<BroadcastStatusTransaction>
 };
 
 export const INITIAL_STATE: State = {
@@ -49,13 +48,13 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
 }
 
 function handleUpdateTxArray(
-  transactions,
-  tx,
-  isBroadcasting,
-  successfullyBroadcast
-) {
+  transactions: Array<BroadcastStatusTransaction>,
+  broadcastStatusTx: BroadcastStatusTransaction,
+  isBroadcasting: boolean,
+  successfullyBroadcast: boolean
+): Array<BroadcastStatusTransaction> {
   return transactions.map(item => {
-    if (item === tx) {
+    if (item === broadcastStatusTx) {
       return { ...item, isBroadcasting, successfullyBroadcast };
     } else {
       return { ...item };
@@ -64,35 +63,46 @@ function handleUpdateTxArray(
 }
 
 function handleTxBroadcastCompleted(
-  state,
-  rawTx,
-  successfullyBroadcast
-): State {
-  const existingTx = getTxFromTransactionsByRawTx(state, rawTx);
-  const isBroadcasting = false;
-  return handleUpdateTxArray(
+  state: State,
+  signedTx: string,
+  successfullyBroadcast: boolean
+  // TODO How to handle null case for existing Tx?. Should use Array<BroadcastStatusTransaction> but can't.
+): Array<any> {
+  const existingTx = getTxFromBroadcastStatusTransactions(
     state.transactions,
-    existingTx,
-    isBroadcasting,
-    successfullyBroadcast
+    signedTx
   );
+  if (existingTx) {
+    const isBroadcasting = false;
+    return handleUpdateTxArray(
+      state.transactions,
+      existingTx,
+      isBroadcasting,
+      successfullyBroadcast
+    );
+  } else {
+    return [];
+  }
 }
 
-function handleBroadcastTxRequested(state, rawTx) {
-  const existingTx = getTxFromTransactionsByRawTx(state, rawTx);
+function handleBroadcastTxRequested(state: State, signedTx: string) {
+  const existingTx = getTxFromBroadcastStatusTransactions(
+    state.transactions,
+    signedTx
+  );
   const isBroadcasting = true;
   const successfullyBroadcast = false;
   if (!existingTx) {
     return state.transactions.concat([
       {
-        tx: rawTx,
+        signedTx,
         isBroadcasting,
         successfullyBroadcast
       }
     ]);
   } else {
     return handleUpdateTxArray(
-      state.transaction,
+      state.transactions,
       existingTx,
       isBroadcasting,
       successfullyBroadcast
@@ -115,14 +125,14 @@ export function wallet(
       return {
         ...state,
         isBroadcasting: true,
-        transactions: handleBroadcastTxRequested(state, action.payload.rawTx)
+        transactions: handleBroadcastTxRequested(state, action.payload.signedTx)
       };
     case 'WALLET_BROADCAST_TX_SUCCEEDED':
       return {
         ...state,
         transactions: handleTxBroadcastCompleted(
           state,
-          action.payload.rawTx,
+          action.payload.broadcastTx,
           true
         )
       };
@@ -131,7 +141,7 @@ export function wallet(
         ...state,
         transactions: handleTxBroadcastCompleted(
           state,
-          action.payload.rawTx,
+          action.payload.broadcastTx,
           false
         )
       };

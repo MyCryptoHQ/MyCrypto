@@ -1,7 +1,6 @@
 // @flow
 import BaseWallet from 'libs/wallet/base';
 import Big from 'bignumber.js';
-import { BroadcastTransaction } from 'libs/transaction';
 
 /*** Unlock Private Key ***/
 export type PrivateKeyUnlockParams = {
@@ -90,17 +89,15 @@ export function setTokenBalances(payload: {
 export type BroadcastTxRequestedAction = {
   type: 'WALLET_BROADCAST_TX_REQUESTED',
   payload: {
-    rawTx: BroadcastTransaction
+    signedTx: string
   }
 };
 
-export function broadcastTx(
-  rawTx: BroadcastTransaction
-): BroadcastTxRequestedAction {
+export function broadcastTx(signedTx: string): BroadcastTxRequestedAction {
   return {
     type: 'WALLET_BROADCAST_TX_REQUESTED',
     payload: {
-      rawTx
+      signedTx
     }
   };
 }

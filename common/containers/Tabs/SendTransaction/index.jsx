@@ -32,9 +32,13 @@ import Big from 'bignumber.js';
 import { valueToHex } from 'libs/values';
 import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
-import { getTokenBalances, getTxFromTransactionsReal } from 'selectors/wallet';
+import {
+  getTokenBalances,
+  getTxFromBroadcastStatusTransactions
+} from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
-import { broadcastTx, BroadcastTxAction } from 'actions/wallet';
+import { broadcastTx } from 'actions/wallet';
+import type { BroadcastTxRequestedAction } from 'actions/wallet';
 import type {
   TransactionWithoutGas,
   BroadcastTransaction
@@ -61,7 +65,8 @@ type State = {
   data: string,
   gasChanged: boolean,
   transaction: ?BroadcastTransaction,
-  showTxConfirm: boolean
+  showTxConfirm: boolean,
+  disabled: boolean
 };
 
 function getParam(query: { [string]: string }, key: string) {
@@ -92,7 +97,7 @@ type Props = {
   tokens: Token[],
   tokenBalances: TokenBalance[],
   gasPrice: number,
-  broadcastTx: (payload: BroadcastTransaction) => BroadcastTxAction,
+  broadcastTx: (signedTx: string) => BroadcastTxRequestedAction,
   showNotification: (
     level: string,
     msg: string,
@@ -150,14 +155,14 @@ export class SendTransaction extends React.Component {
     }
 
     if (this.state.transaction && this.state.transaction.signedTx) {
-      const currentTxFromState = getTxFromTransactionsReal(
+      const currentTxFromState = getTxFromBroadcastStatusTransactions(
         this.props.transactions,
         this.state.transaction.signedTx
       );
       if (
         this.state.transaction &&
         currentTxFromState &&
-        this.state.transaction.signedTx === currentTxFromState.tx
+        this.state.transaction.signedTx === currentTxFromState.signedTx
       ) {
         if (currentTxFromState.successfullyBroadcast) {
           this.resetState();
@@ -307,7 +312,7 @@ export class SendTransaction extends React.Component {
           <ConfirmationModal
             wallet={this.props.wallet}
             node={this.props.node}
-            signedTransaction={transaction.signedTx}
+            signedTx={transaction.signedTx}
             onClose={this.hideConfirmTx}
             onConfirm={this.confirmTx}
           />}
@@ -490,15 +495,12 @@ export class SendTransaction extends React.Component {
     this.setState({
       to: '',
       value: '',
-      transaction: {
-        signedTx: '',
-        rawTx: ''
-      }
+      transaction: null
     });
   };
 
-  confirmTx = () => {
-    this.props.broadcastTx(this.state.transaction.signedTx);
+  confirmTx = (signedTx: string) => {
+    this.props.broadcastTx(signedTx);
   };
 }
 

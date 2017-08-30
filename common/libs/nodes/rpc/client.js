@@ -9,7 +9,8 @@ import type {
   GetBalanceRequest,
   GetTokenBalanceRequest,
   EstimateGasRequest,
-  GetTransactionCountRequest
+  GetTransactionCountRequest,
+  SendRawTxRequest
 } from './types';
 import type { Token } from 'config/data';
 
@@ -18,12 +19,12 @@ function id(): string {
   return randomBytes(16).toString('hex');
 }
 
-export function sendRawTx(rawTx) {
+export function sendRawTx(signedTx: string): SendRawTxRequest {
   return {
     id: id(),
     jsonrpc: '2.0',
     method: 'eth_sendRawTransaction',
-    params: [rawTx]
+    params: [signedTx]
   };
 }
 

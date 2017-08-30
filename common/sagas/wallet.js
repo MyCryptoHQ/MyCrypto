@@ -22,6 +22,7 @@ import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
 import { determineKeystoreType } from 'libs/keystore';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+import type { BroadcastTxRequestedAction } from 'actions/wallet';
 
 function* updateAccountBalance() {
   try {
@@ -135,11 +136,13 @@ export function* unlockKeystore(
   yield put(setWallet(wallet));
 }
 
-function* broadcastTx(action) {
-  const rawTx = action.payload.rawTx;
+function* broadcastTx(
+  action: BroadcastTxRequestedAction
+): Generator<Effect, void, any> {
+  const signedTx = action.payload.signedTx;
   try {
     const node: BaseNode = yield select(getNodeLib);
-    const txHash = yield apply(node, node.sendRawTx, [rawTx]);
+    const txHash = yield apply(node, node.sendRawTx, [signedTx]);
     yield put(
       showNotification('success', <TransactionSucceeded txHash={txHash} />, 0)
     );
@@ -147,7 +150,7 @@ function* broadcastTx(action) {
       type: 'WALLET_BROADCAST_TX_SUCCEEDED',
       payload: {
         txHash,
-        rawTx
+        signedTx
       }
     });
   } catch (error) {
@@ -155,7 +158,7 @@ function* broadcastTx(action) {
     yield put({
       type: 'WALLET_BROADCAST_TX_FAILED',
       payload: {
-        rawTx: rawTx
+        signedTx
       }
     });
   }
@@ -169,6 +172,7 @@ export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
     takeEvery('WALLET_SET', updateBalances),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
+    // $FlowFixMe but how do I specify param types here flow?
     takeEvery('WALLET_BROADCAST_TX_REQUESTED', broadcastTx)
   ];
 }
