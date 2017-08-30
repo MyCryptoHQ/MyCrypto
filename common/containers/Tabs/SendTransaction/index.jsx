@@ -154,17 +154,17 @@ export class SendTransaction extends React.Component {
       this.setState({ disabled: !this.isValid() });
     }
 
-    if (this.state.transaction && this.state.transaction.signedTx) {
-      const currentTxFromState = getTxFromBroadcastStatusTransactions(
+    const componentStateTransaction = this.state.transaction;
+    if (componentStateTransaction) {
+      // lives in redux state
+      const currentTxAsBroadcastTransaction = getTxFromBroadcastStatusTransactions(
         this.props.transactions,
         this.state.transaction.signedTx
       );
-      if (
-        this.state.transaction &&
-        currentTxFromState &&
-        this.state.transaction.signedTx === currentTxFromState.signedTx
-      ) {
-        if (currentTxFromState.successfullyBroadcast) {
+      // if there is a matching tx in redux state
+      if (currentTxAsBroadcastTransaction) {
+        // if the broad-casted transaction attempt is successful, clear the form
+        if (currentTxAsBroadcastTransaction.successfullyBroadcast) {
           this.resetTransaction();
         }
       }
