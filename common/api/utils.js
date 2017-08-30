@@ -11,3 +11,11 @@ export function checkHttpStatus(response) {
 export function parseJSON(response) {
   return response.json();
 }
+
+export async function ensureOKResponse(response) {
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  }
+  return false;
+}
