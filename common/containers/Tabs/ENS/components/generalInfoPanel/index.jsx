@@ -1,25 +1,8 @@
 // @flow
 import * as React from 'react';
 import GeneralInfoNode from './generalInfoNode';
-
-type ABlankNooperProps = {
-  content: React.Element<any>,
-  href: string
-};
-
-const ABlankNooper = ({
-  content, //eslint-disable-line
-  href //eslint-disable-line
-}): ABlankNooperProps =>
-  <a target="_blank" rel="noopener" href={href}>
-    {content}
-  </a>;
-
-type InfoNode = {
-  name: string,
-  headerContent: string,
-  innerList: Array<React.Element<any>>
-};
+import { ABlankNooper } from './helperStatelessFunctionals';
+import type { InfoNode } from './types';
 const generalInfoNodes: Array<InfoNode> = [
   {
     name: 'ensPrep',

@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
-import Title from './components/title';
-import GeneralInfoPanel from './components/generalInfoPanel';
+import Title from './title';
+import GeneralInfoPanel from './generalInfoPanel';
 type ContainerTabPaneActiveProps = {
   children: React.Element<any>
 };

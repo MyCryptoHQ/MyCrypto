@@ -1,19 +1,11 @@
 // @flow
 import * as React from 'react';
+import type { HeaderProps, ListProps, NodeProps, NodeState } from './types';
 
-type HeaderProps = {
-  children: string,
-  onClickHandler: () => void
-};
 const InfoHeader = ({ children, onClickHandler }: HeaderProps) =>
   <h6 onClick={onClickHandler}>
     <span>+</span> {children}
   </h6>;
-
-type ListProps = {
-  children: Array<React.Element<any>>,
-  isOpen: boolean
-};
 
 const InfoList = ({ children, isOpen }: ListProps) =>
   isOpen
@@ -21,16 +13,6 @@ const InfoList = ({ children, isOpen }: ListProps) =>
         {children}
       </ul>
     : null;
-
-type NodeProps = {
-  innerList: Array<React.Element<any>>,
-  headerContent: string,
-  name: string
-};
-
-type NodeState = {
-  isOpen: boolean
-};
 
 export default class GeneralInfoNode extends React.Component<
   NodeProps,
