@@ -14,14 +14,14 @@ const TransactionSucceeded = ({ txHash }: TransactionSucceededProps) => {
       <p>
         {translate('SUCCESS_3', true) + txHash}
       </p>
-      <button
+      <a
         className="btn btn-xs btn-info string"
         href={txHashLink}
         target="_blank"
         rel="noopener"
       >
         Verify Transaction
-      </button>
+      </a>
     </div>
   );
 };

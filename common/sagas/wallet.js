@@ -158,7 +158,8 @@ function* broadcastTx(
     yield put({
       type: 'WALLET_BROADCAST_TX_FAILED',
       payload: {
-        signedTx
+        signedTx,
+        error: String(error)
       }
     });
   }
