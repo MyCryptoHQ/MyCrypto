@@ -31,7 +31,7 @@ const generalInfoNodes: Array<InfoNode> = [
       </li>,
       <li>
         Decide the maximum amount of ETH you are willing to pay for the name
-        (your <u>Bid Amount</u> ). Ensure that account has enough to cover your
+        (your <u>Bid Amount</u>). Ensure that account has enough to cover your
         bid + 0.01 ETH for gas.
       </li>
     ]
@@ -42,7 +42,7 @@ const generalInfoNodes: Array<InfoNode> = [
     innerList: [
       <li>Bidding period lasts 3 days (72 hours).</li>,
       <li>
-        You will enter the <u>name</u>, <u>Actual Bid Amount</u>,
+        You will enter the <u>name</u>, <u>Actual Bid Amount</u>,{' '}
         <u>Bid Mask</u>, which is protected by a <u>Secret Phrase</u>
       </li>,
       <li>
@@ -62,8 +62,8 @@ const generalInfoNodes: Array<InfoNode> = [
       </li>,
       <li> Reveal Period lasts 2 days (48 hours). </li>,
       <li>
-        You will unlock your account, enter the
-        <u>Bid Amount</u>, and the <u>Secret Phrase</u>.
+        You will unlock your account, enter the <u>Bid Amount</u>, and the{' '}
+        <u>Secret Phrase</u>.
       </li>,
       <li>
         In the event that two parties bid exactly the same amount, the first bid
@@ -93,7 +93,7 @@ const generalInfoNodes: Array<InfoNode> = [
       <li>
         The auction for this registrar is a blind auction, and is described in
         <ABlankNooper
-          content="EIP162"
+          content=" EIP162"
           href="https://github.com/ethereum/EIPs/issues/162"
         />
         . Basically, no one can see *anything* during the auction.
