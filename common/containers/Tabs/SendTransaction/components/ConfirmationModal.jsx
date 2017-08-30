@@ -28,7 +28,7 @@ type Props = {
   onConfirm: (string, EthTx) => void,
   onClose: () => void,
   lang: string,
-  stateSignedTx: string
+  broadCastStatusTx: string
 };
 
 type State = {
@@ -59,7 +59,10 @@ class ConfirmationModal extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.hasBroadCasted && !this.props.stateSignedTx.isBroadcasting) {
+    if (
+      this.state.hasBroadCasted &&
+      !this.props.broadCastStatusTx.isBroadcasting
+    ) {
       this.props.onClose();
     }
   }
@@ -147,7 +150,8 @@ class ConfirmationModal extends React.Component {
         handleClose={onClose}
         isOpen={true}
       >
-        {this.props.stateSignedTx && this.props.stateSignedTx.isBroadcasting
+        {this.props.broadCastStatusTx &&
+        this.props.broadCastStatusTx.isBroadcasting
           ? <div className="text-center" style={{ fontSize: '150px' }}>
               <Spinner />
             </div>
@@ -219,7 +223,10 @@ function mapStateToProps(state, props) {
 
   const lang = getLanguageSelection(state);
 
-  const stateSignedTx = getTxFromTransactionsBySignedTx(state, props.signedTx);
+  const broadCastStatusTx = getTxFromTransactionsBySignedTx(
+    state,
+    props.signedTx
+  );
 
   // Determine if we're sending to a token from the transaction to address
   const { to, data } = getTransactionFields(transaction);
@@ -227,7 +234,7 @@ function mapStateToProps(state, props) {
   const token = data && tokens.find(t => t.address === to);
 
   return {
-    stateSignedTx,
+    broadCastStatusTx,
     transaction,
     token,
     network,
