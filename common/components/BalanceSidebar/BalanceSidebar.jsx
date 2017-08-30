@@ -42,7 +42,6 @@ export class BalanceSidebar extends React.Component {
       })
       .catch(err => {
         this.props.showNotification('danger', err);
-        console.log(err);
       });
   }
 

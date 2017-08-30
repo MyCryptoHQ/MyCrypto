@@ -132,7 +132,7 @@ export function wallet(
         ...state,
         transactions: handleTxBroadcastCompleted(
           state,
-          action.payload.broadcastTx,
+          action.payload.signedTx,
           true
         )
       };
@@ -141,7 +141,7 @@ export function wallet(
         ...state,
         transactions: handleTxBroadcastCompleted(
           state,
-          action.payload.broadcastTx,
+          action.payload.signedTx,
           false
         )
       };

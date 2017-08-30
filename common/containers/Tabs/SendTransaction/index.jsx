@@ -433,7 +433,6 @@ export class SendTransaction extends React.Component {
 
   onAmountChange = (value: string, unit: string) => {
     // TODO sub gas for eth
-    console.log(value);
     if (value === 'everything') {
       if (unit === 'ether') {
         // TODO - why do we never use this?
@@ -476,7 +475,6 @@ export class SendTransaction extends React.Component {
       );
       this.setState({ transaction });
     } catch (err) {
-      console.log(err);
       this.props.showNotification('danger', err.message, 5000);
     }
   };

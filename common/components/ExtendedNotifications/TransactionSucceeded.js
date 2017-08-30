@@ -1,6 +1,6 @@
 import React from 'react';
 import bityConfig from 'config/bity';
-
+import translate from 'translations';
 export type TransactionSucceededProps = {
   txHash: any
 };
@@ -12,18 +12,16 @@ const TransactionSucceeded = ({ txHash }: TransactionSucceededProps) => {
   return (
     <div>
       <p>
-        Your TX has been broadcast to the network. It is waiting to be mined &
-        confirmed. During ICOs, it may take 3+ hours to confirm. Use the Verify
-        & Check buttons below to see. TX Hash: {txHash}
+        {translate('SUCCESS_3', true) + txHash}
       </p>
-      <a
+      <button
         className="btn btn-xs btn-info string"
         href={txHashLink}
         target="_blank"
         rel="noopener"
       >
         Verify Transaction
-      </a>
+      </button>
     </div>
   );
 };
