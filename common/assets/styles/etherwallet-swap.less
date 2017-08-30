@@ -1,32 +1,14 @@
 .swap-tab {
-
-  a.link, a.link:hover {
+  a.link,
+  a.link:hover {
     transition: none;
   }
 
-  .btn-lg {
-    margin-top: @space*5;
-  }
-  .btn svg, .btn img {
+  .btn svg,
+  .btn img {
     margin-right: @space-sm;
     margin-left: -@space-xs;
     vertical-align: middle;
-  }
-
-  .swap-panel {
-    padding-top: @space*5;
-    text-align: center;
-    > * {
-      display: inline-block;
-      margin: @space-xs @space-sm;
-      vertical-align: middle;
-    }
-    .form-control {
-      width: 10rem;
-    }
-    .dropdown {
-      margin-left: 0;
-    }
   }
 
   .swap-start {
@@ -49,9 +31,11 @@
   }
 }
 
-.swap-tab, .ens-tab {
+.swap-tab,
+.ens-tab {
   .collapse-container {
-    h4, h5 {
+    h4,
+    h5 {
       display: inline-block;
     }
     .collapse-button {
@@ -78,19 +62,21 @@
   text-align: center;
   padding: @space/2 0;
   color: white;
-  h3, h4, p {
+  h3,
+  h4,
+  p {
     margin: 0;
   }
-  &:nth-child(4n+1) {
+  &:nth-child(4n + 1) {
     background-color: #175575;
   }
-  &:nth-child(4n+2) {
+  &:nth-child(4n + 2) {
     background-color: #1e92ba;
   }
-  &:nth-child(4n+3) {
+  &:nth-child(4n + 3) {
     background-color: #143955;
   }
-  &:nth-child(4n+4) {
+  &:nth-child(4n + 4) {
     background-color: #19b3ae;
   }
 }
@@ -122,19 +108,19 @@
     @media screen and (max-width: @progress-breakpoint) {
       width: 100%;
     }
-    &:nth-child(4n+1) .progress-circle {
+    &:nth-child(4n + 1) .progress-circle {
       border-color: fadeout(#1e92ba, 60%);
       color: fadeout(#1e92ba, 60%);
     }
-    &:nth-child(4n+2) .progress-circle {
+    &:nth-child(4n + 2) .progress-circle {
       border-color: fadeout(#175575, 60%);
       color: fadeout(#175575, 60%);
     }
-    &:nth-child(4n+3) .progress-circle {
+    &:nth-child(4n + 3) .progress-circle {
       border-color: fadeout(#19b3ae, 60%);
       color: fadeout(#19b3ae, 60%);
     }
-    &:nth-child(4n+4) .progress-circle {
+    &:nth-child(4n + 4) .progress-circle {
       border-color: fadeout(#143955, 60%);
       color: fadeout(#143955, 60%);
     }
@@ -195,19 +181,19 @@
         color: lighten(@gray, 10%);
       }
     }
-    &.progress-active:nth-child(4n+1) .progress-circle {
+    &.progress-active:nth-child(4n + 1) .progress-circle {
       border-color: #1e92ba;
       color: #1e92ba;
     }
-    &.progress-active:nth-child(4n+2) .progress-circle {
+    &.progress-active:nth-child(4n + 2) .progress-circle {
       border-color: #175575;
       color: #175575;
     }
-    &.progress-active:nth-child(4n+3) .progress-circle {
+    &.progress-active:nth-child(4n + 3) .progress-circle {
       border-color: #19b3ae;
       color: #19b3ae;
     }
-    &.progress-active:nth-child(4n+4) .progress-circle {
+    &.progress-active:nth-child(4n + 4) .progress-circle {
       border-color: #143955;
       color: #143955;
     }
