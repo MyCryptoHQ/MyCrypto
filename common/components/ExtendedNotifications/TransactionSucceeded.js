@@ -2,11 +2,11 @@ import React from 'react';
 import bityConfig from 'config/bity';
 import translate from 'translations';
 export type TransactionSucceededProps = {
-  txHash: any
+  txHash: string
 };
 
 const TransactionSucceeded = ({ txHash }: TransactionSucceededProps) => {
-  const checkTxLink = `https://www.myetherwallet.com?txHash=${txHash}/#check-tx-status`;
+  // const checkTxLink = `https://www.myetherwallet.com?txHash=${txHash}/#check-tx-status`;
   const txHashLink = bityConfig.ethExplorer.replace('[[txHash]]', txHash);
 
   return (

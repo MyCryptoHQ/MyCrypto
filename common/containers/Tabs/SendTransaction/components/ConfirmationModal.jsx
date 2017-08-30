@@ -28,7 +28,7 @@ type Props = {
   onConfirm: (string, EthTx) => void,
   onClose: () => void,
   lang: string,
-  stateSignedTx: any
+  stateSignedTx: string
 };
 
 type State = {

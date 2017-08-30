@@ -39,6 +39,7 @@ import {
 import type { RPCNode } from 'libs/nodes';
 import { broadcastTx } from 'actions/wallet';
 import type { BroadcastTxRequestedAction } from 'actions/wallet';
+import type { BroadcastStatusTransaction } from 'reducers/wallet';
 import type {
   TransactionWithoutGas,
   BroadcastTransaction
@@ -88,7 +89,6 @@ type Props = {
       [string]: string
     }
   },
-  latestTx: any,
   wallet: BaseWallet,
   balance: Big,
   node: NodeConfig,
@@ -103,7 +103,7 @@ type Props = {
     msg: string,
     duration?: number
   ) => ShowNotificationAction,
-  transactions: any
+  transactions: Array<BroadcastStatusTransaction>
 };
 
 const initialState = {
