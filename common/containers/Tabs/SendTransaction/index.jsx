@@ -165,7 +165,7 @@ export class SendTransaction extends React.Component {
         this.state.transaction.signedTx === currentTxFromState.signedTx
       ) {
         if (currentTxFromState.successfullyBroadcast) {
-          this.resetState();
+          this.resetTransaction();
         }
       }
     }
@@ -489,7 +489,7 @@ export class SendTransaction extends React.Component {
     this.setState({ showTxConfirm: false });
   };
 
-  resetState = () => {
+  resetTransaction = () => {
     this.setState({
       to: '',
       value: '',
