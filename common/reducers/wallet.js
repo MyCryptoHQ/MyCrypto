@@ -9,13 +9,7 @@ import { BaseWallet } from 'libs/wallet';
 import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
 import { getTxFromBroadcastStatusTransactions } from 'selectors/wallet';
-
-export type BroadcastStatusTransaction = {
-  isBroadcasting: boolean,
-  signedTx: string,
-  successfullyBroadcast: boolean
-};
-
+import type { BroadcastStatusTransaction } from 'libs/transaction';
 export type State = {
   inst: ?BaseWallet,
   // in ETH

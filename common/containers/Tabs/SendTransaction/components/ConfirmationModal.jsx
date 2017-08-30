@@ -17,7 +17,7 @@ import type { Token, NetworkConfig } from 'config/data';
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 import Spinner from 'components/ui/Spinner';
-import type { BroadcastStatusTransaction } from 'reducers/wallet';
+import type { BroadcastStatusTransaction } from 'libs/transaction';
 
 type Props = {
   signedTx: string,

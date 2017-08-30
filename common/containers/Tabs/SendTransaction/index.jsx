@@ -39,7 +39,7 @@ import {
 import type { RPCNode } from 'libs/nodes';
 import { broadcastTx } from 'actions/wallet';
 import type { BroadcastTxRequestedAction } from 'actions/wallet';
-import type { BroadcastStatusTransaction } from 'reducers/wallet';
+import type { BroadcastStatusTransaction } from 'libs/transaction';
 import type {
   TransactionWithoutGas,
   BroadcastTransaction

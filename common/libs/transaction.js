@@ -11,6 +11,12 @@ import type { BaseWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
 import type EthTx from 'ethereumjs-tx';
 
+export type BroadcastStatusTransaction = {
+  isBroadcasting: boolean,
+  signedTx: string,
+  successfullyBroadcast: boolean
+};
+
 // TODO: Enforce more bigs, or find better way to avoid ether vs wei for value
 export type TransactionWithoutGas = {|
   from: string,
