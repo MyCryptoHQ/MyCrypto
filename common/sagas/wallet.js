@@ -64,7 +64,7 @@ function* updateTokenBalances() {
       )
     );
   } catch (error) {
-    yield put({ type: 'updateTokenBalances_error', error });
+    yield put({ type: 'UPDATE_TOKEN_BALANCE_FAILED', error });
   }
 }
 
