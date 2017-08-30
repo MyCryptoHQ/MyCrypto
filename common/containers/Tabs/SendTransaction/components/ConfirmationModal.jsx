@@ -11,7 +11,7 @@ import ERC20 from 'libs/erc20';
 import { getTransactionFields } from 'libs/transaction';
 import { getTokens } from 'selectors/wallet';
 import { getNetworkConfig, getLanguageSelection } from 'selectors/config';
-import { getTxFromTransactionsBySignedTx } from 'selectors/wallet';
+import { getTxFromState } from 'selectors/wallet';
 import type { NodeConfig } from 'config/data';
 import type { Token, NetworkConfig } from 'config/data';
 import Modal from 'components/ui/Modal';
@@ -229,10 +229,7 @@ function mapStateToProps(state, props) {
 
   const lang = getLanguageSelection(state);
 
-  const broadCastStatusTx = getTxFromTransactionsBySignedTx(
-    state,
-    props.signedTx
-  );
+  const broadCastStatusTx = getTxFromState(state, props.signedTx);
 
   // Determine if we're sending to a token from the transaction to address
   const { to, data } = getTransactionFields(transaction);

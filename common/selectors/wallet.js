@@ -41,24 +41,19 @@ export function getTokenBalances(state: State): TokenBalance[] {
   }));
 }
 
-export function getTxFromTransactionsBySignedTx(
+export function getTxFromState(
   state: State,
   signedTx: string
 ): ?BroadcastStatusTransaction {
   const transactions = state.wallet.transactions;
-  const matchingTxs = transactions.filter(function(obj) {
-    return obj.signedTx === signedTx;
-  });
-  return matchingTxs ? matchingTxs[0] : null;
+  return getTxFromBroadcastStatusTransactions(transactions, signedTx);
 }
 
-// TODO type signedTx?
 export function getTxFromBroadcastStatusTransactions(
   transactions: Array<BroadcastStatusTransaction>,
   signedTx: string
 ): ?BroadcastStatusTransaction {
-  const matchingTxs = transactions.filter(function(obj) {
-    return obj.signedTx === signedTx;
+  return transactions.find(transaction => {
+    return transaction.signedTx === signedTx;
   });
-  return matchingTxs ? matchingTxs[0] : null;
 }
