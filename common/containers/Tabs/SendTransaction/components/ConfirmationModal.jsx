@@ -1,7 +1,7 @@
 // @flow
 import './ConfirmationModal.scss';
 import React from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import Big from 'bignumber.js';
 import EthTx from 'ethereumjs-tx';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import { toUnit, toTokenDisplay } from 'libs/units';
 import ERC20 from 'libs/erc20';
 import { getTransactionFields } from 'libs/transaction';
 import { getTokens } from 'selectors/wallet';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getLanguageSelection } from 'selectors/config';
 import type { NodeConfig } from 'config/data';
 import type { Token, NetworkConfig } from 'config/data';
 
@@ -25,7 +25,8 @@ type Props = {
   token: ?Token,
   network: NetworkConfig,
   onConfirm: (string, EthTx) => void,
-  onCancel: () => void
+  onCancel: () => void,
+  lang: string
 };
 
 type State = {
@@ -116,13 +117,13 @@ class ConfirmationModal extends React.Component {
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons = [
       {
-        text: buttonPrefix + translate('SENDModal_Yes'),
+        text: buttonPrefix + translateRaw('SENDModal_Yes'),
         type: 'primary',
         disabled: timeToRead > 0,
         onClick: this._confirm()
       },
       {
-        text: translate('SENDModal_No'),
+        text: translateRaw('SENDModal_No'),
         type: 'default',
         onClick: onCancel
       }
@@ -203,6 +204,8 @@ function mapStateToProps(state, props) {
   // Network config for defaults
   const network = getNetworkConfig(state);
 
+  const lang = getLanguageSelection(state);
+
   // Determine if we're sending to a token from the transaction to address
   const { to, data } = getTransactionFields(transaction);
   const tokens = getTokens(state);
@@ -211,7 +214,8 @@ function mapStateToProps(state, props) {
   return {
     transaction,
     token,
-    network
+    network,
+    lang
   };
 }
 

@@ -9,7 +9,7 @@ import LedgerNanoSDecrypt from './LedgerNano';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
 import map from 'lodash/map';
-import { unlockPrivateKey, unlockKeystore } from 'actions/wallet';
+import { unlockPrivateKey, unlockKeystore, setWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 
 const WALLETS = {
@@ -44,7 +44,8 @@ const WALLETS = {
   trezor: {
     lid: 'x_Trezor',
     component: TrezorDecrypt,
-    disabled: true
+    initialParams: {},
+    unlock: setWallet
   },
   'view-only': {
     lid: 'View with Address Only',
@@ -162,9 +163,9 @@ export class WalletDecrypt extends Component {
     this.setState({ value });
   };
 
-  onUnlock = () => {
+  onUnlock = (payload: any) => {
     this.props.dispatch(
-      WALLETS[this.state.selectedWalletKey].unlock(this.state.value)
+      WALLETS[this.state.selectedWalletKey].unlock(payload || this.state.value)
     );
   };
 }

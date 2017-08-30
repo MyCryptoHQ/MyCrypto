@@ -18,8 +18,7 @@ type Props = {
       | 'danger'
       | 'link',
     disabled?: boolean,
-    // $FlowFixMe - Why the fuck doesn't this like onClick?
-    onClick: () => void
+    onClick?: () => void
   }[],
   handleClose: () => void,
   children: any

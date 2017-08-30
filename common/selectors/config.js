@@ -27,3 +27,7 @@ export function getNetworkContracts(state: State): ?Array<NetworkContract> {
 export function getGasPriceGwei(state: State): number {
   return state.config.gasPriceGwei;
 }
+
+export function getLanguageSelection(state: State): string {
+  return state.config.languageSelection;
+}

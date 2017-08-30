@@ -40,9 +40,7 @@ export default class RpcNode extends BaseNode {
       if (response.error) {
         return Big(0);
       }
-      return new Big(Number(response.result)).div(
-        new Big(10).pow(token.decimal)
-      );
+      return new Big(response.result).div(new Big(10).pow(token.decimal));
     });
   }
 
@@ -55,9 +53,7 @@ export default class RpcNode extends BaseNode {
           if (item.error) {
             return new Big(0);
           }
-          return new Big(Number(item.result)).div(
-            new Big(10).pow(tokens[idx].decimal)
-          );
+          return new Big(item.result).div(new Big(10).pow(tokens[idx].decimal));
         });
       });
   }
