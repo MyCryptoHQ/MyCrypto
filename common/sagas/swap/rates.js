@@ -8,17 +8,18 @@ import { getAllRates } from 'api/bity';
 import { loadBityRatesSucceededSwap } from 'actions/swap';
 import { showNotification } from 'actions/notifications';
 
-// @TODO Pulled out finally block as nothing was being done on cancellation anyway. Need to
-// audit whether we should perform some cleanup in the state or messaging in the event of
-// cancellation of this loop.
-export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
+// @TODO Move this to a type definition file in sagas for reuse.
+type Yield = Effect | {};
+type Return = void;
+type Next = any;
+
+export function* loadBityRates(_action?: any): Generator<Yield, Return, Next> {
   while (true) {
     try {
       const data = yield call(getAllRates);
       yield put(loadBityRatesSucceededSwap(data));
     } catch (error) {
-      const action = yield showNotification('danger', error);
-      yield put(action);
+      yield put(yield showNotification('danger', error));
     }
     yield call(delay, 5000);
   }

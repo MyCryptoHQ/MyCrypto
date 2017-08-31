@@ -27,7 +27,6 @@ export default function* ratesSaga(): Generator<Effect, void, any> {
     const rates = yield call(fetchRates);
     yield put(setRates(rates));
   } catch (error) {
-    const action = yield showNotification('danger', error);
-    yield put(action);
+    yield put(showNotification('danger', error));
   }
 }
