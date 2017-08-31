@@ -27,7 +27,7 @@ describe('Validator', () => {
   });
 
   it('should validate a correct DPath as true', () => {
-    expect(isValidPath('m/44\'/60\'/0\'/0')).toBeTruthy();
+    expect(isValidPath("m/44'/60'/0'/0")).toBeTruthy();
   });
   it('should validate an incorrect DPath as false', () => {
     expect(isValidPath('m/44/60/0/0')).toBeFalsy();

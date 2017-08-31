@@ -5,9 +5,7 @@ import type { Element } from 'react';
 const DEFAULT_BUTTON_TYPE = 'primary';
 const DEFAULT_BUTTON_SIZE = 'lg';
 
-const Spinner = () => {
-  return <i className="fa fa-spinner fa-spin fa-fw" />;
-};
+import Spinner from './Spinner';
 
 type ButtonType =
   | 'default'

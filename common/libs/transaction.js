@@ -10,6 +10,13 @@ import type BaseNode from 'libs/nodes/base';
 import type { BaseWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
 import type EthTx from 'ethereumjs-tx';
+import { toUnit } from 'libs/units';
+
+export type BroadcastStatusTransaction = {
+  isBroadcasting: boolean,
+  signedTx: string,
+  successfullyBroadcast: boolean
+};
 
 // TODO: Enforce more bigs, or find better way to avoid ether vs wei for value
 export type TransactionWithoutGas = {|
@@ -153,4 +160,15 @@ export async function generateTransaction(
     rawTx: rawTxJson,
     signedTx: signedTx
   };
+}
+
+// TODO determine best place for helper function
+export function getBalanceMinusGasCosts(
+  weiGasLimit: Big,
+  weiGasPrice: Big,
+  weiBalance: Big
+): Big {
+  const weiGasCosts = weiGasPrice.times(weiGasLimit);
+  const weiBalanceMinusGasCosts = weiBalance.minus(weiGasCosts);
+  return toUnit(weiBalanceMinusGasCosts, 'wei', 'ether');
 }
