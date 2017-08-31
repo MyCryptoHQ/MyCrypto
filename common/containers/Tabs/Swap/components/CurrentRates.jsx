@@ -26,7 +26,7 @@ export default class CurrentRates extends Component {
     });
   };
 
-  buildPairRate = (origin, destination) => {
+  buildPairRate = (origin: string, destination: string) => {
     const pair = origin + destination;
     const statePair = this.state[pair + 'Amount'];
     const propsPair = this.props[pair];
