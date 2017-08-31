@@ -18,7 +18,7 @@ export default class PaymentInfo extends Component {
             {translate('SWAP_order_CTA')}
           </span>
           <strong>
-            {this.props.originAmount} {this.props.originKind}{' '}
+            {' '}{this.props.originAmount} {this.props.originKind}{' '}
           </strong>
           <span>
             {translate('SENDModal_Content_2')}
