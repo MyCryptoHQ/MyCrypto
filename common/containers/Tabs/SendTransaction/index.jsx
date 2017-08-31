@@ -21,7 +21,6 @@ import BaseWallet from 'libs/wallet/base';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
 import { isValidETHAddress } from 'libs/validators';
-import { toUnit } from 'libs/units';
 import {
   getNodeLib,
   getNetworkConfig,
@@ -337,46 +336,47 @@ export class SendTransaction extends React.Component {
 
   async getTransactionInfoFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
-    const { token } = this.state;
+    const { token, unit, value, to, data } = this.state;
 
-    if (this.state.unit === 'ether') {
+    if (unit === 'ether') {
       return {
-        to: this.state.to,
+        to,
         from: await wallet.getAddress(),
-        value: valueToHex(this.state.value),
-        data: this.state.data
+        value: valueToHex(value),
+        data
       };
     } else {
       if (!token) {
         throw new Error('No matching token');
       }
 
+      const bigAmount = new Big(value);
+
       return {
         to: token.address,
         from: await wallet.getAddress(),
         value: '0x0',
-        data: ERC20.transfer(
-          this.state.to,
-          toTokenUnit(new Big(this.state.value), token)
-        )
+        data: ERC20.transfer(to, toTokenUnit(bigAmount, token))
       };
     }
   }
 
   async estimateGas() {
-    try {
-      const transaction = await this.getTransactionInfoFromState();
-      // Grab a reference to state. If it has changed by the time the estimateGas
-      // call comes back, we don't want to replace the gasLimit in state.
-      const state = this.state;
-      const gasLimit = await this.props.nodeLib.estimateGas(transaction);
-      if (this.state === state) {
-        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
-      } else {
-        this.estimateGas();
+    if (!isNaN(parseInt(this.state.value))) {
+      try {
+        const transaction = await this.getTransactionInfoFromState();
+        // Grab a reference to state. If it has changed by the time the estimateGas
+        // call comes back, we don't want to replace the gasLimit in state.
+        const state = this.state;
+        const gasLimit = await this.props.nodeLib.estimateGas(transaction);
+        if (this.state === state) {
+          this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+        } else {
+          this.estimateGas();
+        }
+      } catch (error) {
+        this.props.showNotification('danger', error.message, 5000);
       }
-    } catch (error) {
-      this.props.showNotification('danger', error.message, 5000);
     }
   }
 
@@ -439,6 +439,7 @@ export class SendTransaction extends React.Component {
         value = tokenBalance.balance.toString();
       }
     }
+
     let token = this.props.tokens.find(x => x.symbol === unit);
 
     this.setState({
