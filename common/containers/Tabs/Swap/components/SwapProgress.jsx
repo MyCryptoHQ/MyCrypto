@@ -40,10 +40,7 @@ export default class SwapProgress extends Component {
       if (!hasShownViewTx) {
         let linkElement;
         let link;
-        const notificationMessage = `
-           Your TX has been broadcast to the network. 
-           It is waiting to be mined & confirmed. During ICOs, it may take 3+ hours to confirm. 
-           Use the Verify & Check buttons below to see. TX Hash: ${outputTx}`;
+        const notificationMessage = translate('SUCCESS_3', true) + outputTx;
         // everything but BTC is a token
         if (destinationKind !== 'BTC') {
           link = bityConfig.ethExplorer.replace('[[txHash]]', outputTx);
