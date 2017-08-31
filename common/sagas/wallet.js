@@ -26,11 +26,11 @@ import type { BroadcastTxRequestedAction } from 'actions/wallet';
 
 function* updateAccountBalance() {
   try {
-    const node: BaseNode = yield select(getNodeLib);
     const wallet: ?BaseWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
     }
+    const node: BaseNode = yield select(getNodeLib);
     const address = yield wallet.getAddress();
     // network request
     let balance = yield apply(node, node.getBalance, [address]);

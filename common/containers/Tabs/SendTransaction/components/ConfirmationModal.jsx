@@ -87,6 +87,7 @@ class ConfirmationModal extends React.Component {
   }
 
   async _setWalletAddress(wallet: BaseWallet) {
+    // TODO move getAddress to saga
     const fromAddress = await wallet.getAddress();
     this.setState({ fromAddress });
   }
@@ -123,7 +124,7 @@ class ConfirmationModal extends React.Component {
   };
 
   render() {
-    const { node, token, network, onClose } = this.props;
+    const { node, token, network, onClose, broadCastStatusTx } = this.props;
     const { fromAddress, timeToRead } = this.state;
     const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
@@ -145,8 +146,7 @@ class ConfirmationModal extends React.Component {
     const symbol = token ? token.symbol : network.unit;
 
     const isBroadcasting =
-      this.props.broadCastStatusTx &&
-      this.props.broadCastStatusTx.isBroadcasting;
+      broadCastStatusTx && broadCastStatusTx.isBroadcasting;
 
     return (
       <Modal

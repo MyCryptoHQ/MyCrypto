@@ -21,6 +21,7 @@ import BaseWallet from 'libs/wallet/base';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
 import { isValidETHAddress } from 'libs/validators';
+import { toUnit } from 'libs/units';
 import {
   getNodeLib,
   getNetworkConfig,
@@ -51,7 +52,7 @@ import { showNotification } from 'actions/notifications';
 import type { ShowNotificationAction } from 'actions/notifications';
 import type { NodeConfig } from 'config/data';
 import { getNodeConfig } from 'selectors/config';
-import { generateTransaction } from 'libs/transaction';
+import { generateTransaction, getBalanceMinusGasCosts } from 'libs/transaction';
 
 type State = {
   hasQueryString: boolean,
@@ -109,7 +110,6 @@ type Props = {
 const initialState = {
   hasQueryString: false,
   readOnly: false,
-  // FIXME use correct defaults
   to: '',
   value: '',
   unit: 'ether',
@@ -147,7 +147,9 @@ export class SendTransaction extends React.Component {
         this.state.unit !== prevState.unit ||
         this.state.data !== prevState.data)
     ) {
-      this.estimateGas();
+      if (!isNaN(parseInt(this.state.value))) {
+        this.estimateGas();
+      }
     }
     if (this.state.generateDisabled !== !this.isValid()) {
       this.setState({ generateDisabled: !this.isValid() });
@@ -172,7 +174,6 @@ export class SendTransaction extends React.Component {
 
   render() {
     const unlocked = !!this.props.wallet;
-    const hasEnoughBalance = false;
     const {
       to,
       value,
@@ -201,7 +202,7 @@ export class SendTransaction extends React.Component {
 
             {unlocked &&
               <article className="row">
-                {'' /* <!-- Sidebar --> */}
+                {/* <!-- Sidebar --> */}
                 <section className="col-sm-4">
                   <div style={{ maxWidth: 350 }}>
                     <BalanceSidebar />
@@ -211,19 +212,6 @@ export class SendTransaction extends React.Component {
                 </section>
 
                 <section className="col-sm-8">
-                  {readOnly &&
-                    !hasEnoughBalance &&
-                    <div className="row form-group">
-                      <div className="alert alert-danger col-xs-12 clearfix">
-                        <strong>
-                          Warning! You do not have enough funds to complete this
-                          swap.
-                        </strong>
-                        <br />
-                        Please add more funds or access a different wallet.
-                      </div>
-                    </div>}
-
                   <div className="row form-group">
                     <h4 className="col-xs-12">
                       {translate('SEND_trans')}
@@ -431,22 +419,25 @@ export class SendTransaction extends React.Component {
   };
 
   onAmountChange = (value: string, unit: string) => {
-    // TODO sub gas for eth
+    let token = null;
     if (value === 'everything') {
       if (unit === 'ether') {
-        // TODO - why do we never use this?
-        value = this.props.balance.toString();
+        const { balance, gasPrice } = this.props;
+        const { gasLimit } = this.state;
+        const weiBalance = toWei(balance, 'ether');
+        value = getBalanceMinusGasCosts(gasLimit, gasPrice, weiBalance);
+      } else {
+        token = this.props.tokenBalances.find(
+          tokenBalance => tokenBalance.symbol === unit
+        );
+        if (!token) {
+          return;
+        }
+        value = token.balance.toString();
       }
-      const token = this.props.tokenBalances.find(
-        token => token.symbol === unit
-      );
-      if (!token) {
-        return;
-      }
-      value = token.balance.toString();
+    } else {
+      token = this.props.tokens.find(x => x.symbol === unit);
     }
-
-    let token = this.props.tokens.find(x => x.symbol === unit);
     this.setState({
       value,
       unit,
