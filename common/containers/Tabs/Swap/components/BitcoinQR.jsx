@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import translate from 'translations';
 
 import QRCode from 'qrcode.react';
 
