@@ -27,3 +27,9 @@
   font-weight: normal;
   letter-spacing: .02em;
 }
+
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

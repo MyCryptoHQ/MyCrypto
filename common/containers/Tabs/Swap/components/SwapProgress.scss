@@ -1,0 +1,144 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+$circle-width: 4rem;
+$circle-width-phone: 3rem;
+$track-size: .25rem;
+$step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
+
+.SwapProgress {
+  margin-top: 2rem;
+  margin-bottom: 0;
+  position: relative;
+  @include clearfix;
+
+  &-track {
+    position: absolute;
+    top: 3.5rem;
+    left: $cont-padding-lg;
+    right: $cont-padding-lg;
+    height: $track-size;
+    background-color: $gray-lighter;
+  }
+
+  &-item {
+    width: 20%;
+    float: left;
+    text-align: center;
+    margin: .25rem 0;
+
+    &-circle {
+      border-radius: 50%;
+      border-width: $space-xs;
+      border-style: solid;
+      box-sizing: content-box;
+      margin: $space auto;
+      padding-bottom: $circle-width;
+      position: relative;
+      width: $circle-width;
+      background: white;
+      color: $gray;
+      border-color: $gray;
+
+      @each $idx, $color in $step-colors {
+        &.position-#{$idx} {
+          border-color: fade-out($color, 0.6);
+          color: fade-out($color, 0.6);
+
+          .is-active & {
+            border-color: $color;
+            color: $color;
+          }
+        }
+      }
+
+      .is-complete & {
+        border-color: $brand-success;
+        background: $brand-success;
+        box-shadow: inset 0px 0px 0px $space-xs white;
+        color: #fff;
+      }
+
+      &-number {
+        font-size: $space * 1.5;
+        line-height: $space * 1.75;
+        height: $space * 1.75;
+        width: $space * 1.75;
+        font-weight: 900;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        .is-complete & {
+          background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20426.67%20426.67%22%20width%3D%2232%22%20height%3D%2232%22%3E%3Cpath%20d%3D%22M153.504%20366.839c-8.657%200-17.323-3.302-23.927-9.911L9.914%20237.265c-13.218-13.218-13.218-34.645%200-47.863%2013.218-13.218%2034.645-13.218%2047.863%200l95.727%2095.727%20215.39-215.386c13.218-13.214%2034.65-13.218%2047.859%200%2013.222%2013.218%2013.222%2034.65%200%2047.863L177.436%20356.928c-6.609%206.605-15.271%209.911-23.932%209.911z%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E');
+          background-position: 50%;
+          background-repeat: no-repeat;
+          background-size: contain;
+          font-size: 0;
+        }
+      }
+    }
+
+    &-text {
+      font-size: $font-size-small;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: fade-out(lighten($gray, 10%), 0.5);
+      letter-spacing: .1em;
+
+      small {
+        letter-spacing: .03em;
+        font-size: 75%;
+      }
+
+      .is-active & {
+        color: lighten($gray, 10%);
+      }
+
+      .is-complete & {
+        color: $brand-success;
+      }
+    }
+  }
+
+  // Go vertical at mobile
+  @media screen and (max-width: $screen-md) {
+    &-track {
+      top: $cont-padding-lg;
+      left: 2.6rem;
+      bottom: $cont-padding-lg;
+      right: auto;
+      height: auto;
+      width: 4px;
+    }
+
+    &-item {
+      width: 100%;
+
+      &-circle {
+        margin: $space-xs #{$space / 2} $space-xs $space;
+        padding-bottom: $circle-width-phone;
+        width: $circle-width-phone;
+        float: left;
+
+        &-number {
+          font-size: $space * 1.5;
+          line-height: $space * 1.5;
+          height: $space * 1.5;
+          width: $space * 1.5;
+        }
+      }
+
+      &-text {
+        line-height: 4rem;
+        margin: 0;
+        text-align: left;
+
+        small {
+          display: none;
+        }
+      }
+    }
+  }
+}

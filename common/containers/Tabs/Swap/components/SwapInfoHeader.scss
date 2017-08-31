@@ -5,7 +5,8 @@ $top-height: 40px;
 
 .SwapInfo {
   &-top {
-    padding-bottom: .5rem;
+    margin: 0;
+    padding-bottom: $space / 2;
 
     &-back {
       @include reset-button;
@@ -40,7 +41,7 @@ $top-height: 40px;
   }
 
   &-details {
-    margin: 0 0 2rem;
+    margin: 0 0 $space * 2;
 
     &-block {
       display: flex;
@@ -70,6 +71,8 @@ $top-height: 40px;
       }
 
       &-value {
+        @include ellipsis;
+        padding: 0 .5rem;
       }
 
       &-label {
