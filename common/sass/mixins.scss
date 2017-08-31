@@ -12,3 +12,11 @@
   border: none;
   cursor: pointer;
 }
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}

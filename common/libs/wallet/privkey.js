@@ -8,13 +8,18 @@ import {
 import { randomBytes } from 'crypto';
 import { pkeyToKeystore } from 'libs/keystore';
 import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
+import { isValidPrivKey } from 'libs/validators';
 import type { RawTransaction } from 'libs/transaction';
+import type { UtcKeystore } from 'libs/keystore';
 
 export default class PrivKeyWallet extends BaseWallet {
   privKey: Buffer;
   pubKey: Buffer;
   address: Buffer;
   constructor(privkey: Buffer) {
+    if (!isValidPrivKey(privkey)) {
+      throw new Error('Invalid private key');
+    }
     super();
     this.privKey = privkey;
     this.pubKey = privateToPublic(this.privKey);
@@ -35,7 +40,7 @@ export default class PrivKeyWallet extends BaseWallet {
     return new PrivKeyWallet(randomBytes(32));
   }
 
-  toKeystore(password: string): Promise<any> {
+  toKeystore(password: string): Promise<UtcKeystore> {
     return new Promise(resolve => {
       this.getNakedAddress().then(address => {
         resolve(pkeyToKeystore(this.privKey, address, password));

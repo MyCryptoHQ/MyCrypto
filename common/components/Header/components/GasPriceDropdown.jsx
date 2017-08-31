@@ -1,9 +1,15 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash/throttle';
 
 import './GasPriceDropdown.scss';
 import { gasPriceDefaults } from 'config/data';
+
+type Props = {
+  value: number,
+  onChange: (gasPrice: number) => void
+};
 
 export default class GasPriceDropdown extends Component {
   state = { expanded: false };
@@ -12,6 +18,11 @@ export default class GasPriceDropdown extends Component {
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired
   };
+
+  constructor(props: Props) {
+    super(props);
+    this.updateGasPrice = throttle(this.updateGasPrice, 50);
+  }
 
   render() {
     return (
@@ -34,7 +45,7 @@ export default class GasPriceDropdown extends Component {
                 value={this.props.value}
                 min={gasPriceDefaults.gasPriceMinGwei}
                 max={gasPriceDefaults.gasPriceMaxGwei}
-                onChange={this.updateGasPrice}
+                onChange={this.handleGasPriceChange}
               />
               <p className="small col-xs-4 text-left GasPrice-padding-reset">
                 Not So Fast
@@ -74,7 +85,11 @@ export default class GasPriceDropdown extends Component {
     });
   };
 
-  updateGasPrice = (e: SyntheticInputEvent) => {
-    this.props.onChange(parseInt(e.target.value, 10));
+  updateGasPrice = (value: string) => {
+    this.props.onChange(parseInt(value, 10));
+  };
+
+  handleGasPriceChange = (e: SyntheticInputEvent) => {
+    this.updateGasPrice(e.target.value);
   };
 }

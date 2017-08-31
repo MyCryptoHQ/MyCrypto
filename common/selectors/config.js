@@ -2,10 +2,14 @@
 import type { State } from 'reducers';
 import { BaseNode } from 'libs/nodes';
 import { NODES, NETWORKS } from 'config/data';
-import type { NetworkConfig, NetworkContract } from 'config/data';
+import type { NodeConfig, NetworkConfig, NetworkContract } from 'config/data';
 
 export function getNode(state: State): string {
   return state.config.nodeSelection;
+}
+
+export function getNodeConfig(state: State): NodeConfig {
+  return NODES[state.config.nodeSelection];
 }
 
 export function getNodeLib(state: State): BaseNode {
@@ -22,4 +26,8 @@ export function getNetworkContracts(state: State): ?Array<NetworkContract> {
 
 export function getGasPriceGwei(state: State): number {
   return state.config.gasPriceGwei;
+}
+
+export function getLanguageSelection(state: State): string {
+  return state.config.languageSelection;
 }

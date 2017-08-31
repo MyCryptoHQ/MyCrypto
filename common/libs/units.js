@@ -1,6 +1,6 @@
 // @flow
-
 import Big from 'bignumber.js';
+import type { Token } from 'config/data';
 
 const UNITS = {
   wei: '1',
@@ -35,10 +35,18 @@ function getValueOfUnit(unit: UNIT) {
   return new Big(UNITS[unit]);
 }
 
-export function toEther(number: Big, unit: UNIT) {
-  return toWei(number, unit).div(getValueOfUnit('ether'));
-}
-
 export function toWei(number: Big, unit: UNIT): Big {
   return number.times(getValueOfUnit(unit));
+}
+
+export function toUnit(number: Big, fromUnit: UNIT, toUnit: UNIT): Big {
+  return toWei(number, fromUnit).div(getValueOfUnit(toUnit));
+}
+
+export function toTokenUnit(number: Big, token: Token): Big {
+  return number.times(new Big(10).pow(token.decimal));
+}
+
+export function toTokenDisplay(number: Big, token: Token): Big {
+  return number.times(new Big(10).pow(-token.decimal));
 }

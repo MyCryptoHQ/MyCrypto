@@ -9,7 +9,8 @@ import {
   CustomMessage,
   GasField,
   AmountField,
-  AddressField
+  AddressField,
+  ConfirmationModal
 } from './components';
 import { BalanceSidebar } from 'components';
 import pickBy from 'lodash/pickBy';
@@ -20,6 +21,7 @@ import BaseWallet from 'libs/wallet/base';
 import customMessages from './messages';
 import { donationAddressMap } from 'config/data';
 import { isValidETHAddress } from 'libs/validators';
+import { toUnit } from 'libs/units';
 import {
   getNodeLib,
   getNetworkConfig,
@@ -31,29 +33,42 @@ import Big from 'bignumber.js';
 import { valueToHex } from 'libs/values';
 import ERC20 from 'libs/erc20';
 import type { TokenBalance } from 'selectors/wallet';
-import { getTokenBalances } from 'selectors/wallet';
+import {
+  getTokenBalances,
+  getTxFromBroadcastStatusTransactions
+} from 'selectors/wallet';
 import type { RPCNode } from 'libs/nodes';
+import { broadcastTx } from 'actions/wallet';
+import type { BroadcastTxRequestedAction } from 'actions/wallet';
+import type { BroadcastStatusTransaction } from 'libs/transaction';
 import type {
   TransactionWithoutGas,
   BroadcastTransaction
 } from 'libs/transaction';
 import type { UNIT } from 'libs/units';
-import { toWei } from 'libs/units';
+import { toWei, toTokenUnit } from 'libs/units';
 import { formatGasLimit } from 'utils/formatters';
 import { showNotification } from 'actions/notifications';
 import type { ShowNotificationAction } from 'actions/notifications';
+import type { NodeConfig } from 'config/data';
+import { getNodeConfig } from 'selectors/config';
+import { generateTransaction, getBalanceMinusGasCosts } from 'libs/transaction';
 
 type State = {
   hasQueryString: boolean,
   readOnly: boolean,
   to: string,
+  // amount value
   value: string,
   // $FlowFixMe - Comes from getParam not validating unit
   unit: UNIT,
+  token: ?Token,
   gasLimit: string,
   data: string,
   gasChanged: boolean,
-  transaction: ?BroadcastTransaction
+  transaction: ?BroadcastTransaction,
+  showTxConfirm: boolean,
+  generateDisabled: boolean
 };
 
 function getParam(query: { [string]: string }, key: string) {
@@ -77,32 +92,39 @@ type Props = {
   },
   wallet: BaseWallet,
   balance: Big,
+  node: NodeConfig,
   nodeLib: RPCNode,
   network: NetworkConfig,
   tokens: Token[],
   tokenBalances: TokenBalance[],
   gasPrice: number,
+  broadcastTx: (signedTx: string) => BroadcastTxRequestedAction,
   showNotification: (
     level: string,
     msg: string,
     duration?: number
-  ) => ShowNotificationAction
+  ) => ShowNotificationAction,
+  transactions: Array<BroadcastStatusTransaction>
+};
+
+const initialState = {
+  hasQueryString: false,
+  readOnly: false,
+  to: '',
+  value: '',
+  unit: 'ether',
+  token: null,
+  gasLimit: '21000',
+  data: '',
+  gasChanged: false,
+  showTxConfirm: false,
+  transaction: null,
+  generateDisabled: true
 };
 
 export class SendTransaction extends React.Component {
   props: Props;
-  state: State = {
-    hasQueryString: false,
-    readOnly: false,
-    // FIXME use correct defaults
-    to: '',
-    value: '',
-    unit: 'ether',
-    gasLimit: '21000',
-    data: '',
-    gasChanged: false,
-    transaction: null
-  };
+  state: State = initialState;
 
   componentDidMount() {
     const queryPresets = pickBy(this.parseQuery());
@@ -112,27 +134,46 @@ export class SendTransaction extends React.Component {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    // if gas is not changed
-    // and we have valid tx
-    // and relevant fields changed
-    // estimate gas
-    // TODO we might want to listen to gas price changes here
-    // TODO debunce the call
+    // TODO listen to gas price changes here
+    // TODO debounce the call
     if (
+      // if gas has not changed
       !this.state.gasChanged &&
+      // if we have valid tx
       this.isValid() &&
+      // if any relevant fields changed
       (this.state.to !== prevState.to ||
         this.state.value !== prevState.value ||
         this.state.unit !== prevState.unit ||
         this.state.data !== prevState.data)
     ) {
-      this.estimateGas();
+      if (!isNaN(parseInt(this.state.value))) {
+        this.estimateGas();
+      }
+    }
+    if (this.state.generateDisabled !== !this.isValid()) {
+      this.setState({ generateDisabled: !this.isValid() });
+    }
+
+    const componentStateTransaction = this.state.transaction;
+    if (componentStateTransaction) {
+      // lives in redux state
+      const currentTxAsBroadcastTransaction = getTxFromBroadcastStatusTransactions(
+        this.props.transactions,
+        componentStateTransaction.signedTx
+      );
+      // if there is a matching tx in redux state
+      if (currentTxAsBroadcastTransaction) {
+        // if the broad-casted transaction attempt is successful, clear the form
+        if (currentTxAsBroadcastTransaction.successfullyBroadcast) {
+          this.resetTransaction();
+        }
+      }
     }
   }
 
   render() {
     const unlocked = !!this.props.wallet;
-    const hasEnoughBalance = false;
     const {
       to,
       value,
@@ -141,12 +182,10 @@ export class SendTransaction extends React.Component {
       data,
       readOnly,
       hasQueryString,
+      showTxConfirm,
       transaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
-
-    // tokens
-    // ng-show="token.balance!=0 && token.balance!='loading' || token.type!=='default' || tokenVisibility=='shown'"
 
     return (
       <section className="container" style={{ minHeight: '50%' }}>
@@ -163,7 +202,7 @@ export class SendTransaction extends React.Component {
 
             {unlocked &&
               <article className="row">
-                {'' /* <!-- Sidebar --> */}
+                {/* <!-- Sidebar --> */}
                 <section className="col-sm-4">
                   <div style={{ maxWidth: 350 }}>
                     <BalanceSidebar />
@@ -173,19 +212,6 @@ export class SendTransaction extends React.Component {
                 </section>
 
                 <section className="col-sm-8">
-                  {readOnly &&
-                    !hasEnoughBalance &&
-                    <div className="row form-group">
-                      <div className="alert alert-danger col-xs-12 clearfix">
-                        <strong>
-                          Warning! You do not have enough funds to complete this
-                          swap.
-                        </strong>
-                        <br />
-                        Please add more funds or access a different wallet.
-                      </div>
-                    </div>}
-
                   <div className="row form-group">
                     <h4 className="col-xs-12">
                       {translate('SEND_trans')}
@@ -218,61 +244,65 @@ export class SendTransaction extends React.Component {
 
                   <div className="row form-group">
                     <div className="col-xs-12 clearfix">
-                      <a
+                      <button
+                        disabled={this.state.generateDisabled}
                         className="btn btn-info btn-block"
                         onClick={this.generateTx}
                       >
                         {translate('SEND_generate')}
-                      </a>
+                      </button>
                     </div>
                   </div>
 
-                  <div className="row form-group">
-                    <div className="col-sm-6">
-                      <label>
-                        {translate('SEND_raw')}
-                      </label>
-                      <textarea
-                        className="form-control"
-                        value={transaction ? transaction.rawTx : ''}
-                        rows="4"
-                        readOnly
-                      />
-                    </div>
-                    <div className="col-sm-6">
-                      <label>
-                        {translate('SEND_signed')}
-                      </label>
-                      <textarea
-                        className="form-control"
-                        value={transaction ? transaction.signedTx : ''}
-                        rows="4"
-                        readOnly
-                      />
-                    </div>
-                  </div>
+                  {transaction &&
+                    <div>
+                      <div className="row form-group">
+                        <div className="col-sm-6">
+                          <label>
+                            {translate('SEND_raw')}
+                          </label>
+                          <textarea
+                            className="form-control"
+                            value={transaction.rawTx}
+                            rows="4"
+                            readOnly
+                          />
+                        </div>
+                        <div className="col-sm-6">
+                          <label>
+                            {translate('SEND_signed')}
+                          </label>
+                          <textarea
+                            className="form-control"
+                            value={transaction.signedTx}
+                            rows="4"
+                            readOnly
+                          />
+                        </div>
+                      </div>
 
-                  <div className="form-group">
-                    <a
-                      className="btn btn-primary btn-block col-sm-11"
-                      data-toggle="modal"
-                      data-target="#sendTransaction"
-                    >
-                      {translate('SEND_trans')}
-                    </a>
-                  </div>
+                      <div className="form-group">
+                        <button
+                          className="btn btn-primary btn-block col-sm-11"
+                          onClick={this.openTxModal}
+                        >
+                          {translate('SEND_trans')}
+                        </button>
+                      </div>
+                    </div>}
                 </section>
-                {'' /* <!-- / Content --> */}
-                {
-                  '' /* @@if (site === 'mew' ) { @@include( './sendTx-content.tpl', { "site": "mew" } ) }
-            @@if (site === 'cx'  ) { @@include( './sendTx-content.tpl', { "site": "cx"  } ) }
-
-            @@if (site === 'mew' ) { @@include( './sendTx-modal.tpl',   { "site": "mew" } ) }
-            @@if (site === 'cx'  ) { @@include( './sendTx-modal.tpl',   { "site": "cx"  } ) } */
-                }
               </article>}
           </main>
         </div>
+        {transaction &&
+          showTxConfirm &&
+          <ConfirmationModal
+            wallet={this.props.wallet}
+            node={this.props.node}
+            signedTx={transaction.signedTx}
+            onClose={this.hideConfirmTx}
+            onConfirm={this.confirmTx}
+          />}
       </section>
     );
   }
@@ -288,63 +318,66 @@ export class SendTransaction extends React.Component {
     if (gasLimit === null) {
       gasLimit = getParam(query, 'limit');
     }
-    const readOnly = getParam(query, 'readOnly') == null ? false : true;
-
+    const readOnly = getParam(query, 'readOnly') != null;
     return { to, data, value, unit, gasLimit, readOnly };
   }
 
   isValid() {
-    const { to, value } = this.state;
+    const { to, value, gasLimit } = this.state;
     return (
       isValidETHAddress(to) &&
       value &&
       Number(value) > 0 &&
       !isNaN(Number(value)) &&
-      isFinite(Number(value))
+      isFinite(Number(value)) &&
+      !isNaN(parseInt(gasLimit)) &&
+      isFinite(parseInt(gasLimit))
     );
   }
 
-  async getTransactionFromState(): Promise<TransactionWithoutGas> {
+  async getTransactionInfoFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
+    const { token } = this.state;
 
     if (this.state.unit === 'ether') {
       return {
         to: this.state.to,
         from: await wallet.getAddress(),
-        value: valueToHex(this.state.value)
+        value: valueToHex(this.state.value),
+        data: this.state.data
+      };
+    } else {
+      if (!token) {
+        throw new Error('No matching token');
+      }
+
+      return {
+        to: token.address,
+        from: await wallet.getAddress(),
+        value: '0x0',
+        data: ERC20.transfer(
+          this.state.to,
+          toTokenUnit(new Big(this.state.value), token)
+        )
       };
     }
-    const token = this.props.tokens.find(x => x.symbol === this.state.unit);
-    if (!token) {
-      throw new Error('No matching token');
-    }
-
-    return {
-      to: token.address,
-      from: await wallet.getAddress(),
-      value: '0x0',
-      data: ERC20.transfer(
-        this.state.to,
-        new Big(this.state.value).times(new Big(10).pow(token.decimal))
-      )
-    };
   }
 
   async estimateGas() {
-    const trans = await this.getTransactionFromState();
-    if (!trans) {
-      return;
-    }
-
-    // Grab a reference to state. If it has changed by the time the estimateGas
-    // call comes back, we don't want to replace the gasLimit in state.
-    const state = this.state;
-
-    this.props.nodeLib.estimateGas(trans).then(gasLimit => {
+    try {
+      const transaction = await this.getTransactionInfoFromState();
+      // Grab a reference to state. If it has changed by the time the estimateGas
+      // call comes back, we don't want to replace the gasLimit in state.
+      const state = this.state;
+      const gasLimit = await this.props.nodeLib.estimateGas(transaction);
       if (this.state === state) {
         this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+      } else {
+        this.estimateGas();
       }
-    });
+    } catch (error) {
+      this.props.showNotification('danger', error.message, 5000);
+    }
   }
 
   // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
@@ -386,47 +419,78 @@ export class SendTransaction extends React.Component {
   };
 
   onAmountChange = (value: string, unit: string) => {
-    // TODO sub gas for eth
     if (value === 'everything') {
       if (unit === 'ether') {
-        value = this.props.balance.toString();
+        const { balance, gasPrice } = this.props;
+        const { gasLimit } = this.state;
+        const weiBalance = toWei(balance, 'ether');
+        value = getBalanceMinusGasCosts(
+          new Big(gasLimit),
+          gasPrice,
+          weiBalance
+        );
+      } else {
+        const tokenBalance = this.props.tokenBalances.find(
+          tokenBalance => tokenBalance.symbol === unit
+        );
+        if (!tokenBalance) {
+          return;
+        }
+        value = tokenBalance.balance.toString();
       }
-      const token = this.props.tokenBalances.find(
-        token => token.symbol === unit
-      );
-      if (!token) {
-        return;
-      }
-      value = token.balance.toString();
     }
+    let token = this.props.tokens.find(x => x.symbol === unit);
+
     this.setState({
       value,
-      unit
+      unit,
+      token
     });
   };
 
   generateTx = async () => {
     const { nodeLib, wallet } = this.props;
-    const address = await wallet.getAddress();
+    const { token } = this.state;
+    const stateTxInfo = await this.getTransactionInfoFromState();
 
     try {
-      const transaction = await nodeLib.generateTransaction(
+      const transaction = await generateTransaction(
+        nodeLib,
         {
-          to: this.state.to,
-          from: address,
-          value: this.state.value,
+          ...stateTxInfo,
           gasLimit: this.state.gasLimit,
           gasPrice: this.props.gasPrice,
-          data: this.state.data,
           chainId: this.props.network.chainId
         },
-        wallet
+        wallet,
+        token
       );
-
       this.setState({ transaction });
     } catch (err) {
       this.props.showNotification('danger', err.message, 5000);
     }
+  };
+
+  openTxModal = () => {
+    if (this.state.transaction) {
+      this.setState({ showTxConfirm: true });
+    }
+  };
+
+  hideConfirmTx = () => {
+    this.setState({ showTxConfirm: false });
+  };
+
+  resetTransaction = () => {
+    this.setState({
+      to: '',
+      value: '',
+      transaction: null
+    });
+  };
+
+  confirmTx = (signedTx: string) => {
+    this.props.broadcastTx(signedTx);
   };
 }
 
@@ -435,11 +499,15 @@ function mapStateToProps(state: AppState) {
     wallet: state.wallet.inst,
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
+    node: getNodeConfig(state),
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),
-    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei')
+    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei'),
+    transactions: state.wallet.transactions
   };
 }
 
-export default connect(mapStateToProps, { showNotification })(SendTransaction);
+export default connect(mapStateToProps, { showNotification, broadcastTx })(
+  SendTransaction
+);

@@ -1,12 +1,11 @@
 // @flow
 import React, { Component } from 'react';
+import type { Element } from 'react';
 
 const DEFAULT_BUTTON_TYPE = 'primary';
 const DEFAULT_BUTTON_SIZE = 'lg';
 
-const Spinner = () => {
-  return <i className="fa fa-spinner fa-spin fa-fw" />;
-};
+import Spinner from './Spinner';
 
 type ButtonType =
   | 'default'
@@ -19,7 +18,7 @@ type ButtonSize = 'lg' | 'sm' | 'xs';
 
 type Props = {
   onClick: () => any,
-  text: string,
+  text: Element<*> | string,
   loading?: boolean,
   disabled?: boolean,
   loadingText?: string,
@@ -47,8 +46,7 @@ export default class SimpleButton extends Component {
         >
           {loading
             ? <div>
-                <Spinner />
-                {`  ${loadingText || text}`}
+                <Spinner /> {loadingText || text}
               </div>
             : <div>
                 {text}
