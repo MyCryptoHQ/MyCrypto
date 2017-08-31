@@ -163,11 +163,12 @@ export async function generateTransaction(
 }
 
 // TODO determine best place for helper function
-export function getBalanceMinusGasCosts(weiGasLimit, weiGasPrice, weiBalance) {
-  const bigGasLimit = new Big(weiGasLimit);
-  const bigGasPrice = new Big(weiGasPrice);
-  const bigGasCosts = bigGasPrice.times(bigGasLimit);
-  const bigWeiBalance = new Big(weiBalance);
-  const weiBalanceMinusGasCosts = bigWeiBalance.minus(bigGasCosts);
+export function getBalanceMinusGasCosts(
+  weiGasLimit: Big,
+  weiGasPrice: Big,
+  weiBalance: Big
+): Big {
+  const weiGasCosts = weiGasPrice.times(weiGasLimit);
+  const weiBalanceMinusGasCosts = weiBalance.minus(weiGasCosts);
   return toUnit(weiBalanceMinusGasCosts, 'wei', 'ether');
 }

@@ -419,25 +419,28 @@ export class SendTransaction extends React.Component {
   };
 
   onAmountChange = (value: string, unit: string) => {
-    let token = null;
     if (value === 'everything') {
       if (unit === 'ether') {
         const { balance, gasPrice } = this.props;
         const { gasLimit } = this.state;
         const weiBalance = toWei(balance, 'ether');
-        value = getBalanceMinusGasCosts(gasLimit, gasPrice, weiBalance);
+        value = getBalanceMinusGasCosts(
+          new Big(gasLimit),
+          gasPrice,
+          weiBalance
+        );
       } else {
-        token = this.props.tokenBalances.find(
+        const tokenBalance = this.props.tokenBalances.find(
           tokenBalance => tokenBalance.symbol === unit
         );
-        if (!token) {
+        if (!tokenBalance) {
           return;
         }
-        value = token.balance.toString();
+        value = tokenBalance.balance.toString();
       }
-    } else {
-      token = this.props.tokens.find(x => x.symbol === unit);
     }
+    let token = this.props.tokens.find(x => x.symbol === unit);
+
     this.setState({
       value,
       unit,
