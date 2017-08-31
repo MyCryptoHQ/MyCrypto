@@ -11,6 +11,8 @@ export const ANNOUNCEMENT_TYPE = 'warning';
 export const ANNOUNCEMENT_MESSAGE = `
   This is an Alpha build of MyEtherWallet v4. Please only use for testing,
   or use v3 at <a href='https://myetherwallet.com'>https://myetherwallet.com</a>.
+  <br/>
+  If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">mailchimp</a> :)
 `;
 
 export const DONATION_ADDRESSES_MAP = {
