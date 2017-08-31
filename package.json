@@ -22,6 +22,7 @@
     "moment": "^2.18.1",
     "prop-types": "^15.5.8",
     "qrcode": "^0.8.2",
+    "qrcode.react": "^0.7.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-markdown": "^2.5.0",
