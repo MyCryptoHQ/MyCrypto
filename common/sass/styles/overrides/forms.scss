@@ -1,6 +1,18 @@
 // Form overrides
 @import "common/sass/variables";
 
+label {
+  margin-top: $space-sm;
+  margin-bottom: $space-xs;
+  font-size: $font-size-bump-more;
+}
+
+label + .form-control,
+label + input,
+label + textarea {
+  margin-top: 0;
+}
+
 input[type="radio"],
 input[type="checkbox"] {
   margin: 3px 0 0;

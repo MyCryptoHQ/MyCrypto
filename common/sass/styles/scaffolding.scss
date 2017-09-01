@@ -8,7 +8,13 @@
 }
 
 html {
-  font-size: $font-size-pixels;
+  // Why comment this out you might ask? A bug in v3 set font-size to `15 px`
+  // which was invalid syntax, so it went with the browser default of 16px.
+  // But many things use $font-size-base as 15px, so I can't just change that
+  // to 16px. Neat-o.
+  // font-size: $font-size-pixels;
+  font-size: 16px;
+
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   @media screen and (min-width: $screen-xl) {
     font-size: $font-size-pixels-xl;

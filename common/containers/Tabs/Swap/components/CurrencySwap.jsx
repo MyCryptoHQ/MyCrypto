@@ -217,6 +217,7 @@ export default class CurrencySwap extends Component {
             onClick={this.onClickStartSwap}
             text={translate('SWAP_init_CTA')}
             disabled={this.state.disabled}
+            type="info"
           />
         </div>
       </article>
