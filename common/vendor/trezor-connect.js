@@ -715,7 +715,7 @@ function TrezorConnect() {
 
   var LOGIN_ONCLICK =
     'TrezorConnect.requestLogin(' +
-    '\'@hosticon@\',\'@challenge_hidden@\',\'@challenge_visual@\',\'@callback@\'' +
+    "'@hosticon@','@challenge_hidden@','@challenge_visual@','@callback@'" +
     ')';
 
   var LOGIN_HTML =
@@ -775,7 +775,7 @@ function parseHDPath(string) {
     })
     .map(function(p) {
       var hardened = false;
-      if (p[p.length - 1] === '\'') {
+      if (p[p.length - 1] === "'") {
         hardened = true;
         p = p.substr(0, p.length - 1);
       }

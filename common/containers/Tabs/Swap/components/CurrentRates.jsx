@@ -6,6 +6,7 @@ import { toFixedIfLarger } from 'utils/formatters';
 import type { Pairs } from 'actions/swapTypes';
 import { bityReferralURL } from 'config/data';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
+import Spinner from 'components/ui/Spinner';
 
 export default class CurrentRates extends Component {
   props: Pairs;
@@ -26,9 +27,33 @@ export default class CurrentRates extends Component {
     });
   };
 
-  render() {
-    const { ETHBTC, ETHREP, BTCETH, BTCREP } = this.props;
+  buildPairRate = (origin: string, destination: string) => {
+    const pair = origin + destination;
+    const statePair = this.state[pair + 'Amount'];
+    const propsPair = this.props[pair];
+    return (
+      <div className="SwapRates-panel-rate">
+        {propsPair
+          ? <div>
+              <input
+                className="SwapRates-panel-rate-input"
+                onChange={this.onChange}
+                value={statePair}
+                name={pair + 'Amount'}
+              />
+              <span className="SwapRates-panel-rate-amount">
+                {` ${origin} = ${toFixedIfLarger(
+                  statePair * propsPair,
+                  6
+                )} ${destination}`}
+              </span>
+            </div>
+          : <Spinner />}
+      </div>
+    );
+  };
 
+  render() {
     return (
       <article className="SwapRates">
         <h3 className="SwapRates-title">
@@ -37,67 +62,13 @@ export default class CurrentRates extends Component {
 
         <section className="SwapRates-panel row">
           <div className="SwapRates-panel-side col-sm-6">
-            <div className="SwapRates-panel-rate">
-              <input
-                className="SwapRates-panel-rate-input"
-                onChange={this.onChange}
-                value={this.state.ETHBTCAmount}
-                name="ETHBTCAmount"
-              />
-              <span className="SwapRates-panel-rate-amount">
-                {` ETH = ${toFixedIfLarger(
-                  this.state.ETHBTCAmount * ETHBTC,
-                  6
-                )} BTC`}
-              </span>
-            </div>
-
-            <div className="SwapRates-panel-rate">
-              <input
-                className="SwapRates-panel-rate-input"
-                onChange={this.onChange}
-                value={this.state.ETHREPAmount}
-                name="ETHREPAmount"
-              />
-              <span className="SwapRates-panel-rate-amount">
-                {` ETH = ${toFixedIfLarger(
-                  this.state.ETHREPAmount * ETHREP,
-                  6
-                )} REP`}
-              </span>
-            </div>
+            {this.buildPairRate('ETH', 'BTC')}
+            {this.buildPairRate('ETH', 'REP')}
           </div>
 
           <div className="SwapRates-panel-side col-sm-6">
-            <div className="SwapRates-panel-rate">
-              <input
-                className="SwapRates-panel-rate-input"
-                onChange={this.onChange}
-                value={this.state.BTCETHAmount}
-                name="BTCETHAmount"
-              />
-              <span className="SwapRates-panel-rate-amount">
-                {` BTC = ${toFixedIfLarger(
-                  this.state.BTCETHAmount * BTCETH,
-                  6
-                )} ETH`}
-              </span>
-            </div>
-
-            <div className="SwapRates-panel-rate">
-              <input
-                className="SwapRates-panel-rate-input"
-                onChange={this.onChange}
-                value={this.state.BTCREPAmount}
-                name="BTCREPAmount"
-              />
-              <span className="SwapRates-panel-rate-amount">
-                {` BTC = ${toFixedIfLarger(
-                  this.state.BTCREPAmount * BTCREP,
-                  6
-                )} REP`}
-              </span>
-            </div>
+            {this.buildPairRate('BTC', 'ETH')}
+            {this.buildPairRate('BTC', 'REP')}
           </div>
           <a
             className="SwapRates-panel-logo"

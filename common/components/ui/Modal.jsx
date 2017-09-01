@@ -21,6 +21,7 @@ type Props = {
     onClick?: () => void
   }[],
   handleClose: () => void,
+  disableButtons?: boolean,
   children: any
 };
 
@@ -65,8 +66,10 @@ export default class Modal extends Component {
     }
   };
 
-  _renderButtons() {
-    return this.props.buttons.map((btn, idx) => {
+  _renderButtons = () => {
+    const { disableButtons, buttons } = this.props;
+
+    return buttons.map((btn, idx) => {
       let btnClass = 'Modal-footer-btn btn';
 
       if (btn.type) {
@@ -78,13 +81,13 @@ export default class Modal extends Component {
           className={btnClass}
           onClick={btn.onClick}
           key={idx}
-          disabled={btn.disabled}
+          disabled={disableButtons || btn.disabled}
         >
           {btn.text}
         </button>
       );
     });
-  }
+  };
 
   render() {
     const { isOpen, title, children, buttons, handleClose } = this.props;

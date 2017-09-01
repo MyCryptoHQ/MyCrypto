@@ -23,4 +23,8 @@ export default class BaseNode {
   async getTransactionCount(_address: string): Promise<string> {
     throw new Error('Implement me');
   }
+
+  async sendRawTx(_tx: string): Promise<string> {
+    throw new Error('Implement me');
+  }
 }

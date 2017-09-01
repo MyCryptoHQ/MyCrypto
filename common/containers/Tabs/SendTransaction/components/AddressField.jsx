@@ -25,15 +25,16 @@ export class AddressField extends React.Component {
     const isReadonly = !this.props.onChange;
     return (
       <div className="row form-group">
-        <div className="col-xs-10">
+        <div className="col-xs-11">
           <label>
-            {translate('SEND_addr')}
+            {translate('SEND_addr')}:
           </label>
           <input
             className={`form-control ${isValidENSorEtherAddress(value)
               ? 'is-valid'
               : 'is-invalid'}`}
             type="text"
+            value={value}
             placeholder={placeholder}
             onChange={this.onChange}
             disabled={isReadonly}

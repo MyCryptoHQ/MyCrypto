@@ -6,6 +6,7 @@ import type {
 } from 'actions/swap';
 import SwapProgress from './SwapProgress';
 import PaymentInfo from './PaymentInfo';
+import BitcoinQR from './BitcoinQR';
 
 type ReduxStateProps = {
   destinationAddress: string,
@@ -77,6 +78,7 @@ export default class PartThree extends Component {
       <div>
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
+        {orderStatus === 'OPEN' && originKind === 'BTC' && <BitcoinQR />}
       </div>
     );
   }

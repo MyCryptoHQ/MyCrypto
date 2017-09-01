@@ -44,4 +44,10 @@ $summary-height: 54px;
     font-weight: bold;
     font-size: $font-size-medium-bump;
   }
+
+  &-loading {
+    text-align: center;
+    font-size: $font-size-medium-bump
+  }
+
 }

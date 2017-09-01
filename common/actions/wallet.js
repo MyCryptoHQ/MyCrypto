@@ -85,9 +85,27 @@ export function setTokenBalances(payload: {
   };
 }
 
+/*** Broadcast Tx ***/
+export type BroadcastTxRequestedAction = {
+  type: 'WALLET_BROADCAST_TX_REQUESTED',
+  payload: {
+    signedTx: string
+  }
+};
+
+export function broadcastTx(signedTx: string): BroadcastTxRequestedAction {
+  return {
+    type: 'WALLET_BROADCAST_TX_REQUESTED',
+    payload: {
+      signedTx
+    }
+  };
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
   | SetBalanceAction
-  | SetTokenBalancesAction;
+  | SetTokenBalancesAction
+  | BroadcastTxRequestedAction;

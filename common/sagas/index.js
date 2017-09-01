@@ -12,7 +12,6 @@ import wallet from './wallet';
 import handleConfigChanges from './config';
 import deterministicWallets from './deterministicWallets';
 
-
 export default {
   bityTimeRemaining,
   handleConfigChanges,
