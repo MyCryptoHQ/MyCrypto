@@ -12,7 +12,10 @@
 
   &-content {
     text-align: center;
-    margin-top: 40%;
+    margin-top: 20%;
+    @media screen and (min-width: 2150px) {
+      margin-top: 15%;
+    }
     color: #fff;
     text-shadow: 1px 1px 1px rgba(#000, 0.12);
     overflow: auto;
