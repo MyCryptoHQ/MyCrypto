@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { NewTabLink } from 'components/NewTabLink';
+import NewTabLink from 'components/ui/NewTabLink';
 import translate from 'translations';
 
 const ENSDocsLink = () =>

@@ -35,7 +35,7 @@ type NewTabLinkProps = {
   rest?: AAttributes
 };
 
-export const NewTabLink = ({
+const NewTabLink = ({
   /* eslint-disable */
   content, // ESLINT: prop-types validation error, to be fixed in #122
   children /* eslint-enable */,
@@ -44,3 +44,5 @@ export const NewTabLink = ({
   <a target="_blank" rel="noopener" {...rest}>
     {content || children} {/* Keep content for short-hand text insertion */}
   </a>;
+
+export default NewTabLink;

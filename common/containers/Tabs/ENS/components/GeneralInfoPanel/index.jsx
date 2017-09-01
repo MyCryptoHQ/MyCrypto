@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import GeneralInfoNode from './GeneralInfoNode';
-import { NewTabLink } from 'components/NewTabLink';
+import NewTabLink from 'components/ui/NewTabLink';
 import type { InfoNode, AssignKeyToArrayLiteral } from './types';
 const assignKeyToArrayLiteral = (arr, key = null): AssignKeyToArrayLiteral =>
   arr.map(
