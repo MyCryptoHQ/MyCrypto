@@ -25,11 +25,8 @@ export default class UnfinishedBanner extends React.Component {
       <div className={`UnfinishedBanner ${isFading}`} onClick={this._continue}>
         <div className="UnfinishedBanner-content">
           <h2>Under Contruction</h2>
-          <p>
-            The ENS section is still under-contruction - Expect unfinished
-            components
-          </p>
-
+          <p>The ENS section is still under contruction</p>
+          <p>Expect unfinished components</p>
           <h3>Click to continue</h3>
         </div>
       </div>
