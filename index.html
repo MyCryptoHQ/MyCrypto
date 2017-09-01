@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>MyEtherWallet</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#0e97c0">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#163151">
+<link href="/client.6617445b.css" rel="stylesheet"></head>
+<!-- Start Single Page Apps for GitHub Pages -->
+<script type="text/javascript">
+  // Single Page Apps for GitHub Pages
+  // https://github.com/rafrex/spa-github-pages
+  // Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
+  // ----------------------------------------------------------------------
+  // This script checks to see if a redirect is present in the query string
+  // and converts it back into the correct url and adds it to the
+  // browser's history using window.history.replaceState(...),
+  // which won't cause the browser to attempt to load the new url.
+  // When the single page app is loaded further down in this file,
+  // the correct url will be waiting in the browser's history for
+  // the single page app to route accordingly.
+  (function(l) {
+    if (l.search) {
+      var q = {};
+      l.search.slice(1).split('&').forEach(function(v) {
+        var a = v.split('=');
+        q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
+      });
+      if (q.p !== undefined) {
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + (q.p || '') +
+          (q.q ? ('?' + q.q) : '') +
+          l.hash
+        );
+      }
+    }
+  }(window.location))
+</script>
+<!-- End Single Page Apps for GitHub Pages -->
+
+
+<body>
+<div id="app"></div>
+<script type="text/javascript" src="/vendor.ac43fdf5.js"></script><script type="text/javascript" src="/client.6617445b.js"></script></body>
+
+</html>

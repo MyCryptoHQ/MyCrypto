@@ -1,2 +1,0 @@
-# MyEtherWallet
-MyEtherWallet (v4+)
