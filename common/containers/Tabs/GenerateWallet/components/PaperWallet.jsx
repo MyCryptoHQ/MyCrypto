@@ -1,4 +1,5 @@
 // @flow
+import './PaperWallet.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
@@ -23,32 +24,47 @@ export default class PaperWallet extends Component {
     const { wallet } = this.props;
 
     const content = (
-      <div>
+      <div className="GenPaper">
         {/* Private Key */}
-        <h1>
+        <h1 className="GenPaper-title">
           {translate('GEN_Label_5')}
         </h1>
         <input
+          className="GenPaper-private form-control"
           value={wallet.getPrivateKey()}
           aria-label={translate('x_PrivKey')}
           aria-describedby="x_PrivKeyDesc"
-          className="form-control"
           type="text"
           readOnly="readonly"
         />
-        <br />
 
         {/* Download Paper Wallet */}
-        <h1>
+        <h1 className="GenPaper-title">
           {translate('x_Print')}
         </h1>
-        <PrintableWallet wallet={wallet} />
-        <br />
-        <br />
+        <div className="GenPaper-paper">
+          <PrintableWallet wallet={wallet} />
+        </div>
+
+        {/* Warning */}
+        <div className="GenPaper-warning">
+          <p>
+            <strong>Do not lose it!</strong> It cannot be recovered if you lose
+            it.
+          </p>
+          <p>
+            <strong>Do not share it!</strong> Your funds will be stolen if you
+            use this file on a malicious/phishing site.
+          </p>
+          <p>
+            <strong>Make a backup!</strong> Secure it like the millions of
+            dollars it may one day be worth.
+          </p>
+        </div>
 
         {/* Continue button */}
-        <Link className="btn btn-default" to={'view-wallet'}>
-          View Wallet Info ->
+        <Link className="GenPaper-continue btn btn-default" to="/view-wallet">
+          {translate('NAV_ViewWallet')} →
         </Link>
       </div>
     );
