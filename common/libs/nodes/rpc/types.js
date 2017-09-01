@@ -1,8 +1,9 @@
-// @flow
+// don't use flow temporarily
 import type { TransactionWithoutGas } from 'libs/transaction';
 
 type DATA = string;
 type QUANTITY = string;
+type TX = string;
 
 export type DEFAULT_BLOCK = string | 'earliest' | 'latest' | 'pending';
 
@@ -19,11 +20,19 @@ type JsonRpcError = {|
   }
 |};
 
+export type JSONRPC2 = '2.0';
+
 export type JsonRpcResponse = JsonRpcSuccess | JsonRpcError;
 
 type RPCRequestBase = {
   id: string,
-  jsonrpc: '2.0'
+  jsonrpc: JSONRPC2,
+  method: string
+};
+
+export type SendRawTxRequest = RPCRequestBase & {
+  method: 'eth_sendRawTransaction',
+  params: [TX]
 };
 
 export type GetBalanceRequest = RPCRequestBase & {

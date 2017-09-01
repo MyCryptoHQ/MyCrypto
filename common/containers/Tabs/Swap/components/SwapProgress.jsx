@@ -40,12 +40,13 @@ export default class SwapProgress extends Component {
       if (!hasShownViewTx) {
         let linkElement;
         let link;
+        const notificationMessage = translate('SUCCESS_3', true) + outputTx;
         // everything but BTC is a token
         if (destinationKind !== 'BTC') {
           link = bityConfig.ethExplorer.replace('[[txHash]]', outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
-              {' '}View your transaction{' '}
+              ${notificationMessage}
             </a>
           );
           // BTC uses a different explorer
@@ -53,7 +54,7 @@ export default class SwapProgress extends Component {
           link = bityConfig.btcExplorer.replace('[[txHash]]', outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
-              {' '}View your transaction{' '}
+              ${notificationMessage}
             </a>
           );
         }

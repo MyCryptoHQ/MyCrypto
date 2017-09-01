@@ -6,7 +6,8 @@ import RPCClient, {
   getBalance,
   estimateGas,
   getTransactionCount,
-  getTokenBalance
+  getTokenBalance,
+  sendRawTx
 } from './client';
 import type { Token } from 'config/data';
 
@@ -20,27 +21,30 @@ export default class RpcNode extends BaseNode {
   async getBalance(address: string): Promise<Big> {
     return this.client.call(getBalance(address)).then(response => {
       if (response.error) {
-        throw new Error('getBalance error');
+        throw new Error(response.error.message);
       }
-      return new Big(Number(response.result));
+      return new Big(String(response.result));
     });
   }
 
   async estimateGas(transaction: TransactionWithoutGas): Promise<Big> {
     return this.client.call(estimateGas(transaction)).then(response => {
       if (response.error) {
-        throw new Error('estimateGas error');
+        throw new Error(response.error.message);
       }
-      return new Big(Number(response.result));
+      return new Big(String(response.result));
     });
   }
 
   async getTokenBalance(address: string, token: Token): Promise<Big> {
     return this.client.call(getTokenBalance(address, token)).then(response => {
       if (response.error) {
+        // TODO - Error handling
         return Big(0);
       }
-      return new Big(response.result).div(new Big(10).pow(token.decimal));
+      return new Big(String(response.result)).div(
+        new Big(10).pow(token.decimal)
+      );
     });
   }
 
@@ -53,15 +57,30 @@ export default class RpcNode extends BaseNode {
           if (item.error) {
             return new Big(0);
           }
-          return new Big(item.result).div(new Big(10).pow(tokens[idx].decimal));
+          return new Big(String(item.result)).div(
+            new Big(10).pow(tokens[idx].decimal)
+          );
         });
       });
+    // TODO - Error handling
   }
 
   async getTransactionCount(address: string): Promise<string> {
     return this.client.call(getTransactionCount(address)).then(response => {
       if (response.error) {
-        throw new Error('getTransactionCount error');
+        throw new Error(response.error.message);
+      }
+      return response.result;
+    });
+  }
+
+  async sendRawTx(signedTx: string): Promise<string> {
+    return this.client.call(sendRawTx(signedTx)).then(response => {
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+      if (response.errorMessage) {
+        throw new Error(response.errorMessage);
       }
       return response.result;
     });

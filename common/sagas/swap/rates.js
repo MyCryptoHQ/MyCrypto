@@ -1,37 +1,34 @@
 // @flow
 import { delay } from 'redux-saga';
-import { getAllRates } from 'api/bity';
-import { call, put, fork, take, cancel, cancelled } from 'redux-saga/effects';
-import type { Effect } from 'redux-saga/effects';
-import { loadBityRatesSucceededSwap } from 'actions/swap';
+import { call, cancel, fork, put, take, takeLatest } from 'redux-saga/effects';
 
-export function* loadBityRates(_action?: any): Generator<Effect, void, any> {
-  try {
-    while (true) {
-      // TODO - BITY_RATE_REQUESTED
-      // network request
+import { getAllRates } from 'api/bity';
+
+import { loadBityRatesSucceededSwap } from 'actions/swap';
+import { showNotification } from 'actions/notifications';
+
+import type { Yield, Return, Next } from 'sagas/types';
+
+export function* loadBityRates(_action?: any): Generator<Yield, Return, Next> {
+  while (true) {
+    try {
       const data = yield call(getAllRates);
-      // action
       yield put(loadBityRatesSucceededSwap(data));
-      // wait 5 seconds before refreshing rates
-      yield call(delay, 5000);
+    } catch (error) {
+      yield put(yield showNotification('danger', error));
     }
-  } finally {
-    if (yield cancelled()) {
-      // TODO - implement request cancel if needed
-      // yield put(actions.requestFailure('Request cancelled!'))
-    }
+    yield call(delay, 5000);
   }
 }
 
-export function* getBityRatesSaga(): Generator<Effect, void, any> {
-  while (yield take('SWAP_LOAD_BITY_RATES_REQUESTED')) {
-    // starts the task in the background
-    const loadBityRatesTask = yield fork(loadBityRates);
-    // wait for the user to get to point where refresh is no longer needed
-    yield take('SWAP_STOP_LOAD_BITY_RATES');
-    // cancel the background task
-    // this will cause the forked loadBityRates task to jump into its finally block
-    yield cancel(loadBityRatesTask);
-  }
+// Fork our recurring API call, watch for the need to cancel.
+function* handleBityRates(): Generator<Yield, Return, Next> {
+  const loadBityRatesTask = yield fork(loadBityRates);
+  yield take('SWAP_STOP_LOAD_BITY_RATES');
+  yield cancel(loadBityRatesTask);
+}
+
+// Watch for latest SWAP_LOAD_BITY_RATES_REQUESTED action.
+export function* getBityRatesSaga(): Generator<Yield, Return, Next> {
+  yield takeLatest('SWAP_LOAD_BITY_RATES_REQUESTED', handleBityRates);
 }
