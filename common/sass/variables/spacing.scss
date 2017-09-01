@@ -1,0 +1,29 @@
+$space-xs: 0.25rem;
+$space-sm: 0.50rem;
+$space-md: 0.75rem;
+$space: 1.00rem;
+$space-lg: 1.50rem;
+$space-xl: 2.00rem;
+
+$padding-base-vertical: $space * 0.6;
+$padding-base-horizontal: $space;
+
+$padding-large-vertical: $space-md;
+$padding-large-horizontal: $space-xl;
+
+$padding-small-vertical: 0.1rem;
+$padding-small-horizontal: $space-sm;
+
+$padding-xs-vertical: $space-xs;
+$padding-xs-horizontal: 0.2rem;
+
+$line-height-large: 1.2;
+$line-height-small: 1.5;
+
+$border-radius: 2px;
+
+$component-active-color: #fff;
+$component-active-bg: $brand-primary;
+
+$caret-width-base: $space-xs;
+$caret-width-large: $space-xs;

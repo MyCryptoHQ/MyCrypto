@@ -1,0 +1,19 @@
+$ether-navy: #163151;
+$ether-blue: #0e97c0;
+
+$gray-base: #000;
+$gray-darker: lighten($gray-base, 13.5%);
+$gray-dark: lighten($gray-base, 20%);
+$gray: #737373;
+$gray-light: #9a9a9a;
+$gray-lighter: #ececec;
+$gray-lightest: #fafafa;
+
+$brand-primary: $ether-blue;
+$brand-success: #5dba5a;
+$brand-info: $ether-navy;
+$brand-warning: #ff9800;
+$brand-danger: #ea4b40;
+
+$body-bg: #fff;
+$text-color: $gray-dark;

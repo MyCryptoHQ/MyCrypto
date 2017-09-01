@@ -1,0 +1,58 @@
+// @flow
+import React, { Component } from 'react';
+import type { Element } from 'react';
+
+const DEFAULT_BUTTON_TYPE = 'primary';
+const DEFAULT_BUTTON_SIZE = 'lg';
+
+import Spinner from './Spinner';
+
+type ButtonType =
+  | 'default'
+  | 'primary'
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'danger';
+type ButtonSize = 'lg' | 'sm' | 'xs';
+
+type Props = {
+  onClick: () => any,
+  text: Element<*> | string,
+  loading?: boolean,
+  disabled?: boolean,
+  loadingText?: string,
+  size?: ButtonSize,
+  type?: ButtonType
+};
+
+export default class SimpleButton extends Component {
+  props: Props;
+
+  computedClass = () => {
+    return `btn btn-${this.props.size || DEFAULT_BUTTON_TYPE} btn-${this.props
+      .type || DEFAULT_BUTTON_SIZE}`;
+  };
+
+  render() {
+    let { loading, disabled, loadingText, text, onClick } = this.props;
+
+    return (
+      <div>
+        <button
+          onClick={onClick}
+          disabled={loading || disabled}
+          className={this.computedClass()}
+        >
+          {loading
+            ? <div>
+                <Spinner /> {loadingText || text}
+              </div>
+            : <div>
+                {text}
+              </div>}
+        </button>
+      </div>
+    );
+  }
+}

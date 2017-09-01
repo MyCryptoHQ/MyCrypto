@@ -1,0 +1,10 @@
+# http://editorconfig.org
+root = true
+
+[{*.js,*.jsx}]
+end_of_line = lf
+charset = utf-8
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = true
+insert_final_newline = true

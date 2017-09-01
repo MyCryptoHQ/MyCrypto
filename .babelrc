@@ -1,0 +1,25 @@
+{
+    "plugins": [
+        [
+            "transform-runtime", {
+                "helpers": false,
+                "polyfill": false,
+                "regenerator": true,
+                "moduleName": "babel-runtime"
+            }
+        ],
+        ["module-resolver", {
+            "root": ["./common"],
+            "alias": {
+                "underscore": "lodash"
+            },
+            "cwd": "babelrc"
+        }],
+    "react-hot-loader/babel"],
+    "presets": ["es2015", "react", "stage-0", "flow"],
+    "env": {
+      "production": {
+          "presets": ["react-optimize"]
+      }
+    }
+}
