@@ -22,21 +22,9 @@ type NodeState = {
   isOpen: boolean
 };
 
-type ABlankNooperProps = {
-  content: React.Element<any>,
-  href: string
-};
-
 type ListProps = {
   children: Array<React.Element<any>>,
   isOpen: boolean
 };
 
-export type {
-  InfoNode,
-  HeaderProps,
-  NodeProps,
-  NodeState,
-  ABlankNooperProps,
-  ListProps
-};
+export type { InfoNode, HeaderProps, NodeProps, NodeState, ListProps };
