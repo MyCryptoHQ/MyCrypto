@@ -1,4 +1,5 @@
 // @flow
+import './DownloadWallet.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import type PrivKeyWallet from 'libs/wallet/privkey';
@@ -63,27 +64,25 @@ export default class DownloadWallet extends Component {
     const filename = this.getFilename();
 
     const content = (
-      <div>
-        <h1>
+      <div className="DlWallet">
+        <h1 className="DlWallet-title">
           {translate('GEN_Label_2')}
         </h1>
 
-        <div>
-          <a
-            role="button"
-            className="btn btn-primary btn-block"
-            aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-            aria-describedby="x_KeystoreDesc"
-            disabled={!this.state.keystore}
-            download={filename}
-            href={this.getBlob()}
-            onClick={this._markDownloaded}
-          >
-            {translate('x_Download')} {translate('x_Keystore2')}
-          </a>
-        </div>
+        <a
+          role="button"
+          className="DlWallet-download btn btn-primary btn-lg"
+          aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
+          aria-describedby="x_KeystoreDesc"
+          disabled={!this.state.keystore}
+          download={filename}
+          href={this.getBlob()}
+          onClick={this._markDownloaded}
+        >
+          {translate('x_Download')} {translate('x_Keystore2')}
+        </a>
 
-        <div className="warn">
+        <div className="DlWallet-warning">
           <p>
             <strong>Do not lose it!</strong> It cannot be recovered if you lose
             it.
@@ -98,13 +97,14 @@ export default class DownloadWallet extends Component {
           </p>
         </div>
 
-        <a
+        <button
+          className="DlWallet-continue btn btn-danger"
           role="button"
-          className={`btn btn-danger ${hasDownloadedWallet ? '' : 'disabled'}`}
           onClick={this._handleContinue}
+          disabled={!hasDownloadedWallet}
         >
           I understand. Continue.
-        </a>
+        </button>
       </div>
     );
 

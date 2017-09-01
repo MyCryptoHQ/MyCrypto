@@ -1,0 +1,15 @@
+@import "common/sass/variables";
+
+.DlWallet {
+  &-title {
+    margin: $space auto $space * 1.5;
+  }
+
+  &-download {
+    margin: 0 auto $space * 4;
+  }
+
+  &-warning {
+    margin: 0 auto $space * 3;
+  }
+}
