@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { NewTabLink } from 'components/NewTabLink';
+import translate from 'translations';
 
 const ENSDocsLink = () =>
   <NewTabLink
@@ -10,8 +11,8 @@ const ENSDocsLink = () =>
 
 const ENSTitle = () =>
   <article className="cont-md">
-    <h1 className="text-center" translate="NAV_ENS">
-      ENS
+    <h1 className="text-center">
+      {translate('NAV_ENS')}
     </h1>
     <p>
       The <ENSDocsLink /> is a distributed, open, and extensible naming system
