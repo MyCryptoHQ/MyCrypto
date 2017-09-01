@@ -5,6 +5,7 @@
 
   &-title {
     font-weight: 100;
+    margin-bottom: $space * 3;
   }
 
   &-input,
@@ -27,7 +28,7 @@
 
   &-submit {
     .btn {
-      margin-top: 3rem;
+      margin-top: $space * 3;
     }
   }
 }

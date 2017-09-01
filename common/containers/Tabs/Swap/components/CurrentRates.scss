@@ -3,12 +3,13 @@
 
 .SwapRates {
   &-title {
+    margin-top: 0;
     text-align: center;
   }
 
   &-panel {
     position: relative;
-    margin: 0;
+    margin: 0 auto $space * 2;
     background: linear-gradient(150deg, $ether-blue, $ether-navy);
     @include mono;
 
