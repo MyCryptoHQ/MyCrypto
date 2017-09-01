@@ -4,7 +4,10 @@ import GeneralInfoNode from './generalInfoNode';
 import { NewTabLink } from 'components/NewTabLink';
 import type { InfoNode, AssignKeyToArrayLiteral } from './types';
 const assignKeyToArrayLiteral = (arr, key = null): AssignKeyToArrayLiteral =>
-  arr.map((e, i) => (key ? { ...e, key } : { ...e, key: i }));
+  arr.map(
+    (e, i) =>
+      key ? React.cloneElement(e, { key }) : React.cloneElement(e, { key: i })
+  );
 
 const generalInfoNodes: InfoNode[] = [
   {
