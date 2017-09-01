@@ -1,12 +1,14 @@
 // @flow
 import * as React from 'react';
-import GeneralInfoNode from './generalInfoNode';
+import GeneralInfoNode from './GeneralInfoNode';
 import { NewTabLink } from 'components/NewTabLink';
 import type { InfoNode, AssignKeyToArrayLiteral } from './types';
 const assignKeyToArrayLiteral = (arr, key = null): AssignKeyToArrayLiteral =>
   arr.map(
     (e, i) =>
-      key ? React.cloneElement(e, { key }) : React.cloneElement(e, { key: i })
+      key
+        ? React.cloneElement(e, { key: `${key}-${i}` })
+        : React.cloneElement(e, { key: i })
   );
 
 const generalInfoNodes: InfoNode[] = [
