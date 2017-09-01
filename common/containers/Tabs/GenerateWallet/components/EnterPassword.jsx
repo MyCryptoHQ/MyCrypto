@@ -1,4 +1,5 @@
 // @flow
+import './EnterPassword.scss';
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router';
@@ -44,30 +45,37 @@ class EnterPassword extends Component {
     const { isPasswordVisible } = this.state;
 
     const content = (
-      <div>
-        <h1 aria-live="polite">
+      <div className="EnterPw">
+        <h1 className="EnterPw-title" aria-live="polite">
           {translate('NAV_GenerateWallet')}
         </h1>
 
-        <h4>
-          {translate('HELP_1_Desc_3')}
-        </h4>
-        <Field
-          validate={[required, minLength9]}
-          component={PasswordInput}
-          isPasswordVisible={isPasswordVisible}
-          togglePassword={this._togglePassword}
-          name="password"
-          type="text"
-        />
-        <br />
+        <label className="EnterPw-password">
+          <h4 className="EnterPw-password-label">
+            {translate('GEN_Label_1')}
+          </h4>
+          <Field
+            className="EnterPw-password-field"
+            validate={[required, minLength9]}
+            component={PasswordInput}
+            isPasswordVisible={isPasswordVisible}
+            togglePassword={this._togglePassword}
+            name="password"
+            type="text"
+          />
+        </label>
+
         <button
           onClick={this._onClickGenerateFile}
           disabled={walletPasswordForm ? walletPasswordForm.syncErrors : true}
-          className="btn btn-primary btn-block"
+          className="EnterPw-submit btn btn-primary btn-block"
         >
           {translate('NAV_GenerateWallet')}
         </button>
+
+        <p className="EnterPw-warning">
+          {translate('x_PasswordDesc')}
+        </p>
       </div>
     );
 
