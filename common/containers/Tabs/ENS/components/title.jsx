@@ -1,14 +1,12 @@
 // @flow
 import * as React from 'react';
+import { NewTabLink } from 'components/NewTabLink';
 
 const ENSDocsLink = () =>
-  <a
+  <NewTabLink
     href="http://ens.readthedocs.io/en/latest/introduction.html"
-    target="_blank"
-    rel="noopener"
-  >
-    Ethereum Name Service
-  </a>;
+    content="Ethereum Name Service"
+  />;
 
 const ENSTitle = () =>
   <article className="cont-md">

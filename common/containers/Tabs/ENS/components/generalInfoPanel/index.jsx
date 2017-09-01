@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import GeneralInfoNode from './generalInfoNode';
-import { ABlankNooper } from './helperStatelessFunctionals';
+import { NewTabLink } from 'components/NewTabLink';
 import type { InfoNode } from './types';
 const generalInfoNodes: Array<InfoNode> = [
   {
@@ -75,20 +75,20 @@ const generalInfoNodes: Array<InfoNode> = [
     innerList: [
       <li>
         The auction for this registrar is a blind auction, and is described in
-        <ABlankNooper
+        <NewTabLink
           content=" EIP162"
           href="https://github.com/ethereum/EIPs/issues/162"
         />
         . Basically, no one can see *anything* during the auction.
       </li>,
       <li>
-        <ABlankNooper
+        <NewTabLink
           content="ENS: Read the Docs"
           href="http://docs.ens.domains/en/latest/userguide.html#registering-a-name-with-the-auction-registrar"
         />
       </li>,
       <li>
-        <ABlankNooper
+        <NewTabLink
           content="Announcing the Ethereum Name Service Relaunch Date!"
           href="https://medium.com/the-ethereum-name-service/announcing-the-ethereum-name-service-relaunch-date-4390af6dd9a2"
         />
@@ -115,12 +115,12 @@ const GeneralInfoPanel = () =>
       <h4> What is the process like? </h4>
       <GeneralInfoList />
       <h6>
-        <ABlankNooper
+        <NewTabLink
           content="Help Center: ENS"
           href="https://myetherwallet.groovehq.com/knowledge_base/categories/ens"
         />
         &nbsp;&middot;&nbsp;
-        <ABlankNooper
+        <NewTabLink
           content="Debugging a [BAD INSTRUCTION] Reveal"
           href="https://myetherwallet.groovehq.com/knowledge_base/topics/debugging-a-bad-instruction-reveal"
         />
