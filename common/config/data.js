@@ -2,7 +2,7 @@
 import { RPCNode } from 'libs/nodes';
 
 // Displays in the header
-export const VERSION = '4.0.0';
+export const VERSION = '4.0.0 (Alpha 0.0.1)';
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
