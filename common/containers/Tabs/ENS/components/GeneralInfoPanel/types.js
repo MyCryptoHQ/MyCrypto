@@ -1,9 +1,5 @@
 // @flow
 import * as React from 'react';
-type AssignKeyToArrayLiteral = (
-  arr: React.Element<any>[],
-  key: ?string
-) => React.Element<any>[];
 
 type InfoNode = {
   name: string,
@@ -31,11 +27,4 @@ type ListProps = {
   isOpen: boolean
 };
 
-export type {
-  AssignKeyToArrayLiteral,
-  InfoNode,
-  HeaderProps,
-  NodeProps,
-  NodeState,
-  ListProps
-};
+export type { InfoNode, HeaderProps, NodeProps, NodeState, ListProps };
