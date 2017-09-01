@@ -30,9 +30,9 @@ type AAttributes = {
 };
 
 type NewTabLinkProps = {
-  content: React.Element<any>,
-  children: React.Element<any>,
-  rest: AAttributes
+  content?: React.Element<any> | string,
+  children?: React.Element<any> | string,
+  rest?: AAttributes
 };
 
 export const NewTabLink = ({

@@ -1,10 +1,14 @@
 // @flow
 import * as React from 'react';
+type AssignKeyToArrayLiteral = (
+  arr: React.Element<any>[],
+  key: ?string
+) => React.Element<any>[];
 
 type InfoNode = {
   name: string,
   headerContent: string,
-  innerList: Array<React.Element<any>>
+  innerList: React.Element<any>[]
 };
 
 type HeaderProps = {
@@ -13,7 +17,7 @@ type HeaderProps = {
 };
 
 type NodeProps = {
-  innerList: Array<React.Element<any>>,
+  innerList: React.Element<any>[],
   headerContent: string,
   name: string
 };
@@ -23,8 +27,15 @@ type NodeState = {
 };
 
 type ListProps = {
-  children: Array<React.Element<any>>,
+  children: React.Element<any>[],
   isOpen: boolean
 };
 
-export type { InfoNode, HeaderProps, NodeProps, NodeState, ListProps };
+export type {
+  AssignKeyToArrayLiteral,
+  InfoNode,
+  HeaderProps,
+  NodeProps,
+  NodeState,
+  ListProps
+};

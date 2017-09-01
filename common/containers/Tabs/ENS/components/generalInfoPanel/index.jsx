@@ -2,12 +2,15 @@
 import * as React from 'react';
 import GeneralInfoNode from './generalInfoNode';
 import { NewTabLink } from 'components/NewTabLink';
-import type { InfoNode } from './types';
-const generalInfoNodes: Array<InfoNode> = [
+import type { InfoNode, AssignKeyToArrayLiteral } from './types';
+const assignKeyToArrayLiteral = (arr, key = null): AssignKeyToArrayLiteral =>
+  arr.map((e, i) => (key ? { ...e, key } : { ...e, key: i }));
+
+const generalInfoNodes: InfoNode[] = [
   {
     name: 'ensPrep',
     headerContent: '1. Preparation',
-    innerList: [
+    innerList: assignKeyToArrayLiteral([
       <li>
         Decide which account you wish to own the name & ensure you have multiple
         backups of that account.
@@ -17,12 +20,12 @@ const generalInfoNodes: Array<InfoNode> = [
         (your <u>Bid Amount</u>). Ensure that account has enough to cover your
         bid + 0.01 ETH for gas.
       </li>
-    ]
+    ])
   },
   {
     name: 'ensAuct',
     headerContent: '2. Start an Auction / Place a Bid',
-    innerList: [
+    innerList: assignKeyToArrayLiteral([
       <li>Bidding period lasts 3 days (72 hours).</li>,
       <li>
         You will enter the <u>name</u>, <u>Actual Bid Amount</u>,{' '}
@@ -32,12 +35,12 @@ const generalInfoNodes: Array<InfoNode> = [
         This places your bid, but this information is kept secret until you
         reveal it.
       </li>
-    ]
+    ])
   },
   {
     name: 'ensReveal',
     headerContent: '3. Reveal your Bid',
-    innerList: [
+    innerList: assignKeyToArrayLiteral([
       <li>
         <strong>
           If you do not reveal your bid, you will not be refunded.
@@ -52,12 +55,12 @@ const generalInfoNodes: Array<InfoNode> = [
         In the event that two parties bid exactly the same amount, the first bid
         revealed will win.
       </li>
-    ]
+    ])
   },
   {
     name: 'ensFinalize',
     headerContent: '4. Finalize the Auction',
-    innerList: [
+    innerList: assignKeyToArrayLiteral([
       <li>
         Once the auction has ended (after 5 days / 120 hours), the winner needs
         to finalize the auction in order to claim their new name.
@@ -67,12 +70,12 @@ const generalInfoNodes: Array<InfoNode> = [
         next-highest bid. If you are the only bidder, you will refunded all but
         0.01 ETH.
       </li>
-    ]
+    ])
   },
   {
     name: 'ensMore',
     headerContent: 'More Information',
-    innerList: [
+    innerList: assignKeyToArrayLiteral([
       <li>
         The auction for this registrar is a blind auction, and is described in
         <NewTabLink
@@ -93,20 +96,15 @@ const generalInfoNodes: Array<InfoNode> = [
           href="https://medium.com/the-ethereum-name-service/announcing-the-ethereum-name-service-relaunch-date-4390af6dd9a2"
         />
       </li>
-    ]
+    ])
   }
 ];
 
 const GeneralInfoList = () =>
   <section>
-    {generalInfoNodes.map(data => {
-      const innerListWithKeys = data.innerList.map((ele, i) => ({
-        ...ele,
-        key: i
-      }));
-      const props = { ...data, innerList: innerListWithKeys };
-      return <GeneralInfoNode key={data.name} {...props} />;
-    })}
+    {generalInfoNodes.map((data: InfoNode) =>
+      <GeneralInfoNode key={data.name} {...data} />
+    )}
   </section>;
 
 const GeneralInfoPanel = () =>

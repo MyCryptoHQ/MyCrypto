@@ -14,10 +14,16 @@ const InfoList = ({ children, isOpen }: ListProps) =>
       </ul>
     : null;
 
-export default class GeneralInfoNode extends React.Component<
+/*
+TODO: After #122: export default class GeneralInfoNode extends React.Component <
   NodeProps,
   NodeState
-> {
+  >
+*/
+export default class GeneralInfoNode extends React.Component {
+  props: NodeProps;
+  state: NodeState;
+
   state = {
     isOpen: false
   };
@@ -27,8 +33,8 @@ export default class GeneralInfoNode extends React.Component<
 
   render() {
     const {
-      toggleVisibility, //Eslint is erroring out of prop types even when i've covered them with flow?
-      props: { innerList, name, headerContent }, //eslint-disable-line
+      toggleVisibility,
+      props: { innerList, name, headerContent },
       state: { isOpen }
     } = this;
 
