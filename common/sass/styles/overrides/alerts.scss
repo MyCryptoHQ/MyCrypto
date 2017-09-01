@@ -1,6 +1,6 @@
 // Extends Bootstrap's `.alert`
-@import "../variables";
-@import "../mixins";
+@import "common/sass/variables";
+@import "common/sass/mixins";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/alerts";
 
 // Alert icons
