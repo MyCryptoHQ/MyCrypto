@@ -2,6 +2,7 @@
 import * as React from 'react';
 import Title from './Title';
 import GeneralInfoPanel from './GeneralInfoPanel';
+import UnfinishedBanner from './UnfinishedBanner';
 type ContainerTabPaneActiveProps = {
   children: React.Element<any>
 };
@@ -19,6 +20,7 @@ const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) =>
 
 const ENS = () =>
   <ContainerTabPaneActive>
+    <UnfinishedBanner />
     <Title />
     <GeneralInfoPanel />
   </ContainerTabPaneActive>;
