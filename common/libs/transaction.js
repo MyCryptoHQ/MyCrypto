@@ -11,6 +11,8 @@ import type { BaseWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
 import type EthTx from 'ethereumjs-tx';
 import { toUnit } from 'libs/units';
+import { valueToHex } from 'libs/values';
+import type { UNIT } from 'libs/units';
 
 export type BroadcastStatusTransaction = {
   isBroadcasting: boolean,
@@ -71,7 +73,7 @@ export function getTransactionFields(tx: EthTx) {
   };
 }
 
-export async function generateTransaction(
+export async function generateBroadcastTx(
   node: BaseNode,
   tx: Transaction,
   wallet: BaseWallet,
@@ -171,4 +173,38 @@ export function getBalanceMinusGasCosts(
   const weiGasCosts = weiGasPrice.times(weiGasLimit);
   const weiBalanceMinusGasCosts = weiBalance.minus(weiGasCosts);
   return toUnit(weiBalanceMinusGasCosts, 'wei', 'ether');
+}
+
+export type TransactionInput = {
+  wallet: BaseWallet,
+  token: ?Token,
+  unit: UNIT,
+  value: string,
+  to: string,
+  data: string
+};
+
+export async function buildTransactionWithoutGas(
+  wallet: BaseWallet,
+  { token, unit, value, to, data }: TransactionInput
+): Promise<TransactionWithoutGas> {
+  if (unit === 'ether') {
+    return {
+      to,
+      from: await wallet.getAddress(),
+      value: valueToHex(value),
+      data
+    };
+  } else {
+    if (!token) {
+      throw new Error('No matching token');
+    }
+    const bigAmount = new Big(value);
+    return {
+      to: token.address,
+      from: await wallet.getAddress(),
+      value: '0x0',
+      data: ERC20.transfer(to, toTokenUnit(bigAmount, token))
+    };
+  }
 }
