@@ -15,13 +15,20 @@ export const ANNOUNCEMENT_MESSAGE = `
   If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">mailchimp</a> :)
 `;
 
-export const DONATION_ADDRESSES_MAP = {
+const etherScan = 'https://etherscan.io';
+const blockChainInfo = 'https://blockchain.info';
+const ethPlorer = 'https://ethplorer.io';
+
+export const ETHTxExplorer = `${etherScan}/tx/[[txHash]]`;
+export const BTCTxExplorer = `${blockChainInfo}/tx/[[txHash]]`;
+export const ETHAddressExplorer = `${etherScan}/address/[[address]]`;
+export const ETHTokenExplorer = `${ethPlorer}/address/[[address]]`;
+
+export const donationAddressMap = {
   BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
   ETH: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
   REP: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8'
 };
-
-export const donationAddressMap = DONATION_ADDRESSES_MAP;
 
 export const gasPriceDefaults = {
   gasPriceMinGwei: 1,
@@ -167,13 +174,13 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'ETH',
     chainId: 1,
     blockExplorer: {
-      name: 'https://etherscan.io',
-      tx: 'https://etherscan.io/tx/[[txHash]]',
-      address: 'https://etherscan.io/address/[[address]]'
+      name: etherScan,
+      tx: ETHTxExplorer,
+      address: ETHAddressExplorer
     },
     tokenExplorer: {
-      name: 'Ethplorer.io',
-      address: 'https://ethplorer.io/address/[[address]]'
+      name: ethPlorer,
+      address: ETHTokenExplorer
     },
     tokens: require('./tokens/eth').default,
     contracts: require('./contracts/eth.json')

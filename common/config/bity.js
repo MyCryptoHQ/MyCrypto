@@ -1,39 +1,52 @@
-export default {
-  serverURL: 'https://bity.myetherapi.com',
-  bityAPI: 'https://bity.com/api',
-  ethExplorer: 'https://etherscan.io/tx/[[txHash]]',
-  btcExplorer: 'https://blockchain.info/tx/[[txHash]]',
+import { ETHTxExplorer, BTCTxExplorer } from './data';
+
+type SupportedDestinationKind = 'ETH' | 'BTC' | 'REP';
+
+const serverURL = 'https://bity.myetherapi.com';
+const bityURL = 'https://bity.com/api';
+const BTCMin = 0.01;
+const BTCMax = 3;
+
+// while Bity is supposedly OK with any order that is at least 0.01 BTC Worth, the order will fail if you send 0.01 BTC worth of ETH.
+// This is a bad magic number, but will suffice for now
+// value = percent higher/lower than 0.01 BTC worth
+const buffers = {
+  ETH: 0.1,
+  REP: 0.2
+};
+
+// rate must be BTC[KIND]
+export function kindMin(
+  BTCKINDRate: number,
+  kind: SupportedDestinationKind
+): number {
+  const kindMin = BTCKINDRate * BTCMin;
+  return kindMin + kindMin * buffers[kind];
+}
+
+// rate must be BTC[KIND]
+export function kindMax(
+  BTCKINDRate: number,
+  kind: SupportedDestinationKind
+): number {
+  const kindMax = BTCKINDRate * BTCMax;
+  return kindMax - kindMax * buffers[kind];
+}
+
+const info = {
+  serverURL,
+  bityURL,
+  ETHTxExplorer,
+  BTCTxExplorer,
+  BTCMin,
+  BTCMax,
   validStatus: ['RCVE', 'FILL', 'CONF', 'EXEC'],
   invalidStatus: ['CANC'],
-  // while Bity is supposedly OK with any order that is at least 0.01 BTC Worth, the order will fail if you send 0.01 BTC worth of ETH.
-  // This is a bad magic number, but will suffice for now
-  ETHBuffer: 0.1, // percent higher/lower than 0.01 BTC worth
-  REPBuffer: 0.2, // percent higher/lower than 0.01 BTC worth
-  BTCMin: 0.01,
-  BTCMax: 3,
-  ETHMin: function(BTCETHRate: number) {
-    const ETHMin = BTCETHRate * this.BTCMin;
-    const ETHMinWithPadding = ETHMin + ETHMin * this.ETHBuffer;
-    return ETHMinWithPadding;
-  },
-  ETHMax: function(BTCETHRate: number) {
-    const ETHMax = BTCETHRate * this.BTCMax;
-    const ETHMaxWithPadding = ETHMax - ETHMax * this.ETHBuffer;
-    return ETHMaxWithPadding;
-  },
-  REPMin: function(BTCREPRate: number) {
-    const REPMin = BTCREPRate * this.BTCMin;
-    const REPMinWithPadding = REPMin + REPMin * this.REPBuffer;
-    return REPMinWithPadding;
-  },
-  REPMax: function(BTCREPRate: number) {
-    const REPMax = BTCREPRate * this.BTCMax;
-    const REPMaxWithPadding = REPMax - REPMax * this.ETHBuffer;
-    return REPMaxWithPadding;
-  },
   postConfig: {
     headers: {
       'Content-Type': 'application/json; charset:UTF-8'
     }
   }
 };
+
+export default info;
