@@ -47,15 +47,15 @@ import type { RPCNode } from 'libs/nodes';
 import type {
   SignedTransactionStatus,
   TransactionInput,
-  GasEstimationCallParams,
   CompleteTransaction
 } from 'libs/transaction';
+import type { GasEstimationCallParams } from 'libs/messages';
 import type { UNIT } from 'libs/units';
 import { toWei } from 'libs/units';
 import {
   generateCompleteTransaction,
   getBalanceMinusGasCosts,
-  buildGasEstimationCallParams
+  formatTxInput
 } from 'libs/transaction';
 // MISC
 import customMessages from './messages';
@@ -100,7 +100,7 @@ type Props = {
   network: NetworkConfig,
   tokens: Token[],
   tokenBalances: TokenBalance[],
-  gasPrice: number,
+  gasPrice: string,
   broadcastTx: (signedTx: string) => BroadcastTxRequestedAction,
   showNotification: (
     level: string,
@@ -350,7 +350,7 @@ export class SendTransaction extends React.Component {
       to,
       data
     };
-    return await buildGasEstimationCallParams(wallet, transactionInput);
+    return await formatTxInput(wallet, transactionInput);
   }
 
   async estimateGas() {
@@ -492,7 +492,7 @@ function mapStateToProps(state: AppState) {
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),
-    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei'),
+    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei').toString(),
     transactions: state.wallet.transactions
   };
 }

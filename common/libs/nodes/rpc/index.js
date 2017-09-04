@@ -1,7 +1,7 @@
 // @flow
 import Big from 'bignumber.js';
 import BaseNode from '../base';
-import type { GasEstimationCallParams } from 'libs/transaction';
+import type { GasEstimationCallParams } from 'libs/messages';
 import RPCClient, {
   getBalance,
   estimateGas,

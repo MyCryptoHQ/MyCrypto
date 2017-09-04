@@ -1,6 +1,6 @@
 // @flow
 import Big from 'bignumber.js';
-import type { GasEstimationCallParams } from 'libs/transaction';
+import type { GasEstimationCallParams } from 'libs/messages';
 import type { Token } from 'config/data';
 
 export default class BaseNode {

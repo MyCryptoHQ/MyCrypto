@@ -1,5 +1,5 @@
 // don't use flow temporarily
-import type { GasEstimationCallParams } from 'libs/transaction';
+import type { GasEstimationCallParams } from 'libs/messages';
 
 type DATA = string;
 type QUANTITY = string;
