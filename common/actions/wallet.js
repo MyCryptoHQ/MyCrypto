@@ -22,6 +22,26 @@ export function unlockPrivateKey(
   };
 }
 
+/*** Unlock Keystore File ***/
+export type KeystoreUnlockParams = {
+  file: string,
+  password: string
+};
+
+export type UnlockKeystoreAction = {
+  type: 'WALLET_UNLOCK_KEYSTORE',
+  payload: KeystoreUnlockParams
+};
+
+export function unlockKeystore(
+  value: KeystoreUnlockParams
+): UnlockKeystoreAction {
+  return {
+    type: 'WALLET_UNLOCK_KEYSTORE',
+    payload: value
+  };
+}
+
 /*** Set Wallet ***/
 export type SetWalletAction = {
   type: 'WALLET_SET',
@@ -65,9 +85,27 @@ export function setTokenBalances(payload: {
   };
 }
 
+/*** Broadcast Tx ***/
+export type BroadcastTxRequestedAction = {
+  type: 'WALLET_BROADCAST_TX_REQUESTED',
+  payload: {
+    signedTx: string
+  }
+};
+
+export function broadcastTx(signedTx: string): BroadcastTxRequestedAction {
+  return {
+    type: 'WALLET_BROADCAST_TX_REQUESTED',
+    payload: {
+      signedTx
+    }
+  };
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
   | SetBalanceAction
-  | SetTokenBalancesAction;
+  | SetTokenBalancesAction
+  | BroadcastTxRequestedAction;

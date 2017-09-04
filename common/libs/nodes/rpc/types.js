@@ -1,7 +1,9 @@
-// @flow
+// don't use flow temporarily
+import type { TransactionWithoutGas } from 'libs/transaction';
 
 type DATA = string;
 type QUANTITY = string;
+type TX = string;
 
 export type DEFAULT_BLOCK = string | 'earliest' | 'latest' | 'pending';
 
@@ -18,16 +20,35 @@ type JsonRpcError = {|
   }
 |};
 
+export type JSONRPC2 = '2.0';
+
 export type JsonRpcResponse = JsonRpcSuccess | JsonRpcError;
 
 type RPCRequestBase = {
   id: string,
-  jsonrpc: '2.0'
+  jsonrpc: JSONRPC2,
+  method: string
+};
+
+export type SendRawTxRequest = RPCRequestBase & {
+  method: 'eth_sendRawTransaction',
+  params: [TX]
 };
 
 export type GetBalanceRequest = RPCRequestBase & {
   method: 'eth_getBalance',
   params: [DATA, DEFAULT_BLOCK]
+};
+
+export type GetTokenBalanceRequest = RPCRequestBase & {
+  method: 'eth_call',
+  params: [
+    {
+      to: string,
+      data: string
+    },
+    DEFAULT_BLOCK
+  ]
 };
 
 export type CallRequest = RPCRequestBase & {
@@ -47,16 +68,7 @@ export type CallRequest = RPCRequestBase & {
 
 export type EstimateGasRequest = RPCRequestBase & {
   method: 'eth_estimateGas',
-  params: [
-    {
-      from?: DATA,
-      to?: DATA,
-      gas?: QUANTITY,
-      gasPrice?: QUANTITY,
-      value?: QUANTITY,
-      data?: DATA
-    }
-  ]
+  params: [TransactionWithoutGas]
 };
 
 export type GetTransactionCountRequest = RPCRequestBase & {
@@ -66,6 +78,7 @@ export type GetTransactionCountRequest = RPCRequestBase & {
 
 export type RPCRequest =
   | GetBalanceRequest
+  | GetTokenBalanceRequest
   | CallRequest
   | EstimateGasRequest
   | GetTransactionCountRequest;

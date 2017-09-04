@@ -42,6 +42,7 @@ export class AddressField extends React.Component<Props> {
               ? 'is-valid'
               : 'is-invalid'}`}
             type="text"
+            value={value}
             placeholder={placeholder}
             onChange={this.onChange}
             disabled={isReadonly}

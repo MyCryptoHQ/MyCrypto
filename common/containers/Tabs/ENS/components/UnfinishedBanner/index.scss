@@ -1,0 +1,47 @@
+@import "common/sass/variables";
+
+.UnfinishedBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $brand-warning;
+  overflow: auto;
+  z-index: 10000;
+
+  &-content {
+    text-align: center;
+    margin-top: 20%;
+    @media screen and (min-width: 2150px) {
+      margin-top: 15%;
+    }
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(#000, 0.12);
+    overflow: auto;
+
+    h2 {
+      font-size: 52px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+  }
+
+  // Fade out
+  &.is-fading {
+    pointer-events: none;
+    opacity: 0;
+    background: #fff;
+    transition: all 500ms ease 400ms;
+
+    .UnfinishedBanner-content {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 500ms ease;
+    }
+  }
+}

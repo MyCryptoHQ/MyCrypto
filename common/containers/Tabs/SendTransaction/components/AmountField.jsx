@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
 
 type Props = {
@@ -14,8 +14,6 @@ export default class AmountField extends React.Component<Props> {
   render() {
     const { value, unit, onChange } = this.props;
     const isReadonly = !onChange;
-    const validityClass =
-      isFinite(Number(value)) && Number(value) > 0 ? 'is-valid' : 'is-invalid';
     return (
       <div>
         <label>
@@ -23,9 +21,12 @@ export default class AmountField extends React.Component<Props> {
         </label>
         <div className="input-group col-sm-11">
           <input
-            className={`form-control ${validityClass}`}
+            className={`form-control ${isFinite(Number(value)) &&
+            Number(value) > 0
+              ? 'is-valid'
+              : 'is-invalid'}`}
             type="text"
-            placeholder={translate('SEND_amount_short')}
+            placeholder={translateRaw('SEND_amount_short')}
             value={value}
             disabled={isReadonly}
             onChange={isReadonly ? void 0 : this.onValueChange}

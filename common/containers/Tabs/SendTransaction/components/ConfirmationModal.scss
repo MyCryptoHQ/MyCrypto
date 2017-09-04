@@ -1,0 +1,53 @@
+@import "common/sass/variables";
+
+$summary-height: 54px;
+
+.ConfModal {
+  &-summary {
+    display: flex;
+    margin-bottom: 30px;
+
+    &-icon {
+      height: $summary-height;
+      width: $summary-height;
+      margin: 0 30px;
+    }
+
+    &-amount {
+      flex-grow: 1;
+      text-align: center;
+      line-height: $summary-height / 2;
+
+      &-arrow {
+        display: inline-block;
+        height: $summary-height / 3;
+        width: 100%;
+        background-image: url('~assets/images/icon-dot-arrow.svg');
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      &-currency {
+        color: $brand-danger;
+      }
+    }
+  }
+
+  &-details {
+    padding-left: 30px;
+    margin-bottom: 20px;
+  }
+
+  &-confirm {
+    text-align: center;
+    font-weight: bold;
+    font-size: $font-size-medium-bump;
+  }
+
+  &-loading {
+    text-align: center;
+    font-size: $font-size-medium-bump
+  }
+
+}

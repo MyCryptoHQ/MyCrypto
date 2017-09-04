@@ -15,6 +15,7 @@ import { formatNumber } from 'utils/formatters';
 import { Identicon } from 'components/ui';
 import translate from 'translations';
 import * as customTokenActions from 'actions/customTokens';
+import { showNotification } from 'actions/notifications';
 
 type Props = {
   wallet: BaseWallet,
@@ -22,6 +23,7 @@ type Props = {
   network: NetworkConfig,
   tokenBalances: TokenBalance[],
   rates: { [string]: number },
+  showNotification: Function,
   addCustomToken: typeof customTokenActions.addCustomToken,
   removeCustomToken: typeof customTokenActions.removeCustomToken
 };
@@ -45,8 +47,7 @@ export class BalanceSidebar extends Component<Props, State> {
         this.setState({ address: addr });
       })
       .catch(err => {
-        //TODO: communicate error in UI
-        console.log(err);
+        this.props.showNotification('danger', err);
       });
   }
 
@@ -136,35 +137,35 @@ export class BalanceSidebar extends Component<Props, State> {
               {rates['REP'] &&
                 <li>
                   <span className="mono wrap">
-                    {formatNumber(balance.times(rates['REP']))}
+                    {formatNumber(balance.times(rates['REP']), 2)}
                   </span>{' '}
                   REP
                 </li>}
               {rates['EUR'] &&
                 <li>
                   <span className="mono wrap">
-                    €{formatNumber(balance.times(rates['EUR']))}
+                    €{formatNumber(balance.times(rates['EUR']), 2)}
                   </span>
                   {' EUR'}
                 </li>}
               {rates['USD'] &&
                 <li>
                   <span className="mono wrap">
-                    ${formatNumber(balance.times(rates['USD']))}
+                    ${formatNumber(balance.times(rates['USD']), 2)}
                   </span>
                   {' USD'}
                 </li>}
               {rates['GBP'] &&
                 <li>
                   <span className="mono wrap">
-                    £{formatNumber(balance.times(rates['GBP']))}
+                    £{formatNumber(balance.times(rates['GBP']), 2)}
                   </span>
                   {' GBP'}
                 </li>}
               {rates['CHF'] &&
                 <li>
                   <span className="mono wrap">
-                    {formatNumber(balance.times(rates['CHF']))}
+                    {formatNumber(balance.times(rates['CHF']), 2)}
                   </span>{' '}
                   CHF
                 </li>}
@@ -197,4 +198,7 @@ function mapStateToProps(state: ReduxState) {
   };
 }
 
-export default connect(mapStateToProps, customTokenActions)(BalanceSidebar);
+export default connect(mapStateToProps, {
+  ...customTokenActions,
+  showNotification
+})(BalanceSidebar);

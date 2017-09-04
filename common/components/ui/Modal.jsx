@@ -17,13 +17,17 @@ type Props = {
       | 'warning'
       | 'danger'
       | 'link',
-    onClick: () => void
+    disabled?: boolean,
+    onClick?: () => void
   }[],
   handleClose: () => void,
+  disableButtons?: boolean,
   children: any
 };
 
-export default class Modal extends Component<Props> {
+export default class Modal extends Component {
+  props: Props;
+
   componentDidMount() {
     this.updateBodyClass();
     document.addEventListener('keydown', this._escapeListner);
@@ -62,8 +66,10 @@ export default class Modal extends Component<Props> {
     }
   };
 
-  _renderButtons() {
-    return this.props.buttons.map((btn, idx) => {
+  _renderButtons = () => {
+    const { disableButtons, buttons } = this.props;
+
+    return buttons.map((btn, idx) => {
       let btnClass = 'Modal-footer-btn btn';
 
       if (btn.type) {
@@ -71,12 +77,17 @@ export default class Modal extends Component<Props> {
       }
 
       return (
-        <button className={btnClass} onClick={btn.onClick} key={idx}>
+        <button
+          className={btnClass}
+          onClick={btn.onClick}
+          key={idx}
+          disabled={disableButtons || btn.disabled}
+        >
           {btn.text}
         </button>
       );
     });
-  }
+  };
 
   render() {
     const { isOpen, title, children, buttons, handleClose } = this.props;

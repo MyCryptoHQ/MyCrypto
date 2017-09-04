@@ -139,7 +139,6 @@ export function* bityTimeRemaining() {
             yield put(orderTimeSwap(0));
             yield put(stopPollBityOrderStatus());
             yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
-
             if (!hasShownNotification) {
               hasShownNotification = true;
               yield put(
@@ -148,7 +147,6 @@ export function* bityTimeRemaining() {
             }
             break;
           case 'CANC':
-            yield put(orderTimeSwap(0));
             yield put(stopPollBityOrderStatus());
             yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
             if (!hasShownNotification) {
@@ -159,7 +157,6 @@ export function* bityTimeRemaining() {
             }
             break;
           case 'RCVE':
-            yield put(orderTimeSwap(0));
             if (!hasShownNotification) {
               hasShownNotification = true;
               yield put(
@@ -168,7 +165,6 @@ export function* bityTimeRemaining() {
             }
             break;
           case 'FILL':
-            yield put(orderTimeSwap(0));
             yield put(stopPollBityOrderStatus());
             yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
             break;

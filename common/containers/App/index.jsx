@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Footer, Header } from 'components';
+import { Footer, Header, AlphaAgreement } from 'components';
 import Notifications from './Notifications';
 import * as actions from 'actions/config';
 
@@ -58,6 +58,7 @@ class App extends Component {
           <Footer />
         </main>
         <Notifications />
+        <AlphaAgreement />
       </div>
     );
   }

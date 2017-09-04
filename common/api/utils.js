@@ -11,3 +11,14 @@ export function checkHttpStatus(response) {
 export function parseJSON(response) {
   return response.json();
 }
+
+export async function handleJSONResponse(response, errorMessage) {
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  }
+  if (errorMessage) {
+    throw new Error(errorMessage);
+  }
+  return false;
+}

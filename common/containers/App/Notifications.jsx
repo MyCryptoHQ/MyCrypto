@@ -35,7 +35,9 @@ class NotificationRow extends React.Component {
         <span className="sr-only">
           {level}
         </span>
-        <div className="container" dangerouslySetInnerHTML={{ __html: msg }} />
+        <div className="container">
+          {msg}
+        </div>
         <i
           tabIndex="0"
           aria-label="dismiss"
