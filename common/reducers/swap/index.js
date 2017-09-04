@@ -10,7 +10,7 @@ export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
 
-type State = {
+export type State = {
   originAmount: ?number,
   destinationAmount: ?number,
   originKind: string,
