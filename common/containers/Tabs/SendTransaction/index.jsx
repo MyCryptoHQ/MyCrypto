@@ -447,21 +447,19 @@ export class SendTransaction extends React.Component {
       to,
       data
     };
-    // try {
-    const signedTx = await generateCompleteTransaction(
-      wallet,
-      nodeLib,
-      gasPrice,
-      gasLimit,
-      chainId,
-      transactionInput
-    );
-    this.setState({ transaction: signedTx });
-    // } catch (err) {
-    //   console.log(err)
-    //   throw err
-    //   this.props.showNotification('danger', err.message, 5000);
-    // }
+    try {
+      const signedTx = await generateCompleteTransaction(
+        wallet,
+        nodeLib,
+        gasPrice,
+        gasLimit,
+        chainId,
+        transactionInput
+      );
+      this.setState({ transaction: signedTx });
+    } catch (err) {
+      this.props.showNotification('danger', err.message, 5000);
+    }
   };
 
   openTxModal = () => {
