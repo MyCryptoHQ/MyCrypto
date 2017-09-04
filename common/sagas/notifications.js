@@ -1,11 +1,15 @@
 // @flow
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import type { Effect } from 'redux-saga/effects';
+
+import type { Yield, Return, Next } from 'sagas/types';
+
 import { closeNotification } from 'actions/notifications';
 import type { ShowNotificationAction } from 'actions/notifications';
 
-function* handleNotification(action?: ShowNotificationAction) {
+function* handleNotification(
+  action?: ShowNotificationAction
+): Generator<Yield, Return, Next> {
   if (!action) return;
   const { duration } = action.payload;
   // show forever
@@ -18,6 +22,6 @@ function* handleNotification(action?: ShowNotificationAction) {
   yield put(closeNotification(action.payload));
 }
 
-export default function* notificationsSaga(): Generator<Effect, void, any> {
+export default function* notificationsSaga(): Generator<Yield, Return, Next> {
   yield takeEvery('SHOW_NOTIFICATION', handleNotification);
 }

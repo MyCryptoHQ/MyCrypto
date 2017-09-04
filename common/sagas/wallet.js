@@ -1,13 +1,17 @@
 // @flow
 import React from 'react';
 import { takeEvery, call, apply, put, select, fork } from 'redux-saga/effects';
-import type { Effect } from 'redux-saga/effects';
+
 import { setWallet, setBalance, setTokenBalances } from 'actions/wallet';
 import type {
   UnlockPrivateKeyAction,
   UnlockKeystoreAction
 } from 'actions/wallet';
 import { showNotification } from 'actions/notifications';
+import type { BroadcastTxRequestedAction } from 'actions/wallet';
+
+import type { Yield, Return, Next } from 'sagas/types';
+
 import translate from 'translations';
 import {
   PresaleWallet,
@@ -18,13 +22,14 @@ import {
   BaseWallet
 } from 'libs/wallet';
 import { BaseNode } from 'libs/nodes';
+import { determineKeystoreType } from 'libs/keystore';
+
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
-import { determineKeystoreType } from 'libs/keystore';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-import type { BroadcastTxRequestedAction } from 'actions/wallet';
 
-function* updateAccountBalance() {
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+
+function* updateAccountBalance(): Generator<Yield, Return, Next> {
   try {
     const wallet: ?BaseWallet = yield select(getWalletInst);
     if (!wallet) {
@@ -40,7 +45,7 @@ function* updateAccountBalance() {
   }
 }
 
-function* updateTokenBalances() {
+function* updateTokenBalances(): Generator<Yield, Return, Next> {
   try {
     const node: BaseNode = yield select(getNodeLib);
     const wallet: ?BaseWallet = yield select(getWalletInst);
@@ -68,14 +73,14 @@ function* updateTokenBalances() {
   }
 }
 
-function* updateBalances() {
+function* updateBalances(): Generator<Yield, Return, Next> {
   yield fork(updateAccountBalance);
   yield fork(updateTokenBalances);
 }
 
 export function* unlockPrivateKey(
   action?: UnlockPrivateKeyAction
-): Generator<Effect, void, any> {
+): Generator<Yield, Return, Next> {
   if (!action) return;
   let wallet = null;
 
@@ -97,7 +102,7 @@ export function* unlockPrivateKey(
 
 export function* unlockKeystore(
   action?: UnlockKeystoreAction
-): Generator<Effect, void, any> {
+): Generator<Yield, Return, Next> {
   if (!action) return;
 
   const file = action.payload.file;
@@ -138,7 +143,7 @@ export function* unlockKeystore(
 
 function* broadcastTx(
   action: BroadcastTxRequestedAction
-): Generator<Effect, void, any> {
+): Generator<Yield, Return, Next> {
   const signedTx = action.payload.signedTx;
   try {
     const node: BaseNode = yield select(getNodeLib);
@@ -165,7 +170,7 @@ function* broadcastTx(
   }
 }
 
-export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
+export default function* walletSaga(): Generator<Yield, Return, Next> {
   // useful for development
   yield call(updateBalances);
   yield [
