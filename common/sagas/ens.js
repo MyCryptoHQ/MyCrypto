@@ -1,13 +1,18 @@
 // @flow
 import { takeEvery, call, put, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import type { Effect } from 'redux-saga/effects';
+
 import { cacheEnsAddress } from 'actions/ens';
 import type { ResolveEnsNameAction } from 'actions/ens';
+
 import { getEnsAddress } from 'selectors/ens';
 import { donationAddressMap } from 'config/data';
 
-function* resolveEns(action?: ResolveEnsNameAction) {
+import type { Yield, Return, Next } from 'sagas/types';
+
+function* resolveEns(
+  action?: ResolveEnsNameAction
+): Generator<Yield, Return, Next> {
   if (!action) return;
   const ensName = action.payload;
   // FIXME Add resolve logic
@@ -31,6 +36,6 @@ function* resolveEns(action?: ResolveEnsNameAction) {
   yield put(cacheEnsAddress(ensName, donationAddressMap.ETH));
 }
 
-export default function* notificationsSaga(): Generator<Effect, void, any> {
+export default function* notificationsSaga(): Generator<Yield, Return, Next> {
   yield takeEvery('ENS_RESOLVE', resolveEns);
 }
