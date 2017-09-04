@@ -1,7 +1,7 @@
 // @flow
 import Big from 'bignumber.js';
 import BaseNode from '../base';
-import type { TransactionWithoutGas } from 'libs/transaction';
+import type { GasEstimationCallParams } from 'libs/transaction';
 import RPCClient, {
   getBalance,
   estimateGas,
@@ -27,7 +27,7 @@ export default class RpcNode extends BaseNode {
     });
   }
 
-  async estimateGas(transaction: TransactionWithoutGas): Promise<Big> {
+  async estimateGas(transaction: GasEstimationCallParams): Promise<Big> {
     return this.client.call(estimateGas(transaction)).then(response => {
       if (response.error) {
         throw new Error(response.error.message);
@@ -39,8 +39,9 @@ export default class RpcNode extends BaseNode {
   async getTokenBalance(address: string, token: Token): Promise<Big> {
     return this.client.call(getTokenBalance(address, token)).then(response => {
       if (response.error) {
+        console.log(response.error);
         // TODO - Error handling
-        return Big(0);
+        return new Big(0);
       }
       return new Big(String(response.result)).div(
         new Big(10).pow(token.decimal)

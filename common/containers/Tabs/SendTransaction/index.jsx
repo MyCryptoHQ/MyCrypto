@@ -13,7 +13,7 @@ import {
 } from 'selectors/config';
 import {
   getTokenBalances,
-  getTxFromBroadcastStatusTransactions
+  getTxFromSignedTransactionStatuss
 } from 'selectors/wallet';
 import { getTokens } from 'selectors/wallet';
 import type { TokenBalance } from 'selectors/wallet';
@@ -45,18 +45,17 @@ import BaseWallet from 'libs/wallet/base';
 import { isValidETHAddress } from 'libs/validators';
 import type { RPCNode } from 'libs/nodes';
 import type {
-  Transaction,
-  BroadcastStatusTransaction,
+  SignedTransactionStatus,
   TransactionInput,
-  TransactionWithoutGas,
-  BroadcastTransaction
+  GasEstimationCallParams,
+  CompleteTransaction
 } from 'libs/transaction';
 import type { UNIT } from 'libs/units';
 import { toWei } from 'libs/units';
 import {
-  generateBroadcastTx,
+  generateCompleteTransaction,
   getBalanceMinusGasCosts,
-  buildTransactionWithoutGas
+  buildGasEstimationCallParams
 } from 'libs/transaction';
 // MISC
 import customMessages from './messages';
@@ -74,7 +73,7 @@ type State = {
   gasLimit: string,
   data: string,
   gasChanged: boolean,
-  transaction: ?BroadcastTransaction,
+  transaction: ?CompleteTransaction,
   showTxConfirm: boolean,
   generateDisabled: boolean
 };
@@ -108,7 +107,7 @@ type Props = {
     msg: string,
     duration?: number
   ) => ShowNotificationAction,
-  transactions: Array<BroadcastStatusTransaction>
+  transactions: Array<SignedTransactionStatus>
 };
 
 const initialState = {
@@ -161,14 +160,14 @@ export class SendTransaction extends React.Component {
     const componentStateTransaction = this.state.transaction;
     if (componentStateTransaction) {
       // lives in redux state
-      const currentTxAsBroadcastTransaction = getTxFromBroadcastStatusTransactions(
+      const currentTxAsSignedTransaction = getTxFromSignedTransactionStatuss(
         this.props.transactions,
         componentStateTransaction.signedTx
       );
       // if there is a matching tx in redux state
-      if (currentTxAsBroadcastTransaction) {
+      if (currentTxAsSignedTransaction) {
         // if the broad-casted transaction attempt is successful, clear the form
-        if (currentTxAsBroadcastTransaction.successfullyBroadcast) {
+        if (currentTxAsSignedTransaction.successfullyBroadcast) {
           this.resetTx();
         }
       }
@@ -339,24 +338,25 @@ export class SendTransaction extends React.Component {
     );
   }
 
-  async getTransactionWithoutGasFromState(): Promise<TransactionWithoutGas> {
+  async getGasEstimationCallParamsFromState(): Promise<
+    GasEstimationCallParams
+  > {
     const { wallet } = this.props;
     const { token, unit, value, to, data } = this.state;
     const transactionInput: TransactionInput = {
-      wallet,
       token,
       unit,
       value,
       to,
       data
     };
-    return await buildTransactionWithoutGas(wallet, transactionInput);
+    return await buildGasEstimationCallParams(wallet, transactionInput);
   }
 
   async estimateGas() {
     if (!isNaN(parseInt(this.state.value))) {
       try {
-        const transactionWithoutGas = await this.getTransactionWithoutGasFromState();
+        const transactionWithoutGas = await this.getGasEstimationCallParamsFromState();
         // Grab a reference to state. If it has changed by the time the estimateGas
         // call comes back, we don't want to replace the gasLimit in state.
         const state = this.state;
@@ -437,27 +437,31 @@ export class SendTransaction extends React.Component {
   };
 
   generateTxFromState = async () => {
-    const { nodeLib, wallet } = this.props;
-    const { token } = this.state;
-    const transactionWithoutGas = await this.getTransactionWithoutGasFromState();
-    const transaction = {
-      ...transactionWithoutGas,
-      gasLimit: this.state.gasLimit,
-      gasPrice: this.props.gasPrice,
-      chainId: this.props.network.chainId
+    const { nodeLib, wallet, gasPrice, network } = this.props;
+    const { token, unit, value, to, data, gasLimit } = this.state;
+    const chainId = network.chainId;
+    const transactionInput = {
+      token,
+      unit,
+      value,
+      to,
+      data
     };
-
-    try {
-      const broadcastTx = await generateBroadcastTx(
-        nodeLib,
-        transaction,
-        wallet,
-        token
-      );
-      this.setState({ transaction: broadcastTx });
-    } catch (err) {
-      this.props.showNotification('danger', err.message, 5000);
-    }
+    // try {
+    const signedTx = await generateCompleteTransaction(
+      wallet,
+      nodeLib,
+      gasPrice,
+      gasLimit,
+      chainId,
+      transactionInput
+    );
+    this.setState({ transaction: signedTx });
+    // } catch (err) {
+    //   console.log(err)
+    //   throw err
+    //   this.props.showNotification('danger', err.message, 5000);
+    // }
   };
 
   openTxModal = () => {

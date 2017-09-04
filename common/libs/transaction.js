@@ -13,39 +13,51 @@ import type EthTx from 'ethereumjs-tx';
 import { toUnit } from 'libs/units';
 import { valueToHex } from 'libs/values';
 import type { UNIT } from 'libs/units';
+import { RPCNode } from 'libs/nodes';
 
-export type BroadcastStatusTransaction = {
+export type TransactionInput = {
+  token: ?Token,
+  unit: UNIT,
+  value: string,
+  to: string,
+  data: string
+};
+
+// TODO - move this out of transaction; it's only for estimating gas costs
+export type GasEstimationCallParams = {|
+  to: string,
+  value: string | number,
+  data: string,
+  from: string
+|};
+
+export type SignedTransactionStatus = {
   isBroadcasting: boolean,
   signedTx: string,
   successfullyBroadcast: boolean
 };
 
-// TODO: Enforce more bigs, or find better way to avoid ether vs wei for value
-export type TransactionWithoutGas = {|
-  from: string,
+export type BaseTransaction = {|
   to: string,
-  gasLimit?: string | number,
   value: string | number,
-  data?: string,
-  chainId?: number
-|};
-
-export type Transaction = {|
-  ...TransactionWithoutGas,
-  gasPrice: string | number
-|};
-
-export type RawTransaction = {|
-  nonce: string,
-  gasPrice: string,
-  gasLimit: string,
-  to: string,
-  value: string,
   data: string,
+  gasLimit: string | number,
+  gasPrice: string | number,
   chainId: number
 |};
 
-export type BroadcastTransaction = {|
+export type TxIncludingFromMissingNonce = {|
+  ...BaseTransaction,
+  // non-standard
+  from: string
+|};
+
+export type RawTransaction = {|
+  ...BaseTransaction,
+  nonce: string
+|};
+
+export type CompleteTransaction = {|
   ...RawTransaction,
   rawTx: string,
   signedTx: string
@@ -73,26 +85,26 @@ export function getTransactionFields(tx: EthTx) {
   };
 }
 
-export async function generateBroadcastTx(
+export async function generateCompleteTransactionFromRawTransaction(
   node: BaseNode,
-  tx: Transaction,
+  txIncludingFromMissingNonce: TxIncludingFromMissingNonce,
   wallet: BaseWallet,
   token: ?Token
-): Promise<BroadcastTransaction> {
+): Promise<CompleteTransaction> {
   // Reject bad addresses
-  if (!isValidETHAddress(tx.to)) {
+  if (!isValidETHAddress(txIncludingFromMissingNonce.to)) {
     throw new Error(translate('ERROR_5'));
   }
 
   // Reject token transactions without data
-  if (token && !tx.data) {
+  if (token && !txIncludingFromMissingNonce.data) {
     throw new Error('Tokens must be sent with data');
   }
 
   // Reject gas limit under 21000 (Minimum for transaction)
   // Reject if limit over 5000000
   // TODO: Make this dynamic, the limit shifts
-  const limitBig = new Big(tx.gasLimit);
+  const limitBig = new Big(txIncludingFromMissingNonce.gasLimit);
   if (limitBig.lessThan(21000)) {
     throw new Error(
       translate('Gas limit must be at least 21000 for transactions')
@@ -104,7 +116,7 @@ export async function generateBroadcastTx(
   }
 
   // Reject gas over 1000gwei (1000000000000)
-  const gasPriceBig = new Big(tx.gasPrice);
+  const gasPriceBig = new Big(txIncludingFromMissingNonce.gasPrice);
   if (gasPriceBig.greaterThan(new Big('1000000000000'))) {
     throw new Error(
       'Gas price too high. Please contact support if this was not a mistake.'
@@ -117,12 +129,14 @@ export async function generateBroadcastTx(
   let balance;
 
   if (token) {
-    // $FlowFixMe - We reject above if tx has no data for token
-    value = new Big(ERC20.$transfer(tx.data).value);
-    balance = toTokenUnit(await node.getTokenBalance(tx.from, token), token);
+    value = new Big(ERC20.$transfer(txIncludingFromMissingNonce.data).value);
+    balance = toTokenUnit(
+      await node.getTokenBalance(txIncludingFromMissingNonce.from, token),
+      token
+    );
   } else {
-    value = new Big(tx.value);
-    balance = await node.getBalance(tx.from);
+    value = new Big(txIncludingFromMissingNonce.value);
+    balance = await node.getBalance(txIncludingFromMissingNonce.from);
   }
 
   if (value.gte(balance)) {
@@ -134,60 +148,48 @@ export async function generateBroadcastTx(
   const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
 
   // Generate the raw transaction
-  const txCount = await node.getTransactionCount(tx.from);
-  const rawTx = {
+  const txCount = await node.getTransactionCount(
+    txIncludingFromMissingNonce.from
+  );
+  const cleanedRawTx = {
     nonce: cleanHex(txCount),
-    gasPrice: cleanHex(new Big(tx.gasPrice).toString(16)),
-    gasLimit: cleanHex(new Big(tx.gasLimit).toString(16)),
-    to: cleanHex(tx.to),
+    gasPrice: cleanHex(
+      new Big(txIncludingFromMissingNonce.gasPrice).toString(16)
+    ),
+    gasLimit: cleanHex(
+      new Big(txIncludingFromMissingNonce.gasLimit).toString(16)
+    ),
+    to: cleanHex(txIncludingFromMissingNonce.to),
     value: token ? '0x00' : cleanHex(value.toString(16)),
-    data: tx.data ? cleanHex(tx.data) : '',
-    chainId: tx.chainId || 1
+    data: txIncludingFromMissingNonce.data
+      ? cleanHex(txIncludingFromMissingNonce.data)
+      : '',
+    chainId: txIncludingFromMissingNonce.chainId || 1
   };
 
   // Sign the transaction
-  const rawTxJson = JSON.stringify(rawTx);
-  const signedTx = await wallet.signRawTransaction(rawTx);
+  const rawTxJson = JSON.stringify(cleanedRawTx);
+  const signedTx = await wallet.signRawTransaction(cleanedRawTx);
 
   // Repeat all of this shit for Flow typechecking. Sealed objects don't
   // like spreads, so we have to be explicit.
   return {
-    nonce: rawTx.nonce,
-    gasPrice: rawTx.gasPrice,
-    gasLimit: rawTx.gasLimit,
-    to: rawTx.to,
-    value: rawTx.value,
-    data: rawTx.data,
-    chainId: rawTx.chainId,
+    nonce: cleanedRawTx.nonce,
+    gasPrice: cleanedRawTx.gasPrice,
+    gasLimit: cleanedRawTx.gasLimit,
+    to: cleanedRawTx.to,
+    value: cleanedRawTx.value,
+    data: cleanedRawTx.data,
+    chainId: cleanedRawTx.chainId,
     rawTx: rawTxJson,
     signedTx: signedTx
   };
 }
 
-// TODO determine best place for helper function
-export function getBalanceMinusGasCosts(
-  weiGasLimit: Big,
-  weiGasPrice: Big,
-  weiBalance: Big
-): Big {
-  const weiGasCosts = weiGasPrice.times(weiGasLimit);
-  const weiBalanceMinusGasCosts = weiBalance.minus(weiGasCosts);
-  return toUnit(weiBalanceMinusGasCosts, 'wei', 'ether');
-}
-
-export type TransactionInput = {
-  wallet: BaseWallet,
-  token: ?Token,
-  unit: UNIT,
-  value: string,
-  to: string,
-  data: string
-};
-
-export async function buildTransactionWithoutGas(
+export async function buildGasEstimationCallParams(
   wallet: BaseWallet,
   { token, unit, value, to, data }: TransactionInput
-): Promise<TransactionWithoutGas> {
+): Promise<GasEstimationCallParams> {
   if (unit === 'ether') {
     return {
       to,
@@ -207,4 +209,48 @@ export async function buildTransactionWithoutGas(
       data: ERC20.transfer(to, toTokenUnit(bigAmount, token))
     };
   }
+}
+
+export async function generateCompleteTransaction(
+  wallet: BaseWallet,
+  nodeLib: RPCNode,
+  gasPrice: number,
+  gasLimit: string,
+  chainId: number,
+  transactionInput: TransactionInput
+): Promise<CompleteTransaction> {
+  const { token } = transactionInput;
+
+  const transactionWithoutGas: GasEstimationCallParams = await buildGasEstimationCallParams(
+    wallet,
+    transactionInput
+  );
+
+  const transaction: TxIncludingFromMissingNonce = {
+    from: await wallet.getAddress(),
+    to: transactionWithoutGas.to,
+    gasLimit,
+    value: transactionWithoutGas.value,
+    data: transactionWithoutGas.data,
+    chainId,
+    gasPrice
+  };
+
+  return await generateCompleteTransactionFromRawTransaction(
+    nodeLib,
+    transaction,
+    wallet,
+    token
+  );
+}
+
+// TODO determine best place for helper function
+export function getBalanceMinusGasCosts(
+  weiGasLimit: Big,
+  weiGasPrice: Big,
+  weiBalance: Big
+): Big {
+  const weiGasCosts = weiGasPrice.times(weiGasLimit);
+  const weiBalanceMinusGasCosts = weiBalance.minus(weiGasCosts);
+  return toUnit(weiBalanceMinusGasCosts, 'wei', 'ether');
 }

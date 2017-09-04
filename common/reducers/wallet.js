@@ -8,8 +8,8 @@ import type {
 import { BaseWallet } from 'libs/wallet';
 import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
-import { getTxFromBroadcastStatusTransactions } from 'selectors/wallet';
-import type { BroadcastStatusTransaction } from 'libs/transaction';
+import { getTxFromSignedTransactionStatuss } from 'selectors/wallet';
+import type { SignedTransactionStatus } from 'libs/transaction';
 export type State = {
   inst: ?BaseWallet,
   // in ETH
@@ -17,7 +17,7 @@ export type State = {
   tokens: {
     [string]: Big
   },
-  transactions: Array<BroadcastStatusTransaction>
+  transactions: Array<SignedTransactionStatus>
 };
 
 export const INITIAL_STATE: State = {
@@ -42,11 +42,11 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
 }
 
 function handleUpdateTxArray(
-  transactions: Array<BroadcastStatusTransaction>,
-  broadcastStatusTx: BroadcastStatusTransaction,
+  transactions: Array<SignedTransactionStatus>,
+  broadcastStatusTx: SignedTransactionStatus,
   isBroadcasting: boolean,
   successfullyBroadcast: boolean
-): Array<BroadcastStatusTransaction> {
+): Array<SignedTransactionStatus> {
   return transactions.map(item => {
     if (item === broadcastStatusTx) {
       return { ...item, isBroadcasting, successfullyBroadcast };
@@ -60,9 +60,9 @@ function handleTxBroadcastCompleted(
   state: State,
   signedTx: string,
   successfullyBroadcast: boolean
-  // TODO How to handle null case for existing Tx?. Should use Array<BroadcastStatusTransaction> but can't.
+  // TODO How to handle null case for existing Tx?. Should use Array<SignedTransactionStatus> but can't.
 ): Array<any> {
-  const existingTx = getTxFromBroadcastStatusTransactions(
+  const existingTx = getTxFromSignedTransactionStatuss(
     state.transactions,
     signedTx
   );
@@ -80,7 +80,7 @@ function handleTxBroadcastCompleted(
 }
 
 function handleBroadcastTxRequested(state: State, signedTx: string) {
-  const existingTx = getTxFromBroadcastStatusTransactions(
+  const existingTx = getTxFromSignedTransactionStatuss(
     state.transactions,
     signedTx
   );
