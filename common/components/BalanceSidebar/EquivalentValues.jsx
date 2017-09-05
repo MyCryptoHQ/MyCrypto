@@ -1,9 +1,12 @@
 // @flow
+import './EquivalentValues.scss';
 import React from 'react';
 import translate from 'translations';
 import { Link } from 'react-router';
 import { formatNumber } from 'utils/formatters';
 import type Big from 'bignumber.js';
+
+const ratesKeys = ['BTC', 'REP', 'EUR', 'USD', 'GBP', 'CHF'];
 
 type Props = {
   balance: Big,
@@ -17,57 +20,26 @@ export default class EquivalentValues extends React.Component {
     const { balance, rates } = this.props;
 
     return (
-      <div>
-        <h5>
+      <div className="EquivalentValues">
+        <h5 className="EquivalentValues-title">
           {translate('sidebar_Equiv')}
         </h5>
-        <ul className="account-info">
-          {rates['BTC'] &&
-            <li>
-              <span className="mono wrap">
-                {formatNumber(balance.times(rates['BTC']))}
-              </span>{' '}
-              BTC
-            </li>}
-          {rates['REP'] &&
-            <li>
-              <span className="mono wrap">
-                {formatNumber(balance.times(rates['REP']), 2)}
-              </span>{' '}
-              REP
-            </li>}
-          {rates['EUR'] &&
-            <li>
-              <span className="mono wrap">
-                €{formatNumber(balance.times(rates['EUR']), 2)}
-              </span>
-              {' EUR'}
-            </li>}
-          {rates['USD'] &&
-            <li>
-              <span className="mono wrap">
-                ${formatNumber(balance.times(rates['USD']), 2)}
-              </span>
-              {' USD'}
-            </li>}
-          {rates['GBP'] &&
-            <li>
-              <span className="mono wrap">
-                £{formatNumber(balance.times(rates['GBP']), 2)}
-              </span>
-              {' GBP'}
-            </li>}
-          {rates['CHF'] &&
-            <li>
-              <span className="mono wrap">
-                {formatNumber(balance.times(rates['CHF']), 2)}
-              </span>{' '}
-              CHF
-            </li>}
+
+        <ul className="EquivalentValues-values">
+          {ratesKeys.map(key => {
+            if (!rates[key]) return null;
+            return (
+              <li className="EquivalentValues-values-currency" key={key}>
+                <span className="EquivalentValues-values-currency-label">
+                  {key}:
+                </span>
+                <span className="EquivalentValues-values-currency-value">
+                  {' '}{formatNumber(balance.times(rates[key]))}
+                </span>
+              </li>
+            );
+          })}
         </ul>
-        <Link to={'swap'} className="btn btn-primary btn-sm">
-          Swap via bity
-        </Link>
       </div>
     );
   }
