@@ -187,112 +187,110 @@ export class SendTransaction extends React.Component {
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
-      <section className="container" style={{ minHeight: '50%' }}>
-        <div className="tab-content">
-          <main className="tab-pane active">
-            {hasQueryString &&
-              <div className="alert alert-info">
-                <p>
-                  {translate('WARN_Send_Link')}
-                </p>
-              </div>}
+      <section className="Tab-content">
+        <UnlockHeader title={'NAV_SendEther'} />
 
-            <UnlockHeader title={'NAV_SendEther'} />
+        <div className="row">
+          {/* Send Form */}
+          {unlocked &&
+            <main className="col-sm-8">
+              <div className="Tab-content-pane">
+                {hasQueryString &&
+                  <div className="alert alert-info">
+                    <p>
+                      {translate('WARN_Send_Link')}
+                    </p>
+                  </div>}
 
-            {unlocked &&
-              <article className="row">
-                {/* <!-- Sidebar --> */}
-                <section className="col-sm-4">
-                  <div style={{ maxWidth: 350 }}>
-                    <BalanceSidebar />
-                    <hr />
-                    <Donate onDonate={this.onNewTx} />
+                <AddressField
+                  placeholder={donationAddressMap.ETH}
+                  value={this.state.to}
+                  onChange={readOnly ? null : this.onAddressChange}
+                />
+                <AmountField
+                  value={value}
+                  unit={unit}
+                  tokens={this.props.tokenBalances
+                    .filter(token => !token.balance.eq(0))
+                    .map(token => token.symbol)
+                    .sort()}
+                  onChange={readOnly ? void 0 : this.onAmountChange}
+                />
+                <GasField
+                  value={gasLimit}
+                  onChange={readOnly ? void 0 : this.onGasChange}
+                />
+                {unit === 'ether' &&
+                  <DataField
+                    value={data}
+                    onChange={readOnly ? void 0 : this.onDataChange}
+                  />}
+                <CustomMessage message={customMessage} />
+
+                <div className="row form-group">
+                  <div className="col-xs-12 clearfix">
+                    <button
+                      disabled={this.state.generateDisabled}
+                      className="btn btn-info btn-block"
+                      onClick={this.generateTx}
+                    >
+                      {translate('SEND_generate')}
+                    </button>
                   </div>
-                </section>
+                </div>
 
-                <section className="col-sm-8">
-                  <div className="row form-group">
-                    <h4 className="col-xs-12">
-                      {translate('SEND_trans')}
-                    </h4>
-                  </div>
-                  <AddressField
-                    placeholder={donationAddressMap.ETH}
-                    value={this.state.to}
-                    onChange={readOnly ? null : this.onAddressChange}
-                  />
-                  <AmountField
-                    value={value}
-                    unit={unit}
-                    tokens={this.props.tokenBalances
-                      .filter(token => !token.balance.eq(0))
-                      .map(token => token.symbol)
-                      .sort()}
-                    onChange={readOnly ? void 0 : this.onAmountChange}
-                  />
-                  <GasField
-                    value={gasLimit}
-                    onChange={readOnly ? void 0 : this.onGasChange}
-                  />
-                  {unit === 'ether' &&
-                    <DataField
-                      value={data}
-                      onChange={readOnly ? void 0 : this.onDataChange}
-                    />}
-                  <CustomMessage message={customMessage} />
+                {transaction &&
+                  <div>
+                    <div className="row form-group">
+                      <div className="col-sm-6">
+                        <label>
+                          {translate('SEND_raw')}
+                        </label>
+                        <textarea
+                          className="form-control"
+                          value={transaction.rawTx}
+                          rows="4"
+                          readOnly
+                        />
+                      </div>
+                      <div className="col-sm-6">
+                        <label>
+                          {translate('SEND_signed')}
+                        </label>
+                        <textarea
+                          className="form-control"
+                          value={transaction.signedTx}
+                          rows="4"
+                          readOnly
+                        />
+                      </div>
+                    </div>
 
-                  <div className="row form-group">
-                    <div className="col-xs-12 clearfix">
+                    <div className="form-group">
                       <button
-                        disabled={this.state.generateDisabled}
-                        className="btn btn-info btn-block"
-                        onClick={this.generateTx}
+                        className="btn btn-primary btn-block col-sm-11"
+                        onClick={this.openTxModal}
                       >
-                        {translate('SEND_generate')}
+                        {translate('SEND_trans')}
                       </button>
                     </div>
-                  </div>
+                  </div>}
+              </div>
+            </main>}
 
-                  {transaction &&
-                    <div>
-                      <div className="row form-group">
-                        <div className="col-sm-6">
-                          <label>
-                            {translate('SEND_raw')}
-                          </label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.rawTx}
-                            rows="4"
-                            readOnly
-                          />
-                        </div>
-                        <div className="col-sm-6">
-                          <label>
-                            {translate('SEND_signed')}
-                          </label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.signedTx}
-                            rows="4"
-                            readOnly
-                          />
-                        </div>
-                      </div>
-
-                      <div className="form-group">
-                        <button
-                          className="btn btn-primary btn-block col-sm-11"
-                          onClick={this.openTxModal}
-                        >
-                          {translate('SEND_trans')}
-                        </button>
-                      </div>
-                    </div>}
-                </section>
-              </article>}
-          </main>
+          {/* Sidebar */}
+          {unlocked &&
+            <section className="col-sm-4">
+              <div className="Tab-content-pane">
+                <div>
+                  <BalanceSidebar />
+                  <hr />
+                  <Donate onDonate={this.onNewTx} />
+                </div>
+              </div>
+            </section>}
         </div>
+
         {transaction &&
           showTxConfirm &&
           <ConfirmationModal

@@ -25,8 +25,9 @@ export default class GasPriceDropdown extends Component {
   }
 
   render() {
+    const { expanded } = this.state;
     return (
-      <span className="dropdown">
+      <span className={`dropdown ${expanded ? 'open' : ''}`}>
         <a
           aria-haspopup="true"
           aria-label="adjust gas price"
@@ -36,7 +37,7 @@ export default class GasPriceDropdown extends Component {
           <span>Gas Price</span>: {this.props.value} Gwei
           <i className="caret" />
         </a>
-        {this.state.expanded &&
+        {expanded &&
           <ul className="dropdown-menu GasPrice-dropdown-menu">
             <div className="GasPrice-header">
               <span>Gas Price</span>: {this.props.value} Gwei

@@ -48,13 +48,7 @@ export class UnlockHeader extends React.Component {
             {translate(this.props.title)}
           </h1>
         </div>
-        {this.state.expanded &&
-          <div>
-            <WalletDecrypt />
-            {/* @@if (site === 'cx' )  {  <cx-wallet-decrypt-drtv></cx-wallet-decrypt-drtv>   }
-    @@if (site === 'mew' ) {  <wallet-decrypt-drtv></wallet-decrypt-drtv>         } */}
-          </div>}
-
+        {this.state.expanded && <WalletDecrypt />}
         {this.state.expanded && <hr />}
       </article>
     );

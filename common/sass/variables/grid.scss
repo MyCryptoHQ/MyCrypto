@@ -1,0 +1,29 @@
+$screen-xs: 32rem;
+$screen-xs-min: $screen-xs;
+$screen-sm: 51.2rem;
+$screen-sm-min: $screen-sm;
+$screen-md: 66.133333333rem;
+$screen-md-min: $screen-md;
+$screen-lg: 80rem;
+$screen-lg-min: $screen-lg;
+$screen-xl: 94rem;
+$screen-xl-min: $screen-xl;
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-sm-max: ($screen-md-min - 1);
+$screen-md-max: ($screen-lg-min - 1);
+$screen-lg-max: ($screen-xl-min - 1);
+
+$grid-columns: 12;
+$grid-gutter-width: 2rem;
+$grid-float-breakpoint: $screen-sm-min;
+$grid-float-breakpoint-max: ($grid-float-breakpoint - 1);
+
+$cont-padding: 1%;
+$cont-padding-lg: 3%;
+$cont-width: 113rem;
+$container-tablet: (48rem + $grid-gutter-width);
+$container-sm: $container-tablet;
+$container-desktop: (62rem + $grid-gutter-width);
+$container-md: $container-desktop;
+$container-large-desktop: (76rem + $grid-gutter-width);
+$container-lg: $container-large-desktop;
