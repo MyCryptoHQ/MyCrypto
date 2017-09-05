@@ -96,19 +96,13 @@ export class BalanceSidebar extends React.Component {
             <ul className="account-info">
               {!!blockExplorer &&
                 <li>
-                  <a
-                    href={blockExplorer.address.replace('[[address]]', address)}
-                    target="_blank"
-                  >
+                  <a href={blockExplorer.address(address)} target="_blank">
                     {`${network.name} (${blockExplorer.name})`}
                   </a>
                 </li>}
               {!!tokenExplorer &&
                 <li>
-                  <a
-                    href={tokenExplorer.address.replace('[[address]]', address)}
-                    target="_blank"
-                  >
+                  <a href={tokenExplorer.address(address)} target="_blank">
                     {`Tokens (${tokenExplorer.name})`}
                   </a>
                 </li>}
