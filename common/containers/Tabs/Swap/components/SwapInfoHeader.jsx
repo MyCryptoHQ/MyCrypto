@@ -1,4 +1,5 @@
 // @flow
+import './SwapInfoHeader.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import type { RestartSwapAction } from 'actions/swapTypes';
@@ -15,31 +16,29 @@ class SwapInfoHeaderTitle extends Component {
 
   render() {
     return (
-      <section className="row text-center">
+      <section className="SwapInfo-top row text-center">
         <div className="col-xs-3 text-left">
           <button
-            className="btn btn-danger btn-xs"
+            className="SwapInfo-top-back"
             onClick={this.props.restartSwap}
           >
+            <i className="fa fa-arrow-left" />
             Start New Swap
           </button>
         </div>
-        <h5 className="col-xs-6">
-          {translate('SWAP_information')}
-        </h5>
+        <div className="col-xs-6">
+          <h3 className="SwapInfo-top-title">
+            {translate('SWAP_information')}
+          </h3>
+        </div>
         <div className="col-xs-3">
           <a
-            className="link"
+            className="SwapInfo-top-logo"
             href={bityReferralURL}
             target="_blank"
             rel="noopener"
           >
-            <img
-              className="pull-right"
-              src={bityLogo}
-              width={100}
-              height={38}
-            />
+            <img className="SwapInfo-top-logo-img" src={bityLogo} />
           </a>
         </div>
       </section>
@@ -71,9 +70,9 @@ export default class SwapInfoHeader extends Component {
 
   computedClass = () => {
     if (this.isExpanded()) {
-      return 'col-sm-3 order-info';
+      return 'SwapInfo-details-block col-sm-3';
     } else {
-      return 'col-sm-4 order-info';
+      return 'SwapInfo-details-block col-sm-4';
     }
   };
 
@@ -100,16 +99,16 @@ export default class SwapInfoHeader extends Component {
       restartSwap
     } = this.props;
     return (
-      <div>
+      <div className="SwapInfo">
         <SwapInfoHeaderTitle restartSwap={restartSwap} />
-        <section className="row order-info-wrap">
+        <section className="SwapInfo-details row">
           {/*Amount to send*/}
           {!this.isExpanded() &&
             <div className={this.computedClass()}>
-              <h4>
+              <h3 className="SwapInfo-details-block-value">
                 {` ${originAmount} ${originKind}`}
-              </h4>
-              <p>
+              </h3>
+              <p className="SwapInfo-details-block-label">
                 {translate('SEND_amount')}
               </p>
             </div>}
@@ -117,10 +116,10 @@ export default class SwapInfoHeader extends Component {
           {/*Reference Number*/}
           {this.isExpanded() &&
             <div className={this.computedClass()}>
-              <h4>
+              <h3 className="SwapInfo-details-block-value">
                 {reference}
-              </h4>
-              <p>
+              </h3>
+              <p className="SwapInfo-details-block-label">
                 {translate('SWAP_ref_num')}
               </p>
             </div>}
@@ -128,32 +127,32 @@ export default class SwapInfoHeader extends Component {
           {/*Time remaining*/}
           {this.isExpanded() &&
             <div className={this.computedClass()}>
-              <h4>
+              <h3 className="SwapInfo-details-block-value">
                 {this.formattedTime()}
-              </h4>
-              <p>
+              </h3>
+              <p className="SwapInfo-details-block-label">
                 {translate('SWAP_time')}
               </p>
             </div>}
 
           {/*Amount to Receive*/}
           <div className={this.computedClass()}>
-            <h4>
+            <h3 className="SwapInfo-details-block-value">
               {` ${destinationAmount} ${destinationKind}`}
-            </h4>
-            <p>
+            </h3>
+            <p className="SwapInfo-details-block-label">
               {translate('SWAP_rec_amt')}
             </p>
           </div>
 
           {/*Your rate*/}
           <div className={this.computedClass()}>
-            <h4>
-              {` ${toFixedIfLarger(
+            <h3 className="SwapInfo-details-block-value">
+              {`${toFixedIfLarger(
                 this.computedOriginDestinationRatio()
-              )} ${originKind}/${destinationKind} `}
-            </h4>
-            <p>
+              )} ${originKind}/${destinationKind}`}
+            </h3>
+            <p className="SwapInfo-details-block-label">
               {translate('SWAP_your_rate')}
             </p>
           </div>

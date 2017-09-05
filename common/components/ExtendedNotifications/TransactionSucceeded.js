@@ -1,5 +1,5 @@
 import React from 'react';
-import bityConfig from 'config/bity';
+import { ETHTxExplorer } from 'config/data';
 import translate from 'translations';
 export type TransactionSucceededProps = {
   txHash: string
@@ -7,7 +7,7 @@ export type TransactionSucceededProps = {
 
 const TransactionSucceeded = ({ txHash }: TransactionSucceededProps) => {
   // const checkTxLink = `https://www.myetherwallet.com?txHash=${txHash}/#check-tx-status`;
-  const txHashLink = bityConfig.ethExplorer.replace('[[txHash]]', txHash);
+  const txHashLink = ETHTxExplorer(txHash);
 
   return (
     <div>

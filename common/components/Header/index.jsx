@@ -61,7 +61,7 @@ export default class Header extends Component {
             </Link>
             <div className="Header-branding-title-tagline">
               <span className="Header-branding-title-tagline-version">
-                Open-Source & Client-Side Ether Wallet · v{VERSION}
+                v{VERSION}
               </span>
 
               <GasPriceDropdown

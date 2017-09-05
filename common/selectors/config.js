@@ -1,6 +1,6 @@
 // @flow
 import type { State } from 'reducers';
-import { BaseNode } from 'libs/nodes';
+import type { INode } from 'libs/nodes/INode';
 import { NODES, NETWORKS } from 'config/data';
 import type { NodeConfig, NetworkConfig, NetworkContract } from 'config/data';
 
@@ -12,7 +12,7 @@ export function getNodeConfig(state: State): NodeConfig {
   return NODES[state.config.nodeSelection];
 }
 
-export function getNodeLib(state: State): BaseNode {
+export function getNodeLib(state: State): INode {
   return NODES[state.config.nodeSelection].lib;
 }
 

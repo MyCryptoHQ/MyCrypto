@@ -27,9 +27,10 @@ export default class DropdownComponent<T: *> extends Component<
 
   render() {
     const { options, value, ariaLabel, extra } = this.props;
+    const { expanded } = this.state;
 
     return (
-      <span className="dropdown">
+      <span className={`dropdown ${expanded ? 'open' : ''}`}>
         <a
           tabIndex="0"
           aria-haspopup="true"
@@ -41,7 +42,7 @@ export default class DropdownComponent<T: *> extends Component<
           {this.formatTitle(value)}
           <i className="caret" />
         </a>
-        {this.state.expanded &&
+        {expanded &&
           <ul className="dropdown-menu">
             {options.map((option, i) => {
               return (

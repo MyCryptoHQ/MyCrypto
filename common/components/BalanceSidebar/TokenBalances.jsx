@@ -45,13 +45,13 @@ export default class TokenBalances extends React.Component {
           </tbody>
         </table>
         <a
-          className="btn btn-default btn-sm"
+          className="btn btn-default btn-xs"
           onClick={this.toggleShowAllTokens}
         >
           {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
         </a>{' '}
         <a
-          className="btn btn-default btn-sm"
+          className="btn btn-default btn-xs"
           onClick={this.toggleShowCustomTokenForm}
         >
           <span>

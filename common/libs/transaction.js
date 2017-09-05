@@ -6,7 +6,7 @@ import { isValidETHAddress } from 'libs/validators';
 import ERC20 from 'libs/erc20';
 import { toTokenUnit } from 'libs/units';
 import { stripHex } from 'libs/values';
-import type BaseNode from 'libs/nodes/base';
+import type { INode } from 'libs/nodes/INode';
 import type { BaseWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
 import type EthTx from 'ethereumjs-tx';
@@ -79,7 +79,7 @@ export function getTransactionFields(tx: EthTx) {
 }
 
 export async function generateCompleteTransactionFromRawTransaction(
-  node: BaseNode,
+  node: INode,
   tx: ExtendedRawTransaction,
   wallet: BaseWallet,
   token: ?Token

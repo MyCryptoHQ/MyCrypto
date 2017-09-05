@@ -1,0 +1,83 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+$top-height: 40px;
+
+.SwapInfo {
+  &-top {
+    margin: 0;
+    padding-bottom: $space / 2;
+
+    &-back {
+      @include reset-button;
+      line-height: $top-height;
+      font-size: $font-size-small;
+      color: $gray-light;
+      opacity: 0.7;
+
+      &:hover {
+        color: $gray-dark;
+        opacity: 1;
+      }
+
+      .fa {
+        margin-right: 6px;
+      }
+    }
+
+    &-title {
+      margin: 0;
+      line-height: $top-height;
+    }
+
+    &-logo {
+      float: right;
+
+      &-img {
+        width: auto;
+        height: $top-height - 4px;
+      }
+    }
+  }
+
+  &-details {
+    margin: 0 0 $space * 2;
+
+    &-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      min-height: 100px;
+      text-align: center;
+      padding: 1.2rem 0;
+      color: #fff;
+
+      &:nth-child(4n + 1) {
+        background-color: #175575;
+      }
+      &:nth-child(4n + 2) {
+        background-color: #1e92ba;
+      }
+      &:nth-child(4n + 3) {
+        background-color: #143955;
+      }
+      &:nth-child(4n + 4) {
+        background-color: #19b3ae;
+      }
+
+      &-value,
+      &-label {
+        margin: 0;
+      }
+
+      &-value {
+        @include ellipsis;
+        padding: 0 .5rem;
+      }
+
+      &-label {
+        font-weight: 100;
+      }
+    }
+  }
+}

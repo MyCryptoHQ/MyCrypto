@@ -1,4 +1,5 @@
 //flow
+import './SwapProgress.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import bityConfig from 'config/bity';
@@ -43,7 +44,7 @@ export default class SwapProgress extends Component {
         const notificationMessage = translate('SUCCESS_3', true) + outputTx;
         // everything but BTC is a token
         if (destinationKind !== 'BTC') {
-          link = bityConfig.ethExplorer.replace('[[txHash]]', outputTx);
+          link = bityConfig.ETHTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
               ${notificationMessage}
@@ -51,7 +52,7 @@ export default class SwapProgress extends Component {
           );
           // BTC uses a different explorer
         } else {
-          link = bityConfig.btcExplorer.replace('[[txHash]]', outputTx);
+          link = bityConfig.BTCTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
               ${notificationMessage}
@@ -68,27 +69,27 @@ export default class SwapProgress extends Component {
   computedClass = (step: number) => {
     const { orderStatus } = this.props;
 
-    let cssClass = 'progress-item';
+    let cssClass = 'SwapProgress-item';
 
     switch (orderStatus) {
       case 'OPEN':
         if (step < 2) {
-          return cssClass + ' progress-true';
+          return cssClass + ' is-complete';
         } else if (step === 2) {
-          return cssClass + ' progress-active';
+          return cssClass + ' is-active';
         } else {
           return cssClass;
         }
       case 'RCVE':
         if (step < 4) {
-          return cssClass + ' progress-true';
+          return cssClass + ' is-complete';
         } else if (step === 4) {
-          return cssClass + ' progress-active';
+          return cssClass + ' is-active';
         } else {
           return cssClass;
         }
       case 'FILL':
-        cssClass += ' progress-true';
+        cssClass += ' is-complete';
         return cssClass;
       case 'CANC':
         return cssClass;
@@ -99,56 +100,46 @@ export default class SwapProgress extends Component {
 
   render() {
     const { destinationKind, originKind } = this.props;
-
     const numberOfConfirmations = originKind === 'BTC' ? '3' : '10';
-    return (
-      <section className="row swap-progress">
-        <div className="sep" />
+    const steps = [
+      // 1
+      translate('SWAP_progress_1'),
+      // 2
+      <span>
+        {translate('SWAP_progress_2')} {originKind}...
+      </span>,
+      // 3
+      <span>
+        {originKind} {translate('SWAP_progress_3')}
+      </span>,
+      // 4 TODO: Translate me
+      <span>
+        Sending your {destinationKind}
+        <br />
+        <small>Waiting for {numberOfConfirmations} confirmations...</small>
+      </span>,
+      // 5
+      translate('SWAP_progress_5')
+    ];
 
-        <div className={this.computedClass(1)}>
-          <div className="progress-circle">
-            <i>1</i>
-          </div>
-          <p>
-            {translate('SWAP_progress_1')}
-          </p>
-        </div>
-        <div className={this.computedClass(2)}>
-          <div className="progress-circle">
-            <i>2</i>
-          </div>
-          <p>
-            <span>{translate('SWAP_progress_2')}</span>
-            {originKind}...
-          </p>
-        </div>
-        <div className={this.computedClass(3)}>
-          <div className="progress-circle">
-            <i>3</i>
-          </div>
-          <p>
-            {originKind} <span>{translate('SWAP_progress_3')}</span>
-          </p>
-        </div>
-        <div className={this.computedClass(4)}>
-          <div className="progress-circle">
-            <i>4</i>
-          </div>
-          <p>
-            <span>Sending your </span>
-            {destinationKind}
-            <br />
-            <small>
-              Waiting for {numberOfConfirmations} confirmations...
-            </small>
-          </p>
-        </div>
-        <div className={this.computedClass(5)}>
-          <div className="progress-circle">
-            <i>5</i>
-          </div>
-          <p>Order Complete</p>
-        </div>
+    return (
+      <section className="SwapProgress">
+        <div className="SwapProgress-track" />
+
+        {steps.map((text, idx) => {
+          return (
+            <div key={idx} className={this.computedClass(idx + 1)}>
+              <div className={`SwapProgress-item-circle position-${idx + 1}`}>
+                <span className="SwapProgress-item-circle-number">
+                  {idx + 1}
+                </span>
+              </div>
+              <p className="SwapProgress-item-text">
+                {text}
+              </p>
+            </div>
+          );
+        })}
       </section>
     );
   }
