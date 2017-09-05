@@ -23,16 +23,16 @@ module.exports = {
       'During times of high volume (like during ICOs) transactions can be pending for hours, if not days. This tool aims to give you the ability to find and "cancel" / replace these TXs. ** This is not typically something you can do. It should not be relied upon & will only work when the TX Pools are full. [Please, read about this tool here.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**',
     tx_notFound: 'Transaction Not Found',
     tx_notFound_1:
-      'This TX cannot be found in the TX Pool of the node you are connected to.',
+      'This TX cannot be found in the TX Pool of the network you are connected to.',
     tx_notFound_2:
       'If you just sent the transaction, please wait 15 seconds and press the "Check TX Status" button again. ',
     tx_notFound_3:
-      'It could still be in the TX Pool of a different node, waiting to be mined.',
+      'It could still be in the TX Pool of a different network, waiting to be mined.',
     tx_notFound_4:
-      'Please use the dropdown in the top-right & select a different ETH node (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyEtherWallet)`) and check again.',
+      'Please use the dropdown in the top-right & select a different ETH network (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyEtherWallet)`) and check again.',
     tx_foundInPending: 'Pending Transaction Found',
     tx_foundInPending_1:
-      'Your transaction was located in the TX Pool of the node you are connected to. ',
+      'Your transaction was located in the TX Pool of the network you are connected to. ',
     tx_foundInPending_2: 'It is currently pending (waiting to be mined). ',
     tx_foundInPending_3:
       'There is a chance you can "cancel" or replace this transaction. Unlock your wallet below.',
@@ -339,14 +339,14 @@ module.exports = {
     DEP_signtx: 'Sign Transaction ',
     DEP_interface: 'Generated Interface ',
 
-    /* Node Switcher */
-    NODE_Title: 'Set Up Your Custom Node',
-    NODE_Subtitle: 'To connect to a local node...',
+    /* Node Switcher / Network Selector */
+    NODE_Title: 'Set Up Your Custom Network',
+    NODE_Subtitle: 'To connect to a local network...',
     NODE_Warning:
-      'Your node must be HTTPS in order to connect to it via MyEtherWallet.com. You can [download the MyEtherWallet repo & run it locally](https://github.com/kvhnuke/etherwallet/releases/latest) to connect to any node. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)',
-    NODE_Name: 'Node Name',
-    NODE_Port: 'Node Port',
-    NODE_CTA: 'Save & Use Custom Node',
+      'Your network must be HTTPS in order to connect to it via MyEtherWallet.com. You can [download the MyEtherWallet repo & run it locally](https://github.com/kvhnuke/etherwallet/releases/latest) to connect to any newtork. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)',
+    NODE_Name: 'Network Name',
+    NODE_Port: 'Network Port',
+    NODE_CTA: 'Save & Use Custom Network',
 
     /* Swap / Exchange */
     SWAP_rates: 'Current Rates ',
@@ -429,7 +429,7 @@ module.exports = {
     ERROR_20: 'Not a valid ERC-20 token', // 20
     ERROR_21:
       'Could not estimate gas. There are not enough funds in the account, or the receiving contract address would throw an error. Feel free to manually set the gas and proceed. The error message upon sending may be more informative.', // 21
-    ERROR_22: 'Please enter a valid node name', // 22
+    ERROR_22: 'Please enter a valid network name', // 22
     ERROR_23:
       'Please enter a valid URL. If you are on https, your URL must be https', // 23
     ERROR_24: 'Please enter a valid port. ', // 24
@@ -442,7 +442,7 @@ module.exports = {
     ERROR_30: 'Please enter a valid name (7+ characters, limited punctuation) ', // 30
     ERROR_31: 'Please enter a valid secret phrase. ', // 31
     ERROR_32:
-      'Could not connect to the node. Refresh your page, try a different node (upper right corner), check your firewall settings. If custom node, check your configs.', // 32
+      'Could not connect to the network. Refresh your page, try a different network (upper right corner), check your firewall settings. If custom network, check your configs.', // 32
     ERROR_33:
       "The wallet you have unlocked does not match the owner's address. ", // 33
     ERROR_34:
@@ -484,7 +484,7 @@ module.exports = {
     PARITY_LimitReached:
       'There are too many transactions in the queue. Your transaction was dropped due to limit. Try increasing the fee.',
     PARITY_InsufficientGasPrice:
-      "Transaction fee is too low. It does not satisfy your node's minimal fee (minimal: {}, got: {}). Try increasing the fee.",
+      "Transaction fee is too low. It does not satisfy your network's minimal fee (minimal: {}, got: {}). Try increasing the fee.",
     PARITY_InsufficientBalance:
       'Insufficient funds. Account you try to send transaction from does not have enough funds. Required {} wei and got: {} wei.',
     PARITY_GasLimitExceeded:
@@ -848,7 +848,7 @@ module.exports = {
     HELP_Sec_Desc_6:
       'Generate a test wallet and check and see what network activity is happening. The easiest way for you to do this is to right click on the page and click "inspect element". Go to the "Network" tab. Generate a test wallet. You will see there is no network activity. You may see something happening that looks like data:image/gif and data:image/png. Those are the QR codes being generated...on your computer...by your computer. No bytes were transferred. ',
     HELP_Sec_Desc_8:
-      'If you do not feel comfortable using this tool, then by all means, do not use it. We created this tool as a helpful way for people to generate wallets and make transactions without needing to dive into command line or run a full node. Again, feel free to reach out if you have concerns and we will respond as quickly as possible. Thanks! ',
+      'If you do not feel comfortable using this tool, then by all means, do not use it. We created this tool as a helpful way for people to generate wallets and make transactions without needing to dive into command line or run a full network. Again, feel free to reach out if you have concerns and we will respond as quickly as possible. Thanks! ',
 
     HELP_FAQ_Title: 'More Helpful Answers to Frequent Questions ',
     HELP_Contact_Title: 'Ways to Get in Touch '
