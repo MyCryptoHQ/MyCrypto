@@ -338,9 +338,7 @@ export class SendTransaction extends React.Component {
     );
   }
 
-  async getGasEstimationCallParamsFromState(): Promise<
-    GasEstimationCallParams
-  > {
+  async getFormattedTxFromState(): Promise<GasEstimationCallParams> {
     const { wallet } = this.props;
     const { token, unit, value, to, data } = this.state;
     const transactionInput: TransactionInput = {
@@ -356,7 +354,7 @@ export class SendTransaction extends React.Component {
   async estimateGas() {
     if (!isNaN(parseInt(this.state.value))) {
       try {
-        const transactionWithoutGas = await this.getGasEstimationCallParamsFromState();
+        const transactionWithoutGas = await this.getFormattedTxFromState();
         // Grab a reference to state. If it has changed by the time the estimateGas
         // call comes back, we don't want to replace the gasLimit in state.
         const state = this.state;
