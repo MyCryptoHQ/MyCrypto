@@ -281,13 +281,7 @@ export class SendTransaction extends React.Component {
           {/* Sidebar */}
           {unlocked &&
             <section className="col-sm-4">
-              <div className="Tab-content-pane">
-                <div>
-                  <BalanceSidebar />
-                  <hr />
-                  <Donate onDonate={this.onNewTx} />
-                </div>
-              </div>
+              <BalanceSidebar />
             </section>}
         </div>
 
