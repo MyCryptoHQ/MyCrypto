@@ -1,4 +1,5 @@
 // @flow
+import './index.scss';
 import React from 'react';
 import translate from 'translations';
 import TokenRow from './TokenRow';
@@ -21,45 +22,50 @@ export default class TokenBalances extends React.Component {
 
   render() {
     const { tokens } = this.props;
+    const shownTokens = tokens.filter(
+      token => !token.balance.eq(0) || token.custom || this.state.showAllTokens
+    );
+
     return (
-      <section className="token-balances">
-        <h5>{translate('sidebar_TokenBal')}</h5>
-        <table className="account-info">
+      <section className="TokenBalances">
+        <h5>
+          {translate('sidebar_TokenBal')}
+        </h5>
+        <table className="TokenBalances-rows">
           <tbody>
-            {tokens
-              .filter(
-                token =>
-                  !token.balance.eq(0) ||
-                  token.custom ||
-                  this.state.showAllTokens
-              )
-              .map(token =>
-                <TokenRow
-                  key={token.symbol}
-                  balance={token.balance}
-                  symbol={token.symbol}
-                  custom={token.custom}
-                  onRemove={this.props.onRemoveCustomToken}
-                />
-              )}
+            {shownTokens.map(token =>
+              <TokenRow
+                key={token.symbol}
+                balance={token.balance}
+                symbol={token.symbol}
+                custom={token.custom}
+                onRemove={this.props.onRemoveCustomToken}
+              />
+            )}
           </tbody>
         </table>
-        <a
-          className="btn btn-default btn-xs"
-          onClick={this.toggleShowAllTokens}
-        >
-          {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
-        </a>{' '}
-        <a
-          className="btn btn-default btn-xs"
-          onClick={this.toggleShowCustomTokenForm}
-        >
-          <span>
-            {translate('SEND_custom')}
-          </span>
-        </a>
+
+        <div className="TokenBalances-buttons">
+          <button
+            className="btn btn-default btn-xs"
+            onClick={this.toggleShowAllTokens}
+          >
+            {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
+          </button>{' '}
+          <button
+            className="btn btn-default btn-xs"
+            onClick={this.toggleShowCustomTokenForm}
+          >
+            <span>
+              {translate('SEND_custom')}
+            </span>
+          </button>
+        </div>
+
         {this.state.showCustomTokenForm &&
-          <AddCustomTokenForm onSave={this.addCustomToken} />}
+          <div className="TokenBalances-form">
+            <AddCustomTokenForm onSave={this.addCustomToken} />
+          </div>}
       </section>
     );
   }

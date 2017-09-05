@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import classnames from 'classnames';
 import { isValidETHAddress, isPositiveIntegerOrZero } from 'libs/validators';
 import translate from 'translations';
 
@@ -14,92 +15,94 @@ export default class AddCustomTokenForm extends React.Component {
   };
 
   render() {
+    const { address, symbol, decimal } = this.state;
+    const inputClasses = 'AddCustom-field-input form-control input-sm';
+    const errors = this.getErrors();
+
+    const fields = [
+      {
+        name: 'address',
+        value: address,
+        label: translate('TOKEN_Addr')
+      },
+      {
+        name: 'symbol',
+        value: symbol,
+        label: translate('TOKEN_Symbol')
+      },
+      {
+        name: 'decimal',
+        value: decimal,
+        label: translate('TOKEN_Dec')
+      }
+    ];
+
     return (
-      <div className="custom-token-fields">
-        <label>
-          {translate('TOKEN_Addr')}
-        </label>
-        <input
-          className={
-            'form-control input-sm ' +
-            (isValidETHAddress(this.state.address) ? 'is-valid' : 'is-invalid')
-          }
-          type="text"
-          name="address"
-          value={this.state.address}
-          onChange={this.onFieldChange}
-        />
-        <label>
-          {translate('TOKEN_Symbol')}
-        </label>
-        <input
-          className={
-            'form-control input-sm ' +
-            (this.state.symbol !== '' ? 'is-valid' : 'is-invalid')
-          }
-          type="text"
-          name="symbol"
-          value={this.state.symbol}
-          onChange={this.onFieldChange}
-        />
-        <label>
-          {translate('TOKEN_Dec')}
-        </label>
-        <input
-          className={
-            'form-control input-sm ' +
-            (isPositiveIntegerOrZero(parseInt(this.state.decimal))
-              ? 'is-valid'
-              : 'is-invalid')
-          }
-          type="text"
-          name="decimal"
-          value={this.state.decimal}
-          onChange={this.onFieldChange}
-        />
-        <div
-          className={`btn btn-primary btn-sm ${this.isValid()
-            ? ''
-            : 'disabled'}`}
-          onClick={this.onSave}
+      <form className="AddCustom" onSubmit={this.onSave}>
+        {fields.map(field => {
+          return (
+            <label className="AddCustom-field form-group" key={field.name}>
+              <span className="AddCustom-field-label">
+                {field.label}
+              </span>
+              <input
+                className={classnames(
+                  inputClasses,
+                  errors[field.name] ? 'is-invalid' : 'is-valid'
+                )}
+                type="text"
+                name={field.name}
+                value={field.value}
+                onChange={this.onFieldChange}
+              />
+            </label>
+          );
+        })}
+
+        <button
+          className="btn btn-primary btn-sm btn-block"
+          disabled={this.isValid()}
         >
           {translate('x_Save')}
-        </div>
-      </div>
+        </button>
+      </form>
     );
   }
 
-  isValid() {
+  getErrors() {
     const { address, symbol, decimal } = this.state;
-    if (!isPositiveIntegerOrZero(parseInt(decimal))) {
-      return false;
+    const errors = {};
+
+    if (!isPositiveIntegerOrZero(parseInt(decimal, 10))) {
+      errors.decimal = true;
     }
     if (!isValidETHAddress(address)) {
-      return false;
+      errors.address = true;
     }
-    if (symbol === '') {
-      return false;
+    if (!symbol) {
+      errors.symbol = true;
     }
 
-    return true;
+    return errors;
+  }
+
+  isValid() {
+    return !Object.keys(this.getErrors()).length;
   }
 
   onFieldChange = (e: SyntheticInputEvent) => {
     var name = e.target.name;
     var value = e.target.value;
-    this.setState(state => {
-      var newState = Object.assign({}, state);
-      newState[name] = value;
-      return newState;
-    });
+    this.setState({ [name]: value });
   };
 
-  onSave = () => {
+  onSave = (ev: SyntheticInputEvent) => {
+    ev.preventDefault();
     if (!this.isValid()) {
       return;
     }
-    const { address, symbol, decimal } = this.state;
 
-    this.props.onSave({ address, symbol, decimal: parseInt(decimal) });
+    const { address, symbol, decimal } = this.state;
+    this.props.onSave({ address, symbol, decimal: parseInt(decimal, 10) });
   };
 }

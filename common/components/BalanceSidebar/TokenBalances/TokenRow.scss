@@ -1,0 +1,19 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.TokenRow {
+  border-bottom: 1px solid $gray-lighter;
+
+  &-balance,
+  &-symbol {
+    padding: $space-xs 0 $space-xs $space-md;
+  }
+
+  &-balance {
+    @include mono;
+  }
+
+  &-symbol {
+    font-weight: 300;
+  }
+}
