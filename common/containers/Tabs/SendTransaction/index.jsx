@@ -13,7 +13,7 @@ import {
 } from 'selectors/config';
 import {
   getTokenBalances,
-  getTxFromSignedTransactionStatuss
+  getTxFromBroadcastTransactionStatus
 } from 'selectors/wallet';
 import { getTokens } from 'selectors/wallet';
 import type { TokenBalance } from 'selectors/wallet';
@@ -45,7 +45,7 @@ import BaseWallet from 'libs/wallet/base';
 import { isValidETHAddress } from 'libs/validators';
 import type { RPCNode } from 'libs/nodes';
 import type {
-  SignedTransactionStatus,
+  BroadcastTransactionStatus,
   TransactionInput,
   CompleteTransaction
 } from 'libs/transaction';
@@ -107,7 +107,7 @@ type Props = {
     msg: string,
     duration?: number
   ) => ShowNotificationAction,
-  transactions: Array<SignedTransactionStatus>
+  transactions: Array<BroadcastTransactionStatus>
 };
 
 const initialState = {
@@ -160,7 +160,7 @@ export class SendTransaction extends React.Component {
     const componentStateTransaction = this.state.transaction;
     if (componentStateTransaction) {
       // lives in redux state
-      const currentTxAsSignedTransaction = getTxFromSignedTransactionStatuss(
+      const currentTxAsSignedTransaction = getTxFromBroadcastTransactionStatus(
         this.props.transactions,
         componentStateTransaction.signedTx
       );

@@ -24,7 +24,7 @@ export type TransactionInput = {
   data: string
 };
 
-export type SignedTransactionStatus = {
+export type BroadcastTransactionStatus = {
   isBroadcasting: boolean,
   signedTx: string,
   successfullyBroadcast: boolean

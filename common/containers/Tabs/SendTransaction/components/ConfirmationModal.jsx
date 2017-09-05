@@ -17,7 +17,7 @@ import type { Token, NetworkConfig } from 'config/data';
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 import Spinner from 'components/ui/Spinner';
-import type { SignedTransactionStatus } from 'libs/transaction';
+import type { BroadcastTransactionStatus } from 'libs/transaction';
 
 type Props = {
   signedTx: string,
@@ -29,7 +29,7 @@ type Props = {
   onConfirm: (string, EthTx) => void,
   onClose: () => void,
   lang: string,
-  broadCastStatusTx: SignedTransactionStatus
+  broadCastStatusTx: BroadcastTransactionStatus
 };
 
 type State = {
