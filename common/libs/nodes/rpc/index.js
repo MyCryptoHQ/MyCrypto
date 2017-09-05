@@ -1,7 +1,7 @@
 // @flow
 import Big from 'bignumber.js';
 import type { INode } from '../INode';
-import type { TransactionWithoutGas } from 'libs/transaction';
+import type { TransactionWithoutGas } from 'libs/messages';
 import RPCClient, {
   getBalance,
   estimateGas,
@@ -39,7 +39,7 @@ export default class RpcNode implements INode {
     return this.client.call(getTokenBalance(address, token)).then(response => {
       if (response.error) {
         // TODO - Error handling
-        return Big(0);
+        return new Big(0);
       }
       return new Big(String(response.result)).div(
         new Big(10).pow(token.decimal)
