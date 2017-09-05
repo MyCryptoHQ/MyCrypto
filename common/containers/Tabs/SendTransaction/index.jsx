@@ -49,7 +49,7 @@ import type {
   TransactionInput,
   CompleteTransaction
 } from 'libs/transaction';
-import type { GasEstimationCallParams } from 'libs/messages';
+import type { GasEstimationTransaction } from 'libs/messages';
 import type { UNIT } from 'libs/units';
 import { toWei } from 'libs/units';
 import {
@@ -338,7 +338,7 @@ export class SendTransaction extends React.Component {
     );
   }
 
-  async getFormattedTxFromState(): Promise<GasEstimationCallParams> {
+  async getFormattedTxFromState(): Promise<GasEstimationTransaction> {
     const { wallet } = this.props;
     const { token, unit, value, to, data } = this.state;
     const transactionInput: TransactionInput = {
