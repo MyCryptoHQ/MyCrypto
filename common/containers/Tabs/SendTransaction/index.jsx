@@ -154,7 +154,7 @@ export class SendTransaction extends React.Component {
         this.estimateGas();
       }
     }
-    if (this.state.generateDisabled !== !this.isValid()) {
+    if (this.state.generateDisabled === this.isValid()) {
       this.setState({ generateDisabled: !this.isValid() });
     }
     const componentStateTransaction = this.state.transaction;
@@ -350,24 +350,23 @@ export class SendTransaction extends React.Component {
   }
 
   async estimateGas() {
-    if (!isNaN(parseInt(this.state.value))) {
-      try {
-        const transactionWithoutGas = await this.getFormattedTxFromState();
-        // Grab a reference to state. If it has changed by the time the estimateGas
-        // call comes back, we don't want to replace the gasLimit in state.
-        const state = this.state;
-        const gasLimit = await this.props.nodeLib.estimateGas(
-          transactionWithoutGas
-        );
-        if (this.state === state) {
-          this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
-        } else {
-          // state has changed, so try again from the start (with the hope that state won't change by the next time)
-          this.estimateGas();
-        }
-      } catch (error) {
-        this.props.showNotification('danger', error.message, 5000);
+    if (isNaN(parseInt(this.state.value))) {
+      return;
+    }
+    try {
+      const cachedFormattedTx = await this.getFormattedTxFromState();
+      // Grab a reference to state. If it has changed by the time the estimateGas
+      // call comes back, we don't want to replace the gasLimit in state.
+      const state = this.state;
+      const gasLimit = await this.props.nodeLib.estimateGas(cachedFormattedTx);
+      if (this.state === state) {
+        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+      } else {
+        // state has changed, so try again from the start (with the hope that state won't change by the next time)
+        this.estimateGas();
       }
+    } catch (error) {
+      this.props.showNotification('danger', error.message, 5000);
     }
   }
 

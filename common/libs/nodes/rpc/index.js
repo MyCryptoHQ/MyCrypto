@@ -1,7 +1,7 @@
 // @flow
 import Big from 'bignumber.js';
 import type { INode } from '../INode';
-import type { TransactionWithoutGas } from 'libs/transaction';
+import type { TransactionWithoutGas } from 'libs/messages';
 import RPCClient, {
   getBalance,
   estimateGas,
