@@ -19,10 +19,14 @@ const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
 const ethPlorer = 'https://ethplorer.io';
 
-export const ETHTxExplorer = `${etherScan}/tx/[[txHash]]`;
-export const BTCTxExplorer = `${blockChainInfo}/tx/[[txHash]]`;
-export const ETHAddressExplorer = `${etherScan}/address/[[address]]`;
-export const ETHTokenExplorer = `${ethPlorer}/address/[[address]]`;
+export const ETHTxExplorer = (txHash: string): string =>
+  `${etherScan}/tx/${txHash}`;
+export const BTCTxExplorer = (txHash: string): string =>
+  `${blockChainInfo}/tx/${txHash}`;
+export const ETHAddressExplorer = (address: string): string =>
+  `${etherScan}/address/${address}`;
+export const ETHTokenExplorer = (address: string): string =>
+  `${ethPlorer}/address/${address}`;
 
 export const donationAddressMap = {
   BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
@@ -149,12 +153,12 @@ export type NetworkConfig = {
   unit: string,
   blockExplorer?: {
     name: string,
-    tx: string,
-    address: string
+    tx: Function,
+    address: Function
   },
   tokenExplorer?: {
     name: string,
-    address: string
+    address: Function
   },
   chainId: number,
   tokens: Token[],

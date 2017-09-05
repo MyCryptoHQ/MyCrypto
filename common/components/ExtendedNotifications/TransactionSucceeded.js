@@ -7,7 +7,7 @@ export type TransactionSucceededProps = {
 
 const TransactionSucceeded = ({ txHash }: TransactionSucceededProps) => {
   // const checkTxLink = `https://www.myetherwallet.com?txHash=${txHash}/#check-tx-status`;
-  const txHashLink = ETHTxExplorer.replace('[[txHash]]', txHash);
+  const txHashLink = ETHTxExplorer(txHash);
 
   return (
     <div>
