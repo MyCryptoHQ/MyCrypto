@@ -58,8 +58,11 @@
     margin: $font-size-small 0 0;
 
     i {
-      margin-left: -1.5em;
       margin-right: .25em;
+
+      @media (min-width: $screen-sm-min) {
+        margin-left: -1.5em;
+      }
     }
   }
 
