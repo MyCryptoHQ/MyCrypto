@@ -1,5 +1,5 @@
 // don't use flow temporarily
-import type { GasEstimationTransaction } from 'libs/messages';
+import type { TransactionWithoutGas } from 'libs/messages';
 
 type DATA = string;
 type QUANTITY = string;
@@ -68,7 +68,7 @@ export type CallRequest = RPCRequestBase & {
 
 export type EstimateGasRequest = RPCRequestBase & {
   method: 'eth_estimateGas',
-  params: [GasEstimationTransaction]
+  params: [TransactionWithoutGas]
 };
 
 export type GetTransactionCountRequest = RPCRequestBase & {

@@ -1,7 +1,7 @@
 // @flow
 import Big from 'bignumber.js';
 import BaseNode from '../base';
-import type { GasEstimationTransaction } from 'libs/messages';
+import type { TransactionWithoutGas } from 'libs/messages';
 import RPCClient, {
   getBalance,
   estimateGas,
@@ -27,7 +27,7 @@ export default class RpcNode extends BaseNode {
     });
   }
 
-  async estimateGas(transaction: GasEstimationTransaction): Promise<Big> {
+  async estimateGas(transaction: TransactionWithoutGas): Promise<Big> {
     return this.client.call(estimateGas(transaction)).then(response => {
       if (response.error) {
         throw new Error(response.error.message);

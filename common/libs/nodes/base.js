@@ -1,6 +1,6 @@
 // @flow
 import Big from 'bignumber.js';
-import type { GasEstimationTransaction } from 'libs/messages';
+import type { TransactionWithoutGas } from 'libs/messages';
 import type { Token } from 'config/data';
 
 export default class BaseNode {
@@ -16,7 +16,7 @@ export default class BaseNode {
     throw new Error('Implement me');
   }
 
-  async estimateGas(_tx: GasEstimationTransaction): Promise<Big> {
+  async estimateGas(_tx: TransactionWithoutGas): Promise<Big> {
     throw new Error('Implement me');
   }
 

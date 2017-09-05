@@ -14,7 +14,7 @@ import { toUnit } from 'libs/units';
 import { valueToHex } from 'libs/values';
 import type { UNIT } from 'libs/units';
 import { RPCNode } from 'libs/nodes';
-import { GasEstimationTransaction } from 'libs/messages';
+import { TransactionWithoutGas } from 'libs/messages';
 
 export type TransactionInput = {
   token: ?Token,
@@ -169,7 +169,7 @@ export async function generateCompleteTransactionFromRawTransaction(
 export async function formatTxInput(
   wallet: BaseWallet,
   { token, unit, value, to, data }: TransactionInput
-): Promise<GasEstimationTransaction> {
+): Promise<TransactionWithoutGas> {
   if (unit === 'ether') {
     return {
       to,
