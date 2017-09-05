@@ -65,14 +65,14 @@ class Contracts extends Component {
           <h1 className="Contracts-header">
             <button
               className={`Contracts-header-tab ${interactActive}`}
-              onClick={this.changeTab.bind(this, 'interact')}
+              onClick={() => this.changeTab('interact')}
             >
               {translate('NAV_InteractContract')}
             </button>{' '}
             <span>or</span>{' '}
             <button
               className={`Contracts-header-tab ${deployActive}`}
-              onClick={this.changeTab.bind(this, 'deploy')}
+              onClick={() => this.changeTab('deploy')}
             >
               {translate('NAV_DeployContract')}
             </button>
