@@ -168,49 +168,52 @@ export default class CurrencySwap extends Component {
         <h1 className="CurrencySwap-title">
           {translate('SWAP_init_1')}
         </h1>
-        <input
-          className={`CurrencySwap-input form-control ${originAmount !== '' &&
-          this.isMinMaxValid(originAmount, originKind)
-            ? 'is-valid'
-            : 'is-invalid'}`}
-          type="number"
-          placeholder="Amount"
-          value={
-            parseFloat(originAmount) === 0 ? originAmount : originAmount || ''
-          }
-          onChange={this.onChangeOriginAmount}
-        />
 
-        <SimpleDropDown
-          value={originKind}
-          onChange={this.onChangeOriginKind.bind(this)}
-          options={originKindOptions}
-        />
+        <div className="form-inline">
+          <input
+            className={`CurrencySwap-input form-control ${originAmount !== '' &&
+            this.isMinMaxValid(originAmount, originKind)
+              ? 'is-valid'
+              : 'is-invalid'}`}
+            type="number"
+            placeholder="Amount"
+            value={
+              parseFloat(originAmount) === 0 ? originAmount : originAmount || ''
+            }
+            onChange={this.onChangeOriginAmount}
+          />
 
-        <h1 className="CurrencySwap-divider">
-          {translate('SWAP_init_2')}
-        </h1>
+          <SimpleDropDown
+            value={originKind}
+            onChange={this.onChangeOriginKind.bind(this)}
+            options={originKindOptions}
+          />
 
-        <input
-          className={`CurrencySwap-input form-control ${destinationAmount !==
-            '' && this.isMinMaxValid(originAmount, originKind)
-            ? 'is-valid'
-            : 'is-invalid'}`}
-          type="number"
-          placeholder="Amount"
-          value={
-            parseFloat(destinationAmount) === 0
-              ? destinationAmount
-              : destinationAmount || ''
-          }
-          onChange={this.onChangeDestinationAmount}
-        />
+          <h1 className="CurrencySwap-divider">
+            {translate('SWAP_init_2')}
+          </h1>
 
-        <SimpleDropDown
-          value={destinationKind}
-          onChange={this.onChangeDestinationKind}
-          options={destinationKindOptions}
-        />
+          <input
+            className={`CurrencySwap-input form-control ${destinationAmount !==
+              '' && this.isMinMaxValid(originAmount, originKind)
+              ? 'is-valid'
+              : 'is-invalid'}`}
+            type="number"
+            placeholder="Amount"
+            value={
+              parseFloat(destinationAmount) === 0
+                ? destinationAmount
+                : destinationAmount || ''
+            }
+            onChange={this.onChangeDestinationAmount}
+          />
+
+          <SimpleDropDown
+            value={destinationKind}
+            onChange={this.onChangeDestinationKind}
+            options={destinationKindOptions}
+          />
+        </div>
 
         <div className="CurrencySwap-submit">
           <SimpleButton

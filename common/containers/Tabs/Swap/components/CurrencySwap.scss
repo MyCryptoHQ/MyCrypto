@@ -17,12 +17,13 @@
   &-input {
     width: 100%;
     max-width: 10rem;
+    margin-right: $space-sm;
   }
 
   &-divider {
     height: $input-height-base;
     line-height: $input-height-base;
-    margin: 0 15px;
+    margin: 0 $space * 2;
     font-weight: 100;
   }
 
