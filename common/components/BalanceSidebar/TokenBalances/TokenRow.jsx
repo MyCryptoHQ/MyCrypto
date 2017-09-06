@@ -32,6 +32,7 @@ export default class TokenRow extends React.Component {
               className="TokenRow-balance-remove"
               title="Remove Token"
               onClick={this.onRemove}
+              tabIndex="0"
             />}
           <span>
             {showLongBalance ? balance.toString() : formatNumber(balance)}

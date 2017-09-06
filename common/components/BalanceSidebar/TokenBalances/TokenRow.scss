@@ -11,6 +11,18 @@
 
   &-balance {
     @include mono;
+
+    &-remove {
+      margin-left: -32px;
+      margin-right: 20px;
+      height: 12px;
+      cursor: pointer;
+      opacity: 0.4;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 
   &-symbol {

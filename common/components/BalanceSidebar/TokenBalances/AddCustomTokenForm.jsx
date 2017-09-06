@@ -61,7 +61,7 @@ export default class AddCustomTokenForm extends React.Component {
 
         <button
           className="btn btn-primary btn-sm btn-block"
-          disabled={this.isValid()}
+          disabled={!this.isValid()}
         >
           {translate('x_Save')}
         </button>
@@ -87,6 +87,7 @@ export default class AddCustomTokenForm extends React.Component {
   }
 
   isValid() {
+    console.log(Object.keys(this.getErrors()).length);
     return !Object.keys(this.getErrors()).length;
   }
 
