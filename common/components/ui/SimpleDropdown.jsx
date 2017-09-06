@@ -1,15 +1,15 @@
 // @flow
 import React, { Component } from 'react';
 
-type Props<T> = {
-  value?: T,
-  options: Array<T>,
+type Props = {
+  value?: string,
+  options: string[],
   onChange: (event: SyntheticInputEvent) => void,
   className?: string
 };
 
-export default class SimpleDropDown<T: *> extends Component {
-  props: Props<T>;
+export default class SimpleDropDown extends Component {
+  props: Props;
 
   render() {
     return (
