@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 type Props<T> = {
   value?: T,
   options: Array<T>,
-  onChange: (event: SyntheticInputEvent) => void
+  onChange: (event: SyntheticInputEvent) => void,
+  className?: string
 };
 
 export default class SimpleDropDown<T: *> extends Component {
@@ -14,7 +15,7 @@ export default class SimpleDropDown<T: *> extends Component {
     return (
       <select
         value={this.props.value || this.props.options[0]}
-        className="form-control"
+        className={this.props.className || 'form-control'}
         onChange={this.props.onChange}
       >
         {this.props.options.map((obj, i) => {
