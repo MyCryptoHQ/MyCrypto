@@ -28,6 +28,8 @@ import type { State as ContractsState } from './contracts';
 import * as deterministicWallets from './deterministicWallets';
 import type { State as DeterministicWalletsState } from './deterministicWallets';
 
+import type { State as SwapState } from './swap';
+
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
@@ -45,7 +47,8 @@ export type State = {
   deterministicWallets: DeterministicWalletsState,
   // Third party reducers (TODO: Fill these out)
   form: Object,
-  routing: Object
+  routing: Object,
+  swap: SwapState
 };
 
 export default combineReducers({

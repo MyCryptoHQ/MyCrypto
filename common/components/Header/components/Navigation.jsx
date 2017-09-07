@@ -29,6 +29,10 @@ const tabs = [
     // to: 'view-wallet'
   },
   {
+    name: 'NAV_ENS',
+    to: 'ens'
+  },
+  {
     name: 'NAV_Help',
     to: 'https://myetherwallet.groovehq.com/help_center',
     external: true

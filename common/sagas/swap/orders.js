@@ -1,6 +1,5 @@
-import { showNotification } from 'actions/notifications';
+// @flow
 import { delay } from 'redux-saga';
-import { postOrder, getOrderStatus } from 'api/bity';
 import {
   call,
   put,
@@ -9,9 +8,11 @@ import {
   cancel,
   select,
   cancelled,
-  takeEvery,
-  Effect
+  takeEvery
 } from 'redux-saga/effects';
+import moment from 'moment';
+
+import { showNotification } from 'actions/notifications';
 import {
   orderTimeSwap,
   bityOrderCreateSucceededSwap,
@@ -23,19 +24,25 @@ import {
   startPollBityOrderStatus,
   stopPollBityOrderStatus
 } from 'actions/swap';
-import moment from 'moment';
 
-export const getSwap = state => state.swap;
+import { postOrder, getOrderStatus } from 'api/bity';
+
+import type { Yield, Return, Next } from 'sagas/types';
+import type { State as SwapState } from 'reducers/swap';
+import type { State } from 'reducers';
+import type { BityOrderCreateRequestedSwapAction } from 'actions/swapTypes';
+
+export const getSwap = (state: State): SwapState => state.swap;
 const ONE_SECOND = 1000;
 const TEN_SECONDS = ONE_SECOND * 10;
 const BITY_TIMEOUT_MESSAGE = `
-    Time has run out. 
-    If you have already sent, please wait 1 hour. 
-    If your order has not be processed after 1 hour, 
+    Time has run out.
+    If you have already sent, please wait 1 hour.
+    If your order has not be processed after 1 hour,
     please press the orange 'Issue with your Swap?' button.
 `;
 
-export function* pollBityOrderStatus(): Generator<Effect, void, any> {
+export function* pollBityOrderStatus(): Generator<Yield, Return, Next> {
   try {
     let swap = yield select(getSwap);
     while (true) {
@@ -66,7 +73,7 @@ export function* pollBityOrderStatus(): Generator<Effect, void, any> {
   }
 }
 
-export function* pollBityOrderStatusSaga(): Generator<Effect, void, any> {
+export function* pollBityOrderStatusSaga(): Generator<Yield, Return, Next> {
   while (yield take('SWAP_START_POLL_BITY_ORDER_STATUS')) {
     // starts the task in the background
     const pollBityOrderStatusTask = yield fork(pollBityOrderStatus);
@@ -78,7 +85,9 @@ export function* pollBityOrderStatusSaga(): Generator<Effect, void, any> {
   }
 }
 
-function* postBityOrderCreate(action) {
+function* postBityOrderCreate(
+  action: BityOrderCreateRequestedSwapAction
+): Generator<Yield, Return, Next> {
   const payload = action.payload;
   try {
     yield put(stopLoadBityRatesSwap());
@@ -111,11 +120,11 @@ function* postBityOrderCreate(action) {
   }
 }
 
-export function* postBityOrderSaga(): Generator<Effect, void, any> {
+export function* postBityOrderSaga(): Generator<Yield, Return, Next> {
   yield takeEvery('SWAP_ORDER_CREATE_REQUESTED', postBityOrderCreate);
 }
 
-export function* bityTimeRemaining() {
+export function* bityTimeRemaining(): Generator<Yield, Return, Next> {
   while (yield take('SWAP_ORDER_START_TIMER')) {
     let hasShownNotification = false;
     while (true) {

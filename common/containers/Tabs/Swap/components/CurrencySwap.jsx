@@ -11,7 +11,7 @@ import type {
   DestinationAmountSwapAction,
   ChangeStepSwapAction
 } from 'actions/swapTypes';
-import bityConfig from 'config/bity';
+import bityConfig, { kindMin, kindMax } from 'config/bity';
 import { toFixedIfLarger } from 'utils/formatters';
 
 export type StateProps = {
@@ -46,8 +46,8 @@ export default class CurrencySwap extends Component {
     let bityMax;
     if (kind !== 'BTC') {
       const bityPairRate = this.props.bityRates['BTC' + kind];
-      bityMin = bityConfig[kind + 'Min'](bityPairRate);
-      bityMax = bityConfig[kind + 'Max'](bityPairRate);
+      bityMin = kindMin(bityPairRate, kind);
+      bityMax = kindMax(bityPairRate, kind);
     } else {
       bityMin = bityConfig.BTCMin;
       bityMax = bityConfig.BTCMax;
@@ -73,9 +73,9 @@ export default class CurrencySwap extends Component {
 
     if (disabled && originAmount && !this.state.showedMinMaxError) {
       const { bityRates } = this.props;
-      const ETHMin = bityConfig.ETHMin(bityRates.BTCETH);
-      const ETHMax = bityConfig.ETHMax(bityRates.BTCETH);
-      const REPMin = bityConfig.REPMax(bityRates.BTCREP);
+      const ETHMin = kindMin(bityRates.BTCETH, 'ETH');
+      const ETHMax = kindMax(bityRates.BTCETH, 'ETH');
+      const REPMin = kindMin(bityRates.BTCREP, 'REP');
 
       const notificationMessage = `
         Minimum amount ${bityConfig.BTCMin} BTC,

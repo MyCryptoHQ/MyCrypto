@@ -8,8 +8,8 @@ import type {
 import { BaseWallet } from 'libs/wallet';
 import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
-import { getTxFromBroadcastStatusTransactions } from 'selectors/wallet';
-import type { BroadcastStatusTransaction } from 'libs/transaction';
+import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
+import type { BroadcastTransactionStatus } from 'libs/transaction';
 export type State = {
   inst: ?BaseWallet,
   // in ETH
@@ -17,7 +17,7 @@ export type State = {
   tokens: {
     [string]: Big
   },
-  transactions: Array<BroadcastStatusTransaction>
+  transactions: Array<BroadcastTransactionStatus>
 };
 
 export const INITIAL_STATE: State = {
@@ -42,11 +42,11 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
 }
 
 function handleUpdateTxArray(
-  transactions: Array<BroadcastStatusTransaction>,
-  broadcastStatusTx: BroadcastStatusTransaction,
+  transactions: Array<BroadcastTransactionStatus>,
+  broadcastStatusTx: BroadcastTransactionStatus,
   isBroadcasting: boolean,
   successfullyBroadcast: boolean
-): Array<BroadcastStatusTransaction> {
+): Array<BroadcastTransactionStatus> {
   return transactions.map(item => {
     if (item === broadcastStatusTx) {
       return { ...item, isBroadcasting, successfullyBroadcast };
@@ -60,9 +60,8 @@ function handleTxBroadcastCompleted(
   state: State,
   signedTx: string,
   successfullyBroadcast: boolean
-  // TODO How to handle null case for existing Tx?. Should use Array<BroadcastStatusTransaction> but can't.
-): Array<any> {
-  const existingTx = getTxFromBroadcastStatusTransactions(
+): Array<BroadcastTransactionStatus> {
+  const existingTx = getTxFromBroadcastTransactionStatus(
     state.transactions,
     signedTx
   );
@@ -75,12 +74,12 @@ function handleTxBroadcastCompleted(
       successfullyBroadcast
     );
   } else {
-    return [];
+    return state.transactions;
   }
 }
 
 function handleBroadcastTxRequested(state: State, signedTx: string) {
-  const existingTx = getTxFromBroadcastStatusTransactions(
+  const existingTx = getTxFromBroadcastTransactionStatus(
     state.transactions,
     signedTx
   );
