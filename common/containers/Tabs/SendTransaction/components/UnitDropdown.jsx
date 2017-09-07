@@ -31,9 +31,9 @@ export default class UnitDropdown extends React.Component {
     );
   }
 
-  onChange = (e: SyntheticInputEvent) => {
+  onChange = (value: string) => {
     if (this.props.onChange) {
-      this.props.onChange(e.target.value);
+      this.props.onChange(value);
     }
   };
 }

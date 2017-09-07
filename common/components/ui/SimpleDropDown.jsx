@@ -22,14 +22,16 @@ export default class SimpleDropDown extends Component {
   };
 
   onClick = (event: SyntheticInputEvent) => {
-    this.props.onChange(event.target.value);
+    const value = event.target.getAttribute('data-value') || '';
+    this.props.onChange(value);
+    this.setState({ expanded: false });
   };
 
   render() {
     const { options, value } = this.props;
     const { expanded } = this.state;
     return (
-      <span className={`dropdown ${expanded ? 'open' : ''}`}>
+      <div className={`dropdown ${expanded ? 'open' : ''}`}>
         <a
           className="btn btn-default dropdown-toggle"
           onClick={this.toggleExpanded}
@@ -39,16 +41,14 @@ export default class SimpleDropDown extends Component {
         </a>
 
         {expanded &&
-          <ul
-            className="dropdown-menu dropdown-menu-right"
-            style={{ marginTop: '15px' }}
-          >
+          <ul className="dropdown-menu dropdown-menu-right">
             {options.map((option, i) => {
               return (
-                <li value={option} key={i}>
+                <li key={i}>
                   <a
                     className={option === value ? 'active' : ''}
                     onClick={this.onClick}
+                    data-value={option}
                   >
                     {option}
                   </a>
@@ -56,7 +56,7 @@ export default class SimpleDropDown extends Component {
               );
             })}
           </ul>}
-      </span>
+      </div>
     );
   }
 }
