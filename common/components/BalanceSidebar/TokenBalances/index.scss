@@ -1,6 +1,10 @@
 @import "common/sass/variables";
 
 .TokenBalances {
+  &-title {
+    margin-top: 0;
+  }
+
   &-rows {
     width: 100%;
     margin-bottom: $space;

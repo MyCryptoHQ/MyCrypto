@@ -2,6 +2,18 @@
 @import "common/sass/mixins";
 
 .AccountInfo {
+  &-section {
+    margin-top: $space * 1.5;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &-header {
+      margin-top: 0;
+    }
+  }
+
   &-address,
   &-list {
     padding-left: $space;

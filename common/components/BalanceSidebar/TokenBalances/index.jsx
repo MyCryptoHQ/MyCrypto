@@ -28,7 +28,7 @@ export default class TokenBalances extends React.Component {
 
     return (
       <section className="TokenBalances">
-        <h5>
+        <h5 className="TokenBalances-title">
           {translate('sidebar_TokenBal')}
         </h5>
         <table className="TokenBalances-rows">

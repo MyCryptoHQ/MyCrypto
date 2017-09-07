@@ -44,57 +44,55 @@ export default class AccountInfo extends React.Component {
 
     return (
       <div className="AccountInfo">
-        <h5 className="AccountInfo-header">
-          {translate('sidebar_AccountAddr')}
-        </h5>
-        <div className="AccountInfo-address">
-          <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
-          </div>
-          <div className="AccountInfo-address-addr">
-            {address}
+        <div className="AccountInfo-section">
+          <h5 className="AccountInfo-section-header">
+            {translate('sidebar_AccountAddr')}
+          </h5>
+          <div className="AccountInfo-address">
+            <div className="AccountInfo-address-icon">
+              <Identicon address={address} size="100%" />
+            </div>
+            <div className="AccountInfo-address-addr">
+              {address}
+            </div>
           </div>
         </div>
 
-        <h5 className="AccountInfo-header">
-          {translate('sidebar_AccountBal')}
-        </h5>
-        <ul className="AccountInfo-list">
-          <li className="AccountInfo-list-item">
-            <span
-              className="AccountInfo-list-item-clickable mono wrap"
-              onClick={this.toggleShowLongBalance}
-              title={`${balance.toString()}`}
-            >
-              {this.state.showLongBalance
-                ? balance.toString()
-                : formatNumber(balance)}
-            </span>
-            {` ${network.name}`}
-          </li>
-        </ul>
+        <div className="AccountInfo-section">
+          <h5 className="AccountInfo-section-header">
+            {translate('sidebar_AccountBal')}
+          </h5>
+          <ul className="AccountInfo-list">
+            <li className="AccountInfo-list-item">
+              <span
+                className="AccountInfo-list-item-clickable mono wrap"
+                onClick={this.toggleShowLongBalance}
+                title={`${balance.toString()}`}
+              >
+                {this.state.showLongBalance
+                  ? balance.toString()
+                  : formatNumber(balance)}
+              </span>
+              {` ${network.name}`}
+            </li>
+          </ul>
+        </div>
 
         {(!!blockExplorer || !!tokenExplorer) &&
-          <div>
-            <h5 className="AccountInfo-header">
+          <div className="AccountInfo-section">
+            <h5 className="AccountInfo-section-header">
               {translate('sidebar_TransHistory')}
             </h5>
             <ul className="AccountInfo-list">
               {!!blockExplorer &&
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={blockExplorer.address.replace('[[address]]', address)}
-                    target="_blank"
-                  >
+                  <a href={blockExplorer.address(address)} target="_blank">
                     {`${network.name} (${blockExplorer.name})`}
                   </a>
                 </li>}
               {!!tokenExplorer &&
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={tokenExplorer.address.replace('[[address]]', address)}
-                    target="_blank"
-                  >
+                  <a href={tokenExplorer.address(address)} target="_blank">
                     {`Tokens (${tokenExplorer.name})`}
                   </a>
                 </li>}
