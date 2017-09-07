@@ -28,7 +28,7 @@ export default class AbiFunction {
     this.inputTypes = inputs.map(({ type }) => type);
     this.outputTypes = outputs.map(({ type }) => type);
     this.inputNames = inputs.map(({ name }) => name);
-    this.outputNames = outputs.map(({ name }) => name);
+    this.outputNames = outputs.map(({ name }, i) => name || i);
 
     this.methodSelector = abi
       .methodID(this.name, this.inputTypes)
