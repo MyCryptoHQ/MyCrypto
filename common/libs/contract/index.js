@@ -1,7 +1,7 @@
 import ABIFunction from './ABIFunction';
-import Big from 'bignumber.js';
+//import Big from 'bignumber.js';
 
-class Contract {
+export default class Contract {
   abi;
   constructor(abi) {
     this.abi = abi;
@@ -18,14 +18,14 @@ class Contract {
         const funcToAssign = {
           [currentABIMethod.name]: { encodeInput, decodeInput, decodeOutput }
         };
-        console.log(funcToAssign);
         Object.assign(this, funcToAssign);
       }
     });
   };
 }
 
-const erc20Abi: ABI = [
+/**
+ * const erc20Abi: ABI = [
   {
     constant: true,
     inputs: [
@@ -71,6 +71,8 @@ const MEW_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 
 const ERC20 = new Contract(erc20Abi);
 console.log(ERC20);
+ */
+
 /*
 Contract {
   abi: {...},
@@ -83,7 +85,8 @@ Contract {
      decodeOutput: [Function] }
   }
  */
-const encodedInput = ERC20.balanceOf.encodeInput({ _owner: MEW_ADDRESS });
+/**
+ *const encodedInput = ERC20.balanceOf.encodeInput({ _owner: MEW_ADDRESS });
 console.log(encodedInput); //0x70a082310000000000000000000000007cb57b5a97eabe94205c07890be4c1ad31e486a8
 const decodedInput = ERC20.balanceOf.decodeInput(encodedInput);
 console.log(decodedInput); //{"_owner":"7cb57b5a97eabe94205c07890be4c1ad31e486a8"}
@@ -99,3 +102,6 @@ const tx = ERC20.transfer.decodeInput(
 );
 console.log(tx._value);
 console.log(new Big('0.001').times(new Big(10).pow(18)).toString());
+
+ *
+ */
