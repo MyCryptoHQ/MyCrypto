@@ -15,8 +15,8 @@ export default class TrezorWallet extends DeterministicWallet {
         // Args
         this.getPath(),
         stripHex(tx.nonce),
-        stripHex(tx.gasPrice),
-        stripHex(tx.gasLimit),
+        stripHex(String(tx.gasPrice.amount)),
+        stripHex(String(tx.gasLimit.amount)),
         stripHex(tx.to),
         stripHex(tx.value),
         stripHex(tx.data),
