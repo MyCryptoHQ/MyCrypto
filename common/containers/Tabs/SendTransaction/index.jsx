@@ -412,7 +412,7 @@ export class SendTransaction extends React.Component {
         const weiBalance = toWei(balance, 'ether');
         value = getBalanceMinusGasCosts(
           new Big(gasLimit),
-          gasPrice,
+          new Big(gasPrice),
           weiBalance
         );
       } else {
