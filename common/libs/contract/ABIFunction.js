@@ -77,6 +77,10 @@ export default class AbiFunction {
 
     // Remove method selector from data, if present
     argString = argString.replace(`0x${methodSelector}`, '');
+
+    // Remove 0x prefix
+    argString = argString.replace('0x', '');
+
     // Convert argdata to a hex buffer for ethereumjs-abi
     const argBuffer = new Buffer(argString, 'hex');
     // Decode!
