@@ -1,3 +1,4 @@
+import './PaymentInfo.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 
@@ -12,21 +13,22 @@ export default class PaymentInfo extends Component {
 
   render() {
     return (
-      <section className="row text-center">
+      <section className="SwapPayment">
         <h1>
           <span>
             {translate('SWAP_order_CTA')}
           </span>
           <strong>
-            {' '}{this.props.originAmount} {this.props.originKind}{' '}
+            {' '}{this.props.originAmount} {this.props.originKind}
           </strong>
           <span>
-            {translate('SENDModal_Content_2')}
+            {' '}{translate('SENDModal_Content_2')}
           </span>
-          <br />
-          <strong className="mono text-primary">
-            {this.props.paymentAddress}
-          </strong>
+          <input
+            className="SwapPayment-address form-control"
+            value={this.props.paymentAddress}
+            disabled
+          />
         </h1>
       </section>
     );

@@ -5,25 +5,22 @@ $space: 1.00rem;
 $space-lg: 1.50rem;
 $space-xl: 2.00rem;
 
-$padding-base-vertical: $space * 0.6;
-$padding-base-horizontal: $space;
+$padding-base-vertical: $space*.75;
+$padding-base-horizontal: $space-lg;
 
-$padding-large-vertical: $space-md;
+$padding-large-vertical: $space;
 $padding-large-horizontal: $space-xl;
 
-$padding-small-vertical: 0.1rem;
-$padding-small-horizontal: $space-sm;
+$padding-small-vertical: $space-sm;
+$padding-small-horizontal: $space;
 
-$padding-xs-vertical: $space-xs;
-$padding-xs-horizontal: 0.2rem;
+$padding-xs-vertical: 0.1rem;
+$padding-xs-horizontal: 0.6rem;
 
 $line-height-large: 1.2;
 $line-height-small: 1.5;
 
-$border-radius: 2px;
-
-$component-active-color: #fff;
-$component-active-bg: $brand-primary;
+$border-radius: 0px;
 
 $caret-width-base: $space-xs;
 $caret-width-large: $space-xs;

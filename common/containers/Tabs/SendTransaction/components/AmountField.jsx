@@ -17,36 +17,38 @@ export default class AmountField extends React.Component {
     const { value, unit, onChange } = this.props;
     const isReadonly = !onChange;
     return (
-      <div>
-        <label>
-          {translate('SEND_amount')}
-        </label>
-        <div className="input-group col-sm-11">
-          <input
-            className={`form-control ${isFinite(Number(value)) &&
-            Number(value) > 0
-              ? 'is-valid'
-              : 'is-invalid'}`}
-            type="text"
-            placeholder={translateRaw('SEND_amount_short')}
-            value={value}
-            disabled={isReadonly}
-            onChange={isReadonly ? void 0 : this.onValueChange}
-          />
-          <UnitDropdown
-            value={unit}
-            options={['ether'].concat(this.props.tokens)}
-            onChange={isReadonly ? void 0 : this.onUnitChange}
-          />
+      <div className="row form-group">
+        <div className="col-xs-11">
+          <label>
+            {translate('SEND_amount')}
+          </label>
+          <div className="input-group">
+            <input
+              className={`form-control ${isFinite(Number(value)) &&
+              Number(value) > 0
+                ? 'is-valid'
+                : 'is-invalid'}`}
+              type="text"
+              placeholder={translateRaw('SEND_amount_short')}
+              value={value}
+              disabled={isReadonly}
+              onChange={isReadonly ? void 0 : this.onValueChange}
+            />
+            <UnitDropdown
+              value={unit}
+              options={['ether'].concat(this.props.tokens)}
+              onChange={isReadonly ? void 0 : this.onUnitChange}
+            />
+          </div>
+          {!isReadonly &&
+            <span className="help-block">
+              <a onClick={this.onSendEverything}>
+                <span className="strong">
+                  {translate('SEND_TransferTotal')}
+                </span>
+              </a>
+            </span>}
         </div>
-        {!isReadonly &&
-          <p>
-            <a onClick={this.onSendEverything}>
-              <span className="strong">
-                {translate('SEND_TransferTotal')}
-              </span>
-            </a>
-          </p>}
       </div>
     );
   }

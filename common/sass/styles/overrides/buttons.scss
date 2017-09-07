@@ -1,0 +1,100 @@
+// Button overrides
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.btn {
+  @include button-size(
+		$padding-base-vertical,
+		$padding-large-horizontal,
+		$font-size-bump,
+		$line-height-base,
+		$border-radius
+	);
+}
+
+// Override sizes
+.btn-lg {
+  // line-height: ensure even-numbered height of button next to large input
+  @include button-size(
+		$padding-large-vertical,
+		$padding-large-horizontal,
+		$font-size-bump-more,
+		$line-height-large,
+		$border-radius
+	);
+}
+.btn-sm {
+  // line-height: ensure proper height of button next to small input
+  @include button-size(
+		$padding-small-vertical,
+		$padding-small-horizontal,
+		$font-size-base,
+		$line-height-small,
+		$border-radius
+	);
+}
+.btn-xs {
+  @include button-size(
+		$padding-xs-vertical,
+		$padding-xs-horizontal,
+		$font-size-small,
+		$line-height-small,
+		$border-radius
+	);
+  padding: .1rem .6rem .2rem;
+}
+
+// Custom color
+.btn-white {
+  @include button-variant($brand-info, rgba(255,255,255,.8), rgba(255,255,255,.8));
+  color: $brand-info;
+}
+
+// Custom file button
+.btn-file {
+  position: relative;
+  overflow: hidden;
+
+  input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    opacity: 0;
+    background: red;
+    cursor: inherit;
+    display: block;
+  }
+}
+
+// Contextual color overrides (?)
+.alert .btn-info {
+  background-color: white;
+  text-decoration: none;
+  color: $brand-info;
+  &:hover,
+  &:focus,
+  &.focus {
+    color: white;
+    text-decoration: none;
+    opacity: 1;
+  }
+  &.disabled {
+    background-color: white;
+    text-decoration: none;
+    color: $brand-info;
+    opacity: .6;
+  }
+}
+
+.btn-group .btn-default {
+  border-bottom-width: 1px;
+  &.active {
+    border: 1px solid $brand-primary;
+    color: $brand-primary;
+    background: #f5f5f5;
+  }
+}

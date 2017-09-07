@@ -1,0 +1,76 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.SwapRates {
+  &-title {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  &-panel {
+    position: relative;
+    margin: 0 auto $space * 2;
+    background: linear-gradient(150deg, $ether-blue, $ether-navy);
+    @include mono;
+
+    &-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      min-height: 100px;
+      text-align: center;
+      padding: $space 0;
+    }
+
+    &-rate {
+      color: #fff;
+
+      &-input {
+        display: inline-block;
+        width: 16%;
+        min-width: 3.5rem;
+        height: 2rem;
+        padding: 1rem;
+        margin: .5rem auto;
+        font-size: 1rem;
+        margin-right: $space;
+        text-align: right;
+        background-color: transparent;
+        box-shadow: 0 0 0 #fff;
+        border: 0 solid #fff;
+        border-bottom: 2px solid #fff;
+      }
+
+      &-amount {
+        display: inline-block;
+        min-width: 190px;
+        opacity: 0.9;
+        text-align: left;
+      }
+    }
+
+    &-logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    // Go vertical on small screens
+    @media screen and (max-width: $screen-sm) {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+
+      &-side {
+        text-align: left;
+        padding: 0 0 0 22%;
+      }
+
+      &-logo {
+        left: -1rem;
+        top: 40%;
+        transform: rotate(-90deg);
+      }
+    }
+  }
+}

@@ -1,6 +1,8 @@
 // @flow
+import './Notifications.scss';
 import React from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import { closeNotification } from 'actions/notifications';
 import type { Notification } from 'actions/notifications';
 
@@ -11,36 +13,23 @@ class NotificationRow extends React.Component {
   };
   render() {
     const { msg, level } = this.props.notification;
-    let className = '';
-
-    switch (level) {
-      case 'danger':
-        className = 'alert-danger';
-        break;
-      case 'success':
-        className = 'alert-success';
-        break;
-      case 'warning':
-        className = 'alert-warning';
-        break;
-    }
+    const notifClass = classnames({
+      Notification: true,
+      alert: true,
+      [`alert-${level}`]: !!level
+    });
 
     return (
-      <div
-        className={`alert popup ${className} animated-show-hide`}
-        role="alert"
-        aria-live="assertive"
-      >
+      <div className={notifClass} role="alert" aria-live="assertive">
         <span className="sr-only">
           {level}
         </span>
-        <div className="container">
+        <div className="Notification-message">
           {msg}
         </div>
-        <i
-          tabIndex="0"
+        <button
+          className="Notification-close"
           aria-label="dismiss"
-          className="icon-close"
           onClick={this.onClose}
         />
       </div>
@@ -62,7 +51,7 @@ export class Notifications extends React.Component {
       return null;
     }
     return (
-      <div className="alerts-container">
+      <div className="Notifications">
         {this.props.notifications.map((n, i) =>
           <NotificationRow
             key={`${n.level}-${i}`}

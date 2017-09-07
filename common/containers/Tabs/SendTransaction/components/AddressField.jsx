@@ -45,7 +45,7 @@ export class AddressField extends React.Component {
               <span className="mono">{ensAddress}</span>
             </p>}
         </div>
-        <div className="col-xs-1 address-identicon-container">
+        <div className="col-xs-1" style={{ padding: 0 }}>
           <Identicon address={ensAddress || value} />
         </div>
       </div>

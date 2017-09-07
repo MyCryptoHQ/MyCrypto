@@ -1,0 +1,16 @@
+.SwapAddress {
+  text-align: center;
+
+  &-address {
+    display: block;
+
+    &-label {
+      font-weight: 600;
+      margin: 1rem 0;
+    }
+  }
+
+  &-submit {
+    margin-top: 2rem;
+  }
+}

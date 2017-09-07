@@ -11,39 +11,46 @@ import type { BaseWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
 import type EthTx from 'ethereumjs-tx';
 import { toUnit } from 'libs/units';
+import { valueToHex } from 'libs/values';
+import type { UNIT } from 'libs/units';
+import { RPCNode } from 'libs/nodes';
+import { TransactionWithoutGas } from 'libs/messages';
 
-export type BroadcastStatusTransaction = {
+export type TransactionInput = {
+  token: ?Token,
+  unit: UNIT,
+  value: string,
+  to: string,
+  data: string
+};
+
+export type BroadcastTransactionStatus = {
   isBroadcasting: boolean,
   signedTx: string,
   successfullyBroadcast: boolean
 };
 
-// TODO: Enforce more bigs, or find better way to avoid ether vs wei for value
-export type TransactionWithoutGas = {|
-  from: string,
-  to: string,
-  gasLimit?: string | number,
-  value: string | number,
-  data?: string,
-  chainId?: number
-|};
-
-export type Transaction = {|
-  ...TransactionWithoutGas,
-  gasPrice: string | number
-|};
-
-export type RawTransaction = {|
-  nonce: string,
-  gasPrice: string,
-  gasLimit: string,
+export type BaseTransaction = {|
   to: string,
   value: string,
   data: string,
+  gasLimit: string,
+  gasPrice: string,
   chainId: number
 |};
 
-export type BroadcastTransaction = {|
+export type RawTransaction = {|
+  ...BaseTransaction,
+  nonce: string
+|};
+
+export type ExtendedRawTransaction = {|
+  ...RawTransaction,
+  // non-standard, legacy
+  from: string
+|};
+
+export type CompleteTransaction = {|
   ...RawTransaction,
   rawTx: string,
   signedTx: string
@@ -71,12 +78,12 @@ export function getTransactionFields(tx: EthTx) {
   };
 }
 
-export async function generateTransaction(
+export async function generateCompleteTransactionFromRawTransaction(
   node: INode,
-  tx: Transaction,
+  tx: ExtendedRawTransaction,
   wallet: BaseWallet,
   token: ?Token
-): Promise<BroadcastTransaction> {
+): Promise<CompleteTransaction> {
   // Reject bad addresses
   if (!isValidETHAddress(tx.to)) {
     throw new Error(translate('ERROR_5'));
@@ -115,7 +122,6 @@ export async function generateTransaction(
   let balance;
 
   if (token) {
-    // $FlowFixMe - We reject above if tx has no data for token
     value = new Big(ERC20.$transfer(tx.data).value);
     balance = toTokenUnit(await node.getTokenBalance(tx.from, token), token);
   } else {
@@ -131,10 +137,8 @@ export async function generateTransaction(
   // prefix'd hex value.
   const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
 
-  // Generate the raw transaction
-  const txCount = await node.getTransactionCount(tx.from);
-  const rawTx = {
-    nonce: cleanHex(txCount),
+  const cleanedRawTx = {
+    nonce: cleanHex(tx.nonce),
     gasPrice: cleanHex(new Big(tx.gasPrice).toString(16)),
     gasLimit: cleanHex(new Big(tx.gasLimit).toString(16)),
     to: cleanHex(tx.to),
@@ -144,22 +148,80 @@ export async function generateTransaction(
   };
 
   // Sign the transaction
-  const rawTxJson = JSON.stringify(rawTx);
-  const signedTx = await wallet.signRawTransaction(rawTx);
+  const rawTxJson = JSON.stringify(cleanedRawTx);
+  const signedTx = await wallet.signRawTransaction(cleanedRawTx);
 
   // Repeat all of this shit for Flow typechecking. Sealed objects don't
   // like spreads, so we have to be explicit.
   return {
-    nonce: rawTx.nonce,
-    gasPrice: rawTx.gasPrice,
-    gasLimit: rawTx.gasLimit,
-    to: rawTx.to,
-    value: rawTx.value,
-    data: rawTx.data,
-    chainId: rawTx.chainId,
+    nonce: cleanedRawTx.nonce,
+    gasPrice: cleanedRawTx.gasPrice,
+    gasLimit: cleanedRawTx.gasLimit,
+    to: cleanedRawTx.to,
+    value: cleanedRawTx.value,
+    data: cleanedRawTx.data,
+    chainId: cleanedRawTx.chainId,
     rawTx: rawTxJson,
     signedTx: signedTx
   };
+}
+
+export async function formatTxInput(
+  wallet: BaseWallet,
+  { token, unit, value, to, data }: TransactionInput
+): Promise<TransactionWithoutGas> {
+  if (unit === 'ether') {
+    return {
+      to,
+      from: await wallet.getAddress(),
+      value: valueToHex(value),
+      data
+    };
+  } else {
+    if (!token) {
+      throw new Error('No matching token');
+    }
+    const bigAmount = new Big(value);
+    return {
+      to: token.address,
+      from: await wallet.getAddress(),
+      value: '0x0',
+      data: ERC20.transfer(to, toTokenUnit(bigAmount, token))
+    };
+  }
+}
+
+export async function generateCompleteTransaction(
+  wallet: BaseWallet,
+  nodeLib: RPCNode,
+  gasPrice: string,
+  gasLimit: string,
+  chainId: number,
+  transactionInput: TransactionInput
+): Promise<CompleteTransaction> {
+  const { token } = transactionInput;
+
+  const formattedTx = await formatTxInput(wallet, transactionInput);
+
+  const from = await wallet.getAddress();
+
+  const transaction: ExtendedRawTransaction = {
+    nonce: await nodeLib.getTransactionCount(from),
+    from,
+    to: formattedTx.to,
+    gasLimit,
+    value: formattedTx.value,
+    data: formattedTx.data,
+    chainId,
+    gasPrice
+  };
+
+  return await generateCompleteTransactionFromRawTransaction(
+    nodeLib,
+    transaction,
+    wallet,
+    token
+  );
 }
 
 // TODO determine best place for helper function
