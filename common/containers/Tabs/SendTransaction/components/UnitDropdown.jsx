@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import SimpleDropDown from 'components/ui/SimpleDropdown';
+import SimpleDropDown from 'components/ui/SimpleDropDown';
 
 type UnitDropdownProps = {
   value: string,
@@ -23,7 +23,6 @@ export default class UnitDropdown extends React.Component {
     return (
       <div className="input-group-btn">
         <SimpleDropDown
-          className="btn btn-default dropdown-toggle"
           value={value}
           onChange={this.onChange}
           options={options}
@@ -32,9 +31,9 @@ export default class UnitDropdown extends React.Component {
     );
   }
 
-  onChange = (e: SyntheticInputEvent) => {
+  onChange = (value: string) => {
     if (this.props.onChange) {
-      this.props.onChange(e.target.value);
+      this.props.onChange(value);
     }
   };
 }
