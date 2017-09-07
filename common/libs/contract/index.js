@@ -2,13 +2,10 @@ import ABIFunction from './ABIFunction';
 //import Big from 'bignumber.js';
 
 export default class Contract {
-  abi;
   constructor(abi) {
-    this.abi = abi;
-    this._assignABIFuncs();
+    this._assignABIFuncs(abi);
   }
-  _assignABIFuncs = () => {
-    const { abi } = this;
+  _assignABIFuncs = abi => {
     abi.forEach(currentABIMethod => {
       if (currentABIMethod.type === 'function') {
         //only grab the functions we need
