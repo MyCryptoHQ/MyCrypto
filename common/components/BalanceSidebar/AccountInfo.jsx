@@ -7,9 +7,10 @@ import { formatNumber } from 'utils/formatters';
 import type Big from 'bignumber.js';
 import type { BaseWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
+import { Ether } from 'libs/units';
 
 type Props = {
-  balance: Big,
+  balance: Ether,
   wallet: BaseWallet,
   network: NetworkConfig
 };
@@ -71,7 +72,7 @@ export default class AccountInfo extends React.Component {
               >
                 {this.state.showLongBalance
                   ? balance.toString()
-                  : formatNumber(balance)}
+                  : formatNumber(balance.amount)}
               </span>
               {` ${network.name}`}
             </li>

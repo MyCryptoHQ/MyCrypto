@@ -5,11 +5,12 @@ import translate from 'translations';
 import { Link } from 'react-router';
 import { formatNumber } from 'utils/formatters';
 import type Big from 'bignumber.js';
+import { Ether } from 'libs/units';
 
 const ratesKeys = ['BTC', 'REP', 'EUR', 'USD', 'GBP', 'CHF'];
 
 type Props = {
-  balance: Big,
+  balance: Ether,
   rates: { [string]: number }
 };
 
@@ -34,7 +35,7 @@ export default class EquivalentValues extends React.Component {
                   {key}:
                 </span>
                 <span className="EquivalentValues-values-currency-value">
-                  {' '}{formatNumber(balance.times(rates[key]))}
+                  {' '}{formatNumber(balance.amount.times(rates[key]))}
                 </span>
               </li>
             );

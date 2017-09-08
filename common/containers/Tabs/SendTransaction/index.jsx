@@ -506,7 +506,7 @@ export class SendTransaction extends React.Component {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-    balance: new Ether(state.wallet.balance),
+    balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
     node: getNodeConfig(state),
     nodeLib: getNodeLib(state),

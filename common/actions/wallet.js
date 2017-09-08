@@ -1,6 +1,7 @@
 // @flow
 import BaseWallet from 'libs/wallet/base';
 import Big from 'bignumber.js';
+import { Wei } from 'libs/units';
 
 /*** Unlock Private Key ***/
 export type PrivateKeyUnlockParams = {
@@ -58,10 +59,10 @@ export function setWallet(value: BaseWallet): SetWalletAction {
 /*** Set Balance ***/
 export type SetBalanceAction = {
   type: 'WALLET_SET_BALANCE',
-  payload: Big
+  payload: Wei
 };
 
-export function setBalance(value: Big): SetBalanceAction {
+export function setBalance(value: Wei): SetBalanceAction {
   return {
     type: 'WALLET_SET_BALANCE',
     payload: value

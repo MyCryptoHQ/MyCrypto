@@ -15,10 +15,11 @@ import AccountInfo from './AccountInfo';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
 import EquivalentValues from './EquivalentValues';
+import { Ether } from 'libs/units';
 
 type Props = {
   wallet: BaseWallet,
-  balance: Big,
+  balance: Ether,
   network: NetworkConfig,
   tokenBalances: TokenBalance[],
   rates: { [string]: number },
