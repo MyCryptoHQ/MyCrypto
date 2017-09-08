@@ -18,8 +18,12 @@ const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) =>
       </main>
     </div>
   </section>;
-/* eslint-disable */
-const ENS = props => {
+
+type Props = {
+  ens: {},
+  resolveDomainRequested: (domain: string) => void
+};
+const ENS = (props: Props) => {
   console.error('PROPS', props);
   return (
     <ContainerTabPaneActive>
