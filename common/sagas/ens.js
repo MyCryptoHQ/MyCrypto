@@ -1,41 +1,23 @@
 // @flow
-import { takeEvery, call, put, select } from 'redux-saga/effects';
+import { takeEvery, call, apply, put, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-
-import { cacheEnsAddress } from 'actions/ens';
-import type { ResolveEnsNameAction } from 'actions/ens';
-
-import { getEnsAddress } from 'selectors/ens';
-import { donationAddressMap } from 'config/data';
-
+import { resolveDomainFailed, resolveDomainSuccess } from 'actions/ens';
+import type { ResolveDomainRequested, ResolveDomainFailed } from 'actions/ens';
 import type { Yield, Return, Next } from 'sagas/types';
-
-function* resolveEns(
-  action?: ResolveEnsNameAction
+import { INode } from 'libs/nodes/INode';
+import { getNodeLib } from 'selectors/config';
+import { resolveDomainRequest } from 'libs/ens';
+function* resolveDomain(
+  action: ResolveDomainRequested
 ): Generator<Yield, Return, Next> {
-  if (!action) return;
-  const ensName = action.payload;
-  // FIXME Add resolve logic
-  ////                     _ens.getAddress(scope.addressDrtv.ensAddressField, function(data) {
-  //                         if (data.error) uiFuncs.notifier.danger(data.msg);
-  //                         else if (data.data == '0x0000000000000000000000000000000000000000' || data.data == '0x') {
-  //                             setValue('0x0000000000000000000000000000000000000000');
-  //                             scope.addressDrtv.derivedAddress = '0x0000000000000000000000000000000000000000';
-  //                             scope.addressDrtv.showDerivedAddress = true;
-  //                         } else {
-  //                             setValue(data.data);
-  //                             scope.addressDrtv.derivedAddress = ethUtil.toChecksumAddress(data.data);
-  //                             scope.addressDrtv.showDerivedAddress = true;
-
-  const cachedEnsAddress = yield select(getEnsAddress, ensName);
-
-  if (cachedEnsAddress) {
-    return;
-  }
-  yield call(delay, 1000);
-  yield put(cacheEnsAddress(ensName, donationAddressMap.ETH));
+  const { domain } = action.payload;
+  const node: INode = yield select(getNodeLib);
+  const domainData = yield call(resolveDomainRequest, domain, node);
+  const domainSuccessAction = resolveDomainSuccess(domain, domainData);
+  console.error(domainSuccessAction);
+  yield put(domainSuccessAction);
 }
 
 export default function* notificationsSaga(): Generator<Yield, Return, Next> {
-  yield takeEvery('ENS_RESOLVE', resolveEns);
+  yield takeEvery('ENS_RESOLVE_DOMAIN_REQUESTED', resolveDomain);
 }
