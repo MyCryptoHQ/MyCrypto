@@ -21,7 +21,7 @@ export default class AbiFunction {
     this._init(outputMappings);
   }
 
-  _init(outputMappings) {
+  _init(outputMappings = []) {
     const { inputs, outputs } = this;
     this.funcParams = this._makeFuncParams();
     //TODO: do this in O(n)
