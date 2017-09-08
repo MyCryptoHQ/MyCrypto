@@ -1,10 +1,27 @@
 import uts46 from 'idna-uts46';
 import ethUtil from 'ethereumjs-util';
-import ENS from './contract';
+import ENS from './contracts';
 import networkConfigs from './networkConfigs';
 import type { TxCallObject } from 'libs/node/rpc/types';
 import type { INode } from 'libs/node/INode';
 const { main } = networkConfigs;
+
+/**
+0 - Name is available and the auction hasn’t started
+1 - Name is available and the auction has been started
+2 - Name is taken and currently owned by someone
+3 - Name is forbidden
+4 - Name is currently in the ‘reveal’ stage of the auction
+5 - Name is not yet available due to the ‘soft launch’ of names.
+ */
+const modeMap = [
+  'Name is available and the auction hasn’t started',
+  'Name is available and the auction has been started',
+  'Name is taken and currently owned by someone',
+  'Name is forbidden',
+  'Name is currently in the ‘reveal’ stage of the auction',
+  'Name is not yet available due to the ‘soft launch’ of names.'
+];
 
 export function normalise(name) {
   try {
