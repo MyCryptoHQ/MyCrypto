@@ -455,9 +455,7 @@ export class SendTransaction extends React.Component {
         {
           transaction: null
         },
-        () => {
-          resolve();
-        }
+        resolve
       );
     });
   };
