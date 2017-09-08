@@ -1,9 +1,10 @@
+// @flow
 import uts46 from 'idna-uts46';
 import ethUtil from 'ethereumjs-util';
 import ENS from './contracts';
 import networkConfigs from './networkConfigs';
-import type { TxCallObject } from 'libs/node/rpc/types';
-import type { INode } from 'libs/node/INode';
+import type { TxCallObject } from 'libs/nodes/rpc/types';
+import type { INode } from 'libs/nodes/INode';
 const { main } = networkConfigs;
 
 /**
@@ -23,7 +24,7 @@ const modeMap = [
   'Name is not yet available due to the ‘soft launch’ of names.'
 ];
 
-export function normalise(name) {
+export function normalise(name: string) {
   try {
     return uts46.toUnicode(name, { useStd3ASCII: true, transitional: false });
   } catch (e) {

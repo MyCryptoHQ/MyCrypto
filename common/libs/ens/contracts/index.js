@@ -12,9 +12,9 @@ import registryOutputMappings from './registry/outputMappings';
 const resolverABI = require('./resolver/resolver.json');
 import resolverOutputMappings from './resolver/outputMappings';
 
-const auction = new Contract(auctionABI, auctionOutputMappings);
-const deed = new Contract(deedABI, deedOutputMappings);
-const registry = new Contract(registryABI, registryOutputMappings);
-const resolver = new Contract(resolverABI, resolverOutputMappings);
+const auction: Object = new Contract(auctionABI, auctionOutputMappings);
+const deed: Object = new Contract(deedABI, deedOutputMappings);
+const registry: Object = new Contract(registryABI, registryOutputMappings);
+const resolver: Object = new Contract(resolverABI, resolverOutputMappings);
 
 export default { auction, deed, registry, resolver };
