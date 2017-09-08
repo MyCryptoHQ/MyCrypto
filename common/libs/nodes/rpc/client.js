@@ -10,10 +10,10 @@ import type {
   GetTokenBalanceRequest,
   EstimateGasRequest,
   GetTransactionCountRequest,
-  SendRawTxRequest
+  SendRawTxRequest,
+  TxCallObject
 } from './types';
 import type { Token } from 'config/data';
-
 // FIXME is it safe to generate that much entropy?
 function id(): string {
   return randomBytes(16).toString('hex');
@@ -46,7 +46,7 @@ export function getBalance(address: string): GetBalanceRequest {
   };
 }
 
-export function ethCall<T: *>(transaction: T): CallRequest {
+export function ethCall(transaction: TxCallObject): CallRequest {
   return {
     id: id(),
     jsonrpc: '2.0',

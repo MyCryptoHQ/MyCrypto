@@ -7,8 +7,10 @@ import RPCClient, {
   estimateGas,
   getTransactionCount,
   getTokenBalance,
-  sendRawTx
+  sendRawTx,
+  ethCall
 } from './client';
+import type { TxCallObject } from './types';
 import type { Token } from 'config/data';
 
 export default class RpcNode implements INode {
@@ -80,6 +82,14 @@ export default class RpcNode implements INode {
       }
       if (response.errorMessage) {
         throw new Error(response.errorMessage);
+      }
+      return response.result;
+    });
+  }
+  sendCallRequest(txCallObj: TxCallObject): Promise<string> {
+    return this.client.call(ethCall(txCallObj)).then(response => {
+      if (response.error) {
+        throw new Error(response.error.message);
       }
       return response.result;
     });

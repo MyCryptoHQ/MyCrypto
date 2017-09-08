@@ -50,20 +50,17 @@ export type GetTokenBalanceRequest = RPCRequestBase & {
     DEFAULT_BLOCK
   ]
 };
-
+export type TxCallObject = {
+  from?: DATA,
+  to: DATA,
+  gas?: QUANTITY,
+  gasPrice?: QUANTITY,
+  value?: QUANTITY,
+  data?: DATA
+};
 export type CallRequest = RPCRequestBase & {
   method: 'eth_call',
-  params: [
-    {
-      from?: DATA,
-      to: DATA,
-      gas?: QUANTITY,
-      gasPrice?: QUANTITY,
-      value?: QUANTITY,
-      data?: DATA
-    },
-    DEFAULT_BLOCK
-  ]
+  params: [TxCallObject, DEFAULT_BLOCK]
 };
 
 export type EstimateGasRequest = RPCRequestBase & {
