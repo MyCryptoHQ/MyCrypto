@@ -1,0 +1,33 @@
+// Button overrides
+@import "common/sass/variables";
+
+.dropdown {
+  .caret {
+    margin-left: $space-sm;
+  }
+}
+
+.dropdown-menu {
+  padding: 0;
+  border: none;
+
+  > li {
+    margin: 0;
+
+    &:first-child {
+      padding-top: 4px;
+    }
+
+    &:last-child {
+      padding-bottom: 4px;
+    }
+
+    > a {
+      font-weight: 300;
+
+      &.active {
+        color: $link-color;
+      }
+    }
+  }
+}

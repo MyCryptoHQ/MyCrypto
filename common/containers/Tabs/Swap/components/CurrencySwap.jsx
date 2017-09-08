@@ -2,7 +2,7 @@ import './CurrencySwap.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
-import SimpleDropDown from 'components/ui/SimpleDropdown';
+import SimpleSelect from 'components/ui/SimpleSelect';
 import SimpleButton from 'components/ui/SimpleButton';
 import type {
   OriginKindSwapAction,
@@ -183,7 +183,7 @@ export default class CurrencySwap extends Component {
             onChange={this.onChangeOriginAmount}
           />
 
-          <SimpleDropDown
+          <SimpleSelect
             value={originKind}
             onChange={this.onChangeOriginKind.bind(this)}
             options={originKindOptions}
@@ -208,7 +208,7 @@ export default class CurrencySwap extends Component {
             onChange={this.onChangeDestinationAmount}
           />
 
-          <SimpleDropDown
+          <SimpleSelect
             value={destinationKind}
             onChange={this.onChangeDestinationKind}
             options={destinationKindOptions}
