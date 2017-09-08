@@ -74,7 +74,6 @@ function* updateWalletValues(): Generator<Yield, Return, Next> {
   const wallets: DeterministicWalletData[] = yield select(getWallets);
 
   try {
-    //deterministic wallets failed to update upon api fail/blocked
     const calls = wallets.map(w => apply(node, node.getBalance, [w.address]));
     const balances = yield all(calls);
 
@@ -105,7 +104,6 @@ function* updateWalletTokenValues(): Generator<Yield, Return, Next> {
   const wallets: DeterministicWalletData[] = yield select(getWallets);
 
   try {
-    //deterministic wallets failed to update upon api fail/blocked
     const calls = wallets.map(w => {
       return apply(node, node.getTokenBalance, [w.address, token]);
     });
