@@ -10,6 +10,7 @@ import RPCClient, {
   sendRawTx
 } from './client';
 import type { Token } from 'config/data';
+import { Wei } from 'libs/units';
 
 export default class RpcNode implements INode {
   client: RPCClient;
@@ -17,12 +18,12 @@ export default class RpcNode implements INode {
     this.client = new RPCClient(endpoint);
   }
 
-  getBalance(address: string): Promise<Big> {
+  getBalance(address: string): Promise<Wei> {
     return this.client.call(getBalance(address)).then(response => {
       if (response.error) {
         throw new Error(response.error.message);
       }
-      return new Big(String(response.result));
+      return new Wei(String(response.result));
     });
   }
 
