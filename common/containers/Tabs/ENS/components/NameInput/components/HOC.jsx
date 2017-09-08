@@ -4,12 +4,16 @@ import { isValidENSName } from 'libs/validators';
 
 const HOC = PassedComponent =>
   class HOC extends React.Component {
+    state = {
+      isValidDomain: 'neither'
+    };
     //add delay to namehash computation / getting the availability
     onChange = (event: SyntheticInputEvent<>) => {
       const domainToCheck = event.target.value;
       /* eslint-disable */
       this.setState({ domainToCheck });
       const isValidName = isValidENSName(domainToCheck);
+      console.log('SETTING isValidDomain');
       this.setState({ isValidDomain: isValidName });
     };
     onClick = (event: SyntheticInputEvent<>) => {
@@ -19,9 +23,11 @@ const HOC = PassedComponent =>
     };
     render() {
       const { onChange, onClick } = this;
+      const { isValidDomain } = this.state;
       const props = {
         onChange,
-        onClick
+        onClick,
+        isValidDomain
       };
       return <PassedComponent {...props} />;
     }

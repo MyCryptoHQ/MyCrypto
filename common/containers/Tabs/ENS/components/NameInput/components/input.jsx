@@ -4,18 +4,22 @@ import HOC from './HOC';
 
 type NameInputProps = {
   onChange: (SyntheticInputEvent<>) => void,
-  onClick: (SyntheticInputEvent<>) => void
+  onClick: (SyntheticInputEvent<>) => void,
+  isValidDomain: boolean | null
 };
 class ENSNameInput extends React.Component {
   props: NameInputProps;
   render() {
-    const { onChange, onClick } = this.props;
+    const { onChange, onClick, isValidDomain } = this.props;
+    console.log('IS_VALID_DOMAIN', isValidDomain);
     return (
       <article className="row">
         <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
           <div className="input-group">
             <input
-              className="form-control"
+              className={`form-control ${isValidDomain === 'neither'
+                ? ''
+                : isValidDomain ? 'is-valid' : 'is-invalid'}`}
               type="text"
               placeholder="myetherwallet"
               onChange={onChange}
