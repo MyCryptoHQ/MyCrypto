@@ -2,18 +2,20 @@ import ABIFunction from './ABIFunction';
 //import Big from 'bignumber.js';
 
 export default class Contract {
-  constructor(abi) {
-    this._assignABIFuncs(abi);
+  constructor(abi, outputMappings = {}) {
+    this._assignABIFuncs(abi, outputMappings);
   }
-  _assignABIFuncs = abi => {
+  _assignABIFuncs = (abi, outputMappings) => {
     abi.forEach(currentABIMethod => {
-      if (currentABIMethod.type === 'function') {
+      const { name, type } = currentABIMethod;
+      if (type === 'function') {
         //only grab the functions we need
         const { encodeInput, decodeInput, decodeOutput } = new ABIFunction(
-          currentABIMethod
+          currentABIMethod,
+          outputMappings[name]
         );
         const funcToAssign = {
-          [currentABIMethod.name]: { encodeInput, decodeInput, decodeOutput }
+          [name]: { encodeInput, decodeInput, decodeOutput }
         };
         Object.assign(this, funcToAssign);
       }

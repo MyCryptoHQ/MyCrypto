@@ -16,19 +16,21 @@ export default class AbiFunction {
   payable;
   type;
 
-  constructor(abiFunc) {
+  constructor(abiFunc, outputMappings) {
     Object.assign(this, abiFunc);
-    this._init();
+    this._init(outputMappings);
   }
 
-  _init() {
+  _init(outputMappings = []) {
     const { inputs, outputs } = this;
     this.funcParams = this._makeFuncParams();
     //TODO: do this in O(n)
     this.inputTypes = inputs.map(({ type }) => type);
     this.outputTypes = outputs.map(({ type }) => type);
     this.inputNames = inputs.map(({ name }) => name);
-    this.outputNames = outputs.map(({ name }, i) => name || i);
+    this.outputNames = outputs.map(
+      ({ name }, i) => outputMappings[i] || name || i
+    );
 
     this.methodSelector = abi
       .methodID(this.name, this.inputTypes)
