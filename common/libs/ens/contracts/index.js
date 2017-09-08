@@ -1,16 +1,16 @@
 // @flow
 import Contract from '../../contract/index'; // for some reason default dir import fails, needed to explictly define index
 const auctionABI = require('./auction/auction.json');
-const auctionOutputMappings = require('./auction/outputMappings');
+import auctionOutputMappings from './auction/outputMappings';
 
 const deedABI = require('./deed/deed.json');
-const deedOutputMappings = require('./deed/outputMappings');
+import deedOutputMappings from './deed/outputMappings';
 
 const registryABI = require('./registry/registry.json');
-const registryOutputMappings = require('./registry/outputMappings');
+import registryOutputMappings from './registry/outputMappings';
 
 const resolverABI = require('./resolver/resolver.json');
-const resolverOutputMappings = require('./resolver/outputMappings');
+import resolverOutputMappings from './resolver/outputMappings';
 
 const auction = new Contract(auctionABI, auctionOutputMappings);
 const deed = new Contract(deedABI, deedOutputMappings);
