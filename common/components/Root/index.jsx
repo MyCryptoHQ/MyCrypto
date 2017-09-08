@@ -21,7 +21,7 @@ export default class Root extends Component {
     const { store, history } = this.props;
     return (
       <Provider store={store}>
-        <Router history={history}>
+        <Router history={history} key={Math.random()}>
           <Route name="App" path="" component={App}>
             <Route name="GenerateWallet" path="/" component={GenerateWallet} />
             <Route
