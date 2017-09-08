@@ -12,5 +12,31 @@
       "label": "Testnet",
       "value": "m/44'/1'/0'/0"
     }
+  ],
+  "MNEMONIC": [
+    {
+      "label": "Default (ETH)",
+      "value": "m/44'/60'/0'/0"
+    },
+    {
+      "label": "Ledger (ETH)",
+      "value": "m/44'/60'/0'"
+    },
+    {
+      "label": "Ledger (ETC)",
+      "value": "m/44'/60'/160720'/0'"
+    },
+    {
+      "label": "Trezor (ETC)",
+      "value": "m/44'/61'/0'/0"
+    },
+    {
+      "label": "Testnet",
+      "value": "m/44'/1'/0'/0"
+    },
+    {
+      "label": "Expanse",
+      "value": "m/44'/40'/0'/0"
+    }
   ]
 }
