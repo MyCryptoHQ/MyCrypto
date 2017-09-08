@@ -87,7 +87,6 @@ export default class AddCustomTokenForm extends React.Component {
   }
 
   isValid() {
-    console.log(Object.keys(this.getErrors()).length);
     return !Object.keys(this.getErrors()).length;
   }
 
