@@ -43,6 +43,28 @@ export function unlockKeystore(
   };
 }
 
+/*** Unlock Mnemonic ***/
+export type MnemonicUnlockParams = {
+  phrase: string,
+  pass: string,
+  path: string,
+  address: string
+};
+
+export type UnlockMnemonicAction = {
+  type: 'WALLET_UNLOCK_MNEMONIC',
+  payload: MnemonicUnlockParams
+};
+
+export function unlockMnemonic(
+  value: MnemonicUnlockParams
+): UnlockMnemonicAction {
+  return {
+    type: 'WALLET_UNLOCK_MNEMONIC',
+    payload: value
+  };
+}
+
 /*** Set Wallet ***/
 export type SetWalletAction = {
   type: 'WALLET_SET',
