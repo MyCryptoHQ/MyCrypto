@@ -43,8 +43,8 @@ class Unit {
     this.amount = amount;
   }
 
-  toString() {
-    return this.amount.toString();
+  toString(base?: number) {
+    return this.amount.toString(base);
   }
 
   toWei(): Wei {

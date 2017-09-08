@@ -9,5 +9,5 @@ export function valueToHex(value: Ether): string {
   // Values are in ether, so convert to wei for RPC calls
   const wei = value.toWei();
   // Finally, hex it up!
-  return `0x${wei.amount.toString(16)}`;
+  return `0x${wei.toString(16)}`;
 }

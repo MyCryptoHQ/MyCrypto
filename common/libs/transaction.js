@@ -135,7 +135,7 @@ export async function generateCompleteTransactionFromRawTransaction(
   const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
   const cleanedRawTx = {
     nonce: cleanHex(nonce),
-    gasPrice: cleanHex(gasPrice.amount.toString(16)),
+    gasPrice: cleanHex(gasPrice.toString(16)),
     gasLimit: cleanHex(gasLimit.toString(16)),
     to: cleanHex(to),
     value: token ? '0x00' : cleanHex(value.toString(16)),
