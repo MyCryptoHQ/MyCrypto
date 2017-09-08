@@ -93,7 +93,7 @@ class EnterPassword extends Component {
             <span>
               {' '}{translate('GEN_Help_2')}
             </span>
-            <span translate="GEN_Help_3" className="ng-scope">
+            <span>
               {' '}{translate('GEN_Help_3')}
             </span>
           </li>
@@ -129,9 +129,7 @@ class EnterPassword extends Component {
           </li>
         </ul>
 
-        <h4 translate="GEN_Help_4" className="ng-scope">
-          Guides & FAQ
-        </h4>
+        <h4>Guides & FAQ</h4>
         <ul>
           <li>
             <strong>
