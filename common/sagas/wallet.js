@@ -23,7 +23,7 @@ import {
 } from 'libs/wallet';
 import { INode } from 'libs/nodes/INode';
 import { determineKeystoreType } from 'libs/keystore';
-
+import type { Wei } from 'libs/units';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
 
@@ -38,8 +38,8 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
     const node: INode = yield select(getNodeLib);
     const address = yield wallet.getAddress();
     // network request
-    let balance = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance));
+    let balance: Wei = yield apply(node, node.getBalance, [address]);
+    yield put(setBalance(balance.amount));
   } catch (error) {
     yield put({ type: 'updateAccountBalance_error', error });
   }
