@@ -10,6 +10,16 @@
       min-height: 1.5rem;
       padding: 1.5rem 2rem;
       margin: 0 auto 1rem;
+
+      &.is-full-width {
+        background: none;
+        box-shadow: none;
+        padding: 0;
+      }
     }
   }
+}
+
+.Block {
+  @extend .Tab-content-pane;
 }

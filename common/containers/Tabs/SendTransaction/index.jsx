@@ -285,13 +285,7 @@ export class SendTransaction extends React.Component {
           {/* Sidebar */}
           {unlocked &&
             <section className="col-sm-4">
-              <div className="Tab-content-pane">
-                <div>
-                  <BalanceSidebar />
-                  <hr />
-                  <Donate onDonate={this.onNewTx} />
-                </div>
-              </div>
+              <BalanceSidebar />
             </section>}
         </div>
 
@@ -512,7 +506,7 @@ export class SendTransaction extends React.Component {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-    balance: new Ether(state.wallet.balance),
+    balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
     node: getNodeConfig(state),
     nodeLib: getNodeLib(state),

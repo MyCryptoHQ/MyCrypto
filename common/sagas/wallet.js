@@ -39,7 +39,7 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
     const address = yield wallet.getAddress();
     // network request
     let balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance.amount));
+    yield put(setBalance(balance));
   } catch (error) {
     yield put({ type: 'updateAccountBalance_error', error });
   }
