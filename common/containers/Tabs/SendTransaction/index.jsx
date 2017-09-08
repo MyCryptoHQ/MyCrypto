@@ -415,7 +415,7 @@ export class SendTransaction extends React.Component {
         bigGasLimit,
         gasPrice,
         weiBalance
-      ).amount.toString();
+      ).toString();
     } else {
       const tokenBalance = this.props.tokenBalances.find(
         tokenBalance => tokenBalance.symbol === unit

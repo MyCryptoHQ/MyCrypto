@@ -43,6 +43,10 @@ class Unit {
     this.amount = amount;
   }
 
+  toString() {
+    return this.amount.toString();
+  }
+
   toWei(): Wei {
     return new Wei(toWei(this.amount, this.unit));
   }
