@@ -51,7 +51,7 @@ import type {
 } from 'libs/transaction';
 import type { TransactionWithoutGas } from 'libs/messages';
 import type { UNIT } from 'libs/units';
-import { toWei } from 'libs/units';
+import { Wei, Ether, GWei } from 'libs/units';
 import {
   generateCompleteTransaction,
   getBalanceMinusGasCosts,
@@ -94,13 +94,13 @@ type Props = {
     }
   },
   wallet: BaseWallet,
-  balance: Big,
+  balance: Ether,
   node: NodeConfig,
   nodeLib: RPCNode,
   network: NetworkConfig,
   tokens: Token[],
   tokenBalances: TokenBalance[],
-  gasPrice: string,
+  gasPrice: Wei,
   broadcastTx: (signedTx: string) => BroadcastTxRequestedAction,
   showNotification: (
     level: string,
@@ -366,6 +366,7 @@ export class SendTransaction extends React.Component {
         this.estimateGas();
       }
     } catch (error) {
+      this.setState({ generateDisabled: true });
       this.props.showNotification('danger', error.message, 5000);
     }
   }
@@ -404,36 +405,63 @@ export class SendTransaction extends React.Component {
     this.setState({ gasLimit: value, gasChanged: true });
   };
 
+  handleEverythingAmountChange = (value: string, unit: string): string => {
+    if (unit === 'ether') {
+      const { balance, gasPrice } = this.props;
+      const { gasLimit } = this.state;
+      const weiBalance = balance.toWei();
+      const bigGasLimit = new Big(gasLimit);
+      value = getBalanceMinusGasCosts(
+        bigGasLimit,
+        gasPrice,
+        weiBalance
+      ).toString();
+    } else {
+      const tokenBalance = this.props.tokenBalances.find(
+        tokenBalance => tokenBalance.symbol === unit
+      );
+      if (!tokenBalance) {
+        throw new Error(`${unit}: not found in token balances;`);
+      }
+      value = tokenBalance.balance.toString();
+    }
+    return value;
+  };
+
   onAmountChange = (value: string, unit: string) => {
     if (value === 'everything') {
-      if (unit === 'ether') {
-        const { balance, gasPrice } = this.props;
-        const { gasLimit } = this.state;
-        const weiBalance = toWei(balance, 'ether');
-        value = getBalanceMinusGasCosts(
-          new Big(gasLimit),
-          new Big(gasPrice),
-          weiBalance
-        );
-      } else {
-        const tokenBalance = this.props.tokenBalances.find(
-          tokenBalance => tokenBalance.symbol === unit
-        );
-        if (!tokenBalance) {
-          return;
-        }
-        value = tokenBalance.balance.toString();
-      }
+      value = this.handleEverythingAmountChange(value, unit);
+    }
+    let transaction = this.state.transaction;
+    let generateDisabled = this.state.generateDisabled;
+    if (unit && unit !== this.state.unit) {
+      value = '';
+      transaction = null;
+      generateDisabled = true;
     }
     let token = this.props.tokens.find(x => x.symbol === unit);
     this.setState({
       value,
       unit,
-      token
+      token,
+      transaction,
+      generateDisabled
+    });
+  };
+
+  resetJustTx = async (): Promise<*> => {
+    new Promise(resolve => {
+      this.setState(
+        {
+          transaction: null
+        },
+        resolve
+      );
     });
   };
 
   generateTxFromState = async () => {
+    await this.resetJustTx();
     const { nodeLib, wallet, gasPrice, network } = this.props;
     const { token, unit, value, to, data, gasLimit } = this.state;
     const chainId = network.chainId;
@@ -444,12 +472,13 @@ export class SendTransaction extends React.Component {
       to,
       data
     };
+    const bigGasLimit = new Big(gasLimit);
     try {
       const signedTx = await generateCompleteTransaction(
         wallet,
         nodeLib,
         gasPrice,
-        gasLimit,
+        bigGasLimit,
         chainId,
         transactionInput
       );
@@ -483,13 +512,13 @@ export class SendTransaction extends React.Component {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-    balance: state.wallet.balance,
+    balance: new Ether(state.wallet.balance),
     tokenBalances: getTokenBalances(state),
     node: getNodeConfig(state),
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),
-    gasPrice: toWei(new Big(getGasPriceGwei(state)), 'gwei').toString(),
+    gasPrice: new GWei(getGasPriceGwei(state)).toWei(),
     transactions: state.wallet.transactions
   };
 }

@@ -31,6 +31,53 @@ const UNITS = {
 
 export type UNIT = $Keys<typeof UNITS>;
 
+class Unit {
+  unit: UNIT;
+  amount: Big;
+
+  constructor(amount: Big, unit: UNIT) {
+    if (!(unit in UNITS)) {
+      throw new Error(`Supplied unit: ${unit} is not a valid unit.`);
+    }
+    this.unit = unit;
+    this.amount = amount;
+  }
+
+  toString(base?: number) {
+    return this.amount.toString(base);
+  }
+
+  toWei(): Wei {
+    return new Wei(toWei(this.amount, this.unit));
+  }
+
+  toGWei(): GWei {
+    return new GWei(toUnit(this.amount, this.unit, 'gwei'));
+  }
+
+  toEther(): Ether {
+    return new Ether(toUnit(this.amount, this.unit, 'ether'));
+  }
+}
+
+export class Ether extends Unit {
+  constructor(amount: Big | number | string) {
+    super(new Big(amount), 'ether');
+  }
+}
+
+export class Wei extends Unit {
+  constructor(amount: Big | number | string) {
+    super(new Big(amount), 'wei');
+  }
+}
+
+export class GWei extends Unit {
+  constructor(amount: Big | number | string) {
+    super(new Big(amount), 'gwei');
+  }
+}
+
 function getValueOfUnit(unit: UNIT) {
   return new Big(UNITS[unit]);
 }
