@@ -6,7 +6,6 @@ import type {
   SetTokenBalancesAction
 } from 'actions/wallet';
 import { BaseWallet } from 'libs/wallet';
-import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 import type { BroadcastTransactionStatus } from 'libs/transaction';
