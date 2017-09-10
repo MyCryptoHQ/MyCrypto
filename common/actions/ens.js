@@ -52,12 +52,15 @@ export const resolveDomainSuccess = (
 /*** Resolve Domain ***/
 export type ResolveDomainFailed = {
   type: 'ENS_RESOLVE_DOMAIN_FAILED',
-  payload: { domain: string }
+  payload: { domain: string, error: Error }
 };
 
-export const resolveDomainFailed = (domain: string): ResolveDomainFailed => ({
+export const resolveDomainFailed = (
+  domain: string,
+  error: Error
+): ResolveDomainFailed => ({
   type: 'ENS_RESOLVE_DOMAIN_FAILED',
-  payload: { domain }
+  payload: { domain, error }
 });
 /*** Union Type ***/
 export type EnsAction =
