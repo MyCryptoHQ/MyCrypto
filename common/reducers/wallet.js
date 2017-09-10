@@ -5,7 +5,7 @@ import type {
   SetBalanceAction,
   SetTokenBalancesAction
 } from 'actions/wallet';
-import { BaseWallet } from 'libs/wallet';
+import { IWallet } from 'libs/wallet';
 import { toUnit } from 'libs/units';
 import Big from 'bignumber.js';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
@@ -13,7 +13,7 @@ import type { BroadcastTransactionStatus } from 'libs/transaction';
 import { Ether } from 'libs/units';
 
 export type State = {
-  inst: ?BaseWallet,
+  inst: ?IWallet,
   // in ETH
   balance: Ether,
   tokens: {
