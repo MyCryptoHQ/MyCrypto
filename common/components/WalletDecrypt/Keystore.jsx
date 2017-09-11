@@ -74,7 +74,7 @@ export default class KeystoreDecrypt extends Component {
     );
   }
 
-  onKeyDown = (e: SyntheticKeyboardEvent) => {
+  onKeyDown = (e: SyntheticKeyboardEvent<*>) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();
@@ -82,7 +82,7 @@ export default class KeystoreDecrypt extends Component {
     }
   };
 
-  onPasswordChange = (e: SyntheticInputEvent) => {
+  onPasswordChange = (e: SyntheticInputEvent<*>) => {
     const valid = this.props.value.file.length && e.target.value.length;
     this.props.onChange({
       ...this.props.value,
@@ -91,7 +91,7 @@ export default class KeystoreDecrypt extends Component {
     });
   };
 
-  handleFileSelection = (e: SyntheticInputEvent) => {
+  handleFileSelection = (e: SyntheticInputEvent<*>) => {
     const fileReader = new FileReader();
     const inputFile = e.target.files[0];
 

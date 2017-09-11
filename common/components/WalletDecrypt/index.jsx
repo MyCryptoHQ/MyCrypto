@@ -56,18 +56,17 @@ const WALLETS = {
 
 type UnlockParams = {} | PrivateKeyValue;
 
+type Props = {
+  dispatch: (action: any) => void
+};
+
 type State = {
   selectedWalletKey: string,
   value: UnlockParams
 };
 
-export class WalletDecrypt extends Component {
-  props: {
-    // FIXME
-    dispatch: (action: any) => void
-  };
-
-  state: State = {
+export class WalletDecrypt extends Component<Props, State> {
+  state = {
     selectedWalletKey: 'keystore-file',
     value: WALLETS['keystore-file'].initialParams
   };
@@ -113,7 +112,7 @@ export class WalletDecrypt extends Component {
     });
   }
 
-  handleDecryptionChoiceChange = (event: SyntheticInputEvent) => {
+  handleDecryptionChoiceChange = (event: SyntheticInputEvent<*>) => {
     const wallet = WALLETS[event.target.value];
 
     if (!wallet) {

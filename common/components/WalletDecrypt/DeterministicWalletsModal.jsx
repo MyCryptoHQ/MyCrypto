@@ -89,7 +89,7 @@ class DeterministicWalletsModal extends React.Component {
     }
   }
 
-  _handleChangePath = (ev: SyntheticInputEvent) => {
+  _handleChangePath = (ev: SyntheticInputEvent<*>) => {
     const { value } = ev.target;
 
     if (value === 'custom') {
@@ -102,17 +102,17 @@ class DeterministicWalletsModal extends React.Component {
     }
   };
 
-  _handleChangeCustomPath = (ev: SyntheticInputEvent) => {
+  _handleChangeCustomPath = (ev: SyntheticInputEvent<*>) => {
     this.setState({ customPath: ev.target.value });
   };
 
-  _handleSubmitCustomPath = (ev: SyntheticInputEvent) => {
+  _handleSubmitCustomPath = (ev: SyntheticInputEvent<*>) => {
     ev.preventDefault();
     if (!isValidPath(this.state.customPath)) return;
     this.props.onPathChange(this.state.customPath);
   };
 
-  _handleChangeToken = (ev: SyntheticInputEvent) => {
+  _handleChangeToken = (ev: SyntheticInputEvent<*>) => {
     this.props.setDesiredToken(ev.target.value || null);
   };
 

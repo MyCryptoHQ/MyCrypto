@@ -116,7 +116,7 @@ export default class CurrencySwap extends Component<Props, State> {
     this.setDisabled(null, this.props.originKind, null);
   };
 
-  onChangeOriginAmount = (event: SyntheticInputEvent) => {
+  onChangeOriginAmount = (event: SyntheticInputEvent<*>) => {
     const { destinationKind, originKind } = this.props;
     const amount = event.target.value;
     let originAmountAsNumber = parseFloat(amount);
@@ -132,7 +132,7 @@ export default class CurrencySwap extends Component<Props, State> {
     }
   };
 
-  onChangeDestinationAmount = (event: SyntheticInputEvent) => {
+  onChangeDestinationAmount = (event: SyntheticInputEvent<*>) => {
     const { destinationKind, originKind } = this.props;
     const amount = event.target.value;
     let destinationAmountAsNumber = parseFloat(amount);
@@ -148,12 +148,12 @@ export default class CurrencySwap extends Component<Props, State> {
     }
   };
 
-  onChangeDestinationKind = (event: SyntheticInputEvent) => {
+  onChangeDestinationKind = (event: SyntheticInputEvent<*>) => {
     let newDestinationKind = event.target.value;
     this.props.destinationKindSwap(newDestinationKind);
   };
 
-  onChangeOriginKind = (event: SyntheticInputEvent) => {
+  onChangeOriginKind = (event: SyntheticInputEvent<*>) => {
     let newOriginKind = event.target.value;
     this.props.originKindSwap(newOriginKind);
   };

@@ -17,7 +17,7 @@ export default class CurrentRates extends Component {
     BTCREPAmount: 1
   };
 
-  onChange = (event: SyntheticInputEvent) => {
+  onChange = (event: SyntheticInputEvent<*>) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;

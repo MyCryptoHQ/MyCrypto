@@ -5,25 +5,24 @@ import { Footer, Header, AlphaAgreement } from 'components';
 import Notifications from './Notifications';
 import * as actions from 'actions/config';
 
-class App extends Component {
-  props: {
-    // FIXME
-    children: any,
-    location: any,
-    router: any,
-    isMobile: boolean,
+type Props = {
+  children: any,
+  location: any,
+  router: any,
+  isMobile: boolean,
 
-    languageSelection: string,
-    nodeSelection: string,
+  languageSelection: string,
+  nodeSelection: string,
 
-    gasPriceGwei: number,
+  gasPriceGwei: number,
 
-    changeLanguage: typeof actions.changeLanguage,
-    changeNode: typeof actions.changeNode,
-    changeGasPrice: typeof actions.changeGasPrice,
-    handleWindowResize: () => void
-  };
+  changeLanguage: typeof actions.changeLanguage,
+  changeNode: typeof actions.changeNode,
+  changeGasPrice: typeof actions.changeGasPrice,
+  handleWindowResize: () => void
+};
 
+class App extends Component<Props> {
   render() {
     let {
       children,

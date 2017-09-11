@@ -35,7 +35,7 @@ export type ActionProps = {
 export default class ReceivingAddress extends Component {
   props: StateProps & ActionProps;
 
-  onChangeDestinationAddress = (event: SyntheticInputEvent) => {
+  onChangeDestinationAddress = (event: SyntheticInputEvent<*>) => {
     const value = event.target.value;
     this.props.destinationAddressSwap(value);
   };

@@ -86,7 +86,7 @@ export default class GasPriceDropdown extends Component {
     this.props.onChange(parseInt(value, 10));
   };
 
-  handleGasPriceChange = (e: SyntheticInputEvent) => {
+  handleGasPriceChange = (e: SyntheticInputEvent<*>) => {
     this.updateGasPrice(e.target.value);
   };
 }

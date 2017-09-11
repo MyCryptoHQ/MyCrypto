@@ -34,11 +34,11 @@ export type UnlockKeystoreAction = {
 };
 
 export function unlockKeystore(
-  value: KeystoreUnlockParams
+  payload: KeystoreUnlockParams
 ): UnlockKeystoreAction {
   return {
     type: 'WALLET_UNLOCK_KEYSTORE',
-    payload: value
+    payload
   };
 }
 
