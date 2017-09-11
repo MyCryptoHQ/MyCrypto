@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import { isKeystorePassRequired } from 'libs/keystore';

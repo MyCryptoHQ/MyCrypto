@@ -27,7 +27,7 @@ import { getWallets, getDesiredToken } from 'selectors/deterministicWallets';
 import { getNodeLib } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 
-import type { BaseNode } from 'libs/nodes';
+import type { INode } from 'libs/nodes/INode';
 import type { Token } from 'config/data';
 
 // TODO: BIP39 for mnemonic wallets?
@@ -60,7 +60,7 @@ function* getDeterministicWallets(
 
 // Grab each wallet's main network token, and update it with it
 function* updateWalletValues(): Generator<Yield, Return, Next> {
-  const node: BaseNode = yield select(getNodeLib);
+  const node: INode = yield select(getNodeLib);
   const wallets: DeterministicWalletData[] = yield select(getWallets);
   const calls = wallets.map(w => apply(node, node.getBalance, [w.address]));
   const balances = yield all(calls);
@@ -84,7 +84,7 @@ function* updateWalletTokenValues(): Generator<Yield, Return, Next> {
   const token = tokens.find(t => t.symbol === desiredToken);
   if (!token) return;
 
-  const node: BaseNode = yield select(getNodeLib);
+  const node: INode = yield select(getNodeLib);
   const wallets: DeterministicWalletData[] = yield select(getWallets);
   const calls = wallets.map(w => {
     return apply(node, node.getTokenBalance, [w.address, token]);

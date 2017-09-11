@@ -1,3 +1,4 @@
+// @flow
 import { takeEvery } from 'redux-saga/effects';
 
 import type { Yield, Return, Next } from 'sagas/types';

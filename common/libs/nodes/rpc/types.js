@@ -1,5 +1,5 @@
 // don't use flow temporarily
-import type { TransactionWithoutGas } from 'libs/transaction';
+import type { TransactionWithoutGas } from 'libs/messages';
 
 type DATA = string;
 type QUANTITY = string;

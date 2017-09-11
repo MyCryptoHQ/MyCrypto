@@ -21,9 +21,9 @@ import {
   PrivKeyWallet,
   BaseWallet
 } from 'libs/wallet';
-import { BaseNode } from 'libs/nodes';
+import { INode } from 'libs/nodes/INode';
 import { determineKeystoreType } from 'libs/keystore';
-
+import type { Wei } from 'libs/units';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
 
@@ -35,10 +35,10 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
     if (!wallet) {
       return;
     }
-    const node: BaseNode = yield select(getNodeLib);
+    const node: INode = yield select(getNodeLib);
     const address = yield wallet.getAddress();
     // network request
-    let balance = yield apply(node, node.getBalance, [address]);
+    let balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalance(balance));
   } catch (error) {
     yield put({ type: 'updateAccountBalance_error', error });
@@ -47,7 +47,7 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
 
 function* updateTokenBalances(): Generator<Yield, Return, Next> {
   try {
-    const node: BaseNode = yield select(getNodeLib);
+    const node: INode = yield select(getNodeLib);
     const wallet: ?BaseWallet = yield select(getWalletInst);
     const tokens = yield select(getTokens);
     if (!wallet || !node) {
@@ -146,7 +146,7 @@ function* broadcastTx(
 ): Generator<Yield, Return, Next> {
   const signedTx = action.payload.signedTx;
   try {
-    const node: BaseNode = yield select(getNodeLib);
+    const node: INode = yield select(getNodeLib);
     const txHash = yield apply(node, node.sendRawTx, [signedTx]);
     yield put(
       showNotification('success', <TransactionSucceeded txHash={txHash} />, 0)

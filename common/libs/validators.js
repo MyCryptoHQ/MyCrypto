@@ -140,8 +140,12 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
   return true;
 }
 
+/* eslint-disable quotes */
+
 // Full length deterministic wallet paths from BIP32
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 export function isValidPath(dPath: string) {
   return dPath.split("'/").length === 4;
 }
+
+/* eslint-enable quotes */

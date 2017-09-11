@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+}
+
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  // Why comment this out you might ask? A bug in v3 set font-size to `15 px`
+  // which was invalid syntax, so it went with the browser default of 16px.
+  // But many things use $font-size-base as 15px, so I can't just change that
+  // to 16px. Neat-o.
+  // font-size: $font-size-pixels;
+  font-size: 16px;
+
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  @media screen and (min-width: $screen-xl) {
+    font-size: $font-size-pixels-xl;
+  }
+  @media screen and (max-width: $grid-float-breakpoint-max) {
+    font-size: $font-size-pixels-sm;
+  }
+  height: 100%;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-color;
+  background-color: $body-bg;
+  height: 100%;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+figure {
+  margin: 0;
+}
+
+img {
+  vertical-align: middle;
+}
+
+hr {
+  margin-top: $space;
+  margin-bottom: $space;
+  border: 0;
+  border-top: 1px solid $hr-border;
+}

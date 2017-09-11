@@ -70,15 +70,8 @@ class GenerateWallet extends Component<Props> {
     }
 
     return (
-      <section className="container" style={{ minHeight: '50%' }}>
-        <div className="tab-content">
-          <main className="tab-pane active text-center" role="main">
-            <section role="main" className="row">
-              <br />
-              {content}
-            </section>
-          </main>
-        </div>
+      <section className="Tab-content">
+        {content}
       </section>
     );
   }

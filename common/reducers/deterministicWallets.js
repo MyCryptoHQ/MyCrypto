@@ -1,3 +1,4 @@
+// @flow
 import type {
   DeterministicWalletData,
   DeterministicWalletAction

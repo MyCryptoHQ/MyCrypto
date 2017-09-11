@@ -1,28 +1,6 @@
 // @flow
 import React from 'react';
-
-type OptionProps = {
-  value: string,
-  active: boolean,
-  onChange: (value: string) => void
-};
-
-class Option extends React.Component<OptionProps> {
-  render() {
-    const { value, active } = this.props;
-    return (
-      <li>
-        <a className={active ? 'active' : ''} onClick={this.onChange}>
-          {value}
-        </a>
-      </li>
-    );
-  }
-
-  onChange = () => {
-    this.props.onChange(this.props.value);
-  };
-}
+import SimpleDropDown from 'components/ui/SimpleDropDown';
 
 type UnitDropdownProps = {
   value: string,
@@ -30,63 +8,30 @@ type UnitDropdownProps = {
   onChange?: (value: string) => void
 };
 
-type UnitDropdownState = {
-  expanded: boolean
-};
+export default class UnitDropdown extends React.Component {
+  props: UnitDropdownProps;
 
-export default class UnitDropdown extends React.Component<
-  UnitDropdownProps,
-  UnitDropdownState
-> {
-  state = {
+  state: {
+    expanded: boolean
+  } = {
     expanded: false
   };
 
   render() {
-    const { value, options, onChange } = this.props;
-    const isReadonly = !onChange;
+    const { value, options } = this.props;
 
     return (
       <div className="input-group-btn">
-        <a
-          style={{ minWidth: 170 }}
-          className="btn btn-default dropdown-toggle"
-          onClick={this.onToggleExpand}
-        >
-          <strong>
-            {value}
-            <i className="caret" />
-          </strong>
-        </a>
-        {this.state.expanded &&
-          !isReadonly &&
-          <ul className="dropdown-menu dropdown-menu-right">
-            {options.map(o =>
-              <Option
-                key={o}
-                active={value === o}
-                value={o}
-                onChange={this.onChange}
-              />
-            )}
-          </ul>}
+        <SimpleDropDown
+          value={value}
+          onChange={this.onChange}
+          options={options}
+        />
       </div>
     );
   }
 
-  onToggleExpand = () => {
-    this.setState(state => {
-      return {
-        expanded: !state.expanded
-      };
-    });
-  };
-
   onChange = (value: string) => {
-    this.setState({
-      expanded: false
-    });
-
     if (this.props.onChange) {
       this.props.onChange(value);
     }
