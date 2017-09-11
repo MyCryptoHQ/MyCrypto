@@ -6,6 +6,7 @@ import { getNodeLib } from 'selectors/config';
 import { resolveDomainFailed, resolveDomainSuccess } from 'actions/ens';
 import { resolveDomainRequest } from 'libs/ens';
 import { takeEvery, call, put, select } from 'redux-saga/effects';
+import { showNotification } from 'actions/notifications';
 
 function* resolveDomain(
   action: ResolveDomainRequested
@@ -19,6 +20,7 @@ function* resolveDomain(
   } catch (e) {
     const domainFailAction = resolveDomainFailed(domain, e);
     yield put(domainFailAction);
+    yield put(showNotification('danger', e.message, 5000));
   }
 }
 

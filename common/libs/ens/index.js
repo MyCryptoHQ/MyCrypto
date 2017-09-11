@@ -84,12 +84,16 @@ export const resolveDomainRequest = async (
     rawResolverResult
   );
 
-  const rawResolvedAddress = await node.sendCallRequest(
-    resolveAddressTxObj(resolverAddress, _nameHash)
-  );
-  const { ret: resolvedAddress } = ENS.resolver.addr.decodeOutput(
-    rawResolvedAddress
-  );
+  let rawResolvedAddress = '0x0';
+  let resolvedAddress = '0x0';
+
+  if (resolverAddress !== '0x0') {
+    rawResolvedAddress = await node.sendCallRequest(
+      resolveAddressTxObj(resolverAddress, _nameHash)
+    );
+    const { ret } = ENS.resolver.addr.decodeOutput(rawResolvedAddress);
+    resolvedAddress = ret;
+  }
 
   return {
     ...parsedResult,
