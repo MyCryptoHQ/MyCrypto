@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router, Redirect, Route } from 'react-router';
-import PropTypes from 'prop-types';
 import { App } from 'containers';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import ViewWallet from 'containers/Tabs/ViewWallet';
@@ -12,12 +11,12 @@ import SendTransaction from 'containers/Tabs/SendTransaction';
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 
-export default class Root extends Component {
-  static propTypes = {
-    store: PropTypes.object,
-    history: PropTypes.object
-  };
+type Props = {
+  store: {},
+  history: {}
+};
 
+export default class Root extends Component<Props> {
   render() {
     const { store, history } = this.props;
     return (

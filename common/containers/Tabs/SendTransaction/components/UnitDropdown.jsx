@@ -1,19 +1,19 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import SimpleDropDown from 'components/ui/SimpleDropDown';
 
-type UnitDropdownProps = {
+type Props = {
   value: string,
   options: string[],
   onChange?: (value: string) => void
 };
 
-export default class UnitDropdown extends React.Component {
-  props: UnitDropdownProps;
+type State = {
+  expanded: boolean
+};
 
-  state: {
-    expanded: boolean
-  } = {
+export default class UnitDropdown extends Component<Props, State> {
+  state = {
     expanded: false
   };
 

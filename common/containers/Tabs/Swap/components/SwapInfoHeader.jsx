@@ -7,13 +7,11 @@ import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
 import { toFixedIfLarger } from 'utils/formatters';
 
-export type SwapInfoHeaderTitleProps = {
+type SwapInfoHeaderTitleProps = {
   restartSwap: () => RestartSwapAction
 };
 
-class SwapInfoHeaderTitle extends Component {
-  props: SwapInfoHeaderTitleProps;
-
+class SwapInfoHeaderTitle extends Component<SwapInfoHeaderTitleProps> {
   render() {
     return (
       <section className="SwapInfo-top row text-center">
@@ -56,9 +54,7 @@ export type SwapInfoHeaderProps = {
   restartSwap: () => RestartSwapAction
 };
 
-export default class SwapInfoHeader extends Component {
-  props: SwapInfoHeaderProps;
-
+export default class SwapInfoHeader extends Component<SwapInfoHeaderProps> {
   computedOriginDestinationRatio = () => {
     return this.props.destinationAmount / this.props.originAmount;
   };

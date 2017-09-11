@@ -45,13 +45,13 @@ function validatePkeyAndPass(pkey: string, pass: string): validated {
   };
 }
 
-export default class PrivateKeyDecrypt extends Component {
-  props: {
-    value: PrivateKeyValue,
-    onChange: (value: PrivateKeyValue) => void,
-    onUnlock: () => void
-  };
+type Props = {
+  value: PrivateKeyValue,
+  onChange: (value: PrivateKeyValue) => void,
+  onUnlock: () => void
+};
 
+export default class PrivateKeyDecrypt extends Component<Props> {
   render() {
     const { key, password } = this.props.value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);

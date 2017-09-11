@@ -1,15 +1,13 @@
 // @flow
 import './Template.scss';
-import React from 'react';
+import * as React from 'react';
 
 type Props = {
   content: React.Element<*>,
   help: React.Element<*>
 };
 
-export default class GenerateWalletTemplate extends React.Component {
-  props: Props;
-
+export default class GenerateWalletTemplate extends React.Component<Props> {
   render() {
     const { content, help } = this.props;
     return (

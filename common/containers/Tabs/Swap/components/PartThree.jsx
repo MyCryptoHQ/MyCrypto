@@ -4,12 +4,12 @@ import type {
   LoadBityRatesRequestedSwapAction,
   RestartSwapAction,
   StopLoadBityRatesSwapAction
-} from 'actions/swap';
+} from 'actions/swapTypes';
 import SwapProgress from './SwapProgress';
 import PaymentInfo from './PaymentInfo';
 import BitcoinQR from './BitcoinQR';
 
-type ReduxStateProps = {
+type Props = {
   destinationAddress: string,
   destinationKind: string,
   originKind: string,
@@ -19,10 +19,8 @@ type ReduxStateProps = {
   reference: string,
   secondsRemaining: ?number,
   paymentAddress: ?string,
-  orderStatus: ?string
-};
-
-type ReduxActionProps = {
+  orderStatus: ?string,
+  outputTx: ?string,
   loadBityRatesRequestedSwap: () => LoadBityRatesRequestedSwapAction,
   restartSwap: () => RestartSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
@@ -33,9 +31,7 @@ type ReduxActionProps = {
   showNotification: Function
 };
 
-export default class PartThree extends Component {
-  props: ReduxActionProps & ReduxStateProps;
-
+export default class PartThree extends Component<Props> {
   componentDidMount() {
     this.props.startPollBityOrderStatus();
     this.props.startOrderTimerSwap();

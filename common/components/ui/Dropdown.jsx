@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 
 type Props = {
-  value: {},
-  options: (?{})[],
+  value: {} | string,
+  options: (?{} | string)[],
   ariaLabel: string,
-  formatTitle: (option: string) => any,
+  formatTitle: (option: any) => any,
   extra?: any,
   onChange: (value: string) => void
 };

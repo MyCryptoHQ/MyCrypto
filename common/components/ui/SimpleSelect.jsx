@@ -4,12 +4,10 @@ import React, { Component } from 'react';
 type Props = {
   value?: string,
   options: string[],
-  onChange: (event: SyntheticInputEvent) => void
+  onChange: (event: SyntheticInputEvent<*>) => void
 };
 
-export default class SimpleSelect extends Component {
-  props: Props;
-
+export default class SimpleSelect extends Component<Props> {
   render() {
     return (
       <select

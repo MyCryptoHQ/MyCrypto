@@ -14,15 +14,14 @@ export type Props = {
   showNotification: Function
 };
 
-export default class SwapProgress extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasShownViewTx: false
-    };
-  }
+type State = {
+  hasShownViewTx: boolean
+};
 
-  props: Props;
+export default class SwapProgress extends Component<Props, State> {
+  state = {
+    hasShownViewTx: false
+  };
 
   componentDidMount() {
     this.showNotification();

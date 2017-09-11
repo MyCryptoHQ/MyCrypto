@@ -9,9 +9,7 @@ type Props = {
   wallet: PrivKeyWallet
 };
 
-export default class PrintableWallet extends Component {
-  props: Props;
-
+export default class PrintableWallet extends Component<Props> {
   print = () => {
     printElement(<PaperWallet wallet={this.props.wallet} />, {
       popupFeatures: {

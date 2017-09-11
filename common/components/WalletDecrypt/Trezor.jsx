@@ -8,6 +8,10 @@ import TrezorWallet from 'libs/wallet/trezor';
 import DPATHS from 'config/dpaths.json';
 const DEFAULT_PATH = DPATHS.TREZOR[0].value;
 
+type Props = {
+  onUnlock: any => void
+};
+
 type State = {
   publicKey: string,
   chainCode: string,
@@ -16,9 +20,8 @@ type State = {
   isLoading: boolean
 };
 
-export default class TrezorDecrypt extends Component {
-  props: { onUnlock: any => void };
-  state: State = {
+export default class TrezorDecrypt extends Component<Props, State> {
+  state = {
     publicKey: '',
     chainCode: '',
     dPath: DEFAULT_PATH,

@@ -11,10 +11,12 @@ type Props = {
   onChange: (gasPrice: number) => void
 };
 
-export default class GasPriceDropdown extends Component {
-  state = { expanded: false };
+type State = {
+  expanded: boolean
+};
 
-  props: Props;
+export default class GasPriceDropdown extends Component<Props, State> {
+  state = { expanded: false };
 
   constructor(props: Props) {
     super(props);

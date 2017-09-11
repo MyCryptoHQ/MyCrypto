@@ -24,26 +24,23 @@ import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
 import PartThree from './components/PartThree';
 
-type ReduxStateProps = {
+type Props = {
   step: string,
   destinationAddress: string,
   destinationKind: string,
   originKind: string,
-  destinationKindOptions: String[],
-  originKindOptions: String[],
-  bityRates: {},
+  destinationKindOptions: string[],
+  originKindOptions: string[],
+  bityRates: any,
   originAmount: ?number,
   destinationAmount: ?number,
   isPostingOrder: boolean,
   isFetchingRates: boolean,
-  bityOrder: {},
+  bityOrder: any,
   secondsRemaining: ?number,
   paymentAddress: ?string,
   orderStatus: ?string,
-  outputTx: ?string
-};
-
-type ReduxActionProps = {
+  outputTx: ?string,
   changeStepSwap: (value: number) => ChangeStepSwapAction,
   originKindSwap: (value: string) => OriginKindSwapAction,
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
@@ -61,10 +58,10 @@ type ReduxActionProps = {
   ) => BityOrderCreateRequestedSwapAction,
   startPollBityOrderStatus: () => StartPollBityOrderStatusAction,
   stopOrderTimerSwap: () => StopOrderTimerSwapAction,
-  stopPollBityOrderStatus: () => StopPollBityOrderStatusAction
+  stopPollBityOrderStatus: () => StopPollBityOrderStatusAction,
+  showNotification: any => void,
+  startOrderTimerSwap: any => void
 };
-
-type Props = ReduxActionProps & ReduxStateProps;
 
 class Swap extends Component<Props> {
   componentDidMount() {

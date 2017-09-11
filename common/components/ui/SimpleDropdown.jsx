@@ -7,11 +7,12 @@ type Props = {
   onChange: (value: string) => void
 };
 
-export default class SimpleDropDown extends Component {
-  props: Props;
-  state: {
-    expanded: boolean
-  } = {
+type State = {
+  expanded: boolean
+};
+
+export default class SimpleDropDown extends Component<Props, State> {
+  state = {
     expanded: false
   };
 
@@ -21,7 +22,7 @@ export default class SimpleDropDown extends Component {
     });
   };
 
-  onClick = (event: SyntheticInputEvent) => {
+  onClick = (event: SyntheticInputEvent<*>) => {
     const value = event.target.getAttribute('data-value') || '';
     this.props.onChange(value);
     this.setState({ expanded: false });

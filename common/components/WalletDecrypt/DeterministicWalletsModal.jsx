@@ -1,6 +1,6 @@
 // @flow
 import './DeterministicWalletsModal.scss';
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/ui/Modal';
 import {
@@ -52,9 +52,8 @@ type State = {
   page: number
 };
 
-class DeterministicWalletsModal extends React.Component {
-  props: Props;
-  state: State = {
+class DeterministicWalletsModal extends Component<Props, State> {
+  state = {
     selectedAddress: '',
     isCustomPath: false,
     customPath: '',

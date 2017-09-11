@@ -9,9 +9,7 @@ export type Props = {
   paymentAddress: string
 };
 
-export default class PaymentInfo extends Component {
-  props: Props;
-
+export default class PaymentInfo extends Component<Props> {
   render() {
     return (
       <section className="SwapPayment">

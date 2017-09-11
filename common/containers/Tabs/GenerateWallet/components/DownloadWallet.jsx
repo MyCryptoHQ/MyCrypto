@@ -20,9 +20,8 @@ type State = {
   keystore: UtcKeystore | null
 };
 
-export default class DownloadWallet extends Component {
-  props: Props;
-  state: State = {
+export default class DownloadWallet extends Component<Props, State> {
+  state = {
     hasDownloadedWallet: false,
     address: '',
     keystore: null

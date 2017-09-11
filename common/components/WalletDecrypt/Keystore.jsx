@@ -3,13 +3,15 @@ import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import { isKeystorePassRequired } from 'libs/keystore';
 
-export type KeystoreValue = {
-  file: string,
-  password: string,
-  valid: boolean
-};
+// @TODO Update this to better match expected object properties.
+// export type KeystoreValue = {
+//   file: string,
+//   password: string,
+//   valid: boolean
+// };
+export type KeystoreValue = any;
 
-function isPassRequired(file: string): boolean {
+function isPassRequired(file: mixed): boolean {
   let passReq = false;
   try {
     passReq = isKeystorePassRequired(file);
@@ -19,13 +21,13 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
-export default class KeystoreDecrypt extends Component {
-  props: {
-    value: KeystoreValue,
-    onChange: (value: KeystoreValue) => void,
-    onUnlock: () => void
-  };
+type Props = {
+  value: KeystoreValue,
+  onChange: (value: KeystoreValue) => void,
+  onUnlock: () => void
+};
 
+export default class KeystoreDecrypt extends Component<Props> {
   render() {
     const { file, password } = this.props.value;
     let passReq = isPassRequired(file);

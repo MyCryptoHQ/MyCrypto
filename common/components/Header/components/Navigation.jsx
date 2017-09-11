@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import NavigationLink from './NavigationLink';
 
 import './Navigation.scss';
@@ -44,19 +43,15 @@ type Props = {
   location: mixed
 };
 
-export default class TabsOptions extends Component {
-  props: Props;
+type State = {
+  showLeftArrow: boolean,
+  showRightArrow: boolean
+};
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showLeftArrow: false,
-      showRightArrow: false
-    };
-  }
-
-  static propTypes = {
-    location: PropTypes.object
+export default class TabsOptions extends Component<Props, State> {
+  state = {
+    showLeftArrow: false,
+    showRightArrow: false
   };
 
   scrollLeft() {}
@@ -75,7 +70,7 @@ export default class TabsOptions extends Component {
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow--left"
-            onClick={() => this.scrollLeft(100)}
+            onClick={() => this.scrollLeft()}
           >
             &#171;
           </a>}
@@ -98,7 +93,7 @@ export default class TabsOptions extends Component {
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow-right"
-            onClick={() => this.scrollRight(100)}
+            onClick={() => this.scrollRight()}
           >
             &#187;
           </a>}

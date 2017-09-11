@@ -29,7 +29,7 @@ export function determineKeystoreType(file: string): string {
   else throw new Error('Invalid keystore');
 }
 
-export function isKeystorePassRequired(file: string): boolean {
+export function isKeystorePassRequired(file: mixed): boolean {
   switch (determineKeystoreType(file)) {
     case 'presale':
       return true;

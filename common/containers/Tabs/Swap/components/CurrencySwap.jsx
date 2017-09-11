@@ -15,17 +15,14 @@ import type {
 import bityConfig, { kindMin, kindMax } from 'config/bity';
 import { toFixedIfLarger } from 'utils/formatters';
 
-export type StateProps = {
-  bityRates: {},
+type Props = {
+  bityRates: any,
   originAmount: ?number,
   destinationAmount: ?number,
   originKind: string,
   destinationKind: string,
-  destinationKindOptions: String[],
-  originKindOptions: String[]
-};
-
-export type ActionProps = {
+  destinationKindOptions: string[],
+  originKindOptions: string[],
   originKindSwap: (value: string) => OriginKindSwapAction,
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
   originAmountSwap: (value: ?number) => OriginAmountSwapAction,
@@ -33,8 +30,6 @@ export type ActionProps = {
   changeStepSwap: () => ChangeStepSwapAction,
   showNotification: Function
 };
-
-type Props = StateProps & ActionProps;
 
 type State = {
   disabled: boolean,
@@ -47,7 +42,7 @@ export default class CurrencySwap extends Component<Props, State> {
     showedMinMaxError: false
   };
 
-  isMinMaxValid = (amount, kind) => {
+  isMinMaxValid = (amount: any, kind: any) => {
     let bityMin;
     let bityMax;
     if (kind !== 'BTC') {
@@ -63,14 +58,14 @@ export default class CurrencySwap extends Component<Props, State> {
     return higherThanMin && lowerThanMax;
   };
 
-  isDisabled = (originAmount, originKind, destinationAmount) => {
+  isDisabled = (originAmount: any, originKind: any, destinationAmount: any) => {
     const hasOriginAmountAndDestinationAmount =
       originAmount && destinationAmount;
     const minMaxIsValid = this.isMinMaxValid(originAmount, originKind);
     return !(hasOriginAmountAndDestinationAmount && minMaxIsValid);
   };
 
-  setDisabled(originAmount, originKind, destinationAmount) {
+  setDisabled(originAmount: any, originKind: any, destinationAmount: any) {
     const disabled = this.isDisabled(
       originAmount,
       originKind,
