@@ -24,7 +24,6 @@ type Props = {
   resolveDomainRequested: (domain: string) => void
 };
 const ENS = (props: Props) => {
-  console.error('PROPS', props);
   return (
     <ContainerTabPaneActive>
       <UnfinishedBanner />

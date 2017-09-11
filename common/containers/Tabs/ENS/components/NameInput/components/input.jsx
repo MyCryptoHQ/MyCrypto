@@ -12,7 +12,6 @@ class ENSNameInput extends React.Component {
   props: NameInputProps;
   render() {
     const { onChange, onClick, isValidDomain, domainToCheck } = this.props;
-    console.log('IS_VALID_DOMAIN', isValidDomain);
     return (
       <article className="row">
         <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
