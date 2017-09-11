@@ -15,7 +15,7 @@ export function* loadBityRates(_action?: any): Generator<Yield, Return, Next> {
       const data = yield call(getAllRates);
       yield put(loadBityRatesSucceededSwap(data));
     } catch (error) {
-      yield put(yield showNotification('danger', error));
+      yield put(yield showNotification('danger', error.message));
     }
     yield call(delay, 5000);
   }
