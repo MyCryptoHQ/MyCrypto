@@ -10,8 +10,8 @@ import * as swap from './swap';
 import * as notifications from './notifications';
 import type { State as NotificationsState } from './notifications';
 
-import * as ens from './ens';
-import type { State as EnsState } from './ens';
+import * as ens from './ens/index';
+import type { State as EnsState } from './ens/index';
 
 import * as wallet from './wallet';
 import type { State as WalletState } from './wallet';

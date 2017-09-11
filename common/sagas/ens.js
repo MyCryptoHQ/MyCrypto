@@ -1,12 +1,12 @@
 // @flow
-import { takeEvery, call, apply, put, select } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
-import { resolveDomainFailed, resolveDomainSuccess } from 'actions/ens';
 import type { ResolveDomainRequested } from 'actions/ens';
-import type { Yield, Return, Next } from 'sagas/types';
-import { INode } from 'libs/nodes/INode';
+import type { Next, Return, Yield } from 'sagas/types';
+import type { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
+import { resolveDomainFailed, resolveDomainSuccess } from 'actions/ens';
 import { resolveDomainRequest } from 'libs/ens';
+import { takeEvery, call, put, select } from 'redux-saga/effects';
+
 function* resolveDomain(
   action: ResolveDomainRequested
 ): Generator<Yield, Return, Next> {

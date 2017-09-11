@@ -1,4 +1,9 @@
 // @flow
+
+import type { State } from './types';
+
+const INITIAL_STATE: State = {};
+
 import type {
   EnsAction,
   ResolveDomainRequested,
@@ -6,35 +11,26 @@ import type {
   ResolveDomainSuccess
 } from 'actions/ens';
 
-import { combineReducers } from 'redux';
-
 const REQUEST_STATES = {
   pending: 'PENDING',
   success: 'SUCCESS',
   failed: 'FAILED'
 };
-type Domain = {
-  state: string,
-  data: Object
-};
-export type State = { [string]: Domain };
 
-export const INITIAL_STATE: State = {};
-
-function resolveDomainRequested(
+const resolveDomainRequested = (
   state: State,
   action: ResolveDomainRequested
-): State {
+): State => {
   const { domain } = action.payload;
   const prevDomain = state[domain];
   const nextDomain = { ...prevDomain, state: REQUEST_STATES.pending };
   return { ...state, [domain]: nextDomain };
-}
+};
 
-function resolveDomainSuccess(
+const resolveDomainSuccess = (
   state: State,
   action: ResolveDomainSuccess
-): State {
+): State => {
   const { domain, domainData } = action.payload;
   const prevDomain = state[domain];
   const nextDomain = {
@@ -43,9 +39,12 @@ function resolveDomainSuccess(
     state: REQUEST_STATES.success
   };
   return { ...state, [domain]: nextDomain };
-}
+};
 
-function resolveDomainFailed(state: State, action: ResolveDomainFailed): State {
+const resolveDomainFailed = (
+  state: State,
+  action: ResolveDomainFailed
+): State => {
   const { domain, error } = action.payload;
   const prevDomain = state[domain];
   const nextDomain = {
@@ -54,28 +53,9 @@ function resolveDomainFailed(state: State, action: ResolveDomainFailed): State {
     state: REQUEST_STATES.failed
   };
   return { ...state, [domain]: nextDomain };
-}
+};
 
-function currentDomainName(state: State, action: ResolveDomainSuccess): State {
-  //const { domainName } = action.payload;
-  //return { currentDomain: domainName };
-  return {};
-}
-function domainSelector(
-  state: State = INITIAL_STATE,
-  action: EnsAction
-): State {
-  switch (action.type) {
-    case 'ENS_RESOLVE_DOMAIN_SUCCESS':
-      return currentDomainName(state, action);
-    default:
-      return state;
-  }
-}
-function domainRequests(
-  state: State = INITIAL_STATE,
-  action: EnsAction
-): State {
+export default (state: State = INITIAL_STATE, action: EnsAction): State => {
   switch (action.type) {
     case 'ENS_RESOLVE_DOMAIN_REQUESTED':
       return resolveDomainRequested(state, action);
@@ -86,6 +66,4 @@ function domainRequests(
     default:
       return state;
   }
-}
-
-export const reducer = combineReducers({ domainSelector, domainRequests });
+};

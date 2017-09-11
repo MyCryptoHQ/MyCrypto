@@ -1,6 +1,6 @@
 // @flow
-import * as React from 'react';
-import HOC from './HOC';
+import React from 'react';
+import HOC from './EnsNameBarHOC';
 
 type NameInputProps = {
   onChange: SyntheticInputEvent => void,

@@ -1,5 +1,6 @@
 // @flow
-import * as React from 'react';
+import React, { Component } from 'react';
+
 import { isValidENSName } from 'libs/validators';
 type State = {
   domainToCheck: string,
@@ -11,7 +12,7 @@ type Props = {
 type HOCPassedComponent = any; //TODO: ComponentType (Property not found in exports of "react")
 
 const HOC = (PassedComponent: HOCPassedComponent) =>
-  class HOC extends React.Component {
+  class HOC extends Component {
     state: State;
     props: Props;
     state = {
