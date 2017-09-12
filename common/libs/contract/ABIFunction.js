@@ -43,7 +43,25 @@ export default class AbiFunction {
       .methodID(this.name, this.inputTypes)
       .toString('hex');
   }
-
+  call = async (input, _node, to) => {
+    const { encodeInput, decodeOutput, name } = this;
+    if (!_node.sendCallRequest) throw Error(`No node given to ${name}`);
+    const data = encodeInput(input);
+    const returnedData = await _node
+      .sendCallRequest({
+        to,
+        data
+      })
+      .catch(e => {
+        //TODO: Put this in its own handler
+        throw Error(`Node call request error at: ${name}
+        Params:${JSON.stringify(input, null, 2)}
+        Message:${e.message}
+        EncodedCall:${data}`);
+      });
+    const decodedOutput = decodeOutput(returnedData);
+    return decodedOutput;
+  };
   encodeInput = (suppliedInputs: Object = {}) => {
     const { _processSuppliedArgs, _makeEncodedFuncCall } = this;
     const args = _processSuppliedArgs(suppliedInputs);
@@ -156,7 +174,13 @@ export default class AbiFunction {
       const type = funcParams[name].type;
       //TODO: parse args based on type
       if (!suppliedArgs[name])
-        throw Error(`Expected argument "${name}" of type "${type}" missing`);
+        throw Error(
+          `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(
+            suppliedArgs,
+            null,
+            2
+          )}`
+        );
       const value = suppliedArgs[name];
 
       const processedArg = funcParams[name].processInput(value);
