@@ -19,7 +19,7 @@ import {
   UtcWallet,
   EncryptedPrivKeyWallet,
   PrivKeyWallet,
-  BaseWallet
+  IWallet
 } from 'libs/wallet';
 import { INode } from 'libs/nodes/INode';
 import { determineKeystoreType } from 'libs/keystore';
@@ -31,7 +31,7 @@ import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSu
 
 function* updateAccountBalance(): Generator<Yield, Return, Next> {
   try {
-    const wallet: ?BaseWallet = yield select(getWalletInst);
+    const wallet: ?IWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
     }
@@ -39,7 +39,7 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
     const address = yield wallet.getAddress();
     // network request
     let balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance.amount));
+    yield put(setBalance(balance));
   } catch (error) {
     yield put({ type: 'updateAccountBalance_error', error });
   }
@@ -48,7 +48,7 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
 function* updateTokenBalances(): Generator<Yield, Return, Next> {
   try {
     const node: INode = yield select(getNodeLib);
-    const wallet: ?BaseWallet = yield select(getWalletInst);
+    const wallet: ?IWallet = yield select(getWalletInst);
     const tokens = yield select(getTokens);
     if (!wallet || !node) {
       return;

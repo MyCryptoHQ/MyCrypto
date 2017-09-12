@@ -1,0 +1,76 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.AccountInfo {
+  &-section {
+    margin-top: $space * 1.5;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &-header {
+      margin-top: 0;
+    }
+  }
+
+  &-address,
+  &-list {
+    padding-left: $space;
+  }
+
+  &-address {
+    @include clearfix;
+
+    &-icon {
+      float: left;
+      width: 44px;
+      height: 44px;
+      margin-right: $space-md;
+    }
+
+    &-addr {
+      width: 100%;
+      word-wrap: break-word;
+      @include mono;
+    }
+  }
+
+  &-list {
+    &-item {
+      margin-bottom: 0;
+      list-style-type: none;
+      word-break: break-all;
+
+      &-clickable:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.account-info {
+  padding-left: 1em;
+  margin: 0;
+  li {
+  }
+  table {
+    font-weight: 200;
+    border-bottom: 0;
+    min-width: 200px;
+    td {
+      padding: 4px 5px;
+      line-height: 1;
+    }
+    td:first-child {
+      max-width: 115px;
+      word-wrap: break-word;
+      padding-left: 1em;
+    }
+    tr:nth-last-child(2),
+    tr:last-child {
+      background-color: white !important;
+    }
+  }
+}

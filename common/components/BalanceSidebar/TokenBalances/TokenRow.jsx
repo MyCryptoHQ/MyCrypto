@@ -1,4 +1,5 @@
 // @flow
+import './TokenRow.scss';
 import React from 'react';
 import Big from 'bignumber.js';
 import { formatNumber } from 'utils/formatters';
@@ -19,24 +20,25 @@ export default class TokenRow extends React.Component {
     const { balance, symbol, custom } = this.props;
     const { showLongBalance } = this.state;
     return (
-      <tr>
+      <tr className="TokenRow">
         <td
-          className="mono wrap point"
+          className="TokenRow-balance"
           title={`${balance.toString()} (Double-Click)`}
           onDoubleClick={this.toggleShowLongBalance}
         >
           {!!custom &&
             <img
               src={removeIcon}
-              className="token-remove"
+              className="TokenRow-balance-remove"
               title="Remove Token"
               onClick={this.onRemove}
+              tabIndex="0"
             />}
           <span>
             {showLongBalance ? balance.toString() : formatNumber(balance)}
           </span>
         </td>
-        <td>
+        <td className="TokenRow-symbol">
           {symbol}
         </td>
       </tr>
