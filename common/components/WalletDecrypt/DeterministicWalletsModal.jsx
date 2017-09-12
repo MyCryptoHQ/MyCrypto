@@ -7,11 +7,9 @@ import {
   getDeterministicWallets,
   setDesiredToken
 } from 'actions/deterministicWallets';
-import { toUnit } from 'libs/units';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 import { isValidPath } from 'libs/validators';
-
 import type {
   DeterministicWalletData,
   GetDeterministicWalletsArgs,
