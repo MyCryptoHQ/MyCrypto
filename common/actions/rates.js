@@ -5,7 +5,6 @@ export type FiatRequestedRatesAction = {
 };
 
 export function fiatRequestedRates() {
-  console.log('fiatRequestedRates');
   return {
     type: 'RATES_FIAT_REQUESTED'
   };
