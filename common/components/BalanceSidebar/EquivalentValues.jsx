@@ -8,7 +8,7 @@ import { Ether } from 'libs/units';
 const ratesKeys = ['BTC', 'REP', 'EUR', 'USD', 'GBP', 'CHF'];
 
 type Props = {
-  balance: Ether,
+  balance: ?Ether,
   rates: ?{ [string]: number }
 };
 
@@ -34,7 +34,9 @@ export default class EquivalentValues extends React.Component {
                       {key}:
                     </span>
                     <span className="EquivalentValues-values-currency-value">
-                      {' '}{formatNumber(balance.amount.times(rates[key]))}
+                      {' '}{balance
+                        ? formatNumber(balance.amount.times(rates[key]))
+                        : '???'}
                     </span>
                   </li>
                 );
