@@ -17,6 +17,7 @@ export default class EquivalentValues extends React.Component {
 
   render() {
     const { balance, rates } = this.props;
+    const ratesExist = !!rates;
 
     return (
       <div className="EquivalentValues">
@@ -25,8 +26,9 @@ export default class EquivalentValues extends React.Component {
         </h5>
 
         <ul className="EquivalentValues-values">
-          {rates.length
+          {ratesExist
             ? ratesKeys.map(key => {
+                // $FlowFixMe - flow doesn't realize that ratesExist ensures that rates will not be undefined
                 if (!rates[key]) return null;
                 return (
                   <li className="EquivalentValues-values-currency" key={key}>
