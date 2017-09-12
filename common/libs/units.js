@@ -47,6 +47,10 @@ class Unit {
     return this.amount.toString(base);
   }
 
+  toPrecision(precision?: number) {
+    return this.amount.toPrecision(precision);
+  }
+
   toWei(): Wei {
     return new Wei(toWei(this.amount, this.unit));
   }

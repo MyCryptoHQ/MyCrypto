@@ -11,6 +11,7 @@ import ViewOnlyDecrypt from './ViewOnly';
 import map from 'lodash/map';
 import { unlockPrivateKey, unlockKeystore, setWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 const WALLETS = {
   'keystore-file': {
@@ -164,8 +165,14 @@ export class WalletDecrypt extends Component {
   };
 
   onUnlock = (payload: any) => {
+    // some components (TrezorDecrypt) don't take an onChange prop, and thus this.state.value will remain unpopulated.
+    // in this case, we can expect the payload to contain the unlocked wallet info.
+    const unlockValue =
+      this.state.value && !isEmpty(this.state.value)
+        ? this.state.value
+        : payload;
     this.props.dispatch(
-      WALLETS[this.state.selectedWalletKey].unlock(this.state.value || payload)
+      WALLETS[this.state.selectedWalletKey].unlock(unlockValue)
     );
   };
 }

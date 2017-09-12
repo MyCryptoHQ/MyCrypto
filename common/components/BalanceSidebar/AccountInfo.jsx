@@ -4,7 +4,6 @@ import React from 'react';
 import translate from 'translations';
 import { Identicon } from 'components/ui';
 import { formatNumber } from 'utils/formatters';
-import type Big from 'bignumber.js';
 import type { IWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
