@@ -3,13 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
-import BaseWallet from 'libs/wallet/base';
+import type { IWallet } from 'libs/wallet/IWallet';
 import { connect } from 'react-redux';
 import type { State } from 'reducers';
 
 type Props = {
   title: string,
-  wallet: BaseWallet
+  wallet: IWallet
 };
 
 export class UnlockHeader extends React.Component {
