@@ -9,7 +9,7 @@ import { Wei, Ether, toTokenUnit } from 'libs/units';
 import { RPCNode } from 'libs/nodes';
 import { TransactionWithoutGas } from 'libs/messages';
 import type { INode } from 'libs/nodes/INode';
-import type { BaseWallet } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
 import type EthTx from 'ethereumjs-tx';
 import type { UNIT } from 'libs/units';
@@ -79,7 +79,7 @@ export function getTransactionFields(tx: EthTx) {
 export async function generateCompleteTransactionFromRawTransaction(
   node: INode,
   tx: ExtendedRawTransaction,
-  wallet: BaseWallet,
+  wallet: IWallet,
   token: ?Token
 ): Promise<CompleteTransaction> {
   const { to, data, gasLimit, gasPrice, from, chainId, nonce } = tx;
@@ -161,7 +161,7 @@ export async function generateCompleteTransactionFromRawTransaction(
 }
 
 export async function formatTxInput(
-  wallet: BaseWallet,
+  wallet: IWallet,
   { token, unit, value, to, data }: TransactionInput
 ): Promise<TransactionWithoutGas> {
   if (unit === 'ether') {
@@ -187,7 +187,7 @@ export async function formatTxInput(
 }
 
 export async function generateCompleteTransaction(
-  wallet: BaseWallet,
+  wallet: IWallet,
   nodeLib: RPCNode,
   gasPrice: Wei,
   gasLimit: Big,

@@ -5,13 +5,13 @@ import translate from 'translations';
 import { Identicon } from 'components/ui';
 import { formatNumber } from 'utils/formatters';
 import type Big from 'bignumber.js';
-import type { BaseWallet } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
 
 type Props = {
   balance: Ether,
-  wallet: BaseWallet,
+  wallet: IWallet,
   network: NetworkConfig
 };
 

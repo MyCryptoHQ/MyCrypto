@@ -1,12 +1,11 @@
 // @flow
-import BaseWallet from './base';
+import type { IWallet } from './IWallet';
 
-export default class DeterministicWallet extends BaseWallet {
+export default class DeterministicWallet implements IWallet {
   address: string;
   dPath: string;
 
   constructor(address: string, dPath: string) {
-    super();
     this.address = address;
     this.dPath = dPath;
   }

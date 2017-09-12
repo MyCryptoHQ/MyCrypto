@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import Big from 'bignumber.js';
-import { BaseWallet } from 'libs/wallet';
+import { IWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import type { State } from 'reducers';
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ import EquivalentValues from './EquivalentValues';
 import { Ether } from 'libs/units';
 
 type Props = {
-  wallet: BaseWallet,
+  wallet: IWallet,
   balance: Ether,
   network: NetworkConfig,
   tokenBalances: TokenBalance[],

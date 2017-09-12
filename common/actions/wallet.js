@@ -1,5 +1,5 @@
 // @flow
-import BaseWallet from 'libs/wallet/base';
+import type { IWallet } from 'libs/wallet/IWallet';
 import Big from 'bignumber.js';
 import { Wei } from 'libs/units';
 
@@ -46,10 +46,10 @@ export function unlockKeystore(
 /*** Set Wallet ***/
 export type SetWalletAction = {
   type: 'WALLET_SET',
-  payload: BaseWallet
+  payload: IWallet
 };
 
-export function setWallet(value: BaseWallet): SetWalletAction {
+export function setWallet(value: IWallet): SetWalletAction {
   return {
     type: 'WALLET_SET',
     payload: value
