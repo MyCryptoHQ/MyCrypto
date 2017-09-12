@@ -3,7 +3,6 @@ import uts46 from 'idna-uts46';
 import ethUtil from 'ethereumjs-util';
 import ENS from './contracts';
 import networkConfigs from './networkConfigs';
-import type { TxCallObject } from 'libs/nodes/rpc/types';
 import type { INode } from 'libs/nodes/INode';
 const { main } = networkConfigs;
 
@@ -23,6 +22,8 @@ const modeMap = name => [
   `${name} is currently in the ‘reveal’ stage of the auction`,
   `${name} is not yet available due to the ‘soft launch’ of names.`
 ];
+ENS.auction.at(main.public.ethAuction);
+ENS.registry.at(main.registry);
 
 export function normalise(name: string) {
   try {
@@ -46,60 +47,42 @@ export const nameHash = (name: string = ''): string => {
 
   return `0x${rawNode.toString('hex')}`;
 };
-const getOwnerTxObj = deedAddress => ({
-  to: deedAddress,
-  data: ENS.deed.owner.encodeInput()
-});
-
-const getResolverTxObj = node => ({
-  to: main.registry,
-  data: ENS.registry.resolver.encodeInput({ node })
-});
-const resolveAddressTxObj = (resolverAddress, node) => ({
-  to: resolverAddress,
-  data: ENS.resolver.addr.encodeInput({ node })
-});
-export const resolveDomainTxObj = (_hash: string): TxCallObject => ({
-  to: main.public.ethAuction,
-  data: ENS.auction.entries.encodeInput({ _hash })
-});
-
+const setNodes = node => {
+  ENS.auction.setNode(node);
+  ENS.deed.setNode(node);
+  ENS.resolver.setNode(node);
+  ENS.registry.setNode(node);
+};
 export const resolveDomainRequest = async (
   name: string,
   node: INode
 ): Promise<any> => {
+  setNodes(node);
   const _hash = ethUtil.sha3(name);
   const _nameHash = nameHash(`${name}.eth`);
-  const txObj = resolveDomainTxObj(_hash);
-  const rawResult = await node.sendCallRequest(txObj);
-  const parsedResult = ENS.auction.entries.decodeOutput(rawResult);
-  const rawOwnerResult = await node.sendCallRequest(
-    getOwnerTxObj(parsedResult.deedAddress)
-  );
-  const rawResolverResult = await node.sendCallRequest(
-    getResolverTxObj(_nameHash)
-  );
-  const { ownerAddress } = ENS.deed.owner.decodeOutput(rawOwnerResult);
-  const { resolverAddress } = ENS.registry.resolver.decodeOutput(
-    rawResolverResult
-  );
 
-  let rawResolvedAddress = '0x0';
+  const domainData = await ENS.auction.entries.call({ _hash });
+  const { ownerAddress } = await ENS.deed
+    .at(domainData.deedAddress)
+    .owner.call();
+  const { resolverAddress } = await ENS.registry.resolver.call({
+    node: _nameHash
+  });
+
   let resolvedAddress = '0x0';
 
   if (resolverAddress !== '0x0') {
-    rawResolvedAddress = await node.sendCallRequest(
-      resolveAddressTxObj(resolverAddress, _nameHash)
-    );
-    const { ret } = ENS.resolver.addr.decodeOutput(rawResolvedAddress);
+    const { ret } = await ENS.resolver
+      .at(resolverAddress)
+      .addr.call({ node: _hash });
     resolvedAddress = ret;
   }
 
   return {
-    ...parsedResult,
+    ...domainData,
     labelHash: _hash.toString('hex'),
     nameHash: _nameHash,
-    mappedMode: modeMap(`${name}.eth`)[parsedResult.mode],
+    mappedMode: modeMap(`${name}.eth`)[domainData.mode],
     ownerAddress,
     resolvedAddress
   };
