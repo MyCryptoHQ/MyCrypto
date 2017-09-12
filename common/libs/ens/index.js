@@ -3,7 +3,6 @@ import uts46 from 'idna-uts46';
 import ethUtil from 'ethereumjs-util';
 import ENS from './contracts';
 import networkConfigs from './networkConfigs';
-import type { TxCallObject } from 'libs/nodes/rpc/types';
 import type { INode } from 'libs/nodes/INode';
 const { main } = networkConfigs;
 
@@ -15,14 +14,16 @@ const { main } = networkConfigs;
 4 - Name is currently in the ‘reveal’ stage of the auction
 5 - Name is not yet available due to the ‘soft launch’ of names.
  */
-const modeMap = [
-  'Name is available and the auction hasn’t started',
-  'Name is available and the auction has been started',
-  'Name is taken and currently owned by someone',
-  'Name is forbidden',
-  'Name is currently in the ‘reveal’ stage of the auction',
-  'Name is not yet available due to the ‘soft launch’ of names.'
+const modeMap = name => [
+  `${name} is available and the auction hasn’t started`,
+  `${name} is available and the auction has been started`,
+  `${name} is taken and currently owned by someone`,
+  `${name} is forbidden`,
+  `${name} is currently in the ‘reveal’ stage of the auction`,
+  `${name} is not yet available due to the ‘soft launch’ of names.`
 ];
+ENS.auction.at(main.public.ethAuction);
+ENS.registry.at(main.registry);
 
 export function normalise(name: string) {
   try {
@@ -46,19 +47,43 @@ export const nameHash = (name: string = ''): string => {
 
   return `0x${rawNode.toString('hex')}`;
 };
-
-export const resolveDomainTxObj = (_hash: string): TxCallObject => ({
-  to: main.public.ethAuction,
-  data: ENS.auction.entries.encodeInput({ _hash })
-});
-
+const setNodes = node => {
+  ENS.auction.setNode(node);
+  ENS.deed.setNode(node);
+  ENS.resolver.setNode(node);
+  ENS.registry.setNode(node);
+};
 export const resolveDomainRequest = async (
   name: string,
   node: INode
 ): Promise<any> => {
+  setNodes(node);
   const _hash = ethUtil.sha3(name);
-  const txObj = resolveDomainTxObj(_hash);
-  const rawResult = await node.sendCallRequest(txObj);
-  const parsedResult = ENS.auction.entries.decodeOutput(rawResult);
-  return parsedResult;
+  const _nameHash = nameHash(`${name}.eth`);
+
+  const domainData = await ENS.auction.entries.call({ _hash });
+  const { ownerAddress } = await ENS.deed
+    .at(domainData.deedAddress)
+    .owner.call();
+  const { resolverAddress } = await ENS.registry.resolver.call({
+    node: _nameHash
+  });
+
+  let resolvedAddress = '0x0';
+
+  if (resolverAddress !== '0x0') {
+    const { ret } = await ENS.resolver
+      .at(resolverAddress)
+      .addr.call({ node: _hash });
+    resolvedAddress = ret;
+  }
+
+  return {
+    ...domainData,
+    labelHash: _hash.toString('hex'),
+    nameHash: _nameHash,
+    mappedMode: modeMap(`${name}.eth`)[domainData.mode],
+    ownerAddress,
+    resolvedAddress
+  };
 };
