@@ -116,7 +116,7 @@ export function bityOrderCreateRequestedSwap(
   amount: number,
   destinationAddress: string,
   pair: string,
-  mode: number = 0
+  mode: ?number = 0
 ): BityOrderCreateRequestedSwapAction {
   return {
     type: 'SWAP_ORDER_CREATE_REQUESTED',

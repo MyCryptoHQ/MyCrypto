@@ -54,7 +54,7 @@ type Props = {
     amount: number,
     destinationAddress: string,
     pair: string,
-    mode: number
+    mode: ?number
   ) => BityOrderCreateRequestedSwapAction,
   startPollBityOrderStatus: () => StartPollBityOrderStatusAction,
   stopOrderTimerSwap: () => StopOrderTimerSwapAction,

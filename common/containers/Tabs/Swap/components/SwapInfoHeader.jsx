@@ -45,13 +45,14 @@ class SwapInfoHeaderTitle extends Component<SwapInfoHeaderTitleProps> {
 }
 
 export type SwapInfoHeaderProps = {
-  originAmount: number,
+  originAmount: ?number,
   originKind: string,
   destinationKind: string,
-  destinationAmount: number,
+  destinationAmount: ?number,
   reference: string,
   secondsRemaining: ?number,
-  restartSwap: () => RestartSwapAction
+  restartSwap: () => RestartSwapAction,
+  orderStatus: ?string
 };
 
 export default class SwapInfoHeader extends Component<SwapInfoHeaderProps> {

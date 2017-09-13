@@ -1,3 +1,4 @@
+// @flow
 import type { RawTransaction } from 'libs/transaction';
 
 export interface IWallet {

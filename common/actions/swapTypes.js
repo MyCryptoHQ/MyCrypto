@@ -55,7 +55,7 @@ export type BityOrderCreateRequestedSwapAction = {
     amount: number,
     destinationAddress: string,
     pair: string,
-    mode: number
+    mode: ?number
   }
 };
 
@@ -125,6 +125,5 @@ export type SwapAction =
   | StopLoadBityRatesSwapAction
   | BityOrderCreateRequestedSwapAction
   | BityOrderCreateSucceededSwapAction
-  | BityOrderResponse
   | OrderStatusSucceededSwapAction
   | StartPollBityOrderStatusAction;

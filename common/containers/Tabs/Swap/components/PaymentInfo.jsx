@@ -5,7 +5,7 @@ import translate from 'translations';
 
 export type Props = {
   originKind: string,
-  originAmount: string,
+  originAmount: string | number,
   paymentAddress: string
 };
 
