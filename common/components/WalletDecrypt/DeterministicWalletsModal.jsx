@@ -36,9 +36,9 @@ type Props = {
   walletType: ?string,
   dPath: string,
   dPaths: { label: string, value: string }[],
-  publicKey: string,
-  chainCode: string,
-  seed: string,
+  publicKey: ?string,
+  chainCode: ?string,
+  seed: ?string,
   onCancel: () => void,
   onConfirmAddress: (string, number) => void,
   onPathChange: string => void
