@@ -119,7 +119,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
           onCancel={this._handleCancel}
           onConfirmAddress={this._handleUnlock}
           onPathChange={this._handlePathChange}
-          walletType={translate('x_Trezor')}
+          walletType={translate('x_Trezor', true)}
         />
       </section>
     );

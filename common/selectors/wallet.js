@@ -1,12 +1,12 @@
 // @flow
 import type { State } from 'reducers';
-import { BaseWallet } from 'libs/wallet';
+import { IWallet } from 'libs/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import Big from 'bignumber.js';
 import type { Token } from 'config/data';
 import type { BroadcastTransactionStatus } from 'libs/transaction';
 
-export function getWalletInst(state: State): ?BaseWallet {
+export function getWalletInst(state: State): ?IWallet {
   return state.wallet.inst;
 }
 

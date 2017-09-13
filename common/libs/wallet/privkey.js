@@ -1,5 +1,5 @@
 // @flow
-import BaseWallet from './base';
+import type { IWallet } from './IWallet';
 import {
   privateToPublic,
   publicToAddress,
@@ -11,8 +11,9 @@ import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
 import { isValidPrivKey } from 'libs/validators';
 import type { RawTransaction } from 'libs/transaction';
 import type { UtcKeystore } from 'libs/keystore';
+import { stripHex } from 'libs/values';
 
-export default class PrivKeyWallet extends BaseWallet {
+export default class PrivKeyWallet implements IWallet {
   privKey: Buffer;
   pubKey: Buffer;
   address: Buffer;
@@ -20,7 +21,6 @@ export default class PrivKeyWallet extends BaseWallet {
     if (!isValidPrivKey(privkey)) {
       throw new Error('Invalid private key');
     }
-    super();
     this.privKey = privkey;
     this.pubKey = privateToPublic(this.privKey);
     this.address = publicToAddress(this.pubKey);
@@ -38,6 +38,14 @@ export default class PrivKeyWallet extends BaseWallet {
 
   static generate() {
     return new PrivKeyWallet(randomBytes(32));
+  }
+
+  getNakedAddress(): Promise<string> {
+    return new Promise(resolve => {
+      this.getAddress().then(address => {
+        resolve(stripHex(address));
+      });
+    });
   }
 
   toKeystore(password: string): Promise<UtcKeystore> {

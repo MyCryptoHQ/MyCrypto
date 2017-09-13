@@ -5,16 +5,16 @@ import type {
   SetBalanceAction,
   SetTokenBalancesAction
 } from 'actions/wallet';
-import { BaseWallet } from 'libs/wallet';
+import { IWallet } from 'libs/wallet';
 import Big from 'bignumber.js';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 import type { BroadcastTransactionStatus } from 'libs/transaction';
 import { Ether } from 'libs/units';
 
 export type State = {
-  inst: ?BaseWallet,
+  inst: ?IWallet,
   // in ETH
-  balance: Ether,
+  balance: ?Ether,
   tokens: {
     [string]: Big
   },
@@ -23,14 +23,14 @@ export type State = {
 
 export const INITIAL_STATE: State = {
   inst: null,
-  balance: new Ether(0),
+  balance: null,
   tokens: {},
   isBroadcasting: false,
   transactions: []
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
-  return { ...state, inst: action.payload, balance: new Ether(0), tokens: {} };
+  return { ...state, inst: action.payload, balance: null, tokens: {} };
 }
 
 function setBalance(state: State, action: SetBalanceAction): State {

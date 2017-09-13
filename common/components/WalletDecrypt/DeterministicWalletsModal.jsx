@@ -7,11 +7,9 @@ import {
   getDeterministicWallets,
   setDesiredToken
 } from 'actions/deterministicWallets';
-import { toUnit } from 'libs/units';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 import { isValidPath } from 'libs/validators';
-
 import type {
   DeterministicWalletData,
   GetDeterministicWalletsArgs,
@@ -141,9 +139,7 @@ class DeterministicWalletsModal extends Component<Props, State> {
     const { selectedAddress } = this.state;
 
     // Get renderable values, but keep 'em short
-    const value = wallet.value
-      ? toUnit(wallet.value, 'wei', 'ether').toPrecision(4)
-      : '';
+    const value = wallet.value ? wallet.value.toEther().toPrecision(4) : '';
     const tokenValue = wallet.tokenValues[desiredToken]
       ? wallet.tokenValues[desiredToken].toPrecision(4)
       : '';

@@ -2,13 +2,13 @@
 import React from 'react';
 import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
-import BaseWallet from 'libs/wallet/base';
+import type { IWallet } from 'libs/wallet/IWallet';
 import { connect } from 'react-redux';
 import type { State as ReduxState } from 'reducers';
 
 type Props = {
   title: string,
-  wallet: BaseWallet
+  wallet: IWallet
 };
 
 type State = {

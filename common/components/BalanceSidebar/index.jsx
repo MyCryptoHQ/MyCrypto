@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { BaseWallet } from 'libs/wallet';
+import { IWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import type { State } from 'reducers';
 import { connect } from 'react-redux';
@@ -9,6 +9,8 @@ import type { TokenBalance } from 'selectors/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import * as customTokenActions from 'actions/customTokens';
 import { showNotification } from 'actions/notifications';
+import { fiatRequestedRates } from 'actions/rates';
+import type { FiatRequestedRatesAction } from 'actions/rates';
 
 import AccountInfo from './AccountInfo';
 import Promos from './Promos';
@@ -17,19 +19,27 @@ import EquivalentValues from './EquivalentValues';
 import { Ether } from 'libs/units';
 
 type Props = {
-  wallet: BaseWallet,
+  wallet: IWallet,
   balance: Ether,
   network: NetworkConfig,
   tokenBalances: TokenBalance[],
   rates: { [string]: number },
   showNotification: Function,
   addCustomToken: typeof customTokenActions.addCustomToken,
-  removeCustomToken: typeof customTokenActions.removeCustomToken
+  removeCustomToken: typeof customTokenActions.removeCustomToken,
+  fiatRequestedRates: () => FiatRequestedRatesAction
 };
 
 export class BalanceSidebar extends Component<Props> {
   render() {
-    const { wallet, balance, network, tokenBalances, rates } = this.props;
+    const {
+      wallet,
+      balance,
+      network,
+      tokenBalances,
+      rates,
+      fiatRequestedRates
+    } = this.props;
     if (!wallet) {
       return null;
     }
@@ -38,7 +48,12 @@ export class BalanceSidebar extends Component<Props> {
       {
         name: 'Account Info',
         content: (
-          <AccountInfo wallet={wallet} balance={balance} network={network} />
+          <AccountInfo
+            wallet={wallet}
+            balance={balance}
+            network={network}
+            fiatRequestedRates={fiatRequestedRates}
+          />
         )
       },
       {
@@ -89,5 +104,6 @@ function mapStateToProps(state: State) {
 
 export default connect(mapStateToProps, {
   ...customTokenActions,
-  showNotification
+  showNotification,
+  fiatRequestedRates
 })(BalanceSidebar);

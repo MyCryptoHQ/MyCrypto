@@ -13,7 +13,7 @@ describe('wallet reducer', () => {
     expect(wallet(undefined, walletActions.setWallet(walletInstance))).toEqual({
       ...INITIAL_STATE,
       inst: walletInstance,
-      balance: new Ether(0),
+      balance: null,
       tokens: {}
     });
   });
