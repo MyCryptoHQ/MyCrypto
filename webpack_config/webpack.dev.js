@@ -5,7 +5,10 @@ const webpack = require('webpack');
 const base = require('./webpack.base');
 const FriendlyErrors = require('friendly-errors-webpack-plugin');
 
-base.devtool = 'source-map';
+base.devtool = process.env.SLOW_BUILD_SPEED
+  ? 'source-map'
+  : 'cheap-module-eval-source-map';
+
 base.module.loaders.push(
   {
     test: /\.css$/,
