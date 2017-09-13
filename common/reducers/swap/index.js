@@ -90,7 +90,7 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
     case 'SWAP_ORIGIN_AMOUNT':
       return {
         ...state,
-        originAmount: parseFloat(action.value)
+        originAmount: action.value
       };
     case 'SWAP_DESTINATION_AMOUNT':
       return {

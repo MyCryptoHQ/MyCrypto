@@ -6,7 +6,7 @@ import type {
 
 export type State = {
   wallets: DeterministicWalletData[],
-  desiredToken: string
+  desiredToken: ?string
 };
 
 export const INITIAL_STATE: State = {

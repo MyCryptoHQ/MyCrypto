@@ -5,8 +5,8 @@ import translate from 'translations';
 
 export type Props = {
   originKind: string,
-  originAmount: string | number,
-  paymentAddress: string
+  originAmount: number,
+  paymentAddress: ?string
 };
 
 export default class PaymentInfo extends Component<Props> {

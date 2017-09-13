@@ -9,7 +9,7 @@ export type Props = {
   destinationAddress: string,
   outputTx: string,
   originKind: string,
-  orderStatus: string,
+  orderStatus: ?string,
   // actions
   showNotification: Function
 };

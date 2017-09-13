@@ -17,7 +17,7 @@ import { toFixedIfLarger } from 'utils/formatters';
 
 type Props = {
   bityRates: any,
-  originAmount: ?number,
+  originAmount: number,
   destinationAmount: ?number,
   originKind: string,
   destinationKind: string,
@@ -25,9 +25,9 @@ type Props = {
   originKindOptions: string[],
   originKindSwap: (value: string) => OriginKindSwapAction,
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
-  originAmountSwap: (value: ?number) => OriginAmountSwapAction,
+  originAmountSwap: (value: number) => OriginAmountSwapAction,
   destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
-  changeStepSwap: () => ChangeStepSwapAction,
+  changeStepSwap: (value: number) => ChangeStepSwapAction,
   showNotification: Function
 };
 
@@ -137,7 +137,7 @@ export default class CurrencySwap extends Component<Props, State> {
       let pairNameReversed = combineAndUpper(destinationKind, originKind);
       let bityRate = this.props.bityRates[pairNameReversed];
       let originAmount = destinationAmountAsNumber * bityRate;
-      this.props.originAmountSwap(originAmount, originKind);
+      this.props.originAmountSwap(originAmount);
       this.setDisabled(originAmount, originKind, destinationAmountAsNumber);
     } else {
       this.setOriginAndDestinationToNull();

@@ -1,6 +1,6 @@
 // @flow
 
-export { default as IWallet } from './IWallet';
+export { IWallet } from './IWallet';
 export { default as PrivKeyWallet } from './privkey';
 export { default as EncryptedPrivKeyWallet } from './encprivkey';
 export { default as PresaleWallet } from './presale';

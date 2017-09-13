@@ -1,10 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import type {
-  LoadBityRatesRequestedSwapAction,
-  RestartSwapAction,
-  StopLoadBityRatesSwapAction
-} from 'actions/swapTypes';
+import type { RestartSwapAction } from 'actions/swapTypes';
 import SwapProgress from './SwapProgress';
 import PaymentInfo from './PaymentInfo';
 import BitcoinQR from './BitcoinQR';
@@ -13,17 +9,14 @@ type Props = {
   destinationAddress: string,
   destinationKind: string,
   originKind: string,
-  originAmount: ?number,
+  originAmount: number,
   destinationAmount: ?number,
-  isPostingOrder: boolean,
   reference: string,
   secondsRemaining: ?number,
   paymentAddress: ?string,
   orderStatus: ?string,
-  outputTx: ?string,
-  loadBityRatesRequestedSwap: () => LoadBityRatesRequestedSwapAction,
+  outputTx: string,
   restartSwap: () => RestartSwapAction,
-  stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
   startOrderTimerSwap: Function,
   startPollBityOrderStatus: Function,
   stopOrderTimerSwap: Function,

@@ -23,7 +23,7 @@ import type {
   StopPollBityOrderStatusAction
 } from './swapTypes';
 
-export function changeStepSwap(value: number): ChangeStepSwapAction {
+export function changeStepSwap(value: ?number): ChangeStepSwapAction {
   return {
     type: 'SWAP_STEP',
     value

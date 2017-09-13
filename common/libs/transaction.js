@@ -7,7 +7,7 @@ import ERC20 from 'libs/erc20';
 import { stripHex, valueToHex } from 'libs/values';
 import { Wei, Ether, toTokenUnit } from 'libs/units';
 import { RPCNode } from 'libs/nodes';
-import { TransactionWithoutGas } from 'libs/messages';
+import type { TransactionWithoutGas } from 'libs/messages';
 import type { INode } from 'libs/nodes/INode';
 import type { IWallet } from 'libs/wallet';
 import type { Token } from 'config/data';

@@ -42,7 +42,7 @@ export type LoadBityRatesRequestedSwapAction = {
 
 export type ChangeStepSwapAction = {
   type: 'SWAP_STEP',
-  value: number
+  value: ?number
 };
 
 export type StopLoadBityRatesSwapAction = {
@@ -60,11 +60,14 @@ export type BityOrderCreateRequestedSwapAction = {
 };
 
 type BityOrderInput = {
-  amount: string
+  amount: string,
+  status: ?string
 };
 
 type BityOrderOutput = {
-  amount: string
+  amount: string,
+  status: ?string,
+  reference: ?string
 };
 
 export type BityOrderResponse = {
@@ -77,7 +80,8 @@ export type BityOrderPostResponse = BityOrderResponse & {
   input: BityOrderInput,
   output: BityOrderOutput,
   timestamp_created: string,
-  validFor: number
+  validFor: number,
+  id: ?string
 };
 
 export type BityOrderCreateSucceededSwapAction = {
@@ -92,7 +96,7 @@ export type OrderStatusRequestedSwapAction = {
 
 export type OrderStatusSucceededSwapAction = {
   type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
-  payload: BityOrderResponse
+  payload: BityOrderPostResponse
 };
 
 export type StartOrderTimerSwapAction = {

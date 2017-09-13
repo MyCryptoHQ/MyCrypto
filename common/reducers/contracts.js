@@ -7,7 +7,7 @@ import type {
 export type State = {
   selectedAddress: ?string,
   selectedABIJson: ?string,
-  selectedABIFunctions: ?Array
+  selectedABIFunctions: ?Array<any>
 };
 
 export const initialState: State = {
@@ -19,7 +19,7 @@ export const initialState: State = {
 
 type Action = AccessContractAction | SetInteractiveContractAction;
 
-export function contracts(state: State = initialState, action: Action) {
+export function contracts(state: State = initialState, action: Action): State {
   switch (action.type) {
     case 'ACCESS_CONTRACT':
       return {

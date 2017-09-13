@@ -4,10 +4,10 @@ import without from 'lodash/without';
 import { ALL_CRYPTO_KIND_OPTIONS } from '.';
 
 export const buildDestinationAmount = (
-  originAmount,
-  originKind,
-  destinationKind,
-  bityRates
+  originAmount: number,
+  originKind: string,
+  destinationKind: string,
+  bityRates: {}
 ) => {
   let pairName = combineAndUpper(originKind, destinationKind);
   let bityRate = bityRates[pairName];
