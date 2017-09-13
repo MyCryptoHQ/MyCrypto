@@ -59,7 +59,7 @@ export default class MnemonicDecrypt extends Component {
             <div className="form-group">
               <button
                 style={{ width: '100%' }}
-                onClick={this.onChooseAddress}
+                onClick={this.onDWModalOpen}
                 className="btn btn-primary btn-lg"
               >
                 {translate('Choose Address')}
@@ -89,7 +89,7 @@ export default class MnemonicDecrypt extends Component {
     this.setState({ phrase: e.target.value });
   };
 
-  onChooseAddress = (e: SyntheticInputEvent) => {
+  onDWModalOpen = (e: SyntheticInputEvent) => {
     const { phrase, pass } = this.state;
 
     if (!validateMnemonic(phrase)) return;
