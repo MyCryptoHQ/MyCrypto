@@ -31,12 +31,6 @@ module.exports = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        loaders: ['eslint-loader'],
-        exclude: [/node_modules/]
-      },
-      {
-        test: /\.(js|jsx)$/,
         loaders: ['babel-loader'],
         exclude: [/node_modules\/(?!ethereum-blockies|idna-uts46)/]
       },

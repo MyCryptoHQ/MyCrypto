@@ -7,11 +7,13 @@ import { formatNumber } from 'utils/formatters';
 import type { IWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
+import type { FiatRequestedRatesAction } from 'actions/rates';
 
 type Props = {
   balance: Ether,
   wallet: IWallet,
-  network: NetworkConfig
+  network: NetworkConfig,
+  fiatRequestedRates: () => FiatRequestedRatesAction
 };
 
 export default class AccountInfo extends React.Component {
@@ -23,6 +25,7 @@ export default class AccountInfo extends React.Component {
   };
 
   componentDidMount() {
+    this.props.fiatRequestedRates();
     this.props.wallet.getAddress().then(addr => {
       this.setState({ address: addr });
     });
@@ -67,11 +70,10 @@ export default class AccountInfo extends React.Component {
               <span
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
-                title={`${balance.toString()}`}
               >
                 {this.state.showLongBalance
-                  ? balance.toString()
-                  : formatNumber(balance.amount)}
+                  ? balance ? balance.toString() : '???'
+                  : balance ? formatNumber(balance.amount) : '???'}
               </span>
               {` ${network.name}`}
             </li>
