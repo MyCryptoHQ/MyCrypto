@@ -110,6 +110,7 @@
     "predev": "check-node-version --package",
     "flow": "flow",
     "derivation-checker": "babel-node common/derivation-checker.js --presets es2015,stage-0,flow",
+    "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },

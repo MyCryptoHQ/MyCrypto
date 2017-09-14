@@ -7,6 +7,7 @@ const config = require('./config');
 const _ = require('./utils');
 
 module.exports = {
+  cache: true,
   entry: {
     client: './common/index.jsx'
   },
@@ -31,7 +32,12 @@ module.exports = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        loaders: ['babel-loader'],
+        loaders: [
+          {
+            loader: 'babel-loader',
+            query: { cacheDirectory: true }
+          }
+        ],
         exclude: [/node_modules\/(?!ethereum-blockies|idna-uts46)/]
       },
       {
