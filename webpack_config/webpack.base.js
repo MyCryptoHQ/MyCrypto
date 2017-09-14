@@ -64,10 +64,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DllReferencePlugin({
-      context: path.join(__dirname, '../common'),
-      manifest: require('../dll/vendor-manifest.json')
-    }),
     new webpack.DefinePlugin({
       'process.env.BUILD_GH_PAGES': JSON.stringify(!!process.env.BUILD_GH_PAGES)
     }),
