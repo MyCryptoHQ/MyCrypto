@@ -4,13 +4,8 @@ import EthTx from 'ethereumjs-tx';
 import Big from 'bignumber.js';
 import { addHexPrefix } from 'ethereumjs-util';
 import DeterministicWallet from './deterministic';
-import { stripHex } from 'libs/values';
+import { stripHexPrefixAndLower } from 'libs/values';
 import type { RawTransaction } from 'libs/transaction';
-
-// Identical to ethFuncs.getNakedAddress
-function stripAndLower(str) {
-  return stripHex(str).toLowerCase();
-}
 
 export default class TrezorWallet extends DeterministicWallet {
   signRawTransaction(tx: RawTransaction): Promise<string> {
@@ -18,12 +13,13 @@ export default class TrezorWallet extends DeterministicWallet {
       TrezorConnect.ethereumSignTx(
         // Args
         this.getPath(),
-        stripAndLower(tx.nonce),
-        stripAndLower(tx.gasPrice.toString()),
-        stripAndLower(tx.gasLimit.toString()),
-        stripAndLower(tx.to),
-        stripAndLower(tx.value),
-        stripAndLower(tx.data),
+        // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
+        stripHexPrefixAndLower(tx.nonce),
+        stripHexPrefixAndLower(tx.gasPrice.toString()),
+        stripHexPrefixAndLower(tx.gasLimit.toString()),
+        stripHexPrefixAndLower(tx.to),
+        stripHexPrefixAndLower(tx.value),
+        stripHexPrefixAndLower(tx.data),
         tx.chainId,
         // Callback
         result => {
