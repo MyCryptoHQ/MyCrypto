@@ -14,20 +14,20 @@ export type DeterministicWalletData = {
 export type GetDeterministicWalletsAction = {
   type: 'DW_GET_WALLETS',
   payload: {
-    seed: string,
+    seed: ?string,
     dPath: string,
-    publicKey: string,
-    chainCode: string,
+    publicKey: ?string,
+    chainCode: ?string,
     limit: number,
     offset: number
   }
 };
 
 export type GetDeterministicWalletsArgs = {
-  seed: string,
+  seed: ?string,
   dPath: string,
-  publicKey: string,
-  chainCode: string,
+  publicKey: ?string,
+  chainCode: ?string,
   limit?: number,
   offset?: number
 };

@@ -30,6 +30,9 @@ import { getTokens } from 'selectors/wallet';
 import type { INode } from 'libs/nodes/INode';
 import type { Token } from 'config/data';
 
+import { showNotification } from 'actions/notifications';
+import translate from 'translations';
+
 function* getDeterministicWallets(
   action?: GetDeterministicWalletsAction
 ): Generator<Yield, Return, Next> {
@@ -39,17 +42,17 @@ function* getDeterministicWallets(
   let pathBase, hdk;
 
   //if seed present, treat as mnemonic
-  //else, treat as HW wallet
+  //if pubKey & chainCode present, treat as HW wallet
 
   if (seed) {
     hdk = HDKey.fromMasterSeed(new Buffer(seed, 'hex'));
     pathBase = dPath;
-  } else {
+  } else if (publicKey && chainCode) {
     hdk = new HDKey();
     hdk.publicKey = new Buffer(publicKey, 'hex');
     hdk.chainCode = new Buffer(chainCode, 'hex');
     pathBase = 'm';
-  }
+  } else return;
 
   const wallets = [];
   for (let i = 0; i < limit; i++) {
@@ -87,7 +90,7 @@ function* updateWalletValues(): Generator<Yield, Return, Next> {
     }
   } catch (err) {
     console.log(err);
-    //TODO: maybe communicate API call error to user?
+    yield put(showNotification('danger', translate('ERROR_32')));
   }
 }
 
@@ -122,7 +125,7 @@ function* updateWalletTokenValues(): Generator<Yield, Return, Next> {
     }
   } catch (err) {
     console.log(err);
-    //TODO: maybe communicate API call error to user?
+    yield put(showNotification('danger', translate('ERROR_32')));
   }
 }
 
