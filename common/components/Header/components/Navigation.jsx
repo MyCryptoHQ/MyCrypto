@@ -40,7 +40,7 @@ const tabs = [
 ];
 
 type Props = {
-  location: mixed
+  location: {}
 };
 
 type State = {

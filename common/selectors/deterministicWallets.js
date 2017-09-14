@@ -6,6 +6,6 @@ export function getWallets(state: State): DeterministicWalletData[] {
   return state.deterministicWallets.wallets;
 }
 
-export function getDesiredToken(state: State): string {
+export function getDesiredToken(state: State): ?string {
   return state.deterministicWallets.desiredToken;
 }

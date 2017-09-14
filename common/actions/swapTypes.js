@@ -89,11 +89,6 @@ export type BityOrderCreateSucceededSwapAction = {
   payload: BityOrderPostResponse
 };
 
-export type OrderStatusRequestedSwapAction = {
-  type: 'SWAP_BITY_ORDER_STATUS_REQUESTED',
-  payload: BityOrderResponse
-};
-
 export type OrderStatusSucceededSwapAction = {
   type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
   payload: BityOrderPostResponse

@@ -68,7 +68,9 @@ export default class PartThree extends Component<Props> {
       <div>
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
-        {orderStatus === 'OPEN' && originKind === 'BTC' && <BitcoinQR />}
+        {orderStatus === 'OPEN' &&
+          originKind === 'BTC' &&
+          <BitcoinQR amount={originAmount} paymentAddress={paymentAddress} />}
       </div>
     );
   }

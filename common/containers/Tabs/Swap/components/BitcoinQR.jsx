@@ -4,13 +4,11 @@ import React, { Component } from 'react';
 import QRCode from 'qrcode.react';
 
 type Props = {
-  paymentAddress: string,
-  amount: number
+  paymentAddress: ?string,
+  amount: ?number
 };
 
-export default class BitcoinQR extends Component {
-  props: Props;
-
+export default class BitcoinQR extends Component<Props> {
   render() {
     const { paymentAddress, amount } = this.props;
     return (
@@ -18,7 +16,9 @@ export default class BitcoinQR extends Component {
         <section className="row block swap-address text-center">
           <label> Your Address </label>
           <div className="qr-code">
-            <QRCode value={`bitcoin:${paymentAddress}amount=${amount}`} />
+            <QRCode
+              value={`bitcoin:${paymentAddress || ''}amount=${amount || ''}`}
+            />
           </div>
           <br />
           <p className="text-danger">

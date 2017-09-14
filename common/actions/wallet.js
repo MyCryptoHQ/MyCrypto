@@ -46,10 +46,10 @@ export function unlockKeystore(
 /*** Set Wallet ***/
 export type SetWalletAction = {
   type: 'WALLET_SET',
-  payload: IWallet
+  payload: any
 };
 
-export function setWallet(value: IWallet): SetWalletAction {
+export function setWallet(value: any): SetWalletAction {
   return {
     type: 'WALLET_SET',
     payload: value

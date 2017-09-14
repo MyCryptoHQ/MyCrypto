@@ -107,7 +107,7 @@ export default class CurrencySwap extends Component<Props, State> {
   };
 
   setOriginAndDestinationToNull = () => {
-    this.props.originAmountSwap(null);
+    this.props.originAmountSwap(0);
     this.props.destinationAmountSwap(null);
     this.setDisabled(null, this.props.originKind, null);
   };

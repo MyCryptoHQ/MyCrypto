@@ -11,7 +11,7 @@ import { isKeystorePassRequired } from 'libs/keystore';
 // };
 export type KeystoreValue = any;
 
-function isPassRequired(file: mixed): boolean {
+function isPassRequired(file: string): boolean {
   let passReq = false;
   try {
     passReq = isKeystorePassRequired(file);
@@ -95,7 +95,7 @@ export default class KeystoreDecrypt extends Component<Props> {
   };
 
   handleFileSelection = (e: SyntheticInputEvent<*>) => {
-    const fileReader = new FileReader();
+    const fileReader: FileReader = new FileReader();
     const inputFile = e.target.files[0];
 
     fileReader.onload = () => {

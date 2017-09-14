@@ -1,6 +1,6 @@
 // @flow
 import type { State } from 'reducers';
-import { IWallet } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import Big from 'bignumber.js';
 import type { Token } from 'config/data';

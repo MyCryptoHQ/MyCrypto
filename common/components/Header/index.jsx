@@ -112,7 +112,7 @@ export default class Header extends Component<Props> {
     );
   }
 
-  changeLanguage = (value: { sign: string }) => {
-    this.props.changeLanguage(value.sign);
+  changeLanguage = (value: string) => {
+    this.props.changeLanguage(value);
   };
 }

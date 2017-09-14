@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Big from 'bignumber.js';
 
-import { BaseWallet } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import type { State as ReduxState } from 'reducers';
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ import * as customTokenActions from 'actions/customTokens';
 import { showNotification } from 'actions/notifications';
 
 type Props = {
-  wallet: BaseWallet,
+  wallet: IWallet,
   balance: Big,
   network: NetworkConfig,
   tokenBalances: TokenBalance[],

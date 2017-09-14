@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { IWallet } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import type { NetworkConfig } from 'config/data';
 import type { State } from 'reducers';
 import { connect } from 'react-redux';

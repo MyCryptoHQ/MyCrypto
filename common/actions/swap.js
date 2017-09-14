@@ -16,7 +16,6 @@ import type {
   StopLoadBityRatesSwapAction,
   BityOrderResponse,
   BityOrderPostResponse,
-  OrderStatusRequestedSwapAction,
   StopOrderTimerSwapAction,
   StartOrderTimerSwapAction,
   StartPollBityOrderStatusAction,
@@ -134,15 +133,6 @@ export function orderStatusSucceededSwap(
 ): OrderStatusSucceededSwapAction {
   return {
     type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
-    payload
-  };
-}
-
-export function orderStatusRequestedSwap(
-  payload: BityOrderResponse
-): OrderStatusRequestedSwapAction {
-  return {
-    type: 'SWAP_BITY_ORDER_STATUS_REQUESTED',
     payload
   };
 }
