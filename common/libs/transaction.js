@@ -137,7 +137,7 @@ export async function generateCompleteTransactionFromRawTransaction(
     nonce: cleanHex(nonce),
     gasPrice: cleanHex(gasPrice.toString(16)),
     gasLimit: cleanHex(gasLimit.toString(16)),
-    to: cleanHex(to),
+    to: toChecksumAddress(cleanHex(to)),
     value: token ? '0x00' : cleanHex(value.toString(16)),
     data: data ? cleanHex(data) : '',
     chainId: chainId || 1
