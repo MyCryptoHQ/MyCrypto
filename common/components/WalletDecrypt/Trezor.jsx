@@ -5,7 +5,7 @@ import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import TrezorWallet from 'libs/wallet/trezor';
-import DPATHS from 'config/dpaths.json';
+import DPATHS from 'config/dpaths.js';
 const DEFAULT_PATH = DPATHS.TREZOR[0].value;
 
 type State = {

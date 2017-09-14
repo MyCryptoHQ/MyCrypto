@@ -4,7 +4,7 @@ import { validateMnemonic, mnemonicToSeed } from 'bip39';
 
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 
-import DPATHS from 'config/dpaths.json';
+import DPATHS from 'config/dpaths.js';
 const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
 
 type State = {
