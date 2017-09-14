@@ -164,6 +164,15 @@ describe('decryptMnemonicToPrivKey', () => {
       address: '0x3e583eF3d3cE5Dd483c86A1E00A479cE11Ca21Cf',
       privKey:
         '450538d4181c4d8ce076ecb34785198316adebe959d6f9462cfb68a58b1819bc'
+    },
+    {
+      phrase:
+        'champion pitch profit beyond know imitate weasel gift escape bullet price barely crime renew hurry',
+      pass: 'password123',
+      path: "m/44'/60'/0'/1",
+      address: '0x7545D615643F933c34C3E083E68CC831167F31af',
+      privKey:
+        '0a43098da5ae737843e385b76b44266a9f8f856cb1b943055b5a96188d306d97'
     }
   ];
 
