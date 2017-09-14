@@ -9,6 +9,8 @@ import type { TokenBalance } from 'selectors/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import * as customTokenActions from 'actions/customTokens';
 import { showNotification } from 'actions/notifications';
+import { fiatRequestedRates } from 'actions/rates';
+import type { FiatRequestedRatesAction } from 'actions/rates';
 
 import AccountInfo from './AccountInfo';
 import Promos from './Promos';
@@ -24,14 +26,22 @@ type Props = {
   rates: { [string]: number },
   showNotification: Function,
   addCustomToken: typeof customTokenActions.addCustomToken,
-  removeCustomToken: typeof customTokenActions.removeCustomToken
+  removeCustomToken: typeof customTokenActions.removeCustomToken,
+  fiatRequestedRates: () => FiatRequestedRatesAction
 };
 
 export class BalanceSidebar extends React.Component {
   props: Props;
 
   render() {
-    const { wallet, balance, network, tokenBalances, rates } = this.props;
+    const {
+      wallet,
+      balance,
+      network,
+      tokenBalances,
+      rates,
+      fiatRequestedRates
+    } = this.props;
     if (!wallet) {
       return null;
     }
@@ -40,7 +50,12 @@ export class BalanceSidebar extends React.Component {
       {
         name: 'Account Info',
         content: (
-          <AccountInfo wallet={wallet} balance={balance} network={network} />
+          <AccountInfo
+            wallet={wallet}
+            balance={balance}
+            network={network}
+            fiatRequestedRates={fiatRequestedRates}
+          />
         )
       },
       {
@@ -91,5 +106,6 @@ function mapStateToProps(state: State) {
 
 export default connect(mapStateToProps, {
   ...customTokenActions,
-  showNotification
+  showNotification,
+  fiatRequestedRates
 })(BalanceSidebar);

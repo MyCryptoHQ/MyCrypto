@@ -1,5 +1,5 @@
 // @flow
-import type { SetRatesAction, RatesAction } from 'actions/rates';
+import type { FiatSucceededRatesAction, RatesAction } from 'actions/rates';
 
 // SYMBOL -> PRICE TO BUY 1 ETH
 export type State = {
@@ -8,7 +8,10 @@ export type State = {
 
 export const INITIAL_STATE: State = {};
 
-function setRates(state: State, action: SetRatesAction): State {
+function fiatSucceededRates(
+  state: State,
+  action: FiatSucceededRatesAction
+): State {
   return action.payload;
 }
 
@@ -17,8 +20,8 @@ export function rates(
   action: RatesAction
 ): State {
   switch (action.type) {
-    case 'RATES_SET':
-      return setRates(state, action);
+    case 'RATES_FIAT_SUCCEEDED':
+      return fiatSucceededRates(state, action);
     default:
       return state;
   }
