@@ -3,6 +3,7 @@
 #### Run:
 
 ```bash
+webpack --config=./webpack_config/webpack.dll.js # Only do this if you havent built the .dll.js yet, or if vendor dependencies have changed/updated
 npm run dev # run app in dev mode
 ```
 
