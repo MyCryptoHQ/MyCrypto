@@ -7,6 +7,7 @@ const config = require('./config');
 const _ = require('./utils');
 
 module.exports = {
+  cache: true,
   entry: {
     client: './common/index.jsx'
   },
@@ -31,7 +32,12 @@ module.exports = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        loaders: ['babel-loader'],
+        loaders: [
+          {
+            loader: 'babel-loader',
+            query: { cacheDirectory: true }
+          }
+        ],
         exclude: [/node_modules\/(?!ethereum-blockies|idna-uts46)/]
       },
       {
@@ -58,6 +64,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DllReferencePlugin({
+      context: path.join(__dirname, '../common'),
+      manifest: require('../dll/vendor-manifest.json')
+    }),
     new webpack.DefinePlugin({
       'process.env.BUILD_GH_PAGES': JSON.stringify(!!process.env.BUILD_GH_PAGES)
     }),
