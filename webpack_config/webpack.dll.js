@@ -1,8 +1,8 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 const config = require('./config');
-
 const _ = require('./utils');
+
 module.exports = {
   entry: {
     vendor: [path.join(__dirname, '../common', 'vendors.js')]
