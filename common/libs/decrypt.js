@@ -3,7 +3,7 @@
 import { createHash, createDecipheriv } from 'crypto';
 import { validateMnemonic, mnemonicToSeed } from 'bip39';
 import { fromMasterSeed } from 'hdkey';
-import { stripHex } from 'libs/values';
+import { stripHexPrefixAndLower } from 'libs/values';
 
 import { privateToAddress } from 'ethereumjs-util';
 
@@ -79,7 +79,7 @@ export function decryptMnemonicToPrivKey(
   address: string
 ): Buffer {
   phrase = phrase.trim();
-  address = stripHex(address);
+  address = stripHexPrefixAndLower(address);
 
   if (!validateMnemonic(phrase)) {
     throw new Error('Invalid mnemonic');

@@ -11,7 +11,7 @@ import { signRawTxWithPrivKey, signMessageWithPrivKey } from 'libs/signing';
 import { isValidPrivKey } from 'libs/validators';
 import type { RawTransaction } from 'libs/transaction';
 import type { UtcKeystore } from 'libs/keystore';
-import { stripHex } from 'libs/values';
+import { stripHexPrefixAndLower } from 'libs/values';
 
 export default class PrivKeyWallet implements IWallet {
   privKey: Buffer;
@@ -43,7 +43,7 @@ export default class PrivKeyWallet implements IWallet {
   getNakedAddress(): Promise<string> {
     return new Promise(resolve => {
       this.getAddress().then(address => {
-        resolve(stripHex(address));
+        resolve(stripHexPrefixAndLower(address));
       });
     });
   }

@@ -65,8 +65,8 @@ export default class TrezorDecrypt extends Component {
     });
   };
 
-  _handleUnlock = (address: string) => {
-    this.props.onUnlock(new TrezorWallet(address, this.state.dPath));
+  _handleUnlock = (address: string, index: number) => {
+    this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
   };
 
   render() {
