@@ -14,7 +14,6 @@ import type {
   RestartSwapAction,
   LoadBityRatesRequestedSwapAction,
   StopLoadBityRatesSwapAction,
-  BityOrderResponse,
   BityOrderPostResponse,
   StopOrderTimerSwapAction,
   StartOrderTimerSwapAction,
@@ -129,7 +128,7 @@ export function bityOrderCreateRequestedSwap(
 }
 
 export function orderStatusSucceededSwap(
-  payload: BityOrderResponse
+  payload: BityOrderPostResponse
 ): OrderStatusSucceededSwapAction {
   return {
     type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',

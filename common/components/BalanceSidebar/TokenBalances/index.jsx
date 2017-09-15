@@ -1,6 +1,6 @@
 // @flow
 import './index.scss';
-import React from 'react';
+import React, { Component } from 'react';
 import translate from 'translations';
 import TokenRow from './TokenRow';
 import AddCustomTokenForm from './AddCustomTokenForm';
@@ -13,8 +13,12 @@ type Props = {
   onRemoveCustomToken: (symbol: string) => any
 };
 
-export default class TokenBalances extends React.Component {
-  props: Props;
+type State = {
+  showAllTokens: boolean,
+  showCustomTokenForm: boolean
+};
+
+export default class TokenBalances extends Component<Props, State> {
   state = {
     showAllTokens: false,
     showCustomTokenForm: false

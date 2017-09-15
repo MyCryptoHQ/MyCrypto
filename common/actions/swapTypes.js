@@ -70,11 +70,7 @@ type BityOrderOutput = {
   reference: ?string
 };
 
-export type BityOrderResponse = {
-  status: string
-};
-
-export type BityOrderPostResponse = BityOrderResponse & {
+export type BityOrderPostResponse = {
   payment_address: string,
   status: string,
   input: BityOrderInput,

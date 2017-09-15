@@ -45,7 +45,7 @@ export function getOrderStatus(orderid: string) {
     .then(parseJSON);
 }
 
-function _getAllRates() {
+function _getAllRates(): Promise<any> {
   return fetch(`${bityConfig.bityURL}/v1/rate2/`)
     .then(checkHttpStatus)
     .then(parseJSON);

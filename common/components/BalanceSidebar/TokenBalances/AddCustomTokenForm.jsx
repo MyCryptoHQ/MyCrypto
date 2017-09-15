@@ -1,13 +1,24 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { isValidETHAddress, isPositiveIntegerOrZero } from 'libs/validators';
 import translate from 'translations';
 
-export default class AddCustomTokenForm extends React.Component {
-  props: {
-    onSave: ({ address: string, symbol: string, decimal: number }) => void
-  };
+type Props = {
+  onSave: ({
+    address: string,
+    symbol: string,
+    decimal: number
+  }) => void
+};
+
+type State = {
+  address: string,
+  symbol: string,
+  decimal: string
+};
+
+export default class AddCustomTokenForm extends Component<Props, State> {
   state = {
     address: '',
     symbol: '',
@@ -90,13 +101,13 @@ export default class AddCustomTokenForm extends React.Component {
     return !Object.keys(this.getErrors()).length;
   }
 
-  onFieldChange = (e: SyntheticInputEvent) => {
+  onFieldChange = (e: SyntheticInputEvent<*>) => {
     var name = e.target.name;
     var value = e.target.value;
     this.setState({ [name]: value });
   };
 
-  onSave = (ev: SyntheticInputEvent) => {
+  onSave = (ev: SyntheticInputEvent<*>) => {
     ev.preventDefault();
     if (!this.isValid()) {
       return;
