@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { ETHTxExplorer } from 'config/data';
 import translate from 'translations';

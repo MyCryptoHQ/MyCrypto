@@ -5,7 +5,7 @@ import type {
   SetBalanceAction,
   SetTokenBalancesAction
 } from 'actions/wallet';
-import { IWallet } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import Big from 'bignumber.js';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 import type { BroadcastTransactionStatus } from 'libs/transaction';

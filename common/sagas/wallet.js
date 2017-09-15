@@ -18,9 +18,9 @@ import {
   MewV1Wallet,
   UtcWallet,
   EncryptedPrivKeyWallet,
-  PrivKeyWallet,
-  IWallet
+  PrivKeyWallet
 } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import { INode } from 'libs/nodes/INode';
 import { determineKeystoreType } from 'libs/keystore';
 import type { Wei } from 'libs/units';

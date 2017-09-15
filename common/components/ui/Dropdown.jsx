@@ -1,26 +1,20 @@
 // @flow
 import React, { Component } from 'react';
 
-type Props<T> = {
-  value: T,
-  options: T[],
+type Props = {
+  value: {} | string,
+  options: (?{} | string)[],
   ariaLabel: string,
-  formatTitle: (option: T) => any,
+  formatTitle: (option: any) => any,
   extra?: any,
-  onChange: (value: T) => void
+  onChange: (value: string) => void
 };
 
 type State = {
   expanded: boolean
 };
 
-export default class DropdownComponent<T: *> extends Component<
-  void,
-  Props<T>,
-  State
-> {
-  props: Props<T>;
-
+export default class DropdownComponent extends Component<Props, State> {
   state = {
     expanded: false
   };

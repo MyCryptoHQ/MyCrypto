@@ -1,16 +1,15 @@
+// @flow
 import './PaymentInfo.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 
 export type Props = {
   originKind: string,
-  originAmount: string,
-  paymentAddress: string
+  originAmount: number,
+  paymentAddress: ?string
 };
 
-export default class PaymentInfo extends Component {
-  props: Props;
-
+export default class PaymentInfo extends Component<Props> {
   render() {
     return (
       <section className="SwapPayment">

@@ -1,7 +1,5 @@
 // @flow
-import type { IWallet } from './IWallet';
-
-export default class DeterministicWallet implements IWallet {
+export default class DeterministicWallet {
   address: string;
   dPath: string;
 

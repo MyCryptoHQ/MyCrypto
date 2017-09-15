@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import translate from 'translations';
 import printElement from 'utils/printElement';
 import { PaperWallet } from 'components';
@@ -10,12 +9,7 @@ type Props = {
   wallet: PrivKeyWallet
 };
 
-export default class PrintableWallet extends Component {
-  props: Props;
-  static propTypes = {
-    wallet: PropTypes.object.isRequired
-  };
-
+export default class PrintableWallet extends Component<Props> {
   print = () => {
     printElement(<PaperWallet wallet={this.props.wallet} />, {
       popupFeatures: {

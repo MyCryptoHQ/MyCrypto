@@ -11,7 +11,7 @@ const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
 
 export type State = {
-  originAmount: ?number,
+  originAmount: number,
   destinationAmount: ?number,
   originKind: string,
   destinationKind: string,
@@ -32,7 +32,7 @@ export type State = {
 };
 
 export const INITIAL_STATE: State = {
-  originAmount: null,
+  originAmount: 0,
   destinationAmount: null,
   originKind: DEFAULT_ORIGIN_KIND,
   destinationKind: DEFAULT_DESTINATION_KIND,

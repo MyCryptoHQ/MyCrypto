@@ -1,6 +1,6 @@
 // @flow
 import './Promos.scss';
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 const promos = [
@@ -37,9 +37,13 @@ const promos = [
   }
 ];
 
-export default class Promos extends React.Component {
-  state: { activePromo: number };
+type Props = {};
 
+type State = {
+  activePromo: number
+};
+
+export default class Promos extends Component<Props, State> {
   state = {
     activePromo: parseInt(Math.random() * promos.length)
   };

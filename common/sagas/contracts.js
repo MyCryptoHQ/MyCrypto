@@ -1,3 +1,4 @@
+// @flow
 import { takeEvery, put } from 'redux-saga/effects';
 
 import type { Yield, Return, Next } from 'sagas/types';
@@ -5,10 +6,8 @@ import type { Yield, Return, Next } from 'sagas/types';
 import translate from 'translations';
 import { isValidETHAddress } from 'libs/validators';
 
-import {
-  AccessContractAction,
-  setInteractiveContract
-} from 'actions/contracts';
+import type { AccessContractAction } from 'actions/contracts';
+import { setInteractiveContract } from 'actions/contracts';
 import { showNotification } from 'actions/notifications';
 
 function* handleAccessContract(

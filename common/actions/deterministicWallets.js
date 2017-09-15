@@ -78,7 +78,7 @@ export function setDesiredToken(token: ?string): SetDesiredTokenAction {
 export type UpdateDeterministicWalletArgs = {
   address: string,
   value: ?Big,
-  tokenValues: ?TokenValues
+  tokenValues: TokenValues
 };
 
 export type UpdateDeterministicWalletAction = {

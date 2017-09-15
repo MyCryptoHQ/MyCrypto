@@ -26,9 +26,7 @@ type Props = {
   resetGenerateWallet: () => ResetGenerateWalletAction
 };
 
-class GenerateWallet extends Component {
-  props: Props;
-
+class GenerateWallet extends Component<Props> {
   componentWillUnmount() {
     this.props.resetGenerateWallet();
   }

@@ -14,10 +14,7 @@ type State = {
   qr?: string
 };
 
-export default class QRCode extends React.Component {
-  props: Props;
-  state: State = {};
-
+export default class QRCode extends React.Component<Props, State> {
   componentWillMount() {
     // Start generating QR codes immediately
     this._generateQrCode(this.props.data);

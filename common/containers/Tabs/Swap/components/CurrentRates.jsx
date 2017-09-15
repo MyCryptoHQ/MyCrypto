@@ -3,14 +3,19 @@ import './CurrentRates.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
-import type { Pairs } from 'actions/swapTypes';
+import type { Pairs as Props } from 'actions/swapTypes';
 import { bityReferralURL } from 'config/data';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import Spinner from 'components/ui/Spinner';
 
-export default class CurrentRates extends Component {
-  props: Pairs;
+type State = {
+  ETHBTCAmount: number,
+  ETHREPAmount: number,
+  BTCETHAmount: number,
+  BTCREPAmount: number
+};
 
+export default class CurrentRates extends Component<Props, State> {
   state = {
     ETHBTCAmount: 1,
     ETHREPAmount: 1,
@@ -18,7 +23,7 @@ export default class CurrentRates extends Component {
     BTCREPAmount: 1
   };
 
-  onChange = (event: SyntheticInputEvent) => {
+  onChange = (event: SyntheticInputEvent<*>) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;

@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { showNotification } from 'actions/notifications';
@@ -16,33 +17,30 @@ import type {
   StartPollBityOrderStatusAction,
   StopOrderTimerSwapAction,
   StopPollBityOrderStatusAction
-} from 'actions/swap';
+} from 'actions/swapTypes';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
 import PartThree from './components/PartThree';
 
-type ReduxStateProps = {
+type Props = {
   step: string,
   destinationAddress: string,
   destinationKind: string,
   originKind: string,
-  destinationKindOptions: String[],
-  originKindOptions: String[],
-  bityRates: {},
-  originAmount: ?number,
-  destinationAmount: ?number,
+  destinationKindOptions: string[],
+  originKindOptions: string[],
+  bityRates: any,
+  originAmount: number,
+  destinationAmount: number,
   isPostingOrder: boolean,
   isFetchingRates: boolean,
-  bityOrder: {},
+  bityOrder: any,
   secondsRemaining: ?number,
   paymentAddress: ?string,
   orderStatus: ?string,
-  outputTx: ?string
-};
-
-type ReduxActionProps = {
+  outputTx: string,
   changeStepSwap: (value: number) => ChangeStepSwapAction,
   originKindSwap: (value: string) => OriginKindSwapAction,
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
@@ -56,16 +54,16 @@ type ReduxActionProps = {
     amount: number,
     destinationAddress: string,
     pair: string,
-    mode: number
+    mode: ?number
   ) => BityOrderCreateRequestedSwapAction,
   startPollBityOrderStatus: () => StartPollBityOrderStatusAction,
   stopOrderTimerSwap: () => StopOrderTimerSwapAction,
-  stopPollBityOrderStatus: () => StopPollBityOrderStatusAction
+  stopPollBityOrderStatus: () => StopPollBityOrderStatusAction,
+  showNotification: any => void,
+  startOrderTimerSwap: any => void
 };
 
-class Swap extends Component {
-  props: ReduxActionProps & ReduxStateProps;
-
+class Swap extends Component<Props> {
   componentDidMount() {
     // TODO: Use `isFetchingRates` to show a loader
     this.props.loadBityRatesRequestedSwap();

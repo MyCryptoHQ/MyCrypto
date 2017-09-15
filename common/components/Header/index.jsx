@@ -15,18 +15,18 @@ import logo from 'assets/images/logo-myetherwallet.svg';
 
 import './index.scss';
 
-export default class Header extends Component {
-  props: {
-    location: {},
-    languageSelection: string,
-    nodeSelection: string,
-    gasPriceGwei: number,
+type Props = {
+  location: {},
+  languageSelection: string,
+  nodeSelection: string,
+  gasPriceGwei: number,
 
-    changeLanguage: (sign: string) => any,
-    changeNode: (key: string) => any,
-    changeGasPrice: (price: number) => any
-  };
+  changeLanguage: (sign: string) => any,
+  changeNode: (key: string) => any,
+  changeGasPrice: (price: number) => any
+};
 
+export default class Header extends Component<Props> {
   render() {
     const { languageSelection, changeNode, nodeSelection } = this.props;
     const selectedLanguage =
@@ -112,7 +112,7 @@ export default class Header extends Component {
     );
   }
 
-  changeLanguage = (value: { sign: string }) => {
-    this.props.changeLanguage(value.sign);
+  changeLanguage = (value: string) => {
+    this.props.changeLanguage(value);
   };
 }

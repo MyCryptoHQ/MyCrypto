@@ -1,5 +1,4 @@
 // @flow
-import type { IWallet } from './IWallet';
 import {
   privateToPublic,
   publicToAddress,
@@ -13,7 +12,7 @@ import type { RawTransaction } from 'libs/transaction';
 import type { UtcKeystore } from 'libs/keystore';
 import { stripHex } from 'libs/values';
 
-export default class PrivKeyWallet implements IWallet {
+export default class PrivKeyWallet {
   privKey: Buffer;
   pubKey: Buffer;
   address: Buffer;

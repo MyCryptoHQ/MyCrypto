@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import { QRCode, Identicon } from 'components/ui';
 import type PrivKeyWallet from 'libs/wallet/privkey';
 
@@ -95,8 +95,11 @@ type Props = {
   wallet: PrivKeyWallet
 };
 
-export default class PaperWallet extends React.Component {
-  props: Props;
+type State = {
+  address: string
+};
+
+export default class PaperWallet extends Component<Props, State> {
   state = { address: '' };
 
   componentDidMount() {

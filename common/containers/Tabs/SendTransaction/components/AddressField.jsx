@@ -8,18 +8,26 @@ import { isValidENSorEtherAddress, isValidENSAddress } from 'libs/validators';
 import { resolveEnsName } from 'actions/ens';
 import translate from 'translations';
 
-type PublicProps = {
+type StoreProps = {
   placeholder: string,
   value: string,
   onChange?: (value: string) => void
 };
 
-export class AddressField extends React.Component {
-  props: PublicProps & {
-    ensAddress: ?string,
-    resolveEnsName: typeof resolveEnsName
-  };
+type Props = StoreProps & {
+  ensAddress: ?string,
+  resolveEnsName: typeof resolveEnsName
+};
 
+const mapStateToProps = (state: State, props: StoreProps) => ({
+  ensAddress: getEnsAddress(state, props.value)
+});
+
+const mapDispatchToProps = {
+  resolveEnsName
+};
+
+export class AddressField extends React.Component<Props> {
   render() {
     const { placeholder, value, ensAddress } = this.props;
     const isReadonly = !this.props.onChange;
@@ -52,7 +60,7 @@ export class AddressField extends React.Component {
     );
   }
 
-  onChange = (e: SyntheticInputEvent) => {
+  onChange = (e: SyntheticInputEvent<*>) => {
     const newValue = e.target.value;
     const { onChange } = this.props;
     if (!onChange) {
@@ -66,10 +74,4 @@ export class AddressField extends React.Component {
   };
 }
 
-function mapStateToProps(state: State, props: PublicProps) {
-  return {
-    ensAddress: getEnsAddress(state, props.value)
-  };
-}
-
-export default connect(mapStateToProps, { resolveEnsName })(AddressField);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressField);

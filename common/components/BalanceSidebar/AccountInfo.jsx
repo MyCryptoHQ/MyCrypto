@@ -1,6 +1,6 @@
 // @flow
 import './AccountInfo.scss';
-import React from 'react';
+import React, { Component } from 'react';
 import translate from 'translations';
 import { Identicon } from 'components/ui';
 import { formatNumber } from 'utils/formatters';
@@ -16,9 +16,12 @@ type Props = {
   fiatRequestedRates: () => FiatRequestedRatesAction
 };
 
-export default class AccountInfo extends React.Component {
-  props: Props;
+type State = {
+  showLongBalance: boolean,
+  address: string
+};
 
+export default class AccountInfo extends Component<Props, State> {
   state = {
     showLongBalance: false,
     address: ''
@@ -31,7 +34,7 @@ export default class AccountInfo extends React.Component {
     });
   }
 
-  toggleShowLongBalance = (e: SyntheticMouseEvent) => {
+  toggleShowLongBalance = (e: SyntheticMouseEvent<*>) => {
     e.preventDefault();
     this.setState(state => {
       return {

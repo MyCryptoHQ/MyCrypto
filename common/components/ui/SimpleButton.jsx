@@ -26,9 +26,7 @@ type Props = {
   type?: ButtonType
 };
 
-export default class SimpleButton extends Component {
-  props: Props;
-
+export default class SimpleButton extends Component<Props> {
   computedClass = () => {
     return `btn btn-${this.props.size || DEFAULT_BUTTON_TYPE} btn-${this.props
       .type || DEFAULT_BUTTON_SIZE}`;

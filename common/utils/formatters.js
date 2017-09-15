@@ -5,7 +5,7 @@ export function toFixedIfLarger(number: number, fixedSize: number = 6): string {
   return parseFloat(number.toFixed(fixedSize)).toString();
 }
 
-export function combineAndUpper(...args: string[]) {
+export function combineAndUpper(...args: string[]): string {
   return args.reduce((acc, item) => acc.concat(item.toUpperCase()), '');
 }
 
@@ -30,7 +30,10 @@ export function formatNumber(number: Big, digits: number = 3): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(limit: Big, transactionUnit: string = 'ether') {
+export function formatGasLimit(
+  limit: Big,
+  transactionUnit: string = 'ether'
+): string {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?

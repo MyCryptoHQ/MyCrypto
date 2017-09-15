@@ -1,3 +1,4 @@
+// @flow
 import './CurrencySwap.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
@@ -14,34 +15,34 @@ import type {
 import bityConfig, { kindMin, kindMax } from 'config/bity';
 import { toFixedIfLarger } from 'utils/formatters';
 
-export type StateProps = {
-  bityRates: {},
-  originAmount: ?number,
+type Props = {
+  bityRates: any,
+  originAmount: number,
   destinationAmount: ?number,
   originKind: string,
   destinationKind: string,
-  destinationKindOptions: String[],
-  originKindOptions: String[]
-};
-
-export type ActionProps = {
+  destinationKindOptions: string[],
+  originKindOptions: string[],
   originKindSwap: (value: string) => OriginKindSwapAction,
   destinationKindSwap: (value: string) => DestinationKindSwapAction,
-  originAmountSwap: (value: ?number) => OriginAmountSwapAction,
+  originAmountSwap: (value: number) => OriginAmountSwapAction,
   destinationAmountSwap: (value: ?number) => DestinationAmountSwapAction,
-  changeStepSwap: () => ChangeStepSwapAction,
+  changeStepSwap: (value: number) => ChangeStepSwapAction,
   showNotification: Function
 };
 
-export default class CurrencySwap extends Component {
-  props: StateProps & ActionProps;
+type State = {
+  disabled: boolean,
+  showedMinMaxError: boolean
+};
 
+export default class CurrencySwap extends Component<Props, State> {
   state = {
     disabled: true,
     showedMinMaxError: false
   };
 
-  isMinMaxValid = (amount, kind) => {
+  isMinMaxValid = (amount: any, kind: any) => {
     let bityMin;
     let bityMax;
     if (kind !== 'BTC') {
@@ -57,14 +58,14 @@ export default class CurrencySwap extends Component {
     return higherThanMin && lowerThanMax;
   };
 
-  isDisabled = (originAmount, originKind, destinationAmount) => {
+  isDisabled = (originAmount: any, originKind: any, destinationAmount: any) => {
     const hasOriginAmountAndDestinationAmount =
       originAmount && destinationAmount;
     const minMaxIsValid = this.isMinMaxValid(originAmount, originKind);
     return !(hasOriginAmountAndDestinationAmount && minMaxIsValid);
   };
 
-  setDisabled(originAmount, originKind, destinationAmount) {
+  setDisabled(originAmount: any, originKind: any, destinationAmount: any) {
     const disabled = this.isDisabled(
       originAmount,
       originKind,
@@ -106,12 +107,12 @@ export default class CurrencySwap extends Component {
   };
 
   setOriginAndDestinationToNull = () => {
-    this.props.originAmountSwap(null);
+    this.props.originAmountSwap(0);
     this.props.destinationAmountSwap(null);
     this.setDisabled(null, this.props.originKind, null);
   };
 
-  onChangeOriginAmount = (event: SyntheticInputEvent) => {
+  onChangeOriginAmount = (event: SyntheticInputEvent<*>) => {
     const { destinationKind, originKind } = this.props;
     const amount = event.target.value;
     let originAmountAsNumber = parseFloat(amount);
@@ -127,7 +128,7 @@ export default class CurrencySwap extends Component {
     }
   };
 
-  onChangeDestinationAmount = (event: SyntheticInputEvent) => {
+  onChangeDestinationAmount = (event: SyntheticInputEvent<*>) => {
     const { destinationKind, originKind } = this.props;
     const amount = event.target.value;
     let destinationAmountAsNumber = parseFloat(amount);
@@ -136,19 +137,19 @@ export default class CurrencySwap extends Component {
       let pairNameReversed = combineAndUpper(destinationKind, originKind);
       let bityRate = this.props.bityRates[pairNameReversed];
       let originAmount = destinationAmountAsNumber * bityRate;
-      this.props.originAmountSwap(originAmount, originKind);
+      this.props.originAmountSwap(originAmount);
       this.setDisabled(originAmount, originKind, destinationAmountAsNumber);
     } else {
       this.setOriginAndDestinationToNull();
     }
   };
 
-  onChangeDestinationKind = (event: SyntheticInputEvent) => {
+  onChangeDestinationKind = (event: SyntheticInputEvent<*>) => {
     let newDestinationKind = event.target.value;
     this.props.destinationKindSwap(newDestinationKind);
   };
 
-  onChangeOriginKind = (event: SyntheticInputEvent) => {
+  onChangeOriginKind = (event: SyntheticInputEvent<*>) => {
     let newOriginKind = event.target.value;
     this.props.originKindSwap(newOriginKind);
   };

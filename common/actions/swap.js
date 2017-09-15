@@ -14,16 +14,14 @@ import type {
   RestartSwapAction,
   LoadBityRatesRequestedSwapAction,
   StopLoadBityRatesSwapAction,
-  BityOrderResponse,
   BityOrderPostResponse,
-  OrderStatusRequestedSwapAction,
   StopOrderTimerSwapAction,
   StartOrderTimerSwapAction,
   StartPollBityOrderStatusAction,
   StopPollBityOrderStatusAction
 } from './swapTypes';
 
-export function changeStepSwap(value: number): ChangeStepSwapAction {
+export function changeStepSwap(value: ?number): ChangeStepSwapAction {
   return {
     type: 'SWAP_STEP',
     value
@@ -116,7 +114,7 @@ export function bityOrderCreateRequestedSwap(
   amount: number,
   destinationAddress: string,
   pair: string,
-  mode: number = 0
+  mode: ?number = 0
 ): BityOrderCreateRequestedSwapAction {
   return {
     type: 'SWAP_ORDER_CREATE_REQUESTED',
@@ -130,17 +128,11 @@ export function bityOrderCreateRequestedSwap(
 }
 
 export function orderStatusSucceededSwap(
-  payload: BityOrderResponse
+  payload: BityOrderPostResponse
 ): OrderStatusSucceededSwapAction {
   return {
     type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
     payload
-  };
-}
-
-export function orderStatusRequestedSwap(): OrderStatusRequestedSwapAction {
-  return {
-    type: 'SWAP_BITY_ORDER_STATUS_REQUESTED'
   };
 }
 

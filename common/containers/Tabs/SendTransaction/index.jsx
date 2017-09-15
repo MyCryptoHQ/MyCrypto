@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 // UTILS
 import { formatGasLimit } from 'utils/formatters';
 import translate from 'translations';
@@ -20,7 +20,6 @@ import type { TokenBalance } from 'selectors/wallet';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
 import {
-  Donate,
   DataField,
   CustomMessage,
   GasField,
@@ -125,9 +124,8 @@ const initialState = {
   generateDisabled: true
 };
 
-export class SendTransaction extends React.Component {
-  props: Props;
-  state: State = initialState;
+export class SendTransaction extends Component<Props, State> {
+  state = initialState;
 
   componentDidMount() {
     const queryPresets = pickBy(this.parseQuery());

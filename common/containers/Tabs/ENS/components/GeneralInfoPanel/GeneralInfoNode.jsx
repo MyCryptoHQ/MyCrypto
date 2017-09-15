@@ -1,6 +1,11 @@
 // @flow
-import * as React from 'react';
-import type { HeaderProps, ListProps, NodeProps, NodeState } from './types';
+import React, { Component } from 'react';
+import type {
+  HeaderProps,
+  ListProps,
+  NodeProps as Props,
+  NodeState as State
+} from './types';
 
 const InfoHeader = ({ children, onClickHandler }: HeaderProps) =>
   <h6 onClick={onClickHandler}>
@@ -14,16 +19,7 @@ const InfoList = ({ children, isOpen }: ListProps) =>
       </ul>
     : null;
 
-/*
-TODO: After #122: export default class GeneralInfoNode extends React.Component <
-  NodeProps,
-  NodeState
-  >
-*/
-export default class GeneralInfoNode extends React.Component {
-  props: NodeProps;
-  state: NodeState;
-
+export default class GeneralInfoNode extends Component<Props, State> {
   state = {
     isOpen: false
   };

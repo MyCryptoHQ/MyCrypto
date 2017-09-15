@@ -4,14 +4,20 @@ import translate from 'translations';
 import { isValidHex } from 'libs/validators';
 import { donationAddressMap } from 'config/data';
 
-export default class DataField extends React.Component {
-  props: {
-    value: string,
-    onChange?: (e: string) => void
-  };
+type Props = {
+  value: string,
+  onChange?: (e: string) => void
+};
+
+type State = {
+  expanded: boolean
+};
+
+export default class DataField extends React.Component<Props, State> {
   state = {
     expanded: false
   };
+
   render() {
     const { value } = this.props;
     const { expanded } = this.state;
@@ -54,7 +60,7 @@ export default class DataField extends React.Component {
     this.setState({ expanded: true });
   };
 
-  onChange = (e: SyntheticInputEvent) => {
+  onChange = (e: SyntheticInputEvent<*>) => {
     if (this.props.onChange) {
       this.props.onChange(e.target.value);
     }

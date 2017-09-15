@@ -77,7 +77,7 @@ function* updateWalletValues(): Generator<Yield, Return, Next> {
 
 // Grab the current desired token, and update the wallet with it
 function* updateWalletTokenValues(): Generator<Yield, Return, Next> {
-  const desiredToken: string = yield select(getDesiredToken);
+  const desiredToken: ?string = yield select(getDesiredToken);
   if (!desiredToken) return;
 
   const tokens: Token[] = yield select(getTokens);

@@ -1,5 +1,6 @@
 /* prettier-ignore */
 /* eslint-ignore */
+/* eslint-disable */
 
 /**
  * (C) 2017 SatoshiLabs
@@ -35,7 +36,7 @@ var ERR_WINDOW_BLOCKED = 'Window blocked';
 var ERR_ALREADY_WAITING = 'Already waiting for a response';
 var ERR_CHROME_NOT_CONNECTED = 'Internal Chrome popup is not responding.';
 
-var DISABLE_LOGIN_BUTTONS = window.TREZOR_DISABLE_LOGIN_BUTTONS || false;
+// var DISABLE_LOGIN_BUTTONS = window.TREZOR_DISABLE_LOGIN_BUTTONS || false;
 var CHROME_URL = window.TREZOR_CHROME_URL || './chrome/wrapper.html';
 var POPUP_URL =
   window.TREZOR_POPUP_URL ||

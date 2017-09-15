@@ -13,9 +13,7 @@ type Props = {
   accessContract: Function
 };
 
-export default class Interact extends Component {
-  props: Props;
-
+export default class Interact extends Component<Props> {
   render() {
     const {
       NetworkContracts,

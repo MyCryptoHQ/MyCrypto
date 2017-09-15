@@ -3,7 +3,6 @@ import { delay } from 'redux-saga';
 import { call, cancel, fork, put, take, takeLatest } from 'redux-saga/effects';
 
 import { getAllRates } from 'api/bity';
-
 import { loadBityRatesSucceededSwap } from 'actions/swap';
 import { showNotification } from 'actions/notifications';
 

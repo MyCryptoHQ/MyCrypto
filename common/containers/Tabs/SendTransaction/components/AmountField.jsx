@@ -10,9 +10,7 @@ type Props = {
   onChange?: (value: string, unit: string) => void
 };
 
-export default class AmountField extends React.Component {
-  props: Props;
-
+export default class AmountField extends React.Component<Props> {
   render() {
     const { value, unit, onChange } = this.props;
     const isReadonly = !onChange;
@@ -59,7 +57,7 @@ export default class AmountField extends React.Component {
     }
   };
 
-  onValueChange = (e: SyntheticInputEvent) => {
+  onValueChange = (e: SyntheticInputEvent<*>) => {
     if (this.props.onChange) {
       this.props.onChange(e.target.value, this.props.unit);
     }

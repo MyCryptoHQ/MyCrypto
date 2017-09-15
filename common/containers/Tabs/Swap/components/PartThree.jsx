@@ -1,30 +1,22 @@
+// @flow
 import React, { Component } from 'react';
-import type {
-  LoadBityRatesRequestedSwapAction,
-  RestartSwapAction,
-  StopLoadBityRatesSwapAction
-} from 'actions/swap';
+import type { RestartSwapAction } from 'actions/swapTypes';
 import SwapProgress from './SwapProgress';
 import PaymentInfo from './PaymentInfo';
 import BitcoinQR from './BitcoinQR';
 
-type ReduxStateProps = {
+type Props = {
   destinationAddress: string,
   destinationKind: string,
   originKind: string,
-  originAmount: ?number,
+  originAmount: number,
   destinationAmount: ?number,
-  isPostingOrder: boolean,
   reference: string,
   secondsRemaining: ?number,
   paymentAddress: ?string,
-  orderStatus: ?string
-};
-
-type ReduxActionProps = {
-  loadBityRatesRequestedSwap: () => LoadBityRatesRequestedSwapAction,
+  orderStatus: ?string,
+  outputTx: string,
   restartSwap: () => RestartSwapAction,
-  stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
   startOrderTimerSwap: Function,
   startPollBityOrderStatus: Function,
   stopOrderTimerSwap: Function,
@@ -32,9 +24,7 @@ type ReduxActionProps = {
   showNotification: Function
 };
 
-export default class PartThree extends Component {
-  props: ReduxActionProps & ReduxStateProps;
-
+export default class PartThree extends Component<Props> {
   componentDidMount() {
     this.props.startPollBityOrderStatus();
     this.props.startOrderTimerSwap();
@@ -78,7 +68,9 @@ export default class PartThree extends Component {
       <div>
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
-        {orderStatus === 'OPEN' && originKind === 'BTC' && <BitcoinQR />}
+        {orderStatus === 'OPEN' &&
+          originKind === 'BTC' &&
+          <BitcoinQR amount={originAmount} paymentAddress={paymentAddress} />}
       </div>
     );
   }

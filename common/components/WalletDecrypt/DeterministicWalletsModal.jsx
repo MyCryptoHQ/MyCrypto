@@ -1,6 +1,6 @@
 // @flow
 import './DeterministicWalletsModal.scss';
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'components/ui/Modal';
 import {
@@ -50,9 +50,8 @@ type State = {
   page: number
 };
 
-class DeterministicWalletsModal extends React.Component {
-  props: Props;
-  state: State = {
+class DeterministicWalletsModal extends Component<Props, State> {
+  state = {
     selectedAddress: '',
     isCustomPath: false,
     customPath: '',
@@ -87,7 +86,7 @@ class DeterministicWalletsModal extends React.Component {
     }
   }
 
-  _handleChangePath = (ev: SyntheticInputEvent) => {
+  _handleChangePath = (ev: SyntheticInputEvent<*>) => {
     const { value } = ev.target;
 
     if (value === 'custom') {
@@ -100,17 +99,17 @@ class DeterministicWalletsModal extends React.Component {
     }
   };
 
-  _handleChangeCustomPath = (ev: SyntheticInputEvent) => {
+  _handleChangeCustomPath = (ev: SyntheticInputEvent<*>) => {
     this.setState({ customPath: ev.target.value });
   };
 
-  _handleSubmitCustomPath = (ev: SyntheticInputEvent) => {
+  _handleSubmitCustomPath = (ev: SyntheticInputEvent<*>) => {
     ev.preventDefault();
     if (!isValidPath(this.state.customPath)) return;
     this.props.onPathChange(this.state.customPath);
   };
 
-  _handleChangeToken = (ev: SyntheticInputEvent) => {
+  _handleChangeToken = (ev: SyntheticInputEvent<*>) => {
     this.props.setDesiredToken(ev.target.value || null);
   };
 

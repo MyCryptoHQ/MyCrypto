@@ -1,7 +1,7 @@
 {
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "parser": "babel-eslint",
-  "plugins": ["react"],
+  "plugins": ["react", "flowtype"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true,
@@ -29,8 +29,10 @@
     "no-unreachable": 1,
     "no-alert": 0,
     "react/jsx-uses-react": 1,
+    "react/prop-types": [0],
     "no-unused-vars": [1, { "argsIgnorePattern": "^_" }],
-    "no-restricted-globals": ["error", "event"]
+    "no-restricted-globals": ["error", "event"],
+    "flowtype/no-types-missing-file-annotation": 2
   },
   "globals": {
     "SyntheticInputEvent": false,

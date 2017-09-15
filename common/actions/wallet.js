@@ -35,21 +35,21 @@ export type UnlockKeystoreAction = {
 };
 
 export function unlockKeystore(
-  value: KeystoreUnlockParams
+  payload: KeystoreUnlockParams
 ): UnlockKeystoreAction {
   return {
     type: 'WALLET_UNLOCK_KEYSTORE',
-    payload: value
+    payload
   };
 }
 
 /*** Set Wallet ***/
 export type SetWalletAction = {
   type: 'WALLET_SET',
-  payload: IWallet
+  payload: any
 };
 
-export function setWallet(value: IWallet): SetWalletAction {
+export function setWallet(value: any): SetWalletAction {
   return {
     type: 'WALLET_SET',
     payload: value

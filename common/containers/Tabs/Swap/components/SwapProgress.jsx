@@ -1,4 +1,4 @@
-//flow
+// @flow
 import './SwapProgress.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
@@ -9,20 +9,19 @@ export type Props = {
   destinationAddress: string,
   outputTx: string,
   originKind: string,
-  orderStatus: string,
+  orderStatus: ?string,
   // actions
   showNotification: Function
 };
 
-export default class SwapProgress extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasShownViewTx: false
-    };
-  }
+type State = {
+  hasShownViewTx: boolean
+};
 
-  props: Props;
+export default class SwapProgress extends Component<Props, State> {
+  state = {
+    hasShownViewTx: false
+  };
 
   componentDidMount() {
     this.showNotification();

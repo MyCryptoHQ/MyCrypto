@@ -45,13 +45,13 @@ function validatePkeyAndPass(pkey: string, pass: string): validated {
   };
 }
 
-export default class PrivateKeyDecrypt extends Component {
-  props: {
-    value: PrivateKeyValue,
-    onChange: (value: PrivateKeyValue) => void,
-    onUnlock: () => void
-  };
+type Props = {
+  value: PrivateKeyValue,
+  onChange: (value: PrivateKeyValue) => void,
+  onUnlock: () => void
+};
 
+export default class PrivateKeyDecrypt extends Component<Props> {
   render() {
     const { key, password } = this.props.value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
@@ -97,7 +97,7 @@ export default class PrivateKeyDecrypt extends Component {
     );
   }
 
-  onPkeyChange = (e: SyntheticInputEvent) => {
+  onPkeyChange = (e: SyntheticInputEvent<*>) => {
     const pkey = e.target.value;
     const pass = this.props.value.password;
     const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
@@ -105,7 +105,7 @@ export default class PrivateKeyDecrypt extends Component {
     this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
   };
 
-  onPasswordChange = (e: SyntheticInputEvent) => {
+  onPasswordChange = (e: SyntheticInputEvent<*>) => {
     const pkey = this.props.value.key;
     const pass = e.target.value;
     const { valid } = validatePkeyAndPass(pkey, pass);
@@ -117,7 +117,7 @@ export default class PrivateKeyDecrypt extends Component {
     });
   };
 
-  onKeyDown = (e: SyntheticKeyboardEvent) => {
+  onKeyDown = (e: SyntheticKeyboardEvent<*>) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();

@@ -14,15 +14,12 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import SimpleButton from 'components/ui/SimpleButton';
 
-export type StateProps = {
+export type Props = {
   isPostingOrder: boolean,
   originAmount: number,
   originKind: string,
   destinationKind: string,
-  destinationAddress: string
-};
-
-export type ActionProps = {
+  destinationAddress: string,
   destinationAddressSwap: (value: ?string) => DestinationAddressSwapAction,
   changeStepSwap: (value: number) => ChangeStepSwapAction,
   stopLoadBityRatesSwap: () => StopLoadBityRatesSwapAction,
@@ -34,10 +31,8 @@ export type ActionProps = {
   ) => BityOrderCreateRequestedSwapAction
 };
 
-export default class ReceivingAddress extends Component {
-  props: StateProps & ActionProps;
-
-  onChangeDestinationAddress = (event: SyntheticInputEvent) => {
+export default class ReceivingAddress extends Component<Props> {
+  onChangeDestinationAddress = (event: SyntheticInputEvent<*>) => {
     const value = event.target.value;
     this.props.destinationAddressSwap(value);
   };

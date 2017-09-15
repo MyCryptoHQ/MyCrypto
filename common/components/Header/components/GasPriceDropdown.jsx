@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import throttle from 'lodash/throttle';
 
 import './GasPriceDropdown.scss';
@@ -11,13 +11,12 @@ type Props = {
   onChange: (gasPrice: number) => void
 };
 
-export default class GasPriceDropdown extends Component {
-  state = { expanded: false };
+type State = {
+  expanded: boolean
+};
 
-  static propTypes = {
-    value: PropTypes.number,
-    onChange: PropTypes.func.isRequired
-  };
+export default class GasPriceDropdown extends Component<Props, State> {
+  state = { expanded: false };
 
   constructor(props: Props) {
     super(props);
@@ -90,7 +89,7 @@ export default class GasPriceDropdown extends Component {
     this.props.onChange(parseInt(value, 10));
   };
 
-  handleGasPriceChange = (e: SyntheticInputEvent) => {
+  handleGasPriceChange = (e: SyntheticInputEvent<*>) => {
     this.updateGasPrice(e.target.value);
   };
 }

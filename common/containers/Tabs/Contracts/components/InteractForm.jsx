@@ -11,19 +11,22 @@ type Props = {
   accessContract: Function
 };
 
-export default class InteractForm extends Component {
-  props: Props;
+type State = {
+  address: string,
+  abiJson: string
+};
 
+export default class InteractForm extends Component<Props, State> {
   state = {
     address: '',
     abiJson: ''
   };
 
-  _handleInput = (ev: SyntheticInputEvent) => {
+  _handleInput = (ev: SyntheticInputEvent<*>) => {
     this.setState({ [ev.target.name]: ev.target.value });
   };
 
-  _handleSelectContract = (ev: SyntheticInputEvent) => {
+  _handleSelectContract = (ev: SyntheticInputEvent<*>) => {
     const addr = ev.target.value;
     const contract = this.props.contracts.reduce((prev, contract) => {
       return contract.address === addr ? contract : prev;

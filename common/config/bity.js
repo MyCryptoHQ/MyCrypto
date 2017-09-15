@@ -1,6 +1,7 @@
+// @flow
 import { ETHTxExplorer, BTCTxExplorer } from './data';
 
-type SupportedDestinationKind = 'ETH' | 'BTC' | 'REP';
+type SupportedDestinationKind = 'ETH' | 'REP';
 
 const serverURL = 'https://bity.myetherapi.com';
 const bityURL = 'https://bity.com/api';

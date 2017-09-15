@@ -18,7 +18,6 @@ import {
   bityOrderCreateSucceededSwap,
   stopLoadBityRatesSwap,
   changeStepSwap,
-  orderStatusRequestedSwap,
   orderStatusSucceededSwap,
   startOrderTimerSwap,
   startPollBityOrderStatus,
@@ -46,7 +45,6 @@ export function* pollBityOrderStatus(): Generator<Yield, Return, Next> {
   try {
     let swap = yield select(getSwap);
     while (true) {
-      yield put(orderStatusRequestedSwap());
       const orderStatus = yield call(getOrderStatus, swap.orderId);
       if (orderStatus.error) {
         yield put(
@@ -94,7 +92,7 @@ function* postBityOrderCreate(
     const order = yield call(
       postOrder,
       payload.amount,
-      payload.destAddress,
+      payload.destinationAddress,
       payload.mode,
       payload.pair
     );

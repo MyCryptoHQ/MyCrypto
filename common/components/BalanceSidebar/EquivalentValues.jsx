@@ -1,6 +1,6 @@
 // @flow
 import './EquivalentValues.scss';
-import React from 'react';
+import React, { Component } from 'react';
 import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
 import { Ether } from 'libs/units';
@@ -12,9 +12,7 @@ type Props = {
   rates: ?{ [string]: number }
 };
 
-export default class EquivalentValues extends React.Component {
-  props: Props;
-
+export default class EquivalentValues extends Component<Props> {
   render() {
     const { balance, rates } = this.props;
 

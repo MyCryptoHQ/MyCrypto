@@ -1,12 +1,15 @@
+// @flow
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import { isKeystorePassRequired } from 'libs/keystore';
 
-export type KeystoreValue = {
-  file: string,
-  password: string,
-  valid: boolean
-};
+// @TODO Update this to better match expected object properties.
+// export type KeystoreValue = {
+//   file: string,
+//   password: string,
+//   valid: boolean
+// };
+export type KeystoreValue = any;
 
 function isPassRequired(file: string): boolean {
   let passReq = false;
@@ -18,13 +21,13 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
-export default class KeystoreDecrypt extends Component {
-  props: {
-    value: KeystoreValue,
-    onChange: (value: KeystoreValue) => void,
-    onUnlock: () => void
-  };
+type Props = {
+  value: KeystoreValue,
+  onChange: (value: KeystoreValue) => void,
+  onUnlock: () => void
+};
 
+export default class KeystoreDecrypt extends Component<Props> {
   render() {
     const { file, password } = this.props.value;
     let passReq = isPassRequired(file);
@@ -74,7 +77,7 @@ export default class KeystoreDecrypt extends Component {
     );
   }
 
-  onKeyDown = (e: SyntheticKeyboardEvent) => {
+  onKeyDown = (e: SyntheticKeyboardEvent<*>) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();
@@ -82,7 +85,7 @@ export default class KeystoreDecrypt extends Component {
     }
   };
 
-  onPasswordChange = (e: SyntheticInputEvent) => {
+  onPasswordChange = (e: SyntheticInputEvent<*>) => {
     const valid = this.props.value.file.length && e.target.value.length;
     this.props.onChange({
       ...this.props.value,
@@ -91,8 +94,8 @@ export default class KeystoreDecrypt extends Component {
     });
   };
 
-  handleFileSelection = (e: SyntheticInputEvent) => {
-    const fileReader = new FileReader();
+  handleFileSelection = (e: SyntheticInputEvent<*>) => {
+    const fileReader: FileReader = new FileReader();
     const inputFile = e.target.files[0];
 
     fileReader.onload = () => {

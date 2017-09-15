@@ -1,3 +1,5 @@
+// @flow
+
 export type Pairs = {
   ETHBTC: number,
   ETHREP: number,
@@ -27,7 +29,7 @@ export type LoadBityRatesSucceededSwapAction = {
 };
 export type DestinationAddressSwapAction = {
   type: 'SWAP_DESTINATION_ADDRESS',
-  value: ?number
+  value: ?string
 };
 
 export type RestartSwapAction = {
@@ -40,7 +42,7 @@ export type LoadBityRatesRequestedSwapAction = {
 
 export type ChangeStepSwapAction = {
   type: 'SWAP_STEP',
-  value: number
+  value: ?number
 };
 
 export type StopLoadBityRatesSwapAction = {
@@ -53,29 +55,29 @@ export type BityOrderCreateRequestedSwapAction = {
     amount: number,
     destinationAddress: string,
     pair: string,
-    mode: number
+    mode: ?number
   }
 };
 
 type BityOrderInput = {
-  amount: string
+  amount: string,
+  status: ?string
 };
 
 type BityOrderOutput = {
-  amount: string
+  amount: string,
+  status: ?string,
+  reference: ?string
 };
 
-export type BityOrderResponse = {
-  status: string
-};
-
-export type BityOrderPostResponse = BityOrderResponse & {
+export type BityOrderPostResponse = {
   payment_address: string,
   status: string,
   input: BityOrderInput,
   output: BityOrderOutput,
   timestamp_created: string,
-  validFor: number
+  validFor: number,
+  id: ?string
 };
 
 export type BityOrderCreateSucceededSwapAction = {
@@ -83,14 +85,9 @@ export type BityOrderCreateSucceededSwapAction = {
   payload: BityOrderPostResponse
 };
 
-export type OrderStatusRequestedSwapAction = {
-  type: 'SWAP_BITY_ORDER_STATUS_REQUESTED',
-  payload: BityOrderResponse
-};
-
 export type OrderStatusSucceededSwapAction = {
   type: 'SWAP_BITY_ORDER_STATUS_SUCCEEDED',
-  payload: BityOrderResponse
+  payload: BityOrderPostResponse
 };
 
 export type StartOrderTimerSwapAction = {
@@ -123,6 +120,5 @@ export type SwapAction =
   | StopLoadBityRatesSwapAction
   | BityOrderCreateRequestedSwapAction
   | BityOrderCreateSucceededSwapAction
-  | BityOrderResponse
   | OrderStatusSucceededSwapAction
   | StartPollBityOrderStatusAction;

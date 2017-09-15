@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import translate from 'translations';
 import { Link } from 'react-router';
@@ -14,9 +14,7 @@ type Props = {
   location: Object
 };
 
-export default class NavigationLink extends React.Component {
-  props: Props;
-
+export default class NavigationLink extends Component<Props> {
   render() {
     const { link, location } = this.props;
     const linkClasses = classnames({

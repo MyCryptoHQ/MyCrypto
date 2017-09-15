@@ -1,6 +1,6 @@
 // @flow
 import './ConfirmationModal.scss';
-import React from 'react';
+import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import Big from 'bignumber.js';
 import EthTx from 'ethereumjs-tx';
@@ -38,19 +38,12 @@ type State = {
   hasBroadCasted: boolean
 };
 
-class ConfirmationModal extends React.Component {
-  props: Props;
-  state: State;
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      fromAddress: '',
-      timeToRead: 5,
-      hasBroadCasted: false
-    };
-  }
+class ConfirmationModal extends Component<Props, State> {
+  state = {
+    fromAddress: '',
+    timeToRead: 5,
+    hasBroadCasted: false
+  };
 
   componentWillReceiveProps(newProps: Props) {
     // Reload address if the wallet changes
