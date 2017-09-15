@@ -1,7 +1,7 @@
 // @flow
 import { Ether } from 'libs/units';
 
-export function stripHex(address: string): string {
+export function stripHexPrefixAndLower(address: string): string {
   return address.replace('0x', '').toLowerCase();
 }
 

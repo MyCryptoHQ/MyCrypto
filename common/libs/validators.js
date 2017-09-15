@@ -140,8 +140,11 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
   return true;
 }
 
-// Full length deterministic wallet paths from BIP32
-// https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+// Full length deterministic wallet paths from BIP44
+// https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+// normal path length is 4, ledger is the exception at 3
 export function isValidPath(dPath: string) {
-  return dPath.split("'/").length === 4;
+  //TODO: use a regex to detect proper paths
+  const len = dPath.split("'/").length;
+  return len === 3 || len === 4;
 }

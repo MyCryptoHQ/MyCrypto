@@ -1,6 +1,6 @@
 'use strict';
 process.env.NODE_ENV = 'development';
-
+const path = require('path');
 const webpack = require('webpack');
 const base = require('./webpack.base');
 const FriendlyErrors = require('friendly-errors-webpack-plugin');
@@ -25,6 +25,10 @@ base.module.loaders.push(
 );
 
 base.plugins.push(
+  new webpack.DllReferencePlugin({
+    context: path.join(__dirname, '../common'),
+    manifest: require('../dll/vendor-manifest.json')
+  }),
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('development')
   }),

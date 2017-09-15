@@ -25,7 +25,6 @@ export const INITIAL_STATE: State = {
   inst: null,
   balance: null,
   tokens: {},
-  isBroadcasting: false,
   transactions: []
 };
 
@@ -118,7 +117,6 @@ export function wallet(
     case 'WALLET_BROADCAST_TX_REQUESTED':
       return {
         ...state,
-        isBroadcasting: true,
         transactions: handleBroadcastTxRequested(state, action.payload.signedTx)
       };
     case 'WALLET_BROADCAST_TX_SUCCEEDED':
