@@ -3,6 +3,7 @@ import translate from 'translations';
 import { donationAddressMap } from 'config/data';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { bityReferralURL } from 'config/data';
+import PreFooter from './PreFooter';
 import './index.scss';
 
 const LINKS_LEFT = [
@@ -94,102 +95,105 @@ const LINKS_SOCIAL = [
 export default class Footer extends Component {
   render() {
     return (
-      <footer className="Footer" role="contentinfo" aria-label="footer">
-        <div className="Footer-column Footer-about">
-          <p aria-hidden="true">
-            <a href="/">
-              <img
-                className="Footer-about-logo"
-                src={logo}
-                height="55px"
-                width="auto"
-                alt="MyEtherWallet"
-              />
-            </a>
-          </p>
-          <p className="Footer-about-text">
-            <span>
-              {translate('FOOTER_1')}
-            </span>
-            <span>
-              {translate('FOOTER_1b')}
-            </span>
-          </p>
+      <div>
+        <PreFooter />
+        <footer className="Footer" role="contentinfo" aria-label="footer">
+          <div className="Footer-column Footer-about">
+            <p aria-hidden="true">
+              <a href="/">
+                <img
+                  className="Footer-about-logo"
+                  src={logo}
+                  height="55px"
+                  width="auto"
+                  alt="MyEtherWallet"
+                />
+              </a>
+            </p>
+            <p className="Footer-about-text">
+              <span>
+                {translate('FOOTER_1')}
+              </span>
+              <span>
+                {translate('FOOTER_1b')}
+              </span>
+            </p>
 
-          {LINKS_LEFT.map(link => {
-            return (
-              <p key={link.href}>
-                <a href={link.href} target="_blank" rel="noopener">
-                  {link.text}
-                </a>
-              </p>
-            );
-          })}
-
-          <p>&copy; 2017 MyEtherWallet, LLC</p>
-        </div>
-
-        <div className="Footer-column Footer-info">
-          <h5>
-            <i aria-hidden="true">👫</i>
-            You can support us by supporting our blockchain-family.
-          </h5>
-          <p>Consider using our affiliate links to...</p>
-          <ul>
-            {LINKS_SUPPORT.map(link => {
+            {LINKS_LEFT.map(link => {
               return (
-                <li key={link.href}>
+                <p key={link.href}>
+                  <a href={link.href} target="_blank" rel="noopener">
+                    {link.text}
+                  </a>
+                </p>
+              );
+            })}
+
+            <p>&copy; 2017 MyEtherWallet, LLC</p>
+          </div>
+
+          <div className="Footer-column Footer-info">
+            <h5>
+              <i aria-hidden="true">👫</i>
+              You can support us by supporting our blockchain-family.
+            </h5>
+            <p>Consider using our affiliate links to...</p>
+            <ul>
+              {LINKS_SUPPORT.map(link => {
+                return (
+                  <li key={link.href}>
+                    <a href={link.href} target="_blank">
+                      {link.text}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <h5>
+              <i aria-hidden="true">💝</i>
+              {translate('FOOTER_2')}
+            </h5>
+            <ul>
+              <li>
+                {' '}ETH:{' '}
+                <span className="mono wrap">{donationAddressMap.ETH}</span>
+              </li>
+              <li>
+                {' '}BTC:{' '}
+                <span className="mono wrap">{donationAddressMap.BTC}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="Footer-column Footer-links">
+            {LINKS_RIGHT.map(link => {
+              return (
+                <p key={link.href}>
                   <a href={link.href} target="_blank">
                     {link.text}
                   </a>
-                </li>
+                </p>
               );
             })}
-          </ul>
+            <p>
+              {LINKS_SOCIAL.map((link, i) => {
+                return (
+                  <span key={link.href}>
+                    <a key={link.href} href={link.href} target="_blank">
+                      {link.text}
+                    </a>
+                    {i !== LINKS_SOCIAL.length - 1 && ' · '}
+                  </span>
+                );
+              })}
+            </p>
 
-          <h5>
-            <i aria-hidden="true">💝</i>
-            {translate('FOOTER_2')}
-          </h5>
-          <ul>
-            <li>
-              {' '}ETH:{' '}
-              <span className="mono wrap">{donationAddressMap.ETH}</span>
-            </li>
-            <li>
-              {' '}BTC:{' '}
-              <span className="mono wrap">{donationAddressMap.BTC}</span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="Footer-column Footer-links">
-          {LINKS_RIGHT.map(link => {
-            return (
-              <p key={link.href}>
-                <a href={link.href} target="_blank">
-                  {link.text}
-                </a>
-              </p>
-            );
-          })}
-          <p>
-            {LINKS_SOCIAL.map((link, i) => {
-              return (
-                <span key={link.href}>
-                  <a key={link.href} href={link.href} target="_blank">
-                    {link.text}
-                  </a>
-                  {i !== LINKS_SOCIAL.length - 1 && ' · '}
-                </span>
-              );
-            })}
-          </p>
-
-          {/* TODO: Fix me */}
-          <p>Latest Block#: ?????</p>
-        </div>
-      </footer>
+            {/* TODO: Fix me */}
+            <p>Latest Block#: ?????</p>
+          </div>
+        </footer>
+      </div>
     );
   }
 }
