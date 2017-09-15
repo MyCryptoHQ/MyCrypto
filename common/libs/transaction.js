@@ -4,7 +4,7 @@ import translate from 'translations';
 import { padToEven, addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { isValidETHAddress } from 'libs/validators';
 import ERC20 from 'libs/erc20';
-import { stripHex, valueToHex } from 'libs/values';
+import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { Wei, Ether, toTokenUnit } from 'libs/units';
 import { RPCNode } from 'libs/nodes';
 import { TransactionWithoutGas } from 'libs/messages';
@@ -132,12 +132,12 @@ export async function generateCompleteTransactionFromRawTransaction(
   }
   // Taken from v3's `sanitizeHex`, ensures that the value is a %2 === 0
   // prefix'd hex value.
-  const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
+  const cleanHex = hex => addHexPrefix(padToEven(stripHexPrefixAndLower(hex)));
   const cleanedRawTx = {
     nonce: cleanHex(nonce),
     gasPrice: cleanHex(gasPrice.toString(16)),
     gasLimit: cleanHex(gasLimit.toString(16)),
-    to: cleanHex(to),
+    to: toChecksumAddress(cleanHex(to)),
     value: token ? '0x00' : cleanHex(value.toString(16)),
     data: data ? cleanHex(data) : '',
     chainId: chainId || 1
