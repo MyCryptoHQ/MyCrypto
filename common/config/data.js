@@ -202,7 +202,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     name: 'ETC',
     unit: 'ETC',
     chainId: 61,
-    color: '#009241',
+    color: '#669073',
     blockExplorer: makeEtherscanExplorer('https://gastracker.io'),
     tokens: require('./tokens/etc.json'),
     contracts: require('./contracts/etc.json')
