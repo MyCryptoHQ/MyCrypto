@@ -19,6 +19,7 @@ const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
 const ethPlorer = 'https://ethplorer.io';
 
+// TODO: Stop exporting these! Everything should use active node config.
 export const ETHTxExplorer = (txHash: string): string =>
   `${etherScan}/tx/${txHash}`;
 export const BTCTxExplorer = (txHash: string): string =>
@@ -148,14 +149,17 @@ export type NetworkContract = {
   abi: string
 };
 
+type BlockExplorerConfig = {
+  name: string,
+  tx: Function,
+  address: Function
+};
+
 export type NetworkConfig = {
   name: string,
   unit: string,
-  blockExplorer?: {
-    name: string,
-    tx: Function,
-    address: Function
-  },
+  color: string,
+  blockExplorer?: BlockExplorerConfig,
   tokenExplorer?: {
     name: string,
     address: Function
@@ -172,22 +176,90 @@ export type NodeConfig = {
   estimateGas: ?boolean
 };
 
+function makeEtherscanExplorer(url): BlockExplorerConfig {
+  return {
+    name: url,
+    tx: hash => `${url}/tx/${hash}`,
+    address: address => `${url}/address/${address}`
+  };
+}
+
 export const NETWORKS: { [key: string]: NetworkConfig } = {
   ETH: {
     name: 'ETH',
     unit: 'ETH',
     chainId: 1,
-    blockExplorer: {
-      name: etherScan,
-      tx: ETHTxExplorer,
-      address: ETHAddressExplorer
-    },
+    color: '#0e97c0',
+    blockExplorer: makeEtherscanExplorer('https://etherscan.io'),
     tokenExplorer: {
       name: ethPlorer,
       address: ETHTokenExplorer
     },
-    tokens: require('./tokens/eth').default,
+    tokens: require('./tokens/eth.json'),
     contracts: require('./contracts/eth.json')
+  },
+  ETC: {
+    name: 'ETC',
+    unit: 'ETC',
+    chainId: 61,
+    color: '#009241',
+    blockExplorer: makeEtherscanExplorer('https://gastracker.io'),
+    tokens: require('./tokens/etc.json'),
+    contracts: require('./contracts/etc.json')
+  },
+  Ropsten: {
+    name: 'Ropsten',
+    unit: 'ETH',
+    chainId: 3,
+    color: '#adc101',
+    blockExplorer: makeEtherscanExplorer('https://ropsten.etherscan.io'),
+    tokens: require('./tokens/ropsten.json'),
+    contracts: require('./contracts/ropsten.json')
+  },
+  Kovan: {
+    name: 'Kovan',
+    unit: 'ETH',
+    chainId: 42,
+    color: '#adc101',
+    blockExplorer: makeEtherscanExplorer('https://kovan.etherscan.io'),
+    tokens: require('./tokens/ropsten.json'),
+    contracts: require('./contracts/ropsten.json')
+  },
+  Rinkeby: {
+    name: 'Rinkeby',
+    unit: 'ETH',
+    chainId: 4,
+    color: '#adc101',
+    blockExplorer: makeEtherscanExplorer('https://rinkeby.etherscan.io'),
+    tokens: require('./tokens/rinkeby.json'),
+    contracts: require('./contracts/rinkeby.json')
+  },
+  RSK: {
+    name: 'RSK',
+    unit: 'RSK',
+    chainId: 31,
+    color: '#ff794f',
+    blockExplorer: makeEtherscanExplorer('https://explorer.rsk.co'),
+    tokens: require('./tokens/rsk.json'),
+    contracts: require('./contracts/rsk.json')
+  },
+  EXP: {
+    name: 'EXP',
+    unit: 'EXP',
+    chainId: 2,
+    color: '#673ab7',
+    blockExplorer: makeEtherscanExplorer('http://www.gander.tech'),
+    tokens: require('./tokens/exp.json'),
+    contracts: require('./contracts/exp.json')
+  },
+  UBQ: {
+    name: 'UBQ',
+    unit: 'UBQ',
+    chainId: 8,
+    color: '#b37aff',
+    blockExplorer: makeEtherscanExplorer('https://ubiqscan.io/en'),
+    tokens: require('./tokens/ubq.json'),
+    contracts: require('./contracts/ubq.json')
   }
 };
 
