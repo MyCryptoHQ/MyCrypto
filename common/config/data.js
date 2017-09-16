@@ -1,5 +1,5 @@
 // @flow
-import { RPCNode } from 'libs/nodes';
+import { RPCNode, InfuraNode, EtherscanNode } from 'libs/nodes';
 
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.0.1)';
@@ -196,6 +196,72 @@ export const NODES: { [key: string]: NodeConfig } = {
     network: 'ETH',
     lib: new RPCNode('https://api.myetherapi.com/eth'),
     service: 'MyEtherWallet',
+    estimateGas: true
+  },
+  eth_ethscan: {
+    network: 'ETH',
+    service: 'Etherscan.io',
+    lib: new EtherscanNode('https://api.etherscan.io/api'),
+    estimateGas: false
+  },
+  eth_infura: {
+    network: 'ETH',
+    service: 'infura.io',
+    lib: new InfuraNode('https://mainnet.infura.io/mew'),
+    estimateGas: false
+  },
+  etc_epool: {
+    network: 'ETC',
+    service: 'Epool.io',
+    lib: new RPCNode('https://mewapi.epool.io'),
+    estimateGas: false
+  },
+  rop_mew: {
+    network: 'Ropsten',
+    service: 'MyEtherWallet',
+    lib: new RPCNode('https://api.myetherapi.com/rop'),
+    estimateGas: false
+  },
+  rop_infura: {
+    network: 'Ropsten',
+    service: 'infura.io',
+    lib: new InfuraNode('https://ropsten.infura.io/mew'),
+    estimateGas: false
+  },
+  kov_ethscan: {
+    network: 'Kovan',
+    service: 'Etherscan.io',
+    lib: new EtherscanNode('https://kovan.etherscan.io/api'),
+    estimateGas: false
+  },
+  rin_ethscan: {
+    network: 'Rinkeby',
+    service: 'Etherscan.io',
+    lib: new EtherscanNode('https://rinkeby.etherscan.io/api'),
+    estimateGas: false
+  },
+  rin_infura: {
+    network: 'Rinkeby',
+    service: 'infura.io',
+    lib: new InfuraNode('https://rinkeby.infura.io/mew'),
+    estimateGas: false
+  },
+  rsk: {
+    network: 'RSK',
+    service: 'GK2.sk',
+    lib: new RPCNode('https://rsk-test.gk2.sk/'),
+    estimateGas: true
+  },
+  exp: {
+    network: 'EXP',
+    service: 'Expanse.tech',
+    lib: new RPCNode('https://node.expanse.tech/'),
+    estimateGas: true
+  },
+  ubq: {
+    network: 'UBQ',
+    service: 'ubiqscan.io',
+    lib: new RPCNode('https://pyrus2.ubiqscan.io'),
     estimateGas: true
   }
 };
