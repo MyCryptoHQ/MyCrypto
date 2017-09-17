@@ -4,12 +4,12 @@ import translate from 'translations';
 import { padToEven, addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { isValidETHAddress } from 'libs/validators';
 import ERC20 from 'libs/erc20';
-import { stripHex, valueToHex } from 'libs/values';
+import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { Wei, Ether, toTokenUnit } from 'libs/units';
 import { RPCNode } from 'libs/nodes';
 import { TransactionWithoutGas } from 'libs/messages';
 import type { INode } from 'libs/nodes/INode';
-import type { BaseWallet } from 'libs/wallet';
+import type { IWallet } from 'libs/wallet';
 import type { Token } from 'config/data';
 import type EthTx from 'ethereumjs-tx';
 import type { UNIT } from 'libs/units';
@@ -79,7 +79,7 @@ export function getTransactionFields(tx: EthTx) {
 export async function generateCompleteTransactionFromRawTransaction(
   node: INode,
   tx: ExtendedRawTransaction,
-  wallet: BaseWallet,
+  wallet: IWallet,
   token: ?Token
 ): Promise<CompleteTransaction> {
   const { to, data, gasLimit, gasPrice, from, chainId, nonce } = tx;
@@ -132,12 +132,12 @@ export async function generateCompleteTransactionFromRawTransaction(
   }
   // Taken from v3's `sanitizeHex`, ensures that the value is a %2 === 0
   // prefix'd hex value.
-  const cleanHex = hex => addHexPrefix(padToEven(stripHex(hex)));
+  const cleanHex = hex => addHexPrefix(padToEven(stripHexPrefixAndLower(hex)));
   const cleanedRawTx = {
     nonce: cleanHex(nonce),
     gasPrice: cleanHex(gasPrice.toString(16)),
     gasLimit: cleanHex(gasLimit.toString(16)),
-    to: cleanHex(to),
+    to: toChecksumAddress(cleanHex(to)),
     value: token ? '0x00' : cleanHex(value.toString(16)),
     data: data ? cleanHex(data) : '',
     chainId: chainId || 1
@@ -161,7 +161,7 @@ export async function generateCompleteTransactionFromRawTransaction(
 }
 
 export async function formatTxInput(
-  wallet: BaseWallet,
+  wallet: IWallet,
   { token, unit, value, to, data }: TransactionInput
 ): Promise<TransactionWithoutGas> {
   if (unit === 'ether') {
@@ -187,7 +187,7 @@ export async function formatTxInput(
 }
 
 export async function generateCompleteTransaction(
-  wallet: BaseWallet,
+  wallet: IWallet,
   nodeLib: RPCNode,
   gasPrice: Wei,
   gasLimit: Big,

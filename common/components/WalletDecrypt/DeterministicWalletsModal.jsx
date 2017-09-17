@@ -7,11 +7,9 @@ import {
   getDeterministicWallets,
   setDesiredToken
 } from 'actions/deterministicWallets';
-import { toUnit } from 'libs/units';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 import { isValidPath } from 'libs/validators';
-
 import type {
   DeterministicWalletData,
   GetDeterministicWalletsArgs,
@@ -38,15 +36,17 @@ type Props = {
   walletType: ?string,
   dPath: string,
   dPaths: { label: string, value: string }[],
-  publicKey: string,
-  chainCode: string,
+  publicKey: ?string,
+  chainCode: ?string,
+  seed: ?string,
   onCancel: () => void,
-  onConfirmAddress: string => void,
+  onConfirmAddress: (string, number) => void,
   onPathChange: string => void
 };
 
 type State = {
   selectedAddress: string,
+  selectedAddrIndex: number,
   isCustomPath: boolean,
   customPath: string,
   page: number
@@ -56,6 +56,7 @@ class DeterministicWalletsModal extends React.Component {
   props: Props;
   state: State = {
     selectedAddress: '',
+    selectedAddrIndex: 0,
     isCustomPath: false,
     customPath: '',
     page: 0
@@ -66,20 +67,23 @@ class DeterministicWalletsModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { publicKey, chainCode } = this.props;
+    const { publicKey, chainCode, seed, dPath } = this.props;
     if (
       nextProps.publicKey !== publicKey ||
-      nextProps.chainCode !== chainCode
+      nextProps.chainCode !== chainCode ||
+      nextProps.dPath !== dPath ||
+      nextProps.seed !== seed
     ) {
       this._getAddresses(nextProps);
     }
   }
 
   _getAddresses(props: Props = this.props) {
-    const { dPath, publicKey, chainCode } = props;
+    const { dPath, publicKey, chainCode, seed } = props;
 
-    if (dPath && publicKey && chainCode && isValidPath(dPath)) {
+    if (dPath && ((publicKey && chainCode) || seed) && isValidPath(dPath)) {
       this.props.getDeterministicWallets({
+        seed,
         dPath,
         publicKey,
         chainCode,
@@ -118,12 +122,15 @@ class DeterministicWalletsModal extends React.Component {
 
   _handleConfirmAddress = () => {
     if (this.state.selectedAddress) {
-      this.props.onConfirmAddress(this.state.selectedAddress);
+      this.props.onConfirmAddress(
+        this.state.selectedAddress,
+        this.state.selectedAddrIndex
+      );
     }
   };
 
-  _selectAddress(selectedAddress) {
-    this.setState({ selectedAddress });
+  _selectAddress(selectedAddress, selectedAddrIndex) {
+    this.setState({ selectedAddress, selectedAddrIndex });
   }
 
   _nextPage = () => {
@@ -142,9 +149,7 @@ class DeterministicWalletsModal extends React.Component {
     const { selectedAddress } = this.state;
 
     // Get renderable values, but keep 'em short
-    const value = wallet.value
-      ? toUnit(wallet.value, 'wei', 'ether').toPrecision(4)
-      : '';
+    const value = wallet.value ? wallet.value.toEther().toPrecision(4) : '';
     const tokenValue = wallet.tokenValues[desiredToken]
       ? wallet.tokenValues[desiredToken].toPrecision(4)
       : '';
@@ -152,7 +157,7 @@ class DeterministicWalletsModal extends React.Component {
     return (
       <tr
         key={wallet.address}
-        onClick={this._selectAddress.bind(this, wallet.address)}
+        onClick={this._selectAddress.bind(this, wallet.address, wallet.index)}
       >
         <td>
           {wallet.index + 1}

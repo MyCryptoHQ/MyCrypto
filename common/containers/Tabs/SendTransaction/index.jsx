@@ -41,7 +41,7 @@ import type { BroadcastTxRequestedAction } from 'actions/wallet';
 import { showNotification } from 'actions/notifications';
 import type { ShowNotificationAction } from 'actions/notifications';
 // LIBS
-import BaseWallet from 'libs/wallet/base';
+import type { IWallet } from 'libs/wallet/IWallet';
 import { isValidETHAddress } from 'libs/validators';
 import type { RPCNode } from 'libs/nodes';
 import type {
@@ -93,7 +93,7 @@ type Props = {
       [string]: string
     }
   },
-  wallet: BaseWallet,
+  wallet: IWallet,
   balance: Ether,
   node: NodeConfig,
   nodeLib: RPCNode,
@@ -285,13 +285,7 @@ export class SendTransaction extends React.Component {
           {/* Sidebar */}
           {unlocked &&
             <section className="col-sm-4">
-              <div className="Tab-content-pane">
-                <div>
-                  <BalanceSidebar />
-                  <hr />
-                  <Donate onDonate={this.onNewTx} />
-                </div>
-              </div>
+              <BalanceSidebar />
             </section>}
         </div>
 
@@ -512,7 +506,7 @@ export class SendTransaction extends React.Component {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-    balance: new Ether(state.wallet.balance),
+    balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
     node: getNodeConfig(state),
     nodeLib: getNodeLib(state),

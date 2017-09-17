@@ -5,7 +5,8 @@ import { takeEvery, call, apply, put, select, fork } from 'redux-saga/effects';
 import { setWallet, setBalance, setTokenBalances } from 'actions/wallet';
 import type {
   UnlockPrivateKeyAction,
-  UnlockKeystoreAction
+  UnlockKeystoreAction,
+  UnlockMnemonicAction
 } from 'actions/wallet';
 import { showNotification } from 'actions/notifications';
 import type { BroadcastTxRequestedAction } from 'actions/wallet';
@@ -19,7 +20,8 @@ import {
   UtcWallet,
   EncryptedPrivKeyWallet,
   PrivKeyWallet,
-  BaseWallet
+  MnemonicWallet,
+  IWallet
 } from 'libs/wallet';
 import { INode } from 'libs/nodes/INode';
 import { determineKeystoreType } from 'libs/keystore';
@@ -31,7 +33,7 @@ import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSu
 
 function* updateAccountBalance(): Generator<Yield, Return, Next> {
   try {
-    const wallet: ?BaseWallet = yield select(getWalletInst);
+    const wallet: ?IWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
     }
@@ -39,7 +41,7 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
     const address = yield wallet.getAddress();
     // network request
     let balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance.amount));
+    yield put(setBalance(balance));
   } catch (error) {
     yield put({ type: 'updateAccountBalance_error', error });
   }
@@ -48,7 +50,7 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
 function* updateTokenBalances(): Generator<Yield, Return, Next> {
   try {
     const node: INode = yield select(getNodeLib);
-    const wallet: ?BaseWallet = yield select(getWalletInst);
+    const wallet: ?IWallet = yield select(getWalletInst);
     const tokens = yield select(getTokens);
     if (!wallet || !node) {
       return;
@@ -141,6 +143,25 @@ export function* unlockKeystore(
   yield put(setWallet(wallet));
 }
 
+function* unlockMnemonic(
+  action?: UnlockMnemonicAction
+): Generator<Yield, Return, Next> {
+  if (!action) return;
+
+  let wallet;
+  const { phrase, pass, path, address } = action.payload;
+
+  try {
+    wallet = new MnemonicWallet(phrase, pass, path, address);
+  } catch (err) {
+    // TODO: use better error than 'ERROR_14' (wallet not found)
+    yield put(showNotification('danger', translate('ERROR_14')));
+    return;
+  }
+
+  yield put(setWallet(wallet));
+}
+
 function* broadcastTx(
   action: BroadcastTxRequestedAction
 ): Generator<Yield, Return, Next> {
@@ -176,6 +197,7 @@ export default function* walletSaga(): Generator<Yield, Return, Next> {
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
+    takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
     takeEvery('WALLET_SET', updateBalances),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
     // $FlowFixMe but how do I specify param types here flow?

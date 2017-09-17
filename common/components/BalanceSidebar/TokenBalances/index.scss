@@ -1,0 +1,18 @@
+@import "common/sass/variables";
+
+.TokenBalances {
+  &-title {
+    margin-top: 0;
+  }
+
+  &-rows {
+    width: 100%;
+    margin-bottom: $space;
+  }
+
+  &-form {
+    margin-top: $space * 2;
+    padding-top: $space;
+    border-top: 1px solid $gray-lighter;
+  }
+}

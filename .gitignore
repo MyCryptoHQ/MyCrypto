@@ -44,3 +44,5 @@ jspm_packages
 
 # VScode workspace settings
 .vscode/
+static/dll.vendor.js
+dll

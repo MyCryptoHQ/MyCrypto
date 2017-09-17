@@ -1,0 +1,90 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.Promos {
+  &-promo {
+    position: relative;
+    height: 6rem;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    transition-duration: 200ms;
+    @include clearfix;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: #fff;
+      opacity: 0.85;
+    }
+
+    &-inner {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      transform: translateY(-50%);
+    }
+
+    &-text,
+    &-images {
+      padding: 0 $space-sm;
+    }
+
+    &-text {
+      flex: 1;
+
+      p,
+      h4,
+      h5,
+      h6 {
+        margin: .15rem 0;
+      }
+
+      p {
+        font-size: 0.8rem;
+      }
+
+      h5 {
+        font-size: 1.3rem;
+      }
+    }
+
+    &-images {
+      padding: 0 $space * 1.5;
+
+      img {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 96px;
+        height: auto;
+        padding: $space-xs;
+      }
+    }
+  }
+
+  &-nav {
+    text-align: center;
+
+    &-btn {
+      @include reset-button;
+      display: inline-block;
+      margin: 0 $space-xs;
+      background: $gray-dark;
+      width: 12px;
+      height: 12px;
+      border: 3px solid $gray-lightest;
+      border-radius: 100%;
+      outline: none;
+      opacity: 0.6;
+
+      &.is-active {
+        opacity: 1;
+      }
+    }
+  }
+}
