@@ -10,8 +10,21 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { Root } from 'components';
 import { history } from './routing';
 import { store } from './store';
+import checkBadBrowser from './utils/checkBadBrowser';
 
 const renderRoot = Root => {
+  // Check if they have a bad browser before rendering root.
+  if (checkBadBrowser()) {
+    const el = document.getElementsByClassName('BadBrowser')[0];
+    el.classList.add('is-open');
+    // Dumb check for known mobile OS's. Not important to catch all, just
+    // displays more appropriate information.
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      el.classList.add('is-mobile');
+    }
+    return;
+  }
+
   let syncedHistory = syncHistoryWithStore(history, store);
   render(
     <Root history={syncedHistory} store={store} />,
