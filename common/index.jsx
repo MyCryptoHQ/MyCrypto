@@ -8,13 +8,18 @@ import { render } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 import { Root } from 'components';
-import { history } from './routing';
+import { Routing, history } from './routing';
 import { store } from './store';
 
 const renderRoot = Root => {
   let syncedHistory = syncHistoryWithStore(history, store);
   render(
-    <Root history={syncedHistory} store={store} />,
+    <Root
+      key={Math.random()}
+      routes={Routing}
+      history={syncedHistory}
+      store={store}
+    />,
     document.getElementById('app')
   );
 };
@@ -25,5 +30,4 @@ if (module.hot) {
   module.hot.accept('reducers/index', () =>
     store.replaceReducer(require('reducers/index').default)
   );
-  module.hot.accept();
 }
