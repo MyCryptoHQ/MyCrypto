@@ -46,6 +46,7 @@ export default class PrintableWallet extends Component {
           aria-describedby="x_PrintDesc"
           className={'btn btn-lg btn-primary'}
           onClick={this.print}
+          style={{ marginTop: 10 }}
         >
           {translate('x_Print')}
         </a>

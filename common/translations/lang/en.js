@@ -8,7 +8,7 @@ module.exports = {
     x_CancelReplaceTx: 'Cancel or Replace Transaction',
     x_CancelTx: 'Cancel Transaction',
     x_PasswordDesc:
-      'This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
+      'This password *encrypts* your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**',
     x_ReadMore: 'Read More',
     x_ReplaceTx: 'Replace Transaction',
     x_TransHash: 'Transaction Hash',

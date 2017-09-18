@@ -29,6 +29,10 @@ const tabs = [
     // to: 'view-wallet'
   },
   {
+    name: 'NAV_ENS',
+    to: 'ens'
+  },
+  {
     name: 'NAV_Help',
     to: 'https://myetherwallet.groovehq.com/help_center',
     external: true
@@ -58,7 +62,7 @@ export default class TabsOptions extends Component {
       <nav
         role="navigation"
         aria-label="main navigation"
-        className="Navigation container overflowing"
+        className="Navigation"
       >
         {this.state.showLeftArrow &&
           <a
@@ -69,7 +73,7 @@ export default class TabsOptions extends Component {
             &#171;
           </a>}
 
-        <div className="Navigation-scroll">
+        <div className="Navigation-scroll container">
           <ul className="Navigation-links">
             {tabs.map(link => {
               return (

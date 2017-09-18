@@ -1,0 +1,28 @@
+// Input groups overrides
+@import "common/sass/variables";
+
+.input-group {
+  > * {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .dropdown-toggle {
+    padding-left: $space-md;
+    padding-right: $space-md;
+  }
+}
+
+// Align with inputs
+.input-group-addon {
+  padding: 0 $padding-base-horizontal;
+}
+
+.input-group-btn {
+  .btn {
+    margin-bottom: 0;
+    margin-top: 0;
+    font-size: $font-size-base;
+    padding: .55rem $space-xl;
+  }
+}

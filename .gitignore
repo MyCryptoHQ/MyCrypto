@@ -41,3 +41,8 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# VScode workspace settings
+.vscode/
+static/dll.vendor.js
+dll

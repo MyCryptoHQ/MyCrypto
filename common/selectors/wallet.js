@@ -1,12 +1,12 @@
 // @flow
 import type { State } from 'reducers';
-import { BaseWallet } from 'libs/wallet';
+import { IWallet } from 'libs/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import Big from 'bignumber.js';
 import type { Token } from 'config/data';
-import type { BroadcastStatusTransaction } from 'libs/transaction';
+import type { BroadcastTransactionStatus } from 'libs/transaction';
 
-export function getWalletInst(state: State): ?BaseWallet {
+export function getWalletInst(state: State): ?IWallet {
   return state.wallet.inst;
 }
 
@@ -44,15 +44,15 @@ export function getTokenBalances(state: State): TokenBalance[] {
 export function getTxFromState(
   state: State,
   signedTx: string
-): ?BroadcastStatusTransaction {
+): ?BroadcastTransactionStatus {
   const transactions = state.wallet.transactions;
-  return getTxFromBroadcastStatusTransactions(transactions, signedTx);
+  return getTxFromBroadcastTransactionStatus(transactions, signedTx);
 }
 
-export function getTxFromBroadcastStatusTransactions(
-  transactions: Array<BroadcastStatusTransaction>,
+export function getTxFromBroadcastTransactionStatus(
+  transactions: Array<BroadcastTransactionStatus>,
   signedTx: string
-): ?BroadcastStatusTransaction {
+): ?BroadcastTransactionStatus {
   return transactions.find(transaction => {
     return transaction.signedTx === signedTx;
   });

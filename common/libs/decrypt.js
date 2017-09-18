@@ -1,6 +1,11 @@
 //@flow
 
 import { createHash, createDecipheriv } from 'crypto';
+import { validateMnemonic, mnemonicToSeed } from 'bip39';
+import { fromMasterSeed } from 'hdkey';
+import { stripHexPrefixAndLower } from 'libs/values';
+
+import { privateToAddress } from 'ethereumjs-util';
 
 //adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L230
 export function decryptPrivKey(encprivkey: string, password: string): Buffer {
@@ -65,4 +70,29 @@ export function evp_kdf(data: Buffer, salt: Buffer, opts: Object) {
 
 export function decipherBuffer(decipher: Object, data: Buffer): Buffer {
   return Buffer.concat([decipher.update(data), decipher.final()]);
+}
+
+export function decryptMnemonicToPrivKey(
+  phrase: string,
+  pass: string,
+  path: string,
+  address: string
+): Buffer {
+  phrase = phrase.trim();
+  address = stripHexPrefixAndLower(address);
+
+  if (!validateMnemonic(phrase)) {
+    throw new Error('Invalid mnemonic');
+  }
+
+  const seed = mnemonicToSeed(phrase, pass);
+  const derived = fromMasterSeed(seed).derive(path);
+  const dPrivKey = derived.privateKey;
+  const dAddress = privateToAddress(dPrivKey).toString('hex');
+
+  if (dAddress !== address) {
+    throw new Error(`Derived ${dAddress}, expected ${address}`);
+  }
+
+  return dPrivKey;
 }

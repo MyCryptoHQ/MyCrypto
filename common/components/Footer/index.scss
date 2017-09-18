@@ -4,19 +4,40 @@
 .Footer {
   background-color: $ether-navy;
   color: white;
-  margin-top: 100px;
   padding-top: $space-xs;
   padding-bottom: $space-sm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
 
-  &-logo {
-    width: 100%;
-    height: auto;
-    max-width: 20rem;
+  @media (min-width: $screen-sm-min) {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
   }
 
-  &-info,
+  &-column {
+    padding: 1rem 2rem;
+  }
+
+  &-about {
+    max-width: 22rem;
+
+    &-logo {
+      width: 100%;
+      height: auto;
+      max-width: 20rem;
+    }
+  }
+
+  &-info {
+    max-width: 34rem;
+  }
+
   &-links {
-    padding-left: 3rem;
+    max-width: 28rem;
   }
 
   p {
@@ -36,8 +57,11 @@
     margin: $font-size-small 0 0;
 
     i {
-      margin-left: -1.5em;
       margin-right: .25em;
+
+      @media (min-width: $screen-sm-min) {
+        margin-left: -1.5em;
+      }
     }
   }
 

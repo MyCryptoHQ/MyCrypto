@@ -1,6 +1,7 @@
 // @flow
-import BaseWallet from 'libs/wallet/base';
+import type { IWallet } from 'libs/wallet/IWallet';
 import Big from 'bignumber.js';
+import { Wei } from 'libs/units';
 
 /*** Unlock Private Key ***/
 export type PrivateKeyUnlockParams = {
@@ -42,13 +43,35 @@ export function unlockKeystore(
   };
 }
 
+/*** Unlock Mnemonic ***/
+export type MnemonicUnlockParams = {
+  phrase: string,
+  pass: string,
+  path: string,
+  address: string
+};
+
+export type UnlockMnemonicAction = {
+  type: 'WALLET_UNLOCK_MNEMONIC',
+  payload: MnemonicUnlockParams
+};
+
+export function unlockMnemonic(
+  value: MnemonicUnlockParams
+): UnlockMnemonicAction {
+  return {
+    type: 'WALLET_UNLOCK_MNEMONIC',
+    payload: value
+  };
+}
+
 /*** Set Wallet ***/
 export type SetWalletAction = {
   type: 'WALLET_SET',
-  payload: BaseWallet
+  payload: IWallet
 };
 
-export function setWallet(value: BaseWallet): SetWalletAction {
+export function setWallet(value: IWallet): SetWalletAction {
   return {
     type: 'WALLET_SET',
     payload: value
@@ -58,10 +81,10 @@ export function setWallet(value: BaseWallet): SetWalletAction {
 /*** Set Balance ***/
 export type SetBalanceAction = {
   type: 'WALLET_SET_BALANCE',
-  payload: Big
+  payload: Wei
 };
 
-export function setBalance(value: Big): SetBalanceAction {
+export function setBalance(value: Wei): SetBalanceAction {
   return {
     type: 'WALLET_SET_BALANCE',
     payload: value

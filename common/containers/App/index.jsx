@@ -52,7 +52,7 @@ class App extends Component {
       <div className="page-layout">
         <main>
           <Header {...headerProps} />
-          <div className="main-content">
+          <div className="Tab container">
             {React.cloneElement(children, { languageSelection })}
           </div>
           <Footer />

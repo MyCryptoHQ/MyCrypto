@@ -1,4 +1,5 @@
 // @flow
+import './CurrentRates.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
@@ -30,46 +31,50 @@ export default class CurrentRates extends Component {
     const pair = origin + destination;
     const statePair = this.state[pair + 'Amount'];
     const propsPair = this.props[pair];
-    return !propsPair
-      ? <Spinner />
-      : <p className="mono">
-          <input
-            className="form-control input-sm"
-            onChange={this.onChange}
-            value={statePair}
-            name={pair + 'Amount'}
-          />
-          <span>
-            {` ${origin} = ${toFixedIfLarger(
-              statePair * propsPair,
-              6
-            )} ${destination}`}
-          </span>
-        </p>;
+    return (
+      <div className="SwapRates-panel-rate">
+        {propsPair
+          ? <div>
+              <input
+                className="SwapRates-panel-rate-input"
+                onChange={this.onChange}
+                value={statePair}
+                name={pair + 'Amount'}
+              />
+              <span className="SwapRates-panel-rate-amount">
+                {` ${origin} = ${toFixedIfLarger(
+                  statePair * propsPair,
+                  6
+                )} ${destination}`}
+              </span>
+            </div>
+          : <Spinner />}
+      </div>
+    );
   };
 
   render() {
     return (
-      <article className="swap-rates">
-        <section className="row">
-          <h5 className="col-xs-6 col-xs-offset-3">
-            {translate('SWAP_rates')}
-          </h5>
-        </section>
-        <section className="row order-panel">
-          {
-            <div>
-              <div className="col-sm-6 order-info">
-                {this.buildPairRate('ETH', 'BTC')}
-                {this.buildPairRate('ETH', 'REP')}
-              </div>
-              <div className="col-sm-6 order-info">
-                {this.buildPairRate('BTC', 'ETH')}
-                {this.buildPairRate('BTC', 'REP')}
-              </div>
-            </div>
-          }
-          <a className="link bity-logo" href={bityReferralURL} target="_blank">
+      <article className="SwapRates">
+        <h3 className="SwapRates-title">
+          {translate('SWAP_rates')}
+        </h3>
+
+        <section className="SwapRates-panel row">
+          <div className="SwapRates-panel-side col-sm-6">
+            {this.buildPairRate('ETH', 'BTC')}
+            {this.buildPairRate('ETH', 'REP')}
+          </div>
+
+          <div className="SwapRates-panel-side col-sm-6">
+            {this.buildPairRate('BTC', 'ETH')}
+            {this.buildPairRate('BTC', 'REP')}
+          </div>
+          <a
+            className="SwapRates-panel-logo"
+            href={bityReferralURL}
+            target="_blank"
+          >
             <img src={bityLogoWhite} width={120} height={49} />
           </a>
         </section>

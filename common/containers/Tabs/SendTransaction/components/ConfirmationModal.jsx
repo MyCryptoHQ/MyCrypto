@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'translations';
 import Big from 'bignumber.js';
 import EthTx from 'ethereumjs-tx';
 import { connect } from 'react-redux';
-import BaseWallet from 'libs/wallet/base';
+import type { IWallet } from 'libs/wallet/IWallet';
 import { toUnit, toTokenDisplay } from 'libs/units';
 import ERC20 from 'libs/erc20';
 import { getTransactionFields } from 'libs/transaction';
@@ -17,19 +17,19 @@ import type { Token, NetworkConfig } from 'config/data';
 import Modal from 'components/ui/Modal';
 import Identicon from 'components/ui/Identicon';
 import Spinner from 'components/ui/Spinner';
-import type { BroadcastStatusTransaction } from 'libs/transaction';
+import type { BroadcastTransactionStatus } from 'libs/transaction';
 
 type Props = {
   signedTx: string,
   transaction: EthTx,
-  wallet: BaseWallet,
+  wallet: IWallet,
   node: NodeConfig,
   token: ?Token,
   network: NetworkConfig,
   onConfirm: (string, EthTx) => void,
   onClose: () => void,
   lang: string,
-  broadCastStatusTx: BroadcastStatusTransaction
+  broadCastTxStatus: BroadcastTransactionStatus
 };
 
 type State = {
@@ -62,7 +62,7 @@ class ConfirmationModal extends React.Component {
   componentDidUpdate() {
     if (
       this.state.hasBroadCasted &&
-      !this.props.broadCastStatusTx.isBroadcasting
+      !this.props.broadCastTxStatus.isBroadcasting
     ) {
       this.props.onClose();
     }
@@ -86,7 +86,7 @@ class ConfirmationModal extends React.Component {
     clearInterval(this.readTimer);
   }
 
-  async _setWalletAddress(wallet: BaseWallet) {
+  async _setWalletAddress(wallet: IWallet) {
     // TODO move getAddress to saga
     const fromAddress = await wallet.getAddress();
     this.setState({ fromAddress });
@@ -124,7 +124,7 @@ class ConfirmationModal extends React.Component {
   };
 
   render() {
-    const { node, token, network, onClose, broadCastStatusTx } = this.props;
+    const { node, token, network, onClose, broadCastTxStatus } = this.props;
     const { fromAddress, timeToRead } = this.state;
     const { toAddress, value, gasPrice, data } = this._decodeTransaction();
 
@@ -146,7 +146,7 @@ class ConfirmationModal extends React.Component {
     const symbol = token ? token.symbol : network.unit;
 
     const isBroadcasting =
-      broadCastStatusTx && broadCastStatusTx.isBroadcasting;
+      broadCastTxStatus && broadCastTxStatus.isBroadcasting;
 
     return (
       <Modal
@@ -233,7 +233,7 @@ function mapStateToProps(state, props) {
 
   const lang = getLanguageSelection(state);
 
-  const broadCastStatusTx = getTxFromState(state, props.signedTx);
+  const broadCastTxStatus = getTxFromState(state, props.signedTx);
 
   // Determine if we're sending to a token from the transaction to address
   const { to, data } = getTransactionFields(transaction);
@@ -241,7 +241,7 @@ function mapStateToProps(state, props) {
   const token = data && tokens.find(t => t.address === to);
 
   return {
-    broadCastStatusTx,
+    broadCastTxStatus,
     transaction,
     token,
     network,

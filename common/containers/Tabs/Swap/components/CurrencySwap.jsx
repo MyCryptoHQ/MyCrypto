@@ -1,7 +1,8 @@
+import './CurrencySwap.scss';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
-import SimpleDropDown from 'components/ui/SimpleDropdown';
+import SimpleSelect from 'components/ui/SimpleSelect';
 import SimpleButton from 'components/ui/SimpleButton';
 import type {
   OriginKindSwapAction,
@@ -10,7 +11,7 @@ import type {
   DestinationAmountSwapAction,
   ChangeStepSwapAction
 } from 'actions/swapTypes';
-import bityConfig from 'config/bity';
+import bityConfig, { kindMin, kindMax } from 'config/bity';
 import { toFixedIfLarger } from 'utils/formatters';
 
 export type StateProps = {
@@ -45,8 +46,8 @@ export default class CurrencySwap extends Component {
     let bityMax;
     if (kind !== 'BTC') {
       const bityPairRate = this.props.bityRates['BTC' + kind];
-      bityMin = bityConfig[kind + 'Min'](bityPairRate);
-      bityMax = bityConfig[kind + 'Max'](bityPairRate);
+      bityMin = kindMin(bityPairRate, kind);
+      bityMax = kindMax(bityPairRate, kind);
     } else {
       bityMin = bityConfig.BTCMin;
       bityMax = bityConfig.BTCMax;
@@ -72,15 +73,15 @@ export default class CurrencySwap extends Component {
 
     if (disabled && originAmount && !this.state.showedMinMaxError) {
       const { bityRates } = this.props;
-      const ETHMin = bityConfig.ETHMin(bityRates.BTCETH);
-      const ETHMax = bityConfig.ETHMax(bityRates.BTCETH);
-      const REPMin = bityConfig.REPMax(bityRates.BTCREP);
+      const ETHMin = kindMin(bityRates.BTCETH, 'ETH');
+      const ETHMax = kindMax(bityRates.BTCETH, 'ETH');
+      const REPMin = kindMin(bityRates.BTCREP, 'REP');
 
       const notificationMessage = `
-        Minimum amount ${bityConfig.BTCMin} BTC, 
-        ${toFixedIfLarger(ETHMin, 3)} ETH. 
-        Max amount ${bityConfig.BTCMax} BTC, 
-        ${toFixedIfLarger(ETHMax, 3)} ETH, or 
+        Minimum amount ${bityConfig.BTCMin} BTC,
+        ${toFixedIfLarger(ETHMin, 3)} ETH.
+        Max amount ${bityConfig.BTCMax} BTC,
+        ${toFixedIfLarger(ETHMax, 3)} ETH, or
         ${toFixedIfLarger(REPMin, 3)} REP
       `;
 
@@ -163,59 +164,63 @@ export default class CurrencySwap extends Component {
     } = this.props;
 
     return (
-      <article className="swap-panel">
-        <h1>
+      <article className="CurrencySwap">
+        <h1 className="CurrencySwap-title">
           {translate('SWAP_init_1')}
         </h1>
-        <input
-          className={`form-control ${originAmount !== '' &&
-          this.isMinMaxValid(originAmount, originKind)
-            ? 'is-valid'
-            : 'is-invalid'}`}
-          type="number"
-          placeholder="Amount"
-          value={
-            parseFloat(originAmount) === 0 ? originAmount : originAmount || ''
-          }
-          onChange={this.onChangeOriginAmount}
-        />
 
-        <SimpleDropDown
-          value={originKind}
-          onChange={this.onChangeOriginKind.bind(this)}
-          options={originKindOptions}
-        />
+        <div className="form-inline">
+          <input
+            className={`CurrencySwap-input form-control ${originAmount !== '' &&
+            this.isMinMaxValid(originAmount, originKind)
+              ? 'is-valid'
+              : 'is-invalid'}`}
+            type="number"
+            placeholder="Amount"
+            value={
+              parseFloat(originAmount) === 0 ? originAmount : originAmount || ''
+            }
+            onChange={this.onChangeOriginAmount}
+          />
 
-        <h1>
-          {translate('SWAP_init_2')}
-        </h1>
+          <SimpleSelect
+            value={originKind}
+            onChange={this.onChangeOriginKind.bind(this)}
+            options={originKindOptions}
+          />
 
-        <input
-          className={`form-control ${destinationAmount !== '' &&
-          this.isMinMaxValid(originAmount, originKind)
-            ? 'is-valid'
-            : 'is-invalid'}`}
-          type="number"
-          placeholder="Amount"
-          value={
-            parseFloat(destinationAmount) === 0
-              ? destinationAmount
-              : destinationAmount || ''
-          }
-          onChange={this.onChangeDestinationAmount}
-        />
+          <h1 className="CurrencySwap-divider">
+            {translate('SWAP_init_2')}
+          </h1>
 
-        <SimpleDropDown
-          value={destinationKind}
-          onChange={this.onChangeDestinationKind}
-          options={destinationKindOptions}
-        />
+          <input
+            className={`CurrencySwap-input form-control ${destinationAmount !==
+              '' && this.isMinMaxValid(originAmount, originKind)
+              ? 'is-valid'
+              : 'is-invalid'}`}
+            type="number"
+            placeholder="Amount"
+            value={
+              parseFloat(destinationAmount) === 0
+                ? destinationAmount
+                : destinationAmount || ''
+            }
+            onChange={this.onChangeDestinationAmount}
+          />
 
-        <div className="col-xs-12 clearfix text-center">
+          <SimpleSelect
+            value={destinationKind}
+            onChange={this.onChangeDestinationKind}
+            options={destinationKindOptions}
+          />
+        </div>
+
+        <div className="CurrencySwap-submit">
           <SimpleButton
             onClick={this.onClickStartSwap}
             text={translate('SWAP_init_CTA')}
             disabled={this.state.disabled}
+            type="info"
           />
         </div>
       </article>

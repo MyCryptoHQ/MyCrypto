@@ -1,5 +1,7 @@
 // @flow
+import './ReceivingAddress.scss';
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import type {
   DestinationAddressSwapAction,
   ChangeStepSwapAction,
@@ -58,40 +60,42 @@ export default class ReceivingAddress extends Component {
       validAddress = isValidETHAddress(destinationAddress);
     }
 
+    const inputClasses = classnames({
+      'SwapAddress-address-input': true,
+      'form-control': true,
+      'is-valid': validAddress,
+      'is-invalid': !validAddress
+    });
+
     return (
-      <article className="swap-start">
-        <section className="swap-address block">
-          <section className="row">
-            <div className="col-sm-8 col-sm-offset-2 col-xs-12">
-              <label>
-                <span>
-                  {translate('SWAP_rec_add')}
-                </span>
-                <strong>
-                  {' '}({destinationKind})
-                </strong>
-              </label>
+      <section className="SwapAddress block">
+        <section className="row">
+          <div className="col-sm-8 col-sm-offset-2 col-xs-12">
+            <label className="SwapAddress-address">
+              <h4 className="SwapAddress-address-label">
+                {translate('SWAP_rec_add')} ({destinationKind})
+              </h4>
+
               <input
-                className={`form-control ${validAddress
-                  ? 'is-valid'
-                  : 'is-invalid'}`}
+                className={inputClasses}
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
                 placeholder={donationAddressMap[destinationKind]}
               />
-            </div>
-          </section>
-          <section className="row text-center">
-            <SimpleButton
-              text={translate('SWAP_start_CTA')}
-              onClick={this.onClickPartTwoComplete}
-              disabled={!validAddress}
-              loading={isPostingOrder}
-            />
-          </section>
+            </label>
+          </div>
         </section>
-      </article>
+
+        <section className="SwapAddress-submit row">
+          <SimpleButton
+            text={translate('SWAP_start_CTA')}
+            onClick={this.onClickPartTwoComplete}
+            disabled={!validAddress}
+            loading={isPostingOrder}
+          />
+        </section>
+      </section>
     );
   }
 }

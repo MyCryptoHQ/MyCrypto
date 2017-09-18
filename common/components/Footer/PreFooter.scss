@@ -1,0 +1,12 @@
+@import "common/sass/variables";
+
+.pre-footer {
+  padding: 1rem;
+  box-shadow: 16px 16px 47px 0 rgba(0, 0, 0, .07);
+  margin-top: 5rem;
+  background-color: white;
+  text-align: center;
+  p {
+    font-size: $font-size-medium;
+  }
+}

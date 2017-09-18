@@ -9,8 +9,14 @@ import LedgerNanoSDecrypt from './LedgerNano';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
 import map from 'lodash/map';
-import { unlockPrivateKey, unlockKeystore, setWallet } from 'actions/wallet';
+import {
+  unlockPrivateKey,
+  unlockKeystore,
+  unlockMnemonic,
+  setWallet
+} from 'actions/wallet';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 const WALLETS = {
   'keystore-file': {
@@ -34,7 +40,8 @@ const WALLETS = {
   'mnemonic-phrase': {
     lid: 'x_Mnemonic',
     component: MnemonicDecrypt,
-    disabled: true
+    initialParams: {},
+    unlock: unlockMnemonic
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
@@ -129,7 +136,7 @@ export class WalletDecrypt extends Component {
     const decryptionComponent = this.getDecryptionComponent();
 
     return (
-      <article className="well decrypt-drtv row">
+      <article className="Tab-content-pane row">
         <section className="col-md-4 col-sm-6">
           <h4>
             {translate('decrypt_Access')}
@@ -164,8 +171,14 @@ export class WalletDecrypt extends Component {
   };
 
   onUnlock = (payload: any) => {
+    // some components (TrezorDecrypt) don't take an onChange prop, and thus this.state.value will remain unpopulated.
+    // in this case, we can expect the payload to contain the unlocked wallet info.
+    const unlockValue =
+      this.state.value && !isEmpty(this.state.value)
+        ? this.state.value
+        : payload;
     this.props.dispatch(
-      WALLETS[this.state.selectedWalletKey].unlock(this.state.value || payload)
+      WALLETS[this.state.selectedWalletKey].unlock(unlockValue)
     );
   };
 }

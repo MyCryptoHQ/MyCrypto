@@ -1,7 +1,7 @@
 // @flow
 import Big from 'bignumber.js';
-import BaseNode from '../base';
-import type { TransactionWithoutGas } from 'libs/transaction';
+import type { INode } from '../INode';
+import type { TransactionWithoutGas } from 'libs/messages';
 import RPCClient, {
   getBalance,
   estimateGas,
@@ -10,24 +10,24 @@ import RPCClient, {
   sendRawTx
 } from './client';
 import type { Token } from 'config/data';
+import { Wei } from 'libs/units';
 
-export default class RpcNode extends BaseNode {
+export default class RpcNode implements INode {
   client: RPCClient;
   constructor(endpoint: string) {
-    super();
     this.client = new RPCClient(endpoint);
   }
 
-  async getBalance(address: string): Promise<Big> {
+  getBalance(address: string): Promise<Wei> {
     return this.client.call(getBalance(address)).then(response => {
       if (response.error) {
         throw new Error(response.error.message);
       }
-      return new Big(String(response.result));
+      return new Wei(String(response.result));
     });
   }
 
-  async estimateGas(transaction: TransactionWithoutGas): Promise<Big> {
+  estimateGas(transaction: TransactionWithoutGas): Promise<Big> {
     return this.client.call(estimateGas(transaction)).then(response => {
       if (response.error) {
         throw new Error(response.error.message);
@@ -36,11 +36,11 @@ export default class RpcNode extends BaseNode {
     });
   }
 
-  async getTokenBalance(address: string, token: Token): Promise<Big> {
+  getTokenBalance(address: string, token: Token): Promise<Big> {
     return this.client.call(getTokenBalance(address, token)).then(response => {
       if (response.error) {
         // TODO - Error handling
-        return Big(0);
+        return new Big(0);
       }
       return new Big(String(response.result)).div(
         new Big(10).pow(token.decimal)
@@ -48,7 +48,7 @@ export default class RpcNode extends BaseNode {
     });
   }
 
-  async getTokenBalances(address: string, tokens: Token[]): Promise<Big[]> {
+  getTokenBalances(address: string, tokens: Token[]): Promise<Big[]> {
     return this.client
       .batch(tokens.map(t => getTokenBalance(address, t)))
       .then(response => {
@@ -65,7 +65,7 @@ export default class RpcNode extends BaseNode {
     // TODO - Error handling
   }
 
-  async getTransactionCount(address: string): Promise<string> {
+  getTransactionCount(address: string): Promise<string> {
     return this.client.call(getTransactionCount(address)).then(response => {
       if (response.error) {
         throw new Error(response.error.message);
@@ -74,7 +74,7 @@ export default class RpcNode extends BaseNode {
     });
   }
 
-  async sendRawTx(signedTx: string): Promise<string> {
+  sendRawTx(signedTx: string): Promise<string> {
     return this.client.call(sendRawTx(signedTx)).then(response => {
       if (response.error) {
         throw new Error(response.error.message);

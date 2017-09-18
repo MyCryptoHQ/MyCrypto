@@ -20,7 +20,7 @@ export type ShowNotificationAction = {
 export function showNotification(
   level: NOTIFICATION_LEVEL = 'info',
   msg: Element<*> | string,
-  duration?: number
+  duration?: number | INFINITY
 ): ShowNotificationAction {
   return {
     type: 'SHOW_NOTIFICATION',

@@ -3,13 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
-import BaseWallet from 'libs/wallet/base';
+import type { IWallet } from 'libs/wallet/IWallet';
 import { connect } from 'react-redux';
 import type { State } from 'reducers';
 
 type Props = {
   title: string,
-  wallet: BaseWallet
+  wallet: IWallet
 };
 
 export class UnlockHeader extends React.Component {
@@ -48,13 +48,7 @@ export class UnlockHeader extends React.Component {
             {translate(this.props.title)}
           </h1>
         </div>
-        {this.state.expanded &&
-          <div>
-            <WalletDecrypt />
-            {/* @@if (site === 'cx' )  {  <cx-wallet-decrypt-drtv></cx-wallet-decrypt-drtv>   }
-    @@if (site === 'mew' ) {  <wallet-decrypt-drtv></wallet-decrypt-drtv>         } */}
-          </div>}
-
+        {this.state.expanded && <WalletDecrypt />}
         {this.state.expanded && <hr />}
       </article>
     );

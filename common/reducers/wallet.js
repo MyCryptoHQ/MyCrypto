@@ -5,35 +5,35 @@ import type {
   SetBalanceAction,
   SetTokenBalancesAction
 } from 'actions/wallet';
-import { BaseWallet } from 'libs/wallet';
-import { toUnit } from 'libs/units';
+import { IWallet } from 'libs/wallet';
 import Big from 'bignumber.js';
-import { getTxFromBroadcastStatusTransactions } from 'selectors/wallet';
-import type { BroadcastStatusTransaction } from 'libs/transaction';
+import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
+import type { BroadcastTransactionStatus } from 'libs/transaction';
+import { Ether } from 'libs/units';
+
 export type State = {
-  inst: ?BaseWallet,
+  inst: ?IWallet,
   // in ETH
-  balance: Big,
+  balance: ?Ether,
   tokens: {
     [string]: Big
   },
-  transactions: Array<BroadcastStatusTransaction>
+  transactions: Array<BroadcastTransactionStatus>
 };
 
 export const INITIAL_STATE: State = {
   inst: null,
-  balance: new Big(0),
+  balance: null,
   tokens: {},
-  isBroadcasting: false,
   transactions: []
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
-  return { ...state, inst: action.payload, balance: new Big(0), tokens: {} };
+  return { ...state, inst: action.payload, balance: null, tokens: {} };
 }
 
 function setBalance(state: State, action: SetBalanceAction): State {
-  const ethBalance = toUnit(action.payload, 'wei', 'ether');
+  const ethBalance = action.payload.toEther();
   return { ...state, balance: ethBalance };
 }
 
@@ -42,11 +42,11 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
 }
 
 function handleUpdateTxArray(
-  transactions: Array<BroadcastStatusTransaction>,
-  broadcastStatusTx: BroadcastStatusTransaction,
+  transactions: Array<BroadcastTransactionStatus>,
+  broadcastStatusTx: BroadcastTransactionStatus,
   isBroadcasting: boolean,
   successfullyBroadcast: boolean
-): Array<BroadcastStatusTransaction> {
+): Array<BroadcastTransactionStatus> {
   return transactions.map(item => {
     if (item === broadcastStatusTx) {
       return { ...item, isBroadcasting, successfullyBroadcast };
@@ -60,9 +60,8 @@ function handleTxBroadcastCompleted(
   state: State,
   signedTx: string,
   successfullyBroadcast: boolean
-  // TODO How to handle null case for existing Tx?. Should use Array<BroadcastStatusTransaction> but can't.
-): Array<any> {
-  const existingTx = getTxFromBroadcastStatusTransactions(
+): Array<BroadcastTransactionStatus> {
+  const existingTx = getTxFromBroadcastTransactionStatus(
     state.transactions,
     signedTx
   );
@@ -75,12 +74,12 @@ function handleTxBroadcastCompleted(
       successfullyBroadcast
     );
   } else {
-    return [];
+    return state.transactions;
   }
 }
 
 function handleBroadcastTxRequested(state: State, signedTx: string) {
-  const existingTx = getTxFromBroadcastStatusTransactions(
+  const existingTx = getTxFromBroadcastTransactionStatus(
     state.transactions,
     signedTx
   );
@@ -118,7 +117,6 @@ export function wallet(
     case 'WALLET_BROADCAST_TX_REQUESTED':
       return {
         ...state,
-        isBroadcasting: true,
         transactions: handleBroadcastTxRequested(state, action.payload.signedTx)
       };
     case 'WALLET_BROADCAST_TX_SUCCEEDED':

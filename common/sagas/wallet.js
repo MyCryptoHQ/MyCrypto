@@ -1,13 +1,18 @@
 // @flow
 import React from 'react';
 import { takeEvery, call, apply, put, select, fork } from 'redux-saga/effects';
-import type { Effect } from 'redux-saga/effects';
+
 import { setWallet, setBalance, setTokenBalances } from 'actions/wallet';
 import type {
   UnlockPrivateKeyAction,
-  UnlockKeystoreAction
+  UnlockKeystoreAction,
+  UnlockMnemonicAction
 } from 'actions/wallet';
 import { showNotification } from 'actions/notifications';
+import type { BroadcastTxRequestedAction } from 'actions/wallet';
+
+import type { Yield, Return, Next } from 'sagas/types';
+
 import translate from 'translations';
 import {
   PresaleWallet,
@@ -15,35 +20,37 @@ import {
   UtcWallet,
   EncryptedPrivKeyWallet,
   PrivKeyWallet,
-  BaseWallet
+  MnemonicWallet,
+  IWallet
 } from 'libs/wallet';
-import { BaseNode } from 'libs/nodes';
+import { INode } from 'libs/nodes/INode';
+import { determineKeystoreType } from 'libs/keystore';
+import type { Wei } from 'libs/units';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
-import { determineKeystoreType } from 'libs/keystore';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-import type { BroadcastTxRequestedAction } from 'actions/wallet';
 
-function* updateAccountBalance() {
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+
+function* updateAccountBalance(): Generator<Yield, Return, Next> {
   try {
-    const wallet: ?BaseWallet = yield select(getWalletInst);
+    const wallet: ?IWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
     }
-    const node: BaseNode = yield select(getNodeLib);
+    const node: INode = yield select(getNodeLib);
     const address = yield wallet.getAddress();
     // network request
-    let balance = yield apply(node, node.getBalance, [address]);
+    let balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalance(balance));
   } catch (error) {
     yield put({ type: 'updateAccountBalance_error', error });
   }
 }
 
-function* updateTokenBalances() {
+function* updateTokenBalances(): Generator<Yield, Return, Next> {
   try {
-    const node: BaseNode = yield select(getNodeLib);
-    const wallet: ?BaseWallet = yield select(getWalletInst);
+    const node: INode = yield select(getNodeLib);
+    const wallet: ?IWallet = yield select(getWalletInst);
     const tokens = yield select(getTokens);
     if (!wallet || !node) {
       return;
@@ -68,14 +75,14 @@ function* updateTokenBalances() {
   }
 }
 
-function* updateBalances() {
+function* updateBalances(): Generator<Yield, Return, Next> {
   yield fork(updateAccountBalance);
   yield fork(updateTokenBalances);
 }
 
 export function* unlockPrivateKey(
   action?: UnlockPrivateKeyAction
-): Generator<Effect, void, any> {
+): Generator<Yield, Return, Next> {
   if (!action) return;
   let wallet = null;
 
@@ -97,7 +104,7 @@ export function* unlockPrivateKey(
 
 export function* unlockKeystore(
   action?: UnlockKeystoreAction
-): Generator<Effect, void, any> {
+): Generator<Yield, Return, Next> {
   if (!action) return;
 
   const file = action.payload.file;
@@ -136,12 +143,31 @@ export function* unlockKeystore(
   yield put(setWallet(wallet));
 }
 
+function* unlockMnemonic(
+  action?: UnlockMnemonicAction
+): Generator<Yield, Return, Next> {
+  if (!action) return;
+
+  let wallet;
+  const { phrase, pass, path, address } = action.payload;
+
+  try {
+    wallet = new MnemonicWallet(phrase, pass, path, address);
+  } catch (err) {
+    // TODO: use better error than 'ERROR_14' (wallet not found)
+    yield put(showNotification('danger', translate('ERROR_14')));
+    return;
+  }
+
+  yield put(setWallet(wallet));
+}
+
 function* broadcastTx(
   action: BroadcastTxRequestedAction
-): Generator<Effect, void, any> {
+): Generator<Yield, Return, Next> {
   const signedTx = action.payload.signedTx;
   try {
-    const node: BaseNode = yield select(getNodeLib);
+    const node: INode = yield select(getNodeLib);
     const txHash = yield apply(node, node.sendRawTx, [signedTx]);
     yield put(
       showNotification('success', <TransactionSucceeded txHash={txHash} />, 0)
@@ -165,12 +191,13 @@ function* broadcastTx(
   }
 }
 
-export default function* walletSaga(): Generator<Effect | Effect[], void, any> {
+export default function* walletSaga(): Generator<Yield, Return, Next> {
   // useful for development
   yield call(updateBalances);
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
+    takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
     takeEvery('WALLET_SET', updateBalances),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
     // $FlowFixMe but how do I specify param types here flow?

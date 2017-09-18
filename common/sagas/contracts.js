@@ -1,15 +1,19 @@
 import { takeEvery, put } from 'redux-saga/effects';
-import type { Effect } from 'redux-saga/effects';
+
+import type { Yield, Return, Next } from 'sagas/types';
+
 import translate from 'translations';
+import { isValidETHAddress } from 'libs/validators';
 
 import {
   AccessContractAction,
   setInteractiveContract
 } from 'actions/contracts';
 import { showNotification } from 'actions/notifications';
-import { isValidETHAddress } from 'libs/validators';
 
-function* handleAccessContract(action: AccessContractAction) {
+function* handleAccessContract(
+  action: AccessContractAction
+): Generator<Yield, Return, Next> {
   const contractFunctions = [];
 
   if (!action.address || !isValidETHAddress(action.address)) {
@@ -36,6 +40,6 @@ function* handleAccessContract(action: AccessContractAction) {
   }
 }
 
-export default function* contractsSaga(): Generator<Effect, void, any> {
+export default function* contractsSaga(): Generator<Yield, Return, Next> {
   yield takeEvery('ACCESS_CONTRACT', handleAccessContract);
 }

@@ -1,0 +1,33 @@
+@import "common/sass/variables";
+
+.CurrencySwap {
+  text-align: center;
+
+  &-title {
+    font-weight: 100;
+    margin-bottom: $space * 2.5;
+  }
+
+  &-input,
+  &-divider {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  &-input {
+    width: 100%;
+    max-width: 10rem;
+    margin-right: $space-sm;
+  }
+
+  &-divider {
+    height: $input-height-base;
+    line-height: $input-height-base;
+    margin: 0 $space * 2;
+    font-weight: 100;
+  }
+
+  &-submit {
+    margin-top: $space * 2.5;
+  }
+}

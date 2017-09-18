@@ -174,20 +174,16 @@ class Swap extends Component {
     };
 
     return (
-      <section className="container" style={{ minHeight: '50%' }}>
-        <div className="tab-content">
-          <main className="tab-pane swap-tab">
-            {step === 1 &&
-              <div>
-                <CurrentRates {...CurrentRatesProps} />
-                <CurrencySwap {...CurrencySwapProps} />
-              </div>}
-            {(step === 2 || step === 3) &&
-              <SwapInfoHeader {...SwapInfoHeaderProps} />}
-            {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
-            {step === 3 && <PartThree {...PartThreeProps} />}
-          </main>
-        </div>
+      <section className="Tab-content swap-tab">
+        {step === 1 && <CurrentRates {...CurrentRatesProps} />}
+        {(step === 2 || step === 3) &&
+          <SwapInfoHeader {...SwapInfoHeaderProps} />}
+
+        <main className="Tab-content-pane">
+          {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
+          {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
+          {step === 3 && <PartThree {...PartThreeProps} />}
+        </main>
       </section>
     );
   }

@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "bignumber.js": "^4.0.2",
+    "bootstrap-sass": "^3.3.7",
+    "bip39": "^2.4.0",
     "classnames": "^2.2.5",
     "ethereum-blockies": "git+https://github.com/MyEtherWallet/blockies.git",
     "ethereumjs-abi": "^0.6.4",
@@ -109,6 +111,7 @@
     "predev": "check-node-version --package",
     "flow": "flow",
     "derivation-checker": "babel-node common/derivation-checker.js --presets es2015,stage-0,flow",
+    "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
