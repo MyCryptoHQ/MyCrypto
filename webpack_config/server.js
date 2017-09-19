@@ -9,7 +9,6 @@ const config = require('./config');
 const LogPlugin = require('./log-plugin');
 
 const app = express();
-let httpsApp;
 
 const port = config.port;
 webpackConfig.entry.client = [
