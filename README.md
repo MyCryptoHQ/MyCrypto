@@ -20,6 +20,16 @@ It generates app in `dist` folder.
 npm run test # run tests with Jest
 ```
 
+#### Dev (HTTPS):
+
+1. Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
+2. Move the `.key` and `.crt` files into `webpack_config/server.*`
+3. Run the following command:
+
+```bash
+npm run dev:https
+```
+
 #### Derivation Check:
 ##### The derivation checker utility assumes that you have:
 1. Docker installed/available
@@ -28,7 +38,7 @@ npm run test # run tests with Jest
 ##### Docker setup instructions:
 1. Install docker (on macOS, I suggest [Docker for Mac](https://docs.docker.com/docker-for-mac/))
 2. `docker pull dternyak/eth-priv-to-addr`
-   
+
 ##### Run Derivation Checker
 ```bash
 npm run derivation-checker
