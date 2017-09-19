@@ -8,7 +8,6 @@ export default class RPCClient {
     this.endpoint = endpoint;
   }
 
-  // FIXME is it safe to generate that much entropy?
   id(): string {
     return randomBytes(16).toString('hex');
   }

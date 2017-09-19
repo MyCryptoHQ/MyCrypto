@@ -176,7 +176,9 @@ export type NodeConfig = {
   estimateGas: ?boolean
 };
 
-function makeEtherscanExplorer(url): BlockExplorerConfig {
+// Must be a website that follows the ethplorer convention of /tx/[hash] and
+// address/[address] to generate the correct functions.
+function makeExplorer(url): BlockExplorerConfig {
   return {
     name: url,
     tx: hash => `${url}/tx/${hash}`,
@@ -190,7 +192,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'ETH',
     chainId: 1,
     color: '#0e97c0',
-    blockExplorer: makeEtherscanExplorer('https://etherscan.io'),
+    blockExplorer: makeExplorer('https://etherscan.io'),
     tokenExplorer: {
       name: ethPlorer,
       address: ETHTokenExplorer
@@ -203,7 +205,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'ETC',
     chainId: 61,
     color: '#669073',
-    blockExplorer: makeEtherscanExplorer('https://gastracker.io'),
+    blockExplorer: makeExplorer('https://gastracker.io'),
     tokens: require('./tokens/etc.json'),
     contracts: require('./contracts/etc.json')
   },
@@ -212,7 +214,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'ETH',
     chainId: 3,
     color: '#adc101',
-    blockExplorer: makeEtherscanExplorer('https://ropsten.etherscan.io'),
+    blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
     contracts: require('./contracts/ropsten.json')
   },
@@ -221,7 +223,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'ETH',
     chainId: 42,
     color: '#adc101',
-    blockExplorer: makeEtherscanExplorer('https://kovan.etherscan.io'),
+    blockExplorer: makeExplorer('https://kovan.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
     contracts: require('./contracts/ropsten.json')
   },
@@ -230,7 +232,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'ETH',
     chainId: 4,
     color: '#adc101',
-    blockExplorer: makeEtherscanExplorer('https://rinkeby.etherscan.io'),
+    blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
     tokens: require('./tokens/rinkeby.json'),
     contracts: require('./contracts/rinkeby.json')
   },
@@ -239,7 +241,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'RSK',
     chainId: 31,
     color: '#ff794f',
-    blockExplorer: makeEtherscanExplorer('https://explorer.rsk.co'),
+    blockExplorer: makeExplorer('https://explorer.rsk.co'),
     tokens: require('./tokens/rsk.json'),
     contracts: require('./contracts/rsk.json')
   },
@@ -248,7 +250,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'EXP',
     chainId: 2,
     color: '#673ab7',
-    blockExplorer: makeEtherscanExplorer('http://www.gander.tech'),
+    blockExplorer: makeExplorer('http://www.gander.tech'),
     tokens: require('./tokens/exp.json'),
     contracts: require('./contracts/exp.json')
   },
@@ -257,7 +259,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     unit: 'UBQ',
     chainId: 8,
     color: '#b37aff',
-    blockExplorer: makeEtherscanExplorer('https://ubiqscan.io/en'),
+    blockExplorer: makeExplorer('https://ubiqscan.io/en'),
     tokens: require('./tokens/ubq.json'),
     contracts: require('./contracts/ubq.json')
   }
