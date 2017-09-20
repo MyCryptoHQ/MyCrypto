@@ -1,13 +1,18 @@
 import React from 'react';
-import { ETHTxExplorer } from 'config/data';
+import type { BlockExplorerConfig } from 'config.data';
 import translate from 'translations';
+
 export type TransactionSucceededProps = {
-  txHash: string
+  txHash: string,
+  blockExplorer: BlockExplorerConfig
 };
 
-const TransactionSucceeded = ({ txHash }: TransactionSucceededProps) => {
+const TransactionSucceeded = ({
+  txHash,
+  blockExplorer
+}: TransactionSucceededProps) => {
   // const checkTxLink = `https://www.myetherwallet.com?txHash=${txHash}/#check-tx-status`;
-  const txHashLink = ETHTxExplorer(txHash);
+  const txHashLink = blockExplorer.tx(txHash);
 
   return (
     <div>

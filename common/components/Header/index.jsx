@@ -7,6 +7,7 @@ import { Dropdown } from 'components/ui';
 import {
   languages,
   NODES,
+  NETWORKS,
   VERSION,
   ANNOUNCEMENT_TYPE,
   ANNOUNCEMENT_MESSAGE
@@ -32,6 +33,7 @@ export default class Header extends Component {
     const selectedLanguage =
       languages.find(l => l.sign === languageSelection) || languages[0];
     const selectedNode = NODES[nodeSelection];
+    const selectedNetwork = NETWORKS[selectedNode.network];
 
     return (
       <div className="Header">
@@ -107,7 +109,10 @@ export default class Header extends Component {
           </section>
         </section>
 
-        <Navigation location={this.props.location} />
+        <Navigation
+          location={this.props.location}
+          color={selectedNetwork.color}
+        />
       </div>
     );
   }

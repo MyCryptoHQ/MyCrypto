@@ -39,7 +39,7 @@ const tabs = [
   }
 ];
 
-export default class TabsOptions extends Component {
+export default class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +49,8 @@ export default class TabsOptions extends Component {
   }
 
   static propTypes = {
-    location: PropTypes.object
+    location: PropTypes.object,
+    color: PropTypes.string
   };
 
   scrollLeft() {}
@@ -57,12 +58,19 @@ export default class TabsOptions extends Component {
   scrollRight() {}
 
   render() {
-    const { location } = this.props;
+    const { location, color } = this.props;
+    const borderStyle = {};
+
+    if (color) {
+      borderStyle.borderTopColor = color;
+    }
+
     return (
       <nav
         role="navigation"
         aria-label="main navigation"
         className="Navigation"
+        style={borderStyle}
       >
         {this.state.showLeftArrow &&
           <a
