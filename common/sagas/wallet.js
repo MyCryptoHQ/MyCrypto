@@ -26,7 +26,7 @@ import {
 import { INode } from 'libs/nodes/INode';
 import { determineKeystoreType } from 'libs/keystore';
 import type { Wei } from 'libs/units';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getNetworkConfig } from 'selectors/config';
 import { getWalletInst, getTokens } from 'selectors/wallet';
 
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
@@ -168,9 +168,17 @@ function* broadcastTx(
   const signedTx = action.payload.signedTx;
   try {
     const node: INode = yield select(getNodeLib);
+    const network = yield select(getNetworkConfig);
     const txHash = yield apply(node, node.sendRawTx, [signedTx]);
     yield put(
-      showNotification('success', <TransactionSucceeded txHash={txHash} />, 0)
+      showNotification(
+        'success',
+        <TransactionSucceeded
+          txHash={txHash}
+          blockExplorer={network.blockExplorer}
+        />,
+        0
+      )
     );
     yield put({
       type: 'WALLET_BROADCAST_TX_SUCCEEDED',
