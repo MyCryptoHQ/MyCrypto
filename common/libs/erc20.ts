@@ -1,7 +1,6 @@
 import Big from 'bignumber.js';
 import { toChecksumAddress } from 'ethereumjs-util';
-import Contract from 'libs/contract';
-import { ABI } from 'libs/contract';
+import Contract, { ABI } from 'libs/contract';
 
 interface Transfer {
   to: string;

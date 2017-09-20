@@ -1,7 +1,9 @@
-declare module 'ethereumjs-wallet' {
+declare module 'ethereumjs-tx' {
+  import { BigNumber } from 'bignumber.js';
   import BN = require('bn.js');
   import { Buffer } from 'buffer';
-  type fieldName =
+  /**
+   *   type fieldName =
     | 'nonce'
     | 'gasPrice'
     | 'gasLimit'
@@ -20,7 +22,24 @@ declare module 'ethereumjs-wallet' {
     default?: Buffer;
   };
 
-  interface ITx {
+   */
+  type DataParamType = any; //TS complaining about big numbers heres
+  interface Data {
+    chainId: number;
+    gasLimit: DataParamType;
+    gasPrice: DataParamType;
+    to: DataParamType;
+    nonce: DataParamType;
+    data: DataParamType;
+    v?: DataParamType;
+    r?: DataParamType;
+    s?: DataParamType;
+    value: DataParamType;
+  }
+
+  export = ITx;
+  class ITx {
+    constructor(data: Data);
     /**
      * If the tx's `to` is to the creation address
      * @return {Boolean}
@@ -88,5 +107,9 @@ declare module 'ethereumjs-wallet' {
    * @return {Boolean|String}
    */
     validate(stringError: boolean): boolean | string;
+
+    toJSON(): any;
+
+    serialize(): Buffer;
   }
 }

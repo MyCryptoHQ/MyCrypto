@@ -132,6 +132,7 @@ declare module 'ethereumjs-util' {
     homestead?: boolean
   ): boolean;
 
+  export function padToEven(str: string): string;
   export function baToJSON(ba: Buffer): string;
   export function baToJSON(ba: any[]): string[];
 }
