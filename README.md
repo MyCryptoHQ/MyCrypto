@@ -222,3 +222,13 @@ When working on a module that has styling in Less, try to do the following:
 * Convert as many element selectors to class name selectors as possible
 * Convert as many `<br/>` tags or `&nbsp;`s to margins
 * Ensure that there has been little to no deviation from screenshot
+
+
+
+## Thanks & Support
+
+<a href="https://browserstack.com/">
+<img src="https://i.imgur.com/Rib9y9E.png" align="left" />
+</a>
+
+Cross browser testing and debugging provided by the very lovely team at BrowserStack.
