@@ -1,4 +1,3 @@
-// @flow
 import bityConfig from 'config/bity';
 import { checkHttpStatus, parseJSON } from './utils';
 // import { combineAndUpper } from 'utils/formatters';
@@ -15,8 +14,8 @@ import { checkHttpStatus, parseJSON } from './utils';
 
 export function getAllRates() {
   const mappedRates = {};
-  return _getAllRates().then(bityRates => {
-    bityRates.objects.forEach(each => {
+  return _getAllRates().then((bityRates) => {
+    bityRates.objects.forEach((each) => {
       const pairName = each.pair;
       mappedRates[pairName] = parseFloat(each.rate_we_sell);
     });
