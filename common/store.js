@@ -60,6 +60,7 @@ const configureStore = () => {
     throttle(() => {
       saveState({
         config: {
+          nodeSelection: store.getState().config.nodeSelection,
           languageSelection: store.getState().config.languageSelection
         },
         swap: store.getState().swap,
