@@ -1,4 +1,4 @@
-// @flow
+
 import { Token } from 'config/data';
 import ERC20 from 'libs/erc20';
 import RPCRequests from '../rpc/requests';

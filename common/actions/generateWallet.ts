@@ -1,4 +1,4 @@
-import { PrivKeyWallet } from 'libs/wallet';
+import { PrivKeyWallet } from 'libs/wallet/index';
 
 /*** Generate Wallet File ***/
 export interface GenerateNewWalletAction {
@@ -34,4 +34,7 @@ export function resetGenerateWallet(): ResetGenerateWalletAction {
 }
 
 /*** Action Union ***/
-export type GenerateWalletAction = GenerateWalletAction;
+export type GenerateWalletAction =
+  | GenerateNewWalletAction
+  | ContinueToPaperAction
+  | ResetGenerateWalletAction;

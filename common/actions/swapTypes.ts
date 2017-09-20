@@ -27,7 +27,7 @@ export interface LoadBityRatesSucceededSwapAction {
 }
 export interface DestinationAddressSwapAction {
   type: 'SWAP_DESTINATION_ADDRESS';
-  value?: number;
+  value?: string;
 }
 
 export interface RestartSwapAction {
@@ -85,7 +85,6 @@ export interface BityOrderCreateSucceededSwapAction {
 
 export interface OrderStatusRequestedSwapAction {
   type: 'SWAP_BITY_ORDER_STATUS_REQUESTED';
-  payload: BityOrderResponse;
 }
 
 export interface OrderStatusSucceededSwapAction {

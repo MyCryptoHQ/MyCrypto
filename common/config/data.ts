@@ -1,4 +1,4 @@
-import { RPCNode } from 'libs/nodes/index';
+import { RPCNode, InfuraNode, EtherscanNode } from 'libs/nodes/index';
 
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.0.2)';
@@ -135,6 +135,12 @@ export const languages = [
   }
 ];
 
+export interface BlockExplorerConfig {
+    name: string;
+    tx: Function;
+    address: Function
+}
+
 export interface Token {
   address: string;
   symbol: string;
@@ -150,11 +156,7 @@ export interface NetworkContract {
 export interface NetworkConfig {
   name: string;
   unit: string;
-  blockExplorer?: {
-    name: string;
-    tx: Function;
-    address: Function;
-  };
+  blockExplorer?: BlockExplorerConfig;
   tokenExplorer?: {
     name: string;
     address: Function;

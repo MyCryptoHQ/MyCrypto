@@ -24,7 +24,7 @@ import {
 import React from 'react';
 import { apply, call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { Next, Return, Yield } from 'sagas/types';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getNetworkConfig } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations/index';
 
@@ -170,9 +170,10 @@ function* broadcastTx(
   const signedTx = action.payload.signedTx;
   try {
     const node: INode = yield select(getNodeLib);
+    const network = yield select(getNetworkConfig)
     const txHash = yield apply(node, node.sendRawTx, [signedTx]);
     yield put(
-      showNotification('success', <TransactionSucceeded txHash={txHash} />, 0)
+      showNotification('success', <TransactionSucceeded txHash={txHash} blockExplorer={network.blockExplorer} />, 0)
     );
     yield put({
       type: 'WALLET_BROADCAST_TX_SUCCEEDED',

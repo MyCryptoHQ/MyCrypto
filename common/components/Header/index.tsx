@@ -1,4 +1,3 @@
-// @flow
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown } from 'components/ui/index';
 import React, { Component } from 'react';

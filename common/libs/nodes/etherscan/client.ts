@@ -1,4 +1,4 @@
-// @flow
+
 import RPCClient from '../rpc/client';
 import { JsonRpcResponse } from '../rpc/types';
 import { EtherscanRequest } from './types';

@@ -14,6 +14,7 @@ interface Props {
   network: NetworkConfig;
   fiatRequestedRates(): FiatRequestedRatesAction;
 }
+
 interface State {
   showLongBalance: boolean;
   address: string;

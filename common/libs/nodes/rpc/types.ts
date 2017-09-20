@@ -25,8 +25,6 @@ export type JSONRPC2 = '2.0';
 export type JsonRpcResponse = JsonRpcSuccess | JsonRpcError;
 
 interface RPCRequestBase {
-  id: string;
-  jsonrpc: JSONRPC2;
   method: string;
 }
 

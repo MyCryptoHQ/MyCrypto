@@ -48,7 +48,7 @@ interface State {
   showLeftArrow: boolean;
   showRightArrow: boolean;
 }
-export default class TabsOptions extends Component<Props, State> {
+export default class Navigation extends Component<Props, State> {
   public state = {
     showLeftArrow: false,
     showRightArrow: false

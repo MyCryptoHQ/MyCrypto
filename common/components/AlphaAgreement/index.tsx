@@ -9,7 +9,7 @@ interface State {
 }
 export default class AlphaAgreement extends React.Component<{}, State> {
   public state = {
-    hasAcknowledged: localStorage.getItem(LS_KEY),
+    hasAcknowledged: !!localStorage.getItem(LS_KEY),
     isFading: false
   };
 
@@ -56,7 +56,7 @@ export default class AlphaAgreement extends React.Component<{}, State> {
     );
   }
   private continue = () => {
-    localStorage.setItem(LS_KEY, true);
+    localStorage.setItem(LS_KEY, 'true');
     this.setState({ isFading: true });
 
     setTimeout(() => {
