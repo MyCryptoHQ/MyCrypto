@@ -1,10 +1,8 @@
-// @flow
-
 /*** Change Language ***/
-export type ChangeLanguageAction = {
-  type: 'CONFIG_LANGUAGE_CHANGE',
-  value: string
-};
+export interface ChangeLanguageAction {
+  type: 'CONFIG_LANGUAGE_CHANGE';
+  value: string;
+}
 
 export function changeLanguage(sign: string): ChangeLanguageAction {
   return {
@@ -14,11 +12,11 @@ export function changeLanguage(sign: string): ChangeLanguageAction {
 }
 
 /*** Change Node ***/
-export type ChangeNodeAction = {
-  type: 'CONFIG_NODE_CHANGE',
+export interface ChangeNodeAction {
+  type: 'CONFIG_NODE_CHANGE';
   // FIXME $keyof?
-  value: string
-};
+  value: string;
+}
 
 export function changeNode(value: string): ChangeNodeAction {
   return {
@@ -28,10 +26,10 @@ export function changeNode(value: string): ChangeNodeAction {
 }
 
 /*** Change gas price ***/
-export type ChangeGasPriceAction = {
-  type: 'CONFIG_GAS_PRICE',
-  value: number
-};
+export interface ChangeGasPriceAction {
+  type: 'CONFIG_GAS_PRICE';
+  value: number;
+}
 
 export function changeGasPrice(value: number): ChangeGasPriceAction {
   return {

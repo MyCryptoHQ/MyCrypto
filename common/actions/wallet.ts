@@ -1,18 +1,17 @@
-// @flow
-import type { IWallet } from 'libs/wallet/IWallet';
-import Big from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { Wei } from 'libs/units';
+import { IWallet } from 'libs/wallet/IWallet';
 
 /*** Unlock Private Key ***/
-export type PrivateKeyUnlockParams = {
-  key: string,
-  password: string
-};
+export interface PrivateKeyUnlockParams {
+  key: string;
+  password: string;
+}
 
-export type UnlockPrivateKeyAction = {
-  type: 'WALLET_UNLOCK_PRIVATE_KEY',
-  payload: PrivateKeyUnlockParams
-};
+export interface UnlockPrivateKeyAction {
+  type: 'WALLET_UNLOCK_PRIVATE_KEY';
+  payload: PrivateKeyUnlockParams;
+}
 
 export function unlockPrivateKey(
   value: PrivateKeyUnlockParams
@@ -24,15 +23,15 @@ export function unlockPrivateKey(
 }
 
 /*** Unlock Keystore File ***/
-export type KeystoreUnlockParams = {
-  file: string,
-  password: string
-};
+export interface KeystoreUnlockParams {
+  file: string;
+  password: string;
+}
 
-export type UnlockKeystoreAction = {
-  type: 'WALLET_UNLOCK_KEYSTORE',
-  payload: KeystoreUnlockParams
-};
+export interface UnlockKeystoreAction {
+  type: 'WALLET_UNLOCK_KEYSTORE';
+  payload: KeystoreUnlockParams;
+}
 
 export function unlockKeystore(
   value: KeystoreUnlockParams
@@ -44,17 +43,17 @@ export function unlockKeystore(
 }
 
 /*** Unlock Mnemonic ***/
-export type MnemonicUnlockParams = {
-  phrase: string,
-  pass: string,
-  path: string,
-  address: string
-};
+export interface MnemonicUnlockParams {
+  phrase: string;
+  pass: string;
+  path: string;
+  address: string;
+}
 
-export type UnlockMnemonicAction = {
-  type: 'WALLET_UNLOCK_MNEMONIC',
-  payload: MnemonicUnlockParams
-};
+export interface UnlockMnemonicAction {
+  type: 'WALLET_UNLOCK_MNEMONIC';
+  payload: MnemonicUnlockParams;
+}
 
 export function unlockMnemonic(
   value: MnemonicUnlockParams
@@ -66,10 +65,10 @@ export function unlockMnemonic(
 }
 
 /*** Set Wallet ***/
-export type SetWalletAction = {
-  type: 'WALLET_SET',
-  payload: IWallet
-};
+export interface SetWalletAction {
+  type: 'WALLET_SET';
+  payload: IWallet;
+}
 
 export function setWallet(value: IWallet): SetWalletAction {
   return {
@@ -79,10 +78,10 @@ export function setWallet(value: IWallet): SetWalletAction {
 }
 
 /*** Set Balance ***/
-export type SetBalanceAction = {
-  type: 'WALLET_SET_BALANCE',
-  payload: Wei
-};
+export interface SetBalanceAction {
+  type: 'WALLET_SET_BALANCE';
+  payload: Wei;
+}
 
 export function setBalance(value: Wei): SetBalanceAction {
   return {
@@ -92,15 +91,15 @@ export function setBalance(value: Wei): SetBalanceAction {
 }
 
 /*** Set Token Balance ***/
-export type SetTokenBalancesAction = {
-  type: 'WALLET_SET_TOKEN_BALANCES',
+export interface SetTokenBalancesAction {
+  type: 'WALLET_SET_TOKEN_BALANCES';
   payload: {
-    [string]: Big
-  }
-};
+    [key: string]: BigNumber;
+  };
+}
 
 export function setTokenBalances(payload: {
-  [string]: Big
+  [key: string]: BigNumber;
 }): SetTokenBalancesAction {
   return {
     type: 'WALLET_SET_TOKEN_BALANCES',
@@ -109,12 +108,12 @@ export function setTokenBalances(payload: {
 }
 
 /*** Broadcast Tx ***/
-export type BroadcastTxRequestedAction = {
-  type: 'WALLET_BROADCAST_TX_REQUESTED',
+export interface BroadcastTxRequestedAction {
+  type: 'WALLET_BROADCAST_TX_REQUESTED';
   payload: {
-    signedTx: string
-  }
-};
+    signedTx: string;
+  };
+}
 
 export function broadcastTx(signedTx: string): BroadcastTxRequestedAction {
   return {

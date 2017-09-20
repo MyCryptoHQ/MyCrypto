@@ -1,25 +1,24 @@
-// @flow
-import type {
-  OriginKindSwapAction,
-  DestinationKindSwapAction,
-  OriginAmountSwapAction,
-  DestinationAmountSwapAction,
-  LoadBityRatesSucceededSwapAction,
-  DestinationAddressSwapAction,
-  BityOrderCreateSucceededSwapAction,
+import {
   BityOrderCreateRequestedSwapAction,
-  OrderStatusSucceededSwapAction,
+  BityOrderCreateSucceededSwapAction,
+  BityOrderPostResponse,
+  BityOrderResponse,
   ChangeStepSwapAction,
+  DestinationAddressSwapAction,
+  DestinationAmountSwapAction,
+  DestinationKindSwapAction,
+  LoadBityRatesRequestedSwapAction,
+  LoadBityRatesSucceededSwapAction,
+  OrderStatusRequestedSwapAction,
+  OrderStatusSucceededSwapAction,
+  OriginAmountSwapAction,
+  OriginKindSwapAction,
   Pairs,
   RestartSwapAction,
-  LoadBityRatesRequestedSwapAction,
-  StopLoadBityRatesSwapAction,
-  BityOrderResponse,
-  BityOrderPostResponse,
-  OrderStatusRequestedSwapAction,
-  StopOrderTimerSwapAction,
   StartOrderTimerSwapAction,
   StartPollBityOrderStatusAction,
+  StopLoadBityRatesSwapAction,
+  StopOrderTimerSwapAction,
   StopPollBityOrderStatusAction
 } from './swapTypes';
 
@@ -44,7 +43,7 @@ export function destinationKindSwap(value: string): DestinationKindSwapAction {
   };
 }
 
-export function originAmountSwap(value: ?number): OriginAmountSwapAction {
+export function originAmountSwap(value?: number): OriginAmountSwapAction {
   return {
     type: 'SWAP_ORIGIN_AMOUNT',
     value
@@ -52,7 +51,7 @@ export function originAmountSwap(value: ?number): OriginAmountSwapAction {
 }
 
 export function destinationAmountSwap(
-  value: ?number
+  value?: number
 ): DestinationAmountSwapAction {
   return {
     type: 'SWAP_DESTINATION_AMOUNT',
@@ -70,7 +69,7 @@ export function loadBityRatesSucceededSwap(
 }
 
 export function destinationAddressSwap(
-  value: ?string
+  value?: string
 ): DestinationAddressSwapAction {
   return {
     type: 'SWAP_DESTINATION_ADDRESS',

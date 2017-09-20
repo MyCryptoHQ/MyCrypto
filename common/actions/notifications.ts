@@ -1,25 +1,24 @@
-// @flow
-import type { Element } from 'react';
+import { ReactElement } from 'react';
 
 /*** Shared types ***/
 export type NOTIFICATION_LEVEL = 'danger' | 'warning' | 'success' | 'info';
 export type INFINITY = 'infinity';
 
-export type Notification = {
-  level: NOTIFICATION_LEVEL,
-  msg: Element<*> | string,
-  duration?: number | INFINITY
-};
+export interface Notification {
+  level: NOTIFICATION_LEVEL;
+  msg: ReactElement<any> | string;
+  duration?: number | INFINITY;
+}
 
 /*** Show Notification ***/
-export type ShowNotificationAction = {
-  type: 'SHOW_NOTIFICATION',
-  payload: Notification
-};
+export interface ShowNotificationAction {
+  type: 'SHOW_NOTIFICATION';
+  payload: Notification;
+}
 
 export function showNotification(
   level: NOTIFICATION_LEVEL = 'info',
-  msg: Element<*> | string,
+  msg: ReactElement<any> | string,
   duration?: number | INFINITY
 ): ShowNotificationAction {
   return {
@@ -33,10 +32,10 @@ export function showNotification(
 }
 
 /*** Close notification ***/
-export type CloseNotificationAction = {
-  type: 'CLOSE_NOTIFICATION',
-  payload: Notification
-};
+export interface CloseNotificationAction {
+  type: 'CLOSE_NOTIFICATION';
+  payload: Notification;
+}
 
 export function closeNotification(
   notification: Notification
