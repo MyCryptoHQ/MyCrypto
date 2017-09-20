@@ -28,10 +28,9 @@ interface AAttributes {
   type?: string;
 }
 
-interface NewTabLinkProps {
+interface NewTabLinkProps  extends AAttributes {
   content?: React.ReactElement<any> | string;
   children?: React.ReactElement<any> | string;
-  rest?: AAttributes;
 }
 
 const NewTabLink = ({ content, children, ...rest }: NewTabLinkProps) =>

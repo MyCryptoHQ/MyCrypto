@@ -1,7 +1,7 @@
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { bityReferralURL, donationAddressMap } from 'config/data';
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import './index.scss';
 import PreFooter from './PreFooter';
 

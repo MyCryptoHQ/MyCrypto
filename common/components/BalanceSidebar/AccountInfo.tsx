@@ -1,10 +1,10 @@
 import { FiatRequestedRatesAction } from 'actions/rates';
-import { Identicon } from 'components/ui/index';
+import { Identicon } from 'components/ui';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
-import { IWallet } from 'libs/wallet/index';
+import { IWallet } from 'libs/wallet';
 import React from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
 import './AccountInfo.scss';
 
@@ -32,7 +32,8 @@ export default class AccountInfo extends React.Component<Props, State> {
     });
   }
 
-  public toggleShowLongBalance = (e: React.MouseEvent<MouseEvent>) => {
+  // TODO: don't use any;
+  public toggleShowLongBalance = (e: any) => {
     e.preventDefault();
     this.setState(state => {
       return {

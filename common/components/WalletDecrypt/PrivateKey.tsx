@@ -1,6 +1,6 @@
 import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 
 export interface PrivateKeyValue {
   key: string;
@@ -96,7 +96,7 @@ export default class PrivateKeyDecrypt extends Component {
     );
   }
 
-  public onPkeyChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  public onPkeyChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
     const pkey = (e.target as HTMLInputElement).value;
     const pass = this.props.value.password;
     const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);

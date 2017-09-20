@@ -20,8 +20,8 @@ export default class SimpleDropDown extends Component<Props, State> {
     });
   };
 
-  public onClick = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const value = event.target.getAttribute('data-value') || '';
+  public onClick = (event: React.SyntheticEvent<HTMLAnchorElement>) => {
+    const value = (event.target as HTMLAnchorElement).getAttribute('data-value') || '';
     this.props.onChange(value);
     this.setState({ expanded: false });
   };

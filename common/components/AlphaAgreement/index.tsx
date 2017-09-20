@@ -46,7 +46,7 @@ export default class AlphaAgreement extends React.Component<{}, State> {
             </button>
             <button
               className="AlphaAgreement-content-buttons-btn is-continue"
-              onClick={this.continue}
+              onClick={this.doContinue}
             >
               Yes, Continue to v4
             </button>
@@ -55,7 +55,8 @@ export default class AlphaAgreement extends React.Component<{}, State> {
       </div>
     );
   }
-  private continue = () => {
+
+  private doContinue = () => {
     localStorage.setItem(LS_KEY, 'true');
     this.setState({ isFading: true });
 

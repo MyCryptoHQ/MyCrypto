@@ -1,5 +1,5 @@
 import * as actions from 'actions/config';
-import { AlphaAgreement, Footer, Header } from 'components/index';
+import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Notifications from './Notifications';

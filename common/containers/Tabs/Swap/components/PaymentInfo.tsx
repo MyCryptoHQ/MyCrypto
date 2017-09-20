@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import './PaymentInfo.scss';
 
 export interface Props {

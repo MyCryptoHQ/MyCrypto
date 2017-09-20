@@ -6,7 +6,7 @@ import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers/index';
+import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import {
   getTokenBalances,
@@ -16,7 +16,7 @@ import {
 import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
-import TokenBalances from './TokenBalances/index';
+import TokenBalances from './TokenBalances';
 
 interface Props {
   wallet: IWallet;
@@ -28,6 +28,13 @@ interface Props {
   addCustomToken: typeof customTokenActions.addCustomToken;
   removeCustomToken: typeof customTokenActions.removeCustomToken;
   fiatRequestedRates: typeof fiatRequestedRates;
+}
+
+
+interface Block {
+    name: string;
+    content: React.ReactElement<any>;
+    isFullWidth?: boolean;
 }
 
 export class BalanceSidebar extends React.Component<Props, {}> {
@@ -44,7 +51,9 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       return null;
     }
 
-    const blocks = [
+
+
+    const blocks: Block[] = [
       {
         name: 'Account Info',
         content: (

@@ -1,6 +1,6 @@
 import { isKeystorePassRequired } from 'libs/keystore';
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 
 export interface KeystoreValue {
   file: string;
@@ -94,7 +94,8 @@ export default class KeystoreDecrypt extends Component {
 
   public handleFileSelection = (e: React.SyntheticEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
-    const inputFile = e.target.files[0];
+    const target = e.target as HTMLInputElement
+    const inputFile = target.files[0];
 
     fileReader.onload = () => {
       const keystore = fileReader.result;

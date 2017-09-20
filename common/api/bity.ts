@@ -1,16 +1,5 @@
 import bityConfig from 'config/bity';
 import { checkHttpStatus, parseJSON } from './utils';
-// import { combineAndUpper } from 'utils/formatters';
-
-// function findRateFromBityRateList(rateObjects, pairName: string) {
-//   return rateObjects.find(x => x.pair === pairName);
-// }
-
-// function _getRate(bityRates, originKind: string, destinationKind: string) {
-//   const pairName = combineAndUpper(originKind, destinationKind);
-//   const rateObjects = bityRates.objects;
-//   return findRateFromBityRateList(rateObjects, pairName);
-// }
 
 export function getAllRates() {
   const mappedRates = {};
@@ -60,5 +49,3 @@ function _getAllRates() {
     .then(checkHttpStatus)
     .then(parseJSON);
 }
-
-// function requestOrderStatus() {}

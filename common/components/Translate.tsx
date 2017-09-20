@@ -1,6 +1,6 @@
 import React from 'react';
 import Markdown from 'react-markdown';
-import { translateRaw } from 'translations/index';
+import { translateRaw } from 'translations';
 
 interface Props {
   translationKey: string;

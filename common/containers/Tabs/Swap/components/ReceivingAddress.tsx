@@ -9,7 +9,7 @@ import SimpleButton from 'components/ui/SimpleButton';
 import { donationAddressMap } from 'config/data';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
 export interface StateProps {

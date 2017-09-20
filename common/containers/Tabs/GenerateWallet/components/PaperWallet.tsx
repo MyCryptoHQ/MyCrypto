@@ -1,8 +1,8 @@
-import PrintableWallet from 'components/PrintableWallet/index';
+import PrintableWallet from 'components/PrintableWallet';
 import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import translate from 'translations/index';
+import translate from 'translations';
 import './PaperWallet.scss';
 import Template from './Template';
 

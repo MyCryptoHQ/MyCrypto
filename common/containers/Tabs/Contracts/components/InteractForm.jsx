@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractForm.scss';
-import type { NetworkContract } from 'config/data';
+import { NetworkContract } from 'config/data';
 
 type Props = {
   contracts: Array<NetworkContract>,

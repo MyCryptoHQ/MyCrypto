@@ -2,11 +2,12 @@ import classnames from 'classnames';
 import { Token } from 'config/data';
 import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
 import React from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 
 interface Props {
   onSave(params: Token): void;
 }
+
 export default class AddCustomTokenForm extends React.Component<Props, Token> {
   public state = {
     address: '',
@@ -95,18 +96,20 @@ export default class AddCustomTokenForm extends React.Component<Props, Token> {
   }
 
   public onFieldChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    const name = (e.target as HTMLInputElement).name;
+    // TODO: typescript bug: https://github.com/Microsoft/TypeScript/issues/13948
+    const name: any = (e.target as HTMLInputElement).name;
     const value = (e.target as HTMLInputElement).value;
     this.setState({ [name]: value });
   };
 
-  public onSave = (ev: React.SyntheticEvent<HTMLInputElement>) => {
+  public onSave = (ev: React.SyntheticEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!this.isValid()) {
       return;
     }
 
     const { address, symbol, decimal } = this.state;
-    this.props.onSave({ address, symbol, decimal: parseInt(decimal, 10) });
+    // TODO - determine why Token decimal is a string instead of a number. 
+    this.props.onSave({ address, symbol, decimal: String(parseInt(decimal, 10)) });
   };
 }

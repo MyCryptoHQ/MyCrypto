@@ -4,13 +4,13 @@ import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, padToEven, toChecksumAddress } from 'ethereumjs-util';
 import ERC20 from 'libs/erc20';
 import { TransactionWithoutGas } from 'libs/messages';
-import { RPCNode } from 'libs/nodes/index';
+import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
 import { Ether, toTokenUnit, UNIT, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
-import { IWallet } from 'libs/wallet/index';
-import translate from 'translations/index';
+import { IWallet } from 'libs/wallet';
+import translate from 'translations';
 
 export interface TransactionInput {
   token?: Token;

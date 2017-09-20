@@ -3,7 +3,8 @@ export function checkHttpStatus(response) {
     return response;
   } else {
     const error = new Error(response.statusText);
-    error.response = response;
+    // TODO: why assign response?
+    // error.response = response;
     throw error;
   }
 }

@@ -1,4 +1,4 @@
-import { NewTabLink } from 'components/ui/index';
+import { NewTabLink } from 'components/ui';
 import React from 'react';
 import GeneralInfoNode from './GeneralInfoNode';
 import { InfoNode } from './types';

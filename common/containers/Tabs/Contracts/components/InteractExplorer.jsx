@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import translate from 'translations';
-import type { ABIFunction } from 'actions/contracts';
+import { ABIFunction } from 'actions/contracts';
 import './InteractExplorer.scss';
 
 type Props = {

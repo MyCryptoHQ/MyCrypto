@@ -2,7 +2,7 @@ export interface FiatRequestedRatesAction {
   type: 'RATES_FIAT_REQUESTED';
 }
 
-export function fiatRequestedRates() {
+export function fiatRequestedRates(): FiatRequestedRatesAction {
   return {
     type: 'RATES_FIAT_REQUESTED'
   };

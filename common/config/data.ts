@@ -1,4 +1,4 @@
-import { RPCNode, InfuraNode, EtherscanNode } from 'libs/nodes/index';
+import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.0.2)';
@@ -136,9 +136,9 @@ export const languages = [
 ];
 
 export interface BlockExplorerConfig {
-    name: string;
-    tx: Function;
-    address: Function
+  name: string;
+  tx(txHash: string): string;
+  address(address: string): string;
 }
 
 export interface Token {
@@ -159,7 +159,7 @@ export interface NetworkConfig {
   blockExplorer?: BlockExplorerConfig;
   tokenExplorer?: {
     name: string;
-    address: Function;
+    address(address: string): string;
   };
   chainId: number;
   tokens: Token[];

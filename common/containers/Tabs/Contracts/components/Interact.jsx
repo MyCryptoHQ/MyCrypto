@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import InteractForm from './InteractForm';
 import InteractExplorer from './InteractExplorer';
-import type { ABIFunction } from 'actions/contracts';
-import type { NetworkContract } from 'config/data';
+import { ABIFunction } from 'actions/contracts';
+import { NetworkContract } from 'config/data';
 
 type Props = {
   NetworkContracts: Array<NetworkContract>,

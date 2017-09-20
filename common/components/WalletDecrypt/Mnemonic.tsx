@@ -1,7 +1,7 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import DPATHS from 'config/dpaths';
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 
 const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
@@ -86,11 +86,11 @@ export default class MnemonicDecrypt extends Component<Props, State> {
     this.setState({ pass: (e.target as HTMLInputElement).value });
   };
 
-  public onMnemonicChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    this.setState({ phrase: (e.target as HTMLInputElement).value });
+  public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+    this.setState({ phrase: (e.target as HTMLTextAreaElement).value });
   };
 
-  public onDWModalOpen = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  public onDWModalOpen = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     const { phrase, pass } = this.state;
 
     if (!validateMnemonic(phrase)) {

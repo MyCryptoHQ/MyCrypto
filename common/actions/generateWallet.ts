@@ -1,4 +1,4 @@
-import { PrivKeyWallet } from 'libs/wallet/index';
+import { PrivKeyWallet } from 'libs/wallet';
 
 /*** Generate Wallet File ***/
 export interface GenerateNewWalletAction {

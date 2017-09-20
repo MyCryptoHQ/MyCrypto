@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import './Promos.scss';
 
 const promos = [
@@ -44,7 +44,7 @@ interface State {
 
 export default class Promos extends React.Component<{}, State> {
   public state = {
-    activePromo: parseInt(Math.random() * promos.length)
+    activePromo: parseInt(String(Math.random() * promos.length))
   };
 
   public render() {

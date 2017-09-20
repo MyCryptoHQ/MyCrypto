@@ -1,7 +1,7 @@
 import { Token } from 'config/data';
 import React from 'react';
 import { TokenBalance } from 'selectors/wallet';
-import translate from 'translations/index';
+import translate from 'translations';
 import AddCustomTokenForm from './AddCustomTokenForm';
 import './index.scss';
 import TokenRow from './TokenRow';

@@ -1,4 +1,4 @@
-import { Identicon, QRCode } from 'components/ui/index';
+import { Identicon, QRCode } from 'components/ui';
 import PrivKeyWallet from 'libs/wallet/privkey';
 import React from 'react';
 

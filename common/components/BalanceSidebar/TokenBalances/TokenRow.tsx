@@ -13,6 +13,7 @@ interface Props {
 interface State {
   showLongBalance: boolean;
 }
+
 export default class TokenRow extends React.Component<Props, State> {
   public state = {
     showLongBalance: false
@@ -47,7 +48,8 @@ export default class TokenRow extends React.Component<Props, State> {
   }
 
   public toggleShowLongBalance = (
-    e: React.SyntheticEvent<HTMLInputElement>
+    // TODO: don't use any
+    e: any
   ) => {
     e.preventDefault();
     this.setState(state => {

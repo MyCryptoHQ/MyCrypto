@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
-import translate from 'translations/index';
+import translate from 'translations';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from './Template';
