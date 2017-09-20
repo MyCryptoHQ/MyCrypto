@@ -1,12 +1,13 @@
-// @flow
-import React, { Component } from 'react';
+import { Component } from 'react';
+import * as React from 'react';
 import translate from 'translations';
 
 type Props = {};
-
-export default class Deploy extends Component {
-  props: Props;
-
+interface State {
+  byteCode: string,
+  gasLimit: string
+}
+export default class Deploy extends Component<Props, State> {
   state = {
     byteCode: '',
     gasLimit: ''

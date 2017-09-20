@@ -3,15 +3,15 @@ import 'assets/styles/etherwallet-master.less';
 import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
 
-import * as React from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import { Root } from './components';
-import { Routing, history } from './routing';
+import { Root } from './components/index';
+import { Routing, history } from './routing/index';
 import { store } from './store';
 
-const renderRoot = (Root) => {
+const renderRoot = Root => {
   const syncedHistory = syncHistoryWithStore(history, store);
   render(
     <Root
@@ -20,7 +20,7 @@ const renderRoot = (Root) => {
       history={syncedHistory}
       store={store}
     />,
-    document.getElementById('app'),
+    document.getElementById('app')
   );
 };
 
@@ -28,6 +28,6 @@ renderRoot(Root);
 
 if (module.hot) {
   module.hot.accept('reducers/index', () =>
-    store.replaceReducer(require('reducers/index').default),
+    store.replaceReducer(require('reducers/index').default)
   );
 }
