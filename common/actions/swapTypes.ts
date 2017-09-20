@@ -15,11 +15,11 @@ export interface DestinationKindSwapAction {
 }
 export interface OriginAmountSwapAction {
   type: 'SWAP_ORIGIN_AMOUNT';
-  value?: number;
+  value?: number | null;
 }
 export interface DestinationAmountSwapAction {
   type: 'SWAP_DESTINATION_AMOUNT';
-  value?: number;
+  value?: number | null;
 }
 export interface LoadBityRatesSucceededSwapAction {
   type: 'SWAP_LOAD_BITY_RATES_SUCCEEDED';

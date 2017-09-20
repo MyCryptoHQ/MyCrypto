@@ -4,9 +4,9 @@ import {
 } from 'actions/contracts';
 
 export interface State {
-  selectedAddress?: string;
-  selectedABIJson?: string;
-  selectedABIFunctions?: any[];
+  selectedAddress?: string | null;
+  selectedABIJson?: string | null;
+  selectedABIFunctions?: any[] | null;
 }
 
 export const initialState: State = {

@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import translate from 'translations';
 import './NavigationLink.scss';
 
@@ -10,7 +10,7 @@ interface Props {
     to?: string;
     external?: boolean;
   };
-  location: object;
+  location: any;
 }
 
 export default class NavigationLink extends React.Component<Props, {}> {

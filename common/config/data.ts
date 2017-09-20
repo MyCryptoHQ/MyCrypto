@@ -144,7 +144,7 @@ export interface BlockExplorerConfig {
 export interface Token {
   address: string;
   symbol: string;
-  decimal: string;
+  decimal: number;
 }
 
 export interface NetworkContract {

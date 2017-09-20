@@ -16,7 +16,6 @@ import {
   put,
   select,
   takeEvery,
-  // $FlowFixMe - I guarantee you ,it's in there.
   takeLatest
 } from 'redux-saga/effects';
 import { Next, Return, Yield } from 'sagas/types';

@@ -2,6 +2,7 @@ import bityConfig from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import './SwapProgress.scss';
+import {showNotification} from 'actions/notifications';
 
 export interface Props {
   destinationKind: string;
@@ -10,7 +11,7 @@ export interface Props {
   originKind: string;
   orderStatus: string;
   // actions
-  showNotification: Function;
+  showNotification: typeof showNotification;
 }
 
 interface State {

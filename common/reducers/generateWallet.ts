@@ -3,8 +3,8 @@ import PrivateKeyWallet from 'libs/wallet/privkey';
 
 export interface State {
   activeStep: string;
-  wallet?: PrivateKeyWallet;
-  password?: string;
+  wallet?: PrivateKeyWallet | null;
+  password?: string | null;
 }
 
 export const INITIAL_STATE: State = {

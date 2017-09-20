@@ -42,7 +42,7 @@ export default class GeneralInfoNode extends React.Component<
         <InfoHeader onClickHandler={toggleVisibility} name={name}>
           {headerContent}
         </InfoHeader>
-        <InfoList name={propname} isOpen={isOpen}>
+        <InfoList name={name} isOpen={isOpen}>
           {innerList}
         </InfoList>
       </section>

@@ -48,6 +48,11 @@ interface State {
   showLeftArrow: boolean;
   showRightArrow: boolean;
 }
+
+interface BorderStyle {
+    borderTopColor?: string;
+}
+
 export default class Navigation extends Component<Props, State> {
   public state = {
     showLeftArrow: false,
@@ -60,7 +65,7 @@ export default class Navigation extends Component<Props, State> {
 
   public render() {
     const { location, color } = this.props;
-    const borderStyle = {};
+    const borderStyle: BorderStyle = {};
 
     if (color) {
       borderStyle.borderTopColor = color;
@@ -77,7 +82,7 @@ export default class Navigation extends Component<Props, State> {
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow--left"
-            onClick={() => this.scrollLeft(100)}
+            onClick={() => this.scrollLeft()}
           >
             &#171;
           </a>}
@@ -100,7 +105,7 @@ export default class Navigation extends Component<Props, State> {
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow-right"
-            onClick={() => this.scrollRight(100)}
+            onClick={() => this.scrollRight()}
           >
             &#187;
           </a>}

@@ -1,7 +1,34 @@
-import Big from 'bignumber.js';
+import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 
-const UNITS = {
+interface UNITS {
+  wei: string;
+  kwei: string;
+  ada: string;
+  femtoether: string;
+  mwei: string;
+  babbage: string;
+  picoether: string;
+  gwei: string;
+  shannon: string;
+  nanoether: string;
+  nano: string;
+  szabo: string;
+  microether: string;
+  micro: string;
+  finney: string;
+  milliether: string;
+  milli: string;
+  ether: string;
+  kether: string;
+  grand: string;
+  einstein: string;
+  mether: string;
+  gether: string;
+  tether: string;
+}
+
+const Units: UNITS = {
   wei: '1',
   kwei: '1000',
   ada: '1000',
@@ -28,16 +55,13 @@ const UNITS = {
   tether: '1000000000000000000000000000000'
 };
 
-export type UNIT = typeof UNITS;
+export type UNIT = keyof UNITS;
 
 class Unit {
   public unit: UNIT;
-  public amount: Big;
+  public amount: BigNumber;
 
-  constructor(amount: Big, unit: UNIT) {
-    if (!(unit in UNITS)) {
-      throw new Error(`Supplied unit: ${unit} is not a valid unit.`);
-    }
+  constructor(amount: BigNumber, unit: UNIT) {
     this.unit = unit;
     this.amount = amount;
   }
@@ -64,39 +88,39 @@ class Unit {
 }
 
 export class Ether extends Unit {
-  constructor(amount: Big | number | string) {
+  constructor(amount: BigNumber | number | string) {
     super(new Big(amount), 'ether');
   }
 }
 
 export class Wei extends Unit {
-  constructor(amount: Big | number | string) {
+  constructor(amount: BigNumber | number | string) {
     super(new Big(amount), 'wei');
   }
 }
 
 export class GWei extends Unit {
-  constructor(amount: Big | number | string) {
+  constructor(amount: BigNumber | number | string) {
     super(new Big(amount), 'gwei');
   }
 }
 
 function getValueOfUnit(unit: UNIT) {
-  return new Big(UNITS[unit]);
+  return new Big(Units[unit]);
 }
 
-export function toWei(number: Big, unit: UNIT): Big {
+export function toWei(number: BigNumber, unit: UNIT): BigNumber {
   return number.times(getValueOfUnit(unit));
 }
 
-export function toUnit(number: Big, fromUnit: UNIT, toUnit: UNIT): Big {
+export function toUnit(number: BigNumber, fromUnit: UNIT, toUnit: UNIT): BigNumber {
   return toWei(number, fromUnit).div(getValueOfUnit(toUnit));
 }
 
-export function toTokenUnit(number: Big, token: Token): Big {
+export function toTokenUnit(number: BigNumber, token: Token): BigNumber {
   return number.times(new Big(10).pow(token.decimal));
 }
 
-export function toTokenDisplay(number: Big, token: Token): Big {
+export function toTokenDisplay(number: BigNumber, token: Token): BigNumber {
   return number.times(new Big(10).pow(-token.decimal));
 }

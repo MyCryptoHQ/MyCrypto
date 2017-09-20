@@ -3,13 +3,14 @@ import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { makeBlob } from 'utils/blob';
+import { ContinueToPaperAction } from 'actions/generateWallet';
 import './DownloadWallet.scss';
 import Template from './Template';
 
 interface Props {
   wallet: PrivKeyWallet;
   password: string;
-  continueToPaper: Function;
+  continueToPaper: () => ContinueToPaperAction;
 }
 
 interface State {

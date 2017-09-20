@@ -22,7 +22,7 @@ import { combineAndUpper, toFixedIfLarger } from 'utils/formatters';
 import './CurrencySwap.scss';
 
 export interface StateProps {
-  bityRates: {};
+  bityRates: any;
   originAmount?: number;
   destinationAmount?: number;
   originKind: string;
@@ -188,14 +188,17 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
 
         <div className="form-inline">
           <input
-            className={`CurrencySwap-input form-control ${originAmount !== '' &&
-            this.isMinMaxValid(originAmount, originKind)
+            className={`CurrencySwap-input form-control ${String(
+              originAmount
+            ) !== '' && this.isMinMaxValid(originAmount, originKind)
               ? 'is-valid'
               : 'is-invalid'}`}
             type="number"
             placeholder="Amount"
             value={
-              parseFloat(originAmount) === 0 ? originAmount : originAmount || ''
+              parseFloat(String(originAmount)) === 0
+                ? originAmount
+                : originAmount || ''
             }
             onChange={this.onChangeOriginAmount}
           />
@@ -211,14 +214,15 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
           </h1>
 
           <input
-            className={`CurrencySwap-input form-control ${destinationAmount !==
-              '' && this.isMinMaxValid(originAmount, originKind)
+            className={`CurrencySwap-input form-control ${String(
+              destinationAmount
+            ) !== '' && this.isMinMaxValid(originAmount, originKind)
               ? 'is-valid'
               : 'is-invalid'}`}
             type="number"
             placeholder="Amount"
             value={
-              parseFloat(destinationAmount) === 0
+              parseFloat(String(destinationAmount)) === 0
                 ? destinationAmount
                 : destinationAmount || ''
             }

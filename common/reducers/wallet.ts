@@ -11,9 +11,9 @@ import { IWallet } from 'libs/wallet';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 
 export interface State {
-  inst?: IWallet;
+  inst?: IWallet | null;
   // in ETH
-  balance?: Ether;
+  balance?: Ether | null;
   tokens: {
     [key: string]: Big;
   };
