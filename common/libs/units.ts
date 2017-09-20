@@ -28,7 +28,7 @@ interface UNITS {
   tether: string;
 }
 
-const Units: UNITS = {
+const Units = {
   wei: '1',
   kwei: '1000',
   ada: '1000',
@@ -55,13 +55,14 @@ const Units: UNITS = {
   tether: '1000000000000000000000000000000'
 };
 
-export type UNIT = keyof UNITS;
+export type TUnit = typeof Units;
+export type UnitKeys = keyof TUnit;
 
 class Unit {
-  public unit: UNIT;
+  public unit: UnitKeys;
   public amount: BigNumber;
 
-  constructor(amount: BigNumber, unit: UNIT) {
+  constructor(amount: BigNumber, unit: UnitKeys) {
     this.unit = unit;
     this.amount = amount;
   }
@@ -105,15 +106,19 @@ export class GWei extends Unit {
   }
 }
 
-function getValueOfUnit(unit: UNIT) {
+function getValueOfUnit(unit: UnitKeys) {
   return new Big(Units[unit]);
 }
 
-export function toWei(number: BigNumber, unit: UNIT): BigNumber {
+export function toWei(number: BigNumber, unit: UnitKeys): BigNumber {
   return number.times(getValueOfUnit(unit));
 }
 
-export function toUnit(number: BigNumber, fromUnit: UNIT, toUnit: UNIT): BigNumber {
+export function toUnit(
+  number: BigNumber,
+  fromUnit: UnitKeys,
+  toUnit: UnitKeys
+): BigNumber {
   return toWei(number, fromUnit).div(getValueOfUnit(toUnit));
 }
 
