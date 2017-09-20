@@ -13,12 +13,6 @@ const InfoList = ({ children, isOpen }: ListProps) =>
       </ul>
     : null;
 
-/*
-TODO: After #122: export default class GeneralInfoNode extends React.Component <
-  NodeProps,
-  NodeState
-  >
-*/
 export default class GeneralInfoNode extends React.Component<
   NodeProps,
   NodeState
@@ -33,16 +27,16 @@ export default class GeneralInfoNode extends React.Component<
   public render() {
     const {
       toggleVisibility,
-      props: { innerList, name, headerContent },
+      props: { innerList, headerContent },
       state: { isOpen }
     } = this;
 
     return (
       <section>
-        <InfoHeader onClickHandler={toggleVisibility} name={name}>
+        <InfoHeader onClickHandler={toggleVisibility}>
           {headerContent}
         </InfoHeader>
-        <InfoList name={name} isOpen={isOpen}>
+        <InfoList isOpen={isOpen}>
           {innerList}
         </InfoList>
       </section>

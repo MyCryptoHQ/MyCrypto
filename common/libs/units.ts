@@ -1,33 +1,6 @@
 import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 
-interface UNITS {
-  wei: string;
-  kwei: string;
-  ada: string;
-  femtoether: string;
-  mwei: string;
-  babbage: string;
-  picoether: string;
-  gwei: string;
-  shannon: string;
-  nanoether: string;
-  nano: string;
-  szabo: string;
-  microether: string;
-  micro: string;
-  finney: string;
-  milliether: string;
-  milli: string;
-  ether: string;
-  kether: string;
-  grand: string;
-  einstein: string;
-  mether: string;
-  gether: string;
-  tether: string;
-}
-
 const Units = {
   wei: '1',
   kwei: '1000',
@@ -88,6 +61,7 @@ class Unit {
   }
 }
 
+// tslint:disable:max-classes-per-file
 export class Ether extends Unit {
   constructor(amount: BigNumber | number | string) {
     super(new Big(amount), 'ether');
@@ -110,22 +84,22 @@ function getValueOfUnit(unit: UnitKeys) {
   return new Big(Units[unit]);
 }
 
-export function toWei(number: BigNumber, unit: UnitKeys): BigNumber {
-  return number.times(getValueOfUnit(unit));
+export function toWei(num: BigNumber, unit: UnitKeys): BigNumber {
+  return num.times(getValueOfUnit(unit));
 }
 
 export function toUnit(
-  number: BigNumber,
+  num: BigNumber,
   fromUnit: UnitKeys,
-  toUnit: UnitKeys
+  convertToUnit: UnitKeys
 ): BigNumber {
-  return toWei(number, fromUnit).div(getValueOfUnit(toUnit));
+  return toWei(num, fromUnit).div(getValueOfUnit(convertToUnit));
 }
 
-export function toTokenUnit(number: BigNumber, token: Token): BigNumber {
-  return number.times(new Big(10).pow(token.decimal));
+export function toTokenUnit(num: BigNumber, token: Token): BigNumber {
+  return num.times(new Big(10).pow(token.decimal));
 }
 
-export function toTokenDisplay(number: BigNumber, token: Token): BigNumber {
-  return number.times(new Big(10).pow(-token.decimal));
+export function toTokenDisplay(num: BigNumber, token: Token): BigNumber {
+  return num.times(new Big(10).pow(-token.decimal));
 }

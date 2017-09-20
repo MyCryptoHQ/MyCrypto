@@ -1,3 +1,4 @@
+import { showNotification } from 'actions/notifications';
 import {
   loadBityRatesRequestedSwap,
   restartSwap,
@@ -7,7 +8,6 @@ import {
   stopOrderTimerSwap,
   stopPollBityOrderStatus
 } from 'actions/swap';
-import { showNotification } from 'actions/notifications';
 import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';

@@ -9,7 +9,7 @@ const dockerImage = 'dternyak/eth-priv-to-addr';
 const dockerTag = 'latest';
 const bar = new ProgressBar(':percent :bar', { total: derivationRounds });
 
-function promiseFromChildProcess(command) {
+function promiseFromChildProcess(command): Promise<any> {
   return new Promise((resolve, reject) => {
     return exec(command, (err, stdout) => {
       err ? reject(err) : resolve(stdout);

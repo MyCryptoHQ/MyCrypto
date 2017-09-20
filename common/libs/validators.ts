@@ -7,7 +7,9 @@ export function isValidETHAddress(address: string): boolean {
   if (!address) {
     return false;
   }
-  if (address === '0x0000000000000000000000000000000000000000') return false;
+  if (address === '0x0000000000000000000000000000000000000000') {
+    return false;
+  }
   return validateEtherAddress(address);
 }
 
@@ -53,7 +55,7 @@ export function isValidENSAddress(address: string): boolean {
       test: true,
       reverse: true
     };
-    if (validTLDs[tld]) return true;
+    if (validTLDs[tld]) { return true };
   } catch (e) {
     return false;
   }
@@ -98,11 +100,11 @@ export function isValidEncryptedPrivKey(privkey: string): boolean {
   }
 }
 
-export function isPositiveIntegerOrZero(number: number): boolean {
-  if (isNaN(number) || !isFinite(number)) {
+export function isPositiveIntegerOrZero(num: number): boolean {
+  if (isNaN(num) || !isFinite(num)) {
     return false;
   }
-  return number >= 0 && parseInt(number) === number;
+  return num >= 0 && parseInt(num) === num;
 }
 
 export function isValidRawTx(rawTx: RawTransaction): boolean {
@@ -113,7 +115,7 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
     { name: 'to', type: 'string', lenReq: true },
     { name: 'value', type: 'string', lenReq: true },
     { name: 'data', type: 'string', lenReq: false },
-    { name: 'chainId', type: 'number' }
+    { name: 'chainId', type: 'number', lenReq: false }
   ];
 
   // ensure rawTx has above properties
@@ -124,23 +126,30 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
   // ensure valid address for 'to' prop
   // ensure rawTx only has above properties
 
-  for (let i = 0; i < propReqs.length; i++) {
-    const prop = propReqs[i];
+  for (const prop of propReqs) {
     const value = rawTx[prop.name];
 
-    if (!rawTx.hasOwnProperty(prop.name)) return false;
-    if (typeof value !== prop.type) return false;
+    if (!rawTx.hasOwnProperty(prop.name)) {
+      return false;
+    }
+    if (typeof value !== prop.type) {
+      return false;
+    }
     if (prop.type === 'string') {
-      if (prop.lenReq && value.length === 0) return false;
+      if (prop.lenReq && value.length === 0) {
+        return false;
+      }
       if (value.length && value.substring(0, 2) !== '0x') {
         return false;
       }
-      if (!isValidHex(value)) return false;
+      if (!isValidHex(value)) {
+        return false;
+      }
     }
   }
 
-  if (!isValidETHAddress(rawTx.to)) return false;
-  if (Object.keys(rawTx).length !== propReqs.length) return false;
+  if (!isValidETHAddress(rawTx.to)) { return false };
+  if (Object.keys(rawTx).length !== propReqs.length) { return false };
 
   return true;
 }

@@ -32,11 +32,11 @@ export function postOrder(
     .then(parseJSON);
 }
 
-export function getOrderStatus(orderid: string) {
+export function getOrderStatus(orderId: string) {
   return fetch(`${bityConfig.serverURL}/status`, {
     method: 'POST',
     body: JSON.stringify({
-      orderid
+      orderid: orderId
     }),
     headers: bityConfig.postConfig.headers
   })
