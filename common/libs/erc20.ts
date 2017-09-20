@@ -1,4 +1,4 @@
-import Big from 'bignumber.js';
+import Big, {BigNumber} from 'bignumber.js';
 import { toChecksumAddress } from 'ethereumjs-util';
 import Contract, { ABI } from 'libs/contract';
 
@@ -59,7 +59,7 @@ class ERC20 extends Contract {
     return this.call('balanceOf', [address]);
   }
 
-  public transfer(to: string, value: Big): string {
+  public transfer(to: string, value: BigNumber): string {
     return this.call('transfer', [to, value.toString()]);
   }
 

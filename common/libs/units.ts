@@ -1,33 +1,6 @@
 import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 
-interface UNITS {
-  wei: string;
-  kwei: string;
-  ada: string;
-  femtoether: string;
-  mwei: string;
-  babbage: string;
-  picoether: string;
-  gwei: string;
-  shannon: string;
-  nanoether: string;
-  nano: string;
-  szabo: string;
-  microether: string;
-  micro: string;
-  finney: string;
-  milliether: string;
-  milli: string;
-  ether: string;
-  kether: string;
-  grand: string;
-  einstein: string;
-  mether: string;
-  gether: string;
-  tether: string;
-}
-
 const Units = {
   wei: '1',
   kwei: '1000',
@@ -117,9 +90,9 @@ export function toWei(number: BigNumber, unit: UnitKeys): BigNumber {
 export function toUnit(
   number: BigNumber,
   fromUnit: UnitKeys,
-  toUnit: UnitKeys
+  _toUnit: UnitKeys
 ): BigNumber {
-  return toWei(number, fromUnit).div(getValueOfUnit(toUnit));
+  return toWei(number, fromUnit).div(getValueOfUnit(_toUnit));
 }
 
 export function toTokenUnit(number: BigNumber, token: Token): BigNumber {
