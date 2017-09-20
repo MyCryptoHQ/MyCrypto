@@ -21,10 +21,6 @@ const tabs = [
     name: 'NAV_Offline'
   },
   {
-    name: 'NAV_Contracts',
-    to: 'contracts'
-  },
-  {
     name: 'NAV_ViewWallet'
     // to: 'view-wallet'
   },
@@ -50,7 +46,7 @@ interface State {
 }
 
 interface BorderStyle {
-    borderTopColor?: string;
+  borderTopColor?: string;
 }
 
 export default class Navigation extends Component<Props, State> {
