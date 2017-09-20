@@ -109,6 +109,8 @@
     "pretest": "check-node-version --package",
     "dev": "node webpack_config/server.js",
     "predev": "check-node-version --package",
+    "dev:https": "HTTPS=true node webpack_config/server.js",
+    "predev:https": "check-node-version --package",
     "flow": "flow",
     "derivation-checker": "babel-node common/derivation-checker.js --presets es2015,stage-0,flow",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
@@ -116,9 +118,6 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write --single-quote",
-      "git add"
-    ]
+    "*.{js,jsx}": ["prettier --write --single-quote", "git add"]
   }
 }
