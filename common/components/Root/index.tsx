@@ -8,6 +8,7 @@ interface Props {
   history: object;
   routes(): null;
 }
+
 export default class Root extends Component<Props, {}> {
   public render() {
     const { store, history, routes } = this.props;

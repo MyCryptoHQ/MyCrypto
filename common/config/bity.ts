@@ -16,16 +16,16 @@ const buffers = {
 };
 
 // rate must be BTC[KIND]
-export function kindMin(
+export function generateKindMin(
   BTCKINDRate: number,
   kind: SupportedDestinationKind
 ): number {
-  const kindMin = BTCKINDRate * BTCMin;
-  return kindMin + kindMin * buffers[kind];
+  const kindMinVal = BTCKINDRate * BTCMin;
+  return kindMinVal + kindMinVal * buffers[kind];
 }
 
 // rate must be BTC[KIND]
-export function kindMax(
+export function generateKindMax(
   BTCKINDRate: number,
   kind: SupportedDestinationKind
 ): number {

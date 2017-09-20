@@ -8,7 +8,13 @@ interface Props {
   onSave(params: Token): void;
 }
 
-export default class AddCustomTokenForm extends React.Component<Props, Token> {
+interface State {
+  address: string;
+  symbol: string;
+  decimal: string;
+}
+
+export default class AddCustomTokenForm extends React.Component<Props, State> {
   public state = {
     address: '',
     symbol: '',
@@ -109,7 +115,6 @@ export default class AddCustomTokenForm extends React.Component<Props, Token> {
     }
 
     const { address, symbol, decimal } = this.state;
-    // TODO - determine why Token decimal is a string instead of a number. 
-    this.props.onSave({ address, symbol, decimal: String(parseInt(decimal, 10)) });
+    this.props.onSave({ address, symbol, decimal: parseInt(decimal, 10) });
   };
 }

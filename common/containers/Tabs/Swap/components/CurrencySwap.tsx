@@ -15,7 +15,7 @@ import {
 } from 'actions/swapTypes';
 import SimpleButton from 'components/ui/SimpleButton';
 import SimpleSelect from 'components/ui/SimpleSelect';
-import bityConfig, { kindMax, kindMin } from 'config/bity';
+import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper, toFixedIfLarger } from 'utils/formatters';
@@ -55,8 +55,8 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
     let bityMax;
     if (kind !== 'BTC') {
       const bityPairRate = this.props.bityRates['BTC' + kind];
-      bityMin = kindMin(bityPairRate, kind);
-      bityMax = kindMax(bityPairRate, kind);
+      bityMin = generateKindMin(bityPairRate, kind);
+      bityMax = generateKindMax(bityPairRate, kind);
     } else {
       bityMin = bityConfig.BTCMin;
       bityMax = bityConfig.BTCMax;
@@ -82,9 +82,9 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
 
     if (disabled && originAmount && !this.state.showedMinMaxError) {
       const { bityRates } = this.props;
-      const ETHMin = kindMin(bityRates.BTCETH, 'ETH');
-      const ETHMax = kindMax(bityRates.BTCETH, 'ETH');
-      const REPMin = kindMin(bityRates.BTCREP, 'REP');
+      const ETHMin = generateKindMin(bityRates.BTCETH, 'ETH');
+      const ETHMax = generateKindMax(bityRates.BTCETH, 'ETH');
+      const REPMin = generateKindMin(bityRates.BTCREP, 'REP');
 
       const notificationMessage = `
         Minimum amount ${bityConfig.BTCMin} BTC,

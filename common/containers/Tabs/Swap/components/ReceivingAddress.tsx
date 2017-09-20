@@ -12,6 +12,7 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
+
 export interface StateProps {
   isPostingOrder: boolean;
   originAmount: number;
@@ -19,6 +20,7 @@ export interface StateProps {
   destinationKind: string;
   destinationAddress: string;
 }
+
 export interface ActionProps {
   destinationAddressSwap(value?: string): DestinationAddressSwapAction;
   changeStepSwap(value: number): ChangeStepSwapAction;

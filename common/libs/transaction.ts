@@ -10,7 +10,7 @@ import { Ether, toTokenUnit, UnitKeys, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
-import translate from 'translations';
+import translate, {translateRaw} from 'translations';
 
 export interface TransactionInput {
   token?: Token;
@@ -80,7 +80,7 @@ export async function generateCompleteTransactionFromRawTransaction(
   const { to, data, gasLimit, gasPrice, from, chainId, nonce } = tx;
   // Reject bad addresses
   if (!isValidETHAddress(to)) {
-    throw new Error(translate('ERROR_5', true));
+    throw new Error(translateRaw('ERROR_5'));
   }
   // Reject token transactions without data
   if (token && !data) {
@@ -94,7 +94,7 @@ export async function generateCompleteTransactionFromRawTransaction(
   }
   // Reject gasLimit over 5000000gwei
   if (gasLimit.greaterThan(5000000)) {
-    throw new Error(translate('GETH_GasLimit', true));
+    throw new Error(translateRaw('GETH_GasLimit'));
   }
   // Reject gasPrice over 1000gwei (1000000000000)
   if (gasPrice.amount.greaterThan(new Big('1000000000000'))) {
@@ -116,7 +116,7 @@ export async function generateCompleteTransactionFromRawTransaction(
     balance = ETHBalance.amount;
   }
   if (value.gt(balance)) {
-    throw new Error(translate('GETH_Balance', true));
+    throw new Error(translateRaw('GETH_Balance'));
   }
   // ensure gas cost is not greaterThan current eth balance
   // TODO check that eth balance is not lesser than txAmount + gasCost

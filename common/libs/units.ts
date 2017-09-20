@@ -61,6 +61,7 @@ class Unit {
   }
 }
 
+// tslint:disable:max-classes-per-file
 export class Ether extends Unit {
   constructor(amount: BigNumber | number | string) {
     super(new Big(amount), 'ether');
@@ -83,22 +84,22 @@ function getValueOfUnit(unit: UnitKeys) {
   return new Big(Units[unit]);
 }
 
-export function toWei(number: BigNumber, unit: UnitKeys): BigNumber {
-  return number.times(getValueOfUnit(unit));
+export function toWei(num: BigNumber, unit: UnitKeys): BigNumber {
+  return num.times(getValueOfUnit(unit));
 }
 
 export function toUnit(
-  number: BigNumber,
+  num: BigNumber,
   fromUnit: UnitKeys,
-  _toUnit: UnitKeys
+  convertToUnit: UnitKeys
 ): BigNumber {
-  return toWei(number, fromUnit).div(getValueOfUnit(_toUnit));
+  return toWei(num, fromUnit).div(getValueOfUnit(convertToUnit));
 }
 
-export function toTokenUnit(number: BigNumber, token: Token): BigNumber {
-  return number.times(new Big(10).pow(token.decimal));
+export function toTokenUnit(num: BigNumber, token: Token): BigNumber {
+  return num.times(new Big(10).pow(token.decimal));
 }
 
-export function toTokenDisplay(number: BigNumber, token: Token): BigNumber {
-  return number.times(new Big(10).pow(-token.decimal));
+export function toTokenDisplay(num: BigNumber, token: Token): BigNumber {
+  return num.times(new Big(10).pow(-token.decimal));
 }

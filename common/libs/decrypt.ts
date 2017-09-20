@@ -1,12 +1,12 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { createDecipheriv, createHash } from 'crypto';
+import { privateToAddress } from 'ethereumjs-util';
 import { fromMasterSeed } from 'hdkey';
 import { stripHexPrefixAndLower } from 'libs/values';
-import { privateToAddress } from 'ethereumjs-util';
 
 // adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L230
 export function decryptPrivKey(encprivkey: string, password: string): Buffer {
-  let cipher = encprivkey.slice(0, 128);
+  const cipher = encprivkey.slice(0, 128);
   const decryptedCipher = decodeCryptojsSalt(cipher);
   const evp = evp_kdf(new Buffer(password), decryptedCipher.salt, {
     keysize: 32,
@@ -55,7 +55,7 @@ export function evp_kdf(data: Buffer, salt: Buffer, opts: any) {
   }
   const keysize = opts.keysize || 16;
   const ivsize = opts.ivsize || 16;
-  const ret = [];
+  const ret: any[] = [];
   let i = 0;
   while (Buffer.concat(ret).length < keysize + ivsize) {
     ret[i] = iter(i === 0 ? new Buffer(0) : ret[i - 1]);
