@@ -1,7 +1,7 @@
 import React from 'react';
-import { GeneralInfoPanel } from './GeneralInfoPanel/index';
+import { GeneralInfoPanel } from './GeneralInfoPanel';
 import Title from './Title';
-import UnfinishedBanner from './UnfinishedBanner/index';
+import UnfinishedBanner from './UnfinishedBanner';
 interface ContainerTabPaneActiveProps {
   children: React.ReactElement<any>;
 }

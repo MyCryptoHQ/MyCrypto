@@ -11,7 +11,7 @@ import ens, { State as EnsState } from './ens';
 import generateWallet, { State as GenerateWalletState } from './generateWallet';
 import notifications, { State as NotificationsState } from './notifications';
 import rates, { State as RatesState } from './rates';
-import swap, { State as SwapState } from './swap/index';
+import swap, { State as SwapState } from './swap';
 import wallet, { State as WalletState } from './wallet';
 
 export interface AppState {

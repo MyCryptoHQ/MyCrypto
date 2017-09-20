@@ -1,7 +1,7 @@
-import { PaperWallet } from 'components/index';
+import { PaperWallet } from 'components';
 import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import printElement from 'utils/printElement';
 
 interface Props {

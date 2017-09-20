@@ -17,7 +17,7 @@ import SimpleButton from 'components/ui/SimpleButton';
 import SimpleSelect from 'components/ui/SimpleSelect';
 import bityConfig, { kindMax, kindMin } from 'config/bity';
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import { combineAndUpper, toFixedIfLarger } from 'utils/formatters';
 import './CurrencySwap.scss';
 

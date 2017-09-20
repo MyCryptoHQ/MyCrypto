@@ -1,6 +1,6 @@
 import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 
 export interface PrivateKeyValue {
   key: string;

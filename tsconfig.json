@@ -12,9 +12,11 @@
             "es2017", "dom"
         ],
         "allowSyntheticDefaultImports": true,
-        "checkJs": true
+        "checkJs": true,
+        "moduleResolution": "node"
     },
     "include": [
-        "./common/"
+        "./common/",
+        "./node_modules/types-bn/index.d.ts"
     ]
 }

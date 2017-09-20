@@ -1,8 +1,8 @@
 import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 import { BroadcastTransactionStatus } from 'libs/transaction';
-import { IWallet } from 'libs/wallet/index';
-import { AppState } from 'reducers/index';
+import { IWallet } from 'libs/wallet';
+import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 
 export function getWalletInst(state: AppState): null | IWallet {

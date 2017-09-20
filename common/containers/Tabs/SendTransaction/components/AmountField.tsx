@@ -1,5 +1,5 @@
 import React from 'react';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
 
 interface Props {

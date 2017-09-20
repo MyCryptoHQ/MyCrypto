@@ -1,6 +1,6 @@
 import React from 'react';
 
-import translate from 'translations/index';
+import translate from 'translations';
 
 const Help = () =>
   <section className="container" style={{ minHeight: '50%' }}>

@@ -1,6 +1,6 @@
 import { BlockExplorerConfig } from 'config/data';
 import React from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 
 export interface TransactionSucceededProps {
   txHash: string;

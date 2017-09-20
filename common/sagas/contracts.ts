@@ -6,7 +6,7 @@ import { showNotification } from 'actions/notifications';
 import { isValidETHAddress } from 'libs/validators';
 import { put, takeEvery } from 'redux-saga/effects';
 import { Next, Return, Yield } from 'sagas/types';
-import translate from 'translations/index';
+import translate from 'translations';
 
 function* handleAccessContract(
   action: AccessContractAction

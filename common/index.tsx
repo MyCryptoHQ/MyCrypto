@@ -7,8 +7,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import { Root } from './components/index';
-import { Routing, history } from './routing/index';
+import { Root } from './components';
+import { Routing, history } from './routing';
 import { store } from './store';
 
 const renderRoot = Root => {
@@ -27,7 +27,7 @@ const renderRoot = Root => {
 renderRoot(Root);
 
 if (module.hot) {
-  module.hot.accept('reducers/index', () =>
-    store.replaceReducer(require('reducers/index').default)
+  module.hot.accept('reducers', () =>
+    store.replaceReducer(require('reducers').default)
   );
 }

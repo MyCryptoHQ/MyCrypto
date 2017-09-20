@@ -5,7 +5,7 @@ import { Pairs } from 'actions/swapTypes';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import Spinner from 'components/ui/Spinner';
 import { bityReferralURL } from 'config/data';
-import translate from 'translations/index';
+import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 
 interface State {

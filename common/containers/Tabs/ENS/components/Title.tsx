@@ -1,6 +1,6 @@
-import { NewTabLink } from 'components/ui/index';
+import { NewTabLink } from 'components/ui';
 import React from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 
 const ENSDocsLink = () =>
   <NewTabLink

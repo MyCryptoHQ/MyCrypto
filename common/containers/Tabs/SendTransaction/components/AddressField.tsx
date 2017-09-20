@@ -1,11 +1,11 @@
 import { resolveEnsName } from 'actions/ens';
-import { Identicon } from 'components/ui/index';
+import { Identicon } from 'components/ui';
 import { isValidENSAddress, isValidENSorEtherAddress } from 'libs/validators';
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers/index';
+import { AppState } from 'reducers';
 import { getEnsAddress } from 'selectors/ens';
-import translate from 'translations/index';
+import translate from 'translations';
 
 interface PublicProps {
   placeholder: string;

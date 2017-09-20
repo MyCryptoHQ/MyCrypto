@@ -1,6 +1,6 @@
 import bityConfig from 'config/bity';
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import './SwapProgress.scss';
 
 export interface Props {

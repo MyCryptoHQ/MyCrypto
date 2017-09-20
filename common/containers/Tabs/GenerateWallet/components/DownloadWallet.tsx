@@ -1,7 +1,7 @@
 import { getV3Filename, UtcKeystore } from 'libs/keystore';
 import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from './Template';

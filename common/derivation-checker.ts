@@ -10,7 +10,7 @@ const dockerTag = 'latest';
 const bar = new ProgressBar(':percent :bar', { total: derivationRounds });
 
 function promiseFromChildProcess(command) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     return exec(command, (err, stdout) => {
       err ? reject(err) : resolve(stdout);
     });

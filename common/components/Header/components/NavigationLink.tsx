@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router';
-import translate from 'translations/index';
+import translate from 'translations';
 import './NavigationLink.scss';
 
 interface Props {

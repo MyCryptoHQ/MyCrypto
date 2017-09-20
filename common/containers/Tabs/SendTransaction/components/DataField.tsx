@@ -1,7 +1,7 @@
 import { donationAddressMap } from 'config/data';
 import { isValidHex } from 'libs/validators';
 import React from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 
 interface Props {
   value: string;

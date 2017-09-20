@@ -1,6 +1,6 @@
 import { donationAddressMap } from 'config/data';
 import React from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 
 interface Props {
   onDonate(address: string, amount: string, unit: string): void;

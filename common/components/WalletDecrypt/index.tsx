@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import translate from 'translations/index';
+import translate from 'translations';
 import KeystoreDecrypt from './Keystore';
 import LedgerNanoSDecrypt from './LedgerNano';
 import MnemonicDecrypt from './Mnemonic';

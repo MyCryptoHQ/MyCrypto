@@ -2,8 +2,8 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers/index';
-import translate from 'translations/index';
+import { AppState } from 'reducers';
+import translate from 'translations';
 
 interface Props {
   title: string;

@@ -1,6 +1,6 @@
 import { isKeystorePassRequired } from 'libs/keystore';
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 
 export interface KeystoreValue {
   file: string;

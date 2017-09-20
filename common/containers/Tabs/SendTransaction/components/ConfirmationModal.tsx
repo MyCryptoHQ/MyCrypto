@@ -15,7 +15,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getLanguageSelection, getNetworkConfig } from 'selectors/config';
 import { getTokens, getTxFromState } from 'selectors/wallet';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 import './ConfirmationModal.scss';
 
 interface Props {

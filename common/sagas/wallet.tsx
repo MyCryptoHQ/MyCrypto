@@ -20,13 +20,13 @@ import {
   PresaleWallet,
   PrivKeyWallet,
   UtcWallet
-} from 'libs/wallet/index';
+} from 'libs/wallet';
 import React from 'react';
 import { apply, call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { Next, Return, Yield } from 'sagas/types';
-import { getNodeLib, getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
-import translate from 'translations/index';
+import translate from 'translations';
 
 function* updateAccountBalance(): Generator<Yield, Return, Next> {
   try {

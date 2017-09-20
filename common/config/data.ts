@@ -1,4 +1,4 @@
-import { RPCNode, InfuraNode, EtherscanNode } from 'libs/nodes/index';
+import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.0.2)';

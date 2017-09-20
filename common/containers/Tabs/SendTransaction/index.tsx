@@ -4,9 +4,9 @@ import {
 } from 'actions/notifications';
 import { broadcastTx, BroadcastTxRequestedAction } from 'actions/wallet';
 import Big, { BigNumber } from 'bignumber.js';
-import { BalanceSidebar } from 'components/index';
+import { BalanceSidebar } from 'components';
 // COMPONENTS
-import { UnlockHeader } from 'components/ui/index';
+import { UnlockHeader } from 'components/ui';
 import {
   donationAddressMap,
   NetworkConfig,
@@ -15,7 +15,7 @@ import {
 } from 'config/data';
 // CONFIG
 import { TransactionWithoutGas } from 'libs/messages';
-import { RPCNode } from 'libs/nodes/index';
+import { RPCNode } from 'libs/nodes';
 import {
   BroadcastTransactionStatus,
   CompleteTransaction,
@@ -33,7 +33,7 @@ import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
 import { connect } from 'react-redux';
-import { AppState } from 'reducers/index';
+import { AppState } from 'reducers';
 import {
   getGasPriceGwei,
   getNetworkConfig,
@@ -48,7 +48,7 @@ import {
   TokenBalance
 } from 'selectors/wallet';
 
-import translate from 'translations/index';
+import translate from 'translations';
 // UTILS
 import { formatGasLimit } from 'utils/formatters';
 import {
@@ -59,7 +59,7 @@ import {
   DataField,
   Donate,
   GasField
-} from './components/index';
+} from './components';
 // MISC
 import customMessages from './messages';
 

@@ -1,7 +1,7 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import DPATHS from 'config/dpaths';
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations/index';
+import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 
 const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;

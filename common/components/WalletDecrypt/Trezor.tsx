@@ -1,7 +1,7 @@
 import DPATHS from 'config/dpaths';
 import TrezorWallet from 'libs/wallet/trezor';
 import React, { Component } from 'react';
-import translate from 'translations/index';
+import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
