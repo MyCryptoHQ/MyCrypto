@@ -16,10 +16,6 @@ module.exports = {
     'redux-saga',
     'whatwg-fetch'
   ],
-  // enable babelrc
-  babel: {
-    babelrc: true
-  },
   // Settings for webpack-image-loader image compression
   imageCompressionOptions: {
     optipng: {
