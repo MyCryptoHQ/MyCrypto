@@ -34,13 +34,11 @@ export default class Modal extends Component<Props, {}> {
   }
 
   public updateBodyClass() {
-    // $FlowFixMe
     document.body.classList.toggle('no-scroll', !!this.props.isOpen);
   }
 
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.escapeListner);
-    // $FlowFixMe
     document.body.classList.remove('no-scroll');
   }
 

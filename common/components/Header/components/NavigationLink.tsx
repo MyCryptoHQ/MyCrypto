@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import translate from 'translations';
+import translate, {translateRaw} from 'translations';
 import './NavigationLink.scss';
 
 interface Props {
@@ -23,8 +23,7 @@ export default class NavigationLink extends React.Component<Props, {}> {
         location.pathname === link.to ||
         location.pathname.substring(1) === link.to
     });
-    // $FlowFixMe flow is wrong, this isn't an element
-    const linkLabel = `nav item: ${translate(link.name, true)}`;
+    const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
     const linkEl = link.external
       ? <a

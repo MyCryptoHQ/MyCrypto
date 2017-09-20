@@ -192,7 +192,6 @@ class ConfirmationModal extends React.Component<Props, State> {
     let toAddress;
 
     if (token) {
-      // $FlowFixMe - If you have a token prop, you have data
       const tokenData = ERC20.$transfer(data);
       fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
       toAddress = tokenData.to;

@@ -194,7 +194,6 @@ export default function* walletSaga(): SagaIterator {
     takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
     takeEvery('WALLET_SET', updateBalances),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
-    // $FlowFixMe but how do I specify param types here flow?
     takeEvery('WALLET_BROADCAST_TX_REQUESTED', broadcastTx)
   ];
 }

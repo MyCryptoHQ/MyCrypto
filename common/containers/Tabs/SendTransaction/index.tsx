@@ -69,7 +69,6 @@ interface State {
   to: string;
   // amount value
   value: string;
-  // $FlowFixMe - Comes from getParam not validating unit
   unit: UnitKeys;
   token?: Token;
   gasLimit: string;

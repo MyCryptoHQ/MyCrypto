@@ -1,7 +1,7 @@
 import { showNotification } from 'actions/notifications';
 import bityConfig from 'config/bity';
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, {translateRaw} from 'translations';
 import './SwapProgress.scss';
 
 export interface Props {
@@ -39,7 +39,7 @@ export default class SwapProgress extends Component<Props, State> {
       if (!hasShownViewTx) {
         let linkElement;
         let link;
-        const notificationMessage = translate('SUCCESS_3', true) + outputTx;
+        const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
         // everything but BTC is a token
         if (destinationKind !== 'BTC') {
           link = bityConfig.ETHTxExplorer(outputTx);

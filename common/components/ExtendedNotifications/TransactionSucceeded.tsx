@@ -1,6 +1,6 @@
 import { BlockExplorerConfig } from 'config/data';
 import React from 'react';
-import translate from 'translations';
+import {translateRaw} from 'translations';
 
 export interface TransactionSucceededProps {
   txHash: string;
@@ -17,7 +17,7 @@ const TransactionSucceeded = ({
   return (
     <div>
       <p>
-        {translate('SUCCESS_3', true) + txHash}
+        {translateRaw('SUCCESS_3') + txHash}
       </p>
       <a
         className="btn btn-xs btn-info string"

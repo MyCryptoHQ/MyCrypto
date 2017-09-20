@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import {translateRaw} from 'translations';
 
 interface Props {
   togglePassword: Function;
@@ -21,12 +21,12 @@ export default class PasswordInput extends Component<Props, {}> {
               name="password"
               className={`form-control ${meta.error ? 'is-invalid' : ''}`}
               type={isPasswordVisible ? 'text' : 'password'}
-              placeholder={translate('GEN_Placeholder_1', true)}
-              aria-label={translate('GEN_Aria_1', true)}
+              placeholder={translateRaw('GEN_Placeholder_1')}
+              aria-label={translateRaw('GEN_Aria_1')}
             />
             <span
               onClick={togglePassword}
-              aria-label={translate('GEN_Aria_2', true)}
+              aria-label={translateRaw('GEN_Aria_2')}
               role="button"
               className="input-group-addon eye"
             />

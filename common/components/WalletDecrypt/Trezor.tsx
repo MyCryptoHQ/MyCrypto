@@ -1,7 +1,7 @@
 import DPATHS from 'config/dpaths';
 import TrezorWallet from 'libs/wallet/trezor';
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, {translateRaw} from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
@@ -74,7 +74,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={translate('x_Trezor', true)}
+          walletType={translateRaw('x_Trezor')}
         />
       </section>
     );
