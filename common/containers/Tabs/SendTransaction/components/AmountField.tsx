@@ -60,7 +60,10 @@ export default class AmountField extends React.Component {
 
   public onValueChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
     if (this.props.onChange) {
-      this.props.onChange(e.(e.target as HTMLInputElement), this.props.unit);
+      this.props.onChange(
+        (e.target as HTMLInputElement).value,
+        this.props.unit
+      );
     }
   };
 
