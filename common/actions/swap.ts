@@ -43,7 +43,9 @@ export function destinationKindSwap(value: string): DestinationKindSwapAction {
   };
 }
 
-export function originAmountSwap(value?: number | null): OriginAmountSwapAction {
+export function originAmountSwap(
+  value?: number | null
+): OriginAmountSwapAction {
   return {
     type: 'SWAP_ORIGIN_AMOUNT',
     value

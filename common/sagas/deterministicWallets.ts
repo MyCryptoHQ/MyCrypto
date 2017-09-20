@@ -25,11 +25,8 @@ import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
 
 function* getDeterministicWallets(
-  action?: GetDeterministicWalletsAction
+  action: GetDeterministicWalletsAction
 ): SagaIterator {
-  if (!action) {
-  }
-
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
   let pathBase;
   let hdk;
@@ -48,8 +45,7 @@ function* getDeterministicWallets(
   } else {
     return;
   }
-
-  const wallets = [];
+  const wallets: DeterministicWalletData[] = [];
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
     const dkey = hdk.derive(`${pathBase}/${index}`);
@@ -128,11 +124,7 @@ function* updateWalletTokenValues(): SagaIterator {
   }
 }
 
-export default function* deterministicWalletsSaga(): Generator<
-  Yield,
-  Return,
-  Next
-> {
+export default function* deterministicWalletsSaga(): SagaIterator {
   yield takeLatest('DW_GET_WALLETS', getDeterministicWallets);
   yield takeEvery('DW_SET_DESIRED_TOKEN', updateWalletTokenValues);
 }

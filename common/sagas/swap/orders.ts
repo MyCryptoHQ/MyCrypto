@@ -89,7 +89,7 @@ function* postBityOrderCreate(
     const order = yield call(
       postOrder,
       payload.amount,
-      payload.destAddress,
+      payload.destinationAddress,
       payload.mode,
       payload.pair
     );
@@ -134,7 +134,7 @@ export function* bityTimeRemaining(): SagaIterator {
       if (validUntil.isAfter(now)) {
         const duration = moment.duration(validUntil.diff(now));
         const seconds = duration.asSeconds();
-        yield put(orderTimeSwap(parseInt(seconds)));
+        yield put(orderTimeSwap(seconds));
         // TODO (!Important) - check orderStatus here and stop polling / show notifications based on status
       } else {
         switch (swap.orderStatus) {

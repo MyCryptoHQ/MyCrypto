@@ -5,10 +5,7 @@ import {
 import { delay, SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-function* handleNotification(action?: ShowNotificationAction): SagaIterator {
-  if (!action) {
-    return;
-  }
+function* handleNotification(action: ShowNotificationAction): SagaIterator {
   const { duration } = action.payload;
   // show forever
   if (duration === 0 || duration === 'infinity') {

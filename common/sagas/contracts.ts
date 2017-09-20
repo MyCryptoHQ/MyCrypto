@@ -9,7 +9,7 @@ import { put, takeEvery } from 'redux-saga/effects';
 import translate from 'translations';
 
 function* handleAccessContract(action: AccessContractAction): SagaIterator {
-  const contractFunctions = [];
+  const contractFunctions: any[] = [];
 
   if (!action.address || !isValidETHAddress(action.address)) {
     yield put(showNotification('danger', translate('ERROR_5'), 5000));

@@ -1,7 +1,6 @@
 import handleConfigChanges from './config';
 import contracts from './contracts';
 import deterministicWallets from './deterministicWallets';
-import ens from './ens';
 import notifications from './notifications';
 import rates from './rates';
 import {
@@ -19,7 +18,6 @@ export default {
   pollBityOrderStatusSaga,
   getBityRatesSaga,
   contracts,
-  ens,
   notifications,
   rates,
   wallet,

@@ -83,6 +83,7 @@ export interface UpdateDeterministicWalletArgs {
   address: string;
   value?: BigNumber;
   tokenValues?: TokenValues;
+  index?: any;
 }
 
 export interface UpdateDeterministicWalletAction {

@@ -10,7 +10,7 @@ export function* loadBityRates(action?: any): SagaIterator {
       const data = yield call(getAllRates);
       yield put(loadBityRatesSucceededSwap(data));
     } catch (error) {
-      yield put(yield showNotification('danger', error.message));
+      yield put(showNotification('danger', error.message));
     }
     yield call(delay, 5000);
   }

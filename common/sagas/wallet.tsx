@@ -35,7 +35,7 @@ function* updateAccountBalance(): SagaIterator {
       return;
     }
     const node: INode = yield select(getNodeLib);
-    const address = yield wallet.getAddress();
+    const address = yield call(wallet.getAddress);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalance(balance));
@@ -53,7 +53,7 @@ function* updateTokenBalances(): SagaIterator {
       return;
     }
     // FIXME handle errors
-    const address = yield wallet.getAddress();
+    const address = yield call(wallet.getAddress);
     // network request
     const tokenBalances = yield apply(node, node.getTokenBalances, [
       address,
@@ -78,12 +78,9 @@ function* updateBalances(): SagaIterator {
 }
 
 export function* unlockPrivateKey(
-  action?: UnlockPrivateKeyAction
+  action: UnlockPrivateKeyAction
 ): SagaIterator {
-  if (!action) {
-    return;
-  }
-  let wallet = null;
+  let wallet: IWallet | null = null;
 
   try {
     if (action.payload.key.length === 64) {
@@ -101,14 +98,10 @@ export function* unlockPrivateKey(
   yield put(setWallet(wallet));
 }
 
-export function* unlockKeystore(action?: UnlockKeystoreAction): SagaIterator {
-  if (!action) {
-    return;
-  }
-
+export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   const file = action.payload.file;
   const pass = action.payload.password;
-  let wallet = null;
+  let wallet: null | IWallet = null;
 
   try {
     const parsed = JSON.parse(file);
@@ -142,10 +135,7 @@ export function* unlockKeystore(action?: UnlockKeystoreAction): SagaIterator {
   yield put(setWallet(wallet));
 }
 
-function* unlockMnemonic(action?: UnlockMnemonicAction): SagaIterator {
-  if (!action) {
-    return;
-  }
+function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
   let wallet;
   const { phrase, pass, path, address } = action.payload;
 
