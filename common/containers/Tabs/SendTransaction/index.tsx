@@ -25,7 +25,7 @@ import {
   TransactionInput
 } from 'libs/transaction';
 
-import { Ether, GWei, TUnit, Wei } from 'libs/units';
+import { Ether, GWei, UnitKeys, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 // LIBS
 import { IWallet } from 'libs/wallet/IWallet';
@@ -70,7 +70,7 @@ interface State {
   // amount value
   value: string;
   // $FlowFixMe - Comes from getParam not validating unit
-  unit: TUnit;
+  unit: UnitKeys;
   token?: Token;
   gasLimit: string;
   data: string;

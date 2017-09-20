@@ -9,6 +9,7 @@ import { Token } from 'config/data';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 import { INode } from 'libs/nodes/INode';
+import { SagaIterator } from 'redux-saga';
 import {
   all,
   apply,
@@ -18,7 +19,6 @@ import {
   takeEvery,
   takeLatest
 } from 'redux-saga/effects';
-import { Next, Return, Yield } from 'sagas/types';
 import { getNodeLib } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
@@ -26,7 +26,7 @@ import translate from 'translations';
 
 function* getDeterministicWallets(
   action?: GetDeterministicWalletsAction
-): Generator<Yield, Return, Next> {
+): SagaIterator {
   if (!action) {
   }
 
@@ -45,7 +45,9 @@ function* getDeterministicWallets(
     hdk.publicKey = new Buffer(publicKey, 'hex');
     hdk.chainCode = new Buffer(chainCode, 'hex');
     pathBase = 'm';
-  } else return;
+  } else {
+    return;
+  }
 
   const wallets = [];
   for (let i = 0; i < limit; i++) {
@@ -65,7 +67,7 @@ function* getDeterministicWallets(
 }
 
 // Grab each wallet's main network token, and update it with it
-function* updateWalletValues(): Generator<Yield, Return, Next> {
+function* updateWalletValues(): SagaIterator {
   const node: INode = yield select(getNodeLib);
   const wallets: DeterministicWalletData[] = yield select(getWallets);
 
@@ -88,7 +90,7 @@ function* updateWalletValues(): Generator<Yield, Return, Next> {
 }
 
 // Grab the current desired token, and update the wallet with it
-function* updateWalletTokenValues(): Generator<Yield, Return, Next> {
+function* updateWalletTokenValues(): SagaIterator {
   const desiredToken: string = yield select(getDesiredToken);
   if (!desiredToken) {
     return;

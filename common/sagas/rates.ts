@@ -1,7 +1,7 @@
 import { fiatSucceededRates } from 'actions/rates';
 import { handleJSONResponse } from 'api/utils';
+import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { Next, Return, Yield } from 'sagas/types';
 
 const symbols = ['USD', 'EUR', 'GBP', 'BTC', 'CHF', 'REP'];
 const symbolsURL = symbols.join(',');
@@ -13,7 +13,7 @@ const fetchRates = () =>
     `https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=${symbolsURL}`
   ).then(response => handleJSONResponse(response, ERROR_MESSAGE));
 
-export function* handleRatesRequest(): Generator<Yield, Return, Next> {
+export function* handleRatesRequest(): SagaIterator {
   try {
     const rates = yield call(fetchRates);
     yield put(fiatSucceededRates(rates));
@@ -22,6 +22,6 @@ export function* handleRatesRequest(): Generator<Yield, Return, Next> {
   }
 }
 
-export default function* ratesSaga(): Generator<Yield, Return, Next> {
+export default function* ratesSaga(): SagaIterator {
   yield takeLatest('RATES_FIAT_REQUESTED', handleRatesRequest);
 }

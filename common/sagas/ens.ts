@@ -1,4 +1,4 @@
-import { delay } from 'redux-saga';
+import { delay, SagaIterator } from 'redux-saga';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { cacheEnsAddress } from 'actions/ens';
@@ -7,12 +7,10 @@ import { ResolveEnsNameAction } from 'actions/ens';
 import { donationAddressMap } from 'config/data';
 import { getEnsAddress } from 'selectors/ens';
 
-import { Next, Return, Yield } from 'sagas/types';
-
-function* resolveEns(
-  action?: ResolveEnsNameAction
-): Generator<Yield, Return, Next> {
-  if (!action) return;
+function* resolveEns(action?: ResolveEnsNameAction): SagaIterator {
+  if (!action) {
+    return;
+  }
   const ensName = action.payload;
   // FIXME Add resolve logic
   ////                     _ens.getAddress(scope.addressDrtv.ensAddressField, function(data) {
@@ -35,6 +33,6 @@ function* resolveEns(
   yield put(cacheEnsAddress(ensName, donationAddressMap.ETH));
 }
 
-export default function* notificationsSaga(): Generator<Yield, Return, Next> {
+export default function* notificationsSaga(): SagaIterator {
   yield takeEvery('ENS_RESOLVE', resolveEns);
 }
