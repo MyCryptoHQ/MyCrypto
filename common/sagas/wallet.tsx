@@ -22,13 +22,13 @@ import {
   UtcWallet
 } from 'libs/wallet';
 import React from 'react';
+import { SagaIterator } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery } from 'redux-saga/effects';
-import { Next, Return, Yield } from 'sagas/types';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 
-function* updateAccountBalance(): Generator<Yield, Return, Next> {
+function* updateAccountBalance(): SagaIterator {
   try {
     const wallet: null | IWallet = yield select(getWalletInst);
     if (!wallet) {
@@ -44,7 +44,7 @@ function* updateAccountBalance(): Generator<Yield, Return, Next> {
   }
 }
 
-function* updateTokenBalances(): Generator<Yield, Return, Next> {
+function* updateTokenBalances(): SagaIterator {
   try {
     const node: INode = yield select(getNodeLib);
     const wallet: null | IWallet = yield select(getWalletInst);
@@ -72,14 +72,14 @@ function* updateTokenBalances(): Generator<Yield, Return, Next> {
   }
 }
 
-function* updateBalances(): Generator<Yield, Return, Next> {
+function* updateBalances(): SagaIterator {
   yield fork(updateAccountBalance);
   yield fork(updateTokenBalances);
 }
 
 export function* unlockPrivateKey(
   action?: UnlockPrivateKeyAction
-): Generator<Yield, Return, Next> {
+): SagaIterator {
   if (!action) {
     return;
   }
@@ -101,9 +101,7 @@ export function* unlockPrivateKey(
   yield put(setWallet(wallet));
 }
 
-export function* unlockKeystore(
-  action?: UnlockKeystoreAction
-): Generator<Yield, Return, Next> {
+export function* unlockKeystore(action?: UnlockKeystoreAction): SagaIterator {
   if (!action) {
     return;
   }
@@ -144,9 +142,7 @@ export function* unlockKeystore(
   yield put(setWallet(wallet));
 }
 
-function* unlockMnemonic(
-  action?: UnlockMnemonicAction
-): Generator<Yield, Return, Next> {
+function* unlockMnemonic(action?: UnlockMnemonicAction): SagaIterator {
   if (!action) {
     return;
   }
@@ -164,16 +160,21 @@ function* unlockMnemonic(
   yield put(setWallet(wallet));
 }
 
-function* broadcastTx(
-  action: BroadcastTxRequestedAction
-): Generator<Yield, Return, Next> {
+function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
   const signedTx = action.payload.signedTx;
   try {
     const node: INode = yield select(getNodeLib);
-    const network = yield select(getNetworkConfig)
+    const network = yield select(getNetworkConfig);
     const txHash = yield apply(node, node.sendRawTx, [signedTx]);
     yield put(
-      showNotification('success', <TransactionSucceeded txHash={txHash} blockExplorer={network.blockExplorer} />, 0)
+      showNotification(
+        'success',
+        <TransactionSucceeded
+          txHash={txHash}
+          blockExplorer={network.blockExplorer}
+        />,
+        0
+      )
     );
     yield put({
       type: 'WALLET_BROADCAST_TX_SUCCEEDED',
@@ -194,7 +195,7 @@ function* broadcastTx(
   }
 }
 
-export default function* walletSaga(): Generator<Yield, Return, Next> {
+export default function* walletSaga(): SagaIterator {
   // useful for development
   yield call(updateBalances);
   yield [

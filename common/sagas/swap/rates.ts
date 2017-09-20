@@ -1,14 +1,10 @@
-import { delay } from 'redux-saga';
-import { call, cancel, fork, put, take, takeLatest } from 'redux-saga/effects';
-
-import { getAllRates } from 'api/bity';
-
 import { showNotification } from 'actions/notifications';
 import { loadBityRatesSucceededSwap } from 'actions/swap';
+import { getAllRates } from 'api/bity';
+import { delay, SagaIterator } from 'redux-saga';
+import { call, cancel, fork, put, take, takeLatest } from 'redux-saga/effects';
 
-import { Next, Return, Yield } from 'sagas/types';
-
-export function* loadBityRates(action?: any): Generator<Yield, Return, Next> {
+export function* loadBityRates(action?: any): SagaIterator {
   while (true) {
     try {
       const data = yield call(getAllRates);
@@ -21,13 +17,13 @@ export function* loadBityRates(action?: any): Generator<Yield, Return, Next> {
 }
 
 // Fork our recurring API call, watch for the need to cancel.
-function* handleBityRates(): Generator<Yield, Return, Next> {
+function* handleBityRates(): SagaIterator {
   const loadBityRatesTask = yield fork(loadBityRates);
   yield take('SWAP_STOP_LOAD_BITY_RATES');
   yield cancel(loadBityRatesTask);
 }
 
 // Watch for latest SWAP_LOAD_BITY_RATES_REQUESTED action.
-export function* getBityRatesSaga(): Generator<Yield, Return, Next> {
+export function* getBityRatesSaga(): SagaIterator {
   yield takeLatest('SWAP_LOAD_BITY_RATES_REQUESTED', handleBityRates);
 }
