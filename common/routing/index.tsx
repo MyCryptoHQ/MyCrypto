@@ -1,5 +1,4 @@
 import App from 'containers';
-import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import Help from 'containers/Tabs/Help';
@@ -18,7 +17,6 @@ export const Routing = () =>
     <Route name="Help" path="/help" component={Help} />
     <Route name="Swap" path="/swap" component={Swap} />
     <Route name="Send" path="/send-transaction" component={SendTransaction} />
-    <Route name="Contracts" path="/contracts" component={Contracts} />
     <Route name="ENS" path="/ens" component={ENS} />
     <Redirect from="/*" to="/" />
   </Route>;
