@@ -61,50 +61,62 @@ export default class Header extends Component {
                 alt="MyEtherWallet"
               />
             </Link>
-            <div className="Header-branding-title-tagline">
-              <span className="Header-branding-title-tagline-version">
+            <div className="Header-branding-right">
+              <span className="Header-branding-right-version">
                 v{VERSION}
               </span>
 
-              <GasPriceDropdown
-                value={this.props.gasPriceGwei}
-                onChange={this.props.changeGasPrice}
-              />
+              <div className="Header-branding-right-dropdown">
+                <GasPriceDropdown
+                  value={this.props.gasPriceGwei}
+                  onChange={this.props.changeGasPrice}
+                />
+              </div>
 
-              <Dropdown
-                ariaLabel={`change language. current language ${selectedLanguage.name}`}
-                options={languages}
-                formatTitle={o => o.name}
-                value={selectedLanguage}
-                extra={[
-                  <li key={'separator'} role="separator" className="divider" />,
-                  <li key={'disclaimer'}>
-                    <a data-toggle="modal" data-target="#disclaimerModal">
-                      Disclaimer
-                    </a>
-                  </li>
-                ]}
-                onChange={this.changeLanguage}
-              />
+              <div className="Header-branding-right-dropdown">
+                <Dropdown
+                  ariaLabel={`change language. current language ${selectedLanguage.name}`}
+                  options={languages}
+                  formatTitle={o => o.name}
+                  value={selectedLanguage}
+                  color="white"
+                  size="smr"
+                  extra={[
+                    <li
+                      key={'separator'}
+                      role="separator"
+                      className="divider"
+                    />,
+                    <li key={'disclaimer'}>
+                      <a data-toggle="modal" data-target="#disclaimerModal">
+                        Disclaimer
+                      </a>
+                    </li>
+                  ]}
+                  onChange={this.changeLanguage}
+                />
+              </div>
 
-              <Dropdown
-                ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
-                options={Object.keys(NODES)}
-                formatTitle={o => [
-                  NODES[o].network,
-                  ' ',
-                  <small key="service">
-                    ({NODES[o].service})
-                  </small>
-                ]}
-                value={nodeSelection}
-                extra={
-                  <li>
-                    <a onClick={() => {}}>Add Custom Node</a>
-                  </li>
-                }
-                onChange={changeNode}
-              />
+              <div className="Header-branding-right-dropdown">
+                <Dropdown
+                  ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
+                  options={Object.keys(NODES)}
+                  formatTitle={o =>
+                    <span>
+                      {NODES[o].network} <small>({NODES[o].service})</small>
+                    </span>}
+                  label="Network"
+                  value={nodeSelection}
+                  color="white"
+                  size="smr"
+                  extra={
+                    <li>
+                      <a onClick={() => {}}>Add Custom Node</a>
+                    </li>
+                  }
+                  onChange={changeNode}
+                />
+              </div>
             </div>
           </section>
         </section>

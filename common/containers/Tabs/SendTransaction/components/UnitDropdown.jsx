@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import SimpleDropDown from 'components/ui/SimpleDropDown';
+import SimpleDropdown from 'components/ui/SimpleDropdown';
 
 type UnitDropdownProps = {
   value: string,
@@ -22,7 +22,7 @@ export default class UnitDropdown extends React.Component {
 
     return (
       <div className="input-group-btn">
-        <SimpleDropDown
+        <SimpleDropdown
           value={value}
           onChange={this.onChange}
           options={options}

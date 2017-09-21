@@ -1,9 +1,9 @@
 // @flow
+import './GasPriceDropdown.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash/throttle';
-
-import './GasPriceDropdown.scss';
+import DropdownShell from 'components/ui/DropdownShell';
 import { gasPriceDefaults } from 'config/data';
 
 type Props = {
@@ -12,8 +12,6 @@ type Props = {
 };
 
 export default class GasPriceDropdown extends Component {
-  state = { expanded: false };
-
   static propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func.isRequired
@@ -25,25 +23,20 @@ export default class GasPriceDropdown extends Component {
   }
 
   render() {
-    const { expanded } = this.state;
+    const { value } = this.props;
     return (
-      <span className={`dropdown ${expanded ? 'open' : ''}`}>
-        <a
-          aria-haspopup="true"
-          aria-label="adjust gas price"
-          className="dropdown-toggle"
-          onClick={this.toggleExpanded}
-        >
-          <span>Gas Price</span>: {this.props.value} Gwei
-          <i className="caret" />
-        </a>
-        {expanded &&
-          <ul className="dropdown-menu GasPrice-dropdown-menu">
+      <DropdownShell
+        color="white"
+        size="smr"
+        ariaLabel={`adjust gas price. current price is ${value} gwei`}
+        renderLabel={() => `Gas Price: ${value} Gwei`}
+        renderOptions={() =>
+          <div className="dropdown-menu GasPrice-dropdown-menu">
             <div className="GasPrice-header">
-              <span>Gas Price</span>: {this.props.value} Gwei
+              <span>Gas Price</span>: {value} Gwei
               <input
                 type="range"
-                value={this.props.value}
+                value={value}
                 min={gasPriceDefaults.gasPriceMinGwei}
                 max={gasPriceDefaults.gasPriceMaxGwei}
                 onChange={this.handleGasPriceChange}
@@ -73,18 +66,10 @@ export default class GasPriceDropdown extends Component {
                 </a>
               </p>
             </div>
-          </ul>}
-      </span>
+          </div>}
+      />
     );
   }
-
-  toggleExpanded = () => {
-    this.setState(state => {
-      return {
-        expanded: !state.expanded
-      };
-    });
-  };
 
   updateGasPrice = (value: string) => {
     this.props.onChange(parseInt(value, 10));

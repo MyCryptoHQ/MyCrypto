@@ -1,48 +1,38 @@
 // @flow
 import React, { Component } from 'react';
+import DropdownShell from './DropdownShell';
 
 type Props<T> = {
   value: T,
   options: T[],
+  label?: string,
   ariaLabel: string,
-  formatTitle: (option: T) => any,
   extra?: any,
+  size?: string,
+  color?: string,
+  formatTitle?: (option: T) => any,
   onChange: (value: T) => void
-};
-
-type State = {
-  expanded: boolean
 };
 
 export default class DropdownComponent<T: *> extends Component<
   void,
   Props<T>,
-  State
+  void
 > {
   props: Props<T>;
-
-  state = {
-    expanded: false
-  };
+  dropdownShell: DropdownShell;
 
   render() {
-    const { options, value, ariaLabel, extra } = this.props;
-    const { expanded } = this.state;
+    const { options, value, ariaLabel, color, size, extra } = this.props;
+    const label = this.props.label ? `${this.props.label}:` : '';
 
     return (
-      <span className={`dropdown ${expanded ? 'open' : ''}`}>
-        <a
-          tabIndex="0"
-          aria-haspopup="true"
-          aria-expanded="false"
-          aria-label={ariaLabel}
-          className="dropdown-toggle"
-          onClick={this.toggleExpanded}
-        >
-          {this.formatTitle(value)}
-          <i className="caret" />
-        </a>
-        {expanded &&
+      <DropdownShell
+        renderLabel={() =>
+          <span>
+            {label} {this.formatTitle(value)}
+          </span>}
+        renderOptions={() =>
           <ul className="dropdown-menu">
             {options.map((option, i) => {
               return (
@@ -58,24 +48,24 @@ export default class DropdownComponent<T: *> extends Component<
             })}
             {extra}
           </ul>}
-      </span>
+        size={size}
+        color={color}
+        ariaLabel={ariaLabel}
+        ref={el => (this.dropdownShell = el)}
+      />
     );
   }
 
   formatTitle(option: any) {
-    return this.props.formatTitle(option);
+    if (this.props.formatTitle) {
+      return this.props.formatTitle(option);
+    } else {
+      return option;
+    }
   }
-
-  toggleExpanded = () => {
-    this.setState(state => {
-      return {
-        expanded: !state.expanded
-      };
-    });
-  };
 
   onChange = (value: any) => {
     this.props.onChange(value);
-    this.setState({ expanded: false });
+    this.dropdownShell.close();
   };
 }
