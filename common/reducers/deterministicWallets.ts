@@ -1,7 +1,7 @@
 import {
   DeterministicWalletAction,
   DeterministicWalletData
-} from 'actions/deterministicWallets';
+} from 'actions/deterministicWallets/actionTypes';
 
 export interface State {
   wallets: DeterministicWalletData[];

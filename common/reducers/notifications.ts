@@ -3,7 +3,7 @@ import {
   Notification,
   NotificationsAction,
   ShowNotificationAction
-} from 'actions/notifications';
+} from 'actions/notifications/actionTypes';
 
 export type State = Notification[];
 

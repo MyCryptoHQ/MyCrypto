@@ -3,7 +3,7 @@ import {
   SetTokenBalancesAction,
   SetWalletAction,
   WalletAction
-} from 'actions/wallet';
+} from 'actions/wallet/actionTypes';
 import Big from 'bignumber.js';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 import { Ether } from 'libs/units';

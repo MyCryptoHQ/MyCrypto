@@ -1,10 +1,11 @@
+import { languages, NODES } from '../config/data';
+
 import {
   ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
   ConfigAction
-} from 'actions/config';
-import { languages, NODES } from '../config/data';
+} from 'actions/config/actionTypes';
 
 export interface State {
   // FIXME

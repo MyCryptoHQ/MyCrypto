@@ -1,4 +1,4 @@
-import { FiatSucceededRatesAction, RatesAction } from 'actions/rates';
+import { FiatSucceededRatesAction, RatesAction } from 'actions/rates/actionTypes';
 
 // SYMBOL -> PRICE TO BUY 1 ETH
 export interface State {
