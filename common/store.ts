@@ -72,4 +72,4 @@ const configureStore = () => {
   return store;
 };
 
-export const store = configureStore();
+export const configuredStore = configureStore();

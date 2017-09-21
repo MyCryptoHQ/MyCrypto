@@ -1,12 +1,10 @@
 import { TShowNotification } from 'actions/notifications';
 import {
-  loadBityRatesRequestedSwap,
-  restartSwap,
-  startOrderTimerSwap,
-  startPollBityOrderStatus,
-  stopLoadBityRatesSwap,
-  stopOrderTimerSwap,
-  stopPollBityOrderStatus
+  TRestartSwap,
+  TStartOrderTimerSwap,
+  TStartPollBityOrderStatus,
+  TStopOrderTimerSwap,
+  TStopPollBityOrderStatus
 } from 'actions/swap';
 import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
@@ -19,7 +17,6 @@ interface ReduxStateProps {
   originKind: string;
   originAmount: number;
   destinationAmount: number;
-  isPostingOrder: boolean;
   reference: string;
   secondsRemaining?: number;
   paymentAddress: string;
@@ -28,13 +25,11 @@ interface ReduxStateProps {
 }
 
 interface ReduxActionProps {
-  loadBityRatesRequestedSwap: typeof loadBityRatesRequestedSwap;
-  restartSwap: typeof restartSwap;
-  stopLoadBityRatesSwap: typeof stopLoadBityRatesSwap;
-  startOrderTimerSwap: typeof startOrderTimerSwap;
-  startPollBityOrderStatus: typeof startPollBityOrderStatus;
-  stopOrderTimerSwap: typeof stopOrderTimerSwap;
-  stopPollBityOrderStatus: typeof stopPollBityOrderStatus;
+  restartSwap: TRestartSwap;
+  startOrderTimerSwap: TStartOrderTimerSwap;
+  startPollBityOrderStatus: TStartPollBityOrderStatus;
+  stopOrderTimerSwap: TStopOrderTimerSwap;
+  stopPollBityOrderStatus: TStopPollBityOrderStatus;
   showNotification: TShowNotification;
 }
 

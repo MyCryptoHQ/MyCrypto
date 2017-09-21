@@ -11,13 +11,13 @@ import { browserHistory, Redirect, Route } from 'react-router';
 
 export const history = getHistory();
 export const Routing = () =>
-  <Route name="App" path="" component={App}>
-    <Route name="GenerateWallet" path="/" component={GenerateWallet} />
-    <Route name="ViewWallet" path="/view-wallet" component={ViewWallet} />
-    <Route name="Help" path="/help" component={Help} />
-    <Route name="Swap" path="/swap" component={Swap} />
-    <Route name="Send" path="/send-transaction" component={SendTransaction} />
-    <Route name="ENS" path="/ens" component={ENS} />
+  <Route path="" component={App}>
+    <Route path="/" component={GenerateWallet} />
+    <Route path="/view-wallet" component={ViewWallet} />
+    <Route path="/help" component={Help} />
+    <Route path="/swap" component={Swap} />
+    <Route path="/send-transaction" component={SendTransaction} />
+    <Route path="/ens" component={ENS} />
     <Redirect from="/*" to="/" />
   </Route>;
 

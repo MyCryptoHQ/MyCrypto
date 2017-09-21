@@ -18,7 +18,7 @@ export default class RPCRequests {
     };
   }
 
-  public estimateGas<T>(transaction: T): EstimateGasRequest {
+  public estimateGas(transaction): EstimateGasRequest {
     return {
       method: 'eth_estimateGas',
       params: [transaction]
@@ -32,7 +32,7 @@ export default class RPCRequests {
     };
   }
 
-  public ethCall<T>(transaction: T): CallRequest {
+  public ethCall(transaction): CallRequest {
     return {
       method: 'eth_call',
       params: [transaction, 'pending']

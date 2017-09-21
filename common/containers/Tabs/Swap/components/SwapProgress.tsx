@@ -1,7 +1,4 @@
-import {
-  showNotification,
-  TShowNotification
-} from 'actions/notifications';
+import { TShowNotification } from 'actions/notifications';
 import bityConfig from 'config/bity';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';

@@ -1,6 +1,6 @@
 export interface EtherscanReqBase {
   module: string;
-  action: string;
+  action?: string;
 }
 
 export interface SendRawTxRequest extends EtherscanReqBase {

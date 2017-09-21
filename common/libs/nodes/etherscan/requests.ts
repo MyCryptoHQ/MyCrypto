@@ -1,4 +1,3 @@
-
 import { Token } from 'config/data';
 import ERC20 from 'libs/erc20';
 import RPCRequests from '../rpc/requests';
@@ -20,7 +19,7 @@ export default class EtherscanRequests extends RPCRequests {
     };
   }
 
-  public estimateGas<T>(transaction: T): EstimateGasRequest {
+  public estimateGas(transaction): EstimateGasRequest {
     return {
       module: 'proxy',
       method: 'eth_estimateGas',
@@ -40,7 +39,7 @@ export default class EtherscanRequests extends RPCRequests {
     };
   }
 
-  public ethCall<T>(transaction: T): CallRequest {
+  public ethCall(transaction): CallRequest {
     return {
       module: 'proxy',
       action: 'eth_call',

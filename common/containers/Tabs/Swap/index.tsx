@@ -1,4 +1,7 @@
-import { TShowNotification } from 'actions/notifications';
+import {
+  showNotification as dShowNotification,
+  TShowNotification
+} from 'actions/notifications';
 import swapActions, {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
@@ -17,6 +20,7 @@ import swapActions, {
 } from 'actions/swap';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
@@ -31,14 +35,14 @@ interface ReduxStateProps {
   destinationKindOptions: string[];
   originKindOptions: string[];
   bityRates: any;
-  originAmount?: number;
-  destinationAmount?: number;
+  originAmount: number;
+  destinationAmount: number;
   isPostingOrder: boolean;
   isFetchingRates: boolean;
   bityOrder: any;
   secondsRemaining?: number;
-  paymentAddress?: string;
-  orderStatus?: string;
+  paymentAddress: string;
+  orderStatus: string;
   outputTx?: string;
 }
 
@@ -46,7 +50,7 @@ interface ReduxActionProps {
   changeStepSwap: TChangeStepSwap;
   originKindSwap: TOriginKindSwap;
   destinationKindSwap: TDestinationKindSwap;
-  originAmountSwap: TOriginKindSwap;
+  originAmountSwap: TOriginAmountSwap;
   destinationAmountSwap: TDestinationAmountSwap;
   loadBityRatesRequestedSwap: TLoadBityRatesRequestedSwap;
   destinationAddressSwap: TDestinationAddressSwap;
@@ -184,7 +188,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: AppState) {
   return {
     outputTx: state.swap.outputTx,
     isPostingOrder: state.swap.isPostingOrder,
@@ -205,6 +209,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { ...swapActions, TShowNotification })(
-  Swap
-);
+export default connect(mapStateToProps, {
+  ...swapActions,
+  showNotification: dShowNotification
+})(Swap);

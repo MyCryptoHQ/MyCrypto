@@ -1,7 +1,7 @@
 import Translate from 'components/Translate';
 import React from 'react';
 import { getLanguageSelection } from 'selectors/config';
-import { store } from 'store';
+import { configuredStore } from 'store';
 const fallbackLanguage = 'en';
 const repository = {};
 
@@ -59,7 +59,7 @@ export default function translate(
 }
 
 export function translateRaw(key: string) {
-  const lang = getLanguageSelection(store.getState());
+  const lang = getLanguageSelection(configuredStore.getState());
 
   return (
     (repository[lang] && repository[lang][key]) ||

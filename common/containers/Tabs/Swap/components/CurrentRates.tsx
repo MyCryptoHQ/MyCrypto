@@ -1,4 +1,4 @@
-import { Pairs } from 'actions/swapTypes';
+import { Pairs } from 'actions/swap';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import Spinner from 'components/ui/Spinner';
 import { bityReferralURL } from 'config/data';
@@ -21,10 +21,10 @@ export default class CurrentRates extends Component<Pairs, State> {
     BTCREPAmount: 1
   };
 
-  public onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  public onChange = (event: any) => {
     const target = event.target;
-    const { value } = event.target as HTMLInputElement;
-    const { name } = event.target as HTMLInputElement;
+    const { value } = event.target;
+    const { name } = event.target;
     this.setState({
       [name]: value
     });
