@@ -21,7 +21,9 @@ export const saveState = (state: Object) => {
   }
 };
 
-export const loadStatePropertyOrEmptyObject = (key: string): Object => {
+export const loadStatePropertyOrEmptyObject = (
+  key: string
+): WindowLocalStorage | {} => {
   const localStorageState = loadState();
   if (localStorageState) {
     if (localStorageState.hasOwnProperty(key)) {

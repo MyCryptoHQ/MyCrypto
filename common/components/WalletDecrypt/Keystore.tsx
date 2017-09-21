@@ -74,8 +74,8 @@ export default class KeystoreDecrypt extends Component {
     );
   }
 
-  public onKeyDown = (e: SyntheticKeyboardEvent) => {
-    if (e.keyCode === 13) {
+  public onKeyDown = (e: React.SyntheticEvent<KeyboardEvent>) => {
+    if ((e as KeyboardEvent).keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();
       this.props.onUnlock();
@@ -94,7 +94,7 @@ export default class KeystoreDecrypt extends Component {
 
   public handleFileSelection = (e: React.SyntheticEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
-    const target = e.target as HTMLInputElement
+    const target = e.target as HTMLInputElement;
     const inputFile = target.files[0];
 
     fileReader.onload = () => {

@@ -44,7 +44,7 @@ interface State {
 
 export default class Promos extends React.Component<{}, State> {
   public state = {
-    activePromo: parseInt(String(Math.random() * promos.length))
+    activePromo: parseInt(String(Math.random() * promos.length), 10)
   };
 
   public render() {
@@ -86,7 +86,7 @@ export default class Promos extends React.Component<{}, State> {
       <div className="Promos">
         {promoEl}
         <div className="Promos-nav">
-          {promos.map((promo, idx) => {
+          {promos.map((_, idx) => {
             return (
               <button
                 className={`Promos-nav-btn ${idx === activePromo

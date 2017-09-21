@@ -163,7 +163,7 @@ export interface NetworkConfig {
   };
   chainId: number;
   tokens: Token[];
-  contracts?: NetworkContract[];
+  contracts: NetworkContract[] | null;
 }
 
 export interface NodeConfig {

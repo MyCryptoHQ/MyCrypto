@@ -5,7 +5,7 @@ import { IWallet } from 'libs/wallet';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 
-export function getWalletInst(state: AppState): IWallet {
+export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
 }
 
@@ -15,7 +15,7 @@ export interface TokenBalance {
   custom: boolean;
 }
 
-type MergedToken = Token & {
+export type MergedToken = Token & {
   custom: boolean;
 };
 

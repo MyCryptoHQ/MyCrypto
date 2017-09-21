@@ -34,7 +34,7 @@ export default class GasField extends React.Component<Props, {}> {
 
   public onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
     if (this.props.onChange) {
-      this.props.onChange(e.target);
+      this.props.onChange((e.target as HTMLInputElement).value);
     }
   };
 }

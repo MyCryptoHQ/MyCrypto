@@ -2,24 +2,25 @@ import closeIcon from 'assets/images/icon-x.svg';
 import React, { Component } from 'react';
 import './Modal.scss';
 
+export interface IButton {
+  text: string;
+  type?:
+    | 'default'
+    | 'primary'
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'link';
+  disabled?: boolean;
+  onClick?(): void;
+}
 interface Props {
   isOpen?: boolean;
   title: string;
   disableButtons?: boolean;
   children: any;
-  buttons: {
-    text: string;
-    type?:
-      | 'default'
-      | 'primary'
-      | 'success'
-      | 'info'
-      | 'warning'
-      | 'danger'
-      | 'link';
-    disabled?: boolean;
-    onClick?(): void;
-  }[];
+  buttons: IButton[];
   handleClose(): void;
 }
 
@@ -73,10 +74,10 @@ export default class Modal extends Component<Props, {}> {
     // Don't trigger if they hit escape while on an input
     if (ev.target) {
       if (
-        ev.target.tagName === 'INPUT' ||
-        ev.target.tagName === 'SELECT' ||
-        ev.target.tagName === 'TEXTAREA' ||
-        ev.target.isContentEditable
+        (ev.target as HTMLElement).tagName === 'INPUT' ||
+        (ev.target as HTMLElement).tagName === 'SELECT' ||
+        (ev.target as HTMLElement).tagName === 'TEXTAREA' ||
+        (ev.target as HTMLElement).isContentEditable
       ) {
         return;
       }

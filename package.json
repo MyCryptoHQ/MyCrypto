@@ -58,7 +58,7 @@
     "@types/redux-logger": "^3.0.3",
     "@types/redux-saga": "^0.10.5",
     "@types/uuid": "^3.4.2",
-    "@types/whatwg-fetch": "0.0.33",
+    "@types/webpack-env": "^1.13.1",
     "awesome-typescript-loader": "^3.2.3",
     "check-node-version": "^2.1.0",
     "copy-webpack-plugin": "^4.0.1",

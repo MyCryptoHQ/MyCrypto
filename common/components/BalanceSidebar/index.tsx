@@ -1,6 +1,9 @@
-import * as customTokenActions from 'actions/customTokens';
-import { showNotification } from 'actions/notifications';
-import { fiatRequestedRates } from 'actions/rates';
+import {
+  TAddCustomToken,
+  TRemoveCustomToken
+} from 'actions/customTokens/actionCreators';
+import { TShowNotification } from 'actions/notifications/actionCreators';
+import { TFiatRequestedRates } from 'actions/rates/actionCreators';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
@@ -24,17 +27,16 @@ interface Props {
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
   rates: { [key: string]: number };
-  showNotification: typeof showNotification;
-  addCustomToken: typeof customTokenActions.addCustomToken;
-  removeCustomToken: typeof customTokenActions.removeCustomToken;
-  fiatRequestedRates: typeof fiatRequestedRates;
+  showNotification: TShowNotification;
+  addCustomToken: TAddCustomToken;
+  removeCustomToken: TRemoveCustomToken;
+  fiatRequestedRates: TFiatRequestedRates;
 }
 
-
 interface Block {
-    name: string;
-    content: React.ReactElement<any>;
-    isFullWidth?: boolean;
+  name: string;
+  content: React.ReactElement<any>;
+  isFullWidth?: boolean;
 }
 
 export class BalanceSidebar extends React.Component<Props, {}> {
@@ -50,8 +52,6 @@ export class BalanceSidebar extends React.Component<Props, {}> {
     if (!wallet) {
       return null;
     }
-
-
 
     const blocks: Block[] = [
       {
@@ -114,5 +114,5 @@ function mapStateToProps(state: AppState) {
 export default connect(mapStateToProps, {
   ...customTokenActions,
   showNotification,
-  fiatRequestedRates
+  TFiatRequestedRates
 })(BalanceSidebar);

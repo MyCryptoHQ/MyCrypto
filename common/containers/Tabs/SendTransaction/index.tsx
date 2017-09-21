@@ -70,11 +70,11 @@ interface State {
   // amount value
   value: string;
   unit: UnitKeys;
-  token?: Token;
+  token: Token | null;
   gasLimit: string;
   data: string;
   gasChanged: boolean;
-  transaction?: CompleteTransaction;
+  transaction: CompleteTransaction | null;
   showTxConfirm: boolean;
   generateDisabled: boolean;
 }
@@ -112,7 +112,7 @@ interface Props {
   ): ShowNotificationAction;
 }
 
-const initialState = {
+const initialState: State = {
   hasQueryString: false,
   readOnly: false,
   to: '',
@@ -370,7 +370,7 @@ export class SendTransaction extends React.Component<Props, State> {
   public onNewTx = (
     address: string,
     amount: string,
-    unit: string,
+    unit: UnitKeys,
     data: string = '',
     gasLimit: string = '21000'
   ) => {
@@ -416,7 +416,7 @@ export class SendTransaction extends React.Component<Props, State> {
       ).toString();
     } else {
       const tokenBalance = this.props.tokenBalances.find(
-        tokenBalance => tokenBalance.symbol === unit
+        tBalance => tBalance.symbol === unit
       );
       if (!tokenBalance) {
         throw new Error(`${unit}: not found in token balances;`);

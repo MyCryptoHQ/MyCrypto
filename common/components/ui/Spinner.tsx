@@ -1,9 +1,9 @@
 import React from 'react';
 
-type size = 'lg' | '2x' | '3x' | '4x' | '5x';
+type Size = 'lg' | '2x' | '3x' | '4x' | '5x';
 
 interface SpinnerProps {
-  size?: size;
+  size?: Size;
 }
 
 const Spinner = ({ size = 'fa-' }: SpinnerProps) => {

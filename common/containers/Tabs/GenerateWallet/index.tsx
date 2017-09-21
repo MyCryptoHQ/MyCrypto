@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import PrivKeyWallet from 'libs/wallet/privkey';
-import { State } from 'reducers';
+import { AppState } from 'reducers';
 import DownloadWallet from './components/DownloadWallet';
 import EnterPassword from './components/EnterPassword';
 import PaperWallet from './components/PaperWallet';
@@ -76,7 +76,7 @@ class GenerateWallet extends Component<Props, {}> {
   }
 }
 
-function mapStateToProps(state: State) {
+function mapStateToProps(state: AppState) {
   return {
     walletPasswordForm: state.form.walletPasswordForm,
     activeStep: state.generateWallet.activeStep,

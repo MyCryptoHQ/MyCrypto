@@ -17,8 +17,7 @@ const required = value => (value ? undefined : 'Required');
 
 interface Props {
   walletPasswordForm: Object;
-  showWalletPassword: Function;
-  generateNewWallet: Function;
+  generateNewWallet(pw: string): GenerateNewWalletAction;
 }
 
 interface State {

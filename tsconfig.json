@@ -12,7 +12,6 @@
             "es2017", "dom"
         ],
         "allowSyntheticDefaultImports": true,
-        "checkJs": true,
         "moduleResolution": "node"
     },
     "include": [

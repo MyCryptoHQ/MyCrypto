@@ -55,7 +55,9 @@ export function isValidENSAddress(address: string): boolean {
       test: true,
       reverse: true
     };
-    if (validTLDs[tld]) { return true };
+    if (validTLDs[tld]) {
+      return true;
+    }
   } catch (e) {
     return false;
   }
@@ -104,7 +106,7 @@ export function isPositiveIntegerOrZero(num: number): boolean {
   if (isNaN(num) || !isFinite(num)) {
     return false;
   }
-  return num >= 0 && parseInt(num) === num;
+  return num >= 0 && parseInt(num, 10) === num;
 }
 
 export function isValidRawTx(rawTx: RawTransaction): boolean {
@@ -148,8 +150,12 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
     }
   }
 
-  if (!isValidETHAddress(rawTx.to)) { return false };
-  if (Object.keys(rawTx).length !== propReqs.length) { return false };
+  if (!isValidETHAddress(rawTx.to)) {
+    return false;
+  }
+  if (Object.keys(rawTx).length !== propReqs.length) {
+    return false;
+  }
 
   return true;
 }

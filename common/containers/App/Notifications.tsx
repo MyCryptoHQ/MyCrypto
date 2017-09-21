@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import NotificationRow from './NotificationRow';
 import './Notifications.scss';
 
-export class Notifications extends React.Component {
-  public props: {
-    notifications: Notification[];
-    closeNotification(n: Notification): void;
-  };
-
+interface Props {
+  notifications: Notification[];
+  closeNotification(n: Notification): void;
+}
+export class Notifications extends React.Component<Props, {}> {
   public render() {
     if (!this.props.notifications.length) {
       return null;

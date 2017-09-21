@@ -9,7 +9,7 @@ import sidebarImg from 'assets/images/print-sidebar.png';
 const walletWidth = 680;
 const walletHeight = 280;
 
-const styles = {
+const styles: any = {
   container: {
     position: 'relative',
     margin: '0 auto',

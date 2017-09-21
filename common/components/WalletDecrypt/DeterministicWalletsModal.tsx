@@ -6,7 +6,7 @@ import {
   setDesiredToken,
   SetDesiredTokenAction
 } from 'actions/deterministicWallets';
-import Modal from 'components/ui/Modal';
+import Modal, { IButton } from 'components/ui/Modal';
 import { NetworkConfig, Token } from 'config/data';
 import { isValidPath } from 'libs/validators';
 import React from 'react';
@@ -91,7 +91,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     const { selectedAddress, isCustomPath, customPath, page } = this.state;
     const validPathClass = isValidPath(customPath) ? 'is-valid' : 'is-invalid';
 
-    const buttons = [
+    const buttons: IButton[] = [
       {
         text: 'Unlock this Address',
         type: 'primary',
@@ -206,8 +206,8 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     }
   }
 
-  private handleChangePath = (ev: React.SyntheticEvent<HTMLInputElement>) => {
-    const { value } = ev.target as HTMLInputElement;
+  private handleChangePath = (ev: React.SyntheticEvent<HTMLSelectElement>) => {
+    const { value } = ev.target as HTMLSelectElement;
 
     if (value === 'custom') {
       this.setState({ isCustomPath: true });
@@ -226,7 +226,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
   };
 
   private handleSubmitCustomPath = (
-    ev: React.SyntheticEvent<HTMLInputElement>
+    ev: React.SyntheticEvent<HTMLFormElement>
   ) => {
     ev.preventDefault();
     if (!isValidPath(this.state.customPath)) {
@@ -235,8 +235,10 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     this.props.onPathChange(this.state.customPath);
   };
 
-  private handleChangeToken = (ev: React.SyntheticEvent<HTMLInputElement>) => {
-    this.props.setDesiredToken((ev.target as HTMLInputElement).value || null);
+  private handleChangeToken = (ev: React.SyntheticEvent<HTMLSelectElement>) => {
+    this.props.setDesiredToken(
+      (ev.target as HTMLSelectElement).value || undefined
+    );
   };
 
   private handleConfirmAddress = () => {

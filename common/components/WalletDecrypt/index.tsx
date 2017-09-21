@@ -24,7 +24,8 @@ const WALLETS = {
       file: '',
       password: ''
     },
-    unlock: unlockKeystore
+    unlock: unlockKeystore,
+    disabled: false
   },
   'private-key': {
     lid: 'x_PrivKey2',
@@ -33,13 +34,15 @@ const WALLETS = {
       key: '',
       password: ''
     },
-    unlock: unlockPrivateKey
+    unlock: unlockPrivateKey,
+    disabled: false
   },
   'mnemonic-phrase': {
     lid: 'x_Mnemonic',
     component: MnemonicDecrypt,
     initialParams: {},
-    unlock: unlockMnemonic
+    unlock: unlockMnemonic,
+    disabled: false
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
@@ -50,7 +53,8 @@ const WALLETS = {
     lid: 'x_Trezor',
     component: TrezorDecrypt,
     initialParams: {},
-    unlock: setWallet
+    unlock: setWallet,
+    disabled: false
   },
   'view-only': {
     lid: 'View with Address Only',

@@ -33,7 +33,10 @@ export default class Header extends Component<Props, {}> {
       languages.find(l => l.sign === languageSelection) || languages[0];
     const selectedNode = NODES[nodeSelection];
     const selectedNetwork = NETWORKS[selectedNode.network];
-
+    const LanguageDropDown = Dropdown as new () => Dropdown<
+      typeof selectedLanguage
+    >;
+    const NodeDropDown = Dropdown as new () => Dropdown<keyof typeof NODES>;
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE &&
@@ -70,7 +73,7 @@ export default class Header extends Component<Props, {}> {
                 onChange={this.props.changeGasPrice}
               />
 
-              <Dropdown
+              <LanguageDropDown
                 ariaLabel={`change language. current language ${selectedLanguage.name}`}
                 options={languages}
                 formatTitle={o => o.name}
@@ -86,7 +89,7 @@ export default class Header extends Component<Props, {}> {
                 onChange={this.changeLanguage}
               />
 
-              <Dropdown
+              <NodeDropDown
                 ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
                 options={Object.keys(NODES)}
                 formatTitle={o => [

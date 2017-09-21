@@ -124,7 +124,7 @@ export function pkeyToKeystore(
   const salt = randomBytes(32);
   const iv = randomBytes(16);
   let derivedKey;
-  const kdfparams = {
+  const kdfparams: any = {
     dklen: 32,
     salt: salt.toString('hex')
   };

@@ -1,6 +1,6 @@
 import Big, { BigNumber } from 'bignumber.js';
 import Identicon from 'components/ui/Identicon';
-import Modal from 'components/ui/Modal';
+import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import { NetworkConfig, NodeConfig, Token } from 'config/data';
 import EthTx from 'ethereumjs-tx';
@@ -14,7 +14,7 @@ import { IWallet } from 'libs/wallet/IWallet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getLanguageSelection, getNetworkConfig } from 'selectors/config';
-import { getTokens, getTxFromState } from 'selectors/wallet';
+import { getTokens, getTxFromState, MergedToken } from 'selectors/wallet';
 import translate, { translateRaw } from 'translations';
 import './ConfirmationModal.scss';
 
@@ -23,11 +23,11 @@ interface Props {
   transaction: EthTx;
   wallet: IWallet;
   node: NodeConfig;
-  token?: Token;
+  token: MergedToken | undefined;
   network: NetworkConfig;
   lang: string;
   broadCastTxStatus: BroadcastTransactionStatus;
-  onConfirm(string, EthTx): void;
+  onConfirm(signedTx: string): void;
   onClose(): void;
 }
 
@@ -81,7 +81,7 @@ class ConfirmationModal extends React.Component<Props, State> {
     const { toAddress, value, gasPrice, data } = this.decodeTransaction();
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
-    const buttons = [
+    const buttons: IButton[] = [
       {
         text: buttonPrefix + translateRaw('SENDModal_Yes'),
         type: 'primary',

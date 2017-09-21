@@ -10,14 +10,14 @@ import translate from 'translations';
 interface PublicProps {
   placeholder: string;
   value: string;
-  onChange?(value: string): void;
+  onChange: ((value: string) => void) | null;
 }
 
-interface Props {
-  ensAddress?: string;
+interface Props extends PublicProps {
+  ensAddress: string | null;
   resolveEnsName: typeof resolveEnsName;
 }
-export class AddressField extends React.Component<PublicProps & Props, {}> {
+export class AddressField extends React.Component<Props> {
   public render() {
     const { placeholder, value, ensAddress } = this.props;
     const isReadonly = !this.props.onChange;

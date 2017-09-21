@@ -10,10 +10,10 @@ import { Ether, toTokenUnit, UnitKeys, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
-import translate, {translateRaw} from 'translations';
+import translate, { translateRaw } from 'translations';
 
 export interface TransactionInput {
-  token?: Token;
+  token: Token | null;
   unit: UnitKeys;
   value: string;
   to: string;
@@ -30,7 +30,7 @@ export interface BaseTransaction {
   to: string;
   value: string;
   data: string;
-  gasLimit: BigNumber;
+  gasLimit: BigNumber | string;
   gasPrice: Wei;
   chainId: number;
 }

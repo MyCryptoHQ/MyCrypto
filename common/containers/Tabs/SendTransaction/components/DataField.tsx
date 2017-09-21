@@ -59,7 +59,7 @@ export default class DataField extends React.Component<Props, State> {
 
   public onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
     if (this.props.onChange) {
-      this.props.onChange(e.target);
+      this.props.onChange((e.target as HTMLInputElement).value);
     }
   };
 }

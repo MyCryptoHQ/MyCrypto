@@ -1,10 +1,10 @@
 // Ref: https://github.com/ethereum/wiki/wiki/JSON-RPC
 
-import Big from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { toBuffer } from 'ethereumjs-util';
 
 // When encoding QUANTITIES (integers, numbers): encode as hex, prefix with "0x", the most compact representation (slight exception: zero should be represented as "0x0").
-export function hexEncodeQuantity(value: Big): string {
+export function hexEncodeQuantity(value: BigNumber): string {
   return '0x' + (value.toString(16) || '0');
 }
 
