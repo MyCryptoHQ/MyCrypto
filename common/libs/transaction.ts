@@ -13,7 +13,7 @@ import { IWallet } from 'libs/wallet';
 import translate, { translateRaw } from 'translations';
 
 export interface TransactionInput {
-  token: Token | null;
+  token?: Token | null;
   unit: UnitKeys;
   value: string;
   to: string;

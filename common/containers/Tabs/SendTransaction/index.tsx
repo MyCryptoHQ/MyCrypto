@@ -1,9 +1,10 @@
 import {
   showNotification,
-  ShowNotificationAction
-} from 'actions/notifications';
-import { broadcastTx, BroadcastTxRequestedAction } from 'actions/wallet';
-import Big, { BigNumber } from 'bignumber.js';
+  TShowNotification
+} from 'actions/notifications/actionCreators';
+import { broadcastTx } from 'actions/wallet/actionCreators';
+import { BroadcastTxRequestedAction } from 'actions/wallet/actionTypes';
+import Big, from 'bignumber.js';
 import { BalanceSidebar } from 'components';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
@@ -24,7 +25,6 @@ import {
   getBalanceMinusGasCosts,
   TransactionInput
 } from 'libs/transaction';
-
 import { Ether, GWei, UnitKeys, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 // LIBS
@@ -47,7 +47,6 @@ import {
   getTxFromBroadcastTransactionStatus,
   TokenBalance
 } from 'selectors/wallet';
-
 import translate from 'translations';
 // UTILS
 import { formatGasLimit } from 'utils/formatters';
@@ -70,7 +69,7 @@ interface State {
   // amount value
   value: string;
   unit: UnitKeys;
-  token: Token | null;
+  token?: Token | null;
   gasLimit: string;
   data: string;
   gasChanged: boolean;
@@ -103,13 +102,8 @@ interface Props {
   tokenBalances: TokenBalance[];
   gasPrice: Wei;
   transactions: BroadcastTransactionStatus[];
-
   broadcastTx(signedTx: string): BroadcastTxRequestedAction;
-  showNotification(
-    level: string,
-    msg: string,
-    duration?: number
-  ): ShowNotificationAction;
+  showNotification: TShowNotification;
 }
 
 const initialState: State = {

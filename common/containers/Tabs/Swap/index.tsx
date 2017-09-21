@@ -1,4 +1,7 @@
-import { showNotification } from 'actions/notifications';
+import {
+  showNotification,
+  TShowNotification
+} from 'actions/notifications/actionCreators';
 import swapActions, {
   bityOrderCreateRequestedSwap,
   changeStepSwap,
@@ -12,8 +15,9 @@ import swapActions, {
   startPollBityOrderStatus,
   stopLoadBityRatesSwap,
   stopOrderTimerSwap,
-  stopPollBityOrderStatus
-} from 'actions/swap';
+  stopPollBityOrderStatus,
+  startOrderTimerSwap
+} from 'actions/swap/actionCreators';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CurrencySwap from './components/CurrencySwap';
@@ -23,18 +27,18 @@ import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
 
 interface ReduxStateProps {
-  step: string;
+  step: number;
   destinationAddress: string;
   destinationKind: string;
   originKind: string;
   destinationKindOptions: string[];
   originKindOptions: string[];
-  bityRates: {};
+  bityRates: any;
   originAmount?: number;
   destinationAmount?: number;
   isPostingOrder: boolean;
   isFetchingRates: boolean;
-  bityOrder: {};
+  bityOrder: any
   secondsRemaining?: number;
   paymentAddress?: string;
   orderStatus?: string;
@@ -55,6 +59,8 @@ interface ReduxActionProps {
   startPollBityOrderStatus: typeof startPollBityOrderStatus;
   stopOrderTimerSwap: typeof stopOrderTimerSwap;
   stopPollBityOrderStatus: typeof stopPollBityOrderStatus;
+  showNotification: TShowNotification;
+  startOrderTimerSwap: typeof startOrderTimerSwap;
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {

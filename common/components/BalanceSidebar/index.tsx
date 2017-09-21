@@ -1,8 +1,8 @@
+import * as customTokenActions from 'actions/customTokens/actionCreators';
 import {
   TAddCustomToken,
   TRemoveCustomToken
 } from 'actions/customTokens/actionCreators';
-import { TShowNotification } from 'actions/notifications/actionCreators';
 import { TFiatRequestedRates } from 'actions/rates/actionCreators';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
@@ -20,6 +20,10 @@ import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
+import {
+  showNotification,
+  TShowNotification
+} from 'actions/notifications/actionCreators';
 
 interface Props {
   wallet: IWallet;

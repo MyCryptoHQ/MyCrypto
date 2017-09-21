@@ -1,13 +1,12 @@
-import * as generateWalletActions from 'actions/generateWallet';
 import {
   ContinueToPaperAction,
   GenerateNewWalletAction,
   ResetGenerateWalletAction
-} from 'actions/generateWallet';
+} from 'actions/generateWallet/actionTypes';
+import * as generateWalletActions from 'actions/generateWallet/actionCreators';
+import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import PrivKeyWallet from 'libs/wallet/privkey';
 import { AppState } from 'reducers';
 import DownloadWallet from './components/DownloadWallet';
 import EnterPassword from './components/EnterPassword';

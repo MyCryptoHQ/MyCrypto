@@ -1,4 +1,4 @@
-import { FiatRequestedRatesAction } from 'actions/rates';
+import { FiatRequestedRatesAction } from 'actions/rates/actionTypes';
 import { Identicon } from 'components/ui';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
