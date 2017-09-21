@@ -4,6 +4,7 @@ import { IWallet } from 'libs/wallet/IWallet';
 import * as types from './actionTypes';
 import * as constants from './constants';
 
+export type TUnlockPrivateKey = typeof unlockPrivateKey;
 export function unlockPrivateKey(
   value: types.PrivateKeyUnlockParams
 ): types.UnlockPrivateKeyAction {
@@ -13,6 +14,7 @@ export function unlockPrivateKey(
   };
 }
 
+export type TUnlockKeystore = typeof unlockKeystore;
 export function unlockKeystore(
   value: types.KeystoreUnlockParams
 ): types.UnlockKeystoreAction {
@@ -22,6 +24,7 @@ export function unlockKeystore(
   };
 }
 
+export type TUnlockMnemonic = typeof unlockMnemonic;
 export function unlockMnemonic(
   value: types.MnemonicUnlockParams
 ): types.UnlockMnemonicAction {
@@ -31,6 +34,7 @@ export function unlockMnemonic(
   };
 }
 
+export type TSetWallet = typeof setWallet;
 export function setWallet(value: IWallet): types.SetWalletAction {
   return {
     type: constants.WALLET_SET,
@@ -38,6 +42,7 @@ export function setWallet(value: IWallet): types.SetWalletAction {
   };
 }
 
+export type TSetBalance = typeof setBalance;
 export function setBalance(value: Wei): types.SetBalanceAction {
   return {
     type: constants.WALLET_SET_BALANCE,
@@ -45,6 +50,7 @@ export function setBalance(value: Wei): types.SetBalanceAction {
   };
 }
 
+export type TSetTokenBalances = typeof setTokenBalances;
 export function setTokenBalances(payload: {
   [key: string]: BigNumber;
 }): types.SetTokenBalancesAction {
@@ -54,6 +60,7 @@ export function setTokenBalances(payload: {
   };
 }
 
+export type TBroadcastTx = typeof broadcastTx;
 export function broadcastTx(
   signedTx: string
 ): types.BroadcastTxRequestedAction {
@@ -65,6 +72,7 @@ export function broadcastTx(
   };
 }
 
+export type TBroadcastTxSucceded = typeof broadcastTxSucceded;
 export function broadcastTxSucceded(
   txHash: string,
   signedTx: string
@@ -77,6 +85,8 @@ export function broadcastTxSucceded(
     }
   };
 }
+
+export type TBroadCastTxFailed = typeof broadCastTxFailed;
 export function broadCastTxFailed(
   signedTx: string,
   errorMsg: string
