@@ -5,7 +5,7 @@ import { IWallet } from 'libs/wallet';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 
-export function getWalletInst(state: AppState): null | IWallet {
+export function getWalletInst(state: AppState): IWallet {
   return state.wallet.inst;
 }
 

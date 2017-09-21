@@ -64,10 +64,49 @@ export interface UnlockKeystoreAction {
   payload: KeystoreUnlockParams;
 }
 
+export interface BroadcastTxSuccededAction {
+  type: string;
+  payload: {
+    txHash: string;
+    signedTx: string;
+  };
+}
+export function broadcastTxSucceded(
+  txHash: string,
+  signedTx: string
+): BroadcastTxSuccededAction {
+  return {
+    type: 'WALLET_BROADCAST_TX_SUCCEEDED',
+    payload: {
+      txHash,
+      signedTx
+    }
+  };
+}
+
+export interface BroadcastTxFailedAction {
+  type: string;
+  payload: {
+    signedTx: string;
+    error: string;
+  };
+}
+
+export function broadCastTxFailed(signedTx: string, errorMsg: string) {
+  return {
+    type: 'WALLET_BROADCAST_TX_FAILED',
+    payload: {
+      signedTx,
+      error: errorMsg
+    }
+  };
+}
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
   | SetBalanceAction
   | SetTokenBalancesAction
-  | BroadcastTxRequestedAction;
+  | BroadcastTxRequestedAction
+  | BroadcastTxFailedAction
+  | BroadcastTxSuccededAction;

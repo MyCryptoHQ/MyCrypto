@@ -137,7 +137,7 @@ export class SendTransaction extends React.Component<Props, State> {
     }
   }
 
-  public componentDidUpdate(_prevProps: Props, prevState: State) {
+  public componentDidUpdate(prevProps: Props, prevState: State) {
     // TODO listen to gas price changes here
     // TODO debounce the call
     if (
@@ -447,16 +447,15 @@ export class SendTransaction extends React.Component<Props, State> {
     });
   };
 
-  public resetJustTx = async (): Promise<any> => {
-    new Promise(resolve => {
+  public resetJustTx = async (): Promise<any> =>
+    new Promise(resolve =>
       this.setState(
         {
           transaction: null
         },
         resolve
-      );
-    });
-  };
+      )
+    );
 
   public generateTxFromState = async () => {
     await this.resetJustTx();

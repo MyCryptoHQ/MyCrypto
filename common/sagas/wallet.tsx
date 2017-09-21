@@ -1,6 +1,8 @@
 import { showNotification } from 'actions/notifications';
 import {
+  broadCastTxFailed,
   BroadcastTxRequestedAction,
+  broadcastTxSucceded,
   setBalance,
   setTokenBalances,
   setWallet,
@@ -166,22 +168,10 @@ function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
         0
       )
     );
-    yield put({
-      type: 'WALLET_BROADCAST_TX_SUCCEEDED',
-      payload: {
-        txHash,
-        signedTx
-      }
-    });
+    yield put(broadcastTxSucceded(txHash, signedTx));
   } catch (error) {
-    yield put(showNotification('danger', String(error)));
-    yield put({
-      type: 'WALLET_BROADCAST_TX_FAILED',
-      payload: {
-        signedTx,
-        error: String(error)
-      }
-    });
+    yield put(showNotification('danger', error.message));
+    yield put(broadCastTxFailed(signedTx, error.message));
   }
 }
 
