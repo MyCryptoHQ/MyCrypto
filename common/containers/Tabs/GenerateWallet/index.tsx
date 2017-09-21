@@ -1,8 +1,10 @@
-import * as generateWalletActions from 'actions/generateWallet';
 import {
-  ContinueToPaperAction,
-  GenerateNewWalletAction,
-  ResetGenerateWalletAction
+  continueToPaper,
+  generateNewWallet,
+  resetGenerateWallet,
+  TContinueToPaper,
+  TGenerateNewWallet,
+  TResetGenerateWallet
 } from 'actions/generateWallet';
 import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
@@ -16,12 +18,12 @@ interface Props {
   // Redux state
   activeStep: string; // FIXME union actual steps
   password: string;
-  wallet?: PrivKeyWallet;
-  walletPasswordForm: Object;
+  wallet: PrivKeyWallet | null | undefined;
+  walletPasswordForm: any;
   // Actions
-  generateNewWallet(pw: string): GenerateNewWalletAction;
-  continueToPaper(): ContinueToPaperAction;
-  resetGenerateWallet(): ResetGenerateWalletAction;
+  generateNewWallet: TGenerateNewWallet;
+  continueToPaper: TContinueToPaper;
+  resetGenerateWallet: TResetGenerateWallet;
 }
 
 class GenerateWallet extends Component<Props, {}> {
@@ -84,4 +86,8 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps, generateWalletActions)(GenerateWallet);
+export default connect(mapStateToProps, {
+  generateNewWallet,
+  continueToPaper,
+  resetGenerateWallet
+})(GenerateWallet);

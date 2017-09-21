@@ -1,13 +1,12 @@
-import customTokenActions, {
+import {
+  addCustomToken,
+  removeCustomToken,
   TAddCustomToken,
   TRemoveCustomToken
 } from 'actions/customTokens';
+import { showNotification, TShowNotification } from 'actions/notifications';
 import {
-  showNotification,
-  TShowNotification
-} from 'actions/notifications';
-import {
-  fiatRequestedRates,
+  fiatRequestedRates as dFiatRequestedRates,
   TFiatRequestedRates
 } from 'actions/rates';
 import { NetworkConfig } from 'config/data';
@@ -118,7 +117,8 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  ...customTokenActions,
+  addCustomToken,
+  removeCustomToken,
   showNotification,
-  fiatRequestedRates
+  fiatRequestedRates: dFiatRequestedRates
 })(BalanceSidebar);

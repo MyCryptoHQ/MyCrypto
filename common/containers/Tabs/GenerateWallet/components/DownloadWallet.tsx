@@ -60,10 +60,11 @@ export default class DownloadWallet extends Component<Props, State> {
           className="DlWallet-download btn btn-primary btn-lg"
           aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
           aria-describedby="x_KeystoreDesc"
-          disabled={!this.state.keystore}
           download={filename}
           href={this.getBlob()}
-          onClick={this.markDownloaded}
+          onClick={(e: any) => {
+            this.state.keystore ? this.markDownloaded() : e.preventDefault();
+          }}
         >
           {translate('x_Download')} {translate('x_Keystore2')}
         </a>

@@ -21,7 +21,7 @@ interface Props {
 }
 
 interface State {
-  filename: null | string;
+  fileName: null | string;
   blobURI: null | string;
   isPasswordVisible: boolean;
 }
@@ -49,7 +49,7 @@ class EnterPassword extends Component<Props, State> {
           <Field
             className="EnterPw-password-field"
             validate={[required, minLength9]}
-            component={PasswordInput}
+            component={PasswordInput as any}
             isPasswordVisible={isPasswordVisible}
             togglePassword={this.togglePassword}
             name="password"

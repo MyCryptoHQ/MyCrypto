@@ -1,8 +1,5 @@
-import {
-  showNotification,
-  TShowNotification
-} from 'actions/notifications';
-import { broadcastTx, BroadcastTxRequestedAction } from 'actions/wallet';
+import { showNotification, TShowNotification } from 'actions/notifications';
+import { broadcastTx, TBroadcastTx } from 'actions/wallet';
 import Big from 'bignumber.js';
 import { BalanceSidebar } from 'components';
 // COMPONENTS
@@ -44,6 +41,7 @@ import {
   getTokenBalances,
   getTokens,
   getTxFromBroadcastTransactionStatus,
+  MergedToken,
   TokenBalance
 } from 'selectors/wallet';
 import translate from 'translations';
@@ -61,22 +59,6 @@ import {
 // MISC
 import customMessages from './messages';
 
-interface State {
-  hasQueryString: boolean;
-  readOnly: boolean;
-  to: string;
-  // amount value
-  value: string;
-  unit: UnitKey;
-  token?: Token | null;
-  gasLimit: string;
-  data: string;
-  gasChanged: boolean;
-  transaction: CompleteTransaction | null;
-  showTxConfirm: boolean;
-  generateDisabled: boolean;
-}
-
 function getParam(query: { [key: string]: string }, key: string) {
   const keys = Object.keys(query);
   const index = keys.findIndex(k => k.toLowerCase() === key.toLowerCase());
@@ -84,6 +66,22 @@ function getParam(query: { [key: string]: string }, key: string) {
     return null;
   }
   return query[keys[index]];
+}
+
+interface State {
+  hasQueryString: boolean;
+  readOnly: boolean;
+  to: string;
+  // amount value
+  value: string;
+  unit: UnitKey;
+  token?: MergedToken | null;
+  gasLimit: string;
+  data: string;
+  gasChanged: boolean;
+  transaction: CompleteTransaction | null;
+  showTxConfirm: boolean;
+  generateDisabled: boolean;
 }
 
 interface Props {
@@ -97,12 +95,12 @@ interface Props {
   node: NodeConfig;
   nodeLib: RPCNode;
   network: NetworkConfig;
-  tokens: Token[];
+  tokens: MergedToken[];
   tokenBalances: TokenBalance[];
   gasPrice: Wei;
   transactions: BroadcastTransactionStatus[];
   showNotification: TShowNotification;
-  broadcastTx(signedTx: string): BroadcastTxRequestedAction;
+  broadcastTx: TBroadcastTx;
 }
 
 const initialState: State = {

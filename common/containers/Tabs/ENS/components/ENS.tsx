@@ -4,7 +4,7 @@ import Title from './Title';
 import UnfinishedBanner from './UnfinishedBanner';
 
 interface ContainerTabPaneActiveProps {
-  children: React.ReactElement<any>;
+  children: React.ReactElement<any> | React.ReactElement<any>[];
 }
 
 const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) =>

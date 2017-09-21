@@ -1,5 +1,5 @@
-import { State } from 'reducers';
+import { AppState } from 'reducers';
 
-export function getEnsAddress(state: State, ensName: string): null | string {
+export function getEnsAddress(state: AppState, ensName: string): null | string {
   return state.ens[ensName];
 }

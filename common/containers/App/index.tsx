@@ -1,4 +1,7 @@
-import actions, {
+import {
+  changeGasPrice as dChangeGasPrice,
+  changeLanguage as dChangeLanguage,
+  changeNode as dChangeNode,
   TChangeGasPrice,
   TChangeLanguage,
   TChangeNode
@@ -23,7 +26,6 @@ interface Props {
   changeLanguage: TChangeLanguage;
   changeNode: TChangeNode;
   changeGasPrice: TChangeGasPrice;
-  handleWindowResize(): void;
 }
 class App extends Component<Props, {}> {
   public render() {
@@ -74,4 +76,8 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps, actions)(App);
+export default connect(mapStateToProps, {
+  changeGasPrice: dChangeGasPrice,
+  changeLanguage: dChangeLanguage,
+  changeNode: dChangeNode
+})(App);

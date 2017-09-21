@@ -20,10 +20,13 @@ export type MergedToken = Token & {
 };
 
 export function getTokens(state: AppState): MergedToken[] {
-  const tokens: MergedToken[] = getNetworkConfig(state).tokens;
+  const tokens: Token[] = getNetworkConfig(state).tokens;
   return tokens.concat(
-    state.customTokens.map(token => ({ ...token, custom: true }))
-  );
+    state.customTokens.map((token: Token) => {
+      const mergedToken = { ...token, custom: true };
+      return mergedToken;
+    })
+  ) as MergedToken[];
 }
 
 export function getTokenBalances(state: AppState): TokenBalance[] {

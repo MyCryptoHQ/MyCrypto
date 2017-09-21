@@ -44,7 +44,7 @@ class ConfirmationModal extends React.Component<Props, State> {
     hasBroadCasted: false
   };
 
-  public readTimer = 0;
+  private readTimer = 0;
 
   public componentWillReceiveProps(newProps: Props) {
     // Reload address if the wallet changes
@@ -64,11 +64,11 @@ class ConfirmationModal extends React.Component<Props, State> {
 
   // Count down 5 seconds before allowing them to confirm
   public componentDidMount() {
-    this.readTimer = setInterval(() => {
+    this.readTimer = window.setInterval(() => {
       if (this.state.timeToRead > 0) {
         this.setState({ timeToRead: this.state.timeToRead - 1 });
       } else {
-        clearInterval(this.readTimer);
+        window.clearInterval(this.readTimer);
       }
     }, 1000);
 
@@ -176,7 +176,7 @@ class ConfirmationModal extends React.Component<Props, State> {
   }
 
   public componentWillUnmount() {
-    clearInterval(this.readTimer);
+    window.clearInterval(this.readTimer);
   }
 
   private async setWalletAddress(wallet: IWallet) {

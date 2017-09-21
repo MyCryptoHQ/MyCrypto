@@ -1,4 +1,8 @@
-import { closeNotification, Notification } from 'actions/notifications';
+import {
+  closeNotification,
+  Notification,
+  TCloseNotification
+} from 'actions/notifications';
 import React from 'react';
 import { connect } from 'react-redux';
 import NotificationRow from './NotificationRow';
@@ -6,7 +10,7 @@ import './Notifications.scss';
 
 interface Props {
   notifications: Notification[];
-  closeNotification(n: Notification): void;
+  closeNotification: TCloseNotification;
 }
 export class Notifications extends React.Component<Props, {}> {
   public render() {
