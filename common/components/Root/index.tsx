@@ -5,7 +5,7 @@ import { Router } from 'react-router';
 // TODO: fix this
 interface Props {
   store: any;
-  history: object;
+  history: any;
   routes(): null;
 }
 

@@ -106,7 +106,7 @@ export function isPositiveIntegerOrZero(num: number): boolean {
   if (isNaN(num) || !isFinite(num)) {
     return false;
   }
-  return num >= 0 && parseInt(num, 10) === num;
+  return num >= 0 && parseInt(num.toString(), 10) === num;
 }
 
 export function isValidRawTx(rawTx: RawTransaction): boolean {

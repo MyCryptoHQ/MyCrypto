@@ -1,6 +1,6 @@
 import { IWallet } from './IWallet';
 
-export default class DeterministicWallet implements IWallet {
+export default class DeterministicWallet {
   private address: string;
   private dPath: string;
   private index: number;

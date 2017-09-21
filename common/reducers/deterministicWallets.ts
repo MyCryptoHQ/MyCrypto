@@ -5,7 +5,7 @@ import {
 
 export interface State {
   wallets: DeterministicWalletData[];
-  desiredToken: string;
+  desiredToken: string | null;
 }
 
 export const INITIAL_STATE: State = {

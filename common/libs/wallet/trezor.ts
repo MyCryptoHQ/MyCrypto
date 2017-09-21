@@ -5,8 +5,9 @@ import { RawTransaction } from 'libs/transaction';
 import { stripHexPrefixAndLower } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWallet from './deterministic';
-
-export default class TrezorWallet extends DeterministicWallet {
+import { IWallet } from './IWallet';
+export default class TrezorWallet extends DeterministicWallet
+  implements IWallet {
   public signRawTransaction(tx: RawTransaction): Promise<string> {
     return new Promise((resolve, reject) => {
       TrezorConnect.ethereumSignTx(
