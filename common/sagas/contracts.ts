@@ -1,6 +1,5 @@
-import { setInteractiveContract } from 'actions/contracts/actionCreators';
-import { AccessContractAction } from 'actions/contracts/actionTypes';
-import { showNotification } from 'actions/notifications/actionCreators';
+import { setInteractiveContract, AccessContractAction } from 'actions/contracts';
+import { showNotification } from 'actions/notifications';
 import { isValidETHAddress } from 'libs/validators';
 import { SagaIterator } from 'redux-saga';
 import { put, takeEvery } from 'redux-saga/effects';

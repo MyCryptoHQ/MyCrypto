@@ -1,4 +1,4 @@
-import { Notification } from 'actions/notifications/actionTypes';
+import { Notification } from 'actions/notifications';
 import classnames from 'classnames';
 import React, { Component } from 'react';
 import './Notifications.scss';

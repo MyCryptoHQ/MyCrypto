@@ -1,7 +1,7 @@
 import {
   showNotification,
   TShowNotification
-} from 'actions/notifications/actionCreators';
+} from 'actions/notifications';
 import bityConfig from 'config/bity';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';

@@ -3,7 +3,7 @@ import {
   unlockKeystore,
   unlockMnemonic,
   unlockPrivateKey
-} from 'actions/wallet/actionCreators';
+} from 'actions/wallet';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import React, { Component } from 'react';

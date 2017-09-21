@@ -1,4 +1,4 @@
-import { fiatSucceededRates } from 'actions/rates/actionCreators';
+import { fiatSucceededRates } from 'actions/rates';
 import { handleJSONResponse } from 'api/utils';
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';

@@ -2,7 +2,7 @@ import {
   AddCustomTokenAction,
   CustomTokenAction,
   RemoveCustomTokenAction
-} from 'actions/customTokens/actionTypes';
+} from 'actions/customTokens';
 import { Token } from 'config/data';
 
 export type State = Token[];

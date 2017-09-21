@@ -1,4 +1,4 @@
-import { TShowNotification } from 'actions/notifications/actionCreators';
+import { TShowNotification } from 'actions/notifications';
 import {
   loadBityRatesRequestedSwap,
   restartSwap,
@@ -7,7 +7,7 @@ import {
   stopLoadBityRatesSwap,
   stopOrderTimerSwap,
   stopPollBityOrderStatus
-} from 'actions/swap/actionCreators';
+} from 'actions/swap';
 import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';

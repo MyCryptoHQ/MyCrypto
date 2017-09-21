@@ -1,4 +1,4 @@
-import { GenerateWalletAction } from 'actions/generateWallet/actionTypes';
+import { GenerateWalletAction } from 'actions/generateWallet';
 import PrivateKeyWallet from 'libs/wallet/privkey';
 
 export interface State {

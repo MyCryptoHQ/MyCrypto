@@ -1,4 +1,4 @@
-import { TShowNotification } from 'actions/notifications/actionCreators';
+import { TShowNotification } from 'actions/notifications';
 import swapActions, {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
@@ -14,7 +14,7 @@ import swapActions, {
   TStopLoadBityRatesSwap,
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus
-} from 'actions/swap/actionCreators';
+} from 'actions/swap';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CurrencySwap from './components/CurrencySwap';
