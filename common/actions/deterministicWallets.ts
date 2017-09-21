@@ -68,10 +68,10 @@ export function setDeterministicWallets(
 /*** Set desired token ***/
 export interface SetDesiredTokenAction {
   type: 'DW_SET_DESIRED_TOKEN';
-  payload?: string;
+  payload: string;
 }
 
-export function setDesiredToken(token?: string): SetDesiredTokenAction {
+export function setDesiredToken(token: string): SetDesiredTokenAction {
   return {
     type: 'DW_SET_DESIRED_TOKEN',
     payload: token
@@ -104,4 +104,5 @@ export function updateDeterministicWallet(
 export type DeterministicWalletAction =
   | GetDeterministicWalletsAction
   | UpdateDeterministicWalletAction
-  | SetDesiredTokenAction;
+  | SetDesiredTokenAction
+  | SetDeterministicWalletsAction;

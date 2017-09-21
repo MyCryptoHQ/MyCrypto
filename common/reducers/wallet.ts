@@ -4,7 +4,7 @@ import {
   SetWalletAction,
   WalletAction
 } from 'actions/wallet';
-import Big from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet';
@@ -15,7 +15,7 @@ export interface State {
   // in ETH
   balance?: Ether | null;
   tokens: {
-    [key: string]: Big;
+    [key: string]: BigNumber;
   };
   transactions: BroadcastTransactionStatus[];
 }

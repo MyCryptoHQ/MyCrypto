@@ -56,7 +56,9 @@ export interface BityOrderCreateRequestedSwapAction {
     mode: number;
   };
 }
-
+export interface SwapOrderCreateFailedAction {
+  type: 'SWAP_ORDER_CREATE_FAILED';
+}
 interface BityOrderInput {
   amount: string;
 }
@@ -66,7 +68,24 @@ interface BityOrderOutput {
 }
 
 export interface BityOrderResponse {
-  status: string;
+  error: boolean;
+  msg: string;
+  data: {
+    status: string;
+    timestamp_created: string;
+    input: {
+      amount: string;
+      currency: string;
+      reference: string;
+      status: string;
+    };
+    output: {
+      amount: string;
+      currency: string;
+      reference: string;
+      status: string;
+    };
+  };
 }
 
 export type BityOrderPostResponse = BityOrderResponse & {
@@ -76,6 +95,7 @@ export type BityOrderPostResponse = BityOrderResponse & {
   output: BityOrderOutput;
   timestamp_created: string;
   validFor: number;
+  id: string;
 };
 
 export interface BityOrderCreateSucceededSwapAction {
@@ -122,6 +142,6 @@ export type SwapAction =
   | StopLoadBityRatesSwapAction
   | BityOrderCreateRequestedSwapAction
   | BityOrderCreateSucceededSwapAction
-  | BityOrderResponse
   | OrderStatusSucceededSwapAction
+  | SwapOrderCreateFailedAction
   | StartPollBityOrderStatusAction;
