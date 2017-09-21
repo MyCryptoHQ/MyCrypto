@@ -130,7 +130,7 @@ export default class LedgerNanoSDecrypt extends Component {
         </a>
 
         <DeterministicWalletsModal
-          isOpen={!!publicKey}
+          isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
