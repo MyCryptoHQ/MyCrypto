@@ -30,6 +30,7 @@ export default class LedgerNanoSDecrypt extends Component {
   };
 
   _handlePathChange = (dPath: string) => {
+    this.setState({ dPath });
     this._handleConnect(dPath);
   };
 
