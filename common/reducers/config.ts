@@ -5,7 +5,7 @@ import {
   ChangeLanguageAction,
   ChangeNodeAction,
   ConfigAction
-} from 'actions/config/actionTypes';
+} from 'actions/config';
 
 export interface State {
   // FIXME

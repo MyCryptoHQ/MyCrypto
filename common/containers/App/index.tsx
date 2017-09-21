@@ -2,7 +2,7 @@ import actions, {
   TChangeGasPrice,
   TChangeLanguage,
   TChangeNode
-} from 'actions/config/actionCreators';
+} from 'actions/config';
 import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';

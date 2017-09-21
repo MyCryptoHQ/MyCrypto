@@ -1,5 +1,5 @@
-import { showNotification } from 'actions/notifications/actionCreators';
-import { loadBityRatesSucceededSwap } from 'actions/swap/actionCreators';
+import { showNotification } from 'actions/notifications';
+import { loadBityRatesSucceededSwap } from 'actions/swap';
 import { getAllRates } from 'api/bity';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, takeLatest } from 'redux-saga/effects';

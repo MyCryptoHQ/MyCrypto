@@ -3,7 +3,7 @@ import {
   ChangeStepSwapAction,
   DestinationAddressSwapAction,
   StopLoadBityRatesSwapAction
-} from 'actions/swap/actionTypes';
+} from 'actions/swap';
 import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
 import { donationAddressMap } from 'config/data';

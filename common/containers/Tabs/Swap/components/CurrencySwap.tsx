@@ -1,18 +1,11 @@
-import { TShowNotification } from 'actions/notifications/actionCreators';
+import { TShowNotification } from 'actions/notifications';
 import {
   TChangeStepSwap,
   TDestinationAmountSwap,
   TDestinationKindSwap,
   TOriginAmountSwap,
   TOriginKindSwap
-} from 'actions/swap/actionCreators';
-import {
-  ChangeStepSwapAction,
-  DestinationAmountSwapAction,
-  DestinationKindSwapAction,
-  OriginAmountSwapAction,
-  OriginKindSwapAction
-} from 'actions/swap/actionTypes';
+} from 'actions/swap';
 import SimpleButton from 'components/ui/SimpleButton';
 import SimpleSelect from 'components/ui/SimpleSelect';
 import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';

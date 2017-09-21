@@ -1,7 +1,7 @@
 import {
   AccessContractAction,
   SetInteractiveContractAction
-} from 'actions/contracts/actionTypes';
+} from 'actions/contracts';
 
 export interface State {
   selectedAddress?: string | null;

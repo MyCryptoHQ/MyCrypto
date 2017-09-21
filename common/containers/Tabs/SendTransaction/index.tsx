@@ -1,9 +1,8 @@
 import {
   showNotification,
   TShowNotification
-} from 'actions/notifications/actionCreators';
-import { broadcastTx } from 'actions/wallet/actionCreators';
-import { BroadcastTxRequestedAction } from 'actions/wallet/actionTypes';
+} from 'actions/notifications';
+import { broadcastTx, BroadcastTxRequestedAction } from 'actions/wallet';
 import Big from 'bignumber.js';
 import { BalanceSidebar } from 'components';
 // COMPONENTS

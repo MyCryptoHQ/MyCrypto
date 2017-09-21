@@ -1,4 +1,4 @@
-import { resolveEnsName } from 'actions/ens/actionCreators';
+import { resolveEnsName } from 'actions/ens';
 import { Identicon } from 'components/ui';
 import { isValidENSAddress, isValidENSorEtherAddress } from 'libs/validators';
 import React from 'react';

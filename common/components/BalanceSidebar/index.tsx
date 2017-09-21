@@ -1,15 +1,15 @@
 import customTokenActions, {
   TAddCustomToken,
   TRemoveCustomToken
-} from 'actions/customTokens/actionCreators';
+} from 'actions/customTokens';
 import {
   showNotification,
   TShowNotification
-} from 'actions/notifications/actionCreators';
+} from 'actions/notifications';
 import {
   fiatRequestedRates,
   TFiatRequestedRates
-} from 'actions/rates/actionCreators';
+} from 'actions/rates';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';

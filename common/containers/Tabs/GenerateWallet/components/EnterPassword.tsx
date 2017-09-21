@@ -1,4 +1,4 @@
-import { GenerateNewWalletAction } from 'actions/generateWallet/actionTypes';
+import { GenerateNewWalletAction } from 'actions/generateWallet';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
