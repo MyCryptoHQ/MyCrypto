@@ -11,6 +11,10 @@ import { Root } from 'components';
 import { Routing, history } from './routing';
 import { store } from './store';
 
+import u2f from './vendor/u2f-api';
+
+window.u2f = u2f;
+
 const renderRoot = Root => {
   let syncedHistory = syncHistoryWithStore(history, store);
   render(

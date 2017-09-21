@@ -46,7 +46,8 @@ const WALLETS = {
   'ledger-nano-s': {
     lid: 'x_Ledger',
     component: LedgerNanoSDecrypt,
-    disabled: true
+    initialParams: {},
+    unlock: setWallet
   },
   trezor: {
     lid: 'x_Trezor',
