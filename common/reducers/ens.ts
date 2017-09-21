@@ -1,4 +1,4 @@
-import { CacheEnsAddressAction, EnsAction } from 'actions/ens';
+import { CacheEnsAddressAction, EnsAction } from 'actions/ens/actionTypes';
 
 export interface State {
   [key: string]: string;

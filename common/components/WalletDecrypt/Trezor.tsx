@@ -1,7 +1,7 @@
 import DPATHS from 'config/dpaths';
 import TrezorWallet from 'libs/wallet/trezor';
 import React, { Component } from 'react';
-import translate, {translateRaw} from 'translations';
+import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
@@ -14,7 +14,7 @@ interface State {
   publicKey: string;
   chainCode: string;
   dPath: string;
-  error?: string;
+  error: string | null;
   isLoading: boolean;
 }
 
@@ -90,7 +90,8 @@ export default class TrezorDecrypt extends Component<Props, State> {
       error: null
     });
 
-    TrezorConnect.getXPubKey(
+    // TODO: type vendor file
+    (TrezorConnect as any).getXPubKey(
       dPath,
       res => {
         if (res.success) {

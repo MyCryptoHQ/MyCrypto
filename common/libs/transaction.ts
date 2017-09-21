@@ -6,7 +6,7 @@ import ERC20 from 'libs/erc20';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
-import { Ether, toTokenUnit, UnitKeys, Wei } from 'libs/units';
+import { Ether, toTokenUnit, UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
@@ -14,7 +14,7 @@ import translate, { translateRaw } from 'translations';
 
 export interface TransactionInput {
   token?: Token | null;
-  unit: UnitKeys;
+  unit: UnitKey;
   value: string;
   to: string;
   data: string;
@@ -30,7 +30,7 @@ export interface BaseTransaction {
   to: string;
   value: string;
   data: string;
-  gasLimit: BigNumber | string;
+  gasLimit: BigNumber;
   gasPrice: Wei;
   chainId: number;
 }

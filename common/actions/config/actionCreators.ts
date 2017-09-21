@@ -1,23 +1,26 @@
-import * as constants from './constants';
 import * as interfaces from './actionTypes';
+import * as constants from './constants';
 
+export type TChangeLanguage = typeof changeLanguage;
 export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
-    return {
-        type: constants.CONFIG_LANGUAGE_CHANGE,
-        value: sign
-    };
+  return {
+    type: constants.CONFIG_LANGUAGE_CHANGE,
+    value: sign
+  };
 }
 
+export type TChangeNode = typeof changeNode;
 export function changeNode(value: string): interfaces.ChangeNodeAction {
-    return {
-        type: constants.CONFIG_NODE_CHANGE,
-        value
-    };
+  return {
+    type: constants.CONFIG_NODE_CHANGE,
+    value
+  };
 }
 
+export type TChangeGasPrice = typeof changeGasPrice;
 export function changeGasPrice(value: number): interfaces.ChangeGasPriceAction {
-    return {
-        type: constants.CONFIG_GAS_PRICE,
-        value
-    };
+  return {
+    type: constants.CONFIG_GAS_PRICE,
+    value
+  };
 }

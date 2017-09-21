@@ -1,6 +1,7 @@
 import * as interfaces from './actionTypes';
 import * as constants from './constants';
 
+export type TChangeStepSwap = typeof changeStepSwap;
 export function changeStepSwap(value: number): interfaces.ChangeStepSwapAction {
   return {
     type: constants.SWAP_STEP,
@@ -8,12 +9,15 @@ export function changeStepSwap(value: number): interfaces.ChangeStepSwapAction {
   };
 }
 
+export type TOriginKindSwap = typeof originKindSwap;
+
 export function originKindSwap(value: string): interfaces.OriginKindSwapAction {
   return {
     type: constants.SWAP_ORIGIN_KIND,
     value
   };
 }
+export type TDestinationKindSwap = typeof destinationKindSwap;
 
 export function destinationKindSwap(
   value: string
@@ -23,6 +27,7 @@ export function destinationKindSwap(
     value
   };
 }
+export type TOriginAmountSwap = typeof originAmountSwap;
 
 export function originAmountSwap(
   value?: number | null
@@ -32,6 +37,7 @@ export function originAmountSwap(
     value
   };
 }
+export type TDestinationAmountSwap = typeof destinationAmountSwap;
 
 export function destinationAmountSwap(
   value?: number | null
@@ -41,6 +47,7 @@ export function destinationAmountSwap(
     value
   };
 }
+export type TLoadBityRatesSucceededSwap = typeof loadBityRatesSucceededSwap;
 
 export function loadBityRatesSucceededSwap(
   value: interfaces.Pairs
@@ -50,6 +57,7 @@ export function loadBityRatesSucceededSwap(
     value
   };
 }
+export type TDestinationAddressSwap = typeof destinationAddressSwap;
 
 export function destinationAddressSwap(
   value?: string
@@ -59,24 +67,28 @@ export function destinationAddressSwap(
     value
   };
 }
+export type TRestartSwap = typeof restartSwap;
 
 export function restartSwap(): interfaces.RestartSwapAction {
   return {
     type: constants.SWAP_RESTART
   };
 }
+export type TLoadBityRatesRequestedSwap = typeof loadBityRatesRequestedSwap;
 
 export function loadBityRatesRequestedSwap(): interfaces.LoadBityRatesRequestedSwapAction {
   return {
     type: constants.SWAP_LOAD_BITY_RATES_REQUESTED
   };
 }
+export type TStopLoadBityRatesSwap = typeof stopLoadBityRatesSwap;
 
 export function stopLoadBityRatesSwap(): interfaces.StopLoadBityRatesSwapAction {
   return {
     type: constants.SWAP_STOP_LOAD_BITY_RATES
   };
 }
+export type TOrderTimeSwap = typeof orderTimeSwap;
 
 export function orderTimeSwap(value: number) {
   return {
@@ -84,6 +96,7 @@ export function orderTimeSwap(value: number) {
     value
   };
 }
+export type TBityOrderCreateSucceededSwap = typeof bityOrderCreateSucceededSwap;
 
 export function bityOrderCreateSucceededSwap(
   payload: interfaces.BityOrderPostResponse
@@ -93,6 +106,7 @@ export function bityOrderCreateSucceededSwap(
     payload
   };
 }
+export type TBityOrderCreateRequestedSwap = typeof bityOrderCreateRequestedSwap;
 
 export function bityOrderCreateRequestedSwap(
   amount: number,
@@ -110,6 +124,7 @@ export function bityOrderCreateRequestedSwap(
     }
   };
 }
+export type TOrderStatusSucceededSwap = typeof orderStatusSucceededSwap;
 
 export function orderStatusSucceededSwap(
   payload: interfaces.BityOrderResponse
@@ -119,30 +134,35 @@ export function orderStatusSucceededSwap(
     payload
   };
 }
+export type TOrderStatusRequestedSwap = typeof orderStatusRequestedSwap;
 
 export function orderStatusRequestedSwap(): interfaces.OrderStatusRequestedSwapAction {
   return {
     type: constants.SWAP_BITY_ORDER_STATUS_REQUESTED
   };
 }
+export type TStartOrderTimerSwap = typeof startOrderTimerSwap;
 
 export function startOrderTimerSwap(): interfaces.StartOrderTimerSwapAction {
   return {
     type: constants.SWAP_ORDER_START_TIMER
   };
 }
+export type TStopOrderTimerSwap = typeof stopOrderTimerSwap;
 
 export function stopOrderTimerSwap(): interfaces.StopOrderTimerSwapAction {
   return {
     type: constants.SWAP_ORDER_STOP_TIMER
   };
 }
+export type TStartPollBityOrderStatus = typeof startPollBityOrderStatus;
 
 export function startPollBityOrderStatus(): interfaces.StartPollBityOrderStatusAction {
   return {
     type: constants.SWAP_START_POLL_BITY_ORDER_STATUS
   };
 }
+export type TStopPollBityOrderStatus = typeof stopPollBityOrderStatus;
 
 export function stopPollBityOrderStatus(): interfaces.StopPollBityOrderStatusAction {
   return {

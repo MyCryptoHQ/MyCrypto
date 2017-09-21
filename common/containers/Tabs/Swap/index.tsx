@@ -1,22 +1,19 @@
-import {
-  showNotification,
-  TShowNotification
-} from 'actions/notifications/actionCreators';
+import { TShowNotification } from 'actions/notifications/actionCreators';
 import swapActions, {
-  bityOrderCreateRequestedSwap,
-  changeStepSwap,
-  destinationAddressSwap,
-  destinationAmountSwap,
-  destinationKindSwap,
-  loadBityRatesRequestedSwap,
-  originAmountSwap,
-  originKindSwap,
-  restartSwap,
-  startPollBityOrderStatus,
-  stopLoadBityRatesSwap,
-  stopOrderTimerSwap,
-  stopPollBityOrderStatus,
-  startOrderTimerSwap
+  TBityOrderCreateRequestedSwap,
+  TChangeStepSwap,
+  TDestinationAddressSwap,
+  TDestinationAmountSwap,
+  TDestinationKindSwap,
+  TLoadBityRatesRequestedSwap,
+  TOriginAmountSwap,
+  TOriginKindSwap,
+  TRestartSwap,
+  TStartOrderTimerSwap,
+  TStartPollBityOrderStatus,
+  TStopLoadBityRatesSwap,
+  TStopOrderTimerSwap,
+  TStopPollBityOrderStatus
 } from 'actions/swap/actionCreators';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -38,7 +35,7 @@ interface ReduxStateProps {
   destinationAmount?: number;
   isPostingOrder: boolean;
   isFetchingRates: boolean;
-  bityOrder: any
+  bityOrder: any;
   secondsRemaining?: number;
   paymentAddress?: string;
   orderStatus?: string;
@@ -46,21 +43,21 @@ interface ReduxStateProps {
 }
 
 interface ReduxActionProps {
-  changeStepSwap: typeof changeStepSwap;
-  originKindSwap: typeof originKindSwap;
-  destinationKindSwap: typeof destinationKindSwap;
-  originAmountSwap: typeof originAmountSwap;
-  destinationAmountSwap: typeof destinationAmountSwap;
-  loadBityRatesRequestedSwap: typeof loadBityRatesRequestedSwap;
-  destinationAddressSwap: typeof destinationAddressSwap;
-  restartSwap: typeof restartSwap;
-  stopLoadBityRatesSwap: typeof stopLoadBityRatesSwap;
-  bityOrderCreateRequestedSwap: typeof bityOrderCreateRequestedSwap;
-  startPollBityOrderStatus: typeof startPollBityOrderStatus;
-  stopOrderTimerSwap: typeof stopOrderTimerSwap;
-  stopPollBityOrderStatus: typeof stopPollBityOrderStatus;
+  changeStepSwap: TChangeStepSwap;
+  originKindSwap: TOriginKindSwap;
+  destinationKindSwap: TDestinationKindSwap;
+  originAmountSwap: TOriginKindSwap;
+  destinationAmountSwap: TDestinationAmountSwap;
+  loadBityRatesRequestedSwap: TLoadBityRatesRequestedSwap;
+  destinationAddressSwap: TDestinationAddressSwap;
+  restartSwap: TRestartSwap;
+  stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
+  bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
+  startPollBityOrderStatus: TStartPollBityOrderStatus;
+  stopOrderTimerSwap: TStopOrderTimerSwap;
+  stopPollBityOrderStatus: TStopPollBityOrderStatus;
   showNotification: TShowNotification;
-  startOrderTimerSwap: typeof startOrderTimerSwap;
+  startOrderTimerSwap: TStartOrderTimerSwap;
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
@@ -208,6 +205,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { ...swapActions, showNotification })(
+export default connect(mapStateToProps, { ...swapActions, TShowNotification })(
   Swap
 );

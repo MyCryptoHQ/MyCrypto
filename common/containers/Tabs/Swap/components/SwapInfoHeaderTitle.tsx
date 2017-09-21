@@ -1,4 +1,4 @@
-import { RestartSwapAction } from 'actions/swapTypes';
+import { RestartSwapAction } from 'actions/swap/actionTypes';
 import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
 import React, { Component } from 'react';
@@ -10,7 +10,10 @@ export interface SwapInfoHeaderTitleProps {
   restartSwap(): RestartSwapAction;
 }
 
-export default class SwapInfoHeaderTitle extends Component<SwapInfoHeaderTitleProps, {}> {
+export default class SwapInfoHeaderTitle extends Component<
+  SwapInfoHeaderTitleProps,
+  {}
+> {
   public render() {
     return (
       <section className="SwapInfo-top row text-center">

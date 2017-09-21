@@ -1,3 +1,4 @@
+import { GenerateNewWalletAction } from 'actions/generateWallet/actionTypes';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
@@ -5,7 +6,6 @@ import translate from 'translations';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from './Template';
-
 // VALIDATORS
 const minLength = min => value => {
   return value && value.length < min

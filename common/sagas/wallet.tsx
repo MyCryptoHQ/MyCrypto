@@ -1,15 +1,17 @@
-import { showNotification } from 'actions/notifications';
+import { showNotification } from 'actions/notifications/actionCreators';
 import {
   broadCastTxFailed,
-  BroadcastTxRequestedAction,
   broadcastTxSucceded,
   setBalance,
   setTokenBalances,
-  setWallet,
+  setWallet
+} from 'actions/wallet/actionCreators';
+import {
+  BroadcastTxRequestedAction,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
   UnlockPrivateKeyAction
-} from 'actions/wallet';
+} from 'actions/wallet/actionTypes';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { determineKeystoreType } from 'libs/keystore';
 import { INode } from 'libs/nodes/INode';

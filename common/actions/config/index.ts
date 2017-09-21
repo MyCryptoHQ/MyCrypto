@@ -1,5 +1,5 @@
-import * as constants from './constants';
-import * as interfaces from './actionTypes';
 import * as actions from './actionCreators';
+import * as interfaces from './actionTypes';
+import * as constants from './constants';
 
-export {constants, interfaces, actions};
+export { constants, interfaces, actions };

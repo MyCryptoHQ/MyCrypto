@@ -116,7 +116,7 @@ export default class PrivateKeyDecrypt extends Component {
     });
   };
 
-  public onKeyDown = (e: SyntheticKeyboardEvent) => {
+  public onKeyDown = (e: any) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();

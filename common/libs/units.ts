@@ -29,13 +29,13 @@ const Units = {
 };
 
 export type TUnit = typeof Units;
-export type UnitKeys = keyof TUnit;
+export type UnitKey = keyof TUnit;
 
 class Unit {
-  public unit: UnitKeys;
+  public unit: UnitKey;
   public amount: BigNumber;
 
-  constructor(amount: BigNumber, unit: UnitKeys) {
+  constructor(amount: BigNumber, unit: UnitKey) {
     this.unit = unit;
     this.amount = amount;
   }
@@ -80,18 +80,18 @@ export class GWei extends Unit {
   }
 }
 
-function getValueOfUnit(unit: UnitKeys) {
+function getValueOfUnit(unit: UnitKey) {
   return new Big(Units[unit]);
 }
 
-export function toWei(num: BigNumber, unit: UnitKeys): BigNumber {
+export function toWei(num: BigNumber, unit: UnitKey): BigNumber {
   return num.times(getValueOfUnit(unit));
 }
 
 export function toUnit(
   num: BigNumber,
-  fromUnit: UnitKeys,
-  convertToUnit: UnitKeys
+  fromUnit: UnitKey,
+  convertToUnit: UnitKey
 ): BigNumber {
   return toWei(num, fromUnit).div(getValueOfUnit(convertToUnit));
 }

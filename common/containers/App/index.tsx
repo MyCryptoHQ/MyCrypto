@@ -1,4 +1,8 @@
-import * as actions from 'actions/config';
+import actions, {
+  TChangeGasPrice,
+  TChangeLanguage,
+  TChangeNode
+} from 'actions/config/actionCreators';
 import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -16,9 +20,9 @@ interface Props {
 
   gasPriceGwei: number;
 
-  changeLanguage: typeof actions.changeLanguage;
-  changeNode: typeof actions.changeNode;
-  changeGasPrice: typeof actions.changeGasPrice;
+  changeLanguage: TChangeLanguage;
+  changeNode: TChangeGasPrice;
+  changeGasPrice: TChangeNode;
   handleWindowResize(): void;
 }
 class App extends Component<Props, {}> {

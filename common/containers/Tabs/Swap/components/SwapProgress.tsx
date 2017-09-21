@@ -1,7 +1,10 @@
-import { showNotification } from 'actions/notifications';
+import {
+  showNotification,
+  TShowNotification
+} from 'actions/notifications/actionCreators';
 import bityConfig from 'config/bity';
 import React, { Component } from 'react';
-import translate, {translateRaw} from 'translations';
+import translate, { translateRaw } from 'translations';
 import './SwapProgress.scss';
 
 export interface Props {
@@ -11,7 +14,7 @@ export interface Props {
   originKind: string;
   orderStatus: string;
   // actions
-  showNotification: typeof showNotification;
+  showNotification: TShowNotification;
 }
 
 interface State {
@@ -23,10 +26,10 @@ export default class SwapProgress extends Component<Props, State> {
   };
 
   public componentDidMount() {
-    this.showNotification();
+    this.showSwapNotification();
   }
 
-  public showNotification = () => {
+  public showSwapNotification = () => {
     const { hasShownViewTx } = this.state;
     const {
       destinationKind,

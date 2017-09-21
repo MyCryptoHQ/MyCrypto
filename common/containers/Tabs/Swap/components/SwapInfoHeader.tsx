@@ -1,4 +1,4 @@
-import { RestartSwapAction } from 'actions/swapTypes';
+import { RestartSwapAction } from 'actions/swap/actionTypes';
 import bityLogo from 'assets/images/logo-bity.svg';
 import { bityReferralURL } from 'config/data';
 import React, { Component } from 'react';
@@ -38,11 +38,11 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
   public formattedTime = () => {
     const { secondsRemaining } = this.props;
     if (secondsRemaining || secondsRemaining === 0) {
-      let minutes = Math.floor(secondsRemaining / 60);
-      let seconds = secondsRemaining - minutes * 60;
-      minutes = minutes < 10 ? '0' + minutes : minutes;
-      seconds = seconds < 10 ? '0' + seconds : seconds;
-      return minutes + ':' + seconds;
+      const minutes = Math.floor(secondsRemaining / 60);
+      const seconds = secondsRemaining - minutes * 60;
+      const stringMinutes = minutes < 10 ? '0' + minutes : minutes;
+      const stringSeconds = seconds < 10 ? '0' + seconds : seconds;
+      return stringMinutes + ':' + stringSeconds;
     } else {
       throw Error('secondsRemaining must be a number');
     }

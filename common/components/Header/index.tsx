@@ -102,7 +102,7 @@ export default class Header extends Component<Props, {}> {
                 value={nodeSelection}
                 extra={
                   <li>
-                    <a onClick={() => {}}>Add Custom Node</a>
+                    <a>Add Custom Node</a>
                   </li>
                 }
                 onChange={changeNode}

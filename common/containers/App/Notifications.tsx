@@ -1,4 +1,5 @@
-import { closeNotification, Notification } from 'actions/notifications';
+import { closeNotification } from 'actions/notifications/actionCreators';
+import { Notification } from 'actions/notifications/actionTypes';
 import React from 'react';
 import { connect } from 'react-redux';
 import NotificationRow from './NotificationRow';

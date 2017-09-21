@@ -1,4 +1,4 @@
-import { showNotification } from 'actions/notifications';
+import { TShowNotification } from 'actions/notifications/actionCreators';
 import {
   loadBityRatesRequestedSwap,
   restartSwap,
@@ -7,7 +7,7 @@ import {
   stopLoadBityRatesSwap,
   stopOrderTimerSwap,
   stopPollBityOrderStatus
-} from 'actions/swap';
+} from 'actions/swap/actionCreators';
 import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
@@ -35,7 +35,7 @@ interface ReduxActionProps {
   startPollBityOrderStatus: typeof startPollBityOrderStatus;
   stopOrderTimerSwap: typeof stopOrderTimerSwap;
   stopPollBityOrderStatus: typeof stopPollBityOrderStatus;
-  showNotification: typeof showNotification;
+  showNotification: TShowNotification;
 }
 
 export default class PartThree extends Component<

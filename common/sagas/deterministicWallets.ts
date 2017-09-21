@@ -4,7 +4,7 @@ import {
   setDeterministicWallets,
   updateDeterministicWallet
 } from 'actions/deterministicWallets';
-import { showNotification } from 'actions/notifications';
+import { showNotification } from 'actions/notifications/actionCreators';
 import { Token } from 'config/data';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';

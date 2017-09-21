@@ -1,18 +1,18 @@
-import { showNotification } from 'actions/notifications';
+import { TShowNotification } from 'actions/notifications/actionCreators';
 import {
-  changeStepSwap,
-  destinationAmountSwap,
-  destinationKindSwap,
-  originAmountSwap,
-  originKindSwap
-} from 'actions/swap';
+  TChangeStepSwap,
+  TDestinationAmountSwap,
+  TDestinationKindSwap,
+  TOriginAmountSwap,
+  TOriginKindSwap
+} from 'actions/swap/actionCreators';
 import {
   ChangeStepSwapAction,
   DestinationAmountSwapAction,
   DestinationKindSwapAction,
   OriginAmountSwapAction,
   OriginKindSwapAction
-} from 'actions/swapTypes';
+} from 'actions/swap/actionTypes';
 import SimpleButton from 'components/ui/SimpleButton';
 import SimpleSelect from 'components/ui/SimpleSelect';
 import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
@@ -32,12 +32,12 @@ export interface StateProps {
 }
 
 export interface ActionProps {
-  showNotification: typeof showNotification;
-  changeStepSwap: typeof changeStepSwap;
-  originKindSwap: typeof originKindSwap;
-  destinationKindSwap: typeof destinationAmountSwap;
-  originAmountSwap: typeof originAmountSwap;
-  destinationAmountSwap: typeof destinationAmountSwap;
+  showNotification: TShowNotification;
+  changeStepSwap: TChangeStepSwap;
+  originKindSwap: TOriginKindSwap;
+  destinationKindSwap: TDestinationKindSwap;
+  originAmountSwap: TOriginAmountSwap;
+  destinationAmountSwap: TDestinationAmountSwap;
 }
 
 interface State {

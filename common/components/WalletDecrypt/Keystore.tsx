@@ -74,27 +74,26 @@ export default class KeystoreDecrypt extends Component {
     );
   }
 
-  public onKeyDown = (e: React.SyntheticEvent<KeyboardEvent>) => {
-    if ((e as KeyboardEvent).keyCode === 13) {
+  public onKeyDown = (e: any) => {
+    if (e.keyCode === 13) {
       e.preventDefault();
       e.stopPropagation();
       this.props.onUnlock();
     }
   };
 
-  public onPasswordChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    const valid =
-      this.props.value.file.length && (e.target as HTMLInputElement).length;
+  public onPasswordChange = (e: any) => {
+    const valid = this.props.value.file.length && e.target.value.length;
     this.props.onChange({
       ...this.props.value,
-      password: (e.target as HTMLInputElement).value,
+      password: e.target.value,
       valid
     });
   };
 
-  public handleFileSelection = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  public handleFileSelection = (e: any) => {
     const fileReader = new FileReader();
-    const target = e.target as HTMLInputElement;
+    const target = e.target;
     const inputFile = target.files[0];
 
     fileReader.onload = () => {

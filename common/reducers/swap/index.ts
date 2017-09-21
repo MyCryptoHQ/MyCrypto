@@ -1,4 +1,4 @@
-import { SwapAction } from 'actions/swapTypes';
+import { SwapAction } from 'actions/swap/actionTypes';
 import without from 'lodash/without';
 import {
   buildDestinationAmount,

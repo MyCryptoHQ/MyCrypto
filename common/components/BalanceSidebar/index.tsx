@@ -1,9 +1,15 @@
-import * as customTokenActions from 'actions/customTokens/actionCreators';
-import {
+import customTokenActions, {
   TAddCustomToken,
   TRemoveCustomToken
 } from 'actions/customTokens/actionCreators';
-import { TFiatRequestedRates } from 'actions/rates/actionCreators';
+import {
+  showNotification,
+  TShowNotification
+} from 'actions/notifications/actionCreators';
+import {
+  fiatRequestedRates,
+  TFiatRequestedRates
+} from 'actions/rates/actionCreators';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
@@ -20,10 +26,6 @@ import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import {
-  showNotification,
-  TShowNotification
-} from 'actions/notifications/actionCreators';
 
 interface Props {
   wallet: IWallet;
@@ -118,5 +120,5 @@ function mapStateToProps(state: AppState) {
 export default connect(mapStateToProps, {
   ...customTokenActions,
   showNotification,
-  TFiatRequestedRates
+  fiatRequestedRates
 })(BalanceSidebar);

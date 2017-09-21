@@ -1,7 +1,7 @@
-import * as types from './actionTypes';
 import { BigNumber } from 'bignumber.js';
 import { Wei } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
+import * as types from './actionTypes';
 import * as constants from './constants';
 
 export function unlockPrivateKey(
@@ -61,6 +61,31 @@ export function broadcastTx(
     type: constants.WALLET_BROADCAST_TX_REQUESTED,
     payload: {
       signedTx
+    }
+  };
+}
+
+export function broadcastTxSucceded(
+  txHash: string,
+  signedTx: string
+): types.BroadcastTxSuccededAction {
+  return {
+    type: constants.WALLET_BROADCAST_TX_SUCCEEDED,
+    payload: {
+      txHash,
+      signedTx
+    }
+  };
+}
+export function broadCastTxFailed(
+  signedTx: string,
+  errorMsg: string
+): types.BroadcastTxFailedAction {
+  return {
+    type: constants.WALLET_BROADCAST_TX_FAILED,
+    payload: {
+      signedTx,
+      error: errorMsg
     }
   };
 }

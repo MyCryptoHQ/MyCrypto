@@ -4,7 +4,7 @@ import {
 } from 'actions/notifications/actionCreators';
 import { broadcastTx } from 'actions/wallet/actionCreators';
 import { BroadcastTxRequestedAction } from 'actions/wallet/actionTypes';
-import Big, from 'bignumber.js';
+import Big from 'bignumber.js';
 import { BalanceSidebar } from 'components';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
@@ -25,7 +25,7 @@ import {
   getBalanceMinusGasCosts,
   TransactionInput
 } from 'libs/transaction';
-import { Ether, GWei, UnitKeys, Wei } from 'libs/units';
+import { Ether, GWei, UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 // LIBS
 import { IWallet } from 'libs/wallet/IWallet';
@@ -68,7 +68,7 @@ interface State {
   to: string;
   // amount value
   value: string;
-  unit: UnitKeys;
+  unit: UnitKey;
   token?: Token | null;
   gasLimit: string;
   data: string;
@@ -102,8 +102,8 @@ interface Props {
   tokenBalances: TokenBalance[];
   gasPrice: Wei;
   transactions: BroadcastTransactionStatus[];
-  broadcastTx(signedTx: string): BroadcastTxRequestedAction;
   showNotification: TShowNotification;
+  broadcastTx(signedTx: string): BroadcastTxRequestedAction;
 }
 
 const initialState: State = {
@@ -364,7 +364,7 @@ export class SendTransaction extends React.Component<Props, State> {
   public onNewTx = (
     address: string,
     amount: string,
-    unit: UnitKeys,
+    unit: UnitKey,
     data: string = '',
     gasLimit: string = '21000'
   ) => {
@@ -420,7 +420,7 @@ export class SendTransaction extends React.Component<Props, State> {
     return value;
   };
 
-  public onAmountChange = (value: string, unit: string) => {
+  public onAmountChange = (value: string, unit: UnitKey) => {
     if (value === 'everything') {
       value = this.handleEverythingAmountChange(value, unit);
     }

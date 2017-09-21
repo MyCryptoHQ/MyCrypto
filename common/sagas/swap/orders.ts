@@ -1,4 +1,4 @@
-import { showNotification } from 'actions/notifications';
+import { showNotification } from 'actions/notifications/actionCreators';
 import {
   bityOrderCreateSucceededSwap,
   changeStepSwap,
@@ -9,8 +9,8 @@ import {
   startPollBityOrderStatus,
   stopLoadBityRatesSwap,
   stopPollBityOrderStatus
-} from 'actions/swap';
-import { BityOrderCreateRequestedSwapAction } from 'actions/swapTypes';
+} from 'actions/swap/actionCreators';
+import { BityOrderCreateRequestedSwapAction } from 'actions/swap/actionTypes';
 import { getOrderStatus, postOrder } from 'api/bity';
 import moment from 'moment';
 import { AppState } from 'reducers';

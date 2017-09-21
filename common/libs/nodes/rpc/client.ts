@@ -1,41 +1,41 @@
 import { randomBytes } from 'crypto';
-import { RPCRequest, JsonRpcResponse } from './types';
+import { JsonRpcResponse, RPCRequest } from './types';
 
 export default class RPCClient {
-    endpoint: string;
-    constructor(endpoint: string) {
-        this.endpoint = endpoint;
-    }
+  public endpoint: string;
+  constructor(endpoint: string) {
+    this.endpoint = endpoint;
+  }
 
-    id(): string {
-        return randomBytes(16).toString('hex');
-    }
+  public id(): string {
+    return randomBytes(16).toString('hex');
+  }
 
-    decorateRequest(req: RPCRequest) {
-        return {
-            ...req,
-            id: this.id(),
-            jsonrpc: '2.0'
-        };
-    }
+  public decorateRequest(req: RPCRequest) {
+    return {
+      ...req,
+      id: this.id(),
+      jsonrpc: '2.0'
+    };
+  }
 
-    async call(request: RPCRequest): Promise<JsonRpcResponse> {
-        return fetch(this.endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(this.decorateRequest(request))
-        }).then(r => r.json());
-    }
+  public async call(request: RPCRequest): Promise<JsonRpcResponse> {
+    return fetch(this.endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.decorateRequest(request))
+    }).then(r => r.json());
+  }
 
-    async batch(requests: RPCRequest[]): Promise<JsonRpcResponse[]> {
-        return fetch(this.endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requests.map(this.decorateRequest))
-        }).then(r => r.json());
-    }
+  public async batch(requests: RPCRequest[]): Promise<JsonRpcResponse[]> {
+    return fetch(this.endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requests.map(this.decorateRequest))
+    }).then(r => r.json());
+  }
 }
