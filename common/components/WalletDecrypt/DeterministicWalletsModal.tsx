@@ -12,7 +12,7 @@ import { isValidPath } from 'libs/validators';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
-import { getTokens } from 'selectors/wallet';
+import { getTokens, MergedToken } from 'selectors/wallet';
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
@@ -31,7 +31,7 @@ interface Props {
   wallets: DeterministicWalletData[];
   desiredToken: string;
   network: NetworkConfig;
-  tokens: Token[];
+  tokens: MergedToken[];
 
   // Redux actions
   getDeterministicWallets(

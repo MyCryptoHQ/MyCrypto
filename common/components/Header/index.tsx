@@ -1,3 +1,4 @@
+import { TChangeGasPrice, TChangeLanguage, TChangeNode } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown } from 'components/ui';
 import React, { Component } from 'react';
@@ -21,9 +22,9 @@ interface Props {
   nodeSelection: string;
   gasPriceGwei: number;
 
-  changeLanguage(sign: string): any;
-  changeNode(key: string): any;
-  changeGasPrice(price: number): any;
+  changeLanguage: TChangeLanguage;
+  changeNode: TChangeNode;
+  changeGasPrice: TChangeGasPrice;
 }
 
 export default class Header extends Component<Props, {}> {

@@ -151,7 +151,7 @@ export class WalletDecrypt extends Component<Props, State> {
         </section>
 
         {decryptionComponent}
-        {!!this.state.value.valid &&
+        {!!(this.state.value as PrivateKeyValue).valid &&
           <section className="col-md-4 col-sm-6">
             <h4 id="uploadbtntxt-wallet">
               {translate('ADD_Label_6')}

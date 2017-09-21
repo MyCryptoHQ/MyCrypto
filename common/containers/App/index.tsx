@@ -6,8 +6,8 @@ import actions, {
 import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 import Notifications from './Notifications';
-
 interface Props {
   // FIXME
   children: any;
@@ -21,8 +21,8 @@ interface Props {
   gasPriceGwei: number;
 
   changeLanguage: TChangeLanguage;
-  changeNode: TChangeGasPrice;
-  changeGasPrice: TChangeNode;
+  changeNode: TChangeNode;
+  changeGasPrice: TChangeGasPrice;
   handleWindowResize(): void;
 }
 class App extends Component<Props, {}> {
@@ -66,13 +66,10 @@ class App extends Component<Props, {}> {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: AppState) {
   return {
     nodeSelection: state.config.nodeSelection,
-    nodeToggle: state.config.nodeToggle,
     languageSelection: state.config.languageSelection,
-    languageToggle: state.config.languageToggle,
-
     gasPriceGwei: state.config.gasPriceGwei
   };
 }
