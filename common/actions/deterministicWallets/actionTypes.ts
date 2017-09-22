@@ -33,7 +33,7 @@ export interface SetDeterministicWalletsAction {
 /*** Set desired token ***/
 export interface SetDesiredTokenAction {
   type: 'DW_SET_DESIRED_TOKEN';
-  payload: string | null;
+  payload: string | undefined;
 }
 
 /*** Set wallet values ***/

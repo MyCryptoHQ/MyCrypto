@@ -37,7 +37,7 @@ interface Props {
   getDeterministicWallets(
     args: GetDeterministicWalletsArgs
   ): GetDeterministicWalletsAction;
-  setDesiredToken(tkn?: string): SetDesiredTokenAction;
+  setDesiredToken(tkn: string | undefined): SetDesiredTokenAction;
 
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
