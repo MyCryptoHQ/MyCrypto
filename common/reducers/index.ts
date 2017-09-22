@@ -26,8 +26,8 @@ export interface AppState {
   contracts: ContractsState;
   deterministicWallets: DeterministicWalletsState;
   // Third party reducers (TODO: Fill these out)
-  form: object;
-  routing: object;
+  form: any;
+  routing: any;
   swap: SwapState;
 }
 

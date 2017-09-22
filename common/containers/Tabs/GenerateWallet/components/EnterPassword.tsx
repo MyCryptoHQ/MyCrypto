@@ -16,7 +16,7 @@ const minLength9 = minLength(9);
 const required = value => (value ? undefined : 'Required');
 
 interface Props {
-  walletPasswordForm: Object;
+  walletPasswordForm: any;
   generateNewWallet(pw: string): GenerateNewWalletAction;
 }
 
@@ -50,7 +50,7 @@ class EnterPassword extends Component<Props, State> {
             className="EnterPw-password-field"
             validate={[required, minLength9]}
             component={PasswordInput as any}
-            isPasswordVisible={isPasswordVisible}
+            isPasswordVisible={isPasswordVisible as any}
             togglePassword={this.togglePassword}
             name="password"
             type="text"
@@ -163,4 +163,4 @@ class EnterPassword extends Component<Props, State> {
 
 export default reduxForm({
   form: 'walletPasswordForm' // a unique name for this form
-})(EnterPassword);
+})(EnterPassword as any);

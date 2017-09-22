@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {translateRaw} from 'translations';
+import { translateRaw } from 'translations';
 
 interface Props {
-  togglePassword: Function;
+  togglePassword: any;
   isPasswordVisible?: boolean;
-  input: object;
-  meta: object;
+  input: any;
+  meta: any;
 }
 
 export default class PasswordInput extends Component<Props, {}> {
