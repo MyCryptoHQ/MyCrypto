@@ -1,13 +1,17 @@
 import {
   setWallet,
   unlockKeystore,
+  UnlockKeystoreAction,
   unlockMnemonic,
-  unlockPrivateKey
+  UnlockMnemonicAction,
+  unlockPrivateKey,
+  UnlockPrivateKeyAction
 } from 'actions/wallet';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import translate from 'translations';
 import KeystoreDecrypt from './Keystore';
 import LedgerNanoSDecrypt from './LedgerNano';
@@ -67,7 +71,9 @@ type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
   // FIXME
-  dispatch(action: any): void;
+  dispatch: Dispatch<
+    UnlockKeystoreAction | UnlockMnemonicAction | UnlockPrivateKeyAction
+  >;
 }
 
 interface State {
