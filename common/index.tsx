@@ -26,6 +26,6 @@ renderRoot(Root);
 
 if (module.hot) {
   module.hot.accept('reducers', () =>
-    configuredStore.replaceReducer(require('reducers').default)
+    configuredStore.replaceReducer(require('reducers'))
   );
 }

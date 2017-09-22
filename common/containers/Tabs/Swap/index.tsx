@@ -2,7 +2,7 @@ import {
   showNotification as dShowNotification,
   TShowNotification
 } from 'actions/notifications';
-import swapActions, {
+import {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
@@ -18,6 +18,7 @@ import swapActions, {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus
 } from 'actions/swap';
+import *  as swapActions from 'actions/swap/actionCreators'
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';

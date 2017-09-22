@@ -187,7 +187,7 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
       name: ethPlorer,
       address: ETHTokenExplorer
     },
-    tokens: require('./tokens/eth').default,
+    tokens: require('./tokens/eth'),
     contracts: require('./contracts/eth.json')
   }
 };

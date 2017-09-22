@@ -12,10 +12,14 @@
             "es2017", "dom"
         ],
         "allowSyntheticDefaultImports": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "noEmitOnError": false
     },
     "include": [
         "./common/",
         "./node_modules/types-bn/index.d.ts"
-    ]
+    ],
+    "awesomeTypescriptLoaderOptions": {
+        "transpileOnly": true
+    }
 }

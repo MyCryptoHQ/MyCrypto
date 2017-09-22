@@ -1,7 +1,7 @@
 import PrintableWallet from 'components/PrintableWallet';
 import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import translate from 'translations';
 import './PaperWallet.scss';
 import Template from './Template';
@@ -13,7 +13,7 @@ interface Props {
 export default class PaperWallet extends Component<Props, {}> {
   public render() {
     const { wallet } = this.props;
-
+    
     const content = (
       <div className="GenPaper">
         {/* Private Key */}
@@ -26,6 +26,7 @@ export default class PaperWallet extends Component<Props, {}> {
           aria-label={translate('x_PrivKey')}
           aria-describedby="x_PrivKeyDesc"
           type="text"
+          readOnly={true}          
         />
 
         {/* Download Paper Wallet */}
