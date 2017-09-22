@@ -7,7 +7,6 @@ const config = require('./config');
 const _ = require('./utils');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 module.exports = {
-  cache: true,
   entry: {
     client: './common/index.tsx'
   },
@@ -33,11 +32,12 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         loaders: [
+          { loader: 'cache-loader' },
           {
             loader: 'awesome-typescript-loader'
           }
         ],
-        exclude: [/node_modules\/(?!ethereum-blockies|idna-uts46)/]
+        exclude: [/node_modules/]
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
