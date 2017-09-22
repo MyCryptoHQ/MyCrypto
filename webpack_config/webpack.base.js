@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const config = require('./config');
 const _ = require('./utils');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const { CheckerPlugin } = require('awesome-typescript-loader');
 module.exports = {
   entry: {
     client: './common/index.tsx'
@@ -63,7 +63,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new TsConfigPathsPlugin(),
     new webpack.DefinePlugin({
       'process.env.BUILD_GH_PAGES': JSON.stringify(!!process.env.BUILD_GH_PAGES)
     }),
