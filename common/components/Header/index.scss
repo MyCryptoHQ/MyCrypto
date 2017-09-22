@@ -100,7 +100,7 @@ $small-size: 900px;
       color: white;
       flex: 1 auto;
       text-align: right;
-      padding: 5px 0;
+      padding: 0 0 5px;
       @include small-query {
         text-align: center;
       }
@@ -108,6 +108,7 @@ $small-size: 900px;
       > * {
         display: inline-block;
         vertical-align: middle;
+        margin-top: 5px;
       }
 
       &-version {

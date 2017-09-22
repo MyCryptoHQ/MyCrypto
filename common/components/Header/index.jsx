@@ -109,6 +109,7 @@ export default class Header extends Component {
                   value={nodeSelection}
                   color="white"
                   size="smr"
+                  menuAlign="right"
                   extra={
                     <li>
                       <a onClick={() => {}}>Add Custom Node</a>

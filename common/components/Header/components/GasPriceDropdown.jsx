@@ -31,7 +31,7 @@ export default class GasPriceDropdown extends Component {
         ariaLabel={`adjust gas price. current price is ${value} gwei`}
         renderLabel={() => `Gas Price: ${value} Gwei`}
         renderOptions={() =>
-          <div className="dropdown-menu GasPrice-dropdown-menu">
+          <div className="GasPrice-dropdown-menu dropdown-menu dropdown-menu-right">
             <div className="GasPrice-header">
               <span>Gas Price</span>: {value} Gwei
               <input

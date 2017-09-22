@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import DropdownShell from './DropdownShell';
 
 type Props<T> = {
@@ -10,6 +11,7 @@ type Props<T> = {
   extra?: any,
   size?: string,
   color?: string,
+  menuAlign?: string,
   formatTitle?: (option: T) => any,
   onChange: (value: T) => void
 };
@@ -23,8 +25,20 @@ export default class DropdownComponent<T: *> extends Component<
   dropdownShell: DropdownShell;
 
   render() {
-    const { options, value, ariaLabel, color, size, extra } = this.props;
+    const {
+      options,
+      value,
+      ariaLabel,
+      color,
+      size,
+      extra,
+      menuAlign
+    } = this.props;
     const label = this.props.label ? `${this.props.label}:` : '';
+    const menuClass = classnames({
+      'dropdown-menu': true,
+      [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
+    });
 
     return (
       <DropdownShell
@@ -33,7 +47,7 @@ export default class DropdownComponent<T: *> extends Component<
             {label} {this.formatTitle(value)}
           </span>}
         renderOptions={() =>
-          <ul className="dropdown-menu">
+          <ul className={menuClass}>
             {options.map((option, i) => {
               return (
                 <li key={i}>
