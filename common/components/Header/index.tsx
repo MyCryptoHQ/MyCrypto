@@ -114,7 +114,7 @@ export default class Header extends Component<Props, {}> {
 
         <Navigation
           location={this.props.location}
-          color={selectedNetwork.color}
+          // color={selectedNetwork.color}
         />
       </div>
     );
