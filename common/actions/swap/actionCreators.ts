@@ -93,7 +93,9 @@ export function stopLoadBityRatesSwap(): interfaces.StopLoadBityRatesSwapAction 
 }
 
 export type TOrderTimeSwap = typeof orderTimeSwap;
-export function orderTimeSwap(payload: number) {
+export function orderTimeSwap(
+  payload: number
+): interfaces.OrderSwapTimeSwapAction {
   return {
     type: TypeKeys.SWAP_ORDER_TIME,
     payload
