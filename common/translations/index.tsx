@@ -1,7 +1,7 @@
 import Translate from 'components/Translate';
 import React from 'react';
 import { getLanguageSelection } from 'selectors/config';
-import { configuredStore } from 'store';
+import { configuredStore } from '../store';
 const fallbackLanguage = 'en';
 const repository = {};
 

@@ -30,8 +30,8 @@ export interface BaseTransaction {
   to: string;
   value: string;
   data: string;
-  gasLimit: BigNumber;
-  gasPrice: Wei;
+  gasLimit: BigNumber | string;
+  gasPrice: Wei | string;
   chainId: number;
 }
 
@@ -75,7 +75,7 @@ export async function generateCompleteTransactionFromRawTransaction(
   node: INode,
   tx: ExtendedRawTransaction,
   wallet: IWallet,
-  token?: Token
+  token: Token | null | undefined
 ): Promise<CompleteTransaction> {
   const { to, data, gasLimit, gasPrice, from, chainId, nonce } = tx;
   // Reject bad addresses
@@ -85,6 +85,9 @@ export async function generateCompleteTransactionFromRawTransaction(
   // Reject token transactions without data
   if (token && !data) {
     throw new Error('Tokens must be sent with data');
+  }
+  if (typeof gasLimit === 'string' || typeof gasPrice === 'string') {
+    throw Error('Gas Limit and Gas Price should be of type bignumber');
   }
   // Reject gas limit under 21000 (Minimum for transaction)
   // Reject if limit over 5000000
@@ -97,7 +100,8 @@ export async function generateCompleteTransactionFromRawTransaction(
     throw new Error(translateRaw('GETH_GasLimit'));
   }
   // Reject gasPrice over 1000gwei (1000000000000)
-  if (gasPrice.amount.greaterThan(new Big('1000000000000'))) {
+  const gwei = new Big('1000000000000');
+  if (gasPrice.amount.greaterThan(gwei)) {
     throw new Error(
       'Gas price too high. Please contact support if this was not a mistake.'
     );
