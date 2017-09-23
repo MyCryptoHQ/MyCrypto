@@ -120,7 +120,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "*.{ts,tsx}": [
       "prettier --write --single-quote",
       "git add"
     ]
