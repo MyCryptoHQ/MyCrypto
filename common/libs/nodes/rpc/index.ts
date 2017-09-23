@@ -5,9 +5,11 @@ import { Wei } from 'libs/units';
 import { INode } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
+
 export default class RpcNode implements INode {
   public client: RPCClient;
   public requests: RPCRequests;
+
   constructor(endpoint: string) {
     this.client = new RPCClient(endpoint);
     this.requests = new RPCRequests();
