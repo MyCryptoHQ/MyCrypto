@@ -14,6 +14,9 @@ import {
   saveState
 } from 'utils/localStorage';
 import RootReducer from './reducers';
+import { State as CustomTokenState } from './reducers/customTokens';
+import { State as SwapState } from './reducers/swap';
+
 import sagas from './sagas';
 
 interface MyWindow extends Window {
@@ -30,26 +33,36 @@ const configureStore = () => {
   if (process.env.NODE_ENV !== 'production') {
     (window as MyWindow).Perf = Perf;
     middleware = composeWithDevTools(
-      applyMiddleware(sagaMiddleware, logger, routerMiddleware(history))
+      applyMiddleware(sagaMiddleware, logger, routerMiddleware(history as any))
     );
   } else {
-    middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history));
+    middleware = applyMiddleware(
+      sagaMiddleware,
+      routerMiddleware(history as any)
+    );
   }
+
+  const localSwapState = loadStatePropertyOrEmptyObject<SwapState>('swap');
+  const swapState =
+    localSwapState && localSwapState.step === 3
+      ? {
+          ...swapInitialState,
+          ...localSwapState
+        }
+      : { ...swapInitialState };
+
+  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>(
+    'customTokens'
+  );
 
   const persistedInitialState = {
     config: {
       ...configInitialState,
       ...loadStatePropertyOrEmptyObject('config')
     },
-    customTokens: (loadState() || {}).customTokens || customTokensInitialState,
+    customTokens: localCustomTokens || customTokensInitialState,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
-    swap:
-      loadStatePropertyOrEmptyObject('swap').step === 3
-        ? {
-            ...swapInitialState,
-            ...loadStatePropertyOrEmptyObject('swap')
-          }
-        : { ...swapInitialState }
+    swap: swapState
   };
 
   store = createStore(RootReducer, persistedInitialState, middleware);

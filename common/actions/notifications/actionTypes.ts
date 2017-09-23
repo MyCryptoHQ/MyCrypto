@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-
+import { TypeKeys } from './constants';
 /*** Shared types ***/
 export type NOTIFICATION_LEVEL = 'danger' | 'warning' | 'success' | 'info';
 export type INFINITY = 'infinity';
@@ -12,13 +12,13 @@ export interface Notification {
 
 /*** Close notification ***/
 export interface CloseNotificationAction {
-  type: 'CLOSE_NOTIFICATION';
+  type: TypeKeys.CLOSE_NOTIFICATION;
   payload: Notification;
 }
 
 /*** Show Notification ***/
 export interface ShowNotificationAction {
-  type: 'SHOW_NOTIFICATION';
+  type: TypeKeys.SHOW_NOTIFICATION;
   payload: Notification;
 }
 

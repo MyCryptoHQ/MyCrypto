@@ -2,7 +2,7 @@ import {
   AccessContractAction,
   SetInteractiveContractAction
 } from 'actions/contracts';
-
+import { TypeKeys } from 'actions/contracts/constants';
 export interface State {
   selectedAddress?: string | null;
   selectedABIJson?: string | null;
@@ -20,14 +20,14 @@ type Action = AccessContractAction | SetInteractiveContractAction;
 
 export function contracts(state: State = initialState, action: Action) {
   switch (action.type) {
-    case 'ACCESS_CONTRACT':
+    case TypeKeys.ACCESS_CONTRACT:
       return {
         ...state,
         selectedAddress: action.address,
         selectedABIJson: action.abiJson
       };
 
-    case 'SET_INTERACTIVE_CONTRACT':
+    case TypeKeys.SET_INTERACTIVE_CONTRACT:
       return {
         ...state,
         selectedABIFunctions: action.functions

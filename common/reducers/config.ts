@@ -1,11 +1,11 @@
-import { languages, NODES } from '../config/data';
-
 import {
   ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
   ConfigAction
 } from 'actions/config';
+import { TypeKeys } from 'actions/config/constants';
+import { languages, NODES } from '../config/data';
 
 export interface State {
   // FIXME
@@ -46,11 +46,11 @@ export function config(
   action: ConfigAction
 ): State {
   switch (action.type) {
-    case 'CONFIG_LANGUAGE_CHANGE':
+    case TypeKeys.CONFIG_LANGUAGE_CHANGE:
       return changeLanguage(state, action);
-    case 'CONFIG_NODE_CHANGE':
+    case TypeKeys.CONFIG_NODE_CHANGE:
       return changeNode(state, action);
-    case 'CONFIG_GAS_PRICE':
+    case TypeKeys.CONFIG_GAS_PRICE:
       return changeGasPrice(state, action);
     default:
       return state;

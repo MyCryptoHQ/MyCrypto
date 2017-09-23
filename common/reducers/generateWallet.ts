@@ -1,4 +1,5 @@
 import { GenerateWalletAction } from 'actions/generateWallet';
+import { TypeKeys } from 'actions/generateWallet/constants';
 import PrivateKeyWallet from 'libs/wallet/privkey';
 
 export interface State {
@@ -18,7 +19,7 @@ export function generateWallet(
   action: GenerateWalletAction
 ): State {
   switch (action.type) {
-    case 'GENERATE_WALLET_GENERATE_WALLET': {
+    case TypeKeys.GENERATE_WALLET_GENERATE_WALLET: {
       return {
         ...state,
         wallet: action.wallet,
@@ -27,14 +28,14 @@ export function generateWallet(
       };
     }
 
-    case 'GENERATE_WALLET_CONTINUE_TO_PAPER': {
+    case TypeKeys.GENERATE_WALLET_CONTINUE_TO_PAPER: {
       return {
         ...state,
         activeStep: 'paper'
       };
     }
 
-    case 'GENERATE_WALLET_RESET': {
+    case TypeKeys.GENERATE_WALLET_RESET: {
       return INITIAL_STATE;
     }
 

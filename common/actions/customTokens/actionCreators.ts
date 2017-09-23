@@ -1,13 +1,13 @@
 import { Token } from 'config/data';
 import * as interfaces from './actionTypes';
-import * as constants from './constants';
+import { TypeKeys } from './constants';
 
 export type TAddCustomToken = typeof addCustomToken;
 export function addCustomToken(
   payload: Token
 ): interfaces.AddCustomTokenAction {
   return {
-    type: constants.CUSTOM_TOKEN_ADD,
+    type: TypeKeys.CUSTOM_TOKEN_ADD,
     payload
   };
 }
@@ -18,7 +18,7 @@ export function removeCustomToken(
   payload: string
 ): interfaces.RemoveCustomTokenAction {
   return {
-    type: constants.CUSTOM_TOKEN_REMOVE,
+    type: TypeKeys.CUSTOM_TOKEN_REMOVE,
     payload
   };
 }

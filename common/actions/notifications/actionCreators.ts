@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import * as types from './actionTypes';
-import * as constants from './constants';
+import { TypeKeys } from './constants';
 
 export type TShowNotification = typeof showNotification;
 export function showNotification(
@@ -9,7 +9,7 @@ export function showNotification(
   duration?: number | types.INFINITY
 ): types.ShowNotificationAction {
   return {
-    type: constants.SHOW_NOTIFICATION,
+    type: TypeKeys.SHOW_NOTIFICATION,
     payload: {
       level,
       msg,
@@ -23,7 +23,7 @@ export function closeNotification(
   notification: types.Notification
 ): types.CloseNotificationAction {
   return {
-    type: constants.CLOSE_NOTIFICATION,
+    type: TypeKeys.CLOSE_NOTIFICATION,
     payload: notification
   };
 }

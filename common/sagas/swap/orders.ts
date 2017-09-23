@@ -1,5 +1,7 @@
 import { showNotification } from 'actions/notifications';
 import {
+  bityOrderCreateFailedSwap,
+  BityOrderCreateRequestedSwapAction,
   bityOrderCreateSucceededSwap,
   changeStepSwap,
   orderStatusRequestedSwap,
@@ -8,8 +10,7 @@ import {
   startOrderTimerSwap,
   startPollBityOrderStatus,
   stopLoadBityRatesSwap,
-  stopPollBityOrderStatus,
-  BityOrderCreateRequestedSwapAction
+  stopPollBityOrderStatus
 } from 'actions/swap';
 import { getOrderStatus, postOrder } from 'api/bity';
 import moment from 'moment';
@@ -98,7 +99,7 @@ function* postBityOrderCreate(
       yield put(
         showNotification('danger', `Bity Error: ${order.msg}`, TEN_SECONDS)
       );
-      yield put({ type: 'SWAP_ORDER_CREATE_FAILED' });
+      yield put(bityOrderCreateFailedSwap());
     } else {
       yield put(bityOrderCreateSucceededSwap(order.data));
       yield put(changeStepSwap(3));
@@ -111,7 +112,7 @@ function* postBityOrderCreate(
     const message =
       'Connection Error. Please check the developer console for more details and/or contact support';
     yield put(showNotification('danger', message, TEN_SECONDS));
-    yield put({ type: 'SWAP_ORDER_CREATE_FAILED' });
+    yield put(bityOrderCreateFailedSwap());
   }
 }
 

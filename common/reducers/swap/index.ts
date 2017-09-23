@@ -1,4 +1,5 @@
 import * as actionTypes from 'actions/swap';
+import { TypeKeys } from 'actions/swap/constants';
 import without from 'lodash/without';
 import {
   buildDestinationAmount,
@@ -54,8 +55,8 @@ export const INITIAL_STATE: State = {
 };
 
 function handleSwapOriginKind(
-    state: State,
-action: actionTypes.OriginKindSwapAction
+  state: State,
+  action: actionTypes.OriginKindSwapAction
 ) {
   const newDestinationKind = buildDestinationKind(
     action.payload,
@@ -98,23 +99,23 @@ export function swap(
   action: actionTypes.SwapAction
 ) {
   switch (action.type) {
-    case 'SWAP_ORIGIN_KIND': {
+    case TypeKeys.SWAP_ORIGIN_KIND: {
       return handleSwapOriginKind(state, action);
     }
-    case 'SWAP_DESTINATION_KIND': {
+    case TypeKeys.SWAP_DESTINATION_KIND: {
       return handleSwapDestinationKind(state, action);
     }
-    case 'SWAP_ORIGIN_AMOUNT':
+    case TypeKeys.SWAP_ORIGIN_AMOUNT:
       return {
         ...state,
         originAmount: action.payload
       };
-    case 'SWAP_DESTINATION_AMOUNT':
+    case TypeKeys.SWAP_DESTINATION_AMOUNT:
       return {
         ...state,
         destinationAmount: action.payload
       };
-    case 'SWAP_LOAD_BITY_RATES_SUCCEEDED':
+    case TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED:
       return {
         ...state,
         bityRates: {
@@ -123,34 +124,34 @@ export function swap(
         },
         isFetchingRates: false
       };
-    case 'SWAP_STEP': {
+    case TypeKeys.SWAP_STEP: {
       return {
         ...state,
         step: action.payload
       };
     }
-    case 'SWAP_DESTINATION_ADDRESS':
+    case TypeKeys.SWAP_DESTINATION_ADDRESS:
       return {
         ...state,
         destinationAddress: action.payload
       };
-    case 'SWAP_RESTART':
+    case TypeKeys.SWAP_RESTART:
       return {
         ...INITIAL_STATE,
         bityRates: state.bityRates
       };
-    case 'SWAP_ORDER_CREATE_REQUESTED':
+    case TypeKeys.SWAP_ORDER_CREATE_REQUESTED:
       return {
         ...state,
         isPostingOrder: true
       };
-    case 'SWAP_ORDER_CREATE_FAILED':
+    case TypeKeys.SWAP_ORDER_CREATE_FAILED:
       return {
         ...state,
         isPostingOrder: false
       };
     // TODO - fix bad naming
-    case 'SWAP_BITY_ORDER_CREATE_SUCCEEDED':
+    case TypeKeys.SWAP_BITY_ORDER_CREATE_SUCCEEDED:
       return {
         ...state,
         bityOrder: {
@@ -166,27 +167,28 @@ export function swap(
         orderStatus: action.payload.status,
         orderId: action.payload.id
       };
-    case 'SWAP_BITY_ORDER_STATUS_SUCCEEDED':
+    case TypeKeys.SWAP_BITY_ORDER_STATUS_SUCCEEDED:
       return {
         ...state,
         outputTx: action.payload.output.reference,
-        orderStatus: action.payload.output.status === 'FILL'
-          ? action.payload.output.status
-          : action.payload.input.status
+        orderStatus:
+          action.payload.output.status === 'FILL'
+            ? action.payload.output.status
+            : action.payload.input.status
       };
-    case 'SWAP_ORDER_TIME':
+    case TypeKeys.SWAP_ORDER_TIME:
       return {
         ...state,
         secondsRemaining: action.payload
       };
 
-    case 'SWAP_LOAD_BITY_RATES_REQUESTED':
+    case TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED:
       return {
         ...state,
         isFetchingRates: true
       };
 
-    case 'SWAP_STOP_LOAD_BITY_RATES':
+    case TypeKeys.SWAP_STOP_LOAD_BITY_RATES:
       return {
         ...state,
         isFetchingRates: false

@@ -2,6 +2,7 @@ import {
   DeterministicWalletAction,
   DeterministicWalletData
 } from 'actions/deterministicWallets';
+import { TypeKeys } from 'actions/deterministicWallets/constants';
 
 export interface State {
   wallets: DeterministicWalletData[];
@@ -18,19 +19,19 @@ export function deterministicWallets(
   action: DeterministicWalletAction
 ): State {
   switch (action.type) {
-    case 'DW_SET_WALLETS':
+    case TypeKeys.DW_SET_WALLETS:
       return {
         ...state,
         wallets: action.payload
       };
 
-    case 'DW_SET_DESIRED_TOKEN':
+    case TypeKeys.DW_SET_DESIRED_TOKEN:
       return {
         ...state,
         desiredToken: action.payload
       };
 
-    case 'DW_UPDATE_WALLET':
+    case TypeKeys.DW_UPDATE_WALLET:
       return {
         ...state,
         wallets: updateWalletValues(state.wallets, action.payload)

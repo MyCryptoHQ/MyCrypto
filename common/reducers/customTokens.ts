@@ -3,6 +3,7 @@ import {
   CustomTokenAction,
   RemoveCustomTokenAction
 } from 'actions/customTokens';
+import { TypeKeys } from 'actions/customTokens/constants';
 import { Token } from 'config/data';
 
 export type State = Token[];
@@ -28,9 +29,9 @@ export function customTokens(
   action: CustomTokenAction
 ): State {
   switch (action.type) {
-    case 'CUSTOM_TOKEN_ADD':
+    case TypeKeys.CUSTOM_TOKEN_ADD:
       return addCustomToken(state, action);
-    case 'CUSTOM_TOKEN_REMOVE':
+    case TypeKeys.CUSTOM_TOKEN_REMOVE:
       return removeCustomToken(state, action);
     default:
       return state;

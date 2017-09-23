@@ -1,5 +1,5 @@
 import { FiatSucceededRatesAction, RatesAction } from 'actions/rates';
-
+import { TypeKeys } from 'actions/rates/constants';
 // SYMBOL -> PRICE TO BUY 1 ETH
 export interface State {
   [key: string]: number;
@@ -19,7 +19,7 @@ export function rates(
   action: RatesAction
 ): State {
   switch (action.type) {
-    case 'RATES_FIAT_SUCCEEDED':
+    case TypeKeys.RATES_FIAT_SUCCEEDED:
       return fiatSucceededRates(state, action);
     default:
       return state;

@@ -1,4 +1,6 @@
 export const REDUX_STATE = 'REDUX_STATE';
+import { State as CustomTokenState } from 'reducers/customTokens';
+import { State as SwapState } from 'reducers/swap';
 
 export function loadState<T>(): T | undefined {
   try {
@@ -10,7 +12,7 @@ export function loadState<T>(): T | undefined {
   } catch (err) {
     console.warn(' Warning: corrupted local storage');
   }
-};
+}
 
 export const saveState = (state: Object) => {
   try {
@@ -21,12 +23,14 @@ export const saveState = (state: Object) => {
   }
 };
 
+export type SwapLocalStorage = SwapState;
+
 export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
   const localStorageState = loadState();
   if (localStorageState) {
     if (localStorageState.hasOwnProperty(key)) {
-      return localStorageState[key];
+      return localStorageState[key] as T;
     }
   }
-  return undefined
-};
+  return undefined;
+}

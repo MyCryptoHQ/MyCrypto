@@ -1,16 +1,15 @@
-import {Token} from 'config/data';
-
+import { Token } from 'config/data';
+import { TypeKeys } from './constants';
 /*** Add custom token ***/
 export interface AddCustomTokenAction {
-    type: 'CUSTOM_TOKEN_ADD';
-    payload: Token;
+  type: TypeKeys.CUSTOM_TOKEN_ADD;
+  payload: Token;
 }
 
 /*** Remove Custom Token ***/
 export interface RemoveCustomTokenAction {
-    type: 'CUSTOM_TOKEN_REMOVE';
-    payload: string;
+  type: TypeKeys.CUSTOM_TOKEN_REMOVE;
+  payload: string;
 }
-
 
 export type CustomTokenAction = AddCustomTokenAction | RemoveCustomTokenAction;

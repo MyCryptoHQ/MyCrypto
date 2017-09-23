@@ -4,7 +4,7 @@ import {
   NotificationsAction,
   ShowNotificationAction
 } from 'actions/notifications';
-
+import { TypeKeys } from 'actions/notifications/constants';
 export type State = Notification[];
 
 export const INITIAL_STATE: State = [];
@@ -24,9 +24,9 @@ export function notifications(
   action: NotificationsAction
 ): State {
   switch (action.type) {
-    case 'SHOW_NOTIFICATION':
+    case TypeKeys.SHOW_NOTIFICATION:
       return showNotification(state, action);
-    case 'CLOSE_NOTIFICATION':
+    case TypeKeys.CLOSE_NOTIFICATION:
       return closeNotification(state, action);
     default:
       return state;
