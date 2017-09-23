@@ -54,6 +54,11 @@ export interface StopLoadBityRatesSwapAction {
   type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES;
 }
 
+export interface OrderSwapTimeSwapAction {
+  type: TypeKeys.SWAP_ORDER_TIME;
+  payload: number;
+}
+
 export interface BityOrderCreateRequestedSwapAction {
   type: TypeKeys.SWAP_ORDER_CREATE_REQUESTED;
   payload: {
@@ -66,13 +71,21 @@ export interface BityOrderCreateRequestedSwapAction {
 
 interface BityOrderInput {
   amount: string;
+  currency: string;
+  reference: string;
+  status: string;
 }
 
 interface BityOrderOutput {
   amount: string;
+  currency: string;
+  reference: string;
+  status: string;
 }
 
 export interface BityOrderResponse {
+  input: BityOrderInput;
+  output: BityOrderOutput;
   status: string;
 }
 
@@ -83,6 +96,7 @@ export type BityOrderPostResponse = BityOrderResponse & {
   output: BityOrderOutput;
   timestamp_created: string;
   validFor: number;
+  id: string;
 };
 
 export interface BityOrderCreateSucceededSwapAction {
@@ -134,4 +148,5 @@ export type SwapAction =
   | BityOrderCreateSucceededSwapAction
   | OrderStatusSucceededSwapAction
   | StartPollBityOrderStatusAction
-  | BityOrderCreateFailedSwapAction;
+  | BityOrderCreateFailedSwapAction
+  | OrderSwapTimeSwapAction;
