@@ -37,7 +37,7 @@ function* updateAccountBalance(): SagaIterator {
       return;
     }
     const node: INode = yield select(getNodeLib);
-    const address = yield call(wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddress);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalance(balance));
@@ -55,7 +55,8 @@ function* updateTokenBalances(): SagaIterator {
       return;
     }
     // FIXME handle errors
-    const address = yield call(wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddress);
+
     // network request
     const tokenBalances = yield apply(node, node.getTokenBalances, [
       address,
