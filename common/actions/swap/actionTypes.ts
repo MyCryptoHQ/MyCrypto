@@ -7,32 +7,32 @@ export interface Pairs {
 
 export interface OriginKindSwapAction {
     type: 'SWAP_ORIGIN_KIND';
-    value: string;
+    payload: string;
 }
 
 export interface DestinationKindSwapAction {
     type: 'SWAP_DESTINATION_KIND';
-    value: string;
+    payload: string;
 }
 
 export interface OriginAmountSwapAction {
     type: 'SWAP_ORIGIN_AMOUNT';
-    value?: number | null;
+    payload?: number | null;
 }
 
 export interface DestinationAmountSwapAction {
     type: 'SWAP_DESTINATION_AMOUNT';
-    value?: number | null;
+    payload?: number | null;
 }
 
 export interface LoadBityRatesSucceededSwapAction {
     type: 'SWAP_LOAD_BITY_RATES_SUCCEEDED';
-    value: Pairs;
+    payload: Pairs;
 }
 
 export interface DestinationAddressSwapAction {
     type: 'SWAP_DESTINATION_ADDRESS';
-    value?: string;
+    payload?: string;
 }
 
 export interface RestartSwapAction {
@@ -41,11 +41,12 @@ export interface RestartSwapAction {
 
 export interface LoadBityRatesRequestedSwapAction {
     type: 'SWAP_LOAD_BITY_RATES_REQUESTED';
+    payload?: null
 }
 
 export interface ChangeStepSwapAction {
     type: 'SWAP_STEP';
-    value: number;
+    payload: number;
 }
 
 export interface StopLoadBityRatesSwapAction {

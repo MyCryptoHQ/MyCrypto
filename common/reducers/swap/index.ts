@@ -1,4 +1,4 @@
-import { SwapAction } from 'actions/swap';
+import * as actionTypes from 'actions/swap';
 import without from 'lodash/without';
 import {
   buildDestinationAmount,
@@ -10,24 +10,25 @@ const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
 
 export interface State {
-  originAmount?: number;
-  destinationAmount?: number;
+  originAmount?: number | null;
+  destinationAmount?: number | null;
   originKind: string;
   destinationKind: string;
   destinationKindOptions: string[];
   originKindOptions: string[];
   step: number;
-  bityRates: Object;
+  bityRates: any;
+  bityOrder: any;
   destinationAddress: string;
-  isFetchingRates?: boolean;
-  secondsRemaining?: number;
-  outputTx?: string;
-  isPostingOrder?: boolean;
-  orderStatus?: string;
-  orderTimestampCreatedISOString?: string;
-  paymentAddress?: string;
-  validFor?: number;
-  orderId?: string;
+  isFetchingRates?: boolean | null;
+  secondsRemaining?: number | null;
+  outputTx?: string | null;
+  isPostingOrder?: boolean | null;
+  orderStatus?: string | null;
+  orderTimestampCreatedISOString?: string | null;
+  paymentAddress?: string | null;
+  validFor?: number | null;
+  orderId?: string | null;
 }
 
 export const INITIAL_STATE: State = {
@@ -52,69 +53,86 @@ export const INITIAL_STATE: State = {
   orderId: null
 };
 
-export function swap(state: State = INITIAL_STATE, action: SwapAction) {
+function handleSwapOriginKind(
+    state: State,
+action: actionTypes.OriginKindSwapAction
+) {
+  const newDestinationKind = buildDestinationKind(
+    action.payload,
+    state.destinationKind
+  );
+  return {
+    ...state,
+    originKind: action.payload,
+    destinationKind: newDestinationKind,
+    destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, action.payload),
+    destinationAmount: buildDestinationAmount(
+      state.originAmount,
+      action.payload,
+      newDestinationKind,
+      state.bityRates
+    )
+  };
+}
+
+function handleSwapDestinationKind(
+  state: State,
+  action: actionTypes.DestinationKindSwapAction
+) {
+  const newOriginKind = buildOriginKind(state.originKind, action.payload);
+  return {
+    ...state,
+    originKind: newOriginKind,
+    destinationKind: action.payload,
+    destinationAmount: buildDestinationAmount(
+      state.originAmount,
+      state.originKind,
+      action.payload,
+      state.bityRates
+    )
+  };
+}
+
+export function swap(
+  state: State = INITIAL_STATE,
+  action: actionTypes.SwapAction
+) {
   switch (action.type) {
     case 'SWAP_ORIGIN_KIND': {
-      const newDestinationKind = buildDestinationKind(
-        action.value,
-        state.destinationKind
-      );
-      return {
-        ...state,
-        originKind: action.value,
-        destinationKind: newDestinationKind,
-        destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, action.value),
-        destinationAmount: buildDestinationAmount(
-          state.originAmount,
-          action.value,
-          newDestinationKind,
-          state.bityRates
-        )
-      };
+      return handleSwapOriginKind(state, action);
     }
     case 'SWAP_DESTINATION_KIND': {
-      const newOriginKind = buildOriginKind(state.originKind, action.value);
-      return {
-        ...state,
-        originKind: newOriginKind,
-        destinationKind: action.value,
-        destinationAmount: buildDestinationAmount(
-          state.originAmount,
-          state.originKind,
-          action.value,
-          state.bityRates
-        )
-      };
+      return handleSwapDestinationKind(state, action);
     }
     case 'SWAP_ORIGIN_AMOUNT':
       return {
         ...state,
-        originAmount: action.value
+        originAmount: action.payload
       };
     case 'SWAP_DESTINATION_AMOUNT':
       return {
         ...state,
-        destinationAmount: action.value
+        destinationAmount: action.payload
       };
     case 'SWAP_LOAD_BITY_RATES_SUCCEEDED':
       return {
         ...state,
         bityRates: {
           ...state.bityRates,
-          ...action.value
+          ...action.payload
         },
         isFetchingRates: false
       };
     case 'SWAP_STEP': {
       return {
         ...state,
-        step: action.value
+        step: action.payload
       };
     }
     case 'SWAP_DESTINATION_ADDRESS':
       return {
         ...state,
-        destinationAddress: action.value
+        destinationAddress: action.payload
       };
     case 'SWAP_RESTART':
       return {
@@ -152,15 +170,14 @@ export function swap(state: State = INITIAL_STATE, action: SwapAction) {
       return {
         ...state,
         outputTx: action.payload.output.reference,
-        orderStatus:
-          action.payload.output.status === 'FILL'
-            ? action.payload.output.status
-            : action.payload.input.status
+        orderStatus: action.payload.output.status === 'FILL'
+          ? action.payload.output.status
+          : action.payload.input.status
       };
     case 'SWAP_ORDER_TIME':
       return {
         ...state,
-        secondsRemaining: action.value
+        secondsRemaining: action.payload
       };
 
     case 'SWAP_LOAD_BITY_RATES_REQUESTED':
