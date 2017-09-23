@@ -2,8 +2,8 @@ import QRCode from 'qrcode.react';
 import React, { Component } from 'react';
 
 interface Props {
-  paymentAddress: string;
-  amount: number;
+  paymentAddress: string | null;
+  amount: number | null;
 }
 
 export default class BitcoinQR extends Component<Props, {}> {

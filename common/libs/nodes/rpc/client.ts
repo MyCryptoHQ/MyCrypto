@@ -17,7 +17,7 @@ export default class RPCClient {
     jsonrpc: '2.0'
   });
 
-  public call = (request: RPCRequest): Promise<JsonRpcResponse> => {
+  public call = (request: RPCRequest | any): Promise<JsonRpcResponse> => {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {
@@ -25,9 +25,9 @@ export default class RPCClient {
       },
       body: JSON.stringify(this.decorateRequest(request))
     }).then(r => r.json());
-  }
+  };
 
-  public batch = (requests: RPCRequest[]): Promise<JsonRpcResponse[]> => {
+  public batch = (requests: RPCRequest[] | any): Promise<JsonRpcResponse[]> => {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {
@@ -35,5 +35,5 @@ export default class RPCClient {
       },
       body: JSON.stringify(requests.map(this.decorateRequest))
     }).then(r => r.json());
-  }
+  };
 }

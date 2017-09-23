@@ -1,11 +1,11 @@
 import { showNotification } from 'actions/notifications';
 import {
   broadCastTxFailed,
+  BroadcastTxRequestedAction,
   broadcastTxSucceded,
   setBalance,
   setTokenBalances,
   setWallet,
-  BroadcastTxRequestedAction,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
   UnlockPrivateKeyAction
@@ -71,9 +71,8 @@ function* updateTokenBalances(): SagaIterator {
         }, {})
       )
     );
-
   } catch (error) {
-      console.log(error);
+    console.log(error);
     yield put({ type: 'UPDATE_TOKEN_BALANCE_FAILED', error });
   }
 }

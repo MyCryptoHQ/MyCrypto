@@ -4,8 +4,8 @@ import './PaymentInfo.scss';
 
 export interface Props {
   originKind: string;
-  originAmount: number;
-  paymentAddress: string;
+  originAmount: number | null;
+  paymentAddress: string | null;
 }
 
 export default class PaymentInfo extends Component<Props, {}> {
@@ -13,18 +13,15 @@ export default class PaymentInfo extends Component<Props, {}> {
     return (
       <section className="SwapPayment">
         <h1>
-          <span>
-            {translate('SWAP_order_CTA')}
-          </span>
+          <span>{translate('SWAP_order_CTA')}</span>
           <strong>
-            {' '}{this.props.originAmount} {this.props.originKind}
+            {' '}
+            {this.props.originAmount} {this.props.originKind}
           </strong>
-          <span>
-            {' '}{translate('SENDModal_Content_2')}
-          </span>
+          <span> {translate('SENDModal_Content_2')}</span>
           <input
             className="SwapPayment-address form-control"
-            value={this.props.paymentAddress}
+            value={this.props.paymentAddress || undefined}
             disabled
           />
         </h1>

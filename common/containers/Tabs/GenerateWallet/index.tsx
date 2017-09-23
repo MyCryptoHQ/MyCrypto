@@ -35,10 +35,12 @@ class GenerateWallet extends Component<Props, {}> {
     const { activeStep, wallet, password } = this.props;
     let content;
 
+    const AnyEnterPassword = EnterPassword as new () => any;
+
     switch (activeStep) {
       case 'password':
         content = (
-          <EnterPassword
+          <AnyEnterPassword
             walletPasswordForm={this.props.walletPasswordForm}
             generateNewWallet={this.props.generateNewWallet}
           />
@@ -69,11 +71,7 @@ class GenerateWallet extends Component<Props, {}> {
         content = <h1>Uh oh. Not sure how you got here.</h1>;
     }
 
-    return (
-      <section className="Tab-content">
-        {content}
-      </section>
-    );
+    return <section className="Tab-content">{content}</section>;
   }
 }
 

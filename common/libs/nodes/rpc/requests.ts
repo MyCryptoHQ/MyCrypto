@@ -11,35 +11,37 @@ import {
 import { hexEncodeData } from './utils';
 
 export default class RPCRequests {
-  public sendRawTx(signedTx: string): SendRawTxRequest {
+  public sendRawTx(signedTx: string): SendRawTxRequest | any {
     return {
       method: 'eth_sendRawTransaction',
       params: [signedTx]
     };
   }
 
-  public estimateGas(transaction): EstimateGasRequest {
+  public estimateGas(transaction): EstimateGasRequest | any {
     return {
       method: 'eth_estimateGas',
       params: [transaction]
     };
   }
 
-  public getBalance(address: string): GetBalanceRequest {
+  public getBalance(address: string): GetBalanceRequest | any {
     return {
       method: 'eth_getBalance',
       params: [hexEncodeData(address), 'pending']
     };
   }
 
-  public ethCall(transaction): CallRequest {
+  public ethCall(transaction): CallRequest | any {
     return {
       method: 'eth_call',
       params: [transaction, 'pending']
     };
   }
 
-  public getTransactionCount(address: string): GetTransactionCountRequest {
+  public getTransactionCount(
+    address: string
+  ): GetTransactionCountRequest | any {
     return {
       method: 'eth_getTransactionCount',
       params: [address, 'pending']
@@ -49,7 +51,7 @@ export default class RPCRequests {
   public getTokenBalance(
     address: string,
     token: Token
-  ): GetTokenBalanceRequest {
+  ): GetTokenBalanceRequest | any {
     return {
       method: 'eth_call',
       params: [

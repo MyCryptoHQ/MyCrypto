@@ -16,8 +16,8 @@ import './CurrencySwap.scss';
 
 export interface StateProps {
   bityRates: any;
-  originAmount?: number;
-  destinationAmount?: number;
+  originAmount: number | null;
+  destinationAmount: number | null;
   originKind: string;
   destinationKind: string;
   destinationKindOptions: string[];
@@ -175,9 +175,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
 
     return (
       <article className="CurrencySwap">
-        <h1 className="CurrencySwap-title">
-          {translate('SWAP_init_1')}
-        </h1>
+        <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
 
         <div className="form-inline">
           <input
@@ -188,11 +186,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
               : 'is-invalid'}`}
             type="number"
             placeholder="Amount"
-            value={
-              parseFloat(String(originAmount)) === 0
-                ? originAmount
-                : originAmount || ''
-            }
+            value={originAmount ? originAmount : ''}
             onChange={this.onChangeOriginAmount}
           />
 
@@ -202,9 +196,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
             options={originKindOptions}
           />
 
-          <h1 className="CurrencySwap-divider">
-            {translate('SWAP_init_2')}
-          </h1>
+          <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
 
           <input
             className={`CurrencySwap-input form-control ${String(
@@ -214,11 +206,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
               : 'is-invalid'}`}
             type="number"
             placeholder="Amount"
-            value={
-              parseFloat(String(destinationAmount)) === 0
-                ? destinationAmount
-                : destinationAmount || ''
-            }
+            value={destinationAmount ? destinationAmount : ''}
             onChange={this.onChangeDestinationAmount}
           />
 

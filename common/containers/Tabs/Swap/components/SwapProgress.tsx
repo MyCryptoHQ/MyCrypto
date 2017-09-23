@@ -9,7 +9,7 @@ export interface Props {
   destinationAddress: string;
   outputTx: string;
   originKind: string;
-  orderStatus: string;
+  orderStatus: string | null;
   // actions
   showNotification: TShowNotification;
 }
@@ -132,9 +132,7 @@ export default class SwapProgress extends Component<Props, State> {
                   {idx + 1}
                 </span>
               </div>
-              <p className="SwapProgress-item-text">
-                {text}
-              </p>
+              <p className="SwapProgress-item-text">{text}</p>
             </div>
           );
         })}

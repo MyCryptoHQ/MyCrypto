@@ -31,9 +31,9 @@ export interface DecodedCall {
 // Contract helper, returns data for given call
 export default class Contract {
   public abi: ABI;
-  constructor(abi: ABI) {
+  constructor(ethJsAbi: ABI) {
     // TODO: Check ABI, throw if it's malformed
-    this.abi = abi;
+    this.abi = ethJsAbi;
   }
 
   public getMethodAbi(name: string): ABIMethod {

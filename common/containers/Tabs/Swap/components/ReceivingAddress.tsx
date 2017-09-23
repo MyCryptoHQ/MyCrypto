@@ -1,8 +1,8 @@
 import {
-  BityOrderCreateRequestedSwapAction,
-  ChangeStepSwapAction,
-  DestinationAddressSwapAction,
-  StopLoadBityRatesSwapAction
+  TBityOrderCreateRequestedSwap,
+  TChangeStepSwap,
+  TDestinationAddressSwap,
+  TStopLoadBityRatesSwap
 } from 'actions/swap';
 import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
@@ -15,22 +15,17 @@ import './ReceivingAddress.scss';
 
 export interface StateProps {
   isPostingOrder: boolean;
-  originAmount: number;
+  originAmount: number | null;
   originKind: string;
   destinationKind: string;
   destinationAddress: string;
 }
 
 export interface ActionProps {
-  destinationAddressSwap(value?: string): DestinationAddressSwapAction;
-  changeStepSwap(value: number): ChangeStepSwapAction;
-  stopLoadBityRatesSwap(): StopLoadBityRatesSwapAction;
-  bityOrderCreateRequestedSwap(
-    amount: number,
-    destinationAddress: string,
-    pair: string,
-    mode?: number
-  ): BityOrderCreateRequestedSwapAction;
+  destinationAddressSwap: TDestinationAddressSwap;
+  changeStepSwap: TChangeStepSwap;
+  stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
+  bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
 }
 
 export default class ReceivingAddress extends Component<
@@ -45,6 +40,9 @@ export default class ReceivingAddress extends Component<
   };
 
   public onClickPartTwoComplete = () => {
+    if (!this.props.originAmount) {
+      return;
+    }
     this.props.bityOrderCreateRequestedSwap(
       this.props.originAmount,
       this.props.destinationAddress,

@@ -11,8 +11,8 @@ const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
 
 export interface State {
-  originAmount?: number | null;
-  destinationAmount?: number | null;
+  originAmount: number | null;
+  destinationAmount: number | null;
   originKind: string;
   destinationKind: string;
   destinationKindOptions: string[];
@@ -21,15 +21,15 @@ export interface State {
   bityRates: any;
   bityOrder: any;
   destinationAddress: string;
-  isFetchingRates?: boolean | null;
-  secondsRemaining?: number | null;
-  outputTx?: string | null;
-  isPostingOrder?: boolean | null;
-  orderStatus?: string | null;
-  orderTimestampCreatedISOString?: string | null;
-  paymentAddress?: string | null;
-  validFor?: number | null;
-  orderId?: string | null;
+  isFetchingRates: boolean | null;
+  secondsRemaining: number | null;
+  outputTx: string | null;
+  isPostingOrder: boolean;
+  orderStatus: string | null;
+  orderTimestampCreatedISOString: string | null;
+  paymentAddress: string | null;
+  validFor: number | null;
+  orderId: string | null;
 }
 
 export const INITIAL_STATE: State = {

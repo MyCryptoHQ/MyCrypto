@@ -89,9 +89,6 @@ export default class RpcNode implements INode {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        if (response.errorMessage) {
-          throw new Error(response.errorMessage);
-        }
         return response.result;
       });
   }

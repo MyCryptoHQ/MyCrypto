@@ -15,12 +15,12 @@ interface ReduxStateProps {
   destinationAddress: string;
   destinationKind: string;
   originKind: string;
-  originAmount: number;
-  destinationAmount: number;
+  originAmount: number | null;
+  destinationAmount: number | null;
   reference: string;
-  secondsRemaining?: number;
-  paymentAddress: string;
-  orderStatus: string;
+  secondsRemaining: number | null;
+  paymentAddress: string | null;
+  orderStatus: string | null;
   outputTx: any;
 }
 
@@ -87,8 +87,7 @@ export default class PartThree extends Component<
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
         {orderStatus === 'OPEN' &&
-          originKind === 'BTC' &&
-          <BitcoinQR {...BitcoinQRProps} />}
+          originKind === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
   }

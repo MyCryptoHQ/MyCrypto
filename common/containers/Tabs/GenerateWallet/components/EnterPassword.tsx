@@ -35,7 +35,7 @@ class EnterPassword extends Component<Props, State> {
   public render() {
     const { walletPasswordForm } = this.props;
     const { isPasswordVisible } = this.state;
-
+    const AnyField = Field as new () => Field<any>;
     const content = (
       <div className="EnterPw">
         <h1 className="EnterPw-title" aria-live="polite">
@@ -43,14 +43,12 @@ class EnterPassword extends Component<Props, State> {
         </h1>
 
         <label className="EnterPw-password">
-          <h4 className="EnterPw-password-label">
-            {translate('GEN_Label_1')}
-          </h4>
-          <Field
+          <h4 className="EnterPw-password-label">{translate('GEN_Label_1')}</h4>
+          <AnyField
             className="EnterPw-password-field"
             validate={[required, minLength9]}
-            component={PasswordInput as any}
-            isPasswordVisible={isPasswordVisible as any}
+            component={PasswordInput}
+            isPasswordVisible={isPasswordVisible}
             togglePassword={this.togglePassword}
             name="password"
             type="text"
@@ -65,9 +63,7 @@ class EnterPassword extends Component<Props, State> {
           {translate('NAV_GenerateWallet')}
         </button>
 
-        <p className="EnterPw-warning">
-          {translate('x_PasswordDesc')}
-        </p>
+        <p className="EnterPw-warning">{translate('x_PasswordDesc')}</p>
       </div>
     );
 
@@ -76,48 +72,31 @@ class EnterPassword extends Component<Props, State> {
         <h4>Ledger / TREZOR:</h4>
         <ul>
           <li>
-            <span>
-              {translate('GEN_Help_1')}
-            </span>
+            <span>{translate('GEN_Help_1')}</span>
             <Link to="/send-transaction">
-              {' '}Ledger or TREZOR or Digital Bitbox
+              {' '}
+              Ledger or TREZOR or Digital Bitbox
             </Link>
-            <span>
-              {' '}{translate('GEN_Help_2')}
-            </span>
-            <span>
-              {' '}{translate('GEN_Help_3')}
-            </span>
+            <span> {translate('GEN_Help_2')}</span>
+            <span> {translate('GEN_Help_3')}</span>
           </li>
         </ul>
 
         <h4>Jaxx / Metamask:</h4>
         <ul>
           <li>
-            <span>
-              {translate('GEN_Help_1')}
-            </span>
-            <Link to="/send-transaction">
-              {' '}{translate('x_Mnemonic')}
-            </Link>
-            <span>
-              {' '}{translate('GEN_Help_2')}
-            </span>
+            <span>{translate('GEN_Help_1')}</span>
+            <Link to="/send-transaction"> {translate('x_Mnemonic')}</Link>
+            <span> {translate('GEN_Help_2')}</span>
           </li>
         </ul>
 
         <h4>Mist / Geth / Parity:</h4>
         <ul>
           <li>
-            <span>
-              {translate('GEN_Help_1')}
-            </span>
-            <Link to="/send-transaction">
-              {' '}{translate('x_Keystore2')}
-            </Link>
-            <span>
-              {' '}{translate('GEN_Help_2')}
-            </span>
+            <span>{translate('GEN_Help_1')}</span>
+            <Link to="/send-transaction"> {translate('x_Keystore2')}</Link>
+            <span> {translate('GEN_Help_2')}</span>
           </li>
         </ul>
 

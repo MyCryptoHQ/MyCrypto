@@ -1,7 +1,12 @@
 {
   "defaultSeverity": "error",
   "extends": ["tslint:recommended", "tslint-config-prettier"],
-  "jsRules": {"quotemark":false, "max-line-length":false, "trailing-comma": false, "object-literal-sort-keys": false},
+  "jsRules": {
+    "quotemark": false,
+    "max-line-length": false,
+    "trailing-comma": false,
+    "object-literal-sort-keys": false
+  },
   "rules": {
     "quotemark": false,
     "trailing-comma": false,
@@ -11,11 +16,12 @@
     "arrow-parens": false,
     "no-unnecessary-type-assertion": true,
     "array-type": [true, "array"],
-    "interface-name":false,
+    "interface-name": false,
     "no-duplicate-imports": true,
+    "no-console": false,
     "no-var-requires": false //TODO: remove this
     //"no-default-export": true
   },
-  
+
   "rulesDirectory": []
 }

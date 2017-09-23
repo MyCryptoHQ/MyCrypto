@@ -1,6 +1,8 @@
-export function makeBlob(mime: string, str: string | Object) {
+export function makeBlob(mime: string, str: string | object) {
   str = typeof str === 'object' ? JSON.stringify(str) : str;
-  if (str === null) return '';
+  if (str === null) {
+    return '';
+  }
   const blob = new Blob([str], {
     type: mime
   });

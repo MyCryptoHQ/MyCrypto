@@ -25,23 +25,25 @@ export default class NavigationLink extends React.Component<Props, {}> {
     });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
-    const linkEl = link.external
-      ? <a
-          className={linkClasses}
-          href={link.to}
-          aria-label={linkLabel}
-          target="_blank"
-        >
-          {translate(link.name)}
-        </a>
-      : <Link className={linkClasses} to={link.to} aria-label={linkLabel}>
-          {translate(link.name)}
-        </Link>;
-
-    return (
-      <li className="NavigationLink">
-        {linkEl}
-      </li>
+    const linkEl = link.external ? (
+      <a
+        className={linkClasses}
+        href={link.to}
+        aria-label={linkLabel}
+        target="_blank"
+      >
+        {translate(link.name)}
+      </a>
+    ) : (
+      <Link
+        className={linkClasses}
+        to={(link as any).to}
+        aria-label={linkLabel}
+      >
+        {translate(link.name)}
+      </Link>
     );
+
+    return <li className="NavigationLink">{linkEl}</li>;
   }
 }

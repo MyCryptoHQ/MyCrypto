@@ -46,7 +46,7 @@ export function evp_kdf(data: Buffer, salt: Buffer, opts: any) {
     hash.update(data);
     hash.update(salt);
     block = hash.digest();
-    for (let i = 1; i < (opts.count || 1); i++) {
+    for (let e = 1; e < (opts.count || 1); e++) {
       hash = createHash(opts.digest || 'md5');
       hash.update(block);
       block = hash.digest();

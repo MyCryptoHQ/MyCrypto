@@ -40,3 +40,11 @@ export interface GetTransactionCountRequest extends EtherscanReqBase {
   address: string;
   tag: 'latest';
 }
+
+export type EtherscanRequest =
+  | SendRawTxRequest
+  | GetBalanceRequest
+  | CallRequest
+  | GetTokenBalanceRequest
+  | EstimateGasRequest
+  | GetTransactionCountRequest;

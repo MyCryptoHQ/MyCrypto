@@ -1,4 +1,7 @@
-import { setInteractiveContract, AccessContractAction } from 'actions/contracts';
+import {
+  AccessContractAction,
+  setInteractiveContract
+} from 'actions/contracts';
 import { showNotification } from 'actions/notifications';
 import { isValidETHAddress } from 'libs/validators';
 import { SagaIterator } from 'redux-saga';

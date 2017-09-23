@@ -10,7 +10,7 @@ export default class TrezorWallet extends DeterministicWallet
   implements IWallet {
   public signRawTransaction(tx: RawTransaction): Promise<string> {
     return new Promise((resolve, reject) => {
-      TrezorConnect.ethereumSignTx(
+      (TrezorConnect as any).ethereumSignTx(
         // Args
         this.getPath(),
         // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress

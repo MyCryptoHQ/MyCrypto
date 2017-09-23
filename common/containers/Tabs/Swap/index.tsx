@@ -3,6 +3,20 @@ import {
   TShowNotification
 } from 'actions/notifications';
 import {
+  bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
+  changeStepSwap as dChangeStepSwap,
+  destinationAddressSwap as dDestinationAddressSwap,
+  destinationAmountSwap as dDestinationAmountSwap,
+  destinationKindSwap as dDestinationKindSwap,
+  loadBityRatesRequestedSwap as dLoadBityRatesRequestedSwap,
+  originAmountSwap as dOriginAmountSwap,
+  originKindSwap as dOriginKindSwap,
+  restartSwap as dRestartSwap,
+  startOrderTimerSwap as dStartOrderTimerSwap,
+  startPollBityOrderStatus as dStartPollBityOrderStatus,
+  stopLoadBityRatesSwap as dStopLoadBityRatesSwap,
+  stopOrderTimerSwap as dStopOrderTimerSwap,
+  stopPollBityOrderStatus as dStopPollBityOrderStatus,
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
@@ -18,7 +32,7 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus
 } from 'actions/swap';
-import *  as swapActions from 'actions/swap/actionCreators'
+import swapActions from 'actions/swap/actionCreators';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -29,22 +43,22 @@ import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
 
 interface ReduxStateProps {
-  step: number;
-  destinationAddress: string;
-  destinationKind: string;
+  originAmount: number | null;
+  destinationAmount: number | null;
   originKind: string;
+  destinationKind: string;
   destinationKindOptions: string[];
   originKindOptions: string[];
+  step: number;
   bityRates: any;
-  originAmount: number;
-  destinationAmount: number;
-  isPostingOrder: boolean;
-  isFetchingRates: boolean;
   bityOrder: any;
-  secondsRemaining?: number;
-  paymentAddress: string;
-  orderStatus: string;
-  outputTx?: string;
+  destinationAddress: string;
+  isFetchingRates: boolean | null;
+  secondsRemaining: number | null;
+  outputTx: string | null;
+  isPostingOrder: boolean;
+  orderStatus: string | null;
+  paymentAddress: string | null;
 }
 
 interface ReduxActionProps {
@@ -176,8 +190,9 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     return (
       <section className="Tab-content swap-tab">
         {step === 1 && <CurrentRates {...CurrentRatesProps} />}
-        {(step === 2 || step === 3) &&
-          <SwapInfoHeader {...SwapInfoHeaderProps} />}
+        {(step === 2 || step === 3) && (
+            <SwapInfoHeader {...SwapInfoHeaderProps} />
+          )}
 
         <main className="Tab-content-pane">
           {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
@@ -191,26 +206,39 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
 
 function mapStateToProps(state: AppState) {
   return {
-    outputTx: state.swap.outputTx,
-    isPostingOrder: state.swap.isPostingOrder,
-    orderStatus: state.swap.orderStatus,
-    paymentAddress: state.swap.paymentAddress,
-    step: state.swap.step,
-    destinationAddress: state.swap.destinationAddress,
     originAmount: state.swap.originAmount,
     destinationAmount: state.swap.destinationAmount,
     originKind: state.swap.originKind,
     destinationKind: state.swap.destinationKind,
     destinationKindOptions: state.swap.destinationKindOptions,
     originKindOptions: state.swap.originKindOptions,
+    step: state.swap.step,
     bityRates: state.swap.bityRates,
     bityOrder: state.swap.bityOrder,
+    destinationAddress: state.swap.destinationAddress,
+    isFetchingRates: state.swap.isFetchingRates,
     secondsRemaining: state.swap.secondsRemaining,
-    isFetchingRates: state.swap.isFetchingRates
+    outputTx: state.swap.outputTx,
+    isPostingOrder: state.swap.isPostingOrder,
+    orderStatus: state.swap.orderStatus,
+    paymentAddress: state.swap.paymentAddress
   };
 }
 
 export default connect(mapStateToProps, {
-  ...swapActions,
+  bityOrderCreateRequestedSwap: dBityOrderCreateRequestedSwap,
+  changeStepSwap: dChangeStepSwap,
+  destinationAddressSwap: dDestinationAddressSwap,
+  destinationAmountSwap: dDestinationAmountSwap,
+  destinationKindSwap: dDestinationKindSwap,
+  loadBityRatesRequestedSwap: dLoadBityRatesRequestedSwap,
+  originAmountSwap: dOriginAmountSwap,
+  originKindSwap: dOriginKindSwap,
+  restartSwap: dRestartSwap,
+  startOrderTimerSwap: dStartOrderTimerSwap,
+  startPollBityOrderStatus: dStartPollBityOrderStatus,
+  stopLoadBityRatesSwap: dStopLoadBityRatesSwap,
+  stopOrderTimerSwap: dStopOrderTimerSwap,
+  stopPollBityOrderStatus: dStopPollBityOrderStatus,
   showNotification: dShowNotification
 })(Swap);
