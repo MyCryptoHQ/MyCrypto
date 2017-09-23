@@ -26,7 +26,10 @@
     "interface-name": false,
     "no-duplicate-imports": true,
     "no-console": false,
-    "no-var-requires": false
+    "no-var-requires": false,
+    "jsx-wrap-multiline": false,
+    "comment-format": false,
+    "ordered-imports": false
   },
   "rulesDirectory": []
 }
