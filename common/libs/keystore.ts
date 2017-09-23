@@ -150,12 +150,15 @@ export function pkeyToKeystore(
   }
   const ciphertext = Buffer.concat([cipher.update(pkey), cipher.final()]);
   const mac = sha3(
-    Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')])
+    Buffer.concat([
+      derivedKey.slice(16, 32),
+      new Buffer(ciphertext as any, 'hex')
+    ])
   );
   return {
     version: 3,
     id: uuid.v4({
-      random: randomBytes(16)
+      random: randomBytes(16) as any
     }),
     address,
     Crypto: {
