@@ -1,6 +1,10 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier",
+    "tslint-react"
+  ],
   "jsRules": {
     "quotemark": false,
     "max-line-length": false,
@@ -19,9 +23,10 @@
     "interface-name": false,
     "no-duplicate-imports": true,
     "no-console": false,
-    "no-var-requires": false //TODO: remove this
-    //"no-default-export": true
+    "no-var-requires": false
   },
-
-  "rulesDirectory": []
+  "rulesDirectory": [],
+  "cliOptions": {
+    "exclude": ["vendor"]
+  }
 }
