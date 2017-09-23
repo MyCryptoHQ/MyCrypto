@@ -118,6 +118,12 @@ $small-size: 900px;
 
       &-dropdown {
         margin-left: 6px;
+
+        &-add {
+          text-align: center;
+          padding-top: $space-sm !important;
+          padding-bottom: $space-sm !important;
+        }
       }
     }
   }

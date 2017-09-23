@@ -60,6 +60,8 @@ export default class DropdownComponent<T: *> extends Component<
                 </li>
               );
             })}
+            {extra &&
+              <li key={'separator'} role="separator" className="divider" />}
             {extra}
           </ul>}
         size={size}

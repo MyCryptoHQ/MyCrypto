@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Navigation from './components/Navigation';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import { Link } from 'react-router';
-import { Dropdown } from 'components/ui';
+import { Dropdown, ColorDropdown } from 'components/ui';
 import {
   languages,
   NODES,
@@ -81,30 +81,32 @@ export default class Header extends Component {
                   value={selectedLanguage}
                   color="white"
                   size="smr"
-                  extra={[
-                    <li
-                      key={'separator'}
-                      role="separator"
-                      className="divider"
-                    />,
+                  extra={
                     <li key={'disclaimer'}>
                       <a data-toggle="modal" data-target="#disclaimerModal">
                         Disclaimer
                       </a>
                     </li>
-                  ]}
+                  }
                   onChange={this.changeLanguage}
                 />
               </div>
 
               <div className="Header-branding-right-dropdown">
-                <Dropdown
+                <ColorDropdown
                   ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
-                  options={Object.keys(NODES)}
-                  formatTitle={o =>
-                    <span>
-                      {NODES[o].network} <small>({NODES[o].service})</small>
-                    </span>}
+                  options={Object.keys(NODES).map(key => {
+                    return {
+                      value: key,
+                      name: (
+                        <span>
+                          {NODES[key].network}{' '}
+                          <small>({NODES[key].service})</small>
+                        </span>
+                      ),
+                      color: NETWORKS[NODES[key].network].color
+                    };
+                  })}
                   label="Network"
                   value={nodeSelection}
                   color="white"
@@ -112,7 +114,12 @@ export default class Header extends Component {
                   menuAlign="right"
                   extra={
                     <li>
-                      <a onClick={() => {}}>Add Custom Node</a>
+                      <a
+                        className="Header-branding-right-dropdown-add"
+                        onClick={() => alert('Not implemented yet')}
+                      >
+                        Add Custom Node
+                      </a>
                     </li>
                   }
                   onChange={changeNode}
