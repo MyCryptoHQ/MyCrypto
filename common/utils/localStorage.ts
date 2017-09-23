@@ -1,6 +1,6 @@
 export const REDUX_STATE = 'REDUX_STATE';
 
-export const loadState = () => {
+export function loadState<T>(): T | undefined {
   try {
     const serializedState = localStorage.getItem(REDUX_STATE);
     if (serializedState === null) {
@@ -21,14 +21,12 @@ export const saveState = (state: Object) => {
   }
 };
 
-export const loadStatePropertyOrEmptyObject = (
-  key: string
-): WindowLocalStorage | {} => {
+export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
   const localStorageState = loadState();
   if (localStorageState) {
     if (localStorageState.hasOwnProperty(key)) {
       return localStorageState[key];
     }
   }
-  return {};
+  return undefined
 };
