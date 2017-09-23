@@ -2,8 +2,8 @@
   "defaultSeverity": "error",
   "extends": [
     "tslint:recommended",
-    "tslint-config-prettier",
-    "tslint-react"
+    "tslint-react",
+    "tslint-config-prettier"
   ],
   "jsRules": {
     "quotemark": false,

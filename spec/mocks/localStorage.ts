@@ -1,21 +1,23 @@
 export default class LocalStorageMock {
+  private store: object;
+
   constructor() {
     this.store = {};
   }
 
-  clear() {
+  public clear() {
     this.store = {};
   }
 
-  getItem(key) {
+  public getItem(key) {
     return this.store[key];
   }
 
-  setItem(key, value) {
+  public setItem(key, value) {
     this.store[key] = value.toString();
   }
 
-  removeItem(key) {
+  public removeItem(key) {
     delete this.store[key];
   }
 }
