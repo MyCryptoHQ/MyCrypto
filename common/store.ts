@@ -16,6 +16,9 @@ import {
 import RootReducer from './reducers';
 import sagas from './sagas';
 
+interface MyWindow extends Window {
+  Perf: Perf;
+}
 const configureStore = () => {
   const logger = createLogger({
     collapsed: true
@@ -25,7 +28,7 @@ const configureStore = () => {
   let store;
 
   if (process.env.NODE_ENV !== 'production') {
-    window.Perf = Perf;
+    (window as MyWindow).Perf = Perf;
     middleware = composeWithDevTools(
       applyMiddleware(sagaMiddleware, logger, routerMiddleware(history))
     );
