@@ -29,5 +29,3 @@ if (module.hot) {
     configuredStore.replaceReducer(require('reducers'))
   );
 }
-
-console.log(fuckYoCouch);

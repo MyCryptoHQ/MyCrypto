@@ -88,6 +88,4 @@ const configureStore = () => {
   return store;
 };
 
-console.log(fuckthapolice);
-
 export const configuredStore = configureStore();
