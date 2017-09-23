@@ -76,14 +76,15 @@ export default class Navigation extends Component<Props, State> {
         className="Navigation"
         style={borderStyle}
       >
-        {this.state.showLeftArrow &&
+        {this.state.showLeftArrow && (
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow--left"
             // onClick={() => this.scrollLeft()}
           >
             &#171;
-          </a>}
+          </a>
+        )}
 
         <div className="Navigation-scroll container">
           <ul className="Navigation-links">
@@ -99,14 +100,15 @@ export default class Navigation extends Component<Props, State> {
           </ul>
         </div>
 
-        {this.state.showRightArrow &&
+        {this.state.showRightArrow && (
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow-right"
             // onClick={() => this.scrollRight()}
           >
             &#187;
-          </a>}
+          </a>
+        )}
       </nav>
     );
   }
