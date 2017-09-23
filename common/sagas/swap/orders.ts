@@ -135,7 +135,7 @@ export function* bityTimeRemaining(): SagaIterator {
       if (validUntil.isAfter(now)) {
         const duration = moment.duration(validUntil.diff(now));
         const seconds = duration.asSeconds();
-        yield put(orderTimeSwap(+seconds.toString()));
+        yield put(orderTimeSwap(parseInt(seconds.toString(), 10)));
         // TODO (!Important) - check orderStatus here and stop polling / show notifications based on status
       } else {
         switch (swap.orderStatus) {
