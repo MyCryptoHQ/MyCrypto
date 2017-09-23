@@ -62,6 +62,7 @@ function* updateTokenBalances(): SagaIterator {
       address,
       tokens
     ]);
+
     yield put(
       setTokenBalances(
         tokens.reduce((acc, t, i) => {
@@ -70,7 +71,9 @@ function* updateTokenBalances(): SagaIterator {
         }, {})
       )
     );
+
   } catch (error) {
+      console.log(error);
     yield put({ type: 'UPDATE_TOKEN_BALANCE_FAILED', error });
   }
 }

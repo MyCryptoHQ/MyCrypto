@@ -11,15 +11,13 @@ export default class RPCClient {
     return randomBytes(16).toString('hex');
   }
 
-  public decorateRequest(req: RPCRequest) {
-    return {
-      ...req,
-      id: this.id(),
-      jsonrpc: '2.0'
-    };
-  }
+  public decorateRequest = (req: RPCRequest) => ({
+    ...req,
+    id: this.id(),
+    jsonrpc: '2.0'
+  });
 
-  public async call(request: RPCRequest): Promise<JsonRpcResponse> {
+  public call = (request: RPCRequest): Promise<JsonRpcResponse> => {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {
@@ -29,7 +27,7 @@ export default class RPCClient {
     }).then(r => r.json());
   }
 
-  public async batch(requests: RPCRequest[]): Promise<JsonRpcResponse[]> {
+  public batch = (requests: RPCRequest[]): Promise<JsonRpcResponse[]> => {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {
