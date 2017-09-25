@@ -76,6 +76,7 @@ const configureStore = () => {
     throttle(() => {
       saveState({
         config: {
+          gasPriceGwei: store.getState().config.gasPriceGwei,
           nodeSelection: store.getState().config.nodeSelection,
           languageSelection: store.getState().config.languageSelection
         },
