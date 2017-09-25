@@ -43,6 +43,7 @@
   "devDependencies": {
     "@types/bignumber.js": "^4.0.2",
     "@types/classnames": "^2.2.3",
+    "@types/jest": "^21.1.0",
     "@types/lodash": "^4.14.74",
     "@types/moment": "^2.13.0",
     "@types/prop-types": "^15.5.1",
@@ -59,6 +60,7 @@
     "@types/uuid": "^3.4.2",
     "@types/webpack-env": "^1.13.1",
     "awesome-typescript-loader": "^3.2.3",
+    "bs58": "^4.0.1",
     "cache-loader": "^1.0.3",
     "check-node-version": "^2.1.0",
     "copy-webpack-plugin": "^4.0.1",
@@ -73,7 +75,7 @@
     "html-webpack-plugin": "^2.30.1",
     "husky": "^0.14.3",
     "image-webpack-loader": "^3.4.2",
-    "jest": "^21.1.0",
+    "jest": "^19.0.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
     "lint-staged": "^4.2.2",
@@ -90,8 +92,10 @@
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.2",
     "style-loader": "^0.18.2",
+    "ts-jest": "^21.0.1",
     "tslint": "^5.7.0",
     "tslint-config-prettier": "^1.5.0",
+    "tslint-react": "^3.2.0",
     "types-bn": "0.0.1",
     "typescript": "^2.5.2",
     "url-loader": "^0.5.8",
@@ -103,7 +107,8 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
+    "build:demo":
+      "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "pretest": "check-node-version --package",
@@ -111,16 +116,14 @@
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
-    "flow": "flow",
-    "derivation-checker": "babel-node common/derivation-checker.js --presets es2015,stage-0,flow",
+    "derivation-checker":
+      "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
+    "tslint": "tslint --project . --exclude common/vendor/*",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write --single-quote",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["prettier --write --single-quote", "git add"]
   }
 }

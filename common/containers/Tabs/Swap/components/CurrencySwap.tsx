@@ -192,7 +192,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
 
           <SimpleSelect
             value={originKind}
-            onChange={this.onChangeOriginKind.bind(this)}
+            onChange={this.onChangeOriginKind}
             options={originKindOptions}
           />
 

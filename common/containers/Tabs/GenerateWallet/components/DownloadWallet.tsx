@@ -51,9 +51,7 @@ export default class DownloadWallet extends Component<Props, State> {
 
     const content = (
       <div className="DlWallet">
-        <h1 className="DlWallet-title">
-          {translate('GEN_Label_2')}
-        </h1>
+        <h1 className="DlWallet-title">{translate('GEN_Label_2')}</h1>
 
         <a
           role="button"
@@ -62,9 +60,7 @@ export default class DownloadWallet extends Component<Props, State> {
           aria-describedby="x_KeystoreDesc"
           download={filename}
           href={this.getBlob()}
-          onClick={(e: any) => {
-            this.state.keystore ? this.markDownloaded() : e.preventDefault();
-          }}
+          onClick={this.handleDownloadKeystore}
         >
           {translate('x_Download')} {translate('x_Keystore2')}
         </a>
@@ -97,31 +93,23 @@ export default class DownloadWallet extends Component<Props, State> {
 
     const help = (
       <div>
-        <h4>
-          {translate('GEN_Help_8')}
-        </h4>
+        <h4>{translate('GEN_Help_8')}</h4>
         <ul>
-          <li>
-            {translate('GEN_Help_9')}
-          </li>
-          <li>
-            {' '}{translate('GEN_Help_10')}
-          </li>
-          <input value={filename} className="form-control input-sm" disabled />
+          <li>{translate('GEN_Help_9')}</li>
+          <li> {translate('GEN_Help_10')}</li>
+          <input
+            value={filename}
+            className="form-control input-sm"
+            disabled={true}
+          />
         </ul>
 
-        <h4>
-          {translate('GEN_Help_11')}
-        </h4>
+        <h4>{translate('GEN_Help_11')}</h4>
         <ul>
-          <li>
-            {translate('GEN_Help_12')}
-          </li>
+          <li>{translate('GEN_Help_12')}</li>
         </ul>
 
-        <h4>
-          {translate('GEN_Help_4')}
-        </h4>
+        <h4>{translate('GEN_Help_4')}</h4>
         <ul>
           <li>
             <a
@@ -129,9 +117,7 @@ export default class DownloadWallet extends Component<Props, State> {
               target="_blank"
               rel="noopener"
             >
-              <strong>
-                {translate('GEN_Help_13')}
-              </strong>
+              <strong>{translate('GEN_Help_13')}</strong>
             </a>
           </li>
           <li>
@@ -140,9 +126,7 @@ export default class DownloadWallet extends Component<Props, State> {
               target="_blank"
               rel="noopener"
             >
-              <strong>
-                {translate('GEN_Help_14')}
-              </strong>
+              <strong>{translate('GEN_Help_14')}</strong>
             </a>
           </li>
         </ul>
@@ -172,4 +156,8 @@ export default class DownloadWallet extends Component<Props, State> {
       this.props.continueToPaper();
     }
   };
+
+  private handleDownloadKeystore(e): void {
+    this.state.keystore ? this.markDownloaded() : e.preventDefault();
+  }
 }

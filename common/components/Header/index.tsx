@@ -40,13 +40,14 @@ export default class Header extends Component<Props, {}> {
     const NodeDropDown = Dropdown as new () => Dropdown<keyof typeof NODES>;
     return (
       <div className="Header">
-        {ANNOUNCEMENT_MESSAGE &&
+        {ANNOUNCEMENT_MESSAGE && (
           <div
             className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}
             dangerouslySetInnerHTML={{
               __html: ANNOUNCEMENT_MESSAGE
             }}
-          />}
+          />
+        )}
 
         <section className="Header-branding">
           <section className="Header-branding-inner container">
@@ -77,7 +78,7 @@ export default class Header extends Component<Props, {}> {
               <LanguageDropDown
                 ariaLabel={`change language. current language ${selectedLanguage.name}`}
                 options={languages}
-                formatTitle={o => o.name}
+                formatTitle={this.extractName}
                 value={selectedLanguage}
                 extra={[
                   <li key={'separator'} role="separator" className="divider" />,
@@ -93,13 +94,7 @@ export default class Header extends Component<Props, {}> {
               <NodeDropDown
                 ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
                 options={Object.keys(NODES)}
-                formatTitle={o => [
-                  NODES[o].network,
-                  ' ',
-                  <small key="service">
-                    ({NODES[o].service})
-                  </small>
-                ]}
+                formatTitle={this.nodeNetworkAndService}
                 value={nodeSelection}
                 extra={
                   <li>
@@ -123,4 +118,14 @@ export default class Header extends Component<Props, {}> {
   public changeLanguage = (value: { sign: string }) => {
     this.props.changeLanguage(value.sign);
   };
+
+  private extractName(): (option: { sign: string; name: string }) => string {
+    return name;
+  }
+
+  private nodeNetworkAndService = (option: string) => [
+    NODES[option].network,
+    ' ',
+    <small key="service">({NODES[option].service}) </small>
+  ];
 }

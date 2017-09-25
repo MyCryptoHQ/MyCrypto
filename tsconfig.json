@@ -1,25 +1,26 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist/",        // path to output directory
-        "sourceMap": true,          // allow sourcemap support
-        "strictNullChecks": true,   // enable strict null checks as a best practice
-        "module": "es6",            // specifiy module code generation
-        "jsx": "react",             // use typescript to transpile jsx to js
-        "target": "es5",            // specify ECMAScript target version
-        "allowJs": true,          // allow a partial TypeScript and JavaScript codebase  
-        "baseUrl": "./common/",
-        "lib": [
-            "es2017", "dom"
-        ],
-        "allowSyntheticDefaultImports": true,
-        "moduleResolution": "node",
-        "noEmitOnError": false
-    },
-    "include": [
-        "./common/",
-        "./node_modules/types-bn/index.d.ts"
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "module": "esnext",
+    "jsx": "react",
+    "target": "es5",
+    "allowJs": true,
+    "baseUrl": "./common/",
+    "lib": [
+      "es2017",
+      "dom"
     ],
-    "awesomeTypescriptLoaderOptions": {
-        "transpileOnly": true
-    }
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "noEmitOnError": false
+  },
+  "include": [
+    "./common/",
+    "./node_modules/types-bn/index.d.ts"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "transpileOnly": true
+  }
 }

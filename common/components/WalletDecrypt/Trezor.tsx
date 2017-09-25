@@ -35,7 +35,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
       <section className="TrezorDecrypt col-md-4 col-sm-6">
         <button
           className="TrezorDecrypt-decrypt btn btn-primary btn-lg"
-          onClick={() => this.handleConnect()}
+          onClick={this.handleNullConnect}
           disabled={isLoading}
         >
           {isLoading ? 'Unlocking...' : translate('ADD_Trezor_scan')}
@@ -84,7 +84,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
     this.handleConnect(dPath);
   };
 
-  private handleConnect = (dPath: string = this.state.dPath) => {
+  private handleConnect = (dPath: string = this.state.dPath): void => {
     this.setState({
       isLoading: true,
       error: null
@@ -123,4 +123,8 @@ export default class TrezorDecrypt extends Component<Props, State> {
   private handleUnlock = (address: string, index: number) => {
     this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
   };
+
+  private handleNullConnect(): void {
+    return this.handleConnect();
+  }
 }

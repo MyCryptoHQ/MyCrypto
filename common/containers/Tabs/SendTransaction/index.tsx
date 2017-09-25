@@ -187,15 +187,14 @@ export class SendTransaction extends React.Component<Props, State> {
 
         <div className="row">
           {/* Send Form */}
-          {unlocked &&
+          {unlocked && (
             <main className="col-sm-8">
               <div className="Tab-content-pane">
-                {hasQueryString &&
+                {hasQueryString && (
                   <div className="alert alert-info">
-                    <p>
-                      {translate('WARN_Send_Link')}
-                    </p>
-                  </div>}
+                    <p>{translate('WARN_Send_Link')}</p>
+                  </div>
+                )}
 
                 <AddressField
                   placeholder={donationAddressMap.ETH}
@@ -215,11 +214,12 @@ export class SendTransaction extends React.Component<Props, State> {
                   value={gasLimit}
                   onChange={readOnly ? void 0 : this.onGasChange}
                 />
-                {unit === 'ether' &&
+                {unit === 'ether' && (
                   <DataField
                     value={data}
                     onChange={readOnly ? void 0 : this.onDataChange}
-                  />}
+                  />
+                )}
                 <CustomMessage message={customMessage} />
 
                 <div className="row form-group">
@@ -234,29 +234,25 @@ export class SendTransaction extends React.Component<Props, State> {
                   </div>
                 </div>
 
-                {transaction &&
+                {transaction && (
                   <div>
                     <div className="row form-group">
                       <div className="col-sm-6">
-                        <label>
-                          {translate('SEND_raw')}
-                        </label>
+                        <label>{translate('SEND_raw')}</label>
                         <textarea
                           className="form-control"
                           value={transaction.rawTx}
                           rows={4}
-                          readOnly
+                          readOnly={true}
                         />
                       </div>
                       <div className="col-sm-6">
-                        <label>
-                          {translate('SEND_signed')}
-                        </label>
+                        <label>{translate('SEND_signed')}</label>
                         <textarea
                           className="form-control"
                           value={transaction.signedTx}
                           rows={4}
-                          readOnly
+                          readOnly={true}
                         />
                       </div>
                     </div>
@@ -270,26 +266,30 @@ export class SendTransaction extends React.Component<Props, State> {
                         {translate('SEND_trans')}
                       </button>
                     </div>
-                  </div>}
+                  </div>
+                )}
               </div>
-            </main>}
+            </main>
+          )}
 
           {/* Sidebar */}
-          {unlocked &&
+          {unlocked && (
             <section className="col-sm-4">
               <BalanceSidebar />
-            </section>}
+            </section>
+          )}
         </div>
 
         {transaction &&
-          showTxConfirm &&
-          <ConfirmationModal
-            wallet={this.props.wallet}
-            node={this.props.node}
-            signedTx={transaction.signedTx}
-            onClose={this.hideConfirmTx}
-            onConfirm={this.confirmTx}
-          />}
+          showTxConfirm && (
+            <ConfirmationModal
+              wallet={this.props.wallet}
+              node={this.props.node}
+              signedTx={transaction.signedTx}
+              onClose={this.hideConfirmTx}
+              onConfirm={this.confirmTx}
+            />
+          )}
       </section>
     );
   }

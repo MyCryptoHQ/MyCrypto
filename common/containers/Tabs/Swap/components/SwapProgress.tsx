@@ -103,15 +103,15 @@ export default class SwapProgress extends Component<Props, State> {
       // 1
       translate('SWAP_progress_1'),
       // 2
-      <span>
+      <span key="1">
         {translate('SWAP_progress_2')} {originKind}...
       </span>,
       // 3
-      <span>
+      <span key="2">
         {originKind} {translate('SWAP_progress_3')}
       </span>,
       // 4 TODO: Translate me
-      <span>
+      <span key="3">
         Sending your {destinationKind}
         <br />
         <small>Waiting for {numberOfConfirmations} confirmations...</small>
