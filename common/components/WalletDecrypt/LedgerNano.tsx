@@ -6,9 +6,7 @@ export default class LedgerNanoSDecrypt extends Component {
     return (
       <section className="col-md-4 col-sm-6">
         <div id="selectedUploadKey">
-          <h4>
-            {translate('ADD_Radio_2_alt')}
-          </h4>
+          <h4>{translate('ADD_Radio_2_alt')}</h4>
 
           <div className="form-group">
             <input type="file" id="fselector" />

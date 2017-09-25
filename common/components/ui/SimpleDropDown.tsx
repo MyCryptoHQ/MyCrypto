@@ -21,7 +21,8 @@ export default class SimpleDropDown extends Component<Props, State> {
   };
 
   public onClick = (event: React.SyntheticEvent<HTMLAnchorElement>) => {
-    const value = (event.target as HTMLAnchorElement).getAttribute('data-value') || '';
+    const value =
+      (event.target as HTMLAnchorElement).getAttribute('data-value') || '';
     this.props.onChange(value);
     this.setState({ expanded: false });
   };
@@ -39,7 +40,7 @@ export default class SimpleDropDown extends Component<Props, State> {
           <i className="caret" />
         </a>
 
-        {expanded &&
+        {expanded && (
           <ul className="dropdown-menu dropdown-menu-right">
             {options.map((option, i) => {
               return (
@@ -54,7 +55,8 @@ export default class SimpleDropDown extends Component<Props, State> {
                 </li>
               );
             })}
-          </ul>}
+          </ul>
+        )}
       </div>
     );
   }

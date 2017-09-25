@@ -2,13 +2,11 @@ import React from 'react';
 
 import translate from 'translations';
 
-const Help = () =>
+const Help = () => (
   <section className="container" style={{ minHeight: '50%' }}>
     <div className="tab-content">
       <article className="tab-pane help active">
-        <h1>
-          {translate('NAV_Help')}
-        </h1>
+        <h1>{translate('NAV_Help')}</h1>
         <article className="collapse-container">
           <div>
             <ul>
@@ -41,6 +39,7 @@ const Help = () =>
         </article>
       </article>
     </div>
-  </section>;
+  </section>
+);
 
 export default Help;

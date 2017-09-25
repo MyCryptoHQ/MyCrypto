@@ -18,9 +18,7 @@ export default class AmountField extends React.Component {
     return (
       <div className="row form-group">
         <div className="col-xs-11">
-          <label>
-            {translate('SEND_amount')}
-          </label>
+          <label>{translate('SEND_amount')}</label>
           <div className="input-group">
             <input
               className={`form-control ${isFinite(Number(value)) &&
@@ -39,14 +37,15 @@ export default class AmountField extends React.Component {
               onChange={isReadonly ? void 0 : this.onUnitChange}
             />
           </div>
-          {!isReadonly &&
+          {!isReadonly && (
             <span className="help-block">
               <a onClick={this.onSendEverything}>
                 <span className="strong">
                   {translate('SEND_TransferTotal')}
                 </span>
               </a>
-            </span>}
+            </span>
+          )}
         </div>
       </div>
     );

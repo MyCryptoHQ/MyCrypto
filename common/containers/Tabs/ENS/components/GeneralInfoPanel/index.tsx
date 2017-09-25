@@ -97,14 +97,15 @@ const generalInfoNodes: InfoNode[] = [
   }
 ];
 
-const GeneralInfoList = () =>
+const GeneralInfoList = () => (
   <section>
-    {generalInfoNodes.map((data: InfoNode) =>
+    {generalInfoNodes.map((data: InfoNode) => (
       <GeneralInfoNode key={data.name} {...data} />
-    )}
-  </section>;
+    ))}
+  </section>
+);
 
-export const GeneralInfoPanel = () =>
+export const GeneralInfoPanel = () => (
   <article className="block">
     <div className="cont-md">
       <h4> What is the process like? </h4>
@@ -125,4 +126,5 @@ export const GeneralInfoPanel = () =>
         are severely backlogged on support tickets. We're so sorry. :(
       </p>
     </div>
-  </article>;
+  </article>
+);

@@ -28,21 +28,20 @@ export default class TokenRow extends React.Component<Props, State> {
           title={`${balance.toString()} (Double-Click)`}
           onDoubleClick={this.toggleShowLongBalance}
         >
-          {!!custom &&
+          {!!custom && (
             <img
               src={removeIcon}
               className="TokenRow-balance-remove"
               title="Remove Token"
               onClick={this.onRemove}
               tabIndex={0}
-            />}
+            />
+          )}
           <span>
             {showLongBalance ? balance.toString() : formatNumber(balance)}
           </span>
         </td>
-        <td className="TokenRow-symbol">
-          {symbol}
-        </td>
+        <td className="TokenRow-symbol">{symbol}</td>
       </tr>
     );
   }

@@ -19,13 +19,13 @@ export class Notifications extends React.Component<Props, {}> {
     }
     return (
       <div className="Notifications">
-        {this.props.notifications.map((n, i) =>
+        {this.props.notifications.map((n, i) => (
           <NotificationRow
             key={`${n.level}-${i}`}
             notification={n}
             onClose={this.props.closeNotification}
           />
-        )}
+        ))}
       </div>
     );
   }

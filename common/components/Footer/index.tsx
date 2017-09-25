@@ -110,12 +110,8 @@ export default class Footer extends Component {
               </a>
             </p>
             <p className="Footer-about-text">
-              <span>
-                {translate('FOOTER_1')}
-              </span>
-              <span>
-                {translate('FOOTER_1b')}
-              </span>
+              <span>{translate('FOOTER_1')}</span>
+              <span>{translate('FOOTER_1b')}</span>
             </p>
 
             {LINKS_LEFT.map(link => {
@@ -155,12 +151,12 @@ export default class Footer extends Component {
             </h5>
             <ul>
               <li>
-                {' '}ETH:{' '}
-                <span className="mono wrap">{donationAddressMap.ETH}</span>
+                {' '}
+                ETH: <span className="mono wrap">{donationAddressMap.ETH}</span>
               </li>
               <li>
-                {' '}BTC:{' '}
-                <span className="mono wrap">{donationAddressMap.BTC}</span>
+                {' '}
+                BTC: <span className="mono wrap">{donationAddressMap.BTC}</span>
               </li>
             </ul>
           </div>

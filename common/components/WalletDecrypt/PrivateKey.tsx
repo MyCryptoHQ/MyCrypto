@@ -58,9 +58,7 @@ export default class PrivateKeyDecrypt extends Component {
     return (
       <section className="col-md-4 col-sm-6">
         <div id="selectedTypeKey">
-          <h4>
-            {translate('ADD_Radio_3')}
-          </h4>
+          <h4>{translate('ADD_Radio_3')}</h4>
           <div className="form-group">
             <textarea
               id="aria-private-key"
@@ -75,22 +73,21 @@ export default class PrivateKeyDecrypt extends Component {
             />
           </div>
           {isValidPkey &&
-            isPassRequired &&
-            <div className="form-group">
-              <p>
-                {translate('ADD_Label_3')}
-              </p>
-              <input
-                className={`form-control ${password.length > 0
-                  ? 'is-valid'
-                  : 'is-invalid'}`}
-                value={password}
-                onChange={this.onPasswordChange}
-                onKeyDown={this.onKeyDown}
-                placeholder={translateRaw('x_Password')}
-                type="password"
-              />
-            </div>}
+            isPassRequired && (
+              <div className="form-group">
+                <p>{translate('ADD_Label_3')}</p>
+                <input
+                  className={`form-control ${password.length > 0
+                    ? 'is-valid'
+                    : 'is-invalid'}`}
+                  value={password}
+                  onChange={this.onPasswordChange}
+                  onKeyDown={this.onKeyDown}
+                  placeholder={translateRaw('x_Password')}
+                  type="password"
+                />
+              </div>
+            )}
         </div>
       </section>
     );

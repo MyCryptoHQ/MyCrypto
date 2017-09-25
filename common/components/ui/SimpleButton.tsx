@@ -39,13 +39,13 @@ export default class SimpleButton extends Component<Props, {}> {
           disabled={loading || disabled}
           className={this.computedClass()}
         >
-          {loading
-            ? <div>
-                <Spinner /> {loadingText || text}
-              </div>
-            : <div>
-                {text}
-              </div>}
+          {loading ? (
+            <div>
+              <Spinner /> {loadingText || text}
+            </div>
+          ) : (
+            <div>{text}</div>
+          )}
         </button>
       </div>
     );

@@ -24,18 +24,15 @@ export default class DataField extends React.Component<Props, State> {
     return (
       <div className="row form-group">
         <div className="col-sm-11 clearfix">
-          {!expanded &&
+          {!expanded && (
             <a onClick={this.expand}>
-              <p className="strong">
-                {translate('TRANS_advanced')}
-              </p>
-            </a>}
-          {expanded &&
+              <p className="strong">{translate('TRANS_advanced')}</p>
+            </a>
+          )}
+          {expanded && (
             <section>
               <div className="form-group">
-                <label>
-                  {translate('TRANS_data')}
-                </label>
+                <label>{translate('TRANS_data')}</label>
                 <input
                   className={`form-control ${valid
                     ? 'is-valid'
@@ -47,7 +44,8 @@ export default class DataField extends React.Component<Props, State> {
                   onChange={this.onChange}
                 />
               </div>
-            </section>}
+            </section>
+          )}
         </div>
       </div>
     );

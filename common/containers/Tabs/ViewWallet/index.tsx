@@ -12,9 +12,7 @@ export default class ViewWallet extends Component {
                 <h1>View Wallet Info</h1>
               </div>
               <div>
-                <p>
-                  {translate('VIEWWALLET_Subtitle')}
-                </p>
+                <p>{translate('VIEWWALLET_Subtitle')}</p>
               </div>
             </article>
           </article>

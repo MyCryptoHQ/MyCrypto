@@ -31,7 +31,7 @@ export default class GasPriceDropdown extends Component<Props, State> {
           <span>Gas Price</span>: {this.props.value} Gwei
           <i className="caret" />
         </a>
-        {expanded &&
+        {expanded && (
           <ul className="dropdown-menu GasPrice-dropdown-menu">
             <div className="GasPrice-header">
               <span>Gas Price</span>: {this.props.value} Gwei
@@ -67,7 +67,8 @@ export default class GasPriceDropdown extends Component<Props, State> {
                 </a>
               </p>
             </div>
-          </ul>}
+          </ul>
+        )}
       </span>
     );
   }

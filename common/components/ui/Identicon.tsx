@@ -33,7 +33,7 @@ export default function Identicon(props: Props) {
                   `
         }}
       />
-      {identiconDataUrl &&
+      {identiconDataUrl && (
         <img
           src={identiconDataUrl}
           style={{
@@ -41,7 +41,8 @@ export default function Identicon(props: Props) {
             width: '100%',
             height: '100%'
           }}
-        />}
+        />
+      )}
     </div>
   );
 }

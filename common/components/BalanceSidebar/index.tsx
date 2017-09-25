@@ -93,14 +93,14 @@ export class BalanceSidebar extends React.Component<Props, {}> {
 
     return (
       <aside>
-        {blocks.map(block =>
+        {blocks.map(block => (
           <section
             className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`}
             key={block.name}
           >
             {block.content}
           </section>
-        )}
+        ))}
       </aside>
     );
   }

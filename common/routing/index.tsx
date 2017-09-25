@@ -10,7 +10,7 @@ import React from 'react';
 import { browserHistory, Redirect, Route } from 'react-router';
 
 export const history = getHistory();
-export const Routing = () =>
+export const Routing = () => (
   <Route path="" component={App}>
     <Route path="/" component={GenerateWallet} />
     <Route path="/view-wallet" component={ViewWallet} />
@@ -19,7 +19,8 @@ export const Routing = () =>
     <Route path="/send-transaction" component={SendTransaction} />
     <Route path="/ens" component={ENS} />
     <Redirect from="/*" to="/" />
-  </Route>;
+  </Route>
+);
 
 function getHistory() {
   const basename = '';

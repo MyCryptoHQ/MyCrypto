@@ -35,7 +35,7 @@ export default class DropdownComponent<T> extends Component<Props<T>, State> {
           {this.formatTitle(value)}
           <i className="caret" />
         </a>
-        {expanded &&
+        {expanded && (
           <ul className="dropdown-menu">
             {options.map((option, i) => {
               return (
@@ -50,7 +50,8 @@ export default class DropdownComponent<T> extends Component<Props<T>, State> {
               );
             })}
             {extra}
-          </ul>}
+          </ul>
+        )}
       </span>
     );
   }

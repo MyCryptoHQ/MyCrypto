@@ -120,9 +120,7 @@ export class WalletDecrypt extends Component<Props, State> {
             onChange={this.handleDecryptionChoiceChange}
             disabled={wallet.disabled}
           />
-          <span id={`${key}-label`}>
-            {translate(wallet.lid)}
-          </span>
+          <span id={`${key}-label`}>{translate(wallet.lid)}</span>
         </label>
       );
     });
@@ -149,19 +147,15 @@ export class WalletDecrypt extends Component<Props, State> {
     return (
       <article className="Tab-content-pane row">
         <section className="col-md-4 col-sm-6">
-          <h4>
-            {translate('decrypt_Access')}
-          </h4>
+          <h4>{translate('decrypt_Access')}</h4>
 
           {this.buildWalletOptions()}
         </section>
 
         {decryptionComponent}
-        {!!(this.state.value as PrivateKeyValue).valid &&
+        {!!(this.state.value as PrivateKeyValue).valid && (
           <section className="col-md-4 col-sm-6">
-            <h4 id="uploadbtntxt-wallet">
-              {translate('ADD_Label_6')}
-            </h4>
+            <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
             <div className="form-group">
               <a
                 tabIndex={0}
@@ -172,7 +166,8 @@ export class WalletDecrypt extends Component<Props, State> {
                 {translate('ADD_Label_6_short')}
               </a>
             </div>
-          </section>}
+          </section>
+        )}
       </article>
     );
   }

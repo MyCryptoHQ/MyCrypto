@@ -7,7 +7,7 @@ interface ContainerTabPaneActiveProps {
   children: React.ReactElement<any> | React.ReactElement<any>[];
 }
 
-const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) =>
+const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) => (
   <section className="container">
     <div className="tab-content">
       <main className="tab-pane active">
@@ -16,13 +16,15 @@ const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) =>
         </section>
       </main>
     </div>
-  </section>;
+  </section>
+);
 
-const ENS = () =>
+const ENS = () => (
   <ContainerTabPaneActive>
     <UnfinishedBanner />
     <Title />
     <GeneralInfoPanel />
-  </ContainerTabPaneActive>;
+  </ContainerTabPaneActive>
+);
 
 export default ENS;
