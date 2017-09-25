@@ -157,7 +157,7 @@ export default class DownloadWallet extends Component<Props, State> {
     }
   };
 
-  private handleDownloadKeystore(e): void {
+  private handleDownloadKeystore = (e): void => {
     this.state.keystore ? this.markDownloaded() : e.preventDefault();
-  }
+  };
 }
