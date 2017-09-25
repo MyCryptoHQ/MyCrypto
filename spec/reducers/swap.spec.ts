@@ -164,8 +164,10 @@ describe('swap reducer', () => {
     });
   });
 
-  it('should handle SWAP_LOAD_BITY_RATES', () => {
-    expect(swap(undefined, { type: 'SWAP_LOAD_BITY_RATES' })).toEqual({
+  it('should handle SWAP_LOAD_BITY_RATES_REQUESTED', () => {
+    expect(
+      swap(undefined, { type: 'SWAP_LOAD_BITY_RATES_REQUESTED' })
+    ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: true
     });
