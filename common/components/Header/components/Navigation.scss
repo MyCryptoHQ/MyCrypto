@@ -5,6 +5,7 @@
   position: relative;
   overflow-y: hidden;
   border-top: .25rem solid $brand-primary;
+  transition: border 300ms ease;
 
   &-scroll {
     -ms-overflow-style: -ms-autohiding-scrollbar;
