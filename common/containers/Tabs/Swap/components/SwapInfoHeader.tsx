@@ -1,6 +1,4 @@
 import { RestartSwapAction } from 'actions/swap';
-import bityLogo from 'assets/images/logo-bity.svg';
-import { bityReferralURL } from 'config/data';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';

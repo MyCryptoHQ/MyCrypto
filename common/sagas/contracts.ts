@@ -30,7 +30,6 @@ function* handleAccessContract(action: AccessContractAction): SagaIterator {
 
     yield put(setInteractiveContract(contractFunctions));
   } catch (err) {
-    console.error('Error parsing contract ABI JSON', err);
     yield put(showNotification('danger', translate('ERROR_26'), 5000));
   }
 }

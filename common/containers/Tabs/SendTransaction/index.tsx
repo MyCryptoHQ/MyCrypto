@@ -4,12 +4,7 @@ import Big from 'bignumber.js';
 import { BalanceSidebar } from 'components';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
-import {
-  donationAddressMap,
-  NetworkConfig,
-  NodeConfig,
-  Token
-} from 'config/data';
+import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
 // CONFIG
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
@@ -53,7 +48,6 @@ import {
   ConfirmationModal,
   CustomMessage,
   DataField,
-  Donate,
   GasField
 } from './components';
 // MISC
@@ -356,24 +350,6 @@ export class SendTransaction extends React.Component<Props, State> {
       this.props.showNotification('danger', error.message, 5000);
     }
   }
-
-  // FIXME use mkTx instead or something that could take care of default gas/data and whatnot,
-  public onNewTx = (
-    address: string,
-    amount: string,
-    unit: UnitKey,
-    data: string = '',
-    gasLimit: string = '21000'
-  ) => {
-    this.setState({
-      to: address,
-      value: amount,
-      unit,
-      data,
-      gasLimit,
-      gasChanged: false
-    });
-  };
 
   public onAddressChange = (value: string) => {
     this.setState({

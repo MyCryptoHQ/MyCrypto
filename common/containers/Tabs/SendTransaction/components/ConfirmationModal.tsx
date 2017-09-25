@@ -1,8 +1,8 @@
-import Big, { BigNumber } from 'bignumber.js';
+import Big from 'bignumber.js';
 import Identicon from 'components/ui/Identicon';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
-import { NetworkConfig, NodeConfig, Token } from 'config/data';
+import { NetworkConfig, NodeConfig } from 'config/data';
 import EthTx from 'ethereumjs-tx';
 import ERC20 from 'libs/erc20';
 import {

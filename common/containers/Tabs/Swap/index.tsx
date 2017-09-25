@@ -32,7 +32,6 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus
 } from 'actions/swap';
-import swapActions from 'actions/swap/actionCreators';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
