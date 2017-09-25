@@ -2,6 +2,8 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
+const https = require('https');
+const fs = require('fs');
 const webpackConfig = require('./webpack.dev');
 const config = require('./config');
 const LogPlugin = require('./log-plugin');
@@ -60,4 +62,26 @@ app.get('*', (req, res) => {
   });
 });
 
-app.listen(port);
+if (process.env.HTTPS) {
+  let creds = {};
+  try {
+    creds.key = fs.readFileSync(path.resolve(__dirname, 'server.key'), 'utf8');
+  } catch (err) {
+    console.error('Failed to get SSL private key at webpack_config/server.key');
+    console.error(err);
+    process.exit(1);
+  }
+
+  try {
+    creds.cert = fs.readFileSync(path.resolve(__dirname, 'server.crt'), 'utf8');
+  } catch (err) {
+    console.error('Failed to get SSL certificate at webpack_config/server.crt');
+    console.error(err);
+    process.exit(1);
+  }
+
+  const httpsApp = https.createServer(creds, app);
+  httpsApp.listen(port);
+} else {
+  app.listen(port);
+}

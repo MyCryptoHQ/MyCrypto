@@ -15,4 +15,4 @@ notifications:
 
 script:
 - npm run test
-- npm run flow
+- npm run tslint
