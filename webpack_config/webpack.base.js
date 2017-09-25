@@ -5,10 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const config = require('./config');
 const _ = require('./utils');
-
+const { CheckerPlugin } = require('awesome-typescript-loader');
 module.exports = {
   entry: {
-    client: './common/index.jsx'
+    client: './common/index.tsx'
   },
   output: {
     path: _.outputPath,
@@ -19,7 +19,7 @@ module.exports = {
     hints: process.env.NODE_ENV === 'production' ? 'warning' : false
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css', '.json', '.scss', '.less'],
+    extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
     modules: [
       // places where to search for required modules
       config.srcPath,
@@ -30,15 +30,14 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        loaders: ['eslint-loader'],
+        test: /\.(ts|tsx)$/,
+        loaders: [
+          { loader: 'cache-loader' },
+          {
+            loader: 'awesome-typescript-loader'
+          }
+        ],
         exclude: [/node_modules/]
-      },
-      {
-        test: /\.(js|jsx)$/,
-        loaders: ['babel-loader'],
-        exclude: [/node_modules\/(?!ethereum-blockies|idna-uts46)/]
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,

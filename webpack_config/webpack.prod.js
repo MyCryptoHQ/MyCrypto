@@ -11,9 +11,9 @@ const rimraf = require('rimraf');
 const distFolder = 'dist/';
 
 // Clear out build folder
-rimraf.sync(distFolder, {'rmdirSync': true});
+rimraf.sync(distFolder, { rmdirSync: true });
 
-base.devtool = 'cheap-source-map';
+base.devtool = 'source-map';
 base.module.loaders.push(
   {
     test: /\.css$/,
