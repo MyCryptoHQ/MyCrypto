@@ -2,7 +2,7 @@
 import abi from 'ethereumjs-abi';
 import { toChecksumAddress } from 'ethereumjs-util';
 import BigNumber from 'bignumber.js';
-import type {
+import {
   FuncParams,
   OutputMappings,
   ABIFunction,
@@ -10,44 +10,30 @@ import type {
   Input
 } from './types';
 export default class AbiFunction {
-  constant: boolean;
-  funcParams: FuncParams;
-  inputs: Input[];
-  inputNames: string[];
-  inputTypes: string[];
-  outputs: Output[];
-  outputNames: string[];
-  outputTypes: string[];
-  methodSelector: string;
-  name: string;
-  payable: boolean;
-  type: boolean;
+  private constant: boolean;
+  private funcParams: FuncParams;
+  private inputs: Input[];
+  private inputNames: string[];
+  private inputTypes: string[];
+  private outputs: Output[];
+  private outputNames: string[];
+  private outputTypes: string[];
+  private methodSelector: string;
+  private name: string;
+  private payable: boolean;
+  private type: boolean;
 
   constructor(abiFunc: ABIFunction, outputMappings: OutputMappings) {
     Object.assign(this, abiFunc);
-    this._init(outputMappings);
+    this.init(outputMappings);
   }
-
-  _init(outputMappings: OutputMappings = []) {
-    const { inputs, outputs } = this;
-    this.funcParams = this._makeFuncParams();
-    //TODO: do this in O(n)
-    this.inputTypes = inputs.map(({ type }) => type);
-    this.outputTypes = outputs.map(({ type }) => type);
-    this.inputNames = inputs.map(({ name }) => name);
-    this.outputNames = outputs.map(
-      ({ name }, i) => outputMappings[i] || name || `${i}`
-    );
-
-    this.methodSelector = abi
-      .methodID(this.name, this.inputTypes)
-      .toString('hex');
-  }
-  call = async (input, _node, to) => {
+  public call = async (input, node, to) => {
     const { encodeInput, decodeOutput, name } = this;
-    if (!_node.sendCallRequest) throw Error(`No node given to ${name}`);
+    if (!node.sendCallRequest) {
+      throw Error(`No node given to ${name}`);
+    }
     const data = encodeInput(input);
-    const returnedData = await _node
+    const returnedData = await node
       .sendCallRequest({
         to,
         data
@@ -62,19 +48,19 @@ export default class AbiFunction {
     const decodedOutput = decodeOutput(returnedData);
     return decodedOutput;
   };
-  encodeInput = (suppliedInputs: Object = {}) => {
-    const { _processSuppliedArgs, _makeEncodedFuncCall } = this;
-    const args = _processSuppliedArgs(suppliedInputs);
-    const encodedCall = _makeEncodedFuncCall(args);
+  public encodeInput = (suppliedInputs: Object = {}) => {
+    const { processSuppliedArgs, makeEncodedFuncCall } = this;
+    const args = processSuppliedArgs(suppliedInputs);
+    const encodedCall = makeEncodedFuncCall(args);
     return encodedCall;
   };
 
-  decodeInput = (argString: string) => {
+  public decodeInput = (argString: string) => {
     const {
       methodSelector,
       inputTypes,
       inputNames,
-      _parsePostDecodedValue
+      parsePostDecodedValue
     } = this;
 
     // Remove method selector from data, if present
@@ -89,17 +75,17 @@ export default class AbiFunction {
       const currType = inputTypes[index];
       return {
         ...argObj,
-        [currName]: _parsePostDecodedValue(currType, currArg)
+        [currName]: parsePostDecodedValue(currType, currArg)
       };
     }, {});
   };
 
-  decodeOutput = (argString: string) => {
+  public decodeOutput = (argString: string) => {
     const {
       methodSelector,
       outputTypes,
       outputNames,
-      _parsePostDecodedValue
+      parsePostDecodedValue
     } = this;
 
     // Remove method selector from data, if present
@@ -118,13 +104,29 @@ export default class AbiFunction {
       const currType = outputTypes[index];
       return {
         ...argObj,
-        [currName]: _parsePostDecodedValue(currType, currArg)
+        [currName]: parsePostDecodedValue(currType, currArg)
       };
     }, {});
   };
 
-  _parsePostDecodedValue = (type: string, value: any) => {
-    const { _isBigNumber } = this;
+  private init(outputMappings: OutputMappings = []) {
+    const { inputs, outputs } = this;
+    this.funcParams = this.makeFuncParams();
+    //TODO: do this in O(n)
+    this.inputTypes = inputs.map(({ type }) => type);
+    this.outputTypes = outputs.map(({ type }) => type);
+    this.inputNames = inputs.map(({ name }) => name);
+    this.outputNames = outputs.map(
+      ({ name }, i) => outputMappings[i] || name || `${i}`
+    );
+
+    this.methodSelector = abi
+      .methodID(this.name, this.inputTypes)
+      .toString('hex');
+  }
+
+  private parsePostDecodedValue = (type: string, value: any) => {
+    const { isBigNumber } = this;
 
     const valueMapping = {
       address: val => toChecksumAddress(val.toString(16))
@@ -132,14 +134,14 @@ export default class AbiFunction {
 
     return valueMapping[type]
       ? valueMapping[type](value)
-      : _isBigNumber(value) ? value.toString() : value;
+      : isBigNumber(value) ? value.toString() : value;
   };
 
-  _parsePreEncodedValue = (type: string, value: any) => {
-    const { _isBigNumber } = this;
-    return _isBigNumber(value) ? value.toString() : value;
+  private parsePreEncodedValue = (type: string, value: any) => {
+    const { isBigNumber } = this;
+    return isBigNumber(value) ? value.toString() : value;
   };
-  _isBigNumber(object: Object) {
+  private isBigNumber(object: Object) {
     return (
       object instanceof BigNumber ||
       (object &&
@@ -148,13 +150,13 @@ export default class AbiFunction {
           object.constructor.name === 'BN'))
     );
   }
-  _makeFuncParams = () => {
-    const { inputs, _parsePreEncodedValue } = this;
+  private makeFuncParams = () => {
+    const { inputs, parsePreEncodedValue } = this;
     return inputs.reduce((inputs, currInput) => {
       const { name, type } = currInput;
       const inputHandler = inputToParse => {
         //TODO: introduce typechecking and typecasting mapping for inputs
-        const value = _parsePreEncodedValue(type, inputToParse);
+        const value = parsePreEncodedValue(type, inputToParse);
         return { name, type, value };
       };
 
@@ -162,18 +164,18 @@ export default class AbiFunction {
     }, {});
   };
 
-  _makeEncodedFuncCall = (args: string[]) => {
+  private makeEncodedFuncCall = (args: string[]) => {
     const { methodSelector, inputTypes } = this;
     const encodedArgs = abi.rawEncode(inputTypes, args).toString('hex');
     return `0x${methodSelector}${encodedArgs}`;
   };
 
-  _processSuppliedArgs = (suppliedArgs: Object) => {
+  private processSuppliedArgs = (suppliedArgs: Object) => {
     const { inputNames, funcParams } = this;
     return inputNames.map(name => {
       const type = funcParams[name].type;
       //TODO: parse args based on type
-      if (!suppliedArgs[name])
+      if (!suppliedArgs[name]) {
         throw Error(
           `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(
             suppliedArgs,
@@ -181,6 +183,7 @@ export default class AbiFunction {
             2
           )}`
         );
+      }
       const value = suppliedArgs[name];
 
       const processedArg = funcParams[name].processInput(value);
