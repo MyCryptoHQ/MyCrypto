@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "module": "esnext",
+    "jsx": "react",
+    "target": "es5",
+    "allowJs": true,
+    "baseUrl": "./common/",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "noEmitOnError": false
+  },
+  "include": [
+    "./common/",
+    "./node_modules/types-bn/index.d.ts"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "transpileOnly": true
+  }
+}

@@ -46,6 +46,7 @@ jspm_packages
 .vscode/
 static/dll.vendor.js
 dll
+.cache-loader
 
 # SSL cert stuff
 webpack_config/server.key
