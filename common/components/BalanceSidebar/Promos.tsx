@@ -53,47 +53,45 @@ export default class Promos extends React.Component<{}, State> {
 
     const promoContent = (
       <div className="Promos-promo-inner">
-        <div className="Promos-promo-text">
-          {promo.texts}
-        </div>
+        <div className="Promos-promo-text">{promo.texts}</div>
         <div className="Promos-promo-images">
           {promo.images.map((img, idx) => <img src={img} key={idx} />)}
         </div>
       </div>
     );
-    const promoEl = promo.isExternal
-      ? <a
-          className="Promos-promo"
-          key={promo.href}
-          target="_blank"
-          href={promo.href}
-          style={{ backgroundColor: promo.color }}
-        >
-          {promoContent}
-        </a>
-      : <Link
-          className="Promos-promo"
-          key={promo.href}
-          to={promo.href}
-          style={{ backgroundColor: promo.color }}
-        >
-          <div className="Promos-promo-inner">
-            {promoContent}
-          </div>
-        </Link>;
+    const promoEl = promo.isExternal ? (
+      <a
+        className="Promos-promo"
+        key={promo.href}
+        target="_blank"
+        href={promo.href}
+        style={{ backgroundColor: promo.color }}
+      >
+        {promoContent}
+      </a>
+    ) : (
+      <Link
+        className="Promos-promo"
+        key={promo.href}
+        to={promo.href}
+        style={{ backgroundColor: promo.color }}
+      >
+        <div className="Promos-promo-inner">{promoContent}</div>
+      </Link>
+    );
 
     return (
       <div className="Promos">
         {promoEl}
         <div className="Promos-nav">
-          {promos.map((_, idx) => {
+          {promos.map((_, index) => {
             return (
               <button
-                className={`Promos-nav-btn ${idx === activePromo
+                className={`Promos-nav-btn ${index === activePromo
                   ? 'is-active'
                   : ''}`}
-                key={idx}
-                onClick={() => this.navigateToPromo(idx)}
+                key={index}
+                onClick={this.navigateToPromo(index)}
               />
             );
           })}
@@ -102,7 +100,7 @@ export default class Promos extends React.Component<{}, State> {
     );
   }
 
-  private navigateToPromo = (idx: number) => {
+  private navigateToPromo = (idx: number) => () => {
     this.setState({ activePromo: Math.max(0, Math.min(promos.length, idx)) });
   };
 }

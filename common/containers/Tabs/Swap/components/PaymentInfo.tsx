@@ -22,7 +22,7 @@ export default class PaymentInfo extends Component<Props, {}> {
           <input
             className="SwapPayment-address form-control"
             value={this.props.paymentAddress || undefined}
-            disabled
+            disabled={true}
           />
         </h1>
       </section>
