@@ -5,10 +5,7 @@ import {
   TRemoveCustomToken
 } from 'actions/customTokens';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import {
-  fiatRequestedRates as dFiatRequestedRates,
-  TFiatRequestedRates
-} from 'actions/rates';
+import { fetchCMCRates as dFetchCMCRates, TFetchCMCRates } from 'actions/rates';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
@@ -35,7 +32,7 @@ interface Props {
   showNotification: TShowNotification;
   addCustomToken: TAddCustomToken;
   removeCustomToken: TRemoveCustomToken;
-  fiatRequestedRates: TFiatRequestedRates;
+  fetchCMCRates: TFetchCMCRates;
 }
 
 interface Block {
@@ -52,7 +49,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       network,
       tokenBalances,
       rates,
-      fiatRequestedRates
+      fetchCMCRates
     } = this.props;
     if (!wallet) {
       return null;
@@ -66,7 +63,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
             wallet={wallet}
             balance={balance}
             network={network}
-            fiatRequestedRates={fiatRequestedRates}
+            fetchCMCRates={fetchCMCRates}
           />
         )
       },
@@ -93,14 +90,14 @@ export class BalanceSidebar extends React.Component<Props, {}> {
 
     return (
       <aside>
-        {blocks.map(block =>
+        {blocks.map(block => (
           <section
             className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`}
             key={block.name}
           >
             {block.content}
           </section>
-        )}
+        ))}
       </aside>
     );
   }
@@ -120,5 +117,5 @@ export default connect(mapStateToProps, {
   addCustomToken,
   removeCustomToken,
   showNotification,
-  fiatRequestedRates: dFiatRequestedRates
+  fetchCMCRates: dFetchCMCRates
 })(BalanceSidebar);

@@ -1,19 +1,11 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
+import { fetchRates } from './actionPayloads';
 
-export type TFiatRequestedRates = typeof fiatRequestedRates;
-export function fiatRequestedRates(): interfaces.FiatRequestedRatesAction {
+export type TFetchCMCRates = typeof fetchCMCRates;
+export function fetchCMCRates(): interfaces.FetchCMCRates {
   return {
-    type: TypeKeys.RATES_FIAT_REQUESTED
-  };
-}
-
-export type TFiatSucceededRates = typeof fiatSucceededRates;
-export function fiatSucceededRates(payload: {
-  [key: string]: number;
-}): interfaces.FiatSucceededRatesAction {
-  return {
-    type: TypeKeys.RATES_FIAT_SUCCEEDED,
-    payload
+    type: TypeKeys.RATES_FETCH_CMC,
+    payload: fetchRates()
   };
 }

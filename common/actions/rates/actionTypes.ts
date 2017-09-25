@@ -1,13 +1,22 @@
 import { TypeKeys } from './constants';
-export interface FiatRequestedRatesAction {
-  type: TypeKeys.RATES_FIAT_REQUESTED;
+
+export interface FetchCMCRates {
+  type: TypeKeys.RATES_FETCH_CMC;
+  payload: Promise<any>;
 }
 
 /*** Set rates ***/
-export interface FiatSucceededRatesAction {
-  type: TypeKeys.RATES_FIAT_SUCCEEDED;
+export interface FetchCMCRatesSucceeded {
+  type: TypeKeys.RATES_FETCH_CMC_SUCCEEDED;
   payload: { [key: string]: number };
 }
 
+export interface FetchCMCRatesFailed {
+  type: TypeKeys.RATES_FETCH_CMC_FAILED;
+}
+
 /*** Union Type ***/
-export type RatesAction = FiatSucceededRatesAction | FiatRequestedRatesAction;
+export type RatesAction =
+  | FetchCMCRatesSucceeded
+  | FetchCMCRates
+  | FetchCMCRatesFailed;

@@ -8,14 +8,11 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-import {
-  loadState,
-  loadStatePropertyOrEmptyObject,
-  saveState
-} from 'utils/localStorage';
+import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer from './reducers';
 import { State as CustomTokenState } from './reducers/customTokens';
 import { State as SwapState } from './reducers/swap';
+import promiseMiddleware from 'redux-promise-middleware';
 
 import sagas from './sagas';
 
@@ -27,17 +24,26 @@ const configureStore = () => {
     collapsed: true
   });
   const sagaMiddleware = createSagaMiddleware();
+  const reduxPromiseMiddleWare = promiseMiddleware({
+    promiseTypeSuffixes: ['REQUESTED', 'SUCCEEDED', 'FAILED']
+  });
   let middleware;
   let store;
 
   if (process.env.NODE_ENV !== 'production') {
     (window as MyWindow).Perf = Perf;
     middleware = composeWithDevTools(
-      applyMiddleware(sagaMiddleware, logger, routerMiddleware(history as any))
+      applyMiddleware(
+        sagaMiddleware,
+        logger,
+        reduxPromiseMiddleWare,
+        routerMiddleware(history as any)
+      )
     );
   } else {
     middleware = applyMiddleware(
       sagaMiddleware,
+      reduxPromiseMiddleWare,
       routerMiddleware(history as any)
     );
   }
