@@ -14,16 +14,13 @@ interface State {
 }
 
 export default class QRCode extends React.Component<Props, State> {
-  public state: State = {}
+  public state: State = {};
   public componentWillMount() {
-    console.error(this.props.data)
     // Start generating QR codes immediately
     this.generateQrCode(this.props.data);
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    console.error(this.props.data)
-    
     // Regenerate QR codes if props change
     if (nextProps.data !== this.props.data) {
       this.generateQrCode(nextProps.data);
@@ -51,7 +48,6 @@ export default class QRCode extends React.Component<Props, State> {
       this.setState({ qr: cache[value] });
       return;
     }
-    console.error(value, 'Value')
     QRCodeLib.toDataURL(
       value,
       {
