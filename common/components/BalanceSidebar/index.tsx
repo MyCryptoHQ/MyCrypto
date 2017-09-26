@@ -5,10 +5,7 @@ import {
   TRemoveCustomToken
 } from 'actions/customTokens';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import {
-  fiatRequestedRates as dFiatRequestedRates,
-  TFiatRequestedRates
-} from 'actions/rates';
+import { fetchCCRates as dFetchCCRates, TFetchCCRates } from 'actions/rates';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
@@ -25,17 +22,19 @@ import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
+import { State } from 'reducers/rates';
 
 interface Props {
   wallet: IWallet;
   balance: Ether;
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
-  rates: { [key: string]: number };
+  rates: State['rates'];
+  ratesError: State['ratesError'];
   showNotification: TShowNotification;
   addCustomToken: TAddCustomToken;
   removeCustomToken: TRemoveCustomToken;
-  fiatRequestedRates: TFiatRequestedRates;
+  fetchCCRates: TFetchCCRates;
 }
 
 interface Block {
@@ -52,7 +51,8 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       network,
       tokenBalances,
       rates,
-      fiatRequestedRates
+      ratesError,
+      fetchCCRates
     } = this.props;
     if (!wallet) {
       return null;
@@ -66,7 +66,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
             wallet={wallet}
             balance={balance}
             network={network}
-            fiatRequestedRates={fiatRequestedRates}
+            fetchCCRates={fetchCCRates}
           />
         )
       },
@@ -87,20 +87,26 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       },
       {
         name: 'Equivalent Values',
-        content: <EquivalentValues balance={balance} rates={rates} />
+        content: (
+          <EquivalentValues
+            balance={balance}
+            rates={rates}
+            ratesError={ratesError}
+          />
+        )
       }
     ];
 
     return (
       <aside>
-        {blocks.map(block =>
+        {blocks.map(block => (
           <section
             className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`}
             key={block.name}
           >
             {block.content}
           </section>
-        )}
+        ))}
       </aside>
     );
   }
@@ -112,7 +118,8 @@ function mapStateToProps(state: AppState) {
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
     network: getNetworkConfig(state),
-    rates: state.rates
+    rates: state.rates.rates,
+    ratesError: state.rates.ratesError
   };
 }
 
@@ -120,5 +127,5 @@ export default connect(mapStateToProps, {
   addCustomToken,
   removeCustomToken,
   showNotification,
-  fiatRequestedRates: dFiatRequestedRates
+  fetchCCRates: dFetchCCRates
 })(BalanceSidebar);

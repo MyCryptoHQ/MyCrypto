@@ -33,6 +33,7 @@
     "redux": "^3.6.0",
     "redux-form": "^6.6.3",
     "redux-logger": "^3.0.1",
+    "redux-promise-middleware": "^4.4.1",
     "redux-saga": "^0.15.3",
     "scryptsy": "^2.0.0",
     "store2": "^2.5.5",
@@ -56,6 +57,7 @@
     "@types/react-router-redux": "^4.0.50",
     "@types/redux-form": "^7.0.5",
     "@types/redux-logger": "^3.0.3",
+    "@types/redux-promise-middleware": "0.0.8",
     "@types/redux-saga": "^0.10.5",
     "@types/uuid": "^3.4.2",
     "@types/webpack-env": "^1.13.1",
@@ -107,8 +109,7 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "build:demo":
-      "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
+    "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "pretest": "check-node-version --package",
@@ -116,14 +117,16 @@
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
-    "derivation-checker":
-      "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
+    "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
     "tslint": "tslint --project . --exclude common/vendor/*",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["prettier --write --single-quote", "git add"]
+    "*.{ts,tsx}": [
+      "prettier --write --single-quote",
+      "git add"
+    ]
   }
 }
