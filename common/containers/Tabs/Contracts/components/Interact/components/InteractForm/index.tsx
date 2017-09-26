@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractForm.scss';
 import { NetworkContract } from 'config/data';
-
+import { getNetworkContracts } from 'selectors/config';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 interface Props {
   contracts: NetworkContract[];
-  address: string | undefined | null;
-  abiJson: string | undefined | null;
-  accessContract: Function;
 }
 
 interface State {
   address: string;
   abiJson: string;
 }
-export default class InteractForm extends Component<Props, State> {
+class InteractForm extends Component<Props, State> {
   public state = {
     address: '',
     abiJson: ''
@@ -127,3 +126,8 @@ export default class InteractForm extends Component<Props, State> {
     this.props.accessContract(this.state.address, this.state.abiJson);
   };
 }
+const mapStateToProps = (state: AppState) => ({
+  contracts: getNetworkContracts(state)
+});
+
+export default connect(mapStateToProps)(InteractForm);

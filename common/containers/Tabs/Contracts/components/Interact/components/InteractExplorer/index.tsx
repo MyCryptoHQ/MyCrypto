@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { ABIFunction } from 'actions/contracts';
 import './InteractExplorer.scss';
 
 interface Props {
   address: string | undefined | null;
-  functions: ABIFunction[] | undefined | null;
 }
 
 interface State {
-  selectedFunction: ABIFunction | undefined | null;
   inputs: object;
   outputs: object;
+  selectedFunction: null | any;
 }
 
 export default class InteractExplorer extends Component<Props, State> {
@@ -19,32 +17,6 @@ export default class InteractExplorer extends Component<Props, State> {
     selectedFunction: null,
     inputs: {},
     outputs: {}
-  };
-
-  public _handleFunctionSelect = (ev: any) => {
-    const { functions } = this.props;
-
-    if (!functions) {
-      return;
-    }
-
-    const selectedFunction = functions.reduce((prev, fn) => {
-      return ev.target.value === fn.name ? fn : prev;
-    });
-
-    this.setState({
-      selectedFunction,
-      inputs: {}
-    });
-  };
-
-  public _handleInputChange = (ev: any) => {
-    this.setState({
-      inputs: {
-        ...this.state.inputs,
-        [ev.target.name]: ev.target.value
-      }
-    });
   };
 
   public render() {
@@ -65,7 +37,7 @@ export default class InteractExplorer extends Component<Props, State> {
         <select
           value={selectedFunction ? selectedFunction.name : ''}
           className="InteractExplorer-fnselect form-control"
-          onChange={this._handleFunctionSelect}
+          onChange={this.handleFunctionSelect}
         >
           <option>{translate('CONTRACT_Interact_CTA')}</option>
           {functions.map(fn => (
@@ -93,7 +65,7 @@ export default class InteractExplorer extends Component<Props, State> {
                   className="InteractExplorer-func-in-input form-control"
                   name={input.name}
                   value={inputs[input.name]}
-                  onChange={this._handleInputChange}
+                  onChange={this.handleInputChange}
                 />
               </label>
             ))}
@@ -133,4 +105,30 @@ export default class InteractExplorer extends Component<Props, State> {
       </div>
     );
   }
+
+  private handleFunctionSelect = (ev: any) => {
+    const { functions } = this.props;
+
+    if (!functions) {
+      return;
+    }
+
+    const selectedFunction = functions.reduce((prev, fn) => {
+      return ev.target.value === fn.name ? fn : prev;
+    });
+
+    this.setState({
+      selectedFunction,
+      inputs: {}
+    });
+  };
+
+  private handleInputChange = (ev: any) => {
+    this.setState({
+      inputs: {
+        ...this.state.inputs,
+        [ev.target.name]: ev.target.value
+      }
+    });
+  };
 }
