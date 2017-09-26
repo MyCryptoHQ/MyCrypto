@@ -20,7 +20,6 @@ export default class DropdownComponent<T> extends Component<Props<T>, State> {
 
   public render() {
     const { options, value, ariaLabel, extra } = this.props;
-    console.log('options', options);
     const { expanded } = this.state;
 
     return (
