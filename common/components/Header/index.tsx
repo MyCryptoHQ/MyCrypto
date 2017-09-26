@@ -13,7 +13,7 @@ import {
 } from '../../config/data';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
-
+import { getKeyByValue } from 'utils/helpers';
 import './index.scss';
 
 interface Props {
@@ -30,8 +30,7 @@ interface Props {
 export default class Header extends Component<Props, {}> {
   public render() {
     const { languageSelection, changeNode, nodeSelection } = this.props;
-    const selectedLanguage =
-      languages.find(l => l.sign === languageSelection) || languages[0];
+    const selectedLanguage = languageSelection;
     const selectedNode = NODES[nodeSelection];
     const selectedNetwork = NETWORKS[selectedNode.network];
     const LanguageDropDown = Dropdown as new () => Dropdown<
@@ -76,10 +75,11 @@ export default class Header extends Component<Props, {}> {
               />
 
               <LanguageDropDown
-                ariaLabel={`change language. current language ${selectedLanguage.name}`}
-                options={languages}
-                formatTitle={this.extractName}
-                value={selectedLanguage}
+                ariaLabel={`change language. current language ${languages[
+                  selectedLanguage
+                ]}`}
+                options={Object.values(languages)}
+                value={languages[selectedLanguage]}
                 extra={[
                   <li key={'separator'} role="separator" className="divider" />,
                   <li key={'disclaimer'}>
@@ -109,19 +109,18 @@ export default class Header extends Component<Props, {}> {
 
         <Navigation
           location={this.props.location}
-          // color={selectedNetwork.color}
+          color={selectedNetwork.color}
         />
       </div>
     );
   }
 
-  public changeLanguage = (value: { sign: string }) => {
-    this.props.changeLanguage(value.sign);
+  public changeLanguage = (value: string) => {
+    const key = getKeyByValue(languages, value);
+    if (key) {
+      this.props.changeLanguage(key);
+    }
   };
-
-  private extractName(): (option: { sign: string; name: string }) => string {
-    return name;
-  }
 
   private nodeNetworkAndService = (option: string) => [
     NODES[option].network,

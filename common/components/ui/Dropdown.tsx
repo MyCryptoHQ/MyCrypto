@@ -5,7 +5,7 @@ interface Props<T> {
   options: T[];
   ariaLabel: string;
   extra?: any;
-  formatTitle(option: T): any;
+  formatTitle?(option: T): any;
   onChange(value: T): void;
 }
 
@@ -32,10 +32,10 @@ export default class DropdownComponent<T> extends Component<Props<T>, State> {
           className="dropdown-toggle"
           onClick={this.toggleExpanded}
         >
-          {this.formatTitle(value)}
+          {this.props.formatTitle ? this.formatTitle(value) : value}
           <i className="caret" />
         </a>
-        {expanded &&
+        {expanded && (
           <ul className="dropdown-menu">
             {options.map((option, i) => {
               return (
@@ -44,20 +44,23 @@ export default class DropdownComponent<T> extends Component<Props<T>, State> {
                     className={option === value ? 'active' : ''}
                     onClick={this.onChange.bind(null, option)}
                   >
-                    {this.formatTitle(option)}
+                    {this.props.formatTitle ? this.formatTitle(option) : option}
                   </a>
                 </li>
               );
             })}
             {extra}
-          </ul>}
+          </ul>
+        )}
       </span>
     );
   }
 
-  public formatTitle(option: any) {
-    return this.props.formatTitle(option);
-  }
+  public formatTitle = (option: any) => {
+    if (this.props.formatTitle) {
+      return this.props.formatTitle(option);
+    }
+  };
 
   public toggleExpanded = () => {
     this.setState(state => {

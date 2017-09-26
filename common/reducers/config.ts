@@ -15,7 +15,7 @@ export interface State {
 }
 
 export const INITIAL_STATE: State = {
-  languageSelection: languages[0].sign,
+  languageSelection: 'en',
   nodeSelection: Object.keys(NODES)[0],
   gasPriceGwei: 21
 };
