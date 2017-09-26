@@ -97,6 +97,7 @@
     "tslint-config-prettier": "^1.5.0",
     "tslint-react": "^3.2.0",
     "types-bn": "0.0.1",
+    "types-rlp": "0.0.1",
     "typescript": "^2.5.2",
     "url-loader": "^0.5.8",
     "webpack": "^3.6.0",
@@ -107,8 +108,7 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "build:demo":
-      "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
+    "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "pretest": "check-node-version --package",
@@ -116,14 +116,16 @@
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
-    "derivation-checker":
-      "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
+    "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
     "tslint": "tslint --project . --exclude common/vendor/*",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["prettier --write --single-quote", "git add"]
+    "*.{ts,tsx}": [
+      "prettier --write --single-quote",
+      "git add"
+    ]
   }
 }
