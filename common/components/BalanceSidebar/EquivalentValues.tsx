@@ -3,27 +3,26 @@ import React from 'react';
 import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
 import './EquivalentValues.scss';
-
-const ratesKeys = ['BTC', 'REP', 'EUR', 'USD', 'GBP', 'CHF'];
+import { State } from 'reducers/rates';
+import { symbols } from 'actions/rates';
 
 interface Props {
   balance?: Ether;
-  rates?: { [key: string]: number };
+  rates?: State['rates'];
+  ratesError?: State['ratesError'];
 }
 
 export default class EquivalentValues extends React.Component<Props, {}> {
   public render() {
-    const { balance, rates } = this.props;
+    const { balance, rates, ratesError } = this.props;
 
     return (
       <div className="EquivalentValues">
-        <h5 className="EquivalentValues-title">
-          {translate('sidebar_Equiv')}
-        </h5>
+        <h5 className="EquivalentValues-title">{translate('sidebar_Equiv')}</h5>
 
         <ul className="EquivalentValues-values">
           {rates
-            ? ratesKeys.map(key => {
+            ? symbols.map(key => {
                 if (!rates[key]) {
                   return null;
                 }
@@ -33,14 +32,15 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                       {key}:
                     </span>
                     <span className="EquivalentValues-values-currency-value">
-                      {' '}{balance
+                      {' '}
+                      {balance
                         ? formatNumber(balance.amount.times(rates[key]))
                         : '???'}
                     </span>
                   </li>
                 );
               })
-            : <h5>No rates were loaded.</h5>}
+            : ratesError && <h5>{ratesError}</h5>}
         </ul>
       </div>
     );
