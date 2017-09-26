@@ -27,8 +27,8 @@ export default class DownloadWallet extends Component<Props, State> {
   };
 
   public componentDidMount() {
-    this.props.wallet.getAddress().then(addr => {
-      this.setState({ address: addr });
+    this.props.wallet.getAddress().then(address => {
+      this.setState({ address });
     });
   }
 
@@ -157,7 +157,7 @@ export default class DownloadWallet extends Component<Props, State> {
     }
   };
 
-  private handleDownloadKeystore(e): void {
+  private handleDownloadKeystore = (e): void => {
     this.state.keystore ? this.markDownloaded() : e.preventDefault();
-  }
+  };
 }

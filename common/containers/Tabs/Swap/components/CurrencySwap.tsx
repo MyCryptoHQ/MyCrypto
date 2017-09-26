@@ -35,9 +35,13 @@ export interface ActionProps {
 
 interface State {
   disabled: boolean;
-  showMinMaxError: boolean;
+  showedMinMaxError: boolean;
 }
-export default class CurrencySwap extends Component<StateProps & ActionProps> {
+
+export default class CurrencySwap extends Component<
+  StateProps & ActionProps,
+  State
+> {
   public state = {
     disabled: true,
     showedMinMaxError: false
@@ -186,7 +190,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
               : 'is-invalid'}`}
             type="number"
             placeholder="Amount"
-            value={originAmount ? originAmount : ''}
+            value={originAmount || originAmount === 0 ? originAmount : ''}
             onChange={this.onChangeOriginAmount}
           />
 
@@ -206,7 +210,11 @@ export default class CurrencySwap extends Component<StateProps & ActionProps> {
               : 'is-invalid'}`}
             type="number"
             placeholder="Amount"
-            value={destinationAmount ? destinationAmount : ''}
+            value={
+              destinationAmount || destinationAmount === 0
+                ? destinationAmount
+                : ''
+            }
             onChange={this.onChangeDestinationAmount}
           />
 

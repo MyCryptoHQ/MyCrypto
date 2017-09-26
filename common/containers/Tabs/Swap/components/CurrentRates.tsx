@@ -22,7 +22,6 @@ export default class CurrentRates extends Component<Pairs, State> {
   };
 
   public onChange = (event: any) => {
-    const target = event.target;
     const { value } = event.target;
     const { name } = event.target;
     this.setState({
@@ -36,22 +35,24 @@ export default class CurrentRates extends Component<Pairs, State> {
     const propsPair = this.props[pair];
     return (
       <div className="SwapRates-panel-rate">
-        {propsPair
-          ? <div>
-              <input
-                className="SwapRates-panel-rate-input"
-                onChange={this.onChange}
-                value={statePair}
-                name={pair + 'Amount'}
-              />
-              <span className="SwapRates-panel-rate-amount">
-                {` ${origin} = ${toFixedIfLarger(
-                  statePair * propsPair,
-                  6
-                )} ${destination}`}
-              </span>
-            </div>
-          : <Spinner />}
+        {propsPair ? (
+          <div>
+            <input
+              className="SwapRates-panel-rate-input"
+              onChange={this.onChange}
+              value={statePair}
+              name={pair + 'Amount'}
+            />
+            <span className="SwapRates-panel-rate-amount">
+              {` ${origin} = ${toFixedIfLarger(
+                statePair * propsPair,
+                6
+              )} ${destination}`}
+            </span>
+          </div>
+        ) : (
+          <Spinner />
+        )}
       </div>
     );
   };
@@ -59,9 +60,7 @@ export default class CurrentRates extends Component<Pairs, State> {
   public render() {
     return (
       <article className="SwapRates">
-        <h3 className="SwapRates-title">
-          {translate('SWAP_rates')}
-        </h3>
+        <h3 className="SwapRates-title">{translate('SWAP_rates')}</h3>
 
         <section className="SwapRates-panel row">
           <div className="SwapRates-panel-side col-sm-6">
