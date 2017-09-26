@@ -1,22 +1,23 @@
 import { TypeKeys } from './constants';
+import { CCResponse } from './actionPayloads';
 
-export interface FetchCMCRates {
-  type: TypeKeys.RATES_FETCH_CMC;
-  payload: Promise<any>;
+export interface FetchCCRates {
+  type: TypeKeys.RATES_FETCH_CC;
+  payload: Promise<CCResponse>;
 }
 
 /*** Set rates ***/
-export interface FetchCMCRatesSucceeded {
-  type: TypeKeys.RATES_FETCH_CMC_SUCCEEDED;
-  payload: { [key: string]: number };
+export interface FetchCCRatesSucceeded {
+  type: TypeKeys.RATES_FETCH_CC_SUCCEEDED;
+  payload: CCResponse;
 }
 
-export interface FetchCMCRatesFailed {
-  type: TypeKeys.RATES_FETCH_CMC_FAILED;
+export interface FetchCCRatesFailed {
+  type: TypeKeys.RATES_FETCH_CC_FAILED;
 }
 
 /*** Union Type ***/
 export type RatesAction =
-  | FetchCMCRatesSucceeded
-  | FetchCMCRates
-  | FetchCMCRatesFailed;
+  | FetchCCRatesSucceeded
+  | FetchCCRates
+  | FetchCCRatesFailed;

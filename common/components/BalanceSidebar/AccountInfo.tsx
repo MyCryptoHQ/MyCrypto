@@ -1,4 +1,4 @@
-import { TFetchCMCRates } from 'actions/rates';
+import { TFetchCCRates } from 'actions/rates';
 import { Identicon } from 'components/ui';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
@@ -12,7 +12,7 @@ interface Props {
   balance: Ether;
   wallet: IWallet;
   network: NetworkConfig;
-  fetchCMCRates: TFetchCMCRates;
+  fetchCCRates: TFetchCCRates;
 }
 
 interface State {
@@ -26,9 +26,9 @@ export default class AccountInfo extends React.Component<Props, State> {
   };
 
   public componentDidMount() {
-    this.props.fetchCMCRates();
-    this.props.wallet.getAddress().then(addr => {
-      this.setState({ address: addr });
+    this.props.fetchCCRates();
+    this.props.wallet.getAddress().then(address => {
+      this.setState({ address });
     });
   }
 

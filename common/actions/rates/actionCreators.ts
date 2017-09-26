@@ -1,11 +1,11 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { fetchRates } from './actionPayloads';
+import { fetchRates, CCResponse } from './actionPayloads';
 
-export type TFetchCMCRates = typeof fetchCMCRates;
-export function fetchCMCRates(): interfaces.FetchCMCRates {
+export type TFetchCCRates = typeof fetchCCRates;
+export function fetchCCRates(): interfaces.FetchCCRates {
   return {
-    type: TypeKeys.RATES_FETCH_CMC,
+    type: TypeKeys.RATES_FETCH_CC,
     payload: fetchRates()
   };
 }
