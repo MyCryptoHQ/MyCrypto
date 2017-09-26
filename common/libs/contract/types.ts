@@ -17,7 +17,7 @@ export interface Input {
   type: string;
 }
 
-type Output = Input;
+export type Output = Input;
 
 /**
  * @enum {string}
@@ -64,15 +64,11 @@ type Payable = boolean;
  * @interface ABIFunction
  * @template T 
  */
-export interface ABIFunction<T> {
-  constant: boolean;
-  inputs: Input[];
-  outputs: Output[];
-  name: string;
-  payable: boolean;
-  type: boolean;
-}
 export type OutputMappings = string[];
 export interface FuncParams {
-  [name: string]: (input: string) => string;
+  [name: string]: {
+    type: string;
+
+    processInput(value: any): any;
+  };
 }

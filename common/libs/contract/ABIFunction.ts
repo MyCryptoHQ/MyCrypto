@@ -2,13 +2,7 @@
 import abi from 'ethereumjs-abi';
 import { toChecksumAddress } from 'ethereumjs-util';
 import BigNumber from 'bignumber.js';
-import {
-  FuncParams,
-  OutputMappings,
-  ABIFunction,
-  Output,
-  Input
-} from './types';
+import { FuncParams, OutputMappings, Output, Input } from './types';
 export default class AbiFunction {
   private constant: boolean;
   private funcParams: FuncParams;
@@ -23,7 +17,7 @@ export default class AbiFunction {
   private payable: boolean;
   private type: boolean;
 
-  constructor(abiFunc: ABIFunction, outputMappings: OutputMappings) {
+  constructor(abiFunc: any, outputMappings: OutputMappings) {
     Object.assign(this, abiFunc);
     this.init(outputMappings);
   }
@@ -48,7 +42,7 @@ export default class AbiFunction {
     const decodedOutput = decodeOutput(returnedData);
     return decodedOutput;
   };
-  public encodeInput = (suppliedInputs: Object = {}) => {
+  public encodeInput = (suppliedInputs: object = {}) => {
     const { processSuppliedArgs, makeEncodedFuncCall } = this;
     const args = processSuppliedArgs(suppliedInputs);
     const encodedCall = makeEncodedFuncCall(args);
@@ -141,7 +135,7 @@ export default class AbiFunction {
     const { isBigNumber } = this;
     return isBigNumber(value) ? value.toString() : value;
   };
-  private isBigNumber(object: Object) {
+  private isBigNumber(object: object) {
     return (
       object instanceof BigNumber ||
       (object &&
@@ -152,7 +146,7 @@ export default class AbiFunction {
   }
   private makeFuncParams = () => {
     const { inputs, parsePreEncodedValue } = this;
-    return inputs.reduce((inputs, currInput) => {
+    return inputs.reduce((accumulator, currInput) => {
       const { name, type } = currInput;
       const inputHandler = inputToParse => {
         //TODO: introduce typechecking and typecasting mapping for inputs
@@ -160,7 +154,7 @@ export default class AbiFunction {
         return { name, type, value };
       };
 
-      return { ...inputs, [name]: { processInput: inputHandler, type } };
+      return { ...accumulator, [name]: { processInput: inputHandler, type } };
     }, {});
   };
 
@@ -170,7 +164,7 @@ export default class AbiFunction {
     return `0x${methodSelector}${encodedArgs}`;
   };
 
-  private processSuppliedArgs = (suppliedArgs: Object) => {
+  private processSuppliedArgs = (suppliedArgs: object) => {
     const { inputNames, funcParams } = this;
     return inputNames.map(name => {
       const type = funcParams[name].type;
