@@ -2,7 +2,7 @@ import { TChangeGasPrice, TChangeLanguage, TChangeNode } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown } from 'components/ui';
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
   ANNOUNCEMENT_MESSAGE,
   ANNOUNCEMENT_TYPE,
@@ -38,6 +38,9 @@ export default class Header extends Component<Props, {}> {
       typeof selectedLanguage
     >;
     const NodeDropDown = Dropdown as new () => Dropdown<keyof typeof NODES>;
+    {
+      console.log(selectedLanguage);
+    }
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE && (
@@ -77,7 +80,7 @@ export default class Header extends Component<Props, {}> {
 
               <LanguageDropDown
                 ariaLabel={`change language. current language ${selectedLanguage.name}`}
-                options={languages}
+                options={Object.values(languages)}
                 formatTitle={this.extractName}
                 value={selectedLanguage}
                 extra={[

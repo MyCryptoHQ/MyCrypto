@@ -19,6 +19,7 @@
     "ethereumjs-util": "^5.1.2",
     "font-awesome": "^4.7.0",
     "hdkey": "^0.7.1",
+    "history": "^4.7.2",
     "idna-uts46": "^1.1.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
@@ -28,7 +29,7 @@
     "react-dom": "^15.4.2",
     "react-markdown": "^2.5.0",
     "react-redux": "^5.0.6",
-    "react-router": "^3.0.0",
+    "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
     "redux": "^3.6.0",
     "redux-form": "^6.6.3",
@@ -107,8 +108,7 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "build:demo":
-      "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
+    "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "pretest": "check-node-version --package",
@@ -116,14 +116,16 @@
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
-    "derivation-checker":
-      "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
+    "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
     "tslint": "tslint --project . --exclude common/vendor/*",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["prettier --write --single-quote", "git add"]
+    "*.{ts,tsx}": [
+      "prettier --write --single-quote",
+      "git add"
+    ]
   }
 }
