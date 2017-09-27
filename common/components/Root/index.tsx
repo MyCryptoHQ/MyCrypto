@@ -23,7 +23,7 @@ export default class Root extends Component<Props, {}> {
       <Provider store={store} key={Math.random()}>
         <Router history={history} key={Math.random()}>
           <div>
-            <Route exact path="/" component={GenerateWallet} />
+            <Route exact={true} path="/" component={GenerateWallet} />
             <Route path="/view-wallet" component={ViewWallet} />
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />

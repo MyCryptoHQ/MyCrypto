@@ -38,9 +38,6 @@ export default class Header extends Component<Props, {}> {
       typeof selectedLanguage
     >;
     const NodeDropDown = Dropdown as new () => Dropdown<keyof typeof NODES>;
-    {
-      console.log(selectedLanguage);
-    }
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE && (
