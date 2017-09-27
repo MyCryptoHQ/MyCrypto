@@ -5,7 +5,7 @@ import { BalanceSidebar } from 'components';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
 import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
-import App from '../../App';
+import App from 'containers/App';
 // CONFIG
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';

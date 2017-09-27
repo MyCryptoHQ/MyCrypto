@@ -2,7 +2,7 @@ import React from 'react';
 import { GeneralInfoPanel } from './GeneralInfoPanel';
 import Title from './Title';
 import UnfinishedBanner from './UnfinishedBanner';
-import App from '../../../../containers/App';
+import App from 'containers/App';
 
 interface ContainerTabPaneActiveProps {
   children: React.ReactElement<any> | React.ReactElement<any>[];

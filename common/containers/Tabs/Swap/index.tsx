@@ -40,7 +40,7 @@ import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
-import App from '../../App';
+import App from 'containers/App';
 
 interface ReduxStateProps {
   originAmount: number | null;

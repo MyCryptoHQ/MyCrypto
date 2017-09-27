@@ -1,6 +1,6 @@
 import React from 'react';
 import translate from 'translations';
-import App from '../../App';
+import App from 'containers/App';
 
 const Help = () => (
   <App>

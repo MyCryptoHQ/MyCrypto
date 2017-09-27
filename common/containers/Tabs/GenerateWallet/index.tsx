@@ -13,7 +13,7 @@ import { AppState } from 'reducers';
 import DownloadWallet from './components/DownloadWallet';
 import EnterPassword from './components/EnterPassword';
 import PaperWallet from './components/PaperWallet';
-import App from '../../App';
+import App from 'containers/App';
 
 interface Props {
   // Redux state
