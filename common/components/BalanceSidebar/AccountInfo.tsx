@@ -1,4 +1,4 @@
-import { FiatRequestedRatesAction } from 'actions/rates';
+import { TFetchCCRates } from 'actions/rates';
 import { Identicon } from 'components/ui';
 import { NetworkConfig } from 'config/data';
 import { Ether } from 'libs/units';
@@ -12,7 +12,7 @@ interface Props {
   balance: Ether;
   wallet: IWallet;
   network: NetworkConfig;
-  fiatRequestedRates(): FiatRequestedRatesAction;
+  fetchCCRates: TFetchCCRates;
 }
 
 interface State {
@@ -26,9 +26,9 @@ export default class AccountInfo extends React.Component<Props, State> {
   };
 
   public componentDidMount() {
-    this.props.fiatRequestedRates();
-    this.props.wallet.getAddress().then(addr => {
-      this.setState({ address: addr });
+    this.props.fetchCCRates();
+    this.props.wallet.getAddress().then(address => {
+      this.setState({ address });
     });
   }
 
@@ -57,9 +57,7 @@ export default class AccountInfo extends React.Component<Props, State> {
             <div className="AccountInfo-address-icon">
               <Identicon address={address} size="100%" />
             </div>
-            <div className="AccountInfo-address-addr">
-              {address}
-            </div>
+            <div className="AccountInfo-address-addr">{address}</div>
           </div>
         </div>
 
@@ -82,26 +80,29 @@ export default class AccountInfo extends React.Component<Props, State> {
           </ul>
         </div>
 
-        {(!!blockExplorer || !!tokenExplorer) &&
-          <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">
-              {translate('sidebar_TransHistory')}
-            </h5>
-            <ul className="AccountInfo-list">
-              {!!blockExplorer &&
-                <li className="AccountInfo-list-item">
-                  <a href={blockExplorer.address(address)} target="_blank">
-                    {`${network.name} (${blockExplorer.name})`}
-                  </a>
-                </li>}
-              {!!tokenExplorer &&
-                <li className="AccountInfo-list-item">
-                  <a href={tokenExplorer.address(address)} target="_blank">
-                    {`Tokens (${tokenExplorer.name})`}
-                  </a>
-                </li>}
-            </ul>
-          </div>}
+        {(!!blockExplorer || !!tokenExplorer) && (
+            <div className="AccountInfo-section">
+              <h5 className="AccountInfo-section-header">
+                {translate('sidebar_TransHistory')}
+              </h5>
+              <ul className="AccountInfo-list">
+                {!!blockExplorer && (
+                  <li className="AccountInfo-list-item">
+                    <a href={blockExplorer.address(address)} target="_blank">
+                      {`${network.name} (${blockExplorer.name})`}
+                    </a>
+                  </li>
+                )}
+                {!!tokenExplorer && (
+                  <li className="AccountInfo-list-item">
+                    <a href={tokenExplorer.address(address)} target="_blank">
+                      {`Tokens (${tokenExplorer.name})`}
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
       </div>
     );
   }

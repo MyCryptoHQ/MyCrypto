@@ -104,8 +104,8 @@ export default class PaperWallet extends React.Component<Props, State> {
     if (!this.props.wallet) {
       return;
     }
-    this.props.wallet.getAddress().then(addr => {
-      this.setState({ address: addr });
+    this.props.wallet.getAddress().then(address => {
+      this.setState({ address });
     });
   }
 
