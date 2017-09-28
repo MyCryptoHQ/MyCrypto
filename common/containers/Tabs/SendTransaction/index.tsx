@@ -43,6 +43,7 @@ import translate from 'translations';
 // UTILS
 import { formatGasLimit } from 'utils/formatters';
 import {
+  NonceField,
   AddressField,
   AmountField,
   ConfirmationModal,
@@ -76,6 +77,7 @@ interface State {
   transaction: CompleteTransaction | null;
   showTxConfirm: boolean;
   generateDisabled: boolean;
+  nonce: number | null;
 }
 
 interface Props {
@@ -95,6 +97,7 @@ interface Props {
   transactions: BroadcastTransactionStatus[];
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
+  offline: boolean;
 }
 
 const initialState: State = {
@@ -109,7 +112,8 @@ const initialState: State = {
   gasChanged: false,
   showTxConfirm: false,
   transaction: null,
-  generateDisabled: true
+  generateDisabled: true,
+  nonce: 0
 };
 
 export class SendTransaction extends React.Component<Props, State> {
@@ -160,6 +164,10 @@ export class SendTransaction extends React.Component<Props, State> {
     }
   }
 
+  public onNonceChange = (value: number) => {
+    this.setState({ nonce: value });
+  };
+
   public render() {
     const unlocked = !!this.props.wallet;
     const {
@@ -171,13 +179,24 @@ export class SendTransaction extends React.Component<Props, State> {
       readOnly,
       hasQueryString,
       showTxConfirm,
-      transaction
+      transaction,
+      nonce
     } = this.state;
+    const { offline } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
       <section className="Tab-content">
-        <UnlockHeader title={'NAV_SendEther'} />
+        <UnlockHeader
+          title={
+            <div>
+              {translate('NAV_SendEther')}
+              {offline ? (
+                <span style={{ color: 'red' }}> (Offline)</span>
+              ) : null}
+            </div>
+          }
+        />
 
         <div className="row">
           {/* Send Form */}
@@ -208,6 +227,13 @@ export class SendTransaction extends React.Component<Props, State> {
                   value={gasLimit}
                   onChange={readOnly ? void 0 : this.onGasChange}
                 />
+                {offline && (
+                  <NonceField
+                    value={String(nonce)}
+                    onChange={this.onNonceChange}
+                    placeholder={'0'}
+                  />
+                )}
                 {unit === 'ether' && (
                   <DataField
                     value={data}
@@ -484,7 +510,8 @@ function mapStateToProps(state: AppState) {
     network: getNetworkConfig(state),
     tokens: getTokens(state),
     gasPrice: new GWei(getGasPriceGwei(state)).toWei(),
-    transactions: state.wallet.transactions
+    transactions: state.wallet.transactions,
+    offline: state.config.offline
   };
 }
 
