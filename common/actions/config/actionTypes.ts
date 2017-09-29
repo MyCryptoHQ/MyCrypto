@@ -24,9 +24,15 @@ export interface ChangeGasPriceAction {
   payload: number;
 }
 
+/*** Poll offline status ***/
+export interface PollOfflineStatus {
+  type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS;
+}
+
 /*** Union Type ***/
 export type ConfigAction =
   | ChangeNodeAction
   | ChangeLanguageAction
   | ChangeGasPriceAction
-  | ToggleOfflineAction;
+  | ToggleOfflineAction
+  | PollOfflineStatus;

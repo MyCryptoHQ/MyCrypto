@@ -31,3 +31,10 @@ export function changeGasPrice(value: number): interfaces.ChangeGasPriceAction {
     payload: value
   };
 }
+
+export type TPollOfflineStatus = typeof pollOfflineStatus;
+export function pollOfflineStatus(): interfaces.PollOfflineStatus {
+  return {
+    type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS
+  };
+}
