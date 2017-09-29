@@ -517,7 +517,7 @@ function mapStateToProps(state: AppState) {
     tokens: getTokens(state),
     gasPrice: new GWei(getGasPriceGwei(state)).toWei(),
     transactions: state.wallet.transactions,
-    offline: state.config.offline
+    offline: state.config.offline || state.config.forceOffline
   };
 }
 
