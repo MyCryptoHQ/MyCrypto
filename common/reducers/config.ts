@@ -3,10 +3,11 @@ import {
   ChangeLanguageAction,
   ChangeNodeAction,
   ConfigAction,
-  ToggleOfflineAction
+  ToggleOfflineAction,
+  ForceOfflineAction
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
-import { languages, NODES } from '../config/data';
+import { NODES } from '../config/data';
 
 export interface State {
   // FIXME
@@ -14,13 +15,15 @@ export interface State {
   nodeSelection: string;
   gasPriceGwei: number;
   offline: boolean;
+  forceOffline: boolean;
 }
 
 export const INITIAL_STATE: State = {
   languageSelection: 'en',
   nodeSelection: Object.keys(NODES)[0],
   gasPriceGwei: 21,
-  offline: false
+  offline: false,
+  forceOffline: false
 };
 
 function changeLanguage(state: State, action: ChangeLanguageAction): State {
@@ -51,6 +54,13 @@ function toggleOffline(state: State, action: ToggleOfflineAction): State {
   };
 }
 
+function forceOffline(state: State, action: ForceOfflineAction): State {
+  return {
+    ...state,
+    forceOffline: !state.forceOffline
+  };
+}
+
 export function config(
   state: State = INITIAL_STATE,
   action: ConfigAction
@@ -64,6 +74,8 @@ export function config(
       return changeGasPrice(state, action);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
       return toggleOffline(state, action);
+    case TypeKeys.CONFIG_FORCE_OFFLINE:
+      return forceOffline(state, action);
     default:
       return state;
   }
