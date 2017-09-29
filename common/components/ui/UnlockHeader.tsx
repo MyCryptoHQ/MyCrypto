@@ -31,8 +31,8 @@ export class UnlockHeader extends React.Component<Props, State> {
     const { title } = this.props;
     return (
       <article className="collapse-container">
-        <div onClick={this.toggleExpanded}>
-          <a className="collapse-button">
+        <div>
+          <a className="collapse-button" onClick={this.toggleExpanded}>
             <span>{this.state.expanded ? '-' : '+'}</span>
           </a>
           <h1>{title}</h1>
