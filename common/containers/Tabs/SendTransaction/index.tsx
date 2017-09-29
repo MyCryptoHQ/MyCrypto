@@ -1,11 +1,9 @@
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { broadcastTx, TBroadcastTx } from 'actions/wallet';
 import Big from 'bignumber.js';
-import { BalanceSidebar } from 'components';
 // COMPONENTS
+import { BalanceSidebar } from 'components';
 import { UnlockHeader } from 'components/ui';
-import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
 // CONFIG
+import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import {
@@ -25,13 +23,19 @@ import React from 'react';
 // REDUX
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import { showNotification, TShowNotification } from 'actions/notifications';
+import { broadcastTx, TBroadcastTx } from 'actions/wallet';
+import {
+  pollOfflineStatus as dPollOfflineStatus,
+  TPollOfflineStatus
+} from 'actions/config';
+// SELECTORS
 import {
   getGasPriceGwei,
   getNetworkConfig,
   getNodeConfig,
   getNodeLib
 } from 'selectors/config';
-// SELECTORS
 import {
   getTokenBalances,
   getTokens,
@@ -98,6 +102,7 @@ interface Props {
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
   offline: boolean;
+  pollOfflineStatus: TPollOfflineStatus;
 }
 
 const initialState: State = {
@@ -120,6 +125,7 @@ export class SendTransaction extends React.Component<Props, State> {
   public state: State = initialState;
 
   public componentDidMount() {
+    this.props.pollOfflineStatus();
     const queryPresets = pickBy(this.parseQuery());
     if (Object.keys(queryPresets).length) {
       this.setState({ ...queryPresets, hasQueryString: true });
@@ -515,6 +521,8 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps, { showNotification, broadcastTx })(
-  SendTransaction
-);
+export default connect(mapStateToProps, {
+  showNotification,
+  broadcastTx,
+  pollOfflineStatus: dPollOfflineStatus
+})(SendTransaction);
