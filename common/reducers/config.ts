@@ -64,7 +64,6 @@ export function config(
       return changeGasPrice(state, action);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
       return toggleOffline(state, action);
-    // return { ...state, offline: !state.offline };
     default:
       return state;
   }
