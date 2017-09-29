@@ -1,30 +1,37 @@
 import React from 'react';
 import {
-  toggleOfflineConfig as dToggleOfflineConfig,
-  TToggleOfflineConfig
+  forceOfflineConfig as dForceOfflineConfig,
+  TForceOfflineConfig
 } from 'actions/config';
 import OfflineSymbol from 'components/ui/OfflineSymbol';
 import { connect } from 'react-redux';
 
 interface OfflineToggleProps {
   offline: boolean;
-  toggleOfflineConfig: TToggleOfflineConfig;
+  forceOffline: boolean;
+  forceOfflineConfig: TForceOfflineConfig;
 }
 
 class OfflineToggle extends React.Component<OfflineToggleProps, {}> {
   public render() {
-    const { toggleOfflineConfig, offline } = this.props;
+    const { forceOfflineConfig, offline, forceOffline } = this.props;
 
     return (
-      <div className="row text-center">
-        <div className="col-md-3">
-          <OfflineSymbol offline={offline} size="small" />
-        </div>
-        <div className="col-md-6">
-          <button className="btn-xs btn-info" onClick={toggleOfflineConfig}>
-            Go {offline ? 'Online' : 'Offline'}
-          </button>
-        </div>
+      <div>
+        {!offline ? (
+          <div className="row text-center">
+            <div className="col-md-3">
+              <OfflineSymbol offline={offline || forceOffline} size="small" />
+            </div>
+            <div className="col-md-6">
+              <button className="btn-xs btn-info" onClick={forceOfflineConfig}>
+                {forceOffline ? 'Stop Forced Offline' : 'Force Offline'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <h5>You are currently offline.</h5>
+        )}
       </div>
     );
   }
@@ -32,10 +39,11 @@ class OfflineToggle extends React.Component<OfflineToggleProps, {}> {
 
 function mapStateToProps(state) {
   return {
-    offline: state.config.offline
+    offline: state.config.offline,
+    forceOffline: state.config.forceOffline
   };
 }
 
 export default connect(mapStateToProps, {
-  toggleOfflineConfig: dToggleOfflineConfig
+  forceOfflineConfig: dForceOfflineConfig
 })(OfflineToggle);
