@@ -1,7 +1,7 @@
 // @flow
-import React, { Component } from "react";
-import classnames from "classnames";
-import DropdownShell from "./DropdownShell";
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import DropdownShell from './DropdownShell';
 
 interface Option<T> {
   name: any;
@@ -40,12 +40,12 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   }
 
   private renderLabel = () => {
-    const label = this.props.label ? `${this.props.label}:` : "";
+    const label = this.props.label ? `${this.props.label}:` : '';
     const activeOption = this.getActiveOption();
 
     return (
       <span>
-        {label} {activeOption ? activeOption.name : "-"}
+        {label} {activeOption ? activeOption.name : '-'}
       </span>
     );
   };
@@ -65,8 +65,8 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
     }, []);
 
     const menuClass = classnames({
-      "dropdown-menu": true,
-      [`dropdown-menu-${menuAlign || ""}`]: !!menuAlign
+      'dropdown-menu': true,
+      [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
     });
 
     return (
@@ -78,7 +78,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
             return (
               <li key={i} style={{ borderLeft: `2px solid ${option.color}` }}>
                 <a
-                  className={option.value === value ? "active" : ""}
+                  className={option.value === value ? 'active' : ''}
                   onClick={this.onChange.bind(null, option.value)}
                 >
                   {option.name}

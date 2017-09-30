@@ -1,6 +1,6 @@
 // @flow
-import React, { Component } from "react";
-import classnames from "classnames";
+import React, { Component } from 'react';
+import classnames from 'classnames';
 
 interface Props {
   ariaLabel: string;
@@ -16,8 +16,8 @@ interface State {
 
 export default class DropdownComponent extends Component<Props, State> {
   public static defaultProps = {
-    color: "default",
-    size: "sm"
+    color: 'default',
+    size: 'sm'
   };
 
   public state: State = {
@@ -27,26 +27,26 @@ export default class DropdownComponent extends Component<Props, State> {
   private dropdown: HTMLElement | null;
 
   public componentDidMount() {
-    document.addEventListener("click", this.clickOffHandler);
+    document.addEventListener('click', this.clickOffHandler);
   }
 
   public componentWillUnmount() {
-    document.removeEventListener("click", this.clickOffHandler);
+    document.removeEventListener('click', this.clickOffHandler);
   }
 
   public render() {
     const { ariaLabel, color, size, renderOptions, renderLabel } = this.props;
     const { expanded } = this.state;
     const toggleClasses = classnames([
-      "dropdown-toggle",
-      "btn",
+      'dropdown-toggle',
+      'btn',
       `btn-${color}`,
       `btn-${size}`
     ]);
 
     return (
       <span
-        className={`dropdown ${expanded ? "open" : ""}`}
+        className={`dropdown ${expanded ? 'open' : ''}`}
         ref={el => (this.dropdown = el)}
       >
         <a

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import classnames from "classnames";
-import DropdownShell from "./DropdownShell";
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import DropdownShell from './DropdownShell';
 
 interface Props<T> {
   value: T;
@@ -35,7 +35,7 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
 
   private renderLabel = () => {
     const { label, value } = this.props;
-    const labelStr = this.props.label ? `${this.props.label}:` : "";
+    const labelStr = this.props.label ? `${this.props.label}:` : '';
     return (
       <span>
         {labelStr} {this.formatTitle(value)}
@@ -46,8 +46,8 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
   private renderOptions = () => {
     const { options, value, menuAlign, extra } = this.props;
     const menuClass = classnames({
-      "dropdown-menu": true,
-      [`dropdown-menu-${menuAlign || ""}`]: !!menuAlign
+      'dropdown-menu': true,
+      [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
     });
 
     return (
@@ -56,7 +56,7 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
           return (
             <li key={i}>
               <a
-                className={option === value ? "active" : ""}
+                className={option === value ? 'active' : ''}
                 onClick={this.onChange.bind(null, option)}
               >
                 {this.props.formatTitle ? this.formatTitle(option) : option}
@@ -64,7 +64,7 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
             </li>
           );
         })}
-        {extra && <li key={"separator"} role="separator" className="divider" />}
+        {extra && <li key={'separator'} role="separator" className="divider" />}
         {extra}
       </ul>
     );

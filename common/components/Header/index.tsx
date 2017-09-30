@@ -1,8 +1,8 @@
-import { TChangeGasPrice, TChangeLanguage, TChangeNode } from "actions/config";
-import logo from "assets/images/logo-myetherwallet.svg";
-import { Dropdown, ColorDropdown } from "components/ui";
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { TChangeGasPrice, TChangeLanguage, TChangeNode } from 'actions/config';
+import logo from 'assets/images/logo-myetherwallet.svg';
+import { Dropdown, ColorDropdown } from 'components/ui';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ANNOUNCEMENT_MESSAGE,
   ANNOUNCEMENT_TYPE,
@@ -10,11 +10,11 @@ import {
   NETWORKS,
   NODES,
   VERSION
-} from "../../config/data";
-import GasPriceDropdown from "./components/GasPriceDropdown";
-import Navigation from "./components/Navigation";
-import { getKeyByValue } from "utils/helpers";
-import "./index.scss";
+} from '../../config/data';
+import GasPriceDropdown from './components/GasPriceDropdown';
+import Navigation from './components/Navigation';
+import { getKeyByValue } from 'utils/helpers';
+import './index.scss';
 
 interface Props {
   location: {};
@@ -62,7 +62,7 @@ export default class Header extends Component<Props, {}> {
         <section className="Header-branding">
           <section className="Header-branding-inner container">
             <Link
-              to={"/"}
+              to={'/'}
               className="Header-branding-title"
               aria-label="Go to homepage"
             >

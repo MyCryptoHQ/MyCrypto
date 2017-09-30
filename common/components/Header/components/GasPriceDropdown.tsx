@@ -1,8 +1,8 @@
-import { gasPriceDefaults } from "config/data";
-import throttle from "lodash/throttle";
-import React, { Component } from "react";
-import DropdownShell from "components/ui/DropdownShell";
-import "./GasPriceDropdown.scss";
+import { gasPriceDefaults } from 'config/data';
+import throttle from 'lodash/throttle';
+import React, { Component } from 'react';
+import DropdownShell from 'components/ui/DropdownShell';
+import './GasPriceDropdown.scss';
 
 interface Props {
   value: number;
@@ -55,7 +55,7 @@ export default class GasPriceDropdown extends Component<Props, {}> {
             Fast AF
           </p>
           <p className="small GasPrice-description">
-            Gas Price is the amount you pay per unit of gas.{" "}
+            Gas Price is the amount you pay per unit of gas.{' '}
             <code>TX fee = gas price * gas limit</code> & is paid to miners for
             including your TX in a block. Higher the gas price = faster
             transaction, but more expensive. Default is <code>21 GWEI</code>.
