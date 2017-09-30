@@ -62,25 +62,28 @@ export default class LedgerWallet extends DeterministicWallet
       this.ethApp.signPersonalMessage_async(
         this.getPath(),
         msgHex,
-        (signed, error) => {
+        async (signed, error) => {
           if (error) {
             return reject(this.ethApp.getError(error));
           }
 
-          const combined = signed.r + signed.s + signed.v;
-          const combinedHex = combined.toString('hex');
-          const signedMsg = JSON.stringify(
-            {
-              address: this.address,
-              msg,
-              sig: addHexPrefix(combinedHex),
-              version: '2'
-            },
-            null,
-            2
-          );
-
-          resolve(signedMsg);
+          try {
+            const combined = signed.r + signed.s + signed.v;
+            const combinedHex = combined.toString('hex');
+            const signedMsg = JSON.stringify(
+              {
+                address: await this.getAddress(),
+                msg,
+                sig: addHexPrefix(combinedHex),
+                version: '2'
+              },
+              null,
+              2
+            );
+            resolve(signedMsg);
+          } catch (err) {
+            reject(err);
+          }
         }
       );
     });

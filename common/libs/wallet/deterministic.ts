@@ -1,7 +1,7 @@
 import { IWallet } from './IWallet';
 
 export default class DeterministicWallet {
-  public address: string;
+  private address: string;
   private dPath: string;
   private index: number;
 
