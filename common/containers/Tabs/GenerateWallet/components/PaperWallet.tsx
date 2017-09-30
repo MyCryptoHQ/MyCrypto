@@ -1,7 +1,7 @@
 import PrintableWallet from 'components/PrintableWallet';
 import PrivKeyWallet from 'libs/wallet/privkey';
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import translate from 'translations';
 import './PaperWallet.scss';
 import Template from './Template';
@@ -13,26 +13,22 @@ interface Props {
 export default class PaperWallet extends Component<Props, {}> {
   public render() {
     const { wallet } = this.props;
-    
+
     const content = (
       <div className="GenPaper">
         {/* Private Key */}
-        <h1 className="GenPaper-title">
-          {translate('GEN_Label_5')}
-        </h1>
+        <h1 className="GenPaper-title">{translate('GEN_Label_5')}</h1>
         <input
           className="GenPaper-private form-control"
           value={wallet.getPrivateKey()}
           aria-label={translate('x_PrivKey')}
           aria-describedby="x_PrivKeyDesc"
           type="text"
-          readOnly={true}          
+          readOnly={true}
         />
 
         {/* Download Paper Wallet */}
-        <h1 className="GenPaper-title">
-          {translate('x_Print')}
-        </h1>
+        <h1 className="GenPaper-title">{translate('x_Print')}</h1>
         <div className="GenPaper-paper">
           <PrintableWallet wallet={wallet} />
         </div>
@@ -62,9 +58,7 @@ export default class PaperWallet extends Component<Props, {}> {
 
     const help = (
       <div>
-        <h4>
-          {translate('GEN_Help_4')}
-        </h4>
+        <h4>{translate('GEN_Help_4')}</h4>
         <ul>
           <li>
             <a
@@ -72,9 +66,7 @@ export default class PaperWallet extends Component<Props, {}> {
               target="_blank"
               rel="noopener"
             >
-              <strong>
-                {translate('HELP_2a_Title')}
-              </strong>
+              <strong>{translate('HELP_2a_Title')}</strong>
             </a>
           </li>
           <li>
@@ -83,9 +75,7 @@ export default class PaperWallet extends Component<Props, {}> {
               target="_blank"
               rel="noopener"
             >
-              <strong>
-                {translate('GEN_Help_15')}
-              </strong>
+              <strong>{translate('GEN_Help_15')}</strong>
             </a>
           </li>
           <li>
@@ -94,23 +84,15 @@ export default class PaperWallet extends Component<Props, {}> {
               target="_blank"
               rel="noopener"
             >
-              <strong>
-                {translate('GEN_Help_16')}
-              </strong>
+              <strong>{translate('GEN_Help_16')}</strong>
             </a>
           </li>
         </ul>
 
-        <h4>
-          {translate('GEN_Help_17')}
-        </h4>
+        <h4>{translate('GEN_Help_17')}</h4>
         <ul>
-          <li>
-            {translate('GEN_Help_18')}
-          </li>
-          <li>
-            {translate('GEN_Help_19')}
-          </li>
+          <li>{translate('GEN_Help_18')}</li>
+          <li>{translate('GEN_Help_19')}</li>
           <li>
             <a
               href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-safely-slash-offline-slash-cold-storage-with-myetherwallet"
@@ -122,9 +104,7 @@ export default class PaperWallet extends Component<Props, {}> {
           </li>
         </ul>
 
-        <h4>
-          {translate('x_PrintDesc')}
-        </h4>
+        <h4>{translate('x_PrintDesc')}</h4>
       </div>
     );
 
