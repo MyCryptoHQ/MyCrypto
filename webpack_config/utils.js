@@ -21,8 +21,7 @@ _.loadersOptions = () => {
     minimize: isProd,
     options: {
       // css-loader relies on context
-      context: process.cwd(),
-      babel: config.babel
+      context: process.cwd()
     }
   };
 };
