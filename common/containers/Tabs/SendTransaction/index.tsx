@@ -53,8 +53,6 @@ import {
 } from './components';
 // MISC
 import customMessages from './messages';
-// POLYFILL
-import 'url-search-params-polyfill';
 
 function getParam(query: { [key: string]: string }, key: string) {
   const keys = Object.keys(query);
