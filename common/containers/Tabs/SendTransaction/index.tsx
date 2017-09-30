@@ -80,7 +80,7 @@ interface State {
 }
 
 interface Props {
-  location; //TODO: update type
+  location; //TODO: fixtype
   wallet: IWallet;
   balance: Ether;
   node: NodeConfig;
@@ -297,8 +297,8 @@ export class SendTransaction extends React.Component<Props, State> {
               .replace(/&/g, '","')
               .replace(/=/g, '":"') +
             '"}',
-          (key, value) => {
-            return key === '' ? value : decodeURIComponent(value);
+          (key, val) => {
+            return key === '' ? val : decodeURIComponent(val);
           }
         )
       : {};
