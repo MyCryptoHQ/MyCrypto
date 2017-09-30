@@ -53,6 +53,8 @@ import {
 } from './components';
 // MISC
 import customMessages from './messages';
+// POLYFILL
+import 'url-search-params-polyfill';
 
 function getParam(query: { [key: string]: string }, key: string) {
   const keys = Object.keys(query);
@@ -80,11 +82,7 @@ interface State {
 }
 
 interface Props {
-  location: {
-    query: {
-      [key: string]: string;
-    };
-  };
+  location; //TODO: update type
   wallet: IWallet;
   balance: Ether;
   node: NodeConfig;
@@ -292,7 +290,20 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public parseQuery() {
-    const query = this.props.location.query;
+    const search = this.props.location.search;
+    const query = search
+      ? JSON.parse(
+          '{"' +
+            search
+              .substring(1)
+              .replace(/&/g, '","')
+              .replace(/=/g, '":"') +
+            '"}',
+          (key, value) => {
+            return key === '' ? value : decodeURIComponent(value);
+          }
+        )
+      : {};
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
     // FIXME validate token against presets
