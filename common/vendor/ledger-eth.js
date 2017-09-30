@@ -1,5 +1,4 @@
 /* prettier-ignore */
-/* eslint-ignore */
 
 /********************************************************************************
  *   Ledger Communication toolkit

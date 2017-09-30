@@ -1,5 +1,4 @@
 /* prettier-ignore */
-/* eslint-ignore */
 
 //Copyright 2014-2015 Google Inc. All rights reserved.
 
