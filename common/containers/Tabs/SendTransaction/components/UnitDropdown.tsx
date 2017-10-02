@@ -1,5 +1,5 @@
-import SimpleDropDown from 'components/ui/SimpleDropDown';
 import React from 'react';
+import SimpleDropdown from 'components/ui/SimpleDropdown';
 
 interface UnitDropdownProps {
   value: string;
@@ -22,7 +22,7 @@ export default class UnitDropdown extends React.Component<
 
     return (
       <div className="input-group-btn">
-        <SimpleDropDown
+        <SimpleDropdown
           value={value}
           onChange={this.onChange}
           options={options}
