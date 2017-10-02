@@ -1,23 +1,32 @@
-// @flow
 import React from 'react';
 import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
 import HOC from './components/DeployHoc';
+import { TTxCompare } from './components/DeployHoc/components/TxCompare';
+import { TDeployModal } from './components/DeployHoc/components/DeployModal';
 interface Props {
-  data: string;
+  byteCode: string;
   gasLimit: string;
   walletExists: boolean;
+  TxCompare: TTxCompare | null;
+  displayModal: boolean;
+  DeployModal: TDeployModal | null;
   handleInput(input: string): () => null;
-  handleSubmit(): null;
+  handleSignTx(): null;
+  handleDeploy(): null;
 }
 
 const Deploy = (props: Props) => {
   const {
-    handleSubmit,
+    handleSignTx,
     handleInput,
-    data: byteCode,
+    handleDeploy,
+    byteCode,
     gasLimit,
-    walletExists
+    walletExists,
+    DeployModal,
+    displayModal,
+    TxCompare
   } = props;
   // TODO: Use common components for byte code / gas price
   return (
@@ -50,12 +59,26 @@ const Deploy = (props: Props) => {
 
         {(walletExists && (
           <button
-            className="Deploy-submit btn btn-primary"
-            onClick={handleSubmit}
+            className="Sign-submit btn btn-primary"
+            onClick={handleSignTx}
           >
-            Deploy Contract
+            {translate('DEP_signtx')}
           </button>
         )) || <WalletDecrypt />}
+
+        {TxCompare ? (
+          <section>
+            {TxCompare}
+            <button
+              className="Deploy-submit btn btn-primary"
+              onClick={handleDeploy}
+            >
+              {translate('NAV_DeployContract')}
+            </button>
+          </section>
+        ) : null}
+
+        {displayModal && DeployModal}
       </section>
     </div>
   );
