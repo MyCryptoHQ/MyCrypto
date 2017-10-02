@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import './index.scss';
 import PreFooter from './PreFooter';
-import Modal, { IButton } from 'components/ui/Modal';
+import Modal from 'components/ui/Modal';
 
 const LINKS_LEFT = [
   {
@@ -93,20 +93,17 @@ const LINKS_SOCIAL = [
 ];
 
 export default class Footer extends Component {
-  constructor(props) {
-    super(props);
+  public openModal = () => {
+    this.setState({ isOpen: true });
+  };
 
-    this.state = { isOpen: false };
-  }
-
-  public toggleModal = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-    document.body.classList.toggle('no-scroll');
+  public closeModal = () => {
+    this.setState({ isOpen: false });
   };
 
   public render() {
-    const buttons: IButton[] = [
-      { text: 'Okay', type: 'default', onClick: this.toggleModal }
+    const buttons = [
+      { text: 'Okay', type: 'default', onClick: this.closeModal }
     ];
     return (
       <div>
@@ -139,14 +136,15 @@ export default class Footer extends Component {
               );
             })}
 
-            <button className="modal_open" onClick={this.toggleModal}>
+            <button className="modal_open" onClick={this.openModal}>
               Disclaimer
             </button>
             <Modal
-              isOpen={this.state.isOpen}
-              title="Disclaimer"
+              isOpen={this.state && this.state.isOpen}
+              className="is-small"
               buttons={buttons}
-              handleClose={this.toggleModal}
+              title="Disclaimer"
+              handleClose={this.closeModal}
             >
               <p>
                 <b>Be safe & secure: </b>
