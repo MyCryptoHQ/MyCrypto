@@ -24,14 +24,11 @@ base.module.loaders.push(
   }
 );
 
-base.plugins.unshift(
+base.plugins.push(
   new webpack.DllReferencePlugin({
     context: path.join(__dirname, '../common'),
     manifest: require('../dll/vendor-manifest.json')
-  })
-);
-
-base.plugins.push(
+  }),
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('development')
   }),
