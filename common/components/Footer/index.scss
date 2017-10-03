@@ -89,7 +89,7 @@
   color: #000;
 }
 
-.modal_open {
+.modal_open_button {
   color: #4ac8ed;
   background-color: rgba(0, 0, 0, 0);
   border: none;
@@ -101,15 +101,4 @@
   &:hover {
     color: #0e97c0;
   }
-}
-
-.modal_close {
-  display: block;
-  background-color: #c3c3c3;
-  color: #000;
-  border: none;
-  border-radius: 5px;
-  margin-top: 16px;
-  padding: 13px 32px;
-  text-decoration: none;
 }

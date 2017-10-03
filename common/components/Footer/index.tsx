@@ -136,7 +136,7 @@ export default class Footer extends Component {
               );
             })}
 
-            <button className="modal_open" onClick={this.openModal}>
+            <button className="modal_open_button" onClick={this.openModal}>
               Disclaimer
             </button>
             <Modal
