@@ -28,7 +28,6 @@ const Deploy = (props: Props) => {
     displayModal,
     TxCompare
   } = props;
-  // TODO: Use common components for byte code / gas price
   return (
     <div className="Deploy">
       <section>

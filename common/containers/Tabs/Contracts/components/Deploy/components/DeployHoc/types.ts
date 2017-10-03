@@ -10,7 +10,8 @@ export interface Props {
   balance: Ether;
   node: NodeConfig;
   nodeLib: RPCNode;
-  network: NetworkConfig;
+  chainId: NetworkConfig['chainId'];
+  networkName: NetworkConfig['name'];
   gasPrice: Wei;
   broadcastTx: TBroadcastTx;
   showNotification: TShowNotification;
@@ -27,3 +28,15 @@ export interface State {
   to: string;
   displayModal: boolean;
 }
+
+export const initialState: State = {
+  data: '',
+  gasLimit: '300000',
+  determinedContractAddress: '',
+  signedTx: null,
+  nonce: null,
+  address: null,
+  to: '0x',
+  value: '0x0',
+  displayModal: false
+};
