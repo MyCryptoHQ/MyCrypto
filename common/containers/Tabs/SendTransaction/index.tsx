@@ -5,7 +5,7 @@ import { BalanceSidebar } from 'components';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
 import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 // CONFIG
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
@@ -82,7 +82,7 @@ interface State {
 }
 
 interface Props {
-  location; //TODO: fixtype
+  location: { pathname };
   wallet: IWallet;
   balance: Ether;
   node: NodeConfig;
@@ -175,7 +175,7 @@ export class SendTransaction extends React.Component<Props, State> {
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
-      <App>
+      <TabSection location={this.props.location}>
         <section className="Tab-content">
           <UnlockHeader title={'NAV_SendEther'} />
 
@@ -285,7 +285,7 @@ export class SendTransaction extends React.Component<Props, State> {
               />
             )}
         </section>
-      </App>
+      </TabSection>
     );
   }
 

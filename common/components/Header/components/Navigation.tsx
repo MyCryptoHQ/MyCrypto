@@ -36,7 +36,7 @@ const tabs = [
 ];
 
 interface Props {
-  location: object;
+  location: { pathname: string };
   color?: string;
 }
 

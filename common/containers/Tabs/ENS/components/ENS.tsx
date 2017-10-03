@@ -2,14 +2,18 @@ import React from 'react';
 import { GeneralInfoPanel } from './GeneralInfoPanel';
 import Title from './Title';
 import UnfinishedBanner from './UnfinishedBanner';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 
 interface ContainerTabPaneActiveProps {
   children: React.ReactElement<any> | React.ReactElement<any>[];
+  location: { pathname: string };
 }
 
-const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) => (
-  <App>
+const ContainerTabPaneActive = ({
+  children,
+  location
+}: ContainerTabPaneActiveProps) => (
+  <TabSection location={location}>
     <section className="container">
       <div className="tab-content">
         <main className="tab-pane active">
@@ -19,11 +23,11 @@ const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) => (
         </main>
       </div>
     </section>
-  </App>
+  </TabSection>
 );
 
-const ENS = () => (
-  <ContainerTabPaneActive>
+const ENS = ({ location }) => (
+  <ContainerTabPaneActive location={location}>
     <UnfinishedBanner />
     <Title />
     <GeneralInfoPanel />

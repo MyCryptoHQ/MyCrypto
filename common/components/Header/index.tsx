@@ -17,7 +17,7 @@ import { getKeyByValue } from 'utils/helpers';
 import './index.scss';
 
 interface Props {
-  location: {};
+  location: { pathname: string };
   languageSelection: string;
   nodeSelection: string;
   gasPriceGwei: number;

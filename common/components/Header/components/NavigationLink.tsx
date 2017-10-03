@@ -10,7 +10,7 @@ interface Props {
     to?: string;
     external?: boolean;
   };
-  location: any;
+  location: { pathname: string };
 }
 
 export default class NavigationLink extends React.Component<Props, {}> {

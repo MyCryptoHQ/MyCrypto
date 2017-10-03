@@ -13,9 +13,11 @@ import { AppState } from 'reducers';
 import DownloadWallet from './components/DownloadWallet';
 import EnterPassword from './components/EnterPassword';
 import PaperWallet from './components/PaperWallet';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 
 interface Props {
+  // react-router location obj
+  location: { pathname };
   // Redux state
   activeStep: string; // FIXME union actual steps
   password: string;
@@ -73,9 +75,9 @@ class GenerateWallet extends Component<Props, {}> {
     }
 
     return (
-      <App>
+      <TabSection location={this.props.location}>
         <section className="Tab-content">{content}</section>
-      </App>
+      </TabSection>
     );
   }
 }
