@@ -64,7 +64,10 @@ type Payable = boolean;
  * @interface ABIFunction
  * @template T 
  */
-export type OutputMappings = string[];
+export interface ContractOutputMappings {
+  [key: string]: string[];
+}
+export type FunctionOutputMappings = string[];
 export interface FuncParams {
   [name: string]: {
     type: string;

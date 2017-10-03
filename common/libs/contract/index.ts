@@ -1,10 +1,14 @@
 import AbiFunction from './ABIFunction';
-import { ABIFunction, OutputMappings } from './types';
+import { ABIFunction, ContractOutputMappings } from './types';
 
 type ABIType = ABIFunction[];
-
+enum ABIMethodTypes {
+  FUNC = 'function'
+}
 export default class Contract {
-  constructor(abi: ABIType, outputMappings: OutputMappings = {}) {
+  private node;
+  private address: string;
+  constructor(abi: ABIType, outputMappings: ContractOutputMappings = {}) {
     this.assignABIFuncs(abi, outputMappings);
   }
 
@@ -21,16 +25,20 @@ export default class Contract {
     this.address = addr;
     return this;
   };
+
   public setNode = node => {
     //TODO: caching
     this.node = node;
     return this;
   };
 
-  private assignABIFuncs = (abi: ABIType, outputMappings: OutputMappings) => {
+  private assignABIFuncs = (
+    abi: ABIType,
+    outputMappings: ContractOutputMappings
+  ) => {
     abi.forEach(currentABIMethod => {
       const { name, type } = currentABIMethod;
-      if (type === 'function') {
+      if (type === ABIMethodTypes.FUNC) {
         //only grab the functions we need
         const {
           encodeInput,
