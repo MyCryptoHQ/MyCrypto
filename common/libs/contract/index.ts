@@ -2,7 +2,9 @@ import AbiFunction from './ABIFunction';
 import { ABIFunction, ContractOutputMappings } from './types';
 
 type ABIType = ABIFunction[];
-
+enum ABIMethodTypes {
+  FUNC = 'function'
+}
 export default class Contract {
   private node;
   private address: string;
@@ -36,7 +38,7 @@ export default class Contract {
   ) => {
     abi.forEach(currentABIMethod => {
       const { name, type } = currentABIMethod;
-      if (type === 'function') {
+      if (type === ABIMethodTypes.FUNC) {
         //only grab the functions we need
         const {
           encodeInput,
