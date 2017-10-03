@@ -51,6 +51,8 @@ import {
   DataField,
   GasField
 } from './components';
+// NodeJS QuerySting: https://nodejs.org/api/querystring.html
+import querystring from 'querystring';
 // MISC
 import customMessages from './messages';
 
@@ -124,10 +126,8 @@ export class SendTransaction extends React.Component<Props, State> {
     // TODO debounce the call
     if (
       // if gas has not changed
-      !this.state.gasChanged &&
-      // if we have valid tx
-      this.isValid() &&
-      // if any relevant fields changed
+      !this.state.gasChanged && // if we have valid tx
+      this.isValid() && // if any relevant fields changed
       (this.state.to !== prevState.to ||
         this.state.value !== prevState.value ||
         this.state.unit !== prevState.unit ||
@@ -287,21 +287,13 @@ export class SendTransaction extends React.Component<Props, State> {
     );
   }
 
+  public parseQS = str => {
+    return querystring.parse(str);
+  };
+
   public parseQuery() {
-    const search = this.props.location.search;
-    const query = search
-      ? JSON.parse(
-          '{"' +
-            search
-              .substring(1)
-              .replace(/&/g, '","')
-              .replace(/=/g, '":"') +
-            '"}',
-          (key, val) => {
-            return key === '' ? val : decodeURIComponent(val);
-          }
-        )
-      : {};
+    const searchStr = this.props.location.search.substring(1);
+    const query = this.parseQS(searchStr);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
     // FIXME validate token against presets
@@ -331,13 +323,7 @@ export class SendTransaction extends React.Component<Props, State> {
   public async getFormattedTxFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
     const { token, unit, value, to, data } = this.state;
-    const transactionInput: TransactionInput = {
-      token,
-      unit,
-      value,
-      to,
-      data
-    };
+    const transactionInput: TransactionInput = { token, unit, value, to, data };
     return await formatTxInput(wallet, transactionInput);
   }
 
@@ -352,7 +338,9 @@ export class SendTransaction extends React.Component<Props, State> {
       const state = this.state;
       const gasLimit = await this.props.nodeLib.estimateGas(cachedFormattedTx);
       if (this.state === state) {
-        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+        this.setState({
+          gasLimit: formatGasLimit(gasLimit, state.unit)
+        });
       } else {
         // state has changed, so try again from the start (with the hope that state won't change by the next time)
         this.estimateGas();
@@ -364,9 +352,7 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public onAddressChange = (value: string) => {
-    this.setState({
-      to: value
-    });
+    this.setState({ to: value });
   };
 
   public onDataChange = (value: string) => {
@@ -442,13 +428,7 @@ export class SendTransaction extends React.Component<Props, State> {
 
     const { token, unit, value, to, data, gasLimit } = this.state;
     const chainId = network.chainId;
-    const transactionInput = {
-      token,
-      unit,
-      value,
-      to,
-      data
-    };
+    const transactionInput = { token, unit, value, to, data };
     const bigGasLimit = new Big(gasLimit);
     try {
       const signedTx = await generateCompleteTransaction(
@@ -474,11 +454,7 @@ export class SendTransaction extends React.Component<Props, State> {
   };
 
   public resetTx = () => {
-    this.setState({
-      to: '',
-      value: '',
-      transaction: null
-    });
+    this.setState({ to: '', value: '', transaction: null });
   };
 
   public confirmTx = (signedTx: string) => {
