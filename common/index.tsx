@@ -3,26 +3,17 @@ import 'assets/styles/etherwallet-master.less';
 import 'font-awesome/scss/font-awesome.scss';
 import React from 'react';
 import { render } from 'react-dom';
-import { syncHistoryWithStore } from 'react-router-redux';
-import 'sass/styles.scss';
 import { Root } from './components';
-import { history, Routing } from './routing';
+import createHistory from 'history/createBrowserHistory';
 import { configuredStore } from './store';
+import 'sass/styles.scss';
 
-const renderRoot = RouteToRender => {
-  const syncedHistory = syncHistoryWithStore(history, configuredStore);
-  render(
-    <RouteToRender
-      key={Math.random()}
-      routes={Routing}
-      history={syncedHistory}
-      store={configuredStore}
-    />,
-    document.getElementById('app')
-  );
-};
+const history = createHistory();
 
-renderRoot(Root);
+render(
+  <Root store={configuredStore} history={history} />,
+  document.getElementById('app')
+);
 
 if (module.hot) {
   module.hot.accept('reducers', () =>

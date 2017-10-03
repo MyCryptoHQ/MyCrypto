@@ -1,5 +1,6 @@
 import Big from 'bignumber.js';
 // COMPONENTS
+import App from 'containers/App';
 import { BalanceSidebar } from 'components';
 import { UnlockHeader } from 'components/ui';
 // CONFIG
@@ -192,131 +193,133 @@ export class SendTransaction extends React.Component<Props, State> {
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
-      <section className="Tab-content">
-        <UnlockHeader
-          title={
-            <div>
-              {translate('NAV_SendEther')}
-              {offline ? (
-                <span style={{ color: 'red' }}> (Offline)</span>
-              ) : null}
-            </div>
-          }
-        />
+      <App>
+        <section className="Tab-content">
+          <UnlockHeader
+            title={
+              <div>
+                {translate('NAV_SendEther')}
+                {offline ? (
+                  <span style={{ color: 'red' }}> (Offline)</span>
+                ) : null}
+              </div>
+            }
+          />
 
-        <div className="row">
-          {/* Send Form */}
-          {unlocked && (
-            <main className="col-sm-8">
-              <div className="Tab-content-pane">
-                {hasQueryString && (
-                  <div className="alert alert-info">
-                    <p>{translate('WARN_Send_Link')}</p>
-                  </div>
-                )}
-
-                <AddressField
-                  placeholder={donationAddressMap.ETH}
-                  value={this.state.to}
-                  onChange={readOnly ? null : this.onAddressChange}
-                />
-                <AmountField
-                  value={value}
-                  unit={unit}
-                  tokens={this.props.tokenBalances
-                    .filter(token => !token.balance.eq(0))
-                    .map(token => token.symbol)
-                    .sort()}
-                  onChange={readOnly ? void 0 : this.onAmountChange}
-                />
-                <GasField
-                  value={gasLimit}
-                  onChange={readOnly ? void 0 : this.onGasChange}
-                />
-                {offline && (
-                  <NonceField
-                    value={String(nonce)}
-                    onChange={this.onNonceChange}
-                    placeholder={'0'}
-                  />
-                )}
-                {unit === 'ether' && (
-                  <DataField
-                    value={data}
-                    onChange={readOnly ? void 0 : this.onDataChange}
-                  />
-                )}
-                <CustomMessage message={customMessage} />
-
-                <div className="row form-group">
-                  <div className="col-xs-12 clearfix">
-                    <button
-                      disabled={this.state.generateDisabled}
-                      className="btn btn-info btn-block"
-                      onClick={this.generateTxFromState}
-                    >
-                      {translate('SEND_generate')}
-                    </button>
-                  </div>
-                </div>
-
-                {transaction && (
-                  <div>
-                    <div className="row form-group">
-                      <div className="col-sm-6">
-                        <label>{translate('SEND_raw')}</label>
-                        <textarea
-                          className="form-control"
-                          value={transaction.rawTx}
-                          rows={4}
-                          readOnly={true}
-                        />
-                      </div>
-                      <div className="col-sm-6">
-                        <label>{translate('SEND_signed')}</label>
-                        <textarea
-                          className="form-control"
-                          value={transaction.signedTx}
-                          rows={4}
-                          readOnly={true}
-                        />
-                      </div>
+          <div className="row">
+            {/* Send Form */}
+            {unlocked && (
+              <main className="col-sm-8">
+                <div className="Tab-content-pane">
+                  {hasQueryString && (
+                    <div className="alert alert-info">
+                      <p>{translate('WARN_Send_Link')}</p>
                     </div>
+                  )}
 
-                    <div className="form-group">
+                  <AddressField
+                    placeholder={donationAddressMap.ETH}
+                    value={this.state.to}
+                    onChange={readOnly ? null : this.onAddressChange}
+                  />
+                  <AmountField
+                    value={value}
+                    unit={unit}
+                    tokens={this.props.tokenBalances
+                      .filter(token => !token.balance.eq(0))
+                      .map(token => token.symbol)
+                      .sort()}
+                    onChange={readOnly ? void 0 : this.onAmountChange}
+                  />
+                  <GasField
+                    value={gasLimit}
+                    onChange={readOnly ? void 0 : this.onGasChange}
+                  />
+                  {offline && (
+                    <NonceField
+                      value={String(nonce)}
+                      onChange={this.onNonceChange}
+                      placeholder={'0'}
+                    />
+                  )}
+                  {unit === 'ether' && (
+                    <DataField
+                      value={data}
+                      onChange={readOnly ? void 0 : this.onDataChange}
+                    />
+                  )}
+                  <CustomMessage message={customMessage} />
+
+                  <div className="row form-group">
+                    <div className="col-xs-12 clearfix">
                       <button
-                        className="btn btn-primary btn-block col-sm-11"
-                        disabled={!this.state.transaction}
-                        onClick={this.openTxModal}
+                        disabled={this.state.generateDisabled}
+                        className="btn btn-info btn-block"
+                        onClick={this.generateTxFromState}
                       >
-                        {translate('SEND_trans')}
+                        {translate('SEND_generate')}
                       </button>
                     </div>
                   </div>
-                )}
-              </div>
-            </main>
-          )}
 
-          {/* Sidebar */}
-          {unlocked && (
-            <section className="col-sm-4">
-              <BalanceSidebar />
-            </section>
-          )}
-        </div>
+                  {transaction && (
+                    <div>
+                      <div className="row form-group">
+                        <div className="col-sm-6">
+                          <label>{translate('SEND_raw')}</label>
+                          <textarea
+                            className="form-control"
+                            value={transaction.rawTx}
+                            rows={4}
+                            readOnly={true}
+                          />
+                        </div>
+                        <div className="col-sm-6">
+                          <label>{translate('SEND_signed')}</label>
+                          <textarea
+                            className="form-control"
+                            value={transaction.signedTx}
+                            rows={4}
+                            readOnly={true}
+                          />
+                        </div>
+                      </div>
 
-        {transaction &&
-          showTxConfirm && (
-            <ConfirmationModal
-              wallet={this.props.wallet}
-              node={this.props.node}
-              signedTx={transaction.signedTx}
-              onClose={this.hideConfirmTx}
-              onConfirm={this.confirmTx}
-            />
-          )}
-      </section>
+                      <div className="form-group">
+                        <button
+                          className="btn btn-primary btn-block col-sm-11"
+                          disabled={!this.state.transaction}
+                          onClick={this.openTxModal}
+                        >
+                          {translate('SEND_trans')}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </main>
+            )}
+
+            {/* Sidebar */}
+            {unlocked && (
+              <section className="col-sm-4">
+                <BalanceSidebar />
+              </section>
+            )}
+          </div>
+
+          {transaction &&
+            showTxConfirm && (
+              <ConfirmationModal
+                wallet={this.props.wallet}
+                node={this.props.node}
+                signedTx={transaction.signedTx}
+                onClose={this.hideConfirmTx}
+                onConfirm={this.confirmTx}
+              />
+            )}
+        </section>
+      </App>
     );
   }
 
