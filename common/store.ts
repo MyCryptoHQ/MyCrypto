@@ -1,5 +1,4 @@
 import throttle from 'lodash/throttle';
-import Perf from 'react-addons-perf';
 import { routerMiddleware } from 'react-router-redux';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
@@ -16,9 +15,6 @@ import promiseMiddleware from 'redux-promise-middleware';
 
 import sagas from './sagas';
 
-interface MyWindow extends Window {
-  Perf: Perf;
-}
 const configureStore = () => {
   const logger = createLogger({
     collapsed: true
@@ -31,7 +27,6 @@ const configureStore = () => {
   let store;
 
   if (process.env.NODE_ENV !== 'production') {
-    (window as MyWindow).Perf = Perf;
     middleware = composeWithDevTools(
       applyMiddleware(
         sagaMiddleware,
