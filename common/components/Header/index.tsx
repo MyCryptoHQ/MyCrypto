@@ -2,7 +2,7 @@ import { TChangeGasPrice, TChangeLanguage, TChangeNode } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown } from 'components/ui';
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
   ANNOUNCEMENT_MESSAGE,
   ANNOUNCEMENT_TYPE,

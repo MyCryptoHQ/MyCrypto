@@ -13,6 +13,7 @@ import { AppState } from 'reducers';
 import DownloadWallet from './components/DownloadWallet';
 import EnterPassword from './components/EnterPassword';
 import PaperWallet from './components/PaperWallet';
+import App from 'containers/App';
 
 interface Props {
   // Redux state
@@ -71,7 +72,11 @@ class GenerateWallet extends Component<Props, {}> {
         content = <h1>Uh oh. Not sure how you got here.</h1>;
     }
 
-    return <section className="Tab-content">{content}</section>;
+    return (
+      <App>
+        <section className="Tab-content">{content}</section>
+      </App>
+    );
   }
 }
 
