@@ -2,7 +2,6 @@ import Big from 'bignumber.js';
 import React, { Component } from 'react';
 import { generateCompleteTransaction as makeAndSignTx } from 'libs/transaction';
 import { Props, State, initialState } from './types';
-import ethUtil from 'ethereumjs-util';
 import { DeployModal, Props as DMProps } from './components/DeployModal';
 import { TxCompare, Props as TCProps } from './components/TxCompare';
 
@@ -24,7 +23,6 @@ export const deployHOC = PassedComponent =>
 
       try {
         await this.getAddressAndNonce();
-        await this.getDeteministicContractAddress();
         await this.makeSignedTxFromState();
       } catch (e) {
         props.showNotification(
@@ -129,28 +127,6 @@ export const deployHOC = PassedComponent =>
         transactionInput,
         true
       ).then(({ signedTx }) => this.asyncSetState({ signedTx }));
-    };
-
-    private getDeteministicContractAddress = () => {
-      const { state: { nonce, address } } = this;
-
-      if (!address || !nonce) {
-        throw Error(
-          'Can not determine contract address, no nonce or address supplied'
-        );
-      }
-
-      //NOTE: Do we even need to check for this?
-      const prefixedAddress =
-        address.substring(0, 2) === '0x' ? address : `0x${address}`;
-
-      const determinedContractAddress = ethUtil
-        .generateAddress(prefixedAddress, nonce)
-        .toString('hex');
-
-      return this.asyncSetState({
-        determinedContractAddress: `0x${determinedContractAddress}`
-      });
     };
 
     private getAddressAndNonce = async () => {
