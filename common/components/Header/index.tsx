@@ -1,6 +1,6 @@
 import { TChangeGasPrice, TChangeLanguage, TChangeNode } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
-import { Dropdown } from 'components/ui';
+import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -36,7 +36,18 @@ export default class Header extends Component<Props, {}> {
     const LanguageDropDown = Dropdown as new () => Dropdown<
       typeof selectedLanguage
     >;
-    const NodeDropDown = Dropdown as new () => Dropdown<keyof typeof NODES>;
+    const nodeOptions = Object.keys(NODES).map(key => {
+      return {
+        value: key,
+        name: (
+          <span>
+            {NODES[key].network} <small>({NODES[key].service})</small>
+          </span>
+        ),
+        color: NETWORKS[NODES[key].network].color
+      };
+    });
+
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE && (
@@ -64,45 +75,51 @@ export default class Header extends Component<Props, {}> {
                 alt="MyEtherWallet"
               />
             </Link>
-            <div className="Header-branding-title-tagline">
-              <span className="Header-branding-title-tagline-version">
-                v{VERSION}
-              </span>
+            <div className="Header-branding-right">
+              <span className="Header-branding-right-version">v{VERSION}</span>
 
-              <GasPriceDropdown
-                value={this.props.gasPriceGwei}
-                onChange={this.props.changeGasPrice}
-              />
+              <div className="Header-branding-right-dropdown">
+                <GasPriceDropdown
+                  value={this.props.gasPriceGwei}
+                  onChange={this.props.changeGasPrice}
+                />
+              </div>
 
-              <LanguageDropDown
-                ariaLabel={`change language. current language ${languages[
-                  selectedLanguage
-                ]}`}
-                options={Object.values(languages)}
-                value={languages[selectedLanguage]}
-                extra={[
-                  <li key={'separator'} role="separator" className="divider" />,
-                  <li key={'disclaimer'}>
-                    <a data-toggle="modal" data-target="#disclaimerModal">
-                      Disclaimer
-                    </a>
-                  </li>
-                ]}
-                onChange={this.changeLanguage}
-              />
+              <div className="Header-branding-right-dropdown">
+                <LanguageDropDown
+                  ariaLabel={`change language. current language ${languages[
+                    selectedLanguage
+                  ]}`}
+                  options={Object.values(languages)}
+                  value={languages[selectedLanguage]}
+                  extra={
+                    <li key="disclaimer">
+                      <a data-toggle="modal" data-target="#disclaimerModal">
+                        Disclaimer
+                      </a>
+                    </li>
+                  }
+                  onChange={this.changeLanguage}
+                  size="smr"
+                  color="white"
+                />
+              </div>
 
-              <NodeDropDown
-                ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
-                options={Object.keys(NODES)}
-                formatTitle={this.nodeNetworkAndService}
-                value={nodeSelection}
-                extra={
-                  <li>
-                    <a>Add Custom Node</a>
-                  </li>
-                }
-                onChange={changeNode}
-              />
+              <div className="Header-branding-right-dropdown">
+                <ColorDropdown
+                  ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
+                  options={nodeOptions}
+                  value={nodeSelection}
+                  extra={
+                    <li>
+                      <a>Add Custom Node</a>
+                    </li>
+                  }
+                  onChange={changeNode}
+                  size="smr"
+                  color="white"
+                />
+              </div>
             </div>
           </section>
         </section>
@@ -121,10 +138,4 @@ export default class Header extends Component<Props, {}> {
       this.props.changeLanguage(key);
     }
   };
-
-  private nodeNetworkAndService = (option: string) => [
-    NODES[option].network,
-    ' ',
-    <small key="service">({NODES[option].service}) </small>
-  ];
 }
