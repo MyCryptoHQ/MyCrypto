@@ -51,6 +51,8 @@ import {
   DataField,
   GasField
 } from './components';
+// NodeJS QuerySting: https://nodejs.org/api/querystring.html
+import querystring from 'querystring';
 // MISC
 import customMessages from './messages';
 
@@ -287,21 +289,13 @@ export class SendTransaction extends React.Component<Props, State> {
     );
   }
 
+  public parseQS = str => {
+    return querystring.parse(str);
+  };
+
   public parseQuery() {
-    const search = this.props.location.search;
-    const query = search
-      ? JSON.parse(
-          '{"' +
-            search
-              .substring(1)
-              .replace(/&/g, '","')
-              .replace(/=/g, '":"') +
-            '"}',
-          (key, val) => {
-            return key === '' ? val : decodeURIComponent(val);
-          }
-        )
-      : {};
+    const searchStr = this.props.location.search.substring(1);
+    const query = this.parseQS(searchStr);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
     // FIXME validate token against presets
