@@ -14,9 +14,6 @@ import Notifications from './Notifications';
 interface Props {
   // FIXME
   children: any;
-  location: any;
-  router: any;
-  isMobile: boolean;
 
   languageSelection: string;
   nodeSelection: string;
@@ -27,7 +24,7 @@ interface Props {
   changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
 }
-class App extends Component<Props, {}> {
+class TabSection extends Component<Props, {}> {
   public render() {
     const {
       children,
@@ -42,7 +39,6 @@ class App extends Component<Props, {}> {
     } = this.props;
 
     const headerProps = {
-      location,
       languageSelection,
       nodeSelection,
       gasPriceGwei,
@@ -78,4 +74,4 @@ export default connect(mapStateToProps, {
   changeGasPrice: dChangeGasPrice,
   changeLanguage: dChangeLanguage,
   changeNodeIntent: dChangeNodeIntent
-})(App);
+})(TabSection);

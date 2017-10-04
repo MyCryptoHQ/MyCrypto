@@ -5,7 +5,7 @@ import { BalanceSidebar } from 'components';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
 import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 // CONFIG
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
@@ -51,6 +51,7 @@ import {
   DataField,
   GasField
 } from './components';
+import queryString from 'query-string';
 // MISC
 import customMessages from './messages';
 
@@ -80,11 +81,6 @@ interface State {
 }
 
 interface Props {
-  location: {
-    query: {
-      [key: string]: string;
-    };
-  };
   wallet: IWallet;
   balance: Ether;
   node: NodeConfig;
@@ -96,6 +92,7 @@ interface Props {
   transactions: BroadcastTransactionStatus[];
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
+  location: { search: string };
 }
 
 const initialState: State = {
@@ -177,7 +174,7 @@ export class SendTransaction extends React.Component<Props, State> {
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
-      <App>
+      <TabSection>
         <section className="Tab-content">
           <UnlockHeader title={'NAV_SendEther'} />
 
@@ -287,12 +284,15 @@ export class SendTransaction extends React.Component<Props, State> {
               />
             )}
         </section>
-      </App>
+      </TabSection>
     );
   }
 
   public parseQuery() {
-    const query = this.props.location.query;
+    const searchStr = this.props.location.search;
+    console.log(searchStr);
+    const query = queryString.parse(searchStr);
+    console.log(query);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
     // FIXME validate token against presets

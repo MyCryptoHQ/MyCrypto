@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 
 export default class ViewWallet extends Component {
   public render() {
     return (
-      <App>
+      <TabSection>
         <section className="container">
           <div className="tab-content">
             <article className="tab-pane active">
@@ -20,7 +20,7 @@ export default class ViewWallet extends Component {
             </article>
           </div>
         </section>
-      </App>
+      </TabSection>
     );
   }
 }
