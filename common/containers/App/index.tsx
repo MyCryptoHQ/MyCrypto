@@ -1,10 +1,10 @@
 import {
   changeGasPrice as dChangeGasPrice,
   changeLanguage as dChangeLanguage,
-  changeNode as dChangeNode,
+  changeNodeIntent as dChangeNodeIntent,
   TChangeGasPrice,
   TChangeLanguage,
-  TChangeNode
+  TChangeNodeIntent
 } from 'actions/config';
 import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
@@ -24,7 +24,7 @@ interface Props {
   gasPriceGwei: number;
 
   changeLanguage: TChangeLanguage;
-  changeNode: TChangeNode;
+  changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
 }
 class App extends Component<Props, {}> {
@@ -37,7 +37,7 @@ class App extends Component<Props, {}> {
       gasPriceGwei,
 
       changeLanguage,
-      changeNode,
+      changeNodeIntent,
       changeGasPrice
     } = this.props;
 
@@ -48,7 +48,7 @@ class App extends Component<Props, {}> {
       gasPriceGwei,
 
       changeLanguage,
-      changeNode,
+      changeNodeIntent,
       changeGasPrice
     };
 
@@ -77,5 +77,5 @@ function mapStateToProps(state: AppState) {
 export default connect(mapStateToProps, {
   changeGasPrice: dChangeGasPrice,
   changeLanguage: dChangeLanguage,
-  changeNode: dChangeNode
+  changeNodeIntent: dChangeNodeIntent
 })(App);
