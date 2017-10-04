@@ -40,7 +40,7 @@ import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 
 interface ReduxStateProps {
   originAmount: number | null;
@@ -188,7 +188,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     };
 
     return (
-      <App>
+      <TabSection>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
           {(step === 2 || step === 3) && (
@@ -201,7 +201,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
             {step === 3 && <PartThree {...PartThreeProps} />}
           </main>
         </section>
-      </App>
+      </TabSection>
     );
   }
 }

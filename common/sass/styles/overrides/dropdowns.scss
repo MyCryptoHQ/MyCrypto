@@ -7,6 +7,11 @@
   }
 }
 
+// If it's a span, we probably want it inline-block, not inline
+span.dropdown {
+  display: inline-block;
+}
+
 .dropdown-menu {
   padding: 0;
   border: none;
