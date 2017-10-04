@@ -1,4 +1,5 @@
 import { TypeKeys } from './constants';
+
 /*** Change Language ***/
 export interface ChangeLanguageAction {
   type: TypeKeys.CONFIG_LANGUAGE_CHANGE;
@@ -18,8 +19,15 @@ export interface ChangeGasPriceAction {
   value: number;
 }
 
+/*** Change Node ***/
+export interface ChangeNodeIntentAction {
+  type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
+  payload: string;
+}
+
 /*** Union Type ***/
 export type ConfigAction =
   | ChangeNodeAction
   | ChangeLanguageAction
-  | ChangeGasPriceAction;
+  | ChangeGasPriceAction
+  | ChangeNodeIntentAction;
