@@ -16,3 +16,4 @@ notifications:
 script:
 - npm run test
 - npm run tslint
+- tsc --noEmit
