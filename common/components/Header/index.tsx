@@ -17,7 +17,6 @@ import { getKeyByValue } from 'utils/helpers';
 import './index.scss';
 
 interface Props {
-  location: {};
   languageSelection: string;
   nodeSelection: string;
   gasPriceGwei: number;
@@ -124,10 +123,7 @@ export default class Header extends Component<Props, {}> {
           </section>
         </section>
 
-        <Navigation
-          location={this.props.location}
-          color={selectedNetwork.color}
-        />
+        <Navigation color={selectedNetwork.color} />
       </div>
     );
   }

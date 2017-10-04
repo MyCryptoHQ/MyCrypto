@@ -1,9 +1,9 @@
 import React from 'react';
 import translate from 'translations';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 
 const Help = () => (
-  <App>
+  <TabSection>
     <section className="container" style={{ minHeight: '50%' }}>
       <div className="tab-content">
         <article className="tab-pane help active">
@@ -41,7 +41,7 @@ const Help = () => (
         </article>
       </div>
     </section>
-  </App>
+  </TabSection>
 );
 
 export default Help;
