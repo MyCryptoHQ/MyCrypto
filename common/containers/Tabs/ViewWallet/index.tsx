@@ -5,7 +5,7 @@ import TabSection from 'containers/TabSection';
 export default class ViewWallet extends Component {
   public render() {
     return (
-      <TabSection location={this.props.location}>
+      <TabSection>
         <section className="container">
           <div className="tab-content">
             <article className="tab-pane active">

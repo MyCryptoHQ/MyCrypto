@@ -6,14 +6,10 @@ import TabSection from 'containers/TabSection';
 
 interface ContainerTabPaneActiveProps {
   children: React.ReactElement<any> | React.ReactElement<any>[];
-  location: { pathname: string };
 }
 
-const ContainerTabPaneActive = ({
-  children,
-  location
-}: ContainerTabPaneActiveProps) => (
-  <TabSection location={location}>
+const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) => (
+  <TabSection>
     <section className="container">
       <div className="tab-content">
         <main className="tab-pane active">
@@ -26,8 +22,8 @@ const ContainerTabPaneActive = ({
   </TabSection>
 );
 
-const ENS = ({ location }) => (
-  <ContainerTabPaneActive location={location}>
+const ENS = () => (
+  <ContainerTabPaneActive>
     <UnfinishedBanner />
     <Title />
     <GeneralInfoPanel />

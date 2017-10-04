@@ -3,7 +3,7 @@ import translate from 'translations';
 import TabSection from 'containers/TabSection';
 
 const Help = () => (
-  <TabSection location={this.props.location}>
+  <TabSection>
     <section className="container" style={{ minHeight: '50%' }}>
       <div className="tab-content">
         <article className="tab-pane help active">

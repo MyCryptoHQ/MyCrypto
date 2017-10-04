@@ -82,7 +82,6 @@ interface State {
 }
 
 interface Props {
-  location: { pathname };
   wallet: IWallet;
   balance: Ether;
   node: NodeConfig;
@@ -175,7 +174,7 @@ export class SendTransaction extends React.Component<Props, State> {
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
-      <TabSection location={this.props.location}>
+      <TabSection>
         <section className="Tab-content">
           <UnlockHeader title={'NAV_SendEther'} />
 

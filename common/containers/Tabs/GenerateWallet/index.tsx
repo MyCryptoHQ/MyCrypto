@@ -16,8 +16,6 @@ import PaperWallet from './components/PaperWallet';
 import TabSection from 'containers/TabSection';
 
 interface Props {
-  // react-router location obj
-  location: { pathname };
   // Redux state
   activeStep: string; // FIXME union actual steps
   password: string;
@@ -75,7 +73,7 @@ class GenerateWallet extends Component<Props, {}> {
     }
 
     return (
-      <TabSection location={this.props.location}>
+      <TabSection>
         <section className="Tab-content">{content}</section>
       </TabSection>
     );

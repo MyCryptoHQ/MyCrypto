@@ -188,7 +188,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     };
 
     return (
-      <TabSection location={this.props.location}>
+      <TabSection>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
           {(step === 2 || step === 3) && (

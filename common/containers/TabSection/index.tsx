@@ -14,7 +14,6 @@ import Notifications from './Notifications';
 interface Props {
   // FIXME
   children: any;
-  location: { pathname: string };
 
   languageSelection: string;
   nodeSelection: string;
