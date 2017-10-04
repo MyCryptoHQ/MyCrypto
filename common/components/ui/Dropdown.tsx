@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import DropdownShell from './DropdownShell';
 
 interface Props<T> {
-  value: T;
+  value: T | undefined;
   options: T[];
   ariaLabel: string;
   label?: string;
