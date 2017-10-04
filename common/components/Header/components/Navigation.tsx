@@ -36,7 +36,6 @@ const tabs = [
 ];
 
 interface Props {
-  location: { pathname: string };
   color?: string;
 }
 
@@ -62,7 +61,7 @@ export default class Navigation extends Component<Props, State> {
    */
 
   public render() {
-    const { location, color } = this.props;
+    const { color } = this.props;
     const borderStyle: BorderStyle = {};
 
     if (color) {
@@ -80,7 +79,6 @@ export default class Navigation extends Component<Props, State> {
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow--left"
-            // onClick={() => this.scrollLeft()}
           >
             &#171;
           </a>
@@ -98,7 +96,6 @@ export default class Navigation extends Component<Props, State> {
           <a
             aria-hidden="true"
             className="Navigation-arrow Navigation-arrow-right"
-            // onClick={() => this.scrollRight()}
           >
             &#187;
           </a>

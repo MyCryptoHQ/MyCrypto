@@ -51,7 +51,6 @@ import {
   DataField,
   GasField
 } from './components';
-// NodeJS QuerySting: https://nodejs.org/api/querystring.html
 import queryString from 'query-string';
 // MISC
 import customMessages from './messages';

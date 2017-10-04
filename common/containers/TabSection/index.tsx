@@ -27,7 +27,6 @@ interface Props {
 class TabSection extends Component<Props, {}> {
   public render() {
     const {
-      location,
       children,
       // APP
       nodeSelection,
@@ -40,7 +39,6 @@ class TabSection extends Component<Props, {}> {
     } = this.props;
 
     const headerProps = {
-      location,
       languageSelection,
       nodeSelection,
       gasPriceGwei,
