@@ -24,3 +24,13 @@ export function changeGasPrice(value: number): interfaces.ChangeGasPriceAction {
     value
   };
 }
+
+export type TChangeNodeIntent = typeof changeNodeIntent;
+export function changeNodeIntent(
+  payload: string
+): interfaces.ChangeNodeIntentAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_CHANGE_INTENT,
+    payload
+  };
+}
