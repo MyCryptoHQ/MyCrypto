@@ -92,6 +92,7 @@ interface Props {
   transactions: BroadcastTransactionStatus[];
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
+  location: { search: string };
 }
 
 const initialState: State = {
@@ -288,8 +289,10 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public parseQuery() {
-    const searchStr = this.props.location.search.substring(1);
+    const searchStr = this.props.location.search;
+    console.log(searchStr);
     const query = queryString.parse(searchStr);
+    console.log(query);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
     // FIXME validate token against presets
