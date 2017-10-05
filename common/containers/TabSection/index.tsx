@@ -1,10 +1,10 @@
 import {
   changeGasPrice as dChangeGasPrice,
   changeLanguage as dChangeLanguage,
-  changeNode as dChangeNode,
+  changeNodeIntent as dChangeNodeIntent,
   TChangeGasPrice,
   TChangeLanguage,
-  TChangeNode
+  TChangeNodeIntent
 } from 'actions/config';
 import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
@@ -14,9 +14,6 @@ import Notifications from './Notifications';
 interface Props {
   // FIXME
   children: any;
-  location: any;
-  router: any;
-  isMobile: boolean;
 
   languageSelection: string;
   nodeSelection: string;
@@ -24,10 +21,10 @@ interface Props {
   gasPriceGwei: number;
 
   changeLanguage: TChangeLanguage;
-  changeNode: TChangeNode;
+  changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
 }
-class App extends Component<Props, {}> {
+class TabSection extends Component<Props, {}> {
   public render() {
     const {
       children,
@@ -37,18 +34,17 @@ class App extends Component<Props, {}> {
       gasPriceGwei,
 
       changeLanguage,
-      changeNode,
+      changeNodeIntent,
       changeGasPrice
     } = this.props;
 
     const headerProps = {
-      location,
       languageSelection,
       nodeSelection,
       gasPriceGwei,
 
       changeLanguage,
-      changeNode,
+      changeNodeIntent,
       changeGasPrice
     };
 
@@ -77,5 +73,5 @@ function mapStateToProps(state: AppState) {
 export default connect(mapStateToProps, {
   changeGasPrice: dChangeGasPrice,
   changeLanguage: dChangeLanguage,
-  changeNode: dChangeNode
-})(App);
+  changeNodeIntent: dChangeNodeIntent
+})(TabSection);
