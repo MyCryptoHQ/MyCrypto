@@ -4,6 +4,7 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import HOC from './components/DeployHoc';
 import { TTxCompare } from './components/DeployHoc/components/TxCompare';
 import { TDeployModal } from './components/DeployHoc/components/DeployModal';
+
 interface Props {
   byteCode: string;
   gasLimit: string;
