@@ -1,7 +1,7 @@
 declare module 'ethereumjs-util' {
   import { Buffer } from 'buffer';
   import BN = require('bn.js');
-  import rlp from 'types-rlp';
+  export import rlp = require('rlp');
 
   interface Signature {
     v: number;
@@ -77,8 +77,6 @@ declare module 'ethereumjs-util' {
     a: Buffer | string | number | number[],
     padded?: boolean
   ): Buffer;
-
-  export const rlp: rlp;
 
   export function rlphash(a: Buffer | string | number | number[]): Buffer;
 
