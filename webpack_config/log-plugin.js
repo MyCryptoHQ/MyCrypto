@@ -8,9 +8,12 @@ module.exports = class LogPlugin {
   }
 
   apply(compiler) {
+    const protocol = process.env.HTTPS ? 'https' : 'http';
     compiler.plugin('done', () => {
       console.log(
-        `> App is running at ${chalk.yellow(`http://localhost:${this.port}`)}\n`
+        `> App is running at ${chalk.yellow(
+          `${protocol}://localhost:${this.port}`
+        )}\n`
       );
     });
   }

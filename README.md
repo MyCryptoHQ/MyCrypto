@@ -20,6 +20,16 @@ It generates app in `dist` folder.
 npm run test # run tests with Jest
 ```
 
+#### Dev (HTTPS):
+
+1. Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
+2. Move the `.key` and `.crt` files into `webpack_config/server.*`
+3. Run the following command:
+
+```bash
+npm run dev:https
+```
+
 #### Derivation Check:
 ##### The derivation checker utility assumes that you have:
 1. Docker installed/available
@@ -28,7 +38,7 @@ npm run test # run tests with Jest
 ##### Docker setup instructions:
 1. Install docker (on macOS, I suggest [Docker for Mac](https://docs.docker.com/docker-for-mac/))
 2. `docker pull dternyak/eth-priv-to-addr`
-   
+
 ##### Run Derivation Checker
 ```bash
 npm run derivation-checker
@@ -212,3 +222,13 @@ When working on a module that has styling in Less, try to do the following:
 * Convert as many element selectors to class name selectors as possible
 * Convert as many `<br/>` tags or `&nbsp;`s to margins
 * Ensure that there has been little to no deviation from screenshot
+
+
+
+## Thanks & Support
+
+<a href="https://browserstack.com/">
+<img src="https://i.imgur.com/Rib9y9E.png" align="left" />
+</a>
+
+Cross browser testing and debugging provided by the very lovely team at BrowserStack.

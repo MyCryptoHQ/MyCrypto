@@ -46,3 +46,12 @@ jspm_packages
 .vscode/
 static/dll.vendor.js
 dll
+.cache-loader
+
+# SSL cert stuff
+webpack_config/server.key
+webpack_config/server.crt
+webpack_config/server.csr
+
+
+v8-compile-cache-0/

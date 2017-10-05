@@ -2,7 +2,7 @@
 const path = require('path');
 
 module.exports = {
-  port: 3000,
+  port: process.env.HTTPS ? 3443 : 3000,
   title: 'MEW',
   publicPath: process.env.BUILD_GH_PAGES ? '/react-semantic.ui-starter/' : '/',
   srcPath: path.join(__dirname, './../common'),
@@ -16,10 +16,6 @@ module.exports = {
     'redux-saga',
     'whatwg-fetch'
   ],
-  // enable babelrc
-  babel: {
-    babelrc: true
-  },
   // Settings for webpack-image-loader image compression
   imageCompressionOptions: {
     optipng: {

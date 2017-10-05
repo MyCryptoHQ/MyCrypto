@@ -1,6 +1,5 @@
 require('ethereumjs-abi');
 require('ethereumjs-util');
-require('ethereumjs-wallet');
 require('hdkey');
 require('idna-uts46');
 require('lodash');
