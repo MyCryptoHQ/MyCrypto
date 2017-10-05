@@ -65,11 +65,6 @@ $m-anim-speed: 400ms;
   animation: modal-open $m-anim-speed ease 1;
   text-align: left;
 
-  &.is-small {
-    width: calc(100% - 40px);
-    max-width: 850px;
-  }
-
   &.is-open {
     display: flex;
   }
@@ -132,4 +127,10 @@ $m-anim-speed: 400ms;
       min-width: 100px;
     }
   }
+}
+
+@media(max-width: 820px) {
+  .Modal {
+        width: calc(100% - 40px);
+   }
 }

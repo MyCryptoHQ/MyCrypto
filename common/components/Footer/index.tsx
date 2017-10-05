@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import './index.scss';
 import PreFooter from './PreFooter';
-import Modal from 'components/ui/Modal';
+import Modal, { IButton } from 'components/ui/Modal';
 
 const LINKS_LEFT = [
   {
@@ -92,7 +92,16 @@ const LINKS_SOCIAL = [
   }
 ];
 
-export default class Footer extends Component {
+interface ComponentState {
+  isOpen: boolean;
+}
+
+export default class Footer extends React.Component<{}, ComponentState> {
+  constructor(props) {
+    super(props);
+    this.state = { isOpen: false };
+  }
+
   public openModal = () => {
     this.setState({ isOpen: true });
   };
@@ -102,7 +111,7 @@ export default class Footer extends Component {
   };
 
   public render() {
-    const buttons = [
+    const buttons: IButton[] = [
       { text: 'Okay', type: 'default', onClick: this.closeModal }
     ];
     return (
@@ -136,14 +145,13 @@ export default class Footer extends Component {
               );
             })}
 
-            <button className="modal_open_button" onClick={this.openModal}>
+            <button className="Footer-modal-button" onClick={this.openModal}>
               Disclaimer
             </button>
             <Modal
-              isOpen={this.state && this.state.isOpen}
-              className="is-small"
-              buttons={buttons}
+              isOpen={this.state.isOpen}
               title="Disclaimer"
+              buttons={buttons}
               handleClose={this.closeModal}
             >
               <p>

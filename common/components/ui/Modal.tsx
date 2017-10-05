@@ -21,7 +21,6 @@ interface Props {
   disableButtons?: boolean;
   children: any;
   buttons: IButton[];
-  className?: string;
   handleClose(): void;
 }
 
@@ -51,9 +50,7 @@ export default class Modal extends Component<Props, {}> {
     return (
       <div>
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
-        <div
-          className={`Modal ${this.props.className} ${isOpen ? 'is-open' : ''}`}
-        >
+        <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
           <div className="Modal-header">
             <h2 className="Modal-header-title">{title}</h2>
             <button className="Modal-header-close" onClick={handleClose}>

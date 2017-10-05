@@ -40,6 +40,20 @@
     max-width: 28rem;
   }
 
+  &-modal-button {
+    color: #4ac8ed;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    font-weight: 300;
+    transition: 500ms all ease-in-out;
+    &:hover {
+      color: #0e97c0;
+    }
+  }
+
   p {
     margin: $space-xs 0 $space-sm;
   }
@@ -87,18 +101,4 @@
 
 .Modal {
   color: #000;
-}
-
-.modal_open_button {
-  color: #4ac8ed;
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  text-align: left;
-  padding: 0;
-  margin: 0;
-  font-weight: 300;
-  transition: 500ms all ease-in-out;
-  &:hover {
-    color: #0e97c0;
-  }
 }
