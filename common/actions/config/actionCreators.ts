@@ -45,3 +45,13 @@ export function pollOfflineStatus(): interfaces.PollOfflineStatus {
     type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS
   };
 }
+
+export type TChangeNodeIntent = typeof changeNodeIntent;
+export function changeNodeIntent(
+  payload: string
+): interfaces.ChangeNodeIntentAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_CHANGE_INTENT,
+    payload
+  };
+}

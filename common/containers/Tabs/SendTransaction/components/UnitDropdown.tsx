@@ -1,31 +1,38 @@
 import React from 'react';
-import SimpleDropdown from 'components/ui/SimpleDropdown';
+import Dropdown from 'components/ui/Dropdown';
 
 interface UnitDropdownProps {
   value: string;
   options: string[];
   onChange?(value: string): void;
 }
+
 interface State {
   expanded: boolean;
 }
+
+const initialState = {
+  expanded: false
+};
+
 export default class UnitDropdown extends React.Component<
   UnitDropdownProps,
   State
 > {
-  public state = {
-    expanded: false
-  };
+  public state: State = initialState;
 
   public render() {
     const { value, options } = this.props;
 
+    const StringDropdown = Dropdown as new () => Dropdown<string>;
+
     return (
       <div className="input-group-btn">
-        <SimpleDropdown
+        <StringDropdown
+          options={options}
           value={value}
           onChange={this.onChange}
-          options={options}
+          ariaLabel={'dropdown'}
         />
       </div>
     );

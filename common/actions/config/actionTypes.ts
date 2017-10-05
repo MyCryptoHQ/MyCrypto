@@ -34,6 +34,12 @@ export interface PollOfflineStatus {
   type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS;
 }
 
+/*** Change Node ***/
+export interface ChangeNodeIntentAction {
+  type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
+  payload: string;
+}
+
 /*** Union Type ***/
 export type ConfigAction =
   | ChangeNodeAction
@@ -41,4 +47,5 @@ export type ConfigAction =
   | ChangeGasPriceAction
   | ToggleOfflineAction
   | PollOfflineStatus
-  | ForceOfflineAction;
+  | ForceOfflineAction
+  | ChangeNodeIntentAction;

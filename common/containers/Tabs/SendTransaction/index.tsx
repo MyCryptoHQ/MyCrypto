@@ -1,6 +1,6 @@
 import Big from 'bignumber.js';
 // COMPONENTS
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 import { BalanceSidebar } from 'components';
 import { UnlockHeader } from 'components/ui';
 // CONFIG
@@ -56,6 +56,7 @@ import {
   DataField,
   GasField
 } from './components';
+import queryString from 'query-string';
 // MISC
 import customMessages from './messages';
 
@@ -86,11 +87,6 @@ interface State {
 }
 
 interface Props {
-  location: {
-    query: {
-      [key: string]: string;
-    };
-  };
   wallet: IWallet;
   balance: Ether;
   node: NodeConfig;
@@ -104,6 +100,7 @@ interface Props {
   broadcastTx: TBroadcastTx;
   offline: boolean;
   pollOfflineStatus: TPollOfflineStatus;
+  location: { search: string };
 }
 
 const initialState: State = {
@@ -193,7 +190,7 @@ export class SendTransaction extends React.Component<Props, State> {
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
-      <App>
+      <TabSection>
         <section className="Tab-content">
           <UnlockHeader
             title={
@@ -319,12 +316,13 @@ export class SendTransaction extends React.Component<Props, State> {
               />
             )}
         </section>
-      </App>
+      </TabSection>
     );
   }
 
   public parseQuery() {
-    const query = this.props.location.query;
+    const searchStr = this.props.location.search;
+    const query = queryString.parse(searchStr);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
     // FIXME validate token against presets

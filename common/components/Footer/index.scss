@@ -1,4 +1,4 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
 
 // footer
 .Footer {
@@ -40,6 +40,20 @@
     max-width: 28rem;
   }
 
+  &-modal-button {
+    color: #4ac8ed;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    font-weight: 300;
+    transition: 500ms all ease-in-out;
+    &:hover {
+      color: #0e97c0;
+    }
+  }
+
   p {
     margin: $space-xs 0 $space-sm;
   }
@@ -57,7 +71,7 @@
     margin: $font-size-small 0 0;
 
     i {
-      margin-right: .25em;
+      margin-right: 0.25em;
 
       @media (min-width: $screen-sm-min) {
         margin-left: -1.5em;
@@ -79,8 +93,12 @@
 
   @media screen and (max-width: $grid-float-breakpoint) {
     .row {
-      margin-left: -.5rem;
-      margin-right: -.5rem;
+      margin-left: -0.5rem;
+      margin-right: -0.5rem;
     }
   }
+}
+
+.Modal {
+  color: #000;
 }

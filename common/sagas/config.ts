@@ -1,4 +1,3 @@
-import { toggleOfflineConfig, TToggleOfflineConfig } from 'actions/config';
 import { delay, SagaIterator } from 'redux-saga';
 import {
   call,
@@ -10,9 +9,16 @@ import {
   takeEvery,
   select
 } from 'redux-saga/effects';
+import { NODES } from 'config/data';
+import { getNodeConfig } from 'selectors/config';
 import { AppState } from 'reducers';
-import { State as ConfigState } from 'reducers/config';
 import { TypeKeys } from 'actions/config/constants';
+import {
+  toggleOfflineConfig,
+  TToggleOfflineConfig,
+  changeNode,
+  State as ConfigState
+} from 'actions/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -41,11 +47,21 @@ function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 250);
 }
 
+function* handleNodeChangeIntent(action): SagaIterator {
+  const nodeConfig = yield select(getNodeConfig);
+  const currentNetwork = nodeConfig.network;
+  const actionNetwork = NODES[action.payload].network;
+  yield put(changeNode(action.payload));
+  if (currentNetwork !== actionNetwork) {
+    yield call(reload);
+  }
+}
+
 export default function* handleConfigChanges(): SagaIterator {
   yield takeLatest(
     TypeKeys.CONFIG_POLL_OFFLINE_STATUS,
     handlePollOfflineStatus
   );
-  yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE, reload);
-  yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
+  yield takeEvery('CONFIG_NODE_CHANGE_INTENT', handleNodeChangeIntent);
+  yield takeEvery('CONFIG_LANGUAGE_CHANGE', reload);
 }

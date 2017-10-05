@@ -52,3 +52,6 @@ dll
 webpack_config/server.key
 webpack_config/server.crt
 webpack_config/server.csr
+
+
+v8-compile-cache-0/
