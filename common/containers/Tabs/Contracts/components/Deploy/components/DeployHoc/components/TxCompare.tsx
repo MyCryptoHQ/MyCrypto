@@ -1,6 +1,8 @@
 import React from 'react';
 import { Wei } from 'libs/units';
 import translate from 'translations';
+import Code from 'components/ui/Code';
+
 export interface Props {
   nonce: string;
   gasPrice: Wei;
@@ -17,21 +19,19 @@ export const TxCompare = (props: Props) => {
   const Left = () => (
     <div className="form-group">
       <h4>{translate('SEND_raw')}</h4>
-      <textarea
-        disabled={true}
-        value={JSON.stringify(
+      <Code>
+        {JSON.stringify(
           { ...rawTx, gasPrice: rawTx.gasPrice.toString(16) },
           null,
           2
         )}
-        rows={3}
-      />
+      </Code>
     </div>
   );
   const Right = () => (
     <div className="form-group">
       <h4> {translate('SEND_signed')} </h4>
-      <textarea disabled={true} value={signedTx} rows={3} />
+      <Code>{signedTx}</Code>
     </div>
   );
   return (

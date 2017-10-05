@@ -57,7 +57,8 @@ class InteractForm extends Component<Props, State> {
             <h4>{translate('CONTRACT_Title')}</h4>
             <input
               placeholder="mewtopia.eth or 0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
-              name="address"
+              name="contract_address"
+              autoComplete="off"
               value={address}
               className="InteractForm-address-field-input form-control"
               onChange={this.handleInput}
