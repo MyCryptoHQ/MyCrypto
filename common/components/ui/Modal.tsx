@@ -52,20 +52,15 @@ export default class Modal extends Component<Props, {}> {
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
         <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
           <div className="Modal-header">
-            <h2 className="Modal-header-title">
-              {title}
-            </h2>
+            <h2 className="Modal-header-title">{title}</h2>
             <button className="Modal-header-close" onClick={handleClose}>
               <img className="Modal-header-close-icon" src={closeIcon} />
             </button>
           </div>
-          <div className="Modal-content">
-            {isOpen && children}
-          </div>
-          {hasButtons &&
-            <div className="Modal-footer">
-              {this.renderButtons()}
-            </div>}
+          <div className="Modal-content">{isOpen && children}</div>
+          {hasButtons && (
+            <div className="Modal-footer">{this.renderButtons()}</div>
+          )}
         </div>
       </div>
     );

@@ -7,12 +7,12 @@ import {
   TOriginKindSwap
 } from 'actions/swap';
 import SimpleButton from 'components/ui/SimpleButton';
-import SimpleSelect from 'components/ui/SimpleSelect';
 import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper, toFixedIfLarger } from 'utils/formatters';
 import './CurrencySwap.scss';
+import { Dropdown } from 'components/ui';
 
 export interface StateProps {
   bityRates: any;
@@ -153,20 +153,6 @@ export default class CurrencySwap extends Component<
     }
   };
 
-  public onChangeDestinationKind = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    const newDestinationKind = (event.target as HTMLInputElement).value;
-    this.props.destinationKindSwap(newDestinationKind);
-  };
-
-  public onChangeOriginKind = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    const newOriginKind = (event.target as HTMLInputElement).value;
-    this.props.originKindSwap(newOriginKind);
-  };
-
   public render() {
     const {
       originAmount,
@@ -176,6 +162,13 @@ export default class CurrencySwap extends Component<
       destinationKindOptions,
       originKindOptions
     } = this.props;
+
+    const OriginKindDropDown = Dropdown as new () => Dropdown<
+      typeof originKind
+    >;
+    const DestinationKindDropDown = Dropdown as new () => Dropdown<
+      typeof destinationKind
+    >;
 
     return (
       <article className="CurrencySwap">
@@ -194,10 +187,13 @@ export default class CurrencySwap extends Component<
             onChange={this.onChangeOriginAmount}
           />
 
-          <SimpleSelect
-            value={originKind}
-            onChange={this.onChangeOriginKind}
+          <OriginKindDropDown
+            ariaLabel={`change origin kind. current origin kind ${originKind}`}
             options={originKindOptions}
+            value={originKind}
+            onChange={this.props.originKindSwap}
+            size="smr"
+            color="default"
           />
 
           <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
@@ -218,10 +214,13 @@ export default class CurrencySwap extends Component<
             onChange={this.onChangeDestinationAmount}
           />
 
-          <SimpleSelect
-            value={destinationKind}
-            onChange={this.onChangeDestinationKind}
+          <DestinationKindDropDown
+            ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
             options={destinationKindOptions}
+            value={destinationKind}
+            onChange={this.props.destinationKindSwap}
+            size="smr"
+            color="default"
           />
         </div>
 
