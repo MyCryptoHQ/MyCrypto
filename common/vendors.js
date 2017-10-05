@@ -24,7 +24,3 @@ require('qrcode');
 require('qrcode.react');
 require('bignumber.js');
 require('classnames');
-require('./vendor/trezor-connect');
-require('./vendor/u2f-api');
-require('./vendor/ledger3');
-require('./vendor/ledger-eth');
