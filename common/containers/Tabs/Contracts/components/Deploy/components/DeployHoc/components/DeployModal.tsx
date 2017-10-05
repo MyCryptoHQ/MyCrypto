@@ -37,7 +37,7 @@ export const DeployModal = (props: Props) => {
 
   return (
     <Modal
-      title="Confirm Your Transaction"
+      title="Deploy Contract"
       buttons={buttons}
       handleClose={onClose}
       isOpen={true}
