@@ -16,9 +16,9 @@ import { TypeKeys } from 'actions/config/constants';
 import {
   toggleOfflineConfig,
   TToggleOfflineConfig,
-  changeNode,
-  State as ConfigState
+  changeNode
 } from 'actions/config';
+import { State as ConfigState } from 'reducers/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
