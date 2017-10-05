@@ -43,6 +43,16 @@
 	);
   padding: .1rem .6rem .2rem;
 }
+// This is a "smaller" small, to accomodate overrides done in v3.
+.btn-smr {
+  @include button-size(
+		.4rem,
+		1rem,
+		14px,
+		$line-height-base,
+		$border-radius
+	);
+}
 
 // Custom color
 .btn-white {
