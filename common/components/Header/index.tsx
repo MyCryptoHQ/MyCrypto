@@ -1,4 +1,8 @@
-import { TChangeGasPrice, TChangeLanguage, TChangeNode } from 'actions/config';
+import {
+  TChangeGasPrice,
+  TChangeLanguage,
+  TChangeNodeIntent
+} from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
@@ -17,19 +21,18 @@ import { getKeyByValue } from 'utils/helpers';
 import './index.scss';
 
 interface Props {
-  location: {};
   languageSelection: string;
   nodeSelection: string;
   gasPriceGwei: number;
 
   changeLanguage: TChangeLanguage;
-  changeNode: TChangeNode;
+  changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
 }
 
 export default class Header extends Component<Props, {}> {
   public render() {
-    const { languageSelection, changeNode, nodeSelection } = this.props;
+    const { languageSelection, changeNodeIntent, nodeSelection } = this.props;
     const selectedLanguage = languageSelection;
     const selectedNode = NODES[nodeSelection];
     const selectedNetwork = NETWORKS[selectedNode.network];
@@ -115,7 +118,7 @@ export default class Header extends Component<Props, {}> {
                       <a>Add Custom Node</a>
                     </li>
                   }
-                  onChange={changeNode}
+                  onChange={changeNodeIntent}
                   size="smr"
                   color="white"
                 />
@@ -124,10 +127,7 @@ export default class Header extends Component<Props, {}> {
           </section>
         </section>
 
-        <Navigation
-          location={this.props.location}
-          color={selectedNetwork.color}
-        />
+        <Navigation color={selectedNetwork.color} />
       </div>
     );
   }

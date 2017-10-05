@@ -1,12 +1,11 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 $m-background: #fff;
 $m-window-padding: 20px;
 $m-header-padding: 15px;
 $m-header-height: 62px;
 $m-content-padding: 20px;
-$m-footer-height: 58px;
 $m-close-size: 26px;
 $m-anim-speed: 400ms;
 
@@ -117,7 +116,6 @@ $m-anim-speed: 400ms;
   }
 
   &-footer {
-    height: $m-footer-height;
     padding: 7px 10px;
     border-top: 1px solid $gray-lighter;
     background: $m-background;
@@ -128,5 +126,9 @@ $m-anim-speed: 400ms;
       margin: 0 0 0 8px;
       min-width: 100px;
     }
+  }
+
+  @media(max-width: 820px) {
+    width: calc(100% - 40px);
   }
 }

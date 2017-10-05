@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
 import './NavigationLink.scss';
 
@@ -10,12 +10,19 @@ interface Props {
     to?: string;
     external?: boolean;
   };
-  location: any;
 }
 
-export default class NavigationLink extends React.Component<Props, {}> {
+interface InjectedLocation extends Props {
+  location: { pathname: string };
+}
+
+class NavigationLink extends React.Component<Props, {}> {
+  get injected() {
+    return this.props as InjectedLocation;
+  }
   public render() {
-    const { link, location } = this.props;
+    const { link } = this.props;
+    const { location } = this.injected;
     const linkClasses = classnames({
       'NavigationLink-link': true,
       'is-disabled': !link.to,
@@ -48,3 +55,6 @@ export default class NavigationLink extends React.Component<Props, {}> {
     return <li className="NavigationLink">{linkEl}</li>;
   }
 }
+
+// withRouter is a HOC which provides NavigationLink with a react-router location prop
+export default withRouter(NavigationLink);
