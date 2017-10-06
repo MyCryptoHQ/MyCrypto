@@ -1,10 +1,24 @@
 import abi from 'ethereumjs-abi';
 import { toChecksumAddress } from 'ethereumjs-util';
-import BigNumber from 'bignumber.js';
+import Big, { BigNumber } from 'bignumber.js';
+import { INode } from 'libs/nodes/INode';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
+import {
+  generateCompleteTransaction as makeAndSignTx,
+  TransactionInput
+} from 'libs/transaction';
+import { ISetConfigForTx } from './index';
+export interface IUserSendParams {
+  input;
+  to: string;
+  gasLimit: BigNumber;
+  value: string;
+}
+export type ISendParams = IUserSendParams & ISetConfigForTx;
+
 export default class AbiFunction {
-  private constant: boolean;
-  private funcParams: FuncParams;
+  public funcParams: FuncParams;
+  public constant: boolean;
   private inputs: Input[];
   private inputNames: string[];
   private inputTypes: string[];
@@ -21,18 +35,20 @@ export default class AbiFunction {
     this.init(outputMappings);
   }
 
-  public call = async (input, node, to) => {
-    if (!node.sendCallRequest) {
+  public call = async (input, node: INode, to) => {
+    if (!node || !node.sendCallRequest) {
       throw Error(`No node given to ${this.name}`);
     }
 
     const data = this.encodeInput(input);
+
     const returnedData = await node
       .sendCallRequest({
         to,
         data
       })
       .catch(e => {
+        console.error(e);
         //TODO: Put this in its own handler
         throw Error(`Node call request error at: ${this.name}
         Params:${JSON.stringify(input, null, 2)}
@@ -44,6 +60,37 @@ export default class AbiFunction {
     return decodedOutput;
   };
 
+  public send = async ({
+    nodeLib,
+    chainId,
+    wallet,
+    gasLimit,
+    broadcastTx,
+    ...userInputs
+  }: ISendParams) => {
+    if (!nodeLib || !nodeLib.sendRawTx) {
+      throw Error(`No node given to ${this.name}`);
+    }
+    const data = this.encodeInput(userInputs.input);
+
+    const transactionInput: TransactionInput = {
+      data,
+      to: userInputs.to,
+      unit: 'ether',
+      value: userInputs.value
+    };
+
+    const { signedTx } = await makeAndSignTx(
+      wallet,
+      nodeLib,
+      userInputs.gasPrice,
+      gasLimit,
+      chainId,
+      transactionInput
+    );
+
+    broadcastTx(signedTx);
+  };
   public encodeInput = (suppliedInputs: object = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
@@ -121,7 +168,7 @@ export default class AbiFunction {
     this.isBigNumber(value) ? value.toString() : value;
 
   private isBigNumber = (object: object) =>
-    object instanceof BigNumber ||
+    object instanceof Big ||
     (object &&
       object.constructor &&
       (object.constructor.name === 'BigNumber' ||
@@ -134,7 +181,10 @@ export default class AbiFunction {
         //TODO: introduce typechecking and typecasting mapping for inputs
         ({ name, type, value: this.parsePreEncodedValue(type, inputToParse) });
 
-      return { ...accumulator, [name]: { processInput: inputHandler, type } };
+      return {
+        ...accumulator,
+        [name]: { processInput: inputHandler, type, name }
+      };
     }, {});
 
   private makeEncodedFuncCall = (args: string[]) => {
