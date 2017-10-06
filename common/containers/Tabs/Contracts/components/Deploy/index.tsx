@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
-import HOC from './components/DeployHoc';
+import { deployHOC } from './components/DeployHoc';
 import { TTxCompare } from './components/DeployHoc/components/TxCompare';
 import { TDeployModal } from './components/DeployHoc/components/DeployModal';
 interface Props {
@@ -83,4 +83,4 @@ const Deploy = (props: Props) => {
   );
 };
 
-export default HOC(Deploy);
+export default deployHOC(Deploy);
