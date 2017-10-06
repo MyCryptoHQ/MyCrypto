@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { getNetworkContracts } from 'selectors/config';
 import { AppState } from 'reducers';
@@ -6,7 +5,7 @@ import translate from 'translations';
 import Interact from './components/Interact';
 import Deploy from './components/Deploy';
 import './index.scss';
-import App from 'containers/App';
+import TabSection from 'containers/TabSection';
 
 interface State {
   activeTab: string;
@@ -34,7 +33,7 @@ export default class Contracts extends Component<{}, State> {
     }
 
     return (
-      <App>
+      <TabSection>
         <section className="Tab-content Contracts">
           <div className="Tab-content-pane">
             <h1 className="Contracts-header">
@@ -58,7 +57,7 @@ export default class Contracts extends Component<{}, State> {
             <div className="Contracts-content">{content}</div>
           </main>
         </section>
-      </App>
+      </TabSection>
     );
   }
 }
