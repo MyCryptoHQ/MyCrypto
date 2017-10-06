@@ -191,7 +191,8 @@ export async function generateCompleteTransaction(
   gasPrice: Wei,
   gasLimit: BigNumber,
   chainId: number,
-  transactionInput: TransactionInput
+  transactionInput: TransactionInput,
+  nonce?: number | null
 ): Promise<CompleteTransaction> {
   const { token } = transactionInput;
   const { from, to, value, data } = await formatTxInput(
@@ -199,7 +200,7 @@ export async function generateCompleteTransaction(
     transactionInput
   );
   const transaction: ExtendedRawTransaction = {
-    nonce: await nodeLib.getTransactionCount(from),
+    nonce: nonce ? `0x${nonce}` : await nodeLib.getTransactionCount(from),
     from,
     to,
     gasLimit,
