@@ -1,31 +1,51 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractExplorer.scss';
-
+import Contract from 'libs/contracts';
 interface Props {
-  address: string | undefined | null;
+  contractFunctions: any;
+  address: Contract['address'];
 }
 
 interface State {
-  inputs: object;
-  outputs: object;
+  inputs;
+  outputs;
   selectedFunction: null | any;
+  selectedFunctionName: string;
 }
 
 export default class InteractExplorer extends Component<Props, State> {
+  public static defaultProps: Partial<Props> = {
+    contractFunctions: {}
+  };
+
   public state: State = {
     selectedFunction: null,
+    selectedFunctionName: '',
     inputs: {},
     outputs: {}
   };
 
-  public render() {
-    const { address, functions } = this.props;
-    const { selectedFunction, inputs, outputs } = this.state;
+  public contractOptions = () => {
+    const { contractFunctions } = this.props;
 
-    if (!functions) {
-      return null;
-    }
+    return Object.keys(contractFunctions).map(name => {
+      return (
+        <option key={name} value={name}>
+          {name}
+        </option>
+      );
+    });
+  };
+
+  public render() {
+    const {
+      inputs,
+      outputs,
+      selectedFunction,
+      selectedFunctionName
+    } = this.state;
+    const { contractFunctions, address } = this.props;
 
     return (
       <div className="InteractExplorer">
@@ -39,38 +59,80 @@ export default class InteractExplorer extends Component<Props, State> {
           className="InteractExplorer-fnselect form-control"
           onChange={this.handleFunctionSelect}
         >
-          <option>{translate('CONTRACT_Interact_CTA')}</option>
-          {functions.map(fn => (
-            <option key={fn.name} value={fn.name}>
-              {fn.name}
-            </option>
-          ))}
+          <option>{translate('CONTRACT_Interact_CTA', true)}</option>
+          {this.contractOptions()}
         </select>
 
         {selectedFunction && (
-          <div key={selectedFunction.name} className="InteractExplorer-func">
+          <div key={selectedFunctionName} className="InteractExplorer-func">
             {/* TODO: Use reusable components with validation */}
-            {selectedFunction.inputs.map(input => (
-              <label
-                key={input.name}
-                className="InteractExplorer-func-in form-group"
-              >
-                <h4 className="InteractExplorer-func-in-label">
-                  {input.name}
-                  <span className="InteractExplorer-func-in-label-type">
-                    {input.type}
-                  </span>
-                </h4>
-                <input
-                  className="InteractExplorer-func-in-input form-control"
-                  name={input.name}
-                  value={inputs[input.name]}
-                  onChange={this.handleInputChange}
-                />
-              </label>
-            ))}
+            {Object.keys(selectedFunction.funcParams).map(input => {
+              const { type, name } = selectedFunction.funcParams[input];
 
-            {selectedFunction.outputs.map(output => (
+              return (
+                <label
+                  key={name}
+                  className="InteractExplorer-func-in form-group"
+                >
+                  <h4 className="InteractExplorer-func-in-label">
+                    {name}
+                    <span className="InteractExplorer-func-in-label-type">
+                      {type}
+                    </span>
+                  </h4>
+                  <input
+                    className="InteractExplorer-func-in-input form-control"
+                    name={name}
+                    value={inputs[name] || ''}
+                    onChange={this.handleInputChange}
+                  />
+                </label>
+              );
+            })}
+
+            {selectedFunction.constant ? (
+              <button
+                className="InteractExplorer-func-submit btn btn-primary"
+                onClick={() => {
+                  selectedFunction.call(inputs).then(x => console.log(x));
+                }}
+              >
+                {translate('CONTRACT_Read')}
+              </button>
+            ) : (
+              <button className="InteractExplorer-func-submit btn btn-primary">
+                {translate('CONTRACT_Write')}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  private handleFunctionSelect = (ev: any) => {
+    const { contractFunctions } = this.props;
+
+    const selectedFunctionName = ev.target.value;
+    const selectedFunction = contractFunctions[selectedFunctionName];
+    this.setState({
+      selectedFunction,
+      selectedFunctionName
+    });
+  };
+
+  private handleInputChange = (ev: any) => {
+    this.setState({
+      inputs: {
+        ...this.state.inputs,
+        [ev.target.name]: ev.target.value
+      }
+    });
+  };
+}
+
+/*
+ *          {selectedFunction.outputs.map(output => (
               <label
                 key={output.name}
                 className="InteractExplorer-func-out form-group"
@@ -88,47 +150,5 @@ export default class InteractExplorer extends Component<Props, State> {
                 />
               </label>
             ))}
-
-            {selectedFunction.constant ? (
-              <button className="InteractExplorer-func-submit btn btn-primary">
-                {/* translate('CONTRACT_Read') */}
-                Implement Me
-              </button>
-            ) : (
-              <button className="InteractExplorer-func-submit btn btn-primary">
-                {/* translate('CONTRACT_Write') */}
-                Implement Me
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  private handleFunctionSelect = (ev: any) => {
-    const { functions } = this.props;
-
-    if (!functions) {
-      return;
-    }
-
-    const selectedFunction = functions.reduce((prev, fn) => {
-      return ev.target.value === fn.name ? fn : prev;
-    });
-
-    this.setState({
-      selectedFunction,
-      inputs: {}
-    });
-  };
-
-  private handleInputChange = (ev: any) => {
-    this.setState({
-      inputs: {
-        ...this.state.inputs,
-        [ev.target.name]: ev.target.value
-      }
-    });
-  };
-}
+ *
+ */

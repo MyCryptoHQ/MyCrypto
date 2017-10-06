@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 interface Props {
   contracts: NetworkContract[];
+  accessContract(abiJson: string, address: string): (ev) => void;
 }
 
 interface State {
@@ -20,7 +21,7 @@ class InteractForm extends Component<Props, State> {
   };
 
   public render() {
-    const { contracts } = this.props;
+    const { contracts, accessContract } = this.props;
     const { address, abiJson } = this.state;
 
     let contractOptions;
@@ -98,7 +99,7 @@ class InteractForm extends Component<Props, State> {
 
         <button
           className="InteractForm-submit btn btn-primary"
-          onClick={this.accessContract}
+          onClick={accessContract(abiJson, address)}
         >
           {translate('x_Access')}
         </button>
@@ -120,10 +121,6 @@ class InteractForm extends Component<Props, State> {
       address: contract.address,
       abiJson: contract.abi
     });
-  };
-
-  private accessContract = () => {
-    this.props.accessContract(this.state.address, this.state.abiJson);
   };
 }
 const mapStateToProps = (state: AppState) => ({
