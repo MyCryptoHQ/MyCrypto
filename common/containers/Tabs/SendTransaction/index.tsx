@@ -3,8 +3,19 @@ import Big from 'bignumber.js';
 import TabSection from 'containers/TabSection';
 import { BalanceSidebar } from 'components';
 import { UnlockHeader } from 'components/ui';
+import {
+  NonceField,
+  AddressField,
+  AmountField,
+  ConfirmationModal,
+  CustomMessage,
+  DataField,
+  GasField
+} from './components';
 // CONFIG
 import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
+// LIBS
+import { stripHexPrefix } from 'libs/values';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import {
@@ -17,7 +28,6 @@ import {
 } from 'libs/transaction';
 import { Ether, GWei, UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-// LIBS
 import { IWallet } from 'libs/wallet/IWallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
@@ -47,27 +57,10 @@ import {
 import translate from 'translations';
 // UTILS
 import { formatGasLimit } from 'utils/formatters';
-import {
-  NonceField,
-  AddressField,
-  AmountField,
-  ConfirmationModal,
-  CustomMessage,
-  DataField,
-  GasField
-} from './components';
+import { getParam } from 'utils/helpers';
 import queryString from 'query-string';
 // MISC
 import customMessages from './messages';
-
-function getParam(query: { [key: string]: string }, key: string) {
-  const keys = Object.keys(query);
-  const index = keys.findIndex(k => k.toLowerCase() === key.toLowerCase());
-  if (index === -1) {
-    return null;
-  }
-  return query[keys[index]];
-}
 
 interface State {
   hasQueryString: boolean;
@@ -84,6 +77,7 @@ interface State {
   showTxConfirm: boolean;
   generateDisabled: boolean;
   nonce: number | null;
+  hasSetDefaultNonce: boolean;
 }
 
 interface Props {
@@ -99,6 +93,7 @@ interface Props {
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
   offline: boolean;
+  forceOffline: boolean;
   pollOfflineStatus: TPollOfflineStatus;
   location: { search: string };
 }
@@ -116,7 +111,8 @@ const initialState: State = {
   showTxConfirm: false,
   transaction: null,
   generateDisabled: true,
-  nonce: 0
+  nonce: null,
+  hasSetDefaultNonce: false
 };
 
 export class SendTransaction extends React.Component<Props, State> {
@@ -126,13 +122,20 @@ export class SendTransaction extends React.Component<Props, State> {
     this.props.pollOfflineStatus();
     const queryPresets = pickBy(this.parseQuery());
     if (Object.keys(queryPresets).length) {
-      this.setState({ ...queryPresets, hasQueryString: true });
+      this.setState(state => {
+        return {
+          ...state,
+          ...queryPresets,
+          hasQueryString: true
+        };
+      });
     }
   }
 
-  public componentDidUpdate(prevProps: Props, prevState: State) {
+  public handleGasEstimationOnUpdate(prevState) {
     // TODO listen to gas price changes here
     // TODO debounce the call
+    // handle gas estimation
     if (
       // if gas has not changed
       !this.state.gasChanged &&
@@ -148,9 +151,16 @@ export class SendTransaction extends React.Component<Props, State> {
         this.estimateGas();
       }
     }
+  }
+
+  public handleGenerateDisabledOnUpdate() {
     if (this.state.generateDisabled === this.isValid()) {
       this.setState({ generateDisabled: !this.isValid() });
     }
+  }
+
+  public handleBroadcastTransactionOnUpdate() {
+    // handle clearing the form once broadcast transaction promise resolves and compontent updates
     const componentStateTransaction = this.state.transaction;
     if (componentStateTransaction) {
       // lives in redux state
@@ -166,6 +176,31 @@ export class SendTransaction extends React.Component<Props, State> {
         }
       }
     }
+  }
+
+  public async handleSetNonceWhenOffline() {
+    const { offline, forceOffline, wallet, nodeLib } = this.props;
+    const { hasSetDefaultNonce, nonce } = this.state;
+    const unlocked = !!wallet;
+    const from = await wallet.getAddress();
+    if (unlocked) {
+      if (forceOffline && !offline && !hasSetDefaultNonce) {
+        const nonceHex = await nodeLib.getTransactionCount(from);
+        const newNonce = parseInt(stripHexPrefix(nonceHex), 10);
+        this.setState({ nonce: newNonce, hasSetDefaultNonce: true });
+      }
+      if (!forceOffline && !offline && nonce) {
+        // set hasSetDefaultNonce back to false in case user toggles force offline several times
+        this.setState({ nonce: null, hasSetDefaultNonce: false });
+      }
+    }
+  }
+
+  public componentDidUpdate(prevProps: Props, prevState: State) {
+    this.handleGasEstimationOnUpdate(prevState);
+    this.handleGenerateDisabledOnUpdate();
+    this.handleBroadcastTransactionOnUpdate();
+    this.handleSetNonceWhenOffline();
   }
 
   public onNonceChange = (value: number) => {
@@ -186,7 +221,7 @@ export class SendTransaction extends React.Component<Props, State> {
       transaction,
       nonce
     } = this.state;
-    const { offline } = this.props;
+    const { offline, forceOffline } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
@@ -196,13 +231,12 @@ export class SendTransaction extends React.Component<Props, State> {
             title={
               <div>
                 {translate('NAV_SendEther')}
-                {offline ? (
+                {offline || forceOffline ? (
                   <span style={{ color: 'red' }}> (Offline)</span>
                 ) : null}
               </div>
             }
           />
-
           <div className="row">
             {/* Send Form */}
             {unlocked && (
@@ -232,13 +266,13 @@ export class SendTransaction extends React.Component<Props, State> {
                     value={gasLimit}
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
-                  {offline && (
-                    <NonceField
-                      value={String(nonce)}
-                      onChange={this.onNonceChange}
-                      placeholder={'0'}
-                    />
-                  )}
+                  {(offline || forceOffline) && (
+                      <NonceField
+                        value={String(nonce)}
+                        onChange={this.onNonceChange}
+                        placeholder={'0'}
+                      />
+                    )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
@@ -460,8 +494,7 @@ export class SendTransaction extends React.Component<Props, State> {
   public generateTxFromState = async () => {
     await this.resetJustTx();
     const { nodeLib, wallet, gasPrice, network } = this.props;
-
-    const { token, unit, value, to, data, gasLimit } = this.state;
+    const { token, unit, value, to, data, gasLimit, nonce } = this.state;
     const chainId = network.chainId;
     const transactionInput = {
       token,
@@ -478,7 +511,8 @@ export class SendTransaction extends React.Component<Props, State> {
         gasPrice,
         bigGasLimit,
         chainId,
-        transactionInput
+        transactionInput,
+        nonce
       );
       this.setState({ transaction: signedTx });
     } catch (err) {
@@ -518,7 +552,8 @@ function mapStateToProps(state: AppState) {
     tokens: getTokens(state),
     gasPrice: new GWei(getGasPriceGwei(state)).toWei(),
     transactions: state.wallet.transactions,
-    offline: state.config.offline || state.config.forceOffline
+    offline: state.config.offline,
+    forceOffline: state.config.forceOffline
   };
 }
 
