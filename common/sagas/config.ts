@@ -57,11 +57,11 @@ function* handleNodeChangeIntent(action): SagaIterator {
   }
 }
 
-export default function* handleConfigChanges(): SagaIterator {
+export default function* configSaga(): SagaIterator {
   yield takeLatest(
     TypeKeys.CONFIG_POLL_OFFLINE_STATUS,
     handlePollOfflineStatus
   );
-  yield takeEvery('CONFIG_NODE_CHANGE_INTENT', handleNodeChangeIntent);
-  yield takeEvery('CONFIG_LANGUAGE_CHANGE', reload);
+  yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
+  yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
 }
