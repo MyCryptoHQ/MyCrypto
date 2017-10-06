@@ -1,6 +1,7 @@
 declare module 'ethereumjs-util' {
   import { Buffer } from 'buffer';
   import BN = require('bn.js');
+  export import rlp = require('rlp');
 
   interface Signature {
     v: number;
