@@ -33,7 +33,9 @@ class OfflineToggle extends React.Component<OfflineToggleProps, {}> {
             </div>
           </div>
         ) : (
-          <h5>You are currently offline.</h5>
+          <div className="text-center">
+            <h5>You are currently offline.</h5>
+          </div>
         )}
       </div>
     );
