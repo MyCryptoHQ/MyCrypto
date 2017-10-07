@@ -77,7 +77,7 @@ interface State {
   transaction: CompleteTransaction | null;
   showTxConfirm: boolean;
   generateDisabled: boolean;
-  nonce: number | null;
+  nonce: number | null | undefined;
   hasSetDefaultNonce: boolean;
   generateTxProcessing: boolean;
 }
@@ -335,15 +335,17 @@ export class SendTransaction extends React.Component<Props, State> {
                         </div>
                       </div>
 
-                      <div className="form-group">
-                        <button
-                          className="btn btn-primary btn-block col-sm-11"
-                          disabled={!this.state.transaction}
-                          onClick={this.openTxModal}
-                        >
-                          {translate('SEND_trans')}
-                        </button>
-                      </div>
+                      {!offline && (
+                        <div className="form-group">
+                          <button
+                            className="btn btn-primary btn-block col-sm-11"
+                            disabled={!this.state.transaction}
+                            onClick={this.openTxModal}
+                          >
+                            {translate('SEND_trans')}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -389,6 +391,18 @@ export class SendTransaction extends React.Component<Props, State> {
     return { to, data, value, unit, gasLimit, readOnly };
   }
 
+  public isValidNonce() {
+    const { offline, forceOffline } = this.props;
+    const { nonce } = this.state;
+    let valid = false;
+    if (offline || forceOffline) {
+      if (nonce && nonce !== 0) {
+        valid = true;
+      }
+    }
+    return valid;
+  }
+
   public isValid() {
     const { to, value, gasLimit } = this.state;
     return (
@@ -398,7 +412,8 @@ export class SendTransaction extends React.Component<Props, State> {
       !isNaN(Number(value)) &&
       isFinite(Number(value)) &&
       !isNaN(parseInt(gasLimit, 10)) &&
-      isFinite(parseInt(gasLimit, 10))
+      isFinite(parseInt(gasLimit, 10)) &&
+      this.isValidNonce()
     );
   }
 
@@ -416,7 +431,11 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public async estimateGas() {
+    const { offline, forceOffline, nodeLib } = this.props;
     if (isNaN(parseInt(this.state.value, 10))) {
+      return;
+    }
+    if (offline || forceOffline) {
       return;
     }
     try {
@@ -424,7 +443,7 @@ export class SendTransaction extends React.Component<Props, State> {
       // Grab a reference to state. If it has changed by the time the estimateGas
       // call comes back, we don't want to replace the gasLimit in state.
       const state = this.state;
-      const gasLimit = await this.props.nodeLib.estimateGas(cachedFormattedTx);
+      const gasLimit = await nodeLib.estimateGas(cachedFormattedTx);
       if (this.state === state) {
         this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
       } else {
@@ -513,7 +532,14 @@ export class SendTransaction extends React.Component<Props, State> {
   public generateTxFromState = async () => {
     this.setState({ generateTxProcessing: true });
     await this.resetJustTx();
-    const { nodeLib, wallet, gasPrice, network } = this.props;
+    const {
+      nodeLib,
+      wallet,
+      gasPrice,
+      network,
+      offline,
+      forceOffline
+    } = this.props;
     const { token, unit, value, to, data, gasLimit, nonce } = this.state;
     const chainId = network.chainId;
     const transactionInput = {
@@ -524,6 +550,7 @@ export class SendTransaction extends React.Component<Props, State> {
       data
     };
     const bigGasLimit = new Big(gasLimit);
+    const isOffline = offline || forceOffline;
     try {
       const signedTx = await generateCompleteTransaction(
         wallet,
@@ -532,7 +559,8 @@ export class SendTransaction extends React.Component<Props, State> {
         bigGasLimit,
         chainId,
         transactionInput,
-        nonce
+        nonce,
+        isOffline
       );
       this.setState({ transaction: signedTx, generateTxProcessing: false });
     } catch (err) {
