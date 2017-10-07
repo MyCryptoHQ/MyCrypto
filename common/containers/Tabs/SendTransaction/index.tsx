@@ -1,5 +1,6 @@
 import Big from 'bignumber.js';
 // COMPONENTS
+import Spinner from 'components/ui/Spinner';
 import TabSection from 'containers/TabSection';
 import { BalanceSidebar } from 'components';
 import { UnlockHeader } from 'components/ui';
@@ -78,6 +79,7 @@ interface State {
   generateDisabled: boolean;
   nonce: number | null;
   hasSetDefaultNonce: boolean;
+  generateTxProcessing: boolean;
 }
 
 interface Props {
@@ -112,7 +114,8 @@ const initialState: State = {
   transaction: null,
   generateDisabled: true,
   nonce: null,
-  hasSetDefaultNonce: false
+  hasSetDefaultNonce: false,
+  generateTxProcessing: false
 };
 
 export class SendTransaction extends React.Component<Props, State> {
@@ -178,12 +181,12 @@ export class SendTransaction extends React.Component<Props, State> {
     }
   }
 
-  public async handleSetNonceWhenOffline() {
+  public async handleSetNonceWhenOfflineOnUpdate() {
     const { offline, forceOffline, wallet, nodeLib } = this.props;
     const { hasSetDefaultNonce, nonce } = this.state;
     const unlocked = !!wallet;
-    const from = await wallet.getAddress();
     if (unlocked) {
+      const from = await wallet.getAddress();
       if (forceOffline && !offline && !hasSetDefaultNonce) {
         const nonceHex = await nodeLib.getTransactionCount(from);
         const newNonce = parseInt(stripHexPrefix(nonceHex), 10);
@@ -196,11 +199,18 @@ export class SendTransaction extends React.Component<Props, State> {
     }
   }
 
+  public handleWalletStateOnUpdate(prevProps) {
+    if (this.props.wallet !== prevProps.wallet) {
+      this.setState(initialState);
+    }
+  }
+
   public componentDidUpdate(prevProps: Props, prevState: State) {
     this.handleGasEstimationOnUpdate(prevState);
     this.handleGenerateDisabledOnUpdate();
     this.handleBroadcastTransactionOnUpdate();
-    this.handleSetNonceWhenOffline();
+    this.handleSetNonceWhenOfflineOnUpdate();
+    this.handleWalletStateOnUpdate(prevProps);
   }
 
   public onNonceChange = (value: number) => {
@@ -219,7 +229,8 @@ export class SendTransaction extends React.Component<Props, State> {
       hasQueryString,
       showTxConfirm,
       transaction,
-      nonce
+      nonce,
+      generateTxProcessing
     } = this.state;
     const { offline, forceOffline } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
@@ -292,6 +303,14 @@ export class SendTransaction extends React.Component<Props, State> {
                       </button>
                     </div>
                   </div>
+
+                  {generateTxProcessing && (
+                    <div className="container">
+                      <div className="row form-group text-center">
+                        <Spinner size="5x" />
+                      </div>
+                    </div>
+                  )}
 
                   {transaction && (
                     <div>
@@ -492,6 +511,7 @@ export class SendTransaction extends React.Component<Props, State> {
     );
 
   public generateTxFromState = async () => {
+    this.setState({ generateTxProcessing: true });
     await this.resetJustTx();
     const { nodeLib, wallet, gasPrice, network } = this.props;
     const { token, unit, value, to, data, gasLimit, nonce } = this.state;
@@ -514,7 +534,7 @@ export class SendTransaction extends React.Component<Props, State> {
         transactionInput,
         nonce
       );
-      this.setState({ transaction: signedTx });
+      this.setState({ transaction: signedTx, generateTxProcessing: false });
     } catch (err) {
       this.props.showNotification('danger', err.message, 5000);
     }
