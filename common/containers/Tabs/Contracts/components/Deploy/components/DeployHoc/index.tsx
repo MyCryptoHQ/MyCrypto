@@ -5,8 +5,8 @@ import {
   TransactionInput
 } from 'libs/transaction';
 import { Props, State, initialState } from './types';
-import { DeployModal, Props as DMProps } from './components/DeployModal';
-import { TxCompare, Props as TCProps } from './components/TxCompare';
+import { DeployModal, Props as DMProps } from '../../../TxModal';
+import { TxCompare, Props as TCProps } from '../../../TxCompare';
 import { withTx } from '../../../withTx';
 
 export const deployHOC = PassedComponent => {

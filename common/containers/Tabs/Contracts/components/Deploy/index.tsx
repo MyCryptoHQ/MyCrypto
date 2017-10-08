@@ -2,8 +2,8 @@ import React from 'react';
 import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
 import { deployHOC } from './components/DeployHoc';
-import { TTxCompare } from './components/DeployHoc/components/TxCompare';
-import { TDeployModal } from './components/DeployHoc/components/DeployModal';
+import { TTxCompare } from '../TxCompare';
+import { TDeployModal } from '../TxModal';
 interface Props {
   byteCode: string;
   gasLimit: string;
