@@ -15,7 +15,9 @@ export default function checkBadBrowser() {
   try {
     const el = document.createElement('div');
     el.style.display = 'flex';
-    if (el.style.display !== 'flex') return false;
+    if (el.style.display !== 'flex') {
+      return false;
+    }
   } catch (err) {
     return true;
   }
