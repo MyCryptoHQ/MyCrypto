@@ -17,12 +17,12 @@ export interface IUserSendParams {
 export type ISendParams = IUserSendParams & ISetConfigForTx;
 
 export default class AbiFunction {
-  public funcParams: FuncParams;
   public constant: boolean;
-  private inputs: Input[];
+  public outputs: Output[];
+  public inputs: Input[];
+  private funcParams: FuncParams;
   private inputNames: string[];
   private inputTypes: string[];
-  private outputs: Output[];
   private outputNames: string[];
   private outputTypes: string[];
   private methodSelector: string;

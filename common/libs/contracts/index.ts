@@ -70,11 +70,6 @@ export default class Contract {
     this.address = addr;
     return this;
   };
-  /*
-makeAndSignTx(wallet: IWallet, nodeLib: RpcNode, gasPrice: Wei,
-   gasLimit: Big.BigNumber, chainId: number, transactionInput: TransactionInput,
-    skipValidation?: boolean)
-*/
 
   public setWallet = (w: IWallet) => {
     this.wallet = w;
@@ -113,8 +108,9 @@ makeAndSignTx(wallet: IWallet, nodeLib: RpcNode, gasPrice: Wei,
           decodeOutput,
           call,
           send,
-          funcParams,
-          constant
+          constant,
+          outputs,
+          inputs
         } = new AbiFunction(currentABIMethod, outputMappings[name]);
 
         const proxiedCall = new Proxy(call, {
@@ -130,8 +126,9 @@ makeAndSignTx(wallet: IWallet, nodeLib: RpcNode, gasPrice: Wei,
             decodeOutput,
             call: proxiedCall,
             send: proxiedSend,
-            funcParams,
-            constant
+            constant,
+            outputs,
+            inputs
           }
         };
         Object.assign(this, funcToAssign);
