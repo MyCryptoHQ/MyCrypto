@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractExplorer.scss';
 import Contract from 'libs/contracts';
+import { IUserSendParams } from 'libs/contracts/ABIFunction';
+import { TDeployModal } from 'containers/Tabs/Contracts/components/TxModal';
+import WalletDecrypt from 'components/WalletDecrypt';
+
 interface Props {
   contractFunctions: any;
+  //DeployModal: TDeployModal | null;
+
   address: Contract['address'];
 }
 
@@ -66,8 +72,8 @@ export default class InteractExplorer extends Component<Props, State> {
         {selectedFunction && (
           <div key={selectedFunctionName} className="InteractExplorer-func">
             {/* TODO: Use reusable components with validation */}
-            {Object.keys(selectedFunction.funcParams).map(input => {
-              const { type, name } = selectedFunction.funcParams[input];
+            {selectedFunction.inputs.map(input => {
+              const { type, name } = input;
 
               return (
                 <label
@@ -89,13 +95,32 @@ export default class InteractExplorer extends Component<Props, State> {
                 </label>
               );
             })}
+            {selectedFunction.outputs.map(output => {
+              const { type, name } = output;
+              return (
+                <label
+                  key={name}
+                  className="InteractExplorer-func-out form-group"
+                >
+                  <h4 className="InteractExplorer-func-out-label">
+                    ↳ {name}
+                    <span className="InteractExplorer-func-out-label-type">
+                      {type}
+                    </span>
+                  </h4>
+                  <input
+                    className="InteractExplorer-func-out-input form-control"
+                    value={outputs[name] || ''}
+                    disabled={true}
+                  />
+                </label>
+              );
+            })}
 
             {selectedFunction.constant ? (
               <button
                 className="InteractExplorer-func-submit btn btn-primary"
-                onClick={() => {
-                  selectedFunction.call(inputs).then(x => console.log(x));
-                }}
+                onClick={this.handleFunctionCall}
               >
                 {translate('CONTRACT_Read')}
               </button>
@@ -109,7 +134,22 @@ export default class InteractExplorer extends Component<Props, State> {
       </div>
     );
   }
+  private handleFunctionCall = async (ev: any) => {
+    const { selectedFunction, inputs } = this.state;
+    const results = await selectedFunction.call(inputs);
+    this.setState({ outputs: results });
+  };
+  private handleFunctionSend = (ev: any) => {
+    const { selectedFunction, inputs } = this.state;
 
+    const userInputs: IUserSendParams = {
+      input: inputs,
+      to: this.props.address,
+      gasLimit: this.state.gas,
+      value
+    };
+    selectedFunction.send(inputs);
+  };
   private handleFunctionSelect = (ev: any) => {
     const { contractFunctions } = this.props;
 
@@ -117,7 +157,9 @@ export default class InteractExplorer extends Component<Props, State> {
     const selectedFunction = contractFunctions[selectedFunctionName];
     this.setState({
       selectedFunction,
-      selectedFunctionName
+      selectedFunctionName,
+      outputs: {},
+      inputs: {}
     });
   };
 
@@ -130,25 +172,3 @@ export default class InteractExplorer extends Component<Props, State> {
     });
   };
 }
-
-/*
- *          {selectedFunction.outputs.map(output => (
-              <label
-                key={output.name}
-                className="InteractExplorer-func-out form-group"
-              >
-                <h4 className="InteractExplorer-func-out-label">
-                  ↳ {output.name}
-                  <span className="InteractExplorer-func-out-label-type">
-                    {output.type}
-                  </span>
-                </h4>
-                <input
-                  className="InteractExplorer-func-out-input form-control"
-                  value={outputs[output.name]}
-                  disabled={true}
-                />
-              </label>
-            ))}
- *
- */
