@@ -2,11 +2,11 @@
 @import "common/sass/mixins";
 
 .BadBrowser {
-  display: none;
   @include cover-message;
 
   &.is-open {
-    display: block;
+    // Override inline display none
+    display: block !important;
   }
 
   &-content {
