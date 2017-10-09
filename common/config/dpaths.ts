@@ -44,7 +44,10 @@ const MNEMONIC = [
   EXPANSE
 ];
 
+const LEDGER = [ETH_LEDGER, ETC_LEDGER, TESTNET];
+
 export default {
   TREZOR,
-  MNEMONIC
+  MNEMONIC,
+  LEDGER
 };

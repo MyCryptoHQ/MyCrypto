@@ -81,6 +81,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
   }
 
   private handlePathChange = (dPath: string) => {
+    this.setState({ dPath });
     this.handleConnect(dPath);
   };
 
