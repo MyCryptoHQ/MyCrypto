@@ -4,6 +4,7 @@ process.env.NODE_ENV = 'production';
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
+const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 // const OfflinePlugin = require('offline-plugin')
 const base = require('./webpack.base');
 const config = require('./config');
@@ -48,14 +49,8 @@ base.plugins.push(
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('production')
   }),
-  new webpack.optimize.UglifyJsPlugin({
-    sourceMap: true,
-    compress: {
-      warnings: false
-    },
-    output: {
-      comments: false
-    }
+  new BabelMinifyPlugin(undefined, {
+    comments: false
   }),
   // extract vendor chunks
   new webpack.optimize.CommonsChunkPlugin({
