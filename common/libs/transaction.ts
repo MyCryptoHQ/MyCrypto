@@ -75,11 +75,12 @@ export async function generateCompleteTransactionFromRawTransaction(
   node: INode,
   tx: ExtendedRawTransaction,
   wallet: IWallet,
-  token: Token | null | undefined
+  token: Token | null | undefined,
+  skipEthAddressValidation: boolean
 ): Promise<CompleteTransaction> {
   const { to, data, gasLimit, gasPrice, from, chainId, nonce } = tx;
   // Reject bad addresses
-  if (!isValidETHAddress(to)) {
+  if (!isValidETHAddress(to) && !skipEthAddressValidation) {
     throw new Error(translateRaw('ERROR_5'));
   }
   // Reject token transactions without data
@@ -191,7 +192,8 @@ export async function generateCompleteTransaction(
   gasPrice: Wei,
   gasLimit: BigNumber,
   chainId: number,
-  transactionInput: TransactionInput
+  transactionInput: TransactionInput,
+  skipValidation: boolean = false
 ): Promise<CompleteTransaction> {
   const { token } = transactionInput;
   const { from, to, value, data } = await formatTxInput(
@@ -212,7 +214,8 @@ export async function generateCompleteTransaction(
     nodeLib,
     transaction,
     wallet,
-    token
+    token,
+    skipValidation
   );
 }
 
