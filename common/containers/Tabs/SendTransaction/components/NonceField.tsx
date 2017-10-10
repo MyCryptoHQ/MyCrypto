@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import Help from 'components/ui/Help';
+import { translateRaw } from 'translations';
 
 interface PublicProps {
   placeholder: string;
@@ -17,6 +19,12 @@ export default class NonceField extends React.Component<PublicProps, {}> {
     return (
       <div className="row form-group">
         <div className="col-xs-11">
+          <Help
+            size={'small'}
+            link={
+              'https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html'
+            }
+          />
           <label>Nonce</label>
           <input
             className={`form-control ${isValidNonce(value)
