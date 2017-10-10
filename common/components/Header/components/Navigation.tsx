@@ -25,6 +25,10 @@ const tabs = [
     // to: 'view-wallet'
   },
   {
+    name: 'NAV_Contracts',
+    to: 'contracts'
+  },
+  {
     name: 'NAV_ENS',
     to: 'ens'
   },

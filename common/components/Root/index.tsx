@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route } from 'react-router-dom';
 // Components
+import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import Help from 'containers/Tabs/Help';
@@ -28,6 +29,7 @@ export default class Root extends Component<Props, {}> {
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
             <Route path="/send-transaction" component={SendTransaction} />
+            <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
           </div>
         </Router>

@@ -28,7 +28,7 @@ export function isValidHex(str: string): boolean {
     str.substring(0, 2) === '0x'
       ? str.substring(2).toUpperCase()
       : str.toUpperCase();
-  const re = /^[0-9A-F]+$/g;
+  const re = /^[0-9A-F]*$/g; // Match 0 -> unlimited times, 0 being "0x" case
   return re.test(str);
 }
 
@@ -150,9 +150,6 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
     }
   }
 
-  if (!isValidETHAddress(rawTx.to)) {
-    return false;
-  }
   if (Object.keys(rawTx).length !== propReqs.length) {
     return false;
   }
