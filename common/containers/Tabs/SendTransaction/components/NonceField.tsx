@@ -10,13 +10,22 @@ interface PublicProps {
   onChange(value: number): void;
 }
 
-const isValidNonce = (value: number) => {
-  return isPositiveInteger(value);
+const isValidNonce = (value: string | null | undefined) => {
+  let valid;
+  if (value === '0') {
+    valid = true;
+  } else if (!value) {
+    valid = false;
+  } else {
+    valid = isPositiveInteger(parseInt(value, 10));
+  }
+  return valid;
 };
 
 export default class NonceField extends React.Component<PublicProps, {}> {
   public render() {
     const { placeholder, value } = this.props;
+    const strValue = value ? value.toString() : '';
     return (
       <div className="row form-group">
         <div className="col-xs-11">
@@ -28,11 +37,11 @@ export default class NonceField extends React.Component<PublicProps, {}> {
           />
           <label>Nonce</label>
           <input
-            className={`form-control ${value && isValidNonce(value)
+            className={`form-control ${isValidNonce(strValue)
               ? 'is-valid'
               : 'is-invalid'}`}
             type="number"
-            value={String(value)}
+            value={strValue}
             placeholder={placeholder}
             onChange={this.onChange}
           />
