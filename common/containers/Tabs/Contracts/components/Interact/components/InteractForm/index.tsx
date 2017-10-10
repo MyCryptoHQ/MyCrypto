@@ -8,6 +8,7 @@ import { AppState } from 'reducers';
 interface Props {
   contracts: NetworkContract[];
   accessContract(abiJson: string, address: string): (ev) => void;
+  resetState(): void;
 }
 
 interface State {
@@ -108,10 +109,12 @@ class InteractForm extends Component<Props, State> {
   }
 
   private handleInput = (ev: any) => {
+    this.props.resetState();
     this.setState({ [ev.target.name]: ev.target.value });
   };
 
   private handleSelectContract = (ev: any) => {
+    this.props.resetState();
     const addr = ev.target.value;
     const contract = this.props.contracts.reduce((prev, currContract) => {
       return currContract.address === addr ? currContract : prev;
