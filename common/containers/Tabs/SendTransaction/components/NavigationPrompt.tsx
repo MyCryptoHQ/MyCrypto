@@ -30,6 +30,7 @@ class NavigationPrompt extends React.Component<Props, State> {
   get injected() {
     return this.props as InjectedProps;
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +39,7 @@ class NavigationPrompt extends React.Component<Props, State> {
     };
   }
 
-  public componentDidMount() {
+  public setupUnblock() {
     this.unblock = this.injected.history.block(nextLocation => {
       if (
         this.props.when &&
@@ -51,6 +52,10 @@ class NavigationPrompt extends React.Component<Props, State> {
       }
       return !this.props.when;
     });
+  }
+
+  public componentDidMount() {
+    this.setupUnblock();
   }
 
   public componentWillUnmount() {
