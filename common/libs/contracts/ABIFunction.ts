@@ -60,14 +60,8 @@ export default class AbiFunction {
     return decodedOutput;
   };
 
-  public send = async ({
-    nodeLib,
-    chainId,
-    wallet,
-    gasLimit,
-    broadcastTx,
-    ...userInputs
-  }: ISendParams) => {
+  public send = async (params: ISendParams) => {
+    const { nodeLib, chainId, wallet, gasLimit, ...userInputs } = params;
     if (!nodeLib || !nodeLib.sendRawTx) {
       throw Error(`No node given to ${this.name}`);
     }
@@ -80,7 +74,7 @@ export default class AbiFunction {
       value: userInputs.value
     };
 
-    const { signedTx } = await makeAndSignTx(
+    const { signedTx, rawTx } = await makeAndSignTx(
       wallet,
       nodeLib,
       userInputs.gasPrice,
@@ -88,8 +82,7 @@ export default class AbiFunction {
       chainId,
       transactionInput
     );
-
-    broadcastTx(signedTx);
+    return { signedTx, rawTx: JSON.parse(rawTx) };
   };
   public encodeInput = (suppliedInputs: object = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
