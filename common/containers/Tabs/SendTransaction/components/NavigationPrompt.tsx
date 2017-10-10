@@ -1,25 +1,29 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
+import { Location, History } from 'history';
 
-interface InjectedProps {
-  history: History;
-  location: {};
-  match: {};
+interface Props {
+  when: boolean;
+  onConfirm?: any;
+  onCancel?: any;
 }
 
-interface Props extends InjectedProps {
-  when: boolean;
-  onConfirm?: void;
-  onCancel?: void;
+interface InjectedProps extends Props {
+  location: Location;
+  history: History;
 }
 
 interface State {
-  nextLocation;
+  nextLocation: Location | null;
   openModal: boolean;
 }
 
 class NavigationPrompt extends React.Component<Props, State> {
+  public unblock;
+  get injected() {
+    return this.props as InjectedProps;
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -29,14 +33,14 @@ class NavigationPrompt extends React.Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.unblock = this.props.history.block(nextLocation => {
+    this.unblock = this.injected.history.block(nextLocation => {
       if (
         this.props.when &&
-        nextLocation.pathname !== this.props.location.pathname
+        nextLocation.pathname !== this.injected.location.pathname
       ) {
         this.setState({
           openModal: true,
-          nextLocation: nextLocation
+          nextLocation
         });
       }
       return !this.props.when;
@@ -48,21 +52,25 @@ class NavigationPrompt extends React.Component<Props, State> {
   }
 
   public onCancel = () => {
-    this.props.onCancel ? this.props.onCancel() : null;
+    if (this.props.onCancel) {
+      this.props.onCancel();
+    }
     this.setState({ nextLocation: null, openModal: false });
   };
 
   public onConfirm = () => {
-    this.props.onConfirm ? this.props.onConfirm() : null;
+    if (this.props.onConfirm) {
+      this.props.onConfirm();
+    }
     // Lock Wallet
     this.navigateToNextLocation();
   };
 
   public navigateToNextLocation() {
     this.unblock();
-    this.state.nextLocation
-      ? this.props.history.push(this.state.nextLocation.pathname)
-      : null;
+    if (this.state.nextLocation) {
+      this.injected.history.push(this.state.nextLocation.pathname);
+    }
   }
 
   public render() {
