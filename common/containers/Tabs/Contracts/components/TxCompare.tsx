@@ -13,6 +13,9 @@ export interface Props {
 }
 
 export const TxCompare = (props: Props) => {
+  if (!props.signedTx) {
+    return null;
+  }
   const { signedTx, ...rawTx } = props;
   const Left = () => (
     <div className="form-group">

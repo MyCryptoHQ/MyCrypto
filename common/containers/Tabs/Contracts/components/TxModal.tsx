@@ -4,22 +4,24 @@ import Modal, { IButton } from 'components/ui/Modal';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 
 export interface Props {
-  chainName: string;
-  nodeName: string;
-  nodeProvider: string;
+  networkName: string;
+  network: string;
+  service: string;
+  action: string;
   handleBroadcastTx(): void;
   onClose(): void;
 }
 
-export type TDeployModal = typeof DeployModal;
+export type TTxModal = typeof TxModal;
 
-export const DeployModal = (props: Props) => {
+export const TxModal = (props: Props) => {
   const {
-    chainName,
-    nodeName,
-    nodeProvider,
+    networkName,
+    network,
+    service,
     handleBroadcastTx,
-    onClose
+    onClose,
+    action
   } = props;
 
   const buttons: IButton[] = [
@@ -48,13 +50,13 @@ export const DeployModal = (props: Props) => {
         </h2>
 
         <p>
-          You are about to <strong>deploy a contract</strong> on the{' '}
-          <strong>{chainName}</strong> chain.
+          You are about to <strong>{action}</strong> on the{' '}
+          <strong>{networkName}</strong> chain.
         </p>
 
         <p>
-          The <strong>{nodeName}</strong> node you are sending through is
-          provided by <strong>{nodeProvider}</strong>.
+          The <strong>{network}</strong> node you are sending through is
+          provided by <strong>{service}</strong>.
         </p>
 
         <h4>{translate('SENDModal_Content_3')}</h4>

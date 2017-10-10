@@ -5,7 +5,7 @@ import {
   TransactionInput
 } from 'libs/transaction';
 import { Props, State, initialState } from './types';
-import { DeployModal, Props as DMProps } from '../../../TxModal';
+import { TxModal, Props as DMProps } from '../../../TxModal';
 import { TxCompare, Props as TCProps } from '../../../TxCompare';
 import { withTx } from '../../../withTx';
 
@@ -95,14 +95,15 @@ export const deployHOC = PassedComponent => {
       }
 
       const props: DMProps = {
-        chainName: networkName,
-        nodeName: network,
-        nodeProvider: service,
+        action: 'deploy a contract',
+        networkName,
+        network,
+        service,
         handleBroadcastTx: this.handleBroadcastTx,
         onClose: this.resetState
       };
 
-      return <DeployModal {...props} />;
+      return <TxModal {...props} />;
     };
 
     private handleBroadcastTx = () => {

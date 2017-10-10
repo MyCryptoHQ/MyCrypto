@@ -3,14 +3,14 @@ import translate from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
 import { deployHOC } from './components/DeployHoc';
 import { TTxCompare } from '../TxCompare';
-import { TDeployModal } from '../TxModal';
+import { TTxModal } from '../TxModal';
 interface Props {
   byteCode: string;
   gasLimit: string;
   walletExists: boolean;
   TxCompare: TTxCompare | null;
   displayModal: boolean;
-  DeployModal: TDeployModal | null;
+  DeployModal: TTxModal | null;
   handleInput(input: string): () => null;
   handleSignTx(): null;
   handleDeploy(): null;
