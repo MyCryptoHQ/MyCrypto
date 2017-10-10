@@ -23,6 +23,7 @@ import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
 import { State } from 'reducers/rates';
+import OfflineToggle from './OfflineToggle';
 
 interface Props {
   wallet: IWallet;
@@ -59,6 +60,10 @@ export class BalanceSidebar extends React.Component<Props, {}> {
     }
 
     const blocks: Block[] = [
+      {
+        name: 'Go Offline',
+        content: <OfflineToggle />
+      },
       {
         name: 'Account Info',
         content: (
