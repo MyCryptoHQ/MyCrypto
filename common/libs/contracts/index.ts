@@ -1,8 +1,7 @@
 import AbiFunction, { IUserSendParams, ISendParams } from './ABIFunction';
 import { IWallet } from 'libs/wallet/IWallet';
 import { RPCNode } from 'libs/nodes';
-import { ABIFunction, ContractOutputMappings } from './types';
-import { TBroadcastTx } from 'actions/wallet';
+import { ContractOutputMappings } from './types';
 import { Wei } from 'libs/units';
 const ABIFUNC_METHOD_NAMES = [
   'encodeInput',
@@ -11,14 +10,11 @@ const ABIFUNC_METHOD_NAMES = [
   'call'
 ];
 
-type ABIType = ABIFunction[];
-
 export interface ISetConfigForTx {
   wallet: IWallet;
   nodeLib: RPCNode;
   chainId: number;
   gasPrice: Wei;
-  broadcastTx: TBroadcastTx;
 }
 
 enum ABIMethodTypes {
@@ -29,14 +25,13 @@ export type TContract = typeof Contract;
 export default class Contract {
   public static setConfigForTx = (
     contract: Contract,
-    { wallet, nodeLib, chainId, gasPrice, broadcastTx }: ISetConfigForTx
+    { wallet, nodeLib, chainId, gasPrice }: ISetConfigForTx
   ): Contract =>
     contract
       .setWallet(wallet)
       .setNode(nodeLib)
       .setChainId(chainId)
-      .setGasPrice(gasPrice)
-      .setBroadcaster(broadcastTx);
+      .setGasPrice(gasPrice);
 
   public static getFunctions = (contract: Contract) =>
     Object.getOwnPropertyNames(
@@ -61,8 +56,8 @@ export default class Contract {
   private gasPrice: Wei;
   private chainId: number;
   private node: RPCNode;
-  private broadcaster: TBroadcastTx;
-  constructor(abi: ABIType, outputMappings: ContractOutputMappings = {}) {
+
+  constructor(abi, outputMappings: ContractOutputMappings = {}) {
     this.assignABIFuncs(abi, outputMappings);
   }
 
@@ -90,14 +85,8 @@ export default class Contract {
     this.node = node;
     return this;
   };
-  public setBroadcaster = (b: TBroadcastTx) => {
-    this.broadcaster = b;
-    return this;
-  };
-  private assignABIFuncs = (
-    abi: ABIType,
-    outputMappings: ContractOutputMappings
-  ) => {
+
+  private assignABIFuncs = (abi, outputMappings: ContractOutputMappings) => {
     abi.forEach(currentABIMethod => {
       const { name, type } = currentABIMethod;
       if (type === ABIMethodTypes.FUNC) {
@@ -151,7 +140,6 @@ export default class Contract {
     [userSendParams]: [IUserSendParams]
   ) => {
     return target({
-      broadcastTx: this.broadcaster,
       chainId: this.chainId,
       gasPrice: this.gasPrice,
       to: this.address,
