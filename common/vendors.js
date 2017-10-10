@@ -24,4 +24,3 @@ require('qrcode');
 require('qrcode.react');
 require('bignumber.js');
 require('classnames');
-require('./vendor/trezor-connect');
