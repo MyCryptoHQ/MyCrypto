@@ -22,7 +22,7 @@ import { State as ConfigState } from 'reducers/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
-export function* pollOfflineStatus(action?: any): SagaIterator {
+export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     const offline = !navigator.onLine;
     const config = yield select(getConfig);
