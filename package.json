@@ -65,6 +65,7 @@
     "@types/uuid": "^3.4.2",
     "@types/webpack-env": "^1.13.1",
     "awesome-typescript-loader": "^3.2.3",
+    "babel-minify-webpack-plugin": "^0.2.0",
     "bs58": "^4.0.1",
     "cache-loader": "^1.0.3",
     "check-node-version": "^2.1.0",
