@@ -23,6 +23,11 @@ const ETC_TREZOR = {
   value: "m/44'/61'/0'/0"
 };
 
+const ETH_SINGULAR = {
+  label: 'SingularDTV',
+  value: "m/0'/0'/0'"
+};
+
 const TESTNET = {
   label: 'Testnet',
   value: "m/44'/1'/0'/0"
@@ -40,6 +45,7 @@ const MNEMONIC = [
   ETH_LEDGER,
   ETC_LEDGER,
   ETC_TREZOR,
+  ETH_SINGULAR,
   TESTNET,
   EXPANSE
 ];
