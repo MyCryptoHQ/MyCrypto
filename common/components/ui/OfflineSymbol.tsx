@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import wifiOn from 'assets/images/wifi-on.svg';
 import wifiOff from 'assets/images/wifi-off.svg';
