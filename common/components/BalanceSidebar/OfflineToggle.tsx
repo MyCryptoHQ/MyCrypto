@@ -5,6 +5,7 @@ import {
 } from 'actions/config';
 import OfflineSymbol from 'components/ui/OfflineSymbol';
 import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 
 type sizeType = 'small' | 'medium' | 'large';
 
@@ -42,7 +43,7 @@ class OfflineToggle extends React.Component<OfflineToggleProps, {}> {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: AppState) {
   return {
     offline: state.config.offline,
     forceOffline: state.config.forceOffline

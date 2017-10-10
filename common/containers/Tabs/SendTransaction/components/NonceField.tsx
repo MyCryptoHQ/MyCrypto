@@ -1,6 +1,5 @@
 import React from 'react';
 import Help from 'components/ui/Help';
-import { translateRaw } from 'translations';
 import { isPositiveInteger } from 'utils/helpers';
 
 interface PublicProps {

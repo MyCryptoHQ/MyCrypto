@@ -1,4 +1,3 @@
-import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, padToEven, toChecksumAddress } from 'ethereumjs-util';
@@ -11,6 +10,7 @@ import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
 import translate, { translateRaw } from 'translations';
+import Big, { BigNumber } from 'bignumber.js';
 
 export interface TransactionInput {
   token?: Token | null;
@@ -71,7 +71,10 @@ export function getTransactionFields(tx: EthTx) {
   };
 }
 
-function getValue(token: Token | null | undefined, tx: ExtendedRawTransaction) {
+function getValue(
+  token: Token | null | undefined,
+  tx: ExtendedRawTransaction
+): BigNumber {
   let value;
   if (token) {
     value = new Big(ERC20.$transfer(tx.data).value);
@@ -103,8 +106,8 @@ async function getBalance(
 async function balanceCheck(
   node: INode,
   tx: ExtendedRawTransaction,
-  token: Token | any | any,
-  value: any,
+  token: Token | null | undefined,
+  value: BigNumber,
   gasCost: Wei
 ) {
   // Ensure their balance exceeds the amount they're sending
@@ -123,9 +126,9 @@ async function balanceCheck(
 
 function generateTxValidation(
   to: string,
-  token: Token | any | any,
+  token: Token | null | undefined,
   data: string,
-  gasLimit: BigNumber.BigNumber | string,
+  gasLimit: BigNumber | string,
   gasPrice: Wei | string
 ) {
   // Reject bad addresses
