@@ -1,11 +1,17 @@
 import { showNotification, TShowNotification } from 'actions/notifications';
-import { broadcastTx, TBroadcastTx } from 'actions/wallet';
+import {
+  broadcastTx,
+  TBroadcastTx,
+  resetWallet,
+  TResetWallet
+} from 'actions/wallet';
 import Big from 'bignumber.js';
 import { BalanceSidebar } from 'components';
 // COMPONENTS
 import { UnlockHeader } from 'components/ui';
 import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
 import TabSection from 'containers/TabSection';
+import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
@@ -92,6 +98,7 @@ interface Props {
   transactions: BroadcastTransactionStatus[];
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
+  resetWallet: TResetWallet;
   location: { search: string };
 }
 
@@ -172,12 +179,14 @@ export class SendTransaction extends React.Component<Props, State> {
       transaction
     } = this.state;
     const customMessage = customMessages.find(m => m.to === to);
-
     return (
       <TabSection>
         <section className="Tab-content">
           <UnlockHeader title={'NAV_SendEther'} />
-
+          <NavigationPrompt
+            when={unlocked}
+            onConfirm={this.props.resetWallet}
+          />
           <div className="row">
             {/* Send Form */}
             {unlocked && (
@@ -272,7 +281,6 @@ export class SendTransaction extends React.Component<Props, State> {
               </section>
             )}
           </div>
-
           {transaction &&
             showTxConfirm && (
               <ConfirmationModal
@@ -489,6 +497,8 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps, { showNotification, broadcastTx })(
-  SendTransaction
-);
+export default connect(mapStateToProps, {
+  showNotification,
+  broadcastTx,
+  resetWallet
+})(SendTransaction);
