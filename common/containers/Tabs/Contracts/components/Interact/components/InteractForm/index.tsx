@@ -59,10 +59,11 @@ class InteractForm extends Component<Props, State> {
             <h4>{translate('CONTRACT_Title')}</h4>
             <input
               placeholder="mewtopia.eth or 0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
-              name="address"
+              name="contract_address"
+              autoComplete="off"
               value={address}
               className="InteractForm-address-field-input form-control"
-              onChange={this.handleInput}
+              onChange={this.handleInput('address')}
             />
           </label>
 
@@ -91,7 +92,7 @@ class InteractForm extends Component<Props, State> {
               placeholder="[{ &quot;type&quot;:&quot;contructor&quot;, &quot;inputs&quot;: [{ &quot;name&quot;:&quot;param1&quot;, &quot;type&quot;:&quot;uint256&quot;, &quot;indexed&quot;:true }], &quot;name&quot;:&quot;Event&quot; }, { &quot;type&quot;:&quot;function&quot;, &quot;inputs&quot;: [{&quot;name&quot;:&quot;a&quot;, &quot;type&quot;:&quot;uint256&quot;}], &quot;name&quot;:&quot;foo&quot;, &quot;outputs&quot;: [] }] "
               name="abiJson"
               className="InteractForm-interface-field-input form-control"
-              onChange={this.handleInput}
+              onChange={this.handleInput('abiJson')}
               value={abiJson}
               rows={6}
             />
@@ -108,9 +109,9 @@ class InteractForm extends Component<Props, State> {
     );
   }
 
-  private handleInput = (ev: any) => {
+  private handleInput = name => (ev: any) => {
     this.props.resetState();
-    this.setState({ [ev.target.name]: ev.target.value });
+    this.setState({ [name]: ev.target.value });
   };
 
   private handleSelectContract = (ev: any) => {
