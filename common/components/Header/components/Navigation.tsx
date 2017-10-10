@@ -18,9 +18,6 @@ const tabs = [
     to: 'swap'
   },
   {
-    name: 'NAV_Offline'
-  },
-  {
     name: 'NAV_ViewWallet'
     // to: 'view-wallet'
   },
