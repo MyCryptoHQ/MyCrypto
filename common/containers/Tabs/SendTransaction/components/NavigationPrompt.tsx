@@ -1,7 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
-import { Location, History } from 'history';
+import { Location, History as H } from 'history';
+
+type UnregisterCallback = () => void;
+type BooleanCallback = (arg?: any) => boolean;
+interface History extends H {
+  block(prompt?: boolean | BooleanCallback): UnregisterCallback;
+}
 
 interface Props {
   when: boolean;
