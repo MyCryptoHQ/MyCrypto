@@ -10,3 +10,7 @@ export function getParam(query: { [key: string]: string }, key: string) {
   }
   return query[keys[index]];
 }
+
+export function isPositiveInteger(n: number) {
+  return Number.isInteger(n) && n > 0;
+}
