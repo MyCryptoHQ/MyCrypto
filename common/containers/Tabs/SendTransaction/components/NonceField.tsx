@@ -2,15 +2,16 @@
 import React from 'react';
 import Help from 'components/ui/Help';
 import { translateRaw } from 'translations';
+import { isPositiveInteger } from 'utils/helpers';
 
 interface PublicProps {
   placeholder: string;
-  value: string;
+  value: number | null | undefined;
   onChange(value: number): void;
 }
 
-const isValidNonce = (value: any) => {
-  return true;
+const isValidNonce = (value: number) => {
+  return isPositiveInteger(value);
 };
 
 export default class NonceField extends React.Component<PublicProps, {}> {
@@ -27,11 +28,11 @@ export default class NonceField extends React.Component<PublicProps, {}> {
           />
           <label>Nonce</label>
           <input
-            className={`form-control ${isValidNonce(value)
+            className={`form-control ${value && isValidNonce(value)
               ? 'is-valid'
               : 'is-invalid'}`}
             type="number"
-            value={value}
+            value={String(value)}
             placeholder={placeholder}
             onChange={this.onChange}
           />

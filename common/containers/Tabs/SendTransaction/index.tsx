@@ -289,7 +289,7 @@ export class SendTransaction extends React.Component<Props, State> {
                   {(offline || forceOffline) && (
                       <div>
                         <NonceField
-                          value={String(nonce)}
+                          value={nonce}
                           onChange={this.onNonceChange}
                           placeholder={'0'}
                         />
@@ -422,7 +422,7 @@ export class SendTransaction extends React.Component<Props, State> {
     const { nonce } = this.state;
     let valid = true;
     if (offline || forceOffline) {
-      if (!(nonce && nonce !== 0)) {
+      if (!nonce || nonce < 0) {
         valid = false;
       }
     }
