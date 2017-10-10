@@ -1,2 +1,2 @@
-import App from './App';
-export default App;
+import TabSection from './TabSection';
+export default TabSection;

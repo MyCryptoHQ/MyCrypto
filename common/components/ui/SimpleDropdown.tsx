@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Dropdown from './Dropdown';
 
 interface Props {
-  value?: string;
+  value: string | undefined;
   options: string[];
   ariaLabel?: string;
   onChange(value: string): void;
@@ -19,7 +19,7 @@ export default class SimpleDropdown extends Component<Props, void> {
         options={options}
         value={value}
         onChange={onChange}
-        ariaLabel={ariaLabel || "dropdown"}
+        ariaLabel={ariaLabel || 'dropdown'}
       />
     );
   }
