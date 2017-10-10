@@ -135,24 +135,32 @@ export class SendTransaction extends React.Component<Props, State> {
     }
   }
 
-  public handleGasEstimationOnUpdate(prevState) {
+  public haveFieldsChanged(prevState) {
+    return (
+      this.state.to !== prevState.to ||
+      this.state.value !== prevState.value ||
+      this.state.unit !== prevState.unit ||
+      this.state.data !== prevState.data
+    );
+  }
+
+  public shouldReEstimateGas(prevState) {
     // TODO listen to gas price changes here
     // TODO debounce the call
     // handle gas estimation
-    if (
+    // if any relevant fields changed
+    return (
+      this.haveFieldsChanged(prevState) &&
       // if gas has not changed
       !this.state.gasChanged &&
       // if we have valid tx
-      this.isValid() &&
-      // if any relevant fields changed
-      (this.state.to !== prevState.to ||
-        this.state.value !== prevState.value ||
-        this.state.unit !== prevState.unit ||
-        this.state.data !== prevState.data)
-    ) {
-      if (!isNaN(parseInt(this.state.value, 10))) {
-        this.estimateGas();
-      }
+      (this.isValid() || (this.props.offline || this.props.forceOffline))
+    );
+  }
+
+  public handleGasEstimationOnUpdate(prevState) {
+    if (this.shouldReEstimateGas(prevState)) {
+      this.estimateGas();
     }
   }
 
@@ -232,7 +240,7 @@ export class SendTransaction extends React.Component<Props, State> {
       nonce,
       generateTxProcessing
     } = this.state;
-    const { offline, forceOffline } = this.props;
+    const { offline, forceOffline, balance } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
 
     return (
@@ -267,6 +275,7 @@ export class SendTransaction extends React.Component<Props, State> {
                   <AmountField
                     value={value}
                     unit={unit}
+                    balance={balance}
                     tokens={this.props.tokenBalances
                       .filter(token => !token.balance.eq(0))
                       .map(token => token.symbol)
@@ -278,11 +287,13 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                      <NonceField
-                        value={String(nonce)}
-                        onChange={this.onNonceChange}
-                        placeholder={'0'}
-                      />
+                      <div>
+                        <NonceField
+                          value={String(nonce)}
+                          onChange={this.onNonceChange}
+                          placeholder={'0'}
+                        />
+                      </div>
                     )}
                   {unit === 'ether' && (
                     <DataField
@@ -332,6 +343,21 @@ export class SendTransaction extends React.Component<Props, State> {
                             rows={4}
                             readOnly={true}
                           />
+                          {offline && (
+                            <p>
+                              To broadcast this transaction, paste the above
+                              into{' '}
+                              <a href="https://myetherwallet.com/pushTx">
+                                {' '}
+                                myetherwallet.com/pushTx
+                              </a>{' '}
+                              or{' '}
+                              <a href="https://etherscan.io/pushTx">
+                                {' '}
+                                etherscan.io/pushTx
+                              </a>
+                            </p>
+                          )}
                         </div>
                       </div>
 
@@ -394,10 +420,10 @@ export class SendTransaction extends React.Component<Props, State> {
   public isValidNonce() {
     const { offline, forceOffline } = this.props;
     const { nonce } = this.state;
-    let valid = false;
+    let valid = true;
     if (offline || forceOffline) {
-      if (nonce && nonce !== 0) {
-        valid = true;
+      if (!(nonce && nonce !== 0)) {
+        valid = false;
       }
     }
     return valid;
@@ -430,20 +456,35 @@ export class SendTransaction extends React.Component<Props, State> {
     return await formatTxInput(wallet, transactionInput);
   }
 
+  public isValidValue() {
+    return !isNaN(parseInt(this.state.value, 10));
+  }
+
   public async estimateGas() {
     const { offline, forceOffline, nodeLib } = this.props;
-    if (isNaN(parseInt(this.state.value, 10))) {
-      return;
-    }
+    let gasLimit;
+
     if (offline || forceOffline) {
+      const { unit } = this.state;
+      if (unit === 'ether') {
+        gasLimit = 21000;
+      } else {
+        gasLimit = 150000;
+      }
+      this.setState({ gasLimit });
       return;
     }
+
+    if (!this.isValidValue()) {
+      return;
+    }
+
     try {
       const cachedFormattedTx = await this.getFormattedTxFromState();
       // Grab a reference to state. If it has changed by the time the estimateGas
       // call comes back, we don't want to replace the gasLimit in state.
       const state = this.state;
-      const gasLimit = await nodeLib.estimateGas(cachedFormattedTx);
+      gasLimit = await nodeLib.estimateGas(cachedFormattedTx);
       if (this.state === state) {
         this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
       } else {
