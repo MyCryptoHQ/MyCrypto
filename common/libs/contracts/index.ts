@@ -135,7 +135,7 @@ export default class Contract {
   };
 
   private applyTrapForSend = (
-    target: ISend,
+    target: (sendParams: ISendParams) => void,
     thisArg,
     [userSendParams]: [IUserSendParams]
   ) => {
@@ -149,5 +149,3 @@ export default class Contract {
     });
   };
 }
-type ISend = (sendParams: ISendParams) => void;
-type ISendUser = (userSendParams: IUserSendParams) => void;
