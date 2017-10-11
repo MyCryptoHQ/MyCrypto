@@ -328,7 +328,7 @@ export class SendTransaction extends React.Component<Props, State> {
                   {generateTxProcessing && (
                     <div className="container">
                       <div className="row form-group text-center">
-                        <Spinner size="5x" />
+                        <Spinner />
                       </div>
                     </div>
                   )}
