@@ -1,33 +1,11 @@
 @import "common/sass/variables";
+@import "common/sass/mixins";
 
 .AlphaAgreement {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  @include cover-message;
   background: $brand-warning;
-  overflow: auto;
-  z-index: 10000;
 
   &-content {
-    max-width: 520px;
-    padding: 20px;
-    margin: 0 auto;
-    color: #fff;
-    text-shadow: 1px 1px 1px rgba(#000, 0.12);
-    overflow: auto;
-
-    h2 {
-      font-size: 42px;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-
     &-buttons {
       padding-top: 20px;
 

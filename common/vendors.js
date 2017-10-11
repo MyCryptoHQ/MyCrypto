@@ -1,6 +1,5 @@
 require('ethereumjs-abi');
 require('ethereumjs-util');
-require('ethereumjs-wallet');
 require('hdkey');
 require('idna-uts46');
 require('lodash');
@@ -25,4 +24,3 @@ require('qrcode');
 require('qrcode.react');
 require('bignumber.js');
 require('classnames');
-require('./vendor/trezor-connect');
