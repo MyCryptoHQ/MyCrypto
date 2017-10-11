@@ -1,32 +1,17 @@
 import React from 'react';
-import wifiOn from 'assets/images/wifi-on.svg';
-import wifiOff from 'assets/images/wifi-off.svg';
+import wifiOn from 'assets/images/wifi_white_24px.svg';
+import wifiOff from 'assets/images/wifi_off_white_24px.svg';
 
-type sizeType = 'small' | 'medium' | 'large';
+const styles = {
+  margin: '0px 8px 0px 0px'
+};
 
-interface OfflineSymbolProps {
+interface Props {
   offline: boolean;
-  size?: sizeType;
 }
 
-const OfflineSymbol = ({ offline, size }: OfflineSymbolProps) => {
-  let width = 30;
-  let height = 12;
-
-  switch (size) {
-    case 'medium':
-      width = width * 3;
-      height = height * 3;
-      break;
-    case 'large':
-      width = width * 4;
-      height = height * 4;
-      break;
-    default:
-      break;
-  }
-
-  return <img src={offline ? wifiOff : wifiOn} width={width} height={height} />;
-};
+const OfflineSymbol = ({ offline }: Props) => (
+  <img src={offline ? wifiOff : wifiOn} style={styles} />
+);
 
 export default OfflineSymbol;
