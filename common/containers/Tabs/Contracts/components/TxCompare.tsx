@@ -37,7 +37,7 @@ export const TxCompare = (props: Props) => {
     </div>
   );
   return (
-    <section className="row">
+    <section>
       <Left />
       <Right />
     </section>
