@@ -48,7 +48,7 @@ npm run derivation-checker
 
 ```
 │
-├── common - Your App
+├── common
 │   ├── actions - application actions
 │   ├── api - Services and XHR utils(also custom form validation, see InputComponent from components/common)
 │   ├── components - components according to "Redux philosophy"
@@ -120,6 +120,7 @@ export function [namespace](
 * Define each action type as a string enum in `constants.ts`  
 * Export `actionCreators` and `actionTypes` from module file `index.ts`  
 
+```
 ├── common
     ├── actions - application actions
         ├── [namespace] - action namespace
@@ -127,7 +128,7 @@ export function [namespace](
             ├── actionTypes.ts - action interfaces / types
             ├── constants.ts - string enum
             ├── index.ts - exports all action creators and action object types
-
+```
 ##### constants.ts
 ```ts
 export enum TypeKeys {
