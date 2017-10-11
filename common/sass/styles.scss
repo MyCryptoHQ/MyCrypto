@@ -22,6 +22,8 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
 
 // --- CUSTOM ---
+@import "./styles/badbrowser";
+@import "./styles/noscript";
 @import "./styles/overrides";
 @import "./styles/scaffolding";
 @import "./styles/tab";

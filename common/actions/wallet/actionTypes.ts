@@ -23,6 +23,11 @@ export interface SetWalletAction {
   payload: IWallet;
 }
 
+/*** Reset Wallet ***/
+export interface ResetWalletAction {
+  type: 'WALLET_RESET';
+}
+
 /*** Set Balance ***/
 export interface SetBalanceAction {
   type: 'WALLET_SET_BALANCE';
@@ -84,6 +89,7 @@ export interface BroadcastTxFailedAction {
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
+  | ResetWalletAction
   | SetBalanceAction
   | SetTokenBalancesAction
   | BroadcastTxRequestedAction
