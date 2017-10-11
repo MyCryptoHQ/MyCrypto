@@ -6,6 +6,9 @@ import { TTxModal } from 'containers/Tabs/Contracts/components/TxModal';
 import { TTxCompare } from 'containers/Tabs/Contracts/components/TxCompare';
 import WalletDecrypt from 'components/WalletDecrypt';
 import { TShowNotification } from 'actions/notifications';
+import classnames from 'classnames';
+import { isValidGasPrice, isValidValue } from 'libs/validators';
+import { addProperties } from 'utils/helpers';
 
 export interface Props {
   contractFunctions: any;
@@ -67,6 +70,9 @@ export default class InteractExplorer extends Component<Props, State> {
       walletDecrypted
     } = this.props;
 
+    const validValue = isValidValue(value);
+    const validGasLimit = isValidGasPrice(gasLimit);
+    const showContractWrite = validValue && validGasLimit;
     return (
       <div className="InteractExplorer">
         <h3 className="InteractExplorer-title">
@@ -149,8 +155,11 @@ export default class InteractExplorer extends Component<Props, State> {
                       name="gasLimit"
                       value={gasLimit}
                       onChange={handleInput('gasLimit')}
-                      placeholder="30000"
-                      className="InteractExplorer-field-input form-control"
+                      className={classnames(
+                        'InteractExplorer-field-input',
+                        'form-control',
+                        { 'is-invalid': !validGasLimit }
+                      )}
                     />
                   </label>
                   <label className="InteractExplorer-field form-group">
@@ -160,12 +169,19 @@ export default class InteractExplorer extends Component<Props, State> {
                       value={value}
                       onChange={handleInput('value')}
                       placeholder="0"
-                      className="InteractExplorer-field-input form-control"
+                      className={classnames(
+                        'InteractExplorer-field-input',
+                        'form-control',
+                        { 'is-invalid': !validValue }
+                      )}
                     />
                   </label>
                   <button
                     className="InteractExplorer-func-submit btn btn-primary"
-                    onClick={handleFunctionSend(selectedFunction, inputs)}
+                    disabled={!showContractWrite}
+                    {...addProperties(showContractWrite, {
+                      onClick: handleFunctionSend(selectedFunction, inputs)
+                    })}
                   >
                     {translate('CONTRACT_Write')}
                   </button>

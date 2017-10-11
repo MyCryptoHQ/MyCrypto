@@ -5,6 +5,10 @@ import { NetworkContract } from 'config/data';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
+import { addProperties } from 'utils/helpers';
+import classnames from 'classnames';
+
 interface Props {
   contracts: NetworkContract[];
   accessContract(abiJson: string, address: string): (ev) => void;
@@ -24,7 +28,9 @@ class InteractForm extends Component<Props, State> {
   public render() {
     const { contracts, accessContract } = this.props;
     const { address, abiJson } = this.state;
-
+    const validEthAddress = isValidETHAddress(address);
+    const validAbiJson = isValidAbiJson(abiJson);
+    const showContractAccessButton = validEthAddress && validAbiJson;
     let contractOptions;
     if (contracts && contracts.length) {
       contractOptions = [
@@ -62,7 +68,11 @@ class InteractForm extends Component<Props, State> {
               name="contract_address"
               autoComplete="off"
               value={address}
-              className="InteractForm-address-field-input form-control"
+              className={classnames(
+                'InteractForm-address-field-input',
+                'form-control',
+                { 'is-invalid': !validEthAddress }
+              )}
               onChange={this.handleInput('address')}
             />
           </label>
@@ -91,7 +101,11 @@ class InteractForm extends Component<Props, State> {
             <textarea
               placeholder="[{ &quot;type&quot;:&quot;contructor&quot;, &quot;inputs&quot;: [{ &quot;name&quot;:&quot;param1&quot;, &quot;type&quot;:&quot;uint256&quot;, &quot;indexed&quot;:true }], &quot;name&quot;:&quot;Event&quot; }, { &quot;type&quot;:&quot;function&quot;, &quot;inputs&quot;: [{&quot;name&quot;:&quot;a&quot;, &quot;type&quot;:&quot;uint256&quot;}], &quot;name&quot;:&quot;foo&quot;, &quot;outputs&quot;: [] }] "
               name="abiJson"
-              className="InteractForm-interface-field-input form-control"
+              className={classnames(
+                'InteractForm-interface-field-input',
+                'form-control',
+                { 'is-invalid': !validAbiJson }
+              )}
               onChange={this.handleInput('abiJson')}
               value={abiJson}
               rows={6}
@@ -101,7 +115,10 @@ class InteractForm extends Component<Props, State> {
 
         <button
           className="InteractForm-submit btn btn-primary"
-          onClick={accessContract(abiJson, address)}
+          disabled={!showContractAccessButton}
+          {...addProperties(showContractAccessButton, {
+            onClick: accessContract(abiJson, address)
+          })}
         >
           {translate('x_Access')}
         </button>

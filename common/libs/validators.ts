@@ -165,3 +165,15 @@ export function isValidPath(dPath: string) {
   const len = dPath.split("'/").length;
   return len === 3 || len === 4;
 }
+
+export const isValidValue = (value: string) =>
+  !!(value && isFinite(parseFloat(value)) && parseFloat(value) >= 0);
+
+export const isValidGasPrice = (gasLimit: string) =>
+  !!(gasLimit && isFinite(parseFloat(gasLimit)) && parseFloat(gasLimit) > 0);
+
+export const isValidByteCode = (byteCode: string) =>
+  byteCode && byteCode.length > 0 && byteCode.length % 2 === 0;
+
+export const isValidAbiJson = (abiJson: string) =>
+  abiJson && abiJson.startsWith('[') && abiJson.endsWith(']');

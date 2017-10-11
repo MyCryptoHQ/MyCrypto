@@ -4,16 +4,21 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import { deployHOC } from './components/DeployHoc';
 import { TTxCompare } from '../TxCompare';
 import { TTxModal } from '../TxModal';
-interface Props {
+import classnames from 'classnames';
+import { addProperties } from 'utils/helpers';
+import { isValidGasPrice, isValidByteCode } from 'libs/validators';
+export interface Props {
   byteCode: string;
   gasLimit: string;
   walletExists: boolean;
-  TxCompare: TTxCompare | null;
+  txCompare: React.ReactElement<TTxCompare> | null;
   displayModal: boolean;
-  DeployModal: TTxModal | null;
-  handleInput(input: string): () => null;
-  handleSignTx(): null;
-  handleDeploy(): null;
+  deployModal: React.ReactElement<TTxModal> | null;
+  handleInput(
+    input: string
+  ): (ev: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
+  handleSignTx(): Promise<void>;
+  handleDeploy(): void;
 }
 
 const Deploy = (props: Props) => {
@@ -24,10 +29,13 @@ const Deploy = (props: Props) => {
     byteCode,
     gasLimit,
     walletExists,
-    DeployModal,
+    deployModal,
     displayModal,
-    TxCompare
+    txCompare
   } = props;
+  const validByteCode = isValidByteCode(byteCode);
+  const validGasLimit = isValidGasPrice(gasLimit);
+  const showSignTxButton = validByteCode && validGasLimit;
   return (
     <div className="Deploy">
       <section>
@@ -40,8 +48,10 @@ const Deploy = (props: Props) => {
             placeholder="0x8f87a973e..."
             rows={6}
             onChange={handleInput('data')}
-            className="Deploy-field-input form-control"
-            value={byteCode}
+            className={classnames('Deploy-field-input', 'form-control', {
+              'is-invalid': !validByteCode
+            })}
+            value={byteCode || ''}
           />
         </label>
 
@@ -49,25 +59,29 @@ const Deploy = (props: Props) => {
           <h4 className="Deploy-field-label">Gas Limit</h4>
           <input
             name="gasLimit"
-            value={gasLimit}
+            value={gasLimit || ''}
             onChange={handleInput('gasLimit')}
-            placeholder="30000"
-            className="Deploy-field-input form-control"
+            className={classnames('Deploy-field-input', 'form-control', {
+              'is-invalid': !validGasLimit
+            })}
           />
         </label>
 
-        {(walletExists && (
+        {walletExists ? (
           <button
             className="Sign-submit btn btn-primary"
-            onClick={handleSignTx}
+            disabled={!showSignTxButton}
+            {...addProperties(showSignTxButton, { onClick: handleSignTx })}
           >
             {translate('DEP_signtx')}
           </button>
-        )) || <WalletDecrypt />}
+        ) : (
+          <WalletDecrypt />
+        )}
 
-        {TxCompare ? (
+        {txCompare ? (
           <section>
-            {TxCompare}
+            {txCompare}
             <button
               className="Deploy-submit btn btn-primary"
               onClick={handleDeploy}
@@ -77,7 +91,7 @@ const Deploy = (props: Props) => {
           </section>
         ) : null}
 
-        {displayModal && DeployModal}
+        {displayModal && deployModal}
       </section>
     </div>
   );

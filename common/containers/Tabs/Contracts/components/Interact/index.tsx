@@ -50,15 +50,24 @@ class Interact extends Component<IWithTx, State> {
   }
 
   public accessContract = (contractAbi: string, address: string) => ev => {
-    const parsedAbi = JSON.parse(contractAbi);
-    const contractInstance = new Contract(parsedAbi);
-    contractInstance.at(address);
-    contractInstance.setNode(this.props.nodeLib);
-    this.setState({
-      currentContract: contractInstance,
-      showExplorer: true,
-      address
-    });
+    try {
+      const parsedAbi = JSON.parse(contractAbi);
+      const contractInstance = new Contract(parsedAbi);
+      contractInstance.at(address);
+      contractInstance.setNode(this.props.nodeLib);
+      this.setState({
+        currentContract: contractInstance,
+        showExplorer: true,
+        address
+      });
+    } catch (e) {
+      this.props.showNotification(
+        'danger',
+        `Contract Access Error: ${(e as Error).message ||
+          'Can not parse contract'}`
+      );
+      this.resetState();
+    }
   };
 
   public render() {

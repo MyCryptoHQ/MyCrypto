@@ -5,9 +5,10 @@ import {
   TransactionInput
 } from 'libs/transaction';
 import { Props, State, initialState } from './types';
-import { TxModal, Props as DMProps } from '../../../TxModal';
-import { TxCompare, Props as TCProps } from '../../../TxCompare';
+import { TxModal, Props as DMProps, TTxModal } from '../../../TxModal';
+import { TxCompare, Props as TCProps, TTxCompare } from '../../../TxCompare';
 import { withTx } from '../../../withTx';
+import { Props as DProps } from '../../';
 
 export const deployHOC = PassedComponent => {
   class WrappedComponent extends Component<Props, State> {
@@ -39,17 +40,24 @@ export const deployHOC = PassedComponent => {
       }
     };
 
-    public handleInput = inputName => ev =>
+    public handleInput = inputName => (
+      ev: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>
+    ): void => {
+      if (this.state.signedTx) {
+        this.resetState();
+      }
+
       this.setState({
-        [inputName]: ev.target.value
+        [inputName]: ev.currentTarget.value
       });
+    };
 
     public handleDeploy = () => this.setState({ displayModal: true });
 
     public render() {
       const { data: byteCode, gasLimit, signedTx, displayModal } = this.state;
 
-      const props = {
+      const props: DProps = {
         handleInput: this.handleInput,
         handleSignTx: this.handleSignTx,
         handleDeploy: this.handleDeploy,
@@ -57,14 +65,14 @@ export const deployHOC = PassedComponent => {
         gasLimit,
         displayModal,
         walletExists: !!this.props.wallet,
-        TxCompare: signedTx ? this.displayCompareTx() : null,
-        DeployModal: signedTx ? this.displayDeployModal() : null
+        txCompare: signedTx ? this.displayCompareTx() : null,
+        deployModal: signedTx ? this.displayDeployModal() : null
       };
 
       return <PassedComponent {...props} />;
     }
 
-    private displayCompareTx = () => {
+    private displayCompareTx = (): React.ReactElement<TTxCompare> => {
       const { nonce, gasLimit, data, value, signedTx, to } = this.state;
       const { gasPrice, chainId } = this.props;
 
@@ -86,7 +94,7 @@ export const deployHOC = PassedComponent => {
       return <TxCompare {...props} />;
     };
 
-    private displayDeployModal = () => {
+    private displayDeployModal = (): React.ReactElement<TTxModal> => {
       const { networkName, node: { network, service } } = this.props;
       const { signedTx } = this.state;
 
