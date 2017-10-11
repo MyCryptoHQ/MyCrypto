@@ -13,6 +13,7 @@ import {
   DataField,
   GasField
 } from './components';
+import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
 import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
 // LIBS
@@ -36,7 +37,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import { broadcastTx, TBroadcastTx } from 'actions/wallet';
+import {
+  broadcastTx,
+  TBroadcastTx,
+  resetWallet,
+  TResetWallet
+} from 'actions/wallet';
 import {
   pollOfflineStatus as dPollOfflineStatus,
   TPollOfflineStatus
@@ -94,6 +100,7 @@ interface Props {
   transactions: BroadcastTransactionStatus[];
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
+  resetWallet: TResetWallet;
   offline: boolean;
   forceOffline: boolean;
   pollOfflineStatus: TPollOfflineStatus;
@@ -242,7 +249,6 @@ export class SendTransaction extends React.Component<Props, State> {
     } = this.state;
     const { offline, forceOffline, balance } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
-
     return (
       <TabSection>
         <section className="Tab-content">
@@ -255,6 +261,10 @@ export class SendTransaction extends React.Component<Props, State> {
                 ) : null}
               </div>
             }
+          />
+          <NavigationPrompt
+            when={unlocked}
+            onConfirm={this.props.resetWallet}
           />
           <div className="row">
             {/* Send Form */}
@@ -385,7 +395,6 @@ export class SendTransaction extends React.Component<Props, State> {
               </section>
             )}
           </div>
-
           {transaction &&
             showTxConfirm && (
               <ConfirmationModal
@@ -573,14 +582,7 @@ export class SendTransaction extends React.Component<Props, State> {
   public generateTxFromState = async () => {
     this.setState({ generateTxProcessing: true });
     await this.resetJustTx();
-    const {
-      nodeLib,
-      wallet,
-      gasPrice,
-      network,
-      offline,
-      forceOffline
-    } = this.props;
+    const { nodeLib, wallet, gasPrice, network, offline } = this.props;
     const { token, unit, value, to, data, gasLimit, nonce } = this.state;
     const chainId = network.chainId;
     const transactionInput = {
@@ -591,7 +593,6 @@ export class SendTransaction extends React.Component<Props, State> {
       data
     };
     const bigGasLimit = new Big(gasLimit);
-    const isOffline = offline || forceOffline;
     try {
       const signedTx = await generateCompleteTransaction(
         wallet,
@@ -601,10 +602,11 @@ export class SendTransaction extends React.Component<Props, State> {
         chainId,
         transactionInput,
         nonce,
-        isOffline
+        offline
       );
       this.setState({ transaction: signedTx, generateTxProcessing: false });
     } catch (err) {
+      this.setState({ generateTxProcessing: false });
       this.props.showNotification('danger', err.message, 5000);
     }
   };
@@ -649,5 +651,6 @@ function mapStateToProps(state: AppState) {
 export default connect(mapStateToProps, {
   showNotification,
   broadcastTx,
+  resetWallet,
   pollOfflineStatus: dPollOfflineStatus
 })(SendTransaction);
