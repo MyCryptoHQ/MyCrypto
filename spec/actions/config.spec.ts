@@ -5,7 +5,7 @@ describe('actions', () => {
     const value = 'en';
     const expectedAction = {
       type: 'CONFIG_LANGUAGE_CHANGE',
-      value
+      payload: value
     };
     expect(changeLanguage(value)).toEqual(expectedAction);
   });
