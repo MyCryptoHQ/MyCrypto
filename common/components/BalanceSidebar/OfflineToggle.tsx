@@ -24,12 +24,10 @@ class OfflineToggle extends React.Component<OfflineToggleProps, {}> {
       <div>
         {!offline ? (
           <div className="row text-center">
-            <div className="col-md-6">
-              <button className="btn btn-info" onClick={forceOfflineConfig}>
-                <OfflineSymbol offline={forceOffline} />
-                {forceOffline ? 'Go Online' : 'Go Offline'}
-              </button>
-            </div>
+            <button className="btn btn-info" onClick={forceOfflineConfig}>
+              <OfflineSymbol offline={forceOffline} />
+              {forceOffline ? 'Go Online' : 'Go Offline'}
+            </button>
           </div>
         ) : (
           <div className="text-center">
