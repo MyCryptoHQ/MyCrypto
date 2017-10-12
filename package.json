@@ -37,6 +37,7 @@
     "redux-promise-middleware": "^4.4.1",
     "redux-saga": "^0.15.3",
     "scryptsy": "^2.0.0",
+    "solidity-sha3": "^0.4.1",
     "store2": "^2.5.5",
     "uuid": "^3.1.0",
     "wallet-address-validator": "^0.1.0",
