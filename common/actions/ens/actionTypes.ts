@@ -1,19 +1,22 @@
 import * as constants from './constants';
+import { IResolveDomainRequest } from 'libs/ens';
 
-/*** Resolve ENS name ***/
-export interface ResolveEnsNameAction {
-  type: 'ENS_RESOLVE';
-  payload: string;
+export interface ResolveDomainRequested {
+  type: 'ENS_RESOLVE_DOMAIN_REQUESTED';
+  payload: { domain: string };
 }
 
-/*** Cache ENS address ***/
-export interface CacheEnsAddressAction {
-  type: 'ENS_CACHE';
-  payload: {
-    ensName: string;
-    address: string;
-  };
+export interface ResolveDomainSucceeded {
+  type: 'ENS_RESOLVE_DOMAIN_SUCCEEDED';
+  payload: { domain: string; domainData: IResolveDomainRequest };
 }
 
-/*** Union Type ***/
-export type EnsAction = ResolveEnsNameAction | CacheEnsAddressAction;
+export interface ResolveDomainFailed {
+  type: 'ENS_RESOLVE_DOMAIN_FAILED';
+  payload: { domain: string; error: Error };
+}
+
+export type EnsAction =
+  | ResolveDomainRequested
+  | ResolveDomainSucceeded
+  | ResolveDomainFailed;
