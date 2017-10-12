@@ -1,7 +1,14 @@
 import EthTx from 'ethereumjs-tx';
-import { ecsign, sha3 } from 'ethereumjs-util';
+import { ecsign, ecrecover, publicToAddress } from 'ethereumjs-util';
+import sha3 from 'solidity-sha3';
 import { RawTransaction } from 'libs/transaction';
 import { isValidRawTx } from 'libs/validators';
+
+export interface SignatureArgs {
+  r: Buffer;
+  s: Buffer;
+  v: number;
+}
 
 export function signRawTxWithPrivKey(
   privKey: Buffer,
@@ -36,6 +43,20 @@ export function signMessageWithPrivKey(
   return JSON.stringify({
     address,
     msg: fullMessage,
-    sig: '0x' + combinedHex
+    sig: signed
   });
+}
+
+export function verifyAddrFromRecoveredSig(
+  address: string,
+  msg: string,
+  signature: SignatureArgs
+): boolean {
+  console.log(ecrecover(sha3(msg), signature.v, signature.r, signature.s));
+  return (
+    address ===
+    publicToAddress(
+      ecrecover(sha3(msg), signature.v, signature.r, signature.s)
+    ).toString('utf-8')
+  );
 }
