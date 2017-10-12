@@ -45,10 +45,23 @@ const setNodes = node => {
   ENS.resolver.setNode(node);
   ENS.registry.setNode(node);
 };
+
+export interface IResolveDomainRequest {
+  mode: string;
+  deedAddress: string;
+  registrationDate: string;
+  value: string;
+  highestBid: string;
+  labelHash: string;
+  nameHash: string;
+  mappedMode: string;
+  ownerAddress: string;
+  resolvedAddress: string;
+}
 export const resolveDomainRequest = async (
   name: string,
   node: INode
-): Promise<any> => {
+): Promise<IResolveDomainRequest> => {
   setNodes(node);
   const hash = ethUtil.sha3(name);
   const nameHash = getNameHash(`${name}.eth`);
