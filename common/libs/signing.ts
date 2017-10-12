@@ -33,13 +33,6 @@ export function signMessageWithPrivKey(
   const fullMessage = msg + spacer + date;
   const hash = sha3(fullMessage);
   const signed = ecsign(hash, privKey);
-  const combined = Buffer.concat([
-    Buffer.from(signed.r),
-    Buffer.from(signed.s),
-    Buffer.from([signed.v])
-  ]);
-  const combinedHex = combined.toString('hex');
-
   return JSON.stringify({
     address,
     msg: fullMessage,
