@@ -27,6 +27,4 @@ describe('signingAndVerifying', () => {
         ).toEqual(true);
       });
   });
-  //expect(result).toBeInstanceOf(Buffer);
-  //expect(result.toString('hex')).toEqual(mewV1PrivKey);
 });
