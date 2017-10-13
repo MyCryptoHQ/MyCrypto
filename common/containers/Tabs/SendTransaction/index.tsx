@@ -415,7 +415,6 @@ export class SendTransaction extends React.Component<Props, State> {
     const query = queryString.parse(searchStr);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
-    // FIXME validate token against presets
     const unit = getParam(query, 'tokenSymbol');
     const token = this.props.tokens.find(x => x.symbol === unit);
     const value = getParam(query, 'value');
