@@ -215,7 +215,7 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public handleWalletStateOnUpdate(prevProps) {
-    if (this.props.wallet !== prevProps.wallet) {
+    if (this.props.wallet !== prevProps.wallet && prevProps.wallet !== null) {
       this.setState(initialState);
     }
   }
@@ -418,7 +418,7 @@ export class SendTransaction extends React.Component<Props, State> {
     // FIXME validate token against presets
     const unit = getParam(query, 'tokenSymbol');
     const value = getParam(query, 'value');
-    let gasLimit = getParam(query, 'gas');
+    let gasLimit = getParam(query, 'gaslimit');
     if (gasLimit === null) {
       gasLimit = getParam(query, 'limit');
     }
