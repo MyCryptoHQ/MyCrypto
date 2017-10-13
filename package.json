@@ -74,6 +74,7 @@
     "empty": "^0.10.1",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.1",
+    "enzyme-to-json": "^3.1.2",
     "express": "^4.15.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.0",
@@ -93,6 +94,7 @@
     "prettier": "^1.7.0",
     "progress": "^2.0.0",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-test-renderer": "^16.0.0",
     "redux-devtools-extension": "^2.13.0",
     "resolve-url-loader": "^2.0.0",
     "rimraf": "^2.6.2",
@@ -114,8 +116,7 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "build:demo":
-      "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
+    "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "pretest": "check-node-version --package",
@@ -123,14 +124,16 @@
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
-    "derivation-checker":
-      "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
+    "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["prettier --write --single-quote", "git add"]
+    "*.{ts,tsx}": [
+      "prettier --write --single-quote",
+      "git add"
+    ]
   }
 }
