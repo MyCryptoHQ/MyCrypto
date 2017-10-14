@@ -6,27 +6,27 @@ const fallbackLanguage = 'en';
 const repository = {};
 
 const languages = [
-  require('./lang/de'),
-  require('./lang/el'),
-  require('./lang/en'),
-  require('./lang/es'),
-  require('./lang/fi'),
-  require('./lang/fr'),
-  require('./lang/ht'),
-  require('./lang/hu'),
-  require('./lang/id'),
-  require('./lang/it'),
-  require('./lang/ja'),
-  require('./lang/nl'),
-  require('./lang/no'),
-  require('./lang/pl'),
-  require('./lang/pt'),
-  require('./lang/ru') /*sk, sl, sv */,
-  require('./lang/ko'),
-  require('./lang/tr'),
-  require('./lang/vi'),
-  require('./lang/zhcn'),
-  require('./lang/zhtw')
+  require('./lang/de.json'),
+  require('./lang/el.json'),
+  require('./lang/en.json'),
+  require('./lang/es.json'),
+  require('./lang/fi.json'),
+  require('./lang/fr.json'),
+  require('./lang/ht.json'),
+  require('./lang/hu.json'),
+  require('./lang/id.json'),
+  require('./lang/it.json'),
+  require('./lang/ja.json'),
+  require('./lang/nl.json'),
+  require('./lang/no.json'),
+  require('./lang/pl.json'),
+  require('./lang/pt.json'),
+  require('./lang/ru.json') /*sk, sl, sv */,
+  require('./lang/ko.json'),
+  require('./lang/tr.json'),
+  require('./lang/vi.json'),
+  require('./lang/zhcn.json'),
+  require('./lang/zhtw.json')
 ];
 
 languages.forEach(l => {
