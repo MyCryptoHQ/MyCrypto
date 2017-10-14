@@ -208,6 +208,7 @@ interface InjectedProps extends MyComponentProps {
 
 Now you can add a [getter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) to the component to derive the injected props from the props object at runtime:
 
+```
 class MyComponent extends React.Component<MyComponentProps, {}> {
   get injected() {
     return this.props as InjectedProps;
@@ -219,6 +220,7 @@ class MyComponent extends React.Component<MyComponentProps, {}> {
     ...
   }
 }
+```
 
 All the injected props are now strongly typed, while staying private to the module, and not polluting the public props interface.
 
