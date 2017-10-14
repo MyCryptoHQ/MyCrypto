@@ -167,6 +167,61 @@ export function nameOfAction(): interfaces.NameOfActionAction {
 export * from './actionCreators';
 export * from './actionTypes';
 ```
+### Higher Order Components
+
+#### Typing Injected Props
+Props made available through higher order components can be tricky to type. Normally, if a component requires a prop, you add it to the component's interface and it just works. However, working with injected props from [higher order components](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e), you will be forced to supply all required props whenever you compose the component.  
+
+```
+interface MyComponentProps {
+  name: string;
+  countryCode?: string;
+  router: InjectedRouter;
+}
+
+...
+
+class OtherComponent extends React.Component<{}, {}> {
+  render() {
+    return (
+      <MyComponent
+        name="foo"
+        countryCode="CA"
+        // Error: 'router' is missing!
+        />
+    );
+  }
+```
+
+Instead of tacking the injected props on to the MyComponentProps interface itself, put them on another interface that extends the main interface:
+
+```
+interface MyComponentProps {
+  name: string;
+  countryCode?: string;
+}
+
+interface InjectedProps extends MyComponentProps {
+  userStore: UserStore;
+  router: InjectedRouter;
+}
+```
+
+Now you can add a [getter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) to the component to derive the injected props from the props object at runtime:
+
+class MyComponent extends React.Component<MyComponentProps, {}> {
+  get injected() {
+    return this.props as InjectedProps;
+  }
+
+  render() {
+    const { name, countryCode } = this.props;
+    const { router } = this.injected;
+    ...
+  }
+}
+
+All the injected props are now strongly typed, while staying private to the module, and not polluting the public props interface.
 
 ### Styling
 
