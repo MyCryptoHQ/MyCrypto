@@ -8,13 +8,33 @@ interface Props {
   wallet: PrivKeyWallet;
 }
 
+interface State {
+  address: string | null;
+  privateKey: string | null;
+}
+
+const initialState = {
+  address: null,
+  privateKey: null
+};
+
 export default class PrintableWallet extends Component<Props, {}> {
+  public state: State = initialState;
+
+  public async componentDidMount() {
+    const address = await this.props.wallet.getAddress();
+    const privateKey = this.props.wallet.getPrivateKey();
+    this.setState({ address, privateKey });
+  }
+
   public print = () => {
-    printElement(<PaperWallet wallet={this.props.wallet} />, {
-      popupFeatures: {
-        scrollbars: 'no'
-      },
-      styles: `
+    const { address, privateKey } = this.state;
+    if (address && privateKey) {
+      printElement(<PaperWallet address={address} privateKey={privateKey} />, {
+        popupFeatures: {
+          scrollbars: 'no'
+        },
+        styles: `
         * {
           box-sizing: border-box;
         }
@@ -26,13 +46,15 @@ export default class PrintableWallet extends Component<Props, {}> {
           margin: 0;
         }
       `
-    });
+      });
+    }
   };
 
   public render() {
-    return (
+    const { address, privateKey } = this.state;
+    return address && privateKey ? (
       <div>
-        <PaperWallet wallet={this.props.wallet} />
+        <PaperWallet address={address} privateKey={privateKey} />
         <a
           role="button"
           aria-label={translate('x_Print')}
@@ -44,6 +66,6 @@ export default class PrintableWallet extends Component<Props, {}> {
           {translate('x_Print')}
         </a>
       </div>
-    );
+    ) : null;
   }
 }
