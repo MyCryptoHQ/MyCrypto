@@ -202,7 +202,6 @@ interface MyComponentProps {
 }
 
 interface InjectedProps extends MyComponentProps {
-  userStore: UserStore;
   router: InjectedRouter;
 }
 ```
