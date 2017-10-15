@@ -1,11 +1,13 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
+import { Ether } from 'libs/units';
 
 interface Props {
   value: string;
   unit: string;
   tokens: string[];
+  balance: number | null | Ether;
   onChange?(value: string, unit: string): void;
 }
 
@@ -13,14 +15,12 @@ export default class AmountField extends React.Component {
   public props: Props;
 
   public render() {
-    const { value, unit, onChange } = this.props;
+    const { value, unit, onChange, balance } = this.props;
     const isReadonly = !onChange;
     return (
       <div className="row form-group">
         <div className="col-xs-11">
-          <label>
-            {translate('SEND_amount')}
-          </label>
+          <label>{translate('SEND_amount')}</label>
           <div className="input-group">
             <input
               className={`form-control ${isFinite(Number(value)) &&
@@ -40,13 +40,15 @@ export default class AmountField extends React.Component {
             />
           </div>
           {!isReadonly &&
-            <span className="help-block">
-              <a onClick={this.onSendEverything}>
-                <span className="strong">
-                  {translate('SEND_TransferTotal')}
-                </span>
-              </a>
-            </span>}
+            balance && (
+              <span className="help-block">
+                <a onClick={this.onSendEverything}>
+                  <span className="strong">
+                    {translate('SEND_TransferTotal')}
+                  </span>
+                </a>
+              </span>
+            )}
         </div>
       </div>
     );

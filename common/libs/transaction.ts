@@ -1,4 +1,3 @@
-import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, padToEven, toChecksumAddress } from 'ethereumjs-util';
@@ -11,6 +10,7 @@ import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
 import translate, { translateRaw } from 'translations';
+import Big, { BigNumber } from 'bignumber.js';
 
 export interface TransactionInput {
   token?: Token | null;
@@ -71,13 +71,66 @@ export function getTransactionFields(tx: EthTx) {
   };
 }
 
-export async function generateCompleteTransactionFromRawTransaction(
+function getValue(
+  token: Token | null | undefined,
+  tx: ExtendedRawTransaction
+): BigNumber {
+  let value;
+  if (token) {
+    value = new Big(ERC20.$transfer(tx.data).value);
+  } else {
+    value = new Big(tx.value);
+  }
+  return value;
+}
+
+async function getBalance(
   node: INode,
   tx: ExtendedRawTransaction,
-  wallet: IWallet,
   token: Token | null | undefined
-): Promise<CompleteTransaction> {
-  const { to, data, gasLimit, gasPrice, from, chainId, nonce } = tx;
+) {
+  const { from } = tx;
+  const ETHBalance = await node.getBalance(from);
+  let balance;
+  if (token) {
+    balance = toTokenUnit(await node.getTokenBalance(tx.from, token), token);
+  } else {
+    balance = ETHBalance.amount;
+  }
+  return {
+    balance,
+    ETHBalance
+  };
+}
+
+async function balanceCheck(
+  node: INode,
+  tx: ExtendedRawTransaction,
+  token: Token | null | undefined,
+  value: BigNumber,
+  gasCost: Wei
+) {
+  // Ensure their balance exceeds the amount they're sending
+  const { balance, ETHBalance } = await getBalance(node, tx, token);
+  if (value.gt(balance)) {
+    throw new Error(translateRaw('GETH_Balance'));
+  }
+  // ensure gas cost is not greaterThan current eth balance
+  // TODO check that eth balance is not lesser than txAmount + gasCost
+  if (gasCost.amount.gt(ETHBalance.amount)) {
+    throw new Error(
+      `gasCost: ${gasCost.amount} greaterThan ETHBalance: ${ETHBalance.amount}`
+    );
+  }
+}
+
+function generateTxValidation(
+  to: string,
+  token: Token | null | undefined,
+  data: string,
+  gasLimit: BigNumber | string,
+  gasPrice: Wei | string
+) {
   // Reject bad addresses
   if (!isValidETHAddress(to)) {
     throw new Error(translateRaw('ERROR_5'));
@@ -106,28 +159,29 @@ export async function generateCompleteTransactionFromRawTransaction(
       'Gas price too high. Please contact support if this was not a mistake.'
     );
   }
-  // build gasCost by multiplying gasPrice * gasLimit
+}
+
+export async function generateCompleteTransactionFromRawTransaction(
+  node: INode,
+  tx: ExtendedRawTransaction,
+  wallet: IWallet,
+  token: Token | null | undefined,
+  offline?: boolean
+): Promise<CompleteTransaction> {
+  const { to, data, gasLimit, gasPrice, chainId, nonce } = tx;
+  // validation
+  generateTxValidation(to, token, data, gasLimit, gasPrice);
+  // duplicated from generateTxValidation -- typescript bug
+  if (typeof gasLimit === 'string' || typeof gasPrice === 'string') {
+    throw Error('Gas Limit and Gas Price should be of type bignumber');
+  }
+  // computed gas cost (gasprice * gaslimit)
   const gasCost: Wei = new Wei(gasPrice.amount.times(gasLimit));
-  // Ensure their balance exceeds the amount they're sending
-  let value;
-  let balance;
-  const ETHBalance: Wei = await node.getBalance(from);
-  if (token) {
-    value = new Big(ERC20.$transfer(tx.data).value);
-    balance = toTokenUnit(await node.getTokenBalance(tx.from, token), token);
-  } else {
-    value = new Big(tx.value);
-    balance = ETHBalance.amount;
-  }
-  if (value.gt(balance)) {
-    throw new Error(translateRaw('GETH_Balance'));
-  }
-  // ensure gas cost is not greaterThan current eth balance
-  // TODO check that eth balance is not lesser than txAmount + gasCost
-  if (gasCost.amount.gt(ETHBalance.amount)) {
-    throw new Error(
-      `gasCost: ${gasCost.amount} greaterThan ETHBalance: ${ETHBalance.amount}`
-    );
+  // get amount value (either in ETH or in Token)
+  const value = getValue(token, tx);
+  // if not offline, ensure that balance exceeds costs
+  if (!offline) {
+    await balanceCheck(node, tx, token, value, gasCost);
   }
   // Taken from v3's `sanitizeHex`, ensures that the value is a %2 === 0
   // prefix'd hex value.
@@ -141,19 +195,13 @@ export async function generateCompleteTransactionFromRawTransaction(
     data: data ? cleanHex(data) : '',
     chainId: chainId || 1
   };
+
   // Sign the transaction
   const rawTxJson = JSON.stringify(cleanedRawTx);
   const signedTx = await wallet.signRawTransaction(cleanedRawTx);
-  // Repeat all of this shit for Flow typechecking. Sealed objects don't
-  // like spreads, so we have to be explicit.
+
   return {
-    nonce: cleanedRawTx.nonce,
-    gasPrice: cleanedRawTx.gasPrice,
-    gasLimit: cleanedRawTx.gasLimit,
-    to: cleanedRawTx.to,
-    value: cleanedRawTx.value,
-    data: cleanedRawTx.data,
-    chainId: cleanedRawTx.chainId,
+    ...cleanedRawTx,
     rawTx: rawTxJson,
     signedTx
   };
@@ -191,7 +239,9 @@ export async function generateCompleteTransaction(
   gasPrice: Wei,
   gasLimit: BigNumber,
   chainId: number,
-  transactionInput: TransactionInput
+  transactionInput: TransactionInput,
+  nonce?: number | null,
+  offline?: boolean
 ): Promise<CompleteTransaction> {
   const { token } = transactionInput;
   const { from, to, value, data } = await formatTxInput(
@@ -199,7 +249,7 @@ export async function generateCompleteTransaction(
     transactionInput
   );
   const transaction: ExtendedRawTransaction = {
-    nonce: await nodeLib.getTransactionCount(from),
+    nonce: nonce ? `0x${nonce}` : await nodeLib.getTransactionCount(from),
     from,
     to,
     gasLimit,
@@ -212,7 +262,8 @@ export async function generateCompleteTransaction(
     nodeLib,
     transaction,
     wallet,
-    token
+    token,
+    offline
   );
 }
 

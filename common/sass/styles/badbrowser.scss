@@ -1,0 +1,69 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.BadBrowser {
+  @include cover-message;
+
+  &.is-open {
+    // Override inline display none
+    display: block !important;
+  }
+
+  &-content {
+    &-browsers {
+      text-align: center;
+
+      &-browser {
+        position: relative;
+        display: inline-block;
+        width: 20%;
+        margin: 5%;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        &:after {
+          content: "";
+          display: block;
+          padding-bottom: 100%;
+        }
+
+        &-name {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          text-align: center;
+          padding-top: 12px;
+          color: rgba(#fff, 0.8);
+        }
+
+        &.chrome {
+          background-image: url('~assets/images/browsers/chrome.svg');
+        }
+
+        &.firefox {
+          background-image: url('~assets/images/browsers/firefox.svg');
+        }
+
+        &.opera {
+          background-image: url('~assets/images/browsers/opera.svg');
+        }
+      }
+    }
+  }
+
+  // Hide mobile specific messaging by default
+  .is-mobile {
+    display: none;
+  }
+
+  &.is-mobile {
+    .is-mobile {
+      display: block;
+    }
+
+    .is-desktop {
+      display: none;
+    }
+  }
+}

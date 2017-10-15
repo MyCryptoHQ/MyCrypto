@@ -109,6 +109,8 @@ export function wallet(
   switch (action.type) {
     case 'WALLET_SET':
       return setWallet(state, action);
+    case 'WALLET_RESET':
+      return INITIAL_STATE;
     case 'WALLET_SET_BALANCE':
       return setBalance(state, action);
     case 'WALLET_SET_TOKEN_BALANCES':
