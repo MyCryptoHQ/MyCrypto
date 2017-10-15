@@ -17,6 +17,7 @@ import {
 } from '../../config/data';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
+import CustomNodeModal from './components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import './index.scss';
 
@@ -30,9 +31,18 @@ interface Props {
   changeGasPrice: TChangeGasPrice;
 }
 
-export default class Header extends Component<Props, {}> {
+interface State {
+  isAddingCustomNode: boolean;
+}
+
+export default class Header extends Component<Props, State> {
+  public state = {
+    isAddingCustomNode: false
+  };
+
   public render() {
     const { languageSelection, changeNodeIntent, nodeSelection } = this.props;
+    const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
     const selectedNode = NODES[nodeSelection];
     const selectedNetwork = NETWORKS[selectedNode.network];
@@ -115,7 +125,7 @@ export default class Header extends Component<Props, {}> {
                   value={nodeSelection}
                   extra={
                     <li>
-                      <a>Add Custom Node</a>
+                      <a onClick={this.openCustomNodeModal}>Add Custom Node</a>
                     </li>
                   }
                   onChange={changeNodeIntent}
@@ -128,6 +138,10 @@ export default class Header extends Component<Props, {}> {
         </section>
 
         <Navigation color={selectedNetwork.color} />
+
+        {isAddingCustomNode &&
+          <CustomNodeModal handleClose={this.closeCustomNodeModal}/>
+        }
       </div>
     );
   }
@@ -137,5 +151,13 @@ export default class Header extends Component<Props, {}> {
     if (key) {
       this.props.changeLanguage(key);
     }
+  };
+
+  private openCustomNodeModal = () => {
+    this.setState({ isAddingCustomNode: true });
+  };
+
+  private closeCustomNodeModal = () => {
+    this.setState({ isAddingCustomNode: false });
   };
 }

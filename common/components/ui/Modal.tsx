@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './Modal.scss';
 
 export interface IButton {
-  text: string;
+  text: any;
   type?:
     | 'default'
     | 'primary'
@@ -17,7 +17,7 @@ export interface IButton {
 }
 interface Props {
   isOpen?: boolean;
-  title: string;
+  title: any;
   disableButtons?: boolean;
   children: any;
   buttons: IButton[];

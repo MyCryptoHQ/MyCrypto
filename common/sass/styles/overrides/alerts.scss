@@ -23,6 +23,15 @@
   @media screen and (max-width: $screen-xs) {
     left: 1%;
   }
+
+  a {
+    color: #FFF;
+
+    &:hover {
+      color: #FFF;
+      opacity: 0.8;
+    }
+  }
 }
 
 .alert,
