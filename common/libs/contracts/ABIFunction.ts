@@ -8,6 +8,7 @@ import {
   TransactionInput
 } from 'libs/transaction';
 import { ISetConfigForTx } from './index';
+
 export interface IUserSendParams {
   input;
   to: string;
@@ -27,8 +28,6 @@ export default class AbiFunction {
   private outputTypes: string[];
   private methodSelector: string;
   private name: string;
-  private payable: boolean;
-  private type: boolean;
 
   constructor(abiFunc: any, outputMappings: FunctionOutputMappings) {
     Object.assign(this, abiFunc);
@@ -84,6 +83,7 @@ export default class AbiFunction {
     );
     return { signedTx, rawTx: JSON.parse(rawTx) };
   };
+
   public encodeInput = (suppliedInputs: object = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
@@ -157,7 +157,7 @@ export default class AbiFunction {
       : this.isBigNumber(value) ? value.toString() : value;
   };
 
-  private parsePreEncodedValue = (type: string, value: any) =>
+  private parsePreEncodedValue = (_: string, value: any) =>
     this.isBigNumber(value) ? value.toString() : value;
 
   private isBigNumber = (object: object) =>
