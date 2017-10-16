@@ -1,5 +1,4 @@
 import { Identicon, QRCode } from 'components/ui';
-import PrivKeyWallet from 'libs/wallet/privkey';
 import React from 'react';
 
 import ethLogo from 'assets/images/logo-ethereum-1.png';
@@ -91,26 +90,13 @@ const styles: any = {
 };
 
 interface Props {
-  wallet: PrivKeyWallet;
-}
-
-interface State {
   address: string;
+  privateKey: string;
 }
-export default class PaperWallet extends React.Component<Props, State> {
-  public state = { address: '' };
 
-  public componentDidMount() {
-    if (!this.props.wallet) {
-      return;
-    }
-    this.props.wallet.getAddress().then(address => {
-      this.setState({ address });
-    });
-  }
-
+export default class PaperWallet extends React.Component<Props, {}> {
   public render() {
-    const privateKey = this.props.wallet.getPrivateKey();
+    const { privateKey, address } = this.props;
 
     return (
       <div style={styles.container}>
@@ -119,7 +105,7 @@ export default class PaperWallet extends React.Component<Props, State> {
 
         <div style={styles.block}>
           <div style={styles.box}>
-            <QRCode data={this.state.address} />
+            <QRCode data={address} />
           </div>
           <p style={styles.blockText}>YOUR ADDRESS</p>
         </div>
@@ -140,7 +126,7 @@ export default class PaperWallet extends React.Component<Props, State> {
           <p style={styles.infoText}>
             <strong style={styles.infoLabel}>Your Address:</strong>
             <br />
-            {this.state.address}
+            {address}
           </p>
           <p style={styles.infoText}>
             <strong style={styles.infoLabel}>Your Private Key:</strong>
@@ -151,7 +137,7 @@ export default class PaperWallet extends React.Component<Props, State> {
 
         <div style={styles.identiconContainer}>
           <div style={{ float: 'left' }}>
-            <Identicon address={this.state.address} size={'42px'} />
+            <Identicon address={address} size={'42px'} />
           </div>
           <p style={styles.identiconText}>
             Always look for this icon when sending to this wallet

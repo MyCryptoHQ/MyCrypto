@@ -99,3 +99,10 @@ export function broadCastTxFailed(
     }
   };
 }
+
+export type TResetWallet = typeof resetWallet;
+export function resetWallet() {
+  return {
+    type: constants.WALLET_RESET
+  };
+}
