@@ -57,7 +57,6 @@ export default class InteractExplorer extends Component<Props, State> {
 
     const {
       address,
-      contractFunctions,
       displayModal,
       handleInput,
       handleFunctionSend,
@@ -146,8 +145,8 @@ export default class InteractExplorer extends Component<Props, State> {
               >
                 {translate('CONTRACT_Read')}
               </button>
-            ) : this.props.walletDecrypted ? (
-              !this.props.txGenerated ? (
+            ) : walletDecrypted ? (
+              !txGenerated ? (
                 <Aux>
                   <label className="InteractExplorer-field form-group">
                     <h4 className="InteractExplorer-field-label">Gas Limit</h4>
@@ -188,7 +187,7 @@ export default class InteractExplorer extends Component<Props, State> {
                 </Aux>
               ) : (
                 <Aux>
-                  {this.props.txCompare}
+                  {txCompare}
                   <button
                     className="Deploy-submit btn btn-primary"
                     onClick={toggleModal}
@@ -219,7 +218,7 @@ export default class InteractExplorer extends Component<Props, State> {
     });
   };
 
-  private handleFunctionCall = async (ev: any) => {
+  private handleFunctionCall = async (_: any) => {
     try {
       const { selectedFunction, inputs } = this.state;
       const parsedInputs = Object.keys(inputs).reduce(
@@ -258,6 +257,7 @@ export default class InteractExplorer extends Component<Props, State> {
       return input;
     }
   }
+
   private handleInputChange = (ev: any) => {
     const rawValue: string = ev.target.value;
     const isArr = rawValue.startsWith('[') && rawValue.endsWith(']');

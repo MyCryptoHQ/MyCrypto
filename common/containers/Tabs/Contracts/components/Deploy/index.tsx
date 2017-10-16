@@ -7,6 +7,7 @@ import { TTxModal } from '../TxModal';
 import classnames from 'classnames';
 import { addProperties } from 'utils/helpers';
 import { isValidGasPrice, isValidByteCode } from 'libs/validators';
+
 export interface Props {
   byteCode: string;
   gasLimit: string;

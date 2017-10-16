@@ -5,9 +5,17 @@ import {
   TransactionInput
 } from 'libs/transaction';
 import { Props, State, initialState } from './types';
-import { TxModal, Props as DMProps, TTxModal } from '../../../TxModal';
-import { TxCompare, Props as TCProps, TTxCompare } from '../../../TxCompare';
-import { withTx } from '../../../withTx';
+import {
+  TxModal,
+  Props as DMProps,
+  TTxModal
+} from 'containers/Tabs/Contracts/components/TxModal';
+import {
+  TxCompare,
+  Props as TCProps,
+  TTxCompare
+} from 'containers/Tabs/Contracts/components/TxCompare';
+import { withTx } from 'containers/Tabs/Contracts/components//withTx';
 import { Props as DProps } from '../../';
 
 export const deployHOC = PassedComponent => {

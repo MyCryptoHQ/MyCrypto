@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import InteractForm from './components/InteractForm';
-import InteractExplorer, {
-  Props as IEProps
-} from './components//InteractExplorer';
-import Contract, { TContract } from 'libs/contracts';
+import InteractExplorer from './components//InteractExplorer';
+import Contract from 'libs/contracts';
 import { withTx, IWithTx } from '../withTx';
 import {
   TxModal,
@@ -49,7 +46,7 @@ class Interact extends Component<IWithTx, State> {
     }
   }
 
-  public accessContract = (contractAbi: string, address: string) => ev => {
+  public accessContract = (contractAbi: string, address: string) => () => {
     try {
       const parsedAbi = JSON.parse(contractAbi);
       const contractInstance = new Contract(parsedAbi);
@@ -82,7 +79,6 @@ class Interact extends Component<IWithTx, State> {
     const { wallet, showNotification } = this.props;
     const txGenerated = !!signedTx;
 
-    // TODO: Use common components for address, abi json
     return (
       <div className="Interact">
         <InteractForm
@@ -113,6 +109,7 @@ class Interact extends Component<IWithTx, State> {
       </div>
     );
   }
+
   private makeCompareTx = (): React.ReactElement<TTxCompare> => {
     const { nonce, gasLimit, data, value, to, gasPrice } = this.state.rawTx;
     const { signedTx } = this.state;

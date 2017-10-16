@@ -1,7 +1,6 @@
 import React from 'react';
 import translate from 'translations';
 import Modal, { IButton } from 'components/ui/Modal';
-import { BroadcastTransactionStatus } from 'libs/transaction';
 
 export interface Props {
   networkName: string;

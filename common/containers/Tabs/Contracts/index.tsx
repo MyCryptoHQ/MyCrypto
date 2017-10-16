@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { getNetworkContracts } from 'selectors/config';
-import { AppState } from 'reducers';
 import translate from 'translations';
 import Interact from './components/Interact';
 import Deploy from './components/Deploy';

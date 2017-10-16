@@ -19,11 +19,17 @@ interface State {
   address: string;
   abiJson: string;
 }
+
 class InteractForm extends Component<Props, State> {
   public state = {
     address: '',
     abiJson: ''
   };
+
+  private abiJsonPlaceholder = '[{ "type":"contructor", "inputs":\
+ [{ "name":"param1","type":"uint256", "indexed":true }],\
+"name":"Event" }, { "type":"function", "inputs": [{"nam\
+e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
 
   public render() {
     const { contracts, accessContract } = this.props;
@@ -99,7 +105,7 @@ class InteractForm extends Component<Props, State> {
               {translate('CONTRACT_Json')}
             </h4>
             <textarea
-              placeholder="[{ &quot;type&quot;:&quot;contructor&quot;, &quot;inputs&quot;: [{ &quot;name&quot;:&quot;param1&quot;, &quot;type&quot;:&quot;uint256&quot;, &quot;indexed&quot;:true }], &quot;name&quot;:&quot;Event&quot; }, { &quot;type&quot;:&quot;function&quot;, &quot;inputs&quot;: [{&quot;name&quot;:&quot;a&quot;, &quot;type&quot;:&quot;uint256&quot;}], &quot;name&quot;:&quot;foo&quot;, &quot;outputs&quot;: [] }] "
+              placeholder={this.abiJsonPlaceholder}
               name="abiJson"
               className={classnames(
                 'InteractForm-interface-field-input',
@@ -144,6 +150,7 @@ class InteractForm extends Component<Props, State> {
     });
   };
 }
+
 const mapStateToProps = (state: AppState) => ({
   contracts: getNetworkContracts(state)
 });
