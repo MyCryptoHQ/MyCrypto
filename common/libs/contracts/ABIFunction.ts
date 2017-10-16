@@ -47,12 +47,10 @@ export default class AbiFunction {
         data
       })
       .catch(e => {
-        console.error(e);
-        //TODO: Put this in its own handler
         throw Error(`Node call request error at: ${this.name}
-        Params:${JSON.stringify(input, null, 2)}
-        Message:${e.message}
-        EncodedCall:${data}`);
+Params:${JSON.stringify(input, null, 2)}
+Message:${e.message}
+EncodedCall:${data}`);
       });
     const decodedOutput = this.decodeOutput(returnedData);
 
