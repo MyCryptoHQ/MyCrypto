@@ -2,7 +2,6 @@ import { routerReducer } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { config, State as ConfigState } from './config';
-import { contracts, State as ContractsState } from './contracts';
 import { customTokens, State as CustomTokensState } from './customTokens';
 import {
   deterministicWallets,
@@ -23,7 +22,6 @@ export interface AppState {
   wallet: WalletState;
   customTokens: CustomTokensState;
   rates: RatesState;
-  contracts: ContractsState;
   deterministicWallets: DeterministicWalletsState;
   // Third party reducers (TODO: Fill these out)
   form: any;
@@ -40,7 +38,6 @@ export default combineReducers({
   wallet,
   customTokens,
   rates,
-  contracts,
   deterministicWallets,
   form: formReducer,
   routing: routerReducer
