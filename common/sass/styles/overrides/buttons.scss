@@ -1,6 +1,6 @@
 // Button overrides
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .btn {
   @include button-size(
@@ -41,12 +41,12 @@
 		$line-height-small,
 		$border-radius
 	);
-  padding: .1rem .6rem .2rem;
+  padding: 0.1rem 0.6rem 0.2rem;
 }
 // This is a "smaller" small, to accomodate overrides done in v3.
 .btn-smr {
   @include button-size(
-		.4rem,
+		0.4rem,
 		1rem,
 		14px,
 		$line-height-base,
@@ -56,7 +56,7 @@
 
 // Custom color
 .btn-white {
-  @include button-variant($brand-info, rgba(255,255,255,.8), rgba(255,255,255,.8));
+  @include button-variant($brand-info, rgba(255,255,255,0.8), rgba(255,255,255,0.8));
   color: $brand-info;
 }
 
@@ -65,7 +65,7 @@
   position: relative;
   overflow: hidden;
 
-  input[type=file] {
+  input[type='file'] {
     position: absolute;
     top: 0;
     right: 0;
@@ -88,7 +88,6 @@
   &:hover,
   &:focus,
   &.focus {
-    color: white;
     text-decoration: none;
     opacity: 1;
   }
@@ -96,7 +95,7 @@
     background-color: white;
     text-decoration: none;
     color: $brand-info;
-    opacity: .6;
+    opacity: 0.6;
   }
 }
 
