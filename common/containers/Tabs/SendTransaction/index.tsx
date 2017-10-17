@@ -215,7 +215,7 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public handleWalletStateOnUpdate(prevProps) {
-    if (this.props.wallet !== prevProps.wallet && prevProps.wallet !== null) {
+    if (this.props.wallet !== prevProps.wallet && !!prevProps.wallet) {
       this.setState(initialState);
     }
   }
