@@ -1,6 +1,5 @@
 import React from 'react';
 import helpIcon from 'assets/images/icon-help.svg';
-import translate, { translateRaw } from 'translations';
 
 type sizeType = 'small' | 'medium' | 'large';
 

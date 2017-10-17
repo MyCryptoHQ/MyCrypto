@@ -9,7 +9,7 @@ import { Ether, toTokenUnit, UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import Big, { BigNumber } from 'bignumber.js';
 
 export interface TransactionInput {
