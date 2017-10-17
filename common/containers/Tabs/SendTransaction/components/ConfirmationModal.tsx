@@ -78,7 +78,13 @@ class ConfirmationModal extends React.Component<Props, State> {
   public render() {
     const { node, token, network, onClose, broadCastTxStatus } = this.props;
     const { fromAddress, timeToRead } = this.state;
-    const { toAddress, value, gasPrice, data } = this.decodeTransaction();
+    const {
+      toAddress,
+      value,
+      gasPrice,
+      data,
+      nonce
+    } = this.decodeTransaction();
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons: IButton[] = [
@@ -139,6 +145,9 @@ class ConfirmationModal extends React.Component<Props, State> {
                     You are sending to <code>{toAddress}</code>
                   </li>
                   <li className="ConfModal-details-detail">
+                    You are sending with a nonce of <code>{nonce}</code>
+                  </li>
+                  <li className="ConfModal-details-detail">
                     You are sending{' '}
                     <strong>
                       {value} {symbol}
@@ -191,7 +200,9 @@ class ConfirmationModal extends React.Component<Props, State> {
 
   private decodeTransaction() {
     const { transaction, token } = this.props;
-    const { to, value, data, gasPrice } = getTransactionFields(transaction);
+    const { to, value, data, gasPrice, nonce } = getTransactionFields(
+      transaction
+    );
     let fixedValue;
     let toAddress;
 
@@ -208,7 +219,8 @@ class ConfirmationModal extends React.Component<Props, State> {
       value: fixedValue,
       gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
       data,
-      toAddress
+      toAddress,
+      nonce
     };
   }
 

@@ -25,11 +25,20 @@ export default class AccountInfo extends React.Component<Props, State> {
     address: ''
   };
 
+  public async setAddressFromWallet() {
+    const address = await this.props.wallet.getAddress();
+    if (address !== this.state.address) {
+      this.setState({ address });
+    }
+  }
+
   public componentDidMount() {
     this.props.fetchCCRates();
-    this.props.wallet.getAddress().then(address => {
-      this.setState({ address });
-    });
+    this.setAddressFromWallet();
+  }
+
+  public componentDidUpdate() {
+    this.setAddressFromWallet();
   }
 
   // TODO: don't use any;

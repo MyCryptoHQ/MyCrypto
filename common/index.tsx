@@ -4,19 +4,22 @@ import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
 import React from 'react';
 import { render } from 'react-dom';
-import { Root } from './components';
+import Root from './Root';
 import createHistory from 'history/createBrowserHistory';
 import { configuredStore } from './store';
 
 const history = createHistory();
 
-render(
-  <Root store={configuredStore} history={history} />,
-  document.getElementById('app')
-);
+const appEl = document.getElementById('app');
+
+render(<Root store={configuredStore} history={history} />, appEl);
 
 if (module.hot) {
   module.hot.accept('reducers', () =>
     configuredStore.replaceReducer(require('reducers'))
   );
+
+  module.hot.accept('./Root', () => {
+    render(<Root store={configuredStore} history={history} />, appEl);
+  });
 }

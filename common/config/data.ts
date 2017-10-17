@@ -1,7 +1,7 @@
 import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.2)';
+export const VERSION = '4.0.0 (Alpha 0.0.3)';
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.

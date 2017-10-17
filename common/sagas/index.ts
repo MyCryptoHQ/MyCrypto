@@ -1,4 +1,4 @@
-import handleConfigChanges from './config';
+import configSaga from './config';
 import deterministicWallets from './deterministicWallets';
 import notifications from './notifications';
 import {
@@ -11,7 +11,7 @@ import wallet from './wallet';
 
 export default {
   bityTimeRemaining,
-  handleConfigChanges,
+  configSaga,
   postBityOrderSaga,
   pollBityOrderStatusSaga,
   getBityRatesSaga,
