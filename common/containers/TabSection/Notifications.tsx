@@ -5,7 +5,7 @@ import {
 } from 'actions/notifications';
 import React from 'react';
 import { connect } from 'react-redux';
-import { CSSTransitionGroup } from 'react-transition-group'; // ES6
+import { CSSTransitionGroup } from 'react-transition-group';
 import NotificationRow from './NotificationRow';
 import './Notifications.scss';
 
@@ -19,15 +19,16 @@ export class Notifications extends React.Component<Props, {}> {
       console.log('notifications: ' + this.props.notifications.length);
       // TODO: remove oldest notification
     }
+    console.log(this.props);
   }
 
   public render() {
-    return this.props.notifications.length ? (
+    return (
       <CSSTransitionGroup
         className="Notifications"
         transitionName="example"
         transitionEnterTimeout={500}
-        transitionLeaveTimeout={300}
+        transitionLeaveTimeout={500}
       >
         {this.props.notifications.map((n, i) => (
           <NotificationRow
@@ -37,7 +38,7 @@ export class Notifications extends React.Component<Props, {}> {
           />
         ))}
       </CSSTransitionGroup>
-    ) : null;
+    );
   }
 }
 

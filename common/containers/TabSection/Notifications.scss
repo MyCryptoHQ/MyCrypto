@@ -149,14 +149,16 @@
 
 .example-enter.example-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transition: opacity 0.5s;
 }
 
 .example-leave {
   opacity: 1;
+  transform: none;
 }
 
 .example-leave.example-leave-active {
   opacity: 0.01;
-  transition: opacity 300ms ease-in;
+  transform: translateY(100%);
+  transition: opacity 0.5s, transform 0.5s;
 }
