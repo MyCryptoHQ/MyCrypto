@@ -47,7 +47,8 @@ export default class Header extends Component<Props, {}> {
             {NODES[key].network} <small>({NODES[key].service})</small>
           </span>
         ),
-        color: NETWORKS[NODES[key].network].color
+        color: NETWORKS[NODES[key].network].color,
+        hidden: NODES[key].hidden
       };
     });
 
@@ -118,6 +119,7 @@ export default class Header extends Component<Props, {}> {
                       <a>Add Custom Node</a>
                     </li>
                   }
+                  disabled={nodeSelection === 'web3'}
                   onChange={changeNodeIntent}
                   size="smr"
                   color="white"
