@@ -30,7 +30,7 @@ const tabs = [
   },
   {
     name: 'Broadcast Transaction',
-    to: 'broadcastTx'
+    to: 'pushTx'
   },
   {
     name: 'NAV_Help',
