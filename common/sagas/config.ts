@@ -58,7 +58,7 @@ function* handleNodeChangeIntent(action): SagaIterator {
 
   yield put(changeNode(action.payload));
 
-  // if there's no wallet, not reload as there's no component state to resync
+  // if there's no wallet, do not reload as there's no component state to resync
   if (currentWallet && currentNetwork !== actionNetwork) {
     yield call(reload);
   }
