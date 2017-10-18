@@ -1,0 +1,14 @@
+.InteractForm {
+  &-address {
+    display: flex;
+
+    > * {
+      flex: 1;
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
