@@ -34,6 +34,13 @@ export function unlockMnemonic(
   };
 }
 
+export type TUnlockWeb3 = typeof unlockWeb3;
+export function unlockWeb3(): types.UnlockWeb3Action {
+  return {
+    type: constants.WALLET_UNLOCK_WEB3
+  };
+}
+
 export type TSetWallet = typeof setWallet;
 export function setWallet(value: IWallet): types.SetWalletAction {
   return {

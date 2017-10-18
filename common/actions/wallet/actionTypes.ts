@@ -17,6 +17,10 @@ export interface UnlockMnemonicAction {
   payload: MnemonicUnlockParams;
 }
 
+export interface UnlockWeb3Action {
+  type: 'WALLET_UNLOCK_WEB3';
+}
+
 /*** Set Wallet ***/
 export interface SetWalletAction {
   type: 'WALLET_SET';
