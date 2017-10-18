@@ -6,7 +6,12 @@ import { translateRaw } from 'translations';
 import { broadcastTx as dBroadcastTx, TBroadcastTx } from 'actions/wallet';
 import { QRCode } from 'components/ui';
 import './index.scss';
-import { BroadcastTransactionStatus } from 'libs/transaction';
+import {
+  BroadcastTransactionStatus,
+  getTransactionFields
+} from 'libs/transaction';
+import EthTx from 'ethereumjs-tx';
+import { ConfirmationModal } from 'containers/Tabs/SendTransaction/components';
 
 interface Props {
   broadcastTx: TBroadcastTx;
@@ -15,19 +20,39 @@ interface Props {
 
 interface State {
   signedTx: string;
-  broadcastingTx: boolean;
+  showConfirmationModal: boolean;
+  disabled: boolean;
 }
 
 const initialState: State = {
-  broadcastingTx: false,
-  signedTx: ''
+  showConfirmationModal: false,
+  signedTx: '',
+  disabled: true
 };
 
 class BroadcastTx extends Component<Props, State> {
   public state = initialState;
 
+  public ensureValidSignedTxInputOnUpdate() {
+    try {
+      const tx = new EthTx(this.state.signedTx);
+      const fields = getTransactionFields(tx);
+      if (this.state.disabled) {
+        this.setState({ disabled: false });
+      }
+    } catch (e) {
+      if (!this.state.disabled) {
+        this.setState({ disabled: true });
+      }
+    }
+  }
+
+  public componentDidUpdate() {
+    this.ensureValidSignedTxInputOnUpdate();
+  }
+
   public render() {
-    const { signedTx, broadcastingTx } = this.state;
+    const { signedTx, disabled } = this.state;
     return (
       <TabSection>
         <div className="text-center">
@@ -49,8 +74,8 @@ class BroadcastTx extends Component<Props, State> {
               />
               <button
                 className="btn btn-primary"
-                disabled={!signedTx}
-                onClick={this.handleBroadcastTx || broadcastingTx}
+                disabled={disabled || signedTx === ''}
+                onClick={this.handleBroadcastTx}
               >
                 {translateRaw('SEND_trans')}
               </button>
@@ -70,11 +95,26 @@ class BroadcastTx extends Component<Props, State> {
             </div>
           </div>
         </div>
+        {this.state.showConfirmationModal && (
+          <ConfirmationModal
+            signedTx={this.state.signedTx}
+            onClose={this.handleClose}
+            onConfirm={this.handleConfirm}
+          />
+        )}
       </TabSection>
     );
   }
 
+  public handleClose = () => {
+    this.setState({ showConfirmationModal: false });
+  };
+
   public handleBroadcastTx = () => {
+    this.setState({ showConfirmationModal: true });
+  };
+
+  public handleConfirm = () => {
     this.props.broadcastTx(this.state.signedTx);
   };
 
