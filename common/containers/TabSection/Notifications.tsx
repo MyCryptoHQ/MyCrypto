@@ -14,14 +14,6 @@ interface Props {
   closeNotification: TCloseNotification;
 }
 export class Notifications extends React.Component<Props, {}> {
-  public componentDidUpdate() {
-    if (this.props.notifications.length > 1) {
-      console.log('notifications: ' + this.props.notifications.length);
-      // TODO: remove oldest notification
-    }
-    console.log(this.props);
-  }
-
   public render() {
     return (
       <CSSTransitionGroup
@@ -30,13 +22,16 @@ export class Notifications extends React.Component<Props, {}> {
         transitionEnterTimeout={500}
         transitionLeaveTimeout={500}
       >
-        {this.props.notifications.map((n, i) => (
-          <NotificationRow
-            key={`${n.level}-${i}`}
-            notification={n}
-            onClose={this.props.closeNotification}
-          />
-        ))}
+        {this.props.notifications.map((n, i) => {
+          // console.log(n, i);
+          return (
+            <NotificationRow
+              key={`${n.level}-${i}`}
+              notification={n}
+              onClose={this.props.closeNotification}
+            />
+          );
+        })}
       </CSSTransitionGroup>
     );
   }
