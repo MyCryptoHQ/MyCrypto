@@ -13,6 +13,7 @@ import {
   DataField,
   GasField
 } from './components';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
 import { donationAddressMap, NetworkConfig } from 'config/data';
@@ -23,6 +24,7 @@ import { RPCNode } from 'libs/nodes';
 import {
   BroadcastTransactionStatus,
   CompleteTransaction,
+  confirmAndSendWeb3Transaction,
   formatTxInput,
   generateCompleteTransaction,
   getBalanceMinusGasCosts,
@@ -30,7 +32,8 @@ import {
 } from 'libs/transaction';
 import { Ether, GWei, UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { IWallet } from 'libs/wallet/IWallet';
+// LIBS
+import { IWallet, Web3Wallet } from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
@@ -259,6 +262,7 @@ export class SendTransaction extends React.Component<Props, State> {
     } = this.state;
     const { offline, forceOffline, balance } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
+    const isWeb3Wallet = this.props.wallet instanceof Web3Wallet;
     return (
       <TabSection>
         <section className="Tab-content">
@@ -328,9 +332,15 @@ export class SendTransaction extends React.Component<Props, State> {
                       <button
                         disabled={this.state.generateDisabled}
                         className="btn btn-info btn-block"
-                        onClick={this.generateTxFromState}
+                        onClick={
+                          isWeb3Wallet
+                            ? this.generateWeb3TxFromState
+                            : this.generateTxFromState
+                        }
                       >
-                        {translate('SEND_generate')}
+                        {isWeb3Wallet
+                          ? translate('Send to MetaMask / Mist')
+                          : translate('SEND_generate')}
                       </button>
                     </div>
                   </div>
@@ -591,6 +601,50 @@ export class SendTransaction extends React.Component<Props, State> {
         resolve
       )
     );
+
+  public generateWeb3TxFromState = async () => {
+    await this.resetJustTx();
+    const { nodeLib, wallet, gasPrice, network } = this.props;
+
+    const { token, unit, value, to, data, gasLimit } = this.state;
+    const chainId = network.chainId;
+    const transactionInput = {
+      token,
+      unit,
+      value,
+      to,
+      data
+    };
+    const bigGasLimit = new Big(gasLimit);
+
+    if (!(wallet instanceof Web3Wallet)) {
+      return;
+    }
+
+    try {
+      const txHash = await confirmAndSendWeb3Transaction(
+        wallet,
+        nodeLib,
+        gasPrice,
+        bigGasLimit,
+        chainId,
+        transactionInput
+      );
+
+      this.props.showNotification(
+        'success',
+        <TransactionSucceeded
+          txHash={txHash}
+          blockExplorer={network.blockExplorer}
+        />,
+        0
+      );
+    } catch (err) {
+      console.error(err.message);
+      //show an error
+      this.props.showNotification('danger', err.message, 5000);
+    }
+  };
 
   public generateTxFromState = async () => {
     this.setState({ generateTxProcessing: true });
