@@ -155,8 +155,8 @@ export class SendTransaction extends React.Component<Props, State> {
     // TODO listen to gas price changes here
     // TODO debounce the call
     // handle gas estimation
-    // if any relevant fields changed
     return (
+      // if any relevant fields changed
       this.haveFieldsChanged(prevState) &&
       // if gas has not changed
       !this.state.gasChanged &&
@@ -215,7 +215,7 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public handleWalletStateOnUpdate(prevProps) {
-    if (this.props.wallet !== prevProps.wallet) {
+    if (this.props.wallet !== prevProps.wallet && !!prevProps.wallet) {
       this.setState(initialState);
     }
   }
@@ -415,15 +415,15 @@ export class SendTransaction extends React.Component<Props, State> {
     const query = queryString.parse(searchStr);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
-    // FIXME validate token against presets
     const unit = getParam(query, 'tokenSymbol');
+    const token = this.props.tokens.find(x => x.symbol === unit);
     const value = getParam(query, 'value');
-    let gasLimit = getParam(query, 'gas');
+    let gasLimit = getParam(query, 'gaslimit');
     if (gasLimit === null) {
       gasLimit = getParam(query, 'limit');
     }
     const readOnly = getParam(query, 'readOnly') != null;
-    return { to, data, value, unit, gasLimit, readOnly };
+    return { to, token, data, value, unit, gasLimit, readOnly };
   }
 
   public isValidNonce() {
@@ -488,21 +488,23 @@ export class SendTransaction extends React.Component<Props, State> {
       return;
     }
 
-    try {
-      const cachedFormattedTx = await this.getFormattedTxFromState();
-      // Grab a reference to state. If it has changed by the time the estimateGas
-      // call comes back, we don't want to replace the gasLimit in state.
-      const state = this.state;
-      gasLimit = await nodeLib.estimateGas(cachedFormattedTx);
-      if (this.state === state) {
-        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
-      } else {
-        // state has changed, so try again from the start (with the hope that state won't change by the next time)
-        this.estimateGas();
+    if (this.props.wallet) {
+      try {
+        const cachedFormattedTx = await this.getFormattedTxFromState();
+        // Grab a reference to state. If it has changed by the time the estimateGas
+        // call comes back, we don't want to replace the gasLimit in state.
+        const state = this.state;
+        gasLimit = await nodeLib.estimateGas(cachedFormattedTx);
+        if (this.state === state) {
+          this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+        } else {
+          // state has changed, so try again from the start (with the hope that state won't change by the next time)
+          this.estimateGas();
+        }
+      } catch (error) {
+        this.setState({ generateDisabled: true });
+        this.props.showNotification('danger', error.message, 5000);
       }
-    } catch (error) {
-      this.setState({ generateDisabled: true });
-      this.props.showNotification('danger', error.message, 5000);
     }
   }
 
