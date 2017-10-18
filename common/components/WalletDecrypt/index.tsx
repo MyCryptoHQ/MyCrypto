@@ -19,6 +19,7 @@ import MnemonicDecrypt from './Mnemonic';
 import PrivateKeyDecrypt, { PrivateKeyValue } from './PrivateKey';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
+import { AppState } from 'reducers';
 
 const WALLETS = {
   'keystore-file': {
@@ -51,7 +52,9 @@ const WALLETS = {
   'ledger-nano-s': {
     lid: 'x_Ledger',
     component: LedgerNanoSDecrypt,
-    disabled: true
+    initialParams: {},
+    unlock: setWallet,
+    disabled: false
   },
   trezor: {
     lid: 'x_Trezor',
@@ -74,6 +77,7 @@ interface Props {
   dispatch: Dispatch<
     UnlockKeystoreAction | UnlockMnemonicAction | UnlockPrivateKeyAction
   >;
+  offline: boolean;
 }
 
 interface State {
@@ -104,6 +108,13 @@ export class WalletDecrypt extends Component<Props, State> {
     );
   }
 
+  public isOnlineRequiredWalletAndOffline(selectedWalletKey) {
+    const onlineRequiredWallets = ['trezor', 'ledger-nano-s'];
+    return (
+      this.props.offline && onlineRequiredWallets.includes(selectedWalletKey)
+    );
+  }
+
   public buildWalletOptions() {
     return map(WALLETS, (wallet, key) => {
       const isSelected = this.state.selectedWalletKey === key;
@@ -118,11 +129,11 @@ export class WalletDecrypt extends Component<Props, State> {
             value={key}
             checked={isSelected}
             onChange={this.handleDecryptionChoiceChange}
-            disabled={wallet.disabled}
+            disabled={
+              wallet.disabled || this.isOnlineRequiredWalletAndOffline(key)
+            }
           />
-          <span id={`${key}-label`}>
-            {translate(wallet.lid)}
-          </span>
+          <span id={`${key}-label`}>{translate(wallet.lid)}</span>
         </label>
       );
     });
@@ -149,19 +160,15 @@ export class WalletDecrypt extends Component<Props, State> {
     return (
       <article className="Tab-content-pane row">
         <section className="col-md-4 col-sm-6">
-          <h4>
-            {translate('decrypt_Access')}
-          </h4>
+          <h4>{translate('decrypt_Access')}</h4>
 
           {this.buildWalletOptions()}
         </section>
 
         {decryptionComponent}
-        {!!(this.state.value as PrivateKeyValue).valid &&
+        {!!(this.state.value as PrivateKeyValue).valid && (
           <section className="col-md-4 col-sm-6">
-            <h4 id="uploadbtntxt-wallet">
-              {translate('ADD_Label_6')}
-            </h4>
+            <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
             <div className="form-group">
               <a
                 tabIndex={0}
@@ -172,7 +179,8 @@ export class WalletDecrypt extends Component<Props, State> {
                 {translate('ADD_Label_6_short')}
               </a>
             </div>
-          </section>}
+          </section>
+        )}
       </article>
     );
   }
@@ -194,4 +202,10 @@ export class WalletDecrypt extends Component<Props, State> {
   };
 }
 
-export default connect()(WalletDecrypt);
+function mapStateToProps(state: AppState) {
+  return {
+    offline: state.config.offline
+  };
+}
+
+export default connect(mapStateToProps)(WalletDecrypt);
