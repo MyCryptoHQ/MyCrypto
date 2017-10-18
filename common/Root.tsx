@@ -32,7 +32,7 @@ export default class Root extends Component<Props, {}> {
             <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
-            <Route path="/broadcastTx" component={BroadcastTx} />
+            <Route path="/pushTx" component={BroadcastTx} />
           </div>
         </Router>
       </Provider>
