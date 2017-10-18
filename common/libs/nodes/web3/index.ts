@@ -108,7 +108,7 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err);
         }
-        resolve(txCount);
+        resolve(txCount.toString());
       })
     );
   }
