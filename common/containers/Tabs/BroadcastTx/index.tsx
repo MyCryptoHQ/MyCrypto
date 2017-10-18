@@ -67,7 +67,8 @@ class BroadcastTx extends Component<Props, State> {
               </p>
               <label>{translateRaw('SEND_signed')}</label>
               <textarea
-                className="form-control"
+                className={`form-control
+                ${disabled ? 'is-invalid' : 'is-valid'}`}
                 rows={7}
                 value={signedTx}
                 onChange={this.handleChange}
