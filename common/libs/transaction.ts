@@ -5,14 +5,19 @@ import ERC20 from 'libs/erc20';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
-import { Ether, toTokenUnit, UnitKey, Wei } from 'libs/units';
+import {
+  Ether,
+  toTokenUnit,
+  UnitKey,
+  Wei,
+  toTokenDisplay,
+  toUnit
+} from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
+import { stripHexPrefixAndLower, valueToHex, sanitizeHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import Big, { BigNumber } from 'bignumber.js';
-import { sanitizeHex } from 'libs/values';
-import { toTokenDisplay, toUnit } from 'libs/units';
 
 export interface TransactionInput {
   token?: Token | null;
