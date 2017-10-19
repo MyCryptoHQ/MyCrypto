@@ -1,4 +1,4 @@
-import Big, {BigNumber} from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import { toChecksumAddress } from 'ethereumjs-util';
 import Contract, { ABI } from 'libs/contract';
 

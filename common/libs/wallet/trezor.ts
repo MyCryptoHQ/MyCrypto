@@ -1,4 +1,4 @@
-import Big, { BigNumber } from 'bignumber.js';
+import Big from 'bignumber.js';
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
