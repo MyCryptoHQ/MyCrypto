@@ -129,10 +129,11 @@ function generateTxValidation(
   token: Token | null | undefined,
   data: string,
   gasLimit: BigNumber | string,
-  gasPrice: Wei | string
+  gasPrice: Wei | string,
+  skipEthAddressValidation: boolean
 ) {
   // Reject bad addresses
-  if (!isValidETHAddress(to)) {
+  if (!isValidETHAddress(to) && !skipEthAddressValidation) {
     throw new Error(translateRaw('ERROR_5'));
   }
   // Reject token transactions without data
@@ -166,11 +167,12 @@ export async function generateCompleteTransactionFromRawTransaction(
   tx: ExtendedRawTransaction,
   wallet: IWallet,
   token: Token | null | undefined,
+  skipValidation: boolean,
   offline?: boolean
 ): Promise<CompleteTransaction> {
   const { to, data, gasLimit, gasPrice, chainId, nonce } = tx;
   // validation
-  generateTxValidation(to, token, data, gasLimit, gasPrice);
+  generateTxValidation(to, token, data, gasLimit, gasPrice, skipValidation);
   // duplicated from generateTxValidation -- typescript bug
   if (typeof gasLimit === 'string' || typeof gasPrice === 'string') {
     throw Error('Gas Limit and Gas Price should be of type bignumber');
@@ -240,6 +242,7 @@ export async function generateCompleteTransaction(
   gasLimit: BigNumber,
   chainId: number,
   transactionInput: TransactionInput,
+  skipValidation: boolean,
   nonce?: number | null,
   offline?: boolean
 ): Promise<CompleteTransaction> {
@@ -263,6 +266,7 @@ export async function generateCompleteTransaction(
     transaction,
     wallet,
     token,
+    skipValidation,
     offline
   );
 }

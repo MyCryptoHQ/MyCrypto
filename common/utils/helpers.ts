@@ -2,6 +2,13 @@ export function getKeyByValue(object, value) {
   return Object.keys(object).find(key => object[key] === value);
 }
 
+interface IKeyedObj {
+  [key: string]: any;
+}
+export const addProperties = (
+  truthy,
+  propertiesToAdd: IKeyedObj
+): {} | IKeyedObj => (truthy ? propertiesToAdd : {});
 export function getParam(query: { [key: string]: string }, key: string) {
   const keys = Object.keys(query);
   const index = keys.findIndex(k => k.toLowerCase() === key.toLowerCase());
