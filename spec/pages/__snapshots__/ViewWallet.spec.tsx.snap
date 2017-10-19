@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render snapshot 1`] = `
+<Connect(TabSection)>
+  <section
+    className="container"
+  >
+    <div
+      className="tab-content"
+    >
+      <article
+        className="tab-pane active"
+      >
+        <article
+          className="collapse-container"
+        >
+          <div>
+            <h1>
+              View Wallet Info
+            </h1>
+          </div>
+          <div>
+            <p>
+              <Translate
+                translationKey="VIEWWALLET_Subtitle"
+              />
+            </p>
+          </div>
+        </article>
+      </article>
+    </div>
+  </section>
+</Connect(TabSection)>
+`;
