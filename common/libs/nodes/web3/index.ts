@@ -52,7 +52,7 @@ export default class Web3Node implements INode {
   }
 
   public getTokenBalance(address: string, token: Token): Promise<BigNumber> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.web3.eth.call(
         {
           to: token.address,
@@ -75,7 +75,7 @@ export default class Web3Node implements INode {
     address: string,
     tokens: Token[]
   ): Promise<BigNumber[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const batch = this.web3.createBatch();
       const totalCount = tokens.length;
       const returnArr = new Array<BigNumber>(totalCount);

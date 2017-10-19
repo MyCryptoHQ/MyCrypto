@@ -251,7 +251,6 @@ export async function confirmAndSendWeb3Transaction(
   chainId: number,
   transactionInput: TransactionInput
 ): Promise<string> {
-  const { token } = transactionInput;
   const { from, to, value, data } = await formatTxInput(
     wallet,
     transactionInput

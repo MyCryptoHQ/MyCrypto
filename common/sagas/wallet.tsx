@@ -8,8 +8,7 @@ import {
   setWallet,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
-  UnlockPrivateKeyAction,
-  UnlockWeb3Action
+  UnlockPrivateKeyAction
 } from 'actions/wallet';
 import { changeNodeIntent } from 'actions/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
@@ -137,7 +136,7 @@ function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
 
 // inspired by v3:
 // https://github.com/kvhnuke/etherwallet/blob/417115b0ab4dd2033d9108a1a5c00652d38db68d/app/scripts/controllers/decryptWalletCtrl.js#L311
-function* unlockWeb3(action: UnlockWeb3Action): SagaIterator {
+function* unlockWeb3(): SagaIterator {
   const failMsg1 = 'Could not connect to MetaMask / Mist.';
   const failMsg2 = 'No accounts found in MetaMask / Mist.';
   const { web3 } = window as any;

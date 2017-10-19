@@ -1,5 +1,5 @@
 import { IWallet } from './IWallet';
-import { ExtendedRawTransaction, RawTransaction } from 'libs/transaction';
+import { ExtendedRawTransaction } from 'libs/transaction';
 import { networkIdToName } from 'libs/values';
 
 export default class Web3Wallet implements IWallet {
@@ -17,7 +17,7 @@ export default class Web3Wallet implements IWallet {
     return Promise.resolve(this.address);
   }
 
-  public signRawTransaction(rawTx: RawTransaction): Promise<string> {
+  public signRawTransaction(): Promise<string> {
     return Promise.reject(
       new Error('Web3 wallets cannot sign raw transactions.')
     );

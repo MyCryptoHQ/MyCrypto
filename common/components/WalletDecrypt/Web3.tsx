@@ -1,6 +1,5 @@
-import Web3Wallet from 'libs/wallet/web3';
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import './Web3.scss';
 
 interface Props {
