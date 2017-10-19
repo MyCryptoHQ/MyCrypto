@@ -13,11 +13,7 @@ import { NODES } from 'config/data';
 import { getNodeConfig } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
-import {
-  toggleOfflineConfig,
-  TToggleOfflineConfig,
-  changeNode
-} from 'actions/config';
+import { toggleOfflineConfig, changeNode } from 'actions/config';
 import { State as ConfigState } from 'reducers/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;

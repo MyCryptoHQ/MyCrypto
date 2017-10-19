@@ -34,7 +34,7 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
   }
 
   private renderLabel = () => {
-    const { label, value } = this.props;
+    const { value } = this.props;
     const labelStr = this.props.label ? `${this.props.label}:` : '';
     return (
       <span>

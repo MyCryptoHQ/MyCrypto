@@ -2,9 +2,7 @@ import {
   ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
-  ConfigAction,
-  ToggleOfflineAction,
-  ForceOfflineAction
+  ConfigAction
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
 import { NODES } from '../config/data';
@@ -47,14 +45,14 @@ function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
   };
 }
 
-function toggleOffline(state: State, action: ToggleOfflineAction): State {
+function toggleOffline(state: State): State {
   return {
     ...state,
     offline: !state.offline
   };
 }
 
-function forceOffline(state: State, action: ForceOfflineAction): State {
+function forceOffline(state: State): State {
   return {
     ...state,
     forceOffline: !state.forceOffline
@@ -73,9 +71,9 @@ export function config(
     case TypeKeys.CONFIG_GAS_PRICE:
       return changeGasPrice(state, action);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
-      return toggleOffline(state, action);
+      return toggleOffline(state);
     case TypeKeys.CONFIG_FORCE_OFFLINE:
-      return forceOffline(state, action);
+      return forceOffline(state);
     default:
       return state;
   }

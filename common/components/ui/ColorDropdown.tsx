@@ -52,8 +52,6 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   private renderOptions = () => {
     const { options, value, menuAlign, extra } = this.props;
 
-    const activeOption = this.getActiveOption();
-
     const listItems = options.reduce((prev: any[], opt) => {
       const prevOpt = prev.length ? prev[prev.length - 1] : null;
       if (prevOpt && !prevOpt.divider && prevOpt.color !== opt.color) {
