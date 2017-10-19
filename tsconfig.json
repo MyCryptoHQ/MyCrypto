@@ -17,6 +17,7 @@
   },
   "include": [
     "./common/",
+    "spec",
     "./node_modules/types-rlp/index.d.ts",
     "./node_modules/types-bn/index.d.ts"
   ],

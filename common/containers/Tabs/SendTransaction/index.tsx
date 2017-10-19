@@ -438,6 +438,18 @@ export class SendTransaction extends React.Component<Props, State> {
     return valid;
   }
 
+  public isValidNonce() {
+    const { offline, forceOffline } = this.props;
+    const { nonce } = this.state;
+    let valid = true;
+    if (offline || forceOffline) {
+      if (!nonce || nonce < 0) {
+        valid = false;
+      }
+    }
+    return valid;
+  }
+
   public isValid() {
     const { to, value, gasLimit } = this.state;
     return (

@@ -2,7 +2,9 @@ import {
   ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
-  ConfigAction
+  ConfigAction,
+  ToggleOfflineAction,
+  ForceOfflineAction
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
 import { NODES } from '../config/data';

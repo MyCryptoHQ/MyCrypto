@@ -1,0 +1,11 @@
+.help-icon {
+  margin-left: 8px;
+  img {
+    height: 18px;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
