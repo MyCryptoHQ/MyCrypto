@@ -31,9 +31,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
     return (
       <section className="col-md-4 col-sm-6">
         <div id="selectedTypeKey">
-          <h4>
-            {translate('ADD_Radio_5')}
-          </h4>
+          <h4>{translate('ADD_Radio_5')}</h4>
           <div className="form-group">
             <textarea
               id="aria-private-key"
@@ -56,7 +54,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
               type="password"
             />
           </div>
-          {isValidMnemonic &&
+          {isValidMnemonic && (
             <div className="form-group">
               <button
                 style={{ width: '100%' }}
@@ -65,7 +63,8 @@ export default class MnemonicDecrypt extends Component<Props, State> {
               >
                 {translate('Choose Address')}
               </button>
-            </div>}
+            </div>
+          )}
         </div>
 
         <DeterministicWalletsModal
@@ -90,7 +89,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
     this.setState({ phrase: (e.target as HTMLTextAreaElement).value });
   };
 
-  public onDWModalOpen = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+  public onDWModalOpen = () => {
     const { phrase, pass } = this.state;
 
     if (!validateMnemonic(phrase)) {

@@ -1,4 +1,4 @@
-import Big, { BigNumber } from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();

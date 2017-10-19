@@ -1,5 +1,3 @@
-import * as constants from './constants';
-
 /*** Resolve ENS name ***/
 export interface ResolveEnsNameAction {
   type: 'ENS_RESOLVE';
