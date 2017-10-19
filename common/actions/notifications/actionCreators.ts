@@ -6,14 +6,16 @@ export type TShowNotification = typeof showNotification;
 export function showNotification(
   level: types.NOTIFICATION_LEVEL = 'info',
   msg: ReactElement<any> | string,
-  duration?: number | types.INFINITY
+  duration?: number | types.INFINITY,
+  id?: number
 ): types.ShowNotificationAction {
   return {
     type: TypeKeys.SHOW_NOTIFICATION,
     payload: {
       level,
       msg,
-      duration
+      duration,
+      id
     }
   };
 }

@@ -20,7 +20,6 @@
     "font-awesome": "^4.7.0",
     "hdkey": "^0.7.1",
     "idna-uts46": "^1.1.0",
-    "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "qrcode": "^0.8.2",
     "qrcode.react": "^0.7.1",

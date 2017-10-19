@@ -14,21 +14,22 @@ interface Props {
   notifications: Notification[];
   closeNotification: TCloseNotification;
 }
+
+const Transition = props => (
+  <CSSTransition
+    {...props}
+    classNames="example"
+    timeout={{ enter: 500, exit: 500 }}
+  />
+);
+
 export class Notifications extends React.Component<Props, {}> {
   public render() {
-    const Transition = props => (
-      <CSSTransition
-        {...props}
-        classNames="example"
-        timeout={{ enter: 500, exit: 500 }}
-      />
-    );
     return (
       <TransitionGroup className="Notifications">
         {this.props.notifications.map((n, i) => {
           return (
-            // TODO: add unique ID's to notifications to use as keys. Keys cannot be based off array index
-            <Transition key={`${n.level}-${i}`}>
+            <Transition key={n.id}>
               <NotificationRow
                 notification={n}
                 onClose={this.props.closeNotification}
