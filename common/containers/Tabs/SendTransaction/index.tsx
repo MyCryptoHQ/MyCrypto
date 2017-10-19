@@ -644,14 +644,16 @@ export class SendTransaction extends React.Component<Props, State> {
         transactionInput
       );
 
-      this.props.showNotification(
-        'success',
-        <TransactionSucceeded
-          txHash={txHash}
-          blockExplorer={network.blockExplorer}
-        />,
-        0
-      );
+      if (network.blockExplorer !== undefined) {
+        this.props.showNotification(
+          'success',
+          <TransactionSucceeded
+            txHash={txHash}
+            blockExplorer={network.blockExplorer}
+          />,
+          0
+        );
+      }
     } catch (err) {
       console.error(err.message);
       //show an error
