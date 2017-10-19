@@ -15,7 +15,7 @@ import {
 } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
-import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
+import { donationAddressMap, NetworkConfig } from 'config/data';
 // LIBS
 import { stripHexPrefix } from 'libs/values';
 import { TransactionWithoutGas } from 'libs/messages';
@@ -307,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                      <div>
-                        <NonceField
-                          value={nonce}
-                          onChange={this.onNonceChange}
-                          placeholder={'0'}
-                        />
-                      </div>
-                    )}
+                    <div>
+                      <NonceField
+                        value={nonce}
+                        onChange={this.onNonceChange}
+                        placeholder={'0'}
+                      />
+                    </div>
+                  )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}

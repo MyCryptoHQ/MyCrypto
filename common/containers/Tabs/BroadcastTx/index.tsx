@@ -36,7 +36,7 @@ class BroadcastTx extends Component<Props, State> {
   public ensureValidSignedTxInputOnUpdate() {
     try {
       const tx = new EthTx(this.state.signedTx);
-      const fields = getTransactionFields(tx);
+      getTransactionFields(tx);
       if (this.state.disabled) {
         this.setState({ disabled: false });
       }
