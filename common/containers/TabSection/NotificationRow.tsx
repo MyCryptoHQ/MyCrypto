@@ -9,22 +9,6 @@ interface Props {
 }
 
 export default class NotificationRow extends Component<Props, {}> {
-  public componentDidUpdate(prevProps) {
-    if (
-      prevProps.notification.msg.props.txHash !==
-        this.props.notification.msg.props.txHash &&
-      !!this.props.notification
-    ) {
-      console.log('something got overridden');
-      console.log(
-        prevProps.notification.msg.props.txHash +
-          ' to ' +
-          this.props.notification.msg.props.txHash
-      );
-      console.log(prevProps, this.props.notification);
-    }
-  }
-
   public render() {
     const { msg, level } = this.props.notification;
     const notifClass = classnames({

@@ -5,8 +5,9 @@ import {
 } from 'actions/notifications';
 import React from 'react';
 import { connect } from 'react-redux';
-import { CSSTransitionGroup } from 'react-transition-group';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import NotificationRow from './NotificationRow';
+import { uniqueId } from 'lodash';
 import './Notifications.scss';
 
 interface Props {
@@ -15,24 +16,27 @@ interface Props {
 }
 export class Notifications extends React.Component<Props, {}> {
   public render() {
+    const Transition = props => (
+      <CSSTransition
+        {...props}
+        classNames="example"
+        timeout={{ enter: 500, exit: 500 }}
+      />
+    );
     return (
-      <CSSTransitionGroup
-        className="Notifications"
-        transitionName="example"
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-      >
+      <TransitionGroup className="Notifications">
         {this.props.notifications.map((n, i) => {
-          // console.log(n, i);
           return (
-            <NotificationRow
-              key={`${n.level}-${i}`}
-              notification={n}
-              onClose={this.props.closeNotification}
-            />
+            // TODO: add unique ID's to notifications to use as keys. Keys cannot be based off array index
+            <Transition key={`${n.level}-${i}`}>
+              <NotificationRow
+                notification={n}
+                onClose={this.props.closeNotification}
+              />
+            </Transition>
           );
         })}
-      </CSSTransitionGroup>
+      </TransitionGroup>
     );
   }
 }
