@@ -28,7 +28,7 @@ export function isValidHex(str: string): boolean {
     str.substring(0, 2) === '0x'
       ? str.substring(2).toUpperCase()
       : str.toUpperCase();
-  const re = /^[0-9A-F]+$/g;
+  const re = /^[0-9A-F]*$/g; // Match 0 -> unlimited times, 0 being "0x" case
   return re.test(str);
 }
 
@@ -150,9 +150,6 @@ export function isValidRawTx(rawTx: RawTransaction): boolean {
     }
   }
 
-  if (!isValidETHAddress(rawTx.to)) {
-    return false;
-  }
   if (Object.keys(rawTx).length !== propReqs.length) {
     return false;
   }
@@ -168,3 +165,15 @@ export function isValidPath(dPath: string) {
   const len = dPath.split("'/").length;
   return len === 3 || len === 4;
 }
+
+export const isValidValue = (value: string) =>
+  !!(value && isFinite(parseFloat(value)) && parseFloat(value) >= 0);
+
+export const isValidGasPrice = (gasLimit: string) =>
+  !!(gasLimit && isFinite(parseFloat(gasLimit)) && parseFloat(gasLimit) > 0);
+
+export const isValidByteCode = (byteCode: string) =>
+  byteCode && byteCode.length > 0 && byteCode.length % 2 === 0;
+
+export const isValidAbiJson = (abiJson: string) =>
+  abiJson && abiJson.startsWith('[') && abiJson.endsWith(']');

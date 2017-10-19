@@ -11,7 +11,9 @@
     "lib": ["es2017", "dom"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "noEmitOnError": false
+    "noEmitOnError": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "./common/",

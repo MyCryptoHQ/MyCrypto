@@ -1,6 +1,6 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { fetchRates, CCResponse } from './actionPayloads';
+import { fetchRates } from './actionPayloads';
 
 export type TFetchCCRates = typeof fetchCCRates;
 export function fetchCCRates(): interfaces.FetchCCRates {
