@@ -7,7 +7,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import NotificationRow from './NotificationRow';
-import { uniqueId } from 'lodash';
 import './Notifications.scss';
 
 interface Props {
@@ -18,7 +17,7 @@ interface Props {
 const Transition = props => (
   <CSSTransition
     {...props}
-    classNames="example"
+    classNames="animation"
     timeout={{ enter: 500, exit: 500 }}
   />
 );
@@ -27,7 +26,7 @@ export class Notifications extends React.Component<Props, {}> {
   public render() {
     return (
       <TransitionGroup className="Notifications">
-        {this.props.notifications.map((n, i) => {
+        {this.props.notifications.map(n => {
           return (
             <Transition key={n.id}>
               <NotificationRow

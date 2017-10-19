@@ -143,21 +143,21 @@
   }
 }
 
-.example-enter {
+.animation-enter {
   opacity: 0.01;
 }
 
-.example-enter.example-enter-active {
+.animation-enter.animation-enter-active {
   opacity: 1;
   transition: opacity 500ms;
 }
 
-.example-exit {
+.animation-exit {
   opacity: 1;
   transform: none;
 }
 
-.example-exit.example-exit-active {
+.animation-exit.animation-exit-active {
   opacity: 0.01;
   transform: translateY(100%);
   transition: opacity 500ms, transform 500ms;
