@@ -2,7 +2,7 @@ import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
 import { Wei } from 'libs/units';
-import { INode } from '../INode';
+import { INode, TxObj } from '../INode';
 import ERC20 from 'libs/erc20';
 
 export default class Web3Node implements INode {
@@ -10,6 +10,17 @@ export default class Web3Node implements INode {
 
   constructor(web3: any) {
     this.web3 = web3;
+  }
+
+  public sendCallRequest(txObj: TxObj): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.web3.eth.call(txObj, 'pending', (err, res) => {
+        if (err) {
+          return reject(err.message);
+        }
+        resolve(res);
+      });
+    });
   }
 
   public getBalance(address: string): Promise<Wei> {
