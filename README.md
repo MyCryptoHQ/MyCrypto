@@ -217,6 +217,29 @@ class MyComponent extends React.Component<MyComponentProps, {}> {
 
 All the injected props are now strongly typed, while staying private to the module, and not polluting the public props interface.
 
+## Event Handlers
+
+Event handlers such as `onChange` and `onClick`, should be properly typed. For example, if you have an event listener on an input element inside a form:
+```js
+public onValueChange = (e: React.FormEvent<HTMLInputElement>) => {
+    if (this.props.onChange) {
+      this.props.onChange(
+        e.currentTarget.value,
+        this.props.unit
+      );
+    }
+  };
+```
+Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`. 
+
+## Class names
+
+Dynamic class names should use the `classnames` module to simplify how they are created instead of using string template literals with expressions inside. 
+
+## Conditional handlers
+
+Conditional handlers such as an `onChange` handler that is only valid if the component is not `disabled` should not be setting `onChange` to null. Instead, either make a HOC that handles adding or removing the `onChange` handler or use the `addProperties` helper function in `utils/helpers`
+
 ### Styling
 
 Legacy styles are housed under `common/assets/styles` and written with LESS.
