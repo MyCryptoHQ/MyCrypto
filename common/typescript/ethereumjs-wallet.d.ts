@@ -66,8 +66,14 @@ declare module 'ethereumjs-wallet/hdkey' {
     getWallet(): FullWallet;
   }
 
+  /**
+     * @description create an instance based on a seed
+     */
   function fromMasterSeed(seed: Buffer): IHDNodePrivate;
 
+  /**
+     * @description create an instance based on a BIP32 extended private or public key
+     */
   function fromExtendedKey(key: string): IHDNodePrivate | IHDNodePublic;
 }
 
