@@ -1,3 +1,13 @@
+/**
+ * Incomplete -- Provider-engine needs its own typings
+ */
+declare module 'ethereumjs-wallet/provider-engine' {
+  import { PublicKeyOnlyWallet, FullWallet } from 'ethereumjs-wallet';
+  class WalletSubprovider {
+    constructor(wallet: PublicKeyOnlyWallet | FullWallet, opts: object);
+  }
+}
+
 declare module 'ethereumjs-wallet/hdkey' {
   import { Buffer } from 'buffer';
   import { PublicKeyOnlyWallet, FullWallet } from 'ethereumjs-wallet';
