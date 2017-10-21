@@ -168,6 +168,8 @@ declare module 'ethereumjs-wallet' {
   }
 
   class PublicKeyOnlyWallet {
+    _pubKey: string;
+
     /**
      * @description return the public key
      */
@@ -200,6 +202,8 @@ declare module 'ethereumjs-wallet' {
     getV3Filename(timestamp?: number): string;
   }
   class FullWallet extends PublicKeyOnlyWallet {
+    _privKey: string;
+
     /**
      * @description return the private key
      */
