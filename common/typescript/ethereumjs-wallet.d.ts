@@ -197,7 +197,7 @@ declare module 'ethereumjs-wallet' {
     /**
      * @description return the suggested filename for V3 keystores
      */
-    getV3Filename(timestamp?: number);
+    getV3Filename(timestamp?: number): string;
   }
   class FullWallet extends PublicKeyOnlyWallet {
     /**
