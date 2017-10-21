@@ -2,15 +2,15 @@
  * Incomplete -- Provider-engine needs its own typings
  */
 declare module 'ethereumjs-wallet/provider-engine' {
-  import { PublicKeyOnlyWallet, IFullWallet } from 'ethereumjs-wallet';
+  import { IPublicKeyOnlyWallet, IFullWallet } from 'ethereumjs-wallet';
   class WalletSubprovider {
-    constructor(wallet: PublicKeyOnlyWallet | IFullWallet, opts?: object);
+    constructor(wallet: IPublicKeyOnlyWallet | IFullWallet, opts?: object);
   }
 }
 
 declare module 'ethereumjs-wallet/hdkey' {
   import { Buffer } from 'buffer';
-  import { PublicKeyOnlyWallet, IFullWallet } from 'ethereumjs-wallet';
+  import { IPublicKeyOnlyWallet, IFullWallet } from 'ethereumjs-wallet';
 
   interface IHDNodePublic {
     /**
@@ -31,7 +31,7 @@ declare module 'ethereumjs-wallet/hdkey' {
     /**
      * @description return a Wallet instance 
      */
-    getWallet(): PublicKeyOnlyWallet;
+    getWallet(): IPublicKeyOnlyWallet;
   }
 
   /**
@@ -169,7 +169,7 @@ declare module 'ethereumjs-wallet' {
     p?: number; // Parallelization factor. Defaults to 1.
   }
 
-  class PublicKeyOnlyWallet {
+  class IPublicKeyOnlyWallet {
     _pubKey: string;
 
     /**
@@ -203,7 +203,7 @@ declare module 'ethereumjs-wallet' {
      */
     getV3Filename(timestamp?: number): string;
   }
-  class IFullWallet extends PublicKeyOnlyWallet {
+  class IFullWallet extends IPublicKeyOnlyWallet {
     _privKey: string;
 
     /**
@@ -257,13 +257,13 @@ declare module 'ethereumjs-wallet' {
   function fromPublicKey(
     input: Buffer,
     nonStrict?: boolean
-  ): PublicKeyOnlyWallet;
+  ): IPublicKeyOnlyWallet;
 
   /**
      * @description  create an instance based on a BIP32 extended public key (xpub)
      * @param input 
      */
-  function fromExtendedPublicKey(input: string): PublicKeyOnlyWallet;
+  function fromExtendedPublicKey(input: string): IPublicKeyOnlyWallet;
 
   /**
      * @description import a wallet (Version 1 of the Ethereum wallet format)
