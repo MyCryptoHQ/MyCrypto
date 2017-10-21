@@ -1,3 +1,66 @@
+declare module 'ethereumjs-wallet/hdkey' {
+  import { Buffer } from 'buffer';
+  import { PublicKeyOnlyWallet, FullWallet } from 'ethereumjs-wallet';
+
+  interface IHDNodePublic {
+    /**
+     * @description return a BIP32 extended public key (xpub)
+     */
+    publicExtendedKey(): string;
+
+    /**
+     * @description derive a node based on a path (e.g. m/44'/0'/0/1)
+     */
+    derivePath(path: string): IHDNodePublic;
+
+    /**
+     * @description derive a node based on a child index
+     */
+    deriveChild(index): IHDNodePublic;
+
+    /**
+     * @description return a Wallet instance 
+     */
+    getWallet(): PublicKeyOnlyWallet;
+  }
+
+  /**
+   * 
+   * 
+   * @interface IHDNodePrivate
+   */
+  interface IHDNodePrivate {
+    /**
+     * @description return a BIP32 extended private key (xprv)
+     */
+    privateExtendedKey(): string;
+
+    /**
+     * @description return a BIP32 extended public key (xpub)
+     */
+    publicExtendedKey(): string;
+
+    /**
+     * @description derive a node based on a path (e.g. m/44'/0'/0/1)
+     */
+    derivePath(path: string): IHDNodePrivate | IHDNodePublic;
+
+    /**
+     * @description derive a node based on a child index
+     */
+    deriveChild(index): IHDNodePrivate | IHDNodePublic;
+
+    /**
+     * @description return a Wallet instance 
+     */
+    getWallet(): FullWallet;
+  }
+
+  function fromMasterSeed(seed: Buffer): IHDNodePrivate;
+
+  function fromExtendedKey(key: string): IHDNodePrivate | IHDNodePublic;
+}
+
 declare module 'ethereumjs-wallet' {
   import { Buffer } from 'buffer';
 
@@ -24,6 +87,25 @@ declare module 'ethereumjs-wallet' {
     c: number;
   }
 
+  interface IV1Wallet {
+    Version: 1;
+    Crypto: {
+      KeyHeader: {
+        Kdf: 'scrypt';
+        KdfParams: {
+          N: number;
+          R: number;
+          P: number;
+          DkLen: number;
+        };
+      };
+      MAC: string;
+      CipherText: string;
+      Salt: string;
+      IV: string;
+    };
+  }
+
   interface IV3Wallet {
     version: 3;
     crypto: {
@@ -38,6 +120,20 @@ declare module 'ethereumjs-wallet' {
     };
   }
 
+  interface IEtherWalletLocked {
+    private: string;
+    encrypted: true;
+    address: string;
+    locked: true;
+  }
+
+  interface IEtherWalletUnlocked {
+    private: string;
+    locked: false;
+    encrypted: false;
+    address: string;
+  }
+
   interface IV3Options {
     salt?: Buffer; // Random salt for the kdf. Size must match the requirements of the KDF (key derivation function). Random number generated via crypto.getRandomBytes if nothing is supplied.
     iv?: Buffer; // Initialization vector for the cipher. Size must match the requirements of the cipher. Random number generated via crypto.getRandomBytes if nothing is supplied.
@@ -47,27 +143,60 @@ declare module 'ethereumjs-wallet' {
     cipher?: string | 'aes-128-ctr' | 'aes-128-cbc'; // The cipher to use. Names must match those of supported by OpenSSL, e.g. aes-128-ctr or aes-128-cbc.
 
     /* pbkdf2 */
-
     c?: number; //  Number of iterations. Defaults to 262144.
 
     /* scrypt */
-
     n?: number; // Iteration count. Defaults to 262144.
     r?: number; // Block size for the underlying hash. Defaults to 8.
     p?: number; // Parallelization factor. Defaults to 1.
   }
 
   class PublicKeyOnlyWallet {
+    /**
+     * @description return the public key
+     */
     getPublicKey(): Buffer; //only returns uncompressed Ethereum-style public keys.
+
+    /**
+     * @description return the public key
+     */
     getPublicKeyString(): string;
+
+    /**
+     * @description  return the address
+     */
     getAddress(): Buffer;
+
+    /**
+     * 
+     * @description return the address
+     */
     getAddressString(): string;
+
+    /**
+     * @description  return the address with checksum
+     */
     getChecksumAddressString(): string;
+
+    /**
+     * @description return the suggested filename for V3 keystores
+     */
     getV3Filename(timestamp?: number);
   }
   class FullWallet extends PublicKeyOnlyWallet {
+    /**
+     * @description return the private key
+     */
     getPrivateKey(): Buffer;
+
+    /**
+     * @description return the private key
+     */
     getPrivateKeyString(): string;
+
+    /**
+     * @description return the wallet as a JSON string (Version 3 of the Ethereum wallet format)
+     */
     toV3(password: string, options?: IV3Options);
   }
 
@@ -119,7 +248,7 @@ declare module 'ethereumjs-wallet' {
      * @param input 
      * @param password 
      */
-  function fromV1(input: object | string, password: string): FullWallet;
+  function fromV1(input: IV1Wallet | string, password: string): FullWallet;
 
   /**
      * @description import a wallet (Version 3 of the Ethereum wallet format). Set nonStrict true to accept files with mixed-caps.
@@ -156,7 +285,7 @@ declare module 'ethereumjs-wallet' {
      * @param password 
      */
   function fromEtherWallet(
-    input: object | string,
+    input: IEtherWalletLocked | IEtherWalletUnlocked | string,
     password: string
   ): FullWallet;
 
