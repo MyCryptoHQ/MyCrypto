@@ -1,8 +1,11 @@
 import { decryptMnemonicToPrivKey } from 'libs/decrypt';
-import PrivKeyWallet from './privkey';
+import { fromPrivateKey } from 'ethereumjs-wallet';
 
-export default class MnemonicWallet extends PrivKeyWallet {
-  constructor(phrase: string, pass: string, path: string, address: string) {
-    super(decryptMnemonicToPrivKey(phrase, pass, path, address));
-  }
-}
+const MnemonicWallet = (
+  phrase: string,
+  pass: string,
+  path: string,
+  address: string
+) => fromPrivateKey(decryptMnemonicToPrivKey(phrase, pass, path, address));
+
+export default MnemonicWallet;

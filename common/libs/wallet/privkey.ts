@@ -1,81 +1,105 @@
-import { randomBytes } from 'crypto';
 import {
-  privateToPublic,
-  publicToAddress,
-  toChecksumAddress
-} from 'ethereumjs-util';
-import { pkeyToKeystore, UtcKeystore } from 'libs/keystore';
-import { signMessageWithPrivKey, signRawTxWithPrivKey } from 'libs/signing';
+  IFullWallet,
+  fromPrivateKey,
+  fromEthSale,
+  fromEtherWallet,
+  fromV3
+} from 'ethereumjs-wallet';
 import { RawTransaction } from 'libs/transaction';
-import { isValidPrivKey } from 'libs/validators';
-import { stripHexPrefixAndLower } from 'libs/values';
-import { IWallet } from './IWallet';
+import { signMessageWithPrivKey, signRawTxWithPrivKey } from 'libs/signing';
+import { decryptPrivKey } from 'libs/decrypt';
 
-export default class PrivKeyWallet implements IWallet {
-  public static generate() {
-    return new PrivKeyWallet(randomBytes(32));
-  }
+interface ISignWrapper {
+  signRawTransaction(rawTx: RawTransaction): string;
+  signMessage(msg: string, addresss: string, date: string): string;
+  unlock();
+}
 
-  private privKey: Buffer;
-  private pubKey: Buffer;
-  private address: Buffer;
+type WrappedWallet = IFullWallet & ISignWrapper;
 
-  constructor(privkey: Buffer) {
-    if (!isValidPrivKey(privkey)) {
-      throw new Error('Invalid private key');
-    }
-    this.privKey = privkey;
-    this.pubKey = privateToPublic(this.privKey);
-    this.address = publicToAddress(this.pubKey);
-  }
+const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
+  Object.assign(walletToWrap, {
+    signRawTransaction: (rawTx: RawTransaction) =>
+      signRawTxWithPrivKey(walletToWrap.getPrivateKey(), rawTx),
+    signMessage: (msg: string, address: string, date: string) =>
+      signMessageWithPrivKey(walletToWrap.getPrivateKey(), msg, address, date),
+    unlock: () => Promise.resolve()
+  });
 
-  public getAddress(): Promise<string> {
-    return Promise.resolve(
-      toChecksumAddress(`0x${this.address.toString('hex')}`)
-    );
-  }
+export const EncryptedPrivateKeyWallet = (
+  encryptedPrivateKey: string,
+  password: string
+) => signWrapper(fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
 
-  public getPrivateKey() {
-    return this.privKey.toString('hex');
-  }
+export const PresaleWallet = (keystore: string, password: string) =>
+  signWrapper(fromEthSale(keystore, password));
 
-  public getNakedAddress(): Promise<string> {
-    return new Promise(resolve => {
-      this.getAddress().then(address => {
-        resolve(stripHexPrefixAndLower(address));
-      });
-    });
-  }
+export const MewV1Wallet = (keystore: string, password: string) =>
+  signWrapper(fromEtherWallet(keystore, password));
 
-  public toKeystore(password: string): Promise<UtcKeystore> {
-    return new Promise(resolve => {
-      this.getNakedAddress().then(address => {
-        resolve(pkeyToKeystore(this.privKey, address, password));
-      });
-    });
-  }
+export const PrivKeyWallet = (privkey: Buffer) =>
+  signWrapper(fromPrivateKey(privkey));
 
-  public unlock(): Promise<any> {
-    return Promise.resolve();
-  }
+export const UtcWallet = (keystore: string, password: string) =>
+  signWrapper(fromV3(keystore, password, true));
 
-  public signRawTransaction(rawTx: RawTransaction): Promise<string> {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(signRawTxWithPrivKey(this.privKey, rawTx));
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
+enum KeystoreTypes {
+  presale = 'presale',
+  utc = 'v2-v3-utc',
+  v1Unencrypted = 'v1-unencrypted',
+  v1Encrypted = 'v1-encrypted',
+  v2Unencrypted = 'v2-unencrypted'
+}
 
-  public signMessage(msg: string, address: string, date: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(signMessageWithPrivKey(this.privKey, msg, address, date));
-      } catch (err) {
-        reject(err);
-      }
-    });
+function determineKeystoreType(file: string): string {
+  const parsed = JSON.parse(file);
+  if (parsed.encseed) {
+    return KeystoreTypes.presale;
+  } else if (parsed.Crypto || parsed.crypto) {
+    return KeystoreTypes.utc;
+  } else if (parsed.hash && parsed.locked === true) {
+    return KeystoreTypes.v1Encrypted;
+  } else if (parsed.hash && parsed.locked === false) {
+    return KeystoreTypes.v1Unencrypted;
+  } else if (parsed.publisher === 'MyEtherWallet') {
+    return KeystoreTypes.v2Unencrypted;
+  } else {
+    throw new Error('Invalid keystore');
   }
 }
+
+export const isKeystorePassRequired = (file: string): boolean =>
+  determineKeystoreType(file) === KeystoreTypes.presale ||
+  KeystoreTypes.v1Encrypted ||
+  KeystoreTypes.utc
+    ? true
+    : false;
+
+export const getPrivKeyWallet = (key: string, password: string) =>
+  key.length === 64
+    ? PrivKeyWallet(Buffer.from(key, 'hex'))
+    : EncryptedPrivateKeyWallet(key, password);
+
+export const getKeystoreWallet = (file: string, password: string) => {
+  const parsed = JSON.parse(file);
+
+  switch (determineKeystoreType(file)) {
+    case KeystoreTypes.presale:
+      return PresaleWallet(file, password);
+
+    case KeystoreTypes.v1Unencrypted:
+      return PrivKeyWallet(Buffer.from(parsed.private, 'hex'));
+
+    case KeystoreTypes.v1Encrypted:
+      return MewV1Wallet(file, password);
+
+    case KeystoreTypes.v2Unencrypted:
+      return PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
+
+    case KeystoreTypes.utc:
+      return UtcWallet(file, password);
+
+    default:
+      throw Error('Unknown wallet');
+  }
+};
