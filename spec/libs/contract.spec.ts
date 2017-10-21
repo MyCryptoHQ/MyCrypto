@@ -1,5 +1,4 @@
 import Contract from 'libs/contract';
-import Big from 'bignumber.js';
 
 describe('Contract', () => {
   // From the ABI docs

@@ -8,10 +8,6 @@ import * as swapActions from 'actions/swap';
 import without from 'lodash/without';
 
 describe('swap reducer', () => {
-  it('should return the initial state', () => {
-    expect(swap(undefined, {})).toEqual(INITIAL_STATE);
-  });
-
   it('should handle SWAP_ORIGIN_KIND', () => {
     const newOriginKind = 'ETH';
     const newDestinationKind = buildDestinationKind(
