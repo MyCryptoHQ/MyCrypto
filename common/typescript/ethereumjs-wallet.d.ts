@@ -213,7 +213,7 @@ declare module 'ethereumjs-wallet' {
     /**
      * @description return the wallet as a JSON string (Version 3 of the Ethereum wallet format)
      */
-    toV3(password: string, options?: IV3Options);
+    toV3(password: string, options?: IV3Options): string;
   }
 
   /**
