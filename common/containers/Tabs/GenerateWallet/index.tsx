@@ -6,7 +6,7 @@ import {
   TGenerateNewWallet,
   TResetGenerateWallet
 } from 'actions/generateWallet';
-import PrivKeyWallet from 'libs/wallet/privkey';
+import { IFullWallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -19,7 +19,7 @@ interface Props {
   // Redux state
   activeStep: string; // FIXME union actual steps
   password: string;
-  wallet: PrivKeyWallet | null | undefined;
+  wallet: IFullWallet | null | undefined;
   walletPasswordForm: any;
   // Actions
   generateNewWallet: TGenerateNewWallet;

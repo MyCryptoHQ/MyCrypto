@@ -1,10 +1,10 @@
-import { PrivKeyWallet } from 'libs/wallet';
+import { IFullWallet } from 'ethereumjs-wallet';
 import { TypeKeys } from './constants';
 
 /*** Generate Wallet File ***/
 export interface GenerateNewWalletAction {
   type: TypeKeys.GENERATE_WALLET_GENERATE_WALLET;
-  wallet: PrivKeyWallet;
+  wallet: IFullWallet;
   password: string;
 }
 
