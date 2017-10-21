@@ -4,7 +4,7 @@
 declare module 'ethereumjs-wallet/provider-engine' {
   import { PublicKeyOnlyWallet, FullWallet } from 'ethereumjs-wallet';
   class WalletSubprovider {
-    constructor(wallet: PublicKeyOnlyWallet | FullWallet, opts: object);
+    constructor(wallet: PublicKeyOnlyWallet | FullWallet, opts?: object);
   }
 }
 
