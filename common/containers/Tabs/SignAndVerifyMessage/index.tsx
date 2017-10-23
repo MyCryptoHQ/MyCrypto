@@ -11,7 +11,7 @@ interface State {
 
 export default class SignAndVerifyMessage extends Component<{}, State> {
   public state: State = {
-    activeTab: 'interact'
+    activeTab: 'sign'
   };
 
   public changeTab = activeTab => () => this.setState({ activeTab });
