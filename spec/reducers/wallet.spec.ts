@@ -4,7 +4,15 @@ import Big from 'bignumber.js';
 
 describe('wallet reducer', () => {
   it('should handle WALLET_SET', () => {
-    const walletInstance = { wallet: true };
+    const doSomething = new Promise<string>(resolve => {
+      setTimeout(() => resolve('Success'), 1000);
+    });
+
+    const walletInstance = {
+      getAddress: () => doSomething,
+      signRawTransaction: () => doSomething
+    };
+
     expect(wallet(undefined, walletActions.setWallet(walletInstance))).toEqual({
       ...INITIAL_STATE,
       inst: walletInstance,

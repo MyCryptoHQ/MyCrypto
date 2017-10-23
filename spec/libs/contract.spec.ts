@@ -6,16 +6,16 @@ describe('Contract', () => {
   const testAbi = [
     {
       type: 'event',
+      name: 'Event',
       inputs: [
         { name: 'a', type: 'uint256', indexed: true },
         { name: 'b', type: 'bytes32', indexed: false }
-      ],
-      name: 'Event'
+      ]
     },
     {
       type: 'function',
-      inputs: [{ name: 'a', type: 'uint256' }],
       name: 'foo',
+      inputs: [{ name: 'a', type: 'uint256' }],
       outputs: []
     }
   ];

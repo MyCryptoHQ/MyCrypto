@@ -80,7 +80,9 @@ describe('swap reducer', () => {
   it('should handle SWAP_LOAD_BITY_RATES_SUCCEEDED', () => {
     const bityRates = {
       BTCETH: 0.01,
-      ETHREP: 10
+      ETHREP: 10,
+      ETHBTC: 0,
+      BTCREP: 0
     };
     expect(
       swap(undefined, swapActions.loadBityRatesSucceededSwap(bityRates))
@@ -130,14 +132,22 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_ORDER_CREATE_REQUESTED', () => {
-    expect(swap(undefined, { type: 'SWAP_ORDER_CREATE_REQUESTED' })).toEqual({
+    expect(
+      swap(undefined, {
+        type: 'SWAP_ORDER_CREATE_REQUESTED'
+      } as swapActions.SwapAction)
+    ).toEqual({
       ...INITIAL_STATE,
       isPostingOrder: true
     });
   });
 
   it('should handle SWAP_ORDER_CREATE_FAILED', () => {
-    expect(swap(undefined, { type: 'SWAP_ORDER_CREATE_FAILED' })).toEqual({
+    expect(
+      swap(undefined, {
+        type: 'SWAP_ORDER_CREATE_FAILED'
+      } as swapActions.SwapAction)
+    ).toEqual({
       ...INITIAL_STATE,
       isPostingOrder: false
     });
@@ -162,7 +172,9 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_LOAD_BITY_RATES_REQUESTED', () => {
     expect(
-      swap(undefined, { type: 'SWAP_LOAD_BITY_RATES_REQUESTED' })
+      swap(undefined, {
+        type: 'SWAP_LOAD_BITY_RATES_REQUESTED'
+      } as swapActions.SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: true
@@ -170,7 +182,11 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_STOP_LOAD_BITY_RATES', () => {
-    expect(swap(undefined, { type: 'SWAP_STOP_LOAD_BITY_RATES' })).toEqual({
+    expect(
+      swap(undefined, {
+        type: 'SWAP_STOP_LOAD_BITY_RATES'
+      } as swapActions.SwapAction)
+    ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false
     });
