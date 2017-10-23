@@ -42,4 +42,7 @@ export default class TrezorWallet extends DeterministicWallet
       );
     });
   }
+
+  public signMessage = () =>
+    Promise.reject(new Error('Signing via Trezor not yet supported.'));
 }
