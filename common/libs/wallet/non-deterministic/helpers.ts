@@ -1,13 +1,21 @@
-import {
-  IFullWallet,
-  fromPrivateKey,
-  fromEthSale,
-  fromEtherWallet,
-  fromV3
-} from 'ethereumjs-wallet';
+import { IFullWallet } from 'ethereumjs-wallet';
 import { RawTransaction } from 'libs/transaction';
 import { signMessageWithPrivKey, signRawTxWithPrivKey } from 'libs/signing';
-import { decryptPrivKey } from 'libs/decrypt';
+import {
+  EncryptedPrivateKeyWallet,
+  MewV1Wallet,
+  PresaleWallet,
+  PrivKeyWallet,
+  UtcWallet
+} from './wallets';
+
+enum KeystoreTypes {
+  presale = 'presale',
+  utc = 'v2-v3-utc',
+  v1Unencrypted = 'v1-unencrypted',
+  v1Encrypted = 'v1-encrypted',
+  v2Unencrypted = 'v2-unencrypted'
+}
 
 interface ISignWrapper {
   signRawTransaction(rawTx: RawTransaction): string;
@@ -17,7 +25,7 @@ interface ISignWrapper {
 
 type WrappedWallet = IFullWallet & ISignWrapper;
 
-const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
+export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
   Object.assign(walletToWrap, {
     signRawTransaction: (rawTx: RawTransaction) =>
       signRawTxWithPrivKey(walletToWrap.getPrivateKey(), rawTx),
@@ -25,31 +33,6 @@ const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
       signMessageWithPrivKey(walletToWrap.getPrivateKey(), msg, address, date),
     unlock: () => Promise.resolve()
   });
-
-export const EncryptedPrivateKeyWallet = (
-  encryptedPrivateKey: string,
-  password: string
-) => signWrapper(fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
-
-export const PresaleWallet = (keystore: string, password: string) =>
-  signWrapper(fromEthSale(keystore, password));
-
-export const MewV1Wallet = (keystore: string, password: string) =>
-  signWrapper(fromEtherWallet(keystore, password));
-
-export const PrivKeyWallet = (privkey: Buffer) =>
-  signWrapper(fromPrivateKey(privkey));
-
-export const UtcWallet = (keystore: string, password: string) =>
-  signWrapper(fromV3(keystore, password, true));
-
-enum KeystoreTypes {
-  presale = 'presale',
-  utc = 'v2-v3-utc',
-  v1Unencrypted = 'v1-unencrypted',
-  v1Encrypted = 'v1-encrypted',
-  v2Unencrypted = 'v2-unencrypted'
-}
 
 function determineKeystoreType(file: string): string {
   const parsed = JSON.parse(file);
@@ -68,19 +51,19 @@ function determineKeystoreType(file: string): string {
   }
 }
 
-export const isKeystorePassRequired = (file: string): boolean =>
+const isKeystorePassRequired = (file: string): boolean =>
   determineKeystoreType(file) === KeystoreTypes.presale ||
   KeystoreTypes.v1Encrypted ||
   KeystoreTypes.utc
     ? true
     : false;
 
-export const getPrivKeyWallet = (key: string, password: string) =>
+const getPrivKeyWallet = (key: string, password: string) =>
   key.length === 64
     ? PrivKeyWallet(Buffer.from(key, 'hex'))
     : EncryptedPrivateKeyWallet(key, password);
 
-export const getKeystoreWallet = (file: string, password: string) => {
+const getKeystoreWallet = (file: string, password: string) => {
   const parsed = JSON.parse(file);
 
   switch (determineKeystoreType(file)) {
@@ -103,3 +86,5 @@ export const getKeystoreWallet = (file: string, password: string) => {
       throw Error('Unknown wallet');
   }
 };
+
+export { isKeystorePassRequired, getPrivKeyWallet, getKeystoreWallet };

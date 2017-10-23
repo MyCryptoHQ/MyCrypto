@@ -194,7 +194,7 @@ class ConfirmationModal extends React.Component<Props, State> {
 
   private async setWalletAddress(wallet: IWallet) {
     // TODO move getAddress to saga
-    const fromAddress = await wallet.getAddress();
+    const fromAddress = await wallet.getAddressString();
     this.setState({ fromAddress });
   }
 

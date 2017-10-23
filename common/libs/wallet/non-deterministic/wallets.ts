@@ -1,0 +1,32 @@
+import {
+  fromPrivateKey,
+  fromEthSale,
+  fromEtherWallet,
+  fromV3
+} from 'ethereumjs-wallet';
+import { signWrapper } from './helpers';
+import { decryptPrivKey } from 'libs/decrypt';
+
+const EncryptedPrivateKeyWallet = (
+  encryptedPrivateKey: string,
+  password: string
+) => signWrapper(fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
+
+const PresaleWallet = (keystore: string, password: string) =>
+  signWrapper(fromEthSale(keystore, password));
+
+const MewV1Wallet = (keystore: string, password: string) =>
+  signWrapper(fromEtherWallet(keystore, password));
+
+const PrivKeyWallet = (privkey: Buffer) => signWrapper(fromPrivateKey(privkey));
+
+const UtcWallet = (keystore: string, password: string) =>
+  signWrapper(fromV3(keystore, password, true));
+
+export {
+  EncryptedPrivateKeyWallet,
+  PresaleWallet,
+  MewV1Wallet,
+  PrivKeyWallet,
+  UtcWallet
+};

@@ -33,7 +33,7 @@ function* updateAccountBalance(): SagaIterator {
       return;
     }
     const node: INode = yield select(getNodeLib);
-    const address = yield apply(wallet, wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddressString);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalance(balance));
@@ -51,7 +51,7 @@ function* updateTokenBalances(): SagaIterator {
       return;
     }
     // FIXME handle errors
-    const address = yield apply(wallet, wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddressString);
 
     // network request
     const tokenBalances = yield apply(node, node.getTokenBalances, [
@@ -98,7 +98,7 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   let wallet: null | IWallet = null;
 
   try {
-    wallet = (getKeystoreWallet(file, password) as any) as IWallet;
+    wallet = getKeystoreWallet(file, password);
   } catch (e) {
     yield put(showNotification('danger', translate('ERROR_6')));
     return;
