@@ -14,7 +14,6 @@ require('redux-form');
 require('redux-logger');
 require('redux-saga');
 require('wallet-address-validator');
-require('scryptsy');
 require('store2');
 require('uuid');
 require('whatwg-fetch');

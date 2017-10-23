@@ -3,15 +3,10 @@
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json"
-  ],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
   "testPathIgnorePatterns": ["<rootDir>/common/config"],
   "setupFiles": ["<rootDir>/jest_config/setupJest.js"],
   "automock": false,
-  "moduleDirectories": ["node_modules", "common"]
+  "moduleDirectories": ["node_modules", "common"],
+  "browser": true
 }
