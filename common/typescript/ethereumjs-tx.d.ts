@@ -42,7 +42,7 @@ declare module 'ethereumjs-tx' {
   class ITx {
     public raw: Buffer;
 
-    constructor(data: Data);
+    constructor(data: Data | string);
     /**
      * If the tx's `to` is to the creation address
      * @return {Boolean}

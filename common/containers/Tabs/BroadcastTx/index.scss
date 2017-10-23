@@ -1,0 +1,7 @@
+@import "common/sass/variables";
+
+.BroadcastTx {
+  &-title {
+    margin: $space auto $space * 2.5;
+  }
+}
