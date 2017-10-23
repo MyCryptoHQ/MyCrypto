@@ -238,7 +238,16 @@ Dynamic class names should use the `classnames` module to simplify how they are 
 
 ## Conditional handlers
 
-Conditional handlers such as an `onChange` handler that is only valid if the component is not `disabled` should not be setting `onChange` to null. Instead, either make a HOC that handles adding or removing the `onChange` handler or use the `addProperties` helper function in `utils/helpers`
+Conditional handlers such as an `onChange` handler should not be set to null. The reason being, Typescript will throw an error if this is done. This is often done in the context of the `disabled` condition. Instead, use the `addProperties` helper function in `utils/helpers`. Ex.
+```js
+          <button
+            className="Sign-submit btn btn-primary"
+            disabled={!showSignTxButton}
+            {...addProperties(showSignTxButton, { onClick: handleSignTx })}
+          >
+            {translate('DEP_signtx')}
+          </button>
+```
 
 ### Styling
 
