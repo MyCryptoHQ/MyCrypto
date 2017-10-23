@@ -1,0 +1,28 @@
+.VerifyMessage {
+  text-align: center;
+  padding-top: 30px;
+
+  &-sign {
+    width: 100%;
+  }
+
+  &-help {
+    margin-top: 10px;
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  &-inputBox {
+    min-height: 180px;
+  }
+
+  &-success {
+    opacity: 1;
+    transition: none;
+    margin-top: 10px;
+  }
+
+  &-buy {
+    margin-top: 10px;
+  }
+}
