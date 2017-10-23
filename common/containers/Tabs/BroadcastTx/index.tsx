@@ -12,6 +12,7 @@ import {
 } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 import { ConfirmationModal } from 'containers/Tabs/SendTransaction/components';
+import classnames from 'classnames';
 
 interface Props {
   broadcastTx: TBroadcastTx;
@@ -52,53 +53,57 @@ class BroadcastTx extends Component<Props, State> {
   }
 
   public render() {
-    const { signedTx, disabled } = this.state;
+    const { signedTx, disabled, showConfirmationModal } = this.state;
+
+    const inputClasses = classnames({
+      'form-control': true,
+      'is-valid': !disabled,
+      'is-invalid': disabled
+    });
+
     return (
       <TabSection>
-        <div className="text-center">
-          <div className="Tab-content-pane row block">
-            <div className="col-md-6">
-              <div className="col-md-12 BroadcastTx-title">
-                <h2>Broadcast Signed Transaction</h2>
-              </div>
-              <p>
-                Paste a signed transaction and press the "SEND TRANSACTION"
-                button.
-              </p>
-              <label>{translateRaw('SEND_signed')}</label>
-              <textarea
-                className={`form-control
-                ${disabled ? 'is-invalid' : 'is-valid'}`}
-                rows={7}
-                value={signedTx}
-                onChange={this.handleChange}
-              />
-              <button
-                className="btn btn-primary"
-                disabled={disabled || signedTx === ''}
-                onClick={this.handleBroadcastTx}
-              >
-                {translateRaw('SEND_trans')}
-              </button>
+        <div className="Tab-content-pane row block text-center">
+          <div className="col-md-6">
+            <div className="col-md-12 BroadcastTx-title">
+              <h2>Broadcast Signed Transaction</h2>
             </div>
+            <p>
+              Paste a signed transaction and press the "SEND TRANSACTION"
+              button.
+            </p>
+            <label>{translateRaw('SEND_signed')}</label>
+            <textarea
+              className={inputClasses}
+              rows={7}
+              value={signedTx}
+              onChange={this.handleChange}
+            />
+            <button
+              className="btn btn-primary"
+              disabled={disabled || signedTx === ''}
+              onClick={this.handleBroadcastTx}
+            >
+              {translateRaw('SEND_trans')}
+            </button>
+          </div>
 
-            <div className="col-md-6" style={{ marginTop: '70px' }}>
-              <div
-                className="qr-code text-center"
-                style={{
-                  maxWidth: '15rem',
-                  margin: '1rem auto',
-                  width: '100%'
-                }}
-              >
-                {this.state.signedTx && <QRCode data={this.state.signedTx} />}
-              </div>
+          <div className="col-md-6" style={{ marginTop: '70px' }}>
+            <div
+              className="qr-code text-center"
+              style={{
+                maxWidth: '15rem',
+                margin: '1rem auto',
+                width: '100%'
+              }}
+            >
+              {signedTx && <QRCode data={signedTx} />}
             </div>
           </div>
         </div>
-        {this.state.showConfirmationModal && (
+        {showConfirmationModal && (
           <ConfirmationModal
-            signedTx={this.state.signedTx}
+            signedTx={signedTx}
             onClose={this.handleClose}
             onConfirm={this.handleConfirm}
           />
