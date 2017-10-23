@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import './index.scss';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
+import './index.scss';
 
 export interface Props {
   showNotification: TShowNotification;
