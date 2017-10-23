@@ -15,7 +15,6 @@ require('redux-logger');
 require('redux-saga');
 require('wallet-address-validator');
 require('store2');
-require('uuid');
 require('whatwg-fetch');
 require('moment');
 require('prop-types');

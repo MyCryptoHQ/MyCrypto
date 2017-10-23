@@ -38,7 +38,6 @@
     "redux-promise-middleware": "^4.4.1",
     "redux-saga": "^0.15.3",
     "store2": "^2.5.5",
-    "uuid": "^3.1.0",
     "wallet-address-validator": "^0.1.0",
     "whatwg-fetch": "^2.0.2"
   },
@@ -62,7 +61,6 @@
     "@types/redux-logger": "^3.0.3",
     "@types/redux-promise-middleware": "0.0.8",
     "@types/redux-saga": "^0.10.5",
-    "@types/uuid": "^3.4.2",
     "@types/webpack-env": "^1.13.1",
     "awesome-typescript-loader": "^3.2.3",
     "babel-minify-webpack-plugin": "^0.2.0",
