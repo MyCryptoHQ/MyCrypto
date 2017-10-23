@@ -16,14 +16,12 @@ export interface Props {
 export interface State {
   message: string;
   signMessageError: string;
-  walletSelectExpanded: boolean;
   signedMessage: ISignedMessage | null;
 }
 
 export const initialState: State = {
   message: '',
   signMessageError: '',
-  walletSelectExpanded: true,
   signedMessage: null
 };
 
