@@ -34,8 +34,8 @@ export class VerifyMessage extends Component<Props, State> {
           <h4>{translate('MSG_signature')}</h4>
           <div className="form-group">
             <textarea
-              className={`VerifyMessage-inputBox form-control ${this.state
-                .signature.length
+              className={`VerifyMessage-inputBox form-control ${!!this.state
+                .signature
                 ? 'is-valid'
                 : 'is-invalid'}`}
               placeholder={signaturePlaceholder}
