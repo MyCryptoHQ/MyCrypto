@@ -1,5 +1,4 @@
 export const REDUX_STATE = 'REDUX_STATE';
-import { State as CustomTokenState } from 'reducers/customTokens';
 import { State as SwapState } from 'reducers/swap';
 
 export function loadState<T>(): T | undefined {

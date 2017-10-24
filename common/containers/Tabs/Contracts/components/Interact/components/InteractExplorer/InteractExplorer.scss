@@ -1,0 +1,32 @@
+@import 'common/sass/variables';
+
+.InteractExplorer {
+  &-title {
+    &-address {
+      margin-left: 6px;
+      font-weight: 300;
+      opacity: 0.6;
+    }
+  }
+
+  &-func {
+    &-in,
+    &-out {
+      &-label {
+        &-type {
+          margin-left: 5px;
+          font-weight: 300;
+          opacity: 0.6;
+        }
+      }
+    }
+
+    &-in {
+      margin-right: 2rem;
+    }
+
+    &-out {
+      margin-left: 2rem;
+    }
+  }
+}

@@ -4,7 +4,7 @@ import { getAllRates } from 'api/bity';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, takeLatest } from 'redux-saga/effects';
 
-export function* loadBityRates(action?: any): SagaIterator {
+export function* loadBityRates(): SagaIterator {
   while (true) {
     try {
       const data = yield call(getAllRates);

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
 
@@ -18,15 +17,20 @@ const tabs = [
     to: 'swap'
   },
   {
-    name: 'NAV_Offline'
-  },
-  {
     name: 'NAV_ViewWallet'
     // to: 'view-wallet'
   },
   {
+    name: 'NAV_Contracts',
+    to: 'contracts'
+  },
+  {
     name: 'NAV_ENS',
     to: 'ens'
+  },
+  {
+    name: 'Broadcast Transaction',
+    to: 'pushTx'
   },
   {
     name: 'NAV_Help',
