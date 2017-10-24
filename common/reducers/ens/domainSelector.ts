@@ -1,8 +1,4 @@
-import {
-  EnsAction,
-  ResolveDomainSucceeded,
-  ResolveDomainFailed
-} from 'actions/ens';
+import { EnsAction, ResolveDomainSucceeded } from 'actions/ens';
 import { TypeKeys } from 'actions/ens/constants';
 
 export interface State {
@@ -18,8 +14,9 @@ const setCurrentDomainName = (
   action: ResolveDomainSucceeded
 ): State => {
   const { domain: domainName } = action.payload;
-  return { currentDomain: domainName };
+  return { ...state, currentDomain: domainName };
 };
+
 const clearCurrentDomainName = (): State => {
   return { currentDomain: null };
 };

@@ -22,7 +22,7 @@ const NameInputHoc = PassedComponent =>
       const isValidName: boolean = isValidENSName(domainToCheck);
       this.setState({ isValidDomain: isValidName });
     };
-    public onClick = (event: React.FormEvent<HTMLInputElement>) => {
+    public onClick = () => {
       const { isValidDomain, domainToCheck } = this.state;
       const { resolveDomainRequested } = this.props;
       return isValidDomain && resolveDomainRequested(domainToCheck);

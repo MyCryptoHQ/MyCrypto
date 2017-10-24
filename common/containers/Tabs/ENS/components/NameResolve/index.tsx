@@ -12,10 +12,10 @@ const MonoTd = ({ children }: ChildrenProps) => (
 
 type Props = AppState['ens'];
 
-const NameResolve = (props: Props) => {
+const NameResolve: React.SFC<Props> = props => {
   const { domainRequests, domainSelector } = props;
+  const { currentDomain } = domainSelector;
 
-  const { currentDomain = null } = domainSelector;
   if (
     !currentDomain ||
     !domainRequests[currentDomain] ||
