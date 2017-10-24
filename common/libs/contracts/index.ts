@@ -125,7 +125,7 @@ export default class Contract {
     });
   };
 
-  private applyTrapForCall = (target, thisArg, argumentsList) => {
+  private applyTrapForCall = (target, _, argumentsList) => {
     return target(
       //TODO: pass object instead
       ...(argumentsList.length > 0 ? argumentsList : [null]),
@@ -136,7 +136,7 @@ export default class Contract {
 
   private applyTrapForSend = (
     target: (sendParams: ISendParams) => void,
-    thisArg,
+    _,
     [userSendParams]: [IUserSendParams]
   ) => {
     return target({

@@ -20,45 +20,6 @@ export interface Input {
 export type Output = Input;
 
 /**
- * @enum {string}
- * @desc "function", "constructor", or "fallback" (the unnamed "default" function)
- */
-enum Type {
-  function = 'function',
-  constructor = 'constructor',
-  fallback = 'fallback'
-}
-
-/**
- * @desc an array of objects, each of which contains:
- *
- * name: the name of the parameter
- *
- * type: the canonical type of the parameter
- */
-type Inputs = Input[];
-
-/**
- * @desc an array of objects similar to inputs, can be omitted if function doesn't return anything
- */
-type Outputs = Output[];
-
-/**
- * @desc the name of the function
- */
-type Name = string;
-
-/**
- * @desc True if function is specified to not modify blockchain state
- */
-type Constant = boolean;
-
-/**
- *  @desc True if function accepts ether, defaults to false
- */
-type Payable = boolean;
-
-/**
  * 
  * @export
  * @interface ABIFunction
