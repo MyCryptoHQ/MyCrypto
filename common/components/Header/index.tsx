@@ -3,6 +3,7 @@ import {
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
+  TRemoveCustomNode,
 } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
@@ -28,6 +29,7 @@ import './index.scss';
 interface Props {
   languageSelection: string;
   node: NodeConfig;
+  nodeSelection: string;
   gasPriceGwei: number;
   customNodes: CustomNodeConfig[];
 
@@ -35,6 +37,7 @@ interface Props {
   changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
   addCustomNode: TAddCustomNode;
+  removeCustomNode: TRemoveCustomNode
 }
 
 interface State {
@@ -76,6 +79,7 @@ export default class Header extends Component<Props, State> {
           {customNode.network} - {customNode.name} <small>(custom)</small>
         </span>,
         color: '#000',
+        onRemove: () => this.props.removeCustomNode(customNode),
       };
     }));
 
@@ -152,6 +156,7 @@ export default class Header extends Component<Props, State> {
                   onChange={changeNodeIntent}
                   size="smr"
                   color="white"
+                  menuAlign="right"
                 />
               </div>
             </div>

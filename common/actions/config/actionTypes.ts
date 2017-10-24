@@ -50,6 +50,12 @@ export interface AddCustomNodeAction {
   payload: CustomNodeConfig;
 }
 
+/*** Remove Custom Node ***/
+export interface RemoveCustomNodeAction {
+  type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
+  payload: CustomNodeConfig;
+}
+
 /*** Union Type ***/
 export type ConfigAction =
   | ChangeNodeAction
@@ -59,4 +65,5 @@ export type ConfigAction =
   | PollOfflineStatus
   | ForceOfflineAction
   | ChangeNodeIntentAction
-  | AddCustomNodeAction;
+  | AddCustomNodeAction
+  | RemoveCustomNodeAction;

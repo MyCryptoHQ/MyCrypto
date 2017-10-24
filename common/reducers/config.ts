@@ -6,9 +6,15 @@ import {
   ToggleOfflineAction,
   ForceOfflineAction,
   AddCustomNodeAction,
+  RemoveCustomNodeAction,
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
-import { NODES, NodeConfig, CustomNodeConfig } from '../config/data';
+import {
+  NODES,
+  NodeConfig,
+  CustomNodeConfig,
+  makeCustomNodeId,
+} from '../config/data';
 
 export interface State {
   // FIXME
@@ -78,6 +84,16 @@ function addCustomNode(state: State, action: AddCustomNodeAction): State {
   };
 }
 
+function removeCustomNode(state: State, action: RemoveCustomNodeAction): State {
+  const id = makeCustomNodeId(action.payload);
+  return {
+    ...state,
+    customNodes: state.customNodes.filter((cn) => cn !== action.payload),
+    nodeSelection: id === state.nodeSelection ?
+      defaultNode : state.nodeSelection,
+  };
+}
+
 export function config(
   state: State = INITIAL_STATE,
   action: ConfigAction
@@ -95,6 +111,8 @@ export function config(
       return forceOffline(state, action);
     case TypeKeys.CONFIG_ADD_CUSTOM_NODE:
       return addCustomNode(state, action);
+    case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:
+      return removeCustomNode(state, action);
     default:
       return state;
   }

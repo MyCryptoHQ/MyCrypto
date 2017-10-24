@@ -68,3 +68,13 @@ export function addCustomNode(
     payload
   };
 }
+
+export type TRemoveCustomNode = typeof removeCustomNode;
+export function removeCustomNode(
+  payload: CustomNodeConfig
+): interfaces.RemoveCustomNodeAction {
+  return {
+    type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
+    payload
+  };
+}
