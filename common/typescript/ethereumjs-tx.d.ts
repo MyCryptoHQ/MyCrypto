@@ -1,6 +1,5 @@
 declare module 'ethereumjs-tx' {
-  import { BigNumber } from 'bignumber.js';
-  import BN = require('bn.js');
+  import BN from 'bn.js';
   import { Buffer } from 'buffer';
 
   /*
