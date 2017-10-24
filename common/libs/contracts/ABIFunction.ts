@@ -27,8 +27,6 @@ export default class AbiFunction {
   private outputTypes: string[];
   private methodSelector: string;
   private name: string;
-  private payable: boolean;
-  private type: boolean;
 
   constructor(abiFunc: any, outputMappings: FunctionOutputMappings) {
     Object.assign(this, abiFunc);
@@ -48,12 +46,10 @@ export default class AbiFunction {
         data
       })
       .catch(e => {
-        console.error(e);
-        //TODO: Put this in its own handler
         throw Error(`Node call request error at: ${this.name}
-        Params:${JSON.stringify(input, null, 2)}
-        Message:${e.message}
-        EncodedCall:${data}`);
+Params:${JSON.stringify(input, null, 2)}
+Message:${e.message}
+EncodedCall:${data}`);
       });
     const decodedOutput = this.decodeOutput(returnedData);
 
@@ -80,10 +76,12 @@ export default class AbiFunction {
       userInputs.gasPrice,
       gasLimit,
       chainId,
-      transactionInput
+      transactionInput,
+      false
     );
     return { signedTx, rawTx: JSON.parse(rawTx) };
   };
+
   public encodeInput = (suppliedInputs: object = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
@@ -157,7 +155,7 @@ export default class AbiFunction {
       : this.isBigNumber(value) ? value.toString() : value;
   };
 
-  private parsePreEncodedValue = (type: string, value: any) =>
+  private parsePreEncodedValue = (_: string, value: any) =>
     this.isBigNumber(value) ? value.toString() : value;
 
   private isBigNumber = (object: object) =>

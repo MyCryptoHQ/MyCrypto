@@ -1,5 +1,4 @@
 import configSaga from './config';
-import contracts from './contracts';
 import deterministicWallets from './deterministicWallets';
 import notifications from './notifications';
 import {
@@ -17,7 +16,6 @@ export default {
   postBityOrderSaga,
   pollBityOrderStatusSaga,
   getBityRatesSaga,
-  contracts,
   notifications,
   wallet,
   deterministicWallets
