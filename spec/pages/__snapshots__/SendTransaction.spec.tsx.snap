@@ -56,22 +56,6 @@ exports[`render snapshot 1`] = `
       "unit": "ETH",
     }
   }
-  node={
-    Object {
-      "estimateGas": false,
-      "lib": RpcNode {
-        "client": RPCClient {
-          "batch": [Function],
-          "call": [Function],
-          "decorateRequest": [Function],
-          "endpoint": "https://api.myetherapi.com/rop",
-        },
-        "requests": RPCRequests {},
-      },
-      "network": "Ropsten",
-      "service": "MyEtherWallet",
-    }
-  }
   nodeLib={
     RpcNode {
       "client": RPCClient {
