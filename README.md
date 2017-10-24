@@ -236,19 +236,6 @@ Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`.
 
 Dynamic class names should use the `classnames` module to simplify how they are created instead of using string template literals with expressions inside. 
 
-## Conditional handlers
-
-Conditional handlers such as an `onChange` handler should not be set to null. The reason being, Typescript will throw an error if this is done. This is often done in the context of the `disabled` condition. Instead, use the `addProperties` helper function in `utils/helpers`. Ex.
-```js
-          <button
-            className="Sign-submit btn btn-primary"
-            disabled={!showSignTxButton}
-            {...addProperties(showSignTxButton, { onClick: handleSignTx })}
-          >
-            {translate('DEP_signtx')}
-          </button>
-```
-
 ### Styling
 
 Legacy styles are housed under `common/assets/styles` and written with LESS.
