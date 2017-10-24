@@ -75,14 +75,16 @@ const configureStore = () => {
 
   store.subscribe(
     throttle(() => {
+      const state = store.getState();
       saveState({
         config: {
-          gasPriceGwei: store.getState().config.gasPriceGwei,
-          nodeSelection: store.getState().config.nodeSelection,
-          languageSelection: store.getState().config.languageSelection
+          gasPriceGwei: state.config.gasPriceGwei,
+          nodeSelection: state.config.nodeSelection,
+          languageSelection: state.config.languageSelection,
+          customNodes: state.config.customNodes,
         },
-        swap: store.getState().swap,
-        customTokens: store.getState().customTokens
+        swap: state.swap,
+        customTokens: state.customTokens
       });
     }),
     1000
