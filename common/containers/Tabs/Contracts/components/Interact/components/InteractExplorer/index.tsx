@@ -8,7 +8,6 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import { TShowNotification } from 'actions/notifications';
 import classnames from 'classnames';
 import { isValidGasPrice, isValidValue } from 'libs/validators';
-import { addProperties } from 'utils/helpers';
 
 export interface Props {
   contractFunctions: any;
@@ -157,7 +156,9 @@ export default class InteractExplorer extends Component<Props, State> {
                       className={classnames(
                         'InteractExplorer-field-input',
                         'form-control',
-                        { 'is-invalid': !validGasLimit }
+                        {
+                          'is-invalid': !validGasLimit
+                        }
                       )}
                     />
                   </label>
@@ -171,16 +172,16 @@ export default class InteractExplorer extends Component<Props, State> {
                       className={classnames(
                         'InteractExplorer-field-input',
                         'form-control',
-                        { 'is-invalid': !validValue }
+                        {
+                          'is-invalid': !validValue
+                        }
                       )}
                     />
                   </label>
                   <button
                     className="InteractExplorer-func-submit btn btn-primary"
                     disabled={!showContractWrite}
-                    {...addProperties(showContractWrite, {
-                      onClick: handleFunctionSend(selectedFunction, inputs)
-                    })}
+                    onClick={handleFunctionSend(selectedFunction, inputs)}
                   >
                     {translate('CONTRACT_Write')}
                   </button>
