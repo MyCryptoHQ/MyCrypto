@@ -1,7 +1,8 @@
 import {
   TChangeGasPrice,
   TChangeLanguage,
-  TChangeNodeIntent
+  TChangeNodeIntent,
+  TAddCustomNode,
 } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
@@ -13,7 +14,10 @@ import {
   languages,
   NETWORKS,
   NODES,
-  VERSION
+  VERSION,
+  NodeConfig,
+  CustomNodeConfig,
+  makeCustomNodeId,
 } from '../../config/data';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
@@ -23,12 +27,14 @@ import './index.scss';
 
 interface Props {
   languageSelection: string;
-  nodeSelection: string;
+  node: NodeConfig;
   gasPriceGwei: number;
+  customNodes: CustomNodeConfig[];
 
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
+  addCustomNode: TAddCustomNode;
 }
 
 interface State {
@@ -41,25 +47,37 @@ export default class Header extends Component<Props, State> {
   };
 
   public render() {
-    const { languageSelection, changeNodeIntent, nodeSelection } = this.props;
+    const {
+      languageSelection,
+      changeNodeIntent,
+      node,
+      nodeSelection,
+      customNodes,
+    } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const selectedNode = NODES[nodeSelection];
-    const selectedNetwork = NETWORKS[selectedNode.network];
+    const selectedNetwork = NETWORKS[node.network];
     const LanguageDropDown = Dropdown as new () => Dropdown<
       typeof selectedLanguage
     >;
+
     const nodeOptions = Object.keys(NODES).map(key => {
       return {
         value: key,
-        name: (
-          <span>
-            {NODES[key].network} <small>({NODES[key].service})</small>
-          </span>
-        ),
+        name: <span>
+          {NODES[key].network} <small>({NODES[key].service})</small>
+        </span>,
         color: NETWORKS[NODES[key].network].color
       };
-    });
+    }).concat(customNodes.map((customNode) => {
+      return {
+        value: makeCustomNodeId(customNode),
+        name: <span>
+          {customNode.network} - {customNode.name} <small>(custom)</small>
+        </span>,
+        color: '#000',
+      };
+    }));
 
     return (
       <div className="Header">
@@ -75,7 +93,7 @@ export default class Header extends Component<Props, State> {
         <section className="Header-branding">
           <section className="Header-branding-inner container">
             <Link
-              to={'/'}
+              to="/"
               className="Header-branding-title"
               aria-label="Go to homepage"
             >
@@ -120,7 +138,10 @@ export default class Header extends Component<Props, State> {
 
               <div className="Header-branding-right-dropdown">
                 <ColorDropdown
-                  ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
+                  ariaLabel={`
+                    change node. current node ${node.network} node
+                    by ${node.service}
+                  `}
                   options={nodeOptions}
                   value={nodeSelection}
                   extra={
@@ -140,7 +161,10 @@ export default class Header extends Component<Props, State> {
         <Navigation color={selectedNetwork.color} />
 
         {isAddingCustomNode &&
-          <CustomNodeModal handleClose={this.closeCustomNodeModal}/>
+          <CustomNodeModal
+            handleAddCustomNode={this.addCustomNode}
+            handleClose={this.closeCustomNodeModal}
+          />
         }
       </div>
     );
@@ -159,5 +183,10 @@ export default class Header extends Component<Props, State> {
 
   private closeCustomNodeModal = () => {
     this.setState({ isAddingCustomNode: false });
+  };
+
+  private addCustomNode = (node: CustomNodeConfig) => {
+    this.setState({ isAddingCustomNode: false });
+    this.props.addCustomNode(node);
   };
 }

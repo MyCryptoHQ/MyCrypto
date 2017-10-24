@@ -1,9 +1,13 @@
 import React from 'react';
+import classnames from 'classnames';
 import Modal, { IButton } from 'components/ui/Modal';
 import translate from 'translations';
-import { NETWORKS } from 'config/data';
+import { NETWORKS, CustomNodeConfig } from 'config/data';
+
+const NETWORK_KEYS = Object.keys(NETWORKS);
 
 interface Props {
+  handleAddCustomNode(node: CustomNodeConfig): void;
   handleClose(): void;
 }
 
@@ -30,7 +34,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     name: '',
     url: '',
     port: '',
-    network: '',
+    network: NETWORK_KEYS[0],
     customEip155: false,
     customChainId: '',
     hasAuth: false,
@@ -41,11 +45,27 @@ export default class CustomNodeModal extends React.Component<Props, State> {
   public render() {
     const { handleClose } = this.props;
     const isHttps = window.location.protocol.includes('https');
+    const invalids = this.getInvalids();
+
+    const createInput = (name: string, placeholder?: string, type?: string) => {
+      return <input
+        className={classnames({
+          'form-control': true,
+          'is-invalid': this.state[name] && invalids[name],
+        })}
+        name={name}
+        type={type}
+        value={this.state[name]}
+        placeholder={placeholder}
+        onChange={this.handleChange}
+      />;
+    };
 
     const buttons: IButton[] = [{
       type: 'primary',
       text: translate('NODE_CTA'),
-      onClick: () => console.log("yo")
+      onClick: this.saveAndAdd,
+      disabled: !!Object.keys(invalids).length,
     }, {
       text: translate('x_Cancel'),
       onClick: handleClose
@@ -69,13 +89,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
             <div className="row">
               <div className="col-sm-7">
                 <label>{translate('NODE_Name')}</label>
-                <input
-                  className="form-control"
-                  name="name"
-                  value={this.state.name}
-                  placeholder="My Node"
-                  onChange={this.handleChange}
-                />
+                {createInput("name", "My Node")}
               </div>
               <div className="col-sm-5">
                 <label>Network</label>
@@ -85,7 +99,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                   value={this.state.network}
                   onChange={this.handleChange}
                 >
-                  {Object.keys(NETWORKS).map((net) =>
+                  {NETWORK_KEYS.map((net) =>
                     <option key={net} value={net}>{net}</option>
                   )}
                   <option value="custom">Custom</option>
@@ -96,14 +110,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
               <div className="row">
                 <div className="col-sm-7">
                   {this.state.customEip155 &&
-                    <input
-                      className="form-control"
-                      type="number"
-                      name="customChainId"
-                      value={this.state.customChainId}
-                      onChange={this.handleChange}
-                      placeholder="Chain ID"
-                    />
+                    createInput("customChainId", "Chain ID", "number")
                   }
                 </div>
                 <div className="col-sm-5">
@@ -124,25 +131,12 @@ export default class CustomNodeModal extends React.Component<Props, State> {
             <div className="row">
               <div className="col-sm-9">
                 <label>URL</label>
-                <input
-                  className="form-control"
-                  name="url"
-                  value={this.state.url}
-                  placeholder="http://127.0.0.1/"
-                  onChange={this.handleChange}
-                />
+                {createInput("url", "http://127.0.0.1/")}
               </div>
 
               <div className="col-sm-3">
                 <label>{translate('NODE_Port')}</label>
-                <input
-                  className="form-control"
-                  name="port"
-                  type="number"
-                  value={this.state.port}
-                  placeholder="8545"
-                  onChange={this.handleChange}
-                />
+                {createInput("port", "8545", "number")}
               </div>
             </div>
             <div className="row">
@@ -163,22 +157,11 @@ export default class CustomNodeModal extends React.Component<Props, State> {
               <div className="row">
                 <div className="col-sm-6">
                   <label>Username</label>
-                  <input
-                    className="form-control"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.handleChange}
-                  />
+                  {createInput("username")}
                 </div>
                 <div className="col-sm-6">
                   <label>Password</label>
-                  <input
-                    className="form-control"
-                    name="password"
-                    type="password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                  />
+                  {createInput("password", undefined, "password")}
                 </div>
               </div>
             }
@@ -186,6 +169,56 @@ export default class CustomNodeModal extends React.Component<Props, State> {
         </div>
       </Modal>
     );
+  }
+
+  private getInvalids(): { [key: string]: boolean } {
+    const {
+      network,
+      url,
+      port,
+      hasAuth,
+      username,
+      password,
+      customEip155,
+      customChainId,
+    } = this.state;
+    const required = ["name", "url", "port", "network"];
+    const invalids: { [key: string]: boolean } = {};
+
+    // Required fields
+    required.forEach((field) => {
+      if (!this.state[field]) {
+        invalids[field] = true;
+      }
+    });
+
+    // Somewhat valid URL, not 100% fool-proof
+    if (!/https?\:\/\/\w+/i.test(url)) {
+      invalids.url = true;
+    }
+
+    // Numeric port within range
+    const iport = parseInt(port, 10);
+    if (!iport || iport < 1 || iport > 65535) {
+      invalids.port = true;
+    }
+
+    // If they have auth, make sure it's provided
+    if (hasAuth) {
+      if (!username) {
+        invalids.username = true;
+      }
+      if (!password) {
+        invalids.password = true;
+      }
+    }
+
+    // Numeric chain id, if provided
+    if (network === "custom" && customEip155 && !parseInt(customChainId, 10)) {
+      invalids.customChainId = true;
+    }
+
+    return invalids;
   }
 
   private handleChange = (ev: React.SyntheticEvent<
@@ -201,5 +234,27 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     // TODO: typescript bug: https://github.com/Microsoft/TypeScript/issues/13948
     const name: any = (ev.target as HTMLInputElement).name;
     this.setState({ [name]: !this.state[name] });
+  };
+
+  private saveAndAdd = () => {
+    const node: CustomNodeConfig = {
+      name: this.state.name.trim(),
+      url: this.state.url.trim(),
+      port: parseInt(this.state.port, 10),
+      network: this.state.network,
+    };
+
+    if (this.state.hasAuth) {
+      node.auth = {
+        username: this.state.username,
+        password: this.state.password,
+      };
+    }
+
+    if (this.state.network === "custom" && this.state.customEip155) {
+      node.customChainId = parseInt(this.state.customChainId, 10);
+    }
+
+    this.props.handleAddCustomNode(node);
   };
 }

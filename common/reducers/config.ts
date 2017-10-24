@@ -4,26 +4,32 @@ import {
   ChangeNodeAction,
   ConfigAction,
   ToggleOfflineAction,
-  ForceOfflineAction
+  ForceOfflineAction,
+  AddCustomNodeAction,
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
-import { NODES } from '../config/data';
+import { NODES, NodeConfig, CustomNodeConfig } from '../config/data';
 
 export interface State {
   // FIXME
   languageSelection: string;
   nodeSelection: string;
+  node: NodeConfig;
   gasPriceGwei: number;
   offline: boolean;
   forceOffline: boolean;
+  customNodes: CustomNodeConfig[];
 }
 
+const defaultNode = 'eth_mew';
 export const INITIAL_STATE: State = {
   languageSelection: 'en',
-  nodeSelection: Object.keys(NODES)[0],
+  nodeSelection: defaultNode,
+  node: NODES[defaultNode],
   gasPriceGwei: 21,
   offline: false,
-  forceOffline: false
+  forceOffline: false,
+  customNodes: [],
 };
 
 function changeLanguage(state: State, action: ChangeLanguageAction): State {
@@ -36,7 +42,8 @@ function changeLanguage(state: State, action: ChangeLanguageAction): State {
 function changeNode(state: State, action: ChangeNodeAction): State {
   return {
     ...state,
-    nodeSelection: action.payload
+    nodeSelection: action.payload.nodeSelection,
+    node: action.payload.node,
   };
 }
 
@@ -61,6 +68,16 @@ function forceOffline(state: State, action: ForceOfflineAction): State {
   };
 }
 
+function addCustomNode(state: State, action: AddCustomNodeAction): State {
+  return {
+    ...state,
+    customNodes: [
+      ...state.customNodes,
+      action.payload,
+    ],
+  };
+}
+
 export function config(
   state: State = INITIAL_STATE,
   action: ConfigAction
@@ -76,6 +93,8 @@ export function config(
       return toggleOffline(state, action);
     case TypeKeys.CONFIG_FORCE_OFFLINE:
       return forceOffline(state, action);
+    case TypeKeys.CONFIG_ADD_CUSTOM_NODE:
+      return addCustomNode(state, action);
     default:
       return state;
   }

@@ -1,4 +1,5 @@
 import { TypeKeys } from './constants';
+import { CustomNodeConfig, NodeConfig } from 'config/data';
 
 /*** Toggle Offline ***/
 export interface ToggleOfflineAction {
@@ -20,7 +21,10 @@ export interface ChangeLanguageAction {
 export interface ChangeNodeAction {
   type: TypeKeys.CONFIG_NODE_CHANGE;
   // FIXME $keyof?
-  payload: string;
+  payload: {
+    nodeSelection: string;
+    node: NodeConfig;
+  };
 }
 
 /*** Change gas price ***/
@@ -40,6 +44,12 @@ export interface ChangeNodeIntentAction {
   payload: string;
 }
 
+/*** Add Custom Node ***/
+export interface AddCustomNodeAction {
+  type: TypeKeys.CONFIG_ADD_CUSTOM_NODE,
+  payload: CustomNodeConfig;
+}
+
 /*** Union Type ***/
 export type ConfigAction =
   | ChangeNodeAction
@@ -48,4 +58,5 @@ export type ConfigAction =
   | ToggleOfflineAction
   | PollOfflineStatus
   | ForceOfflineAction
-  | ChangeNodeIntentAction;
+  | ChangeNodeIntentAction
+  | AddCustomNodeAction;

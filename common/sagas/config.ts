@@ -9,8 +9,12 @@ import {
   takeEvery,
   select
 } from 'redux-saga/effects';
-import { NODES } from 'config/data';
-import { getNodeConfig } from 'selectors/config';
+import {
+  NODES,
+  getCustomNodeConfigFromId,
+  makeNodeConfigFromCustomConfig,
+} from 'config/data';
+import { getNodeConfig, getCustomNodeConfigs } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
 import {
@@ -19,6 +23,7 @@ import {
   changeNode
 } from 'actions/config';
 import { State as ConfigState } from 'reducers/config';
+import { showNotification } from 'actions/notifications';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -50,9 +55,27 @@ function* reload(): SagaIterator {
 function* handleNodeChangeIntent(action): SagaIterator {
   const nodeConfig = yield select(getNodeConfig);
   const currentNetwork = nodeConfig.network;
-  const actionNetwork = NODES[action.payload].network;
-  yield put(changeNode(action.payload));
-  if (currentNetwork !== actionNetwork) {
+
+  let actionNode = NODES[action.payload];
+  if (!actionNode) {
+    const customConfigs = yield select(getCustomNodeConfigs);
+    const config = getCustomNodeConfigFromId(action.payload, customConfigs);
+    if (config) {
+      actionNode = makeNodeConfigFromCustomConfig(config);
+    }
+  }
+
+  if (!actionNode) {
+    yield put(showNotification(
+      'danger',
+      `Attempted to switch to unknown node '${action.payload}'`,
+      5000,
+    ));
+    return;
+  }
+
+  yield put(changeNode(action.payload, actionNode));
+  if (currentNetwork !== actionNode.network) {
     yield call(reload);
   }
 }
