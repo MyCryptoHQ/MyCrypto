@@ -9,6 +9,7 @@ import Help from 'containers/Tabs/Help';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
 import ViewWallet from 'containers/Tabs/ViewWallet';
+import BroadcastTx from 'containers/Tabs/BroadcastTx';
 
 // TODO: fix this
 interface Props {
@@ -31,6 +32,7 @@ export default class Root extends Component<Props, {}> {
             <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
+            <Route path="/pushTx" component={BroadcastTx} />
           </div>
         </Router>
       </Provider>

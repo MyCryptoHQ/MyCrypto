@@ -6,7 +6,6 @@ import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
-import { addProperties } from 'utils/helpers';
 import classnames from 'classnames';
 
 interface Props {
@@ -77,7 +76,9 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
               className={classnames(
                 'InteractForm-address-field-input',
                 'form-control',
-                { 'is-invalid': !validEthAddress }
+                {
+                  'is-invalid': !validEthAddress
+                }
               )}
               onChange={this.handleInput('address')}
             />
@@ -110,7 +111,9 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
               className={classnames(
                 'InteractForm-interface-field-input',
                 'form-control',
-                { 'is-invalid': !validAbiJson }
+                {
+                  'is-invalid': !validAbiJson
+                }
               )}
               onChange={this.handleInput('abiJson')}
               value={abiJson}
@@ -122,9 +125,7 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
         <button
           className="InteractForm-submit btn btn-primary"
           disabled={!showContractAccessButton}
-          {...addProperties(showContractAccessButton, {
-            onClick: accessContract(abiJson, address)
-          })}
+          onClick={accessContract(abiJson, address)}
         >
           {translate('x_Access')}
         </button>

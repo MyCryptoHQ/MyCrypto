@@ -29,6 +29,10 @@ const tabs = [
     to: 'ens'
   },
   {
+    name: 'Broadcast Transaction',
+    to: 'pushTx'
+  },
+  {
     name: 'NAV_Help',
     to: 'https://myetherwallet.groovehq.com/help_center',
     external: true
