@@ -56,6 +56,12 @@ declare module 'bn.js' {
      * @description  Convert number to red
      */
 
+    /**
+     * @description returns true if the supplied object is a BN.js instance
+     */
+
+    static isBN(b: object): boolean;
+
     toRed(reductionContext: IReductionContext): RedBN;
     /**
      * @description  clone number
@@ -232,12 +238,6 @@ declare module 'bn.js' {
      */
 
     fromTwos(width: number): BN;
-
-    /**
-     * @description returns true if the supplied object is a BN.js instance
-     */
-
-    isBN(b: object): boolean;
 
     /**
      * @description negate sign
