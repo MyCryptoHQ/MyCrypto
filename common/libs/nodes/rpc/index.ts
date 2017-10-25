@@ -1,4 +1,4 @@
-import Big, { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
 import { Wei } from 'libs/units';
@@ -34,45 +34,42 @@ export default class RpcNode implements INode {
       });
   }
 
-  public estimateGas(transaction: TransactionWithoutGas): Promise<BigNumber> {
+  public estimateGas(transaction: TransactionWithoutGas): Promise<BN> {
     return this.client
       .call(this.requests.estimateGas(transaction))
       .then(response => {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        return new Big(String(response.result));
+        return new BN(String(response.result));
       });
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<BigNumber> {
+  public getTokenBalance(address: string, token: Token): Promise<BN> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
       .then(response => {
         if (response.error) {
           // TODO - Error handling
-          return new Big(0);
+          return new BN(0);
         }
-        return new Big(String(response.result)).div(
-          new Big(10).pow(token.decimal)
+        return new BN(String(response.result)).div(
+          new BN(10).pow(new BN(token.decimal))
         );
       });
   }
 
-  public getTokenBalances(
-    address: string,
-    tokens: Token[]
-  ): Promise<BigNumber[]> {
+  public getTokenBalances(address: string, tokens: Token[]): Promise<BN[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
       .then(response => {
         return response.map((item, idx) => {
           // FIXME wrap in maybe-like
           if (item.error) {
-            return new Big(0);
+            return new BN(0);
           }
-          return new Big(String(item.result)).div(
-            new Big(10).pow(tokens[idx].decimal)
+          return new BN(String(item.result)).div(
+            new BN(10).pow(new BN(tokens[idx].decimal))
           );
         });
       });

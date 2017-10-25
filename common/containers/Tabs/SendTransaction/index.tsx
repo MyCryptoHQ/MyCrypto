@@ -1,4 +1,4 @@
-import Big from 'bignumber.js';
+import BN from 'bn.js';
 // COMPONENTS
 import Spinner from 'components/ui/Spinner';
 import TabSection from 'containers/TabSection';
@@ -297,7 +297,7 @@ export class SendTransaction extends React.Component<Props, State> {
                     unit={unit}
                     balance={balance}
                     tokens={this.props.tokenBalances
-                      .filter(token => !token.balance.eq(0))
+                      .filter(token => !token.balance.eqn(0))
                       .map(token => token.symbol)
                       .sort()}
                     onChange={readOnly ? void 0 : this.onAmountChange}
@@ -307,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                    <div>
-                      <NonceField
-                        value={nonce}
-                        onChange={this.onNonceChange}
-                        placeholder={'0'}
-                      />
-                    </div>
-                  )}
+                      <div>
+                        <NonceField
+                          value={nonce}
+                          onChange={this.onNonceChange}
+                          placeholder={'0'}
+                        />
+                      </div>
+                    )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
@@ -541,7 +541,7 @@ export class SendTransaction extends React.Component<Props, State> {
       const { balance, gasPrice } = this.props;
       const { gasLimit } = this.state;
       const weiBalance = balance.toWei();
-      const bigGasLimit = new Big(gasLimit);
+      const bigGasLimit = new BN(gasLimit);
       value = getBalanceMinusGasCosts(
         bigGasLimit,
         gasPrice,
@@ -603,7 +603,7 @@ export class SendTransaction extends React.Component<Props, State> {
       to,
       data
     };
-    const bigGasLimit = new Big(gasLimit);
+    const bigGasLimit = new BN(gasLimit);
     try {
       const signedTx = await generateCompleteTransaction(
         wallet,

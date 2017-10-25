@@ -1,4 +1,4 @@
-import { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 import { Wei } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
 
@@ -38,7 +38,7 @@ export interface SetBalanceAction {
 export interface SetTokenBalancesAction {
   type: 'WALLET_SET_TOKEN_BALANCES';
   payload: {
-    [key: string]: BigNumber;
+    [key: string]: BN;
   };
 }
 

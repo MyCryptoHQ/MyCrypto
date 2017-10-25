@@ -1,4 +1,4 @@
-import Big, { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 import { Token } from 'config/data';
 
 const Units = {
@@ -33,19 +33,15 @@ export type UnitKey = keyof TUnit;
 
 class Unit {
   public unit: UnitKey;
-  public amount: BigNumber;
+  public amount: BN;
 
-  constructor(amount: BigNumber, unit: UnitKey) {
+  constructor(amount: BN, unit: UnitKey) {
     this.unit = unit;
     this.amount = amount;
   }
 
   public toString(base?: number) {
     return this.amount.toString(base);
-  }
-
-  public toPrecision(precision?: number) {
-    return this.amount.toPrecision(precision);
   }
 
   public toWei(): Wei {
@@ -63,43 +59,39 @@ class Unit {
 
 // tslint:disable:max-classes-per-file
 export class Ether extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'ether');
+  constructor(amount: BN | number | string) {
+    super(new BN(amount), 'ether');
   }
 }
 
 export class Wei extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'wei');
+  constructor(amount: BN | number | string) {
+    super(new BN(amount), 'wei');
   }
 }
 
 export class GWei extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'gwei');
+  constructor(amount: BN | number | string) {
+    super(new BN(amount), 'gwei');
   }
 }
 
-function getValueOfUnit(unit: UnitKey) {
-  return new Big(Units[unit]);
+function getValueOfUnit(unit: UnitKey): BN {
+  return new BN(Units[unit]);
 }
 
-export function toWei(num: BigNumber, unit: UnitKey): BigNumber {
-  return num.times(getValueOfUnit(unit));
+export function toWei(num: BN, unit: UnitKey): BN {
+  return num.mul(getValueOfUnit(unit));
 }
 
-export function toUnit(
-  num: BigNumber,
-  fromUnit: UnitKey,
-  convertToUnit: UnitKey
-): BigNumber {
+export function toUnit(num: BN, fromUnit: UnitKey, convertToUnit: UnitKey): BN {
   return toWei(num, fromUnit).div(getValueOfUnit(convertToUnit));
 }
 
-export function toTokenUnit(num: BigNumber, token: Token): BigNumber {
-  return num.times(new Big(10).pow(token.decimal));
+export function toTokenUnit(num: BN, token: Token): BN {
+  return num.mul(new BN(10).pow(new BN(token.decimal)));
 }
 
-export function toTokenDisplay(num: BigNumber, token: Token): BigNumber {
-  return num.times(new Big(10).pow(-token.decimal));
+export function toTokenDisplay(num: BN, token: Token): BN {
+  return num.mul(new BN(10).pow(new BN(-token.decimal)));
 }

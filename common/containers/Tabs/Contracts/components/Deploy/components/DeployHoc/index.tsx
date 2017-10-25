@@ -1,4 +1,5 @@
-import Big from 'bignumber.js';
+import BN from 'bn.js';
+
 import React, { Component } from 'react';
 import {
   generateCompleteTransaction as makeAndSignTx,
@@ -143,7 +144,7 @@ export const deployHOC = PassedComponent => {
         props.wallet,
         props.nodeLib,
         props.gasPrice,
-        new Big(gasLimit),
+        new BN(gasLimit),
         props.chainId,
         transactionInput,
         true
@@ -154,7 +155,7 @@ export const deployHOC = PassedComponent => {
       const address = await this.props.wallet.getAddress();
       const nonce = await this.props.nodeLib
         .getTransactionCount(address)
-        .then(n => new Big(n).toString());
+        .then(n => new BN(n).toString());
       return this.asyncSetState({ nonce, address });
     };
   }

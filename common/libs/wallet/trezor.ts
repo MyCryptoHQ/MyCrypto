@@ -1,4 +1,4 @@
-import Big from 'bignumber.js';
+import BN from 'bn.js';
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
@@ -31,7 +31,7 @@ export default class TrezorWallet extends DeterministicWallet
           // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
           const txToSerialize = {
             ...tx,
-            v: addHexPrefix(new Big(result.v).toString(16)),
+            v: addHexPrefix(new BN(result.v).toString(16)),
             r: addHexPrefix(result.r),
             s: addHexPrefix(result.s)
           };

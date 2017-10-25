@@ -25,17 +25,15 @@ export default class TokenBalances extends React.Component<Props, State> {
   public render() {
     const { tokens } = this.props;
     const shownTokens = tokens.filter(
-      token => !token.balance.eq(0) || token.custom || this.state.showAllTokens
+      token => !token.balance.eqn(0) || token.custom || this.state.showAllTokens
     );
 
     return (
       <section className="TokenBalances">
-        <h5 className="TokenBalances-title">
-          {translate('sidebar_TokenBal')}
-        </h5>
+        <h5 className="TokenBalances-title">{translate('sidebar_TokenBal')}</h5>
         <table className="TokenBalances-rows">
           <tbody>
-            {shownTokens.map(token =>
+            {shownTokens.map(token => (
               <TokenRow
                 key={token.symbol}
                 balance={token.balance}
@@ -43,7 +41,7 @@ export default class TokenBalances extends React.Component<Props, State> {
                 custom={token.custom}
                 onRemove={this.props.onRemoveCustomToken}
               />
-            )}
+            ))}
           </tbody>
         </table>
 
@@ -58,16 +56,15 @@ export default class TokenBalances extends React.Component<Props, State> {
             className="btn btn-default btn-xs"
             onClick={this.toggleShowCustomTokenForm}
           >
-            <span>
-              {translate('SEND_custom')}
-            </span>
+            <span>{translate('SEND_custom')}</span>
           </button>
         </div>
 
-        {this.state.showCustomTokenForm &&
+        {this.state.showCustomTokenForm && (
           <div className="TokenBalances-form">
             <AddCustomTokenForm onSave={this.addCustomToken} />
-          </div>}
+          </div>
+        )}
       </section>
     );
   }

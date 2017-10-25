@@ -1,13 +1,13 @@
-import { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 
 export interface TokenValues {
-  [key: string]: BigNumber;
+  [key: string]: BN;
 }
 
 export interface DeterministicWalletData {
   index: number;
   address: string;
-  value?: BigNumber;
+  value?: BN;
   tokenValues: TokenValues;
 }
 
@@ -39,7 +39,7 @@ export interface SetDesiredTokenAction {
 /*** Set wallet values ***/
 export interface UpdateDeterministicWalletArgs {
   address: string;
-  value?: BigNumber;
+  value?: BN;
   tokenValues?: TokenValues;
   index?: any;
 }

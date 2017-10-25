@@ -1,4 +1,4 @@
-import { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -9,7 +9,7 @@ export function combineAndUpper(...args: string[]) {
 }
 
 // Use in place of angular number filter
-export function formatNumber(num: BigNumber, digits: number = 3): string {
+export function formatNumber(num: BN, digits: number = 3): string {
   const parts = num.toFixed(digits).split('.');
 
   // Remove trailing zeroes on decimal (If there is a decimal)
@@ -29,10 +29,7 @@ export function formatNumber(num: BigNumber, digits: number = 3): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(
-  limit: BigNumber,
-  transactionUnit: string = 'ether'
-) {
+export function formatGasLimit(limit: BN, transactionUnit: string = 'ether') {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?
@@ -47,7 +44,7 @@ export function formatGasLimit(
   // TODO: Make this dynamic, potentially. Would require promisifying this fn.
   // TODO: Figure out if this is only true for ether. Do other currencies have
   //       this limit?
-  if (limit.gte(4000000)) {
+  if (limit.gten(4000000)) {
     limitStr = '-1';
   }
 

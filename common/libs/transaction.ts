@@ -17,7 +17,7 @@ import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex, sanitizeHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
-import Big, { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 
 export interface TransactionInput {
   token?: Token | null;
@@ -37,7 +37,7 @@ export interface BaseTransaction {
   to: string;
   value: string;
   data: string;
-  gasLimit: BigNumber | string;
+  gasLimit: BN | string;
   gasPrice: Wei | string;
   chainId: number;
 }
@@ -82,12 +82,12 @@ export function getTransactionFields(tx: EthTx) {
 function getValue(
   token: Token | null | undefined,
   tx: ExtendedRawTransaction
-): BigNumber {
+): BN {
   let value;
   if (token) {
-    value = new Big(ERC20.$transfer(tx.data).value);
+    value = new BN(ERC20.$transfer(tx.data).value);
   } else {
-    value = new Big(tx.value);
+    value = new BN(tx.value);
   }
   return value;
 }
@@ -115,7 +115,7 @@ async function balanceCheck(
   node: INode,
   tx: ExtendedRawTransaction,
   token: Token | null | undefined,
-  value: BigNumber,
+  value: BN,
   gasCost: Wei
 ) {
   // Ensure their balance exceeds the amount they're sending
@@ -136,7 +136,7 @@ function generateTxValidation(
   to: string,
   token: Token | null | undefined,
   data: string,
-  gasLimit: BigNumber | string,
+  gasLimit: BN | string,
   gasPrice: Wei | string,
   skipEthAddressValidation: boolean
 ) {
@@ -154,16 +154,16 @@ function generateTxValidation(
   // Reject gas limit under 21000 (Minimum for transaction)
   // Reject if limit over 5000000
   // TODO: Make this dynamic, the limit shifts
-  if (gasLimit.lessThan(21000)) {
+  if (gasLimit.ltn(21000)) {
     throw new Error('Gas limit must be at least 21000 for transactions');
   }
   // Reject gasLimit over 5000000gwei
-  if (gasLimit.greaterThan(5000000)) {
+  if (gasLimit.gtn(5000000)) {
     throw new Error(translateRaw('GETH_GasLimit'));
   }
   // Reject gasPrice over 1000gwei (1000000000000)
-  const gwei = new Big('1000000000000');
-  if (gasPrice.amount.greaterThan(gwei)) {
+  const gwei = new BN('1000000000000');
+  if (gasPrice.amount.gt(gwei)) {
     throw new Error(
       'Gas price too high. Please contact support if this was not a mistake.'
     );
@@ -186,7 +186,7 @@ export async function generateCompleteTransactionFromRawTransaction(
     throw Error('Gas Limit and Gas Price should be of type bignumber');
   }
   // computed gas cost (gasprice * gaslimit)
-  const gasCost: Wei = new Wei(gasPrice.amount.times(gasLimit));
+  const gasCost: Wei = new Wei(gasPrice.amount.mul(gasLimit));
   // get amount value (either in ETH or in Token)
   const value = getValue(token, tx);
   // if not offline, ensure that balance exceeds costs
@@ -232,7 +232,7 @@ export async function formatTxInput(
     if (!token) {
       throw new Error('No matching token');
     }
-    const bigAmount = new Big(value);
+    const bigAmount = new BN(value);
     const ERC20Data = ERC20.transfer(to, bigAmount);
     return {
       to: token.address,
@@ -247,7 +247,7 @@ export async function generateCompleteTransaction(
   wallet: IWallet,
   nodeLib: RPCNode,
   gasPrice: Wei,
-  gasLimit: BigNumber,
+  gasLimit: BN,
   chainId: number,
   transactionInput: TransactionInput,
   skipValidation: boolean,
@@ -281,12 +281,12 @@ export async function generateCompleteTransaction(
 
 // TODO determine best place for helper function
 export function getBalanceMinusGasCosts(
-  gasLimit: BigNumber,
+  gasLimit: BN,
   gasPrice: Wei,
   balance: Wei
 ): Ether {
-  const weiGasCosts = gasPrice.amount.times(gasLimit);
-  const weiBalanceMinusGasCosts = balance.amount.minus(weiGasCosts);
+  const weiGasCosts = gasPrice.amount.mul(gasLimit);
+  const weiBalanceMinusGasCosts = balance.amount.sub(weiGasCosts);
   return new Ether(weiBalanceMinusGasCosts);
 }
 
@@ -299,16 +299,16 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
 
   if (token) {
     const tokenData = ERC20.$transfer(data);
-    fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
+    fixedValue = toTokenDisplay(new BN(tokenData.value), token).toString();
     toAddress = tokenData.to;
   } else {
-    fixedValue = toUnit(new Big(value, 16), 'wei', 'ether').toString();
+    fixedValue = toUnit(new BN(value, 16), 'wei', 'ether').toString();
     toAddress = to;
   }
 
   return {
     value: fixedValue,
-    gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
+    gasPrice: toUnit(new BN(gasPrice, 16), 'wei', 'gwei').toString(),
     data,
     toAddress,
     nonce,

@@ -34,7 +34,7 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                     <span className="EquivalentValues-values-currency-value">
                       {' '}
                       {balance
-                        ? formatNumber(balance.amount.times(rates[key]))
+                        ? formatNumber(balance.amount.muln(rates[key]))
                         : '???'}
                     </span>
                   </li>

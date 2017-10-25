@@ -1,4 +1,4 @@
-import Big, { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 import { Token } from 'config/data';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 import { IWallet } from 'libs/wallet';
@@ -11,7 +11,7 @@ export function getWalletInst(state: AppState): IWallet | null | undefined {
 
 export interface TokenBalance {
   symbol: string;
-  balance: BigNumber;
+  balance: BN;
   custom: boolean;
 }
 
@@ -38,7 +38,7 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     symbol: t.symbol,
     balance: state.wallet.tokens[t.symbol]
       ? state.wallet.tokens[t.symbol]
-      : new Big(0),
+      : new BN(0),
     custom: t.custom
   }));
 }

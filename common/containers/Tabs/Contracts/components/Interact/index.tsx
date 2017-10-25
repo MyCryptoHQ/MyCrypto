@@ -9,7 +9,7 @@ import {
   TTxModal
 } from 'containers/Tabs/Contracts/components/TxModal';
 import { IUserSendParams } from 'libs/contracts/ABIFunction';
-import Big from 'bignumber.js';
+import BN from 'bn.js';
 import {
   TxCompare,
   Props as TCProps,
@@ -182,7 +182,7 @@ class Interact extends Component<IWithTx, State> {
       const userInputs: IUserSendParams = {
         input: parsedInputs,
         to: address,
-        gasLimit: new Big(gasLimit),
+        gasLimit: new BN(gasLimit),
         value
       };
 
