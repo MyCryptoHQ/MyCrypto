@@ -25,15 +25,18 @@ describe('formatNumber', () => {
   const pairs = [
     {
       input: new Big('0.0127491'),
-      output: '0.013'
+      output: '0.013',
+      digits: undefined
     },
     {
       input: new Big('21.87468421'),
-      output: '21.875'
+      output: '21.875',
+      digits: undefined
     },
     {
       input: new Big(0),
-      output: '0'
+      output: '0',
+      digits: undefined
     },
     {
       input: new Big('354.4728173'),
@@ -48,7 +51,7 @@ describe('formatNumber', () => {
   ];
 
   pairs.forEach(pair => {
-    const digits = pair.digits === undefined ? 'default' : pair.digits;
+    const digits = pair.digits;
     it(`should convert ${pair.input.toString()} to ${pair.output} when using ${digits} digits`, () => {
       expect(formatNumber(pair.input, pair.digits)).toEqual(pair.output);
     });

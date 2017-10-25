@@ -1,17 +1,17 @@
 import Big from 'bignumber.js';
-import { toWei, toUnit } from '../../common/libs/units';
+import { toWei, toUnit, UnitKey } from '../../common/libs/units';
 
 describe('Units', () => {
   describe('toWei', () => {
     const conversions = [
       {
         value: '0.001371',
-        unit: 'ether',
+        unit: 'ether' as UnitKey,
         wei: '1371000000000000'
       },
       {
         value: '9',
-        unit: 'gwei',
+        unit: 'gwei' as UnitKey,
         wei: '9000000000'
       }
     ];
@@ -28,14 +28,14 @@ describe('Units', () => {
     const conversions = [
       {
         value: '.41849',
-        fromUnit: 'ether',
-        toUnit: 'gwei',
+        fromUnit: 'ether' as UnitKey,
+        toUnit: 'gwei' as UnitKey,
         output: '418490000'
       },
       {
         value: '4924.71',
-        fromUnit: 'nanoether',
-        toUnit: 'szabo',
+        fromUnit: 'nanoether' as UnitKey,
+        toUnit: 'szabo' as UnitKey,
         output: '4.92471'
       }
     ];
