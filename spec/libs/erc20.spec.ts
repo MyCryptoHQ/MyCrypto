@@ -1,6 +1,5 @@
 import Big from 'bignumber.js';
 import ERC20 from 'libs/erc20';
-import abi from 'ethereumjs-abi';
 const MEW_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 
 describe('ERC20', () => {
