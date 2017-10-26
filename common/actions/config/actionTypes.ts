@@ -56,6 +56,12 @@ export interface RemoveCustomNodeAction {
   payload: CustomNodeConfig;
 }
 
+/*** Set Latest Block ***/
+export interface SetLatestBlockAction {
+  type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
+  payload: string;
+}
+
 /*** Union Type ***/
 export type ConfigAction =
   | ChangeNodeAction
@@ -66,4 +72,5 @@ export type ConfigAction =
   | ForceOfflineAction
   | ChangeNodeIntentAction
   | AddCustomNodeAction
-  | RemoveCustomNodeAction;
+  | RemoveCustomNodeAction
+  | SetLatestBlockAction;

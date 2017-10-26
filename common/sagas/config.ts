@@ -7,7 +7,8 @@ import {
   take,
   takeLatest,
   takeEvery,
-  select
+  select,
+  race
 } from 'redux-saga/effects';
 import {
   NODES,
@@ -20,10 +21,12 @@ import { TypeKeys } from 'actions/config/constants';
 import {
   toggleOfflineConfig,
   TToggleOfflineConfig,
-  changeNode
+  changeNode,
+  setLatestBlock,
 } from 'actions/config';
 import { State as ConfigState } from 'reducers/config';
 import { showNotification } from 'actions/notifications';
+import translate from 'translations';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -74,6 +77,19 @@ function* handleNodeChangeIntent(action): SagaIterator {
     return;
   }
 
+  // Grab latest block from the node, before switching, to confirm it's online
+  // Give it 5 seconds before we call it offline
+  const { latestBlock, timeout } = yield race({
+    latestBlock: call(actionNode.lib.getCurrentBlock.bind(actionNode.lib)),
+    timeout: call(delay, 5000),
+  });
+
+  if (timeout) {
+    yield put(showNotification('danger', translate('ERROR_32'), 5000));
+    return;
+  }
+
+  yield put(setLatestBlock(latestBlock));
   yield put(changeNode(action.payload, actionNode));
   if (currentNetwork !== actionNode.network) {
     yield call(reload);

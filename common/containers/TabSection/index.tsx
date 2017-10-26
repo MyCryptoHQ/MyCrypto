@@ -26,6 +26,7 @@ interface Props {
   nodeSelection: string;
   gasPriceGwei: number;
   customNodes: CustomNodeConfig[];
+  latestBlock: string;
 
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
@@ -43,6 +44,7 @@ class TabSection extends Component<Props, {}> {
       languageSelection,
       gasPriceGwei,
       customNodes,
+      latestBlock,
 
       changeLanguage,
       changeNodeIntent,
@@ -70,7 +72,7 @@ class TabSection extends Component<Props, {}> {
         <main>
           <Header {...headerProps} />
           <div className="Tab container">{children}</div>
-          <Footer />
+          <Footer latestBlock={latestBlock} />
         </main>
         <Notifications />
         <AlphaAgreement />
@@ -86,6 +88,7 @@ function mapStateToProps(state: AppState) {
     languageSelection: state.config.languageSelection,
     gasPriceGwei: state.config.gasPriceGwei,
     customNodes: state.config.customNodes,
+    latestBlock: state.config.latestBlock,
   };
 }
 

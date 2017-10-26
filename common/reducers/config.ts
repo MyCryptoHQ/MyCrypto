@@ -7,6 +7,7 @@ import {
   ForceOfflineAction,
   AddCustomNodeAction,
   RemoveCustomNodeAction,
+  SetLatestBlockAction,
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
@@ -25,6 +26,7 @@ export interface State {
   offline: boolean;
   forceOffline: boolean;
   customNodes: CustomNodeConfig[];
+  latestBlock: string;
 }
 
 const defaultNode = 'eth_mew';
@@ -36,6 +38,7 @@ export const INITIAL_STATE: State = {
   offline: false,
   forceOffline: false,
   customNodes: [],
+  latestBlock: "???",
 };
 
 function changeLanguage(state: State, action: ChangeLanguageAction): State {
@@ -94,6 +97,13 @@ function removeCustomNode(state: State, action: RemoveCustomNodeAction): State {
   };
 }
 
+function setLatestBlock(state: State, action: SetLatestBlockAction): State {
+  return {
+    ...state,
+    latestBlock: action.payload,
+  };
+}
+
 export function config(
   state: State = INITIAL_STATE,
   action: ConfigAction
@@ -113,6 +123,8 @@ export function config(
       return addCustomNode(state, action);
     case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:
       return removeCustomNode(state, action);
+    case TypeKeys.CONFIG_SET_LATEST_BLOCK:
+      return setLatestBlock(state, action);
     default:
       return state;
   }

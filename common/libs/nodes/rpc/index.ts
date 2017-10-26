@@ -6,6 +6,13 @@ import { INode } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
 
+function errorOrResult(response) {
+  if (response.error) {
+    throw new Error(response.error.message);
+  }
+  return response.result;
+}
+
 export default class RpcNode implements INode {
   public client: RPCClient;
   public requests: RPCRequests;
@@ -18,23 +25,15 @@ export default class RpcNode implements INode {
   public getBalance(address: string): Promise<Wei> {
     return this.client
       .call(this.requests.getBalance(address))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return new Wei(String(response.result));
-      });
+      .then(errorOrResult)
+      .then(result => new Wei(String(result)));
   }
 
   public estimateGas(transaction: TransactionWithoutGas): Promise<BigNumber> {
     return this.client
       .call(this.requests.estimateGas(transaction))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return new Big(String(response.result));
-      });
+      .then(errorOrResult)
+      .then(result => new Big(String(result)));
   }
 
   public getTokenBalance(address: string, token: Token): Promise<BigNumber> {
@@ -74,12 +73,14 @@ export default class RpcNode implements INode {
   public getTransactionCount(address: string): Promise<string> {
     return this.client
       .call(this.requests.getTransactionCount(address))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return response.result;
-      });
+      .then(errorOrResult);
+  }
+
+  public getCurrentBlock(): Promise<string> {
+    return this.client
+      .call(this.requests.getCurrentBlock())
+      .then(errorOrResult)
+      .then((result) => new Big(result).toString());
   }
 
   public sendRawTx(signedTx: string): Promise<string> {

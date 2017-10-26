@@ -10,4 +10,5 @@ export interface INode {
   estimateGas(tx: TransactionWithoutGas): Promise<BigNumber>;
   getTransactionCount(address: string): Promise<string>;
   sendRawTx(tx: string): Promise<string>;
+  getCurrentBlock(): Promise<string>;
 }

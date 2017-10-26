@@ -78,3 +78,11 @@ export function removeCustomNode(
     payload
   };
 }
+
+export type TSetLatestBlock = typeof setLatestBlock;
+export function setLatestBlock(payload: string): interfaces.setLatestBlock {
+  return {
+    type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
+    payload,
+  };
+}
