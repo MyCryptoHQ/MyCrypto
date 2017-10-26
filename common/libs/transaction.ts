@@ -5,9 +5,15 @@ import ERC20 from 'libs/erc20';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
-import { UnitKey, Wei } from 'libs/units';
+import {
+  UnitKey,
+  Wei,
+  fromTokenBase,
+  TokenValue,
+  toTokenBase
+} from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { stripHexPrefixAndLower, valueToHex, sanitizeHex } from 'libs/values';
+import { stripHexPrefixAndLower, etherTo0xWei, sanitizeHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 
@@ -93,7 +99,10 @@ async function getBalance(
   const ETHBalance = await node.getBalance(from);
   let balance: Wei;
   if (token) {
-    balance = toTokenUnit(await node.getTokenBalance(tx.from, token), token);
+    balance = toTokenBase({
+      value: TokenValue(await node.getTokenBalance(tx.from, token)).toString(),
+      decimal: token.decimal
+    });
   } else {
     balance = ETHBalance;
   }
@@ -217,14 +226,14 @@ export async function formatTxInput(
     return {
       to,
       from: await wallet.getAddress(),
-      value: valueToHex(new Ether(value)),
+      value: etherTo0xWei(value), //turn users ether to wei
       data
     };
   } else {
     if (!token) {
       throw new Error('No matching token');
     }
-    const bigAmount = new BN(value);
+    const bigAmount = TokenValue(value);
     const ERC20Data = ERC20.transfer(to, bigAmount);
     return {
       to: token.address,
@@ -276,10 +285,10 @@ export function getBalanceMinusGasCosts(
   gasLimit: Wei,
   gasPrice: Wei,
   balance: Wei
-): Ether {
+): Wei {
   const weiGasCosts = gasPrice.mul(gasLimit);
   const weiBalanceMinusGasCosts = balance.sub(weiGasCosts);
-  return new Ether(weiBalanceMinusGasCosts);
+  return Wei(weiBalanceMinusGasCosts);
 }
 
 export function decodeTransaction(transaction: EthTx, token: Token | false) {
@@ -291,16 +300,19 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
 
   if (token) {
     const tokenData = ERC20.$transfer(data);
-    fixedValue = toTokenDisplay(new BN(tokenData.value), token).toString();
+    fixedValue = fromTokenBase({
+      value: tokenData.value,
+      decimal: token.decimal
+    }).value;
     toAddress = tokenData.to;
   } else {
-    fixedValue = toUnit(Wei(value, 16), 'wei', 'ether').toString();
+    fixedValue = Wei(value, 16);
     toAddress = to;
   }
 
   return {
     value: fixedValue,
-    gasPrice: toUnit(new BN(gasPrice, 16), 'wei', 'gwei').toString(),
+    gasPrice: Wei(gasPrice, 16),
     data,
     toAddress,
     nonce,

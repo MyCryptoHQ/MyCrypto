@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 // COMPONENTS
 import Spinner from 'components/ui/Spinner';
 import TabSection from 'containers/TabSection';
@@ -28,7 +27,7 @@ import {
   getBalanceMinusGasCosts,
   TransactionInput
 } from 'libs/transaction';
-import { Ether, GWei, UnitKey, Wei } from 'libs/units';
+import { UnitKey, Wei, getDecimal, toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { IWallet } from 'libs/wallet/IWallet';
 import pickBy from 'lodash/pickBy';
@@ -90,7 +89,7 @@ interface State {
 
 interface Props {
   wallet: IWallet;
-  balance: Ether;
+  balance: Wei;
   nodeLib: RPCNode;
   network: NetworkConfig;
   tokens: MergedToken[];
@@ -540,12 +539,11 @@ export class SendTransaction extends React.Component<Props, State> {
     if (unit === 'ether') {
       const { balance, gasPrice } = this.props;
       const { gasLimit } = this.state;
-      const weiBalance = balance.toWei();
-      const bigGasLimit = new BN(gasLimit);
+      const bigGasLimit = Wei(gasLimit);
       value = getBalanceMinusGasCosts(
         bigGasLimit,
         gasPrice,
-        weiBalance
+        balance
       ).toString();
     } else {
       const tokenBalance = this.props.tokenBalances.find(
@@ -562,6 +560,9 @@ export class SendTransaction extends React.Component<Props, State> {
   public onAmountChange = (value: string, unit: UnitKey) => {
     if (value === 'everything') {
       value = this.handleEverythingAmountChange(value, unit);
+    }
+    if (unit === 'ether') {
+      value = toWei({ value, decimal: getDecimal('ether') }).toString();
     }
     let transaction = this.state.transaction;
     let generateDisabled = this.state.generateDisabled;
@@ -603,7 +604,7 @@ export class SendTransaction extends React.Component<Props, State> {
       to,
       data
     };
-    const bigGasLimit = new BN(gasLimit);
+    const bigGasLimit = Wei(gasLimit);
     try {
       const signedTx = await generateCompleteTransaction(
         wallet,
@@ -652,7 +653,10 @@ function mapStateToProps(state: AppState) {
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),
-    gasPrice: new GWei(getGasPriceGwei(state)).toWei(),
+    gasPrice: toWei({
+      value: `${getGasPriceGwei(state)}`,
+      decimal: getDecimal('gwei')
+    }),
     transactions: state.wallet.transactions,
     offline: state.config.offline,
     forceOffline: state.config.forceOffline

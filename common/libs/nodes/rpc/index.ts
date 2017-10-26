@@ -1,7 +1,7 @@
-import BN from 'bn.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
-import { Wei } from 'libs/units';
+import { stripHexPrefix } from 'libs/values';
+import { Wei, TokenValue, toTokenBase } from 'libs/units';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
@@ -30,47 +30,52 @@ export default class RpcNode implements INode {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        return new Wei(String(response.result));
+        return Wei(stripHexPrefix(response.result), 16);
       });
   }
 
-  public estimateGas(transaction: TransactionWithoutGas): Promise<BN> {
+  public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
     return this.client
       .call(this.requests.estimateGas(transaction))
       .then(response => {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        return new BN(String(response.result));
+        return Wei(stripHexPrefix(response.result), 16);
       });
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<BN> {
+  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
       .then(response => {
         if (response.error) {
           // TODO - Error handling
-          return new BN(0);
+          return TokenValue(0);
         }
-        return new BN(String(response.result)).div(
-          new BN(10).pow(new BN(token.decimal))
-        );
+        return toTokenBase({
+          value: TokenValue(stripHexPrefix(response.result), 16).toString(),
+          decimal: token.decimal
+        });
       });
   }
 
-  public getTokenBalances(address: string, tokens: Token[]): Promise<BN[]> {
+  public getTokenBalances(
+    address: string,
+    tokens: Token[]
+  ): Promise<TokenValue[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
       .then(response => {
         return response.map((item, idx) => {
           // FIXME wrap in maybe-like
           if (item.error) {
-            return new BN(0);
+            return TokenValue(0);
           }
-          return new BN(String(item.result)).div(
-            new BN(10).pow(new BN(tokens[idx].decimal))
-          );
+          return toTokenBase({
+            value: TokenValue(stripHexPrefix(item.result), 16).toString(),
+            decimal: tokens[idx].decimal
+          });
         });
       });
     // TODO - Error handling

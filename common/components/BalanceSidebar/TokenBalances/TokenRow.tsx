@@ -1,7 +1,6 @@
 import removeIcon from 'assets/images/icon-remove.svg';
 import BN from 'bn.js';
 import React from 'react';
-import { formatNumber } from 'utils/formatters';
 import './TokenRow.scss';
 
 interface Props {
@@ -38,8 +37,8 @@ export default class TokenRow extends React.Component<Props, State> {
             />
           )}
           <span>
-            {showLongBalance ? balance.toString() : formatNumber(balance)}
-          </span>
+            {showLongBalance ? balance.toString() : balance.toString()}{' '}
+          </span>// TODO: format number
         </td>
         <td className="TokenRow-symbol">{symbol}</td>
       </tr>

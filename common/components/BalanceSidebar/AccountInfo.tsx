@@ -2,12 +2,13 @@ import { TFetchCCRates } from 'actions/rates';
 import { Identicon } from 'components/ui';
 import { NetworkConfig } from 'config/data';
 import { IWallet } from 'libs/wallet';
+import { Wei, fromWei } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 
 interface Props {
-  balance: Ether;
+  balance: Wei;
   wallet: IWallet;
   network: NetworkConfig;
   fetchCCRates: TFetchCCRates;
@@ -80,7 +81,7 @@ export default class AccountInfo extends React.Component<Props, State> {
               >
                 {this.state.showLongBalance
                   ? balance ? balance.toString() : '???'
-                  : balance ? balance.amount.toString() : '???'}
+                  : balance ? fromWei(balance, 'ether').value : '???'}
               </span>
               {` ${network.name}`}
             </li>

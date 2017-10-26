@@ -1,13 +1,13 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
-import { Ether } from 'libs/units';
+import { Wei } from 'libs/units';
 
 interface Props {
   value: string;
   unit: string;
   tokens: string[];
-  balance: number | null | Ether;
+  balance: number | null | Wei;
   onChange?(value: string, unit: string): void;
 }
 
