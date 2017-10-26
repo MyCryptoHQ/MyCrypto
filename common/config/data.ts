@@ -1,4 +1,4 @@
-import { EtherscanNode, InfuraNode, RPCNode, CustomNode } from 'libs/nodes';
+import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 export const languages = require('./languages.json');
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.0.3)';
@@ -87,25 +87,6 @@ export interface CustomNodeConfig {
   auth?: {
     username: string;
     password: string;
-  };
-}
-
-export function makeCustomNodeId(config: CustomNodeConfig): string {
-  return `${config.url}:${config.port}`;
-}
-
-export function getCustomNodeConfigFromId(
-  id: string, configs: CustomNodeConfig[]
-): CustomNodeConfig | undefined {
-  return configs.find((node) => makeCustomNodeId(node) === id);
-}
-
-export function makeNodeConfigFromCustomConfig(config: CustomNodeConfig) {
-  return {
-    network: config.network,
-    lib: new CustomNode(config),
-    service: "your custom node",
-    estimateGas: true,
   };
 }
 

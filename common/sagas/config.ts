@@ -10,12 +10,12 @@ import {
   select,
   race
 } from 'redux-saga/effects';
+import { NODES } from 'config/data';
 import {
-  NODES,
   getCustomNodeConfigFromId,
   makeNodeConfigFromCustomConfig,
-} from 'config/data';
-import { getNodeConfig, getCustomNodeConfigs } from 'selectors/config';
+} from 'utils/node';
+import { getNode, getNodeConfig, getCustomNodeConfigs } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
 import {
@@ -56,42 +56,55 @@ function* reload(): SagaIterator {
 }
 
 function* handleNodeChangeIntent(action): SagaIterator {
-  const nodeConfig = yield select(getNodeConfig);
-  const currentNetwork = nodeConfig.network;
+  const currentNode = yield select(getNode);
+  const currentConfig = yield select(getNodeConfig);
 
-  let actionNode = NODES[action.payload];
-  if (!actionNode) {
+  let actionConfig = NODES[action.payload];
+  if (!actionConfig) {
     const customConfigs = yield select(getCustomNodeConfigs);
     const config = getCustomNodeConfigFromId(action.payload, customConfigs);
     if (config) {
-      actionNode = makeNodeConfigFromCustomConfig(config);
+      actionConfig = makeNodeConfigFromCustomConfig(config);
     }
   }
 
-  if (!actionNode) {
+  if (!actionConfig) {
     yield put(showNotification(
       'danger',
       `Attempted to switch to unknown node '${action.payload}'`,
       5000,
     ));
+    yield put(changeNode(currentNode, currentConfig));
     return;
   }
 
   // Grab latest block from the node, before switching, to confirm it's online
   // Give it 5 seconds before we call it offline
-  const { latestBlock, timeout } = yield race({
-    latestBlock: call(actionNode.lib.getCurrentBlock.bind(actionNode.lib)),
-    timeout: call(delay, 5000),
-  });
+  let latestBlock
+  let timeout;
+  try {
+    const { lb, to } = yield race({
+      latestBlock: call(
+        actionConfig.lib.getCurrentBlock.bind(actionConfig.lib)
+      ),
+      timeout: call(delay, 5000),
+    });
+    latestBlock = lb;
+    timeout = to;
+  } catch (err) {
+    // Whether it times out or errors, same message
+    timeout = true;
+  }
 
   if (timeout) {
     yield put(showNotification('danger', translate('ERROR_32'), 5000));
+    yield put(changeNode(currentNode, currentConfig));
     return;
   }
 
   yield put(setLatestBlock(latestBlock));
-  yield put(changeNode(action.payload, actionNode));
-  if (currentNetwork !== actionNode.network) {
+  yield put(changeNode(action.payload, actionConfig));
+  if (currentConfig.network !== actionConfig.network) {
     yield call(reload);
   }
 }

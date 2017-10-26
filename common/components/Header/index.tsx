@@ -8,6 +8,7 @@ import {
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import {
   ANNOUNCEMENT_MESSAGE,
@@ -18,18 +19,19 @@ import {
   VERSION,
   NodeConfig,
   CustomNodeConfig,
-  makeCustomNodeId,
 } from '../../config/data';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
+import { makeCustomNodeId } from 'utils/node';
 import './index.scss';
 
 interface Props {
   languageSelection: string;
   node: NodeConfig;
   nodeSelection: string;
+  isChangingNode: boolean;
   gasPriceGwei: number;
   customNodes: CustomNodeConfig[];
 
@@ -55,6 +57,7 @@ export default class Header extends Component<Props, State> {
       changeNodeIntent,
       node,
       nodeSelection,
+      isChangingNode,
       customNodes,
     } = this.props;
     const { isAddingCustomNode } = this.state;
@@ -63,6 +66,9 @@ export default class Header extends Component<Props, State> {
     const LanguageDropDown = Dropdown as new () => Dropdown<
       typeof selectedLanguage
     >;
+
+    console.log(node);
+    console.log(selectedNetwork);
 
     const nodeOptions = Object.keys(NODES).map(key => {
       return {
@@ -140,7 +146,10 @@ export default class Header extends Component<Props, State> {
                 />
               </div>
 
-              <div className="Header-branding-right-dropdown">
+              <div className={classnames({
+                'Header-branding-right-dropdown': true,
+                'is-flashing': isChangingNode,
+              })}>
                 <ColorDropdown
                   ariaLabel={`
                     change node. current node ${node.network} node

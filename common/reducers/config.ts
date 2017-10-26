@@ -2,6 +2,7 @@ import {
   ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
+  ChangeNodeIntentAction,
   ConfigAction,
   ToggleOfflineAction,
   ForceOfflineAction,
@@ -14,14 +15,15 @@ import {
   NODES,
   NodeConfig,
   CustomNodeConfig,
-  makeCustomNodeId,
 } from '../config/data';
+import { makeCustomNodeId } from 'utils/node';
 
 export interface State {
   // FIXME
   languageSelection: string;
   nodeSelection: string;
   node: NodeConfig;
+  isChangingNode: boolean;
   gasPriceGwei: number;
   offline: boolean;
   forceOffline: boolean;
@@ -34,6 +36,7 @@ export const INITIAL_STATE: State = {
   languageSelection: 'en',
   nodeSelection: defaultNode,
   node: NODES[defaultNode],
+  isChangingNode: false,
   gasPriceGwei: 21,
   offline: false,
   forceOffline: false,
@@ -53,6 +56,14 @@ function changeNode(state: State, action: ChangeNodeAction): State {
     ...state,
     nodeSelection: action.payload.nodeSelection,
     node: action.payload.node,
+    isChangingNode: false,
+  };
+}
+
+function changeNodeIntent(state: State, action: ChangeNodeIntentAction): State {
+  return {
+    ...state,
+    isChangingNode: true,
   };
 }
 
@@ -113,6 +124,8 @@ export function config(
       return changeLanguage(state, action);
     case TypeKeys.CONFIG_NODE_CHANGE:
       return changeNode(state, action);
+    case TypeKeys.CONFIG_NODE_CHANGE_INTENT:
+      return changeNodeIntent(state, action);
     case TypeKeys.CONFIG_GAS_PRICE:
       return changeGasPrice(state, action);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:

@@ -24,6 +24,7 @@ interface Props {
   languageSelection: string;
   node: NodeConfig;
   nodeSelection: string;
+  isChangingNode: boolean;
   gasPriceGwei: number;
   customNodes: CustomNodeConfig[];
   latestBlock: string;
@@ -41,6 +42,7 @@ class TabSection extends Component<Props, {}> {
       // APP
       node,
       nodeSelection,
+      isChangingNode,
       languageSelection,
       gasPriceGwei,
       customNodes,
@@ -57,6 +59,7 @@ class TabSection extends Component<Props, {}> {
       languageSelection,
       node,
       nodeSelection,
+      isChangingNode,
       gasPriceGwei,
       customNodes,
 
@@ -85,6 +88,7 @@ function mapStateToProps(state: AppState) {
   return {
     node: state.config.node,
     nodeSelection: state.config.nodeSelection,
+    isChangingNode: state.config.isChangingNode,
     languageSelection: state.config.languageSelection,
     gasPriceGwei: state.config.gasPriceGwei,
     customNodes: state.config.customNodes,

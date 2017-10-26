@@ -9,9 +9,12 @@ import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer from './reducers';
+import { State as ConfigState } from './reducers/config';
 import { State as CustomTokenState } from './reducers/customTokens';
 import { State as SwapState } from './reducers/swap';
 import promiseMiddleware from 'redux-promise-middleware';
+import { changeNodeIntent } from 'actions/config';
+import { getNodeConfigFromId } from 'utils/node';
 
 import sagas from './sagas';
 
@@ -56,10 +59,30 @@ const configureStore = () => {
     'customTokens'
   );
 
+  const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>(
+    'config'
+  );
+
+  // If they have a saved node, make sure we assign that too. The node selected
+  // isn't serializable, so we have to assign it here.
+  if (savedConfigState && savedConfigState.nodeSelection) {
+    const savedNode = getNodeConfigFromId(
+      savedConfigState.nodeSelection,
+      savedConfigState.customNodes,
+    );
+    // If we couldn't find it, revert to defaults
+    if (savedNode) {
+      savedConfigState.node = savedNode;
+    }
+    else {
+      savedConfigState.nodeSelection = configInitialState.nodeSelection;
+    }
+  }
+
   const persistedInitialState = {
     config: {
       ...configInitialState,
-      ...loadStatePropertyOrEmptyObject('config')
+      ...savedConfigState,
     },
     customTokens: localCustomTokens || customTokensInitialState,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
