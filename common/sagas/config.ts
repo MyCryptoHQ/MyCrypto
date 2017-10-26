@@ -84,10 +84,10 @@ function* handleNodeChangeIntent(action): SagaIterator {
   let timeout;
   try {
     const { lb, to } = yield race({
-      latestBlock: call(
+      lb: call(
         actionConfig.lib.getCurrentBlock.bind(actionConfig.lib)
       ),
-      timeout: call(delay, 5000),
+      to: call(delay, 5000),
     });
     latestBlock = lb;
     timeout = to;
