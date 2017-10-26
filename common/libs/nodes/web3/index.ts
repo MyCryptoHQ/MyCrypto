@@ -65,7 +65,10 @@ export default class Web3Node implements INode {
             return resolve(new Big(0));
           }
 
-          resolve(new Big(res.toString()).div(new Big(10).pow(token.decimal)));
+          const bigResult = new Big(res.toString());
+          const bigTokenBase = new Big(10).pow(token.decimal);
+
+          resolve(bigResult.div(bigTokenBase));
         }
       );
     });
