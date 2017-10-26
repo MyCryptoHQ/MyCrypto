@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import translate from 'translations';
+import { NewTabLink } from 'components/ui';
 import './Web3.scss';
 
 interface Props {
@@ -20,14 +21,11 @@ export default class Web3Decrypt extends Component<Props> {
         </div>
 
         <div>
-          <a
+          <NewTabLink
             className="Web3Decrypt-install btn btn-sm btn-default"
+            content={translate('Download MetaMask')}
             href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
-            target="_blank"
-            rel="noopener"
-          >
-            {translate('Download MetaMask')}
-          </a>
+          />
         </div>
       </section>
     );
