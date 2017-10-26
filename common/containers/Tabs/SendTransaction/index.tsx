@@ -655,7 +655,6 @@ export class SendTransaction extends React.Component<Props, State> {
         );
       }
     } catch (err) {
-      console.error(err.message);
       //show an error
       this.props.showNotification('danger', err.message, 5000);
     }
