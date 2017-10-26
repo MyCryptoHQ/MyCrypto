@@ -12,10 +12,10 @@ interface ABITypedSlot {
 
 interface ABIMethod {
   name: string;
-  type: 'function';
-  constant: boolean;
+  type: string;
+  constant?: boolean;
   inputs: ABITypedSlot[];
-  outputs: ABITypedSlot[];
+  outputs?: ABITypedSlot[];
   // default - false
   payable?: boolean;
 }
