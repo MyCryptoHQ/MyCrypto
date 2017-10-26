@@ -10,10 +10,10 @@ import {
   UnlockMnemonicAction,
   UnlockPrivateKeyAction
 } from 'actions/wallet';
+import { Wei } from 'libs/units';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { determineKeystoreType } from 'libs/keystore';
 import { INode } from 'libs/nodes/INode';
-import { Wei } from 'libs/units';
 import {
   EncryptedPrivKeyWallet,
   IWallet,

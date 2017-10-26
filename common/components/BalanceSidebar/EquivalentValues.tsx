@@ -1,7 +1,6 @@
 import { Ether } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
 import './EquivalentValues.scss';
 import { State } from 'reducers/rates';
 import { symbols } from 'actions/rates';

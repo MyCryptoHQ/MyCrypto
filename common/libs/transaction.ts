@@ -5,19 +5,11 @@ import ERC20 from 'libs/erc20';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
-import {
-  Ether,
-  toTokenUnit,
-  UnitKey,
-  Wei,
-  toTokenDisplay,
-  toUnit
-} from 'libs/units';
+import { UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex, sanitizeHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
-import BN from 'bn.js';
 
 export interface TransactionInput {
   token?: Token | null;
@@ -37,7 +29,7 @@ export interface BaseTransaction {
   to: string;
   value: string;
   data: string;
-  gasLimit: BN | string;
+  gasLimit: Wei | string;
   gasPrice: Wei | string;
   chainId: number;
 }
@@ -82,12 +74,12 @@ export function getTransactionFields(tx: EthTx) {
 function getValue(
   token: Token | null | undefined,
   tx: ExtendedRawTransaction
-): BN {
+): Wei {
   let value;
   if (token) {
-    value = new BN(ERC20.$transfer(tx.data).value);
+    value = Wei(ERC20.$transfer(tx.data).value);
   } else {
-    value = new BN(tx.value);
+    value = Wei(tx.value);
   }
   return value;
 }
@@ -99,11 +91,11 @@ async function getBalance(
 ) {
   const { from } = tx;
   const ETHBalance = await node.getBalance(from);
-  let balance;
+  let balance: Wei;
   if (token) {
     balance = toTokenUnit(await node.getTokenBalance(tx.from, token), token);
   } else {
-    balance = ETHBalance.amount;
+    balance = ETHBalance;
   }
   return {
     balance,
@@ -115,7 +107,7 @@ async function balanceCheck(
   node: INode,
   tx: ExtendedRawTransaction,
   token: Token | null | undefined,
-  value: BN,
+  value: Wei,
   gasCost: Wei
 ) {
   // Ensure their balance exceeds the amount they're sending
@@ -125,9 +117,9 @@ async function balanceCheck(
   }
   // ensure gas cost is not greaterThan current eth balance
   // TODO check that eth balance is not lesser than txAmount + gasCost
-  if (gasCost.amount.gt(ETHBalance.amount)) {
+  if (gasCost.gt(ETHBalance)) {
     throw new Error(
-      `gasCost: ${gasCost.amount} greaterThan ETHBalance: ${ETHBalance.amount}`
+      `gasCost: ${gasCost.toString()} greaterThan ETHBalance: ${ETHBalance.toString()}`
     );
   }
 }
@@ -136,7 +128,7 @@ function generateTxValidation(
   to: string,
   token: Token | null | undefined,
   data: string,
-  gasLimit: BN | string,
+  gasLimit: Wei | string,
   gasPrice: Wei | string,
   skipEthAddressValidation: boolean
 ) {
@@ -162,8 +154,8 @@ function generateTxValidation(
     throw new Error(translateRaw('GETH_GasLimit'));
   }
   // Reject gasPrice over 1000gwei (1000000000000)
-  const gwei = new BN('1000000000000');
-  if (gasPrice.amount.gt(gwei)) {
+  const gwei = Wei('1000000000000');
+  if (gasPrice.gt(gwei)) {
     throw new Error(
       'Gas price too high. Please contact support if this was not a mistake.'
     );
@@ -186,7 +178,7 @@ export async function generateCompleteTransactionFromRawTransaction(
     throw Error('Gas Limit and Gas Price should be of type bignumber');
   }
   // computed gas cost (gasprice * gaslimit)
-  const gasCost: Wei = new Wei(gasPrice.amount.mul(gasLimit));
+  const gasCost: Wei = Wei(gasPrice.mul(gasLimit));
   // get amount value (either in ETH or in Token)
   const value = getValue(token, tx);
   // if not offline, ensure that balance exceeds costs
@@ -247,7 +239,7 @@ export async function generateCompleteTransaction(
   wallet: IWallet,
   nodeLib: RPCNode,
   gasPrice: Wei,
-  gasLimit: BN,
+  gasLimit: Wei,
   chainId: number,
   transactionInput: TransactionInput,
   skipValidation: boolean,
@@ -281,12 +273,12 @@ export async function generateCompleteTransaction(
 
 // TODO determine best place for helper function
 export function getBalanceMinusGasCosts(
-  gasLimit: BN,
+  gasLimit: Wei,
   gasPrice: Wei,
   balance: Wei
 ): Ether {
-  const weiGasCosts = gasPrice.amount.mul(gasLimit);
-  const weiBalanceMinusGasCosts = balance.amount.sub(weiGasCosts);
+  const weiGasCosts = gasPrice.mul(gasLimit);
+  const weiBalanceMinusGasCosts = balance.sub(weiGasCosts);
   return new Ether(weiBalanceMinusGasCosts);
 }
 
@@ -302,7 +294,7 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
     fixedValue = toTokenDisplay(new BN(tokenData.value), token).toString();
     toAddress = tokenData.to;
   } else {
-    fixedValue = toUnit(new BN(value, 16), 'wei', 'ether').toString();
+    fixedValue = toUnit(Wei(value, 16), 'wei', 'ether').toString();
     toAddress = to;
   }
 

@@ -1,11 +1,9 @@
 import { TFetchCCRates } from 'actions/rates';
 import { Identicon } from 'components/ui';
 import { NetworkConfig } from 'config/data';
-import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
 import './AccountInfo.scss';
 
 interface Props {
@@ -82,7 +80,7 @@ export default class AccountInfo extends React.Component<Props, State> {
               >
                 {this.state.showLongBalance
                   ? balance ? balance.toString() : '???'
-                  : balance ? formatNumber(balance.amount) : '???'}
+                  : balance ? balance.amount.toString() : '???'}
               </span>
               {` ${network.name}`}
             </li>

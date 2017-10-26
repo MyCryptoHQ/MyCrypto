@@ -9,7 +9,7 @@ export function combineAndUpper(...args: string[]) {
 }
 
 // Use in place of angular number filter
-export function formatNumber(num: BN, digits: number = 3): string {
+function formatNumber(num: BN, digits: number = 3): string {
   const parts = num.toFixed(digits).split('.');
 
   // Remove trailing zeroes on decimal (If there is a decimal)

@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 import { Wei } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
 import * as types from './actionTypes';
