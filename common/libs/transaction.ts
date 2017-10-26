@@ -266,7 +266,7 @@ export async function confirmAndSendWeb3Transaction(
     gasPrice
   };
 
-  return await wallet.sendTransaction(transaction);
+  return wallet.sendTransaction(transaction);
 }
 
 export async function generateCompleteTransaction(
