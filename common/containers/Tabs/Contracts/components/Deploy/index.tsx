@@ -5,7 +5,6 @@ import { deployHOC } from './components/DeployHoc';
 import { TTxCompare } from '../TxCompare';
 import { TTxModal } from '../TxModal';
 import classnames from 'classnames';
-import { addProperties } from 'utils/helpers';
 import { isValidGasPrice, isValidByteCode } from 'libs/validators';
 
 export interface Props {
@@ -72,7 +71,7 @@ const Deploy = (props: Props) => {
           <button
             className="Sign-submit btn btn-primary"
             disabled={!showSignTxButton}
-            {...addProperties(showSignTxButton, { onClick: handleSignTx })}
+            onClick={handleSignTx}
           >
             {translate('DEP_signtx')}
           </button>
