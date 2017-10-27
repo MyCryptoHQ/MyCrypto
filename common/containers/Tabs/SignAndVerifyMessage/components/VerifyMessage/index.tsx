@@ -6,17 +6,17 @@ import { showNotification, TShowNotification } from 'actions/notifications';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
 import './index.scss';
 
-export interface Props {
+interface Props {
   showNotification: TShowNotification;
 }
 
-export interface State {
+interface State {
   signature: string;
   verifiedAddress?: string;
   verifiedMessage?: string;
 }
 
-export const initialState: State = {
+const initialState: State = {
   signature: ''
 };
 

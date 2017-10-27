@@ -9,18 +9,18 @@ import { ISignedMessage } from 'libs/signing';
 import { AppState } from 'reducers';
 import './index.scss';
 
-export interface Props {
+interface Props {
   wallet: IWallet;
   showNotification: TShowNotification;
 }
 
-export interface State {
+interface State {
   message: string;
   signMessageError: string;
   signedMessage: ISignedMessage | null;
 }
 
-export const initialState: State = {
+const initialState: State = {
   message: '',
   signMessageError: '',
   signedMessage: null
