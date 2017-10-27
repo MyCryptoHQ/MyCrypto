@@ -60,7 +60,6 @@ export class SignMessage extends Component<Props, State> {
             <button
               className="SignMessage-sign btn btn-primary btn-lg"
               onClick={this.handleSignMessage}
-              disabled={false}
             >
               {translate('NAV_SignMsg')}
             </button>
