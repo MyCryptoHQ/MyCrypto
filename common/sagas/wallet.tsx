@@ -169,7 +169,7 @@ function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
           blockExplorer={network.blockExplorer}
         />,
         0,
-        txHash
+        Math.random()
       )
     );
     yield put(broadcastTxSucceded(txHash, signedTx));

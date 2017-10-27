@@ -17,7 +17,7 @@ interface Props {
 const Transition = props => (
   <CSSTransition
     {...props}
-    classNames="animation"
+    classNames="NotificationAnimation"
     timeout={{ enter: 500, exit: 500 }}
   />
 );
