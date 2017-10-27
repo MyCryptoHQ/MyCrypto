@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import { IWallet } from 'libs/wallet/IWallet';
 import WalletDecrypt from 'components/WalletDecrypt';
 import translate from 'translations';
@@ -33,6 +34,13 @@ export class SignMessage extends Component<Props, State> {
 
   public render() {
     const { wallet } = this.props;
+    const { message } = this.state;
+
+    const messageBoxClass = classnames([
+      'SignMessage-inputBox',
+      'form-control',
+      message ? 'is-valid' : 'is-invalid'
+    ]);
 
     return (
       <div>
@@ -40,10 +48,7 @@ export class SignMessage extends Component<Props, State> {
           <h4>{translate('MSG_message')}</h4>
           <div className="form-group">
             <textarea
-              className={`SignMessage-inputBox form-control ${!!this.state
-                .message
-                ? 'is-valid'
-                : 'is-invalid'}`}
+              className={messageBoxClass}
               placeholder={messagePlaceholder}
               value={this.state.message}
               onChange={this.handleMessageChange}
@@ -66,7 +71,7 @@ export class SignMessage extends Component<Props, State> {
               <h4>{translate('MSG_signature')}</h4>
               <div className="form-group">
                 <textarea
-                  className={'SignMessage-inputBox form-control'}
+                  className="SignMessage-inputBox form-control"
                   value={JSON.stringify(this.state.signedMessage, null, 2)}
                   disabled={true}
                   onChange={this.handleMessageChange}
