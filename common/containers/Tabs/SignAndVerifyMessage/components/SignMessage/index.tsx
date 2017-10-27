@@ -116,10 +116,8 @@ export class SignMessage extends Component<Props, State> {
     }
   };
 
-  private handleMessageChange = (
-    e: React.SyntheticEvent<HTMLTextAreaElement>
-  ) => {
-    const message = (e.target as HTMLInputElement).value;
+  private handleMessageChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const message = e.currentTarget.value;
     this.setState({ message });
   };
 }

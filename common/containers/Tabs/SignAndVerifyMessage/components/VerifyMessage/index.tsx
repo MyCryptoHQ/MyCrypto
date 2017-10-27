@@ -95,10 +95,8 @@ export class VerifyMessage extends Component<Props, State> {
     }
   };
 
-  private handleSignatureChange = (
-    e: React.SyntheticEvent<HTMLTextAreaElement>
-  ) => {
-    const signature = (e.target as HTMLInputElement).value;
+  private handleSignatureChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const signature = e.currentTarget.value;
     this.setState({ signature });
   };
 }
