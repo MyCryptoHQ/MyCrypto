@@ -1,9 +1,5 @@
-import {
-  fromPrivateKey,
-  fromEthSale,
-  fromEtherWallet,
-  fromV3
-} from 'ethereumjs-wallet';
+import { fromPrivateKey, fromEthSale, fromV3 } from 'ethereumjs-wallet';
+import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
 import { signWrapper } from './helpers';
 import { decryptPrivKey } from 'libs/decrypt';
 
