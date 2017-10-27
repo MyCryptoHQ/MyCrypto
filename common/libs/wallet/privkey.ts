@@ -69,13 +69,6 @@ export default class PrivKeyWallet implements IWallet {
     });
   }
 
-  public signMessage(msg: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(signMessageWithPrivKeyV2(this.privKey, msg));
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
+  public signMessage = async (msg: string) =>
+    signMessageWithPrivKeyV2(this.privKey, msg);
 }
