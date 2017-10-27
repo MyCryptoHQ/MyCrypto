@@ -21,5 +21,5 @@ require('moment');
 require('prop-types');
 require('qrcode');
 require('qrcode.react');
-require('bignumber.js');
+require('bn.js');
 require('classnames');
