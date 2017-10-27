@@ -43,7 +43,7 @@ export class VerifyMessage extends Component<Props, State> {
             <textarea
               className={signatureBoxClass}
               placeholder={signaturePlaceholder}
-              value={this.state.signature}
+              value={signature}
               onChange={this.handleSignatureChange}
             />
           </div>
