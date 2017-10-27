@@ -34,7 +34,7 @@ export class SignMessage extends Component<Props, State> {
 
   public render() {
     const { wallet } = this.props;
-    const { message } = this.state;
+    const { message, signedMessage } = this.state;
 
     const messageBoxClass = classnames([
       'SignMessage-inputBox',
@@ -50,13 +50,13 @@ export class SignMessage extends Component<Props, State> {
             <textarea
               className={messageBoxClass}
               placeholder={messagePlaceholder}
-              value={this.state.message}
+              value={message}
               onChange={this.handleMessageChange}
             />
             <div className="SignMessage-help">{translate('MSG_info2')}</div>
           </div>
 
-          {!!this.props.wallet && (
+          {!!wallet && (
             <button
               className="SignMessage-sign btn btn-primary btn-lg"
               onClick={this.handleSignMessage}
@@ -65,13 +65,13 @@ export class SignMessage extends Component<Props, State> {
             </button>
           )}
 
-          {!!this.state.signedMessage && (
+          {!!signedMessage && (
             <div>
               <h4>{translate('MSG_signature')}</h4>
               <div className="form-group">
                 <textarea
                   className="SignMessage-inputBox form-control"
-                  value={JSON.stringify(this.state.signedMessage, null, 2)}
+                  value={JSON.stringify(signedMessage, null, 2)}
                   disabled={true}
                   onChange={this.handleMessageChange}
                 />
@@ -107,7 +107,6 @@ export class SignMessage extends Component<Props, State> {
         `Successfully signed message with address ${signedMessage.address}.`
       );
     } catch (err) {
-      console.error(err);
       this.props.showNotification(
         'danger',
         `Error signing message: ${err.message}`
