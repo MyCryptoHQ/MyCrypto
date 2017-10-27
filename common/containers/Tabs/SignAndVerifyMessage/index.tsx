@@ -51,9 +51,7 @@ export default class SignAndVerifyMessage extends Component<{}, State> {
             </h1>
           </div>
 
-          <main className="" role="main">
-            {content}
-          </main>
+          <main role="main">{content}</main>
         </section>
       </TabSection>
     );
