@@ -29,7 +29,7 @@ export class VerifyMessage extends Component<Props, State> {
   public render() {
     const { verifiedAddress, verifiedMessage, signature } = this.state;
 
-    const messageBoxClass = classnames([
+    const signatureBoxClass = classnames([
       'VerifyMessage-inputBox',
       'form-control',
       signature ? 'is-valid' : 'is-invalid'
@@ -41,7 +41,7 @@ export class VerifyMessage extends Component<Props, State> {
           <h4>{translate('MSG_signature')}</h4>
           <div className="form-group">
             <textarea
-              className={messageBoxClass}
+              className={signatureBoxClass}
               placeholder={signaturePlaceholder}
               value={this.state.signature}
               onChange={this.handleSignatureChange}
