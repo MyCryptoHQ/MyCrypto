@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
@@ -26,7 +27,13 @@ export class VerifyMessage extends Component<Props, State> {
   public state: State = initialState;
 
   public render() {
-    const { verifiedAddress, verifiedMessage } = this.state;
+    const { verifiedAddress, verifiedMessage, signature } = this.state;
+
+    const messageBoxClass = classnames([
+      'VerifyMessage-inputBox',
+      'form-control',
+      signature ? 'is-valid' : 'is-invalid'
+    ]);
 
     return (
       <div>
@@ -34,10 +41,7 @@ export class VerifyMessage extends Component<Props, State> {
           <h4>{translate('MSG_signature')}</h4>
           <div className="form-group">
             <textarea
-              className={`VerifyMessage-inputBox form-control ${!!this.state
-                .signature
-                ? 'is-valid'
-                : 'is-invalid'}`}
+              className={messageBoxClass}
               placeholder={signaturePlaceholder}
               value={this.state.signature}
               onChange={this.handleSignatureChange}
@@ -54,7 +58,7 @@ export class VerifyMessage extends Component<Props, State> {
 
           {!!verifiedAddress &&
             !!verifiedMessage && (
-              <div className={`VerifyMessage-success alert alert-success`}>
+              <div className="VerifyMessage-success alert alert-success">
                 <strong>{verifiedAddress}</strong> did sign the message{' '}
                 <strong>{verifiedMessage}</strong>.
               </div>
@@ -86,7 +90,6 @@ export class VerifyMessage extends Component<Props, State> {
         this.props.showNotification('danger', translate('ERROR_12'));
       }
     } catch (err) {
-      console.error(err);
       this.clearVerifiedData();
       this.props.showNotification('danger', translate('ERROR_12'));
     }
