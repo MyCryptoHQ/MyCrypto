@@ -78,17 +78,16 @@ export class VerifyMessage extends Component<Props, State> {
     try {
       const parsedSignature: ISignedMessage = JSON.parse(this.state.signature);
 
-      if (verifySignedMessage(parsedSignature)) {
-        const { address, message } = parsedSignature;
-        this.setState({
-          verifiedAddress: address,
-          verifiedMessage: message
-        });
-        this.props.showNotification('success', translate('SUCCESS_7'));
-      } else {
-        this.clearVerifiedData();
-        this.props.showNotification('danger', translate('ERROR_12'));
+      if (!verifySignedMessage(parsedSignature)) {
+        throw Error();
       }
+
+      const { address, message } = parsedSignature;
+      this.setState({
+        verifiedAddress: address,
+        verifiedMessage: message
+      });
+      this.props.showNotification('success', translate('SUCCESS_7'));
     } catch (err) {
       this.clearVerifiedData();
       this.props.showNotification('danger', translate('ERROR_12'));
