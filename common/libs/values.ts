@@ -1,4 +1,4 @@
-import { toWei, getDecimal } from 'libs/units';
+import { Wei } from 'libs/units';
 export function stripHexPrefix(value: string) {
   return value.replace('0x', '');
 }
@@ -7,11 +7,8 @@ export function stripHexPrefixAndLower(value: string): string {
   return stripHexPrefix(value).toLowerCase();
 }
 
-export function etherTo0xWei(ether: string): string {
-  // Values are in ether, so convert to wei for RPC calls
-  const wei = toWei({ value: ether, decimal: getDecimal('ether') });
-  // Finally, hex it up!
-  return `0x${wei.toString(16)}`;
+export function toHexWei(weiString: string): string {
+  return `0x${Wei(weiString).toString(16)}`;
 }
 
 export function padLeftEven(hex: string) {
