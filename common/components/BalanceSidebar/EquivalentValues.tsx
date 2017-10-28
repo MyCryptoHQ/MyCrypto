@@ -1,4 +1,4 @@
-import { Wei } from 'libs/units';
+import { Wei, fromWei } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
 import './EquivalentValues.scss';
@@ -33,7 +33,7 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                     <span className="EquivalentValues-values-currency-value">
                       {' '}
                       {balance
-                        ? balance.muln(rates[key]).toString() // TODO: format number
+                        ? fromWei(balance.muln(rates[key]), 'ether').value // TODO: format number
                         : '???'}
                     </span>
                   </li>

@@ -1,12 +1,14 @@
 import removeIcon from 'assets/images/icon-remove.svg';
 import BN from 'bn.js';
 import React from 'react';
+import { fromTokenBase } from 'libs/units';
 import './TokenRow.scss';
 
 interface Props {
   balance: BN;
   symbol: string;
   custom?: boolean;
+  decimal: number;
   onRemove(symbol: string): void;
 }
 interface State {
@@ -18,7 +20,7 @@ export default class TokenRow extends React.Component<Props, State> {
     showLongBalance: false
   };
   public render() {
-    const { balance, symbol, custom } = this.props;
+    const { balance, symbol, custom, decimal } = this.props;
     const { showLongBalance } = this.state;
     return (
       <tr className="TokenRow">
@@ -37,8 +39,12 @@ export default class TokenRow extends React.Component<Props, State> {
             />
           )}
           <span>
-            {showLongBalance ? balance.toString() : balance.toString()}{' '}
-          </span>// TODO: format number
+            {showLongBalance
+              ? balance.toString()
+              : fromTokenBase({ value: balance.toString(), decimal })
+                  .value}{' '}
+          </span>
+          {/* // TODO: format number */}
         </td>
         <td className="TokenRow-symbol">{symbol}</td>
       </tr>

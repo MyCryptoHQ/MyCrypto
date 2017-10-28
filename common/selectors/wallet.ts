@@ -13,6 +13,7 @@ export interface TokenBalance {
   symbol: string;
   balance: BN;
   custom: boolean;
+  decimal: number;
 }
 
 export type MergedToken = Token & {
@@ -39,7 +40,8 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     balance: state.wallet.tokens[t.symbol]
       ? state.wallet.tokens[t.symbol]
       : new BN(0),
-    custom: t.custom
+    custom: t.custom,
+    decimal: t.decimal
   }));
 }
 

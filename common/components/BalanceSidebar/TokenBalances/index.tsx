@@ -39,6 +39,7 @@ export default class TokenBalances extends React.Component<Props, State> {
                 balance={token.balance}
                 symbol={token.symbol}
                 custom={token.custom}
+                decimal={token.decimal}
                 onRemove={this.props.onRemoveCustomToken}
               />
             ))}
