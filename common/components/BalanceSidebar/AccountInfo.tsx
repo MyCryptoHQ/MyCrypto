@@ -6,6 +6,7 @@ import { IWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
+import Spinner from 'components/ui/Spinner';
 import './AccountInfo.scss';
 
 interface Props {
@@ -80,9 +81,17 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {this.state.showLongBalance
-                  ? balance ? balance.toString() : '???'
-                  : balance ? formatNumber(balance.amount) : '???'}
+                {this.state.showLongBalance ? (
+                  balance ? (
+                    balance.toString()
+                  ) : (
+                    <Spinner size="x1" />
+                  )
+                ) : balance ? (
+                  formatNumber(balance.amount)
+                ) : (
+                  <Spinner size="x1" />
+                )}
               </span>
               {` ${network.name}`}
             </li>
