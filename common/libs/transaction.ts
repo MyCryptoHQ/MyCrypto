@@ -5,15 +5,9 @@ import ERC20 from 'libs/erc20';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
-import {
-  UnitKey,
-  Wei,
-  fromTokenBase,
-  TokenValue,
-  toTokenBase
-} from 'libs/units';
+import { UnitKey, Wei, TokenValue, toTokenBase } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { stripHexPrefixAndLower, etherTo0xWei, sanitizeHex } from 'libs/values';
+import { stripHexPrefixAndLower, toHexWei, sanitizeHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 
@@ -83,9 +77,9 @@ function getValue(
 ): Wei {
   let value;
   if (token) {
-    value = Wei(ERC20.$transfer(tx.data).value);
+    value = Wei(ERC20.$transfer(tx.data).value, 16);
   } else {
-    value = Wei(tx.value);
+    value = Wei(tx.value, 16);
   }
   return value;
 }
@@ -226,7 +220,7 @@ export async function formatTxInput(
     return {
       to,
       from: await wallet.getAddress(),
-      value: etherTo0xWei(value), //turn users ether to wei
+      value: toHexWei(value), //turn users ether to wei
       data
     };
   } else {
@@ -300,10 +294,7 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
 
   if (token) {
     const tokenData = ERC20.$transfer(data);
-    fixedValue = fromTokenBase({
-      value: tokenData.value,
-      decimal: token.decimal
-    }).value;
+    fixedValue = tokenData.value;
     toAddress = tokenData.to;
   } else {
     fixedValue = Wei(value, 16);
@@ -311,7 +302,7 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
   }
 
   return {
-    value: fixedValue,
+    value: fixedValue.toString(),
     gasPrice: Wei(gasPrice, 16),
     data,
     toAddress,
