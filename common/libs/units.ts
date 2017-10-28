@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-
+import { stripHexPrefix } from 'libs/values';
 export type TUnit = typeof Units;
 export type UnitKey = keyof TUnit;
 type Wei = BN;
@@ -39,10 +39,15 @@ export interface IValue {
   decimal: number;
 }
 
-const Wei = (input: number | string | BN, base: number = 10): Wei =>
-  new BN(input, base);
-const TokenValue = (input: number | string | BN, base: number = 10) =>
-  new BN(input, base);
+const Wei = (input: string | BN, base: number = 10): Wei =>
+  typeof input === 'string'
+    ? new BN(stripHexPrefix(input), base)
+    : new BN(input, base);
+
+const TokenValue = (input: string | BN, base: number = 10) =>
+  typeof input === 'string'
+    ? new BN(stripHexPrefix(input), base)
+    : new BN(input, base);
 
 const getDecimal = (key: UnitKey) => Units[key].length - 1;
 
@@ -51,14 +56,20 @@ const stripRightZeros = (str: string) => {
   return strippedStr === '' ? null : strippedStr;
 };
 
-const strPow = (value: string, decimal: number) => {
-  const paddedValue = value.padStart(decimal + 1, '0');
+const baseToConvertedUnit = (value: string, decimal: number) => {
+  if (decimal === 0) {
+    return value;
+  }
+  const paddedValue = value.padStart(decimal + 1, '0'); //0.1 ==>
   const integerPart = paddedValue.slice(0, -decimal);
   const fractionPart = stripRightZeros(paddedValue.slice(-decimal));
   return fractionPart ? `${integerPart}.${fractionPart}` : `${integerPart}`;
 };
 
-const strDiv = (value: string, decimal: number) => {
+const convertedToBaseUnit = (value: string, decimal: number) => {
+  if (decimal === 0) {
+    return value;
+  }
   const [integerPart, fractionPart = ''] = value.split('.');
   const paddedFraction = fractionPart.padEnd(decimal, '0');
   return `${integerPart}${paddedFraction}`;
@@ -66,21 +77,21 @@ const strDiv = (value: string, decimal: number) => {
 
 const fromWei = (wei: Wei, unit: UnitKey): IValue => {
   const decimal = getDecimal(unit);
-  return { value: strPow(wei.toString(), decimal), decimal };
+  return { value: baseToConvertedUnit(wei.toString(), decimal), decimal };
 };
 
 const toWei = (ethereumUnit: IValue): Wei => {
-  const wei = strDiv(ethereumUnit.value, ethereumUnit.decimal);
+  const wei = convertedToBaseUnit(ethereumUnit.value, ethereumUnit.decimal);
   return Wei(wei);
 };
 
 const fromTokenBase = ({ value, decimal }: IValue): IValue => ({
-  value: strPow(value, decimal),
+  value: baseToConvertedUnit(value, decimal),
   decimal
 });
 
 const toTokenBase = ({ value, decimal }: IValue) =>
-  TokenValue(strDiv(value, decimal));
+  TokenValue(convertedToBaseUnit(value, decimal));
 
 export {
   TokenValue,
