@@ -15,7 +15,7 @@ import {
 } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
-import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
+import { donationAddressMap, NetworkConfig } from 'config/data';
 // LIBS
 import { stripHexPrefix } from 'libs/values';
 import { TransactionWithoutGas } from 'libs/messages';
@@ -51,7 +51,6 @@ import {
 import {
   getGasPriceGwei,
   getNetworkConfig,
-  getNodeConfig,
   getNodeLib
 } from 'selectors/config';
 import {
@@ -86,12 +85,12 @@ interface State {
   nonce: number | null | undefined;
   hasSetDefaultNonce: boolean;
   generateTxProcessing: boolean;
+  walletAddress: string | null;
 }
 
 interface Props {
   wallet: IWallet;
   balance: Ether;
-  node: NodeConfig;
   nodeLib: RPCNode;
   network: NetworkConfig;
   tokens: MergedToken[];
@@ -122,7 +121,8 @@ const initialState: State = {
   generateDisabled: true,
   nonce: null,
   hasSetDefaultNonce: false,
-  generateTxProcessing: false
+  generateTxProcessing: false,
+  walletAddress: null
 };
 
 export class SendTransaction extends React.Component<Props, State> {
@@ -155,8 +155,8 @@ export class SendTransaction extends React.Component<Props, State> {
     // TODO listen to gas price changes here
     // TODO debounce the call
     // handle gas estimation
-    // if any relevant fields changed
     return (
+      // if any relevant fields changed
       this.haveFieldsChanged(prevState) &&
       // if gas has not changed
       !this.state.gasChanged &&
@@ -215,8 +215,17 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public handleWalletStateOnUpdate(prevProps) {
-    if (this.props.wallet !== prevProps.wallet) {
+    if (this.props.wallet !== prevProps.wallet && !!prevProps.wallet) {
       this.setState(initialState);
+    }
+  }
+
+  public async setWalletAddressOnUpdate() {
+    if (this.props.wallet) {
+      const walletAddress = await this.props.wallet.getAddress();
+      if (walletAddress !== this.state.walletAddress) {
+        this.setState({ walletAddress });
+      }
     }
   }
 
@@ -226,6 +235,7 @@ export class SendTransaction extends React.Component<Props, State> {
     this.handleBroadcastTransactionOnUpdate();
     this.handleSetNonceWhenOfflineOnUpdate();
     this.handleWalletStateOnUpdate(prevProps);
+    this.setWalletAddressOnUpdate();
   }
 
   public onNonceChange = (value: number) => {
@@ -297,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                      <div>
-                        <NonceField
-                          value={nonce}
-                          onChange={this.onNonceChange}
-                          placeholder={'0'}
-                        />
-                      </div>
-                    )}
+                    <div>
+                      <NonceField
+                        value={nonce}
+                        onChange={this.onNonceChange}
+                        placeholder={'0'}
+                      />
+                    </div>
+                  )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
@@ -398,8 +408,7 @@ export class SendTransaction extends React.Component<Props, State> {
           {transaction &&
             showTxConfirm && (
               <ConfirmationModal
-                wallet={this.props.wallet}
-                node={this.props.node}
+                fromAddress={this.state.walletAddress}
                 signedTx={transaction.signedTx}
                 onClose={this.hideConfirmTx}
                 onConfirm={this.confirmTx}
@@ -415,15 +424,15 @@ export class SendTransaction extends React.Component<Props, State> {
     const query = queryString.parse(searchStr);
     const to = getParam(query, 'to');
     const data = getParam(query, 'data');
-    // FIXME validate token against presets
     const unit = getParam(query, 'tokenSymbol');
+    const token = this.props.tokens.find(x => x.symbol === unit);
     const value = getParam(query, 'value');
-    let gasLimit = getParam(query, 'gas');
+    let gasLimit = getParam(query, 'gaslimit');
     if (gasLimit === null) {
       gasLimit = getParam(query, 'limit');
     }
     const readOnly = getParam(query, 'readOnly') != null;
-    return { to, data, value, unit, gasLimit, readOnly };
+    return { to, token, data, value, unit, gasLimit, readOnly };
   }
 
   public isValidNonce() {
@@ -488,21 +497,23 @@ export class SendTransaction extends React.Component<Props, State> {
       return;
     }
 
-    try {
-      const cachedFormattedTx = await this.getFormattedTxFromState();
-      // Grab a reference to state. If it has changed by the time the estimateGas
-      // call comes back, we don't want to replace the gasLimit in state.
-      const state = this.state;
-      gasLimit = await nodeLib.estimateGas(cachedFormattedTx);
-      if (this.state === state) {
-        this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
-      } else {
-        // state has changed, so try again from the start (with the hope that state won't change by the next time)
-        this.estimateGas();
+    if (this.props.wallet) {
+      try {
+        const cachedFormattedTx = await this.getFormattedTxFromState();
+        // Grab a reference to state. If it has changed by the time the estimateGas
+        // call comes back, we don't want to replace the gasLimit in state.
+        const state = this.state;
+        gasLimit = await nodeLib.estimateGas(cachedFormattedTx);
+        if (this.state === state) {
+          this.setState({ gasLimit: formatGasLimit(gasLimit, state.unit) });
+        } else {
+          // state has changed, so try again from the start (with the hope that state won't change by the next time)
+          this.estimateGas();
+        }
+      } catch (error) {
+        this.setState({ generateDisabled: true });
+        this.props.showNotification('danger', error.message, 5000);
       }
-    } catch (error) {
-      this.setState({ generateDisabled: true });
-      this.props.showNotification('danger', error.message, 5000);
     }
   }
 
@@ -601,6 +612,7 @@ export class SendTransaction extends React.Component<Props, State> {
         bigGasLimit,
         chainId,
         transactionInput,
+        false,
         nonce,
         offline
       );
@@ -637,7 +649,6 @@ function mapStateToProps(state: AppState) {
     wallet: state.wallet.inst,
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
-    node: getNodeConfig(state),
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),

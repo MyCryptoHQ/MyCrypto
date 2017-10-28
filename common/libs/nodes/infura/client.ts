@@ -1,4 +1,3 @@
-import Big from 'bignumber.js';
 import { randomBytes } from 'crypto';
 import RPCClient from '../rpc/client';
 

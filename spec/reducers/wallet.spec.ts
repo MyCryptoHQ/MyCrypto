@@ -1,15 +1,18 @@
 import { wallet, INITIAL_STATE } from 'reducers/wallet';
 import * as walletActions from 'actions/wallet';
 import Big from 'bignumber.js';
-import { Ether } from 'libs/units';
 
 describe('wallet reducer', () => {
-  it('should return the initial state', () => {
-    expect(wallet(undefined, {})).toEqual(INITIAL_STATE);
-  });
-
   it('should handle WALLET_SET', () => {
-    const walletInstance = { wallet: true };
+    const doSomething = new Promise<string>(resolve => {
+      setTimeout(() => resolve('Success'), 1000);
+    });
+
+    const walletInstance = {
+      getAddress: () => doSomething,
+      signRawTransaction: () => doSomething
+    };
+
     expect(wallet(undefined, walletActions.setWallet(walletInstance))).toEqual({
       ...INITIAL_STATE,
       inst: walletInstance,

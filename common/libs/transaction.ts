@@ -5,11 +5,18 @@ import ERC20 from 'libs/erc20';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
-import { Ether, toTokenUnit, UnitKey, Wei } from 'libs/units';
+import {
+  Ether,
+  toTokenUnit,
+  UnitKey,
+  Wei,
+  toTokenDisplay,
+  toUnit
+} from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { stripHexPrefixAndLower, valueToHex } from 'libs/values';
+import { stripHexPrefixAndLower, valueToHex, sanitizeHex } from 'libs/values';
 import { IWallet } from 'libs/wallet';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import Big, { BigNumber } from 'bignumber.js';
 
 export interface TransactionInput {
@@ -61,6 +68,7 @@ export function getTransactionFields(tx: EthTx) {
     data: data === '0x' ? null : data,
     // To address is unchecksummed, which could cause mismatches in comparisons
     to: toChecksumAddress(to),
+    from: sanitizeHex(tx.getSenderAddress().toString('hex')),
     // Everything else is as-is
     nonce,
     gasPrice,
@@ -129,10 +137,11 @@ function generateTxValidation(
   token: Token | null | undefined,
   data: string,
   gasLimit: BigNumber | string,
-  gasPrice: Wei | string
+  gasPrice: Wei | string,
+  skipEthAddressValidation: boolean
 ) {
   // Reject bad addresses
-  if (!isValidETHAddress(to)) {
+  if (!isValidETHAddress(to) && !skipEthAddressValidation) {
     throw new Error(translateRaw('ERROR_5'));
   }
   // Reject token transactions without data
@@ -166,11 +175,12 @@ export async function generateCompleteTransactionFromRawTransaction(
   tx: ExtendedRawTransaction,
   wallet: IWallet,
   token: Token | null | undefined,
+  skipValidation: boolean,
   offline?: boolean
 ): Promise<CompleteTransaction> {
   const { to, data, gasLimit, gasPrice, chainId, nonce } = tx;
   // validation
-  generateTxValidation(to, token, data, gasLimit, gasPrice);
+  generateTxValidation(to, token, data, gasLimit, gasPrice, skipValidation);
   // duplicated from generateTxValidation -- typescript bug
   if (typeof gasLimit === 'string' || typeof gasPrice === 'string') {
     throw Error('Gas Limit and Gas Price should be of type bignumber');
@@ -240,6 +250,7 @@ export async function generateCompleteTransaction(
   gasLimit: BigNumber,
   chainId: number,
   transactionInput: TransactionInput,
+  skipValidation: boolean,
   nonce?: number | null,
   offline?: boolean
 ): Promise<CompleteTransaction> {
@@ -263,6 +274,7 @@ export async function generateCompleteTransaction(
     transaction,
     wallet,
     token,
+    skipValidation,
     offline
   );
 }
@@ -276,4 +288,30 @@ export function getBalanceMinusGasCosts(
   const weiGasCosts = gasPrice.amount.times(gasLimit);
   const weiBalanceMinusGasCosts = balance.amount.minus(weiGasCosts);
   return new Ether(weiBalanceMinusGasCosts);
+}
+
+export function decodeTransaction(transaction: EthTx, token: Token | false) {
+  const { to, value, data, gasPrice, nonce, from } = getTransactionFields(
+    transaction
+  );
+  let fixedValue;
+  let toAddress;
+
+  if (token) {
+    const tokenData = ERC20.$transfer(data);
+    fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
+    toAddress = tokenData.to;
+  } else {
+    fixedValue = toUnit(new Big(value, 16), 'wei', 'ether').toString();
+    toAddress = to;
+  }
+
+  return {
+    value: fixedValue,
+    gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
+    data,
+    toAddress,
+    nonce,
+    from
+  };
 }

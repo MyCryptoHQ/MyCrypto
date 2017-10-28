@@ -10,7 +10,7 @@ import {
   GetCurrentBlockRequest,
 } from './types';
 import { hexEncodeData } from './utils';
-
+import { TxObj } from '../INode';
 export default class RPCRequests {
   public sendRawTx(signedTx: string): SendRawTxRequest | any {
     return {
@@ -33,10 +33,10 @@ export default class RPCRequests {
     };
   }
 
-  public ethCall(transaction): CallRequest | any {
+  public ethCall(txObj: TxObj): CallRequest | any {
     return {
       method: 'eth_call',
-      params: [transaction, 'pending']
+      params: [txObj, 'pending']
     };
   }
 

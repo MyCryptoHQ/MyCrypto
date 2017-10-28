@@ -2,7 +2,7 @@ import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
 import { Wei } from 'libs/units';
-import { INode } from '../INode';
+import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
 
@@ -22,6 +22,14 @@ export default class RpcNode implements INode {
     this.requests = new RPCRequests();
   }
 
+  public sendCallRequest(txObj: TxObj): Promise<string> {
+    return this.client.call(this.requests.ethCall(txObj)).then(r => {
+      if (r.error) {
+        throw Error(r.error.message);
+      }
+      return r.result;
+    });
+  }
   public getBalance(address: string): Promise<Wei> {
     return this.client
       .call(this.requests.getBalance(address))

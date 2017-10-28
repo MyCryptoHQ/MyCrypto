@@ -20,7 +20,6 @@ import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
 import {
   toggleOfflineConfig,
-  TToggleOfflineConfig,
   changeNode,
   setLatestBlock,
 } from 'actions/config';

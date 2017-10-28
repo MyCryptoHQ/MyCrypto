@@ -2,13 +2,10 @@ import {
   ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
-  ChangeNodeIntentAction,
-  ConfigAction,
-  ToggleOfflineAction,
-  ForceOfflineAction,
   AddCustomNodeAction,
   RemoveCustomNodeAction,
   SetLatestBlockAction,
+  ConfigAction,
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
@@ -60,7 +57,7 @@ function changeNode(state: State, action: ChangeNodeAction): State {
   };
 }
 
-function changeNodeIntent(state: State, action: ChangeNodeIntentAction): State {
+function changeNodeIntent(state: State): State {
   return {
     ...state,
     isChangingNode: true,
@@ -74,14 +71,14 @@ function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
   };
 }
 
-function toggleOffline(state: State, action: ToggleOfflineAction): State {
+function toggleOffline(state: State): State {
   return {
     ...state,
     offline: !state.offline
   };
 }
 
-function forceOffline(state: State, action: ForceOfflineAction): State {
+function forceOffline(state: State): State {
   return {
     ...state,
     forceOffline: !state.forceOffline
@@ -125,13 +122,13 @@ export function config(
     case TypeKeys.CONFIG_NODE_CHANGE:
       return changeNode(state, action);
     case TypeKeys.CONFIG_NODE_CHANGE_INTENT:
-      return changeNodeIntent(state, action);
+      return changeNodeIntent(state);
     case TypeKeys.CONFIG_GAS_PRICE:
       return changeGasPrice(state, action);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
-      return toggleOffline(state, action);
+      return toggleOffline(state);
     case TypeKeys.CONFIG_FORCE_OFFLINE:
-      return forceOffline(state, action);
+      return forceOffline(state);
     case TypeKeys.CONFIG_ADD_CUSTOM_NODE:
       return addCustomNode(state, action);
     case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:
