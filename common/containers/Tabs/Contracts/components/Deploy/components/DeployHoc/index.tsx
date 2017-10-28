@@ -13,7 +13,6 @@ import {
 } from 'containers/Tabs/Contracts/components/TxModal';
 import {
   TxCompare,
-  Props as TCProps,
   TTxCompare
 } from 'containers/Tabs/Contracts/components/TxCompare';
 import { withTx } from 'containers/Tabs/Contracts/components//withTx';
@@ -82,25 +81,13 @@ export const deployHOC = PassedComponent => {
     }
 
     private displayCompareTx = (): React.ReactElement<TTxCompare> => {
-      const { nonce, gasLimit, data, value, signedTx, to } = this.state;
-      const { gasPrice, chainId } = this.props;
+      const { signedTx, nonce } = this.state;
 
       if (!nonce || !signedTx) {
         throw Error('Can not display raw tx, nonce empty or no signed tx');
       }
 
-      const props: TCProps = {
-        nonce,
-        gasPrice,
-        chainId,
-        data,
-        gasLimit,
-        to,
-        value,
-        signedTx
-      };
-
-      return <TxCompare {...props} />;
+      return <TxCompare signedTx={signedTx} />;
     };
 
     private displayDeployModal = (): React.ReactElement<TTxModal> => {
