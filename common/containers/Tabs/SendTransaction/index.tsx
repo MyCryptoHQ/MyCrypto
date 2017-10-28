@@ -245,7 +245,6 @@ export class SendTransaction extends React.Component<Props, State> {
     const unlocked = !!this.props.wallet;
     const {
       to,
-      value,
       unit,
       gasLimit,
       data,
@@ -258,6 +257,10 @@ export class SendTransaction extends React.Component<Props, State> {
     } = this.state;
     const { offline, forceOffline, balance } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
+    const decimal =
+      unit === 'ether'
+        ? getDecimal('ether')
+        : (this.state.token && this.state.token.decimal) || 0;
     return (
       <TabSection>
         <section className="Tab-content">
@@ -292,14 +295,16 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? null : this.onAddressChange}
                   />
                   <AmountField
-                    value={value}
                     unit={unit}
+                    decimal={decimal}
                     balance={balance}
                     tokens={this.props.tokenBalances
                       .filter(token => !token.balance.eqn(0))
                       .map(token => token.symbol)
                       .sort()}
-                    onChange={readOnly ? void 0 : this.onAmountChange}
+                    onAmountChange={this.onAmountChange}
+                    isReadOnly={readOnly}
+                    onUnitChange={this.onUnitChange}
                   />
                   <GasField
                     value={gasLimit}
@@ -407,6 +412,7 @@ export class SendTransaction extends React.Component<Props, State> {
           {transaction &&
             showTxConfirm && (
               <ConfirmationModal
+                decimal={decimal}
                 fromAddress={this.state.walletAddress}
                 signedTx={transaction.signedTx}
                 onClose={this.hideConfirmTx}
@@ -561,24 +567,27 @@ export class SendTransaction extends React.Component<Props, State> {
     if (value === 'everything') {
       value = this.handleEverythingAmountChange(value, unit);
     }
-    if (unit === 'ether') {
-      value = toWei({ value, decimal: getDecimal('ether') }).toString();
-    }
-    let transaction = this.state.transaction;
-    let generateDisabled = this.state.generateDisabled;
-    if (unit && unit !== this.state.unit) {
-      value = '';
-      transaction = null;
-      generateDisabled = true;
-    }
-    const token = this.props.tokens.find(x => x.symbol === unit);
+
     this.setState({
       value,
-      unit,
-      token,
-      transaction,
-      generateDisabled
+      unit
     });
+  };
+
+  public onUnitChange = (unit: UnitKey) => {
+    const token = this.props.tokens.find(x => x.symbol === unit);
+    let stateToSet: any = { token };
+
+    if (unit !== this.state.unit) {
+      stateToSet = {
+        ...stateToSet,
+        transaction: null,
+        generateDisabled: true,
+        unit
+      };
+    }
+
+    this.setState(stateToSet);
   };
 
   public resetJustTx = async (): Promise<any> =>
