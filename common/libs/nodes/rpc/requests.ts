@@ -68,7 +68,6 @@ export default class RPCRequests {
   public getCurrentBlock(): GetCurrentBlockRequest | any {
     return {
       method: 'eth_blockNumber',
-      params: [],
     };
   }
 }

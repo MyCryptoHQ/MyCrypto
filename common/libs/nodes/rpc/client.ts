@@ -23,7 +23,8 @@ export default class RPCClient {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...this.headers,
       },
       body: JSON.stringify(this.decorateRequest(request))
     }).then(r => r.json());
