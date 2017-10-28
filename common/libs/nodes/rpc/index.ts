@@ -1,7 +1,6 @@
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
-import { stripHexPrefix } from 'libs/values';
-import { Wei, TokenValue, toTokenBase } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
@@ -30,7 +29,7 @@ export default class RpcNode implements INode {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        return Wei(stripHexPrefix(response.result), 16);
+        return Wei(response.result, 16);
       });
   }
 
@@ -41,7 +40,7 @@ export default class RpcNode implements INode {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        return Wei(stripHexPrefix(response.result), 16);
+        return Wei(response.result, 16);
       });
   }
 
@@ -51,12 +50,9 @@ export default class RpcNode implements INode {
       .then(response => {
         if (response.error) {
           // TODO - Error handling
-          return TokenValue(0);
+          return TokenValue('0');
         }
-        return toTokenBase({
-          value: TokenValue(stripHexPrefix(response.result), 16).toString(),
-          decimal: token.decimal
-        });
+        return TokenValue(response.result, 16);
       });
   }
 
@@ -67,15 +63,12 @@ export default class RpcNode implements INode {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
       .then(response => {
-        return response.map((item, idx) => {
+        return response.map(item => {
           // FIXME wrap in maybe-like
           if (item.error) {
-            return TokenValue(0);
+            return TokenValue('0');
           }
-          return toTokenBase({
-            value: TokenValue(stripHexPrefix(item.result), 16).toString(),
-            decimal: tokens[idx].decimal
-          });
+          return TokenValue(item.result, 16);
         });
       });
     // TODO - Error handling
