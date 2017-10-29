@@ -125,7 +125,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
     this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
   };
 
-  private handleNullConnect(): void {
+  private handleNullConnect = (): void => {
     return this.handleConnect();
   }
 }
