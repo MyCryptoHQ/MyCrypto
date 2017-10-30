@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { stripHexPrefix } from 'libs/values';
-export type TUnit = typeof Units;
-export type UnitKey = keyof TUnit;
+
+export type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
 
@@ -31,8 +31,6 @@ const Units = {
   gether: '1000000000000000000000000000',
   tether: '1000000000000000000000000000000'
 };
-type TUnit = typeof Units;
-type UnitKey = keyof TUnit;
 
 export interface IValue {
   value: string;
