@@ -5,7 +5,7 @@ import {
   toChecksumAddress
 } from 'ethereumjs-util';
 import { pkeyToKeystore, UtcKeystore } from 'libs/keystore';
-import { signMessageWithPrivKey, signRawTxWithPrivKey } from 'libs/signing';
+import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from 'libs/signing';
 import { RawTransaction } from 'libs/transaction';
 import { isValidPrivKey } from 'libs/validators';
 import { stripHexPrefixAndLower } from 'libs/values';
@@ -69,13 +69,6 @@ export default class PrivKeyWallet implements IWallet {
     });
   }
 
-  public signMessage(msg: string, address: string, date: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(signMessageWithPrivKey(this.privKey, msg, address, date));
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
+  public signMessage = async (msg: string) =>
+    signMessageWithPrivKeyV2(this.privKey, msg);
 }
