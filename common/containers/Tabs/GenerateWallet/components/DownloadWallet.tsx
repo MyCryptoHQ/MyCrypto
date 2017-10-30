@@ -1,5 +1,6 @@
 import { ContinueToPaperAction } from 'actions/generateWallet';
 import { IFullWallet, IV3Wallet } from 'ethereumjs-wallet';
+import { toChecksumAddress } from 'ethereumjs-util';
 import { NewTabLink } from 'components/ui';
 import React, { Component } from 'react';
 import translate from 'translations';
@@ -129,7 +130,8 @@ export default class DownloadWallet extends Component<Props, State> {
     this.state.hasDownloadedWallet && this.props.continueToPaper();
 
   private setWallet(wallet: IFullWallet, password: string) {
-    const keystore = wallet.toV3(password);
+    const keystore = wallet.toV3(password, { n: 1024 });
+    keystore.address = toChecksumAddress(keystore.address);
     this.setState({ keystore });
   }
 
