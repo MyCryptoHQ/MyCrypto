@@ -3,10 +3,6 @@ import * as configActions from 'actions/config';
 import { NODES } from 'config/data';
 
 describe('config reducer', () => {
-  it('should return the initial state', () => {
-    expect(config(undefined, {})).toEqual(INITIAL_STATE);
-  });
-
   it('should handle CONFIG_LANGUAGE_CHANGE', () => {
     const language = 'en';
     expect(config(undefined, configActions.changeLanguage(language))).toEqual({
@@ -16,7 +12,7 @@ describe('config reducer', () => {
   });
 
   it('should handle CONFIG_NODE_CHANGE', () => {
-    const node = NODES[0];
+    const node = Object.keys(NODES)[0];
 
     expect(config(undefined, configActions.changeNode(node))).toEqual({
       ...INITIAL_STATE,

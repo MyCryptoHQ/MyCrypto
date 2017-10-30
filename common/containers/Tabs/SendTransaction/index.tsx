@@ -15,7 +15,7 @@ import {
 } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
-import { donationAddressMap, NetworkConfig, NodeConfig } from 'config/data';
+import { donationAddressMap, NetworkConfig } from 'config/data';
 // LIBS
 import { stripHexPrefix } from 'libs/values';
 import { TransactionWithoutGas } from 'libs/messages';
@@ -51,7 +51,6 @@ import {
 import {
   getGasPriceGwei,
   getNetworkConfig,
-  getNodeConfig,
   getNodeLib
 } from 'selectors/config';
 import {
@@ -86,12 +85,12 @@ interface State {
   nonce: number | null | undefined;
   hasSetDefaultNonce: boolean;
   generateTxProcessing: boolean;
+  walletAddress: string | null;
 }
 
 interface Props {
   wallet: IWallet;
   balance: Ether;
-  node: NodeConfig;
   nodeLib: RPCNode;
   network: NetworkConfig;
   tokens: MergedToken[];
@@ -122,7 +121,8 @@ const initialState: State = {
   generateDisabled: true,
   nonce: null,
   hasSetDefaultNonce: false,
-  generateTxProcessing: false
+  generateTxProcessing: false,
+  walletAddress: null
 };
 
 export class SendTransaction extends React.Component<Props, State> {
@@ -220,12 +220,22 @@ export class SendTransaction extends React.Component<Props, State> {
     }
   }
 
+  public async setWalletAddressOnUpdate() {
+    if (this.props.wallet) {
+      const walletAddress = await this.props.wallet.getAddress();
+      if (walletAddress !== this.state.walletAddress) {
+        this.setState({ walletAddress });
+      }
+    }
+  }
+
   public componentDidUpdate(prevProps: Props, prevState: State) {
     this.handleGasEstimationOnUpdate(prevState);
     this.handleGenerateDisabledOnUpdate();
     this.handleBroadcastTransactionOnUpdate();
     this.handleSetNonceWhenOfflineOnUpdate();
     this.handleWalletStateOnUpdate(prevProps);
+    this.setWalletAddressOnUpdate();
   }
 
   public onNonceChange = (value: number) => {
@@ -297,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                      <div>
-                        <NonceField
-                          value={nonce}
-                          onChange={this.onNonceChange}
-                          placeholder={'0'}
-                        />
-                      </div>
-                    )}
+                    <div>
+                      <NonceField
+                        value={nonce}
+                        onChange={this.onNonceChange}
+                        placeholder={'0'}
+                      />
+                    </div>
+                  )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
@@ -398,8 +408,7 @@ export class SendTransaction extends React.Component<Props, State> {
           {transaction &&
             showTxConfirm && (
               <ConfirmationModal
-                wallet={this.props.wallet}
-                node={this.props.node}
+                fromAddress={this.state.walletAddress}
                 signedTx={transaction.signedTx}
                 onClose={this.hideConfirmTx}
                 onConfirm={this.confirmTx}
@@ -640,7 +649,6 @@ function mapStateToProps(state: AppState) {
     wallet: state.wallet.inst,
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
-    node: getNodeConfig(state),
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),

@@ -33,6 +33,10 @@ const tabs = [
     to: 'sign-and-verify-message'
   },
   {
+    name: 'Broadcast Transaction',
+    to: 'pushTx'
+  },
+  {
     name: 'NAV_Help',
     to: 'https://myetherwallet.groovehq.com/help_center',
     external: true
