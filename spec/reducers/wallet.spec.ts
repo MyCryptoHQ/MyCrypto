@@ -1,6 +1,6 @@
 import { wallet, INITIAL_STATE } from 'reducers/wallet';
 import * as walletActions from 'actions/wallet';
-import BN from 'bn.js';
+import { TokenValue } from 'libs/units';
 
 describe('wallet reducer', () => {
   it('should handle WALLET_SET', () => {
@@ -23,7 +23,7 @@ describe('wallet reducer', () => {
   });
 
   it('should handle WALLET_SET_TOKEN_BALANCES', () => {
-    const tokenBalances = { OMG: new BN(20) };
+    const tokenBalances = { OMG: TokenValue('20') };
     expect(
       wallet(undefined, walletActions.setTokenBalances(tokenBalances))
     ).toEqual({

@@ -1,4 +1,4 @@
-import BN from 'bn.js';
+import { Wei } from 'libs/units';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -58,7 +58,7 @@ export function formatNumber(num: string, digits?: number): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(limit: BN, transactionUnit: string = 'ether') {
+export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?

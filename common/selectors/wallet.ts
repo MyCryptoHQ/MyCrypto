@@ -1,4 +1,4 @@
-import BN from 'bn.js';
+import { TokenValue } from 'libs/units';
 import { Token } from 'config/data';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 import { IWallet } from 'libs/wallet';
@@ -11,7 +11,7 @@ export function getWalletInst(state: AppState): IWallet | null | undefined {
 
 export interface TokenBalance {
   symbol: string;
-  balance: BN;
+  balance: TokenValue;
   custom: boolean;
   decimal: number;
 }
@@ -39,7 +39,7 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     symbol: t.symbol,
     balance: state.wallet.tokens[t.symbol]
       ? state.wallet.tokens[t.symbol]
-      : new BN(0),
+      : TokenValue('0'),
     custom: t.custom,
     decimal: t.decimal
   }));

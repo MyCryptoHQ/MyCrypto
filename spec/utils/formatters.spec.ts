@@ -1,4 +1,4 @@
-import BN from 'bn.js';
+import { Wei } from 'libs/units';
 import {
   toFixedIfLarger,
   formatNumber,
@@ -60,14 +60,14 @@ describe('formatNumber', () => {
 
 describe('formatGasLimit', () => {
   it('should fix transaction gas limit off-by-one errors', () => {
-    expect(formatGasLimit(new BN(21001), 'ether')).toEqual('21000');
+    expect(formatGasLimit(Wei('21001'), 'ether')).toEqual('21000');
   });
 
   it('should mark the gas limit `-1` if you exceed the limit per block', () => {
-    expect(formatGasLimit(new BN(999999999999999), 'ether')).toEqual('-1');
+    expect(formatGasLimit(Wei('999999999999999'), 'ether')).toEqual('-1');
   });
 
   it('should not alter a valid gas limit', () => {
-    expect(formatGasLimit(new BN(1234))).toEqual('1234');
+    expect(formatGasLimit(Wei('1234'))).toEqual('1234');
   });
 });

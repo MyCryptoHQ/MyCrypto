@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-
+import { Wei } from 'libs/units';
 import React, { Component } from 'react';
 import {
   generateCompleteTransaction as makeAndSignTx,
@@ -131,7 +131,7 @@ export const deployHOC = PassedComponent => {
         props.wallet,
         props.nodeLib,
         props.gasPrice,
-        new BN(gasLimit),
+        Wei(gasLimit),
         props.chainId,
         transactionInput,
         true

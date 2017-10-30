@@ -1,13 +1,13 @@
-import BN from 'bn.js';
+import { TokenValue } from 'libs/units';
 
 export interface TokenValues {
-  [key: string]: BN;
+  [key: string]: TokenValue;
 }
 
 export interface DeterministicWalletData {
   index: number;
   address: string;
-  value?: BN;
+  value?: TokenValue;
   tokenValues: TokenValues;
 }
 
@@ -39,7 +39,7 @@ export interface SetDesiredTokenAction {
 /*** Set wallet values ***/
 export interface UpdateDeterministicWalletArgs {
   address: string;
-  value?: BN;
+  value?: TokenValue;
   tokenValues?: TokenValues;
   index?: any;
 }
