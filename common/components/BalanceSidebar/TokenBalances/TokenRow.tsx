@@ -3,6 +3,7 @@ import BN from 'bn.js';
 import React from 'react';
 import { fromTokenBase } from 'libs/units';
 import './TokenRow.scss';
+import { formatNumber } from 'utils/formatters';
 
 interface Props {
   balance: BN;
@@ -22,6 +23,8 @@ export default class TokenRow extends React.Component<Props, State> {
   public render() {
     const { balance, symbol, custom, decimal } = this.props;
     const { showLongBalance } = this.state;
+    const tokenStrVal = fromTokenBase({ value: balance.toString(), decimal })
+      .value;
     return (
       <tr className="TokenRow">
         <td
@@ -39,12 +42,10 @@ export default class TokenRow extends React.Component<Props, State> {
             />
           )}
           <span>
-            {showLongBalance
-              ? balance.toString()
-              : fromTokenBase({ value: balance.toString(), decimal })
-                  .value}{' '}
+            {balance
+              ? showLongBalance ? tokenStrVal : formatNumber(tokenStrVal)
+              : '???'}
           </span>
-          {/* // TODO: format number */}
         </td>
         <td className="TokenRow-symbol">{symbol}</td>
       </tr>

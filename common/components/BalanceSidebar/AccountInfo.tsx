@@ -6,6 +6,7 @@ import { Wei, fromWei } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
+import { formatNumber } from 'utils/formatters';
 
 interface Props {
   balance: Wei;
@@ -53,8 +54,8 @@ export default class AccountInfo extends React.Component<Props, State> {
   public render() {
     const { network, balance } = this.props;
     const { blockExplorer, tokenExplorer } = network;
-    const { address } = this.state;
-
+    const { address, showLongBalance } = this.state;
+    const weiBalance = fromWei(balance, 'ether').value;
     return (
       <div className="AccountInfo">
         <div className="AccountInfo-section">
@@ -79,9 +80,9 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {this.state.showLongBalance
-                  ? balance ? balance.toString() : '???'
-                  : balance ? fromWei(balance, 'ether').value : '???'}
+                {balance
+                  ? showLongBalance ? weiBalance : formatNumber(weiBalance)
+                  : '???'}
               </span>
               {` ${network.name}`}
             </li>

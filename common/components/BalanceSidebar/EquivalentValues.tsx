@@ -4,6 +4,7 @@ import translate from 'translations';
 import './EquivalentValues.scss';
 import { State } from 'reducers/rates';
 import { symbols } from 'actions/rates';
+import { formatNumber } from 'utils/formatters';
 
 interface Props {
   balance?: Wei;
@@ -33,7 +34,10 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                     <span className="EquivalentValues-values-currency-value">
                       {' '}
                       {balance
-                        ? fromWei(balance.muln(rates[key]), 'ether').value // TODO: format number
+                        ? formatNumber(
+                            fromWei(balance.muln(rates[key]), 'ether').value,
+                            2
+                          )
                         : '???'}
                     </span>
                   </li>
