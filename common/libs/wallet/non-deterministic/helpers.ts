@@ -51,12 +51,14 @@ function determineKeystoreType(file: string): string {
   }
 }
 
-const isKeystorePassRequired = (file: string): boolean =>
-  determineKeystoreType(file) === KeystoreTypes.presale ||
-  KeystoreTypes.v1Encrypted ||
-  KeystoreTypes.utc
-    ? true
-    : false;
+const isKeystorePassRequired = (file: string): boolean => {
+  const keystoreType = determineKeystoreType(file);
+  return (
+    keystoreType === KeystoreTypes.presale ||
+    keystoreType === KeystoreTypes.v1Encrypted ||
+    keystoreType === KeystoreTypes.utc
+  );
+};
 
 const getPrivKeyWallet = (key: string, password: string) =>
   key.length === 64
