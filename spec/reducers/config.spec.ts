@@ -12,12 +12,14 @@ describe('config reducer', () => {
   });
 
   it('should handle CONFIG_NODE_CHANGE', () => {
-    const node = Object.keys(NODES)[0];
+    const key = Object.keys(NODES)[0];
 
-    expect(config(undefined, configActions.changeNode(node))).toEqual({
-      ...INITIAL_STATE,
-      nodeSelection: node
-    });
+    expect(config(undefined, configActions.changeNode(key, NODES[key])))
+      .toEqual({
+        ...INITIAL_STATE,
+        node: NODES[key],
+        nodeSelection: key
+      });
   });
 
   it('should handle CONFIG_GAS_PRICE', () => {
