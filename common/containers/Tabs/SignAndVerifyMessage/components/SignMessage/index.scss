@@ -1,0 +1,31 @@
+.SignMessage {
+  text-align: center;
+  padding-top: 30px;
+
+  &-sign {
+    width: 100%;
+  }
+
+  &-help {
+    margin-top: 10px;
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  &-inputBox {
+    min-height: 180px;
+  }
+
+  &-error {
+    opacity: 0;
+    transition: none;
+
+    &.is-showing {
+      opacity: 1;
+    }
+  }
+
+  &-buy {
+    margin-top: 10px;
+  }
+}
