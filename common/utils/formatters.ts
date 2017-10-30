@@ -8,9 +8,38 @@ export function combineAndUpper(...args: string[]) {
   return args.reduce((acc, item) => acc.concat(item.toUpperCase()), '');
 }
 
+const toFixed = (num: string, digits: number = 3) => {
+  const [integerPart, fractionPart = ''] = num.split('.');
+  if (fractionPart.length === digits) {
+    return num;
+  }
+  if (digits === 0) {
+    return integerPart;
+  }
+  if (fractionPart.length < digits) {
+    return `${integerPart}.${fractionPart.padEnd(digits, '0')}`;
+  }
+
+  const formattedFraction = fractionPart.slice(0, digits);
+  const integerArr = formattedFraction.split('').map(str => +str);
+  let carryOver = Math.floor((+fractionPart[digits] + 5) / 10);
+  // grade school addition / rounding
+  for (let i = integerArr.length - 1; i >= 0; i--) {
+    const currVal = integerArr[i] + carryOver;
+    const newVal = currVal % 10;
+    carryOver = Math.floor(currVal / 10);
+    integerArr[i] = newVal;
+    if (i === 0 && carryOver > 0) {
+      integerArr.unshift(0);
+    }
+  }
+
+  return `${integerPart}.${integerArr.join('')}`;
+};
+
 // Use in place of angular number filter
-function formatNumber(num: BN, digits: number = 3): string {
-  const parts = num.toFixed(digits).split('.');
+export function formatNumber(num: string, digits?: number): string {
+  const parts = toFixed(num, digits).split('.');
 
   // Remove trailing zeroes on decimal (If there is a decimal)
   if (parts[1]) {

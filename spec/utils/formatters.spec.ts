@@ -24,27 +24,27 @@ describe('toFixedIfLarger', () => {
 describe('formatNumber', () => {
   const pairs = [
     {
-      input: new BN('0.0127491'),
+      input: '0.0127491',
       output: '0.013',
       digits: undefined
     },
     {
-      input: new BN('21.87468421'),
+      input: '21.87468421',
       output: '21.875',
       digits: undefined
     },
     {
-      input: new BN(0),
+      input: '0',
       output: '0',
       digits: undefined
     },
     {
-      input: new BN('354.4728173'),
+      input: '354.4728173',
       output: '354.4728',
       digits: 4
     },
     {
-      input: new BN('100.48391'),
+      input: '100.48391',
       output: '100',
       digits: 0
     }
