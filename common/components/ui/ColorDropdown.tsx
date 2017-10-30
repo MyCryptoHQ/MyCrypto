@@ -107,7 +107,6 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   };
 
   private onChange = (value: any) => {
-    console.log(value);
     this.props.onChange(value);
     if (this.dropdownShell) {
       this.dropdownShell.close();
