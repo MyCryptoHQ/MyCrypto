@@ -93,10 +93,10 @@ async function getBalance(
   const ETHBalance = await node.getBalance(from);
   let balance: Wei;
   if (token) {
-    balance = toTokenBase({
-      value: TokenValue(await node.getTokenBalance(tx.from, token)).toString(),
-      decimal: token.decimal
-    });
+    balance = toTokenBase(
+      await node.getTokenBalance(tx.from, token).toString(),
+      token.decimal
+    );
   } else {
     balance = ETHBalance;
   }
@@ -289,7 +289,7 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
   const { to, value, data, gasPrice, nonce, from } = getTransactionFields(
     transaction
   );
-  let fixedValue;
+  let fixedValue: TokenValue;
   let toAddress;
 
   if (token) {
@@ -302,7 +302,7 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
   }
 
   return {
-    value: fixedValue.toString(),
+    value: fixedValue,
     gasPrice: Wei(gasPrice, 16),
     data,
     toAddress,

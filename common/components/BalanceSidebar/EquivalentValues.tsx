@@ -1,10 +1,10 @@
-import { Wei, fromWei } from 'libs/units';
+import { Wei } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
 import './EquivalentValues.scss';
 import { State } from 'reducers/rates';
 import { symbols } from 'actions/rates';
-import { formatNumber } from 'utils/formatters';
+import { UnitDisplay } from 'components/ui';
 
 interface Props {
   balance?: Wei;
@@ -33,12 +33,16 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                     </span>
                     <span className="EquivalentValues-values-currency-value">
                       {' '}
-                      {balance
-                        ? formatNumber(
-                            fromWei(balance.muln(rates[key]), 'ether').value,
-                            2
-                          )
-                        : '???'}
+                      {balance ? (
+                        <UnitDisplay
+                          unit={'ether'}
+                          value={balance.muln(rates[key])}
+                          formatNumber={true}
+                          digits={2}
+                        />
+                      ) : (
+                        '???'
+                      )}
                     </span>
                   </li>
                 );

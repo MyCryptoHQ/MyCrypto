@@ -27,10 +27,10 @@ const mapStateToProps = (state: AppState) => ({
   nodeLib: configSelectors.getNodeLib(state),
   chainId: configSelectors.getNetworkConfig(state).chainId,
   networkName: configSelectors.getNetworkConfig(state).name,
-  gasPrice: toWei({
-    value: `${configSelectors.getGasPriceGwei(state)}`,
-    decimal: getDecimal('gwei')
-  })
+  gasPrice: toWei(
+    `${configSelectors.getGasPriceGwei(state)}`,
+    getDecimal('gwei')
+  )
 });
 
 export const withTx = passedComponent =>

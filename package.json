@@ -117,22 +117,20 @@
     "prebuild": "check-node-version --package",
     "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
-    "test": "jest --config=jest_config/jest.config.json --coverage",
+    "test": "jest --config=jest_config/jest.config.json",
     "pretest": "check-node-version --package",
     "dev": "node webpack_config/server.js",
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
-    "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
+    "derivation-checker":
+      "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write --single-quote",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["prettier --write --single-quote", "git add"]
   }
 }

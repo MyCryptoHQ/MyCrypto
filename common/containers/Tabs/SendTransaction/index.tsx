@@ -662,10 +662,7 @@ function mapStateToProps(state: AppState) {
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
     tokens: getTokens(state),
-    gasPrice: toWei({
-      value: `${getGasPriceGwei(state)}`,
-      decimal: getDecimal('gwei')
-    }),
+    gasPrice: toWei(`${getGasPriceGwei(state)}`, getDecimal('gwei')),
     transactions: state.wallet.transactions,
     offline: state.config.offline,
     forceOffline: state.config.forceOffline

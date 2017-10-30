@@ -4,7 +4,7 @@ import Contract, { ABI } from 'libs/contract';
 
 interface Transfer {
   to: string;
-  value: string;
+  value: BN;
 }
 
 const erc20Abi: ABI = [
@@ -67,7 +67,7 @@ class ERC20 extends Contract {
     const decodedArgs = this.decodeArgs(this.getMethodAbi('transfer'), data);
     return {
       to: toChecksumAddress(`0x${decodedArgs[0].toString(16)}`),
-      value: decodedArgs[1].toString(10)
+      value: decodedArgs[1]
     };
   }
 }

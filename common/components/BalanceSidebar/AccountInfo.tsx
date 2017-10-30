@@ -1,12 +1,11 @@
 import { TFetchCCRates } from 'actions/rates';
-import { Identicon } from 'components/ui';
+import { Identicon, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'config/data';
 import { IWallet } from 'libs/wallet';
-import { Wei, fromWei } from 'libs/units';
+import { Wei, UnitKey } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
-import { formatNumber } from 'utils/formatters';
 
 interface Props {
   balance: Wei;
@@ -55,7 +54,8 @@ export default class AccountInfo extends React.Component<Props, State> {
     const { network, balance } = this.props;
     const { blockExplorer, tokenExplorer } = network;
     const { address, showLongBalance } = this.state;
-    const weiBalance = fromWei(balance, 'ether').value;
+    const weiBalance = this.getEthereumValue(balance, 'ether');
+
     return (
       <div className="AccountInfo">
         <div className="AccountInfo-section">
@@ -81,7 +81,7 @@ export default class AccountInfo extends React.Component<Props, State> {
                 onClick={this.toggleShowLongBalance}
               >
                 {balance
-                  ? showLongBalance ? weiBalance : formatNumber(weiBalance)
+                  ? showLongBalance ? weiBalance() : weiBalance(true)
                   : '???'}
               </span>
               {` ${network.name}`}
@@ -115,4 +115,9 @@ export default class AccountInfo extends React.Component<Props, State> {
       </div>
     );
   }
+  private getEthereumValue = (value: Wei, etherUnit: UnitKey) => (
+    formatNumber?: boolean
+  ) => (
+    <UnitDisplay value={value} unit={etherUnit} formatNumber={formatNumber} />
+  );
 }

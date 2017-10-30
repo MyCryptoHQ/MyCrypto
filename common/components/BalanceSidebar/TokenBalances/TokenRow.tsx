@@ -1,12 +1,11 @@
 import removeIcon from 'assets/images/icon-remove.svg';
-import BN from 'bn.js';
 import React from 'react';
-import { fromTokenBase } from 'libs/units';
+import { TokenValue } from 'libs/units';
+import { UnitDisplay } from 'components/ui';
 import './TokenRow.scss';
-import { formatNumber } from 'utils/formatters';
 
 interface Props {
-  balance: BN;
+  balance: TokenValue;
   symbol: string;
   custom?: boolean;
   decimal: number;
@@ -23,8 +22,8 @@ export default class TokenRow extends React.Component<Props, State> {
   public render() {
     const { balance, symbol, custom, decimal } = this.props;
     const { showLongBalance } = this.state;
-    const tokenStrVal = fromTokenBase({ value: balance.toString(), decimal })
-      .value;
+    const tokenVal = this.getTokenValue(balance, decimal);
+
     return (
       <tr className="TokenRow">
         <td
@@ -42,9 +41,7 @@ export default class TokenRow extends React.Component<Props, State> {
             />
           )}
           <span>
-            {balance
-              ? showLongBalance ? tokenStrVal : formatNumber(tokenStrVal)
-              : '???'}
+            {balance ? (showLongBalance ? tokenVal() : tokenVal(true)) : '???'}
           </span>
         </td>
         <td className="TokenRow-symbol">{symbol}</td>
@@ -67,4 +64,10 @@ export default class TokenRow extends React.Component<Props, State> {
   public onRemove = () => {
     this.props.onRemove(this.props.symbol);
   };
+
+  private getTokenValue = (value: TokenValue, decimal: number) => (
+    formatNumber?: boolean
+  ) => (
+    <UnitDisplay value={value} decimal={decimal} formatNumber={formatNumber} />
+  );
 }

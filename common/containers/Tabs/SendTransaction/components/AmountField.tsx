@@ -2,7 +2,7 @@ import React from 'react';
 import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
 import { Wei } from 'libs/units';
-import { UnitConverter } from 'components/renderCbs/UnitConverter';
+import { UnitConverter } from 'components/renderCbs';
 interface Props {
   decimal: number;
   unit: string;

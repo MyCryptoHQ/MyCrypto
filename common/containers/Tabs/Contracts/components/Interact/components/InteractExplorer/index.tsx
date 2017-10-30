@@ -8,7 +8,7 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import { TShowNotification } from 'actions/notifications';
 import classnames from 'classnames';
 import { isValidGasPrice, isValidValue } from 'libs/validators';
-import { UnitConverter } from 'components/renderCbs/UnitConverter';
+import { UnitConverter } from 'components/renderCbs';
 import { getDecimal } from 'libs/units';
 
 export interface Props {

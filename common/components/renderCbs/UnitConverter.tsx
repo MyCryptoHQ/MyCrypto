@@ -49,7 +49,7 @@ export class UnitConverter extends Component<Props, State> {
     });
   }
   private baseUnitCb = (value: string, decimal: number) => {
-    const baseUnit = toTokenBase({ value, decimal }).toString();
+    const baseUnit = toTokenBase(value, decimal).toString();
     const fakeEvent = {
       currentTarget: {
         value: baseUnit

@@ -3,7 +3,6 @@ import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import { NetworkConfig, NodeConfig } from 'config/data';
 import EthTx from 'ethereumjs-tx';
-import { fromTokenBase, fromWei } from 'libs/units';
 import {
   BroadcastTransactionStatus,
   getTransactionFields,
@@ -18,6 +17,7 @@ import {
 } from 'selectors/config';
 import { getTokens, getTxFromState, MergedToken } from 'selectors/wallet';
 import translate, { translateRaw } from 'translations';
+import { UnitDisplay } from 'components/ui';
 import './ConfirmationModal.scss';
 
 interface Props {
@@ -126,7 +126,11 @@ class ConfirmationModal extends React.Component<Props, State> {
                   <div className="ConfModal-summary-amount">
                     <div className="ConfModal-summary-amount-arrow" />
                     <div className="ConfModal-summary-amount-currency">
-                      {fromTokenBase({ value, decimal }).value} {symbol}
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
                     </div>
                   </div>
                   <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
@@ -147,10 +151,20 @@ class ConfirmationModal extends React.Component<Props, State> {
                   <li className="ConfModal-details-detail">
                     You are sending{' '}
                     <strong>
-                      {fromTokenBase({ value, decimal }).value} {symbol}
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
                     </strong>{' '}
                     with a gas price of{' '}
-                    <strong>{fromWei(gasPrice, 'gwei').value} gwei</strong>
+                    <strong>
+                      <UnitDisplay
+                        unit={'gwei'}
+                        value={gasPrice}
+                        symbol={'gwei'}
+                      />
+                    </strong>
                   </li>
                   <li className="ConfModal-details-detail">
                     You are interacting with the <strong>{node.network}</strong>{' '}

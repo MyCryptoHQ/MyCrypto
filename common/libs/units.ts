@@ -32,11 +32,6 @@ const Units = {
   tether: '1000000000000000000000000000000'
 };
 
-export interface IValue {
-  value: string;
-  decimal: number;
-}
-
 const Wei = (input: string | BN, base: number = 10): Wei =>
   typeof input === 'string'
     ? new BN(stripHexPrefix(input), base)
@@ -73,22 +68,21 @@ const convertedToBaseUnit = (value: string, decimal: number) => {
   return `${integerPart}${paddedFraction}`;
 };
 
-const fromWei = (wei: Wei, unit: UnitKey): IValue => {
+const fromWei = (wei: Wei, unit: UnitKey) => {
   const decimal = getDecimal(unit);
-  return { value: baseToConvertedUnit(wei.toString(), decimal), decimal };
+  console.log(baseToConvertedUnit(wei.toString(), decimal));
+  return baseToConvertedUnit(wei.toString(), decimal);
 };
 
-const toWei = (ethereumUnit: IValue): Wei => {
-  const wei = convertedToBaseUnit(ethereumUnit.value, ethereumUnit.decimal);
+const toWei = (value: string, decimal: number): Wei => {
+  const wei = convertedToBaseUnit(value, decimal);
   return Wei(wei);
 };
 
-const fromTokenBase = ({ value, decimal }: IValue): IValue => ({
-  value: baseToConvertedUnit(value, decimal),
-  decimal
-});
+const fromTokenBase = (value: BN, decimal: number) =>
+  baseToConvertedUnit(value.toString(), decimal);
 
-const toTokenBase = ({ value, decimal }: IValue) =>
+const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
 export {
