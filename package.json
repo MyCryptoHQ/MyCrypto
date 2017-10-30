@@ -117,7 +117,7 @@
     "prebuild": "check-node-version --package",
     "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
-    "test": "jest --config=jest_config/jest.config.json",
+    "test": "jest --config=jest_config/jest.config.json --coverage",
     "pretest": "check-node-version --package",
     "dev": "node webpack_config/server.js",
     "predev": "check-node-version --package",
