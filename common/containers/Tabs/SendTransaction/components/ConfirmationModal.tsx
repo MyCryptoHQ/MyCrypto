@@ -150,7 +150,7 @@ class ConfirmationModal extends React.Component<Props, State> {
                       with a gas price of <strong>{gasPrice} gwei</strong>
                     </li>
                     <li className="ConfModal-details-detail">
-                      You are interacting with the
+                      You are interacting with the{' '}
                       <strong>{node.network}</strong>{' '}
                       network provided by <strong>{node.service}</strong>
                     </li>
