@@ -1,9 +1,4 @@
-import {
-  FetchCCRatesSucceeded,
-  FetchCCRatesFailed,
-  RatesAction,
-  CCResponse
-} from 'actions/rates';
+import { FetchCCRatesSucceeded, RatesAction, CCResponse } from 'actions/rates';
 import { TypeKeys } from 'actions/rates/constants';
 import { Optional } from 'utils/types';
 
@@ -22,7 +17,7 @@ function fetchCCRatesSucceeded(
   return { ...state, rates: action.payload };
 }
 
-function fetchCCRatesFailed(state: State, action: FetchCCRatesFailed): State {
+function fetchCCRatesFailed(state: State): State {
   // TODO: Make library for error messages
   return {
     ...state,
@@ -38,7 +33,7 @@ export function rates(
     case TypeKeys.RATES_FETCH_CC_SUCCEEDED:
       return fetchCCRatesSucceeded(state, action);
     case TypeKeys.RATES_FETCH_CC_FAILED:
-      return fetchCCRatesFailed(state, action);
+      return fetchCCRatesFailed(state);
     default:
       return state;
   }

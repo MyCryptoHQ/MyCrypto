@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
 
@@ -28,6 +27,10 @@ const tabs = [
   {
     name: 'NAV_ENS',
     to: 'ens'
+  },
+  {
+    name: 'Broadcast Transaction',
+    to: 'pushTx'
   },
   {
     name: 'NAV_Help',
