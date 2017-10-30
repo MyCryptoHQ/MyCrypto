@@ -1,7 +1,16 @@
 import EthTx from 'ethereumjs-tx';
-import { ecsign, sha3 } from 'ethereumjs-util';
+import {
+  addHexPrefix,
+  ecsign,
+  ecrecover,
+  sha3,
+  hashPersonalMessage,
+  toBuffer,
+  pubToAddress
+} from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
 import { isValidRawTx } from 'libs/validators';
+import { stripHexPrefixAndLower } from 'libs/values';
 
 export function signRawTxWithPrivKey(
   privKey: Buffer,
@@ -16,15 +25,10 @@ export function signRawTxWithPrivKey(
   return '0x' + eTx.serialize().toString('hex');
 }
 
-export function signMessageWithPrivKey(
-  privKey: Buffer,
-  msg: string,
-  address: string,
-  date: string
-): string {
-  const spacer = msg.length > 0 && date.length > 0 ? ' ' : '';
-  const fullMessage = msg + spacer + date;
-  const hash = sha3(fullMessage);
+// adapted from:
+// https://github.com/kvhnuke/etherwallet/blob/2a5bc0db1c65906b14d8c33ce9101788c70d3774/app/scripts/controllers/signMsgCtrl.js#L95
+export function signMessageWithPrivKeyV2(privKey: Buffer, msg: string): string {
+  const hash = hashPersonalMessage(toBuffer(msg));
   const signed = ecsign(hash, privKey);
   const combined = Buffer.concat([
     Buffer.from(signed.r),
@@ -33,9 +37,35 @@ export function signMessageWithPrivKey(
   ]);
   const combinedHex = combined.toString('hex');
 
-  return JSON.stringify({
-    address,
-    msg: fullMessage,
-    sig: '0x' + combinedHex
-  });
+  return addHexPrefix(combinedHex);
+}
+
+export interface ISignedMessage {
+  address: string;
+  message: string;
+  signature: string;
+  version: string;
+}
+
+// adapted from:
+// https://github.com/kvhnuke/etherwallet/blob/2a5bc0db1c65906b14d8c33ce9101788c70d3774/app/scripts/controllers/signMsgCtrl.js#L118
+export function verifySignedMessage({
+  address,
+  message,
+  signature,
+  version
+}: ISignedMessage) {
+  const sig = new Buffer(stripHexPrefixAndLower(signature), 'hex');
+  if (sig.length !== 65) {
+    return false;
+  }
+  //TODO: explain what's going on here
+  sig[64] = sig[64] === 0 || sig[64] === 1 ? sig[64] + 27 : sig[64];
+  const hash =
+    version === '2' ? hashPersonalMessage(toBuffer(message)) : sha3(message);
+  const pubKey = ecrecover(hash, sig[64], sig.slice(0, 32), sig.slice(32, 64));
+
+  return (
+    stripHexPrefixAndLower(address) === pubToAddress(pubKey).toString('hex')
+  );
 }

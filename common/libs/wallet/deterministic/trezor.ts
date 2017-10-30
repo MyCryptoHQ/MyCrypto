@@ -41,4 +41,27 @@ export class TrezorWallet extends DeterministicWallet implements IWallet {
       );
     });
   }
+
+  public signMessage = () =>
+    Promise.reject(new Error('Signing via Trezor not yet supported.'));
+
+  // works, but returns a signature that can only be verified with a Trezor device
+  /*
+  public signMessage = (message: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      (TrezorConnect as any).ethereumSignMessage(
+        this.getPath(), 
+        message, 
+        response => {
+          if (response.success) {
+            resolve(addHexPrefix(response.signature))
+          } else{ 
+            console.error(response.error)
+            reject(response.error)
+          }
+        }
+      )
+    })
+  }
+  */
 }

@@ -10,7 +10,8 @@ describe('wallet reducer', () => {
 
     const walletInstance = {
       getAddressString: () => doSomething,
-      signRawTransaction: () => doSomething
+      signRawTransaction: () => doSomething,
+      signMessage: () => doSomething
     };
 
     expect(wallet(undefined, walletActions.setWallet(walletInstance))).toEqual({
