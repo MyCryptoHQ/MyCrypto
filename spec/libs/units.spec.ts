@@ -61,10 +61,7 @@ describe('Units', () => {
     });
     describe('kwei', () => {
       const wei = Wei('1623');
-      console.log(wei);
-      console.log(wei.toString());
       const kwei = fromWei(wei, 'kwei');
-      console.log(kwei);
       it('should equal 1.623 kwei', () => {
         expect(kwei).toEqual('1.623');
       });
