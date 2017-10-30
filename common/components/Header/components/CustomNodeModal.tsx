@@ -19,14 +19,6 @@ interface State {
   hasAuth: boolean;
   username: string;
   password: string;
-  customEip155: boolean;
-  customChainId: string;
-}
-
-interface Input {
-  name: string;
-  label: any;
-  placeholder: string;
 }
 
 export default class CustomNodeModal extends React.Component<Props, State> {
@@ -35,8 +27,6 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     url: '',
     port: '',
     network: NETWORK_KEYS[0],
-    customEip155: false,
-    customChainId: '',
     hasAuth: false,
     username: '',
     password: '',
@@ -102,31 +92,9 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                   {NETWORK_KEYS.map((net) =>
                     <option key={net} value={net}>{net}</option>
                   )}
-                  <option value="custom">Custom</option>
                 </select>
               </div>
             </div>
-            {this.state.network === "custom" &&
-              <div className="row">
-                <div className="col-sm-7">
-                  {this.state.customEip155 &&
-                    createInput("customChainId", "Chain ID", "number")
-                  }
-                </div>
-                <div className="col-sm-5">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="customEip155"
-                      checked={this.state.customEip155}
-                      onChange={this.handleCheckbox}
-                    />
-                    {' '}
-                    <span>Supports EIP-155</span>
-                  </label>
-                </div>
-              </div>
-            }
 
             <div className="row">
               <div className="col-sm-9">
@@ -173,14 +141,11 @@ export default class CustomNodeModal extends React.Component<Props, State> {
 
   private getInvalids(): { [key: string]: boolean } {
     const {
-      network,
       url,
       port,
       hasAuth,
       username,
       password,
-      customEip155,
-      customChainId,
     } = this.state;
     const required = ["name", "url", "port", "network"];
     const invalids: { [key: string]: boolean } = {};
@@ -211,11 +176,6 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       if (!password) {
         invalids.password = true;
       }
-    }
-
-    // Numeric chain id, if provided
-    if (network === "custom" && customEip155 && !parseInt(customChainId, 10)) {
-      invalids.customChainId = true;
     }
 
     return invalids;
@@ -249,10 +209,6 @@ export default class CustomNodeModal extends React.Component<Props, State> {
         username: this.state.username,
         password: this.state.password,
       };
-    }
-
-    if (this.state.network === "custom" && this.state.customEip155) {
-      node.customChainId = parseInt(this.state.customChainId, 10);
     }
 
     this.props.handleAddCustomNode(node);
