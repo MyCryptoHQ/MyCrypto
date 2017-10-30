@@ -6,6 +6,12 @@ import { NETWORKS, CustomNodeConfig } from 'config/data';
 
 const NETWORK_KEYS = Object.keys(NETWORKS);
 
+interface Input {
+  name: string;
+  placeholder?: string;
+  type?: string;
+}
+
 interface Props {
   handleAddCustomNode(node: CustomNodeConfig): void;
   handleClose(): void;
@@ -37,20 +43,6 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
 
-    const createInput = (name: string, placeholder?: string, type?: string) => {
-      return <input
-        className={classnames({
-          'form-control': true,
-          'is-invalid': this.state[name] && invalids[name],
-        })}
-        name={name}
-        type={type}
-        value={this.state[name]}
-        placeholder={placeholder}
-        onChange={this.handleChange}
-      />;
-    };
-
     const buttons: IButton[] = [{
       type: 'primary',
       text: translate('NODE_CTA'),
@@ -79,7 +71,10 @@ export default class CustomNodeModal extends React.Component<Props, State> {
             <div className="row">
               <div className="col-sm-7">
                 <label>{translate('NODE_Name')}</label>
-                {createInput("name", "My Node")}
+                {this.renderInput({
+                  name: 'name',
+                  placeholder: 'My Node',
+                }, invalids)}
               </div>
               <div className="col-sm-5">
                 <label>Network</label>
@@ -99,12 +94,19 @@ export default class CustomNodeModal extends React.Component<Props, State> {
             <div className="row">
               <div className="col-sm-9">
                 <label>URL</label>
-                {createInput("url", "http://127.0.0.1/")}
+                {this.renderInput({
+                  name: 'url',
+                  placeholder: 'http://127.0.0.1/',
+                }, invalids)}
               </div>
 
               <div className="col-sm-3">
                 <label>{translate('NODE_Port')}</label>
-                {createInput("port", "8545", "number")}
+                {this.renderInput({
+                  name: 'port',
+                  placeholder: '8545',
+                  type: 'number',
+                }, invalids)}
               </div>
             </div>
             <div className="row">
@@ -125,11 +127,14 @@ export default class CustomNodeModal extends React.Component<Props, State> {
               <div className="row">
                 <div className="col-sm-6">
                   <label>Username</label>
-                  {createInput("username")}
+                  {this.renderInput({ name: 'username' }, invalids)}
                 </div>
                 <div className="col-sm-6">
                   <label>Password</label>
-                  {createInput("password", undefined, "password")}
+                  {this.renderInput({
+                    name: 'password',
+                    type: 'password',
+                  }, invalids)}
                 </div>
               </div>
             }
@@ -137,6 +142,18 @@ export default class CustomNodeModal extends React.Component<Props, State> {
         </div>
       </Modal>
     );
+  }
+
+  private renderInput(input: Input, invalids: { [key: string]: boolean }) {
+    return <input
+      className={classnames({
+        'form-control': true,
+        'is-invalid': this.state[input.name] && invalids[input.name],
+      })}
+      value={this.state[name]}
+      onChange={this.handleChange}
+      {...input}
+    />;
   }
 
   private getInvalids(): { [key: string]: boolean } {
@@ -181,19 +198,16 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     return invalids;
   }
 
-  private handleChange = (ev: React.SyntheticEvent<
+  private handleChange = (ev: React.FormEvent<
     HTMLInputElement | HTMLSelectElement
   >) => {
-    // TODO: typescript bug: https://github.com/Microsoft/TypeScript/issues/13948
-    const name: any = (ev.target as HTMLInputElement).name;
-    const value = (ev.target as HTMLInputElement).value;
-    this.setState({ [name]: value });
+    const { name, value } = ev.currentTarget;
+    this.setState({ [name]: value } as any);
   };
 
-  private handleCheckbox = (ev: React.SyntheticEvent<HTMLInputElement>) => {
-    // TODO: typescript bug: https://github.com/Microsoft/TypeScript/issues/13948
-    const name: any = (ev.target as HTMLInputElement).name;
-    this.setState({ [name]: !this.state[name] });
+  private handleCheckbox = (ev: React.FormEvent<HTMLInputElement>) => {
+    const { name } = ev.currentTarget;
+    this.setState({ [name]: !this.state[name] } as any);
   };
 
   private saveAndAdd = () => {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './Modal.scss';
 
 export interface IButton {
-  text: any;
+  text: string | React.ReactElement<string>;
   type?:
     | 'default'
     | 'primary'

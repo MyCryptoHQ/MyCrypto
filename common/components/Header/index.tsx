@@ -67,9 +67,6 @@ export default class Header extends Component<Props, State> {
       typeof selectedLanguage
     >;
 
-    console.log(node);
-    console.log(selectedNetwork);
-
     const nodeOptions = Object.keys(NODES).map(key => {
       return {
         value: key,
