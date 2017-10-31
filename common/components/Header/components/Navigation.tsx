@@ -9,6 +9,10 @@ const tabs = [
     to: '/'
   },
   {
+    name: 'NAV_RestoreKeystore',
+    to: 'restore-keystore'
+  },
+  {
     name: 'NAV_SendEther',
     to: 'send-transaction'
   },

@@ -61,6 +61,7 @@
     "NAV_ENS": "ENS",
     "NAV_GenerateWallet_alt": "New Wallet ",
     "NAV_GenerateWallet": "Create New Wallet ",
+    "NAV_RestoreKeystore": "Redownload Keystore",
     "NAV_Help": "Help ",
     "NAV_InteractContract": "Interact with Contract ",
     "NAV_Multisig": "Multisig ",
