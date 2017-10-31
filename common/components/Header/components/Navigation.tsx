@@ -29,6 +29,10 @@ const tabs = [
     to: 'ens'
   },
   {
+    name: 'Sign & Verify Message',
+    to: 'sign-and-verify-message'
+  },
+  {
     name: 'Broadcast Transaction',
     to: 'pushTx'
   },
