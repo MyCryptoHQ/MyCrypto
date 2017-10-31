@@ -42,11 +42,27 @@ export function setWallet(value: IWallet): types.SetWalletAction {
   };
 }
 
-export type TSetBalance = typeof setBalance;
-export function setBalance(value: Wei): types.SetBalanceAction {
+export function setBalancePending(): types.SetBalancePendingAction {
   return {
-    type: constants.WALLET_SET_BALANCE,
-    payload: value
+    type: constants.WALLET_SET_BALANCE_PENDING,
+    payload: { status: { isPending: true } }
+  };
+}
+
+export type TSetBalance = typeof setBalanceFullfilled;
+export function setBalanceFullfilled(
+  value: Wei
+): types.SetBalanceFullfilledAction {
+  return {
+    type: constants.WALLET_SET_BALANCE_FULFILLED,
+    payload: { value, status: { isPending: false } }
+  };
+}
+
+export function SetBalanceRejected(): types.SetBalanceRejectedAction {
+  return {
+    type: constants.WALLET_SET_BALANCE_REJECTED,
+    payload: { status: { isPending: false } }
   };
 }
 

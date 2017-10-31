@@ -1,8 +1,7 @@
 import { TFetchCCRates } from 'actions/rates';
 import { Identicon } from 'components/ui';
 import { NetworkConfig } from 'config/data';
-import { Ether } from 'libs/units';
-import { IWallet } from 'libs/wallet';
+import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
@@ -10,7 +9,7 @@ import Spinner from 'components/ui/Spinner';
 import './AccountInfo.scss';
 
 interface Props {
-  balance: Ether;
+  balance: Balance;
   wallet: IWallet;
   network: NetworkConfig;
   fetchCCRates: TFetchCCRates;
@@ -82,15 +81,15 @@ export default class AccountInfo extends React.Component<Props, State> {
                 onClick={this.toggleShowLongBalance}
               >
                 {this.state.showLongBalance ? (
-                  balance ? (
-                    balance.toString()
-                  ) : (
+                  balance.isPending ? (
                     <Spinner size="x1" />
+                  ) : (
+                    balance.amount.toString()
                   )
-                ) : balance ? (
-                  formatNumber(balance.amount)
-                ) : (
+                ) : balance.isPending ? (
                   <Spinner size="x1" />
+                ) : (
+                  formatNumber(balance.amount)
                 )}
               </span>
               {` ${network.name}`}

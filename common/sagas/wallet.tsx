@@ -3,7 +3,9 @@ import {
   broadCastTxFailed,
   BroadcastTxRequestedAction,
   broadcastTxSucceded,
-  setBalance,
+  setBalanceFullfilled,
+  setBalancePending,
+  SetBalanceRejected,
   setTokenBalances,
   setWallet,
   UnlockKeystoreAction,
@@ -25,13 +27,14 @@ import {
 } from 'libs/wallet';
 import React from 'react';
 import { SagaIterator } from 'redux-saga';
-import { apply, call, fork, put, select, takeEvery } from 'redux-saga/effects';
+import { apply, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 
 function* updateAccountBalance(): SagaIterator {
   try {
+    yield put(setBalancePending());
     const wallet: null | IWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
@@ -40,9 +43,9 @@ function* updateAccountBalance(): SagaIterator {
     const address = yield apply(wallet, wallet.getAddress);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance));
+    yield put(setBalanceFullfilled(balance));
   } catch (error) {
-    yield put({ type: 'updateAccountBalance_error', error });
+    yield put(SetBalanceRejected());
   }
 }
 
@@ -179,8 +182,6 @@ function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
 }
 
 export default function* walletSaga(): SagaIterator {
-  // useful for development
-  yield call(updateBalances);
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),

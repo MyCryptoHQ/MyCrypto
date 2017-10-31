@@ -1,4 +1,5 @@
 export { IWallet } from './IWallet';
+export { Balance, NetworkStatus } from './balance';
 export { default as PrivKeyWallet } from './privkey';
 export { default as EncryptedPrivKeyWallet } from './encprivkey';
 export { default as PresaleWallet } from './presale';
