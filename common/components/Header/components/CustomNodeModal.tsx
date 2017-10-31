@@ -202,12 +202,12 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     HTMLInputElement | HTMLSelectElement
   >) => {
     const { name, value } = ev.currentTarget;
-    this.setState({ [name]: value } as any);
+    this.setState({ [name as any]: value });
   };
 
   private handleCheckbox = (ev: React.FormEvent<HTMLInputElement>) => {
     const { name } = ev.currentTarget;
-    this.setState({ [name]: !this.state[name] } as any);
+    this.setState({ [name as any]: !this.state[name] });
   };
 
   private saveAndAdd = () => {
