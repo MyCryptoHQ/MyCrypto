@@ -4,6 +4,7 @@ import { default as Help } from './Help';
 import { default as SendTransaction } from './SendTransaction';
 import { default as Swap } from './Swap';
 import { default as ViewWallet } from './ViewWallet';
+import { default as SignAndVerifyMessage } from './SignAndVerifyMessage';
 
 export default {
   ENS,
@@ -11,5 +12,6 @@ export default {
   Help,
   SendTransaction,
   Swap,
-  ViewWallet
+  ViewWallet,
+  SignAndVerifyMessage
 };

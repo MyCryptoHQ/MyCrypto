@@ -1,8 +1,15 @@
 @import "common/sass/variables";
 
 $summary-height: 54px;
+$button-break: 'max-width: 620px';
 
 .ConfModal {
+  min-width: 580px;
+
+  @media (#{$button-break}) {
+    min-width: 0;
+  }
+
   &-summary {
     display: flex;
     margin-bottom: 30px;
@@ -50,4 +57,20 @@ $summary-height: 54px;
     font-size: $font-size-medium-bump
   }
 
+}
+
+// Modal overrides for extra long buttons
+@media (#{$button-break}) {
+  .ConfModalWrap {
+    .Modal-footer-btn {
+      display: block;
+      float: none;
+      width: 100%;
+      margin: 0 0 5px;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
 }
