@@ -70,17 +70,8 @@ export default class LedgerWallet extends DeterministicWallet
           try {
             const combined = signed.r + signed.s + signed.v;
             const combinedHex = combined.toString('hex');
-            const signedMsg = JSON.stringify(
-              {
-                address: await this.getAddress(),
-                msg,
-                sig: addHexPrefix(combinedHex),
-                version: '2'
-              },
-              null,
-              2
-            );
-            resolve(signedMsg);
+            const signature = addHexPrefix(combinedHex);
+            resolve(signature);
           } catch (err) {
             reject(err);
           }
