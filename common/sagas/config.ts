@@ -12,6 +12,7 @@ import {
 } from 'redux-saga/effects';
 import { NODES } from 'config/data';
 import {
+  makeCustomNodeId,
   getCustomNodeConfigFromId,
   makeNodeConfigFromCustomConfig,
 } from 'utils/node';
@@ -21,7 +22,9 @@ import { TypeKeys } from 'actions/config/constants';
 import {
   toggleOfflineConfig,
   changeNode,
+  changeNodeIntent,
   setLatestBlock,
+  AddCustomNodeAction,
 } from 'actions/config';
 import { State as ConfigState } from 'reducers/config';
 import { showNotification } from 'actions/notifications';
@@ -108,6 +111,11 @@ function* handleNodeChangeIntent(action): SagaIterator {
   }
 }
 
+export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
+  const nodeId = makeCustomNodeId(action.payload);
+  yield put(changeNodeIntent(nodeId));
+}
+
 export default function* configSaga(): SagaIterator {
   yield takeLatest(
     TypeKeys.CONFIG_POLL_OFFLINE_STATUS,
@@ -115,4 +123,5 @@ export default function* configSaga(): SagaIterator {
   );
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
+  yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
 }
