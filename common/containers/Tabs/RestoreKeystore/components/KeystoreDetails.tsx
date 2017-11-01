@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Template from './Template';
 import { fromPrivateKey, IFullWallet } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
+import { isValidPrivKey } from 'libs/validators';
+import classnames from 'classnames';
+import translate from 'translations';
 import './KeystoreDetails.scss';
 
 interface State {
@@ -27,6 +30,7 @@ class KeystoreDetails extends Component<{}, State> {
   public componentWillUnmount() {
     this.resetState();
   }
+
   public render() {
     const {
       secretKey,
@@ -37,8 +41,8 @@ class KeystoreDetails extends Component<{}, State> {
       fileName
     } = this.state;
     const passwordValid = password.length > 9;
-    const privateKeyValid =
-      secretKey.length === 64 && /^[a-fA-F0-9]+$/g.test(secretKey);
+    const privateKeyValid = isValidPrivKey(secretKey);
+
     const content = (
       <div className="KeystoreDetails">
         <div>
@@ -46,9 +50,10 @@ class KeystoreDetails extends Component<{}, State> {
             <h4 className="KeystoreDetails-label">Private Key</h4>
             <div className="input-group">
               <input
-                className={`form-control is-${privateKeyValid
-                  ? 'valid'
-                  : 'invalid'}`}
+                className={classnames(
+                  'form-control',
+                  privateKeyValid ? 'is-valid' : 'is-invalid'
+                )}
                 type={isPrivateKeyVisible ? 'text' : 'password'}
                 name="secretKey"
                 value={secretKey}
@@ -67,9 +72,10 @@ class KeystoreDetails extends Component<{}, State> {
             <h4 className="KeystoreDetails-label">Password</h4>
             <div className="input-group">
               <input
-                className={`form-control is-${passwordValid
-                  ? 'valid'
-                  : 'invalid'}`}
+                className={classnames(
+                  'form-control',
+                  passwordValid ? 'is-valid' : 'is-invalid'
+                )}
                 type={isPasswordVisible ? 'text' : 'password'}
                 name="password"
                 value={password}
@@ -97,7 +103,7 @@ class KeystoreDetails extends Component<{}, State> {
             href={this.getBlob()}
             className="KeystoreDetails-download btn btn-primary btn-block"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-            aria-describedby="x_KeystoreDesc"
+            aria-describedby={translate('x_KeystoreDesc')}
             download={fileName}
           >
             Download Keystore
@@ -111,19 +117,23 @@ class KeystoreDetails extends Component<{}, State> {
       </div>
     );
   }
+
   private togglePrivateKey = () => {
     this.setState({
       isPrivateKeyVisible: !this.state.isPrivateKeyVisible
     });
   };
+
   private togglePassword = () => {
     this.setState({
       isPasswordVisible: !this.state.isPasswordVisible
     });
   };
+
   private resetState = () => {
     this.setState(initialState);
   };
+
   private handleKeystoreGeneration = () => {
     const { secretKey } = this.state;
     const keyBuffer = Buffer.from(secretKey, 'hex');
@@ -134,6 +144,7 @@ class KeystoreDetails extends Component<{}, State> {
       fileName
     });
   };
+
   private handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const name = e.currentTarget.name;
     const value = e.currentTarget.value;
@@ -144,6 +155,7 @@ class KeystoreDetails extends Component<{}, State> {
     }
     this.setState({ [name as any]: value });
   };
+
   private getBlob() {
     const { wallet } = this.state;
     if (wallet) {
