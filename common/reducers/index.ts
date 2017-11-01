@@ -9,10 +9,6 @@ import {
 } from './deterministicWallets';
 import { ens, State as EnsState } from './ens';
 import { generateWallet, State as GenerateWalletState } from './generateWallet';
-import {
-  restoreKeystore,
-  State as RestoreKeystoreState
-} from './restoreKeystore';
 import { notifications, State as NotificationsState } from './notifications';
 import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
@@ -20,7 +16,6 @@ import { State as WalletState, wallet } from './wallet';
 export interface AppState {
   // Custom reducers
   generateWallet: GenerateWalletState;
-  restoreKeystore: RestoreKeystoreState;
   config: ConfigState;
   notifications: NotificationsState;
   ens: EnsState;
@@ -36,7 +31,6 @@ export interface AppState {
 
 export default combineReducers({
   generateWallet,
-  restoreKeystore,
   config,
   swap,
   notifications,

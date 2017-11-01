@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import Template from './Template';
-import { TRestoreKeystoreFromWallet } from 'actions/restoreKeystore';
-import { fromPrivateKey } from 'ethereumjs-wallet';
-
-interface Props {
-  generateKeystore: TRestoreKeystoreFromWallet;
-}
+import { fromPrivateKey, fromV3, IFullWallet } from 'ethereumjs-wallet';
+import { makeBlob } from 'utils/blob';
+import './KeystoreDetails.scss';
 
 interface State {
   secretKey: string;
   password: string;
+  wallet: IFullWallet | null | undefined;
 }
 
-class KeystoreDetails extends Component<Props, State> {
+class KeystoreDetails extends Component<{}, State> {
   public state = {
     secretKey:
       '127070df79297d620ddcb6d97f65de5cc94c325d523a0e7dd55ec8f665d5376a',
-    password: '1234123412341234'
+    password: '1234123412341234',
+    wallet: null
   };
   public render() {
     const { secretKey, password } = this.state;
@@ -44,12 +43,21 @@ class KeystoreDetails extends Component<Props, State> {
             />
           </label>
         </div>
-        <button
-          onClick={this.handleKeystoreGeneration}
-          className="KeystoreDetails-submit btn btn-primary btn-block"
-        >
-          Generate Keystore
-        </button>
+        {this.state.wallet ? (
+          <button
+            onClick={this.handleKeystoreGeneration}
+            className="KeystoreDetails-submit btn btn-primary btn-block"
+          >
+            Generate Keystore
+          </button>
+        ) : (
+          <a
+            href={this.getBlob()}
+            className="KeystoreDetails-submit btn btn-primary btn-block"
+          >
+            Download Keystore
+          </a>
+        )}
       </div>
     );
     return (
@@ -59,17 +67,25 @@ class KeystoreDetails extends Component<Props, State> {
     );
   }
   private handleKeystoreGeneration = () => {
-    // const { generateKeystore } = this.props;
     const { secretKey } = this.state;
     const keyBuffer = Buffer.from(secretKey, 'hex');
     const wallet = fromPrivateKey(keyBuffer);
-    // generateKeystore(keyBuffer, password);
+    this.setState({
+      wallet
+    });
   };
   private handleInput = (e: React.SyntheticEvent<HTMLInputElement>) => {
     const name: any = (e.target as HTMLInputElement).name;
     const value = (e.target as HTMLInputElement).value;
     this.setState({ [name]: value });
   };
+  private getBlob() {
+    const { wallet } = this.state;
+    if (wallet) {
+      const keystore = fromV3(wallet.toV3(), this.state.password, true);
+      return makeBlob('text/json;charset=UTF-8', keystore);
+    }
+  }
 }
 
 export default KeystoreDetails;
