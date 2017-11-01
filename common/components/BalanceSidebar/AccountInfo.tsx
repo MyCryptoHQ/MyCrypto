@@ -1,15 +1,14 @@
 import { TFetchCCRates } from 'actions/rates';
-import { Identicon } from 'components/ui';
+import { Identicon, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'config/data';
-import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet';
+import { Wei, UnitKey } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
 import './AccountInfo.scss';
 
 interface Props {
-  balance: Ether;
+  balance: Wei;
   wallet: IWallet;
   network: NetworkConfig;
   fetchCCRates: TFetchCCRates;
@@ -54,7 +53,8 @@ export default class AccountInfo extends React.Component<Props, State> {
   public render() {
     const { network, balance } = this.props;
     const { blockExplorer, tokenExplorer } = network;
-    const { address } = this.state;
+    const { address, showLongBalance } = this.state;
+    const weiBalance = this.getEthereumValue(balance, 'ether');
 
     return (
       <div className="AccountInfo">
@@ -80,9 +80,9 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {this.state.showLongBalance
-                  ? balance ? balance.toString() : '???'
-                  : balance ? formatNumber(balance.amount) : '???'}
+                {balance
+                  ? showLongBalance ? weiBalance() : weiBalance(true)
+                  : '???'}
               </span>
               {` ${network.name}`}
             </li>
@@ -115,4 +115,9 @@ export default class AccountInfo extends React.Component<Props, State> {
       </div>
     );
   }
+  private getEthereumValue = (value: Wei, etherUnit: UnitKey) => (
+    formatNumber?: boolean
+  ) => (
+    <UnitDisplay value={value} unit={etherUnit} formatNumber={formatNumber} />
+  );
 }

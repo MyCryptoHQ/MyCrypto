@@ -1,5 +1,9 @@
-import Big, { BigNumber } from 'bignumber.js';
-import { Token } from 'config/data';
+import BN from 'bn.js';
+import { stripHexPrefix } from 'libs/values';
+
+export type UnitKey = keyof typeof Units;
+type Wei = BN;
+type TokenValue = BN;
 
 const Units = {
   wei: '1',
@@ -28,78 +32,65 @@ const Units = {
   tether: '1000000000000000000000000000000'
 };
 
-export type TUnit = typeof Units;
-export type UnitKey = keyof TUnit;
+const Wei = (input: string | BN, base: number = 10): Wei =>
+  typeof input === 'string'
+    ? new BN(stripHexPrefix(input), base)
+    : new BN(input, base);
 
-class Unit {
-  public unit: UnitKey;
-  public amount: BigNumber;
+const TokenValue = (input: string | BN, base: number = 10) =>
+  typeof input === 'string'
+    ? new BN(stripHexPrefix(input), base)
+    : new BN(input, base);
 
-  constructor(amount: BigNumber, unit: UnitKey) {
-    this.unit = unit;
-    this.amount = amount;
+const getDecimal = (key: UnitKey) => Units[key].length - 1;
+
+const stripRightZeros = (str: string) => {
+  const strippedStr = str.replace(/0+$/, '');
+  return strippedStr === '' ? null : strippedStr;
+};
+
+const baseToConvertedUnit = (value: string, decimal: number) => {
+  if (decimal === 0) {
+    return value;
   }
+  const paddedValue = value.padStart(decimal + 1, '0'); //0.1 ==>
+  const integerPart = paddedValue.slice(0, -decimal);
+  const fractionPart = stripRightZeros(paddedValue.slice(-decimal));
+  return fractionPart ? `${integerPart}.${fractionPart}` : `${integerPart}`;
+};
 
-  public toString(base?: number) {
-    return this.amount.toString(base);
+const convertedToBaseUnit = (value: string, decimal: number) => {
+  if (decimal === 0) {
+    return value;
   }
+  const [integerPart, fractionPart = ''] = value.split('.');
+  const paddedFraction = fractionPart.padEnd(decimal, '0');
+  return `${integerPart}${paddedFraction}`;
+};
 
-  public toPrecision(precision?: number) {
-    return this.amount.toPrecision(precision);
-  }
+const fromWei = (wei: Wei, unit: UnitKey) => {
+  const decimal = getDecimal(unit);
+  console.log(baseToConvertedUnit(wei.toString(), decimal));
+  return baseToConvertedUnit(wei.toString(), decimal);
+};
 
-  public toWei(): Wei {
-    return new Wei(toWei(this.amount, this.unit));
-  }
+const toWei = (value: string, decimal: number): Wei => {
+  const wei = convertedToBaseUnit(value, decimal);
+  return Wei(wei);
+};
 
-  public toGWei(): GWei {
-    return new GWei(toUnit(this.amount, this.unit, 'gwei'));
-  }
+const fromTokenBase = (value: BN, decimal: number) =>
+  baseToConvertedUnit(value.toString(), decimal);
 
-  public toEther(): Ether {
-    return new Ether(toUnit(this.amount, this.unit, 'ether'));
-  }
-}
+const toTokenBase = (value: string, decimal: number) =>
+  TokenValue(convertedToBaseUnit(value, decimal));
 
-// tslint:disable:max-classes-per-file
-export class Ether extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'ether');
-  }
-}
-
-export class Wei extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'wei');
-  }
-}
-
-export class GWei extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'gwei');
-  }
-}
-
-function getValueOfUnit(unit: UnitKey) {
-  return new Big(Units[unit]);
-}
-
-export function toWei(num: BigNumber, unit: UnitKey): BigNumber {
-  return num.times(getValueOfUnit(unit));
-}
-
-export function toUnit(
-  num: BigNumber,
-  fromUnit: UnitKey,
-  convertToUnit: UnitKey
-): BigNumber {
-  return toWei(num, fromUnit).div(getValueOfUnit(convertToUnit));
-}
-
-export function toTokenUnit(num: BigNumber, token: Token): BigNumber {
-  return num.times(new Big(10).pow(token.decimal));
-}
-
-export function toTokenDisplay(num: BigNumber, token: Token): BigNumber {
-  return num.times(new Big(10).pow(-token.decimal));
-}
+export {
+  TokenValue,
+  fromWei,
+  toWei,
+  toTokenBase,
+  fromTokenBase,
+  Wei,
+  getDecimal
+};
