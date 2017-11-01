@@ -11,17 +11,21 @@ import { formatNumber as format } from 'utils/formatters';
 interface Props {
   unit?: UnitKey;
   decimal?: number;
-  value: TokenValue | Wei;
+  value?: TokenValue | Wei;
   symbol?: string;
-  formatNumber?: boolean;
+  long?: boolean;
   digits?: number;
 }
 
 const UnitDisplay: React.SFC<Props> = params => {
-  const { value, decimal, unit, symbol, digits, formatNumber } = params;
+  const { value, decimal, unit, symbol, digits, long } = params;
+
+  if (!value) {
+    return <span>???</span>;
+  }
 
   const noDecimal = decimal === null || decimal === undefined;
-  if ((noDecimal && !unit) || !value) {
+  if (noDecimal && !unit) {
     throw Error(
       `Not enough parameters to convert base unit to display unit. Params given: ${JSON.stringify(
         params,
@@ -35,7 +39,7 @@ const UnitDisplay: React.SFC<Props> = params => {
     ? fromTokenBase(value, getDecimal(unit as UnitKey))
     : fromTokenBase(value, decimal as number);
 
-  const formattedValue = formatNumber
+  const formattedValue = !long
     ? digits ? format(convertedValue, digits) : format(convertedValue)
     : convertedValue;
 

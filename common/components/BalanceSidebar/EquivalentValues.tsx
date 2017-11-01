@@ -37,7 +37,6 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                         <UnitDisplay
                           unit={'ether'}
                           value={balance.muln(rates[key])}
-                          formatNumber={true}
                           digits={2}
                         />
                       ) : (

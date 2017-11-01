@@ -133,6 +133,9 @@ class ConfirmationModal extends React.Component<Props, State> {
                       />
                     </div>
                   </div>
+                  <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
+                    <Identicon size="100%" address={toAddress} />
+                  </div>
                 </div>
                 <ul className="ConfModal-details">
                   <li className="ConfModal-details-detail">

@@ -19,10 +19,10 @@ export default class TokenRow extends React.Component<Props, State> {
   public state = {
     showLongBalance: false
   };
+
   public render() {
     const { balance, symbol, custom, decimal } = this.props;
     const { showLongBalance } = this.state;
-    const tokenVal = this.getTokenValue(balance, decimal);
 
     return (
       <tr className="TokenRow">
@@ -41,7 +41,11 @@ export default class TokenRow extends React.Component<Props, State> {
             />
           )}
           <span>
-            {balance ? (showLongBalance ? tokenVal() : tokenVal(true)) : '???'}
+            <UnitDisplay
+              value={balance}
+              decimal={decimal}
+              long={showLongBalance}
+            />
           </span>
         </td>
         <td className="TokenRow-symbol">{symbol}</td>
@@ -64,10 +68,4 @@ export default class TokenRow extends React.Component<Props, State> {
   public onRemove = () => {
     this.props.onRemove(this.props.symbol);
   };
-
-  private getTokenValue = (value: TokenValue, decimal: number) => (
-    formatNumber?: boolean
-  ) => (
-    <UnitDisplay value={value} decimal={decimal} formatNumber={formatNumber} />
-  );
 }

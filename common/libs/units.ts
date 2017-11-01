@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { stripHexPrefix } from 'libs/values';
 
-export type UnitKey = keyof typeof Units;
+type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
 
@@ -70,7 +70,6 @@ const convertedToBaseUnit = (value: string, decimal: number) => {
 
 const fromWei = (wei: Wei, unit: UnitKey) => {
   const decimal = getDecimal(unit);
-  console.log(baseToConvertedUnit(wei.toString(), decimal));
   return baseToConvertedUnit(wei.toString(), decimal);
 };
 
@@ -79,7 +78,7 @@ const toWei = (value: string, decimal: number): Wei => {
   return Wei(wei);
 };
 
-const fromTokenBase = (value: BN, decimal: number) =>
+const fromTokenBase = (value: TokenValue, decimal: number) =>
   baseToConvertedUnit(value.toString(), decimal);
 
 const toTokenBase = (value: string, decimal: number) =>
@@ -92,5 +91,6 @@ export {
   toTokenBase,
   fromTokenBase,
   Wei,
-  getDecimal
+  getDecimal,
+  UnitKey
 };

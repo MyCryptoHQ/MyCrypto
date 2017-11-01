@@ -1,14 +1,19 @@
-import { TokenValue } from 'libs/units';
+import { TokenValue, Wei } from 'libs/units';
 
-export interface TokenValues {
-  [key: string]: TokenValue;
+export interface ITokenData {
+  value: TokenValue;
+  decimal: number;
+}
+
+export interface ITokenValues {
+  [key: string]: ITokenData | null;
 }
 
 export interface DeterministicWalletData {
   index: number;
   address: string;
   value?: TokenValue;
-  tokenValues: TokenValues;
+  tokenValues: ITokenValues;
 }
 
 /*** Get determinstic wallets ***/
@@ -39,8 +44,8 @@ export interface SetDesiredTokenAction {
 /*** Set wallet values ***/
 export interface UpdateDeterministicWalletArgs {
   address: string;
-  value?: TokenValue;
-  tokenValues?: TokenValues;
+  value?: Wei;
+  tokenValues?: ITokenValues;
   index?: any;
 }
 
