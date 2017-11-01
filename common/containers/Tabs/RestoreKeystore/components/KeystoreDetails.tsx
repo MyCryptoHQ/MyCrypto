@@ -8,11 +8,15 @@ interface State {
   secretKey: string;
   password: string;
   fileName: string;
+  isPasswordVisible: boolean;
+  isPrivateKeyVisible: boolean;
   wallet: IFullWallet | null | undefined;
 }
 const initialState: State = {
   secretKey: '',
   password: '',
+  isPasswordVisible: false,
+  isPrivateKeyVisible: false,
   fileName: '',
   wallet: null
 };
@@ -24,7 +28,14 @@ class KeystoreDetails extends Component<{}, State> {
     this.resetState();
   }
   public render() {
-    const { secretKey, password, wallet, fileName } = this.state;
+    const {
+      secretKey,
+      isPasswordVisible,
+      isPrivateKeyVisible,
+      password,
+      wallet,
+      fileName
+    } = this.state;
     const passwordValid = password.length > 9;
     const privateKeyValid =
       secretKey.length === 64 && /^[a-fA-F0-9]+$/g.test(secretKey);
@@ -33,35 +44,49 @@ class KeystoreDetails extends Component<{}, State> {
         <div>
           <label className="KeystoreDetails-key">
             <h4 className="KeystoreDetails-label">Private Key</h4>
-            <input
-              className={`form-control is-${privateKeyValid
-                ? 'valid'
-                : 'invalid'}`}
-              type="text"
-              name="secretKey"
-              value={secretKey}
-              onChange={this.handleInput}
-            />
+            <div className="input-group">
+              <input
+                className={`form-control is-${privateKeyValid
+                  ? 'valid'
+                  : 'invalid'}`}
+                type={isPrivateKeyVisible ? 'text' : 'password'}
+                name="secretKey"
+                value={secretKey}
+                onChange={this.handleInput}
+              />
+              <span
+                onClick={this.togglePrivateKey}
+                role="button"
+                className="input-group-addon eye"
+              />
+            </div>
           </label>
         </div>
         <div>
           <label className="KeystoreDetails-password">
             <h4 className="KeystoreDetails-label">Password</h4>
-            <input
-              className={`form-control is-${passwordValid
-                ? 'valid'
-                : 'invalid'}`}
-              type="text"
-              name="password"
-              value={password}
-              onChange={this.handleInput}
-            />
+            <div className="input-group">
+              <input
+                className={`form-control is-${passwordValid
+                  ? 'valid'
+                  : 'invalid'}`}
+                type={isPasswordVisible ? 'text' : 'password'}
+                name="password"
+                value={password}
+                onChange={this.handleInput}
+              />
+              <span
+                onClick={this.togglePassword}
+                role="button"
+                className="input-group-addon eye"
+              />
+            </div>
           </label>
         </div>
         {!wallet ? (
           <button
             onClick={this.handleKeystoreGeneration}
-            className="KeystoreDetails-submit btn btn-primary btn-block"
+            className="KeystoreDetails-submit btn btn-block"
             disabled={!passwordValid || !privateKeyValid}
           >
             Generate Keystore
@@ -86,6 +111,16 @@ class KeystoreDetails extends Component<{}, State> {
       </div>
     );
   }
+  private togglePrivateKey = () => {
+    this.setState({
+      isPrivateKeyVisible: !this.state.isPrivateKeyVisible
+    });
+  };
+  private togglePassword = () => {
+    this.setState({
+      isPasswordVisible: !this.state.isPasswordVisible
+    });
+  };
   private resetState = () => {
     this.setState(initialState);
   };
