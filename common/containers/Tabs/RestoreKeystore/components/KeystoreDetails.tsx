@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Template from './Template';
+import KeystoreInput from './KeystoreInput';
 import { fromPrivateKey, IFullWallet } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
 import { isValidPrivKey } from 'libs/validators';
@@ -40,7 +41,7 @@ class KeystoreDetails extends Component<{}, State> {
       wallet,
       fileName
     } = this.state;
-    const passwordValid = password.length > 9;
+    const passwordValid = (password as any).length > 9;
     const privateKeyValid = isValidPrivKey(secretKey);
 
     const content = (
@@ -48,45 +49,29 @@ class KeystoreDetails extends Component<{}, State> {
         <div>
           <label className="KeystoreDetails-key">
             <h4 className="KeystoreDetails-label">Private Key</h4>
-            <div className="input-group">
-              <input
-                className={classnames(
-                  'form-control',
-                  privateKeyValid ? 'is-valid' : 'is-invalid'
-                )}
-                type={isPrivateKeyVisible ? 'text' : 'password'}
-                name="secretKey"
-                value={secretKey}
-                onChange={this.handleInput}
-              />
-              <span
-                onClick={this.togglePrivateKey}
-                role="button"
-                className="input-group-addon eye"
-              />
-            </div>
+            <KeystoreInput
+              isValid={privateKeyValid}
+              isVisible={isPrivateKeyVisible}
+              name="secretKey"
+              value={secretKey}
+              handleInput={this.handleInput}
+              placeholder="Enter your saved private key here"
+              handleToggle={this.togglePrivateKey}
+            />
           </label>
         </div>
         <div>
           <label className="KeystoreDetails-password">
             <h4 className="KeystoreDetails-label">Password</h4>
-            <div className="input-group">
-              <input
-                className={classnames(
-                  'form-control',
-                  passwordValid ? 'is-valid' : 'is-invalid'
-                )}
-                type={isPasswordVisible ? 'text' : 'password'}
-                name="password"
-                value={password}
-                onChange={this.handleInput}
-              />
-              <span
-                onClick={this.togglePassword}
-                role="button"
-                className="input-group-addon eye"
-              />
-            </div>
+            <KeystoreInput
+              isValid={passwordValid}
+              isVisible={isPasswordVisible}
+              name="password"
+              value={password}
+              placeholder="Enter your encryption password here."
+              handleInput={this.handleInput}
+              handleToggle={this.togglePassword}
+            />
           </label>
         </div>
         {!wallet ? (
