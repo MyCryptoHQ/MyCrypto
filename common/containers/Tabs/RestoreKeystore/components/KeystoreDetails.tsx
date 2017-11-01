@@ -4,7 +4,6 @@ import KeystoreInput from './KeystoreInput';
 import { fromPrivateKey, IFullWallet } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
 import { isValidPrivKey } from 'libs/validators';
-import classnames from 'classnames';
 import translate from 'translations';
 import './KeystoreDetails.scss';
 
