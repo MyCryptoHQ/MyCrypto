@@ -19,7 +19,7 @@ enum KeystoreTypes {
 
 interface ISignWrapper {
   signRawTransaction(rawTx: RawTransaction): string;
-  signMessage(msg: string, addresss: string, date: string): string;
+  signMessage(msg: string): string;
   unlock();
 }
 
