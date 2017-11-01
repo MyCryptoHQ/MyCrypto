@@ -1,30 +1,42 @@
 import React, { Component } from 'react';
 import Template from './Template';
-import { fromPrivateKey, fromV3, IFullWallet } from 'ethereumjs-wallet';
+import { fromPrivateKey, IFullWallet } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
 import './KeystoreDetails.scss';
 
 interface State {
   secretKey: string;
   password: string;
+  fileName: string;
   wallet: IFullWallet | null | undefined;
 }
+const initialState: State = {
+  secretKey: '',
+  password: '',
+  fileName: '',
+  wallet: null
+};
 
 class KeystoreDetails extends Component<{}, State> {
-  public state = {
-    secretKey:
-      '127070df79297d620ddcb6d97f65de5cc94c325d523a0e7dd55ec8f665d5376a',
-    password: '1234123412341234',
-    wallet: null
-  };
+  public state = initialState;
+
+  public componentWillUnmount() {
+    this.resetState();
+  }
   public render() {
-    const { secretKey, password } = this.state;
+    const { secretKey, password, wallet, fileName } = this.state;
+    const passwordValid = password.length > 9;
+    const privateKeyValid =
+      secretKey.length === 64 && /^[a-fA-F0-9]+$/g.test(secretKey);
     const content = (
       <div className="KeystoreDetails">
         <div>
           <label className="KeystoreDetails-key">
             <h4 className="KeystoreDetails-label">Private Key</h4>
             <input
+              className={`form-control is-${privateKeyValid
+                ? 'valid'
+                : 'invalid'}`}
               type="text"
               name="secretKey"
               value={secretKey}
@@ -36,6 +48,9 @@ class KeystoreDetails extends Component<{}, State> {
           <label className="KeystoreDetails-password">
             <h4 className="KeystoreDetails-label">Password</h4>
             <input
+              className={`form-control is-${passwordValid
+                ? 'valid'
+                : 'invalid'}`}
               type="text"
               name="password"
               value={password}
@@ -43,17 +58,22 @@ class KeystoreDetails extends Component<{}, State> {
             />
           </label>
         </div>
-        {this.state.wallet ? (
+        {!wallet ? (
           <button
             onClick={this.handleKeystoreGeneration}
             className="KeystoreDetails-submit btn btn-primary btn-block"
+            disabled={!passwordValid || !privateKeyValid}
           >
             Generate Keystore
           </button>
         ) : (
           <a
+            onClick={this.resetState}
             href={this.getBlob()}
-            className="KeystoreDetails-submit btn btn-primary btn-block"
+            className="KeystoreDetails-download btn btn-primary btn-block"
+            aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
+            aria-describedby="x_KeystoreDesc"
+            download={fileName}
           >
             Download Keystore
           </a>
@@ -66,23 +86,33 @@ class KeystoreDetails extends Component<{}, State> {
       </div>
     );
   }
+  private resetState = () => {
+    this.setState(initialState);
+  };
   private handleKeystoreGeneration = () => {
     const { secretKey } = this.state;
     const keyBuffer = Buffer.from(secretKey, 'hex');
     const wallet = fromPrivateKey(keyBuffer);
+    const fileName = wallet.getV3Filename();
     this.setState({
-      wallet
+      wallet,
+      fileName
     });
   };
-  private handleInput = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    const name: any = (e.target as HTMLInputElement).name;
-    const value = (e.target as HTMLInputElement).value;
-    this.setState({ [name]: value });
+  private handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const name = e.currentTarget.name;
+    const value = e.currentTarget.value;
+    if (name === 'secretKey') {
+      this.setState({
+        wallet: null
+      });
+    }
+    this.setState({ [name as any]: value });
   };
   private getBlob() {
     const { wallet } = this.state;
     if (wallet) {
-      const keystore = fromV3(wallet.toV3(), this.state.password, true);
+      const keystore = wallet.toV3(this.state.password, { n: 1024 });
       return makeBlob('text/json;charset=UTF-8', keystore);
     }
   }
