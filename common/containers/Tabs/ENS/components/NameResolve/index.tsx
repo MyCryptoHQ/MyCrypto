@@ -1,81 +1,50 @@
 import React from 'react';
-import { NewTabLink } from 'components/ui';
 import { AppState } from 'reducers';
-import { IResolveDomainRequest } from 'libs/ens';
-const lookupLink = name => `https://etherscan.io/enslookup?q=${name}`;
-
-type ChildrenProps = any;
-
-const MonoTd = ({ children }: ChildrenProps) => (
-  <td className="mono">{children}</td>
-);
+import { NameState } from 'libs/ens';
+import {
+  NameOwned,
+  NameAuction,
+  NameForbidden,
+  NameNotYetAvailable,
+  NameOpen,
+  NameReveal
+} from './components';
 
 type Props = AppState['ens'];
 
-const NameResolve: React.SFC<Props> = props => {
+const modeResult = {
+  [NameState.Auction]: NameAuction,
+  [NameState.Forbidden]: NameForbidden,
+  [NameState.NotYetAvailable]: NameNotYetAvailable,
+  [NameState.Open]: NameOpen,
+  [NameState.Owned]: NameOwned,
+  [NameState.Reveal]: NameReveal
+};
+
+export const NameResolve: React.SFC<Props> = props => {
   const { domainRequests, domainSelector } = props;
   const { currentDomain } = domainSelector;
 
   if (
     !currentDomain ||
     !domainRequests[currentDomain] ||
-    typeof domainRequests[currentDomain].data === 'string'
+    domainRequests[currentDomain].error
   ) {
     return null;
   }
 
-  const {
-    deedAddress,
-    registrationDate,
-    value,
-    highestBid,
-    labelHash,
-    nameHash,
-    mappedMode,
-    resolvedAddress,
-    ownerAddress
-  } = domainRequests[currentDomain].data as IResolveDomainRequest;
+  const domain = domainRequests[currentDomain];
+  if (domain.state === 'PENDING') {
+    //TODO: display spinner
+    return null;
+  }
+  const Component = modeResult[domain.data!.mode];
 
   return (
-    <section>
-      <h4>{mappedMode}</h4>
-      <table className="table table-striped">
-        <tbody>
-          <tr>
-            <td>Name: </td>
-            <MonoTd>
-              <NewTabLink
-                content={`${currentDomain}.eth`}
-                href={lookupLink(`${currentDomain}.eth`)}
-              />
-            </MonoTd>
-          </tr>
-          <tr>
-            <td>Labelhash ({currentDomain}): </td>
-            <MonoTd>{labelHash}</MonoTd>
-          </tr>
-          <tr>
-            <td>Namehash ({currentDomain}).eth: </td>
-            <MonoTd>{nameHash}</MonoTd>
-          </tr>
-          <tr>
-            <td>Owner:</td>
-            <MonoTd>{ownerAddress}</MonoTd>
-          </tr>
-          <tr>
-            <td>Highest Bidder (Deed Owner): </td>
-            <MonoTd>
-              <span>{highestBid}</span>
-            </MonoTd>
-          </tr>
-          <tr>
-            <td>Resolved Address: </td>
-            <MonoTd>{resolvedAddress}</MonoTd>
-          </tr>
-        </tbody>
-      </table>
+    <section className="row">
+      <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
+        <Component {...domain.data!} />
+      </section>
     </section>
   );
 };
-
-export default NameResolve;
