@@ -4,13 +4,15 @@ import {
   ResolveDomainFailed,
   ResolveDomainSucceeded
 } from 'actions/ens';
-import { IResolveDomainRequest } from 'libs/ens';
+import { DomainRequest } from 'libs/ens';
 import { TypeKeys } from 'actions/ens/constants';
 
 export interface State {
   [key: string]: {
     state: REQUEST_STATES;
-    data: IResolveDomainRequest | string;
+    data?: DomainRequest;
+    error?: boolean;
+    errorMsg?: string;
   };
 }
 
@@ -27,8 +29,10 @@ const resolveDomainRequested = (
   action: ResolveDomainRequested
 ): State => {
   const { domain } = action.payload;
-  const prevDomain = state[domain];
-  const nextDomain = { ...prevDomain, state: REQUEST_STATES.pending };
+  const nextDomain = {
+    state: REQUEST_STATES.pending
+  };
+
   return { ...state, [domain]: nextDomain };
 };
 
@@ -37,12 +41,11 @@ const resolveDomainSuccess = (
   action: ResolveDomainSucceeded
 ): State => {
   const { domain, domainData } = action.payload;
-  const prevDomain = state[domain];
   const nextDomain = {
-    ...prevDomain,
     data: domainData,
     state: REQUEST_STATES.success
   };
+
   return { ...state, [domain]: nextDomain };
 };
 
@@ -51,12 +54,12 @@ const resolveDomainFailed = (
   action: ResolveDomainFailed
 ): State => {
   const { domain, error } = action.payload;
-  const prevDomain = state[domain];
   const nextDomain = {
-    ...prevDomain,
-    data: error.message,
+    error: true,
+    errorMsg: error.message,
     state: REQUEST_STATES.failed
   };
+
   return { ...state, [domain]: nextDomain };
 };
 

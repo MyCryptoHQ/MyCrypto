@@ -7,7 +7,7 @@ import { TypeKeys } from 'actions/ens/constants';
 import { SagaIterator } from 'redux-saga';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
-import { resolveDomainRequest, IResolveDomainRequest } from 'libs/ens';
+import { resolveDomainRequest, DomainRequest } from 'libs/ens';
 import { takeEvery, call, put, select } from 'redux-saga/effects';
 import { showNotification } from 'actions/notifications';
 
@@ -15,7 +15,7 @@ function* resolveDomain(action: ResolveDomainRequested): SagaIterator {
   const { domain } = action.payload;
   const node: INode = yield select(getNodeLib);
   try {
-    const domainData: IResolveDomainRequest = yield call(
+    const domainData: DomainRequest = yield call(
       resolveDomainRequest,
       domain,
       node

@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { IResolveDomainRequest } from 'libs/ens';
+import { DomainRequest } from 'libs/ens';
 
 export interface ResolveDomainRequested {
   type: TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED;
@@ -8,7 +8,7 @@ export interface ResolveDomainRequested {
 
 export interface ResolveDomainSucceeded {
   type: TypeKeys.ENS_RESOLVE_DOMAIN_SUCCEEDED;
-  payload: { domain: string; domainData: IResolveDomainRequest };
+  payload: { domain: string; domainData: DomainRequest };
 }
 
 export interface ResolveDomainFailed {

@@ -1,6 +1,6 @@
 import * as ActionTypes from './actionTypes';
 import { TypeKeys } from './constants';
-import { IResolveDomainRequest } from 'libs/ens';
+import { DomainRequest } from 'libs/ens';
 
 export type TResolveDomainRequested = typeof resolveDomainRequested;
 export const resolveDomainRequested = (
@@ -13,7 +13,7 @@ export const resolveDomainRequested = (
 export type TResolveDomainSucceeded = typeof resolveDomainSucceeded;
 export const resolveDomainSucceeded = (
   domain: string,
-  domainData: IResolveDomainRequest
+  domainData: DomainRequest
 ): ActionTypes.ResolveDomainSucceeded => ({
   type: TypeKeys.ENS_RESOLVE_DOMAIN_SUCCEEDED,
   payload: { domain, domainData }
