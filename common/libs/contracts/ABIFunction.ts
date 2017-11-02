@@ -8,12 +8,14 @@ import {
   TransactionInput
 } from 'libs/transaction';
 import { ISetConfigForTx } from './index';
+
 export interface IUserSendParams {
   input;
-  to: string;
+  to?: string;
   gasLimit: BigNumber;
   value: string;
 }
+
 export type ISendParams = IUserSendParams & ISetConfigForTx;
 
 export default class AbiFunction {
