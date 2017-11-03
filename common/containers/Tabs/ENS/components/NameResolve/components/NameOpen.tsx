@@ -1,11 +1,10 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
-import { Aux } from 'components/ui';
 
 export const NameOpen: React.SFC<IBaseDomainRequest> = props => {
   const domainName = `${props.name}.eth`;
   return (
-    <Aux>
+    <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
       <h1>
         <strong>{domainName} is available!</strong>
       </h1>
@@ -13,6 +12,6 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => {
         {' '}
         Do you want {domainName}? Unlock your wallet to start an auction.
       </h4>
-    </Aux>
+    </section>
   );
 };

@@ -40,11 +40,5 @@ export const NameResolve: React.SFC<Props> = props => {
   }
   const Component = modeResult[domain.data!.mode];
 
-  return (
-    <section className="row">
-      <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
-        <Component {...domain.data!} />
-      </section>
-    </section>
-  );
+  return <Component {...domain.data!} />;
 };

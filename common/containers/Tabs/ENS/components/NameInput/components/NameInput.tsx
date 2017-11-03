@@ -26,7 +26,7 @@ class ENSNameInput extends React.Component<Props, {}> {
               <a className="btn btn-default">.eth</a>
             </div>
           </div>
-          <button className="btn btn-primary" onClick={onClick}>
+          <button className="btn btn-primary " onClick={onClick}>
             Check ENS Name
           </button>
         </section>

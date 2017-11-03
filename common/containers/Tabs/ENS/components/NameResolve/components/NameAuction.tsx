@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
-import { Aux } from 'components/ui';
 import moment from 'moment';
 
 class CountDown extends Component<
@@ -84,12 +83,17 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({
 }) => {
   const { auctionCloseTime, revealBidTime } = getDeadlines(registrationDate);
   return (
-    <Aux>
+    <section className="row text-center">
       <h1>
         An auction has been started for <strong>{name}.eth.</strong>
       </h1>
-      <EnsTime text="Reveal Bids On" time={revealBidTime} />
-      <EnsTime text="Auction Closes On" time={auctionCloseTime} />
-    </Aux>
+
+      <section className="col-sm-6 col-xs-12 order-info">
+        <EnsTime text="Reveal Bids On" time={revealBidTime} />
+      </section>
+      <section className="col-sm-6 col-xs-12 order-info">
+        <EnsTime text="Auction Closes On" time={auctionCloseTime} />
+      </section>
+    </section>
   );
 };
