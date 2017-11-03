@@ -1,6 +1,6 @@
 import abi from 'ethereumjs-abi';
 import { toChecksumAddress } from 'ethereumjs-util';
-import Big, { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 import { INode } from 'libs/nodes/INode';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
 import {
@@ -12,7 +12,7 @@ import { ISetConfigForTx } from './index';
 export interface IUserSendParams {
   input;
   to?: string;
-  gasLimit: BigNumber;
+  gasLimit: BN;
   value: string;
 }
 
@@ -67,7 +67,7 @@ EncodedCall:${data}`);
 
     const transactionInput: TransactionInput = {
       data,
-      to: userInputs.to,
+      to: userInputs.to!,
       unit: 'ether',
       value: userInputs.value
     };
@@ -154,18 +154,11 @@ EncodedCall:${data}`);
 
     return valueMapping[type]
       ? valueMapping[type](value)
-      : this.isBigNumber(value) ? value.toString() : value;
+      : BN.isBN(value) ? value.toString() : value;
   };
 
   private parsePreEncodedValue = (_: string, value: any) =>
-    this.isBigNumber(value) ? value.toString() : value;
-
-  private isBigNumber = (object: object) =>
-    object instanceof Big ||
-    (object &&
-      object.constructor &&
-      (object.constructor.name === 'BigNumber' ||
-        object.constructor.name === 'BN'));
+    BN.isBN(value) ? value.toString() : value;
 
   private makeFuncParams = () =>
     this.inputs.reduce((accumulator, currInput) => {
