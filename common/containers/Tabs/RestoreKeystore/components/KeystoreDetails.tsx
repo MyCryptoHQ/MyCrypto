@@ -40,7 +40,6 @@ class KeystoreDetails extends Component<{}, State> {
       wallet,
       fileName
     } = this.state;
-    const passwordValid = (password as any).length > 9;
     const privateKeyValid = isValidPrivKey(secretKey);
 
     const content = (
@@ -63,7 +62,7 @@ class KeystoreDetails extends Component<{}, State> {
           <label className="KeystoreDetails-password">
             <h4 className="KeystoreDetails-label">Password</h4>
             <KeystoreInput
-              isValid={passwordValid}
+              isValid={true}
               isVisible={isPasswordVisible}
               name="password"
               value={password}
@@ -77,7 +76,7 @@ class KeystoreDetails extends Component<{}, State> {
           <button
             onClick={this.handleKeystoreGeneration}
             className="KeystoreDetails-submit btn btn-block"
-            disabled={!passwordValid || !privateKeyValid}
+            disabled={!privateKeyValid}
           >
             Generate Keystore
           </button>

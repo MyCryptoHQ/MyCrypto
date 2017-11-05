@@ -94,7 +94,7 @@ export function isValidPrivKey(privkey: string | Buffer): boolean {
     }
     return false;
   } else if (privkey instanceof Buffer) {
-    return privkey.length === 32;
+    return privkey.length === 32 && isValidPrivate(privkey);
   } else {
     return false;
   }
