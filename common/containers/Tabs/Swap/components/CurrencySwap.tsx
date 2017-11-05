@@ -13,6 +13,7 @@ import translate from 'translations';
 import { combineAndUpper, toFixedIfLarger } from 'utils/formatters';
 import './CurrencySwap.scss';
 import { Dropdown } from 'components/ui';
+import Spinner from 'components/ui/Spinner';
 
 export interface StateProps {
   bityRates: any;
@@ -160,7 +161,8 @@ export default class CurrencySwap extends Component<
       originKind,
       destinationKind,
       destinationKindOptions,
-      originKindOptions
+      originKindOptions,
+      bityRates
     } = this.props;
 
     const OriginKindDropDown = Dropdown as new () => Dropdown<
@@ -169,60 +171,64 @@ export default class CurrencySwap extends Component<
     const DestinationKindDropDown = Dropdown as new () => Dropdown<
       typeof destinationKind
     >;
-
+    const pairName = combineAndUpper(originKind, destinationKind);
+    const bityLoaded = bityRates[pairName];
     return (
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
+        {bityLoaded ? (
+          <div className="form-inline">
+            <input
+              className={`CurrencySwap-input form-control ${String(
+                originAmount
+              ) !== '' && this.isMinMaxValid(originAmount, originKind)
+                ? 'is-valid'
+                : 'is-invalid'}`}
+              type="number"
+              placeholder="Amount"
+              value={originAmount || originAmount === 0 ? originAmount : ''}
+              onChange={this.onChangeOriginAmount}
+            />
 
-        <div className="form-inline">
-          <input
-            className={`CurrencySwap-input form-control ${String(
-              originAmount
-            ) !== '' && this.isMinMaxValid(originAmount, originKind)
-              ? 'is-valid'
-              : 'is-invalid'}`}
-            type="number"
-            placeholder="Amount"
-            value={originAmount || originAmount === 0 ? originAmount : ''}
-            onChange={this.onChangeOriginAmount}
-          />
+            <OriginKindDropDown
+              ariaLabel={`change origin kind. current origin kind ${originKind}`}
+              options={originKindOptions}
+              value={originKind}
+              onChange={this.props.originKindSwap}
+              size="smr"
+              color="default"
+            />
 
-          <OriginKindDropDown
-            ariaLabel={`change origin kind. current origin kind ${originKind}`}
-            options={originKindOptions}
-            value={originKind}
-            onChange={this.props.originKindSwap}
-            size="smr"
-            color="default"
-          />
+            <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
 
-          <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
+            <input
+              className={`CurrencySwap-input form-control ${String(
+                destinationAmount
+              ) !== '' && this.isMinMaxValid(originAmount, originKind)
+                ? 'is-valid'
+                : 'is-invalid'}`}
+              type="number"
+              placeholder="Amount"
+              value={
+                destinationAmount || destinationAmount === 0
+                  ? destinationAmount
+                  : ''
+              }
+              onChange={this.onChangeDestinationAmount}
+            />
 
-          <input
-            className={`CurrencySwap-input form-control ${String(
-              destinationAmount
-            ) !== '' && this.isMinMaxValid(originAmount, originKind)
-              ? 'is-valid'
-              : 'is-invalid'}`}
-            type="number"
-            placeholder="Amount"
-            value={
-              destinationAmount || destinationAmount === 0
-                ? destinationAmount
-                : ''
-            }
-            onChange={this.onChangeDestinationAmount}
-          />
-
-          <DestinationKindDropDown
-            ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
-            options={destinationKindOptions}
-            value={destinationKind}
-            onChange={this.props.destinationKindSwap}
-            size="smr"
-            color="default"
-          />
-        </div>
+            <DestinationKindDropDown
+              ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
+              options={destinationKindOptions}
+              value={destinationKind}
+              onChange={this.props.destinationKindSwap}
+              size="smr"
+              color="default"
+            />
+          </div>
+        ) : (
+          <Spinner />
+        )}
 
         <div className="CurrencySwap-submit">
           <SimpleButton
