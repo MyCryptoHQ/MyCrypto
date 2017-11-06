@@ -1,6 +1,8 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
 import { ENSWallet } from './ENSWallet';
+import { PlaceBid } from './PlaceBid';
+import { BalanceSidebar } from 'components';
 
 export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
   <section className="row text-center">
@@ -13,7 +15,20 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
       text={`Do you want ${props.name}.eth? Unlock your wallet to start an auction.`}
     >
       {wallet => {
-        return <p> Placeholder: {JSON.stringify(wallet)} </p>;
+        return (
+          <div>
+            <div className="col-xs-8">
+              <PlaceBid
+                buttonName="Start the Auction"
+                title="Start an Auction"
+                {...props}
+              />
+            </div>
+            <div className="col-xs-4">
+              <BalanceSidebar />
+            </div>
+          </div>
+        );
       }}
     </ENSWallet>
   </section>
