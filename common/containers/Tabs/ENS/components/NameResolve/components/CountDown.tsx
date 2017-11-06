@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-class CountDown extends Component<
-  {
-    initialTime: number;
-  },
-  {
-    currentTime: number;
-  }
-> {
+interface Props {
+  initialTime: number;
+}
+
+interface State {
+  currentTime: number;
+}
+
+class CountDown extends Component<Props, State> {
   public state = { currentTime: 0 };
+
   constructor() {
     super();
     this.startCountDown();
@@ -61,9 +63,9 @@ interface ITime {
 }
 
 export const EnsTime: React.SFC<ITime> = ({ text, time }) => (
-  <div className="sm-6 col-xs-12 order-info">
+  <section className="sm-6 col-xs-12 order-info">
     <p>{text}</p>
     <h4>{moment(time).toString()}</h4>
     <CountDown initialTime={time} />
-  </div>
+  </section>
 );
