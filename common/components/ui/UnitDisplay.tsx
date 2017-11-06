@@ -9,39 +9,57 @@ import {
 import { formatNumber as format } from 'utils/formatters';
 
 interface Props {
-  unit?: UnitKey;
-  decimal?: number;
+  /**
+   * @description base value of the token / ether, incase of waiting for API calls, we can return '???'
+   * @type {TokenValue | Wei}
+   * @memberof Props
+   */
   value?: TokenValue | Wei;
+  /**
+   * @description Symbol to display to the right of the value, such as 'ETH'
+   * @type {string}
+   * @memberof Props
+   */
   symbol?: string;
-  long?: boolean;
-  digits?: number;
+  /**
+   * @description display the long balance, if false, trims it to 3 decimal places, if a number is specified then that number is the number of digits to be displayed.
+   * @type {boolean}
+   * @memberof Props
+   */
+  displayLongBalance?: boolean | number;
 }
 
-const UnitDisplay: React.SFC<Props> = params => {
-  const { value, decimal, unit, symbol, digits, long } = params;
+interface EthProps extends Props {
+  unit: UnitKey;
+}
+interface TokenProps extends Props {
+  decimal: number;
+}
+
+const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
+  !!(param as EthProps).unit;
+
+const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
+  const { value, symbol, displayLongBalance } = params;
 
   if (!value) {
     return <span>???</span>;
   }
 
-  const noDecimal = decimal === null || decimal === undefined;
-  if (noDecimal && !unit) {
-    throw Error(
-      `Not enough parameters to convert base unit to display unit. Params given: ${JSON.stringify(
-        params,
-        null,
-        1
-      )}`
-    );
+  const convertedValue = isEthereumUnit(params)
+    ? fromTokenBase(value, getDecimal(params.unit))
+    : fromTokenBase(value, params.decimal);
+
+  let formattedValue;
+
+  if (displayLongBalance) {
+    formattedValue = convertedValue;
+  } else {
+    const digits = displayLongBalance instanceof Number && displayLongBalance;
+    formattedValue = digits
+      ? format(convertedValue, digits)
+      : format(convertedValue);
   }
-
-  const convertedValue = noDecimal
-    ? fromTokenBase(value, getDecimal(unit as UnitKey))
-    : fromTokenBase(value, decimal as number);
-
-  const formattedValue = !long
-    ? digits ? format(convertedValue, digits) : format(convertedValue)
-    : convertedValue;
 
   return (
     <span>
