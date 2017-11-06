@@ -1,14 +1,13 @@
 import WalletDecrypt from 'components/WalletDecrypt';
 import { AppState } from 'reducers';
 import React, { Component } from 'react';
-import { IWallet } from 'libs/wallet';
 import { connect } from 'react-redux';
 import { Aux } from 'components/ui';
 
 interface Props {
   text: string;
-  wallet: AppState['wallet']['inst'];
-  children(wallet: IWallet): React.ReactElement<any>;
+  wallet: AppState['wallet'];
+  children(wallet: AppState['wallet']): React.ReactElement<any>;
 }
 
 interface State {
@@ -44,10 +43,8 @@ class ENSWalletClass extends Component<Props, State> {
       </Aux>
     );
 
-    return wallet ? (
-      <section className="col-xs-12 col-sm-12 text-center">
-        {children(wallet)}
-      </section>
+    return wallet.inst ? (
+      <section className="col-xs-12 col-sm-12 ">{children(wallet)}</section>
     ) : (
       DecryptComponent
     );
@@ -60,5 +57,5 @@ class ENSWalletClass extends Component<Props, State> {
 }
 
 export const ENSWallet = connect((state: AppState) => ({
-  wallet: state.wallet.inst
+  wallet: state.wallet
 }))(ENSWalletClass);
