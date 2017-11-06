@@ -1,4 +1,4 @@
-import { resolveEnsName } from 'actions/ens';
+import { resolveDomainRequested, TResolveDomainRequested } from 'actions/ens';
 import { Identicon } from 'components/ui';
 import { isValidENSAddress, isValidENSorEtherAddress } from 'libs/validators';
 import React from 'react';
@@ -15,7 +15,7 @@ interface PublicProps {
 
 interface Props extends PublicProps {
   ensAddress: string | null;
-  resolveEnsName: typeof resolveEnsName;
+  resolveDomainRequested: TResolveDomainRequested;
 }
 export class AddressField extends React.Component<Props> {
   public render() {
@@ -24,9 +24,7 @@ export class AddressField extends React.Component<Props> {
     return (
       <div className="row form-group">
         <div className="col-xs-11">
-          <label>
-            {translate('SEND_addr')}:
-          </label>
+          <label>{translate('SEND_addr')}:</label>
           <input
             className={`form-control ${isValidENSorEtherAddress(value)
               ? 'is-valid'
@@ -37,11 +35,12 @@ export class AddressField extends React.Component<Props> {
             onChange={this.onChange}
             disabled={isReadonly}
           />
-          {!!ensAddress &&
+          {!!ensAddress && (
             <p className="ens-response">
               ↳
               <span className="mono">{ensAddress}</span>
-            </p>}
+            </p>
+          )}
         </div>
         <div className="col-xs-1" style={{ padding: 0 }}>
           <Identicon address={ensAddress || value} />
@@ -58,7 +57,7 @@ export class AddressField extends React.Component<Props> {
     }
     // FIXME debounce?
     if (isValidENSAddress(newValue)) {
-      this.props.resolveEnsName(newValue);
+      this.props.resolveDomainRequested(newValue);
     }
     onChange(newValue);
   };
@@ -70,4 +69,6 @@ function mapStateToProps(state: AppState, props: PublicProps) {
   };
 }
 
-export default connect(mapStateToProps, { resolveEnsName })(AddressField);
+export default connect(mapStateToProps, { resolveDomainRequested })(
+  AddressField
+);

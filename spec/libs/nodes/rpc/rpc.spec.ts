@@ -1,6 +1,6 @@
 // Ref: https://github.com/ethereum/wiki/wiki/JSON-RPC
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
-import Big from 'bignumber.js';
+import BN from 'bn.js';
 
 // 0x41 (65 in decimal)
 // 0x400 (1024 in decimal)
@@ -9,13 +9,13 @@ import Big from 'bignumber.js';
 // WRONG: ff (must be prefixed 0x)
 describe('hexEncodeQuantity', () => {
   it('convert dec to hex', () => {
-    expect(hexEncodeQuantity(new Big(65))).toEqual('0x41');
+    expect(hexEncodeQuantity(new BN(65))).toEqual('0x41');
   });
   it('should strip leading zeroes', () => {
-    expect(hexEncodeQuantity(new Big(1024))).toEqual('0x400');
+    expect(hexEncodeQuantity(new BN(1024))).toEqual('0x400');
   });
   it('should handle zeroes correctly', () => {
-    expect(hexEncodeQuantity(new Big(0))).toEqual('0x0');
+    expect(hexEncodeQuantity(new BN(0))).toEqual('0x0');
   });
 });
 
