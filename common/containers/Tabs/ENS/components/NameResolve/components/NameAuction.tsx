@@ -18,7 +18,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({
 }) => {
   const { auctionCloseTime, revealBidTime } = getDeadlines(registrationDate);
   return (
-    <section className="row text-center">
+    <section className="row">
       <h1>
         An auction has been started for <strong>{name}.eth.</strong>
       </h1>
