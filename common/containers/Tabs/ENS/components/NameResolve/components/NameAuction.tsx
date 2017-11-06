@@ -1,6 +1,7 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
 import { EnsTime } from './CountDown';
+import { ENSWallet } from './ENSWallet';
 import moment from 'moment';
 
 const getDeadlines = (registrationDate: string) => {
@@ -28,6 +29,13 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({
       <section className="col-sm-6 col-xs-12 order-info">
         <EnsTime text="Auction Closes On" time={auctionCloseTime} />
       </section>
+      <ENSWallet
+        text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}
+      >
+        {wallet => {
+          return <p> Placeholder: {JSON.stringify(wallet)} </p>;
+        }}
+      </ENSWallet>
     </section>
   );
 };

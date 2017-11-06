@@ -3,10 +3,6 @@ import ENS from './components/ENS';
 import { AppState } from 'reducers';
 import { resolveDomainRequested } from 'actions/ens';
 
-const mapStateToProps = (state: AppState) => {
-  return { ensState: state.ens };
-};
-
-export default connect(mapStateToProps, {
+export default connect((state: AppState) => ({ ensState: state.ens }), {
   resolveDomainRequested
 })(ENS);

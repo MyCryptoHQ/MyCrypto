@@ -9,6 +9,7 @@ import TabSection from 'containers/TabSection';
 
 interface Props {
   ensState: AppState['ens'];
+
   resolveDomainRequested(domain: string): void;
 }
 const ENS = (props: Props) => {
