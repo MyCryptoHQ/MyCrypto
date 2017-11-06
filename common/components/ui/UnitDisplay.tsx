@@ -26,7 +26,7 @@ interface Props {
    * @type {boolean}
    * @memberof Props
    */
-  displayLongBalance?: boolean | number;
+  displayShortBalance?: boolean | number;
 }
 
 interface EthProps extends Props {
@@ -40,7 +40,7 @@ const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
   !!(param as EthProps).unit;
 
 const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
-  const { value, symbol, displayLongBalance } = params;
+  const { value, symbol, displayShortBalance } = params;
 
   if (!value) {
     return <span>???</span>;
@@ -52,13 +52,14 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
 
   let formattedValue;
 
-  if (displayLongBalance) {
-    formattedValue = convertedValue;
-  } else {
-    const digits = displayLongBalance instanceof Number && displayLongBalance;
+  if (displayShortBalance) {
+    const digits =
+      typeof displayShortBalance === 'number' && displayShortBalance;
     formattedValue = digits
       ? format(convertedValue, digits)
       : format(convertedValue);
+  } else {
+    formattedValue = convertedValue;
   }
 
   return (
