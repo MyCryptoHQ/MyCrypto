@@ -9,10 +9,9 @@ import {
   TTxModal
 } from 'containers/Tabs/Contracts/components/TxModal';
 import { IUserSendParams } from 'libs/contracts/ABIFunction';
-import Big from 'bignumber.js';
+import BN from 'bn.js';
 import {
   TxCompare,
-  Props as TCProps,
   TTxCompare
 } from 'containers/Tabs/Contracts/components/TxCompare';
 
@@ -111,26 +110,14 @@ class Interact extends Component<IWithTx, State> {
   }
 
   private makeCompareTx = (): React.ReactElement<TTxCompare> => {
-    const { nonce, gasLimit, data, value, to, gasPrice } = this.state.rawTx;
+    const { nonce } = this.state.rawTx;
     const { signedTx } = this.state;
-    const { chainId } = this.props;
 
     if (!nonce || !signedTx) {
       throw Error('Can not display raw tx, nonce empty or no signed tx');
     }
 
-    const props: TCProps = {
-      nonce,
-      gasPrice,
-      chainId,
-      data,
-      gasLimit,
-      to,
-      value,
-      signedTx
-    };
-
-    return <TxCompare {...props} />;
+    return <TxCompare signedTx={signedTx} />;
   };
 
   private makeModal = (): React.ReactElement<TTxModal> => {
@@ -182,7 +169,7 @@ class Interact extends Component<IWithTx, State> {
       const userInputs: IUserSendParams = {
         input: parsedInputs,
         to: address,
-        gasLimit: new Big(gasLimit),
+        gasLimit: new BN(gasLimit),
         value
       };
 
@@ -198,8 +185,8 @@ class Interact extends Component<IWithTx, State> {
     }
   };
 
-  private handleInput = name => ev =>
-    this.setState({ [name]: ev.target.value });
+  private handleInput = name => (ev: React.FormEvent<any>) =>
+    this.setState({ [name]: ev.currentTarget.value });
 }
 
 export default withTx(Interact);

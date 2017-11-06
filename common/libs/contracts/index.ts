@@ -3,7 +3,6 @@ import { IWallet } from 'libs/wallet/IWallet';
 import { RPCNode } from 'libs/nodes';
 import { ContractOutputMappings } from './types';
 import { Wei } from 'libs/units';
-
 const ABIFUNC_METHOD_NAMES = [
   'encodeInput',
   'decodeInput',
@@ -21,7 +20,6 @@ export interface ISetConfigForTx {
 enum ABIMethodTypes {
   FUNC = 'function'
 }
-
 export type TContract = typeof Contract;
 
 export default class Contract {

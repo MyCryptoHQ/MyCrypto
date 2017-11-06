@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import ENS from './components/ENS';
+import { AppState } from 'reducers';
+import { resolveDomainRequested } from 'actions/ens';
 
-const mapStateToProps = _ => ({});
-
-export default connect(mapStateToProps)(ENS);
+export default connect((state: AppState) => ({ ensState: state.ens }), {
+  resolveDomainRequested
+})(ENS);

@@ -1,4 +1,4 @@
-import Big from 'bignumber.js';
+import { Wei } from 'libs/units';
 import {
   toFixedIfLarger,
   formatNumber,
@@ -24,27 +24,27 @@ describe('toFixedIfLarger', () => {
 describe('formatNumber', () => {
   const pairs = [
     {
-      input: new Big('0.0127491'),
+      input: '0.0127491',
       output: '0.013',
       digits: undefined
     },
     {
-      input: new Big('21.87468421'),
+      input: '21.87468421',
       output: '21.875',
       digits: undefined
     },
     {
-      input: new Big(0),
+      input: '0',
       output: '0',
       digits: undefined
     },
     {
-      input: new Big('354.4728173'),
+      input: '354.4728173',
       output: '354.4728',
       digits: 4
     },
     {
-      input: new Big('100.48391'),
+      input: '100.48391',
       output: '100',
       digits: 0
     }
@@ -60,14 +60,14 @@ describe('formatNumber', () => {
 
 describe('formatGasLimit', () => {
   it('should fix transaction gas limit off-by-one errors', () => {
-    expect(formatGasLimit(new Big(21001), 'ether')).toEqual('21000');
+    expect(formatGasLimit(Wei('21001'), 'ether')).toEqual('21000');
   });
 
   it('should mark the gas limit `-1` if you exceed the limit per block', () => {
-    expect(formatGasLimit(new Big(999999999999999), 'ether')).toEqual('-1');
+    expect(formatGasLimit(Wei('999999999999999'), 'ether')).toEqual('-1');
   });
 
   it('should not alter a valid gas limit', () => {
-    expect(formatGasLimit(new Big(1234))).toEqual('1234');
+    expect(formatGasLimit(Wei('1234'))).toEqual('1234');
   });
 });

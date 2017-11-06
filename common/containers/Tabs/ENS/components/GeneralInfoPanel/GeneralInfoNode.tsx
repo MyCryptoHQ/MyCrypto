@@ -1,17 +1,14 @@
 import React from 'react';
 import { HeaderProps, ListProps, NodeProps, NodeState } from './types';
 
-const InfoHeader = ({ children, onClickHandler }: HeaderProps) =>
+const InfoHeader = ({ children, onClickHandler }: HeaderProps) => (
   <h6 onClick={onClickHandler}>
     <span>+</span> {children}
-  </h6>;
+  </h6>
+);
 
 const InfoList = ({ children, isOpen }: ListProps) =>
-  isOpen
-    ? <ul>
-        {children}
-      </ul>
-    : null;
+  isOpen ? <ul>{children}</ul> : null;
 
 export default class GeneralInfoNode extends React.Component<
   NodeProps,
@@ -36,9 +33,7 @@ export default class GeneralInfoNode extends React.Component<
         <InfoHeader onClickHandler={toggleVisibility}>
           {headerContent}
         </InfoHeader>
-        <InfoList isOpen={isOpen}>
-          {innerList}
-        </InfoList>
+        <InfoList isOpen={isOpen}>{innerList}</InfoList>
       </section>
     );
   }
