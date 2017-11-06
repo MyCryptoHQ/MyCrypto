@@ -82,7 +82,7 @@ export default class AccountInfo extends React.Component<Props, State> {
                 <UnitDisplay
                   value={balance}
                   unit={'ether'}
-                  displayLongBalance={showLongBalance}
+                  displayShortBalance={!showLongBalance}
                 />
               </span>
               {network.name}
