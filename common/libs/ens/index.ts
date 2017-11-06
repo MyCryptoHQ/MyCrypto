@@ -110,12 +110,13 @@ export const placeBid = async (
   config: ISetConfigForTx,
   { labelHash, ownerAddress }: IRevealDomainRequest,
   bidValue: BN,
-  sendValue: BN,
+  maskValue: BN,
   gasLimit: BN
 ) => {
   Contract.setConfigForTx(ENS.auction, config);
   const secret = randomBytes(32).toString();
-  const sealedBid = await ENS.auction.shaBid.call({
+
+  const { sealedBid }: { sealedBid: string } = await ENS.auction.shaBid.call({
     hash: Buffer.from(labelHash, 'hex'),
     owner: ownerAddress,
     value: bidValue,
@@ -125,8 +126,8 @@ export const placeBid = async (
   return {
     ...await ENS.auction.newBid.send({
       input: { sealedBid },
-      value: sendValue.toString(),
-      gasLimit: gasLimit as any //TODO: fix this when BN gets merged
+      value: maskValue.toString(),
+      gasLimit
     }),
     sealedBid
   };
@@ -143,7 +144,7 @@ export const unsealBid = async (
   const sendParams = {
     input: { _hash: Buffer.from(labelHash, 'hex'), _value: value, _salt: salt },
     value: '0',
-    gasLimit: gasLimit as any //TODO: fix this when BN gets merged
+    gasLimit
   };
 
   return ENS.auction.unsealBid.send(sendParams);
