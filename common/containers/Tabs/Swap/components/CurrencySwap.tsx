@@ -37,6 +37,8 @@ export interface ActionProps {
 interface State {
   disabled: boolean;
   showedMinMaxError: boolean;
+  originErr: string;
+  destinationErr: string;
 }
 
 export default class CurrencySwap extends Component<
@@ -45,7 +47,9 @@ export default class CurrencySwap extends Component<
 > {
   public state = {
     disabled: true,
-    showedMinMaxError: false
+    showedMinMaxError: false,
+    originErr: '',
+    destinationErr: ''
   };
 
   public isMinMaxValid = (amount, kind) => {
@@ -78,30 +82,38 @@ export default class CurrencySwap extends Component<
       destinationAmount
     );
 
-    if (disabled && originAmount && !this.state.showedMinMaxError) {
+    if (disabled && originAmount) {
       const { bityRates } = this.props;
       const ETHMin = generateKindMin(bityRates.BTCETH, 'ETH');
       const ETHMax = generateKindMax(bityRates.BTCETH, 'ETH');
       const REPMin = generateKindMin(bityRates.BTCREP, 'REP');
 
-      const notificationMessage = `
-        Minimum amount ${bityConfig.BTCMin} BTC,
-        ${toFixedIfLarger(ETHMin, 3)} ETH.
-        Max amount ${bityConfig.BTCMax} BTC,
-        ${toFixedIfLarger(ETHMax, 3)} ETH, or
-        ${toFixedIfLarger(REPMin, 3)} REP
-      `;
+      let minAmount;
+      let maxAmount;
+      switch (originKind) {
+        case 'BTC':
+          minAmount = toFixedIfLarger(bityConfig.BTCMin, 3);
+          maxAmount = toFixedIfLarger(bityConfig.BTCMax, 3);
+          break;
+        case 'ETH':
+          minAmount = toFixedIfLarger(ETHMin, 3);
+          maxAmount = toFixedIfLarger(ETHMax, 3);
+          break;
+        case 'REP':
+          minAmount = toFixedIfLarger(REPMin, 3);
+          break;
+        default:
+          console.log('Something went terribly wrong!');
+      }
+      const errString = `Min ${minAmount} ${originKind}. Max ${maxAmount} ${originKind}.`;
 
-      this.setState(
-        {
-          disabled,
-          showedMinMaxError: true
-        },
-        () => {
-          this.props.showNotification('danger', notificationMessage, 10000);
-        }
-      );
+      this.setState({
+        originErr: errString
+      });
     } else {
+      this.setState({
+        originErr: ''
+      });
       this.setState({
         disabled
       });
@@ -165,6 +177,8 @@ export default class CurrencySwap extends Component<
       bityRates
     } = this.props;
 
+    const { originErr, destinationErr } = this.state;
+
     const OriginKindDropDown = Dropdown as new () => Dropdown<
       typeof originKind
     >;
@@ -178,53 +192,59 @@ export default class CurrencySwap extends Component<
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
         {bityLoaded ? (
           <div className="form-inline">
-            <input
-              className={`CurrencySwap-input form-control ${String(
-                originAmount
-              ) !== '' && this.isMinMaxValid(originAmount, originKind)
-                ? 'is-valid'
-                : 'is-invalid'}`}
-              type="number"
-              placeholder="Amount"
-              value={originAmount || originAmount === 0 ? originAmount : ''}
-              onChange={this.onChangeOriginAmount}
-            />
-
-            <OriginKindDropDown
-              ariaLabel={`change origin kind. current origin kind ${originKind}`}
-              options={originKindOptions}
-              value={originKind}
-              onChange={this.props.originKindSwap}
-              size="smr"
-              color="default"
-            />
-
+            <div className="CurrencySwap-input-group">
+              <span className="CurrencySwap-error-message">{originErr}</span>
+              <input
+                className={`CurrencySwap-input form-control ${String(
+                  originAmount
+                ) !== '' && this.isMinMaxValid(originAmount, originKind)
+                  ? 'is-valid'
+                  : 'is-invalid'}`}
+                type="number"
+                placeholder="Amount"
+                value={originAmount || originAmount === 0 ? originAmount : ''}
+                onChange={this.onChangeOriginAmount}
+              />
+              <OriginKindDropDown
+                className="CurrencySwap-dropdown"
+                ariaLabel={`change origin kind. current origin kind ${originKind}`}
+                options={originKindOptions}
+                value={originKind}
+                onChange={this.props.originKindSwap}
+                size="smr"
+                color="default"
+              />
+            </div>
             <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
-
-            <input
-              className={`CurrencySwap-input form-control ${String(
-                destinationAmount
-              ) !== '' && this.isMinMaxValid(originAmount, originKind)
-                ? 'is-valid'
-                : 'is-invalid'}`}
-              type="number"
-              placeholder="Amount"
-              value={
-                destinationAmount || destinationAmount === 0
-                  ? destinationAmount
-                  : ''
-              }
-              onChange={this.onChangeDestinationAmount}
-            />
-
-            <DestinationKindDropDown
-              ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
-              options={destinationKindOptions}
-              value={destinationKind}
-              onChange={this.props.destinationKindSwap}
-              size="smr"
-              color="default"
-            />
+            <div className="CurrencySwap-input-group">
+              <span className="CurrencySwap-error-message">
+                {destinationErr}
+              </span>
+              <input
+                className={`CurrencySwap-input form-control ${String(
+                  destinationAmount
+                ) !== '' && this.isMinMaxValid(originAmount, originKind)
+                  ? 'is-valid'
+                  : 'is-invalid'}`}
+                type="number"
+                placeholder="Amount"
+                value={
+                  destinationAmount || destinationAmount === 0
+                    ? destinationAmount
+                    : ''
+                }
+                onChange={this.onChangeDestinationAmount}
+              />
+              <DestinationKindDropDown
+                className="CurrencySwap-dropdown"
+                ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
+                options={destinationKindOptions}
+                value={destinationKind}
+                onChange={this.props.destinationKindSwap}
+                size="smr"
+                color="default"
+              />
+            </div>
           </div>
         ) : (
           <Spinner />

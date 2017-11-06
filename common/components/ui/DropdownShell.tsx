@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 interface Props {
+  className?: string;
   ariaLabel: string;
   size?: string;
   color?: string;
@@ -34,7 +35,14 @@ export default class DropdownComponent extends Component<Props, State> {
   }
 
   public render() {
-    const { ariaLabel, color, size, renderOptions, renderLabel } = this.props;
+    const {
+      ariaLabel,
+      color,
+      size,
+      renderOptions,
+      renderLabel,
+      className
+    } = this.props;
     const { expanded } = this.state;
     const toggleClasses = classnames([
       'dropdown-toggle',
@@ -45,7 +53,9 @@ export default class DropdownComponent extends Component<Props, State> {
 
     return (
       <span
-        className={`dropdown ${expanded ? 'open' : ''}`}
+        className={`dropdown ${expanded ? 'open' : ''} ${className
+          ? className
+          : ''}`}
         ref={el => (this.dropdown = el)}
       >
         <a

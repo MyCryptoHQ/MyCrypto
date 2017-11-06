@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import DropdownShell from './DropdownShell';
 
 interface Props<T> {
+  className?: string;
   value: T | undefined;
   options: T[];
   ariaLabel: string;
@@ -19,7 +20,7 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
   private dropdownShell: DropdownShell | null;
 
   public render() {
-    const { ariaLabel, color, size } = this.props;
+    const { ariaLabel, color, size, className } = this.props;
 
     return (
       <DropdownShell
@@ -28,6 +29,7 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
         size={size}
         color={color}
         ariaLabel={ariaLabel}
+        className={className}
         ref={el => (this.dropdownShell = el)}
       />
     );
