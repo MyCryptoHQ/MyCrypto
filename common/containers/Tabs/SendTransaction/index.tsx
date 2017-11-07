@@ -307,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                    <div>
-                      <NonceField
-                        value={nonce}
-                        onChange={this.onNonceChange}
-                        placeholder={'0'}
-                      />
-                    </div>
-                  )}
+                      <div>
+                        <NonceField
+                          value={nonce}
+                          onChange={this.onNonceChange}
+                          placeholder={'0'}
+                        />
+                      </div>
+                    )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
