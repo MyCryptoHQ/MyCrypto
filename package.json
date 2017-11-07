@@ -55,7 +55,7 @@
     "@types/qrcode": "^0.8.0",
     "@types/qrcode.react": "^0.6.2",
     "@types/react": "^16.0.5",
-    "@types/react-dom": "^15.5.4",
+    "@types/react-dom": "16.0.2",
     "@types/react-redux": "^5.0.9",
     "@types/react-router": "^4.0.15",
     "@types/react-router-dom": "^4.0.8",
@@ -126,16 +126,14 @@
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
-    "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
+    "derivation-checker":
+      "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write --single-quote",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["prettier --write --single-quote", "git add"]
   }
 }
