@@ -1,10 +1,10 @@
 import { GenerateWalletAction } from 'actions/generateWallet';
 import { TypeKeys } from 'actions/generateWallet/constants';
-import PrivateKeyWallet from 'libs/wallet/privkey';
+import { IFullWallet } from 'ethereumjs-wallet';
 
 export interface State {
   activeStep: string;
-  wallet?: PrivateKeyWallet | null;
+  wallet?: IFullWallet | null;
   password?: string | null;
 }
 

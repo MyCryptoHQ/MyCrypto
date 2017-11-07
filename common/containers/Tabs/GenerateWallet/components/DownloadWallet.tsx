@@ -1,6 +1,7 @@
 import { ContinueToPaperAction } from 'actions/generateWallet';
-import { getV3Filename, UtcKeystore } from 'libs/keystore';
-import PrivKeyWallet from 'libs/wallet/privkey';
+import { IFullWallet, IV3Wallet } from 'ethereumjs-wallet';
+import { toChecksumAddress } from 'ethereumjs-util';
+import { NewTabLink } from 'components/ui';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { makeBlob } from 'utils/blob';
@@ -8,46 +9,35 @@ import './DownloadWallet.scss';
 import Template from './Template';
 
 interface Props {
-  wallet: PrivKeyWallet;
+  wallet: IFullWallet;
   password: string;
   continueToPaper(): ContinueToPaperAction;
 }
 
 interface State {
   hasDownloadedWallet: boolean;
-  address: string;
-  keystore: UtcKeystore | null;
+  keystore: IV3Wallet | null;
 }
 
 export default class DownloadWallet extends Component<Props, State> {
   public state: State = {
     hasDownloadedWallet: false,
-    address: '',
     keystore: null
   };
 
-  public componentDidMount() {
-    this.props.wallet.getAddress().then(address => {
-      this.setState({ address });
-    });
+  public componentWillMount() {
+    this.setWallet(this.props.wallet, this.props.password);
   }
 
-  public componentWillMount() {
-    this.props.wallet.toKeystore(this.props.password).then(utcKeystore => {
-      this.setState({ keystore: utcKeystore });
-    });
-  }
   public componentWillUpdate(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
-      nextProps.wallet.toKeystore(nextProps.password).then(utcKeystore => {
-        this.setState({ keystore: utcKeystore });
-      });
+      this.setWallet(nextProps.wallet, nextProps.password);
     }
   }
 
   public render() {
     const { hasDownloadedWallet } = this.state;
-    const filename = this.getFilename();
+    const filename = this.props.wallet.getV3Filename();
 
     const content = (
       <div className="DlWallet">
@@ -112,22 +102,14 @@ export default class DownloadWallet extends Component<Props, State> {
         <h4>{translate('GEN_Help_4')}</h4>
         <ul>
           <li>
-            <a
-              href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-save-slash-backup-my-wallet"
-              target="_blank"
-              rel="noopener"
-            >
+            <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-save-slash-backup-my-wallet">
               <strong>{translate('GEN_Help_13')}</strong>
-            </a>
+            </NewTabLink>
           </li>
           <li>
-            <a
-              href="https://myetherwallet.groovehq.com/knowledge_base/topics/what-are-the-different-formats-of-a-private-key"
-              target="_blank"
-              rel="noopener"
-            >
+            <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/what-are-the-different-formats-of-a-private-key">
               <strong>{translate('GEN_Help_14')}</strong>
-            </a>
+            </NewTabLink>
           </li>
         </ul>
       </div>
@@ -136,28 +118,23 @@ export default class DownloadWallet extends Component<Props, State> {
     return <Template content={content} help={help} />;
   }
 
-  public getBlob() {
-    if (this.state.keystore) {
-      return makeBlob('text/json;charset=UTF-8', this.state.keystore);
-    }
+  public getBlob = () =>
+    (this.state.keystore &&
+      makeBlob('text/json;charset=UTF-8', this.state.keystore)) ||
+    undefined;
+
+  private markDownloaded = () =>
+    this.state.keystore && this.setState({ hasDownloadedWallet: true });
+
+  private handleContinue = () =>
+    this.state.hasDownloadedWallet && this.props.continueToPaper();
+
+  private setWallet(wallet: IFullWallet, password: string) {
+    const keystore = wallet.toV3(password, { n: 1024 });
+    keystore.address = toChecksumAddress(keystore.address);
+    this.setState({ keystore });
   }
 
-  public getFilename() {
-    return getV3Filename(this.state.address);
-  }
-  private markDownloaded = () => {
-    if (this.state.keystore) {
-      this.setState({ hasDownloadedWallet: true });
-    }
-  };
-
-  private handleContinue = () => {
-    if (this.state.hasDownloadedWallet) {
-      this.props.continueToPaper();
-    }
-  };
-
-  private handleDownloadKeystore = (e): void => {
+  private handleDownloadKeystore = e =>
     this.state.keystore ? this.markDownloaded() : e.preventDefault();
-  };
 }
