@@ -2,6 +2,7 @@ import React from 'react';
 
 interface AAttributes {
   charset?: string;
+  className?: string;
   coords?: string;
   download?: string;
   href: string;
@@ -28,14 +29,15 @@ interface AAttributes {
   type?: string;
 }
 
-interface NewTabLinkProps  extends AAttributes {
+interface NewTabLinkProps extends AAttributes {
   content?: React.ReactElement<any> | string;
   children?: React.ReactElement<any> | string;
 }
 
-const NewTabLink = ({ content, children, ...rest }: NewTabLinkProps) =>
+const NewTabLink = ({ content, children, ...rest }: NewTabLinkProps) => (
   <a target="_blank" rel="noopener" {...rest}>
     {content || children} {/* Keep content for short-hand text insertion */}
-  </a>;
+  </a>
+);
 
 export default NewTabLink;
