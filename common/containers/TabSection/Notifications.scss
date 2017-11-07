@@ -142,3 +142,25 @@
     }
   }
 }
+
+.NotificationAnimation{
+  &-enter {
+    opacity: 0.01;
+    &-active {
+      opacity: 1;
+      transition: opacity 500ms;
+    }
+  }
+}
+
+.NotificationAnimation{
+  &-exit {
+    opacity: 1;
+    transform: none;
+    &-active {
+      opacity: 0.01;
+      transform: translateY(100%);
+      transition: opacity 500ms, transform 500ms;
+    }
+  }
+}

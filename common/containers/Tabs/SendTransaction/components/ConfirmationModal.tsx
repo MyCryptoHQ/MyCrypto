@@ -101,84 +101,87 @@ class ConfirmationModal extends React.Component<Props, State> {
       broadCastTxStatus && broadCastTxStatus.isBroadcasting;
 
     return (
-      <Modal
-        title="Confirm Your Transaction"
-        buttons={buttons}
-        handleClose={onClose}
-        disableButtons={isBroadcasting}
-        isOpen={true}
-      >
-        {
-          <div className="ConfModal">
-            {isBroadcasting ? (
-              <div className="ConfModal-loading">
-                <Spinner size="5x" />
-              </div>
-            ) : (
-              <div>
-                <div className="ConfModal-summary">
-                  <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
-                    <Identicon size="100%" address={from} />
-                  </div>
-                  <div className="ConfModal-summary-amount">
-                    <div className="ConfModal-summary-amount-arrow" />
-                    <div className="ConfModal-summary-amount-currency">
-                      {value} {symbol}
+      <div className="ConfModalWrap">
+        <Modal
+          title="Confirm Your Transaction"
+          buttons={buttons}
+          handleClose={onClose}
+          disableButtons={isBroadcasting}
+          isOpen={true}
+        >
+          {
+            <div className="ConfModal">
+              {isBroadcasting ? (
+                <div className="ConfModal-loading">
+                  <Spinner size="5x" />
+                </div>
+              ) : (
+                <div>
+                  <div className="ConfModal-summary">
+                    <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
+                      <Identicon size="100%" address={from} />
+                    </div>
+                    <div className="ConfModal-summary-amount">
+                      <div className="ConfModal-summary-amount-arrow" />
+                      <div className="ConfModal-summary-amount-currency">
+                        {value} {symbol}
+                      </div>
+                    </div>
+                    <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
+                      <Identicon size="100%" address={toAddress} />
                     </div>
                   </div>
-                  <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
-                    <Identicon size="100%" address={toAddress} />
+
+                  <ul className="ConfModal-details">
+                    <li className="ConfModal-details-detail">
+                      You are sending from <code>{from}</code>
+                    </li>
+                    <li className="ConfModal-details-detail">
+                      You are sending to <code>{toAddress}</code>
+                    </li>
+                    <li className="ConfModal-details-detail">
+                      You are sending with a nonce of <code>{nonce}</code>
+                    </li>
+                    <li className="ConfModal-details-detail">
+                      You are sending{' '}
+                      <strong>
+                        {value} {symbol}
+                      </strong>{' '}
+                      with a gas price of <strong>{gasPrice} gwei</strong>
+                    </li>
+                    <li className="ConfModal-details-detail">
+                      You are interacting with the{' '}
+                      <strong>{node.network}</strong>{' '}
+                      network provided by <strong>{node.service}</strong>
+                    </li>
+                    {!token && (
+                      <li className="ConfModal-details-detail">
+                        {data ? (
+                          <span>
+                            You are sending the following data:{' '}
+                            <textarea
+                              className="form-control"
+                              value={data}
+                              rows={3}
+                              disabled={true}
+                            />
+                          </span>
+                        ) : (
+                          'There is no data attached to this transaction'
+                        )}
+                      </li>
+                    )}
+                  </ul>
+
+                  <div className="ConfModal-confirm">
+                    {translate('SENDModal_Content_3')}
                   </div>
                 </div>
-
-                <ul className="ConfModal-details">
-                  <li className="ConfModal-details-detail">
-                    You are sending from <code>{from}</code>
-                  </li>
-                  <li className="ConfModal-details-detail">
-                    You are sending to <code>{toAddress}</code>
-                  </li>
-                  <li className="ConfModal-details-detail">
-                    You are sending with a nonce of <code>{nonce}</code>
-                  </li>
-                  <li className="ConfModal-details-detail">
-                    You are sending{' '}
-                    <strong>
-                      {value} {symbol}
-                    </strong>{' '}
-                    with a gas price of <strong>{gasPrice} gwei</strong>
-                  </li>
-                  <li className="ConfModal-details-detail">
-                    You are interacting with the <strong>{node.network}</strong>{' '}
-                    network provided by <strong>{node.service}</strong>
-                  </li>
-                  {!token && (
-                    <li className="ConfModal-details-detail">
-                      {data ? (
-                        <span>
-                          You are sending the following data:{' '}
-                          <textarea
-                            className="form-control"
-                            value={data}
-                            rows={3}
-                            disabled={true}
-                          />
-                        </span>
-                      ) : (
-                        'There is no data attached to this transaction'
-                      )}
-                    </li>
-                  )}
-                </ul>
-
-                <div className="ConfModal-confirm">
-                  {translate('SENDModal_Content_3')}
-                </div>
-              </div>
-            )}
-          </div>
-        }
-      </Modal>
+              )}
+            </div>
+          }
+        </Modal>
+      </div>
     );
   }
 

@@ -307,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                    <div>
-                      <NonceField
-                        value={nonce}
-                        onChange={this.onNonceChange}
-                        placeholder={'0'}
-                      />
-                    </div>
-                  )}
+                      <div>
+                        <NonceField
+                          value={nonce}
+                          onChange={this.onNonceChange}
+                          placeholder={'0'}
+                        />
+                      </div>
+                    )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
@@ -382,14 +382,16 @@ export class SendTransaction extends React.Component<Props, State> {
                       </div>
 
                       {!offline && (
-                        <div className="form-group">
-                          <button
-                            className="btn btn-primary btn-block col-sm-11"
-                            disabled={!this.state.transaction}
-                            onClick={this.openTxModal}
-                          >
-                            {translate('SEND_trans')}
-                          </button>
+                        <div className="row form-group">
+                          <div className="col-xs-12">
+                            <button
+                              className="btn btn-primary btn-block"
+                              disabled={!this.state.transaction}
+                              onClick={this.openTxModal}
+                            >
+                              {translate('SEND_trans')}
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
