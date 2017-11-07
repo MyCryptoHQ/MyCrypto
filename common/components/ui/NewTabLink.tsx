@@ -2,6 +2,7 @@ import React from 'react';
 
 interface AAttributes {
   charset?: string;
+  className?: string;
   coords?: string;
   download?: string;
   href: string;
