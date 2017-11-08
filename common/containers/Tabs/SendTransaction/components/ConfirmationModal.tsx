@@ -151,8 +151,8 @@ class ConfirmationModal extends React.Component<Props, State> {
                     </li>
                     <li className="ConfModal-details-detail">
                       You are interacting with the{' '}
-                      <strong>{node.network}</strong>{' '}
-                      network provided by <strong>{node.service}</strong>
+                      <strong>{node.network}</strong> network provided by{' '}
+                      <strong>{node.service}</strong>
                     </li>
                     {!token && (
                       <li className="ConfModal-details-detail">

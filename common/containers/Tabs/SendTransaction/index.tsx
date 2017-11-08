@@ -201,7 +201,7 @@ export class SendTransaction extends React.Component<Props, State> {
     const { hasSetDefaultNonce, nonce } = this.state;
     const unlocked = !!wallet;
     if (unlocked) {
-      const from = await wallet.getAddress();
+      const from = await wallet.getAddressString();
       if (forceOffline && !offline && !hasSetDefaultNonce) {
         const nonceHex = await nodeLib.getTransactionCount(from);
         const newNonce = parseInt(stripHexPrefix(nonceHex), 10);
@@ -222,7 +222,7 @@ export class SendTransaction extends React.Component<Props, State> {
 
   public async setWalletAddressOnUpdate() {
     if (this.props.wallet) {
-      const walletAddress = await this.props.wallet.getAddress();
+      const walletAddress = await this.props.wallet.getAddressString();
       if (walletAddress !== this.state.walletAddress) {
         this.setState({ walletAddress });
       }
