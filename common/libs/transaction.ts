@@ -219,7 +219,7 @@ export async function formatTxInput(
   if (unit === 'ether') {
     return {
       to,
-      from: await wallet.getAddress(),
+      from: await wallet.getAddressString(),
       value: toHexWei(value), //turn users ether to wei
       data
     };
@@ -231,7 +231,7 @@ export async function formatTxInput(
     const ERC20Data = ERC20.transfer(to, bigAmount);
     return {
       to: token.address,
-      from: await wallet.getAddress(),
+      from: await wallet.getAddressString(),
       value: '0x0',
       data: ERC20Data
     };

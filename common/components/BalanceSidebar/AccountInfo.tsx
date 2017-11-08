@@ -25,7 +25,7 @@ export default class AccountInfo extends React.Component<Props, State> {
   };
 
   public async setAddressFromWallet() {
-    const address = await this.props.wallet.getAddress();
+    const address = await this.props.wallet.getAddressString();
     if (address !== this.state.address) {
       this.setState({ address });
     }
@@ -91,28 +91,28 @@ export default class AccountInfo extends React.Component<Props, State> {
         </div>
 
         {(!!blockExplorer || !!tokenExplorer) && (
-            <div className="AccountInfo-section">
-              <h5 className="AccountInfo-section-header">
-                {translate('sidebar_TransHistory')}
-              </h5>
-              <ul className="AccountInfo-list">
-                {!!blockExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={blockExplorer.address(address)} target="_blank">
-                      {`${network.name} (${blockExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-                {!!tokenExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={tokenExplorer.address(address)} target="_blank">
-                      {`Tokens (${tokenExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
+          <div className="AccountInfo-section">
+            <h5 className="AccountInfo-section-header">
+              {translate('sidebar_TransHistory')}
+            </h5>
+            <ul className="AccountInfo-list">
+              {!!blockExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={blockExplorer.address(address)} target="_blank">
+                    {`${network.name} (${blockExplorer.name})`}
+                  </a>
+                </li>
+              )}
+              {!!tokenExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={tokenExplorer.address(address)} target="_blank">
+                    {`Tokens (${tokenExplorer.name})`}
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     );
   }

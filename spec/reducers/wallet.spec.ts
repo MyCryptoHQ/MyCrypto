@@ -9,7 +9,7 @@ describe('wallet reducer', () => {
     });
 
     const walletInstance = {
-      getAddress: () => doSomething,
+      getAddressString: () => doSomething,
       signRawTransaction: () => doSomething,
       signMessage: () => doSomething
     };
