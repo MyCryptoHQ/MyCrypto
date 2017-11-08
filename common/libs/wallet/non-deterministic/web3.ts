@@ -1,6 +1,7 @@
-import { IWallet } from './IWallet';
+import { IWallet } from '../IWallet';
 import { ExtendedRawTransaction } from 'libs/transaction';
 import { networkIdToName } from 'libs/values';
+import { addHexPrefix } from 'ethereumjs-util';
 
 export default class Web3Wallet implements IWallet {
   private web3: any;
@@ -13,7 +14,7 @@ export default class Web3Wallet implements IWallet {
     this.network = network;
   }
 
-  public getAddress(): Promise<string> {
+  public getAddressString(): Promise<string> {
     return Promise.resolve(this.address);
   }
 
@@ -21,6 +22,28 @@ export default class Web3Wallet implements IWallet {
     return Promise.reject(
       new Error('Web3 wallets cannot sign raw transactions.')
     );
+  }
+
+  public signMessage(msg: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const msgHex = Buffer.from(msg).toString('hex');
+      const options = {
+        method: 'personal_sign',
+        params: [addHexPrefix(msgHex), this.address],
+        signingAddr: this.address
+      };
+
+      this.web3.currentProvider.sendAsync(options, (err, data) => {
+        if (err) {
+          return reject(err);
+        }
+
+        if (data.error) {
+          return reject(data.error);
+        }
+        resolve(data.result);
+      });
+    });
   }
 
   public sendTransaction(transaction: ExtendedRawTransaction): Promise<string> {
