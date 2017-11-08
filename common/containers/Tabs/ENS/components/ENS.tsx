@@ -1,33 +1,27 @@
-import React from 'react';
-import { GeneralInfoPanel } from './GeneralInfoPanel';
+import * as React from 'react';
 import Title from './Title';
+import { GeneralInfoPanel } from './GeneralInfoPanel';
 import UnfinishedBanner from './UnfinishedBanner';
+import NameInput from './NameInput';
+import { NameResolve } from './NameResolve';
+import { AppState } from 'reducers';
 import TabSection from 'containers/TabSection';
 
-interface ContainerTabPaneActiveProps {
-  children: React.ReactElement<any> | React.ReactElement<any>[];
+interface Props {
+  ensState: AppState['ens'];
+  resolveDomainRequested(domain: string): void;
 }
 
-const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) => (
-  <TabSection>
-    <section className="container">
-      <div className="tab-content">
-        <main className="tab-pane active">
-          <section role="main" className="row">
-            {children}
-          </section>
-        </main>
-      </div>
-    </section>
-  </TabSection>
-);
-
-const ENS = () => (
-  <ContainerTabPaneActive>
-    <UnfinishedBanner />
-    <Title />
-    <GeneralInfoPanel />
-  </ContainerTabPaneActive>
-);
+const ENS = (props: Props) => {
+  return (
+    <TabSection>
+      <UnfinishedBanner />
+      <Title />
+      <NameInput resolveDomainRequested={props.resolveDomainRequested} />
+      <NameResolve {...props.ensState} />
+      <GeneralInfoPanel />
+    </TabSection>
+  );
+};
 
 export default ENS;
