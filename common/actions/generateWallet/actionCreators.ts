@@ -1,4 +1,4 @@
-import { PrivKeyWallet } from 'libs/wallet';
+import { generate } from 'ethereumjs-wallet';
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
 
@@ -8,7 +8,7 @@ export function generateNewWallet(
 ): interfaces.GenerateNewWalletAction {
   return {
     type: TypeKeys.GENERATE_WALLET_GENERATE_WALLET,
-    wallet: PrivKeyWallet.generate(),
+    wallet: generate(),
     password
   };
 }

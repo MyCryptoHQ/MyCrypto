@@ -13,7 +13,8 @@ export function showNotification(
     payload: {
       level,
       msg,
-      duration
+      duration,
+      id: Math.random()
     }
   };
 }
