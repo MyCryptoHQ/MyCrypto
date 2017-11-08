@@ -2,7 +2,7 @@ import './LedgerNano.scss';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
-import LedgerWallet from 'libs/wallet/ledger';
+import { LedgerWallet } from 'libs/wallet';
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
 import DPATHS from 'config/dpaths';
