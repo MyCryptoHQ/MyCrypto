@@ -6,6 +6,7 @@ import { stripHexPrefixAndLower } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
 import { IWallet } from '../IWallet';
+
 export class TrezorWallet extends DeterministicWallet implements IWallet {
   public signRawTransaction(tx: ITransaction): Promise<string> {
     return new Promise((resolve, reject) => {
