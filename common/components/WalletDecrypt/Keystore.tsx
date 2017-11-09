@@ -1,4 +1,4 @@
-import { isKeystorePassRequired } from 'libs/keystore';
+import { isKeystorePassRequired } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 
@@ -32,9 +32,7 @@ export default class KeystoreDecrypt extends Component {
     return (
       <section className="col-md-4 col-sm-6">
         <div id="selectedUploadKey">
-          <h4>
-            {translate('ADD_Radio_2_alt')}
-          </h4>
+          <h4>{translate('ADD_Radio_2_alt')}</h4>
 
           <div className="form-group">
             <input
@@ -54,13 +52,11 @@ export default class KeystoreDecrypt extends Component {
               </a>
             </label>
             <div className={file.length && passReq ? '' : 'hidden'}>
-              <p>
-                {translate('ADD_Label_3')}
-              </p>
+              <p>{translate('ADD_Label_3')}</p>
               <input
-                className={`form-control ${password.length > 0
-                  ? 'is-valid'
-                  : 'is-invalid'}`}
+                className={`form-control ${
+                  password.length > 0 ? 'is-valid' : 'is-invalid'
+                }`}
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}

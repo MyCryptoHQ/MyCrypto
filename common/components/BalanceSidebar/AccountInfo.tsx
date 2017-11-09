@@ -26,7 +26,7 @@ export default class AccountInfo extends React.Component<Props, State> {
   };
 
   public async setAddressFromWallet() {
-    const address = await this.props.wallet.getAddress();
+    const address = await this.props.wallet.getAddressString();
     if (address !== this.state.address) {
       this.setState({ address });
     }

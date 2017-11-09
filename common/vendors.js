@@ -1,5 +1,6 @@
 require('ethereumjs-abi');
 require('ethereumjs-util');
+require('ethereumjs-wallet');
 require('hdkey');
 require('idna-uts46');
 require('lodash');
@@ -14,9 +15,7 @@ require('redux-form');
 require('redux-logger');
 require('redux-saga');
 require('wallet-address-validator');
-require('scryptsy');
 require('store2');
-require('uuid');
 require('whatwg-fetch');
 require('moment');
 require('prop-types');

@@ -7,6 +7,7 @@ export type INFINITY = 'infinity';
 export interface Notification {
   level: NOTIFICATION_LEVEL;
   msg: ReactElement<any> | string;
+  id: number;
   duration?: number | INFINITY;
 }
 
