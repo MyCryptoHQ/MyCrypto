@@ -3,10 +3,7 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import BN from 'bn.js';
 import { INode } from 'libs/nodes/INode';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
-import {
-  generateCompleteTransaction as makeAndSignTx,
-  TransactionInput
-} from 'libs/transaction';
+import { transaction, ITransaction } from 'libs/transaction';
 import { ISetConfigForTx } from './index';
 
 export interface IUserSendParams {
@@ -183,11 +180,9 @@ EncodedCall:${data}`);
       //TODO: parse args based on type
       if (!suppliedArgs[name]) {
         throw Error(
-          `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(
-            suppliedArgs,
-            null,
-            2
-          )}`
+          `Expected argument "${name}" of type "${
+            type
+          }" missing, suppliedArgs: ${JSON.stringify(suppliedArgs, null, 2)}`
         );
       }
       const value = suppliedArgs[name];

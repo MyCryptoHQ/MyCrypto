@@ -23,25 +23,32 @@ declare module 'ethereumjs-tx' {
   };
   */
 
-  type DataParamType = any; //TS complaining about big numbers heres
-  interface Data {
+  export interface TxObj {
     chainId: number;
-    gasLimit: DataParamType;
-    gasPrice: DataParamType;
-    to: DataParamType;
-    nonce: DataParamType;
-    data: DataParamType;
-    v?: DataParamType;
-    r?: DataParamType;
-    s?: DataParamType;
-    value: DataParamType;
+    gasLimit: Buffer | BN | string | number;
+    gasPrice: Buffer | BN | string | number;
+    to: Buffer | BN | string | number;
+    nonce: Buffer | BN | string | number;
+    data?: Buffer | BN | string | number;
+    v?: Buffer | BN | string | number;
+    r?: Buffer | BN | string | number;
+    s?: Buffer | BN | string | number;
+    value?: Buffer | BN | string | number;
   }
 
-  export = ITx;
-  class ITx {
+  class Base {
+    public chainId: Number;
     public raw: Buffer;
+    public gasLimit: Buffer;
+    public gasPrice: Buffer;
+    public to: Buffer;
+    public nonce: Buffer;
+    public data: Buffer;
+    public value: Buffer;
+    public from: Buffer;
 
-    constructor(data: Data | string);
+    constructor(data: TxObj | string);
+
     /**
      * If the tx's `to` is to the creation address
      * @return {Boolean}
@@ -114,4 +121,6 @@ declare module 'ethereumjs-tx' {
 
     public serialize(): Buffer;
   }
+
+  export default Base;
 }

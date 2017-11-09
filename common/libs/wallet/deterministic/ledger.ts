@@ -1,10 +1,10 @@
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
 import EthTx from 'ethereumjs-tx';
-import { addHexPrefix, rlp } from 'ethereumjs-util';
+import { addHexPrefix, bufferToHex } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { IWallet } from '../IWallet';
-import { RawTransaction } from 'libs/transaction';
+import { ITransaction } from 'libs/transaction';
 
 export class LedgerWallet extends DeterministicWallet implements IWallet {
   private ledger: any;
@@ -18,18 +18,18 @@ export class LedgerWallet extends DeterministicWallet implements IWallet {
 
   // modeled after
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/uiFuncs.js#L58
-  public signRawTransaction(rawTx: RawTransaction): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const eTx = new EthTx({
-        ...rawTx,
-        v: Buffer.from([rawTx.chainId]),
-        r: 0,
-        s: 0
-      });
+  public signRawTransaction(rawTx: ITransaction): Promise<string> {
+    const eTx = new EthTx({
+      ...rawTx,
+      v: Buffer.from([rawTx.chainId]),
+      r: 0,
+      s: 0
+    });
 
+    return new Promise((resolve, reject) => {
       this.ethApp.signTransaction(
         this.getPath(),
-        rlp.encode(eTx.raw).toString('hex'),
+        eTx.serialize().toString('hex'),
         (result, error) => {
           if (error) {
             return reject(this.ethApp.getError(error));
@@ -42,11 +42,9 @@ export class LedgerWallet extends DeterministicWallet implements IWallet {
             s: addHexPrefix(result.s)
           };
 
-          const serializedTx = new EthTx(txToSerialize)
-            .serialize()
-            .toString('hex');
+          const serializedTx = new EthTx(txToSerialize).serialize();
 
-          resolve(addHexPrefix(serializedTx));
+          resolve(bufferToHex(serializedTx));
         }
       );
     });
@@ -55,9 +53,9 @@ export class LedgerWallet extends DeterministicWallet implements IWallet {
   // modeled after
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/controllers/signMsgCtrl.js#L53
   public signMessage(msg: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const msgHex = Buffer.from(msg).toString('hex');
+    const msgHex = Buffer.from(msg).toString('hex');
 
+    return new Promise((resolve, reject) => {
       this.ethApp.signPersonalMessage_async(
         this.getPath(),
         msgHex,
@@ -68,9 +66,7 @@ export class LedgerWallet extends DeterministicWallet implements IWallet {
 
           try {
             const combined = signed.r + signed.s + signed.v;
-            const combinedHex = combined.toString('hex');
-            const signature = addHexPrefix(combinedHex);
-            resolve(signature);
+            resolve(bufferToHex(combined));
           } catch (err) {
             reject(err);
           }

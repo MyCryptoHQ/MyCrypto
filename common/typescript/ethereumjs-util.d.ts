@@ -58,11 +58,11 @@ declare module 'ethereumjs-util' {
 
   export function toBuffer(v: any): Buffer;
 
-  export function bufferToInt(buf: Buffer): number;
+  export function bufferToInt(buf: Buffer | BN): number;
 
-  export function bufferToHex(buf: Buffer): string;
+  export function bufferToHex(buf: Buffer | BN): string;
 
-  export function fromSigned(num: Buffer): BN;
+  export function fromSigned(num: Buffer | BN): BN;
 
   export function toUnsigned(num: BN): Buffer;
 

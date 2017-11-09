@@ -22,7 +22,7 @@ export function signRawTxWithPrivKey(
 
   const eTx = new EthTx(rawTx);
   eTx.sign(privKey);
-  return '0x' + eTx.serialize().toString('hex');
+  return eTx.serialize().toString('hex');
 }
 
 // adapted from:

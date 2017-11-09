@@ -3,14 +3,23 @@ import { RawTransaction } from 'libs/transaction';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 
+// FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
-  if (!address) {
-    return false;
-  }
   if (address === '0x0000000000000000000000000000000000000000') {
     return false;
   }
-  return validateEtherAddress(address);
+  if (address.substring(0, 2) !== '0x') {
+    return false;
+  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    return false;
+  } else if (
+    /^(0x)?[0-9a-f]{40}$/.test(address) ||
+    /^(0x)?[0-9A-F]{40}$/.test(address)
+  ) {
+    return true;
+  } else {
+    return isChecksumAddress(address);
+  }
 }
 
 export function isValidBTCAddress(address: string): boolean {
@@ -18,9 +27,6 @@ export function isValidBTCAddress(address: string): boolean {
 }
 
 export function isValidHex(str: string): boolean {
-  if (typeof str !== 'string') {
-    return false;
-  }
   if (str === '') {
     return true;
   }
@@ -66,22 +72,6 @@ export function isValidENSAddress(address: string): boolean {
 
 function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address);
-}
-
-// FIXME we probably want to do checksum checks sideways
-function validateEtherAddress(address: string): boolean {
-  if (address.substring(0, 2) !== '0x') {
-    return false;
-  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
-    return false;
-  } else if (
-    /^(0x)?[0-9a-f]{40}$/.test(address) ||
-    /^(0x)?[0-9A-F]{40}$/.test(address)
-  ) {
-    return true;
-  } else {
-    return isChecksumAddress(address);
-  }
 }
 
 export function isValidPrivKey(privkey: string | Buffer): boolean {

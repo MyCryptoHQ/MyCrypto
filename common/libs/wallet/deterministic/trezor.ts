@@ -1,13 +1,13 @@
 import BN from 'bn.js';
 import EthTx from 'ethereumjs-tx';
-import { addHexPrefix } from 'ethereumjs-util';
-import { RawTransaction } from 'libs/transaction';
+import { bufferToHex, addHexPrefix } from 'ethereumjs-util';
+import { ITransaction } from 'libs/transaction';
 import { stripHexPrefixAndLower } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
 import { IWallet } from '../IWallet';
 export class TrezorWallet extends DeterministicWallet implements IWallet {
-  public signRawTransaction(tx: RawTransaction): Promise<string> {
+  public signRawTransaction(tx: ITransaction): Promise<string> {
     return new Promise((resolve, reject) => {
       (TrezorConnect as any).ethereumSignTx(
         // Args
@@ -35,7 +35,7 @@ export class TrezorWallet extends DeterministicWallet implements IWallet {
             s: addHexPrefix(result.s)
           };
           const eTx = new EthTx(txToSerialize);
-          const signedTx = addHexPrefix(eTx.serialize().toString('hex'));
+          const signedTx = bufferToHex(eTx.serialize());
           resolve(signedTx);
         }
       );

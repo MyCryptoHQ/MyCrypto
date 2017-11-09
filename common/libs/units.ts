@@ -4,6 +4,7 @@ import { stripHexPrefix } from 'libs/values';
 type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
+type Address = BN;
 
 const Units = {
   wei: '1',
@@ -85,6 +86,7 @@ const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
 export {
+  Address,
   TokenValue,
   fromWei,
   toWei,
