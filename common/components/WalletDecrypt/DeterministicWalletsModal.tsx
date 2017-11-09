@@ -300,7 +300,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
             <UnitDisplay
               decimal={token.decimal}
               value={token.value}
-              symbol={network.unit}
+              symbol={desiredToken}
             />
           ) : (
             '???'
