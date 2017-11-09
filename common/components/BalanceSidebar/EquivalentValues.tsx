@@ -2,10 +2,11 @@ import { Ether } from 'libs/units';
 import * as React from 'react';
 import translate from 'translations';
 import { formatNumber } from 'utils/formatters';
-import './EquivalentValues.scss';
 import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
 import { TokenBalance } from 'selectors/wallet';
+import Spinner from 'components/ui/Spinner';
+import './EquivalentValues.scss';
 
 interface Props {
   balance?: Ether;
@@ -72,6 +73,12 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       });
     } else if (ratesError) {
       values = <h5>{ratesError}</h5>;
+    } else {
+      values = (
+        <div className="EquivalentValues-values-loader">
+          <Spinner size="3x" />
+        </div>
+      );
     }
 
     return (
