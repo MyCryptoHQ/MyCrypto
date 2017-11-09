@@ -13,7 +13,6 @@ import { State as ConfigState } from './reducers/config';
 import { State as CustomTokenState } from './reducers/customTokens';
 import { State as SwapState } from './reducers/swap';
 import promiseMiddleware from 'redux-promise-middleware';
-import { changeNodeIntent } from 'actions/config';
 import { getNodeConfigFromId } from 'utils/node';
 
 import sagas from './sagas';
@@ -68,13 +67,12 @@ const configureStore = () => {
   if (savedConfigState && savedConfigState.nodeSelection) {
     const savedNode = getNodeConfigFromId(
       savedConfigState.nodeSelection,
-      savedConfigState.customNodes,
+      savedConfigState.customNodes
     );
     // If we couldn't find it, revert to defaults
     if (savedNode) {
       savedConfigState.node = savedNode;
-    }
-    else {
+    } else {
       savedConfigState.nodeSelection = configInitialState.nodeSelection;
     }
   }
@@ -82,7 +80,7 @@ const configureStore = () => {
   const persistedInitialState = {
     config: {
       ...configInitialState,
-      ...savedConfigState,
+      ...savedConfigState
     },
     customTokens: localCustomTokens || customTokensInitialState,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
@@ -104,7 +102,7 @@ const configureStore = () => {
           gasPriceGwei: state.config.gasPriceGwei,
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
-          customNodes: state.config.customNodes,
+          customNodes: state.config.customNodes
         },
         swap: state.swap,
         customTokens: state.customTokens

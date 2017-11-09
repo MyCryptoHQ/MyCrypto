@@ -3,8 +3,7 @@ import {
   NetworkContract,
   NETWORKS,
   NodeConfig,
-  NODES,
-  CustomNodeConfig,
+  CustomNodeConfig
 } from 'config/data';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';

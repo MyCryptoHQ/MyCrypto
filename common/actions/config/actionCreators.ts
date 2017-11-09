@@ -26,11 +26,12 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
 
 export type TChangeNode = typeof changeNode;
 export function changeNode(
-  nodeSelection: string, node: NodeConfig
+  nodeSelection: string,
+  node: NodeConfig
 ): interfaces.ChangeNodeAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE,
-    payload: { nodeSelection, node },
+    payload: { nodeSelection, node }
   };
 }
 
@@ -80,9 +81,11 @@ export function removeCustomNode(
 }
 
 export type TSetLatestBlock = typeof setLatestBlock;
-export function setLatestBlock(payload: string): interfaces.setLatestBlock {
+export function setLatestBlock(
+  payload: string
+): interfaces.SetLatestBlockAction {
   return {
     type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
-    payload,
+    payload
   };
 }
