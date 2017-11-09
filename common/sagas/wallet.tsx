@@ -11,17 +11,13 @@ import {
   UnlockPrivateKeyAction
 } from 'actions/wallet';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-import { determineKeystoreType } from 'libs/keystore';
 import { INode } from 'libs/nodes/INode';
 import { Wei } from 'libs/units';
 import {
-  EncryptedPrivKeyWallet,
   IWallet,
-  MewV1Wallet,
   MnemonicWallet,
-  PresaleWallet,
-  PrivKeyWallet,
-  UtcWallet
+  getPrivKeyWallet,
+  getKeystoreWallet
 } from 'libs/wallet';
 import React from 'react';
 import { SagaIterator } from 'redux-saga';
@@ -37,7 +33,7 @@ function* updateAccountBalance(): SagaIterator {
       return;
     }
     const node: INode = yield select(getNodeLib);
-    const address = yield apply(wallet, wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddressString);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalance(balance));
@@ -55,7 +51,7 @@ function* updateTokenBalances(): SagaIterator {
       return;
     }
     // FIXME handle errors
-    const address = yield apply(wallet, wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddressString);
 
     // network request
     const tokenBalances = yield apply(node, node.getTokenBalances, [
@@ -86,16 +82,10 @@ export function* unlockPrivateKey(
   action: UnlockPrivateKeyAction
 ): SagaIterator {
   let wallet: IWallet | null = null;
+  const { key, password } = action.payload;
 
   try {
-    if (action.payload.key.length === 64) {
-      wallet = new PrivKeyWallet(Buffer.from(action.payload.key, 'hex'));
-    } else {
-      wallet = new EncryptedPrivKeyWallet(
-        action.payload.key,
-        action.payload.password
-      );
-    }
+    wallet = getPrivKeyWallet(key, password);
   } catch (e) {
     yield put(showNotification('danger', translate('INVALID_PKEY')));
     return;
@@ -104,33 +94,11 @@ export function* unlockPrivateKey(
 }
 
 export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
-  const file = action.payload.file;
-  const pass = action.payload.password;
+  const { file, password } = action.payload;
   let wallet: null | IWallet = null;
 
   try {
-    const parsed = JSON.parse(file);
-
-    switch (determineKeystoreType(file)) {
-      case 'presale':
-        wallet = new PresaleWallet(file, pass);
-        break;
-      case 'v1-unencrypted':
-        wallet = new PrivKeyWallet(Buffer.from(parsed.private, 'hex'));
-        break;
-      case 'v1-encrypted':
-        wallet = new MewV1Wallet(file, pass);
-        break;
-      case 'v2-unencrypted':
-        wallet = new PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
-        break;
-      case 'v2-v3-utc':
-        wallet = new UtcWallet(file, pass);
-        break;
-      default:
-        yield put(showNotification('danger', translate('ERROR_6')));
-        return;
-    }
+    wallet = getKeystoreWallet(file, password);
   } catch (e) {
     yield put(showNotification('danger', translate('ERROR_6')));
     return;
@@ -145,7 +113,7 @@ function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
   const { phrase, pass, path, address } = action.payload;
 
   try {
-    wallet = new MnemonicWallet(phrase, pass, path, address);
+    wallet = MnemonicWallet(phrase, pass, path, address);
   } catch (err) {
     // TODO: use better error than 'ERROR_14' (wallet not found)
     yield put(showNotification('danger', translate('ERROR_14')));

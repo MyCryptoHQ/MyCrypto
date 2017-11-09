@@ -151,7 +151,7 @@ export const deployHOC = PassedComponent => {
     };
 
     private getAddressAndNonce = async () => {
-      const address = await this.props.wallet.getAddress();
+      const address = await this.props.wallet.getAddressString();
       const nonce = await this.props.nodeLib
         .getTransactionCount(address)
         .then(n => new Big(n).toString());
