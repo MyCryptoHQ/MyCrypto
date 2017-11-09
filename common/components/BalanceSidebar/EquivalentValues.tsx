@@ -33,14 +33,11 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                       {key}:
                     </span>
                     <span className="EquivalentValues-values-currency-value">
-                      {' '}
-                      {balance ? (
-                        balance.isPending ? (
-                          <Spinner size="x1" />
-                        ) : (
-                          formatNumber(balance.amount.times(rates[key]))
-                        )
-                      ) : null}
+                      {balance && !balance.isPending ? (
+                        formatNumber(balance.amount.times(rates[key]))
+                      ) : (
+                        <Spinner size="x1" />
+                      )}
                     </span>
                   </li>
                 );

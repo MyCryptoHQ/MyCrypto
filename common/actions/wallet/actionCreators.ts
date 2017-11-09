@@ -44,8 +44,7 @@ export function setWallet(value: IWallet): types.SetWalletAction {
 
 export function setBalancePending(): types.SetBalancePendingAction {
   return {
-    type: constants.WALLET_SET_BALANCE_PENDING,
-    payload: { status: { isPending: true } }
+    type: constants.WALLET_SET_BALANCE_PENDING
   };
 }
 
@@ -55,14 +54,13 @@ export function setBalanceFullfilled(
 ): types.SetBalanceFullfilledAction {
   return {
     type: constants.WALLET_SET_BALANCE_FULFILLED,
-    payload: { value, status: { isPending: false } }
+    payload: value
   };
 }
 
 export function SetBalanceRejected(): types.SetBalanceRejectedAction {
   return {
-    type: constants.WALLET_SET_BALANCE_REJECTED,
-    payload: { status: { isPending: false } }
+    type: constants.WALLET_SET_BALANCE_REJECTED
   };
 }
 

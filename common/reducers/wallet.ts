@@ -1,8 +1,4 @@
-import {
-  SetBalancePendingAction,
-  SetBalanceFullfilledAction,
-  SetBalanceRejectedAction
-} from './../actions/wallet/actionTypes';
+import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
 import {
   SetTokenBalancesAction,
   SetWalletAction,
@@ -39,11 +35,8 @@ function setWallet(state: State, action: SetWalletAction): State {
   };
 }
 
-function setBalancePending(
-  state: State,
-  action: SetBalancePendingAction
-): State {
-  return { ...state, balance: { ...state.balance, ...action.payload.status } };
+function setBalancePending(state: State): State {
+  return { ...state, balance: { ...state.balance, isPending: true } };
 }
 
 function SetBalanceFullfilled(
@@ -52,15 +45,12 @@ function SetBalanceFullfilled(
 ): State {
   return {
     ...state,
-    balance: { ...action.payload.value.toEther(), ...action.payload.status }
+    balance: { ...action.payload.toEther(), isPending: false }
   };
 }
 
-function SetBalanceRejected(
-  state: State,
-  action: SetBalanceRejectedAction
-): State {
-  return { ...state, balance: { ...state.balance, ...action.payload.status } };
+function SetBalanceRejected(state: State): State {
+  return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
 function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
@@ -139,11 +129,11 @@ export function wallet(
     case 'WALLET_RESET':
       return INITIAL_STATE;
     case 'WALLET_SET_BALANCE_PENDING':
-      return setBalancePending(state, action);
+      return setBalancePending(state);
     case 'WALLET_SET_BALANCE_FULFILLED':
       return SetBalanceFullfilled(state, action);
     case 'WALLET_SET_BALANCE_REJECTED':
-      return SetBalanceRejected(state, action);
+      return SetBalanceRejected(state);
     case 'WALLET_SET_TOKEN_BALANCES':
       return setTokenBalances(state, action);
     case 'WALLET_BROADCAST_TX_REQUESTED':

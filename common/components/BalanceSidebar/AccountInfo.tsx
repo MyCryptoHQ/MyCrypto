@@ -80,14 +80,10 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {this.state.showLongBalance ? (
-                  balance.isPending ? (
-                    <Spinner size="x1" />
-                  ) : (
-                    balance.amount.toString()
-                  )
-                ) : balance.isPending ? (
+                {balance.isPending ? (
                   <Spinner size="x1" />
+                ) : this.state.showLongBalance ? (
+                  balance.amount.toString()
                 ) : (
                   formatNumber(balance.amount)
                 )}
@@ -98,28 +94,28 @@ export default class AccountInfo extends React.Component<Props, State> {
         </div>
 
         {(!!blockExplorer || !!tokenExplorer) && (
-            <div className="AccountInfo-section">
-              <h5 className="AccountInfo-section-header">
-                {translate('sidebar_TransHistory')}
-              </h5>
-              <ul className="AccountInfo-list">
-                {!!blockExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={blockExplorer.address(address)} target="_blank">
-                      {`${network.name} (${blockExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-                {!!tokenExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={tokenExplorer.address(address)} target="_blank">
-                      {`Tokens (${tokenExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
+          <div className="AccountInfo-section">
+            <h5 className="AccountInfo-section-header">
+              {translate('sidebar_TransHistory')}
+            </h5>
+            <ul className="AccountInfo-list">
+              {!!blockExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={blockExplorer.address(address)} target="_blank">
+                    {`${network.name} (${blockExplorer.name})`}
+                  </a>
+                </li>
+              )}
+              {!!tokenExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={tokenExplorer.address(address)} target="_blank">
+                    {`Tokens (${tokenExplorer.name})`}
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     );
   }

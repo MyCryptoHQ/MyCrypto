@@ -1,6 +1,5 @@
 import { BigNumber } from 'bignumber.js';
 import { Wei } from 'libs/units';
-import { NetworkStatus } from 'libs/wallet';
 import { IWallet } from 'libs/wallet/IWallet';
 
 /*** Unlock Private Key ***/
@@ -32,15 +31,13 @@ export interface ResetWalletAction {
 /*** Set Balance ***/
 export interface SetBalancePendingAction {
   type: 'WALLET_SET_BALANCE_PENDING';
-  payload: { status: NetworkStatus };
 }
 export interface SetBalanceFullfilledAction {
   type: 'WALLET_SET_BALANCE_FULFILLED';
-  payload: { value: Wei; status: NetworkStatus };
+  payload: Wei;
 }
 export interface SetBalanceRejectedAction {
   type: 'WALLET_SET_BALANCE_REJECTED';
-  payload: { status: NetworkStatus };
 }
 
 /*** Set Token Balance ***/

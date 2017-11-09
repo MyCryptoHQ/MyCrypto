@@ -28,9 +28,9 @@ import {
   getBalanceMinusGasCosts,
   TransactionInput
 } from 'libs/transaction';
-import { Ether, GWei, UnitKey, Wei } from 'libs/units';
+import { GWei, UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, Balance } from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
@@ -90,7 +90,7 @@ interface State {
 
 interface Props {
   wallet: IWallet;
-  balance: Ether;
+  balance: Balance;
   nodeLib: RPCNode;
   network: NetworkConfig;
   tokens: MergedToken[];
@@ -307,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                      <div>
-                        <NonceField
-                          value={nonce}
-                          onChange={this.onNonceChange}
-                          placeholder={'0'}
-                        />
-                      </div>
-                    )}
+                    <div>
+                      <NonceField
+                        value={nonce}
+                        onChange={this.onNonceChange}
+                        placeholder={'0'}
+                      />
+                    </div>
+                  )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
