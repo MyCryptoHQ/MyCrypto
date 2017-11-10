@@ -17,6 +17,7 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err.message);
         }
+        // web3 return string
         resolve(res);
       });
     });
@@ -28,7 +29,8 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err);
         }
-        resolve(Wei(res));
+        // web3 returns BigNumber
+        resolve(Wei(res.toString()));
       });
     });
   }
@@ -44,6 +46,7 @@ export default class Web3Node implements INode {
           if (err) {
             return reject(err);
           }
+          // web3 returns number
           resolve(Wei(res));
         }
       )
@@ -63,7 +66,7 @@ export default class Web3Node implements INode {
             // TODO - Error handling
             return resolve(TokenValue('0'));
           }
-
+          // web3 returns string
           resolve(TokenValue(res));
         }
       );
@@ -99,6 +102,7 @@ export default class Web3Node implements INode {
           // TODO - Error handling
           returnArr[index] = TokenValue('0');
         } else {
+          // web3 returns string
           returnArr[index] = TokenValue(res);
         }
 
@@ -116,6 +120,7 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err);
         }
+        // web3 returns number
         resolve(txCount.toString());
       })
     );
@@ -127,6 +132,7 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err);
         }
+        // web3 return string
         resolve(txHash);
       })
     );
