@@ -27,3 +27,18 @@ export function sanitizeHex(hex: string) {
   }
   return `0x${padLeftEven(hex)}`;
 }
+
+export function networkIdToName(networkId: string | number): string {
+  switch (networkId.toString()) {
+    case '1':
+      return 'ETH';
+    case '3':
+      return 'Ropsten';
+    case '4':
+      return 'Rinkeby';
+    case '42':
+      return 'Kovan';
+    default:
+      throw new Error(`Network ${networkId} is unsupported.`);
+  }
+}

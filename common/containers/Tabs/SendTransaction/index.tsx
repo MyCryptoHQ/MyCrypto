@@ -13,6 +13,7 @@ import {
   DataField,
   GasField
 } from './components';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
 import { donationAddressMap, NetworkConfig } from 'config/data';
@@ -23,6 +24,7 @@ import { RPCNode } from 'libs/nodes';
 import {
   BroadcastTransactionStatus,
   CompleteTransaction,
+  confirmAndSendWeb3Transaction,
   formatTxInput,
   generateCompleteTransaction,
   getBalanceMinusGasCosts,
@@ -30,7 +32,8 @@ import {
 } from 'libs/transaction';
 import { Ether, GWei, UnitKey, Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { IWallet } from 'libs/wallet/IWallet';
+// LIBS
+import { IWallet, Web3Wallet } from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
@@ -259,6 +262,7 @@ export class SendTransaction extends React.Component<Props, State> {
     } = this.state;
     const { offline, forceOffline, balance } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
+    const isWeb3Wallet = this.props.wallet instanceof Web3Wallet;
     return (
       <TabSection>
         <section className="Tab-content">
@@ -278,127 +282,146 @@ export class SendTransaction extends React.Component<Props, State> {
           />
           <div className="row">
             {/* Send Form */}
-            {unlocked && (
-              <main className="col-sm-8">
-                <div className="Tab-content-pane">
-                  {hasQueryString && (
-                    <div className="alert alert-info">
-                      <p>{translate('WARN_Send_Link')}</p>
-                    </div>
-                  )}
-
-                  <AddressField
-                    placeholder={donationAddressMap.ETH}
-                    value={this.state.to}
-                    onChange={readOnly ? null : this.onAddressChange}
-                  />
-                  <AmountField
-                    value={value}
-                    unit={unit}
-                    balance={balance}
-                    tokens={this.props.tokenBalances
-                      .filter(token => !token.balance.eq(0))
-                      .map(token => token.symbol)
-                      .sort()}
-                    onChange={readOnly ? void 0 : this.onAmountChange}
-                  />
-                  <GasField
-                    value={gasLimit}
-                    onChange={readOnly ? void 0 : this.onGasChange}
-                  />
-                  {(offline || forceOffline) && (
-                      <div>
-                        <NonceField
-                          value={nonce}
-                          onChange={this.onNonceChange}
-                          placeholder={'0'}
-                        />
+            {unlocked &&
+              !(offline || (forceOffline && isWeb3Wallet)) && (
+                <main className="col-sm-8">
+                  <div className="Tab-content-pane">
+                    {hasQueryString && (
+                      <div className="alert alert-info">
+                        <p>{translate('WARN_Send_Link')}</p>
                       </div>
                     )}
-                  {unit === 'ether' && (
-                    <DataField
-                      value={data}
-                      onChange={readOnly ? void 0 : this.onDataChange}
+
+                    <AddressField
+                      placeholder={donationAddressMap.ETH}
+                      value={this.state.to}
+                      onChange={readOnly ? null : this.onAddressChange}
                     />
-                  )}
-                  <CustomMessage message={customMessage} />
-
-                  <div className="row form-group">
-                    <div className="col-xs-12 clearfix">
-                      <button
-                        disabled={this.state.generateDisabled}
-                        className="btn btn-info btn-block"
-                        onClick={this.generateTxFromState}
-                      >
-                        {translate('SEND_generate')}
-                      </button>
-                    </div>
-                  </div>
-
-                  {generateTxProcessing && (
-                    <div className="container">
-                      <div className="row form-group text-center">
-                        <Spinner size="5x" />
-                      </div>
-                    </div>
-                  )}
-
-                  {transaction && (
-                    <div>
-                      <div className="row form-group">
-                        <div className="col-sm-6">
-                          <label>{translate('SEND_raw')}</label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.rawTx}
-                            rows={4}
-                            readOnly={true}
+                    <AmountField
+                      value={value}
+                      unit={unit}
+                      balance={balance}
+                      tokens={this.props.tokenBalances
+                        .filter(token => !token.balance.eq(0))
+                        .map(token => token.symbol)
+                        .sort()}
+                      onChange={readOnly ? void 0 : this.onAmountChange}
+                    />
+                    <GasField
+                      value={gasLimit}
+                      onChange={readOnly ? void 0 : this.onGasChange}
+                    />
+                    {(offline || forceOffline) && (
+                        <div>
+                          <NonceField
+                            value={nonce}
+                            onChange={this.onNonceChange}
+                            placeholder={'0'}
                           />
-                        </div>
-                        <div className="col-sm-6">
-                          <label>{translate('SEND_signed')}</label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.signedTx}
-                            rows={4}
-                            readOnly={true}
-                          />
-                          {offline && (
-                            <p>
-                              To broadcast this transaction, paste the above
-                              into{' '}
-                              <a href="https://myetherwallet.com/pushTx">
-                                {' '}
-                                myetherwallet.com/pushTx
-                              </a>{' '}
-                              or{' '}
-                              <a href="https://etherscan.io/pushTx">
-                                {' '}
-                                etherscan.io/pushTx
-                              </a>
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {!offline && (
-                        <div className="row form-group">
-                          <div className="col-xs-12">
-                            <button
-                              className="btn btn-primary btn-block"
-                              disabled={!this.state.transaction}
-                              onClick={this.openTxModal}
-                            >
-                              {translate('SEND_trans')}
-                            </button>
-                          </div>
                         </div>
                       )}
+                    {unit === 'ether' && (
+                      <DataField
+                        value={data}
+                        onChange={readOnly ? void 0 : this.onDataChange}
+                      />
+                    )}
+                    <CustomMessage message={customMessage} />
+
+                    <div className="row form-group">
+                      <div className="col-xs-12 clearfix">
+                        <button
+                          disabled={this.state.generateDisabled}
+                          className="btn btn-info btn-block"
+                          onClick={
+                            isWeb3Wallet
+                              ? this.generateWeb3TxFromState
+                              : this.generateTxFromState
+                          }
+                        >
+                          {isWeb3Wallet
+                            ? translate('Send to MetaMask / Mist')
+                            : translate('SEND_generate')}
+                        </button>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </main>
-            )}
+
+                    {generateTxProcessing && (
+                      <div className="container">
+                        <div className="row form-group text-center">
+                          <Spinner size="5x" />
+                        </div>
+                      </div>
+                    )}
+
+                    {transaction && (
+                      <div>
+                        <div className="row form-group">
+                          <div className="col-sm-6">
+                            <label>{translate('SEND_raw')}</label>
+                            <textarea
+                              className="form-control"
+                              value={transaction.rawTx}
+                              rows={4}
+                              readOnly={true}
+                            />
+                          </div>
+                          <div className="col-sm-6">
+                            <label>{translate('SEND_signed')}</label>
+                            <textarea
+                              className="form-control"
+                              value={transaction.signedTx}
+                              rows={4}
+                              readOnly={true}
+                            />
+                            {offline && (
+                              <p>
+                                To broadcast this transaction, paste the above
+                                into{' '}
+                                <a href="https://myetherwallet.com/pushTx">
+                                  {' '}
+                                  myetherwallet.com/pushTx
+                                </a>{' '}
+                                or{' '}
+                                <a href="https://etherscan.io/pushTx">
+                                  {' '}
+                                  etherscan.io/pushTx
+                                </a>
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        {!offline && (
+                          <div className="row form-group">
+                            <div className="col-xs-12">
+                              <button
+                                className="btn btn-primary btn-block"
+                                disabled={!this.state.transaction}
+                                onClick={this.openTxModal}
+                              >
+                                {translate('SEND_trans')}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </main>
+              )}
+
+            {unlocked &&
+              (offline || (forceOffline && isWeb3Wallet)) && (
+                <main className="col-sm-8">
+                  <div className="Tab-content-pane">
+                    <h4>Sorry...</h4>
+                    <p>
+                      MetaMask / Mist wallets are not available in offline mode.
+                    </p>
+                  </div>
+                </main>
+              )}
 
             {/* Sidebar */}
             {unlocked && (
@@ -591,6 +614,51 @@ export class SendTransaction extends React.Component<Props, State> {
         resolve
       )
     );
+
+  public generateWeb3TxFromState = async () => {
+    await this.resetJustTx();
+    const { nodeLib, wallet, gasPrice, network } = this.props;
+
+    const { token, unit, value, to, data, gasLimit } = this.state;
+    const chainId = network.chainId;
+    const transactionInput = {
+      token,
+      unit,
+      value,
+      to,
+      data
+    };
+    const bigGasLimit = new Big(gasLimit);
+
+    if (!(wallet instanceof Web3Wallet)) {
+      return;
+    }
+
+    try {
+      const txHash = await confirmAndSendWeb3Transaction(
+        wallet,
+        nodeLib,
+        gasPrice,
+        bigGasLimit,
+        chainId,
+        transactionInput
+      );
+
+      if (network.blockExplorer !== undefined) {
+        this.props.showNotification(
+          'success',
+          <TransactionSucceeded
+            txHash={txHash}
+            blockExplorer={network.blockExplorer}
+          />,
+          0
+        );
+      }
+    } catch (err) {
+      //show an error
+      this.props.showNotification('danger', err.message, 5000);
+    }
+  };
 
   public generateTxFromState = async () => {
     this.setState({ generateTxProcessing: true });

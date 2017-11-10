@@ -15,7 +15,7 @@ import {
 } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, valueToHex, sanitizeHex } from 'libs/values';
-import { IWallet } from 'libs/wallet';
+import { IWallet, Web3Wallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import Big, { BigNumber } from 'bignumber.js';
 
@@ -241,6 +241,32 @@ export async function formatTxInput(
       data: ERC20Data
     };
   }
+}
+
+export async function confirmAndSendWeb3Transaction(
+  wallet: Web3Wallet,
+  nodeLib: RPCNode,
+  gasPrice: Wei,
+  gasLimit: BigNumber,
+  chainId: number,
+  transactionInput: TransactionInput
+): Promise<string> {
+  const { from, to, value, data } = await formatTxInput(
+    wallet,
+    transactionInput
+  );
+  const transaction: ExtendedRawTransaction = {
+    nonce: await nodeLib.getTransactionCount(from),
+    from,
+    to,
+    gasLimit,
+    value,
+    data,
+    chainId,
+    gasPrice
+  };
+
+  return wallet.sendTransaction(transaction);
 }
 
 export async function generateCompleteTransaction(

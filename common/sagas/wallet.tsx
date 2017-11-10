@@ -10,6 +10,7 @@ import {
   UnlockMnemonicAction,
   UnlockPrivateKeyAction
 } from 'actions/wallet';
+import { changeNodeIntent } from 'actions/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { INode } from 'libs/nodes/INode';
 import { Wei } from 'libs/units';
@@ -17,11 +18,21 @@ import {
   IWallet,
   MnemonicWallet,
   getPrivKeyWallet,
-  getKeystoreWallet
+  getKeystoreWallet,
+  Web3Wallet
 } from 'libs/wallet';
+import { NODES, initWeb3Node } from 'config/data';
 import React from 'react';
 import { SagaIterator } from 'redux-saga';
-import { apply, call, fork, put, select, takeEvery } from 'redux-saga/effects';
+import {
+  apply,
+  call,
+  cps,
+  fork,
+  put,
+  select,
+  takeEvery
+} from 'redux-saga/effects';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
@@ -123,6 +134,39 @@ function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
   yield put(setWallet(wallet));
 }
 
+// inspired by v3:
+// https://github.com/kvhnuke/etherwallet/blob/417115b0ab4dd2033d9108a1a5c00652d38db68d/app/scripts/controllers/decryptWalletCtrl.js#L311
+function* unlockWeb3(): SagaIterator {
+  const failMsg1 = 'Could not connect to MetaMask / Mist.';
+  const failMsg2 = 'No accounts found in MetaMask / Mist.';
+  const { web3 } = window as any;
+
+  if (!web3 || !web3.eth) {
+    yield put(showNotification('danger', translate(failMsg1)));
+    return;
+  }
+
+  try {
+    yield call(initWeb3Node);
+
+    const network = NODES.web3.network;
+    const accounts = yield cps(web3.eth.getAccounts);
+
+    if (!accounts.length) {
+      yield put(showNotification('danger', translate(failMsg2)));
+      return;
+    }
+
+    const address = accounts[0];
+
+    yield put(changeNodeIntent('web3'));
+    yield put(setWallet(new Web3Wallet(web3, address, network)));
+  } catch (err) {
+    console.error(err);
+    yield put(showNotification('danger', translate(err.message)));
+  }
+}
+
 function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
   const signedTx = action.payload.signedTx;
   try {
@@ -153,6 +197,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
     takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
+    takeEvery('WALLET_UNLOCK_WEB3', unlockWeb3),
     takeEvery('WALLET_SET', updateBalances),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
     takeEvery('WALLET_BROADCAST_TX_REQUESTED', broadcastTx)

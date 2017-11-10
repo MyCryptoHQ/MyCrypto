@@ -2,7 +2,8 @@ import {
   SetBalanceAction,
   SetTokenBalancesAction,
   SetWalletAction,
-  WalletAction
+  WalletAction,
+  TypeKeys
 } from 'actions/wallet';
 import { BigNumber } from 'bignumber.js';
 import { BroadcastTransactionStatus } from 'libs/transaction';
@@ -107,20 +108,20 @@ export function wallet(
   action: WalletAction
 ): State {
   switch (action.type) {
-    case 'WALLET_SET':
+    case TypeKeys.WALLET_SET:
       return setWallet(state, action);
-    case 'WALLET_RESET':
+    case TypeKeys.WALLET_RESET:
       return INITIAL_STATE;
-    case 'WALLET_SET_BALANCE':
+    case TypeKeys.WALLET_SET_BALANCE:
       return setBalance(state, action);
-    case 'WALLET_SET_TOKEN_BALANCES':
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES:
       return setTokenBalances(state, action);
-    case 'WALLET_BROADCAST_TX_REQUESTED':
+    case TypeKeys.WALLET_BROADCAST_TX_REQUESTED:
       return {
         ...state,
         transactions: handleBroadcastTxRequested(state, action.payload.signedTx)
       };
-    case 'WALLET_BROADCAST_TX_SUCCEEDED':
+    case TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED:
       return {
         ...state,
         transactions: handleTxBroadcastCompleted(
@@ -129,7 +130,7 @@ export function wallet(
           true
         )
       };
-    case 'WALLET_BROADCAST_TX_FAILED':
+    case TypeKeys.WALLET_BROADCAST_TX_FAILED:
       return {
         ...state,
         transactions: handleTxBroadcastCompleted(
