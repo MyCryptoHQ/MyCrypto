@@ -7,8 +7,8 @@ import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
 import { UnitKey, Wei, TokenValue, toTokenBase } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { stripHexPrefixAndLower, toHexWei, sanitizeHex } from 'libs/values';
-import { IWallet } from 'libs/wallet';
+import { stripHexPrefixAndLower, sanitizeHex, toHexWei } from 'libs/values';
+import { IWallet, Web3Wallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 
 export interface TransactionInput {
@@ -77,9 +77,9 @@ function getValue(
 ): Wei {
   let value;
   if (token) {
-    value = Wei(ERC20.$transfer(tx.data).value, 16);
+    value = Wei(ERC20.$transfer(tx.data).value);
   } else {
-    value = Wei(tx.value, 16);
+    value = Wei(tx.value);
   }
   return value;
 }
@@ -238,6 +238,32 @@ export async function formatTxInput(
   }
 }
 
+export async function confirmAndSendWeb3Transaction(
+  wallet: Web3Wallet,
+  nodeLib: RPCNode,
+  gasPrice: Wei,
+  gasLimit: Wei,
+  chainId: number,
+  transactionInput: TransactionInput
+): Promise<string> {
+  const { from, to, value, data } = await formatTxInput(
+    wallet,
+    transactionInput
+  );
+  const transaction: ExtendedRawTransaction = {
+    nonce: await nodeLib.getTransactionCount(from),
+    from,
+    to,
+    gasLimit,
+    value,
+    data,
+    chainId,
+    gasPrice
+  };
+
+  return wallet.sendTransaction(transaction);
+}
+
 export async function generateCompleteTransaction(
   wallet: IWallet,
   nodeLib: RPCNode,
@@ -297,13 +323,13 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
     fixedValue = tokenData.value;
     toAddress = tokenData.to;
   } else {
-    fixedValue = Wei(value, 16);
+    fixedValue = Wei(value);
     toAddress = to;
   }
 
   return {
     value: fixedValue,
-    gasPrice: Wei(gasPrice, 16),
+    gasPrice: Wei(gasPrice),
     data,
     toAddress,
     nonce,
