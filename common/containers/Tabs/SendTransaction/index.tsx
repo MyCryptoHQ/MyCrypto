@@ -3,12 +3,35 @@ import Spinner from 'components/ui/Spinner';
 import TabSection from 'containers/TabSection';
 import { BalanceSidebar } from 'components';
 import { UnlockHeader } from 'components/ui';
-import { ConfirmationModal, CustomMessage } from './components';
+import {
+  NonceField,
+  AddressField,
+  AmountField,
+  ConfirmationModal,
+  CustomMessage,
+  DataField,
+  GasField
+} from './components';
+
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import NavigationPrompt from './components/NavigationPrompt';
 // LIBS
 import { stripHexPrefix } from 'libs/values';
+import { TransactionWithoutGas } from 'libs/messages';
+import { RPCNode } from 'libs/nodes';
+import {
+  BroadcastTransactionStatus,
+  CompleteTransaction,
+  confirmAndSendWeb3Transaction,
+  formatTxInput,
+  generateCompleteTransaction,
+  getBalanceMinusGasCosts,
+  TransactionInput
+} from 'libs/transaction';
 import { UnitKey, Wei, getDecimal, toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
+// LIBS
+import { IWallet, Web3Wallet } from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
@@ -175,6 +198,7 @@ export class SendTransaction extends React.Component<Props, State> {
       unit === 'ether'
         ? getDecimal('ether')
         : (this.state.token && this.state.token.decimal) || 0;
+    const isWeb3Wallet = this.props.wallet instanceof Web3Wallet;
     return (
       <TabSection>
         <section className="Tab-content">
@@ -194,93 +218,121 @@ export class SendTransaction extends React.Component<Props, State> {
           />
           <div className="row">
             {/* Send Form */}
-            {unlocked && (
-              <main className="col-sm-8">
-                <div className="Tab-content-pane">
-                  {hasQueryString && (
-                    <div className="alert alert-info">
-                      <p>{translate('WARN_Send_Link')}</p>
-                    </div>
-                  )}
-
-                  <CustomMessage message={customMessage} />
-
-                  <div className="row form-group">
-                    <div className="col-xs-12 clearfix">
-                      <button
-                        disabled={this.state.generateDisabled}
-                        className="btn btn-info btn-block"
-                        onClick={this.generateTxFromState}
-                      >
-                        {translate('SEND_generate')}
-                      </button>
-                    </div>
-                  </div>
-
-                  {generateTxProcessing && (
-                    <div className="container">
-                      <div className="row form-group text-center">
-                        <Spinner size="5x" />
+            {unlocked &&
+              !(offline || (forceOffline && isWeb3Wallet)) && (
+                <main className="col-sm-8">
+                  <div className="Tab-content-pane">
+                    {hasQueryString && (
+                      <div className="alert alert-info">
+                        <p>{translate('WARN_Send_Link')}</p>
+                      </div>
+                    )}
+                    <CustomMessage message={customMessage} />
+                    <div className="row form-group">
+                      <div className="col-xs-12 clearfix">
+                        <button
+                          disabled={this.state.generateDisabled}
+                          className="btn btn-info btn-block"
+                          onClick={this.generateTxFromState}
+                        >
+                          {translate('SEND_generate')}
+                        </button>
                       </div>
                     </div>
-                  )}
-
-                  {transaction && (
-                    <div>
-                      <div className="row form-group">
-                        <div className="col-sm-6">
-                          <label>{translate('SEND_raw')}</label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.rawTx}
-                            rows={4}
-                            readOnly={true}
-                          />
-                        </div>
-                        <div className="col-sm-6">
-                          <label>{translate('SEND_signed')}</label>
-                          <textarea
-                            className="form-control"
-                            value={transaction.signedTx}
-                            rows={4}
-                            readOnly={true}
-                          />
-                          {offline && (
-                            <p>
-                              To broadcast this transaction, paste the above
-                              into{' '}
-                              <a href="https://myetherwallet.com/pushTx">
-                                {' '}
-                                myetherwallet.com/pushTx
-                              </a>{' '}
-                              or{' '}
-                              <a href="https://etherscan.io/pushTx">
-                                {' '}
-                                etherscan.io/pushTx
-                              </a>
-                            </p>
-                          )}
+                    }
+                    <CustomMessage message={customMessage} />
+                    <div className="row form-group">
+                      <div className="col-xs-12 clearfix">
+                        <button
+                          disabled={this.state.generateDisabled}
+                          className="btn btn-info btn-block"
+                          onClick={
+                            isWeb3Wallet
+                              ? this.generateWeb3TxFromState
+                              : this.generateTxFromState
+                          }
+                        >
+                          {isWeb3Wallet
+                            ? translate('Send to MetaMask / Mist')
+                            : translate('SEND_generate')}
+                        </button>
+                      </div>
+                    </div>
+                    {generateTxProcessing && (
+                      <div className="container">
+                        <div className="row form-group text-center">
+                          <Spinner size="5x" />
                         </div>
                       </div>
-
-                      {!offline && (
+                    )}
+                    {transaction && (
+                      <div>
                         <div className="row form-group">
-                          <div className="col-xs-12">
-                            <button
-                              className="btn btn-primary btn-block"
-                              disabled={!this.state.transaction}
-                              onClick={this.openTxModal}
-                            >
-                              {translate('SEND_trans')}
-                            </button>
+                          <div className="col-sm-6">
+                            <label>{translate('SEND_raw')}</label>
+                            <textarea
+                              className="form-control"
+                              value={transaction.rawTx}
+                              rows={4}
+                              readOnly={true}
+                            />
+                          </div>
+                          <div className="col-sm-6">
+                            <label>{translate('SEND_signed')}</label>
+                            <textarea
+                              className="form-control"
+                              value={transaction.signedTx}
+                              rows={4}
+                              readOnly={true}
+                            />
+                            {offline && (
+                              <p>
+                                To broadcast this transaction, paste the above
+                                into{' '}
+                                <a href="https://myetherwallet.com/pushTx">
+                                  {' '}
+                                  myetherwallet.com/pushTx
+                                </a>{' '}
+                                or{' '}
+                                <a href="https://etherscan.io/pushTx">
+                                  {' '}
+                                  etherscan.io/pushTx
+                                </a>
+                              </p>
+                            )}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </main>
-            )}
+
+                        {!offline && (
+                          <div className="row form-group">
+                            <div className="col-xs-12">
+                              <button
+                                className="btn btn-primary btn-block"
+                                disabled={!this.state.transaction}
+                                onClick={this.openTxModal}
+                              >
+                                {translate('SEND_trans')}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </main>
+              )}
+
+            {unlocked &&
+              (offline || (forceOffline && isWeb3Wallet)) && (
+                <main className="col-sm-8">
+                  <div className="Tab-content-pane">
+                    <h4>Sorry...</h4>
+                    <p>
+                      MetaMask / Mist wallets are not available in offline mode.
+                    </p>
+                  </div>
+                </main>
+              )}
 
             {/* Sidebar */}
             {unlocked && (
@@ -450,6 +502,51 @@ export class SendTransaction extends React.Component<Props, State> {
         resolve
       )
     );
+
+  public generateWeb3TxFromState = async () => {
+    await this.resetJustTx();
+    const { nodeLib, wallet, gasPrice, network } = this.props;
+
+    const { token, unit, value, to, data, gasLimit } = this.state;
+    const chainId = network.chainId;
+    const transactionInput = {
+      token,
+      unit,
+      value,
+      to,
+      data
+    };
+    const bigGasLimit = Wei(gasLimit);
+
+    if (!(wallet instanceof Web3Wallet)) {
+      return;
+    }
+
+    try {
+      const txHash = await confirmAndSendWeb3Transaction(
+        wallet,
+        nodeLib,
+        gasPrice,
+        bigGasLimit,
+        chainId,
+        transactionInput
+      );
+
+      if (network.blockExplorer !== undefined) {
+        this.props.showNotification(
+          'success',
+          <TransactionSucceeded
+            txHash={txHash}
+            blockExplorer={network.blockExplorer}
+          />,
+          0
+        );
+      }
+    } catch (err) {
+      //show an error
+      this.props.showNotification('danger', err.message, 5000);
+    }
+  };
 
   public generateTxFromState = async () => {
     this.setState({ generateTxProcessing: true });

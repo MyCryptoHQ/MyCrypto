@@ -47,7 +47,8 @@ export default class Header extends Component<Props, {}> {
             {NODES[key].network} <small>({NODES[key].service})</small>
           </span>
         ),
-        color: NETWORKS[NODES[key].network].color
+        color: NETWORKS[NODES[key].network].color,
+        hidden: NODES[key].hidden
       };
     });
 
@@ -90,9 +91,9 @@ export default class Header extends Component<Props, {}> {
 
               <div className="Header-branding-right-dropdown">
                 <LanguageDropDown
-                  ariaLabel={`change language. current language ${languages[
-                    selectedLanguage
-                  ]}`}
+                  ariaLabel={`change language. current language ${
+                    languages[selectedLanguage]
+                  }`}
                   options={Object.values(languages)}
                   value={languages[selectedLanguage]}
                   extra={
@@ -110,7 +111,9 @@ export default class Header extends Component<Props, {}> {
 
               <div className="Header-branding-right-dropdown">
                 <ColorDropdown
-                  ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
+                  ariaLabel={`change node. current node ${
+                    selectedNode.network
+                  } node by ${selectedNode.service}`}
                   options={nodeOptions}
                   value={nodeSelection}
                   extra={
@@ -118,6 +121,7 @@ export default class Header extends Component<Props, {}> {
                       <a>Add Custom Node</a>
                     </li>
                   }
+                  disabled={nodeSelection === 'web3'}
                   onChange={changeNodeIntent}
                   size="smr"
                   color="white"
