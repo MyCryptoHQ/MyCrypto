@@ -1,7 +1,7 @@
 import { IWallet } from '../IWallet';
 import { ExtendedRawTransaction } from 'libs/transaction';
 import { networkIdToName } from 'libs/values';
-import { addHexPrefix } from 'ethereumjs-util';
+import { bufferToHex } from 'ethereumjs-util';
 
 export default class Web3Wallet implements IWallet {
   private web3: any;
@@ -26,10 +26,10 @@ export default class Web3Wallet implements IWallet {
 
   public signMessage(msg: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const msgHex = Buffer.from(msg).toString('hex');
+      const msgHex = bufferToHex(Buffer.from(msg));
       const options = {
         method: 'personal_sign',
-        params: [addHexPrefix(msgHex), this.address],
+        params: [msgHex, this.address],
         signingAddr: this.address
       };
 
