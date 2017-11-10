@@ -51,7 +51,7 @@ describe('formatNumber', () => {
     {
       input: '239.999632',
       output: '240',
-      digits: '0'
+      digits: 0
     },
     {
       input: '999.999',
