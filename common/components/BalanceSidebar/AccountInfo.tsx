@@ -85,7 +85,7 @@ export default class AccountInfo extends React.Component<Props, State> {
                   displayShortBalance={!showLongBalance}
                 />
               </span>
-              {network.name}
+              {` ${network.name}`}
             </li>
           </ul>
         </div>
