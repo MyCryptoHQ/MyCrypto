@@ -3,49 +3,20 @@ import Spinner from 'components/ui/Spinner';
 import TabSection from 'containers/TabSection';
 import { BalanceSidebar } from 'components';
 import { UnlockHeader } from 'components/ui';
-import {
-  NonceField,
-  AddressField,
-  AmountField,
-  ConfirmationModal,
-  CustomMessage,
-  DataField,
-  GasField
-} from './components';
+import { ConfirmationModal, CustomMessage } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
-// CONFIG
-import { donationAddressMap, NetworkConfig } from 'config/data';
 // LIBS
 import { stripHexPrefix } from 'libs/values';
-import { TransactionWithoutGas } from 'libs/messages';
-import { RPCNode } from 'libs/nodes';
-import {
-  BroadcastTransactionStatus,
-  CompleteTransaction,
-  formatTxInput,
-  generateCompleteTransaction,
-  getBalanceMinusGasCosts,
-  TransactionInput
-} from 'libs/transaction';
 import { UnitKey, Wei, getDecimal, toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { IWallet } from 'libs/wallet/IWallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import {
-  broadcastTx,
-  TBroadcastTx,
-  resetWallet,
-  TResetWallet
-} from 'actions/wallet';
-import {
-  pollOfflineStatus as dPollOfflineStatus,
-  TPollOfflineStatus
-} from 'actions/config';
+import { showNotification } from 'actions/notifications';
+import { broadcastTx, resetWallet } from 'actions/wallet';
+import { pollOfflineStatus as dPollOfflineStatus } from 'actions/config';
 // SELECTORS
 import {
   getGasPriceGwei,
@@ -55,9 +26,7 @@ import {
 import {
   getTokenBalances,
   getTokens,
-  getTxFromBroadcastTransactionStatus,
-  MergedToken,
-  TokenBalance
+  getTxFromBroadcastTransactionStatus
 } from 'selectors/wallet';
 import translate from 'translations';
 // UTILS
@@ -67,62 +36,7 @@ import queryString from 'query-string';
 // MISC
 import customMessages from './messages';
 
-interface State {
-  hasQueryString: boolean;
-  readOnly: boolean;
-  to: string;
-  // amount value
-  value: string;
-  unit: UnitKey;
-  token?: MergedToken | null;
-  gasLimit: string;
-  data: string;
-  gasChanged: boolean;
-  transaction: CompleteTransaction | null;
-  showTxConfirm: boolean;
-  generateDisabled: boolean;
-  nonce: number | null | undefined;
-  hasSetDefaultNonce: boolean;
-  generateTxProcessing: boolean;
-  walletAddress: string | null;
-}
-
-interface Props {
-  wallet: IWallet;
-  balance: Wei;
-  nodeLib: RPCNode;
-  network: NetworkConfig;
-  tokens: MergedToken[];
-  tokenBalances: TokenBalance[];
-  gasPrice: Wei;
-  transactions: BroadcastTransactionStatus[];
-  showNotification: TShowNotification;
-  broadcastTx: TBroadcastTx;
-  resetWallet: TResetWallet;
-  offline: boolean;
-  forceOffline: boolean;
-  pollOfflineStatus: TPollOfflineStatus;
-  location: { search: string };
-}
-
-const initialState: State = {
-  hasQueryString: false,
-  readOnly: false,
-  to: '',
-  value: '',
-  unit: 'ether',
-  token: null,
-  gasLimit: '21000',
-  data: '',
-  gasChanged: false,
-  showTxConfirm: false,
-  transaction: null,
-  generateDisabled: true,
-  nonce: null,
-  hasSetDefaultNonce: false,
-  generateTxProcessing: false,
-  walletAddress: null
-};
+import { initialState, Props, State } from './typings';
 
 export class SendTransaction extends React.Component<Props, State> {
   public state: State = initialState;
@@ -289,42 +203,6 @@ export class SendTransaction extends React.Component<Props, State> {
                     </div>
                   )}
 
-                  <AddressField
-                    placeholder={donationAddressMap.ETH}
-                    value={this.state.to}
-                    onChange={readOnly ? null : this.onAddressChange}
-                  />
-                  <AmountField
-                    unit={unit}
-                    decimal={decimal}
-                    balance={balance}
-                    tokens={this.props.tokenBalances
-                      .filter(token => !token.balance.eqn(0))
-                      .map(token => token.symbol)
-                      .sort()}
-                    onAmountChange={this.onAmountChange}
-                    isReadOnly={readOnly}
-                    onUnitChange={this.onUnitChange}
-                  />
-                  <GasField
-                    value={gasLimit}
-                    onChange={readOnly ? void 0 : this.onGasChange}
-                  />
-                  {(offline || forceOffline) && (
-                    <div>
-                      <NonceField
-                        value={nonce}
-                        onChange={this.onNonceChange}
-                        placeholder={'0'}
-                      />
-                    </div>
-                  )}
-                  {unit === 'ether' && (
-                    <DataField
-                      value={data}
-                      onChange={readOnly ? void 0 : this.onDataChange}
-                    />
-                  )}
                   <CustomMessage message={customMessage} />
 
                   <div className="row form-group">
@@ -468,19 +346,6 @@ export class SendTransaction extends React.Component<Props, State> {
     );
   }
 
-  public async getFormattedTxFromState(): Promise<TransactionWithoutGas> {
-    const { wallet } = this.props;
-    const { token, unit, value, to, data } = this.state;
-    const transactionInput: TransactionInput = {
-      token,
-      unit,
-      value,
-      to,
-      data
-    };
-    return await formatTxInput(wallet, transactionInput);
-  }
-
   public isValidValue() {
     return !isNaN(parseInt(this.state.value, 10));
   }
@@ -523,22 +388,6 @@ export class SendTransaction extends React.Component<Props, State> {
       }
     }
   }
-
-  public onAddressChange = (value: string) => {
-    this.setState({
-      to: value
-    });
-  };
-
-  public onDataChange = (value: string) => {
-    if (this.state.unit === 'ether') {
-      this.setState({ data: value });
-    }
-  };
-
-  public onGasChange = (value: string) => {
-    this.setState({ gasLimit: value, gasChanged: true });
-  };
 
   public handleEverythingAmountChange = (
     value: string,
@@ -635,25 +484,29 @@ export class SendTransaction extends React.Component<Props, State> {
     }
   };
 
-  public openTxModal = () => {
-    this.setState({ showTxConfirm: true });
-  };
+  public onAddressChange = (value: string) =>
+    this.setState({
+      to: value
+    });
 
-  public hideConfirmTx = () => {
-    this.setState({ showTxConfirm: false });
-  };
+  public onDataChange = (value: string) =>
+    this.state.unit === 'ether' && this.setState({ data: value });
 
-  public resetTx = () => {
+  public onGasChange = (value: string) =>
+    this.setState({ gasLimit: value, gasChanged: true });
+
+  public openTxModal = () => this.setState({ showTxConfirm: true });
+
+  public hideConfirmTx = () => this.setState({ showTxConfirm: false });
+
+  public resetTx = () =>
     this.setState({
       to: '',
       value: '',
       transaction: null
     });
-  };
 
-  public confirmTx = (signedTx: string) => {
-    this.props.broadcastTx(signedTx);
-  };
+  public confirmTx = (signedTx: string) => this.props.broadcastTx(signedTx);
 }
 
 function mapStateToProps(state: AppState) {
