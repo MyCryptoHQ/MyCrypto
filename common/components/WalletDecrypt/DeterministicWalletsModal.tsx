@@ -293,6 +293,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
             unit={'ether'}
             value={wallet.value}
             symbol={network.unit}
+            displayShortBalance={true}
           />
         </td>
         <td>
@@ -301,6 +302,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
               decimal={token.decimal}
               value={token.value}
               symbol={desiredToken}
+              displayShortBalance={true}
             />
           ) : (
             '???'
