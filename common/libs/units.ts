@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { stripHexPrefix } from 'libs/values';
+import { toBuffer } from 'ethereumjs-util';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -32,15 +32,9 @@ const Units = {
   tether: '1000000000000000000000000000000'
 };
 
-const Wei = (input: string | BN, base: number = 10): Wei =>
-  typeof input === 'string'
-    ? new BN(stripHexPrefix(input), base)
-    : new BN(input, base);
+const Wei = (input: string | BN): Wei => new BN(toBuffer(input).toString());
 
-const TokenValue = (input: string | BN, base: number = 10) =>
-  typeof input === 'string'
-    ? new BN(stripHexPrefix(input), base)
-    : new BN(input, base);
+const TokenValue = (input: string | BN) => new BN(toBuffer(input).toString());
 
 const getDecimal = (key: UnitKey) => Units[key].length - 1;
 

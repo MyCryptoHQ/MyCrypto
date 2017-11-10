@@ -29,7 +29,7 @@ export default class RpcNode implements INode {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        return Wei(response.result, 16);
+        return Wei(response.result);
       });
   }
 
@@ -40,7 +40,7 @@ export default class RpcNode implements INode {
         if (response.error) {
           throw new Error(response.error.message);
         }
-        return Wei(response.result, 16);
+        return Wei(response.result);
       });
   }
 
@@ -52,7 +52,7 @@ export default class RpcNode implements INode {
           // TODO - Error handling
           return TokenValue('0');
         }
-        return TokenValue(response.result, 16);
+        return TokenValue(response.result);
       });
   }
 
@@ -68,7 +68,7 @@ export default class RpcNode implements INode {
           if (item.error) {
             return TokenValue('0');
           }
-          return TokenValue(item.result, 16);
+          return TokenValue(item.result);
         });
       });
     // TODO - Error handling

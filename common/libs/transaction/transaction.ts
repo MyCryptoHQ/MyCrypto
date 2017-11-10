@@ -77,9 +77,9 @@ function getValue(
 ): Wei {
   let value;
   if (token) {
-    value = Wei(ERC20.$transfer(tx.data).value, 16);
+    value = Wei(ERC20.$transfer(tx.data).value);
   } else {
-    value = Wei(tx.value, 16);
+    value = Wei(tx.value);
   }
   return value;
 }
@@ -297,13 +297,13 @@ export function decodeTransaction(transaction: EthTx, token: Token | false) {
     fixedValue = tokenData.value;
     toAddress = tokenData.to;
   } else {
-    fixedValue = Wei(value, 16);
+    fixedValue = Wei(value);
     toAddress = to;
   }
 
   return {
     value: fixedValue,
-    gasPrice: Wei(gasPrice, 16),
+    gasPrice: Wei(gasPrice),
     data,
     toAddress,
     nonce,
