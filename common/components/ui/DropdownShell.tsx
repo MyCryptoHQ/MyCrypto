@@ -53,9 +53,9 @@ export default class DropdownComponent extends Component<Props, State> {
 
     return (
       <span
-        className={`dropdown ${expanded ? 'open' : ''} ${className
-          ? className
-          : ''}`}
+        className={classnames('dropdown', className, {
+          open: expanded
+        })}
         ref={el => (this.dropdown = el)}
       >
         <a

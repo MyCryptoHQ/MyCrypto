@@ -206,7 +206,6 @@ export default class CurrencySwap extends Component<
                 onChange={this.onChangeOriginAmount}
               />
               <OriginKindDropDown
-                className="CurrencySwap-dropdown"
                 ariaLabel={`change origin kind. current origin kind ${originKind}`}
                 options={originKindOptions}
                 value={originKind}
@@ -236,7 +235,6 @@ export default class CurrencySwap extends Component<
                 onChange={this.onChangeDestinationAmount}
               />
               <DestinationKindDropDown
-                className="CurrencySwap-dropdown"
                 ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
                 options={destinationKindOptions}
                 value={destinationKind}
