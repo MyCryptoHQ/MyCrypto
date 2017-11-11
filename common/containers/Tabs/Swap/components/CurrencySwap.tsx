@@ -103,18 +103,20 @@ export default class CurrencySwap extends Component<
           minAmount = toFixedIfLarger(REPMin, 3);
           break;
         default:
-          console.log('Something went terribly wrong!');
+          console.warn('Something went terribly wrong!');
       }
-      const errString = `Min ${minAmount} ${originKind}. Max ${maxAmount} ${originKind}.`;
-
+      let errString;
+      if (originAmount > maxAmount) {
+        errString = `Maximum ${originKind} is ${maxAmount}`;
+      } else {
+        errString = `Minimum ${originKind} is ${minAmount}`;
+      }
       this.setState({
         originErr: errString
       });
     } else {
       this.setState({
-        originErr: ''
-      });
-      this.setState({
+        originErr: '',
         disabled
       });
     }
