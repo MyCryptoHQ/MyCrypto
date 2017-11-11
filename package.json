@@ -48,7 +48,7 @@
     "@types/bignumber.js": "4.0.2",
     "@types/classnames": "2.2.3",
     "@types/history": "4.6.1",
-    "@types/jest": "21.1.5",
+    "@types/jest": "21.1.6",
     "@types/lodash": "4.14.82",
     "@types/qrcode": "0.8.0",
     "@types/qrcode.react": "0.6.2",
