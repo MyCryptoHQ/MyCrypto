@@ -29,8 +29,7 @@ const WALLETS = {
       file: '',
       password: ''
     },
-    unlock: unlockKeystore,
-    disabled: false
+    unlock: unlockKeystore
   },
   'private-key': {
     lid: 'x_PrivKey2',
@@ -39,34 +38,31 @@ const WALLETS = {
       key: '',
       password: ''
     },
-    unlock: unlockPrivateKey,
-    disabled: false
+    unlock: unlockPrivateKey
   },
   'mnemonic-phrase': {
     lid: 'x_Mnemonic',
     component: MnemonicDecrypt,
     initialParams: {},
-    unlock: unlockMnemonic,
-    disabled: false
+    unlock: unlockMnemonic
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
     component: LedgerNanoSDecrypt,
     initialParams: {},
-    unlock: setWallet,
-    disabled: false
+    unlock: setWallet
   },
   trezor: {
     lid: 'x_Trezor',
     component: TrezorDecrypt,
     initialParams: {},
-    unlock: setWallet,
-    disabled: false
+    unlock: setWallet
   },
   'view-only': {
     lid: 'View with Address Only',
     component: ViewOnlyDecrypt,
-    disabled: true
+    initialParams: {},
+    unlock: setWallet
   }
 };
 
@@ -129,9 +125,7 @@ export class WalletDecrypt extends Component<Props, State> {
             value={key}
             checked={isSelected}
             onChange={this.handleDecryptionChoiceChange}
-            disabled={
-              wallet.disabled || this.isOnlineRequiredWalletAndOffline(key)
-            }
+            disabled={this.isOnlineRequiredWalletAndOffline(key)}
           />
           <span id={`${key}-label`}>{translate(wallet.lid)}</span>
         </label>
