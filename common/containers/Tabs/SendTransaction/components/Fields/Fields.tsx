@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  NonceField,
+  NonceInput,
   AddressField,
   AmountField,
   DataField,
@@ -33,7 +33,7 @@ const Fields: React.SFC<any> = () => (
     />
     {(offline || forceOffline) && (
       <div>
-        <NonceField
+        <NonceInput
           value={nonce}
           onChange={this.onNonceChange}
           placeholder={'0'}
