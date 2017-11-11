@@ -8,7 +8,10 @@ interface Offline {
 }
 
 interface Props extends Offline {
-  withOffline({ offline, forceOffline }: Offline): React.ReactElement<any>;
+  withOffline({
+    offline,
+    forceOffline
+  }: Offline): React.ReactElement<any> | null;
 }
 
 class OfflineClass extends React.Component<Props, {}> {
