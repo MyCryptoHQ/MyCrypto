@@ -5,6 +5,7 @@ import { Wei } from 'libs/units';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
+import { isValidGetBalance } from '../../validators';
 
 // TODO - understand response values
 // "RPC" requests will sometimes resolve with 200, but contain a payload informing there was an error.
@@ -42,11 +43,12 @@ export default class RpcNode implements INode {
     return this.client
       .call(this.requests.getBalance(address))
       .then(ensureOkResponse)
+      .then(isValidGetBalance)
       .then(response => {
         return new Wei(String(response.result));
       })
       .catch(err => {
-        throw new Error('Warning: Unable to Get Balance');
+        throw new Error('Warning: Unable to Get Balance - ' + err);
       });
   }
 

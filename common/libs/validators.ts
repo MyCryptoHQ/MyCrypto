@@ -2,6 +2,8 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
+import { Validator, validate } from 'jsonschema';
+import { JsonRpcResponse } from './nodes/rpc/types';
 
 export function isValidETHAddress(address: string): boolean {
   if (!address) {
@@ -177,3 +179,28 @@ export const isValidByteCode = (byteCode: string) =>
 
 export const isValidAbiJson = (abiJson: string) =>
   abiJson && abiJson.startsWith('[') && abiJson.endsWith(']');
+
+// JSONSchema Validations for Rpc responses
+const v = new Validator();
+
+export const schema = {
+  getBalance: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      jsonrpc: { type: 'string' },
+      id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
+      result: { type: 'string' },
+      status: { type: 'string' },
+      message: { type: 'string' }
+    }
+  }
+};
+
+export const isValidGetBalance = (result: JsonRpcResponse) => {
+  const validateResult = v.validate(result, schema.getBalance);
+  if (!validateResult.valid) {
+    throw new Error('Invalid Balance Data Shape.');
+  }
+  return result;
+};
