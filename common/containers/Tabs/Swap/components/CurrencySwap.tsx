@@ -96,7 +96,7 @@ export default class CurrencySwap extends Component<
       const getRates = kind => {
         let minAmount;
         let maxAmount;
-        switch (originKind) {
+        switch (kind) {
           case 'BTC':
             minAmount = toFixedIfLarger(bityConfig.BTCMin, 3);
             maxAmount = toFixedIfLarger(bityConfig.BTCMax, 3);
