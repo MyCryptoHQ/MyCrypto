@@ -91,9 +91,9 @@ export default class Header extends Component<Props, {}> {
 
               <div className="Header-branding-right-dropdown">
                 <LanguageDropDown
-                  ariaLabel={`change language. current language ${languages[
-                    selectedLanguage
-                  ]}`}
+                  ariaLabel={`change language. current language ${
+                    languages[selectedLanguage]
+                  }`}
                   options={Object.values(languages)}
                   value={languages[selectedLanguage]}
                   extra={
@@ -111,7 +111,9 @@ export default class Header extends Component<Props, {}> {
 
               <div className="Header-branding-right-dropdown">
                 <ColorDropdown
-                  ariaLabel={`change node. current node ${selectedNode.network} node by ${selectedNode.service}`}
+                  ariaLabel={`change node. current node ${
+                    selectedNode.network
+                  } node by ${selectedNode.service}`}
                   options={nodeOptions}
                   value={nodeSelection}
                   extra={
