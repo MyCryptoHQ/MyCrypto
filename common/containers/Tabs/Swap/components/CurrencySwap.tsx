@@ -109,7 +109,20 @@ export default class CurrencySwap extends Component<
             minAmount = toFixedIfLarger(REPMin, 3);
             break;
           default:
-            console.warn('Something went terribly wrong!');
+            if (this.state.showedMinMaxError) {
+              this.setState(
+                {
+                  showedMinMaxError: true
+                },
+                () => {
+                  this.props.showNotification(
+                    'danger',
+                    "Couldn't get match currency kind. Something went terribly wrong",
+                    10000
+                  );
+                }
+              );
+            }
         }
         return { minAmount, maxAmount };
       };
@@ -237,11 +250,12 @@ export default class CurrencySwap extends Component<
             <div className="CurrencySwap-input-group">
               <span className="CurrencySwap-error-message">{originErr}</span>
               <input
-                className={`CurrencySwap-input form-control ${String(
-                  originAmount
-                ) !== '' && this.isMinMaxValid(originAmount, originKind)
-                  ? 'is-valid'
-                  : 'is-invalid'}`}
+                className={`CurrencySwap-input form-control ${
+                  String(originAmount) !== '' &&
+                  this.isMinMaxValid(originAmount, originKind)
+                    ? 'is-valid'
+                    : 'is-invalid'
+                }`}
                 type="number"
                 placeholder="Amount"
                 value={originAmount || originAmount === 0 ? originAmount : ''}
@@ -249,7 +263,9 @@ export default class CurrencySwap extends Component<
               />
               <div className="CurrencySwap-dropdown">
                 <OriginKindDropDown
-                  ariaLabel={`change origin kind. current origin kind ${originKind}`}
+                  ariaLabel={`change origin kind. current origin kind ${
+                    originKind
+                  }`}
                   options={originKindOptions}
                   value={originKind}
                   onChange={this.props.originKindSwap}
@@ -264,11 +280,12 @@ export default class CurrencySwap extends Component<
                 {destinationErr}
               </span>
               <input
-                className={`CurrencySwap-input form-control ${String(
-                  destinationAmount
-                ) !== '' && this.isMinMaxValid(originAmount, originKind)
-                  ? 'is-valid'
-                  : 'is-invalid'}`}
+                className={`CurrencySwap-input form-control ${
+                  String(destinationAmount) !== '' &&
+                  this.isMinMaxValid(originAmount, originKind)
+                    ? 'is-valid'
+                    : 'is-invalid'
+                }`}
                 type="number"
                 placeholder="Amount"
                 value={
@@ -280,7 +297,9 @@ export default class CurrencySwap extends Component<
               />
               <div className="CurrencySwap-dropdown">
                 <DestinationKindDropDown
-                  ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
+                  ariaLabel={`change destination kind. current destination kind ${
+                    destinationKind
+                  }`}
                   options={destinationKindOptions}
                   value={destinationKind}
                   onChange={this.props.destinationKindSwap}
