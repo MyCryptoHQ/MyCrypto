@@ -85,6 +85,7 @@
     "husky": "^0.14.3",
     "image-webpack-loader": "^3.4.2",
     "jest": "^21.2.1",
+    "jsonschema": "1.2.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
     "lint-staged": "^4.2.2",
