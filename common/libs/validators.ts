@@ -2,7 +2,7 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
-import { Validator, validate } from 'jsonschema';
+import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
 
 export function isValidETHAddress(address: string): boolean {

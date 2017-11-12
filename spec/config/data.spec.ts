@@ -11,11 +11,10 @@ const validRequests = {
   txObject: {}
 };
 
-const testGetBalance = async (n: RPCNode, service: string) => {
+const testGetBalance = async (n: RPCNode) => {
   const data = await n.client.call(
     n.requests.getBalance(validRequests.address)
   );
-  console.log(service, data);
   return v.validate(data, schema.getBalance);
 };
 
@@ -27,9 +26,7 @@ function testRequests(node: RPCNode, service: string) {
   Object.keys(RPCTests).forEach(testType => {
     describe('RPC getBalance should work', () => {
       it(`RPC: ${testType} ${service}`, () => {
-        return RPCTests[testType](node, service).then(d =>
-          expect(d.valid).toBeTruthy()
-        );
+        return RPCTests[testType](node).then(d => expect(d.valid).toBeTruthy());
       });
     });
   });
