@@ -75,7 +75,12 @@ export default class CurrencySwap extends Component<
     return !(hasOriginAmountAndDestinationAmount && minMaxIsValid);
   };
 
-  public setDisabled(originAmount, originKind, destinationAmount) {
+  public setDisabled(
+    originAmount,
+    originKind,
+    destinationKind,
+    destinationAmount
+  ) {
     const disabled = this.isDisabled(
       originAmount,
       originKind,
@@ -88,36 +93,55 @@ export default class CurrencySwap extends Component<
       const ETHMax = generateKindMax(bityRates.BTCETH, 'ETH');
       const REPMin = generateKindMin(bityRates.BTCREP, 'REP');
 
-      let minAmount;
-      let maxAmount;
-      switch (originKind) {
-        case 'BTC':
-          minAmount = toFixedIfLarger(bityConfig.BTCMin, 3);
-          maxAmount = toFixedIfLarger(bityConfig.BTCMax, 3);
-          break;
-        case 'ETH':
-          minAmount = toFixedIfLarger(ETHMin, 3);
-          maxAmount = toFixedIfLarger(ETHMax, 3);
-          break;
-        case 'REP':
-          minAmount = toFixedIfLarger(REPMin, 3);
-          break;
-        default:
-          console.warn('Something went terribly wrong!');
-      }
-      let errString;
-      if (originAmount > maxAmount) {
-        errString = `Maximum ${originKind} is ${maxAmount} ${originKind}`;
-      } else {
-        errString = `Minimum ${originKind} is ${minAmount} ${originKind}`;
-      }
+      const getRates = kind => {
+        let minAmount;
+        let maxAmount;
+        switch (originKind) {
+          case 'BTC':
+            minAmount = toFixedIfLarger(bityConfig.BTCMin, 3);
+            maxAmount = toFixedIfLarger(bityConfig.BTCMax, 3);
+            break;
+          case 'ETH':
+            minAmount = toFixedIfLarger(ETHMin, 3);
+            maxAmount = toFixedIfLarger(ETHMax, 3);
+            break;
+          case 'REP':
+            minAmount = toFixedIfLarger(REPMin, 3);
+            break;
+          default:
+            console.warn('Something went terribly wrong!');
+        }
+        return { minAmount, maxAmount };
+      };
+
+      const createErrString = (kind, amount, rate) => {
+        let errString;
+        if (amount > rate.maxAmount) {
+          errString = `Maximum ${kind} is ${rate.maxAmount} ${kind}`;
+        } else {
+          errString = `Minimum ${kind} is ${rate.minAmount} ${kind}`;
+        }
+
+        return errString;
+      };
+      const originRate = getRates(originKind);
+      const destinationRate = getRates(destinationKind);
+      const originErr = createErrString(originKind, originAmount, originRate);
+      const destinationErr = createErrString(
+        destinationKind,
+        destinationAmount,
+        destinationRate
+      );
+
       this.setState({
-        originErr: errString,
+        originErr,
+        destinationErr,
         disabled: true
       });
     } else {
       this.setState({
         originErr: '',
+        destinationErr: '',
         disabled
       });
     }
@@ -130,7 +154,12 @@ export default class CurrencySwap extends Component<
   public setOriginAndDestinationToNull = () => {
     this.props.originAmountSwap(null);
     this.props.destinationAmountSwap(null);
-    this.setDisabled(null, this.props.originKind, null);
+    this.setDisabled(
+      null,
+      this.props.originKind,
+      this.props.destinationKind,
+      null
+    );
   };
 
   public onChangeOriginAmount = (
@@ -145,7 +174,12 @@ export default class CurrencySwap extends Component<
       this.props.originAmountSwap(originAmountAsNumber);
       const destinationAmount = originAmountAsNumber * bityRate;
       this.props.destinationAmountSwap(destinationAmount);
-      this.setDisabled(originAmountAsNumber, originKind, destinationAmount);
+      this.setDisabled(
+        originAmountAsNumber,
+        originKind,
+        destinationKind,
+        destinationAmount
+      );
     } else {
       this.setOriginAndDestinationToNull();
     }
@@ -163,7 +197,12 @@ export default class CurrencySwap extends Component<
       const bityRate = this.props.bityRates[pairNameReversed];
       const originAmount = destinationAmountAsNumber * bityRate;
       this.props.originAmountSwap(originAmount);
-      this.setDisabled(originAmount, originKind, destinationAmountAsNumber);
+      this.setDisabled(
+        originAmount,
+        originKind,
+        destinationKind,
+        destinationAmountAsNumber
+      );
     } else {
       this.setOriginAndDestinationToNull();
     }
