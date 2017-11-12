@@ -1,14 +1,21 @@
-import { NODES } from '../../common/config/data';
+import { NODES, NodeConfig } from '../../common/config/data';
 import { RPCNode } from '../../common/libs/nodes';
 import { Validator } from 'jsonschema';
+import 'url-search-params-polyfill';
 
 const v = new Validator();
 
 const schema = {
   getBalance: {
-    jsonrpc: 'string',
-    id: 'integer',
-    params: 'array'
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      jsonrpc: { type: 'string' },
+      id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
+      result: { type: 'string' },
+      status: { type: 'string' },
+      message: { type: 'string' }
+    }
   }
 };
 const validRequests = {
@@ -16,10 +23,11 @@ const validRequests = {
   txObject: {}
 };
 
-const testGetBalance = async (n: RPCNode) => {
+const testGetBalance = async (n: RPCNode, service: string) => {
   const data = await n.client.call(
-    this.requests.getBalance(validRequests.address)
+    n.requests.getBalance(validRequests.address)
   );
+  console.log(service, data);
   return v.validate(data, schema.getBalance);
 };
 
@@ -27,19 +35,23 @@ const RPCTests = {
   getBalance: testGetBalance
 };
 
-function testRequests(node: RPCNode) {
-  let result = true;
-  Object.keys(RPCTests).forEach(c => {
-    const testBool = RPCTests[c](node);
-    if (!testBool && result) {
-      result = false;
-    }
+function testRequests(node: RPCNode, service: string) {
+  Object.keys(RPCTests).forEach(testType => {
+    describe('RPC getBalance should work', () => {
+      it(`RPC: ${testType} ${service}`, () => {
+        return RPCTests[testType](node, service).then(d =>
+          expect(d.valid).toBeTruthy()
+        );
+      });
+    });
   });
-  return result;
 }
 
-describe('RPC Nodes', () => {
-  it('should be able to get balance', () => {
-    expect(testRequests(NODES.eth_mew.lib)).toBeTruthy();
+const mapNodeEndpoints = (nodes: { [key: string]: NodeConfig }) => {
+  const testList = ['eth_mew', 'eth_ethscan', 'eth_infura', 'etc_epool'];
+  testList.forEach(n => {
+    testRequests(nodes[n].lib, `${nodes[n].service} ${nodes[n].network}`);
   });
-});
+};
+
+mapNodeEndpoints(NODES);

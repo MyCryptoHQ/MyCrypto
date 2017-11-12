@@ -110,6 +110,7 @@
     "types-rlp": "0.0.1",
     "typescript": "^2.5.2",
     "url-loader": "^0.5.8",
+    "url-search-params-polyfill": "2.0.1",
     "webpack": "^3.6.0",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.19.1"
