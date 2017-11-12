@@ -107,12 +107,13 @@ export default class CurrencySwap extends Component<
       }
       let errString;
       if (originAmount > maxAmount) {
-        errString = `Maximum ${originKind} is ${maxAmount}`;
+        errString = `Maximum ${originKind} is ${maxAmount} ${originKind}`;
       } else {
-        errString = `Minimum ${originKind} is ${minAmount}`;
+        errString = `Minimum ${originKind} is ${minAmount} ${originKind}`;
       }
       this.setState({
-        originErr: errString
+        originErr: errString,
+        disabled: true
       });
     } else {
       this.setState({
@@ -193,7 +194,7 @@ export default class CurrencySwap extends Component<
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
         {bityLoaded ? (
-          <div className="form-inline">
+          <div className="form-inline CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
               <span className="CurrencySwap-error-message">{originErr}</span>
               <input
@@ -207,14 +208,16 @@ export default class CurrencySwap extends Component<
                 value={originAmount || originAmount === 0 ? originAmount : ''}
                 onChange={this.onChangeOriginAmount}
               />
-              <OriginKindDropDown
-                ariaLabel={`change origin kind. current origin kind ${originKind}`}
-                options={originKindOptions}
-                value={originKind}
-                onChange={this.props.originKindSwap}
-                size="smr"
-                color="default"
-              />
+              <div className="CurrencySwap-dropdown">
+                <OriginKindDropDown
+                  ariaLabel={`change origin kind. current origin kind ${originKind}`}
+                  options={originKindOptions}
+                  value={originKind}
+                  onChange={this.props.originKindSwap}
+                  size="smr"
+                  color="default"
+                />
+              </div>
             </div>
             <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
             <div className="CurrencySwap-input-group">
@@ -236,14 +239,16 @@ export default class CurrencySwap extends Component<
                 }
                 onChange={this.onChangeDestinationAmount}
               />
-              <DestinationKindDropDown
-                ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
-                options={destinationKindOptions}
-                value={destinationKind}
-                onChange={this.props.destinationKindSwap}
-                size="smr"
-                color="default"
-              />
+              <div className="CurrencySwap-dropdown">
+                <DestinationKindDropDown
+                  ariaLabel={`change destination kind. current destination kind ${destinationKind}`}
+                  options={destinationKindOptions}
+                  value={destinationKind}
+                  onChange={this.props.destinationKindSwap}
+                  size="smr"
+                  color="default"
+                />
+              </div>
             </div>
           </div>
         ) : (
