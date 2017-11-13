@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/classnames": "2.2.3",
-    "@types/history": "4.6.1",
+    "@types/history": "4.6.2",
     "@types/jest": "21.1.5",
     "@types/lodash": "4.14.82",
     "@types/qrcode": "0.8.0",
