@@ -31,16 +31,15 @@ export default class Root extends Component<Props, {}> {
             <Route path="/view-wallet" component={ViewWallet} />
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
-            <Route path="/restore-keystore" component={RestoreKeystore} />
             <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
+            <Route path="/utilities" component={RestoreKeystore} />
             <Route
               path="/sign-and-verify-message"
               component={SignAndVerifyMessage}
             />
             <Route path="/pushTx" component={BroadcastTx} />
-
             <LegacyRoutes />
           </div>
         </Router>
