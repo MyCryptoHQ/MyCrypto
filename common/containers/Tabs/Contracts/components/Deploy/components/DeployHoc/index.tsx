@@ -139,6 +139,10 @@ export const deployHOC = PassedComponent => {
         value
       };
 
+      if (!props.wallet || props.wallet.isReadOnly) {
+        return;
+      }
+
       return makeAndSignTx(
         props.wallet,
         props.nodeLib,
@@ -151,6 +155,10 @@ export const deployHOC = PassedComponent => {
     };
 
     private getAddressAndNonce = async () => {
+      if (!this.props.wallet || this.props.wallet.isReadOnly) {
+        return;
+      }
+
       const address = await this.props.wallet.getAddressString();
       const nonce = await this.props.nodeLib
         .getTransactionCount(address)
