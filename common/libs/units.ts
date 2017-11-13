@@ -5,6 +5,7 @@ type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
 type Address = BN;
+type Nonce = BN;
 
 const Units = {
   wei: '1',
@@ -46,6 +47,8 @@ const handleValues = (input: string | BN) => {
   }
   throw Error('unsupported value conversion');
 };
+
+const Nonce = (input: string | BN) => handleValues(input);
 
 const Wei = (input: string | BN): Wei => handleValues(input);
 
@@ -102,5 +105,6 @@ export {
   fromTokenBase,
   Wei,
   getDecimal,
-  UnitKey
+  UnitKey,
+  Nonce
 };

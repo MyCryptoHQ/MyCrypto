@@ -1,22 +1,11 @@
 import { isPositiveInteger } from 'utils/helpers';
 import { NonceInput } from './NonceInput';
+import { Nonce } from 'libs/units';
 import React from 'react';
 
-const isValidNonce = (value: string | null | undefined): boolean => {
-  let valid;
-  if (value === '0') {
-    valid = true;
-  } else if (!value) {
-    valid = false;
-  } else {
-    valid = isPositiveInteger(+value);
-  }
-  return valid;
-};
-
-interface Props {
+export interface Props {
   defaultNonce: Promise<string | null>;
-  onChange(nonce: string | null): void;
+  onChange(nonce: Nonce | null): void;
 }
 
 interface State {
@@ -30,12 +19,14 @@ export class DefaultNonceInput extends React.Component<Props, State> {
     const networkNonce = await defaultNonce;
 
     if (networkNonce) {
-      onChange(networkNonce);
+      onChange(Nonce(networkNonce));
     }
 
-    this.state = networkNonce
+    const state: State = networkNonce
       ? { nonce: networkNonce, validNonce: true }
       : { nonce: '', validNonce: false };
+
+    this.setState(state);
   }
 
   public render() {
@@ -50,8 +41,20 @@ export class DefaultNonceInput extends React.Component<Props, State> {
 
   private setNonce = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    const validNonce = isValidNonce(value);
-    this.props.onChange(validNonce ? value : null);
+    const validNonce = this.isValidNonce(value);
+    this.props.onChange(validNonce ? Nonce(value) : null);
     this.setState({ nonce: value, validNonce });
+  };
+
+  private isValidNonce = (value: string | null | undefined): boolean => {
+    let valid;
+    if (value === '0') {
+      valid = true;
+    } else if (!value) {
+      valid = false;
+    } else {
+      valid = isPositiveInteger(+value);
+    }
+    return valid;
   };
 }

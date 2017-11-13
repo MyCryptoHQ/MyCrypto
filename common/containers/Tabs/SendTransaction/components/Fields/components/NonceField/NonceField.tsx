@@ -1,9 +1,9 @@
 import React from 'react';
-import { DefaultNonceInput } from './DefaultNonceInput';
+import { DefaultNonceInput, Props as DNProps } from './DefaultNonceInput';
 import { Nonce } from 'components/renderCbs';
 
 interface Props {
-  withNonce(nonce: string | null): void;
+  withNonce: DNProps['onChange'];
 }
 
 export const NonceField: React.SFC<Props> = ({ withNonce }) => (
