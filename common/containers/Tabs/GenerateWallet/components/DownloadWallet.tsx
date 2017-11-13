@@ -1,6 +1,7 @@
 import { ContinueToPaperAction } from 'actions/generateWallet';
 import { IFullWallet, IV3Wallet } from 'ethereumjs-wallet';
 import { toChecksumAddress } from 'ethereumjs-util';
+import { checksumKeystoreFilename } from 'libs/wallet/non-deterministic';
 import { NewTabLink } from 'components/ui';
 import React, { Component } from 'react';
 import translate from 'translations';
@@ -37,7 +38,7 @@ export default class DownloadWallet extends Component<Props, State> {
 
   public render() {
     const { hasDownloadedWallet } = this.state;
-    const filename = this.props.wallet.getV3Filename();
+    const filename = checksumKeystoreFilename(this.props.wallet);
 
     const content = (
       <div className="DlWallet">
