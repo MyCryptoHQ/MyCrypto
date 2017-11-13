@@ -602,10 +602,6 @@ export class SendTransaction extends React.Component<Props, State> {
     const { nodeLib, wallet, gasPrice, network, offline } = this.props;
     const { token, unit, value, to, data, gasLimit, nonce } = this.state;
 
-    if (wallet.isReadOnly) {
-      throw new Error('Wallet is read-only');
-    }
-
     const chainId = network.chainId;
     const transactionInput = {
       token,
@@ -616,6 +612,10 @@ export class SendTransaction extends React.Component<Props, State> {
     };
     const bigGasLimit = new Big(gasLimit);
     try {
+      if (wallet.isReadOnly) {
+        throw new Error('Wallet is read-only');
+      }
+
       const signedTx = await generateCompleteTransaction(
         wallet,
         nodeLib,
