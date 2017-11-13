@@ -52,6 +52,26 @@ export default class CurrencySwap extends Component<
     destinationErr: ''
   };
 
+  public componentWillReceiveProps(newProps) {
+    const {
+      originAmount,
+      originKind,
+      destinationKind,
+      destinationAmount
+    } = newProps;
+    if (
+      originKind !== this.props.originKind ||
+      destinationKind !== this.props.destinationKind
+    ) {
+      this.setDisabled(
+        originAmount,
+        originKind,
+        destinationKind,
+        destinationAmount
+      );
+    }
+  }
+
   public isMinMaxValid = (amount, kind) => {
     let bityMin;
     let bityMax;
