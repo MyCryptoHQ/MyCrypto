@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConditionalInput, Aux } from 'components/ui';
+import { Aux } from 'components/ui';
 import { Offline, Query } from 'components/renderCbs';
 import Help from 'components/ui/Help';
 
@@ -27,12 +27,12 @@ export const NonceInput: React.StatelessComponent<Props> = props => {
       <Query
         params={['readOnly']}
         withQuery={({ readOnly }) => (
-          <ConditionalInput
+          <input
             className={`form-control ${validNonce ? 'is-valid' : 'is-invalid'}`}
             type="number"
             value={value || '0'}
-            condition={!readOnly}
-            conditionalProps={{ onChange }}
+            readOnly={!!readOnly}
+            onChange={onChange}
           />
         )}
       />
