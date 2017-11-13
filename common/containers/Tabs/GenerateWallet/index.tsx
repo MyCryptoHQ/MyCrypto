@@ -6,20 +6,21 @@ import {
   TGenerateNewWallet,
   TResetGenerateWallet
 } from 'actions/generateWallet';
-import PrivKeyWallet from 'libs/wallet/privkey';
+import { IFullWallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import DownloadWallet from './components/DownloadWallet';
 import EnterPassword from './components/EnterPassword';
 import PaperWallet from './components/PaperWallet';
+import CryptoWarning from './components/CryptoWarning';
 import TabSection from 'containers/TabSection';
 
 interface Props {
   // Redux state
   activeStep: string; // FIXME union actual steps
   password: string;
-  wallet: PrivKeyWallet | null | undefined;
+  wallet: IFullWallet | null | undefined;
   walletPasswordForm: any;
   // Actions
   generateNewWallet: TGenerateNewWallet;
@@ -38,38 +39,42 @@ class GenerateWallet extends Component<Props, {}> {
 
     const AnyEnterPassword = EnterPassword as new () => any;
 
-    switch (activeStep) {
-      case 'password':
-        content = (
-          <AnyEnterPassword
-            walletPasswordForm={this.props.walletPasswordForm}
-            generateNewWallet={this.props.generateNewWallet}
-          />
-        );
-        break;
-
-      case 'download':
-        if (wallet) {
+    if (window.crypto) {
+      switch (activeStep) {
+        case 'password':
           content = (
-            <DownloadWallet
-              wallet={wallet}
-              password={password}
-              continueToPaper={this.props.continueToPaper}
+            <AnyEnterPassword
+              walletPasswordForm={this.props.walletPasswordForm}
+              generateNewWallet={this.props.generateNewWallet}
             />
           );
-        }
-        break;
+          break;
 
-      case 'paper':
-        if (wallet) {
-          content = <PaperWallet wallet={wallet} />;
-        } else {
+        case 'download':
+          if (wallet) {
+            content = (
+              <DownloadWallet
+                wallet={wallet}
+                password={password}
+                continueToPaper={this.props.continueToPaper}
+              />
+            );
+          }
+          break;
+
+        case 'paper':
+          if (wallet) {
+            content = <PaperWallet wallet={wallet} />;
+          } else {
+            content = <h1>Uh oh. Not sure how you got here.</h1>;
+          }
+          break;
+
+        default:
           content = <h1>Uh oh. Not sure how you got here.</h1>;
-        }
-        break;
-
-      default:
-        content = <h1>Uh oh. Not sure how you got here.</h1>;
+      }
+    } else {
+      content = <CryptoWarning />;
     }
 
     return (

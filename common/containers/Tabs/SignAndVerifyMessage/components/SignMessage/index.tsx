@@ -95,7 +95,7 @@ export class SignMessage extends Component<Props, State> {
 
     try {
       const signedMessage: ISignedMessage = {
-        address: await wallet.getAddress(),
+        address: await wallet.getAddressString(),
         message,
         signature: await wallet.signMessage(message),
         version: '2'

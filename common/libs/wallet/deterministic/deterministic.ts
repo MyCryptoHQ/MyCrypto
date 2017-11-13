@@ -1,4 +1,4 @@
-export default class DeterministicWallet {
+export class DeterministicWallet {
   private address: string;
   private dPath: string;
   private index: number;
@@ -9,7 +9,7 @@ export default class DeterministicWallet {
     this.index = index;
   }
 
-  public getAddress(): Promise<string> {
+  public getAddressString(): Promise<string> {
     return Promise.resolve(this.address);
   }
 

@@ -1,5 +1,7 @@
 # MyEtherWallet V4+ (ALPHA - VISIT [V3](https://github.com/kvhnuke/etherwallet) for the production site)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/MyEtherWallet/MyEtherWallet.svg)](https://greenkeeper.io/)
+
 #### Run:
 
 ```bash
@@ -36,7 +38,7 @@ npm run dev:https
 2. [dternyak/eth-priv-to-addr](https://hub.docker.com/r/dternyak/eth-priv-to-addr/) pulled from DockerHub
 
 ##### Docker setup instructions:
-1. Install docker (on macOS, [Docker for Mac](https://docs.docker.com/docker-for-mac/)is suggested)
+1. Install docker (on macOS, [Docker for Mac](https://docs.docker.com/docker-for-mac/) is suggested)
 2. `docker pull dternyak/eth-priv-to-addr`
 
 ##### Run Derivation Checker
@@ -50,7 +52,7 @@ npm run derivation-checker
 │
 ├── common
 │   ├── actions - application actions
-│   ├── api - Services and XHR utils(also custom form validation, see InputComponent from components/common)
+│   ├── api - Services and XHR utils
 │   ├── components - components according to "Redux philosophy"
 │   ├── config - frontend config depending on REACT_WEBPACK_ENV
 │   ├── containers - containers according to "Redux philosophy"
