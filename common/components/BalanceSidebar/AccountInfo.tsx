@@ -1,11 +1,9 @@
 import { TFetchCCRates } from 'actions/rates';
-import { Identicon } from 'components/ui';
+import { Identicon, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'config/data';
 import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
-import Spinner from 'components/ui/Spinner';
 import './AccountInfo.scss';
 
 interface Props {
@@ -54,7 +52,7 @@ export default class AccountInfo extends React.Component<Props, State> {
   public render() {
     const { network, balance } = this.props;
     const { blockExplorer, tokenExplorer } = network;
-    const { address } = this.state;
+    const { address, showLongBalance } = this.state;
 
     return (
       <div className="AccountInfo">
@@ -80,13 +78,11 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {balance.isPending ? (
-                  <Spinner size="x1" />
-                ) : this.state.showLongBalance ? (
-                  balance.amount.toString()
-                ) : (
-                  formatNumber(balance.amount)
-                )}
+                <UnitDisplay
+                  value={balance.wei}
+                  unit={'ether'}
+                  displayShortBalance={!showLongBalance}
+                />
               </span>
               {` ${network.name}`}
             </li>

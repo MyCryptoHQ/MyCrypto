@@ -2,9 +2,10 @@ import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
 import {
   SetTokenBalancesAction,
   SetWalletAction,
-  WalletAction
+  WalletAction,
+  TypeKeys
 } from 'actions/wallet';
-import { BigNumber } from 'bignumber.js';
+import { TokenValue } from 'libs/units';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 import { IWallet, Balance, NetworkStatus } from 'libs/wallet';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
@@ -12,16 +13,16 @@ import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 export interface State {
   inst?: IWallet | null;
   // in ETH
-  balance: Balance | NetworkStatus;
+  balance: Balance | NetworkStatus | any;
   tokens: {
-    [key: string]: BigNumber;
+    [key: string]: TokenValue;
   };
   transactions: BroadcastTransactionStatus[];
 }
 
 export const INITIAL_STATE: State = {
   inst: null,
-  balance: { isPending: false, unit: null, amount: null },
+  balance: { isPending: false, wei: null },
   tokens: {},
   transactions: []
 };
@@ -45,7 +46,7 @@ function SetBalanceFullfilled(
 ): State {
   return {
     ...state,
-    balance: { ...action.payload.toEther(), isPending: false }
+    balance: { wei: action.payload, isPending: false }
   };
 }
 
@@ -124,24 +125,24 @@ export function wallet(
   action: WalletAction
 ): State {
   switch (action.type) {
-    case 'WALLET_SET':
+    case TypeKeys.WALLET_SET:
       return setWallet(state, action);
-    case 'WALLET_RESET':
+    case TypeKeys.WALLET_RESET:
       return INITIAL_STATE;
-    case 'WALLET_SET_BALANCE_PENDING':
+    case TypeKeys.WALLET_SET_BALANCE_PENDING:
       return setBalancePending(state);
-    case 'WALLET_SET_BALANCE_FULFILLED':
+    case TypeKeys.WALLET_SET_BALANCE_FULFILLED:
       return SetBalanceFullfilled(state, action);
-    case 'WALLET_SET_BALANCE_REJECTED':
+    case TypeKeys.WALLET_SET_BALANCE_REJECTED:
       return SetBalanceRejected(state);
-    case 'WALLET_SET_TOKEN_BALANCES':
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES:
       return setTokenBalances(state, action);
-    case 'WALLET_BROADCAST_TX_REQUESTED':
+    case TypeKeys.WALLET_BROADCAST_TX_REQUESTED:
       return {
         ...state,
         transactions: handleBroadcastTxRequested(state, action.payload.signedTx)
       };
-    case 'WALLET_BROADCAST_TX_SUCCEEDED':
+    case TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED:
       return {
         ...state,
         transactions: handleTxBroadcastCompleted(
@@ -150,7 +151,7 @@ export function wallet(
           true
         )
       };
-    case 'WALLET_BROADCAST_TX_FAILED':
+    case TypeKeys.WALLET_BROADCAST_TX_FAILED:
       return {
         ...state,
         transactions: handleTxBroadcastCompleted(

@@ -40,6 +40,11 @@ export interface ChangeNodeIntentAction {
   payload: string;
 }
 
+/*** Unset Web3 as a Node ***/
+export interface Web3UnsetNodeAction {
+  type: TypeKeys.CONFIG_NODE_WEB3_UNSET;
+}
+
 /*** Union Type ***/
 export type ConfigAction =
   | ChangeNodeAction
@@ -48,4 +53,5 @@ export type ConfigAction =
   | ToggleOfflineAction
   | PollOfflineStatus
   | ForceOfflineAction
-  | ChangeNodeIntentAction;
+  | ChangeNodeIntentAction
+  | Web3UnsetNodeAction;

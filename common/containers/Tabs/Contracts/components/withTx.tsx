@@ -1,6 +1,6 @@
 import * as configSelectors from 'selectors/config';
 import { AppState } from 'reducers';
-import { GWei, Wei } from 'libs/units';
+import { toWei, Wei, getDecimal } from 'libs/units';
 import { connect } from 'react-redux';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { broadcastTx, TBroadcastTx } from 'actions/wallet';
@@ -27,7 +27,10 @@ const mapStateToProps = (state: AppState) => ({
   nodeLib: configSelectors.getNodeLib(state),
   chainId: configSelectors.getNetworkConfig(state).chainId,
   networkName: configSelectors.getNetworkConfig(state).name,
-  gasPrice: new GWei(configSelectors.getGasPriceGwei(state)).toWei()
+  gasPrice: toWei(
+    `${configSelectors.getGasPriceGwei(state)}`,
+    getDecimal('gwei')
+  )
 });
 
 export const withTx = passedComponent =>

@@ -1,6 +1,5 @@
-import { Ether } from 'libs/units';
-
-export interface NetworkStatus {
+import { Wei } from 'libs/units';
+export interface Balance {
+  wei: Wei | null;
   isPending: boolean;
 }
-export interface Balance extends Ether, NetworkStatus {}

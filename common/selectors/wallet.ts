@@ -1,4 +1,4 @@
-import Big, { BigNumber } from 'bignumber.js';
+import { TokenValue } from 'libs/units';
 import { Token } from 'config/data';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 import { IWallet } from 'libs/wallet';
@@ -11,8 +11,9 @@ export function getWalletInst(state: AppState): IWallet | null | undefined {
 
 export interface TokenBalance {
   symbol: string;
-  balance: BigNumber;
+  balance: TokenValue;
   custom: boolean;
+  decimal: number;
 }
 
 export type MergedToken = Token & {
@@ -38,8 +39,9 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     symbol: t.symbol,
     balance: state.wallet.tokens[t.symbol]
       ? state.wallet.tokens[t.symbol]
-      : new Big(0),
-    custom: t.custom
+      : TokenValue('0'),
+    custom: t.custom,
+    decimal: t.decimal
   }));
 }
 
