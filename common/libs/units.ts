@@ -1,11 +1,13 @@
 import BN from 'bn.js';
+import { toBuffer } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
-type Address = BN;
+type Address = Buffer;
 type Nonce = BN;
+type Data = Buffer;
 
 const Units = {
   wei: '1',
@@ -47,6 +49,10 @@ const handleValues = (input: string | BN) => {
   }
   throw Error('unsupported value conversion');
 };
+
+const Address = (input: string) => toBuffer(input);
+
+const Data = (input: string) => toBuffer(input);
 
 const Nonce = (input: string | BN) => handleValues(input);
 
@@ -97,6 +103,7 @@ const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
 export {
+  Data,
   Address,
   TokenValue,
   fromWei,
