@@ -37,7 +37,11 @@ export default class DownloadWallet extends Component<Props, State> {
 
   public render() {
     const { hasDownloadedWallet } = this.state;
-    const filename = this.props.wallet.getV3Filename();
+    const getFilename = this.props.wallet.getV3Filename().split('--');
+    const checksumAddress = toChecksumAddress(getFilename[2]);
+    const filename = [getFilename[0], getFilename[1], checksumAddress].join(
+      '--'
+    );
 
     const content = (
       <div className="DlWallet">
