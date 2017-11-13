@@ -74,6 +74,7 @@ interface Props {
     UnlockKeystoreAction | UnlockMnemonicAction | UnlockPrivateKeyAction
   >;
   offline: boolean;
+  allowReadOnly?: boolean;
 }
 
 interface State {
@@ -114,6 +115,9 @@ export class WalletDecrypt extends Component<Props, State> {
   public buildWalletOptions() {
     return map(WALLETS, (wallet, key) => {
       const isSelected = this.state.selectedWalletKey === key;
+      const isDisabled =
+        this.isOnlineRequiredWalletAndOffline(key) ||
+        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt);
 
       return (
         <label className="radio" key={key}>
@@ -124,8 +128,8 @@ export class WalletDecrypt extends Component<Props, State> {
             name="decryption-choice-radio-group"
             value={key}
             checked={isSelected}
+            disabled={isDisabled}
             onChange={this.handleDecryptionChoiceChange}
-            disabled={this.isOnlineRequiredWalletAndOffline(key)}
           />
           <span id={`${key}-label`}>{translate(wallet.lid)}</span>
         </label>
