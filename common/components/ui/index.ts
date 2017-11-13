@@ -8,3 +8,4 @@ export { default as QRCode } from './QRCode';
 export { default as NewTabLink } from './NewTabLink';
 export { default as UnitDisplay } from './UnitDisplay';
 export * from './ConditionalInput';
+export * from './Aux';
