@@ -4,12 +4,12 @@ import { GWei, Wei, Ether } from 'libs/units';
 import { connect } from 'react-redux';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { broadcastTx, TBroadcastTx } from 'actions/wallet';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IFullWallet } from 'libs/wallet/IWallet';
 import { RPCNode } from 'libs/nodes';
 import { NodeConfig, NetworkConfig } from 'config/data';
 
 export interface IWithTx {
-  wallet: IWallet;
+  wallet: IFullWallet;
   balance: Ether;
   node: NodeConfig;
   nodeLib: RPCNode;

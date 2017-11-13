@@ -1,12 +1,12 @@
 import { Wei, Ether } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IFullWallet } from 'libs/wallet/IWallet';
 import { RPCNode } from 'libs/nodes';
 import { NodeConfig, NetworkConfig } from 'config/data';
 import { TBroadcastTx } from 'actions/wallet';
 import { TShowNotification } from 'actions/notifications';
 
 export interface Props {
-  wallet: IWallet;
+  wallet: IFullWallet;
   balance: Ether;
   node: NodeConfig;
   nodeLib: RPCNode;

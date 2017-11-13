@@ -34,21 +34,27 @@ export default class ViewOnlyDecrypt extends Component<Props, State> {
               value={address}
               placeholder={donationAddressMap.ETH}
             />
+
+            <button className="btn btn-primary btn-block">
+              {translate('NAV_ViewWallet')}
+            </button>
           </form>
         </div>
       </section>
     );
   }
 
-  private changeAddress(ev: React.FormEvent<HTMLInputElement>) {
+  private changeAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     this.setState({ address: ev.currentTarget.value });
-  }
+  };
 
-  private openWallet(ev: React.SyntheticEvent<HTMLFormElement>) {
+  private openWallet = (ev: React.SyntheticEvent<HTMLFormElement>) => {
     const { address } = this.state;
     ev.preventDefault();
     if (isValidETHAddress(address)) {
-      this.props.onUnlock(new AddressOnlyWallet(address));
+      const wallet = new AddressOnlyWallet(address);
+      console.log(wallet);
+      this.props.onUnlock(wallet);
     }
-  }
+  };
 }

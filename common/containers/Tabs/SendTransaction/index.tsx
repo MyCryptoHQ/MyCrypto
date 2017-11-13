@@ -307,14 +307,14 @@ export class SendTransaction extends React.Component<Props, State> {
                     onChange={readOnly ? void 0 : this.onGasChange}
                   />
                   {(offline || forceOffline) && (
-                      <div>
-                        <NonceField
-                          value={nonce}
-                          onChange={this.onNonceChange}
-                          placeholder={'0'}
-                        />
-                      </div>
-                    )}
+                    <div>
+                      <NonceField
+                        value={nonce}
+                        onChange={this.onNonceChange}
+                        placeholder={'0'}
+                      />
+                    </div>
+                  )}
                   {unit === 'ether' && (
                     <DataField
                       value={data}
@@ -465,6 +465,10 @@ export class SendTransaction extends React.Component<Props, State> {
 
   public async getFormattedTxFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
+    if (wallet.isReadOnly) {
+      throw new Error('Wallet is read-only');
+    }
+
     const { token, unit, value, to, data } = this.state;
     const transactionInput: TransactionInput = {
       token,
@@ -597,6 +601,11 @@ export class SendTransaction extends React.Component<Props, State> {
     await this.resetJustTx();
     const { nodeLib, wallet, gasPrice, network, offline } = this.props;
     const { token, unit, value, to, data, gasLimit, nonce } = this.state;
+
+    if (wallet.isReadOnly) {
+      throw new Error('Wallet is read-only');
+    }
+
     const chainId = network.chainId;
     const transactionInput = {
       token,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IFullWallet } from 'libs/wallet/IWallet';
 import WalletDecrypt from 'components/WalletDecrypt';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
@@ -10,7 +10,7 @@ import { AppState } from 'reducers';
 import './index.scss';
 
 interface Props {
-  wallet: IWallet;
+  wallet: IFullWallet;
   showNotification: TShowNotification;
 }
 
