@@ -5,7 +5,7 @@ import { IWallet, IFullWallet } from 'libs/wallet';
 
 interface Props {
   wallet: IWallet;
-  withFullWallet({ wallet }: { wallet: IFullWallet }): React.ReactElement<any>;
+  withFullWallet(wallet: IFullWallet): React.ReactElement<any>;
   withoutFullWallet(): React.ReactElement<any>;
 }
 
@@ -18,7 +18,7 @@ class FullWalletOnly extends React.Component<Props, {}> {
       }
       return null;
     }
-    return withFullWallet({ wallet });
+    return withFullWallet(wallet);
   }
 }
 

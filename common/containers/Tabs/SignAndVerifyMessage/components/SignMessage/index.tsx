@@ -5,13 +5,11 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ISignedMessage } from 'libs/signing';
-import { AppState } from 'reducers';
 import FullWalletOnly from 'components/renderCbs/FullWalletOnly';
 import SignButton from './SignButton';
 import './index.scss';
 
 interface Props {
-  wallet: AppState['wallet']['inst'];
   showNotification: TShowNotification;
 }
 
@@ -32,7 +30,6 @@ export class SignMessage extends Component<Props, State> {
   public state: State = initialState;
 
   public render() {
-    const { wallet } = this.props;
     const { message, signedMessage } = this.state;
 
     const messageBoxClass = classnames([
@@ -100,12 +97,4 @@ export class SignMessage extends Component<Props, State> {
   };
 }
 
-function mapStateToProps(state: AppState) {
-  return {
-    wallet: state.wallet.inst
-  };
-}
-
-export default connect(mapStateToProps, {
-  showNotification
-})(SignMessage);
+export default connect(null, { showNotification })(SignMessage);
