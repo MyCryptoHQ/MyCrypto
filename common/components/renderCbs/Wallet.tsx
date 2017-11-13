@@ -6,11 +6,7 @@ type IWallet = AppState['wallet'];
 
 interface Props {
   wallet: IWallet;
-  withWallet({
-    wallet
-  }: {
-    wallet: IWallet;
-  }): Promise<React.ReactElement<any> | null> | React.ReactElement<any> | null;
+  withWallet({ wallet }: { wallet: IWallet }): React.ReactElement<any> | null;
 }
 
 class WalletClass extends React.Component<Props, {}> {

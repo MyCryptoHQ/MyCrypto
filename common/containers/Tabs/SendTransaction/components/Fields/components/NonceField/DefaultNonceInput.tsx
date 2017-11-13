@@ -15,7 +15,7 @@ const isValidNonce = (value: string | null | undefined): boolean => {
 };
 
 interface Props {
-  defaultNonce: string | null;
+  defaultNonce: Promise<string | null>;
   onChange(nonce: string | null): void;
 }
 
@@ -29,13 +29,15 @@ export class DefaultNonceInput extends React.Component<Props, State> {
     super(props);
     const { defaultNonce, onChange } = props;
 
-    if (defaultNonce) {
-      onChange(defaultNonce);
-    }
+    defaultNonce.then(nonce => {
+      if (nonce) {
+        onChange(nonce);
+      }
 
-    this.state = defaultNonce
-      ? { nonce: defaultNonce, validNonce: true }
-      : { nonce: '', validNonce: false };
+      this.state = nonce
+        ? { nonce, validNonce: true }
+        : { nonce: '', validNonce: false };
+    });
   }
 
   public render() {
