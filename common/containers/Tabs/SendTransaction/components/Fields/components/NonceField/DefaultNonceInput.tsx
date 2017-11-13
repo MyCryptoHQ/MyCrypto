@@ -25,19 +25,17 @@ interface State {
 }
 
 export class DefaultNonceInput extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    const { defaultNonce, onChange } = props;
+  public async componentDidMount() {
+    const { defaultNonce, onChange } = this.props;
+    const networkNonce = await defaultNonce;
 
-    defaultNonce.then(nonce => {
-      if (nonce) {
-        onChange(nonce);
-      }
+    if (networkNonce) {
+      onChange(networkNonce);
+    }
 
-      this.state = nonce
-        ? { nonce, validNonce: true }
-        : { nonce: '', validNonce: false };
-    });
+    this.state = networkNonce
+      ? { nonce: networkNonce, validNonce: true }
+      : { nonce: '', validNonce: false };
   }
 
   public render() {
