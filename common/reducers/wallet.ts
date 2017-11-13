@@ -7,13 +7,13 @@ import {
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
 import { BroadcastTransactionStatus } from 'libs/transaction';
-import { IWallet, Balance, NetworkStatus } from 'libs/wallet';
+import { IWallet, Balance } from 'libs/wallet';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 
 export interface State {
   inst?: IWallet | null;
   // in ETH
-  balance: Balance | NetworkStatus | any;
+  balance: Balance | { wei: null };
   tokens: {
     [key: string]: TokenValue;
   };

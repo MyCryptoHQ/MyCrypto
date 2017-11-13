@@ -1,4 +1,4 @@
 export { IWallet } from './IWallet';
-export { Balance, NetworkStatus } from './balance';
+export { Balance } from './balance';
 export * from './deterministic';
 export * from './non-deterministic';

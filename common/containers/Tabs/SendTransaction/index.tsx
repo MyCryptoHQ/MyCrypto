@@ -574,7 +574,7 @@ export class SendTransaction extends React.Component<Props, State> {
       value = getBalanceMinusGasCosts(
         bigGasLimit,
         gasPrice,
-        balance
+        balance.wei
       ).toString();
     } else {
       const tokenBalance = this.props.tokenBalances.find(
