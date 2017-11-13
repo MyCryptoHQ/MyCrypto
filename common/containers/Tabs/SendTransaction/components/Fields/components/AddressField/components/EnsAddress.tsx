@@ -1,7 +1,4 @@
 import React from 'react';
-import { resolveEnsName } from 'actions/ens';
-import { isValidENSAddress, isValidENSorEtherAddress } from 'libs/validators';
-import { getEnsAddress } from 'selectors/ens';
 /*
 
   public onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
