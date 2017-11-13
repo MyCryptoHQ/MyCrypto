@@ -15,7 +15,6 @@ interface IQueryResults {
 
 interface Props {
   params: string[];
-  paramGetter?(query: Query, param: string): string | null;
   withQuery(query: IQueryResults): React.ReactElement<any>;
 }
 
@@ -30,12 +29,11 @@ export const Query = withRouter(
     }
 
     public render() {
-      const { paramGetter, withQuery, params } = this.props;
+      const { withQuery, params } = this.props;
       const { location } = this.injected;
       const query = parse(location);
-      const getter = paramGetter ? paramGetter : getParam;
       const res = params.reduce(
-        (obj, param) => ({ ...obj, [param]: getter(query, param) }),
+        (obj, param) => ({ ...obj, [param]: getParam(query, param) }),
         {}
       );
 
