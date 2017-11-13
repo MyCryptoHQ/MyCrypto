@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  NonceInput,
+  NonceField,
   AddressField,
   AmountField,
   DataField,
@@ -9,11 +9,7 @@ import {
 
 const Fields: React.SFC<any> = () => (
   <div>
-    <AddressField
-      placeholder={donationAddressMap.ETH}
-      value={this.state.to}
-      onChange={readOnly ? null : this.onAddressChange}
-    />
+    <AddressField withAddress={} />
     <AmountField
       unit={unit}
       decimal={decimal}
@@ -31,15 +27,8 @@ const Fields: React.SFC<any> = () => (
       value={gasLimit}
       onChange={this.onGasChange}
     />
-    {(offline || forceOffline) && (
-      <div>
-        <NonceInput
-          value={nonce}
-          onChange={this.onNonceChange}
-          placeholder={'0'}
-        />
-      </div>
-    )}
+    <NonceField withNonce={} />
+
     {unit === 'ether' && (
       <DataField
         value={data}

@@ -4,8 +4,9 @@ import { AddressInput } from './AddressInput';
 import { Address } from 'libs/units';
 import React from 'react';
 
-interface Props extends DefaultProps {
+interface Props {
   to: string | null;
+  onChange(to: Address | null): void;
 }
 
 interface State {
@@ -13,7 +14,7 @@ interface State {
   validAddress: boolean;
 }
 //TODO: add ens resolving
-export class AddressField extends React.Component<Props, State> {
+class AddressField extends React.Component<Props, State> {
   public componentDidMount() {
     const { to, onChange } = this.props;
 
@@ -47,18 +48,19 @@ export class AddressField extends React.Component<Props, State> {
 }
 
 interface DefaultProps {
-  placeholder: string;
-  ensAddress: string | null;
-  onChange(to: Address | null): void;
+  withAddress(to: Address | null): void;
 }
 
-export const DefaultAddressField: React.SFC<DefaultProps> = props => (
+const DefaultAddressField: React.SFC<DefaultProps> = props => (
   <Query
     params={['to']}
-    withQuery={({ to }) => <AddressField {...{ ...props, to }} />}
+    withQuery={({ to }) => (
+      <AddressField {...{ ...props, to, onChange: props.withAddress }} />
+    )}
   />
 );
 
+export { DefaultAddressField as AddressField };
 /*
     <div className="row form-group">
       <div className="col-xs-11">

@@ -3,6 +3,7 @@ import { Identicon, Aux } from 'components/ui';
 import translate from 'translations';
 //import { EnsAddress } from './components';
 import { Query } from 'components/renderCbs';
+import { donationAddressMap } from 'config/data';
 
 interface Props {
   value: string;
@@ -25,7 +26,7 @@ export const AddressInput: React.SFC<Props> = ({
           className={`form-control ${validAddress ? 'is-valid' : 'is-invalid'}`}
           type="text"
           value={value}
-          //  placeholder={placeholder}
+          placeholder={donationAddressMap.ETH}
           readOnly={!!readOnly}
           onChange={onChange}
         />
