@@ -5,7 +5,8 @@ import {
   unlockMnemonic,
   UnlockMnemonicAction,
   unlockPrivateKey,
-  UnlockPrivateKeyAction
+  UnlockPrivateKeyAction,
+  unlockWeb3
 } from 'actions/wallet';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
@@ -20,6 +21,7 @@ import PrivateKeyDecrypt, { PrivateKeyValue } from './PrivateKey';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
 import { AppState } from 'reducers';
+import Web3Decrypt from './Web3';
 
 const WALLETS = {
   'keystore-file': {
@@ -61,6 +63,13 @@ const WALLETS = {
     component: TrezorDecrypt,
     initialParams: {},
     unlock: setWallet,
+    disabled: false
+  },
+  web3: {
+    lid: 'x_MetaMask',
+    component: Web3Decrypt,
+    initialParams: {},
+    unlock: unlockWeb3,
     disabled: false
   },
   'view-only': {

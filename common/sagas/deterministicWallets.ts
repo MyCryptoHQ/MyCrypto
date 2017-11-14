@@ -23,6 +23,7 @@ import { getNodeLib } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
+import { TokenValue } from 'libs/units';
 
 function* getDeterministicWallets(
   action: GetDeterministicWalletsAction
@@ -105,7 +106,7 @@ function* updateWalletTokenValues(): SagaIterator {
     const calls = wallets.map(w => {
       return apply(node, node.getTokenBalance, [w.address, token]);
     });
-    const tokenBalances = yield all(calls);
+    const tokenBalances: TokenValue[] = yield all(calls);
 
     for (let i = 0; i < wallets.length; i++) {
       yield put(
@@ -113,7 +114,7 @@ function* updateWalletTokenValues(): SagaIterator {
           ...wallets[i],
           tokenValues: {
             ...wallets[i].tokenValues,
-            [desiredToken]: tokenBalances[i]
+            [desiredToken]: { value: tokenBalances[i], decimal: token.decimal }
           }
         })
       );
