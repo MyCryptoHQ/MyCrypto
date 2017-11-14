@@ -33,19 +33,14 @@ class GasLimitField extends Component<Props, State> {
     const { transaction: nextT } = nextProps;
     const { transaction: prevT, onChange } = this.props;
 
-    if (nextT) {
-      /*
-      * Data and address destination (creation address) are the two parameters that change gas estimation
-      * Otherwise, we let user input override everything
-      */
-      const shouldEstimateGas = prevT
-        ? nextT.data === prevT.data && nextT.to === prevT.to
-        : true;
-      if (shouldEstimateGas) {
-        const gasLimit = nextT.getBaseFee();
-        this.setState({ validGasLimit: true, gasLimit: gasLimit.toString() });
-        onChange(gasLimit);
-      }
+    if (!nextT) {
+      return;
+    }
+
+    if (this.shouldEstimateGas(nextT, prevT)) {
+      const gasLimit = nextT.getBaseFee();
+      this.setState({ validGasLimit: true, gasLimit: gasLimit.toString() });
+      onChange(gasLimit);
     }
   }
 
@@ -64,6 +59,19 @@ class GasLimitField extends Component<Props, State> {
     const validGasLimit = isFinite(parseFloat(value)) && parseFloat(value) > 0;
     this.props.onChange(validGasLimit ? Wei(value) : null);
     this.setState({ validGasLimit, gasLimit: value });
+  }
+
+  private shouldEstimateGas(nextT: EthTx, prevT: EthTx | null) {
+    /*
+    * Data and address destination (creation address) are the two parameters that change gas estimation
+    * Otherwise, we let user input override everything
+    */
+    if (!prevT) {
+      return true;
+    }
+    const sameData = nextT.data === prevT.data;
+    const sameAddress = nextT.to === prevT.to;
+    return !(sameData && sameAddress);
   }
 }
 
