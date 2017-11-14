@@ -1,13 +1,14 @@
 import removeIcon from 'assets/images/icon-remove.svg';
-import { BigNumber } from 'bignumber.js';
 import React from 'react';
-import { formatNumber } from 'utils/formatters';
+import { TokenValue } from 'libs/units';
+import { UnitDisplay } from 'components/ui';
 import './TokenRow.scss';
 
 interface Props {
-  balance: BigNumber;
+  balance: TokenValue;
   symbol: string;
   custom?: boolean;
+  decimal: number;
   onRemove(symbol: string): void;
 }
 interface State {
@@ -18,9 +19,11 @@ export default class TokenRow extends React.Component<Props, State> {
   public state = {
     showLongBalance: false
   };
+
   public render() {
-    const { balance, symbol, custom } = this.props;
+    const { balance, symbol, custom, decimal } = this.props;
     const { showLongBalance } = this.state;
+
     return (
       <tr className="TokenRow">
         <td
@@ -28,21 +31,24 @@ export default class TokenRow extends React.Component<Props, State> {
           title={`${balance.toString()} (Double-Click)`}
           onDoubleClick={this.toggleShowLongBalance}
         >
-          {!!custom &&
+          {!!custom && (
             <img
               src={removeIcon}
               className="TokenRow-balance-remove"
               title="Remove Token"
               onClick={this.onRemove}
               tabIndex={0}
-            />}
+            />
+          )}
           <span>
-            {showLongBalance ? balance.toString() : formatNumber(balance)}
+            <UnitDisplay
+              value={balance}
+              decimal={decimal}
+              displayShortBalance={!showLongBalance}
+            />
           </span>
         </td>
-        <td className="TokenRow-symbol">
-          {symbol}
-        </td>
+        <td className="TokenRow-symbol">{symbol}</td>
       </tr>
     );
   }

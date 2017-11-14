@@ -17,6 +17,7 @@ import {
 } from 'selectors/config';
 import { getTokens, getTxFromState, MergedToken } from 'selectors/wallet';
 import translate, { translateRaw } from 'translations';
+import { UnitDisplay } from 'components/ui';
 import './ConfirmationModal.scss';
 
 interface Props {
@@ -27,6 +28,7 @@ interface Props {
   network: NetworkConfig;
   lang: string;
   broadCastTxStatus: BroadcastTransactionStatus;
+  decimal: number;
   onConfirm(signedTx: string): void;
   onClose(): void;
 }
@@ -72,7 +74,8 @@ class ConfirmationModal extends React.Component<Props, State> {
       network,
       onClose,
       broadCastTxStatus,
-      transaction
+      transaction,
+      decimal
     } = this.props;
     const { timeToRead } = this.state;
     const { toAddress, value, gasPrice, data, from, nonce } = decodeTransaction(
@@ -109,77 +112,88 @@ class ConfirmationModal extends React.Component<Props, State> {
           disableButtons={isBroadcasting}
           isOpen={true}
         >
-          {
-            <div className="ConfModal">
-              {isBroadcasting ? (
-                <div className="ConfModal-loading">
-                  <Spinner size="5x" />
-                </div>
-              ) : (
-                <div>
-                  <div className="ConfModal-summary">
-                    <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
-                      <Identicon size="100%" address={from} />
-                    </div>
-                    <div className="ConfModal-summary-amount">
-                      <div className="ConfModal-summary-amount-arrow" />
-                      <div className="ConfModal-summary-amount-currency">
-                        {value} {symbol}
-                      </div>
-                    </div>
-                    <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
-                      <Identicon size="100%" address={toAddress} />
+          <div className="ConfModal">
+            {isBroadcasting ? (
+              <div className="ConfModal-loading">
+                <Spinner size="5x" />
+              </div>
+            ) : (
+              <div>
+                <div className="ConfModal-summary">
+                  <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
+                    <Identicon size="100%" address={from} />
+                  </div>
+                  <div className="ConfModal-summary-amount">
+                    <div className="ConfModal-summary-amount-arrow" />
+                    <div className="ConfModal-summary-amount-currency">
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
                     </div>
                   </div>
-
-                  <ul className="ConfModal-details">
-                    <li className="ConfModal-details-detail">
-                      You are sending from <code>{from}</code>
-                    </li>
-                    <li className="ConfModal-details-detail">
-                      You are sending to <code>{toAddress}</code>
-                    </li>
-                    <li className="ConfModal-details-detail">
-                      You are sending with a nonce of <code>{nonce}</code>
-                    </li>
-                    <li className="ConfModal-details-detail">
-                      You are sending{' '}
-                      <strong>
-                        {value} {symbol}
-                      </strong>{' '}
-                      with a gas price of <strong>{gasPrice} gwei</strong>
-                    </li>
-                    <li className="ConfModal-details-detail">
-                      You are interacting with the{' '}
-                      <strong>{node.network}</strong> network provided by{' '}
-                      <strong>{node.service}</strong>
-                    </li>
-                    {!token && (
-                      <li className="ConfModal-details-detail">
-                        {data ? (
-                          <span>
-                            You are sending the following data:{' '}
-                            <textarea
-                              className="form-control"
-                              value={data}
-                              rows={3}
-                              disabled={true}
-                            />
-                          </span>
-                        ) : (
-                          'There is no data attached to this transaction'
-                        )}
-                      </li>
-                    )}
-                  </ul>
-
-                  <div className="ConfModal-confirm">
-                    {translate('SENDModal_Content_3')}
+                  <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
+                    <Identicon size="100%" address={toAddress} />
                   </div>
                 </div>
-              )}
-            </div>
-          }
+                <ul className="ConfModal-details">
+                  <li className="ConfModal-details-detail">
+                    You are sending from <code>{from}</code>
+                  </li>
+                  <li className="ConfModal-details-detail">
+                    You are sending to <code>{toAddress}</code>
+                  </li>
+                  <li className="ConfModal-details-detail">
+                    You are sending with a nonce of <code>{nonce}</code>
+                  </li>
+                  <li className="ConfModal-details-detail">
+                    You are sending{' '}
+                    <strong>
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
+                    </strong>{' '}
+                    with a gas price of{' '}
+                    <strong>
+                      <UnitDisplay
+                        unit={'gwei'}
+                        value={gasPrice}
+                        symbol={'gwei'}
+                      />
+                    </strong>
+                  </li>
+                  <li className="ConfModal-details-detail">
+                    You are interacting with the <strong>{node.network}</strong>{' '}
+                    network provided by <strong>{node.service}</strong>
+                  </li>
+                  {!token && (
+                    <li className="ConfModal-details-detail">
+                      {data ? (
+                        <span>
+                          You are sending the following data:{' '}
+                          <textarea
+                            className="form-control"
+                            value={data}
+                            rows={3}
+                            disabled={true}
+                          />
+                        </span>
+                      ) : (
+                        'There is no data attached to this transaction'
+                      )}
+                    </li>
+                  )}
+                </ul>
+
+                <div className="ConfModal-confirm">
+                  {translate('SENDModal_Content_3')}
+                </div>
+              </div>
+            )}
+          </div>
         </Modal>
       </div>
     );
