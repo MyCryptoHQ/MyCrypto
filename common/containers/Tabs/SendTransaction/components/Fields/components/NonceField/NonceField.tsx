@@ -1,15 +1,16 @@
 import React from 'react';
-import { DefaultNonceInput, Props as DNProps } from './DefaultNonceInput';
-import { Nonce } from 'components/renderCbs';
+import { DefaultNonceInput } from './DefaultNonceInput';
+import { Nonce, SetTransactionFields } from 'components/renderCbs';
 
-interface Props {
-  withNonce: DNProps['onChange'];
-}
-
-export const NonceField: React.SFC<Props> = ({ withNonce }) => (
-  <Nonce
-    withNonce={({ nonce }) => (
-      <DefaultNonceInput defaultNonce={nonce} onChange={withNonce} />
+export const NonceField: React.SFC<{}> = () => (
+  <SetTransactionFields
+    name="nonce"
+    withFieldSetter={setter => (
+      <Nonce
+        withNonce={({ nonce }) => (
+          <DefaultNonceInput defaultNonce={nonce} setter={setter} />
+        )}
+      />
     )}
   />
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Aux } from 'components/ui';
-import { Offline, Query } from 'components/renderCbs';
+import { Offline, Query, GetTransactionFields } from 'components/renderCbs';
 import Help from 'components/ui/Help';
 
 const nonceHelp = (
@@ -13,26 +13,27 @@ const nonceHelp = (
 );
 
 interface Props {
-  value: string;
-  validNonce: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
 export const NonceInput: React.StatelessComponent<Props> = props => {
-  const { value, onChange, validNonce } = props;
   const content = (
     <Aux>
       {nonceHelp}
       <label>Nonce</label>
-      <Query
-        params={['readOnly']}
-        withQuery={({ readOnly }) => (
-          <input
-            className={`form-control ${validNonce ? 'is-valid' : 'is-invalid'}`}
-            type="number"
-            value={value || '0'}
-            readOnly={!!readOnly}
-            onChange={onChange}
+      <GetTransactionFields
+        withFieldValues={({ nonce: { raw, valid } }) => (
+          <Query
+            params={['readOnly']}
+            withQuery={({ readOnly }) => (
+              <input
+                className={`form-control ${valid ? 'is-valid' : 'is-invalid'}`}
+                type="text"
+                value={raw}
+                readOnly={!!readOnly}
+                onChange={props.onChange}
+              />
+            )}
           />
         )}
       />

@@ -9,7 +9,7 @@ import {
 
 const Fields: React.SFC<any> = () => (
   <div>
-    <AddressField withAddress={} />
+    <AddressField />
     <AmountField
       unit={unit}
       decimal={decimal}
@@ -23,7 +23,7 @@ const Fields: React.SFC<any> = () => (
       onUnitChange={this.onUnitChange}
     />
     <GasField transaction={} withGas={} />
-    <NonceField withNonce={} />
+    <NonceField />
     <DataField withData={} unit={} />
   </div>
 );
