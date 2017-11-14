@@ -1,7 +1,6 @@
 import { wallet, INITIAL_STATE } from 'reducers/wallet';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 import * as walletActions from 'actions/wallet';
-import { TokenValue } from 'libs/units';
 
 describe('wallet reducer', () => {
   it('should handle WALLET_SET', () => {
@@ -30,11 +29,11 @@ describe('wallet reducer', () => {
   });
 
   it('should handle WALLET_SET_BALANCE', () => {
-    const balance = new Wei(200);
+    const balance = Wei('200');
 
     expect(wallet(undefined, walletActions.setBalance(balance))).toEqual({
       ...INITIAL_STATE,
-      balance: balance.toEther()
+      balance
     });
   });
 
