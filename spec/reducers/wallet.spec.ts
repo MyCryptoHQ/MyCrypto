@@ -101,18 +101,4 @@ describe('wallet reducer', () => {
       ]
     });
   });
-
-  // it('snapshot test A', () => {
-  //   const tokenBalances = { BTC: new Big(20) };
-  //   const state = wallet(undefined, walletActions.setTokenBalances(tokenBalances));
-
-  //   expect(state).toMatchSnapshot();
-  // })
-
-  // it('snapshot test', () => {
-  //   const tokenBalances = { BTC: new Big(20) };
-  //   const { tokens } = wallet(undefined, walletActions.setTokenBalances(tokenBalances));
-
-  //   expect(tokens).toMatchSnapshot();
-  // })
 });

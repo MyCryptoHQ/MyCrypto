@@ -2,7 +2,6 @@ import {
   deterministicWallets,
   INITIAL_STATE
 } from 'reducers/deterministicWallets';
-// import { Wei } from 'libs/units';
 import * as dWalletActions from 'actions/deterministicWallets';
 import {
   DeterministicWalletData,
