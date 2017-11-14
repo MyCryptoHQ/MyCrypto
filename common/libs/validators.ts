@@ -84,6 +84,13 @@ function validateEtherAddress(address: string): boolean {
   }
 }
 
+export function fixPkey(key) {
+  if (key.indexOf('0x') === 0) {
+    return key.slice(2);
+  }
+  return key;
+}
+
 export function isValidPrivKey(privkey: string | Buffer): boolean {
   if (typeof privkey === 'string') {
     const initialCheck =

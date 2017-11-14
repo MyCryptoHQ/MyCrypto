@@ -3,7 +3,7 @@ import Template from './Template';
 import KeystoreInput from './KeystoreInput';
 import { fromPrivateKey, IFullWallet } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
-import { isValidPrivKey } from 'libs/validators';
+import { isValidPrivKey, fixPkey } from 'libs/validators';
 import translate from 'translations';
 import './KeystoreDetails.scss';
 
@@ -40,7 +40,9 @@ class KeystoreDetails extends Component<{}, State> {
       wallet,
       fileName
     } = this.state;
-    const privateKeyValid = isValidPrivKey(secretKey);
+
+    const privateKey = fixPkey(secretKey);
+    const privateKeyValid = isValidPrivKey(privateKey);
 
     const content = (
       <div className="KeystoreDetails">
