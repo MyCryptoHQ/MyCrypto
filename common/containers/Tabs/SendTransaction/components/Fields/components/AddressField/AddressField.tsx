@@ -1,63 +1,45 @@
 import { isValidENSorEtherAddress } from 'libs/validators';
 import { Query, SetTransactionFields } from 'components/renderCbs';
-import { setToField } from 'actions/transactionFields';
+import { SetToFieldAction } from 'actions/transactionFields';
 import { AddressInput } from './AddressInput';
 import { Address } from 'libs/units';
 import React from 'react';
 
 interface Props {
   to: string | null;
-  onChange(to: Address | null): void;
+  setter(payload: SetToFieldAction['payload']): void;
 }
 
-interface State {
-  address: string;
-  validAddress: boolean;
-}
 //TODO: add ens resolving
-class AddressField extends React.Component<Props, State> {
+class AddressField extends React.Component<Props, {}> {
   public componentDidMount() {
-    const { to, onChange } = this.props;
-
+    const { to, setter } = this.props;
     if (to) {
-      onChange(Address(to));
-      this.setState({ address: to, validAddress: true });
-    } else {
-      this.setState({ address: '', validAddress: false });
+      setter({ raw: to, value: Address(to) });
     }
   }
 
   public render() {
-    return (
-      <AddressInput
-        value={this.state.address}
-        validAddress={this.state.validAddress}
-        onChange={this.setAddress}
-      />
-    );
+    return <AddressInput onChange={this.setAddress} />;
   }
 
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
     const validAddress = isValidENSorEtherAddress(value);
-    this.props.onChange(validAddress ? Address(value) : null);
-    this.setState({ address: value, validAddress });
+    this.props.setter({
+      raw: value,
+      value: validAddress ? Address(value) : null
+    });
   };
 }
 
-interface DefaultProps {
-  withAddress(to: Address | null): void;
-}
-
-const DefaultAddressField: React.SFC<DefaultProps> = props => (
+const DefaultAddressField: React.SFC<{}> = props => (
   <SetTransactionFields
     name="to"
     withFieldSetter={setter => (
       <Query
         params={['to']}
-        withQuery={({ to }) => (
-          <AddressField {...{ ...props, to, onChange: props.withAddress }} />
-        )}
+        withQuery={({ to }) => <AddressField {...{ ...props, to, setter }} />}
       />
     )}
   />
