@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 interface Props {
-  className?: string;
   ariaLabel: string;
   disabled?: boolean;
   size?: string;

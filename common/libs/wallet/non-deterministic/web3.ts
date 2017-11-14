@@ -71,8 +71,9 @@ export default class Web3Wallet implements IWallet {
         if (this.network !== networkName) {
           return reject(
             new Error(
-              `Expected MetaMask / Mist network to be ${this
-                .network}, but got ${networkName}. ` +
+              `Expected MetaMask / Mist network to be ${
+                this.network
+              }, but got ${networkName}. ` +
                 `Please change the network or restart MyEtherWallet.`
             )
           );
