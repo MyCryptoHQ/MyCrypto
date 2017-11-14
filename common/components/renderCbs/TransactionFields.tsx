@@ -17,7 +17,6 @@ import {
 } from 'actions/transactionFields/actionCreators';
 
 type FieldNames = keyof AppState['transactionFields'];
-type FieldGetter = () => TransactionFieldPayloadedAction['payload'];
 type FieldSetter = (
   payload: TransactionFieldPayloadedAction['payload']
 ) => void;
@@ -29,35 +28,36 @@ interface ReduxProps {
   setAmountField: TSetValueField;
   transactionFields: AppState['transactionFields'];
 }
-
-interface BaseProps {
+interface SetterProps {
   name: FieldNames;
-}
-
-interface SetterProps extends BaseProps {
   withFieldSetter(setter: FieldSetter): React.ReactElement<any> | null;
 }
-
-interface GetterProps extends BaseProps {
-  withFieldValue(getter: FieldGetter): React.ReactElement<any> | null;
+interface GetterProps {
+  withFieldValues(
+    values: AppState['transactionFields']
+  ): React.ReactElement<any> | null;
 }
-
 type Props = SetterProps | GetterProps;
 
 class TransactionFieldsClass extends Component<Props & ReduxProps> {
   public render() {
     return this.setterSupplied(this.props)
       ? this.props.withFieldSetter(this.fieldSetter)
-      : this.props.withFieldValue(this.fieldGetter);
+      : this.props.withFieldValues(this.props.transactionFields);
   }
 
-  private fieldGetter = () => this.props.transactionFields[this.props.name];
-
-  private fieldSetter = (payload: TransactionFieldPayloadedAction['payload']) =>
-    this.props[`set${upperFirst(this.props.name)}Field`](payload);
+  private fieldSetter = (
+    payload: TransactionFieldPayloadedAction['payload']
+  ) => {
+    if (this.setterSupplied(this.props)) {
+      this.props[`set${upperFirst(this.props.name)}Field`](payload);
+    } else {
+      throw Error('No setter or field name supplied');
+    }
+  };
 
   private setterSupplied = (props: Props): props is SetterProps =>
-    !!(props as SetterProps).withFieldSetter;
+    !!(props as SetterProps).withFieldSetter && !!(props as SetterProps).name;
 }
 
 export const TransactionFields = connect(
