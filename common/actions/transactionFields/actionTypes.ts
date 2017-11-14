@@ -3,10 +3,12 @@ import { Wei, Nonce, Address, Data } from 'libs/units';
 export {
   SetGasLimitFieldAction,
   SetDataFieldAction,
-  SetAddressFieldAction,
+  SetToFieldAction,
   SetNonceFieldAction,
-  SetAmountFieldAction,
-  ClearFieldsAction
+  SetValueFieldAction,
+  ClearFieldsAction,
+  TransactionFieldPayloadedAction,
+  TransactionFieldAction
 };
 
 // We can compute field validity by checking if the value is null
@@ -27,8 +29,8 @@ interface SetDataFieldAction {
   };
 }
 
-interface SetAddressFieldAction {
-  type: TypeKeys.ADDRESS_FIELD_SET;
+interface SetToFieldAction {
+  type: TypeKeys.TO_FIELD_SET;
   payload: {
     raw: string;
     value: Address | null;
@@ -43,8 +45,8 @@ interface SetNonceFieldAction {
   };
 }
 
-interface SetAmountFieldAction {
-  type: TypeKeys.AMOUNT_FIELD_SET;
+interface SetValueFieldAction {
+  type: TypeKeys.VALUE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -55,10 +57,13 @@ interface ClearFieldsAction {
   type: TypeKeys.CLEAR_FIELDS;
 }
 
-export type TransactionFieldAction =
+type TransactionFieldPayloadedAction =
   | SetGasLimitFieldAction
   | SetDataFieldAction
-  | SetAddressFieldAction
+  | SetToFieldAction
   | SetNonceFieldAction
-  | SetAmountFieldAction
-  | ClearFieldsAction;
+  | SetValueFieldAction;
+
+type TransactionFieldAction =
+  | ClearFieldsAction
+  | TransactionFieldPayloadedAction;

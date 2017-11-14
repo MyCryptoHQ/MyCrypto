@@ -1,18 +1,18 @@
 import {
   SetGasLimitFieldAction,
   SetDataFieldAction,
-  SetAddressFieldAction,
+  SetToFieldAction,
   SetNonceFieldAction,
-  SetAmountFieldAction,
+  SetValueFieldAction,
   ClearFieldsAction
 } from './actionTypes';
 import { TypeKeys } from 'actions/transactionFields/constants';
 export {
   TSetGasLimitField,
   TSetDataField,
-  TSetAddressField,
+  TSetToField,
   TSetNonceField,
-  TSetAmountField,
+  TSetValueField,
   TClearFields,
   setGasLimitField,
   setDataField,
@@ -38,11 +38,11 @@ const setDataField = (
   payload
 });
 
-type TSetAddressField = typeof setAddressField;
+type TSetToField = typeof setAddressField;
 const setAddressField = (
-  payload: SetAddressFieldAction['payload']
-): SetAddressFieldAction => ({
-  type: TypeKeys.ADDRESS_FIELD_SET,
+  payload: SetToFieldAction['payload']
+): SetToFieldAction => ({
+  type: TypeKeys.TO_FIELD_SET,
   payload
 });
 
@@ -54,11 +54,11 @@ const setNonceField = (
   payload
 });
 
-type TSetAmountField = typeof setAmountField;
+type TSetValueField = typeof setAmountField;
 const setAmountField = (
-  payload: SetAmountFieldAction['payload']
-): SetAmountFieldAction => ({
-  type: TypeKeys.AMOUNT_FIELD_SET,
+  payload: SetValueFieldAction['payload']
+): SetValueFieldAction => ({
+  type: TypeKeys.VALUE_FIELD_SET,
   payload
 });
 
