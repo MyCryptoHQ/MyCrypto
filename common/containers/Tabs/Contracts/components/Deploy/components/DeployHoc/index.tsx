@@ -1,4 +1,5 @@
-import Big from 'bignumber.js';
+import BN from 'bn.js';
+import { Wei } from 'libs/units';
 import React, { Component } from 'react';
 import {
   generateCompleteTransaction as makeAndSignTx,
@@ -12,7 +13,6 @@ import {
 } from 'containers/Tabs/Contracts/components/TxModal';
 import {
   TxCompare,
-  Props as TCProps,
   TTxCompare
 } from 'containers/Tabs/Contracts/components/TxCompare';
 import { withTx } from 'containers/Tabs/Contracts/components//withTx';
@@ -81,25 +81,13 @@ export const deployHOC = PassedComponent => {
     }
 
     private displayCompareTx = (): React.ReactElement<TTxCompare> => {
-      const { nonce, gasLimit, data, value, signedTx, to } = this.state;
-      const { gasPrice, chainId } = this.props;
+      const { signedTx, nonce } = this.state;
 
       if (!nonce || !signedTx) {
         throw Error('Can not display raw tx, nonce empty or no signed tx');
       }
 
-      const props: TCProps = {
-        nonce,
-        gasPrice,
-        chainId,
-        data,
-        gasLimit,
-        to,
-        value,
-        signedTx
-      };
-
-      return <TxCompare {...props} />;
+      return <TxCompare signedTx={signedTx} />;
     };
 
     private displayDeployModal = (): React.ReactElement<TTxModal> => {
@@ -143,7 +131,7 @@ export const deployHOC = PassedComponent => {
         props.wallet,
         props.nodeLib,
         props.gasPrice,
-        new Big(gasLimit),
+        Wei(gasLimit),
         props.chainId,
         transactionInput,
         true
@@ -154,7 +142,7 @@ export const deployHOC = PassedComponent => {
       const address = await this.props.wallet.getAddressString();
       const nonce = await this.props.nodeLib
         .getTransactionCount(address)
-        .then(n => new Big(n).toString());
+        .then(n => new BN(n).toString());
       return this.asyncSetState({ nonce, address });
     };
   }

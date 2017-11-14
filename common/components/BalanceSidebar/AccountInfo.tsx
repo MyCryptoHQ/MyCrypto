@@ -1,15 +1,14 @@
 import { TFetchCCRates } from 'actions/rates';
-import { Identicon } from 'components/ui';
+import { Identicon, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'config/data';
-import { Ether } from 'libs/units';
 import { IWallet } from 'libs/wallet';
+import { Wei } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
 import './AccountInfo.scss';
 
 interface Props {
-  balance: Ether;
+  balance: Wei;
   wallet: IWallet;
   network: NetworkConfig;
   fetchCCRates: TFetchCCRates;
@@ -54,7 +53,7 @@ export default class AccountInfo extends React.Component<Props, State> {
   public render() {
     const { network, balance } = this.props;
     const { blockExplorer, tokenExplorer } = network;
-    const { address } = this.state;
+    const { address, showLongBalance } = this.state;
 
     return (
       <div className="AccountInfo">
@@ -80,9 +79,11 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {this.state.showLongBalance
-                  ? balance ? balance.toString() : '???'
-                  : balance ? formatNumber(balance.amount) : '???'}
+                <UnitDisplay
+                  value={balance}
+                  unit={'ether'}
+                  displayShortBalance={!showLongBalance}
+                />
               </span>
               {` ${network.name}`}
             </li>
@@ -90,28 +91,28 @@ export default class AccountInfo extends React.Component<Props, State> {
         </div>
 
         {(!!blockExplorer || !!tokenExplorer) && (
-            <div className="AccountInfo-section">
-              <h5 className="AccountInfo-section-header">
-                {translate('sidebar_TransHistory')}
-              </h5>
-              <ul className="AccountInfo-list">
-                {!!blockExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={blockExplorer.address(address)} target="_blank">
-                      {`${network.name} (${blockExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-                {!!tokenExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={tokenExplorer.address(address)} target="_blank">
-                      {`Tokens (${tokenExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
+          <div className="AccountInfo-section">
+            <h5 className="AccountInfo-section-header">
+              {translate('sidebar_TransHistory')}
+            </h5>
+            <ul className="AccountInfo-list">
+              {!!blockExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={blockExplorer.address(address)} target="_blank">
+                    {`${network.name} (${blockExplorer.name})`}
+                  </a>
+                </li>
+              )}
+              {!!tokenExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={tokenExplorer.address(address)} target="_blank">
+                    {`Tokens (${tokenExplorer.name})`}
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     );
   }

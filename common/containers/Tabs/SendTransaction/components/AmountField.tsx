@@ -1,45 +1,54 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
-import { Ether } from 'libs/units';
-
+import { Wei } from 'libs/units';
+import { UnitConverter } from 'components/renderCbs';
 interface Props {
-  value: string;
+  decimal: number;
   unit: string;
   tokens: string[];
-  balance: number | null | Ether;
-  onChange?(value: string, unit: string): void;
+  balance: number | null | Wei;
+  isReadOnly: boolean;
+  onAmountChange(value: string, unit: string): void;
+  onUnitChange(unit: string): void;
 }
 
 export default class AmountField extends React.Component {
   public props: Props;
 
+  get active() {
+    return !this.props.isReadOnly;
+  }
+
   public render() {
-    const { value, unit, onChange, balance } = this.props;
-    const isReadonly = !onChange;
+    const { unit, balance, decimal, isReadOnly } = this.props;
     return (
       <div className="row form-group">
         <div className="col-xs-11">
           <label>{translate('SEND_amount')}</label>
           <div className="input-group">
-            <input
-              className={`form-control ${isFinite(Number(value)) &&
-              Number(value) > 0
-                ? 'is-valid'
-                : 'is-invalid'}`}
-              type="text"
-              placeholder={translateRaw('SEND_amount_short')}
-              value={value}
-              disabled={isReadonly}
-              onChange={isReadonly ? void 0 : this.onValueChange}
-            />
+            <UnitConverter decimal={decimal} onChange={this.callWithBaseUnit}>
+              {({ onUserInput, convertedUnit }) => (
+                <input
+                  className={`form-control ${isFinite(Number(convertedUnit)) &&
+                  Number(convertedUnit) > 0
+                    ? 'is-valid'
+                    : 'is-invalid'}`}
+                  type="text"
+                  placeholder={translateRaw('SEND_amount_short')}
+                  value={convertedUnit}
+                  disabled={isReadOnly}
+                  onChange={onUserInput}
+                />
+              )}
+            </UnitConverter>
             <UnitDropdown
               value={unit}
               options={['ether'].concat(this.props.tokens)}
-              onChange={isReadonly ? void 0 : this.onUnitChange}
+              onChange={isReadOnly ? void 0 : this.onUnitChange}
             />
           </div>
-          {!isReadonly &&
+          {!isReadOnly &&
             balance && (
               <span className="help-block">
                 <a onClick={this.onSendEverything}>
@@ -54,24 +63,12 @@ export default class AmountField extends React.Component {
     );
   }
 
-  public onUnitChange = (unit: string) => {
-    if (this.props.onChange) {
-      this.props.onChange(this.props.value, unit);
-    }
-  };
+  public onUnitChange = (unit: string) =>
+    this.active && this.props.onUnitChange(unit); // thsi needs to be converted unit
 
-  public onValueChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    if (this.props.onChange) {
-      this.props.onChange(
-        (e.target as HTMLInputElement).value,
-        this.props.unit
-      );
-    }
-  };
+  public callWithBaseUnit = ({ currentTarget: { value } }) =>
+    this.active && this.props.onAmountChange(value, this.props.unit);
 
-  public onSendEverything = () => {
-    if (this.props.onChange) {
-      this.props.onChange('everything', this.props.unit);
-    }
-  };
+  public onSendEverything = () =>
+    this.active && this.props.onAmountChange('everything', this.props.unit);
 }

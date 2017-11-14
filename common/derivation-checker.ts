@@ -18,7 +18,9 @@ function promiseFromChildProcess(command): Promise<any> {
 }
 
 async function privToAddrViaDocker(privKeyWallet: IFullWallet) {
-  const command = `docker run -e key=${privKeyWallet.getPrivateKeyString()} ${dockerImage}:${dockerTag}`;
+  const command = `docker run -e key=${privKeyWallet.getPrivateKeyString()} ${
+    dockerImage
+  }:${dockerTag}`;
   const dockerOutput = await promiseFromChildProcess(command);
   const newlineStrippedDockerOutput = dockerOutput.replace(
     /(\r\n|\n|\r)/gm,
