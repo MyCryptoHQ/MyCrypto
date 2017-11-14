@@ -25,23 +25,4 @@ describe('rates reducer', () => {
       'ratesError'
     );
   });
-
-  // it('should handle WALLET_SET', () => {
-  //   const doSomething = new Promise<string>(resolve => {
-  //     setTimeout(() => resolve('Success'), 10);
-  //   });
-
-  //   const walletInstance = {
-  //     getAddressString: () => doSomething,
-  //     signRawTransaction: () => doSomething,
-  //     signMessage: () => doSomething
-  //   };
-
-  //   expect(wallet(undefined, walletActions.setWallet(walletInstance))).toEqual({
-  //     ...INITIAL_STATE,
-  //     inst: walletInstance,
-  //     balance: null,
-  //     tokens: {}
-  //   });
-  // });
 });
