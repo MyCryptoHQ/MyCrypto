@@ -45,7 +45,6 @@ class TransactionFieldsClass extends Component<Props & ReduxProps> {
       ? this.props.withFieldSetter(this.fieldSetter)
       : this.props.withFieldValues(this.props.transactionFields);
   }
-
   private fieldSetter = (
     payload: TransactionFieldPayloadedAction['payload']
   ) => {
