@@ -66,6 +66,13 @@ const configureStore = () => {
     swap: swapState
   };
 
+  // if 'web3' has persisted as node selection, reset to app default
+  // necessary because web3 is only initialized as a node upon MetaMask / Mist unlock
+  if (persistedInitialState.config.nodeSelection === 'web3') {
+    persistedInitialState.config.nodeSelection =
+      configInitialState.nodeSelection;
+  }
+
   store = createStore(RootReducer, persistedInitialState, middleware);
 
   // Add all of the sagas to the middleware
