@@ -14,17 +14,17 @@ declare module 'bn.js' {
     redSqr(): RedBN;
     redISqr(): RedBN;
     /**
-     * @description square root modulo reduction context's prime
-     */
+       * @description square root modulo reduction context's prime
+       */
     redSqrt(): RedBN;
     /**
-     * @description  modular inverse of the number
-     */
+       * @description  modular inverse of the number
+       */
     redInvm(): RedBN;
     redNeg(): RedBN;
     /**
-     * @description modular exponentiation
-     */
+       * @description modular exponentiation
+       */
     redPow(b: RedBN): RedBN;
     fromRed(): BN;
   }
@@ -150,43 +150,43 @@ declare module 'bn.js' {
     isZero(): boolean;
 
     /**
-     * @description compare numbers and return `-1 (a < b)`, `0 (a == b)`, or `1 (a > b)` depending on the comparison result
+     * @description compare numbers and return `-1 (a < b)`, `0 (a == b)`, or `1 (a > b)` depending on the comparison result 
      */
 
     cmp(b: BN): -1 | 0 | 1;
 
     /**
-     * @description compare numbers and return `-1 (a < b)`, `0 (a == b)`, or `1 (a > b)` depending on the comparison result
+     * @description compare numbers and return `-1 (a < b)`, `0 (a == b)`, or `1 (a > b)` depending on the comparison result 
      */
 
     ucmp(b: BN): -1 | 0 | 1;
 
     /**
-     * @description compare numbers and return `-1 (a < b)`, `0 (a == b)`, or `1 (a > b)` depending on the comparison result
+     * @description compare numbers and return `-1 (a < b)`, `0 (a == b)`, or `1 (a > b)` depending on the comparison result 
      */
 
     cmpn(b: number): -1 | 0 | 1;
 
     /**
-     * @description a less than b
+     * @description a less than b 
      */
 
     lt(b: BN): boolean;
 
     /**
-     * @description a less than b
+     * @description a less than b 
      */
 
     ltn(b: number): boolean;
 
     /**
-     * @description a less than or equals b
+     * @description a less than or equals b 
      */
 
     lte(b: BN): boolean;
 
     /**
-     * @description a less than or equals b
+     * @description a less than or equals b 
      */
 
     lten(b: number): boolean;
@@ -369,7 +369,7 @@ declare module 'bn.js' {
      * @description reduct
      */
 
-    modn(b: number): number; //API consistency https://github.com/indutny/bn.js/pull/130
+    modn(b: number): BN;
 
     /**
      * @description  rounded division
@@ -511,12 +511,12 @@ declare module 'bn.js' {
 
     bincn(b: number): BN;
     /**
-     * @description not (for the width specified by `w`)
+     * @description not (for the width specified by `w`) 
      */
 
     notn(w: number): BN;
     /**
-     * @description not (for the width specified by `w`)
+     * @description not (for the width specified by `w`) 
      */
 
     inotn(w: number): BN;
