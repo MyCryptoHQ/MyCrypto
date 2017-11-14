@@ -1,6 +1,7 @@
 export * from './UnitConverter';
 export * from './EtherBalance';
 export * from './GasPrice';
+export * from './GasQuery';
 export * from './Offline';
 export * from './TokenBalances';
 export * from './Query';
