@@ -1,13 +1,13 @@
-import { Ether } from 'libs/units';
+import { Wei } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
 import './EquivalentValues.scss';
 import { State } from 'reducers/rates';
 import { symbols } from 'actions/rates';
+import { UnitDisplay } from 'components/ui';
 
 interface Props {
-  balance?: Ether;
+  balance?: Wei;
   rates?: State['rates'];
   ratesError?: State['ratesError'];
 }
@@ -33,9 +33,15 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                     </span>
                     <span className="EquivalentValues-values-currency-value">
                       {' '}
-                      {balance
-                        ? formatNumber(balance.amount.times(rates[key]))
-                        : '???'}
+                      {balance ? (
+                        <UnitDisplay
+                          unit={'ether'}
+                          value={balance.muln(rates[key])}
+                          displayShortBalance={2}
+                        />
+                      ) : (
+                        '???'
+                      )}
                     </span>
                   </li>
                 );

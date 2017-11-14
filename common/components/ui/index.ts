@@ -6,3 +6,4 @@ export { default as Modal } from './Modal';
 export { default as UnlockHeader } from './UnlockHeader';
 export { default as QRCode } from './QRCode';
 export { default as NewTabLink } from './NewTabLink';
+export { default as UnitDisplay } from './UnitDisplay';
