@@ -63,7 +63,7 @@ export function setBalanceFullfilled(
   };
 }
 
-export function SetBalanceRejected(): types.SetBalanceRejectedAction {
+export function setBalanceRejected(): types.SetBalanceRejectedAction {
   return {
     type: TypeKeys.WALLET_SET_BALANCE_REJECTED
   };

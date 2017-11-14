@@ -40,7 +40,7 @@ function setBalancePending(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: true } };
 }
 
-function SetBalanceFullfilled(
+function setBalanceFullfilled(
   state: State,
   action: SetBalanceFullfilledAction
 ): State {
@@ -50,7 +50,7 @@ function SetBalanceFullfilled(
   };
 }
 
-function SetBalanceRejected(state: State): State {
+function setBalanceRejected(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
@@ -132,9 +132,9 @@ export function wallet(
     case TypeKeys.WALLET_SET_BALANCE_PENDING:
       return setBalancePending(state);
     case TypeKeys.WALLET_SET_BALANCE_FULFILLED:
-      return SetBalanceFullfilled(state, action);
+      return setBalanceFullfilled(state, action);
     case TypeKeys.WALLET_SET_BALANCE_REJECTED:
-      return SetBalanceRejected(state);
+      return setBalanceRejected(state);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES:
       return setTokenBalances(state, action);
     case TypeKeys.WALLET_BROADCAST_TX_REQUESTED:

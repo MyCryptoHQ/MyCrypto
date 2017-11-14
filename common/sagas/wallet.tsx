@@ -5,7 +5,7 @@ import {
   broadcastTxSucceded,
   setBalanceFullfilled,
   setBalancePending,
-  SetBalanceRejected,
+  setBalanceRejected,
   setTokenBalances,
   setWallet,
   UnlockKeystoreAction,
@@ -52,7 +52,7 @@ function* updateAccountBalance(): SagaIterator {
     const balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalanceFullfilled(balance));
   } catch (error) {
-    yield put(SetBalanceRejected());
+    yield put(setBalanceRejected());
   }
 }
 
