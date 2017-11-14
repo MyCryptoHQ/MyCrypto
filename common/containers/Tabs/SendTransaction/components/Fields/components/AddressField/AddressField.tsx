@@ -1,5 +1,6 @@
 import { isValidENSorEtherAddress } from 'libs/validators';
-import { Query } from 'components/renderCbs';
+import { Query, SetTransactionFields } from 'components/renderCbs';
+import { setToField } from 'actions/transactionFields';
 import { AddressInput } from './AddressInput';
 import { Address } from 'libs/units';
 import React from 'react';
@@ -49,10 +50,15 @@ interface DefaultProps {
 }
 
 const DefaultAddressField: React.SFC<DefaultProps> = props => (
-  <Query
-    params={['to']}
-    withQuery={({ to }) => (
-      <AddressField {...{ ...props, to, onChange: props.withAddress }} />
+  <SetTransactionFields
+    name="to"
+    withFieldSetter={setter => (
+      <Query
+        params={['to']}
+        withQuery={({ to }) => (
+          <AddressField {...{ ...props, to, onChange: props.withAddress }} />
+        )}
+      />
     )}
   />
 );

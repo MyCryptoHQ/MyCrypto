@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { TransactionFieldPayloadedAction } from 'actions/transactionFields';
-import { upperFirst } from 'lodash';
 import {
+  TransactionFieldPayloadedAction,
+  setValueField,
   setGasLimitField,
   setDataField,
-  setAddressField,
+  setToField,
   setNonceField,
-  setAmountField,
   TSetGasLimitField,
   TSetDataField,
   TSetToField,
   TSetNonceField,
   TSetValueField
-} from 'actions/transactionFields/actionCreators';
+} from 'actions/transactionFields';
+import { upperFirst } from 'lodash';
 
 type FieldNames = keyof AppState['transactionFields'];
 type FieldSetter = (
@@ -23,9 +23,9 @@ type FieldSetter = (
 interface ReduxProps {
   setGasLimitField: TSetGasLimitField;
   setDataField: TSetDataField;
-  setAddressField: TSetToField;
+  setToField: TSetToField;
   setNonceField: TSetNonceField;
-  setAmountField: TSetValueField;
+  setValueField: TSetValueField;
 }
 interface SetterProps {
   name: FieldNames;
@@ -43,7 +43,7 @@ class SetTransactionFieldsClass extends Component<SetterProps & ReduxProps> {
 export const SetTransactionFields = connect(null, {
   setGasLimitField,
   setDataField,
-  setAddressField,
+  setToField,
   setNonceField,
-  setAmountField
+  setValueField
 })(SetTransactionFieldsClass);

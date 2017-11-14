@@ -16,9 +16,9 @@ export {
   TClearFields,
   setGasLimitField,
   setDataField,
-  setAddressField,
+  setToField,
   setNonceField,
-  setAmountField,
+  setValueField,
   clearFields
 };
 
@@ -38,8 +38,8 @@ const setDataField = (
   payload
 });
 
-type TSetToField = typeof setAddressField;
-const setAddressField = (
+type TSetToField = typeof setToField;
+const setToField = (
   payload: SetToFieldAction['payload']
 ): SetToFieldAction => ({
   type: TypeKeys.TO_FIELD_SET,
@@ -54,8 +54,8 @@ const setNonceField = (
   payload
 });
 
-type TSetValueField = typeof setAmountField;
-const setAmountField = (
+type TSetValueField = typeof setValueField;
+const setValueField = (
   payload: SetValueFieldAction['payload']
 ): SetValueFieldAction => ({
   type: TypeKeys.VALUE_FIELD_SET,
