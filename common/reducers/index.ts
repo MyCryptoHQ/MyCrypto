@@ -13,6 +13,10 @@ import { notifications, State as NotificationsState } from './notifications';
 import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
+import {
+  State as TransactionFieldState,
+  transactionFields
+} from './transactionFields';
 export interface AppState {
   // Custom reducers
   generateWallet: GenerateWalletState;
@@ -27,6 +31,7 @@ export interface AppState {
   form: any;
   routing: any;
   swap: SwapState;
+  transactionFields: TransactionFieldState;
 }
 
 export default combineReducers({
@@ -40,5 +45,6 @@ export default combineReducers({
   rates,
   deterministicWallets,
   form: formReducer,
-  routing: routerReducer
+  routing: routerReducer,
+  transactionFields
 });
