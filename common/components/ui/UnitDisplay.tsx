@@ -7,7 +7,6 @@ import {
   TokenValue
 } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
-import Spinner from 'components/ui/Spinner';
 
 interface Props {
   /**
@@ -44,7 +43,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
   const { value, symbol, displayShortBalance } = params;
 
   if (!value) {
-    return <Spinner size="x1" />;
+    return <span>Balance isn't available offline</span>;
   }
 
   const convertedValue = isEthereumUnit(params)

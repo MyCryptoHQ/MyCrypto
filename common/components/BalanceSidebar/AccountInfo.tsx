@@ -5,6 +5,7 @@ import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
+import Spinner from 'components/ui/Spinner';
 
 interface Props {
   balance: Balance;
@@ -78,11 +79,15 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                <UnitDisplay
-                  value={balance.wei}
-                  unit={'ether'}
-                  displayShortBalance={!showLongBalance}
-                />
+                {balance.isPending ? (
+                  <Spinner />
+                ) : (
+                  <UnitDisplay
+                    value={balance.wei}
+                    unit={'ether'}
+                    displayShortBalance={!showLongBalance}
+                  />
+                )}
               </span>
               {` ${network.name}`}
             </li>
