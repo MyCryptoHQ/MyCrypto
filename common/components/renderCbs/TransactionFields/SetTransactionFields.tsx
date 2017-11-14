@@ -26,7 +26,6 @@ interface ReduxProps {
   setAddressField: TSetToField;
   setNonceField: TSetNonceField;
   setAmountField: TSetValueField;
-  transactionFields: AppState['transactionFields'];
 }
 interface SetterProps {
   name: FieldNames;
