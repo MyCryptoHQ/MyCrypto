@@ -1,5 +1,4 @@
-import { BigNumber } from 'bignumber.js';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
 import * as types from './actionTypes';
 import { TypeKeys } from './constants';
@@ -58,7 +57,7 @@ export function setBalance(value: Wei): types.SetBalanceAction {
 
 export type TSetTokenBalances = typeof setTokenBalances;
 export function setTokenBalances(payload: {
-  [key: string]: BigNumber;
+  [key: string]: TokenValue;
 }): types.SetTokenBalancesAction {
   return {
     type: TypeKeys.WALLET_SET_TOKEN_BALANCES,
