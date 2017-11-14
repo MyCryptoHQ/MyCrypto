@@ -1,14 +1,19 @@
-import { BigNumber } from 'bignumber.js';
+import { TokenValue, Wei } from 'libs/units';
 
-export interface TokenValues {
-  [key: string]: BigNumber;
+export interface ITokenData {
+  value: TokenValue;
+  decimal: number;
+}
+
+export interface ITokenValues {
+  [key: string]: ITokenData | null;
 }
 
 export interface DeterministicWalletData {
   index: number;
   address: string;
-  value?: BigNumber;
-  tokenValues: TokenValues;
+  value?: TokenValue;
+  tokenValues: ITokenValues;
 }
 
 /*** Get determinstic wallets ***/
@@ -39,8 +44,8 @@ export interface SetDesiredTokenAction {
 /*** Set wallet values ***/
 export interface UpdateDeterministicWalletArgs {
   address: string;
-  value?: BigNumber;
-  tokenValues?: TokenValues;
+  value?: Wei;
+  tokenValues?: ITokenValues;
   index?: any;
 }
 
