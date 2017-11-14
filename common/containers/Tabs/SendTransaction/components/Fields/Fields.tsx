@@ -24,12 +24,6 @@ const Fields: React.SFC<any> = () => (
     />
     <GasField transaction={} withGas={} />
     <NonceField withNonce={} />
-
-    {unit === 'ether' && (
-      <DataField
-        value={data}
-        onChange={readOnly ? void 0 : this.onDataChange}
-      />
-    )}
+    <DataField withData={} unit={} />
   </div>
 );

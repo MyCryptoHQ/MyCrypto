@@ -20,13 +20,10 @@ class AddressField extends React.Component<Props, State> {
 
     if (to) {
       onChange(Address(to));
+      this.setState({ address: to, validAddress: true });
+    } else {
+      this.setState({ address: '', validAddress: false });
     }
-
-    const state: State = to
-      ? { address: to, validAddress: true }
-      : { address: '', validAddress: false };
-
-    this.setState(state);
   }
 
   public render() {
