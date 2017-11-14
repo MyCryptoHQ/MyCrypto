@@ -22,11 +22,7 @@ const Fields: React.SFC<any> = () => (
       readOnly={readOnly}
       onUnitChange={this.onUnitChange}
     />
-    <GasField
-      readOnly={readonly}
-      value={gasLimit}
-      onChange={this.onGasChange}
-    />
+    <GasField transaction={} withGas={} />
     <NonceField withNonce={} />
 
     {unit === 'ether' && (
