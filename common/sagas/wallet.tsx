@@ -3,7 +3,9 @@ import {
   broadCastTxFailed,
   BroadcastTxRequestedAction,
   broadcastTxSucceded,
-  setBalance,
+  setBalanceFullfilled,
+  setBalancePending,
+  setBalanceRejected,
   setTokenBalances,
   setWallet,
   UnlockKeystoreAction,
@@ -39,6 +41,7 @@ import translate from 'translations';
 
 function* updateAccountBalance(): SagaIterator {
   try {
+    yield put(setBalancePending());
     const wallet: null | IWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
@@ -47,9 +50,9 @@ function* updateAccountBalance(): SagaIterator {
     const address = yield apply(wallet, wallet.getAddressString);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance));
+    yield put(setBalanceFullfilled(balance));
   } catch (error) {
-    yield put({ type: 'updateAccountBalance_error', error });
+    yield put(setBalanceRejected());
   }
 }
 
@@ -191,8 +194,6 @@ function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
 }
 
 export default function* walletSaga(): SagaIterator {
-  // useful for development
-  yield call(updateBalances);
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),

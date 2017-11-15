@@ -369,7 +369,7 @@ declare module 'bn.js' {
      * @description reduct
      */
 
-    modn(b: number): number; //API consistency https://github.com/indutny/bn.js/pull/130
+    modn(b: number): BN;
 
     /**
      * @description  rounded division

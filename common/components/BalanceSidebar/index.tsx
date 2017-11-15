@@ -7,8 +7,7 @@ import {
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { fetchCCRates as dFetchCCRates, TFetchCCRates } from 'actions/rates';
 import { NetworkConfig } from 'config/data';
-import { Wei } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -27,7 +26,7 @@ import OfflineToggle from './OfflineToggle';
 
 interface Props {
   wallet: IWallet;
-  balance: Wei;
+  balance: Balance;
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
   rates: State['rates'];

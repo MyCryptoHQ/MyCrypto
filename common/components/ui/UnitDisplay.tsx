@@ -14,7 +14,7 @@ interface Props {
    * @type {TokenValue | Wei}
    * @memberof Props
    */
-  value?: TokenValue | Wei;
+  value?: TokenValue | Wei | null;
   /**
    * @description Symbol to display to the right of the value, such as 'ETH'
    * @type {string}
@@ -43,7 +43,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
   const { value, symbol, displayShortBalance } = params;
 
   if (!value) {
-    return <span>???</span>;
+    return <span>Balance isn't available offline</span>;
   }
 
   const convertedValue = isEthereumUnit(params)

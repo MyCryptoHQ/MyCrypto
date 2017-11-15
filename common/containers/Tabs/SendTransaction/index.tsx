@@ -32,7 +32,7 @@ import {
 import { UnitKey, Wei, getDecimal, toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 // LIBS
-import { IWallet, Web3Wallet } from 'libs/wallet';
+import { IWallet, Balance, Web3Wallet } from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
@@ -92,7 +92,7 @@ interface State {
 
 interface Props {
   wallet: IWallet;
-  balance: Wei;
+  balance: Balance;
   nodeLib: RPCNode;
   network: NetworkConfig;
   tokens: MergedToken[];
@@ -353,7 +353,7 @@ export class SendTransaction extends React.Component<Props, State> {
                     {generateTxProcessing && (
                       <div className="container">
                         <div className="row form-group text-center">
-                          <Spinner size="5x" />
+                          <Spinner size="x5" />
                         </div>
                       </div>
                     )}
@@ -574,7 +574,7 @@ export class SendTransaction extends React.Component<Props, State> {
       value = getBalanceMinusGasCosts(
         bigGasLimit,
         gasPrice,
-        balance
+        balance.wei
       ).toString();
     } else {
       const tokenBalance = this.props.tokenBalances.find(
