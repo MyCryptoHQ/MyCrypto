@@ -1,14 +1,14 @@
 import { TFetchCCRates } from 'actions/rates';
 import { Identicon, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'config/data';
-import { IWallet } from 'libs/wallet';
-import { Wei } from 'libs/units';
+import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
+import Spinner from 'components/ui/Spinner';
 
 interface Props {
-  balance: Wei;
+  balance: Balance;
   wallet: IWallet;
   network: NetworkConfig;
   fetchCCRates: TFetchCCRates;
@@ -79,13 +79,17 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                <UnitDisplay
-                  value={balance}
-                  unit={'ether'}
-                  displayShortBalance={!showLongBalance}
-                />
+                {balance.isPending ? (
+                  <Spinner />
+                ) : (
+                  <UnitDisplay
+                    value={balance.wei}
+                    unit={'ether'}
+                    displayShortBalance={!showLongBalance}
+                  />
+                )}
               </span>
-              {` ${network.name}`}
+              {balance ? `${network.name}` : null}
             </li>
           </ul>
         </div>

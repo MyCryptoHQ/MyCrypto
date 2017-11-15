@@ -1,13 +1,14 @@
-import { Wei } from 'libs/units';
 import React from 'react';
 import translate from 'translations';
 import './EquivalentValues.scss';
 import { State } from 'reducers/rates';
 import { symbols } from 'actions/rates';
 import { UnitDisplay } from 'components/ui';
+import { Balance } from 'libs/wallet';
+import Spinner from 'components/ui/Spinner';
 
 interface Props {
-  balance?: Wei;
+  balance: Balance;
   rates?: State['rates'];
   ratesError?: State['ratesError'];
 }
@@ -29,18 +30,19 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                 return (
                   <li className="EquivalentValues-values-currency" key={key}>
                     <span className="EquivalentValues-values-currency-label">
-                      {key}:
+                      {key + ': '}
                     </span>
                     <span className="EquivalentValues-values-currency-value">
-                      {' '}
-                      {balance ? (
+                      {balance.isPending ? (
+                        <Spinner />
+                      ) : (
                         <UnitDisplay
                           unit={'ether'}
-                          value={balance.muln(rates[key])}
+                          value={
+                            balance.wei ? balance.wei.muln(rates[key]) : null
+                          }
                           displayShortBalance={2}
                         />
-                      ) : (
-                        '???'
                       )}
                     </span>
                   </li>

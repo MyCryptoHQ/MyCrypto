@@ -183,11 +183,9 @@ EncodedCall:${data}`);
       //TODO: parse args based on type
       if (!suppliedArgs[name]) {
         throw Error(
-          `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(
-            suppliedArgs,
-            null,
-            2
-          )}`
+          `Expected argument "${name}" of type "${
+            type
+          }" missing, suppliedArgs: ${JSON.stringify(suppliedArgs, null, 2)}`
         );
       }
       const value = suppliedArgs[name];
