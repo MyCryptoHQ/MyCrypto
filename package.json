@@ -88,7 +88,7 @@
     "node-sass": "4.6.1",
     "nodemon": "1.12.1",
     "null-loader": "0.1.1",
-    "prettier": "1.8.1",
+    "prettier": "1.8.2",
     "progress": "2.0.0",
     "react-hot-loader": "3.1.2",
     "react-test-renderer": "16.0.0",
