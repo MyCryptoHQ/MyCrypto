@@ -1,7 +1,6 @@
-import Big, { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 import { INode, TxObj } from '../INode';
 import ERC20 from 'libs/erc20';
 
@@ -18,6 +17,7 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err.message);
         }
+        // web3 return string
         resolve(res);
       });
     });
@@ -29,12 +29,13 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err);
         }
-        resolve(new Wei(res.toString()));
+        // web3 returns BigNumber
+        resolve(Wei(res.toString()));
       });
     });
   }
 
-  public estimateGas(transaction: TransactionWithoutGas): Promise<BigNumber> {
+  public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
     return new Promise((resolve, reject) =>
       this.web3.eth.estimateGas(
         {
@@ -45,13 +46,14 @@ export default class Web3Node implements INode {
           if (err) {
             return reject(err);
           }
-          resolve(new Big(res.toString()));
+          // web3 returns number
+          resolve(Wei(res));
         }
       )
     );
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<BigNumber> {
+  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
     return new Promise(resolve => {
       this.web3.eth.call(
         {
@@ -62,13 +64,10 @@ export default class Web3Node implements INode {
         (err, res) => {
           if (err) {
             // TODO - Error handling
-            return resolve(new Big(0));
+            return resolve(TokenValue('0'));
           }
-
-          const bigResult = new Big(res.toString());
-          const bigTokenBase = new Big(10).pow(token.decimal);
-
-          resolve(bigResult.div(bigTokenBase));
+          // web3 returns string
+          resolve(TokenValue(res));
         }
       );
     });
@@ -77,11 +76,11 @@ export default class Web3Node implements INode {
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<BigNumber[]> {
+  ): Promise<TokenValue[]> {
     return new Promise(resolve => {
       const batch = this.web3.createBatch();
       const totalCount = tokens.length;
-      const returnArr = new Array<BigNumber>(totalCount);
+      const returnArr = new Array<TokenValue>(totalCount);
       let finishCount = 0;
 
       tokens.forEach((token, index) =>
@@ -92,20 +91,19 @@ export default class Web3Node implements INode {
               data: ERC20.balanceOf(address)
             },
             'pending',
-            (err, res) => finish(token, index, err, res)
+            (err, res) => finish(index, err, res)
           )
         )
       );
       batch.execute();
 
-      function finish(token, index, err, res) {
+      function finish(index, err, res) {
         if (err) {
           // TODO - Error handling
-          returnArr[index] = new Big(0);
+          returnArr[index] = TokenValue('0');
         } else {
-          returnArr[index] = new Big(res.toString()).div(
-            new Big(10).pow(token.decimal)
-          );
+          // web3 returns string
+          returnArr[index] = TokenValue(res);
         }
 
         finishCount++;
@@ -122,6 +120,7 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err);
         }
+        // web3 returns number
         resolve(txCount.toString());
       })
     );
@@ -133,6 +132,7 @@ export default class Web3Node implements INode {
         if (err) {
           return reject(err);
         }
+        // web3 return string
         resolve(txHash);
       })
     );

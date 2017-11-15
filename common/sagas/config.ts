@@ -20,7 +20,10 @@ import {
   changeNode,
   changeNodeIntent
 } from 'actions/config';
-import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+import {
+  State as ConfigState,
+  INITIAL_STATE as configInitialState
+} from 'reducers/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -42,7 +45,6 @@ function* handlePollOfflineStatus(): SagaIterator {
   yield take('CONFIG_STOP_POLL_OFFLINE_STATE');
   yield cancel(pollOfflineStatusTask);
 }
-
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.

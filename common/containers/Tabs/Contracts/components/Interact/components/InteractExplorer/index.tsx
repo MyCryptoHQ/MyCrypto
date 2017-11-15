@@ -8,6 +8,8 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import { TShowNotification } from 'actions/notifications';
 import classnames from 'classnames';
 import { isValidGasPrice, isValidValue } from 'libs/validators';
+import { UnitConverter } from 'components/renderCbs';
+import { getDecimal } from 'libs/units';
 
 export interface Props {
   contractFunctions: any;
@@ -164,19 +166,26 @@ export default class InteractExplorer extends Component<Props, State> {
                   </label>
                   <label className="InteractExplorer-field form-group">
                     <h4 className="InteractExplorer-field-label">Value</h4>
-                    <input
-                      name="value"
-                      value={value}
+                    <UnitConverter
+                      decimal={getDecimal('ether')}
                       onChange={handleInput('value')}
-                      placeholder="0"
-                      className={classnames(
-                        'InteractExplorer-field-input',
-                        'form-control',
-                        {
-                          'is-invalid': !validValue
-                        }
+                    >
+                      {({ convertedUnit, onUserInput }) => (
+                        <input
+                          name="value"
+                          value={convertedUnit}
+                          onChange={onUserInput}
+                          placeholder="0"
+                          className={classnames(
+                            'InteractExplorer-field-input',
+                            'form-control',
+                            {
+                              'is-invalid': !validValue
+                            }
+                          )}
+                        />
                       )}
-                    />
+                    </UnitConverter>
                   </label>
                   <button
                     className="InteractExplorer-func-submit btn btn-primary"
