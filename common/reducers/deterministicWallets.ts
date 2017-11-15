@@ -42,7 +42,10 @@ export function deterministicWallets(
   }
 }
 
-function updateWalletValues(wallets, newWallet) {
+function updateWalletValues(
+  wallets: DeterministicWalletData[],
+  newWallet: Partial<DeterministicWalletData>
+) {
   return wallets.map(w => {
     if (w.address === newWallet.address) {
       return {

@@ -1,4 +1,4 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
 
 .CurrencySwap {
   text-align: center;
@@ -12,6 +12,30 @@
   &-divider {
     display: inline-block;
     vertical-align: top;
+  }
+  &-input-group {
+    display: inline-block;
+  }
+  &-error-message {
+    display: block;
+    min-height: 25px;
+    color: $brand-danger;
+    text-align: left;
+  }
+  &-inner-wrap {
+    display: block;
+  }
+  @media (min-width: $screen-xs-min) {
+    &-inner-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  &-dropdown {
+    display: inline-block;
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
   }
 
   &-input {
