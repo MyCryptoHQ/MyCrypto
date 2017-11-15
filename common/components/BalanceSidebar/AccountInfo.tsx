@@ -89,7 +89,7 @@ export default class AccountInfo extends React.Component<Props, State> {
                   />
                 )}
               </span>
-              {balance ? `${network.name}` : null}
+              {balance && !balance.isPending ? `${network.name}` : null}
             </li>
           </ul>
         </div>
