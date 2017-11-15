@@ -38,7 +38,9 @@ export default class EquivalentValues extends React.Component<Props, {}> {
                       ) : (
                         <UnitDisplay
                           unit={'ether'}
-                          value={balance.wei.muln(rates[key])}
+                          value={
+                            balance.wei ? balance.wei.muln(rates[key]) : null
+                          }
                           displayShortBalance={2}
                         />
                       )}
