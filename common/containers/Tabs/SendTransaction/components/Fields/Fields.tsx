@@ -24,6 +24,6 @@ const Fields: React.SFC<any> = () => (
     />
     <GasField />
     <NonceField />
-    <DataField withData={} unit={} />
+    <DataField unit={} />
   </div>
 );

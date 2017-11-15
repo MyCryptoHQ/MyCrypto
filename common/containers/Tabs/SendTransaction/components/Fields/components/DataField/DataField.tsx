@@ -1,62 +1,51 @@
 import { DataInput } from './DataInput';
 import { isValidHex } from 'libs/validators';
-import { Query } from 'components/renderCbs';
+import { Query, SetTransactionFields } from 'components/renderCbs';
+import { SetDataFieldAction } from 'actions/transactionFields';
 import { Data } from 'libs/units';
 import React from 'react';
 
 interface Props {
   data: string | null;
-  onChange(data: Buffer | null): void;
+  setter(payload: SetDataFieldAction['payload']): void;
 }
 
-interface State {
-  validData: boolean;
-  data: string;
-}
-
-class DataField extends React.Component<Props, State> {
+class DataField extends React.Component<Props> {
   public componentDidMount() {
-    const { data, onChange } = this.props;
+    const { data, setter } = this.props;
     if (data) {
-      onChange(Data(data));
-      this.setState({ data, validData: true });
-    } else {
-      onChange(Data('')); // default data is empty buffer
-      this.setState({ data: '', validData: false });
+      setter({ raw: data, value: Data(data) });
     }
   }
 
   public render() {
-    return (
-      <DataInput
-        onChange={this.setData}
-        value={this.state.data}
-        validData={this.state.validData}
-      />
-    );
+    return <DataInput onChange={this.setData} />;
   }
 
   private setData = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
     const validData = isValidHex(value);
-    this.props.onChange(validData ? Data(value) : null);
-    this.setState({ data: value, validData });
+    this.props.setter({ raw: value, value: validData ? Data(value) : null });
   };
 }
 
 interface DefaultProps {
   unit: string;
-  withData(data: Buffer | null);
 }
 
 const DefaultDataField: React.SFC<DefaultProps> = (
   /* TODO: check query param of tokens too */
-  { withData, unit } // only display if it isn't a token
+  { unit } // only display if it isn't a token
 ) =>
   unit === 'ether' ? (
-    <Query
-      params={['data']}
-      withQuery={({ data }) => <DataField onChange={withData} data={data} />}
+    <SetTransactionFields
+      name="data"
+      withFieldSetter={setter => (
+        <Query
+          params={['data']}
+          withQuery={({ data }) => <DataField data={data} setter={setter} />}
+        />
+      )}
     />
   ) : null;
 

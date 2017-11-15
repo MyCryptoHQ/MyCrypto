@@ -1,12 +1,10 @@
 import React from 'react';
 import { Expandable, ExpandHandler } from 'components/ui';
-import { Query } from 'components/renderCbs';
+import { Query, GetTransactionFields } from 'components/renderCbs';
 import translate from 'translations';
 import { donationAddressMap } from 'config/data';
 
 interface Props {
-  value: string;
-  validData: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>);
 }
 
@@ -16,20 +14,24 @@ const expander = (expandHandler: ExpandHandler) => (
   </a>
 );
 
-export const DataInput: React.SFC<Props> = ({ onChange, value, validData }) => (
+export const DataInput: React.SFC<Props> = ({ onChange }) => (
   <Expandable expandLabel={expander}>
     <div className="form-group">
       <label>{translate('TRANS_data')}</label>
-      <Query
-        params={['readOnly']}
-        withQuery={({ readOnly }) => (
-          <input
-            className={`form-control ${validData ? 'is-valid' : 'is-invalid'}`}
-            type="text"
-            placeholder={donationAddressMap.ETH}
-            value={value}
-            readOnly={!!readOnly}
-            onChange={onChange}
+      <GetTransactionFields
+        withFieldValues={({ data: { raw, valid } }) => (
+          <Query
+            params={['readOnly']}
+            withQuery={({ readOnly }) => (
+              <input
+                className={`form-control ${valid ? 'is-valid' : 'is-invalid'}`}
+                type="text"
+                placeholder={donationAddressMap.ETH}
+                value={raw}
+                readOnly={!!readOnly}
+                onChange={onChange}
+              />
+            )}
           />
         )}
       />
