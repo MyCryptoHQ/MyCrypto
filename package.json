@@ -22,7 +22,7 @@
     "idna-uts46": "1.1.0",
     "lodash": "4.17.4",
     "moment": "2.19.2",
-    "qrcode": "0.9.0",
+    "qrcode": "1.0.0",
     "qrcode.react": "0.7.2",
     "query-string": "5.0.1",
     "react": "16.0.0",
