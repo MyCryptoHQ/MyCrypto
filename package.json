@@ -55,7 +55,7 @@
     "@types/react-redux": "5.0.12",
     "@types/react-router": "4.0.16",
     "@types/react-router-dom": "4.2.0",
-    "@types/react-router-redux": "4.0.51",
+    "@types/react-router-redux": "5.0.10",
     "@types/redux-form": "7.0.8",
     "@types/redux-logger": "3.0.5",
     "@types/redux-promise-middleware": "0.0.9",
