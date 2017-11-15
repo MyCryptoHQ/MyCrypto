@@ -66,12 +66,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       {
         name: 'Account Info',
         content: (
-          <AccountInfo
-            wallet={wallet}
-            balance={balance}
-            network={network}
-            fetchCCRates={fetchCCRates}
-          />
+          <AccountInfo wallet={wallet} balance={balance} network={network} />
         )
       },
       {
@@ -94,8 +89,10 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         content: (
           <EquivalentValues
             balance={balance}
+            tokenBalances={tokenBalances}
             rates={rates}
             ratesError={ratesError}
+            fetchCCRates={fetchCCRates}
           />
         )
       }
