@@ -1,4 +1,4 @@
-import { Wei, Ether } from 'libs/units';
+import { Wei } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
 import { RPCNode } from 'libs/nodes';
 import { NodeConfig, NetworkConfig } from 'config/data';
@@ -7,7 +7,7 @@ import { TShowNotification } from 'actions/notifications';
 
 export interface Props {
   wallet: IWallet;
-  balance: Ether;
+  balance: Wei;
   node: NodeConfig;
   nodeLib: RPCNode;
   chainId: NetworkConfig['chainId'];
