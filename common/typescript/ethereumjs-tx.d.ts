@@ -24,16 +24,16 @@ declare module 'ethereumjs-tx' {
   */
 
   export interface TxObj {
-    chainId: number;
-    gasLimit: Buffer | BN | string | number;
-    gasPrice: Buffer | BN | string | number;
-    to: Buffer | BN | string | number;
-    nonce: Buffer | BN | string | number;
-    data?: Buffer | BN | string | number;
-    v?: Buffer | BN | string | number;
-    r?: Buffer | BN | string | number;
-    s?: Buffer | BN | string | number;
-    value?: Buffer | BN | string | number;
+    chainId?: number | null;
+    gasLimit?: Buffer | BN | string | number | null;
+    gasPrice?: Buffer | BN | string | number | null;
+    to?: Buffer | BN | string | number | null;
+    nonce: Buffer | BN | string | number | null;
+    data?: Buffer | BN | string | number | null;
+    v?: Buffer | BN | string | number | null;
+    r?: Buffer | BN | string | number | null;
+    s?: Buffer | BN | string | number | null;
+    value?: Buffer | BN | string | number | null;
   }
 
   class Base {

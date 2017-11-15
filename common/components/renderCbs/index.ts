@@ -8,3 +8,4 @@ export * from './Query';
 export * from './Nonce';
 export * from './Wallet';
 export * from './TransactionFields';
+export * from './Transaction';

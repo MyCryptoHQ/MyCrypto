@@ -22,7 +22,7 @@ const Fields: React.SFC<any> = () => (
       readOnly={readOnly}
       onUnitChange={this.onUnitChange}
     />
-    <GasField transaction={} withGas={} />
+    <GasField />
     <NonceField />
     <DataField withData={} unit={} />
   </div>

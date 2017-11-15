@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { GasQuery } from 'components/renderCbs';
+import {
+  GasQuery,
+  Transaction,
+  SetTransactionFields
+} from 'components/renderCbs';
 import { Wei } from 'libs/units';
 import { GasInput } from './GasInput';
+import { SetGasLimitFieldAction } from 'actions/transactionFields';
 import EthTx from 'ethereumjs-tx';
 
 const defaultGasLimit = '21000';
@@ -9,29 +14,22 @@ const defaultGasLimit = '21000';
 interface Props {
   gasLimit: string | null;
   transaction: EthTx | null;
-  onChange(gasLimit: Wei | null): void;
+  setter(payload: SetGasLimitFieldAction['payload']): void;
 }
 
-interface State {
-  validGasLimit: boolean;
-  gasLimit: string;
-}
-
-class GasLimitField extends Component<Props, State> {
+class GasLimitField extends Component<Props, {}> {
   public componentDidMount() {
-    const { gasLimit, onChange } = this.props;
+    const { gasLimit, setter } = this.props;
     if (gasLimit) {
-      onChange(Wei(gasLimit));
-      this.setState({ validGasLimit: true, gasLimit });
+      setter({ raw: gasLimit, value: Wei(gasLimit) });
     } else {
-      onChange(Wei(defaultGasLimit));
-      this.setState({ validGasLimit: true, gasLimit: defaultGasLimit });
+      setter({ raw: defaultGasLimit, value: Wei(defaultGasLimit) });
     }
   }
 
   public componentWillReceiveProps(nextProps: Props) {
     const { transaction: nextT } = nextProps;
-    const { transaction: prevT, onChange } = this.props;
+    const { transaction: prevT, setter } = this.props;
 
     if (!nextT) {
       return;
@@ -39,26 +37,18 @@ class GasLimitField extends Component<Props, State> {
 
     if (this.shouldEstimateGas(nextT, prevT)) {
       const gasLimit = nextT.getBaseFee();
-      this.setState({ validGasLimit: true, gasLimit: gasLimit.toString() });
-      onChange(gasLimit);
+      setter({ raw: gasLimit.toString(), value: gasLimit });
     }
   }
 
   public render() {
-    return (
-      <GasInput
-        validGas={this.state.validGasLimit}
-        value={this.state.gasLimit}
-        onChange={this.setGas}
-      />
-    );
+    return <GasInput onChange={this.setGas} />;
   }
 
   private setGas(ev: React.FormEvent<HTMLInputElement>) {
     const { value } = ev.currentTarget;
     const validGasLimit = isFinite(parseFloat(value)) && parseFloat(value) > 0;
-    this.props.onChange(validGasLimit ? Wei(value) : null);
-    this.setState({ validGasLimit, gasLimit: value });
+    this.props.setter({ raw: value, value: validGasLimit ? Wei(value) : null });
   }
 
   private shouldEstimateGas(nextT: EthTx, prevT: EthTx | null) {
@@ -75,18 +65,22 @@ class GasLimitField extends Component<Props, State> {
   }
 }
 
-interface DefaultProps {
-  transaction: EthTx | null;
-  withGas(gasLimit: Wei);
-}
-
-const DefaultGasField: React.SFC<DefaultProps> = ({ withGas, transaction }) => (
-  <GasQuery
-    withQuery={({ gasLimit }) => (
-      <GasLimitField
-        gasLimit={gasLimit}
-        onChange={withGas}
-        transaction={transaction}
+const DefaultGasField: React.SFC<{}> = () => (
+  <Transaction
+    withTransaction={({ transaction }) => (
+      <GasQuery
+        withQuery={({ gasLimit }) => (
+          <SetTransactionFields
+            name="gasLimit"
+            withFieldSetter={setter => (
+              <GasLimitField
+                gasLimit={gasLimit}
+                transaction={transaction}
+                setter={setter}
+              />
+            )}
+          />
+        )}
       />
     )}
   />
