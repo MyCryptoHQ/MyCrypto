@@ -7,8 +7,8 @@ import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
 import { UnitKey, Wei, TokenValue, toTokenBase } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { stripHexPrefixAndLower, sanitizeHex, toHexWei } from 'libs/values';
-import { IWallet, Web3Wallet } from 'libs/wallet';
+import { stripHexPrefixAndLower, toHexWei, sanitizeHex } from 'libs/values';
+import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 
 export interface TransactionInput {
@@ -236,32 +236,6 @@ export async function formatTxInput(
       data: ERC20Data
     };
   }
-}
-
-export async function confirmAndSendWeb3Transaction(
-  wallet: Web3Wallet,
-  nodeLib: RPCNode,
-  gasPrice: Wei,
-  gasLimit: Wei,
-  chainId: number,
-  transactionInput: TransactionInput
-): Promise<string> {
-  const { from, to, value, data } = await formatTxInput(
-    wallet,
-    transactionInput
-  );
-  const transaction: ExtendedRawTransaction = {
-    nonce: await nodeLib.getTransactionCount(from),
-    from,
-    to,
-    gasLimit,
-    value,
-    data,
-    chainId,
-    gasPrice
-  };
-
-  return wallet.sendTransaction(transaction);
 }
 
 export async function generateCompleteTransaction(

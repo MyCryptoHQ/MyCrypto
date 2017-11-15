@@ -1,5 +1,9 @@
-import Big, { BigNumber } from 'bignumber.js';
-import { Token } from 'config/data';
+import BN from 'bn.js';
+import { stripHexPrefix } from 'libs/values';
+
+type UnitKey = keyof typeof Units;
+type Wei = BN;
+type TokenValue = BN;
 
 const Units = {
   wei: '1',
@@ -27,79 +31,74 @@ const Units = {
   gether: '1000000000000000000000000000',
   tether: '1000000000000000000000000000000'
 };
-
-export type TUnit = typeof Units;
-export type UnitKey = keyof TUnit;
-
-class Unit {
-  public unit: UnitKey;
-  public amount: BigNumber;
-
-  constructor(amount: BigNumber, unit: UnitKey) {
-    this.unit = unit;
-    this.amount = amount;
+const handleValues = (input: string | BN) => {
+  if (typeof input === 'string') {
+    return input.startsWith('0x')
+      ? new BN(stripHexPrefix(input), 16)
+      : new BN(input);
   }
-
-  public toString(base?: number) {
-    return this.amount.toString(base);
+  if (typeof input === 'number') {
+    return new BN(input);
   }
-
-  public toPrecision(precision?: number) {
-    return this.amount.toPrecision(precision);
+  if (BN.isBN(input)) {
+    return input;
   }
+  throw Error('unsupported value conversion');
+};
 
-  public toWei(): Wei {
-    return new Wei(toWei(this.amount, this.unit));
+const Wei = (input: string | BN): Wei => handleValues(input);
+
+const TokenValue = (input: string | BN) => handleValues(input);
+
+const getDecimal = (key: UnitKey) => Units[key].length - 1;
+
+const stripRightZeros = (str: string) => {
+  const strippedStr = str.replace(/0+$/, '');
+  return strippedStr === '' ? null : strippedStr;
+};
+
+const baseToConvertedUnit = (value: string, decimal: number) => {
+  if (decimal === 0) {
+    return value;
   }
+  const paddedValue = value.padStart(decimal + 1, '0'); //0.1 ==>
+  const integerPart = paddedValue.slice(0, -decimal);
+  const fractionPart = stripRightZeros(paddedValue.slice(-decimal));
+  return fractionPart ? `${integerPart}.${fractionPart}` : `${integerPart}`;
+};
 
-  public toGWei(): GWei {
-    return new GWei(toUnit(this.amount, this.unit, 'gwei'));
+const convertedToBaseUnit = (value: string, decimal: number) => {
+  if (decimal === 0) {
+    return value;
   }
+  const [integerPart, fractionPart = ''] = value.split('.');
+  const paddedFraction = fractionPart.padEnd(decimal, '0');
+  return `${integerPart}${paddedFraction}`;
+};
 
-  public toEther(): Ether {
-    return new Ether(toUnit(this.amount, this.unit, 'ether'));
-  }
-}
+const fromWei = (wei: Wei, unit: UnitKey) => {
+  const decimal = getDecimal(unit);
+  return baseToConvertedUnit(wei.toString(), decimal);
+};
 
-// tslint:disable:max-classes-per-file
-export class Ether extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'ether');
-  }
-}
+const toWei = (value: string, decimal: number): Wei => {
+  const wei = convertedToBaseUnit(value, decimal);
+  return Wei(wei);
+};
 
-export class Wei extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'wei');
-  }
-}
+const fromTokenBase = (value: TokenValue, decimal: number) =>
+  baseToConvertedUnit(value.toString(), decimal);
 
-export class GWei extends Unit {
-  constructor(amount: BigNumber | number | string) {
-    super(new Big(amount), 'gwei');
-  }
-}
+const toTokenBase = (value: string, decimal: number) =>
+  TokenValue(convertedToBaseUnit(value, decimal));
 
-function getValueOfUnit(unit: UnitKey) {
-  return new Big(Units[unit]);
-}
-
-export function toWei(num: BigNumber, unit: UnitKey): BigNumber {
-  return num.times(getValueOfUnit(unit));
-}
-
-export function toUnit(
-  num: BigNumber,
-  fromUnit: UnitKey,
-  convertToUnit: UnitKey
-): BigNumber {
-  return toWei(num, fromUnit).div(getValueOfUnit(convertToUnit));
-}
-
-export function toTokenUnit(num: BigNumber, token: Token): BigNumber {
-  return num.times(new Big(10).pow(token.decimal));
-}
-
-export function toTokenDisplay(num: BigNumber, token: Token): BigNumber {
-  return num.times(new Big(10).pow(-token.decimal));
-}
+export {
+  TokenValue,
+  fromWei,
+  toWei,
+  toTokenBase,
+  fromTokenBase,
+  Wei,
+  getDecimal,
+  UnitKey
+};
