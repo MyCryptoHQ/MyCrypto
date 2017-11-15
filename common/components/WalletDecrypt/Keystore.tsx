@@ -54,9 +54,9 @@ export default class KeystoreDecrypt extends Component {
             <div className={file.length && passReq ? '' : 'hidden'}>
               <p>{translate('ADD_Label_3')}</p>
               <input
-                className={`form-control ${password.length > 0
-                  ? 'is-valid'
-                  : 'is-invalid'}`}
+                className={`form-control ${
+                  password.length > 0 ? 'is-valid' : 'is-invalid'
+                }`}
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}

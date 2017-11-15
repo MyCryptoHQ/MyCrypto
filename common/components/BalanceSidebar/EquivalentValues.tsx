@@ -1,15 +1,15 @@
-import { Ether } from 'libs/units';
 import * as React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
 import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
 import { TokenBalance } from 'selectors/wallet';
+import { Balance } from 'libs/wallet';
 import Spinner from 'components/ui/Spinner';
+import UnitDisplay from 'components/ui/UnitDisplay';
 import './EquivalentValues.scss';
 
 interface Props {
-  balance?: Ether;
+  balance?: Balance;
   tokenBalances?: TokenBalance[];
   rates: State['rates'];
   ratesError?: State['ratesError'];
@@ -61,12 +61,17 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           <li className="EquivalentValues-values-currency" key={key}>
             <span className="EquivalentValues-values-currency-label">
               {key}:
-            </span>
+            </span>{' '}
             <span className="EquivalentValues-values-currency-value">
-              {' '}
-              {balance
-                ? formatNumber(balance.times(rates[currency][key]))
-                : '???'}
+              {balance.isPending ? (
+                <Spinner />
+              ) : (
+                <UnitDisplay
+                  unit={'ether'}
+                  value={balance ? balance.muln(rates[currency][key]) : null}
+                  displayShortBalance={2}
+                />
+              )}
             </span>
           </li>
         );
@@ -76,7 +81,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     } else {
       values = (
         <div className="EquivalentValues-values-loader">
-          <Spinner size="3x" />
+          <Spinner size="x3" />
         </div>
       );
     }
@@ -128,7 +133,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           [tk.symbol]: tk.balance
         };
       },
-      { ETH: props.balance && props.balance.amount }
+      { ETH: props.balance && props.balance.wei }
     );
   }
 }
