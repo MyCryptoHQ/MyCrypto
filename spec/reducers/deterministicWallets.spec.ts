@@ -3,17 +3,20 @@ import {
   INITIAL_STATE
 } from 'reducers/deterministicWallets';
 import * as dWalletActions from 'actions/deterministicWallets';
-import Big from 'bignumber.js';
+import { TokenValue } from 'libs/units';
 
 describe('deterministicWallets reducer', () => {
-  const tokenValues: dWalletActions.TokenValues = {
-    OMG: new Big(0)
+  const tokenValues: dWalletActions.ITokenValues = {
+    OMG: {
+      value: TokenValue('0'),
+      decimal: 16
+    }
   };
 
   const wallet: dWalletActions.DeterministicWalletData = {
     index: 0,
     address: 'address',
-    value: new Big(0),
+    value: TokenValue('0'),
     tokenValues
   };
 
@@ -62,7 +65,7 @@ describe('deterministicWallets reducer', () => {
       ...wallet,
       index: 100,
       address: 'wallet2',
-      value: new Big(100)
+      value: TokenValue('100')
     };
 
     expect(
