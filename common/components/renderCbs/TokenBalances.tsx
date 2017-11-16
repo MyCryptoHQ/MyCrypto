@@ -5,14 +5,20 @@ import { getTokenBalances, TokenBalance } from 'selectors/wallet';
 
 interface Props {
   tokens: TokenBalance[];
+  nonZeroBalances?: boolean;
   withTokens({ tokens }: { tokens: TokenBalance[] }): React.ReactElement<any>;
 }
 
 class TokenBalancesClass extends React.Component<Props, {}> {
   public render() {
-    const { tokens, withTokens } = this.props;
-    return withTokens({ tokens });
+    const { tokens, withTokens, nonZeroBalances } = this.props;
+    return nonZeroBalances
+      ? withTokens({ tokens: this.getNonZeroBalanceTokens(tokens) })
+      : withTokens({ tokens });
   }
+
+  private getNonZeroBalanceTokens = (tokens: TokenBalance[]) =>
+    tokens.filter(t => !t.balance.isZero());
 }
 
 export const TokenBalances = connect((state: AppState) => ({
