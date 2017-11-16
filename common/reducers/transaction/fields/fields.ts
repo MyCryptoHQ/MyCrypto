@@ -1,10 +1,7 @@
-import {
-  TransactionFieldPayloadedAction,
-  TypeKeys as TK
-} from 'actions/transactionFields';
-import { createReducerFromObj } from 'reducers/TransactionFields/helpers';
+import { FieldAction, TypeKeys as TK } from 'actions/transaction';
+import { createReducerFromObj } from '../helpers';
 import { ReducersMapObject, Reducer } from 'redux';
-import { State } from 'reducers/TransactionFields/typings';
+import { State } from './typings';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -16,7 +13,7 @@ const INITIAL_STATE: State = {
 
 const updateField = (key: keyof State): Reducer<State> => (
   state: State,
-  action: TransactionFieldPayloadedAction
+  action: FieldAction
 ) => ({
   ...state,
   [key]: action.payload
@@ -28,10 +25,7 @@ const reducerObj: ReducersMapObject = {
   [TK.DATA_FIELD_SET]: updateField('data'),
   [TK.GAS_LIMIT_FIELD_SET]: updateField('gasLimit'),
   [TK.NONCE_FIELD_SET]: updateField('nonce'),
-  [TK.CLEAR_FIELDS]: _ => INITIAL_STATE
+  [TK.RESET]: _ => INITIAL_STATE
 };
 
-export const transactionFields = createReducerFromObj(
-  reducerObj,
-  INITIAL_STATE
-);
+export const fields = createReducerFromObj(reducerObj, INITIAL_STATE);

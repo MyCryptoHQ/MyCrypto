@@ -4,23 +4,41 @@ import {
   SetToFieldAction,
   SetNonceFieldAction,
   SetValueFieldAction,
-  ClearFieldsAction
+  ResetAction,
+  SetUnitMetaAction,
+  SetDecimalMetaAction
 } from './actionTypes';
-import { TypeKeys } from 'actions/transactionFields/constants';
+import { TypeKeys } from 'actions/transaction/constants';
 export {
+  TSetDecimalMeta,
+  TSetUnitMeta,
   TSetGasLimitField,
   TSetDataField,
   TSetToField,
   TSetNonceField,
   TSetValueField,
-  TClearFields,
+  TReset,
+  setUnitMeta,
+  setDecimalMeta,
   setGasLimitField,
   setDataField,
   setToField,
   setNonceField,
   setValueField,
-  clearFields
+  reset
 };
+
+type TSetUnitMeta = typeof setUnitMeta;
+const setUnitMeta = (payload: SetUnitMetaAction['payload']) => ({
+  type: TypeKeys.UNIT_META_SET,
+  payload
+});
+
+type TSetDecimalMeta = typeof setDecimalMeta;
+const setDecimalMeta = (payload: SetDecimalMetaAction['payload']) => ({
+  type: TypeKeys.DECIMAL_META_SET,
+  payload
+});
 
 type TSetGasLimitField = typeof setGasLimitField;
 const setGasLimitField = (
@@ -62,5 +80,5 @@ const setValueField = (
   payload
 });
 
-type TClearFields = typeof clearFields;
-const clearFields = (): ClearFieldsAction => ({ type: TypeKeys.CLEAR_FIELDS });
+type TReset = typeof reset;
+const reset = (): ResetAction => ({ type: TypeKeys.RESET });

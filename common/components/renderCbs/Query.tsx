@@ -13,8 +13,17 @@ interface IQueryResults {
   [key: string]: string | null;
 }
 
+type Param =
+  | 'to'
+  | 'data'
+  | 'readOnly'
+  | 'tokenSymbol'
+  | 'value'
+  | 'gaslimit'
+  | 'limit';
+
 interface Props {
-  params: string[];
+  params: Param[];
   withQuery(query: IQueryResults): React.ReactElement<any>;
 }
 

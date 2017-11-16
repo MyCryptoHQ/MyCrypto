@@ -6,7 +6,7 @@ import {
 } from 'components/renderCbs';
 import { Wei } from 'libs/units';
 import { GasInput } from './GasInput';
-import { SetGasLimitFieldAction } from 'actions/transactionFields';
+import { SetGasLimitFieldAction } from 'actions/transaction';
 import EthTx from 'ethereumjs-tx';
 
 const defaultGasLimit = '21000';

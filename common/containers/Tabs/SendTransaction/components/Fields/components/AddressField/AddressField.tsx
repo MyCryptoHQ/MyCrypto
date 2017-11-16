@@ -1,6 +1,6 @@
 import { isValidENSorEtherAddress } from 'libs/validators';
 import { Query, SetTransactionFields } from 'components/renderCbs';
-import { SetToFieldAction } from 'actions/transactionFields';
+import { SetToFieldAction } from 'actions/transaction';
 import { AddressInput } from './AddressInput';
 import { Address } from 'libs/units';
 import React from 'react';

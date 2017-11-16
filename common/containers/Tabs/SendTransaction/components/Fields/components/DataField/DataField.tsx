@@ -1,7 +1,7 @@
 import { DataInput } from './DataInput';
 import { isValidHex } from 'libs/validators';
 import { Query, SetTransactionFields } from 'components/renderCbs';
-import { SetDataFieldAction } from 'actions/transactionFields';
+import { SetDataFieldAction } from 'actions/transaction';
 import { Data } from 'libs/units';
 import React from 'react';
 

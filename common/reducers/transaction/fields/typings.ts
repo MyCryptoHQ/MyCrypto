@@ -4,7 +4,7 @@ import {
   SetNonceFieldAction,
   SetValueFieldAction,
   SetGasLimitFieldAction
-} from 'actions/transactionFields';
+} from 'actions/transaction';
 
 export interface State {
   to: SetToFieldAction['payload'];

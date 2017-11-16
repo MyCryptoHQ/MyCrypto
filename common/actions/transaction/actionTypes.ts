@@ -1,4 +1,4 @@
-import { TypeKeys } from 'actions/transactionFields/constants';
+import { TypeKeys } from 'actions/transaction/constants';
 import { Wei, Nonce, Address, Data } from 'libs/units';
 export {
   SetGasLimitFieldAction,
@@ -6,10 +6,23 @@ export {
   SetToFieldAction,
   SetNonceFieldAction,
   SetValueFieldAction,
-  ClearFieldsAction,
-  TransactionFieldPayloadedAction,
-  TransactionFieldAction
+  SetUnitMetaAction,
+  SetDecimalMetaAction,
+  ResetAction,
+  FieldAction,
+  TransactionAction,
+  MetaAction
 };
+
+interface SetDecimalMetaAction {
+  type: TypeKeys.DECIMAL_META_SET;
+  payload: number;
+}
+
+interface SetUnitMetaAction {
+  type: TypeKeys.UNIT_META_SET;
+  payload: string;
+}
 
 // We can compute field validity by checking if the value is null
 
@@ -53,17 +66,17 @@ interface SetValueFieldAction {
   };
 }
 
-interface ClearFieldsAction {
-  type: TypeKeys.CLEAR_FIELDS;
+interface ResetAction {
+  type: TypeKeys.RESET;
 }
 
-type TransactionFieldPayloadedAction =
+type MetaAction = SetUnitMetaAction | SetDecimalMetaAction;
+
+type FieldAction =
   | SetGasLimitFieldAction
   | SetDataFieldAction
   | SetToFieldAction
   | SetNonceFieldAction
   | SetValueFieldAction;
 
-type TransactionFieldAction =
-  | ClearFieldsAction
-  | TransactionFieldPayloadedAction;
+type TransactionAction = ResetAction | FieldAction | MetaAction;

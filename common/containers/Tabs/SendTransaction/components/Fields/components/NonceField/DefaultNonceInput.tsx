@@ -1,6 +1,6 @@
 import { isPositiveInteger } from 'utils/helpers';
 import { NonceInput } from './NonceInput';
-import { SetNonceFieldAction } from 'actions/transactionFields';
+import { SetNonceFieldAction } from 'actions/transaction';
 
 import { Nonce } from 'libs/units';
 import React from 'react';

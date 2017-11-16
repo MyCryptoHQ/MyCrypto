@@ -3,10 +3,10 @@ import { GetTransactionFields } from './TransactionFields';
 import { AppState } from 'reducers';
 import React from 'react';
 
-const reduceToValues = (transactionFields: AppState['transactionFields']) =>
+const reduceToValues = (transactionFields: AppState['transaction']['fields']) =>
   Object.keys(transactionFields).reduce(
     (obj, currFieldName) => {
-      const currField: AppState['transactionFields'] =
+      const currField: AppState['transaction']['fields'] =
         transactionFields[currFieldName];
       return { ...obj, [currFieldName]: currField.value };
     },
