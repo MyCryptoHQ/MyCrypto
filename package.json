@@ -123,10 +123,11 @@
     "dev:https": "HTTPS=true node webpack_config/server.js",
     "predev:https": "check-node-version --package",
     "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
-    "tslint": "tsc --noEmit && tslint --project . --exclude common/vendor/**/*",
+    "tslint": "tslint --project . --exclude common/vendor/**/*",
+    "tscheck": "tsc --noEmit",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
-    "precommit": "lint-staged && npm run tslint",
+    "precommit": "lint-staged && npm run tslint && npm run tscheck",
     "prepush": "npm run test"
   },
   "lint-staged": {
