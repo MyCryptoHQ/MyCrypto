@@ -1,9 +1,9 @@
 import React from 'react';
 import { DefaultNonceInput } from './DefaultNonceInput';
-import { Nonce, SetTransactionFields } from 'components/renderCbs';
+import { Nonce, SetTransactionField } from 'components/renderCbs';
 
 export const NonceField: React.SFC<{}> = () => (
-  <SetTransactionFields
+  <SetTransactionField
     name="nonce"
     withFieldSetter={setter => (
       <Nonce

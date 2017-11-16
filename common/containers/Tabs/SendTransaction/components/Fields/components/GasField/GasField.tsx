@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   GasQuery,
   Transaction,
-  SetTransactionFields
+  SetTransactionField
 } from 'components/renderCbs';
 import { Wei } from 'libs/units';
 import { GasInput } from './GasInput';
@@ -70,7 +70,7 @@ const DefaultGasField: React.SFC<{}> = () => (
     withTransaction={({ transaction }) => (
       <GasQuery
         withQuery={({ gasLimit }) => (
-          <SetTransactionFields
+          <SetTransactionField
             name="gasLimit"
             withFieldSetter={setter => (
               <GasLimitField

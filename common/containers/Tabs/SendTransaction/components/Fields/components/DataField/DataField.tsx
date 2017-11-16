@@ -1,6 +1,6 @@
 import { DataInput } from './DataInput';
 import { isValidHex } from 'libs/validators';
-import { Query, SetTransactionFields } from 'components/renderCbs';
+import { Query, SetTransactionField } from 'components/renderCbs';
 import { SetDataFieldAction } from 'actions/transaction';
 import { Data } from 'libs/units';
 import React from 'react';
@@ -38,7 +38,7 @@ const DefaultDataField: React.SFC<DefaultProps> = (
   { unit } // only display if it isn't a token
 ) =>
   unit === 'ether' ? (
-    <SetTransactionFields
+    <SetTransactionField
       name="data"
       withFieldSetter={setter => (
         <Query

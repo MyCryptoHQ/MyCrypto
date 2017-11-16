@@ -1,2 +1,2 @@
 export * from './GetTransactionFields';
-export * from './SetTransactionFields';
+export * from './SetTransactionField';

@@ -18,7 +18,7 @@ import { upperFirst } from 'lodash';
 
 type FieldNames = keyof AppState['transaction']['fields'];
 type FieldSetter = (payload: FieldAction['payload']) => void;
-interface ReduxProps {
+interface DispatchProps {
   setGasLimitField: TSetGasLimitField;
   setDataField: TSetDataField;
   setToField: TSetToField;
@@ -30,7 +30,7 @@ interface SetterProps {
   withFieldSetter(setter: FieldSetter): React.ReactElement<any> | null;
 }
 
-class SetTransactionFieldsClass extends Component<SetterProps & ReduxProps> {
+class SetTransactionFieldClass extends Component<SetterProps & DispatchProps> {
   public render() {
     return this.props.withFieldSetter(this.fieldSetter);
   }
@@ -38,10 +38,10 @@ class SetTransactionFieldsClass extends Component<SetterProps & ReduxProps> {
     this.props[`set${upperFirst(this.props.name)}Field`](payload);
 }
 
-export const SetTransactionFields = connect(null, {
+export const SetTransactionField = connect(null, {
   setGasLimitField,
   setDataField,
   setToField,
   setNonceField,
   setValueField
-})(SetTransactionFieldsClass);
+})(SetTransactionFieldClass);
