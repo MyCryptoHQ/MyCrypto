@@ -1,28 +1,72 @@
 import React from 'react';
 import Dropdown from 'components/ui/Dropdown';
 import { withConditional } from 'components/hocs';
+import { TokenBalance } from 'selectors/wallet';
+import { getDecimal } from 'libs/units';
+import {
+  Query,
+  GetTransactionMetaFields,
+  TokenBalances
+} from 'components/renderCbs';
 
 interface Props {
-  value: string;
-  options: string[];
-  isReadOnly: boolean;
-  onChange(value: string): void;
+  onUnitChange(value: string): void;
+  onDecimalChange(value: number): void;
 }
 
-export const ConditionalUnitDropdown: React.SFC<Props> = props => {
-  const { value, options, onChange, isReadOnly } = props;
-  const StringDropdown = Dropdown as new () => Dropdown<string>;
-  const ConditionalStringDropDown = withConditional(StringDropdown);
+const StringDropdown = Dropdown as new () => Dropdown<string>;
+const ConditionalStringDropDown = withConditional(StringDropdown);
 
-  return (
-    <div className="input-group-btn">
-      <ConditionalStringDropDown
-        options={options}
-        value={value}
-        condition={isReadOnly}
-        conditionalProps={{ onChange }}
-        ariaLabel={'dropdown'}
-      />
-    </div>
-  );
+export const ConditionalUnitDropdown: React.SFC<Props> = ({
+  onUnitChange,
+  onDecimalChange
+}) => (
+  <div className="input-group-btn">
+    <TokenBalances
+      nonZeroBalances={true}
+      withTokens={({ tokens }) => (
+        <Query
+          params={['readOnly']}
+          withQuery={({ readOnly }) => (
+            <GetTransactionMetaFields
+              withFieldValues={({ unit }) => (
+                <ConditionalStringDropDown
+                  options={[...getTokenSymbols(tokens), 'ether']}
+                  value={unit}
+                  condition={!!readOnly}
+                  conditionalProps={{
+                    onChange: handleOnChange(
+                      onUnitChange,
+                      onDecimalChange,
+                      tokens
+                    )
+                  }}
+                  ariaLabel={'dropdown'}
+                />
+              )}
+            />
+          )}
+        />
+      )}
+    />
+  </div>
+);
+
+const getTokenSymbols = (tokens: TokenBalance[]) => tokens.map(t => t.symbol);
+
+const handleOnChange = (
+  onUnitChange: Props['onUnitChange'],
+  onDecimalChange: Props['onDecimalChange'],
+  options: TokenBalance[]
+) => (value: string) => {
+  const token = options.find(t => t.symbol === value);
+  if (token) {
+    onDecimalChange(token.decimal);
+    onUnitChange(token.symbol);
+  } else if (value === 'ether') {
+    onDecimalChange(getDecimal(value));
+    onUnitChange(value);
+  } else {
+    throw Error('Invalid unit selected in drop down');
+  }
 };
