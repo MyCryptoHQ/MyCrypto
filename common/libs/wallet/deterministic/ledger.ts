@@ -2,12 +2,11 @@ import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, rlp } from 'ethereumjs-util';
-import DeterministicWallet from './deterministic';
-import { IWallet } from './IWallet';
+import { DeterministicWallet } from './deterministic';
+import { IWallet } from '../IWallet';
 import { RawTransaction } from 'libs/transaction';
 
-export default class LedgerWallet extends DeterministicWallet
-  implements IWallet {
+export class LedgerWallet extends DeterministicWallet implements IWallet {
   private ledger: any;
   private ethApp: any;
 
