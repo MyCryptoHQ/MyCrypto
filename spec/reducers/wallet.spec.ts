@@ -26,12 +26,36 @@ describe('wallet reducer', () => {
     );
   });
 
-  it('should handle WALLET_SET_BALANCE', () => {
-    const balance = Wei('200');
-
-    expect(wallet(undefined, walletActions.setBalance(balance))).toEqual({
+  it('should handle WALLET_SET_BALANCE_PENDING', () => {
+    expect(wallet(undefined, walletActions.setBalancePending())).toEqual({
       ...INITIAL_STATE,
-      balance
+      balance: {
+        ...INITIAL_STATE.balance,
+        isPending: true
+      }
+    });
+  });
+
+  it('should handle WALLET_SET_BALANCE_FULFILLED', () => {
+    const balance = Wei('100');
+    expect(
+      wallet(undefined, walletActions.setBalanceFullfilled(balance))
+    ).toEqual({
+      ...INITIAL_STATE,
+      balance: {
+        wei: balance,
+        isPending: false
+      }
+    });
+  });
+
+  it('should handle WALLET_SET_BALANCE_REJECTED', () => {
+    expect(wallet(undefined, walletActions.setBalanceRejected())).toEqual({
+      ...INITIAL_STATE,
+      balance: {
+        ...INITIAL_STATE.balance,
+        isPending: false
+      }
     });
   });
 
