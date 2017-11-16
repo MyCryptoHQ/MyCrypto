@@ -3,10 +3,10 @@ import { TypeKeys } from './constants';
 import { fetchRates, CCResponse } from './actionPayloads';
 
 export type TFetchCCRates = typeof fetchCCRates;
-export function fetchCCRates(): interfaces.FetchCCRates {
+export function fetchCCRates(symbol: string): interfaces.FetchCCRates {
   return {
     type: TypeKeys.RATES_FETCH_CC,
-    payload: fetchRates()
+    payload: fetchRates(symbol)
   };
 }
 

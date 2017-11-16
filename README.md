@@ -165,13 +165,13 @@ export * from './actionTypes';
 ### Higher Order Components
 
 #### Typing Injected Props
-Props made available through higher order components can be tricky to type. Normally, if a component requires a prop, you add it to the component's interface and it just works. However, working with injected props from [higher order components](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e), you will be forced to supply all required props whenever you compose the component.  
+Props made available through higher order components can be tricky to type. Normally, if a component requires a prop, you add it to the component's interface and it just works. However, working with injected props from [higher order components](https://medium.com/@DanHomola/react-higher-order-components-in-typescript-made-simple-6f9b55691af1), you will be forced to supply all required props whenever you compose the component.  
 
 ```ts
 interface MyComponentProps {
   name: string;
   countryCode?: string;
-  router: InjectedRouter;
+  routerLocation: { pathname: string };
 }
 
 ...
@@ -182,13 +182,13 @@ class OtherComponent extends React.Component<{}, {}> {
       <MyComponent
         name="foo"
         countryCode="CA"
-        // Error: 'router' is missing!
+        // Error: 'routerLocation' is missing!
         />
     );
   }
 ```
 
-Instead of tacking the injected props on to the MyComponentProps interface itself, put them on another interface that extends the main interface:
+Instead of tacking the injected props on the MyComponentProps interface, put them in another interface called `InjectedProps`:
 
 ```ts
 interface MyComponentProps {
@@ -196,28 +196,25 @@ interface MyComponentProps {
   countryCode?: string;
 }
 
-interface InjectedProps extends MyComponentProps {
-  router: InjectedRouter;
+interface InjectedProps  {
+  routerLocation: { pathname: string };
 }
 ```
 
-Now you can add a [getter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) to the component to derive the injected props from the props object at runtime:
+Now add a [getter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) to cast `this.props` as the original props - `MyComponentProps` and the injected props - `InjectedProps`:
 
 ```ts
 class MyComponent extends React.Component<MyComponentProps, {}> {
   get injected() {
-    return this.props as InjectedProps;
+    return this.props as MyComponentProps & InjectedProps;
   }
 
   render() {
-    const { name, countryCode } = this.props;
-    const { router } = this.injected;
+    const { name, countryCode, routerLocation } = this.props;
     ...
   }
 }
 ```
-
-All the injected props are now strongly typed, while staying private to the module, and not polluting the public props interface.
 
 ## Event Handlers
 

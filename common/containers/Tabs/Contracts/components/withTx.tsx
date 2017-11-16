@@ -4,13 +4,13 @@ import { toWei, Wei, getDecimal } from 'libs/units';
 import { connect } from 'react-redux';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { broadcastTx, TBroadcastTx } from 'actions/wallet';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, Balance } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { NodeConfig, NetworkConfig } from 'config/data';
 
 export interface IWithTx {
   wallet: IWallet;
-  balance: Wei;
+  balance: Balance;
   node: NodeConfig;
   nodeLib: RPCNode;
   chainId: NetworkConfig['chainId'];
