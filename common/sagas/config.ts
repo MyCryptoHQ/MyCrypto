@@ -107,4 +107,5 @@ export default function* configSaga(): SagaIterator {
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery('WALLET_SET', unsetWeb3Node);
+  yield takeEvery('WALLET_RESET', unsetWeb3Node);
 }
