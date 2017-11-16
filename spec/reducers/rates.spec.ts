@@ -3,19 +3,24 @@ import * as ratesActions from 'actions/rates';
 
 describe('rates reducer', () => {
   it('should handle RATES_FETCH_CC_SUCCEEDED', () => {
-    const fakeCCResp = {
-      BTC: 1,
-      EUR: 2,
-      GBP: 3,
-      CHF: 4,
-      REP: 5
+    const fakeCCResp: ratesActions.CCResponse = {
+      symbol: 'USD',
+      rates: {
+        BTC: 1,
+        EUR: 2,
+        GBP: 3,
+        CHF: 4,
+        REP: 5,
+        ETH: 6
+      }
     };
     expect(
       rates(undefined, ratesActions.fetchCCRatesSucceeded(fakeCCResp))
     ).toEqual({
       ...INITIAL_STATE,
       rates: {
-        ...fakeCCResp
+        ...INITIAL_STATE.rates,
+        [fakeCCResp.symbol]: fakeCCResp.rates
       }
     });
   });
