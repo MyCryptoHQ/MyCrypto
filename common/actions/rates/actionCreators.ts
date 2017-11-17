@@ -1,11 +1,28 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { fetchRates } from './actionPayloads';
+import { fetchRates, CCResponse } from './actionPayloads';
 
 export type TFetchCCRates = typeof fetchCCRates;
 export function fetchCCRates(symbol: string): interfaces.FetchCCRates {
   return {
     type: TypeKeys.RATES_FETCH_CC,
     payload: fetchRates(symbol)
+  };
+}
+
+export type TFetchCCRatesSucceeded = typeof fetchCCRatesSucceeded;
+export function fetchCCRatesSucceeded(
+  payload: CCResponse
+): interfaces.FetchCCRatesSucceeded {
+  return {
+    type: TypeKeys.RATES_FETCH_CC_SUCCEEDED,
+    payload
+  };
+}
+
+export type TFetchCCRatesFailed = typeof fetchCCRatesFailed;
+export function fetchCCRatesFailed(): interfaces.FetchCCRatesFailed {
+  return {
+    type: TypeKeys.RATES_FETCH_CC_FAILED
   };
 }
