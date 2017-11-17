@@ -1,6 +1,5 @@
 import { IFullWallet } from 'ethereumjs-wallet';
 import { RawTransaction } from 'libs/transaction';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from 'libs/signing';
 import {
   EncryptedPrivateKeyWallet,
@@ -90,15 +89,4 @@ const getKeystoreWallet = (file: string, password: string) => {
   }
 };
 
-const checksumKeystoreFilename = (wallet: IFullWallet) => {
-  const getFilename = wallet.getV3Filename().split('--');
-  const checksumAddress = toChecksumAddress(getFilename[2]);
-  return [getFilename[0], getFilename[1], checksumAddress].join('--');
-};
-
-export {
-  isKeystorePassRequired,
-  getPrivKeyWallet,
-  getKeystoreWallet,
-  checksumKeystoreFilename
-};
+export { isKeystorePassRequired, getPrivKeyWallet, getKeystoreWallet };
