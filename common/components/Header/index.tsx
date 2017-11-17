@@ -90,6 +90,7 @@ export default class Header extends Component<Props, State> {
               </span>
             ),
             color: '#000',
+            hidden: false,
             onRemove: () => this.props.removeCustomNode(customNode)
           };
         })
