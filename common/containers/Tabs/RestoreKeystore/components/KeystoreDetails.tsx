@@ -77,7 +77,7 @@ class KeystoreDetails extends Component<{}, State> {
         {!wallet ? (
           <button
             onClick={this.handleKeystoreGeneration}
-            className="KeystoreDetails-submit btn btn-block"
+            className="KeystoreDetails-submit btn btn-primary btn-block"
             disabled={!privateKeyValid}
           >
             Generate Keystore
@@ -86,7 +86,7 @@ class KeystoreDetails extends Component<{}, State> {
           <a
             onClick={this.resetState}
             href={this.getBlob()}
-            className="KeystoreDetails-download btn btn-primary btn-block"
+            className="KeystoreDetails-download btn btn-success btn-block"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
             aria-describedby={translate('x_KeystoreDesc')}
             download={fileName}
@@ -121,7 +121,8 @@ class KeystoreDetails extends Component<{}, State> {
 
   private handleKeystoreGeneration = () => {
     const { secretKey } = this.state;
-    const keyBuffer = Buffer.from(secretKey, 'hex');
+    const removeChecksumPkey = fixPkey(secretKey);
+    const keyBuffer = Buffer.from(removeChecksumPkey, 'hex');
     const wallet = fromPrivateKey(keyBuffer);
     const fileName = wallet.getV3Filename();
     this.setState({
