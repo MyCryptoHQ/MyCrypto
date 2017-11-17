@@ -46,20 +46,25 @@ export interface ChangeNodeIntentAction {
 
 /*** Add Custom Node ***/
 export interface AddCustomNodeAction {
-  type: TypeKeys.CONFIG_ADD_CUSTOM_NODE,
+  type: TypeKeys.CONFIG_ADD_CUSTOM_NODE;
   payload: CustomNodeConfig;
 }
 
 /*** Remove Custom Node ***/
 export interface RemoveCustomNodeAction {
-  type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
+  type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE;
   payload: CustomNodeConfig;
 }
 
 /*** Set Latest Block ***/
 export interface SetLatestBlockAction {
-  type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
+  type: TypeKeys.CONFIG_SET_LATEST_BLOCK;
   payload: string;
+}
+
+/*** Unset Web3 as a Node ***/
+export interface Web3UnsetNodeAction {
+  type: TypeKeys.CONFIG_NODE_WEB3_UNSET;
 }
 
 /*** Union Type ***/
@@ -73,4 +78,5 @@ export type ConfigAction =
   | ChangeNodeIntentAction
   | AddCustomNodeAction
   | RemoveCustomNodeAction
-  | SetLatestBlockAction;
+  | SetLatestBlockAction
+  | Web3UnsetNodeAction;

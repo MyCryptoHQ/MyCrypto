@@ -14,7 +14,7 @@ import { NODES } from 'config/data';
 import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,
-  makeNodeConfigFromCustomConfig,
+  makeNodeConfigFromCustomConfig
 } from 'utils/node';
 import { getNode, getNodeConfig, getCustomNodeConfigs } from 'selectors/config';
 import { AppState } from 'reducers';
@@ -24,11 +24,17 @@ import {
   changeNode,
   changeNodeIntent,
   setLatestBlock,
-  AddCustomNodeAction,
+  AddCustomNodeAction
 } from 'actions/config';
-import { State as ConfigState } from 'reducers/config';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
+import { Web3Wallet } from 'libs/wallet';
+import { getWalletInst } from 'selectors/wallet';
+import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
+import {
+  State as ConfigState,
+  INITIAL_STATE as configInitialState
+} from 'reducers/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -60,6 +66,8 @@ function* reload(): SagaIterator {
 function* handleNodeChangeIntent(action): SagaIterator {
   const currentNode = yield select(getNode);
   const currentConfig = yield select(getNodeConfig);
+  const currentWallet = yield select(getWalletInst);
+  const currentNetwork = currentConfig.network;
 
   let actionConfig = NODES[action.payload];
   if (!actionConfig) {
@@ -71,25 +79,25 @@ function* handleNodeChangeIntent(action): SagaIterator {
   }
 
   if (!actionConfig) {
-    yield put(showNotification(
-      'danger',
-      `Attempted to switch to unknown node '${action.payload}'`,
-      5000,
-    ));
+    yield put(
+      showNotification(
+        'danger',
+        `Attempted to switch to unknown node '${action.payload}'`,
+        5000
+      )
+    );
     yield put(changeNode(currentNode, currentConfig));
     return;
   }
 
   // Grab latest block from the node, before switching, to confirm it's online
   // Give it 5 seconds before we call it offline
-  let latestBlock
+  let latestBlock;
   let timeout;
   try {
     const { lb, to } = yield race({
-      lb: call(
-        actionConfig.lib.getCurrentBlock.bind(actionConfig.lib)
-      ),
-      to: call(delay, 5000),
+      lb: call(actionConfig.lib.getCurrentBlock.bind(actionConfig.lib)),
+      to: call(delay, 5000)
     });
     latestBlock = lb;
     timeout = to;
@@ -106,7 +114,9 @@ function* handleNodeChangeIntent(action): SagaIterator {
 
   yield put(setLatestBlock(latestBlock));
   yield put(changeNode(action.payload, actionConfig));
-  if (currentConfig.network !== actionConfig.network) {
+
+  // if there's no wallet, do not reload as there's no component state to resync
+  if (currentWallet && currentNetwork !== actionConfig.network) {
     yield call(reload);
   }
 }
@@ -114,6 +124,39 @@ function* handleNodeChangeIntent(action): SagaIterator {
 export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
   const nodeId = makeCustomNodeId(action.payload);
   yield put(changeNodeIntent(nodeId));
+}
+
+// unset web3 as the selected node if a non-web3 wallet has been selected
+function* unsetWeb3Node(action): SagaIterator {
+  const node = yield select(getNode);
+  const nodeConfig = yield select(getNodeConfig);
+  const newWallet = action.payload;
+  const isWeb3Wallet = newWallet instanceof Web3Wallet;
+
+  if (node !== 'web3' || isWeb3Wallet) {
+    return;
+  }
+
+  // switch back to a node with the same network as MetaMask/Mist
+  const equivalentNode = Object.keys(NODES)
+    .filter(key => key !== 'web3')
+    .reduce((found, key) => {
+      const config = NODES[key];
+      if (found.length) {
+        return found;
+      }
+      if (nodeConfig.network === config.network) {
+        return (found = key);
+      }
+      return found;
+    }, '');
+
+  // if no equivalent node was found, use the app default
+  const newNode = equivalentNode.length
+    ? equivalentNode
+    : configInitialState.nodeSelection;
+
+  yield put(changeNodeIntent(newNode));
 }
 
 export default function* configSaga(): SagaIterator {
@@ -124,4 +167,6 @@ export default function* configSaga(): SagaIterator {
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
+  yield takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3Node);
+  yield takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3Node);
 }

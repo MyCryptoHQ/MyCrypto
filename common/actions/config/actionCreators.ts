@@ -89,3 +89,10 @@ export function setLatestBlock(
     payload
   };
 }
+
+export type TWeb3UnsetNode = typeof web3UnsetNode;
+export function web3UnsetNode(): interfaces.Web3UnsetNodeAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_WEB3_UNSET
+  };
+}

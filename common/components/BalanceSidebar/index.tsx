@@ -7,8 +7,7 @@ import {
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { fetchCCRates as dFetchCCRates, TFetchCCRates } from 'actions/rates';
 import { NetworkConfig } from 'config/data';
-import { Ether } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -27,7 +26,7 @@ import OfflineToggle from './OfflineToggle';
 
 interface Props {
   wallet: IWallet;
-  balance: Ether;
+  balance: Balance;
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
   rates: State['rates'];
@@ -67,12 +66,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       {
         name: 'Account Info',
         content: (
-          <AccountInfo
-            wallet={wallet}
-            balance={balance}
-            network={network}
-            fetchCCRates={fetchCCRates}
-          />
+          <AccountInfo wallet={wallet} balance={balance} network={network} />
         )
       },
       {
@@ -95,8 +89,10 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         content: (
           <EquivalentValues
             balance={balance}
+            tokenBalances={tokenBalances}
             rates={rates}
             ratesError={ratesError}
+            fetchCCRates={fetchCCRates}
           />
         )
       }

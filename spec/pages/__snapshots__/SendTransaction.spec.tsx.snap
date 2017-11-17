@@ -4,12 +4,7 @@ exports[`render snapshot 1`] = `
 <SendTransaction
   broadcastTx={[Function]}
   forceOffline={false}
-  gasPrice={
-    Wei {
-      "amount": "21000000000",
-      "unit": "wei",
-    }
-  }
+  gasPrice={"4e3b29200"}
   location={
     Object {
       "search": "?to=73640ebefe93e4d0d6e9030ee9c1866ad1f3b9f1feeb403e978c4952d8369b39",

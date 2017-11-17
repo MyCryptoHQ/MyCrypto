@@ -8,6 +8,7 @@ interface Option<T> {
   name: any;
   value: T;
   color?: string;
+  hidden: boolean | undefined;
   onRemove?(): void;
 }
 
@@ -20,6 +21,7 @@ interface Props<T> {
   size?: string;
   color?: string;
   menuAlign?: string;
+  disabled?: boolean;
   onChange(value: T): void;
 }
 
@@ -27,7 +29,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   private dropdownShell: DropdownShell | null;
 
   public render() {
-    const { ariaLabel, color, size } = this.props;
+    const { ariaLabel, disabled, color, size } = this.props;
 
     return (
       <DropdownShell
@@ -37,6 +39,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
         color={color}
         ariaLabel={ariaLabel}
         ref={el => (this.dropdownShell = el)}
+        disabled={disabled}
       />
     );
   }
@@ -55,17 +58,19 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   private renderOptions = () => {
     const { options, value, menuAlign, extra } = this.props;
 
-    const listItems = options.reduce((prev: any[], opt) => {
-      const prevOpt = prev.length ? prev[prev.length - 1] : null;
-      if (prevOpt && !prevOpt.divider && prevOpt.color !== opt.color) {
-        prev.push({ divider: true });
-      }
-      prev.push(opt);
-      return prev;
-    }, []);
+    const listItems = options
+      .filter(opt => !opt.hidden)
+      .reduce((prev: any[], opt) => {
+        const prevOpt = prev.length ? prev[prev.length - 1] : null;
+        if (prevOpt && !prevOpt.divider && prevOpt.color !== opt.color) {
+          prev.push({ divider: true });
+        }
+        prev.push(opt);
+        return prev;
+      }, []);
 
     const menuClass = classnames({
-      'ColorDropdown': true,
+      ColorDropdown: true,
       'dropdown-menu': true,
       [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
     });
@@ -88,13 +93,13 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
                 >
                   {option.name}
 
-                  {option.onRemove &&
+                  {option.onRemove && (
                     <img
                       className="ColorDropdown-item-remove"
                       onClick={this.onRemove.bind(null, option.onRemove)}
                       src={removeIcon}
                     />
-                  }
+                  )}
                 </a>
               </li>
             );
@@ -122,7 +127,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
       ev.stopPropagation();
     }
     onRemove();
-  };
+  }
 
   private getActiveOption() {
     return this.props.options.find(opt => opt.value === this.props.value);

@@ -7,12 +7,14 @@ import {
   SetDesiredTokenAction
 } from 'actions/deterministicWallets';
 import Modal, { IButton } from 'components/ui/Modal';
+import { AppState } from 'reducers';
 import { NetworkConfig } from 'config/data';
 import { isValidPath } from 'libs/validators';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
+import { UnitDisplay } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
@@ -264,15 +266,12 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     );
   };
 
-  private renderWalletRow(wallet) {
+  private renderWalletRow(wallet: DeterministicWalletData) {
     const { desiredToken, network } = this.props;
     const { selectedAddress } = this.state;
 
     // Get renderable values, but keep 'em short
-    const value = wallet.value ? wallet.value.toEther().toPrecision(4) : '';
-    const tokenValue = wallet.tokenValues[desiredToken]
-      ? wallet.tokenValues[desiredToken].toPrecision(4)
-      : '';
+    const token = wallet.tokenValues[desiredToken];
 
     return (
       <tr
@@ -290,10 +289,24 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
           {wallet.address}
         </td>
         <td>
-          {value} {network.unit}
+          <UnitDisplay
+            unit={'ether'}
+            value={wallet.value}
+            symbol={network.unit}
+            displayShortBalance={true}
+          />
         </td>
         <td>
-          {tokenValue} {desiredToken}
+          {token ? (
+            <UnitDisplay
+              decimal={token.decimal}
+              value={token.value}
+              symbol={desiredToken}
+              displayShortBalance={true}
+            />
+          ) : (
+            '???'
+          )}
         </td>
         <td>
           <a
@@ -308,7 +321,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: AppState) {
   return {
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
