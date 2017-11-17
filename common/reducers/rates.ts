@@ -19,7 +19,7 @@ function fetchCCRatesSucceeded(
     ...state,
     rates: {
       ...state.rates,
-      [action.payload.symbol]: action.payload.rates
+      ...action.payload
     }
   };
 }
