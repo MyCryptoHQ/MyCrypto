@@ -28,4 +28,52 @@ describe('config reducer', () => {
       gasPriceGwei: gasPrice
     });
   });
+
+  it('should handle CONFIG_TOGGLE_OFFLINE', () => {
+    const offlineState = {
+      ...INITIAL_STATE,
+      offline: true
+    };
+
+    const onlineState = {
+      ...INITIAL_STATE,
+      offline: false
+    };
+
+    expect(config(offlineState, configActions.toggleOfflineConfig())).toEqual({
+      ...offlineState,
+      offline: false
+    });
+
+    expect(config(onlineState, configActions.toggleOfflineConfig())).toEqual({
+      ...onlineState,
+      offline: true
+    });
+  });
+
+  it('should handle CONFIG_FORCE_OFFLINE', () => {
+    const forceOfflineTrue = {
+      ...INITIAL_STATE,
+      forceOffline: true
+    };
+
+    const forceOfflineFalse = {
+      ...INITIAL_STATE,
+      forceOffline: false
+    };
+
+    expect(
+      config(forceOfflineTrue, configActions.forceOfflineConfig())
+    ).toEqual({
+      ...forceOfflineTrue,
+      forceOffline: false
+    });
+
+    expect(
+      config(forceOfflineFalse, configActions.forceOfflineConfig())
+    ).toEqual({
+      ...forceOfflineFalse,
+      forceOffline: true
+    });
+  });
 });

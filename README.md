@@ -162,6 +162,41 @@ export function nameOfAction(): interfaces.NameOfActionAction {
 export * from './actionCreators';
 export * from './actionTypes';
 ```
+
+### Typing Redux-Connected Components
+
+Components that receive props directly from redux as a result of the `connect`
+function should use AppState for typing, rather than manually defining types.
+This makes refactoring reducers easier by catching mismatches or changes of
+types in components, and reduces the chance for inconsistency. It's also less
+code overall.
+
+```
+// Do this
+import { AppState } from 'reducers';
+
+interface Props {
+	wallet: AppState['wallet']['inst'];
+	rates: AppState['rates']['rates'];
+	// ...
+}
+
+// Not this
+import { IWallet } from 'libs/wallet';
+import { Rates } from 'libs/rates';
+
+interface Props {
+	wallet: IWallet;
+	rates: Rates;
+	// ...
+}
+```
+
+However, if you have a sub-component that takes in props from a connected
+component, it's OK to manually specify the type. Especially if you go from
+being type-or-null to guaranteeing the prop will be passed (because of a
+conditional render.)
+
 ### Higher Order Components
 
 #### Typing Injected Props
@@ -229,11 +264,11 @@ public onValueChange = (e: React.FormEvent<HTMLInputElement>) => {
     }
   };
 ```
-Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`. 
+Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`.
 
 ## Class names
 
-Dynamic class names should use the `classnames` module to simplify how they are created instead of using string template literals with expressions inside. 
+Dynamic class names should use the `classnames` module to simplify how they are created instead of using string template literals with expressions inside.
 
 ### Styling
 
