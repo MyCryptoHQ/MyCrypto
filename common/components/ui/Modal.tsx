@@ -17,7 +17,7 @@ export interface IButton {
 }
 interface Props {
   isOpen?: boolean;
-  title: any;
+  title: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
   buttons: IButton[];
