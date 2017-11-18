@@ -61,7 +61,7 @@
     "@types/redux-promise-middleware": "0.0.9",
     "@types/uuid": "3.4.3",
     "@types/webpack-env": "1.13.2",
-    "awesome-typescript-loader": "3.3.0",
+    "awesome-typescript-loader": "3.4.0",
     "babel-minify-webpack-plugin": "0.2.0",
     "bs58": "4.0.1",
     "cache-loader": "1.2.0",
