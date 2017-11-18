@@ -14,4 +14,5 @@ export interface INode {
   getTransactionCount(address: string): Promise<string>;
   sendRawTx(tx: string): Promise<string>;
   sendCallRequest(txObj: TxObj): Promise<string>;
+  getCurrentBlock(): Promise<string>;
 }

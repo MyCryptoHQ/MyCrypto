@@ -81,6 +81,17 @@ export interface NodeConfig {
   hidden?: boolean;
 }
 
+export interface CustomNodeConfig {
+  name: string;
+  url: string;
+  port: number;
+  network: string;
+  auth?: {
+    username: string;
+    password: string;
+  };
+}
+
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
 function makeExplorer(url): BlockExplorerConfig {
