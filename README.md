@@ -1,5 +1,7 @@
 # MyEtherWallet V4+ (ALPHA - VISIT [V3](https://github.com/kvhnuke/etherwallet) for the production site)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/MyEtherWallet/MyEtherWallet.svg)](https://greenkeeper.io/)
+
 #### Run:
 
 ```bash
@@ -36,7 +38,7 @@ npm run dev:https
 2. [dternyak/eth-priv-to-addr](https://hub.docker.com/r/dternyak/eth-priv-to-addr/) pulled from DockerHub
 
 ##### Docker setup instructions:
-1. Install docker (on macOS, I suggest [Docker for Mac](https://docs.docker.com/docker-for-mac/))
+1. Install docker (on macOS, [Docker for Mac](https://docs.docker.com/docker-for-mac/) is suggested)
 2. `docker pull dternyak/eth-priv-to-addr`
 
 ##### Run Derivation Checker
@@ -48,26 +50,19 @@ npm run derivation-checker
 
 ```
 │
-├── common - Your App
+├── common
 │   ├── actions - application actions
-│   ├── api - Services and XHR utils(also custom form validation, see InputComponent from components/common)
+│   ├── api - Services and XHR utils
 │   ├── components - components according to "Redux philosophy"
 │   ├── config - frontend config depending on REACT_WEBPACK_ENV
 │   ├── containers - containers according to "Redux philosophy"
 │   ├── reducers - application reducers
 │   ├── routing - application routing
-│   ├── index.jsx - entry
+│   ├── index.tsx - entry
 │   ├── index.html
 ├── static
 ├── webpack_config - Webpack configuration
 ├── jest_config - Jest configuration
-```
-
-## Docker setup
-You should already have docker and docker-compose setup for your platform as a pre-req.
-
-```bash
-docker-compose up
 ```
 
 ## Style Guides and Philosophies
@@ -75,13 +70,12 @@ docker-compose up
 The following are guides for developers to follow for writing compliant code.
 
 
-
 ### Redux and Actions
 
-Each reducer has one file in `reducers/[namespace].js` that contains the reducer
-and initial state, one file in `actions/[namespace].js` that contains the action
+Each reducer has one file in `reducers/[namespace].ts` that contains the reducer
+and initial state, one file in `actions/[namespace].ts` that contains the action
 creators and their return types, and optionally one file in
-`sagas/[namespace].js` that handles action side effects using
+`sagas/[namespace].ts` that handles action side effects using
 [`redux-saga`](https://github.com/redux-saga/redux-saga).
 
 The files should be laid out as follows:
@@ -89,56 +83,59 @@ The files should be laid out as follows:
 #### Reducer
 
 * State should be explicitly defined and exported
-* Initial state should match state flow typing, define every key
-* Reducer function should handle all cases for actions. If state does not change
-as a result of an action (Because it merely kicks off side-effects in saga) then
-define the case above default, and have it fall through.
+* Initial state should match state typing, define every key
 
-```js
-// @flow
-import type { NamespaceAction } from "actions/namespace";
+```ts
+import { NamespaceAction } from "actions/[namespace]";
+import { TypeKeys } from 'actions/[namespace]/constants';
 
-export type State = { /* Flowtype definition for state object */ };
+export interface State { /* definition for state object */ };
 export const INITIAL_STATE: State = { /* Initial state shape */ };
 
-export function namespace(
+export function [namespace](
 	state: State = INITIAL_STATE,
 	action: NamespaceAction
 ): State {
 	switch (action.type) {
-		case 'NAMESPACE_NAME_OF_ACTION':
+		case TypeKeys.NAMESPACE_NAME_OF_ACTION:
 			return {
 				...state,
 				// Alterations to state
-			};
-
-		case 'NAMESPACE_NAME_OF_SAGA_ACTION':
+			};		  
 		default:
-			// Ensures every action was handled in reducer
-			// Unhandled actions should just fall into default
-			(action: empty);
 			return state;
 	}
 }
 ```
 
 #### Actions
+* Define each action creator in `actionCreator.ts`
+* Define each action object type in `actionTypes.ts`
+    * Export a union of all of the action types for use by the reducer
+* Define each action type as a string enum in `constants.ts`  
+* Export `actionCreators` and `actionTypes` from module file `index.ts`  
 
-* Define each action object type beside the action creator
-* Export a union of all of the action types for use by the reducer
-
-```js
+```
+├── common
+    ├── actions - application actions
+        ├── [namespace] - action namespace
+            ├── actionCreators.ts - action creators
+            ├── actionTypes.ts - action interfaces / types
+            ├── constants.ts - string enum
+            ├── index.ts - exports all action creators and action object types
+```
+##### constants.ts
+```ts
+export enum TypeKeys {
+  NAMESPACE_NAME_OF_ACTION = 'NAMESPACE_NAME_OF_ACTION'
+}
+```
+##### actionTypes.ts
+```ts
 /*** Name of action ***/
-export type NameOfActionAction = {
-	type: 'NAMESPACE_NAME_OF_ACTION',
+export interface NameOfActionAction {
+	type: TypeKeys.NAMESPACE_NAME_OF_ACTION,
 	/* Rest of the action object shape */
-};
-
-export function nameOfAction(): NameOfActionAction {
-	return {
-		type: 'NAMESPACE_NAME_OF_ACTION',
-		/* Rest of the action object */
-	};
 };
 
 /*** Action Union ***/
@@ -147,17 +144,131 @@ export type NamespaceAction =
 	| ActionTwoAction
 	| ActionThreeAction;
 ```
+##### actionCreators.ts
+```ts
+import * as interfaces from './actionTypes';
+import { TypeKeys } from './constants';
 
-#### Action Constants
+export interface TNameOfAction = typeof nameOfAction;
+export function nameOfAction(): interfaces.NameOfActionAction {
+	return {
+		type: TypeKeys.NAMESPACE_NAME_OF_ACTION,
+		payload: {}
+	};
+};
+```
+##### index.ts
+```ts
+export * from './actionCreators';
+export * from './actionTypes';
+```
 
-Action constants are not used thanks to flow type checking. To avoid typos, we
-use `(action: empty)` in the default case which assures every case is accounted
-for. If you need to use another reducer's action, import that action type into
-your reducer, and create a new action union of your actions, and the other
-action types used.
+### Typing Redux-Connected Components
 
+Components that receive props directly from redux as a result of the `connect`
+function should use AppState for typing, rather than manually defining types.
+This makes refactoring reducers easier by catching mismatches or changes of
+types in components, and reduces the chance for inconsistency. It's also less
+code overall.
 
+```
+// Do this
+import { AppState } from 'reducers';
 
+interface Props {
+	wallet: AppState['wallet']['inst'];
+	rates: AppState['rates']['rates'];
+	// ...
+}
+
+// Not this
+import { IWallet } from 'libs/wallet';
+import { Rates } from 'libs/rates';
+
+interface Props {
+	wallet: IWallet;
+	rates: Rates;
+	// ...
+}
+```
+
+However, if you have a sub-component that takes in props from a connected
+component, it's OK to manually specify the type. Especially if you go from
+being type-or-null to guaranteeing the prop will be passed (because of a
+conditional render.)
+
+### Higher Order Components
+
+#### Typing Injected Props
+Props made available through higher order components can be tricky to type. Normally, if a component requires a prop, you add it to the component's interface and it just works. However, working with injected props from [higher order components](https://medium.com/@DanHomola/react-higher-order-components-in-typescript-made-simple-6f9b55691af1), you will be forced to supply all required props whenever you compose the component.  
+
+```ts
+interface MyComponentProps {
+  name: string;
+  countryCode?: string;
+  routerLocation: { pathname: string };
+}
+
+...
+
+class OtherComponent extends React.Component<{}, {}> {
+  render() {
+    return (
+      <MyComponent
+        name="foo"
+        countryCode="CA"
+        // Error: 'routerLocation' is missing!
+        />
+    );
+  }
+```
+
+Instead of tacking the injected props on the MyComponentProps interface, put them in another interface called `InjectedProps`:
+
+```ts
+interface MyComponentProps {
+  name: string;
+  countryCode?: string;
+}
+
+interface InjectedProps  {
+  routerLocation: { pathname: string };
+}
+```
+
+Now add a [getter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) to cast `this.props` as the original props - `MyComponentProps` and the injected props - `InjectedProps`:
+
+```ts
+class MyComponent extends React.Component<MyComponentProps, {}> {
+  get injected() {
+    return this.props as MyComponentProps & InjectedProps;
+  }
+
+  render() {
+    const { name, countryCode, routerLocation } = this.props;
+    ...
+  }
+}
+```
+
+## Event Handlers
+
+Event handlers such as `onChange` and `onClick`, should be properly typed. For example, if you have an event listener on an input element inside a form:
+```ts
+public onValueChange = (e: React.FormEvent<HTMLInputElement>) => {
+    if (this.props.onChange) {
+      this.props.onChange(
+        e.currentTarget.value,
+        this.props.unit
+      );
+    }
+  };
+```
+Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`.
+
+## Class names
+
+Dynamic class names should use the `classnames` module to simplify how they are created instead of using string template literals with expressions inside.
 
 ### Styling
 
@@ -165,12 +276,12 @@ Legacy styles are housed under `common/assets/styles` and written with LESS.
 However, going forward, each styled component should create a a `.scss` file of
 the same name in the same folder, and import it like so:
 
-```js
+```ts
 import React from "react";
 
 import "./MyComponent.scss";
 
-export default class MyComponent extends React.component {
+export default class MyComponent extends React.component<{}, {}> {
 	render() {
 		return (
 			<div className="MyComponent">

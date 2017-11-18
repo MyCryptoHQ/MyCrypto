@@ -1,6 +1,6 @@
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { bityReferralURL, donationAddressMap } from 'config/data';
-import React, { Component } from 'react';
+import React from 'react';
 import translate from 'translations';
 import './index.scss';
 import PreFooter from './PreFooter';
@@ -92,11 +92,15 @@ const LINKS_SOCIAL = [
   }
 ];
 
-interface ComponentState {
+interface Props {
+  latestBlock: string;
+};
+
+interface State {
   isOpen: boolean;
 }
 
-export default class Footer extends React.Component<{}, ComponentState> {
+export default class Footer extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = { isOpen: false };
@@ -276,9 +280,7 @@ export default class Footer extends React.Component<{}, ComponentState> {
                 );
               })}
             </p>
-
-            {/* TODO: Fix me */}
-            <p>Latest Block#: ?????</p>
+            <p>Latest Block#: {this.props.latestBlock}</p>
           </div>
         </footer>
       </div>

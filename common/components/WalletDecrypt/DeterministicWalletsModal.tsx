@@ -7,12 +7,14 @@ import {
   SetDesiredTokenAction
 } from 'actions/deterministicWallets';
 import Modal, { IButton } from 'components/ui/Modal';
-import { NetworkConfig, Token } from 'config/data';
+import { AppState } from 'reducers';
+import { NetworkConfig } from 'config/data';
 import { isValidPath } from 'libs/validators';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
+import { UnitDisplay } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
@@ -123,20 +125,21 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
               onChange={this.handleChangePath}
               value={isCustomPath ? 'custom' : dPath}
             >
-              {dPaths.map(dp =>
+              {dPaths.map(dp => (
                 <option key={dp.value} value={dp.value}>
                   {dp.label}
                 </option>
-              )}
+              ))}
               <option value="custom">Custom path...</option>
             </select>
-            {isCustomPath &&
+            {isCustomPath && (
               <input
                 className={`form-control ${validPathClass}`}
                 value={customPath}
                 placeholder="m/44'/60'/0'/0"
                 onChange={this.handleChangeCustomPath}
-              />}
+              />
+            )}
           </form>
 
           <div className="DWModal-addresses">
@@ -145,9 +148,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
                 <tr>
                   <td>#</td>
                   <td>Address</td>
-                  <td>
-                    {network.unit}
-                  </td>
+                  <td>{network.unit}</td>
                   <td>
                     <select
                       className="DWModal-addresses-table-token"
@@ -155,11 +156,11 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
                       onChange={this.handleChangeToken}
                     >
                       <option value="">-Token-</option>
-                      {tokens.map(t =>
+                      {tokens.map(t => (
                         <option key={t.symbol} value={t.symbol}>
                           {t.symbol}
                         </option>
-                      )}
+                      ))}
                     </select>
                   </td>
                   <td>More</td>
@@ -265,24 +266,19 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     );
   };
 
-  private renderWalletRow(wallet) {
+  private renderWalletRow(wallet: DeterministicWalletData) {
     const { desiredToken, network } = this.props;
     const { selectedAddress } = this.state;
 
     // Get renderable values, but keep 'em short
-    const value = wallet.value ? wallet.value.toEther().toPrecision(4) : '';
-    const tokenValue = wallet.tokenValues[desiredToken]
-      ? wallet.tokenValues[desiredToken].toPrecision(4)
-      : '';
+    const token = wallet.tokenValues[desiredToken];
 
     return (
       <tr
         key={wallet.address}
         onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
       >
-        <td>
-          {wallet.index + 1}
-        </td>
+        <td>{wallet.index + 1}</td>
         <td className="DWModal-addresses-table-address">
           <input
             type="radio"
@@ -293,10 +289,24 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
           {wallet.address}
         </td>
         <td>
-          {value} {network.unit}
+          <UnitDisplay
+            unit={'ether'}
+            value={wallet.value}
+            symbol={network.unit}
+            displayShortBalance={true}
+          />
         </td>
         <td>
-          {tokenValue} {desiredToken}
+          {token ? (
+            <UnitDisplay
+              decimal={token.decimal}
+              value={token.value}
+              symbol={desiredToken}
+              displayShortBalance={true}
+            />
+          ) : (
+            '???'
+          )}
         </td>
         <td>
           <a
@@ -311,7 +321,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: AppState) {
   return {
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,

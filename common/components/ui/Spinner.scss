@@ -1,0 +1,66 @@
+.Spinner {
+  animation: rotate 2s linear infinite;
+
+  &-x1 {
+    height: 1em;
+    width: 1em;
+  }
+
+  &-x2 {
+    height: 2em;
+    width: 2em;
+  }
+
+  &-x3 {
+    height: 3em;
+    width: 3em;
+  }
+
+  &-x4 {
+    height: 4em;
+    width: 4em;
+  }
+
+  &-x5 {
+    height: 5em;
+    width: 5em;
+  }
+
+  & .path {
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+
+  &-light {
+    & .path {
+      stroke: white;
+    }
+  }
+
+  &-dark {
+    & .path {
+      stroke: #163151;
+    }
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}

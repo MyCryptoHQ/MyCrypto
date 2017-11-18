@@ -7,7 +7,8 @@ import {
   GetBalanceRequest,
   GetTokenBalanceRequest,
   GetTransactionCountRequest,
-  SendRawTxRequest
+  SendRawTxRequest,
+  GetCurrentBlockRequest
 } from './types';
 
 export default class EtherscanRequests extends RPCRequests {
@@ -65,5 +66,12 @@ export default class EtherscanRequests extends RPCRequests {
       to: token.address,
       data: ERC20.balanceOf(address)
     });
+  }
+
+  public getCurrentBlock(): GetCurrentBlockRequest {
+    return {
+      module: 'proxy',
+      action: 'eth_blockNumber',
+    };
   }
 }

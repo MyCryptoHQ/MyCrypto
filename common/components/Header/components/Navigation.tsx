@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
 
@@ -22,8 +21,20 @@ const tabs = [
     // to: 'view-wallet'
   },
   {
+    name: 'NAV_Contracts',
+    to: 'contracts'
+  },
+  {
     name: 'NAV_ENS',
     to: 'ens'
+  },
+  {
+    name: 'Sign & Verify Message',
+    to: 'sign-and-verify-message'
+  },
+  {
+    name: 'Broadcast Transaction',
+    to: 'pushTx'
   },
   {
     name: 'NAV_Help',
@@ -54,7 +65,7 @@ export default class Navigation extends Component<Props, State> {
   /*
    *   public scrollLeft() {}
       public scrollRight() {}
-   * 
+   *
    */
 
   public render() {

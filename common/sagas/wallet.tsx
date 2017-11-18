@@ -3,46 +3,56 @@ import {
   broadCastTxFailed,
   BroadcastTxRequestedAction,
   broadcastTxSucceded,
-  setBalance,
+  setBalanceFullfilled,
+  setBalancePending,
+  setBalanceRejected,
   setTokenBalances,
   setWallet,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
   UnlockPrivateKeyAction
 } from 'actions/wallet';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-import { determineKeystoreType } from 'libs/keystore';
-import { INode } from 'libs/nodes/INode';
 import { Wei } from 'libs/units';
+import { changeNodeIntent } from 'actions/config';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+import { INode } from 'libs/nodes/INode';
 import {
-  EncryptedPrivKeyWallet,
   IWallet,
-  MewV1Wallet,
   MnemonicWallet,
-  PresaleWallet,
-  PrivKeyWallet,
-  UtcWallet
+  getPrivKeyWallet,
+  getKeystoreWallet,
+  Web3Wallet
 } from 'libs/wallet';
+import { NODES, initWeb3Node } from 'config/data';
 import React from 'react';
 import { SagaIterator } from 'redux-saga';
-import { apply, call, fork, put, select, takeEvery } from 'redux-saga/effects';
+import {
+  apply,
+  call,
+  cps,
+  fork,
+  put,
+  select,
+  takeEvery
+} from 'redux-saga/effects';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 
 function* updateAccountBalance(): SagaIterator {
   try {
+    yield put(setBalancePending());
     const wallet: null | IWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
     }
     const node: INode = yield select(getNodeLib);
-    const address = yield apply(wallet, wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddressString);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance));
+    yield put(setBalanceFullfilled(balance));
   } catch (error) {
-    yield put({ type: 'updateAccountBalance_error', error });
+    yield put(setBalanceRejected());
   }
 }
 
@@ -55,7 +65,7 @@ function* updateTokenBalances(): SagaIterator {
       return;
     }
     // FIXME handle errors
-    const address = yield apply(wallet, wallet.getAddress);
+    const address = yield apply(wallet, wallet.getAddressString);
 
     // network request
     const tokenBalances = yield apply(node, node.getTokenBalances, [
@@ -86,16 +96,10 @@ export function* unlockPrivateKey(
   action: UnlockPrivateKeyAction
 ): SagaIterator {
   let wallet: IWallet | null = null;
+  const { key, password } = action.payload;
 
   try {
-    if (action.payload.key.length === 64) {
-      wallet = new PrivKeyWallet(Buffer.from(action.payload.key, 'hex'));
-    } else {
-      wallet = new EncryptedPrivKeyWallet(
-        action.payload.key,
-        action.payload.password
-      );
-    }
+    wallet = getPrivKeyWallet(key, password);
   } catch (e) {
     yield put(showNotification('danger', translate('INVALID_PKEY')));
     return;
@@ -104,33 +108,11 @@ export function* unlockPrivateKey(
 }
 
 export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
-  const file = action.payload.file;
-  const pass = action.payload.password;
+  const { file, password } = action.payload;
   let wallet: null | IWallet = null;
 
   try {
-    const parsed = JSON.parse(file);
-
-    switch (determineKeystoreType(file)) {
-      case 'presale':
-        wallet = new PresaleWallet(file, pass);
-        break;
-      case 'v1-unencrypted':
-        wallet = new PrivKeyWallet(Buffer.from(parsed.private, 'hex'));
-        break;
-      case 'v1-encrypted':
-        wallet = new MewV1Wallet(file, pass);
-        break;
-      case 'v2-unencrypted':
-        wallet = new PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
-        break;
-      case 'v2-v3-utc':
-        wallet = new UtcWallet(file, pass);
-        break;
-      default:
-        yield put(showNotification('danger', translate('ERROR_6')));
-        return;
-    }
+    wallet = getKeystoreWallet(file, password);
   } catch (e) {
     yield put(showNotification('danger', translate('ERROR_6')));
     return;
@@ -145,7 +127,7 @@ function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
   const { phrase, pass, path, address } = action.payload;
 
   try {
-    wallet = new MnemonicWallet(phrase, pass, path, address);
+    wallet = MnemonicWallet(phrase, pass, path, address);
   } catch (err) {
     // TODO: use better error than 'ERROR_14' (wallet not found)
     yield put(showNotification('danger', translate('ERROR_14')));
@@ -153,6 +135,39 @@ function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
   }
 
   yield put(setWallet(wallet));
+}
+
+// inspired by v3:
+// https://github.com/kvhnuke/etherwallet/blob/417115b0ab4dd2033d9108a1a5c00652d38db68d/app/scripts/controllers/decryptWalletCtrl.js#L311
+function* unlockWeb3(): SagaIterator {
+  const failMsg1 = 'Could not connect to MetaMask / Mist.';
+  const failMsg2 = 'No accounts found in MetaMask / Mist.';
+  const { web3 } = window as any;
+
+  if (!web3 || !web3.eth) {
+    yield put(showNotification('danger', translate(failMsg1)));
+    return;
+  }
+
+  try {
+    yield call(initWeb3Node);
+
+    const network = NODES.web3.network;
+    const accounts = yield cps(web3.eth.getAccounts);
+
+    if (!accounts.length) {
+      yield put(showNotification('danger', translate(failMsg2)));
+      return;
+    }
+
+    const address = accounts[0];
+
+    yield put(changeNodeIntent('web3'));
+    yield put(setWallet(new Web3Wallet(web3, address, network)));
+  } catch (err) {
+    console.error(err);
+    yield put(showNotification('danger', translate(err.message)));
+  }
 }
 
 function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
@@ -179,12 +194,11 @@ function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
 }
 
 export default function* walletSaga(): SagaIterator {
-  // useful for development
-  yield call(updateBalances);
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
     takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
+    takeEvery('WALLET_UNLOCK_WEB3', unlockWeb3),
     takeEvery('WALLET_SET', updateBalances),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
     takeEvery('WALLET_BROADCAST_TX_REQUESTED', broadcastTx)

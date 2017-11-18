@@ -1,6 +1,6 @@
-import { BigNumber } from 'bignumber.js';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
+import { TypeKeys } from './constants';
 
 /*** Unlock Private Key ***/
 export interface PrivateKeyUnlockParams {
@@ -9,42 +9,52 @@ export interface PrivateKeyUnlockParams {
 }
 
 export interface UnlockPrivateKeyAction {
-  type: 'WALLET_UNLOCK_PRIVATE_KEY';
+  type: TypeKeys.WALLET_UNLOCK_PRIVATE_KEY;
   payload: PrivateKeyUnlockParams;
 }
 export interface UnlockMnemonicAction {
-  type: 'WALLET_UNLOCK_MNEMONIC';
+  type: TypeKeys.WALLET_UNLOCK_MNEMONIC;
   payload: MnemonicUnlockParams;
+}
+
+export interface UnlockWeb3Action {
+  type: TypeKeys.WALLET_UNLOCK_WEB3;
 }
 
 /*** Set Wallet ***/
 export interface SetWalletAction {
-  type: 'WALLET_SET';
+  type: TypeKeys.WALLET_SET;
   payload: IWallet;
 }
 
 /*** Reset Wallet ***/
 export interface ResetWalletAction {
-  type: 'WALLET_RESET';
+  type: TypeKeys.WALLET_RESET;
 }
 
 /*** Set Balance ***/
-export interface SetBalanceAction {
-  type: 'WALLET_SET_BALANCE';
+export interface SetBalancePendingAction {
+  type: TypeKeys.WALLET_SET_BALANCE_PENDING;
+}
+export interface SetBalanceFullfilledAction {
+  type: TypeKeys.WALLET_SET_BALANCE_FULFILLED;
   payload: Wei;
+}
+export interface SetBalanceRejectedAction {
+  type: TypeKeys.WALLET_SET_BALANCE_REJECTED;
 }
 
 /*** Set Token Balance ***/
 export interface SetTokenBalancesAction {
-  type: 'WALLET_SET_TOKEN_BALANCES';
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCES;
   payload: {
-    [key: string]: BigNumber;
+    [key: string]: TokenValue;
   };
 }
 
 /*** Broadcast Tx ***/
 export interface BroadcastTxRequestedAction {
-  type: 'WALLET_BROADCAST_TX_REQUESTED';
+  type: TypeKeys.WALLET_BROADCAST_TX_REQUESTED;
   payload: {
     signedTx: string;
   };
@@ -65,12 +75,12 @@ export interface KeystoreUnlockParams {
 }
 
 export interface UnlockKeystoreAction {
-  type: 'WALLET_UNLOCK_KEYSTORE';
+  type: TypeKeys.WALLET_UNLOCK_KEYSTORE;
   payload: KeystoreUnlockParams;
 }
 
 export interface BroadcastTxSuccededAction {
-  type: 'WALLET_BROADCAST_TX_SUCCEEDED';
+  type: TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED;
   payload: {
     txHash: string;
     signedTx: string;
@@ -78,7 +88,7 @@ export interface BroadcastTxSuccededAction {
 }
 
 export interface BroadcastTxFailedAction {
-  type: 'WALLET_BROADCAST_TX_FAILED';
+  type: TypeKeys.WALLET_BROADCAST_TX_FAILED;
   payload: {
     signedTx: string;
     error: string;
@@ -90,7 +100,9 @@ export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
   | ResetWalletAction
-  | SetBalanceAction
+  | SetBalancePendingAction
+  | SetBalanceFullfilledAction
+  | SetBalanceRejectedAction
   | SetTokenBalancesAction
   | BroadcastTxRequestedAction
   | BroadcastTxFailedAction

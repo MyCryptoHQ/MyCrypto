@@ -1,13 +1,18 @@
-import { BigNumber } from 'bignumber.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 
+export interface TxObj {
+  to: string;
+  data: string;
+}
 export interface INode {
   getBalance(address: string): Promise<Wei>;
-  getTokenBalance(address: string, token: Token): Promise<BigNumber>;
-  getTokenBalances(address: string, tokens: Token[]): Promise<BigNumber[]>;
-  estimateGas(tx: TransactionWithoutGas): Promise<BigNumber>;
+  getTokenBalance(address: string, token: Token): Promise<TokenValue>;
+  getTokenBalances(address: string, tokens: Token[]): Promise<TokenValue[]>;
+  estimateGas(tx: TransactionWithoutGas): Promise<Wei>;
   getTransactionCount(address: string): Promise<string>;
   sendRawTx(tx: string): Promise<string>;
+  sendCallRequest(txObj: TxObj): Promise<string>;
+  getCurrentBlock(): Promise<string>;
 }

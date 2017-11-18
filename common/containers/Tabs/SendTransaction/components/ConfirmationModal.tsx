@@ -1,61 +1,55 @@
-import Big from 'bignumber.js';
 import Identicon from 'components/ui/Identicon';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import { NetworkConfig, NodeConfig } from 'config/data';
 import EthTx from 'ethereumjs-tx';
-import ERC20 from 'libs/erc20';
 import {
   BroadcastTransactionStatus,
-  getTransactionFields
+  getTransactionFields,
+  decodeTransaction
 } from 'libs/transaction';
-import { toTokenDisplay, toUnit } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
 import React from 'react';
 import { connect } from 'react-redux';
-import { getLanguageSelection, getNetworkConfig } from 'selectors/config';
+import {
+  getLanguageSelection,
+  getNetworkConfig,
+  getNodeConfig
+} from 'selectors/config';
 import { getTokens, getTxFromState, MergedToken } from 'selectors/wallet';
 import translate, { translateRaw } from 'translations';
+import { UnitDisplay } from 'components/ui';
 import './ConfirmationModal.scss';
 
 interface Props {
   signedTx: string;
   transaction: EthTx;
-  wallet: IWallet;
   node: NodeConfig;
-  token: MergedToken | undefined;
+  token: MergedToken;
   network: NetworkConfig;
   lang: string;
   broadCastTxStatus: BroadcastTransactionStatus;
+  decimal: number;
   onConfirm(signedTx: string): void;
   onClose(): void;
 }
 
 interface State {
-  fromAddress: string;
   timeToRead: number;
   hasBroadCasted: boolean;
 }
 
 class ConfirmationModal extends React.Component<Props, State> {
   public state = {
-    fromAddress: '',
     timeToRead: 5,
     hasBroadCasted: false
   };
 
   private readTimer = 0;
 
-  public componentWillReceiveProps(newProps: Props) {
-    // Reload address if the wallet changes
-    if (newProps.wallet !== this.props.wallet) {
-      this.setWalletAddress(this.props.wallet);
-    }
-  }
-
   public componentDidUpdate() {
     if (
       this.state.hasBroadCasted &&
+      this.props.broadCastTxStatus &&
       !this.props.broadCastTxStatus.isBroadcasting
     ) {
       this.props.onClose();
@@ -71,20 +65,23 @@ class ConfirmationModal extends React.Component<Props, State> {
         window.clearInterval(this.readTimer);
       }
     }, 1000);
-
-    this.setWalletAddress(this.props.wallet);
   }
 
   public render() {
-    const { node, token, network, onClose, broadCastTxStatus } = this.props;
-    const { fromAddress, timeToRead } = this.state;
     const {
-      toAddress,
-      value,
-      gasPrice,
-      data,
-      nonce
-    } = this.decodeTransaction();
+      node,
+      token,
+      network,
+      onClose,
+      broadCastTxStatus,
+      transaction,
+      decimal
+    } = this.props;
+    const { timeToRead } = this.state;
+    const { toAddress, value, gasPrice, data, from, nonce } = decodeTransaction(
+      transaction,
+      token
+    );
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons: IButton[] = [
@@ -107,39 +104,42 @@ class ConfirmationModal extends React.Component<Props, State> {
       broadCastTxStatus && broadCastTxStatus.isBroadcasting;
 
     return (
-      <Modal
-        title="Confirm Your Transaction"
-        buttons={buttons}
-        handleClose={onClose}
-        disableButtons={isBroadcasting}
-        isOpen={true}
-      >
-        {
+      <div className="ConfModalWrap">
+        <Modal
+          title="Confirm Your Transaction"
+          buttons={buttons}
+          handleClose={onClose}
+          disableButtons={isBroadcasting}
+          isOpen={true}
+        >
           <div className="ConfModal">
             {isBroadcasting ? (
               <div className="ConfModal-loading">
-                <Spinner size="5x" />
+                <Spinner size="x5" />
               </div>
             ) : (
               <div>
                 <div className="ConfModal-summary">
                   <div className="ConfModal-summary-icon ConfModal-summary-icon--from">
-                    <Identicon size="100%" address={fromAddress} />
+                    <Identicon size="100%" address={from} />
                   </div>
                   <div className="ConfModal-summary-amount">
                     <div className="ConfModal-summary-amount-arrow" />
                     <div className="ConfModal-summary-amount-currency">
-                      {value} {symbol}
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
                     </div>
                   </div>
                   <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
                     <Identicon size="100%" address={toAddress} />
                   </div>
                 </div>
-
                 <ul className="ConfModal-details">
                   <li className="ConfModal-details-detail">
-                    You are sending from <code>{fromAddress}</code>
+                    You are sending from <code>{from}</code>
                   </li>
                   <li className="ConfModal-details-detail">
                     You are sending to <code>{toAddress}</code>
@@ -150,9 +150,20 @@ class ConfirmationModal extends React.Component<Props, State> {
                   <li className="ConfModal-details-detail">
                     You are sending{' '}
                     <strong>
-                      {value} {symbol}
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
                     </strong>{' '}
-                    with a gas price of <strong>{gasPrice} gwei</strong>
+                    with a gas price of{' '}
+                    <strong>
+                      <UnitDisplay
+                        unit={'gwei'}
+                        value={gasPrice}
+                        symbol={'gwei'}
+                      />
+                    </strong>
                   </li>
                   <li className="ConfModal-details-detail">
                     You are interacting with the <strong>{node.network}</strong>{' '}
@@ -183,45 +194,13 @@ class ConfirmationModal extends React.Component<Props, State> {
               </div>
             )}
           </div>
-        }
-      </Modal>
+        </Modal>
+      </div>
     );
   }
 
   public componentWillUnmount() {
     window.clearInterval(this.readTimer);
-  }
-
-  private async setWalletAddress(wallet: IWallet) {
-    // TODO move getAddress to saga
-    const fromAddress = await wallet.getAddress();
-    this.setState({ fromAddress });
-  }
-
-  private decodeTransaction() {
-    const { transaction, token } = this.props;
-    const { to, value, data, gasPrice, nonce } = getTransactionFields(
-      transaction
-    );
-    let fixedValue;
-    let toAddress;
-
-    if (token) {
-      const tokenData = ERC20.$transfer(data);
-      fixedValue = toTokenDisplay(new Big(tokenData.value), token).toString();
-      toAddress = tokenData.to;
-    } else {
-      fixedValue = toUnit(new Big(value, 16), 'wei', 'ether').toString();
-      toAddress = to;
-    }
-
-    return {
-      value: fixedValue,
-      gasPrice: toUnit(new Big(gasPrice, 16), 'wei', 'gwei').toString(),
-      data,
-      toAddress,
-      nonce
-    };
   }
 
   private confirm = () => {
@@ -239,6 +218,8 @@ function mapStateToProps(state, props) {
   // Network config for defaults
   const network = getNetworkConfig(state);
 
+  const node = getNodeConfig(state);
+
   const lang = getLanguageSelection(state);
 
   const broadCastTxStatus = getTxFromState(state, props.signedTx);
@@ -249,6 +230,7 @@ function mapStateToProps(state, props) {
   const token = data && tokens.find(t => t.address === to);
 
   return {
+    node,
     broadCastTxStatus,
     transaction,
     token,

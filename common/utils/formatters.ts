@@ -1,4 +1,4 @@
-import Big, { BigNumber } from 'bignumber.js';
+import { Wei } from 'libs/units';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -8,9 +8,53 @@ export function combineAndUpper(...args: string[]) {
   return args.reduce((acc, item) => acc.concat(item.toUpperCase()), '');
 }
 
+const toFixed = (num: string, digits: number = 3) => {
+  const [integerPart, fractionPart = ''] = num.split('.');
+  if (fractionPart.length === digits) {
+    return num;
+  }
+  if (fractionPart.length < digits) {
+    return `${integerPart}.${fractionPart.padEnd(digits, '0')}`;
+  }
+
+  let decimalPoint = integerPart.length;
+
+  const formattedFraction = fractionPart.slice(0, digits);
+
+  const integerArr = `${integerPart}${formattedFraction}`
+    .split('')
+    .map(str => +str);
+
+  let carryOver = Math.floor((+fractionPart[digits] + 5) / 10);
+
+  // grade school addition / rounding
+
+  for (let i = integerArr.length - 1; i >= 0; i--) {
+    const currVal = integerArr[i] + carryOver;
+    const newVal = currVal % 10;
+    carryOver = Math.floor(currVal / 10);
+    integerArr[i] = newVal;
+    if (i === 0 && carryOver > 0) {
+      integerArr.unshift(0);
+      decimalPoint++;
+      i++;
+    }
+  }
+
+  const strArr = integerArr.map(n => n.toString());
+
+  strArr.splice(decimalPoint, 0, '.');
+
+  if (strArr[strArr.length - 1] === '.') {
+    strArr.pop();
+  }
+
+  return strArr.join('');
+};
+
 // Use in place of angular number filter
-export function formatNumber(num: BigNumber, digits: number = 3): string {
-  const parts = num.toFixed(digits).split('.');
+export function formatNumber(num: string, digits?: number): string {
+  const parts = toFixed(num, digits).split('.');
 
   // Remove trailing zeroes on decimal (If there is a decimal)
   if (parts[1]) {
@@ -29,10 +73,7 @@ export function formatNumber(num: BigNumber, digits: number = 3): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(
-  limit: BigNumber,
-  transactionUnit: string = 'ether'
-) {
+export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?
@@ -47,7 +88,7 @@ export function formatGasLimit(
   // TODO: Make this dynamic, potentially. Would require promisifying this fn.
   // TODO: Figure out if this is only true for ether. Do other currencies have
   //       this limit?
-  if (limit.gte(4000000)) {
+  if (limit.gten(4000000)) {
     limitStr = '-1';
   }
 

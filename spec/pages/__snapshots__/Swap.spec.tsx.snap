@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render snapshot 1`] = `
+<Swap
+  bityOrder={Object {}}
+  bityOrderCreateRequestedSwap={[Function]}
+  bityRates={Object {}}
+  changeStepSwap={[Function]}
+  destinationAddress={Object {}}
+  destinationAddressSwap={[Function]}
+  destinationAmount={Object {}}
+  destinationAmountSwap={[Function]}
+  destinationKind={Object {}}
+  destinationKindOptions={Object {}}
+  destinationKindSwap={[Function]}
+  isFetchingRates={Object {}}
+  isPostingOrder={Object {}}
+  loadBityRatesRequestedSwap={[Function]}
+  orderStatus={Object {}}
+  originAmount={Object {}}
+  originAmountSwap={[Function]}
+  originKind={Object {}}
+  originKindOptions={Object {}}
+  originKindSwap={[Function]}
+  outputTx={Object {}}
+  paymentAddress={Object {}}
+  restartSwap={[Function]}
+  secondsRemaining={Object {}}
+  showNotification={[Function]}
+  startOrderTimerSwap={[Function]}
+  startPollBityOrderStatus={[Function]}
+  step={Object {}}
+  stopLoadBityRatesSwap={[Function]}
+  stopOrderTimerSwap={[Function]}
+  stopPollBityOrderStatus={[Function]}
+/>
+`;
