@@ -8,7 +8,8 @@ export interface State {
 }
 
 export const INITIAL_STATE: State = {
-  rates: {}
+  rates: {},
+  ratesError: null
 };
 
 function fetchCCRatesSucceeded(

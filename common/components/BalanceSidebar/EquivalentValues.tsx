@@ -51,11 +51,19 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   }
 
   public render() {
-    const { tokenBalances, rates, ratesError } = this.props;
+    const { balance, tokenBalances, rates, ratesError } = this.props;
     const { currency } = this.state;
 
+    // There are a bunch of reasons why the incorrect balances might be rendered
+    // while we have incomplete data that's being fetched.
+    const isFetching =
+      !balance ||
+      balance.isPending ||
+      !tokenBalances ||
+      Object.keys(rates).length === 0;
+
     let valuesEl;
-    if (rates && (rates[currency] || currency === ALL_OPTION)) {
+    if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
       const values = this.getEquivalentValues(currency);
       valuesEl = rateSymbols.map(key => {
         if (!values[key] || key === currency) {
