@@ -8,19 +8,11 @@ import RPCClient from './client';
 import RPCRequests from './requests';
 import { isValidGetBalance } from '../../validators';
 
-// TODO - understand response values
-// "RPC" requests will sometimes resolve with 200, but contain a payload informing there was an error.
-function ensureOkResponse(response: any) {
+function errorOrResult(response) {
   if (response.error) {
     throw new Error(response.error.message);
   }
-  if (response.status === 0) {
-    throw new Error('Error!: Status Code: RSP0');
-  }
-  if (response.result.toLowerCase().includes('error')) {
-    throw new Error('Error! Status Code: "RPCLIE"');
-  }
-  return response;
+  return response.result;
 }
 
 export default class RpcNode implements INode {
@@ -44,20 +36,23 @@ export default class RpcNode implements INode {
     return this.client
       .call(this.requests.getBalance(address))
       .then(isValidGetBalance)
-      .then(({ result }) => Wei(result));
+      .then(errorOrResult)
+      .catch(err => {
+        console.error('Error calling getBalance: ' + err);
+      })
+      .then(result => Wei(result));
   }
 
   public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
     return this.client
       .call(this.requests.estimateGas(transaction))
-      .then(ensureOkResponse)
-      .then(({ result }) => Wei(result));
+      .then(errorOrResult)
+      .then(result => Wei(result));
   }
 
   public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
-      .then(ensureOkResponse)
       .then(response => {
         if (response.error) {
           // TODO - Error handling
@@ -73,7 +68,6 @@ export default class RpcNode implements INode {
   ): Promise<TokenValue[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
-      .then(ensureOkResponse)
       .then(response => {
         return response.map(item => {
           // FIXME wrap in maybe-like
@@ -89,22 +83,24 @@ export default class RpcNode implements INode {
   public getTransactionCount(address: string): Promise<string> {
     return this.client
       .call(this.requests.getTransactionCount(address))
-      .then(ensureOkResponse);
+      .then(errorOrResult);
   }
 
   public getCurrentBlock(): Promise<string> {
     return this.client
       .call(this.requests.getCurrentBlock())
-      .then(ensureOkResponse)
-      .then(({ result }) => new BN(stripHexPrefix(result)).toString());
+      .then(errorOrResult)
+      .then(result => new BN(stripHexPrefix(result)).toString());
   }
 
   public sendRawTx(signedTx: string): Promise<string> {
     return this.client
       .call(this.requests.sendRawTx(signedTx))
-      .then(ensureOkResponse)
-      .then(({ result }) => {
-        return result;
+      .then(response => {
+        if (response.error) {
+          throw new Error(response.error.message);
+        }
+        return response.result;
       });
   }
 }

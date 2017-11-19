@@ -184,23 +184,21 @@ export const isValidAbiJson = (abiJson: string) =>
 const v = new Validator();
 
 export const schema = {
-  getBalance: {
+  RpcNode: {
     type: 'object',
     additionalProperties: false,
     properties: {
       jsonrpc: { type: 'string' },
       id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
-      result: { type: 'string' },
-      status: { type: 'string' },
-      message: { type: 'string' }
+      result: { type: 'string' }
     }
   }
 };
 
-export const isValidGetBalance = (result: JsonRpcResponse) => {
-  const validateResult = v.validate(result, schema.getBalance);
+export const isValidGetBalance = (response: JsonRpcResponse) => {
+  const validateResult = v.validate(response, schema.RpcNode);
   if (!validateResult.valid) {
     throw new Error('Invalid Balance Data Shape.');
   }
-  return result;
+  return response;
 };
