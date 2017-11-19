@@ -35,7 +35,10 @@ function testRequests(node: RPCNode, service: string) {
 const mapNodeEndpoints = (nodes: { [key: string]: NodeConfig }) => {
   const testList = ['eth_mew', 'eth_ethscan', 'etc_epool'];
   testList.forEach(n => {
-    testRequests(nodes[n].lib, `${nodes[n].service} ${nodes[n].network}`);
+    testRequests(
+      nodes[n].lib as RPCNode,
+      `${nodes[n].service} ${nodes[n].network}`
+    );
   });
 };
 
