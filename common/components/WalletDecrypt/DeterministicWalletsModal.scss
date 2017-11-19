@@ -23,6 +23,7 @@
     &-table {
       width: 100%;
       text-align: center;
+      margin-bottom: 10px;
 
       &-token {
         width: 82px;
@@ -32,6 +33,10 @@
         font-size: 13px;
         text-align: left;
         font-family: $font-family-monospace;
+
+        input {
+          margin-right: 6px;
+        }
       }
 
       &-more {

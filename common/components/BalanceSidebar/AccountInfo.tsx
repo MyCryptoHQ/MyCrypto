@@ -1,18 +1,15 @@
-import { TFetchCCRates } from 'actions/rates';
-import { Identicon } from 'components/ui';
+import { Identicon, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'config/data';
-import { Ether } from 'libs/units';
-import { IWallet } from 'libs/wallet';
+import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
-import { formatNumber } from 'utils/formatters';
 import './AccountInfo.scss';
+import Spinner from 'components/ui/Spinner';
 
 interface Props {
-  balance: Ether;
+  balance: Balance;
   wallet: IWallet;
   network: NetworkConfig;
-  fetchCCRates: TFetchCCRates;
 }
 
 interface State {
@@ -26,14 +23,13 @@ export default class AccountInfo extends React.Component<Props, State> {
   };
 
   public async setAddressFromWallet() {
-    const address = await this.props.wallet.getAddress();
+    const address = await this.props.wallet.getAddressString();
     if (address !== this.state.address) {
       this.setState({ address });
     }
   }
 
   public componentDidMount() {
-    this.props.fetchCCRates();
     this.setAddressFromWallet();
   }
 
@@ -54,7 +50,7 @@ export default class AccountInfo extends React.Component<Props, State> {
   public render() {
     const { network, balance } = this.props;
     const { blockExplorer, tokenExplorer } = network;
-    const { address } = this.state;
+    const { address, showLongBalance } = this.state;
 
     return (
       <div className="AccountInfo">
@@ -80,38 +76,48 @@ export default class AccountInfo extends React.Component<Props, State> {
                 className="AccountInfo-list-item-clickable mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {this.state.showLongBalance
-                  ? balance ? balance.toString() : '???'
-                  : balance ? formatNumber(balance.amount) : '???'}
+                {balance.isPending ? (
+                  <Spinner />
+                ) : (
+                  <UnitDisplay
+                    value={balance.wei}
+                    unit={'ether'}
+                    displayShortBalance={!showLongBalance}
+                  />
+                )}
               </span>
-              {` ${network.name}`}
+              {!balance.isPending ? (
+                balance.wei ? (
+                  <span> {network.name}</span>
+                ) : null
+              ) : null}
             </li>
           </ul>
         </div>
 
         {(!!blockExplorer || !!tokenExplorer) && (
-            <div className="AccountInfo-section">
-              <h5 className="AccountInfo-section-header">
-                {translate('sidebar_TransHistory')}
-              </h5>
-              <ul className="AccountInfo-list">
-                {!!blockExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={blockExplorer.address(address)} target="_blank">
-                      {`${network.name} (${blockExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-                {!!tokenExplorer && (
-                  <li className="AccountInfo-list-item">
-                    <a href={tokenExplorer.address(address)} target="_blank">
-                      {`Tokens (${tokenExplorer.name})`}
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
+          <div className="AccountInfo-section">
+            <h5 className="AccountInfo-section-header">
+              {translate('sidebar_TransHistory')}
+            </h5>
+            <ul className="AccountInfo-list">
+              {!!blockExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={blockExplorer.address(address)} target="_blank">
+                    {`${network.name} (${blockExplorer.name})`}
+                  </a>
+                </li>
+              )}
+              {!!tokenExplorer && (
+                <li className="AccountInfo-list-item">
+                  <a href={tokenExplorer.address(address)} target="_blank">
+                    {`Tokens (${tokenExplorer.name})`}
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     );
   }

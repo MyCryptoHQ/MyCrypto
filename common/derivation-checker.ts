@@ -1,5 +1,5 @@
 import assert from 'assert';
-import PrivKeyWallet from './libs/wallet/privkey';
+import { generate, IFullWallet } from 'ethereumjs-wallet';
 const { exec } = require('child_process');
 const ProgressBar = require('progress');
 
@@ -17,8 +17,10 @@ function promiseFromChildProcess(command): Promise<any> {
   });
 }
 
-async function privToAddrViaDocker(privKeyWallet) {
-  const command = `docker run -e key=${privKeyWallet.getPrivateKey()} ${dockerImage}:${dockerTag}`;
+async function privToAddrViaDocker(privKeyWallet: IFullWallet) {
+  const command = `docker run -e key=${privKeyWallet.getPrivateKeyString()} ${
+    dockerImage
+  }:${dockerTag}`;
   const dockerOutput = await promiseFromChildProcess(command);
   const newlineStrippedDockerOutput = dockerOutput.replace(
     /(\r\n|\n|\r)/gm,
@@ -28,8 +30,8 @@ async function privToAddrViaDocker(privKeyWallet) {
 }
 
 async function testDerivation() {
-  const privKeyWallet = PrivKeyWallet.generate();
-  const privKeyWalletAddress = await privKeyWallet.getAddress();
+  const privKeyWallet = generate();
+  const privKeyWalletAddress = await privKeyWallet.getAddressString();
   const dockerAddr = await privToAddrViaDocker(privKeyWallet);
   // strip the checksum
   const lowerCasedPrivKeyWalletAddress = privKeyWalletAddress.toLowerCase();

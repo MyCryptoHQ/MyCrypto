@@ -1,5 +1,6 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
+import { NodeConfig, CustomNodeConfig } from 'config/data';
 
 export type TForceOfflineConfig = typeof forceOfflineConfig;
 export function forceOfflineConfig(): interfaces.ForceOfflineAction {
@@ -24,10 +25,13 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
 }
 
 export type TChangeNode = typeof changeNode;
-export function changeNode(value: string): interfaces.ChangeNodeAction {
+export function changeNode(
+  nodeSelection: string,
+  node: NodeConfig
+): interfaces.ChangeNodeAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE,
-    payload: value
+    payload: { nodeSelection, node }
   };
 }
 
@@ -53,5 +57,42 @@ export function changeNodeIntent(
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE_INTENT,
     payload
+  };
+}
+
+export type TAddCustomNode = typeof addCustomNode;
+export function addCustomNode(
+  payload: CustomNodeConfig
+): interfaces.AddCustomNodeAction {
+  return {
+    type: TypeKeys.CONFIG_ADD_CUSTOM_NODE,
+    payload
+  };
+}
+
+export type TRemoveCustomNode = typeof removeCustomNode;
+export function removeCustomNode(
+  payload: CustomNodeConfig
+): interfaces.RemoveCustomNodeAction {
+  return {
+    type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
+    payload
+  };
+}
+
+export type TSetLatestBlock = typeof setLatestBlock;
+export function setLatestBlock(
+  payload: string
+): interfaces.SetLatestBlockAction {
+  return {
+    type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
+    payload
+  };
+}
+
+export type TWeb3UnsetNode = typeof web3UnsetNode;
+export function web3UnsetNode(): interfaces.Web3UnsetNodeAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_WEB3_UNSET
   };
 }

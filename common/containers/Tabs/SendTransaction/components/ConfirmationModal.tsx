@@ -17,6 +17,7 @@ import {
 } from 'selectors/config';
 import { getTokens, getTxFromState, MergedToken } from 'selectors/wallet';
 import translate, { translateRaw } from 'translations';
+import { UnitDisplay } from 'components/ui';
 import './ConfirmationModal.scss';
 
 interface Props {
@@ -27,6 +28,7 @@ interface Props {
   network: NetworkConfig;
   lang: string;
   broadCastTxStatus: BroadcastTransactionStatus;
+  decimal: number;
   onConfirm(signedTx: string): void;
   onClose(): void;
 }
@@ -72,7 +74,8 @@ class ConfirmationModal extends React.Component<Props, State> {
       network,
       onClose,
       broadCastTxStatus,
-      transaction
+      transaction,
+      decimal
     } = this.props;
     const { timeToRead } = this.state;
     const { toAddress, value, gasPrice, data, from, nonce } = decodeTransaction(
@@ -101,18 +104,18 @@ class ConfirmationModal extends React.Component<Props, State> {
       broadCastTxStatus && broadCastTxStatus.isBroadcasting;
 
     return (
-      <Modal
-        title="Confirm Your Transaction"
-        buttons={buttons}
-        handleClose={onClose}
-        disableButtons={isBroadcasting}
-        isOpen={true}
-      >
-        {
+      <div className="ConfModalWrap">
+        <Modal
+          title="Confirm Your Transaction"
+          buttons={buttons}
+          handleClose={onClose}
+          disableButtons={isBroadcasting}
+          isOpen={true}
+        >
           <div className="ConfModal">
             {isBroadcasting ? (
               <div className="ConfModal-loading">
-                <Spinner size="5x" />
+                <Spinner size="x5" />
               </div>
             ) : (
               <div>
@@ -123,14 +126,17 @@ class ConfirmationModal extends React.Component<Props, State> {
                   <div className="ConfModal-summary-amount">
                     <div className="ConfModal-summary-amount-arrow" />
                     <div className="ConfModal-summary-amount-currency">
-                      {value} {symbol}
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
                     </div>
                   </div>
                   <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
                     <Identicon size="100%" address={toAddress} />
                   </div>
                 </div>
-
                 <ul className="ConfModal-details">
                   <li className="ConfModal-details-detail">
                     You are sending from <code>{from}</code>
@@ -144,9 +150,20 @@ class ConfirmationModal extends React.Component<Props, State> {
                   <li className="ConfModal-details-detail">
                     You are sending{' '}
                     <strong>
-                      {value} {symbol}
+                      <UnitDisplay
+                        decimal={decimal}
+                        value={value}
+                        symbol={symbol}
+                      />
                     </strong>{' '}
-                    with a gas price of <strong>{gasPrice} gwei</strong>
+                    with a gas price of{' '}
+                    <strong>
+                      <UnitDisplay
+                        unit={'gwei'}
+                        value={gasPrice}
+                        symbol={'gwei'}
+                      />
+                    </strong>
                   </li>
                   <li className="ConfModal-details-detail">
                     You are interacting with the <strong>{node.network}</strong>{' '}
@@ -177,8 +194,8 @@ class ConfirmationModal extends React.Component<Props, State> {
               </div>
             )}
           </div>
-        }
-      </Modal>
+        </Modal>
+      </div>
     );
   }
 

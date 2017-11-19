@@ -9,6 +9,7 @@ import Help from 'containers/Tabs/Help';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
 import ViewWallet from 'containers/Tabs/ViewWallet';
+import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 
 // TODO: fix this
@@ -32,6 +33,10 @@ export default class Root extends Component<Props, {}> {
             <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
+            <Route
+              path="/sign-and-verify-message"
+              component={SignAndVerifyMessage}
+            />
             <Route path="/pushTx" component={BroadcastTx} />
 
             <LegacyRoutes />

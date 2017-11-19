@@ -29,6 +29,10 @@ const tabs = [
     to: 'ens'
   },
   {
+    name: 'Sign & Verify Message',
+    to: 'sign-and-verify-message'
+  },
+  {
     name: 'Broadcast Transaction',
     to: 'pushTx'
   },
@@ -61,7 +65,7 @@ export default class Navigation extends Component<Props, State> {
   /*
    *   public scrollLeft() {}
       public scrollRight() {}
-   * 
+   *
    */
 
   public render() {

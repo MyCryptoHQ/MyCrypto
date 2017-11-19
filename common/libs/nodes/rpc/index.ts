@@ -1,7 +1,8 @@
-import Big, { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
+import { stripHexPrefix } from 'libs/values';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
@@ -42,58 +43,44 @@ export default class RpcNode implements INode {
   public getBalance(address: string): Promise<Wei> {
     return this.client
       .call(this.requests.getBalance(address))
-      .then(ensureOkResponse)
       .then(isValidGetBalance)
-      .then(response => {
-        return new Wei(String(response.result));
-      })
-      .catch(err => {
-        throw new Error('Warning: Unable to Get Balance - ' + err);
-      });
+      .then(({ result }) => Wei(result));
   }
 
-  public estimateGas(transaction: TransactionWithoutGas): Promise<BigNumber> {
+  public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
     return this.client
       .call(this.requests.estimateGas(transaction))
       .then(ensureOkResponse)
-      .then(response => {
-        return new Big(String(response.result));
-      })
-      .catch(err => {
-        throw new Error('Warning: Unable to Estimate Gas');
-      });
+      .then(({ result }) => Wei(result));
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<BigNumber> {
+  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
       .then(ensureOkResponse)
       .then(response => {
-        return new Big(String(response.result)).div(
-          new Big(10).pow(token.decimal)
-        );
-      })
-      .catch(err => {
-        // TODO - do we want to alert if a single token request fails?
-        throw new Error('Warning: Unable to Get Token Balance');
+        if (response.error) {
+          // TODO - Error handling
+          return TokenValue('0');
+        }
+        return TokenValue(response.result);
       });
   }
 
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<BigNumber[]> {
+  ): Promise<TokenValue[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
+      .then(ensureOkResponse)
       .then(response => {
-        return response.map((item, idx) => {
+        return response.map(item => {
           // FIXME wrap in maybe-like
           if (item.error) {
-            return new Big(0);
+            return TokenValue('0');
           }
-          return new Big(String(item.result)).div(
-            new Big(10).pow(tokens[idx].decimal)
-          );
+          return TokenValue(item.result);
         });
       });
     // TODO - Error handling
@@ -102,30 +89,22 @@ export default class RpcNode implements INode {
   public getTransactionCount(address: string): Promise<string> {
     return this.client
       .call(this.requests.getTransactionCount(address))
+      .then(ensureOkResponse);
+  }
+
+  public getCurrentBlock(): Promise<string> {
+    return this.client
+      .call(this.requests.getCurrentBlock())
       .then(ensureOkResponse)
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return response.result;
-      })
-      .catch(err => {
-        throw new Error('Warning: Unable to Get Transaction Count (Nonce)');
-      });
+      .then(({ result }) => new BN(stripHexPrefix(result)).toString());
   }
 
   public sendRawTx(signedTx: string): Promise<string> {
     return this.client
       .call(this.requests.sendRawTx(signedTx))
       .then(ensureOkResponse)
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return response.result;
-      })
-      .catch(err => {
-        throw new Error('Warning: Unable Send Raw Tx');
+      .then(({ result }) => {
+        return result;
       });
   }
 }
