@@ -47,9 +47,9 @@ const RPCTests = {
   getTokenBalance: testGetTokenBalance
 };
 
-function testRequests(node: RPCNode, service: string) {
+function testRpcRequests(node: RPCNode, service: string) {
   Object.keys(RPCTests).forEach(testType => {
-    describe('RPC getBalance should work', () => {
+    describe(`RPC (${service}) should work`, () => {
       it(`RPC: ${testType} ${service}`, () => {
         return RPCTests[testType](node).then(d => expect(d.valid).toBeTruthy());
       });
@@ -58,9 +58,10 @@ function testRequests(node: RPCNode, service: string) {
 }
 
 const mapNodeEndpoints = (nodes: { [key: string]: NodeConfig }) => {
-  const testList = ['eth_mew', 'etc_epool'];
-  testList.forEach(n => {
-    testRequests(
+  const RpcNodeList = ['eth_mew', 'etc_epool', 'etc_epool', 'rop_mew'];
+
+  RpcNodeList.forEach(n => {
+    testRpcRequests(
       nodes[n].lib as RPCNode,
       `${nodes[n].service} ${nodes[n].network}`
     );
