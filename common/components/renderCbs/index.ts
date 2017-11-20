@@ -10,3 +10,4 @@ export * from './Wallet';
 export * from './TransactionFields';
 export * from './MetaFields';
 export * from './Transaction';
+export * from './TokenQuery';

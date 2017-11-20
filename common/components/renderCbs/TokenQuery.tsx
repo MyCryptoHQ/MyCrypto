@@ -13,8 +13,10 @@ class TokenQueryClass extends Component<Props, {}> {
   public render() {
     return (
       <Query
-        params={['unit']}
-        withQuery={({ unit }) => this.props.withQuery(this.paramGetter(unit))}
+        params={['tokenSymbol']}
+        withQuery={({ tokenSymbol }) =>
+          this.props.withQuery(this.paramGetter(tokenSymbol))
+        }
       />
     );
   }
