@@ -31,7 +31,7 @@ export const ConditionalUnitDropdown: React.SFC<Props> = ({
             <GetTransactionMetaFields
               withFieldValues={({ unit }) => (
                 <ConditionalStringDropDown
-                  options={[...getTokenSymbols(tokens), 'ether']}
+                  options={['ether', ...getTokenSymbols(tokens)]}
                   value={unit}
                   condition={!!readOnly}
                   conditionalProps={{
