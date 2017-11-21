@@ -111,7 +111,7 @@ const configureStore = () => {
           languageSelection: state.config.languageSelection,
           customNodes: state.config.customNodes
         },
-        swap: { ...state.swap, bityRates: {} },
+        swap: { ...state.swap, bityRates: swapInitialState.bityRates },
         customTokens: state.customTokens
       });
     }),
