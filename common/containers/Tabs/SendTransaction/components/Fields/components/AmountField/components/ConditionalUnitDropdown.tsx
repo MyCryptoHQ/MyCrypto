@@ -61,11 +61,11 @@ const handleOnChange = (
 ) => (value: string) => {
   const token = options.find(t => t.symbol === value);
   if (token) {
-    onDecimalChange(token.decimal);
     onUnitChange(token.symbol);
+    onDecimalChange(token.decimal);
   } else if (value === 'ether') {
-    onDecimalChange(getDecimal(value));
     onUnitChange(value);
+    onDecimalChange(getDecimal(value));
   } else {
     throw Error('Invalid unit selected in drop down');
   }

@@ -1,20 +1,52 @@
-import React from 'react';
-import translate, { translateRaw } from 'translations';
+import React, { Component } from 'react';
+import EthTx from 'ethereumjs-tx';
+import { TokenBalance } from 'selectors/wallet';
 import { Wei } from 'libs/units';
-import { UnitConverter } from 'components/renderCbs';
+import {
+  UnitConverter,
+  GetTransactionMetaFields,
+  SetTransactionField,
+  Transaction,
+  Query
+} from 'components/renderCbs';
+import { SetValueFieldAction } from 'actions/transaction';
 
 interface Props {
-  decimal: number;
-  unit: string;
-  tokens: string[];
-  balance: number | null | Wei;
-  readOnly: boolean;
-  onAmountChange(value: string, unit: string): void;
-  onUnitChange(unit: string): void;
+  value: string | null;
+  transaction: EthTx | null;
+  setter(payload: SetValueFieldAction['payload']);
 }
 
-export const AmountField: React.SFC<Props> = props => {
-  const { unit, balance, decimal, readOnly } = props;
+class AmountFieldClass extends Component<Props, {}> {
+  public render() {
+    return null;
+  }
+}
+
+const AmountField = (
+  <Query
+    params={['value']}
+    withQuery={({ value }) => (
+      <Transaction
+        withTransaction={({ transaction }) => (
+          <SetTransactionField
+            name="value"
+            withFieldSetter={setter => (
+              <AmountFieldClass
+                value={value}
+                transaction={transaction}
+                setter={setter}
+              />
+            )}
+          />
+        )}
+      />
+    )}
+  />
+);
+
+export const AmountFields: React.SFC<{}> = props => {
+  const { balance, decimal, readOnly } = props;
 
   const callWithBaseUnit = ({ currentTarget: { value } }) =>
     props.readOnly && props.onAmountChange(value, props.unit);
@@ -24,37 +56,12 @@ export const AmountField: React.SFC<Props> = props => {
 
   const validInput = (input: string) => isFinite(+input) && +input > 0;
 
-  return (
-    <div className="row form-group">
-      <div className="col-xs-11">
-        <label>{translate('SEND_amount')}</label>
-        <div className="input-group">
-          <UnitConverter decimal={decimal} onChange={callWithBaseUnit}>
-            {({ onUserInput, convertedUnit }) => (
-              <input
-                className={`form-control ${
-                  validInput(convertedUnit) ? 'is-valid' : 'is-invalid'
-                }`}
-                type="text"
-                placeholder={translateRaw('SEND_amount_short')}
-                value={convertedUnit}
-                readOnly={readOnly}
-                onChange={onUserInput}
-              />
-            )}
-          </UnitConverter>
-        </div>
-        {!readOnly &&
-          balance && (
-            <span className="help-block">
-              <a onClick={onSendEverything}>
-                <span className="strong">
-                  {translate('SEND_TransferTotal')}
-                </span>
-              </a>
-            </span>
-          )}
-      </div>
-    </div>
-  );
+  return null;
 };
+/*
+<div className="row form-group">
+  <div className="col-xs-11">
+
+  </div>
+    </div>
+    */
