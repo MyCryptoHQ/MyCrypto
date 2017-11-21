@@ -135,52 +135,6 @@ textarea {
   }
 }
 
-.account-help-icon {
-  h3,
-  h4,
-  h5,
-  h6,
-  img {
-    display: inline-block;
-  }
-  img:hover + .account-help-text {
-    display: block;
-  }
-  img {
-    margin-left: -30px;
-    margin-right: 3px;
-  }
-}
-
-.account-help-text {
-  background: white;
-  border-radius: @border-radius;
-  border: 1px solid #cdcdcd;
-  box-shadow: 0 0 @space-sm rgba(100, 100, 100, .2);
-  display: none;
-  font-size: @font-size-xs;
-  font-weight: 400;
-  padding: @space-xs;
-  position: absolute;
-  width: 18rem;
-  z-index: 999;
-  ul& {
-    padding-left: 1.6rem;
-  }
-  li {
-    font-size: @font-size-xs;
-    font-weight: 400;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .account-help-icon li,
-  .account-help-icon img,
-  .account-help-icon p {
-    display: none;
-  }
-}
-
 // monospace things
 .mono,
 .form-control,
@@ -283,7 +237,7 @@ input[type="password"] + .eye {
 
 .m-addresses td:first-child {
   max-width: 50px;
-  min-widht: 50px;
+  min-width: 50px;
 }
 
 .m-addresses td:last-child {
