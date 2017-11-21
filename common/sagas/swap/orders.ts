@@ -31,7 +31,7 @@ import {
 export const getSwap = (state: AppState): SwapState => state.swap;
 const ONE_SECOND = 1000;
 const TEN_SECONDS = ONE_SECOND * 10;
-const BITY_TIMEOUT_MESSAGE = `
+export const BITY_TIMEOUT_MESSAGE = `
     Time has run out.
     If you have already sent, please wait 1 hour.
     If your order has not be processed after 1 hour,
@@ -81,7 +81,7 @@ export function* pollBityOrderStatusSaga(): SagaIterator {
   }
 }
 
-function* postBityOrderCreate(
+export function* postBityOrderCreate(
   action: BityOrderCreateRequestedSwapAction
 ): SagaIterator {
   const payload = action.payload;
