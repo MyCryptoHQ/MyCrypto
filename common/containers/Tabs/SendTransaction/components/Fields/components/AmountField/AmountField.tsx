@@ -5,22 +5,39 @@ import { Wei } from 'libs/units';
 import {
   UnitConverter,
   GetTransactionMetaFields,
+  SetUnitMetaField,
   SetTransactionField,
+  SetTokenValueMetaField,
   Transaction,
   Query
 } from 'components/renderCbs';
-import { SetValueFieldAction } from 'actions/transaction';
+import {
+  SetValueFieldAction,
+  SetTokenValueMetaAction
+} from 'actions/transaction';
+import BN from 'bn.js';
 
 interface Props {
   value: string | null;
   transaction: EthTx | null;
-  setter(payload: SetValueFieldAction['payload']);
+  setter(
+    payload: SetValueFieldAction['payload'] | SetTokenValueMetaAction['payload']
+  );
 }
 
 class AmountFieldClass extends Component<Props, {}> {
+  public componentDidMount() {
+    const { value, setter } = this.props;
+    if (value) {
+      setter({ raw: value, value: new BN(value) }); //we dont know if its wei or token balance
+    }
+  }
   public render() {
     return null;
   }
+  private handleSendEverything = () => {};
+  private setValue = () => {};
+  private validInput = (input: string) => isFinite(+input) && +input > 0;
 }
 
 const AmountField = (
@@ -29,39 +46,30 @@ const AmountField = (
     withQuery={({ value }) => (
       <Transaction
         withTransaction={({ transaction }) => (
-          <SetTransactionField
-            name="value"
-            withFieldSetter={setter => (
-              <AmountFieldClass
-                value={value}
-                transaction={transaction}
-                setter={setter}
-              />
-            )}
+          <GetTransactionMetaFields
+            withFieldValues={({ unit }) => {
+              const partialAmountField = setter => (
+                <AmountFieldClass
+                  value={value}
+                  transaction={transaction}
+                  setter={setter}
+                />
+              );
+
+              return unit === 'ether' ? (
+                <SetTransactionField
+                  name="value"
+                  withFieldSetter={partialAmountField}
+                />
+              ) : (
+                <SetTokenValueMetaField
+                  withTokenBalanceSetter={partialAmountField}
+                />
+              );
+            }}
           />
         )}
       />
     )}
   />
 );
-
-export const AmountFields: React.SFC<{}> = props => {
-  const { balance, decimal, readOnly } = props;
-
-  const callWithBaseUnit = ({ currentTarget: { value } }) =>
-    props.readOnly && props.onAmountChange(value, props.unit);
-
-  const onSendEverything = () =>
-    props.readOnly && props.onAmountChange('everything', props.unit);
-
-  const validInput = (input: string) => isFinite(+input) && +input > 0;
-
-  return null;
-};
-/*
-<div className="row form-group">
-  <div className="col-xs-11">
-
-  </div>
-    </div>
-    */
