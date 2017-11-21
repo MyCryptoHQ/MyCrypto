@@ -30,7 +30,7 @@ interface SetUnitMetaAction {
 interface SetTokenValueMetaAction {
   type: TypeKeys.TOKEN_VALUE_META_SET;
   payload: {
-    raw: '';
+    raw: string;
     value: TokenValue | null;
   };
 }
