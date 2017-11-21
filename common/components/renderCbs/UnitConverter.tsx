@@ -1,4 +1,5 @@
 import { toTokenBase } from 'libs/units';
+import parseDecimalNumber from 'parse-decimal-number';
 
 import React, { Component } from 'react';
 
@@ -29,7 +30,6 @@ export class UnitConverter extends Component<Props, State> {
 
   public componentWillReceiveProps(nextProps: Props) {
     const { userInput } = this.state;
-
     if (this.props.decimal !== nextProps.decimal) {
       this.baseUnitCb(userInput, nextProps.decimal);
     }
@@ -49,7 +49,13 @@ export class UnitConverter extends Component<Props, State> {
     });
   }
   private baseUnitCb = (value: string, decimal: number) => {
-    const baseUnit = toTokenBase(value, decimal).toString();
+    console.log('original value', value);
+    const parsedValue = parseDecimalNumber(value, '.,')
+      ? parseDecimalNumber(value, '.,').toString()
+      : parseDecimalNumber(value) ? parseDecimalNumber(value).toString() : '';
+    console.log('new val', parsedValue);
+    const baseUnit = toTokenBase(parsedValue, decimal).toString();
+    console.log(baseUnit);
     const fakeEvent = {
       currentTarget: {
         value: baseUnit
