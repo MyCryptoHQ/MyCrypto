@@ -1,7 +1,7 @@
 import { showNotification } from 'actions/notifications';
 import { loadBityRatesSucceededSwap } from 'actions/swap';
 import { TypeKeys } from 'actions/swap/constants';
-import { getAllRates } from 'api/bity';
+import { getAllRates, getRates } from 'api/bity';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, takeLatest } from 'redux-saga/effects';
 
@@ -11,6 +11,7 @@ export function* loadBityRates(): SagaIterator {
   while (true) {
     try {
       const data = yield call(getAllRates);
+      yield call(getRates);
       yield put(loadBityRatesSucceededSwap(data));
     } catch (error) {
       yield put(showNotification('danger', error.message));
