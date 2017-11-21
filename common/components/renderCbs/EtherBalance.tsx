@@ -5,7 +5,11 @@ import { Wallet } from './Wallet';
 type IBalance = AppState['wallet']['balance'];
 
 interface Props {
-  withBalance({ balance }: { balance: IBalance }): React.ReactElement<any>;
+  withBalance({
+    balance
+  }: {
+    balance: IBalance;
+  }): React.ReactElement<any> | null;
 }
 
 export const EtherBalance: React.SFC<Props> = ({ withBalance }) => (

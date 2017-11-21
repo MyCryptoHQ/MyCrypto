@@ -6,7 +6,11 @@ import { getTokenBalances, TokenBalance } from 'selectors/wallet';
 interface Props {
   tokens: TokenBalance[];
   nonZeroBalances?: boolean;
-  withTokens({ tokens }: { tokens: TokenBalance[] }): React.ReactElement<any>;
+  withTokens({
+    tokens
+  }: {
+    tokens: TokenBalance[];
+  }): React.ReactElement<any> | null;
 }
 
 class TokenBalancesClass extends React.Component<Props, {}> {
