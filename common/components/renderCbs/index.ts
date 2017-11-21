@@ -11,3 +11,5 @@ export * from './TransactionFields';
 export * from './MetaFields';
 export * from './Transaction';
 export * from './TokenQuery';
+export * from './CurrentBalance';
+export * from './CurrentValue';
