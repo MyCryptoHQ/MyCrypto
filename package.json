@@ -110,6 +110,7 @@
     "webpack-hot-middleware": "2.20.0"
   },
   "scripts": {
+    "freezer": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js",
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
