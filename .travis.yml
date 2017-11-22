@@ -18,3 +18,4 @@ script:
 - npm run tslint
 - tsc --noEmit
 - npm run freezer
+- npm run freezer:validate
