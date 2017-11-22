@@ -14,6 +14,11 @@ const start = async () => {
     const packageStr = await runShCommand(GET_PACKAGE_CMD);
     const diff = await runShCommand(GET_DIFF_CMD);
     const { frozen } = JSON.parse(packageStr);
+
+    if (frozen === undefined) {
+      return;
+    }
+
     const newFiles = getNewFiles(diff);
     const frozenFiles = getFrozenFiles(frozen);
     const frozenFolders = getFrozenFolders(frozen);
@@ -110,28 +115,22 @@ const validateConfig = () => {
 
     const errors = frozen
       .map(filePath => {
-        if (frozenFolderRegEx.test(filePath)) {
-          const fixedFilePath = filePath.replace(frozenFolderRegEx, '');
+        const isFolder = frozenFolderRegEx.test(filePath);
+        const fullPath = isFolder
+          ? path.resolve(PROJECT_BASE, filePath.replace(frozenFolderRegEx, ''))
+          : path.resolve(PROJECT_BASE, filePath);
 
-          if (!fs.existsSync(fixedFilePath)) {
-            return `"${filePath}" does not exist!`;
-          }
+        if (!fs.existsSync(fullPath)) {
+          return `"${filePath}" does not exist`;
+        }
 
-          const fullPath = path.resolve(PROJECT_BASE, fixedFilePath);
-          const stats = fs.lstatSync(fullPath);
+        const stats = fs.lstatSync(fullPath);
 
+        if (isFolder) {
           if (!stats.isDirectory()) {
             return `"${filePath}" is not a folder`;
           }
         } else {
-          const fullPath = path.resolve(PROJECT_BASE, filePath);
-
-          if (!fs.existsSync(filePath)) {
-            return `"${filePath}" does not exist`;
-          }
-
-          const stats = fs.lstatSync(fullPath);
-
           if (!stats.isFile()) {
             return `"${filePath}" is not a file`;
           }
@@ -141,6 +140,8 @@ const validateConfig = () => {
 
     if (errors.length) {
       throw new Error(errors.join('\n'));
+    } else {
+      console.log('Freezer config is valid');
     }
   } catch (err) {
     console.log(`Invalid Freezer config on package.json:\n${err}`);
