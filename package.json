@@ -111,7 +111,7 @@
   },
   "scripts": {
     "freezer": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js",
-    "freezer:validate": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js --validate",    
+    "freezer:validate": "npm run freezer -- --validate",    
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
