@@ -4,6 +4,7 @@ import { privateToAddress } from 'ethereumjs-util';
 import { fromMasterSeed } from 'hdkey';
 import { stripHexPrefixAndLower } from 'libs/values';
 
+// this is a test comment
 // adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L230
 export function decryptPrivKey(encprivkey: string, password: string): Buffer {
   const cipher = encprivkey.slice(0, 128);
