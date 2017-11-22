@@ -11,6 +11,11 @@ const frozenFolderRegEx = /\/\*$/;
 
 const start = async () => {
   try {
+    if (isTravisPushJob()) {
+      console.log('Freezer: Travis push job detected. Exiting.');
+      return;
+    }
+
     const packageStr = await runShCommand(GET_PACKAGE_CMD);
     const diff = await runShCommand(GET_DIFF_CMD);
     const { frozen } = JSON.parse(packageStr);
@@ -95,6 +100,11 @@ const runShCommand = (cmd: string): Promise<string> =>
       resolve(stdout.join(''));
     });
   });
+
+const isTravisPushJob = () => {
+  const prb = process.env.TRAVIS_PULL_REQUEST_BRANCH;
+  return typeof prb === 'string' && prb.length === 0;
+};
 
 const exit = () => setTimeout(() => process.exit(1), 100);
 
