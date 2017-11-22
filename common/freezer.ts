@@ -3,8 +3,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 const PROJECT_BASE = path.resolve('./');
-const GET_PACKAGE_CMD = 'git show develop:package.json';
-const GET_DIFF_CMD = 'git diff origin/develop';
+const ORACLE_BRANCH = 'develop';
+const GET_PACKAGE_CMD = `git show ${ORACLE_BRANCH}:package.json`;
+const GET_DIFF_CMD = `git diff origin/${ORACLE_BRANCH}`;
 
 const newFileRegEx = /^\+\+\+ b\//;
 const frozenFolderRegEx = /\/\*$/;
@@ -16,6 +17,9 @@ const start = async () => {
     const { frozen } = JSON.parse(packageStr);
 
     if (frozen === undefined) {
+      console.log(
+        `No config found on package.json in branch ${ORACLE_BRANCH}. Exiting.`
+      );
       return;
     }
 
@@ -111,11 +115,14 @@ const validateConfig = () => {
     const { frozen } = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
 
     if (frozen === undefined) {
+      console.log(
+        `No config found in package.json on branch ${ORACLE_BRANCH}. Exiting.`
+      );
       return;
     }
 
     if (!Array.isArray(frozen)) {
-      throw new Error(`property "frozen" is not an array`);
+      throw new Error(`Property "frozen" is not an array`);
     }
 
     const errors = frozen
@@ -146,10 +153,10 @@ const validateConfig = () => {
     if (errors.length) {
       throw new Error(errors.join('\n'));
     } else {
-      console.log('Freezer config is valid');
+      console.log('Freezer: Config is valid.');
     }
   } catch (err) {
-    console.log(`Invalid Freezer config on package.json:\n${err}`);
+    console.log(`Freezer: Invalid config on package.json:\n${err}`);
     exit();
   }
 };
