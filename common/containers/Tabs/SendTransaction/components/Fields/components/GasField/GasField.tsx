@@ -59,8 +59,8 @@ class GasLimitField extends Component<Props, {}> {
     if (!prevT) {
       return true;
     }
-    const sameData = nextT.data === prevT.data;
-    const sameAddress = nextT.to === prevT.to;
+    const sameData = nextT.data.toString() === prevT.data.toString();
+    const sameAddress = nextT.to.toString() === prevT.to.toString();
     return !(sameData && sameAddress);
   }
 }

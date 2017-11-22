@@ -37,7 +37,7 @@ declare module 'ethereumjs-tx' {
   }
 
   class Base {
-    public chainId: Number;
+    public chainId: number;
     public raw: Buffer;
     public gasLimit: Buffer;
     public gasPrice: Buffer;

@@ -33,7 +33,7 @@ export const ConditionalUnitDropdown: React.SFC<Props> = ({
                 <ConditionalStringDropDown
                   options={['ether', ...getTokenSymbols(tokens)]}
                   value={unit}
-                  condition={!!readOnly}
+                  condition={!readOnly}
                   conditionalProps={{
                     onChange: handleOnChange(
                       onUnitChange,

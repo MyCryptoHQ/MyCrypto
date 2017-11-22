@@ -46,8 +46,9 @@ const handleValues = (input: string | BN) => {
   }
   if (BN.isBN(input)) {
     return input;
+  } else {
+    throw Error('unsupported value conversion');
   }
-  throw Error('unsupported value conversion');
 };
 
 const Address = (input: string) => toBuffer(input);

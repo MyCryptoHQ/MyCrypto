@@ -1,6 +1,10 @@
 import { DataInput } from './DataInput';
 import { isValidHex } from 'libs/validators';
-import { Query, SetTransactionField } from 'components/renderCbs';
+import {
+  Query,
+  SetTransactionField,
+  GetTransactionMetaFields
+} from 'components/renderCbs';
 import { SetDataFieldAction } from 'actions/transaction';
 import { Data } from 'libs/units';
 import React from 'react';
@@ -29,24 +33,25 @@ class DataField extends React.Component<Props> {
   };
 }
 
-interface DefaultProps {
-  unit: string;
-}
-
-const DefaultDataField: React.SFC<DefaultProps> = (
+const DefaultDataField: React.SFC<{}> = () => (
   /* TODO: check query param of tokens too */
-  { unit } // only display if it isn't a token
-) =>
-  unit === 'ether' ? (
-    <SetTransactionField
-      name="data"
-      withFieldSetter={setter => (
-        <Query
-          params={['data']}
-          withQuery={({ data }) => <DataField data={data} setter={setter} />}
-        />
-      )}
-    />
-  ) : null;
+  <GetTransactionMetaFields
+    withFieldValues={({ unit }) =>
+      unit === 'ether' ? (
+        <SetTransactionField
+          name="data"
+          withFieldSetter={setter => (
+            <Query
+              params={['data']}
+              withQuery={({ data }) => (
+                <DataField data={data} setter={setter} />
+              )}
+            />
+          )}
+        /> // only display if it isn't a token
+      ) : null
+    }
+  />
+);
 
 export { DefaultDataField as DataField };

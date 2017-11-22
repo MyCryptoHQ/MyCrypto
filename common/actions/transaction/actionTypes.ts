@@ -30,7 +30,7 @@ interface SetUnitMetaAction {
 interface SetTokenValueMetaAction {
   type: TypeKeys.TOKEN_VALUE_META_SET;
   payload: {
-    raw: string;
+    raw?: string;
     value: TokenValue | null;
   };
 }
@@ -74,7 +74,7 @@ interface SetNonceFieldAction {
 interface SetValueFieldAction {
   type: TypeKeys.VALUE_FIELD_SET;
   payload: {
-    raw: string;
+    raw?: string;
     value: Wei | null;
   };
 }

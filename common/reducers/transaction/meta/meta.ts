@@ -14,10 +14,20 @@ const INITIAL_STATE: State = {
 const updateField = (key: keyof State): Reducer<State> => (
   state: State,
   action: MetaAction
-) => ({
-  ...state,
-  [key]: action.payload
-});
+) => {
+  if (typeof action.payload === 'object') {
+    // we do this to update just 'raw' or 'value' param of tokenValue
+    return {
+      ...state,
+      [key]: { ...(state[key] as object), ...action.payload }
+    };
+  } else {
+    return {
+      ...state,
+      [key]: action.payload
+    };
+  }
+};
 
 const reducerObj: ReducersMapObject = {
   [TK.UNIT_META_SET]: updateField('unit'),

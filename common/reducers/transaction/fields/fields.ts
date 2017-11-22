@@ -16,7 +16,7 @@ const updateField = (key: keyof State): Reducer<State> => (
   action: FieldAction
 ) => ({
   ...state,
-  [key]: action.payload
+  [key]: { ...state[key], ...action.payload }
 });
 
 const reducerObj: ReducersMapObject = {

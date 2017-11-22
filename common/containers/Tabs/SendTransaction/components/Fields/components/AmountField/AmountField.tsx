@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import EthTx from 'ethereumjs-tx';
-import { TokenBalance } from 'selectors/wallet';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue, toTokenBase } from 'libs/units';
+import { enoughBalance, enoughTokens, ITransaction } from 'libs/transaction';
 import {
-  UnitConverter,
   GetTransactionMetaFields,
-  SetUnitMetaField,
   SetTransactionField,
   SetTokenValueMetaField,
+  CurrentBalance,
+  CurrentValue,
   Transaction,
   Query
 } from 'components/renderCbs';
@@ -15,11 +15,16 @@ import {
   SetValueFieldAction,
   SetTokenValueMetaAction
 } from 'actions/transaction';
-import BN from 'bn.js';
+
+import { AmountInput } from './AmountInput';
 
 interface Props {
+  currentValue;
+  decimal: number;
   value: string | null;
-  transaction: EthTx | null;
+  balance: Wei | TokenValue | null | undefined;
+  transaction: EthTx;
+  unit: string;
   setter(
     payload: SetValueFieldAction['payload'] | SetTokenValueMetaAction['payload']
   );
@@ -29,44 +34,90 @@ class AmountFieldClass extends Component<Props, {}> {
   public componentDidMount() {
     const { value, setter } = this.props;
     if (value) {
-      setter({ raw: value, value: new BN(value) }); //we dont know if its wei or token balance
+      setter({ raw: value, value: TokenValue(value) }); //we dont know if its wei or token balance
     }
+    this.validateBalances(this.props);
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    this.validateBalances(nextProps);
   }
   public render() {
-    return null;
+    return <AmountInput onChange={this.setValue} />;
   }
-  private handleSendEverything = () => {};
-  private setValue = () => {};
-  private validInput = (input: string) => isFinite(+input) && +input > 0;
+
+  private validateBalances = (props: Props) => {
+    const { transaction, balance, unit, setter, currentValue } = props;
+    // do validation based on unit
+    if (balance) {
+      // this check should skip when offline since balance will be unavailable
+      let valid = false;
+      if (unit === 'ether') {
+        valid = enoughBalance(transaction, balance);
+      } else {
+        valid = enoughTokens(transaction, currentValue.value, balance);
+      }
+      if (!valid && currentValue.value !== null) {
+        setter({ value: null });
+      }
+    }
+  };
+  private setValue = (ev: React.FormEvent<HTMLInputElement>) => {
+    const { value } = ev.currentTarget;
+    const num = +value;
+
+    const valid = validNumber(num);
+
+    if (!valid) {
+      this.props.setter({ raw: value, value: null });
+    } else {
+      const baseUnit = toTokenBase(value, this.props.decimal);
+      this.props.setter({ raw: value, value: baseUnit });
+    }
+  };
 }
 
-const AmountField = (
+const validNumber = (num: number) => isFinite(num) && num > 0;
+
+export const AmountField: React.SFC<{}> = () => (
   <Query
     params={['value']}
     withQuery={({ value }) => (
-      <Transaction
-        withTransaction={({ transaction }) => (
-          <GetTransactionMetaFields
-            withFieldValues={({ unit }) => {
-              const partialAmountField = setter => (
-                <AmountFieldClass
-                  value={value}
-                  transaction={transaction}
-                  setter={setter}
-                />
-              );
+      <CurrentValue
+        withValue={({ value: currentValue }) => (
+          <CurrentBalance
+            withBalance={({ balance }) => (
+              <Transaction
+                withTransaction={({ transaction }) => (
+                  <GetTransactionMetaFields
+                    withFieldValues={({ unit, decimal }) => {
+                      const partialAmountField = setter => (
+                        <AmountFieldClass
+                          currentValue={currentValue}
+                          value={value}
+                          balance={balance}
+                          transaction={transaction}
+                          setter={setter}
+                          unit={unit}
+                          decimal={decimal}
+                        />
+                      );
 
-              return unit === 'ether' ? (
-                <SetTransactionField
-                  name="value"
-                  withFieldSetter={partialAmountField}
-                />
-              ) : (
-                <SetTokenValueMetaField
-                  withTokenBalanceSetter={partialAmountField}
-                />
-              );
-            }}
+                      return unit === 'ether' ? (
+                        <SetTransactionField
+                          name="value"
+                          withFieldSetter={partialAmountField}
+                        />
+                      ) : (
+                        <SetTokenValueMetaField
+                          withTokenBalanceSetter={partialAmountField}
+                        />
+                      );
+                    }}
+                  />
+                )}
+              />
+            )}
           />
         )}
       />

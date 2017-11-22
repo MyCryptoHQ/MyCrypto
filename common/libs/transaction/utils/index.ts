@@ -4,6 +4,8 @@ import * as token from './token';
 import { IWallet } from 'libs/wallet';
 import { ITokenTransaction, ITransaction } from '../typings';
 export { tokenTransaction, transaction };
+export * from './ether';
+export * from './token';
 
 const tokenTransaction = (
   tokenInput: ITokenTransaction,

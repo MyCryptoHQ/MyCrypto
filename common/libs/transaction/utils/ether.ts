@@ -18,15 +18,15 @@ export {
  * @description Return the minimum amount of ether needed
  * @param t
  */
-const enoughBalance = (t: ITransaction, accountBalance: Wei) =>
-  new Tx(t).getUpfrontCost().gte(accountBalance);
+const enoughBalance = (t: Tx | ITransaction, accountBalance: Wei) =>
+  new Tx(t).getUpfrontCost().lte(accountBalance);
 
 /**
  * @description Return the minimum amount of gas needed (for gas limit validation)
  * @param t
  */
 const validGasLimit = (t: ITransaction) =>
-  new Tx(t).getBaseFee().gte(t.gasLimit);
+  new Tx(t).getBaseFee().lte(t.gasLimit);
 
 /**
  * @description Check that gas limits and prices are within valid ranges

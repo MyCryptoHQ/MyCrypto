@@ -4,26 +4,40 @@ import {
   AddressField,
   AmountField,
   DataField,
-  GasField
+  GasField,
+  SendEverything,
+  UnitDropDown
 } from './components';
 
-const Fields: React.SFC<any> = () => (
+export const Fields: React.SFC<any> = () => (
   <div>
     <AddressField />
-    <AmountField
-      unit={unit}
-      decimal={decimal}
-      balance={balance}
-      tokens={this.props.tokenBalances
-        .filter(token => !token.balance.eqn(0))
-        .map(token => token.symbol)
-        .sort()}
-      onAmountChange={this.onAmountChange}
-      readOnly={readOnly}
-      onUnitChange={this.onUnitChange}
-    />
-    <GasField />
-    <NonceField />
-    <DataField unit={} />
+
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <div className="input-group">
+          <AmountField />
+          <UnitDropDown />
+        </div>
+        <SendEverything />
+      </div>
+      <div className="col-xs-1" />
+    </div>
+
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <GasField />
+      </div>
+    </div>
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <NonceField />
+      </div>
+    </div>
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <DataField />
+      </div>
+    </div>
   </div>
 );

@@ -24,7 +24,7 @@ type Param =
 
 interface Props {
   params: Param[];
-  withQuery(query: IQueryResults): React.ReactElement<any>;
+  withQuery(query: IQueryResults): React.ReactElement<any> | null;
 }
 
 interface Query {

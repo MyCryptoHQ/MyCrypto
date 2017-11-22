@@ -24,6 +24,8 @@ interface State {
 
 const initialState = { userInput: '' };
 
+const validNumber = (num: number) => isFinite(num) && num > 0;
+
 export class UnitConverter extends Component<Props, State> {
   public state: State = initialState;
 
