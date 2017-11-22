@@ -1,4 +1,4 @@
-// Compile derivation checker using the (mostly) same webpack config
+// Compile freezer using the (mostly) same webpack config
 'use strict';
 const baseConfig = require('./webpack.base');
 
@@ -12,7 +12,7 @@ const derivationConfig = Object.assign({}, baseConfig, {
     loaders: [baseConfig.module.loaders[0]]
   },
 
-  // Point at derivation checker, make sure it's setup to run in node
+  // Point at freezer, make sure it's setup to run in node
   target: 'node',
   entry: {
     'freezer': './common/freezer'
