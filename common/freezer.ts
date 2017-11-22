@@ -11,11 +11,6 @@ const frozenFolderRegEx = /\/\*$/;
 
 const start = async () => {
   try {
-    if (isTravisPushJob()) {
-      console.log('Freezer: Travis push job detected. Exiting.');
-      return;
-    }
-
     const packageStr = await runShCommand(GET_PACKAGE_CMD);
     const diff = await runShCommand(GET_DIFF_CMD);
     const { frozen } = JSON.parse(packageStr);
@@ -159,7 +154,9 @@ const validateConfig = () => {
   }
 };
 
-if (process.argv[2] === '--validate') {
+if (isTravisPushJob()) {
+  console.log('Freezer: Travis push job detected. Exiting.');
+} else if (process.argv[2] === '--validate') {
   validateConfig();
 } else {
   start();
