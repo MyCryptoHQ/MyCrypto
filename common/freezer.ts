@@ -54,6 +54,8 @@ const ensureNewFilesAreNotFrozen = (
 
   if (errors.length) {
     throw new Error(`Frozen files have been modified:\n${errors.join('\n')}`);
+  } else {
+    console.log('Freezer: no frozen files modified.');
   }
 };
 
