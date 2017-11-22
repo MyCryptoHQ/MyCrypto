@@ -18,7 +18,9 @@ const start = async () => {
 
     if (frozen === undefined) {
       console.log(
-        `No config found on package.json in branch ${ORACLE_BRANCH}. Exiting.`
+        `Freezer: No config found in package.json on branch ${
+          ORACLE_BRANCH
+        }. Exiting.`
       );
       return;
     }
@@ -29,7 +31,7 @@ const start = async () => {
 
     ensureNewFilesAreNotFrozen(newFiles, frozenFiles, frozenFolders);
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
     exit();
   }
 };
@@ -116,7 +118,9 @@ const validateConfig = () => {
 
     if (frozen === undefined) {
       console.log(
-        `No config found in package.json on branch ${ORACLE_BRANCH}. Exiting.`
+        `Freezer: No config found in package.json on branch ${
+          ORACLE_BRANCH
+        }. Exiting.`
       );
       return;
     }
@@ -156,7 +160,7 @@ const validateConfig = () => {
       console.log('Freezer: Config is valid.');
     }
   } catch (err) {
-    console.log(`Freezer: Invalid config on package.json:\n${err}`);
+    console.log(`Freezer: Invalid config on package.json:\n${err.message}`);
     exit();
   }
 };
