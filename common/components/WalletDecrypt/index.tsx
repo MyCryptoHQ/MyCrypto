@@ -25,38 +25,14 @@ import Web3Decrypt from './Web3';
 import Help from 'components/ui/Help';
 
 const WALLETS = {
-  'keystore-file': {
-    lid: 'x_Keystore2',
-    component: KeystoreDecrypt,
-    initialParams: {
-      file: '',
-      password: ''
-    },
-    unlock: unlockKeystore,
-    disabled: false,
-    helpLink:
-      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
-  },
-  'private-key': {
-    lid: 'x_PrivKey2',
-    component: PrivateKeyDecrypt,
-    initialParams: {
-      key: '',
-      password: ''
-    },
-    unlock: unlockPrivateKey,
-    disabled: false,
-    helpLink:
-      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
-  },
-  'mnemonic-phrase': {
-    lid: 'x_Mnemonic',
-    component: MnemonicDecrypt,
+  web3: {
+    lid: 'x_MetaMask',
+    component: Web3Decrypt,
     initialParams: {},
-    unlock: unlockMnemonic,
+    unlock: unlockWeb3,
     disabled: false,
     helpLink:
-      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
+      'https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html'
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
@@ -75,14 +51,38 @@ const WALLETS = {
     disabled: false,
     helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
   },
-  web3: {
-    lid: 'x_MetaMask',
-    component: Web3Decrypt,
-    initialParams: {},
-    unlock: unlockWeb3,
+  'keystore-file': {
+    lid: 'x_Keystore2',
+    component: KeystoreDecrypt,
+    initialParams: {
+      file: '',
+      password: ''
+    },
+    unlock: unlockKeystore,
     disabled: false,
     helpLink:
-      'https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html'
+      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
+  },
+  'mnemonic-phrase': {
+    lid: 'x_Mnemonic',
+    component: MnemonicDecrypt,
+    initialParams: {},
+    unlock: unlockMnemonic,
+    disabled: false,
+    helpLink:
+      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
+  },
+  'private-key': {
+    lid: 'x_PrivKey2',
+    component: PrivateKeyDecrypt,
+    initialParams: {
+      key: '',
+      password: ''
+    },
+    unlock: unlockPrivateKey,
+    disabled: false,
+    helpLink:
+      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
   },
   'view-only': {
     lid: 'View with Address Only',
