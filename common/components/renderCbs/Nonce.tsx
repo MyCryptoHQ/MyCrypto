@@ -24,7 +24,9 @@ export const Nonce: React.SFC<Props> = ({ withNonce }) => {
               const noncePromise = Promise.resolve(
                 wallet.inst.getAddressString()
               )
-                .then(nodeLib.getTransactionCount)
+                .then(address => {
+                  return nodeLib.getTransactionCount(address);
+                })
                 .catch(_ => null);
               return withNonce({ nonce: noncePromise });
             }

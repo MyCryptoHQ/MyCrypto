@@ -1,21 +1,31 @@
 import { isValidENSorEtherAddress } from 'libs/validators';
-import { Query, SetTransactionField } from 'components/renderCbs';
-import { SetToFieldAction } from 'actions/transaction';
+import {
+  Query,
+  SetTransactionField,
+  GetTransactionMetaFields,
+  SetTokenToMetaField
+} from 'components/renderCbs';
+import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
 import { AddressInput } from './AddressInput';
 import { Address } from 'libs/units';
 import React from 'react';
 
 interface Props {
   to: string | null;
-  setter(payload: SetToFieldAction['payload']): void;
+  unit: string;
+  toSetter(payload: SetToFieldAction['payload']): void;
+  tokenToSetter(payload: SetTokenToMetaAction['payload']): void;
 }
 
 //TODO: add ens resolving
 class AddressField extends React.Component<Props, {}> {
   public componentDidMount() {
-    const { to, setter } = this.props;
+    // this 'to' parameter can be either token or actual field related
+    const { to, tokenToSetter, toSetter, unit } = this.props;
     if (to) {
-      setter({ raw: to, value: Address(to) });
+      const valueToSet = { raw: to, value: Address(to) };
+      const setter = unit === 'ether' ? toSetter : tokenToSetter;
+      setter(valueToSet);
     }
   }
 
@@ -25,21 +35,39 @@ class AddressField extends React.Component<Props, {}> {
 
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
+    const { toSetter, tokenToSetter, unit } = this.props;
     const validAddress = isValidENSorEtherAddress(value);
-    this.props.setter({
+    const valueToSet = {
       raw: value,
       value: validAddress ? Address(value) : null
-    });
+    };
+    const setter = unit === 'ether' ? toSetter : tokenToSetter;
+    setter(valueToSet);
   };
 }
 
-const DefaultAddressField: React.SFC<{}> = props => (
+const DefaultAddressField: React.SFC<{}> = () => (
   <SetTransactionField
     name="to"
-    withFieldSetter={setter => (
-      <Query
-        params={['to']}
-        withQuery={({ to }) => <AddressField {...{ ...props, to, setter }} />}
+    withFieldSetter={toSetter => (
+      <SetTokenToMetaField
+        withTokenToSetter={tokenToSetter => (
+          <GetTransactionMetaFields
+            withFieldValues={({ unit }) => (
+              <Query
+                params={['to']}
+                withQuery={({ to }) => (
+                  <AddressField
+                    to={to}
+                    toSetter={toSetter}
+                    unit={unit}
+                    tokenToSetter={tokenToSetter}
+                  />
+                )}
+              />
+            )}
+          />
+        )}
       />
     )}
   />

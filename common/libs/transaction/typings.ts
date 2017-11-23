@@ -3,12 +3,26 @@ import BN from 'bn.js';
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {
   to: Address;
+  from?: Address;
   value?: Wei;
   data?: Buffer;
   gasLimit: Wei;
   gasPrice: Wei;
   nonce: BN;
   chainId: number;
+  v;
+  r;
+  s;
+}
+
+export interface IHexStrTransaction {
+  to: string;
+  from?: string;
+  value?: string;
+  data?: string;
+  gasLimit: string;
+  gasPrice: string;
+  nonce: string;
 }
 
 export interface ITokenTransaction {

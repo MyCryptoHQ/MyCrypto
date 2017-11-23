@@ -4,33 +4,61 @@ import {
   SetDecimalMetaAction,
   SetTokenValueMetaAction,
   setDataField,
-  setValueField
+  setValueField,
+  SetTokenToMetaAction,
+  setToField
 } from 'actions/transaction';
 import { ThunkAction } from 'redux-thunk';
 import { AppState } from 'reducers';
-import { toTokenBase, fromTokenBase, TokenValue } from 'libs/units';
+import { toTokenBase, fromTokenBase, Address } from 'libs/units';
 import { bufferToHex } from 'ethereumjs-util';
 import { encodeTransfer } from 'libs/transaction/utils/token';
 import {
   isEtherUnit,
-  clearTokenDataAndValue,
+  clearTokenFields,
   clearEther,
   shouldDecimalUpdate,
   validNumber
 } from 'actions/transaction/actionCreators/helpers';
+import { getTokens } from 'selectors/wallet';
 export {
   TSetDecimalMeta,
   TSetUnitMeta,
   TSetTokenBalance,
+  TSetTokenTo,
   setUnitMeta,
   setDecimalMeta,
   setTokenBalance,
-  createTokenBalanceAction
+  createTokenBalanceAction,
+  setTokenTo,
+  createTokenToAction
 };
 
 type TSetTokenBalance = typeof setTokenBalance;
 type TSetUnitMeta = typeof setUnitMeta;
 type TSetDecimalMeta = typeof setDecimalMeta;
+type TSetTokenTo = typeof setTokenTo;
+
+const createTokenToAction = (
+  payload: SetTokenToMetaAction['payload']
+): SetTokenToMetaAction => ({ type: TypeKeys.TOKEN_TO_META_SET, payload });
+
+const setTokenTo = (
+  payload: SetTokenToMetaAction['payload']
+): ThunkAction<any, AppState, null> => (dispatch, getState) => {
+  const state = getState();
+  const { transaction } = state;
+  const { meta: { tokenValue } } = transaction;
+
+  if (payload.value && tokenValue.value) {
+    // encode token data and dispatch it
+    const data = encodeTransfer(payload.value, tokenValue.value);
+    dispatch(setDataField({ raw: bufferToHex(data), value: data }));
+  }
+
+  // and set the meta 'to' field to what the user wants to send tokens to
+  dispatch(createTokenToAction(payload));
+};
 
 const createTokenBalanceAction = (
   payload: SetTokenValueMetaAction['payload']
@@ -42,11 +70,11 @@ const createTokenBalanceAction = (
 const setTokenBalance = (
   payload: SetTokenValueMetaAction['payload']
 ): ThunkAction<any, AppState, null> => (dispatch, getState) => {
-  const { transaction: { fields: { to } } } = getState();
+  const { transaction: { meta: { tokenTo } } } = getState();
 
-  if (to.value && payload.value) {
+  if (tokenTo.value && payload.value) {
     // we'll need to update the data field for the new balance
-    const data = encodeTransfer(to.value, payload.value);
+    const data = encodeTransfer(tokenTo.value, payload.value);
     dispatch(setDataField({ raw: bufferToHex(data), value: data }));
   }
 
@@ -60,10 +88,6 @@ const createUnitAction = (
   payload
 });
 
-// Only update when switching from or two ether
-const shouldSwapValueFields = (unit1: string, unit2: string) =>
-  (unit1 === 'ether' && unit2 !== 'ether') ||
-  (unit2 === 'ether' && unit1 !== 'ether');
 /**
  * @description When setting the unit, if its a token then handle the contract data, if it changes to eth
  * then clear the data field.
@@ -72,16 +96,24 @@ const shouldSwapValueFields = (unit1: string, unit2: string) =>
 const setUnitMeta = (
   payload: SetUnitMetaAction['payload']
 ): ThunkAction<any, AppState, null> => (dispatch, getState) => {
-  const { transaction } = getState();
-  const {
-    meta: { tokenValue, unit, decimal },
-    fields: { value }
-  } = transaction;
+  const state = getState();
+  const tokens = getTokens(state);
 
-  if (shouldSwapValueFields(unit, payload)) {
+  const { transaction } = state;
+  const {
+    meta: { tokenValue, decimal, unit, tokenTo },
+    fields: { value, to }
+  } = transaction;
+  dispatch(createUnitAction(payload));
+
+  if (!(unit === 'ether' && payload === 'ether')) {
     if (isEtherUnit(payload)) {
+      //set the 'to' field from what the token 'to' field was
+      dispatch(setToField(tokenTo));
+
       // if switching to ether, clear token data and value
-      clearTokenDataAndValue(dispatch);
+      clearTokenFields(dispatch);
+
       // and move the token meta value to ether value
       // we sub in the raw value for the real value again incase it a valid balance
       // for token -> ether as long as it is a valid number
@@ -91,24 +123,38 @@ const setUnitMeta = (
             value: toTokenBase(tokenValue.raw, decimal)
           }
         : tokenValue;
+
       dispatch(setValueField(newValue));
     } else {
-      //clear ether value
-      clearEther(dispatch);
-      // move the ether meta value to token
-      // we sub in the raw value for the real value again incase it a valid balance
-      // for ether -> token as long as it is a valid number
-      const newValue = validNumber(+value.raw)
-        ? {
-            ...value,
-            value: toTokenBase(value.raw, decimal)
-          }
-        : value;
+      // then set the actual field to the token contract address
+      const currentToken = tokens.find(t => t.symbol === payload);
+      dispatch(
+        setToField({
+          raw: '',
+          value: currentToken ? Address(currentToken.address) : null
+        })
+      );
+      // if we're switching from ether to a token, we also need to swap some of the fields into meta fields
+      if (unit === 'ether') {
+        //clear ether value
+        clearEther(dispatch);
+        // move the ether meta value to token
+        // we sub in the raw value for the real value again incase it a valid balance
+        // for ether -> token as long as it is a valid number
+        const newValue = validNumber(+value.raw)
+          ? {
+              ...value,
+              value: toTokenBase(value.raw, decimal)
+            }
+          : value;
+        // set the balance and encode it
+        dispatch(setTokenBalance(newValue));
 
-      dispatch(setTokenBalance(newValue));
+        // set the 'to' field and encode it
+        dispatch(setTokenTo(to));
+      }
     }
   }
-  dispatch(createUnitAction(payload));
 };
 
 const createDecimalAction = (
@@ -136,7 +182,7 @@ const setDecimalMeta = (
     // if we have a balance of both
     // we have a conflict between ether or token balance
     if (isEtherUnit(unit)) {
-      clearTokenDataAndValue(dispatch);
+      clearTokenFields(dispatch);
     } else {
       clearEther(dispatch);
     }

@@ -1,7 +1,8 @@
 import {
   setValueField,
   setDataField,
-  createTokenBalanceAction
+  createTokenBalanceAction,
+  createTokenToAction
 } from 'actions/transaction';
 import { Dispatch } from 'redux';
 import { AppState } from 'reducers';
@@ -9,7 +10,7 @@ export {
   clearEther,
   shouldDecimalUpdate,
   isEtherUnit,
-  clearTokenDataAndValue,
+  clearTokenFields,
   validNumber
 };
 
@@ -21,12 +22,15 @@ const shouldDecimalUpdate = (prevDecimal: number, newDecimal: number) =>
 
 const isEtherUnit = (unit: string) => unit === 'ether';
 
-const clearTokenDataAndValue = (dispatch: Dispatch<AppState>) => {
+const clearTokenFields = (dispatch: Dispatch<AppState>) => {
   // clear any existing data that might have existed for tokens
   dispatch(setDataField({ raw: '', value: null }));
 
   // clear token balances
   dispatch(createTokenBalanceAction({ raw: '', value: null }));
+
+  // clear users 'to' address for tokens
+  dispatch(createTokenToAction({ raw: '', value: null }));
 };
 
 // get rid of this copy paste in 2nd refactor

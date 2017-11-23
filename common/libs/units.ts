@@ -5,7 +5,7 @@ import { stripHexPrefix } from 'libs/values';
 type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
-type Address = Buffer;
+type Address = BN;
 type Nonce = BN;
 type Data = Buffer;
 
@@ -51,7 +51,7 @@ const handleValues = (input: string | BN) => {
   }
 };
 
-const Address = (input: string) => toBuffer(input);
+const Address = (input: string) => handleValues(input);
 
 const Data = (input: string) => toBuffer(input);
 
@@ -114,5 +114,6 @@ export {
   Wei,
   getDecimal,
   UnitKey,
-  Nonce
+  Nonce,
+  handleValues
 };

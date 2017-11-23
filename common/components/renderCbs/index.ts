@@ -13,3 +13,5 @@ export * from './Transaction';
 export * from './TokenQuery';
 export * from './CurrentBalance';
 export * from './CurrentValue';
+export * from './EstimateGas';
+export * from './CurrentTo';

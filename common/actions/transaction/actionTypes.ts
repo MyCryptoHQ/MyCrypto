@@ -1,6 +1,10 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { Wei, Nonce, Address, Data, TokenValue } from 'libs/units';
+import { ITransaction } from 'libs/transaction';
 export {
+  EstimateGasRequestedAction,
+  EstimateGasSucceededAction,
+  EstimateGasFailedAction,
   SetGasLimitFieldAction,
   SetDataFieldAction,
   SetToFieldAction,
@@ -8,14 +12,24 @@ export {
   SetValueFieldAction,
   SetUnitMetaAction,
   SetDecimalMetaAction,
+  SetTokenToMetaAction,
   SetTokenValueMetaAction,
   ResetAction,
   FieldAction,
   TransactionAction,
-  MetaAction
+  MetaAction,
+  NetworkAction
 };
 
 /*Meta Actions*/
+
+interface SetTokenToMetaAction {
+  type: TypeKeys.TOKEN_TO_META_SET;
+  payload: {
+    raw: string;
+    value: Address | null;
+  };
+}
 
 interface SetDecimalMetaAction {
   type: TypeKeys.DECIMAL_META_SET;
@@ -34,7 +48,19 @@ interface SetTokenValueMetaAction {
     value: TokenValue | null;
   };
 }
+/* Network request actions */
+interface EstimateGasRequestedAction {
+  type: TypeKeys.ESTIMATE_GAS_REQUESTED;
+  payload: ITransaction;
+}
 
+interface EstimateGasFailedAction {
+  type: TypeKeys.ESTIMATE_GAS_FAILED;
+}
+
+interface EstimateGasSucceededAction {
+  type: TypeKeys.ESTIMATE_GAS_SUCCEEDED;
+}
 /*Field Actions*/
 
 // We can compute field validity by checking if the value is null
@@ -83,10 +109,16 @@ interface ResetAction {
   type: TypeKeys.RESET;
 }
 
+type NetworkAction =
+  | EstimateGasFailedAction
+  | EstimateGasRequestedAction
+  | EstimateGasSucceededAction;
+
 type MetaAction =
   | SetUnitMetaAction
   | SetDecimalMetaAction
-  | SetTokenValueMetaAction;
+  | SetTokenValueMetaAction
+  | SetTokenToMetaAction;
 
 type FieldAction =
   | SetGasLimitFieldAction
@@ -95,4 +127,4 @@ type FieldAction =
   | SetNonceFieldAction
   | SetValueFieldAction;
 
-type TransactionAction = ResetAction | FieldAction | MetaAction;
+type TransactionAction = ResetAction | FieldAction | MetaAction | NetworkAction;

@@ -1,4 +1,4 @@
-import Contract from 'libs/contract';
+import Contract from 'libs/contracts';
 
 describe('Contract', () => {
   // From the ABI docs

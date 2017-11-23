@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   GasQuery,
   Transaction,
+  EstimateGas,
   SetTransactionField
 } from 'components/renderCbs';
 import { Wei } from 'libs/units';
@@ -15,6 +16,7 @@ interface Props {
   gasLimit: string | null;
   transaction: EthTx | null;
   setter(payload: SetGasLimitFieldAction['payload']): void;
+  estimator(transaction: EthTx): void;
 }
 
 class GasLimitField extends Component<Props, {}> {
@@ -28,16 +30,15 @@ class GasLimitField extends Component<Props, {}> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    const { transaction: nextT } = nextProps;
-    const { transaction: prevT, setter } = this.props;
+    const { transaction: nextT, estimator } = nextProps;
+    const { transaction: prevT } = this.props;
 
     if (!nextT) {
       return;
     }
 
     if (this.shouldEstimateGas(nextT, prevT)) {
-      const gasLimit = nextT.getBaseFee();
-      setter({ raw: gasLimit.toString(), value: gasLimit });
+      estimator(nextT);
     }
   }
 
@@ -45,11 +46,11 @@ class GasLimitField extends Component<Props, {}> {
     return <GasInput onChange={this.setGas} />;
   }
 
-  private setGas(ev: React.FormEvent<HTMLInputElement>) {
+  private setGas = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
     const validGasLimit = isFinite(parseFloat(value)) && parseFloat(value) > 0;
     this.props.setter({ raw: value, value: validGasLimit ? Wei(value) : null });
-  }
+  };
 
   private shouldEstimateGas(nextT: EthTx, prevT: EthTx | null) {
     /*
@@ -73,10 +74,15 @@ const DefaultGasField: React.SFC<{}> = () => (
           <SetTransactionField
             name="gasLimit"
             withFieldSetter={setter => (
-              <GasLimitField
-                gasLimit={gasLimit}
-                transaction={transaction}
-                setter={setter}
+              <EstimateGas
+                withEstimate={({ estimate }) => (
+                  <GasLimitField
+                    gasLimit={gasLimit}
+                    transaction={transaction}
+                    setter={setter}
+                    estimator={estimate}
+                  />
+                )}
               />
             )}
           />

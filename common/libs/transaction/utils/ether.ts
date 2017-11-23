@@ -1,17 +1,50 @@
 import Tx from 'ethereumjs-tx';
-import { bufferToHex } from 'ethereumjs-util';
+import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
-import { ITransaction } from '../typings';
+import { ITransaction, IHexStrTransaction } from '../typings';
+import { sanitizeHex } from 'libs/values';
+import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
+
 export {
   generateTx,
   validAddress,
   validGasLimit,
   enoughBalance,
   gasParamsInRange,
-  validateTx
+  validateTx,
+  getTransactionFields
+};
+
+// Get useable fields from an EthTx object.
+const getTransactionFields = (
+  t: Tx,
+  withSigParams: boolean = false
+): IHexStrTransaction => {
+  // For some crazy reason, toJSON spits out an array, not keyed values.
+  const { data, gasLimit, gasPrice, to, nonce, value } = t;
+
+  /*
+  let address 
+  try {
+    address = sanitizeHex(t.getSenderAddress().toString('hex'))
+  }
+  catch {
+    address = null
+  }*/
+  return {
+    // No value comes back as '0x', but most things expect '0x00'
+    value: hexEncodeQuantity(value),
+    data: hexEncodeData(data),
+    // To address is unchecksummed, which could cause mismatches in comparisons
+    to: hexEncodeData(to),
+    // Everything else is as-is
+    nonce: hexEncodeQuantity(nonce),
+    gasPrice: hexEncodeQuantity(gasPrice),
+    gasLimit: hexEncodeQuantity(gasLimit)
+  };
 };
 
 /**

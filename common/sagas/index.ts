@@ -8,8 +8,10 @@ import {
 } from './swap/orders';
 import { getBityRatesSaga } from './swap/rates';
 import wallet from './wallet';
+import { estimateGas } from './gas';
 
 export default {
+  estimateGas,
   bityTimeRemaining,
   configSaga,
   postBityOrderSaga,

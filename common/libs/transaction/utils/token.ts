@@ -1,5 +1,5 @@
 import { bufferToHex, toBuffer } from 'ethereumjs-util';
-import { Wei, TokenValue } from 'libs/units';
+import { Wei, TokenValue, Address } from 'libs/units';
 import { ITransaction, ITokenTransaction } from '../typings';
 import Tx from 'ethereumjs-tx';
 
@@ -38,5 +38,5 @@ const makeTxObj = (t: ITokenTransaction): ITransaction => {
   return { ...rest, data, value };
 };
 
-const encodeTransfer = (to: Buffer, value: TokenValue) =>
+const encodeTransfer = (to: Address, value: TokenValue) =>
   toBuffer(ERC20.transfer.encodeInput({ _to: to, _value: value }));
