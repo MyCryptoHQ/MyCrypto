@@ -39,9 +39,6 @@ class AmountFieldClass extends Component<Props, {}> {
     this.validateBalances(this.props);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
-    this.validateBalances(nextProps);
-  }
   public render() {
     return <AmountInput onChange={this.setValue} />;
   }
@@ -63,10 +60,10 @@ class AmountFieldClass extends Component<Props, {}> {
     }
   };
   private setValue = (ev: React.FormEvent<HTMLInputElement>) => {
+    const { balance, decimal } = this.props;
     const { value } = ev.currentTarget;
-    const num = +value;
 
-    const valid = validNumber(num);
+    const valid = validNumber(value, balance, decimal);
 
     if (!valid) {
       this.props.setter({ raw: value, value: null });
@@ -77,7 +74,18 @@ class AmountFieldClass extends Component<Props, {}> {
   };
 }
 
-const validNumber = (num: number) => isFinite(num) && num > 0;
+const validNumber = (
+  numStr: string,
+  balance: Wei | TokenValue | null | undefined,
+  decimal: number
+) => {
+  const validNum = isFinite(+numStr) && +numStr > 0;
+  if (balance && validNum) {
+    const validBalance = toTokenBase(numStr, decimal).lte(balance);
+    return validBalance;
+  }
+  return false;
+};
 
 export const AmountField: React.SFC<{}> = () => (
   <Query
