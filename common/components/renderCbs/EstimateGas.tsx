@@ -24,7 +24,9 @@ class EstimateGasClass extends Component<Props, {}> {
   }
   private estimate = (transaction: EthTx): void => {
     // dont need gasLimit
-    const { gasLimit, gasPrice, ...rest } = getTransactionFields(transaction);
+    const { gasLimit, gasPrice, nonce, ...rest } = getTransactionFields(
+      transaction
+    );
     this.props.estimateGasRequested(rest);
   };
 }
