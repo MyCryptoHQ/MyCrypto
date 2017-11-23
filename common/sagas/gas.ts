@@ -1,5 +1,12 @@
-import { SagaIterator, buffers } from 'redux-saga';
-import { apply, put, select, take, actionChannel } from 'redux-saga/effects';
+import { SagaIterator, buffers, delay } from 'redux-saga';
+import {
+  apply,
+  put,
+  select,
+  take,
+  actionChannel,
+  call
+} from 'redux-saga/effects';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
@@ -21,7 +28,8 @@ export function* estimateGas(): SagaIterator {
 
   while (true) {
     const { payload }: EstimateGasRequestedAction = yield take(requestChan);
-
+    // debounce 500 ms
+    yield call(delay, 500);
     const node: INode = yield select(getNodeLib);
     const walletInst: IWallet = yield select(getWalletInst);
     try {
