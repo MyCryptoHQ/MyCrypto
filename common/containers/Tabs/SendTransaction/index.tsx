@@ -1,16 +1,17 @@
 // COMPONENTS
 import Spinner from 'components/ui/Spinner';
 import TabSection from 'containers/TabSection';
-import { BalanceSidebar } from 'components';
-import { UnlockHeader } from 'components/ui';
-import { Fields, ConfirmationModal, CustomMessage } from './components';
+import {
+  Fields,
+  ConfirmationModal,
+  UnavailableWallets,
+  SideBar,
+  OfflineAwareUnlockHeader
+} from './components';
 
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import NavigationPrompt from './components/NavigationPrompt';
 // LIBS
-
-// LIBS
-import { Web3Wallet } from 'libs/wallet';
 
 import React from 'react';
 // REDUX
@@ -18,16 +19,11 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { showNotification } from 'actions/notifications';
 import { broadcastTx, resetWallet } from 'actions/wallet';
-import { pollOfflineStatus as dPollOfflineStatus } from 'actions/config';
 // SELECTORS
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
-import translate from 'translations';
 // UTILS
 //import { formatGasLimit } from 'utils/formatters';
-
-// MISC
-//import customMessages from './messages';
 
 import { initialState, Props, State } from './typings';
 
@@ -61,65 +57,28 @@ export class SendTransaction extends React.Component<Props, State> {
 
   public componentDidUpdate(prevProps: Props) {
     this.handleBroadcastTransactionOnUpdate();
-
     this.handleWalletStateOnUpdate(prevProps);
   }
 
   public render() {
     const unlocked = !!this.props.wallet;
     const { showTxConfirm, transaction } = this.state;
-    const { offline, forceOffline } = this.props;
-    //   const customMessage = customMessages.find(m => m.to === to);
 
-    const isWeb3Wallet = this.props.wallet instanceof Web3Wallet;
     return (
       <TabSection>
         <section className="Tab-content">
-          <UnlockHeader
-            title={
-              <div>
-                {translate('NAV_SendEther')}
-                {offline || forceOffline ? (
-                  <span style={{ color: 'red' }}> (Offline)</span>
-                ) : null}
-              </div>
-            }
-          />
+          <OfflineAwareUnlockHeader />
           <NavigationPrompt
             when={unlocked}
             onConfirm={this.props.resetWallet}
           />
           <div className="row">
             {/* Send Form */}
-            {unlocked &&
-              !(offline || (forceOffline && isWeb3Wallet)) && (
-                <main className="col-sm-8">
-                  <div className="Tab-content-pane">
-                    {' '}
-                    <Fields />
-                  </div>
-                </main>
-              )}
-
-            {unlocked &&
-              (offline || (forceOffline && isWeb3Wallet)) && (
-                <main className="col-sm-8">
-                  <div className="Tab-content-pane">
-                    <h4>Sorry...</h4>
-                    <p>
-                      MetaMask / Mist wallets are not available in offline mode.
-                    </p>
-                  </div>
-                </main>
-              )}
-
-            {/* Sidebar */}
-            {unlocked && (
-              <section className="col-sm-4">
-                <BalanceSidebar />
-              </section>
-            )}
+            <Fields />
+            <UnavailableWallets />
+            <SideBar />
           </div>
+
           {transaction &&
             showTxConfirm && (
               <ConfirmationModal
@@ -202,19 +161,14 @@ export class SendTransaction extends React.Component<Props, State> {
 function mapStateToProps(state: AppState) {
   return {
     wallet: state.wallet.inst,
-
     nodeLib: getNodeLib(state),
     network: getNetworkConfig(state),
-
-    transactions: state.wallet.transactions,
-    offline: state.config.offline,
-    forceOffline: state.config.forceOffline
+    transactions: state.wallet.transactions
   };
 }
 
 export default connect(mapStateToProps, {
   showNotification,
   broadcastTx,
-  resetWallet,
-  pollOfflineStatus: dPollOfflineStatus
+  resetWallet
 })(SendTransaction);
