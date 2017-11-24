@@ -1,18 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import { Web3Wallet } from 'libs/wallet';
 
 type IWallet = AppState['wallet'];
 
 interface Props {
   wallet: IWallet;
-  withWallet({ wallet }: { wallet: IWallet }): React.ReactElement<any> | null;
+  withWallet({
+    wallet,
+    isWeb3Wallet
+  }: {
+    wallet: IWallet;
+    isWeb3Wallet: boolean;
+  }): React.ReactElement<any> | null;
 }
 
 class WalletClass extends React.Component<Props, {}> {
   public render() {
     const { wallet, withWallet } = this.props;
-    return withWallet({ wallet });
+    const isWeb3Wallet = wallet.inst instanceof Web3Wallet;
+
+    return withWallet({ wallet, isWeb3Wallet });
   }
 }
 
