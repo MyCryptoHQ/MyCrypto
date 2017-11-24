@@ -1,10 +1,14 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { Wei, Nonce, Address, Data, TokenValue } from 'libs/units';
 import { ITransaction } from 'libs/transaction';
+import EthTx from 'ethereumjs-tx';
 export {
   EstimateGasRequestedAction,
   EstimateGasSucceededAction,
   EstimateGasFailedAction,
+  SignTransactionRequestedAction,
+  SignTransactionSucceededAction,
+  SignTransactionFailedAction,
   SetGasLimitFieldAction,
   SetDataFieldAction,
   SetToFieldAction,
@@ -18,7 +22,8 @@ export {
   FieldAction,
   TransactionAction,
   MetaAction,
-  NetworkAction
+  NetworkAction,
+  SignAction
 };
 
 /*Meta Actions*/
@@ -48,19 +53,35 @@ interface SetTokenValueMetaAction {
     value: TokenValue | null;
   };
 }
-/* Network request actions */
+/* Network actions */
 interface EstimateGasRequestedAction {
   type: TypeKeys.ESTIMATE_GAS_REQUESTED;
   payload: ITransaction;
+}
+
+interface EstimateGasSucceededAction {
+  type: TypeKeys.ESTIMATE_GAS_SUCCEEDED;
 }
 
 interface EstimateGasFailedAction {
   type: TypeKeys.ESTIMATE_GAS_FAILED;
 }
 
-interface EstimateGasSucceededAction {
-  type: TypeKeys.ESTIMATE_GAS_SUCCEEDED;
+/* Signing / Async actions */
+
+interface SignTransactionRequestedAction {
+  type: TypeKeys.SIGN_TRANSACTION_REQUESTED;
+  payload: EthTx;
 }
+interface SignTransactionSucceededAction {
+  type: TypeKeys.SIGN_TRANSACTION_SUCCEEDED;
+  payload: string;
+}
+interface SignTransactionFailedAction {
+  type: TypeKeys.SIGN_TRANSACTION_FAILED;
+  payload: string;
+}
+
 /*Field Actions*/
 
 // We can compute field validity by checking if the value is null
@@ -127,4 +148,14 @@ type FieldAction =
   | SetNonceFieldAction
   | SetValueFieldAction;
 
-type TransactionAction = ResetAction | FieldAction | MetaAction | NetworkAction;
+type SignAction =
+  | SignTransactionRequestedAction
+  | SignTransactionSucceededAction
+  | SignTransactionFailedAction;
+
+type TransactionAction =
+  | ResetAction
+  | FieldAction
+  | MetaAction
+  | NetworkAction
+  | SignAction;
