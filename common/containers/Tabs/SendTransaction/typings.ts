@@ -4,7 +4,6 @@ import { NetworkConfig } from 'config/data';
 import { BroadcastTransactionStatus } from 'libs/transaction';
 import { TShowNotification } from 'actions/notifications';
 import { TBroadcastTx, TResetWallet } from 'actions/wallet';
-import { TPollOfflineStatus } from 'actions/config';
 
 export interface State {
   hasQueryString: boolean;
@@ -23,10 +22,6 @@ export interface Props {
   showNotification: TShowNotification;
   broadcastTx: TBroadcastTx;
   resetWallet: TResetWallet;
-  offline: boolean;
-  forceOffline: boolean;
-  pollOfflineStatus: TPollOfflineStatus;
-  location: { search: string };
 }
 
 export const initialState: State = {
