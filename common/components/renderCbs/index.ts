@@ -15,3 +15,5 @@ export * from './CurrentBalance';
 export * from './CurrentValue';
 export * from './EstimateGas';
 export * from './CurrentTo';
+export * from './OnlyUnlocked';
+export * from './WhenQueryExists';
