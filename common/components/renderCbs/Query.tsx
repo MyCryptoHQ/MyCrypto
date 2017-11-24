@@ -13,7 +13,7 @@ interface IQueryResults {
   [key: string]: string | null;
 }
 
-type Param =
+export type Param =
   | 'to'
   | 'data'
   | 'readOnly'
