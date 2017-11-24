@@ -365,8 +365,7 @@ export class SendTransaction extends React.Component<Props, State> {
                             <div>
                               <p>
                                 <b>
-                                  Confirm the transaction on your hardware
-                                  wallet
+                                  Confirm transaction on hardware wallet
                                 </b>
                               </p>
                               <Spinner size="x2" />
