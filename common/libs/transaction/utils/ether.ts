@@ -15,6 +15,7 @@ export {
   enoughBalance,
   gasParamsInRange,
   validateTx,
+  transaction,
   getTransactionFields
 };
 
@@ -52,14 +53,18 @@ const getTransactionFields = (
  * @param t
  */
 const enoughBalance = (t: Tx | ITransaction, accountBalance: Wei) =>
-  new Tx(t).getUpfrontCost().lte(accountBalance);
+  transaction(t)
+    .getUpfrontCost()
+    .lte(accountBalance);
 
 /**
  * @description Return the minimum amount of gas needed (for gas limit validation)
  * @param t
  */
 const validGasLimit = (t: ITransaction) =>
-  new Tx(t).getBaseFee().lte(t.gasLimit);
+  transaction(t)
+    .getBaseFee()
+    .lte(t.gasLimit);
 
 /**
  * @description Check that gas limits and prices are within valid ranges
@@ -85,9 +90,11 @@ const validAddress = (t: ITransaction) => {
   }
 };
 
+const transaction = (t: ITransaction | IHexStrTransaction) => new Tx(t);
+
 //TODO: check that addresses are always checksummed
 const signTx = async (t: ITransaction, w: IWallet) => {
-  const tx = new Tx(t);
+  const tx = transaction(t);
   const signedTx = await w.signRawTransaction(tx); //returns a serialized, signed tx
   return signedTx; //instead of returning the rawTx with it, we can derive it from the signedTx anyway
 };
