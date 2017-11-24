@@ -19,6 +19,7 @@ import {
 } from 'actions/transaction';
 import EthTx from 'ethereumjs-tx';
 import { IWallet } from 'libs/wallet';
+import { transaction } from 'libs/transaction';
 
 export function* estimateGas(): SagaIterator {
   const requestChan = yield actionChannel(
@@ -43,7 +44,8 @@ export function* estimateGas(): SagaIterator {
     } catch {
       yield put(estimateGasFailed());
       // fallback for estimating locally
-      const gasLimit = new EthTx(payload).getBaseFee();
+      const tx = yield call(transaction, payload);
+      const gasLimit = yield apply(tx, tx.getBaseFee);
       yield put(
         setGasLimitField({ raw: gasLimit.toString(), value: gasLimit })
       );
