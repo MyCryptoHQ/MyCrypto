@@ -9,7 +9,7 @@ import { sanitizeHex } from 'libs/values';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
 
 export {
-  generateTx,
+  signTx,
   validAddress,
   validGasLimit,
   enoughBalance,
@@ -86,7 +86,7 @@ const validAddress = (t: ITransaction) => {
 };
 
 //TODO: check that addresses are always checksummed
-const generateTx = async (t: ITransaction, w: IWallet) => {
+const signTx = async (t: ITransaction, w: IWallet) => {
   const tx = new Tx(t);
   const signedTx = await w.signRawTransaction(tx); //returns a serialized, signed tx
   return signedTx; //instead of returning the rawTx with it, we can derive it from the signedTx anyway

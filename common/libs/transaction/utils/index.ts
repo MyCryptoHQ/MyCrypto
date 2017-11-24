@@ -24,6 +24,6 @@ const transaction = async (
   isOffline: boolean
 ) => {
   eth.validateTx(t, accountBalance, isOffline);
-  const signedT = await eth.generateTx(t, w);
+  const signedT = await eth.signTx(t, w);
   return signedT;
 };
