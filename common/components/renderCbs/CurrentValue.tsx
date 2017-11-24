@@ -3,12 +3,13 @@ import { GetTransactionMetaFields } from './MetaFields';
 import { GetTransactionFields } from './TransactionFields';
 import { TokenValue, Wei } from 'libs/units';
 
+export interface ICurrentValue {
+  raw: string;
+  value: TokenValue | Wei | null;
+}
+
 interface Props {
-  withValue({
-    value
-  }: {
-    value: { raw: string; value: TokenValue | Wei | null };
-  });
+  withValue({ value }: { value: ICurrentValue });
 }
 // Grabs the current unit, then deduces to send the component an ether or token based value
 export const CurrentValue: React.SFC<Props> = ({ withValue }) => (
