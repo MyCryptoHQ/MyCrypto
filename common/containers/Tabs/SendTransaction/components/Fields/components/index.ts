@@ -5,3 +5,5 @@ export * from './NonceField';
 export * from './AmountField';
 export * from './SendEverything';
 export * from './UnitDropDown';
+export * from './CurrentCustomMessage';
+export * from './GenerateTransaction';
