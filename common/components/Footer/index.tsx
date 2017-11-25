@@ -6,95 +6,32 @@ import './index.scss';
 import PreFooter from './PreFooter';
 import Modal, { IButton } from 'components/ui/Modal';
 
-const LINKS_LEFT = [
-  {
-    text: 'Knowledge Base',
-    href: 'https://myetherwallet.groovehq.com/help_center'
-  },
-  {
-    text: 'Helpers & ENS Debugging',
-    href: 'https://www.myetherwallet.com/helpers.html'
-  },
-  {
-    text: 'Sign Message',
-    href: 'https://www.myetherwallet.com/signmsg.html'
-  }
-];
+const AffiliateTag = ({ link, text }) => {
+  return (
+    <li className="Footer-affiliate-tag" key={link}>
+      <a href={link} target="_blank">
+        {text}
+      </a>
+    </li>
+  );
+};
 
-const LINKS_SUPPORT = [
-  {
-    href: bityReferralURL,
-    text: 'Swap ETH/BTC/EUR/CHF via Bity.com'
-  },
-  {
-    href: 'https://www.ledgerwallet.com/r/fa4b?path=/products/',
-    text: 'Buy a Ledger Nano S'
-  },
-  {
-    href: 'https://trezor.io/?a=myetherwallet.com',
-    text: 'Buy a TREZOR'
-  },
-  {
-    href: 'https://digitalbitbox.com/?ref=mew',
-    text: 'Buy a Digital Bitbox'
-  }
-];
-
-const LINKS_RIGHT = [
-  {
-    href: 'https://www.MyEtherWallet.com',
-    text: 'MyEtherWallet.com'
-  },
-  {
-    href: 'https://github.com/MyEtherWallet/MyEtherWallet',
-    text: 'Github: Current Site'
-  },
-  {
-    href: 'https://github.com/MyEtherWallet',
-    text: 'Github: MEW Org'
-  },
-  {
-    href: 'https://github.com/MyEtherWallet/MyEtherWallet/releases/latest',
-    text: 'Github: Latest Release'
-  },
-  {
-    href:
-      'https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en',
-    text: 'MyEtherWallet CX'
-  },
-  {
-    href:
-      'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-    text: 'Anti-Phishing CX'
-  }
-];
-
-const LINKS_SOCIAL = [
-  {
-    href: 'https://myetherwallet.herokuapp.com/',
-    text: 'Slack'
-  },
-  {
-    href: 'https://www.reddit.com/r/MyEtherWallet/',
-    text: 'Reddit'
-  },
-  {
-    href: 'https://twitter.com/myetherwallet',
-    text: 'Twitter'
-  },
-  {
-    href: 'https://www.facebook.com/MyEtherWallet/',
-    text: 'Facebook'
-  },
-  {
-    href: 'https://medium.com/@myetherwallet',
-    text: 'Medium'
-  }
-];
+const SocialMediaLink = ({ link, text }) => {
+  return (
+    <a
+      className="Footer-social-media-link"
+      key={link}
+      href={link}
+      target="_blank"
+    >
+      <i className={`sm-icon sm-logo-${text} sm-24px`} />
+    </a>
+  );
+};
 
 interface Props {
   latestBlock: string;
-};
+}
 
 interface State {
   isOpen: boolean;
@@ -122,7 +59,7 @@ export default class Footer extends React.Component<Props, State> {
       <div>
         <PreFooter />
         <footer className="Footer" role="contentinfo" aria-label="footer">
-          <div className="Footer-column Footer-about">
+          <div className="Footer-about">
             <p aria-hidden="true">
               <a href="/">
                 <img
@@ -134,20 +71,21 @@ export default class Footer extends React.Component<Props, State> {
                 />
               </a>
             </p>
-            <p className="Footer-about-text">
-              <span>{translate('FOOTER_1')}</span>
-              <span>{translate('FOOTER_1b')}</span>
-            </p>
-
-            {LINKS_LEFT.map(link => {
-              return (
-                <p key={link.href}>
-                  <a href={link.href} target="_blank" rel="noopener">
-                    {link.text}
-                  </a>
-                </p>
-              );
-            })}
+            <p className="Footer-about-text">{translate('FOOTER_1')}</p>
+            <a
+              href="https://myetherwallet.groovehq.com/help_center"
+              target="_blank"
+              rel="noopener"
+            >
+              Knowledge Base
+            </a>
+            <a
+              href="https://www.myetherwallet.com/helpers.html"
+              target="_blank"
+              rel="noopener"
+            >
+              Helpers & ENS Debugging
+            </a>
 
             <button className="Footer-modal-button" onClick={this.openModal}>
               Disclaimer
@@ -220,36 +158,49 @@ export default class Footer extends React.Component<Props, State> {
                 OTHER DEALINGS IN THE SOFTWARE.
               </b>
             </Modal>
-
+            <p>Latest Block#: {this.props.latestBlock}</p>
             <p>&copy; 2017 MyEtherWallet, LLC</p>
           </div>
 
-          <div className="Footer-column Footer-info">
+          <div className="Footer-info">
             <h5>
               <i aria-hidden="true">👫</i>
               You can support us by supporting our blockchain-family.
             </h5>
-            <p>Consider using our affiliate links to...</p>
-            <ul>
-              {LINKS_SUPPORT.map(link => {
-                return (
-                  <li key={link.href}>
-                    <a href={link.href} target="_blank">
-                      {link.text}
-                    </a>
-                  </li>
-                );
-              })}
+            <p>Consider using our affiliate links to</p>
+            <ul className="Footer-affiliate-wrap">
+              <AffiliateTag
+                link={bityReferralURL}
+                text="Swap ETH/BTC/EUR/CHF via Bity.com"
+              />
             </ul>
-
+            <p>Buy a</p>
+            <ul className="Footer-affiliate-wrap">
+              <AffiliateTag
+                link="https://www.ledgerwallet.com/r/fa4b?path=/products/"
+                text="Ledger Nano S"
+              />
+              <AffiliateTag
+                link="https://trezor.io/?a=myetherwallet.com"
+                text="TREZOR"
+              />
+              <AffiliateTag
+                link="https://digitalbitbox.com/?ref=mew"
+                text="Digital Bitbox"
+              />
+            </ul>
             <h5>
               <i aria-hidden="true">💝</i>
               {translate('FOOTER_2')}
             </h5>
             <ul>
               <li>
-                {' '}
-                ETH: <span className="mono wrap">{donationAddressMap.ETH}</span>
+                ETH: mewtopia.eth{' '}
+                <span className="mono wrap">
+                  <a href="https://etherscan.io/address/0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8">
+                    {donationAddressMap.ETH}
+                  </a>
+                </span>
               </li>
               <li>
                 {' '}
@@ -258,29 +209,70 @@ export default class Footer extends React.Component<Props, State> {
             </ul>
           </div>
 
-          <div className="Footer-column Footer-links">
-            {LINKS_RIGHT.map(link => {
-              return (
-                <p key={link.href}>
-                  <a href={link.href} target="_blank">
-                    {link.text}
-                  </a>
-                </p>
-              );
-            })}
-            <p>
-              {LINKS_SOCIAL.map((link, i) => {
-                return (
-                  <span key={link.href}>
-                    <a key={link.href} href={link.href} target="_blank">
-                      {link.text}
-                    </a>
-                    {i !== LINKS_SOCIAL.length - 1 && ' · '}
-                  </span>
-                );
-              })}
-            </p>
-            <p>Latest Block#: {this.props.latestBlock}</p>
+          <div className="Footer-links">
+            <a
+              href="https://www.myetherwallet.com/signmsg.html"
+              target="_blank"
+            >
+              Sign Message
+            </a>
+            <a
+              href="https://github.com/MyEtherWallet/MyEtherWallet"
+              target="_blank"
+            >
+              Github: Current Site
+            </a>
+            <a href="https://github.com/MyEtherWallet'" target="_blank">
+              Github: MEW Org
+            </a>
+            <a
+              href="https://github.com/MyEtherWallet/MyEtherWallet/releases/latest"
+              target="_blank"
+            >
+              Github: Latest Release
+            </a>
+            <a
+              href="https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en"
+              target="_blank"
+            >
+              MyEtherWallet Extension
+            </a>
+            <a
+              href="https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn"
+              target="_blank"
+            >
+              Anti-Phishing Extension
+            </a>
+            <div className="Footer-social-media-wrap">
+              <SocialMediaLink
+                link="https://myetherwallet.herokuapp.com/"
+                text="slack"
+              />
+              <SocialMediaLink
+                link="https://www.reddit.com/r/MyEtherWallet/"
+                text="reddit"
+              />
+              <SocialMediaLink
+                link="https://twitter.com/myetherwallet"
+                text="twitter"
+              />
+              <SocialMediaLink
+                link="https://www.facebook.com/MyEtherWallet"
+                text="facebook"
+              />
+              <SocialMediaLink
+                link="https://medium.com/@myetherwallet"
+                text="medium"
+              />
+              <SocialMediaLink
+                link="https://www.linkedin.com/company/myetherwallet/"
+                text="linkedin"
+              />
+              <SocialMediaLink
+                link="https://github.com/MyEtherWallet"
+                text="github"
+              />
+            </div>
           </div>
         </footer>
       </div>
