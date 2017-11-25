@@ -5,7 +5,7 @@ export interface EtherscanReqBase {
 
 export interface SendRawTxRequest extends EtherscanReqBase {
   module: 'proxy';
-  method: 'eth_sendRawTransaction';
+  action: 'eth_sendRawTransaction';
   hex: string;
 }
 
