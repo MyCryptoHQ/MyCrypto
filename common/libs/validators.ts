@@ -190,15 +190,49 @@ export const schema = {
     properties: {
       jsonrpc: { type: 'string' },
       id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
-      result: { type: 'string' }
+      result: { type: 'string' },
+      status: { type: 'string' },
+      message: { type: 'string', maxLength: 2 }
     }
   }
 };
 
-export const isValidGetBalance = (response: JsonRpcResponse) => {
-  const validateResult = v.validate(response, schema.RpcNode);
-  if (!validateResult.valid) {
-    throw new Error('Invalid Balance Data Shape.');
+function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
+  return v.validate(response, schemaFormat).valid;
+}
+
+function formatErrors(response: JsonRpcResponse, apiType: string) {
+  if (response.error) {
+    return `${response.error.message} ${response.error.data}`;
+  }
+  return `Invalid ${apiType} Error`;
+}
+
+const isValidEthCall = (response: JsonRpcResponse, schemaType) => apiName => {
+  console.log(apiName, response, isValidResult(response, schemaType));
+  if (!isValidResult(response, schemaType)) {
+    throw new Error(formatErrors(response, apiName));
   }
   return response;
 };
+
+export const isValidGetBalance = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Get Balance');
+
+export const isValidEstimateGas = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Estimate Gas');
+
+export const isValidCallRequest = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Call Request');
+
+export const isValidTokenBalance = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Token Balance');
+
+export const isValidTransactionCount = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Transaction Count');
+
+export const isValidCurrentBlock = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Current Block');
+
+export const isValidRawTxApi = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Raw Tx');

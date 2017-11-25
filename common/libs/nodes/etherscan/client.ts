@@ -6,12 +6,15 @@ export default class EtherscanClient extends RPCClient {
   public encodeRequest(request: EtherscanRequest): string {
     const encoded = new URLSearchParams();
     Object.keys(request).forEach(key => {
-      encoded.set(key, request[key]);
+      if (request[key]) {
+        encoded.set(key, request[key]);
+      }
     });
     return encoded.toString();
   }
 
   public call = (request: EtherscanRequest): Promise<JsonRpcResponse> =>
+    console.log(request) ||
     fetch(this.endpoint, {
       method: 'POST',
       headers: {

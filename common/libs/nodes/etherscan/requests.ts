@@ -21,12 +21,13 @@ export default class EtherscanRequests extends RPCRequests {
   }
 
   public estimateGas(transaction): EstimateGasRequest {
+    console.log('tx', transaction);
     return {
       module: 'proxy',
-      method: 'eth_estimateGas',
+      action: 'eth_estimateGas',
       to: transaction.to,
       value: transaction.value,
-      data: transaction.data,
+      data: transaction.string,
       from: transaction.from
     };
   }
