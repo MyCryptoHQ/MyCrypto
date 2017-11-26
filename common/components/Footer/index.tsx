@@ -9,7 +9,7 @@ import Modal, { IButton } from 'components/ui/Modal';
 const AffiliateTag = ({ link, text }) => {
   return (
     <li className="Footer-affiliate-tag" key={link}>
-      <a href={link} target="_blank">
+      <a href={link} target="_blank" rel="noopener noreferrer">
         {text}
       </a>
     </li>
@@ -23,11 +23,84 @@ const SocialMediaLink = ({ link, text }) => {
       key={link}
       href={link}
       target="_blank"
+      rel="noopener noreferrer"
     >
       <i className={`sm-icon sm-logo-${text} sm-24px`} />
     </a>
   );
 };
+
+const SOCIAL_MEDIA: Link[] = [
+  {
+    link: 'https://myetherwallet.herokuapp.com/',
+    text: 'slack'
+  },
+
+  {
+    link: 'https://www.reddit.com/r/MyEtherWallet/',
+    text: 'reddit'
+  },
+
+  {
+    link: 'https://twitter.com/myetherwallet',
+    text: 'twitter'
+  },
+
+  {
+    link: 'https://www.facebook.com/MyEtherWallet',
+    text: 'facebook'
+  },
+
+  {
+    link: 'https://medium.com/@myetherwallet',
+    text: 'medium'
+  },
+
+  {
+    link: 'https://www.linkedin.com/company/myetherwallet/',
+    text: 'linkedin'
+  },
+
+  {
+    link: 'https://github.com/MyEtherWallet',
+    text: 'github'
+  }
+];
+
+const PRODUCT_INFO: Link[] = [
+  {
+    link: 'https://www.myetherwallet.com/signmsg.html',
+    text: 'Sign Message'
+  },
+  {
+    link: 'https://github.com/MyEtherWallet/MyEtherWallet',
+    text: 'Github: Current Site'
+  },
+  {
+    link: 'https://github.com/MyEtherWallet',
+    text: 'Github: MEW Org'
+  },
+  {
+    link: 'https://github.com/MyEtherWallet/MyEtherWallet/releases/latest',
+    text: 'Github: Latest Release'
+  },
+
+  {
+    link:
+      'https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en',
+    text: 'MyEtherWallet Extension'
+  },
+  {
+    link:
+      'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
+    text: 'Anti - Phishing Extension'
+  }
+];
+
+interface Link {
+  link: string;
+  text: string;
+}
 
 interface Props {
   latestBlock: string;
@@ -73,16 +146,16 @@ export default class Footer extends React.Component<Props, State> {
             </p>
             <p className="Footer-about-text">{translate('FOOTER_1')}</p>
             <a
-              href="https://myetherwallet.groovehq.com/help_center"
+              href="https://myetherwallet.github.io/knowledge-base"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               Knowledge Base
             </a>
             <a
               href="https://www.myetherwallet.com/helpers.html"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               Helpers & ENS Debugging
             </a>
@@ -210,68 +283,25 @@ export default class Footer extends React.Component<Props, State> {
           </div>
 
           <div className="Footer-links">
-            <a
-              href="https://www.myetherwallet.com/signmsg.html"
-              target="_blank"
-            >
-              Sign Message
-            </a>
-            <a
-              href="https://github.com/MyEtherWallet/MyEtherWallet"
-              target="_blank"
-            >
-              Github: Current Site
-            </a>
-            <a href="https://github.com/MyEtherWallet'" target="_blank">
-              Github: MEW Org
-            </a>
-            <a
-              href="https://github.com/MyEtherWallet/MyEtherWallet/releases/latest"
-              target="_blank"
-            >
-              Github: Latest Release
-            </a>
-            <a
-              href="https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en"
-              target="_blank"
-            >
-              MyEtherWallet Extension
-            </a>
-            <a
-              href="https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn"
-              target="_blank"
-            >
-              Anti-Phishing Extension
-            </a>
+            {PRODUCT_INFO.map((productInfoItem, idx) => (
+              <a
+                rel="noopener noreferrer"
+                target="_blank"
+                key={idx}
+                href={productInfoItem.link}
+              >
+                {productInfoItem.text}
+              </a>
+            ))}
+
             <div className="Footer-social-media-wrap">
-              <SocialMediaLink
-                link="https://myetherwallet.herokuapp.com/"
-                text="slack"
-              />
-              <SocialMediaLink
-                link="https://www.reddit.com/r/MyEtherWallet/"
-                text="reddit"
-              />
-              <SocialMediaLink
-                link="https://twitter.com/myetherwallet"
-                text="twitter"
-              />
-              <SocialMediaLink
-                link="https://www.facebook.com/MyEtherWallet"
-                text="facebook"
-              />
-              <SocialMediaLink
-                link="https://medium.com/@myetherwallet"
-                text="medium"
-              />
-              <SocialMediaLink
-                link="https://www.linkedin.com/company/myetherwallet/"
-                text="linkedin"
-              />
-              <SocialMediaLink
-                link="https://github.com/MyEtherWallet"
-                text="github"
-              />
+              {SOCIAL_MEDIA.map((socialMediaItem, idx) => (
+                <SocialMediaLink
+                  link={socialMediaItem.link}
+                  key={idx}
+                  text={socialMediaItem.text}
+                />
+              ))}
             </div>
           </div>
         </footer>
