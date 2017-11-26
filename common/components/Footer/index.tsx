@@ -69,10 +69,6 @@ const SOCIAL_MEDIA: Link[] = [
 
 const PRODUCT_INFO: Link[] = [
   {
-    link: 'https://www.myetherwallet.com/signmsg.html',
-    text: 'Sign Message'
-  },
-  {
     link: 'https://github.com/MyEtherWallet/MyEtherWallet',
     text: 'Github: Current Site'
   },
