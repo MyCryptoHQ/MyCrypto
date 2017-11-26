@@ -51,10 +51,10 @@ export class UnitConverter extends Component<Props, State> {
   private baseUnitCb = (value: string, decimal: number) => {
     console.log('original value', value);
     const parsedValue = parseDecimalNumber(value, '.,')
-      ? parseDecimalNumber(value, '.,').toString()
-      : parseDecimalNumber(value) ? parseDecimalNumber(value).toString() : '';
-    console.log('new val', parsedValue);
-    const baseUnit = toTokenBase(parsedValue, decimal).toString();
+      ? parseDecimalNumber(value, '.,')
+      : parseDecimalNumber(value) ? parseDecimalNumber(value) : '';
+    console.log('new val', parsedValue.toString());
+    const baseUnit = toTokenBase(parsedValue.toString(), decimal).toString();
     console.log(baseUnit);
     const fakeEvent = {
       currentTarget: {
