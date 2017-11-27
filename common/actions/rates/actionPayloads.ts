@@ -26,14 +26,6 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
   fetch(CCRates(symbols))
     .then(response => handleJSONResponse(response, ERROR_MESSAGE))
     .then(rates => {
-      if (rates.Response === 'Error') {
-        console.error(
-          'Request for price failed, see json for more info',
-          rates
-        );
-        throw new Error('Request for rates failed');
-      }
-
       // All currencies are in ETH right now. We'll do token -> eth -> value to
       // do it all in one request
       // to their respective rates via ETH.
