@@ -5,7 +5,8 @@ import {
   unlockMnemonic,
   UnlockMnemonicAction,
   unlockPrivateKey,
-  UnlockPrivateKeyAction
+  UnlockPrivateKeyAction,
+  unlockWeb3
 } from 'actions/wallet';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
@@ -20,8 +21,33 @@ import PrivateKeyDecrypt, { PrivateKeyValue } from './PrivateKey';
 import TrezorDecrypt from './Trezor';
 import ViewOnlyDecrypt from './ViewOnly';
 import { AppState } from 'reducers';
+import Web3Decrypt from './Web3';
+import Help from 'components/ui/Help';
 
 const WALLETS = {
+  web3: {
+    lid: 'x_MetaMask',
+    component: Web3Decrypt,
+    initialParams: {},
+    unlock: unlockWeb3,
+    helpLink:
+      'https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html'
+  },
+  'ledger-nano-s': {
+    lid: 'x_Ledger',
+    component: LedgerNanoSDecrypt,
+    initialParams: {},
+    unlock: setWallet,
+    helpLink:
+      'https://ledger.zendesk.com/hc/en-us/articles/115005200009-How-to-use-MyEtherWallet-with-Ledger'
+  },
+  trezor: {
+    lid: 'x_Trezor',
+    component: TrezorDecrypt,
+    initialParams: {},
+    unlock: setWallet,
+    helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+  },
   'keystore-file': {
     lid: 'x_Keystore2',
     component: KeystoreDecrypt,
@@ -29,7 +55,17 @@ const WALLETS = {
       file: '',
       password: ''
     },
-    unlock: unlockKeystore
+    unlock: unlockKeystore,
+    helpLink:
+      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
+  },
+  'mnemonic-phrase': {
+    lid: 'x_Mnemonic',
+    component: MnemonicDecrypt,
+    initialParams: {},
+    unlock: unlockMnemonic,
+    helpLink:
+      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
   },
   'private-key': {
     lid: 'x_PrivKey2',
@@ -38,31 +74,16 @@ const WALLETS = {
       key: '',
       password: ''
     },
-    unlock: unlockPrivateKey
-  },
-  'mnemonic-phrase': {
-    lid: 'x_Mnemonic',
-    component: MnemonicDecrypt,
-    initialParams: {},
-    unlock: unlockMnemonic
-  },
-  'ledger-nano-s': {
-    lid: 'x_Ledger',
-    component: LedgerNanoSDecrypt,
-    initialParams: {},
-    unlock: setWallet
-  },
-  trezor: {
-    lid: 'x_Trezor',
-    component: TrezorDecrypt,
-    initialParams: {},
-    unlock: setWallet
+    unlock: unlockPrivateKey,
+    helpLink:
+      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
   },
   'view-only': {
     lid: 'View with Address Only',
     component: ViewOnlyDecrypt,
     initialParams: {},
-    unlock: setWallet
+    unlock: setWallet,
+    helpLink: ''
   }
 };
 
@@ -114,7 +135,7 @@ export class WalletDecrypt extends Component<Props, State> {
   public buildWalletOptions() {
     return map(WALLETS, (wallet, key) => {
       const isSelected = this.state.selectedWalletKey === key;
-
+      const { helpLink } = wallet;
       return (
         <label className="radio" key={key}>
           <input
@@ -128,6 +149,7 @@ export class WalletDecrypt extends Component<Props, State> {
             disabled={this.isOnlineRequiredWalletAndOffline(key)}
           />
           <span id={`${key}-label`}>{translate(wallet.lid)}</span>
+          {helpLink ? <Help link={helpLink} /> : null}
         </label>
       );
     });

@@ -1,7 +1,8 @@
-import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
+import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
+import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.3)';
+export const VERSION = '4.0.0 (Alpha 0.0.4)';
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
@@ -74,9 +75,21 @@ export interface NetworkConfig {
 
 export interface NodeConfig {
   network: string;
-  lib: RPCNode;
+  lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
+  hidden?: boolean;
+}
+
+export interface CustomNodeConfig {
+  name: string;
+  url: string;
+  port: number;
+  network: string;
+  auth?: {
+    username: string;
+    password: string;
+  };
 }
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
@@ -242,3 +255,44 @@ export const NODES: { [key: string]: NodeConfig } = {
     estimateGas: true
   }
 };
+
+export function initWeb3Node(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const { web3 } = window as any;
+
+    if (!web3) {
+      return reject(
+        new Error(
+          'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
+        )
+      );
+    }
+
+    if (web3.version.network === 'loading') {
+      return reject(
+        new Error(
+          'MetaMask / Mist is still loading. Please refresh the page and try again.'
+        )
+      );
+    }
+
+    web3.version.getNetwork((err, networkId) => {
+      if (err) {
+        return reject(err);
+      }
+
+      try {
+        NODES.web3 = {
+          network: networkIdToName(networkId),
+          service: 'MetaMask / Mist',
+          lib: new Web3Node(web3),
+          estimateGas: false,
+          hidden: true
+        };
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  });
+}

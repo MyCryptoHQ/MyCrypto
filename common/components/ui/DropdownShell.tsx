@@ -3,6 +3,7 @@ import classnames from 'classnames';
 
 interface Props {
   ariaLabel: string;
+  disabled?: boolean;
   size?: string;
   color?: string;
   renderLabel(): any;
@@ -34,7 +35,14 @@ export default class DropdownComponent extends Component<Props, State> {
   }
 
   public render() {
-    const { ariaLabel, color, size, renderOptions, renderLabel } = this.props;
+    const {
+      ariaLabel,
+      color,
+      disabled,
+      size,
+      renderOptions,
+      renderLabel
+    } = this.props;
     const { expanded } = this.state;
     const toggleClasses = classnames([
       'dropdown-toggle',
@@ -45,7 +53,7 @@ export default class DropdownComponent extends Component<Props, State> {
 
     return (
       <span
-        className={`dropdown ${expanded ? 'open' : ''}`}
+        className={`dropdown ${expanded || disabled ? 'open' : ''}`}
         ref={el => (this.dropdown = el)}
       >
         <a
@@ -57,9 +65,9 @@ export default class DropdownComponent extends Component<Props, State> {
           onClick={this.toggle}
         >
           {renderLabel()}
-          <i className="caret" />
+          {!disabled && <i className="caret" />}
         </a>
-        {expanded && renderOptions()}
+        {expanded && !disabled && renderOptions()}
       </span>
     );
   }
