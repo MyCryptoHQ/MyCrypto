@@ -5,6 +5,7 @@ import { schema } from '../../common/libs/validators';
 import 'url-search-params-polyfill';
 import EtherscanNode from 'libs/nodes/etherscan';
 import InfuraNode from 'libs/nodes/infura';
+import RpcNodeTestConfig from './RpcNodeTestConfig';
 
 const v = new Validator();
 
@@ -60,27 +61,23 @@ function testRpcRequests(node: RPCNode, service: string) {
 }
 
 const mapNodeEndpoints = (nodes: { [key: string]: NodeConfig }) => {
-  const RpcNodeList = ['eth_mew', 'etc_epool', 'etc_epool', 'rop_mew'];
+  const { RpcNodes, EtherscanNodes, InfuraNodes } = RpcNodeTestConfig;
 
-  const EthscanNodeList = ['eth_ethscan', 'kov_ethscan', 'rin_ethscan'];
-
-  const InfuraNodeList = ['eth_infura', 'rop_infura', 'rin_infura'];
-
-  RpcNodeList.forEach(n => {
+  RpcNodes.forEach(n => {
     testRpcRequests(
       nodes[n].lib as RPCNode,
       `${nodes[n].service} ${nodes[n].network}`
     );
   });
 
-  EthscanNodeList.forEach(n => {
+  EtherscanNodes.forEach(n => {
     testRpcRequests(
       nodes[n].lib as EtherscanNode,
       `${nodes[n].service} ${nodes[n].network}`
     );
   });
 
-  InfuraNodeList.forEach(n => {
+  InfuraNodes.forEach(n => {
     testRpcRequests(
       nodes[n].lib as InfuraNode,
       `${nodes[n].service} ${nodes[n].network}`
