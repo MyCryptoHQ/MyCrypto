@@ -119,13 +119,12 @@ export function swap(
       };
     case TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED:
       const { payload } = action;
-      console.log(payload);
       console.log(normalize(payload, [schema.bityRate]));
       return {
         ...state,
         bityRates: {
           ...state.bityRates,
-          ...action.payload
+          ...normalize(payload, [schema.bityRate]).entities.bityRates
         },
         isFetchingRates: false
       };
