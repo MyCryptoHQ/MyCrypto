@@ -3,7 +3,7 @@ import {
   NetworkContract,
   NETWORKS,
   NodeConfig,
-  NODES
+  CustomNodeConfig
 } from 'config/data';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
@@ -13,15 +13,15 @@ export function getNode(state: AppState): string {
 }
 
 export function getNodeConfig(state: AppState): NodeConfig {
-  return NODES[state.config.nodeSelection];
+  return state.config.node;
 }
 
 export function getNodeLib(state: AppState): INode {
-  return NODES[state.config.nodeSelection].lib;
+  return getNodeConfig(state).lib;
 }
 
 export function getNetworkConfig(state: AppState): NetworkConfig {
-  return NETWORKS[NODES[state.config.nodeSelection].network];
+  return NETWORKS[getNodeConfig(state).network];
 }
 
 export function getNetworkContracts(state: AppState): NetworkContract[] | null {
@@ -34,4 +34,8 @@ export function getGasPriceGwei(state: AppState): number {
 
 export function getLanguageSelection(state: AppState): string {
   return state.config.languageSelection;
+}
+
+export function getCustomNodeConfigs(state: AppState): CustomNodeConfig[] {
+  return state.config.customNodes;
 }

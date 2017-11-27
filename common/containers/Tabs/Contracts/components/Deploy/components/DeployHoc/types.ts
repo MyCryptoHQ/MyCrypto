@@ -1,4 +1,5 @@
-import { Wei, Ether } from 'libs/units';
+import { Wei } from 'libs/units';
+import { Balance } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { NodeConfig, NetworkConfig } from 'config/data';
 import { TBroadcastTx } from 'actions/wallet';
@@ -7,7 +8,7 @@ import { AppState } from 'reducers';
 
 export interface Props {
   wallet: AppState['wallet']['inst'];
-  balance: Ether;
+  balance: Balance;
   node: NodeConfig;
   nodeLib: RPCNode;
   chainId: NetworkConfig['chainId'];

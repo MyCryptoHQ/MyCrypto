@@ -19,6 +19,7 @@ export default class ViewOnlyDecrypt extends Component<Props, State> {
 
   public render() {
     const { address } = this.state;
+    const isValid = isValidETHAddress(address);
 
     return (
       <section className="col-md-4 col-sm-6">
@@ -28,14 +29,14 @@ export default class ViewOnlyDecrypt extends Component<Props, State> {
           <form className="form-group" onSubmit={this.openWallet}>
             <input
               className={`form-control
-                ${isValidETHAddress(address) ? 'is-valid' : 'is-invalid'}
+                ${isValid ? 'is-valid' : 'is-invalid'}
               `}
               onChange={this.changeAddress}
               value={address}
               placeholder={donationAddressMap.ETH}
             />
 
-            <button className="btn btn-primary btn-block">
+            <button className="btn btn-primary btn-block" disabled={!isValid}>
               {translate('NAV_ViewWallet')}
             </button>
           </form>
@@ -53,7 +54,6 @@ export default class ViewOnlyDecrypt extends Component<Props, State> {
     ev.preventDefault();
     if (isValidETHAddress(address)) {
       const wallet = new AddressOnlyWallet(address);
-      console.log(wallet);
       this.props.onUnlock(wallet);
     }
   };

@@ -1,15 +1,13 @@
-import { BigNumber } from 'bignumber.js';
-import { Wei } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 import { IWallet } from 'libs/wallet/IWallet';
 import * as types from './actionTypes';
-import * as constants from './constants';
-
+import { TypeKeys } from './constants';
 export type TUnlockPrivateKey = typeof unlockPrivateKey;
 export function unlockPrivateKey(
   value: types.PrivateKeyUnlockParams
 ): types.UnlockPrivateKeyAction {
   return {
-    type: constants.WALLET_UNLOCK_PRIVATE_KEY,
+    type: TypeKeys.WALLET_UNLOCK_PRIVATE_KEY,
     payload: value
   };
 }
@@ -19,7 +17,7 @@ export function unlockKeystore(
   value: types.KeystoreUnlockParams
 ): types.UnlockKeystoreAction {
   return {
-    type: constants.WALLET_UNLOCK_KEYSTORE,
+    type: TypeKeys.WALLET_UNLOCK_KEYSTORE,
     payload: value
   };
 }
@@ -29,33 +27,54 @@ export function unlockMnemonic(
   value: types.MnemonicUnlockParams
 ): types.UnlockMnemonicAction {
   return {
-    type: constants.WALLET_UNLOCK_MNEMONIC,
+    type: TypeKeys.WALLET_UNLOCK_MNEMONIC,
     payload: value
+  };
+}
+
+export type TUnlockWeb3 = typeof unlockWeb3;
+export function unlockWeb3(): types.UnlockWeb3Action {
+  return {
+    type: TypeKeys.WALLET_UNLOCK_WEB3
   };
 }
 
 export type TSetWallet = typeof setWallet;
 export function setWallet(value: IWallet): types.SetWalletAction {
   return {
-    type: constants.WALLET_SET,
+    type: TypeKeys.WALLET_SET,
     payload: value
   };
 }
 
-export type TSetBalance = typeof setBalance;
-export function setBalance(value: Wei): types.SetBalanceAction {
+export function setBalancePending(): types.SetBalancePendingAction {
   return {
-    type: constants.WALLET_SET_BALANCE,
+    type: TypeKeys.WALLET_SET_BALANCE_PENDING
+  };
+}
+
+export type TSetBalance = typeof setBalanceFullfilled;
+export function setBalanceFullfilled(
+  value: Wei
+): types.SetBalanceFullfilledAction {
+  return {
+    type: TypeKeys.WALLET_SET_BALANCE_FULFILLED,
     payload: value
+  };
+}
+
+export function setBalanceRejected(): types.SetBalanceRejectedAction {
+  return {
+    type: TypeKeys.WALLET_SET_BALANCE_REJECTED
   };
 }
 
 export type TSetTokenBalances = typeof setTokenBalances;
 export function setTokenBalances(payload: {
-  [key: string]: BigNumber;
+  [key: string]: TokenValue;
 }): types.SetTokenBalancesAction {
   return {
-    type: constants.WALLET_SET_TOKEN_BALANCES,
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES,
     payload
   };
 }
@@ -65,7 +84,7 @@ export function broadcastTx(
   signedTx: string
 ): types.BroadcastTxRequestedAction {
   return {
-    type: constants.WALLET_BROADCAST_TX_REQUESTED,
+    type: TypeKeys.WALLET_BROADCAST_TX_REQUESTED,
     payload: {
       signedTx
     }
@@ -78,7 +97,7 @@ export function broadcastTxSucceded(
   signedTx: string
 ): types.BroadcastTxSuccededAction {
   return {
-    type: constants.WALLET_BROADCAST_TX_SUCCEEDED,
+    type: TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED,
     payload: {
       txHash,
       signedTx
@@ -92,7 +111,7 @@ export function broadCastTxFailed(
   errorMsg: string
 ): types.BroadcastTxFailedAction {
   return {
-    type: constants.WALLET_BROADCAST_TX_FAILED,
+    type: TypeKeys.WALLET_BROADCAST_TX_FAILED,
     payload: {
       signedTx,
       error: errorMsg
@@ -101,8 +120,8 @@ export function broadCastTxFailed(
 }
 
 export type TResetWallet = typeof resetWallet;
-export function resetWallet() {
+export function resetWallet(): types.ResetWalletAction {
   return {
-    type: constants.WALLET_RESET
+    type: TypeKeys.WALLET_RESET
   };
 }
