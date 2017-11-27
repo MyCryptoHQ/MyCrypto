@@ -9,6 +9,8 @@ import {
 export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 const DEFAULT_ORIGIN_KIND = 'BTC';
 const DEFAULT_DESTINATION_KIND = 'ETH';
+import { normalize } from 'normalizr';
+import * as schema from './schema';
 
 export interface State {
   originAmount: number | null;
@@ -116,6 +118,9 @@ export function swap(
         destinationAmount: action.payload
       };
     case TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED:
+      const { payload } = action;
+      console.log(payload);
+      console.log(normalize(payload, [schema.bityRate]));
       return {
         ...state,
         bityRates: {

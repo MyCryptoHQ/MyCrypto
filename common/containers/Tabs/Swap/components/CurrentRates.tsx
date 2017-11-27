@@ -32,7 +32,7 @@ export default class CurrentRates extends Component<Pairs, State> {
   public buildPairRate = (origin: string, destination: string) => {
     const pair = origin + destination;
     const statePair = this.state[pair + 'Amount'];
-    const propsPair = this.props[pair];
+    const propsPair = this.props[pair] ? this.props[pair].rate : null;
     return (
       <div className="SwapRates-panel-rate">
         {propsPair ? (

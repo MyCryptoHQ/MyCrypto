@@ -203,7 +203,7 @@ export default class CurrencySwap extends Component<
     const originAmountAsNumber = parseFloat(amount);
     if (originAmountAsNumber || originAmountAsNumber === 0) {
       const pairName = combineAndUpper(originKind, destinationKind);
-      const bityRate = this.props.bityRates[pairName];
+      const bityRate = this.props.bityRates[pairName].rate;
       this.props.originAmountSwap(originAmountAsNumber);
       const destinationAmount = originAmountAsNumber * bityRate;
       this.props.destinationAmountSwap(destinationAmount);

@@ -8,8 +8,10 @@ export const buildDestinationAmount = (
   destinationKind,
   bityRates
 ) => {
+  console.log('build destination amount');
   const pairName = combineAndUpper(originKind, destinationKind);
   const bityRate = bityRates[pairName];
+  console.log(bityRates);
   return originAmount !== null ? originAmount * bityRate : null;
 };
 
