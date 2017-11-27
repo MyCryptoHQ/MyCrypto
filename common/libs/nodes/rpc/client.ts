@@ -20,7 +20,6 @@ export default class RPCClient {
   });
 
   public call = (request: RPCRequest | any): Promise<JsonRpcResponse> => {
-    console.log(this.decorateRequest(request));
     return fetch(this.endpoint, {
       method: 'POST',
       headers: this.createHeaders({

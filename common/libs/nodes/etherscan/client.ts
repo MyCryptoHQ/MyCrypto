@@ -14,7 +14,6 @@ export default class EtherscanClient extends RPCClient {
   }
 
   public call = (request: EtherscanRequest): Promise<JsonRpcResponse> =>
-    console.log(request) ||
     fetch(this.endpoint, {
       method: 'POST',
       headers: {

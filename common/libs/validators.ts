@@ -209,7 +209,6 @@ function formatErrors(response: JsonRpcResponse, apiType: string) {
 }
 
 const isValidEthCall = (response: JsonRpcResponse, schemaType) => apiName => {
-  console.log(apiName, response, isValidResult(response, schemaType));
   if (!isValidResult(response, schemaType)) {
     throw new Error(formatErrors(response, apiName));
   }
