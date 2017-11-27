@@ -11,7 +11,6 @@ require('react-redux');
 require('react-router');
 require('react-router-redux');
 require('redux');
-require('redux-form');
 require('redux-logger');
 require('redux-saga');
 require('wallet-address-validator');
