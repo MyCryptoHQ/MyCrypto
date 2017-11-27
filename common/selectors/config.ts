@@ -39,3 +39,7 @@ export function getLanguageSelection(state: AppState): string {
 export function getCustomNodeConfigs(state: AppState): CustomNodeConfig[] {
   return state.config.customNodes;
 }
+
+export function getOffline(state: AppState): boolean {
+  return state.config.offline;
+}

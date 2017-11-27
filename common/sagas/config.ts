@@ -16,7 +16,12 @@ import {
   getCustomNodeConfigFromId,
   makeNodeConfigFromCustomConfig
 } from 'utils/node';
-import { getNode, getNodeConfig, getCustomNodeConfigs } from 'selectors/config';
+import {
+  getNode,
+  getNodeConfig,
+  getCustomNodeConfigs,
+  getOffline
+} from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
 import {
@@ -40,13 +45,37 @@ export const getConfig = (state: AppState): ConfigState => state.config;
 
 export function* pollOfflineStatus(): SagaIterator {
   while (true) {
-    const offline = !navigator.onLine;
-    const config = yield select(getConfig);
-    const offlineState = config.offline;
-    if (offline !== offlineState) {
+    const node = yield select(getNodeConfig);
+    const isOffline = yield select(getOffline);
+    const { isOnline } = yield race({
+      isOnline: call(node.lib.ping.bind(node.lib)),
+      timeout: call(delay, 5000)
+    });
+
+    if (isOnline === isOffline) {
+      if (isOffline) {
+        yield put(
+          showNotification(
+            'success',
+            'Your connection to the network has been restored!',
+            3000
+          )
+        );
+      } else {
+        yield put(
+          showNotification(
+            'danger',
+            `You’ve lost your connection to the network, check your internet
+            connection or try changing networks from the dropdown at the
+            top right of the page.`,
+            Infinity
+          )
+        );
+      }
+
       yield put(toggleOfflineConfig());
     }
-    yield call(delay, 250);
+    yield call(delay, 5000);
   }
 }
 
