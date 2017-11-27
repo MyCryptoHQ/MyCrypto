@@ -54,7 +54,6 @@ export default class ViewOnlyDecrypt extends Component<Props, State> {
     ev.preventDefault();
     if (isValidETHAddress(address)) {
       const wallet = new AddressOnlyWallet(address);
-      console.log(wallet);
       this.props.onUnlock(wallet);
     }
   };
