@@ -1,6 +1,5 @@
 import { routerReducer } from 'react-router-redux';
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 import { config, State as ConfigState } from './config';
 import { customTokens, State as CustomTokensState } from './customTokens';
 import {
@@ -39,6 +38,5 @@ export default combineReducers({
   customTokens,
   rates,
   deterministicWallets,
-  form: formReducer,
   routing: routerReducer
 });

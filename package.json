@@ -34,7 +34,6 @@
     "react-router-redux": "4.0.8",
     "react-transition-group": "2.2.1",
     "redux": "3.7.2",
-    "redux-form": "7.1.2",
     "redux-logger": "3.0.6",
     "redux-promise-middleware": "4.4.2",
     "redux-saga": "0.16.0",
@@ -54,8 +53,8 @@
     "@types/react": "16.0.25",
     "@types/react-dom": "16.0.3",
     "@types/react-redux": "5.0.13",
-    "@types/react-router": "4.0.18",
-    "@types/react-router-dom": "4.2.2",
+    "@types/react-router": "4.0.19",
+    "@types/react-router-dom": "4.2.3",
     "@types/react-router-redux": "5.0.10",
     "@types/redux-form": "7.0.9",
     "@types/redux-logger": "3.0.5",
@@ -108,8 +107,8 @@
     "url-loader": "0.6.2",
     "url-search-params-polyfill": "2.0.1",
     "webpack": "3.8.1",
-    "webpack-dev-middleware": "1.12.1",
-    "webpack-hot-middleware": "2.20.0"
+    "webpack-dev-middleware": "1.12.2",
+    "webpack-hot-middleware": "2.21.0"
   },
   "scripts": {
     "db": "nodemon ./db",
