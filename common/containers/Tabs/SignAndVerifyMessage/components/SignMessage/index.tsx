@@ -5,6 +5,7 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ISignedMessage } from 'libs/signing';
+import { IFullWallet } from 'libs/wallet';
 import FullWalletOnly from 'components/renderCbs/FullWalletOnly';
 import SignButton from './SignButton';
 import './index.scss';
@@ -38,18 +39,6 @@ export class SignMessage extends Component<Props, State> {
       message ? 'is-valid' : 'is-invalid'
     ]);
 
-    const renderSignButton = fullWallet => {
-      return (
-        <SignButton
-          wallet={fullWallet}
-          message={message}
-          showNotification={this.props.showNotification}
-          onSignMessage={this.onSignMessage}
-        />
-      );
-    };
-    const renderUnlock = () => <WalletDecrypt />;
-
     return (
       <div>
         <div className="Tab-content-pane">
@@ -65,8 +54,8 @@ export class SignMessage extends Component<Props, State> {
           </div>
 
           <FullWalletOnly
-            withFullWallet={renderSignButton}
-            withoutFullWallet={renderUnlock}
+            withFullWallet={this.renderSignButton}
+            withoutFullWallet={this.renderUnlock}
           />
 
           {!!signedMessage && (
@@ -95,6 +84,21 @@ export class SignMessage extends Component<Props, State> {
   private onSignMessage = (signedMessage: ISignedMessage) => {
     this.setState({ signedMessage });
   };
+
+  private renderSignButton(fullWallet: IFullWallet) {
+    return (
+      <SignButton
+        wallet={fullWallet}
+        message={this.state.message}
+        showNotification={this.props.showNotification}
+        onSignMessage={this.onSignMessage}
+      />
+    );
+  }
+
+  private renderUnlock() {
+    return <WalletDecrypt />;
+  }
 }
 
 export default connect(null, { showNotification })(SignMessage);
