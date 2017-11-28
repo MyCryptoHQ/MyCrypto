@@ -5,28 +5,21 @@ import translate from 'translations';
 import './index.scss';
 import PreFooter from './PreFooter';
 import Modal, { IButton } from 'components/ui/Modal';
+import { NewTabLink } from 'components/ui';
 
 const AffiliateTag = ({ link, text }) => {
   return (
     <li className="Footer-affiliate-tag" key={link}>
-      <a href={link} target="_blank" rel="noopener noreferrer">
-        {text}
-      </a>
+      <NewTabLink href={link}>{text}</NewTabLink>
     </li>
   );
 };
 
 const SocialMediaLink = ({ link, text }) => {
   return (
-    <a
-      className="Footer-social-media-link"
-      key={link}
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <NewTabLink className="Footer-social-media-link" key={link} href={link}>
       <i className={`sm-icon sm-logo-${text} sm-24px`} />
-    </a>
+    </NewTabLink>
   );
 };
 
@@ -130,7 +123,7 @@ export default class Footer extends React.Component<Props, State> {
         <footer className="Footer" role="contentinfo" aria-label="footer">
           <div className="Footer-about">
             <p aria-hidden="true">
-              <a href="/">
+              <NewTabLink href="/">
                 <img
                   className="Footer-about-logo"
                   src={logo}
@@ -138,23 +131,15 @@ export default class Footer extends React.Component<Props, State> {
                   width="auto"
                   alt="MyEtherWallet"
                 />
-              </a>
+              </NewTabLink>
             </p>
             <p className="Footer-about-text">{translate('FOOTER_1')}</p>
-            <a
-              href="https://myetherwallet.github.io/knowledge-base"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <NewTabLink href="https://myetherwallet.github.io/knowledge-base">
               Knowledge Base
-            </a>
-            <a
-              href="https://www.myetherwallet.com/helpers.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            </NewTabLink>
+            <NewTabLink href="https://www.myetherwallet.com/helpers.html">
               Helpers & ENS Debugging
-            </a>
+            </NewTabLink>
 
             <button className="Footer-modal-button" onClick={this.openModal}>
               Disclaimer
@@ -167,11 +152,11 @@ export default class Footer extends React.Component<Props, State> {
             >
               <p>
                 <b>Be safe & secure: </b>
-                <a href="https://myetherwallet.groovehq.com/knowledge_base/topics/protecting-yourself-and-your-funds">
+                <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/protecting-yourself-and-your-funds">
                   We highly recommend that you read our guide on How to Prevent
                   Loss & Theft for some recommendations on how to be proactive
                   about your security.
-                </a>
+                </NewTabLink>
               </p>
               <p>
                 <b>Always backup your keys: </b>
@@ -266,9 +251,9 @@ export default class Footer extends React.Component<Props, State> {
               <li>
                 ETH: mewtopia.eth{' '}
                 <span className="mono wrap">
-                  <a href="https://etherscan.io/address/0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8">
+                  <NewTabLink href="https://etherscan.io/address/0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8">
                     {donationAddressMap.ETH}
-                  </a>
+                  </NewTabLink>
                 </span>
               </li>
               <li>
@@ -280,14 +265,9 @@ export default class Footer extends React.Component<Props, State> {
 
           <div className="Footer-links">
             {PRODUCT_INFO.map((productInfoItem, idx) => (
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
-                key={idx}
-                href={productInfoItem.link}
-              >
+              <NewTabLink target="_blank" key={idx} href={productInfoItem.link}>
                 {productInfoItem.text}
-              </a>
+              </NewTabLink>
             ))}
 
             <div className="Footer-social-media-wrap">
