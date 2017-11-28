@@ -3,11 +3,12 @@ import translate from 'translations';
 import { SignedTransaction } from './Container';
 import { Aux } from 'components/ui';
 import { getTransactionFields, transaction } from 'libs/transaction';
+import { OfflineBroadcast } from './OfflineBroadcast';
 
 const getStringifiedTx = (signedTransaction: string) =>
   JSON.stringify(getTransactionFields(transaction(signedTransaction)), null, 2);
 
-export const TransactionComparison: React.SFC<{}> = () => (
+export const TransactionComparisonAndPushTx: React.SFC<{}> = () => (
   <SignedTransaction
     withSignedTransaction={({ signedTransaction }) => (
       <Aux>
@@ -29,6 +30,7 @@ export const TransactionComparison: React.SFC<{}> = () => (
             readOnly={true}
           />
         </div>
+        <OfflineBroadcast />
       </Aux>
     )}
   />
