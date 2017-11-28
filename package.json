@@ -64,7 +64,7 @@
     "babel-minify-webpack-plugin": "0.2.0",
     "bs58": "4.0.1",
     "cache-loader": "1.2.0",
-    "check-node-version": "2.1.0",
+    "check-node-version": "3.0.0",
     "copy-webpack-plugin": "4.2.3",
     "css-loader": "0.28.7",
     "empty": "0.10.1",
