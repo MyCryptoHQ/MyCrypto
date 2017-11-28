@@ -127,8 +127,8 @@
     "tscheck": "tsc --noEmit",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
-    "precommit": "lint-staged && npm run tslint && npm run tscheck",
-    "prepush": "npm run test"
+    "precommit": "npm run tslint && lint-staged",
+    "prepush": "npm run tscheck"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
