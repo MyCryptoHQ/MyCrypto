@@ -8,6 +8,5 @@ exports[`render snapshot 1`] = `
   password={Object {}}
   resetGenerateWallet={[Function]}
   wallet={Object {}}
-  walletPasswordForm={Object {}}
 />
 `;
