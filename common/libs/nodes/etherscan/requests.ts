@@ -26,7 +26,7 @@ export default class EtherscanRequests extends RPCRequests {
       action: 'eth_estimateGas',
       to: transaction.to,
       value: transaction.value,
-      data: transaction.string,
+      data: transaction.data,
       from: transaction.from
     };
   }
