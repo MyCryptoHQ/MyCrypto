@@ -31,12 +31,6 @@ interface Props {
    * @memberof Props
    */
   displayShortBalance?: boolean | number;
-  /**
-   * @description From redux store, whether or not the user is currently offline
-   * @type {boolean}
-   * @memberof Props
-   */
-  offline?: boolean;
 }
 
 interface EthProps extends Props {
@@ -50,42 +44,64 @@ const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
   !!(param as EthProps).unit;
 
 const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
-  const { value, symbol, displayShortBalance, offline } = params;
+  const { value, symbol, displayShortBalance } = params;
+  let element;
 
-  if (offline) {
-    return <span>Balance isn't available offline</span>;
-  } else if (!value) {
-    return <Spinner size="x1" />;
-  }
-
-  const convertedValue = isEthereumUnit(params)
-    ? fromTokenBase(value, getDecimal(params.unit))
-    : fromTokenBase(value, params.decimal);
-
-  let formattedValue;
-
-  if (displayShortBalance) {
-    const digits =
-      typeof displayShortBalance === 'number' && displayShortBalance;
-    formattedValue = digits
-      ? format(convertedValue, digits)
-      : format(convertedValue);
+  if (!value) {
+    element = <Spinner size="x1" />;
   } else {
-    formattedValue = convertedValue;
+    const convertedValue = isEthereumUnit(params)
+      ? fromTokenBase(value, getDecimal(params.unit))
+      : fromTokenBase(value, params.decimal);
+
+    let formattedValue;
+
+    if (displayShortBalance) {
+      const digits =
+        typeof displayShortBalance === 'number' && displayShortBalance;
+      formattedValue = digits
+        ? format(convertedValue, digits)
+        : format(convertedValue);
+    } else {
+      formattedValue = convertedValue;
+    }
+
+    element = (
+      <span>
+        {formattedValue}
+        {symbol ? ` ${symbol}` : ''}
+      </span>
+    );
   }
 
-  return (
-    <span>
-      {formattedValue}
-      {symbol ? ` ${symbol}` : ''}
-    </span>
-  );
+  return <ConnectedOfflineDisplay>{element}</ConnectedOfflineDisplay>;
 };
 
-function mapStateToProps(state: AppState) {
+export default UnitDisplay;
+
+/**
+ * @description Helper component for displaying alternate text when offline.
+ * Circumvents typescript issue with union props on connected components.
+ */
+interface OfflineProps {
+  offline: AppState['config']['offline'];
+  children: React.ReactElement<string>;
+}
+
+class OfflineDisplay extends React.Component<OfflineProps> {
+  public render() {
+    if (this.props.offline) {
+      return <span>Balance isn't available offline</span>;
+    } else {
+      return this.props.children;
+    }
+  }
+}
+
+function mapStateToOfflineProps(state: AppState) {
   return {
     offline: getOffline(state)
   };
 }
 
-export default connect(mapStateToProps)(UnitDisplay);
+const ConnectedOfflineDisplay = connect(mapStateToOfflineProps)(OfflineDisplay);
