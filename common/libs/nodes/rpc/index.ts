@@ -7,7 +7,7 @@ import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
 
-function errorOrResult(response) {
+export function errorOrResult(response) {
   if (response.error) {
     throw new Error(response.error.message);
   }
