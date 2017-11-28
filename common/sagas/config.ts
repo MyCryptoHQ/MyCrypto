@@ -44,23 +44,31 @@ import {
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
+let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     const node = yield select(getNodeConfig);
     const isOffline = yield select(getOffline);
     const isForcedOffline = yield select(getForceOffline);
 
+    // If they're forcing themselves offline, exit the loop. It will be
+    // kicked off again if they toggle it in handleTogglePollOfflineStatus.
     if (isForcedOffline) {
       return;
     }
 
-    const { isOnline } = yield race({
-      isOnline: call(node.lib.ping.bind(node.lib)),
-      timeout: call(delay, 5000)
-    });
+    // If our offline state disagrees with the browser, run a check
+    // Don't check if the user is in another tab or window
+    const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
+    if (shouldPing && !document.hidden) {
+      hasCheckedOnline = true;
+      const { pingSucceeded } = yield race({
+        pingSucceeded: call(node.lib.ping.bind(node.lib)),
+        timeout: call(delay, 5000)
+      });
 
-    if (isOnline === isOffline && !isForcedOffline) {
-      if (isOffline) {
+      if (pingSucceeded && isOffline) {
+        // If we were able to ping but redux says we're offline, mark online
         yield put(
           showNotification(
             'success',
@@ -68,7 +76,9 @@ export function* pollOfflineStatus(): SagaIterator {
             3000
           )
         );
-      } else {
+        yield put(toggleOfflineConfig());
+      } else if (!pingSucceeded && !isOffline) {
+        // If we were unable to ping but redux says we're online, mark offline
         yield put(
           showNotification(
             'danger',
@@ -78,11 +88,14 @@ export function* pollOfflineStatus(): SagaIterator {
             Infinity
           )
         );
+        yield put(toggleOfflineConfig());
+      } else {
+        // If neither case was true, try again in 5s
+        yield call(delay, 5000);
       }
-
-      yield put(toggleOfflineConfig());
+    } else {
+      yield call(delay, 1000);
     }
-    yield call(delay, 5000);
   }
 }
 
