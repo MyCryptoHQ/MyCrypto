@@ -51,7 +51,7 @@
     "@types/qrcode.react": "0.6.2",
     "@types/react": "16.0.25",
     "@types/react-dom": "16.0.3",
-    "@types/react-redux": "5.0.13",
+    "@types/react-redux": "5.0.14",
     "@types/react-router": "4.0.19",
     "@types/react-router-dom": "4.2.3",
     "@types/react-router-redux": "5.0.10",
