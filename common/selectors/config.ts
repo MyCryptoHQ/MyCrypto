@@ -43,3 +43,7 @@ export function getCustomNodeConfigs(state: AppState): CustomNodeConfig[] {
 export function getOffline(state: AppState): boolean {
   return state.config.offline;
 }
+
+export function getForceOffline(state: AppState): boolean {
+  return state.config.forceOffline;
+}

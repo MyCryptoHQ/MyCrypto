@@ -20,7 +20,8 @@ import {
   getNode,
   getNodeConfig,
   getCustomNodeConfigs,
-  getOffline
+  getOffline,
+  getForceOffline
 } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
@@ -47,12 +48,18 @@ export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     const node = yield select(getNodeConfig);
     const isOffline = yield select(getOffline);
+    const isForcedOffline = yield select(getForceOffline);
+
+    if (isForcedOffline) {
+      return;
+    }
+
     const { isOnline } = yield race({
       isOnline: call(node.lib.ping.bind(node.lib)),
       timeout: call(delay, 5000)
     });
 
-    if (isOnline === isOffline) {
+    if (isOnline === isOffline && !isForcedOffline) {
       if (isOffline) {
         yield put(
           showNotification(
@@ -84,6 +91,15 @@ function* handlePollOfflineStatus(): SagaIterator {
   const pollOfflineStatusTask = yield fork(pollOfflineStatus);
   yield take('CONFIG_STOP_POLL_OFFLINE_STATE');
   yield cancel(pollOfflineStatusTask);
+}
+
+function* handleTogglePollOfflineStatus(): SagaIterator {
+  const isForcedOffline = yield select(getForceOffline);
+  if (isForcedOffline) {
+    yield fork(handlePollOfflineStatus);
+  } else {
+    yield call(handlePollOfflineStatus);
+  }
 }
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
@@ -193,6 +209,7 @@ export default function* configSaga(): SagaIterator {
     TypeKeys.CONFIG_POLL_OFFLINE_STATUS,
     handlePollOfflineStatus
   );
+  yield takeEvery(TypeKeys.CONFIG_FORCE_OFFLINE, handleTogglePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
