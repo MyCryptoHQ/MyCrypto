@@ -1,13 +1,13 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import UnitDropdown from './UnitDropdown';
-import { Wei } from 'libs/units';
+import { Balance } from 'libs/wallet';
 import { UnitConverter } from 'components/renderCbs';
 interface Props {
   decimal: number;
   unit: string;
   tokens: string[];
-  balance: number | null | Wei;
+  balance: number | null | Balance;
   isReadOnly: boolean;
   onAmountChange(value: string, unit: string): void;
   onUnitChange(unit: string): void;
@@ -30,10 +30,11 @@ export default class AmountField extends React.Component {
             <UnitConverter decimal={decimal} onChange={this.callWithBaseUnit}>
               {({ onUserInput, convertedUnit }) => (
                 <input
-                  className={`form-control ${isFinite(Number(convertedUnit)) &&
-                  Number(convertedUnit) > 0
-                    ? 'is-valid'
-                    : 'is-invalid'}`}
+                  className={`form-control ${
+                    isFinite(Number(convertedUnit)) && Number(convertedUnit) > 0
+                      ? 'is-valid'
+                      : 'is-invalid'
+                  }`}
                   type="text"
                   placeholder={translateRaw('SEND_amount_short')}
                   value={convertedUnit}

@@ -32,7 +32,13 @@ import {
 import { UnitKey, Wei, getDecimal, toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 // LIBS
-import { IWallet, Web3Wallet } from 'libs/wallet';
+import {
+  IWallet,
+  Balance,
+  Web3Wallet,
+  LedgerWallet,
+  TrezorWallet
+} from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
@@ -92,7 +98,7 @@ interface State {
 
 interface Props {
   wallet: IWallet;
-  balance: Wei;
+  balance: Balance;
   nodeLib: RPCNode;
   network: NetworkConfig;
   tokens: MergedToken[];
@@ -265,6 +271,8 @@ export class SendTransaction extends React.Component<Props, State> {
         ? getDecimal('ether')
         : (this.state.token && this.state.token.decimal) || 0;
     const isWeb3Wallet = this.props.wallet instanceof Web3Wallet;
+    const isLedgerWallet = this.props.wallet instanceof LedgerWallet;
+    const isTrezorWallet = this.props.wallet instanceof TrezorWallet;
     return (
       <TabSection>
         <section className="Tab-content">
@@ -353,7 +361,18 @@ export class SendTransaction extends React.Component<Props, State> {
                     {generateTxProcessing && (
                       <div className="container">
                         <div className="row form-group text-center">
-                          <Spinner size="5x" />
+                          {isLedgerWallet || isTrezorWallet ? (
+                            <div>
+                              <p>
+                                <b>
+                                  Confirm transaction on hardware wallet
+                                </b>
+                              </p>
+                              <Spinner size="x2" />
+                            </div>
+                          ) : (
+                            <Spinner size="x2" />
+                          )}
                         </div>
                       </div>
                     )}
@@ -574,7 +593,7 @@ export class SendTransaction extends React.Component<Props, State> {
       value = getBalanceMinusGasCosts(
         bigGasLimit,
         gasPrice,
-        balance
+        balance.wei
       ).toString();
     } else {
       const tokenBalance = this.props.tokenBalances.find(

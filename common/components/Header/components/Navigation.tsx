@@ -70,7 +70,7 @@ export default class Navigation extends Component<Props, State> {
   /*
    *   public scrollLeft() {}
       public scrollRight() {}
-   * 
+   *
    */
 
   public render() {
