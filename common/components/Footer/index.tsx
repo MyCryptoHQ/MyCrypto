@@ -1,5 +1,11 @@
 import logo from 'assets/images/logo-myetherwallet.svg';
-import { bityReferralURL, donationAddressMap } from 'config/data';
+import {
+  bityReferralURL,
+  ledgerReferralURL,
+  trezorReferralURL,
+  bitboxReferralURL,
+  donationAddressMap
+} from 'config/data';
 import React from 'react';
 import translate from 'translations';
 import './index.scss';
@@ -230,18 +236,9 @@ export default class Footer extends React.Component<Props, State> {
             </ul>
             <p>Buy a</p>
             <ul className="Footer-affiliate-wrap">
-              <AffiliateTag
-                link="https://www.ledgerwallet.com/r/fa4b?path=/products/"
-                text="Ledger Nano S"
-              />
-              <AffiliateTag
-                link="https://trezor.io/?a=myetherwallet.com"
-                text="TREZOR"
-              />
-              <AffiliateTag
-                link="https://digitalbitbox.com/?ref=mew"
-                text="Digital Bitbox"
-              />
+              <AffiliateTag link={ledgerReferralURL} text="Ledger Nano S" />
+              <AffiliateTag link={trezorReferralURL} text="TREZOR" />
+              <AffiliateTag link={bitboxReferralURL} text="Digital Bitbox" />
             </ul>
             <h5>
               <i aria-hidden="true">💝</i>
@@ -251,7 +248,11 @@ export default class Footer extends React.Component<Props, State> {
               <li>
                 ETH: mewtopia.eth{' '}
                 <span className="mono wrap">
-                  <NewTabLink href="https://etherscan.io/address/0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8">
+                  <NewTabLink
+                    href={`https://etherscan.io/address/${
+                      donationAddressMap.ETH
+                    }`}
+                  >
                     {donationAddressMap.ETH}
                   </NewTabLink>
                 </span>
