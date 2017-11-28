@@ -21,7 +21,6 @@ interface Props {
   activeStep: string; // FIXME union actual steps
   password: string;
   wallet: IFullWallet | null | undefined;
-  walletPasswordForm: any;
   // Actions
   generateNewWallet: TGenerateNewWallet;
   continueToPaper: TContinueToPaper;
@@ -44,7 +43,6 @@ class GenerateWallet extends Component<Props, {}> {
         case 'password':
           content = (
             <AnyEnterPassword
-              walletPasswordForm={this.props.walletPasswordForm}
               generateNewWallet={this.props.generateNewWallet}
             />
           );
@@ -87,7 +85,6 @@ class GenerateWallet extends Component<Props, {}> {
 
 function mapStateToProps(state: AppState) {
   return {
-    walletPasswordForm: state.form.walletPasswordForm,
     activeStep: state.generateWallet.activeStep,
     password: state.generateWallet.password,
     wallet: state.generateWallet.wallet
