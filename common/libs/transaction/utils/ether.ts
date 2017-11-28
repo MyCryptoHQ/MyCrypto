@@ -88,7 +88,8 @@ const validAddress = (t: ITransaction) => {
   }
 };
 
-const transaction = (t: ITransaction | IHexStrTransaction) => new Tx(t);
+const transaction = (t: ITransaction | IHexStrTransaction | string) =>
+  new Tx(t);
 
 //TODO: check that addresses are always checksummed
 const signTx = async (t: ITransaction, w: IWallet) => {

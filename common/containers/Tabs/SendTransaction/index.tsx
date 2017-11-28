@@ -76,6 +76,7 @@ export class SendTransaction extends React.Component<Props, State> {
             {/* Send Form */}
             <Fields />
             <UnavailableWallets />
+
             <SideBar />
           </div>
 

@@ -8,7 +8,8 @@ import {
   SendEverything,
   UnitDropDown,
   CurrentCustomMessage,
-  GenerateTransaction
+  GenerateTransaction,
+  TransactionComparison
 } from './components';
 import {
   Offline,
@@ -54,6 +55,9 @@ const content = (
         <div className="col-xs-12 clearfix">
           <GenerateTransaction />
         </div>
+      </div>
+      <div className="row form-group">
+        <TransactionComparison />
       </div>
     </div>
   </main>

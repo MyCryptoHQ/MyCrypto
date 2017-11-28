@@ -7,3 +7,4 @@ export * from './SendEverything';
 export * from './UnitDropDown';
 export * from './CurrentCustomMessage';
 export * from './GenerateTransaction';
+export * from './TransactionComparison';
