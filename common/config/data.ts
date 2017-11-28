@@ -40,6 +40,10 @@ export const gasPriceDefaults = {
 };
 
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
+export const ledgerReferralURL =
+  'https://www.ledgerwallet.com/r/fa4b?path=/products/';
+export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
+export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
 export interface BlockExplorerConfig {
   name: string;
