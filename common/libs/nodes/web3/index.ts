@@ -126,6 +126,17 @@ export default class Web3Node implements INode {
     );
   }
 
+  public getCurrentBlock(): Promise<string> {
+    return new Promise((resolve, reject) =>
+      this.web3.eth.getBlock('latest', false, (err, block) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(block.number);
+      })
+    );
+  }
+
   public sendRawTx(signedTx: string): Promise<string> {
     return new Promise((resolve, reject) =>
       this.web3.eth.sendRawTransaction(signedTx, (err, txHash) => {

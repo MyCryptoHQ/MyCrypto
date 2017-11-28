@@ -120,7 +120,7 @@ export function broadCastTxFailed(
 }
 
 export type TResetWallet = typeof resetWallet;
-export function resetWallet() {
+export function resetWallet(): types.ResetWalletAction {
   return {
     type: TypeKeys.WALLET_RESET
   };

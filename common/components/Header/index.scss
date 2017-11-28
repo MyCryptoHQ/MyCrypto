@@ -15,6 +15,15 @@ $small-size: 900px;
   }
 }
 
+@keyframes dropdown-is-flashing {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
 // Header
 .Header {
   margin-bottom: 2rem;
@@ -123,6 +132,11 @@ $small-size: 900px;
           text-align: center;
           padding-top: $space-sm !important;
           padding-bottom: $space-sm !important;
+        }
+
+        &.is-flashing {
+          pointer-events: none;
+          animation: dropdown-is-flashing 800ms ease infinite;
         }
       }
     }

@@ -58,6 +58,7 @@ exports[`render snapshot 1`] = `
         "call": [Function],
         "decorateRequest": [Function],
         "endpoint": "https://api.myetherapi.com/rop",
+        "headers": Object {},
       },
       "requests": RPCRequests {},
     }

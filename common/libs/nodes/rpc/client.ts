@@ -3,8 +3,10 @@ import { JsonRpcResponse, RPCRequest } from './types';
 
 export default class RPCClient {
   public endpoint: string;
-  constructor(endpoint: string) {
+  public headers: object;
+  constructor(endpoint: string, headers: object = {}) {
     this.endpoint = endpoint;
+    this.headers = headers;
   }
 
   public id(): string {
@@ -21,7 +23,8 @@ export default class RPCClient {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...this.headers,
       },
       body: JSON.stringify(this.decorateRequest(request))
     }).then(r => r.json());
@@ -31,7 +34,8 @@ export default class RPCClient {
     return fetch(this.endpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...this.headers,
       },
       body: JSON.stringify(requests.map(this.decorateRequest))
     }).then(r => r.json());

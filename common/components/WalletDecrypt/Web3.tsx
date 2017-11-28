@@ -13,7 +13,7 @@ export default class Web3Decrypt extends Component<Props> {
       <section className="Web3Decrypt col-md-4 col-sm-6">
         <div>
           <button
-            className="Web3Decrypt btn btn-primary btn-lg"
+            className="Web3Decrypt-decrypt btn btn-primary btn-lg"
             onClick={this.props.onUnlock}
           >
             {translate('ADD_MetaMask')}
