@@ -7,7 +7,7 @@ import {
   GetTokenBalanceRequest,
   GetTransactionCountRequest,
   SendRawTxRequest,
-  GetCurrentBlockRequest
+  GetCurrentBlockRequest,
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
@@ -67,7 +67,7 @@ export default class RPCRequests {
 
   public getCurrentBlock(): GetCurrentBlockRequest | any {
     return {
-      method: 'eth_blockNumber'
+      method: 'eth_blockNumber',
     };
   }
 }
