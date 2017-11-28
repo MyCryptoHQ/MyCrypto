@@ -248,7 +248,11 @@ export default class Footer extends React.Component<Props, State> {
               <li>
                 ETH: mewtopia.eth{' '}
                 <span className="mono wrap">
-                  <NewTabLink href="https://etherscan.io/address/0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8">
+                  <NewTabLink
+                    href={`https://etherscan.io/address/${
+                      donationAddressMap.ETH
+                    }`}
+                  >
                     {donationAddressMap.ETH}
                   </NewTabLink>
                 </span>
