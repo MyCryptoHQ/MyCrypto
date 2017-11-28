@@ -17,12 +17,12 @@ export interface ITransaction {
 
 export interface IHexStrTransaction {
   to: string;
-  from?: string;
-  value?: string;
-  data?: string;
+  value: string;
+  data: string;
   gasLimit: string;
   gasPrice: string;
   nonce: string;
+  chainId: number;
 }
 
 export interface ITokenTransaction {

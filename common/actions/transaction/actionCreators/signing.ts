@@ -14,11 +14,8 @@ export {
 };
 
 type TSignTransactionFailed = typeof signTransactionFailed;
-const signTransactionFailed = (
-  payload: SignTransactionFailedAction['payload']
-): SignTransactionFailedAction => ({
-  type: TypeKeys.SIGN_TRANSACTION_FAILED,
-  payload
+const signTransactionFailed = (): SignTransactionFailedAction => ({
+  type: TypeKeys.SIGN_TRANSACTION_FAILED
 });
 
 type TSignTransactionSucceeded = typeof signTransactionSucceeded;

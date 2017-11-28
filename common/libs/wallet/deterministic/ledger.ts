@@ -1,10 +1,10 @@
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
 import EthTx from 'ethereumjs-tx';
-import { addHexPrefix, bufferToHex } from 'ethereumjs-util';
+import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { IWallet } from '../IWallet';
-import { ITransaction } from 'libs/transaction';
+import { getTransactionFields } from 'libs/transaction';
 
 export class LedgerWallet extends DeterministicWallet implements IWallet {
   private ledger: any;
@@ -18,33 +18,31 @@ export class LedgerWallet extends DeterministicWallet implements IWallet {
 
   // modeled after
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/uiFuncs.js#L58
-  public signRawTransaction(rawTx: ITransaction): Promise<string> {
-    const eTx = new EthTx({
-      ...rawTx,
-      v: Buffer.from([rawTx.chainId]),
-      r: 0,
-      s: 0
-    });
+  public signRawTransaction(t: EthTx): Promise<string> {
+    t.v = Buffer.from([t._chainId]);
+    t.r = toBuffer(0);
+    t.s = toBuffer(0);
 
     return new Promise((resolve, reject) => {
       this.ethApp.signTransaction(
         this.getPath(),
-        eTx.serialize().toString('hex'),
+        t.serialize().toString('hex'),
         (result, error) => {
           if (error) {
             return reject(this.ethApp.getError(error));
           }
+          const strTx = getTransactionFields(t);
 
           const txToSerialize = {
-            ...rawTx,
+            ...strTx,
             v: addHexPrefix(result.v),
             r: addHexPrefix(result.r),
             s: addHexPrefix(result.s)
           };
 
           const serializedTx = new EthTx(txToSerialize).serialize();
-
-          resolve(bufferToHex(serializedTx));
+          const hexTx = bufferToHex(serializedTx);
+          resolve(hexTx);
         }
       );
     });

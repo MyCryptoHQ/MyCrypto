@@ -30,13 +30,6 @@ const validateTokenBalance = (t: ITransaction, tokenBalance: TokenValue) => {
     throw Error('Not enough tokens available');
   }
 };
-const makeTxObj = (t: ITokenTransaction): ITransaction => {
-  const { tokenValue, ...rest } = t;
-  const data = encodeTransfer(t.to, tokenValue);
-  const value = Wei('0');
-
-  return { ...rest, data, value };
-};
 
 const encodeTransfer = (to: Address, value: TokenValue) =>
   toBuffer(ERC20.transfer.encodeInput({ _to: to, _value: value }));

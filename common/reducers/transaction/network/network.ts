@@ -13,7 +13,8 @@ const reducerObj: ReducersMapObject = {
   [TK.ESTIMATE_GAS_FAILED]: (state: State) => ({
     ...state,
     gasEstimationSuccessful: false
-  })
+  }),
+  [TK.RESET]: _ => INITIAL_STATE
 };
 
 export const network = createReducerFromObj(reducerObj, INITIAL_STATE);

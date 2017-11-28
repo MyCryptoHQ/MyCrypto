@@ -36,8 +36,8 @@ declare module 'ethereumjs-tx' {
     value?: Buffer | BN | string | number | null;
   }
 
-  class Base {
-    public chainId: number;
+  class EthereumJSTx {
+    public _chainId: number;
     public raw: Buffer;
     public gasLimit: Buffer;
     public gasPrice: Buffer;
@@ -46,7 +46,9 @@ declare module 'ethereumjs-tx' {
     public data: Buffer;
     public value: Buffer;
     public from: Buffer;
-
+    public v: Buffer;
+    public r: Buffer;
+    public s: Buffer;
     constructor(data: TxObj | string);
 
     /**
@@ -64,9 +66,9 @@ declare module 'ethereumjs-tx' {
 
     /**
      * returns the public key of the sender
-     * @return {Buffer}
+     * @return {number}
      */
-    public getChainId(): Buffer;
+    public getChainId(): number;
 
     /**
      * returns the sender's address
@@ -122,5 +124,5 @@ declare module 'ethereumjs-tx' {
     public serialize(): Buffer;
   }
 
-  export default Base;
+  export default EthereumJSTx;
 }

@@ -9,9 +9,11 @@ import {
 import { getBityRatesSaga } from './swap/rates';
 import wallet from './wallet';
 import { estimateGas } from './gas';
+import { signing } from './signing';
 
 export default {
   estimateGas,
+  signing,
   bityTimeRemaining,
   configSaga,
   postBityOrderSaga,

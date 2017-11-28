@@ -79,7 +79,6 @@ interface SignTransactionSucceededAction {
 }
 interface SignTransactionFailedAction {
   type: TypeKeys.SIGN_TRANSACTION_FAILED;
-  payload: string;
 }
 
 /*Field Actions*/

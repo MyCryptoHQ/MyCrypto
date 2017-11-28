@@ -1,11 +1,10 @@
 import Tx from 'ethereumjs-tx';
-import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
+import { bufferToHex } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { IWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
-import { sanitizeHex } from 'libs/values';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
 
 export {
@@ -20,13 +19,11 @@ export {
 };
 
 // Get useable fields from an EthTx object.
-const getTransactionFields = (
-  t: Tx,
-  withSigParams: boolean = false
-): IHexStrTransaction => {
+const getTransactionFields = (t: Tx): IHexStrTransaction => {
   // For some crazy reason, toJSON spits out an array, not keyed values.
   const { data, gasLimit, gasPrice, to, nonce, value } = t;
 
+  const chainId = t.getChainId();
   /*
   let address 
   try {
@@ -44,7 +41,8 @@ const getTransactionFields = (
     // Everything else is as-is
     nonce: hexEncodeQuantity(nonce),
     gasPrice: hexEncodeQuantity(gasPrice),
-    gasLimit: hexEncodeQuantity(gasLimit)
+    gasLimit: hexEncodeQuantity(gasLimit),
+    chainId
   };
 };
 

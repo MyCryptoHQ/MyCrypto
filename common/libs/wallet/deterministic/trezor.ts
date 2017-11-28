@@ -1,30 +1,37 @@
 import BN from 'bn.js';
 import EthTx from 'ethereumjs-tx';
 import { bufferToHex, addHexPrefix } from 'ethereumjs-util';
-import { ITransaction } from 'libs/transaction';
-import { stripHexPrefixAndLower } from 'libs/values';
+import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
 import { IWallet } from '../IWallet';
+import { getTransactionFields } from 'libs/transaction';
+import { mapValues } from 'lodash';
 
 export class TrezorWallet extends DeterministicWallet implements IWallet {
-  public signRawTransaction(tx: ITransaction): Promise<string> {
+  public signRawTransaction(tx: EthTx): Promise<string> {
     return new Promise((resolve, reject) => {
+      const { chainId, ...strTx } = getTransactionFields(tx);
+      // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
+      const cleanedTx = mapValues(
+        mapValues(strTx, stripHexPrefixAndLower),
+        padLeftEven
+      );
+
       (TrezorConnect as any).ethereumSignTx(
         // Args
         this.getPath(),
-        // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
-        stripHexPrefixAndLower(tx.nonce),
-        stripHexPrefixAndLower(tx.gasPrice.toString()),
-        stripHexPrefixAndLower(tx.gasLimit.toString()),
-        stripHexPrefixAndLower(tx.to),
-        stripHexPrefixAndLower(tx.value),
-        stripHexPrefixAndLower(tx.data),
-        tx.chainId,
+        cleanedTx.nonce,
+        cleanedTx.gasPrice,
+        cleanedTx.gasLimit,
+        cleanedTx.to,
+        cleanedTx.value,
+        cleanedTx.data,
+        chainId,
         // Callback
         result => {
           if (!result.success) {
-            return reject(new Error(result.error));
+            return reject(Error(result.error));
           }
 
           // TODO: Explain what's going on here? Add tests? Adapted from:
