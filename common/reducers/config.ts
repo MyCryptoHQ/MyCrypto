@@ -5,10 +5,14 @@ import {
   AddCustomNodeAction,
   RemoveCustomNodeAction,
   SetLatestBlockAction,
-  ConfigAction
+  ConfigAction,
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
-import { NODES, NodeConfig, CustomNodeConfig } from '../config/data';
+import {
+  NODES,
+  NodeConfig,
+  CustomNodeConfig,
+} from '../config/data';
 import { makeCustomNodeId } from 'utils/node';
 
 export interface State {
@@ -34,7 +38,7 @@ export const INITIAL_STATE: State = {
   offline: false,
   forceOffline: false,
   customNodes: [],
-  latestBlock: '???'
+  latestBlock: "???",
 };
 
 function changeLanguage(state: State, action: ChangeLanguageAction): State {
@@ -49,14 +53,14 @@ function changeNode(state: State, action: ChangeNodeAction): State {
     ...state,
     nodeSelection: action.payload.nodeSelection,
     node: action.payload.node,
-    isChangingNode: false
+    isChangingNode: false,
   };
 }
 
 function changeNodeIntent(state: State): State {
   return {
     ...state,
-    isChangingNode: true
+    isChangingNode: true,
   };
 }
 
@@ -84,7 +88,10 @@ function forceOffline(state: State): State {
 function addCustomNode(state: State, action: AddCustomNodeAction): State {
   return {
     ...state,
-    customNodes: [...state.customNodes, action.payload]
+    customNodes: [
+      ...state.customNodes,
+      action.payload,
+    ],
   };
 }
 
@@ -92,16 +99,16 @@ function removeCustomNode(state: State, action: RemoveCustomNodeAction): State {
   const id = makeCustomNodeId(action.payload);
   return {
     ...state,
-    customNodes: state.customNodes.filter(cn => cn !== action.payload),
-    nodeSelection:
-      id === state.nodeSelection ? defaultNode : state.nodeSelection
+    customNodes: state.customNodes.filter((cn) => cn !== action.payload),
+    nodeSelection: id === state.nodeSelection ?
+      defaultNode : state.nodeSelection,
   };
 }
 
 function setLatestBlock(state: State, action: SetLatestBlockAction): State {
   return {
     ...state,
-    latestBlock: action.payload
+    latestBlock: action.payload,
   };
 }
 
