@@ -52,17 +52,25 @@ export default class RpcNode implements INode {
       .call(this.requests.getTokenBalance(address, token))
       .then(isValidTokenBalance)
       .then(({ result }) => {
-        return TokenValue(result);
+        return result === 'Failed' ? result : TokenValue(result);
       });
   }
 
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<TokenValue[]> {
+  ): Promise<(TokenValue | string)[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
-      .then(response => response.map(item => TokenValue(item.result)));
+      .then(response =>
+        response.map(item => {
+          if (isValidTokenBalance(item)) {
+            return TokenValue(item.result);
+          } else {
+            return 'Failed';
+          }
+        })
+      );
   }
 
   public getTransactionCount(address: string): Promise<string> {

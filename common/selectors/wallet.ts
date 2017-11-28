@@ -11,7 +11,7 @@ export function getWalletInst(state: AppState): IWallet | null | undefined {
 
 export interface TokenBalance {
   symbol: string;
-  balance: TokenValue;
+  balance: any;
   custom: boolean;
   decimal: number;
 }

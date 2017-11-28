@@ -87,6 +87,8 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       });
     } else if (ratesError) {
       valuesEl = <h5>{ratesError}</h5>;
+    } else if (tokenBalances && tokenBalances.length === 0) {
+      valuesEl = <h5>No tokens found!</h5>;
     } else {
       valuesEl = (
         <div className="EquivalentValues-values-loader">
@@ -108,7 +110,11 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
             <option value="ETH">ETH</option>
             {tokenBalances &&
               tokenBalances.map(tk => {
-                if (!tk.balance || tk.balance.isZero()) {
+                if (
+                  !tk.balance ||
+                  tk.balance === 'Failed' ||
+                  tk.balance.isZero()
+                ) {
                   return;
                 }
                 const sym = tk.symbol;

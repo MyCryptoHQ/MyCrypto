@@ -208,8 +208,14 @@ function formatErrors(response: JsonRpcResponse, apiType: string) {
   return `Invalid ${apiType} Error`;
 }
 
-const isValidEthCall = (response: JsonRpcResponse, schemaType) => apiName => {
+const isValidEthCall = (response: JsonRpcResponse, schemaType) => (
+  apiName,
+  cb?
+) => {
   if (!isValidResult(response, schemaType)) {
+    if (cb) {
+      return cb(response);
+    }
     throw new Error(formatErrors(response, apiName));
   }
   return response;
@@ -225,7 +231,9 @@ export const isValidCallRequest = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Call Request');
 
 export const isValidTokenBalance = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Token Balance');
+  isValidEthCall(response, schema.RpcNode)('Token Balance', () => ({
+    result: 'Failed'
+  }));
 
 export const isValidTransactionCount = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Transaction Count');
