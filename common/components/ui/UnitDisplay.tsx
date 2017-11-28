@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   fromTokenBase,
   getDecimal,
@@ -7,6 +8,9 @@ import {
   TokenValue
 } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
+import Spinner from 'components/ui/Spinner';
+import { getOffline } from 'selectors/config';
+import { AppState } from 'reducers';
 
 interface Props {
   /**
@@ -27,6 +31,12 @@ interface Props {
    * @memberof Props
    */
   displayShortBalance?: boolean | number;
+  /**
+   * @description From redux store, whether or not the user is currently offline
+   * @type {boolean}
+   * @memberof Props
+   */
+  offline?: boolean;
 }
 
 interface EthProps extends Props {
@@ -40,10 +50,12 @@ const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
   !!(param as EthProps).unit;
 
 const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
-  const { value, symbol, displayShortBalance } = params;
+  const { value, symbol, displayShortBalance, offline } = params;
 
-  if (!value) {
+  if (offline) {
     return <span>Balance isn't available offline</span>;
+  } else if (!value) {
+    return <Spinner size="x1" />;
   }
 
   const convertedValue = isEthereumUnit(params)
@@ -70,4 +82,10 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
   );
 };
 
-export default UnitDisplay;
+function mapStateToProps(state: AppState) {
+  return {
+    offline: getOffline(state)
+  };
+}
+
+export default connect(mapStateToProps)(UnitDisplay);
