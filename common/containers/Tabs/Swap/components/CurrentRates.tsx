@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 import './CurrentRates.scss';
+import parseDecimalNumber from 'parse-decimal-number';
 
 interface State {
   ETHBTCAmount: number;
@@ -30,21 +31,30 @@ export default class CurrentRates extends Component<Pairs, State> {
   };
 
   public buildPairRate = (origin: string, destination: string) => {
+    // const isNumbner = new RegExp('/[^d,.]', 'g');
     const pair = origin + destination;
-    const statePair = this.state[pair + 'Amount'];
+    const statePair = this.state[pair + 'Amount']
+      .toString()
+      .replace(/[^\d\,.]/g, '');
+    const parsedValue = parseDecimalNumber(statePair, '.,')
+      ? parseDecimalNumber(statePair, '.,')
+      : parseDecimalNumber(statePair) ? parseDecimalNumber(statePair) : '';
+    // const endsWithDecimal = new RegExp('[,.]$', 'g').test(statePair);
+    // console.log(statePair, parsedValue);
     const propsPair = this.props[pair];
     return (
       <div className="SwapRates-panel-rate">
         {propsPair ? (
           <div>
             <input
+              type="text"
               className="SwapRates-panel-rate-input"
               onChange={this.onChange}
               value={statePair}
               name={pair + 'Amount'}
             />
             <span className="SwapRates-panel-rate-amount">
-              {` ${origin} = ${toFixedIfLarger(statePair * propsPair, 6)} ${
+              {` ${origin} = ${toFixedIfLarger(parsedValue * propsPair, 6)} ${
                 destination
               }`}
             </span>
@@ -62,15 +72,15 @@ export default class CurrentRates extends Component<Pairs, State> {
         <h3 className="SwapRates-title">{translate('SWAP_rates')}</h3>
 
         <section className="SwapRates-panel row">
-          <div className="SwapRates-panel-side col-sm-6">
+          <form className="SwapRates-panel-side col-sm-6">
             {this.buildPairRate('ETH', 'BTC')}
             {this.buildPairRate('ETH', 'REP')}
-          </div>
+          </form>
 
-          <div className="SwapRates-panel-side col-sm-6">
+          <form className="SwapRates-panel-side col-sm-6">
             {this.buildPairRate('BTC', 'ETH')}
             {this.buildPairRate('BTC', 'REP')}
-          </div>
+          </form>
           <a
             className="SwapRates-panel-logo"
             href={bityReferralURL}
