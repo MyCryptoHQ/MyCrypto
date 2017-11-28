@@ -24,24 +24,23 @@ const validRequests = {
   }
 };
 
-const testGetBalance = async (n: RPCNode) => {
-  const data = await n.client.call(
-    n.requests.getBalance(validRequests.address)
-  );
-  return v.validate(data, schema.RpcNode);
+const testGetBalance = (n: RPCNode) => {
+  return n.client
+    .call(n.requests.getBalance(validRequests.address))
+    .then(data => v.validate(data, schema.RpcNode));
 };
 
-const testEstimateGas = async (n: RPCNode) => {
-  const data = await n.client.call(
-    n.requests.estimateGas(validRequests.transaction)
-  );
-  return v.validate(data, schema.RpcNode);
+const testEstimateGas = (n: RPCNode) => {
+  return n.client
+    .call(n.requests.estimateGas(validRequests.transaction))
+    .then(data => v.validate(data, schema.RpcNode));
 };
 
-const testGetTokenBalance = async (n: RPCNode) => {
+const testGetTokenBalance = (n: RPCNode) => {
   const { address, token } = validRequests;
-  const data = await n.client.call(n.requests.getTokenBalance(address, token));
-  return v.validate(data, schema.RpcNode);
+  return n.client
+    .call(n.requests.getTokenBalance(address, token))
+    .then(data => v.validate(data, schema.RpcNode));
 };
 
 const RPCTests = {

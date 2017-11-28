@@ -29,9 +29,7 @@ export default class RpcNode implements INode {
     return this.client
       .call(this.requests.ethCall(txObj))
       .then(isValidCallRequest)
-      .then(({ result }) => {
-        return result;
-      });
+      .then(response => response.result);
   }
   public getBalance(address: string): Promise<Wei> {
     return this.client
