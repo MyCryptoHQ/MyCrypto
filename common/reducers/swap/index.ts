@@ -20,6 +20,7 @@ export interface State {
   destinationKindOptions: string[];
   originKindOptions: string[];
   step: number;
+  options: any;
   bityRates: any;
   bityOrder: any;
   destinationAddress: string;
@@ -42,7 +43,14 @@ export const INITIAL_STATE: State = {
   destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, DEFAULT_ORIGIN_KIND),
   originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
   step: 1,
-  bityRates: {},
+  options: {
+    byId: {},
+    allIds: []
+  },
+  bityRates: {
+    byId: {},
+    allIds: []
+  },
   destinationAddress: '',
   bityOrder: {},
   isFetchingRates: null,
@@ -96,6 +104,10 @@ function handleSwapDestinationKind(
   };
 }
 
+const allIds = byIds => {
+  return Object.keys(byIds);
+};
+
 export function swap(
   state: State = INITIAL_STATE,
   action: actionTypes.SwapAction
@@ -119,12 +131,23 @@ export function swap(
       };
     case TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED:
       const { payload } = action;
-      console.log(normalize(payload, [schema.bityRate]));
       return {
         ...state,
         bityRates: {
-          ...state.bityRates,
-          ...normalize(payload, [schema.bityRate]).entities.bityRates
+          byId: {
+            ...state.bityRates.byId,
+            ...normalize(payload, [schema.bityRate]).entities.bityRates
+          },
+          allIds: allIds(
+            normalize(payload, [schema.bityRate]).entities.bityRates
+          )
+        },
+        options: {
+          byId: {
+            ...state.options.byId,
+            ...normalize(payload, [schema.bityRate]).entities.options
+          },
+          allIds: allIds(normalize(payload, [schema.bityRate]).entities.options)
         },
         isFetchingRates: false
       };

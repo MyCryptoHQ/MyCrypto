@@ -51,6 +51,7 @@ interface ReduxStateProps {
   originKindOptions: string[];
   step: number;
   bityRates: any;
+  options: any;
   bityOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
@@ -93,6 +94,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     const {
       // STATE
       bityRates,
+      options,
       originAmount,
       destinationAmount,
       originKind,
@@ -149,12 +151,10 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       orderStatus
     };
 
-    const { ETHBTC, ETHREP, BTCETH, BTCREP } = bityRates;
-    const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
-
     const CurrencySwapProps = {
       showNotification,
       bityRates,
+      options,
       originAmount,
       destinationAmount,
       originKind,
@@ -187,13 +187,16 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       outputTx
     };
 
+    const { ETHBTC, ETHREP, BTCETH, BTCREP } = bityRates.byId;
+    const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
+
     return (
       <TabSection>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
           {(step === 2 || step === 3) && (
-              <SwapInfoHeader {...SwapInfoHeaderProps} />
-            )}
+            <SwapInfoHeader {...SwapInfoHeaderProps} />
+          )}
 
           <main className="Tab-content-pane">
             {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
@@ -216,6 +219,7 @@ function mapStateToProps(state: AppState) {
     originKindOptions: state.swap.originKindOptions,
     step: state.swap.step,
     bityRates: state.swap.bityRates,
+    options: state.swap.options,
     bityOrder: state.swap.bityOrder,
     destinationAddress: state.swap.destinationAddress,
     isFetchingRates: state.swap.isFetchingRates,
