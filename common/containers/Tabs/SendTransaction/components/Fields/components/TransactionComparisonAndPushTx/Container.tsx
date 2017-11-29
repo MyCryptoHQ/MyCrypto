@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-
+import { getSignedTx, getWeb3Tx } from 'selectors/transaction';
 interface StateProps {
-  signedTransaction: string;
+  serializedTransaction: Buffer | null;
 }
 interface Props {
-  withSignedTransaction({
-    signedTransaction
-  }: {
-    signedTransaction: string;
-  }): React.ReactElement<any> | null;
+  isWeb3: boolean;
+  withSerializedTransaction(
+    serializedTransaction: string
+  ): React.ReactElement<any> | null;
 }
 class Container extends Component<StateProps & Props, {}> {
   public render() {
-    const { signedTransaction, withSignedTransaction } = this.props;
-    return signedTransaction
-      ? withSignedTransaction({ signedTransaction })
+    const { serializedTransaction, withSerializedTransaction } = this.props;
+    return serializedTransaction
+      ? withSerializedTransaction(serializedTransaction.toString('hex'))
       : null;
   }
 }
 
-export const SignedTransaction = connect((state: AppState) => ({
-  signedTransaction: state.transaction.signing.signedTransaction
-}))(Container);
+export const SignedTransaction = connect(
+  (state: AppState, ownProps: Props) => ({
+    serializedTransaction: ownProps.isWeb3
+      ? getWeb3Tx(state)
+      : getSignedTx(state)
+  })
+)(Container);

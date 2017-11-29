@@ -1,5 +1,9 @@
 import { SagaIterator } from 'redux-saga';
-import { getWeb3Tx, getSignedTx } from 'selectors/transaction';
+import {
+  getWeb3Tx,
+  getSignedTx,
+  getTransactionStatus
+} from 'selectors/transaction';
 import { transaction } from 'libs/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
@@ -14,6 +18,11 @@ import {
   StateSerializedTx,
   ISerializedTxAndIndexingHash
 } from 'sagas/broadcast/typings';
+import { ITransactionStatus } from 'reducers/transaction/broadcast';
+import { showNotification } from 'actions/notifications';
+import React from 'react';
+import { getNetworkConfig } from 'selectors/config';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 
 // we dont include the signature paramaters because web3 transactions are unsigned
 const computeIndexingHash = (tx: Buffer) =>
@@ -22,7 +31,7 @@ const computeIndexingHash = (tx: Buffer) =>
 export const broadcastTransactionWrapper = (
   func: (serializedTx: string) => SagaIterator
 ) =>
-  function*(action: BroadcastRequestedAction) {
+  function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
     const {
       indexingHash,
       serializedTransaction
@@ -32,36 +41,56 @@ export const broadcastTransactionWrapper = (
     );
 
     try {
-      yield put(
-        broadcastTransactionQueued({
-          indexingHash,
-          serializedTransaction
-        })
+      const shouldBroadcast = yield call(
+        shouldBroadcastTransaction,
+        indexingHash
       );
+      if (!shouldBroadcast) {
+        return;
+      }
+      const queueAction = broadcastTransactionQueued({
+        indexingHash,
+        serializedTransaction
+      });
+      yield put(queueAction);
       const stringTx: string = yield call(bufferToHex, serializedTransaction);
       const broadcastedHash = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
       yield put(
         broadcastTransactionSucceeded({ indexingHash, broadcastedHash })
       );
-      /*
-          yield put(
-      showNotification(
-        'success',
-        <TransactionSucceeded
-          txHash={txHash}
-          blockExplorer={network.blockExplorer}
-        />,
-        0
-      )
-    );
-      
-      */
-    } catch {
+
+      const network = yield select(getNetworkConfig);
+      //TODO: make this not ugly
+      yield put(
+        showNotification(
+          'success',
+          <TransactionSucceeded
+            txHash={broadcastedHash}
+            blockExplorer={network.blockExplorer}
+          />,
+          0
+        )
+      );
+    } catch (error) {
       yield put(broadcastTransactionFailed({ indexingHash }));
-      //yield put(showNotification('danger', error.message));
+      yield put(showNotification('danger', (error as Error).message));
     }
   };
 
+function* shouldBroadcastTransaction(indexingHash: string): SagaIterator {
+  const existingTx: ITransactionStatus | null = yield select(
+    getTransactionStatus,
+    indexingHash
+  );
+  // if the transaction already exists
+  if (existingTx) {
+    // and is still broadcasting or already broadcasting, dont re-broadcast
+    if (existingTx.isBroadcasting || existingTx.broadcastSuccessful) {
+      return false;
+    }
+  }
+  return true;
+}
 function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction) {
   const isWeb3Req = type === TK.BROADCAST_WEB3_TRANSACTION_REQUESTED;
   const txSelector = isWeb3Req ? getWeb3Tx : getSignedTx;

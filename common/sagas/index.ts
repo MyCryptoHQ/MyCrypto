@@ -10,8 +10,9 @@ import { getBityRatesSaga } from './swap/rates';
 import wallet from './wallet';
 import { estimateGas } from './gas';
 import { signing } from './signing';
-
+import { broadcast } from './broadcast';
 export default {
+  broadcast,
   estimateGas,
   signing,
   bityTimeRemaining,

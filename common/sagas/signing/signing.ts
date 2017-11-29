@@ -6,7 +6,6 @@ import {
   signWeb3TransactionSucceeded,
   TypeKeys
 } from 'actions/transaction';
-import { AppState } from 'reducers';
 
 const signLocalTransaction = signTransactionWrapper(function*({
   tx,

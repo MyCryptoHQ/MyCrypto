@@ -9,6 +9,7 @@ export const GenerateTransaction: React.SFC<{}> = () => (
       <Transaction
         withTransaction={({ isFullTransaction, transaction }) => (
           <WithSigner
+            isWeb3={isWeb3Wallet}
             withSigner={signer => (
               <button
                 disabled={!isFullTransaction}

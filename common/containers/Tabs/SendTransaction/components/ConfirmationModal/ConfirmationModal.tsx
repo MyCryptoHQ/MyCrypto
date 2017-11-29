@@ -15,7 +15,7 @@ import {
   getNetworkConfig,
   getNodeConfig
 } from 'selectors/config';
-import { getTokens, getTxFromState, MergedToken } from 'selectors/wallet';
+import { getTokens, MergedToken } from 'selectors/wallet';
 import translate, { translateRaw } from 'translations';
 import { UnitDisplay } from 'components/ui';
 import './ConfirmationModal.scss';
