@@ -7,6 +7,7 @@ export interface TxObj {
   data: string;
 }
 export interface INode {
+  ping(): Promise<boolean>;
   getBalance(address: string): Promise<Wei>;
   getTokenBalance(address: string, token: Token): Promise<TokenValue>;
   getTokenBalances(address: string, tokens: Token[]): Promise<TokenValue[]>;
