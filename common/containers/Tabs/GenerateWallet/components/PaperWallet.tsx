@@ -4,6 +4,7 @@ import { NewTabLink } from 'components/ui';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import translate from 'translations';
+import { stripHexPrefix } from 'libs/values';
 import './PaperWallet.scss';
 import Template from './Template';
 
@@ -13,7 +14,7 @@ const content = (wallet: IFullWallet) => (
     <h1 className="GenPaper-title">{translate('GEN_Label_5')}</h1>
     <input
       className="GenPaper-private form-control"
-      value={wallet.getPrivateKeyString()}
+      value={stripHexPrefix(wallet.getPrivateKeyString())}
       aria-label={translate('x_PrivKey')}
       aria-describedby="x_PrivKeyDesc"
       type="text"
