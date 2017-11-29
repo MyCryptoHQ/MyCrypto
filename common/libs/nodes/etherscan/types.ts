@@ -41,10 +41,16 @@ export interface GetTransactionCountRequest extends EtherscanReqBase {
   tag: 'latest';
 }
 
+export interface GetCurrentBlockRequest extends EtherscanReqBase {
+  module: 'proxy';
+  action: 'eth_blockNumber';
+}
+
 export type EtherscanRequest =
   | SendRawTxRequest
   | GetBalanceRequest
   | CallRequest
   | GetTokenBalanceRequest
   | EstimateGasRequest
-  | GetTransactionCountRequest;
+  | GetTransactionCountRequest
+  | GetCurrentBlockRequest;

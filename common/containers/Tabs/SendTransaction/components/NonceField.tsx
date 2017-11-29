@@ -27,17 +27,16 @@ export default class NonceField extends React.Component<PublicProps, {}> {
     return (
       <div className="row form-group">
         <div className="col-xs-11">
+          <label>Nonce</label>
           <Help
-            size={'small'}
             link={
               'https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html'
             }
           />
-          <label>Nonce</label>
           <input
-            className={`form-control ${isValidNonce(strValue)
-              ? 'is-valid'
-              : 'is-invalid'}`}
+            className={`form-control ${
+              isValidNonce(strValue) ? 'is-valid' : 'is-invalid'
+            }`}
             type="number"
             value={strValue}
             placeholder={placeholder}
