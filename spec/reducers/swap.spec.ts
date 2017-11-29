@@ -59,12 +59,12 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_ORIGIN_AMOUNT', () => {
     const originAmount = 2;
-    expect(
-      swap(undefined, swapActions.originAmountSwap(originAmount))
-    ).toEqual({
-      ...INITIAL_STATE,
-      originAmount
-    });
+    expect(swap(undefined, swapActions.originAmountSwap(originAmount))).toEqual(
+      {
+        ...INITIAL_STATE,
+        originAmount
+      }
+    );
   });
 
   it('should handle SWAP_DESTINATION_AMOUNT', () => {
@@ -153,12 +153,71 @@ describe('swap reducer', () => {
     });
   });
 
-  // TODO
-  // it('should handle SWAP_BITY_ORDER_CREATE_SUCCEEDED', () => {
-  // });
-  //
-  // it('should handle SWAP_BITY_ORDER_STATUS_SUCCEEDED', () => {
-  // });
+  it('should handle SWAP_BITY_ORDER_CREATE_SUCCEEDED', () => {
+    const mockedBityOrder: swapActions.BityOrderPostResponse = {
+      payment_address: 'payment_address',
+      status: 'status',
+      input: {
+        amount: '1.111',
+        currency: 'input_currency',
+        reference: 'input_reference',
+        status: 'input_status'
+      },
+      output: {
+        amount: '1.111',
+        currency: 'output_currency',
+        reference: 'output_reference',
+        status: 'output_status'
+      },
+      timestamp_created: 'timestamp_created',
+      validFor: 0,
+      id: 'id'
+    };
+
+    expect(
+      swap(undefined, swapActions.bityOrderCreateSucceededSwap(mockedBityOrder))
+    ).toEqual({
+      ...INITIAL_STATE,
+      bityOrder: {
+        ...mockedBityOrder
+      },
+      isPostingOrder: false,
+      originAmount: parseFloat(mockedBityOrder.input.amount),
+      destinationAmount: parseFloat(mockedBityOrder.output.amount),
+      secondsRemaining: mockedBityOrder.validFor,
+      validFor: mockedBityOrder.validFor,
+      orderTimestampCreatedISOString: mockedBityOrder.timestamp_created,
+      paymentAddress: mockedBityOrder.payment_address,
+      orderStatus: mockedBityOrder.status,
+      orderId: mockedBityOrder.id
+    });
+  });
+
+  it('should handle SWAP_BITY_ORDER_STATUS_SUCCEEDED', () => {
+    const mockedBityResponse: swapActions.BityOrderResponse = {
+      input: {
+        amount: '1.111',
+        currency: 'input_currency',
+        reference: 'input_reference',
+        status: 'input_status'
+      },
+      output: {
+        amount: '1.111',
+        currency: 'output_currency',
+        reference: 'output_reference',
+        status: 'FILL'
+      },
+      status: 'status'
+    };
+
+    expect(
+      swap(undefined, swapActions.orderStatusSucceededSwap(mockedBityResponse))
+    ).toEqual({
+      ...INITIAL_STATE,
+      outputTx: mockedBityResponse.output.reference,
+      orderStatus: mockedBityResponse.output.status
+    });
+  });
 
   it('should handle SWAP_ORDER_TIME', () => {
     const secondsRemaining = 300;

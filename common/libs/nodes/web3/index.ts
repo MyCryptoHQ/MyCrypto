@@ -11,6 +11,10 @@ export default class Web3Node implements INode {
     this.web3 = web3;
   }
 
+  public ping(): Promise<boolean> {
+    return Promise.resolve(true);
+  }
+
   public sendCallRequest(txObj: TxObj): Promise<string> {
     return new Promise((resolve, reject) => {
       this.web3.eth.call(txObj, 'pending', (err, res) => {
@@ -122,6 +126,17 @@ export default class Web3Node implements INode {
         }
         // web3 returns number
         resolve(txCount.toString());
+      })
+    );
+  }
+
+  public getCurrentBlock(): Promise<string> {
+    return new Promise((resolve, reject) =>
+      this.web3.eth.getBlock('latest', false, (err, block) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(block.number);
       })
     );
   }

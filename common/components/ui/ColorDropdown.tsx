@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import DropdownShell from './DropdownShell';
+import removeIcon from 'assets/images/icon-remove.svg';
+import './ColorDropdown.scss';
 
 interface Option<T> {
   name: any;
   value: T;
   color?: string;
   hidden: boolean | undefined;
+  onRemove?(): void;
 }
 
 interface Props<T> {
@@ -67,6 +70,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
       }, []);
 
     const menuClass = classnames({
+      ColorDropdown: true,
       'dropdown-menu': true,
       [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
     });
@@ -78,12 +82,24 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
             return <li key={i} role="separator" className="divider" />;
           } else {
             return (
-              <li key={i} style={{ borderLeft: `2px solid ${option.color}` }}>
+              <li
+                key={i}
+                className="ColorDropdown-item"
+                style={{ borderColor: option.color }}
+              >
                 <a
                   className={option.value === value ? 'active' : ''}
                   onClick={this.onChange.bind(null, option.value)}
                 >
                   {option.name}
+
+                  {option.onRemove && (
+                    <img
+                      className="ColorDropdown-item-remove"
+                      onClick={this.onRemove.bind(null, option.onRemove)}
+                      src={removeIcon}
+                    />
+                  )}
                 </a>
               </li>
             );
@@ -101,6 +117,17 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
       this.dropdownShell.close();
     }
   };
+
+  private onRemove(
+    onRemove: () => void,
+    ev?: React.SyntheticEvent<HTMLButtonElement>
+  ) {
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    onRemove();
+  }
 
   private getActiveOption() {
     return this.props.options.find(opt => opt.value === this.props.value);

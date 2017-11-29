@@ -44,14 +44,13 @@ export default class CurrentRates extends Component<Pairs, State> {
               name={pair + 'Amount'}
             />
             <span className="SwapRates-panel-rate-amount">
-              {` ${origin} = ${toFixedIfLarger(
-                statePair * propsPair,
-                6
-              )} ${destination}`}
+              {` ${origin} = ${toFixedIfLarger(statePair * propsPair, 6)} ${
+                destination
+              }`}
             </span>
           </div>
         ) : (
-          <Spinner />
+          <Spinner size="x1" light={true} />
         )}
       </div>
     );

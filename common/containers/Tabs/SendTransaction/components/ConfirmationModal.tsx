@@ -115,7 +115,7 @@ class ConfirmationModal extends React.Component<Props, State> {
           <div className="ConfModal">
             {isBroadcasting ? (
               <div className="ConfModal-loading">
-                <Spinner size="5x" />
+                <Spinner size="x5" />
               </div>
             ) : (
               <div>
