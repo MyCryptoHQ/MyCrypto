@@ -21,7 +21,7 @@
     "hdkey": "0.7.1",
     "idna-uts46": "1.1.0",
     "lodash": "4.17.4",
-    "moment": "2.19.2",
+    "moment": "2.19.3",
     "qrcode": "1.0.0",
     "qrcode.react": "0.7.2",
     "query-string": "5.0.1",
