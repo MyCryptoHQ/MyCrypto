@@ -54,7 +54,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
 
   if (displayShortBalance) {
     const digits =
-      typeof displayShortBalance === 'number' ? displayShortBalance : 3;
+      typeof displayShortBalance === 'number' ? displayShortBalance : 4;
     formattedValue = format(convertedValue, digits);
     // If the formatted value was too low, display something like < 0.01
     if (parseFloat(formattedValue) === 0 && parseFloat(convertedValue) !== 0) {
