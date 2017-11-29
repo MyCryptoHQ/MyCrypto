@@ -277,6 +277,7 @@ export class SendTransaction extends React.Component<Props, State> {
                 ) : null}
               </div>
             }
+            allowReadOnly={true}
           />
           <NavigationPrompt
             when={unlocked}
