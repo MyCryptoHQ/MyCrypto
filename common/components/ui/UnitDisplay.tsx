@@ -58,10 +58,16 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
 
     if (displayShortBalance) {
       const digits =
-        typeof displayShortBalance === 'number' && displayShortBalance;
-      formattedValue = digits
-        ? format(convertedValue, digits)
-        : format(convertedValue);
+        typeof displayShortBalance === 'number' ? displayShortBalance : 4;
+      formattedValue = format(convertedValue, digits);
+      // If the formatted value was too low, display something like < 0.01
+      if (
+        parseFloat(formattedValue) === 0 &&
+        parseFloat(convertedValue) !== 0
+      ) {
+        const padding = digits !== 0 ? `.${'0'.repeat(digits - 1)}1` : '';
+        formattedValue = `< 0${padding}`;
+      }
     } else {
       formattedValue = convertedValue;
     }
