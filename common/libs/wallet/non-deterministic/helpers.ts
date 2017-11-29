@@ -23,7 +23,7 @@ interface ISignWrapper {
   unlock();
 }
 
-type WrappedWallet = IFullWallet & ISignWrapper;
+export type WrappedWallet = IFullWallet & ISignWrapper;
 
 export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
   Object.assign(walletToWrap, {
