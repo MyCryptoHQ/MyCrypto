@@ -4,6 +4,12 @@
 label {
   margin-bottom: $space-xs;
   font-size: $font-size-bump-more;
+
+  &.is-required:after {
+    content: '*';
+    padding-left: 2px;
+    color: $brand-warning;
+  }
 }
 
 label + .form-control,

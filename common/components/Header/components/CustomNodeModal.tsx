@@ -6,6 +6,7 @@ import { NETWORKS, CustomNodeConfig } from 'config/data';
 import { makeCustomNodeId } from 'utils/node';
 
 const NETWORK_KEYS = Object.keys(NETWORKS);
+const CUSTOM = 'custom';
 
 interface Input {
   name: string;
@@ -24,6 +25,9 @@ interface State {
   url: string;
   port: string;
   network: string;
+  customNetworkName: string;
+  customNetworkUnit: string;
+  customNetworkChainId: string;
   hasAuth: boolean;
   username: string;
   password: string;
@@ -42,6 +46,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
 
   public render() {
     const { handleClose } = this.props;
+    const { network } = this.state;
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
 
@@ -98,7 +103,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                 <select
                   className="form-control"
                   name="network"
-                  value={this.state.network}
+                  value={network}
                   onChange={this.handleChange}
                 >
                   {NETWORK_KEYS.map(net => (
@@ -106,9 +111,47 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                       {net}
                     </option>
                   ))}
+                  <option value={CUSTOM}>Custom...</option>
                 </select>
               </div>
             </div>
+
+            {network === CUSTOM && (
+              <div className="row">
+                <div className="col-sm-6">
+                  <label className="is-required">Network Name</label>
+                  {this.renderInput(
+                    {
+                      name: 'customNetworkName',
+                      placeholder: 'My Custom Network'
+                    },
+                    invalids
+                  )}
+                </div>
+                <div className="col-sm-3">
+                  <label className="is-required">Currency</label>
+                  {this.renderInput(
+                    {
+                      name: 'customNetworkUnit',
+                      placeholder: 'ETH'
+                    },
+                    invalids
+                  )}
+                </div>
+                <div className="col-sm-3">
+                  <label>Chain ID</label>
+                  {this.renderInput(
+                    {
+                      name: 'customNetworkChainId',
+                      placeholder: 'e.g. 1'
+                    },
+                    invalids
+                  )}
+                </div>
+              </div>
+            )}
+
+            <hr />
 
             <div className="row">
               <div className="col-sm-9">
@@ -151,11 +194,11 @@ export default class CustomNodeModal extends React.Component<Props, State> {
             {this.state.hasAuth && (
               <div className="row">
                 <div className="col-sm-6">
-                  <label>Username</label>
+                  <label className="is-required">Username</label>
                   {this.renderInput({ name: 'username' }, invalids)}
                 </div>
                 <div className="col-sm-6">
-                  <label>Password</label>
+                  <label className="is-required">Password</label>
                   {this.renderInput(
                     {
                       name: 'password',
