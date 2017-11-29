@@ -23,6 +23,13 @@ export default class RpcNode implements INode {
     this.requests = new RPCRequests();
   }
 
+  public ping(): Promise<boolean> {
+    return this.client
+      .call(this.requests.getNetVersion())
+      .then(() => true)
+      .catch(() => false);
+  }
+
   public sendCallRequest(txObj: TxObj): Promise<string> {
     return this.client.call(this.requests.ethCall(txObj)).then(r => {
       if (r.error) {
