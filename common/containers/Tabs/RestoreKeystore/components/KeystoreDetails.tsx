@@ -3,7 +3,8 @@ import Template from './Template';
 import KeystoreInput from './KeystoreInput';
 import { fromPrivateKey, IFullWallet } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
-import { isValidPrivKey, fixPkey } from 'libs/validators';
+import { isValidPrivKey } from 'libs/validators';
+import { stripHexPrefix } from 'libs/values';
 import translate from 'translations';
 import './KeystoreDetails.scss';
 
@@ -41,7 +42,7 @@ class KeystoreDetails extends Component<{}, State> {
       fileName
     } = this.state;
 
-    const privateKey = fixPkey(secretKey);
+    const privateKey = stripHexPrefix(secretKey);
     const privateKeyValid = isValidPrivKey(privateKey);
 
     const content = (
@@ -121,7 +122,7 @@ class KeystoreDetails extends Component<{}, State> {
 
   private handleKeystoreGeneration = () => {
     const { secretKey } = this.state;
-    const removeChecksumPkey = fixPkey(secretKey);
+    const removeChecksumPkey = stripHexPrefix(secretKey);
     const keyBuffer = Buffer.from(removeChecksumPkey, 'hex');
     const wallet = fromPrivateKey(keyBuffer);
     const fileName = wallet.getV3Filename();

@@ -1,8 +1,5 @@
-import {
-  isValidEncryptedPrivKey,
-  isValidPrivKey,
-  fixPkey
-} from 'libs/validators';
+import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
+import { stripHexPrefix } from 'libs/values';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 
@@ -20,7 +17,7 @@ interface Validated {
 }
 
 function validatePkeyAndPass(pkey: string, pass: string): Validated {
-  const fixedPkey = fixPkey(pkey);
+  const fixedPkey = stripHexPrefix(pkey);
   const validPkey = isValidPrivKey(fixedPkey);
   const validEncPkey = isValidEncryptedPrivKey(fixedPkey);
   const isValidPkey = validPkey || validEncPkey;
