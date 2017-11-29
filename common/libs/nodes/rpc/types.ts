@@ -70,7 +70,7 @@ export interface GetTransactionCountRequest extends RPCRequestBase {
 }
 
 export interface GetCurrentBlockRequest extends RPCRequestBase {
-  method: 'eth_blockNumber'
+  method: 'eth_blockNumber';
 }
 
 export type RPCRequest =

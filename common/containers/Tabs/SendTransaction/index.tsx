@@ -285,6 +285,7 @@ export class SendTransaction extends React.Component<Props, State> {
                 ) : null}
               </div>
             }
+            allowReadOnly={true}
           />
           <NavigationPrompt
             when={unlocked}
@@ -364,9 +365,7 @@ export class SendTransaction extends React.Component<Props, State> {
                           {isLedgerWallet || isTrezorWallet ? (
                             <div>
                               <p>
-                                <b>
-                                  Confirm transaction on hardware wallet
-                                </b>
+                                <b>Confirm transaction on hardware wallet</b>
                               </p>
                               <Spinner size="x2" />
                             </div>
@@ -512,6 +511,10 @@ export class SendTransaction extends React.Component<Props, State> {
 
   public async getFormattedTxFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
+    if (wallet.isReadOnly) {
+      throw new Error('Wallet is read-only');
+    }
+
     const { token, unit, value, to, data } = this.state;
     const transactionInput: TransactionInput = {
       token,
@@ -694,6 +697,7 @@ export class SendTransaction extends React.Component<Props, State> {
     await this.resetJustTx();
     const { nodeLib, wallet, gasPrice, network, offline } = this.props;
     const { token, unit, value, to, data, gasLimit, nonce } = this.state;
+
     const chainId = network.chainId;
     const transactionInput = {
       token,
@@ -704,6 +708,10 @@ export class SendTransaction extends React.Component<Props, State> {
     };
     const bigGasLimit = Wei(gasLimit);
     try {
+      if (wallet.isReadOnly) {
+        throw new Error('Wallet is read-only');
+      }
+
       const signedTx = await generateCompleteTransaction(
         wallet,
         nodeLib,
