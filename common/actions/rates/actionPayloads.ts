@@ -28,7 +28,6 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
     .then(rates => {
       // API errors come as 200s, so check the json for error
       if (rates.Response && rates.Response === 'Error') {
-        console.error('Failed to fetch rates', rates);
         throw new Error('Failed to fetch rates');
       }
 
