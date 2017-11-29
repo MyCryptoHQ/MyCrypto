@@ -33,9 +33,3 @@ export interface ITokenTransaction {
   nonce: BN;
   chainId: number;
 }
-
-export interface BroadcastTransactionStatus {
-  isBroadcasting: boolean;
-  signedTx: string;
-  successfullyBroadcast: boolean;
-}

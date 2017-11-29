@@ -1,8 +1,5 @@
 import { showNotification } from 'actions/notifications';
 import {
-  broadCastTxFailed,
-  BroadcastTxRequestedAction,
-  broadcastTxSucceded,
   setBalance,
   setTokenBalances,
   setWallet,
@@ -12,7 +9,6 @@ import {
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent } from 'actions/config';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { INode } from 'libs/nodes/INode';
 import {
   IWallet,
@@ -22,7 +18,6 @@ import {
   Web3Wallet
 } from 'libs/wallet';
 import { NODES, initWeb3Node } from 'config/data';
-import React from 'react';
 import { SagaIterator } from 'redux-saga';
 import {
   apply,
@@ -33,7 +28,7 @@ import {
   select,
   takeEvery
 } from 'redux-saga/effects';
-import { getNetworkConfig, getNodeLib } from 'selectors/config';
+import { getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 
@@ -167,29 +162,6 @@ function* unlockWeb3(): SagaIterator {
   }
 }
 
-function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
-  const signedTx = action.payload.signedTx;
-  try {
-    const node: INode = yield select(getNodeLib);
-    const network = yield select(getNetworkConfig);
-    const txHash = yield apply(node, node.sendRawTx, [signedTx]);
-    yield put(
-      showNotification(
-        'success',
-        <TransactionSucceeded
-          txHash={txHash}
-          blockExplorer={network.blockExplorer}
-        />,
-        0
-      )
-    );
-    yield put(broadcastTxSucceded(txHash, signedTx));
-  } catch (error) {
-    yield put(showNotification('danger', error.message));
-    yield put(broadCastTxFailed(signedTx, error.message));
-  }
-}
-
 export default function* walletSaga(): SagaIterator {
   // useful for development
   yield call(updateBalances);
@@ -199,7 +171,6 @@ export default function* walletSaga(): SagaIterator {
     takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
     takeEvery('WALLET_UNLOCK_WEB3', unlockWeb3),
     takeEvery('WALLET_SET', updateBalances),
-    takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
-    takeEvery('WALLET_BROADCAST_TX_REQUESTED', broadcastTx)
+    takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances)
   ];
 }

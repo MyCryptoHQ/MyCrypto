@@ -9,7 +9,7 @@ import { getTransactionFields } from 'libs/transaction';
 import { mapValues } from 'lodash';
 
 export class TrezorWallet extends DeterministicWallet implements IWallet {
-  public signRawTransaction(tx: EthTx): Promise<string> {
+  public signRawTransaction(tx: EthTx): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const { chainId, ...strTx } = getTransactionFields(tx);
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
@@ -43,8 +43,8 @@ export class TrezorWallet extends DeterministicWallet implements IWallet {
             s: addHexPrefix(result.s)
           };
           const eTx = new EthTx(txToSerialize);
-          const signedTx = bufferToHex(eTx.serialize());
-          resolve(signedTx);
+          const serializedTx = eTx.serialize();
+          resolve(serializedTx);
         }
       );
     });

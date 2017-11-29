@@ -6,8 +6,10 @@ export {
   EstimateGasRequestedAction,
   EstimateGasSucceededAction,
   EstimateGasFailedAction,
-  SignTransactionRequestedAction,
-  SignTransactionSucceededAction,
+  SignLocalTransactionRequestedAction,
+  SignLocalTransactionSucceededAction,
+  SignWeb3TransactionRequestedAction,
+  SignWeb3TransactionSucceededAction,
   SignTransactionFailedAction,
   SetGasLimitFieldAction,
   SetDataFieldAction,
@@ -18,11 +20,17 @@ export {
   SetDecimalMetaAction,
   SetTokenToMetaAction,
   SetTokenValueMetaAction,
+  BroadcastLocalTransactionRequestedAction,
+  BroadcastTransactionSucceededAction,
+  BroadcastWeb3TransactionRequestedAction,
+  BroadcastTransactionQueuedAction,
+  BroadcastTransactionFailedAction,
   ResetAction,
   FieldAction,
   TransactionAction,
   MetaAction,
   NetworkAction,
+  BroadcastAction,
   SignAction
 };
 
@@ -67,18 +75,52 @@ interface EstimateGasFailedAction {
   type: TypeKeys.ESTIMATE_GAS_FAILED;
 }
 
-/* Signing / Async actions */
+/*
+ * Difference between the web3/local is that a local sign will actually sign the tx
+ * While a web3 sign just gathers the rest of the nessesary parameters of the ethereum tx
+ * to do the sign + broadcast in 1 step later on
+ */
 
-interface SignTransactionRequestedAction {
-  type: TypeKeys.SIGN_TRANSACTION_REQUESTED;
+/* Signing / Async actions */
+interface SignLocalTransactionRequestedAction {
+  type: TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED;
   payload: EthTx;
 }
-interface SignTransactionSucceededAction {
-  type: TypeKeys.SIGN_TRANSACTION_SUCCEEDED;
-  payload: string;
+interface SignLocalTransactionSucceededAction {
+  type: TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED;
+  payload: Buffer;
+}
+
+interface SignWeb3TransactionRequestedAction {
+  type: TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED;
+  payload: EthTx;
+}
+interface SignWeb3TransactionSucceededAction {
+  type: TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED;
+  payload: Buffer;
 }
 interface SignTransactionFailedAction {
   type: TypeKeys.SIGN_TRANSACTION_FAILED;
+}
+
+/* Broadcasting actions */
+interface BroadcastLocalTransactionRequestedAction {
+  type: TypeKeys.BROADCAST_LOCAL_TRANSACTION_REQUESTED;
+}
+interface BroadcastWeb3TransactionRequestedAction {
+  type: TypeKeys.BROADCAST_WEB3_TRANSACTION_REQUESTED;
+}
+interface BroadcastTransactionSucceededAction {
+  type: TypeKeys.BROADCAST_TRANSACTION_SUCCEEDED;
+  payload: { indexingHash: string; broadcastedHash: string };
+}
+interface BroadcastTransactionQueuedAction {
+  type: TypeKeys.BROADCAST_TRANSACTION_QUEUED;
+  payload: { indexingHash: string; serializedTransaction: Buffer };
+}
+interface BroadcastTransactionFailedAction {
+  type: TypeKeys.BROADCAST_TRASACTION_FAILED;
+  payload: { indexingHash: string };
 }
 
 /*Field Actions*/
@@ -148,13 +190,23 @@ type FieldAction =
   | SetValueFieldAction;
 
 type SignAction =
-  | SignTransactionRequestedAction
-  | SignTransactionSucceededAction
+  | SignLocalTransactionRequestedAction
+  | SignLocalTransactionSucceededAction
+  | SignWeb3TransactionRequestedAction
+  | SignWeb3TransactionSucceededAction
   | SignTransactionFailedAction;
+
+type BroadcastAction =
+  | BroadcastLocalTransactionRequestedAction
+  | BroadcastTransactionSucceededAction
+  | BroadcastWeb3TransactionRequestedAction
+  | BroadcastTransactionQueuedAction
+  | BroadcastTransactionFailedAction;
 
 type TransactionAction =
   | ResetAction
   | FieldAction
   | MetaAction
   | NetworkAction
-  | SignAction;
+  | SignAction
+  | BroadcastAction;

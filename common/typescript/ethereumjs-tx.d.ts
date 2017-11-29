@@ -49,7 +49,7 @@ declare module 'ethereumjs-tx' {
     public v: Buffer;
     public r: Buffer;
     public s: Buffer;
-    constructor(data: TxObj | string);
+    constructor(data: TxObj | string | Buffer);
 
     /**
      * If the tx's `to` is to the creation address

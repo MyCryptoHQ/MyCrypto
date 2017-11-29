@@ -65,46 +65,6 @@ export function setTokenBalances(payload: {
   };
 }
 
-export type TBroadcastTx = typeof broadcastTx;
-export function broadcastTx(
-  signedTx: string
-): types.BroadcastTxRequestedAction {
-  return {
-    type: TypeKeys.WALLET_BROADCAST_TX_REQUESTED,
-    payload: {
-      signedTx
-    }
-  };
-}
-
-export type TBroadcastTxSucceded = typeof broadcastTxSucceded;
-export function broadcastTxSucceded(
-  txHash: string,
-  signedTx: string
-): types.BroadcastTxSuccededAction {
-  return {
-    type: TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED,
-    payload: {
-      txHash,
-      signedTx
-    }
-  };
-}
-
-export type TBroadCastTxFailed = typeof broadCastTxFailed;
-export function broadCastTxFailed(
-  signedTx: string,
-  errorMsg: string
-): types.BroadcastTxFailedAction {
-  return {
-    type: TypeKeys.WALLET_BROADCAST_TX_FAILED,
-    payload: {
-      signedTx,
-      error: errorMsg
-    }
-  };
-}
-
 export type TResetWallet = typeof resetWallet;
 export function resetWallet() {
   return {

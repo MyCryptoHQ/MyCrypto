@@ -1,6 +1,5 @@
 import { TokenValue } from 'libs/units';
 import { Token } from 'config/data';
-import { BroadcastTransactionStatus } from 'libs/transaction';
 import { IWallet } from 'libs/wallet';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
@@ -43,22 +42,4 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     custom: t.custom,
     decimal: t.decimal
   }));
-}
-
-export function getTxFromState(
-  state: AppState,
-  signedTx: string
-): BroadcastTransactionStatus | null {
-  const transactions = state.wallet.transactions;
-  return getTxFromBroadcastTransactionStatus(transactions, signedTx);
-}
-
-export function getTxFromBroadcastTransactionStatus(
-  transactions: BroadcastTransactionStatus[],
-  signedTx: string
-): BroadcastTransactionStatus | null {
-  const tx = transactions.find(
-    transaction => transaction.signedTx === signedTx
-  );
-  return tx || null;
 }

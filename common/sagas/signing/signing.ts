@@ -1,51 +1,30 @@
 import { SagaIterator } from 'redux-saga';
-import { put, call, apply, takeEvery } from 'redux-saga/effects';
+import { put, apply, takeEvery } from 'redux-saga/effects';
+import { IWalletAndTransaction, signTransactionWrapper } from './helpers';
 import {
-  getWalletAndTransaction,
-  IWalletAndTransaction,
-  handleFailedTransaction
-} from './helpers';
-import {
-  SignTransactionRequestedAction,
-  signTransactionSucceeded,
+  signLocalTransactionSucceeded,
+  signWeb3TransactionSucceeded,
   TypeKeys
 } from 'actions/transaction';
-import { Web3Wallet } from 'libs/wallet';
+import { AppState } from 'reducers';
 
-function* signTransactionLocally({
+const signLocalTransaction = signTransactionWrapper(function*({
   tx,
   wallet
 }: IWalletAndTransaction): SagaIterator {
-  const signedTx: string = yield apply(wallet, wallet.signRawTransaction, [tx]);
-  yield put(signTransactionSucceeded(signedTx));
-}
+  const signedTx: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
+  yield put(signLocalTransactionSucceeded(signedTx));
+});
 
-function* signTransactionViaWeb3({
-  tx,
-  wallet
-}: IWalletAndTransaction<Web3Wallet>): SagaIterator {
-  yield apply(wallet, wallet.sendTransaction, [tx]);
-}
-
-function* signTransaction(
-  partialTx: SignTransactionRequestedAction
-): SagaIterator {
-  try {
-    const walletAndTx: IWalletAndTransaction = yield call(
-      getWalletAndTransaction,
-      partialTx.payload
-    );
-    const isWeb3Wallet = walletAndTx.wallet instanceof Web3Wallet;
-    const signingFunc = isWeb3Wallet
-      ? signTransactionViaWeb3
-      : signTransactionLocally;
-
-    yield call(signingFunc, walletAndTx);
-  } catch (err) {
-    yield call(handleFailedTransaction, err);
-  }
-}
+const signWeb3Transaction = signTransactionWrapper(function*({
+  tx
+}: IWalletAndTransaction): SagaIterator {
+  yield put(signWeb3TransactionSucceeded(tx.serialize()));
+});
 
 export function* signing(): SagaIterator {
-  yield [takeEvery(TypeKeys.SIGN_TRANSACTION_REQUESTED, signTransaction)];
+  yield [
+    takeEvery(TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED, signLocalTransaction),
+    takeEvery(TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED, signWeb3Transaction)
+  ];
 }

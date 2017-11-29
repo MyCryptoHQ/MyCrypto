@@ -46,14 +46,6 @@ export interface SetTokenBalancesAction {
   };
 }
 
-/*** Broadcast Tx ***/
-export interface BroadcastTxRequestedAction {
-  type: TypeKeys.WALLET_BROADCAST_TX_REQUESTED;
-  payload: {
-    signedTx: string;
-  };
-}
-
 /*** Unlock Mnemonic ***/
 export interface MnemonicUnlockParams {
   phrase: string;
@@ -73,29 +65,10 @@ export interface UnlockKeystoreAction {
   payload: KeystoreUnlockParams;
 }
 
-export interface BroadcastTxSuccededAction {
-  type: TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED;
-  payload: {
-    txHash: string;
-    signedTx: string;
-  };
-}
-
-export interface BroadcastTxFailedAction {
-  type: TypeKeys.WALLET_BROADCAST_TX_FAILED;
-  payload: {
-    signedTx: string;
-    error: string;
-  };
-}
-
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
   | ResetWalletAction
   | SetBalanceAction
-  | SetTokenBalancesAction
-  | BroadcastTxRequestedAction
-  | BroadcastTxFailedAction
-  | BroadcastTxSuccededAction;
+  | SetTokenBalancesAction;

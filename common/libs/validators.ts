@@ -99,54 +99,6 @@ export function isPositiveIntegerOrZero(num: number): boolean {
   return num >= 0 && parseInt(num.toString(), 10) === num;
 }
 
-export function isValidRawTx(rawTx: RawTransaction): boolean {
-  const propReqs = [
-    { name: 'nonce', type: 'string', lenReq: true },
-    { name: 'gasPrice', type: 'string', lenReq: true },
-    { name: 'gasLimit', type: 'string', lenReq: true },
-    { name: 'to', type: 'string', lenReq: true },
-    { name: 'value', type: 'string', lenReq: true },
-    { name: 'data', type: 'string', lenReq: false },
-    { name: 'chainId', type: 'number', lenReq: false }
-  ];
-
-  // ensure rawTx has above properties
-  // ensure all specified types match
-  // ensure length !0 for strings where length is required
-  // ensure valid hex for strings
-  // ensure all strings begin with '0x'
-  // ensure valid address for 'to' prop
-  // ensure rawTx only has above properties
-
-  for (const prop of propReqs) {
-    const value = rawTx[prop.name];
-
-    if (!rawTx.hasOwnProperty(prop.name)) {
-      return false;
-    }
-    if (typeof value !== prop.type) {
-      return false;
-    }
-    if (prop.type === 'string') {
-      if (prop.lenReq && value.length === 0) {
-        return false;
-      }
-      if (value.length && value.substring(0, 2) !== '0x') {
-        return false;
-      }
-      if (!isValidHex(value)) {
-        return false;
-      }
-    }
-  }
-
-  if (Object.keys(rawTx).length !== propReqs.length) {
-    return false;
-  }
-
-  return true;
-}
-
 // Full length deterministic wallet paths from BIP44
 // https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
 // normal path length is 4, ledger is the exception at 3

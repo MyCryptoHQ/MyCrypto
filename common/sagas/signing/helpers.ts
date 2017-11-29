@@ -1,11 +1,12 @@
 import { getWalletInst } from 'selectors/wallet';
 import { IWallet } from 'libs/wallet';
 import { getGasPriceGwei, getNetworkConfig } from 'selectors/config';
-import { select, call, apply, put } from 'redux-saga/effects';
+import { select, call, put } from 'redux-saga/effects';
 import { toWei, getDecimal, Wei } from 'libs/units';
 import {
-  SignTransactionRequestedAction,
-  signTransactionFailed
+  signTransactionFailed,
+  SignWeb3TransactionRequestedAction,
+  SignLocalTransactionRequestedAction
 } from 'actions/transaction';
 import Tx from 'ethereumjs-tx';
 import { NetworkConfig } from 'config/data';
@@ -15,8 +16,34 @@ import { toBuffer } from 'ethereumjs-util';
 export {
   IWalletAndTransaction,
   getWalletAndTransaction,
-  handleFailedTransaction
+  handleFailedTransaction,
+  signTransactionWrapper
 };
+
+interface IWalletAndTransaction {
+  wallet: IWallet;
+  tx: Tx;
+}
+
+const signTransactionWrapper = (
+  func: (IWalletAndTx: IWalletAndTransaction) => SagaIterator
+) =>
+  function*(
+    partialTx:
+      | SignLocalTransactionRequestedAction
+      | SignWeb3TransactionRequestedAction
+  ) {
+    try {
+      const IWalletAndTx: IWalletAndTransaction = yield call(
+        getWalletAndTransaction,
+        partialTx.payload
+      );
+
+      yield call(func, IWalletAndTx);
+    } catch (err) {
+      yield call(handleFailedTransaction, err);
+    }
+  };
 
 function* getGasPrice() {
   // get the current gas price
@@ -33,10 +60,6 @@ function* getGasPrice() {
   const gasPriceBuffer: Buffer = yield call(toBuffer, gasPriceWei);
   return gasPriceBuffer;
 }
-interface IWalletAndTransaction<T = IWallet> {
-  wallet: T;
-  tx: Tx;
-}
 
 /**
  * @description grabs wallet and required tx parameters via selectors, and assigns
@@ -44,7 +67,9 @@ interface IWalletAndTransaction<T = IWallet> {
  * @param partialTx
  */
 function* getWalletAndTransaction(
-  partialTx: SignTransactionRequestedAction['payload']
+  partialTx: (
+    | SignLocalTransactionRequestedAction
+    | SignWeb3TransactionRequestedAction)['payload']
 ) {
   // get the wallet we're going to sign with
   const wallet: null | IWallet = yield select(getWalletInst);
