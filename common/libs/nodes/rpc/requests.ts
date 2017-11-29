@@ -12,6 +12,10 @@ import {
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
 export default class RPCRequests {
+  public getNetVersion() {
+    return { method: 'net_version' };
+  }
+
   public sendRawTx(signedTx: string): SendRawTxRequest | any {
     return {
       method: 'eth_sendRawTransaction',
