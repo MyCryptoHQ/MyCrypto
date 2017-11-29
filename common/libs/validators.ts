@@ -1,5 +1,6 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
+import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 
@@ -86,10 +87,10 @@ function validateEtherAddress(address: string): boolean {
 
 export function isValidPrivKey(privkey: string | Buffer): boolean {
   if (typeof privkey === 'string') {
-    const initialCheck =
-      privkey.length === 64 && /^[a-fA-F0-9]+$/g.test(privkey);
+    const strippedKey = stripHexPrefix(privkey);
+    const initialCheck = strippedKey.length === 64;
     if (initialCheck) {
-      const keyBuffer = Buffer.from(privkey, 'hex');
+      const keyBuffer = Buffer.from(strippedKey, 'hex');
       return isValidPrivate(keyBuffer);
     }
     return false;
