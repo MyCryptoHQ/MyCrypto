@@ -332,7 +332,7 @@ describe('bityTimeRemaining*', () => {
       put({ type: 'SWAP_STOP_LOAD_BITY_RATES' })
     );
     expect(data.OPEN.next().value).toEqual(
-      put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 'infinity'))
+      put(showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity))
     );
   });
 
@@ -346,7 +346,7 @@ describe('bityTimeRemaining*', () => {
       put({ type: 'SWAP_STOP_LOAD_BITY_RATES' })
     );
     expect(data.CANC.next().value).toEqual(
-      put(showNotification('danger', BITY_TIMEOUT_MESSAGE, 'infinity'))
+      put(showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity))
     );
   });
 
@@ -354,7 +354,7 @@ describe('bityTimeRemaining*', () => {
     const rcveOrder = { ...swapOrderExpired, orderStatus: 'RCVE' };
     data.RCVE = data.gen.clone();
     expect(data.RCVE.next(rcveOrder).value).toEqual(
-      put(showNotification('warning', BITY_TIMEOUT_MESSAGE, 'infinity'))
+      put(showNotification('warning', BITY_TIMEOUT_MESSAGE, Infinity))
     );
   });
 
