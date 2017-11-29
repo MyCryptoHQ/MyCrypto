@@ -4,13 +4,16 @@ import Adapter from 'enzyme-adapter-react-16';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
+import { NODES } from 'config/data';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 it('render snapshot', () => {
+  const testNode = 'rop_mew';
   const testStateConfig = {
     languageSelection: 'en',
-    nodeSelection: 'rop_mew',
+    nodeSelection: testNode,
+    node: NODES[testNode],
     gasPriceGwei: 21,
     offline: false,
     forceOffline: false

@@ -1,9 +1,18 @@
+import BN from 'bn.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
 import { Wei, TokenValue } from 'libs/units';
+import { stripHexPrefix } from 'libs/values';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
+
+function errorOrResult(response) {
+  if (response.error) {
+    throw new Error(response.error.message);
+  }
+  return response.result;
+}
 
 export default class RpcNode implements INode {
   public client: RPCClient;
@@ -12,6 +21,13 @@ export default class RpcNode implements INode {
   constructor(endpoint: string) {
     this.client = new RPCClient(endpoint);
     this.requests = new RPCRequests();
+  }
+
+  public ping(): Promise<boolean> {
+    return this.client
+      .call(this.requests.getNetVersion())
+      .then(() => true)
+      .catch(() => false);
   }
 
   public sendCallRequest(txObj: TxObj): Promise<string> {
@@ -25,23 +41,15 @@ export default class RpcNode implements INode {
   public getBalance(address: string): Promise<Wei> {
     return this.client
       .call(this.requests.getBalance(address))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return Wei(response.result);
-      });
+      .then(errorOrResult)
+      .then(result => Wei(result));
   }
 
   public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
     return this.client
       .call(this.requests.estimateGas(transaction))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return Wei(response.result);
-      });
+      .then(errorOrResult)
+      .then(result => Wei(result));
   }
 
   public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
@@ -77,12 +85,14 @@ export default class RpcNode implements INode {
   public getTransactionCount(address: string): Promise<string> {
     return this.client
       .call(this.requests.getTransactionCount(address))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return response.result;
-      });
+      .then(errorOrResult);
+  }
+
+  public getCurrentBlock(): Promise<string> {
+    return this.client
+      .call(this.requests.getCurrentBlock())
+      .then(errorOrResult)
+      .then(result => new BN(stripHexPrefix(result)).toString());
   }
 
   public sendRawTx(signedTx: string): Promise<string> {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import BN from 'bn.js';
 import translate from 'translations';
 import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
@@ -7,6 +8,8 @@ import { Balance } from 'libs/wallet';
 import Spinner from 'components/ui/Spinner';
 import UnitDisplay from 'components/ui/UnitDisplay';
 import './EquivalentValues.scss';
+
+const ALL_OPTION = 'All';
 
 interface Props {
   balance?: Balance;
@@ -22,17 +25,18 @@ interface CmpState {
 
 export default class EquivalentValues extends React.Component<Props, CmpState> {
   public state = {
-    currency: 'ETH'
+    currency: ALL_OPTION
   };
-  private balanceLookup = {};
+  private balanceLookup: { [key: string]: Balance['wei'] | undefined } = {};
+  private requestedCurrencies: string[] = [];
 
   public constructor(props) {
     super(props);
     this.makeBalanceLookup(props);
-  }
 
-  public componentDidMount() {
-    this.props.fetchCCRates(this.state.currency);
+    if (props.balance && props.tokenBalances) {
+      this.fetchRates(props);
+    }
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -42,18 +46,27 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       nextProps.tokenBalances !== tokenBalances
     ) {
       this.makeBalanceLookup(nextProps);
+      this.fetchRates(nextProps);
     }
   }
 
   public render() {
-    const { tokenBalances, rates, ratesError } = this.props;
+    const { balance, tokenBalances, rates, ratesError } = this.props;
     const { currency } = this.state;
-    const balance = this.balanceLookup[currency];
 
-    let values;
-    if (balance && rates && rates[currency]) {
-      values = rateSymbols.map(key => {
-        if (!rates[currency][key] || key === currency) {
+    // There are a bunch of reasons why the incorrect balances might be rendered
+    // while we have incomplete data that's being fetched.
+    const isFetching =
+      !balance ||
+      balance.isPending ||
+      !tokenBalances ||
+      Object.keys(rates).length === 0;
+
+    let valuesEl;
+    if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
+      const values = this.getEquivalentValues(currency);
+      valuesEl = rateSymbols.map(key => {
+        if (!values[key] || key === currency) {
           return null;
         }
 
@@ -63,23 +76,19 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
               {key}:
             </span>{' '}
             <span className="EquivalentValues-values-currency-value">
-              {balance.isPending ? (
-                <Spinner />
-              ) : (
-                <UnitDisplay
-                  unit={'ether'}
-                  value={balance ? balance.muln(rates[currency][key]) : null}
-                  displayShortBalance={2}
-                />
-              )}
+              <UnitDisplay
+                unit={'ether'}
+                value={values[key]}
+                displayShortBalance={3}
+              />
             </span>
           </li>
         );
       });
     } else if (ratesError) {
-      values = <h5>{ratesError}</h5>;
+      valuesEl = <h5>{ratesError}</h5>;
     } else {
-      values = (
+      valuesEl = (
         <div className="EquivalentValues-values-loader">
           <Spinner size="x3" />
         </div>
@@ -95,6 +104,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
             onChange={this.changeCurrency}
             value={currency}
           >
+            <option value={ALL_OPTION}>All Tokens</option>
             <option value="ETH">ETH</option>
             {tokenBalances &&
               tokenBalances.map(tk => {
@@ -111,7 +121,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           </select>
         </h5>
 
-        <ul className="EquivalentValues-values">{values}</ul>
+        <ul className="EquivalentValues-values">{valuesEl}</ul>
       </div>
     );
   }
@@ -119,9 +129,6 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   private changeCurrency = (ev: React.FormEvent<HTMLSelectElement>) => {
     const currency = ev.currentTarget.value;
     this.setState({ currency });
-    if (!this.props.rates || !this.props.rates[currency]) {
-      this.props.fetchCCRates(currency);
-    }
   };
 
   private makeBalanceLookup(props: Props) {
@@ -135,5 +142,62 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       },
       { ETH: props.balance && props.balance.wei }
     );
+  }
+
+  private fetchRates(props: Props) {
+    // Duck out if we haven't gotten balances yet
+    if (!props.balance || !props.tokenBalances) {
+      return;
+    }
+
+    // First determine which currencies we're asking for
+    const currencies = props.tokenBalances
+      .filter(tk => !tk.balance.isZero())
+      .map(tk => tk.symbol)
+      .sort();
+
+    // If it's the same currencies as we have, skip it
+    if (currencies.join() === this.requestedCurrencies.join()) {
+      return;
+    }
+
+    // Fire off the request and save the currencies requested
+    this.props.fetchCCRates(currencies);
+    this.requestedCurrencies = currencies;
+  }
+
+  private getEquivalentValues(
+    currency: string
+  ): {
+    [key: string]: BN | undefined;
+  } {
+    // Recursively call on all currencies
+    if (currency === ALL_OPTION) {
+      return ['ETH'].concat(this.requestedCurrencies).reduce(
+        (prev, curr) => {
+          const currValues = this.getEquivalentValues(curr);
+          rateSymbols.forEach(
+            sym => (prev[sym] = prev[sym].add(currValues[sym] || new BN(0)))
+          );
+          return prev;
+        },
+        rateSymbols.reduce((prev, sym) => {
+          prev[sym] = new BN(0);
+          return prev;
+        }, {})
+      );
+    }
+
+    // Calculate rates for a single currency
+    const { rates } = this.props;
+    const balance = this.balanceLookup[currency];
+    if (!balance || !rates[currency]) {
+      return {};
+    }
+
+    return rateSymbols.reduce((prev, sym) => {
+      prev[sym] = balance ? balance.muln(rates[currency][sym]) : null;
+      return prev;
+    }, {});
   }
 }

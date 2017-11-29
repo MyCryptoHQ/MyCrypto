@@ -21,7 +21,6 @@ import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import { State } from 'reducers/rates';
 import OfflineToggle from './OfflineToggle';
 
 interface Props {
@@ -29,8 +28,8 @@ interface Props {
   balance: Balance;
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
-  rates: State['rates'];
-  ratesError: State['ratesError'];
+  rates: AppState['rates']['rates'];
+  ratesError: AppState['rates']['ratesError'];
   showNotification: TShowNotification;
   addCustomToken: TAddCustomToken;
   removeCustomToken: TRemoveCustomToken;

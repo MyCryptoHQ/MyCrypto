@@ -2,7 +2,7 @@ import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.3)';
+export const VERSION = '4.0.0 (Alpha 0.0.4)';
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
@@ -40,6 +40,10 @@ export const gasPriceDefaults = {
 };
 
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
+export const ledgerReferralURL =
+  'https://www.ledgerwallet.com/r/fa4b?path=/products/';
+export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
+export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -79,6 +83,17 @@ export interface NodeConfig {
   service: string;
   estimateGas?: boolean;
   hidden?: boolean;
+}
+
+export interface CustomNodeConfig {
+  name: string;
+  url: string;
+  port: number;
+  network: string;
+  auth?: {
+    username: string;
+    password: string;
+  };
 }
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and

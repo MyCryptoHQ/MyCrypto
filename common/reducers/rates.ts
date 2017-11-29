@@ -8,7 +8,8 @@ export interface State {
 }
 
 export const INITIAL_STATE: State = {
-  rates: {}
+  rates: {},
+  ratesError: null
 };
 
 function fetchCCRatesSucceeded(
@@ -19,7 +20,7 @@ function fetchCCRatesSucceeded(
     ...state,
     rates: {
       ...state.rates,
-      [action.payload.symbol]: action.payload.rates
+      ...action.payload
     }
   };
 }

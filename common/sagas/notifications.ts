@@ -10,7 +10,7 @@ export function* handleNotification(
 ): SagaIterator {
   const { duration } = action.payload;
   // show forever
-  if (duration === 0 || duration === 'infinity') {
+  if (duration === 0 || duration === Infinity) {
     return;
   }
 

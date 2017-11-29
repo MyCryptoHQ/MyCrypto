@@ -146,7 +146,7 @@ export function* bityTimeRemaining(): SagaIterator {
             if (!hasShownNotification) {
               hasShownNotification = true;
               yield put(
-                showNotification('danger', BITY_TIMEOUT_MESSAGE, 'infinity')
+                showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity)
               );
             }
             break;
@@ -156,7 +156,7 @@ export function* bityTimeRemaining(): SagaIterator {
             if (!hasShownNotification) {
               hasShownNotification = true;
               yield put(
-                showNotification('danger', BITY_TIMEOUT_MESSAGE, 'infinity')
+                showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity)
               );
             }
             break;
@@ -164,7 +164,7 @@ export function* bityTimeRemaining(): SagaIterator {
             if (!hasShownNotification) {
               hasShownNotification = true;
               yield put(
-                showNotification('warning', BITY_TIMEOUT_MESSAGE, 'infinity')
+                showNotification('warning', BITY_TIMEOUT_MESSAGE, Infinity)
               );
             }
             break;

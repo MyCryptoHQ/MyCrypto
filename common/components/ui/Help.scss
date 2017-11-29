@@ -1,0 +1,30 @@
+.Help {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 4px;
+  box-sizing: content-box;
+  line-height: inherit;
+  vertical-align: top;
+  transition: opacity 0.3s;
+
+  & img {
+    display: block;
+    height: inherit;
+    width: inherit;
+  }
+
+  &-x1 {
+    height: 16px;
+    width: 16px;
+  }
+
+  &-x2 {
+    height: 24px;
+    width: 24px;
+  }
+
+  &-x3 {
+    height: 36px;
+    width: 36px;
+  }
+}

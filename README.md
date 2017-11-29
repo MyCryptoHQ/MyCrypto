@@ -162,6 +162,41 @@ export function nameOfAction(): interfaces.NameOfActionAction {
 export * from './actionCreators';
 export * from './actionTypes';
 ```
+
+### Typing Redux-Connected Components
+
+Components that receive props directly from redux as a result of the `connect`
+function should use AppState for typing, rather than manually defining types.
+This makes refactoring reducers easier by catching mismatches or changes of
+types in components, and reduces the chance for inconsistency. It's also less
+code overall.
+
+```
+// Do this
+import { AppState } from 'reducers';
+
+interface Props {
+	wallet: AppState['wallet']['inst'];
+	rates: AppState['rates']['rates'];
+	// ...
+}
+
+// Not this
+import { IWallet } from 'libs/wallet';
+import { Rates } from 'libs/rates';
+
+interface Props {
+	wallet: IWallet;
+	rates: Rates;
+	// ...
+}
+```
+
+However, if you have a sub-component that takes in props from a connected
+component, it's OK to manually specify the type. Especially if you go from
+being type-or-null to guaranteeing the prop will be passed (because of a
+conditional render.)
+
 ### Higher Order Components
 
 #### Typing Injected Props
@@ -229,11 +264,11 @@ public onValueChange = (e: React.FormEvent<HTMLInputElement>) => {
     }
   };
 ```
-Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`. 
+Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`.
 
 ## Class names
 
-Dynamic class names should use the `classnames` module to simplify how they are created instead of using string template literals with expressions inside. 
+Dynamic class names should use the `classnames` module to simplify how they are created instead of using string template literals with expressions inside.
 
 ### Styling
 
@@ -299,7 +334,36 @@ When working on a module that has styling in Less, try to do the following:
 * Convert as many `<br/>` tags or `&nbsp;`s to margins
 * Ensure that there has been little to no deviation from screenshot
 
-
+#### Adding Icon-fonts
+1. Download chosen icon-font
+1. Declare css font-family: 
+	``` 
+	@font-face {
+		font-family: 'social-media';
+		src: url('../assets/fonts/social-media.eot');
+		src: url('../assets/fonts/social-media.eot') format('embedded-opentype'),
+			url('../assets/fonts/social-media.woff2') format('woff2'),
+			url('../assets/fonts/social-media.woff') format('woff'),
+			url('../assets/fonts/social-media.ttf') format('truetype'),
+			url('../assets/fonts/social-media.svg') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+	```
+1. Create classes for each icon using their unicode character
+	```  
+	.sm-logo-facebook:before {
+	    content: '\ea02';
+	  }
+	```
+	* [How to get unicode icon values?](https://stackoverflow.com/questions/27247145/get-the-unicode-icon-value-from-a-custom-font)
+1. Write some markup:
+	```
+	<a href="/">
+		<i className={`sm-icon sm-logo-${text} sm-24px`} />
+		Hello World
+	</a>
+	```
 
 ## Thanks & Support
 
