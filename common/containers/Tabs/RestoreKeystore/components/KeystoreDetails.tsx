@@ -7,6 +7,7 @@ import { isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/values';
 import translate from 'translations';
 import './KeystoreDetails.scss';
+import { N_FACTOR } from 'config/data';
 
 interface State {
   secretKey: string;
@@ -152,7 +153,7 @@ class KeystoreDetails extends Component<{}, State> {
   private runtimeKeystoreCheck(): boolean {
     const { wallet, password, secretKey } = this.state;
     if (wallet) {
-      const keystore = wallet.toV3(password, { n: 1024 });
+      const keystore = wallet.toV3(password, { n: N_FACTOR });
       const backToWallet = fromV3(keystore, password, true);
       if (stripHexPrefix(backToWallet.getPrivateKeyString()) === secretKey) {
         return true;
@@ -164,7 +165,7 @@ class KeystoreDetails extends Component<{}, State> {
   private getBlob() {
     const { wallet, password } = this.state;
     if (wallet) {
-      const keystore = wallet.toV3(password, { n: 1024 });
+      const keystore = wallet.toV3(password, { n: N_FACTOR });
       return makeBlob('text/json;charset=UTF-8', keystore);
     }
   }
