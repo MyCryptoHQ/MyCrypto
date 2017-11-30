@@ -72,7 +72,7 @@ export interface NetworkConfig {
     name: string;
     address(address: string): string;
   };
-  chainId: number | null;
+  chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
 }
@@ -80,7 +80,7 @@ export interface NetworkConfig {
 export interface CustomNetworkConfig {
   name: string;
   unit: string;
-  chainId: number | null;
+  chainId: number;
 }
 
 export interface NodeConfig {

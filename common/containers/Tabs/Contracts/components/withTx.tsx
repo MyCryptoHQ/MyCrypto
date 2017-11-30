@@ -20,18 +20,21 @@ export interface IWithTx {
   showNotification: TShowNotification;
 }
 
-const mapStateToProps = (state: AppState) => ({
-  wallet: state.wallet.inst,
-  balance: state.wallet.balance,
-  node: configSelectors.getNodeConfig(state),
-  nodeLib: configSelectors.getNodeLib(state),
-  chainId: configSelectors.getNetworkConfig(state).chainId,
-  networkName: configSelectors.getNetworkConfig(state).name,
-  gasPrice: toWei(
-    `${configSelectors.getGasPriceGwei(state)}`,
-    getDecimal('gwei')
-  )
-});
+const mapStateToProps = (state: AppState) => {
+  const network = configSelectors.getNetworkConfig(state);
+  return {
+    wallet: state.wallet.inst,
+    balance: state.wallet.balance,
+    node: configSelectors.getNodeConfig(state),
+    nodeLib: configSelectors.getNodeLib(state),
+    chainId: network ? network.chainId : 0,
+    networkName: network ? network.name : 'Unknown network',
+    gasPrice: toWei(
+      `${configSelectors.getGasPriceGwei(state)}`,
+      getDecimal('gwei')
+    )
+  };
+};
 
 export const withTx = passedComponent =>
   connect(mapStateToProps, {

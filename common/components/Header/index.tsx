@@ -15,7 +15,6 @@ import {
   ANNOUNCEMENT_MESSAGE,
   ANNOUNCEMENT_TYPE,
   languages,
-  NETWORKS,
   NODES,
   VERSION,
   NodeConfig,
@@ -68,7 +67,10 @@ export default class Header extends Component<Props, State> {
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const selectedNetwork = NETWORKS[node.network];
+    const selectedNetwork = getNetworkConfigFromId(
+      node.network,
+      customNetworks
+    );
     const LanguageDropDown = Dropdown as new () => Dropdown<
       typeof selectedLanguage
     >;
@@ -191,7 +193,7 @@ export default class Header extends Component<Props, State> {
           </section>
         </section>
 
-        <Navigation color={selectedNetwork.color} />
+        <Navigation color={selectedNetwork && selectedNetwork.color} />
 
         {isAddingCustomNode && (
           <CustomNodeModal

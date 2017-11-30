@@ -198,7 +198,7 @@ export async function generateCompleteTransactionFromRawTransaction(
     to: toChecksumAddress(cleanHex(to)),
     value: token ? '0x00' : cleanHex(value.toString(16)),
     data: data ? cleanHex(data) : '',
-    chainId: chainId || 1
+    chainId: chainId || 0
   };
 
   // Sign the transaction

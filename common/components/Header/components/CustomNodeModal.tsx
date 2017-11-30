@@ -241,6 +241,9 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       hasAuth,
       username,
       password,
+      network,
+      customNetworkName,
+      customNetworkUnit,
       customNetworkChainId
     } = this.state;
     const required = ['name', 'url', 'port', 'network'];
@@ -274,6 +277,16 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       }
     }
 
+    // If they have a custom network, make sure info is provided
+    if (network === CUSTOM) {
+      if (!customNetworkName) {
+        invalids.customNetworkName = true;
+      }
+      if (!customNetworkUnit) {
+        invalids.customNetworkUnit = true;
+      }
+    }
+
     // Numeric chain ID (if provided)
     const iChainId = parseInt(customNetworkChainId, 10);
     if (!iChainId || iChainId < 0) {
@@ -289,7 +302,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       unit: this.state.customNetworkUnit,
       chainId: this.state.customNetworkChainId
         ? parseInt(this.state.customNetworkChainId, 10)
-        : null
+        : 0
     };
   }
 
