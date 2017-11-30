@@ -3,8 +3,8 @@ import { JsonRpcResponse, RPCRequest } from './types';
 
 export default class RPCClient {
   public endpoint: string;
-  public headers: object;
-  constructor(endpoint: string, headers: object = {}) {
+  public headers: { [key: string]: string };
+  constructor(endpoint: string, headers: { [key: string]: string } = {}) {
     this.endpoint = endpoint;
     this.headers = headers;
   }
