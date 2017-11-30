@@ -28,7 +28,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     currency: ALL_OPTION
   };
   private balanceLookup: { [key: string]: Balance['wei'] | undefined } = {};
-  private requestedCurrencies: string[] = [];
+  private requestedCurrencies: string[] | null = null;
 
   public constructor(props) {
     super(props);
@@ -159,7 +159,10 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       .sort();
 
     // If it's the same currencies as we have, skip it
-    if (currencies.join() === this.requestedCurrencies.join()) {
+    if (
+      this.requestedCurrencies &&
+      currencies.join() === this.requestedCurrencies.join()
+    ) {
       return;
     }
 
@@ -175,7 +178,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   } {
     // Recursively call on all currencies
     if (currency === ALL_OPTION) {
-      return ['ETH'].concat(this.requestedCurrencies).reduce(
+      return ['ETH'].concat(this.requestedCurrencies || []).reduce(
         (prev, curr) => {
           const currValues = this.getEquivalentValues(curr);
           rateSymbols.forEach(
