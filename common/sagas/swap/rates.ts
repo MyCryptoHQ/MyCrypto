@@ -20,7 +20,7 @@ export function* loadBityRates(): SagaIterator {
 }
 
 // Fork our recurring API call, watch for the need to cancel.
-function* handleBityRates(): SagaIterator {
+export function* handleBityRates(): SagaIterator {
   const loadBityRatesTask = yield fork(loadBityRates);
   yield take(TypeKeys.SWAP_STOP_LOAD_BITY_RATES);
   yield cancel(loadBityRatesTask);

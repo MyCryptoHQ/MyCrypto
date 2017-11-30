@@ -3,8 +3,8 @@ import { checkHttpStatus, parseJSON } from './utils';
 
 export function getAllRates() {
   const mappedRates = {};
-  return _getAllRates().then((bityRates) => {
-    bityRates.objects.forEach((each) => {
+  return _getAllRates().then(bityRates => {
+    bityRates.objects.forEach(each => {
       const pairName = each.pair;
       mappedRates[pairName] = parseFloat(each.rate_we_sell);
     });
@@ -26,7 +26,7 @@ export function postOrder(
       mode,
       pair
     }),
-    headers: bityConfig.postConfig.headers
+    headers: new Headers(bityConfig.postConfig.headers)
   })
     .then(checkHttpStatus)
     .then(parseJSON);
@@ -38,7 +38,7 @@ export function getOrderStatus(orderId: string) {
     body: JSON.stringify({
       orderid: orderId
     }),
-    headers: bityConfig.postConfig.headers
+    headers: new Headers(bityConfig.postConfig.headers)
   })
     .then(checkHttpStatus)
     .then(parseJSON);
