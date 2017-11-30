@@ -1,8 +1,7 @@
 import { IWallet } from '../IWallet';
-import { ExtendedRawTransaction } from 'libs/transaction';
 import { networkIdToName } from 'libs/values';
 import { bufferToHex } from 'ethereumjs-util';
-
+import { getTransactionFields, transaction } from 'libs/transaction';
 export default class Web3Wallet implements IWallet {
   private web3: any;
   private address: string;
@@ -18,7 +17,7 @@ export default class Web3Wallet implements IWallet {
     return Promise.resolve(this.address);
   }
 
-  public signRawTransaction(): Promise<string> {
+  public signRawTransaction(): Promise<Buffer> {
     return Promise.reject(
       new Error('Web3 wallets cannot sign raw transactions.')
     );
@@ -46,15 +45,24 @@ export default class Web3Wallet implements IWallet {
     });
   }
 
-  public sendTransaction(transaction: ExtendedRawTransaction): Promise<string> {
+  public sendTransaction(serializedTransaction: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const { from, to, value, gasLimit, gasPrice, data, nonce } = transaction;
+      const transactionInstance = transaction(serializedTransaction);
+      const {
+        to,
+        value,
+        gasLimit: gas,
+        gasPrice,
+        data,
+        nonce
+      } = getTransactionFields(transactionInstance);
+      const from = this.address;
 
       const web3Tx = {
         from,
         to,
         value,
-        gas: gasLimit,
+        gas,
         gasPrice,
         data,
         nonce

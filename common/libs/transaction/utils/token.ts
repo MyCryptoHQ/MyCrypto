@@ -1,10 +1,10 @@
 import { bufferToHex, toBuffer } from 'ethereumjs-util';
-import { Wei, TokenValue, Address } from 'libs/units';
-import { ITransaction, ITokenTransaction } from '../typings';
+import { TokenValue, Address } from 'libs/units';
+import { ITransaction } from '../typings';
 import Tx from 'ethereumjs-tx';
 
 import ERC20 from 'libs/erc20';
-export { enoughTokens, makeTxObj, validateTokenBalance, encodeTransfer };
+export { enoughTokens, validateTokenBalance, encodeTransfer };
 
 const enoughTokens = (
   t: ITransaction | Tx,

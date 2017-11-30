@@ -17,3 +17,4 @@ export * from './EstimateGas';
 export * from './CurrentTo';
 export * from './OnlyUnlocked';
 export * from './WhenQueryExists';
+export * from './SerializedTransaction';

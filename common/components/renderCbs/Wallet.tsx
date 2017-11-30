@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { Web3Wallet } from 'libs/wallet';
 
-type IWallet = AppState['wallet'];
+type StateWallet = AppState['wallet'];
 
 interface Props {
-  wallet: IWallet;
+  wallet: StateWallet;
   withWallet({
     wallet,
     isWeb3Wallet
   }: {
-    wallet: IWallet;
+    wallet: StateWallet;
     isWeb3Wallet: boolean;
   }): React.ReactElement<any> | null;
 }

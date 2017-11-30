@@ -4,7 +4,6 @@ import {
   getSignedTx,
   getTransactionStatus
 } from 'selectors/transaction';
-import { transaction } from 'libs/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
@@ -23,10 +22,7 @@ import { showNotification } from 'actions/notifications';
 import React from 'react';
 import { getNetworkConfig } from 'selectors/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-
-// we dont include the signature paramaters because web3 transactions are unsigned
-const computeIndexingHash = (tx: Buffer) =>
-  bufferToHex(transaction(tx).hash(false));
+import { computeIndexingHash } from 'libs/transaction';
 
 export const broadcastTransactionWrapper = (
   func: (serializedTx: string) => SagaIterator

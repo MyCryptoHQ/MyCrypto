@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getSignedTx, getWeb3Tx } from 'selectors/transaction';
+import { Web3Wallet } from 'libs/wallet';
 interface StateProps {
   serializedTransaction: Buffer | null;
 }
 interface Props {
-  isWeb3: boolean;
   withSerializedTransaction(
     serializedTransaction: string
   ): React.ReactElement<any> | null;
 }
-class Container extends Component<StateProps & Props, {}> {
+class SerializedTransactionClass extends Component<StateProps & Props, {}> {
   public render() {
     const { serializedTransaction, withSerializedTransaction } = this.props;
     return serializedTransaction
@@ -20,10 +20,9 @@ class Container extends Component<StateProps & Props, {}> {
   }
 }
 
-export const SignedTransaction = connect(
-  (state: AppState, ownProps: Props) => ({
-    serializedTransaction: ownProps.isWeb3
+export const SerializedTransaction = connect((state: AppState) => ({
+  serializedTransaction:
+    state.wallet.inst instanceof Web3Wallet
       ? getWeb3Tx(state)
       : getSignedTx(state)
-  })
-)(Container);
+}))(SerializedTransactionClass);

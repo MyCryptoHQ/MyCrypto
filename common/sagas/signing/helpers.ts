@@ -1,12 +1,16 @@
 import { getWalletInst } from 'selectors/wallet';
 import { IWallet } from 'libs/wallet';
 import { getGasPriceGwei, getNetworkConfig } from 'selectors/config';
-import { select, call, put } from 'redux-saga/effects';
+import { select, call, put, take } from 'redux-saga/effects';
 import { toWei, getDecimal, Wei } from 'libs/units';
 import {
   signTransactionFailed,
   SignWeb3TransactionRequestedAction,
-  SignLocalTransactionRequestedAction
+  SignLocalTransactionRequestedAction,
+  GetFromFailedAction,
+  GetFromSucceededAction,
+  getFromRequested,
+  TypeKeys as TK
 } from 'actions/transaction';
 import Tx from 'ethereumjs-tx';
 import { NetworkConfig } from 'config/data';
@@ -38,7 +42,7 @@ const signTransactionWrapper = (
         getWalletAndTransaction,
         partialTx.payload
       );
-
+      yield call(getFrom);
       yield call(func, IWalletAndTx);
     } catch (err) {
       yield call(handleFailedTransaction, err);
@@ -92,4 +96,17 @@ function* getWalletAndTransaction(
 function* handleFailedTransaction(err: Error): SagaIterator {
   yield put(showNotification('danger', err.message, 5000));
   yield put(signTransactionFailed());
+}
+
+function* getFrom(): SagaIterator {
+  yield put(getFromRequested());
+  // wait for it to finish
+  const { type }: GetFromFailedAction | GetFromSucceededAction = yield take([
+    TK.GET_FROM_SUCCEEDED,
+    TK.GET_FROM_FAILED
+  ]);
+  // continue if it doesnt fail
+  if (type === TK.GET_FROM_FAILED) {
+    throw Error('Could not get "from" address of wallet');
+  }
 }

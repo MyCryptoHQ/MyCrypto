@@ -6,6 +6,9 @@ export {
   EstimateGasRequestedAction,
   EstimateGasSucceededAction,
   EstimateGasFailedAction,
+  GetFromRequestedAction,
+  GetFromSucceededAction,
+  GetFromFailedAction,
   SignLocalTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionRequestedAction,
@@ -66,13 +69,21 @@ interface EstimateGasRequestedAction {
   type: TypeKeys.ESTIMATE_GAS_REQUESTED;
   payload: ITransaction;
 }
-
 interface EstimateGasSucceededAction {
   type: TypeKeys.ESTIMATE_GAS_SUCCEEDED;
 }
-
 interface EstimateGasFailedAction {
   type: TypeKeys.ESTIMATE_GAS_FAILED;
+}
+interface GetFromRequestedAction {
+  type: TypeKeys.GET_FROM_REQUESTED;
+}
+interface GetFromSucceededAction {
+  type: TypeKeys.GET_FROM_SUCCEEDED;
+  payload: string;
+}
+interface GetFromFailedAction {
+  type: TypeKeys.GET_FROM_FAILED;
 }
 
 /*
@@ -88,7 +99,7 @@ interface SignLocalTransactionRequestedAction {
 }
 interface SignLocalTransactionSucceededAction {
   type: TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED;
-  payload: Buffer;
+  payload: { signedTransaction: Buffer; indexingHash: string };
 }
 
 interface SignWeb3TransactionRequestedAction {
@@ -97,7 +108,7 @@ interface SignWeb3TransactionRequestedAction {
 }
 interface SignWeb3TransactionSucceededAction {
   type: TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED;
-  payload: Buffer;
+  payload: { transaction: Buffer; indexingHash: string };
 }
 interface SignTransactionFailedAction {
   type: TypeKeys.SIGN_TRANSACTION_FAILED;
@@ -174,7 +185,10 @@ interface ResetAction {
 type NetworkAction =
   | EstimateGasFailedAction
   | EstimateGasRequestedAction
-  | EstimateGasSucceededAction;
+  | EstimateGasSucceededAction
+  | GetFromRequestedAction
+  | GetFromSucceededAction
+  | GetFromFailedAction;
 
 type MetaAction =
   | SetUnitMetaAction

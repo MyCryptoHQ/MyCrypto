@@ -15,8 +15,13 @@ export {
   gasParamsInRange,
   validateTx,
   transaction,
-  getTransactionFields
+  getTransactionFields,
+  computeIndexingHash
 };
+
+// we dont include the signature paramaters because web3 transactions are unsigned
+const computeIndexingHash = (tx: Buffer) =>
+  bufferToHex(transaction(tx).hash(false));
 
 // Get useable fields from an EthTx object.
 const getTransactionFields = (t: Tx): IHexStrTransaction => {

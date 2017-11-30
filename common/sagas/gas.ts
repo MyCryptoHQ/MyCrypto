@@ -17,7 +17,6 @@ import {
   estimateGasSucceeded,
   TypeKeys
 } from 'actions/transaction';
-import EthTx from 'ethereumjs-tx';
 import { IWallet } from 'libs/wallet';
 import { transaction } from 'libs/transaction';
 
@@ -42,6 +41,8 @@ export function* estimateGas(): SagaIterator {
       );
       yield put(estimateGasSucceeded());
     } catch {
+      //TODO: display notif
+
       yield put(estimateGasFailed());
       // fallback for estimating locally
       const tx = yield call(transaction, payload);

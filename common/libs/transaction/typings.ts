@@ -1,4 +1,4 @@
-import { Wei, TokenValue, Address } from 'libs/units';
+import { Wei, Address } from 'libs/units';
 import BN from 'bn.js';
 // By only dealing with Buffers / BN, dont have to mess around with cleaning strings
 export interface ITransaction {
@@ -22,14 +22,5 @@ export interface IHexStrTransaction {
   gasLimit: string;
   gasPrice: string;
   nonce: string;
-  chainId: number;
-}
-
-export interface ITokenTransaction {
-  to: Address;
-  tokenValue: TokenValue;
-  gasLimit: Wei;
-  gasPrice: Wei;
-  nonce: BN;
   chainId: number;
 }

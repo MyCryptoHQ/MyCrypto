@@ -8,7 +8,8 @@ const INITIAL_STATE: State = {
   unit: 'ether',
   decimal: getDecimal('ether'),
   tokenValue: { raw: '', value: null },
-  tokenTo: { raw: '', value: null }
+  tokenTo: { raw: '', value: null },
+  from: null
 };
 
 //TODO: generic-ize updateField to reuse
@@ -35,6 +36,7 @@ const reducerObj: ReducersMapObject = {
   [TK.DECIMAL_META_SET]: updateField('decimal'),
   [TK.TOKEN_VALUE_META_SET]: updateField('tokenValue'),
   [TK.TOKEN_TO_META_SET]: updateField('tokenTo'),
+  [TK.GET_FROM_SUCCEEDED]: updateField('from'),
   [TK.RESET]: _ => INITIAL_STATE
 };
 
