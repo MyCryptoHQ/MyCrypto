@@ -25,7 +25,7 @@ import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
 
-function* getDeterministicWallets(
+export function* getDeterministicWallets(
   action: GetDeterministicWalletsAction
 ): SagaIterator {
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
@@ -64,7 +64,7 @@ function* getDeterministicWallets(
 }
 
 // Grab each wallet's main network token, and update it with it
-function* updateWalletValues(): SagaIterator {
+export function* updateWalletValues(): SagaIterator {
   const node: INode = yield select(getNodeLib);
   const wallets: DeterministicWalletData[] = yield select(getWallets);
 
@@ -87,7 +87,7 @@ function* updateWalletValues(): SagaIterator {
 }
 
 // Grab the current desired token, and update the wallet with it
-function* updateWalletTokenValues(): SagaIterator {
+export function* updateWalletTokenValues(): SagaIterator {
   const desiredToken: string = yield select(getDesiredToken);
   if (!desiredToken) {
     return;

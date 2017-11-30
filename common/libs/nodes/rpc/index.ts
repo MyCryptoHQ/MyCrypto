@@ -6,13 +6,15 @@ import { stripHexPrefix } from 'libs/values';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
-
-function errorOrResult(response) {
-  if (response.error) {
-    throw new Error(response.error.message);
-  }
-  return response.result;
-}
+import {
+  isValidGetBalance,
+  isValidEstimateGas,
+  isValidCallRequest,
+  isValidTokenBalance,
+  isValidTransactionCount,
+  isValidCurrentBlock,
+  isValidRawTxApi
+} from '../../validators';
 
 export default class RpcNode implements INode {
   public client: RPCClient;
@@ -31,78 +33,87 @@ export default class RpcNode implements INode {
   }
 
   public sendCallRequest(txObj: TxObj): Promise<string> {
-    return this.client.call(this.requests.ethCall(txObj)).then(r => {
-      if (r.error) {
-        throw Error(r.error.message);
-      }
-      return r.result;
-    });
+    return this.client
+      .call(this.requests.ethCall(txObj))
+      .then(isValidCallRequest)
+      .then(response => response.result);
   }
   public getBalance(address: string): Promise<Wei> {
     return this.client
       .call(this.requests.getBalance(address))
-      .then(errorOrResult)
-      .then(result => Wei(result));
+      .then(isValidGetBalance)
+      .then(({ result }) => Wei(result));
   }
 
   public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
     return this.client
       .call(this.requests.estimateGas(transaction))
-      .then(errorOrResult)
-      .then(result => Wei(result));
+      .then(isValidEstimateGas)
+      .then(({ result }) => Wei(result));
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
+  public getTokenBalance(
+    address: string,
+    token: Token
+  ): Promise<{ balance: TokenValue; error: string | null }> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
-      .then(response => {
-        if (response.error) {
-          // TODO - Error handling
-          return TokenValue('0');
-        }
-        return TokenValue(response.result);
-      });
+      .then(isValidTokenBalance)
+      .then(({ result }) => {
+        return {
+          balance: TokenValue(result),
+          error: null
+        };
+      })
+      .catch(err => ({
+        balance: TokenValue('0'),
+        error: 'Caught error:' + err
+      }));
   }
 
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<TokenValue[]> {
+  ): Promise<{ balance: TokenValue; error: string | null }[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
-      .then(response => {
-        return response.map(item => {
-          // FIXME wrap in maybe-like
-          if (item.error) {
-            return TokenValue('0');
+      .then(response =>
+        response.map(item => {
+          if (isValidTokenBalance(item)) {
+            return {
+              balance: TokenValue(item.result),
+              error: null
+            };
+          } else {
+            return {
+              balance: TokenValue('0'),
+              error: 'Invalid object shape'
+            };
           }
-          return TokenValue(item.result);
-        });
-      });
-    // TODO - Error handling
+        })
+      );
   }
 
   public getTransactionCount(address: string): Promise<string> {
     return this.client
       .call(this.requests.getTransactionCount(address))
-      .then(errorOrResult);
+      .then(isValidTransactionCount)
+      .then(({ result }) => result);
   }
 
   public getCurrentBlock(): Promise<string> {
     return this.client
       .call(this.requests.getCurrentBlock())
-      .then(errorOrResult)
-      .then(result => new BN(stripHexPrefix(result)).toString());
+      .then(isValidCurrentBlock)
+      .then(({ result }) => new BN(stripHexPrefix(result)).toString());
   }
 
   public sendRawTx(signedTx: string): Promise<string> {
     return this.client
       .call(this.requests.sendRawTx(signedTx))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return response.result;
+      .then(isValidRawTxApi)
+      .then(({ result }) => {
+        return result;
       });
   }
 }

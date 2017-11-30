@@ -56,6 +56,7 @@ exports[`render snapshot 1`] = `
       "client": RPCClient {
         "batch": [Function],
         "call": [Function],
+        "createHeaders": [Function],
         "decorateRequest": [Function],
         "endpoint": "https://api.myetherapi.com/rop",
         "headers": Object {},

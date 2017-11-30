@@ -1,9 +1,9 @@
-import { IWallet } from '../IWallet';
+import { IFullWallet } from '../IWallet';
 import { ExtendedRawTransaction } from 'libs/transaction';
 import { networkIdToName } from 'libs/values';
 import { bufferToHex } from 'ethereumjs-util';
 
-export default class Web3Wallet implements IWallet {
+export default class Web3Wallet implements IFullWallet {
   private web3: any;
   private address: string;
   private network: string;

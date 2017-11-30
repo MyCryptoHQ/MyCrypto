@@ -8,7 +8,7 @@ import { INode } from 'libs/nodes/INode';
 import { UnitKey, Wei, TokenValue, toTokenBase } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { stripHexPrefixAndLower, sanitizeHex, toHexWei } from 'libs/values';
-import { IWallet, Web3Wallet } from 'libs/wallet';
+import { IFullWallet, Web3Wallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 
 export interface TransactionInput {
@@ -168,7 +168,7 @@ function generateTxValidation(
 export async function generateCompleteTransactionFromRawTransaction(
   node: INode,
   tx: ExtendedRawTransaction,
-  wallet: IWallet,
+  wallet: IFullWallet,
   token: Token | null | undefined,
   skipValidation: boolean,
   offline?: boolean
@@ -213,7 +213,7 @@ export async function generateCompleteTransactionFromRawTransaction(
 }
 
 export async function formatTxInput(
-  wallet: IWallet,
+  wallet: IFullWallet,
   { token, unit, value, to, data }: TransactionInput
 ): Promise<TransactionWithoutGas> {
   if (unit === 'ether') {
@@ -265,7 +265,7 @@ export async function confirmAndSendWeb3Transaction(
 }
 
 export async function generateCompleteTransaction(
-  wallet: IWallet,
+  wallet: IFullWallet,
   nodeLib: RPCNode,
   gasPrice: Wei,
   gasLimit: Wei,

@@ -26,8 +26,9 @@ export default function(
     .join(',');
 
   const popup = window.open('about:blank', 'printWindow', featuresStr);
-  popup.document.open();
-  popup.document.write(`
+  if (popup) {
+    popup.document.open();
+    popup.document.write(`
   <html>
     <head>
       <style>${options.styles}</style>
@@ -50,4 +51,5 @@ export default function(
     </body>
     </html>
 	`);
+  }
 }
