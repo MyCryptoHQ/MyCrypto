@@ -15,7 +15,7 @@ export default class EtherscanRequests extends RPCRequests {
   public sendRawTx(signedTx: string): SendRawTxRequest {
     return {
       module: 'proxy',
-      method: 'eth_sendRawTransaction',
+      action: 'eth_sendRawTransaction',
       hex: signedTx
     };
   }
@@ -23,7 +23,7 @@ export default class EtherscanRequests extends RPCRequests {
   public estimateGas(transaction): EstimateGasRequest {
     return {
       module: 'proxy',
-      method: 'eth_estimateGas',
+      action: 'eth_estimateGas',
       to: transaction.to,
       value: transaction.value,
       data: transaction.data,

@@ -14,6 +14,7 @@ export interface TokenBalance {
   balance: TokenValue;
   custom: boolean;
   decimal: number;
+  error: string | null;
 }
 
 export type MergedToken = Token & {
@@ -38,8 +39,11 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
   return tokens.map(t => ({
     symbol: t.symbol,
     balance: state.wallet.tokens[t.symbol]
-      ? state.wallet.tokens[t.symbol]
+      ? state.wallet.tokens[t.symbol].balance
       : TokenValue('0'),
+    error: state.wallet.tokens[t.symbol]
+      ? state.wallet.tokens[t.symbol].error
+      : null,
     custom: t.custom,
     decimal: t.decimal
   }));

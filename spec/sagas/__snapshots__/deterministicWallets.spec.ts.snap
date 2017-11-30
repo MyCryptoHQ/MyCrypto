@@ -178,6 +178,7 @@ Object {
           "client": RPCClient {
             "batch": [Function],
             "call": [Function],
+            "createHeaders": [Function],
             "decorateRequest": [Function],
             "endpoint": "",
             "headers": Object {},
@@ -202,6 +203,7 @@ Object {
           "client": RPCClient {
             "batch": [Function],
             "call": [Function],
+            "createHeaders": [Function],
             "decorateRequest": [Function],
             "endpoint": "",
             "headers": Object {},

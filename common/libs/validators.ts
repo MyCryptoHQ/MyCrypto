@@ -2,6 +2,8 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
+import { Validator } from 'jsonschema';
+import { JsonRpcResponse } from './nodes/rpc/types';
 
 export function isValidETHAddress(address: string): boolean {
   if (!address) {
@@ -177,3 +179,67 @@ export const isValidByteCode = (byteCode: string) =>
 
 export const isValidAbiJson = (abiJson: string) =>
   abiJson && abiJson.startsWith('[') && abiJson.endsWith(']');
+
+// JSONSchema Validations for Rpc responses
+const v = new Validator();
+
+export const schema = {
+  RpcNode: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      jsonrpc: { type: 'string' },
+      id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
+      result: { type: 'string' },
+      status: { type: 'string' },
+      message: { type: 'string', maxLength: 2 }
+    }
+  }
+};
+
+function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
+  return v.validate(response, schemaFormat).valid;
+}
+
+function formatErrors(response: JsonRpcResponse, apiType: string) {
+  if (response.error) {
+    return `${response.error.message} ${response.error.data}`;
+  }
+  return `Invalid ${apiType} Error`;
+}
+
+const isValidEthCall = (response: JsonRpcResponse, schemaType) => (
+  apiName,
+  cb?
+) => {
+  if (!isValidResult(response, schemaType)) {
+    if (cb) {
+      return cb(response);
+    }
+    throw new Error(formatErrors(response, apiName));
+  }
+  return response;
+};
+
+export const isValidGetBalance = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Get Balance');
+
+export const isValidEstimateGas = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Estimate Gas');
+
+export const isValidCallRequest = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Call Request');
+
+export const isValidTokenBalance = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Token Balance', () => ({
+    result: 'Failed'
+  }));
+
+export const isValidTransactionCount = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Transaction Count');
+
+export const isValidCurrentBlock = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Current Block');
+
+export const isValidRawTxApi = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Raw Tx');
