@@ -41,7 +41,7 @@ import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 
-function* updateAccountBalance(): SagaIterator {
+export function* updateAccountBalance(): SagaIterator {
   try {
     yield put(setBalancePending());
     const wallet: null | IWallet = yield select(getWalletInst);
@@ -58,7 +58,7 @@ function* updateAccountBalance(): SagaIterator {
   }
 }
 
-function* updateTokenBalances(): SagaIterator {
+export function* updateTokenBalances(): SagaIterator {
   try {
     const node: INode = yield select(getNodeLib);
     const wallet: null | IWallet = yield select(getWalletInst);
@@ -89,7 +89,7 @@ function* updateTokenBalances(): SagaIterator {
   }
 }
 
-function* updateBalances(): SagaIterator {
+export function* updateBalances(): SagaIterator {
   yield fork(updateAccountBalance);
   yield fork(updateTokenBalances);
 }
@@ -124,7 +124,7 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   yield put(setWallet(wallet));
 }
 
-function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
+export function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
   let wallet;
   const { phrase, pass, path, address } = action.payload;
 
@@ -141,7 +141,7 @@ function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
 
 // inspired by v3:
 // https://github.com/kvhnuke/etherwallet/blob/417115b0ab4dd2033d9108a1a5c00652d38db68d/app/scripts/controllers/decryptWalletCtrl.js#L311
-function* unlockWeb3(): SagaIterator {
+export function* unlockWeb3(): SagaIterator {
   try {
     yield call(initWeb3Node);
     yield put(changeNodeIntent('web3'));
@@ -170,7 +170,7 @@ function* unlockWeb3(): SagaIterator {
   }
 }
 
-function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
+export function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
   const signedTx = action.payload.signedTx;
   try {
     const node: INode = yield select(getNodeLib);

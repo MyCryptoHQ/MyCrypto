@@ -8,7 +8,7 @@ import {
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
-  TRemoveCustomNode,
+  TRemoveCustomNode
 } from 'actions/config';
 import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
@@ -52,7 +52,7 @@ class TabSection extends Component<Props, {}> {
       changeNodeIntent,
       changeGasPrice,
       addCustomNode,
-      removeCustomNode,
+      removeCustomNode
     } = this.props;
 
     const headerProps = {
@@ -67,7 +67,7 @@ class TabSection extends Component<Props, {}> {
       changeNodeIntent,
       changeGasPrice,
       addCustomNode,
-      removeCustomNode,
+      removeCustomNode
     };
 
     return (
@@ -92,7 +92,7 @@ function mapStateToProps(state: AppState) {
     languageSelection: state.config.languageSelection,
     gasPriceGwei: state.config.gasPriceGwei,
     customNodes: state.config.customNodes,
-    latestBlock: state.config.latestBlock,
+    latestBlock: state.config.latestBlock
   };
 }
 
@@ -101,5 +101,5 @@ export default connect(mapStateToProps, {
   changeLanguage: dChangeLanguage,
   changeNodeIntent: dChangeNodeIntent,
   addCustomNode: dAddCustomNode,
-  removeCustomNode: dRemoveCustomNode,
+  removeCustomNode: dRemoveCustomNode
 })(TabSection);

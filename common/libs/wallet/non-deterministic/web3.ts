@@ -1,4 +1,4 @@
-import { IWallet } from '../IWallet';
+import { IFullWallet } from '../IWallet';
 import { ExtendedRawTransaction } from 'libs/transaction';
 import { networkIdToName, sanitizeHex } from 'libs/values';
 import { bufferToHex } from 'ethereumjs-util';
@@ -8,7 +8,7 @@ import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 import BN from 'bn.js';
 
-export default class Web3Wallet implements IWallet {
+export default class Web3Wallet implements IFullWallet {
   private address: string;
   private network: string;
 

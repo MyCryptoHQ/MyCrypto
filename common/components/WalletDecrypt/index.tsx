@@ -30,7 +30,6 @@ const WALLETS = {
     component: Web3Decrypt,
     initialParams: {},
     unlock: unlockWeb3,
-    disabled: false,
     helpLink:
       'https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html'
   },
@@ -39,7 +38,6 @@ const WALLETS = {
     component: LedgerNanoSDecrypt,
     initialParams: {},
     unlock: setWallet,
-    disabled: false,
     helpLink:
       'https://ledger.zendesk.com/hc/en-us/articles/115005200009-How-to-use-MyEtherWallet-with-Ledger'
   },
@@ -48,7 +46,6 @@ const WALLETS = {
     component: TrezorDecrypt,
     initialParams: {},
     unlock: setWallet,
-    disabled: false,
     helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
   },
   'keystore-file': {
@@ -59,7 +56,6 @@ const WALLETS = {
       password: ''
     },
     unlock: unlockKeystore,
-    disabled: false,
     helpLink:
       'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
   },
@@ -68,7 +64,6 @@ const WALLETS = {
     component: MnemonicDecrypt,
     initialParams: {},
     unlock: unlockMnemonic,
-    disabled: false,
     helpLink:
       'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
   },
@@ -80,14 +75,14 @@ const WALLETS = {
       password: ''
     },
     unlock: unlockPrivateKey,
-    disabled: false,
     helpLink:
       'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
   },
   'view-only': {
     lid: 'View with Address Only',
     component: ViewOnlyDecrypt,
-    disabled: true,
+    initialParams: {},
+    unlock: setWallet,
     helpLink: ''
   }
 };
@@ -100,6 +95,7 @@ interface Props {
     UnlockKeystoreAction | UnlockMnemonicAction | UnlockPrivateKeyAction
   >;
   offline: boolean;
+  allowReadOnly?: boolean;
 }
 
 interface State {
@@ -139,8 +135,12 @@ export class WalletDecrypt extends Component<Props, State> {
 
   public buildWalletOptions() {
     return map(WALLETS, (wallet, key) => {
-      const isSelected = this.state.selectedWalletKey === key;
       const { helpLink } = wallet;
+      const isSelected = this.state.selectedWalletKey === key;
+      const isDisabled =
+        this.isOnlineRequiredWalletAndOffline(key) ||
+        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt);
+
       return (
         <label className="radio" key={key}>
           <input
@@ -150,10 +150,8 @@ export class WalletDecrypt extends Component<Props, State> {
             name="decryption-choice-radio-group"
             value={key}
             checked={isSelected}
+            disabled={isDisabled}
             onChange={this.handleDecryptionChoiceChange}
-            disabled={
-              wallet.disabled || this.isOnlineRequiredWalletAndOffline(key)
-            }
           />
           <span id={`${key}-label`}>{translate(wallet.lid)}</span>
           {helpLink ? <Help link={helpLink} /> : null}

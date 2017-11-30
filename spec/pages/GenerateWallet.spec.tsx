@@ -9,9 +9,6 @@ Enzyme.configure({ adapter: new Adapter() });
 
 it('render snapshot', () => {
   const testState = {
-    form: {
-      walletPasswordForm: {}
-    },
     generateWallet: {
       activeStep: {},
       password: {},
