@@ -110,11 +110,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
             <option value="ETH">ETH</option>
             {tokenBalances &&
               tokenBalances.map(tk => {
-                if (
-                  !tk.balance ||
-                  tk.balance === 'Failed' ||
-                  tk.balance.isZero()
-                ) {
+                if (!tk.balance || tk.balance.isZero()) {
                   return;
                 }
                 const sym = tk.symbol;
