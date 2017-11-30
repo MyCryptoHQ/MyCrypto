@@ -19,7 +19,7 @@ const reducerObj: ReducersMapObject = {
   }),
   [TK.GET_FROM_SUCCEEDED]: (state: State): State => ({
     ...state,
-    getFromSuccessful: false
+    getFromSuccessful: true
   }),
   [TK.GET_FROM_FAILED]: (state: State): State => ({
     ...state,

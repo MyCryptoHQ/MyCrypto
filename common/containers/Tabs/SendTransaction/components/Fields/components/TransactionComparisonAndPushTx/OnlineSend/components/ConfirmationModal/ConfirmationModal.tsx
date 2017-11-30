@@ -8,7 +8,10 @@ import {
   broadcastLocalTransactionRequested,
   TBroadcastLocalTransactionRequested
 } from 'actions/transaction';
-import { currentTransactionBroadcasting } from 'selectors/transaction';
+import {
+  currentTransactionBroadcasting,
+  currentTransactionBroadcasted
+} from 'selectors/transaction';
 import translate, { translateRaw } from 'translations';
 import './ConfirmationModal.scss';
 import { AppState } from 'reducers';
@@ -19,6 +22,7 @@ interface DispatchProps {
 interface StateProps {
   lang: string;
   transactionBroadcasting: boolean;
+  transactionBroadcasted: boolean;
 }
 interface OwnProps {
   onClose(): void;
@@ -29,7 +33,7 @@ interface State {
 
 type Props = DispatchProps & StateProps & OwnProps;
 
-class ConfirmationModal extends React.Component<Props, State> {
+class ConfirmationModalClass extends React.Component<Props, State> {
   public state = {
     timeToRead: 5
   };
@@ -37,7 +41,7 @@ class ConfirmationModal extends React.Component<Props, State> {
   private readTimer = 0;
 
   public componentDidUpdate() {
-    if (!this.props.transactionBroadcasting) {
+    if (this.props.transactionBroadcasted) {
       this.props.onClose();
     }
   }
@@ -113,10 +117,11 @@ class ConfirmationModal extends React.Component<Props, State> {
   };
 }
 
-export default connect(
+export const ConfirmationModal = connect(
   (state: AppState) => ({
     transactionBroadcasting: currentTransactionBroadcasting(state),
+    transactionBroadcasted: currentTransactionBroadcasted(state),
     lang: getLanguageSelection(state)
   }),
   { broadcastLocalTransactionRequested }
-)(ConfirmationModal);
+)(ConfirmationModalClass);

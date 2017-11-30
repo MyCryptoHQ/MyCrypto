@@ -11,7 +11,9 @@ import wallet from './wallet';
 import { estimateGas } from './gas';
 import { signing } from './signing';
 import { broadcast } from './broadcast';
+import { from } from './from';
 export default {
+  from,
   broadcast,
   estimateGas,
   signing,

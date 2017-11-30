@@ -4,7 +4,7 @@ import { Aux } from 'components/ui';
 import { getTransactionFields, transaction } from 'libs/transaction';
 import { OfflineBroadcast } from './OfflineBroadcast';
 import { SerializedTransaction } from 'components/renderCbs';
-
+import { OnlineSend } from './OnlineSend';
 const getStringifiedTx = (serializedTransaction: string) =>
   JSON.stringify(
     getTransactionFields(transaction(serializedTransaction)),
@@ -35,6 +35,7 @@ export const TransactionComparisonAndPushTx: React.SFC<{}> = () => (
           />
         </div>
         <OfflineBroadcast />
+        <OnlineSend />
       </Aux>
     )}
   />
