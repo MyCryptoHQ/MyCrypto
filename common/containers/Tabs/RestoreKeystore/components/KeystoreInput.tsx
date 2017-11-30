@@ -4,11 +4,11 @@ import classnames from 'classnames';
 interface Props {
   isValid: boolean;
   isVisible: boolean;
-  handleInput: any;
   name: string;
   value: string;
   placeholder: string;
-  handleToggle: any;
+  handleInput(e: React.FormEvent<HTMLInputElement>): void;
+  handleToggle(): void;
 }
 
 const KeystoreInput: React.SFC<Props> = ({

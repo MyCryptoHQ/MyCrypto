@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Template from './Template';
 import KeystoreInput from './KeystoreInput';
-import { fromPrivateKey, IFullWallet } from 'ethereumjs-wallet';
+import { fromPrivateKey, IFullWallet, fromV3 } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
 import { isValidPrivKey } from 'libs/validators';
-import { stripHexPrefix } from 'libs/values';
+import { strippedPrivateKey } from 'libs/values';
 import translate from 'translations';
 import './KeystoreDetails.scss';
 
@@ -42,7 +42,7 @@ class KeystoreDetails extends Component<{}, State> {
       fileName
     } = this.state;
 
-    const privateKey = stripHexPrefix(secretKey);
+    const privateKey = strippedPrivateKey(secretKey);
     const privateKeyValid = isValidPrivKey(privateKey);
 
     const content = (
@@ -83,7 +83,7 @@ class KeystoreDetails extends Component<{}, State> {
           >
             Generate Keystore
           </button>
-        ) : (
+        ) : this.runtimeKeystoreCheck() ? (
           <a
             onClick={this.resetState}
             href={this.getBlob()}
@@ -94,6 +94,12 @@ class KeystoreDetails extends Component<{}, State> {
           >
             Download Keystore
           </a>
+        ) : (
+          <p>
+            Error generating a valid keystore that matches your private key. In
+            order to protect our users, if our runtime check fails, we prevent
+            you from downloading a potentially corrupted wallet.
+          </p>
         )}
       </div>
     );
@@ -122,7 +128,7 @@ class KeystoreDetails extends Component<{}, State> {
 
   private handleKeystoreGeneration = () => {
     const { secretKey } = this.state;
-    const removeChecksumPkey = stripHexPrefix(secretKey);
+    const removeChecksumPkey = strippedPrivateKey(secretKey);
     const keyBuffer = Buffer.from(removeChecksumPkey, 'hex');
     const wallet = fromPrivateKey(keyBuffer);
     const fileName = wallet.getV3Filename();
@@ -143,10 +149,24 @@ class KeystoreDetails extends Component<{}, State> {
     this.setState({ [name as any]: value });
   };
 
-  private getBlob() {
-    const { wallet } = this.state;
+  private runtimeKeystoreCheck(): boolean {
+    const { wallet, password, secretKey } = this.state;
     if (wallet) {
-      const keystore = wallet.toV3(this.state.password, { n: 1024 });
+      const keystore = wallet.toV3(password, { n: 1024 });
+      const backToWallet = fromV3(keystore, password, true);
+      if (
+        strippedPrivateKey(backToWallet.getPrivateKeyString()) === secretKey
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private getBlob() {
+    const { wallet, password } = this.state;
+    if (wallet) {
+      const keystore = wallet.toV3(password, { n: 1024 });
       return makeBlob('text/json;charset=UTF-8', keystore);
     }
   }

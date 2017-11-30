@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
 import { Wei, TokenValue } from 'libs/units';
-import { stripHexPrefix } from 'libs/values';
+import { strippedPrivateKey } from 'libs/values';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
@@ -105,7 +105,7 @@ export default class RpcNode implements INode {
     return this.client
       .call(this.requests.getCurrentBlock())
       .then(isValidCurrentBlock)
-      .then(({ result }) => new BN(stripHexPrefix(result)).toString());
+      .then(({ result }) => new BN(strippedPrivateKey(result)).toString());
   }
 
   public sendRawTx(signedTx: string): Promise<string> {

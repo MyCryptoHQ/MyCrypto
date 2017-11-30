@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { stripHexPrefix } from 'libs/values';
+import { strippedPrivateKey } from 'libs/values';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -34,7 +34,7 @@ const Units = {
 const handleValues = (input: string | BN) => {
   if (typeof input === 'string') {
     return input.startsWith('0x')
-      ? new BN(stripHexPrefix(input), 16)
+      ? new BN(strippedPrivateKey(input), 16)
       : new BN(input);
   }
   if (typeof input === 'number') {
