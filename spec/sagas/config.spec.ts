@@ -1,42 +1,158 @@
+import { configuredStore } from 'store';
 import { delay } from 'redux-saga';
-import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
+import {
+  call,
+  cancel,
+  fork,
+  put,
+  take,
+  select,
+  race
+} from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import {
   toggleOfflineConfig,
   changeNode,
-  changeNodeIntent
+  changeNodeIntent,
+  setLatestBlock
 } from 'actions/config';
 import {
   getConfig,
   pollOfflineStatus,
   handlePollOfflineStatus,
   handleNodeChangeIntent,
+  handleTogglePollOfflineStatus,
   reload,
   unsetWeb3Node,
   equivalentNodeOrDefault
 } from 'sagas/config';
 import { NODES } from 'config/data';
-import { getNode, getNodeConfig } from 'selectors/config';
+import {
+  getNode,
+  getNodeConfig,
+  getOffline,
+  getForceOffline,
+  getCustomNodeConfigs
+} from 'selectors/config';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { getWalletInst } from 'selectors/wallet';
 import { Web3Wallet } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
+import { lang } from 'moment';
+import { showNotification } from 'actions/notifications';
+import { makeBlob } from 'utils/blob';
+import translate from 'translations';
+
+// init module
+configuredStore.getState();
 
 describe('pollOfflineStatus*', () => {
-  const gen = pollOfflineStatus();
+  const nav = navigator as any;
+  const doc = document as any;
+  const data = {} as any;
+  data.gen = cloneableGenerator(pollOfflineStatus)();
+  const node = {
+    lib: {
+      ping: jest.fn()
+    }
+  };
+  const isOffline = true;
+  const isForcedOffline = true;
+  const raceSuccess = {
+    pingSucceeded: true
+  };
+  const raceFailure = {
+    pingSucceeded: false
+  };
 
-  it('should select getConfig', () => {
-    expect(gen.next().value).toEqual(select(getConfig));
+  let originalHidden;
+  let originalOnLine;
+  let originalRandom;
+
+  beforeAll(() => {
+    // backup global config
+    originalHidden = document.hidden;
+    originalOnLine = navigator.onLine;
+    originalRandom = Math.random;
+
+    // mock config
+    Object.defineProperty(document, 'hidden', { value: false, writable: true });
+    Object.defineProperty(navigator, 'onLine', { value: true, writable: true });
+    Math.random = () => 0.001;
   });
 
-  it('should put toggleOfflineConfig', () => {
-    expect(gen.next({ offline: true }).value).toEqual(
+  afterAll(() => {
+    // restore global config
+    Object.defineProperty(document, 'hidden', {
+      value: originalHidden,
+      writable: false
+    });
+    Object.defineProperty(navigator, 'onLine', {
+      value: originalOnLine,
+      writable: false
+    });
+    Math.random = originalRandom;
+  });
+
+  it('should select getNodeConfig', () => {
+    expect(data.gen.next().value).toEqual(select(getNodeConfig));
+  });
+
+  it('should select getOffline', () => {
+    expect(data.gen.next(node).value).toEqual(select(getOffline));
+  });
+
+  it('should select getForceOffline', () => {
+    data.isOfflineClone = data.gen.clone();
+    expect(data.gen.next(isOffline).value).toEqual(select(getForceOffline));
+  });
+
+  it('should be done if isForcedOffline', () => {
+    data.clone1 = data.gen.clone();
+    expect(data.clone1.next(isForcedOffline).done).toEqual(true);
+  });
+
+  it('should call delay if document is hidden', () => {
+    data.clone2 = data.gen.clone();
+    doc.hidden = true;
+
+    expect(data.clone2.next(!isForcedOffline).value).toEqual(call(delay, 1000));
+  });
+
+  it('should race pingSucceeded and timeout', () => {
+    doc.hidden = false;
+    expect(data.gen.next(!isForcedOffline).value).toMatchSnapshot();
+  });
+
+  it('should put showNotification and put toggleOfflineConfig if pingSucceeded && isOffline', () => {
+    expect(data.gen.next(raceSuccess).value).toEqual(
+      put(
+        showNotification(
+          'success',
+          'Your connection to the network has been restored!',
+          3000
+        )
+      )
+    );
+    expect(data.gen.next().value).toEqual(put(toggleOfflineConfig()));
+  });
+
+  it('should put showNotification and put toggleOfflineConfig if !pingSucceeded && !isOffline', () => {
+    nav.onLine = !isOffline;
+
+    data.isOfflineClone.next(!isOffline);
+    data.isOfflineClone.next(!isForcedOffline);
+
+    data.clone3 = data.isOfflineClone.clone();
+
+    expect(data.isOfflineClone.next(raceFailure).value).toMatchSnapshot();
+    expect(data.isOfflineClone.next().value).toEqual(
       put(toggleOfflineConfig())
     );
   });
 
-  it('should call delay', () => {
-    expect(gen.next().value).toEqual(call(delay, 250));
+  it('should call delay when neither case is true', () => {
+    expect(data.clone3.next(raceSuccess).value).toEqual(call(delay, 5000));
   });
 });
 
@@ -60,45 +176,194 @@ describe('handlePollOfflineStatus*', () => {
   });
 });
 
+describe('handleTogglePollOfflineStatus*', () => {
+  const data = {} as any;
+  data.gen = cloneableGenerator(handleTogglePollOfflineStatus)();
+  const isForcedOffline = true;
+
+  it('should select getForceOffline', () => {
+    expect(data.gen.next().value).toEqual(select(getForceOffline));
+  });
+
+  it('should fork handlePollOfflineStatus when isForcedOffline', () => {
+    data.clone = data.gen.clone();
+    expect(data.gen.next(isForcedOffline).value).toEqual(
+      fork(handlePollOfflineStatus)
+    );
+  });
+
+  it('should call handlePollOfflineStatus when !isForcedOffline', () => {
+    expect(data.clone.next(!isForcedOffline).value).toEqual(
+      call(handlePollOfflineStatus)
+    );
+  });
+
+  it('should be done', () => {
+    expect(data.gen.next().done).toEqual(true);
+    expect(data.clone.next().done).toEqual(true);
+  });
+});
+
 describe('handleNodeChangeIntent*', () => {
+  let originalRandom;
+
+  // normal operation variables
   const defaultNode = configInitialState.nodeSelection;
   const defaultNodeConfig = NODES[defaultNode];
   const newNode = Object.keys(NODES).reduce(
     (acc, cur) => (NODES[acc].network === defaultNodeConfig.network ? cur : acc)
   );
-  const changeNodeAction = changeNode(newNode);
+  const newNodeConfig = NODES[newNode];
+  const changeNodeIntentAction = changeNodeIntent(newNode);
   const falsyWallet = false;
   const truthyWallet = true;
+  const latestBlock = '0xa';
+  const raceSuccess = {
+    lb: latestBlock
+  };
+  const raceFailure = {
+    to: true
+  };
 
   const data = {} as any;
-  data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeAction);
+  data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeIntentAction);
 
-  it('should select node config', () => {
-    expect(data.gen.next().value).toEqual(select(getNodeConfig));
+  // custom node variables
+  const customNodeConfigs = [
+    {
+      name: 'name',
+      url: 'url',
+      port: 443,
+      network: 'network'
+    }
+  ];
+  const customNodeIdFound = 'url:443';
+  const customNodeIdNotFound = 'notFound';
+  const customNodeIntentAction = changeNodeIntent(customNodeIdFound);
+  const customNodeIntentNotFoundAction = changeNodeIntent(customNodeIdNotFound);
+  data.customNode = handleNodeChangeIntent(customNodeIntentAction);
+  data.customNodeNotFound = handleNodeChangeIntent(
+    customNodeIntentNotFoundAction
+  );
+
+  beforeAll(() => {
+    originalRandom = Math.random;
+    Math.random = () => 0.001;
   });
 
-  it('should put changeNode with new node', () => {
-    expect(data.gen.next(defaultNodeConfig).value).toEqual(
-      put(changeNode(changeNodeAction.payload))
+  afterAll(() => {
+    Math.random = originalRandom;
+  });
+
+  it('should select getNode', () => {
+    expect(data.gen.next().value).toEqual(select(getNode));
+  });
+
+  it('should select nodeConfig', () => {
+    expect(data.gen.next(defaultNode).value).toEqual(select(getNodeConfig));
+  });
+
+  // it('should select getWalletInst', () => {
+  //   expect(data.gen.next(defaultNodeConfig).value).toEqual(select(getWalletInst));
+  // })
+
+  it('should race getCurrentBlock and delay', () => {
+    expect(data.gen.next(defaultNodeConfig).value).toMatchSnapshot();
+  });
+
+  it('should put showNotification and put changeNode if timeout', () => {
+    data.clone1 = data.gen.clone();
+    expect(data.clone1.next(raceFailure).value).toEqual(
+      put(showNotification('danger', translate('ERROR_32'), 5000))
+    );
+    expect(data.clone1.next().value).toEqual(
+      put(changeNode(defaultNode, defaultNodeConfig))
+    );
+    expect(data.clone1.next().done).toEqual(true);
+  });
+
+  it('should put setLatestBlock', () => {
+    expect(data.gen.next(raceSuccess).value).toEqual(
+      put(setLatestBlock(latestBlock))
     );
   });
 
-  it('should select wallet instance', () => {
+  it('should put changeNode', () => {
+    expect(data.gen.next().value).toEqual(
+      put(changeNode(changeNodeIntentAction.payload, newNodeConfig))
+    );
+  });
+
+  it('should select getWalletInst', () => {
     expect(data.gen.next().value).toEqual(select(getWalletInst));
   });
 
-  it('should end if wallet is falsy', () => {
-    data.clone = data.gen.clone();
-    expect(data.gen.next(falsyWallet).done).toEqual(true);
-  });
-
-  it('should call reload if wallet is truthy and network is new', () => {
-    expect(data.clone.next(truthyWallet).value).toEqual(call(reload));
+  it('should call reload if wallet exists and network is new', () => {
+    data.clone2 = data.gen.clone();
+    expect(data.clone2.next(truthyWallet).value).toEqual(call(reload));
+    expect(data.clone2.next().done).toEqual(true);
   });
 
   it('should be done', () => {
-    expect(data.clone.next().done).toEqual(true);
+    expect(data.gen.next().done).toEqual(true);
   });
+
+  // test custom node
+  it('should select getCustomNodeConfig and match race snapshot', () => {
+    data.customNode.next();
+    data.customNode.next(defaultNode);
+    expect(data.customNode.next(defaultNodeConfig).value).toEqual(
+      select(getCustomNodeConfigs)
+    );
+    expect(data.customNode.next(customNodeConfigs).value).toMatchSnapshot();
+  });
+
+  // test custom node not found
+  it('should select getCustomNodeConfig, put showNotification, put changeNode', () => {
+    data.customNodeNotFound.next();
+    data.customNodeNotFound.next(defaultNode);
+    expect(data.customNodeNotFound.next(defaultNodeConfig).value).toEqual(
+      select(getCustomNodeConfigs)
+    );
+    expect(data.customNodeNotFound.next(customNodeConfigs).value).toEqual(
+      put(
+        showNotification(
+          'danger',
+          `Attempted to switch to unknown node '${
+            customNodeIntentNotFoundAction.payload
+          }'`,
+          5000
+        )
+      )
+    );
+    expect(data.customNodeNotFound.next().value).toEqual(
+      put(changeNode(defaultNode, defaultNodeConfig))
+    );
+    expect(data.customNodeNotFound.next().done).toEqual(true);
+  });
+
+  // it('should put changeNode with new node', () => {
+  //   expect(data.gen.next(defaultNodeConfig).value).toEqual(
+  //     put(changeNode(changeNodeAction.payload))
+  //   );
+  // });
+
+  // it('should select wallet instance', () => {
+  //   expect(data.gen.next().value).toEqual(select(getWalletInst));
+  // });
+
+  // it('should end if wallet is falsy', () => {
+  //   data.clone = data.gen.clone();
+  //   expect(data.gen.next(falsyWallet).done).toEqual(true);
+  // });
+
+  // it('should call reload if wallet is truthy and network is new', () => {
+  //   expect(data.clone.next(truthyWallet).value).toEqual(call(reload));
+  // });
+
+  // it('should be done', () => {
+  //   expect(data.clone.next().done).toEqual(true);
+  // });
 });
 
 describe('unsetWeb3Node*', () => {
