@@ -16,13 +16,6 @@ import {
   isValidRawTxApi
 } from '../../validators';
 
-export function errorOrResult(response) {
-  if (response.error) {
-    throw new Error(response.error.message);
-  }
-  return response.result;
-}
-
 export default class RpcNode implements INode {
   public client: RPCClient;
   public requests: RPCRequests;
