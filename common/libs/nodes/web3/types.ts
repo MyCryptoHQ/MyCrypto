@@ -19,10 +19,6 @@ export interface Web3Transaction {
   nonce: string;
 }
 
-export interface GetNetworkIdRequest extends RPCRequestBase {
-  method: 'net_version';
-}
-
 export interface SendTransactionRequest extends RPCRequestBase {
   method: 'eth_sendTransaction';
   params: [
