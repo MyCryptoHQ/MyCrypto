@@ -13,7 +13,7 @@ import {
   UnlockPrivateKeyAction
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
-import { changeNodeIntent } from 'actions/config';
+import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { INode } from 'libs/nodes/INode';
@@ -166,6 +166,8 @@ export function* unlockWeb3(): SagaIterator {
     }
     yield put(setWallet(new Web3Wallet(address, network)));
   } catch (err) {
+    // unset web3 node so node dropdown isn't disabled
+    yield put(web3UnsetNode());
     yield put(showNotification('danger', translate(err.message)));
   }
 }
