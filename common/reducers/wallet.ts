@@ -15,7 +15,10 @@ export interface State {
   // in ETH
   balance: Balance | { wei: null };
   tokens: {
-    [key: string]: TokenValue | string;
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
   };
   transactions: BroadcastTransactionStatus[];
 }

@@ -45,27 +45,43 @@ export default class RpcNode implements INode {
       .then(({ result }) => Wei(result));
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
+  public getTokenBalance(
+    address: string,
+    token: Token
+  ): Promise<{ balance: TokenValue; error: string | null }> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
       .then(isValidTokenBalance)
       .then(({ result }) => {
-        return result === 'Failed' ? result : TokenValue(result);
-      });
+        return {
+          balance: TokenValue(result),
+          error: null
+        };
+      })
+      .catch(err => ({
+        balance: TokenValue('0'),
+        error: 'Caught error:' + err
+      }));
   }
 
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<(TokenValue | string)[]> {
+  ): Promise<{ balance: TokenValue; error: string | null }[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
       .then(response =>
         response.map(item => {
           if (isValidTokenBalance(item)) {
-            return TokenValue(item.result);
+            return {
+              balance: TokenValue(item.result),
+              error: null
+            };
           } else {
-            return 'Failed';
+            return {
+              balance: TokenValue('0'),
+              error: 'Invalid object shape'
+            };
           }
         })
       );

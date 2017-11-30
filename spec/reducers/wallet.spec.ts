@@ -60,7 +60,12 @@ describe('wallet reducer', () => {
   });
 
   it('should handle WALLET_SET_TOKEN_BALANCES', () => {
-    const tokenBalances = { OMG: TokenValue('20') };
+    const tokenBalances = {
+      OMG: {
+        balance: TokenValue('20'),
+        error: null
+      }
+    };
     expect(
       wallet(undefined, walletActions.setTokenBalances(tokenBalances))
     ).toEqual({
