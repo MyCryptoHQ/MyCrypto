@@ -33,7 +33,7 @@ export function* estimateGas(): SagaIterator {
     const node: INode = yield select(getNodeLib);
     const walletInst: IWallet = yield select(getWalletInst);
     try {
-      const from = yield apply(walletInst, walletInst.getAddressString);
+      const from: string = yield apply(walletInst, walletInst.getAddressString);
       const txObj = { ...payload, from };
       const gasLimit = yield apply(node, node.estimateGas, [txObj]);
       yield put(

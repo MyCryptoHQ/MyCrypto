@@ -1,6 +1,8 @@
 import { showNotification } from 'actions/notifications';
 import {
-  setBalance,
+  setBalanceFullfilled,
+  setBalancePending,
+  setBalanceRejected,
   setTokenBalances,
   setWallet,
   UnlockKeystoreAction,
@@ -32,8 +34,9 @@ import { getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 
-function* updateAccountBalance(): SagaIterator {
+export function* updateAccountBalance(): SagaIterator {
   try {
+    yield put(setBalancePending());
     const wallet: null | IWallet = yield select(getWalletInst);
     if (!wallet) {
       return;
@@ -42,13 +45,13 @@ function* updateAccountBalance(): SagaIterator {
     const address = yield apply(wallet, wallet.getAddressString);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(setBalance(balance));
+    yield put(setBalanceFullfilled(balance));
   } catch (error) {
-    yield put({ type: 'updateAccountBalance_error', error });
+    yield put(setBalanceRejected());
   }
 }
 
-function* updateTokenBalances(): SagaIterator {
+export function* updateTokenBalances(): SagaIterator {
   try {
     const node: INode = yield select(getNodeLib);
     const wallet: null | IWallet = yield select(getWalletInst);
@@ -79,7 +82,7 @@ function* updateTokenBalances(): SagaIterator {
   }
 }
 
-function* updateBalances(): SagaIterator {
+export function* updateBalances(): SagaIterator {
   yield fork(updateAccountBalance);
   yield fork(updateTokenBalances);
 }
@@ -114,7 +117,7 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   yield put(setWallet(wallet));
 }
 
-function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
+export function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
   let wallet;
   const { phrase, pass, path, address } = action.payload;
 
@@ -131,7 +134,7 @@ function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
 
 // inspired by v3:
 // https://github.com/kvhnuke/etherwallet/blob/417115b0ab4dd2033d9108a1a5c00652d38db68d/app/scripts/controllers/decryptWalletCtrl.js#L311
-function* unlockWeb3(): SagaIterator {
+export function* unlockWeb3(): SagaIterator {
   const failMsg1 = 'Could not connect to MetaMask / Mist.';
   const failMsg2 = 'No accounts found in MetaMask / Mist.';
   const { web3 } = window as any;
@@ -163,8 +166,6 @@ function* unlockWeb3(): SagaIterator {
 }
 
 export default function* walletSaga(): SagaIterator {
-  // useful for development
-  yield call(updateBalances);
   yield [
     takeEvery('WALLET_UNLOCK_PRIVATE_KEY', unlockPrivateKey),
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),

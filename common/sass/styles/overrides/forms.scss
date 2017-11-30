@@ -2,7 +2,6 @@
 @import 'common/sass/variables';
 
 label {
-  margin-top: $space-sm;
   margin-bottom: $space-xs;
   font-size: $font-size-bump-more;
 }
@@ -39,7 +38,7 @@ input[readonly] {
 
 .form-group {
   display: block;
-  margin-top: $form-group-margin-bottom;
+  margin-top: $form-group-margin-bottom * 2;
   margin-bottom: $form-group-margin-bottom;
 }
 

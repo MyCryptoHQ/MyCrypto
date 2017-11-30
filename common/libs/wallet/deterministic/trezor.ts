@@ -1,14 +1,16 @@
 import BN from 'bn.js';
 import EthTx from 'ethereumjs-tx';
-import { bufferToHex, addHexPrefix } from 'ethereumjs-util';
+import { addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
-import { IWallet } from '../IWallet';
+
 import { getTransactionFields } from 'libs/transaction';
 import { mapValues } from 'lodash';
 
-export class TrezorWallet extends DeterministicWallet implements IWallet {
+import { IFullWallet } from '../IWallet';
+
+export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   public signRawTransaction(tx: EthTx): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const { chainId, ...strTx } = getTransactionFields(tx);
@@ -58,12 +60,12 @@ export class TrezorWallet extends DeterministicWallet implements IWallet {
   public signMessage = (message: string): Promise<string> => {
     return new Promise((resolve, reject) => {
       (TrezorConnect as any).ethereumSignMessage(
-        this.getPath(), 
-        message, 
+        this.getPath(),
+        message,
         response => {
           if (response.success) {
             resolve(addHexPrefix(response.signature))
-          } else{ 
+          } else{
             console.error(response.error)
             reject(response.error)
           }

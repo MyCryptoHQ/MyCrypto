@@ -2,7 +2,7 @@ import Tx from 'ethereumjs-tx';
 import { bufferToHex } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
-import { IWallet } from 'libs/wallet';
+import { IFullWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
@@ -97,7 +97,7 @@ const transaction = (t: ITransaction | IHexStrTransaction | Buffer | string) =>
   new Tx(t);
 
 //TODO: check that addresses are always checksummed
-const signTx = async (t: ITransaction, w: IWallet) => {
+const signTx = async (t: ITransaction, w: IFullWallet) => {
   const tx = transaction(t);
   const signedTx = await w.signRawTransaction(tx); //returns a serialized, signed tx
   return signedTx; //instead of returning the rawTx with it, we can derive it from the signedTx anyway

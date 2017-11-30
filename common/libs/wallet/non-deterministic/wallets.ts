@@ -3,6 +3,7 @@ import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
 import { signWrapper } from './helpers';
 import { decryptPrivKey } from 'libs/decrypt';
 import Web3Wallet from './web3';
+import AddressOnlyWallet from './address';
 
 const EncryptedPrivateKeyWallet = (
   encryptedPrivateKey: string,
@@ -26,5 +27,6 @@ export {
   MewV1Wallet,
   PrivKeyWallet,
   UtcWallet,
-  Web3Wallet
+  Web3Wallet,
+  AddressOnlyWallet
 };

@@ -8,9 +8,7 @@ import {
   toBuffer,
   pubToAddress
 } from 'ethereumjs-util';
-import { isValidRawTx } from 'libs/validators';
 import { stripHexPrefixAndLower } from 'libs/values';
-import {} from 'module';
 
 export function signRawTxWithPrivKey(privKey: Buffer, t: EthTx): Buffer {
   t.sign(privKey);

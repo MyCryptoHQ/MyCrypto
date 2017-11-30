@@ -88,7 +88,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
           <div className="ConfModal">
             {transactionBroadcasting ? (
               <div className="ConfModal-loading">
-                <Spinner size="5x" />
+                <Spinner size="x5" />
               </div>
             ) : (
               <div>

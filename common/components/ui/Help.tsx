@@ -1,36 +1,18 @@
 import React from 'react';
-import helpIcon from 'assets/images/icon-help.svg';
+import icon from 'assets/images/icon-help-3.svg';
+import './Help.scss';
 
-type sizeType = 'small' | 'medium' | 'large';
+type Size = 'x1' | 'x2' | 'x3';
 
-interface HelpProps {
+interface Props {
   link: string;
-  size?: sizeType;
-  helpText?: string;
+  size?: Size;
 }
 
-const Help = ({ size, link, helpText }: HelpProps) => {
-  let width = 30;
-  let height = 12;
-
-  switch (size) {
-    case 'medium':
-      width = width * 3;
-      height = height * 3;
-      break;
-    case 'large':
-      width = width * 4;
-      height = height * 4;
-      break;
-    default:
-      break;
-  }
-
+const Help = ({ size = 'x1', link }: Props) => {
   return (
-    <a href={link} className={'account-help-icon'} target={'_blank'}>
-      <img src={helpIcon} width={width} height={height} />
-
-      {helpText && <p className="account-help-text">{helpText}</p>}
+    <a href={link} className={`Help Help-${size}`} target={'_blank'}>
+      <img src={icon} />
     </a>
   );
 };

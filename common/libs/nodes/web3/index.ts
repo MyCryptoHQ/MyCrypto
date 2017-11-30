@@ -1,5 +1,6 @@
 import { Token } from 'config/data';
-import { TransactionWithoutGas } from 'libs/messages';
+import { IHexStrTransaction } from 'libs/transaction';
+
 import { Wei, TokenValue } from 'libs/units';
 import { INode, TxObj } from '../INode';
 import ERC20 from 'libs/erc20';
@@ -9,6 +10,10 @@ export default class Web3Node implements INode {
 
   constructor(web3: any) {
     this.web3 = web3;
+  }
+
+  public ping(): Promise<boolean> {
+    return Promise.resolve(true);
   }
 
   public sendCallRequest(txObj: TxObj): Promise<string> {
@@ -35,7 +40,7 @@ export default class Web3Node implements INode {
     });
   }
 
-  public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
+  public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<Wei> {
     return new Promise((resolve, reject) =>
       this.web3.eth.estimateGas(
         {
@@ -53,21 +58,27 @@ export default class Web3Node implements INode {
     );
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
+  public getTokenBalance(
+    address: string,
+    token: Token
+  ): Promise<{
+    balance: TokenValue;
+    error: string | null;
+  }> {
     return new Promise(resolve => {
       this.web3.eth.call(
         {
           to: token.address,
-          data: ERC20.balanceOf(address)
+          data: ERC20.balanceOf.encodeInput({ _owner: address })
         },
         'pending',
         (err, res) => {
           if (err) {
             // TODO - Error handling
-            return resolve(TokenValue('0'));
+            return resolve({ balance: TokenValue('0'), error: err });
           }
           // web3 returns string
-          resolve(TokenValue(res));
+          resolve({ balance: TokenValue(res), error: null });
         }
       );
     });
@@ -76,11 +87,14 @@ export default class Web3Node implements INode {
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<TokenValue[]> {
+  ): Promise<{ balance: TokenValue; error: string | null }[]> {
     return new Promise(resolve => {
       const batch = this.web3.createBatch();
       const totalCount = tokens.length;
-      const returnArr = new Array<TokenValue>(totalCount);
+      const returnArr = new Array<{
+        balance: TokenValue;
+        error: string | null;
+      }>(totalCount);
       let finishCount = 0;
 
       tokens.forEach((token, index) =>
@@ -88,7 +102,7 @@ export default class Web3Node implements INode {
           this.web3.eth.call.request(
             {
               to: token.address,
-              data: ERC20.balanceOf(address)
+              data: ERC20.balanceOf.encodeInput({ _owner: address })
             },
             'pending',
             (err, res) => finish(index, err, res)
@@ -100,10 +114,16 @@ export default class Web3Node implements INode {
       function finish(index, err, res) {
         if (err) {
           // TODO - Error handling
-          returnArr[index] = TokenValue('0');
+          returnArr[index] = {
+            balance: TokenValue('0'),
+            error: err
+          };
         } else {
           // web3 returns string
-          returnArr[index] = TokenValue(res);
+          returnArr[index] = {
+            balance: TokenValue(res),
+            error: err
+          };
         }
 
         finishCount++;
@@ -122,6 +142,17 @@ export default class Web3Node implements INode {
         }
         // web3 returns number
         resolve(txCount.toString());
+      })
+    );
+  }
+
+  public getCurrentBlock(): Promise<string> {
+    return new Promise((resolve, reject) =>
+      this.web3.eth.getBlock('latest', false, (err, block) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(block.number);
       })
     );
   }

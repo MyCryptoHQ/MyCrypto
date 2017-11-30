@@ -5,7 +5,7 @@ export interface EtherscanReqBase {
 
 export interface SendRawTxRequest extends EtherscanReqBase {
   module: 'proxy';
-  method: 'eth_sendRawTransaction';
+  action: 'eth_sendRawTransaction';
   hex: string;
 }
 
@@ -27,7 +27,7 @@ export type GetTokenBalanceRequest = CallRequest;
 
 export interface EstimateGasRequest extends EtherscanReqBase {
   module: 'proxy';
-  method: 'eth_estimateGas';
+  action: 'eth_estimateGas';
   to: string;
   value: string | number;
   data: string;
@@ -41,10 +41,16 @@ export interface GetTransactionCountRequest extends EtherscanReqBase {
   tag: 'latest';
 }
 
+export interface GetCurrentBlockRequest extends EtherscanReqBase {
+  module: 'proxy';
+  action: 'eth_blockNumber';
+}
+
 export type EtherscanRequest =
   | SendRawTxRequest
   | GetBalanceRequest
   | CallRequest
   | GetTokenBalanceRequest
   | EstimateGasRequest
-  | GetTransactionCountRequest;
+  | GetTransactionCountRequest
+  | GetCurrentBlockRequest;

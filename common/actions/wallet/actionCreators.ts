@@ -47,17 +47,34 @@ export function setWallet(value: IWallet): types.SetWalletAction {
   };
 }
 
-export type TSetBalance = typeof setBalance;
-export function setBalance(value: Wei): types.SetBalanceAction {
+export function setBalancePending(): types.SetBalancePendingAction {
   return {
-    type: TypeKeys.WALLET_SET_BALANCE,
+    type: TypeKeys.WALLET_SET_BALANCE_PENDING
+  };
+}
+
+export type TSetBalance = typeof setBalanceFullfilled;
+export function setBalanceFullfilled(
+  value: Wei
+): types.SetBalanceFullfilledAction {
+  return {
+    type: TypeKeys.WALLET_SET_BALANCE_FULFILLED,
     payload: value
+  };
+}
+
+export function setBalanceRejected(): types.SetBalanceRejectedAction {
+  return {
+    type: TypeKeys.WALLET_SET_BALANCE_REJECTED
   };
 }
 
 export type TSetTokenBalances = typeof setTokenBalances;
 export function setTokenBalances(payload: {
-  [key: string]: TokenValue;
+  [key: string]: {
+    balance: TokenValue;
+    error: string | null;
+  };
 }): types.SetTokenBalancesAction {
   return {
     type: TypeKeys.WALLET_SET_TOKEN_BALANCES,
@@ -66,7 +83,7 @@ export function setTokenBalances(payload: {
 }
 
 export type TResetWallet = typeof resetWallet;
-export function resetWallet() {
+export function resetWallet(): types.ResetWalletAction {
   return {
     type: TypeKeys.WALLET_RESET
   };

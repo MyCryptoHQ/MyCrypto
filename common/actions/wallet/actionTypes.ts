@@ -33,16 +33,25 @@ export interface ResetWalletAction {
 }
 
 /*** Set Balance ***/
-export interface SetBalanceAction {
-  type: TypeKeys.WALLET_SET_BALANCE;
+export interface SetBalancePendingAction {
+  type: TypeKeys.WALLET_SET_BALANCE_PENDING;
+}
+export interface SetBalanceFullfilledAction {
+  type: TypeKeys.WALLET_SET_BALANCE_FULFILLED;
   payload: Wei;
+}
+export interface SetBalanceRejectedAction {
+  type: TypeKeys.WALLET_SET_BALANCE_REJECTED;
 }
 
 /*** Set Token Balance ***/
 export interface SetTokenBalancesAction {
   type: TypeKeys.WALLET_SET_TOKEN_BALANCES;
   payload: {
-    [key: string]: TokenValue;
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
   };
 }
 
@@ -70,5 +79,7 @@ export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
   | ResetWalletAction
-  | SetBalanceAction
+  | SetBalancePendingAction
+  | SetBalanceFullfilledAction
+  | SetBalanceRejectedAction
   | SetTokenBalancesAction;

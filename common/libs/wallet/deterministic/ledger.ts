@@ -3,10 +3,10 @@ import LedgerEth from 'vendor/ledger-eth';
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
-import { IWallet } from '../IWallet';
 import { getTransactionFields } from 'libs/transaction';
+import { IFullWallet } from '../IWallet';
 
-export class LedgerWallet extends DeterministicWallet implements IWallet {
+export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   private ledger: any;
   private ethApp: any;
 

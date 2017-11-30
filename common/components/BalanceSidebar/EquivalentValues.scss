@@ -1,5 +1,5 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .EquivalentValues {
   &-title {
@@ -25,6 +25,7 @@
       }
 
       &-label {
+        white-space: pre-wrap;
         display: inline-block;
         min-width: 36px;
       }
@@ -32,6 +33,11 @@
         font-weight: 600;
         @include mono;
       }
+    }
+
+    &-loader {
+      padding: 25px 0;
+      text-align: center;
     }
   }
 }

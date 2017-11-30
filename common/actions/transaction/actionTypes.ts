@@ -1,6 +1,6 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { Wei, Nonce, Address, Data, TokenValue } from 'libs/units';
-import { ITransaction } from 'libs/transaction';
+import { IHexStrTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 export {
   EstimateGasRequestedAction,
@@ -67,7 +67,7 @@ interface SetTokenValueMetaAction {
 /* Network actions */
 interface EstimateGasRequestedAction {
   type: TypeKeys.ESTIMATE_GAS_REQUESTED;
-  payload: ITransaction;
+  payload: Partial<IHexStrTransaction>;
 }
 interface EstimateGasSucceededAction {
   type: TypeKeys.ESTIMATE_GAS_SUCCEEDED;

@@ -1,35 +1,56 @@
+import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
 import {
-  SetBalanceAction,
   SetTokenBalancesAction,
   SetWalletAction,
   WalletAction,
   TypeKeys
 } from 'actions/wallet';
-import { Wei, TokenValue } from 'libs/units';
-import { IWallet } from 'libs/wallet';
+import { TokenValue } from 'libs/units';
+import { IWallet, Balance } from 'libs/wallet';
 
 export interface State {
   inst?: IWallet | null;
   // in ETH
-  balance?: Wei | null;
+  balance: Balance | { wei: null };
   tokens: {
-    [key: string]: TokenValue;
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
   };
 }
 
 export const INITIAL_STATE: State = {
   inst: null,
-  balance: null,
+  balance: { isPending: false, wei: null },
   tokens: {}
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
-  return { ...state, inst: action.payload, balance: null, tokens: {} };
+  return {
+    ...state,
+    inst: action.payload,
+    balance: INITIAL_STATE.balance,
+    tokens: INITIAL_STATE.tokens
+  };
 }
 
-function setBalance(state: State, action: SetBalanceAction): State {
-  const weiBalance = action.payload;
-  return { ...state, balance: weiBalance };
+function setBalancePending(state: State): State {
+  return { ...state, balance: { ...state.balance, isPending: true } };
+}
+
+function setBalanceFullfilled(
+  state: State,
+  action: SetBalanceFullfilledAction
+): State {
+  return {
+    ...state,
+    balance: { wei: action.payload, isPending: false }
+  };
+}
+
+function setBalanceRejected(state: State): State {
+  return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
 function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
@@ -45,8 +66,12 @@ export function wallet(
       return setWallet(state, action);
     case TypeKeys.WALLET_RESET:
       return INITIAL_STATE;
-    case TypeKeys.WALLET_SET_BALANCE:
-      return setBalance(state, action);
+    case TypeKeys.WALLET_SET_BALANCE_PENDING:
+      return setBalancePending(state);
+    case TypeKeys.WALLET_SET_BALANCE_FULFILLED:
+      return setBalanceFullfilled(state, action);
+    case TypeKeys.WALLET_SET_BALANCE_REJECTED:
+      return setBalanceRejected(state);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES:
       return setTokenBalances(state, action);
     default:

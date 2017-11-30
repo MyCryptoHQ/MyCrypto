@@ -5,7 +5,7 @@ import Help from 'components/ui/Help';
 
 const nonceHelp = (
   <Help
-    size={'small'}
+    size={'x1'}
     link={
       'https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html'
     }
