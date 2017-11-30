@@ -11,6 +11,10 @@ export default class Web3Node implements INode {
     this.web3 = web3;
   }
 
+  public ping(): Promise<boolean> {
+    return Promise.resolve(true);
+  }
+
   public sendCallRequest(txObj: TxObj): Promise<string> {
     return new Promise((resolve, reject) => {
       this.web3.eth.call(txObj, 'pending', (err, res) => {
