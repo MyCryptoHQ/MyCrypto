@@ -1,4 +1,4 @@
-import { NetworkConfig, CustomNetworkConfig } from 'config/data';
+import { NETWORKS, NetworkConfig, CustomNetworkConfig } from 'config/data';
 
 export function makeCustomNetworkId(config: CustomNetworkConfig): string {
   return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
@@ -13,4 +13,18 @@ export function makeNetworkConfigFromCustomConfig(
     tokens: [],
     contracts: []
   };
+}
+
+export function getNetworkConfigFromId(
+  id: string,
+  configs: CustomNetworkConfig[]
+): NetworkConfig | undefined {
+  if (NETWORKS[id]) {
+    return NETWORKS[id];
+  }
+
+  const customConfig = configs.find(conf => makeCustomNetworkId(conf) === id);
+  if (customConfig) {
+    return makeNetworkConfigFromCustomConfig(customConfig);
+  }
 }

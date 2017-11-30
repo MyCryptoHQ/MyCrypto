@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   changeGasPrice as dChangeGasPrice,
   changeLanguage as dChangeLanguage,
@@ -13,24 +15,21 @@ import {
   TAddCustomNetwork
 } from 'actions/config';
 import { AlphaAgreement, Footer, Header } from 'components';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
-import { NodeConfig, CustomNodeConfig } from 'config/data';
 
-interface Props {
-  // FIXME
-  children: any;
+interface ReduxProps {
+  languageSelection: AppState['config']['languageSelection'];
+  node: AppState['config']['node'];
+  nodeSelection: AppState['config']['nodeSelection'];
+  isChangingNode: AppState['config']['isChangingNode'];
+  gasPriceGwei: AppState['config']['gasPriceGwei'];
+  customNodes: AppState['config']['customNodes'];
+  customNetworks: AppState['config']['customNetworks'];
+  latestBlock: AppState['config']['latestBlock'];
+}
 
-  languageSelection: string;
-  node: NodeConfig;
-  nodeSelection: string;
-  isChangingNode: boolean;
-  gasPriceGwei: number;
-  customNodes: CustomNodeConfig[];
-  latestBlock: string;
-
+interface ActionProps {
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
@@ -38,6 +37,13 @@ interface Props {
   removeCustomNode: TRemoveCustomNode;
   addCustomNetwork: TAddCustomNetwork;
 }
+
+type Props = {
+  // FIXME
+  children: any;
+} & ReduxProps &
+  ActionProps;
+
 class TabSection extends Component<Props, {}> {
   public render() {
     const {
@@ -49,6 +55,7 @@ class TabSection extends Component<Props, {}> {
       languageSelection,
       gasPriceGwei,
       customNodes,
+      customNetworks,
       latestBlock,
 
       changeLanguage,
@@ -66,6 +73,7 @@ class TabSection extends Component<Props, {}> {
       isChangingNode,
       gasPriceGwei,
       customNodes,
+      customNetworks,
 
       changeLanguage,
       changeNodeIntent,
@@ -89,7 +97,7 @@ class TabSection extends Component<Props, {}> {
   }
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState): ReduxProps {
   return {
     node: state.config.node,
     nodeSelection: state.config.nodeSelection,
@@ -97,6 +105,7 @@ function mapStateToProps(state: AppState) {
     languageSelection: state.config.languageSelection,
     gasPriceGwei: state.config.gasPriceGwei,
     customNodes: state.config.customNodes,
+    customNetworks: state.config.customNetworks,
     latestBlock: state.config.latestBlock
   };
 }

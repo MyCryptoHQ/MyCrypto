@@ -19,13 +19,15 @@ import {
   NODES,
   VERSION,
   NodeConfig,
-  CustomNodeConfig
-} from '../../config/data';
+  CustomNodeConfig,
+  CustomNetworkConfig
+} from 'config/data';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
+import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
 
 interface Props {
@@ -35,6 +37,7 @@ interface Props {
   isChangingNode: boolean;
   gasPriceGwei: number;
   customNodes: CustomNodeConfig[];
+  customNetworks: CustomNetworkConfig[];
 
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
@@ -60,7 +63,8 @@ export default class Header extends Component<Props, State> {
       node,
       nodeSelection,
       isChangingNode,
-      customNodes
+      customNodes,
+      customNetworks
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
@@ -71,29 +75,32 @@ export default class Header extends Component<Props, State> {
 
     const nodeOptions = Object.keys(NODES)
       .map(key => {
+        const n = NODES[key];
+        const network = getNetworkConfigFromId(n.network, customNetworks);
         return {
           value: key,
           name: (
             <span>
-              {NODES[key].network} <small>({NODES[key].service})</small>
+              {network && network.name} <small>({n.service})</small>
             </span>
           ),
-          color: NETWORKS[NODES[key].network].color,
-          hidden: NODES[key].hidden
+          color: network && network.color,
+          hidden: n.hidden
         };
       })
       .concat(
-        customNodes.map(customNode => {
+        customNodes.map(cn => {
+          const network = getNetworkConfigFromId(cn.network, customNetworks);
           return {
-            value: makeCustomNodeId(customNode),
+            value: makeCustomNodeId(cn),
             name: (
               <span>
-                {customNode.network} - {customNode.name} <small>(custom)</small>
+                {network && network.name} - {cn.name} <small>(custom)</small>
               </span>
             ),
-            color: '#000',
+            color: network && network.color,
             hidden: false,
-            onRemove: () => this.props.removeCustomNode(customNode)
+            onRemove: () => this.props.removeCustomNode(cn)
           };
         })
       );
@@ -163,8 +170,8 @@ export default class Header extends Component<Props, State> {
               >
                 <ColorDropdown
                   ariaLabel={`
-                    change node. current node ${node.network}
-                    node by ${node.service}
+                    change node. current node is on the ${node.network} network
+                    provided by ${node.service}
                   `}
                   options={nodeOptions}
                   value={nodeSelection}
