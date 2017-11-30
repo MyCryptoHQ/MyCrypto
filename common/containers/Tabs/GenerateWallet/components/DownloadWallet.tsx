@@ -7,6 +7,7 @@ import translate from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from './Template';
+import { N_FACTOR } from 'config/data';
 
 interface Props {
   wallet: IFullWallet;
@@ -47,7 +48,7 @@ export default class DownloadWallet extends Component<Props, State> {
           role="button"
           className="DlWallet-download btn btn-primary btn-lg"
           aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-          aria-describedby="x_KeystoreDesc"
+          aria-describedby={translate('x_KeystoreDesc')}
           download={filename}
           href={this.getBlob()}
           onClick={this.handleDownloadKeystore}
@@ -130,7 +131,7 @@ export default class DownloadWallet extends Component<Props, State> {
     this.state.hasDownloadedWallet && this.props.continueToPaper();
 
   private setWallet(wallet: IFullWallet, password: string) {
-    const keystore = wallet.toV3(password, { n: 1024 });
+    const keystore = wallet.toV3(password, { n: N_FACTOR });
     keystore.address = toChecksumAddress(keystore.address);
     this.setState({ keystore });
   }
