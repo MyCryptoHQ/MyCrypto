@@ -26,6 +26,9 @@ const initialState: State = {
   wallet: null
 };
 
+const minLength = min => value => value && value.length >= min;
+const minLength9 = minLength(9);
+
 class KeystoreDetails extends Component<{}, State> {
   public state = initialState;
 
@@ -66,7 +69,7 @@ class KeystoreDetails extends Component<{}, State> {
           <label className="KeystoreDetails-password">
             <h4 className="KeystoreDetails-label">Password</h4>
             <KeystoreInput
-              isValid={true}
+              isValid={minLength9(password)}
               isVisible={isPasswordVisible}
               name="password"
               value={password}
@@ -80,7 +83,7 @@ class KeystoreDetails extends Component<{}, State> {
           <button
             onClick={this.handleKeystoreGeneration}
             className="KeystoreDetails-submit btn btn-primary btn-block"
-            disabled={!privateKeyValid}
+            disabled={!privateKeyValid || !minLength9(password)}
           >
             Generate Keystore
           </button>
