@@ -12,7 +12,7 @@ import {
 import { Wei } from 'libs/units';
 import { changeNodeIntent } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
-import { initWeb3Node, Token } from 'config/data';
+import { initWeb3Node, Token, N_FACTOR } from 'config/data';
 import { apply, call, cps, fork, put, select } from 'redux-saga/effects';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
@@ -65,7 +65,7 @@ const utcKeystore = {
     kdfparams: {
       dklen: 32,
       salt: '037a53e520f2d00fb70f02f39b31b77374de9e0e1d35fd7cbe9c8a8b21d6b0ab',
-      n: 1024,
+      n: N_FACTOR,
       r: 8,
       p: 1
     },
