@@ -1,14 +1,6 @@
 import { configuredStore } from 'store';
 import { delay } from 'redux-saga';
-import {
-  call,
-  cancel,
-  fork,
-  put,
-  take,
-  select,
-  race
-} from 'redux-saga/effects';
+import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import {
   toggleOfflineConfig,
@@ -17,7 +9,6 @@ import {
   setLatestBlock
 } from 'actions/config';
 import {
-  getConfig,
   pollOfflineStatus,
   handlePollOfflineStatus,
   handleNodeChangeIntent,
@@ -38,9 +29,7 @@ import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { getWalletInst } from 'selectors/wallet';
 import { Web3Wallet } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
-import { lang } from 'moment';
 import { showNotification } from 'actions/notifications';
-import { makeBlob } from 'utils/blob';
 import translate from 'translations';
 
 // init module
@@ -215,7 +204,6 @@ describe('handleNodeChangeIntent*', () => {
   );
   const newNodeConfig = NODES[newNode];
   const changeNodeIntentAction = changeNodeIntent(newNode);
-  const falsyWallet = false;
   const truthyWallet = true;
   const latestBlock = '0xa';
   const raceSuccess = {
@@ -227,24 +215,6 @@ describe('handleNodeChangeIntent*', () => {
 
   const data = {} as any;
   data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeIntentAction);
-
-  // custom node variables
-  const customNodeConfigs = [
-    {
-      name: 'name',
-      url: 'url',
-      port: 443,
-      network: 'network'
-    }
-  ];
-  const customNodeIdFound = 'url:443';
-  const customNodeIdNotFound = 'notFound';
-  const customNodeIntentAction = changeNodeIntent(customNodeIdFound);
-  const customNodeIntentNotFoundAction = changeNodeIntent(customNodeIdNotFound);
-  data.customNode = handleNodeChangeIntent(customNodeIntentAction);
-  data.customNodeNotFound = handleNodeChangeIntent(
-    customNodeIntentNotFoundAction
-  );
 
   beforeAll(() => {
     originalRandom = Math.random;
@@ -262,10 +232,6 @@ describe('handleNodeChangeIntent*', () => {
   it('should select nodeConfig', () => {
     expect(data.gen.next(defaultNode).value).toEqual(select(getNodeConfig));
   });
-
-  // it('should select getWalletInst', () => {
-  //   expect(data.gen.next(defaultNodeConfig).value).toEqual(select(getWalletInst));
-  // })
 
   it('should race getCurrentBlock and delay', () => {
     expect(data.gen.next(defaultNodeConfig).value).toMatchSnapshot();
@@ -308,6 +274,22 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.gen.next().done).toEqual(true);
   });
 
+  // custom node variables
+  const customNodeConfigs = [
+    {
+      name: 'name',
+      url: 'url',
+      port: 443,
+      network: 'network'
+    }
+  ];
+  const customNodeIdFound = 'url:443';
+  const customNodeIdNotFound = 'notFound';
+  const customNodeAction = changeNodeIntent(customNodeIdFound);
+  const customNodeNotFoundAction = changeNodeIntent(customNodeIdNotFound);
+  data.customNode = handleNodeChangeIntent(customNodeAction);
+  data.customNodeNotFound = handleNodeChangeIntent(customNodeNotFoundAction);
+
   // test custom node
   it('should select getCustomNodeConfig and match race snapshot', () => {
     data.customNode.next();
@@ -330,7 +312,7 @@ describe('handleNodeChangeIntent*', () => {
         showNotification(
           'danger',
           `Attempted to switch to unknown node '${
-            customNodeIntentNotFoundAction.payload
+            customNodeNotFoundAction.payload
           }'`,
           5000
         )
@@ -341,29 +323,6 @@ describe('handleNodeChangeIntent*', () => {
     );
     expect(data.customNodeNotFound.next().done).toEqual(true);
   });
-
-  // it('should put changeNode with new node', () => {
-  //   expect(data.gen.next(defaultNodeConfig).value).toEqual(
-  //     put(changeNode(changeNodeAction.payload))
-  //   );
-  // });
-
-  // it('should select wallet instance', () => {
-  //   expect(data.gen.next().value).toEqual(select(getWalletInst));
-  // });
-
-  // it('should end if wallet is falsy', () => {
-  //   data.clone = data.gen.clone();
-  //   expect(data.gen.next(falsyWallet).done).toEqual(true);
-  // });
-
-  // it('should call reload if wallet is truthy and network is new', () => {
-  //   expect(data.clone.next(truthyWallet).value).toEqual(call(reload));
-  // });
-
-  // it('should be done', () => {
-  //   expect(data.clone.next().done).toEqual(true);
-  // });
 });
 
 describe('unsetWeb3Node*', () => {
