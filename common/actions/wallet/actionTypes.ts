@@ -48,7 +48,10 @@ export interface SetBalanceRejectedAction {
 export interface SetTokenBalancesAction {
   type: TypeKeys.WALLET_SET_TOKEN_BALANCES;
   payload: {
-    [key: string]: TokenValue;
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
   };
 }
 

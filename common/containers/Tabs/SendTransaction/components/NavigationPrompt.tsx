@@ -1,13 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
-import { Location, History as H } from 'history';
-
-type UnregisterCallback = () => void;
-type BooleanCallback = (arg?: any) => boolean;
-interface History extends H {
-  block(prompt?: boolean | BooleanCallback): UnregisterCallback;
-}
+import { Location, History } from 'history';
 
 interface Props {
   when: boolean;
@@ -50,7 +44,9 @@ class NavigationPrompt extends React.Component<Props, State> {
           nextLocation
         });
       }
-      return !this.props.when;
+      if (this.props.when) {
+        return false;
+      }
     });
   }
 
