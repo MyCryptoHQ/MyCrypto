@@ -3,7 +3,7 @@ import { IFullWallet } from 'ethereumjs-wallet';
 import React from 'react';
 import translate from 'translations';
 import printElement from 'utils/printElement';
-import { strippedPrivateKey } from 'libs/values';
+import { stripHexPrefix } from 'libs/values';
 
 const print = (address: string, privateKey: string) => () =>
   address &&
@@ -28,7 +28,7 @@ const print = (address: string, privateKey: string) => () =>
 
 const PrintableWallet: React.SFC<{ wallet: IFullWallet }> = ({ wallet }) => {
   const address = wallet.getAddressString();
-  const privateKey = strippedPrivateKey(wallet.getPrivateKeyString());
+  const privateKey = stripHexPrefix(wallet.getPrivateKeyString());
 
   if (!address || !privateKey) {
     return null;

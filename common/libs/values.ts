@@ -1,10 +1,10 @@
 import { Wei } from 'libs/units';
-export function strippedPrivateKey(value: string) {
+export function stripHexPrefix(value: string) {
   return value.replace('0x', '');
 }
 
 export function stripHexPrefixAndLower(value: string): string {
-  return strippedPrivateKey(value).toLowerCase();
+  return stripHexPrefix(value).toLowerCase();
 }
 
 export function toHexWei(weiString: string): string {

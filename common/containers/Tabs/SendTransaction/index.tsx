@@ -17,7 +17,7 @@ import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
 import { donationAddressMap, NetworkConfig } from 'config/data';
 // LIBS
-import { strippedPrivateKey } from 'libs/values';
+import { stripHexPrefix } from 'libs/values';
 import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import {
@@ -212,7 +212,7 @@ export class SendTransaction extends React.Component<Props, State> {
       const from = await wallet.getAddressString();
       if (forceOffline && !offline && !hasSetDefaultNonce) {
         const nonceHex = await nodeLib.getTransactionCount(from);
-        const newNonce = parseInt(strippedPrivateKey(nonceHex), 10);
+        const newNonce = parseInt(stripHexPrefix(nonceHex), 10);
         this.setState({ nonce: newNonce, hasSetDefaultNonce: true });
       }
       if (!forceOffline && !offline && nonce) {
