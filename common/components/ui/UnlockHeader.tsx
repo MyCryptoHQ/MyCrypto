@@ -7,6 +7,7 @@ import { AppState } from 'reducers';
 interface Props {
   title: React.ReactElement<any>;
   wallet: IWallet;
+  allowReadOnly?: boolean;
 }
 interface State {
   expanded: boolean;
@@ -28,7 +29,7 @@ export class UnlockHeader extends React.Component<Props, State> {
   }
 
   public render() {
-    const { title } = this.props;
+    const { title, allowReadOnly } = this.props;
     return (
       <article className="collapse-container">
         <div>
@@ -37,7 +38,7 @@ export class UnlockHeader extends React.Component<Props, State> {
           </a>
           <h1>{title}</h1>
         </div>
-        {this.state.expanded && <WalletDecrypt />}
+        {this.state.expanded && <WalletDecrypt allowReadOnly={allowReadOnly} />}
         {this.state.expanded && <hr />}
       </article>
     );

@@ -69,14 +69,14 @@ export interface BityOrderCreateRequestedSwapAction {
   };
 }
 
-interface BityOrderInput {
+export interface BityOrderInput {
   amount: string;
   currency: string;
   reference: string;
   status: string;
 }
 
-interface BityOrderOutput {
+export interface BityOrderOutput {
   amount: string;
   currency: string;
   reference: string;

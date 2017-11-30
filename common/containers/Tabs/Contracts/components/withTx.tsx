@@ -4,12 +4,12 @@ import { toWei, Wei, getDecimal } from 'libs/units';
 import { connect } from 'react-redux';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { broadcastTx, TBroadcastTx } from 'actions/wallet';
-import { IWallet, Balance } from 'libs/wallet';
+import { IFullWallet, Balance } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { NodeConfig, NetworkConfig } from 'config/data';
 
 export interface IWithTx {
-  wallet: IWallet;
+  wallet: IFullWallet;
   balance: Balance;
   node: NodeConfig;
   nodeLib: RPCNode;

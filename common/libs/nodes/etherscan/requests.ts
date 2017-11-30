@@ -71,7 +71,7 @@ export default class EtherscanRequests extends RPCRequests {
   public getCurrentBlock(): GetCurrentBlockRequest {
     return {
       module: 'proxy',
-      action: 'eth_blockNumber',
+      action: 'eth_blockNumber'
     };
   }
 }
