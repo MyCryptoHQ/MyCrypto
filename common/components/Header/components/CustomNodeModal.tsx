@@ -2,8 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import Modal, { IButton } from 'components/ui/Modal';
 import translate from 'translations';
-import { NETWORKS, CustomNodeConfig } from 'config/data';
+import { NETWORKS, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
 import { makeCustomNodeId } from 'utils/node';
+import { makeCustomNetworkId } from 'utils/network';
 
 const NETWORK_KEYS = Object.keys(NETWORKS);
 const CUSTOM = 'custom';
@@ -17,6 +18,7 @@ interface Input {
 interface Props {
   customNodes: CustomNodeConfig[];
   handleAddCustomNode(node: CustomNodeConfig): void;
+  handleAddCustomNetwork(node: CustomNetworkConfig): void;
   handleClose(): void;
 }
 
@@ -39,6 +41,9 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     url: '',
     port: '',
     network: NETWORK_KEYS[0],
+    customNetworkName: '',
+    customNetworkUnit: '',
+    customNetworkChainId: '',
     hasAuth: false,
     username: '',
     password: ''
@@ -230,7 +235,14 @@ export default class CustomNodeModal extends React.Component<Props, State> {
   }
 
   private getInvalids(): { [key: string]: boolean } {
-    const { url, port, hasAuth, username, password } = this.state;
+    const {
+      url,
+      port,
+      hasAuth,
+      username,
+      password,
+      customNetworkChainId
+    } = this.state;
     const required = ['name', 'url', 'port', 'network'];
     const invalids: { [key: string]: boolean } = {};
 
@@ -262,15 +274,35 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       }
     }
 
+    // Numeric chain ID (if provided)
+    const iChainId = parseInt(customNetworkChainId, 10);
+    if (!iChainId || iChainId < 0) {
+      invalids.customNetworkChainId = true;
+    }
+
     return invalids;
   }
 
+  private makeCustomNetworkConfigFromState(): CustomNetworkConfig {
+    return {
+      name: this.state.customNetworkName,
+      unit: this.state.customNetworkUnit,
+      chainId: this.state.customNetworkChainId
+        ? parseInt(this.state.customNetworkChainId, 10)
+        : null
+    };
+  }
+
   private makeCustomNodeConfigFromState(): CustomNodeConfig {
+    const { network } = this.state;
     const node: CustomNodeConfig = {
       name: this.state.name.trim(),
       url: this.state.url.trim(),
       port: parseInt(this.state.port, 10),
-      network: this.state.network
+      network:
+        network === CUSTOM
+          ? makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
+          : network
     };
 
     if (this.state.hasAuth) {
@@ -304,6 +336,12 @@ export default class CustomNodeModal extends React.Component<Props, State> {
 
   private saveAndAdd = () => {
     const node = this.makeCustomNodeConfigFromState();
+
+    if (this.state.network === CUSTOM) {
+      const network = this.makeCustomNetworkConfigFromState();
+      this.props.handleAddCustomNetwork(network);
+    }
+
     this.props.handleAddCustomNode(node);
   };
 }

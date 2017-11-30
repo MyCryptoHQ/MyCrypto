@@ -4,11 +4,13 @@ import {
   changeNodeIntent as dChangeNodeIntent,
   addCustomNode as dAddCustomNode,
   removeCustomNode as dRemoveCustomNode,
+  addCustomNetwork as dAddCustomNetwork,
   TChangeGasPrice,
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
   TRemoveCustomNode,
+  TAddCustomNetwork
 } from 'actions/config';
 import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
@@ -34,6 +36,7 @@ interface Props {
   changeGasPrice: TChangeGasPrice;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
+  addCustomNetwork: TAddCustomNetwork;
 }
 class TabSection extends Component<Props, {}> {
   public render() {
@@ -53,6 +56,7 @@ class TabSection extends Component<Props, {}> {
       changeGasPrice,
       addCustomNode,
       removeCustomNode,
+      addCustomNetwork
     } = this.props;
 
     const headerProps = {
@@ -68,6 +72,7 @@ class TabSection extends Component<Props, {}> {
       changeGasPrice,
       addCustomNode,
       removeCustomNode,
+      addCustomNetwork
     };
 
     return (
@@ -92,7 +97,7 @@ function mapStateToProps(state: AppState) {
     languageSelection: state.config.languageSelection,
     gasPriceGwei: state.config.gasPriceGwei,
     customNodes: state.config.customNodes,
-    latestBlock: state.config.latestBlock,
+    latestBlock: state.config.latestBlock
   };
 }
 
@@ -102,4 +107,5 @@ export default connect(mapStateToProps, {
   changeNodeIntent: dChangeNodeIntent,
   addCustomNode: dAddCustomNode,
   removeCustomNode: dRemoveCustomNode,
+  addCustomNetwork: dAddCustomNetwork
 })(TabSection);

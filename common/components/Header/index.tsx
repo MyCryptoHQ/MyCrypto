@@ -3,7 +3,8 @@ import {
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
-  TRemoveCustomNode
+  TRemoveCustomNode,
+  TAddCustomNetwork
 } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
@@ -40,6 +41,7 @@ interface Props {
   changeGasPrice: TChangeGasPrice;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
+  addCustomNetwork: TAddCustomNetwork;
 }
 
 interface State {
@@ -188,6 +190,7 @@ export default class Header extends Component<Props, State> {
           <CustomNodeModal
             customNodes={customNodes}
             handleAddCustomNode={this.addCustomNode}
+            handleAddCustomNetwork={this.props.addCustomNetwork}
             handleClose={this.closeCustomNodeModal}
           />
         )}
