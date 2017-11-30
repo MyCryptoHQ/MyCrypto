@@ -2,7 +2,7 @@
 'use strict';
 const baseConfig = require('./webpack.base');
 
-const derivationConfig = Object.assign({}, baseConfig, {
+const freezerConfig = Object.assign({}, baseConfig, {
   // Remove the cruft we don't need
   plugins: undefined,
   target: undefined,
@@ -19,4 +19,4 @@ const derivationConfig = Object.assign({}, baseConfig, {
   }
 });
 
-module.exports = derivationConfig;
+module.exports = freezerConfig;
