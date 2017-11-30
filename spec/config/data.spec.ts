@@ -52,9 +52,15 @@ const RPCTests = {
 function testRpcRequests(node: RPCNode, service: string) {
   Object.keys(RPCTests).forEach(testType => {
     describe(`RPC (${service}) should work`, () => {
-      it(`RPC: ${testType} ${service}`, () => {
-        return RPCTests[testType](node).then(d => expect(d.valid).toBeTruthy());
-      });
+      it(
+        `RPC: ${testType} ${service}`,
+        () => {
+          return RPCTests[testType](node).then(d =>
+            expect(d.valid).toBeTruthy()
+          );
+        },
+        10000
+      );
     });
   });
 }
