@@ -35,7 +35,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     network: NETWORK_KEYS[0],
     hasAuth: false,
     username: '',
-    password: '',
+    password: ''
   };
 
   public render() {
@@ -43,15 +43,18 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
 
-    const buttons: IButton[] = [{
-      type: 'primary',
-      text: translate('NODE_CTA'),
-      onClick: this.saveAndAdd,
-      disabled: !!Object.keys(invalids).length,
-    }, {
-      text: translate('x_Cancel'),
-      onClick: handleClose
-    }];
+    const buttons: IButton[] = [
+      {
+        type: 'primary',
+        text: translate('NODE_CTA'),
+        onClick: this.saveAndAdd,
+        disabled: !!Object.keys(invalids).length
+      },
+      {
+        text: translate('x_Cancel'),
+        onClick: handleClose
+      }
+    ];
 
     return (
       <Modal
@@ -61,20 +64,23 @@ export default class CustomNodeModal extends React.Component<Props, State> {
         handleClose={handleClose}
       >
         <div>
-          {isHttps &&
+          {isHttps && (
             <div className="alert alert-danger small">
               {translate('NODE_Warning')}
             </div>
-          }
+          )}
 
           <form>
             <div className="row">
               <div className="col-sm-7">
                 <label>{translate('NODE_Name')}</label>
-                {this.renderInput({
-                  name: 'name',
-                  placeholder: 'My Node',
-                }, invalids)}
+                {this.renderInput(
+                  {
+                    name: 'name',
+                    placeholder: 'My Node'
+                  },
+                  invalids
+                )}
               </div>
               <div className="col-sm-5">
                 <label>Network</label>
@@ -84,9 +90,11 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                   value={this.state.network}
                   onChange={this.handleChange}
                 >
-                  {NETWORK_KEYS.map((net) =>
-                    <option key={net} value={net}>{net}</option>
-                  )}
+                  {NETWORK_KEYS.map(net => (
+                    <option key={net} value={net}>
+                      {net}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -94,19 +102,25 @@ export default class CustomNodeModal extends React.Component<Props, State> {
             <div className="row">
               <div className="col-sm-9">
                 <label>URL</label>
-                {this.renderInput({
-                  name: 'url',
-                  placeholder: 'http://127.0.0.1/',
-                }, invalids)}
+                {this.renderInput(
+                  {
+                    name: 'url',
+                    placeholder: 'http://127.0.0.1/'
+                  },
+                  invalids
+                )}
               </div>
 
               <div className="col-sm-3">
                 <label>{translate('NODE_Port')}</label>
-                {this.renderInput({
-                  name: 'port',
-                  placeholder: '8545',
-                  type: 'number',
-                }, invalids)}
+                {this.renderInput(
+                  {
+                    name: 'port',
+                    placeholder: '8545',
+                    type: 'number'
+                  },
+                  invalids
+                )}
               </div>
             </div>
             <div className="row">
@@ -117,13 +131,12 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                     name="hasAuth"
                     checked={this.state.hasAuth}
                     onChange={this.handleCheckbox}
-                  />
-                  {' '}
+                  />{' '}
                   <span>HTTP Basic Authentication</span>
                 </label>
               </div>
             </div>
-            {this.state.hasAuth &&
+            {this.state.hasAuth && (
               <div className="row">
                 <div className="col-sm-6">
                   <label>Username</label>
@@ -131,13 +144,16 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                 </div>
                 <div className="col-sm-6">
                   <label>Password</label>
-                  {this.renderInput({
-                    name: 'password',
-                    type: 'password',
-                  }, invalids)}
+                  {this.renderInput(
+                    {
+                      name: 'password',
+                      type: 'password'
+                    },
+                    invalids
+                  )}
                 </div>
               </div>
-            }
+            )}
           </form>
         </div>
       </Modal>
@@ -145,30 +161,26 @@ export default class CustomNodeModal extends React.Component<Props, State> {
   }
 
   private renderInput(input: Input, invalids: { [key: string]: boolean }) {
-    return <input
-      className={classnames({
-        'form-control': true,
-        'is-invalid': this.state[input.name] && invalids[input.name],
-      })}
-      value={this.state[name]}
-      onChange={this.handleChange}
-      {...input}
-    />;
+    return (
+      <input
+        className={classnames({
+          'form-control': true,
+          'is-invalid': this.state[input.name] && invalids[input.name]
+        })}
+        value={this.state[name]}
+        onChange={this.handleChange}
+        {...input}
+      />
+    );
   }
 
   private getInvalids(): { [key: string]: boolean } {
-    const {
-      url,
-      port,
-      hasAuth,
-      username,
-      password,
-    } = this.state;
-    const required = ["name", "url", "port", "network"];
+    const { url, port, hasAuth, username, password } = this.state;
+    const required = ['name', 'url', 'port', 'network'];
     const invalids: { [key: string]: boolean } = {};
 
     // Required fields
-    required.forEach((field) => {
+    required.forEach(field => {
       if (!this.state[field]) {
         invalids[field] = true;
       }
@@ -198,9 +210,9 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     return invalids;
   }
 
-  private handleChange = (ev: React.FormEvent<
-    HTMLInputElement | HTMLSelectElement
-  >) => {
+  private handleChange = (
+    ev: React.FormEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = ev.currentTarget;
     this.setState({ [name as any]: value });
   };
@@ -215,13 +227,13 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       name: this.state.name.trim(),
       url: this.state.url.trim(),
       port: parseInt(this.state.port, 10),
-      network: this.state.network,
+      network: this.state.network
     };
 
     if (this.state.hasAuth) {
       node.auth = {
         username: this.state.username,
-        password: this.state.password,
+        password: this.state.password
       };
     }
 
