@@ -42,13 +42,13 @@ describe('loadBityRates*', () => {
   });
 
   it('should call delay for 5 seconds', () => {
-    expect(gen1.next().value).toEqual(call(delay, 5000));
+    expect(gen1.next().value).toEqual(call(delay, 30000));
   });
 
   it('should handle an exception', () => {
     const err = { message: 'error' };
     gen2.next();
-    expect(gen2.throw(err).value).toEqual(
+    expect((gen2 as any).throw(err).value).toEqual(
       put(showNotification('danger', err.message))
     );
   });
