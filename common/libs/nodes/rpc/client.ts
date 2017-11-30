@@ -24,7 +24,7 @@ export default class RPCClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...this.headers,
+        ...this.headers
       },
       body: JSON.stringify(this.decorateRequest(request))
     }).then(r => r.json());
@@ -35,7 +35,7 @@ export default class RPCClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...this.headers,
+        ...this.headers
       },
       body: JSON.stringify(requests.map(this.decorateRequest))
     }).then(r => r.json());

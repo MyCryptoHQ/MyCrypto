@@ -5,9 +5,9 @@ import { RawTransaction } from 'libs/transaction';
 import { stripHexPrefixAndLower } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
-import { IWallet } from '../IWallet';
+import { IFullWallet } from '../IWallet';
 
-export class TrezorWallet extends DeterministicWallet implements IWallet {
+export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   public signRawTransaction(tx: RawTransaction): Promise<string> {
     return new Promise((resolve, reject) => {
       (TrezorConnect as any).ethereumSignTx(
@@ -51,12 +51,12 @@ export class TrezorWallet extends DeterministicWallet implements IWallet {
   public signMessage = (message: string): Promise<string> => {
     return new Promise((resolve, reject) => {
       (TrezorConnect as any).ethereumSignMessage(
-        this.getPath(), 
-        message, 
+        this.getPath(),
+        message,
         response => {
           if (response.success) {
             resolve(addHexPrefix(response.signature))
-          } else{ 
+          } else{
             console.error(response.error)
             reject(response.error)
           }

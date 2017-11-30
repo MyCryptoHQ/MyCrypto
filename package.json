@@ -21,7 +21,7 @@
     "hdkey": "0.7.1",
     "idna-uts46": "1.1.0",
     "lodash": "4.17.4",
-    "moment": "2.19.2",
+    "moment": "2.19.3",
     "qrcode": "1.0.0",
     "qrcode.react": "0.7.2",
     "query-string": "5.0.1",
@@ -64,7 +64,7 @@
     "babel-minify-webpack-plugin": "0.2.0",
     "bs58": "4.0.1",
     "cache-loader": "1.2.0",
-    "check-node-version": "3.0.0",
+    "check-node-version": "3.1.1",
     "copy-webpack-plugin": "4.2.3",
     "css-loader": "0.28.7",
     "empty": "0.10.1",
@@ -123,9 +123,11 @@
     "predev:https": "check-node-version --package",
     "derivation-checker": "webpack --config=./webpack_config/webpack.derivation-checker.js && node ./dist/derivation-checker.js",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
+    "tscheck": "tsc --noEmit",
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
