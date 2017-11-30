@@ -18,7 +18,6 @@ notifications:
 script:
 - npm run test
 - npm run tslint
-- tsc --noEmit
 - npm run tscheck
 - npm run freezer
 - npm run freezer:validate
