@@ -64,6 +64,10 @@ describe('wallet reducer', () => {
       OMG: {
         balance: TokenValue('20'),
         error: null
+      },
+      WTT: {
+        balance: TokenValue('0'),
+        error: 'The request failed to execute'
       }
     };
     expect(
