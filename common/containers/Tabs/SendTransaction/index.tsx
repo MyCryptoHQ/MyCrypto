@@ -294,12 +294,6 @@ export class SendTransaction extends React.Component<Props, State> {
           <div className="row">
             {/* Send Form */}
 
-            {/* PRETTIER TEST, WILL BE REMOVED 
-            
-            {unlocked &&
-              !((offline || forceOffline) && isWeb3Wallet) && (
-            
-            */}
             {unlocked &&
               !((offline || forceOffline) && isWeb3Wallet) && (
                 <main className="col-sm-8">
@@ -439,13 +433,6 @@ export class SendTransaction extends React.Component<Props, State> {
                   </div>
                 </main>
               )}
-
-            {/* PRETTIER TEST, WILL BE REMOVED 
-            
-            {unlocked &&
-              ((offline || forceOffline) && isWeb3Wallet) && (
-            
-            */}
 
             {unlocked &&
               ((offline || forceOffline) && isWeb3Wallet) && (

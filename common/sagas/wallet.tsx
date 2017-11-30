@@ -158,7 +158,7 @@ export function* unlockWeb3(): SagaIterator {
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
     }
 
-    const accounts = yield call([nodeLib, 'getAccounts']);
+    const accounts = yield apply(nodeLib, nodeLib.getAccounts);
     const address = accounts[0];
 
     if (!address) {

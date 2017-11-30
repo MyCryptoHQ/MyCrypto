@@ -14,9 +14,7 @@ export default class Web3Client extends RPCClient {
     ...req,
     id: this.id(),
     jsonrpc: '2.0',
-    params: req.params
-      ? req.params // MetaMask errors when params is undefined
-      : [] // so add empty array if falsy
+    params: req.params || [] // default to empty array so MetaMask doesn't error
   });
 
   public call = (request: RPCRequest | any): Promise<JsonRpcResponse> =>
