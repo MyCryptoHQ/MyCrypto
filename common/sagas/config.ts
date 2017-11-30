@@ -30,7 +30,8 @@ import {
   changeNode,
   changeNodeIntent,
   setLatestBlock,
-  AddCustomNodeAction
+  AddCustomNodeAction,
+  ChangeNodeIntentAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
@@ -106,7 +107,7 @@ export function* handlePollOfflineStatus(): SagaIterator {
   yield cancel(pollOfflineStatusTask);
 }
 
-function* handleTogglePollOfflineStatus(): SagaIterator {
+export function* handleTogglePollOfflineStatus(): SagaIterator {
   const isForcedOffline = yield select(getForceOffline);
   if (isForcedOffline) {
     yield fork(handlePollOfflineStatus);
@@ -121,11 +122,11 @@ export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 250);
 }
 
-
-function* handleNodeChangeIntent(action): SagaIterator {
+export function* handleNodeChangeIntent(
+  action: ChangeNodeIntentAction
+): SagaIterator {
   const currentNode = yield select(getNode);
   const currentConfig = yield select(getNodeConfig);
-  const currentWallet = yield select(getWalletInst);
   const currentNetwork = currentConfig.network;
 
   let actionConfig = NODES[action.payload];
@@ -148,7 +149,6 @@ function* handleNodeChangeIntent(action): SagaIterator {
     yield put(changeNode(currentNode, currentConfig));
     return;
   }
-
 
   // Grab latest block from the node, before switching, to confirm it's online
   // Give it 5 seconds before we call it offline
