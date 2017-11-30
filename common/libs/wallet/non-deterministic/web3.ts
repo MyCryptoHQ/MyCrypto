@@ -66,7 +66,7 @@ export default class Web3Wallet implements IFullWallet {
   }
 
   private async networkCheck(lib: Web3Node) {
-    const netId = await lib.getNetworkId();
+    const netId = await lib.getNetVersion();
     const netName = networkIdToName(netId);
     if (this.network !== netName) {
       throw new Error(

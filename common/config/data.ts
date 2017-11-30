@@ -271,7 +271,12 @@ export async function initWeb3Node(): Promise<void> {
   }
 
   const lib = new Web3Node();
-  const networkId = await lib.getNetworkId();
+  const networkId = await lib.getNetVersion();
+  const accounts = await lib.getAccounts();
+
+  if (!accounts.length) {
+    throw new Error('No accounts found in MetaMask / Mist.');
+  }
 
   if (networkId === 'loading') {
     throw new Error(
