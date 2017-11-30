@@ -19,3 +19,5 @@ script:
 - npm run test
 - npm run tslint
 - npm run tscheck
+- npm run freezer
+- npm run freezer:validate
