@@ -5,6 +5,7 @@ import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
 import { TokenBalance } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
+import { ETH_DECIMAL } from 'libs/units';
 import Spinner from 'components/ui/Spinner';
 import UnitDisplay from 'components/ui/UnitDisplay';
 import './EquivalentValues.scss';
@@ -28,6 +29,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     currency: ALL_OPTION
   };
   private balanceLookup: { [key: string]: Balance['wei'] | undefined } = {};
+  private decimalLookup: { [key: string]: number } = {};
   private requestedCurrencies: string[] | null = null;
 
   public constructor(props) {
@@ -137,10 +139,10 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     const tokenBalances = props.tokenBalances || [];
     this.balanceLookup = tokenBalances.reduce(
       (prev, tk) => {
-        return {
-          ...prev,
-          [tk.symbol]: tk.balance
-        };
+        // Piggy-back off of this reduce to add to decimal lookup
+        this.decimalLookup[tk.symbol] = tk.decimal;
+        prev[tk.symbol] = tk.balance;
+        return prev;
       },
       { ETH: props.balance && props.balance.wei }
     );
@@ -200,8 +202,15 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       return {};
     }
 
+    // Tokens with non-ether like decimals need to be adjusted to match
+    const decimal = this.decimalLookup[currency];
+    const adjustedBalance =
+      decimal !== undefined && decimal !== ETH_DECIMAL
+        ? balance.mul(new BN(10).pow(new BN(ETH_DECIMAL - decimal)))
+        : balance;
+
     return rateSymbols.reduce((prev, sym) => {
-      prev[sym] = balance ? balance.muln(rates[currency][sym]) : null;
+      prev[sym] = adjustedBalance.muln(rates[currency][sym]);
       return prev;
     }, {});
   }

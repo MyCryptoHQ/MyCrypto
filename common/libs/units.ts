@@ -5,6 +5,8 @@ type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
 
+export const ETH_DECIMAL = 18;
+
 const Units = {
   wei: '1',
   kwei: '1000',
