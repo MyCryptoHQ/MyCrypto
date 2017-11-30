@@ -30,7 +30,8 @@ import {
   changeNode,
   changeNodeIntent,
   setLatestBlock,
-  AddCustomNodeAction
+  AddCustomNodeAction,
+  ChangeNodeIntentAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
@@ -100,13 +101,13 @@ export function* pollOfflineStatus(): SagaIterator {
 }
 
 // Fork our recurring API call, watch for the need to cancel.
-function* handlePollOfflineStatus(): SagaIterator {
+export function* handlePollOfflineStatus(): SagaIterator {
   const pollOfflineStatusTask = yield fork(pollOfflineStatus);
   yield take('CONFIG_STOP_POLL_OFFLINE_STATE');
   yield cancel(pollOfflineStatusTask);
 }
 
-function* handleTogglePollOfflineStatus(): SagaIterator {
+export function* handleTogglePollOfflineStatus(): SagaIterator {
   const isForcedOffline = yield select(getForceOffline);
   if (isForcedOffline) {
     yield fork(handlePollOfflineStatus);
@@ -117,14 +118,15 @@ function* handleTogglePollOfflineStatus(): SagaIterator {
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.
-function* reload(): SagaIterator {
+export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 250);
 }
 
-function* handleNodeChangeIntent(action): SagaIterator {
+export function* handleNodeChangeIntent(
+  action: ChangeNodeIntentAction
+): SagaIterator {
   const currentNode = yield select(getNode);
   const currentConfig = yield select(getNodeConfig);
-  const currentWallet = yield select(getWalletInst);
   const currentNetwork = currentConfig.network;
 
   let actionConfig = NODES[action.payload];
@@ -173,6 +175,8 @@ function* handleNodeChangeIntent(action): SagaIterator {
   yield put(setLatestBlock(latestBlock));
   yield put(changeNode(action.payload, actionConfig));
 
+  const currentWallet = yield select(getWalletInst);
+
   // if there's no wallet, do not reload as there's no component state to resync
   if (currentWallet && currentNetwork !== actionConfig.network) {
     yield call(reload);
@@ -185,7 +189,7 @@ export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
-function* unsetWeb3Node(action): SagaIterator {
+export function* unsetWeb3Node(action): SagaIterator {
   const node = yield select(getNode);
   const nodeConfig = yield select(getNodeConfig);
   const newWallet = action.payload;
@@ -196,7 +200,11 @@ function* unsetWeb3Node(action): SagaIterator {
   }
 
   // switch back to a node with the same network as MetaMask/Mist
-  const equivalentNode = Object.keys(NODES)
+  yield put(changeNodeIntent(equivalentNodeOrDefault(nodeConfig)));
+}
+
+export const equivalentNodeOrDefault = nodeConfig => {
+  const node = Object.keys(NODES)
     .filter(key => key !== 'web3')
     .reduce((found, key) => {
       const config = NODES[key];
@@ -210,12 +218,8 @@ function* unsetWeb3Node(action): SagaIterator {
     }, '');
 
   // if no equivalent node was found, use the app default
-  const newNode = equivalentNode.length
-    ? equivalentNode
-    : configInitialState.nodeSelection;
-
-  yield put(changeNodeIntent(newNode));
-}
+  return node.length ? node : configInitialState.nodeSelection;
+};
 
 export default function* configSaga(): SagaIterator {
   yield takeLatest(
