@@ -1,5 +1,5 @@
 import React from 'react';
-import { Amount } from '../Amount';
+import { Amount } from '../../Amount';
 
 export const SummaryAmount: React.SFC<{}> = () => (
   <div className="ConfModal-summary-amount">
