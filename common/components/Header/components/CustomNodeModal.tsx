@@ -294,12 +294,12 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       if (!customNetworkUnit) {
         invalids.customNetworkUnit = true;
       }
-    }
 
-    // Numeric chain ID (if provided)
-    const iChainId = parseInt(customNetworkChainId, 10);
-    if (!iChainId || iChainId < 0) {
-      invalids.customNetworkChainId = true;
+      // Numeric chain ID (if provided)
+      const iChainId = parseInt(customNetworkChainId, 10);
+      if (!iChainId || iChainId < 0) {
+        invalids.customNetworkChainId = true;
+      }
     }
 
     return invalids;
