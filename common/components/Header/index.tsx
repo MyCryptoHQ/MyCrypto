@@ -198,6 +198,7 @@ export default class Header extends Component<Props, State> {
         {isAddingCustomNode && (
           <CustomNodeModal
             customNodes={customNodes}
+            customNetworks={customNetworks}
             handleAddCustomNode={this.addCustomNode}
             handleAddCustomNetwork={this.props.addCustomNetwork}
             handleClose={this.closeCustomNodeModal}

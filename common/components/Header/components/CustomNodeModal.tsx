@@ -17,6 +17,7 @@ interface Input {
 
 interface Props {
   customNodes: CustomNodeConfig[];
+  customNetworks: CustomNetworkConfig[];
   handleAddCustomNode(node: CustomNodeConfig): void;
   handleAddCustomNetwork(node: CustomNetworkConfig): void;
   handleClose(): void;
@@ -50,7 +51,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
   };
 
   public render() {
-    const { handleClose } = this.props;
+    const { customNetworks, handleClose } = this.props;
     const { network } = this.state;
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
@@ -116,6 +117,14 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                       {net}
                     </option>
                   ))}
+                  {customNetworks.map(net => {
+                    const id = makeCustomNetworkId(net);
+                    return (
+                      <option key={id} value={id}>
+                        {net.name} (Custom)
+                      </option>
+                    );
+                  })}
                   <option value={CUSTOM}>Custom...</option>
                 </select>
               </div>
