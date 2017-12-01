@@ -268,43 +268,34 @@ export const NODES: { [key: string]: NodeConfig } = {
   }
 };
 
-export function initWeb3Node(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const { web3 } = window as any;
+export async function initWeb3Node(): Promise<void> {
+  const { web3 } = window as any;
 
-    if (!web3) {
-      return reject(
-        new Error(
-          'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
-        )
-      );
-    }
+  if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
+    throw new Error(
+      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
+    );
+  }
 
-    if (web3.version.network === 'loading') {
-      return reject(
-        new Error(
-          'MetaMask / Mist is still loading. Please refresh the page and try again.'
-        )
-      );
-    }
+  const lib = new Web3Node();
+  const networkId = await lib.getNetVersion();
+  const accounts = await lib.getAccounts();
 
-    web3.version.getNetwork((err, networkId) => {
-      if (err) {
-        return reject(err);
-      }
+  if (!accounts.length) {
+    throw new Error('No accounts found in MetaMask / Mist.');
+  }
 
-      try {
-        NODES.web3 = {
-          network: networkIdToName(networkId),
-          service: 'MetaMask / Mist',
-          lib: new Web3Node(web3),
-          estimateGas: false,
-          hidden: true
-        };
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  });
+  if (networkId === 'loading') {
+    throw new Error(
+      'MetaMask / Mist is still loading. Please refresh the page and try again.'
+    );
+  }
+
+  NODES.web3 = {
+    network: networkIdToName(networkId),
+    service: 'MetaMask / Mist',
+    lib,
+    estimateGas: false,
+    hidden: true
+  };
 }
