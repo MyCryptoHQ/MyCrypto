@@ -3,6 +3,7 @@ import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.0.4)';
+export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
