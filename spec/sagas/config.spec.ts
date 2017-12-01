@@ -15,6 +15,7 @@ import {
   handleTogglePollOfflineStatus,
   reload,
   unsetWeb3Node,
+  unsetWeb3NodeOnWalletEvent,
   equivalentNodeOrDefault
 } from 'sagas/config';
 import { NODES } from 'config/data';
@@ -326,10 +327,42 @@ describe('handleNodeChangeIntent*', () => {
 });
 
 describe('unsetWeb3Node*', () => {
+  const node = 'web3';
+  const mockNodeConfig = { network: 'ETH' };
+  const newNode = equivalentNodeOrDefault(mockNodeConfig);
+  const gen = unsetWeb3Node();
+
+  it('should select getNode', () => {
+    expect(gen.next().value).toEqual(select(getNode));
+  });
+
+  it('should select getNodeConfig', () => {
+    expect(gen.next(node).value).toEqual(select(getNodeConfig));
+  });
+
+  it('should put changeNodeIntent', () => {
+    expect(gen.next(mockNodeConfig).value).toEqual(
+      put(changeNodeIntent(newNode))
+    );
+  });
+
+  it('should be done', () => {
+    expect(gen.next().done).toEqual(true);
+  });
+
+  it('should return early if node type is not web3', () => {
+    const gen1 = unsetWeb3Node();
+    gen1.next();
+    gen1.next('notWeb3');
+    expect(gen1.next().done).toEqual(true);
+  });
+});
+
+describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction = {};
   const mockNode = 'web3';
   const mockNodeConfig = { network: 'ETH' };
-  const gen = unsetWeb3Node(fakeAction);
+  const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {
     expect(gen.next().value).toEqual(select(getNode));
@@ -350,18 +383,17 @@ describe('unsetWeb3Node*', () => {
   });
 
   it('should return early if node type is not web3', () => {
-    const gen1 = unsetWeb3Node({ payload: false });
+    const gen1 = unsetWeb3NodeOnWalletEvent({ payload: false });
     gen1.next(); //getNode
     gen1.next('notWeb3'); //getNodeConfig
     expect(gen1.next().done).toEqual(true);
   });
 
   it('should return early if wallet type is web3', () => {
-    const mockWeb3 = {};
     const mockAddress = '0x0';
     const mockNetwork = 'ETH';
-    const mockWeb3Wallet = new Web3Wallet(mockWeb3, mockAddress, mockNetwork);
-    const gen2 = unsetWeb3Node({ payload: mockWeb3Wallet });
+    const mockWeb3Wallet = new Web3Wallet(mockAddress, mockNetwork);
+    const gen2 = unsetWeb3NodeOnWalletEvent({ payload: mockWeb3Wallet });
     gen2.next(); //getNode
     gen2.next('web3'); //getNodeConfig
     expect(gen2.next().done).toEqual(true);
