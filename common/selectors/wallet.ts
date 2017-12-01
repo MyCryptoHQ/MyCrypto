@@ -14,6 +14,7 @@ export interface TokenBalance {
   balance: TokenValue;
   custom: boolean;
   decimal: number;
+  error: string | null;
 }
 
 export type MergedToken = Token & {
@@ -21,7 +22,8 @@ export type MergedToken = Token & {
 };
 
 export function getTokens(state: AppState): MergedToken[] {
-  const tokens: Token[] = getNetworkConfig(state).tokens;
+  const network = getNetworkConfig(state);
+  const tokens: Token[] = network ? network.tokens : [];
   return tokens.concat(
     state.customTokens.map((token: Token) => {
       const mergedToken = { ...token, custom: true };
@@ -38,8 +40,11 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
   return tokens.map(t => ({
     symbol: t.symbol,
     balance: state.wallet.tokens[t.symbol]
-      ? state.wallet.tokens[t.symbol]
+      ? state.wallet.tokens[t.symbol].balance
       : TokenValue('0'),
+    error: state.wallet.tokens[t.symbol]
+      ? state.wallet.tokens[t.symbol].error
+      : null,
     custom: t.custom,
     decimal: t.decimal
   }));

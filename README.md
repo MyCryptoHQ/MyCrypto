@@ -334,7 +334,36 @@ When working on a module that has styling in Less, try to do the following:
 * Convert as many `<br/>` tags or `&nbsp;`s to margins
 * Ensure that there has been little to no deviation from screenshot
 
-
+#### Adding Icon-fonts
+1. Download chosen icon-font
+1. Declare css font-family: 
+	``` 
+	@font-face {
+		font-family: 'social-media';
+		src: url('../assets/fonts/social-media.eot');
+		src: url('../assets/fonts/social-media.eot') format('embedded-opentype'),
+			url('../assets/fonts/social-media.woff2') format('woff2'),
+			url('../assets/fonts/social-media.woff') format('woff'),
+			url('../assets/fonts/social-media.ttf') format('truetype'),
+			url('../assets/fonts/social-media.svg') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+	```
+1. Create classes for each icon using their unicode character
+	```  
+	.sm-logo-facebook:before {
+	    content: '\ea02';
+	  }
+	```
+	* [How to get unicode icon values?](https://stackoverflow.com/questions/27247145/get-the-unicode-icon-value-from-a-custom-font)
+1. Write some markup:
+	```
+	<a href="/">
+		<i className={`sm-icon sm-logo-${text} sm-24px`} />
+		Hello World
+	</a>
+	```
 
 ## Thanks & Support
 

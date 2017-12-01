@@ -32,7 +32,13 @@ import {
 import { UnitKey, Wei, getDecimal, toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 // LIBS
-import { IWallet, Balance, Web3Wallet } from 'libs/wallet';
+import {
+  IWallet,
+  Balance,
+  Web3Wallet,
+  LedgerWallet,
+  TrezorWallet
+} from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
@@ -265,6 +271,8 @@ export class SendTransaction extends React.Component<Props, State> {
         ? getDecimal('ether')
         : (this.state.token && this.state.token.decimal) || 0;
     const isWeb3Wallet = this.props.wallet instanceof Web3Wallet;
+    const isLedgerWallet = this.props.wallet instanceof LedgerWallet;
+    const isTrezorWallet = this.props.wallet instanceof TrezorWallet;
     return (
       <TabSection>
         <section className="Tab-content">
@@ -277,6 +285,7 @@ export class SendTransaction extends React.Component<Props, State> {
                 ) : null}
               </div>
             }
+            allowReadOnly={true}
           />
           <NavigationPrompt
             when={unlocked}
@@ -284,8 +293,9 @@ export class SendTransaction extends React.Component<Props, State> {
           />
           <div className="row">
             {/* Send Form */}
+
             {unlocked &&
-              !(offline || (forceOffline && isWeb3Wallet)) && (
+              !((offline || forceOffline) && isWeb3Wallet) && (
                 <main className="col-sm-8">
                   <div className="Tab-content-pane">
                     {hasQueryString && (
@@ -353,7 +363,16 @@ export class SendTransaction extends React.Component<Props, State> {
                     {generateTxProcessing && (
                       <div className="container">
                         <div className="row form-group text-center">
-                          <Spinner size="x5" />
+                          {isLedgerWallet || isTrezorWallet ? (
+                            <div>
+                              <p>
+                                <b>Confirm transaction on hardware wallet</b>
+                              </p>
+                              <Spinner size="x2" />
+                            </div>
+                          ) : (
+                            <Spinner size="x2" />
+                          )}
                         </div>
                       </div>
                     )}
@@ -416,7 +435,7 @@ export class SendTransaction extends React.Component<Props, State> {
               )}
 
             {unlocked &&
-              (offline || (forceOffline && isWeb3Wallet)) && (
+              ((offline || forceOffline) && isWeb3Wallet) && (
                 <main className="col-sm-8">
                   <div className="Tab-content-pane">
                     <h4>Sorry...</h4>
@@ -493,6 +512,10 @@ export class SendTransaction extends React.Component<Props, State> {
 
   public async getFormattedTxFromState(): Promise<TransactionWithoutGas> {
     const { wallet } = this.props;
+    if (wallet.isReadOnly) {
+      throw new Error('Wallet is read-only');
+    }
+
     const { token, unit, value, to, data } = this.state;
     const transactionInput: TransactionInput = {
       token,
@@ -675,6 +698,7 @@ export class SendTransaction extends React.Component<Props, State> {
     await this.resetJustTx();
     const { nodeLib, wallet, gasPrice, network, offline } = this.props;
     const { token, unit, value, to, data, gasLimit, nonce } = this.state;
+
     const chainId = network.chainId;
     const transactionInput = {
       token,
@@ -685,6 +709,10 @@ export class SendTransaction extends React.Component<Props, State> {
     };
     const bigGasLimit = Wei(gasLimit);
     try {
+      if (wallet.isReadOnly) {
+        throw new Error('Wallet is read-only');
+      }
+
       const signedTx = await generateCompleteTransaction(
         wallet,
         nodeLib,
