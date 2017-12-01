@@ -12,4 +12,5 @@ export interface State {
   nonce: SetNonceFieldAction['payload'];
   value: { raw: string; value: Wei | null }; // TODO: fix this workaround since some of the payload is optional
   gasLimit: SetGasLimitFieldAction['payload'];
+  gasPrice: { raw: string; value: Wei };
 }

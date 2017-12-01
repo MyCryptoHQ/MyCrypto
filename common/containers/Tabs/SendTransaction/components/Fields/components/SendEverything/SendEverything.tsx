@@ -4,7 +4,8 @@ import {
   Transaction,
   GetTransactionMetaFields,
   SetTokenValueMetaField,
-  SetTransactionField
+  SetTransactionField,
+  EtherBalance
 } from 'components/renderCbs';
 import React, { Component } from 'react';
 import { TokenValue, Wei, fromTokenBase, fromWei } from 'libs/units';
@@ -14,20 +15,26 @@ import {
   SetTokenValueMetaAction
 } from 'actions/transaction';
 import translate from 'translations';
-
-interface Props {
+import { connect } from 'react-redux';
+import { showNotification, TShowNotification } from 'actions/notifications';
+interface DispatchProps {
+  notif: TShowNotification;
+}
+interface OwnProps {
   unit: string;
-  balance: Wei | TokenValue | null | undefined;
+  etherBalance: Wei | null;
+  currentBalance: Wei | TokenValue | null | undefined;
   decimal: number;
   transaction: EthTx;
   setter(
     payload: SetValueFieldAction['payload'] | SetTokenValueMetaAction['payload']
   );
 }
+type Props = OwnProps & DispatchProps;
 
-class SendEverythingClass extends Component<Props, {}> {
+class SendEverythingClass extends Component<Props> {
   public render() {
-    if (!this.props.balance) {
+    if (!this.props.currentBalance) {
       return null;
     }
     return (
@@ -48,49 +55,80 @@ class SendEverythingClass extends Component<Props, {}> {
     );
   }
   private onSendEverything = () => {
-    const { unit, transaction, balance, setter, decimal } = this.props; // if its in ether, we need to have upfront-cost in account
-    if (balance) {
+    const {
+      unit,
+      transaction,
+      currentBalance,
+      etherBalance,
+      setter,
+      decimal,
+      notif
+    } = this.props; // if its in ether, we need to have upfront-cost in account
+    if (currentBalance && etherBalance) {
+      // set transaction value to 0 so it's not calculated in the upfrontcost
+      transaction.value = Buffer.from([]);
+      const totalCost = transaction.getUpfrontCost();
+
+      if (totalCost.gt(etherBalance)) {
+        // Dust amount is too small
+        notif(
+          'warning',
+          `The cost of gas is higher than your balance:
+          Total cost: ${totalCost} > 
+          Your Ether balance: ${etherBalance}`
+        );
+        return setter({ raw: '0', value: null });
+      }
+
       if (unit === 'ether') {
-        const remainder = balance.sub(transaction.getUpfrontCost());
+        const remainder = currentBalance.sub(totalCost);
         const rawVersion = fromWei(remainder, 'ether');
         setter({ raw: rawVersion, value: remainder });
       } else {
         // else we just max out the token value
-        const rawVersion = fromTokenBase(balance, decimal);
-        setter({ raw: rawVersion, value: balance });
+        const rawVersion = fromTokenBase(currentBalance, decimal);
+        setter({ raw: rawVersion, value: currentBalance });
       }
     }
   };
 }
 
-export const SendEverything: React.SFC<{}> = () => (
-  <CurrentBalance
-    withBalance={({ balance }) => (
-      <Transaction
-        withTransaction={({ transaction }) => (
-          <GetTransactionMetaFields
-            withFieldValues={({ decimal, unit }) => {
-              const partialSendEverything = setter => (
-                <SendEverythingClass
-                  decimal={decimal}
-                  balance={balance}
-                  setter={setter}
-                  transaction={transaction}
-                  unit={unit}
-                />
-              );
+const Placeholder = connect(null, { notif: showNotification })(
+  SendEverythingClass
+);
 
-              return unit === 'ether' ? (
-                <SetTransactionField
-                  name="value"
-                  withFieldSetter={partialSendEverything}
-                />
-              ) : (
-                <SetTokenValueMetaField
-                  withTokenBalanceSetter={partialSendEverything}
-                />
-              );
-            }}
+//remove this for selectors
+export const SendEverything: React.SFC<{}> = () => (
+  <EtherBalance
+    withBalance={({ balance: etherBalance }) => (
+      <CurrentBalance
+        withBalance={({ balance: currentBalance }) => (
+          <Transaction
+            withTransaction={({ transaction }) => (
+              <GetTransactionMetaFields
+                withFieldValues={({ decimal, unit }) => (
+                  <SetTokenValueMetaField
+                    withTokenBalanceSetter={tokenValueSetter => (
+                      <SetTransactionField
+                        name="value"
+                        withFieldSetter={valueSetter => (
+                          <Placeholder
+                            etherBalance={etherBalance}
+                            decimal={decimal}
+                            currentBalance={currentBalance}
+                            setter={
+                              unit === 'ether' ? valueSetter : tokenValueSetter
+                            }
+                            transaction={transaction}
+                            unit={unit}
+                          />
+                        )}
+                      />
+                    )}
+                  />
+                )}
+              />
+            )}
           />
         )}
       />

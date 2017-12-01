@@ -1,19 +1,18 @@
 import React from 'react';
 import { AppState } from 'reducers';
 import { Wallet } from './Wallet';
-
-type IBalance = AppState['wallet']['balance'];
+import { Wei } from 'libs/units';
 
 interface Props {
   withBalance({
     balance
   }: {
-    balance: IBalance;
+    balance: Wei | null;
   }): React.ReactElement<any> | null;
 }
 
 export const EtherBalance: React.SFC<Props> = ({ withBalance }) => (
   <Wallet
-    withWallet={({ wallet }) => withBalance({ balance: wallet.balance })}
+    withWallet={({ wallet }) => withBalance({ balance: wallet.balance.wei })}
   />
 );

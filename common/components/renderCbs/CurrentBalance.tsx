@@ -18,9 +18,7 @@ export const CurrentBalance: React.SFC<Props> = ({ withBalance }) => (
   <GetTransactionMetaFields
     withFieldValues={({ unit }) =>
       unit === 'ether' ? (
-        <EtherBalance
-          withBalance={({ balance }) => withBalance({ balance: balance.wei })}
-        />
+        <EtherBalance withBalance={({ balance }) => withBalance({ balance })} />
       ) : (
         <TokenBalances
           nonZeroBalances={true}
