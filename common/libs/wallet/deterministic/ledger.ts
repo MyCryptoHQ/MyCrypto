@@ -29,7 +29,8 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
         t.serialize().toString('hex'),
         (result, error) => {
           if (error) {
-            return reject(this.ethApp.getError(error));
+            const errorMessage = this.ethApp.getError(error);
+            return reject(Error(errorMessage));
           }
           const strTx = getTransactionFields(t);
 
