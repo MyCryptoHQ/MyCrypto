@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { CustomNodeConfig, NodeConfig } from 'config/data';
+import { NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
 
 /*** Toggle Offline ***/
 export interface ToggleOfflineAction {
@@ -56,6 +56,18 @@ export interface RemoveCustomNodeAction {
   payload: CustomNodeConfig;
 }
 
+/*** Add Custom Network ***/
+export interface AddCustomNetworkAction {
+  type: TypeKeys.CONFIG_ADD_CUSTOM_NETWORK;
+  payload: CustomNetworkConfig;
+}
+
+/*** Remove Custom Network ***/
+export interface RemoveCustomNetworkAction {
+  type: TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK;
+  payload: CustomNetworkConfig;
+}
+
 /*** Set Latest Block ***/
 export interface SetLatestBlockAction {
   type: TypeKeys.CONFIG_SET_LATEST_BLOCK;
@@ -78,5 +90,7 @@ export type ConfigAction =
   | ChangeNodeIntentAction
   | AddCustomNodeAction
   | RemoveCustomNodeAction
+  | AddCustomNetworkAction
+  | RemoveCustomNetworkAction
   | SetLatestBlockAction
   | Web3UnsetNodeAction;

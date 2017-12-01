@@ -16,10 +16,12 @@ import {
   getCustomNodeConfigFromId,
   makeNodeConfigFromCustomConfig
 } from 'utils/node';
+import { makeCustomNetworkId } from 'utils/network';
 import {
   getNode,
   getNodeConfig,
   getCustomNodeConfigs,
+  getCustomNetworkConfigs,
   getOffline,
   getForceOffline
 } from 'selectors/config';
@@ -30,6 +32,7 @@ import {
   changeNode,
   changeNodeIntent,
   setLatestBlock,
+  removeCustomNetwork,
   AddCustomNodeAction,
   ChangeNodeIntentAction
 } from 'actions/config';
@@ -188,6 +191,22 @@ export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
   yield put(changeNodeIntent(nodeId));
 }
 
+// If there are any orphaned custom networks, purge them
+export function* cleanCustomNetworks(): SagaIterator {
+  const customNodes = yield select(getCustomNodeConfigs);
+  const customNetworks = yield select(getCustomNetworkConfigs);
+  const networksInUse = customNodes.reduce((prev, conf) => {
+    prev[conf.network] = true;
+    return prev;
+  }, {});
+
+  for (const net of customNetworks) {
+    if (!networksInUse[makeCustomNetworkId(net)]) {
+      yield put(removeCustomNetwork(net));
+    }
+  }
+}
+
 // unset web3 as the selected node if a non-web3 wallet has been selected
 export function* unsetWeb3Node(action): SagaIterator {
   const node = yield select(getNode);
@@ -230,6 +249,7 @@ export default function* configSaga(): SagaIterator {
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
+  yield takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, cleanCustomNetworks);
   yield takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3Node);
   yield takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3Node);
 }

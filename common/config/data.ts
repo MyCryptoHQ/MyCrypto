@@ -79,6 +79,12 @@ export interface NetworkConfig {
   contracts: NetworkContract[] | null;
 }
 
+export interface CustomNetworkConfig {
+  name: string;
+  unit: string;
+  chainId: number;
+}
+
 export interface NodeConfig {
   network: string;
   lib: RPCNode | Web3Node;
