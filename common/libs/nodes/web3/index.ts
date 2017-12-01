@@ -11,6 +11,10 @@ export default class Web3Node implements INode {
     this.web3 = web3;
   }
 
+  public ping(): Promise<boolean> {
+    return Promise.resolve(true);
+  }
+
   public sendCallRequest(txObj: TxObj): Promise<string> {
     return new Promise((resolve, reject) => {
       this.web3.eth.call(txObj, 'pending', (err, res) => {
@@ -53,7 +57,13 @@ export default class Web3Node implements INode {
     );
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
+  public getTokenBalance(
+    address: string,
+    token: Token
+  ): Promise<{
+    balance: TokenValue;
+    error: string | null;
+  }> {
     return new Promise(resolve => {
       this.web3.eth.call(
         {
@@ -64,10 +74,10 @@ export default class Web3Node implements INode {
         (err, res) => {
           if (err) {
             // TODO - Error handling
-            return resolve(TokenValue('0'));
+            return resolve({ balance: TokenValue('0'), error: err });
           }
           // web3 returns string
-          resolve(TokenValue(res));
+          resolve({ balance: TokenValue(res), error: null });
         }
       );
     });
@@ -76,11 +86,14 @@ export default class Web3Node implements INode {
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<TokenValue[]> {
+  ): Promise<{ balance: TokenValue; error: string | null }[]> {
     return new Promise(resolve => {
       const batch = this.web3.createBatch();
       const totalCount = tokens.length;
-      const returnArr = new Array<TokenValue>(totalCount);
+      const returnArr = new Array<{
+        balance: TokenValue;
+        error: string | null;
+      }>(totalCount);
       let finishCount = 0;
 
       tokens.forEach((token, index) =>
@@ -100,10 +113,16 @@ export default class Web3Node implements INode {
       function finish(index, err, res) {
         if (err) {
           // TODO - Error handling
-          returnArr[index] = TokenValue('0');
+          returnArr[index] = {
+            balance: TokenValue('0'),
+            error: err
+          };
         } else {
           // web3 returns string
-          returnArr[index] = TokenValue(res);
+          returnArr[index] = {
+            balance: TokenValue(res),
+            error: err
+          };
         }
 
         finishCount++;

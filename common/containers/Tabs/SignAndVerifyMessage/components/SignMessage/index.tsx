@@ -1,28 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { IWallet } from 'libs/wallet/IWallet';
 import WalletDecrypt from 'components/WalletDecrypt';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ISignedMessage } from 'libs/signing';
-import { AppState } from 'reducers';
+import { IFullWallet } from 'libs/wallet';
+import FullWalletOnly from 'components/renderCbs/FullWalletOnly';
+import SignButton from './SignButton';
 import './index.scss';
 
 interface Props {
-  wallet: IWallet;
   showNotification: TShowNotification;
 }
 
 interface State {
   message: string;
-  signMessageError: string;
   signedMessage: ISignedMessage | null;
 }
 
 const initialState: State = {
   message: '',
-  signMessageError: '',
   signedMessage: null
 };
 
@@ -33,7 +31,6 @@ export class SignMessage extends Component<Props, State> {
   public state: State = initialState;
 
   public render() {
-    const { wallet } = this.props;
     const { message, signedMessage } = this.state;
 
     const messageBoxClass = classnames([
@@ -56,14 +53,10 @@ export class SignMessage extends Component<Props, State> {
             <div className="SignMessage-help">{translate('MSG_info2')}</div>
           </div>
 
-          {!!wallet && (
-            <button
-              className="SignMessage-sign btn btn-primary btn-lg"
-              onClick={this.handleSignMessage}
-            >
-              {translate('NAV_SignMsg')}
-            </button>
-          )}
+          <FullWalletOnly
+            withFullWallet={this.renderSignButton}
+            withoutFullWallet={this.renderUnlock}
+          />
 
           {!!signedMessage && (
             <div>
@@ -79,53 +72,33 @@ export class SignMessage extends Component<Props, State> {
             </div>
           )}
         </div>
-
-        {!wallet && <WalletDecrypt />}
       </div>
     );
   }
-
-  private handleSignMessage = async () => {
-    const { wallet } = this.props;
-    const { message } = this.state;
-
-    if (!wallet) {
-      return;
-    }
-
-    try {
-      const signedMessage: ISignedMessage = {
-        address: await wallet.getAddressString(),
-        message,
-        signature: await wallet.signMessage(message),
-        version: '2'
-      };
-
-      this.setState({ signedMessage });
-      this.props.showNotification(
-        'success',
-        `Successfully signed message with address ${signedMessage.address}.`
-      );
-    } catch (err) {
-      this.props.showNotification(
-        'danger',
-        `Error signing message: ${err.message}`
-      );
-    }
-  };
 
   private handleMessageChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const message = e.currentTarget.value;
     this.setState({ message });
   };
-}
 
-function mapStateToProps(state: AppState) {
-  return {
-    wallet: state.wallet.inst
+  private onSignMessage = (signedMessage: ISignedMessage) => {
+    this.setState({ signedMessage });
   };
+
+  private renderSignButton = (fullWallet: IFullWallet) => {
+    return (
+      <SignButton
+        wallet={fullWallet}
+        message={this.state.message}
+        showNotification={this.props.showNotification}
+        onSignMessage={this.onSignMessage}
+      />
+    );
+  };
+
+  private renderUnlock() {
+    return <WalletDecrypt />;
+  }
 }
 
-export default connect(mapStateToProps, {
-  showNotification
-})(SignMessage);
+export default connect(null, { showNotification })(SignMessage);

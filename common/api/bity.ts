@@ -46,7 +46,7 @@ export function postOrder(
       mode,
       pair
     }),
-    headers: bityConfig.postConfig.headers
+    headers: new Headers(bityConfig.postConfig.headers)
   })
     .then(checkHttpStatus)
     .then(parseJSON);
@@ -58,7 +58,7 @@ export function getOrderStatus(orderId: string) {
     body: JSON.stringify({
       orderid: orderId
     }),
-    headers: bityConfig.postConfig.headers
+    headers: new Headers(bityConfig.postConfig.headers)
   })
     .then(checkHttpStatus)
     .then(parseJSON);

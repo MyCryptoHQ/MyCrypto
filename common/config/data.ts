@@ -3,6 +3,7 @@ import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.0.4)';
+export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
@@ -40,6 +41,10 @@ export const gasPriceDefaults = {
 };
 
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
+export const ledgerReferralURL =
+  'https://www.ledgerwallet.com/r/fa4b?path=/products/';
+export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
+export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -51,6 +56,7 @@ export interface Token {
   address: string;
   symbol: string;
   decimal: number;
+  error?: string | null;
 }
 
 export interface NetworkContract {
@@ -71,6 +77,12 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
+}
+
+export interface CustomNetworkConfig {
+  name: string;
+  unit: string;
+  chainId: number;
 }
 
 export interface NodeConfig {

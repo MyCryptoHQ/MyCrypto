@@ -6,13 +6,15 @@ export function makeCustomNodeId(config: CustomNodeConfig): string {
 }
 
 export function getCustomNodeConfigFromId(
-  id: string, configs: CustomNodeConfig[]
+  id: string,
+  configs: CustomNodeConfig[]
 ): CustomNodeConfig | undefined {
-  return configs.find((node) => makeCustomNodeId(node) === id);
+  return configs.find(node => makeCustomNodeId(node) === id);
 }
 
 export function getNodeConfigFromId(
-  id: string, configs: CustomNodeConfig[]
+  id: string,
+  configs: CustomNodeConfig[]
 ): NodeConfig | undefined {
   if (NODES[id]) {
     return NODES[id];
@@ -30,7 +32,7 @@ export function makeNodeConfigFromCustomConfig(
   return {
     network: config.network,
     lib: new CustomNode(config),
-    service: "your custom node",
-    estimateGas: true,
+    service: 'your custom node',
+    estimateGas: true
   };
 }

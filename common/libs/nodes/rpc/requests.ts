@@ -7,11 +7,15 @@ import {
   GetTokenBalanceRequest,
   GetTransactionCountRequest,
   SendRawTxRequest,
-  GetCurrentBlockRequest,
+  GetCurrentBlockRequest
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
 export default class RPCRequests {
+  public getNetVersion() {
+    return { method: 'net_version' };
+  }
+
   public sendRawTx(signedTx: string): SendRawTxRequest | any {
     return {
       method: 'eth_sendRawTransaction',
@@ -67,7 +71,7 @@ export default class RPCRequests {
 
   public getCurrentBlock(): GetCurrentBlockRequest | any {
     return {
-      method: 'eth_blockNumber',
+      method: 'eth_blockNumber'
     };
   }
 }

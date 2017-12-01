@@ -4,27 +4,35 @@ import {
   ChangeNodeAction,
   AddCustomNodeAction,
   RemoveCustomNodeAction,
+  AddCustomNetworkAction,
+  RemoveCustomNetworkAction,
   SetLatestBlockAction,
-  ConfigAction,
+  ConfigAction
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
   NODES,
+  NETWORKS,
   NodeConfig,
   CustomNodeConfig,
+  NetworkConfig,
+  CustomNetworkConfig
 } from '../config/data';
 import { makeCustomNodeId } from 'utils/node';
+import { makeCustomNetworkId } from 'utils/network';
 
 export interface State {
   // FIXME
   languageSelection: string;
   nodeSelection: string;
   node: NodeConfig;
+  network: NetworkConfig;
   isChangingNode: boolean;
   gasPriceGwei: number;
   offline: boolean;
   forceOffline: boolean;
   customNodes: CustomNodeConfig[];
+  customNetworks: CustomNetworkConfig[];
   latestBlock: string;
 }
 
@@ -33,12 +41,14 @@ export const INITIAL_STATE: State = {
   languageSelection: 'en',
   nodeSelection: defaultNode,
   node: NODES[defaultNode],
+  network: NETWORKS[NODES[defaultNode].network],
   isChangingNode: false,
   gasPriceGwei: 21,
   offline: false,
   forceOffline: false,
   customNodes: [],
-  latestBlock: "???",
+  customNetworks: [],
+  latestBlock: '???'
 };
 
 function changeLanguage(state: State, action: ChangeLanguageAction): State {
@@ -53,14 +63,14 @@ function changeNode(state: State, action: ChangeNodeAction): State {
     ...state,
     nodeSelection: action.payload.nodeSelection,
     node: action.payload.node,
-    isChangingNode: false,
+    isChangingNode: false
   };
 }
 
 function changeNodeIntent(state: State): State {
   return {
     ...state,
-    isChangingNode: true,
+    isChangingNode: true
   };
 }
 
@@ -86,12 +96,13 @@ function forceOffline(state: State): State {
 }
 
 function addCustomNode(state: State, action: AddCustomNodeAction): State {
+  const newId = makeCustomNodeId(action.payload);
   return {
     ...state,
     customNodes: [
-      ...state.customNodes,
-      action.payload,
-    ],
+      ...state.customNodes.filter(node => makeCustomNodeId(node) !== newId),
+      action.payload
+    ]
   };
 }
 
@@ -99,16 +110,39 @@ function removeCustomNode(state: State, action: RemoveCustomNodeAction): State {
   const id = makeCustomNodeId(action.payload);
   return {
     ...state,
-    customNodes: state.customNodes.filter((cn) => cn !== action.payload),
-    nodeSelection: id === state.nodeSelection ?
-      defaultNode : state.nodeSelection,
+    customNodes: state.customNodes.filter(cn => cn !== action.payload),
+    nodeSelection:
+      id === state.nodeSelection ? defaultNode : state.nodeSelection
+  };
+}
+
+function addCustomNetwork(state: State, action: AddCustomNetworkAction): State {
+  const newId = makeCustomNetworkId(action.payload);
+  return {
+    ...state,
+    customNetworks: [
+      ...state.customNetworks.filter(
+        node => makeCustomNetworkId(node) !== newId
+      ),
+      action.payload
+    ]
+  };
+}
+
+function removeCustomNetwork(
+  state: State,
+  action: RemoveCustomNetworkAction
+): State {
+  return {
+    ...state,
+    customNetworks: state.customNetworks.filter(cn => cn !== action.payload)
   };
 }
 
 function setLatestBlock(state: State, action: SetLatestBlockAction): State {
   return {
     ...state,
-    latestBlock: action.payload,
+    latestBlock: action.payload
   };
 }
 
@@ -133,6 +167,10 @@ export function config(
       return addCustomNode(state, action);
     case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:
       return removeCustomNode(state, action);
+    case TypeKeys.CONFIG_ADD_CUSTOM_NETWORK:
+      return addCustomNetwork(state, action);
+    case TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK:
+      return removeCustomNetwork(state, action);
     case TypeKeys.CONFIG_SET_LATEST_BLOCK:
       return setLatestBlock(state, action);
     default:

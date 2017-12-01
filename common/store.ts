@@ -109,14 +109,16 @@ const configureStore = () => {
           gasPriceGwei: state.config.gasPriceGwei,
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
-          customNodes: state.config.customNodes
+          customNodes: state.config.customNodes,
+          customNetworks: state.config.customNetworks
         },
-        swap: state.swap,
+        swap: { ...state.swap, bityRates: {} },
         customTokens: state.customTokens
       });
     }),
     1000
   );
+
   return store;
 };
 

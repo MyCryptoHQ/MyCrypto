@@ -71,7 +71,10 @@ export function setBalanceRejected(): types.SetBalanceRejectedAction {
 
 export type TSetTokenBalances = typeof setTokenBalances;
 export function setTokenBalances(payload: {
-  [key: string]: TokenValue;
+  [key: string]: {
+    balance: TokenValue;
+    error: string | null;
+  };
 }): types.SetTokenBalancesAction {
   return {
     type: TypeKeys.WALLET_SET_TOKEN_BALANCES,
