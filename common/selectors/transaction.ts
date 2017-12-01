@@ -31,9 +31,8 @@ const currentTransactionBroadcasting = (state: AppState) => {
   return txExists && txExists.isBroadcasting;
 };
 
-// Note: this doesn't handle the case where the transaction fails to broadcast
 const currentTransactionBroadcasted = (state: AppState) => {
   const txExists = getCurrentTransactionStatus(state);
 
-  return txExists && txExists.broadcastSuccessful;
+  return txExists && !txExists.isBroadcasting;
 };
