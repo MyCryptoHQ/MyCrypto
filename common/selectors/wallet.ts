@@ -1,8 +1,15 @@
 import { TokenValue } from 'libs/units';
 import { Token } from 'config/data';
-import { IWallet } from 'libs/wallet';
+
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
+import {
+  IWallet,
+  Balance,
+  Web3Wallet,
+  LedgerWallet,
+  TrezorWallet
+} from 'libs/wallet';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
@@ -47,3 +54,12 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     decimal: t.decimal
   }));
 }
+
+export const getWalletType = (state: AppState) => {
+  const wallet = getWalletInst(state);
+  const isWeb3Wallet = wallet instanceof Web3Wallet;
+  const isLedgerWallet = wallet instanceof LedgerWallet;
+  const isTrezorWallet = wallet instanceof TrezorWallet;
+  const isHardwareWallet = isLedgerWallet || isTrezorWallet;
+  return { isWeb3Wallet, isHardwareWallet };
+};

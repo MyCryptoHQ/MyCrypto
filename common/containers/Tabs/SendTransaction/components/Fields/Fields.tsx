@@ -9,7 +9,8 @@ import {
   UnitDropDown,
   CurrentCustomMessage,
   GenerateTransaction,
-  TransactionComparisonAndPushTx
+  TransactionComparisonAndPushTx,
+  SigningStatus
 } from './components';
 import {
   Offline,
@@ -56,6 +57,7 @@ const content = (
           <GenerateTransaction />
         </div>
       </div>
+      <SigningStatus />
       <div className="row form-group">
         <TransactionComparisonAndPushTx />
       </div>

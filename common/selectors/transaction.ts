@@ -1,4 +1,5 @@
 import { AppState } from 'reducers';
+import { getWalletType } from 'selectors/wallet';
 
 export {
   getSignedTx,
@@ -6,7 +7,8 @@ export {
   getTransactionStatus,
   getFrom,
   currentTransactionBroadcasting,
-  currentTransactionBroadcasted
+  currentTransactionBroadcasted,
+  signaturePending
 };
 
 const getSignedTx = (state: AppState) =>
@@ -23,6 +25,12 @@ const getCurrentTransactionStatus = (state: AppState) => {
   }
   const txExists = getTransactionStatus(state, indexingHash);
   return txExists;
+};
+
+const signaturePending = (state: AppState) => {
+  const { isHardwareWallet } = getWalletType(state);
+  const { pending } = state.transaction.sign;
+  return { isHardwareWallet, isSignaturePending: pending };
 };
 // Note: if the transaction or the indexing hash doesn't exist, we have a problem
 const currentTransactionBroadcasting = (state: AppState) => {

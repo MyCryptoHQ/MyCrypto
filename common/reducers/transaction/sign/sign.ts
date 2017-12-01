@@ -10,15 +10,22 @@ import { createReducerFromObj } from 'reducers/transaction/helpers';
 const INITIAL_STATE: State = {
   local: { signedTransaction: null },
   web3: { transaction: null },
-  indexingHash: null
+  indexingHash: null,
+  pending: false
 };
 
 const reducerObj: ReducersMapObject = {
+  [TK.SIGN_LOCAL_TRANSACTION_REQUESTED]: (state: State): State => ({
+    ...state,
+    pending: true
+  }),
   [TK.SIGN_LOCAL_TRANSACTION_SUCCEEDED]: (
     _,
     { payload }: SignLocalTransactionSucceededAction
   ): State => ({
     indexingHash: payload.indexingHash,
+    pending: false,
+
     local: { signedTransaction: payload.signedTransaction },
     web3: { transaction: null }
   }),
@@ -27,6 +34,8 @@ const reducerObj: ReducersMapObject = {
     { payload }: SignWeb3TransactionSucceededAction
   ): State => ({
     indexingHash: payload.indexingHash,
+    pending: false,
+
     local: { signedTransaction: null },
     web3: { transaction: payload.transaction }
   }),
