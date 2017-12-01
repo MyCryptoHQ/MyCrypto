@@ -1,6 +1,6 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig } from 'config/data';
+import { NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
 
 export type TForceOfflineConfig = typeof forceOfflineConfig;
 export function forceOfflineConfig(): interfaces.ForceOfflineAction {
@@ -76,6 +76,26 @@ export function removeCustomNode(
 ): interfaces.RemoveCustomNodeAction {
   return {
     type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
+    payload
+  };
+}
+
+export type TAddCustomNetwork = typeof addCustomNetwork;
+export function addCustomNetwork(
+  payload: CustomNetworkConfig
+): interfaces.AddCustomNetworkAction {
+  return {
+    type: TypeKeys.CONFIG_ADD_CUSTOM_NETWORK,
+    payload
+  };
+}
+
+export type TRemoveCustomNetwork = typeof removeCustomNetwork;
+export function removeCustomNetwork(
+  payload: CustomNetworkConfig
+): interfaces.RemoveCustomNetworkAction {
+  return {
+    type: TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK,
     payload
   };
 }
