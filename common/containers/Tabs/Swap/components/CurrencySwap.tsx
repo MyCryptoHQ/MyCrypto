@@ -40,7 +40,6 @@ export default class CurrencySwap extends Component<
     destination: { id: 'ETH', amount: '' },
     originKindOptions: ['ETH', 'BTC'],
     destinationKindOptions: ['ETH', 'REP'],
-    // destinationKindOptions: ['ETH', 'BTC', 'REP'].filter(opt => opt !== this.state.origin.id),
     originErr: '',
     destinationErr: ''
   };
@@ -80,78 +79,6 @@ export default class CurrencySwap extends Component<
         disabled: disabled()
       });
     }
-
-    // if (disabled && origin.amount) {
-    //   const { bityRates } = this.props;
-    //   const ETHMin = generateKindMin(bityRates.BTCETH.rate, 'ETH');
-    //   const ETHMax = generateKindMax(bityRates.BTCETH.rate, 'ETH');
-    //   const REPMin = generateKindMin(bityRates.BTCREP.rate, 'REP');
-
-    //   const getRates = kind => {
-    //     let minAmount;
-    //     let maxAmount;
-    //     switch (kind) {
-    //       case 'BTC':
-    //         minAmount = toFixedIfLarger(bityConfig.BTCMin, 3);
-    //         maxAmount = toFixedIfLarger(bityConfig.BTCMax, 3);
-    //         break;
-    //       case 'ETH':
-    //         minAmount = toFixedIfLarger(ETHMin, 3);
-    //         maxAmount = toFixedIfLarger(ETHMax, 3);
-    //         break;
-    //       case 'REP':
-    //         minAmount = toFixedIfLarger(REPMin, 3);
-    //         break;
-    //       default:
-    //         if (this.state.showedMinMaxError) {
-    //           this.setState(
-    //             {
-    //               showedMinMaxError: true
-    //             },
-    //             () => {
-    //               this.props.showNotification(
-    //                 'danger',
-    //                 "Couldn't get match currency kind. Something went terribly wrong",
-    //                 10000
-    //               );
-    //             }
-    //           );
-    //         }
-    //     }
-    //     return { minAmount, maxAmount };
-    //   };
-
-    //   const createErrString = (kind, amount, rate) => {
-    //     let errString;
-    //     if (amount > rate.maxAmount) {
-    //       errString = `Maximum ${kind} is ${rate.maxAmount} ${kind}`;
-    //     } else {
-    //       errString = `Minimum ${kind} is ${rate.minAmount} ${kind}`;
-    //     }
-
-    //     return errString;
-    //   };
-    //   const originRate = getRates(origin.id);
-    //   const destinationRate = getRates(destination.id);
-    //   const originErr = createErrString(origin.id, origin.amount, originRate);
-    //   const destinationErr = createErrString(
-    //     destination.id,
-    //     destination.amount,
-    //     destinationRate
-    //   );
-
-    //   this.setState({
-    //     originErr,
-    //     destinationErr,
-    //     disabled: true
-    //   });
-    // } else {
-    //   this.setState({
-    //     originErr: '',
-    //     destinationErr: '',
-    //     disabled
-    //   });
-    // }
   }
 
   public onClickStartSwap = () => {
@@ -165,18 +92,17 @@ export default class CurrencySwap extends Component<
     });
   };
 
-  public onChangeOriginAmount = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    const { origin, destination } = this.state;
-    const amount = (event.target as HTMLInputElement).value;
-    const originAmountAsNumber = parseFloat(amount);
-    if (originAmountAsNumber || originAmountAsNumber === 0) {
+  public calcAmount = (inputVal, rate) => {
+    return inputVal * rate;
+  };
+
+  public updateOriginAmount = (origin, destination, amount) => {
+    if (amount || amount === 0) {
       const pairName = combineAndUpper(origin.id, destination.id);
       const bityRate = this.props.bityRates.byId[pairName].rate;
-      const destinationAmount = originAmountAsNumber * bityRate;
+      const destinationAmount = amount * bityRate;
       this.setState({
-        origin: { ...this.state.origin, amount: originAmountAsNumber },
+        origin: { ...this.state.origin, amount },
         destination: { ...this.state.destination, amount: destinationAmount }
       });
     } else {
@@ -184,26 +110,67 @@ export default class CurrencySwap extends Component<
     }
   };
 
-  public onChangeDestinationAmount = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    const { origin, destination } = this.state;
-    const amount = (event.target as HTMLInputElement).value;
-    const destinationAmountAsNumber = parseFloat(amount);
-    if (destinationAmountAsNumber || destinationAmountAsNumber === 0) {
+  public updateDestinationAmount = (origin, destination, amount) => {
+    if (amount || amount === 0) {
       const pairNameReversed = combineAndUpper(destination.id, origin.id);
-      const bityRate = this.props.bityRates.byId[pairNameReversed];
-      const originAmount = destinationAmountAsNumber * bityRate;
+      const bityRate = this.props.bityRates.byId[pairNameReversed].rate;
+      const originAmount = amount * bityRate;
       this.setState({
         origin: { ...this.state.origin, amount: originAmount },
         destination: {
           ...this.state.destination,
-          amount: destinationAmountAsNumber
+          amount
         }
       });
     } else {
       this.setOriginAndDestinationToInitialVal();
     }
+  };
+
+  public onChangeAmount = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const type = (event.target as HTMLInputElement).id;
+    const { origin, destination } = this.state;
+    const amount = parseFloat((event.target as HTMLInputElement).value);
+    type === 'origin-swap-input'
+      ? this.updateOriginAmount(origin, destination, amount)
+      : this.updateDestinationAmount(origin, destination, amount);
+  };
+
+  public onChangeOriginKind = newOption => {
+    const { origin, destination } = this.state;
+    const newDestinationAmount = () => {
+      const pairName = combineAndUpper(destination.id, origin.id);
+      const bityRate = this.props.bityRates.byId[pairName].rate;
+      return bityRate * parseFloat(origin.amount);
+    };
+    this.setState({
+      origin: { ...origin, id: newOption },
+      destination: {
+        id: newOption === destination.id ? origin.id : origin.id,
+        amount: newDestinationAmount()
+          ? newDestinationAmount()
+          : destination.amount
+      },
+      destinationKindOptions: ['ETH', 'BTC', 'REP'].filter(
+        opt => opt !== newOption
+      )
+    });
+  };
+
+  public onChangeDestinationKind = newOption => {
+    const { origin, destination } = this.state;
+    const newOriginAmount = () => {
+      const pairName = combineAndUpper(newOption, origin.id);
+      const bityRate = this.props.bityRates.byId[pairName].rate;
+      return bityRate * parseFloat(destination.amount);
+    };
+    this.setState({
+      origin: {
+        ...origin,
+        amount: newOriginAmount() ? newOriginAmount() : origin.amount
+      },
+      destination: { ...destination, id: newOption }
+    });
   };
 
   public render() {
@@ -217,7 +184,7 @@ export default class CurrencySwap extends Component<
       destinationErr
     } = this.state;
 
-    const OriginKindDropDown = Dropdown as new () => Dropdown<typeof origin.id>;
+    const OriginKindDropDown = Dropdown as new () => Dropdown<any>;
     const DestinationKindDropDown = Dropdown as new () => Dropdown<
       typeof destination.id
     >;
@@ -233,6 +200,7 @@ export default class CurrencySwap extends Component<
             <div className="CurrencySwap-input-group">
               <span className="CurrencySwap-error-message">{originErr}</span>
               <input
+                id="origin-swap-input"
                 className={`CurrencySwap-input form-control ${
                   String(origin.amount) !== '' &&
                   this.isMinMaxValid(origin.amount, origin.id)
@@ -242,7 +210,7 @@ export default class CurrencySwap extends Component<
                 type="number"
                 placeholder="Amount"
                 value={origin.amount}
-                onChange={this.onChangeOriginAmount}
+                onChange={this.onChangeAmount}
               />
               <div className="CurrencySwap-dropdown">
                 <OriginKindDropDown
@@ -251,7 +219,7 @@ export default class CurrencySwap extends Component<
                   }`}
                   options={originKindOptions}
                   value={origin.id}
-                  onChange={this.props.originKindSwap}
+                  onChange={this.onChangeOriginKind}
                   size="smr"
                   color="default"
                 />
@@ -263,6 +231,7 @@ export default class CurrencySwap extends Component<
                 {destinationErr}
               </span>
               <input
+                id="destination-swap-input"
                 className={`CurrencySwap-input form-control ${
                   String(destination.amount) !== '' &&
                   this.isMinMaxValid(origin.amount, origin.id)
@@ -272,7 +241,7 @@ export default class CurrencySwap extends Component<
                 type="number"
                 placeholder="Amount"
                 value={destination.amount}
-                onChange={this.onChangeDestinationAmount}
+                onChange={this.onChangeAmount}
               />
               <div className="CurrencySwap-dropdown">
                 <DestinationKindDropDown
@@ -281,7 +250,7 @@ export default class CurrencySwap extends Component<
                   }`}
                   options={destinationKindOptions}
                   value={destination.id}
-                  onChange={this.props.destinationKindSwap}
+                  onChange={this.onChangeDestinationKind}
                   size="smr"
                   color="default"
                 />
