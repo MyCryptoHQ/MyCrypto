@@ -10,7 +10,7 @@ import SimpleButton from 'components/ui/SimpleButton';
 import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
-import { combineAndUpper, toFixedIfLarger } from 'utils/formatters';
+import { combineAndUpper } from 'utils/formatters';
 import './CurrencySwap.scss';
 import { Dropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
@@ -90,10 +90,6 @@ export default class CurrencySwap extends Component<
       origin: { ...this.state.origin, amount: '' },
       destination: { ...this.state.destination, amount: '' }
     });
-  };
-
-  public calcAmount = (inputVal, rate) => {
-    return inputVal * rate;
   };
 
   public updateOriginAmount = (origin, destination, amount) => {
