@@ -208,7 +208,7 @@ export function* cleanCustomNetworks(): SagaIterator {
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
-export function* unsetWeb3Node(action): SagaIterator {
+export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
   const node = yield select(getNode);
   const nodeConfig = yield select(getNodeConfig);
   const newWallet = action.payload;
@@ -220,6 +220,19 @@ export function* unsetWeb3Node(action): SagaIterator {
 
   // switch back to a node with the same network as MetaMask/Mist
   yield put(changeNodeIntent(equivalentNodeOrDefault(nodeConfig)));
+}
+
+export function* unsetWeb3Node(): SagaIterator {
+  const node = yield select(getNode);
+
+  if (node !== 'web3') {
+    return;
+  }
+
+  const nodeConfig = yield select(getNodeConfig);
+  const newNode = equivalentNodeOrDefault(nodeConfig);
+
+  yield put(changeNodeIntent(newNode));
 }
 
 export const equivalentNodeOrDefault = nodeConfig => {
@@ -250,6 +263,7 @@ export default function* configSaga(): SagaIterator {
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
   yield takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, cleanCustomNetworks);
-  yield takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3Node);
-  yield takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3Node);
+  yield takeEvery(TypeKeys.CONFIG_NODE_WEB3_UNSET, unsetWeb3Node);
+  yield takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3NodeOnWalletEvent);
+  yield takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3NodeOnWalletEvent);
 }

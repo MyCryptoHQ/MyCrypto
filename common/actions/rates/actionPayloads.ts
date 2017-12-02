@@ -36,10 +36,12 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
       // to their respective rates via ETH.
       return symbols.reduce(
         (eqRates, sym) => {
-          eqRates[sym] = rateSymbols.reduce((symRates, rateSym) => {
-            symRates[rateSym] = 1 / rates[sym] * rates[rateSym];
-            return symRates;
-          }, {});
+          if (rates[sym]) {
+            eqRates[sym] = rateSymbols.reduce((symRates, rateSym) => {
+              symRates[rateSym] = 1 / rates[sym] * rates[rateSym];
+              return symRates;
+            }, {});
+          }
           return eqRates;
         },
         {
