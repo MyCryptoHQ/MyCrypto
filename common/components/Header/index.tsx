@@ -3,7 +3,8 @@ import {
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
-  TRemoveCustomNode
+  TRemoveCustomNode,
+  TAddCustomNetwork
 } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
@@ -14,17 +15,18 @@ import {
   ANNOUNCEMENT_MESSAGE,
   ANNOUNCEMENT_TYPE,
   languages,
-  NETWORKS,
   NODES,
   VERSION,
   NodeConfig,
-  CustomNodeConfig
-} from '../../config/data';
+  CustomNodeConfig,
+  CustomNetworkConfig
+} from 'config/data';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
+import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
 
 interface Props {
@@ -34,12 +36,14 @@ interface Props {
   isChangingNode: boolean;
   gasPriceGwei: number;
   customNodes: CustomNodeConfig[];
+  customNetworks: CustomNetworkConfig[];
 
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
   changeGasPrice: TChangeGasPrice;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
+  addCustomNetwork: TAddCustomNetwork;
 }
 
 interface State {
@@ -58,40 +62,47 @@ export default class Header extends Component<Props, State> {
       node,
       nodeSelection,
       isChangingNode,
-      customNodes
+      customNodes,
+      customNetworks
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const selectedNetwork = NETWORKS[node.network];
+    const selectedNetwork = getNetworkConfigFromId(
+      node.network,
+      customNetworks
+    );
     const LanguageDropDown = Dropdown as new () => Dropdown<
       typeof selectedLanguage
     >;
 
     const nodeOptions = Object.keys(NODES)
       .map(key => {
+        const n = NODES[key];
+        const network = getNetworkConfigFromId(n.network, customNetworks);
         return {
           value: key,
           name: (
             <span>
-              {NODES[key].network} <small>({NODES[key].service})</small>
+              {network && network.name} <small>({n.service})</small>
             </span>
           ),
-          color: NETWORKS[NODES[key].network].color,
-          hidden: NODES[key].hidden
+          color: network && network.color,
+          hidden: n.hidden
         };
       })
       .concat(
-        customNodes.map(customNode => {
+        customNodes.map(cn => {
+          const network = getNetworkConfigFromId(cn.network, customNetworks);
           return {
-            value: makeCustomNodeId(customNode),
+            value: makeCustomNodeId(cn),
             name: (
               <span>
-                {customNode.network} - {customNode.name} <small>(custom)</small>
+                {network && network.name} - {cn.name} <small>(custom)</small>
               </span>
             ),
-            color: '#000',
+            color: network && network.color,
             hidden: false,
-            onRemove: () => this.props.removeCustomNode(customNode)
+            onRemove: () => this.props.removeCustomNode(cn)
           };
         })
       );
@@ -161,8 +172,8 @@ export default class Header extends Component<Props, State> {
               >
                 <ColorDropdown
                   ariaLabel={`
-                    change node. current node ${node.network}
-                    node by ${node.service}
+                    change node. current node is on the ${node.network} network
+                    provided by ${node.service}
                   `}
                   options={nodeOptions}
                   value={nodeSelection}
@@ -182,11 +193,14 @@ export default class Header extends Component<Props, State> {
           </section>
         </section>
 
-        <Navigation color={selectedNetwork.color} />
+        <Navigation color={selectedNetwork && selectedNetwork.color} />
 
         {isAddingCustomNode && (
           <CustomNodeModal
+            customNodes={customNodes}
+            customNetworks={customNetworks}
             handleAddCustomNode={this.addCustomNode}
+            handleAddCustomNetwork={this.props.addCustomNetwork}
             handleClose={this.closeCustomNodeModal}
           />
         )}

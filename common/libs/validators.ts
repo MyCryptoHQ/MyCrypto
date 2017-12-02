@@ -197,7 +197,7 @@ export const schema = {
     properties: {
       jsonrpc: { type: 'string' },
       id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
-      result: { type: 'string' },
+      result: { oneOf: [{ type: 'string' }, { type: 'array' }] },
       status: { type: 'string' },
       message: { type: 'string', maxLength: 2 }
     }
@@ -250,3 +250,15 @@ export const isValidCurrentBlock = (response: JsonRpcResponse) =>
 
 export const isValidRawTxApi = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Raw Tx');
+
+export const isValidSendTransaction = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Send Transaction');
+
+export const isValidSignMessage = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Sign Message');
+
+export const isValidGetAccounts = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Get Accounts');
+
+export const isValidGetNetVersion = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Net Version');
