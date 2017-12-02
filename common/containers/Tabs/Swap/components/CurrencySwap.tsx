@@ -82,20 +82,20 @@ export default class CurrencySwap extends Component<
       const rate = this.getMinMax(kind);
       let errString;
       if (amount > rate.max) {
-        errString = `Maximum ${kind} is ${rate.max} ${kind}`;
+        errString = `Maximum ${rate.max} ${kind}`;
       } else {
-        errString = `Minimum ${kind} is ${rate.min} ${kind}`;
+        errString = `Minimum ${rate.min} ${kind}`;
       }
       return errString;
     };
 
     const showError = disabled && amountsValid;
-    const originErr = minMaxValid
-      ? ''
-      : showError ? createErrString(origin.id, origin.amount) : '';
-    const destinationErr = minMaxValid
-      ? ''
-      : showError ? createErrString(destination.id, destination.amount) : '';
+    const originErr = showError
+      ? createErrString(origin.id, origin.amount)
+      : '';
+    const destinationErr = showError
+      ? createErrString(destination.id, destination.amount)
+      : '';
 
     this.setState({
       disabled,
@@ -165,7 +165,7 @@ export default class CurrencySwap extends Component<
     this.setState({
       origin: { ...origin, id: newOption },
       destination: {
-        id: newOption === destination.id ? origin.id : origin.id,
+        id: newOption === destination.id ? origin.id : destination.id,
         amount: newDestinationAmount()
           ? newDestinationAmount()
           : destination.amount
