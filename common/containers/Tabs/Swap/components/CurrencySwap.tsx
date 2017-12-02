@@ -51,34 +51,57 @@ export default class CurrencySwap extends Component<
     }
   }
 
-  public isMinMaxValid = (amount, kind) => {
-    let bityMin;
-    let bityMax;
+  public getMinMax = kind => {
+    let min;
+    let max;
     if (kind !== 'BTC') {
-      const bityPairRate = this.props.bityRates.byId['BTC' + kind];
-      bityMin = generateKindMin(bityPairRate, kind);
-      bityMax = generateKindMax(bityPairRate, kind);
+      const bityPairRate = this.props.bityRates.byId['BTC' + kind].rate;
+      min = generateKindMin(bityPairRate, kind);
+      max = generateKindMax(bityPairRate, kind);
     } else {
-      bityMin = bityConfig.BTCMin;
-      bityMax = bityConfig.BTCMax;
+      min = bityConfig.BTCMin;
+      max = bityConfig.BTCMax;
     }
-    const higherThanMin = amount >= bityMin;
-    const lowerThanMax = amount <= bityMax;
+    return { min, max };
+  };
+
+  public isMinMaxValid = (amount, kind) => {
+    const rate = this.getMinMax(kind);
+    const higherThanMin = amount >= rate.min;
+    const lowerThanMax = amount <= rate.max;
     return higherThanMin && lowerThanMax;
   };
 
   public setDisabled(origin, destination) {
-    const disabled = () => {
-      const amountsAreValid = origin.amount && destination.amount;
-      const minMaxIsValid = this.isMinMaxValid(origin.amount, origin.id);
-      return !(amountsAreValid && minMaxIsValid);
+    const amountsValid = origin.amount && destination.amount;
+    const minMaxValid = this.isMinMaxValid(origin.amount, origin.id);
+
+    const disabled = !(amountsValid && minMaxValid);
+
+    const createErrString = (kind, amount) => {
+      const rate = this.getMinMax(kind);
+      let errString;
+      if (amount > rate.max) {
+        errString = `Maximum ${kind} is ${rate.max} ${kind}`;
+      } else {
+        errString = `Minimum ${kind} is ${rate.min} ${kind}`;
+      }
+      return errString;
     };
 
-    if (disabled) {
-      this.setState({
-        disabled: disabled()
-      });
-    }
+    const showError = disabled && amountsValid;
+    const originErr = minMaxValid
+      ? ''
+      : showError ? createErrString(origin.id, origin.amount) : '';
+    const destinationErr = minMaxValid
+      ? ''
+      : showError ? createErrString(destination.id, destination.amount) : '';
+
+    this.setState({
+      disabled,
+      originErr,
+      destinationErr
+    });
   }
 
   public onClickStartSwap = () => {
