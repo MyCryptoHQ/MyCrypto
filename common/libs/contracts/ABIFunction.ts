@@ -3,7 +3,6 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import BN from 'bn.js';
 import { INode } from 'libs/nodes/INode';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
-import { transaction, ITransaction } from 'libs/transaction';
 import { ISetConfigForTx } from './index';
 
 export interface IUserSendParams {

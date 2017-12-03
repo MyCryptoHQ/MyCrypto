@@ -1,5 +1,4 @@
 // COMPONENTS
-import Spinner from 'components/ui/Spinner';
 import TabSection from 'containers/TabSection';
 import {
   Fields,

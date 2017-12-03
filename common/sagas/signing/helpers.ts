@@ -1,5 +1,5 @@
 import { getWalletInst } from 'selectors/wallet';
-import { IWallet } from 'libs/wallet';
+import { IFullWallet } from 'libs/wallet';
 import { getGasPriceGwei, getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
 import { toWei, getDecimal, Wei } from 'libs/units';
@@ -18,19 +18,19 @@ import { SagaIterator } from 'redux-saga';
 import { showNotification } from 'actions/notifications';
 import { toBuffer } from 'ethereumjs-util';
 export {
-  IWalletAndTransaction,
+  IFullWalletAndTransaction,
   getWalletAndTransaction,
   handleFailedTransaction,
   signTransactionWrapper
 };
 
-interface IWalletAndTransaction {
-  wallet: IWallet;
+interface IFullWalletAndTransaction {
+  wallet: IFullWallet;
   tx: Tx;
 }
 
 const signTransactionWrapper = (
-  func: (IWalletAndTx: IWalletAndTransaction) => SagaIterator
+  func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator
 ) =>
   function*(
     partialTx:
@@ -38,7 +38,7 @@ const signTransactionWrapper = (
       | SignWeb3TransactionRequestedAction
   ) {
     try {
-      const IWalletAndTx: IWalletAndTransaction = yield call(
+      const IWalletAndTx: IFullWalletAndTransaction = yield call(
         getWalletAndTransaction,
         partialTx.payload
       );

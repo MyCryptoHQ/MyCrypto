@@ -28,7 +28,7 @@ declare module 'ethereumjs-tx' {
     gasLimit?: Buffer | BN | string | number | null;
     gasPrice?: Buffer | BN | string | number | null;
     to?: Buffer | BN | string | number | null;
-    nonce: Buffer | BN | string | number | null;
+    nonce?: Buffer | BN | string | number | null;
     data?: Buffer | BN | string | number | null;
     v?: Buffer | BN | string | number | null;
     r?: Buffer | BN | string | number | null;

@@ -93,8 +93,9 @@ const validAddress = (t: ITransaction) => {
   }
 };
 
-const transaction = (t: ITransaction | IHexStrTransaction | Buffer | string) =>
-  new Tx(t);
+const transaction = (
+  t: Tx | ITransaction | Partial<IHexStrTransaction> | Buffer | string
+) => new Tx(t);
 
 //TODO: check that addresses are always checksummed
 const signTx = async (t: ITransaction, w: IFullWallet) => {

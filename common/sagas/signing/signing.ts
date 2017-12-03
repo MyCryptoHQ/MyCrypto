@@ -1,6 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { put, apply, takeEvery, call } from 'redux-saga/effects';
-import { IWalletAndTransaction, signTransactionWrapper } from './helpers';
+import { IFullWalletAndTransaction, signTransactionWrapper } from './helpers';
 import {
   signLocalTransactionSucceeded,
   signWeb3TransactionSucceeded,
@@ -11,7 +11,7 @@ import { computeIndexingHash } from 'libs/transaction';
 const signLocalTransaction = signTransactionWrapper(function*({
   tx,
   wallet
-}: IWalletAndTransaction): SagaIterator {
+}: IFullWalletAndTransaction): SagaIterator {
   const signedTransaction: Buffer = yield apply(
     wallet,
     wallet.signRawTransaction,
@@ -26,7 +26,7 @@ const signLocalTransaction = signTransactionWrapper(function*({
 
 const signWeb3Transaction = signTransactionWrapper(function*({
   tx
-}: IWalletAndTransaction): SagaIterator {
+}: IFullWalletAndTransaction): SagaIterator {
   const serializedTransaction: Buffer = yield apply(tx, tx.serialize);
   const indexingHash: string = yield call(
     computeIndexingHash,

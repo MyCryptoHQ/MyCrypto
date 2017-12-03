@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppState } from 'reducers';
 import { Wallet } from './Wallet';
 import { Wei } from 'libs/units';
 

@@ -1,6 +1,6 @@
 import { Wei } from 'libs/units';
 import * as eth from './ether';
-import { IWallet } from 'libs/wallet';
+import { IFullWallet } from 'libs/wallet';
 import { ITransaction } from '../typings';
 export { signTransaction };
 export {
@@ -14,7 +14,7 @@ export {
 export * from './token';
 const signTransaction = async (
   t: ITransaction,
-  w: IWallet,
+  w: IFullWallet,
   accountBalance: Wei,
   isOffline: boolean
 ) => {
