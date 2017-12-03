@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import EthTx from 'ethereumjs-tx';
 import { Wei, TokenValue, toTokenBase } from 'libs/units';
-import { enoughBalance, enoughTokens, ITransaction } from 'libs/transaction';
+import { enoughBalance, enoughTokens } from 'libs/transaction';
 import {
   GetTransactionMetaFields,
   SetTransactionField,

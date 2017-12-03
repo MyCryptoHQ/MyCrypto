@@ -28,11 +28,3 @@ export const GasInput: React.SFC<Props> = ({ onChange }) => (
     />
   </Aux>
 );
-
-/*
-  <div className="row form-group">
-    <div className="col-sm-11 clearfix">
-     </div>
-  </div>
-
-*/

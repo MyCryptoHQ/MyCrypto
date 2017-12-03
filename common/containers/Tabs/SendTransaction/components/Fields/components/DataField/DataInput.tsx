@@ -38,10 +38,3 @@ export const DataInput: React.SFC<Props> = ({ onChange }) => (
     </div>
   </Expandable>
 );
-
-/*
-* <div className="row form-group">
-<div className="col-sm-11 clearfix">
-* </div>
-</div >
-*/
