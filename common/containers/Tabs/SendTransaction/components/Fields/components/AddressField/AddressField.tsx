@@ -74,9 +74,3 @@ const DefaultAddressField: React.SFC<{}> = () => (
 );
 
 export { DefaultAddressField as AddressField };
-/*
-    <div className="row form-group">
-      <div className="col-xs-11">
-           </div>
-            </div>
-*/

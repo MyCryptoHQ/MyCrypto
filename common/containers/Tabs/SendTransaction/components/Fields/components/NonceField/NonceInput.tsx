@@ -48,10 +48,3 @@ export const NonceInput: React.StatelessComponent<Props> = props => {
     />
   );
 };
-
-/*
-    <div className="row form-group">
-      <div className="col-xs-11">
-            </div>
-    </div>
-    */
