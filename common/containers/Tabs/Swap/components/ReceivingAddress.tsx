@@ -14,10 +14,9 @@ import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
 
 export interface StateProps {
+  origin: any;
+  destination: any;
   isPostingOrder: boolean;
-  originAmount: number | null;
-  originKind: string;
-  destinationKind: string;
   destinationAddress: string;
 }
 
@@ -40,21 +39,22 @@ export default class ReceivingAddress extends Component<
   };
 
   public onClickPartTwoComplete = () => {
-    if (!this.props.originAmount) {
+    const { origin, destination } = this.props;
+    if (!origin) {
       return;
     }
     this.props.bityOrderCreateRequestedSwap(
-      this.props.originAmount,
+      origin.amount,
       this.props.destinationAddress,
-      combineAndUpper(this.props.originKind, this.props.destinationKind)
+      combineAndUpper(origin.id, destination.id)
     );
   };
 
   public render() {
-    const { destinationKind, destinationAddress, isPostingOrder } = this.props;
+    const { destination, destinationAddress, isPostingOrder } = this.props;
     let validAddress;
     // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
-    if (this.props.destinationKind === 'BTC') {
+    if (destination.id === 'BTC') {
       validAddress = isValidBTCAddress(destinationAddress);
     } else {
       validAddress = isValidETHAddress(destinationAddress);
@@ -73,7 +73,7 @@ export default class ReceivingAddress extends Component<
           <div className="col-sm-8 col-sm-offset-2 col-xs-12">
             <label className="SwapAddress-address">
               <h4 className="SwapAddress-address-label">
-                {translate('SWAP_rec_add')} ({destinationKind})
+                {translate('SWAP_rec_add')} ({destination.id})
               </h4>
 
               <input
@@ -81,7 +81,7 @@ export default class ReceivingAddress extends Component<
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
-                placeholder={donationAddressMap[destinationKind]}
+                placeholder={donationAddressMap[destination.id]}
               />
             </label>
           </div>

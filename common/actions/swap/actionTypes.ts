@@ -6,24 +6,10 @@ export interface Pairs {
   BTCREP: number;
 }
 
-export interface OriginKindSwapAction {
-  type: TypeKeys.SWAP_ORIGIN_KIND;
-  payload: string;
-}
-
-export interface DestinationKindSwapAction {
-  type: TypeKeys.SWAP_DESTINATION_KIND;
-  payload: string;
-}
-
-export interface OriginAmountSwapAction {
-  type: TypeKeys.SWAP_ORIGIN_AMOUNT;
-  payload?: number | null;
-}
-
-export interface DestinationAmountSwapAction {
-  type: TypeKeys.SWAP_DESTINATION_AMOUNT;
-  payload?: number | null;
+// TODO: Update
+export interface InitSwap {
+  type: TypeKeys.SWAP_INIT;
+  payload: any;
 }
 
 export interface LoadBityRatesSucceededSwapAction {
@@ -135,10 +121,7 @@ export interface StopPollBityOrderStatusAction {
 /*** Action Type Union ***/
 export type SwapAction =
   | ChangeStepSwapAction
-  | OriginKindSwapAction
-  | DestinationKindSwapAction
-  | OriginAmountSwapAction
-  | DestinationAmountSwapAction
+  | InitSwap
   | LoadBityRatesSucceededSwapAction
   | DestinationAddressSwapAction
   | RestartSwapAction

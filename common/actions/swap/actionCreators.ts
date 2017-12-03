@@ -11,42 +11,11 @@ export function changeStepSwap(
   };
 }
 
-export type TOriginKindSwap = typeof originKindSwap;
-export function originKindSwap(
-  payload: string
-): interfaces.OriginKindSwapAction {
+// TODO: update types
+export type TInitSwap = typeof initSwap;
+export function initSwap(payload: any): interfaces.InitSwap {
   return {
-    type: TypeKeys.SWAP_ORIGIN_KIND,
-    payload
-  };
-}
-
-export type TDestinationKindSwap = typeof destinationKindSwap;
-export function destinationKindSwap(
-  payload: string
-): interfaces.DestinationKindSwapAction {
-  return {
-    type: TypeKeys.SWAP_DESTINATION_KIND,
-    payload
-  };
-}
-
-export type TOriginAmountSwap = typeof originAmountSwap;
-export function originAmountSwap(
-  payload?: number | null
-): interfaces.OriginAmountSwapAction {
-  return {
-    type: TypeKeys.SWAP_ORIGIN_AMOUNT,
-    payload
-  };
-}
-
-export type TDestinationAmountSwap = typeof destinationAmountSwap;
-export function destinationAmountSwap(
-  payload?: number | null
-): interfaces.DestinationAmountSwapAction {
-  return {
-    type: TypeKeys.SWAP_DESTINATION_AMOUNT,
+    type: TypeKeys.SWAP_INIT,
     payload
   };
 }

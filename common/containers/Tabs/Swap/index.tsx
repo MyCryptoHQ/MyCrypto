@@ -3,28 +3,22 @@ import {
   TShowNotification
 } from 'actions/notifications';
 import {
+  initSwap as dInitSwap,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
   changeStepSwap as dChangeStepSwap,
   destinationAddressSwap as dDestinationAddressSwap,
-  destinationAmountSwap as dDestinationAmountSwap,
-  destinationKindSwap as dDestinationKindSwap,
   loadBityRatesRequestedSwap as dLoadBityRatesRequestedSwap,
-  originAmountSwap as dOriginAmountSwap,
-  originKindSwap as dOriginKindSwap,
   restartSwap as dRestartSwap,
   startOrderTimerSwap as dStartOrderTimerSwap,
   startPollBityOrderStatus as dStartPollBityOrderStatus,
   stopLoadBityRatesSwap as dStopLoadBityRatesSwap,
   stopOrderTimerSwap as dStopOrderTimerSwap,
   stopPollBityOrderStatus as dStopPollBityOrderStatus,
+  TInitSwap,
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
-  TDestinationAmountSwap,
-  TDestinationKindSwap,
   TLoadBityRatesRequestedSwap,
-  TOriginAmountSwap,
-  TOriginKindSwap,
   TRestartSwap,
   TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
@@ -50,6 +44,8 @@ interface ReduxStateProps {
   destinationKindOptions: string[];
   originKindOptions: string[];
   step: number;
+  origin: any;
+  destination: any;
   bityRates: any;
   options: any;
   bityOrder: any;
@@ -64,10 +60,6 @@ interface ReduxStateProps {
 
 interface ReduxActionProps {
   changeStepSwap: TChangeStepSwap;
-  originKindSwap: TOriginKindSwap;
-  destinationKindSwap: TDestinationKindSwap;
-  originAmountSwap: TOriginAmountSwap;
-  destinationAmountSwap: TDestinationAmountSwap;
   loadBityRatesRequestedSwap: TLoadBityRatesRequestedSwap;
   destinationAddressSwap: TDestinationAddressSwap;
   restartSwap: TRestartSwap;
@@ -78,6 +70,7 @@ interface ReduxActionProps {
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
   showNotification: TShowNotification;
   startOrderTimerSwap: TStartOrderTimerSwap;
+  initSwap: TInitSwap;
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
@@ -95,12 +88,12 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       // STATE
       bityRates,
       options,
+      origin,
+      destination,
       originAmount,
       destinationAmount,
       originKind,
       destinationKind,
-      destinationKindOptions,
-      originKindOptions,
       destinationAddress,
       step,
       bityOrder,
@@ -110,13 +103,10 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       isPostingOrder,
       outputTx,
       // ACTIONS
+      initSwap,
       restartSwap,
       stopLoadBityRatesSwap,
       changeStepSwap,
-      originKindSwap,
-      destinationKindSwap,
-      originAmountSwap,
-      destinationAmountSwap,
       destinationAddressSwap,
       bityOrderCreateRequestedSwap,
       showNotification,
@@ -130,9 +120,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
 
     const ReceivingAddressProps = {
       isPostingOrder,
-      originAmount,
-      originKind,
-      destinationKind,
+      origin,
+      destination,
       destinationAddressSwap,
       destinationAddress,
       stopLoadBityRatesSwap,
@@ -141,12 +130,10 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     };
 
     const SwapInfoHeaderProps = {
+      origin,
+      destination,
       reference,
       secondsRemaining,
-      originAmount,
-      originKind,
-      destinationKind,
-      destinationAmount,
       restartSwap,
       orderStatus
     };
@@ -155,16 +142,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       showNotification,
       bityRates,
       options,
-      originAmount,
-      destinationAmount,
-      originKind,
-      destinationKind,
-      destinationKindOptions,
-      originKindOptions,
-      originKindSwap,
-      destinationKindSwap,
-      originAmountSwap,
-      destinationAmountSwap,
+      initSwap,
       changeStepSwap
     };
 
@@ -211,13 +189,9 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
 
 function mapStateToProps(state: AppState) {
   return {
-    originAmount: state.swap.originAmount,
-    destinationAmount: state.swap.destinationAmount,
-    originKind: state.swap.originKind,
-    destinationKind: state.swap.destinationKind,
-    destinationKindOptions: state.swap.destinationKindOptions,
-    originKindOptions: state.swap.originKindOptions,
     step: state.swap.step,
+    origin: state.swap.origin,
+    destination: state.swap.destination,
     bityRates: state.swap.bityRates,
     options: state.swap.options,
     bityOrder: state.swap.bityOrder,
@@ -232,14 +206,11 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  bityOrderCreateRequestedSwap: dBityOrderCreateRequestedSwap,
   changeStepSwap: dChangeStepSwap,
-  destinationAddressSwap: dDestinationAddressSwap,
-  destinationAmountSwap: dDestinationAmountSwap,
-  destinationKindSwap: dDestinationKindSwap,
+  initSwap: dInitSwap,
+  bityOrderCreateRequestedSwap: dBityOrderCreateRequestedSwap,
   loadBityRatesRequestedSwap: dLoadBityRatesRequestedSwap,
-  originAmountSwap: dOriginAmountSwap,
-  originKindSwap: dOriginKindSwap,
+  destinationAddressSwap: dDestinationAddressSwap,
   restartSwap: dRestartSwap,
   startOrderTimerSwap: dStartOrderTimerSwap,
   startPollBityOrderStatus: dStartPollBityOrderStatus,

@@ -1,19 +1,13 @@
-import { TShowNotification } from 'actions/notifications';
-import {
-  TChangeStepSwap,
-  TDestinationAmountSwap,
-  TDestinationKindSwap,
-  TOriginAmountSwap,
-  TOriginKindSwap
-} from 'actions/swap';
+import { TChangeStepSwap, TInitSwap } from 'actions/swap';
 import SimpleButton from 'components/ui/SimpleButton';
 import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
-import './CurrencySwap.scss';
 import { Dropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
+import { without, intersection } from 'lodash';
+import './CurrencySwap.scss';
 
 export interface StateProps {
   bityRates: any;
@@ -21,33 +15,40 @@ export interface StateProps {
 }
 
 export interface ActionProps {
-  showNotification: TShowNotification;
   changeStepSwap: TChangeStepSwap;
-  originKindSwap: TOriginKindSwap;
-  destinationKindSwap: TDestinationKindSwap;
-  originAmountSwap: TOriginAmountSwap;
-  destinationAmountSwap: TDestinationAmountSwap;
+  initSwap: TInitSwap;
 }
 
 export default class CurrencySwap extends Component<
   StateProps & ActionProps,
   any
 > {
-  public state = {
-    disabled: true,
-    showedMinMaxError: false,
-    origin: { id: 'BTC', amount: '' },
-    destination: { id: 'ETH', amount: '' },
-    originKindOptions: ['ETH', 'BTC'],
-    destinationKindOptions: ['ETH', 'REP'],
-    originErr: '',
-    destinationErr: ''
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      disabled: true,
+      origin: { id: 'BTC', amount: '' },
+      destination: { id: 'ETH', amount: '' },
+      originKindOptions: ['BTC'],
+      destinationKindOptions: ['ETH'],
+      originErr: '',
+      destinationErr: ''
+    };
+  }
 
   public componentDidUpdate(prevProps, prevState) {
     const { origin, destination } = this.state;
+    const { options } = this.props;
     if (origin !== prevState.origin) {
       this.setDisabled(origin, destination);
+    }
+    if (options.allIds !== prevProps.options.allIds) {
+      const originKindOptions = intersection(options.allIds, ['BTC', 'ETH']);
+      const destinationKindOptions = without(options.allIds, origin.id);
+      this.setState({
+        originKindOptions,
+        destinationKindOptions
+      });
     }
   }
 
@@ -105,7 +106,10 @@ export default class CurrencySwap extends Component<
   }
 
   public onClickStartSwap = () => {
-    this.props.changeStepSwap(2);
+    const { origin, destination } = this.state;
+    const { changeStepSwap, initSwap } = this.props;
+    initSwap({ origin, destination });
+    changeStepSwap(2);
   };
 
   public setOriginAndDestinationToInitialVal = () => {
@@ -170,9 +174,7 @@ export default class CurrencySwap extends Component<
           ? newDestinationAmount()
           : destination.amount
       },
-      destinationKindOptions: ['ETH', 'BTC', 'REP'].filter(
-        opt => opt !== newOption
-      )
+      destinationKindOptions: without(['ETH', 'BTC', 'REP'], newOption)
     });
   };
 

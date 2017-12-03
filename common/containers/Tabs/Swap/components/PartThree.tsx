@@ -13,10 +13,8 @@ import SwapProgress from './SwapProgress';
 
 interface ReduxStateProps {
   destinationAddress: string;
-  destinationKind: string;
-  originKind: string;
-  originAmount: number | null;
-  destinationAmount: number | null;
+  origin: any;
+  destination: any;
   reference: string;
   secondsRemaining: number | null;
   paymentAddress: string | null;
@@ -50,21 +48,19 @@ export default class PartThree extends Component<
   public render() {
     const {
       // STATE
-      originAmount,
-      originKind,
-      destinationKind,
+      origin,
+      destination,
       paymentAddress,
       orderStatus,
       destinationAddress,
       outputTx,
-      destinationAmount,
       // ACTIONS
       showNotification
     } = this.props;
 
     const SwapProgressProps = {
-      originKind,
-      destinationKind,
+      originKind: origin.id,
+      destinationKind: destination.id,
       orderStatus,
       showNotification,
       destinationAddress,
@@ -72,14 +68,14 @@ export default class PartThree extends Component<
     };
 
     const PaymentInfoProps = {
-      originKind,
-      originAmount,
+      originKind: origin.id,
+      originAmount: origin.amount,
       paymentAddress
     };
 
     const BitcoinQRProps = {
       paymentAddress,
-      amount: destinationAmount
+      amount: destination.amount
     };
 
     return (
@@ -87,7 +83,7 @@ export default class PartThree extends Component<
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
         {orderStatus === 'OPEN' &&
-          originKind === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
+          origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
   }
