@@ -3,6 +3,8 @@ import { Wei, Nonce, Address, Data, TokenValue } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 export {
+  SwapEtherToTokenAction,
+  SwapTokenToEtherAction,
   EstimateGasRequestedAction,
   EstimateGasSucceededAction,
   EstimateGasFailedAction,
@@ -34,8 +36,17 @@ export {
   MetaAction,
   NetworkAction,
   BroadcastAction,
-  SignAction
+  SignAction,
+  SwapAction
 };
+
+/* Swapping actions */
+interface SwapTokenToEtherAction {
+  type: TypeKeys.TOKEN_TO_ETHER_SWAP;
+}
+interface SwapEtherToTokenAction {
+  type: TypeKeys.ETHER_TO_TOKEN_SWAP;
+}
 
 /*Meta Actions*/
 
@@ -182,6 +193,8 @@ interface ResetAction {
   type: TypeKeys.RESET;
 }
 
+type SwapAction = SwapEtherToTokenAction | SwapTokenToEtherAction;
+
 type NetworkAction =
   | EstimateGasFailedAction
   | EstimateGasRequestedAction
@@ -223,4 +236,5 @@ type TransactionAction =
   | MetaAction
   | NetworkAction
   | SignAction
-  | BroadcastAction;
+  | BroadcastAction
+  | SwapAction;

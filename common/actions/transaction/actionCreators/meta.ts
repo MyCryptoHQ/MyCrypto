@@ -15,12 +15,10 @@ import { bufferToHex } from 'ethereumjs-util';
 import { encodeTransfer } from 'libs/transaction/utils/token';
 import {
   isEtherUnit,
-  clearTokenFields,
-  clearEther,
-  shouldDecimalUpdate,
   validNumber
 } from 'actions/transaction/actionCreators/helpers';
 import { getTokens } from 'selectors/wallet';
+import { swapEtherToToken, swapTokenToEther } from './swap';
 export {
   TSetDecimalMeta,
   TSetUnitMeta,
@@ -112,7 +110,7 @@ const setUnitMeta = (
       dispatch(setToField(tokenTo));
 
       // if switching to ether, clear token data and value
-      clearTokenFields(dispatch);
+      dispatch(swapTokenToEther());
 
       // and move the token meta value to ether value
       // we sub in the raw value for the real value again incase it a valid balance
@@ -137,7 +135,7 @@ const setUnitMeta = (
       // if we're switching from ether to a token, we also need to swap some of the fields into meta fields
       if (unit === 'ether') {
         //clear ether value
-        clearEther(dispatch);
+        dispatch(swapEtherToToken());
         // move the ether meta value to token
         // we sub in the raw value for the real value again incase it a valid balance
         // for ether -> token as long as it is a valid number
@@ -182,9 +180,9 @@ const setDecimalMeta = (
     // if we have a balance of both
     // we have a conflict between ether or token balance
     if (isEtherUnit(unit)) {
-      clearTokenFields(dispatch);
+      dispatch(swapTokenToEther());
     } else {
-      clearEther(dispatch);
+      dispatch(swapEtherToToken());
     }
   }
 

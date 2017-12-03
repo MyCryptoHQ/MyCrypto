@@ -37,6 +37,11 @@ const reducerObj: ReducersMapObject = {
   [TK.TOKEN_VALUE_META_SET]: updateField('tokenValue'),
   [TK.TOKEN_TO_META_SET]: updateField('tokenTo'),
   [TK.GET_FROM_SUCCEEDED]: updateField('from'),
+  // clear token related fields
+  [TK.TOKEN_TO_ETHER_SWAP]: (state: State): State => {
+    const { tokenValue, tokenTo } = INITIAL_STATE;
+    return { ...state, tokenTo, tokenValue };
+  },
   [TK.RESET]: _ => INITIAL_STATE
 };
 

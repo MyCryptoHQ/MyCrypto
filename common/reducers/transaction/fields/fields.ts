@@ -39,6 +39,15 @@ const reducerObj: ReducersMapObject = {
     ...state,
     gasPrice: { raw: '', value: gasPricetoBase(payload) }
   }),
+  // clear any token-associated fields
+  [TK.TOKEN_TO_ETHER_SWAP]: (state: State): State => ({
+    ...state,
+    data: INITIAL_STATE.data
+  }),
+  [TK.ETHER_TO_TOKEN_SWAP]: (state: State): State => ({
+    ...state,
+    value: INITIAL_STATE.value
+  }),
   [TK.RESET]: _ => INITIAL_STATE
 };
 
