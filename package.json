@@ -134,9 +134,6 @@
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write --single-quote",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["prettier --write", "git add"]
   }
 }
