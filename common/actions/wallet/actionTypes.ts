@@ -1,5 +1,5 @@
 import { Wei, TokenValue } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, WalletConfig } from 'libs/wallet';
 import { TypeKeys } from './constants';
 
 /*** Unlock Private Key ***/
@@ -98,6 +98,11 @@ export interface BroadcastTxFailedAction {
   };
 }
 
+export interface SetWalletConfigAction {
+  type: TypeKeys.WALLET_SET_CONFIG;
+  payload: WalletConfig;
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
@@ -109,4 +114,5 @@ export type WalletAction =
   | SetTokenBalancesAction
   | BroadcastTxRequestedAction
   | BroadcastTxFailedAction
-  | BroadcastTxSuccededAction;
+  | BroadcastTxSuccededAction
+  | SetWalletConfigAction;
