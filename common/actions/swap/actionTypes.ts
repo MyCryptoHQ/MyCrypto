@@ -6,15 +6,26 @@ export interface Pairs {
   BTCREP: number;
 }
 
-// TODO: Update
-export interface InitSwap {
-  type: TypeKeys.SWAP_INIT;
-  payload: any;
+interface SwapOption {
+  id: string;
+  amount: number;
 }
 
+interface ApiResponseObj {
+  id: string;
+  options: string[];
+  rate: number;
+}
+
+export interface InitSwap {
+  type: TypeKeys.SWAP_INIT;
+  payload: { origin: SwapOption; destination: SwapOption };
+}
+
+// TODO: Update types
 export interface LoadBityRatesSucceededSwapAction {
   type: TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED;
-  payload: Pairs;
+  payload: { [name: string]: ApiResponseObj };
 }
 
 export interface DestinationAddressSwapAction {

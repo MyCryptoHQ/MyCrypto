@@ -1,6 +1,5 @@
 import * as actionTypes from 'actions/swap';
 import { TypeKeys } from 'actions/swap/constants';
-export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
 import { normalize } from 'normalizr';
 import * as schema from './schema';
 
@@ -62,19 +61,13 @@ export function swap(
       return {
         ...state,
         bityRates: {
-          byId: {
-            ...state.bityRates.byId,
-            ...normalize(payload, [schema.bityRate]).entities.bityRates
-          },
+          byId: normalize(payload, [schema.bityRate]).entities.bityRates,
           allIds: allIds(
             normalize(payload, [schema.bityRate]).entities.bityRates
           )
         },
         options: {
-          byId: {
-            ...state.options.byId,
-            ...normalize(payload, [schema.bityRate]).entities.options
-          },
+          byId: normalize(payload, [schema.bityRate]).entities.options,
           allIds: allIds(normalize(payload, [schema.bityRate]).entities.options)
         },
         isFetchingRates: false

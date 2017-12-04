@@ -11,9 +11,8 @@ export function changeStepSwap(
   };
 }
 
-// TODO: update types
 export type TInitSwap = typeof initSwap;
-export function initSwap(payload: any): interfaces.InitSwap {
+export function initSwap(payload): interfaces.InitSwap {
   return {
     type: TypeKeys.SWAP_INIT,
     payload
@@ -22,7 +21,7 @@ export function initSwap(payload: any): interfaces.InitSwap {
 
 export type TLoadBityRatesSucceededSwap = typeof loadBityRatesSucceededSwap;
 export function loadBityRatesSucceededSwap(
-  payload: interfaces.Pairs
+  payload
 ): interfaces.LoadBityRatesSucceededSwapAction {
   return {
     type: TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED,

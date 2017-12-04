@@ -1,95 +1,42 @@
-import { swap, INITIAL_STATE, ALL_CRYPTO_KIND_OPTIONS } from 'reducers/swap';
-import {
-  buildDestinationAmount,
-  buildDestinationKind,
-  buildOriginKind
-} from 'reducers/swap/helpers';
+import { swap, INITIAL_STATE } from 'reducers/swap';
 import * as swapActions from 'actions/swap';
-import without from 'lodash/without';
+import { normalize } from 'normalizr';
+import * as schema from 'reducers/swap/schema';
+
+const allIds = byIds => {
+  return Object.keys(byIds);
+};
 
 describe('swap reducer', () => {
-  it('should handle SWAP_ORIGIN_KIND', () => {
-    const newOriginKind = 'ETH';
-    const newDestinationKind = buildDestinationKind(
-      newOriginKind,
-      INITIAL_STATE.destinationKind
-    );
-    const fakeBityRates = {
-      BTCETH: 10,
-      ETHBTC: 0.01
-    };
-    expect(swap(undefined, swapActions.originKindSwap(newOriginKind))).toEqual({
-      ...INITIAL_STATE,
-      originKind: newOriginKind,
-      destinationKind: newDestinationKind,
-      destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, newOriginKind),
-      destinationAmount: buildDestinationAmount(
-        INITIAL_STATE.originAmount,
-        newOriginKind,
-        newDestinationKind,
-        fakeBityRates
-      )
-    });
-  });
-
-  it('should handle SWAP_DESTINATION_KIND', () => {
-    const newDestinationKind = 'REP';
-    const newOriginKind = buildOriginKind(
-      INITIAL_STATE.originKind,
-      newDestinationKind
-    );
-    const fakeBityRates = {
-      BTCETH: 10,
-      ETHBTC: 0.01
-    };
-    expect(
-      swap(undefined, swapActions.destinationKindSwap(newDestinationKind))
-    ).toEqual({
-      ...INITIAL_STATE,
-      destinationKind: newDestinationKind,
-      destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, newOriginKind),
-      destinationAmount: buildDestinationAmount(
-        INITIAL_STATE.originAmount,
-        newOriginKind,
-        newDestinationKind,
-        fakeBityRates
-      )
-    });
-  });
-
-  it('should handle SWAP_ORIGIN_AMOUNT', () => {
-    const originAmount = 2;
-    expect(swap(undefined, swapActions.originAmountSwap(originAmount))).toEqual(
-      {
-        ...INITIAL_STATE,
-        originAmount
-      }
-    );
-  });
-
-  it('should handle SWAP_DESTINATION_AMOUNT', () => {
-    const destinationAmount = 2;
-    expect(
-      swap(undefined, swapActions.destinationAmountSwap(destinationAmount))
-    ).toEqual({
-      ...INITIAL_STATE,
-      destinationAmount
-    });
-  });
-
   it('should handle SWAP_LOAD_BITY_RATES_SUCCEEDED', () => {
-    const bityRates = {
-      BTCETH: 0.01,
-      ETHREP: 10,
-      ETHBTC: 0,
-      BTCREP: 0
+    const input = {
+      BTCETH: {
+        id: 'BTCETH',
+        options: [{ id: 'BTC' }, { id: 'ETH' }],
+        rate: 23.27855114
+      },
+      ETHBTC: {
+        id: 'ETHBTC',
+        options: [{ id: 'ETH' }, { id: 'BTC' }],
+        rate: 0.042958
+      }
+    };
+    const output = {
+      bityRates: {
+        byId: normalize(input, [schema.bityRate]).entities.bityRates,
+        allIds: allIds(normalize(input, [schema.bityRate]).entities.bityRates)
+      },
+      options: {
+        byId: normalize(input, [schema.bityRate]).entities.options,
+        allIds: allIds(normalize(input, [schema.bityRate]).entities.options)
+      }
     };
     expect(
-      swap(undefined, swapActions.loadBityRatesSucceededSwap(bityRates))
+      swap(undefined, swapActions.loadBityRatesSucceededSwap(input))
     ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false,
-      bityRates
+      ...output
     });
   });
 
@@ -121,7 +68,8 @@ describe('swap reducer', () => {
         {
           ...INITIAL_STATE,
           bityRates,
-          originAmount: 1
+          origin: { id: 'BTC', amount: 1 },
+          destination: { id: 'ETH', amount: 3 }
         },
         swapActions.restartSwap()
       )

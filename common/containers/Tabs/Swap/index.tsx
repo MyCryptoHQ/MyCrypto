@@ -37,12 +37,6 @@ import SwapInfoHeader from './components/SwapInfoHeader';
 import TabSection from 'containers/TabSection';
 
 interface ReduxStateProps {
-  originAmount: number | null;
-  destinationAmount: number | null;
-  originKind: string;
-  destinationKind: string;
-  destinationKindOptions: string[];
-  originKindOptions: string[];
   step: number;
   origin: any;
   destination: any;
@@ -75,7 +69,6 @@ interface ReduxActionProps {
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
-    // TODO: Use `isFetchingRates` to show a loader
     this.props.loadBityRatesRequestedSwap();
   }
 
@@ -90,10 +83,6 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       options,
       origin,
       destination,
-      originAmount,
-      destinationAmount,
-      originKind,
-      destinationKind,
       destinationAddress,
       step,
       bityOrder,
@@ -147,8 +136,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     };
 
     const PaymentInfoProps = {
-      originKind,
-      originAmount,
+      origin,
       paymentAddress
     };
 
