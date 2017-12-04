@@ -85,7 +85,7 @@ export class SignMessage extends Component<Props, State> {
     this.setState({ signedMessage });
   };
 
-  private renderSignButton(fullWallet: IFullWallet) {
+  private renderSignButton = (fullWallet: IFullWallet) => {
     return (
       <SignButton
         wallet={fullWallet}
@@ -94,7 +94,7 @@ export class SignMessage extends Component<Props, State> {
         onSignMessage={this.onSignMessage}
       />
     );
-  }
+  };
 
   private renderUnlock() {
     return <WalletDecrypt />;

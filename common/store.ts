@@ -56,13 +56,9 @@ const configureStore = () => {
         }
       : { ...swapInitialState };
 
-  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>(
-    'customTokens'
-  );
+  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens');
 
-  const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>(
-    'config'
-  );
+  const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
 
   // If they have a saved node, make sure we assign that too. The node selected
   // isn't serializable, so we have to assign it here.
@@ -92,8 +88,7 @@ const configureStore = () => {
   // if 'web3' has persisted as node selection, reset to app default
   // necessary because web3 is only initialized as a node upon MetaMask / Mist unlock
   if (persistedInitialState.config.nodeSelection === 'web3') {
-    persistedInitialState.config.nodeSelection =
-      configInitialState.nodeSelection;
+    persistedInitialState.config.nodeSelection = configInitialState.nodeSelection;
   }
 
   store = createStore(RootReducer, persistedInitialState, middleware);
@@ -111,7 +106,8 @@ const configureStore = () => {
           gasPriceGwei: state.config.gasPriceGwei,
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
-          customNodes: state.config.customNodes
+          customNodes: state.config.customNodes,
+          customNetworks: state.config.customNetworks
         },
         swap: { ...state.swap, bityRates: {} },
         customTokens: state.customTokens

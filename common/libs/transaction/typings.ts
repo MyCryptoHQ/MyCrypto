@@ -24,3 +24,13 @@ export interface IHexStrTransaction {
   nonce: string;
   chainId: number;
 }
+
+export interface IHexStrWeb3Transaction {
+  to: string;
+  value: string;
+  data: string;
+  gas: string;
+  gasPrice: string;
+  nonce: string;
+  chainId: number;
+}

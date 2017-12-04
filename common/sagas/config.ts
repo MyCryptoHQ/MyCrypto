@@ -16,10 +16,12 @@ import {
   getCustomNodeConfigFromId,
   makeNodeConfigFromCustomConfig
 } from 'utils/node';
+import { makeCustomNetworkId } from 'utils/network';
 import {
   getNode,
   getNodeConfig,
   getCustomNodeConfigs,
+  getCustomNetworkConfigs,
   getOffline,
   getForceOffline
 } from 'selectors/config';
@@ -30,6 +32,7 @@ import {
   changeNode,
   changeNodeIntent,
   setLatestBlock,
+  removeCustomNetwork,
   AddCustomNodeAction,
   ChangeNodeIntentAction
 } from 'actions/config';
@@ -38,10 +41,7 @@ import translate from 'translations';
 import { Web3Wallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
-import {
-  State as ConfigState,
-  INITIAL_STATE as configInitialState
-} from 'reducers/config';
+import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -71,11 +71,7 @@ export function* pollOfflineStatus(): SagaIterator {
       if (pingSucceeded && isOffline) {
         // If we were able to ping but redux says we're offline, mark online
         yield put(
-          showNotification(
-            'success',
-            'Your connection to the network has been restored!',
-            3000
-          )
+          showNotification('success', 'Your connection to the network has been restored!', 3000)
         );
         yield put(toggleOfflineConfig());
       } else if (!pingSucceeded && !isOffline) {
@@ -122,9 +118,7 @@ export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 250);
 }
 
-export function* handleNodeChangeIntent(
-  action: ChangeNodeIntentAction
-): SagaIterator {
+export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {
   const currentNode = yield select(getNode);
   const currentConfig = yield select(getNodeConfig);
   const currentNetwork = currentConfig.network;
@@ -140,11 +134,7 @@ export function* handleNodeChangeIntent(
 
   if (!actionConfig) {
     yield put(
-      showNotification(
-        'danger',
-        `Attempted to switch to unknown node '${action.payload}'`,
-        5000
-      )
+      showNotification('danger', `Attempted to switch to unknown node '${action.payload}'`, 5000)
     );
     yield put(changeNode(currentNode, currentConfig));
     return;
@@ -188,8 +178,24 @@ export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
   yield put(changeNodeIntent(nodeId));
 }
 
+// If there are any orphaned custom networks, purge them
+export function* cleanCustomNetworks(): SagaIterator {
+  const customNodes = yield select(getCustomNodeConfigs);
+  const customNetworks = yield select(getCustomNetworkConfigs);
+  const networksInUse = customNodes.reduce((prev, conf) => {
+    prev[conf.network] = true;
+    return prev;
+  }, {});
+
+  for (const net of customNetworks) {
+    if (!networksInUse[makeCustomNetworkId(net)]) {
+      yield put(removeCustomNetwork(net));
+    }
+  }
+}
+
 // unset web3 as the selected node if a non-web3 wallet has been selected
-export function* unsetWeb3Node(action): SagaIterator {
+export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
   const node = yield select(getNode);
   const nodeConfig = yield select(getNodeConfig);
   const newWallet = action.payload;
@@ -201,6 +207,19 @@ export function* unsetWeb3Node(action): SagaIterator {
 
   // switch back to a node with the same network as MetaMask/Mist
   yield put(changeNodeIntent(equivalentNodeOrDefault(nodeConfig)));
+}
+
+export function* unsetWeb3Node(): SagaIterator {
+  const node = yield select(getNode);
+
+  if (node !== 'web3') {
+    return;
+  }
+
+  const nodeConfig = yield select(getNodeConfig);
+  const newNode = equivalentNodeOrDefault(nodeConfig);
+
+  yield put(changeNodeIntent(newNode));
 }
 
 export const equivalentNodeOrDefault = nodeConfig => {
@@ -222,14 +241,13 @@ export const equivalentNodeOrDefault = nodeConfig => {
 };
 
 export default function* configSaga(): SagaIterator {
-  yield takeLatest(
-    TypeKeys.CONFIG_POLL_OFFLINE_STATUS,
-    handlePollOfflineStatus
-  );
+  yield takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_FORCE_OFFLINE, handleTogglePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
-  yield takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3Node);
-  yield takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3Node);
+  yield takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, cleanCustomNetworks);
+  yield takeEvery(TypeKeys.CONFIG_NODE_WEB3_UNSET, unsetWeb3Node);
+  yield takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3NodeOnWalletEvent);
+  yield takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3NodeOnWalletEvent);
 }

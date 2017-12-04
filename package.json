@@ -1,6 +1,6 @@
 {
   "name": "MyEtherWallet",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.5",
   "main": "common/index.jsx",
   "description": "MyEtherWallet v4",
   "engines": {
@@ -51,18 +51,19 @@
     "@types/lodash": "4.14.86",
     "@types/qrcode": "0.8.0",
     "@types/qrcode.react": "0.6.2",
+    "@types/react": "16.0.26",
     "@types/query-string": "5.0.1",
-    "@types/react": "16.0.21",
-    "@types/react-dom": "16.0.2",
-    "@types/react-redux": "5.0.12",
-    "@types/react-router": "4.0.16",
-    "@types/react-router-dom": "4.2.0",
-    "@types/react-router-redux": "4.0.51",
+    "@types/react-dom": "16.0.3",
+    "@types/react-redux": "5.0.14",
+    "@types/react-router": "4.0.19",
+    "@types/react-router-dom": "4.2.3",
+    "@types/react-router-redux": "5.0.10",
+    "@types/redux-form": "7.0.9",
     "@types/redux-logger": "3.0.5",
     "@types/redux-promise-middleware": "0.0.9",
     "@types/uuid": "3.4.3",
     "@types/webpack-env": "1.13.2",
-    "awesome-typescript-loader": "3.4.0",
+    "awesome-typescript-loader": "3.4.1",
     "babel-minify-webpack-plugin": "0.2.0",
     "bs58": "4.0.1",
     "cache-loader": "1.2.0",
@@ -99,7 +100,7 @@
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",
     "style-loader": "0.19.0",
-    "ts-jest": "21.2.3",
+    "ts-jest": "21.2.4",
     "tslint": "5.8.0",
     "tslint-config-prettier": "1.6.0",
     "tslint-react": "3.2.0",
@@ -135,9 +136,6 @@
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write --single-quote",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["prettier --write", "git add"]
   }
 }

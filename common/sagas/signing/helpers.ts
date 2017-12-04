@@ -29,14 +29,8 @@ interface IFullWalletAndTransaction {
   tx: Tx;
 }
 
-const signTransactionWrapper = (
-  func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator
-) =>
-  function*(
-    partialTx:
-      | SignLocalTransactionRequestedAction
-      | SignWeb3TransactionRequestedAction
-  ) {
+const signTransactionWrapper = (func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator) =>
+  function*(partialTx: SignLocalTransactionRequestedAction | SignWeb3TransactionRequestedAction) {
     try {
       const IWalletAndTx: IFullWalletAndTransaction = yield call(
         getWalletAndTransaction,
@@ -55,11 +49,7 @@ function* getGasPrice() {
   // should verify chainId and gas price here
 
   const gweiDecimal: number = yield call(getDecimal, 'gwei');
-  const gasPriceWei: Wei = yield call(
-    toWei,
-    gasPriceInGwei.toString(),
-    gweiDecimal
-  );
+  const gasPriceWei: Wei = yield call(toWei, gasPriceInGwei.toString(), gweiDecimal);
 
   const gasPriceBuffer: Buffer = yield call(toBuffer, gasPriceWei);
   return gasPriceBuffer;
@@ -71,12 +61,10 @@ function* getGasPrice() {
  * @param partialTx
  */
 function* getWalletAndTransaction(
-  partialTx: (
-    | SignLocalTransactionRequestedAction
-    | SignWeb3TransactionRequestedAction)['payload']
+  partialTx: (SignLocalTransactionRequestedAction | SignWeb3TransactionRequestedAction)['payload']
 ) {
   // get the wallet we're going to sign with
-  const wallet: null | IWallet = yield select(getWalletInst);
+  const wallet: null | IFullWallet = yield select(getWalletInst);
   if (!wallet) {
     throw Error('Could not get wallet instance to sign transaction');
   }

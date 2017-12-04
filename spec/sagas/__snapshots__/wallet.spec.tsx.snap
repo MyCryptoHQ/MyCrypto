@@ -194,15 +194,6 @@ Object {
       "payload": Web3Wallet {
         "address": "0xe2EdC95134bbD88443bc6D55b809F7d0C2f0C854",
         "network": "ETH",
-        "web3": Object {
-          "eth": Object {
-            "getAccounts": [Function],
-          },
-          "network": "1",
-          "version": Object {
-            "getNetwork": [Function],
-          },
-        },
       },
       "type": "WALLET_SET",
     },

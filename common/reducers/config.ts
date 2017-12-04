@@ -4,23 +4,35 @@ import {
   ChangeNodeAction,
   AddCustomNodeAction,
   RemoveCustomNodeAction,
+  AddCustomNetworkAction,
+  RemoveCustomNetworkAction,
   SetLatestBlockAction,
   ConfigAction
 } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
-import { NODES, NodeConfig, CustomNodeConfig } from '../config/data';
+import {
+  NODES,
+  NETWORKS,
+  NodeConfig,
+  CustomNodeConfig,
+  NetworkConfig,
+  CustomNetworkConfig
+} from '../config/data';
 import { makeCustomNodeId } from 'utils/node';
+import { makeCustomNetworkId } from 'utils/network';
 
 export interface State {
   // FIXME
   languageSelection: string;
   nodeSelection: string;
   node: NodeConfig;
+  network: NetworkConfig;
   isChangingNode: boolean;
   gasPriceGwei: number;
   offline: boolean;
   forceOffline: boolean;
   customNodes: CustomNodeConfig[];
+  customNetworks: CustomNetworkConfig[];
   latestBlock: string;
 }
 
@@ -29,11 +41,13 @@ export const INITIAL_STATE: State = {
   languageSelection: 'en',
   nodeSelection: defaultNode,
   node: NODES[defaultNode],
+  network: NETWORKS[NODES[defaultNode].network],
   isChangingNode: false,
   gasPriceGwei: 21,
   offline: false,
   forceOffline: false,
   customNodes: [],
+  customNetworks: [],
   latestBlock: '???'
 };
 
@@ -82,9 +96,13 @@ function forceOffline(state: State): State {
 }
 
 function addCustomNode(state: State, action: AddCustomNodeAction): State {
+  const newId = makeCustomNodeId(action.payload);
   return {
     ...state,
-    customNodes: [...state.customNodes, action.payload]
+    customNodes: [
+      ...state.customNodes.filter(node => makeCustomNodeId(node) !== newId),
+      action.payload
+    ]
   };
 }
 
@@ -93,8 +111,25 @@ function removeCustomNode(state: State, action: RemoveCustomNodeAction): State {
   return {
     ...state,
     customNodes: state.customNodes.filter(cn => cn !== action.payload),
-    nodeSelection:
-      id === state.nodeSelection ? defaultNode : state.nodeSelection
+    nodeSelection: id === state.nodeSelection ? defaultNode : state.nodeSelection
+  };
+}
+
+function addCustomNetwork(state: State, action: AddCustomNetworkAction): State {
+  const newId = makeCustomNetworkId(action.payload);
+  return {
+    ...state,
+    customNetworks: [
+      ...state.customNetworks.filter(node => makeCustomNetworkId(node) !== newId),
+      action.payload
+    ]
+  };
+}
+
+function removeCustomNetwork(state: State, action: RemoveCustomNetworkAction): State {
+  return {
+    ...state,
+    customNetworks: state.customNetworks.filter(cn => cn !== action.payload)
   };
 }
 
@@ -105,10 +140,7 @@ function setLatestBlock(state: State, action: SetLatestBlockAction): State {
   };
 }
 
-export function config(
-  state: State = INITIAL_STATE,
-  action: ConfigAction
-): State {
+export function config(state: State = INITIAL_STATE, action: ConfigAction): State {
   switch (action.type) {
     case TypeKeys.CONFIG_LANGUAGE_CHANGE:
       return changeLanguage(state, action);
@@ -126,6 +158,10 @@ export function config(
       return addCustomNode(state, action);
     case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:
       return removeCustomNode(state, action);
+    case TypeKeys.CONFIG_ADD_CUSTOM_NETWORK:
+      return addCustomNetwork(state, action);
+    case TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK:
+      return removeCustomNetwork(state, action);
     case TypeKeys.CONFIG_SET_LATEST_BLOCK:
       return setLatestBlock(state, action);
     default:

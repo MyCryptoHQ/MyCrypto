@@ -7,6 +7,7 @@ import translate from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from './Template';
+import { N_FACTOR } from 'config/data';
 
 interface Props {
   wallet: IFullWallet;
@@ -47,7 +48,7 @@ export default class DownloadWallet extends Component<Props, State> {
           role="button"
           className="DlWallet-download btn btn-primary btn-lg"
           aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-          aria-describedby="x_KeystoreDesc"
+          aria-describedby={translate('x_KeystoreDesc')}
           download={filename}
           href={this.getBlob()}
           onClick={this.handleDownloadKeystore}
@@ -57,16 +58,15 @@ export default class DownloadWallet extends Component<Props, State> {
 
         <div className="DlWallet-warning">
           <p>
-            <strong>Do not lose it!</strong> It cannot be recovered if you lose
-            it.
+            <strong>Do not lose it!</strong> It cannot be recovered if you lose it.
           </p>
           <p>
-            <strong>Do not share it!</strong> Your funds will be stolen if you
-            use this file on a malicious/phishing site.
+            <strong>Do not share it!</strong> Your funds will be stolen if you use this file on a
+            malicious/phishing site.
           </p>
           <p>
-            <strong>Make a backup!</strong> Secure it like the millions of
-            dollars it may one day be worth.
+            <strong>Make a backup!</strong> Secure it like the millions of dollars it may one day be
+            worth.
           </p>
         </div>
 
@@ -87,11 +87,7 @@ export default class DownloadWallet extends Component<Props, State> {
         <ul>
           <li>{translate('GEN_Help_9')}</li>
           <li> {translate('GEN_Help_10')}</li>
-          <input
-            value={filename}
-            className="form-control input-sm"
-            disabled={true}
-          />
+          <input value={filename} className="form-control input-sm" disabled={true} />
         </ul>
 
         <h4>{translate('GEN_Help_11')}</h4>
@@ -119,18 +115,15 @@ export default class DownloadWallet extends Component<Props, State> {
   }
 
   public getBlob = () =>
-    (this.state.keystore &&
-      makeBlob('text/json;charset=UTF-8', this.state.keystore)) ||
-    undefined;
+    (this.state.keystore && makeBlob('text/json;charset=UTF-8', this.state.keystore)) || undefined;
 
   private markDownloaded = () =>
     this.state.keystore && this.setState({ hasDownloadedWallet: true });
 
-  private handleContinue = () =>
-    this.state.hasDownloadedWallet && this.props.continueToPaper();
+  private handleContinue = () => this.state.hasDownloadedWallet && this.props.continueToPaper();
 
   private setWallet(wallet: IFullWallet, password: string) {
-    const keystore = wallet.toV3(password, { n: 1024 });
+    const keystore = wallet.toV3(password, { n: N_FACTOR });
     keystore.address = toChecksumAddress(keystore.address);
     this.setState({ keystore });
   }

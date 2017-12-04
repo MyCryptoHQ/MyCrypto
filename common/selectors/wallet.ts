@@ -3,13 +3,7 @@ import { Token } from 'config/data';
 
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import {
-  IWallet,
-  Balance,
-  Web3Wallet,
-  LedgerWallet,
-  TrezorWallet
-} from 'libs/wallet';
+import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet } from 'libs/wallet';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
@@ -28,7 +22,8 @@ export type MergedToken = Token & {
 };
 
 export function getTokens(state: AppState): MergedToken[] {
-  const tokens: Token[] = getNetworkConfig(state).tokens;
+  const network = getNetworkConfig(state);
+  const tokens: Token[] = network ? network.tokens : [];
   return tokens.concat(
     state.customTokens.map((token: Token) => {
       const mergedToken = { ...token, custom: true };
@@ -47,9 +42,7 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     balance: state.wallet.tokens[t.symbol]
       ? state.wallet.tokens[t.symbol].balance
       : TokenValue('0'),
-    error: state.wallet.tokens[t.symbol]
-      ? state.wallet.tokens[t.symbol].error
-      : null,
+    error: state.wallet.tokens[t.symbol] ? state.wallet.tokens[t.symbol].error : null,
     custom: t.custom,
     decimal: t.decimal
   }));

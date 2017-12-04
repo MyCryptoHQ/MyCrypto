@@ -4,16 +4,14 @@ import translate from 'translations';
 import { Offline } from 'components/renderCbs';
 
 export const OfflineAwareUnlockHeader: React.SFC<{}> = () => (
-  <UnlockHeader title={title} />
+  <UnlockHeader title={title} allowReadOnly={true} />
 );
 
 const title = (
   <div>
     {translate('NAV_SendEther')}
     <Offline
-      withOffline={({ forceOffline, offline }) =>
-        offline || forceOffline ? offlineTitle : null
-      }
+      withOffline={({ forceOffline, offline }) => (offline || forceOffline ? offlineTitle : null)}
     />
   </div>
 );

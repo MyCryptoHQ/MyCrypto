@@ -10,10 +10,10 @@ import {
   broadcastTx as broadcastTxActionGen
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
-import { changeNodeIntent } from 'actions/config';
+import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
-import { initWeb3Node, Token } from 'config/data';
-import { apply, call, cps, fork, put, select } from 'redux-saga/effects';
+import { initWeb3Node, Token, N_FACTOR } from 'config/data';
+import { apply, call, fork, put, select, take } from 'redux-saga/effects';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import {
@@ -27,6 +27,11 @@ import {
   broadcastTx
 } from 'sagas/wallet';
 import { PrivKeyWallet } from 'libs/wallet/non-deterministic';
+import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
+import Web3Node from 'libs/nodes/web3';
+import { cloneableGenerator } from 'redux-saga/utils';
+import { showNotification } from 'actions/notifications';
+import translate from 'translations';
 
 // init module
 configuredStore.getState();
@@ -55,8 +60,7 @@ const utcKeystore = {
   id: 'cb788af4-993d-43ad-851b-0d2031e52c61',
   address: '25a24679f35e447f778cf54a3823facf39904a63',
   Crypto: {
-    ciphertext:
-      '4193915c560835d00b2b9ff5dd20f3e13793b2a3ca8a97df649286063f27f707',
+    ciphertext: '4193915c560835d00b2b9ff5dd20f3e13793b2a3ca8a97df649286063f27f707',
     cipherparams: {
       iv: 'dccb8c009b11d1c6226ba19b557dce4c'
     },
@@ -65,7 +69,7 @@ const utcKeystore = {
     kdfparams: {
       dklen: 32,
       salt: '037a53e520f2d00fb70f02f39b31b77374de9e0e1d35fd7cbe9c8a8b21d6b0ab',
-      n: 1024,
+      n: N_FACTOR,
       r: 8,
       p: 1
     },
@@ -74,7 +78,6 @@ const utcKeystore = {
 };
 
 // necessary so we can later inject a mocked web3 to the window
-declare var window: any;
 
 describe('updateAccountBalance*', () => {
   const gen1 = updateAccountBalance();
@@ -100,21 +103,15 @@ describe('updateAccountBalance*', () => {
   });
 
   it('should apply wallet.getAddressString', () => {
-    expect(gen1.next(node).value).toEqual(
-      apply(wallet, wallet.getAddressString)
-    );
+    expect(gen1.next(node).value).toEqual(apply(wallet, wallet.getAddressString));
   });
 
   it('should apply node.getBalance', () => {
-    expect(gen1.next(address).value).toEqual(
-      apply(node, node.getBalance, [address])
-    );
+    expect(gen1.next(address).value).toEqual(apply(node, node.getBalance, [address]));
   });
 
   it('should put setBalanceFulfilled', () => {
-    expect(gen1.next(balance).value).toEqual(
-      put(setBalanceFullfilled(balance))
-    );
+    expect(gen1.next(balance).value).toEqual(put(setBalanceFullfilled(balance)));
   });
 
   it('should be done', () => {
@@ -154,15 +151,11 @@ describe('updateTokenBalances*', () => {
   });
 
   it('should apply wallet.getAddressString', () => {
-    expect(gen1.next(tokens).value).toEqual(
-      apply(wallet, wallet.getAddressString)
-    );
+    expect(gen1.next(tokens).value).toEqual(apply(wallet, wallet.getAddressString));
   });
 
   it('should apply node.getTokenBalances', () => {
-    expect(gen1.next(address).value).toEqual(
-      apply(node, node.getTokenBalances, [address, tokens])
-    );
+    expect(gen1.next(address).value).toEqual(apply(node, node.getTokenBalances, [address, tokens]));
   });
 
   it('should match put setTokenBalances snapshot', () => {
@@ -225,8 +218,7 @@ describe('unlockKeystore*', () => {
 
 describe('unlockMnemonic*', () => {
   const action = unlockMnemonicActionGen({
-    phrase:
-      'first catalog away faculty jelly now life kingdom pigeon raise gain accident',
+    phrase: 'first catalog away faculty jelly now life kingdom pigeon raise gain accident',
     pass: '',
     path: "m/44'/60'/0'/0/8",
     address: '0xe2EdC95134bbD88443bc6D55b809F7d0C2f0C854'
@@ -243,42 +235,87 @@ describe('unlockMnemonic*', () => {
 });
 
 describe('unlockWeb3*', () => {
-  const gen = unlockWeb3();
+  const G = global as any;
+  const data = {} as any;
+  data.gen = cloneableGenerator(unlockWeb3)();
   const accounts = [address];
+  const { random } = Math;
+  let nodeLib;
 
-  window.web3 = {
-    eth: {
-      getAccounts: jest.fn(cb => cb(undefined, accounts))
-    },
-    version: {
-      getNetwork: jest.fn(cb => cb(undefined, '1'))
-    },
-    network: '1'
-  };
+  function sendAsync(options, cb) {
+    const resp = {
+      id: 'id'
+    };
+    switch (options.method) {
+      case 'net_version':
+        return cb(null, { ...resp, result: '1' });
+      case 'eth_accounts':
+        return cb(null, { ...resp, result: JSON.stringify(accounts) });
+    }
+  }
 
   beforeAll(async done => {
+    G.web3 = {
+      currentProvider: {
+        sendAsync
+      }
+    };
+    nodeLib = new Web3Node();
+    Math.random = () => 0.001;
     await initWeb3Node();
     done();
   });
 
   afterAll(() => {
-    delete window.web3;
+    Math.random = random;
+    delete G.web3;
   });
 
   it('should call initWeb3Node', () => {
-    expect(gen.next().value).toEqual(call(initWeb3Node));
-  });
-
-  it('should cps web3.eth.getAccounts', () => {
-    expect(gen.next().value).toEqual(cps(window.web3.eth.getAccounts));
+    expect(data.gen.next().value).toEqual(call(initWeb3Node));
   });
 
   it('should put changeNodeIntent', () => {
-    expect(gen.next(accounts).value).toEqual(put(changeNodeIntent('web3')));
+    expect(data.gen.next(accounts).value).toEqual(put(changeNodeIntent('web3')));
+  });
+
+  it('should yield take on node change', () => {
+    const expected = take(
+      action =>
+        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
+    );
+    const result = data.gen.next().value;
+    expect(JSON.stringify(expected)).toEqual(JSON.stringify(result));
+  });
+
+  it('should select getNodeLib', () => {
+    expect(data.gen.next().value).toEqual(select(getNodeLib));
+  });
+
+  it('should throw & catch if node is not web3 node', () => {
+    data.clone = data.gen.clone();
+    expect(data.clone.next().value).toEqual(put(web3UnsetNode()));
+    expect(data.clone.next().value).toEqual(
+      put(showNotification('danger', translate('Cannot use Web3 wallet without a Web3 node.')))
+    );
+    expect(data.clone.next().done).toEqual(true);
+  });
+
+  it('should apply nodeLib.getAccounts', () => {
+    expect(data.gen.next(nodeLib).value).toEqual(apply(nodeLib, nodeLib.getAccounts));
+  });
+
+  it('should throw & catch if no accounts found', () => {
+    data.clone1 = data.gen.clone();
+    expect(data.clone1.next([]).value).toEqual(put(web3UnsetNode()));
+    expect(data.clone1.next().value).toEqual(
+      put(showNotification('danger', translate('No accounts found in MetaMask / Mist.')))
+    );
+    expect(data.clone1.next().done).toEqual(true);
   });
 
   it('should match setWallet snapshot', () => {
-    expect(gen.next().value).toMatchSnapshot();
+    expect(data.gen.next(accounts).value).toMatchSnapshot();
   });
 });
 
@@ -310,9 +347,7 @@ describe('broadcastTx*', () => {
   });
 
   it('should apply node.sendRawTx', () => {
-    expect(gen.next(networkConfig).value).toEqual(
-      apply(node, node.sendRawTx, [signedTx])
-    );
+    expect(gen.next(networkConfig).value).toEqual(apply(node, node.sendRawTx, [signedTx]));
   });
 
   it('should match put showNotifiction snapshot', () => {
@@ -320,8 +355,6 @@ describe('broadcastTx*', () => {
   });
 
   it('should put broadcastTxSucceded', () => {
-    expect(gen.next().value).toEqual(
-      put(broadcastTxSucceded(txHash, signedTx))
-    );
+    expect(gen.next().value).toEqual(put(broadcastTxSucceded(txHash, signedTx)));
   });
 });

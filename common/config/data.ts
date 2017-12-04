@@ -2,7 +2,8 @@ import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.4)';
+export const VERSION = '4.0.0 (Alpha 0.0.5)';
+export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
@@ -19,14 +20,10 @@ const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
 const ethPlorer = 'https://ethplorer.io';
 
-export const ETHTxExplorer = (txHash: string): string =>
-  `${etherScan}/tx/${txHash}`;
-export const BTCTxExplorer = (txHash: string): string =>
-  `${blockChainInfo}/tx/${txHash}`;
-export const ETHAddressExplorer = (address: string): string =>
-  `${etherScan}/address/${address}`;
-export const ETHTokenExplorer = (address: string): string =>
-  `${ethPlorer}/address/${address}`;
+export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHash}`;
+export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
+export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
+export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
 
 export const donationAddressMap = {
   BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
@@ -40,8 +37,7 @@ export const gasPriceDefaults = {
 };
 
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
-export const ledgerReferralURL =
-  'https://www.ledgerwallet.com/r/fa4b?path=/products/';
+export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
 export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
@@ -76,6 +72,12 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
+}
+
+export interface CustomNetworkConfig {
+  name: string;
+  unit: string;
+  chainId: number;
 }
 
 export interface NodeConfig {
@@ -261,43 +263,32 @@ export const NODES: { [key: string]: NodeConfig } = {
   }
 };
 
-export function initWeb3Node(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const { web3 } = window as any;
+export async function initWeb3Node(): Promise<void> {
+  const { web3 } = window as any;
 
-    if (!web3) {
-      return reject(
-        new Error(
-          'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
-        )
-      );
-    }
+  if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
+    throw new Error(
+      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
+    );
+  }
 
-    if (web3.version.network === 'loading') {
-      return reject(
-        new Error(
-          'MetaMask / Mist is still loading. Please refresh the page and try again.'
-        )
-      );
-    }
+  const lib = new Web3Node();
+  const networkId = await lib.getNetVersion();
+  const accounts = await lib.getAccounts();
 
-    web3.version.getNetwork((err, networkId) => {
-      if (err) {
-        return reject(err);
-      }
+  if (!accounts.length) {
+    throw new Error('No accounts found in MetaMask / Mist.');
+  }
 
-      try {
-        NODES.web3 = {
-          network: networkIdToName(networkId),
-          service: 'MetaMask / Mist',
-          lib: new Web3Node(web3),
-          estimateGas: false,
-          hidden: true
-        };
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
-  });
+  if (networkId === 'loading') {
+    throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
+  }
+
+  NODES.web3 = {
+    network: networkIdToName(networkId),
+    service: 'MetaMask / Mist',
+    lib,
+    estimateGas: false,
+    hidden: true
+  };
 }

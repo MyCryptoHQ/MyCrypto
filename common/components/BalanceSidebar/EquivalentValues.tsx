@@ -41,10 +41,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
 
   public componentWillReceiveProps(nextProps) {
     const { balance, tokenBalances } = this.props;
-    if (
-      nextProps.balance !== balance ||
-      nextProps.tokenBalances !== tokenBalances
-    ) {
+    if (nextProps.balance !== balance || nextProps.tokenBalances !== tokenBalances) {
       this.makeBalanceLookup(nextProps);
       this.fetchRates(nextProps);
     }
@@ -57,10 +54,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     // There are a bunch of reasons why the incorrect balances might be rendered
     // while we have incomplete data that's being fetched.
     const isFetching =
-      !balance ||
-      balance.isPending ||
-      !tokenBalances ||
-      Object.keys(rates).length === 0;
+      !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
 
     let valuesEl;
     if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
@@ -72,15 +66,9 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
 
         return (
           <li className="EquivalentValues-values-currency" key={key}>
-            <span className="EquivalentValues-values-currency-label">
-              {key}:
-            </span>{' '}
+            <span className="EquivalentValues-values-currency-label">{key}:</span>{' '}
             <span className="EquivalentValues-values-currency-value">
-              <UnitDisplay
-                unit={'ether'}
-                value={values[key]}
-                displayShortBalance={3}
-              />
+              <UnitDisplay unit={'ether'} value={values[key]} displayShortBalance={3} />
             </span>
           </li>
         );
@@ -110,7 +98,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
             <option value="ETH">ETH</option>
             {tokenBalances &&
               tokenBalances.map(tk => {
-                if (!tk.balance || tk.balance.isZero()) {
+                if (!tk.balance || tk.balance.isZero() || !rates[tk.symbol]) {
                   return;
                 }
                 const sym = tk.symbol;
@@ -178,9 +166,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       return ['ETH'].concat(this.requestedCurrencies).reduce(
         (prev, curr) => {
           const currValues = this.getEquivalentValues(curr);
-          rateSymbols.forEach(
-            sym => (prev[sym] = prev[sym].add(currValues[sym] || new BN(0)))
-          );
+          rateSymbols.forEach(sym => (prev[sym] = prev[sym].add(currValues[sym] || new BN(0))));
           return prev;
         },
         rateSymbols.reduce((prev, sym) => {
