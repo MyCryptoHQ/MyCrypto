@@ -13,7 +13,8 @@ import {
   UnlockPrivateKeyAction
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
-import { changeNodeIntent } from 'actions/config';
+import { changeNodeIntent, web3UnsetNode } from 'actions/config';
+import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { INode } from 'libs/nodes/INode';
 import {
@@ -29,15 +30,16 @@ import { SagaIterator } from 'redux-saga';
 import {
   apply,
   call,
-  cps,
   fork,
   put,
   select,
-  takeEvery
+  takeEvery,
+  take
 } from 'redux-saga/effects';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
+import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 
 export function* updateAccountBalance(): SagaIterator {
   try {
@@ -140,32 +142,32 @@ export function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
 // inspired by v3:
 // https://github.com/kvhnuke/etherwallet/blob/417115b0ab4dd2033d9108a1a5c00652d38db68d/app/scripts/controllers/decryptWalletCtrl.js#L311
 export function* unlockWeb3(): SagaIterator {
-  const failMsg1 = 'Could not connect to MetaMask / Mist.';
-  const failMsg2 = 'No accounts found in MetaMask / Mist.';
-  const { web3 } = window as any;
-
-  if (!web3 || !web3.eth) {
-    yield put(showNotification('danger', translate(failMsg1)));
-    return;
-  }
-
   try {
     yield call(initWeb3Node);
+    yield put(changeNodeIntent('web3'));
+    yield take(
+      action =>
+        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE &&
+        action.payload.nodeSelection === 'web3'
+    );
 
     const network = NODES.web3.network;
-    const accounts = yield cps(web3.eth.getAccounts);
+    const nodeLib: INode | Web3Node = yield select(getNodeLib);
 
-    if (!accounts.length) {
-      yield put(showNotification('danger', translate(failMsg2)));
-      return;
+    if (!isWeb3Node(nodeLib)) {
+      throw new Error('Cannot use Web3 wallet without a Web3 node.');
     }
 
+    const accounts = yield apply(nodeLib, nodeLib.getAccounts);
     const address = accounts[0];
 
-    yield put(changeNodeIntent('web3'));
-    yield put(setWallet(new Web3Wallet(web3, address, network)));
+    if (!address) {
+      throw new Error('No accounts found in MetaMask / Mist.');
+    }
+    yield put(setWallet(new Web3Wallet(address, network)));
   } catch (err) {
-    console.error(err);
+    // unset web3 node so node dropdown isn't disabled
+    yield put(web3UnsetNode());
     yield put(showNotification('danger', translate(err.message)));
   }
 }

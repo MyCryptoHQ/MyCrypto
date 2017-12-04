@@ -3,6 +3,19 @@
 @import "common/sass/mixins";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/alerts";
 
+.alert {
+  margin-bottom: 1rem;
+
+  a {
+    color: #FFF;
+
+    &:hover {
+      color: #FFF;
+      opacity: 0.8;
+    }
+  }
+}
+
 // Alert icons
 .alert:after {
   content: '';
@@ -22,15 +35,6 @@
   }
   @media screen and (max-width: $screen-xs) {
     left: 1%;
-  }
-
-  a {
-    color: #FFF;
-
-    &:hover {
-      color: #FFF;
-      opacity: 0.8;
-    }
   }
 }
 
