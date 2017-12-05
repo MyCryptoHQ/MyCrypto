@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import './InteractForm.scss';
 import { NetworkContract } from 'config/data';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
@@ -65,26 +64,22 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
     // TODO: Use common components for address, abi json
     return (
       <div className="InteractForm">
-        <div className="InteractForm-address">
-          <label className="InteractForm-address-field form-group">
+        <div className="InteractForm-address row">
+          <label className="InteractForm-address-field form-group col-sm-6">
             <h4>{translate('CONTRACT_Title')}</h4>
             <input
               placeholder="mewtopia.eth or 0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
               name="contract_address"
               autoComplete="off"
               value={address}
-              className={classnames(
-                'InteractForm-address-field-input',
-                'form-control',
-                {
-                  'is-invalid': !validEthAddress
-                }
-              )}
+              className={classnames('InteractForm-address-field-input', 'form-control', {
+                'is-invalid': !validEthAddress
+              })}
               onChange={this.handleInput('address')}
             />
           </label>
 
-          <label className="InteractForm-address-contract form-group">
+          <label className="InteractForm-address-contract form-group col-sm-6">
             <h4>{translate('CONTRACT_Title_2')}</h4>
             <select
               className="InteractForm-address-field-input form-control"
@@ -102,19 +97,13 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
 
         <div className="InteractForm-interface">
           <label className="InteractForm-interface-field form-group">
-            <h4 className="InteractForm-interface-field-label">
-              {translate('CONTRACT_Json')}
-            </h4>
+            <h4 className="InteractForm-interface-field-label">{translate('CONTRACT_Json')}</h4>
             <textarea
               placeholder={this.abiJsonPlaceholder}
               name="abiJson"
-              className={classnames(
-                'InteractForm-interface-field-input',
-                'form-control',
-                {
-                  'is-invalid': !validAbiJson
-                }
-              )}
+              className={classnames('InteractForm-interface-field-input', 'form-control', {
+                'is-invalid': !validAbiJson
+              })}
               onChange={this.handleInput('abiJson')}
               value={abiJson}
               rows={6}
