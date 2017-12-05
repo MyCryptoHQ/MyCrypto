@@ -9,33 +9,6 @@ import { INITIAL_STATE } from 'reducers/swap';
 Enzyme.configure({ adapter: new Adapter() });
 
 it('render snapshot', () => {
-  // const testState = {
-  //   swap: {
-  //     step: 1,
-  //     origin: null,
-  //     destination: null,
-  //     options: {
-  //       byId: {},
-  //       allIds: []
-  //     },
-  //     bityRates: {
-  //       byId: {},
-  //       allIds: []
-  //     },
-  //     destinationAddress: '',
-  //     bityOrder: {},
-  //     isFetchingRates: null,
-  //     secondsRemaining: null,
-  //     outputTx: null,
-  //     isPostingOrder: false,
-  //     orderStatus: null,
-  //     orderTimestampCreatedISOString: null,
-  //     paymentAddress: null,
-  //     validFor: null,
-  //     orderId: null
-  //   }
-  // };
-  // const store = createMockStore(testState);
   const store = createMockStore({ swap: INITIAL_STATE });
   const component = shallowWithStore(<Swap />, store);
 
