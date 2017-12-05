@@ -6,8 +6,8 @@ import { TypeKeys as ConfigTK } from 'actions/config/constants';
 import { toWei, getDecimal } from 'libs/units';
 import { ChangeGasPriceAction } from 'actions/config';
 
-const gasPricetoBase = (price: number) =>
-  toWei(price.toString(), getDecimal('gwei'));
+export const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimal('gwei'));
+
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
   data: { raw: '', value: null },
@@ -17,10 +17,7 @@ const INITIAL_STATE: State = {
   gasPrice: { raw: '', value: gasPricetoBase(21) }
 };
 
-const updateField = (key: keyof State): Reducer<State> => (
-  state: State,
-  action: FieldAction
-) => ({
+const updateField = (key: keyof State): Reducer<State> => (state: State, action: FieldAction) => ({
   ...state,
   [key]: { ...state[key], ...action.payload }
 });
@@ -32,10 +29,7 @@ const reducerObj: ReducersMapObject = {
   [TK.GAS_LIMIT_FIELD_SET]: updateField('gasLimit'),
   [TK.NONCE_FIELD_SET]: updateField('nonce'),
   // this is kind of shoehorned in here, would need to re-work config reducer
-  [ConfigTK.CONFIG_GAS_PRICE]: (
-    state: State,
-    { payload }: ChangeGasPriceAction
-  ): State => ({
+  [ConfigTK.CONFIG_GAS_PRICE]: (state: State, { payload }: ChangeGasPriceAction): State => ({
     ...state,
     gasPrice: { raw: '', value: gasPricetoBase(payload) }
   }),

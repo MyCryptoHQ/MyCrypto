@@ -145,7 +145,8 @@ export function* unlockWeb3(): SagaIterator {
     if (!address) {
       throw new Error('No accounts found in MetaMask / Mist.');
     }
-    yield put(setWallet(new Web3Wallet(address, network)));
+    const wallet = new Web3Wallet(address, network);
+    yield put(setWallet(wallet));
   } catch (err) {
     // unset web3 node so node dropdown isn't disabled
     yield put(web3UnsetNode());

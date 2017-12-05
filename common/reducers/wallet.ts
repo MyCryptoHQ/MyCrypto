@@ -1,10 +1,5 @@
 import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
-import {
-  SetTokenBalancesAction,
-  SetWalletAction,
-  WalletAction,
-  TypeKeys
-} from 'actions/wallet';
+import { SetTokenBalancesAction, SetWalletAction, WalletAction, TypeKeys } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
 import { IWallet, Balance } from 'libs/wallet';
 
@@ -39,10 +34,7 @@ function setBalancePending(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: true } };
 }
 
-function setBalanceFullfilled(
-  state: State,
-  action: SetBalanceFullfilledAction
-): State {
+function setBalanceFullfilled(state: State, action: SetBalanceFullfilledAction): State {
   return {
     ...state,
     balance: { wei: action.payload, isPending: false }
@@ -57,10 +49,7 @@ function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
   return { ...state, tokens: { ...state.tokens, ...action.payload } };
 }
 
-export function wallet(
-  state: State = INITIAL_STATE,
-  action: WalletAction
-): State {
+export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
     case TypeKeys.WALLET_SET:
       return setWallet(state, action);
