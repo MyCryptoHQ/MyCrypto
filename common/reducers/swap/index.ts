@@ -5,10 +5,10 @@ import * as schema from './schema';
 
 export interface State {
   step: number;
-  origin: any;
-  destination: any;
-  options: any;
-  bityRates: any;
+  origin: actionTypes.SwapInput | null;
+  destination: actionTypes.SwapInput | null;
+  options: actionTypes.NormalizedOptions;
+  bityRates: actionTypes.NormalizedBityRates;
   bityOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
@@ -51,10 +51,7 @@ const allIds = byIds => {
   return Object.keys(byIds);
 };
 
-export function swap(
-  state: State = INITIAL_STATE,
-  action: actionTypes.SwapAction
-) {
+export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapAction) {
   switch (action.type) {
     case TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED:
       const { payload } = action;
@@ -62,9 +59,7 @@ export function swap(
         ...state,
         bityRates: {
           byId: normalize(payload, [schema.bityRate]).entities.bityRates,
-          allIds: allIds(
-            normalize(payload, [schema.bityRate]).entities.bityRates
-          )
+          allIds: allIds(normalize(payload, [schema.bityRate]).entities.bityRates)
         },
         options: {
           byId: normalize(payload, [schema.bityRate]).entities.options,

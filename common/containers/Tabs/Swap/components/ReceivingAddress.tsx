@@ -2,7 +2,8 @@ import {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
-  TStopLoadBityRatesSwap
+  TStopLoadBityRatesSwap,
+  SwapInput
 } from 'actions/swap';
 import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
@@ -14,8 +15,8 @@ import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
 
 export interface StateProps {
-  origin: any;
-  destination: any;
+  origin: SwapInput;
+  destination: SwapInput;
   isPostingOrder: boolean;
   destinationAddress: string;
 }
@@ -27,13 +28,8 @@ export interface ActionProps {
   bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
 }
 
-export default class ReceivingAddress extends Component<
-  StateProps & ActionProps,
-  {}
-> {
-  public onChangeDestinationAddress = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
+export default class ReceivingAddress extends Component<StateProps & ActionProps, {}> {
+  public onChangeDestinationAddress = (event: React.SyntheticEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value;
     this.props.destinationAddressSwap(value);
   };
@@ -44,7 +40,7 @@ export default class ReceivingAddress extends Component<
       return;
     }
     this.props.bityOrderCreateRequestedSwap(
-      origin.amount,
+      origin.amount as number,
       this.props.destinationAddress,
       combineAndUpper(origin.id, destination.id)
     );

@@ -1,4 +1,4 @@
-import { RestartSwapAction } from 'actions/swap';
+import { RestartSwapAction, SwapInput } from 'actions/swap';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
@@ -6,8 +6,8 @@ import './SwapInfoHeader.scss';
 import SwapInfoHeaderTitle from './SwapInfoHeaderTitle';
 
 export interface SwapInfoHeaderProps {
-  origin: any;
-  destination: any;
+  origin: SwapInput;
+  destination: SwapInput;
   reference: string;
   secondsRemaining: number | null;
   restartSwap(): RestartSwapAction;
@@ -58,12 +58,8 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
           {/*Amount to send*/}
           {!this.isExpanded() && (
             <div className={this.computedClass()}>
-              <h3 className="SwapInfo-details-block-value">{` ${
-                origin.amount
-              } ${origin.id}`}</h3>
-              <p className="SwapInfo-details-block-label">
-                {translate('SEND_amount')}
-              </p>
+              <h3 className="SwapInfo-details-block-value">{` ${origin.amount} ${origin.id}`}</h3>
+              <p className="SwapInfo-details-block-label">{translate('SEND_amount')}</p>
             </div>
           )}
 
@@ -71,21 +67,15 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
           {this.isExpanded() && (
             <div className={this.computedClass()}>
               <h3 className="SwapInfo-details-block-value">{reference}</h3>
-              <p className="SwapInfo-details-block-label">
-                {translate('SWAP_ref_num')}
-              </p>
+              <p className="SwapInfo-details-block-label">{translate('SWAP_ref_num')}</p>
             </div>
           )}
 
           {/*Time remaining*/}
           {this.isExpanded() && (
             <div className={this.computedClass()}>
-              <h3 className="SwapInfo-details-block-value">
-                {this.formattedTime()}
-              </h3>
-              <p className="SwapInfo-details-block-label">
-                {translate('SWAP_time')}
-              </p>
+              <h3 className="SwapInfo-details-block-value">{this.formattedTime()}</h3>
+              <p className="SwapInfo-details-block-label">{translate('SWAP_time')}</p>
             </div>
           )}
 
@@ -94,22 +84,16 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
             <h3 className="SwapInfo-details-block-value">
               {` ${destination.amount} ${destination.id}`}
             </h3>
-            <p className="SwapInfo-details-block-label">
-              {translate('SWAP_rec_amt')}
-            </p>
+            <p className="SwapInfo-details-block-label">{translate('SWAP_rec_amt')}</p>
           </div>
 
           {/*Your rate*/}
           <div className={this.computedClass()}>
             <h3 className="SwapInfo-details-block-value">
               {`${computedOriginDestinationRatio &&
-                toFixedIfLarger(computedOriginDestinationRatio)} ${
-                destination.id
-              }/${origin.id}`}
+                toFixedIfLarger(computedOriginDestinationRatio)} ${destination.id}/${origin.id}`}
             </h3>
-            <p className="SwapInfo-details-block-label">
-              {translate('SWAP_your_rate')}
-            </p>
+            <p className="SwapInfo-details-block-label">{translate('SWAP_your_rate')}</p>
           </div>
         </section>
       </div>

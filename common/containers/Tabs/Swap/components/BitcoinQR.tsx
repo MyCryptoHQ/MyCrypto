@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 interface Props {
   paymentAddress: string | null;
-  amount: number | null;
+  amount: number | '';
 }
 
 export default class BitcoinQR extends Component<Props, {}> {
@@ -18,14 +18,10 @@ export default class BitcoinQR extends Component<Props, {}> {
           </div>
           <br />
           <p className="text-danger">
-            Orders that take too long will have to be processed manually &amp;
-            and may delay the amount of time it takes to receive your coins.
+            Orders that take too long will have to be processed manually &amp; and may delay the
+            amount of time it takes to receive your coins.
             <br />
-            <a
-              href="https://shapeshift.io/#/btcfee"
-              target="_blank"
-              rel="noopener"
-            >
+            <a href="https://shapeshift.io/#/btcfee" target="_blank" rel="noopener">
               Please use the recommended TX fees seen here.
             </a>
           </p>

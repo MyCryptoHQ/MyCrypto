@@ -4,7 +4,7 @@ import './PaymentInfo.scss';
 
 export interface Props {
   originKind: string;
-  originAmount: number | null;
+  originAmount: number | '';
   paymentAddress: string | null;
 }
 

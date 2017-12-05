@@ -1,4 +1,10 @@
-import { TChangeStepSwap, TInitSwap } from 'actions/swap';
+import {
+  TChangeStepSwap,
+  TInitSwap,
+  NormalizedBityRates,
+  NormalizedOptions,
+  SwapInput
+} from 'actions/swap';
 import SimpleButton from 'components/ui/SimpleButton';
 import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
 import React, { Component } from 'react';
@@ -10,8 +16,8 @@ import { without, intersection } from 'lodash';
 import './CurrencySwap.scss';
 
 export interface StateProps {
-  bityRates: any;
-  options: any;
+  bityRates: NormalizedBityRates;
+  options: NormalizedOptions;
 }
 
 export interface ActionProps {
@@ -19,10 +25,17 @@ export interface ActionProps {
   initSwap: TInitSwap;
 }
 
-export default class CurrencySwap extends Component<
-  StateProps & ActionProps,
-  any
-> {
+interface State {
+  disabled: boolean;
+  origin: SwapInput;
+  destination: SwapInput;
+  originKindOptions: string[];
+  destinationKindOptions: string[];
+  originErr: string;
+  destinationErr: string;
+}
+
+export default class CurrencySwap extends Component<StateProps & ActionProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -91,12 +104,8 @@ export default class CurrencySwap extends Component<
     };
 
     const showError = disabled && amountsValid;
-    const originErr = showError
-      ? createErrString(origin.id, origin.amount)
-      : '';
-    const destinationErr = showError
-      ? createErrString(destination.id, destination.amount)
-      : '';
+    const originErr = showError ? createErrString(origin.id, origin.amount) : '';
+    const destinationErr = showError ? createErrString(destination.id, destination.amount) : '';
 
     this.setState({
       disabled,
@@ -164,15 +173,13 @@ export default class CurrencySwap extends Component<
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
       const bityRate = this.props.bityRates.byId[pairName].rate;
-      return bityRate * parseFloat(origin.amount);
+      return bityRate * parseFloat(origin.amount as string);
     };
     this.setState({
       origin: { ...origin, id: newOption },
       destination: {
         id: newOption === destination.id ? origin.id : destination.id,
-        amount: newDestinationAmount()
-          ? newDestinationAmount()
-          : destination.amount
+        amount: newDestinationAmount() ? newDestinationAmount() : destination.amount
       },
       destinationKindOptions: without(['ETH', 'BTC', 'REP'], newOption)
     });
@@ -183,7 +190,7 @@ export default class CurrencySwap extends Component<
     const newOriginAmount = () => {
       const pairName = combineAndUpper(newOption, origin.id);
       const bityRate = this.props.bityRates.byId[pairName].rate;
-      return bityRate * parseFloat(destination.amount);
+      return bityRate * parseFloat(destination.amount as string);
     };
     this.setState({
       origin: {
@@ -206,13 +213,9 @@ export default class CurrencySwap extends Component<
     } = this.state;
 
     const OriginKindDropDown = Dropdown as new () => Dropdown<any>;
-    const DestinationKindDropDown = Dropdown as new () => Dropdown<
-      typeof destination.id
-    >;
+    const DestinationKindDropDown = Dropdown as new () => Dropdown<typeof destination.id>;
     const pairName = combineAndUpper(origin.id, destination.id);
-    const bityLoaded = bityRates.byId[pairName]
-      ? bityRates.byId[pairName].id
-      : false;
+    const bityLoaded = bityRates.byId[pairName] ? bityRates.byId[pairName].id : false;
     return (
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
@@ -223,8 +226,7 @@ export default class CurrencySwap extends Component<
               <input
                 id="origin-swap-input"
                 className={`CurrencySwap-input form-control ${
-                  String(origin.amount) !== '' &&
-                  this.isMinMaxValid(origin.amount, origin.id)
+                  String(origin.amount) !== '' && this.isMinMaxValid(origin.amount, origin.id)
                     ? 'is-valid'
                     : 'is-invalid'
                 }`}
@@ -235,9 +237,7 @@ export default class CurrencySwap extends Component<
               />
               <div className="CurrencySwap-dropdown">
                 <OriginKindDropDown
-                  ariaLabel={`change origin kind. current origin kind ${
-                    origin.id
-                  }`}
+                  ariaLabel={`change origin kind. current origin kind ${origin.id}`}
                   options={originKindOptions}
                   value={origin.id}
                   onChange={this.onChangeOriginKind}
@@ -248,14 +248,11 @@ export default class CurrencySwap extends Component<
             </div>
             <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
             <div className="CurrencySwap-input-group">
-              <span className="CurrencySwap-error-message">
-                {destinationErr}
-              </span>
+              <span className="CurrencySwap-error-message">{destinationErr}</span>
               <input
                 id="destination-swap-input"
                 className={`CurrencySwap-input form-control ${
-                  String(destination.amount) !== '' &&
-                  this.isMinMaxValid(origin.amount, origin.id)
+                  String(destination.amount) !== '' && this.isMinMaxValid(origin.amount, origin.id)
                     ? 'is-valid'
                     : 'is-invalid'
                 }`}
@@ -266,9 +263,7 @@ export default class CurrencySwap extends Component<
               />
               <div className="CurrencySwap-dropdown">
                 <DestinationKindDropDown
-                  ariaLabel={`change destination kind. current destination kind ${
-                    destination.id
-                  }`}
+                  ariaLabel={`change destination kind. current destination kind ${destination.id}`}
                   options={destinationKindOptions}
                   value={destination.id}
                   onChange={this.onChangeDestinationKind}

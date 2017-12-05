@@ -1,9 +1,9 @@
-import {
-  showNotification as dShowNotification,
-  TShowNotification
-} from 'actions/notifications';
+import { showNotification as dShowNotification, TShowNotification } from 'actions/notifications';
 import {
   initSwap as dInitSwap,
+  SwapInput,
+  NormalizedOptions,
+  NormalizedBityRates,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
   changeStepSwap as dChangeStepSwap,
   destinationAddressSwap as dDestinationAddressSwap,
@@ -38,10 +38,10 @@ import TabSection from 'containers/TabSection';
 
 interface ReduxStateProps {
   step: number;
-  origin: any;
-  destination: any;
-  bityRates: any;
-  options: any;
+  origin: SwapInput;
+  destination: SwapInput;
+  bityRates: NormalizedBityRates;
+  options: NormalizedOptions;
   bityOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
@@ -160,9 +160,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       <TabSection>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
-          {(step === 2 || step === 3) && (
-            <SwapInfoHeader {...SwapInfoHeaderProps} />
-          )}
+          {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
 
           <main className="Tab-content-pane">
             {step === 1 && <CurrencySwap {...CurrencySwapProps} />}

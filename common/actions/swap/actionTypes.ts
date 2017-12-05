@@ -1,4 +1,5 @@
 import { TypeKeys } from './constants';
+
 export interface Pairs {
   ETHBTC: number;
   ETHREP: number;
@@ -6,26 +7,49 @@ export interface Pairs {
   BTCREP: number;
 }
 
-interface SwapOption {
+export interface SwapInput {
   id: string;
-  amount: number;
+  amount: number | '';
 }
 
-interface ApiResponseObj {
+export interface NormalizedOption {
   id: string;
+}
+
+export interface NormalizedOptions {
+  byId: { [id: string]: NormalizedOption };
+  allIds: string[];
+}
+
+export interface NormalizedBityRate {
+  id: number;
   options: string[];
   rate: number;
 }
 
-export interface InitSwap {
-  type: TypeKeys.SWAP_INIT;
-  payload: { origin: SwapOption; destination: SwapOption };
+export interface NormalizedBityRates {
+  byId: { [id: string]: NormalizedBityRate };
+  allIds: string[];
 }
 
-// TODO: Update types
+export interface ApiResponseObj {
+  id: number;
+  options: {}[];
+  rate: number;
+}
+
+export interface ApiResponse {
+  [name: string]: ApiResponseObj;
+}
+
+export interface InitSwap {
+  type: TypeKeys.SWAP_INIT;
+  payload: { origin: SwapInput; destination: SwapInput };
+}
+
 export interface LoadBityRatesSucceededSwapAction {
   type: TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED;
-  payload: { [name: string]: ApiResponseObj };
+  payload: ApiResponse;
 }
 
 export interface DestinationAddressSwapAction {

@@ -4,7 +4,8 @@ import {
   TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
   TStopOrderTimerSwap,
-  TStopPollBityOrderStatus
+  TStopPollBityOrderStatus,
+  SwapInput
 } from 'actions/swap';
 import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
@@ -13,8 +14,8 @@ import SwapProgress from './SwapProgress';
 
 interface ReduxStateProps {
   destinationAddress: string;
-  origin: any;
-  destination: any;
+  origin: SwapInput;
+  destination: SwapInput;
   reference: string;
   secondsRemaining: number | null;
   paymentAddress: string | null;
@@ -31,10 +32,7 @@ interface ReduxActionProps {
   showNotification: TShowNotification;
 }
 
-export default class PartThree extends Component<
-  ReduxActionProps & ReduxStateProps,
-  {}
-> {
+export default class PartThree extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
     this.props.startPollBityOrderStatus();
     this.props.startOrderTimerSwap();
@@ -82,8 +80,7 @@ export default class PartThree extends Component<
       <div>
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
-        {orderStatus === 'OPEN' &&
-          origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
+        {orderStatus === 'OPEN' && origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
   }
