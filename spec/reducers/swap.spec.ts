@@ -8,35 +8,32 @@ const allIds = byIds => {
 };
 
 describe('swap reducer', () => {
+  const exampleApiResponse = {
+    BTCETH: {
+      id: 'BTCETH',
+      options: [{ id: 'BTC' }, { id: 'ETH' }],
+      rate: 23.27855114
+    },
+    ETHBTC: {
+      id: 'ETHBTC',
+      options: [{ id: 'ETH' }, { id: 'BTC' }],
+      rate: 0.042958
+    }
+  };
+  const normalizedbityRates: swapActions.NormalizedBityRates = {
+    byId: normalize(exampleApiResponse, [schema.bityRate]).entities.bityRates,
+    allIds: allIds(normalize(exampleApiResponse, [schema.bityRate]).entities.bityRates)
+  };
+  const normalizedOptions: swapActions.NormalizedOptions = {
+    byId: normalize(exampleApiResponse, [schema.bityRate]).entities.options,
+    allIds: allIds(normalize(exampleApiResponse, [schema.bityRate]).entities.options)
+  };
   it('should handle SWAP_LOAD_BITY_RATES_SUCCEEDED', () => {
-    const input = {
-      BTCETH: {
-        id: 'BTCETH',
-        options: [{ id: 'BTC' }, { id: 'ETH' }],
-        rate: 23.27855114
-      },
-      ETHBTC: {
-        id: 'ETHBTC',
-        options: [{ id: 'ETH' }, { id: 'BTC' }],
-        rate: 0.042958
-      }
-    };
-    const output = {
-      bityRates: {
-        byId: normalize(input, [schema.bityRate]).entities.bityRates,
-        allIds: allIds(normalize(input, [schema.bityRate]).entities.bityRates)
-      },
-      options: {
-        byId: normalize(input, [schema.bityRate]).entities.options,
-        allIds: allIds(normalize(input, [schema.bityRate]).entities.options)
-      }
-    };
-    expect(
-      swap(undefined, swapActions.loadBityRatesSucceededSwap(input))
-    ).toEqual({
+    expect(swap(undefined, swapActions.loadBityRatesSucceededSwap(exampleApiResponse))).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false,
-      ...output
+      bityRates: normalizedbityRates,
+      options: normalizedOptions
     });
   });
 
@@ -50,24 +47,18 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_DESTINATION_ADDRESS', () => {
     const destinationAddress = '341a0sdf83';
-    expect(
-      swap(undefined, swapActions.destinationAddressSwap(destinationAddress))
-    ).toEqual({
+    expect(swap(undefined, swapActions.destinationAddressSwap(destinationAddress))).toEqual({
       ...INITIAL_STATE,
       destinationAddress
     });
   });
 
   it('should handle SWAP_RESTART', () => {
-    const bityRates = {
-      BTCETH: 0.01,
-      ETHREP: 10
-    };
     expect(
       swap(
         {
           ...INITIAL_STATE,
-          bityRates,
+          bityRates: normalizedbityRates,
           origin: { id: 'BTC', amount: 1 },
           destination: { id: 'ETH', amount: 3 }
         },
@@ -75,7 +66,7 @@ describe('swap reducer', () => {
       )
     ).toEqual({
       ...INITIAL_STATE,
-      bityRates
+      bityRates: normalizedbityRates
     });
   });
 
@@ -122,9 +113,7 @@ describe('swap reducer', () => {
       id: 'id'
     };
 
-    expect(
-      swap(undefined, swapActions.bityOrderCreateSucceededSwap(mockedBityOrder))
-    ).toEqual({
+    expect(swap(undefined, swapActions.bityOrderCreateSucceededSwap(mockedBityOrder))).toEqual({
       ...INITIAL_STATE,
       bityOrder: {
         ...mockedBityOrder
@@ -158,9 +147,7 @@ describe('swap reducer', () => {
       status: 'status'
     };
 
-    expect(
-      swap(undefined, swapActions.orderStatusSucceededSwap(mockedBityResponse))
-    ).toEqual({
+    expect(swap(undefined, swapActions.orderStatusSucceededSwap(mockedBityResponse))).toEqual({
       ...INITIAL_STATE,
       outputTx: mockedBityResponse.output.reference,
       orderStatus: mockedBityResponse.output.status
@@ -169,9 +156,7 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_ORDER_TIME', () => {
     const secondsRemaining = 300;
-    expect(
-      swap(undefined, swapActions.orderTimeSwap(secondsRemaining))
-    ).toEqual({
+    expect(swap(undefined, swapActions.orderTimeSwap(secondsRemaining))).toEqual({
       ...INITIAL_STATE,
       secondsRemaining
     });
