@@ -13,9 +13,7 @@ export function unlockPrivateKey(
 }
 
 export type TUnlockKeystore = typeof unlockKeystore;
-export function unlockKeystore(
-  value: types.KeystoreUnlockParams
-): types.UnlockKeystoreAction {
+export function unlockKeystore(value: types.KeystoreUnlockParams): types.UnlockKeystoreAction {
   return {
     type: TypeKeys.WALLET_UNLOCK_KEYSTORE,
     payload: value
@@ -23,9 +21,7 @@ export function unlockKeystore(
 }
 
 export type TUnlockMnemonic = typeof unlockMnemonic;
-export function unlockMnemonic(
-  value: types.MnemonicUnlockParams
-): types.UnlockMnemonicAction {
+export function unlockMnemonic(value: types.MnemonicUnlockParams): types.UnlockMnemonicAction {
   return {
     type: TypeKeys.WALLET_UNLOCK_MNEMONIC,
     payload: value
@@ -54,9 +50,7 @@ export function setBalancePending(): types.SetBalancePendingAction {
 }
 
 export type TSetBalance = typeof setBalanceFullfilled;
-export function setBalanceFullfilled(
-  value: Wei
-): types.SetBalanceFullfilledAction {
+export function setBalanceFullfilled(value: Wei): types.SetBalanceFullfilledAction {
   return {
     type: TypeKeys.WALLET_SET_BALANCE_FULFILLED,
     payload: value
@@ -69,16 +63,28 @@ export function setBalanceRejected(): types.SetBalanceRejectedAction {
   };
 }
 
-export type TSetTokenBalances = typeof setTokenBalances;
-export function setTokenBalances(payload: {
+export function setTokenBalancesPending(): types.SetTokenBalancesPendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING
+  };
+}
+
+export type TSetTokenBalancesFulfilled = typeof setTokenBalancesFulfilled;
+export function setTokenBalancesFulfilled(payload: {
   [key: string]: {
     balance: TokenValue;
     error: string | null;
   };
-}): types.SetTokenBalancesAction {
+}): types.SetTokenBalancesFulfilledAction {
   return {
-    type: TypeKeys.WALLET_SET_TOKEN_BALANCES,
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED,
     payload
+  };
+}
+
+export function setTokenBalancesRejected(): types.SetTokenBalancesRejectedAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED
   };
 }
 

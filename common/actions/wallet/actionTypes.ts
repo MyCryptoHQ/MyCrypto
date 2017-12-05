@@ -45,14 +45,22 @@ export interface SetBalanceRejectedAction {
 }
 
 /*** Set Token Balance ***/
-export interface SetTokenBalancesAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCES;
+export interface SetTokenBalancesPendingAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING;
+}
+
+export interface SetTokenBalancesFulfilledAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED;
   payload: {
     [key: string]: {
       balance: TokenValue;
       error: string | null;
     };
   };
+}
+
+export interface SetTokenBalancesRejectedAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED;
 }
 
 /*** Unlock Mnemonic ***/
@@ -82,4 +90,6 @@ export type WalletAction =
   | SetBalancePendingAction
   | SetBalanceFullfilledAction
   | SetBalanceRejectedAction
-  | SetTokenBalancesAction;
+  | SetTokenBalancesPendingAction
+  | SetTokenBalancesFulfilledAction
+  | SetTokenBalancesRejectedAction;

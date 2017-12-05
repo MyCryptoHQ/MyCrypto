@@ -1,6 +1,6 @@
 import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
 import {
-  SetTokenBalancesAction,
+  SetTokenBalancesFulfilledAction,
   SetWalletAction,
   WalletAction,
   TypeKeys
@@ -18,12 +18,16 @@ export interface State {
       error: string | null;
     };
   };
+  isTokensLoading: boolean;
+  tokensError: string | null;
 }
 
 export const INITIAL_STATE: State = {
   inst: null,
   balance: { isPending: false, wei: null },
-  tokens: {}
+  tokens: {},
+  isTokensLoading: false,
+  tokensError: null
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
@@ -39,10 +43,7 @@ function setBalancePending(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: true } };
 }
 
-function setBalanceFullfilled(
-  state: State,
-  action: SetBalanceFullfilledAction
-): State {
+function setBalanceFullfilled(state: State, action: SetBalanceFullfilledAction): State {
   return {
     ...state,
     balance: { wei: action.payload, isPending: false }
@@ -53,14 +54,31 @@ function setBalanceRejected(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
-function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
-  return { ...state, tokens: { ...state.tokens, ...action.payload } };
+function setTokenBalancesPending(state: State): State {
+  return {
+    ...state,
+    isTokensLoading: true,
+    tokensError: null
+  };
 }
 
-export function wallet(
-  state: State = INITIAL_STATE,
-  action: WalletAction
-): State {
+function setTokenBalancesFulfilled(state: State, action: SetTokenBalancesFulfilledAction): State {
+  return {
+    ...state,
+    tokens: { ...state.tokens, ...action.payload },
+    isTokensLoading: false
+  };
+}
+
+function setTokenBalancesRejected(state: State): State {
+  return {
+    ...state,
+    isTokensLoading: false,
+    tokensError: 'Failed to fetch token values'
+  };
+}
+
+export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
     case TypeKeys.WALLET_SET:
       return setWallet(state, action);
@@ -72,8 +90,12 @@ export function wallet(
       return setBalanceFullfilled(state, action);
     case TypeKeys.WALLET_SET_BALANCE_REJECTED:
       return setBalanceRejected(state);
-    case TypeKeys.WALLET_SET_TOKEN_BALANCES:
-      return setTokenBalances(state, action);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING:
+      return setTokenBalancesPending(state);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED:
+      return setTokenBalancesFulfilled(state, action);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED:
+      return setTokenBalancesRejected(state);
     default:
       return state;
   }

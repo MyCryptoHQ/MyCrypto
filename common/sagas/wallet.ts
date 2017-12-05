@@ -3,7 +3,9 @@ import {
   setBalanceFullfilled,
   setBalancePending,
   setBalanceRejected,
-  setTokenBalances,
+  setTokenBalancesPending,
+  setTokenBalancesFulfilled,
+  setTokenBalancesRejected,
   setWallet,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
@@ -53,6 +55,9 @@ export function* updateTokenBalances(): SagaIterator {
     if (!wallet || !node) {
       return;
     }
+
+    yield put(setTokenBalancesPending());
+
     // FIXME handle errors
     const address = yield apply(wallet, wallet.getAddressString);
 
@@ -60,7 +65,7 @@ export function* updateTokenBalances(): SagaIterator {
     const tokenBalances = yield apply(node, node.getTokenBalances, [address, tokens]);
 
     yield put(
-      setTokenBalances(
+      setTokenBalancesFulfilled(
         tokens.reduce((acc, t, i) => {
           acc[t.symbol] = tokenBalances[i];
           return acc;
@@ -68,8 +73,8 @@ export function* updateTokenBalances(): SagaIterator {
       )
     );
   } catch (error) {
-    console.log(error);
-    yield put({ type: 'UPDATE_TOKEN_BALANCE_FAILED', error });
+    console.error('Failed to get token balances', error);
+    yield put(setTokenBalancesRejected());
   }
 }
 

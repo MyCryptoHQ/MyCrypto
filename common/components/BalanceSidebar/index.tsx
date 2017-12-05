@@ -12,11 +12,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import {
-  getTokenBalances,
-  getWalletInst,
-  TokenBalance
-} from 'selectors/wallet';
+import { getTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
@@ -28,6 +24,8 @@ interface Props {
   balance: Balance;
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
+  tokensError: AppState['wallet']['tokensError'];
+  isTokensLoading: AppState['wallet']['isTokensLoading'];
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
   showNotification: TShowNotification;
@@ -49,6 +47,8 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       balance,
       network,
       tokenBalances,
+      tokensError,
+      isTokensLoading,
       rates,
       ratesError,
       fetchCCRates
@@ -64,9 +64,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       },
       {
         name: 'Account Info',
-        content: (
-          <AccountInfo wallet={wallet} balance={balance} network={network} />
-        )
+        content: <AccountInfo wallet={wallet} balance={balance} network={network} />
       },
       {
         name: 'Promos',
@@ -78,6 +76,8 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         content: (
           <TokenBalances
             tokens={tokenBalances}
+            tokensError={tokensError}
+            isTokensLoading={isTokensLoading}
             onAddCustomToken={this.props.addCustomToken}
             onRemoveCustomToken={this.props.removeCustomToken}
           />
@@ -100,10 +100,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
     return (
       <aside>
         {blocks.map(block => (
-          <section
-            className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`}
-            key={block.name}
-          >
+          <section className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`} key={block.name}>
             {block.content}
           </section>
         ))}
@@ -117,6 +114,8 @@ function mapStateToProps(state: AppState) {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,
     tokenBalances: getTokenBalances(state),
+    tokensError: state.wallet.tokensError,
+    isTokensLoading: state.wallet.isTokensLoading,
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError
