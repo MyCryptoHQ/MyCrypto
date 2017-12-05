@@ -83,7 +83,7 @@
     "jest": "21.2.1",
     "less": "2.7.3",
     "less-loader": "4.0.5",
-    "lint-staged": "5.0.0",
+    "lint-staged": "6.0.0",
     "minimist": "1.2.0",
     "node-sass": "4.7.2",
     "nodemon": "1.12.1",
