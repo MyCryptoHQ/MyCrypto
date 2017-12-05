@@ -8,6 +8,7 @@ const tabs = [
     name: 'NAV_GenerateWallet',
     to: '/'
   },
+
   {
     name: 'NAV_SendEther',
     to: 'send-transaction'
@@ -35,6 +36,10 @@ const tabs = [
   {
     name: 'Broadcast Transaction',
     to: 'pushTx'
+  },
+  {
+    name: 'NAV_Utilities',
+    to: 'utilities'
   },
   {
     name: 'NAV_Help',

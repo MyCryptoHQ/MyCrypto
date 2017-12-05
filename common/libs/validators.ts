@@ -1,5 +1,6 @@
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
 import { RawTransaction } from 'libs/transaction';
+import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { Validator } from 'jsonschema';
@@ -88,9 +89,15 @@ function validateEtherAddress(address: string): boolean {
 
 export function isValidPrivKey(privkey: string | Buffer): boolean {
   if (typeof privkey === 'string') {
-    return privkey.length === 64;
+    const strippedKey = stripHexPrefix(privkey);
+    const initialCheck = strippedKey.length === 64;
+    if (initialCheck) {
+      const keyBuffer = Buffer.from(strippedKey, 'hex');
+      return isValidPrivate(keyBuffer);
+    }
+    return false;
   } else if (privkey instanceof Buffer) {
-    return privkey.length === 32;
+    return privkey.length === 32 && isValidPrivate(privkey);
   } else {
     return false;
   }
@@ -190,7 +197,7 @@ export const schema = {
     properties: {
       jsonrpc: { type: 'string' },
       id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
-      result: { type: 'string' },
+      result: { oneOf: [{ type: 'string' }, { type: 'array' }] },
       status: { type: 'string' },
       message: { type: 'string', maxLength: 2 }
     }
@@ -243,3 +250,15 @@ export const isValidCurrentBlock = (response: JsonRpcResponse) =>
 
 export const isValidRawTxApi = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Raw Tx');
+
+export const isValidSendTransaction = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Send Transaction');
+
+export const isValidSignMessage = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Sign Message');
+
+export const isValidGetAccounts = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Get Accounts');
+
+export const isValidGetNetVersion = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Net Version');

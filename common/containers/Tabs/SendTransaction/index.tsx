@@ -293,8 +293,9 @@ export class SendTransaction extends React.Component<Props, State> {
           />
           <div className="row">
             {/* Send Form */}
+
             {unlocked &&
-              !(offline || (forceOffline && isWeb3Wallet)) && (
+              !((offline || forceOffline) && isWeb3Wallet) && (
                 <main className="col-sm-8">
                   <div className="Tab-content-pane">
                     {hasQueryString && (
@@ -434,7 +435,7 @@ export class SendTransaction extends React.Component<Props, State> {
               )}
 
             {unlocked &&
-              (offline || (forceOffline && isWeb3Wallet)) && (
+              ((offline || forceOffline) && isWeb3Wallet) && (
                 <main className="col-sm-8">
                   <div className="Tab-content-pane">
                     <h4>Sorry...</h4>

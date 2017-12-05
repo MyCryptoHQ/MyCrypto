@@ -22,7 +22,8 @@ export type MergedToken = Token & {
 };
 
 export function getTokens(state: AppState): MergedToken[] {
-  const tokens: Token[] = getNetworkConfig(state).tokens;
+  const network = getNetworkConfig(state);
+  const tokens: Token[] = network ? network.tokens : [];
   return tokens.concat(
     state.customTokens.map((token: Token) => {
       const mergedToken = { ...token, custom: true };
