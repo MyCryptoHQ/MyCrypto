@@ -169,7 +169,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
   };
 
   public onChangeOriginKind = newOption => {
-    const { origin, destination } = this.state;
+    const { origin, destination, destinationKindOptions } = this.state;
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
       const bityRate = this.props.bityRates.byId[pairName].rate;
@@ -181,7 +181,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
         id: newOption === destination.id ? origin.id : destination.id,
         amount: newDestinationAmount() ? newDestinationAmount() : destination.amount
       },
-      destinationKindOptions: without(['ETH', 'BTC', 'REP'], newOption)
+      destinationKindOptions: without([...destinationKindOptions, origin.id], newOption)
     });
   };
 
