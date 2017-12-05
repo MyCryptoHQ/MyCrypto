@@ -28,6 +28,10 @@ $small-size: 900px;
 .Header {
   margin-bottom: 2rem;
 
+  @media screen and (max-width: $screen-sm) {
+    margin-bottom: 1rem;
+  }
+
   &-announcement {
     padding: 4px 10px;
     line-height: 26px;
