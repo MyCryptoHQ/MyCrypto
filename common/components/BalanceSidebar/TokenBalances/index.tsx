@@ -8,7 +8,8 @@ import Spinner from 'components/ui/Spinner';
 import './index.scss';
 
 interface Props {
-  tokens: TokenBalance[];
+  tokens: Token[];
+  tokenBalances: TokenBalance[];
   isTokensLoading: boolean;
   tokensError: string | null;
   onAddCustomToken(token: Token): any;
@@ -26,8 +27,8 @@ export default class TokenBalances extends React.Component<Props, State> {
   };
 
   public render() {
-    const { tokens, isTokensLoading, tokensError } = this.props;
-    const shownTokens = tokens.filter(
+    const { tokens, tokenBalances, isTokensLoading, tokensError } = this.props;
+    const shownTokens = tokenBalances.filter(
       token => !token.balance.eqn(0) || token.custom || this.state.showAllTokens
     );
 
@@ -45,18 +46,22 @@ export default class TokenBalances extends React.Component<Props, State> {
         <div>
           <TokenRows tokens={shownTokens} onRemoveCustomToken={this.props.onRemoveCustomToken} />
 
-          <div className="TokenBalances-buttons">
-            <button className="btn btn-default btn-xs" onClick={this.toggleShowAllTokens}>
-              {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
-            </button>{' '}
-            <button className="btn btn-default btn-xs" onClick={this.toggleShowCustomTokenForm}>
-              <span>{translate('SEND_custom')}</span>
-            </button>
-          </div>
-
-          {this.state.showCustomTokenForm && (
+          {this.state.showCustomTokenForm ? (
             <div className="TokenBalances-form">
-              <AddCustomTokenForm onSave={this.addCustomToken} />
+              <AddCustomTokenForm
+                tokens={tokens}
+                onSave={this.addCustomToken}
+                toggleForm={this.toggleShowCustomTokenForm}
+              />
+            </div>
+          ) : (
+            <div className="TokenBalances-buttons">
+              <button className="btn btn-default btn-xs" onClick={this.toggleShowAllTokens}>
+                {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
+              </button>{' '}
+              <button className="btn btn-default btn-xs" onClick={this.toggleShowCustomTokenForm}>
+                <span>{translate('SEND_custom')}</span>
+              </button>
             </div>
           )}
         </div>

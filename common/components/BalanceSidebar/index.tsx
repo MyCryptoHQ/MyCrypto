@@ -6,12 +6,12 @@ import {
 } from 'actions/customTokens';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { fetchCCRates as dFetchCCRates, TFetchCCRates } from 'actions/rates';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig, Token } from 'config/data';
 import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getAllTokens } from 'selectors/config';
 import { getTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
@@ -23,6 +23,7 @@ interface Props {
   wallet: IWallet;
   balance: Balance;
   network: NetworkConfig;
+  tokens: Token[];
   tokenBalances: TokenBalance[];
   tokensError: AppState['wallet']['tokensError'];
   isTokensLoading: AppState['wallet']['isTokensLoading'];
@@ -46,6 +47,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       wallet,
       balance,
       network,
+      tokens,
       tokenBalances,
       tokensError,
       isTokensLoading,
@@ -75,7 +77,8 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         name: 'Token Balances',
         content: (
           <TokenBalances
-            tokens={tokenBalances}
+            tokens={tokens}
+            tokenBalances={tokenBalances}
             tokensError={tokensError}
             isTokensLoading={isTokensLoading}
             onAddCustomToken={this.props.addCustomToken}
@@ -113,6 +116,7 @@ function mapStateToProps(state: AppState) {
   return {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,
+    tokens: getAllTokens(state),
     tokenBalances: getTokenBalances(state),
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
