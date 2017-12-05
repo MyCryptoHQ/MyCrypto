@@ -1,7 +1,4 @@
-import {
-  showNotification as dShowNotification,
-  TShowNotification
-} from 'actions/notifications';
+import { showNotification as dShowNotification, TShowNotification } from 'actions/notifications';
 import {
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
   changeStepSwap as dChangeStepSwap,
@@ -81,7 +78,6 @@ interface ReduxActionProps {
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
-    // TODO: Use `isFetchingRates` to show a loader
     this.props.loadBityRatesRequestedSwap();
   }
 
@@ -191,9 +187,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       <TabSection>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
-          {(step === 2 || step === 3) && (
-              <SwapInfoHeader {...SwapInfoHeaderProps} />
-            )}
+          {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
 
           <main className="Tab-content-pane">
             {step === 1 && <CurrencySwap {...CurrencySwapProps} />}

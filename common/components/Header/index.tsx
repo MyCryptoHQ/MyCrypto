@@ -67,13 +67,8 @@ export default class Header extends Component<Props, State> {
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const selectedNetwork = getNetworkConfigFromId(
-      node.network,
-      customNetworks
-    );
-    const LanguageDropDown = Dropdown as new () => Dropdown<
-      typeof selectedLanguage
-    >;
+    const selectedNetwork = getNetworkConfigFromId(node.network, customNetworks);
+    const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
 
     const nodeOptions = Object.keys(NODES)
       .map(key => {
@@ -120,12 +115,7 @@ export default class Header extends Component<Props, State> {
 
         <section className="Header-branding">
           <section className="Header-branding-inner container">
-            <Link
-              to="/"
-              className="Header-branding-title"
-              aria-label="Go to homepage"
-            >
-              {/* TODO - don't hardcode image path*/}
+            <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
               <img
                 className="Header-branding-title-logo"
                 src={logo}
@@ -146,9 +136,7 @@ export default class Header extends Component<Props, State> {
 
               <div className="Header-branding-right-dropdown">
                 <LanguageDropDown
-                  ariaLabel={`change language. current language ${
-                    languages[selectedLanguage]
-                  }`}
+                  ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
                   options={Object.values(languages)}
                   value={languages[selectedLanguage]}
                   extra={
