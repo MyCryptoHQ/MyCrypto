@@ -5,6 +5,11 @@
   &-dropdown-menu {
     padding: 0.5rem !important;
     min-width: 300px !important;
+
+    @media screen and (max-width: $screen-xs) {
+      left: 0;
+      right: auto;
+    }
   }
 
   &-header {
