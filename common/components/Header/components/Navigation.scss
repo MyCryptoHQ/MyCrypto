@@ -14,8 +14,9 @@
     margin-bottom: -20px;
     font-size: 0;
     white-space: nowrap;
+
     @media screen and (max-width: $screen-sm) {
-      margin: 0 -5% -20px;
+      padding: 0;
     }
   }
 
