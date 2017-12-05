@@ -107,11 +107,7 @@ export default class AddCustomTokenForm extends React.Component<Props, State> {
 
   public getErrors() {
     const { address, symbol, decimal } = this.state;
-    const errors: { [key: string]: boolean | string } = {
-      decimal: false,
-      address: false,
-      symbol: false
-    };
+    const errors: { [key: string]: boolean | string } = {};
 
     // Formatting errors
     if (decimal && !isPositiveIntegerOrZero(parseInt(decimal, 10))) {
