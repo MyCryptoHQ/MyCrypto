@@ -3,10 +3,13 @@ import Spinner from 'components/ui/Spinner';
 import { Details, Summary } from './components';
 import React from 'react';
 import { connect } from 'react-redux';
+import { getWalletType, IWalletType } from 'selectors/wallet';
 import { getLanguageSelection } from 'selectors/config';
 import {
   broadcastLocalTransactionRequested,
-  TBroadcastLocalTransactionRequested
+  TBroadcastLocalTransactionRequested,
+  broadcastWeb3TransactionRequested,
+  TBroadcastWeb3TransactionRequested
 } from 'actions/transaction';
 import {
   currentTransactionBroadcasting,
@@ -18,9 +21,11 @@ import { AppState } from 'reducers';
 
 interface DispatchProps {
   broadcastLocalTransactionRequested: TBroadcastLocalTransactionRequested;
+  broadcastWeb3TransactionRequested: TBroadcastWeb3TransactionRequested;
 }
 interface StateProps {
   lang: string;
+  walletTypes: IWalletType;
   transactionBroadcasting: boolean;
   transactionBroadcasted: boolean;
 }
@@ -95,9 +100,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
                 <Summary />
                 <Details />
 
-                <div className="ConfModal-confirm">
-                  {translate('SENDModal_Content_3')}
-                </div>
+                <div className="ConfModal-confirm">{translate('SENDModal_Content_3')}</div>
               </div>
             )}
           </div>
@@ -112,7 +115,9 @@ class ConfirmationModalClass extends React.Component<Props, State> {
 
   private confirm = () => {
     if (this.state.timeToRead < 1) {
-      this.props.broadcastLocalTransactionRequested();
+      this.props.walletTypes.isWeb3Wallet
+        ? this.props.broadcastWeb3TransactionRequested()
+        : this.props.broadcastLocalTransactionRequested();
     }
   };
 }
@@ -121,7 +126,8 @@ export const ConfirmationModal = connect(
   (state: AppState) => ({
     transactionBroadcasting: currentTransactionBroadcasting(state),
     transactionBroadcasted: currentTransactionBroadcasted(state),
-    lang: getLanguageSelection(state)
+    lang: getLanguageSelection(state),
+    walletTypes: getWalletType(state)
   }),
-  { broadcastLocalTransactionRequested }
+  { broadcastLocalTransactionRequested, broadcastWeb3TransactionRequested }
 )(ConfirmationModalClass);

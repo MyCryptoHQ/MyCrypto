@@ -48,7 +48,12 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
   }));
 }
 
-export const getWalletType = (state: AppState) => {
+export interface IWalletType {
+  isWeb3Wallet: boolean;
+  isHardwareWallet: boolean;
+}
+
+export const getWalletType = (state: AppState): IWalletType => {
   const wallet = getWalletInst(state);
   const isWeb3Wallet = wallet instanceof Web3Wallet;
   const isLedgerWallet = wallet instanceof LedgerWallet;
