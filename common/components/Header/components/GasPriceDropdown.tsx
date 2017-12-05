@@ -31,7 +31,7 @@ export default class GasPriceDropdown extends Component<Props, {}> {
   private renderLabel = () => {
     return (
       <span>
-        Gas Price<span className="hidden-xs">: ${this.props.value} Gwei</span>
+        Gas Price<span className="hidden-xs">: {this.props.value} Gwei</span>
       </span>
     );
   };
