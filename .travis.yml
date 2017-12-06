@@ -1,11 +1,7 @@
 dist: trusty
 sudo: required
 language: node_js
-
-env:
-  - TEST_SUITE=unit
-  - TEST_SUITE=int
-
+g
 services:
   - docker
 
@@ -18,12 +14,15 @@ before_install:
 install:
   - npm install --silent
 
-script:
-- npm run test:$TEST_SUITE
-- npm run tslint
-- npm run tscheck
-- npm run freezer
-- npm run freezer:validate
+jobs:
+  include:
+    - stage: test
+      script: npm run test
+      script: npm run test:int
+      script: npm run tslint
+      script: npm run tscheck
+      script: npm run freezer
+      script: npm run freezer:validate
 
 notifications:
   email:
