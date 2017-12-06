@@ -2,6 +2,10 @@ dist: trusty
 sudo: required
 language: node_js
 
+env:
+  - TEST_SUITE=unit
+  - TEST_SUITE=int
+
 services:
   - docker
 
@@ -15,7 +19,7 @@ install:
   - npm install --silent
 
 script:
-- npm run test
+- npm run test:$TEST_SUITE
 - npm run int-test
 - npm run tslint
 - npm run tscheck
