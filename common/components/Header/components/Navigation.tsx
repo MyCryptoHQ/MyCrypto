@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
+import { knowledgeBaseURL } from 'config/data';
 
 import './Navigation.scss';
 
@@ -43,7 +44,7 @@ const tabs = [
   },
   {
     name: 'NAV_Help',
-    to: 'https://myetherwallet.groovehq.com/help_center',
+    to: `${knowledgeBaseURL}`,
     external: true
   }
 ];
@@ -89,10 +90,7 @@ export default class Navigation extends Component<Props, State> {
         style={borderStyle}
       >
         {this.state.showLeftArrow && (
-          <a
-            aria-hidden="true"
-            className="Navigation-arrow Navigation-arrow--left"
-          >
+          <a aria-hidden="true" className="Navigation-arrow Navigation-arrow--left">
             &#171;
           </a>
         )}
@@ -106,10 +104,7 @@ export default class Navigation extends Component<Props, State> {
         </div>
 
         {this.state.showRightArrow && (
-          <a
-            aria-hidden="true"
-            className="Navigation-arrow Navigation-arrow-right"
-          >
+          <a aria-hidden="true" className="Navigation-arrow Navigation-arrow-right">
             &#187;
           </a>
         )}
