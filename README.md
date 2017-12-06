@@ -25,7 +25,7 @@ npm run test # run tests with Jest
 #### Integration Tests:
 
 ```bash
-npm run test # run tests with Jest
+npm run test:int # run tests with Jest
 ```
 
 #### Dev (HTTPS):
