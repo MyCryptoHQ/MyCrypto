@@ -6,9 +6,8 @@ const { exec } = require('child_process');
 const derivationRounds = 500;
 const dockerImage = 'dternyak/eth-priv-to-addr';
 const dockerTag = 'latest';
-const range = n => Array.from(Array(n).keys());
 
-function promiseFromChildProcess(command): Promise<any> {
+function promiseFromChildProcess(command: string): Promise<any> {
   return new Promise((resolve, reject) => {
     return exec(command, (err, stdout) => {
       err ? reject(err) : resolve(stdout);
@@ -36,10 +35,12 @@ async function privToAddrViaDocker(privKeyWallets: IFullWallet[]): Promise<strin
 
 function makeWallets(): IFullWallet[] {
   const wallets: IFullWallet[] = [];
-  range(derivationRounds).forEach(() => {
+  let i = 0;
+  while (i < derivationRounds) {
     const privKeyWallet = generate();
     wallets.push(privKeyWallet);
-  });
+    i += 1;
+  }
   return wallets;
 }
 
@@ -53,7 +54,7 @@ async function getNormalizedAddressesFromWallets(wallets: IFullWallet[]): Promis
   return Promise.all(wallets.map(getNormalizedAddressFromWallet));
 }
 
-async function testDerivation(): Promise<boolean> {
+async function testDerivation(): Promise<true> {
   const wallets = makeWallets();
   const walletAddrs = await getNormalizedAddressesFromWallets(wallets);
   const dockerAddrsCS = await privToAddrViaDocker(wallets);
@@ -69,8 +70,6 @@ describe('Derivation Checker', () => {
   });
 
   it(`should derive identical addresses ${derivationRounds} times`, () => {
-    return testDerivation().then(success => {
-      expect(success);
-    });
+    return testDerivation().then(expect);
   });
 });
