@@ -55,9 +55,7 @@ function testRpcRequests(node: RPCNode, service: string) {
       it(
         `RPC: ${testType} ${service}`,
         () => {
-          return RPCTests[testType](node).then(d =>
-            expect(d.valid).toBeTruthy()
-          );
+          return RPCTests[testType](node).then(d => expect(d.valid).toBeTruthy());
         },
         10000
       );
@@ -69,24 +67,15 @@ const mapNodeEndpoints = (nodes: { [key: string]: NodeConfig }) => {
   const { RpcNodes, EtherscanNodes, InfuraNodes } = RpcNodeTestConfig;
 
   RpcNodes.forEach(n => {
-    testRpcRequests(
-      nodes[n].lib as RPCNode,
-      `${nodes[n].service} ${nodes[n].network}`
-    );
+    testRpcRequests(nodes[n].lib as RPCNode, `${nodes[n].service} ${nodes[n].network}`);
   });
 
   EtherscanNodes.forEach(n => {
-    testRpcRequests(
-      nodes[n].lib as EtherscanNode,
-      `${nodes[n].service} ${nodes[n].network}`
-    );
+    testRpcRequests(nodes[n].lib as EtherscanNode, `${nodes[n].service} ${nodes[n].network}`);
   });
 
   InfuraNodes.forEach(n => {
-    testRpcRequests(
-      nodes[n].lib as InfuraNode,
-      `${nodes[n].service} ${nodes[n].network}`
-    );
+    testRpcRequests(nodes[n].lib as InfuraNode, `${nodes[n].service} ${nodes[n].network}`);
   });
 };
 
