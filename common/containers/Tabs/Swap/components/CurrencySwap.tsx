@@ -1,10 +1,5 @@
-import {
-  TChangeStepSwap,
-  TInitSwap,
-  NormalizedBityRates,
-  NormalizedOptions,
-  SwapInput
-} from 'actions/swap';
+import { TChangeStepSwap, TInitSwap } from 'actions/swap';
+import { NormalizedBityRates, NormalizedOptions, SwapInput } from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
 import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
 import React, { Component } from 'react';

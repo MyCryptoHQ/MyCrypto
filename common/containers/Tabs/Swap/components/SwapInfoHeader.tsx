@@ -1,4 +1,5 @@
-import { RestartSwapAction, SwapInput } from 'actions/swap';
+import { RestartSwapAction } from 'actions/swap';
+import { SwapInput } from 'reducers/swap/types';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';

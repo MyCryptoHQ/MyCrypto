@@ -1,9 +1,6 @@
 import { showNotification as dShowNotification, TShowNotification } from 'actions/notifications';
 import {
   initSwap as dInitSwap,
-  SwapInput,
-  NormalizedOptions,
-  NormalizedBityRates,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
   changeStepSwap as dChangeStepSwap,
   destinationAddressSwap as dDestinationAddressSwap,
@@ -26,6 +23,7 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus
 } from 'actions/swap';
+import { SwapInput, NormalizedOptions, NormalizedBityRates } from 'reducers/swap/types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';

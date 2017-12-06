@@ -1,5 +1,6 @@
 import { swap, INITIAL_STATE } from 'reducers/swap';
 import * as swapActions from 'actions/swap';
+import { NormalizedBityRates, NormalizedOptions } from 'reducers/swap/types';
 import { normalize } from 'normalizr';
 import * as schema from 'reducers/swap/schema';
 
@@ -20,11 +21,11 @@ describe('swap reducer', () => {
       rate: 0.042958
     }
   };
-  const normalizedbityRates: swapActions.NormalizedBityRates = {
+  const normalizedbityRates: NormalizedBityRates = {
     byId: normalize(exampleApiResponse, [schema.bityRate]).entities.bityRates,
     allIds: allIds(normalize(exampleApiResponse, [schema.bityRate]).entities.bityRates)
   };
-  const normalizedOptions: swapActions.NormalizedOptions = {
+  const normalizedOptions: NormalizedOptions = {
     byId: normalize(exampleApiResponse, [schema.bityRate]).entities.options,
     allIds: allIds(normalize(exampleApiResponse, [schema.bityRate]).entities.options)
   };

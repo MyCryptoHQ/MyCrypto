@@ -2,9 +2,9 @@ import {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
-  TStopLoadBityRatesSwap,
-  SwapInput
+  TStopLoadBityRatesSwap
 } from 'actions/swap';
+import { SwapInput } from 'reducers/swap/types';
 import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
 import { donationAddressMap } from 'config/data';

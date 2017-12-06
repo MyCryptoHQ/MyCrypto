@@ -1,14 +1,15 @@
 import * as actionTypes from 'actions/swap';
+import * as stateTypes from './types';
+import * as schema from './schema';
 import { TypeKeys } from 'actions/swap/constants';
 import { normalize } from 'normalizr';
-import * as schema from './schema';
 
 export interface State {
   step: number;
-  origin: actionTypes.SwapInput | null;
-  destination: actionTypes.SwapInput | null;
-  options: actionTypes.NormalizedOptions;
-  bityRates: actionTypes.NormalizedBityRates;
+  origin: stateTypes.SwapInput | null;
+  destination: stateTypes.SwapInput | null;
+  options: stateTypes.NormalizedOptions;
+  bityRates: stateTypes.NormalizedBityRates;
   bityOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;

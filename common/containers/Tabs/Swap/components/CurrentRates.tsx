@@ -1,4 +1,4 @@
-import { NormalizedBityRate } from 'actions/swap';
+import { NormalizedBityRate } from 'reducers/swap/types';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import Spinner from 'components/ui/Spinner';
 import { bityReferralURL } from 'config/data';

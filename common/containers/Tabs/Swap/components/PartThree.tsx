@@ -4,9 +4,9 @@ import {
   TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
   TStopOrderTimerSwap,
-  TStopPollBityOrderStatus,
-  SwapInput
+  TStopPollBityOrderStatus
 } from 'actions/swap';
+import { SwapInput } from 'reducers/swap/types';
 import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
