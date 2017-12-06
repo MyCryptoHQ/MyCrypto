@@ -1,7 +1,4 @@
-import {
-  showNotification as dShowNotification,
-  TShowNotification
-} from 'actions/notifications';
+import { showNotification as dShowNotification, TShowNotification } from 'actions/notifications';
 import {
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
   changeStepSwap as dChangeStepSwap,
@@ -40,6 +37,7 @@ import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
+import ShapeshiftBanner from './components/ShapeshiftBanner';
 import TabSection from 'containers/TabSection';
 
 interface ReduxStateProps {
@@ -191,9 +189,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       <TabSection>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
-          {(step === 2 || step === 3) && (
-              <SwapInfoHeader {...SwapInfoHeaderProps} />
-            )}
+          <ShapeshiftBanner />
+          {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
 
           <main className="Tab-content-pane">
             {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
