@@ -35,7 +35,7 @@ const TABS = [
 
 export default class SubTabs extends React.Component<Props, {}> {
   public render() {
-    const { activeTab } = this.props;
+    const activeTab = this.props.activeTab || TABS[0].path;
     const tab = TABS.find(t => t.path === activeTab) || TABS[0];
 
     return (
