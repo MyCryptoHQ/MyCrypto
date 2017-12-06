@@ -28,9 +28,12 @@ export default class Root extends Component<Props, {}> {
         <Router history={history} key={Math.random()}>
           <div>
             <Route exact={true} path="/" component={GenerateWallet} />
-            <Route path="/view-wallet" component={ViewWallet} />
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
+            <Route path="/account" component={SendTransaction}>
+              <Route path="send" component={SendTransaction} />
+              <Route path="info" component={SendTransaction} />
+            </Route>
             <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
@@ -80,6 +83,7 @@ const LegacyRoutes = withRouter(props => {
     <Switch>
       <Redirect from="/signmsg.html" to="/sign-and-verify-message" />
       <Redirect from="/helpers.html" to="/helpers" />
+      <Redirect from="/send-transaction" to="/account/send" />
     </Switch>
   );
 });

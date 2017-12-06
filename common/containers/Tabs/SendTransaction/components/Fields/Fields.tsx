@@ -12,57 +12,50 @@ import {
   TransactionComparisonAndPushTx,
   SigningStatus
 } from './components';
-import {
-  Offline,
-  OnlyUnlocked,
-  Wallet,
-  WhenQueryExists
-} from 'components/renderCbs';
+import { Offline, OnlyUnlocked, Wallet, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 import { Aux } from 'components/ui';
 
 const content = (
-  <main className="col-sm-8">
-    <div className="Tab-content-pane">
-      <AddressField />
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <div className="input-group">
-            <AmountField />
-            <UnitDropDown />
-          </div>
-          <SendEverything />
+  <div className="Tab-content-pane">
+    <AddressField />
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <div className="input-group">
+          <AmountField />
+          <UnitDropDown />
         </div>
-        <div className="col-xs-1" />
+        <SendEverything />
       </div>
+      <div className="col-xs-1" />
+    </div>
 
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <GasField />
-        </div>
-      </div>
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <NonceField />
-        </div>
-      </div>
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <DataField />
-        </div>
-      </div>
-      <CurrentCustomMessage />
-      <div className="row form-group">
-        <div className="col-xs-12 clearfix">
-          <GenerateTransaction />
-        </div>
-      </div>
-      <SigningStatus />
-      <div className="row form-group">
-        <TransactionComparisonAndPushTx />
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <GasField />
       </div>
     </div>
-  </main>
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <NonceField />
+      </div>
+    </div>
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <DataField />
+      </div>
+    </div>
+    <CurrentCustomMessage />
+    <div className="row form-group">
+      <div className="col-xs-12 clearfix">
+        <GenerateTransaction />
+      </div>
+    </div>
+    <SigningStatus />
+    <div className="row form-group">
+      <TransactionComparisonAndPushTx />
+    </div>
+  </div>
 );
 
 const QueryWarning: React.SFC<{}> = () => (
@@ -93,11 +86,7 @@ const Wrapped: React.SFC<{}> = () => (
             withWallet={({ isWeb3Wallet }) => (
               <Aux>
                 <QueryWarning />
-                <Fields
-                  offline={offline}
-                  forceOffline={forceOffline}
-                  isWeb3Wallet={isWeb3Wallet}
-                />
+                <Fields offline={offline} forceOffline={forceOffline} isWeb3Wallet={isWeb3Wallet} />
               </Aux>
             )}
           />

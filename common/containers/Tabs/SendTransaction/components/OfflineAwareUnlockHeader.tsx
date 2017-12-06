@@ -9,7 +9,7 @@ export const OfflineAwareUnlockHeader: React.SFC<{}> = () => (
 
 const title = (
   <div>
-    {translate('NAV_SendEther')}
+    {translate('Account')}
     <Offline
       withOffline={({ forceOffline, offline }) => (offline || forceOffline ? offlineTitle : null)}
     />

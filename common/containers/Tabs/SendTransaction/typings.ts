@@ -1,3 +1,4 @@
+import { Location } from 'history';
 import { TResetWallet } from 'actions/wallet';
 
 export interface State {
@@ -6,6 +7,7 @@ export interface State {
 }
 
 export interface Props {
+  location: Location;
   resetWallet: TResetWallet;
 }
 
