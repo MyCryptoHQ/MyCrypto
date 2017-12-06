@@ -1,11 +1,15 @@
 import { TypeKeys } from './constants';
-import { SwapInput } from 'reducers/swap/types';
 
 export interface Pairs {
   ETHBTC: number;
   ETHREP: number;
   BTCETH: number;
   BTCREP: number;
+}
+
+export interface SwapInput {
+  id: string;
+  amount: number;
 }
 
 export interface InitSwap {
