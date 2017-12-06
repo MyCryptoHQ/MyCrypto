@@ -1,8 +1,10 @@
 import React from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
-import { Identicon, QRCode } from 'components/ui';
 import { print } from 'components/PrintableWallet';
+import { Identicon, QRCode } from 'components/ui';
+import FaEye from 'c';
+import './WalletInfo.scss';
 
 interface Props {
   wallet: IWallet;
@@ -37,7 +39,7 @@ export default class WalletInfo extends React.Component<Props, State> {
     const { address, privateKey, showPrivateKey } = this.state;
 
     return (
-      <div>
+      <div className="WalletInfo">
         <div className="Tab-content-pane">
           <div className="row form-group">
             <div className="col-xs-11">
@@ -53,12 +55,20 @@ export default class WalletInfo extends React.Component<Props, State> {
             <div className="row form-group">
               <div className="col-xs-12">
                 <label>{translate('x_PrivKey')}</label>
-                <input
-                  className="form-control"
-                  disabled={true}
-                  type={showPrivateKey ? 'text' : 'password'}
-                  value={privateKey}
-                />
+                <div className="input-group">
+                  <input
+                    className="form-control"
+                    disabled={true}
+                    type={showPrivateKey ? 'text' : 'password'}
+                    value={privateKey}
+                  />
+                  <span
+                    onClick={this.togglePrivateKey}
+                    aria-label={translateRaw('GEN_Aria_2')}
+                    role="button"
+                    className="input-group-addon eye"
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -68,15 +78,20 @@ export default class WalletInfo extends React.Component<Props, State> {
           <div className="row">
             <div className="col-xs-6">
               <label>Public Address</label>
-              <div className="well well-lg">
+              <div className="WalletInfo-qr well well-lg">
                 <QRCode data={address} />
               </div>
             </div>
             {privateKey && (
               <div className="col-xs-6">
                 <label>Private Key</label>
-                <div className="well well-lg">
-                  <QRCode data={privateKey} />
+                <div className="WalletInfo-qr well well-lg" onClick={this.togglePrivateKey}>
+                  <QRCode data={showPrivateKey ? privateKey : '0'} />
+                  {!showPrivateKey && (
+                    <div className="WalletInfo-qr-cover">
+                      <i className="WalletInfo-qr-cover-icon fa fa-eye" />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -94,4 +109,8 @@ export default class WalletInfo extends React.Component<Props, State> {
       </div>
     );
   }
+
+  private togglePrivateKey = () => {
+    this.setState({ showPrivateKey: !this.state.showPrivateKey });
+  };
 }
