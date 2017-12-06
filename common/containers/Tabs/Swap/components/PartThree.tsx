@@ -57,8 +57,8 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
     } = this.props;
 
     const SwapProgressProps = {
-      originKind: origin.id,
-      destinationKind: destination.id,
+      origin,
+      destination,
       orderStatus,
       showNotification,
       destinationAddress,
@@ -66,14 +66,13 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
     };
 
     const PaymentInfoProps = {
-      originKind: origin.id,
-      originAmount: origin.amount,
+      origin,
       paymentAddress
     };
 
     const BitcoinQRProps = {
       paymentAddress,
-      amount: destination.amount
+      destination
     };
 
     return (

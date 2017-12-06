@@ -1,20 +1,21 @@
 import QRCode from 'qrcode.react';
 import React, { Component } from 'react';
+import { SwapInput } from 'reducers/swap/types';
 
 interface Props {
   paymentAddress: string | null;
-  amount: number | '';
+  destination: SwapInput;
 }
 
 export default class BitcoinQR extends Component<Props, {}> {
   public render() {
-    const { paymentAddress, amount } = this.props;
+    const { paymentAddress, destination } = this.props;
     return (
       <div>
         <section className="row block swap-address text-center">
           <label> Your Address </label>
           <div className="qr-code">
-            <QRCode value={`bitcoin:${paymentAddress}amount=${amount}`} />
+            <QRCode value={`bitcoin:${paymentAddress}amount=${destination.amount}`} />
           </div>
           <br />
           <p className="text-danger">
