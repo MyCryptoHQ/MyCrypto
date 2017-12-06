@@ -20,7 +20,6 @@ install:
 
 script:
 - npm run test:$TEST_SUITE
-- npm run int-test
 - npm run tslint
 - npm run tscheck
 - npm run freezer
