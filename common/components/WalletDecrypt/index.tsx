@@ -23,6 +23,7 @@ import ViewOnlyDecrypt from './ViewOnly';
 import { AppState } from 'reducers';
 import Web3Decrypt from './Web3';
 import Help from 'components/ui/Help';
+import { knowledgeBaseURL } from 'config/data';
 
 const WALLETS = {
   web3: {
@@ -30,8 +31,7 @@ const WALLETS = {
     component: Web3Decrypt,
     initialParams: {},
     unlock: unlockWeb3,
-    helpLink:
-      'https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html'
+    helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
   },
   'ledger-nano-s': {
     lid: 'x_Ledger',
@@ -56,16 +56,18 @@ const WALLETS = {
       password: ''
     },
     unlock: unlockKeystore,
-    helpLink:
-      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
+    helpLink: `${
+      knowledgeBaseURL
+    }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
   },
   'mnemonic-phrase': {
     lid: 'x_Mnemonic',
     component: MnemonicDecrypt,
     initialParams: {},
     unlock: unlockMnemonic,
-    helpLink:
-      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
+    helpLink: `${
+      knowledgeBaseURL
+    }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
   },
   'private-key': {
     lid: 'x_PrivKey2',
@@ -75,8 +77,9 @@ const WALLETS = {
       password: ''
     },
     unlock: unlockPrivateKey,
-    helpLink:
-      'https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html'
+    helpLink: `${
+      knowledgeBaseURL
+    }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
   },
   'view-only': {
     lid: 'View with Address Only',
@@ -91,9 +94,7 @@ type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
   // FIXME
-  dispatch: Dispatch<
-    UnlockKeystoreAction | UnlockMnemonicAction | UnlockPrivateKeyAction
-  >;
+  dispatch: Dispatch<UnlockKeystoreAction | UnlockMnemonicAction | UnlockPrivateKeyAction>;
   offline: boolean;
   allowReadOnly?: boolean;
 }
@@ -118,19 +119,13 @@ export class WalletDecrypt extends Component<Props, State> {
     }
 
     return (
-      <selectedWallet.component
-        value={value}
-        onChange={this.onChange}
-        onUnlock={this.onUnlock}
-      />
+      <selectedWallet.component value={value} onChange={this.onChange} onUnlock={this.onUnlock} />
     );
   }
 
   public isOnlineRequiredWalletAndOffline(selectedWalletKey) {
     const onlineRequiredWallets = ['trezor', 'ledger-nano-s'];
-    return (
-      this.props.offline && onlineRequiredWallets.includes(selectedWalletKey)
-    );
+    return this.props.offline && onlineRequiredWallets.includes(selectedWalletKey);
   }
 
   public buildWalletOptions() {
@@ -160,9 +155,7 @@ export class WalletDecrypt extends Component<Props, State> {
     });
   }
 
-  public handleDecryptionChoiceChange = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
+  public handleDecryptionChoiceChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
     const wallet = WALLETS[(event.target as HTMLInputElement).value];
 
     if (!wallet) {
@@ -213,13 +206,8 @@ export class WalletDecrypt extends Component<Props, State> {
   public onUnlock = (payload: any) => {
     // some components (TrezorDecrypt) don't take an onChange prop, and thus this.state.value will remain unpopulated.
     // in this case, we can expect the payload to contain the unlocked wallet info.
-    const unlockValue =
-      this.state.value && !isEmpty(this.state.value)
-        ? this.state.value
-        : payload;
-    this.props.dispatch(
-      WALLETS[this.state.selectedWalletKey].unlock(unlockValue)
-    );
+    const unlockValue = this.state.value && !isEmpty(this.state.value) ? this.state.value : payload;
+    this.props.dispatch(WALLETS[this.state.selectedWalletKey].unlock(unlockValue));
   };
 }
 

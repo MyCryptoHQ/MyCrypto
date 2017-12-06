@@ -5,6 +5,7 @@ import translate from 'translations';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from './Template';
+import { knowledgeBaseURL } from 'config/data';
 
 // VALIDATORS
 const minLength = min => value => value && value.length >= min;
@@ -67,10 +68,7 @@ export default class EnterPassword extends Component<Props, State> {
         <ul>
           <li>
             <span>{translate('GEN_Help_1')}</span>
-            <Link to="/send-transaction">
-              {' '}
-              Ledger or TREZOR or Digital Bitbox
-            </Link>
+            <Link to="/send-transaction"> Ledger or TREZOR or Digital Bitbox</Link>
             <span> {translate('GEN_Help_2')}</span>
             <span> {translate('GEN_Help_3')}</span>
           </li>
@@ -99,7 +97,7 @@ export default class EnterPassword extends Component<Props, State> {
           <li>
             <strong>
               <a
-                href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-create-a-new-wallet"
+                href={`${knowledgeBaseURL}/getting-started/creating-a-new-wallet-on-myetherwallet`}
                 target="_blank"
                 rel="noopener"
               >
@@ -110,7 +108,7 @@ export default class EnterPassword extends Component<Props, State> {
           <li>
             <strong>
               <a
-                href="https://myetherwallet.groovehq.com/knowledge_base/categories/getting-started-443"
+                href={`${knowledgeBaseURL}/getting-started/getting-started-new`}
                 target="_blank"
                 rel="noopener"
               >

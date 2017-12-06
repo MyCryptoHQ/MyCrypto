@@ -60,7 +60,7 @@
     "@types/redux-logger": "3.0.5",
     "@types/redux-promise-middleware": "0.0.9",
     "@types/uuid": "3.4.3",
-    "@types/webpack-env": "1.13.2",
+    "@types/webpack-env": "1.13.3",
     "awesome-typescript-loader": "3.4.1",
     "babel-minify-webpack-plugin": "0.2.0",
     "bs58": "4.0.1",
