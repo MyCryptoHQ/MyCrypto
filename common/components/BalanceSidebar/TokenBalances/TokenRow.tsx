@@ -40,20 +40,21 @@ export default class TokenRow extends React.Component<Props, State> {
           title={`${balance.toString()} (Double-Click)`}
           onDoubleClick={this.toggleShowLongBalance}
         >
+          <span>
+            <UnitDisplay value={balance} decimal={decimal} displayShortBalance={!showLongBalance} />
+          </span>
+        </td>
+        <td className="TokenRow-symbol">
+          {symbol}
           {!!custom && (
-            <img
-              src={removeIcon}
-              className="TokenRow-balance-remove"
+            <i
+              className="TokenRow-symbol-remove fa fa-times-circle"
               title="Remove Token"
               onClick={this.onRemove}
               tabIndex={0}
             />
           )}
-          <span>
-            <UnitDisplay value={balance} decimal={decimal} displayShortBalance={!showLongBalance} />
-          </span>
         </td>
-        <td className="TokenRow-symbol">{symbol}</td>
       </tr>
     );
   }
