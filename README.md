@@ -16,10 +16,16 @@ npm run build # build app
 
 It generates app in `dist` folder.
 
-#### Test:
+#### Unit Tests:
 
 ```bash
 npm run test # run tests with Jest
+```
+
+#### Integration Tests:
+
+```bash
+npm run test:int # run tests with Jest
 ```
 
 #### Dev (HTTPS):
@@ -32,7 +38,13 @@ npm run test # run tests with Jest
 npm run dev:https
 ```
 
-#### Derivation Check:
+#### Address Derivation Checker:
+EthereumJS-Util previously contained a bug that would incorrectly derive addresses from private keys with a 1/128 probability of occurring. A summary of this issue can be found [here](https://www.reddit.com/r/ethereum/comments/48rt6n/using_myetherwalletcom_just_burned_me_for/d0m4c6l/).
+
+As a reactionary measure, the address derivation checker was created. 
+
+To test for correct address derivation, the address derivation checker uses multiple sources of address derivation (EthereumJS and PyEthereum) to ensure that multiple official implementations derive the same address for any given private key.
+
 ##### The derivation checker utility assumes that you have:
 1. Docker installed/available
 2. [dternyak/eth-priv-to-addr](https://hub.docker.com/r/dternyak/eth-priv-to-addr/) pulled from DockerHub
@@ -41,9 +53,12 @@ npm run dev:https
 1. Install docker (on macOS, [Docker for Mac](https://docs.docker.com/docker-for-mac/) is suggested)
 2. `docker pull dternyak/eth-priv-to-addr`
 
+
 ##### Run Derivation Checker
+The derivation checker utility runs as part of the integration test suite.
+
 ```bash
-npm run derivation-checker
+npm run test:int
 ```
 
 ## Folder structure:
