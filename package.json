@@ -50,7 +50,7 @@
     "@types/lodash": "4.14.88",
     "@types/qrcode": "0.8.0",
     "@types/qrcode.react": "0.6.2",
-    "@types/react": "16.0.26",
+    "@types/react": "16.0.28",
     "@types/react-dom": "16.0.3",
     "@types/react-redux": "5.0.14",
     "@types/react-router": "4.0.19",
