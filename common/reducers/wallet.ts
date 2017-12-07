@@ -6,10 +6,11 @@ import {
   TypeKeys
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
-import { IWallet, Balance } from 'libs/wallet';
+import { IWallet, Balance, WalletConfig } from 'libs/wallet';
 
 export interface State {
   inst?: IWallet | null;
+  config?: WalletConfig | null;
   // in ETH
   balance: Balance | { wei: null };
   tokens: {
@@ -24,6 +25,7 @@ export interface State {
 
 export const INITIAL_STATE: State = {
   inst: null,
+  config: null,
   balance: { isPending: false, wei: null },
   tokens: {},
   isTokensLoading: false,
@@ -34,6 +36,7 @@ function setWallet(state: State, action: SetWalletAction): State {
   return {
     ...state,
     inst: action.payload,
+    config: null,
     balance: INITIAL_STATE.balance,
     tokens: INITIAL_STATE.tokens
   };
@@ -96,6 +99,11 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setTokenBalancesFulfilled(state, action);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED:
       return setTokenBalancesRejected(state);
+    case TypeKeys.WALLET_SET_CONFIG:
+      return {
+        ...state,
+        config: action.payload
+      };
     default:
       return state;
   }

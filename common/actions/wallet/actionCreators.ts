@@ -1,5 +1,5 @@
 import { Wei, TokenValue } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, WalletConfig } from 'libs/wallet';
 import * as types from './actionTypes';
 import { TypeKeys } from './constants';
 export type TUnlockPrivateKey = typeof unlockPrivateKey;
@@ -92,5 +92,13 @@ export type TResetWallet = typeof resetWallet;
 export function resetWallet(): types.ResetWalletAction {
   return {
     type: TypeKeys.WALLET_RESET
+  };
+}
+
+export type TSetWalletConfig = typeof setWalletConfig;
+export function setWalletConfig(config: WalletConfig): types.SetWalletConfigAction {
+  return {
+    type: TypeKeys.WALLET_SET_CONFIG,
+    payload: config
   };
 }

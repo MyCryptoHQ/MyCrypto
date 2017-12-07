@@ -7,6 +7,7 @@ import {
   setTokenBalancesFulfilled,
   setTokenBalancesRejected,
   setWallet,
+  setWalletConfig,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
   UnlockPrivateKeyAction
@@ -29,6 +30,7 @@ import { getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
+import { loadWalletConfig } from 'utils/localStorage';
 
 export function* updateAccountBalance(): SagaIterator {
   try {
@@ -81,6 +83,20 @@ export function* updateTokenBalances(): SagaIterator {
 export function* updateBalances(): SagaIterator {
   yield fork(updateAccountBalance);
   yield fork(updateTokenBalances);
+}
+
+export function* handleNewWallet(): SagaIterator {
+  yield fork(updateBalances);
+  yield fork(updateWalletConfig);
+}
+
+export function* updateWalletConfig(): SagaIterator {
+  const wallet: null | IWallet = yield select(getWalletInst);
+  if (!wallet) {
+    return;
+  }
+  const config = yield call(loadWalletConfig, wallet);
+  yield put(setWalletConfig(config));
 }
 
 export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator {
@@ -164,7 +180,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
     takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
     takeEvery('WALLET_UNLOCK_WEB3', unlockWeb3),
-    takeEvery('WALLET_SET', updateBalances),
+    takeEvery('WALLET_SET', handleNewWallet),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances)
   ];
 }
