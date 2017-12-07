@@ -16,8 +16,8 @@ import {
   TypeKeys
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
-import { changeNodeIntent, web3UnsetNode } from 'actions/config';
-import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
+import { changeNodeIntent, web3UnsetNode, TypeKeys as ConfigTypeKeys } from 'actions/config';
+import { AddCustomTokenAction, TypeKeys as CustomTokenTypeKeys } from 'actions/customTokens';
 import { INode } from 'libs/nodes/INode';
 import {
   IWallet,
@@ -220,6 +220,22 @@ export function* unlockWeb3(): SagaIterator {
   }
 }
 
+export function* handleCustomTokenAdd(action: AddCustomTokenAction): SagaIterator {
+  // Add the custom token to our current wallet's config
+  const wallet: null | IWallet = yield select(getWalletInst);
+  if (!wallet) {
+    return;
+  }
+  const oldConfig: WalletConfig = yield call(loadWalletConfig, wallet);
+  const config: WalletConfig = yield call(saveWalletConfig, wallet, {
+    tokens: [...(oldConfig.tokens || []), action.payload.symbol]
+  });
+  yield put(setWalletConfig(config));
+
+  // Update token balances
+  yield fork(updateTokenBalances);
+}
+
 export default function* walletSaga(): SagaIterator {
   yield [
     takeEvery(TypeKeys.WALLET_UNLOCK_PRIVATE_KEY, unlockPrivateKey),
@@ -229,6 +245,6 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SET, handleNewWallet),
     takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
-    takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances)
+    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
   ];
 }
