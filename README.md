@@ -39,7 +39,7 @@ npm run dev:https
 ```
 
 #### Address Derivation Checker:
-EthereumJS-Util previously contained a bug that would incorrectly derive addresses from private keys with a 1/128 probably of occurring. A summary of this issue can be found [here](https://www.reddit.com/r/ethereum/comments/48rt6n/using_myetherwalletcom_just_burned_me_for/d0m4c6l/).
+EthereumJS-Util previously contained a bug that would incorrectly derive addresses from private keys with a 1/128 probability of occurring. A summary of this issue can be found [here](https://www.reddit.com/r/ethereum/comments/48rt6n/using_myetherwalletcom_just_burned_me_for/d0m4c6l/).
 
 As a reactionary measure, the address derivation checker was created. 
 
