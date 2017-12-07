@@ -1,22 +1,27 @@
 import { State } from 'reducers/transaction/meta/typings';
-import { getDecimal } from 'libs/units';
-import { TypeKeys as TK, MetaAction } from 'actions/transaction';
+import { getDecimalFromEtherUnit } from 'libs/units';
+import {
+  TypeKeys as TK,
+  MetaAction,
+  SetUnitMetaAction,
+  SwapTokenToEtherAction,
+  SwapEtherToTokenAction,
+  SwapTokenToTokenAction
+} from 'actions/transaction';
 import { ReducersMapObject, Reducer } from 'redux';
 import { createReducerFromObj } from 'reducers/transaction/helpers';
 
 const INITIAL_STATE: State = {
   unit: 'ether',
-  decimal: getDecimal('ether'),
+  previousUnit: 'ether',
+  decimal: getDecimalFromEtherUnit('ether'),
   tokenValue: { raw: '', value: null },
   tokenTo: { raw: '', value: null },
   from: null
 };
 
 //TODO: generic-ize updateField to reuse
-const updateField = (key: keyof State): Reducer<State> => (
-  state: State,
-  action: MetaAction
-) => {
+const updateField = (key: keyof State): Reducer<State> => (state: State, action: MetaAction) => {
   if (typeof action.payload === 'object') {
     // we do this to update just 'raw' or 'value' param of tokenValue
     return {
@@ -32,16 +37,30 @@ const updateField = (key: keyof State): Reducer<State> => (
 };
 
 const reducerObj: ReducersMapObject = {
-  [TK.UNIT_META_SET]: updateField('unit'),
-  [TK.DECIMAL_META_SET]: updateField('decimal'),
+  [TK.UNIT_META_SET]: (state: State, { payload }: SetUnitMetaAction): State => ({
+    ...state,
+    previousUnit: state.unit,
+    unit: payload
+  }),
   [TK.TOKEN_VALUE_META_SET]: updateField('tokenValue'),
   [TK.TOKEN_TO_META_SET]: updateField('tokenTo'),
   [TK.GET_FROM_SUCCEEDED]: updateField('from'),
-  // clear token related fields
-  [TK.TOKEN_TO_ETHER_SWAP]: (state: State): State => {
+
+  [TK.TOKEN_TO_ETHER_SWAP]: (state: State, { payload }: SwapTokenToEtherAction): State => {
     const { tokenValue, tokenTo } = INITIAL_STATE;
-    return { ...state, tokenTo, tokenValue };
+    return { ...state, tokenTo, tokenValue, decimal: payload.decimal };
   },
+
+  [TK.ETHER_TO_TOKEN_SWAP]: (
+    state: State,
+    { payload: { data: _, to: __, ...rest } }: SwapEtherToTokenAction
+  ): State => ({ ...state, ...rest }),
+
+  [TK.TOKEN_TO_TOKEN_SWAP]: (
+    state: State,
+    { payload: { data: _, to: __, ...rest } }: SwapTokenToTokenAction
+  ): State => ({ ...state, ...rest }),
+
   [TK.RESET]: _ => INITIAL_STATE
 };
 

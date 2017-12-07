@@ -4,7 +4,7 @@ import {
   toWei,
   toTokenBase,
   fromTokenBase,
-  getDecimal,
+  getDecimalFromEtherUnit,
   TokenValue
 } from 'libs/units';
 
@@ -45,7 +45,7 @@ describe('Units', () => {
       });
 
       it('should equal 1 * 10^18 wei', () => {
-        const converted = toWei(ether, getDecimal('ether'));
+        const converted = toWei(ether, getDecimalFromEtherUnit('ether'));
         expect(converted.toString()).toEqual(Units.ether);
       });
     });
@@ -56,7 +56,7 @@ describe('Units', () => {
         expect(gwei).toEqual('21');
       });
       it('should equal 21 * 10^9 wei', () => {
-        const converted = toWei(gwei, getDecimal('gwei'));
+        const converted = toWei(gwei, getDecimalFromEtherUnit('gwei'));
         expect(converted.toString()).toEqual(wei.toString());
       });
     });
@@ -67,7 +67,7 @@ describe('Units', () => {
         expect(kwei).toEqual('1.623');
       });
       it('should equal 1.623  * 10^3 wei', () => {
-        const converted = toWei(kwei, getDecimal('kwei'));
+        const converted = toWei(kwei, getDecimalFromEtherUnit('kwei'));
         expect(converted.toString()).toEqual('1623');
       });
     });

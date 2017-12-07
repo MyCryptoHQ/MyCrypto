@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import {
   NonceField,
   AddressField,
@@ -12,14 +14,10 @@ import {
   TransactionComparisonAndPushTx,
   SigningStatus
 } from './components';
-import {
-  Offline,
-  OnlyUnlocked,
-  Wallet,
-  WhenQueryExists
-} from 'components/renderCbs';
+import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 import { Aux } from 'components/ui';
+import { AppState } from 'reducers';
 
 const content = (
   <main className="col-sm-8">
@@ -75,36 +73,26 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-interface Props {
-  offline: boolean;
-  forceOffline: boolean;
-  isWeb3Wallet: boolean;
+interface StateProps {
+  shouldDisplay: boolean;
 }
 
-const Fields: React.SFC<Props> = ({ forceOffline, isWeb3Wallet, offline }) =>
-  !(offline || (forceOffline && isWeb3Wallet)) ? content : null;
-
-const Wrapped: React.SFC<{}> = () => (
-  <OnlyUnlocked
-    whenUnlocked={
-      <Offline
-        withOffline={({ forceOffline, offline }) => (
-          <Wallet
-            withWallet={({ isWeb3Wallet }) => (
-              <Aux>
-                <QueryWarning />
-                <Fields
-                  offline={offline}
-                  forceOffline={forceOffline}
-                  isWeb3Wallet={isWeb3Wallet}
-                />
-              </Aux>
-            )}
-          />
-        )}
+class FieldsClass extends Component<StateProps> {
+  public render() {
+    const { shouldDisplay } = this.props;
+    return (
+      <OnlyUnlocked
+        whenUnlocked={
+          <Aux>
+            <QueryWarning />
+            {shouldDisplay ? content : null}
+          </Aux>
+        }
       />
-    }
-  />
-);
+    );
+  }
+}
 
-export { Wrapped as Fields };
+export const Fields = connect((state: AppState) => ({
+  shouldDisplay: !isAnyOfflineWithWeb3(state)
+}))(FieldsClass);

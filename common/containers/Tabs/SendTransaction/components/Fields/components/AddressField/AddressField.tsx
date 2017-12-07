@@ -1,31 +1,26 @@
-import { isValidENSorEtherAddress } from 'libs/validators';
-import {
-  Query,
-  SetTransactionField,
-  GetTransactionMetaFields,
-  SetTokenToMetaField
-} from 'components/renderCbs';
-import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
+import { Query } from 'components/renderCbs';
+import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressInput } from './AddressInput';
-import { Address } from 'libs/units';
 import React from 'react';
+import { connect } from 'react-redux';
 
-interface Props {
-  to: string | null;
-  unit: string;
-  toSetter(payload: SetToFieldAction['payload']): void;
-  tokenToSetter(payload: SetTokenToMetaAction['payload']): void;
+interface DispatchProps {
+  setCurrentTo: TSetCurrentTo;
 }
 
+interface OwnProps {
+  to: string | null;
+}
+
+type Props = DispatchProps & DispatchProps & OwnProps;
+
 //TODO: add ens resolving
-class AddressField extends React.Component<Props, {}> {
+class AddressFieldClass extends React.Component<Props, {}> {
   public componentDidMount() {
     // this 'to' parameter can be either token or actual field related
-    const { to, tokenToSetter, toSetter, unit } = this.props;
+    const { to } = this.props;
     if (to) {
-      const valueToSet = { raw: to, value: Address(to) };
-      const setter = unit === 'ether' ? toSetter : tokenToSetter;
-      setter(valueToSet);
+      this.props.setCurrentTo(to);
     }
   }
 
@@ -35,42 +30,14 @@ class AddressField extends React.Component<Props, {}> {
 
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    const { toSetter, tokenToSetter, unit } = this.props;
-    const validAddress = isValidENSorEtherAddress(value);
-    const valueToSet = {
-      raw: value,
-      value: validAddress ? Address(value) : null
-    };
-    const setter = unit === 'ether' ? toSetter : tokenToSetter;
-    setter(valueToSet);
+    this.props.setCurrentTo(value);
   };
 }
 
+const AddressField = connect(null, { setCurrentTo })(AddressFieldClass);
+
 const DefaultAddressField: React.SFC<{}> = () => (
-  <SetTransactionField
-    name="to"
-    withFieldSetter={toSetter => (
-      <SetTokenToMetaField
-        withTokenToSetter={tokenToSetter => (
-          <GetTransactionMetaFields
-            withFieldValues={({ unit }) => (
-              <Query
-                params={['to']}
-                withQuery={({ to }) => (
-                  <AddressField
-                    to={to}
-                    toSetter={toSetter}
-                    unit={unit}
-                    tokenToSetter={tokenToSetter}
-                  />
-                )}
-              />
-            )}
-          />
-        )}
-      />
-    )}
-  />
+  <Query params={['to']} withQuery={({ to }) => <AddressField to={to} />} />
 );
 
 export { DefaultAddressField as AddressField };

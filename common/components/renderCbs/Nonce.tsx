@@ -1,15 +1,33 @@
-import React from 'react';
-import { NodeLib } from './NodeLib';
-import { Wallet } from './Wallet';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Offline } from './Offline';
+import { getNodeLib } from 'selectors/config';
+import { getWallet } from 'selectors/wallet';
+import { INode } from 'libs/nodes/INode';
+import { AppState } from 'reducers';
 
-interface Props {
-  withNonce({
-    nonce
-  }: {
-    nonce: Promise<string | null>;
-  }): React.ReactElement<any> | null;
+interface OwnProps {
+  withNonce({ nonce }: { nonce: Promise<string | null> }): React.ReactElement<any> | null;
 }
+interface StateProps {
+  nodeLib: AppState['config']['node']['lib'];
+  wallet: AppState['wallet'];
+}
+
+function mapStateToProps(state: AppState) {
+  return {
+    nodeLib: getNodeLib(state),
+    wallet: getWallet(state)
+  };
+}
+
+class componentName extends Component<OwnProps & StateProps> {
+  public render() {
+    return <div />;
+  }
+}
+
+export default connect(mapStateToProps)(componentName);
 
 const nullPromise = { nonce: Promise.resolve(null) };
 export const Nonce: React.SFC<Props> = ({ withNonce }) => {
@@ -21,9 +39,7 @@ export const Nonce: React.SFC<Props> = ({ withNonce }) => {
             if (!wallet.inst) {
               return withNonce(nullPromise);
             } else {
-              const noncePromise = Promise.resolve(
-                wallet.inst.getAddressString()
-              )
+              const noncePromise = Promise.resolve(wallet.inst.getAddressString())
                 .then(address => {
                   return nodeLib.getTransactionCount(address);
                 })
@@ -37,10 +53,6 @@ export const Nonce: React.SFC<Props> = ({ withNonce }) => {
   );
 
   return (
-    <Offline
-      withOffline={({ offline }) =>
-        offline ? withNonce(nullPromise) : nonceGetter
-      }
-    />
+    <Offline withOffline={({ offline }) => (offline ? withNonce(nullPromise) : nonceGetter)} />
   );
 };

@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Expandable, ExpandHandler } from 'components/ui';
-import { Query, GetTransactionFields } from 'components/renderCbs';
+import { Query } from 'components/renderCbs';
 import translate from 'translations';
 import { donationAddressMap } from 'config/data';
+import { getData } from 'selectors/transaction';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 
-interface Props {
+interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>);
 }
+interface StateProps {
+  data: AppState['transaction']['fields']['data'];
+}
+
+type Props = OwnProps & StateProps;
 
 const expander = (expandHandler: ExpandHandler) => (
   <a onClick={expandHandler}>
@@ -14,17 +22,18 @@ const expander = (expandHandler: ExpandHandler) => (
   </a>
 );
 
-export const DataInput: React.SFC<Props> = ({ onChange }) => (
-  <Expandable expandLabel={expander}>
-    <div className="form-group">
-      <label>{translate('TRANS_data')}</label>
-      <GetTransactionFields
-        withFieldValues={({ data: { raw, valid } }) => (
+class DataInputClass extends Component<Props> {
+  public render() {
+    const { data: { raw, value }, onChange } = this.props;
+    return (
+      <Expandable expandLabel={expander}>
+        <div className="form-group">
+          <label>{translate('TRANS_data')}</label>
           <Query
             params={['readOnly']}
             withQuery={({ readOnly }) => (
               <input
-                className={`form-control ${valid ? 'is-valid' : 'is-invalid'}`}
+                className={`form-control ${!!value ? 'is-valid' : 'is-invalid'}`}
                 type="text"
                 placeholder={donationAddressMap.ETH}
                 value={raw}
@@ -33,8 +42,10 @@ export const DataInput: React.SFC<Props> = ({ onChange }) => (
               />
             )}
           />
-        )}
-      />
-    </div>
-  </Expandable>
-);
+        </div>
+      </Expandable>
+    );
+  }
+}
+
+export const DataInput = connect((state: AppState) => ({ data: getData(state) }))(DataInputClass);

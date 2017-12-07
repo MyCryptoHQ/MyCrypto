@@ -1,22 +1,36 @@
 // COMPONENTS
 import TabSection from 'containers/TabSection';
-import {
-  Fields,
-  UnavailableWallets,
-  SideBar,
-  OfflineAwareUnlockHeader
-} from './components';
+import { Fields, UnavailableWallets, SideBar, OfflineAwareUnlockHeader } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
 // LIBS
 import React from 'react';
 // REDUX
 import { connect } from 'react-redux';
-import { resetWallet } from 'actions/wallet';
-import { Wallet } from 'components/renderCbs';
+import { resetWallet, TResetWallet } from 'actions/wallet';
 // UTILS
 //import { formatGasLimit } from 'utils/formatters';
 
-import { initialState, Props, State } from './typings';
+import { getWalletInst } from 'selectors/wallet';
+import { AppState } from 'reducers';
+
+interface State {
+  generateDisabled: boolean;
+  generateTxProcessing: boolean;
+}
+
+interface StateProps {
+  wallet: AppState['wallet']['inst'];
+}
+interface DispatchProps {
+  resetWallet: TResetWallet;
+}
+
+export type Props = StateProps & DispatchProps;
+
+export const initialState: State = {
+  generateDisabled: true,
+  generateTxProcessing: false
+};
 
 export class SendTransaction extends React.Component<Props, State> {
   public state: State = initialState;
@@ -26,14 +40,8 @@ export class SendTransaction extends React.Component<Props, State> {
       <TabSection>
         <section className="Tab-content">
           <OfflineAwareUnlockHeader />
-          <Wallet
-            withWallet={({ wallet }) => (
-              <NavigationPrompt
-                when={!!wallet.inst}
-                onConfirm={this.props.resetWallet}
-              />
-            )}
-          />
+
+          <NavigationPrompt when={!!this.props.wallet} onConfirm={this.props.resetWallet} />
 
           <div className="row">
             {/* Send Form */}
@@ -47,6 +55,6 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 }
 
-export default connect(null, {
+export default connect((state: AppState) => ({ wallet: getWalletInst(state) }), {
   resetWallet
 })(SendTransaction);

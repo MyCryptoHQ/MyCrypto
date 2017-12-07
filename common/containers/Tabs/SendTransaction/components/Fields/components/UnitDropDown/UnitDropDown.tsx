@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import {
-  SetDecimalMetaField,
-  SetUnitMetaField,
-  TokenQuery
-} from 'components/renderCbs';
+import { SetDecimalMetaField, SetUnitMetaField, TokenQuery } from 'components/renderCbs';
 import { ConditionalUnitDropdown } from './components';
 import { MergedToken } from 'selectors/wallet';
-import { SetDecimalMetaAction, SetUnitMetaAction } from 'actions/transaction';
+import { SetUnitMetaAction } from 'actions/transaction';
 
 export const UnitDropDown: React.SFC<{}> = () => (
   <TokenQuery
@@ -44,11 +40,6 @@ class DefaultUnitDropDown extends Component<Props, {}> {
   }
   public render() {
     const { decimalSetter, unitSetter } = this.props;
-    return (
-      <ConditionalUnitDropdown
-        onDecimalChange={decimalSetter}
-        onUnitChange={unitSetter}
-      />
-    );
+    return <ConditionalUnitDropdown onDecimalChange={decimalSetter} onUnitChange={unitSetter} />;
   }
 }

@@ -2,7 +2,7 @@ import { getWalletInst } from 'selectors/wallet';
 import { IFullWallet } from 'libs/wallet';
 import { getGasPriceGwei, getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
-import { toWei, getDecimal, Wei } from 'libs/units';
+import { toWei, getDecimalFromEtherUnit, Wei } from 'libs/units';
 import {
   signTransactionFailed,
   SignWeb3TransactionRequestedAction,
@@ -48,7 +48,7 @@ function* getGasPrice() {
   const gasPriceInGwei: number = yield select(getGasPriceGwei);
   // should verify chainId and gas price here
 
-  const gweiDecimal: number = yield call(getDecimal, 'gwei');
+  const gweiDecimal: number = yield call(getDecimalFromEtherUnit, 'gwei');
   const gasPriceWei: Wei = yield call(toWei, gasPriceInGwei.toString(), gweiDecimal);
 
   const gasPriceBuffer: Buffer = yield call(toBuffer, gasPriceWei);

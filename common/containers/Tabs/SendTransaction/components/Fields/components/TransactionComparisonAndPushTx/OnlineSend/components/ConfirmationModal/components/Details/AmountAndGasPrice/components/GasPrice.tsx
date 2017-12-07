@@ -1,5 +1,5 @@
 import React from 'react';
-import { getTransactionFields, transaction } from 'libs/transaction';
+import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { SerializedTransaction } from 'components/renderCbs';
 import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
@@ -7,7 +7,7 @@ import { Wei } from 'libs/units';
 export const GasPrice: React.SFC<{}> = () => (
   <SerializedTransaction
     withSerializedTransaction={serializedTransaction => {
-      const transactionInstance = transaction(serializedTransaction);
+      const transactionInstance = makeTransaction(serializedTransaction);
       const { gasPrice } = getTransactionFields(transactionInstance);
 
       return (

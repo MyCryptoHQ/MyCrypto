@@ -1,23 +1,25 @@
-import { isPositiveInteger } from 'utils/helpers';
 import { NonceInput } from './NonceInput';
-import { SetNonceFieldAction } from 'actions/transaction';
+import { inputNonce, TInputNonce } from 'actions/transaction';
 
-import { Nonce } from 'libs/units';
 import React from 'react';
+import { connect } from 'react-redux';
 
-export interface Props {
+interface OwnProps {
   defaultNonce: Promise<string | null>;
-  setter(payload: SetNonceFieldAction['payload']): void;
+}
+interface DispatchProps {
+  inputNonce: TInputNonce;
 }
 
-export class DefaultNonceInput extends React.Component<Props, {}> {
+type Props = OwnProps & DispatchProps;
+
+class DefaultNonceInputClass extends React.Component<Props, {}> {
   public async componentDidMount() {
-    const { defaultNonce, setter } = this.props;
+    const { defaultNonce } = this.props;
     const networkNonce = await defaultNonce;
 
     if (networkNonce) {
-      const nonce = Nonce(networkNonce);
-      setter({ raw: nonce.toString(), value: nonce });
+      this.props.inputNonce(networkNonce);
     }
   }
 
@@ -27,19 +29,8 @@ export class DefaultNonceInput extends React.Component<Props, {}> {
 
   private setNonce = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    const validNonce = this.isValidNonce(value);
-    this.props.setter({ raw: value, value: validNonce ? Nonce(value) : null });
-  };
-
-  private isValidNonce = (value: string | null | undefined): boolean => {
-    let valid;
-    if (value === '0') {
-      valid = true;
-    } else if (!value) {
-      valid = false;
-    } else {
-      valid = isPositiveInteger(+value);
-    }
-    return valid;
+    this.props.inputNonce(value);
   };
 }
+
+export const DefaultNonceInput = connect(null, { inputNonce })(DefaultNonceInputClass);

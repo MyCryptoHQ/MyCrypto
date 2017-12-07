@@ -2,12 +2,8 @@ import React from 'react';
 import Dropdown from 'components/ui/Dropdown';
 import { withConditional } from 'components/hocs';
 import { TokenBalance } from 'selectors/wallet';
-import { getDecimal } from 'libs/units';
-import {
-  Query,
-  GetTransactionMetaFields,
-  TokenBalances
-} from 'components/renderCbs';
+import { getDecimalFromEtherUnit } from 'libs/units';
+import { Query, GetTransactionMetaFields, TokenBalances } from 'components/renderCbs';
 
 interface Props {
   onUnitChange(value: string): void;
@@ -17,10 +13,7 @@ interface Props {
 const StringDropdown = Dropdown as new () => Dropdown<string>;
 const ConditionalStringDropDown = withConditional(StringDropdown);
 
-export const ConditionalUnitDropdown: React.SFC<Props> = ({
-  onUnitChange,
-  onDecimalChange
-}) => (
+export const ConditionalUnitDropdown: React.SFC<Props> = ({ onUnitChange, onDecimalChange }) => (
   <div className="input-group-btn">
     <TokenBalances
       nonZeroBalances={true}
@@ -35,11 +28,7 @@ export const ConditionalUnitDropdown: React.SFC<Props> = ({
                   value={unit}
                   condition={!readOnly}
                   conditionalProps={{
-                    onChange: handleOnChange(
-                      onUnitChange,
-                      onDecimalChange,
-                      tokens
-                    )
+                    onChange: handleOnChange(onUnitChange, onDecimalChange, tokens)
                   }}
                   ariaLabel={'dropdown'}
                 />
@@ -65,7 +54,7 @@ const handleOnChange = (
     onDecimalChange(token.decimal);
   } else if (value === 'ether') {
     onUnitChange(value);
-    onDecimalChange(getDecimal(value));
+    onDecimalChange(getDecimalFromEtherUnit(value));
   } else {
     throw Error('Invalid unit selected in drop down');
   }

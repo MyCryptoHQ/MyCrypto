@@ -1,9 +1,6 @@
 import React from 'react';
-import { getTransactionFields, transaction } from 'libs/transaction';
-import {
-  SerializedTransaction,
-  GetTransactionMetaFields
-} from 'components/renderCbs';
+import { getTransactionFields, makeTransaction } from 'libs/transaction';
+import { SerializedTransaction, GetTransactionMetaFields } from 'components/renderCbs';
 import { Aux } from 'components/ui';
 import ERC20 from 'libs/erc20';
 import { From } from '../From';
@@ -13,7 +10,7 @@ import { From } from '../From';
 export const Addresses: React.SFC<{}> = () => (
   <SerializedTransaction
     withSerializedTransaction={serializedTransaction => {
-      const transactionInstance = transaction(serializedTransaction);
+      const transactionInstance = makeTransaction(serializedTransaction);
       const { to, data } = getTransactionFields(transactionInstance);
 
       return (

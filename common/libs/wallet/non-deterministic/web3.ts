@@ -1,4 +1,4 @@
-import { getTransactionFields, transaction } from 'libs/transaction';
+import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
 import { networkIdToName } from 'libs/values';
 import { bufferToHex } from 'ethereumjs-util';
@@ -37,7 +37,7 @@ export default class Web3Wallet implements IFullWallet {
   }
 
   public async sendTransaction(serializedTransaction: string): Promise<string> {
-    const transactionInstance = transaction(serializedTransaction);
+    const transactionInstance = makeTransaction(serializedTransaction);
     const { to, value, gasLimit: gas, gasPrice, data, nonce, chainId } = getTransactionFields(
       transactionInstance
     );

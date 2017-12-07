@@ -1,44 +1,27 @@
 import React, { Component } from 'react';
-import {
-  GasQuery,
-  Transaction,
-  EstimateGas,
-  SetTransactionField
-} from 'components/renderCbs';
-import { Wei } from 'libs/units';
+import { GasQuery } from 'components/renderCbs';
 import { GasInput } from './GasInput';
-import { SetGasLimitFieldAction } from 'actions/transaction';
-import EthTx from 'ethereumjs-tx';
+import { inputGasLimit, TInputGasLimit } from 'actions/transaction';
+import { connect } from 'react-redux';
 
 const defaultGasLimit = '21000';
 
-interface Props {
+interface DispatchProps {
+  inputGasLimit: TInputGasLimit;
+}
+interface OwnProps {
   gasLimit: string | null;
-  transaction: EthTx | null;
-  setter(payload: SetGasLimitFieldAction['payload']): void;
-  estimator(transaction: EthTx): void;
 }
 
-class GasLimitField extends Component<Props, {}> {
+type Props = DispatchProps & OwnProps;
+
+class GasLimitFieldClass extends Component<Props, {}> {
   public componentDidMount() {
-    const { gasLimit, setter } = this.props;
+    const { gasLimit } = this.props;
     if (gasLimit) {
-      setter({ raw: gasLimit, value: Wei(gasLimit) });
+      this.props.inputGasLimit(gasLimit);
     } else {
-      setter({ raw: defaultGasLimit, value: Wei(defaultGasLimit) });
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: Props) {
-    const { transaction: nextT, estimator } = nextProps;
-    const { transaction: prevT } = this.props;
-
-    if (!nextT) {
-      return;
-    }
-
-    if (this.shouldEstimateGas(nextT, prevT)) {
-      estimator(nextT);
+      this.props.inputGasLimit(defaultGasLimit);
     }
   }
 
@@ -48,48 +31,14 @@ class GasLimitField extends Component<Props, {}> {
 
   private setGas = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    const validGasLimit = isFinite(parseFloat(value)) && parseFloat(value) > 0;
-    this.props.setter({ raw: value, value: validGasLimit ? Wei(value) : null });
+    this.props.inputGasLimit(value);
   };
-
-  private shouldEstimateGas(nextT: EthTx, prevT: EthTx | null) {
-    /*
-    * Data and address destination (creation address) are the two parameters that change gas estimation
-    * Otherwise, we let user input override everything
-    */
-    if (!prevT) {
-      return true;
-    }
-    const sameData = nextT.data.toString() === prevT.data.toString();
-    const sameAddress = nextT.to.toString() === prevT.to.toString();
-    return !(sameData && sameAddress);
-  }
 }
 
+const GasLimitField = connect(null, { inputGasLimit })(GasLimitFieldClass);
+
 const DefaultGasField: React.SFC<{}> = () => (
-  <Transaction
-    withTransaction={({ transaction }) => (
-      <GasQuery
-        withQuery={({ gasLimit }) => (
-          <SetTransactionField
-            name="gasLimit"
-            withFieldSetter={setter => (
-              <EstimateGas
-                withEstimate={({ estimate }) => (
-                  <GasLimitField
-                    gasLimit={gasLimit}
-                    transaction={transaction}
-                    setter={setter}
-                    estimator={estimate}
-                  />
-                )}
-              />
-            )}
-          />
-        )}
-      />
-    )}
-  />
+  <GasQuery withQuery={({ gasLimit }) => <GasLimitField gasLimit={gasLimit} />} />
 );
 
 export { DefaultGasField as GasField };

@@ -53,3 +53,5 @@ export function getOffline(state: AppState): boolean {
 export function getForceOffline(state: AppState): boolean {
   return state.config.forceOffline;
 }
+
+export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);

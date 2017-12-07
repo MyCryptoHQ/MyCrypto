@@ -1,19 +1,34 @@
 import { UnlockHeader } from 'components/ui';
-import React from 'react';
+import React, { Component } from 'react';
 import translate from 'translations';
-import { Offline } from 'components/renderCbs';
+import { isAnyOffline } from 'selectors/config';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 
 export const OfflineAwareUnlockHeader: React.SFC<{}> = () => (
-  <UnlockHeader title={title} allowReadOnly={true} />
+  <UnlockHeader title={<Title />} allowReadOnly={true} />
 );
 
-const title = (
-  <div>
-    {translate('NAV_SendEther')}
-    <Offline
-      withOffline={({ forceOffline, offline }) => (offline || forceOffline ? offlineTitle : null)}
-    />
-  </div>
-);
+interface StateProps {
+  shouldDisplayOffline: boolean;
+}
 
-const offlineTitle = <span style={{ color: 'red' }}> (Offline)</span>;
+class TitleClass extends Component<StateProps> {
+  public render() {
+    const { shouldDisplayOffline } = this.props;
+    const offlineTitle = shouldDisplayOffline ? (
+      <span style={{ color: 'red' }}> (Offline)</span>
+    ) : null;
+    return (
+      <div>
+        {translate('NAV_SendEther')}
+        {offlineTitle}
+        />
+      </div>
+    );
+  }
+}
+
+const Title = connect((state: AppState) => ({
+  shouldDisplayOffline: isAnyOffline(state)
+}))(TitleClass);

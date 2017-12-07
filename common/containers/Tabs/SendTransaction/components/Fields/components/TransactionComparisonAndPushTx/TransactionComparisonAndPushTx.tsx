@@ -1,16 +1,12 @@
 import React from 'react';
 import translate from 'translations';
 import { Aux } from 'components/ui';
-import { getTransactionFields, transaction } from 'libs/transaction';
+import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { OfflineBroadcast } from './OfflineBroadcast';
 import { SerializedTransaction } from 'components/renderCbs';
 import { OnlineSend } from './OnlineSend';
 const getStringifiedTx = (serializedTransaction: string) =>
-  JSON.stringify(
-    getTransactionFields(transaction(serializedTransaction)),
-    null,
-    2
-  );
+  JSON.stringify(getTransactionFields(makeTransaction(serializedTransaction)), null, 2);
 
 export const TransactionComparisonAndPushTx: React.SFC<{}> = () => (
   <SerializedTransaction
