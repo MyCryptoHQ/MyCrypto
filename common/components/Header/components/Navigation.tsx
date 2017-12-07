@@ -10,7 +10,7 @@ const tabs = [
   },
 
   {
-    name: 'Account',
+    name: 'Account View & Send',
     to: '/account'
   },
   {
@@ -32,10 +32,6 @@ const tabs = [
   {
     name: 'Broadcast Transaction',
     to: '/pushTx'
-  },
-  {
-    name: 'NAV_Utilities',
-    to: '/utilities'
   },
   {
     name: 'NAV_Help',

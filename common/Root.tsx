@@ -8,10 +8,8 @@ import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import Help from 'containers/Tabs/Help';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
-import ViewWallet from 'containers/Tabs/ViewWallet';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
-import RestoreKeystore from 'containers/Tabs/RestoreKeystore';
 
 // TODO: fix this
 interface Props {
@@ -37,7 +35,6 @@ export default class Root extends Component<Props, {}> {
             <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
-            <Route path="/utilities" component={RestoreKeystore} />
             <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
             <Route path="/pushTx" component={BroadcastTx} />
             <LegacyRoutes />
@@ -71,7 +68,7 @@ const LegacyRoutes = withRouter(props => {
         history.push('/ens');
         break;
       case '#view-wallet-info':
-        history.push('/view-wallet');
+        history.push('/account/info');
         break;
       case '#check-tx-status':
         history.push('/check-tx-status');
