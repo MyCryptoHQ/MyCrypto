@@ -9,7 +9,9 @@ import { signing } from './signing';
 import { broadcast } from './broadcast';
 import { from } from './from';
 import { fields } from './fields';
+import { sendEverything } from './sendEverything';
 export default {
+  sendEverything,
   fields,
   from,
   broadcast,

@@ -5,6 +5,7 @@ export * from './network';
 export * from './sign';
 export * from './swap';
 export * from './current';
+export * from './sendEverything';
 
 import { TypeKeys } from '../constants';
 import { BroadcastAction } from './broadcast';
@@ -14,6 +15,7 @@ import { NetworkAction } from './network';
 import { SignAction } from './sign';
 import { SwapAction } from './swap';
 import { CurrentAction } from './current';
+import { SendEverythingAction } from './sendEverything';
 
 export interface ResetAction {
   type: TypeKeys.RESET;
@@ -28,4 +30,5 @@ export type TransactionAction =
   | SignAction
   | SwapAction
   | ResetAction
-  | CurrentAction;
+  | CurrentAction
+  | SendEverythingAction;
