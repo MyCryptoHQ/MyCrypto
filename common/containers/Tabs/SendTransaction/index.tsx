@@ -24,7 +24,12 @@ export class SendTransaction extends React.Component<Props, State> {
           <Wallet
             withWallet={({ wallet }) => (
               <div>
-                {wallet.inst && <SubTabs wallet={wallet.inst} activeTab={activeTab} />}
+                {wallet.inst && (
+                  <SubTabs
+                    wallet={wallet.inst}
+                    activeTab={wallet.inst.isReadOnly ? 'info' : activeTab}
+                  />
+                )}
                 <NavigationPrompt when={!!wallet.inst} onConfirm={this.props.resetWallet} />
               </div>
             )}

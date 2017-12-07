@@ -17,6 +17,12 @@
       &.is-active {
         border-bottom-color: $ether-blue;
       }
+
+      &.is-disabled {
+        color: $gray-light;
+        pointer-events: none;
+        text-decoration: line-through;
+      }
     }
   }
 }
