@@ -23,31 +23,22 @@ class NavigationLink extends React.Component<Props, {}> {
   public render() {
     const { link } = this.props;
     const { location } = this.injected;
+    const locationPaths = location.pathname.split('/');
+    const linkPaths = link.to ? link.to.split('/') : [];
     const linkClasses = classnames({
       'NavigationLink-link': true,
       'is-disabled': !link.to,
-      'is-active':
-        location.pathname === link.to ||
-        location.pathname.substring(1) === link.to
+      'is-active': locationPaths[1] === linkPaths[1]
     });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
     const linkEl =
       link.external || !link.to ? (
-        <a
-          className={linkClasses}
-          href={link.to}
-          aria-label={linkLabel}
-          target="_blank"
-        >
+        <a className={linkClasses} href={link.to} aria-label={linkLabel} target="_blank">
           {translate(link.name)}
         </a>
       ) : (
-        <Link
-          className={linkClasses}
-          to={(link as any).to}
-          aria-label={linkLabel}
-        >
+        <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>
           {translate(link.name)}
         </Link>
       );
