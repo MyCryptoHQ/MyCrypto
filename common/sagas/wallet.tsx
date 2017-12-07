@@ -8,6 +8,7 @@ import {
   setBalanceRejected,
   setTokenBalances,
   setWallet,
+  setWalletConfig,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
   UnlockPrivateKeyAction
@@ -27,19 +28,12 @@ import {
 import { NODES, initWeb3Node } from 'config/data';
 import React from 'react';
 import { SagaIterator } from 'redux-saga';
-import {
-  apply,
-  call,
-  fork,
-  put,
-  select,
-  takeEvery,
-  take
-} from 'redux-saga/effects';
+import { apply, call, fork, put, select, takeEvery, take } from 'redux-saga/effects';
 import { getNetworkConfig, getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import translate from 'translations';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
+import { loadWalletConfig } from 'utils/localStorage';
 
 export function* updateAccountBalance(): SagaIterator {
   try {
@@ -70,10 +64,7 @@ export function* updateTokenBalances(): SagaIterator {
     const address = yield apply(wallet, wallet.getAddressString);
 
     // network request
-    const tokenBalances = yield apply(node, node.getTokenBalances, [
-      address,
-      tokens
-    ]);
+    const tokenBalances = yield apply(node, node.getTokenBalances, [address, tokens]);
 
     yield put(
       setTokenBalances(
@@ -94,9 +85,21 @@ export function* updateBalances(): SagaIterator {
   yield fork(updateTokenBalances);
 }
 
-export function* unlockPrivateKey(
-  action: UnlockPrivateKeyAction
-): SagaIterator {
+export function* handleNewWallet(): SagaIterator {
+  yield fork(updateBalances);
+  yield fork(updateWalletConfig);
+}
+
+export function* updateWalletConfig(): SagaIterator {
+  const wallet: null | IWallet = yield select(getWalletInst);
+  if (!wallet) {
+    return;
+  }
+  const config = yield call(loadWalletConfig, wallet);
+  yield put(setWalletConfig(config));
+}
+
+export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator {
   let wallet: IWallet | null = null;
   const { key, password } = action.payload;
 
@@ -147,8 +150,7 @@ export function* unlockWeb3(): SagaIterator {
     yield put(changeNodeIntent('web3'));
     yield take(
       action =>
-        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE &&
-        action.payload.nodeSelection === 'web3'
+        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
     );
 
     const network = NODES.web3.network;
@@ -181,10 +183,7 @@ export function* broadcastTx(action: BroadcastTxRequestedAction): SagaIterator {
     yield put(
       showNotification(
         'success',
-        <TransactionSucceeded
-          txHash={txHash}
-          blockExplorer={network.blockExplorer}
-        />,
+        <TransactionSucceeded txHash={txHash} blockExplorer={network.blockExplorer} />,
         0
       )
     );
@@ -201,7 +200,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery('WALLET_UNLOCK_KEYSTORE', unlockKeystore),
     takeEvery('WALLET_UNLOCK_MNEMONIC', unlockMnemonic),
     takeEvery('WALLET_UNLOCK_WEB3', unlockWeb3),
-    takeEvery('WALLET_SET', updateBalances),
+    takeEvery('WALLET_SET', handleNewWallet),
     takeEvery('CUSTOM_TOKEN_ADD', updateTokenBalances),
     takeEvery('WALLET_BROADCAST_TX_REQUESTED', broadcastTx)
   ];

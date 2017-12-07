@@ -1,17 +1,13 @@
 import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
-import {
-  SetTokenBalancesAction,
-  SetWalletAction,
-  WalletAction,
-  TypeKeys
-} from 'actions/wallet';
+import { SetTokenBalancesAction, SetWalletAction, WalletAction, TypeKeys } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
 import { BroadcastTransactionStatus } from 'libs/transaction';
-import { IWallet, Balance } from 'libs/wallet';
+import { IWallet, Balance, WalletConfig } from 'libs/wallet';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 
 export interface State {
   inst?: IWallet | null;
+  config?: WalletConfig | null;
   // in ETH
   balance: Balance | { wei: null };
   tokens: {
@@ -25,6 +21,7 @@ export interface State {
 
 export const INITIAL_STATE: State = {
   inst: null,
+  config: null,
   balance: { isPending: false, wei: null },
   tokens: {},
   transactions: []
@@ -34,6 +31,7 @@ function setWallet(state: State, action: SetWalletAction): State {
   return {
     ...state,
     inst: action.payload,
+    config: null,
     balance: INITIAL_STATE.balance,
     tokens: INITIAL_STATE.tokens
   };
@@ -43,10 +41,7 @@ function setBalancePending(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: true } };
 }
 
-function setBalanceFullfilled(
-  state: State,
-  action: SetBalanceFullfilledAction
-): State {
+function setBalanceFullfilled(state: State, action: SetBalanceFullfilledAction): State {
   return {
     ...state,
     balance: { wei: action.payload, isPending: false }
@@ -81,10 +76,7 @@ function handleTxBroadcastCompleted(
   signedTx: string,
   successfullyBroadcast: boolean
 ): BroadcastTransactionStatus[] {
-  const existingTx = getTxFromBroadcastTransactionStatus(
-    state.transactions,
-    signedTx
-  );
+  const existingTx = getTxFromBroadcastTransactionStatus(state.transactions, signedTx);
   if (existingTx) {
     const isBroadcasting = false;
     return handleUpdateTxArray(
@@ -99,10 +91,7 @@ function handleTxBroadcastCompleted(
 }
 
 function handleBroadcastTxRequested(state: State, signedTx: string) {
-  const existingTx = getTxFromBroadcastTransactionStatus(
-    state.transactions,
-    signedTx
-  );
+  const existingTx = getTxFromBroadcastTransactionStatus(state.transactions, signedTx);
   const isBroadcasting = true;
   const successfullyBroadcast = false;
   if (!existingTx) {
@@ -123,10 +112,7 @@ function handleBroadcastTxRequested(state: State, signedTx: string) {
   }
 }
 
-export function wallet(
-  state: State = INITIAL_STATE,
-  action: WalletAction
-): State {
+export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
     case TypeKeys.WALLET_SET:
       return setWallet(state, action);
@@ -148,20 +134,17 @@ export function wallet(
     case TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED:
       return {
         ...state,
-        transactions: handleTxBroadcastCompleted(
-          state,
-          action.payload.signedTx,
-          true
-        )
+        transactions: handleTxBroadcastCompleted(state, action.payload.signedTx, true)
       };
     case TypeKeys.WALLET_BROADCAST_TX_FAILED:
       return {
         ...state,
-        transactions: handleTxBroadcastCompleted(
-          state,
-          action.payload.signedTx,
-          false
-        )
+        transactions: handleTxBroadcastCompleted(state, action.payload.signedTx, false)
+      };
+    case TypeKeys.WALLET_SET_CONFIG:
+      return {
+        ...state,
+        config: action.payload
       };
     default:
       return state;
