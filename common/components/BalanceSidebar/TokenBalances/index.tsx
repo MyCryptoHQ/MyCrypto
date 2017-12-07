@@ -45,7 +45,10 @@ export default class TokenBalances extends React.Component<Props, {}> {
       );
     } else if (!walletTokens) {
       content = (
-        <button className="btn btn-primary btn-block" onClick={scanWalletForTokens}>
+        <button
+          className="TokenBalances-scan btn btn-primary btn-block"
+          onClick={scanWalletForTokens}
+        >
           {translate('Scan for my Tokens')}
         </button>
       );
