@@ -1,36 +1,38 @@
-import { Token } from 'config/data';
 import React from 'react';
 import { TokenBalance } from 'selectors/wallet';
+import { Token } from 'config/data';
 import translate from 'translations';
-import AddCustomTokenForm from './AddCustomTokenForm';
-import TokenRows from './TokenRows';
+import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';
 import './index.scss';
 
 interface Props {
   tokens: Token[];
+  walletTokens: string[] | null;
   tokenBalances: TokenBalance[];
   isTokensLoading: boolean;
+  hasSavedWalletTokens: boolean;
   tokensError: string | null;
+  scanWalletForTokens(): any;
+  setWalletTokens(tokens: string[]): any;
   onAddCustomToken(token: Token): any;
   onRemoveCustomToken(symbol: string): any;
 }
 
-interface State {
-  showAllTokens: boolean;
-  showCustomTokenForm: boolean;
-}
-export default class TokenBalances extends React.Component<Props, State> {
-  public state = {
-    showAllTokens: false,
-    showCustomTokenForm: false
-  };
-
+export default class TokenBalances extends React.Component<Props, {}> {
   public render() {
-    const { tokens, tokenBalances, isTokensLoading, tokensError } = this.props;
-    const shownTokens = tokenBalances.filter(
-      token => !token.balance.eqn(0) || token.custom || this.state.showAllTokens
-    );
+    const {
+      tokens,
+      walletTokens,
+      tokenBalances,
+      hasSavedWalletTokens,
+      isTokensLoading,
+      tokensError,
+      scanWalletForTokens,
+      setWalletTokens,
+      onAddCustomToken,
+      onRemoveCustomToken
+    } = this.props;
 
     let content;
     if (tokensError) {
@@ -41,30 +43,25 @@ export default class TokenBalances extends React.Component<Props, State> {
           <Spinner size="x3" />
         </div>
       );
-    } else {
+    } else if (!walletTokens) {
       content = (
-        <div>
-          <TokenRows tokens={shownTokens} onRemoveCustomToken={this.props.onRemoveCustomToken} />
+        <button className="btn btn-primary btn-block" onClick={scanWalletForTokens}>
+          {translate('Scan for my Tokens')}
+        </button>
+      );
+    } else {
+      const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
 
-          {this.state.showCustomTokenForm ? (
-            <div className="TokenBalances-form">
-              <AddCustomTokenForm
-                tokens={tokens}
-                onSave={this.addCustomToken}
-                toggleForm={this.toggleShowCustomTokenForm}
-              />
-            </div>
-          ) : (
-            <div className="TokenBalances-buttons">
-              <button className="btn btn-default btn-xs" onClick={this.toggleShowAllTokens}>
-                {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
-              </button>{' '}
-              <button className="btn btn-default btn-xs" onClick={this.toggleShowCustomTokenForm}>
-                <span>{translate('SEND_custom')}</span>
-              </button>
-            </div>
-          )}
-        </div>
+      content = (
+        <Balances
+          allTokens={tokens}
+          tokenBalances={shownBalances}
+          hasSavedWalletTokens={hasSavedWalletTokens}
+          scanWalletForTokens={scanWalletForTokens}
+          setWalletTokens={setWalletTokens}
+          onAddCustomToken={onAddCustomToken}
+          onRemoveCustomToken={onRemoveCustomToken}
+        />
       );
     }
 
@@ -75,25 +72,4 @@ export default class TokenBalances extends React.Component<Props, State> {
       </section>
     );
   }
-
-  public toggleShowAllTokens = () => {
-    this.setState(state => {
-      return {
-        showAllTokens: !state.showAllTokens
-      };
-    });
-  };
-
-  public toggleShowCustomTokenForm = () => {
-    this.setState(state => {
-      return {
-        showCustomTokenForm: !state.showCustomTokenForm
-      };
-    });
-  };
-
-  public addCustomToken = (token: Token) => {
-    this.props.onAddCustomToken(token);
-    this.setState({ showCustomTokenForm: false });
-  };
 }

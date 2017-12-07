@@ -88,6 +88,22 @@ export function setTokenBalancesRejected(): types.SetTokenBalancesRejectedAction
   };
 }
 
+export type TScanWalletForTokens = typeof scanWalletForTokens;
+export function scanWalletForTokens(wallet: IWallet): types.ScanWalletForTokensAction {
+  return {
+    type: TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS,
+    payload: wallet
+  };
+}
+
+export type TSetWalletTokens = typeof setWalletTokens;
+export function setWalletTokens(tokens: string[]): types.SetWalletTokensAction {
+  return {
+    type: TypeKeys.WALLET_SET_WALLET_TOKENS,
+    payload: tokens
+  };
+}
+
 export type TResetWallet = typeof resetWallet;
 export function resetWallet(): types.ResetWalletAction {
   return {

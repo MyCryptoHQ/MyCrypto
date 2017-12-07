@@ -5,6 +5,11 @@
     margin-top: 0;
   }
 
+  &-help {
+    font-size: $font-size-small;
+    margin-bottom: 15px;
+  }
+
   &-loader {
     padding: 25px 0;
     text-align: center;
@@ -17,5 +22,14 @@
 
   &-form {
     margin-top: $space;
+  }
+
+  &-buttons {
+    &-help {
+      padding-top: 10px;
+      text-align: center;
+      font-size: $font-size-xs;
+      color: $gray;
+    }
   }
 }

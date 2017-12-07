@@ -3,6 +3,7 @@ import {
   SetTokenBalancesFulfilledAction,
   SetWalletAction,
   WalletAction,
+  SetWalletConfigAction,
   TypeKeys
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
@@ -21,6 +22,7 @@ export interface State {
   };
   isTokensLoading: boolean;
   tokensError: string | null;
+  hasSavedWalletTokens: boolean;
 }
 
 export const INITIAL_STATE: State = {
@@ -29,7 +31,8 @@ export const INITIAL_STATE: State = {
   balance: { isPending: false, wei: null },
   tokens: {},
   isTokensLoading: false,
-  tokensError: null
+  tokensError: null,
+  hasSavedWalletTokens: true
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
@@ -60,6 +63,7 @@ function setBalanceRejected(state: State): State {
 function setTokenBalancesPending(state: State): State {
   return {
     ...state,
+    tokens: {},
     isTokensLoading: true,
     tokensError: null
   };
@@ -68,7 +72,7 @@ function setTokenBalancesPending(state: State): State {
 function setTokenBalancesFulfilled(state: State, action: SetTokenBalancesFulfilledAction): State {
   return {
     ...state,
-    tokens: { ...state.tokens, ...action.payload },
+    tokens: action.payload,
     isTokensLoading: false
   };
 }
@@ -78,6 +82,27 @@ function setTokenBalancesRejected(state: State): State {
     ...state,
     isTokensLoading: false,
     tokensError: 'Failed to fetch token values'
+  };
+}
+
+function scanWalletForTokens(state: State): State {
+  return {
+    ...state,
+    hasSavedWalletTokens: false
+  };
+}
+
+function setWalletTokens(state: State): State {
+  return {
+    ...state,
+    hasSavedWalletTokens: true
+  };
+}
+
+function setWalletConfig(state: State, action: SetWalletConfigAction): State {
+  return {
+    ...state,
+    config: action.payload
   };
 }
 
@@ -99,11 +124,12 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setTokenBalancesFulfilled(state, action);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED:
       return setTokenBalancesRejected(state);
+    case TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS:
+      return scanWalletForTokens(state);
+    case TypeKeys.WALLET_SET_WALLET_TOKENS:
+      return setWalletTokens(state);
     case TypeKeys.WALLET_SET_CONFIG:
-      return {
-        ...state,
-        config: action.payload
-      };
+      return setWalletConfig(state, action);
     default:
       return state;
   }

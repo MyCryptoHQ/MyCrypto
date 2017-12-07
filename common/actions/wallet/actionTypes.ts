@@ -63,6 +63,16 @@ export interface SetTokenBalancesRejectedAction {
   type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED;
 }
 
+export interface ScanWalletForTokensAction {
+  type: TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS;
+  payload: IWallet;
+}
+
+export interface SetWalletTokensAction {
+  type: TypeKeys.WALLET_SET_WALLET_TOKENS;
+  payload: string[];
+}
+
 /*** Unlock Mnemonic ***/
 export interface MnemonicUnlockParams {
   phrase: string;
@@ -98,4 +108,6 @@ export type WalletAction =
   | SetTokenBalancesPendingAction
   | SetTokenBalancesFulfilledAction
   | SetTokenBalancesRejectedAction
+  | ScanWalletForTokensAction
+  | SetWalletTokensAction
   | SetWalletConfigAction;

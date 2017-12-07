@@ -39,17 +39,12 @@ export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
 export async function saveWalletConfig(
   wallet: IWallet,
   state: Partial<WalletConfig>
-): Promise<boolean> {
-  try {
-    const oldState = await loadWalletConfig(wallet);
-    const newState = { ...oldState, ...state };
-    const key = await getWalletConfigKey(wallet);
-    localStorage.setItem(key, JSON.stringify(newState));
-    return true;
-  } catch (err) {
-    console.error('Failed to save wallet state', err);
-    return false;
-  }
+): Promise<WalletConfig> {
+  const oldState = await loadWalletConfig(wallet);
+  const newState = { ...oldState, ...state };
+  const key = await getWalletConfigKey(wallet);
+  localStorage.setItem(key, JSON.stringify(newState));
+  return newState;
 }
 
 export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {

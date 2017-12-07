@@ -7,7 +7,7 @@ import NewTabLink from 'components/ui/NewTabLink';
 import './AddCustomTokenForm.scss';
 
 interface Props {
-  tokens: Token[];
+  allTokens: Token[];
   onSave(params: Token): void;
   toggleForm(): void;
 }
@@ -31,7 +31,7 @@ export default class AddCustomTokenForm extends React.Component<Props, State> {
     super(props);
     this.state = {
       ...this.state,
-      tokenSymbolLookup: this.generateSymbolLookup(props.tokens)
+      tokenSymbolLookup: this.generateSymbolLookup(props.allTokens)
     };
   }
 

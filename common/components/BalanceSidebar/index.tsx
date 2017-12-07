@@ -5,14 +5,20 @@ import {
   TRemoveCustomToken
 } from 'actions/customTokens';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import { fetchCCRates as dFetchCCRates, TFetchCCRates } from 'actions/rates';
+import { fetchCCRates, TFetchCCRates } from 'actions/rates';
+import {
+  scanWalletForTokens,
+  TScanWalletForTokens,
+  setWalletTokens,
+  TSetWalletTokens
+} from 'actions/wallet';
 import { NetworkConfig, Token } from 'config/data';
-import { IWallet, Balance } from 'libs/wallet';
+import { IWallet, Balance, WalletConfig } from 'libs/wallet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getAllTokens } from 'selectors/config';
-import { getTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
+import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
@@ -21,17 +27,21 @@ import OfflineToggle from './OfflineToggle';
 
 interface Props {
   wallet: IWallet;
+  walletConfig: WalletConfig;
   balance: Balance;
   network: NetworkConfig;
   tokens: Token[];
   tokenBalances: TokenBalance[];
   tokensError: AppState['wallet']['tokensError'];
   isTokensLoading: AppState['wallet']['isTokensLoading'];
+  hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
   showNotification: TShowNotification;
   addCustomToken: TAddCustomToken;
   removeCustomToken: TRemoveCustomToken;
+  scanWalletForTokens: TScanWalletForTokens;
+  setWalletTokens: TSetWalletTokens;
   fetchCCRates: TFetchCCRates;
 }
 
@@ -45,16 +55,18 @@ export class BalanceSidebar extends React.Component<Props, {}> {
   public render() {
     const {
       wallet,
+      walletConfig,
       balance,
       network,
       tokens,
       tokenBalances,
       tokensError,
       isTokensLoading,
+      hasSavedWalletTokens,
       rates,
-      ratesError,
-      fetchCCRates
+      ratesError
     } = this.props;
+
     if (!wallet) {
       return null;
     }
@@ -78,11 +90,15 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         content: (
           <TokenBalances
             tokens={tokens}
+            walletTokens={(walletConfig && walletConfig.tokens) || null}
             tokenBalances={tokenBalances}
             tokensError={tokensError}
             isTokensLoading={isTokensLoading}
+            hasSavedWalletTokens={hasSavedWalletTokens}
             onAddCustomToken={this.props.addCustomToken}
             onRemoveCustomToken={this.props.removeCustomToken}
+            scanWalletForTokens={this.scanWalletForTokens}
+            setWalletTokens={this.props.setWalletTokens}
           />
         )
       },
@@ -94,7 +110,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
             tokenBalances={tokenBalances}
             rates={rates}
             ratesError={ratesError}
-            fetchCCRates={fetchCCRates}
+            fetchCCRates={this.props.fetchCCRates}
           />
         )
       }
@@ -110,16 +126,24 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       </aside>
     );
   }
+
+  private scanWalletForTokens = () => {
+    if (this.props.wallet) {
+      this.props.scanWalletForTokens(this.props.wallet);
+    }
+  };
 }
 
 function mapStateToProps(state: AppState) {
   return {
     wallet: getWalletInst(state),
+    walletConfig: getWalletConfig(state),
     balance: state.wallet.balance,
     tokens: getAllTokens(state),
     tokenBalances: getTokenBalances(state),
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
+    hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError
@@ -130,5 +154,7 @@ export default connect(mapStateToProps, {
   addCustomToken,
   removeCustomToken,
   showNotification,
-  fetchCCRates: dFetchCCRates
+  scanWalletForTokens,
+  setWalletTokens,
+  fetchCCRates
 })(BalanceSidebar);
