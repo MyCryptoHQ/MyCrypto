@@ -14,7 +14,7 @@ exports[`render snapshot 1`] = `
   destination={
     Object {
       "amount": NaN,
-      "id": "",
+      "id": "ETH",
     }
   }
   destinationAddress=""
@@ -33,7 +33,7 @@ exports[`render snapshot 1`] = `
   origin={
     Object {
       "amount": NaN,
-      "id": "",
+      "id": "BTC",
     }
   }
   outputTx={null}

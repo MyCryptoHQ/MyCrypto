@@ -8,7 +8,7 @@ export interface SwapInput {
 
 export interface NormalizedBityRate {
   id: number;
-  options: string[];
+  options: SupportedDestinationKind[];
   rate: number;
 }
 

@@ -1,7 +1,7 @@
-import bityConfig from 'config/bity';
+import bityConfig, { SupportedDestinationKind } from 'config/bity';
 import { checkHttpStatus, parseJSON, filter } from './utils';
 
-const isCryptoPair = (from: string, to: string, arr: string[]) => {
+const isCryptoPair = (from: string, to: string, arr: SupportedDestinationKind[]) => {
   return filter(from, arr) && filter(to, arr);
 };
 
