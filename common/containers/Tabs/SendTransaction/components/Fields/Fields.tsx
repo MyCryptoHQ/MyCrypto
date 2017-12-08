@@ -11,7 +11,7 @@ import {
   UnitDropDown,
   CurrentCustomMessage,
   GenerateTransaction,
-  TransactionComparisonAndPushTx,
+  SendButton,
   SigningStatus
 } from './components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
@@ -57,7 +57,7 @@ const content = (
       </div>
       <SigningStatus />
       <div className="row form-group">
-        <TransactionComparisonAndPushTx />
+        <SendButton />
       </div>
     </div>
   </main>

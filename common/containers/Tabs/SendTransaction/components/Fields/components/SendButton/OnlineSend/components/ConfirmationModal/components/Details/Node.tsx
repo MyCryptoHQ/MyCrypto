@@ -12,8 +12,8 @@ class NodeClass extends Component<StateProps, {}> {
   public render() {
     return (
       <li className="ConfModal-details-detail">
-        You are interacting with the <strong>{this.props.node.network}</strong>{' '}
-        network provided by <strong>{this.props.node.service}</strong>
+        You are interacting with the <strong>{this.props.node.network}</strong> network provided by{' '}
+        <strong>{this.props.node.service}</strong>
       </li>
     );
   }

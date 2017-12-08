@@ -1,6 +1,6 @@
-import { select, call, put } from 'redux-saga/effects';
+import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { SetUnitMetaAction } from 'actions/transaction';
+import { SetUnitMetaAction, TypeKeys } from 'actions/transaction';
 import {
   getUnit,
   getTokenTo,
@@ -173,4 +173,8 @@ function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
       yield put(swapTokenToToken(basePayload));
     }
   }
+}
+
+export function* setUnitMeta(): SagaIterator {
+  takeEvery(TypeKeys.UNIT_META_SET, handleSetUnitMeta);
 }

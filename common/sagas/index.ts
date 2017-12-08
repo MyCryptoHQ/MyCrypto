@@ -7,10 +7,11 @@ import wallet from './wallet';
 import { estimateGas, shouldEstimateGas } from './gas';
 import { signing } from './signing';
 import { broadcast } from './broadcast';
-import { from } from './from';
+import { from, nonce } from './from';
 import { fields } from './fields';
 import { sendEverything } from './sendEverything';
 export default {
+  nonce,
   sendEverything,
   fields,
   from,

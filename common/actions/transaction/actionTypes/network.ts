@@ -7,6 +7,9 @@ export {
   GetFromRequestedAction,
   GetFromSucceededAction,
   GetFromFailedAction,
+  GetNonceRequestedAction,
+  GetNonceSucceededAction,
+  GetNonceFailedAction,
   NetworkAction
 };
 /* Network actions */
@@ -30,6 +33,16 @@ interface GetFromSucceededAction {
 interface GetFromFailedAction {
   type: TypeKeys.GET_FROM_FAILED;
 }
+interface GetNonceRequestedAction {
+  type: TypeKeys.GET_NONCE_REQUESTED;
+}
+interface GetNonceSucceededAction {
+  type: TypeKeys.GET_NONCE_SUCCEEDED;
+  payload: string;
+}
+interface GetNonceFailedAction {
+  type: TypeKeys.GET_NONCE_FAILED;
+}
 
 type NetworkAction =
   | EstimateGasFailedAction
@@ -37,4 +50,7 @@ type NetworkAction =
   | EstimateGasSucceededAction
   | GetFromRequestedAction
   | GetFromSucceededAction
-  | GetFromFailedAction;
+  | GetFromFailedAction
+  | GetNonceRequestedAction
+  | GetNonceSucceededAction
+  | GetNonceFailedAction;

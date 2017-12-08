@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Aux } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import Help from 'components/ui/Help';
-import { getNonce } from 'selectors/transaction';
+import { getNonce, nonceRequestFailed } from 'selectors/transaction';
 import { isAnyOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
@@ -50,6 +50,6 @@ class NonceInputClass extends Component<Props> {
 }
 
 export const NonceInput = connect((state: AppState) => ({
-  shouldDisplay: isAnyOffline(state),
+  shouldDisplay: isAnyOffline(state) || nonceRequestFailed(state),
   nonce: getNonce(state)
 }))(NonceInputClass);

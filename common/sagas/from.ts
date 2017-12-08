@@ -4,27 +4,56 @@ import { getWalletInst } from 'selectors/wallet';
 import {
   getFromSucceeded,
   getFromFailed,
-  TypeKeys as TK
+  getNonceSucceeded,
+  getNonceFailed,
+  TypeKeys as TK,
+  inputNonce
 } from 'actions/transaction';
-import { IWallet } from 'libs/wallet';
+
+import { getNodeLib } from 'selectors/config';
+import { INode } from 'libs/nodes/INode';
+import { showNotification } from 'actions/notifications';
+import { AppState } from 'reducers';
 
 /*
 * This function will be called during transaction serialization / signing
 */
-export function* handleFromRequest(): SagaIterator {
-  const walletInst: IWallet = yield select(getWalletInst);
+function* handleFromRequest(): SagaIterator {
+  const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
   try {
-    const fromAddress: string = yield apply(
-      walletInst,
-      walletInst.getAddressString
-    );
+    if (!walletInst) {
+      throw Error();
+    }
+    const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
     yield put(getFromSucceeded(fromAddress));
-  } catch (error) {
-    //TODO: display notif
+  } catch {
+    yield put(showNotification('warning', 'Your wallets address could not be fetched'));
     yield put(getFromFailed());
   }
 }
 
 export function* from(): SagaIterator {
   yield takeEvery(TK.GET_FROM_REQUESTED, handleFromRequest);
+}
+
+function* handleNonceRequest(): SagaIterator {
+  const nodeLib: INode = yield select(getNodeLib);
+  const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
+  try {
+    if (!walletInst) {
+      throw Error();
+    }
+    const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
+
+    const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);
+    yield put(inputNonce(retrievedNonce));
+    yield put(getNonceSucceeded(retrievedNonce));
+  } catch {
+    yield put(showNotification('warning', 'Your addresses nonce could not be fetched'));
+    yield put(getNonceFailed());
+  }
+}
+
+export function* nonce(): SagaIterator {
+  yield takeEvery(TK.GET_NONCE_REQUESTED, handleNonceRequest);
 }

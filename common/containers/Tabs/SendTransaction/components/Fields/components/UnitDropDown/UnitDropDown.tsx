@@ -1,45 +1,54 @@
 import React, { Component } from 'react';
-import { SetDecimalMetaField, SetUnitMetaField, TokenQuery } from 'components/renderCbs';
-import { ConditionalUnitDropdown } from './components';
-import { MergedToken } from 'selectors/wallet';
-import { SetUnitMetaAction } from 'actions/transaction';
+import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
+import Dropdown from 'components/ui/Dropdown';
+import { withConditional } from 'components/hocs';
+import { TokenBalance, getTokenBalances } from 'selectors/wallet';
+import { Query } from 'components/renderCbs';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
+import { getUnit } from 'selectors/transaction';
 
-export const UnitDropDown: React.SFC<{}> = () => (
-  <TokenQuery
-    withQuery={({ token }) => (
-      <SetDecimalMetaField
-        withDecimalSetter={decimalSetter => (
-          <SetUnitMetaField
-            withUnitSetter={unitSetter => (
-              <DefaultUnitDropDown
-                decimalSetter={decimalSetter}
-                unitSetter={unitSetter}
-                token={token}
-              />
-            )}
-          />
-        )}
-      />
-    )}
-  />
-);
-
-interface Props {
-  token: MergedToken | undefined | null;
-  decimalSetter(payload: SetDecimalMetaAction['payload']);
-  unitSetter(payload: SetUnitMetaAction['payload']);
+interface DispatchProps {
+  setUnitMeta: TSetUnitMeta;
 }
 
-class DefaultUnitDropDown extends Component<Props, {}> {
-  public componentWillMount() {
-    const { token, decimalSetter, unitSetter } = this.props;
-    if (token) {
-      decimalSetter(token.decimal);
-      unitSetter(token.symbol);
-    }
-  }
+interface StateProps {
+  unit: string;
+  tokens: TokenBalance[];
+}
+
+const StringDropdown = Dropdown as new () => Dropdown<string>;
+const ConditionalStringDropDown = withConditional(StringDropdown);
+
+class UnitDropdownClass extends Component<DispatchProps & StateProps> {
   public render() {
-    const { decimalSetter, unitSetter } = this.props;
-    return <ConditionalUnitDropdown onDecimalChange={decimalSetter} onUnitChange={unitSetter} />;
+    const { tokens, unit } = this.props;
+    return (
+      <div className="input-group-btn">
+        <Query
+          params={['readOnly']}
+          withQuery={({ readOnly }) => (
+            <ConditionalStringDropDown
+              options={['ether', ...getTokenSymbols(tokens)]}
+              value={unit}
+              condition={!readOnly}
+              conditionalProps={{
+                onChange: this.handleOnChange
+              }}
+              ariaLabel={'dropdown'}
+            />
+          )}
+        />
+      </div>
+    );
   }
+  private handleOnChange = (unit: string) => {
+    this.props.setUnitMeta(unit);
+  };
 }
+const getTokenSymbols = (tokens: TokenBalance[]) => tokens.map(t => t.symbol);
+
+export const UnitDropDown = connect(
+  (state: AppState) => ({ tokens: getTokenBalances(state, true), unit: getUnit(state) }),
+  { setUnitMeta }
+)(UnitDropdownClass);

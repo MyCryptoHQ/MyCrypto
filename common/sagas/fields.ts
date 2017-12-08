@@ -1,4 +1,4 @@
-import { select, call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
 import {

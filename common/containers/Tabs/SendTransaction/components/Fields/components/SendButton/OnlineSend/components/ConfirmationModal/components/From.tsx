@@ -18,6 +18,4 @@ class FromClass extends Component<StateProps & OwnProps, {}> {
   }
 }
 
-export const From = connect((state: AppState) => ({ from: getFrom(state) }))(
-  FromClass
-);
+export const From = connect((state: AppState) => ({ from: getFrom(state) }))(FromClass);

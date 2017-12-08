@@ -4,12 +4,14 @@ import { TokenValue, Wei } from 'libs/units';
 import translate from 'translations';
 import { connect } from 'react-redux';
 import { sendEverythingRequested, TSendEverythingRequested } from 'actions/transaction';
+import { getCurrentBalance } from 'selectors/wallet';
+import { AppState } from 'reducers';
 
 interface DispatchProps {
   sendEverythingRequested: TSendEverythingRequested;
 }
 interface StateProps {
-  currentBalance: Wei | TokenValue | null | undefined;
+  currentBalance: Wei | TokenValue | null;
 }
 type Props = StateProps & DispatchProps;
 
@@ -37,4 +39,7 @@ class SendEverythingClass extends Component<Props> {
     this.props.sendEverythingRequested();
   };
 }
-export const OnSendEverything = connect(null, { sendEverythingRequested })(SendEverythingClass);
+export const SendEverything = connect(
+  (state: AppState) => ({ currentBalance: getCurrentBalance(state) }),
+  { sendEverythingRequested }
+)(SendEverythingClass);

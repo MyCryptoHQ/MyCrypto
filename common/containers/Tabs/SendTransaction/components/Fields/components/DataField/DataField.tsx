@@ -1,4 +1,4 @@
-import { DataInputClass } from './DataInput';
+import { DataInput } from './DataInput';
 import { Query } from 'components/renderCbs';
 import { inputData, TInputData } from 'actions/transaction';
 import React from 'react';
@@ -27,7 +27,7 @@ class DataFieldClass extends React.Component<Props> {
   }
 
   public render() {
-    return this.props.isEtherTransaction ? <DataInputClass onChange={this.setData} /> : null;
+    return this.props.isEtherTransaction ? <DataInput onChange={this.setData} /> : null;
   }
 
   private setData = (ev: React.FormEvent<HTMLInputElement>) => {

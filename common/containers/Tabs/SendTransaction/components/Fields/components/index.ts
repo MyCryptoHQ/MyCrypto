@@ -7,5 +7,5 @@ export * from './SendEverything';
 export * from './UnitDropDown';
 export * from './CurrentCustomMessage';
 export * from './GenerateTransaction';
-export * from './TransactionComparisonAndPushTx';
+export * from './SendButton';
 export * from './SigningStatus';

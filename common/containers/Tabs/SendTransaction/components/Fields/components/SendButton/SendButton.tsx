@@ -8,7 +8,7 @@ import { OnlineSend } from './OnlineSend';
 const getStringifiedTx = (serializedTransaction: string) =>
   JSON.stringify(getTransactionFields(makeTransaction(serializedTransaction)), null, 2);
 
-export const TransactionComparisonAndPushTx: React.SFC<{}> = () => (
+export const SendButton: React.SFC<{}> = () => (
   <SerializedTransaction
     withSerializedTransaction={serializedTransaction => (
       <Aux>
