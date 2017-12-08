@@ -37,7 +37,6 @@
     "redux-logger": "3.0.6",
     "redux-promise-middleware": "4.4.2",
     "redux-saga": "0.16.0",
-    "redux-thunk": "^2.2.0",
     "scryptsy": "2.0.0",
     "store2": "2.5.9",
     "uuid": "3.1.0",
@@ -136,6 +135,9 @@
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["prettier --write", "git add"]
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
