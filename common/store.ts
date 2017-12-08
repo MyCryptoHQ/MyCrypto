@@ -5,7 +5,6 @@ import { INITIAL_STATE as transactionInitialState } from 'reducers/transaction';
 import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
 import { INITIAL_STATE as swapInitialState } from 'reducers/swap';
 import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
@@ -34,7 +33,6 @@ const configureStore = () => {
   if (process.env.NODE_ENV !== 'production') {
     middleware = composeWithDevTools(
       applyMiddleware(
-        thunk,
         sagaMiddleware,
         logger,
         reduxPromiseMiddleWare,
