@@ -5,7 +5,8 @@ import {
   trezorReferralURL,
   bitboxReferralURL,
   donationAddressMap,
-  VERSION
+  VERSION,
+  knowledgeBaseURL
 } from 'config/data';
 import React from 'react';
 import translate from 'translations';
@@ -139,9 +140,7 @@ export default class Footer extends React.Component<Props, State> {
               </NewTabLink>
             </p>
             <p className="Footer-about-text">{translate('FOOTER_1')}</p>
-            <NewTabLink href="https://myetherwallet.github.io/knowledge-base">
-              Knowledge Base
-            </NewTabLink>
+            <NewTabLink href={knowledgeBaseURL}>Knowledge Base</NewTabLink>
             <NewTabLink href="https://www.myetherwallet.com/helpers.html">
               Helpers & ENS Debugging
             </NewTabLink>
@@ -157,7 +156,7 @@ export default class Footer extends React.Component<Props, State> {
             >
               <p>
                 <b>Be safe & secure: </b>
-                <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/protecting-yourself-and-your-funds">
+                <NewTabLink href={`${knowledgeBaseURL}/security/securing-your-ethereum`}>
                   We highly recommend that you read our guide on How to Prevent Loss & Theft for
                   some recommendations on how to be proactive about your security.
                 </NewTabLink>

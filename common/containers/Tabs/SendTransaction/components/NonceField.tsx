@@ -1,5 +1,6 @@
 import React from 'react';
 import Help from 'components/ui/Help';
+import { knowledgeBaseURL } from 'config/data';
 import { isPositiveInteger } from 'utils/helpers';
 
 interface PublicProps {
@@ -28,15 +29,9 @@ export default class NonceField extends React.Component<PublicProps, {}> {
       <div className="row form-group">
         <div className="col-xs-11">
           <label>Nonce</label>
-          <Help
-            link={
-              'https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html'
-            }
-          />
+          <Help link={`${knowledgeBaseURL}/transactions/what-is-nonce.html`} />
           <input
-            className={`form-control ${
-              isValidNonce(strValue) ? 'is-valid' : 'is-invalid'
-            }`}
+            className={`form-control ${isValidNonce(strValue) ? 'is-valid' : 'is-invalid'}`}
             type="number"
             value={strValue}
             placeholder={placeholder}

@@ -1,4 +1,4 @@
-import { gasPriceDefaults } from 'config/data';
+import { gasPriceDefaults, knowledgeBaseURL } from 'config/data';
 import throttle from 'lodash/throttle';
 import React, { Component } from 'react';
 import DropdownShell from 'components/ui/DropdownShell';
@@ -59,11 +59,7 @@ export default class GasPriceDropdown extends Component<Props, {}> {
             <code>21 GWEI</code>.
           </p>
           <p>
-            {/* TODO: maybe not hardcode a link? :) */}
-            <a
-              href="https://myetherwallet.groovehq.com/knowledge_base/topics/what-is-gas"
-              target="_blank"
-            >
+            <a href={`${knowledgeBaseURL}/gas/what-is-gas-ethereum`} target="_blank">
               Read more
             </a>
           </p>
