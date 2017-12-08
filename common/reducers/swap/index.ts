@@ -6,8 +6,8 @@ import { normalize } from 'normalizr';
 
 export interface State {
   step: number;
-  origin: stateTypes.SwapInput | null;
-  destination: stateTypes.SwapInput | null;
+  origin: stateTypes.SwapInput;
+  destination: stateTypes.SwapInput;
   options: stateTypes.NormalizedOptions;
   bityRates: stateTypes.NormalizedBityRates;
   bityOrder: any;
@@ -25,8 +25,8 @@ export interface State {
 
 export const INITIAL_STATE: State = {
   step: 1,
-  origin: null,
-  destination: null,
+  origin: { id: '', amount: NaN },
+  destination: { id: '', amount: NaN },
   options: {
     byId: {},
     allIds: []

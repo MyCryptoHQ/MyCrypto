@@ -11,7 +11,12 @@ exports[`render snapshot 1`] = `
     }
   }
   changeStepSwap={[Function]}
-  destination={null}
+  destination={
+    Object {
+      "amount": NaN,
+      "id": "",
+    }
+  }
   destinationAddress=""
   destinationAddressSwap={[Function]}
   initSwap={[Function]}
@@ -25,7 +30,12 @@ exports[`render snapshot 1`] = `
     }
   }
   orderStatus={null}
-  origin={null}
+  origin={
+    Object {
+      "amount": NaN,
+      "id": "",
+    }
+  }
   outputTx={null}
   paymentAddress={null}
   restartSwap={[Function]}
