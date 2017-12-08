@@ -7,9 +7,8 @@ import {
   InputNonceAction,
   TypeKeys
 } from 'actions/transaction';
-import { isValidHex } from 'libs/validators';
+import { isValidHex, isValidNonce } from 'libs/validators';
 import { Data, Wei, Nonce } from 'libs/units';
-import { isPositiveInteger } from 'utils/helpers';
 
 function* handleDataInput({ payload }: InputDataAction): SagaIterator {
   const validData: boolean = yield call(isValidHex, payload);
@@ -21,27 +20,13 @@ function* handleGasLimitInput({ payload }: InputGasLimitAction): SagaIterator {
   yield put(setGasLimitField({ raw: payload, value: validGasLimit ? Wei(payload) : null }));
 }
 
-const isValidNonce = (value: string): boolean => {
-  let valid;
-  if (value === '0') {
-    valid = true;
-  } else if (!value) {
-    valid = false;
-  } else {
-    valid = isPositiveInteger(+value);
-  }
-  return valid;
-};
-
 function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
   const validNonce: boolean = yield call(isValidNonce, payload);
   yield put(setNonceField({ raw: payload, value: validNonce ? Nonce(payload) : null }));
 }
 
-export function* fields(): SagaIterator {
-  yield [
-    takeEvery(TypeKeys.DATA_FIELD_INPUT, handleDataInput),
-    takeEvery(TypeKeys.GAS_LIMIT_INPUT, handleGasLimitInput),
-    takeEvery(TypeKeys.NONCE_INPUT, handleNonceInput)
-  ];
-}
+export const fields = [
+  takeEvery(TypeKeys.DATA_FIELD_INPUT, handleDataInput),
+  takeEvery(TypeKeys.GAS_LIMIT_INPUT, handleGasLimitInput),
+  takeEvery(TypeKeys.NONCE_INPUT, handleNonceInput)
+];

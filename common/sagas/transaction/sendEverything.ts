@@ -64,6 +64,4 @@ function* handleSendEverything(): SagaIterator {
   }
 }
 
-export function* sendEverything(): SagaIterator {
-  yield takeEvery(TK.SEND_EVERYTHING_REQUESTED, handleSendEverything);
-}
+export const sendEverything = [takeEvery(TK.SEND_EVERYTHING_REQUESTED, handleSendEverything)];

@@ -8,29 +8,20 @@ import {
   getTo,
   getPreviousUnit,
   getValue,
-  getGasLimit,
-  getGasPrice,
   getDecimalFromUnit
 } from 'selectors/transaction';
-import { getEtherBalance, getToken, MergedToken, getTokenBalance } from 'selectors/wallet';
+import { getToken, MergedToken } from 'selectors/wallet';
 import { isEtherUnit, toTokenBase, TokenValue, Wei, Address, fromTokenBase } from 'libs/units';
 import {
   swapTokenToEther,
   swapEtherToToken,
   swapTokenToToken
 } from 'actions/transaction/actionCreators/swap';
-import { getOffline } from 'selectors/config';
-import {
-  enoughBalanceViaTx,
-  encodeTransfer,
-  ITransaction,
-  enoughTokensViaInput
-} from 'libs/transaction';
+import { encodeTransfer } from 'libs/transaction';
 import { AppState } from 'reducers';
-import { makeTransaction } from 'libs/transaction/utils/ether';
 import { bufferToHex } from 'ethereumjs-util';
-
-const validNumber = (num: number) => isFinite(num) && num > 0;
+import { validNumber } from 'libs/validators';
+import { validateInput } from 'sagas/transaction/validationHelpers';
 
 interface IInput {
   raw: string;
@@ -60,58 +51,6 @@ function* rebaseUserInput(value: IInput): SagaIterator {
       value: value.value ? toTokenBase(fromTokenBase(value.value, prevDecimal), newDecimal) : null
     };
   }
-}
-
-/**
- * @description Creates a minimum viable transaction for calculating costs for validating user balances
- * @param {(Wei | null)} value
- * @returns {SagaIterator}
- */
-function* makeCostCalculationTx(
-  value: AppState['transaction']['fields']['value']['value']
-): SagaIterator {
-  const gasLimit: AppState['transaction']['fields']['gasLimit'] = yield select(getGasLimit);
-  const gasPrice: AppState['transaction']['fields']['gasPrice'] = yield select(getGasPrice);
-  const txObj: Partial<ITransaction> = {
-    gasLimit: gasLimit.value || undefined,
-    gasPrice: gasPrice.value || undefined,
-    value
-  };
-
-  return yield call(makeTransaction, txObj);
-}
-
-export function* validateInput(input: TokenValue | Wei | null, unit: string): SagaIterator {
-  if (!input) {
-    return false;
-  }
-
-  const etherBalance: Wei | null = yield select(getEtherBalance);
-  const isOffline: boolean = yield select(getOffline);
-  const etherTransaction: boolean = yield call(isEtherUnit, unit);
-
-  if (isOffline || !etherBalance) {
-    return true;
-  }
-
-  let valid = true;
-
-  // TODO: do gas estimation here if we're switching to a token too, it should cover the last edge case
-
-  //make a new transaction for validating ether balances
-  const validationTx = etherTransaction
-    ? yield call(makeCostCalculationTx, input)
-    : yield call(makeCostCalculationTx, null);
-
-  // check that they have enough ether
-  valid = valid && enoughBalanceViaTx(validationTx, etherBalance);
-
-  if (!etherTransaction) {
-    const tokenBalance: TokenValue | null = yield select(getTokenBalance, unit);
-    valid = valid && enoughTokensViaInput(input, tokenBalance);
-  }
-
-  return valid;
 }
 
 function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
@@ -188,6 +127,4 @@ function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
   }
 }
 
-export function* setUnitMeta(): SagaIterator {
-  yield takeEvery(TypeKeys.UNIT_META_SET, handleSetUnitMeta);
-}
+export const handleSetUnit = [takeEvery(TypeKeys.UNIT_META_SET, handleSetUnitMeta)];

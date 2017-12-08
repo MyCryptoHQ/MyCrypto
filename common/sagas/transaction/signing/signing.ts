@@ -12,15 +12,8 @@ const signLocalTransaction = signTransactionWrapper(function*({
   tx,
   wallet
 }: IFullWalletAndTransaction): SagaIterator {
-  const signedTransaction: Buffer = yield apply(
-    wallet,
-    wallet.signRawTransaction,
-    [tx]
-  );
-  const indexingHash: string = yield call(
-    computeIndexingHash,
-    signedTransaction
-  );
+  const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
+  const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
   yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash }));
 });
 
@@ -28,10 +21,7 @@ const signWeb3Transaction = signTransactionWrapper(function*({
   tx
 }: IFullWalletAndTransaction): SagaIterator {
   const serializedTransaction: Buffer = yield apply(tx, tx.serialize);
-  const indexingHash: string = yield call(
-    computeIndexingHash,
-    serializedTransaction
-  );
+  const indexingHash: string = yield call(computeIndexingHash, serializedTransaction);
 
   yield put(
     signWeb3TransactionSucceeded({
@@ -41,9 +31,7 @@ const signWeb3Transaction = signTransactionWrapper(function*({
   );
 });
 
-export function* signing(): SagaIterator {
-  yield [
-    takeEvery(TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED, signLocalTransaction),
-    takeEvery(TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED, signWeb3Transaction)
-  ];
-}
+export const signing = [
+  takeEvery(TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED, signLocalTransaction),
+  takeEvery(TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED, signWeb3Transaction)
+];

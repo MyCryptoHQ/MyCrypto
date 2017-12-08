@@ -1,9 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import {
-  getWeb3Tx,
-  getSignedTx,
-  getTransactionStatus
-} from 'selectors/transaction';
+import { getWeb3Tx, getSignedTx, getTransactionStatus } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
@@ -24,23 +20,15 @@ import { getNetworkConfig } from 'selectors/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { computeIndexingHash } from 'libs/transaction';
 
-export const broadcastTransactionWrapper = (
-  func: (serializedTx: string) => SagaIterator
-) =>
+export const broadcastTransactionWrapper = (func: (serializedTx: string) => SagaIterator) =>
   function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
-    const {
-      indexingHash,
-      serializedTransaction
-    }: ISerializedTxAndIndexingHash = yield call(
+    const { indexingHash, serializedTransaction }: ISerializedTxAndIndexingHash = yield call(
       getSerializedTxAndIndexingHash,
       action
     );
 
     try {
-      const shouldBroadcast = yield call(
-        shouldBroadcastTransaction,
-        indexingHash
-      );
+      const shouldBroadcast = yield call(shouldBroadcastTransaction, indexingHash);
       if (!shouldBroadcast) {
         return;
       }
@@ -51,19 +39,14 @@ export const broadcastTransactionWrapper = (
       yield put(queueAction);
       const stringTx: string = yield call(bufferToHex, serializedTransaction);
       const broadcastedHash = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
-      yield put(
-        broadcastTransactionSucceeded({ indexingHash, broadcastedHash })
-      );
+      yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
 
       const network = yield select(getNetworkConfig);
       //TODO: make this not ugly
       yield put(
         showNotification(
           'success',
-          <TransactionSucceeded
-            txHash={broadcastedHash}
-            blockExplorer={network.blockExplorer}
-          />,
+          <TransactionSucceeded txHash={broadcastedHash} blockExplorer={network.blockExplorer} />,
           0
         )
       );
@@ -74,10 +57,7 @@ export const broadcastTransactionWrapper = (
   };
 
 function* shouldBroadcastTransaction(indexingHash: string): SagaIterator {
-  const existingTx: ITransactionStatus | null = yield select(
-    getTransactionStatus,
-    indexingHash
-  );
+  const existingTx: ITransactionStatus | null = yield select(getTransactionStatus, indexingHash);
   // if the transaction already exists
   if (existingTx) {
     // and is still broadcasting or already broadcasting, dont re-broadcast

@@ -3,9 +3,8 @@ import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
 import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
-
-import { validateInput } from 'sagas/meta/unitSwap';
 import { toTokenBase } from 'libs/units';
+import { validateInput } from 'sagas/transaction/validationHelpers';
 
 function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
@@ -22,6 +21,4 @@ function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   yield put(setter({ raw: payload, value: isValid ? value : null }));
 }
 
-export function* currentValue(): SagaIterator {
-  yield takeEvery([TypeKeys.CURRENT_VALUE_SET], setCurrentValue);
-}
+export const currentValue = takeEvery([TypeKeys.CURRENT_VALUE_SET], setCurrentValue);

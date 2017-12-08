@@ -20,6 +20,4 @@ function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
   }
 }
 
-export function* currentTo(): SagaIterator {
-  yield takeEvery([TypeKeys.CURRENT_TO_SET], setCurrentTo);
-}
+export const currentTo = takeEvery([TypeKeys.CURRENT_TO_SET], setCurrentTo);

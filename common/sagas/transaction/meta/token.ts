@@ -32,9 +32,7 @@ function* handleTokenValue({ payload }: SetTokenValueMetaAction) {
   yield put(setDataField({ raw: bufferToHex(data), value: data }));
 }
 
-export function* handleToken(): SagaIterator {
-  yield [
-    takeEvery(TypeKeys.TOKEN_TO_META_SET, handleTokenTo),
-    takeEvery(TypeKeys.TOKEN_VALUE_META_SET, handleTokenValue)
-  ];
-}
+export const handleToken = [
+  takeEvery(TypeKeys.TOKEN_TO_META_SET, handleTokenTo),
+  takeEvery(TypeKeys.TOKEN_VALUE_META_SET, handleTokenValue)
+];

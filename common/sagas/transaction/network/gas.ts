@@ -1,5 +1,5 @@
 import { SagaIterator, buffers, delay } from 'redux-saga';
-import { apply, put, select, take, actionChannel, call } from 'redux-saga/effects';
+import { apply, put, select, take, actionChannel, call, fork } from 'redux-saga/effects';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
@@ -15,7 +15,7 @@ import {
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 
-export function* shouldEstimateGas(): SagaIterator {
+function* shouldEstimateGas(): SagaIterator {
   while (true) {
     yield take([
       TypeKeys.TO_FIELD_SET,
@@ -34,7 +34,7 @@ export function* shouldEstimateGas(): SagaIterator {
   }
 }
 
-export function* estimateGas(): SagaIterator {
+function* estimateGas(): SagaIterator {
   const requestChan = yield actionChannel(TypeKeys.ESTIMATE_GAS_REQUESTED, buffers.sliding(1));
 
   while (true) {
@@ -60,3 +60,5 @@ export function* estimateGas(): SagaIterator {
     }
   }
 }
+
+export const gas = [fork(shouldEstimateGas), fork(estimateGas)];

@@ -18,9 +18,7 @@ const broadcastLocalTransaction = broadcastTransactionWrapper(function*(
 
 // web3 transactions are a little different since they do signing + broadcast in 1 step
 // meaning we have to grab the tx data and send it
-const broadcastWeb3Transaction = broadcastTransactionWrapper(function*(
-  tx: string
-): SagaIterator {
+const broadcastWeb3Transaction = broadcastTransactionWrapper(function*(tx: string): SagaIterator {
   //get web3 wallet
   const wallet: AppState['wallet']['inst'] = yield select(getWalletInst);
   if (!wallet || !(wallet instanceof Web3Wallet)) {
@@ -32,15 +30,7 @@ const broadcastWeb3Transaction = broadcastTransactionWrapper(function*(
   return txHash;
 });
 
-export function* broadcast(): SagaIterator {
-  yield [
-    takeEvery(
-      [TK.BROADCAST_WEB3_TRANSACTION_REQUESTED],
-      broadcastWeb3Transaction
-    ),
-    takeEvery(
-      [TK.BROADCAST_LOCAL_TRANSACTION_REQUESTED],
-      broadcastLocalTransaction
-    )
-  ];
-}
+export const broadcast = [
+  takeEvery([TK.BROADCAST_WEB3_TRANSACTION_REQUESTED], broadcastWeb3Transaction),
+  takeEvery([TK.BROADCAST_LOCAL_TRANSACTION_REQUESTED], broadcastLocalTransaction)
+];

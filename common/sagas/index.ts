@@ -4,25 +4,9 @@ import notifications from './notifications';
 import { bityTimeRemaining, pollBityOrderStatusSaga, postBityOrderSaga } from './swap/orders';
 import { getBityRatesSaga } from './swap/rates';
 import wallet from './wallet';
-import { estimateGas, shouldEstimateGas } from './gas';
-import { signing } from './signing';
-import { broadcast } from './broadcast';
-import { from, nonce } from './from';
-import { fields } from './fields';
-import { sendEverything } from './sendEverything';
-import { currentTo, currentValue } from './current';
-import { handleToken, setUnitMeta } from './meta';
+import { transaction } from './transaction';
 export default {
-  currentTo,
-  currentValue,
-  nonce,
-  sendEverything,
-  fields,
-  from,
-  broadcast,
-  shouldEstimateGas,
-  estimateGas,
-  signing,
+  transaction,
   bityTimeRemaining,
   configSaga,
   postBityOrderSaga,
@@ -30,7 +14,5 @@ export default {
   getBityRatesSaga,
   notifications,
   wallet,
-  deterministicWallets,
-  handleToken,
-  setUnitMeta
+  deterministicWallets
 };
