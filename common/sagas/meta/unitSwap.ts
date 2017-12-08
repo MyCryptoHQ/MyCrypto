@@ -135,7 +135,7 @@ function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
     const { value, raw }: IInput = yield call(rebaseUserInput, tokenValue);
 
     const isValid = yield call(validateInput, value, currentUnit);
-    yield put(
+    return yield put(
       swapTokenToEther({ to: tokenTo, value: { raw, value: isValid ? value : null }, decimal })
     );
   }
@@ -145,14 +145,27 @@ function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
     if (!currentToken) {
       throw Error('Could not find token during unit swap');
     }
-    const input: AppState['transaction']['fields']['value'] = yield select(getValue);
+    const input:
+      | AppState['transaction']['fields']['value']
+      | AppState['transaction']['meta']['tokenValue'] = etherToToken
+      ? yield select(getValue)
+      : yield select(getTokenValue);
     const { raw, value }: IInput = yield call(rebaseUserInput, input);
-    const to: AppState['transaction']['fields']['to'] = yield select(getTo);
+
     const isValid = yield call(validateInput, value, currentUnit);
-    const data = encodeTransfer(
-      to.value || Address('0x0'),
-      isValid ? value || TokenValue('0') : TokenValue('0')
-    );
+    const to: AppState['transaction']['fields']['to'] = yield select(getTo);
+
+    const valueToEncode = isValid && value ? value : TokenValue('0');
+    let addressToEncode;
+    if (etherToToken) {
+      addressToEncode = to.value || Address('0x0');
+    } else {
+      const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(getTokenTo);
+      addressToEncode = tokenTo.value || Address('0x0');
+    }
+
+    const data = encodeTransfer(addressToEncode, valueToEncode);
+
     const basePayload = {
       data: { raw: bufferToHex(data), value: data },
       to: { raw: '', value: Address(currentToken.address) },
@@ -161,7 +174,7 @@ function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
     };
     // need to set meta fields for tokenTo and tokenValue
     if (etherToToken) {
-      yield put(
+      return yield put(
         swapEtherToToken({
           ...basePayload,
           tokenTo: to
@@ -170,11 +183,11 @@ function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
     }
     // need to rebase the token if the decimal has changed and re-validate
     if (tokenToToken) {
-      yield put(swapTokenToToken(basePayload));
+      return yield put(swapTokenToToken(basePayload));
     }
   }
 }
 
 export function* setUnitMeta(): SagaIterator {
-  takeEvery(TypeKeys.UNIT_META_SET, handleSetUnitMeta);
+  yield takeEvery(TypeKeys.UNIT_META_SET, handleSetUnitMeta);
 }

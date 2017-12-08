@@ -10,7 +10,11 @@ import { broadcast } from './broadcast';
 import { from, nonce } from './from';
 import { fields } from './fields';
 import { sendEverything } from './sendEverything';
+import { currentTo, currentValue } from './current';
+import { handleToken, setUnitMeta } from './meta';
 export default {
+  currentTo,
+  currentValue,
   nonce,
   sendEverything,
   fields,
@@ -26,5 +30,7 @@ export default {
   getBityRatesSaga,
   notifications,
   wallet,
-  deterministicWallets
+  deterministicWallets,
+  handleToken,
+  setUnitMeta
 };

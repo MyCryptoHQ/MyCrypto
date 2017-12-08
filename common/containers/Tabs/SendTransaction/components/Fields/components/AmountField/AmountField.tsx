@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
-import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
+import { setCurrentValue, TSetCurrentValue } from 'actions/transaction';
 import { connect } from 'react-redux';
 import { AmountInput } from './AmountInput';
 
 interface DispatchProps {
-  setCurrentTo: TSetCurrentTo;
+  setCurrentValue: TSetCurrentValue;
 }
 
 interface OwnProps {
@@ -18,7 +18,7 @@ class AmountFieldClass extends Component<Props, {}> {
   public componentDidMount() {
     const { value } = this.props;
     if (value) {
-      this.props.setCurrentTo(value);
+      this.props.setCurrentValue(value);
     }
   }
 
@@ -28,10 +28,10 @@ class AmountFieldClass extends Component<Props, {}> {
 
   private setValue = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    this.props.setCurrentTo(value);
+    this.props.setCurrentValue(value);
   };
 }
-const AmountField = connect(null, { setCurrentTo })(AmountFieldClass);
+const AmountField = connect(null, { setCurrentValue })(AmountFieldClass);
 
 const DefaultAmountField: React.SFC<{}> = () => (
   <Query params={['value']} withQuery={({ value }) => <AmountField value={value} />} />

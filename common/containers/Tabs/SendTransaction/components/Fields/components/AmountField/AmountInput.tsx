@@ -26,7 +26,7 @@ class AmountInputClass extends Component<Props> {
             <label>{translate('SEND_amount')}</label>
             <input
               className={`form-control ${!!value ? 'is-valid' : 'is-invalid'}`}
-              type="text"
+              type="number"
               placeholder={translateRaw('SEND_amount_short')}
               value={raw}
               readOnly={!!readOnly}

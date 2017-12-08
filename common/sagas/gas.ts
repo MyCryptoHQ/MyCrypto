@@ -17,7 +17,13 @@ import { makeTransaction, getTransactionFields } from 'libs/transaction';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
-    yield take([TypeKeys.TO_FIELD_SET, TypeKeys.DATA_FIELD_SET]);
+    yield take([
+      TypeKeys.TO_FIELD_SET,
+      TypeKeys.DATA_FIELD_SET,
+      TypeKeys.ETHER_TO_TOKEN_SWAP,
+      TypeKeys.TOKEN_TO_TOKEN_SWAP,
+      TypeKeys.TOKEN_TO_ETHER_SWAP
+    ]);
     const { transaction }: IGetTransaction = yield select(getTransaction);
     const { gasLimit, gasPrice, nonce, chainId, ...rest } = yield call(
       getTransactionFields,

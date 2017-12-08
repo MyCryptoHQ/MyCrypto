@@ -23,7 +23,6 @@ class TitleClass extends Component<StateProps> {
       <div>
         {translate('NAV_SendEther')}
         {offlineTitle}
-        />
       </div>
     );
   }

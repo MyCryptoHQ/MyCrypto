@@ -51,14 +51,16 @@ function* handleSendEverything(): SagaIterator {
   if (etherTransaction) {
     const remainder = currentBalance.sub(totalCost);
     const rawVersion = fromWei(remainder, 'ether');
+    yield put(setter({ raw: rawVersion, value: remainder }));
+
     yield put(sendEverythingSucceeded());
-    setter({ raw: rawVersion, value: remainder });
   } else {
     // else we just max out the token value
     const decimal: number = yield select(getDecimal);
     const rawVersion = fromTokenBase(currentBalance, decimal);
+    yield put(setter({ raw: rawVersion, value: currentBalance }));
+
     yield put(sendEverythingSucceeded());
-    setter({ raw: rawVersion, value: currentBalance });
   }
 }
 
