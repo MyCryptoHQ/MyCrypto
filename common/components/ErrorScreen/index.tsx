@@ -7,7 +7,7 @@ const DESCRIPTION =
 
 const ErrorScreen: React.SFC<{}> = () => {
   return (
-    <div className={`ErrorScreen`}>
+    <div className="ErrorScreen">
       <div className="ErrorScreen-content">
         <h2>Oops!</h2>
         <p>Something went really wrong, so we're showing you this red error page! 😱</p>

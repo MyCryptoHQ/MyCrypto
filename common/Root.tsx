@@ -37,30 +37,26 @@ export default class Root extends Component<Props, State> {
     const { store, history } = this.props;
     const { hasError } = this.state;
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
-    return (
-      <div>
-        {hasError ? (
-          <ErrorScreen />
-        ) : (
-          <Provider store={store} key={Math.random()}>
-            <Router history={history} key={Math.random()}>
-              <div>
-                <Route exact={true} path="/" component={GenerateWallet} />
-                <Route path="/view-wallet" component={ViewWallet} />
-                <Route path="/help" component={Help} />
-                <Route path="/swap" component={Swap} />
-                <Route path="/send-transaction" component={SendTransaction} />
-                <Route path="/contracts" component={Contracts} />
-                <Route path="/ens" component={ENS} />
-                <Route path="/utilities" component={RestoreKeystore} />
-                <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-                <Route path="/pushTx" component={BroadcastTx} />
-                <LegacyRoutes />
-              </div>
-            </Router>
-          </Provider>
-        )}
-      </div>
+    return hasError ? (
+      <ErrorScreen />
+    ) : (
+      <Provider store={store} key={Math.random()}>
+        <Router history={history} key={Math.random()}>
+          <div>
+            <Route exact={true} path="/" component={GenerateWallet} />
+            <Route path="/view-wallet" component={ViewWallet} />
+            <Route path="/help" component={Help} />
+            <Route path="/swap" component={Swap} />
+            <Route path="/send-transaction" component={SendTransaction} />
+            <Route path="/contracts" component={Contracts} />
+            <Route path="/ens" component={ENS} />
+            <Route path="/utilities" component={RestoreKeystore} />
+            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+            <Route path="/pushTx" component={BroadcastTx} />
+            <LegacyRoutes />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
