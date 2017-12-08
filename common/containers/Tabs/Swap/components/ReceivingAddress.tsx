@@ -16,7 +16,7 @@ import './ReceivingAddress.scss';
 
 export interface StateProps {
   origin: SwapInput;
-  destination: SwapInput;
+  destinationId: string;
   isPostingOrder: boolean;
   destinationAddress: string;
 }
@@ -35,22 +35,22 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
   };
 
   public onClickPartTwoComplete = () => {
-    const { origin, destination } = this.props;
+    const { origin, destinationId } = this.props;
     if (!origin) {
       return;
     }
     this.props.bityOrderCreateRequestedSwap(
-      origin.amount as number,
+      origin.amount,
       this.props.destinationAddress,
-      combineAndUpper(origin.id, destination.id)
+      combineAndUpper(origin.id, destinationId)
     );
   };
 
   public render() {
-    const { destination, destinationAddress, isPostingOrder } = this.props;
+    const { destinationId, destinationAddress, isPostingOrder } = this.props;
     let validAddress;
     // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
-    if (destination.id === 'BTC') {
+    if (destinationId === 'BTC') {
       validAddress = isValidBTCAddress(destinationAddress);
     } else {
       validAddress = isValidETHAddress(destinationAddress);
@@ -69,7 +69,7 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
           <div className="col-sm-8 col-sm-offset-2 col-xs-12">
             <label className="SwapAddress-address">
               <h4 className="SwapAddress-address-label">
-                {translate('SWAP_rec_add')} ({destination.id})
+                {translate('SWAP_rec_add')} ({destinationId})
               </h4>
 
               <input
@@ -77,7 +77,7 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
-                placeholder={donationAddressMap[destination.id]}
+                placeholder={donationAddressMap[destinationId]}
               />
             </label>
           </div>

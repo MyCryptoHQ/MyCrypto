@@ -19,15 +19,12 @@ interface State {
 }
 
 export default class CurrentRates extends Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ETHBTCAmount: 1,
-      ETHREPAmount: 1,
-      BTCETHAmount: 1,
-      BTCREPAmount: 1
-    };
-  }
+  public state = {
+    ETHBTCAmount: 1,
+    ETHREPAmount: 1,
+    BTCETHAmount: 1,
+    BTCREPAmount: 1
+  };
 
   public onChange = (event: any) => {
     const { value } = event.target;

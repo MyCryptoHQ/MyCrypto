@@ -48,10 +48,6 @@ export const INITIAL_STATE: State = {
   orderId: null
 };
 
-const allIds = byIds => {
-  return Object.keys(byIds);
-};
-
 export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapAction) {
   switch (action.type) {
     case TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED:
@@ -60,11 +56,11 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         ...state,
         bityRates: {
           byId: normalize(payload, [schema.bityRate]).entities.bityRates,
-          allIds: allIds(normalize(payload, [schema.bityRate]).entities.bityRates)
+          allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.bityRates)
         },
         options: {
           byId: normalize(payload, [schema.bityRate]).entities.options,
-          allIds: allIds(normalize(payload, [schema.bityRate]).entities.options)
+          allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.options)
         },
         isFetchingRates: false
       };

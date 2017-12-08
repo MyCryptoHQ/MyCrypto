@@ -2,12 +2,11 @@ import { TShowNotification } from 'actions/notifications';
 import bityConfig from 'config/bity';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import { SwapInput } from 'reducers/swap/types';
 import './SwapProgress.scss';
 
 export interface Props {
-  destination: SwapInput;
-  origin: SwapInput;
+  destinationId: string;
+  originId: string;
   destinationAddress: string;
   outputTx: string;
   orderStatus: string | null;
@@ -29,7 +28,7 @@ export default class SwapProgress extends Component<Props, State> {
 
   public showSwapNotification = () => {
     const { hasShownViewTx } = this.state;
-    const { destination, outputTx, showNotification, orderStatus } = this.props;
+    const { destinationId, outputTx, showNotification, orderStatus } = this.props;
 
     if (orderStatus === 'FILL') {
       if (!hasShownViewTx) {
@@ -37,7 +36,7 @@ export default class SwapProgress extends Component<Props, State> {
         let link;
         const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
         // everything but BTC is a token
-        if (destination.id !== 'BTC') {
+        if (destinationId !== 'BTC') {
           link = bityConfig.ETHTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
@@ -93,22 +92,22 @@ export default class SwapProgress extends Component<Props, State> {
   };
 
   public render() {
-    const { origin, destination } = this.props;
-    const numberOfConfirmations = origin.id === 'BTC' ? '3' : '10';
+    const { originId, destinationId } = this.props;
+    const numberOfConfirmations = originId === 'BTC' ? '3' : '10';
     const steps = [
       // 1
       translate('SWAP_progress_1'),
       // 2
       <span key="1">
-        {translate('SWAP_progress_2')} {origin.id}...
+        {translate('SWAP_progress_2')} {originId}...
       </span>,
       // 3
       <span key="2">
-        {origin.id} {translate('SWAP_progress_3')}
+        {originId} {translate('SWAP_progress_3')}
       </span>,
       // 4 TODO: Translate me
       <span key="3">
-        Sending your {destination.id}
+        Sending your {destinationId}
         <br />
         <small>Waiting for {numberOfConfirmations} confirmations...</small>
       </span>,

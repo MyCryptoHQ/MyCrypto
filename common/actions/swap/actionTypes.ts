@@ -12,9 +12,14 @@ export interface SwapInput {
   amount: number;
 }
 
+export interface SwapInputs {
+  origin: SwapInput;
+  destination: SwapInput;
+}
+
 export interface InitSwap {
   type: TypeKeys.SWAP_INIT;
-  payload: { origin: SwapInput; destination: SwapInput };
+  payload: SwapInputs;
 }
 
 export interface Option {
@@ -22,7 +27,7 @@ export interface Option {
 }
 
 export interface ApiResponseObj {
-  id: number;
+  id: string;
   options: Option[];
   rate: number;
 }

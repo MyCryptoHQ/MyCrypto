@@ -4,12 +4,8 @@ import { NormalizedBityRates, NormalizedOptions } from 'reducers/swap/types';
 import { normalize } from 'normalizr';
 import * as schema from 'reducers/swap/schema';
 
-const allIds = byIds => {
-  return Object.keys(byIds);
-};
-
 describe('swap reducer', () => {
-  const exampleApiResponse = {
+  const apiResponse = {
     BTCETH: {
       id: 'BTCETH',
       options: [{ id: 'BTC' }, { id: 'ETH' }],
@@ -22,15 +18,15 @@ describe('swap reducer', () => {
     }
   };
   const normalizedbityRates: NormalizedBityRates = {
-    byId: normalize(exampleApiResponse, [schema.bityRate]).entities.bityRates,
-    allIds: allIds(normalize(exampleApiResponse, [schema.bityRate]).entities.bityRates)
+    byId: normalize(apiResponse, [schema.bityRate]).entities.bityRates,
+    allIds: schema.allIds(normalize(apiResponse, [schema.bityRate]).entities.bityRates)
   };
   const normalizedOptions: NormalizedOptions = {
-    byId: normalize(exampleApiResponse, [schema.bityRate]).entities.options,
-    allIds: allIds(normalize(exampleApiResponse, [schema.bityRate]).entities.options)
+    byId: normalize(apiResponse, [schema.bityRate]).entities.options,
+    allIds: schema.allIds(normalize(apiResponse, [schema.bityRate]).entities.options)
   };
   it('should handle SWAP_LOAD_BITY_RATES_SUCCEEDED', () => {
-    expect(swap(undefined, swapActions.loadBityRatesSucceededSwap(exampleApiResponse))).toEqual({
+    expect(swap(undefined, swapActions.loadBityRatesSucceededSwap(apiResponse))).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false,
       bityRates: normalizedbityRates,

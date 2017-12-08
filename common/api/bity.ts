@@ -1,12 +1,7 @@
 import bityConfig from 'config/bity';
-import { checkHttpStatus, parseJSON } from './utils';
-import { indexOf } from 'lodash';
+import { checkHttpStatus, parseJSON, filter } from './utils';
 
-const filter = (id, array) => {
-  return -1 !== indexOf(array, id) ? true : false;
-};
-
-const isCryptoPair = (from, to, arr) => {
+const isCryptoPair = (from: string, to: string, arr: string[]) => {
   return filter(from, arr) && filter(to, arr);
 };
 
@@ -17,10 +12,8 @@ export function getAllRates() {
       const pairName = each.pair;
       const from = { id: pairName.substring(0, 3) };
       const to = { id: pairName.substring(3, 6) };
-      if (
-        parseFloat(each.rate_we_sell) &&
-        isCryptoPair(from.id, to.id, ['BTC', 'ETH', 'REP'])
-      ) {
+      // Check if rate exists= && check if the pair only crypto to crypto, not crypto to fiat, or any other combination
+      if (parseFloat(each.rate_we_sell) && isCryptoPair(from.id, to.id, ['BTC', 'ETH', 'REP'])) {
         mappedRates[pairName] = {
           id: pairName,
           options: [from, to],
@@ -32,12 +25,7 @@ export function getAllRates() {
   });
 }
 
-export function postOrder(
-  amount: number,
-  destAddress: string,
-  mode: number,
-  pair: string
-) {
+export function postOrder(amount: number, destAddress: string, mode: number, pair: string) {
   return fetch(`${bityConfig.serverURL}/order`, {
     method: 'post',
     body: JSON.stringify({

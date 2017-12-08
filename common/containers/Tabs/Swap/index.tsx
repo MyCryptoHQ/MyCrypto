@@ -108,7 +108,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     const ReceivingAddressProps = {
       isPostingOrder,
       origin,
-      destination,
+      destinationId: destination.id,
       destinationAddressSwap,
       destinationAddress,
       stopLoadBityRatesSwap,

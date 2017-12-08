@@ -2,7 +2,7 @@ import { Option } from 'actions/swap/actionTypes';
 
 export interface SwapInput {
   id: string;
-  amount: number | '';
+  amount: number;
 }
 
 export interface NormalizedBityRate {

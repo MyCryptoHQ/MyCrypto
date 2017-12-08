@@ -31,18 +31,15 @@ interface State {
 }
 
 export default class CurrencySwap extends Component<StateProps & ActionProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      disabled: true,
-      origin: { id: 'BTC', amount: '' },
-      destination: { id: 'ETH', amount: '' },
-      originKindOptions: ['BTC'],
-      destinationKindOptions: ['ETH'],
-      originErr: '',
-      destinationErr: ''
-    };
-  }
+  public state = {
+    disabled: true,
+    origin: { id: 'BTC', amount: NaN },
+    destination: { id: 'ETH', amount: NaN },
+    originKindOptions: ['BTC'],
+    destinationKindOptions: ['ETH'],
+    originErr: '',
+    destinationErr: ''
+  };
 
   public componentDidUpdate(prevProps, prevState) {
     const { origin, destination } = this.state;
@@ -74,20 +71,20 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
     return { min, max };
   };
 
-  public isMinMaxValid = (amount, kind) => {
+  public isMinMaxValid = (amount: number, kind: string) => {
     const rate = this.getMinMax(kind);
     const higherThanMin = amount >= rate.min;
     const lowerThanMax = amount <= rate.max;
     return higherThanMin && lowerThanMax;
   };
 
-  public setDisabled(origin, destination) {
+  public setDisabled(origin: SwapInput, destination: SwapInput) {
     const amountsValid = origin.amount && destination.amount;
     const minMaxValid = this.isMinMaxValid(origin.amount, origin.id);
 
     const disabled = !(amountsValid && minMaxValid);
 
-    const createErrString = (kind, amount) => {
+    const createErrString = (kind, amount: number) => {
       const rate = this.getMinMax(kind);
       let errString;
       if (amount > rate.max) {
@@ -118,12 +115,12 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
 
   public setOriginAndDestinationToInitialVal = () => {
     this.setState({
-      origin: { ...this.state.origin, amount: '' },
-      destination: { ...this.state.destination, amount: '' }
+      origin: { ...this.state.origin, amount: NaN },
+      destination: { ...this.state.destination, amount: NaN }
     });
   };
 
-  public updateOriginAmount = (origin, destination, amount) => {
+  public updateOriginAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
       const pairName = combineAndUpper(origin.id, destination.id);
       const bityRate = this.props.bityRates.byId[pairName].rate;
@@ -137,7 +134,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
     }
   };
 
-  public updateDestinationAmount = (origin, destination, amount) => {
+  public updateDestinationAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
       const pairNameReversed = combineAndUpper(destination.id, origin.id);
       const bityRate = this.props.bityRates.byId[pairNameReversed].rate;
@@ -163,12 +160,12 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
       : this.updateDestinationAmount(origin, destination, amount);
   };
 
-  public onChangeOriginKind = newOption => {
+  public onChangeOriginKind = (newOption: string) => {
     const { origin, destination, destinationKindOptions } = this.state;
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
       const bityRate = this.props.bityRates.byId[pairName].rate;
-      return bityRate * parseFloat(origin.amount as string);
+      return bityRate * origin.amount;
     };
     this.setState({
       origin: { ...origin, id: newOption },
@@ -180,12 +177,12 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
     });
   };
 
-  public onChangeDestinationKind = newOption => {
+  public onChangeDestinationKind = (newOption: string) => {
     const { origin, destination } = this.state;
     const newOriginAmount = () => {
       const pairName = combineAndUpper(newOption, origin.id);
       const bityRate = this.props.bityRates.byId[pairName].rate;
-      return bityRate * parseFloat(destination.amount as string);
+      return bityRate * destination.amount;
     };
     this.setState({
       origin: {
@@ -227,7 +224,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
                 }`}
                 type="number"
                 placeholder="Amount"
-                value={origin.amount}
+                value={isNaN(origin.amount) ? '' : origin.amount}
                 onChange={this.onChangeAmount}
               />
               <div className="CurrencySwap-dropdown">
@@ -253,7 +250,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
                 }`}
                 type="number"
                 placeholder="Amount"
-                value={destination.amount}
+                value={isNaN(destination.amount) ? '' : destination.amount}
                 onChange={this.onChangeAmount}
               />
               <div className="CurrencySwap-dropdown">
