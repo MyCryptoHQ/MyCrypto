@@ -13,7 +13,7 @@ import {
   GenerateTransaction,
   SendButton,
   SigningStatus
-} from './components';
+} from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 import { Aux } from 'components/ui';

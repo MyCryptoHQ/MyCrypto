@@ -30,6 +30,6 @@ class SigningStatusClass extends Component<StateProps> {
   }
 }
 
-export const SigningStatus = connect((state: AppState) =>
-  signaturePending(state)
-)(SigningStatusClass);
+export const SigningStatus = connect((state: AppState) => signaturePending(state))(
+  SigningStatusClass
+);

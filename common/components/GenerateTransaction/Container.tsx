@@ -15,9 +15,7 @@ type Payload =
   | SignWeb3TransactionRequestedAction['payload'];
 type Signer = (
   payload: Payload
-) => () =>
-  | SignLocalTransactionRequestedAction
-  | SignWeb3TransactionRequestedAction;
+) => () => SignLocalTransactionRequestedAction | SignWeb3TransactionRequestedAction;
 
 interface DispatchProps {
   signer: TSignLocalTransactionRequested | TSignWeb3TransactionRequested;
@@ -35,16 +33,11 @@ class Container extends Component<DispatchProps & Props, {}> {
   private sign = (payload: Payload) => () => this.props.signer(payload);
 }
 
-export const WithSigner = connect(
-  null,
-  (dispatch: Dispatch<AppState>, ownProps: Props) => {
-    return bindActionCreators(
-      {
-        signer: ownProps.isWeb3
-          ? signWeb3TransactionRequested
-          : signLocalTransactionRequested
-      },
-      dispatch
-    );
-  }
-)(Container);
+export const WithSigner = connect(null, (dispatch: Dispatch<AppState>, ownProps: Props) => {
+  return bindActionCreators(
+    {
+      signer: ownProps.isWeb3 ? signWeb3TransactionRequested : signLocalTransactionRequested
+    },
+    dispatch
+  );
+})(Container);
