@@ -109,8 +109,8 @@ const configureStore = () => {
         },
         swap: {
           ...state.swap,
-          options: swapInitialState.options,
-          bityRates: swapInitialState.bityRates
+          options: {},
+          bityRates: {}
         },
         customTokens: state.customTokens
       });

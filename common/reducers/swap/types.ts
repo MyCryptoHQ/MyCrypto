@@ -1,7 +1,8 @@
 import { Option } from 'actions/swap/actionTypes';
+import { SupportedDestinationKind } from 'config/bity';
 
 export interface SwapInput {
-  id: string;
+  id: SupportedDestinationKind;
   amount: number;
 }
 

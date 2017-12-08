@@ -1,7 +1,11 @@
 import { TChangeStepSwap, TInitSwap } from 'actions/swap';
 import { NormalizedBityRates, NormalizedOptions, SwapInput } from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
-import bityConfig, { generateKindMax, generateKindMin } from 'config/bity';
+import bityConfig, {
+  generateKindMax,
+  generateKindMin,
+  SupportedDestinationKind
+} from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
@@ -24,32 +28,40 @@ interface State {
   disabled: boolean;
   origin: SwapInput;
   destination: SwapInput;
-  originKindOptions: string[];
-  destinationKindOptions: string[];
+  originKindOptions: SupportedDestinationKind[];
+  destinationKindOptions: SupportedDestinationKind[];
   originErr: string;
   destinationErr: string;
 }
 
-export default class CurrencySwap extends Component<StateProps & ActionProps, State> {
+type Props = StateProps & ActionProps;
+
+export default class CurrencySwap extends Component<Props, State> {
   public state = {
     disabled: true,
-    origin: { id: 'BTC', amount: NaN },
-    destination: { id: 'ETH', amount: NaN },
-    originKindOptions: ['BTC'],
-    destinationKindOptions: ['ETH'],
+    origin: { id: 'BTC', amount: NaN } as SwapInput,
+    destination: { id: 'ETH', amount: NaN } as SwapInput,
+    originKindOptions: ['BTC', 'ETH'] as SupportedDestinationKind[],
+    destinationKindOptions: ['ETH'] as SupportedDestinationKind[],
     originErr: '',
     destinationErr: ''
   };
 
-  public componentDidUpdate(prevProps, prevState) {
+  public componentDidUpdate(prevProps: Props, prevState: State) {
     const { origin, destination } = this.state;
     const { options } = this.props;
     if (origin !== prevState.origin) {
       this.setDisabled(origin, destination);
     }
     if (options.allIds !== prevProps.options.allIds) {
-      const originKindOptions = intersection(options.allIds, ['BTC', 'ETH']);
-      const destinationKindOptions = without(options.allIds, origin.id);
+      const originKindOptions: SupportedDestinationKind[] = intersection<any>(
+        options.allIds,
+        this.state.originKindOptions
+      );
+      const destinationKindOptions: SupportedDestinationKind[] = without<any>(
+        options.allIds,
+        origin.id
+      );
       this.setState({
         originKindOptions,
         destinationKindOptions
@@ -57,7 +69,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
     }
   }
 
-  public getMinMax = kind => {
+  public getMinMax = (kind: SupportedDestinationKind) => {
     let min;
     let max;
     if (kind !== 'BTC') {
@@ -71,7 +83,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
     return { min, max };
   };
 
-  public isMinMaxValid = (amount: number, kind: string) => {
+  public isMinMaxValid = (amount: number, kind: SupportedDestinationKind) => {
     const rate = this.getMinMax(kind);
     const higherThanMin = amount >= rate.min;
     const lowerThanMax = amount <= rate.max;
@@ -84,7 +96,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
 
     const disabled = !(amountsValid && minMaxValid);
 
-    const createErrString = (kind, amount: number) => {
+    const createErrString = (kind: SupportedDestinationKind, amount: number) => {
       const rate = this.getMinMax(kind);
       let errString;
       if (amount > rate.max) {
@@ -160,7 +172,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
       : this.updateDestinationAmount(origin, destination, amount);
   };
 
-  public onChangeOriginKind = (newOption: string) => {
+  public onChangeOriginKind = (newOption: SupportedDestinationKind) => {
     const { origin, destination, destinationKindOptions } = this.state;
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
@@ -177,7 +189,7 @@ export default class CurrencySwap extends Component<StateProps & ActionProps, St
     });
   };
 
-  public onChangeDestinationKind = (newOption: string) => {
+  public onChangeDestinationKind = (newOption: SupportedDestinationKind) => {
     const { origin, destination } = this.state;
     const newOriginAmount = () => {
       const pairName = combineAndUpper(newOption, origin.id);

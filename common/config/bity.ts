@@ -1,6 +1,6 @@
 import { BTCTxExplorer, ETHTxExplorer } from './data';
 
-type SupportedDestinationKind = 'ETH' | 'BTC' | 'REP';
+export type SupportedDestinationKind = 'ETH' | 'BTC' | 'REP';
 
 const serverURL = 'https://bity.myetherapi.com';
 const bityURL = 'https://bity.com/api';
