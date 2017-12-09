@@ -7,6 +7,7 @@ import translate from 'translations';
 import { stripHexPrefix } from 'libs/values';
 import './PaperWallet.scss';
 import Template from './Template';
+import { knowledgeBaseURL } from 'config/data';
 
 const content = (wallet: IFullWallet) => (
   <div className="GenPaper">
@@ -33,12 +34,12 @@ const content = (wallet: IFullWallet) => (
         <strong>Do not lose it!</strong> It cannot be recovered if you lose it.
       </p>
       <p>
-        <strong>Do not share it!</strong> Your funds will be stolen if you use
-        this file on a malicious/phishing site.
+        <strong>Do not share it!</strong> Your funds will be stolen if you use this file on a
+        malicious/phishing site.
       </p>
       <p>
-        <strong>Make a backup!</strong> Secure it like the millions of dollars
-        it may one day be worth.
+        <strong>Make a backup!</strong> Secure it like the millions of dollars it may one day be
+        worth.
       </p>
     </div>
 
@@ -54,17 +55,21 @@ const help = (
     <h4>{translate('GEN_Help_4')}</h4>
     <ul>
       <li>
-        <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-save-slash-backup-my-wallet">
+        <NewTabLink href={`${knowledgeBaseURL}/getting-started/backing-up-your-new-wallet`}>
           <strong>{translate('HELP_2a_Title')}</strong>
         </NewTabLink>
       </li>
       <li>
-        <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/protecting-yourself-and-your-funds">
+        <NewTabLink href={`${knowledgeBaseURL}/security/securing-your-ethereum`}>
           <strong>{translate('GEN_Help_15')}</strong>
         </NewTabLink>
       </li>
       <li>
-        <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/what-are-the-different-formats-of-a-private-key">
+        <NewTabLink
+          href={`${
+            knowledgeBaseURL
+          }/private-keys-passwords/difference-beween-private-key-and-keystore-file`}
+        >
           <strong>{translate('GEN_Help_16')}</strong>
         </NewTabLink>
       </li>
@@ -75,7 +80,7 @@ const help = (
       <li>{translate('GEN_Help_18')}</li>
       <li>{translate('GEN_Help_19')}</li>
       <li>
-        <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-safely-slash-offline-slash-cold-storage-with-myetherwallet">
+        <NewTabLink href={`${knowledgeBaseURL}/offline/ethereum-cold-storage-with-myetherwallet`}>
           {translate('GEN_Help_20')}
         </NewTabLink>
       </li>

@@ -1,17 +1,17 @@
 import throttle from 'lodash/throttle';
 import { routerMiddleware } from 'react-router-redux';
-import { INITIAL_STATE as configInitialState } from 'reducers/config';
-import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
-import { INITIAL_STATE as swapInitialState } from 'reducers/swap';
+import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+import {
+  State as CustomTokenState,
+  INITIAL_STATE as customTokensInitialState
+} from 'reducers/customTokens';
+import { State as SwapState, INITIAL_STATE as swapInitialState } from 'reducers/swap';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer from './reducers';
-import { State as ConfigState } from './reducers/config';
-import { State as CustomTokenState } from './reducers/customTokens';
-import { State as SwapState } from './reducers/swap';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 
@@ -54,13 +54,9 @@ const configureStore = () => {
         }
       : { ...swapInitialState };
 
-  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>(
-    'customTokens'
-  );
+  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens');
 
-  const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>(
-    'config'
-  );
+  const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
 
   // If they have a saved node, make sure we assign that too. The node selected
   // isn't serializable, so we have to assign it here.
@@ -90,8 +86,7 @@ const configureStore = () => {
   // if 'web3' has persisted as node selection, reset to app default
   // necessary because web3 is only initialized as a node upon MetaMask / Mist unlock
   if (persistedInitialState.config.nodeSelection === 'web3') {
-    persistedInitialState.config.nodeSelection =
-      configInitialState.nodeSelection;
+    persistedInitialState.config.nodeSelection = configInitialState.nodeSelection;
   }
 
   store = createStore(RootReducer, persistedInitialState, middleware);
@@ -112,7 +107,11 @@ const configureStore = () => {
           customNodes: state.config.customNodes,
           customNetworks: state.config.customNetworks
         },
-        swap: { ...state.swap, bityRates: {} },
+        swap: {
+          ...state.swap,
+          options: {},
+          bityRates: {}
+        },
         customTokens: state.customTokens
       });
     }),
