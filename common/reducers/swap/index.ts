@@ -10,6 +10,9 @@ export interface State {
   destination: stateTypes.SwapInput;
   options: stateTypes.NormalizedOptions;
   bityRates: stateTypes.NormalizedBityRates;
+  // Change this
+  shapeshiftRates: stateTypes.NormalizedBityRates;
+  provider: string;
   bityOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
@@ -35,6 +38,11 @@ export const INITIAL_STATE: State = {
     byId: {},
     allIds: []
   },
+  shapeshiftRates: {
+    byId: {},
+    allIds: []
+  },
+  provider: 'shapeshift',
   destinationAddress: '',
   bityOrder: {},
   isFetchingRates: null,
@@ -61,6 +69,20 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         options: {
           byId: normalize(payload, [schema.bityRate]).entities.options,
           allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.options)
+        },
+        isFetchingRates: false
+      };
+    case TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED:
+      return {
+        ...state,
+        // modify to shapeshift normalization schema
+        shapeshiftRates: {
+          byId: normalize(action.payload, [schema.bityRate]).entities.bityRates,
+          allIds: schema.allIds(normalize(action.payload, [schema.bityRate]).entities.bityRates)
+        },
+        options: {
+          byId: normalize(action.payload, [schema.bityRate]).entities.options,
+          allIds: schema.allIds(normalize(action.payload, [schema.bityRate]).entities.options)
         },
         isFetchingRates: false
       };
@@ -134,13 +156,21 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         ...state,
         isFetchingRates: true
       };
-
+    case TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED:
+      return {
+        ...state,
+        isFetchingRates: true
+      };
     case TypeKeys.SWAP_STOP_LOAD_BITY_RATES:
       return {
         ...state,
         isFetchingRates: false
       };
-
+    case TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES:
+      return {
+        ...state,
+        isFetchingRates: false
+      };
     default:
       return state;
   }

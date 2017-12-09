@@ -5,6 +5,7 @@ import {
   changeStepSwap as dChangeStepSwap,
   destinationAddressSwap as dDestinationAddressSwap,
   loadBityRatesRequestedSwap as dLoadBityRatesRequestedSwap,
+  loadShapeshiftRatesRequestedSwap as dLoadShapeshiftRatesRequestedSwap,
   restartSwap as dRestartSwap,
   startOrderTimerSwap as dStartOrderTimerSwap,
   startPollBityOrderStatus as dStartPollBityOrderStatus,
@@ -16,6 +17,7 @@ import {
   TChangeStepSwap,
   TDestinationAddressSwap,
   TLoadBityRatesRequestedSwap,
+  TLoadShapeshiftRequestedSwap,
   TRestartSwap,
   TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
@@ -40,6 +42,8 @@ interface ReduxStateProps {
   origin: SwapInput;
   destination: SwapInput;
   bityRates: NormalizedBityRates;
+  // change
+  shapeshiftRates: NormalizedBityRates;
   options: NormalizedOptions;
   bityOrder: any;
   destinationAddress: string;
@@ -54,6 +58,7 @@ interface ReduxStateProps {
 interface ReduxActionProps {
   changeStepSwap: TChangeStepSwap;
   loadBityRatesRequestedSwap: TLoadBityRatesRequestedSwap;
+  loadShapeshiftRatesRequestedSwap: TLoadShapeshiftRequestedSwap;
   destinationAddressSwap: TDestinationAddressSwap;
   restartSwap: TRestartSwap;
   stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
@@ -68,6 +73,7 @@ interface ReduxActionProps {
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
+    this.props.loadShapeshiftRatesRequestedSwap();
     this.props.loadBityRatesRequestedSwap();
   }
 
@@ -79,6 +85,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     const {
       // STATE
       bityRates,
+      shapeshiftRates,
+      provider,
       options,
       origin,
       destination,
@@ -129,6 +137,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     const CurrencySwapProps = {
       showNotification,
       bityRates,
+      shapeshiftRates,
+      provider,
       options,
       initSwap,
       changeStepSwap
@@ -152,7 +162,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       outputTx
     };
 
-    const { ETHBTC, ETHREP, BTCETH, BTCREP } = bityRates.byId;
+    const { ETHBTC, ETHREP, BTCETH, BTCREP } = shapeshiftRates.byId;
     const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
 
     return (
@@ -178,6 +188,8 @@ function mapStateToProps(state: AppState) {
     origin: state.swap.origin,
     destination: state.swap.destination,
     bityRates: state.swap.bityRates,
+    shapeshiftRates: state.swap.shapeshiftRates,
+    provider: state.swap.provider,
     options: state.swap.options,
     bityOrder: state.swap.bityOrder,
     destinationAddress: state.swap.destinationAddress,
@@ -195,6 +207,7 @@ export default connect(mapStateToProps, {
   initSwap: dInitSwap,
   bityOrderCreateRequestedSwap: dBityOrderCreateRequestedSwap,
   loadBityRatesRequestedSwap: dLoadBityRatesRequestedSwap,
+  loadShapeshiftRatesRequestedSwap: dLoadShapeshiftRatesRequestedSwap,
   destinationAddressSwap: dDestinationAddressSwap,
   restartSwap: dRestartSwap,
   startOrderTimerSwap: dStartOrderTimerSwap,

@@ -1,12 +1,8 @@
 import configSaga from './config';
 import deterministicWallets from './deterministicWallets';
 import notifications from './notifications';
-import {
-  bityTimeRemaining,
-  pollBityOrderStatusSaga,
-  postBityOrderSaga
-} from './swap/orders';
-import { getBityRatesSaga } from './swap/rates';
+import { bityTimeRemaining, pollBityOrderStatusSaga, postBityOrderSaga } from './swap/orders';
+import { getBityRatesSaga, getShapeShiftRatesSaga } from './swap/rates';
 import wallet from './wallet';
 
 export default {
@@ -15,6 +11,7 @@ export default {
   postBityOrderSaga,
   pollBityOrderStatusSaga,
   getBityRatesSaga,
+  getShapeShiftRatesSaga,
   notifications,
   wallet,
   deterministicWallets

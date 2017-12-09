@@ -13,9 +13,12 @@ import { Dropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
 import { without, intersection } from 'lodash';
 import './CurrencySwap.scss';
+import shapeshift from 'api/shapeshift';
 
 export interface StateProps {
   bityRates: NormalizedBityRates;
+  shapeshiftRates: NormalizedBityRates;
+  provider: string;
   options: NormalizedOptions;
 }
 
@@ -28,8 +31,8 @@ interface State {
   disabled: boolean;
   origin: SwapInput;
   destination: SwapInput;
-  originKindOptions: SupportedDestinationKind[];
-  destinationKindOptions: SupportedDestinationKind[];
+  originKindOptions: string[];
+  destinationKindOptions: string[];
   originErr: string;
   destinationErr: string;
 }
@@ -41,8 +44,8 @@ export default class CurrencySwap extends Component<Props, State> {
     disabled: true,
     origin: { id: 'BTC', amount: NaN } as SwapInput,
     destination: { id: 'ETH', amount: NaN } as SwapInput,
-    originKindOptions: ['BTC', 'ETH'] as SupportedDestinationKind[],
-    destinationKindOptions: ['ETH'] as SupportedDestinationKind[],
+    originKindOptions: shapeshift.whitelist,
+    destinationKindOptions: shapeshift.whitelist,
     originErr: '',
     destinationErr: ''
   };
@@ -56,7 +59,7 @@ export default class CurrencySwap extends Component<Props, State> {
     if (options.allIds !== prevProps.options.allIds) {
       const originKindOptions: SupportedDestinationKind[] = intersection<any>(
         options.allIds,
-        this.state.originKindOptions
+        shapeshift.whitelist
       );
       const destinationKindOptions: SupportedDestinationKind[] = without<any>(
         options.allIds,
@@ -69,13 +72,16 @@ export default class CurrencySwap extends Component<Props, State> {
     }
   }
 
+  public activeProvider = () =>
+    this.props.provider === 'shapeshift' ? this.props.shapeshiftRates : this.props.bityRates;
+
   public getMinMax = (kind: SupportedDestinationKind) => {
     let min;
     let max;
     if (kind !== 'BTC') {
-      const bityPairRate = this.props.bityRates.byId['BTC' + kind].rate;
-      min = generateKindMin(bityPairRate, kind);
-      max = generateKindMax(bityPairRate, kind);
+      const pairRate = this.activeProvider().byId['BTC' + kind].rate;
+      min = generateKindMin(pairRate, kind);
+      max = generateKindMax(pairRate, kind);
     } else {
       min = bityConfig.BTCMin;
       max = bityConfig.BTCMax;
@@ -135,8 +141,8 @@ export default class CurrencySwap extends Component<Props, State> {
   public updateOriginAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
       const pairName = combineAndUpper(origin.id, destination.id);
-      const bityRate = this.props.bityRates.byId[pairName].rate;
-      const destinationAmount = amount * bityRate;
+      const rate = this.activeProvider().byId[pairName].rate;
+      const destinationAmount = amount * rate;
       this.setState({
         origin: { ...this.state.origin, amount },
         destination: { ...this.state.destination, amount: destinationAmount }
@@ -149,8 +155,8 @@ export default class CurrencySwap extends Component<Props, State> {
   public updateDestinationAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
       const pairNameReversed = combineAndUpper(destination.id, origin.id);
-      const bityRate = this.props.bityRates.byId[pairNameReversed].rate;
-      const originAmount = amount * bityRate;
+      const rate = this.activeProvider().byId[pairNameReversed].rate;
+      const originAmount = amount * rate;
       this.setState({
         origin: { ...this.state.origin, amount: originAmount },
         destination: {
@@ -176,8 +182,8 @@ export default class CurrencySwap extends Component<Props, State> {
     const { origin, destination, destinationKindOptions } = this.state;
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
-      const bityRate = this.props.bityRates.byId[pairName].rate;
-      return bityRate * origin.amount;
+      const rate = this.activeProvider().byId[pairName].rate;
+      return rate * origin.amount;
     };
     this.setState({
       origin: { ...origin, id: newOption },
@@ -193,8 +199,8 @@ export default class CurrencySwap extends Component<Props, State> {
     const { origin, destination } = this.state;
     const newOriginAmount = () => {
       const pairName = combineAndUpper(newOption, origin.id);
-      const bityRate = this.props.bityRates.byId[pairName].rate;
-      return bityRate * destination.amount;
+      const rate = this.activeProvider().byId[pairName].rate;
+      return rate * destination.amount;
     };
     this.setState({
       origin: {
@@ -206,7 +212,7 @@ export default class CurrencySwap extends Component<Props, State> {
   };
 
   public render() {
-    const { bityRates } = this.props;
+    const { bityRates, shapeshiftRates, provider } = this.props;
     const {
       origin,
       destination,
@@ -220,10 +226,14 @@ export default class CurrencySwap extends Component<Props, State> {
     const DestinationKindDropDown = Dropdown as new () => Dropdown<typeof destination.id>;
     const pairName = combineAndUpper(origin.id, destination.id);
     const bityLoaded = bityRates.byId[pairName] ? bityRates.byId[pairName].id : false;
+    const shapeshiftLoaded = shapeshiftRates.byId[pairName]
+      ? shapeshiftRates.byId[pairName].id
+      : false;
+    const loaded = provider === 'shapeshift' ? shapeshiftLoaded : bityLoaded;
     return (
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
-        {bityLoaded ? (
+        {loaded ? (
           <div className="form-inline CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
               <span className="CurrencySwap-error-message">{originErr}</span>

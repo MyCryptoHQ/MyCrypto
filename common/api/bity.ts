@@ -21,6 +21,7 @@ export function getAllRates() {
         };
       }
     });
+    console.log('mappedRates', mappedRates);
     return mappedRates;
   });
 }

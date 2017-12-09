@@ -41,6 +41,11 @@ export interface LoadBityRatesSucceededSwapAction {
   payload: ApiResponse;
 }
 
+export interface LoadShapshiftRatesSucceededSwapAction {
+  type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED;
+  payload: ApiResponse;
+}
+
 export interface DestinationAddressSwapAction {
   type: TypeKeys.SWAP_DESTINATION_ADDRESS;
   payload?: string;
@@ -55,6 +60,11 @@ export interface LoadBityRatesRequestedSwapAction {
   payload?: null;
 }
 
+export interface LoadShapeshiftRequestedSwapAction {
+  type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED;
+  payload?: null;
+}
+
 export interface ChangeStepSwapAction {
   type: TypeKeys.SWAP_STEP;
   payload: number;
@@ -62,6 +72,10 @@ export interface ChangeStepSwapAction {
 
 export interface StopLoadBityRatesSwapAction {
   type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES;
+}
+
+export interface StopLoadShapeshiftRatesSwapAction {
+  type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES;
 }
 
 export interface OrderSwapTimeSwapAction {
@@ -147,10 +161,13 @@ export type SwapAction =
   | ChangeStepSwapAction
   | InitSwap
   | LoadBityRatesSucceededSwapAction
+  | LoadShapshiftRatesSucceededSwapAction
   | DestinationAddressSwapAction
   | RestartSwapAction
   | LoadBityRatesRequestedSwapAction
+  | LoadShapeshiftRequestedSwapAction
   | StopLoadBityRatesSwapAction
+  | StopLoadShapeshiftRatesSwapAction
   | BityOrderCreateRequestedSwapAction
   | BityOrderCreateSucceededSwapAction
   | OrderStatusSucceededSwapAction
