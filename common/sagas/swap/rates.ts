@@ -51,7 +51,7 @@ export function* swapWhitelist(): SagaIterator {
   // Select currenty swap type (Bity or SS)
   const swapType = select(getSwapType);
   if (swapType === 'bity') {
-    // SWAP_LOAD_BITY_RATES_REQUESTED
+    // SWAP_LOAD_BITY_RATES_REUESTED
     yield put(loadBityRatesRequestedSwap());
   } else if (swapType === 'shapeshift') {
     // SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED
