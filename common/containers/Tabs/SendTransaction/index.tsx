@@ -13,7 +13,6 @@ import {
   GasField
 } from './components';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-// import NavigationPrompt from './components/NavigationPrompt';
 // CONFIG
 import { donationAddressMap, NetworkConfig } from 'config/data';
 // LIBS
