@@ -25,7 +25,7 @@ export const SendButton: React.SFC<{}> = () => (
           <label>{translate('SEND_signed')}</label>
           <textarea
             className="form-control"
-            value={serializedTransaction}
+            value={`0x${serializedTransaction}`}
             rows={4}
             readOnly={true}
           />

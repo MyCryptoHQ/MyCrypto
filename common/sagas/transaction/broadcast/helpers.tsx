@@ -12,7 +12,7 @@ import {
   BroadcastRequestedAction,
   StateSerializedTx,
   ISerializedTxAndIndexingHash
-} from 'sagas/broadcast/typings';
+} from 'sagas/transaction/broadcast/typings';
 import { ITransactionStatus } from 'reducers/transaction/broadcast';
 import { showNotification } from 'actions/notifications';
 import React from 'react';
