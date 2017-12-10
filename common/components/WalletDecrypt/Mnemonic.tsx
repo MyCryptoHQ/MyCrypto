@@ -86,7 +86,8 @@ export default class MnemonicDecrypt extends Component<Props, State> {
   };
 
   public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    this.setState({ phrase: (e.target as HTMLTextAreaElement).value });
+    var userInputPhrase = (e.target as HTMLTextAreaElement).value;
+    this.setState({ phrase: userInputPhrase });
   };
 
   public onDWModalOpen = () => {
