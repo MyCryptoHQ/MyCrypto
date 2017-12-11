@@ -12,6 +12,7 @@ export const transaction = combineReducers({
   sign,
   broadcast
 });
+
 export interface State {
   network: NetworkState;
   fields: FieldState;
@@ -19,3 +20,5 @@ export interface State {
   sign: SignState;
   broadcast: BroadcastState;
 }
+
+export const INITIAL_STATE: State = transaction({}, { type: undefined }) as State;

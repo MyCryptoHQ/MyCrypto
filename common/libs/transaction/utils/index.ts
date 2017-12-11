@@ -4,10 +4,10 @@ import { IFullWallet } from 'libs/wallet';
 import { ITransaction } from '../typings';
 export { signTransaction };
 export {
-  enoughBalance,
+  enoughBalanceViaTx,
   validateTx,
   validGasLimit,
-  transaction,
+  makeTransaction,
   getTransactionFields,
   computeIndexingHash
 } from './ether';

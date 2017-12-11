@@ -1,9 +1,26 @@
-import React from 'react';
-import { Wallet } from './Wallet';
-interface Props {
-  whenUnlocked: React.ReactElement<any>;
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { isUnlocked } from 'selectors/wallet';
+import { AppState } from 'reducers';
+
+interface OwnProps {
+  whenUnlocked: React.ReactElement<any> | null;
 }
 
-export const OnlyUnlocked: React.SFC<Props> = ({ whenUnlocked }) => (
-  <Wallet withWallet={({ wallet }) => (!!wallet.inst ? whenUnlocked : null)} />
-);
+interface StateProps {
+  isUnlocked: boolean;
+}
+
+function mapStateToProps(state: AppState) {
+  return {
+    isUnlocked: isUnlocked(state)
+  };
+}
+
+class OnlyUnlockedClass extends Component<OwnProps & StateProps> {
+  public render() {
+    return this.props.isUnlocked ? this.props.whenUnlocked : null;
+  }
+}
+
+export const OnlyUnlocked = connect(mapStateToProps)(OnlyUnlockedClass);

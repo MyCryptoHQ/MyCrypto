@@ -4,6 +4,7 @@ import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
+import { isPositiveInteger } from 'utils/helpers';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -92,6 +93,8 @@ export function isValidEncryptedPrivKey(privkey: string): boolean {
   }
 }
 
+export const validNumber = (num: number) => isFinite(num) && num > 0;
+
 export function isPositiveIntegerOrZero(num: number): boolean {
   if (isNaN(num) || !isFinite(num)) {
     return false;
@@ -135,6 +138,18 @@ export const schema = {
       message: { type: 'string', maxLength: 2 }
     }
   }
+};
+
+export const isValidNonce = (value: string): boolean => {
+  let valid;
+  if (value === '0') {
+    valid = true;
+  } else if (!value) {
+    valid = false;
+  } else {
+    valid = isPositiveInteger(+value);
+  }
+  return valid;
 };
 
 function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {

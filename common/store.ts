@@ -1,10 +1,10 @@
 import throttle from 'lodash/throttle';
 import { routerMiddleware } from 'react-router-redux';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
+import { INITIAL_STATE as transactionInitialState } from 'reducers/transaction';
 import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
 import { INITIAL_STATE as swapInitialState } from 'reducers/swap';
 import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
@@ -17,6 +17,7 @@ import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 
 import sagas from './sagas';
+import { gasPricetoBase } from 'reducers/transaction/fields';
 
 const configureStore = () => {
   const logger = createLogger({
@@ -32,7 +33,6 @@ const configureStore = () => {
   if (process.env.NODE_ENV !== 'production') {
     middleware = composeWithDevTools(
       applyMiddleware(
-        thunk,
         sagaMiddleware,
         logger,
         reduxPromiseMiddleWare,
@@ -80,6 +80,7 @@ const configureStore = () => {
       ...configInitialState,
       ...savedConfigState
     },
+    transaction: { ...transactionInitialState },
     customTokens: localCustomTokens || customTokensInitialState,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState
@@ -91,6 +92,13 @@ const configureStore = () => {
     persistedInitialState.config.nodeSelection = configInitialState.nodeSelection;
   }
 
+  // set transaction field of gasPrice to the same as the persisted config
+  //TODO: maybe only pull in gasprice for transaction
+  persistedInitialState.transaction.fields.gasPrice = {
+    raw: '',
+    value: gasPricetoBase(persistedInitialState.config.gasPriceGwei)
+  };
+
   store = createStore(RootReducer, persistedInitialState, middleware);
 
   // Add all of the sagas to the middleware
@@ -101,6 +109,7 @@ const configureStore = () => {
   store.subscribe(
     throttle(() => {
       const state = store.getState();
+
       saveState({
         config: {
           gasPriceGwei: state.config.gasPriceGwei,
@@ -109,11 +118,11 @@ const configureStore = () => {
           customNodes: state.config.customNodes,
           customNetworks: state.config.customNetworks
         },
+        transaction: state.transaction,
         swap: { ...state.swap, bityRates: {} },
         customTokens: state.customTokens
       });
-    }),
-    1000
+    }, 1000)
   );
 
   return store;

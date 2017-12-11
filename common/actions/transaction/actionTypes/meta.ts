@@ -1,12 +1,6 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { Address, TokenValue } from 'libs/units';
-export {
-  MetaAction,
-  SetUnitMetaAction,
-  SetDecimalMetaAction,
-  SetTokenToMetaAction,
-  SetTokenValueMetaAction
-};
+export { MetaAction, SetUnitMetaAction, SetTokenToMetaAction, SetTokenValueMetaAction };
 /*Meta Actions*/
 
 interface SetTokenToMetaAction {
@@ -17,11 +11,6 @@ interface SetTokenToMetaAction {
   };
 }
 
-interface SetDecimalMetaAction {
-  type: TypeKeys.DECIMAL_META_SET;
-  payload: number;
-}
-
 interface SetUnitMetaAction {
   type: TypeKeys.UNIT_META_SET;
   payload: string;
@@ -30,13 +19,9 @@ interface SetUnitMetaAction {
 interface SetTokenValueMetaAction {
   type: TypeKeys.TOKEN_VALUE_META_SET;
   payload: {
-    raw?: string;
+    raw: string;
     value: TokenValue | null;
   };
 }
 
-type MetaAction =
-  | SetUnitMetaAction
-  | SetDecimalMetaAction
-  | SetTokenValueMetaAction
-  | SetTokenToMetaAction;
+type MetaAction = SetUnitMetaAction | SetTokenValueMetaAction | SetTokenToMetaAction;

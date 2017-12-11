@@ -13,14 +13,7 @@ interface IQueryResults {
   [key: string]: string | null;
 }
 
-export type Param =
-  | 'to'
-  | 'data'
-  | 'readOnly'
-  | 'tokenSymbol'
-  | 'value'
-  | 'gaslimit'
-  | 'limit';
+export type Param = 'to' | 'data' | 'readOnly' | 'tokenSymbol' | 'value' | 'gaslimit' | 'limit';
 
 interface Props {
   params: Param[];
@@ -41,30 +34,9 @@ export const Query = withRouter(
       const { withQuery, params } = this.props;
       const { location } = this.injected;
       const query = parse(location);
-      const res = params.reduce(
-        (obj, param) => ({ ...obj, [param]: getParam(query, param) }),
-        {}
-      );
+      const res = params.reduce((obj, param) => ({ ...obj, [param]: getParam(query, param) }), {});
 
       return withQuery(res);
     }
   }
 );
-
-/*
-const parseQuery = () => {
-  const searchStr = this.props.location.search;
-  const query = queryString.parse(searchStr);
-  const to = getParam(query, 'to');
-  const data = getParam(query, 'data');
-  const unit = getParam(query, 'tokenSymbol');
-  const token = this.props.tokens.find(x => x.symbol === unit);
-  const value = getParam(query, 'value');
-  let gasLimit = getParam(query, 'gaslimit');
-  if (gasLimit === null) {
-    gasLimit = getParam(query, 'limit');
-  }
-  const readOnly = getParam(query, 'readOnly') != null;
-  return { to, token, data, value, unit, gasLimit, readOnly };
-};
-*/

@@ -1,15 +1,33 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { Wei, Data, Address, Nonce } from 'libs/units';
 export {
+  InputGasLimitAction,
+  InputDataAction,
+  InputNonceAction,
   SetGasLimitFieldAction,
   SetDataFieldAction,
   SetToFieldAction,
   SetNonceFieldAction,
   SetValueFieldAction,
-  FieldAction
+  FieldAction,
+  InputFieldAction
 };
 
-/*Field Actions*/
+/* User Input */
+interface InputGasLimitAction {
+  type: TypeKeys.GAS_LIMIT_INPUT;
+  payload: string;
+}
+interface InputDataAction {
+  type: TypeKeys.DATA_FIELD_INPUT;
+  payload: string;
+}
+interface InputNonceAction {
+  type: TypeKeys.NONCE_INPUT;
+  payload: string;
+}
+
+/*Field Actions -- Reducer input*/
 
 // We can compute field validity by checking if the value is null
 
@@ -48,10 +66,12 @@ interface SetNonceFieldAction {
 interface SetValueFieldAction {
   type: TypeKeys.VALUE_FIELD_SET;
   payload: {
-    raw?: string;
+    raw: string;
     value: Wei | null;
   };
 }
+
+type InputFieldAction = InputNonceAction | InputGasLimitAction | InputDataAction;
 
 type FieldAction =
   | SetGasLimitFieldAction

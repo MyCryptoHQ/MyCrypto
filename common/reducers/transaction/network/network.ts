@@ -5,7 +5,8 @@ import { createReducerFromObj } from 'reducers/transaction/helpers';
 
 const INITIAL_STATE: State = {
   gasEstimationSuccessful: true,
-  getFromSuccessful: true
+  getFromSuccessful: true,
+  getNonceFailed: false
 };
 
 const reducerObj: ReducersMapObject = {
@@ -25,6 +26,7 @@ const reducerObj: ReducersMapObject = {
     ...state,
     getFromSuccessful: false
   }),
+  [TK.GET_NONCE_FAILED]: (state: State): State => ({ ...state, getNonceFailed: true }),
   [TK.RESET]: _ => INITIAL_STATE
 };
 
