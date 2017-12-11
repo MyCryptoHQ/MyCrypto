@@ -19,8 +19,6 @@ jobs:
     - stage: test
       script: npm run test
     - stage: test
-      script: npm run test:int
-    - stage: test
       script: npm run tslint
     - stage: test
       script: npm run tscheck
