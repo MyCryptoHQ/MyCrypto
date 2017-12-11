@@ -264,7 +264,6 @@ export class SendTransaction extends React.Component<Props, State> {
           />
           <div className="row">
             {/* Send Form */}
-
             {unlocked &&
               !((offline || forceOffline) && isWeb3Wallet) && (
                 <main className="col-sm-8">
