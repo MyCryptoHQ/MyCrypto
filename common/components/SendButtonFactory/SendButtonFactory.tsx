@@ -8,7 +8,14 @@ import { OnlineSend } from './OnlineSend';
 const getStringifiedTx = (serializedTransaction: string) =>
   JSON.stringify(getTransactionFields(makeTransaction(serializedTransaction)), null, 2);
 
-export const SendButton: React.SFC<{}> = () => (
+export interface CallbackProps {
+  onClick(): void;
+}
+
+interface Props {
+  withProps(props: CallbackProps): React.ReactElement<any> | null;
+}
+export const SendButtonFactory: React.SFC<Props> = ({ withProps }) => (
   <SerializedTransaction
     withSerializedTransaction={serializedTransaction => (
       <Aux>
@@ -31,7 +38,7 @@ export const SendButton: React.SFC<{}> = () => (
           />
         </div>
         <OfflineBroadcast />
-        <OnlineSend />
+        <OnlineSend withProps={withProps} />
       </Aux>
     )}
   />

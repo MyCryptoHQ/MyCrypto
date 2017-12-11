@@ -1,7 +1,8 @@
 // COMPONENTS
 import TabSection from 'containers/TabSection';
-import { Fields, UnavailableWallets, SideBar, OfflineAwareUnlockHeader } from './components';
+import { Fields, UnavailableWallets, SideBar } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
+import { OfflineAwareUnlockHeader } from 'components';
 // LIBS
 import React from 'react';
 // REDUX

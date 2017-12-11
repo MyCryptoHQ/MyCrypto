@@ -20,8 +20,9 @@ const getTransaction = (state: AppState): IGetTransaction => {
   const currentValue = getCurrentValue(state);
   const transactionFields = getFields(state);
   const unit = getUnit(state);
-  const transaction: EthTx = makeTransaction(reduceToValues(transactionFields));
-  const isFullTransaction = isFullTx(transactionFields, currentTo, currentValue, unit);
+  const reducedValues = reduceToValues(transactionFields);
+  const transaction: EthTx = makeTransaction(reducedValues);
+  const isFullTransaction = !!isFullTx(transactionFields, currentTo, currentValue, unit);
 
   return { transaction, isFullTransaction };
 };

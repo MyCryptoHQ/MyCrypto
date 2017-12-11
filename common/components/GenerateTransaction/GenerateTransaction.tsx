@@ -25,7 +25,7 @@ class GenerateTransactionClass extends Component<StateProps> {
             className="btn btn-info btn-block"
             onClick={signer(transaction)}
           >
-            {isWeb3Wallet ? translate('Send to MetaMask / Mist') : translate('SEND_generate')}
+            {isWeb3Wallet ? translate('Send to MetaMask / Mist') : translate('DEP_signtx')}
           </button>
         )}
       />

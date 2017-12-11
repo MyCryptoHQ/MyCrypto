@@ -4,12 +4,13 @@ import translate from 'translations';
 //import { EnsAddress } from './components';
 import { Query } from 'components/renderCbs';
 import { donationAddressMap } from 'config/data';
-import { ICurrentTo, getCurrentTo } from 'selectors/transaction';
+import { ICurrentTo, getCurrentTo, dataExists } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 
 interface StateProps {
   currentTo: ICurrentTo;
+  dataExists: boolean;
 }
 interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
@@ -30,7 +31,9 @@ class AddressInputClass extends Component<Props> {
             params={['readOnly']}
             withQuery={({ readOnly }) => (
               <input
-                className={`form-control ${!!value ? 'is-valid' : 'is-invalid'}`}
+                className={`form-control ${
+                  !!value || this.props.dataExists ? 'is-valid' : 'is-invalid'
+                }`}
                 type="text"
                 value={raw}
                 placeholder={donationAddressMap.ETH}
@@ -49,6 +52,7 @@ class AddressInputClass extends Component<Props> {
   }
 }
 
-export const AddressInput = connect((state: AppState) => ({ currentTo: getCurrentTo(state) }))(
-  AddressInputClass
-);
+export const AddressInput = connect((state: AppState) => ({
+  currentTo: getCurrentTo(state),
+  dataExists: dataExists(state)
+}))(AddressInputClass);

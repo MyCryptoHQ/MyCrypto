@@ -17,6 +17,7 @@ class NonceFieldClass extends Component<DispatchProps> {
   public componentDidMount() {
     this.props.getNonceRequested();
   }
+
   public render() {
     return <NonceInput onChange={this.setNonce} />;
   }

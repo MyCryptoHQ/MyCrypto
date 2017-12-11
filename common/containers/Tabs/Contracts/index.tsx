@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import Interact from './components/Interact';
-import Deploy from './components/Deploy';
+import { Deploy } from './components/Deploy';
 import './index.scss';
 import TabSection from 'containers/TabSection';
 
