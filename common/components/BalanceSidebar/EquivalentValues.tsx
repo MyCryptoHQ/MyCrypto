@@ -5,7 +5,7 @@ import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
 import { TokenBalance } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
-import { ETH_DECIMAL, toTokenBase } from 'libs/units';
+import { ETH_DECIMAL, convertTokenBase } from 'libs/units';
 import Spinner from 'components/ui/Spinner';
 import UnitDisplay from 'components/ui/UnitDisplay';
 import './EquivalentValues.scss';
@@ -186,9 +186,9 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     }
 
     // Tokens with non-ether like decimals need to be adjusted to match
-    const decimal = this.decimalLookup[currency];
-    const adjustedBalance =
-      decimal === undefined ? balance : toTokenBase(balance.toString(10), ETH_DECIMAL - decimal);
+    const decimal =
+      this.decimalLookup[currency] === undefined ? ETH_DECIMAL : this.decimalLookup[currency];
+    const adjustedBalance = convertTokenBase(balance, decimal, ETH_DECIMAL);
 
     return rateSymbols.reduce((prev, sym) => {
       prev[sym] = adjustedBalance.muln(rates[currency][sym]);
