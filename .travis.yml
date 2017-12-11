@@ -2,6 +2,10 @@ dist: trusty
 sudo: required
 language: node_js
 
+cache:
+  directories:
+    - node_modules
+
 services:
   - docker
 
