@@ -11,6 +11,7 @@ interface Props {
 }
 interface State {
   phrase: string;
+  formattedPhrase: string;
   pass: string;
   seed: string;
   dPath: string;
@@ -19,14 +20,15 @@ interface State {
 export default class MnemonicDecrypt extends Component<Props, State> {
   public state: State = {
     phrase: '',
+    formattedPhrase: '',
     pass: '',
     seed: '',
     dPath: DEFAULT_PATH
   };
 
   public render() {
-    const { phrase, seed, dPath, pass } = this.state;
-    const isValidMnemonic = validateMnemonic(phrase);
+    const { phrase, formattedPhrase, seed, dPath, pass } = this.state;
+    const isValidMnemonic = validateMnemonic(formattedPhrase);
 
     return (
       <section className="col-md-4 col-sm-6">
@@ -86,19 +88,21 @@ export default class MnemonicDecrypt extends Component<Props, State> {
   };
 
   public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    var userInputPhrase = (e.target as HTMLTextAreaElement).value;
-    this.setState({ phrase: userInputPhrase });
+    const phrase = (e.target as HTMLTextAreaElement).value;
+    const formattedPhrase = phrase.replace(/(\r\n|\n|\r|,)/gm," ").trim();
+    this.setState({ phrase });
+    this.setState({ formattedPhrase })
   };
 
   public onDWModalOpen = () => {
-    const { phrase, pass } = this.state;
+    const { formattedPhrase, pass } = this.state;
 
-    if (!validateMnemonic(phrase)) {
+    if (!validateMnemonic(formattedPhrase)) {
       return;
     }
 
     try {
-      const seed = mnemonicToSeed(phrase.trim(), pass).toString('hex');
+      const seed = mnemonicToSeed(formattedPhrase, pass).toString('hex');
       this.setState({ seed });
     } catch (err) {
       console.log(err);
@@ -114,19 +118,20 @@ export default class MnemonicDecrypt extends Component<Props, State> {
   };
 
   private handleUnlock = (address, index) => {
-    const { phrase, pass, dPath } = this.state;
+    const { formattedPhrase, pass, dPath } = this.state;
 
     this.props.onUnlock({
       path: `${dPath}/${index}`,
       pass,
-      phrase,
+      phrase: formattedPhrase,
       address
     });
 
     this.setState({
       seed: '',
       pass: '',
-      phrase: ''
+      phrase: '',
+      formattedPhrase: ''
     });
   };
 }
