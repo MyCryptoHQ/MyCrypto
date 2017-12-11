@@ -1,11 +1,7 @@
 import { TChangeStepSwap, TInitSwap } from 'actions/swap';
 import { NormalizedBityRates, NormalizedOptions, SwapInput } from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
-import bityConfig, {
-  generateKindMax,
-  generateKindMin,
-  SupportedDestinationKind
-} from 'config/bity';
+import bityConfig, { generateKindMax, generateKindMin, WhitelistedCoins } from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
@@ -28,8 +24,8 @@ interface State {
   disabled: boolean;
   origin: SwapInput;
   destination: SwapInput;
-  originKindOptions: SupportedDestinationKind[];
-  destinationKindOptions: SupportedDestinationKind[];
+  originKindOptions: WhitelistedCoins[];
+  destinationKindOptions: WhitelistedCoins[];
   originErr: string;
   destinationErr: string;
 }
@@ -41,8 +37,8 @@ export default class CurrencySwap extends Component<Props, State> {
     disabled: true,
     origin: { id: 'BTC', amount: NaN } as SwapInput,
     destination: { id: 'ETH', amount: NaN } as SwapInput,
-    originKindOptions: ['BTC', 'ETH'] as SupportedDestinationKind[],
-    destinationKindOptions: ['ETH'] as SupportedDestinationKind[],
+    originKindOptions: ['BTC', 'ETH'] as WhitelistedCoins[],
+    destinationKindOptions: ['ETH'] as WhitelistedCoins[],
     originErr: '',
     destinationErr: ''
   };
@@ -54,14 +50,11 @@ export default class CurrencySwap extends Component<Props, State> {
       this.setDisabled(origin, destination);
     }
     if (options.allIds !== prevProps.options.allIds) {
-      const originKindOptions: SupportedDestinationKind[] = intersection<any>(
+      const originKindOptions: WhitelistedCoins[] = intersection<any>(
         options.allIds,
         this.state.originKindOptions
       );
-      const destinationKindOptions: SupportedDestinationKind[] = without<any>(
-        options.allIds,
-        origin.id
-      );
+      const destinationKindOptions: WhitelistedCoins[] = without<any>(options.allIds, origin.id);
       this.setState({
         originKindOptions,
         destinationKindOptions
@@ -69,7 +62,7 @@ export default class CurrencySwap extends Component<Props, State> {
     }
   }
 
-  public getMinMax = (kind: SupportedDestinationKind) => {
+  public getMinMax = (kind: WhitelistedCoins) => {
     let min;
     let max;
     if (kind !== 'BTC') {
@@ -83,7 +76,7 @@ export default class CurrencySwap extends Component<Props, State> {
     return { min, max };
   };
 
-  public isMinMaxValid = (amount: number, kind: SupportedDestinationKind) => {
+  public isMinMaxValid = (amount: number, kind: WhitelistedCoins) => {
     const rate = this.getMinMax(kind);
     const higherThanMin = amount >= rate.min;
     const lowerThanMax = amount <= rate.max;
@@ -96,7 +89,7 @@ export default class CurrencySwap extends Component<Props, State> {
 
     const disabled = !(amountsValid && minMaxValid);
 
-    const createErrString = (kind: SupportedDestinationKind, amount: number) => {
+    const createErrString = (kind: WhitelistedCoins, amount: number) => {
       const rate = this.getMinMax(kind);
       let errString;
       if (amount > rate.max) {
@@ -172,7 +165,7 @@ export default class CurrencySwap extends Component<Props, State> {
       : this.updateDestinationAmount(origin, destination, amount);
   };
 
-  public onChangeOriginKind = (newOption: SupportedDestinationKind) => {
+  public onChangeOriginKind = (newOption: WhitelistedCoins) => {
     const { origin, destination, destinationKindOptions } = this.state;
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
@@ -189,7 +182,7 @@ export default class CurrencySwap extends Component<Props, State> {
     });
   };
 
-  public onChangeDestinationKind = (newOption: SupportedDestinationKind) => {
+  public onChangeDestinationKind = (newOption: WhitelistedCoins) => {
     const { origin, destination } = this.state;
     const newOriginAmount = () => {
       const pairName = combineAndUpper(newOption, origin.id);
