@@ -1,4 +1,4 @@
-import { Pairs } from 'actions/swap';
+import { NormalizedBityRate } from 'reducers/swap/types';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import Spinner from 'components/ui/Spinner';
 import { bityReferralURL } from 'config/data';
@@ -7,13 +7,18 @@ import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 import './CurrentRates.scss';
 
+interface Props {
+  [id: string]: NormalizedBityRate;
+}
+
 interface State {
   ETHBTCAmount: number;
   ETHREPAmount: number;
   BTCETHAmount: number;
   BTCREPAmount: number;
 }
-export default class CurrentRates extends Component<Pairs, State> {
+
+export default class CurrentRates extends Component<Props, State> {
   public state = {
     ETHBTCAmount: 1,
     ETHREPAmount: 1,
@@ -32,7 +37,7 @@ export default class CurrentRates extends Component<Pairs, State> {
   public buildPairRate = (origin: string, destination: string) => {
     const pair = origin + destination;
     const statePair = this.state[pair + 'Amount'];
-    const propsPair = this.props[pair];
+    const propsPair = this.props[pair] ? this.props[pair].rate : null;
     return (
       <div className="SwapRates-panel-rate">
         {propsPair ? (
@@ -44,9 +49,7 @@ export default class CurrentRates extends Component<Pairs, State> {
               name={pair + 'Amount'}
             />
             <span className="SwapRates-panel-rate-amount">
-              {` ${origin} = ${toFixedIfLarger(statePair * propsPair, 6)} ${
-                destination
-              }`}
+              {` ${origin} = ${toFixedIfLarger(statePair * propsPair, 6)} ${destination}`}
             </span>
           </div>
         ) : (
@@ -71,11 +74,7 @@ export default class CurrentRates extends Component<Pairs, State> {
             {this.buildPairRate('BTC', 'ETH')}
             {this.buildPairRate('BTC', 'REP')}
           </div>
-          <a
-            className="SwapRates-panel-logo"
-            href={bityReferralURL}
-            target="_blank"
-          >
+          <a className="SwapRates-panel-logo" href={bityReferralURL} target="_blank">
             <img src={bityLogoWhite} width={120} height={49} />
           </a>
         </section>

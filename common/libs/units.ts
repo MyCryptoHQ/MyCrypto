@@ -5,6 +5,8 @@ type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
 
+export const ETH_DECIMAL = 18;
+
 const Units = {
   wei: '1',
   kwei: '1000',
@@ -33,9 +35,7 @@ const Units = {
 };
 const handleValues = (input: string | BN) => {
   if (typeof input === 'string') {
-    return input.startsWith('0x')
-      ? new BN(stripHexPrefix(input), 16)
-      : new BN(input);
+    return input.startsWith('0x') ? new BN(stripHexPrefix(input), 16) : new BN(input);
   }
   if (typeof input === 'number') {
     return new BN(input);
@@ -92,12 +92,20 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
+const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
+  if (oldDecimal === newDecimal) {
+    return value;
+  }
+  return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
+};
+
 export {
   TokenValue,
   fromWei,
   toWei,
   toTokenBase,
   fromTokenBase,
+  convertTokenBase,
   Wei,
   getDecimal,
   UnitKey

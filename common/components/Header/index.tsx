@@ -116,7 +116,6 @@ export default class Header extends Component<Props, State> {
         <section className="Header-branding">
           <section className="Header-branding-inner container">
             <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
-              {/* TODO - don't hardcode image path*/}
               <img
                 className="Header-branding-title-logo"
                 src={logo}
