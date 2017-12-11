@@ -83,39 +83,38 @@ export default class WalletInfo extends React.Component<Props, State> {
               </div>
             </div>
             {privateKey && (
-              <div className="col-xs-6">
-                <label>Private Key</label>
-                <div className="WalletInfo-qr well well-lg" onClick={this.togglePrivateKey}>
-                  <QRCode data={isPrivateKeyVisible ? privateKey : '0'} />
-                  {!isPrivateKeyVisible && (
-                    <div className="WalletInfo-qr-cover">
-                      <i className="WalletInfo-qr-cover-icon fa fa-eye" />
-                    </div>
-                  )}
+              <div>
+                <div className="col-xs-6">
+                  <label>Private Key</label>
+                  <div className="WalletInfo-qr well well-lg" onClick={this.togglePrivateKey}>
+                    <QRCode data={isPrivateKeyVisible ? privateKey : '0'} />
+                    {!isPrivateKeyVisible && (
+                      <div className="WalletInfo-qr-cover">
+                        <i className="WalletInfo-qr-cover-icon fa fa-eye" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-xs-6">
+                  <label>Utilities</label>
+
+                  <button className="btn btn-info btn-block" onClick={print(address, privateKey)}>
+                    {translate('x_Print')}
+                  </button>
+
+                  <button className="btn btn-info btn-block" onClick={this.toggleKeystoreModal}>
+                    Generate Keystore File
+                  </button>
                 </div>
               </div>
             )}
 
-            {privateKey && (
-              <div className="col-xs-6">
-                <label>Utilities</label>
-
-                <button className="btn btn-info btn-block" onClick={print(address, privateKey)}>
-                  {translate('x_Print')}
-                </button>
-
-                <button className="btn btn-info btn-block" onClick={this.toggleKeystoreModal}>
-                  Generate Keystore File
-                </button>
-              </div>
-            )}
-
-            {isKeystoreModalOpen && (
-              <GenerateKeystoreModal
-                privateKey={privateKey}
-                handleClose={this.toggleKeystoreModal}
-              />
-            )}
+            <GenerateKeystoreModal
+              isOpen={isKeystoreModalOpen}
+              privateKey={privateKey}
+              handleClose={this.toggleKeystoreModal}
+            />
           </div>
         </div>
       </div>
@@ -124,12 +123,7 @@ export default class WalletInfo extends React.Component<Props, State> {
 
   private async setWalletAsyncState(wallet: IWallet) {
     const address = await wallet.getAddressString();
-    let privateKey = '';
-
-    if (wallet.getPrivateKeyString) {
-      privateKey = await wallet.getPrivateKeyString();
-    }
-
+    const privateKey = wallet.getPrivateKeyString ? await wallet.getPrivateKeyString() : '';
     this.setState({ address, privateKey });
   }
 

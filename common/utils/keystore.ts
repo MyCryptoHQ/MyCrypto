@@ -21,8 +21,6 @@ export function checkKeystoreWallet(
 ): boolean {
   const keystore = wallet.toV3(password, { n: N_FACTOR });
   const backToWallet = fromV3(keystore, password, true);
-  console.log(stripHexPrefix(backToWallet.getPrivateKeyString()));
-  console.log(stripHexPrefix(privateKey));
   return stripHexPrefix(backToWallet.getPrivateKeyString()) === stripHexPrefix(privateKey);
 }
 

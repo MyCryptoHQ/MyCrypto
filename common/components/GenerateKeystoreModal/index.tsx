@@ -8,6 +8,7 @@ import { isValidPrivKey } from 'libs/validators';
 import './index.scss';
 
 interface Props {
+  isOpen: boolean;
   privateKey?: string;
   handleClose(): void;
 }
@@ -21,15 +22,17 @@ interface State {
   hasError: boolean;
 }
 
+const initialState: State = {
+  privateKey: '',
+  password: '',
+  isPrivateKeyVisible: false,
+  isPasswordVisible: false,
+  keystoreFile: null,
+  hasError: false
+};
+
 export default class GenerateKeystoreModal extends React.Component<Props, State> {
-  public state: State = {
-    privateKey: '',
-    password: '',
-    isPrivateKeyVisible: false,
-    isPasswordVisible: false,
-    keystoreFile: null,
-    hasError: false
-  };
+  public state: State = initialState;
 
   constructor(props: Props) {
     super(props);
@@ -39,6 +42,12 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
         ...this.state,
         privateKey: props.privateKey
       };
+    }
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    if (nextProps.privateKey !== this.props.privateKey) {
+      this.setState({ privateKey: nextProps.privateKey });
     }
   }
 
@@ -58,8 +67,8 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
     return (
       <Modal
         title={translate('Generate Keystore File')}
-        isOpen={true}
-        handleClose={this.props.handleClose}
+        isOpen={this.props.isOpen}
+        handleClose={this.handleClose}
       >
         <form className="GenKeystore" onSubmit={this.handleSubmit}>
           <label className="GenKeystore-field">
@@ -103,7 +112,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
             </p>
           ) : (
             <a
-              onClick={this.props.handleClose}
+              onClick={this.handleClose}
               href={keystoreFile.blob}
               className="GenKeystore-button btn btn-success btn-block"
               aria-label={translateRaw('x_Keystore')}
@@ -156,5 +165,13 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
     } catch (err) {
       this.setState({ hasError: true });
     }
+  };
+
+  private handleClose = () => {
+    this.setState({
+      ...initialState,
+      privateKey: this.props.privateKey || initialState.privateKey
+    });
+    this.props.handleClose();
   };
 }
