@@ -8,6 +8,7 @@ import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { AppState } from 'reducers';
 import SignButton from './SignButton';
+import { isWalletFullyUnlocked } from 'selectors/wallet';
 import './index.scss';
 
 interface Props {
@@ -95,7 +96,7 @@ export class SignMessage extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => ({
   wallet: state.wallet.inst,
-  unlocked: !!state.wallet.inst && !state.wallet.inst.isReadOnly
+  unlocked: isWalletFullyUnlocked(state)
 });
 
 export default connect(mapStateToProps, { showNotification })(SignMessage);
