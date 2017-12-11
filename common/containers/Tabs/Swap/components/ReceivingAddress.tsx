@@ -28,13 +28,8 @@ export interface ActionProps {
   bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
 }
 
-export default class ReceivingAddress extends Component<
-  StateProps & ActionProps,
-  {}
-> {
-  public onChangeDestinationAddress = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
+export default class ReceivingAddress extends Component<StateProps & ActionProps, {}> {
+  public onChangeDestinationAddress = (event: React.SyntheticEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value;
     this.props.destinationAddressSwap(value);
   };
@@ -53,7 +48,7 @@ export default class ReceivingAddress extends Component<
   public render() {
     const { destinationKind, destinationAddress, isPostingOrder } = this.props;
     let validAddress;
-    // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
+    // TODO - Update pattern to scale beyond BTC, ETH, and REP
     if (this.props.destinationKind === 'BTC') {
       validAddress = isValidBTCAddress(destinationAddress);
     } else {

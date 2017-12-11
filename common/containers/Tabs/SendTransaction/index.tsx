@@ -141,9 +141,7 @@ export class SendTransaction extends React.Component<Props, State> {
   }
 
   public shouldReEstimateGas(prevState) {
-    // TODO listen to gas price changes here
-    // TODO debounce the call
-    // handle gas estimation
+    // TODO listen to gas price changes here, debounce the call, and handle gas estimation
     return (
       // if any relevant fields changed
       this.haveFieldsChanged(prevState) &&
@@ -264,7 +262,6 @@ export class SendTransaction extends React.Component<Props, State> {
             }
             allowReadOnly={true}
           />
-
           <div className="row">
             {/* Send Form */}
 
