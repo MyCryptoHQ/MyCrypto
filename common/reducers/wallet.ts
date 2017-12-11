@@ -39,7 +39,7 @@ function setWallet(state: State, action: SetWalletAction): State {
   return {
     ...state,
     inst: action.payload,
-    config: null,
+    config: INITIAL_STATE.config,
     balance: INITIAL_STATE.balance,
     tokens: INITIAL_STATE.tokens
   };

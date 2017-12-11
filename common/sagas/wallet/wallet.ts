@@ -31,12 +31,21 @@ import { NODES, initWeb3Node } from 'config/data';
 import { SagaIterator } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take } from 'redux-saga/effects';
 import { getNodeLib } from 'selectors/config';
-import { getTokens, getWalletInst, getWalletConfig } from 'selectors/wallet';
-import { getCustomTokens } from 'selectors/customTokens';
+import {
+  getTokens,
+  getWalletInst,
+  getWalletConfigTokens,
+  MergedToken,
+  TokenBalance
+} from 'selectors/wallet';
 import translate from 'translations';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
-import { getTokenBalances } from './helpers';
+import { getTokenBalances, filterScannedTokenBalances } from './helpers';
+
+export interface TokenBalanceLookup {
+  [symbol: string]: TokenBalance;
+}
 
 export function* updateAccountBalance(): SagaIterator {
   try {
@@ -46,7 +55,7 @@ export function* updateAccountBalance(): SagaIterator {
       return;
     }
     const node: INode = yield select(getNodeLib);
-    const address = yield apply(wallet, wallet.getAddressString);
+    const address: string = yield apply(wallet, wallet.getAddressString);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
     yield put(setBalanceFullfilled(balance));
@@ -58,20 +67,13 @@ export function* updateAccountBalance(): SagaIterator {
 export function* updateTokenBalances(): SagaIterator {
   try {
     const wallet: null | IWallet = yield select(getWalletInst);
-    const config: null | WalletConfig = yield select(getWalletConfig);
-    if (!wallet || !config || !config.tokens) {
+    const tokens: MergedToken[] = yield select(getWalletConfigTokens);
+    if (!wallet || !tokens.length) {
       return;
     }
-
-    // Get the token objects for the tokens in the config
-    const allTokens = yield select(getTokens);
-    const tokens = config.tokens
-      .map(symbol => allTokens.find(t => t.symbol === symbol))
-      .filter(token => !!token);
-
-    // Fetch & Set
     yield put(setTokenBalancesPending());
-    const tokenBalances = yield call(getTokenBalances, wallet, tokens);
+    const tokenBalances: TokenBalanceLookup = yield call(getTokenBalances, wallet, tokens);
+    console.log(tokenBalances);
     yield put(setTokenBalancesFulfilled(tokenBalances));
   } catch (error) {
     console.error('Failed to get token balances', error);
@@ -82,33 +84,15 @@ export function* updateTokenBalances(): SagaIterator {
 export function* scanWalletForTokens(action: ScanWalletForTokensAction): SagaIterator {
   try {
     const wallet = action.payload;
-    const tokens = yield select(getTokens);
-
-    // Piggy-back off of setTokenBalances
+    const tokens: MergedToken[] = yield select(getTokens);
     yield put(setTokenBalancesPending());
-    const balances = yield call(getTokenBalances, wallet, tokens);
 
-    // Save the non-zero tokens, tokens previously tracked, and custom tokens
-    const customTokens = yield select(getCustomTokens);
-    const oldConfig = yield call(loadWalletConfig, wallet);
-    const nonEmptyTokens = Object.keys(balances).filter(symbol => {
-      if (balances[symbol] && !balances[symbol].balance.isZero()) {
-        return true;
-      }
-      if (oldConfig.tokens && oldConfig.tokens.includes(symbol)) {
-        return true;
-      }
-      if (customTokens.find(token => token.symbol === symbol)) {
-        return true;
-      }
-    });
-    const config = yield call(saveWalletConfig, wallet, { tokens: nonEmptyTokens });
+    // Fetch all token balances, save ones we want to the config
+    const balances: TokenBalanceLookup = yield call(getTokenBalances, wallet, tokens);
+    const tokensToSave: string[] = yield call(filterScannedTokenBalances, wallet, balances);
+    const config: WalletConfig = yield call(saveWalletConfig, wallet, { tokens: tokensToSave });
     yield put(setWalletConfig(config));
 
-    // Finish off setTokenBalances, sending only:
-    // 1. Tokens with value
-    // 2. Tokens that were tracked previously
-    // 3. Custom tokens
     yield put(setTokenBalancesFulfilled(balances));
   } catch (err) {
     console.error('Failed to scan for tokens', err);
@@ -122,7 +106,7 @@ export function* handleSetWalletTokens(action: SetWalletTokensAction): SagaItera
     return;
   }
 
-  const config = yield call(saveWalletConfig, wallet, { tokens: action.payload });
+  const config: WalletConfig = yield call(saveWalletConfig, wallet, { tokens: action.payload });
   yield put(setWalletConfig(config));
 }
 
@@ -141,7 +125,7 @@ export function* updateWalletConfig(): SagaIterator {
   if (!wallet) {
     return;
   }
-  const config = yield call(loadWalletConfig, wallet);
+  const config: WalletConfig = yield call(loadWalletConfig, wallet);
   yield put(setWalletConfig(config));
 }
 
@@ -206,7 +190,7 @@ export function* unlockWeb3(): SagaIterator {
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
     }
 
-    const accounts = yield apply(nodeLib, nodeLib.getAccounts);
+    const accounts: string = yield apply(nodeLib, nodeLib.getAccounts);
     const address = accounts[0];
 
     if (!address) {

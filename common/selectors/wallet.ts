@@ -36,6 +36,17 @@ export function getTokens(state: AppState): MergedToken[] {
   ) as MergedToken[];
 }
 
+export function getWalletConfigTokens(state: AppState): MergedToken[] {
+  const tokens = getTokens(state);
+  const config = getWalletConfig(state);
+  if (!config || !config.tokens) {
+    return [];
+  }
+  return config.tokens
+    .map(symbol => tokens.find(t => t.symbol === symbol))
+    .filter(token => token) as MergedToken[];
+}
+
 export const getToken = (state: AppState, unit: string): MergedToken | undefined => {
   const tokens = getTokens(state);
   const token = tokens.find(t => t.symbol === unit);
