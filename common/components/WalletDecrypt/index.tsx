@@ -6,7 +6,8 @@ import {
   UnlockMnemonicAction,
   unlockPrivateKey,
   UnlockPrivateKeyAction,
-  unlockWeb3
+  unlockWeb3,
+  resetWallet
 } from 'actions/wallet';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
@@ -24,6 +25,8 @@ import { AppState } from 'reducers';
 import Web3Decrypt from './Web3';
 import Help from 'components/ui/Help';
 import { knowledgeBaseURL } from 'config/data';
+import NavigationPrompt from './NavigationPrompt';
+import { IWallet } from 'libs/wallet';
 
 const WALLETS = {
   web3: {
@@ -95,6 +98,8 @@ type UnlockParams = {} | PrivateKeyValue;
 interface Props {
   // FIXME
   dispatch: Dispatch<UnlockKeystoreAction | UnlockMnemonicAction | UnlockPrivateKeyAction>;
+  wallet: IWallet;
+  hidden?: boolean;
   offline: boolean;
   allowReadOnly?: boolean;
 }
@@ -117,7 +122,6 @@ export class WalletDecrypt extends Component<Props, State> {
     if (!selectedWallet) {
       return null;
     }
-
     return (
       <selectedWallet.component value={value} onChange={this.onChange} onUnlock={this.onUnlock} />
     );
@@ -168,34 +172,42 @@ export class WalletDecrypt extends Component<Props, State> {
     });
   };
 
+  public resetWallet = () => {
+    this.props.dispatch(resetWallet());
+  };
+
   public render() {
+    const { wallet, hidden } = this.props;
     const decryptionComponent = this.getDecryptionComponent();
-
+    const unlocked = !!wallet;
     return (
-      <article className="Tab-content-pane row">
-        <section className="col-md-4 col-sm-6">
-          <h4>{translate('decrypt_Access')}</h4>
-
-          {this.buildWalletOptions()}
-        </section>
-
-        {decryptionComponent}
-        {!!(this.state.value as PrivateKeyValue).valid && (
+      <div>
+        <NavigationPrompt when={unlocked} onConfirm={this.resetWallet} />
+        <article hidden={hidden} className="Tab-content-pane row">
           <section className="col-md-4 col-sm-6">
-            <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
-            <div className="form-group">
-              <a
-                tabIndex={0}
-                role="button"
-                className="btn btn-primary btn-block"
-                onClick={this.onUnlock}
-              >
-                {translate('ADD_Label_6_short')}
-              </a>
-            </div>
+            <h4>{translate('decrypt_Access')}</h4>
+
+            {this.buildWalletOptions()}
           </section>
-        )}
-      </article>
+
+          {decryptionComponent}
+          {!!(this.state.value as PrivateKeyValue).valid && (
+            <section className="col-md-4 col-sm-6">
+              <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
+              <div className="form-group">
+                <a
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-primary btn-block"
+                  onClick={this.onUnlock}
+                >
+                  {translate('ADD_Label_6_short')}
+                </a>
+              </div>
+            </section>
+          )}
+        </article>
+      </div>
     );
   }
 
@@ -213,7 +225,8 @@ export class WalletDecrypt extends Component<Props, State> {
 
 function mapStateToProps(state: AppState) {
   return {
-    offline: state.config.offline
+    offline: state.config.offline,
+    wallet: state.wallet.inst
   };
 }
 
