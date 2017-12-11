@@ -14,9 +14,7 @@ export interface Props {
   txCompare: React.ReactElement<TTxCompare> | null;
   displayModal: boolean;
   deployModal: React.ReactElement<TTxModal> | null;
-  handleInput(
-    input: string
-  ): (ev: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
+  handleInput(input: string): (ev: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   handleSignTx(): Promise<void>;
   handleDeploy(): void;
 }
@@ -40,9 +38,7 @@ const Deploy = (props: Props) => {
     <div className="Deploy">
       <section>
         <label className="Deploy-field form-group">
-          <h4 className="Deploy-field-label">
-            {translate('CONTRACT_ByteCode')}
-          </h4>
+          <h4 className="Deploy-field-label">{translate('CONTRACT_ByteCode')}</h4>
           <textarea
             name="byteCode"
             placeholder="0x8f87a973e..."
@@ -67,7 +63,7 @@ const Deploy = (props: Props) => {
           />
         </label>
 
-        {walletExists ? (
+        {walletExists && (
           <button
             className="Sign-submit btn btn-primary"
             disabled={!showSignTxButton}
@@ -75,17 +71,13 @@ const Deploy = (props: Props) => {
           >
             {translate('DEP_signtx')}
           </button>
-        ) : (
-          <WalletDecrypt />
         )}
+        <WalletDecrypt hidden={walletExists} />
 
         {txCompare ? (
           <section>
             {txCompare}
-            <button
-              className="Deploy-submit btn btn-primary"
-              onClick={handleDeploy}
-            >
+            <button className="Deploy-submit btn btn-primary" onClick={handleDeploy}>
               {translate('NAV_DeployContract')}
             </button>
           </section>
