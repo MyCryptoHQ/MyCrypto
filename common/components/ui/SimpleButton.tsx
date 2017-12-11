@@ -31,7 +31,6 @@ export default class SimpleButton extends Component<Props, {}> {
 
   public render() {
     const { loading, disabled, loadingText, text, onClick } = this.props;
-
     return (
       <div>
         <button
@@ -39,13 +38,13 @@ export default class SimpleButton extends Component<Props, {}> {
           disabled={loading || disabled}
           className={this.computedClass()}
         >
-          {loading
-            ? <div>
-                <Spinner /> {loadingText || text}
-              </div>
-            : <div>
-                {text}
-              </div>}
+          {loading ? (
+            <div>
+              <Spinner /> {loadingText || text}
+            </div>
+          ) : (
+            <div>{text}</div>
+          )}
         </button>
       </div>
     );

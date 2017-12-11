@@ -5,10 +5,10 @@ import translate, { translateRaw } from 'translations';
 import './SwapProgress.scss';
 
 export interface Props {
-  destinationKind: string;
+  destinationId: string;
+  originId: string;
   destinationAddress: string;
   outputTx: string;
-  originKind: string;
   orderStatus: string | null;
   // actions
   showNotification: TShowNotification;
@@ -28,12 +28,7 @@ export default class SwapProgress extends Component<Props, State> {
 
   public showSwapNotification = () => {
     const { hasShownViewTx } = this.state;
-    const {
-      destinationKind,
-      outputTx,
-      showNotification,
-      orderStatus
-    } = this.props;
+    const { destinationId, outputTx, showNotification, orderStatus } = this.props;
 
     if (orderStatus === 'FILL') {
       if (!hasShownViewTx) {
@@ -41,7 +36,7 @@ export default class SwapProgress extends Component<Props, State> {
         let link;
         const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
         // everything but BTC is a token
-        if (destinationKind !== 'BTC') {
+        if (destinationId !== 'BTC') {
           link = bityConfig.ETHTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
@@ -97,22 +92,22 @@ export default class SwapProgress extends Component<Props, State> {
   };
 
   public render() {
-    const { destinationKind, originKind } = this.props;
-    const numberOfConfirmations = originKind === 'BTC' ? '3' : '10';
+    const { originId, destinationId } = this.props;
+    const numberOfConfirmations = originId === 'BTC' ? '3' : '10';
     const steps = [
       // 1
       translate('SWAP_progress_1'),
       // 2
       <span key="1">
-        {translate('SWAP_progress_2')} {originKind}...
+        {translate('SWAP_progress_2')} {originId}...
       </span>,
       // 3
       <span key="2">
-        {originKind} {translate('SWAP_progress_3')}
+        {originId} {translate('SWAP_progress_3')}
       </span>,
       // 4 TODO: Translate me
       <span key="3">
-        Sending your {destinationKind}
+        Sending your {destinationId}
         <br />
         <small>Waiting for {numberOfConfirmations} confirmations...</small>
       </span>,
@@ -128,9 +123,7 @@ export default class SwapProgress extends Component<Props, State> {
           return (
             <div key={idx} className={this.computedClass(idx + 1)}>
               <div className={`SwapProgress-item-circle position-${idx + 1}`}>
-                <span className="SwapProgress-item-circle-number">
-                  {idx + 1}
-                </span>
+                <span className="SwapProgress-item-circle-number">{idx + 1}</span>
               </div>
               <p className="SwapProgress-item-text">{text}</p>
             </div>

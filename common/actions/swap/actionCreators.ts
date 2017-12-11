@@ -2,58 +2,24 @@ import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
 
 export type TChangeStepSwap = typeof changeStepSwap;
-export function changeStepSwap(
-  payload: number
-): interfaces.ChangeStepSwapAction {
+export function changeStepSwap(payload: number): interfaces.ChangeStepSwapAction {
   return {
     type: TypeKeys.SWAP_STEP,
     payload
   };
 }
 
-export type TOriginKindSwap = typeof originKindSwap;
-export function originKindSwap(
-  payload: string
-): interfaces.OriginKindSwapAction {
+export type TInitSwap = typeof initSwap;
+export function initSwap(payload: interfaces.SwapInputs): interfaces.InitSwap {
   return {
-    type: TypeKeys.SWAP_ORIGIN_KIND,
-    payload
-  };
-}
-
-export type TDestinationKindSwap = typeof destinationKindSwap;
-export function destinationKindSwap(
-  payload: string
-): interfaces.DestinationKindSwapAction {
-  return {
-    type: TypeKeys.SWAP_DESTINATION_KIND,
-    payload
-  };
-}
-
-export type TOriginAmountSwap = typeof originAmountSwap;
-export function originAmountSwap(
-  payload?: number | null
-): interfaces.OriginAmountSwapAction {
-  return {
-    type: TypeKeys.SWAP_ORIGIN_AMOUNT,
-    payload
-  };
-}
-
-export type TDestinationAmountSwap = typeof destinationAmountSwap;
-export function destinationAmountSwap(
-  payload?: number | null
-): interfaces.DestinationAmountSwapAction {
-  return {
-    type: TypeKeys.SWAP_DESTINATION_AMOUNT,
+    type: TypeKeys.SWAP_INIT,
     payload
   };
 }
 
 export type TLoadBityRatesSucceededSwap = typeof loadBityRatesSucceededSwap;
 export function loadBityRatesSucceededSwap(
-  payload: interfaces.Pairs
+  payload: interfaces.ApiResponse
 ): interfaces.LoadBityRatesSucceededSwapAction {
   return {
     type: TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED,
@@ -62,9 +28,7 @@ export function loadBityRatesSucceededSwap(
 }
 
 export type TDestinationAddressSwap = typeof destinationAddressSwap;
-export function destinationAddressSwap(
-  payload?: string
-): interfaces.DestinationAddressSwapAction {
+export function destinationAddressSwap(payload?: string): interfaces.DestinationAddressSwapAction {
   return {
     type: TypeKeys.SWAP_DESTINATION_ADDRESS,
     payload
@@ -93,9 +57,7 @@ export function stopLoadBityRatesSwap(): interfaces.StopLoadBityRatesSwapAction 
 }
 
 export type TOrderTimeSwap = typeof orderTimeSwap;
-export function orderTimeSwap(
-  payload: number
-): interfaces.OrderSwapTimeSwapAction {
+export function orderTimeSwap(payload: number): interfaces.OrderSwapTimeSwapAction {
   return {
     type: TypeKeys.SWAP_ORDER_TIME,
     payload
