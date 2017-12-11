@@ -1,38 +1,55 @@
 import React from 'react';
-import { TokenBalance } from 'selectors/wallet';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
+import {
+  addCustomToken,
+  removeCustomToken,
+  TAddCustomToken,
+  TRemoveCustomToken
+} from 'actions/customTokens';
+import {
+  scanWalletForTokens,
+  TScanWalletForTokens,
+  setWalletTokens,
+  TSetWalletTokens
+} from 'actions/wallet';
+import { getAllTokens } from 'selectors/config';
+import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
 import { Token } from 'config/data';
 import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';
 import './index.scss';
 
-interface Props {
+interface StateProps {
+  wallet: AppState['wallet']['inst'];
+  walletConfig: AppState['wallet']['config'];
   tokens: Token[];
-  walletTokens: string[] | null;
   tokenBalances: TokenBalance[];
-  isTokensLoading: boolean;
-  hasSavedWalletTokens: boolean;
-  tokensError: string | null;
-  scanWalletForTokens(): any;
-  setWalletTokens(tokens: string[]): any;
-  onAddCustomToken(token: Token): any;
-  onRemoveCustomToken(symbol: string): any;
+  tokensError: AppState['wallet']['tokensError'];
+  isTokensLoading: AppState['wallet']['isTokensLoading'];
+  hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
 }
+interface ActionProps {
+  addCustomToken: TAddCustomToken;
+  removeCustomToken: TRemoveCustomToken;
+  scanWalletForTokens: TScanWalletForTokens;
+  setWalletTokens: TSetWalletTokens;
+}
+type Props = StateProps & ActionProps;
 
-export default class TokenBalances extends React.Component<Props, {}> {
+class TokenBalances extends React.Component<Props, {}> {
   public render() {
     const {
       tokens,
-      walletTokens,
+      walletConfig,
       tokenBalances,
       hasSavedWalletTokens,
       isTokensLoading,
-      tokensError,
-      scanWalletForTokens,
-      setWalletTokens,
-      onAddCustomToken,
-      onRemoveCustomToken
+      tokensError
     } = this.props;
+
+    const walletTokens = walletConfig ? walletConfig.tokens : [];
 
     let content;
     if (tokensError) {
@@ -47,7 +64,7 @@ export default class TokenBalances extends React.Component<Props, {}> {
       content = (
         <button
           className="TokenBalances-scan btn btn-primary btn-block"
-          onClick={scanWalletForTokens}
+          onClick={this.scanWalletForTokens}
         >
           {translate('Scan for my Tokens')}
         </button>
@@ -60,10 +77,10 @@ export default class TokenBalances extends React.Component<Props, {}> {
           allTokens={tokens}
           tokenBalances={shownBalances}
           hasSavedWalletTokens={hasSavedWalletTokens}
-          scanWalletForTokens={scanWalletForTokens}
-          setWalletTokens={setWalletTokens}
-          onAddCustomToken={onAddCustomToken}
-          onRemoveCustomToken={onRemoveCustomToken}
+          scanWalletForTokens={this.scanWalletForTokens}
+          setWalletTokens={this.props.setWalletTokens}
+          onAddCustomToken={this.props.addCustomToken}
+          onRemoveCustomToken={this.props.removeCustomToken}
         />
       );
     }
@@ -75,4 +92,29 @@ export default class TokenBalances extends React.Component<Props, {}> {
       </section>
     );
   }
+
+  private scanWalletForTokens = () => {
+    if (this.props.wallet) {
+      this.props.scanWalletForTokens(this.props.wallet);
+    }
+  };
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    wallet: getWalletInst(state),
+    walletConfig: getWalletConfig(state),
+    tokens: getAllTokens(state),
+    tokenBalances: getTokenBalances(state),
+    tokensError: state.wallet.tokensError,
+    isTokensLoading: state.wallet.isTokensLoading,
+    hasSavedWalletTokens: state.wallet.hasSavedWalletTokens
+  };
+}
+
+export default connect(mapStateToProps, {
+  addCustomToken,
+  removeCustomToken,
+  scanWalletForTokens,
+  setWalletTokens
+})(TokenBalances);
