@@ -1,24 +1,15 @@
 import * as actionTypes from 'actions/swap';
+import * as stateTypes from './types';
+import * as schema from './schema';
 import { TypeKeys } from 'actions/swap/constants';
-import without from 'lodash/without';
-import {
-  buildDestinationAmount,
-  buildDestinationKind,
-  buildOriginKind
-} from './helpers';
-export const ALL_CRYPTO_KIND_OPTIONS = ['BTC', 'ETH', 'REP'];
-const DEFAULT_ORIGIN_KIND = 'BTC';
-const DEFAULT_DESTINATION_KIND = 'ETH';
+import { normalize } from 'normalizr';
 
 export interface State {
-  originAmount: number | null;
-  destinationAmount: number | null;
-  originKind: string;
-  destinationKind: string;
-  destinationKindOptions: string[];
-  originKindOptions: string[];
   step: number;
-  bityRates: any;
+  origin: stateTypes.SwapInput;
+  destination: stateTypes.SwapInput;
+  options: stateTypes.NormalizedOptions;
+  bityRates: stateTypes.NormalizedBityRates;
   bityOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
@@ -33,14 +24,17 @@ export interface State {
 }
 
 export const INITIAL_STATE: State = {
-  originAmount: null,
-  destinationAmount: null,
-  originKind: DEFAULT_ORIGIN_KIND,
-  destinationKind: DEFAULT_DESTINATION_KIND,
-  destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, DEFAULT_ORIGIN_KIND),
-  originKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, 'REP'),
   step: 1,
-  bityRates: {},
+  origin: { id: 'BTC', amount: NaN },
+  destination: { id: 'ETH', amount: NaN },
+  options: {
+    byId: {},
+    allIds: []
+  },
+  bityRates: {
+    byId: {},
+    allIds: []
+  },
   destinationAddress: '',
   bityOrder: {},
   isFetchingRates: null,
@@ -54,76 +48,29 @@ export const INITIAL_STATE: State = {
   orderId: null
 };
 
-function handleSwapOriginKind(
-  state: State,
-  action: actionTypes.OriginKindSwapAction
-) {
-  const newDestinationKind = buildDestinationKind(
-    action.payload,
-    state.destinationKind
-  );
-  return {
-    ...state,
-    originKind: action.payload,
-    destinationKind: newDestinationKind,
-    destinationKindOptions: without(ALL_CRYPTO_KIND_OPTIONS, action.payload),
-    destinationAmount: buildDestinationAmount(
-      state.originAmount,
-      action.payload,
-      newDestinationKind,
-      state.bityRates
-    )
-  };
-}
-
-function handleSwapDestinationKind(
-  state: State,
-  action: actionTypes.DestinationKindSwapAction
-) {
-  const newOriginKind = buildOriginKind(state.originKind, action.payload);
-  return {
-    ...state,
-    originKind: newOriginKind,
-    destinationKind: action.payload,
-    destinationAmount: buildDestinationAmount(
-      state.originAmount,
-      state.originKind,
-      action.payload,
-      state.bityRates
-    )
-  };
-}
-
-export function swap(
-  state: State = INITIAL_STATE,
-  action: actionTypes.SwapAction
-) {
+export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapAction) {
   switch (action.type) {
-    case TypeKeys.SWAP_ORIGIN_KIND: {
-      return handleSwapOriginKind(state, action);
-    }
-    case TypeKeys.SWAP_DESTINATION_KIND: {
-      return handleSwapDestinationKind(state, action);
-    }
-    case TypeKeys.SWAP_ORIGIN_AMOUNT:
-      return {
-        ...state,
-        originAmount: action.payload
-      };
-    case TypeKeys.SWAP_DESTINATION_AMOUNT:
-      return {
-        ...state,
-        destinationAmount: action.payload
-      };
     case TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED:
+      const { payload } = action;
       return {
         ...state,
         bityRates: {
-          ...state.bityRates,
-          ...action.payload
+          byId: normalize(payload, [schema.bityRate]).entities.bityRates,
+          allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.bityRates)
+        },
+        options: {
+          byId: normalize(payload, [schema.bityRate]).entities.options,
+          allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.options)
         },
         isFetchingRates: false
       };
+    case TypeKeys.SWAP_INIT: {
+      return {
+        ...state,
+        origin: action.payload.origin,
+        destination: action.payload.destination
+      };
+    }
     case TypeKeys.SWAP_STEP: {
       return {
         ...state,

@@ -4,6 +4,7 @@ import {
   TDestinationAddressSwap,
   TStopLoadBityRatesSwap
 } from 'actions/swap';
+import { SwapInput } from 'reducers/swap/types';
 import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
 import { donationAddressMap } from 'config/data';
@@ -14,10 +15,9 @@ import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
 
 export interface StateProps {
+  origin: SwapInput;
+  destinationId: string;
   isPostingOrder: boolean;
-  originAmount: number | null;
-  originKind: string;
-  destinationKind: string;
   destinationAddress: string;
 }
 
@@ -35,21 +35,22 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
   };
 
   public onClickPartTwoComplete = () => {
-    if (!this.props.originAmount) {
+    const { origin, destinationId } = this.props;
+    if (!origin) {
       return;
     }
     this.props.bityOrderCreateRequestedSwap(
-      this.props.originAmount,
+      origin.amount,
       this.props.destinationAddress,
-      combineAndUpper(this.props.originKind, this.props.destinationKind)
+      combineAndUpper(origin.id, destinationId)
     );
   };
 
   public render() {
-    const { destinationKind, destinationAddress, isPostingOrder } = this.props;
+    const { destinationId, destinationAddress, isPostingOrder } = this.props;
     let validAddress;
-    // TODO - Update pattern to scale beyond BTC, ETH, and REP
-    if (this.props.destinationKind === 'BTC') {
+    // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
+    if (destinationId === 'BTC') {
       validAddress = isValidBTCAddress(destinationAddress);
     } else {
       validAddress = isValidETHAddress(destinationAddress);
@@ -68,7 +69,7 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
           <div className="col-sm-8 col-sm-offset-2 col-xs-12">
             <label className="SwapAddress-address">
               <h4 className="SwapAddress-address-label">
-                {translate('SWAP_rec_add')} ({destinationKind})
+                {translate('SWAP_rec_add')} ({destinationId})
               </h4>
 
               <input
@@ -76,7 +77,7 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
-                placeholder={donationAddressMap[destinationKind]}
+                placeholder={donationAddressMap[destinationId]}
               />
             </label>
           </div>

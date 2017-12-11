@@ -1,4 +1,5 @@
 import { TypeKeys } from './constants';
+
 export interface Pairs {
   ETHBTC: number;
   ETHREP: number;
@@ -6,29 +7,38 @@ export interface Pairs {
   BTCREP: number;
 }
 
-export interface OriginKindSwapAction {
-  type: TypeKeys.SWAP_ORIGIN_KIND;
-  payload: string;
+export interface SwapInput {
+  id: string;
+  amount: number;
 }
 
-export interface DestinationKindSwapAction {
-  type: TypeKeys.SWAP_DESTINATION_KIND;
-  payload: string;
+export interface SwapInputs {
+  origin: SwapInput;
+  destination: SwapInput;
 }
 
-export interface OriginAmountSwapAction {
-  type: TypeKeys.SWAP_ORIGIN_AMOUNT;
-  payload?: number | null;
+export interface InitSwap {
+  type: TypeKeys.SWAP_INIT;
+  payload: SwapInputs;
 }
 
-export interface DestinationAmountSwapAction {
-  type: TypeKeys.SWAP_DESTINATION_AMOUNT;
-  payload?: number | null;
+export interface Option {
+  id: string;
+}
+
+export interface ApiResponseObj {
+  id: string;
+  options: Option[];
+  rate: number;
+}
+
+export interface ApiResponse {
+  [name: string]: ApiResponseObj;
 }
 
 export interface LoadBityRatesSucceededSwapAction {
   type: TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED;
-  payload: Pairs;
+  payload: ApiResponse;
 }
 
 export interface DestinationAddressSwapAction {
@@ -135,10 +145,7 @@ export interface StopPollBityOrderStatusAction {
 /*** Action Type Union ***/
 export type SwapAction =
   | ChangeStepSwapAction
-  | OriginKindSwapAction
-  | DestinationKindSwapAction
-  | OriginAmountSwapAction
-  | DestinationAmountSwapAction
+  | InitSwap
   | LoadBityRatesSucceededSwapAction
   | DestinationAddressSwapAction
   | RestartSwapAction
