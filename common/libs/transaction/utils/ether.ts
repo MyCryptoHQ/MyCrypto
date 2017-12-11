@@ -11,17 +11,16 @@ export {
   signTx,
   validAddress,
   validGasLimit,
-  enoughBalance,
+  enoughBalanceViaTx,
   gasParamsInRange,
   validateTx,
-  transaction,
+  makeTransaction,
   getTransactionFields,
   computeIndexingHash
 };
 
 // we dont include the signature paramaters because web3 transactions are unsigned
-const computeIndexingHash = (tx: Buffer) =>
-  bufferToHex(transaction(tx).hash(false));
+const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));
 
 // Get useable fields from an EthTx object.
 const getTransactionFields = (t: Tx): IHexStrTransaction => {
@@ -55,8 +54,8 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
  * @description Return the minimum amount of ether needed
  * @param t
  */
-const enoughBalance = (t: Tx | ITransaction, accountBalance: Wei) =>
-  transaction(t)
+const enoughBalanceViaTx = (t: Tx | ITransaction, accountBalance: Wei) =>
+  makeTransaction(t)
     .getUpfrontCost()
     .lte(accountBalance);
 
@@ -65,7 +64,7 @@ const enoughBalance = (t: Tx | ITransaction, accountBalance: Wei) =>
  * @param t
  */
 const validGasLimit = (t: ITransaction) =>
-  transaction(t)
+  makeTransaction(t)
     .getBaseFee()
     .lte(t.gasLimit);
 
@@ -81,9 +80,7 @@ const gasParamsInRange = (t: ITransaction) => {
     throw Error(translateRaw('GETH_GasLimit'));
   }
   if (t.gasPrice.gt(Wei('1000000000000'))) {
-    throw Error(
-      'Gas price too high. Please contact support if this was not a mistake.'
-    );
+    throw Error('Gas price too high. Please contact support if this was not a mistake.');
   }
 };
 
@@ -93,27 +90,23 @@ const validAddress = (t: ITransaction) => {
   }
 };
 
-const transaction = (
-  t: Tx | ITransaction | Partial<IHexStrTransaction> | Buffer | string
+const makeTransaction = (
+  t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
 ) => new Tx(t);
 
 //TODO: check that addresses are always checksummed
 const signTx = async (t: ITransaction, w: IFullWallet) => {
-  const tx = transaction(t);
+  const tx = makeTransaction(t);
   const signedTx = await w.signRawTransaction(tx); //returns a serialized, signed tx
   return signedTx; //instead of returning the rawTx with it, we can derive it from the signedTx anyway
 };
 
-const validateTx = (
-  t: ITransaction,
-  accountBalance: Wei,
-  isOffline: boolean
-) => {
+const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean) => {
   gasParamsInRange(t);
   if (!isOffline && !validGasLimit(t)) {
     throw Error('Not enough gas supplied');
   }
-  if (!enoughBalance(t, accountBalance)) {
+  if (!enoughBalanceViaTx(t, accountBalance)) {
     throw Error(translateRaw('GETH_Balance'));
   }
   validAddress(t);

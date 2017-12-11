@@ -4,8 +4,8 @@ import BN from 'bn.js';
 export interface ITransaction {
   to: Address;
   from?: Address;
-  value?: Wei;
-  data?: Buffer;
+  value?: Wei | null;
+  data?: Buffer | null;
   gasLimit: Wei;
   gasPrice: Wei;
   nonce: BN;

@@ -1,12 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  fromTokenBase,
-  getDecimal,
-  UnitKey,
-  Wei,
-  TokenValue
-} from 'libs/units';
+import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
 import Spinner from 'components/ui/Spinner';
 import { getOffline } from 'selectors/config';
@@ -51,20 +45,16 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
     element = <Spinner size="x1" />;
   } else {
     const convertedValue = isEthereumUnit(params)
-      ? fromTokenBase(value, getDecimal(params.unit))
+      ? fromTokenBase(value, getDecimalFromEtherUnit(params.unit))
       : fromTokenBase(value, params.decimal);
 
     let formattedValue;
 
     if (displayShortBalance) {
-      const digits =
-        typeof displayShortBalance === 'number' ? displayShortBalance : 4;
+      const digits = typeof displayShortBalance === 'number' ? displayShortBalance : 4;
       formattedValue = format(convertedValue, digits);
       // If the formatted value was too low, display something like < 0.01
-      if (
-        parseFloat(formattedValue) === 0 &&
-        parseFloat(convertedValue) !== 0
-      ) {
+      if (parseFloat(formattedValue) === 0 && parseFloat(convertedValue) !== 0) {
         const padding = digits !== 0 ? `.${'0'.repeat(digits - 1)}1` : '';
         formattedValue = `< 0${padding}`;
       }

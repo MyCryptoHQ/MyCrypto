@@ -2,33 +2,31 @@ import { bufferToHex, toBuffer } from 'ethereumjs-util';
 import { TokenValue, Address } from 'libs/units';
 import { ITransaction } from '../typings';
 import Tx from 'ethereumjs-tx';
-
 import ERC20 from 'libs/erc20';
-export { enoughTokens, validateTokenBalance, encodeTransfer };
+export { enoughTokensViaTx, encodeTransfer, enoughTokensViaInput };
 
-const enoughTokens = (
-  t: ITransaction | Tx,
-  tokenValue: TokenValue | null,
-  tokenBalance: TokenValue
-) => {
-  let value;
-  if ((!t.data || t.data.length === 0) && !tokenValue) {
+const enoughTokensViaTx = (t: ITransaction | Tx, tokenBalance: TokenValue | null) => {
+  if (!tokenBalance) {
+    return true;
+  }
+
+  if (!t.data || t.data.length === 0) {
     return false;
     //throw Error('Not enough parameters supplied to validate token balance');
-  }
-  if (!t.data || t.data.length === 0) {
-    value = tokenValue;
   } else {
     const { _value } = ERC20.transfer.decodeInput(bufferToHex(t.data));
-    value = _value;
+    return tokenBalance.gte(TokenValue(_value));
   }
-  return tokenBalance.gte(TokenValue(value));
 };
 
-const validateTokenBalance = (t: ITransaction, tokenBalance: TokenValue) => {
-  if (!enoughTokens(t, null, tokenBalance)) {
-    throw Error('Not enough tokens available');
+const enoughTokensViaInput = (input: TokenValue | null, tokenBalance: TokenValue | null) => {
+  if (!input) {
+    return false;
   }
+  if (!tokenBalance) {
+    return true;
+  }
+  return input.lte(tokenBalance);
 };
 
 const encodeTransfer = (to: Address, value: TokenValue) =>

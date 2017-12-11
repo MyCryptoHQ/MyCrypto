@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import {
   NonceField,
   AddressField,
@@ -9,12 +11,13 @@ import {
   UnitDropDown,
   CurrentCustomMessage,
   GenerateTransaction,
-  TransactionComparisonAndPushTx,
+  SendButton,
   SigningStatus
-} from './components';
-import { Offline, OnlyUnlocked, Wallet, WhenQueryExists } from 'components/renderCbs';
+} from 'components';
+import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 import { Aux } from 'components/ui';
+import { AppState } from 'reducers';
 
 const content = (
   <div className="Tab-content-pane">
@@ -53,7 +56,7 @@ const content = (
     </div>
     <SigningStatus />
     <div className="row form-group">
-      <TransactionComparisonAndPushTx />
+      <SendButton />
     </div>
   </div>
 );
@@ -68,32 +71,26 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-interface Props {
-  offline: boolean;
-  forceOffline: boolean;
-  isWeb3Wallet: boolean;
+interface StateProps {
+  shouldDisplay: boolean;
 }
 
-const Fields: React.SFC<Props> = ({ forceOffline, isWeb3Wallet, offline }) =>
-  !(offline || (forceOffline && isWeb3Wallet)) ? content : null;
-
-const Wrapped: React.SFC<{}> = () => (
-  <OnlyUnlocked
-    whenUnlocked={
-      <Offline
-        withOffline={({ forceOffline, offline }) => (
-          <Wallet
-            withWallet={({ isWeb3Wallet }) => (
-              <Aux>
-                <QueryWarning />
-                <Fields offline={offline} forceOffline={forceOffline} isWeb3Wallet={isWeb3Wallet} />
-              </Aux>
-            )}
-          />
-        )}
+class FieldsClass extends Component<StateProps> {
+  public render() {
+    const { shouldDisplay } = this.props;
+    return (
+      <OnlyUnlocked
+        whenUnlocked={
+          <Aux>
+            <QueryWarning />
+            {shouldDisplay ? content : null}
+          </Aux>
+        }
       />
-    }
-  />
-);
+    );
+  }
+}
 
-export { Wrapped as Fields };
+export const Fields = connect((state: AppState) => ({
+  shouldDisplay: !isAnyOfflineWithWeb3(state)
+}))(FieldsClass);

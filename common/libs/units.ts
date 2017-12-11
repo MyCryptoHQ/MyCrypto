@@ -37,9 +37,7 @@ const Units = {
 };
 const handleValues = (input: string | BN) => {
   if (typeof input === 'string') {
-    return input.startsWith('0x')
-      ? new BN(stripHexPrefix(input), 16)
-      : new BN(input);
+    return input.startsWith('0x') ? new BN(stripHexPrefix(input), 16) : new BN(input);
   }
   if (typeof input === 'number') {
     return new BN(input);
@@ -61,7 +59,7 @@ const Wei = (input: string | BN): Wei => handleValues(input);
 
 const TokenValue = (input: string | BN) => handleValues(input);
 
-const getDecimal = (key: UnitKey) => Units[key].length - 1;
+const getDecimalFromEtherUnit = (key: UnitKey) => Units[key].length - 1;
 
 const stripRightZeros = (str: string) => {
   const strippedStr = str.replace(/0+$/, '');
@@ -88,7 +86,7 @@ const convertedToBaseUnit = (value: string, decimal: number) => {
 };
 
 const fromWei = (wei: Wei, unit: UnitKey) => {
-  const decimal = getDecimal(unit);
+  const decimal = getDecimalFromEtherUnit(unit);
   return baseToConvertedUnit(wei.toString(), decimal);
 };
 
@@ -103,7 +101,9 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
+const isEtherUnit = (unit: string) => unit === 'ether';
 export {
+  isEtherUnit,
   Data,
   Address,
   TokenValue,
@@ -112,7 +112,7 @@ export {
   toTokenBase,
   fromTokenBase,
   Wei,
-  getDecimal,
+  getDecimalFromEtherUnit,
   UnitKey,
   Nonce,
   handleValues

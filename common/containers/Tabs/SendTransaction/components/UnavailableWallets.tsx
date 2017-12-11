@@ -1,10 +1,11 @@
-import React from 'react';
-import { Offline, OnlyUnlocked, Wallet } from 'components/renderCbs';
+import React, { Component } from 'react';
+import { OnlyUnlocked } from 'components/renderCbs';
+import { isAnyOfflineWithWeb3 } from 'selectors/derived';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 
-interface Props {
-  offline: boolean;
-  forceOffline: boolean;
-  isWeb3Wallet: boolean;
+interface StateProps {
+  shouldDisplay: boolean;
 }
 
 const content = (
@@ -14,27 +15,12 @@ const content = (
   </div>
 );
 
-const UnavailableWallets: React.SFC<Props> = ({ forceOffline, isWeb3Wallet, offline }) =>
-  offline || (forceOffline && isWeb3Wallet) ? content : null;
+class UnavailableWalletsClass extends Component<StateProps> {
+  public render() {
+    return <OnlyUnlocked whenUnlocked={this.props.shouldDisplay ? content : null} />;
+  }
+}
 
-const Wrapped: React.SFC<{}> = () => (
-  <OnlyUnlocked
-    whenUnlocked={
-      <Offline
-        withOffline={({ forceOffline, offline }) => (
-          <Wallet
-            withWallet={({ isWeb3Wallet }) => (
-              <UnavailableWallets
-                offline={offline}
-                forceOffline={forceOffline}
-                isWeb3Wallet={isWeb3Wallet}
-              />
-            )}
-          />
-        )}
-      />
-    }
-  />
-);
-
-export { Wrapped as UnavailableWallets };
+export const UnavailableWallets = connect((state: AppState) => ({
+  shouldDisplay: isAnyOfflineWithWeb3(state)
+}))(UnavailableWalletsClass);
