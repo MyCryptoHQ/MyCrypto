@@ -111,7 +111,8 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
     case TypeKeys.SWAP_RESTART:
       return {
         ...INITIAL_STATE,
-        bityRates: state.bityRates
+        bityRates: state.bityRates,
+        shapeshiftRates: state.shapeshiftRates
       };
     case TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED:
       return {

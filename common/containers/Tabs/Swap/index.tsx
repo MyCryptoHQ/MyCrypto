@@ -2,6 +2,7 @@ import { showNotification as dShowNotification, TShowNotification } from 'action
 import {
   initSwap as dInitSwap,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
+  shapeshiftOrderCreateRequestedSwap as dShapeshiftOrderCreateRequestedSwap,
   changeStepSwap as dChangeStepSwap,
   destinationAddressSwap as dDestinationAddressSwap,
   loadBityRatesRequestedSwap as dLoadBityRatesRequestedSwap,
@@ -17,6 +18,7 @@ import {
   TChangeStepSwap,
   TDestinationAddressSwap,
   TLoadBityRatesRequestedSwap,
+  TShapeshiftOrderCreateRequestedSwap,
   TLoadShapeshiftRequestedSwap,
   TRestartSwap,
   TStartOrderTimerSwap,
@@ -57,7 +59,8 @@ interface ReduxStateProps {
   secondsRemaining: number | null;
   outputTx: string | null;
   isPostingOrder: boolean;
-  orderStatus: string | null;
+  bityOrderStatus: string | null;
+  shapeshiftOrderStatus: string | null;
   paymentAddress: string | null;
 }
 
@@ -68,6 +71,7 @@ interface ReduxActionProps {
   destinationAddressSwap: TDestinationAddressSwap;
   restartSwap: TRestartSwap;
   stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
+  shapeshiftOrderCreateRequestedSwap: TShapeshiftOrderCreateRequestedSwap;
   bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
   startPollBityOrderStatus: TStartPollBityOrderStatus;
   stopOrderTimerSwap: TStopOrderTimerSwap;
@@ -105,7 +109,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       bityOrder,
       secondsRemaining,
       paymentAddress,
-      orderStatus,
+      bityOrderStatus,
+      shapeshiftOrderStatus,
       isPostingOrder,
       outputTx,
       // ACTIONS
@@ -115,6 +120,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       changeStepSwap,
       destinationAddressSwap,
       bityOrderCreateRequestedSwap,
+      shapeshiftOrderCreateRequestedSwap,
       showNotification,
       startOrderTimerSwap,
       startPollBityOrderStatus,
@@ -128,11 +134,14 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       isPostingOrder,
       origin,
       destinationId: destination.id,
+      destinationKind: destination.amount,
       destinationAddressSwap,
       destinationAddress,
       stopLoadBityRatesSwap,
       changeStepSwap,
-      bityOrderCreateRequestedSwap
+      provider,
+      bityOrderCreateRequestedSwap,
+      shapeshiftOrderCreateRequestedSwap
     };
 
     const SwapInfoHeaderProps = {
@@ -141,7 +150,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       reference,
       secondsRemaining,
       restartSwap,
-      orderStatus
+      bityOrderStatus,
+      shapeshiftOrderStatus
     };
 
     const CurrencySwapProps = {
@@ -163,6 +173,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       ...SwapInfoHeaderProps,
       ...PaymentInfoProps,
       reference,
+      provider,
       startOrderTimerSwap,
       startPollBityOrderStatus,
       stopOrderTimerSwap,
@@ -179,7 +190,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       <TabSection>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
-          <ShapeshiftBanner />
+          {step === 1 && <ShapeshiftBanner />}
           {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
           <main className="Tab-content-pane">
             {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
@@ -207,7 +218,8 @@ function mapStateToProps(state: AppState) {
     secondsRemaining: state.swap.secondsRemaining,
     outputTx: state.swap.outputTx,
     isPostingOrder: state.swap.isPostingOrder,
-    orderStatus: state.swap.orderStatus,
+    bityOrderStatus: state.swap.bityOrderStatus,
+    shapeshiftOrderStatus: state.swap.shapeshiftOrderStatus,
     paymentAddress: state.swap.paymentAddress
   };
 }
@@ -216,6 +228,7 @@ export default connect(mapStateToProps, {
   changeStepSwap: dChangeStepSwap,
   initSwap: dInitSwap,
   bityOrderCreateRequestedSwap: dBityOrderCreateRequestedSwap,
+  shapeshiftOrderCreateRequestedSwap: dShapeshiftOrderCreateRequestedSwap,
   loadBityRatesRequestedSwap: dLoadBityRatesRequestedSwap,
   loadShapeshiftRatesRequestedSwap: dLoadShapeshiftRatesRequestedSwap,
   destinationAddressSwap: dDestinationAddressSwap,

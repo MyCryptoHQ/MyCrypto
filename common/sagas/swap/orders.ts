@@ -24,7 +24,17 @@ import moment from 'moment';
 import { AppState } from 'reducers';
 import { State as SwapState } from 'reducers/swap';
 import { delay, SagaIterator } from 'redux-saga';
-import { call, cancel, cancelled, fork, put, select, take, takeEvery } from 'redux-saga/effects';
+import {
+  call,
+  cancel,
+  apply,
+  cancelled,
+  fork,
+  put,
+  select,
+  take,
+  takeEvery
+} from 'redux-saga/effects';
 import shapeshift from 'api/shapeshift';
 import { TypeKeys } from 'actions/swap/constants';
 
@@ -75,7 +85,7 @@ export function* pollShapeshiftOrderStatus(): SagaIterator {
     let swap = yield select(getSwap);
     while (true) {
       yield put(orderStatusRequestedSwap());
-      const orderStatus = yield call(shapeshift.checkStatus, swap.paymentAddress);
+      const orderStatus = yield apply(shapeshift, shapeshift.checkStatus, swap.paymentAddress);
       if (orderStatus.status === 'failed') {
         yield put(
           showNotification('danger', `Shapeshift Error: ${orderStatus.error}`, TEN_SECONDS)
@@ -153,13 +163,13 @@ export function* postShapeshiftOrderCreate(
   const payload = action.payload;
   try {
     yield put(stopLoadShapshiftRatesSwap());
-    const order = yield call(
-      shapeshift.sendAmount,
+    const order = yield apply(shapeshift, shapeshift.sendAmount, [
       payload.withdrawal,
       payload.originKind,
       payload.destinationKind,
       payload.destinationAmount
-    );
+    ]);
+    console.error('ORDER', order);
     if (order.error) {
       yield put(showNotification('danger', `Shapeshift Error: ${order.error}`));
       yield put(shapeshiftOrderCreateFailedSwap());
@@ -173,6 +183,7 @@ export function* postShapeshiftOrderCreate(
       yield put(startPollShapeshiftOrderStatus());
     }
   } catch (e) {
+    console.log(e);
     const message =
       'Connection Error. Please check the developer console for more details and/or contact support';
     yield put(showNotification('danger', message, TEN_SECONDS));

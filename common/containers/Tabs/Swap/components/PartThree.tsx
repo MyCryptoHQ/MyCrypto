@@ -19,7 +19,9 @@ interface ReduxStateProps {
   reference: string;
   secondsRemaining: number | null;
   paymentAddress: string | null;
-  orderStatus: string | null;
+  provider: string;
+  bityOrderStatus: string | null;
+  shapeshiftOrderStatus: string | null;
   outputTx: any;
 }
 
@@ -49,7 +51,9 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
       origin,
       destination,
       paymentAddress,
-      orderStatus,
+      provider,
+      bityOrderStatus,
+      shapeshiftOrderStatus,
       destinationAddress,
       outputTx,
       // ACTIONS
@@ -59,7 +63,9 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
     const SwapProgressProps = {
       originId: origin.id,
       destinationId: destination.id,
-      orderStatus,
+      provider,
+      bityOrderStatus,
+      shapeshiftOrderStatus,
       showNotification,
       destinationAddress,
       outputTx
@@ -75,11 +81,13 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
       destinationAmount: destination.amount
     };
 
+    const OpenOrder = bityOrderStatus === 'OPEN' || shapeshiftOrderStatus === 'no_deposits';
+
     return (
       <div>
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
-        {orderStatus === 'OPEN' && origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
+        {OpenOrder && origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
   }

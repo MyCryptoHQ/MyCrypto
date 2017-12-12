@@ -248,10 +248,11 @@ export default class CurrencySwap extends Component<Props, State> {
     const OriginKindDropDown = Dropdown as new () => Dropdown<any>;
     const DestinationKindDropDown = Dropdown as new () => Dropdown<any>;
     const pairName = combineAndUpper(origin.id, destination.id);
-    const bityLoaded = bityRates.byId[pairName] ? bityRates.byId[pairName].id : false;
-    const shapeshiftLoaded = shapeshiftRates.byId[pairName]
-      ? shapeshiftRates.byId[pairName].id
-      : false;
+    const bityLoaded = bityRates.byId && bityRates.byId[pairName];
+    const shapeshiftLoaded =
+      shapeshiftRates.byId && shapeshiftRates.byId[pairName]
+        ? shapeshiftRates.byId[pairName].id
+        : false;
     const loaded = provider === 'shapeshift' ? shapeshiftLoaded : bityLoaded;
     return (
       <article className="CurrencySwap">

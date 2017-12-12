@@ -125,6 +125,24 @@ export function bityOrderCreateRequestedSwap(
   };
 }
 
+export type TShapeshiftOrderCreateRequestedSwap = typeof shapeshiftOrderCreateRequestedSwap;
+export function shapeshiftOrderCreateRequestedSwap(
+  withdrawal: string,
+  originKind: string,
+  destinationKind: string,
+  destinationAmount: number
+): interfaces.ShapeshiftOrderCreateRequestedSwapAction {
+  return {
+    type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED,
+    payload: {
+      withdrawal,
+      originKind,
+      destinationKind,
+      destinationAmount
+    }
+  };
+}
+
 export function bityOrderCreateFailedSwap(): interfaces.BityOrderCreateFailedSwapAction {
   return {
     type: TypeKeys.SWAP_BITY_ORDER_CREATE_FAILED
