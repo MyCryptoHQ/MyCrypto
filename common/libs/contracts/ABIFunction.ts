@@ -19,56 +19,7 @@ export default class AbiFunction {
     Object.assign(this, abiFunc);
     this.init(outputMappings);
   }
-  /*
-  public call = async (input, node: INode, to) => {
-    if (!node || !node.sendCallRequest) {
-      throw Error(`No node given to ${this.name}`);
-    }
 
-    const data = this.encodeInput(input);
-
-    const returnedData = await node
-      .sendCallRequest({
-        to,
-        data
-      })
-      .catch(e => {
-        throw Error(`Node call request error at: ${this.name}
-Params:${JSON.stringify(input, null, 2)}
-Message:${e.message}
-EncodedCall:${data}`);
-      });
-    const decodedOutput = this.decodeOutput(returnedData);
-
-    return decodedOutput;
-  };
-
-  public send = async (params: ISendParams) => {
-    const { nodeLib, chainId, wallet, gasLimit, ...userInputs } = params;
-    if (!nodeLib || !nodeLib.sendRawTx) {
-      throw Error(`No node given to ${this.name}`);
-    }
-    const data = this.encodeInput(userInputs.input);
-
-    const transactionInput: TransactionInput = {
-      data,
-      to: userInputs.to,
-      unit: 'ether',
-      value: userInputs.value
-    };
-
-    const { signedTx, rawTx } = await makeAndSignTx(
-      wallet,
-      nodeLib,
-      userInputs.gasPrice,
-      gasLimit,
-      chainId,
-      transactionInput,
-      false
-    );
-    return { signedTx, rawTx: JSON.parse(rawTx) };
-  };
-*/
   public encodeInput = (suppliedInputs: object = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
