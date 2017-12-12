@@ -5,27 +5,25 @@ import { Query } from 'components/renderCbs';
 import { ICurrentValue, getCurrentValue, dataExists } from 'selectors/transaction';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
+import { CallbackProps } from 'components/AmountFieldFactory';
 
 interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>);
+  withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
+
 interface StateProps {
   currentValue: ICurrentValue;
   dataExists: boolean;
 }
+
 type Props = OwnProps & StateProps;
 
-class AmountInputClass extends Component<Props> {
-  public render() {
-    const { currentValue, onChange } = this.props;
-    const { raw, value } = currentValue;
-
-    return (
-      <Query
-        params={['readOnly']}
-        withQuery={({ readOnly }) => (
+/* 
           <Aux>
+
             <label>{translate('SEND_amount')}</label>
+
             <input
               className={`form-control ${
                 !!value || this.props.dataExists ? 'is-valid' : 'is-invalid'
@@ -36,8 +34,26 @@ class AmountInputClass extends Component<Props> {
               readOnly={!!readOnly}
               onChange={onChange}
             />
+
           </Aux>
-        )}
+            
+*/
+class AmountInputClass extends Component<Props> {
+  public render() {
+    const { currentValue, onChange, withProps } = this.props;
+    const { value } = currentValue;
+
+    return (
+      <Query
+        params={['readOnly']}
+        withQuery={({ readOnly }) =>
+          withProps({
+            currentValue,
+            isValid: !!(value || this.props.dataExists),
+            readOnly: !!readOnly,
+            onChange
+          })
+        }
       />
     );
   }

@@ -1,17 +1,7 @@
 import abi from 'ethereumjs-abi';
 import { toChecksumAddress } from 'ethereumjs-util';
 import BN from 'bn.js';
-import { INode } from 'libs/nodes/INode';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
-import { ISetConfigForTx } from './index';
-
-export interface IUserSendParams {
-  input;
-  to: string;
-  gasLimit: BN;
-  value: string;
-}
-export type ISendParams = IUserSendParams & ISetConfigForTx;
 
 export default class AbiFunction {
   public constant: boolean;
@@ -29,7 +19,7 @@ export default class AbiFunction {
     Object.assign(this, abiFunc);
     this.init(outputMappings);
   }
-
+  /*
   public call = async (input, node: INode, to) => {
     if (!node || !node.sendCallRequest) {
       throw Error(`No node given to ${this.name}`);
@@ -78,7 +68,7 @@ EncodedCall:${data}`);
     );
     return { signedTx, rawTx: JSON.parse(rawTx) };
   };
-
+*/
   public encodeInput = (suppliedInputs: object = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
@@ -133,13 +123,9 @@ EncodedCall:${data}`);
     this.inputTypes = this.inputs.map(({ type }) => type);
     this.outputTypes = this.outputs.map(({ type }) => type);
     this.inputNames = this.inputs.map(({ name }) => name);
-    this.outputNames = this.outputs.map(
-      ({ name }, i) => outputMappings[i] || name || `${i}`
-    );
+    this.outputNames = this.outputs.map(({ name }, i) => outputMappings[i] || name || `${i}`);
 
-    this.methodSelector = abi
-      .methodID(this.name, this.inputTypes)
-      .toString('hex');
+    this.methodSelector = abi.methodID(this.name, this.inputTypes).toString('hex');
   }
 
   private parsePostDecodedValue = (type: string, value: any) => {
@@ -179,9 +165,11 @@ EncodedCall:${data}`);
       //TODO: parse args based on type
       if (!suppliedArgs[name]) {
         throw Error(
-          `Expected argument "${name}" of type "${
-            type
-          }" missing, suppliedArgs: ${JSON.stringify(suppliedArgs, null, 2)}`
+          `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(
+            suppliedArgs,
+            null,
+            2
+          )}`
         );
       }
       const value = suppliedArgs[name];
