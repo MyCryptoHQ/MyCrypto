@@ -16,7 +16,7 @@ export default function Identicon(props: Props) {
   return (
     <div
       style={{ position: 'relative', width: size, height: size }}
-      title="Address Indenticon"
+      title="Address Identicon"
     >
       <div
         style={{
