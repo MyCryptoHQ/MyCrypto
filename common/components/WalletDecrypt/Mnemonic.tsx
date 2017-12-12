@@ -90,8 +90,11 @@ export default class MnemonicDecrypt extends Component<Props, State> {
   public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
     const phrase = (e.target as HTMLTextAreaElement).value;
     const formattedPhrase = phrase.replace(/(\r\n|\n|\r|,)/gm," ").trim();
-    this.setState({ phrase });
-    this.setState({ formattedPhrase })
+    
+    this.setState({
+      phrase, 
+      formattedPhrase
+    });
   };
 
   public onDWModalOpen = () => {
