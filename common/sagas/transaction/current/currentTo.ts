@@ -6,9 +6,9 @@ import { Address } from 'libs/units';
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { isValidENSorEtherAddress } from 'libs/validators';
-import { TypeKeys } from 'actions/transaction';
+import { TypeKeys } from 'actions/transaction/constants';
 
-function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
+export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
   const validAddress: boolean = yield call(isValidENSorEtherAddress, raw);
   const etherTransaction: boolean = yield select(isEtherTransaction);
   const value = validAddress ? Address(raw) : null;

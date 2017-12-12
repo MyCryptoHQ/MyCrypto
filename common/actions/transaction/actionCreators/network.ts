@@ -10,26 +10,6 @@ import {
   GetNonceSucceededAction,
   GetNonceFailedAction
 } from 'actions/transaction';
-export {
-  estimateGasRequested,
-  estimateGasFailed,
-  estimateGasSucceeded,
-  getFromRequested,
-  getFromSucceeded,
-  getFromFailed,
-  getNonceRequested,
-  getNonceFailed,
-  getNonceSucceeded,
-  TEstimateGasRequested,
-  TEstimateGasFailed,
-  TEstimateGasSucceeded,
-  TGetFromRequested,
-  TGetFromSucceeded,
-  TGetNonceRequested,
-  TGetNonceSucceeded,
-  TGetNonceFailed,
-  TGetFromFailed
-};
 
 type TEstimateGasRequested = typeof estimateGasRequested;
 const estimateGasRequested = (
@@ -79,3 +59,24 @@ type TGetNonceFailed = typeof getNonceFailed;
 const getNonceFailed = (): GetNonceFailedAction => ({
   type: TypeKeys.GET_NONCE_FAILED
 });
+
+export {
+  estimateGasRequested,
+  estimateGasFailed,
+  estimateGasSucceeded,
+  getFromRequested,
+  getFromSucceeded,
+  getFromFailed,
+  getNonceRequested,
+  getNonceFailed,
+  getNonceSucceeded,
+  TEstimateGasRequested,
+  TEstimateGasFailed,
+  TEstimateGasSucceeded,
+  TGetFromRequested,
+  TGetFromSucceeded,
+  TGetNonceRequested,
+  TGetNonceSucceeded,
+  TGetNonceFailed,
+  TGetFromFailed
+};

@@ -1,17 +1,5 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { IHexStrTransaction } from 'libs/transaction';
-export {
-  EstimateGasRequestedAction,
-  EstimateGasSucceededAction,
-  EstimateGasFailedAction,
-  GetFromRequestedAction,
-  GetFromSucceededAction,
-  GetFromFailedAction,
-  GetNonceRequestedAction,
-  GetNonceSucceededAction,
-  GetNonceFailedAction,
-  NetworkAction
-};
 /* Network actions */
 interface EstimateGasRequestedAction {
   type: TypeKeys.ESTIMATE_GAS_REQUESTED;
@@ -54,3 +42,16 @@ type NetworkAction =
   | GetNonceRequestedAction
   | GetNonceSucceededAction
   | GetNonceFailedAction;
+
+export {
+  EstimateGasRequestedAction,
+  EstimateGasSucceededAction,
+  EstimateGasFailedAction,
+  GetFromRequestedAction,
+  GetFromSucceededAction,
+  GetFromFailedAction,
+  GetNonceRequestedAction,
+  GetNonceSucceededAction,
+  GetNonceFailedAction,
+  NetworkAction
+};

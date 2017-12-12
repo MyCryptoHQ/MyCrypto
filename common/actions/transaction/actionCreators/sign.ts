@@ -6,18 +6,6 @@ import {
   SignWeb3TransactionSucceededAction
 } from '../actionTypes';
 import { TypeKeys } from '../constants';
-export {
-  signTransactionFailed,
-  signLocalTransactionSucceeded,
-  signLocalTransactionRequested,
-  signWeb3TransactionSucceeded,
-  signWeb3TransactionRequested,
-  TSignLocalTransactionSucceeded,
-  TSignLocalTransactionRequested,
-  TSignWeb3TransactionSucceeded,
-  TSignWeb3TransactionRequested,
-  TSignTransactionFailed
-};
 
 type TSignTransactionFailed = typeof signTransactionFailed;
 const signTransactionFailed = (): SignTransactionFailedAction => ({
@@ -55,3 +43,16 @@ const signWeb3TransactionRequested = (
   type: TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED,
   payload
 });
+
+export {
+  signTransactionFailed,
+  signLocalTransactionSucceeded,
+  signLocalTransactionRequested,
+  signWeb3TransactionSucceeded,
+  signWeb3TransactionRequested,
+  TSignLocalTransactionSucceeded,
+  TSignLocalTransactionRequested,
+  TSignWeb3TransactionSucceeded,
+  TSignWeb3TransactionRequested,
+  TSignTransactionFailed
+};

@@ -2,7 +2,6 @@ import { getTo, getValue } from './fields';
 import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
-export { getCurrentValue, getCurrentTo, ICurrentValue, ICurrentTo, isEtherTransaction };
 
 interface ICurrentValue {
   raw: string;
@@ -25,3 +24,5 @@ const getCurrentTo = (state: AppState): ICurrentTo =>
 
 const getCurrentValue = (state: AppState): ICurrentValue =>
   isEtherTransaction(state) ? getValue(state) : getTokenValue(state);
+
+export { getCurrentValue, getCurrentTo, ICurrentValue, ICurrentTo, isEtherTransaction };

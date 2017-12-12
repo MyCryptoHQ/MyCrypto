@@ -1,7 +1,6 @@
 import { getWalletType } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { getTransactionState } from './transaction';
-export { signaturePending, getSignedTx, getWeb3Tx, getSignState, getSerializedTransaction };
 
 const getSignState = (state: AppState) => getTransactionState(state).sign;
 
@@ -17,3 +16,5 @@ const getWeb3Tx = (state: AppState) => getSignState(state).web3.transaction;
 
 const getSerializedTransaction = (state: AppState) =>
   getWalletType(state).isWeb3Wallet ? getWeb3Tx(state) : getSignedTx(state);
+
+export { signaturePending, getSignedTx, getWeb3Tx, getSignState, getSerializedTransaction };

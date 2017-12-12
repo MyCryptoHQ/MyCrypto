@@ -6,8 +6,6 @@ import EthTx from 'ethereumjs-tx';
 import { getUnit } from 'selectors/transaction/meta';
 import { reduceToValues, isFullTx } from 'selectors/transaction/helpers';
 
-export { getTransaction, getTransactionState };
-
 const getTransactionState = (state: AppState) => state.transaction;
 
 export interface IGetTransaction {
@@ -25,3 +23,5 @@ const getTransaction = (state: AppState): IGetTransaction => {
 
   return { transaction, isFullTransaction };
 };
+
+export { getTransaction, getTransactionState };

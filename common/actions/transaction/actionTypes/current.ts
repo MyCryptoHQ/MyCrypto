@@ -1,5 +1,4 @@
 import { TypeKeys } from '../constants';
-export { SetCurrentValueAction, SetCurrentToAction, CurrentAction };
 
 /* user input */
 
@@ -14,3 +13,5 @@ interface SetCurrentToAction {
 }
 
 type CurrentAction = SetCurrentValueAction | SetCurrentToAction;
+
+export { SetCurrentValueAction, SetCurrentToAction, CurrentAction };

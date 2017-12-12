@@ -7,7 +7,7 @@ import { getNodeLib } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { showNotification } from 'actions/notifications';
 
-function* handleNonceRequest(): SagaIterator {
+export function* handleNonceRequest(): SagaIterator {
   const nodeLib: INode = yield select(getNodeLib);
   const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
   try {

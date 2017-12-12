@@ -9,7 +9,7 @@ import { AppState } from 'reducers';
 /*
 * This function will be called during transaction serialization / signing
 */
-function* handleFromRequest(): SagaIterator {
+export function* handleFromRequest(): SagaIterator {
   const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
   try {
     if (!walletInst) {

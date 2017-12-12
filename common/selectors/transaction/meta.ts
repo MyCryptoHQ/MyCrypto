@@ -2,15 +2,6 @@ import { AppState } from 'reducers';
 import { getTransactionState } from './transaction';
 import { getDecimalFromEtherUnit, isEtherUnit } from 'libs/units';
 import { getToken } from 'selectors/wallet';
-export {
-  getFrom,
-  getDecimal,
-  getTokenValue,
-  getTokenTo,
-  getUnit,
-  getPreviousUnit,
-  getDecimalFromUnit
-};
 
 const getMetaState = (state: AppState) => getTransactionState(state).meta;
 const getFrom = (state: AppState) => getMetaState(state).from;
@@ -30,4 +21,14 @@ const getDecimalFromUnit = (state: AppState, unit: string) => {
     }
     return token.decimal;
   }
+};
+
+export {
+  getFrom,
+  getDecimal,
+  getTokenValue,
+  getTokenTo,
+  getUnit,
+  getPreviousUnit,
+  getDecimalFromUnit
 };

@@ -33,7 +33,7 @@ interface IInput {
  * @param {IInput} value
  * @returns {SagaIterator}
  */
-function* rebaseUserInput(value: IInput): SagaIterator {
+export function* rebaseUserInput(value: IInput): SagaIterator {
   const unit: string = yield select(getUnit);
   // get decimal
   const newDecimal: number = yield select(getDecimalFromUnit, unit);
@@ -53,7 +53,7 @@ function* rebaseUserInput(value: IInput): SagaIterator {
   }
 }
 
-function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
+export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
   const previousUnit: string = yield select(getPreviousUnit);
   const etherToEther = isEtherUnit(currentUnit) && isEtherUnit(previousUnit);
   const etherToToken = !isEtherUnit(currentUnit) && isEtherUnit(previousUnit);

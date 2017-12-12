@@ -6,7 +6,7 @@ import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
 
-function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
+export function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
 
   const unit: string = yield select(getUnit);

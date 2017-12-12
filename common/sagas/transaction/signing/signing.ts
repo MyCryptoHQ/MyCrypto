@@ -8,18 +8,18 @@ import {
 } from 'actions/transaction';
 import { computeIndexingHash } from 'libs/transaction';
 
-const signLocalTransaction = signTransactionWrapper(function*({
+export function* signLocalTransactionHandler({
   tx,
   wallet
 }: IFullWalletAndTransaction): SagaIterator {
   const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
   yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash }));
-});
+}
 
-const signWeb3Transaction = signTransactionWrapper(function*({
-  tx
-}: IFullWalletAndTransaction): SagaIterator {
+const signLocalTransaction = signTransactionWrapper(signLocalTransactionHandler);
+
+export function* signWeb3TransactionHandler({ tx }: IFullWalletAndTransaction): SagaIterator {
   const serializedTransaction: Buffer = yield apply(tx, tx.serialize);
   const indexingHash: string = yield call(computeIndexingHash, serializedTransaction);
 
@@ -29,7 +29,9 @@ const signWeb3Transaction = signTransactionWrapper(function*({
       indexingHash
     })
   );
-});
+}
+
+const signWeb3Transaction = signTransactionWrapper(signWeb3TransactionHandler);
 
 export const signing = [
   takeEvery(TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED, signLocalTransaction),

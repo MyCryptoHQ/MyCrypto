@@ -6,7 +6,6 @@ import {
   SetTokenValueMetaAction,
   SetDataFieldAction
 } from 'actions/transaction';
-export { SwapTokenToEtherAction, SwapEtherToTokenAction, SwapAction, SwapTokenToTokenAction };
 
 /* Swapping actions */
 interface SwapTokenToEtherAction {
@@ -37,3 +36,5 @@ interface SwapTokenToTokenAction {
   };
 }
 type SwapAction = SwapEtherToTokenAction | SwapTokenToEtherAction | SwapTokenToTokenAction;
+
+export { SwapTokenToEtherAction, SwapEtherToTokenAction, SwapAction, SwapTokenToTokenAction };

@@ -6,18 +6,6 @@ import {
   BroadcastTransactionQueuedAction
 } from '../actionTypes';
 import { TypeKeys } from '../constants';
-export {
-  broadcastLocalTransactionRequested,
-  broadcastWeb3TransactionRequested,
-  broadcastTransactionSucceeded,
-  broadcastTransactionFailed,
-  broadcastTransactionQueued,
-  TBroadcastLocalTransactionRequested,
-  TBroadcastWeb3TransactionRequested,
-  TBroadcastTransactionSucceeded,
-  TBroadcastTransactionFailed,
-  TBroadcastTransactionQueued
-};
 
 type TBroadcastLocalTransactionRequested = typeof broadcastLocalTransactionRequested;
 const broadcastLocalTransactionRequested = (): BroadcastLocalTransactionRequestedAction => ({
@@ -52,3 +40,16 @@ const broadcastTransactionQueued = (
   type: TypeKeys.BROADCAST_TRANSACTION_QUEUED,
   payload
 });
+
+export {
+  broadcastLocalTransactionRequested,
+  broadcastWeb3TransactionRequested,
+  broadcastTransactionSucceeded,
+  broadcastTransactionFailed,
+  broadcastTransactionQueued,
+  TBroadcastLocalTransactionRequested,
+  TBroadcastWeb3TransactionRequested,
+  TBroadcastTransactionSucceeded,
+  TBroadcastTransactionFailed,
+  TBroadcastTransactionQueued
+};
