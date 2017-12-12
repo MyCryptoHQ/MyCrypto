@@ -31,7 +31,7 @@ class ShapeshiftService {
   private url = SHAPESHIFT_BASE_URL;
   private apiKey = '0ca1ccd50b708a3f8c02327f0caeeece06d3ddc1b0ac749a987b453ee0f4a29bdb5da2e53bc35e57fb4bb7ae1f43c93bb098c3c4716375fc1001c55d8c94c160';
   private postHeaders = {
-    'Content-Type': 'application/json; charset:UTF-8'
+    'Content-Type': 'application/json'
   };
   public checkStatus(address) {
     return fetch(`${this.url}/txStat/${address}`)
