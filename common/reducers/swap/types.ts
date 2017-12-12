@@ -17,6 +17,19 @@ export interface NormalizedBityRates {
   allIds: string[];
 }
 
+export interface NormalizedShapeshiftRate {
+  id: number;
+  options: SupportedDestinationKind[];
+  rate: number;
+  limit: number;
+  min: number;
+}
+
+export interface NormalizedShapeshiftRates {
+  byId: { [id: string]: NormalizedShapeshiftRate };
+  allIds: string[];
+}
+
 export interface NormalizedOptions {
   byId: { [id: string]: Option };
   allIds: string[];

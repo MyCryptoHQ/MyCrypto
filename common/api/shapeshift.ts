@@ -55,10 +55,13 @@ class ShapeshiftService {
       const destinationKind = m.pair.substring(4, 7);
       if (this.isWhitelisted(originKind) && this.isWhitelisted(destinationKind)) {
         const pairName = originKind + destinationKind;
+        const { rate, limit, min } = m;
         tokenMap[pairName] = {
           id: pairName,
           options: [{ id: originKind }, { id: destinationKind }],
-          rate: m.rate
+          rate,
+          limit,
+          min
         };
       }
     });

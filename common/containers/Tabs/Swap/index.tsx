@@ -25,7 +25,12 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus
 } from 'actions/swap';
-import { SwapInput, NormalizedOptions, NormalizedBityRates } from 'reducers/swap/types';
+import {
+  SwapInput,
+  NormalizedOptions,
+  NormalizedBityRates,
+  NormalizedShapeshiftRates
+} from 'reducers/swap/types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -43,8 +48,9 @@ interface ReduxStateProps {
   destination: SwapInput;
   bityRates: NormalizedBityRates;
   // change
-  shapeshiftRates: NormalizedBityRates;
+  shapeshiftRates: NormalizedShapeshiftRates;
   options: NormalizedOptions;
+  provider: string;
   bityOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
@@ -73,8 +79,12 @@ interface ReduxActionProps {
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
-    this.props.loadShapeshiftRatesRequestedSwap();
-    this.props.loadBityRatesRequestedSwap();
+    const { provider } = this.props;
+    if (provider === 'shapeshift') {
+      this.props.loadShapeshiftRatesRequestedSwap();
+    } else {
+      this.props.loadBityRatesRequestedSwap();
+    }
   }
 
   public componentWillUnmount() {

@@ -98,7 +98,7 @@ export default class Navigation extends Component<Props, State> {
         <div className="Navigation-scroll container">
           <ul className="Navigation-links">
             {tabs.map(link => {
-              return <NavigationLink key={link.name} link={link} />;
+              return <NavigationLink key={link.name} link={link} id={link.name} />;
             })}
           </ul>
         </div>

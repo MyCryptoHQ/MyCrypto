@@ -5,6 +5,7 @@ import translate, { translateRaw } from 'translations';
 import './NavigationLink.scss';
 
 interface Props {
+  id: string;
   link: {
     name: string;
     to?: string;
@@ -21,38 +22,31 @@ class NavigationLink extends React.Component<Props, {}> {
     return this.props as InjectedLocation;
   }
   public render() {
-    const { link } = this.props;
+    const { link, id } = this.props;
     const { location } = this.injected;
     const linkClasses = classnames({
       'NavigationLink-link': true,
       'is-disabled': !link.to,
-      'is-active':
-        location.pathname === link.to ||
-        location.pathname.substring(1) === link.to
+      'is-active': location.pathname === link.to || location.pathname.substring(1) === link.to
     });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
     const linkEl =
       link.external || !link.to ? (
-        <a
-          className={linkClasses}
-          href={link.to}
-          aria-label={linkLabel}
-          target="_blank"
-        >
+        <a className={linkClasses} href={link.to} aria-label={linkLabel} target="_blank">
           {translate(link.name)}
         </a>
       ) : (
-        <Link
-          className={linkClasses}
-          to={(link as any).to}
-          aria-label={linkLabel}
-        >
+        <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>
           {translate(link.name)}
         </Link>
       );
 
-    return <li className="NavigationLink">{linkEl}</li>;
+    return (
+      <li id={id} className="NavigationLink">
+        {linkEl}
+      </li>
+    );
   }
 }
 

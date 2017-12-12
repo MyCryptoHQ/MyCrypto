@@ -1,5 +1,10 @@
 import { TChangeStepSwap, TInitSwap } from 'actions/swap';
-import { NormalizedBityRates, NormalizedOptions, SwapInput } from 'reducers/swap/types';
+import {
+  NormalizedBityRates,
+  NormalizedShapeshiftRates,
+  NormalizedOptions,
+  SwapInput
+} from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
 import bityConfig, {
   generateKindMax,
@@ -17,7 +22,7 @@ import shapeshift from 'api/shapeshift';
 
 export interface StateProps {
   bityRates: NormalizedBityRates;
-  shapeshiftRates: NormalizedBityRates;
+  shapeshiftRates: NormalizedShapeshiftRates;
   provider: string;
   options: NormalizedOptions;
 }
@@ -62,7 +67,7 @@ export default class CurrencySwap extends Component<Props, State> {
         shapeshift.whitelist
       );
       const destinationKindOptions: SupportedDestinationKind[] = without<any>(
-        options.allIds,
+        originKindOptions,
         origin.id
       );
       this.setState({
@@ -75,47 +80,65 @@ export default class CurrencySwap extends Component<Props, State> {
   public activeProvider = () =>
     this.props.provider === 'shapeshift' ? this.props.shapeshiftRates : this.props.bityRates;
 
-  public getMinMax = (kind: SupportedDestinationKind) => {
+  public getMinMax = (originKind: SupportedDestinationKind, destinationKind) => {
     let min;
     let max;
-    if (kind !== 'BTC') {
-      const pairRate = this.activeProvider().byId['BTC' + kind].rate;
-      min = generateKindMin(pairRate, kind);
-      max = generateKindMax(pairRate, kind);
+    if (this.props.provider === 'shapeshift') {
+      const pair = (this.activeProvider() as NormalizedShapeshiftRates).byId[
+        originKind + destinationKind
+      ];
+      min = pair.min;
+      max = pair.limit;
     } else {
-      min = bityConfig.BTCMin;
-      max = bityConfig.BTCMax;
+      if (originKind !== 'BTC') {
+        const pairRate = this.activeProvider().byId['BTC' + originKind].rate;
+        min = generateKindMin(pairRate, originKind);
+        max = generateKindMax(pairRate, originKind);
+      } else {
+        min = bityConfig.BTCMin;
+        max = bityConfig.BTCMax;
+      }
     }
     return { min, max };
   };
 
-  public isMinMaxValid = (amount: number, kind: SupportedDestinationKind) => {
-    const rate = this.getMinMax(kind);
-    const higherThanMin = amount >= rate.min;
-    const lowerThanMax = amount <= rate.max;
+  public isMinMaxValid = (
+    originAmount: number,
+    originKind: SupportedDestinationKind,
+    destinationKind
+  ) => {
+    const rate = this.getMinMax(originKind, destinationKind);
+    const higherThanMin = originAmount >= rate.min;
+    const lowerThanMax = originAmount <= rate.max;
     return higherThanMin && lowerThanMax;
   };
 
   public setDisabled(origin: SwapInput, destination: SwapInput) {
     const amountsValid = origin.amount && destination.amount;
-    const minMaxValid = this.isMinMaxValid(origin.amount, origin.id);
+    const minMaxValid = this.isMinMaxValid(origin.amount, origin.id, destination.id);
 
     const disabled = !(amountsValid && minMaxValid);
 
-    const createErrString = (kind: SupportedDestinationKind, amount: number) => {
-      const rate = this.getMinMax(kind);
+    const createErrString = (
+      originKind: SupportedDestinationKind,
+      amount: number,
+      destKind: SupportedDestinationKind
+    ) => {
+      const rate = this.getMinMax(originKind, destKind);
       let errString;
       if (amount > rate.max) {
-        errString = `Maximum ${rate.max} ${kind}`;
+        errString = `Maximum ${rate.max} ${originKind}`;
       } else {
-        errString = `Minimum ${rate.min} ${kind}`;
+        errString = `Minimum ${rate.min} ${originKind}`;
       }
       return errString;
     };
 
     const showError = disabled && amountsValid;
-    const originErr = showError ? createErrString(origin.id, origin.amount) : '';
-    const destinationErr = showError ? createErrString(destination.id, destination.amount) : '';
+    const originErr = showError ? createErrString(origin.id, origin.amount, destination.id) : '';
+    const destinationErr = showError
+      ? createErrString(destination.id, destination.amount, origin.id)
+      : '';
 
     this.setState({
       disabled,
@@ -223,7 +246,7 @@ export default class CurrencySwap extends Component<Props, State> {
     } = this.state;
 
     const OriginKindDropDown = Dropdown as new () => Dropdown<any>;
-    const DestinationKindDropDown = Dropdown as new () => Dropdown<typeof destination.id>;
+    const DestinationKindDropDown = Dropdown as new () => Dropdown<any>;
     const pairName = combineAndUpper(origin.id, destination.id);
     const bityLoaded = bityRates.byId[pairName] ? bityRates.byId[pairName].id : false;
     const shapeshiftLoaded = shapeshiftRates.byId[pairName]
@@ -240,7 +263,8 @@ export default class CurrencySwap extends Component<Props, State> {
               <input
                 id="origin-swap-input"
                 className={`CurrencySwap-input form-control ${
-                  String(origin.amount) !== '' && this.isMinMaxValid(origin.amount, origin.id)
+                  String(origin.amount) !== '' &&
+                  this.isMinMaxValid(origin.amount, origin.id, destination.id)
                     ? 'is-valid'
                     : 'is-invalid'
                 }`}
@@ -266,7 +290,8 @@ export default class CurrencySwap extends Component<Props, State> {
               <input
                 id="destination-swap-input"
                 className={`CurrencySwap-input form-control ${
-                  String(destination.amount) !== '' && this.isMinMaxValid(origin.amount, origin.id)
+                  String(destination.amount) !== '' &&
+                  this.isMinMaxValid(origin.amount, origin.id, destination.id)
                     ? 'is-valid'
                     : 'is-invalid'
                 }`}
