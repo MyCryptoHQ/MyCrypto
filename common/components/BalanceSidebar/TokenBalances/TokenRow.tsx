@@ -4,11 +4,15 @@ import { TokenValue } from 'libs/units';
 import { UnitDisplay } from 'components/ui';
 import './TokenRow.scss';
 
+type ToggleTrackedFn = (symbol: string) => void;
+
 interface Props {
   balance: TokenValue;
   symbol: string;
   custom?: boolean;
   decimal: number;
+  tracked: boolean;
+  toggleTracked: ToggleTrackedFn | false;
   onRemove(symbol: string): void;
 }
 interface State {
@@ -21,42 +25,41 @@ export default class TokenRow extends React.Component<Props, State> {
   };
 
   public render() {
-    const { balance, symbol, custom, decimal } = this.props;
+    const { balance, symbol, custom, decimal, tracked } = this.props;
     const { showLongBalance } = this.state;
 
     return (
-      <tr className="TokenRow">
+      <tr className="TokenRow" onClick={this.handleToggleTracked}>
+        {this.props.toggleTracked && (
+          <td className="TokenRow-toggled">
+            <input type="checkbox" checked={tracked} />
+          </td>
+        )}
         <td
           className="TokenRow-balance"
           title={`${balance.toString()} (Double-Click)`}
           onDoubleClick={this.toggleShowLongBalance}
         >
+          <span>
+            <UnitDisplay value={balance} decimal={decimal} displayShortBalance={!showLongBalance} />
+          </span>
+        </td>
+        <td className="TokenRow-symbol">
+          {symbol}
           {!!custom && (
-            <img
-              src={removeIcon}
-              className="TokenRow-balance-remove"
+            <i
+              className="TokenRow-symbol-remove fa fa-times-circle"
               title="Remove Token"
               onClick={this.onRemove}
               tabIndex={0}
             />
           )}
-          <span>
-            <UnitDisplay
-              value={balance}
-              decimal={decimal}
-              displayShortBalance={!showLongBalance}
-            />
-          </span>
         </td>
-        <td className="TokenRow-symbol">{symbol}</td>
       </tr>
     );
   }
 
-  public toggleShowLongBalance = (
-    // TODO: don't use any
-    e: any
-  ) => {
+  private toggleShowLongBalance = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     this.setState(state => {
       return {
@@ -65,7 +68,13 @@ export default class TokenRow extends React.Component<Props, State> {
     });
   };
 
-  public onRemove = () => {
+  private onRemove = () => {
     this.props.onRemove(this.props.symbol);
+  };
+
+  private handleToggleTracked = () => {
+    if (this.props.toggleTracked) {
+      this.props.toggleTracked(this.props.symbol);
+    }
   };
 }

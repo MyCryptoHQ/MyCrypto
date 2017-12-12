@@ -1,5 +1,5 @@
 import { Wei, TokenValue } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, WalletConfig } from 'libs/wallet';
 import { TypeKeys } from './constants';
 
 /*** Unlock Private Key ***/
@@ -45,14 +45,32 @@ export interface SetBalanceRejectedAction {
 }
 
 /*** Set Token Balance ***/
-export interface SetTokenBalancesAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCES;
+export interface SetTokenBalancesPendingAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING;
+}
+
+export interface SetTokenBalancesFulfilledAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED;
   payload: {
     [key: string]: {
       balance: TokenValue;
       error: string | null;
     };
   };
+}
+
+export interface SetTokenBalancesRejectedAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED;
+}
+
+export interface ScanWalletForTokensAction {
+  type: TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS;
+  payload: IWallet;
+}
+
+export interface SetWalletTokensAction {
+  type: TypeKeys.WALLET_SET_WALLET_TOKENS;
+  payload: string[];
 }
 
 /*** Unlock Mnemonic ***/
@@ -74,6 +92,11 @@ export interface UnlockKeystoreAction {
   payload: KeystoreUnlockParams;
 }
 
+export interface SetWalletConfigAction {
+  type: TypeKeys.WALLET_SET_CONFIG;
+  payload: WalletConfig;
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
@@ -82,4 +105,9 @@ export type WalletAction =
   | SetBalancePendingAction
   | SetBalanceFullfilledAction
   | SetBalanceRejectedAction
-  | SetTokenBalancesAction;
+  | SetTokenBalancesPendingAction
+  | SetTokenBalancesFulfilledAction
+  | SetTokenBalancesRejectedAction
+  | ScanWalletForTokensAction
+  | SetWalletTokensAction
+  | SetWalletConfigAction;
