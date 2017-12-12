@@ -1,7 +1,7 @@
 import AbiFunction from './ABIFunction';
 import { ContractOutputMappings } from './types';
 
-const ABIFUNC_METHOD_NAMES = ['encodeInput', 'decodeInput', 'decodeOutput', 'call'];
+const ABIFUNC_METHOD_NAMES = ['encodeInput', 'decodeInput', 'decodeOutput'];
 
 enum ABIMethodTypes {
   FUNC = 'function'

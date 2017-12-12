@@ -156,14 +156,17 @@ class InteractExplorerClass extends Component<Props, State> {
     try {
       const data = this.encodeData();
       const { nodeLib, to } = this.props;
+      const { selectedFunction } = this.state;
 
       if (!to.value) {
         throw Error();
       }
 
-      const results = await nodeLib.sendCallRequest({ to: bufferToHex(to.value.toBuffer()), data });
+      const callData = { to: to.raw, data };
+      const results = await nodeLib.sendCallRequest(callData);
 
-      this.setState({ outputs: results });
+      const parsedResult = selectedFunction.decodeOutput(results);
+      this.setState({ outputs: parsedResult });
     } catch (e) {
       this.props.showNotification(
         'warning',
