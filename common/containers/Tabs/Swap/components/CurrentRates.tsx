@@ -1,14 +1,19 @@
-import { NormalizedBityRate } from 'reducers/swap/types';
+import { NormalizedBityRate, NormalizedShapeshiftRate } from 'reducers/swap/types';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
+import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
-import { bityReferralURL } from 'config/data';
+import { bityReferralURL, shapeshiftReferralURL } from 'config/data';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 import './CurrentRates.scss';
 
+interface ReduxStateProps {
+  provider: string;
+}
+
 interface Props {
-  [id: string]: NormalizedBityRate;
+  [id: string]: NormalizedBityRate | NormalizedShapeshiftRate | string;
 }
 
 interface State {
@@ -18,7 +23,7 @@ interface State {
   BTCREPAmount: number;
 }
 
-export default class CurrentRates extends Component<Props, State> {
+export default class CurrentRates extends Component<Props & ReduxStateProps, State> {
   public state = {
     ETHBTCAmount: 1,
     ETHREPAmount: 1,
@@ -37,7 +42,7 @@ export default class CurrentRates extends Component<Props, State> {
   public buildPairRate = (origin: string, destination: string) => {
     const pair = origin + destination;
     const statePair = this.state[pair + 'Amount'];
-    const propsPair = this.props[pair] ? this.props[pair].rate : null;
+    const propsPair = this.props[pair] ? (this.props[pair] as NormalizedShapeshiftRate).rate : null;
     return (
       <div className="SwapRates-panel-rate">
         {propsPair ? (
@@ -60,6 +65,9 @@ export default class CurrentRates extends Component<Props, State> {
   };
 
   public render() {
+    const { provider } = this.props;
+    const providerLogo = provider === 'shapeshift' ? shapeshiftLogoWhite : bityLogoWhite;
+    const providerURL = provider === 'shapeshift' ? shapeshiftReferralURL : bityReferralURL;
     return (
       <article className="SwapRates">
         <h3 className="SwapRates-title">{translate('SWAP_rates')}</h3>
@@ -74,8 +82,8 @@ export default class CurrentRates extends Component<Props, State> {
             {this.buildPairRate('BTC', 'ETH')}
             {this.buildPairRate('BTC', 'REP')}
           </div>
-          <a className="SwapRates-panel-logo" href={bityReferralURL} target="_blank">
-            <img src={bityLogoWhite} width={120} height={49} />
+          <a className="SwapRates-panel-logo" href={providerURL} target="_blank">
+            <img src={providerLogo} width={120} height={49} />
           </a>
         </section>
       </article>

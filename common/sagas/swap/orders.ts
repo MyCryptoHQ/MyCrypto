@@ -5,36 +5,43 @@ import {
   bityOrderCreateSucceededSwap,
   changeStepSwap,
   orderStatusRequestedSwap,
-  orderStatusSucceededSwap,
+  bityOrderStatusSucceededSwap,
   orderTimeSwap,
   startOrderTimerSwap,
   startPollBityOrderStatus,
   stopLoadBityRatesSwap,
-  stopPollBityOrderStatus
+  stopPollBityOrderStatus,
+  shapeshiftOrderStatusSucceededSwap,
+  ShapeshiftOrderCreateRequestedSwapAction,
+  stopLoadShapshiftRatesSwap,
+  shapeshiftOrderCreateFailedSwap,
+  shapeshiftOrderCreateSucceededSwap,
+  startPollShapeshiftOrderStatus,
+  stopPollShapeshiftOrderStatus
 } from 'actions/swap';
 import { getOrderStatus, postOrder } from 'api/bity';
 import moment from 'moment';
 import { AppState } from 'reducers';
 import { State as SwapState } from 'reducers/swap';
 import { delay, SagaIterator } from 'redux-saga';
-import {
-  call,
-  cancel,
-  cancelled,
-  fork,
-  put,
-  select,
-  take,
-  takeEvery
-} from 'redux-saga/effects';
+import { call, cancel, cancelled, fork, put, select, take, takeEvery } from 'redux-saga/effects';
+import shapeshift from 'api/shapeshift';
+import { TypeKeys } from 'actions/swap/constants';
 
 export const getSwap = (state: AppState): SwapState => state.swap;
 const ONE_SECOND = 1000;
 const TEN_SECONDS = ONE_SECOND * 10;
-export const BITY_TIMEOUT_MESSAGE = `
+export const ORDER_TIMEOUT_MESSAGE = `
     Time has run out.
     If you have already sent, please wait 1 hour.
     If your order has not be processed after 1 hour,
+    please press the orange 'Issue with your Swap?' button.
+`;
+
+export const ORDER_RECEIVED_MESSAGE = `
+    The order was recieved.
+    It may take some time to process the transaction.
+    Please wait 1 hour. If your order has not been processed by then,
     please press the orange 'Issue with your Swap?' button.
 `;
 
@@ -45,15 +52,9 @@ export function* pollBityOrderStatus(): SagaIterator {
       yield put(orderStatusRequestedSwap());
       const orderStatus = yield call(getOrderStatus, swap.orderId);
       if (orderStatus.error) {
-        yield put(
-          showNotification(
-            'danger',
-            `Bity Error: ${orderStatus.msg}`,
-            TEN_SECONDS
-          )
-        );
+        yield put(showNotification('danger', `Bity Error: ${orderStatus.msg}`, TEN_SECONDS));
       } else {
-        yield put(orderStatusSucceededSwap(orderStatus.data));
+        yield put(bityOrderStatusSucceededSwap(orderStatus.data));
         yield call(delay, ONE_SECOND * 5);
         swap = yield select(getSwap);
         if (swap === 'CANC') {
@@ -65,6 +66,32 @@ export function* pollBityOrderStatus(): SagaIterator {
     if (yield cancelled()) {
       // TODO - implement request cancel if needed
       // yield put(actions.requestFailure('Request cancelled!'))
+    }
+  }
+}
+
+export function* pollShapeshiftOrderStatus(): SagaIterator {
+  try {
+    let swap = yield select(getSwap);
+    while (true) {
+      yield put(orderStatusRequestedSwap());
+      const orderStatus = yield call(shapeshift.checkStatus, swap.paymentAddress);
+      if (orderStatus.status === 'failed') {
+        yield put(
+          showNotification('danger', `Shapeshift Error: ${orderStatus.error}`, TEN_SECONDS)
+        );
+      } else {
+        yield put(shapeshiftOrderStatusSucceededSwap(orderStatus.data));
+        yield call(delay, ONE_SECOND * 5);
+        swap = yield select(getSwap);
+        if (swap === 'CANC') {
+          break;
+        }
+      }
+    }
+  } finally {
+    if (yield cancelled()) {
+      // Request canclled
     }
   }
 }
@@ -81,9 +108,15 @@ export function* pollBityOrderStatusSaga(): SagaIterator {
   }
 }
 
-export function* postBityOrderCreate(
-  action: BityOrderCreateRequestedSwapAction
-): SagaIterator {
+export function* pollShapeshiftOrderStatusSaga(): SagaIterator {
+  while (yield take('SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS')) {
+    const pollShapeshiftOrderStatusTask = yield fork(pollShapeshiftOrderStatus);
+    yield take('SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS');
+    yield cancel(pollShapeshiftOrderStatusTask);
+  }
+}
+
+export function* postBityOrderCreate(action: BityOrderCreateRequestedSwapAction): SagaIterator {
   const payload = action.payload;
   try {
     yield put(stopLoadBityRatesSwap());
@@ -96,9 +129,7 @@ export function* postBityOrderCreate(
     );
     if (order.error) {
       // TODO - handle better / like existing site?
-      yield put(
-        showNotification('danger', `Bity Error: ${order.msg}`, TEN_SECONDS)
-      );
+      yield put(showNotification('danger', `Bity Error: ${order.msg}`, TEN_SECONDS));
       yield put(bityOrderCreateFailedSwap());
     } else {
       yield put(bityOrderCreateSucceededSwap(order.data));
@@ -116,20 +147,55 @@ export function* postBityOrderCreate(
   }
 }
 
-export function* postBityOrderSaga(): SagaIterator {
-  yield takeEvery('SWAP_ORDER_CREATE_REQUESTED', postBityOrderCreate);
+export function* postShapeshiftOrderCreate(
+  action: ShapeshiftOrderCreateRequestedSwapAction
+): SagaIterator {
+  const payload = action.payload;
+  try {
+    yield put(stopLoadShapshiftRatesSwap());
+    const order = yield call(
+      shapeshift.sendAmount,
+      payload.withdrawal,
+      payload.originKind,
+      payload.destinationKind,
+      payload.destinationAmount
+    );
+    if (order.error) {
+      yield put(showNotification('danger', `Shapeshift Error: ${order.error}`));
+      yield put(shapeshiftOrderCreateFailedSwap());
+    } else {
+      console.log('Order data', order.data);
+      yield put(shapeshiftOrderCreateSucceededSwap(order.data));
+      yield put(changeStepSwap(3));
+      // start countdown
+      yield put(startOrderTimerSwap());
+      // start shapeshift order status polling
+      yield put(startPollShapeshiftOrderStatus());
+    }
+  } catch (e) {
+    const message =
+      'Connection Error. Please check the developer console for more details and/or contact support';
+    yield put(showNotification('danger', message, TEN_SECONDS));
+    yield put(shapeshiftOrderCreateFailedSwap());
+  }
 }
 
-export function* bityTimeRemaining(): SagaIterator {
-  while (yield take('SWAP_ORDER_START_TIMER')) {
+export function* postBityOrderSaga(): SagaIterator {
+  yield takeEvery(TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED, postBityOrderCreate);
+}
+
+export function* postShapeshiftOrderSaga(): SagaIterator {
+  yield takeEvery(TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED, postShapeshiftOrderCreate);
+}
+
+export function* orderTimeRemaining(): SagaIterator {
+  while (yield take(TypeKeys.SWAP_ORDER_START_TIMER)) {
     let hasShownNotification = false;
     while (true) {
       yield call(delay, ONE_SECOND);
       const swap = yield select(getSwap);
       // if (swap.bityOrder.status === 'OPEN') {
-      const createdTimeStampMoment = moment(
-        swap.orderTimestampCreatedISOString
-      );
+      const createdTimeStampMoment = moment(swap.orderTimestampCreatedISOString);
       const validUntil = moment(createdTimeStampMoment).add(swap.validFor, 's');
       const now = moment();
       if (validUntil.isAfter(now)) {
@@ -138,40 +204,66 @@ export function* bityTimeRemaining(): SagaIterator {
         yield put(orderTimeSwap(parseInt(seconds.toString(), 10)));
         // TODO (!Important) - check orderStatus here and stop polling / show notifications based on status
       } else {
-        switch (swap.orderStatus) {
-          case 'OPEN':
-            yield put(orderTimeSwap(0));
-            yield put(stopPollBityOrderStatus());
-            yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
-            if (!hasShownNotification) {
-              hasShownNotification = true;
-              yield put(
-                showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity)
-              );
-            }
-            break;
-          case 'CANC':
-            yield put(stopPollBityOrderStatus());
-            yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
-            if (!hasShownNotification) {
-              hasShownNotification = true;
-              yield put(
-                showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity)
-              );
-            }
-            break;
-          case 'RCVE':
-            if (!hasShownNotification) {
-              hasShownNotification = true;
-              yield put(
-                showNotification('warning', BITY_TIMEOUT_MESSAGE, Infinity)
-              );
-            }
-            break;
-          case 'FILL':
-            yield put(stopPollBityOrderStatus());
-            yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
-            break;
+        if (swap.provider === 'shapeshift') {
+          switch (swap.shapeshiftOrderStatus) {
+            case 'no_deposits':
+              yield put(orderTimeSwap(0));
+              yield put(stopPollShapeshiftOrderStatus());
+              yield put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES });
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+              }
+              break;
+            case 'failed':
+              yield put(stopPollShapeshiftOrderStatus());
+              yield put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES });
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+              }
+              break;
+            case 'received':
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('warning', ORDER_RECEIVED_MESSAGE, Infinity));
+              }
+              break;
+            case 'complete':
+              yield put(stopPollShapeshiftOrderStatus());
+              yield put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES });
+              break;
+          }
+        } else {
+          switch (swap.bityOrderStatus) {
+            case 'OPEN':
+              yield put(orderTimeSwap(0));
+              yield put(stopPollBityOrderStatus());
+              yield put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES });
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+              }
+              break;
+            case 'CANC':
+              yield put(stopPollBityOrderStatus());
+              yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+              }
+              break;
+            case 'RCVE':
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('warning', ORDER_TIMEOUT_MESSAGE, Infinity));
+              }
+              break;
+            case 'FILL':
+              yield put(stopPollBityOrderStatus());
+              yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
+              break;
+          }
         }
       }
     }

@@ -173,7 +173,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     };
 
     const { ETHBTC, ETHREP, BTCETH, BTCREP } = shapeshiftRates.byId;
-    const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
+    const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP, provider };
 
     return (
       <TabSection>

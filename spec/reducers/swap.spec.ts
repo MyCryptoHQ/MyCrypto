@@ -144,7 +144,7 @@ describe('swap reducer', () => {
       status: 'status'
     };
 
-    expect(swap(undefined, swapActions.orderStatusSucceededSwap(mockedBityResponse))).toEqual({
+    expect(swap(undefined, swapActions.bityOrderStatusSucceededSwap(mockedBityResponse))).toEqual({
       ...INITIAL_STATE,
       outputTx: mockedBityResponse.output.reference,
       orderStatus: mockedBityResponse.output.status

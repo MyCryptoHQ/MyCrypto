@@ -29,12 +29,28 @@ const SHAPESHIFT_WHITELIST = [
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
+  private apiKey = '0ca1ccd50b708a3f8c02327f0caeeece06d3ddc1b0ac749a987b453ee0f4a29bdb5da2e53bc35e57fb4bb7ae1f43c93bb098c3c4716375fc1001c55d8c94c160';
 
   public checkStatus(address) {
     return fetch(`${this.url}/txStat/${address}`)
       .then(checkHttpStatus)
       .then(parseJSON);
   }
+  public sendAmount(withdrawal, originKind, destinationKind, destinationAmount) {
+    const pair = `${originKind.toLowerCase()}_${destinationKind.toLowerCase()}`;
+    return fetch(`${this.url}/sendamount`, {
+      method: 'post',
+      body: JSON.stringify({
+        withdrawal,
+        pair,
+        amount: destinationAmount,
+        apiKey: this.apiKey
+      })
+    })
+      .then(checkHttpStatus)
+      .then(parseJSON);
+  }
+
   public getAllRates = async () => {
     const marketInfo = await this.getMarketInfo();
     const mappedRates = this.mapMarketInfo(marketInfo);

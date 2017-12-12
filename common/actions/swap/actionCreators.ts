@@ -73,7 +73,7 @@ export function stopLoadBityRatesSwap(): interfaces.StopLoadBityRatesSwapAction 
   };
 }
 
-export function stopLoadShapshiftRates() {
+export function stopLoadShapshiftRatesSwap() {
   return {
     type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES
   };
@@ -97,6 +97,16 @@ export function bityOrderCreateSucceededSwap(
   };
 }
 
+export type TShapeshiftOrderCreateSucceededSwap = typeof shapeshiftOrderCreateSucceededSwap;
+export function shapeshiftOrderCreateSucceededSwap(
+  payload: interfaces.ShapeshiftOrderResponse
+): interfaces.ShapeshiftOrderCreateSucceededSwapAction {
+  return {
+    type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_SUCCEEDED,
+    payload
+  };
+}
+
 export type TBityOrderCreateRequestedSwap = typeof bityOrderCreateRequestedSwap;
 export function bityOrderCreateRequestedSwap(
   amount: number,
@@ -105,7 +115,7 @@ export function bityOrderCreateRequestedSwap(
   mode: number = 0
 ): interfaces.BityOrderCreateRequestedSwapAction {
   return {
-    type: TypeKeys.SWAP_ORDER_CREATE_REQUESTED,
+    type: TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED,
     payload: {
       amount,
       destinationAddress,
@@ -117,22 +127,38 @@ export function bityOrderCreateRequestedSwap(
 
 export function bityOrderCreateFailedSwap(): interfaces.BityOrderCreateFailedSwapAction {
   return {
-    type: TypeKeys.SWAP_ORDER_CREATE_FAILED
+    type: TypeKeys.SWAP_BITY_ORDER_CREATE_FAILED
   };
 }
 
-export type TOrderStatusSucceededSwap = typeof orderStatusSucceededSwap;
-export function orderStatusSucceededSwap(
+export function shapeshiftOrderCreateFailedSwap(): interfaces.ShapeshiftOrderCreateFailedSwapAction {
+  return {
+    type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_FAILED
+  };
+}
+
+export type TBityOrderStatusSucceededSwap = typeof bityOrderStatusSucceededSwap;
+export function bityOrderStatusSucceededSwap(
   payload: interfaces.BityOrderResponse
-): interfaces.OrderStatusSucceededSwapAction {
+): interfaces.BityOrderStatusSucceededSwapAction {
   return {
     type: TypeKeys.SWAP_BITY_ORDER_STATUS_SUCCEEDED,
     payload
   };
 }
 
+export type TShapeshiftOrderStatusSucceededSwap = typeof shapeshiftOrderStatusSucceededSwap;
+export function shapeshiftOrderStatusSucceededSwap(
+  payload: interfaces.ShapeshiftStatusResponse
+): interfaces.ShapeshiftOrderStatusSucceededSwapAction {
+  return {
+    type: TypeKeys.SWAP_SHAPESHIFT_ORDER_STATUS_SUCCEEDED,
+    payload
+  };
+}
+
 export type TOrderStatusRequestedSwap = typeof orderStatusRequestedSwap;
-export function orderStatusRequestedSwap(): interfaces.OrderStatusRequestedSwapAction {
+export function orderStatusRequestedSwap(): interfaces.BityOrderStatusRequestedSwapAction {
   return {
     type: TypeKeys.SWAP_BITY_ORDER_STATUS_REQUESTED
   };
@@ -159,9 +185,23 @@ export function startPollBityOrderStatus(): interfaces.StartPollBityOrderStatusA
   };
 }
 
+export type TStartPollShapeshiftOrderStatus = typeof startPollShapeshiftOrderStatus;
+export function startPollShapeshiftOrderStatus(): interfaces.StartPollShapeshiftOrderStatusAction {
+  return {
+    type: TypeKeys.SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS
+  };
+}
+
 export type TStopPollBityOrderStatus = typeof stopPollBityOrderStatus;
 export function stopPollBityOrderStatus(): interfaces.StopPollBityOrderStatusAction {
   return {
     type: TypeKeys.SWAP_STOP_POLL_BITY_ORDER_STATUS
+  };
+}
+
+export type TStopPollShapeshiftOrderStatus = typeof stopPollShapeshiftOrderStatus;
+export function stopPollShapeshiftOrderStatus(): interfaces.StopPollShapeshiftOrderStatusAction {
+  return {
+    type: TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS
   };
 }

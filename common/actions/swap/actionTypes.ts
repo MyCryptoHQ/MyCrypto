@@ -84,12 +84,22 @@ export interface OrderSwapTimeSwapAction {
 }
 
 export interface BityOrderCreateRequestedSwapAction {
-  type: TypeKeys.SWAP_ORDER_CREATE_REQUESTED;
+  type: TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED;
   payload: {
     amount: number;
     destinationAddress: string;
     pair: string;
     mode: number;
+  };
+}
+
+export interface ShapeshiftOrderCreateRequestedSwapAction {
+  type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED;
+  payload: {
+    withdrawal: string;
+    originKind: string;
+    destinationKind: string;
+    destinationAmount: number;
   };
 }
 
@@ -113,6 +123,31 @@ export interface BityOrderResponse {
   status: string;
 }
 
+export interface ShapeshiftOrderResponse {
+  apiPubyKey: string;
+  deposit: string;
+  depositAmount: string;
+  expiration: number;
+  expirationFormatted: string;
+  inputCurrency: string;
+  maxLimit: number;
+  minerFee: string;
+  orderId: string;
+  outputCurrency: string;
+  pair: string; // e.g. eth_bat
+  provider: string; // shapeshift
+  quotedRate: string;
+  withdrawl: string;
+  withdrawalAmount: string;
+}
+
+export interface ShapeshiftStatusResponse {
+  status: string;
+  address: string;
+  withdraw?: string;
+  transaction: string;
+}
+
 export type BityOrderPostResponse = BityOrderResponse & {
   payment_address: string;
   status: string;
@@ -128,16 +163,35 @@ export interface BityOrderCreateSucceededSwapAction {
   payload: BityOrderPostResponse;
 }
 
-export interface BityOrderCreateFailedSwapAction {
-  type: TypeKeys.SWAP_ORDER_CREATE_FAILED;
+export interface ShapeshiftOrderCreateSucceededSwapAction {
+  type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_SUCCEEDED;
+  payload: ShapeshiftOrderResponse;
 }
-export interface OrderStatusRequestedSwapAction {
+
+export interface BityOrderCreateFailedSwapAction {
+  type: TypeKeys.SWAP_BITY_ORDER_CREATE_FAILED;
+}
+
+export interface ShapeshiftOrderCreateFailedSwapAction {
+  type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_FAILED;
+}
+
+export interface BityOrderStatusRequestedSwapAction {
   type: TypeKeys.SWAP_BITY_ORDER_STATUS_REQUESTED;
 }
 
-export interface OrderStatusSucceededSwapAction {
+export interface ShapeshiftOrderStatusRequestedSwapAction {
+  type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED;
+}
+
+export interface BityOrderStatusSucceededSwapAction {
   type: TypeKeys.SWAP_BITY_ORDER_STATUS_SUCCEEDED;
   payload: BityOrderResponse;
+}
+
+export interface ShapeshiftOrderStatusSucceededSwapAction {
+  type: TypeKeys.SWAP_SHAPESHIFT_ORDER_STATUS_SUCCEEDED;
+  payload: ShapeshiftStatusResponse;
 }
 
 export interface StartOrderTimerSwapAction {
@@ -152,8 +206,16 @@ export interface StartPollBityOrderStatusAction {
   type: TypeKeys.SWAP_START_POLL_BITY_ORDER_STATUS;
 }
 
+export interface StartPollShapeshiftOrderStatusAction {
+  type: TypeKeys.SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS;
+}
+
 export interface StopPollBityOrderStatusAction {
   type: TypeKeys.SWAP_STOP_POLL_BITY_ORDER_STATUS;
+}
+
+export interface StopPollShapeshiftOrderStatusAction {
+  type: TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS;
 }
 
 /*** Action Type Union ***/
@@ -169,8 +231,13 @@ export type SwapAction =
   | StopLoadBityRatesSwapAction
   | StopLoadShapeshiftRatesSwapAction
   | BityOrderCreateRequestedSwapAction
+  | ShapeshiftOrderCreateRequestedSwapAction
   | BityOrderCreateSucceededSwapAction
-  | OrderStatusSucceededSwapAction
+  | ShapeshiftOrderCreateSucceededSwapAction
+  | BityOrderStatusSucceededSwapAction
+  | ShapeshiftOrderStatusSucceededSwapAction
   | StartPollBityOrderStatusAction
+  | StartPollShapeshiftOrderStatusAction
   | BityOrderCreateFailedSwapAction
+  | ShapeshiftOrderCreateFailedSwapAction
   | OrderSwapTimeSwapAction;

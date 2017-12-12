@@ -14,12 +14,14 @@ export interface State {
   shapeshiftRates: stateTypes.NormalizedBityRates;
   provider: string;
   bityOrder: any;
+  shapeshiftOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
   secondsRemaining: number | null;
   outputTx: string | null;
   isPostingOrder: boolean;
-  orderStatus: string | null;
+  bityOrderStatus: string | null;
+  shapeshiftOrderStatus: string | null;
   orderTimestampCreatedISOString: string | null;
   paymentAddress: string | null;
   validFor: number | null;
@@ -45,11 +47,13 @@ export const INITIAL_STATE: State = {
   provider: 'shapeshift',
   destinationAddress: '',
   bityOrder: {},
+  shapeshiftOrder: {},
   isFetchingRates: null,
   secondsRemaining: null,
   outputTx: null,
   isPostingOrder: false,
-  orderStatus: null,
+  bityOrderStatus: null,
+  shapeshiftOrderStatus: null,
   orderTimestampCreatedISOString: null,
   paymentAddress: null,
   validFor: null,
@@ -109,12 +113,22 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         ...INITIAL_STATE,
         bityRates: state.bityRates
       };
-    case TypeKeys.SWAP_ORDER_CREATE_REQUESTED:
+    case TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED:
       return {
         ...state,
         isPostingOrder: true
       };
-    case TypeKeys.SWAP_ORDER_CREATE_FAILED:
+    case TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED:
+      return {
+        ...state,
+        isPostingOrder: true
+      };
+    case TypeKeys.SWAP_BITY_ORDER_CREATE_FAILED:
+      return {
+        ...state,
+        isPostingOrder: false
+      };
+    case TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_FAILED:
       return {
         ...state,
         isPostingOrder: false
@@ -133,17 +147,40 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         validFor: action.payload.validFor, // to build from local storage
         orderTimestampCreatedISOString: action.payload.timestamp_created,
         paymentAddress: action.payload.payment_address,
-        orderStatus: action.payload.status,
+        bityOrderStatus: action.payload.status,
         orderId: action.payload.id
+      };
+    case TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_SUCCEEDED:
+      const secondsRemaining = (+new Date(action.payload.expiration) - Date.now()) / 1000;
+      return {
+        ...state,
+        shapeshiftOrder: {
+          ...action.payload
+        },
+        isPostingOrder: false,
+        originAmount: parseFloat(action.payload.depositAmount),
+        destinationAmount: parseFloat(action.payload.withdrawalAmount),
+        secondsRemaining,
+        validFor: secondsRemaining,
+        orderTimestampCreatedISOString: new Date(action.payload.expiration).toISOString(),
+        paymentAddress: action.payload.deposit,
+        shapeshiftOrderStatus: 'no_deposits',
+        orderId: action.payload.orderId
       };
     case TypeKeys.SWAP_BITY_ORDER_STATUS_SUCCEEDED:
       return {
         ...state,
         outputTx: action.payload.output.reference,
-        orderStatus:
+        bityOrderStatus:
           action.payload.output.status === 'FILL'
             ? action.payload.output.status
             : action.payload.input.status
+      };
+    case TypeKeys.SWAP_SHAPESHIFT_ORDER_STATUS_SUCCEEDED:
+      return {
+        ...state,
+        outputTx: action.payload.transaction,
+        shapeshiftOrderStatus: action.payload.status
       };
     case TypeKeys.SWAP_ORDER_TIME:
       return {
