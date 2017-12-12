@@ -23,6 +23,7 @@
     "jsonschema": "1.2.0",
     "lodash": "4.17.4",
     "moment": "2.19.3",
+    "parse-decimal-number": "1.0.0",
     "qrcode": "1.0.0",
     "qrcode.react": "0.7.2",
     "query-string": "5.0.1",

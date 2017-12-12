@@ -39,7 +39,8 @@ class AmountFieldClass extends Component<Props, {}> {
 
   private setValue = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    this.props.setCurrentValue(value);
+    // regex removes all characters except numbers and periods or commas
+    this.props.setCurrentValue(value.toString().replace(/[^\d\,.]/g, ''));
   };
 }
 
