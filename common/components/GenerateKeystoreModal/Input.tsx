@@ -7,6 +7,7 @@ interface Props {
   name: string;
   value: string;
   placeholder: string;
+  disabled?: boolean;
   handleInput(e: React.FormEvent<HTMLInputElement>): void;
   handleToggle(): void;
 }
@@ -18,6 +19,7 @@ const KeystoreInput: React.SFC<Props> = ({
   name,
   value,
   placeholder,
+  disabled,
   handleToggle
 }) => (
   <div className="input-group">
@@ -28,6 +30,7 @@ const KeystoreInput: React.SFC<Props> = ({
       placeholder={placeholder}
       value={value}
       onChange={handleInput}
+      disabled={disabled}
     />
     <span onClick={handleToggle} role="button" className="input-group-addon eye" />
   </div>

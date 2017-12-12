@@ -1,10 +1,11 @@
 // COMPONENTS
 import TabSection from 'containers/TabSection';
-import { Fields, UnavailableWallets, SideBar } from './components';
+import { SubTabs } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
 import { OfflineAwareUnlockHeader } from 'components';
 // LIBS
 import React from 'react';
+import { Location } from 'history';
 // REDUX
 import { connect } from 'react-redux';
 import { resetWallet, TResetWallet } from 'actions/wallet';
@@ -20,6 +21,7 @@ interface State {
 }
 
 interface StateProps {
+  location: Location;
   wallet: AppState['wallet']['inst'];
 }
 interface DispatchProps {
@@ -37,19 +39,17 @@ export class SendTransaction extends React.Component<Props, State> {
   public state: State = initialState;
 
   public render() {
+    const { wallet } = this.props;
+    const activeTab = this.props.location.pathname.split('/')[2];
+
     return (
       <TabSection>
         <section className="Tab-content">
           <OfflineAwareUnlockHeader />
 
-          <NavigationPrompt when={!!this.props.wallet} onConfirm={this.props.resetWallet} />
+          {wallet && <SubTabs wallet={wallet} activeTab={wallet.isReadOnly ? 'info' : activeTab} />}
 
-          <div className="row">
-            {/* Send Form */}
-            <Fields />
-            <UnavailableWallets />
-            <SideBar />
-          </div>
+          <NavigationPrompt when={!!wallet} onConfirm={this.props.resetWallet} />
         </section>
       </TabSection>
     );

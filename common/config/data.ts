@@ -36,6 +36,8 @@ export const gasPriceDefaults = {
   gasPriceMaxGwei: 60
 };
 
+export const MINIMUM_PASSWORD_LENGTH = 9;
+
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
 export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';

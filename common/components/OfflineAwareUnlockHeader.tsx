@@ -21,7 +21,7 @@ class TitleClass extends Component<StateProps> {
     ) : null;
     return (
       <div>
-        {translate('NAV_SendEther')}
+        {translate('Account')}
         {offlineTitle}
       </div>
     );
