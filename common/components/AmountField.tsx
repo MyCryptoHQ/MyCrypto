@@ -11,7 +11,7 @@ export const AmountField: React.SFC<{}> = () => (
 
         <input
           className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
-          type="number"
+          type="text"
           placeholder={translateRaw('SEND_amount_short')}
           value={raw}
           readOnly={!!readOnly}
