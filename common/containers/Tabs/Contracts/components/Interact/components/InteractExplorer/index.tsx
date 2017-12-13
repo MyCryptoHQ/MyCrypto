@@ -6,11 +6,9 @@ import { Aux } from 'components/ui';
 import { getNodeLib } from 'selectors/config';
 import { getTo, dataExists } from 'selectors/transaction';
 import { INode } from 'libs/nodes/INode';
-import { SendButton } from 'components/SendButton';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { bufferToHex } from 'ethereumjs-util';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
@@ -54,7 +52,16 @@ class InteractExplorerClass extends Component<Props, State> {
     const { inputs, outputs, selectedFunction, selectedFunctionName } = this.state;
 
     const { to } = this.props;
-
+    const generateOrWriteButton = this.props.dataExists ? (
+      <GenerateTransaction />
+    ) : (
+      <button
+        className="InteractExplorer-func-submit btn btn-primary"
+        onClick={this.handleFunctionSend}
+      >
+        {translate('CONTRACT_Write')}
+      </button>
+    );
     return (
       <div className="InteractExplorer">
         <h3 className="InteractExplorer-title">
@@ -120,18 +127,7 @@ class InteractExplorerClass extends Component<Props, State> {
               </button>
             ) : (
               <Aux>
-                <Fields />
-                {this.props.dataExists ? (
-                  <GenerateTransaction />
-                ) : (
-                  <button
-                    className="InteractExplorer-func-submit btn btn-primary"
-                    onClick={this.handleFunctionSend}
-                  >
-                    {translate('CONTRACT_Write')}
-                  </button>
-                )}
-                <SendButton />
+                <Fields button={generateOrWriteButton} />
               </Aux>
             )}
           </div>

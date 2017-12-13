@@ -3,23 +3,30 @@ import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { GasFieldFactory } from 'components/GasFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
+import { SigningStatus } from 'components/SigningStatus';
 import { NonceField } from 'components/NonceField';
 import { OfflineAwareUnlockHeader } from 'components';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
 import { setToField, TSetToField } from 'actions/transaction';
 import { connect } from 'react-redux';
+import { isUnlocked } from 'selectors/wallet';
+import { AppState } from 'reducers';
+import { Aux } from 'components/ui';
 
 interface DispatchProps {
   setToField: TSetToField;
 }
-class DeployClass extends Component<DispatchProps> {
+
+interface StateProps {
+  unlocked: boolean;
+}
+
+class DeployClass extends Component<DispatchProps & StateProps> {
   public render() {
-    return (
+    const content = (
       <div className="Deploy">
         <section>
-          <OfflineAwareUnlockHeader />
-
           <label className="Deploy-field form-group">
             <h4 className="Deploy-field-label">{translate('CONTRACT_ByteCode')}</h4>
             <DataFieldFactory
@@ -65,6 +72,7 @@ class DeployClass extends Component<DispatchProps> {
               <GenerateTransaction />
             </div>
           </div>
+          <SigningStatus />
           <SendButtonFactory
             withProps={({ onClick }) => (
               <button className="Deploy-submit btn btn-primary" onClick={onClick}>
@@ -75,7 +83,15 @@ class DeployClass extends Component<DispatchProps> {
         </section>
       </div>
     );
+
+    return (
+      <Aux>
+        <OfflineAwareUnlockHeader /> {this.props.unlocked && content}
+      </Aux>
+    );
   }
 }
 
-export const Deploy = connect(null, { setToField })(DeployClass);
+export const Deploy = connect((state: AppState) => ({ unlocked: isUnlocked(state) }), {
+  setToField
+})(DeployClass);

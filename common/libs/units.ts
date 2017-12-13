@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { toBuffer } from 'ethereumjs-util';
+import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
 
 type UnitKey = keyof typeof Units;
@@ -51,7 +51,7 @@ const handleValues = (input: string | BN) => {
 
 const Address = (input: string) => handleValues(input);
 
-const Data = (input: string) => toBuffer(input);
+const Data = (input: string) => toBuffer(addHexPrefix(input));
 
 const Nonce = (input: string | BN) => handleValues(input);
 

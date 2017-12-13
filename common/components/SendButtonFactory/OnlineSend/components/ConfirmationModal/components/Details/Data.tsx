@@ -32,7 +32,7 @@ const Data: React.SFC<{}> = () => (
 
       return (
         <li className="ConfModal-details-detail">
-          {!emptyData(data) ? { dataBox } : 'There is no data attached to this transaction'}
+          {!emptyData(data) ? dataBox : 'There is no data attached to this transaction'}
         </li>
       );
     }}

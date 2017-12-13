@@ -12,11 +12,9 @@ export const AmountField: React.SFC<{}> = () => (
           value={raw}
           onChange={onChange}
           readOnly={readOnly}
-          className={classnames(
-            'InteractExplorer-field-input',
-            'form-control',
-            `${isValid ? 'is-valid' : 'is-invalid'}`
-          )}
+          className={classnames('InteractExplorer-field-input', 'form-control', {
+            'is-invalid': !(isValid || raw === '')
+          })}
         />
       )}
     />
