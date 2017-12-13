@@ -5,6 +5,7 @@ import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { OfflineBroadcast } from './OfflineBroadcast';
 import { SerializedTransaction } from 'components/renderCbs';
 import { OnlineSend } from './OnlineSend';
+import { addHexPrefix } from 'ethereumjs-util';
 const getStringifiedTx = (serializedTransaction: string) =>
   JSON.stringify(getTransactionFields(makeTransaction(serializedTransaction)), null, 2);
 
@@ -32,7 +33,7 @@ export const SendButtonFactory: React.SFC<Props> = ({ withProps }) => (
           <label>{translate('SEND_signed')}</label>
           <textarea
             className="form-control"
-            value={`0x${serializedTransaction}`}
+            value={addHexPrefix(serializedTransaction)}
             rows={4}
             readOnly={true}
           />

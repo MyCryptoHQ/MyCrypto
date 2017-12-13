@@ -1,5 +1,5 @@
 import abi from 'ethereumjs-abi';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress, addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
 
@@ -28,7 +28,7 @@ export default class AbiFunction {
 
   public decodeInput = (argString: string) => {
     // Remove method selector from data, if present
-    argString = argString.replace(`0x${this.methodSelector}`, '');
+    argString = argString.replace(addHexPrefix(this.methodSelector), '');
     // Convert argdata to a hex buffer for ethereumjs-abi
     const argBuffer = new Buffer(argString, 'hex');
     // Decode!
@@ -46,7 +46,7 @@ export default class AbiFunction {
 
   public decodeOutput = (argString: string) => {
     // Remove method selector from data, if present
-    argString = argString.replace(`0x${this.methodSelector}`, '');
+    argString = argString.replace(addHexPrefix(this.methodSelector), '');
 
     // Remove 0x prefix
     argString = argString.replace('0x', '');
@@ -107,7 +107,7 @@ export default class AbiFunction {
 
   private makeEncodedFuncCall = (args: string[]) => {
     const encodedArgs = abi.rawEncode(this.inputTypes, args).toString('hex');
-    return `0x${this.methodSelector}${encodedArgs}`;
+    return addHexPrefix(`${this.methodSelector}${encodedArgs}`);
   };
 
   private processSuppliedArgs = (suppliedArgs: object) =>
