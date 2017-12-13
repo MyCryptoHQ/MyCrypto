@@ -28,16 +28,8 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
   const { data, gasLimit, gasPrice, to, nonce, value } = t;
 
   const chainId = t.getChainId();
-  /*
-  let address 
-  try {
-    address = sanitizeHex(t.getSenderAddress().toString('hex'))
-  }
-  catch {
-    address = null
-  }*/
+
   return {
-    // No value comes back as '0x', but most things expect '0x00'
     value: hexEncodeQuantity(value),
     data: hexEncodeData(data),
     // To address is unchecksummed, which could cause mismatches in comparisons
@@ -49,6 +41,8 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
     chainId
   };
 };
+
+const get;
 
 /**
  * @description Return the minimum amount of ether needed

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Aux } from 'components/ui';
-import { ConfirmationModal } from './components';
+import { ConfirmationModal } from 'components/ConfirmationModal';
 import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
