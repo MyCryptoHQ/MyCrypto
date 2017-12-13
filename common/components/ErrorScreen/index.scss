@@ -1,0 +1,8 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.ErrorScreen {
+  @include cover-message;
+  background: $brand-danger;
+
+}

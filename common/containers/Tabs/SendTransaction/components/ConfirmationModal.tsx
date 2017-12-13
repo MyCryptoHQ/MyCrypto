@@ -10,11 +10,7 @@ import {
 } from 'libs/transaction';
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  getLanguageSelection,
-  getNetworkConfig,
-  getNodeConfig
-} from 'selectors/config';
+import { getLanguageSelection, getNetworkConfig, getNodeConfig } from 'selectors/config';
 import { getTokens, getTxFromState, MergedToken } from 'selectors/wallet';
 import translate, { translateRaw } from 'translations';
 import { UnitDisplay } from 'components/ui';
@@ -68,20 +64,9 @@ class ConfirmationModal extends React.Component<Props, State> {
   }
 
   public render() {
-    const {
-      node,
-      token,
-      network,
-      onClose,
-      broadCastTxStatus,
-      transaction,
-      decimal
-    } = this.props;
+    const { node, token, network, onClose, broadCastTxStatus, transaction, decimal } = this.props;
     const { timeToRead } = this.state;
-    const { toAddress, value, gasPrice, data, from, nonce } = decodeTransaction(
-      transaction,
-      token
-    );
+    const { toAddress, value, gasPrice, data, from, nonce } = decodeTransaction(transaction, token);
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons: IButton[] = [
@@ -100,8 +85,7 @@ class ConfirmationModal extends React.Component<Props, State> {
 
     const symbol = token ? token.symbol : network.unit;
 
-    const isBroadcasting =
-      broadCastTxStatus && broadCastTxStatus.isBroadcasting;
+    const isBroadcasting = broadCastTxStatus && broadCastTxStatus.isBroadcasting;
 
     return (
       <div className="ConfModalWrap">
@@ -115,7 +99,7 @@ class ConfirmationModal extends React.Component<Props, State> {
           <div className="ConfModal">
             {isBroadcasting ? (
               <div className="ConfModal-loading">
-                <Spinner size="5x" />
+                <Spinner size="x5" />
               </div>
             ) : (
               <div>
@@ -126,11 +110,7 @@ class ConfirmationModal extends React.Component<Props, State> {
                   <div className="ConfModal-summary-amount">
                     <div className="ConfModal-summary-amount-arrow" />
                     <div className="ConfModal-summary-amount-currency">
-                      <UnitDisplay
-                        decimal={decimal}
-                        value={value}
-                        symbol={symbol}
-                      />
+                      <UnitDisplay decimal={decimal} value={value} symbol={symbol} />
                     </div>
                   </div>
                   <div className="ConfModal-summary-icon ConfModal-summary-icon--to">
@@ -150,24 +130,16 @@ class ConfirmationModal extends React.Component<Props, State> {
                   <li className="ConfModal-details-detail">
                     You are sending{' '}
                     <strong>
-                      <UnitDisplay
-                        decimal={decimal}
-                        value={value}
-                        symbol={symbol}
-                      />
+                      <UnitDisplay decimal={decimal} value={value} symbol={symbol} />
                     </strong>{' '}
                     with a gas price of{' '}
                     <strong>
-                      <UnitDisplay
-                        unit={'gwei'}
-                        value={gasPrice}
-                        symbol={'gwei'}
-                      />
+                      <UnitDisplay unit={'gwei'} value={gasPrice} symbol={'gwei'} />
                     </strong>
                   </li>
                   <li className="ConfModal-details-detail">
-                    You are interacting with the <strong>{node.network}</strong>{' '}
-                    network provided by <strong>{node.service}</strong>
+                    You are interacting with the <strong>{node.network}</strong> network provided by{' '}
+                    <strong>{node.service}</strong>
                   </li>
                   {!token && (
                     <li className="ConfModal-details-detail">
@@ -188,9 +160,7 @@ class ConfirmationModal extends React.Component<Props, State> {
                   )}
                 </ul>
 
-                <div className="ConfModal-confirm">
-                  {translate('SENDModal_Content_3')}
-                </div>
+                <div className="ConfModal-confirm">{translate('SENDModal_Content_3')}</div>
               </div>
             )}
           </div>

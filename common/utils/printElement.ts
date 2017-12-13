@@ -7,10 +7,7 @@ interface PrintOptions {
   popupFeatures?: object;
 }
 
-export default function(
-  element: React.ReactElement<any>,
-  opts: PrintOptions = {}
-) {
+export default function(element: React.ReactElement<any>, opts: PrintOptions = {}) {
   const options = {
     styles: '',
     printTimeout: 500,
@@ -26,8 +23,9 @@ export default function(
     .join(',');
 
   const popup = window.open('about:blank', 'printWindow', featuresStr);
-  popup.document.open();
-  popup.document.write(`
+  if (popup) {
+    popup.document.open();
+    popup.document.write(`
   <html>
     <head>
       <style>${options.styles}</style>
@@ -50,4 +48,5 @@ export default function(
     </body>
     </html>
 	`);
+  }
 }

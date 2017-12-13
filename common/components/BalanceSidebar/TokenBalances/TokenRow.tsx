@@ -41,12 +41,7 @@ export default class TokenRow extends React.Component<Props, State> {
             />
           )}
           <span>
-            <UnitDisplay
-              value={balance}
-              decimal={decimal}
-              unit={'ether'}
-              displayShortBalance={!showLongBalance}
-            />
+            <UnitDisplay value={balance} decimal={decimal} displayShortBalance={!showLongBalance} />
           </span>
         </td>
         <td className="TokenRow-symbol">{symbol}</td>

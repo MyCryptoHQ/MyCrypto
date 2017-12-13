@@ -1,20 +1,25 @@
 import { FetchCCRatesSucceeded, RatesAction, CCResponse } from 'actions/rates';
 import { TypeKeys } from 'actions/rates/constants';
-import { Optional } from 'utils/types';
 
 // SYMBOL -> PRICE TO BUY 1 ETH
 export interface State {
-  rates?: Optional<CCResponse>;
+  rates: { [symbol: string]: CCResponse['rates'] };
   ratesError?: string | null;
 }
 
-export const INITIAL_STATE: State = {};
+export const INITIAL_STATE: State = {
+  rates: {},
+  ratesError: null
+};
 
-function fetchCCRatesSucceeded(
-  state: State,
-  action: FetchCCRatesSucceeded
-): State {
-  return { ...state, rates: action.payload };
+function fetchCCRatesSucceeded(state: State, action: FetchCCRatesSucceeded): State {
+  return {
+    ...state,
+    rates: {
+      ...state.rates,
+      ...action.payload
+    }
+  };
 }
 
 function fetchCCRatesFailed(state: State): State {
@@ -25,10 +30,7 @@ function fetchCCRatesFailed(state: State): State {
   };
 }
 
-export function rates(
-  state: State = INITIAL_STATE,
-  action: RatesAction
-): State {
+export function rates(state: State = INITIAL_STATE, action: RatesAction): State {
   switch (action.type) {
     case TypeKeys.RATES_FETCH_CC_SUCCEEDED:
       return fetchCCRatesSucceeded(state, action);

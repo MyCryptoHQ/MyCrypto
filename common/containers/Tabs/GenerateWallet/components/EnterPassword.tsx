@@ -1,41 +1,38 @@
 import { GenerateNewWalletAction } from 'actions/generateWallet';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Field, reduxForm } from 'redux-form';
 import translate from 'translations';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from './Template';
+import { knowledgeBaseURL } from 'config/data';
+
 // VALIDATORS
-const minLength = min => value => {
-  return value && value.length < min
-    ? `Must be ${min} characters or more`
-    : undefined;
-};
+const minLength = min => value => value && value.length >= min;
 const minLength9 = minLength(9);
-const required = value => (value ? undefined : 'Required');
 
 interface Props {
-  walletPasswordForm: any;
   generateNewWallet(pw: string): GenerateNewWalletAction;
 }
 
 interface State {
   fileName: null | string;
   blobURI: null | string;
+  password: string;
+  isPasswordValid: boolean;
   isPasswordVisible: boolean;
 }
-class EnterPassword extends Component<Props, State> {
+export default class EnterPassword extends Component<Props, State> {
   public state = {
     fileName: null,
     blobURI: null,
+    password: '',
+    isPasswordValid: false,
     isPasswordVisible: false
   };
 
   public render() {
-    const { walletPasswordForm } = this.props;
-    const { isPasswordVisible } = this.state;
-    const AnyField = Field as new () => Field<any>;
+    const { password, isPasswordValid, isPasswordVisible } = this.state;
     const content = (
       <div className="EnterPw">
         <h1 className="EnterPw-title" aria-live="polite">
@@ -44,20 +41,18 @@ class EnterPassword extends Component<Props, State> {
 
         <label className="EnterPw-password">
           <h4 className="EnterPw-password-label">{translate('GEN_Label_1')}</h4>
-          <AnyField
-            className="EnterPw-password-field"
-            validate={[required, minLength9]}
-            component={PasswordInput}
+          <PasswordInput
+            password={password}
+            onPasswordChange={this.onPasswordChange}
             isPasswordVisible={isPasswordVisible}
             togglePassword={this.togglePassword}
-            name="password"
-            type="text"
+            isPasswordValid={isPasswordValid}
           />
         </label>
 
         <button
           onClick={this.onClickGenerateFile}
-          disabled={walletPasswordForm ? walletPasswordForm.syncErrors : true}
+          disabled={!isPasswordValid}
           className="EnterPw-submit btn btn-primary btn-block"
         >
           {translate('NAV_GenerateWallet')}
@@ -73,10 +68,7 @@ class EnterPassword extends Component<Props, State> {
         <ul>
           <li>
             <span>{translate('GEN_Help_1')}</span>
-            <Link to="/send-transaction">
-              {' '}
-              Ledger or TREZOR or Digital Bitbox
-            </Link>
+            <Link to="/send-transaction"> Ledger or TREZOR or Digital Bitbox</Link>
             <span> {translate('GEN_Help_2')}</span>
             <span> {translate('GEN_Help_3')}</span>
           </li>
@@ -105,7 +97,7 @@ class EnterPassword extends Component<Props, State> {
           <li>
             <strong>
               <a
-                href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-create-a-new-wallet"
+                href={`${knowledgeBaseURL}/getting-started/creating-a-new-wallet-on-myetherwallet`}
                 target="_blank"
                 rel="noopener"
               >
@@ -116,7 +108,7 @@ class EnterPassword extends Component<Props, State> {
           <li>
             <strong>
               <a
-                href="https://myetherwallet.groovehq.com/knowledge_base/categories/getting-started-443"
+                href={`${knowledgeBaseURL}/getting-started/getting-started-new`}
                 target="_blank"
                 rel="noopener"
               >
@@ -131,15 +123,19 @@ class EnterPassword extends Component<Props, State> {
     return <Template content={content} help={help} />;
   }
   private onClickGenerateFile = () => {
-    const form = this.props.walletPasswordForm;
-    this.props.generateNewWallet(form.values.password);
+    this.props.generateNewWallet(this.state.password);
+    this.setState({ password: '' });
   };
 
   private togglePassword = () => {
     this.setState({ isPasswordVisible: !this.state.isPasswordVisible });
   };
-}
 
-export default reduxForm({
-  form: 'walletPasswordForm' // a unique name for this form
-})(EnterPassword as any);
+  private onPasswordChange = (e: any) => {
+    const password = e.target.value;
+    this.setState({
+      isPasswordValid: minLength9(password),
+      password
+    });
+  };
+}

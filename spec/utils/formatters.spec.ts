@@ -1,9 +1,5 @@
 import { Wei } from 'libs/units';
-import {
-  toFixedIfLarger,
-  formatNumber,
-  formatGasLimit
-} from '../../common/utils/formatters';
+import { toFixedIfLarger, formatNumber, formatGasLimit } from '../../common/utils/formatters';
 
 describe('toFixedIfLarger', () => {
   it('should return same value if decimal isnt longer than default', () => {
@@ -47,12 +43,34 @@ describe('formatNumber', () => {
       input: '100.48391',
       output: '100',
       digits: 0
+    },
+    {
+      input: '239.999632',
+      output: '240',
+      digits: 0
+    },
+    {
+      input: '999.999',
+      output: '1,000',
+      digits: 0
+    },
+    {
+      input: '0.9',
+      output: '1',
+      digits: 0
+    },
+    {
+      input: '0.09',
+      output: '0.1',
+      digits: 1
     }
   ];
 
   pairs.forEach(pair => {
     const digits = pair.digits;
-    it(`should convert ${pair.input.toString()} to ${pair.output} when using ${digits} digits`, () => {
+    it(`should convert ${pair.input.toString()} to ${
+      pair.output
+    } when using ${digits} digits`, () => {
       expect(formatNumber(pair.input, pair.digits)).toEqual(pair.output);
     });
   });

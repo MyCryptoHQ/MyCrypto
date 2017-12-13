@@ -7,28 +7,24 @@ import { AppState } from 'reducers';
 interface Props {
   title: React.ReactElement<any>;
   wallet: IWallet;
+  allowReadOnly?: boolean;
 }
 interface State {
   expanded: boolean;
 }
 export class UnlockHeader extends React.Component<Props, State> {
   public state = {
-    expanded: !this.props.wallet
+    expanded: !!this.props.wallet
   };
 
   public componentDidUpdate(prevProps: Props) {
     if (this.props.wallet && this.props.wallet !== prevProps.wallet) {
-      this.setState({ expanded: false });
-    }
-
-    // not sure if could happen
-    if (!this.props.wallet && this.props.wallet !== prevProps.wallet) {
-      this.setState({ expanded: true });
+      this.setState({ expanded: !this.state.expanded });
     }
   }
 
   public render() {
-    const { title } = this.props;
+    const { title, allowReadOnly } = this.props;
     return (
       <article className="collapse-container">
         <div>
@@ -37,8 +33,7 @@ export class UnlockHeader extends React.Component<Props, State> {
           </a>
           <h1>{title}</h1>
         </div>
-        {this.state.expanded && <WalletDecrypt />}
-        {this.state.expanded && <hr />}
+        <WalletDecrypt hidden={this.state.expanded} allowReadOnly={allowReadOnly} />
       </article>
     );
   }

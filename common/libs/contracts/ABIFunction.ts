@@ -3,15 +3,12 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import BN from 'bn.js';
 import { INode } from 'libs/nodes/INode';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
-import {
-  generateCompleteTransaction as makeAndSignTx,
-  TransactionInput
-} from 'libs/transaction';
+import { generateCompleteTransaction as makeAndSignTx, TransactionInput } from 'libs/transaction';
 import { ISetConfigForTx } from './index';
 
 export interface IUserSendParams {
   input;
-  to?: string;
+  to: string;
   gasLimit: BN;
   value: string;
 }
@@ -67,7 +64,7 @@ EncodedCall:${data}`);
 
     const transactionInput: TransactionInput = {
       data,
-      to: userInputs.to!,
+      to: userInputs.to,
       unit: 'ether',
       value: userInputs.value
     };
@@ -138,13 +135,9 @@ EncodedCall:${data}`);
     this.inputTypes = this.inputs.map(({ type }) => type);
     this.outputTypes = this.outputs.map(({ type }) => type);
     this.inputNames = this.inputs.map(({ name }) => name);
-    this.outputNames = this.outputs.map(
-      ({ name }, i) => outputMappings[i] || name || `${i}`
-    );
+    this.outputNames = this.outputs.map(({ name }, i) => outputMappings[i] || name || `${i}`);
 
-    this.methodSelector = abi
-      .methodID(this.name, this.inputTypes)
-      .toString('hex');
+    this.methodSelector = abi.methodID(this.name, this.inputTypes).toString('hex');
   }
 
   private parsePostDecodedValue = (type: string, value: any) => {

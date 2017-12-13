@@ -49,12 +49,7 @@ export default class InteractExplorer extends Component<Props, State> {
   };
 
   public render() {
-    const {
-      inputs,
-      outputs,
-      selectedFunction,
-      selectedFunctionName
-    } = this.state;
+    const { inputs, outputs, selectedFunction, selectedFunctionName } = this.state;
 
     const {
       address,
@@ -96,15 +91,10 @@ export default class InteractExplorer extends Component<Props, State> {
               const { type, name } = input;
 
               return (
-                <label
-                  key={name}
-                  className="InteractExplorer-func-in form-group"
-                >
+                <label key={name} className="InteractExplorer-func-in form-group">
                   <h4 className="InteractExplorer-func-in-label">
                     {name}
-                    <span className="InteractExplorer-func-in-label-type">
-                      {type}
-                    </span>
+                    <span className="InteractExplorer-func-in-label-type">{type}</span>
                   </h4>
                   <input
                     className="InteractExplorer-func-in-input form-control"
@@ -120,15 +110,10 @@ export default class InteractExplorer extends Component<Props, State> {
               const parsedName = name === '' ? index : name;
 
               return (
-                <label
-                  key={parsedName}
-                  className="InteractExplorer-func-out form-group"
-                >
+                <label key={parsedName} className="InteractExplorer-func-out form-group">
                   <h4 className="InteractExplorer-func-out-label">
                     ↳ {name}
-                    <span className="InteractExplorer-func-out-label-type">
-                      {type}
-                    </span>
+                    <span className="InteractExplorer-func-out-label-type">{type}</span>
                   </h4>
                   <input
                     className="InteractExplorer-func-out-input form-control"
@@ -146,69 +131,52 @@ export default class InteractExplorer extends Component<Props, State> {
               >
                 {translate('CONTRACT_Read')}
               </button>
-            ) : walletDecrypted ? (
-              !txGenerated ? (
-                <Aux>
-                  <label className="InteractExplorer-field form-group">
-                    <h4 className="InteractExplorer-field-label">Gas Limit</h4>
-                    <input
-                      name="gasLimit"
-                      value={gasLimit}
-                      onChange={handleInput('gasLimit')}
-                      className={classnames(
-                        'InteractExplorer-field-input',
-                        'form-control',
-                        {
-                          'is-invalid': !validGasLimit
-                        }
-                      )}
-                    />
-                  </label>
-                  <label className="InteractExplorer-field form-group">
-                    <h4 className="InteractExplorer-field-label">Value</h4>
-                    <UnitConverter
-                      decimal={getDecimal('ether')}
-                      onChange={handleInput('value')}
-                    >
-                      {({ convertedUnit, onUserInput }) => (
-                        <input
-                          name="value"
-                          value={convertedUnit}
-                          onChange={onUserInput}
-                          placeholder="0"
-                          className={classnames(
-                            'InteractExplorer-field-input',
-                            'form-control',
-                            {
-                              'is-invalid': !validValue
-                            }
-                          )}
-                        />
-                      )}
-                    </UnitConverter>
-                  </label>
-                  <button
-                    className="InteractExplorer-func-submit btn btn-primary"
-                    disabled={!showContractWrite}
-                    onClick={handleFunctionSend(selectedFunction, inputs)}
-                  >
-                    {translate('CONTRACT_Write')}
-                  </button>
-                </Aux>
-              ) : (
-                <Aux>
-                  {txCompare}
-                  <button
-                    className="Deploy-submit btn btn-primary"
-                    onClick={toggleModal}
-                  >
-                    {translate('SEND_trans')}
-                  </button>
-                </Aux>
-              )
+            ) : !txGenerated ? (
+              <Aux>
+                <label className="InteractExplorer-field form-group">
+                  <h4 className="InteractExplorer-field-label">Gas Limit</h4>
+                  <input
+                    name="gasLimit"
+                    value={gasLimit}
+                    onChange={handleInput('gasLimit')}
+                    className={classnames('InteractExplorer-field-input', 'form-control', {
+                      'is-invalid': !validGasLimit
+                    })}
+                  />
+                </label>
+                <label className="InteractExplorer-field form-group">
+                  <h4 className="InteractExplorer-field-label">Value</h4>
+                  <UnitConverter decimal={getDecimal('ether')} onChange={handleInput('value')}>
+                    {({ convertedUnit, onUserInput }) => (
+                      <input
+                        name="value"
+                        value={convertedUnit}
+                        onChange={onUserInput}
+                        placeholder="0"
+                        className={classnames('InteractExplorer-field-input', 'form-control', {
+                          'is-invalid': !validValue
+                        })}
+                      />
+                    )}
+                  </UnitConverter>
+                </label>
+                <button
+                  className="InteractExplorer-func-submit btn btn-primary"
+                  disabled={!showContractWrite}
+                  onClick={handleFunctionSend(selectedFunction, inputs)}
+                >
+                  {translate('CONTRACT_Write')}
+                </button>
+              </Aux>
             ) : (
-              <WalletDecrypt />
+              <Aux>
+                {txCompare}
+                <button className="Deploy-submit btn btn-primary" onClick={toggleModal}>
+                  {translate('SEND_trans')}
+                </button>
+              </Aux>
             )}
+            {<WalletDecrypt hidden={walletDecrypted} />}
           </div>
         )}
         {displayModal && txModal}
@@ -240,8 +208,7 @@ export default class InteractExplorer extends Component<Props, State> {
     } catch (e) {
       this.props.showNotification(
         'warning',
-        `Function call error: ${(e as Error).message}` ||
-          'Invalid input parameters',
+        `Function call error: ${(e as Error).message}` || 'Invalid input parameters',
         5000
       );
     }

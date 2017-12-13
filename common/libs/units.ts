@@ -5,6 +5,8 @@ type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
 
+export const ETH_DECIMAL = 18;
+
 const Units = {
   wei: '1',
   kwei: '1000',
@@ -31,16 +33,22 @@ const Units = {
   gether: '1000000000000000000000000000',
   tether: '1000000000000000000000000000000'
 };
+const handleValues = (input: string | BN) => {
+  if (typeof input === 'string') {
+    return input.startsWith('0x') ? new BN(stripHexPrefix(input), 16) : new BN(input);
+  }
+  if (typeof input === 'number') {
+    return new BN(input);
+  }
+  if (BN.isBN(input)) {
+    return input;
+  }
+  throw Error('unsupported value conversion');
+};
 
-const Wei = (input: string | BN, base: number = 10): Wei =>
-  typeof input === 'string'
-    ? new BN(stripHexPrefix(input), base)
-    : new BN(input, base);
+const Wei = (input: string | BN): Wei => handleValues(input);
 
-const TokenValue = (input: string | BN, base: number = 10) =>
-  typeof input === 'string'
-    ? new BN(stripHexPrefix(input), base)
-    : new BN(input, base);
+const TokenValue = (input: string | BN) => handleValues(input);
 
 const getDecimal = (key: UnitKey) => Units[key].length - 1;
 
@@ -84,12 +92,20 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
+const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
+  if (oldDecimal === newDecimal) {
+    return value;
+  }
+  return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
+};
+
 export {
   TokenValue,
   fromWei,
   toWei,
   toTokenBase,
   fromTokenBase,
+  convertTokenBase,
   Wei,
   getDecimal,
   UnitKey

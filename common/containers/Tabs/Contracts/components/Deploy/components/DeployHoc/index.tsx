@@ -1,20 +1,10 @@
 import BN from 'bn.js';
 import { Wei } from 'libs/units';
 import React, { Component } from 'react';
-import {
-  generateCompleteTransaction as makeAndSignTx,
-  TransactionInput
-} from 'libs/transaction';
+import { generateCompleteTransaction as makeAndSignTx, TransactionInput } from 'libs/transaction';
 import { Props, State, initialState } from './types';
-import {
-  TxModal,
-  Props as DMProps,
-  TTxModal
-} from 'containers/Tabs/Contracts/components/TxModal';
-import {
-  TxCompare,
-  TTxCompare
-} from 'containers/Tabs/Contracts/components/TxCompare';
+import { TxModal, Props as DMProps, TTxModal } from 'containers/Tabs/Contracts/components/TxModal';
+import { TxCompare, TTxCompare } from 'containers/Tabs/Contracts/components/TxCompare';
 import { withTx } from 'containers/Tabs/Contracts/components//withTx';
 import { Props as DProps } from '../../';
 
@@ -22,8 +12,7 @@ export const deployHOC = PassedComponent => {
   class WrappedComponent extends Component<Props, State> {
     public state: State = initialState;
 
-    public asyncSetState = value =>
-      new Promise(resolve => this.setState(value, resolve));
+    public asyncSetState = value => new Promise(resolve => this.setState(value, resolve));
 
     public resetState = () => this.setState(initialState);
 
@@ -38,11 +27,7 @@ export const deployHOC = PassedComponent => {
         await this.getAddressAndNonce();
         await this.makeSignedTxFromState();
       } catch (e) {
-        props.showNotification(
-          'danger',
-          e.message || 'Error during contract tx generation',
-          5000
-        );
+        props.showNotification('danger', e.message || 'Error during contract tx generation', 5000);
 
         return this.resetState();
       }
@@ -127,6 +112,10 @@ export const deployHOC = PassedComponent => {
         value
       };
 
+      if (!props.wallet || props.wallet.isReadOnly) {
+        return;
+      }
+
       return makeAndSignTx(
         props.wallet,
         props.nodeLib,
@@ -139,7 +128,11 @@ export const deployHOC = PassedComponent => {
     };
 
     private getAddressAndNonce = async () => {
-      const address = await this.props.wallet.getAddress();
+      if (!this.props.wallet || this.props.wallet.isReadOnly) {
+        return;
+      }
+
+      const address = await this.props.wallet.getAddressString();
       const nonce = await this.props.nodeLib
         .getTransactionCount(address)
         .then(n => new BN(n).toString());

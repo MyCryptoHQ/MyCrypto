@@ -1,9 +1,20 @@
+import BN from 'bn.js';
 import { Token } from 'config/data';
 import { TransactionWithoutGas } from 'libs/messages';
 import { Wei, TokenValue } from 'libs/units';
+import { stripHexPrefix } from 'libs/values';
 import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
+import {
+  isValidGetBalance,
+  isValidEstimateGas,
+  isValidCallRequest,
+  isValidTokenBalance,
+  isValidTransactionCount,
+  isValidCurrentBlock,
+  isValidRawTxApi
+} from '../../validators';
 
 export default class RpcNode implements INode {
   public client: RPCClient;
@@ -14,85 +25,95 @@ export default class RpcNode implements INode {
     this.requests = new RPCRequests();
   }
 
+  public ping(): Promise<boolean> {
+    return this.client
+      .call(this.requests.getNetVersion())
+      .then(() => true)
+      .catch(() => false);
+  }
+
   public sendCallRequest(txObj: TxObj): Promise<string> {
-    return this.client.call(this.requests.ethCall(txObj)).then(r => {
-      if (r.error) {
-        throw Error(r.error.message);
-      }
-      return r.result;
-    });
+    return this.client
+      .call(this.requests.ethCall(txObj))
+      .then(isValidCallRequest)
+      .then(response => response.result);
   }
   public getBalance(address: string): Promise<Wei> {
     return this.client
       .call(this.requests.getBalance(address))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return Wei(response.result, 16);
-      });
+      .then(isValidGetBalance)
+      .then(({ result }) => Wei(result));
   }
 
   public estimateGas(transaction: TransactionWithoutGas): Promise<Wei> {
     return this.client
       .call(this.requests.estimateGas(transaction))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return Wei(response.result, 16);
-      });
+      .then(isValidEstimateGas)
+      .then(({ result }) => Wei(result));
   }
 
-  public getTokenBalance(address: string, token: Token): Promise<TokenValue> {
+  public getTokenBalance(
+    address: string,
+    token: Token
+  ): Promise<{ balance: TokenValue; error: string | null }> {
     return this.client
       .call(this.requests.getTokenBalance(address, token))
-      .then(response => {
-        if (response.error) {
-          // TODO - Error handling
-          return TokenValue('0');
-        }
-        return TokenValue(response.result, 16);
-      });
+      .then(isValidTokenBalance)
+      .then(({ result }) => {
+        return {
+          balance: TokenValue(result),
+          error: null
+        };
+      })
+      .catch(err => ({
+        balance: TokenValue('0'),
+        error: 'Caught error:' + err
+      }));
   }
 
   public getTokenBalances(
     address: string,
     tokens: Token[]
-  ): Promise<TokenValue[]> {
+  ): Promise<{ balance: TokenValue; error: string | null }[]> {
     return this.client
       .batch(tokens.map(t => this.requests.getTokenBalance(address, t)))
-      .then(response => {
-        return response.map(item => {
-          // FIXME wrap in maybe-like
-          if (item.error) {
-            return TokenValue('0');
+      .then(response =>
+        response.map(item => {
+          if (isValidTokenBalance(item)) {
+            return {
+              balance: TokenValue(item.result),
+              error: null
+            };
+          } else {
+            return {
+              balance: TokenValue('0'),
+              error: 'Invalid object shape'
+            };
           }
-          return TokenValue(item.result, 16);
-        });
-      });
-    // TODO - Error handling
+        })
+      );
   }
 
   public getTransactionCount(address: string): Promise<string> {
     return this.client
       .call(this.requests.getTransactionCount(address))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return response.result;
-      });
+      .then(isValidTransactionCount)
+      .then(({ result }) => result);
+  }
+
+  public getCurrentBlock(): Promise<string> {
+    return this.client
+      .call(this.requests.getCurrentBlock())
+      .then(isValidCurrentBlock)
+      .then(({ result }) => new BN(stripHexPrefix(result)).toString());
   }
 
   public sendRawTx(signedTx: string): Promise<string> {
     return this.client
       .call(this.requests.sendRawTx(signedTx))
-      .then(response => {
-        if (response.error) {
-          throw new Error(response.error.message);
-        }
-        return response.result;
+      .then(isValidRawTxApi)
+      .then(({ result }) => {
+        return result;
       });
   }
 }

@@ -1,7 +1,9 @@
-import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
+import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
+import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.3)';
+export const VERSION = '4.0.0 (Alpha 0.0.5)';
+export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
@@ -11,21 +13,23 @@ export const ANNOUNCEMENT_MESSAGE = `
   This is an Alpha build of MyEtherWallet v4. Please only use for testing,
   or use v3 at <a href='https://myetherwallet.com'>https://myetherwallet.com</a>.
   <br/>
-  If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">mailchimp</a> :)
+  <span class="hidden-xs">
+    If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via
+    <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">
+      mailchimp
+    </a>
+    :)
+  </span>
 `;
 
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
 const ethPlorer = 'https://ethplorer.io';
 
-export const ETHTxExplorer = (txHash: string): string =>
-  `${etherScan}/tx/${txHash}`;
-export const BTCTxExplorer = (txHash: string): string =>
-  `${blockChainInfo}/tx/${txHash}`;
-export const ETHAddressExplorer = (address: string): string =>
-  `${etherScan}/address/${address}`;
-export const ETHTokenExplorer = (address: string): string =>
-  `${ethPlorer}/address/${address}`;
+export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHash}`;
+export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
+export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
+export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
 
 export const donationAddressMap = {
   BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
@@ -38,7 +42,11 @@ export const gasPriceDefaults = {
   gasPriceMaxGwei: 60
 };
 
+export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
+export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
+export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
+export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -50,6 +58,7 @@ export interface Token {
   address: string;
   symbol: string;
   decimal: number;
+  error?: string | null;
 }
 
 export interface NetworkContract {
@@ -72,11 +81,29 @@ export interface NetworkConfig {
   contracts: NetworkContract[] | null;
 }
 
+export interface CustomNetworkConfig {
+  name: string;
+  unit: string;
+  chainId: number;
+}
+
 export interface NodeConfig {
   network: string;
-  lib: RPCNode;
+  lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
+  hidden?: boolean;
+}
+
+export interface CustomNodeConfig {
+  name: string;
+  url: string;
+  port: number;
+  network: string;
+  auth?: {
+    username: string;
+    password: string;
+  };
 }
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
@@ -242,3 +269,33 @@ export const NODES: { [key: string]: NodeConfig } = {
     estimateGas: true
   }
 };
+
+export async function initWeb3Node(): Promise<void> {
+  const { web3 } = window as any;
+
+  if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
+    throw new Error(
+      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
+    );
+  }
+
+  const lib = new Web3Node();
+  const networkId = await lib.getNetVersion();
+  const accounts = await lib.getAccounts();
+
+  if (!accounts.length) {
+    throw new Error('No accounts found in MetaMask / Mist.');
+  }
+
+  if (networkId === 'loading') {
+    throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
+  }
+
+  NODES.web3 = {
+    network: networkIdToName(networkId),
+    service: 'MetaMask / Mist',
+    lib,
+    estimateGas: false,
+    hidden: true
+  };
+}

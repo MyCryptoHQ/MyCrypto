@@ -1,17 +1,12 @@
 import AbiFunction, { IUserSendParams, ISendParams } from './ABIFunction';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IFullWallet } from 'libs/wallet/IWallet';
 import { RPCNode } from 'libs/nodes';
 import { ContractOutputMappings } from './types';
 import { Wei } from 'libs/units';
-const ABIFUNC_METHOD_NAMES = [
-  'encodeInput',
-  'decodeInput',
-  'decodeOutput',
-  'call'
-];
+const ABIFUNC_METHOD_NAMES = ['encodeInput', 'decodeInput', 'decodeOutput', 'call'];
 
 export interface ISetConfigForTx {
-  wallet: IWallet;
+  wallet: IFullWallet;
   nodeLib: RPCNode;
   chainId: number;
   gasPrice: Wei;
@@ -34,9 +29,7 @@ export default class Contract {
       .setGasPrice(gasPrice);
 
   public static getFunctions = (contract: Contract) =>
-    Object.getOwnPropertyNames(
-      contract
-    ).reduce((accu, currContractMethodName) => {
+    Object.getOwnPropertyNames(contract).reduce((accu, currContractMethodName) => {
       const currContractMethod = contract[currContractMethodName];
       const methodNames = Object.getOwnPropertyNames(currContractMethod);
 
@@ -45,14 +38,12 @@ export default class Contract {
           isAbiFunc && methodNames.includes(currAbiFuncMethodName),
         true
       );
-      return isFunc
-        ? { ...accu, [currContractMethodName]: currContractMethod }
-        : accu;
+      return isFunc ? { ...accu, [currContractMethodName]: currContractMethod } : accu;
     }, {});
 
   public address: string;
   public abi;
-  private wallet: IWallet;
+  private wallet: IFullWallet;
   private gasPrice: Wei;
   private chainId: number;
   private node: RPCNode;
@@ -66,7 +57,7 @@ export default class Contract {
     return this;
   };
 
-  public setWallet = (w: IWallet) => {
+  public setWallet = (w: IFullWallet) => {
     this.wallet = w;
     return this;
   };

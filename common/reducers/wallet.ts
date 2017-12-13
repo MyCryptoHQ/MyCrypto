@@ -1,38 +1,52 @@
-import {
-  SetBalanceAction,
-  SetTokenBalancesAction,
-  SetWalletAction,
-  WalletAction
-} from 'actions/wallet';
-import { Wei, TokenValue } from 'libs/units';
+import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
+import { SetTokenBalancesAction, SetWalletAction, WalletAction, TypeKeys } from 'actions/wallet';
+import { TokenValue } from 'libs/units';
 import { BroadcastTransactionStatus } from 'libs/transaction';
-import { IWallet } from 'libs/wallet';
+import { IWallet, Balance } from 'libs/wallet';
 import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
 
 export interface State {
   inst?: IWallet | null;
   // in ETH
-  balance?: Wei | null;
+  balance: Balance | { wei: null };
   tokens: {
-    [key: string]: TokenValue;
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
   };
   transactions: BroadcastTransactionStatus[];
 }
 
 export const INITIAL_STATE: State = {
   inst: null,
-  balance: null,
+  balance: { isPending: false, wei: null },
   tokens: {},
   transactions: []
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
-  return { ...state, inst: action.payload, balance: null, tokens: {} };
+  return {
+    ...state,
+    inst: action.payload,
+    balance: INITIAL_STATE.balance,
+    tokens: INITIAL_STATE.tokens
+  };
 }
 
-function setBalance(state: State, action: SetBalanceAction): State {
-  const weiBalance = action.payload;
-  return { ...state, balance: weiBalance };
+function setBalancePending(state: State): State {
+  return { ...state, balance: { ...state.balance, isPending: true } };
+}
+
+function setBalanceFullfilled(state: State, action: SetBalanceFullfilledAction): State {
+  return {
+    ...state,
+    balance: { wei: action.payload, isPending: false }
+  };
+}
+
+function setBalanceRejected(state: State): State {
+  return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
 function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
@@ -59,10 +73,7 @@ function handleTxBroadcastCompleted(
   signedTx: string,
   successfullyBroadcast: boolean
 ): BroadcastTransactionStatus[] {
-  const existingTx = getTxFromBroadcastTransactionStatus(
-    state.transactions,
-    signedTx
-  );
+  const existingTx = getTxFromBroadcastTransactionStatus(state.transactions, signedTx);
   if (existingTx) {
     const isBroadcasting = false;
     return handleUpdateTxArray(
@@ -77,10 +88,7 @@ function handleTxBroadcastCompleted(
 }
 
 function handleBroadcastTxRequested(state: State, signedTx: string) {
-  const existingTx = getTxFromBroadcastTransactionStatus(
-    state.transactions,
-    signedTx
-  );
+  const existingTx = getTxFromBroadcastTransactionStatus(state.transactions, signedTx);
   const isBroadcasting = true;
   const successfullyBroadcast = false;
   if (!existingTx) {
@@ -101,41 +109,34 @@ function handleBroadcastTxRequested(state: State, signedTx: string) {
   }
 }
 
-export function wallet(
-  state: State = INITIAL_STATE,
-  action: WalletAction
-): State {
+export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
-    case 'WALLET_SET':
+    case TypeKeys.WALLET_SET:
       return setWallet(state, action);
-    case 'WALLET_RESET':
+    case TypeKeys.WALLET_RESET:
       return INITIAL_STATE;
-    case 'WALLET_SET_BALANCE':
-      return setBalance(state, action);
-    case 'WALLET_SET_TOKEN_BALANCES':
+    case TypeKeys.WALLET_SET_BALANCE_PENDING:
+      return setBalancePending(state);
+    case TypeKeys.WALLET_SET_BALANCE_FULFILLED:
+      return setBalanceFullfilled(state, action);
+    case TypeKeys.WALLET_SET_BALANCE_REJECTED:
+      return setBalanceRejected(state);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES:
       return setTokenBalances(state, action);
-    case 'WALLET_BROADCAST_TX_REQUESTED':
+    case TypeKeys.WALLET_BROADCAST_TX_REQUESTED:
       return {
         ...state,
         transactions: handleBroadcastTxRequested(state, action.payload.signedTx)
       };
-    case 'WALLET_BROADCAST_TX_SUCCEEDED':
+    case TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED:
       return {
         ...state,
-        transactions: handleTxBroadcastCompleted(
-          state,
-          action.payload.signedTx,
-          true
-        )
+        transactions: handleTxBroadcastCompleted(state, action.payload.signedTx, true)
       };
-    case 'WALLET_BROADCAST_TX_FAILED':
+    case TypeKeys.WALLET_BROADCAST_TX_FAILED:
       return {
         ...state,
-        transactions: handleTxBroadcastCompleted(
-          state,
-          action.payload.signedTx,
-          false
-        )
+        transactions: handleTxBroadcastCompleted(state, action.payload.signedTx, false)
       };
     default:
       return state;

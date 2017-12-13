@@ -3,21 +3,14 @@ import React, { Component } from 'react';
 import './Modal.scss';
 
 export interface IButton {
-  text: string;
-  type?:
-    | 'default'
-    | 'primary'
-    | 'success'
-    | 'info'
-    | 'warning'
-    | 'danger'
-    | 'link';
+  text: string | React.ReactElement<string>;
+  type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link';
   disabled?: boolean;
   onClick?(): void;
 }
 interface Props {
   isOpen?: boolean;
-  title: string;
+  title: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
   buttons: IButton[];
@@ -58,9 +51,7 @@ export default class Modal extends Component<Props, {}> {
             </button>
           </div>
           <div className="Modal-content">{isOpen && children}</div>
-          {hasButtons && (
-            <div className="Modal-footer">{this.renderButtons()}</div>
-          )}
+          {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
         </div>
       </div>
     );

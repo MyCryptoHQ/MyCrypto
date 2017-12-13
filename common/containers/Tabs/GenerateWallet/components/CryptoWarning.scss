@@ -1,0 +1,41 @@
+@import "common/sass/variables";
+
+.CryptoWarning {
+  max-width: 740px;
+  margin: 0 auto;
+  text-align: center;
+
+  &-title {
+    margin-bottom: 15px;
+  }
+
+  &-text {
+    margin-bottom: 30px;
+  }
+
+  &-browsers {
+    &-browser {
+      display: inline-block;
+      width: 86px;
+      margin: 0 25px;
+      color: $text-color;
+      opacity: 0.8;
+      transition: opacity 100ms ease;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &-icon {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      &-name {
+        font-size: 18px;
+        font-weight: 300;
+      }
+    }
+  }
+}
