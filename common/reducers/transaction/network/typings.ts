@@ -1,5 +1,10 @@
+export enum RequestStatus {
+  REQUESTED = 'PENDING',
+  SUCCEEDED = 'SUCCESS',
+  FAILED = 'FAIL'
+}
 export interface State {
-  gasEstimationSuccessful: boolean;
-  getFromSuccessful: boolean;
-  getNonceFailed: boolean;
+  gasEstimationStatus: RequestStatus | null;
+  getFromStatus: RequestStatus | null;
+  getNonceStatus: RequestStatus | null;
 }
