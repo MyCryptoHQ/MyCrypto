@@ -1,1 +1,4 @@
-$transition: 500ms all ease-in-out;
+$transition: 120ms opacity ease,
+             120ms color ease,
+             120ms background-color ease,
+             120ms border-color ease;
