@@ -3,18 +3,19 @@ import {
   getUnit,
   getGasCost,
   isEtherTransaction,
-  getDecimal
+  getDecimal,
+  ICurrentValue
 } from 'selectors/transaction';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { UnitDisplay } from 'components/ui';
-import { Wei, fromWei } from 'libs/units';
+import { Wei, fromWei, getDecimalFromEtherUnit, isEtherUnit } from 'libs/units';
 
 type TransactionState = AppState['transaction'];
 
 interface StateProps {
-  currentValue: TransactionState['meta']['tokenValue'] | TransactionState['fields']['value'];
+  currentValue: ICurrentValue;
   unit: TransactionState['meta']['unit'];
   gasCostInWei: Wei;
   etherTransaction: boolean;
@@ -31,45 +32,44 @@ function mapStateToProps(state: AppState) {
   };
 }
 
+interface TotalSpentProps {
+  currentValue: ICurrentValue;
+  gasCostInWei;
+}
+const TotalSpentForEther: React.SFC<TotalSpentProps> = ({
+  currentValue: { value },
+  gasCostInWei
+}) => (
+  <UnitDisplay symbol="ETH" value={value ? value.add(gasCostInWei) : gasCostInWei} unit="ether" />
+);
 class CostBreakdownClass extends Component<StateProps> {
   public render() {
-    const {
-      currentValue,
-      etherTransaction,
-      gasCostInWei,
-
-      unit,
-      decimal
-    } = this.props;
-    const gasCostInEther = fromWei(gasCostInWei, 'ether');
+    const { currentValue, etherTransaction, gasCostInWei, unit, decimal } = this.props;
+    const amountToSend = (
+      <UnitDisplay
+        symbol={isEtherUnit(unit) ? 'ETH' : unit}
+        value={currentValue.value || Wei('0')}
+        decimal={decimal}
+      />
+    );
     return (
       <div>
+        <h5>Amount To Send: {amountToSend}</h5>
+
         <h5>
-          Amount To Send: <UnitDisplay symbol={unit} value={currentValue.value} decimal={decimal} />
+          Gas Cost: <UnitDisplay symbol="ETH" value={gasCostInWei} unit="ether" />
         </h5>
-        <h5>Gas Cost: {gasCostInEther}</h5>
         <h5>
           {' '}
           Total Spent:{' '}
           {etherTransaction ? (
-            currentValue.value ? (
-              <UnitDisplay
-                symbol={unit}
-                value={currentValue.value.add(gasCostInWei)}
-                decimal={decimal}
-              />
-            ) : (
-              gasCostInEther
-            )
+            <TotalSpentForEther currentValue={currentValue} gasCostInWei={gasCostInWei} />
           ) : (
             <div>
               <h5>
-                {' '}
-                <UnitDisplay symbol="ether" value={gasCostInWei} unit="ether" />
+                <UnitDisplay symbol="ETH" value={gasCostInWei} unit="ether" />
               </h5>
-              <h5>
-                <UnitDisplay symbol={unit} value={currentValue.value} decimal={decimal} />{' '}
-              </h5>
+              <h5>{amountToSend}</h5>
             </div>
           )}
         </h5>
