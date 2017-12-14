@@ -1,59 +1,52 @@
 import React, { Component } from 'react';
-import translate from 'translations';
 import { Interact } from './components/Interact';
 import { Deploy } from './components/Deploy';
 import './index.scss';
 import TabSection from 'containers/TabSection';
+import SubTabs, { Tab } from 'components/SubTabs';
 
 interface State {
   activeTab: string;
 }
 
-export default class Contracts extends Component<{}, State> {
-  public state: State = {
-    activeTab: 'interact'
-  };
+interface Props {
+  location: any;
+}
 
-  public changeTab = activeTab => () => this.setState({ activeTab });
-
+export default class Contracts extends Component<Props, State> {
   public render() {
-    const { activeTab } = this.state;
-    let content;
-    let interactActive = '';
-    let deployActive = '';
+    const { location } = this.props;
+    const activeTab = location.pathname.split('/')[2];
 
-    if (activeTab === 'interact') {
-      content = <Interact />;
-      interactActive = 'is-active';
-    } else {
-      content = <Deploy />;
-      deployActive = 'is-active';
-    }
+    const tabs: Tab[] = [
+      {
+        path: 'interact',
+        name: 'Contract Interact',
+        render() {
+          return (
+            <main className="Tab-content-pane" role="main">
+              <Interact />
+            </main>
+          );
+        }
+      },
+      {
+        path: 'deploy',
+        name: 'Deploy Contract',
+        render() {
+          return (
+            <main className="Tab-content-pane" role="main">
+              <Deploy />
+            </main>
+          );
+        }
+      }
+    ];
 
     return (
       <TabSection>
         <section className="Tab-content Contracts">
-          <div className="Tab-content-pane">
-            <h1 className="Contracts-header">
-              <button
-                className={`Contracts-header-tab ${interactActive}`}
-                onClick={this.changeTab('interact')}
-              >
-                {translate('NAV_InteractContract')}
-              </button>{' '}
-              <span>or</span>{' '}
-              <button
-                className={`Contracts-header-tab ${deployActive}`}
-                onClick={this.changeTab('deploy')}
-              >
-                {translate('NAV_DeployContract')}
-              </button>
-            </h1>
-          </div>
-
-          <main className="Tab-content-pane" role="main">
-            <div className="Contracts-content">{content}</div>
-          </main>
+          <SubTabs root="contract" tabs={tabs} activeTab={activeTab} />
         </section>
       </TabSection>
     );
