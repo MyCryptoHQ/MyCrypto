@@ -3,6 +3,7 @@ import DPATHS from 'config/dpaths';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
+import { formatMnemonic } from 'utils/formatters';
 
 const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
 
@@ -89,8 +90,8 @@ export default class MnemonicDecrypt extends Component<Props, State> {
 
   public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
     const phrase = (e.target as HTMLTextAreaElement).value;
-    const formattedPhrase = phrase.replace(/(\r\n|\n|\r|,)/gm," ").trim();
-    
+    const formattedPhrase = formatMnemonic(phrase);
+
     this.setState({
       phrase, 
       formattedPhrase
