@@ -1,23 +1,11 @@
-import { select, call, put, takeEvery } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
-import {
-  SetTokenToMetaAction,
-  setDataField,
-  SetTokenValueMetaAction,
-  TypeKeys
-} from 'actions/transaction';
+import { select, call, put } from 'redux-saga/effects';
+import { setDataField } from 'actions/transaction';
 import { encodeTransfer } from 'libs/transaction/utils/token';
 import { getTokenValue } from 'selectors/transaction/meta';
-import { AppState } from 'reducers';
-import { bufferToHex } from 'ethereumjs-util';
-import { getTokenTo } from 'selectors/transaction';
-
+import { bufferToHex, toBuffer } from 'ethereumjs-util';
+import { getTokenTo, getData } from 'selectors/transaction';
 import { handleTokenTo, handleTokenValue } from 'sagas/transaction/meta/token';
 import { cloneableGenerator } from 'redux-saga/utils';
-
-/* tslint:disable */
-// import 'selectors/transaction'; //throws if not imported
-/* tslint:enable */
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -77,7 +65,10 @@ describe('handleTokenValue*', () => {
   const tokenTo: any = {
     value: 'value2'
   };
-  const data: any = 'data';
+  const data: any = toBuffer('0x0a');
+  const prevData: any = {
+    raw: '0x0b'
+  };
 
   const gens: any = {};
   gens.gen = cloneableGenerator(handleTokenValue)(action);
@@ -86,21 +77,32 @@ describe('handleTokenValue*', () => {
     expect(gens.gen.next().value).toEqual(select(getTokenTo));
   });
 
+  it('should select getData', () => {
+    gens.clone1 = gens.gen.clone();
+    expect(gens.gen.next(tokenTo).value).toEqual(select(getData));
+  });
+
   it('should return if !tokenTo.value', () => {
-    const clone1 = gens.gen.clone();
-    expect(clone1.next({ value: false }).done).toEqual(true);
+    gens.clone1.next({ value: false });
+    expect(gens.clone1.next().done).toEqual(true);
   });
 
   it('should call encodeTransfer', () => {
-    expect(gens.gen.next(tokenTo).value).toEqual(
+    expect(gens.gen.next(prevData).value).toEqual(
       call(encodeTransfer, tokenTo.value, action.payload.value)
     );
   });
 
   it('should put setDataField', () => {
+    gens.clone2 = gens.gen.clone();
     expect(gens.gen.next(data).value).toEqual(
       put(setDataField({ raw: bufferToHex(data), value: data }))
     );
+  });
+
+  it('should return if prevData is equal to data', () => {
+    const sameData = toBuffer('0xb');
+    expect(gens.clone2.next(sameData).done).toEqual(true);
   });
 
   itShouldBeDone(gens.gen);
