@@ -14,6 +14,7 @@ import {
 } from 'actions/transaction';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
+import { showNotification } from 'actions/notifications';
 
 function* shouldEstimateGas(): SagaIterator {
   while (true) {
@@ -51,7 +52,12 @@ function* estimateGas(): SagaIterator {
       yield put(estimateGasSucceeded());
     } catch {
       //TODO: display notif
-
+      yield put(
+        showNotification(
+          'warning',
+          'Gas estimation failed, falling back to local estimation, it may not be accurate'
+        )
+      );
       yield put(estimateGasFailed());
       // fallback for estimating locally
       const tx = yield call(makeTransaction, payload);
