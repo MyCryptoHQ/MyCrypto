@@ -100,5 +100,5 @@ export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
 // delimiter (in the case of csv style mnemonic phrases) as well as any stray
 // space characters. it should be fairly easy to add new delimiters as required 
 export function formatMnemonic(phrase: string) {
-  return phrase.replace(/(\r\n|\n|\r|\s+|,)/gm," ").trim()
+  return phrase.replace(/(\r\n|\n|\r|\s+|,)/gm," ").trim();
 };
