@@ -1,26 +1,18 @@
-import { SagaIterator } from 'redux-saga';
 import { getWeb3Tx, getSignedTx, getTransactionStatus } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
-  broadcastTransactionQueued,
-  TypeKeys as TK
+  broadcastTransactionQueued
 } from 'actions/transaction';
 import { bufferToHex } from 'ethereumjs-util';
-import {
-  BroadcastRequestedAction,
-  StateSerializedTx,
-  ISerializedTxAndIndexingHash
-} from 'sagas/transaction/broadcast/typings';
-import { ITransactionStatus } from 'reducers/transaction/broadcast';
 import { showNotification } from 'actions/notifications';
 import React from 'react';
 import { getNetworkConfig } from 'selectors/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { computeIndexingHash } from 'libs/transaction';
 
-import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
+import { cloneableGenerator } from 'redux-saga/utils';
 
 /* tslint:disable */
 import 'actions/transaction';
@@ -38,8 +30,8 @@ describe('broadcastTransactinWrapper*', () => {
   const serializedTransaction = new Buffer('serializedTransaction');
   const shouldBroadcast = true;
   const stringTx = 'stringTx';
-  const broadcastedHash = 'broadcastedHash';
-  const network = {
+  const broadcastedHash: any = 'broadcastedHash';
+  const network: any = {
     blockExplorer: 'blockExplorer'
   };
 
@@ -137,7 +129,7 @@ describe('broadcastTransactinWrapper*', () => {
   });
 });
 
-describe('shouldBroadCastTransaction', () => {
+describe('shouldBroadCastTransaction*', () => {
   const indexingHash = 'indexingHash';
   const existingTxIsBroadcasting: any = {
     isBroadcasting: true
@@ -174,11 +166,11 @@ describe('shouldBroadCastTransaction', () => {
   });
 });
 
-describe('getSerializedTxAndIndexingHash', () => {
-  const web3Req = {
+describe('getSerializedTxAndIndexingHash*', () => {
+  const web3Req: any = {
     type: 'BROADCAST_WEB3_TRANSACTION_REQUESTED'
   };
-  const notWeb3Req = {
+  const notWeb3Req: any = {
     type: 'NOT_WEB3_TRANSACTION_REQUEST'
   };
   const serializedTransaction: any = true;
@@ -186,14 +178,14 @@ describe('getSerializedTxAndIndexingHash', () => {
 
   const gens: any = {};
   gens.gen1 = cloneableGenerator(getSerializedTxAndIndexingHash)(web3Req);
-  gens.gen2 = cloneableGenerator(getSerializedTxAndIndexingHash)(notWeb3Req);
+  const gen2 = getSerializedTxAndIndexingHash(notWeb3Req);
 
   it('should select getWeb3Tx', () => {
     expect(gens.gen1.next().value).toEqual(select(getWeb3Tx));
   });
 
-  it('should select getWeb3Tx', () => {
-    expect(gens.gen2.next().value).toEqual(select(getSignedTx));
+  it('should select getSignedTx', () => {
+    expect(gen2.next().value).toEqual(select(getSignedTx));
   });
 
   it('should throw error if !serializedTransaction', () => {

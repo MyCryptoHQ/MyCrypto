@@ -1,11 +1,5 @@
-import { SagaIterator } from 'redux-saga';
-import { put, apply, takeEvery, call } from 'redux-saga/effects';
-import { IFullWalletAndTransaction, signTransactionWrapper } from './helpers';
-import {
-  signLocalTransactionSucceeded,
-  signWeb3TransactionSucceeded,
-  TypeKeys
-} from 'actions/transaction';
+import { put, apply, call } from 'redux-saga/effects';
+import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from 'actions/transaction';
 import { computeIndexingHash } from 'libs/transaction';
 import {
   signLocalTransactionHandler,
@@ -51,7 +45,7 @@ describe('signWeb3TransactionHandler*', () => {
   const tx = {
     serialize: jest.fn
   };
-  const action = { tx };
+  const action: any = { tx };
   const serializedTransaction = new Buffer('tx');
   const indexingHash = 'indexingHash';
 

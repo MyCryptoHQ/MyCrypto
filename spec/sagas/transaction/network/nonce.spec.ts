@@ -1,12 +1,8 @@
-import { getNonceSucceeded, getNonceFailed, TypeKeys as TK, inputNonce } from 'actions/transaction';
-import { SagaIterator } from 'redux-saga';
-import { apply, put, select, takeEvery } from 'redux-saga/effects';
-import { INode } from 'libs/nodes/INode';
-import { AppState } from 'reducers';
+import { getNonceSucceeded, getNonceFailed, inputNonce } from 'actions/transaction';
+import { apply, put, select } from 'redux-saga/effects';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { showNotification } from 'actions/notifications';
-
 import { handleNonceRequest } from 'sagas/transaction/network/nonce';
 import { cloneableGenerator } from 'redux-saga/utils';
 

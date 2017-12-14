@@ -1,12 +1,7 @@
 import { getNodeLib } from 'selectors/config';
-import { select, apply, takeEvery } from 'redux-saga/effects';
-import { INode } from 'libs/nodes/INode';
-import { SagaIterator } from 'redux-saga';
-import { getWalletInst, getWallet } from 'selectors/wallet';
+import { select, apply } from 'redux-saga/effects';
+import { getWalletInst } from 'selectors/wallet';
 import { Web3Wallet } from 'libs/wallet';
-import { AppState } from 'reducers';
-import { broadcastTransactionWrapper } from 'sagas/transaction/broadcast/helpers';
-import { TypeKeys as TK } from 'actions/transaction';
 import {
   broadcastLocalTransactionHandler,
   broadcastWeb3TransactionHandler

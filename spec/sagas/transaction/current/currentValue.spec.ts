@@ -1,8 +1,6 @@
 import { isEtherTransaction, getUnit, getDecimal, getCurrentValue } from 'selectors/transaction';
-import { select, call, put, takeEvery } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
+import { select, call, put } from 'redux-saga/effects';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
-import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
 import {
@@ -134,7 +132,7 @@ describe('revalidateCurrentValue*', () => {
     const currVal = {
       raw: 'raw1'
     };
-    const reparsedValue = {
+    const reparsedValue: any = {
       value: 'value',
       raw: 'raw'
     };
@@ -154,7 +152,7 @@ describe('revalidateCurrentValue*', () => {
           setValueField({
             raw: reparsedValue.raw,
             value: reparsedValue.value
-          })
+          } as any)
         )
       );
     });

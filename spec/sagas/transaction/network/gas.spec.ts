@@ -1,28 +1,24 @@
-import { SagaIterator, buffers, delay } from 'redux-saga';
-import { apply, put, select, take, actionChannel, call, fork } from 'redux-saga/effects';
-import { INode } from 'libs/nodes/INode';
+import { buffers, delay } from 'redux-saga';
+import { apply, put, select, take, actionChannel, call } from 'redux-saga/effects';
 import { getNodeLib } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { getTransaction, IGetTransaction } from 'selectors/transaction';
+import { getTransaction } from 'selectors/transaction';
 import {
-  EstimateGasRequestedAction,
   setGasLimitField,
   estimateGasFailed,
   estimateGasSucceeded,
   TypeKeys,
   estimateGasRequested
 } from 'actions/transaction';
-import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
-
 import { shouldEstimateGas, estimateGas } from 'sagas/transaction/network/gas';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { Data, Wei, Nonce } from 'libs/units';
+import { Wei } from 'libs/units';
 
 describe('shouldEstimateGas*', () => {
-  const transaction = 'transaction';
+  const transaction: any = 'transaction';
   const tx = { transaction };
-  const rest = {
+  const rest: any = {
     mock1: 'mock1',
     mock2: 'mock2'
   };
@@ -63,7 +59,7 @@ describe('shouldEstimateGas*', () => {
 
 describe('estimateGas*', () => {
   const requestChan = 'requestChan';
-  const payload = {
+  const payload: any = {
     mock1: 'mock1',
     mock2: 'mock2'
   };
@@ -76,7 +72,7 @@ describe('estimateGas*', () => {
   };
   const from = '0xa';
   const txObj = { ...payload, from };
-  const gasLimit = Wei(100);
+  const gasLimit = Wei('100');
 
   const gens: any = {};
   gens.gen = cloneableGenerator(estimateGas)();

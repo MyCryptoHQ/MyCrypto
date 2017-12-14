@@ -1,20 +1,8 @@
 import { getWalletInst } from 'selectors/wallet';
-import { IFullWallet } from 'libs/wallet';
 import { getGasPriceGwei, getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
 import { toWei, getDecimalFromEtherUnit, Wei } from 'libs/units';
-import {
-  signTransactionFailed,
-  SignWeb3TransactionRequestedAction,
-  SignLocalTransactionRequestedAction,
-  GetFromFailedAction,
-  GetFromSucceededAction,
-  getFromRequested,
-  TypeKeys as TK
-} from 'actions/transaction';
-import Tx from 'ethereumjs-tx';
-import { NetworkConfig } from 'config/data';
-import { SagaIterator } from 'redux-saga';
+import { signTransactionFailed, getFromRequested, TypeKeys as TK } from 'actions/transaction';
 import { showNotification } from 'actions/notifications';
 import { toBuffer } from 'ethereumjs-util';
 
@@ -71,7 +59,6 @@ describe('getGasPrice*', () => {
   const gasPriceInGwei = 21;
   const gweiDecimal = 42;
   const gasPriceWei = Wei('100');
-  const gasPriceBuffer = new Buffer(gasPriceInGwei);
 
   const gen = getGasPrice();
 
@@ -109,7 +96,6 @@ describe('getWalletAndTransaction*', () => {
   const networkConfig = {
     chainId: 'chainId'
   };
-  const gasPrice = new Buffer('gasPrice');
 
   const gens: any = {};
   gens.gen = cloneableGenerator(getWalletAndTransaction)(partialTx);

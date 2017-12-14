@@ -1,21 +1,11 @@
 import { isEtherTransaction } from 'selectors/transaction';
-import { SetCurrentToAction } from 'actions/transaction/actionTypes/current';
 import { setToField } from 'actions/transaction/actionCreators/fields';
 import { setTokenTo } from 'actions/transaction/actionCreators/meta';
 import { Address } from 'libs/units';
-import { select, call, put, takeEvery } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
+import { select, call, put } from 'redux-saga/effects';
 import { isValidENSorEtherAddress } from 'libs/validators';
-import { TypeKeys } from 'actions/transaction';
-
 import { setCurrentTo } from 'sagas/transaction/current/currentTo';
 import { cloneableGenerator } from 'redux-saga/utils';
-
-// import { setCurrentTo } from 'sagas/transaction/current/currentTo'
-
-/* tslint:disable */
-// import 'selectors/transaction'; //throws if not imported
-/* tslint:enable */
 
 describe('setCurrentTo*', () => {
   const raw = '0xa';

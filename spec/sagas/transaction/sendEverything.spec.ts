@@ -1,33 +1,16 @@
-import { SagaIterator } from 'redux-saga';
-import { apply, put, select, takeEvery } from 'redux-saga/effects';
+import { apply, put, select } from 'redux-saga/effects';
 import {
   sendEverythingFailed,
-  TypeKeys as TK,
   setValueField,
   setTokenValue,
   sendEverythingSucceeded
 } from 'actions/transaction';
 import { showNotification } from 'actions/notifications';
-import {
-  isEtherTransaction,
-  getTransaction,
-  IGetTransaction,
-  getDecimal
-} from 'selectors/transaction';
+import { isEtherTransaction, getTransaction, getDecimal } from 'selectors/transaction';
 import { getEtherBalance, getCurrentBalance } from 'selectors/wallet';
-
-import { AppState } from 'reducers';
-import { fromTokenBase, fromWei, Wei, TokenValue } from 'libs/units';
-
+import { fromTokenBase, fromWei, Wei } from 'libs/units';
 import { handleSendEverything } from 'sagas/transaction/sendEverything';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { totalmem } from 'os';
-
-const itShouldBeDone = gen => {
-  it('should be done', () => {
-    expect(gen.next().done).toEqual(true);
-  });
-};
 
 describe('handleSendEverything*', () => {
   let random;
@@ -167,7 +150,7 @@ describe('handleSendEverything*', () => {
     });
 
     describe('if !etherTransaction (a token tx)', () => {
-      const totalCostLocal = Wei(1);
+      const totalCostLocal = Wei('1');
       const etherTransactionLocal = false;
       const decimal = 3;
       const rawVersion = fromTokenBase(currentBalance, decimal);

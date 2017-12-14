@@ -1,6 +1,4 @@
-import { SagaIterator } from 'redux-saga';
-import { TypeKeys } from 'actions/wallet';
-import { takeEvery, put } from 'redux-saga/effects';
+import { put } from 'redux-saga/effects';
 import { reset as resetActionCreator } from 'actions/transaction';
 import { resetTransactionState } from 'sagas/transaction/reset';
 

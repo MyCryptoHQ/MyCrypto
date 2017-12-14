@@ -1,11 +1,7 @@
-import { SagaIterator } from 'redux-saga';
-import { apply, put, select, takeEvery } from 'redux-saga/effects';
+import { apply, put, select } from 'redux-saga/effects';
 import { getWalletInst } from 'selectors/wallet';
-import { getFromSucceeded, getFromFailed, TypeKeys as TK } from 'actions/transaction';
-
+import { getFromSucceeded, getFromFailed } from 'actions/transaction';
 import { showNotification } from 'actions/notifications';
-import { AppState } from 'reducers';
-
 import { cloneableGenerator } from 'redux-saga/utils';
 import { handleFromRequest } from 'sagas/transaction/network/from';
 

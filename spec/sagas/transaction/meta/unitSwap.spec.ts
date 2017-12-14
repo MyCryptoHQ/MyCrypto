@@ -1,8 +1,5 @@
-import { select, call, put, takeEvery } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
-import { SetUnitMetaAction, TypeKeys } from 'actions/transaction';
+import { select, call, put } from 'redux-saga/effects';
 import {
-  getUnit,
   getTokenTo,
   getTokenValue,
   getTo,
@@ -10,95 +7,24 @@ import {
   getValue,
   getDecimalFromUnit
 } from 'selectors/transaction';
-import { getToken, MergedToken } from 'selectors/wallet';
-import { isEtherUnit, toTokenBase, TokenValue, Wei, Address, fromTokenBase } from 'libs/units';
+import { getToken } from 'selectors/wallet';
+import { Wei, Address } from 'libs/units';
 import {
   swapTokenToEther,
   swapEtherToToken,
   swapTokenToToken
 } from 'actions/transaction/actionCreators/swap';
 import { encodeTransfer } from 'libs/transaction';
-import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
-import { validNumber } from 'libs/validators';
-import { validateInput } from 'sagas/transaction/validationHelpers';
+import { rebaseUserInput, validateInput } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { rebaseUserInput, handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
-import { currentId } from 'async_hooks';
+import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });
 };
-
-describe('rebaseUserInput*', () => {
-  const validNumberValue = {
-    raw: '1',
-    value: Wei('1')
-  };
-  const notValidNumberValue: any = {
-    raw: '0x0',
-    value: '0x0'
-  };
-  const unit = 'unit';
-  const newDecimal = 1;
-  const prevUnit = 'prevUnit';
-  const prevDecimal = 1;
-
-  const gens: any = {};
-  gens.gen1 = rebaseUserInput(validNumberValue);
-  gens.gen2 = rebaseUserInput(notValidNumberValue);
-
-  describe('when a valid number', () => {
-    it('should select getUnit', () => {
-      expect(gens.gen1.next().value).toEqual(select(getUnit));
-    });
-
-    it('should select getDecimalFromUnit with unit', () => {
-      expect(gens.gen1.next(unit).value).toEqual(select(getDecimalFromUnit, unit));
-    });
-
-    it('should return correctly', () => {
-      expect(gens.gen1.next(newDecimal).value).toEqual({
-        raw: validNumberValue.raw,
-        value: toTokenBase(validNumberValue.raw, newDecimal)
-      });
-    });
-
-    itShouldBeDone(gens.gen1);
-  });
-
-  describe('when not a valid number', () => {
-    it('should select getUnit', () => {
-      expect(gens.gen2.next().value).toEqual(select(getUnit));
-    });
-
-    it('should select getDecimalFromUnit with unit', () => {
-      expect(gens.gen2.next(unit).value).toEqual(select(getDecimalFromUnit, unit));
-    });
-
-    it('should select getPreviousUnit', () => {
-      expect(gens.gen2.next().value).toEqual(select(getPreviousUnit));
-    });
-
-    it('should select getDecimalFromUnit with prevUnit', () => {
-      expect(gens.gen2.next(prevUnit).value).toEqual(select(getDecimalFromUnit, prevUnit));
-    });
-
-    it('should return correctly', () => {
-      const result = JSON.stringify(gens.gen2.next(prevDecimal).value);
-      const expected = JSON.stringify({
-        raw: notValidNumberValue.raw,
-        value: toTokenBase(fromTokenBase(notValidNumberValue.value, prevDecimal), newDecimal)
-      });
-
-      expect(result).toEqual(expected);
-    });
-
-    itShouldBeDone(gens.gen2);
-  });
-});
 
 describe('handleSetUnitMeta*', () => {
   const expectedStart = (gen, previousUnit, currentUnit) => {

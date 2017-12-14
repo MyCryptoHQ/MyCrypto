@@ -1,15 +1,7 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
+import { call, put } from 'redux-saga/effects';
 import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
-import {
-  InputDataAction,
-  InputGasLimitAction,
-  InputNonceAction,
-  TypeKeys
-} from 'actions/transaction';
 import { isValidHex, isValidNonce } from 'libs/validators';
 import { Data, Wei, Nonce } from 'libs/units';
-
 import {
   handleDataInput,
   handleGasLimitInput,

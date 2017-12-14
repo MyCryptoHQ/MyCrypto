@@ -1,36 +1,20 @@
-import { select, call, put, takeEvery } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
-import { SetUnitMetaAction, TypeKeys } from 'actions/transaction';
+import { select, call } from 'redux-saga/effects';
 import {
   getUnit,
-  getTokenTo,
-  getTokenValue,
-  getTo,
   getPreviousUnit,
-  getValue,
   getDecimalFromUnit,
   getGasLimit,
   getGasPrice
 } from 'selectors/transaction';
-import { getToken, MergedToken, getEtherBalance, getTokenBalance } from 'selectors/wallet';
-import { isEtherUnit, toTokenBase, TokenValue, Wei, Address, fromTokenBase } from 'libs/units';
-import {
-  swapTokenToEther,
-  swapEtherToToken,
-  swapTokenToToken
-} from 'actions/transaction/actionCreators/swap';
-import { encodeTransfer, makeTransaction } from 'libs/transaction';
-import { AppState } from 'reducers';
-import { bufferToHex } from 'ethereumjs-util';
-import { validNumber } from 'libs/validators';
+import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
+import { isEtherUnit, toTokenBase, Wei, fromTokenBase } from 'libs/units';
+import { makeTransaction } from 'libs/transaction';
 import {
   rebaseUserInput,
   validateInput,
   makeCostCalculationTx
 } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
-import { currentId } from 'async_hooks';
 import { getOffline } from 'selectors/config';
 
 const itShouldBeDone = gen => {
@@ -108,7 +92,7 @@ describe('rebaseUserInput*', () => {
 });
 
 describe('validateInput*', () => {
-  const input = 'input';
+  const input: any = 'input';
   const unit = 'unit';
   const etherBalance = Wei('1000');
   const isOffline = false;
@@ -123,7 +107,7 @@ describe('validateInput*', () => {
   gens.gen = cloneableGenerator(validateInput)(input, unit);
 
   it('should return when !input', () => {
-    expect(validateInput(false).next().done).toEqual(true);
+    expect(validateInput(null, '').next().done).toEqual(true);
   });
 
   it('should select getEtherBalance', () => {
