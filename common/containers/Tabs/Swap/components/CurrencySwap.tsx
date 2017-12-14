@@ -219,7 +219,7 @@ export default class CurrencySwap extends Component<Props, State> {
         {bityLoaded ? (
           <div className="form-inline CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
-              <span className="CurrencySwap-error-message">{originErr}</span>
+              {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
               <input
                 id="origin-swap-input"
                 className={`CurrencySwap-input form-control ${
@@ -238,14 +238,15 @@ export default class CurrencySwap extends Component<Props, State> {
                   options={originKindOptions}
                   value={origin.id}
                   onChange={this.onChangeOriginKind}
-                  size="smr"
                   color="default"
                 />
               </div>
             </div>
             <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
             <div className="CurrencySwap-input-group">
-              <span className="CurrencySwap-error-message">{destinationErr}</span>
+              {destinationErr && (
+                <span className="CurrencySwap-error-message">{destinationErr}</span>
+              )}
               <input
                 id="destination-swap-input"
                 className={`CurrencySwap-input form-control ${
@@ -264,7 +265,6 @@ export default class CurrencySwap extends Component<Props, State> {
                   options={destinationKindOptions}
                   value={destination.id}
                   onChange={this.onChangeDestinationKind}
-                  size="smr"
                   color="default"
                 />
               </div>
@@ -279,7 +279,7 @@ export default class CurrencySwap extends Component<Props, State> {
             onClick={this.onClickStartSwap}
             text={translate('SWAP_init_CTA')}
             disabled={this.state.disabled}
-            type="info"
+            type="primary"
           />
         </div>
       </article>
