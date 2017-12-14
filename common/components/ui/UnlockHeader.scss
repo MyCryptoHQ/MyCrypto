@@ -10,10 +10,9 @@
     right: 0;
     padding-right: none;
     transform: translateY(-50%);
-    background: none;
 
-    .fa {
-      padding-left: 8px;
+    &-text {
+      padding-right: 8px;
     }
   }
 

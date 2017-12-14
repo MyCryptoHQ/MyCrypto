@@ -39,7 +39,9 @@ export class UnlockHeader extends React.Component<Props, State> {
               onClick={this.toggleisExpanded}
             >
               <span>
-                {translate('Change Wallet')}
+                <span className="hidden-xs UnlockHeader-open-text">
+                  {translate('Change Wallet')}
+                </span>
                 <i className="fa fa-refresh" />
               </span>
             </button>
