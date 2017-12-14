@@ -35,16 +35,16 @@ class NavigationPrompt extends React.Component<Props, State> {
 
   public setupUnblock() {
     this.unblock = this.injected.history.block(nextLocation => {
-      if (
-        this.props.when &&
-        nextLocation.pathname !== this.injected.location.pathname
-      ) {
+      // If they're just changing sub-paths, don't block it
+      const currentPaths = this.injected.location.pathname.split('/');
+      const newPaths = nextLocation.pathname.split('/');
+      const isChangingTabs = newPaths[1] !== currentPaths[1];
+
+      if (this.props.when && isChangingTabs) {
         this.setState({
           openModal: true,
           nextLocation
         });
-      }
-      if (this.props.when) {
         return false;
       }
     });
@@ -92,9 +92,7 @@ class NavigationPrompt extends React.Component<Props, State> {
         handleClose={this.onCancel}
         buttons={buttons}
       >
-        <p>
-          Leaving this page will log you out. Are you sure you want to continue?
-        </p>
+        <p>Leaving this page will log you out. Are you sure you want to continue?</p>
       </Modal>
     );
   }

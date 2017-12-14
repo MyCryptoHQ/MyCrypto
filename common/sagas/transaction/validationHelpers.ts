@@ -1,16 +1,53 @@
-import { TokenValue, Wei, isEtherUnit } from 'libs/units';
+import { TokenValue, Wei, isEtherUnit, toTokenBase, fromTokenBase } from 'libs/units';
 import { SagaIterator } from 'redux-saga';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
 import { getOffline } from 'selectors/config';
 import { select, call } from 'redux-saga/effects';
 import { AppState } from 'reducers';
-import { getGasLimit, getGasPrice } from 'selectors/transaction';
+import {
+  getGasLimit,
+  getGasPrice,
+  getUnit,
+  getDecimalFromUnit,
+  getPreviousUnit
+} from 'selectors/transaction';
 import {
   ITransaction,
   enoughBalanceViaTx,
   enoughTokensViaInput,
   makeTransaction
 } from 'libs/transaction';
+import { validNumber } from 'libs/validators';
+
+export interface IInput {
+  raw: string;
+  value: Wei | TokenValue | null;
+}
+
+/**
+ * @description Takes in an input, and rebases it to a new decimal, rebases the raw input if it's a valid number. This is used in the process of switching units, as the previous invalid raw input of a user now may become valid depending if the user's balances on the new unit is high enough
+ * @param {IInput} value
+ * @returns {SagaIterator}
+ */
+export function* rebaseUserInput(value: IInput): SagaIterator {
+  const unit: string = yield select(getUnit);
+  // get decimal
+  const newDecimal: number = yield select(getDecimalFromUnit, unit);
+
+  if (validNumber(+value.raw)) {
+    return {
+      raw: value.raw,
+      value: toTokenBase(value.raw, newDecimal)
+    };
+  } else {
+    const prevUnit: string = yield select(getPreviousUnit);
+    const prevDecimal: number = yield select(getDecimalFromUnit, prevUnit);
+    return {
+      raw: value.raw,
+      value: value.value ? toTokenBase(fromTokenBase(value.value, prevDecimal), newDecimal) : null
+    };
+  }
+}
 
 export function* validateInput(input: TokenValue | Wei | null, unit: string): SagaIterator {
   if (!input) {

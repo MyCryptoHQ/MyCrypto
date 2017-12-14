@@ -14,53 +14,53 @@ import {
   SendButton,
   SigningStatus
 } from 'components';
+import { CostBreakdown } from 'components/CostBreakdown';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 import { Aux } from 'components/ui';
 import { AppState } from 'reducers';
 
 const content = (
-  <main className="col-sm-8">
-    <div className="Tab-content-pane">
-      <AddressField />
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <div className="input-group">
-            <AmountField />
-            <UnitDropDown />
-          </div>
-          <SendEverything />
+  <div className="Tab-content-pane">
+    <AddressField />
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <div className="input-group">
+          <AmountField />
+          <UnitDropDown />
         </div>
-        <div className="col-xs-1" />
+        <SendEverything />
       </div>
+      <div className="col-xs-1" />
+    </div>
 
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <GasField />
-        </div>
-      </div>
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <NonceField />
-        </div>
-      </div>
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <DataField />
-        </div>
-      </div>
-      <CurrentCustomMessage />
-      <div className="row form-group">
-        <div className="col-xs-12 clearfix">
-          <GenerateTransaction />
-        </div>
-      </div>
-      <SigningStatus />
-      <div className="row form-group">
-        <SendButton />
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <GasField />
       </div>
     </div>
-  </main>
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <NonceField />
+      </div>
+    </div>
+    <div className="row form-group">
+      <div className="col-xs-11">
+        <DataField />
+      </div>
+    </div>
+    <CostBreakdown />
+    <CurrentCustomMessage />
+    <div className="row form-group">
+      <div className="col-xs-12 clearfix">
+        <GenerateTransaction />
+      </div>
+    </div>
+    <SigningStatus />
+    <div className="row form-group">
+      <SendButton />
+    </div>
+  </div>
 );
 
 const QueryWarning: React.SFC<{}> = () => (

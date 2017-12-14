@@ -1,5 +1,6 @@
 import { AppState } from 'reducers';
 import { getTransactionState } from 'selectors/transaction';
+export { getData, getFields, getGasLimit, getValue, getTo, getNonce, getGasPrice, getDataExists };
 
 const getFields = (state: AppState) => getTransactionState(state).fields;
 const getTo = (state: AppState) => getFields(state).to;
@@ -8,5 +9,7 @@ const getGasLimit = (state: AppState) => getFields(state).gasLimit;
 const getGasPrice = (state: AppState) => getFields(state).gasPrice;
 const getValue = (state: AppState) => getFields(state).value;
 const getNonce = (state: AppState) => getFields(state).nonce;
-
-export { getData, getFields, getGasLimit, getValue, getTo, getNonce, getGasPrice };
+const getDataExists = (state: AppState) => {
+  const { value } = getData(state);
+  return !!value && value.length > 0;
+};

@@ -3,6 +3,7 @@ import Tx from 'ethereumjs-tx';
 interface IBaseWallet {
   isReadOnly?: boolean;
   getAddressString(): Promise<string> | string;
+  getPrivateKeyString?(): string;
 }
 
 export interface IReadOnlyWallet extends IBaseWallet {

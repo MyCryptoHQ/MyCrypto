@@ -9,12 +9,10 @@ interface StateProps {
 }
 
 const content = (
-  <main className="col-sm-8">
-    <div className="Tab-content-pane">
-      <h4>Sorry...</h4>
-      <p>MetaMask / Mist wallets are not available in offline mode.</p>
-    </div>
-  </main>
+  <div className="Tab-content-pane">
+    <h4>Sorry...</h4>
+    <p>MetaMask / Mist wallets are not available in offline mode.</p>
+  </div>
 );
 
 class UnavailableWalletsClass extends Component<StateProps> {

@@ -21,37 +21,7 @@ import { encodeTransfer } from 'libs/transaction';
 import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
 import { validNumber } from 'libs/validators';
-import { validateInput } from 'sagas/transaction/validationHelpers';
-
-interface IInput {
-  raw: string;
-  value: Wei | TokenValue | null;
-}
-
-/**
- * @description Takes in an input, and rebases it to a new decimal, rebases the raw input if it's a valid number. This is used in the process of switching units, as the previous invalid raw input of a user now may become valid depending if the user's balances on the new unit is high enough
- * @param {IInput} value
- * @returns {SagaIterator}
- */
-export function* rebaseUserInput(value: IInput): SagaIterator {
-  const unit: string = yield select(getUnit);
-  // get decimal
-  const newDecimal: number = yield select(getDecimalFromUnit, unit);
-
-  if (validNumber(+value.raw)) {
-    return {
-      raw: value.raw,
-      value: toTokenBase(value.raw, newDecimal)
-    };
-  } else {
-    const prevUnit: string = yield select(getPreviousUnit);
-    const prevDecimal: number = yield select(getDecimalFromUnit, prevUnit);
-    return {
-      raw: value.raw,
-      value: value.value ? toTokenBase(fromTokenBase(value.value, prevDecimal), newDecimal) : null
-    };
-  }
-}
+import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/validationHelpers';
 
 export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
   const previousUnit: string = yield select(getPreviousUnit);

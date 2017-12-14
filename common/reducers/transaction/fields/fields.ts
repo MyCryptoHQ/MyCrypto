@@ -63,8 +63,8 @@ const reducerObj: ReducersMapObject = {
     state: State,
     { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
   ): State => ({ ...state, ...rest }),
-
-  [TK.RESET]: _ => INITIAL_STATE
+  // reset everything but gas price
+  [TK.RESET]: (state: State): State => ({ ...INITIAL_STATE, gasPrice: state.gasPrice })
 };
 
 export const fields = createReducerFromObj(reducerObj, INITIAL_STATE);

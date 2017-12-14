@@ -3,7 +3,8 @@ import {
   NetworkContract,
   NodeConfig,
   CustomNodeConfig,
-  CustomNetworkConfig
+  CustomNetworkConfig,
+  Token
 } from 'config/data';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
@@ -28,6 +29,16 @@ export function getNetworkConfig(state: AppState): NetworkConfig | undefined {
 export function getNetworkContracts(state: AppState): NetworkContract[] | null {
   const network = getNetworkConfig(state);
   return network ? network.contracts : [];
+}
+
+export function getNetworkTokens(state: AppState): Token[] {
+  const network = getNetworkConfig(state);
+  return network ? network.tokens : [];
+}
+
+export function getAllTokens(state: AppState): Token[] {
+  const networkTokens = getNetworkTokens(state);
+  return networkTokens.concat(state.customTokens);
 }
 
 export function getGasPriceGwei(state: AppState): number {

@@ -2,11 +2,15 @@ import { TokenValue, Wei } from 'libs/units';
 import { Token } from 'config/data';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet } from 'libs/wallet';
+import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';
 import { isEtherTransaction, getUnit } from './transaction';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
+}
+
+export function getWalletConfig(state: AppState): WalletConfig | null | undefined {
+  return state.wallet.config;
 }
 
 export interface TokenBalance {
@@ -30,6 +34,17 @@ export function getTokens(state: AppState): MergedToken[] {
       return mergedToken;
     })
   ) as MergedToken[];
+}
+
+export function getWalletConfigTokens(state: AppState): MergedToken[] {
+  const tokens = getTokens(state);
+  const config = getWalletConfig(state);
+  if (!config || !config.tokens) {
+    return [];
+  }
+  return config.tokens
+    .map(symbol => tokens.find(t => t.symbol === symbol))
+    .filter(token => token) as MergedToken[];
 }
 
 export const getToken = (state: AppState, unit: string): MergedToken | undefined => {

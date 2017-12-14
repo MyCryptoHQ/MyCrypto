@@ -1,0 +1,18 @@
+@import 'common/sass/variables';
+
+.GenKeystore {
+  max-width: 40rem;
+
+  &-field {
+    margin-bottom: $space;
+
+    &-label {
+      margin: 0 0 $space * 0.5;
+    }
+  }
+
+  &-button {
+    max-width: 16rem;
+    margin: $space auto 0;
+  }
+}

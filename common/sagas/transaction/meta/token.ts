@@ -10,7 +10,7 @@ import { encodeTransfer } from 'libs/transaction/utils/token';
 import { getTokenValue } from 'selectors/transaction/meta';
 import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
-import { getTokenTo } from 'selectors/transaction';
+import { getTokenTo, getData } from 'selectors/transaction';
 
 export function* handleTokenTo({ payload }: SetTokenToMetaAction): SagaIterator {
   const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(getTokenValue);
@@ -25,10 +25,14 @@ export function* handleTokenTo({ payload }: SetTokenToMetaAction): SagaIterator 
 
 export function* handleTokenValue({ payload }: SetTokenValueMetaAction) {
   const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(getTokenTo);
+  const prevData = yield select(getData);
   if (!(tokenTo.value && payload.value)) {
     return;
   }
   const data = yield call(encodeTransfer, tokenTo.value, payload.value);
+  if (prevData.raw === bufferToHex(data)) {
+    return;
+  }
   yield put(setDataField({ raw: bufferToHex(data), value: data }));
 }
 
