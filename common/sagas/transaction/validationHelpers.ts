@@ -87,7 +87,7 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
  * @param {(Wei | null)} value
  * @returns {SagaIterator}
  */
-function* makeCostCalculationTx(
+export function* makeCostCalculationTx(
   value: AppState['transaction']['fields']['value']['value']
 ): SagaIterator {
   const gasLimit: AppState['transaction']['fields']['gasLimit'] = yield select(getGasLimit);

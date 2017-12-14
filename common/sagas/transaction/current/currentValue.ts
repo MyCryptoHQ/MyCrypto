@@ -13,7 +13,8 @@ import { toTokenBase } from 'libs/units';
 import { validateInput, IInput } from 'sagas/transaction/validationHelpers';
 import { TypeKeys as ConfigTK } from 'actions/config';
 import { validNumber } from 'libs/validators';
-function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
+
+export function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
 
   const unit: string = yield select(getUnit);
@@ -28,7 +29,7 @@ function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   yield put(setter({ raw: payload, value: isValid ? value : null }));
 }
 
-function* revalidateCurrentValue(): SagaIterator {
+export function* revalidateCurrentValue(): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
   const currVal: ICurrentValue = yield select(getCurrentValue);
   const reparsedValue: null | ICurrentValue = yield call(reparseCurrentValue, currVal);
@@ -41,7 +42,7 @@ function* revalidateCurrentValue(): SagaIterator {
   yield put(setter({ raw: reparsedValue.raw, value: isValid ? reparsedValue.value : null }));
 }
 
-function* reparseCurrentValue(value: IInput): SagaIterator {
+export function* reparseCurrentValue(value: IInput): SagaIterator {
   const decimal = yield select(getDecimal);
 
   if (validNumber(+value.raw)) {
