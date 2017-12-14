@@ -22,11 +22,15 @@
   }
 }
 
-// Align with inputs
 .input-group-addon {
-  padding: 0 $padding-base-horizontal;
+  font-size: 20px;
+  padding: 0px;
+  i {
+    padding: 8px 16px;
+  }
 }
 
+.input-group-addon,
 .input-group-btn {
   width: auto;
 }
