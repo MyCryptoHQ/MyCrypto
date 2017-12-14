@@ -3,15 +3,6 @@ import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
 import { getDataExists } from 'selectors/transaction';
-export {
-  getCurrentValue,
-  getCurrentTo,
-  ICurrentValue,
-  ICurrentTo,
-  isEtherTransaction,
-  isValidCurrentTo,
-  isValidAmount
-};
 
 interface ICurrentValue {
   raw: string;
@@ -59,4 +50,14 @@ const isValidAmount = (state: AppState) => {
   } else {
     return !!currentValue.value;
   }
+};
+
+export {
+  getCurrentValue,
+  getCurrentTo,
+  ICurrentValue,
+  ICurrentTo,
+  isEtherTransaction,
+  isValidCurrentTo,
+  isValidAmount
 };

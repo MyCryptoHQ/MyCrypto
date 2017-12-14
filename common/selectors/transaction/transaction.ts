@@ -7,11 +7,10 @@ import { getUnit } from 'selectors/transaction/meta';
 import { reduceToValues, isFullTx } from 'selectors/transaction/helpers';
 import { getGasPrice, getGasLimit } from 'selectors/transaction';
 import { Wei } from 'libs/units';
-export { getTransaction, getTransactionState, getGasCost };
 
 const getTransactionState = (state: AppState) => state.transaction;
 
-export interface IGetTransaction {
+interface IGetTransaction {
   transaction: EthTx;
   isFullTransaction: boolean; //if the user has filled all the fields
 }
@@ -38,3 +37,5 @@ const getGasCost = (state: AppState) => {
 
   return cost;
 };
+
+export { getTransaction, getTransactionState, getGasCost, IGetTransaction };
