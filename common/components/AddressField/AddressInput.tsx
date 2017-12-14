@@ -4,7 +4,7 @@ import translate from 'translations';
 //import { EnsAddress } from './components';
 import { Query } from 'components/renderCbs';
 import { donationAddressMap } from 'config/data';
-import { ICurrentTo, getCurrentTo, getDataExists, isValidCurrentTo } from 'selectors/transaction';
+import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 
@@ -21,7 +21,7 @@ type Props = OwnProps & StateProps;
 //TODO: ENS handling
 class AddressInputClass extends Component<Props> {
   public render() {
-    const { currentTo, onChange } = this.props;
+    const { currentTo, onChange, isValid } = this.props;
     const { raw } = currentTo;
     return (
       <div className="row form-group">
@@ -31,7 +31,7 @@ class AddressInputClass extends Component<Props> {
             params={['readOnly']}
             withQuery={({ readOnly }) => (
               <input
-                className={`form-control ${this.props.isValid ? 'is-valid' : 'is-invalid'}`}
+                className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
                 type="text"
                 value={raw}
                 placeholder={donationAddressMap.ETH}

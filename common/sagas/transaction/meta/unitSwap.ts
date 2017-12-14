@@ -2,7 +2,6 @@ import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { SetUnitMetaAction, TypeKeys } from 'actions/transaction';
 import {
-  getUnit,
   getTokenTo,
   getTokenValue,
   getTo,
@@ -11,7 +10,7 @@ import {
   getDecimalFromUnit
 } from 'selectors/transaction';
 import { getToken, MergedToken } from 'selectors/wallet';
-import { isEtherUnit, toTokenBase, TokenValue, Wei, Address, fromTokenBase } from 'libs/units';
+import { isEtherUnit, TokenValue, Address } from 'libs/units';
 import {
   swapTokenToEther,
   swapEtherToToken,
@@ -20,10 +19,9 @@ import {
 import { encodeTransfer } from 'libs/transaction';
 import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
-import { validNumber } from 'libs/validators';
 import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/validationHelpers';
 
-function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction) {
+function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
   const previousUnit: string = yield select(getPreviousUnit);
   const etherToEther = isEtherUnit(currentUnit) && isEtherUnit(previousUnit);
   const etherToToken = !isEtherUnit(currentUnit) && isEtherUnit(previousUnit);

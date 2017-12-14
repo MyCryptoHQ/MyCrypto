@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { UnitDisplay } from 'components/ui';
-import { Wei, fromWei, getDecimalFromEtherUnit, isEtherUnit } from 'libs/units';
+import { Wei, isEtherUnit } from 'libs/units';
 
 type TransactionState = AppState['transaction'];
 
