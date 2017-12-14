@@ -34,14 +34,24 @@ export default class Root extends Component<Props, {}> {
 
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
+
+            <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/account" component={SendTransaction}>
               <Route path="send" component={SendTransaction} />
               <Route path="info" component={SendTransaction} />
             </Route>
-            <Route path="/send-transaction" component={SendTransaction} />
+
             <Route path="/contracts" component={Contracts} />
+            <Route path="/contract" component={Contracts}>
+              <Route path="interact" component={Contracts} />
+              <Route path="deploy" component={Contracts} />
+            </Route>
+
             <Route path="/ens" component={ENS} />
-            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+            <Route path="/message" component={SignAndVerifyMessage}>
+              <Route path="sign" component={SendTransaction} />
+              <Route path="verify" component={SendTransaction} />
+            </Route>
             <Route path="/pushTx" component={BroadcastTx} />
             <LegacyRoutes />
           </div>
@@ -87,6 +97,9 @@ const LegacyRoutes = withRouter(props => {
       <Redirect from="/signmsg.html" to="/sign-and-verify-message" />
       <Redirect from="/helpers.html" to="/helpers" />
       <Redirect from="/send-transaction" to="/account/send" />
+      <Redirect from="/contracts" to="/contract/interact" />
+
+      <Redirect from="/sign-and-verify-message" to="/message/sign" />
     </Switch>
   );
 });
