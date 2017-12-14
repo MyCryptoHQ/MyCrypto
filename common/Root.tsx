@@ -26,6 +26,12 @@ export default class Root extends Component<Props, {}> {
         <Router history={history} key={Math.random()}>
           <div>
             <Route exact={true} path="/" component={GenerateWallet} />
+
+            <Route path="/generate" component={GenerateWallet}>
+              <Route path="keystore" />
+              <Route path="mnemonic" />
+            </Route>
+
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
             <Route path="/account" component={SendTransaction}>
