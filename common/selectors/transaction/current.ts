@@ -51,9 +51,6 @@ const isValidCurrentTo = (state: AppState) => {
 const isValidAmount = (state: AppState) => {
   const currentValue = getCurrentValue(state);
   const dataExists = getDataExists(state);
-  if (!currentValue.value) {
-    return false;
-  }
   if (isEtherTransaction(state)) {
     return !!currentValue.value || dataExists;
   } else {
