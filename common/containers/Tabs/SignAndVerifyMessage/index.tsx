@@ -1,57 +1,41 @@
 import React, { Component } from 'react';
-import translate from 'translations';
 import SignMessage from './components/SignMessage';
 import VerifyMessage from './components/VerifyMessage';
 import TabSection from 'containers/TabSection';
 import './index.scss';
 
-interface State {
-  activeTab: string;
+import SubTabs, { Tab } from 'components/SubTabs';
+
+interface Props {
+  location: any;
 }
 
-export default class SignAndVerifyMessage extends Component<{}, State> {
-  public state: State = {
-    activeTab: 'sign'
-  };
-
-  public changeTab = activeTab => () => this.setState({ activeTab });
-
+export default class SignAndVerifyMessage extends Component<Props, {}> {
   public render() {
-    const { activeTab } = this.state;
-    let content;
-    let signActive = '';
-    let verifyActive = '';
+    const { location } = this.props;
+    const activeTab = location.pathname.split('/')[2];
 
-    if (activeTab === 'sign') {
-      content = <SignMessage />;
-      signActive = 'is-active';
-    } else {
-      content = <VerifyMessage />;
-      verifyActive = 'is-active';
-    }
+    const tabs: Tab[] = [
+      {
+        path: 'sign',
+        name: 'Sign Message',
+        render() {
+          return <SignMessage />;
+        }
+      },
+      {
+        path: 'verify',
+        name: 'Verify Message',
+        render() {
+          return <VerifyMessage />;
+        }
+      }
+    ];
 
     return (
       <TabSection>
         <section className="Tab-content SignAndVerifyMsg">
-          <div className="Tab-content-pane">
-            <h1 className="SignAndVerifyMsg-header">
-              <button
-                className={`SignAndVerifyMsg-header-tab ${signActive}`}
-                onClick={this.changeTab('sign')}
-              >
-                {translate('Sign Message')}
-              </button>{' '}
-              <span>or</span>{' '}
-              <button
-                className={`SignAndVerifyMsg-header-tab ${verifyActive}`}
-                onClick={this.changeTab('verify')}
-              >
-                {translate('Verify Message')}
-              </button>
-            </h1>
-          </div>
-
-          <main role="main">{content}</main>
+          <SubTabs root="message" tabs={tabs} activeTab={activeTab} />
         </section>
       </TabSection>
     );
