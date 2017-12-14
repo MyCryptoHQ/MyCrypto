@@ -88,8 +88,8 @@ export default class MnemonicDecrypt extends Component<Props, State> {
     this.setState({ pass: (e.target as HTMLInputElement).value });
   };
 
-  public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    const phrase = (e.target as HTMLTextAreaElement).value;
+  public onMnemonicChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const phrase = e.currentTarget.value;
     const formattedPhrase = formatMnemonic(phrase);
 
     this.setState({
