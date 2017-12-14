@@ -2,6 +2,10 @@ dist: trusty
 sudo: required
 language: node_js
 
+cache:
+  directories:
+    - node_modules
+
 services:
   - docker
 
@@ -18,8 +22,6 @@ jobs:
   include:
     - stage: test
       script: npm run test
-    - stage: test
-      script: npm run test:int
     - stage: test
       script: npm run tslint
     - stage: test
