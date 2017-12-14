@@ -1,17 +1,11 @@
-// COMPONENTS
 import TabSection from 'containers/TabSection';
 import { SubTabs } from './components';
 import NavigationPrompt from './components/NavigationPrompt';
 import { OfflineAwareUnlockHeader } from 'components';
-// LIBS
 import React from 'react';
 import { Location } from 'history';
-// REDUX
 import { connect } from 'react-redux';
 import { resetWallet, TResetWallet } from 'actions/wallet';
-// UTILS
-//import { formatGasLimit } from 'utils/formatters';
-
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
 
@@ -28,14 +22,14 @@ interface DispatchProps {
   resetWallet: TResetWallet;
 }
 
-export type Props = StateProps & DispatchProps;
+type Props = StateProps & DispatchProps;
 
-export const initialState: State = {
+const initialState: State = {
   generateDisabled: true,
   generateTxProcessing: false
 };
 
-export class SendTransaction extends React.Component<Props, State> {
+class SendTransaction extends React.Component<Props, State> {
   public state: State = initialState;
 
   public render() {

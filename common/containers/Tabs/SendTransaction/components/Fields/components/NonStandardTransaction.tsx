@@ -11,8 +11,7 @@ class NonStandardTransactionClass extends Component<Props> {
   public render() {
     return this.props.isNonStandard ? (
       <h5 style={{ color: 'red' }}>
-        {' '}
-        This is a non standard transaction, no tokens or ether will be sent{' '}
+        This is a non standard transaction, no tokens or ether will be sent
       </h5>
     ) : null;
   }
