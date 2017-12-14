@@ -12,13 +12,13 @@ const expander = (expandHandler: ExpandHandler) => (
 
 export const DataField: React.SFC<{}> = () => (
   <DataFieldFactory
-    withProps={({ data: { raw, value }, onChange, readOnly }) => (
+    withProps={({ data: { raw }, dataExists, onChange, readOnly }) => (
       <Expandable expandLabel={expander}>
         <div className="form-group">
           <label>{translate('TRANS_data')}</label>
 
           <input
-            className={`form-control ${!!value && value.length > 0 ? 'is-valid' : 'is-invalid'}`}
+            className={`form-control ${dataExists ? 'is-valid' : 'is-invalid'}`}
             type="text"
             placeholder={donationAddressMap.ETH}
             value={raw}
