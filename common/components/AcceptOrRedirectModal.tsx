@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal, { IButton } from './ui/Modal';
+import { History, Location } from 'history';
+import { withRouter } from 'react-router-dom';
 
 interface Props {
   onConfirm?: any;
@@ -14,7 +16,16 @@ interface State {
   openModal: boolean;
 }
 
-export default class AcceptOrRedirectModal extends React.Component<Props, State> {
+interface InjectedProps extends Props {
+  location: Location;
+  history: History;
+}
+
+class AcceptOrRedirectModal extends React.Component<Props, State> {
+  get injected() {
+    return this.props as InjectedProps;
+  }
+
   public state = {
     openModal: true
   };
@@ -23,8 +34,7 @@ export default class AcceptOrRedirectModal extends React.Component<Props, State>
     if (this.props.onCancel) {
       this.props.onCancel();
     }
-    // TODO USE LOCATION
-    window.location.href = this.props.revertPath;
+    this.injected.history.push(this.props.revertPath);
   };
 
   public onConfirm = () => {
@@ -55,3 +65,5 @@ export default class AcceptOrRedirectModal extends React.Component<Props, State>
     );
   }
 }
+
+export default withRouter(AcceptOrRedirectModal);
