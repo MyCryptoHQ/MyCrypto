@@ -105,7 +105,7 @@ describe('formatMnemonic', () => {
     expect(formatMnemonic(testPhraseNewLines)).toEqual(formattedTestPhrase);
   })
 
-  it('should remove commas and replace space characters', () => {
+  it('should remove commas and replace with space characters', () => {
     expect(formatMnemonic(testPhraseCommas)).toEqual(formattedTestPhrase);
   })
 
