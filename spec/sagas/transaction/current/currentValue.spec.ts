@@ -1,12 +1,15 @@
-import { isEtherTransaction, getUnit, getDecimal } from 'selectors/transaction';
+import { isEtherTransaction, getUnit, getDecimal, getCurrentValue } from 'selectors/transaction';
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
 import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
-
-import { setCurrentValue } from 'sagas/transaction/current/currentValue';
+import {
+  setCurrentValue,
+  revalidateCurrentValue,
+  reparseCurrentValue
+} from 'sagas/transaction/current/currentValue';
 import { cloneableGenerator } from 'redux-saga/utils';
 
 const itShouldBeDone = gen => {
@@ -80,5 +83,125 @@ describe('setCurrentValue*', () => {
     });
 
     itShouldBeDone(gens.gen);
+  });
+});
+
+describe('revalidateCurrentValue*', () => {
+  const sharedLogic = (gen, etherTransaction, currVal, reparsedValue) => {
+    it('should select isEtherTransaction', () => {
+      expect(gen.next().value).toEqual(select(isEtherTransaction));
+    });
+
+    it('should select getCurrentValue', () => {
+      expect(gen.next(etherTransaction).value).toEqual(select(getCurrentValue));
+    });
+
+    it('should call reparseCurrentValue', () => {
+      expect(gen.next(currVal).value).toEqual(call(reparseCurrentValue, currVal));
+    });
+
+    it('should select getUnit', () => {
+      expect(gen.next(reparsedValue).value).toEqual(select(getUnit));
+    });
+  };
+
+  describe('when !reparsedValue', () => {
+    const etherTransaction = false;
+    const currVal = {
+      raw: 'raw1'
+    };
+    const reparsedValue = false;
+    const gen = revalidateCurrentValue();
+
+    sharedLogic(gen, etherTransaction, currVal, reparsedValue);
+
+    it('should put with setTokenValue', () => {
+      expect(gen.next().value).toEqual(
+        put(
+          setTokenValue({
+            raw: currVal.raw,
+            value: null
+          })
+        )
+      );
+    });
+
+    itShouldBeDone(gen);
+  });
+
+  describe('when reparsedValue', () => {
+    const etherTransaction = true;
+    const currVal = {
+      raw: 'raw1'
+    };
+    const reparsedValue = {
+      value: 'value',
+      raw: 'raw'
+    };
+    const unit = 'unit';
+    const isValid = true;
+    const gen = revalidateCurrentValue();
+
+    sharedLogic(gen, etherTransaction, currVal, reparsedValue);
+
+    it('should call validateInput', () => {
+      expect(gen.next(unit).value).toEqual(call(validateInput, reparsedValue.value, unit));
+    });
+
+    it('should put setValueField', () => {
+      expect(gen.next(isValid).value).toEqual(
+        put(
+          setValueField({
+            raw: reparsedValue.raw,
+            value: reparsedValue.value
+          })
+        )
+      );
+    });
+
+    itShouldBeDone(gen);
+  });
+});
+
+describe('reparseCurrentValue*', () => {
+  const sharedLogic = gen => {
+    it('should select getDecimal', () => {
+      expect(gen.next().value).toEqual(select(getDecimal));
+    });
+  };
+
+  describe('when valid number', () => {
+    const value: any = {
+      raw: '100.0000000'
+    };
+    const decimal = 5;
+    const gen = reparseCurrentValue(value);
+
+    sharedLogic(gen);
+
+    it('should return correctly', () => {
+      expect(gen.next().value).toEqual({
+        raw: value.raw,
+        value: toTokenBase(value.raw, decimal)
+      });
+    });
+
+    itShouldBeDone(gen);
+  });
+
+  describe('when invalid number', () => {
+    const value: any = {
+      raw: 'invalidNumber'
+    };
+    const decimal = 5;
+    const gen = reparseCurrentValue(value);
+
+    sharedLogic(gen);
+
+    it('should return null', () => {
+      expect(gen.next(decimal).value).toEqual(null);
+    });
+
+    itShouldBeDone(gen);
   });
 });
