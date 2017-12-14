@@ -32,16 +32,16 @@ export const isFullTx = (
       return validPartialParams;
     } else {
       // otherwise we require value
-      return validPartialParams && !!currentValue.value && !!to.value && !!currentTo.value;
+      return !!(validPartialParams && currentValue.value && to.value && currentTo.value);
     }
   } else {
-    return (
+    return !!(
       validPartialParams &&
-      !!data.value &&
+      data.value &&
       !value.value &&
       currentValue.value &&
-      !!to.value &&
-      !!currentTo.value
+      to.value &&
+      currentTo.value
     );
   }
 };

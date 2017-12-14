@@ -5,9 +5,9 @@ import { makeTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 import { getUnit } from 'selectors/transaction/meta';
 import { reduceToValues, isFullTx } from 'selectors/transaction/helpers';
-import { getGasPrice, getGasLimit } from 'selectors/transaction';
+import { getGasPrice, getGasLimit, getDataExists } from 'selectors/transaction';
 import { Wei } from 'libs/units';
-export { getTransaction, getTransactionState, getGasCost };
+export { getTransaction, getTransactionState, getGasCost, nonValueTransaction };
 
 const getTransactionState = (state: AppState) => state.transaction;
 
@@ -23,9 +23,16 @@ const getTransaction = (state: AppState): IGetTransaction => {
   const unit = getUnit(state);
   const reducedValues = reduceToValues(transactionFields);
   const transaction: EthTx = makeTransaction(reducedValues);
-  const isFullTransaction = !!isFullTx(transactionFields, currentTo, currentValue, unit);
+  const isFullTransaction = isFullTx(transactionFields, currentTo, currentValue, unit);
 
   return { transaction, isFullTransaction };
+};
+
+const nonValueTransaction = (state: AppState): boolean => {
+  const currentValue = getCurrentValue(state);
+  const { isFullTransaction } = getTransaction(state);
+  const dataExists = getDataExists(state);
+  return isFullTransaction && dataExists && !currentValue.value;
 };
 
 const getGasCost = (state: AppState) => {
