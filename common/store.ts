@@ -114,8 +114,7 @@ const configureStore = () => {
         },
         customTokens: state.customTokens
       });
-    }),
-    1000
+    }, 1000)
   );
 
   return store;

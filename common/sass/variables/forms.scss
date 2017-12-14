@@ -2,7 +2,7 @@ $input-bg: #fff;
 $input-bg-disabled: $gray-lightest;
 $input-color: #333333;
 $input-border: $gray-lighter;
-$input-border-focus: $brand-primary;
+$input-border-focus: rgba($brand-primary, 0.6);
 $input-color-placeholder: darken($gray-lighter, 10%);
 
 $input-height-base: 2.55rem;

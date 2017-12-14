@@ -87,7 +87,7 @@
     "lint-staged": "6.0.0",
     "minimist": "1.2.0",
     "node-sass": "4.7.2",
-    "nodemon": "1.12.5",
+    "nodemon": "1.12.7",
     "null-loader": "0.1.1",
     "prettier": "1.9.2",
     "progress": "2.0.0",
@@ -108,7 +108,7 @@
     "url-loader": "0.6.2",
     "url-search-params-polyfill": "2.0.1",
     "webpack": "3.10.0",
-    "webpack-dev-middleware": "1.12.2",
+    "webpack-dev-middleware": "2.0.1",
     "webpack-hot-middleware": "2.21.0",
     "webpack-sources": "1.0.1"
   },

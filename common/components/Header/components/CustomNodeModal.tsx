@@ -64,6 +64,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
         disabled: !!Object.keys(invalids).length
       },
       {
+        type: 'default',
         text: translate('x_Cancel'),
         onClick: handleClose
       }
@@ -79,16 +80,12 @@ export default class CustomNodeModal extends React.Component<Props, State> {
         handleClose={handleClose}
       >
         <div>
-          {isHttps && (
-            <div className="alert alert-warning small">
-              {translate('NODE_Warning')}
-            </div>
-          )}
+          {isHttps && <div className="alert alert-warning small">{translate('NODE_Warning')}</div>}
 
           {conflictedNode && (
             <div className="alert alert-warning small">
-              You already have a node called '{conflictedNode.name}' that
-              matches this one, saving this will overwrite it
+              You already have a node called '{conflictedNode.name}' that matches this one, saving
+              this will overwrite it
             </div>
           )}
 
@@ -309,9 +306,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     return {
       name: this.state.customNetworkName,
       unit: this.state.customNetworkUnit,
-      chainId: this.state.customNetworkChainId
-        ? parseInt(this.state.customNetworkChainId, 10)
-        : 0
+      chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0
     };
   }
 
@@ -322,9 +317,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       url: this.state.url.trim(),
       port: parseInt(this.state.port, 10),
       network:
-        network === CUSTOM
-          ? makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
-          : network
+        network === CUSTOM ? makeCustomNetworkId(this.makeCustomNetworkConfigFromState()) : network
     };
 
     if (this.state.hasAuth) {
@@ -344,9 +337,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
     return customNodes.find(conf => makeCustomNodeId(conf) === thisId);
   }
 
-  private handleChange = (
-    ev: React.FormEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  private handleChange = (ev: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = ev.currentTarget;
     this.setState({ [name as any]: value });
   };
