@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import translate from 'translations';
 import SignMessage from './components/SignMessage';
 import VerifyMessage from './components/VerifyMessage';
 import TabSection from 'containers/TabSection';
@@ -18,14 +19,14 @@ export default class SignAndVerifyMessage extends Component<Props, {}> {
     const tabs: Tab[] = [
       {
         path: 'sign',
-        name: 'Sign Message',
+        name: translate('NAV_SignMsg'),
         render() {
           return <SignMessage />;
         }
       },
       {
         path: 'verify',
-        name: 'Verify Message',
+        name: translate('MSG_verify'),
         render() {
           return <VerifyMessage />;
         }

@@ -27,10 +27,11 @@ export default class SubTabs extends React.Component<Props, State> {
     const { tabs, sideBar } = this.props;
     const activeTab = this.props.activeTab || tabs[0].path;
     const tab = tabs.find(t => t.path === activeTab) || tabs[0];
+    const columnSize = sideBar ? 8 : 12;
 
     return (
       <div className="SubTabs row">
-        <div className={'SubTabs-tabs' && sideBar ? ' col-sm-8' : ''}>
+        <div className={`SubTabs-tabs col-sm-${columnSize}`}>
           {tabs.map(t => (
             <Link
               className={classnames({
@@ -46,7 +47,7 @@ export default class SubTabs extends React.Component<Props, State> {
           ))}
         </div>
 
-        <main className={'SubTabs-content' && sideBar ? ' col-sm-8' : ''} key={tab.path}>
+        <main className={`SubTabs-content col-sm-${columnSize}`} key={tab.path}>
           {tab.render(this.props)}
         </main>
         {this.props.sideBar ? this.props.sideBar : null}

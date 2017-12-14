@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import translate from 'translations';
 import { Interact } from './components/Interact';
 import { Deploy } from './components/Deploy';
 import './index.scss';
@@ -46,7 +47,7 @@ export default class Contracts extends Component<Props, State> {
     return (
       <TabSection>
         <section className="Tab-content Contracts">
-          <SubTabs root="contract" tabs={tabs} activeTab={activeTab} />
+          <SubTabs root="contracts" tabs={tabs} activeTab={activeTab} />
         </section>
       </TabSection>
     );
