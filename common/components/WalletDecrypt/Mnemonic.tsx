@@ -35,9 +35,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
           <div className="form-group">
             <textarea
               id="aria-private-key"
-              className={`form-control ${isValidMnemonic
-                ? 'is-valid'
-                : 'is-invalid'}`}
+              className={`form-control ${isValidMnemonic ? 'is-valid' : 'is-invalid'}`}
               value={phrase}
               onChange={this.onMnemonicChange}
               placeholder={translateRaw('x_Mnemonic')}
@@ -86,7 +84,14 @@ export default class MnemonicDecrypt extends Component<Props, State> {
   };
 
   public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    this.setState({ phrase: (e.target as HTMLTextAreaElement).value });
+    this.setState({ phrase: this.formatMnemonic((e.target as HTMLTextAreaElement).value) });
+  };
+
+  public formatMnemonic = (phrase: string) => {
+    let splitString: string[] = new Array();
+    splitString = phrase.split(/\,|\:|\||\"|\;|\u2018|\u2019|\u201C|\u201D|\s{2,}/g);
+    splitString = splitString.filter(Boolean);
+    return splitString.join(' ');
   };
 
   public onDWModalOpen = () => {
