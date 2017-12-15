@@ -9,7 +9,8 @@ import {
   getGasPrice,
   getGasLimit,
   getDataExists,
-  getSerializedTransaction
+  getSerializedTransaction,
+  getValidGasCost
 } from 'selectors/transaction';
 import { Wei } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
@@ -36,7 +37,16 @@ const getTransaction = (state: AppState): IGetTransaction => {
   const unit = getUnit(state);
   const reducedValues = reduceToValues(transactionFields);
   const transaction: EthTx = makeTransaction(reducedValues);
-  const isFullTransaction = isFullTx(transactionFields, currentTo, currentValue, unit);
+  const dataExists = getDataExists(state);
+  const validGasCost = getValidGasCost(state);
+  const isFullTransaction = isFullTx(
+    transactionFields,
+    currentTo,
+    currentValue,
+    dataExists,
+    validGasCost,
+    unit
+  );
 
   return { transaction, isFullTransaction };
 };
