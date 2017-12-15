@@ -1,20 +1,18 @@
 import { configuredStore } from 'store';
 import RpcNode from 'libs/nodes/rpc';
 import {
-  broadcastTxSucceded,
   setBalanceFullfilled,
   setBalancePending,
   unlockPrivateKey as unlockPrivateKeyActionGen,
   unlockKeystore as unlockKeystoreActionGen,
-  unlockMnemonic as unlockMnemonicActionGen,
-  broadcastTx as broadcastTxActionGen
+  unlockMnemonic as unlockMnemonicActionGen
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
 import { initWeb3Node, Token, N_FACTOR } from 'config/data';
 import { apply, call, fork, put, select, take } from 'redux-saga/effects';
-import { getNetworkConfig, getNodeLib } from 'selectors/config';
+import { getNodeLib } from 'selectors/config';
 import { getTokens, getWalletInst } from 'selectors/wallet';
 import {
   updateAccountBalance,
@@ -23,8 +21,7 @@ import {
   unlockPrivateKey,
   unlockKeystore,
   unlockMnemonic,
-  unlockWeb3,
-  broadcastTx
+  unlockWeb3
 } from 'sagas/wallet';
 import { PrivKeyWallet } from 'libs/wallet/non-deterministic';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
@@ -316,45 +313,5 @@ describe('unlockWeb3*', () => {
 
   it('should match setWallet snapshot', () => {
     expect(data.gen.next(accounts).value).toMatchSnapshot();
-  });
-});
-
-describe('broadcastTx*', () => {
-  const signedTx = 'signedTx';
-  const txHash = 'txHash';
-  const action = broadcastTxActionGen(signedTx);
-  const gen = broadcastTx(action);
-  const networkConfig = {
-    blockExplorer: 'foo'
-  };
-  let random;
-
-  beforeAll(() => {
-    random = Math.random;
-    Math.random = jest.fn(() => 0.001);
-  });
-
-  afterAll(() => {
-    Math.random = random;
-  });
-
-  it('should select getNodeLib', () => {
-    expect(gen.next().value).toEqual(select(getNodeLib));
-  });
-
-  it('should select getNetworkConfig', () => {
-    expect(gen.next(node).value).toEqual(select(getNetworkConfig));
-  });
-
-  it('should apply node.sendRawTx', () => {
-    expect(gen.next(networkConfig).value).toEqual(apply(node, node.sendRawTx, [signedTx]));
-  });
-
-  it('should match put showNotifiction snapshot', () => {
-    expect(gen.next(txHash).value).toMatchSnapshot();
-  });
-
-  it('should put broadcastTxSucceded', () => {
-    expect(gen.next().value).toEqual(put(broadcastTxSucceded(txHash, signedTx)));
   });
 });
