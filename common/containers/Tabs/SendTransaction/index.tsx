@@ -31,35 +31,17 @@ import {
 import { UnitKey, Wei, getDecimal, toWei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 // LIBS
-import {
-  IWallet,
-  Balance,
-  Web3Wallet,
-  LedgerWallet,
-  TrezorWallet
-} from 'libs/wallet';
+import { IWallet, Balance, Web3Wallet, LedgerWallet, TrezorWallet } from 'libs/wallet';
 import pickBy from 'lodash/pickBy';
 import React from 'react';
 // REDUX
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import {
-  broadcastTx,
-  TBroadcastTx,
-  resetWallet,
-  TResetWallet
-} from 'actions/wallet';
-import {
-  pollOfflineStatus as dPollOfflineStatus,
-  TPollOfflineStatus
-} from 'actions/config';
+import { broadcastTx, TBroadcastTx, resetWallet, TResetWallet } from 'actions/wallet';
+import { pollOfflineStatus as dPollOfflineStatus, TPollOfflineStatus } from 'actions/config';
 // SELECTORS
-import {
-  getGasPriceGwei,
-  getNetworkConfig,
-  getNodeLib
-} from 'selectors/config';
+import { getGasPriceGwei, getNetworkConfig, getNodeLib } from 'selectors/config';
 import {
   getTokenBalances,
   getTokens,
@@ -264,9 +246,7 @@ export class SendTransaction extends React.Component<Props, State> {
     const { offline, forceOffline, balance } = this.props;
     const customMessage = customMessages.find(m => m.to === to);
     const decimal =
-      unit === 'ether'
-        ? getDecimal('ether')
-        : (this.state.token && this.state.token.decimal) || 0;
+      unit === 'ether' ? getDecimal('ether') : (this.state.token && this.state.token.decimal) || 0;
     const isWeb3Wallet = this.props.wallet instanceof Web3Wallet;
     const isLedgerWallet = this.props.wallet instanceof LedgerWallet;
     const isTrezorWallet = this.props.wallet instanceof TrezorWallet;
@@ -277,9 +257,7 @@ export class SendTransaction extends React.Component<Props, State> {
             title={
               <div>
                 {translate('NAV_SendEther')}
-                {offline || forceOffline ? (
-                  <span style={{ color: 'red' }}> (Offline)</span>
-                ) : null}
+                {offline || forceOffline ? <span style={{ color: 'red' }}> (Offline)</span> : null}
               </div>
             }
             allowReadOnly={true}
@@ -314,24 +292,14 @@ export class SendTransaction extends React.Component<Props, State> {
                       isReadOnly={readOnly}
                       onUnitChange={this.onUnitChange}
                     />
-                    <GasField
-                      value={gasLimit}
-                      onChange={readOnly ? void 0 : this.onGasChange}
-                    />
+                    <GasField value={gasLimit} onChange={readOnly ? void 0 : this.onGasChange} />
                     {(offline || forceOffline) && (
                       <div>
-                        <NonceField
-                          value={nonce}
-                          onChange={this.onNonceChange}
-                          placeholder={'0'}
-                        />
+                        <NonceField value={nonce} onChange={this.onNonceChange} placeholder={'0'} />
                       </div>
                     )}
                     {unit === 'ether' && (
-                      <DataField
-                        value={data}
-                        onChange={readOnly ? void 0 : this.onDataChange}
-                      />
+                      <DataField value={data} onChange={readOnly ? void 0 : this.onDataChange} />
                     )}
                     <CustomMessage message={customMessage} />
 
@@ -341,9 +309,7 @@ export class SendTransaction extends React.Component<Props, State> {
                           disabled={this.state.generateDisabled}
                           className="btn btn-info btn-block"
                           onClick={
-                            isWeb3Wallet
-                              ? this.generateWeb3TxFromState
-                              : this.generateTxFromState
+                            isWeb3Wallet ? this.generateWeb3TxFromState : this.generateTxFromState
                           }
                         >
                           {isWeb3Wallet
@@ -392,17 +358,12 @@ export class SendTransaction extends React.Component<Props, State> {
                             />
                             {offline && (
                               <p>
-                                To broadcast this transaction, paste the above
-                                into{' '}
+                                To broadcast this transaction, paste the above into{' '}
                                 <a href="https://myetherwallet.com/pushTx">
                                   {' '}
                                   myetherwallet.com/pushTx
                                 </a>{' '}
-                                or{' '}
-                                <a href="https://etherscan.io/pushTx">
-                                  {' '}
-                                  etherscan.io/pushTx
-                                </a>
+                                or <a href="https://etherscan.io/pushTx"> etherscan.io/pushTx</a>
                               </p>
                             )}
                           </div>
@@ -432,9 +393,7 @@ export class SendTransaction extends React.Component<Props, State> {
                 <main className="col-sm-8">
                   <div className="Tab-content-pane">
                     <h4>Sorry...</h4>
-                    <p>
-                      MetaMask / Mist wallets are not available in offline mode.
-                    </p>
+                    <p>MetaMask / Mist wallets are not available in offline mode.</p>
                   </div>
                 </main>
               )}
@@ -579,23 +538,14 @@ export class SendTransaction extends React.Component<Props, State> {
     this.setState({ gasLimit: value, gasChanged: true });
   };
 
-  public handleEverythingAmountChange = (
-    value: string,
-    unit: string
-  ): string => {
+  public handleEverythingAmountChange = (value: string, unit: string): string => {
     if (unit === 'ether') {
       const { balance, gasPrice } = this.props;
       const { gasLimit } = this.state;
       const bigGasLimit = Wei(gasLimit);
-      value = getBalanceMinusGasCosts(
-        bigGasLimit,
-        gasPrice,
-        balance.wei
-      ).toString();
+      value = getBalanceMinusGasCosts(bigGasLimit, gasPrice, balance.wei).toString();
     } else {
-      const tokenBalance = this.props.tokenBalances.find(
-        tBalance => tBalance.symbol === unit
-      );
+      const tokenBalance = this.props.tokenBalances.find(tBalance => tBalance.symbol === unit);
       if (!tokenBalance) {
         throw new Error(`${unit}: not found in token balances;`);
       }
@@ -673,10 +623,7 @@ export class SendTransaction extends React.Component<Props, State> {
       if (network.blockExplorer !== undefined) {
         this.props.showNotification(
           'success',
-          <TransactionSucceeded
-            txHash={txHash}
-            blockExplorer={network.blockExplorer}
-          />,
+          <TransactionSucceeded txHash={txHash} blockExplorer={network.blockExplorer} />,
           0
         );
       }

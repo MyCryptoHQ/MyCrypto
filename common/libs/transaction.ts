@@ -2,7 +2,6 @@ import { Token } from 'config/data';
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, padToEven, toChecksumAddress } from 'ethereumjs-util';
 import ERC20 from 'libs/erc20';
-import { TransactionWithoutGas } from 'libs/messages';
 import { RPCNode } from 'libs/nodes';
 import { INode } from 'libs/nodes/INode';
 import { UnitKey, Wei, TokenValue, toTokenBase } from 'libs/units';
@@ -71,10 +70,7 @@ export function getTransactionFields(tx: EthTx) {
   };
 }
 
-function getValue(
-  token: Token | null | undefined,
-  tx: ExtendedRawTransaction
-): Wei {
+function getValue(token: Token | null | undefined, tx: ExtendedRawTransaction): Wei {
   let value;
   if (token) {
     value = Wei(ERC20.$transfer(tx.data).value);
@@ -93,10 +89,7 @@ async function getBalance(
   const ETHBalance = await node.getBalance(from);
   let balance: Wei;
   if (token) {
-    balance = toTokenBase(
-      await node.getTokenBalance(tx.from, token).toString(),
-      token.decimal
-    );
+    balance = toTokenBase(await node.getTokenBalance(tx.from, token).toString(), token.decimal);
   } else {
     balance = ETHBalance;
   }
@@ -159,9 +152,7 @@ function generateTxValidation(
   // Reject gasPrice over 1000gwei (1000000000000)
   const gwei = Wei('1000000000000');
   if (gasPrice.gt(gwei)) {
-    throw new Error(
-      'Gas price too high. Please contact support if this was not a mistake.'
-    );
+    throw new Error('Gas price too high. Please contact support if this was not a mistake.');
   }
 }
 
@@ -215,12 +206,12 @@ export async function generateCompleteTransactionFromRawTransaction(
 export async function formatTxInput(
   wallet: IFullWallet,
   { token, unit, value, to, data }: TransactionInput
-): Promise<TransactionWithoutGas> {
+): Promise<{ to: string; from: string; value: string; data: string }> {
   if (unit === 'ether') {
     return {
       to,
       from: await wallet.getAddressString(),
-      value: toHexWei(value), //turn users ether to wei
+      value: toHexWei(value), // turn users ether to wei
       data
     };
   } else {
@@ -246,10 +237,7 @@ export async function confirmAndSendWeb3Transaction(
   chainId: number,
   transactionInput: TransactionInput
 ): Promise<string> {
-  const { from, to, value, data } = await formatTxInput(
-    wallet,
-    transactionInput
-  );
+  const { from, to, value, data } = await formatTxInput(wallet, transactionInput);
   const transaction: ExtendedRawTransaction = {
     nonce: await nodeLib.getTransactionCount(from),
     from,
@@ -276,10 +264,7 @@ export async function generateCompleteTransaction(
   offline?: boolean
 ): Promise<CompleteTransaction> {
   const { token } = transactionInput;
-  const { from, to, value, data } = await formatTxInput(
-    wallet,
-    transactionInput
-  );
+  const { from, to, value, data } = await formatTxInput(wallet, transactionInput);
   const transaction: ExtendedRawTransaction = {
     nonce: nonce ? `0x${nonce}` : await nodeLib.getTransactionCount(from),
     from,
@@ -301,20 +286,14 @@ export async function generateCompleteTransaction(
 }
 
 // TODO determine best place for helper function
-export function getBalanceMinusGasCosts(
-  gasLimit: Wei,
-  gasPrice: Wei,
-  balance: Wei
-): Wei {
+export function getBalanceMinusGasCosts(gasLimit: Wei, gasPrice: Wei, balance: Wei): Wei {
   const weiGasCosts = gasPrice.mul(gasLimit);
   const weiBalanceMinusGasCosts = balance.sub(weiGasCosts);
   return Wei(weiBalanceMinusGasCosts);
 }
 
 export function decodeTransaction(transaction: EthTx, token: Token | false) {
-  const { to, value, data, gasPrice, nonce, from } = getTransactionFields(
-    transaction
-  );
+  const { to, value, data, gasPrice, nonce, from } = getTransactionFields(transaction);
   let fixedValue: TokenValue;
   let toAddress;
 
