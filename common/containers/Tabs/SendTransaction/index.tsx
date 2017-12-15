@@ -1,6 +1,5 @@
 import TabSection from 'containers/TabSection';
 import { SubTabs } from './components';
-import NavigationPrompt from './components/NavigationPrompt';
 import { OfflineAwareUnlockHeader } from 'components';
 import React from 'react';
 import { Location } from 'history';
@@ -40,10 +39,7 @@ class SendTransaction extends React.Component<Props, State> {
       <TabSection>
         <section className="Tab-content">
           <OfflineAwareUnlockHeader />
-
           {wallet && <SubTabs wallet={wallet} activeTab={wallet.isReadOnly ? 'info' : activeTab} />}
-
-          <NavigationPrompt when={!!wallet} onConfirm={this.props.resetWallet} />
         </section>
       </TabSection>
     );

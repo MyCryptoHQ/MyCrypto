@@ -35,6 +35,10 @@ const tabs = [
     to: '/pushTx'
   },
   {
+    name: 'NAV_Utilities',
+    to: 'utilities'
+  },
+  {
     name: 'NAV_Help',
     to: `${knowledgeBaseURL}`,
     external: true
