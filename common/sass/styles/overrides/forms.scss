@@ -6,6 +6,7 @@
 }
 
 label {
+  display: block;
   margin-bottom: $space-xs;
   font-size: $font-size-bump-more;
 
@@ -36,6 +37,8 @@ input[readonly] {
 .form-control {
   padding: 8px 16px;
   height: auto;
+  margin-top: $space-sm;
+  margin-bottom: $space-sm;
   transition: $transition;
 
   &:focus {
