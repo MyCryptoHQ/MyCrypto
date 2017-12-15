@@ -19,7 +19,7 @@ const signLocalTransaction = signTransactionWrapper(function*({
 }: IFullWalletAndTransaction): SagaIterator {
   const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
-  yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash }));
+  yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash, noVerify: false }));
 });
 
 const signWeb3Transaction = signTransactionWrapper(function*({
@@ -44,13 +44,16 @@ const signWeb3Transaction = signTransactionWrapper(function*({
  * @returns {SagaIterator}
  */
 function* verifyTransaction({
-  type
+  type,
+  payload: { noVerify }
 }: SignWeb3TransactionSucceededAction | SignLocalTransactionSucceededAction): SagaIterator {
-  // get the chainId
-
+  if (noVerify) {
+    return;
+  }
   const transactionsMatch: boolean = yield select(
     serializedAndTransactionFieldsMatch,
-    type === TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED
+    type === TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+    noVerify
   );
   if (!transactionsMatch) {
     yield put(
