@@ -1,6 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
+import { knowledgeBaseURL } from 'config/data';
 
 const Help = () => (
   <TabSection>
@@ -17,20 +18,14 @@ const Help = () => (
                       href="https://www.reddit.com/r/ethereum/comments/47nkoi/psa_check_your_ethaddressorg_wallets_and_any/d0eo45o"
                       target="_blank"
                     >
-                      <span className="text-danger">
-                        {translate('HELP_Warning')}
-                      </span>
+                      <span className="text-danger">{translate('HELP_Warning')}</span>
                     </a>
                   </h3>
                 </li>
                 <li>
                   <h3>
-                    This page is deprecated. Please check out our more
-                    up-to-date and searchable{' '}
-                    <a
-                      href="https://myetherwallet.groovehq.com/help_center"
-                      target="_blank"
-                    >
+                    This page is deprecated. Please check out our more up-to-date and searchable{' '}
+                    <a href={knowledgeBaseURL} target="_blank">
                       Knowledge Base.{' '}
                     </a>
                   </h3>

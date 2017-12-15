@@ -9,6 +9,10 @@ export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
 }
 
+export function isWalletFullyUnlocked(state: AppState): boolean | null | undefined {
+  return state.wallet.inst && !state.wallet.inst.isReadOnly;
+}
+
 export interface TokenBalance {
   symbol: string;
   balance: TokenValue;
@@ -42,9 +46,7 @@ export function getTokenBalances(state: AppState): TokenBalance[] {
     balance: state.wallet.tokens[t.symbol]
       ? state.wallet.tokens[t.symbol].balance
       : TokenValue('0'),
-    error: state.wallet.tokens[t.symbol]
-      ? state.wallet.tokens[t.symbol].error
-      : null,
+    error: state.wallet.tokens[t.symbol] ? state.wallet.tokens[t.symbol].error : null,
     custom: t.custom,
     decimal: t.decimal
   }));
@@ -62,8 +64,6 @@ export function getTxFromBroadcastTransactionStatus(
   transactions: BroadcastTransactionStatus[],
   signedTx: string
 ): BroadcastTransactionStatus | null {
-  const tx = transactions.find(
-    transaction => transaction.signedTx === signedTx
-  );
+  const tx = transactions.find(transaction => transaction.signedTx === signedTx);
   return tx || null;
 }

@@ -6,12 +6,15 @@ import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
-import FullWalletOnly from 'components/renderCbs/FullWalletOnly';
+import { AppState } from 'reducers';
 import SignButton from './SignButton';
+import { isWalletFullyUnlocked } from 'selectors/wallet';
 import './index.scss';
 
 interface Props {
   showNotification: TShowNotification;
+  wallet: IFullWallet;
+  unlocked: boolean;
 }
 
 interface State {
@@ -31,8 +34,8 @@ export class SignMessage extends Component<Props, State> {
   public state: State = initialState;
 
   public render() {
+    const { wallet, unlocked } = this.props;
     const { message, signedMessage } = this.state;
-
     const messageBoxClass = classnames([
       'SignMessage-inputBox',
       'form-control',
@@ -53,10 +56,15 @@ export class SignMessage extends Component<Props, State> {
             <div className="SignMessage-help">{translate('MSG_info2')}</div>
           </div>
 
-          <FullWalletOnly
-            withFullWallet={this.renderSignButton}
-            withoutFullWallet={this.renderUnlock}
-          />
+          {unlocked && (
+            <SignButton
+              wallet={wallet}
+              message={this.state.message}
+              showNotification={this.props.showNotification}
+              onSignMessage={this.onSignMessage}
+            />
+          )}
+          <WalletDecrypt hidden={unlocked} />
 
           {!!signedMessage && (
             <div>
@@ -84,21 +92,11 @@ export class SignMessage extends Component<Props, State> {
   private onSignMessage = (signedMessage: ISignedMessage) => {
     this.setState({ signedMessage });
   };
-
-  private renderSignButton = (fullWallet: IFullWallet) => {
-    return (
-      <SignButton
-        wallet={fullWallet}
-        message={this.state.message}
-        showNotification={this.props.showNotification}
-        onSignMessage={this.onSignMessage}
-      />
-    );
-  };
-
-  private renderUnlock() {
-    return <WalletDecrypt />;
-  }
 }
 
-export default connect(null, { showNotification })(SignMessage);
+const mapStateToProps = (state: AppState) => ({
+  wallet: state.wallet.inst,
+  unlocked: isWalletFullyUnlocked(state)
+});
+
+export default connect(mapStateToProps, { showNotification })(SignMessage);
