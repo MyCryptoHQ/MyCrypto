@@ -4,8 +4,8 @@ icons Web Font - nucleoapp.com/
 License - nucleoapp.com/license/
 
 -------------------------------- */
-@import 'variables';
-@import 'mixins';
+@import "variables";
+@import "mixins";
 
 @font-face {
   font-family: 'icons';
@@ -23,7 +23,6 @@ License - nucleoapp.com/license/
 	base class definition
 -------------------------*/
 
-// Font sizes is inherited by parent
 .nc-icon {
   display: inline-block;
   font: normal normal normal #{$nc-font-size-base}/1 'icons';
@@ -33,6 +32,7 @@ License - nucleoapp.com/license/
   /* Better Font Rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 /*------------------------
@@ -40,16 +40,16 @@ License - nucleoapp.com/license/
 -------------------------*/
 
 .nc-icon.lg {
-  font-size: 1.33333333em;
-  vertical-align: -16%;
+	font-size: 1.33333333em;
+  	vertical-align: -16%;
 }
 
 .nc-icon.x2 {
-  font-size: 2em;
+	font-size: 2em;
 }
 
 .nc-icon.x3 {
-  font-size: 3em;
+	font-size: 3em;
 }
 
 /*----------------------------------
@@ -145,23 +145,23 @@ License - nucleoapp.com/license/
   rotated/flipped icons
 -------------------------*/
 
-.nc-icon.rotate-90 {
-  @include nc-rotate(90deg, 1);
+.nc-icon.rotate-90  {
+	@include nc-rotate(90deg, 1);
 }
 
 .nc-icon.rotate-180 {
-  @include nc-rotate(180deg, 2);
+	@include nc-rotate(180deg, 2);
 }
 
 .nc-icon.rotate-270 {
-  @include nc-rotate(270deg, 3);
+	@include nc-rotate(270deg, 3);
 }
 
 .nc-icon.flip-y {
-  @include nc-flip(-1, 1, 0);
+	@include nc-flip(-1, 1, 0);
 }
 .nc-icon.flip-x {
-  @include nc-flip(1, -1, 2);
+	@include nc-flip(1, -1, 2);
 }
 
-@import 'icons';
+@import "icons";

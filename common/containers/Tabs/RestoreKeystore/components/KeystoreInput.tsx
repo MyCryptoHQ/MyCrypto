@@ -30,7 +30,7 @@ const KeystoreInput: React.SFC<Props> = ({
       onChange={handleInput}
     />
     <span onClick={handleToggle} role="button" className="input-group-addon">
-      <i className={`nc-icon nc-eye-${isVisible ? '19' : 'ban-20'}`} />
+      <i className={`nc-icon nc-eye${isVisible ? '' : '-closed'}`} style={{ color: '#999' }} />
     </span>
   </div>
 );

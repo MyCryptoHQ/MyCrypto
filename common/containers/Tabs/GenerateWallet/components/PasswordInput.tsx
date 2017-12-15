@@ -38,7 +38,10 @@ export default class PasswordInput extends Component<Props, {}> {
               role="button"
               className="input-group-addon"
             >
-              <i className={`nc-icon nc-eye-${isPasswordVisible ? '19' : 'ban-20'}`} />
+              <i
+                className={`nc-icon nc-eye${isPasswordVisible ? '' : '-closed'}`}
+                style={{ color: '#999' }}
+              />
             </span>
           </div>
         </div>
