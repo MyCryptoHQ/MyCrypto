@@ -6,6 +6,8 @@
   overflow-y: hidden;
   border-top: .25rem solid $brand-primary;
   transition: border 300ms ease;
+  background: #fff;
+  border-bottom: 1px solid #eee;
 
   &-scroll {
     -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -14,16 +16,16 @@
     margin-bottom: -20px;
     font-size: 0;
     white-space: nowrap;
+
     @media screen and (max-width: $screen-sm) {
-      margin: 0 -5% -20px;
+      padding: 0;
     }
   }
 
   &-links {
-    border-bottom: 2px solid #fff;
     display: inline-block;
     font-size: 0;
-    margin-bottom: 20px;
+    margin-bottom: 21px;
     min-width: 100%;
     padding: 5px 0 0;
     vertical-align: middle;

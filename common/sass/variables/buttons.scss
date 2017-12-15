@@ -1,8 +1,10 @@
+@import "./colors";
+
 $btn-font-weight: normal;
 
-$btn-default-color: #222;
-$btn-default-bg: #c3c3c3;
-$btn-default-border: #bdbdbd;
+$btn-default-color: #333;
+$btn-default-bg: #fff;
+$btn-default-border: #ccc;
 
 $btn-primary-color: #fff;
 $btn-primary-bg: $brand-primary;
@@ -26,6 +28,6 @@ $btn-danger-border: $btn-danger-bg;
 
 $btn-link-disabled-color: $gray-light;
 
-$btn-border-radius-base: 0px;
-$btn-border-radius-large: 0px;
-$btn-border-radius-small: 0px;
+$btn-border-radius-base: 2px;
+$btn-border-radius-large: 2px;
+$btn-border-radius-small: 2px;

@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  forceOfflineConfig as dForceOfflineConfig,
-  TForceOfflineConfig
-} from 'actions/config';
+import { forceOfflineConfig as dForceOfflineConfig, TForceOfflineConfig } from 'actions/config';
 import OfflineSymbol from 'components/ui/OfflineSymbol';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -24,10 +21,10 @@ class OfflineToggle extends React.Component<OfflineToggleProps, {}> {
       <div>
         {!offline ? (
           <div className="row text-center">
-            <div className="col-md-3">
+            <div className="col-xs-3">
               <OfflineSymbol offline={offline || forceOffline} size={size} />
             </div>
-            <div className="col-md-6">
+            <div className="col-xs-6">
               <button className="btn-xs btn-info" onClick={forceOfflineConfig}>
                 {forceOffline ? 'Go Online' : 'Go Offline'}
               </button>

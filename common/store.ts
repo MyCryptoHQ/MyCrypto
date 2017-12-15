@@ -1,18 +1,18 @@
 import throttle from 'lodash/throttle';
 import { routerMiddleware } from 'react-router-redux';
-import { INITIAL_STATE as configInitialState } from 'reducers/config';
+import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+import {
+  State as CustomTokenState,
+  INITIAL_STATE as customTokensInitialState
+} from 'reducers/customTokens';
 import { INITIAL_STATE as transactionInitialState } from 'reducers/transaction';
-import { INITIAL_STATE as customTokensInitialState } from 'reducers/customTokens';
-import { INITIAL_STATE as swapInitialState } from 'reducers/swap';
+import { State as SwapState, INITIAL_STATE as swapInitialState } from 'reducers/swap';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer from './reducers';
-import { State as ConfigState } from './reducers/config';
-import { State as CustomTokenState } from './reducers/customTokens';
-import { State as SwapState } from './reducers/swap';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 
@@ -119,7 +119,11 @@ const configureStore = () => {
           customNetworks: state.config.customNetworks
         },
         transaction: state.transaction,
-        swap: { ...state.swap, bityRates: {} },
+        swap: {
+          ...state.swap,
+          options: {},
+          bityRates: {}
+        },
         customTokens: state.customTokens
       });
     }, 1000)

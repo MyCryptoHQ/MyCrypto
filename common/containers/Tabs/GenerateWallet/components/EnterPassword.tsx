@@ -6,6 +6,7 @@ import { MINIMUM_PASSWORD_LENGTH } from 'config/data';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from './Template';
+import { knowledgeBaseURL } from 'config/data';
 
 interface Props {
   generateNewWallet(pw: string): GenerateNewWalletAction;
@@ -93,7 +94,7 @@ export default class EnterPassword extends Component<Props, State> {
           <li>
             <strong>
               <a
-                href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-create-a-new-wallet"
+                href={`${knowledgeBaseURL}/getting-started/creating-a-new-wallet-on-myetherwallet`}
                 target="_blank"
                 rel="noopener"
               >
@@ -104,7 +105,7 @@ export default class EnterPassword extends Component<Props, State> {
           <li>
             <strong>
               <a
-                href="https://myetherwallet.groovehq.com/knowledge_base/categories/getting-started-443"
+                href={`${knowledgeBaseURL}/getting-started/getting-started-new`}
                 target="_blank"
                 rel="noopener"
               >

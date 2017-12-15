@@ -126,7 +126,7 @@ export default class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version">v{VERSION}</span>
+              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
 
               <div className="Header-branding-right-dropdown">
                 <GasPriceDropdown
