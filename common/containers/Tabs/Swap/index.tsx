@@ -151,8 +151,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       outputTx
     };
 
-    const { ETHBTC, ETHREP, BTCETH, BTCREP } = bityRates.byId;
-    const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP };
+    const CurrentRatesProps = bityRates.byId ? { ...bityRates.byId } : {};
 
     return (
       <TabSection>
