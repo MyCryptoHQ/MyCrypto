@@ -13,7 +13,7 @@ import {
   estimateGasRequested
 } from 'actions/transaction';
 import { IWallet } from 'libs/wallet';
-import { makeTransaction, getTransactionFields } from 'libs/transaction';
+import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { showNotification } from 'actions/notifications';
 
 function* shouldEstimateGas(): SagaIterator {
@@ -25,12 +25,13 @@ function* shouldEstimateGas(): SagaIterator {
       TypeKeys.TOKEN_TO_TOKEN_SWAP,
       TypeKeys.TOKEN_TO_ETHER_SWAP
     ]);
+
     const { transaction }: IGetTransaction = yield select(getTransaction);
-    const { gasLimit, gasPrice, nonce, chainId, ...rest } = yield call(
+
+    const { gasLimit, gasPrice, nonce, chainId, ...rest }: IHexStrTransaction = yield call(
       getTransactionFields,
       transaction
     );
-
     yield put(estimateGasRequested(rest));
   }
 }
@@ -40,8 +41,8 @@ function* estimateGas(): SagaIterator {
 
   while (true) {
     const { payload }: EstimateGasRequestedAction = yield take(requestChan);
-    // debounce 500 ms
-    yield call(delay, 500);
+    // debounce 1000 ms
+    yield call(delay, 1000);
     const node: INode = yield select(getNodeLib);
     const walletInst: IWallet = yield select(getWalletInst);
     try {
@@ -50,8 +51,7 @@ function* estimateGas(): SagaIterator {
       const gasLimit = yield apply(node, node.estimateGas, [txObj]);
       yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
       yield put(estimateGasSucceeded());
-    } catch {
-      //TODO: display notif
+    } catch (e) {
       yield put(
         showNotification(
           'warning',
@@ -59,6 +59,7 @@ function* estimateGas(): SagaIterator {
         )
       );
       yield put(estimateGasFailed());
+      console.error(e);
       // fallback for estimating locally
       const tx = yield call(makeTransaction, payload);
       const gasLimit = yield apply(tx, tx.getBaseFee);
