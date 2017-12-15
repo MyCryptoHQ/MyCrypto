@@ -9,7 +9,7 @@ import './UnlockHeader.scss';
 interface Props {
   title: React.ReactElement<any>;
   wallet: IWallet;
-  allowReadOnly?: boolean;
+  allowReadOnly: boolean;
 }
 interface State {
   isExpanded: boolean;

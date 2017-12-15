@@ -5,8 +5,11 @@ import { isAnyOffline } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 
-export const OfflineAwareUnlockHeader: React.SFC<{}> = () => (
-  <UnlockHeader title={<Title />} allowReadOnly={true} />
+interface Props {
+  allowReadOnly: boolean;
+}
+export const OfflineAwareUnlockHeader: React.SFC<Props> = ({ allowReadOnly }) => (
+  <UnlockHeader title={<Title />} allowReadOnly={allowReadOnly} />
 );
 
 interface StateProps {

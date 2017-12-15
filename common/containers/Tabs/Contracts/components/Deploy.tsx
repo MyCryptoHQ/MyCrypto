@@ -10,19 +10,14 @@ import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
 import { setToField, TSetToField } from 'actions/transaction';
 import { connect } from 'react-redux';
-import { isUnlocked } from 'selectors/wallet';
-import { AppState } from 'reducers';
 import { Aux } from 'components/ui';
+import { OnlyUnlocked } from 'components/renderCbs';
 
 interface DispatchProps {
   setToField: TSetToField;
 }
 
-interface StateProps {
-  unlocked: boolean;
-}
-
-class DeployClass extends Component<DispatchProps & StateProps> {
+class DeployClass extends Component<DispatchProps> {
   public render() {
     const content = (
       <div className="Deploy">
@@ -86,12 +81,13 @@ class DeployClass extends Component<DispatchProps & StateProps> {
 
     return (
       <Aux>
-        <OfflineAwareUnlockHeader /> {this.props.unlocked && content}
+        <OfflineAwareUnlockHeader allowReadOnly={false} />
+        <OnlyUnlocked whenUnlocked={content} />
       </Aux>
     );
   }
 }
 
-export const Deploy = connect((state: AppState) => ({ unlocked: isUnlocked(state) }), {
+export const Deploy = connect(null, {
   setToField
 })(DeployClass);
