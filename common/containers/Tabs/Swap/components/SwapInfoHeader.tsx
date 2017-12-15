@@ -11,6 +11,7 @@ export interface SwapInfoHeaderProps {
   destination: SwapInput;
   reference: string;
   secondsRemaining: number | null;
+  provider: string;
   restartSwap(): RestartSwapAction;
 }
 
@@ -51,10 +52,14 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
 
   public render() {
     const computedOriginDestinationRatio = this.computedOriginDestinationRatio();
-    const { reference, origin, destination, restartSwap } = this.props;
+    const { reference, origin, destination, restartSwap, provider } = this.props;
+    const SwapInfoHeaderTitleProps = {
+      restartSwap,
+      provider
+    };
     return (
       <div className="SwapInfo">
-        <SwapInfoHeaderTitle restartSwap={restartSwap} />
+        <SwapInfoHeaderTitle {...SwapInfoHeaderTitleProps} />
         <section className="SwapInfo-details row">
           {/*Amount to send*/}
           {!this.isExpanded() && (

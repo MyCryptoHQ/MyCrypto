@@ -4,8 +4,6 @@ import {
   BityOrderCreateRequestedSwapAction,
   bityOrderCreateSucceededSwap,
   changeStepSwap,
-  orderStatusRequestedSwap,
-  bityOrderStatusSucceededSwap,
   orderTimeSwap,
   startOrderTimerSwap,
   startPollBityOrderStatus,
@@ -17,7 +15,10 @@ import {
   shapeshiftOrderCreateFailedSwap,
   shapeshiftOrderCreateSucceededSwap,
   startPollShapeshiftOrderStatus,
-  stopPollShapeshiftOrderStatus
+  stopPollShapeshiftOrderStatus,
+  bityOrderStatusRequested,
+  bityOrderStatusSucceededSwap,
+  shapeshiftOrderStatusRequested
 } from 'actions/swap';
 import { getOrderStatus, postOrder } from 'api/bity';
 import moment from 'moment';
@@ -59,7 +60,7 @@ export function* pollBityOrderStatus(): SagaIterator {
   try {
     let swap = yield select(getSwap);
     while (true) {
-      yield put(orderStatusRequestedSwap());
+      yield put(bityOrderStatusRequested());
       const orderStatus = yield call(getOrderStatus, swap.orderId);
       if (orderStatus.error) {
         yield put(showNotification('danger', `Bity Error: ${orderStatus.msg}`, TEN_SECONDS));
@@ -84,14 +85,15 @@ export function* pollShapeshiftOrderStatus(): SagaIterator {
   try {
     let swap = yield select(getSwap);
     while (true) {
-      yield put(orderStatusRequestedSwap());
-      const orderStatus = yield apply(shapeshift, shapeshift.checkStatus, swap.paymentAddress);
+      yield put(shapeshiftOrderStatusRequested());
+      const orderStatus = yield apply(shapeshift, shapeshift.checkStatus, [swap.paymentAddress]);
       if (orderStatus.status === 'failed') {
         yield put(
           showNotification('danger', `Shapeshift Error: ${orderStatus.error}`, TEN_SECONDS)
         );
       } else {
-        yield put(shapeshiftOrderStatusSucceededSwap(orderStatus.data));
+        console.log('orderStatus', orderStatus);
+        yield put(shapeshiftOrderStatusSucceededSwap(orderStatus));
         yield call(delay, ONE_SECOND * 5);
         swap = yield select(getSwap);
         if (swap === 'CANC') {
@@ -107,11 +109,11 @@ export function* pollShapeshiftOrderStatus(): SagaIterator {
 }
 
 export function* pollBityOrderStatusSaga(): SagaIterator {
-  while (yield take('SWAP_START_POLL_BITY_ORDER_STATUS')) {
+  while (yield take(TypeKeys.SWAP_START_POLL_BITY_ORDER_STATUS)) {
     // starts the task in the background
     const pollBityOrderStatusTask = yield fork(pollBityOrderStatus);
     // wait for the user to get to point where refresh is no longer needed
-    yield take('SWAP_STOP_POLL_BITY_ORDER_STATUS');
+    yield take(TypeKeys.SWAP_STOP_POLL_BITY_ORDER_STATUS);
     // cancel the background task
     // this will cause the forked loadBityRates task to jump into its finally block
     yield cancel(pollBityOrderStatusTask);
@@ -119,9 +121,9 @@ export function* pollBityOrderStatusSaga(): SagaIterator {
 }
 
 export function* pollShapeshiftOrderStatusSaga(): SagaIterator {
-  while (yield take('SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS')) {
+  while (yield take(TypeKeys.SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS)) {
     const pollShapeshiftOrderStatusTask = yield fork(pollShapeshiftOrderStatus);
-    yield take('SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS');
+    yield take(TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS);
     yield cancel(pollShapeshiftOrderStatusTask);
   }
 }
@@ -169,13 +171,12 @@ export function* postShapeshiftOrderCreate(
       payload.destinationKind,
       payload.destinationAmount
     ]);
-    console.error('ORDER', order);
     if (order.error) {
       yield put(showNotification('danger', `Shapeshift Error: ${order.error}`));
       yield put(shapeshiftOrderCreateFailedSwap());
     } else {
-      console.log('Order data', order.data);
-      yield put(shapeshiftOrderCreateSucceededSwap(order.data));
+      console.log('Order data', order);
+      yield put(shapeshiftOrderCreateSucceededSwap(order.success));
       yield put(changeStepSwap(3));
       // start countdown
       yield put(startOrderTimerSwap());
@@ -199,6 +200,15 @@ export function* postShapeshiftOrderSaga(): SagaIterator {
   yield takeEvery(TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED, postShapeshiftOrderCreate);
 }
 
+export function* restartSwap() {
+  yield put(stopPollShapeshiftOrderStatus());
+  yield put(stopPollBityOrderStatus());
+}
+
+export function* restartSwapSaga(): SagaIterator {
+  yield takeEvery(TypeKeys.SWAP_RESTART, restartSwap);
+}
+
 export function* orderTimeRemaining(): SagaIterator {
   while (yield take(TypeKeys.SWAP_ORDER_START_TIMER)) {
     let hasShownNotification = false;
@@ -220,7 +230,7 @@ export function* orderTimeRemaining(): SagaIterator {
             case 'no_deposits':
               yield put(orderTimeSwap(0));
               yield put(stopPollShapeshiftOrderStatus());
-              yield put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES });
+              yield put(stopLoadShapshiftRatesSwap());
               if (!hasShownNotification) {
                 hasShownNotification = true;
                 yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
@@ -228,7 +238,7 @@ export function* orderTimeRemaining(): SagaIterator {
               break;
             case 'failed':
               yield put(stopPollShapeshiftOrderStatus());
-              yield put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES });
+              yield put(stopLoadShapshiftRatesSwap());
               if (!hasShownNotification) {
                 hasShownNotification = true;
                 yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
@@ -242,7 +252,7 @@ export function* orderTimeRemaining(): SagaIterator {
               break;
             case 'complete':
               yield put(stopPollShapeshiftOrderStatus());
-              yield put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES });
+              yield put(stopLoadShapshiftRatesSwap());
               break;
           }
         } else {
@@ -250,7 +260,7 @@ export function* orderTimeRemaining(): SagaIterator {
             case 'OPEN':
               yield put(orderTimeSwap(0));
               yield put(stopPollBityOrderStatus());
-              yield put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES });
+              yield put(stopLoadBityRatesSwap());
               if (!hasShownNotification) {
                 hasShownNotification = true;
                 yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
@@ -258,7 +268,7 @@ export function* orderTimeRemaining(): SagaIterator {
               break;
             case 'CANC':
               yield put(stopPollBityOrderStatus());
-              yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
+              yield put(stopLoadBityRatesSwap());
               if (!hasShownNotification) {
                 hasShownNotification = true;
                 yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
@@ -272,7 +282,7 @@ export function* orderTimeRemaining(): SagaIterator {
               break;
             case 'FILL':
               yield put(stopPollBityOrderStatus());
-              yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
+              yield put(stopLoadBityRatesSwap());
               break;
           }
         }

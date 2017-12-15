@@ -10,9 +10,11 @@ import {
   restartSwap as dRestartSwap,
   startOrderTimerSwap as dStartOrderTimerSwap,
   startPollBityOrderStatus as dStartPollBityOrderStatus,
+  startPollShapeshiftOrderStatus as dStartPollShapeshiftOrderStatus,
   stopLoadBityRatesSwap as dStopLoadBityRatesSwap,
   stopOrderTimerSwap as dStopOrderTimerSwap,
   stopPollBityOrderStatus as dStopPollBityOrderStatus,
+  stopPollShapeshiftOrderStatus as dStopPollShapeshiftOrderStatus,
   TInitSwap,
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
@@ -23,9 +25,11 @@ import {
   TRestartSwap,
   TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
+  TStartPollShapeshiftOrderStatus,
   TStopLoadBityRatesSwap,
   TStopOrderTimerSwap,
-  TStopPollBityOrderStatus
+  TStopPollBityOrderStatus,
+  TStopPollShapeshiftOrderStatus
 } from 'actions/swap';
 import {
   SwapInput,
@@ -73,11 +77,13 @@ interface ReduxActionProps {
   stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
   shapeshiftOrderCreateRequestedSwap: TShapeshiftOrderCreateRequestedSwap;
   bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
+  startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
   startPollBityOrderStatus: TStartPollBityOrderStatus;
+  startOrderTimerSwap: TStartOrderTimerSwap;
   stopOrderTimerSwap: TStopOrderTimerSwap;
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
+  stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
   showNotification: TShowNotification;
-  startOrderTimerSwap: TStartOrderTimerSwap;
   initSwap: TInitSwap;
 }
 
@@ -124,6 +130,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       showNotification,
       startOrderTimerSwap,
       startPollBityOrderStatus,
+      stopPollShapeshiftOrderStatus,
+      startPollShapeshiftOrderStatus,
       stopOrderTimerSwap,
       stopPollBityOrderStatus
     } = this.props;
@@ -151,7 +159,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       secondsRemaining,
       restartSwap,
       bityOrderStatus,
-      shapeshiftOrderStatus
+      shapeshiftOrderStatus,
+      provider
     };
 
     const CurrencySwapProps = {
@@ -175,9 +184,11 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       reference,
       provider,
       startOrderTimerSwap,
-      startPollBityOrderStatus,
       stopOrderTimerSwap,
+      startPollBityOrderStatus,
+      startPollShapeshiftOrderStatus,
       stopPollBityOrderStatus,
+      stopPollShapeshiftOrderStatus,
       showNotification,
       destinationAddress,
       outputTx
@@ -235,8 +246,10 @@ export default connect(mapStateToProps, {
   restartSwap: dRestartSwap,
   startOrderTimerSwap: dStartOrderTimerSwap,
   startPollBityOrderStatus: dStartPollBityOrderStatus,
+  startPollShapeshiftOrderStatus: dStartPollShapeshiftOrderStatus,
   stopLoadBityRatesSwap: dStopLoadBityRatesSwap,
   stopOrderTimerSwap: dStopOrderTimerSwap,
   stopPollBityOrderStatus: dStopPollBityOrderStatus,
+  stopPollShapeshiftOrderStatus: dStopPollShapeshiftOrderStatus,
   showNotification: dShowNotification
 })(Swap);

@@ -7,7 +7,7 @@ import { call, cancel, fork, put, take, takeLatest, race } from 'redux-saga/effe
 import shapeshift from 'api/shapeshift';
 
 const POLLING_CYCLE = 30000;
-const SHAPESHIFT_TIMEOUT = 10000;
+const SHAPESHIFT_TIMEOUT = 20000;
 
 export function* loadBityRates(): SagaIterator {
   while (true) {

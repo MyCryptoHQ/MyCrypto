@@ -3,8 +3,10 @@ import {
   TRestartSwap,
   TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
+  TStartPollShapeshiftOrderStatus,
   TStopOrderTimerSwap,
-  TStopPollBityOrderStatus
+  TStopPollBityOrderStatus,
+  TStopPollShapeshiftOrderStatus
 } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
 import React, { Component } from 'react';
@@ -29,14 +31,21 @@ interface ReduxActionProps {
   restartSwap: TRestartSwap;
   startOrderTimerSwap: TStartOrderTimerSwap;
   startPollBityOrderStatus: TStartPollBityOrderStatus;
-  stopOrderTimerSwap: TStopOrderTimerSwap;
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
+  startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
+  stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
+  stopOrderTimerSwap: TStopOrderTimerSwap;
   showNotification: TShowNotification;
 }
 
 export default class PartThree extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
-    this.props.startPollBityOrderStatus();
+    const { provider } = this.props;
+    if (provider === 'shapeshift') {
+      this.props.startPollShapeshiftOrderStatus();
+    } else {
+      this.props.startPollBityOrderStatus();
+    }
     this.props.startOrderTimerSwap();
   }
 

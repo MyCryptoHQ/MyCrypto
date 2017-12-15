@@ -181,7 +181,7 @@ export interface BityOrderStatusRequestedSwapAction {
 }
 
 export interface ShapeshiftOrderStatusRequestedSwapAction {
-  type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED;
+  type: TypeKeys.SWAP_SHAPESHIFT_ORDER_STATUS_REQUESTED;
 }
 
 export interface BityOrderStatusSucceededSwapAction {

@@ -180,7 +180,7 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
     case TypeKeys.SWAP_SHAPESHIFT_ORDER_STATUS_SUCCEEDED:
       return {
         ...state,
-        outputTx: action.payload.transaction,
+        outputTx: action.payload && action.payload.transaction ? action.payload.transaction : null,
         shapeshiftOrderStatus: action.payload.status
       };
     case TypeKeys.SWAP_ORDER_TIME:

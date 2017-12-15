@@ -73,7 +73,8 @@ export function stopLoadBityRatesSwap(): interfaces.StopLoadBityRatesSwapAction 
   };
 }
 
-export function stopLoadShapshiftRatesSwap() {
+export type TStopLoadShapeshiftRatesSwap = typeof stopLoadShapshiftRatesSwap;
+export function stopLoadShapshiftRatesSwap(): interfaces.StopLoadShapeshiftRatesSwapAction {
   return {
     type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES
   };
@@ -175,10 +176,17 @@ export function shapeshiftOrderStatusSucceededSwap(
   };
 }
 
-export type TOrderStatusRequestedSwap = typeof orderStatusRequestedSwap;
-export function orderStatusRequestedSwap(): interfaces.BityOrderStatusRequestedSwapAction {
+export type TBityOrderStatusRequestedSwap = typeof bityOrderStatusRequested;
+export function bityOrderStatusRequested(): interfaces.BityOrderStatusRequestedSwapAction {
   return {
     type: TypeKeys.SWAP_BITY_ORDER_STATUS_REQUESTED
+  };
+}
+
+export type TShapeshiftOrderStatusRequestedSwap = typeof shapeshiftOrderStatusRequested;
+export function shapeshiftOrderStatusRequested(): interfaces.ShapeshiftOrderStatusRequestedSwapAction {
+  return {
+    type: TypeKeys.SWAP_SHAPESHIFT_ORDER_STATUS_REQUESTED
   };
 }
 
