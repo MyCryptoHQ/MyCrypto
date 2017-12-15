@@ -1,6 +1,10 @@
 // Form overrides
 @import 'common/sass/variables';
 
+.label-wrapper {
+  font-size: $font-size-bump-more;
+}
+
 label {
   margin-bottom: $space-xs;
   font-size: $font-size-bump-more;

@@ -1,5 +1,4 @@
 import React from 'react';
-import icon from 'assets/images/icon-help-3.svg';
 import './Help.scss';
 
 type Size = 'x1' | 'x2' | 'x3';
@@ -9,10 +8,10 @@ interface Props {
   size?: Size;
 }
 
-const Help = ({ size = 'x1', link }: Props) => {
+const Help = ({ size = 'inherit-size', link }: Props) => {
   return (
     <a href={link} className={`Help Help-${size}`} target={'_blank'}>
-      <img src={icon} />
+      <i className="nc-icon nc-question-circle" style={{ color: '#0e97c0' }} />
     </a>
   );
 };

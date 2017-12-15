@@ -28,8 +28,10 @@ export default class NonceField extends React.Component<PublicProps, {}> {
     return (
       <div className="row form-group">
         <div className="col-xs-11">
-          <label>Nonce</label>
-          <Help link={`${knowledgeBaseURL}/transactions/what-is-nonce.html`} />
+          <div className="label-wrapper">
+            <label>Nonce</label>
+            <Help link={`${knowledgeBaseURL}/transactions/what-is-nonce.html`} />
+          </div>
           <input
             className={`form-control ${isValidNonce(strValue) ? 'is-valid' : 'is-invalid'}`}
             type="number"
