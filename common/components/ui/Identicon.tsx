@@ -14,10 +14,7 @@ export default function Identicon(props: Props) {
     ? toDataUrl(props.address.toLowerCase())
     : '';
   return (
-    <div
-      style={{ position: 'relative', width: size, height: size }}
-      title="Address Identicon"
-    >
+    <div style={{ position: 'relative', width: size, height: size }} title="Address Identicon">
       <div
         style={{
           position: 'absolute',
@@ -33,7 +30,7 @@ export default function Identicon(props: Props) {
                   `
         }}
       />
-      {identiconDataUrl &&
+      {identiconDataUrl && (
         <img
           src={identiconDataUrl}
           style={{
@@ -41,7 +38,8 @@ export default function Identicon(props: Props) {
             width: '100%',
             height: '100%'
           }}
-        />}
+        />
+      )}
     </div>
   );
 }

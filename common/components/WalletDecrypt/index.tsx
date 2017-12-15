@@ -82,18 +82,14 @@ export class WalletDecrypt extends Component<Props, State> {
         password: ''
       },
       unlock: this.props.unlockKeystore,
-      helpLink: `${
-        knowledgeBaseURL
-      }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
     'mnemonic-phrase': {
       lid: 'x_Mnemonic',
       component: MnemonicDecrypt,
       initialParams: {},
       unlock: this.props.unlockMnemonic,
-      helpLink: `${
-        knowledgeBaseURL
-      }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
     'private-key': {
       lid: 'x_PrivKey2',
@@ -103,9 +99,7 @@ export class WalletDecrypt extends Component<Props, State> {
         password: ''
       },
       unlock: this.props.unlockPrivateKey,
-      helpLink: `${
-        knowledgeBaseURL
-      }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
     'view-only': {
       lid: 'View with Address Only',

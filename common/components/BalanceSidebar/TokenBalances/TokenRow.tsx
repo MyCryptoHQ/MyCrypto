@@ -41,11 +41,7 @@ export default class TokenRow extends React.Component<Props, State> {
             />
           )}
           <span>
-            <UnitDisplay
-              value={balance}
-              decimal={decimal}
-              displayShortBalance={!showLongBalance}
-            />
+            <UnitDisplay value={balance} decimal={decimal} displayShortBalance={!showLongBalance} />
           </span>
         </td>
         <td className="TokenRow-symbol">{symbol}</td>
@@ -53,10 +49,7 @@ export default class TokenRow extends React.Component<Props, State> {
     );
   }
 
-  public toggleShowLongBalance = (
-    // TODO: don't use any
-    e: any
-  ) => {
+  public toggleShowLongBalance = (e: React.SyntheticEvent<HTMLTableDataCellElement>) => {
     e.preventDefault();
     this.setState(state => {
       return {
