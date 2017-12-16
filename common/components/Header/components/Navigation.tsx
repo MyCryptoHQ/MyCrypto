@@ -7,7 +7,7 @@ import './Navigation.scss';
 const tabs = [
   {
     name: 'NAV_GenerateWallet',
-    to: '/generate'
+    to: '/'
   },
 
   {
@@ -28,7 +28,7 @@ const tabs = [
   },
   {
     name: 'Sign & Verify Message',
-    to: '/message'
+    to: '/sign-and-verify-message'
   },
   {
     name: 'Broadcast Transaction',

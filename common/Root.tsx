@@ -10,6 +10,7 @@ import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
+import RestoreKeystore from 'containers/Tabs/RestoreKeystore';
 import ErrorScreen from 'components/ErrorScreen';
 
 // TODO: fix this
@@ -41,31 +42,18 @@ export default class Root extends Component<Props, State> {
       <Provider store={store} key={Math.random()}>
         <Router history={history} key={Math.random()}>
           <div>
-            <Route path="/generate" component={GenerateWallet}>
-              <Route path="keystore" />
-              <Route path="mnemonic" />
-            </Route>
-
+            <Route exact={true} path="/" component={GenerateWallet} />
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
-
             <Route path="/account" component={SendTransaction}>
-              <Route path="send" />
-              <Route path="info" />
+              <Route path="send" component={SendTransaction} />
+              <Route path="info" component={SendTransaction} />
             </Route>
-
-            <Route path="/contracts" component={Contracts}>
-              <Route path="interacts" />
-              <Route path="deploys" />
-            </Route>
-
+            <Route path="/send-transaction" component={SendTransaction} />
+            <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
-
-            <Route path="/message" component={SignAndVerifyMessage}>
-              <Route path="sign" />
-              <Route path="verify" />
-            </Route>
-
+            <Route path="/utilities" component={RestoreKeystore} />
+            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
             <Route path="/pushTx" component={BroadcastTx} />
             <LegacyRoutes />
           </div>
@@ -86,7 +74,7 @@ const LegacyRoutes = withRouter(props => {
         history.push('/send-transaction');
         break;
       case '#generate-wallet':
-        history.push('/generate');
+        history.push('/');
         break;
       case '#swap':
         history.push('/swap');
@@ -108,11 +96,9 @@ const LegacyRoutes = withRouter(props => {
 
   return (
     <Switch>
-      <Redirect from="/" to="/generate" exact={true} />
       <Redirect from="/signmsg.html" to="/sign-and-verify-message" />
       <Redirect from="/helpers.html" to="/helpers" />
       <Redirect from="/send-transaction" to="/account/send" />
-      <Redirect from="/sign-and-verify-message" to="/message/sign" />
     </Switch>
   );
 });
