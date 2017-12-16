@@ -13,7 +13,13 @@ export const ANNOUNCEMENT_MESSAGE = `
   This is an Alpha build of MyEtherWallet v4. Please only use for testing,
   or use v3 at <a href='https://myetherwallet.com'>https://myetherwallet.com</a>.
   <br/>
-  If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">mailchimp</a> :)
+  <span class="hidden-xs">
+    If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via
+    <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">
+      mailchimp
+    </a>
+    :)
+  </span>
 `;
 
 const etherScan = 'https://etherscan.io';
@@ -38,6 +44,7 @@ export const gasPriceDefaults = {
 
 export const MINIMUM_PASSWORD_LENGTH = 9;
 
+export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
 export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';

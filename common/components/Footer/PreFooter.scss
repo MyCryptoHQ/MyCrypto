@@ -6,7 +6,12 @@
   margin-top: 5rem;
   background-color: white;
   text-align: center;
+
   p {
     font-size: $font-size-medium;
+
+    @media screen and (max-width: $screen-sm) {
+      font-size: $font-size-small;
+    }
   }
 }

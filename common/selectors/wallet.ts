@@ -13,6 +13,10 @@ export function getWalletConfig(state: AppState): WalletConfig | null | undefine
   return state.wallet.config;
 }
 
+export function isWalletFullyUnlocked(state: AppState): boolean | null | undefined {
+  return state.wallet.inst && !state.wallet.inst.isReadOnly;
+}
+
 export interface TokenBalance {
   symbol: string;
   balance: TokenValue;

@@ -3,42 +3,32 @@ import { GasField } from './GasField';
 import { AmountField } from './AmountField';
 import { NonceField } from 'components/NonceField';
 import { OfflineAwareUnlockHeader } from 'components/OfflineAwareUnlockHeader';
-import { isUnlocked } from 'selectors/wallet';
 import { SendButton } from 'components/SendButton';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
 import { SigningStatus } from 'components/SigningStatus';
+import { OnlyUnlocked } from 'components/renderCbs';
 
-interface StateProps {
-  unlocked: boolean;
-}
 interface OwnProps {
   button: React.ReactElement<any>;
 }
-class FieldsClass extends Component<StateProps & OwnProps> {
+export class Fields extends Component<OwnProps> {
   public render() {
-    return this.props.unlocked ? (
+    return (
       <Aux>
-        <GasField />
-        <AmountField />
-        <NonceField />
-        {this.props.button}
-        <SigningStatus />
-        <SendButton />
+        <OfflineAwareUnlockHeader allowReadOnly={false} />
+        <OnlyUnlocked
+          whenUnlocked={
+            <Aux>
+              <GasField />
+              <AmountField />
+              <NonceField />
+              {this.props.button}
+              <SigningStatus />
+              <SendButton />
+            </Aux>
+          }
+        />
       </Aux>
-    ) : (
-      <OfflineAwareUnlockHeader />
     );
   }
 }
-
-export const Fields = connect((state: AppState) => ({ unlocked: isUnlocked(state) }))(FieldsClass);
-export const FieldsClas: React.SFC<{}> = () => (
-  <Aux>
-    <OfflineAwareUnlockHeader />
-    <GasField />
-    <AmountField />
-    <NonceField />
-  </Aux>
-);

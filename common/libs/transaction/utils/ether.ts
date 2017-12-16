@@ -42,8 +42,6 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
   };
 };
 
-const get;
-
 /**
  * @description Return the minimum amount of ether needed
  * @param t

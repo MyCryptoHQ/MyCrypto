@@ -6,6 +6,7 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus
 } from 'actions/swap';
+import { SwapInput } from 'reducers/swap/types';
 import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
@@ -13,10 +14,8 @@ import SwapProgress from './SwapProgress';
 
 interface ReduxStateProps {
   destinationAddress: string;
-  destinationKind: string;
-  originKind: string;
-  originAmount: number | null;
-  destinationAmount: number | null;
+  origin: SwapInput;
+  destination: SwapInput;
   reference: string;
   secondsRemaining: number | null;
   paymentAddress: string | null;
@@ -33,10 +32,7 @@ interface ReduxActionProps {
   showNotification: TShowNotification;
 }
 
-export default class PartThree extends Component<
-  ReduxActionProps & ReduxStateProps,
-  {}
-> {
+export default class PartThree extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
     this.props.startPollBityOrderStatus();
     this.props.startOrderTimerSwap();
@@ -50,21 +46,19 @@ export default class PartThree extends Component<
   public render() {
     const {
       // STATE
-      originAmount,
-      originKind,
-      destinationKind,
+      origin,
+      destination,
       paymentAddress,
       orderStatus,
       destinationAddress,
       outputTx,
-      destinationAmount,
       // ACTIONS
       showNotification
     } = this.props;
 
     const SwapProgressProps = {
-      originKind,
-      destinationKind,
+      originId: origin.id,
+      destinationId: destination.id,
       orderStatus,
       showNotification,
       destinationAddress,
@@ -72,22 +66,20 @@ export default class PartThree extends Component<
     };
 
     const PaymentInfoProps = {
-      originKind,
-      originAmount,
+      origin,
       paymentAddress
     };
 
     const BitcoinQRProps = {
       paymentAddress,
-      amount: destinationAmount
+      destinationAmount: destination.amount
     };
 
     return (
       <div>
         <SwapProgress {...SwapProgressProps} />
         <PaymentInfo {...PaymentInfoProps} />
-        {orderStatus === 'OPEN' &&
-          originKind === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
+        {orderStatus === 'OPEN' && origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
   }

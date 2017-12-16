@@ -1,52 +1,65 @@
-import WalletDecrypt from 'components/WalletDecrypt';
-import { IWallet } from 'libs/wallet/IWallet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import translate from 'translations';
+import WalletDecrypt from 'components/WalletDecrypt';
+import { IWallet } from 'libs/wallet/IWallet';
+import './UnlockHeader.scss';
 
 interface Props {
   title: React.ReactElement<any>;
   wallet: IWallet;
-  allowReadOnly?: boolean;
+  allowReadOnly: boolean;
 }
 interface State {
-  expanded: boolean;
+  isExpanded: boolean;
 }
 export class UnlockHeader extends React.Component<Props, State> {
   public state = {
-    expanded: !this.props.wallet
+    isExpanded: !this.props.wallet
   };
 
   public componentDidUpdate(prevProps: Props) {
     if (this.props.wallet && this.props.wallet !== prevProps.wallet) {
-      this.setState({ expanded: false });
-    }
-
-    // not sure if could happen
-    if (!this.props.wallet && this.props.wallet !== prevProps.wallet) {
-      this.setState({ expanded: true });
+      this.setState({ isExpanded: !this.state.isExpanded });
     }
   }
 
   public render() {
-    const { title, allowReadOnly } = this.props;
+    const { title, wallet, allowReadOnly } = this.props;
+    const { isExpanded } = this.state;
+
     return (
-      <article className="collapse-container">
-        <div>
-          <a className="collapse-button" onClick={this.toggleExpanded}>
-            <span>{this.state.expanded ? '-' : '+'}</span>
-          </a>
-          <h1>{title}</h1>
-        </div>
-        {this.state.expanded && <WalletDecrypt allowReadOnly={allowReadOnly} />}
-        {this.state.expanded && <hr />}
+      <article className="UnlockHeader">
+        <h1 className="UnlockHeader-title">{title}</h1>
+        {wallet &&
+          !isExpanded && (
+            <button
+              className="UnlockHeader-open btn btn-default btn-smr"
+              onClick={this.toggleisExpanded}
+            >
+              <span>
+                <span className="hidden-xs UnlockHeader-open-text">
+                  {translate('Change Wallet')}
+                </span>
+                <i className="fa fa-refresh" />
+              </span>
+            </button>
+          )}
+        {wallet &&
+          isExpanded && (
+            <button className="UnlockHeader-close" onClick={this.toggleisExpanded}>
+              <i className="fa fa-times" />
+            </button>
+          )}
+        <WalletDecrypt hidden={!this.state.isExpanded} allowReadOnly={allowReadOnly} />
       </article>
     );
   }
 
-  public toggleExpanded = () => {
+  public toggleisExpanded = () => {
     this.setState(state => {
-      return { expanded: !state.expanded };
+      return { isExpanded: !state.isExpanded };
     });
   };
 }

@@ -14,7 +14,7 @@ export const GasPrice: React.SFC<{}> = () => (
         <p>
           with a gas price of{' '}
           <strong>
-            <UnitDisplay unit={'gwei'} value={Wei(gasPrice)} symbol={'gwei'} />
+            <UnitDisplay unit={'gwei'} value={Wei(gasPrice)} symbol={'gwei'} checkOffline={false} />
           </strong>
         </p>
       );

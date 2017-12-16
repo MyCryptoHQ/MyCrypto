@@ -11,15 +11,15 @@ export const reduceToValues = (transactionFields: AppState['transaction']['field
     {} as any //TODO: Fix types
   );
 
-// TODO: retun boolean only
 export const isFullTx = (
   transactionFields: AppState['transaction']['fields'],
   currentTo: ICurrentTo,
   currentValue: ICurrentValue,
+  dataExists: boolean,
+  validGasCost: boolean,
   unit: string // if its ether, we can have empty data, if its a token, we cant have value
 ) => {
   const { data, value, to, ...rest } = transactionFields;
-
   const partialParamsToCheck = { ...rest };
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
     (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
@@ -28,20 +28,23 @@ export const isFullTx = (
   );
   if (isEtherUnit(unit)) {
     // if theres data we can have no current value, and we dont have to check for a to address
-    if (data.value && data.value.length > 0) {
+    if (dataExists && validGasCost && !currentValue.value && currentValue.raw === '') {
       return validPartialParams;
+    } else if (dataExists && validGasCost && !to.value && to.raw === '') {
+      // same goes for value transactions to 0x
+      return !!(validPartialParams && currentValue.value);
     } else {
       // otherwise we require value
-      return validPartialParams && !!currentValue.value && !!to.value && !!currentTo.value;
+      return !!(validPartialParams && currentValue.value && to.value && currentTo.value);
     }
   } else {
-    return (
+    return !!(
       validPartialParams &&
-      !!data.value &&
+      data.value &&
       !value.value &&
       currentValue.value &&
-      !!to.value &&
-      !!currentTo.value
+      to.value &&
+      currentTo.value
     );
   }
 };
