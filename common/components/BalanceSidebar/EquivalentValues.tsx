@@ -70,7 +70,12 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           <li className="EquivalentValues-values-currency" key={key}>
             <span className="EquivalentValues-values-currency-label">{key}:</span>{' '}
             <span className="EquivalentValues-values-currency-value">
-              <UnitDisplay unit={'ether'} value={values[key]} displayShortBalance={3} />
+              <UnitDisplay
+                unit={'ether'}
+                value={values[key]}
+                displayShortBalance={3}
+                checkOffline={true}
+              />
             </span>
           </li>
         );

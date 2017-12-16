@@ -40,7 +40,12 @@ const TotalSpentForEther: React.SFC<TotalSpentProps> = ({
   currentValue: { value },
   gasCostInWei
 }) => (
-  <UnitDisplay symbol="ETH" value={value ? value.add(gasCostInWei) : gasCostInWei} unit="ether" />
+  <UnitDisplay
+    symbol="ETH"
+    value={value ? value.add(gasCostInWei) : gasCostInWei}
+    unit="ether"
+    checkOffline={false}
+  />
 );
 class CostBreakdownClass extends Component<StateProps> {
   public render() {
@@ -50,6 +55,7 @@ class CostBreakdownClass extends Component<StateProps> {
         symbol={isEtherUnit(unit) ? 'ETH' : unit}
         value={currentValue.value || Wei('0')}
         decimal={decimal}
+        checkOffline={false}
       />
     );
     return (
@@ -57,7 +63,8 @@ class CostBreakdownClass extends Component<StateProps> {
         <h5>Amount To Send: {amountToSend}</h5>
 
         <h5>
-          Gas Cost: <UnitDisplay symbol="ETH" value={gasCostInWei} unit="ether" />
+          Gas Cost:{' '}
+          <UnitDisplay symbol="ETH" value={gasCostInWei} unit="ether" checkOffline={false} />
         </h5>
         <h5>
           {' '}
@@ -67,7 +74,7 @@ class CostBreakdownClass extends Component<StateProps> {
           ) : (
             <div>
               <h5>
-                <UnitDisplay symbol="ETH" value={gasCostInWei} unit="ether" />
+                <UnitDisplay symbol="ETH" value={gasCostInWei} unit="ether" checkOffline={false} />
               </h5>
               <h5>{amountToSend}</h5>
             </div>

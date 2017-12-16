@@ -78,6 +78,7 @@ export default class AccountInfo extends React.Component<Props, State> {
                     value={balance.wei}
                     unit={'ether'}
                     displayShortBalance={!showLongBalance}
+                    checkOffline={true}
                   />
                 )}
               </span>
