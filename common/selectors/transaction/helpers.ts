@@ -30,6 +30,9 @@ export const isFullTx = (
     // if theres data we can have no current value, and we dont have to check for a to address
     if (dataExists && validGasCost && !currentValue.value && currentValue.raw === '') {
       return validPartialParams;
+    } else if (dataExists && validGasCost && !to.value && to.raw === '') {
+      // same goes for value transactions to 0x
+      return !!(validPartialParams && currentValue.value);
     } else {
       // otherwise we require value
       return !!(validPartialParams && currentValue.value && to.value && currentTo.value);

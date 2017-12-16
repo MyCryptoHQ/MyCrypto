@@ -10,7 +10,8 @@ import {
   getGasLimit,
   getDataExists,
   getSerializedTransaction,
-  getValidGasCost
+  getValidGasCost,
+  isEtherTransaction
 } from 'selectors/transaction';
 import { Wei } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
@@ -19,7 +20,7 @@ export {
   getTransaction,
   getTransactionState,
   getGasCost,
-  nonValueTransaction,
+  nonStandardTransaction,
   serializedAndTransactionFieldsMatch
 };
 
@@ -51,11 +52,11 @@ const getTransaction = (state: AppState): IGetTransaction => {
   return { transaction, isFullTransaction };
 };
 
-const nonValueTransaction = (state: AppState): boolean => {
-  const currentValue = getCurrentValue(state);
+const nonStandardTransaction = (state: AppState): boolean => {
+  const etherTransaction = isEtherTransaction(state);
   const { isFullTransaction } = getTransaction(state);
   const dataExists = getDataExists(state);
-  return isFullTransaction && dataExists && !currentValue.value;
+  return isFullTransaction && dataExists && etherTransaction;
 };
 
 const getGasCost = (state: AppState) => {
