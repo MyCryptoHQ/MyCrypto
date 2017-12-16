@@ -27,6 +27,10 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           if a refresh doesn't fix it (or click it anyway to open a ticket 😊). If you attach the
           following error, you'll make it a ton easier to fix the issue.
         </p>
+        <h5>
+          Please make sure the error message does not include any sensitive information before
+          sending it us. We don't want your private keys!
+        </h5>
         <code>{error.message}</code>
       </div>
     </div>
