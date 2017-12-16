@@ -59,7 +59,6 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
         )
       );
     } catch (error) {
-      yield put(reset());
       yield put(broadcastTransactionFailed({ indexingHash }));
       yield put(showNotification('danger', (error as Error).message));
     }

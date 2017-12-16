@@ -28,6 +28,7 @@ class AmountClass extends Component<StateProps> {
                 unit === 'ether' ? Wei(value) : TokenValue(ERC20.transfer.decodeInput(data)._value)
               }
               symbol={unit}
+              checkOffline={false}
             />
           );
         }}
