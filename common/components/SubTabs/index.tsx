@@ -4,25 +4,30 @@ import { TranslateType } from 'translations';
 import { Link } from 'react-router-dom';
 import './SubTabs.scss';
 
-export interface Tab {
+export interface Tab<SubTabProps = null> {
   path: string;
-  name: TranslateType | string;
-  isDisabled?(props?: Props): boolean | null;
-  render(props?: Props): React.ReactElement<any>;
+  name: TranslateType;
+  isDisabled?(props: SubTabProps): boolean | null;
+  render(props: SubTabProps): React.ReactElement<any> | null;
 }
 
-interface Props {
+export interface Props<SubTabProps = null> {
   activeTab?: string;
   root: string;
-  tabs: Tab[];
+  tabs: Tab<SubTabProps>[];
   sideBar?: React.ReactElement<any> | React.Component | React.StatelessComponent;
+  subTabProps: SubTabProps;
+  onTabChange?(): void;
 }
 
 interface State {
   isOpenModal: boolean;
 }
 
-export default class SubTabs extends React.Component<Props, State> {
+export default class SubTabs<SubTabProps = null> extends React.Component<
+  Props<SubTabProps>,
+  State
+> {
   public render() {
     const { tabs, sideBar } = this.props;
     const activeTab = this.props.activeTab || tabs[0].path;
@@ -37,10 +42,11 @@ export default class SubTabs extends React.Component<Props, State> {
               className={classnames({
                 'SubTabs-tabs-link': true,
                 'is-active': t.path === activeTab,
-                'is-disabled': t.isDisabled && t.isDisabled(this.props)
+                'is-disabled': t.isDisabled && t.isDisabled(this.props.subTabProps)
               })}
               to={`/${this.props.root}/${t.path}`}
               key={t.path}
+              onClick={this.props.onTabChange}
             >
               {t.name}
             </Link>
@@ -48,7 +54,7 @@ export default class SubTabs extends React.Component<Props, State> {
         </div>
 
         <main className={`SubTabs-content col-sm-${columnSize}`} key={tab.path}>
-          {tab.render(this.props)}
+          {tab.render(this.props.subTabProps)}
         </main>
         {this.props.sideBar ? this.props.sideBar : null}
       </div>

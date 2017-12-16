@@ -14,10 +14,12 @@ import {
   SendButton,
   SigningStatus
 } from 'components';
+import { CostBreakdown } from 'components/CostBreakdown';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 import { Aux } from 'components/ui';
 import { AppState } from 'reducers';
+import { NonStandardTransaction } from './components';
 
 const content = (
   <div className="Tab-content-pane">
@@ -48,7 +50,9 @@ const content = (
         <DataField />
       </div>
     </div>
+    <CostBreakdown />
     <CurrentCustomMessage />
+    <NonStandardTransaction />
     <div className="row form-group">
       <div className="col-xs-12 clearfix">
         <GenerateTransaction />

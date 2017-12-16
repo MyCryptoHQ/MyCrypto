@@ -41,14 +41,20 @@ export default class TokenRow extends React.Component<Props, State> {
           onDoubleClick={this.toggleShowLongBalance}
         >
           <span>
-            <UnitDisplay value={balance} decimal={decimal} displayShortBalance={!showLongBalance} />
+            <UnitDisplay
+              value={balance}
+              decimal={decimal}
+              displayShortBalance={!showLongBalance}
+              checkOffline={true}
+            />
           </span>
         </td>
         <td className="TokenRow-symbol">
           {symbol}
           {!!custom && (
-            <i
-              className="TokenRow-symbol-remove fa fa-times-circle"
+            <img
+              src={removeIcon}
+              className="TokenRow-balance-remove"
               title="Remove Token"
               onClick={this.onRemove}
               tabIndex={0}
@@ -59,7 +65,7 @@ export default class TokenRow extends React.Component<Props, State> {
     );
   }
 
-  private toggleShowLongBalance = (e: React.MouseEvent<HTMLElement>) => {
+  public toggleShowLongBalance = (e: React.SyntheticEvent<HTMLTableDataCellElement>) => {
     e.preventDefault();
     this.setState(state => {
       return {

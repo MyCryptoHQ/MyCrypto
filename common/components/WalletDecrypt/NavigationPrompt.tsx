@@ -35,12 +35,7 @@ class NavigationPrompt extends React.Component<Props, State> {
 
   public setupUnblock() {
     this.unblock = this.injected.history.block(nextLocation => {
-      // If they're just changing sub-paths, don't block it
-      const currentPaths = this.injected.location.pathname.split('/');
-      const newPaths = nextLocation.pathname.split('/');
-      const isChangingTabs = newPaths[1] !== currentPaths[1];
-
-      if (this.props.when && isChangingTabs) {
+      if (this.props.when && nextLocation.pathname !== this.injected.location.pathname) {
         this.setState({
           openModal: true,
           nextLocation

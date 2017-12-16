@@ -37,8 +37,7 @@ export default class AccountInfo extends React.Component<Props, State> {
     this.setAddressFromWallet();
   }
 
-  // TODO: don't use any;
-  public toggleShowLongBalance = (e: any) => {
+  public toggleShowLongBalance = (e: React.FormEvent<HTMLSpanElement>) => {
     e.preventDefault();
     this.setState(state => {
       return {
@@ -55,9 +54,7 @@ export default class AccountInfo extends React.Component<Props, State> {
     return (
       <div className="AccountInfo">
         <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">
-            {translate('sidebar_AccountAddr')}
-          </h5>
+          <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
           <div className="AccountInfo-address">
             <div className="AccountInfo-address-icon">
               <Identicon address={address} size="100%" />
@@ -67,9 +64,7 @@ export default class AccountInfo extends React.Component<Props, State> {
         </div>
 
         <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">
-            {translate('sidebar_AccountBal')}
-          </h5>
+          <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
           <ul className="AccountInfo-list">
             <li className="AccountInfo-list-item">
               <span
@@ -83,23 +78,18 @@ export default class AccountInfo extends React.Component<Props, State> {
                     value={balance.wei}
                     unit={'ether'}
                     displayShortBalance={!showLongBalance}
+                    checkOffline={true}
                   />
                 )}
               </span>
-              {!balance.isPending ? (
-                balance.wei ? (
-                  <span> {network.name}</span>
-                ) : null
-              ) : null}
+              {!balance.isPending ? balance.wei ? <span> {network.name}</span> : null : null}
             </li>
           </ul>
         </div>
 
         {(!!blockExplorer || !!tokenExplorer) && (
           <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">
-              {translate('sidebar_TransHistory')}
-            </h5>
+            <h5 className="AccountInfo-section-header">{translate('sidebar_TransHistory')}</h5>
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">

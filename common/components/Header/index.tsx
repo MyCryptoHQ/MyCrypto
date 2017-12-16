@@ -116,7 +116,6 @@ export default class Header extends Component<Props, State> {
         <section className="Header-branding">
           <section className="Header-branding-inner container">
             <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
-              {/* TODO - don't hardcode image path*/}
               <img
                 className="Header-branding-title-logo"
                 src={logo}
@@ -126,7 +125,7 @@ export default class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version">v{VERSION}</span>
+              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
 
               <div className="Header-branding-right-dropdown">
                 <GasPriceDropdown

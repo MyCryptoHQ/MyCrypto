@@ -4,7 +4,7 @@ import './InteractExplorer.scss';
 import { TShowNotification, showNotification } from 'actions/notifications';
 import { Aux } from 'components/ui';
 import { getNodeLib } from 'selectors/config';
-import { getTo, dataExists } from 'selectors/transaction';
+import { getTo, getDataExists } from 'selectors/transaction';
 import { INode } from 'libs/nodes/INode';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import { AppState } from 'reducers';
@@ -237,7 +237,7 @@ export const InteractExplorer = connect(
   (state: AppState) => ({
     nodeLib: getNodeLib(state),
     to: getTo(state),
-    dataExists: dataExists(state)
+    dataExists: getDataExists(state)
   }),
   { showNotification, setDataField }
 )(InteractExplorerClass);

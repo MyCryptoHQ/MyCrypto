@@ -26,6 +26,7 @@ export interface IHexStrTransaction {
 }
 
 export interface IHexStrWeb3Transaction {
+  from: string;
   to: string;
   value: string;
   data: string;

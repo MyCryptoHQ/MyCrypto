@@ -10,6 +10,8 @@ import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
+import RestoreKeystore from 'containers/Tabs/RestoreKeystore';
+import ErrorScreen from 'components/ErrorScreen';
 
 // TODO: fix this
 interface Props {
@@ -17,11 +19,26 @@ interface Props {
   history: any;
 }
 
-export default class Root extends Component<Props, {}> {
+interface State {
+  hasError: boolean;
+}
+
+export default class Root extends Component<Props, State> {
+  public state = {
+    hasError: false
+  };
+
+  public componentDidCatch() {
+    this.setState({ hasError: true });
+  }
+
   public render() {
     const { store, history } = this.props;
+    const { hasError } = this.state;
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
-    return (
+    return hasError ? (
+      <ErrorScreen />
+    ) : (
       <Provider store={store} key={Math.random()}>
         <Router history={history} key={Math.random()}>
           <div>
@@ -50,6 +67,8 @@ export default class Root extends Component<Props, {}> {
               <Route path="verify" />
             </Route>
 
+            <Route path="/utilities" component={RestoreKeystore} />
+            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
             <Route path="/pushTx" component={BroadcastTx} />
             <LegacyRoutes />
           </div>

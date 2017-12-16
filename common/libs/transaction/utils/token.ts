@@ -30,4 +30,4 @@ const enoughTokensViaInput = (input: TokenValue | null, tokenBalance: TokenValue
 };
 
 const encodeTransfer = (to: Address, value: TokenValue) =>
-  toBuffer(ERC20.transfer.encodeInput({ _to: to, _value: value }));
+  toBuffer(ERC20.transfer.encodeInput({ _to: bufferToHex(to), _value: value }));

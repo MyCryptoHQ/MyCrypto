@@ -7,6 +7,7 @@ import { isEtherTransaction } from 'selectors/transaction';
 import { AppState } from 'reducers';
 export interface CallBackProps {
   data: AppState['transaction']['fields']['data'];
+  dataExists: boolean;
   readOnly: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>);
 }
