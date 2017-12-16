@@ -158,6 +158,8 @@ export type BityOrderPostResponse = BityOrderResponse & {
   id: string;
 };
 
+export type ProviderName = 'shapeshift' | 'bity';
+
 export interface BityOrderCreateSucceededSwapAction {
   type: TypeKeys.SWAP_BITY_ORDER_CREATE_SUCCEEDED;
   payload: BityOrderPostResponse;
@@ -218,6 +220,11 @@ export interface StopPollShapeshiftOrderStatusAction {
   type: TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS;
 }
 
+export interface ChangeProviderSwapAcion {
+  type: TypeKeys.SWAP_CHANGE_PROVIDER;
+  payload: ProviderName;
+}
+
 /*** Action Type Union ***/
 export type SwapAction =
   | ChangeStepSwapAction
@@ -240,4 +247,5 @@ export type SwapAction =
   | StartPollShapeshiftOrderStatusAction
   | BityOrderCreateFailedSwapAction
   | ShapeshiftOrderCreateFailedSwapAction
-  | OrderSwapTimeSwapAction;
+  | OrderSwapTimeSwapAction
+  | ChangeProviderSwapAcion;

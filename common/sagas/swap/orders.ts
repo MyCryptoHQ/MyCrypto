@@ -92,7 +92,6 @@ export function* pollShapeshiftOrderStatus(): SagaIterator {
           showNotification('danger', `Shapeshift Error: ${orderStatus.error}`, TEN_SECONDS)
         );
       } else {
-        console.log('orderStatus', orderStatus);
         yield put(shapeshiftOrderStatusSucceededSwap(orderStatus));
         yield call(delay, ONE_SECOND * 5);
         swap = yield select(getSwap);
@@ -175,7 +174,6 @@ export function* postShapeshiftOrderCreate(
       yield put(showNotification('danger', `Shapeshift Error: ${order.error}`));
       yield put(shapeshiftOrderCreateFailedSwap());
     } else {
-      console.log('Order data', order);
       yield put(shapeshiftOrderCreateSucceededSwap(order.success));
       yield put(changeStepSwap(3));
       // start countdown
@@ -184,7 +182,6 @@ export function* postShapeshiftOrderCreate(
       yield put(startPollShapeshiftOrderStatus());
     }
   } catch (e) {
-    console.log(e);
     const message =
       'Connection Error. Please check the developer console for more details and/or contact support';
     yield put(showNotification('danger', message, TEN_SECONDS));

@@ -3,6 +3,7 @@ import * as stateTypes from './types';
 import * as schema from './schema';
 import { TypeKeys } from 'actions/swap/constants';
 import { normalize } from 'normalizr';
+import { merge } from 'lodash';
 
 export interface State {
   step: number;
@@ -44,7 +45,7 @@ export const INITIAL_STATE: State = {
     byId: {},
     allIds: []
   },
-  provider: 'shapeshift',
+  provider: 'bity',
   destinationAddress: '',
   bityOrder: {},
   shapeshiftOrder: {},
@@ -71,8 +72,15 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
           allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.bityRates)
         },
         options: {
-          byId: normalize(payload, [schema.bityRate]).entities.options,
-          allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.options)
+          byId: Object.assign(
+            {},
+            state.options.byId,
+            normalize(payload, [schema.bityRate]).entities.options
+          ),
+          allIds: [
+            ...state.options.allIds,
+            ...schema.allIds(normalize(payload, [schema.bityRate]).entities.options)
+          ]
         },
         isFetchingRates: false
       };
@@ -85,8 +93,15 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
           allIds: schema.allIds(normalize(action.payload, [schema.bityRate]).entities.bityRates)
         },
         options: {
-          byId: normalize(action.payload, [schema.bityRate]).entities.options,
-          allIds: schema.allIds(normalize(action.payload, [schema.bityRate]).entities.options)
+          byId: Object.assign(
+            {},
+            normalize(action.payload, [schema.bityRate]).entities.options,
+            state.options.byId
+          ),
+          allIds: [
+            ...schema.allIds(normalize(action.payload, [schema.bityRate]).entities.options),
+            ...state.options.allIds
+          ]
         },
         isFetchingRates: false
       };
@@ -208,6 +223,11 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
       return {
         ...state,
         isFetchingRates: false
+      };
+    case TypeKeys.SWAP_CHANGE_PROVIDER:
+      return {
+        ...state,
+        provider: action.payload
       };
     default:
       return state;

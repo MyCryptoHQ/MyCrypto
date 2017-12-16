@@ -231,3 +231,13 @@ export function stopPollShapeshiftOrderStatus(): interfaces.StopPollShapeshiftOr
     type: TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS
   };
 }
+
+export type TChangeSwapProvider = typeof changeSwapProvider;
+export function changeSwapProvider(
+  payload: interfaces.ProviderName
+): interfaces.ChangeProviderSwapAcion {
+  return {
+    type: TypeKeys.SWAP_CHANGE_PROVIDER,
+    payload
+  };
+}

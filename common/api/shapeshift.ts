@@ -61,12 +61,6 @@ class ShapeshiftService {
   public sendAmount(withdrawal, originKind, destinationKind, destinationAmount) {
     const pair = `${originKind.toLowerCase()}_${destinationKind.toLowerCase()}`;
 
-    console.log('destamt', {
-      amount: destinationAmount,
-      pair,
-      apiKey: this.apiKey,
-      withdrawal
-    });
     return fetch(`${this.url}/sendamount`, {
       method: 'POST',
       body: JSON.stringify({

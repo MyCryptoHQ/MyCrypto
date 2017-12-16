@@ -9,7 +9,7 @@ import {
   pollShapeshiftOrderStatusSaga,
   restartSwapSaga
 } from './swap/orders';
-import { getBityRatesSaga, getShapeShiftRatesSaga } from './swap/rates';
+import { getBityRatesSaga, getShapeShiftRatesSaga, swapProviderSaga } from './swap/rates';
 import wallet from './wallet';
 
 export default {
@@ -24,5 +24,6 @@ export default {
   restartSwapSaga,
   notifications,
   wallet,
-  deterministicWallets
+  deterministicWallets,
+  swapProviderSaga
 };

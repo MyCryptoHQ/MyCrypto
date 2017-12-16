@@ -1,4 +1,4 @@
-import { TChangeStepSwap, TInitSwap } from 'actions/swap';
+import { TChangeStepSwap, TInitSwap, TChangeSwapProvider } from 'actions/swap';
 import {
   NormalizedBityRates,
   NormalizedShapeshiftRates,
@@ -16,7 +16,7 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { Dropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { without, intersection } from 'lodash';
+import { without, merge, intersection } from 'lodash';
 import './CurrencySwap.scss';
 import shapeshift from 'api/shapeshift';
 
@@ -30,6 +30,7 @@ export interface StateProps {
 export interface ActionProps {
   changeStepSwap: TChangeStepSwap;
   initSwap: TInitSwap;
+  swapProvider: TChangeSwapProvider;
 }
 
 interface State {
@@ -57,10 +58,30 @@ export default class CurrencySwap extends Component<Props, State> {
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
     const { origin, destination } = this.state;
-    const { options } = this.props;
+    const { options, bityRates } = this.props;
     if (origin !== prevState.origin) {
       this.setDisabled(origin, destination);
     }
+
+    const originCap = origin.id.toUpperCase();
+    const destCap = destination.id.toUpperCase();
+    const { provider } = this.props;
+
+    const ensureCorrectProvider =
+      (originCap === 'BTC' && destCap === 'ETH') || (destCap === 'BTC' && originCap === 'ETH');
+    const ensureBityRatesLoaded =
+      bityRates.allIds.includes('ETHBTC') && bityRates.allIds.includes('BTCETH');
+
+    if (ensureBityRatesLoaded && ensureCorrectProvider) {
+      if (provider === 'shapeshift') {
+        this.props.swapProvider('bity');
+      }
+    } else {
+      if (provider !== 'shapeshift') {
+        this.props.swapProvider('shapeshift');
+      }
+    }
+
     if (options.allIds !== prevProps.options.allIds) {
       const originKindOptions: SupportedDestinationKind[] = intersection<any>(
         options.allIds,
@@ -77,27 +98,32 @@ export default class CurrencySwap extends Component<Props, State> {
     }
   }
 
-  public activeProvider = () =>
-    this.props.provider === 'shapeshift' ? this.props.shapeshiftRates : this.props.bityRates;
+  public rateMixer = () => {
+    const { shapeshiftRates, bityRates } = this.props;
+    return merge(shapeshiftRates, bityRates);
+  };
 
   public getMinMax = (originKind: SupportedDestinationKind, destinationKind) => {
     let min;
     let max;
-    if (this.props.provider === 'shapeshift') {
-      const pair = (this.activeProvider() as NormalizedShapeshiftRates).byId[
-        originKind + destinationKind
-      ];
-      min = pair.min;
-      max = pair.limit;
-    } else {
+
+    const { provider, bityRates } = this.props;
+
+    if (provider === 'bity' && bityRates.allIds.length > 2) {
       if (originKind !== 'BTC') {
-        const pairRate = this.activeProvider().byId['BTC' + originKind].rate;
+        const pairRate = this.rateMixer().byId['BTC' + originKind].rate;
         min = generateKindMin(pairRate, originKind);
         max = generateKindMax(pairRate, originKind);
       } else {
         min = bityConfig.BTCMin;
         max = bityConfig.BTCMax;
       }
+    } else {
+      const pair = (this.rateMixer() as NormalizedShapeshiftRates).byId[
+        originKind + destinationKind
+      ];
+      min = pair.min;
+      max = pair.limit;
     }
     return { min, max };
   };
@@ -164,7 +190,7 @@ export default class CurrencySwap extends Component<Props, State> {
   public updateOriginAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
       const pairName = combineAndUpper(origin.id, destination.id);
-      const rate = this.activeProvider().byId[pairName].rate;
+      const rate = this.rateMixer().byId[pairName].rate;
       const destinationAmount = amount * rate;
       this.setState({
         origin: { ...this.state.origin, amount },
@@ -178,7 +204,7 @@ export default class CurrencySwap extends Component<Props, State> {
   public updateDestinationAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
       const pairNameReversed = combineAndUpper(destination.id, origin.id);
-      const rate = this.activeProvider().byId[pairNameReversed].rate;
+      const rate = this.rateMixer().byId[pairNameReversed].rate;
       const originAmount = amount * rate;
       this.setState({
         origin: { ...this.state.origin, amount: originAmount },
@@ -205,7 +231,7 @@ export default class CurrencySwap extends Component<Props, State> {
     const { origin, destination, destinationKindOptions } = this.state;
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
-      const rate = this.activeProvider().byId[pairName].rate;
+      const rate = this.rateMixer().byId[pairName].rate;
       return rate * origin.amount;
     };
     this.setState({
@@ -222,7 +248,7 @@ export default class CurrencySwap extends Component<Props, State> {
     const { origin, destination } = this.state;
     const newOriginAmount = () => {
       const pairName = combineAndUpper(newOption, origin.id);
-      const rate = this.activeProvider().byId[pairName].rate;
+      const rate = this.rateMixer().byId[pairName].rate;
       return rate * destination.amount;
     };
     this.setState({
@@ -235,7 +261,7 @@ export default class CurrencySwap extends Component<Props, State> {
   };
 
   public render() {
-    const { bityRates, shapeshiftRates, provider } = this.props;
+    const { bityRates, shapeshiftRates } = this.props;
     const {
       origin,
       destination,
@@ -244,7 +270,6 @@ export default class CurrencySwap extends Component<Props, State> {
       originErr,
       destinationErr
     } = this.state;
-
     const OriginKindDropDown = Dropdown as new () => Dropdown<any>;
     const DestinationKindDropDown = Dropdown as new () => Dropdown<any>;
     const pairName = combineAndUpper(origin.id, destination.id);
@@ -253,7 +278,7 @@ export default class CurrencySwap extends Component<Props, State> {
       shapeshiftRates.byId && shapeshiftRates.byId[pairName]
         ? shapeshiftRates.byId[pairName].id
         : false;
-    const loaded = provider === 'shapeshift' ? shapeshiftLoaded : bityLoaded;
+    const loaded = shapeshiftLoaded || bityLoaded;
     return (
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>

@@ -15,6 +15,7 @@ import {
   stopOrderTimerSwap as dStopOrderTimerSwap,
   stopPollBityOrderStatus as dStopPollBityOrderStatus,
   stopPollShapeshiftOrderStatus as dStopPollShapeshiftOrderStatus,
+  changeSwapProvider as dChangeSwapProvider,
   TInitSwap,
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
@@ -29,7 +30,8 @@ import {
   TStopLoadBityRatesSwap,
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus,
-  TStopPollShapeshiftOrderStatus
+  TStopPollShapeshiftOrderStatus,
+  TChangeSwapProvider
 } from 'actions/swap';
 import {
   SwapInput,
@@ -85,16 +87,13 @@ interface ReduxActionProps {
   stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
   showNotification: TShowNotification;
   initSwap: TInitSwap;
+  swapProvider: TChangeSwapProvider;
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
-    const { provider } = this.props;
-    if (provider === 'shapeshift') {
-      this.props.loadShapeshiftRatesRequestedSwap();
-    } else {
-      this.props.loadBityRatesRequestedSwap();
-    }
+    this.props.loadShapeshiftRatesRequestedSwap();
+    this.props.loadBityRatesRequestedSwap();
   }
 
   public componentWillUnmount() {
@@ -133,7 +132,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       stopPollShapeshiftOrderStatus,
       startPollShapeshiftOrderStatus,
       stopOrderTimerSwap,
-      stopPollBityOrderStatus
+      stopPollBityOrderStatus,
+      swapProvider
     } = this.props;
 
     const { reference } = bityOrder;
@@ -170,6 +170,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       provider,
       options,
       initSwap,
+      swapProvider,
       changeStepSwap
     };
 
@@ -194,7 +195,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       outputTx
     };
 
-    const { ETHBTC, ETHREP, BTCETH, BTCREP } = shapeshiftRates.byId;
+    const { ETHBTC, ETHREP, BTCETH, BTCREP } =
+      provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
     const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP, provider };
 
     return (
@@ -251,5 +253,6 @@ export default connect(mapStateToProps, {
   stopOrderTimerSwap: dStopOrderTimerSwap,
   stopPollBityOrderStatus: dStopPollBityOrderStatus,
   stopPollShapeshiftOrderStatus: dStopPollShapeshiftOrderStatus,
-  showNotification: dShowNotification
+  showNotification: dShowNotification,
+  swapProvider: dChangeSwapProvider
 })(Swap);
