@@ -12,6 +12,7 @@ import {
   startPollBityOrderStatus as dStartPollBityOrderStatus,
   startPollShapeshiftOrderStatus as dStartPollShapeshiftOrderStatus,
   stopLoadBityRatesSwap as dStopLoadBityRatesSwap,
+  stopLoadShapeshiftRatesSwap as dStopLoadShapeshiftRatesSwap,
   stopOrderTimerSwap as dStopOrderTimerSwap,
   stopPollBityOrderStatus as dStopPollBityOrderStatus,
   stopPollShapeshiftOrderStatus as dStopPollShapeshiftOrderStatus,
@@ -31,7 +32,8 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus,
   TStopPollShapeshiftOrderStatus,
-  TChangeSwapProvider
+  TChangeSwapProvider,
+  TStopLoadShapeshiftRatesSwap
 } from 'actions/swap';
 import {
   SwapInput,
@@ -49,17 +51,18 @@ import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
 import ShapeshiftBanner from './components/ShapeshiftBanner';
 import TabSection from 'containers/TabSection';
+import { merge } from 'lodash';
 
 interface ReduxStateProps {
   step: number;
   origin: SwapInput;
   destination: SwapInput;
   bityRates: NormalizedBityRates;
-  // change
   shapeshiftRates: NormalizedShapeshiftRates;
   options: NormalizedOptions;
   provider: string;
   bityOrder: any;
+  shapeshiftOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
   secondsRemaining: number | null;
@@ -77,6 +80,7 @@ interface ReduxActionProps {
   destinationAddressSwap: TDestinationAddressSwap;
   restartSwap: TRestartSwap;
   stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
+  stopLoadShapeshiftRatesSwap: TStopLoadShapeshiftRatesSwap;
   shapeshiftOrderCreateRequestedSwap: TShapeshiftOrderCreateRequestedSwap;
   bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
   startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
@@ -98,6 +102,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
 
   public componentWillUnmount() {
     this.props.stopLoadBityRatesSwap();
+    this.props.stopLoadShapeshiftRatesSwap();
   }
 
   public render() {
@@ -112,6 +117,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       destinationAddress,
       step,
       bityOrder,
+      shapeshiftOrder,
       secondsRemaining,
       paymentAddress,
       bityOrderStatus,
@@ -136,7 +142,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       swapProvider
     } = this.props;
 
-    const { reference } = bityOrder;
+    const reference = provider === 'shapeshift' ? shapeshiftOrder.orderId : bityOrder.reference;
 
     const ReceivingAddressProps = {
       isPostingOrder,
@@ -174,8 +180,13 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       changeStepSwap
     };
 
+    const paymentInfo =
+      provider === 'shapeshift'
+        ? merge(origin, { amount: shapeshiftOrder.depositAmount })
+        : merge(origin, { amount: bityOrder.amount });
+
     const PaymentInfoProps = {
-      origin,
+      origin: paymentInfo,
       paymentAddress
     };
 
@@ -226,6 +237,7 @@ function mapStateToProps(state: AppState) {
     provider: state.swap.provider,
     options: state.swap.options,
     bityOrder: state.swap.bityOrder,
+    shapeshiftOrder: state.swap.shapeshiftOrder,
     destinationAddress: state.swap.destinationAddress,
     isFetchingRates: state.swap.isFetchingRates,
     secondsRemaining: state.swap.secondsRemaining,
@@ -250,6 +262,7 @@ export default connect(mapStateToProps, {
   startPollBityOrderStatus: dStartPollBityOrderStatus,
   startPollShapeshiftOrderStatus: dStartPollShapeshiftOrderStatus,
   stopLoadBityRatesSwap: dStopLoadBityRatesSwap,
+  stopLoadShapeshiftRatesSwap: dStopLoadShapeshiftRatesSwap,
   stopOrderTimerSwap: dStopOrderTimerSwap,
   stopPollBityOrderStatus: dStopPollBityOrderStatus,
   stopPollShapeshiftOrderStatus: dStopPollShapeshiftOrderStatus,

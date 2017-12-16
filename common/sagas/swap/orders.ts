@@ -11,7 +11,7 @@ import {
   stopPollBityOrderStatus,
   shapeshiftOrderStatusSucceededSwap,
   ShapeshiftOrderCreateRequestedSwapAction,
-  stopLoadShapshiftRatesSwap,
+  stopLoadShapeshiftRatesSwap,
   shapeshiftOrderCreateFailedSwap,
   shapeshiftOrderCreateSucceededSwap,
   startPollShapeshiftOrderStatus,
@@ -88,9 +88,8 @@ export function* pollShapeshiftOrderStatus(): SagaIterator {
       yield put(shapeshiftOrderStatusRequested());
       const orderStatus = yield apply(shapeshift, shapeshift.checkStatus, [swap.paymentAddress]);
       if (orderStatus.status === 'failed') {
-        yield put(
-          showNotification('danger', `Shapeshift Error: ${orderStatus.error}`, TEN_SECONDS)
-        );
+        yield put(showNotification('danger', `Shapeshift Error: ${orderStatus.error}`, Infinity));
+        yield put(stopPollShapeshiftOrderStatus());
       } else {
         yield put(shapeshiftOrderStatusSucceededSwap(orderStatus));
         yield call(delay, ONE_SECOND * 5);
@@ -163,7 +162,7 @@ export function* postShapeshiftOrderCreate(
 ): SagaIterator {
   const payload = action.payload;
   try {
-    yield put(stopLoadShapshiftRatesSwap());
+    yield put(stopLoadShapeshiftRatesSwap());
     const order = yield apply(shapeshift, shapeshift.sendAmount, [
       payload.withdrawal,
       payload.originKind,
@@ -227,7 +226,7 @@ export function* orderTimeRemaining(): SagaIterator {
             case 'no_deposits':
               yield put(orderTimeSwap(0));
               yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapshiftRatesSwap());
+              yield put(stopLoadShapeshiftRatesSwap());
               if (!hasShownNotification) {
                 hasShownNotification = true;
                 yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
@@ -235,7 +234,7 @@ export function* orderTimeRemaining(): SagaIterator {
               break;
             case 'failed':
               yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapshiftRatesSwap());
+              yield put(stopLoadShapeshiftRatesSwap());
               if (!hasShownNotification) {
                 hasShownNotification = true;
                 yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
@@ -249,7 +248,7 @@ export function* orderTimeRemaining(): SagaIterator {
               break;
             case 'complete':
               yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapshiftRatesSwap());
+              yield put(stopLoadShapeshiftRatesSwap());
               break;
           }
         } else {

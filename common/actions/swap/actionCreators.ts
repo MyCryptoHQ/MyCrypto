@@ -73,8 +73,8 @@ export function stopLoadBityRatesSwap(): interfaces.StopLoadBityRatesSwapAction 
   };
 }
 
-export type TStopLoadShapeshiftRatesSwap = typeof stopLoadShapshiftRatesSwap;
-export function stopLoadShapshiftRatesSwap(): interfaces.StopLoadShapeshiftRatesSwapAction {
+export type TStopLoadShapeshiftRatesSwap = typeof stopLoadShapeshiftRatesSwap;
+export function stopLoadShapeshiftRatesSwap(): interfaces.StopLoadShapeshiftRatesSwapAction {
   return {
     type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES
   };

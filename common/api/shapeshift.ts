@@ -33,33 +33,19 @@ class ShapeshiftService {
   private postHeaders = {
     'Content-Type': 'application/json'
   };
-  // private counter = 0
   public checkStatus(address) {
-    // this.counter++
-    // if (this.counter === 2) {
-    //   return {
-    //     status: 'received',
-    //     address: '329HCMdWTnbvkzZHxDw27is4TmQ5RUjQ9X'
-    //   }
-    // }
-    // if (this.counter > 2) {
-    //   return {
-    //     status: 'complete',
-    //     address: '329HCMdWTnbvkzZHxDw27is4TmQ5RUjQ9X',
-    //     withdraw: '0x6b3a639eb96d8e0241fe4e114d99e739f906944e',
-    //     incomingCoin: 0.01,
-    //     incomingType: 'BTC',
-    //     outgoingCoin: 2,
-    //     outoingType: 'ETH',
-    //     transaction: '0xd88b5f00b99d9131458044d3dd3b54f2c416eaa4db9840e9d6aa938423a3134e'
-    //   }
-    // }
     return fetch(`${this.url}/txStat/${address}`)
       .then(checkHttpStatus)
       .then(parseJSON);
   }
   public sendAmount(withdrawal, originKind, destinationKind, destinationAmount) {
     const pair = `${originKind.toLowerCase()}_${destinationKind.toLowerCase()}`;
+    console.log('order', {
+      amount: destinationAmount,
+      pair,
+      apiKey: this.apiKey,
+      withdrawal
+    });
 
     return fetch(`${this.url}/sendamount`, {
       method: 'POST',

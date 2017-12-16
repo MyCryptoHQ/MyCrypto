@@ -1,6 +1,10 @@
 import { swap, INITIAL_STATE } from 'reducers/swap';
 import * as swapActions from 'actions/swap';
-import { NormalizedBityRates, NormalizedOptions } from 'reducers/swap/types';
+import {
+  NormalizedBityRates,
+  NormalizedOptions,
+  NormalizedShapeshiftRates
+} from 'reducers/swap/types';
 import { normalize } from 'normalizr';
 import * as schema from 'reducers/swap/schema';
 
@@ -17,19 +21,23 @@ describe('swap reducer', () => {
       rate: 0.042958
     }
   };
-  const normalizedbityRates: NormalizedBityRates = {
-    byId: normalize(apiResponse, [schema.bityRate]).entities.bityRates,
-    allIds: schema.allIds(normalize(apiResponse, [schema.bityRate]).entities.bityRates)
+  const normalizedBityRates: NormalizedBityRates = {
+    byId: normalize(apiResponse, [schema.providerRate]).entities.bityRates,
+    allIds: schema.allIds(normalize(apiResponse, [schema.providerRate]).entities.providerRates)
+  };
+  const normalizedShapeshiftRates: NormalizedShapeshiftRates = {
+    byId: normalize(apiResponse, [schema.providerRate]).entities.bityRates,
+    allIds: schema.allIds(normalize(apiResponse, [schema.providerRate]).entities.providerRates)
   };
   const normalizedOptions: NormalizedOptions = {
-    byId: normalize(apiResponse, [schema.bityRate]).entities.options,
-    allIds: schema.allIds(normalize(apiResponse, [schema.bityRate]).entities.options)
+    byId: normalize(apiResponse, [schema.providerRate]).entities.options,
+    allIds: schema.allIds(normalize(apiResponse, [schema.providerRate]).entities.options)
   };
   it('should handle SWAP_LOAD_BITY_RATES_SUCCEEDED', () => {
     expect(swap(undefined, swapActions.loadBityRatesSucceededSwap(apiResponse))).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false,
-      bityRates: normalizedbityRates,
+      bityRates: normalizedBityRates,
       options: normalizedOptions
     });
   });
@@ -55,7 +63,8 @@ describe('swap reducer', () => {
       swap(
         {
           ...INITIAL_STATE,
-          bityRates: normalizedbityRates,
+          bityRates: normalizedBityRates,
+          shapeshiftRates: normalizedShapeshiftRates,
           origin: { id: 'BTC', amount: 1 },
           destination: { id: 'ETH', amount: 3 }
         },
@@ -63,7 +72,8 @@ describe('swap reducer', () => {
       )
     ).toEqual({
       ...INITIAL_STATE,
-      bityRates: normalizedbityRates
+      bityRates: normalizedBityRates,
+      shapeshiftRates: normalizedShapeshiftRates
     });
   });
 
@@ -122,7 +132,7 @@ describe('swap reducer', () => {
       validFor: mockedBityOrder.validFor,
       orderTimestampCreatedISOString: mockedBityOrder.timestamp_created,
       paymentAddress: mockedBityOrder.payment_address,
-      orderStatus: mockedBityOrder.status,
+      bityOrderStatus: mockedBityOrder.status,
       orderId: mockedBityOrder.id
     });
   });

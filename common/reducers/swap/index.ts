@@ -3,7 +3,6 @@ import * as stateTypes from './types';
 import * as schema from './schema';
 import { TypeKeys } from 'actions/swap/constants';
 import { normalize } from 'normalizr';
-import { merge } from 'lodash';
 
 export interface State {
   step: number;
@@ -68,18 +67,18 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
       return {
         ...state,
         bityRates: {
-          byId: normalize(payload, [schema.bityRate]).entities.bityRates,
-          allIds: schema.allIds(normalize(payload, [schema.bityRate]).entities.bityRates)
+          byId: normalize(payload, [schema.providerRate]).entities.providerRates,
+          allIds: schema.allIds(normalize(payload, [schema.providerRate]).entities.providerRates)
         },
         options: {
           byId: Object.assign(
             {},
             state.options.byId,
-            normalize(payload, [schema.bityRate]).entities.options
+            normalize(payload, [schema.providerRate]).entities.options
           ),
           allIds: [
             ...state.options.allIds,
-            ...schema.allIds(normalize(payload, [schema.bityRate]).entities.options)
+            ...schema.allIds(normalize(payload, [schema.providerRate]).entities.options)
           ]
         },
         isFetchingRates: false
@@ -89,17 +88,19 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         ...state,
         // modify to shapeshift normalization schema
         shapeshiftRates: {
-          byId: normalize(action.payload, [schema.bityRate]).entities.bityRates,
-          allIds: schema.allIds(normalize(action.payload, [schema.bityRate]).entities.bityRates)
+          byId: normalize(action.payload, [schema.providerRate]).entities.providerRates,
+          allIds: schema.allIds(
+            normalize(action.payload, [schema.providerRate]).entities.providerRates
+          )
         },
         options: {
           byId: Object.assign(
             {},
-            normalize(action.payload, [schema.bityRate]).entities.options,
+            normalize(action.payload, [schema.providerRate]).entities.options,
             state.options.byId
           ),
           allIds: [
-            ...schema.allIds(normalize(action.payload, [schema.bityRate]).entities.options),
+            ...schema.allIds(normalize(action.payload, [schema.providerRate]).entities.options),
             ...state.options.allIds
           ]
         },
