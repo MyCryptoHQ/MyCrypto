@@ -15,7 +15,7 @@ interface Props {
   activeTab?: string;
   root: string;
   tabs: Tab[];
-  sideBar?: React.ReactElement<any> | React.Component | React.StatelessComponent;
+  sideBar?: React.ReactElement<any>;
 }
 
 interface State {
