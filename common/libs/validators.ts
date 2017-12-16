@@ -158,7 +158,7 @@ function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
 
 function formatErrors(response: JsonRpcResponse, apiType: string) {
   if (response.error) {
-    return `${response.error.message} ${response.error.data}`;
+    return `${response.error.message} ${response.error.data || ''}`;
   }
   return `Invalid ${apiType} Error`;
 }
