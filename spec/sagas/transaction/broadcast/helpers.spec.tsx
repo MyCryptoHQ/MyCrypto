@@ -26,7 +26,7 @@ import {
   shouldBroadcastTransaction
 } from 'sagas/transaction/broadcast/helpers';
 
-describe('broadcastTransactinWrapper*', () => {
+describe('broadcastTransactionWrapper*', () => {
   const indexingHash = 'indexingHash';
   const serializedTransaction = new Buffer('serializedTransaction');
   const shouldBroadcast = true;
@@ -67,8 +67,7 @@ describe('broadcastTransactinWrapper*', () => {
   it('should handle exceptions', () => {
     gens.clone1 = gens.gen.clone();
     const error = { message: 'message' };
-    expect(gens.clone1.throw(error).value).toEqual(put(reset()));
-    expect(gens.clone1.next(error).value).toEqual(
+    expect(gens.clone1.throw(error).value).toEqual(
       put(broadcastTransactionFailed({ indexingHash }))
     );
     expect(gens.clone1.next().value).toEqual(put(showNotification('danger', error.message)));
