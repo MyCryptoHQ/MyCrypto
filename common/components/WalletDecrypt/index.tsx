@@ -12,6 +12,7 @@ import {
   resetWallet,
   TResetWallet
 } from 'actions/wallet';
+import { reset, TReset } from 'actions/transaction';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import React, { Component } from 'react';
@@ -33,6 +34,7 @@ import { IWallet } from 'libs/wallet';
 type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
+  resetTransactionState: TReset;
   unlockKeystore: TUnlockKeystore;
   unlockMnemonic: TUnlockMnemonic;
   unlockPrivateKey: TUnlockPrivateKey;
@@ -217,6 +219,7 @@ export class WalletDecrypt extends Component<Props, State> {
     // in this case, we can expect the payload to contain the unlocked wallet info.
     const unlockValue = this.state.value && !isEmpty(this.state.value) ? this.state.value : payload;
     this.WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
+    this.props.resetTransactionState();
   };
 }
 
@@ -233,5 +236,6 @@ export default connect(mapStateToProps, {
   unlockPrivateKey,
   unlockWeb3,
   setWallet,
-  resetWallet
+  resetWallet,
+  resetTransactionState: reset
 })(WalletDecrypt);
