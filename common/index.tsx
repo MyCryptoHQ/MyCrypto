@@ -2,6 +2,8 @@
 import 'assets/styles/etherwallet-master.less';
 import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
+import 'babel-polyfill';
+import 'whatwg-fetch';
 import React from 'react';
 import { render } from 'react-dom';
 import Root from './Root';
