@@ -48,7 +48,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
     const { transactionFailed } = props;
     this.state = {
       timeToRead: 5,
-      retryingFailedBroadcast: !transactionFailed
+      retryingFailedBroadcast: transactionFailed
     };
   }
 
