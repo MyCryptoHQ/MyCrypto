@@ -21,25 +21,28 @@ interface Props {
 }
 
 interface State {
-  hasError: boolean;
+  error: Error | null;
 }
 
 export default class Root extends Component<Props, State> {
   public state = {
-    hasError: false
+    error: null
   };
 
-  public componentDidCatch() {
-    this.setState({ hasError: true });
+  public componentDidCatch(error) {
+    this.setState({ error });
   }
 
   public render() {
     const { store, history } = this.props;
-    const { hasError } = this.state;
+    const { error } = this.state;
+
+    if (error) {
+      return <ErrorScreen error={error} />;
+    }
+
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
-    return hasError ? (
-      <ErrorScreen />
-    ) : (
+    return (
       <Provider store={store} key={Math.random()}>
         <Router history={history} key={Math.random()}>
           <div>
