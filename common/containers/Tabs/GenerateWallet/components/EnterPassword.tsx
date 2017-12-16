@@ -2,11 +2,10 @@ import { GenerateNewWalletAction } from 'actions/generateWallet';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import translate from 'translations';
-import { MINIMUM_PASSWORD_LENGTH } from 'config/data';
+import { knowledgeBaseURL, MINIMUM_PASSWORD_LENGTH } from 'config/data';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from './Template';
-import { knowledgeBaseURL } from 'config/data';
 
 interface Props {
   generateNewWallet(pw: string): GenerateNewWalletAction;
