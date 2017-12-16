@@ -89,7 +89,8 @@ class BroadcastTx extends Component<DispatchProps & StateProps> {
       const indexingHash = computeIndexingHash(bufferTransaction);
       this.props.signLocalTransactionSucceeded({
         signedTransaction: bufferTransaction,
-        indexingHash
+        indexingHash,
+        noVerify: true
       });
     } catch {
       this.props.signTransactionFailed();

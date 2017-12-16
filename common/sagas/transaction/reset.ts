@@ -7,6 +7,4 @@ export function* resetTransactionState(): SagaIterator {
   yield put(resetActionCreator());
 }
 
-export const reset = [
-  takeEvery([TypeKeys.WALLET_RESET, TypeKeys.WALLET_SET], resetTransactionState)
-];
+export const reset = [takeEvery([TypeKeys.WALLET_RESET], resetTransactionState)];

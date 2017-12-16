@@ -1,8 +1,7 @@
 import { getWalletInst } from 'selectors/wallet';
 import { IFullWallet } from 'libs/wallet';
-import { getGasPriceGwei, getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
-import { toWei, getDecimalFromEtherUnit, Wei } from 'libs/units';
 import {
   signTransactionFailed,
   SignWeb3TransactionRequestedAction,
@@ -16,7 +15,6 @@ import Tx from 'ethereumjs-tx';
 import { NetworkConfig } from 'config/data';
 import { SagaIterator } from 'redux-saga';
 import { showNotification } from 'actions/notifications';
-import { toBuffer } from 'ethereumjs-util';
 
 interface IFullWalletAndTransaction {
   wallet: IFullWallet;
@@ -37,18 +35,6 @@ const signTransactionWrapper = (func: (IWalletAndTx: IFullWalletAndTransaction) 
     }
   };
 
-function* getGasPrice() {
-  // get the current gas price
-  const gasPriceInGwei: number = yield select(getGasPriceGwei);
-  // should verify chainId and gas price here
-
-  const gweiDecimal: number = yield call(getDecimalFromEtherUnit, 'gwei');
-  const gasPriceWei: Wei = yield call(toWei, gasPriceInGwei.toString(), gweiDecimal);
-
-  const gasPriceBuffer: Buffer = yield call(toBuffer, gasPriceWei);
-  return gasPriceBuffer;
-}
-
 /**
  * @description grabs wallet and required tx parameters via selectors, and assigns
  * the rest of the tx parameters from the action
@@ -64,10 +50,8 @@ function* getWalletAndTransaction(
   }
   // get the chainId
   const { chainId }: NetworkConfig = yield select(getNetworkConfig);
-  const gasPrice: Buffer = yield call(getGasPrice);
 
   // get the rest of the transaction parameters
-  partialTx.gasPrice = gasPrice;
   partialTx._chainId = chainId;
   return {
     wallet,
@@ -98,6 +82,5 @@ export {
   getWalletAndTransaction,
   handleFailedTransaction,
   signTransactionWrapper,
-  getGasPrice,
   getFrom
 };

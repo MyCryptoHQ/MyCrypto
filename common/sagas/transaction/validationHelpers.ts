@@ -71,7 +71,7 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
     ? yield call(makeCostCalculationTx, input)
     : yield call(makeCostCalculationTx, null);
 
-  // check that they have enough ether
+  // check that they have enough ether, this checks gas cost too
   valid = valid && enoughBalanceViaTx(validationTx, etherBalance);
 
   if (!etherTransaction) {

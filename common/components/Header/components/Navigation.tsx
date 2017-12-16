@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
+import { knowledgeBaseURL } from 'config/data';
 
 import './Navigation.scss';
 
@@ -34,8 +35,12 @@ const tabs = [
     to: '/pushTx'
   },
   {
+    name: 'NAV_Utilities',
+    to: 'utilities'
+  },
+  {
     name: 'NAV_Help',
-    to: 'https://myetherwallet.groovehq.com/help_center',
+    to: `${knowledgeBaseURL}`,
     external: true
   }
 ];

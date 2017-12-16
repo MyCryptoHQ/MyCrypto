@@ -25,6 +25,7 @@ interface Props {
    * @memberof Props
    */
   displayShortBalance?: boolean | number;
+  checkOffline?: boolean;
 }
 
 interface EthProps extends Props {
@@ -38,7 +39,7 @@ const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
   !!(param as EthProps).unit;
 
 const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
-  const { value, symbol, displayShortBalance } = params;
+  const { value, symbol, displayShortBalance, checkOffline } = params;
   let element;
 
   if (!value) {
@@ -70,7 +71,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
     );
   }
 
-  return <ConnectedOfflineDisplay>{element}</ConnectedOfflineDisplay>;
+  return checkOffline ? <ConnectedOfflineDisplay>{element}</ConnectedOfflineDisplay> : element;
 };
 
 export default UnitDisplay;

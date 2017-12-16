@@ -1,19 +1,7 @@
 @import "common/sass/variables";
 
 .GenerateWallet {
-  display: flex;
-  flex-wrap: wrap;
-
   &-column {
-    display: flex;
-    flex-direction: column;
-
-    &-content,
-    &-help {
-      width: 100%;
-      height: 100%;
-    }
-
     &-content {
       text-align: center;
     }

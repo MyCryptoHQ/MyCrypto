@@ -2,7 +2,7 @@ import { getTo, getValue } from './fields';
 import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
-import { getDataExists } from 'selectors/transaction';
+import { getDataExists, getValidGasCost } from 'selectors/transaction';
 
 interface ICurrentValue {
   raw: string;
@@ -29,10 +29,8 @@ const getCurrentValue = (state: AppState): ICurrentValue =>
 const isValidCurrentTo = (state: AppState) => {
   const currentTo = getCurrentTo(state);
   const dataExists = getDataExists(state);
-  if (!currentTo.value) {
-    return false;
-  }
   if (isEtherTransaction(state)) {
+    // if data exists the address can be 0x
     return !!currentTo.value || dataExists;
   } else {
     return !!currentTo.value;
@@ -42,11 +40,14 @@ const isValidCurrentTo = (state: AppState) => {
 const isValidAmount = (state: AppState) => {
   const currentValue = getCurrentValue(state);
   const dataExists = getDataExists(state);
-  if (!currentValue.value) {
-    return false;
-  }
+  const validGasCost = getValidGasCost(state);
   if (isEtherTransaction(state)) {
-    return !!currentValue.value || dataExists;
+    // if data exists with no value, just check if gas is enough
+    if (dataExists && !currentValue.value && currentValue.raw === '') {
+      return validGasCost;
+    }
+
+    return !!currentValue.value;
   } else {
     return !!currentValue.value;
   }

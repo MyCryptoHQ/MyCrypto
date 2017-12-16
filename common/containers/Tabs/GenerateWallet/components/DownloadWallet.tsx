@@ -7,7 +7,7 @@ import translate from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from './Template';
-import { N_FACTOR } from 'config/data';
+import { N_FACTOR, knowledgeBaseURL } from 'config/data';
 
 interface Props {
   wallet: IFullWallet;
@@ -98,12 +98,16 @@ export default class DownloadWallet extends Component<Props, State> {
         <h4>{translate('GEN_Help_4')}</h4>
         <ul>
           <li>
-            <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/how-do-i-save-slash-backup-my-wallet">
+            <NewTabLink href={`${knowledgeBaseURL}/getting-started/backing-up-your-new-wallet`}>
               <strong>{translate('GEN_Help_13')}</strong>
             </NewTabLink>
           </li>
           <li>
-            <NewTabLink href="https://myetherwallet.groovehq.com/knowledge_base/topics/what-are-the-different-formats-of-a-private-key">
+            <NewTabLink
+              href={`${
+                knowledgeBaseURL
+              }/private-keys-passwords/difference-beween-private-key-and-keystore-file`}
+            >
               <strong>{translate('GEN_Help_14')}</strong>
             </NewTabLink>
           </li>

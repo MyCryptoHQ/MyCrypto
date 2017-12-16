@@ -28,6 +28,10 @@ $small-size: 900px;
 .Header {
   margin-bottom: 2rem;
 
+  @media screen and (max-width: $screen-sm) {
+    margin-bottom: 1rem;
+  }
+
   &-announcement {
     padding: 4px 10px;
     line-height: 26px;
@@ -110,6 +114,7 @@ $small-size: 900px;
       flex: 1 auto;
       text-align: right;
       padding: 0 0 5px;
+
       @include small-query {
         text-align: center;
       }
@@ -127,6 +132,12 @@ $small-size: 900px;
 
       &-dropdown {
         margin-left: 6px;
+
+        @media screen and (max-width: $screen-xs) {
+          .btn {
+            padding: .3rem .5rem;
+          }
+        }
 
         &-add {
           text-align: center;

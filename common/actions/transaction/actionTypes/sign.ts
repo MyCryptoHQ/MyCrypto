@@ -14,7 +14,7 @@ interface SignLocalTransactionRequestedAction {
 }
 interface SignLocalTransactionSucceededAction {
   type: TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED;
-  payload: { signedTransaction: Buffer; indexingHash: string };
+  payload: { signedTransaction: Buffer; indexingHash: string; noVerify?: boolean }; // dont verify against fields, for pushTx
 }
 
 interface SignWeb3TransactionRequestedAction {
@@ -23,7 +23,7 @@ interface SignWeb3TransactionRequestedAction {
 }
 interface SignWeb3TransactionSucceededAction {
   type: TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED;
-  payload: { transaction: Buffer; indexingHash: string };
+  payload: { transaction: Buffer; indexingHash: string; noVerify?: boolean };
 }
 interface SignTransactionFailedAction {
   type: TypeKeys.SIGN_TRANSACTION_FAILED;

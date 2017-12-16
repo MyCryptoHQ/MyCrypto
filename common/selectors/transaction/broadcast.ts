@@ -6,6 +6,11 @@ const getBroadcastState = (state: AppState) => getTransactionState(state).broadc
 const getTransactionStatus = (state: AppState, indexingHash: string) =>
   getBroadcastState(state)[indexingHash];
 
+const currentTransactionFailed = (state: AppState) => {
+  const txExists = getCurrentTransactionStatus(state);
+  return txExists && !txExists.broadcastSuccessful;
+};
+
 // Note: if the transaction or the indexing hash doesn't exist, we have a problem
 const currentTransactionBroadcasting = (state: AppState) => {
   const txExists = getCurrentTransactionStatus(state);
@@ -32,5 +37,6 @@ export {
   getTransactionStatus,
   currentTransactionBroadcasting,
   currentTransactionBroadcasted,
-  getCurrentTransactionStatus
+  getCurrentTransactionStatus,
+  currentTransactionFailed
 };

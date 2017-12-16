@@ -5,9 +5,11 @@ import { stripHexPrefix } from 'libs/values';
 type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
-type Address = BN;
+type Address = Buffer;
 type Nonce = BN;
 type Data = Buffer;
+
+export const ETH_DECIMAL = 18;
 
 const Units = {
   wei: '1',
@@ -49,7 +51,7 @@ const handleValues = (input: string | BN) => {
   }
 };
 
-const Address = (input: string) => handleValues(input);
+const Address = (input: string) => toBuffer(addHexPrefix(input));
 
 const Data = (input: string) => toBuffer(addHexPrefix(input));
 
@@ -102,6 +104,13 @@ const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
 const isEtherUnit = (unit: string) => unit === 'ether';
+const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
+  if (oldDecimal === newDecimal) {
+    return value;
+  }
+  return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
+};
+
 export {
   isEtherUnit,
   Data,
@@ -111,6 +120,7 @@ export {
   toWei,
   toTokenBase,
   fromTokenBase,
+  convertTokenBase,
   Wei,
   getDecimalFromEtherUnit,
   UnitKey,

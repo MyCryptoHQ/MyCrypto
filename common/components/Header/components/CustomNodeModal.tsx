@@ -64,6 +64,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
         disabled: !!Object.keys(invalids).length
       },
       {
+        type: 'default',
         text: translate('x_Cancel'),
         onClick: handleClose
       }

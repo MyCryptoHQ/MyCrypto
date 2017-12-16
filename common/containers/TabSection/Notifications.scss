@@ -6,14 +6,16 @@
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: $zindex-alerts;
 }
 
 .Notification {
   position: relative;
-  padding: $space;
-  margin: $space 0;
+  padding: 1.25rem 1rem;
+  margin: 0 0 1px;
   font-weight: 300;
   font-size: $font-size-bump;
+  box-shadow: 0 1px rgba(#fff, 0.4);
 
   &:first-child {
     margin-top: 0;
@@ -112,13 +114,27 @@
     right: 0;
     width: 9rem;
     bottom: 0;
-    border-left: 1px solid rgba(255, 255, 255, .7);
+    border-radius: 0;
     transition: $transition;
     background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%20348.333%20348.334%22%3E%3Cpath%20d%3D%22M336.559%2068.611L231.016%20174.165l105.543%20105.549c15.699%2015.705%2015.699%2041.145%200%2056.85-7.844%207.844-18.128%2011.769-28.407%2011.769-10.296%200-20.581-3.919-28.419-11.769L174.167%20231.003%2068.609%20336.563c-7.843%207.844-18.128%2011.769-28.416%2011.769-10.285%200-20.563-3.919-28.413-11.769-15.699-15.698-15.699-41.139%200-56.85l105.54-105.549L11.774%2068.611c-15.699-15.699-15.699-41.145%200-56.844%2015.696-15.687%2041.127-15.687%2056.829%200l105.563%20105.554L279.721%2011.767c15.705-15.687%2041.139-15.687%2056.832%200%2015.705%2015.699%2015.705%2041.145.006%2056.844z%22%20fill%3D%22%23FFF%22/%3E%3C/svg%3E');
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 0;
+      border-left: 1px solid rgba(0, 0, 0, .1);
+      transition: $transition;
+    }
 
     &:hover {
       background-color: rgba(#000, 0.1);
       border-color: rgba(#fff, .5);
+
+      &:after {
+        opacity: 0;
+      }
     }
     &:active {
       background-color: rgba(#000, 0.1);
@@ -143,24 +159,29 @@
   }
 }
 
-.NotificationAnimation{
+.NotificationAnimation {
+  &-enter,
+  &-exit {
+    transition: opacity 250ms ease, transform 250ms ease;
+  }
+
   &-enter {
-    opacity: 0.01;
+    opacity: 0;
+    transform: translateY(100%);
+
     &-active {
       opacity: 1;
-      transition: opacity 500ms;
+      transform: translateY(0%);
     }
   }
-}
 
-.NotificationAnimation{
   &-exit {
     opacity: 1;
-    transform: none;
+    transform: translateY(0%);
+
     &-active {
-      opacity: 0.01;
+      opacity: 0;
       transform: translateY(100%);
-      transition: opacity 500ms, transform 500ms;
     }
   }
 }

@@ -13,7 +13,8 @@ import {
 } from 'actions/transaction';
 import {
   currentTransactionBroadcasting,
-  currentTransactionBroadcasted
+  currentTransactionBroadcasted,
+  currentTransactionFailed
 } from 'selectors/transaction';
 import translate, { translateRaw } from 'translations';
 import './ConfirmationModal.scss';
@@ -28,25 +29,31 @@ interface StateProps {
   walletTypes: IWalletType;
   transactionBroadcasting: boolean;
   transactionBroadcasted: boolean;
+  transactionFailed: boolean;
 }
 interface OwnProps {
   onClose(): void;
 }
 interface State {
+  retryingFailedBroadcast: boolean;
   timeToRead: number;
 }
 
 type Props = DispatchProps & StateProps & OwnProps;
 
 class ConfirmationModalClass extends React.Component<Props, State> {
-  public state = {
-    timeToRead: 5
-  };
-
   private readTimer = 0;
+  public constructor(props: Props) {
+    super(props);
+    const { transactionFailed } = props;
+    this.state = {
+      timeToRead: 5,
+      retryingFailedBroadcast: !transactionFailed
+    };
+  }
 
   public componentDidUpdate() {
-    if (this.props.transactionBroadcasted) {
+    if (this.props.transactionBroadcasted && !this.state.retryingFailedBroadcast) {
       this.props.onClose();
     }
   }
@@ -118,6 +125,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
       this.props.walletTypes.isWeb3Wallet
         ? this.props.broadcastWeb3TransactionRequested()
         : this.props.broadcastLocalTransactionRequested();
+      this.setState({ retryingFailedBroadcast: false });
     }
   };
 }
@@ -126,6 +134,7 @@ export const ConfirmationModal = connect(
   (state: AppState) => ({
     transactionBroadcasting: currentTransactionBroadcasting(state),
     transactionBroadcasted: currentTransactionBroadcasted(state),
+    transactionFailed: currentTransactionFailed(state),
     lang: getLanguageSelection(state),
     walletTypes: getWalletType(state)
   }),
