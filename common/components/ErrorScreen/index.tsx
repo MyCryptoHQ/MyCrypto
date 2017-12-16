@@ -3,9 +3,13 @@ import './index.scss';
 
 const SUBJECT = 'Error!';
 const DESCRIPTION =
-  'I encountered an error while using MyEtherWallet. Here are the steps to re-create the issue: ...';
+  'I encountered an error while using MyEtherWallet. Here are the steps to re-create the issue:\n\nThe full error message:';
 
-const ErrorScreen: React.SFC<{}> = () => {
+interface Props {
+  error: Error;
+}
+
+const ErrorScreen: React.SFC<Props> = ({ error }) => {
   return (
     <div className="ErrorScreen">
       <div className="ErrorScreen-content">
@@ -20,8 +24,14 @@ const ErrorScreen: React.SFC<{}> = () => {
           >
             support@myetherwallet.com
           </a>{' '}
-          if a refresh doesn't fix it (or click it anyway to open a ticket 😊 ).
+          if a refresh doesn't fix it (or click it anyway to open a ticket 😊). If you attach the
+          following error, you'll make it a ton easier to fix the issue.
         </p>
+        <h5>
+          Please make sure the error message does not include any sensitive information before
+          sending it us. We don't want your private keys!
+        </h5>
+        <code>{error.message}</code>
       </div>
     </div>
   );
