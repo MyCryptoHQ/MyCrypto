@@ -1,5 +1,5 @@
 import TabSection from 'containers/TabSection';
-import { SubTabs } from './components';
+import SubTabs from 'components/SubTabs';
 import { OfflineAwareUnlockHeader } from 'components';
 import React from 'react';
 import { Location } from 'history';
@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
+import { SideBar } from './components';
+import tabs from './tabs';
 
 interface State {
   generateDisabled: boolean;
@@ -35,11 +37,18 @@ class SendTransaction extends React.Component<Props, State> {
     const { wallet } = this.props;
     const activeTab = this.props.location.pathname.split('/')[2];
 
+    const subTabsProps = {
+      root: 'account',
+      activeTab: wallet ? (wallet.isReadOnly ? 'info' : activeTab) : activeTab,
+      sideBar: <SideBar />,
+      tabs,
+      wallet
+    };
     return (
       <TabSection>
         <section className="Tab-content">
           <OfflineAwareUnlockHeader allowReadOnly={true} />
-          {wallet && <SubTabs wallet={wallet} activeTab={wallet.isReadOnly ? 'info' : activeTab} />}
+          {wallet && <SubTabs {...subTabsProps} />}
         </section>
       </TabSection>
     );
