@@ -14,6 +14,7 @@ import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import { shouldEstimateGas, estimateGas } from 'sagas/transaction/network/gas';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
+import { showNotification } from 'actions/notifications';
 
 describe('shouldEstimateGas*', () => {
   const transaction: any = 'transaction';
@@ -28,6 +29,13 @@ describe('shouldEstimateGas*', () => {
     nonce: 'nonce',
     chainId: 'chainId',
     ...rest
+  };
+  const action: any = {
+    type: TypeKeys.TO_FIELD_SET,
+    payload: {
+      value: 'value',
+      raw: 'raw'
+    }
   };
 
   const gen = shouldEstimateGas();
@@ -45,7 +53,7 @@ describe('shouldEstimateGas*', () => {
   });
 
   it('should select getTransaction', () => {
-    expect(gen.next().value).toEqual(select(getTransaction));
+    expect(gen.next(action).value).toEqual(select(getTransaction));
   });
 
   it('should call getTransactionFields with transaction', () => {
@@ -77,6 +85,16 @@ describe('estimateGas*', () => {
   const gens: any = {};
   gens.gen = cloneableGenerator(estimateGas)();
 
+  let random;
+  beforeAll(() => {
+    random = Math.random;
+    Math.random = () => 0.001;
+  });
+
+  afterAll(() => {
+    Math.random = random;
+  });
+
   it('should yield actionChannel', () => {
     const expected = JSON.stringify(
       actionChannel(TypeKeys.ESTIMATE_GAS_REQUESTED, buffers.sliding(1))
@@ -90,7 +108,7 @@ describe('estimateGas*', () => {
   });
 
   it('should call delay', () => {
-    expect(gens.gen.next(action).value).toEqual(call(delay, 500));
+    expect(gens.gen.next(action).value).toEqual(call(delay, 1000));
   });
 
   it('should select getNodeLib', () => {
@@ -129,8 +147,18 @@ describe('estimateGas*', () => {
     const tx = {
       getBaseFee: jest.fn()
     };
+    it('should put showNotification', () => {
+      expect(gens.clone.throw().value).toEqual(
+        put(
+          showNotification(
+            'warning',
+            'Gas estimation failed, falling back to local estimation, it may not be accurate'
+          )
+        )
+      );
+    });
     it('should catch and put estimateGasFailed', () => {
-      expect(gens.clone.throw().value).toEqual(put(estimateGasFailed()));
+      expect(gens.clone.next().value).toEqual(put(estimateGasFailed()));
     });
 
     it('should call makeTransaction with payload', () => {

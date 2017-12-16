@@ -3,7 +3,8 @@ import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
-  broadcastTransactionQueued
+  broadcastTransactionQueued,
+  reset
 } from 'actions/transaction';
 import { bufferToHex } from 'ethereumjs-util';
 import { showNotification } from 'actions/notifications';
@@ -66,15 +67,25 @@ describe('broadcastTransactinWrapper*', () => {
   it('should handle exceptions', () => {
     gens.clone1 = gens.gen.clone();
     const error = { message: 'message' };
-    expect(gens.clone1.throw(error).value).toEqual(
+    expect(gens.clone1.throw(error).value).toEqual(put(reset()));
+    expect(gens.clone1.next(error).value).toEqual(
       put(broadcastTransactionFailed({ indexingHash }))
     );
     expect(gens.clone1.next().value).toEqual(put(showNotification('danger', error.message)));
     expect(gens.clone1.next().done).toEqual(true);
   });
 
-  it('should call return if !shouldBroadcast', () => {
+  it('should put showNotification & reset if !shouldBroadcast', () => {
     gens.clone2 = gens.gen.clone();
+    expect(gens.clone2.next().value).toEqual(
+      put(
+        showNotification(
+          'warning',
+          'TxHash identical: This transaction has already been broadcasted or is broadcasting'
+        )
+      )
+    );
+    expect(gens.clone2.next().value).toEqual(put(reset()));
     expect(gens.clone2.next(!shouldBroadcast).done).toEqual(true);
   });
 

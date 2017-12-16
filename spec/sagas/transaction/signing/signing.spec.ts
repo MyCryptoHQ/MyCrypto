@@ -30,7 +30,8 @@ describe('signLocalTransactionHandler*', () => {
       put(
         signLocalTransactionSucceeded({
           signedTransaction,
-          indexingHash
+          indexingHash,
+          noVerify: false
         })
       )
     );

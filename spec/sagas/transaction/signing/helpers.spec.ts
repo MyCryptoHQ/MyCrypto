@@ -1,10 +1,8 @@
 import { getWalletInst } from 'selectors/wallet';
-import { getGasPriceGwei, getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
-import { toWei, getDecimalFromEtherUnit, Wei } from 'libs/units';
 import { signTransactionFailed, getFromRequested, TypeKeys as TK } from 'actions/transaction';
 import { showNotification } from 'actions/notifications';
-import { toBuffer } from 'ethereumjs-util';
 
 /* tslint:disable */
 import 'actions/transaction';
@@ -13,7 +11,6 @@ import 'selectors/transaction'; //throws if not imported
 
 import {
   signTransactionWrapper,
-  getGasPrice,
   getWalletAndTransaction,
   handleFailedTransaction,
   getFrom
@@ -55,36 +52,6 @@ describe('signTransactionWrapper*', () => {
   });
 });
 
-describe('getGasPrice*', () => {
-  const gasPriceInGwei = 21;
-  const gweiDecimal = 42;
-  const gasPriceWei = Wei('100');
-
-  const gen = getGasPrice();
-
-  it('should select getGasPriceGwei', () => {
-    expect(gen.next().value).toEqual(select(getGasPriceGwei));
-  });
-
-  it('should call getDecimalFromEtherUnit', () => {
-    expect(gen.next(gasPriceInGwei).value).toEqual(call(getDecimalFromEtherUnit, 'gwei'));
-  });
-
-  it('should call toWei', () => {
-    expect(gen.next(gweiDecimal).value).toEqual(
-      call(toWei, gasPriceInGwei.toString(), gweiDecimal)
-    );
-  });
-
-  it('should call toBuffer', () => {
-    expect(gen.next(gasPriceWei).value).toEqual(call(toBuffer, gasPriceWei));
-  });
-
-  it('should be done', () => {
-    expect(gen.next().done).toEqual(true);
-  });
-});
-
 describe('getWalletAndTransaction*', () => {
   const partialTx: any = {
     gasPrice: 'gasPrice',
@@ -113,12 +80,8 @@ describe('getWalletAndTransaction*', () => {
     expect(gens.gen.next(wallet).value).toEqual(select(getNetworkConfig));
   });
 
-  it('should call getGasPrice', () => {
-    expect(gens.gen.next(networkConfig).value).toEqual(call(getGasPrice));
-  });
-
   it('should return expected', () => {
-    expect(gens.gen.next().value).toEqual({
+    expect(gens.gen.next(networkConfig).value).toEqual({
       wallet,
       tx: partialTx
     });
