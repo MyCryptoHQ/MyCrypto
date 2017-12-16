@@ -10,7 +10,12 @@ import {
   estimateGasFailed,
   estimateGasSucceeded,
   TypeKeys,
-  estimateGasRequested
+  estimateGasRequested,
+  SetToFieldAction,
+  SetDataFieldAction,
+  SwapEtherToTokenAction,
+  SwapTokenToTokenAction,
+  SwapTokenToEtherAction
 } from 'actions/transaction';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
@@ -18,14 +23,29 @@ import { showNotification } from 'actions/notifications';
 
 function* shouldEstimateGas(): SagaIterator {
   while (true) {
-    yield take([
+    const action:
+      | SetToFieldAction
+      | SetDataFieldAction
+      | SwapEtherToTokenAction
+      | SwapTokenToTokenAction
+      | SwapTokenToEtherAction = yield take([
       TypeKeys.TO_FIELD_SET,
       TypeKeys.DATA_FIELD_SET,
       TypeKeys.ETHER_TO_TOKEN_SWAP,
       TypeKeys.TOKEN_TO_TOKEN_SWAP,
       TypeKeys.TOKEN_TO_ETHER_SWAP
     ]);
+    // invalid field is a field that the value is null and the input box isnt empty
+    // reason being is an empty field is valid because it'll be null
 
+    const invalidField =
+      (action.type === TypeKeys.TO_FIELD_SET || action.type === TypeKeys.DATA_FIELD_SET) &&
+      !action.payload.value &&
+      action.payload.raw !== '';
+
+    if (invalidField) {
+      continue;
+    }
     const { transaction }: IGetTransaction = yield select(getTransaction);
 
     const { gasLimit, gasPrice, nonce, chainId, ...rest }: IHexStrTransaction = yield call(
