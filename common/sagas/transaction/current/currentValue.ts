@@ -42,7 +42,7 @@ function* revalidateCurrentValue(): SagaIterator {
 function* reparseCurrentValue(value: IInput): SagaIterator {
   const decimal = yield select(getDecimal);
 
-  if (validNumber(+value.raw)) {
+  if (validNumber(+value.raw) && validDecimal(value.raw, decimal)) {
     return {
       raw: value.raw,
       value: toTokenBase(value.raw, decimal)
