@@ -22,6 +22,7 @@ class InteractClass extends Component<DispatchProps, State> {
     currentContract: null,
     showExplorer: false
   };
+
   public state: State = this.initialState;
 
   public accessContract = (contractAbi: string, address: string) => () => {

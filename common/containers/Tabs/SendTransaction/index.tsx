@@ -37,6 +37,7 @@ class SendTransaction extends React.Component<StateProps> {
     interface IWalletTabs {
       new (): SubTabs<SubTabProps>;
     }
+
     const WalletTabs = SubTabs as IWalletTabs;
 
     return (

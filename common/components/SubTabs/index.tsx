@@ -7,8 +7,8 @@ import './SubTabs.scss';
 export interface Tab<SubTabProps = null> {
   path: string;
   name: TranslateType;
-  isDisabled?(props: SubTabProps): boolean | null;
-  render(props: SubTabProps): React.ReactElement<any> | null;
+  isDisabled?(props: SubTabProps | {}): boolean;
+  render(props: SubTabProps | {}): React.ReactElement<any> | null;
 }
 
 export interface Props<SubTabProps = null> {
@@ -16,7 +16,7 @@ export interface Props<SubTabProps = null> {
   root: string;
   tabs: Tab<SubTabProps>[];
   sideBar?: React.ReactElement<any> | React.Component | React.StatelessComponent;
-  subTabProps: SubTabProps;
+  subTabProps?: SubTabProps;
   onTabChange?(): void;
 }
 
@@ -42,7 +42,7 @@ export default class SubTabs<SubTabProps = null> extends React.Component<
               className={classnames({
                 'SubTabs-tabs-link': true,
                 'is-active': t.path === activeTab,
-                'is-disabled': t.isDisabled && t.isDisabled(this.props.subTabProps)
+                'is-disabled': t.isDisabled && t.isDisabled(this.props.subTabProps || {})
               })}
               to={`/${this.props.root}/${t.path}`}
               key={t.path}
@@ -54,7 +54,7 @@ export default class SubTabs<SubTabProps = null> extends React.Component<
         </div>
 
         <main className={`SubTabs-content col-sm-${columnSize}`} key={tab.path}>
-          {tab.render(this.props.subTabProps)}
+          {tab.render(this.props.subTabProps || {})}
         </main>
         {this.props.sideBar ? this.props.sideBar : null}
       </div>
