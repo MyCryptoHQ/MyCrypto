@@ -1,16 +1,10 @@
-import { TokenValue, Wei, isEtherUnit, toTokenBase, fromTokenBase } from 'libs/units';
+import { TokenValue, Wei, isEtherUnit, toTokenBase } from 'libs/units';
 import { SagaIterator } from 'redux-saga';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
 import { getOffline } from 'selectors/config';
 import { select, call } from 'redux-saga/effects';
 import { AppState } from 'reducers';
-import {
-  getGasLimit,
-  getGasPrice,
-  getUnit,
-  getDecimalFromUnit,
-  getPreviousUnit
-} from 'selectors/transaction';
+import { getGasLimit, getGasPrice, getUnit, getDecimalFromUnit } from 'selectors/transaction';
 import {
   ITransaction,
   enoughBalanceViaTx,

@@ -8,12 +8,7 @@ import {
 import { createReducerFromObj } from '../helpers';
 import { ReducersMapObject, Reducer } from 'redux';
 import { State } from './typings';
-import { TypeKeys as ConfigTK } from 'actions/config/constants';
-import { toWei, getDecimalFromEtherUnit } from 'libs/units';
-import { ChangeGasPriceAction } from 'actions/config';
-
-export const gasPricetoBase = (price: number) =>
-  toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
+import { gasPricetoBase } from 'libs/units';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -21,7 +16,7 @@ const INITIAL_STATE: State = {
   nonce: { raw: '', value: null },
   value: { raw: '', value: null },
   gasLimit: { raw: '', value: null },
-  gasPrice: { raw: '', value: gasPricetoBase(21) }
+  gasPrice: { raw: '21', value: gasPricetoBase(21) }
 };
 
 const updateField = (key: keyof State): Reducer<State> => (state: State, action: FieldAction) => ({
@@ -35,12 +30,7 @@ const reducerObj: ReducersMapObject = {
   [TK.DATA_FIELD_SET]: updateField('data'),
   [TK.GAS_LIMIT_FIELD_SET]: updateField('gasLimit'),
   [TK.NONCE_FIELD_SET]: updateField('nonce'),
-  // this is kind of shoehorned in here, would need to re-work config reducer
-  [ConfigTK.CONFIG_GAS_PRICE]: (state: State, { payload }: ChangeGasPriceAction): State => ({
-    ...state,
-    gasPrice: { raw: '', value: gasPricetoBase(payload) }
-  }),
-
+  [TK.GAS_PRICE_FIELD_SET]: updateField('gasPrice'),
   [TK.TOKEN_TO_ETHER_SWAP]: (
     state: State,
     { payload: { decimal: _, ...rest } }: SwapTokenToEtherAction

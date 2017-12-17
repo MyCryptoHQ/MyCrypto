@@ -11,7 +11,6 @@ import { setTokenValue, setValueField } from 'actions/transaction/actionCreators
 import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput, IInput } from 'sagas/transaction/validationHelpers';
-import { TypeKeys as ConfigTK } from 'actions/config';
 import { validNumber, validDecimal } from 'libs/validators';
 function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
@@ -54,5 +53,5 @@ function* reparseCurrentValue(value: IInput): SagaIterator {
 }
 export const currentValue = [
   takeEvery([TypeKeys.CURRENT_VALUE_SET], setCurrentValue),
-  takeEvery([TypeKeys.GAS_LIMIT_FIELD_SET, ConfigTK.CONFIG_GAS_PRICE], revalidateCurrentValue)
+  takeEvery([TypeKeys.GAS_LIMIT_FIELD_SET, TypeKeys.GAS_PRICE_FIELD_SET], revalidateCurrentValue)
 ];

@@ -10,7 +10,8 @@ export {
   SetNonceFieldAction,
   SetValueFieldAction,
   FieldAction,
-  InputFieldAction
+  InputFieldAction,
+  SetGasPriceFieldAction
 };
 
 /* User Input */
@@ -33,6 +34,14 @@ interface InputNonceAction {
 
 interface SetGasLimitFieldAction {
   type: TypeKeys.GAS_LIMIT_FIELD_SET;
+  payload: {
+    raw: string;
+    value: Wei | null;
+  };
+}
+
+interface SetGasPriceFieldAction {
+  type: TypeKeys.GAS_PRICE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -78,4 +87,5 @@ type FieldAction =
   | SetDataFieldAction
   | SetToFieldAction
   | SetNonceFieldAction
-  | SetValueFieldAction;
+  | SetValueFieldAction
+  | SetGasPriceFieldAction;
