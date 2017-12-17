@@ -4,32 +4,54 @@ import SignMessage from './components/SignMessage';
 import VerifyMessage from './components/VerifyMessage';
 import TabSection from 'containers/TabSection';
 import './index.scss';
-import SubTabs, { Tab } from 'components/SubTabs';
-import { RouteComponentProps } from 'react-router';
 
-export default class SignAndVerifyMessage extends Component<RouteComponentProps<any>, {}> {
+interface State {
+  activeTab: string;
+}
+
+export default class SignAndVerifyMessage extends Component<{}, State> {
+  public state: State = {
+    activeTab: 'sign'
+  };
+
+  public changeTab = activeTab => () => this.setState({ activeTab });
+
   public render() {
-    const { location } = this.props;
-    const activeTab = location.pathname.split('/')[2];
+    const { activeTab } = this.state;
+    let content;
+    let signActive = '';
+    let verifyActive = '';
 
-    const SignTab: Tab = {
-      path: 'sign',
-      name: translate('NAV_SignMsg'),
-      render: () => <SignMessage />
-    };
-
-    const VerifyTab: Tab = {
-      path: 'verify',
-      name: translate('MSG_verify'),
-      render: () => <VerifyMessage />
-    };
-
-    const tabs: Tab[] = [SignTab, VerifyTab];
+    if (activeTab === 'sign') {
+      content = <SignMessage />;
+      signActive = 'is-active';
+    } else {
+      content = <VerifyMessage />;
+      verifyActive = 'is-active';
+    }
 
     return (
       <TabSection>
         <section className="Tab-content SignAndVerifyMsg">
-          <SubTabs root="message" tabs={tabs} activeTab={activeTab} />
+          <div className="Tab-content-pane">
+            <h1 className="SignAndVerifyMsg-header">
+              <button
+                className={`SignAndVerifyMsg-header-tab ${signActive}`}
+                onClick={this.changeTab('sign')}
+              >
+                {translate('Sign Message')}
+              </button>{' '}
+              <span>or</span>{' '}
+              <button
+                className={`SignAndVerifyMsg-header-tab ${verifyActive}`}
+                onClick={this.changeTab('verify')}
+              >
+                {translate('Verify Message')}
+              </button>
+            </h1>
+          </div>
+
+          <main role="main">{content}</main>
         </section>
       </TabSection>
     );
