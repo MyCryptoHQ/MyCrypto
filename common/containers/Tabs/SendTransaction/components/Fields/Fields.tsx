@@ -14,7 +14,6 @@ import {
   SendButton,
   SigningStatus
 } from 'components';
-import { CostBreakdown } from 'components/CostBreakdown';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 import { Aux } from 'components/ui';
@@ -50,7 +49,6 @@ const content = (
         <DataField />
       </div>
     </div>
-    <CostBreakdown />
     <CurrentCustomMessage />
     <NonStandardTransaction />
     <div className="row form-group">
