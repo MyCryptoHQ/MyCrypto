@@ -1,0 +1,140 @@
+/* --------------------------------
+
+icons Web Font - nucleoapp.com/
+License - nucleoapp.com/license/
+
+-------------------------------- */
+@import 'variables';
+@import 'mixins';
+
+@font-face {
+  font-family: 'icons';
+  src: url('#{$nc-font-path}/icons.eot');
+  src: url('#{$nc-font-path}/icons.eot') format('embedded-opentype'),
+    url('#{$nc-font-path}/icons.woff2') format('woff2'),
+    url('#{$nc-font-path}/icons.woff') format('woff'),
+    url('#{$nc-font-path}/icons.ttf') format('truetype'),
+    url('#{$nc-font-path}/icons.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*------------------------
+	base class definition
+-------------------------*/
+
+.nc-icon {
+  display: inline-block;
+  font: normal normal normal #{$nc-font-size-base}/1 'icons';
+  font-size: inherit;
+  speak: none;
+  text-transform: none;
+  /* Better Font Rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*------------------------
+  change icon size
+-------------------------*/
+
+.nc-icon.lg {
+  font-size: 1.33333333em;
+  vertical-align: -16%;
+}
+
+.nc-icon.x2 {
+  font-size: 2em;
+}
+
+.nc-icon.x3 {
+  font-size: 3em;
+}
+
+/*----------------------------------
+  add a square/circle background
+-----------------------------------*/
+.nc-icon.square,
+.nc-icon.circle {
+  padding: $nc-padding-width;
+  vertical-align: -16%;
+  background-color: $nc-background-color;
+}
+
+.nc-icon.circle {
+  border-radius: 50%;
+}
+
+/*------------------------
+  list icons
+-------------------------*/
+
+.#{$nc-css-prefix}-ul {
+  padding-left: 0;
+  margin-left: $nc-li-width;
+  list-style-type: none;
+
+  > li {
+    position: relative;
+  }
+
+  > li > .nc-icon {
+    position: absolute;
+    left: -$nc-li-width/2 - 0.5em;
+    top: (2em / 14);
+    text-align: center;
+
+    &.lg {
+      top: 0;
+      left: -$nc-li-width/2 - (4em / 14);
+    }
+
+    &.circle,
+    &.square {
+      top: (2em / 14) - $nc-padding-width;
+      left: -$nc-li-width/2 - 0.5em - $nc-padding-width;
+    }
+  }
+}
+
+/*------------------------
+  spinning icons
+-------------------------*/
+
+.nc-icon.spin {
+  animation: nc-icon-spin 2s infinite linear;
+}
+
+@keyframes nc-icon-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*------------------------
+  rotated/flipped icons
+-------------------------*/
+
+.nc-icon.rotate-90 {
+  @include nc-rotate(90deg, 1);
+}
+
+.nc-icon.rotate-180 {
+  @include nc-rotate(180deg, 2);
+}
+
+.nc-icon.rotate-270 {
+  @include nc-rotate(270deg, 3);
+}
+
+.nc-icon.flip-y {
+  @include nc-flip(-1, 1, 0);
+}
+.nc-icon.flip-x {
+  @include nc-flip(1, -1, 2);
+}
+
+@import 'icons';

@@ -93,8 +93,7 @@ textarea {
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 50%;
-  box-shadow: inset rgba(255, 255, 255, 0.5) 0 2px 2px,
-    inset rgba(0, 0, 0, 0.6) 0 -1px 8px;
+  box-shadow: inset rgba(255, 255, 255, 0.5) 0 2px 2px, inset rgba(0, 0, 0, 0.6) 0 -1px 8px;
 }
 
 .addressIdenticon.med {
@@ -148,7 +147,7 @@ textarea {
 #accountAddressMainTbl-1 {
   font-family: @font-family-monospace;
   font-weight: normal;
-  letter-spacing: .02em;
+  letter-spacing: 0.02em;
 }
 
 // QR Code on Offline Transactions Page
@@ -160,34 +159,6 @@ textarea {
   }
   @media screen and (max-width: 769px) {
     margin-top: 0;
-  }
-}
-
-input[type="text"] + .eye {
-  cursor: pointer;
-  &:before {
-    content: "";
-    width: 20px;
-    height: 20px;
-    margin-left: 6px;
-    margin-right: 6px;
-    display: inline-block;
-    vertical-align: middle;
-    background: url("../images/icon-eye.svg");
-  }
-}
-
-input[type="password"] + .eye {
-  cursor: pointer;
-  &:before {
-    content: "";
-    width: 20px;
-    height: 20px;
-    margin-left: 6px;
-    margin-right: 6px;
-    display: inline-block;
-    vertical-align: middle;
-    background: url("../images/icon-eye-closed.svg");
   }
 }
 
@@ -393,7 +364,7 @@ label small {
   height: auto;
   width: 100%;
   max-width: 290px;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 
 .ens-response {

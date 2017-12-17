@@ -1,1 +1,6 @@
-@import './fonts/social-media'
+@import './fonts/icons/nucleo';
+@import './fonts/lato/font-face';
+
+.nc-icon::before {
+  vertical-align: middle;
+}

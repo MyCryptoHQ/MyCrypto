@@ -1,0 +1,25 @@
+$nc-font-path: '../assets/fonts/lato';
+
+@font-face {
+  font-family: 'Lato';
+  src: url('#{$nc-font-path}/Lato-Light.woff') format('woff'),
+    url('#{$nc-font-path}/Lato-Light.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('#{$nc-font-path}/Lato-Regular.woff') format('woff'),
+    url('#{$nc-font-path}/Lato-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('#{$nc-font-path}/Lato-Bold.woff') format('woff'),
+    url('#{$nc-font-path}/Lato-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+}

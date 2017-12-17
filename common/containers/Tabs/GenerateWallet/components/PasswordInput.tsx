@@ -36,8 +36,13 @@ export default class PasswordInput extends Component<Props, {}> {
               onClick={togglePassword}
               aria-label={translateRaw('GEN_Aria_2')}
               role="button"
-              className="input-group-addon eye"
-            />
+              className="input-group-addon"
+            >
+              <i
+                className={`nc-icon nc-eye${isPasswordVisible ? '' : '-closed'}`}
+                style={{ color: '#999' }}
+              />
+            </span>
           </div>
         </div>
       </div>

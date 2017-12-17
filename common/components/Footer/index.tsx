@@ -26,7 +26,7 @@ const AffiliateTag = ({ link, text }) => {
 const SocialMediaLink = ({ link, text }) => {
   return (
     <NewTabLink className="Footer-social-media-link" key={link} href={link}>
-      <i className={`sm-icon sm-logo-${text} sm-24px`} />
+      <i className={`nc-icon nc-logo-${text}`} />
     </NewTabLink>
   );
 };
