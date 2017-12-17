@@ -1,13 +1,7 @@
 import { select, call } from 'redux-saga/effects';
-import {
-  getUnit,
-  getPreviousUnit,
-  getDecimalFromUnit,
-  getGasLimit,
-  getGasPrice
-} from 'selectors/transaction';
+import { getUnit, getDecimalFromUnit, getGasLimit, getGasPrice } from 'selectors/transaction';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
-import { isEtherUnit, toTokenBase, Wei, fromTokenBase } from 'libs/units';
+import { isEtherUnit, toTokenBase, Wei } from 'libs/units';
 import { makeTransaction } from 'libs/transaction';
 import {
   rebaseUserInput,
@@ -34,7 +28,6 @@ describe('rebaseUserInput*', () => {
   };
   const unit = 'unit';
   const newDecimal = 1;
-  const prevUnit = 'prevUnit';
   const prevDecimal = 1;
 
   const gens: any = {};
@@ -69,19 +62,11 @@ describe('rebaseUserInput*', () => {
       expect(gens.gen2.next(unit).value).toEqual(select(getDecimalFromUnit, unit));
     });
 
-    it('should select getPreviousUnit', () => {
-      expect(gens.gen2.next().value).toEqual(select(getPreviousUnit));
-    });
-
-    it('should select getDecimalFromUnit with prevUnit', () => {
-      expect(gens.gen2.next(prevUnit).value).toEqual(select(getDecimalFromUnit, prevUnit));
-    });
-
     it('should return correctly', () => {
       const result = JSON.stringify(gens.gen2.next(prevDecimal).value);
       const expected = JSON.stringify({
         raw: notValidNumberValue.raw,
-        value: toTokenBase(fromTokenBase(notValidNumberValue.value, prevDecimal), newDecimal)
+        value: null
       });
 
       expect(result).toEqual(expected);

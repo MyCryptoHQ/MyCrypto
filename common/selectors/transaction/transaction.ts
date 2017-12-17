@@ -19,7 +19,7 @@ import { getNetworkConfig } from 'selectors/config';
 
 const getTransactionState = (state: AppState) => state.transaction;
 
-interface IGetTransaction {
+export interface IGetTransaction {
   transaction: EthTx;
   isFullTransaction: boolean; //if the user has filled all the fields
 }

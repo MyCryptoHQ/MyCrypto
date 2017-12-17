@@ -11,19 +11,16 @@ import { setTokenValue, setValueField } from 'actions/transaction/actionCreators
 import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput, IInput } from 'sagas/transaction/validationHelpers';
-import { TypeKeys as ConfigTK } from 'actions/config';
-import { validNumber } from 'libs/validators';
-
+import { validNumber, validDecimal } from 'libs/validators';
 export function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
-
+  const decimal: number = yield select(getDecimal);
   const unit: string = yield select(getUnit);
-  const validNum = isFinite(+payload) && +payload > 0;
   const setter = etherTransaction ? setValueField : setTokenValue;
-  if (!validNum) {
+
+  if (!validNumber(+payload) || !validDecimal(payload, decimal)) {
     return yield put(setter({ raw: payload, value: null }));
   }
-  const decimal: number = yield select(getDecimal);
   const value = toTokenBase(payload, decimal);
   const isValid: boolean = yield call(validateInput, value, unit);
   yield put(setter({ raw: payload, value: isValid ? value : null }));
@@ -45,7 +42,7 @@ export function* revalidateCurrentValue(): SagaIterator {
 export function* reparseCurrentValue(value: IInput): SagaIterator {
   const decimal = yield select(getDecimal);
 
-  if (validNumber(+value.raw)) {
+  if (validNumber(+value.raw) && validDecimal(value.raw, decimal)) {
     return {
       raw: value.raw,
       value: toTokenBase(value.raw, decimal)
@@ -56,5 +53,5 @@ export function* reparseCurrentValue(value: IInput): SagaIterator {
 }
 export const currentValue = [
   takeEvery([TypeKeys.CURRENT_VALUE_SET], setCurrentValue),
-  takeEvery([TypeKeys.GAS_LIMIT_FIELD_SET, ConfigTK.CONFIG_GAS_PRICE], revalidateCurrentValue)
+  takeEvery([TypeKeys.GAS_LIMIT_FIELD_SET, TypeKeys.GAS_PRICE_FIELD_SET], revalidateCurrentValue)
 ];

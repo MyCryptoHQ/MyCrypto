@@ -104,12 +104,15 @@ const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
 const isEtherUnit = (unit: string) => unit === 'ether';
+
 const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
   if (oldDecimal === newDecimal) {
     return value;
   }
   return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
 };
+
+const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 export {
   isEtherUnit,
@@ -125,5 +128,6 @@ export {
   getDecimalFromEtherUnit,
   UnitKey,
   Nonce,
-  handleValues
+  handleValues,
+  gasPricetoBase
 };

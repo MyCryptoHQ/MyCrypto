@@ -7,7 +7,8 @@ import {
   InputGasLimitAction,
   InputDataAction,
   InputNonceAction,
-  ResetAction
+  ResetAction,
+  SetGasPriceFieldAction
 } from '../actionTypes';
 import { TypeKeys } from 'actions/transaction/constants';
 
@@ -42,7 +43,6 @@ const setDataField = (payload: SetDataFieldAction['payload']): SetDataFieldActio
 });
 
 type TSetToField = typeof setToField;
-
 const setToField = (payload: SetToFieldAction['payload']): SetToFieldAction => ({
   type: TypeKeys.TO_FIELD_SET,
   payload
@@ -60,6 +60,12 @@ const setValueField = (payload: SetValueFieldAction['payload']): SetValueFieldAc
   payload
 });
 
+type TSetGasPriceField = typeof setGasPriceField;
+const setGasPriceField = (payload: SetGasPriceFieldAction['payload']): SetGasPriceFieldAction => ({
+  type: TypeKeys.GAS_PRICE_FIELD_SET,
+  payload
+});
+
 type TReset = typeof reset;
 const reset = (): ResetAction => ({ type: TypeKeys.RESET });
 
@@ -72,6 +78,7 @@ export {
   TSetToField,
   TSetNonceField,
   TSetValueField,
+  TSetGasPriceField,
   TReset,
   inputGasLimit,
   inputNonce,
@@ -81,5 +88,6 @@ export {
   setToField,
   setNonceField,
   setValueField,
+  setGasPriceField,
   reset
 };

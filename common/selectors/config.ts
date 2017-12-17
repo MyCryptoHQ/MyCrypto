@@ -41,10 +41,6 @@ export function getAllTokens(state: AppState): Token[] {
   return networkTokens.concat(state.customTokens);
 }
 
-export function getGasPriceGwei(state: AppState): number {
-  return state.config.gasPriceGwei;
-}
-
 export function getLanguageSelection(state: AppState): string {
   return state.config.languageSelection;
 }

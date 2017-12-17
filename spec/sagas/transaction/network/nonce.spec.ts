@@ -5,7 +5,6 @@ import { getWalletInst } from 'selectors/wallet';
 import { showNotification } from 'actions/notifications';
 import { handleNonceRequest } from 'sagas/transaction/network/nonce';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { wallet } from 'reducers/wallet';
 import { Nonce } from 'libs/units';
 
 describe('handleNonceRequest*', () => {

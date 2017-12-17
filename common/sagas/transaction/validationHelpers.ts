@@ -1,23 +1,17 @@
-import { TokenValue, Wei, isEtherUnit, toTokenBase, fromTokenBase } from 'libs/units';
+import { TokenValue, Wei, isEtherUnit, toTokenBase } from 'libs/units';
 import { SagaIterator } from 'redux-saga';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
 import { getOffline } from 'selectors/config';
 import { select, call } from 'redux-saga/effects';
 import { AppState } from 'reducers';
-import {
-  getGasLimit,
-  getGasPrice,
-  getUnit,
-  getDecimalFromUnit,
-  getPreviousUnit
-} from 'selectors/transaction';
+import { getGasLimit, getGasPrice, getUnit, getDecimalFromUnit } from 'selectors/transaction';
 import {
   ITransaction,
   enoughBalanceViaTx,
   enoughTokensViaInput,
   makeTransaction
 } from 'libs/transaction';
-import { validNumber } from 'libs/validators';
+import { validNumber, validDecimal } from 'libs/validators';
 
 export interface IInput {
   raw: string;
@@ -34,17 +28,15 @@ export function* rebaseUserInput(value: IInput): SagaIterator {
   // get decimal
   const newDecimal: number = yield select(getDecimalFromUnit, unit);
 
-  if (validNumber(+value.raw)) {
+  if (validNumber(+value.raw) && validDecimal(value.raw, newDecimal)) {
     return {
       raw: value.raw,
       value: toTokenBase(value.raw, newDecimal)
     };
   } else {
-    const prevUnit: string = yield select(getPreviousUnit);
-    const prevDecimal: number = yield select(getDecimalFromUnit, prevUnit);
     return {
       raw: value.raw,
-      value: value.value ? toTokenBase(fromTokenBase(value.value, prevDecimal), newDecimal) : null
+      value: null
     };
   }
 }

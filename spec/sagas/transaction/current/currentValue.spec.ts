@@ -8,7 +8,6 @@ import {
   revalidateCurrentValue,
   reparseCurrentValue
 } from 'sagas/transaction/current/currentValue';
-import { cloneableGenerator } from 'redux-saga/utils';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -17,60 +16,65 @@ const itShouldBeDone = gen => {
 };
 
 describe('setCurrentValue*', () => {
-  const sharedLogic = (gens, etherTransaction) => {
+  const sharedLogic = (gen, etherTransaction, decimal: number) => {
     it('should select isEtherTransaction', () => {
-      expect(gens.gen.next().value).toEqual(select(isEtherTransaction));
+      expect(gen.next().value).toEqual(select(isEtherTransaction));
     });
 
+    it('should select getDecimal', () => {
+      expect(gen.next(etherTransaction).value).toEqual(select(getDecimal));
+    });
     it('should select getUnit', () => {
-      expect(gens.gen.next(etherTransaction).value).toEqual(select(getUnit));
+      expect(gen.next(decimal).value).toEqual(select(getUnit));
     });
   };
 
-  describe('when invalid number', () => {
-    const action: any = {
+  describe('when invalid number or decimal', () => {
+    const invalidDecimal: any = {
+      payload: '10.01'
+    };
+    const invalidNumber: any = {
       payload: 'invalidNumber'
     };
     const etherTransaction = true;
+    const decimal = 1;
+    const gen1 = setCurrentValue(invalidNumber);
+    const gen2 = setCurrentValue(invalidDecimal);
 
-    const gens: any = {};
-    gens.gen = cloneableGenerator(setCurrentValue)(action);
-
-    sharedLogic(gens, etherTransaction);
+    sharedLogic(gen2, etherTransaction, decimal);
+    sharedLogic(gen1, etherTransaction, decimal);
 
     it('should put setter', () => {
-      expect(gens.gen.next().value).toEqual(
-        put(setValueField({ raw: action.payload, value: null }))
+      expect(gen1.next().value).toEqual(
+        put(setValueField({ raw: invalidNumber.payload, value: null }))
+      );
+      expect(gen2.next().value).toEqual(
+        put(setValueField({ raw: invalidDecimal.payload, value: null }))
       );
     });
 
-    itShouldBeDone(gens.gen);
+    itShouldBeDone(gen1);
+    itShouldBeDone(gen2);
   });
 
-  describe('when valid number', () => {
-    const payload = '100.00';
+  describe('when valid number and decimal', () => {
+    const payload = '100';
     const action: any = { payload };
     const etherTransaction = true;
-    const unit = 'FAKE_COIN';
-    const decimal = 10.0;
+    const unit = 'ether';
+    const decimal = 0;
     const value = toTokenBase(payload, decimal);
     const isValid = true;
 
-    const gens: any = {};
-    gens.gen = cloneableGenerator(setCurrentValue)(action);
+    const gen = setCurrentValue(action);
 
-    sharedLogic(gens, etherTransaction);
-
-    it('should select getDecimal', () => {
-      expect(gens.gen.next(unit).value).toEqual(select(getDecimal));
-    });
-
+    sharedLogic(gen, etherTransaction, decimal);
     it('should call validateInput', () => {
-      expect(gens.gen.next(decimal).value).toEqual(call(validateInput, value, unit));
+      expect(gen.next(unit).value).toEqual(call(validateInput, value, unit));
     });
 
     it('should put setter', () => {
-      expect(gens.gen.next(isValid).value).toEqual(
+      expect(gen.next(isValid).value).toEqual(
         put(
           setValueField({
             raw: payload,
@@ -80,7 +84,7 @@ describe('setCurrentValue*', () => {
       );
     });
 
-    itShouldBeDone(gens.gen);
+    itShouldBeDone(gen);
   });
 });
 
@@ -139,7 +143,6 @@ describe('revalidateCurrentValue*', () => {
     const unit = 'unit';
     const isValid = true;
     const gen = revalidateCurrentValue();
-
     sharedLogic(gen, etherTransaction, currVal, reparsedValue);
 
     it('should call validateInput', () => {
@@ -168,9 +171,9 @@ describe('reparseCurrentValue*', () => {
     });
   };
 
-  describe('when valid number', () => {
+  describe('when valid number and valid decimal', () => {
     const value: any = {
-      raw: '100.0000000'
+      raw: '100.0000'
     };
     const decimal = 5;
     const gen = reparseCurrentValue(value);
@@ -178,7 +181,7 @@ describe('reparseCurrentValue*', () => {
     sharedLogic(gen);
 
     it('should return correctly', () => {
-      expect(gen.next().value).toEqual({
+      expect(gen.next(decimal).value).toEqual({
         raw: value.raw,
         value: toTokenBase(value.raw, decimal)
       });

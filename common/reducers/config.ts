@@ -1,5 +1,4 @@
 import {
-  ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
   AddCustomNodeAction,
@@ -28,7 +27,6 @@ export interface State {
   node: NodeConfig;
   network: NetworkConfig;
   isChangingNode: boolean;
-  gasPriceGwei: number;
   offline: boolean;
   forceOffline: boolean;
   customNodes: CustomNodeConfig[];
@@ -43,7 +41,6 @@ export const INITIAL_STATE: State = {
   node: NODES[defaultNode],
   network: NETWORKS[NODES[defaultNode].network],
   isChangingNode: false,
-  gasPriceGwei: 21,
   offline: false,
   forceOffline: false,
   customNodes: [],
@@ -71,13 +68,6 @@ function changeNodeIntent(state: State): State {
   return {
     ...state,
     isChangingNode: true
-  };
-}
-
-function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
-  return {
-    ...state,
-    gasPriceGwei: action.payload
   };
 }
 
@@ -148,8 +138,6 @@ export function config(state: State = INITIAL_STATE, action: ConfigAction): Stat
       return changeNode(state, action);
     case TypeKeys.CONFIG_NODE_CHANGE_INTENT:
       return changeNodeIntent(state);
-    case TypeKeys.CONFIG_GAS_PRICE:
-      return changeGasPrice(state, action);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
       return toggleOffline(state);
     case TypeKeys.CONFIG_FORCE_OFFLINE:

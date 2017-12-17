@@ -1,51 +1,54 @@
 import TabSection from 'containers/TabSection';
-import { SubTabs } from './components';
 import { OfflineAwareUnlockHeader } from 'components';
 import React from 'react';
 import { Location } from 'history';
 import { connect } from 'react-redux';
-import { resetWallet, TResetWallet } from 'actions/wallet';
+import { SideBar } from './components/index';
+import { IReadOnlyWallet, IFullWallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
-
-interface State {
-  generateDisabled: boolean;
-  generateTxProcessing: boolean;
-}
+import tabs from './tabs';
+import SubTabs, { Props as TabProps } from 'components/SubTabs';
 
 interface StateProps {
   location: Location;
   wallet: AppState['wallet']['inst'];
 }
-interface DispatchProps {
-  resetWallet: TResetWallet;
+
+export interface SubTabProps {
+  wallet: WalletTypes;
 }
 
-type Props = StateProps & DispatchProps;
+export type WalletTypes = IReadOnlyWallet | IFullWallet | undefined | null;
 
-const initialState: State = {
-  generateDisabled: true,
-  generateTxProcessing: false
-};
-
-class SendTransaction extends React.Component<Props, State> {
-  public state: State = initialState;
-
+class SendTransaction extends React.Component<StateProps> {
   public render() {
     const { wallet } = this.props;
     const activeTab = this.props.location.pathname.split('/')[2];
+
+    const tabProps: TabProps<SubTabProps> = {
+      root: 'account',
+      activeTab: wallet ? (wallet.isReadOnly ? 'info' : activeTab) : activeTab,
+      sideBar: <SideBar />,
+      tabs,
+      subTabProps: { wallet }
+    };
+
+    interface IWalletTabs {
+      new (): SubTabs<SubTabProps>;
+    }
+
+    const WalletTabs = SubTabs as IWalletTabs;
 
     return (
       <TabSection>
         <section className="Tab-content">
           <OfflineAwareUnlockHeader allowReadOnly={true} />
-          {wallet && <SubTabs wallet={wallet} activeTab={wallet.isReadOnly ? 'info' : activeTab} />}
+          {wallet && <WalletTabs {...tabProps} />}
         </section>
       </TabSection>
     );
   }
 }
 
-export default connect((state: AppState) => ({ wallet: getWalletInst(state) }), {
-  resetWallet
-})(SendTransaction);
+export default connect((state: AppState) => ({ wallet: getWalletInst(state) }))(SendTransaction);

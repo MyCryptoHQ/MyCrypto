@@ -159,7 +159,7 @@ describe('handleSetUnitMeta*', () => {
       const raw = 'raw';
       const value = Wei('100');
       const isValid = true;
-      const to = { value };
+      const to = { value: value.toBuffer() };
 
       const gens: any = {};
       gens.gen = cloneableGenerator(handleSetUnitMeta)(action);
