@@ -42,31 +42,13 @@ export default class Root extends Component<Props, State> {
       <Provider store={store} key={Math.random()}>
         <Router history={history} key={Math.random()}>
           <div>
-            <Route path="/generate" component={GenerateWallet}>
-              <Route path="keystore" />
-              <Route path="mnemonic" />
-            </Route>
-
+            <Route path="/generate" component={GenerateWallet} />
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
-
-            <Route path="/account" component={SendTransaction}>
-              <Route path="send" />
-              <Route path="info" />
-            </Route>
-
-            <Route path="/contracts" component={Contracts}>
-              <Route path="interacts" />
-              <Route path="deploys" />
-            </Route>
-
+            <Route path="/account" component={SendTransaction} />
+            <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
-
-            <Route path="/message" component={SignAndVerifyMessage}>
-              <Route path="sign" />
-              <Route path="verify" />
-            </Route>
-
+            <Route path="/message" component={SignAndVerifyMessage} />
             <Route path="/utilities" component={RestoreKeystore} />
             <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
             <Route path="/pushTx" component={BroadcastTx} />
