@@ -95,6 +95,16 @@ export function isValidEncryptedPrivKey(privkey: string): boolean {
 
 export const validNumber = (num: number) => isFinite(num) && num > 0;
 
+export const validDecimal = (input: string, decimal: number) => {
+  const arr = input.split('.');
+  const fractionPortion = arr[1];
+  if (!fractionPortion || fractionPortion.length === 0) {
+    return true;
+  }
+  const decimalLength = fractionPortion.length;
+  return decimalLength <= decimal;
+};
+
 export function isPositiveIntegerOrZero(num: number): boolean {
   if (isNaN(num) || !isFinite(num)) {
     return false;

@@ -12,17 +12,16 @@ import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput, IInput } from 'sagas/transaction/validationHelpers';
 import { TypeKeys as ConfigTK } from 'actions/config';
-import { validNumber } from 'libs/validators';
+import { validNumber, validDecimal } from 'libs/validators';
 function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
-
+  const decimal: number = yield select(getDecimal);
   const unit: string = yield select(getUnit);
-  const validNum = isFinite(+payload) && +payload > 0;
   const setter = etherTransaction ? setValueField : setTokenValue;
-  if (!validNum) {
+
+  if (!validNumber(+payload) || !validDecimal(payload, decimal)) {
     return yield put(setter({ raw: payload, value: null }));
   }
-  const decimal: number = yield select(getDecimal);
   const value = toTokenBase(payload, decimal);
   const isValid: boolean = yield call(validateInput, value, unit);
   yield put(setter({ raw: payload, value: isValid ? value : null }));

@@ -17,7 +17,7 @@ import {
   enoughTokensViaInput,
   makeTransaction
 } from 'libs/transaction';
-import { validNumber } from 'libs/validators';
+import { validNumber, validDecimal } from 'libs/validators';
 
 export interface IInput {
   raw: string;
@@ -34,17 +34,15 @@ export function* rebaseUserInput(value: IInput): SagaIterator {
   // get decimal
   const newDecimal: number = yield select(getDecimalFromUnit, unit);
 
-  if (validNumber(+value.raw)) {
+  if (validNumber(+value.raw) && validDecimal(value.raw, newDecimal)) {
     return {
       raw: value.raw,
       value: toTokenBase(value.raw, newDecimal)
     };
   } else {
-    const prevUnit: string = yield select(getPreviousUnit);
-    const prevDecimal: number = yield select(getDecimalFromUnit, prevUnit);
     return {
       raw: value.raw,
-      value: value.value ? toTokenBase(fromTokenBase(value.value, prevDecimal), newDecimal) : null
+      value: null
     };
   }
 }
