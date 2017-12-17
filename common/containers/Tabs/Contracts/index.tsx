@@ -1,73 +1,75 @@
-import React, { Component } from 'react';
+import translate from 'translations';
 import { Interact } from './components/Interact';
 import { Deploy } from './components/Deploy';
 import './index.scss';
 import { reset, TReset } from 'actions/transaction';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import TabSection from 'containers/TabSection';
-import SubTabs, { Tab } from 'components/SubTabs';
-import { RouteComponentProps } from 'react-router-dom';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 interface State {
   activeTab: string;
 }
 
-interface DispatchProps {
+interface Props {
   reset: TReset;
   resetWallet: TResetWallet;
 }
 
-type Props = DispatchProps & RouteComponentProps<any>;
-
 class Contracts extends Component<Props, State> {
+  public state: State = {
+    activeTab: 'interact'
+  };
+
+  public changeTab = activeTab => () => {
+    this.props.reset();
+    this.props.resetWallet();
+    this.setState({ activeTab });
+  };
+
   public render() {
-    const { location } = this.props;
-    const activeTab = location.pathname.split('/')[2];
+    const { activeTab } = this.state;
+    let content;
+    let interactActive = '';
+    let deployActive = '';
 
-    const InteractTab: Tab = {
-      path: 'interact',
-      name: 'Contract Interact',
-      render() {
-        return (
-          <main className="Tab-content-pane" role="main">
-            <Interact />
-          </main>
-        );
-      }
-    };
-
-    const DeployTab: Tab = {
-      path: 'deploy',
-      name: 'Deploy Contract',
-      render() {
-        return (
-          <main className="Tab-content-pane" role="main">
-            <Deploy />
-          </main>
-        );
-      }
-    };
-
-    const tabs: Tab[] = [InteractTab, DeployTab];
+    if (activeTab === 'interact') {
+      content = <Interact />;
+      interactActive = 'is-active';
+    } else {
+      content = <Deploy />;
+      deployActive = 'is-active';
+    }
 
     return (
       <TabSection>
         <section className="Tab-content Contracts">
-          <SubTabs
-            root="contracts"
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={this.resetStateOnTabChange}
-          />
+          <div className="Tab-content-pane">
+            <h1 className="Contracts-header">
+              <button
+                className={`Contracts-header-tab ${interactActive}`}
+                onClick={this.changeTab('interact')}
+              >
+                {translate('NAV_InteractContract')}
+              </button>{' '}
+              <span>or</span>{' '}
+              <button
+                className={`Contracts-header-tab ${deployActive}`}
+                onClick={this.changeTab('deploy')}
+              >
+                {translate('NAV_DeployContract')}
+              </button>
+            </h1>
+          </div>
+
+          <main className="Tab-content-pane" role="main">
+            <div className="Contracts-content">{content}</div>
+          </main>
         </section>
       </TabSection>
     );
   }
-  private resetStateOnTabChange = () => {
-    this.props.reset();
-    this.props.resetWallet();
-  };
 }
 
 export default connect(null, { reset, resetWallet })(Contracts);
