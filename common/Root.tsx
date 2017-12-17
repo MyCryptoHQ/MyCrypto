@@ -48,7 +48,6 @@ export default class Root extends Component<Props, State> {
             <Route path="/account" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
-            <Route path="/message" component={SignAndVerifyMessage} />
             <Route path="/utilities" component={RestoreKeystore} />
             <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
             <Route path="/pushTx" component={BroadcastTx} />
