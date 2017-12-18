@@ -26,9 +26,7 @@ export function setDeterministicWallets(
   };
 }
 
-export function setDesiredToken(
-  token: string | undefined
-): interfaces.SetDesiredTokenAction {
+export function setDesiredToken(token: string | undefined): interfaces.SetDesiredTokenAction {
   return {
     type: TypeKeys.DW_SET_DESIRED_TOKEN,
     payload: token

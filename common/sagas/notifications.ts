@@ -1,13 +1,8 @@
-import {
-  closeNotification,
-  ShowNotificationAction
-} from 'actions/notifications';
+import { closeNotification, ShowNotificationAction } from 'actions/notifications';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-export function* handleNotification(
-  action: ShowNotificationAction
-): SagaIterator {
+export function* handleNotification(action: ShowNotificationAction): SagaIterator {
   const { duration } = action.payload;
   // show forever
   if (duration === 0 || duration === Infinity) {

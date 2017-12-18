@@ -19,10 +19,7 @@ function closeNotification(state, action: CloseNotificationAction): State {
   return state;
 }
 
-export function notifications(
-  state: State = INITIAL_STATE,
-  action: NotificationsAction
-): State {
+export function notifications(state: State = INITIAL_STATE, action: NotificationsAction): State {
   switch (action.type) {
     case TypeKeys.SHOW_NOTIFICATION:
       return showNotification(state, action);

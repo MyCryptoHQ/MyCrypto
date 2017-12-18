@@ -17,9 +17,7 @@ export const withConditional = <WrappedComponentProps extends {}>(
     public render() {
       const { condition, conditionalProps, ...passedProps } = this.props as any;
       return condition ? (
-        <PassedComponent
-          {...{ ...passedProps, ...(conditionalProps as object) }}
-        />
+        <PassedComponent {...{ ...passedProps, ...(conditionalProps as object) }} />
       ) : (
         <PassedComponent {...passedProps} />
       );

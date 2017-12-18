@@ -27,27 +27,11 @@ declare module 'ethereumjs-util' {
 
   export function zeros(bytes: number): Buffer;
 
-  export function setLength(
-    msg: Buffer,
-    length: number,
-    right: boolean
-  ): Buffer;
-  export function setLength(
-    msg: number[],
-    length: number,
-    right: boolean
-  ): number[];
+  export function setLength(msg: Buffer, length: number, right: boolean): Buffer;
+  export function setLength(msg: number[], length: number, right: boolean): number[];
 
-  export function setLengthLeft(
-    msg: Buffer,
-    length: number,
-    right: boolean
-  ): Buffer;
-  export function setLengthLeft(
-    msg: number[],
-    length: number,
-    right: boolean
-  ): number[];
+  export function setLengthLeft(msg: Buffer, length: number, right: boolean): Buffer;
+  export function setLengthLeft(msg: number[], length: number, right: boolean): number[];
 
   export function setLengthRight(msg: Buffer, length: number): Buffer;
   export function setLengthRight(msg: number[], length: number): number[];
@@ -66,17 +50,11 @@ declare module 'ethereumjs-util' {
 
   export function toUnsigned(num: BN): Buffer;
 
-  export function sha3(
-    a: Buffer | string | number | number[],
-    bits?: number
-  ): Buffer;
+  export function sha3(a: Buffer | string | number | number[], bits?: number): Buffer;
 
   export function sha256(a: Buffer | string | number | number[]): Buffer;
 
-  export function ripemd160(
-    a: Buffer | string | number | number[],
-    padded?: boolean
-  ): Buffer;
+  export function ripemd160(a: Buffer | string | number | number[], padded?: boolean): Buffer;
 
   export function rlphash(a: Buffer | string | number | number[]): Buffer;
 
@@ -85,10 +63,7 @@ declare module 'ethereumjs-util' {
   export function isValidPublic(publicKey: Buffer, sanitize?: boolean): boolean;
 
   export function pubToAddress(publicKey: Buffer, sanitize?: boolean): Buffer;
-  export function publicToAddress(
-    publicKey: Buffer,
-    sanitize?: boolean
-  ): Buffer;
+  export function publicToAddress(publicKey: Buffer, sanitize?: boolean): Buffer;
 
   export function privateToPublic(privateKey: Buffer): Buffer;
 
@@ -98,12 +73,7 @@ declare module 'ethereumjs-util' {
 
   export function hashPersonalMessage(message: Buffer | string): Buffer;
 
-  export function ecrecover(
-    msgHash: Buffer,
-    v: number,
-    r: Buffer,
-    s: Buffer
-  ): Buffer;
+  export function ecrecover(msgHash: Buffer, v: number, r: Buffer, s: Buffer): Buffer;
 
   export function toRpcSig(v: number, r: Buffer, s: Buffer): string;
 

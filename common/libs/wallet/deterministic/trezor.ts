@@ -15,10 +15,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
     return new Promise((resolve, reject) => {
       const { chainId, ...strTx } = getTransactionFields(tx);
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
-      const cleanedTx = mapValues(
-        mapValues(strTx, stripHexPrefixAndLower),
-        padLeftEven
-      );
+      const cleanedTx = mapValues(mapValues(strTx, stripHexPrefixAndLower), padLeftEven);
 
       (TrezorConnect as any).ethereumSignTx(
         // Args
@@ -52,8 +49,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
     });
   }
 
-  public signMessage = () =>
-    Promise.reject(new Error('Signing via Trezor not yet supported.'));
+  public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
 
   // works, but returns a signature that can only be verified with a Trezor device
   /*
