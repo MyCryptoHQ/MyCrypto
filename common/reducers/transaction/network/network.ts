@@ -1,7 +1,7 @@
 import { State, RequestStatus } from './typings';
-import { TypeKeys as TK } from 'actions/transaction';
-import { ReducersMapObject, Action } from 'redux';
-import { createReducerFromObj } from 'reducers/transaction/helpers';
+import { TypeKeys as TK, ResetAction, NetworkAction } from 'actions/transaction';
+import { Action } from 'redux';
+
 const INITIAL_STATE: State = {
   gasEstimationStatus: null,
   getFromStatus: null,
@@ -18,17 +18,31 @@ const nextState = (field: keyof State) => (state: State, action: Action): State 
   [field]: RequestStatus[getPostFix(action.type)]
 });
 
-const reducerObj: ReducersMapObject = {
-  [TK.ESTIMATE_GAS_REQUESTED]: nextState('gasEstimationStatus'),
-  [TK.ESTIMATE_GAS_FAILED]: nextState('gasEstimationStatus'),
-  [TK.ESTIMATE_GAS_SUCCEEDED]: nextState('gasEstimationStatus'),
-  [TK.GET_FROM_REQUESTED]: nextState('getFromStatus'),
-  [TK.GET_FROM_SUCCEEDED]: nextState('getFromStatus'),
-  [TK.GET_FROM_FAILED]: nextState('getFromStatus'),
-  [TK.GET_NONCE_REQUESTED]: nextState('getNonceStatus'),
-  [TK.GET_NONCE_SUCCEEDED]: nextState('getNonceStatus'),
-  [TK.GET_NONCE_FAILED]: nextState('getNonceStatus'),
-  [TK.RESET]: _ => INITIAL_STATE
-};
+const reset = () => INITIAL_STATE;
 
-export const network = createReducerFromObj(reducerObj, INITIAL_STATE);
+export const network = (state: State = INITIAL_STATE, action: NetworkAction | ResetAction) => {
+  switch (action.type) {
+    case TK.ESTIMATE_GAS_REQUESTED:
+      return nextState('gasEstimationStatus')(state, action);
+    case TK.ESTIMATE_GAS_FAILED:
+      return nextState('gasEstimationStatus')(state, action);
+    case TK.ESTIMATE_GAS_SUCCEEDED:
+      return nextState('gasEstimationStatus')(state, action);
+    case TK.GET_FROM_REQUESTED:
+      return nextState('getFromStatus')(state, action);
+    case TK.GET_FROM_SUCCEEDED:
+      return nextState('getFromStatus')(state, action);
+    case TK.GET_FROM_FAILED:
+      return nextState('getFromStatus')(state, action);
+    case TK.GET_NONCE_REQUESTED:
+      return nextState('getNonceStatus')(state, action);
+    case TK.GET_NONCE_SUCCEEDED:
+      return nextState('getNonceStatus')(state, action);
+    case TK.GET_NONCE_FAILED:
+      return nextState('getNonceStatus')(state, action);
+    case TK.RESET:
+      return reset();
+    default:
+      return state;
+  }
+};

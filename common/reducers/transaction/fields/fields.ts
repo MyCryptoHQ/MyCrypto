@@ -3,10 +3,11 @@ import {
   TypeKeys as TK,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
-  SwapTokenToTokenAction
+  SwapTokenToTokenAction,
+  SwapAction,
+  ResetAction
 } from 'actions/transaction';
-import { createReducerFromObj } from '../helpers';
-import { ReducersMapObject, Reducer } from 'redux';
+import { Reducer } from 'redux';
 import { State } from './typings';
 import { gasPricetoBase } from 'libs/units';
 
@@ -24,37 +25,57 @@ const updateField = (key: keyof State): Reducer<State> => (state: State, action:
   [key]: { ...state[key], ...action.payload }
 });
 
-const reducerObj: ReducersMapObject = {
-  [TK.TO_FIELD_SET]: updateField('to'),
-  [TK.VALUE_FIELD_SET]: updateField('value'),
-  [TK.DATA_FIELD_SET]: updateField('data'),
-  [TK.GAS_LIMIT_FIELD_SET]: updateField('gasLimit'),
-  [TK.NONCE_FIELD_SET]: updateField('nonce'),
-  [TK.GAS_PRICE_FIELD_SET]: updateField('gasPrice'),
-  [TK.TOKEN_TO_ETHER_SWAP]: (
-    state: State,
-    { payload: { decimal: _, ...rest } }: SwapTokenToEtherAction
-  ): State => ({
-    ...state,
-    ...rest,
-    data: INITIAL_STATE.data
-  }),
+const tokenToEther = (
+  state: State,
+  { payload: { decimal: _, ...rest } }: SwapTokenToEtherAction
+): State => ({
+  ...state,
+  ...rest,
+  data: INITIAL_STATE.data
+});
 
-  [TK.ETHER_TO_TOKEN_SWAP]: (
-    state: State,
-    { payload: { decimal: _, tokenTo: __, tokenValue: ___, ...rest } }: SwapEtherToTokenAction
-  ): State => ({
-    ...state,
-    ...rest,
-    value: INITIAL_STATE.value
-  }),
+const etherToToken = (
+  state: State,
+  { payload: { decimal: _, tokenTo: __, tokenValue: ___, ...rest } }: SwapEtherToTokenAction
+): State => ({
+  ...state,
+  ...rest,
+  value: INITIAL_STATE.value
+});
 
-  [TK.TOKEN_TO_TOKEN_SWAP]: (
-    state: State,
-    { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
-  ): State => ({ ...state, ...rest }),
-  // reset everything but gas price
-  [TK.RESET]: (state: State): State => ({ ...INITIAL_STATE, gasPrice: state.gasPrice })
+const tokenToToken = (
+  state: State,
+  { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
+): State => ({ ...state, ...rest });
+
+const reset = (state: State): State => ({ ...INITIAL_STATE, gasPrice: state.gasPrice });
+
+export const fields = (
+  state: State = INITIAL_STATE,
+  action: FieldAction | SwapAction | ResetAction
+) => {
+  switch (action.type) {
+    case TK.TO_FIELD_SET:
+      return updateField('to')(state, action);
+    case TK.VALUE_FIELD_SET:
+      return updateField('value')(state, action);
+    case TK.DATA_FIELD_SET:
+      return updateField('data')(state, action);
+    case TK.GAS_LIMIT_FIELD_SET:
+      return updateField('gasLimit')(state, action);
+    case TK.NONCE_FIELD_SET:
+      return updateField('nonce')(state, action);
+    case TK.GAS_PRICE_FIELD_SET:
+      return updateField('gasPrice')(state, action);
+    case TK.TOKEN_TO_ETHER_SWAP:
+      return tokenToEther(state, action);
+    case TK.ETHER_TO_TOKEN_SWAP:
+      return etherToToken(state, action);
+    case TK.TOKEN_TO_TOKEN_SWAP:
+      return tokenToToken(state, action);
+    case TK.RESET:
+      return reset(state);
+    default:
+      return state;
+  }
 };
-
-export const fields = createReducerFromObj(reducerObj, INITIAL_STATE);

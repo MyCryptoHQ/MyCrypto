@@ -3,16 +3,12 @@ import {
   TypeKeys as TK,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
-  BroadcastTransactionFailedAction
+  BroadcastTransactionFailedAction,
+  BroadcastAction
 } from 'actions/transaction';
-import { ReducersMapObject } from 'redux';
-import { createReducerFromObj } from 'reducers/transaction/helpers';
 
 const INITIAL_STATE = {};
-const handleQueue = (
-  state: State,
-  { payload }: BroadcastTransactionQueuedAction
-): State => {
+const handleQueue = (state: State, { payload }: BroadcastTransactionQueuedAction): State => {
   const { indexingHash, serializedTransaction } = payload;
   const nextTxStatus: ITransactionStatus = {
     broadcastedHash: null,
@@ -23,10 +19,7 @@ const handleQueue = (
   return { ...state, [indexingHash]: nextTxStatus };
 };
 
-const handleSuccess = (
-  state: State,
-  { payload }: BroadcastTransactionSucceededAction
-): State => {
+const handleSuccess = (state: State, { payload }: BroadcastTransactionSucceededAction): State => {
   const { broadcastedHash, indexingHash } = payload;
   const existingTx = state[indexingHash];
   if (!existingTx) {
@@ -41,10 +34,7 @@ const handleSuccess = (
   return { ...state, [indexingHash]: nextTx };
 };
 
-const handleFailure = (
-  state: State,
-  { payload }: BroadcastTransactionFailedAction
-): State => {
+const handleFailure = (state: State, { payload }: BroadcastTransactionFailedAction): State => {
   const { indexingHash } = payload;
   const existingTx = state[indexingHash];
   if (!existingTx) {
@@ -58,10 +48,15 @@ const handleFailure = (
   return { ...state, [indexingHash]: nextTx };
 };
 
-const reducerObj: ReducersMapObject = {
-  [TK.BROADCAST_TRANSACTION_QUEUED]: handleQueue,
-  [TK.BROADCAST_TRANSACTION_SUCCEEDED]: handleSuccess,
-  [TK.BROADCAST_TRASACTION_FAILED]: handleFailure
+export const broadcast = (state: State = INITIAL_STATE, action: BroadcastAction) => {
+  switch (action.type) {
+    case TK.BROADCAST_TRANSACTION_QUEUED:
+      return handleQueue(state, action);
+    case TK.BROADCAST_TRANSACTION_SUCCEEDED:
+      return handleSuccess(state, action);
+    case TK.BROADCAST_TRASACTION_FAILED:
+      return handleFailure(state, action);
+    default:
+      return state;
+  }
 };
-
-export const broadcast = createReducerFromObj(reducerObj, INITIAL_STATE);

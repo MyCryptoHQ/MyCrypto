@@ -2,10 +2,10 @@ import { State } from './typings';
 import {
   TypeKeys as TK,
   SignLocalTransactionSucceededAction,
-  SignWeb3TransactionSucceededAction
+  SignWeb3TransactionSucceededAction,
+  SignAction,
+  ResetAction
 } from 'actions/transaction';
-import { ReducersMapObject } from 'redux';
-import { createReducerFromObj } from 'reducers/transaction/helpers';
 
 const INITIAL_STATE: State = {
   local: { signedTransaction: null },
@@ -14,33 +14,50 @@ const INITIAL_STATE: State = {
   pending: false
 };
 
-const reducerObj: ReducersMapObject = {
-  [TK.SIGN_LOCAL_TRANSACTION_REQUESTED]: (state: State): State => ({
-    ...state,
-    pending: true
-  }),
-  [TK.SIGN_LOCAL_TRANSACTION_SUCCEEDED]: (
-    _,
-    { payload }: SignLocalTransactionSucceededAction
-  ): State => ({
-    indexingHash: payload.indexingHash,
-    pending: false,
+const signLocalTransactionRequested = (state: State): State => ({
+  ...state,
+  pending: true
+});
 
-    local: { signedTransaction: payload.signedTransaction },
-    web3: { transaction: null }
-  }),
-  [TK.SIGN_WEB3_TRANSACTION_SUCCEEDED]: (
-    _,
-    { payload }: SignWeb3TransactionSucceededAction
-  ): State => ({
-    indexingHash: payload.indexingHash,
-    pending: false,
+const signLocalTransactionSucceeded = (
+  _,
+  { payload }: SignLocalTransactionSucceededAction
+): State => ({
+  indexingHash: payload.indexingHash,
+  pending: false,
 
-    local: { signedTransaction: null },
-    web3: { transaction: payload.transaction }
-  }),
-  [TK.SIGN_TRANSACTION_FAILED]: _ => INITIAL_STATE,
-  [TK.RESET]: _ => INITIAL_STATE
+  local: { signedTransaction: payload.signedTransaction },
+  web3: { transaction: null }
+});
+
+const signWeb3TranscationRequested = (
+  _,
+  { payload }: SignWeb3TransactionSucceededAction
+): State => ({
+  indexingHash: payload.indexingHash,
+  pending: false,
+
+  local: { signedTransaction: null },
+  web3: { transaction: payload.transaction }
+});
+
+const signTransactionFailed = () => INITIAL_STATE;
+
+const reset = () => INITIAL_STATE;
+
+export const sign = (state: State = INITIAL_STATE, action: SignAction | ResetAction) => {
+  switch (action.type) {
+    case TK.SIGN_LOCAL_TRANSACTION_REQUESTED:
+      return signLocalTransactionRequested(state);
+    case TK.SIGN_LOCAL_TRANSACTION_SUCCEEDED:
+      return signLocalTransactionSucceeded(state, action);
+    case TK.SIGN_WEB3_TRANSACTION_SUCCEEDED:
+      return signWeb3TranscationRequested(state, action);
+    case TK.SIGN_TRANSACTION_FAILED:
+      return signTransactionFailed();
+    case TK.RESET:
+      return reset();
+    default:
+      return state;
+  }
 };
-
-export const sign = createReducerFromObj(reducerObj, INITIAL_STATE);
