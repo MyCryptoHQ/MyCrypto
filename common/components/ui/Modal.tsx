@@ -80,7 +80,7 @@ export default class Modal extends Component<Props, {}> {
 
   private handleClickOutside = (ev: SyntheticEvent<HTMLElement>) => {
     const { isOpen, handleClose } = this.props;
-    if (!this.modalRef.contains(ev.target as HTMLElement) && isOpen) {
+    if (this.modalRef && !this.modalRef.contains(ev.target as HTMLElement) && isOpen) {
       handleClose();
     }
   };
