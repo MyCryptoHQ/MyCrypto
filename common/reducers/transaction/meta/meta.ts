@@ -11,7 +11,7 @@ import {
   ResetAction,
   NetworkAction
 } from 'actions/transaction';
-import { ReducersMapObject, Reducer } from 'redux';
+import { Reducer } from 'redux';
 
 const INITIAL_STATE: State = {
   unit: 'ether',

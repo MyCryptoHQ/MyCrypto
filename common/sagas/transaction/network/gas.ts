@@ -19,7 +19,6 @@ import {
 } from 'actions/transaction';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
-import { showNotification } from 'actions/notifications';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
