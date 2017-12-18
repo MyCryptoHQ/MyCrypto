@@ -2,22 +2,9 @@
 @import "common/sass/variables";
 
 .input-group {
-  display: flex;
-  margin-bottom: 8px;
- 
   > * {
-    display: block;
     margin-bottom: 0;
     margin-top: 0;
-  }
-  
-  > label {
-    flex-grow: 1;
-  }
-
-  .btn {
-    padding: 8px 16px;
-    font-size: 1rem;
   }
 
   .dropdown-toggle {
@@ -28,13 +15,14 @@
 
 // Align with inputs
 .input-group-addon {
-  font-size: inherit;
+  padding: 0 $padding-base-horizontal;
 }
 
-.input-group-addon,
 .input-group-btn {
-  width: auto;
-  display: flex;
-	flex-direction: column;
-  justify-content: flex-end;
+  .btn {
+    margin-bottom: 0;
+    margin-top: 0;
+    font-size: $font-size-base;
+    padding: .55rem $space-xl;
+  }
 }
