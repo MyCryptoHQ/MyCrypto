@@ -11,12 +11,7 @@ export const GasPrice: React.SFC<{}> = () => (
       const { gasPrice } = getTransactionFields(transactionInstance);
 
       return (
-        <p>
-          with a gas price of{' '}
-          <strong>
-            <UnitDisplay unit={'gwei'} value={Wei(gasPrice)} symbol={'gwei'} checkOffline={false} />
-          </strong>
-        </p>
+        <UnitDisplay unit={'gwei'} value={Wei(gasPrice)} symbol={'gwei'} checkOffline={false} />
       );
     }}
   />

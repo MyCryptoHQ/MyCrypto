@@ -4,12 +4,15 @@ import React from 'react';
 
 export const AmountAndGasPrice: React.SFC<{}> = () => (
   <li className="ConfModal-details-detail">
-    <GasPrice />
     <p>
       You are sending{' '}
       <strong>
         <Amount />
       </strong>{' '}
+      with a gas price of{' '}
+      <strong>
+        <GasPrice />
+      </strong>
     </p>
   </li>
 );
