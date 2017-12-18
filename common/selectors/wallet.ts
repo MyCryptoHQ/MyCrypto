@@ -115,3 +115,20 @@ export const getCurrentBalance = (state: AppState): Wei | TokenValue | null => {
     return getTokenBalance(state, unit);
   }
 };
+
+export function getShownTokenBalances(
+  state: AppState,
+  nonZeroOnly: boolean = false
+): TokenBalance[] {
+  const tokenBalances = getTokenBalances(state, nonZeroOnly);
+  const walletConfig = getWalletConfig(state);
+
+  let walletTokens: string[] = [];
+  if (walletConfig) {
+    if (walletConfig.tokens) {
+      walletTokens = walletConfig.tokens;
+    }
+  }
+
+  return tokenBalances.filter(t => walletTokens.includes(t.symbol));
+}
