@@ -1,18 +1,5 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { Wei, Data, Address, Nonce } from 'libs/units';
-export {
-  InputGasLimitAction,
-  InputDataAction,
-  InputNonceAction,
-  SetGasLimitFieldAction,
-  SetDataFieldAction,
-  SetToFieldAction,
-  SetNonceFieldAction,
-  SetValueFieldAction,
-  FieldAction,
-  InputFieldAction,
-  SetGasPriceFieldAction
-};
 
 /* User Input */
 interface InputGasLimitAction {
@@ -89,3 +76,17 @@ type FieldAction =
   | SetNonceFieldAction
   | SetValueFieldAction
   | SetGasPriceFieldAction;
+
+export {
+  InputGasLimitAction,
+  InputDataAction,
+  InputNonceAction,
+  SetGasLimitFieldAction,
+  SetDataFieldAction,
+  SetToFieldAction,
+  SetNonceFieldAction,
+  SetValueFieldAction,
+  FieldAction,
+  InputFieldAction,
+  SetGasPriceFieldAction
+};

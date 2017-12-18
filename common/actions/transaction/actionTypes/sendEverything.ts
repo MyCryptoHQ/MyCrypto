@@ -1,10 +1,4 @@
 import { TypeKeys } from 'actions/transaction';
-export {
-  SendEverythingAction,
-  SendEverythingSucceededAction,
-  SendEverythingFailedAction,
-  SendEverythingRequestedAction
-};
 
 interface SendEverythingRequestedAction {
   type: TypeKeys.SEND_EVERYTHING_REQUESTED;
@@ -20,3 +14,10 @@ type SendEverythingAction =
   | SendEverythingRequestedAction
   | SendEverythingSucceededAction
   | SendEverythingFailedAction;
+
+export {
+  SendEverythingAction,
+  SendEverythingSucceededAction,
+  SendEverythingFailedAction,
+  SendEverythingRequestedAction
+};

@@ -3,7 +3,6 @@ import { TokenValue, Address } from 'libs/units';
 import { ITransaction } from '../typings';
 import Tx from 'ethereumjs-tx';
 import ERC20 from 'libs/erc20';
-export { enoughTokensViaTx, encodeTransfer, enoughTokensViaInput };
 
 const enoughTokensViaTx = (t: ITransaction | Tx, tokenBalance: TokenValue | null) => {
   if (!tokenBalance) {
@@ -31,3 +30,5 @@ const enoughTokensViaInput = (input: TokenValue | null, tokenBalance: TokenValue
 
 const encodeTransfer = (to: Address, value: TokenValue) =>
   toBuffer(ERC20.transfer.encodeInput({ _to: bufferToHex(to), _value: value }));
+
+export { enoughTokensViaTx, encodeTransfer, enoughTokensViaInput };

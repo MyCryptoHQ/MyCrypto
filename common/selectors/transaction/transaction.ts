@@ -16,13 +16,6 @@ import {
 import { Wei } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
 import { getNetworkConfig } from 'selectors/config';
-export {
-  getTransaction,
-  getTransactionState,
-  getGasCost,
-  nonStandardTransaction,
-  serializedAndTransactionFieldsMatch
-};
 
 const getTransactionState = (state: AppState) => state.transaction;
 
@@ -94,4 +87,12 @@ const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: b
   return transactionsMatch && isLocallySigned
     ? makeTransaction(serialzedTransaction).verifySignature()
     : true;
+};
+
+export {
+  getTransaction,
+  getTransactionState,
+  getGasCost,
+  nonStandardTransaction,
+  serializedAndTransactionFieldsMatch
 };

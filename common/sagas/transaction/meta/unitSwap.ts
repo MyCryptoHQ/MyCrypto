@@ -21,7 +21,7 @@ import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
 import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/validationHelpers';
 
-function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
+export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
   const previousUnit: string = yield select(getPreviousUnit);
   const etherToEther = isEtherUnit(currentUnit) && isEtherUnit(previousUnit);
   const etherToToken = !isEtherUnit(currentUnit) && isEtherUnit(previousUnit);

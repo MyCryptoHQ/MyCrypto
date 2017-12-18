@@ -15,12 +15,6 @@ import Tx from 'ethereumjs-tx';
 import { NetworkConfig } from 'config/data';
 import { SagaIterator } from 'redux-saga';
 import { showNotification } from 'actions/notifications';
-export {
-  IFullWalletAndTransaction,
-  getWalletAndTransaction,
-  handleFailedTransaction,
-  signTransactionWrapper
-};
 
 interface IFullWalletAndTransaction {
   wallet: IFullWallet;
@@ -82,3 +76,11 @@ function* getFrom(): SagaIterator {
     throw Error('Could not get "from" address of wallet');
   }
 }
+
+export {
+  IFullWalletAndTransaction,
+  getWalletAndTransaction,
+  handleFailedTransaction,
+  signTransactionWrapper,
+  getFrom
+};

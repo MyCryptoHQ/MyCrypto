@@ -1,7 +1,6 @@
 import { AppState } from 'reducers';
 import { getTransactionState } from 'selectors/transaction';
 import { RequestStatus } from 'reducers/transaction/network';
-export { nonceRequestFailed, isNetworkRequestPending };
 
 const getNetworkStatus = (state: AppState) => getTransactionState(state).network;
 const nonceRequestFailed = (state: AppState) =>
@@ -14,3 +13,5 @@ const isNetworkRequestPending = (state: AppState) => {
     false
   );
 };
+
+export { nonceRequestFailed, isNetworkRequestPending };

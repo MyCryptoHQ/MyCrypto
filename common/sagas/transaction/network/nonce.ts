@@ -9,7 +9,7 @@ import { showNotification } from 'actions/notifications';
 import { TypeKeys as WalletTK } from 'actions/wallet';
 import { Nonce } from 'libs/units';
 
-function* handleNonceRequest(): SagaIterator {
+export function* handleNonceRequest(): SagaIterator {
   const nodeLib: INode = yield select(getNodeLib);
   const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
   const offline: boolean = yield select(getOffline);

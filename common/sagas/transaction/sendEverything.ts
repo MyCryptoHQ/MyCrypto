@@ -19,7 +19,7 @@ import { getEtherBalance, getCurrentBalance } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { fromTokenBase, fromWei, Wei, TokenValue } from 'libs/units';
 
-function* handleSendEverything(): SagaIterator {
+export function* handleSendEverything(): SagaIterator {
   const { transaction }: IGetTransaction = yield select(getTransaction);
   const currentBalance: Wei | TokenValue | null = yield select(getCurrentBalance);
   const etherBalance: AppState['wallet']['balance']['wei'] = yield select(getEtherBalance);

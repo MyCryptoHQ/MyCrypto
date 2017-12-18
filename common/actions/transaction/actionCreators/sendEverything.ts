@@ -4,14 +4,6 @@ import {
   SendEverythingSucceededAction
 } from '../actionTypes/sendEverything';
 import { TypeKeys } from 'actions/transaction';
-export {
-  TSendEverythingRequested,
-  TSendEverythingFailed,
-  TSendEverythingSucceeded,
-  sendEverythingRequested,
-  sendEverythingFailed,
-  sendEverythingSucceeded
-};
 
 type TSendEverythingRequested = typeof sendEverythingRequested;
 const sendEverythingRequested = (): SendEverythingRequestedAction => ({
@@ -27,3 +19,12 @@ type TSendEverythingSucceeded = typeof sendEverythingSucceeded;
 const sendEverythingSucceeded = (): SendEverythingSucceededAction => ({
   type: TypeKeys.SEND_EVERYTHING_SUCCEEDED
 });
+
+export {
+  TSendEverythingRequested,
+  TSendEverythingFailed,
+  TSendEverythingSucceeded,
+  sendEverythingRequested,
+  sendEverythingFailed,
+  sendEverythingSucceeded
+};

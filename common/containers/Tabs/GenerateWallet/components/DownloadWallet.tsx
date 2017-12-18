@@ -104,7 +104,9 @@ export default class DownloadWallet extends Component<Props, State> {
           </li>
           <li>
             <NewTabLink
-              href={`${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file`}
+              href={`${
+                knowledgeBaseURL
+              }/private-keys-passwords/difference-beween-private-key-and-keystore-file`}
             >
               <strong>{translate('GEN_Help_14')}</strong>
             </NewTabLink>

@@ -13,18 +13,18 @@ import { computeIndexingHash } from 'libs/transaction';
 import { serializedAndTransactionFieldsMatch } from 'selectors/transaction';
 import { showNotification } from 'actions/notifications';
 
-const signLocalTransaction = signTransactionWrapper(function*({
+export function* signLocalTransactionHandler({
   tx,
   wallet
 }: IFullWalletAndTransaction): SagaIterator {
   const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
   yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash, noVerify: false }));
-});
+}
 
-const signWeb3Transaction = signTransactionWrapper(function*({
-  tx
-}: IFullWalletAndTransaction): SagaIterator {
+const signLocalTransaction = signTransactionWrapper(signLocalTransactionHandler);
+
+export function* signWeb3TransactionHandler({ tx }: IFullWalletAndTransaction): SagaIterator {
   const serializedTransaction: Buffer = yield apply(tx, tx.serialize);
   const indexingHash: string = yield call(computeIndexingHash, serializedTransaction);
 
@@ -34,7 +34,9 @@ const signWeb3Transaction = signTransactionWrapper(function*({
       indexingHash
     })
   );
-});
+}
+
+const signWeb3Transaction = signTransactionWrapper(signWeb3TransactionHandler);
 
 /**
  * @description Verifies that the transaction matches the fields, and if its a locally signed transaction (so it has a signature) it will verify the signature too

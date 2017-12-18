@@ -1,6 +1,5 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { Address, TokenValue } from 'libs/units';
-export { MetaAction, SetUnitMetaAction, SetTokenToMetaAction, SetTokenValueMetaAction };
 /*Meta Actions*/
 
 interface SetTokenToMetaAction {
@@ -25,3 +24,5 @@ interface SetTokenValueMetaAction {
 }
 
 type MetaAction = SetUnitMetaAction | SetTokenValueMetaAction | SetTokenToMetaAction;
+
+export { MetaAction, SetUnitMetaAction, SetTokenToMetaAction, SetTokenValueMetaAction };

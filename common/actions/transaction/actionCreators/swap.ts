@@ -4,14 +4,6 @@ import {
   SwapTokenToTokenAction
 } from '../actionTypes';
 import { TypeKeys } from '../constants';
-export {
-  swapEtherToToken,
-  swapTokenToEther,
-  swapTokenToToken,
-  TSwapTokenToEther,
-  TSwapEtherToToken,
-  TSwapTokenToToken
-};
 
 type TSwapTokenToEther = typeof swapTokenToEther;
 const swapTokenToEther = (payload: SwapTokenToEtherAction['payload']): SwapTokenToEtherAction => ({
@@ -30,3 +22,12 @@ const swapTokenToToken = (payload: SwapTokenToTokenAction['payload']): SwapToken
   payload,
   type: TypeKeys.TOKEN_TO_TOKEN_SWAP
 });
+
+export {
+  swapEtherToToken,
+  swapTokenToEther,
+  swapTokenToToken,
+  TSwapTokenToEther,
+  TSwapEtherToToken,
+  TSwapTokenToToken
+};

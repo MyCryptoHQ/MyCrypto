@@ -64,7 +64,7 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
     }
   };
 
-function* shouldBroadcastTransaction(indexingHash: string): SagaIterator {
+export function* shouldBroadcastTransaction(indexingHash: string): SagaIterator {
   const existingTx: ITransactionStatus | null = yield select(getTransactionStatus, indexingHash);
   // if the transaction already exists
   if (existingTx) {
@@ -75,7 +75,7 @@ function* shouldBroadcastTransaction(indexingHash: string): SagaIterator {
   }
   return true;
 }
-function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction) {
+export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction) {
   const isWeb3Req = type === TK.BROADCAST_WEB3_TRANSACTION_REQUESTED;
   const txSelector = isWeb3Req ? getWeb3Tx : getSignedTx;
   const serializedTransaction: StateSerializedTx = yield select(txSelector);

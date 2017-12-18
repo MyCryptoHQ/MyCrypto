@@ -7,18 +7,6 @@ import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
 
-export {
-  signTx,
-  validAddress,
-  validGasLimit,
-  enoughBalanceViaTx,
-  gasParamsInRange,
-  validateTx,
-  makeTransaction,
-  getTransactionFields,
-  computeIndexingHash
-};
-
 // we dont include the signature paramaters because web3 transactions are unsigned
 const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));
 
@@ -102,4 +90,16 @@ const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean) =>
     throw Error(translateRaw('GETH_Balance'));
   }
   validAddress(t);
+};
+
+export {
+  signTx,
+  validAddress,
+  validGasLimit,
+  enoughBalanceViaTx,
+  gasParamsInRange,
+  validateTx,
+  makeTransaction,
+  getTransactionFields,
+  computeIndexingHash
 };

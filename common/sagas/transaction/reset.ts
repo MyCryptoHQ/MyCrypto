@@ -3,7 +3,7 @@ import { TypeKeys } from 'actions/wallet';
 import { takeEvery, put } from 'redux-saga/effects';
 import { reset as resetActionCreator } from 'actions/transaction';
 
-function* resetTransactionState(): SagaIterator {
+export function* resetTransactionState(): SagaIterator {
   yield put(resetActionCreator());
 }
 

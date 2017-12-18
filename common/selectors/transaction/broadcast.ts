@@ -1,13 +1,6 @@
 import { AppState } from 'reducers';
 import { getTransactionState } from './transaction';
 import { getSignState } from './sign';
-export {
-  getTransactionStatus,
-  currentTransactionBroadcasting,
-  currentTransactionBroadcasted,
-  getCurrentTransactionStatus,
-  currentTransactionFailed
-};
 
 const getBroadcastState = (state: AppState) => getTransactionState(state).broadcast;
 const getTransactionStatus = (state: AppState, indexingHash: string) =>
@@ -38,4 +31,12 @@ const getCurrentTransactionStatus = (state: AppState) => {
   }
   const txExists = getTransactionStatus(state, indexingHash);
   return txExists;
+};
+
+export {
+  getTransactionStatus,
+  currentTransactionBroadcasting,
+  currentTransactionBroadcasted,
+  getCurrentTransactionStatus,
+  currentTransactionFailed
 };

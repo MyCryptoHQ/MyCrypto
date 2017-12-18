@@ -1,13 +1,5 @@
 import EthTx from 'ethereumjs-tx';
 import { TypeKeys } from 'actions/transaction/constants';
-export {
-  SignLocalTransactionRequestedAction,
-  SignLocalTransactionSucceededAction,
-  SignWeb3TransactionRequestedAction,
-  SignWeb3TransactionSucceededAction,
-  SignTransactionFailedAction,
-  SignAction
-};
 
 /*
  * Difference between the web3/local is that a local sign will actually sign the tx
@@ -43,3 +35,12 @@ type SignAction =
   | SignWeb3TransactionRequestedAction
   | SignWeb3TransactionSucceededAction
   | SignTransactionFailedAction;
+
+export {
+  SignLocalTransactionRequestedAction,
+  SignLocalTransactionSucceededAction,
+  SignWeb3TransactionRequestedAction,
+  SignWeb3TransactionSucceededAction,
+  SignTransactionFailedAction,
+  SignAction
+};

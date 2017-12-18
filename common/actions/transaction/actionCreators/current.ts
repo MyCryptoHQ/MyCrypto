@@ -1,6 +1,5 @@
 import { SetCurrentToAction, SetCurrentValueAction } from '../actionTypes/current';
 import { TypeKeys } from '../';
-export { setCurrentValue, setCurrentTo, TSetCurrentTo, TSetCurrentValue };
 
 type TSetCurrentValue = typeof setCurrentValue;
 const setCurrentValue = (payload: SetCurrentValueAction['payload']): SetCurrentValueAction => ({
@@ -13,3 +12,5 @@ const setCurrentTo = (payload: SetCurrentToAction['payload']): SetCurrentToActio
   type: TypeKeys.CURRENT_TO_SET,
   payload
 });
+
+export { setCurrentValue, setCurrentTo, TSetCurrentTo, TSetCurrentValue };

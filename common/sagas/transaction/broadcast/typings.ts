@@ -3,7 +3,6 @@ import {
   BroadcastWeb3TransactionRequestedAction,
   BroadcastLocalTransactionRequestedAction
 } from 'actions/transaction';
-export { BroadcastRequestedAction, StateSerializedTx, ISerializedTxAndIndexingHash };
 
 type SignState = AppState['transaction']['sign'];
 type BroadcastRequestedAction =
@@ -14,3 +13,5 @@ interface ISerializedTxAndIndexingHash {
   serializedTransaction: Buffer;
   indexingHash: string;
 }
+
+export { BroadcastRequestedAction, StateSerializedTx, ISerializedTxAndIndexingHash };

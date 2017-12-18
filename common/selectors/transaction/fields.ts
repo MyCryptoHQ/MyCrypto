@@ -2,17 +2,6 @@ import { AppState } from 'reducers';
 import { getTransactionState, getGasCost } from 'selectors/transaction';
 import { getEtherBalance } from 'selectors/wallet';
 import { getOffline } from 'selectors/config';
-export {
-  getData,
-  getFields,
-  getGasLimit,
-  getValue,
-  getTo,
-  getNonce,
-  getGasPrice,
-  getDataExists,
-  getValidGasCost
-};
 
 const getFields = (state: AppState) => getTransactionState(state).fields;
 const getTo = (state: AppState) => getFields(state).to;
@@ -33,4 +22,16 @@ const getValidGasCost = (state: AppState) => {
     return true;
   }
   return gasCost.lte(etherBalance);
+};
+
+export {
+  getData,
+  getFields,
+  getGasLimit,
+  getValue,
+  getTo,
+  getNonce,
+  getGasPrice,
+  getDataExists,
+  getValidGasCost
 };

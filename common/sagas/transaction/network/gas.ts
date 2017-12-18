@@ -21,7 +21,7 @@ import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { showNotification } from 'actions/notifications';
 
-function* shouldEstimateGas(): SagaIterator {
+export function* shouldEstimateGas(): SagaIterator {
   while (true) {
     const action:
       | SetToFieldAction
@@ -56,7 +56,7 @@ function* shouldEstimateGas(): SagaIterator {
   }
 }
 
-function* estimateGas(): SagaIterator {
+export function* estimateGas(): SagaIterator {
   const requestChan = yield actionChannel(TypeKeys.ESTIMATE_GAS_REQUESTED, buffers.sliding(1));
 
   while (true) {

@@ -1,12 +1,4 @@
 import { TypeKeys } from 'actions/transaction';
-export {
-  BroadcastLocalTransactionRequestedAction,
-  BroadcastTransactionSucceededAction,
-  BroadcastWeb3TransactionRequestedAction,
-  BroadcastTransactionQueuedAction,
-  BroadcastTransactionFailedAction,
-  BroadcastAction
-};
 /* Broadcasting actions */
 interface BroadcastLocalTransactionRequestedAction {
   type: TypeKeys.BROADCAST_LOCAL_TRANSACTION_REQUESTED;
@@ -32,3 +24,12 @@ type BroadcastAction =
   | BroadcastWeb3TransactionRequestedAction
   | BroadcastTransactionQueuedAction
   | BroadcastTransactionFailedAction;
+
+export {
+  BroadcastLocalTransactionRequestedAction,
+  BroadcastTransactionSucceededAction,
+  BroadcastWeb3TransactionRequestedAction,
+  BroadcastTransactionQueuedAction,
+  BroadcastTransactionFailedAction,
+  BroadcastAction
+};
