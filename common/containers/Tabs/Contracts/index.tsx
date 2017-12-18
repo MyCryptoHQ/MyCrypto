@@ -1,20 +1,32 @@
-import React, { Component } from 'react';
 import translate from 'translations';
-import Interact from './components/Interact';
-import Deploy from './components/Deploy';
+import { Interact } from './components/Interact';
+import { Deploy } from './components/Deploy';
 import './index.scss';
+import { reset, TReset } from 'actions/transaction';
+import { resetWallet, TResetWallet } from 'actions/wallet';
 import TabSection from 'containers/TabSection';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 interface State {
   activeTab: string;
 }
 
-export default class Contracts extends Component<{}, State> {
+interface Props {
+  reset: TReset;
+  resetWallet: TResetWallet;
+}
+
+class Contracts extends Component<Props, State> {
   public state: State = {
     activeTab: 'interact'
   };
 
-  public changeTab = activeTab => () => this.setState({ activeTab });
+  public changeTab = activeTab => () => {
+    this.props.reset();
+    this.props.resetWallet();
+    this.setState({ activeTab });
+  };
 
   public render() {
     const { activeTab } = this.state;
@@ -59,3 +71,5 @@ export default class Contracts extends Component<{}, State> {
     );
   }
 }
+
+export default connect(null, { reset, resetWallet })(Contracts);

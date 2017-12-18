@@ -22,21 +22,10 @@ describe('config reducer', () => {
   it('should handle CONFIG_NODE_CHANGE', () => {
     const key = Object.keys(NODES)[0];
 
-    expect(
-      config(undefined, configActions.changeNode(key, NODES[key]))
-    ).toEqual({
+    expect(config(undefined, configActions.changeNode(key, NODES[key]))).toEqual({
       ...INITIAL_STATE,
       node: NODES[key],
       nodeSelection: key
-    });
-  });
-
-  it('should handle CONFIG_GAS_PRICE', () => {
-    const gasPrice = 20;
-
-    expect(config(undefined, configActions.changeGasPrice(gasPrice))).toEqual({
-      ...INITIAL_STATE,
-      gasPriceGwei: gasPrice
     });
   });
 
@@ -73,16 +62,12 @@ describe('config reducer', () => {
       forceOffline: false
     };
 
-    expect(
-      config(forceOfflineTrue, configActions.forceOfflineConfig())
-    ).toEqual({
+    expect(config(forceOfflineTrue, configActions.forceOfflineConfig())).toEqual({
       ...forceOfflineTrue,
       forceOffline: false
     });
 
-    expect(
-      config(forceOfflineFalse, configActions.forceOfflineConfig())
-    ).toEqual({
+    expect(config(forceOfflineFalse, configActions.forceOfflineConfig())).toEqual({
       ...forceOfflineFalse,
       forceOffline: true
     });
@@ -100,15 +85,9 @@ describe('config reducer', () => {
     const addedState = config(undefined, configActions.addCustomNode(custNode));
     const addedAndActiveState = config(
       addedState,
-      configActions.changeNode(
-        customNodeId,
-        makeNodeConfigFromCustomConfig(custNode)
-      )
+      configActions.changeNode(customNodeId, makeNodeConfigFromCustomConfig(custNode))
     );
-    const removedState = config(
-      addedAndActiveState,
-      configActions.removeCustomNode(custNode)
-    );
+    const removedState = config(addedAndActiveState, configActions.removeCustomNode(custNode));
 
     it('should remove the custom node from `customNodes`', () => {
       expect(removedState.customNodes.length).toBe(0);

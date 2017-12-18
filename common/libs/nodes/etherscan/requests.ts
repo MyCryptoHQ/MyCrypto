@@ -64,7 +64,7 @@ export default class EtherscanRequests extends RPCRequests {
   ): GetTokenBalanceRequest {
     return this.ethCall({
       to: token.address,
-      data: ERC20.balanceOf(address)
+      data: ERC20.balanceOf.encodeInput({ _owner: address })
     });
   }
 

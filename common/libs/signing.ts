@@ -8,21 +8,11 @@ import {
   toBuffer,
   pubToAddress
 } from 'ethereumjs-util';
-import { RawTransaction } from 'libs/transaction';
-import { isValidRawTx } from 'libs/validators';
 import { stripHexPrefixAndLower } from 'libs/values';
 
-export function signRawTxWithPrivKey(
-  privKey: Buffer,
-  rawTx: RawTransaction
-): string {
-  if (!isValidRawTx(rawTx)) {
-    throw new Error('Invalid raw transaction');
-  }
-
-  const eTx = new EthTx(rawTx);
-  eTx.sign(privKey);
-  return '0x' + eTx.serialize().toString('hex');
+export function signRawTxWithPrivKey(privKey: Buffer, t: EthTx): Buffer {
+  t.sign(privKey);
+  return t.serialize();
 }
 
 // adapted from:

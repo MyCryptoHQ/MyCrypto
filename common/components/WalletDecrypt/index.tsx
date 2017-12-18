@@ -12,6 +12,7 @@ import {
   resetWallet,
   TResetWallet
 } from 'actions/wallet';
+import { reset, TReset } from 'actions/transaction';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import React, { Component } from 'react';
@@ -33,6 +34,7 @@ import { IWallet } from 'libs/wallet';
 type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
+  resetTransactionState: TReset;
   unlockKeystore: TUnlockKeystore;
   unlockMnemonic: TUnlockMnemonic;
   unlockPrivateKey: TUnlockPrivateKey;
@@ -82,14 +84,18 @@ export class WalletDecrypt extends Component<Props, State> {
         password: ''
       },
       unlock: this.props.unlockKeystore,
-      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      helpLink: `${
+        knowledgeBaseURL
+      }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
     'mnemonic-phrase': {
       lid: 'x_Mnemonic',
       component: MnemonicDecrypt,
       initialParams: {},
       unlock: this.props.unlockMnemonic,
-      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      helpLink: `${
+        knowledgeBaseURL
+      }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
     'private-key': {
       lid: 'x_PrivKey2',
@@ -99,7 +105,9 @@ export class WalletDecrypt extends Component<Props, State> {
         password: ''
       },
       unlock: this.props.unlockPrivateKey,
-      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      helpLink: `${
+        knowledgeBaseURL
+      }/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
     'view-only': {
       lid: 'View with Address Only',
@@ -178,30 +186,32 @@ export class WalletDecrypt extends Component<Props, State> {
     return (
       <div>
         <NavigationPrompt when={unlocked} onConfirm={this.props.resetWallet} />
-        <article hidden={hidden} className="Tab-content-pane row">
-          <section className="col-md-4 col-sm-6">
-            <h4>{translate('decrypt_Access')}</h4>
-
-            {this.buildWalletOptions()}
-          </section>
-
-          {decryptionComponent}
-          {!!(this.state.value as PrivateKeyValue).valid && (
+        {!hidden && (
+          <article className="Tab-content-pane row">
             <section className="col-md-4 col-sm-6">
-              <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
-              <div className="form-group">
-                <a
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-primary btn-block"
-                  onClick={this.onUnlock}
-                >
-                  {translate('ADD_Label_6_short')}
-                </a>
-              </div>
+              <h4>{translate('decrypt_Access')}</h4>
+
+              {this.buildWalletOptions()}
             </section>
-          )}
-        </article>
+
+            {decryptionComponent}
+            {!!(this.state.value as PrivateKeyValue).valid && (
+              <section className="col-md-4 col-sm-6">
+                <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
+                <div className="form-group">
+                  <a
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-primary btn-block"
+                    onClick={this.onUnlock}
+                  >
+                    {translate('ADD_Label_6_short')}
+                  </a>
+                </div>
+              </section>
+            )}
+          </article>
+        )}
       </div>
     );
   }
@@ -215,6 +225,7 @@ export class WalletDecrypt extends Component<Props, State> {
     // in this case, we can expect the payload to contain the unlocked wallet info.
     const unlockValue = this.state.value && !isEmpty(this.state.value) ? this.state.value : payload;
     this.WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
+    this.props.resetTransactionState();
   };
 }
 
@@ -231,5 +242,6 @@ export default connect(mapStateToProps, {
   unlockPrivateKey,
   unlockWeb3,
   setWallet,
-  resetWallet
+  resetWallet,
+  resetTransactionState: reset
 })(WalletDecrypt);

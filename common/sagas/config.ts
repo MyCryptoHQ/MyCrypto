@@ -41,10 +41,7 @@ import translate from 'translations';
 import { Web3Wallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
-import {
-  State as ConfigState,
-  INITIAL_STATE as configInitialState
-} from 'reducers/config';
+import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -74,11 +71,7 @@ export function* pollOfflineStatus(): SagaIterator {
       if (pingSucceeded && isOffline) {
         // If we were able to ping but redux says we're offline, mark online
         yield put(
-          showNotification(
-            'success',
-            'Your connection to the network has been restored!',
-            3000
-          )
+          showNotification('success', 'Your connection to the network has been restored!', 3000)
         );
         yield put(toggleOfflineConfig());
       } else if (!pingSucceeded && !isOffline) {
@@ -122,12 +115,10 @@ export function* handleTogglePollOfflineStatus(): SagaIterator {
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.
 export function* reload(): SagaIterator {
-  setTimeout(() => location.reload(), 250);
+  setTimeout(() => location.reload(), 1150);
 }
 
-export function* handleNodeChangeIntent(
-  action: ChangeNodeIntentAction
-): SagaIterator {
+export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {
   const currentNode = yield select(getNode);
   const currentConfig = yield select(getNodeConfig);
   const currentNetwork = currentConfig.network;
@@ -143,11 +134,7 @@ export function* handleNodeChangeIntent(
 
   if (!actionConfig) {
     yield put(
-      showNotification(
-        'danger',
-        `Attempted to switch to unknown node '${action.payload}'`,
-        5000
-      )
+      showNotification('danger', `Attempted to switch to unknown node '${action.payload}'`, 5000)
     );
     yield put(changeNode(currentNode, currentConfig));
     return;
@@ -254,10 +241,7 @@ export const equivalentNodeOrDefault = nodeConfig => {
 };
 
 export default function* configSaga(): SagaIterator {
-  yield takeLatest(
-    TypeKeys.CONFIG_POLL_OFFLINE_STATUS,
-    handlePollOfflineStatus
-  );
+  yield takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_FORCE_OFFLINE, handleTogglePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);

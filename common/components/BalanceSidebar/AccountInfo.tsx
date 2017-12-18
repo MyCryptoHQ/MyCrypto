@@ -37,8 +37,7 @@ export default class AccountInfo extends React.Component<Props, State> {
     this.setAddressFromWallet();
   }
 
-  // TODO: don't use any;
-  public toggleShowLongBalance = (e: React.SyntheticEvent<HTMLSpanElement>) => {
+  public toggleShowLongBalance = (e: React.FormEvent<HTMLSpanElement>) => {
     e.preventDefault();
     this.setState(state => {
       return {
@@ -79,6 +78,7 @@ export default class AccountInfo extends React.Component<Props, State> {
                     value={balance.wei}
                     unit={'ether'}
                     displayShortBalance={!showLongBalance}
+                    checkOffline={true}
                   />
                 )}
               </span>

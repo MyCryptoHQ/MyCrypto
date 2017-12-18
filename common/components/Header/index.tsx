@@ -1,5 +1,4 @@
 import {
-  TChangeGasPrice,
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
@@ -11,6 +10,7 @@ import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { TSetGasPriceField } from 'actions/transaction';
 import {
   ANNOUNCEMENT_MESSAGE,
   ANNOUNCEMENT_TYPE,
@@ -28,19 +28,19 @@ import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
+import { AppState } from 'reducers';
 
 interface Props {
   languageSelection: string;
   node: NodeConfig;
   nodeSelection: string;
   isChangingNode: boolean;
-  gasPriceGwei: number;
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
-
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
-  changeGasPrice: TChangeGasPrice;
+  setGasPriceField: TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
   addCustomNetwork: TAddCustomNetwork;
@@ -129,8 +129,8 @@ export default class Header extends Component<Props, State> {
 
               <div className="Header-branding-right-dropdown">
                 <GasPriceDropdown
-                  value={this.props.gasPriceGwei}
-                  onChange={this.props.changeGasPrice}
+                  value={this.props.gasPrice.raw}
+                  onChange={this.props.setGasPriceField}
                 />
               </div>
 

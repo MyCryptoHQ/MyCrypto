@@ -56,9 +56,7 @@ export default class PrivateKeyDecrypt extends Component {
           <div className="form-group">
             <textarea
               id="aria-private-key"
-              className={`form-control ${
-                isValidPkey ? 'is-valid' : 'is-invalid'
-              }`}
+              className={`form-control ${isValidPkey ? 'is-valid' : 'is-invalid'}`}
               value={key}
               onChange={this.onPkeyChange}
               onKeyDown={this.onKeyDown}
@@ -71,9 +69,7 @@ export default class PrivateKeyDecrypt extends Component {
               <div className="form-group">
                 <p>{translate('ADD_Label_3')}</p>
                 <input
-                  className={`form-control ${
-                    password.length > 0 ? 'is-valid' : 'is-invalid'
-                  }`}
+                  className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
                   value={password}
                   onChange={this.onPasswordChange}
                   onKeyDown={this.onKeyDown}

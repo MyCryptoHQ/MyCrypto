@@ -3,13 +3,15 @@ import throttle from 'lodash/throttle';
 import React, { Component } from 'react';
 import DropdownShell from 'components/ui/DropdownShell';
 import './GasPriceDropdown.scss';
+import { SetGasLimitFieldAction } from 'actions/transaction';
+import { gasPricetoBase } from 'libs/units';
 
 interface Props {
-  value: number;
-  onChange(gasPrice: number): void;
+  value: string;
+  onChange(payload: SetGasLimitFieldAction['payload']): void;
 }
 
-export default class GasPriceDropdown extends Component<Props, {}> {
+export default class GasPriceDropdown extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.updateGasPrice = throttle(this.updateGasPrice, 50);
@@ -69,10 +71,10 @@ export default class GasPriceDropdown extends Component<Props, {}> {
   };
 
   private updateGasPrice = (value: string) => {
-    this.props.onChange(parseInt(value, 10));
+    this.props.onChange({ raw: value, value: gasPricetoBase(parseInt(value, 10)) });
   };
 
-  private handleGasPriceChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    this.updateGasPrice((e.target as HTMLInputElement).value);
+  private handleGasPriceChange = (e: React.FormEvent<HTMLInputElement>) => {
+    this.updateGasPrice(e.currentTarget.value);
   };
 }

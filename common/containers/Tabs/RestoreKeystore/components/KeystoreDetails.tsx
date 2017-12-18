@@ -100,9 +100,9 @@ class KeystoreDetails extends Component<{}, State> {
           </a>
         ) : (
           <p>
-            Error generating a valid keystore that matches your private key. In
-            order to protect our users, if our runtime check fails, we prevent
-            you from downloading a potentially corrupted wallet.
+            Error generating a valid keystore that matches your private key. In order to protect our
+            users, if our runtime check fails, we prevent you from downloading a potentially
+            corrupted wallet.
           </p>
         )}
       </div>
