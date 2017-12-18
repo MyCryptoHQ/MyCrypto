@@ -14,7 +14,6 @@ import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import { shouldEstimateGas, estimateGas } from 'sagas/transaction/network/gas';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
-import { showNotification } from 'actions/notifications';
 
 describe('shouldEstimateGas*', () => {
   const transaction: any = 'transaction';
