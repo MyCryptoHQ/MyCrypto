@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import { getTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
+import { getShownTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
@@ -84,7 +84,7 @@ function mapStateToProps(state: AppState) {
   return {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,
-    tokenBalances: getTokenBalances(state),
+    tokenBalances: getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError

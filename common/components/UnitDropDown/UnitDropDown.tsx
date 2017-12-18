@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
 import Dropdown from 'components/ui/Dropdown';
 import { withConditional } from 'components/hocs';
-import { TokenBalance, getTokenBalances } from 'selectors/wallet';
+import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -48,7 +48,11 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
 }
 const getTokenSymbols = (tokens: TokenBalance[]) => tokens.map(t => t.symbol);
 
-export const UnitDropDown = connect(
-  (state: AppState) => ({ tokens: getTokenBalances(state, true), unit: getUnit(state) }),
-  { setUnitMeta }
-)(UnitDropdownClass);
+function mapStateToProps(state: AppState) {
+  return {
+    tokens: getShownTokenBalances(state, true),
+    unit: getUnit(state)
+  };
+}
+
+export const UnitDropDown = connect(mapStateToProps, { setUnitMeta })(UnitDropdownClass);
