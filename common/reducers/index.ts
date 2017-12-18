@@ -2,12 +2,10 @@ import { routerReducer } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import { config, State as ConfigState } from './config';
 import { customTokens, State as CustomTokensState } from './customTokens';
-import {
-  deterministicWallets,
-  State as DeterministicWalletsState
-} from './deterministicWallets';
+import { deterministicWallets, State as DeterministicWalletsState } from './deterministicWallets';
 import { ens, State as EnsState } from './ens';
 import { generateWallet, State as GenerateWalletState } from './generateWallet';
+import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 import { notifications, State as NotificationsState } from './notifications';
 import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
@@ -17,6 +15,7 @@ export interface AppState {
   generateWallet: GenerateWalletState;
   config: ConfigState;
   notifications: NotificationsState;
+  onboardStatus: OnboardStatusState;
   ens: EnsState;
   wallet: WalletState;
   customTokens: CustomTokensState;
@@ -33,6 +32,7 @@ export default combineReducers({
   config,
   swap,
   notifications,
+  onboardStatus,
   ens,
   wallet,
   customTokens,

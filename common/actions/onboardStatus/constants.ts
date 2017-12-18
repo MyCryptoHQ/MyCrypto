@@ -1,0 +1,3 @@
+export enum TypeKeys {
+  START_ONBOARD_SESSION = 'START_ONBOARD_SESSION'
+}
