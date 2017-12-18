@@ -38,7 +38,7 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
   };
 }
 
-export default class PrivateKeyDecrypt extends Component {
+export class PrivateKeyDecrypt extends Component {
   public props: {
     value: PrivateKeyValue;
     onChange(value: PrivateKeyValue): void;

@@ -18,7 +18,7 @@ interface State {
   dPath: string;
 }
 
-export default class MnemonicDecrypt extends Component<Props, State> {
+export class MnemonicDecrypt extends Component<Props, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',

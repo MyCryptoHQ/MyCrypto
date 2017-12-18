@@ -52,7 +52,7 @@ interface State {
   page: number;
 }
 
-class DeterministicWalletsModal extends React.Component<Props, State> {
+class DeterministicWalletsModalClass extends React.Component<Props, State> {
   public state = {
     selectedAddress: '',
     selectedAddrIndex: 0,
@@ -310,7 +310,7 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps, {
+export const DeterministicWalletsModal = connect(mapStateToProps, {
   getDeterministicWallets,
   setDesiredToken
-})(DeterministicWalletsModal);
+})(DeterministicWalletsModalClass);

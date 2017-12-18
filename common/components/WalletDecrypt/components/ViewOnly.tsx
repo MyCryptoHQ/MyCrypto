@@ -12,7 +12,7 @@ interface State {
   address: string;
 }
 
-export default class ViewOnlyDecrypt extends Component<Props, State> {
+export class ViewOnlyDecrypt extends Component<Props, State> {
   public state = {
     address: ''
   };

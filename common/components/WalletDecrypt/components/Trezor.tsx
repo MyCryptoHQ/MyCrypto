@@ -18,7 +18,7 @@ interface State {
   isLoading: boolean;
 }
 
-export default class TrezorDecrypt extends Component<Props, State> {
+export class TrezorDecrypt extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',

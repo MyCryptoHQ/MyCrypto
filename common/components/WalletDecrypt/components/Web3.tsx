@@ -7,7 +7,7 @@ interface Props {
   onUnlock(): void;
 }
 
-export default class Web3Decrypt extends Component<Props> {
+export class Web3Decrypt extends Component<Props> {
   public render() {
     return (
       <section className="Web3Decrypt col-md-4 col-sm-6">

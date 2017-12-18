@@ -18,7 +18,7 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
-export default class KeystoreDecrypt extends Component {
+export class KeystoreDecrypt extends Component {
   public props: {
     value: KeystoreValue;
     onChange(value: KeystoreValue): void;

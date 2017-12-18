@@ -21,7 +21,7 @@ interface State {
   isLoading: boolean;
 }
 
-export default class LedgerNanoSDecrypt extends Component<Props, State> {
+export class LedgerNanoSDecrypt extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',

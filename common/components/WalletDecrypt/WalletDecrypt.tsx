@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   setWallet,
   TSetWallet,
@@ -19,17 +18,20 @@ import map from 'lodash/map';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import KeystoreDecrypt from './Keystore';
-import LedgerNanoSDecrypt from './LedgerNano';
-import MnemonicDecrypt from './Mnemonic';
-import PrivateKeyDecrypt, { PrivateKeyValue } from './PrivateKey';
-import TrezorDecrypt from './Trezor';
-import ViewOnlyDecrypt from './ViewOnly';
+import {
+  KeystoreDecrypt,
+  LedgerNanoSDecrypt,
+  MnemonicDecrypt,
+  PrivateKeyDecrypt,
+  PrivateKeyValue,
+  TrezorDecrypt,
+  ViewOnlyDecrypt,
+  Web3Decrypt,
+  NavigationPrompt
+} from './components';
 import { AppState } from 'reducers';
-import Web3Decrypt from './Web3';
 import Help from 'components/ui/Help';
 import { knowledgeBaseURL } from 'config/data';
-import NavigationPrompt from './NavigationPrompt';
 import { IWallet } from 'libs/wallet';
 
 type UnlockParams = {} | PrivateKeyValue;
@@ -181,7 +183,8 @@ export class WalletDecrypt extends Component<Props, State> {
     return (
       <div>
         <NavigationPrompt when={unlocked} onConfirm={this.props.resetWallet} />
-        {!hidden && (
+
+        {!hidden &&
           <article className="Tab-content-pane row">
             <section className="col-md-4 col-sm-6">
               <h4>{translate('decrypt_Access')}</h4>
@@ -206,7 +209,7 @@ export class WalletDecrypt extends Component<Props, State> {
               </section>
             )}
           </article>
-        )}
+        }
       </div>
     );
   }
@@ -240,7 +243,3 @@ export default connect(mapStateToProps, {
   resetWallet,
   resetTransactionState: reset
 })(WalletDecrypt);
-=======
-import WalletDecrypt from './WalletDecrypt';
-export default WalletDecrypt;
->>>>>>> Reorganize files to better match other components.
