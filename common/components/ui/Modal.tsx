@@ -18,7 +18,8 @@ interface Props {
 }
 
 export default class Modal extends Component<Props, {}> {
-  modalRef: HTMLDivElement | null;
+  public modalRef: HTMLDivElement | null;
+
   public componentDidMount() {
     this.updateBodyClass();
     document.addEventListener('keydown', this.escapeListner);

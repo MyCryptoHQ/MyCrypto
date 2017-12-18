@@ -2,8 +2,8 @@ import React from 'react';
 import onboardIconNine from 'assets/images/onboarding_icon-09.svg';
 
 interface Props {
-  setOnboardStatus(slideNumber: number): void;
   site?: string;
+  setOnboardStatus(slideNumber: number): void;
 }
 
 const SecureSlideThree: React.SFC<Props> = ({ setOnboardStatus, site }) => {

@@ -44,10 +44,10 @@ class OnboardModal extends React.Component<Props, State> {
 
   public componentDidMount() {
     const { onboardStatus } = this.state;
-    const { sessionStarted, startOnboardSession } = this.props;
+    const { sessionStarted } = this.props;
 
     if (!sessionStarted) {
-      startOnboardSession();
+      this.props.startOnboardSession();
       if (onboardStatus === 0) {
         this.setState({
           isOpen: true
@@ -99,16 +99,16 @@ class OnboardModal extends React.Component<Props, State> {
 
   private renderSlide = () => {
     const slides = [
-      <WelcomeSlide setOnboardStatus={this.changeOnboardStatus} />,
-      <NotABankSlide setOnboardStatus={this.changeOnboardStatus} />,
-      <InterfaceSlide setOnboardStatus={this.changeOnboardStatus} />,
-      <BlockchainSlide setOnboardStatus={this.changeOnboardStatus} />,
-      <WhySlide setOnboardStatus={this.changeOnboardStatus} />,
-      <WhyMewSlide setOnboardStatus={this.changeOnboardStatus} />,
-      <SecureSlideOne setOnboardStatus={this.changeOnboardStatus} />,
-      <SecureSlideTwo setOnboardStatus={this.changeOnboardStatus} />,
-      <SecureSlideThree setOnboardStatus={this.changeOnboardStatus} />,
-      <FinalSlide closeModal={this.closeModal} />
+      <WelcomeSlide key={1} setOnboardStatus={this.changeOnboardStatus} />,
+      <NotABankSlide key={2} setOnboardStatus={this.changeOnboardStatus} />,
+      <InterfaceSlide key={3} setOnboardStatus={this.changeOnboardStatus} />,
+      <BlockchainSlide key={4} setOnboardStatus={this.changeOnboardStatus} />,
+      <WhySlide key={5} setOnboardStatus={this.changeOnboardStatus} />,
+      <WhyMewSlide key={6} setOnboardStatus={this.changeOnboardStatus} />,
+      <SecureSlideOne key={7} setOnboardStatus={this.changeOnboardStatus} />,
+      <SecureSlideTwo key={8} setOnboardStatus={this.changeOnboardStatus} />,
+      <SecureSlideThree key={9} setOnboardStatus={this.changeOnboardStatus} />,
+      <FinalSlide key={10} closeModal={this.closeModal} />
     ];
     const currentSlideIndex = this.state.currentSlide - 1;
 
