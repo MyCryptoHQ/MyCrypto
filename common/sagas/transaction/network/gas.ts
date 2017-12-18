@@ -72,12 +72,6 @@ export function* estimateGas(): SagaIterator {
       yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
       yield put(estimateGasSucceeded());
     } catch (e) {
-      yield put(
-        showNotification(
-          'warning',
-          'Gas estimation failed, falling back to local estimation, it may not be accurate'
-        )
-      );
       yield put(estimateGasFailed());
       console.error(e);
       // fallback for estimating locally
