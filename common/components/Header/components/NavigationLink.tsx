@@ -23,12 +23,10 @@ class NavigationLink extends React.Component<Props, {}> {
   public render() {
     const { link } = this.props;
     const { location } = this.injected;
-    const locationPaths = location.pathname.split('/');
-    const linkPaths = link.to ? link.to.split('/') : [];
     const linkClasses = classnames({
       'NavigationLink-link': true,
       'is-disabled': !link.to,
-      'is-active': locationPaths[1] === linkPaths[1]
+      'is-active': location.pathname === link.to
     });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
