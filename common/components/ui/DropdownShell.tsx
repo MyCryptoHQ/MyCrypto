@@ -35,21 +35,9 @@ export default class DropdownComponent extends Component<Props, State> {
   }
 
   public render() {
-    const {
-      ariaLabel,
-      color,
-      disabled,
-      size,
-      renderOptions,
-      renderLabel
-    } = this.props;
+    const { ariaLabel, color, disabled, size, renderOptions, renderLabel } = this.props;
     const { expanded } = this.state;
-    const toggleClasses = classnames([
-      'dropdown-toggle',
-      'btn',
-      `btn-${color}`,
-      `btn-${size}`
-    ]);
+    const toggleClasses = classnames(['dropdown-toggle', 'btn', `btn-${color}`, `btn-${size}`]);
 
     return (
       <span

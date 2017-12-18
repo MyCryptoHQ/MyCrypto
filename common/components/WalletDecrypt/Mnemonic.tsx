@@ -38,9 +38,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
           <div className="form-group">
             <textarea
               id="aria-private-key"
-              className={`form-control ${isValidMnemonic
-                ? 'is-valid'
-                : 'is-invalid'}`}
+              className={`form-control ${isValidMnemonic ? 'is-valid' : 'is-invalid'}`}
               value={phrase}
               onChange={this.onMnemonicChange}
               placeholder={translateRaw('x_Mnemonic')}
@@ -93,7 +91,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
     const formattedPhrase = formatMnemonic(phrase);
 
     this.setState({
-      phrase, 
+      phrase,
       formattedPhrase
     });
   };

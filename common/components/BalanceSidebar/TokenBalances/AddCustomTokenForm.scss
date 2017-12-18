@@ -1,0 +1,33 @@
+@import "common/sass/variables";
+
+.AddCustom {
+  &-field {
+    &-error {
+      font-size: 13px;
+      font-weight: normal;
+      color: $brand-danger;
+    }
+  }
+
+  &-buttons {
+    padding-top: 10px;
+
+    &-help {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    &-btn {
+      margin-right: 10px;
+
+      &.btn-primary {
+        width: 120px;
+      }
+
+      &.btn-default {
+        width: 110px;
+      }
+    }
+  }
+}

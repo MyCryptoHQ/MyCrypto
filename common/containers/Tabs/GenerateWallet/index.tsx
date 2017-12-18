@@ -41,11 +41,7 @@ class GenerateWallet extends Component<Props, {}> {
     if (window.crypto) {
       switch (activeStep) {
         case 'password':
-          content = (
-            <AnyEnterPassword
-              generateNewWallet={this.props.generateNewWallet}
-            />
-          );
+          content = <AnyEnterPassword generateNewWallet={this.props.generateNewWallet} />;
           break;
 
         case 'download':

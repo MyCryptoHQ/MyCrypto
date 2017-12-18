@@ -36,13 +36,15 @@ class NavigationPrompt extends React.Component<Props, State> {
   public setupUnblock() {
     this.unblock = this.injected.history.block(nextLocation => {
       if (this.props.when && nextLocation.pathname !== this.injected.location.pathname) {
-        this.setState({
-          openModal: true,
-          nextLocation
-        });
-      }
-      if (this.props.when) {
-        return false;
+        const isSubTab =
+          nextLocation.pathname.split('/')[1] === this.injected.location.pathname.split('/')[1];
+        if (!isSubTab) {
+          this.setState({
+            openModal: true,
+            nextLocation
+          });
+          return false;
+        }
       }
     });
   }

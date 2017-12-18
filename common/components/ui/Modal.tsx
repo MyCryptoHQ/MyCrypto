@@ -4,14 +4,7 @@ import './Modal.scss';
 
 export interface IButton {
   text: string | React.ReactElement<string>;
-  type?:
-    | 'default'
-    | 'primary'
-    | 'success'
-    | 'info'
-    | 'warning'
-    | 'danger'
-    | 'link';
+  type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link';
   disabled?: boolean;
   onClick?(): void;
 }
@@ -20,7 +13,7 @@ interface Props {
   title: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
-  buttons: IButton[];
+  buttons?: IButton[];
   handleClose(): void;
 }
 
@@ -58,9 +51,7 @@ export default class Modal extends Component<Props, {}> {
             </button>
           </div>
           <div className="Modal-content">{isOpen && children}</div>
-          {hasButtons && (
-            <div className="Modal-footer">{this.renderButtons()}</div>
-          )}
+          {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
         </div>
       </div>
     );
@@ -85,6 +76,9 @@ export default class Modal extends Component<Props, {}> {
 
   private renderButtons = () => {
     const { disableButtons, buttons } = this.props;
+    if (!buttons || !buttons.length) {
+      return;
+    }
 
     return buttons.map((btn, idx) => {
       let btnClass = 'Modal-footer-btn btn';

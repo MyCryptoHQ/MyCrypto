@@ -1,5 +1,5 @@
 import { Wei, TokenValue } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, WalletConfig } from 'libs/wallet';
 import * as types from './actionTypes';
 import { TypeKeys } from './constants';
 export type TUnlockPrivateKey = typeof unlockPrivateKey;
@@ -13,9 +13,7 @@ export function unlockPrivateKey(
 }
 
 export type TUnlockKeystore = typeof unlockKeystore;
-export function unlockKeystore(
-  value: types.KeystoreUnlockParams
-): types.UnlockKeystoreAction {
+export function unlockKeystore(value: types.KeystoreUnlockParams): types.UnlockKeystoreAction {
   return {
     type: TypeKeys.WALLET_UNLOCK_KEYSTORE,
     payload: value
@@ -23,9 +21,7 @@ export function unlockKeystore(
 }
 
 export type TUnlockMnemonic = typeof unlockMnemonic;
-export function unlockMnemonic(
-  value: types.MnemonicUnlockParams
-): types.UnlockMnemonicAction {
+export function unlockMnemonic(value: types.MnemonicUnlockParams): types.UnlockMnemonicAction {
   return {
     type: TypeKeys.WALLET_UNLOCK_MNEMONIC,
     payload: value
@@ -54,9 +50,7 @@ export function setBalancePending(): types.SetBalancePendingAction {
 }
 
 export type TSetBalance = typeof setBalanceFullfilled;
-export function setBalanceFullfilled(
-  value: Wei
-): types.SetBalanceFullfilledAction {
+export function setBalanceFullfilled(value: Wei): types.SetBalanceFullfilledAction {
   return {
     type: TypeKeys.WALLET_SET_BALANCE_FULFILLED,
     payload: value
@@ -69,56 +63,44 @@ export function setBalanceRejected(): types.SetBalanceRejectedAction {
   };
 }
 
-export type TSetTokenBalances = typeof setTokenBalances;
-export function setTokenBalances(payload: {
+export function setTokenBalancesPending(): types.SetTokenBalancesPendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING
+  };
+}
+
+export type TSetTokenBalancesFulfilled = typeof setTokenBalancesFulfilled;
+export function setTokenBalancesFulfilled(payload: {
   [key: string]: {
     balance: TokenValue;
     error: string | null;
   };
-}): types.SetTokenBalancesAction {
+}): types.SetTokenBalancesFulfilledAction {
   return {
-    type: TypeKeys.WALLET_SET_TOKEN_BALANCES,
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED,
     payload
   };
 }
 
-export type TBroadcastTx = typeof broadcastTx;
-export function broadcastTx(
-  signedTx: string
-): types.BroadcastTxRequestedAction {
+export function setTokenBalancesRejected(): types.SetTokenBalancesRejectedAction {
   return {
-    type: TypeKeys.WALLET_BROADCAST_TX_REQUESTED,
-    payload: {
-      signedTx
-    }
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED
   };
 }
 
-export type TBroadcastTxSucceded = typeof broadcastTxSucceded;
-export function broadcastTxSucceded(
-  txHash: string,
-  signedTx: string
-): types.BroadcastTxSuccededAction {
+export type TScanWalletForTokens = typeof scanWalletForTokens;
+export function scanWalletForTokens(wallet: IWallet): types.ScanWalletForTokensAction {
   return {
-    type: TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED,
-    payload: {
-      txHash,
-      signedTx
-    }
+    type: TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS,
+    payload: wallet
   };
 }
 
-export type TBroadCastTxFailed = typeof broadCastTxFailed;
-export function broadCastTxFailed(
-  signedTx: string,
-  errorMsg: string
-): types.BroadcastTxFailedAction {
+export type TSetWalletTokens = typeof setWalletTokens;
+export function setWalletTokens(tokens: string[]): types.SetWalletTokensAction {
   return {
-    type: TypeKeys.WALLET_BROADCAST_TX_FAILED,
-    payload: {
-      signedTx,
-      error: errorMsg
-    }
+    type: TypeKeys.WALLET_SET_WALLET_TOKENS,
+    payload: tokens
   };
 }
 
@@ -126,5 +108,13 @@ export type TResetWallet = typeof resetWallet;
 export function resetWallet(): types.ResetWalletAction {
   return {
     type: TypeKeys.WALLET_RESET
+  };
+}
+
+export type TSetWalletConfig = typeof setWalletConfig;
+export function setWalletConfig(config: WalletConfig): types.SetWalletConfigAction {
+  return {
+    type: TypeKeys.WALLET_SET_CONFIG,
+    payload: config
   };
 }

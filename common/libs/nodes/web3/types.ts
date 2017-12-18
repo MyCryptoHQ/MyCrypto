@@ -1,23 +1,7 @@
-import {
-  JsonRpcResponse,
-  RPCRequest,
-  RPCRequestBase,
-  DATA,
-  QUANTITY
-} from '../rpc/types';
+import { JsonRpcResponse, RPCRequest, RPCRequestBase, DATA, QUANTITY } from '../rpc/types';
 
 type MESSAGE_HEX = string;
 type ADDRESS = string;
-
-export interface Web3Transaction {
-  from: string;
-  to: string;
-  value: string;
-  gas: string;
-  gasPrice: string;
-  data: string;
-  nonce: string;
-}
 
 export interface SendTransactionRequest extends RPCRequestBase {
   method: 'eth_sendTransaction';
@@ -43,14 +27,8 @@ export interface GetAccountsRequest extends RPCRequestBase {
   method: 'eth_accounts';
 }
 
-type TWeb3ProviderCallback = (
-  error,
-  result: JsonRpcResponse | JsonRpcResponse[]
-) => any;
-type TSendAsync = (
-  request: RPCRequest | any,
-  callback: TWeb3ProviderCallback
-) => void;
+type TWeb3ProviderCallback = (error, result: JsonRpcResponse | JsonRpcResponse[]) => any;
+type TSendAsync = (request: RPCRequest | any, callback: TWeb3ProviderCallback) => void;
 
 export interface IWeb3Provider {
   sendAsync: TSendAsync;

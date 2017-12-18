@@ -42,21 +42,14 @@ export default class KeystoreDecrypt extends Component {
               onChange={this.handleFileSelection}
             />
             <label htmlFor="fselector" style={{ width: '100%' }}>
-              <a
-                className="btn btn-default btn-block"
-                id="aria1"
-                tabIndex={0}
-                role="button"
-              >
+              <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
                 {translate('ADD_Radio_2_short')}
               </a>
             </label>
             <div className={file.length && passReq ? '' : 'hidden'}>
               <p>{translate('ADD_Label_3')}</p>
               <input
-                className={`form-control ${
-                  password.length > 0 ? 'is-valid' : 'is-invalid'
-                }`}
+                className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}

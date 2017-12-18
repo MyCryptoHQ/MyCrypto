@@ -1,12 +1,11 @@
+import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
-import { ExtendedRawTransaction } from 'libs/transaction';
-import { networkIdToName, sanitizeHex } from 'libs/values';
+import { networkIdToName } from 'libs/values';
 import { bufferToHex } from 'ethereumjs-util';
 import { configuredStore } from 'store';
 import { getNodeLib } from 'selectors/config';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
-import BN from 'bn.js';
 
 export default class Web3Wallet implements IFullWallet {
   private address: string;
@@ -21,10 +20,8 @@ export default class Web3Wallet implements IFullWallet {
     return Promise.resolve(this.address);
   }
 
-  public signRawTransaction(): Promise<string> {
-    return Promise.reject(
-      new Error('Web3 wallets cannot sign raw transactions.')
-    );
+  public signRawTransaction(): Promise<Buffer> {
+    return Promise.reject(new Error('Web3 wallets cannot sign raw transactions.'));
   }
 
   public async signMessage(msg: string): Promise<string> {
@@ -39,23 +36,26 @@ export default class Web3Wallet implements IFullWallet {
     return nodeLib.signMessage(msgHex, this.address);
   }
 
-  public async sendTransaction(
-    transaction: ExtendedRawTransaction
-  ): Promise<string> {
-    const state = configuredStore.getState();
-    const nodeLib: Web3Node | INode = getNodeLib(state);
-    const { from, to, value, gasLimit, gasPrice, data, nonce } = transaction;
+  public async sendTransaction(serializedTransaction: string): Promise<string> {
+    const transactionInstance = makeTransaction(serializedTransaction);
+    const { to, value, gasLimit: gas, gasPrice, data, nonce, chainId } = getTransactionFields(
+      transactionInstance
+    );
+    const from = this.address;
+
     const web3Tx = {
       from,
       to,
       value,
-      gas:
-        gasLimit instanceof BN ? sanitizeHex(gasLimit.toString(16)) : gasLimit,
-      gasPrice:
-        gasPrice instanceof BN ? sanitizeHex(gasPrice.toString(16)) : gasPrice,
+      gas,
+      gasPrice,
       data,
-      nonce
+      nonce,
+      chainId
     };
+
+    const state = configuredStore.getState();
+    const nodeLib: Web3Node | INode = getNodeLib(state);
 
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Web3 wallets can only be used with a Web3 node.');
@@ -70,9 +70,9 @@ export default class Web3Wallet implements IFullWallet {
     const netName = networkIdToName(netId);
     if (this.network !== netName) {
       throw new Error(
-        `Expected MetaMask / Mist network to be ${this.network}, but got ${
-          netName
-        }. Please change the network or restart MyEtherWallet.`
+        `Expected MetaMask / Mist network to be ${
+          this.network
+        }, but got ${netName}. Please change the network or restart MyEtherWallet.`
       );
     }
   }

@@ -1,5 +1,4 @@
 import { IFullWallet } from 'ethereumjs-wallet';
-import { RawTransaction } from 'libs/transaction';
 import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from 'libs/signing';
 import {
   EncryptedPrivateKeyWallet,
@@ -8,6 +7,7 @@ import {
   PrivKeyWallet,
   UtcWallet
 } from './wallets';
+import Tx from 'ethereumjs-tx';
 
 enum KeystoreTypes {
   presale = 'presale',
@@ -18,7 +18,7 @@ enum KeystoreTypes {
 }
 
 interface ISignWrapper {
-  signRawTransaction(rawTx: RawTransaction): string;
+  signRawTransaction(rawTx: Tx): Buffer;
   signMessage(msg: string): string;
   unlock();
 }
@@ -27,10 +27,8 @@ export type WrappedWallet = IFullWallet & ISignWrapper;
 
 export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
   Object.assign(walletToWrap, {
-    signRawTransaction: (rawTx: RawTransaction) =>
-      signRawTxWithPrivKey(walletToWrap.getPrivateKey(), rawTx),
-    signMessage: (msg: string) =>
-      signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),
+    signRawTransaction: (t: Tx) => signRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
+    signMessage: (msg: string) => signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),
     unlock: () => Promise.resolve()
   });
 

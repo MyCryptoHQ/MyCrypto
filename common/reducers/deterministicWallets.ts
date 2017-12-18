@@ -1,7 +1,4 @@
-import {
-  DeterministicWalletAction,
-  DeterministicWalletData
-} from 'actions/deterministicWallets';
+import { DeterministicWalletAction, DeterministicWalletData } from 'actions/deterministicWallets';
 import { TypeKeys } from 'actions/deterministicWallets/constants';
 
 export interface State {

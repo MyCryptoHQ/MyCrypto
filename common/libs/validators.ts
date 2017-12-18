@@ -1,19 +1,25 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
-import { RawTransaction } from 'libs/transaction';
 import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
+import { isPositiveInteger } from 'utils/helpers';
 
+// FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
-  if (!address) {
-    return false;
-  }
   if (address === '0x0000000000000000000000000000000000000000') {
     return false;
   }
-  return validateEtherAddress(address);
+  if (address.substring(0, 2) !== '0x') {
+    return false;
+  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    return false;
+  } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+    return true;
+  } else {
+    return isChecksumAddress(address);
+  }
 }
 
 export function isValidBTCAddress(address: string): boolean {
@@ -21,16 +27,10 @@ export function isValidBTCAddress(address: string): boolean {
 }
 
 export function isValidHex(str: string): boolean {
-  if (typeof str !== 'string') {
-    return false;
-  }
   if (str === '') {
     return true;
   }
-  str =
-    str.substring(0, 2) === '0x'
-      ? str.substring(2).toUpperCase()
-      : str.toUpperCase();
+  str = str.substring(0, 2) === '0x' ? str.substring(2).toUpperCase() : str.toUpperCase();
   const re = /^[0-9A-F]*$/g; // Match 0 -> unlimited times, 0 being "0x" case
   return re.test(str);
 }
@@ -41,9 +41,7 @@ export function isValidENSorEtherAddress(address: string): boolean {
 
 export function isValidENSName(str: string) {
   try {
-    return (
-      str.length > 6 && normalise(str) !== '' && str.substring(0, 2) !== '0x'
-    );
+    return str.length > 6 && normalise(str) !== '' && str.substring(0, 2) !== '0x';
   } catch (e) {
     return false;
   }
@@ -71,22 +69,6 @@ function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address);
 }
 
-// FIXME we probably want to do checksum checks sideways
-function validateEtherAddress(address: string): boolean {
-  if (address.substring(0, 2) !== '0x') {
-    return false;
-  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
-    return false;
-  } else if (
-    /^(0x)?[0-9a-f]{40}$/.test(address) ||
-    /^(0x)?[0-9A-F]{40}$/.test(address)
-  ) {
-    return true;
-  } else {
-    return isChecksumAddress(address);
-  }
-}
-
 export function isValidPrivKey(privkey: string | Buffer): boolean {
   if (typeof privkey === 'string') {
     const strippedKey = stripHexPrefix(privkey);
@@ -111,59 +93,23 @@ export function isValidEncryptedPrivKey(privkey: string): boolean {
   }
 }
 
+export const validNumber = (num: number) => isFinite(num) && num > 0;
+
+export const validDecimal = (input: string, decimal: number) => {
+  const arr = input.split('.');
+  const fractionPortion = arr[1];
+  if (!fractionPortion || fractionPortion.length === 0) {
+    return true;
+  }
+  const decimalLength = fractionPortion.length;
+  return decimalLength <= decimal;
+};
+
 export function isPositiveIntegerOrZero(num: number): boolean {
   if (isNaN(num) || !isFinite(num)) {
     return false;
   }
   return num >= 0 && parseInt(num.toString(), 10) === num;
-}
-
-export function isValidRawTx(rawTx: RawTransaction): boolean {
-  const propReqs = [
-    { name: 'nonce', type: 'string', lenReq: true },
-    { name: 'gasPrice', type: 'string', lenReq: true },
-    { name: 'gasLimit', type: 'string', lenReq: true },
-    { name: 'to', type: 'string', lenReq: true },
-    { name: 'value', type: 'string', lenReq: true },
-    { name: 'data', type: 'string', lenReq: false },
-    { name: 'chainId', type: 'number', lenReq: false }
-  ];
-
-  // ensure rawTx has above properties
-  // ensure all specified types match
-  // ensure length !0 for strings where length is required
-  // ensure valid hex for strings
-  // ensure all strings begin with '0x'
-  // ensure valid address for 'to' prop
-  // ensure rawTx only has above properties
-
-  for (const prop of propReqs) {
-    const value = rawTx[prop.name];
-
-    if (!rawTx.hasOwnProperty(prop.name)) {
-      return false;
-    }
-    if (typeof value !== prop.type) {
-      return false;
-    }
-    if (prop.type === 'string') {
-      if (prop.lenReq && value.length === 0) {
-        return false;
-      }
-      if (value.length && value.substring(0, 2) !== '0x') {
-        return false;
-      }
-      if (!isValidHex(value)) {
-        return false;
-      }
-    }
-  }
-
-  if (Object.keys(rawTx).length !== propReqs.length) {
-    return false;
-  }
-
-  return true;
 }
 
 // Full length deterministic wallet paths from BIP44
@@ -204,21 +150,30 @@ export const schema = {
   }
 };
 
+export const isValidNonce = (value: string): boolean => {
+  let valid;
+  if (value === '0') {
+    valid = true;
+  } else if (!value) {
+    valid = false;
+  } else {
+    valid = isPositiveInteger(+value);
+  }
+  return valid;
+};
+
 function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
   return v.validate(response, schemaFormat).valid;
 }
 
 function formatErrors(response: JsonRpcResponse, apiType: string) {
   if (response.error) {
-    return `${response.error.message} ${response.error.data}`;
+    return `${response.error.message} ${response.error.data || ''}`;
   }
   return `Invalid ${apiType} Error`;
 }
 
-const isValidEthCall = (response: JsonRpcResponse, schemaType) => (
-  apiName,
-  cb?
-) => {
+const isValidEthCall = (response: JsonRpcResponse, schemaType) => (apiName, cb?) => {
   if (!isValidResult(response, schemaType)) {
     if (cb) {
       return cb(response);

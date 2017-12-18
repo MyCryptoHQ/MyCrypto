@@ -49,21 +49,14 @@ export function getTranslators() {
   });
 }
 
-type TranslateType = React.ReactElement<any> | string;
+export type TranslateType = React.ReactElement<any> | string;
 
-export default function translate(
-  key: string,
-  textOnly: boolean = false
-): TranslateType {
+export default function translate(key: string, textOnly: boolean = false): TranslateType {
   return textOnly ? translateRaw(key) : <Translate translationKey={key} />;
 }
 
 export function translateRaw(key: string) {
   const lang = getLanguageSelection(configuredStore.getState());
 
-  return (
-    (repository[lang] && repository[lang][key]) ||
-    repository[fallbackLanguage][key] ||
-    key
-  );
+  return (repository[lang] && repository[lang][key]) || repository[fallbackLanguage][key] || key;
 }
