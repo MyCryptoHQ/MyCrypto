@@ -8,7 +8,6 @@ import {
   DataField,
   GasField,
   SendEverything,
-  UnitDropDown,
   CurrentCustomMessage,
   GenerateTransaction,
   SendButton,
@@ -25,10 +24,7 @@ const content = (
     <AddressField />
     <div className="row form-group">
       <div className="col-xs-11">
-        <div className="input-group">
-          <AmountField />
-          <UnitDropDown />
-        </div>
+        <AmountField hasUnitDropdown={true} />
         <SendEverything />
       </div>
       <div className="col-xs-1" />
