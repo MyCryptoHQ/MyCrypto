@@ -7,7 +7,7 @@ import {
   InputNonceAction,
   TypeKeys
 } from 'actions/transaction';
-import { isValidHex, isValidNonce } from 'libs/validators';
+import { isValidHex, isValidNonce, validNumber } from 'libs/validators';
 import { Data, Wei, Nonce } from 'libs/units';
 
 export function* handleDataInput({ payload }: InputDataAction): SagaIterator {
@@ -16,7 +16,8 @@ export function* handleDataInput({ payload }: InputDataAction): SagaIterator {
 }
 
 export function* handleGasLimitInput({ payload }: InputGasLimitAction): SagaIterator {
-  const validGasLimit = isFinite(parseFloat(payload)) && parseFloat(payload);
+  const validGasLimit =
+    validNumber(+payload) && isFinite(parseFloat(payload)) && parseFloat(payload);
   yield put(setGasLimitField({ raw: payload, value: validGasLimit ? Wei(payload) : null }));
 }
 
