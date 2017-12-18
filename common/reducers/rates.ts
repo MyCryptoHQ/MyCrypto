@@ -12,10 +12,7 @@ export const INITIAL_STATE: State = {
   ratesError: null
 };
 
-function fetchCCRatesSucceeded(
-  state: State,
-  action: FetchCCRatesSucceeded
-): State {
+function fetchCCRatesSucceeded(state: State, action: FetchCCRatesSucceeded): State {
   return {
     ...state,
     rates: {
@@ -33,10 +30,7 @@ function fetchCCRatesFailed(state: State): State {
   };
 }
 
-export function rates(
-  state: State = INITIAL_STATE,
-  action: RatesAction
-): State {
+export function rates(state: State = INITIAL_STATE, action: RatesAction): State {
   switch (action.type) {
     case TypeKeys.RATES_FETCH_CC_SUCCEEDED:
       return fetchCCRatesSucceeded(state, action);

@@ -54,22 +54,18 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     const msgHex = Buffer.from(msg).toString('hex');
 
     return new Promise((resolve, reject) => {
-      this.ethApp.signPersonalMessage_async(
-        this.getPath(),
-        msgHex,
-        async (signed, error) => {
-          if (error) {
-            return reject(this.ethApp.getError(error));
-          }
-
-          try {
-            const combined = signed.r + signed.s + signed.v;
-            resolve(bufferToHex(combined));
-          } catch (err) {
-            reject(err);
-          }
+      this.ethApp.signPersonalMessage_async(this.getPath(), msgHex, async (signed, error) => {
+        if (error) {
+          return reject(this.ethApp.getError(error));
         }
-      );
+
+        try {
+          const combined = signed.r + signed.s + signed.v;
+          resolve(bufferToHex(combined));
+        } catch (err) {
+          reject(err);
+        }
+      });
     });
   }
 }

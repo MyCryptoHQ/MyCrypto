@@ -14,16 +14,12 @@ class TokenQueryClass extends Component<Props, {}> {
     return (
       <Query
         params={['tokenSymbol']}
-        withQuery={({ tokenSymbol }) =>
-          this.props.withQuery(this.paramGetter(tokenSymbol))
-        }
+        withQuery={({ tokenSymbol }) => this.props.withQuery(this.paramGetter(tokenSymbol))}
       />
     );
   }
   private paramGetter = (unit: string | null) =>
-    unit
-      ? { token: this.props.tokens.find(t => t.symbol === unit) }
-      : { token: null };
+    unit ? { token: this.props.tokens.find(t => t.symbol === unit) } : { token: null };
 }
 
 export const TokenQuery = connect((state: AppState) => ({

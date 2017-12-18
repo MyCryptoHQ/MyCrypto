@@ -134,12 +134,10 @@
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged",
-    "prepush": "npm run tslint && npm run tscheck"
+    "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write",
+    "prepush": "npm run formatAll && npm run tslint && npm run tscheck"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{ts,tsx}": ["prettier --write", "git add"]
   }
 }

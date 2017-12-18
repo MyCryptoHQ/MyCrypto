@@ -139,9 +139,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
           <div style={{ float: 'left' }}>
             <Identicon address={address} size={'42px'} />
           </div>
-          <p style={styles.identiconText}>
-            Always look for this icon when sending to this wallet
-          </p>
+          <p style={styles.identiconText}>Always look for this icon when sending to this wallet</p>
         </div>
       </div>
     );

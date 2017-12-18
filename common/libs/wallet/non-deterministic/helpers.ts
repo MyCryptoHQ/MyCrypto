@@ -27,10 +27,8 @@ export type WrappedWallet = IFullWallet & ISignWrapper;
 
 export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
   Object.assign(walletToWrap, {
-    signRawTransaction: (t: Tx) =>
-      signRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
-    signMessage: (msg: string) =>
-      signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),
+    signRawTransaction: (t: Tx) => signRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
+    signMessage: (msg: string) => signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),
     unlock: () => Promise.resolve()
   });
 

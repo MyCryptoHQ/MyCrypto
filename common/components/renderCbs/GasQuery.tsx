@@ -8,8 +8,6 @@ interface Props {
 export const GasQuery: React.SFC<Props> = ({ withQuery }) => (
   <Query
     params={['limit', 'gaslimit']}
-    withQuery={({ limit, gaslimit }) =>
-      withQuery({ gasLimit: limit || gaslimit })
-    }
+    withQuery={({ limit, gaslimit }) => withQuery({ gasLimit: limit || gaslimit })}
   />
 );

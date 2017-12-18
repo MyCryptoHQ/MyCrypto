@@ -14,10 +14,7 @@ export const INITIAL_STATE: State = {
   password: null
 };
 
-export function generateWallet(
-  state: State = INITIAL_STATE,
-  action: GenerateWalletAction
-): State {
+export function generateWallet(state: State = INITIAL_STATE, action: GenerateWalletAction): State {
   switch (action.type) {
     case TypeKeys.GENERATE_WALLET_GENERATE_WALLET: {
       return {

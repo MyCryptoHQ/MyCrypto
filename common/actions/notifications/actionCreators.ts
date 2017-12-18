@@ -20,9 +20,7 @@ export function showNotification(
 }
 
 export type TCloseNotification = typeof closeNotification;
-export function closeNotification(
-  notification: types.Notification
-): types.CloseNotificationAction {
+export function closeNotification(notification: types.Notification): types.CloseNotificationAction {
   return {
     type: TypeKeys.CLOSE_NOTIFICATION,
     payload: notification

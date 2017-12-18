@@ -14,10 +14,7 @@ export interface INode {
   ping(): Promise<boolean>;
   getBalance(address: string): Promise<Wei>;
   getTokenBalance(address: string, token: Token): Promise<TokenBalanceResult>;
-  getTokenBalances(
-    address: string,
-    tokens: Token[]
-  ): Promise<TokenBalanceResult[]>;
+  getTokenBalances(address: string, tokens: Token[]): Promise<TokenBalanceResult[]>;
   estimateGas(tx: Partial<IHexStrTransaction>): Promise<Wei>;
   getTransactionCount(address: string): Promise<string>;
   sendRawTx(tx: string): Promise<string>;
