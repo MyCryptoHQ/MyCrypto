@@ -147,18 +147,9 @@ describe('estimateGas*', () => {
     const tx = {
       getBaseFee: jest.fn()
     };
-    it('should put showNotification', () => {
-      expect(gens.clone.throw().value).toEqual(
-        put(
-          showNotification(
-            'warning',
-            'Gas estimation failed, falling back to local estimation, it may not be accurate'
-          )
-        )
-      );
-    });
+
     it('should catch and put estimateGasFailed', () => {
-      expect(gens.clone.next().value).toEqual(put(estimateGasFailed()));
+      expect(gens.clone.throw().value).toEqual(put(estimateGasFailed()));
     });
 
     it('should call makeTransaction with payload', () => {
