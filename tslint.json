@@ -1,10 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint:recommended",
-    "tslint-react",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "jsRules": {
     "quotemark": false,
     "max-line-length": false,
@@ -19,15 +15,13 @@
     "prefer-method-signature": true,
     "arrow-parens": false,
     "no-unnecessary-type-assertion": true,
-    "array-type": [
-      true,
-      "array"
-    ],
+    "array-type": [true, "array"],
     "interface-name": false,
     "no-duplicate-imports": true,
     "no-console": false,
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
+    "jsx-no-lambda": false,
     "comment-format": false,
     "ordered-imports": false
   },
