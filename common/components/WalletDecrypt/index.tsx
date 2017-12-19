@@ -47,81 +47,78 @@ interface Props {
   allowReadOnly?: boolean;
 }
 
-const WALLETS = {
-  web3: {
-    lid: 'x_MetaMask',
-    component: Web3Decrypt,
-    initialParams: {},
-    unlock: this.props.unlockWeb3,
-    helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
-  },
-  'ledger-nano-s': {
-    lid: 'x_Ledger',
-    component: LedgerNanoSDecrypt,
-    initialParams: {},
-    unlock: this.props.setWallet,
-    helpLink:
-      'https://ledger.zendesk.com/hc/en-us/articles/115005200009-How-to-use-MyEtherWallet-with-Ledger'
-  },
-  trezor: {
-    lid: 'x_Trezor',
-    component: TrezorDecrypt,
-    initialParams: {},
-    unlock: this.props.setWallet,
-    helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
-  },
-  'keystore-file': {
-    lid: 'x_Keystore2',
-    component: KeystoreDecrypt,
-    initialParams: {
-      file: '',
-      password: ''
-    },
-    unlock: this.props.unlockKeystore,
-    helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-  },
-  'mnemonic-phrase': {
-    lid: 'x_Mnemonic',
-    component: MnemonicDecrypt,
-    initialParams: {},
-    unlock: this.props.unlockMnemonic,
-    helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-  },
-  'private-key': {
-    lid: 'x_PrivKey2',
-    component: PrivateKeyDecrypt,
-    initialParams: {
-      key: '',
-      password: ''
-    },
-    unlock: this.props.unlockPrivateKey,
-    helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-  },
-  'view-only': {
-    lid: 'View with Address Only',
-    component: ViewOnlyDecrypt,
-    initialParams: {},
-    unlock: this.props.setWallet,
-    helpLink: ''
-  }
-};
-
-type WalletKeys = keyof (typeof WALLETS);
-
 interface State {
-  selectedWalletKey: WalletKeys;
+  selectedWalletKey: string;
   value: UnlockParams;
 }
 
 export class WalletDecrypt extends Component<Props, State> {
+  public WALLETS = {
+    web3: {
+      lid: 'x_MetaMask',
+      component: Web3Decrypt,
+      initialParams: {},
+      unlock: this.props.unlockWeb3,
+      helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
+    },
+    'ledger-nano-s': {
+      lid: 'x_Ledger',
+      component: LedgerNanoSDecrypt,
+      initialParams: {},
+      unlock: this.props.setWallet,
+      helpLink:
+        'https://ledger.zendesk.com/hc/en-us/articles/115005200009-How-to-use-MyEtherWallet-with-Ledger'
+    },
+    trezor: {
+      lid: 'x_Trezor',
+      component: TrezorDecrypt,
+      initialParams: {},
+      unlock: this.props.setWallet,
+      helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+    },
+    'keystore-file': {
+      lid: 'x_Keystore2',
+      component: KeystoreDecrypt,
+      initialParams: {
+        file: '',
+        password: ''
+      },
+      unlock: this.props.unlockKeystore,
+      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+    },
+    'mnemonic-phrase': {
+      lid: 'x_Mnemonic',
+      component: MnemonicDecrypt,
+      initialParams: {},
+      unlock: this.props.unlockMnemonic,
+      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+    },
+    'private-key': {
+      lid: 'x_PrivKey2',
+      component: PrivateKeyDecrypt,
+      initialParams: {
+        key: '',
+        password: ''
+      },
+      unlock: this.props.unlockPrivateKey,
+      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+    },
+    'view-only': {
+      lid: 'View with Address Only',
+      component: ViewOnlyDecrypt,
+      initialParams: {},
+      unlock: this.props.setWallet,
+      helpLink: ''
+    }
+  };
   public state: State = {
     selectedWalletKey: 'keystore-file',
-    value: WALLETS['keystore-file'].initialParams
+    value: this.WALLETS['keystore-file'].initialParams
   };
 
   public getDecryptionComponent() {
     const { selectedWalletKey, value } = this.state;
-    const selectedWallet = WALLETS[selectedWalletKey];
+    const selectedWallet = this.WALLETS[selectedWalletKey];
 
     if (!selectedWallet) {
       return null;
@@ -131,13 +128,13 @@ export class WalletDecrypt extends Component<Props, State> {
     );
   }
 
-  public isOnlineRequiredWalletAndOffline(selectedWalletKey: string) {
+  public isOnlineRequiredWalletAndOffline(selectedWalletKey) {
     const onlineRequiredWallets = ['trezor', 'ledger-nano-s'];
     return this.props.offline && onlineRequiredWallets.includes(selectedWalletKey);
   }
 
   public buildWalletOptions() {
-    return map(WALLETS, (wallet, key) => {
+    return map(this.WALLETS, (wallet, key) => {
       const { helpLink } = wallet;
       const isSelected = this.state.selectedWalletKey === key;
       const isDisabled =
@@ -164,15 +161,14 @@ export class WalletDecrypt extends Component<Props, State> {
   }
 
   public handleDecryptionChoiceChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const walletKey = event.currentTarget.value as WalletKeys;
-    const wallet = WALLETS[walletKey];
+    const wallet = this.WALLETS[event.currentTarget.value];
 
     if (!wallet) {
       return;
     }
 
     this.setState({
-      selectedWalletKey: walletKey,
+      selectedWalletKey: event.currentTarget.value,
       value: wallet.initialParams
     });
   };
@@ -222,7 +218,7 @@ export class WalletDecrypt extends Component<Props, State> {
     // some components (TrezorDecrypt) don't take an onChange prop, and thus this.state.value will remain unpopulated.
     // in this case, we can expect the payload to contain the unlocked wallet info.
     const unlockValue = this.state.value && !isEmpty(this.state.value) ? this.state.value : payload;
-    WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
+    this.WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
     this.props.resetTransactionState();
   };
 }

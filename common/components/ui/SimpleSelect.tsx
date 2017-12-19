@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 interface Props {
   value?: string;
   options: string[];
-  onChange(event: React.SyntheticEvent<HTMLSpanElement>): void;
+  onChange(event: React.FormEvent<HTMLSpanElement>): void;
 }
 
 export default class SimpleSelect extends Component<Props, {}> {

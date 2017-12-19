@@ -11,8 +11,12 @@ interface Props {
   closeNotification: TCloseNotification;
 }
 
-const Transition: React.SFC<{}> = () => (
-  <CSSTransition classNames="NotificationAnimation" timeout={{ enter: 500, exit: 500 }} />
+const Transition: React.SFC<{}> = ({ children }) => (
+  <CSSTransition
+    children={children}
+    classNames="NotificationAnimation"
+    timeout={{ enter: 500, exit: 500 }}
+  />
 );
 
 export class Notifications extends React.Component<Props, {}> {

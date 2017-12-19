@@ -134,14 +134,14 @@ export default class AddCustomTokenForm extends React.Component<Props, State> {
     return !Object.keys(this.getErrors()).length && address && symbol && decimal;
   }
 
-  public onFieldChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  public onFieldChange = (e: React.FormEvent<HTMLInputElement>) => {
     // TODO: typescript bug: https://github.com/Microsoft/TypeScript/issues/13948
-    const name: any = (e.target as HTMLInputElement).name;
-    const value = (e.target as HTMLInputElement).value;
+    const name: any = e.currentTarget.name;
+    const value = e.currentTarget.value;
     this.setState({ [name]: value });
   };
 
-  public onSave = (ev: React.SyntheticEvent<HTMLFormElement>) => {
+  public onSave = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!this.isValid()) {
       return;
