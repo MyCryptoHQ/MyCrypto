@@ -11,7 +11,6 @@ import {
 } from './swap/orders';
 import { getBityRatesSaga, getShapeShiftRatesSaga, swapProviderSaga } from './swap/rates';
 import wallet from './wallet';
-
 export default {
   handleOrderTimeRemaining,
   configSaga,

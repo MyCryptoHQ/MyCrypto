@@ -1,8 +1,4 @@
-import {
-  closeNotification,
-  Notification,
-  TCloseNotification
-} from 'actions/notifications';
+import { closeNotification, Notification, TCloseNotification } from 'actions/notifications';
 import React from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -29,10 +25,7 @@ export class Notifications extends React.Component<Props, {}> {
         {this.props.notifications.map(n => {
           return (
             <Transition key={n.id}>
-              <NotificationRow
-                notification={n}
-                onClose={this.props.closeNotification}
-              />
+              <NotificationRow notification={n} onClose={this.props.closeNotification} />
             </Transition>
           );
         })}

@@ -58,13 +58,10 @@ export default class EtherscanRequests extends RPCRequests {
     };
   }
 
-  public getTokenBalance(
-    address: string,
-    token: Token
-  ): GetTokenBalanceRequest {
+  public getTokenBalance(address: string, token: Token): GetTokenBalanceRequest {
     return this.ethCall({
       to: token.address,
-      data: ERC20.balanceOf(address)
+      data: ERC20.balanceOf.encodeInput({ _owner: address })
     });
   }
 

@@ -11,36 +11,28 @@ const tabs = [
   },
 
   {
-    name: 'NAV_SendEther',
-    to: 'send-transaction'
+    name: 'Account View & Send',
+    to: '/account'
   },
   {
     name: 'NAV_Swap',
-    to: 'swap'
-  },
-  {
-    name: 'NAV_ViewWallet'
-    // to: 'view-wallet'
+    to: '/swap'
   },
   {
     name: 'NAV_Contracts',
-    to: 'contracts'
+    to: '/contracts'
   },
   {
     name: 'NAV_ENS',
-    to: 'ens'
+    to: '/ens'
   },
   {
     name: 'Sign & Verify Message',
-    to: 'sign-and-verify-message'
+    to: '/sign-and-verify-message'
   },
   {
     name: 'Broadcast Transaction',
-    to: 'pushTx'
-  },
-  {
-    name: 'NAV_Utilities',
-    to: 'utilities'
+    to: '/pushTx'
   },
   {
     name: 'NAV_Help',

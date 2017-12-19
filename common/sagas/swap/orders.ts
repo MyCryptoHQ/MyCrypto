@@ -289,37 +289,6 @@ export function* orderTimeRemaining(): SagaIterator {
               yield put(stopOrderTimerSwap());
               break;
           }
-        } else {
-          switch (swap.bityOrderStatus) {
-            case 'OPEN':
-              yield put(orderTimeSwap(0));
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'CANC':
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'RCVE':
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('warning', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'FILL':
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              yield put(stopOrderTimerSwap());
-              break;
-          }
         }
       }
     }

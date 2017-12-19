@@ -66,9 +66,7 @@ const help = (
       </li>
       <li>
         <NewTabLink
-          href={`${
-            knowledgeBaseURL
-          }/private-keys-passwords/difference-beween-private-key-and-keystore-file`}
+          href={`${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file`}
         >
           <strong>{translate('GEN_Help_16')}</strong>
         </NewTabLink>

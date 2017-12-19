@@ -5,10 +5,8 @@ import { decryptPrivKey } from 'libs/decrypt';
 import Web3Wallet from './web3';
 import AddressOnlyWallet from './address';
 
-const EncryptedPrivateKeyWallet = (
-  encryptedPrivateKey: string,
-  password: string
-) => signWrapper(fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
+const EncryptedPrivateKeyWallet = (encryptedPrivateKey: string, password: string) =>
+  signWrapper(fromPrivateKey(decryptPrivKey(encryptedPrivateKey, password)));
 
 const PresaleWallet = (keystore: string, password: string) =>
   signWrapper(fromEthSale(keystore, password));

@@ -6,11 +6,7 @@ import {
   SwapInput
 } from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
-import bityConfig, {
-  generateKindMax,
-  generateKindMin,
-  SupportedDestinationKind
-} from 'config/bity';
+import bityConfig, { generateKindMax, generateKindMin, WhitelistedCoins } from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
@@ -110,7 +106,7 @@ export default class CurrencySwap extends Component<Props, State> {
     return merge(shapeshiftRates, bityRates);
   };
 
-  public getMinMax = (originKind: SupportedDestinationKind, destinationKind) => {
+  public getMinMax = (originKind: WhitelistedCoins, destinationKind) => {
     let min;
     let max;
 
@@ -135,11 +131,7 @@ export default class CurrencySwap extends Component<Props, State> {
     return { min, max };
   };
 
-  public isMinMaxValid = (
-    originAmount: number,
-    originKind: SupportedDestinationKind,
-    destinationKind
-  ) => {
+  public isMinMaxValid = (originAmount: number, originKind: WhitelistedCoins, destinationKind) => {
     const rate = this.getMinMax(originKind, destinationKind);
     const higherThanMin = originAmount >= rate.min;
     const lowerThanMax = originAmount <= rate.max;
@@ -153,9 +145,9 @@ export default class CurrencySwap extends Component<Props, State> {
     const disabled = !(amountsValid && minMaxValid);
 
     const createErrString = (
-      originKind: SupportedDestinationKind,
+      originKind: WhitelistedCoins,
       amount: number,
-      destKind: SupportedDestinationKind
+      destKind: WhitelistedCoins
     ) => {
       const rate = this.getMinMax(originKind, destKind);
       let errString;
@@ -234,7 +226,7 @@ export default class CurrencySwap extends Component<Props, State> {
       : this.updateDestinationAmount(origin, destination, amount);
   };
 
-  public onChangeOriginKind = (newOption: SupportedDestinationKind) => {
+  public onChangeOriginKind = (newOption: WhitelistedCoins) => {
     const { origin, destination, destinationKindOptions } = this.state;
     const { options, initSwap } = this.props;
     const newDestinationAmount = () => {
@@ -260,7 +252,7 @@ export default class CurrencySwap extends Component<Props, State> {
     initSwap({ origin: newOrigin, destination: newDest });
   };
 
-  public onChangeDestinationKind = (newOption: SupportedDestinationKind) => {
+  public onChangeDestinationKind = (newOption: WhitelistedCoins) => {
     const { initSwap } = this.props;
     const { origin, destination } = this.state;
     const newOriginAmount = () => {
@@ -308,7 +300,7 @@ export default class CurrencySwap extends Component<Props, State> {
         {loaded ? (
           <div className="form-inline CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
-              <span className="CurrencySwap-error-message">{originErr}</span>
+              {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
               <input
                 id="origin-swap-input"
                 className={`CurrencySwap-input form-control ${
@@ -329,19 +321,13 @@ export default class CurrencySwap extends Component<Props, State> {
                   value={origin.id}
                   onChange={this.onChangeOriginKind}
                 />
-                {/* <OriginKindDropDown
-                  ariaLabel={`change origin kind. current origin kind ${origin.id}`}
-                  options={originKindOptions}
-                  value={origin.id}
-                  onChange={this.onChangeOriginKind}
-                  size="smr"
-                  color="default"
-                /> */}
               </div>
             </div>
             <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
             <div className="CurrencySwap-input-group">
-              <span className="CurrencySwap-error-message">{destinationErr}</span>
+              {destinationErr && (
+                <span className="CurrencySwap-error-message">{destinationErr}</span>
+              )}
               <input
                 id="destination-swap-input"
                 className={`CurrencySwap-input form-control ${
@@ -374,7 +360,7 @@ export default class CurrencySwap extends Component<Props, State> {
             onClick={this.onClickStartSwap}
             text={translate('SWAP_init_CTA')}
             disabled={this.state.disabled}
-            type="info"
+            type="primary"
           />
         </div>
       </article>

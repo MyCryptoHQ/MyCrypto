@@ -1,14 +1,14 @@
 import { Option } from 'actions/swap/actionTypes';
-import { SupportedDestinationKind } from 'config/bity';
+import { WhitelistedCoins } from 'config/bity';
 
 export interface SwapInput {
-  id: SupportedDestinationKind;
+  id: WhitelistedCoins;
   amount: number;
 }
 
 export interface NormalizedBityRate {
   id: number;
-  options: SupportedDestinationKind[];
+  options: WhitelistedCoins[];
   rate: number;
 }
 
@@ -19,7 +19,7 @@ export interface NormalizedBityRates {
 
 export interface NormalizedShapeshiftRate {
   id: number;
-  options: SupportedDestinationKind[];
+  options: WhitelistedCoins[];
   rate: number;
   limit: number;
   min: number;

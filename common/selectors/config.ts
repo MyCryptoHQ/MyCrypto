@@ -3,7 +3,8 @@ import {
   NetworkContract,
   NodeConfig,
   CustomNodeConfig,
-  CustomNetworkConfig
+  CustomNetworkConfig,
+  Token
 } from 'config/data';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
@@ -22,10 +23,7 @@ export function getNodeLib(state: AppState): INode {
 }
 
 export function getNetworkConfig(state: AppState): NetworkConfig | undefined {
-  return getNetworkConfigFromId(
-    getNodeConfig(state).network,
-    getCustomNetworkConfigs(state)
-  );
+  return getNetworkConfigFromId(getNodeConfig(state).network, getCustomNetworkConfigs(state));
 }
 
 export function getNetworkContracts(state: AppState): NetworkContract[] | null {
@@ -33,8 +31,14 @@ export function getNetworkContracts(state: AppState): NetworkContract[] | null {
   return network ? network.contracts : [];
 }
 
-export function getGasPriceGwei(state: AppState): number {
-  return state.config.gasPriceGwei;
+export function getNetworkTokens(state: AppState): Token[] {
+  const network = getNetworkConfig(state);
+  return network ? network.tokens : [];
+}
+
+export function getAllTokens(state: AppState): Token[] {
+  const networkTokens = getNetworkTokens(state);
+  return networkTokens.concat(state.customTokens);
 }
 
 export function getLanguageSelection(state: AppState): string {
@@ -45,9 +49,7 @@ export function getCustomNodeConfigs(state: AppState): CustomNodeConfig[] {
   return state.config.customNodes;
 }
 
-export function getCustomNetworkConfigs(
-  state: AppState
-): CustomNetworkConfig[] {
+export function getCustomNetworkConfigs(state: AppState): CustomNetworkConfig[] {
   return state.config.customNetworks;
 }
 
@@ -58,3 +60,5 @@ export function getOffline(state: AppState): boolean {
 export function getForceOffline(state: AppState): boolean {
   return state.config.forceOffline;
 }
+
+export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);

@@ -1,0 +1,41 @@
+@import "common/sass/variables";
+
+.WalletInfo {
+  &-qr {
+    position: relative;
+    background: #FFF;
+    cursor: pointer;
+
+    &-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: $gray-light;
+
+      &, &-icon {
+        transition: 100ms ease;
+      }
+
+      &-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #FFF;
+        text-shadow: 1px 1px 5px #000;
+        font-size: 48px;
+        opacity: 0.9;
+      }
+
+      &:hover {
+        background: lighten($gray-light, 2%);
+
+        .WalletInfo-qr-cover-icon {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

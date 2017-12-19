@@ -1,10 +1,10 @@
-import bityConfig, { SupportedDestinationKind } from 'config/bity';
+import bityConfig, { WhitelistedCoins } from 'config/bity';
 import { checkHttpStatus, parseJSON, filter } from './utils';
 import bitcoinIcon from 'assets/images/bitcoin.png';
 import repIcon from 'assets/images/augur.png';
 import etherIcon from 'assets/images/ether.png';
 
-const isCryptoPair = (from: string, to: string, arr: SupportedDestinationKind[]) => {
+const isCryptoPair = (from: string, to: string, arr: WhitelistedCoins[]) => {
   return filter(from, arr) && filter(to, arr);
 };
 

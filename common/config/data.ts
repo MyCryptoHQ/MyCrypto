@@ -2,7 +2,7 @@ import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.5)';
+export const VERSION = '4.0.0 (Alpha 0.0.6)';
 export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -41,6 +41,8 @@ export const gasPriceDefaults = {
   gasPriceMinGwei: 1,
   gasPriceMaxGwei: 60
 };
+
+export const MINIMUM_PASSWORD_LENGTH = 9;
 
 export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';

@@ -4,7 +4,8 @@ import {
   toWei,
   toTokenBase,
   fromTokenBase,
-  getDecimal,
+  getDecimalFromEtherUnit,
+  convertTokenBase,
   TokenValue
 } from 'libs/units';
 
@@ -45,7 +46,7 @@ describe('Units', () => {
       });
 
       it('should equal 1 * 10^18 wei', () => {
-        const converted = toWei(ether, getDecimal('ether'));
+        const converted = toWei(ether, getDecimalFromEtherUnit('ether'));
         expect(converted.toString()).toEqual(Units.ether);
       });
     });
@@ -56,7 +57,7 @@ describe('Units', () => {
         expect(gwei).toEqual('21');
       });
       it('should equal 21 * 10^9 wei', () => {
-        const converted = toWei(gwei, getDecimal('gwei'));
+        const converted = toWei(gwei, getDecimalFromEtherUnit('gwei'));
         expect(converted.toString()).toEqual(wei.toString());
       });
     });
@@ -67,7 +68,7 @@ describe('Units', () => {
         expect(kwei).toEqual('1.623');
       });
       it('should equal 1.623  * 10^3 wei', () => {
-        const converted = toWei(kwei, getDecimal('kwei'));
+        const converted = toWei(kwei, getDecimalFromEtherUnit('kwei'));
         expect(converted.toString()).toEqual('1623');
       });
     });
@@ -77,10 +78,10 @@ describe('Units', () => {
       const tokens = '732156.34592016';
       const decimal = 18;
       const tokenBase = toTokenBase(tokens, decimal);
-      it('should equal 732156345920160000000000', () => {
+      it('toTokenBase should equal 732156345920160000000000', () => {
         expect(tokenBase.toString()).toEqual('732156345920160000000000');
       });
-      it('should equal 732156.34592016', () => {
+      it('fromTokenBase should equal 732156.34592016', () => {
         expect(fromTokenBase(tokenBase, decimal)).toEqual(tokens);
       });
     });
@@ -88,11 +89,41 @@ describe('Units', () => {
       const tokens = '8000';
       const decimal = 8;
       const converted = fromTokenBase(TokenValue(tokens), decimal);
-      it('should equal 0.00008', () => {
+      it('fromTokenBase should equal 0.00008', () => {
         expect(converted).toEqual('0.00008');
       });
-      it('should equal 8000', () => {
+      it('toTokenBase should equal 8000', () => {
         expect(toTokenBase(converted, decimal));
+      });
+    });
+    describe('convertTokenBase', () => {
+      const conversions = [
+        {
+          oldDecimal: 0,
+          newDecimal: 18,
+          startValue: '42',
+          endValue: '42000000000000000000'
+        },
+        {
+          oldDecimal: 6,
+          newDecimal: 12,
+          startValue: '547834782',
+          endValue: '547834782000000'
+        },
+        {
+          oldDecimal: 18,
+          newDecimal: 18,
+          startValue: '311095801958902158012580',
+          endValue: '311095801958902158012580'
+        }
+      ];
+
+      conversions.forEach(c => {
+        it(`should convert decimal ${c.oldDecimal} to decimal ${c.newDecimal}`, () => {
+          const tokenValue = TokenValue(c.startValue);
+          const converted = convertTokenBase(tokenValue, c.oldDecimal, c.newDecimal);
+          expect(converted.toString()).toEqual(c.endValue);
+        });
       });
     });
   });

@@ -1,33 +1,26 @@
 import classnames from 'classnames';
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
 import './NavigationLink.scss';
 
-interface Props {
-  id: string;
+interface Props extends RouteComponentProps<{}> {
   link: {
     name: string;
     to?: string;
     external?: boolean;
   };
-}
-
-interface InjectedLocation extends Props {
-  location: { pathname: string };
+  id?: string;
 }
 
 class NavigationLink extends React.Component<Props, {}> {
-  get injected() {
-    return this.props as InjectedLocation;
-  }
   public render() {
-    const { link, id } = this.props;
-    const { location } = this.injected;
+    const { link, location, id } = this.props;
+
     const linkClasses = classnames({
       'NavigationLink-link': true,
       'is-disabled': !link.to,
-      'is-active': location.pathname === link.to || location.pathname.substring(1) === link.to
+      'is-active': location.pathname === link.to
     });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
@@ -51,4 +44,4 @@ class NavigationLink extends React.Component<Props, {}> {
 }
 
 // withRouter is a HOC which provides NavigationLink with a react-router location prop
-export default withRouter(NavigationLink);
+export default withRouter<Props>(NavigationLink);

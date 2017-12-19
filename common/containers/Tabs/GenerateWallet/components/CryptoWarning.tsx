@@ -28,9 +28,7 @@ const BROWSERS = [
 const CryptoWarning: React.SFC<{}> = () => (
   <div className="Tab-content-pane">
     <div className="CryptoWarning">
-      <h2 className="CryptoWarning-title">
-        Your Browser Cannot Generate a Wallet
-      </h2>
+      <h2 className="CryptoWarning-title">Your Browser Cannot Generate a Wallet</h2>
       <p className="CryptoWarning-text">
         {isMobile
           ? `
@@ -55,13 +53,8 @@ const CryptoWarning: React.SFC<{}> = () => (
             className="CryptoWarning-browsers-browser"
           >
             <div>
-              <img
-                className="CryptoWarning-browsers-browser-icon"
-                src={browser.icon}
-              />
-              <div className="CryptoWarning-browsers-browser-name">
-                {browser.name}
-              </div>
+              <img className="CryptoWarning-browsers-browser-icon" src={browser.icon} />
+              <div className="CryptoWarning-browsers-browser-name">{browser.name}</div>
             </div>
           </NewTabLink>
         ))}
