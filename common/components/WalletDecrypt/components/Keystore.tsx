@@ -30,36 +30,32 @@ export class KeystoreDecrypt extends Component {
     const passReq = isPassRequired(file);
 
     return (
-      <section className="col-md-4 col-sm-6">
-        <div id="selectedUploadKey">
-          <h4>{translate('ADD_Radio_2_alt')}</h4>
-
-          <div className="form-group">
+      <div id="selectedUploadKey">
+        <div className="form-group">
+          <input
+            className={'hidden'}
+            type="file"
+            id="fselector"
+            onChange={this.handleFileSelection}
+          />
+          <label htmlFor="fselector" style={{ width: '100%' }}>
+            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+              {translate('ADD_Radio_2_short')}
+            </a>
+          </label>
+          <div className={file.length && passReq ? '' : 'hidden'}>
+            <p>{translate('ADD_Label_3')}</p>
             <input
-              className={'hidden'}
-              type="file"
-              id="fselector"
-              onChange={this.handleFileSelection}
+              className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
+              value={password}
+              onChange={this.onPasswordChange}
+              onKeyDown={this.onKeyDown}
+              placeholder={translateRaw('x_Password')}
+              type="password"
             />
-            <label htmlFor="fselector" style={{ width: '100%' }}>
-              <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-                {translate('ADD_Radio_2_short')}
-              </a>
-            </label>
-            <div className={file.length && passReq ? '' : 'hidden'}>
-              <p>{translate('ADD_Label_3')}</p>
-              <input
-                className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
-                value={password}
-                onChange={this.onPasswordChange}
-                onKeyDown={this.onKeyDown}
-                placeholder={translateRaw('x_Password')}
-                type="password"
-              />
-            </div>
           </div>
         </div>
-      </section>
+      </div>
     );
   }
 

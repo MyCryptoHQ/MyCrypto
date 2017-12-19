@@ -22,26 +22,22 @@ export class ViewOnlyDecrypt extends Component<Props, State> {
     const isValid = isValidETHAddress(address);
 
     return (
-      <section className="col-md-4 col-sm-6">
-        <div id="selectedUploadKey">
-          <h4>{translate('MYWAL_Address')}</h4>
+      <div id="selectedUploadKey">
+        <form className="form-group" onSubmit={this.openWallet}>
+          <input
+            className={`form-control
+              ${isValid ? 'is-valid' : 'is-invalid'}
+            `}
+            onChange={this.changeAddress}
+            value={address}
+            placeholder={donationAddressMap.ETH}
+          />
 
-          <form className="form-group" onSubmit={this.openWallet}>
-            <input
-              className={`form-control
-                ${isValid ? 'is-valid' : 'is-invalid'}
-              `}
-              onChange={this.changeAddress}
-              value={address}
-              placeholder={donationAddressMap.ETH}
-            />
-
-            <button className="btn btn-primary btn-block" disabled={!isValid}>
-              {translate('NAV_ViewWallet')}
-            </button>
-          </form>
-        </div>
-      </section>
+          <button className="btn btn-primary btn-block" disabled={!isValid}>
+            {translate('NAV_ViewWallet')}
+          </button>
+        </form>
+      </div>
     );
   }
 

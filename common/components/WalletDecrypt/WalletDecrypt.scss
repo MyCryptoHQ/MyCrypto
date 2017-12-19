@@ -1,136 +1,74 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
+@mixin decrypt-title {
+  text-align: center;
+  line-height: 1;
+  margin: 5px 0 30px;
+  font-weight: normal;
+}
+
 .WalletDecrypt {
   &-wallets {
     &-title {
-      text-align: center;
-      line-height: 1;
-      margin: 0 0 20px;
-      font-weight: normal;
+      @include decrypt-title;
     }
 
     &-row {
       display: flex;
       justify-content: center;
-      margin-bottom: 30px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+
+      @media screen and (max-width: $screen-xs) {
+        margin: 0;
+      }
+
 
       &:last-child {
         margin: 0;
       }
     }
   }
-}
 
-.WalletButton {
-  position: relative;
-  flex: 1;
-  height: 155px;
-  max-width: 210px;
-  padding: 25px 15px;
-  margin: 0 15px;
+  &-decrypt {
+    position: relative;
+    text-align: center;
 
-  background: #FFF;
-  box-shadow: 0 1px 4px rgba(#000, 0.2);
-  border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 150ms ease, box-shadow 150ms ease;
+    &-back {
+      @include reset-button;
+      position: absolute;
+      top: 0;
+      left: 0;
+      line-height: $font-size-large;
+      opacity: 0.4;
+      transition: opacity 120ms ease, transform 120ms ease;
 
-  &:hover,
-  &:focus {
-    transform: translateY(-2px);
-    box-shadow: 0 1px 4px rgba(#000, 0.12),
-                0 4px 6px rgba(#000, 0.12);
-
-    .WalletButton-title {
-      color: $brand-primary;
-
-      &-icon {
-        opacity: 1;
-      }
-    }
-  }
-
-  &-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: $font-size-medium;
-    margin-bottom: $space * 1.25;
-    transition: color 150ms ease;
-
-    &-icon {
-      margin-right: 8px;
-      max-height: 26px;
-      opacity: 0.8;
-    }
-  }
-
-  &-description {
-    color: $gray;
-    font-size: $font-size-small;
-    font-weight: lighter;
-  }
-
-  &-example {
-    font-size: $font-size-xs;
-    color: rgba($brand-danger, 0.7);
-    @include ellipsis;
-  }
-
-  &-icons {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-
-    .fa {
-      margin-left: 8px;
-      opacity: 0.6;
-      font-size: $font-size-medium;
-
-      &:hover {
+      &:hover,
+      &:focus {
         opacity: 0.9;
       }
 
-      &-shield {
-        color: $brand-primary;
+      &:active {
+        transform: translateY(1px);
+        outline: none;
+        opacity: 1;
       }
 
-      &-exclamation-triangle {
-        color: $brand-warning;
-      }
-
-      &-question-circle,
-      &-eye {
-        color: #666;
-      }
-
-      &-question-circle:hover {
-        color: $brand-primary;
+      .fa {
+        position: relative;
+        top: -2px;
+        font-size: 11px;
       }
     }
-  }
 
-  // Smaller version
-  &--insecure {
-    height: 105px;
-    max-width: 166px;
-    margin: 0 10px;
-    padding: 20px 15px;
+    &-title {
+      @include decrypt-title;
+    }
 
-    .WalletButton {
-      &-title {
-        font-size: $font-size-bump;
-        margin-bottom: $space-sm;
-      }
-
-      &-icons {
-        .fa {
-          font-size: $font-size-bump;
-          margin-left: 6px;
-        }
-      }
+    &-form {
+      max-width: 360px;
+      margin: 0 auto;
     }
   }
 }

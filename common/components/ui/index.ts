@@ -8,6 +8,7 @@ export { default as QRCode } from './QRCode';
 export { default as NewTabLink } from './NewTabLink';
 export { default as UnitDisplay } from './UnitDisplay';
 export { default as Spinner } from './Spinner';
+export { default as Tooltip } from './Tooltip';
 export * from './ConditionalInput';
 export * from './Aux';
 export * from './Expandable';

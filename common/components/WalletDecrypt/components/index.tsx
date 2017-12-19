@@ -7,4 +7,5 @@ export * from './NavigationPrompt';
 export * from './PrivateKey';
 export * from './Trezor';
 export * from './ViewOnly';
+export * from './WalletButton';
 export * from './Web3';

@@ -27,10 +27,10 @@ import {
   TrezorDecrypt,
   ViewOnlyDecrypt,
   Web3Decrypt,
-  NavigationPrompt
+  NavigationPrompt,
+  WalletButton
 } from './components';
 import { AppState } from 'reducers';
-import { NewTabLink } from 'components/ui';
 import { knowledgeBaseURL } from 'config/data';
 import { IWallet } from 'libs/wallet';
 import DigitalBitboxIcon from 'assets/images/wallets/digital-bitbox.svg';
@@ -63,14 +63,14 @@ interface State {
 
 interface BaseWalletInfo {
   lid: string;
-  component: React.ComponentClass;
+  component: any;
   initialParams: object;
   unlock: any;
   helpLink?: string;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
-  icon?: string | null | false;
+  icon?: string | null;
   description: string;
 }
 
@@ -177,19 +177,27 @@ export class WalletDecrypt extends Component<Props, State> {
     value: null
   };
 
-  public getDecryptionComponent() {
-    const { selectedWalletKey, value } = this.state;
+  public getSelectedWallet() {
+    const { selectedWalletKey } = this.state;
     if (!selectedWalletKey) {
       return null;
     }
 
-    const selectedWallet = this.WALLETS[selectedWalletKey];
+    return this.WALLETS[selectedWalletKey];
+  }
+
+  public getDecryptionComponent() {
+    const selectedWallet = this.getSelectedWallet();
     if (!selectedWallet) {
       return null;
     }
 
     return (
-      <selectedWallet.component value={value} onChange={this.onChange} onUnlock={this.onUnlock} />
+      <selectedWallet.component
+        value={this.state.value}
+        onChange={this.onChange}
+        onUnlock={this.onUnlock}
+      />
     );
   }
 
@@ -203,113 +211,101 @@ export class WalletDecrypt extends Component<Props, State> {
 
     return (
       <div className="WalletDecrypt-wallets">
-        <h2 className="WalletDecrypt-wallets-title">
-          {translate('What type of wallet are you using?')}
-        </h2>
+        <h2 className="WalletDecrypt-wallets-title">{translate('decrypt_Access')}</h2>
 
         <div className="WalletDecrypt-wallets-row">
-          {SECURE_WALLETS.map(id => {
-            const wallet = this.WALLETS[id] as SecureWalletInfo;
+          {SECURE_WALLETS.map(type => {
+            const wallet = this.WALLETS[type] as SecureWalletInfo;
             return (
-              <div key={id} className="WalletButton WalletButton--secure">
-                <div className="WalletButton-title">
-                  {wallet.icon && <img className="WalletButton-title-icon" src={wallet.icon} />}
-                  {translate(wallet.lid)}
-                </div>
-                <div className="WalletButton-description">{translate(wallet.description)}</div>
-                <div className="WalletButton-icons">
-                  <i className="fa fa-shield" />
-                  {wallet.helpLink && (
-                    <NewTabLink href={wallet.helpLink}>
-                      <i className="fa fa-question-circle" />
-                    </NewTabLink>
-                  )}
-                </div>
-              </div>
+              <WalletButton
+                key={type}
+                name={translate(wallet.lid)}
+                description={translate(wallet.description)}
+                icon={wallet.icon}
+                helpLink={wallet.helpLink}
+                walletType={type}
+                isSecure={true}
+                onClick={this.handleWalletChoice}
+              />
             );
           })}
         </div>
         <div className="WalletDecrypt-wallets-row">
-          {INSECURE_WALLETS.map(id => {
-            const wallet = this.WALLETS[id] as InsecureWalletInfo;
+          {INSECURE_WALLETS.map(type => {
+            const wallet = this.WALLETS[type] as InsecureWalletInfo;
             return (
-              <div key={id} className="WalletButton WalletButton--insecure">
-                <div className="WalletButton-title">{translate(wallet.lid)}</div>
-                <div className="WalletButton-example">{wallet.example}</div>
-                <div className="WalletButton-icons">
-                  <i className="fa fa-exclamation-triangle" />
-                  {wallet.helpLink && (
-                    <NewTabLink href={wallet.helpLink}>
-                      <i className="fa fa-question-circle" />
-                    </NewTabLink>
-                  )}
-                </div>
-              </div>
+              <WalletButton
+                key={type}
+                name={translate(wallet.lid)}
+                example={wallet.example}
+                helpLink={wallet.helpLink}
+                walletType={type}
+                isSecure={false}
+                onClick={this.handleWalletChoice}
+              />
             );
           })}
 
-          <div className="WalletButton WalletButton--insecure">
-            <div className="WalletButton-title">{translate(viewOnly.lid)}</div>
-            <div className="WalletButton-example">{viewOnly.example}</div>
-            <div className="WalletButton-icons">
-              <i className="fa fa-eye" />
-            </div>
-          </div>
+          <WalletButton
+            key="view-only"
+            name={translate(viewOnly.lid)}
+            example={viewOnly.example}
+            helpLink={viewOnly.helpLink}
+            walletType="view-only"
+            isReadOnly={true}
+            onClick={this.handleWalletChoice}
+          />
         </div>
       </div>
     );
-
-    /*map(this.WALLETS, (wallet, key) => {
-      const { helpLink } = wallet;
-      const isSelected = this.state.selectedWalletKey === key;
-      const isDisabled =
-        this.isOnlineRequiredWalletAndOffline(key) ||
-        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt);
-
-      return (
-        <label className="radio" key={key}>
-          <input
-            aria-flowto={`aria-${key}`}
-            aria-labelledby={`${key}-label`}
-            type="radio"
-            name="decryption-choice-radio-group"
-            value={key}
-            checked={isSelected}
-            disabled={isDisabled}
-            onChange={this.handleDecryptionChoiceChange}
-          />
-          <span id={`${key}-label`}>{translate(wallet.lid)}</span>
-          {helpLink ? <Help link={helpLink} /> : null}
-        </label>
-      );
-    });*/
   }
 
-  public handleDecryptionChoiceChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const wallet = this.WALLETS[(event.target as HTMLInputElement).value];
-
+  public handleWalletChoice = (walletType: string) => {
+    const wallet = this.WALLETS[walletType];
     if (!wallet) {
       return;
     }
 
     this.setState({
-      selectedWalletKey: (event.target as HTMLInputElement).value,
+      selectedWalletKey: walletType,
       value: wallet.initialParams
+    });
+  };
+
+  public clearWalletChoice = () => {
+    this.setState({
+      selectedWalletKey: null,
+      value: null
     });
   };
 
   public render() {
     const { wallet, hidden } = this.props;
+    const selectedWallet = this.getSelectedWallet();
     const decryptionComponent = this.getDecryptionComponent();
     const unlocked = !!wallet;
     return (
-      <div>
+      <div className="WalletDecrypt">
         <NavigationPrompt when={unlocked} onConfirm={this.props.resetWallet} />
-        {!hidden &&
+        {!hidden && (
           <article className="Tab-content-pane row">
-            <div className="col-sm-12">{decryptionComponent || this.buildWalletOptions()}</div>
+            <div className="col-sm-12">
+              {decryptionComponent && selectedWallet ? (
+                <div className="WalletDecrypt-decrypt">
+                  <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
+                    <i className="fa fa-arrow-left" /> {translate('Change Wallet')}
+                  </button>
+                  <h2 className="WalletDecrypt-decrypt-title">
+                    Unlock your {translate(selectedWallet.lid)}
+                  </h2>
+                  <section className="WalletDecrypt-decrypt-form">{decryptionComponent}</section>
+                </div>
+              ) : (
+                this.buildWalletOptions()
+              )}
+            </div>
           </article>
-        }
+        )}
       </div>
     );
   }
