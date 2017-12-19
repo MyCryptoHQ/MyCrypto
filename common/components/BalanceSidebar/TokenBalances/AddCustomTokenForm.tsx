@@ -12,15 +12,19 @@ interface Props {
   toggleForm(): void;
 }
 
+interface IGenerateSymbolLookup {
+  [tokenSymbol: string]: boolean;
+}
+
 interface State {
-  tokenSymbolLookup: { [symbol: string]: boolean };
+  tokenSymbolLookup: IGenerateSymbolLookup;
   address: string;
   symbol: string;
   decimal: string;
 }
 
 export default class AddCustomTokenForm extends React.Component<Props, State> {
-  public state = {
+  public state: State = {
     tokenSymbolLookup: {},
     address: '',
     symbol: '',
@@ -148,9 +152,12 @@ export default class AddCustomTokenForm extends React.Component<Props, State> {
   };
 
   private generateSymbolLookup(tokens: Token[]) {
-    return tokens.reduce((prev, tk) => {
-      prev[tk.symbol] = true;
-      return prev;
-    }, {});
+    return tokens.reduce(
+      (prev, tk) => {
+        prev[tk.symbol] = true;
+        return prev;
+      },
+      {} as IGenerateSymbolLookup
+    );
   }
 }

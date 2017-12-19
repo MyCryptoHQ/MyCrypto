@@ -26,7 +26,7 @@ const initialState: State = {
   wallet: null
 };
 
-const minLength = min => value => value && value.length >= min;
+const minLength = (min: number) => (value: string) => !!value && value.length >= min;
 const minLength9 = minLength(9);
 
 class KeystoreDetails extends Component<{}, State> {

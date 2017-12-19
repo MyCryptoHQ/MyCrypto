@@ -56,7 +56,7 @@ export function isValidENSAddress(address: string): boolean {
       test: true,
       reverse: true
     };
-    if (validTLDs[tld]) {
+    if (validTLDs[tld as keyof typeof validTLDs]) {
       return true;
     }
   } catch (e) {
@@ -173,7 +173,10 @@ function formatErrors(response: JsonRpcResponse, apiType: string) {
   return `Invalid ${apiType} Error`;
 }
 
-const isValidEthCall = (response: JsonRpcResponse, schemaType) => (apiName, cb?) => {
+const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.RpcNode) => (
+  apiName,
+  cb?
+) => {
   if (!isValidResult(response, schemaType)) {
     if (cb) {
       return cb(response);
