@@ -1,0 +1,136 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.WalletDecrypt {
+  &-wallets {
+    &-title {
+      text-align: center;
+      line-height: 1;
+      margin: 0 0 20px;
+      font-weight: normal;
+    }
+
+    &-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.WalletButton {
+  position: relative;
+  flex: 1;
+  height: 155px;
+  max-width: 210px;
+  padding: 25px 15px;
+  margin: 0 15px;
+
+  background: #FFF;
+  box-shadow: 0 1px 4px rgba(#000, 0.2);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+
+  &:hover,
+  &:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 1px 4px rgba(#000, 0.12),
+                0 4px 6px rgba(#000, 0.12);
+
+    .WalletButton-title {
+      color: $brand-primary;
+
+      &-icon {
+        opacity: 1;
+      }
+    }
+  }
+
+  &-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $font-size-medium;
+    margin-bottom: $space * 1.25;
+    transition: color 150ms ease;
+
+    &-icon {
+      margin-right: 8px;
+      max-height: 26px;
+      opacity: 0.8;
+    }
+  }
+
+  &-description {
+    color: $gray;
+    font-size: $font-size-small;
+    font-weight: lighter;
+  }
+
+  &-example {
+    font-size: $font-size-xs;
+    color: rgba($brand-danger, 0.7);
+    @include ellipsis;
+  }
+
+  &-icons {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+
+    .fa {
+      margin-left: 8px;
+      opacity: 0.6;
+      font-size: $font-size-medium;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &-shield {
+        color: $brand-primary;
+      }
+
+      &-exclamation-triangle {
+        color: $brand-warning;
+      }
+
+      &-question-circle,
+      &-eye {
+        color: #666;
+      }
+
+      &-question-circle:hover {
+        color: $brand-primary;
+      }
+    }
+  }
+
+  // Smaller version
+  &--insecure {
+    height: 105px;
+    max-width: 166px;
+    margin: 0 10px;
+    padding: 20px 15px;
+
+    .WalletButton {
+      &-title {
+        font-size: $font-size-bump;
+        margin-bottom: $space-sm;
+      }
+
+      &-icons {
+        .fa {
+          font-size: $font-size-bump;
+          margin-left: 6px;
+        }
+      }
+    }
+  }
+}
