@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, Store } from 'react-redux';
 import { withRouter, Switch, Redirect, Router, Route } from 'react-router-dom';
 // Components
+import { History } from 'history';
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
@@ -11,11 +12,11 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
+import { AppState } from 'reducers';
 
-// TODO: fix this
 interface Props {
-  store: any;
-  history: any;
+  store: Store<AppState>;
+  history: History;
 }
 
 interface State {
