@@ -29,7 +29,7 @@ export default class WalletInfo extends React.Component<Props, State> {
     this.setWalletAsyncState(this.props.wallet);
   }
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
       this.setWalletAsyncState(nextProps.wallet);
     }
