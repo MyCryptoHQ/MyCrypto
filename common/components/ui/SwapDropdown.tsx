@@ -24,22 +24,9 @@ export default class SwapDropdown<T> extends Component<Props<T>, {}> {
     const { open } = this.state;
     const { options, value } = this.props;
     const dropdownGrid = classnames(open && 'open', 'SwapDropdown-grid');
-    // const mocked = [{
-    //   symbol: '1ST',
-    //   name: 'First Blood',
-    //   img: 'https://shapeshift.io/images/coins/firstblood.png'
-    // }, {
-    //   symbol: 'EST',
-    //   name: 'First Blood',
-    //   img: 'https://shapeshift.io/images/coins/firstblood.png'
-    // }, {
-    //   symbol: 'FST',
-    //   name: 'First Blood',
-    //   img: 'https://shapeshift.io/images/coins/firstblood.png'
-    // }]
+
     const mappedCoins = options.map((coin: SingleCoin) => {
       const cn = classnames(coin.status !== 'available' && 'inactive', 'SwapDropdown-item');
-      console.log('key', coin.id, coin);
       return (
         <li className={cn} key={coin.id}>
           <a onClick={coin.status === 'available' ? this.onChange.bind(null, coin.id) : null}>
@@ -69,7 +56,6 @@ export default class SwapDropdown<T> extends Component<Props<T>, {}> {
     });
   };
   private onChange = (value: any) => {
-    console.log('onchange', value);
     this.props.onChange(value);
     if (this.state.open) {
       this.setState({

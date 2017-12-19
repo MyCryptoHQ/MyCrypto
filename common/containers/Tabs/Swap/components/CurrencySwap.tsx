@@ -47,8 +47,18 @@ type Props = StateProps & ActionProps;
 export default class CurrencySwap extends Component<Props, State> {
   public state = {
     disabled: true,
-    origin: { id: 'BTC', amount: NaN } as SwapInput,
-    destination: { id: 'ETH', amount: NaN } as SwapInput,
+    origin: {
+      id: 'BTC',
+      status: 'available',
+      image: 'https://shapeshift.io/images/coins/bitcoin.png',
+      amount: NaN
+    } as SwapInput,
+    destination: {
+      id: 'ETH',
+      status: 'available',
+      image: 'https://shapeshift.io/images/coins/ether.png',
+      amount: NaN
+    } as SwapInput,
     originKindOptions: [],
     destinationKindOptions: [],
     originErr: '',
@@ -237,7 +247,7 @@ export default class CurrencySwap extends Component<Props, State> {
         id: newOption === destination.id ? origin.id : destination.id,
         amount: newDestinationAmount() ? newDestinationAmount() : destination.amount
       },
-      destinationKindOptions: without([...destinationKindOptions, origin.id], newOption)
+      destinationKindOptions: reject([...destinationKindOptions, origin], o => o.id === newOption)
     });
   };
 

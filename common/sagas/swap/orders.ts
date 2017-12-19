@@ -18,7 +18,8 @@ import {
   stopPollShapeshiftOrderStatus,
   bityOrderStatusRequested,
   bityOrderStatusSucceededSwap,
-  shapeshiftOrderStatusRequested
+  shapeshiftOrderStatusRequested,
+  loadShapeshiftRatesRequestedSwap
 } from 'actions/swap';
 import { getOrderStatus, postOrder } from 'api/bity';
 import moment from 'moment';
@@ -199,6 +200,7 @@ export function* postShapeshiftOrderSaga(): SagaIterator {
 export function* restartSwap() {
   yield put(stopPollShapeshiftOrderStatus());
   yield put(stopPollBityOrderStatus());
+  yield put(loadShapeshiftRatesRequestedSwap());
 }
 
 export function* restartSwapSaga(): SagaIterator {

@@ -2,6 +2,7 @@ import { RestartSwapAction } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
 import React, { Component } from 'react';
 import translate from 'translations';
+import classnames from 'classnames';
 import { toFixedIfLarger } from 'utils/formatters';
 import './SwapInfoHeader.scss';
 import SwapInfoHeaderTitle from './SwapInfoHeaderTitle';
@@ -57,6 +58,10 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
       restartSwap,
       provider
     };
+    const referenceClass = classnames(
+      provider === 'shapeshift' && 'SwapInfo-details-block-shapeshift',
+      'SwapInfo-details-block-value'
+    );
     return (
       <div className="SwapInfo">
         <SwapInfoHeaderTitle {...SwapInfoHeaderTitleProps} />
@@ -72,7 +77,7 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
           {/*Reference Number*/}
           {this.isExpanded() && (
             <div className={this.computedClass()}>
-              <h3 className="SwapInfo-details-block-value">{reference}</h3>
+              <h3 className={referenceClass}>{reference}</h3>
               <p className="SwapInfo-details-block-label">{translate('SWAP_ref_num')}</p>
             </div>
           )}
