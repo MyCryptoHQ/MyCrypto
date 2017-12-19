@@ -1,33 +1,45 @@
-import BN from 'bn.js';
-import { toChecksumAddress } from 'ethereumjs-util';
-import Contract, { ABI } from 'libs/contract';
+import Contract from 'libs/contracts';
 
-interface Transfer {
-  to: string;
-  value: BN;
+interface ABIFunc<T, K = void> {
+  encodeInput(x: T): string;
+  decodeInput(argStr: string): T;
+  decodeOutput(argStr: string): K;
 }
 
-const erc20Abi: ABI = [
+type address = any;
+type uint256 = any;
+
+interface IErc20 {
+  balanceOf: ABIFunc<{ _owner: address }, { balance: uint256 }>;
+  transfer: ABIFunc<{ _to: address; _value: uint256 }>;
+}
+
+const erc20Abi = [
   {
+    name: 'balanceOf',
+    type: 'function',
     constant: true,
+    payable: false,
+
     inputs: [
       {
         name: '_owner',
         type: 'address'
       }
     ],
-    name: 'balanceOf',
+
     outputs: [
       {
         name: 'balance',
         type: 'uint256'
       }
-    ],
-    payable: false,
-    type: 'function'
+    ]
   },
   {
+    name: 'transfer',
+    type: 'function',
     constant: false,
+    payable: false,
     inputs: [
       {
         name: '_to',
@@ -38,38 +50,14 @@ const erc20Abi: ABI = [
         type: 'uint256'
       }
     ],
-    name: 'transfer',
+
     outputs: [
       {
         name: 'success',
         type: 'bool'
       }
-    ],
-    payable: false,
-    type: 'function'
+    ]
   }
 ];
 
-class ERC20 extends Contract {
-  constructor() {
-    super(erc20Abi);
-  }
-
-  public balanceOf(address: string): string {
-    return this.call('balanceOf', [address]);
-  }
-
-  public transfer(to: string, value: BN): string {
-    return this.call('transfer', [to, value.toString()]);
-  }
-
-  public $transfer(data: string): Transfer {
-    const decodedArgs = this.decodeArgs(this.getMethodAbi('transfer'), data);
-    return {
-      to: toChecksumAddress(`0x${decodedArgs[0].toString(16)}`),
-      value: decodedArgs[1]
-    };
-  }
-}
-
-export default new ERC20();
+export default (new Contract(erc20Abi) as any) as IErc20;

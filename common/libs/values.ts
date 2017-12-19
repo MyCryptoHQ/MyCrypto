@@ -1,4 +1,5 @@
 import { Wei } from 'libs/units';
+import { addHexPrefix } from 'ethereumjs-util';
 export function stripHexPrefix(value: string) {
   return value.replace('0x', '');
 }
@@ -8,7 +9,7 @@ export function stripHexPrefixAndLower(value: string): string {
 }
 
 export function toHexWei(weiString: string): string {
-  return `0x${Wei(weiString).toString(16)}`;
+  return addHexPrefix(Wei(weiString).toString(16));
 }
 
 export function padLeftEven(hex: string) {

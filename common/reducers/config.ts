@@ -1,5 +1,4 @@
 import {
-  ChangeGasPriceAction,
   ChangeLanguageAction,
   ChangeNodeAction,
   AddCustomNodeAction,
@@ -28,7 +27,6 @@ export interface State {
   node: NodeConfig;
   network: NetworkConfig;
   isChangingNode: boolean;
-  gasPriceGwei: number;
   offline: boolean;
   forceOffline: boolean;
   customNodes: CustomNodeConfig[];
@@ -43,7 +41,6 @@ export const INITIAL_STATE: State = {
   node: NODES[defaultNode],
   network: NETWORKS[NODES[defaultNode].network],
   isChangingNode: false,
-  gasPriceGwei: 21,
   offline: false,
   forceOffline: false,
   customNodes: [],
@@ -71,13 +68,6 @@ function changeNodeIntent(state: State): State {
   return {
     ...state,
     isChangingNode: true
-  };
-}
-
-function changeGasPrice(state: State, action: ChangeGasPriceAction): State {
-  return {
-    ...state,
-    gasPriceGwei: action.payload
   };
 }
 
@@ -111,8 +101,7 @@ function removeCustomNode(state: State, action: RemoveCustomNodeAction): State {
   return {
     ...state,
     customNodes: state.customNodes.filter(cn => cn !== action.payload),
-    nodeSelection:
-      id === state.nodeSelection ? defaultNode : state.nodeSelection
+    nodeSelection: id === state.nodeSelection ? defaultNode : state.nodeSelection
   };
 }
 
@@ -121,18 +110,13 @@ function addCustomNetwork(state: State, action: AddCustomNetworkAction): State {
   return {
     ...state,
     customNetworks: [
-      ...state.customNetworks.filter(
-        node => makeCustomNetworkId(node) !== newId
-      ),
+      ...state.customNetworks.filter(node => makeCustomNetworkId(node) !== newId),
       action.payload
     ]
   };
 }
 
-function removeCustomNetwork(
-  state: State,
-  action: RemoveCustomNetworkAction
-): State {
+function removeCustomNetwork(state: State, action: RemoveCustomNetworkAction): State {
   return {
     ...state,
     customNetworks: state.customNetworks.filter(cn => cn !== action.payload)
@@ -146,10 +130,7 @@ function setLatestBlock(state: State, action: SetLatestBlockAction): State {
   };
 }
 
-export function config(
-  state: State = INITIAL_STATE,
-  action: ConfigAction
-): State {
+export function config(state: State = INITIAL_STATE, action: ConfigAction): State {
   switch (action.type) {
     case TypeKeys.CONFIG_LANGUAGE_CHANGE:
       return changeLanguage(state, action);
@@ -157,8 +138,6 @@ export function config(
       return changeNode(state, action);
     case TypeKeys.CONFIG_NODE_CHANGE_INTENT:
       return changeNodeIntent(state);
-    case TypeKeys.CONFIG_GAS_PRICE:
-      return changeGasPrice(state, action);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
       return toggleOffline(state);
     case TypeKeys.CONFIG_FORCE_OFFLINE:

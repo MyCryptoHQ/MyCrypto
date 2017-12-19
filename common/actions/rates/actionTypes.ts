@@ -17,7 +17,4 @@ export interface FetchCCRatesFailed {
 }
 
 /*** Union Type ***/
-export type RatesAction =
-  | FetchCCRates
-  | FetchCCRatesSucceeded
-  | FetchCCRatesFailed;
+export type RatesAction = FetchCCRates | FetchCCRatesSucceeded | FetchCCRatesFailed;

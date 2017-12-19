@@ -293,10 +293,7 @@ declare module 'ethereumjs-wallet' {
    * @param input
    * @param nonStrict
    */
-  function fromPublicKey(
-    input: Buffer,
-    nonStrict?: boolean
-  ): IPublicKeyOnlyWallet;
+  function fromPublicKey(input: Buffer, nonStrict?: boolean): IPublicKeyOnlyWallet;
 
   /**
    * @description  create an instance based on a BIP32 extended public key (xpub)
@@ -317,19 +314,12 @@ declare module 'ethereumjs-wallet' {
    * @param password
    * @param nonStrict
    */
-  function fromV3(
-    input: IV3Wallet | string,
-    password: string,
-    nonStrict: boolean
-  ): IFullWallet;
+  function fromV3(input: IV3Wallet | string, password: string, nonStrict: boolean): IFullWallet;
 
   /**
    * @description import an Ethereum Pre Sale wallet
    * @param input
    * @param password
    */
-  function fromEthSale(
-    input: IPresaleWallet | string,
-    password: string
-  ): IFullWallet;
+  function fromEthSale(input: IPresaleWallet | string, password: string): IFullWallet;
 }
