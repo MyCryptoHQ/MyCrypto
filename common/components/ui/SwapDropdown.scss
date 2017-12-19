@@ -36,15 +36,28 @@
   padding: 0;
   margin-bottom: 0;
   min-width: 500px;
-  right: 50%;
+  left: 50%;
+
   top: 50px;
-  transform: translateX(50%);
+  transform: translateX(-50%);
   list-style: none;
   font-size: 0.8rem;
   text-align: left;
   z-index: 500;
   background: white;
   box-shadow: 2px 1px 60px rgba(0,0,0,.175);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+  }
   
   &.open {
     display: block;
@@ -83,8 +96,6 @@
   }
   @media screen and (max-width: 800px) {
     min-width: 300px;
-    left: 0;
-    transform: none;
   }
 }
 

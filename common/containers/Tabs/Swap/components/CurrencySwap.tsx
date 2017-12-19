@@ -236,35 +236,51 @@ export default class CurrencySwap extends Component<Props, State> {
 
   public onChangeOriginKind = (newOption: SupportedDestinationKind) => {
     const { origin, destination, destinationKindOptions } = this.state;
+    const { options, initSwap } = this.props;
     const newDestinationAmount = () => {
       const pairName = combineAndUpper(destination.id, origin.id);
       const rate = this.rateMixer().byId[pairName].rate;
       return rate * origin.amount;
     };
+
+    const newOrigin = { ...origin, id: newOption };
+    const newDest = {
+      id: newOption === destination.id ? origin.id : destination.id,
+      amount: newDestinationAmount() ? newDestinationAmount() : destination.amount
+    };
     this.setState({
-      origin: { ...origin, id: newOption },
-      destination: {
-        id: newOption === destination.id ? origin.id : destination.id,
-        amount: newDestinationAmount() ? newDestinationAmount() : destination.amount
-      },
-      destinationKindOptions: reject([...destinationKindOptions, origin], o => o.id === newOption)
+      origin: newOrigin,
+      destination: newDest,
+      destinationKindOptions: reject(
+        [...destinationKindOptions, options.byId[origin.id]],
+        o => o.id === newOption
+      )
     });
+
+    initSwap({ origin: newOrigin, destination: newDest });
   };
 
   public onChangeDestinationKind = (newOption: SupportedDestinationKind) => {
+    const { initSwap } = this.props;
     const { origin, destination } = this.state;
     const newOriginAmount = () => {
       const pairName = combineAndUpper(newOption, origin.id);
       const rate = this.rateMixer().byId[pairName].rate;
       return rate * destination.amount;
     };
+
+    const newOrigin = {
+      ...origin,
+      amount: newOriginAmount() ? newOriginAmount() : origin.amount
+    };
+
+    const newDest = { ...destination, id: newOption };
     this.setState({
-      origin: {
-        ...origin,
-        amount: newOriginAmount() ? newOriginAmount() : origin.amount
-      },
-      destination: { ...destination, id: newOption }
+      origin: newOrigin,
+      destination: newDest
     });
+
+    initSwap({ origin: newOrigin, destination: newDest });
   };
 
   public render() {

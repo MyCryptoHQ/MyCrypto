@@ -90,7 +90,11 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
-                placeholder={donationAddressMap[destinationId]}
+                placeholder={
+                  destinationId === 'BTC'
+                    ? donationAddressMap[destinationId]
+                    : donationAddressMap.ETH
+                }
               />
             </label>
           </div>

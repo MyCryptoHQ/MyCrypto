@@ -47,6 +47,7 @@ import { AppState } from 'reducers';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
+import SupportFooter from './components/SupportFooter';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
 import ShapeshiftBanner from './components/ShapeshiftBanner';
@@ -206,6 +207,17 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       outputTx
     };
 
+    const SupportProps = {
+      origin,
+      destination,
+      destinationAddress,
+      paymentAddress,
+      reference,
+      provider,
+      shapeshiftRates,
+      bityRates
+    };
+
     const { ETHBTC, ETHREP, BTCETH, BTCREP } =
       provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
     const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP, provider };
@@ -222,6 +234,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
             {step === 3 && <PartThree {...PartThreeProps} />}
           </main>
         </section>
+        <SupportFooter {...SupportProps} />
       </TabSection>
     );
   }

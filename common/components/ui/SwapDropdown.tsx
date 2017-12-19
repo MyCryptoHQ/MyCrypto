@@ -25,7 +25,7 @@ export default class SwapDropdown<T> extends Component<Props<T>, {}> {
     const { options, value } = this.props;
     const dropdownGrid = classnames(open && 'open', 'SwapDropdown-grid');
 
-    const mappedCoins = options.map((coin: SingleCoin) => {
+    const mappedCoins = options.sort((a, b) => (a.id > b.id ? 1 : -1)).map((coin: SingleCoin) => {
       const cn = classnames(coin.status !== 'available' && 'inactive', 'SwapDropdown-item');
       return (
         <li className={cn} key={coin.id}>
