@@ -167,7 +167,8 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         orderId: action.payload.id
       };
     case TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_SUCCEEDED:
-      const secondsRemaining = (+new Date(action.payload.expiration) - Date.now()) / 1000;
+      const currDate = Date.now();
+      const secondsRemaining = (+new Date(action.payload.expiration) - currDate) / 1000;
       return {
         ...state,
         shapeshiftOrder: {
@@ -178,7 +179,7 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         destinationAmount: parseFloat(action.payload.withdrawalAmount),
         secondsRemaining,
         validFor: secondsRemaining,
-        orderTimestampCreatedISOString: new Date(action.payload.expiration).toISOString(),
+        orderTimestampCreatedISOString: new Date(currDate).toISOString(),
         paymentAddress: action.payload.deposit,
         shapeshiftOrderStatus: 'no_deposits',
         orderId: action.payload.orderId
