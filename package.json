@@ -23,7 +23,7 @@
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.2",
     "lodash": "4.17.4",
-    "moment": "2.20.0",
+    "moment": "2.20.1",
     "normalizr": "3.2.4",
     "qrcode": "1.0.0",
     "qrcode.react": "0.7.2",
