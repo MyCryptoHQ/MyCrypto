@@ -1,3 +1,9 @@
+import { indexOf } from 'lodash';
+
+export const filter = (i: any, arr: any[]) => {
+  return -1 !== indexOf(arr, i) ? true : false;
+};
+
 export function checkHttpStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;

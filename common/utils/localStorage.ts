@@ -1,5 +1,7 @@
 export const REDUX_STATE = 'REDUX_STATE';
 import { State as SwapState } from 'reducers/swap';
+import { IWallet, WalletConfig } from 'libs/wallet';
+import { sha256 } from 'ethereumjs-util';
 
 export function loadState<T>(): T | undefined {
   try {
@@ -32,4 +34,31 @@ export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
     }
   }
   return undefined;
+}
+
+export async function saveWalletConfig(
+  wallet: IWallet,
+  state: Partial<WalletConfig>
+): Promise<WalletConfig> {
+  const oldState = await loadWalletConfig(wallet);
+  const newState = { ...oldState, ...state };
+  const key = await getWalletConfigKey(wallet);
+  localStorage.setItem(key, JSON.stringify(newState));
+  return newState;
+}
+
+export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {
+  try {
+    const key = await getWalletConfigKey(wallet);
+    const state = localStorage.getItem(key);
+    return state ? JSON.parse(state) : {};
+  } catch (err) {
+    console.error('Failed to load wallet state', err);
+    return {};
+  }
+}
+
+async function getWalletConfigKey(wallet: IWallet): Promise<string> {
+  const address = await wallet.getAddressString();
+  return sha256(`${address}-mew`).toString('hex');
 }

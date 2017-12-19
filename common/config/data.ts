@@ -2,7 +2,7 @@ import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.5)';
+export const VERSION = '4.0.0 (Alpha 0.0.6)';
 export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -13,21 +13,23 @@ export const ANNOUNCEMENT_MESSAGE = `
   This is an Alpha build of MyEtherWallet v4. Please only use for testing,
   or use v3 at <a href='https://myetherwallet.com'>https://myetherwallet.com</a>.
   <br/>
-  If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">mailchimp</a> :)
+  <span class="hidden-xs">
+    If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe via
+    <a href="http://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">
+      mailchimp
+    </a>
+    :)
+  </span>
 `;
 
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
 const ethPlorer = 'https://ethplorer.io';
 
-export const ETHTxExplorer = (txHash: string): string =>
-  `${etherScan}/tx/${txHash}`;
-export const BTCTxExplorer = (txHash: string): string =>
-  `${blockChainInfo}/tx/${txHash}`;
-export const ETHAddressExplorer = (address: string): string =>
-  `${etherScan}/address/${address}`;
-export const ETHTokenExplorer = (address: string): string =>
-  `${ethPlorer}/address/${address}`;
+export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHash}`;
+export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
+export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
+export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
 
 export const donationAddressMap = {
   BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
@@ -40,9 +42,11 @@ export const gasPriceDefaults = {
   gasPriceMaxGwei: 60
 };
 
+export const MINIMUM_PASSWORD_LENGTH = 9;
+
+export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
-export const ledgerReferralURL =
-  'https://www.ledgerwallet.com/r/fa4b?path=/products/';
+export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
 export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
@@ -286,9 +290,7 @@ export async function initWeb3Node(): Promise<void> {
   }
 
   if (networkId === 'loading') {
-    throw new Error(
-      'MetaMask / Mist is still loading. Please refresh the page and try again.'
-    );
+    throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
   }
 
   NODES.web3 = {

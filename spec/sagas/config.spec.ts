@@ -2,12 +2,7 @@ import { configuredStore } from 'store';
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
-import {
-  toggleOfflineConfig,
-  changeNode,
-  changeNodeIntent,
-  setLatestBlock
-} from 'actions/config';
+import { toggleOfflineConfig, changeNode, changeNodeIntent, setLatestBlock } from 'actions/config';
 import {
   pollOfflineStatus,
   handlePollOfflineStatus,
@@ -116,13 +111,7 @@ describe('pollOfflineStatus*', () => {
 
   it('should put showNotification and put toggleOfflineConfig if pingSucceeded && isOffline', () => {
     expect(data.gen.next(raceSuccess).value).toEqual(
-      put(
-        showNotification(
-          'success',
-          'Your connection to the network has been restored!',
-          3000
-        )
-      )
+      put(showNotification('success', 'Your connection to the network has been restored!', 3000))
     );
     expect(data.gen.next().value).toEqual(put(toggleOfflineConfig()));
   });
@@ -136,9 +125,7 @@ describe('pollOfflineStatus*', () => {
     data.clone3 = data.isOfflineClone.clone();
 
     expect(data.isOfflineClone.next(raceFailure).value).toMatchSnapshot();
-    expect(data.isOfflineClone.next().value).toEqual(
-      put(toggleOfflineConfig())
-    );
+    expect(data.isOfflineClone.next().value).toEqual(put(toggleOfflineConfig()));
   });
 
   it('should call delay when neither case is true', () => {
@@ -156,9 +143,7 @@ describe('handlePollOfflineStatus*', () => {
   });
 
   it('should take CONFIG_STOP_POLL_OFFLINE_STATE', () => {
-    expect(gen.next(mockTask).value).toEqual(
-      take('CONFIG_STOP_POLL_OFFLINE_STATE')
-    );
+    expect(gen.next(mockTask).value).toEqual(take('CONFIG_STOP_POLL_OFFLINE_STATE'));
   });
 
   it('should cancel pollOfflineStatus', () => {
@@ -177,15 +162,11 @@ describe('handleTogglePollOfflineStatus*', () => {
 
   it('should fork handlePollOfflineStatus when isForcedOffline', () => {
     data.clone = data.gen.clone();
-    expect(data.gen.next(isForcedOffline).value).toEqual(
-      fork(handlePollOfflineStatus)
-    );
+    expect(data.gen.next(isForcedOffline).value).toEqual(fork(handlePollOfflineStatus));
   });
 
   it('should call handlePollOfflineStatus when !isForcedOffline', () => {
-    expect(data.clone.next(!isForcedOffline).value).toEqual(
-      call(handlePollOfflineStatus)
-    );
+    expect(data.clone.next(!isForcedOffline).value).toEqual(call(handlePollOfflineStatus));
   });
 
   it('should be done', () => {
@@ -243,16 +224,12 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.clone1.next(raceFailure).value).toEqual(
       put(showNotification('danger', translate('ERROR_32'), 5000))
     );
-    expect(data.clone1.next().value).toEqual(
-      put(changeNode(defaultNode, defaultNodeConfig))
-    );
+    expect(data.clone1.next().value).toEqual(put(changeNode(defaultNode, defaultNodeConfig)));
     expect(data.clone1.next().done).toEqual(true);
   });
 
   it('should put setLatestBlock', () => {
-    expect(data.gen.next(raceSuccess).value).toEqual(
-      put(setLatestBlock(latestBlock))
-    );
+    expect(data.gen.next(raceSuccess).value).toEqual(put(setLatestBlock(latestBlock)));
   });
 
   it('should put changeNode', () => {
@@ -295,9 +272,7 @@ describe('handleNodeChangeIntent*', () => {
   it('should select getCustomNodeConfig and match race snapshot', () => {
     data.customNode.next();
     data.customNode.next(defaultNode);
-    expect(data.customNode.next(defaultNodeConfig).value).toEqual(
-      select(getCustomNodeConfigs)
-    );
+    expect(data.customNode.next(defaultNodeConfig).value).toEqual(select(getCustomNodeConfigs));
     expect(data.customNode.next(customNodeConfigs).value).toMatchSnapshot();
   });
 
@@ -312,9 +287,7 @@ describe('handleNodeChangeIntent*', () => {
       put(
         showNotification(
           'danger',
-          `Attempted to switch to unknown node '${
-            customNodeNotFoundAction.payload
-          }'`,
+          `Attempted to switch to unknown node '${customNodeNotFoundAction.payload}'`,
           5000
         )
       )
@@ -341,9 +314,7 @@ describe('unsetWeb3Node*', () => {
   });
 
   it('should put changeNodeIntent', () => {
-    expect(gen.next(mockNodeConfig).value).toEqual(
-      put(changeNodeIntent(newNode))
-    );
+    expect(gen.next(mockNodeConfig).value).toEqual(put(changeNodeIntent(newNode)));
   });
 
   it('should be done', () => {

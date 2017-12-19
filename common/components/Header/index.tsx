@@ -1,5 +1,4 @@
 import {
-  TChangeGasPrice,
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
@@ -11,6 +10,7 @@ import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { TSetGasPriceField } from 'actions/transaction';
 import {
   ANNOUNCEMENT_MESSAGE,
   ANNOUNCEMENT_TYPE,
@@ -28,19 +28,19 @@ import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
+import { AppState } from 'reducers';
 
 interface Props {
   languageSelection: string;
   node: NodeConfig;
   nodeSelection: string;
   isChangingNode: boolean;
-  gasPriceGwei: number;
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
-
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
-  changeGasPrice: TChangeGasPrice;
+  setGasPriceField: TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
   addCustomNetwork: TAddCustomNetwork;
@@ -67,13 +67,8 @@ export default class Header extends Component<Props, State> {
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const selectedNetwork = getNetworkConfigFromId(
-      node.network,
-      customNetworks
-    );
-    const LanguageDropDown = Dropdown as new () => Dropdown<
-      typeof selectedLanguage
-    >;
+    const selectedNetwork = getNetworkConfigFromId(node.network, customNetworks);
+    const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
 
     const nodeOptions = Object.keys(NODES)
       .map(key => {
@@ -120,12 +115,7 @@ export default class Header extends Component<Props, State> {
 
         <section className="Header-branding">
           <section className="Header-branding-inner container">
-            <Link
-              to="/"
-              className="Header-branding-title"
-              aria-label="Go to homepage"
-            >
-              {/* TODO - don't hardcode image path*/}
+            <Link to="/" className="Header-branding-title" aria-label="Go to homepage">
               <img
                 className="Header-branding-title-logo"
                 src={logo}
@@ -135,20 +125,18 @@ export default class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version">v{VERSION}</span>
+              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
 
               <div className="Header-branding-right-dropdown">
                 <GasPriceDropdown
-                  value={this.props.gasPriceGwei}
-                  onChange={this.props.changeGasPrice}
+                  value={this.props.gasPrice.raw}
+                  onChange={this.props.setGasPriceField}
                 />
               </div>
 
               <div className="Header-branding-right-dropdown">
                 <LanguageDropDown
-                  ariaLabel={`change language. current language ${
-                    languages[selectedLanguage]
-                  }`}
+                  ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
                   options={Object.values(languages)}
                   value={languages[selectedLanguage]}
                   extra={

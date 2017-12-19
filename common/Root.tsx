@@ -8,10 +8,9 @@ import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import Help from 'containers/Tabs/Help';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
-import ViewWallet from 'containers/Tabs/ViewWallet';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
-import RestoreKeystore from 'containers/Tabs/RestoreKeystore';
+import ErrorScreen from 'components/ErrorScreen';
 
 // TODO: fix this
 interface Props {
@@ -19,26 +18,43 @@ interface Props {
   history: any;
 }
 
-export default class Root extends Component<Props, {}> {
+interface State {
+  error: Error | null;
+}
+
+export default class Root extends Component<Props, State> {
+  public state = {
+    error: null
+  };
+
+  public componentDidCatch(error) {
+    this.setState({ error });
+  }
+
   public render() {
     const { store, history } = this.props;
+    const { error } = this.state;
+
+    if (error) {
+      return <ErrorScreen error={error} />;
+    }
+
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
     return (
       <Provider store={store} key={Math.random()}>
         <Router history={history} key={Math.random()}>
           <div>
             <Route exact={true} path="/" component={GenerateWallet} />
-            <Route path="/view-wallet" component={ViewWallet} />
             <Route path="/help" component={Help} />
             <Route path="/swap" component={Swap} />
+            <Route path="/account" component={SendTransaction}>
+              <Route path="send" component={SendTransaction} />
+              <Route path="info" component={SendTransaction} />
+            </Route>
             <Route path="/send-transaction" component={SendTransaction} />
             <Route path="/contracts" component={Contracts} />
             <Route path="/ens" component={ENS} />
-            <Route path="/utilities" component={RestoreKeystore} />
-            <Route
-              path="/sign-and-verify-message"
-              component={SignAndVerifyMessage}
-            />
+            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
             <Route path="/pushTx" component={BroadcastTx} />
             <LegacyRoutes />
           </div>
@@ -71,7 +87,7 @@ const LegacyRoutes = withRouter(props => {
         history.push('/ens');
         break;
       case '#view-wallet-info':
-        history.push('/view-wallet');
+        history.push('/account/info');
         break;
       case '#check-tx-status':
         history.push('/check-tx-status');
@@ -83,6 +99,7 @@ const LegacyRoutes = withRouter(props => {
     <Switch>
       <Redirect from="/signmsg.html" to="/sign-and-verify-message" />
       <Redirect from="/helpers.html" to="/helpers" />
+      <Redirect from="/send-transaction" to="/account/send" />
     </Switch>
   );
 });

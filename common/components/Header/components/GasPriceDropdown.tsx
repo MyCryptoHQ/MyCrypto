@@ -1,15 +1,17 @@
-import { gasPriceDefaults } from 'config/data';
+import { gasPriceDefaults, knowledgeBaseURL } from 'config/data';
 import throttle from 'lodash/throttle';
 import React, { Component } from 'react';
 import DropdownShell from 'components/ui/DropdownShell';
 import './GasPriceDropdown.scss';
+import { SetGasLimitFieldAction } from 'actions/transaction';
+import { gasPricetoBase } from 'libs/units';
 
 interface Props {
-  value: number;
-  onChange(gasPrice: number): void;
+  value: string;
+  onChange(payload: SetGasLimitFieldAction['payload']): void;
 }
 
-export default class GasPriceDropdown extends Component<Props, {}> {
+export default class GasPriceDropdown extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.updateGasPrice = throttle(this.updateGasPrice, 50);
@@ -29,7 +31,11 @@ export default class GasPriceDropdown extends Component<Props, {}> {
   }
 
   private renderLabel = () => {
-    return `Gas Price: ${this.props.value} Gwei`;
+    return (
+      <span>
+        Gas Price<span className="hidden-xs">: {this.props.value} Gwei</span>
+      </span>
+    );
   };
 
   private renderOptions = () => {
@@ -45,27 +51,17 @@ export default class GasPriceDropdown extends Component<Props, {}> {
             max={gasPriceDefaults.gasPriceMaxGwei}
             onChange={this.handleGasPriceChange}
           />
-          <p className="small col-xs-4 text-left GasPrice-padding-reset">
-            Not So Fast
-          </p>
-          <p className="small col-xs-4 text-center GasPrice-padding-reset">
-            Fast
-          </p>
-          <p className="small col-xs-4 text-right GasPrice-padding-reset">
-            Fast AF
-          </p>
+          <p className="small col-xs-4 text-left GasPrice-padding-reset">Not So Fast</p>
+          <p className="small col-xs-4 text-center GasPrice-padding-reset">Fast</p>
+          <p className="small col-xs-4 text-right GasPrice-padding-reset">Fast AF</p>
           <p className="small GasPrice-description">
             Gas Price is the amount you pay per unit of gas.{' '}
-            <code>TX fee = gas price * gas limit</code> & is paid to miners for
-            including your TX in a block. Higher the gas price = faster
-            transaction, but more expensive. Default is <code>21 GWEI</code>.
+            <code>TX fee = gas price * gas limit</code> & is paid to miners for including your TX in
+            a block. Higher the gas price = faster transaction, but more expensive. Default is{' '}
+            <code>21 GWEI</code>.
           </p>
           <p>
-            {/* TODO: maybe not hardcode a link? :) */}
-            <a
-              href="https://myetherwallet.groovehq.com/knowledge_base/topics/what-is-gas"
-              target="_blank"
-            >
+            <a href={`${knowledgeBaseURL}/gas/what-is-gas-ethereum`} target="_blank">
               Read more
             </a>
           </p>
@@ -75,12 +71,10 @@ export default class GasPriceDropdown extends Component<Props, {}> {
   };
 
   private updateGasPrice = (value: string) => {
-    this.props.onChange(parseInt(value, 10));
+    this.props.onChange({ raw: value, value: gasPricetoBase(parseInt(value, 10)) });
   };
 
-  private handleGasPriceChange = (
-    e: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    this.updateGasPrice((e.target as HTMLInputElement).value);
+  private handleGasPriceChange = (e: React.FormEvent<HTMLInputElement>) => {
+    this.updateGasPrice(e.currentTarget.value);
   };
 }

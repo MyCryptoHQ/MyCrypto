@@ -27,12 +27,6 @@ export interface ChangeNodeAction {
   };
 }
 
-/*** Change gas price ***/
-export interface ChangeGasPriceAction {
-  type: TypeKeys.CONFIG_GAS_PRICE;
-  payload: number;
-}
-
 /*** Poll offline status ***/
 export interface PollOfflineStatus {
   type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS;
@@ -83,7 +77,6 @@ export interface Web3UnsetNodeAction {
 export type ConfigAction =
   | ChangeNodeAction
   | ChangeLanguageAction
-  | ChangeGasPriceAction
   | ToggleOfflineAction
   | PollOfflineStatus
   | ForceOfflineAction

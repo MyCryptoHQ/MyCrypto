@@ -10,24 +10,14 @@ import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 import { INode } from 'libs/nodes/INode';
 import { SagaIterator } from 'redux-saga';
-import {
-  all,
-  apply,
-  fork,
-  put,
-  select,
-  takeEvery,
-  takeLatest
-} from 'redux-saga/effects';
+import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { getNodeLib } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
 
-export function* getDeterministicWallets(
-  action: GetDeterministicWalletsAction
-): SagaIterator {
+export function* getDeterministicWallets(action: GetDeterministicWalletsAction): SagaIterator {
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
   let pathBase;
   let hdk;

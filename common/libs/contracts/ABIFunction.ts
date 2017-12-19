@@ -1,21 +1,7 @@
 import abi from 'ethereumjs-abi';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress, addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
-import { INode } from 'libs/nodes/INode';
 import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
-import {
-  generateCompleteTransaction as makeAndSignTx,
-  TransactionInput
-} from 'libs/transaction';
-import { ISetConfigForTx } from './index';
-
-export interface IUserSendParams {
-  input;
-  to: string;
-  gasLimit: BN;
-  value: string;
-}
-export type ISendParams = IUserSendParams & ISetConfigForTx;
 
 export default class AbiFunction {
   public constant: boolean;
@@ -34,55 +20,6 @@ export default class AbiFunction {
     this.init(outputMappings);
   }
 
-  public call = async (input, node: INode, to) => {
-    if (!node || !node.sendCallRequest) {
-      throw Error(`No node given to ${this.name}`);
-    }
-
-    const data = this.encodeInput(input);
-
-    const returnedData = await node
-      .sendCallRequest({
-        to,
-        data
-      })
-      .catch(e => {
-        throw Error(`Node call request error at: ${this.name}
-Params:${JSON.stringify(input, null, 2)}
-Message:${e.message}
-EncodedCall:${data}`);
-      });
-    const decodedOutput = this.decodeOutput(returnedData);
-
-    return decodedOutput;
-  };
-
-  public send = async (params: ISendParams) => {
-    const { nodeLib, chainId, wallet, gasLimit, ...userInputs } = params;
-    if (!nodeLib || !nodeLib.sendRawTx) {
-      throw Error(`No node given to ${this.name}`);
-    }
-    const data = this.encodeInput(userInputs.input);
-
-    const transactionInput: TransactionInput = {
-      data,
-      to: userInputs.to,
-      unit: 'ether',
-      value: userInputs.value
-    };
-
-    const { signedTx, rawTx } = await makeAndSignTx(
-      wallet,
-      nodeLib,
-      userInputs.gasPrice,
-      gasLimit,
-      chainId,
-      transactionInput,
-      false
-    );
-    return { signedTx, rawTx: JSON.parse(rawTx) };
-  };
-
   public encodeInput = (suppliedInputs: object = {}) => {
     const args = this.processSuppliedArgs(suppliedInputs);
     const encodedCall = this.makeEncodedFuncCall(args);
@@ -91,7 +28,7 @@ EncodedCall:${data}`);
 
   public decodeInput = (argString: string) => {
     // Remove method selector from data, if present
-    argString = argString.replace(`0x${this.methodSelector}`, '');
+    argString = argString.replace(addHexPrefix(this.methodSelector), '');
     // Convert argdata to a hex buffer for ethereumjs-abi
     const argBuffer = new Buffer(argString, 'hex');
     // Decode!
@@ -109,7 +46,7 @@ EncodedCall:${data}`);
 
   public decodeOutput = (argString: string) => {
     // Remove method selector from data, if present
-    argString = argString.replace(`0x${this.methodSelector}`, '');
+    argString = argString.replace(addHexPrefix(this.methodSelector), '');
 
     // Remove 0x prefix
     argString = argString.replace('0x', '');
@@ -137,13 +74,9 @@ EncodedCall:${data}`);
     this.inputTypes = this.inputs.map(({ type }) => type);
     this.outputTypes = this.outputs.map(({ type }) => type);
     this.inputNames = this.inputs.map(({ name }) => name);
-    this.outputNames = this.outputs.map(
-      ({ name }, i) => outputMappings[i] || name || `${i}`
-    );
+    this.outputNames = this.outputs.map(({ name }, i) => outputMappings[i] || name || `${i}`);
 
-    this.methodSelector = abi
-      .methodID(this.name, this.inputTypes)
-      .toString('hex');
+    this.methodSelector = abi.methodID(this.name, this.inputTypes).toString('hex');
   }
 
   private parsePostDecodedValue = (type: string, value: any) => {
@@ -174,7 +107,7 @@ EncodedCall:${data}`);
 
   private makeEncodedFuncCall = (args: string[]) => {
     const encodedArgs = abi.rawEncode(this.inputTypes, args).toString('hex');
-    return `0x${this.methodSelector}${encodedArgs}`;
+    return addHexPrefix(`${this.methodSelector}${encodedArgs}`);
   };
 
   private processSuppliedArgs = (suppliedArgs: object) =>
@@ -183,9 +116,11 @@ EncodedCall:${data}`);
       //TODO: parse args based on type
       if (!suppliedArgs[name]) {
         throw Error(
-          `Expected argument "${name}" of type "${
-            type
-          }" missing, suppliedArgs: ${JSON.stringify(suppliedArgs, null, 2)}`
+          `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(
+            suppliedArgs,
+            null,
+            2
+          )}`
         );
       }
       const value = suppliedArgs[name];

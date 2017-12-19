@@ -1,5 +1,4 @@
-// don't use flow temporarily
-import { TransactionWithoutGas } from 'libs/messages';
+import { IHexStrTransaction } from 'libs/transaction';
 
 export type DATA = string;
 export type QUANTITY = string;
@@ -62,7 +61,7 @@ export interface CallRequest extends RPCRequestBase {
 
 export interface EstimateGasRequest extends RPCRequestBase {
   method: 'eth_estimateGas';
-  params: [TransactionWithoutGas];
+  params: [Partial<IHexStrTransaction>];
 }
 
 export interface GetTransactionCountRequest extends RPCRequestBase {
