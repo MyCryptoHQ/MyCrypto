@@ -1,0 +1,30 @@
+@import "common/sass/variables";
+
+.SubTabs {
+  margin-top: 15px;
+
+  &-tabs {
+
+    &-link {
+      display: inline-block;
+      padding: 8px;
+      font-size: $font-size-base;
+      min-width: 80px;
+      text-align: center;
+      font-weight: 300;
+      color: $ether-navy;
+      border-bottom: 2px solid $gray-lighter;
+      transition-duration: 100ms;
+
+      &.is-active {
+        border-bottom-color: $ether-blue;
+      }
+
+      &.is-disabled {
+        color: $gray-light;
+        pointer-events: none;
+        text-decoration: line-through;
+      }
+    }
+  }
+}

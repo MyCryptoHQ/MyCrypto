@@ -1,0 +1,33 @@
+@import "common/sass/variables";
+@import "common/sass/mixins";
+
+.UnlockHeader {
+  position: relative;
+
+  &-open {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    padding-right: none;
+    transform: translateY(-50%);
+
+    &-text {
+      padding-right: 8px;
+    }
+  }
+
+  &-close {
+    @include reset-button;
+    position: absolute;
+    top: 56px;
+    right: 6px;
+    padding: 8px;
+    line-height: 24px;
+    font-size: 24px;
+    opacity: 0.3;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

@@ -1,29 +1,20 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
-import { Location, History } from 'history';
 
-interface Props {
+interface Props extends RouteComponentProps<{}> {
   when: boolean;
   onConfirm?: any;
   onCancel?: any;
 }
 
-interface InjectedProps extends Props {
-  location: Location;
-  history: History;
-}
-
 interface State {
-  nextLocation: Location | null;
+  nextLocation: RouteComponentProps<{}>['location'] | null;
   openModal: boolean;
 }
 
 class NavigationPrompt extends React.Component<Props, State> {
   public unblock;
-  get injected() {
-    return this.props as InjectedProps;
-  }
 
   constructor(props) {
     super(props);
@@ -34,15 +25,17 @@ class NavigationPrompt extends React.Component<Props, State> {
   }
 
   public setupUnblock() {
-    this.unblock = this.injected.history.block(nextLocation => {
-      if (this.props.when && nextLocation.pathname !== this.injected.location.pathname) {
-        this.setState({
-          openModal: true,
-          nextLocation
-        });
-      }
-      if (this.props.when) {
-        return false;
+    this.unblock = this.props.history.block(nextLocation => {
+      if (this.props.when && nextLocation.pathname !== this.props.location.pathname) {
+        const isSubTab =
+          nextLocation.pathname.split('/')[1] === this.props.location.pathname.split('/')[1];
+        if (!isSubTab) {
+          this.setState({
+            openModal: true,
+            nextLocation
+          });
+          return false;
+        }
       }
     });
   }
@@ -73,7 +66,7 @@ class NavigationPrompt extends React.Component<Props, State> {
   public navigateToNextLocation() {
     this.unblock();
     if (this.state.nextLocation) {
-      this.injected.history.push(this.state.nextLocation.pathname);
+      this.props.history.push(this.state.nextLocation.pathname);
     }
   }
 
@@ -95,4 +88,4 @@ class NavigationPrompt extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(NavigationPrompt);
+export default withRouter<Props>(NavigationPrompt);

@@ -1,41 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  changeGasPrice as dChangeGasPrice,
   changeLanguage as dChangeLanguage,
   changeNodeIntent as dChangeNodeIntent,
   addCustomNode as dAddCustomNode,
   removeCustomNode as dRemoveCustomNode,
   addCustomNetwork as dAddCustomNetwork,
-  TChangeGasPrice,
   TChangeLanguage,
   TChangeNodeIntent,
   TAddCustomNode,
   TRemoveCustomNode,
   TAddCustomNetwork
 } from 'actions/config';
+import { TSetGasPriceField, setGasPriceField as dSetGasPriceField } from 'actions/transaction';
 import { AlphaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
+import { getGasPrice } from 'selectors/transaction';
 
 interface ReduxProps {
   languageSelection: AppState['config']['languageSelection'];
   node: AppState['config']['node'];
   nodeSelection: AppState['config']['nodeSelection'];
   isChangingNode: AppState['config']['isChangingNode'];
-  gasPriceGwei: AppState['config']['gasPriceGwei'];
   customNodes: AppState['config']['customNodes'];
   customNetworks: AppState['config']['customNetworks'];
   latestBlock: AppState['config']['latestBlock'];
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
 }
 
 interface ActionProps {
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
-  changeGasPrice: TChangeGasPrice;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
   addCustomNetwork: TAddCustomNetwork;
+  setGasPriceField: TSetGasPriceField;
 }
 
 type Props = {
@@ -53,14 +53,13 @@ class TabSection extends Component<Props, {}> {
       nodeSelection,
       isChangingNode,
       languageSelection,
-      gasPriceGwei,
       customNodes,
       customNetworks,
       latestBlock,
-
+      setGasPriceField,
+      gasPrice,
       changeLanguage,
       changeNodeIntent,
-      changeGasPrice,
       addCustomNode,
       removeCustomNode,
       addCustomNetwork
@@ -71,13 +70,12 @@ class TabSection extends Component<Props, {}> {
       node,
       nodeSelection,
       isChangingNode,
-      gasPriceGwei,
+      gasPrice,
       customNodes,
       customNetworks,
-
       changeLanguage,
       changeNodeIntent,
-      changeGasPrice,
+      setGasPriceField,
       addCustomNode,
       removeCustomNode,
       addCustomNetwork
@@ -103,7 +101,7 @@ function mapStateToProps(state: AppState): ReduxProps {
     nodeSelection: state.config.nodeSelection,
     isChangingNode: state.config.isChangingNode,
     languageSelection: state.config.languageSelection,
-    gasPriceGwei: state.config.gasPriceGwei,
+    gasPrice: getGasPrice(state),
     customNodes: state.config.customNodes,
     customNetworks: state.config.customNetworks,
     latestBlock: state.config.latestBlock
@@ -111,7 +109,7 @@ function mapStateToProps(state: AppState): ReduxProps {
 }
 
 export default connect(mapStateToProps, {
-  changeGasPrice: dChangeGasPrice,
+  setGasPriceField: dSetGasPriceField,
   changeLanguage: dChangeLanguage,
   changeNodeIntent: dChangeNodeIntent,
   addCustomNode: dAddCustomNode,

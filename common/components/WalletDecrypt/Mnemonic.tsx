@@ -3,6 +3,7 @@ import DPATHS from 'config/dpaths';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
+import { formatMnemonic } from 'utils/formatters';
 
 const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
 
@@ -11,6 +12,7 @@ interface Props {
 }
 interface State {
   phrase: string;
+  formattedPhrase: string;
   pass: string;
   seed: string;
   dPath: string;
@@ -19,14 +21,15 @@ interface State {
 export default class MnemonicDecrypt extends Component<Props, State> {
   public state: State = {
     phrase: '',
+    formattedPhrase: '',
     pass: '',
     seed: '',
     dPath: DEFAULT_PATH
   };
 
   public render() {
-    const { phrase, seed, dPath, pass } = this.state;
-    const isValidMnemonic = validateMnemonic(phrase);
+    const { phrase, formattedPhrase, seed, dPath, pass } = this.state;
+    const isValidMnemonic = validateMnemonic(formattedPhrase);
 
     return (
       <section className="col-md-4 col-sm-6">
@@ -35,9 +38,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
           <div className="form-group">
             <textarea
               id="aria-private-key"
-              className={`form-control ${isValidMnemonic
-                ? 'is-valid'
-                : 'is-invalid'}`}
+              className={`form-control ${isValidMnemonic ? 'is-valid' : 'is-invalid'}`}
               value={phrase}
               onChange={this.onMnemonicChange}
               placeholder={translateRaw('x_Mnemonic')}
@@ -85,19 +86,25 @@ export default class MnemonicDecrypt extends Component<Props, State> {
     this.setState({ pass: (e.target as HTMLInputElement).value });
   };
 
-  public onMnemonicChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    this.setState({ phrase: (e.target as HTMLTextAreaElement).value });
+  public onMnemonicChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const phrase = e.currentTarget.value;
+    const formattedPhrase = formatMnemonic(phrase);
+
+    this.setState({
+      phrase,
+      formattedPhrase
+    });
   };
 
   public onDWModalOpen = () => {
-    const { phrase, pass } = this.state;
+    const { formattedPhrase, pass } = this.state;
 
-    if (!validateMnemonic(phrase)) {
+    if (!validateMnemonic(formattedPhrase)) {
       return;
     }
 
     try {
-      const seed = mnemonicToSeed(phrase.trim(), pass).toString('hex');
+      const seed = mnemonicToSeed(formattedPhrase, pass).toString('hex');
       this.setState({ seed });
     } catch (err) {
       console.log(err);
@@ -113,19 +120,20 @@ export default class MnemonicDecrypt extends Component<Props, State> {
   };
 
   private handleUnlock = (address, index) => {
-    const { phrase, pass, dPath } = this.state;
+    const { formattedPhrase, pass, dPath } = this.state;
 
     this.props.onUnlock({
       path: `${dPath}/${index}`,
       pass,
-      phrase,
+      phrase: formattedPhrase,
       address
     });
 
     this.setState({
       seed: '',
       pass: '',
-      phrase: ''
+      phrase: '',
+      formattedPhrase: ''
     });
   };
 }

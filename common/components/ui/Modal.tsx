@@ -13,7 +13,7 @@ interface Props {
   title: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
-  buttons: IButton[];
+  buttons?: IButton[];
   handleClose(): void;
 }
 
@@ -76,6 +76,9 @@ export default class Modal extends Component<Props, {}> {
 
   private renderButtons = () => {
     const { disableButtons, buttons } = this.props;
+    if (!buttons || !buttons.length) {
+      return;
+    }
 
     return buttons.map((btn, idx) => {
       let btnClass = 'Modal-footer-btn btn';

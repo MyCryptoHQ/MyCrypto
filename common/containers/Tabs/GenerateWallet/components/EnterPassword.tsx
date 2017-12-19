@@ -2,14 +2,10 @@ import { GenerateNewWalletAction } from 'actions/generateWallet';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import translate from 'translations';
+import { knowledgeBaseURL, MINIMUM_PASSWORD_LENGTH } from 'config/data';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from './Template';
-import { knowledgeBaseURL } from 'config/data';
-
-// VALIDATORS
-const minLength = min => value => value && value.length >= min;
-const minLength9 = minLength(9);
 
 interface Props {
   generateNewWallet(pw: string): GenerateNewWalletAction;
@@ -134,7 +130,7 @@ export default class EnterPassword extends Component<Props, State> {
   private onPasswordChange = (e: any) => {
     const password = e.target.value;
     this.setState({
-      isPasswordValid: minLength9(password),
+      isPasswordValid: password.length >= MINIMUM_PASSWORD_LENGTH,
       password
     });
   };

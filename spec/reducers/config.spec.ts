@@ -29,15 +29,6 @@ describe('config reducer', () => {
     });
   });
 
-  it('should handle CONFIG_GAS_PRICE', () => {
-    const gasPrice = 20;
-
-    expect(config(undefined, configActions.changeGasPrice(gasPrice))).toEqual({
-      ...INITIAL_STATE,
-      gasPriceGwei: gasPrice
-    });
-  });
-
   it('should handle CONFIG_TOGGLE_OFFLINE', () => {
     const offlineState = {
       ...INITIAL_STATE,

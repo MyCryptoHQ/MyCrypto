@@ -3,7 +3,8 @@ import {
   NetworkContract,
   NodeConfig,
   CustomNodeConfig,
-  CustomNetworkConfig
+  CustomNetworkConfig,
+  Token
 } from 'config/data';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
@@ -30,8 +31,14 @@ export function getNetworkContracts(state: AppState): NetworkContract[] | null {
   return network ? network.contracts : [];
 }
 
-export function getGasPriceGwei(state: AppState): number {
-  return state.config.gasPriceGwei;
+export function getNetworkTokens(state: AppState): Token[] {
+  const network = getNetworkConfig(state);
+  return network ? network.tokens : [];
+}
+
+export function getAllTokens(state: AppState): Token[] {
+  const networkTokens = getNetworkTokens(state);
+  return networkTokens.concat(state.customTokens);
 }
 
 export function getLanguageSelection(state: AppState): string {
@@ -53,3 +60,5 @@ export function getOffline(state: AppState): boolean {
 export function getForceOffline(state: AppState): boolean {
   return state.config.forceOffline;
 }
+
+export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);

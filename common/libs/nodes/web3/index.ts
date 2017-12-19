@@ -1,7 +1,7 @@
+import { IHexStrWeb3Transaction } from 'libs/transaction';
 import RPCNode from '../rpc';
 import Web3Client from './client';
 import Web3Requests from './requests';
-import { Web3Transaction } from './types';
 import { INode } from 'libs/nodes/INode';
 
 import {
@@ -28,7 +28,7 @@ export default class Web3Node extends RPCNode {
       .then(({ result }) => result);
   }
 
-  public sendTransaction(web3Tx: Web3Transaction): Promise<string> {
+  public sendTransaction(web3Tx: IHexStrWeb3Transaction): Promise<string> {
     return this.client
       .call(this.requests.sendTransaction(web3Tx))
       .then(isValidSendTransaction)

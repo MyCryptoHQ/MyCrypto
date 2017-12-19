@@ -1,21 +1,22 @@
 import { configuredStore } from 'store';
 import RpcNode from 'libs/nodes/rpc';
 import {
-  broadcastTxSucceded,
   setBalanceFullfilled,
   setBalancePending,
   unlockPrivateKey as unlockPrivateKeyActionGen,
   unlockKeystore as unlockKeystoreActionGen,
   unlockMnemonic as unlockMnemonicActionGen,
-  broadcastTx as broadcastTxActionGen
+  setTokenBalancesFulfilled,
+  setTokenBalancesPending,
+  setTokenBalancesRejected
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
 import { initWeb3Node, Token, N_FACTOR } from 'config/data';
 import { apply, call, fork, put, select, take } from 'redux-saga/effects';
-import { getNetworkConfig, getNodeLib } from 'selectors/config';
-import { getTokens, getWalletInst } from 'selectors/wallet';
+import { getNodeLib } from 'selectors/config';
+import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
 import {
   updateAccountBalance,
   updateTokenBalances,
@@ -24,7 +25,7 @@ import {
   unlockKeystore,
   unlockMnemonic,
   unlockWeb3,
-  broadcastTx
+  getTokenBalances
 } from 'sagas/wallet';
 import { PrivKeyWallet } from 'libs/wallet/non-deterministic';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
@@ -53,7 +54,6 @@ const token2: Token = {
   decimal: 16
 };
 const tokens = [token1, token2];
-const balances = [Wei('100'), Wei('200')];
 
 const utcKeystore = {
   version: 3,
@@ -120,48 +120,48 @@ describe('updateAccountBalance*', () => {
 });
 
 describe('updateTokenBalances*', () => {
-  const gen1 = updateTokenBalances();
+  const gen1 = cloneableGenerator(updateTokenBalances)();
   const gen2 = updateTokenBalances();
   const gen3 = updateTokenBalances();
 
-  it('should select getNodeLib', () => {
-    expect(gen1.next().value).toEqual(select(getNodeLib));
-  });
-
   it('should select getWalletInst', () => {
-    expect(gen1.next(node).value).toEqual(select(getWalletInst));
+    expect(gen1.next().value).toEqual(select(getWalletInst));
   });
 
-  it('should select getTokens', () => {
-    expect(gen1.next(wallet).value).toEqual(select(getTokens));
+  it('should select getWalletConfigTokens', () => {
+    expect(gen1.next(wallet).value).toEqual(select(getWalletConfigTokens));
   });
 
   it('should return if wallet is falsey', () => {
     gen2.next();
-    gen2.next(node);
     gen2.next(null);
     expect(gen2.next().done).toEqual(true);
   });
 
-  it('should return if node is falsey', () => {
+  it('should return if tokens are falsey', () => {
     gen3.next();
-    gen3.next(null);
     gen3.next(wallet);
-    expect(gen3.next().done).toEqual(true);
+    expect(gen3.next({}).done).toEqual(true);
   });
 
-  it('should apply wallet.getAddressString', () => {
-    expect(gen1.next(tokens).value).toEqual(apply(wallet, wallet.getAddressString));
+  it('should put setTokenBalancesPending', () => {
+    expect(gen1.next(tokens).value).toEqual(put(setTokenBalancesPending()));
   });
 
-  it('should apply node.getTokenBalances', () => {
-    expect(gen1.next(address).value).toEqual(apply(node, node.getTokenBalances, [address, tokens]));
+  it('should throw and put setTokenBalancesRejected', () => {
+    const gen4 = gen1.clone();
+    if (gen4.throw) {
+      expect(gen4.throw().value).toEqual(put(setTokenBalancesRejected()));
+    }
   });
 
-  it('should match put setTokenBalances snapshot', () => {
-    expect(gen1.next(balances).value).toMatchSnapshot();
+  it('should call getTokenBalances', () => {
+    expect(gen1.next().value).toEqual(call(getTokenBalances, wallet, tokens));
   });
 
+  it('should put setTokenBalancesFufilled', () => {
+    expect(gen1.next({}).value).toEqual(put(setTokenBalancesFulfilled({})));
+  });
   it('should be done', () => {
     expect(gen1.next().done).toEqual(true);
   });
@@ -316,45 +316,5 @@ describe('unlockWeb3*', () => {
 
   it('should match setWallet snapshot', () => {
     expect(data.gen.next(accounts).value).toMatchSnapshot();
-  });
-});
-
-describe('broadcastTx*', () => {
-  const signedTx = 'signedTx';
-  const txHash = 'txHash';
-  const action = broadcastTxActionGen(signedTx);
-  const gen = broadcastTx(action);
-  const networkConfig = {
-    blockExplorer: 'foo'
-  };
-  let random;
-
-  beforeAll(() => {
-    random = Math.random;
-    Math.random = jest.fn(() => 0.001);
-  });
-
-  afterAll(() => {
-    Math.random = random;
-  });
-
-  it('should select getNodeLib', () => {
-    expect(gen.next().value).toEqual(select(getNodeLib));
-  });
-
-  it('should select getNetworkConfig', () => {
-    expect(gen.next(node).value).toEqual(select(getNetworkConfig));
-  });
-
-  it('should apply node.sendRawTx', () => {
-    expect(gen.next(networkConfig).value).toEqual(apply(node, node.sendRawTx, [signedTx]));
-  });
-
-  it('should match put showNotifiction snapshot', () => {
-    expect(gen.next(txHash).value).toMatchSnapshot();
-  });
-
-  it('should put broadcastTxSucceded', () => {
-    expect(gen.next().value).toEqual(put(broadcastTxSucceded(txHash, signedTx)));
   });
 });

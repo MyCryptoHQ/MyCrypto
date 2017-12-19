@@ -32,14 +32,6 @@ export function changeNode(nodeSelection: string, node: NodeConfig): interfaces.
   };
 }
 
-export type TChangeGasPrice = typeof changeGasPrice;
-export function changeGasPrice(value: number): interfaces.ChangeGasPriceAction {
-  return {
-    type: TypeKeys.CONFIG_GAS_PRICE,
-    payload: value
-  };
-}
-
 export type TPollOfflineStatus = typeof pollOfflineStatus;
 export function pollOfflineStatus(): interfaces.PollOfflineStatus {
   return {

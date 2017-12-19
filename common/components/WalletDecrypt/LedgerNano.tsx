@@ -131,18 +131,23 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
   };
 
   private handleCancel = () => {
-    this.setState({
-      publicKey: '',
-      chainCode: '',
-      dPath: DEFAULT_PATH
-    });
+    this.reset();
   };
 
   private handleUnlock = (address: string, index: number) => {
     this.props.onUnlock(new LedgerWallet(address, this.state.dPath, index));
+    this.reset();
   };
 
   private handleNullConnect = (): void => {
     return this.handleConnect();
   };
+
+  private reset() {
+    this.setState({
+      publicKey: '',
+      chainCode: '',
+      dPath: DEFAULT_PATH
+    });
+  }
 }

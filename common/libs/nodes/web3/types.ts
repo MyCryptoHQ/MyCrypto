@@ -3,16 +3,6 @@ import { JsonRpcResponse, RPCRequest, RPCRequestBase, DATA, QUANTITY } from '../
 type MESSAGE_HEX = string;
 type ADDRESS = string;
 
-export interface Web3Transaction {
-  from: string;
-  to: string;
-  value: string;
-  gas: string;
-  gasPrice: string;
-  data: string;
-  nonce: string;
-}
-
 export interface SendTransactionRequest extends RPCRequestBase {
   method: 'eth_sendTransaction';
   params: [

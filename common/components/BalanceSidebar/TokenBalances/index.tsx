@@ -1,93 +1,120 @@
-import { Token } from 'config/data';
 import React from 'react';
-import { TokenBalance } from 'selectors/wallet';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
+import {
+  addCustomToken,
+  removeCustomToken,
+  TAddCustomToken,
+  TRemoveCustomToken
+} from 'actions/customTokens';
+import {
+  scanWalletForTokens,
+  TScanWalletForTokens,
+  setWalletTokens,
+  TSetWalletTokens
+} from 'actions/wallet';
+import { getAllTokens } from 'selectors/config';
+import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
+import { Token } from 'config/data';
 import translate from 'translations';
-import AddCustomTokenForm from './AddCustomTokenForm';
+import Balances from './Balances';
+import Spinner from 'components/ui/Spinner';
 import './index.scss';
-import TokenRow from './TokenRow';
 
-interface Props {
-  tokens: TokenBalance[];
-  onAddCustomToken(token: Token): any;
-  onRemoveCustomToken(symbol: string): any;
+interface StateProps {
+  wallet: AppState['wallet']['inst'];
+  walletConfig: AppState['wallet']['config'];
+  tokens: Token[];
+  tokenBalances: TokenBalance[];
+  tokensError: AppState['wallet']['tokensError'];
+  isTokensLoading: AppState['wallet']['isTokensLoading'];
+  hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
 }
-
-interface State {
-  showAllTokens: boolean;
-  showCustomTokenForm: boolean;
+interface ActionProps {
+  addCustomToken: TAddCustomToken;
+  removeCustomToken: TRemoveCustomToken;
+  scanWalletForTokens: TScanWalletForTokens;
+  setWalletTokens: TSetWalletTokens;
 }
-export default class TokenBalances extends React.Component<Props, State> {
-  public state = {
-    showAllTokens: false,
-    showCustomTokenForm: false
-  };
+type Props = StateProps & ActionProps;
 
+class TokenBalances extends React.Component<Props, {}> {
   public render() {
-    const { tokens } = this.props;
-    const shownTokens = tokens.filter(
-      token => !token.balance.eqn(0) || token.custom || this.state.showAllTokens
-    );
+    const {
+      tokens,
+      walletConfig,
+      tokenBalances,
+      hasSavedWalletTokens,
+      isTokensLoading,
+      tokensError
+    } = this.props;
+
+    const walletTokens = walletConfig ? walletConfig.tokens : [];
+
+    let content;
+    if (tokensError) {
+      content = <h5>{tokensError}</h5>;
+    } else if (isTokensLoading) {
+      content = (
+        <div className="TokenBalances-loader">
+          <Spinner size="x3" />
+        </div>
+      );
+    } else if (!walletTokens) {
+      content = (
+        <button
+          className="TokenBalances-scan btn btn-primary btn-block"
+          onClick={this.scanWalletForTokens}
+        >
+          {translate('Scan for my Tokens')}
+        </button>
+      );
+    } else {
+      const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
+
+      content = (
+        <Balances
+          allTokens={tokens}
+          tokenBalances={shownBalances}
+          hasSavedWalletTokens={hasSavedWalletTokens}
+          scanWalletForTokens={this.scanWalletForTokens}
+          setWalletTokens={this.props.setWalletTokens}
+          onAddCustomToken={this.props.addCustomToken}
+          onRemoveCustomToken={this.props.removeCustomToken}
+        />
+      );
+    }
 
     return (
       <section className="TokenBalances">
         <h5 className="TokenBalances-title">{translate('sidebar_TokenBal')}</h5>
-        <table className="TokenBalances-rows">
-          <tbody>
-            {shownTokens.map(token => (
-              <TokenRow
-                key={token.symbol}
-                balance={token.balance}
-                symbol={token.symbol}
-                custom={token.custom}
-                decimal={token.decimal}
-                onRemove={this.props.onRemoveCustomToken}
-              />
-            ))}
-          </tbody>
-        </table>
-
-        <div className="TokenBalances-buttons">
-          <button
-            className="btn btn-default btn-xs"
-            onClick={this.toggleShowAllTokens}
-          >
-            {!this.state.showAllTokens ? 'Show All Tokens' : 'Hide Tokens'}
-          </button>{' '}
-          <button
-            className="btn btn-default btn-xs"
-            onClick={this.toggleShowCustomTokenForm}
-          >
-            <span>{translate('SEND_custom')}</span>
-          </button>
-        </div>
-
-        {this.state.showCustomTokenForm && (
-          <div className="TokenBalances-form">
-            <AddCustomTokenForm onSave={this.addCustomToken} />
-          </div>
-        )}
+        {content}
       </section>
     );
   }
 
-  public toggleShowAllTokens = () => {
-    this.setState(state => {
-      return {
-        showAllTokens: !state.showAllTokens
-      };
-    });
-  };
-
-  public toggleShowCustomTokenForm = () => {
-    this.setState(state => {
-      return {
-        showCustomTokenForm: !state.showCustomTokenForm
-      };
-    });
-  };
-
-  public addCustomToken = (token: Token) => {
-    this.props.onAddCustomToken(token);
-    this.setState({ showCustomTokenForm: false });
+  private scanWalletForTokens = () => {
+    if (this.props.wallet) {
+      this.props.scanWalletForTokens(this.props.wallet);
+    }
   };
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    wallet: getWalletInst(state),
+    walletConfig: getWalletConfig(state),
+    tokens: getAllTokens(state),
+    tokenBalances: getTokenBalances(state),
+    tokensError: state.wallet.tokensError,
+    isTokensLoading: state.wallet.isTokensLoading,
+    hasSavedWalletTokens: state.wallet.hasSavedWalletTokens
+  };
+}
+
+export default connect(mapStateToProps, {
+  addCustomToken,
+  removeCustomToken,
+  scanWalletForTokens,
+  setWalletTokens
+})(TokenBalances);

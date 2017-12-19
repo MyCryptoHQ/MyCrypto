@@ -275,6 +275,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
             value={wallet.value}
             symbol={network.unit}
             displayShortBalance={true}
+            checkOffline={true}
           />
         </td>
         <td>
@@ -284,6 +285,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
               value={token.value}
               symbol={desiredToken}
               displayShortBalance={true}
+              checkOffline={true}
             />
           ) : (
             '???'

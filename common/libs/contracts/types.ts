@@ -20,10 +20,10 @@ export interface Input {
 export type Output = Input;
 
 /**
- * 
+ *
  * @export
  * @interface ABIFunction
- * @template T 
+ * @template T
  */
 export interface ContractOutputMappings {
   [key: string]: string[];

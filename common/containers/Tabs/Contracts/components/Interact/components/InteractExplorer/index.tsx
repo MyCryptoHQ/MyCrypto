@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractExplorer.scss';
-import Contract from 'libs/contracts';
-import { TTxModal } from 'containers/Tabs/Contracts/components/TxModal';
-import { TTxCompare } from 'containers/Tabs/Contracts/components/TxCompare';
-import WalletDecrypt from 'components/WalletDecrypt';
-import { TShowNotification } from 'actions/notifications';
-import classnames from 'classnames';
-import { isValidGasPrice, isValidValue } from 'libs/validators';
-import { UnitConverter } from 'components/renderCbs';
-import { getDecimal } from 'libs/units';
+import { TShowNotification, showNotification } from 'actions/notifications';
+import { Aux } from 'components/ui';
+import { getNodeLib } from 'selectors/config';
+import { getTo, getDataExists } from 'selectors/transaction';
+import { INode } from 'libs/nodes/INode';
+import { GenerateTransaction } from 'components/GenerateTransaction';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
+import { Fields } from './components';
+import { setDataField, TSetDataField } from 'actions/transaction';
+import { Data } from 'libs/units';
 
-export interface Props {
-  contractFunctions: any;
-  walletDecrypted: boolean;
-  address: Contract['address'];
-  gasLimit: string;
-  value: string;
-  txGenerated: boolean;
-  txModal: React.ReactElement<TTxModal> | null;
-  txCompare: React.ReactElement<TTxCompare> | null;
-  displayModal: boolean;
-  showNotification: TShowNotification;
-  toggleModal(): void;
-  handleInput(name: string): (ev) => void;
-  handleFunctionSend(selectedFunction, inputs): () => void;
+interface StateProps {
+  nodeLib: INode;
+  to: AppState['transaction']['fields']['to'];
+  dataExists: boolean;
 }
+interface DispatchProps {
+  showNotification: TShowNotification;
+  setDataField: TSetDataField;
+}
+interface OwnProps {
+  contractFunctions: any;
+}
+type Props = StateProps & DispatchProps & OwnProps;
 
 interface State {
   inputs: {
@@ -36,7 +36,7 @@ interface State {
   selectedFunctionName: string;
 }
 
-export default class InteractExplorer extends Component<Props, State> {
+class InteractExplorerClass extends Component<Props, State> {
   public static defaultProps: Partial<Props> = {
     contractFunctions: {}
   };
@@ -51,28 +51,22 @@ export default class InteractExplorer extends Component<Props, State> {
   public render() {
     const { inputs, outputs, selectedFunction, selectedFunctionName } = this.state;
 
-    const {
-      address,
-      displayModal,
-      handleInput,
-      handleFunctionSend,
-      gasLimit,
-      txGenerated,
-      txCompare,
-      txModal,
-      toggleModal,
-      value,
-      walletDecrypted
-    } = this.props;
-
-    const validValue = isValidValue(value);
-    const validGasLimit = isValidGasPrice(gasLimit);
-    const showContractWrite = validValue && validGasLimit;
+    const { to } = this.props;
+    const generateOrWriteButton = this.props.dataExists ? (
+      <GenerateTransaction />
+    ) : (
+      <button
+        className="InteractExplorer-func-submit btn btn-primary"
+        onClick={this.handleFunctionSend}
+      >
+        {translate('CONTRACT_Write')}
+      </button>
+    );
     return (
       <div className="InteractExplorer">
         <h3 className="InteractExplorer-title">
           {translate('CONTRACT_Interact_Title')}
-          <span className="InteractExplorer-title-address">{address}</span>
+          <span className="InteractExplorer-title-address">{to.raw}</span>
         </h3>
 
         <select
@@ -131,55 +125,13 @@ export default class InteractExplorer extends Component<Props, State> {
               >
                 {translate('CONTRACT_Read')}
               </button>
-            ) : !txGenerated ? (
-              <Aux>
-                <label className="InteractExplorer-field form-group">
-                  <h4 className="InteractExplorer-field-label">Gas Limit</h4>
-                  <input
-                    name="gasLimit"
-                    value={gasLimit}
-                    onChange={handleInput('gasLimit')}
-                    className={classnames('InteractExplorer-field-input', 'form-control', {
-                      'is-invalid': !validGasLimit
-                    })}
-                  />
-                </label>
-                <label className="InteractExplorer-field form-group">
-                  <h4 className="InteractExplorer-field-label">Value</h4>
-                  <UnitConverter decimal={getDecimal('ether')} onChange={handleInput('value')}>
-                    {({ convertedUnit, onUserInput }) => (
-                      <input
-                        name="value"
-                        value={convertedUnit}
-                        onChange={onUserInput}
-                        placeholder="0"
-                        className={classnames('InteractExplorer-field-input', 'form-control', {
-                          'is-invalid': !validValue
-                        })}
-                      />
-                    )}
-                  </UnitConverter>
-                </label>
-                <button
-                  className="InteractExplorer-func-submit btn btn-primary"
-                  disabled={!showContractWrite}
-                  onClick={handleFunctionSend(selectedFunction, inputs)}
-                >
-                  {translate('CONTRACT_Write')}
-                </button>
-              </Aux>
             ) : (
               <Aux>
-                {txCompare}
-                <button className="Deploy-submit btn btn-primary" onClick={toggleModal}>
-                  {translate('SEND_trans')}
-                </button>
+                <Fields button={generateOrWriteButton} />
               </Aux>
             )}
-            {<WalletDecrypt hidden={walletDecrypted} />}
           </div>
         )}
-        {displayModal && txModal}
       </div>
     );
   }
@@ -196,15 +148,21 @@ export default class InteractExplorer extends Component<Props, State> {
     });
   };
 
-  private handleFunctionCall = async (_: any) => {
+  private handleFunctionCall = async (_: React.FormEvent<HTMLButtonElement>) => {
     try {
-      const { selectedFunction, inputs } = this.state;
-      const parsedInputs = Object.keys(inputs).reduce(
-        (accu, key) => ({ ...accu, [key]: inputs[key].parsedData }),
-        {}
-      );
-      const results = await selectedFunction.call(parsedInputs);
-      this.setState({ outputs: results });
+      const data = this.encodeData();
+      const { nodeLib, to } = this.props;
+      const { selectedFunction } = this.state;
+
+      if (!to.value) {
+        throw Error();
+      }
+
+      const callData = { to: to.raw, data };
+      const results = await nodeLib.sendCallRequest(callData);
+
+      const parsedResult = selectedFunction.decodeOutput(results);
+      this.setState({ outputs: parsedResult });
     } catch (e) {
       this.props.showNotification(
         'warning',
@@ -214,11 +172,24 @@ export default class InteractExplorer extends Component<Props, State> {
     }
   };
 
-  private handleFunctionSelect = (ev: any) => {
-    const { contractFunctions } = this.props;
+  private handleFunctionSend = (_: React.FormEvent<HTMLButtonElement>) => {
+    try {
+      const data = this.encodeData();
+      this.props.setDataField({ raw: data, value: Data(data) });
+    } catch (e) {
+      this.props.showNotification(
+        'danger',
+        `Function send error: ${(e as Error).message}` || 'Invalid input parameters',
+        5000
+      );
+    }
+  };
 
-    const selectedFunctionName = ev.target.value;
+  private handleFunctionSelect = (ev: React.FormEvent<HTMLSelectElement>) => {
+    const { contractFunctions } = this.props;
+    const selectedFunctionName = ev.currentTarget.value;
     const selectedFunction = contractFunctions[selectedFunctionName];
+
     this.setState({
       selectedFunction,
       selectedFunctionName,
@@ -226,6 +197,16 @@ export default class InteractExplorer extends Component<Props, State> {
       inputs: {}
     });
   };
+
+  private encodeData(): string {
+    const { selectedFunction, inputs } = this.state;
+    const parsedInputs = Object.keys(inputs).reduce(
+      (accu, key) => ({ ...accu, [key]: inputs[key].parsedData }),
+      {}
+    );
+    const data = selectedFunction.encodeInput(parsedInputs);
+    return data;
+  }
 
   private tryParseJSON(input: string) {
     try {
@@ -235,8 +216,8 @@ export default class InteractExplorer extends Component<Props, State> {
     }
   }
 
-  private handleInputChange = (ev: any) => {
-    const rawValue: string = ev.target.value;
+  private handleInputChange = (ev: React.FormEvent<HTMLInputElement>) => {
+    const rawValue: string = ev.currentTarget.value;
     const isArr = rawValue.startsWith('[') && rawValue.endsWith(']');
 
     const value = {
@@ -246,9 +227,17 @@ export default class InteractExplorer extends Component<Props, State> {
     this.setState({
       inputs: {
         ...this.state.inputs,
-        [ev.target.name]: value
+        [ev.currentTarget.name]: value
       }
     });
   };
 }
-const Aux = ({ children }) => children;
+
+export const InteractExplorer = connect(
+  (state: AppState) => ({
+    nodeLib: getNodeLib(state),
+    to: getTo(state),
+    dataExists: getDataExists(state)
+  }),
+  { showNotification, setDataField }
+)(InteractExplorerClass);
