@@ -97,8 +97,8 @@ interface ReduxActionProps {
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
-    this.props.loadShapeshiftRatesRequestedSwap();
     this.props.loadBityRatesRequestedSwap();
+    this.props.loadShapeshiftRatesRequestedSwap();
   }
 
   public componentWillUnmount() {

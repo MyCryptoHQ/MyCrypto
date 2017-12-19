@@ -13,7 +13,7 @@ import shapeshift from 'api/shapeshift';
 import { getSwap } from 'sagas/swap/orders';
 
 const POLLING_CYCLE = 30000;
-const SHAPESHIFT_TIMEOUT = 20000;
+const SHAPESHIFT_TIMEOUT = 10000;
 
 export function* loadBityRates(): SagaIterator {
   while (true) {
@@ -40,11 +40,12 @@ export function* loadShapeshiftRates(): SagaIterator {
       if (tokens) {
         yield put(loadShapeshiftRatesSucceededSwap(tokens));
       } else {
-        put(showNotification('danger', 'Error loading ShapeShift tokens - reverting to Bity'));
+        yield put(
+          showNotification('danger', 'Error loading ShapeShift tokens - reverting to Bity')
+        );
       }
     } catch (error) {
-      // SWAP_STOP_LOAD_SHAPESHIFT_RATES
-      put(showNotification('danger', `Error loading ShapeShift tokens - ${error}`));
+      yield put(showNotification('danger', `Error loading ShapeShift tokens - ${error}`));
     }
     yield call(delay, POLLING_CYCLE);
   }

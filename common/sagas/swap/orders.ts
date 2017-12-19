@@ -17,6 +17,7 @@ import {
   startPollShapeshiftOrderStatus,
   stopPollShapeshiftOrderStatus,
   bityOrderStatusRequested,
+  stopOrderTimerSwap,
   bityOrderStatusSucceededSwap,
   shapeshiftOrderStatusRequested,
   loadShapeshiftRatesRequestedSwap
@@ -221,7 +222,41 @@ export function* orderTimeRemaining(): SagaIterator {
         const duration = moment.duration(validUntil.diff(now));
         const seconds = duration.asSeconds();
         yield put(orderTimeSwap(parseInt(seconds.toString(), 10)));
-        // TODO (!Important) - check orderStatus here and stop polling / show notifications based on status
+        if (swap.provider === 'shapeshift') {
+          switch (swap.shapeshiftOrderStatus) {
+            case 'failed':
+              yield put(stopPollShapeshiftOrderStatus());
+              yield put(stopLoadShapeshiftRatesSwap());
+              yield put(stopOrderTimerSwap());
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+              }
+              break;
+            case 'complete':
+              yield put(stopPollShapeshiftOrderStatus());
+              yield put(stopLoadShapeshiftRatesSwap());
+              yield put(stopOrderTimerSwap());
+              break;
+          }
+        } else {
+          switch (swap.bityOrderStatus) {
+            case 'CANC':
+              yield put(stopPollBityOrderStatus());
+              yield put(stopLoadBityRatesSwap());
+              yield put(stopOrderTimerSwap());
+              if (!hasShownNotification) {
+                hasShownNotification = true;
+                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+              }
+              break;
+            case 'FILL':
+              yield put(stopPollBityOrderStatus());
+              yield put(stopLoadBityRatesSwap());
+              yield put(stopOrderTimerSwap());
+              break;
+          }
+        }
       } else {
         if (swap.provider === 'shapeshift') {
           switch (swap.shapeshiftOrderStatus) {
@@ -251,6 +286,7 @@ export function* orderTimeRemaining(): SagaIterator {
             case 'complete':
               yield put(stopPollShapeshiftOrderStatus());
               yield put(stopLoadShapeshiftRatesSwap());
+              yield put(stopOrderTimerSwap());
               break;
           }
         } else {
@@ -281,10 +317,17 @@ export function* orderTimeRemaining(): SagaIterator {
             case 'FILL':
               yield put(stopPollBityOrderStatus());
               yield put(stopLoadBityRatesSwap());
+              yield put(stopOrderTimerSwap());
               break;
           }
         }
       }
     }
   }
+}
+
+export function* handleOrderTimeRemaining(): SagaIterator {
+  const orderTimeRemainingTask = yield fork(orderTimeRemaining);
+  yield take(TypeKeys.SWAP_ORDER_STOP_TIMER);
+  yield cancel(orderTimeRemainingTask);
 }

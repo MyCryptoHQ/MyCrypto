@@ -50,7 +50,7 @@ export default class SwapProgress extends Component<Props, State> {
           link = bityConfig.ETHTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
-              ${notificationMessage}
+              {notificationMessage}
             </a>
           );
           // BTC uses a different explorer
@@ -58,7 +58,7 @@ export default class SwapProgress extends Component<Props, State> {
           link = bityConfig.BTCTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
-              ${notificationMessage}
+              {notificationMessage}
             </a>
           );
         }
