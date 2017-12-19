@@ -21,16 +21,10 @@ export interface IAuction {
   ens: ABIFuncParamless<{ ensAddress: address }>;
   unsealBid: ABIFunc<{ _hash: bytes32; _value: uint256; _salt: bytes32 }>;
   transferRegistrars: ABIFunc<{ _hash: bytes32 }>;
-  sealedBids: ABIFunc<
-    { address_0: address; bytes32_1: bytes32 },
-    { deedAddress: address }
-  >;
+  sealedBids: ABIFunc<{ address_0: address; bytes32_1: bytes32 }, { deedAddress: address }>;
   state: ABIFunc<{ _hash: bytes32 }, { state: uint8 }>;
   transfer: ABIFunc<{ _hash: bytes32; newOwner: address }>;
-  isAllowed: ABIFunc<
-    { _hash: bytes32; _timestamp: uint256 },
-    { allowed: bool }
-  >;
+  isAllowed: ABIFunc<{ _hash: bytes32; _timestamp: uint256 }, { allowed: bool }>;
   finalizeAuction: ABIFunc<{ _hash: bytes32 }>;
   registryStarted: ABIFuncParamless<{ registryStartDate: uint256 }>;
   launchLength: ABIFuncParamless<{ launchLength: uint32 }>;

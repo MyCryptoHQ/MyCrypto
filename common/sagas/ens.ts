@@ -1,8 +1,4 @@
-import {
-  ResolveDomainRequested,
-  resolveDomainFailed,
-  resolveDomainSucceeded
-} from 'actions/ens';
+import { ResolveDomainRequested, resolveDomainFailed, resolveDomainSucceeded } from 'actions/ens';
 import { TypeKeys } from 'actions/ens/constants';
 import { SagaIterator } from 'redux-saga';
 import { INode } from 'libs/nodes/INode';
@@ -15,11 +11,7 @@ function* resolveDomain(action: ResolveDomainRequested): SagaIterator {
   const { domain } = action.payload;
   const node: INode = yield select(getNodeLib);
   try {
-    const domainData: DomainRequest = yield call(
-      resolveDomainRequest,
-      domain,
-      node
-    );
+    const domainData: DomainRequest = yield call(resolveDomainRequest, domain, node);
     const domainSuccessAction = resolveDomainSucceeded(domain, domainData);
     yield put(domainSuccessAction);
   } catch (e) {

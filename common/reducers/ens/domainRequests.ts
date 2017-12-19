@@ -24,10 +24,7 @@ enum REQUEST_STATES {
   failed = 'FAILED'
 }
 
-const resolveDomainRequested = (
-  state: State,
-  action: ResolveDomainRequested
-): State => {
+const resolveDomainRequested = (state: State, action: ResolveDomainRequested): State => {
   const { domain } = action.payload;
   const nextDomain = {
     state: REQUEST_STATES.pending
@@ -36,10 +33,7 @@ const resolveDomainRequested = (
   return { ...state, [domain]: nextDomain };
 };
 
-const resolveDomainSuccess = (
-  state: State,
-  action: ResolveDomainSucceeded
-): State => {
+const resolveDomainSuccess = (state: State, action: ResolveDomainSucceeded): State => {
   const { domain, domainData } = action.payload;
   const nextDomain = {
     data: domainData,
@@ -49,10 +43,7 @@ const resolveDomainSuccess = (
   return { ...state, [domain]: nextDomain };
 };
 
-const resolveDomainFailed = (
-  state: State,
-  action: ResolveDomainFailed
-): State => {
+const resolveDomainFailed = (state: State, action: ResolveDomainFailed): State => {
   const { domain, error } = action.payload;
   const nextDomain = {
     error: true,

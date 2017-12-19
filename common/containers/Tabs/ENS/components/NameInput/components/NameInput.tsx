@@ -16,9 +16,7 @@ class ENSNameInput extends React.Component<Props, {}> {
           <div className="input-group">
             <input
               className={`form-control ${
-                domainToCheck === ''
-                  ? ''
-                  : isValidDomain ? 'is-valid' : 'is-invalid'
+                domainToCheck === '' ? '' : isValidDomain ? 'is-valid' : 'is-invalid'
               }`}
               type="text"
               placeholder="myetherwallet"

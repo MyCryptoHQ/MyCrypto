@@ -5,9 +5,7 @@ const lookupLink = name => `https://etherscan.io/enslookup?q=${name}`;
 
 type ChildrenProps = any;
 
-const MonoTd = ({ children }: ChildrenProps) => (
-  <td className="mono">{children}</td>
-);
+const MonoTd = ({ children }: ChildrenProps) => <td className="mono">{children}</td>;
 
 export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
   highestBid,
@@ -25,10 +23,7 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
         <tr>
           <td>Name: </td>
           <MonoTd>
-            <NewTabLink
-              content={`${name}.eth`}
-              href={lookupLink(`${name}.eth`)}
-            />
+            <NewTabLink content={`${name}.eth`} href={lookupLink(`${name}.eth`)} />
           </MonoTd>
         </tr>
         <tr>

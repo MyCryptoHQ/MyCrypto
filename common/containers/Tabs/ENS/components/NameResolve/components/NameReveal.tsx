@@ -12,7 +12,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
         It's time to reveal the bids for <strong>{props.name}.eth.</strong>{' '}
       </p>
       <p>
-        Current Highest bid is {' '}
+        Current Highest bid is{' '}
         <strong>
           <UnitDisplay
             value={Wei(props.highestBid)}
@@ -25,9 +25,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     </h1>
     <EnsTime text="Auction closes on" time={+props.registrationDate * 1000} />
 
-    <ENSWallet
-      text={`Did you you bid on ${props.name}.eth? You must reveal your bid now.`}
-    >
+    <ENSWallet text={`Did you you bid on ${props.name}.eth? You must reveal your bid now.`}>
       {wallet => {
         return <p> Placeholder: {JSON.stringify(wallet)} </p>;
       }}

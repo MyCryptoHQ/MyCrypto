@@ -64,10 +64,7 @@ export interface IRevealDomainRequest extends IBaseDomainRequest {
   ownerAddress: string;
 }
 
-export type DomainRequest =
-  | IOwnedDomainRequest
-  | IRevealDomainRequest
-  | IBaseDomainRequest;
+export type DomainRequest = IOwnedDomainRequest | IRevealDomainRequest | IBaseDomainRequest;
 
 interface IDomainData<Mode> {
   mode: Mode;
@@ -167,29 +164,20 @@ const modeMap: IModeMap = {
     let resolvedAddress = '0x0';
 
     if (resolverAddress !== '0x0') {
-      const { ret } = await ENS.resolver
-        .at(resolverAddress)
-        .addr.call({ node: hash });
+      const { ret } = await ENS.resolver.at(resolverAddress).addr.call({ node: hash });
       resolvedAddress = ret;
     }
 
     return { ownerAddress, resolvedAddress };
   },
   [NameState.Forbidden]: (_: IDomainData<NameState.Forbidden>) => ({}),
-  [NameState.Reveal]: async ({
-    deedAddress
-  }: IDomainData<NameState.Reveal>) => ({
+  [NameState.Reveal]: async ({ deedAddress }: IDomainData<NameState.Reveal>) => ({
     ownerAddress: await ENS.deed.at(deedAddress).owner.call()
   }),
-  [NameState.NotYetAvailable]: (
-    _: IDomainData<NameState.NotYetAvailable>
-  ) => ({})
+  [NameState.NotYetAvailable]: (_: IDomainData<NameState.NotYetAvailable>) => ({})
 };
 
-export const resolveDomainRequest = async (
-  name: string,
-  node: INode
-): Promise<DomainRequest> => {
+export const resolveDomainRequest = async (name: string, node: INode): Promise<DomainRequest> => {
   setNodes(node);
   const hash = ethUtil.sha3(name);
   const nameHash = getNameHash(`${name}.eth`);

@@ -12,10 +12,7 @@ const getDeadlines = (registrationDate: string) => {
   return { auctionCloseTime, revealBidTime };
 };
 
-export const NameAuction: React.SFC<IBaseDomainRequest> = ({
-  registrationDate,
-  name
-}) => {
+export const NameAuction: React.SFC<IBaseDomainRequest> = ({ registrationDate, name }) => {
   const { auctionCloseTime, revealBidTime } = getDeadlines(registrationDate);
   return (
     <section className="row">
@@ -29,9 +26,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({
       <section className="col-sm-6 col-xs-12 order-info">
         <EnsTime text="Auction Closes On" time={auctionCloseTime} />
       </section>
-      <ENSWallet
-        text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}
-      >
+      <ENSWallet text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}>
         {wallet => {
           return <p> Placeholder: {JSON.stringify(wallet)} </p>;
         }}

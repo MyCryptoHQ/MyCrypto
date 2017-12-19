@@ -39,9 +39,7 @@ class CountDown extends Component<Props, State> {
     timeRemaining -= minutes * minute;
     const seconds = floorTime(second);
 
-    return `${pad(days)} Days ${pad(hours)} Hours ${pad(minutes)} Minutes ${pad(
-      seconds
-    )} Seconds `;
+    return `${pad(days)} Days ${pad(hours)} Hours ${pad(minutes)} Minutes ${pad(seconds)} Seconds `;
   };
 
   private startCountDown = () => {
