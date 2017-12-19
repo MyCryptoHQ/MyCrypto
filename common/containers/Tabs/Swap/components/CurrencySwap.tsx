@@ -14,9 +14,9 @@ import bityConfig, {
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
-import { Dropdown, SwapDropdown } from 'components/ui';
+import { SwapDropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { without, merge, pickBy, reject } from 'lodash';
+import { merge, reject } from 'lodash';
 import './CurrencySwap.scss';
 
 export interface StateProps {

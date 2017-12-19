@@ -8,7 +8,7 @@ import {
   BityOrderOutput,
   BityOrderResponse,
   changeStepSwap,
-  orderStatusRequestedSwap,
+  bityOrderStatusRequested,
   bityOrderStatusSucceededSwap,
   orderTimeSwap,
   startOrderTimerSwap,
@@ -84,8 +84,8 @@ describe('pollBityOrderStatus*', () => {
     expect(data.gen.next().value).toEqual(select(getSwap));
   });
 
-  it('should put orderStatusRequestedSwap', () => {
-    expect(data.gen.next(fakeSwap).value).toEqual(put(orderStatusRequestedSwap()));
+  it('should put bityOrderStatusRequestedSwap', () => {
+    expect(data.gen.next(fakeSwap).value).toEqual(put(bityOrderStatusRequested()));
   });
 
   it('should call getOrderStatus with swap.orderId', () => {
@@ -120,7 +120,7 @@ describe('pollBityOrderStatus*', () => {
   });
 
   it('should restart loop', () => {
-    expect(data.gen.next(fakeSwap).value).toEqual(put(orderStatusRequestedSwap()));
+    expect(data.gen.next(fakeSwap).value).toEqual(put(bityOrderStatusRequested()));
   });
 });
 
