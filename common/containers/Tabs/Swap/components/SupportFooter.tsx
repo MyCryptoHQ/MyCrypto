@@ -37,10 +37,13 @@ class SupportFooter extends React.Component<Props, {}> {
         ? 'support@myetherwallet.com'
         : 'support@myetherwallet.com,mew@bity.com';
     const mailSubject = encodeURI('Issue regarding my Swap via MEW');
+    const serviceProvider = provider.charAt(0).toUpperCase() + provider.slice(1);
     let mailBody;
     let fallbackBody;
     if (pair && rates[pair]) {
-      mailBody = encodeURI(`Please include the below if this issue is regarding your order. 
+      mailBody = encodeURI(`Please include the below if this issue is regarding your order.
+
+Provider: ${serviceProvider}
 
 REF ID#: ${reference || ''}
 
@@ -57,6 +60,7 @@ Rate: ${rates[pair].rate} ${origin.id}/${destination.id}
       fallbackBody = `To: ${emailTo}
 Subject: Issue regarding my Swap via MEW
 Message:
+Provider: ${serviceProvider}
 REF ID#: ${reference || ''}
 Amount to send: ${origin.amount || ''} ${origin.id}
 Amount to receive: ${destination.amount || ''} ${destination.id}
