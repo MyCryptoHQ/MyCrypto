@@ -95,12 +95,12 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         options: {
           byId: Object.assign(
             {},
-            state.options.byId,
-            normalize(action.payload, [schema.providerRate]).entities.options
+            normalize(action.payload, [schema.providerRate]).entities.options,
+            state.options.byId
           ),
           allIds: [
-            ...state.options.allIds,
-            ...schema.allIds(normalize(action.payload, [schema.providerRate]).entities.options)
+            ...schema.allIds(normalize(action.payload, [schema.providerRate]).entities.options),
+            ...state.options.allIds
           ]
         },
         isFetchingRates: false
@@ -149,7 +149,6 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         ...state,
         isPostingOrder: false
       };
-    // TODO - fix bad naming
     case TypeKeys.SWAP_BITY_ORDER_CREATE_SUCCEEDED:
       return {
         ...state,

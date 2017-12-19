@@ -93,7 +93,7 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
           {/*Amount to Receive*/}
           <div className={this.computedClass()}>
             <h3 className="SwapInfo-details-block-value">
-              {` ${destination.amount} ${destination.id}`}
+              {` ${toFixedIfLarger(destination.amount, 4)} ${destination.id}`}
             </h3>
             <p className="SwapInfo-details-block-label">{translate('SWAP_rec_amt')}</p>
           </div>
@@ -102,7 +102,7 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
           <div className={this.computedClass()}>
             <h3 className="SwapInfo-details-block-value">
               {`${computedOriginDestinationRatio &&
-                toFixedIfLarger(computedOriginDestinationRatio)} ${destination.id}/${origin.id}`}
+                toFixedIfLarger(computedOriginDestinationRatio, 4)} ${destination.id}/${origin.id}`}
             </h3>
             <p className="SwapInfo-details-block-label">{translate('SWAP_your_rate')}</p>
           </div>
