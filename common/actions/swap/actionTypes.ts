@@ -24,6 +24,8 @@ export interface InitSwap {
 
 export interface Option {
   id: string;
+  status?: string;
+  image?: string;
 }
 
 export interface ApiResponseObj {

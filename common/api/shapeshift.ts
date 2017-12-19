@@ -61,11 +61,72 @@ class ShapeshiftService {
       .then(parseJSON);
   }
 
+  public getCoins() {
+    return fetch(`${this.url}/getcoins`)
+      .then(checkHttpStatus)
+      .then(parseJSON);
+  }
+
   public getAllRates = async () => {
     const marketInfo = await this.getMarketInfo();
-    const mappedRates = this.mapMarketInfo(marketInfo);
+    const pairRates = await this.getPairRates(marketInfo);
+    const checkAvl = await this.checkAvl(pairRates);
+    const mappedRates = this.mapMarketInfo(checkAvl);
     return mappedRates;
   };
+
+  private getPairRates(marketInfo) {
+    const filteredMarketInfo = marketInfo.filter(obj => {
+      const { pair } = obj;
+      const pairArr = pair.split('_');
+      return this.whitelist.includes(pairArr[0]) && this.whitelist.includes(pairArr[1])
+        ? true
+        : false;
+    });
+    const pairRates = filteredMarketInfo.map(p => {
+      const { pair } = p;
+      const singlePair = Promise.resolve(this.getSinglePairRate(pair));
+      return { ...p, ...singlePair };
+    });
+    return pairRates;
+  }
+  private async checkAvl(pairRates) {
+    const avlCoins = await this.getAvlCoins();
+    const mapAvl = pairRates.map(p => {
+      const { pair } = p;
+      const pairArr = pair.split('_');
+
+      if (pairArr[0] in avlCoins && pairArr[1] in avlCoins) {
+        return {
+          ...p,
+          ...{
+            [pairArr[0]]: {
+              name: avlCoins[pairArr[0]].name,
+              status: avlCoins[pairArr[0]].status,
+              image: avlCoins[pairArr[0]].image
+            },
+            [pairArr[1]]: {
+              name: avlCoins[pairArr[1]].name,
+              status: avlCoins[pairArr[1]].status,
+              image: avlCoins[pairArr[1]].image
+            }
+          }
+        };
+      }
+    });
+    return mapAvl;
+  }
+  private getAvlCoins() {
+    return fetch(`${this.url}/getcoins`)
+      .then(checkHttpStatus)
+      .then(parseJSON);
+  }
+
+  private getSinglePairRate(pair) {
+    return fetch(`${this.url}/rate/${pair}`)
+      .then(checkHttpStatus)
+      .then(parseJSON);
+  }
   private getMarketInfo() {
     return fetch(`${this.url}/marketinfo`)
       .then(checkHttpStatus)
@@ -84,7 +145,20 @@ class ShapeshiftService {
         const { rate, limit, min } = m;
         tokenMap[pairName] = {
           id: pairName,
-          options: [{ id: originKind }, { id: destinationKind }],
+          options: [
+            {
+              id: originKind,
+              status: m[originKind].status,
+              image: m[originKind].image,
+              name: m[originKind].name
+            },
+            {
+              id: destinationKind,
+              status: m[destinationKind].status,
+              image: m[destinationKind].image,
+              name: m[destinationKind].name
+            }
+          ],
           rate,
           limit,
           min

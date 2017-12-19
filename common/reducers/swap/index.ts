@@ -73,12 +73,12 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         options: {
           byId: Object.assign(
             {},
-            state.options.byId,
-            normalize(payload, [schema.providerRate]).entities.options
+            normalize(payload, [schema.providerRate]).entities.options,
+            state.options.byId
           ),
           allIds: [
-            ...state.options.allIds,
-            ...schema.allIds(normalize(payload, [schema.providerRate]).entities.options)
+            ...schema.allIds(normalize(payload, [schema.providerRate]).entities.options),
+            ...state.options.allIds
           ]
         },
         isFetchingRates: false
@@ -86,7 +86,6 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
     case TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED:
       return {
         ...state,
-        // modify to shapeshift normalization schema
         shapeshiftRates: {
           byId: normalize(action.payload, [schema.providerRate]).entities.providerRates,
           allIds: schema.allIds(
@@ -96,12 +95,12 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
         options: {
           byId: Object.assign(
             {},
-            normalize(action.payload, [schema.providerRate]).entities.options,
-            state.options.byId
+            state.options.byId,
+            normalize(action.payload, [schema.providerRate]).entities.options
           ),
           allIds: [
-            ...schema.allIds(normalize(action.payload, [schema.providerRate]).entities.options),
-            ...state.options.allIds
+            ...state.options.allIds,
+            ...schema.allIds(normalize(action.payload, [schema.providerRate]).entities.options)
           ]
         },
         isFetchingRates: false

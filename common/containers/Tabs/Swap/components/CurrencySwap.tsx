@@ -14,11 +14,10 @@ import bityConfig, {
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
-import { Dropdown } from 'components/ui';
+import { Dropdown, SwapDropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { without, merge, intersection } from 'lodash';
+import { without, merge, pickBy, reject } from 'lodash';
 import './CurrencySwap.scss';
-import shapeshift from 'api/shapeshift';
 
 export interface StateProps {
   bityRates: NormalizedBityRates;
@@ -37,8 +36,8 @@ interface State {
   disabled: boolean;
   origin: SwapInput;
   destination: SwapInput;
-  originKindOptions: string[];
-  destinationKindOptions: string[];
+  originKindOptions: any[];
+  destinationKindOptions: any[];
   originErr: string;
   destinationErr: string;
 }
@@ -50,8 +49,8 @@ export default class CurrencySwap extends Component<Props, State> {
     disabled: true,
     origin: { id: 'BTC', amount: NaN } as SwapInput,
     destination: { id: 'ETH', amount: NaN } as SwapInput,
-    originKindOptions: shapeshift.whitelist,
-    destinationKindOptions: shapeshift.whitelist,
+    originKindOptions: [],
+    destinationKindOptions: [],
     originErr: '',
     destinationErr: ''
   };
@@ -82,15 +81,13 @@ export default class CurrencySwap extends Component<Props, State> {
       }
     }
 
-    if (options.allIds !== prevProps.options.allIds) {
-      const originKindOptions: SupportedDestinationKind[] = intersection<any>(
-        options.allIds,
-        shapeshift.whitelist
+    if (options.allIds !== prevProps.options.allIds && options.byId) {
+      // const avlOptions = pickBy(options.byId, (value, _) => value.status === 'available')
+      const originKindOptions: any[] = Object.values(options.byId);
+      const destinationKindOptions: any[] = Object.values(
+        reject<any>(options.byId, o => o.id === origin.id)
       );
-      const destinationKindOptions: SupportedDestinationKind[] = without<any>(
-        originKindOptions,
-        origin.id
-      );
+
       this.setState({
         originKindOptions,
         destinationKindOptions
@@ -270,8 +267,8 @@ export default class CurrencySwap extends Component<Props, State> {
       originErr,
       destinationErr
     } = this.state;
-    const OriginKindDropDown = Dropdown as new () => Dropdown<any>;
-    const DestinationKindDropDown = Dropdown as new () => Dropdown<any>;
+    const OriginKindDropDown = SwapDropdown as new () => SwapDropdown<any>;
+    const DestinationKindDropDown = SwapDropdown as new () => SwapDropdown<any>;
     const pairName = combineAndUpper(origin.id, destination.id);
     const bityLoaded = bityRates.byId && bityRates.byId[pairName];
     const shapeshiftLoaded =
@@ -301,13 +298,19 @@ export default class CurrencySwap extends Component<Props, State> {
               />
               <div className="CurrencySwap-dropdown">
                 <OriginKindDropDown
+                  ariaLabel={`change origing kind. current origin kind ${origin.id}`}
+                  options={originKindOptions}
+                  value={origin.id}
+                  onChange={this.onChangeOriginKind}
+                />
+                {/* <OriginKindDropDown
                   ariaLabel={`change origin kind. current origin kind ${origin.id}`}
                   options={originKindOptions}
                   value={origin.id}
                   onChange={this.onChangeOriginKind}
                   size="smr"
                   color="default"
-                />
+                /> */}
               </div>
             </div>
             <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
@@ -332,8 +335,6 @@ export default class CurrencySwap extends Component<Props, State> {
                   options={destinationKindOptions}
                   value={destination.id}
                   onChange={this.onChangeDestinationKind}
-                  size="smr"
-                  color="default"
                 />
               </div>
             </div>
