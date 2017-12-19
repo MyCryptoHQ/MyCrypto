@@ -15,7 +15,7 @@ interface IQueryResults {
 
 export type Param = 'to' | 'data' | 'readOnly' | 'tokenSymbol' | 'value' | 'gaslimit' | 'limit';
 
-interface Props {
+interface Props extends RouteComponentProps<{}> {
   params: Param[];
   withQuery(query: IQueryResults): React.ReactElement<any> | null;
 }
@@ -24,15 +24,10 @@ interface Query {
   [key: string]: string;
 }
 
-export const Query = withRouter(
+export const Query = withRouter<Props>(
   class extends React.Component<Props, {}> {
-    get injected() {
-      return this.props as Props & RouteComponentProps<any>;
-    }
-
     public render() {
-      const { withQuery, params } = this.props;
-      const { location } = this.injected;
+      const { withQuery, params, location } = this.props;
       const query = parse(location);
       const res = params.reduce((obj, param) => ({ ...obj, [param]: getParam(query, param) }), {});
 

@@ -39,22 +39,25 @@ npm run dev:https
 ```
 
 #### Address Derivation Checker:
+
 EthereumJS-Util previously contained a bug that would incorrectly derive addresses from private keys with a 1/128 probability of occurring. A summary of this issue can be found [here](https://www.reddit.com/r/ethereum/comments/48rt6n/using_myetherwalletcom_just_burned_me_for/d0m4c6l/).
 
-As a reactionary measure, the address derivation checker was created. 
+As a reactionary measure, the address derivation checker was created.
 
 To test for correct address derivation, the address derivation checker uses multiple sources of address derivation (EthereumJS and PyEthereum) to ensure that multiple official implementations derive the same address for any given private key.
 
 ##### The derivation checker utility assumes that you have:
+
 1. Docker installed/available
 2. [dternyak/eth-priv-to-addr](https://hub.docker.com/r/dternyak/eth-priv-to-addr/) pulled from DockerHub
 
 ##### Docker setup instructions:
+
 1. Install docker (on macOS, [Docker for Mac](https://docs.docker.com/docker-for-mac/) is suggested)
 2. `docker pull dternyak/eth-priv-to-addr`
 
-
 ##### Run Derivation Checker
+
 The derivation checker utility runs as part of the integration test suite.
 
 ```bash
@@ -83,7 +86,6 @@ npm run test:int
 ## Style Guides and Philosophies
 
 The following are guides for developers to follow for writing compliant code.
-
 
 ### Redux and Actions
 
@@ -116,7 +118,7 @@ export function [namespace](
 			return {
 				...state,
 				// Alterations to state
-			};		  
+			};
 		default:
 			return state;
 	}
@@ -124,11 +126,12 @@ export function [namespace](
 ```
 
 #### Actions
+
 * Define each action creator in `actionCreator.ts`
 * Define each action object type in `actionTypes.ts`
-    * Export a union of all of the action types for use by the reducer
-* Define each action type as a string enum in `constants.ts`  
-* Export `actionCreators` and `actionTypes` from module file `index.ts`  
+  * Export a union of all of the action types for use by the reducer
+* Define each action type as a string enum in `constants.ts`
+* Export `actionCreators` and `actionTypes` from module file `index.ts`
 
 ```
 ├── common
@@ -139,27 +142,30 @@ export function [namespace](
             ├── constants.ts - string enum
             ├── index.ts - exports all action creators and action object types
 ```
+
 ##### constants.ts
+
 ```ts
 export enum TypeKeys {
   NAMESPACE_NAME_OF_ACTION = 'NAMESPACE_NAME_OF_ACTION'
 }
 ```
+
 ##### actionTypes.ts
+
 ```ts
 /*** Name of action ***/
 export interface NameOfActionAction {
-	type: TypeKeys.NAMESPACE_NAME_OF_ACTION,
-	/* Rest of the action object shape */
-};
+  type: TypeKeys.NAMESPACE_NAME_OF_ACTION;
+  /* Rest of the action object shape */
+}
 
 /*** Action Union ***/
-export type NamespaceAction =
-	| ActionOneAction
-	| ActionTwoAction
-	| ActionThreeAction;
+export type NamespaceAction = ActionOneAction | ActionTwoAction | ActionThreeAction;
 ```
+
 ##### actionCreators.ts
+
 ```ts
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
@@ -172,7 +178,9 @@ export function nameOfAction(): interfaces.NameOfActionAction {
 	};
 };
 ```
+
 ##### index.ts
+
 ```ts
 export * from './actionCreators';
 export * from './actionTypes';
@@ -215,60 +223,34 @@ conditional render.)
 ### Higher Order Components
 
 #### Typing Injected Props
-Props made available through higher order components can be tricky to type. Normally, if a component requires a prop, you add it to the component's interface and it just works. However, working with injected props from [higher order components](https://medium.com/@DanHomola/react-higher-order-components-in-typescript-made-simple-6f9b55691af1), you will be forced to supply all required props whenever you compose the component.  
+
+Props made available through higher order components can be tricky to type. You can inherit the injected props, and in the case of react router, specialize the generic in `withRouter` so it can omit all of its injected props from the component.
 
 ```ts
-interface MyComponentProps {
-  name: string;
-  countryCode?: string;
-  routerLocation: { pathname: string };
-}
+import { RouteComponentProps } from 'react-router-dom';
 
-...
-
-class OtherComponent extends React.Component<{}, {}> {
-  render() {
-    return (
-      <MyComponent
-        name="foo"
-        countryCode="CA"
-        // Error: 'routerLocation' is missing!
-        />
-    );
-  }
-```
-
-Instead of tacking the injected props on the MyComponentProps interface, put them in another interface called `InjectedProps`:
-
-```ts
-interface MyComponentProps {
+interface MyComponentProps extends RouteComponentProps<{}> {
   name: string;
   countryCode?: string;
 }
-
-interface InjectedProps  {
-  routerLocation: { pathname: string };
-}
 ```
-
-Now add a [getter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) to cast `this.props` as the original props - `MyComponentProps` and the injected props - `InjectedProps`:
 
 ```ts
 class MyComponent extends React.Component<MyComponentProps, {}> {
-  get injected() {
-    return this.props as MyComponentProps & InjectedProps;
-  }
 
   render() {
-    const { name, countryCode, routerLocation } = this.props;
+    const { name, countryCode, location } = this.props; // location being the one of the injected props from the withRouter HOC
     ...
   }
 }
+
+export default withRouter<Props>(MyComponent);
 ```
 
 ## Event Handlers
 
 Event handlers such as `onChange` and `onClick`, should be properly typed. For example, if you have an event listener on an input element inside a form:
+
 ```ts
 public onValueChange = (e: React.FormEvent<HTMLInputElement>) => {
     if (this.props.onChange) {
@@ -279,6 +261,7 @@ public onValueChange = (e: React.FormEvent<HTMLInputElement>) => {
     }
   };
 ```
+
 Where you type the event as a `React.FormEvent` of type `HTML<TYPE>Element`.
 
 ## Class names
@@ -292,18 +275,18 @@ However, going forward, each styled component should create a a `.scss` file of
 the same name in the same folder, and import it like so:
 
 ```ts
-import React from "react";
+import React from 'react';
 
-import "./MyComponent.scss";
+import './MyComponent.scss';
 
 export default class MyComponent extends React.component<{}, {}> {
-	render() {
-		return (
-			<div className="MyComponent">
-				<div className="MyComponent-child">Hello!</div>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="MyComponent">
+        <div className="MyComponent-child">Hello!</div>
+      </div>
+    );
+  }
 }
 ```
 
@@ -311,15 +294,15 @@ These style modules adhere to [SuitCSS naming convention](https://github.com/sui
 
 ```scss
 .MyComponent {
-	/* Styles */
+  /* Styles */
 
-	&-child {
-		/* Styles */
+  &-child {
+    /* Styles */
 
-		&.is-hidden {
-			display: none;
-		}
-	}
+    &.is-hidden {
+      display: none;
+    }
+  }
 }
 ```
 
@@ -329,10 +312,10 @@ create a new namespace (Potentially breaking that out into its own component.)
 Variables and mixins can be imported from the files in `common/styles`:
 
 ```scss
-@import "sass/colors";
+@import 'sass/colors';
 
 code {
-	color: $code-color;
+  color: $code-color;
 }
 ```
 
@@ -350,35 +333,36 @@ When working on a module that has styling in Less, try to do the following:
 * Ensure that there has been little to no deviation from screenshot
 
 #### Adding Icon-fonts
+
 1. Download chosen icon-font
-1. Declare css font-family: 
-	``` 
-	@font-face {
-		font-family: 'social-media';
-		src: url('../assets/fonts/social-media.eot');
-		src: url('../assets/fonts/social-media.eot') format('embedded-opentype'),
-			url('../assets/fonts/social-media.woff2') format('woff2'),
-			url('../assets/fonts/social-media.woff') format('woff'),
-			url('../assets/fonts/social-media.ttf') format('truetype'),
-			url('../assets/fonts/social-media.svg') format('svg');
-		font-weight: normal;
-		font-style: normal;
-	}
-	```
+1. Declare css font-family:
+   ```
+   @font-face {
+   	font-family: 'social-media';
+   	src: url('../assets/fonts/social-media.eot');
+   	src: url('../assets/fonts/social-media.eot') format('embedded-opentype'),
+   		url('../assets/fonts/social-media.woff2') format('woff2'),
+   		url('../assets/fonts/social-media.woff') format('woff'),
+   		url('../assets/fonts/social-media.ttf') format('truetype'),
+   		url('../assets/fonts/social-media.svg') format('svg');
+   	font-weight: normal;
+   	font-style: normal;
+   }
+   ```
 1. Create classes for each icon using their unicode character
-	```  
-	.sm-logo-facebook:before {
-	    content: '\ea02';
-	  }
-	```
-	* [How to get unicode icon values?](https://stackoverflow.com/questions/27247145/get-the-unicode-icon-value-from-a-custom-font)
+   ```
+   .sm-logo-facebook:before {
+       content: '\ea02';
+     }
+   ```
+   * [How to get unicode icon values?](https://stackoverflow.com/questions/27247145/get-the-unicode-icon-value-from-a-custom-font)
 1. Write some markup:
-	```
-	<a href="/">
-		<i className={`sm-icon sm-logo-${text} sm-24px`} />
-		Hello World
-	</a>
-	```
+   ```
+   <a href="/">
+   	<i className={`sm-icon sm-logo-${text} sm-24px`} />
+   	Hello World
+   </a>
+   ```
 
 ## Thanks & Support
 
