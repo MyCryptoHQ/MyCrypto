@@ -340,7 +340,7 @@ export default class CurrencySwap extends Component<Props, State> {
               />
               <div className="CurrencySwap-dropdown">
                 <OriginKindDropDown
-                  ariaLabel={`change origing kind. current origin kind ${origin.id}`}
+                  ariaLabel={`change origin kind. current origin kind ${origin.id}`}
                   options={originKindOptions}
                   value={origin.id}
                   onChange={this.onChangeOriginKind}

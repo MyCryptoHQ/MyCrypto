@@ -11,6 +11,8 @@ import {
 } from './swap/orders';
 import { getBityRatesSaga, getShapeShiftRatesSaga, swapProviderSaga } from './swap/rates';
 import wallet from './wallet';
+import { transaction } from './transaction';
+
 export default {
   configSaga,
   postBityOrderSaga,
@@ -23,6 +25,7 @@ export default {
   restartSwapSaga,
   notifications,
   wallet,
+  transaction,
   deterministicWallets,
   swapProviderSaga
 };
