@@ -9,6 +9,13 @@ export interface KeystoreValue {
   valid: boolean;
 }
 
+interface Props {
+  value: KeystoreValue;
+  onChange(value: KeystoreValue): void;
+  onUnlock(): void;
+  showNotification(level: string, message: string): TShowNotification;
+}
+
 function isPassRequired(file: string): boolean {
   let passReq = false;
   try {
@@ -24,14 +31,7 @@ function isValidFile(rawFile: any): boolean {
   return fileType === '' || fileType === 'application/json';
 }
 
-export default class KeystoreDecrypt extends Component {
-  public props: {
-    value: KeystoreValue;
-    onChange(value: KeystoreValue): void;
-    onUnlock(): void;
-    showNotification(level: string, message: string): TShowNotification;
-  };
-
+export default class KeystoreDecrypt extends Component<Props> {
   public render() {
     const { file, password } = this.props.value;
     const passReq = isPassRequired(file);
