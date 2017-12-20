@@ -3,10 +3,12 @@ import { TypeKeys } from 'actions/onboardStatus/constants';
 
 export interface State {
   sessionStarted: boolean;
+  slideNumber: number;
 }
 
 export const INITIAL_STATE: State = {
-  sessionStarted: false
+  sessionStarted: false,
+  slideNumber: 1
 };
 
 export function onboardStatus(state: State = INITIAL_STATE, action: OnboardStatusAction): State {
@@ -15,6 +17,31 @@ export function onboardStatus(state: State = INITIAL_STATE, action: OnboardStatu
       return {
         ...state,
         sessionStarted: true
+      };
+    }
+
+    case TypeKeys.RESUME_SLIDE: {
+      return {
+        ...state,
+        slideNumber: action.slideNumber
+      };
+    }
+
+    case TypeKeys.DECREMENT_SLIDE: {
+      const prevSlide = state.slideNumber - 1;
+
+      return {
+        ...state,
+        slideNumber: prevSlide
+      };
+    }
+
+    case TypeKeys.INCREMENT_SLIDE: {
+      const nextSlide = state.slideNumber + 1;
+
+      return {
+        ...state,
+        slideNumber: nextSlide
       };
     }
 

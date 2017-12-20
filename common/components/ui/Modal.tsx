@@ -1,5 +1,5 @@
 import closeIcon from 'assets/images/icon-x.svg';
-import React, { Component, SyntheticEvent } from 'react';
+import React, { Component } from 'react';
 import './Modal.scss';
 
 export interface IButton {
@@ -13,7 +13,7 @@ interface Props {
   title?: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
-  buttons?: IButton[];
+  buttons: IButton[];
   handleClose(): void;
 }
 
@@ -43,7 +43,7 @@ export default class Modal extends Component<Props, {}> {
     const hasButtons = buttons && buttons.length;
 
     return (
-      <div onClick={this.handleClickOutside}>
+      <div>
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
         <div className={`Modal ${isOpen ? 'is-open' : ''}`} ref={node => (this.modalRef = node)}>
           {title && (
@@ -75,13 +75,6 @@ export default class Modal extends Component<Props, {}> {
 
     if (ev.key === 'Escape' || ev.keyCode === 27) {
       this.props.handleClose();
-    }
-  };
-
-  private handleClickOutside = (ev: SyntheticEvent<HTMLElement>) => {
-    const { isOpen, handleClose } = this.props;
-    if (this.modalRef && !this.modalRef.contains(ev.target as HTMLElement) && isOpen) {
-      handleClose();
     }
   };
 

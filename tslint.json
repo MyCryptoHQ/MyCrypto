@@ -21,7 +21,6 @@
     "no-console": false,
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
-    "jsx-no-lambda": false,
     "comment-format": false,
     "ordered-imports": false
   },

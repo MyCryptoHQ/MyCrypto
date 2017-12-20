@@ -2,8 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'reducers';
-import Modal from 'components/ui/Modal';
-import { startOnboardSession, TStartOnboardSession } from 'actions/onboardStatus';
+import Modal, { IButton } from 'components/ui/Modal';
+import Stepper from 'react-stepper-horizontal';
+import {
+  startOnboardSession,
+  TStartOnboardSession,
+  decrementSlide,
+  TDecrementSlide,
+  incrementSlide,
+  TIncrementSlide,
+  resumeSlide,
+  TResumeSlide
+} from 'actions/onboardStatus';
 import {
   WelcomeSlide,
   NotABankSlide,
@@ -14,63 +24,87 @@ import {
   SecureSlideOne,
   SecureSlideTwo,
   SecureSlideThree,
-  FinalSlide
+  FinalSlide,
+  OnboardSlide
 } from './components';
 
 const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
 
 interface State {
   isOpen: boolean;
-  showOnboardMsg: boolean;
-  onboardStatus: number;
-  currentSlide: number;
 }
 
 interface Props {
   sessionStarted: boolean;
+  slideNumber: number;
   startOnboardSession: TStartOnboardSession;
+  resumeSlide: TResumeSlide;
+  decrementSlide: TDecrementSlide;
+  incrementSlide: TIncrementSlide;
 }
 
 class OnboardModal extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      showOnboardMsg: false,
-      onboardStatus: Number(localStorage.getItem(ONBOARD_LOCAL_STORAGE_KEY)) || 0,
-      currentSlide: 1
+      isOpen: false
     };
   }
 
   public componentDidMount() {
-    const { onboardStatus } = this.state;
     const { sessionStarted } = this.props;
+
+    const currentSlide = Number(localStorage.getItem(ONBOARD_LOCAL_STORAGE_KEY)) || 0;
 
     if (!sessionStarted) {
       this.props.startOnboardSession();
-      if (onboardStatus === 0) {
+      if (currentSlide === 0) {
         this.setState({
           isOpen: true
         });
-        this.changeOnboardStatus(1);
       }
-      if (onboardStatus > 0 && onboardStatus < 10) {
+      if (currentSlide > 0 && currentSlide < 10) {
+        this.props.resumeSlide(currentSlide);
         this.setState({
-          currentSlide: onboardStatus,
-          showOnboardMsg: true,
           isOpen: true
         });
+
+        // notify message
       }
     }
   }
 
   public render() {
-    const { isOpen, showOnboardMsg } = this.state;
+    const { isOpen } = this.state;
+    const { slideNumber } = this.props;
+    const buttons: IButton[] = [
+      {
+        text: 'Next',
+        type: 'primary',
+        onClick: this.handleNextSlide
+      },
+      {
+        disabled: slideNumber === 1,
+        text: 'Back',
+        type: 'default',
+        onClick: this.handlePreviousSlide
+      }
+    ];
+
     return (
-      <div>
-        <Modal isOpen={isOpen} handleClose={this.closeModal}>
-          {showOnboardMsg && this.renderOnboardMsg()}
-          {this.renderSlide()}
+      <div className="OnboardModal">
+        <Modal isOpen={isOpen} handleClose={this.closeModal} buttons={buttons}>
+          {/* {showOnboardMsg && this.renderOnboardMsg()} */}
+          <div className="OnboardModal-stepper">
+            <Stepper
+              steps={[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]}
+              activeColor="#0e97c0"
+              activeStep={slideNumber - 1}
+              completeColor="#0e97c0"
+              circleTop={1}
+            />
+          </div>
+          <div className="OnboardModal-onboardSlide">{this.renderSlide()}</div>
         </Modal>
       </div>
     );
@@ -82,9 +116,6 @@ class OnboardModal extends React.Component<Props, State> {
 
   public changeOnboardStatus = (slideNumber: number) => {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(slideNumber));
-    this.setState({
-      currentSlide: slideNumber
-    });
   };
 
   private renderOnboardMsg = () => {
@@ -99,29 +130,47 @@ class OnboardModal extends React.Component<Props, State> {
 
   private renderSlide = () => {
     const slides = [
-      <WelcomeSlide key={1} setOnboardStatus={this.changeOnboardStatus} />,
-      <NotABankSlide key={2} setOnboardStatus={this.changeOnboardStatus} />,
-      <InterfaceSlide key={3} setOnboardStatus={this.changeOnboardStatus} />,
-      <BlockchainSlide key={4} setOnboardStatus={this.changeOnboardStatus} />,
-      <WhySlide key={5} setOnboardStatus={this.changeOnboardStatus} />,
-      <WhyMewSlide key={6} setOnboardStatus={this.changeOnboardStatus} />,
-      <SecureSlideOne key={7} setOnboardStatus={this.changeOnboardStatus} />,
-      <SecureSlideTwo key={8} setOnboardStatus={this.changeOnboardStatus} />,
-      <SecureSlideThree key={9} setOnboardStatus={this.changeOnboardStatus} />,
+      <WelcomeSlide key={1} />,
+      <NotABankSlide key={2} />,
+      <InterfaceSlide key={3} />,
+      <BlockchainSlide key={4} />,
+      <WhySlide key={5} />,
+      <WhyMewSlide key={6} />,
+      <SecureSlideOne key={7} />,
+      <SecureSlideTwo key={8} />,
+      <SecureSlideThree key={9} />,
       <FinalSlide key={10} closeModal={this.closeModal} />
     ];
-    const currentSlideIndex = this.state.currentSlide - 1;
+    const currentSlideIndex = this.props.slideNumber - 1;
 
     return slides[currentSlideIndex];
+  };
+
+  private handlePreviousSlide = () => {
+    const prevSlideNum = this.props.slideNumber - 1;
+
+    localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(prevSlideNum));
+    this.props.decrementSlide();
+  };
+
+  private handleNextSlide = () => {
+    const nextSlideNum = this.props.slideNumber + 1;
+
+    localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(nextSlideNum));
+    this.props.incrementSlide();
   };
 }
 
 function mapStateToProps(state: AppState) {
   return {
-    sessionStarted: state.onboardStatus.sessionStarted
+    sessionStarted: state.onboardStatus.sessionStarted,
+    slideNumber: state.onboardStatus.slideNumber
   };
 }
 
 export default connect(mapStateToProps, {
-  startOnboardSession
+  startOnboardSession,
+  resumeSlide,
+  decrementSlide,
+  incrementSlide
 })(OnboardModal);
