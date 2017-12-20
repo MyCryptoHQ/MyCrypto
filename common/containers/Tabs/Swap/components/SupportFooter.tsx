@@ -40,7 +40,7 @@ class SupportFooter extends React.Component<Props, {}> {
     const serviceProvider = provider.charAt(0).toUpperCase() + provider.slice(1);
     let mailBody;
     let fallbackBody;
-    if (pair && rates[pair]) {
+    if (pair && rates && rates[pair]) {
       mailBody = encodeURI(`Please include the below if this issue is regarding your order.
 
 Provider: ${serviceProvider}

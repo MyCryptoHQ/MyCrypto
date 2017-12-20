@@ -1,4 +1,9 @@
-import { NormalizedBityRate, NormalizedShapeshiftRate } from 'reducers/swap/types';
+import {
+  NormalizedBityRates,
+  NormalizedShapeshiftRates,
+  NormalizedShapeshiftRate,
+  NormalizedBityRate
+} from 'reducers/swap/types';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
@@ -7,13 +12,12 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
 import './CurrentRates.scss';
+import shapeshift from 'api/shapeshift';
 
 interface ReduxStateProps {
   provider: string;
-}
-
-interface Props {
-  [id: string]: NormalizedBityRate | NormalizedShapeshiftRate | string;
+  bityRates: NormalizedBityRates;
+  shapeshiftRates: NormalizedShapeshiftRates;
 }
 
 interface State {
@@ -23,7 +27,7 @@ interface State {
   BTCREPAmount: number;
 }
 
-export default class CurrentRates extends Component<Props & ReduxStateProps, State> {
+export default class CurrentRates extends Component<ReduxStateProps, State> {
   public state = {
     ETHBTCAmount: 1,
     ETHREPAmount: 1,
@@ -40,9 +44,16 @@ export default class CurrentRates extends Component<Props & ReduxStateProps, Sta
   };
 
   public buildPairRate = (origin: string, destination: string) => {
+    const { bityRates, shapeshiftRates, provider } = this.props;
     const pair = origin + destination;
+    let propsPair;
+    if (provider === 'shapeshift' && shapeshiftRates.byId && shapeshiftRates.byId[pair]) {
+      propsPair = (shapeshiftRates.byId[pair] as NormalizedShapeshiftRate).rate;
+    } else if (bityRates.byId && bityRates.byId[pair]) {
+      propsPair = (bityRates.byId[pair] as NormalizedBityRate).rate;
+    }
+
     const statePair = this.state[pair + 'Amount'];
-    const propsPair = this.props[pair] ? (this.props[pair] as NormalizedShapeshiftRate).rate : null;
     return (
       <div className="SwapRates-panel-rate">
         {propsPair ? (

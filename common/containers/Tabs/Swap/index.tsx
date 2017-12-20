@@ -219,9 +219,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       bityRates
     };
 
-    const { ETHBTC, ETHREP, BTCETH, BTCREP } =
-      provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
-    const CurrentRatesProps = { ETHBTC, ETHREP, BTCETH, BTCREP, provider };
+    const CurrentRatesProps = { provider, bityRates, shapeshiftRates };
 
     return (
       <TabSection>

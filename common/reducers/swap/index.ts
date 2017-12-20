@@ -167,7 +167,8 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
       };
     case TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_SUCCEEDED:
       const currDate = Date.now();
-      const secondsRemaining = (+new Date(action.payload.expiration) - currDate) / 1000;
+
+      const secondsRemaining = Math.floor((+new Date(action.payload.expiration) - currDate) / 1000);
       return {
         ...state,
         shapeshiftOrder: {
