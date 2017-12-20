@@ -26,7 +26,7 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
-function isValidFile(rawFile: any): boolean {
+function isValidFile(rawFile: File): boolean {
   const fileType = rawFile.type;
   return fileType === '' || fileType === 'application/json';
 }
