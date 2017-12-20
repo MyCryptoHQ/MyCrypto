@@ -1,6 +1,7 @@
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
+import { TShowNotification } from 'actions/notifications';
 
 export interface KeystoreValue {
   file: string;
@@ -18,11 +19,17 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
+function isValidFile(rawFile: any): boolean {
+  const fileType = rawFile.type;
+  return fileType === '' || fileType === 'application/json';
+}
+
 export default class KeystoreDecrypt extends Component {
   public props: {
     value: KeystoreValue;
     onChange(value: KeystoreValue): void;
     onUnlock(): void;
+    showNotification(level: string, message: string): TShowNotification;
   };
 
   public render() {
@@ -96,6 +103,10 @@ export default class KeystoreDecrypt extends Component {
       });
     };
 
-    fileReader.readAsText(inputFile, 'utf-8');
+    if (isValidFile(inputFile)) {
+      fileReader.readAsText(inputFile, 'utf-8');
+    } else {
+      this.props.showNotification('danger', translateRaw('ERROR_3'));
+    }
   };
 }
