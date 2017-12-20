@@ -11,13 +11,16 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
   highestBid,
   labelHash,
   nameHash,
-  mappedMode,
   resolvedAddress,
   ownerAddress,
   name
 }) => (
   <section>
-    <h4>{mappedMode}</h4>
+    <div className="ens-title">
+      <h1 className="text-center">
+        <strong>{name}.eth</strong> is already owned
+      </h1>
+    </div>
     <table className="table table-striped">
       <tbody>
         <tr>
@@ -31,7 +34,7 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
           <MonoTd>{labelHash}</MonoTd>
         </tr>
         <tr>
-          <td>Namehash ({name}).eth: </td>
+          <td>Namehash ({name}.eth): </td>
           <MonoTd>{nameHash}</MonoTd>
         </tr>
         <tr>

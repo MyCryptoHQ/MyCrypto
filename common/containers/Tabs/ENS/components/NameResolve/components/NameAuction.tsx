@@ -16,14 +16,16 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({ registrationDate, n
   const { auctionCloseTime, revealBidTime } = getDeadlines(registrationDate);
   return (
     <section className="row">
-      <h1>
-        An auction has been started for <strong>{name}.eth.</strong>
-      </h1>
+      <div className="ens-title text-center">
+        <h1>
+          An auction has started for <strong>{name}.eth</strong>
+        </h1>
+      </div>
 
-      <section className="col-sm-6 col-xs-12 order-info">
+      <section className="col-sm-6 col-xs-12 order-info ens-panel text-center">
         <EnsTime text="Reveal Bids On" time={revealBidTime} />
       </section>
-      <section className="col-sm-6 col-xs-12 order-info">
+      <section className="col-sm-6 col-xs-12 order-info ens-panel ens-panel-light text-center">
         <EnsTime text="Auction Closes On" time={auctionCloseTime} />
       </section>
       <ENSWallet text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}>

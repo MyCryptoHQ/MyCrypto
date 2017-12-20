@@ -9,6 +9,7 @@ import {
   NameOpen,
   NameReveal
 } from './components';
+import './NameResolve.scss';
 
 type Props = AppState['ens'];
 

@@ -1,4 +1,4 @@
-import { IDomainData, NameState, IModeMap, getNameHash, modeStrMap } from 'libs/ens';
+import { IDomainData, NameState, getNameHash } from 'libs/ens';
 import ENS from 'libs/ens/contracts';
 import { SagaIterator } from 'redux-saga';
 import { call } from 'redux-saga/effects';
@@ -80,7 +80,6 @@ export function* resolveDomainRequest(name: string): SagaIterator {
     ...domainData,
     ...result,
     labelHash: hash.toString('hex'),
-    nameHash,
-    mappedMode: modeStrMap(`${name}.eth`)[domainData.mode]
+    nameHash
   };
 }
