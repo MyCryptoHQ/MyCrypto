@@ -69,6 +69,21 @@ export default class CurrencySwap extends Component<Props, State> {
         timeout: true
       });
     }, 10000);
+
+    const { origin } = this.state;
+    const { options } = this.props;
+
+    if (options.allIds && options.byId) {
+      const originKindOptions: any[] = Object.values(options.byId);
+      const destinationKindOptions: any[] = Object.values(
+        reject<any>(options.byId, o => o.id === origin.id)
+      );
+
+      this.setState({
+        originKindOptions,
+        destinationKindOptions
+      });
+    }
   }
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
@@ -98,7 +113,6 @@ export default class CurrencySwap extends Component<Props, State> {
     }
 
     if (options.allIds !== prevProps.options.allIds && options.byId) {
-      // const avlOptions = pickBy(options.byId, (value, _) => value.status === 'available')
       const originKindOptions: any[] = Object.values(options.byId);
       const destinationKindOptions: any[] = Object.values(
         reject<any>(options.byId, o => o.id === origin.id)
@@ -304,7 +318,6 @@ export default class CurrencySwap extends Component<Props, State> {
     // This ensures both are loaded
     const loaded = provider === 'shapeshift' ? shapeshiftLoaded : bityLoaded && shapeshiftLoaded;
     const timeoutLoaded = (bityLoaded && timeout) || (shapeshiftLoaded && timeout);
-
     return (
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>

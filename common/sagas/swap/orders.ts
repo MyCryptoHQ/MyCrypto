@@ -209,7 +209,7 @@ export function* restartSwapSaga(): SagaIterator {
 }
 
 export function* orderTimeRemaining(): SagaIterator {
-  while (yield take(TypeKeys.SWAP_ORDER_START_TIMER)) {
+  while (true) {
     let hasShownNotification = false;
     while (true) {
       yield call(delay, ONE_SECOND);
@@ -330,4 +330,8 @@ export function* handleOrderTimeRemaining(): SagaIterator {
   const orderTimeRemainingTask = yield fork(orderTimeRemaining);
   yield take(TypeKeys.SWAP_ORDER_STOP_TIMER);
   yield cancel(orderTimeRemainingTask);
+}
+
+export function* swapTimerSaga(): SagaIterator {
+  yield takeEvery(TypeKeys.SWAP_ORDER_START_TIMER, handleOrderTimeRemaining);
 }
