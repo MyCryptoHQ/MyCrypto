@@ -130,6 +130,6 @@ export default class DownloadWallet extends Component<Props, State> {
     this.setState({ keystore });
   }
 
-  private handleDownloadKeystore = e =>
+  private handleDownloadKeystore = (e: React.FormEvent<HTMLAnchorElement>) =>
     this.state.keystore ? this.markDownloaded() : e.preventDefault();
 }

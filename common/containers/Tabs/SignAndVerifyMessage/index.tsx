@@ -6,7 +6,7 @@ import TabSection from 'containers/TabSection';
 import './index.scss';
 
 interface State {
-  activeTab: string;
+  activeTab: 'sign' | 'verify';
 }
 
 export default class SignAndVerifyMessage extends Component<{}, State> {
@@ -14,7 +14,7 @@ export default class SignAndVerifyMessage extends Component<{}, State> {
     activeTab: 'sign'
   };
 
-  public changeTab = activeTab => () => this.setState({ activeTab });
+  public changeTab = (activeTab: State['activeTab']) => () => this.setState({ activeTab });
 
   public render() {
     const { activeTab } = this.state;

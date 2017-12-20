@@ -1,7 +1,7 @@
 import React from 'react';
 import './Code.scss';
 
-const Code = ({ children }) => (
+const Code = ({ children }: React.Props<{}>) => (
   <pre>
     <code>{children}</code>
   </pre>

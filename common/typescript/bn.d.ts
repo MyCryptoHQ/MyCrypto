@@ -273,7 +273,7 @@ declare module 'bn.js' {
      */
 
     iadd(b: BN): BN;
-    addition;
+
     /**
      * @description addition
      */

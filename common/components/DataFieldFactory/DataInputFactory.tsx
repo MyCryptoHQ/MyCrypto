@@ -7,7 +7,7 @@ import { CallBackProps } from 'components/DataFieldFactory';
 
 interface OwnProps {
   withProps(props: CallBackProps): React.ReactElement<any> | null;
-  onChange(ev: React.FormEvent<HTMLInputElement>);
+  onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 interface StateProps {
   data: AppState['transaction']['fields']['data'];

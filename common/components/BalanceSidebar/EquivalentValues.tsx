@@ -32,7 +32,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   private decimalLookup: { [key: string]: number } = {};
   private requestedCurrencies: string[] | null = null;
 
-  public constructor(props) {
+  public constructor(props: Props) {
     super(props);
     this.makeBalanceLookup(props);
 
@@ -41,7 +41,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     }
   }
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     const { balance, tokenBalances } = this.props;
     if (nextProps.balance !== balance || nextProps.tokenBalances !== tokenBalances) {
       this.makeBalanceLookup(nextProps);

@@ -15,7 +15,7 @@ interface IFakeEvent {
 export interface Props {
   decimal: number;
   children({ onUserInput, convertedUnit }: IChildren): React.ReactElement<any>;
-  onChange(baseUnit: IFakeEvent);
+  onChange(baseUnit: IFakeEvent): void;
 }
 
 interface State {
