@@ -292,7 +292,7 @@ describe('orderTimeRemaining*', () => {
   });
 
   it('should handle an OPEN order state', () => {
-    const openOrder = { ...swapOrderExpired, orderStatus: 'OPEN' };
+    const openOrder = { ...swapOrderExpired, bityOrderStatus: 'OPEN' };
     data.OPEN = data.gen.clone();
     expect(data.OPEN.next(openOrder).value).toEqual(put(orderTimeSwap(0)));
     expect(data.OPEN.next().value).toEqual(put(stopPollBityOrderStatus()));
@@ -303,7 +303,7 @@ describe('orderTimeRemaining*', () => {
   });
 
   it('should handle a CANC order state', () => {
-    const cancOrder = { ...swapOrderExpired, orderStatus: 'CANC' };
+    const cancOrder = { ...swapOrderExpired, bityOrderStatus: 'CANC' };
     data.CANC = data.gen.clone();
     expect(data.CANC.next(cancOrder).value).toEqual(put(stopPollBityOrderStatus()));
     expect(data.CANC.next().value).toEqual(put({ type: 'SWAP_STOP_LOAD_BITY_RATES' }));
@@ -313,7 +313,7 @@ describe('orderTimeRemaining*', () => {
   });
 
   it('should handle a RCVE order state', () => {
-    const rcveOrder = { ...swapOrderExpired, orderStatus: 'RCVE' };
+    const rcveOrder = { ...swapOrderExpired, bityOrderStatus: 'RCVE' };
     data.RCVE = data.gen.clone();
     expect(data.RCVE.next(rcveOrder).value).toEqual(
       put(showNotification('warning', ORDER_TIMEOUT_MESSAGE, Infinity))
@@ -321,7 +321,7 @@ describe('orderTimeRemaining*', () => {
   });
 
   it('should handle a FILL order state', () => {
-    const fillOrder = { ...swapOrderExpired, orderStatus: 'FILL' };
+    const fillOrder = { ...swapOrderExpired, bityOrderStatus: 'FILL' };
     data.FILL = data.gen.clone();
     expect(data.FILL.next(fillOrder).value).toEqual(put(stopPollBityOrderStatus()));
     expect(data.FILL.next().value).toEqual(put({ type: 'SWAP_STOP_LOAD_BITY_RATES' }));
