@@ -27,7 +27,7 @@ export default class Root extends Component<Props, State> {
     error: null
   };
 
-  public componentDidCatch(error) {
+  public componentDidCatch(error: Error) {
     this.setState({ error });
   }
 

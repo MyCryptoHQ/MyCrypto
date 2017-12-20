@@ -42,7 +42,7 @@ export default class SwapProgress extends Component<Props, State> {
 
     if (isShapeshift ? shapeshiftOrderStatus === 'complete' : bityOrderStatus === 'FILL') {
       if (!hasShownViewTx) {
-        let linkElement;
+        let linkElement: React.ReactElement<HTMLAnchorElement>;
         let link;
         const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
         // everything but BTC is a token

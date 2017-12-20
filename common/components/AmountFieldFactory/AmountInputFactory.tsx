@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { CallbackProps } from 'components/AmountFieldFactory';
 
 interface OwnProps {
-  onChange(ev: React.FormEvent<HTMLInputElement>);
+  onChange(ev: React.FormEvent<HTMLInputElement>): void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 

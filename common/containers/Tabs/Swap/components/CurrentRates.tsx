@@ -52,8 +52,8 @@ export default class CurrentRates extends Component<ReduxStateProps, State> {
     } else if (bityRates.byId && bityRates.byId[pair]) {
       propsPair = (bityRates.byId[pair] as NormalizedBityRate).rate;
     }
-
-    const statePair = this.state[pair + 'Amount'];
+    
+    const statePair = this.state[(pair + 'Amount') as keyof State];
     return (
       <div className="SwapRates-panel-rate">
         {propsPair ? (

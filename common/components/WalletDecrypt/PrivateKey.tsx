@@ -83,17 +83,17 @@ export default class PrivateKeyDecrypt extends Component {
     );
   }
 
-  public onPkeyChange = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
-    const pkey = (e.target as HTMLInputElement).value;
+  public onPkeyChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const pkey = e.currentTarget.value;
     const pass = this.props.value.password;
     const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
 
     this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
   };
 
-  public onPasswordChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  public onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
     const pkey = this.props.value.key;
-    const pass = (e.target as HTMLInputElement).value;
+    const pass = e.currentTarget.value;
     const { valid } = validatePkeyAndPass(pkey, pass);
 
     this.props.onChange({

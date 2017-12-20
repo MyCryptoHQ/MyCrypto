@@ -17,7 +17,7 @@ import './ReceivingAddress.scss';
 
 export interface StateProps {
   origin: SwapInput;
-  destinationId: string;
+  destinationId: keyof typeof donationAddressMap;
   isPostingOrder: boolean;
   destinationAddress: string;
   destinationKind: number;
@@ -33,8 +33,8 @@ export interface ActionProps {
 }
 
 export default class ReceivingAddress extends Component<StateProps & ActionProps, {}> {
-  public onChangeDestinationAddress = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const value = (event.target as HTMLInputElement).value;
+  public onChangeDestinationAddress = (event: React.FormEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
     this.props.destinationAddressSwap(value);
   };
 
