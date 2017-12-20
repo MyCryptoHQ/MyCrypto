@@ -16,10 +16,25 @@ interface Props<T> {
   onChange(value: T): void;
 }
 
-export default class SwapDropdown<T> extends Component<Props<T>, {}> {
+class SwapDropdown<T> extends Component<Props<T>, {}> {
   public state = {
     open: false
   };
+
+  private dropdown: HTMLElement | null;
+
+  public componentDidMount() {
+    document.addEventListener('click', this.clickHandler);
+  }
+
+  public componentWillUnmount() {
+    document.removeEventListener('click', this.clickHandler);
+  }
+
+  public handleClickOutside() {
+    this.toggleDropdown();
+  }
+
   public render() {
     const { open } = this.state;
     const { options, value } = this.props;
@@ -41,7 +56,7 @@ export default class SwapDropdown<T> extends Component<Props<T>, {}> {
       );
     });
     return (
-      <div className="SwapDropdown">
+      <div className="SwapDropdown" ref={el => (this.dropdown = el)}>
         <button onClick={this.toggleDropdown}>
           {value}
           <i className="caret" />
@@ -55,6 +70,7 @@ export default class SwapDropdown<T> extends Component<Props<T>, {}> {
       open: !this.state.open
     });
   };
+
   private onChange = (value: any) => {
     this.props.onChange(value);
     if (this.state.open) {
@@ -63,4 +79,22 @@ export default class SwapDropdown<T> extends Component<Props<T>, {}> {
       });
     }
   };
+
+  private clickHandler = (ev: Event) => {
+    if (!this.state.open || !this.dropdown) {
+      return;
+    }
+
+    if (
+      this.dropdown !== ev.target &&
+      ev.target instanceof HTMLElement &&
+      !this.dropdown.contains(ev.target)
+    ) {
+      this.setState({
+        open: false
+      });
+    }
+  };
 }
+
+export default SwapDropdown;

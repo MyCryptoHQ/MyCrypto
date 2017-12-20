@@ -1,4 +1,4 @@
-import { TChangeStepSwap, TInitSwap, TChangeSwapProvider } from 'actions/swap';
+import { TChangeStepSwap, TInitSwap, TChangeSwapProvider, ProviderName } from 'actions/swap';
 import {
   NormalizedBityRates,
   NormalizedShapeshiftRates,
@@ -18,7 +18,7 @@ import './CurrencySwap.scss';
 export interface StateProps {
   bityRates: NormalizedBityRates;
   shapeshiftRates: NormalizedShapeshiftRates;
-  provider: string;
+  provider: ProviderName;
   options: NormalizedOptions;
 }
 
@@ -36,6 +36,7 @@ interface State {
   destinationKindOptions: any[];
   originErr: string;
   destinationErr: string;
+  timeout: boolean;
 }
 
 type Props = StateProps & ActionProps;
@@ -58,8 +59,17 @@ export default class CurrencySwap extends Component<Props, State> {
     originKindOptions: [],
     destinationKindOptions: [],
     originErr: '',
-    destinationErr: ''
+    destinationErr: '',
+    timeout: false
   };
+
+  public componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        timeout: true
+      });
+    }, 10000);
+  }
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
     const { origin, destination } = this.state;
@@ -276,28 +286,29 @@ export default class CurrencySwap extends Component<Props, State> {
   };
 
   public render() {
-    const { bityRates, shapeshiftRates } = this.props;
+    const { bityRates, shapeshiftRates, provider } = this.props;
     const {
       origin,
       destination,
       originKindOptions,
       destinationKindOptions,
       originErr,
-      destinationErr
+      destinationErr,
+      timeout
     } = this.state;
     const OriginKindDropDown = SwapDropdown as new () => SwapDropdown<any>;
     const DestinationKindDropDown = SwapDropdown as new () => SwapDropdown<any>;
     const pairName = combineAndUpper(origin.id, destination.id);
-    const bityLoaded = bityRates.byId && bityRates.byId[pairName];
-    const shapeshiftLoaded =
-      shapeshiftRates.byId && shapeshiftRates.byId[pairName]
-        ? shapeshiftRates.byId[pairName].id
-        : false;
-    const loaded = shapeshiftLoaded || bityLoaded;
+    const bityLoaded = bityRates.byId && bityRates.byId[pairName] ? true : false;
+    const shapeshiftLoaded = shapeshiftRates.byId && shapeshiftRates.byId[pairName] ? true : false;
+    // This ensures both are loaded
+    const loaded = provider === 'shapeshift' ? shapeshiftLoaded : bityLoaded && shapeshiftLoaded;
+    const timeoutLoaded = (bityLoaded && timeout) || (shapeshiftLoaded && timeout);
+
     return (
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
-        {loaded ? (
+        {loaded || timeoutLoaded ? (
           <div className="form-inline CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
               {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}

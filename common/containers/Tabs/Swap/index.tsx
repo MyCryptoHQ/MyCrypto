@@ -33,7 +33,8 @@ import {
   TStopPollBityOrderStatus,
   TStopPollShapeshiftOrderStatus,
   TChangeSwapProvider,
-  TStopLoadShapeshiftRatesSwap
+  TStopLoadShapeshiftRatesSwap,
+  ProviderName
 } from 'actions/swap';
 import {
   SwapInput,
@@ -61,7 +62,7 @@ interface ReduxStateProps {
   bityRates: NormalizedBityRates;
   shapeshiftRates: NormalizedShapeshiftRates;
   options: NormalizedOptions;
-  provider: string;
+  provider: ProviderName;
   bityOrder: any;
   shapeshiftOrder: any;
   destinationAddress: string;

@@ -137,7 +137,7 @@ export interface ShapeshiftOrderResponse {
   orderId: string;
   outputCurrency: string;
   pair: string; // e.g. eth_bat
-  provider: string; // shapeshift
+  provider: ProviderName; // shapeshift
   quotedRate: string;
   withdrawl: string;
   withdrawalAmount: string;
