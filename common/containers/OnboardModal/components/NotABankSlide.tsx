@@ -1,10 +1,6 @@
 import React from 'react';
 import OnboardSlide from './OnboardSlide';
 
-const NotABankContent = () => {
-  return;
-};
-
 const NotABankSlide = () => {
   const content = (
     <ul>

@@ -24,8 +24,7 @@ import {
   SecureSlideOne,
   SecureSlideTwo,
   SecureSlideThree,
-  FinalSlide,
-  OnboardSlide
+  FinalSlide
 } from './components';
 
 const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';

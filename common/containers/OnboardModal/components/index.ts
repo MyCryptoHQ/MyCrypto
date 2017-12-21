@@ -8,4 +8,3 @@ export { default as SecureSlideOne } from './SecureSlideOne';
 export { default as SecureSlideTwo } from './SecureSlideTwo';
 export { default as SecureSlideThree } from './SecureSlideThree';
 export { default as FinalSlide } from './FinalSlide';
-export { default as OnboardSlide } from './OnboardSlide';
