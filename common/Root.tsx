@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { withRouter, Switch, Redirect, HashRouter, Route } from 'react-router-dom';
+import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -37,27 +37,35 @@ export default class Root extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
+    const isHostnameValid =
+      process.env.NODE_ENV === 'development' ||
+      (process.env.NODE_ENV === 'production' && window.location.hostname !== 'localhost');
 
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
+    const routes = (
+      <div>
+        <Route exact={true} path="/" component={GenerateWallet} />
+        <Route path="/help" component={Help} />
+        <Route path="/swap" component={Swap} />
+        <Route path="/account" component={SendTransaction}>
+          <Route path="send" component={SendTransaction} />
+          <Route path="info" component={SendTransaction} />
+        </Route>
+        <Route path="/send-transaction" component={SendTransaction} />
+        <Route path="/contracts" component={Contracts} />
+        <Route path="/ens" component={ENS} />
+        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+        <Route path="/pushTx" component={BroadcastTx} />
+        <LegacyRoutes />
+      </div>
+    );
     return (
       <Provider store={store} key={Math.random()}>
-        <HashRouter key={Math.random()}>
-          <div>
-            <Route exact={true} path="/" component={GenerateWallet} />
-            <Route path="/help" component={Help} />
-            <Route path="/swap" component={Swap} />
-            <Route path="/account" component={SendTransaction}>
-              <Route path="send" component={SendTransaction} />
-              <Route path="info" component={SendTransaction} />
-            </Route>
-            <Route path="/send-transaction" component={SendTransaction} />
-            <Route path="/contracts" component={Contracts} />
-            <Route path="/ens" component={ENS} />
-            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-            <Route path="/pushTx" component={BroadcastTx} />
-            <LegacyRoutes />
-          </div>
-        </HashRouter>
+        {isHostnameValid ? (
+          <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>
+        ) : (
+          <HashRouter key={Math.random()}>{routes}</HashRouter>
+        )}
       </Provider>
     );
   }
