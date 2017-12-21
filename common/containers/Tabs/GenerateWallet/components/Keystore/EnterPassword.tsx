@@ -5,7 +5,7 @@ import translate from 'translations';
 import { knowledgeBaseURL, MINIMUM_PASSWORD_LENGTH } from 'config/data';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
-import Template from './Template';
+import Template from '../Template';
 
 interface Props {
   generateNewWallet(pw: string): GenerateNewWalletAction;

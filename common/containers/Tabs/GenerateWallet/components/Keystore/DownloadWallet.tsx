@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
-import Template from './Template';
+import Template from '../Template';
 import { N_FACTOR, knowledgeBaseURL } from 'config/data';
 
 interface Props {

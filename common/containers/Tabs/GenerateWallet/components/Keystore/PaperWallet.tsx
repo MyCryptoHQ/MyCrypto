@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import translate from 'translations';
 import { stripHexPrefix } from 'libs/values';
 import './PaperWallet.scss';
-import Template from './Template';
+import Template from '../Template';
 import { knowledgeBaseURL } from 'config/data';
 
 const content = (wallet: IFullWallet) => (
