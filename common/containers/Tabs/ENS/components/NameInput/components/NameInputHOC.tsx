@@ -17,7 +17,7 @@ const NameInputHoc = PassedComponent =>
     };
     //add delay to namehash computation / getting the availability
     public onChange = (event: React.FormEvent<HTMLButtonElement>) => {
-      const domainToCheck: string = event.currentTarget.value;
+      const domainToCheck: string = event.currentTarget.value.toLowerCase();
       this.setState({ domainToCheck });
       const isValidName: boolean = isValidENSName(domainToCheck);
       this.setState({ isValidDomain: isValidName });

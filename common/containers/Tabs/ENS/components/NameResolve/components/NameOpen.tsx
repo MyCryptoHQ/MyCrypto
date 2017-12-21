@@ -3,7 +3,7 @@ import { IBaseDomainRequest } from 'libs/ens';
 import { ENSWallet } from './ENSWallet';
 
 export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
-  <section className="row text-center">
+  <section className="row">
     <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
       <div className="ens-title">
         <h1>
