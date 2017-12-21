@@ -117,15 +117,15 @@ class OnboardModal extends React.Component<Props, State> {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(slideNumber));
   };
 
-  private renderOnboardMsg = () => {
-    return (
-      <article className="onboarding__msg">
-        {/* translate="ONBOARD_resume" */}
-        It looks like you didn't finish reading through these slides last time. ProTip: Finish
-        reading through the slides 😉
-      </article>
-    );
-  };
+  // private renderOnboardMsg = () => {
+  //   return (
+  //     <article className="onboarding__msg">
+  //       {/* translate="ONBOARD_resume" */}
+  //       It looks like you didn't finish reading through these slides last time. ProTip: Finish
+  //       reading through the slides 😉
+  //     </article>
+  //   );
+  // };
 
   private renderSlide = () => {
     const slides = [
