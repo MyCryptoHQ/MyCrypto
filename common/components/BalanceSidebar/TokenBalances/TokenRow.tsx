@@ -65,7 +65,7 @@ export default class TokenRow extends React.Component<Props, State> {
     );
   }
 
-  public toggleShowLongBalance = (e: React.SyntheticEvent<HTMLTableDataCellElement>) => {
+  public toggleShowLongBalance = (e: React.FormEvent<HTMLTableDataCellElement>) => {
     e.preventDefault();
     this.setState(state => {
       return {

@@ -1,7 +1,6 @@
 import TabSection from 'containers/TabSection';
 import { OfflineAwareUnlockHeader } from 'components';
 import React from 'react';
-import { Location } from 'history';
 import { connect } from 'react-redux';
 import { SideBar } from './components/index';
 import { IReadOnlyWallet, IFullWallet } from 'libs/wallet';
@@ -9,9 +8,9 @@ import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import tabs from './tabs';
 import SubTabs, { Props as TabProps } from 'components/SubTabs';
+import { RouteComponentProps } from 'react-router';
 
 interface StateProps {
-  location: Location;
   wallet: AppState['wallet']['inst'];
 }
 
@@ -21,10 +20,12 @@ export interface SubTabProps {
 
 export type WalletTypes = IReadOnlyWallet | IFullWallet | undefined | null;
 
-class SendTransaction extends React.Component<StateProps> {
+type Props = StateProps & RouteComponentProps<{}>;
+
+class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet } = this.props;
-    const activeTab = this.props.location.pathname.split('/')[2];
+    const { wallet, location } = this.props;
+    const activeTab = location.pathname.split('/')[2];
 
     const tabProps: TabProps<SubTabProps> = {
       root: 'account',

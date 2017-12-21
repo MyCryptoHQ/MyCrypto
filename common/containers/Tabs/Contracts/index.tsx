@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 interface State {
-  activeTab: string;
+  activeTab: 'interact' | 'deploy';
 }
 
 interface Props {
@@ -22,7 +22,7 @@ class Contracts extends Component<Props, State> {
     activeTab: 'interact'
   };
 
-  public changeTab = activeTab => () => {
+  public changeTab = (activeTab: State['activeTab']) => () => {
     this.props.reset();
     this.props.resetWallet();
     this.setState({ activeTab });

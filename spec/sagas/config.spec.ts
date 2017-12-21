@@ -13,7 +13,7 @@ import {
   unsetWeb3NodeOnWalletEvent,
   equivalentNodeOrDefault
 } from 'sagas/config';
-import { NODES } from 'config/data';
+import { NODES, NodeConfig } from 'config/data';
 import {
   getNode,
   getNodeConfig,
@@ -301,7 +301,7 @@ describe('handleNodeChangeIntent*', () => {
 
 describe('unsetWeb3Node*', () => {
   const node = 'web3';
-  const mockNodeConfig = { network: 'ETH' };
+  const mockNodeConfig = { network: 'ETH' } as any;
   const newNode = equivalentNodeOrDefault(mockNodeConfig);
   const gen = unsetWeb3Node();
 
@@ -332,7 +332,7 @@ describe('unsetWeb3Node*', () => {
 describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction = {};
   const mockNode = 'web3';
-  const mockNodeConfig = { network: 'ETH' };
+  const mockNodeConfig: Partial<NodeConfig> = { network: 'ETH' };
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {
@@ -345,7 +345,7 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
 
   it('should put changeNodeIntent', () => {
     expect(gen.next(mockNodeConfig).value).toEqual(
-      put(changeNodeIntent(equivalentNodeOrDefault(mockNodeConfig)))
+      put(changeNodeIntent(equivalentNodeOrDefault(mockNodeConfig as any)))
     );
   });
 
