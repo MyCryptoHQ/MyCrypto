@@ -19,7 +19,7 @@ import RootReducer from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 import sagas from './sagas';
-import { Wei, gasPricetoBase } from 'libs/units';
+import { gasPricetoBase } from 'libs/units';
 
 const configureStore = () => {
   const logger = createLogger({
