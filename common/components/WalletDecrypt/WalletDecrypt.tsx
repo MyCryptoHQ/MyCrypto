@@ -1,3 +1,7 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import {
   setWallet,
   TSetWallet,
@@ -13,9 +17,6 @@ import {
   TResetWallet
 } from 'actions/wallet';
 import { reset, TReset } from 'actions/transaction';
-import isEmpty from 'lodash/isEmpty';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import translate from 'translations';
 import {
   DigitalBitboxDecrypt,
@@ -285,24 +286,35 @@ export class WalletDecrypt extends Component<Props, State> {
     const decryptionComponent = this.getDecryptionComponent();
     const unlocked = !!wallet;
     return (
-      <div className="WalletDecrypt">
+      <div>
         <NavigationPrompt when={unlocked} onConfirm={this.props.resetWallet} />
         {!hidden && (
-          <article className="Tab-content-pane row">
-            <div className="col-sm-12">
-              {decryptionComponent && selectedWallet ? (
-                <div className="WalletDecrypt-decrypt">
-                  <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
-                    <i className="fa fa-arrow-left" /> {translate('Change Wallet')}
-                  </button>
-                  <h2 className="WalletDecrypt-decrypt-title">
-                    Unlock your {translate(selectedWallet.lid)}
-                  </h2>
-                  <section className="WalletDecrypt-decrypt-form">{decryptionComponent}</section>
-                </div>
-              ) : (
-                this.buildWalletOptions()
-              )}
+          <article className="Tab-content-pane">
+            <div className="WalletDecrypt">
+              <TransitionGroup>
+                {decryptionComponent && selectedWallet ? (
+                  <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
+                    <div className="WalletDecrypt-decrypt">
+                      <button
+                        className="WalletDecrypt-decrypt-back"
+                        onClick={this.clearWalletChoice}
+                      >
+                        <i className="fa fa-arrow-left" /> {translate('Change Wallet')}
+                      </button>
+                      <h2 className="WalletDecrypt-decrypt-title">
+                        Unlock your {translate(selectedWallet.lid)}
+                      </h2>
+                      <section className="WalletDecrypt-decrypt-form">
+                        {decryptionComponent}
+                      </section>
+                    </div>
+                  </CSSTransition>
+                ) : (
+                  <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
+                    {this.buildWalletOptions()}
+                  </CSSTransition>
+                )}
+              </TransitionGroup>
             </div>
           </article>
         )}

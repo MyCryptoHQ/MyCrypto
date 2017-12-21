@@ -1,6 +1,17 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
+@keyframes wallet-button-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .WalletButton {
   position: relative;
   flex: 1;
@@ -16,6 +27,14 @@
   text-align: center;
   cursor: pointer;
   transition: transform 150ms ease, box-shadow 150ms ease;
+  animation: wallet-button-enter 400ms ease 1;
+  animation-fill-mode: both;
+
+  @for $i from 0 to 5 {
+    &:nth-child(#{$i}) {
+      animation-delay: 100ms + ($i * 60ms);
+    }
+  }
 
   &:hover,
   &:focus {
