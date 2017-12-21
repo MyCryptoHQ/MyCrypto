@@ -10,9 +10,7 @@ export const GasPrice: React.SFC<{}> = () => (
       const transactionInstance = makeTransaction(serializedTransaction);
       const { gasPrice } = getTransactionFields(transactionInstance);
 
-      return (
-        <UnitDisplay unit={'gwei'} value={Wei(gasPrice)} symbol={'gwei'} checkOffline={false} />
-      );
+      return <UnitDisplay unit="gwei" value={Wei(gasPrice)} symbol="gwei" checkOffline={false} />;
     }}
   />
 );
