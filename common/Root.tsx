@@ -37,9 +37,6 @@ export default class Root extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
-    const isHostnameValid =
-      process.env.NODE_ENV === 'development' ||
-      (process.env.NODE_ENV === 'production' && window.location.hostname !== 'localhost');
 
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
     const routes = (
@@ -61,7 +58,7 @@ export default class Root extends Component<Props, State> {
     );
     return (
       <Provider store={store} key={Math.random()}>
-        {isHostnameValid ? (
+        {process.env.HTTPS || process.env.NODE_ENV === 'development' ? (
           <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>
         ) : (
           <HashRouter key={Math.random()}>{routes}</HashRouter>
