@@ -1,26 +1,3 @@
-@import "common/sass/variables";
-
 .GenerateWallet {
-  &-column {
-    &-content {
-      text-align: center;
-    }
-
-    &-help {
-      background-image: url('~assets/images/icon-help-2.svg');
-      background-size: 8rem;
-      background-position: 102% -5%;
-      background-repeat: no-repeat;
-
-      h4 {
-        margin: 0 0 $space-sm;
-        font-weight: 400;
-      }
-
-      ul {
-        list-style: circle;
-        padding-left: $space;
-      }
-    }
-  }
+  text-align: center;
 }
