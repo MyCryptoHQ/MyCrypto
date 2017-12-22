@@ -44,42 +44,43 @@ export class SignMessage extends Component<Props, State> {
 
     return (
       <div>
-        <div className="Tab-content-pane">
-          <h4>{translate('MSG_message')}</h4>
-          <div className="form-group">
-            <textarea
-              className={messageBoxClass}
-              placeholder={messagePlaceholder}
-              value={message}
-              onChange={this.handleMessageChange}
-            />
-            <div className="SignMessage-help">{translate('MSG_info2')}</div>
-          </div>
+        {unlocked ? (
+          <div className="Tab-content-pane">
+            <h4>{translate('MSG_message')}</h4>
+            <div className="form-group">
+              <textarea
+                className={messageBoxClass}
+                placeholder={messagePlaceholder}
+                value={message}
+                onChange={this.handleMessageChange}
+              />
+              <div className="SignMessage-help">{translate('MSG_info2')}</div>
+            </div>
 
-          {unlocked && (
             <SignButton
               wallet={wallet}
               message={this.state.message}
               showNotification={this.props.showNotification}
               onSignMessage={this.onSignMessage}
             />
-          )}
-          <WalletDecrypt hidden={unlocked} />
 
-          {!!signedMessage && (
-            <div>
-              <h4>{translate('MSG_signature')}</h4>
-              <div className="form-group">
-                <textarea
-                  className="SignMessage-inputBox form-control"
-                  value={JSON.stringify(signedMessage, null, 2)}
-                  disabled={true}
-                  onChange={this.handleMessageChange}
-                />
+            {!!signedMessage && (
+              <div>
+                <h4>{translate('MSG_signature')}</h4>
+                <div className="form-group">
+                  <textarea
+                    className="SignMessage-inputBox form-control"
+                    value={JSON.stringify(signedMessage, null, 2)}
+                    disabled={true}
+                    onChange={this.handleMessageChange}
+                  />
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        ) : (
+          <WalletDecrypt hidden={unlocked} />
+        )}
       </div>
     );
   }
