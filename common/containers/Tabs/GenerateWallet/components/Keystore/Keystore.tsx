@@ -25,7 +25,7 @@ interface Props {
   resetGenerateWallet: TResetGenerateWallet;
 }
 
-class GenerateKeystoreWallet extends Component<Props, {}> {
+class GenerateKeystore extends Component<Props, {}> {
   public componentWillUnmount() {
     this.props.resetGenerateWallet();
   }
@@ -81,4 +81,4 @@ export default connect(mapStateToProps, {
   generateNewWallet,
   continueToPaper,
   resetGenerateWallet
-})(GenerateKeystoreWallet);
+})(GenerateKeystore);

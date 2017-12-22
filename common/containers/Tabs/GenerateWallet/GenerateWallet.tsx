@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import Keystore from './components/Keystore';
+import Mnemonic from './components/Mnemonic';
 import WalletTypes from './components/WalletTypes';
 import CryptoWarning from './components/CryptoWarning';
 import TabSection from 'containers/TabSection';
-
-console.log('test');
 
 export enum WalletType {
   Keystore = 'keystore',
@@ -26,7 +25,7 @@ export default class GenerateWallet extends Component<{}, State> {
 
     if (window.crypto) {
       if (walletType === WalletType.Mnemonic) {
-        content = <h1>Mnemonic!</h1>;
+        content = <Mnemonic />;
       } else if (walletType === WalletType.Keystore) {
         content = <Keystore />;
       } else {

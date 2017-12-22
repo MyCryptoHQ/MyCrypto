@@ -32,7 +32,7 @@ export default class EnterPassword extends Component<Props, State> {
     const content = (
       <div className="EnterPw">
         <h1 className="EnterPw-title" aria-live="polite">
-          {translate('NAV_GenerateWallet')}
+          Generate a {translate('x_Keystore2')}
         </h1>
 
         <label className="EnterPw-password">
