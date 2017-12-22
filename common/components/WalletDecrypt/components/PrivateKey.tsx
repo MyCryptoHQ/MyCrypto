@@ -38,19 +38,20 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
   };
 }
 
-export class PrivateKeyDecrypt extends Component {
-  public props: {
-    value: PrivateKeyValue;
-    onChange(value: PrivateKeyValue): void;
-    onUnlock(): void;
-  };
+interface Props {
+  value: PrivateKeyValue;
+  onChange(value: PrivateKeyValue): void;
+  onUnlock(): void;
+}
 
+export class PrivateKeyDecrypt extends Component<Props> {
   public render() {
     const { key, password } = this.props.value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
+    const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
     return (
-      <div id="selectedTypeKey">
+      <form id="selectedTypeKey" onSubmit={this.unlock}>
         <div className="form-group">
           <textarea
             id="aria-private-key"
@@ -76,7 +77,10 @@ export class PrivateKeyDecrypt extends Component {
               />
             </div>
           )}
-      </div>
+        <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
+          {translate('ADD_Label_6_short')}
+        </button>
+      </form>
     );
   }
 
@@ -100,11 +104,15 @@ export class PrivateKeyDecrypt extends Component {
     });
   };
 
-  public onKeyDown = (e: any) => {
+  public onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.keyCode === 13) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.props.onUnlock();
+      this.unlock(e);
     }
+  };
+
+  private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onUnlock();
   };
 }

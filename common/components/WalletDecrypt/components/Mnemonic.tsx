@@ -54,17 +54,16 @@ export class MnemonicDecrypt extends Component<Props, State> {
               type="password"
             />
           </div>
-          {isValidMnemonic && (
-            <div className="form-group">
-              <button
-                style={{ width: '100%' }}
-                onClick={this.onDWModalOpen}
-                className="btn btn-primary btn-lg"
-              >
-                {translate('Choose Address')}
-              </button>
-            </div>
-          )}
+          <div className="form-group">
+            <button
+              style={{ width: '100%' }}
+              onClick={this.onDWModalOpen}
+              className="btn btn-primary btn-lg"
+              disabled={!isValidMnemonic}
+            >
+              {translate('Choose Address')}
+            </button>
+          </div>
         </div>
 
         <DeterministicWalletsModal

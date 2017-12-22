@@ -68,6 +68,7 @@ interface BaseWalletInfo {
   initialParams: object;
   unlock: any;
   helpLink?: string;
+  isReadOnly?: boolean;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -170,7 +171,8 @@ export class WalletDecrypt extends Component<Props, State> {
       component: ViewOnlyDecrypt,
       initialParams: {},
       unlock: this.props.setWallet,
-      helpLink: ''
+      helpLink: '',
+      isReadOnly: true
     }
   };
   public state: State = {
@@ -302,7 +304,8 @@ export class WalletDecrypt extends Component<Props, State> {
                         <i className="fa fa-arrow-left" /> {translate('Change Wallet')}
                       </button>
                       <h2 className="WalletDecrypt-decrypt-title">
-                        Unlock your {translate(selectedWallet.lid)}
+                        {!selectedWallet.isReadOnly && 'Unlock your'}{' '}
+                        {translate(selectedWallet.lid)}
                       </h2>
                       <section className="WalletDecrypt-decrypt-form">
                         {decryptionComponent}

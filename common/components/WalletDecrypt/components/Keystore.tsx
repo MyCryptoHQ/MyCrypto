@@ -28,9 +28,10 @@ export class KeystoreDecrypt extends Component {
   public render() {
     const { file, password } = this.props.value;
     const passReq = isPassRequired(file);
+    const unlockDisabled = !file || (passReq && !password);
 
     return (
-      <div id="selectedUploadKey">
+      <form id="selectedUploadKey" onSubmit={this.unlock}>
         <div className="form-group">
           <input
             className={'hidden'}
@@ -55,19 +56,27 @@ export class KeystoreDecrypt extends Component {
             />
           </div>
         </div>
-      </div>
+
+        <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
+          {translate('ADD_Label_6_short')}
+        </button>
+      </form>
     );
   }
 
-  public onKeyDown = (e: any) => {
+  private onKeyDown = (e: any) => {
     if (e.keyCode === 13) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.props.onUnlock();
+      this.unlock(e);
     }
   };
 
-  public onPasswordChange = (e: any) => {
+  private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onUnlock();
+  };
+
+  private onPasswordChange = (e: any) => {
     const valid = this.props.value.file.length && e.target.value.length;
     this.props.onChange({
       ...this.props.value,
@@ -76,7 +85,7 @@ export class KeystoreDecrypt extends Component {
     });
   };
 
-  public handleFileSelection = (e: any) => {
+  private handleFileSelection = (e: any) => {
     const fileReader = new FileReader();
     const target = e.target;
     const inputFile = target.files[0];
