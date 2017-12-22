@@ -4,7 +4,9 @@ const path = require('path');
 module.exports = {
   port: process.env.HTTPS ? 3443 : 3000,
   title: 'MEW',
-  publicPath: process.env.BUILD_GH_PAGES ? '/react-semantic.ui-starter/' : '/',
+  publicPath: process.env.BUILD_GH_PAGES
+    ? '/react-semantic.ui-starter/'
+    : process.env.NODE_ENV === 'production' ? './' : '/',
   srcPath: path.join(__dirname, './../common'),
   // add these dependencies to a standalone vendor bundle
   vendor: [
@@ -28,11 +30,7 @@ module.exports = {
       quality: 80
     },
     svgo: {
-      plugins: [
-        { removeViewBox: true },
-        { removeEmptyAttrs: false },
-        { sortAttrs: true }
-      ]
+      plugins: [{ removeViewBox: true }, { removeEmptyAttrs: false }, { sortAttrs: true }]
     }
   }
 };
