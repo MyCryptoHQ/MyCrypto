@@ -38,13 +38,13 @@ export class WalletButton extends React.Component<Props, {}> {
           {isSecure === true && (
             <span className="WalletButton-icons-icon">
               <i className="fa fa-shield" />
-              <Tooltip>{translateRaw('This type of wallet is secure')}</Tooltip>
+              <Tooltip>{translateRaw('This wallet type is secure')}</Tooltip>
             </span>
           )}
           {isSecure === false && (
             <span className="WalletButton-icons-icon">
               <i className="fa fa-exclamation-triangle" />
-              <Tooltip>{translateRaw('This type of wallet is insecure')}</Tooltip>
+              <Tooltip>{translateRaw('This wallet type is insecure')}</Tooltip>
             </span>
           )}
           {isReadOnly === true && (
