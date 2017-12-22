@@ -5,7 +5,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const config = require('./config');
 const _ = require('./utils');
-const { CheckerPlugin } = require('awesome-typescript-loader');
+const AutoDllPlugin = require('autodll-webpack-plugin');
+var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+
 module.exports = {
   entry: {
     client: './common/index.tsx'
@@ -31,12 +33,7 @@ module.exports = {
     loaders: [
       {
         test: /\.(ts|tsx)$/,
-        loaders: [
-          { loader: 'cache-loader' },
-          {
-            loader: 'awesome-typescript-loader'
-          }
-        ],
+        loader: 'awesome-typescript-loader',
         exclude: [/node_modules/]
       },
       {
@@ -63,13 +60,61 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.BUILD_GH_PAGES': JSON.stringify(!!process.env.BUILD_GH_PAGES)
+    new AutoDllPlugin({
+      inject: true, // will inject the DLL bundles to index.html
+      filename: '[name]_[hash].js',
+      debug: true,
+      context: path.join(__dirname, '..'),
+      entry: {
+        vendor: [
+          'babel-polyfill',
+          'bip39',
+          'bn.js',
+          'bootstrap-sass',
+          'classnames',
+          'ethereum-blockies',
+          'ethereumjs-abi',
+          'ethereumjs-tx',
+          'ethereumjs-util',
+          'ethereumjs-wallet',
+          'font-awesome',
+          'hdkey',
+          'idna-uts46',
+          'jsonschema',
+          'lodash',
+          'moment',
+          'normalizr',
+          'qrcode',
+          'qrcode.react',
+          'query-string',
+          'react',
+          'react-dom',
+          'react-markdown',
+          'react-redux',
+          'react-router-dom',
+          'react-router-redux',
+          'react-transition-group',
+          'redux',
+          'redux-logger',
+          'redux-promise-middleware',
+          'redux-saga',
+          'scryptsy',
+          'store2',
+          'uuid',
+          'wallet-address-validator',
+          'whatwg-fetch'
+        ]
+      }
     }),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, '../common/index.html'),
+      inject: true,
       filename: _.outputIndexPath
+    }),
+    new HardSourceWebpackPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.BUILD_GH_PAGES': JSON.stringify(!!process.env.BUILD_GH_PAGES)
     }),
     new webpack.LoaderOptionsPlugin(_.loadersOptions()),
     new CopyWebpackPlugin([
