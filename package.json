@@ -48,7 +48,7 @@
   "devDependencies": {
     "@types/classnames": "2.2.3",
     "@types/history": "4.6.2",
-    "@types/jest": "21.1.8",
+    "@types/jest": "21.1.9",
     "@types/lodash": "4.14.91",
     "@types/qrcode": "0.8.0",
     "@types/qrcode.react": "0.6.2",
@@ -81,13 +81,13 @@
     "html-webpack-plugin": "2.30.1",
     "husky": "0.14.3",
     "image-webpack-loader": "3.4.2",
-    "jest": "22.0.1",
+    "jest": "22.0.3",
     "less": "2.7.3",
     "less-loader": "4.0.5",
     "lint-staged": "6.0.0",
     "minimist": "1.2.0",
     "node-sass": "4.7.2",
-    "nodemon": "1.13.3",
+    "nodemon": "1.14.1",
     "null-loader": "0.1.1",
     "prettier": "1.9.2",
     "progress": "2.0.0",
@@ -134,8 +134,7 @@
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged",
-    "formatAll":
-      "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {

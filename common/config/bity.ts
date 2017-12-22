@@ -1,7 +1,6 @@
 import { BTCTxExplorer, ETHTxExplorer } from './data';
 
-export type WhitelistedCoins = 'ETH' | 'BTC' | 'REP';
-
+export type WhitelistedCoins = 'BTC' | 'REP' | 'ETH';
 const serverURL = 'https://bity.myetherapi.com';
 const bityURL = 'https://bity.com/api';
 const BTCMin = 0.01;
@@ -16,13 +15,13 @@ const buffers = {
 };
 
 // rate must be BTC[KIND]
-export function generateKindMin(BTCKINDRate: number, kind: WhitelistedCoins): number {
+export function generateKindMin(BTCKINDRate: number, kind: keyof typeof buffers): number {
   const kindMinVal = BTCKINDRate * BTCMin;
   return kindMinVal + kindMinVal * buffers[kind];
 }
 
 // rate must be BTC[KIND]
-export function generateKindMax(BTCKINDRate: number, kind: WhitelistedCoins): number {
+export function generateKindMax(BTCKINDRate: number, kind: keyof typeof buffers): number {
   const kindMax = BTCKINDRate * BTCMax;
   return kindMax - kindMax * buffers[kind];
 }

@@ -81,8 +81,8 @@ export class MnemonicDecrypt extends Component<Props, State> {
     );
   }
 
-  public onPasswordChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    this.setState({ pass: (e.target as HTMLInputElement).value });
+  public onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ pass: e.currentTarget.value });
   };
 
   public onMnemonicChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
