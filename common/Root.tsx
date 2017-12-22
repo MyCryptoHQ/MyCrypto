@@ -58,10 +58,10 @@ export default class Root extends Component<Props, State> {
     );
     return (
       <Provider store={store} key={Math.random()}>
-        {process.env.HTTPS || process.env.NODE_ENV === 'development' ? (
-          <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>
-        ) : (
+        {process.env.BUILD_DOWNLOADABLE ? (
           <HashRouter key={Math.random()}>{routes}</HashRouter>
+        ) : (
+          <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>
         )}
       </Provider>
     );
