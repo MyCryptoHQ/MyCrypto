@@ -12,19 +12,21 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
       </h1>
     </section>
     <ENSWallet
-      text={`Do you want ${props.name}.eth? Unlock your wallet to start an auction.`}
+      text={`Do you want ${
+        props.name
+      }.eth? Unlock your wallet to start an auction.`}
     >
       {wallet => {
         return (
           <div>
-            <div className="col-xs-8">
+            <div className="col-sm-8">
               <PlaceBid
                 buttonName="Start the Auction"
                 title="Start an Auction"
                 {...props}
               />
             </div>
-            <div className="col-xs-4">
+            <div className="col-sm-4">
               <BalanceSidebar />
             </div>
           </div>

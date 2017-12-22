@@ -68,7 +68,7 @@ interface PlaceBidProps extends IBaseDomainRequest {
 export class PlaceBid extends Component<PlaceBidProps, State> {
   public render() {
     return (
-      <article className="Tab-content-pane row text-left">
+      <div className="Tab-content-pane row text-left">
         <h2>{this.props.title}</h2>
         <BidFormGroup description="" label="Name" name="ensName" symbol=".eth">
           <input
@@ -111,7 +111,7 @@ export class PlaceBid extends Component<PlaceBidProps, State> {
         <button className="btn btn-primary col-xs-12">
           {this.props.buttonName}
         </button>
-      </article>
+      </div>
     );
   }
 
