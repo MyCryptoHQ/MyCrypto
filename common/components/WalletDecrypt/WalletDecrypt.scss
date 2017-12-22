@@ -1,6 +1,8 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
+$speed: 500ms;
+
 @keyframes decrypt-enter {
   0% {
     opacity: 0;
@@ -15,9 +17,9 @@
 @mixin decrypt-title {
   text-align: center;
   line-height: 1;
-  margin: 5px 0 30px;
+  margin: 0 0 30px;
   font-weight: normal;
-  animation: decrypt-enter 600ms ease 1;
+  animation: decrypt-enter $speed ease 1;
 }
 
 .WalletDecrypt {
@@ -84,19 +86,15 @@
     &-form {
       max-width: 360px;
       margin: 0 auto;
-      animation: decrypt-enter 600ms ease 120ms 1;
-      animation-fill-mode: both;
     }
   }
 }
 
 // Animation between two slides
-$speed: 500ms;
-
 .DecryptContent {
   &-enter {
     opacity: 0;
-    transition: opacity 150ms ease 75ms;
+    transition: opacity $speed * .25 ease $speed * .125;
 
     &-active {
       opacity: 1;
@@ -109,7 +107,8 @@ $speed: 500ms;
     left: 0;
     width: 100%;
     opacity: 1;
-    transition: opacity 150ms ease;
+    transition: opacity $speed * .25 ease;
+    pointer-events: none;
 
     &-active {
       opacity: 0;
