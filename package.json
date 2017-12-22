@@ -20,7 +20,6 @@
     "ethereumjs-wallet": "0.6.0",
     "font-awesome": "4.7.0",
     "hdkey": "0.7.1",
-    "hoist-non-react-statics": "^2.3.1",
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.2",
     "lodash": "4.17.4",
