@@ -5,13 +5,13 @@ import { GasFieldFactory } from 'components/GasFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import { SigningStatus } from 'components/SigningStatus';
 import { NonceField } from 'components/NonceField';
-import { OfflineAwareUnlockHeader } from 'components';
+import { WalletDecrypt } from 'components';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
 import { setToField, TSetToField } from 'actions/transaction';
 import { connect } from 'react-redux';
 import { Aux } from 'components/ui';
-import { OnlyUnlocked } from 'components/renderCbs';
+import { FullWalletOnly } from 'components/renderCbs';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -19,7 +19,7 @@ interface DispatchProps {
 
 class DeployClass extends Component<DispatchProps> {
   public render() {
-    const content = (
+    const makeContent = () => (
       <div className="Deploy">
         <section>
           <label className="Deploy-field form-group">
@@ -79,12 +79,9 @@ class DeployClass extends Component<DispatchProps> {
       </div>
     );
 
-    return (
-      <Aux>
-        <OfflineAwareUnlockHeader allowReadOnly={false} />
-        <OnlyUnlocked whenUnlocked={content} />
-      </Aux>
-    );
+    const makeDecrypt = () => <WalletDecrypt allowReadOnly={false} />;
+
+    return <FullWalletOnly withFullWallet={makeContent} withoutFullWallet={makeDecrypt} />;
   }
 }
 
