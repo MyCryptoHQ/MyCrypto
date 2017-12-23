@@ -10,13 +10,13 @@ import {
 } from 'actions/transaction';
 import { computeIndexingHash } from 'libs/transaction';
 import { QRCode } from 'components/ui';
-import './index.scss';
 import EthTx from 'ethereumjs-tx';
 import classnames from 'classnames';
 import { SendButton } from 'components/SendButton';
 import { toBuffer, bufferToHex } from 'ethereumjs-util';
 import { getSerializedTransaction } from 'selectors/transaction';
 import { AppState } from 'reducers';
+import './index.scss';
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -45,11 +45,11 @@ class BroadcastTx extends Component<DispatchProps & StateProps> {
     return (
       <TabSection>
         <div className="Tab-content-pane row block text-center">
-          <div className="col-md-6">
-            <div className="col-md-12 BroadcastTx-title">
-              <h2>Broadcast Signed Transaction</h2>
-            </div>
-            <p>Paste a signed transaction and press the "SEND TRANSACTION" button.</p>
+          <div className="BroadcastTx">
+            <h1 className="BroadcastTx-title">Broadcast Signed Transaction</h1>
+            <p className="BroadcastTx-help">
+              Paste a signed transaction and press the "SEND TRANSACTION" button.
+            </p>
             <label>{translateRaw('SEND_signed')}</label>
             <textarea
               className={inputClasses}
@@ -58,9 +58,7 @@ class BroadcastTx extends Component<DispatchProps & StateProps> {
               onChange={this.handleChange}
             />
             <SendButton onlyTransactionParameters={true} />
-          </div>
 
-          <div className="col-md-6" style={{ marginTop: '70px' }}>
             <div
               className="qr-code text-center"
               style={{
