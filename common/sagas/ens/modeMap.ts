@@ -8,11 +8,8 @@ import ethUtil from 'ethereumjs-util';
 
 const { main } = networkConfigs;
 
-function* nameStateOwned( // Return the owner's address, and the resolved address if it exists
-  { deedAddress }: IDomainData<NameState.Owned>,
-  nameHash: string,
-  hash: Buffer
-) {
+function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash: string) {
+  // Return the owner's address, and the resolved address if it exists
   const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
     to: deedAddress,
     data: ENS.deed.owner.encodeInput(),
@@ -33,13 +30,13 @@ function* nameStateOwned( // Return the owner's address, and the resolved addres
   let resolvedAddress = '0x0';
 
   if (resolverAddress !== '0x0') {
-    const { ret }: typeof ENS.resolver.addr.outputType = yield call(makeEthCallAndDecode, {
+    const result: typeof ENS.resolver.addr.outputType = yield call(makeEthCallAndDecode, {
       to: resolverAddress,
-      data: ENS.resolver.addr.encodeInput({ node: hash }),
+      data: ENS.resolver.addr.encodeInput({ node: nameHash }),
       decoder: ENS.resolver.addr.decodeOutput
     });
 
-    resolvedAddress = ret;
+    resolvedAddress = result.ret;
   }
 
   return { ownerAddress, resolvedAddress };
@@ -73,7 +70,7 @@ export function* resolveDomainRequest(name: string): SagaIterator {
     decoder: ENS.auction.entries.decodeOutput
   });
   const nameStateHandler = modeMap[domainData.mode];
-  const result = yield call(nameStateHandler, domainData, nameHash, hash);
+  const result = yield call(nameStateHandler, domainData, nameHash);
 
   return {
     name,
