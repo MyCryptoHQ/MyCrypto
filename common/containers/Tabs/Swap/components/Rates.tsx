@@ -7,7 +7,7 @@ import { objectContainsObjectKeys } from 'utils/helpers';
 
 interface RateInputProps {
   rate: number;
-  amount: number;
+  amount: number | string;
   pair: string;
   origin: string;
   destination: string;
@@ -22,7 +22,7 @@ export const RateInput: React.SFC<RateInputProps> = ({
   destination,
   onChange
 }) => {
-  return amount ? (
+  return amount || amount === 0 || amount === '' ? (
     <div className="SwapRates-panel-rate">
       <input
         className="SwapRates-panel-rate-input"
