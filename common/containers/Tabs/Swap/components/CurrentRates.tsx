@@ -29,7 +29,7 @@ export default class CurrentRates extends Component<Props> {
     const coinOne = sample(SHAPESHIFT_WHITELIST) as string;
     const coinTwo = sample(SHAPESHIFT_WHITELIST) as string;
     const pair = coinOne + coinTwo;
-    const pairData = shapeshiftRates.byId[pair] as NormalizedShapeshiftRate;
+    const pairData = shapeshiftRates.byId[pair];
     if (pairData) {
       return pairData;
     } else {
@@ -41,7 +41,7 @@ export default class CurrentRates extends Component<Props> {
   public buildSSPairs = (shapeshiftRates: NormalizedShapeshiftRates, n: number = 4) => {
     const pairCollection = times(n, () => this.getRandomSSPairData(shapeshiftRates));
     const byId = pairCollection.reduce((acc, cur) => {
-      acc[cur.id] = { ...cur, rate: parseFloat(cur.rate) };
+      acc[cur.id] = cur;
       return acc;
     }, {});
     const allIds = pairCollection.map(SSData => SSData.id);
