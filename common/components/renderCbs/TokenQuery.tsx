@@ -6,7 +6,7 @@ import { getTokens, MergedToken } from 'selectors/wallet';
 
 interface Props {
   tokens: MergedToken[];
-  withQuery({ token }: { token: MergedToken | null | undefined });
+  withQuery({ token }: { token: MergedToken | null | undefined }): React.ReactElement<any>;
 }
 
 class TokenQueryClass extends Component<Props, {}> {

@@ -18,7 +18,7 @@ interface DispatchProps {
 }
 interface OwnProps {
   gasLimit: string | null;
-  withProps(props: CallBackProps);
+  withProps(props: CallBackProps): React.ReactElement<any> | null;
 }
 
 type Props = DispatchProps & OwnProps;
@@ -46,7 +46,7 @@ class GasLimitFieldClass extends Component<Props, {}> {
 const GasLimitField = connect(null, { inputGasLimit })(GasLimitFieldClass);
 
 interface DefaultGasFieldProps {
-  withProps(props: CallBackProps);
+  withProps(props: CallBackProps): React.ReactElement<any> | null;
 }
 const DefaultGasField: React.SFC<DefaultGasFieldProps> = ({ withProps }) => (
   <GasQuery
