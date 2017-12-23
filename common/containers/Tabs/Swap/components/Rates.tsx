@@ -31,7 +31,7 @@ export const RateInput: React.SFC<RateInputProps> = ({
         name={pair}
       />
       <span className="SwapRates-panel-rate-amount">
-        {` ${origin} = ${toFixedIfLarger(amount * rate, 6)} ${destination}`}
+        {` ${origin} = ${toFixedIfLarger(+amount * rate, 6)} ${destination}`}
       </span>
     </div>
   ) : null;
