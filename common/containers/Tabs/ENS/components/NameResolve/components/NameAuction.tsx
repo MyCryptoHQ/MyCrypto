@@ -2,6 +2,8 @@ import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
 import { EnsTime } from './CountDown';
 import { ENSWallet } from './ENSWallet';
+import { PlaceBid } from './PlaceBid';
+import ENSUnlockLayout from './ENSUnlockLayout';
 import moment from 'moment';
 
 const getDeadlines = (registrationDate: string) => {

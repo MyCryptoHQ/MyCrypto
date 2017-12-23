@@ -7,7 +7,7 @@ import { Aux } from 'components/ui';
 interface Props {
   text: string;
   wallet: AppState['wallet'];
-  children(wallet: AppState['wallet']): React.ReactElement<any>;
+  children: JSX.Element;
 }
 
 interface State {
@@ -44,7 +44,9 @@ class ENSWalletClass extends Component<Props, State> {
     );
 
     return wallet.inst ? (
-      <section className="col-xs-12 col-sm-12 ">{children(wallet)}</section>
+      <section className="col-xs-12 col-sm-12 ">
+        {wallet ? children : null}
+      </section>
     ) : (
       DecryptComponent
     );
