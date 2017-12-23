@@ -19,6 +19,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
             unit="ether"
             symbol="ETH"
             displayShortBalance={false}
+            checkOffline={false}
           />
         </strong>
       </p>

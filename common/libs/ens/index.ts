@@ -1,16 +1,5 @@
 import uts46 from 'idna-uts46';
 import ethUtil from 'ethereumjs-util';
-import ENS from './contracts';
-import networkConfigs from './networkConfigs';
-import { INode } from 'libs/nodes/INode';
-import Contract, { ISetConfigForTx } from 'libs/contracts';
-import { randomBytes } from 'crypto';
-import BN from 'bn.js';
-const { main } = networkConfigs;
-
-//just set to main network for now
-ENS.auction.at(main.public.ethAuction);
-ENS.registry.at(main.registry);
 
 export function normalise(name: string) {
   try {
@@ -36,13 +25,6 @@ export const getNameHash = (name: string = ''): string => {
   return `0x${rawNode.toString('hex')}`;
 };
 
-const setNodes = node => {
-  ENS.auction.setNode(node);
-  ENS.deed.setNode(node);
-  ENS.resolver.setNode(node);
-  ENS.registry.setNode(node);
-};
-
 export interface IBaseDomainRequest {
   name: string;
   labelHash: string;
@@ -66,7 +48,7 @@ export interface IRevealDomainRequest extends IBaseDomainRequest {
 
 export type DomainRequest = IOwnedDomainRequest | IRevealDomainRequest | IBaseDomainRequest;
 
-interface IDomainData<Mode> {
+export interface IDomainData<Mode> {
   mode: Mode;
   deedAddress: string;
   registrationDate: string;
@@ -83,7 +65,7 @@ export enum NameState {
   NotYetAvailable = '5'
 }
 
-const modeStrMap = name => [
+export const modeStrMap = name => [
   `${name} is available and the auction hasn’t started`,
   `${name} is available and the auction has been started`,
   `${name} is taken and currently owned by someone`,
@@ -92,7 +74,7 @@ const modeStrMap = name => [
   `${name} is not yet available due to the ‘soft launch’ of names.`
 ];
 
-interface IModeMap {
+export interface IModeMap {
   [x: string]: (
     domainData: IDomainData<NameState>,
     nameHash?: string,
@@ -103,6 +85,7 @@ interface IModeMap {
     | { auctionCloseTime: string; revealBidTime: string };
 }
 
+/*
 export const placeBid = async (
   config: ISetConfigForTx,
   { labelHash, ownerAddress }: IRevealDomainRequest,
@@ -146,50 +129,4 @@ export const unsealBid = async (
 
   return ENS.auction.unsealBid.send(sendParams);
 };
-
-const modeMap: IModeMap = {
-  [NameState.Open]: (_: IDomainData<NameState.Open>) => ({}),
-  [NameState.Auction]: (_: IDomainData<NameState.Auction>) => ({}),
-  [NameState.Owned]: async (
-    // Return the owner's address, and the resolved address if it exists
-    { deedAddress }: IDomainData<NameState.Owned>,
-    nameHash: string,
-    hash: Buffer
-  ) => {
-    const { ownerAddress } = await ENS.deed.at(deedAddress).owner.call();
-    const { resolverAddress } = await ENS.registry.resolver.call({
-      node: nameHash
-    });
-
-    let resolvedAddress = '0x0';
-
-    if (resolverAddress !== '0x0') {
-      const { ret } = await ENS.resolver.at(resolverAddress).addr.call({ node: hash });
-      resolvedAddress = ret;
-    }
-
-    return { ownerAddress, resolvedAddress };
-  },
-  [NameState.Forbidden]: (_: IDomainData<NameState.Forbidden>) => ({}),
-  [NameState.Reveal]: async ({ deedAddress }: IDomainData<NameState.Reveal>) => ({
-    ownerAddress: await ENS.deed.at(deedAddress).owner.call()
-  }),
-  [NameState.NotYetAvailable]: (_: IDomainData<NameState.NotYetAvailable>) => ({})
-};
-
-export const resolveDomainRequest = async (name: string, node: INode): Promise<DomainRequest> => {
-  setNodes(node);
-  const hash = ethUtil.sha3(name);
-  const nameHash = getNameHash(`${name}.eth`);
-  const domainData = await ENS.auction.entries.call({ _hash: hash });
-  const result = await modeMap[domainData.mode](domainData, nameHash, hash);
-
-  return {
-    name,
-    ...domainData,
-    ...result,
-    labelHash: hash.toString('hex'),
-    nameHash,
-    mappedMode: modeStrMap(`${name}.eth`)[domainData.mode]
-  };
-};
+*/

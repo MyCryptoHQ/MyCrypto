@@ -12,8 +12,8 @@ interface State {
 class CountDown extends Component<Props, State> {
   public state = { currentTime: 0 };
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props);
     this.startCountDown();
   }
 

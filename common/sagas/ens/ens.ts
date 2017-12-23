@@ -3,9 +3,11 @@ import { TypeKeys } from 'actions/ens/constants';
 import { SagaIterator } from 'redux-saga';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
-import { resolveDomainRequest, DomainRequest } from 'libs/ens';
+import { DomainRequest } from 'libs/ens';
 import { takeEvery, call, put, select } from 'redux-saga/effects';
 import { showNotification } from 'actions/notifications';
+
+import { resolveDomainRequest } from './modeMap';
 
 function* resolveDomain(action: ResolveDomainRequested): SagaIterator {
   const { domain } = action.payload;
@@ -21,6 +23,6 @@ function* resolveDomain(action: ResolveDomainRequested): SagaIterator {
   }
 }
 
-export default function* notificationsSaga(): SagaIterator {
+export function* ens(): SagaIterator {
   yield takeEvery(TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED, resolveDomain);
 }
