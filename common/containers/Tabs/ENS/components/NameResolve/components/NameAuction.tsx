@@ -34,9 +34,16 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({
       <ENSWallet
         text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}
       >
-        {wallet => {
-          return <p> Placeholder: {JSON.stringify(wallet)} </p>;
-        }}
+        {/* TODO: find a better way of conditionally rendering on wallet unlock */}
+        {wallet ? (
+          <ENSUnlockLayout>
+            <PlaceBid
+              buttonName="Start the Auction"
+              title="Start an Auction"
+              {...props}
+            />
+          </ENSUnlockLayout>
+        ) : null}
       </ENSWallet>
     </section>
   );
