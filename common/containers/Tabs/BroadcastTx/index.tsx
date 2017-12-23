@@ -59,14 +59,7 @@ class BroadcastTx extends Component<DispatchProps & StateProps> {
             />
             <SendButton onlyTransactionParameters={true} />
 
-            <div
-              className="qr-code text-center"
-              style={{
-                maxWidth: '15rem',
-                margin: '1rem auto',
-                width: '100%'
-              }}
-            >
+            <div className="BroadcastTx-qr">
               {stateTransaction && <QRCode data={bufferToHex(stateTransaction)} />}
             </div>
           </div>
