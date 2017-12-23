@@ -4,6 +4,8 @@ import { EnsTime } from './CountDown';
 import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
 import { ENSWallet } from './ENSWallet';
+import { RevealBid } from './RevealBid';
+import ENSUnlockLayout from './ENSUnlockLayout';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
   <section className="row text-center">
@@ -12,7 +14,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
         It's time to reveal the bids for <strong>{props.name}.eth.</strong>{' '}
       </p>
       <p>
-        Current Highest bid is {' '}
+        Current Highest bid is{' '}
         <strong>
           <UnitDisplay
             value={Wei(props.highestBid)}
@@ -28,9 +30,13 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     <ENSWallet
       text={`Did you you bid on ${props.name}.eth? You must reveal your bid now.`}
     >
-      {wallet => {
-        return <p> Placeholder: {JSON.stringify(wallet)} </p>;
-      }}
+      <ENSUnlockLayout>
+        <RevealBid
+          buttonName="Start the Auction"
+          title="Reveal Your Bid"
+          {...props}
+        />
+      </ENSUnlockLayout>
     </ENSWallet>
   </section>
 );

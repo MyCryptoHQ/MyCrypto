@@ -14,10 +14,8 @@ const getDeadlines = (registrationDate: string) => {
   return { auctionCloseTime, revealBidTime };
 };
 
-export const NameAuction: React.SFC<IBaseDomainRequest> = ({
-  registrationDate,
-  name
-}) => {
+export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
+  const { registrationDate, name } = props;
   const { auctionCloseTime, revealBidTime } = getDeadlines(registrationDate);
   return (
     <section className="row">
@@ -34,16 +32,13 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({
       <ENSWallet
         text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}
       >
-        {/* TODO: find a better way of conditionally rendering on wallet unlock */}
-        {wallet ? (
-          <ENSUnlockLayout>
-            <PlaceBid
-              buttonName="Start the Auction"
-              title="Start an Auction"
-              {...props}
-            />
-          </ENSUnlockLayout>
-        ) : null}
+        <ENSUnlockLayout>
+          <PlaceBid
+            buttonName="Start the Auction"
+            title="Start an Auction"
+            {...props}
+          />
+        </ENSUnlockLayout>
       </ENSWallet>
     </section>
   );
