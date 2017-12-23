@@ -57,7 +57,7 @@ class BroadcastTx extends Component<DispatchProps & StateProps> {
               value={userInput}
               onChange={this.handleChange}
             />
-            <SendButton />
+            <SendButton onlyTransactionParameters={true} />
           </div>
 
           <div className="col-md-6" style={{ marginTop: '70px' }}>
