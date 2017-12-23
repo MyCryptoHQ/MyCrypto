@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { toFixedIfLarger } from 'utils/formatters';
 import './CurrentRates.scss';
 import { ProviderName } from 'actions/swap';
-import isEqual from 'lodash/isEqual';
+import { objectContainsObjectKeys } from 'utils/helpers';
 
 interface RateInputProps {
   rate: number;
@@ -44,34 +44,38 @@ interface Props {
 
 interface State {
   pairs: { [pair: string]: number };
-  didSetupPairs: boolean;
 }
 
 export default class Rates extends Component<Props, State> {
   public state = {
-    pairs: {},
-    didSetupPairs: false
+    pairs: {}
   };
 
   public componentDidMount() {
-    this.setState(this.setupPairs());
+    this.setState({ pairs: this.getPairs() });
   }
 
   public componentDidUpdate() {
-    const newState = this.setupPairs();
-    if (!isEqual(this.state, newState)) {
-      this.setState(newState);
+    const newPairs = this.getPairs();
+    // prevents endless loop. if state already contains new pairs, don't set state
+    if (!objectContainsObjectKeys(newPairs, this.state.pairs)) {
+      const pairs = {
+        ...this.state.pairs,
+        ...newPairs
+      };
+      this.setState({
+        pairs
+      });
     }
   }
 
-  public setupPairs = () => {
+  public getPairs = () => {
     const { rates } = this.props;
     const { allIds } = rates;
-    const state = allIds.reduce((acc, cur) => {
+    return allIds.reduce((acc, cur) => {
       acc[cur] = 1;
       return acc;
     }, {});
-    return { pairs: state, didSetupPairs: true };
   };
 
   public onChange = (event: any) => {

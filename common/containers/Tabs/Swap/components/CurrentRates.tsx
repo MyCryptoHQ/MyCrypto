@@ -23,6 +23,8 @@ interface Props {
 }
 
 export default class CurrentRates extends Component<Props> {
+  private shapeShiftRateCache = null;
+
   public getRandomSSPairData = (
     shapeshiftRates: NormalizedShapeshiftRates
   ): NormalizedShapeshiftRate => {
@@ -64,12 +66,18 @@ export default class CurrentRates extends Component<Props> {
     } else if (provider === 'shapeshift') {
       // if ShapeShift rates are valid, filter to 4 random pairs
       if (this.isValidRates(shapeshiftRates)) {
-        fixedRates = this.buildSSPairs(shapeshiftRates);
+        if (!this.shapeShiftRateCache) {
+          fixedRates = this.buildSSPairs(shapeshiftRates);
+          this.shapeShiftRateCache = fixedRates;
+        } else {
+          fixedRates = this.shapeShiftRateCache;
+        }
       } else {
         // else, pass along invalid rates. Child component will handle showing spinner until they become valid
         fixedRates = shapeshiftRates;
       }
     }
+
     return fixedRates;
   };
 
@@ -99,6 +107,7 @@ export default class CurrentRates extends Component<Props> {
     if (this.isValidRates(rates)) {
       children = <Rates provider={provider} rates={rates} />;
     } else {
+      // TODO - de-dup
       children = (
         <>
           <div className="SwapRates-panel-side col-sm-6">
