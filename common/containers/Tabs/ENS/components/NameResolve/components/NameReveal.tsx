@@ -1,11 +1,11 @@
 import React from 'react';
 import { IRevealDomainRequest } from 'libs/ens';
-import { EnsTime } from './CountDown';
+import { EnsTime } from './components/ENSTime';
 import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
-import { ENSWallet } from './ENSWallet';
-import { RevealBid } from './RevealBid';
-import ENSUnlockLayout from './ENSUnlockLayout';
+import { ENSWallet } from './components/ENSWallet';
+import { RevealBid } from './components/RevealBid';
+import ENSUnlockLayout from './components/ENSUnlockLayout';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
   <section className="row text-center">
