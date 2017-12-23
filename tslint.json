@@ -23,7 +23,8 @@
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
     "comment-format": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "no-imports": true
   },
-  "rulesDirectory": []
+  "rulesDirectory": ["custom_linting_rules/"]
 }
