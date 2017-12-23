@@ -6,7 +6,18 @@ export interface SwapInput {
   amount: number;
 }
 
-export interface NormalizedBityRate {
+export interface NormalizedRate {
+  id: number;
+  options: WhitelistedCoins[];
+  rate: number;
+}
+
+export interface NormalizedRates {
+  byId: { [id: string]: NormalizedRate };
+  allIds: string[];
+}
+
+export interface NormalizedBityRate extends NormalizedRate {
   id: number;
   options: WhitelistedCoins[];
   rate: number;
@@ -17,7 +28,7 @@ export interface NormalizedBityRates {
   allIds: string[];
 }
 
-export interface NormalizedShapeshiftRate {
+export interface NormalizedShapeshiftRate extends NormalizedRate {
   id: number;
   options: WhitelistedCoins[];
   rate: number;

@@ -1,7 +1,7 @@
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
 const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
-const SHAPESHIFT_WHITELIST = [
+export const SHAPESHIFT_WHITELIST = [
   'ETC',
   'OMG',
   'REP',
@@ -33,11 +33,13 @@ class ShapeshiftService {
   private postHeaders = {
     'Content-Type': 'application/json'
   };
+
   public checkStatus(address) {
     return fetch(`${this.url}/txStat/${address}`)
       .then(checkHttpStatus)
       .then(parseJSON);
   }
+
   public sendAmount(withdrawal, originKind, destinationKind, destinationAmount) {
     const pair = `${originKind.toLowerCase()}_${destinationKind.toLowerCase()}`;
 
@@ -84,6 +86,7 @@ class ShapeshiftService {
     });
     return pairRates;
   }
+
   private async checkAvl(pairRates) {
     const avlCoins = await this.getAvlCoins();
     const mapAvl = pairRates.map(p => {
@@ -110,6 +113,7 @@ class ShapeshiftService {
     });
     return mapAvl;
   }
+
   private getAvlCoins() {
     return fetch(`${this.url}/getcoins`)
       .then(checkHttpStatus)
@@ -121,14 +125,17 @@ class ShapeshiftService {
       .then(checkHttpStatus)
       .then(parseJSON);
   }
+
   private getMarketInfo() {
     return fetch(`${this.url}/marketinfo`)
       .then(checkHttpStatus)
       .then(parseJSON);
   }
+
   private isWhitelisted(coin) {
     return this.whitelist.includes(coin);
   }
+
   private mapMarketInfo(marketInfo) {
     const tokenMap = {};
     marketInfo.forEach(m => {
