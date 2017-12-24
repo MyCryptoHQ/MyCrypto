@@ -8,7 +8,55 @@ const _ = require('./utils');
 const AutoDllPlugin = require('autodll-webpack-plugin');
 var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
-module.exports = {
+const isProd = process.env.NODE_ENV === 'production';
+const dllPlugin = new AutoDllPlugin({
+  inject: true, // will inject the DLL bundles to index.html
+  filename: '[name]_[hash].js',
+  debug: true,
+  context: path.join(__dirname, '..'),
+  entry: {
+    vendor: [
+      'babel-polyfill',
+      'bip39',
+      'bn.js',
+      'bootstrap-sass',
+      'classnames',
+      'ethereum-blockies',
+      'ethereumjs-abi',
+      'ethereumjs-tx',
+      'ethereumjs-util',
+      'ethereumjs-wallet',
+      'font-awesome',
+      'hdkey',
+      'idna-uts46',
+      'jsonschema',
+      'lodash',
+      'moment',
+      'normalizr',
+      'qrcode',
+      'qrcode.react',
+      'query-string',
+      'react',
+      'react-dom',
+      'react-markdown',
+      'react-redux',
+      'react-router-dom',
+      'react-router-redux',
+      'react-transition-group',
+      'redux',
+      'redux-logger',
+      'redux-promise-middleware',
+      'redux-saga',
+      'scryptsy',
+      'store2',
+      'uuid',
+      'wallet-address-validator',
+      'whatwg-fetch'
+    ]
+  }
+});
+
+const webpackConfig = {
   entry: {
     client: './common/index.tsx'
   },
@@ -18,7 +66,7 @@ module.exports = {
     publicPath: config.publicPath
   },
   performance: {
-    hints: process.env.NODE_ENV === 'production' ? 'warning' : false
+    hints: isProd ? 'warning' : false
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
@@ -60,56 +108,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new AutoDllPlugin({
-      inject: true, // will inject the DLL bundles to index.html
-      filename: '[name]_[hash].js',
-      debug: true,
-      context: path.join(__dirname, '..'),
-      entry: {
-        vendor: [
-          'babel-polyfill',
-          'bip39',
-          'bn.js',
-          'bootstrap-sass',
-          'classnames',
-          'ethereum-blockies',
-          'ethereumjs-abi',
-          'ethereumjs-tx',
-          'ethereumjs-util',
-          'ethereumjs-wallet',
-          'font-awesome',
-          'hdkey',
-          'idna-uts46',
-          'jsonschema',
-          'lodash',
-          'moment',
-          'normalizr',
-          'qrcode',
-          'qrcode.react',
-          'query-string',
-          'react',
-          'react-dom',
-          'react-markdown',
-          'react-redux',
-          'react-router-dom',
-          'react-router-redux',
-          'react-transition-group',
-          'redux',
-          'redux-logger',
-          'redux-promise-middleware',
-          'redux-saga',
-          'scryptsy',
-          'store2',
-          'uuid',
-          'wallet-address-validator',
-          'whatwg-fetch'
-        ]
-      }
-    }),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, '../common/index.html'),
-      inject: true,
+      inject: !isProd,
       filename: _.outputIndexPath
     }),
     new HardSourceWebpackPlugin(),
@@ -127,3 +129,9 @@ module.exports = {
   ],
   target: _.target
 };
+
+if (!isProd) {
+  webpackConfig.plugins.unshift(dllPlugin);
+}
+
+module.exports = webpackConfig;

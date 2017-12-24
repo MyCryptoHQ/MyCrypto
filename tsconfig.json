@@ -3,19 +3,26 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "strictNullChecks": true,
-    "module": "esnext",
+    "module": "es2015",
     "jsx": "react",
-    "target": "es5",
+    "target": "es2015",
     "allowJs": true,
     "baseUrl": "./common/",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["./common/", "spec", "./node_modules/types-rlp/index.d.ts"],
+  "include": [
+    "./common/",
+    "spec",
+    "./node_modules/types-rlp/index.d.ts"
+  ],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   }
