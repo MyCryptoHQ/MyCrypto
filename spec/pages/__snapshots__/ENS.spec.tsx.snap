@@ -2,6 +2,6 @@
 
 exports[`render snapshot 1`] = `
 <ENS
-  dispatch={[Function]}
+  resolveDomainRequested={[Function]}
 />
 `;
