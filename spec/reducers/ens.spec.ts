@@ -7,7 +7,7 @@ const INITIAL_STATE = store.getState();
 describe('customTokens reducer', () => {
   it('handles resolveDomainRequested', () => {
     const ensName = 'ensName';
-    expect(ens(undefined, ensActions.resolveDomainRequested(ensName))).toEqual({
+    expect(ens(undefined as any, ensActions.resolveDomainRequested(ensName))).toEqual({
       ...INITIAL_STATE,
       domainRequests: { ensName: { state: 'PENDING' } }
     });

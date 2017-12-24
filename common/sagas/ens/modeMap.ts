@@ -54,6 +54,17 @@ function* nameStateReveal({ deedAddress }: IDomainData<NameState.Reveal>): SagaI
   return ownerAddress;
 }
 
+interface IModeMap {
+  [x: string]: (
+    domainData: IDomainData<NameState>,
+    nameHash?: string,
+    hash?: Buffer
+  ) =>
+    | {}
+    | { ownerAddress: string; resolvedAddress: string }
+    | { auctionCloseTime: string; revealBidTime: string };
+}
+
 const modeMap: IModeMap = {
   [NameState.Open]: (_: IDomainData<NameState.Open>) => ({}),
   [NameState.Auction]: (_: IDomainData<NameState.Auction>) => ({}),
