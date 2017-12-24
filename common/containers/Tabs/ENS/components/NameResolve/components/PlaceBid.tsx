@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { UnitConverter, Props as UCProps } from 'components/renderCbs';
-import { getDecimal, Wei } from 'libs/units';
+import { Wei } from 'libs/units';
 import classnames from 'classnames';
 import { IBaseDomainRequest } from 'libs/ens';
 
@@ -17,13 +17,7 @@ interface BidProps {
   children;
 }
 
-const BidFormGroup: React.SFC<BidProps> = ({
-  children,
-  description,
-  label,
-  name,
-  symbol
-}) => (
+const BidFormGroup: React.SFC<BidProps> = ({ children, description, label, name, symbol }) => (
   <section className="row form-group">
     <label htmlFor={name}>{label}</label>
     <em className="col-xs-12">
@@ -45,15 +39,12 @@ interface Props1 {
 }
 
 const EthereumUnitInput: React.SFC<Props1> = props => (
-  <UnitConverter decimal={getDecimal('ether')} onChange={props.onChange}>
+  <UnitConverter onChange={props.onChange}>
     {({ convertedUnit, onUserInput }) => {
       const validInput = isFinite(+convertedUnit) && +convertedUnit > 0;
       return (
         <input
-          className={classnames(
-            'form-control',
-            validInput ? 'is-valid' : 'is-invalid'
-          )}
+          className={classnames('form-control', validInput ? 'is-valid' : 'is-invalid')}
           value={convertedUnit}
           onChange={onUserInput}
         />
@@ -71,11 +62,7 @@ export class PlaceBid extends Component<PlaceBidProps, State> {
       <article className="Tab-content-pane row text-left">
         <h2>{this.props.title}</h2>
         <BidFormGroup description="" label="Name" name="ensName" symbol=".eth">
-          <input
-            className="form-control"
-            value={this.props.name}
-            readOnly={true}
-          />
+          <input className="form-control" value={this.props.name} readOnly={true} />
         </BidFormGroup>
         <BidFormGroup
           description="You must remember this to claim your name later."
@@ -108,14 +95,11 @@ export class PlaceBid extends Component<PlaceBidProps, State> {
             onChange={this.setField('secretPhrase')}
           />
         </BidFormGroup>
-        <button className="btn btn-primary col-xs-12">
-          {this.props.buttonName}
-        </button>
+        <button className="btn btn-primary col-xs-12">{this.props.buttonName}</button>
       </article>
     );
   }
 
-  private setField = (field: string) => (
-    e: React.FormEvent<HTMLInputElement>
-  ) => this.setState({ [field as any]: e.currentTarget.value });
+  private setField = (field: string) => (e: React.FormEvent<HTMLInputElement>) =>
+    this.setState({ [field as any]: e.currentTarget.value });
 }
