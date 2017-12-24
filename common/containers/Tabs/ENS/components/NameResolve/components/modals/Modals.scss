@@ -3,6 +3,15 @@
 $summary-height: 54px;
 $button-break: 'max-width: 620px';
 
+.Auction-warning {
+  background-color: red;
+  color: white;
+  padding: 1rem 2rem;
+  h4 {
+    margin-top: 0;
+  }
+}
+
 .BidModal {
   min-width: 580px;
 

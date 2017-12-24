@@ -5,6 +5,9 @@ import { NodeConfig } from 'config/data';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNodeConfig } from 'selectors/config';
+import { Identicon } from 'components/ui';
+
+const MonoTd = ({ children }) => <td className="mono">{children}</td>;
 
 interface Props {
   onConfirm?: any;
@@ -14,16 +17,30 @@ interface Props {
   node: NodeConfig;
 }
 
+// TODO: types
 interface State {
   timeToRead: number;
   hasBroadCasted: boolean;
+  toAddress: any;
+  gasPrice: any;
+  from: any;
+  bid: any;
+  mask: any;
+  revealDate: any;
+  endDate: any;
 }
 
 class BidModal extends React.Component<Props, State> {
   public state = {
     timeToRead: 5,
     hasBroadCasted: false,
-    transaction: null
+    toAddress: '',
+    gasPrice: '',
+    from: '',
+    bid: '',
+    mask: '',
+    revealDate: '',
+    endDate: ''
   };
 
   private readTimer = 0;
@@ -58,9 +75,8 @@ class BidModal extends React.Component<Props, State> {
   };
 
   public render() {
-    const { timeToRead } = this.state;
+    const { timeToRead, toAddress, from, bid, mask, revealDate, endDate } = this.state;
     const { node } = this.props;
-    // const { toAddress, gasPrice, from } = decodeTransaction(transaction, false);
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons: IButton[] = [
       {
@@ -73,34 +89,56 @@ class BidModal extends React.Component<Props, State> {
     ];
     return (
       <Modal title="Place a bid" isOpen={true} handleClose={this.onCancel} buttons={buttons}>
-        {/* <section className="BidModal-summary">
+        <div className="Auction-warning">
+          <strong>
+            <h4>Screenshot & Save</h4>
+          </strong>
+          You cannot claim your name unless you have this information during the reveal process.
+        </div>
+        <section className="BidModal-summary">
           <section className="BidModal-summary-icon BidModal-summary-icon--from">
             <Identicon size="100%" address={from} />
           </section>
           <section className="BidModal-summary-amount">
-            <section className="BidModal-summary-amount-arrow" />
+            <section className="BidModal-summary-amount-arrow">{mask}</section>
           </section>
           <section className="BidModal-summary-icon BidModal-summary-icon--to">
             <Identicon size="100%" address={toAddress} />
           </section>
-        </section> */}
-        <ul className="BidModal-details">
-          <li className="BidModal-details-detail">Name: {this.props.name}.eth</li>
-          <li className="BidModal-details-detail">Actual Bid Amount:</li>
-          <li className="BidModal-details-detail">Bid Mask:</li>
-          <li className="BidModal-details-detail">Reveal Date:</li>
-          <li className="BidModal-details-detail">Auction Ends:</li>
-          {/* <li className="BidModal-details-detail">
-            Gas price of{' '}
-            <strong>
-              <UnitDisplay unit={'gwei'} value={gasPrice} symbol={'gwei'} />
-            </strong>
-          </li> */}
-          <li className="BidModal-details-detail">
+        </section>
+        <div className="table-wrapper">
+          <table className="table table-striped">
+            <tbody>
+              <tr>
+                <td>Name: </td>
+                <MonoTd>{this.props.name}.eth</MonoTd>
+              </tr>
+              <tr>
+                <td>Actual Bid Amount: </td>
+                <MonoTd>{bid}</MonoTd>
+              </tr>
+              <tr>
+                <td>Bid Mask:</td>
+                <MonoTd>{mask}</MonoTd>
+              </tr>
+              <tr>
+                <td>Reveal Date:</td>
+                <MonoTd>{revealDate}</MonoTd>
+              </tr>
+              <tr>
+                <td>Auction Ends:</td>
+                <MonoTd>
+                  <span>{endDate}</span>
+                </MonoTd>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="BidModal-details-detail text-center">
             You are interacting with the <strong>{node.network}</strong> network provided by{' '}
             <strong>{node.service}</strong>
-          </li>
-        </ul>
+          </div>
+        </div>
       </Modal>
     );
   }

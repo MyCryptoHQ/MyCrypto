@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { UnitConverter, Props as UCProps } from 'components/renderCbs';
 import classnames from 'classnames';
 import { IBaseDomainRequest } from 'libs/ens';
+import { TShowNotification, showNotification } from 'actions/notifications';
 import BidModal from '../modals/BidModal';
+import { connect } from 'react-redux';
+
+interface DispatchProps {
+  showNotification: TShowNotification;
+}
 
 interface BidProps {
   name: string;
@@ -56,18 +62,23 @@ interface PlaceBidProps extends IBaseDomainRequest {
 }
 
 interface State {
-  openModal: boolean;
+  [name: string]: any;
 }
 
-class PlaceBid extends Component<PlaceBidProps, State> {
+class PlaceBid extends Component<PlaceBidProps & DispatchProps, State> {
   public state = {
-    openModal: false
+    openModal: false,
+    bidValue: 0,
+    maskValue: 0,
+    secretPhrase: ''
   };
 
   public toggleModal = () => {
-    // TODO: validate bid mask > bid
-    if (true) {
+    const { bidValue, maskValue } = this.state;
+    if (maskValue > bidValue) {
       this.setState({ openModal: !this.state.openModal });
+    } else {
+      this.props.showNotification('danger', 'Bid Mask must be greater than Bid Value', 5000);
     }
   };
 
@@ -126,4 +137,6 @@ class PlaceBid extends Component<PlaceBidProps, State> {
     this.setState({ [field as any]: e.currentTarget.value });
 }
 
-export default PlaceBid;
+export default connect(null, {
+  showNotification
+})(PlaceBid);
