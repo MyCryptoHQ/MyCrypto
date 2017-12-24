@@ -90,7 +90,7 @@ class ConfirmationModal extends React.Component<Props, State> {
           <section className="BidModal">
             {isBroadcasting ? (
               <section className="BidModal-loading">
-                <Spinner size="5x" />
+                <Spinner size="x5" />
               </section>
             ) : (
               <section>
