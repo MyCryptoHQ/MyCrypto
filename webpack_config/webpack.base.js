@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const config = require('./config');
 const _ = require('./utils');
 const AutoDllPlugin = require('autodll-webpack-plugin');
-var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 const dllPlugin = new AutoDllPlugin({
