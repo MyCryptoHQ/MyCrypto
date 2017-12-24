@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
   port: process.env.HTTPS ? 3443 : 3000,
   title: 'MEW',
-  publicPath: process.env.BUILD_DOWNLOADABLE ? './' : '/',
+  publicPath: '', // set this at run time
   srcPath: path.join(__dirname, './../common'),
   // add these dependencies to a standalone vendor bundle
   vendor: [
