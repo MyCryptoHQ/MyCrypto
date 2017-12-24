@@ -4,14 +4,12 @@ const path = require('path');
 module.exports = {
   port: process.env.HTTPS ? 3443 : 3000,
   title: 'MEW',
-  publicPath: process.env.BUILD_GH_PAGES ? '/react-semantic.ui-starter/' : '/',
+  publicPath: '', // set this at run time
   srcPath: path.join(__dirname, './../common'),
   // add these dependencies to a standalone vendor bundle
   vendor: [
-    'babel-polyfill',
     'bip39',
     'bn.js',
-    'bootstrap-sass',
     'classnames',
     'ethereum-blockies',
     'ethereumjs-abi',

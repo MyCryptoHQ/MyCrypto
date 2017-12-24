@@ -3,6 +3,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const config = require('./config');
 const _ = require('./utils');
 const AutoDllPlugin = require('autodll-webpack-plugin');
@@ -115,12 +117,13 @@ const webpackConfig = {
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, '../common/index.html'),
-      inject: !isProd,
+      inject: true,
       filename: _.outputIndexPath
     }),
     new HardSourceWebpackPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.BUILD_GH_PAGES': JSON.stringify(!!process.env.BUILD_GH_PAGES)
+    new FaviconsWebpackPlugin({
+      logo: path.resolve(__dirname, '../static/favicon/android-chrome-384x384.png'),
+      background: '#163151'
     }),
     new webpack.LoaderOptionsPlugin(_.loadersOptions()),
     new CopyWebpackPlugin([
