@@ -1,10 +1,7 @@
 import { ABIFunc, ABIFuncParamless } from '../AbiFunc';
 
 export interface IResolver {
-  supportsInterface: ABIFunc<
-    { interfaceID: bytes4 },
-    { doesSupportInterface: bool }
-  >;
+  supportsInterface: ABIFunc<{ interfaceID: bytes4 }, { doesSupportInterface: bool }>;
   addr: ABIFunc<{ node: bytes32 }, { ret: address }>;
   has: ABIFunc<{ node: bytes32; kind: bytes32 }, { has: bool }>;
   setAddr: ABIFunc<{ node: bytes32; addr: address }>;

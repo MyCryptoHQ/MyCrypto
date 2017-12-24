@@ -9,10 +9,7 @@ const INITIAL_STATE: State = {
   currentDomain: null
 };
 
-const setCurrentDomainName = (
-  state: State,
-  action: ResolveDomainSucceeded
-): State => {
+const setCurrentDomainName = (state: State, action: ResolveDomainSucceeded): State => {
   const { domain: domainName } = action.payload;
   return { ...state, currentDomain: domainName };
 };

@@ -3,9 +3,7 @@ import { TypeKeys } from './constants';
 import { DomainRequest } from 'libs/ens';
 
 export type TResolveDomainRequested = typeof resolveDomainRequested;
-export const resolveDomainRequested = (
-  domain: string
-): ActionTypes.ResolveDomainRequested => ({
+export const resolveDomainRequested = (domain: string): ActionTypes.ResolveDomainRequested => ({
   type: TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED,
   payload: { domain }
 });

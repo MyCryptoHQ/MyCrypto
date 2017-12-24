@@ -1,51 +1,84 @@
-import {
-  changeGasPrice as dChangeGasPrice,
-  changeLanguage as dChangeLanguage,
-  changeNodeIntent as dChangeNodeIntent,
-  TChangeGasPrice,
-  TChangeLanguage,
-  TChangeNodeIntent
-} from 'actions/config';
-import { AlphaAgreement, Footer, Header } from 'components';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {
+  changeLanguage as dChangeLanguage,
+  changeNodeIntent as dChangeNodeIntent,
+  addCustomNode as dAddCustomNode,
+  removeCustomNode as dRemoveCustomNode,
+  addCustomNetwork as dAddCustomNetwork,
+  TChangeLanguage,
+  TChangeNodeIntent,
+  TAddCustomNode,
+  TRemoveCustomNode,
+  TAddCustomNetwork
+} from 'actions/config';
+import { TSetGasPriceField, setGasPriceField as dSetGasPriceField } from 'actions/transaction';
+import { AlphaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
-interface Props {
-  // FIXME
-  children: any;
+import { getGasPrice } from 'selectors/transaction';
 
-  languageSelection: string;
-  nodeSelection: string;
+interface ReduxProps {
+  languageSelection: AppState['config']['languageSelection'];
+  node: AppState['config']['node'];
+  nodeSelection: AppState['config']['nodeSelection'];
+  isChangingNode: AppState['config']['isChangingNode'];
+  customNodes: AppState['config']['customNodes'];
+  customNetworks: AppState['config']['customNetworks'];
+  latestBlock: AppState['config']['latestBlock'];
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
+}
 
-  gasPriceGwei: number;
-
+interface ActionProps {
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
-  changeGasPrice: TChangeGasPrice;
+  addCustomNode: TAddCustomNode;
+  removeCustomNode: TRemoveCustomNode;
+  addCustomNetwork: TAddCustomNetwork;
+  setGasPriceField: TSetGasPriceField;
 }
+
+type Props = {
+  // FIXME
+  children: any;
+} & ReduxProps &
+  ActionProps;
+
 class TabSection extends Component<Props, {}> {
   public render() {
     const {
       children,
       // APP
+      node,
       nodeSelection,
+      isChangingNode,
       languageSelection,
-      gasPriceGwei,
-
+      customNodes,
+      customNetworks,
+      latestBlock,
+      setGasPriceField,
+      gasPrice,
       changeLanguage,
       changeNodeIntent,
-      changeGasPrice
+      addCustomNode,
+      removeCustomNode,
+      addCustomNetwork
     } = this.props;
 
     const headerProps = {
       languageSelection,
+      node,
       nodeSelection,
-      gasPriceGwei,
-
+      isChangingNode,
+      gasPrice,
+      customNodes,
+      customNetworks,
       changeLanguage,
       changeNodeIntent,
-      changeGasPrice
+      setGasPriceField,
+      addCustomNode,
+      removeCustomNode,
+      addCustomNetwork
     };
 
     return (
@@ -53,7 +86,7 @@ class TabSection extends Component<Props, {}> {
         <main>
           <Header {...headerProps} />
           <div className="Tab container">{children}</div>
-          <Footer />
+          <Footer latestBlock={latestBlock} />
         </main>
         <Notifications />
         <AlphaAgreement />
@@ -62,16 +95,24 @@ class TabSection extends Component<Props, {}> {
   }
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState): ReduxProps {
   return {
+    node: state.config.node,
     nodeSelection: state.config.nodeSelection,
+    isChangingNode: state.config.isChangingNode,
     languageSelection: state.config.languageSelection,
-    gasPriceGwei: state.config.gasPriceGwei
+    gasPrice: getGasPrice(state),
+    customNodes: state.config.customNodes,
+    customNetworks: state.config.customNetworks,
+    latestBlock: state.config.latestBlock
   };
 }
 
 export default connect(mapStateToProps, {
-  changeGasPrice: dChangeGasPrice,
+  setGasPriceField: dSetGasPriceField,
   changeLanguage: dChangeLanguage,
-  changeNodeIntent: dChangeNodeIntent
+  changeNodeIntent: dChangeNodeIntent,
+  addCustomNode: dAddCustomNode,
+  removeCustomNode: dRemoveCustomNode,
+  addCustomNetwork: dAddCustomNetwork
 })(TabSection);

@@ -1,107 +1,120 @@
 import { Wei, TokenValue } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, WalletConfig } from 'libs/wallet';
 import * as types from './actionTypes';
-import * as constants from './constants';
-
+import { TypeKeys } from './constants';
 export type TUnlockPrivateKey = typeof unlockPrivateKey;
 export function unlockPrivateKey(
   value: types.PrivateKeyUnlockParams
 ): types.UnlockPrivateKeyAction {
   return {
-    type: constants.WALLET_UNLOCK_PRIVATE_KEY,
+    type: TypeKeys.WALLET_UNLOCK_PRIVATE_KEY,
     payload: value
   };
 }
 
 export type TUnlockKeystore = typeof unlockKeystore;
-export function unlockKeystore(
-  value: types.KeystoreUnlockParams
-): types.UnlockKeystoreAction {
+export function unlockKeystore(value: types.KeystoreUnlockParams): types.UnlockKeystoreAction {
   return {
-    type: constants.WALLET_UNLOCK_KEYSTORE,
+    type: TypeKeys.WALLET_UNLOCK_KEYSTORE,
     payload: value
   };
 }
 
 export type TUnlockMnemonic = typeof unlockMnemonic;
-export function unlockMnemonic(
-  value: types.MnemonicUnlockParams
-): types.UnlockMnemonicAction {
+export function unlockMnemonic(value: types.MnemonicUnlockParams): types.UnlockMnemonicAction {
   return {
-    type: constants.WALLET_UNLOCK_MNEMONIC,
+    type: TypeKeys.WALLET_UNLOCK_MNEMONIC,
     payload: value
+  };
+}
+
+export type TUnlockWeb3 = typeof unlockWeb3;
+export function unlockWeb3(): types.UnlockWeb3Action {
+  return {
+    type: TypeKeys.WALLET_UNLOCK_WEB3
   };
 }
 
 export type TSetWallet = typeof setWallet;
 export function setWallet(value: IWallet): types.SetWalletAction {
   return {
-    type: constants.WALLET_SET,
+    type: TypeKeys.WALLET_SET,
     payload: value
   };
 }
 
-export type TSetBalance = typeof setBalance;
-export function setBalance(value: Wei): types.SetBalanceAction {
+export function setBalancePending(): types.SetBalancePendingAction {
   return {
-    type: constants.WALLET_SET_BALANCE,
+    type: TypeKeys.WALLET_SET_BALANCE_PENDING
+  };
+}
+
+export type TSetBalance = typeof setBalanceFullfilled;
+export function setBalanceFullfilled(value: Wei): types.SetBalanceFullfilledAction {
+  return {
+    type: TypeKeys.WALLET_SET_BALANCE_FULFILLED,
     payload: value
   };
 }
 
-export type TSetTokenBalances = typeof setTokenBalances;
-export function setTokenBalances(payload: {
-  [key: string]: TokenValue;
-}): types.SetTokenBalancesAction {
+export function setBalanceRejected(): types.SetBalanceRejectedAction {
   return {
-    type: constants.WALLET_SET_TOKEN_BALANCES,
+    type: TypeKeys.WALLET_SET_BALANCE_REJECTED
+  };
+}
+
+export function setTokenBalancesPending(): types.SetTokenBalancesPendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING
+  };
+}
+
+export type TSetTokenBalancesFulfilled = typeof setTokenBalancesFulfilled;
+export function setTokenBalancesFulfilled(payload: {
+  [key: string]: {
+    balance: TokenValue;
+    error: string | null;
+  };
+}): types.SetTokenBalancesFulfilledAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED,
     payload
   };
 }
 
-export type TBroadcastTx = typeof broadcastTx;
-export function broadcastTx(
-  signedTx: string
-): types.BroadcastTxRequestedAction {
+export function setTokenBalancesRejected(): types.SetTokenBalancesRejectedAction {
   return {
-    type: constants.WALLET_BROADCAST_TX_REQUESTED,
-    payload: {
-      signedTx
-    }
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED
   };
 }
 
-export type TBroadcastTxSucceded = typeof broadcastTxSucceded;
-export function broadcastTxSucceded(
-  txHash: string,
-  signedTx: string
-): types.BroadcastTxSuccededAction {
+export type TScanWalletForTokens = typeof scanWalletForTokens;
+export function scanWalletForTokens(wallet: IWallet): types.ScanWalletForTokensAction {
   return {
-    type: constants.WALLET_BROADCAST_TX_SUCCEEDED,
-    payload: {
-      txHash,
-      signedTx
-    }
+    type: TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS,
+    payload: wallet
   };
 }
 
-export type TBroadCastTxFailed = typeof broadCastTxFailed;
-export function broadCastTxFailed(
-  signedTx: string,
-  errorMsg: string
-): types.BroadcastTxFailedAction {
+export type TSetWalletTokens = typeof setWalletTokens;
+export function setWalletTokens(tokens: string[]): types.SetWalletTokensAction {
   return {
-    type: constants.WALLET_BROADCAST_TX_FAILED,
-    payload: {
-      signedTx,
-      error: errorMsg
-    }
+    type: TypeKeys.WALLET_SET_WALLET_TOKENS,
+    payload: tokens
   };
 }
 
 export type TResetWallet = typeof resetWallet;
-export function resetWallet() {
+export function resetWallet(): types.ResetWalletAction {
   return {
-    type: constants.WALLET_RESET
+    type: TypeKeys.WALLET_RESET
+  };
+}
+
+export type TSetWalletConfig = typeof setWalletConfig;
+export function setWalletConfig(config: WalletConfig): types.SetWalletConfigAction {
+  return {
+    type: TypeKeys.WALLET_SET_CONFIG,
+    payload: config
   };
 }

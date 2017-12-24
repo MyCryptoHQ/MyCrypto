@@ -15,9 +15,9 @@ class ENSNameInput extends React.Component<Props, {}> {
         <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
           <div className="input-group">
             <input
-              className={`form-control ${domainToCheck === ''
-                ? ''
-                : isValidDomain ? 'is-valid' : 'is-invalid'}`}
+              className={`form-control ${
+                domainToCheck === '' ? '' : isValidDomain ? 'is-valid' : 'is-invalid'
+              }`}
               type="text"
               placeholder="myetherwallet"
               onChange={onChange}
@@ -26,6 +26,7 @@ class ENSNameInput extends React.Component<Props, {}> {
               <a className="btn btn-default">.eth</a>
             </div>
           </div>
+          {isValidDomain ? null : <p>Use at least 7 characters</p>}
           <button className="btn btn-primary " onClick={onClick}>
             Check ENS Name
           </button>

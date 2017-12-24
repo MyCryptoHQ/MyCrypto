@@ -13,17 +13,20 @@ const toFixed = (num: string, digits: number = 3) => {
   if (fractionPart.length === digits) {
     return num;
   }
-  if (digits === 0) {
-    return integerPart;
-  }
   if (fractionPart.length < digits) {
     return `${integerPart}.${fractionPart.padEnd(digits, '0')}`;
   }
 
+  let decimalPoint = integerPart.length;
+
   const formattedFraction = fractionPart.slice(0, digits);
-  const integerArr = formattedFraction.split('').map(str => +str);
+
+  const integerArr = `${integerPart}${formattedFraction}`.split('').map(str => +str);
+
   let carryOver = Math.floor((+fractionPart[digits] + 5) / 10);
+
   // grade school addition / rounding
+
   for (let i = integerArr.length - 1; i >= 0; i--) {
     const currVal = integerArr[i] + carryOver;
     const newVal = currVal % 10;
@@ -31,10 +34,20 @@ const toFixed = (num: string, digits: number = 3) => {
     integerArr[i] = newVal;
     if (i === 0 && carryOver > 0) {
       integerArr.unshift(0);
+      decimalPoint++;
+      i++;
     }
   }
 
-  return `${integerPart}.${integerArr.join('')}`;
+  const strArr = integerArr.map(n => n.toString());
+
+  strArr.splice(decimalPoint, 0, '.');
+
+  if (strArr[strArr.length - 1] === '.') {
+    strArr.pop();
+  }
+
+  return strArr.join('');
 };
 
 // Use in place of angular number filter
@@ -78,4 +91,12 @@ export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
   }
 
   return limitStr;
+}
+
+// Regex modified from this stackoverflow answer
+// https://stackoverflow.com/a/10805198, with the comma character added as a
+// delimiter (in the case of csv style mnemonic phrases) as well as any stray
+// space characters. it should be fairly easy to add new delimiters as required
+export function formatMnemonic(phrase: string) {
+  return phrase.replace(/(\r\n|\n|\r|\s+|,)/gm, ' ').trim();
 }

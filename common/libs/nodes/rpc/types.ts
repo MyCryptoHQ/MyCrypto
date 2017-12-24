@@ -1,8 +1,7 @@
-// don't use flow temporarily
-import { TransactionWithoutGas } from 'libs/messages';
+import { IHexStrTransaction } from 'libs/transaction';
 
-type DATA = string;
-type QUANTITY = string;
+export type DATA = string;
+export type QUANTITY = string;
 type TX = string;
 
 export type DEFAULT_BLOCK = string | 'earliest' | 'latest' | 'pending';
@@ -19,8 +18,9 @@ export interface JsonRpcResponse {
   };
 }
 
-interface RPCRequestBase {
+export interface RPCRequestBase {
   method: string;
+  params?: any[];
 }
 
 export interface SendRawTxRequest extends RPCRequestBase {
@@ -61,7 +61,7 @@ export interface CallRequest extends RPCRequestBase {
 
 export interface EstimateGasRequest extends RPCRequestBase {
   method: 'eth_estimateGas';
-  params: [TransactionWithoutGas];
+  params: [Partial<IHexStrTransaction>];
 }
 
 export interface GetTransactionCountRequest extends RPCRequestBase {
@@ -69,9 +69,15 @@ export interface GetTransactionCountRequest extends RPCRequestBase {
   params: [DATA, DEFAULT_BLOCK];
 }
 
+export interface GetCurrentBlockRequest extends RPCRequestBase {
+  method: 'eth_blockNumber';
+}
+
 export type RPCRequest =
+  | RPCRequestBase //base added so I can add an empty params array in decorateRequest without TS complaining
   | GetBalanceRequest
   | GetTokenBalanceRequest
   | CallRequest
   | EstimateGasRequest
-  | GetTransactionCountRequest;
+  | GetTransactionCountRequest
+  | GetCurrentBlockRequest;

@@ -1,3 +1,7 @@
-const Aux = ({ children }) => children;
+import React from 'react';
 
-export default Aux;
+interface Props {
+  children: any;
+}
+
+export const Aux: React.SFC<Props> = ({ children }) => children;

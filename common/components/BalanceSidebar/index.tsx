@@ -1,40 +1,24 @@
-import {
-  addCustomToken,
-  removeCustomToken,
-  TAddCustomToken,
-  TRemoveCustomToken
-} from 'actions/customTokens';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { fetchCCRates as dFetchCCRates, TFetchCCRates } from 'actions/rates';
+import { fetchCCRates, TFetchCCRates } from 'actions/rates';
 import { NetworkConfig } from 'config/data';
-import { Wei } from 'libs/units';
-import { IWallet } from 'libs/wallet/IWallet';
+import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import {
-  getTokenBalances,
-  getWalletInst,
-  TokenBalance
-} from 'selectors/wallet';
+import { getShownTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import { State } from 'reducers/rates';
 import OfflineToggle from './OfflineToggle';
 
 interface Props {
   wallet: IWallet;
-  balance: Wei;
+  balance: Balance;
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
-  rates: State['rates'];
-  ratesError: State['ratesError'];
-  showNotification: TShowNotification;
-  addCustomToken: TAddCustomToken;
-  removeCustomToken: TRemoveCustomToken;
+  rates: AppState['rates']['rates'];
+  ratesError: AppState['rates']['ratesError'];
   fetchCCRates: TFetchCCRates;
 }
 
@@ -46,15 +30,8 @@ interface Block {
 
 export class BalanceSidebar extends React.Component<Props, {}> {
   public render() {
-    const {
-      wallet,
-      balance,
-      network,
-      tokenBalances,
-      rates,
-      ratesError,
-      fetchCCRates
-    } = this.props;
+    const { wallet, balance, network, tokenBalances, rates, ratesError } = this.props;
+
     if (!wallet) {
       return null;
     }
@@ -66,14 +43,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       },
       {
         name: 'Account Info',
-        content: (
-          <AccountInfo
-            wallet={wallet}
-            balance={balance}
-            network={network}
-            fetchCCRates={fetchCCRates}
-          />
-        )
+        content: <AccountInfo wallet={wallet} balance={balance} network={network} />
       },
       {
         name: 'Promos',
@@ -82,21 +52,17 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       },
       {
         name: 'Token Balances',
-        content: (
-          <TokenBalances
-            tokens={tokenBalances}
-            onAddCustomToken={this.props.addCustomToken}
-            onRemoveCustomToken={this.props.removeCustomToken}
-          />
-        )
+        content: <TokenBalances />
       },
       {
         name: 'Equivalent Values',
         content: (
           <EquivalentValues
             balance={balance}
+            tokenBalances={tokenBalances}
             rates={rates}
             ratesError={ratesError}
+            fetchCCRates={this.props.fetchCCRates}
           />
         )
       }
@@ -105,10 +71,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
     return (
       <aside>
         {blocks.map(block => (
-          <section
-            className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`}
-            key={block.name}
-          >
+          <section className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`} key={block.name}>
             {block.content}
           </section>
         ))}
@@ -121,7 +84,7 @@ function mapStateToProps(state: AppState) {
   return {
     wallet: getWalletInst(state),
     balance: state.wallet.balance,
-    tokenBalances: getTokenBalances(state),
+    tokenBalances: getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError
@@ -129,8 +92,5 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  addCustomToken,
-  removeCustomToken,
-  showNotification,
-  fetchCCRates: dFetchCCRates
+  fetchCCRates
 })(BalanceSidebar);

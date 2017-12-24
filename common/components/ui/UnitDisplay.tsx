@@ -1,12 +1,10 @@
 import React from 'react';
-import {
-  fromTokenBase,
-  getDecimal,
-  UnitKey,
-  Wei,
-  TokenValue
-} from 'libs/units';
+import { connect } from 'react-redux';
+import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
+import Spinner from 'components/ui/Spinner';
+import { getOffline } from 'selectors/config';
+import { AppState } from 'reducers';
 
 interface Props {
   /**
@@ -14,7 +12,7 @@ interface Props {
    * @type {TokenValue | Wei}
    * @memberof Props
    */
-  value?: TokenValue | Wei;
+  value?: TokenValue | Wei | null;
   /**
    * @description Symbol to display to the right of the value, such as 'ETH'
    * @type {string}
@@ -27,6 +25,7 @@ interface Props {
    * @memberof Props
    */
   displayShortBalance?: boolean | number;
+  checkOffline: boolean;
 }
 
 interface EthProps extends Props {
@@ -40,34 +39,66 @@ const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
   !!(param as EthProps).unit;
 
 const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
-  const { value, symbol, displayShortBalance } = params;
+  const { value, symbol, displayShortBalance, checkOffline } = params;
+  let element;
 
   if (!value) {
-    return <span>???</span>;
-  }
-
-  const convertedValue = isEthereumUnit(params)
-    ? fromTokenBase(value, getDecimal(params.unit))
-    : fromTokenBase(value, params.decimal);
-
-  let formattedValue;
-
-  if (displayShortBalance) {
-    const digits =
-      typeof displayShortBalance === 'number' && displayShortBalance;
-    formattedValue = digits
-      ? format(convertedValue, digits)
-      : format(convertedValue);
+    element = <Spinner size="x1" />;
   } else {
-    formattedValue = convertedValue;
+    const convertedValue = isEthereumUnit(params)
+      ? fromTokenBase(value, getDecimalFromEtherUnit(params.unit))
+      : fromTokenBase(value, params.decimal);
+
+    let formattedValue;
+
+    if (displayShortBalance) {
+      const digits = typeof displayShortBalance === 'number' ? displayShortBalance : 4;
+      formattedValue = format(convertedValue, digits);
+      // If the formatted value was too low, display something like < 0.01
+      if (parseFloat(formattedValue) === 0 && parseFloat(convertedValue) !== 0) {
+        const padding = digits !== 0 ? `.${'0'.repeat(digits - 1)}1` : '';
+        formattedValue = `< 0${padding}`;
+      }
+    } else {
+      formattedValue = convertedValue;
+    }
+
+    element = (
+      <span>
+        {formattedValue}
+        {symbol ? ` ${symbol}` : ''}
+      </span>
+    );
   }
 
-  return (
-    <span>
-      {formattedValue}
-      {symbol ? ` ${symbol}` : ''}
-    </span>
-  );
+  return checkOffline ? <ConnectedOfflineDisplay>{element}</ConnectedOfflineDisplay> : element;
 };
 
 export default UnitDisplay;
+
+/**
+ * @description Helper component for displaying alternate text when offline.
+ * Circumvents typescript issue with union props on connected components.
+ */
+interface OfflineProps {
+  offline: AppState['config']['offline'];
+  children: React.ReactElement<string>;
+}
+
+class OfflineDisplay extends React.Component<OfflineProps> {
+  public render() {
+    if (this.props.offline) {
+      return <span>Balance isn't available offline</span>;
+    } else {
+      return this.props.children;
+    }
+  }
+}
+
+function mapStateToOfflineProps(state: AppState) {
+  return {
+    offline: getOffline(state)
+  };
+}
+
+const ConnectedOfflineDisplay = connect(mapStateToOfflineProps)(OfflineDisplay);

@@ -8,14 +8,21 @@
     "target": "es5",
     "allowJs": true,
     "baseUrl": "./common/",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["./common/", "spec", "./node_modules/types-rlp/index.d.ts"],
+  "include": [
+    "./common/",
+    "spec",
+    "./node_modules/types-rlp/index.d.ts"
+  ],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   }

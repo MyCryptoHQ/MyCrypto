@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`unlockKeystore* should match put setWallet snapshot 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "PUT": Object {
+    "action": Object {
+      "payload": Wallet {
+        "_privKey": Object {
+          "data": Array [
+            139,
+            203,
+            68,
+            86,
+            239,
+            3,
+            86,
+            206,
+            6,
+            44,
+            133,
+            124,
+            239,
+            221,
+            62,
+            209,
+            186,
+            180,
+            84,
+            50,
+            207,
+            118,
+            214,
+            213,
+            52,
+            8,
+            153,
+            207,
+            208,
+            247,
+            2,
+            232,
+          ],
+          "type": "Buffer",
+        },
+        "_pubKey": undefined,
+        "signMessage": [Function],
+        "signRawTransaction": [Function],
+        "unlock": [Function],
+      },
+      "type": "WALLET_SET",
+    },
+    "channel": null,
+  },
+}
+`;
+
+exports[`unlockMnemonic* should match put setWallet snapshot 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "PUT": Object {
+    "action": Object {
+      "payload": Wallet {
+        "_privKey": Object {
+          "data": Array [
+            49,
+            233,
+            127,
+            57,
+            92,
+            171,
+            198,
+            250,
+            163,
+            125,
+            138,
+            157,
+            107,
+            177,
+            133,
+            24,
+            124,
+            53,
+            112,
+            78,
+            123,
+            151,
+            108,
+            122,
+            17,
+            14,
+            47,
+            14,
+            171,
+            55,
+            195,
+            68,
+          ],
+          "type": "Buffer",
+        },
+        "_pubKey": undefined,
+        "signMessage": [Function],
+        "signRawTransaction": [Function],
+        "unlock": [Function],
+      },
+      "type": "WALLET_SET",
+    },
+    "channel": null,
+  },
+}
+`;
+
+exports[`unlockPrivateKey should match put setWallet snapshot 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "PUT": Object {
+    "action": Object {
+      "payload": Wallet {
+        "_privKey": Object {
+          "data": Array [
+            49,
+            233,
+            127,
+            57,
+            92,
+            171,
+            198,
+            250,
+            163,
+            125,
+            138,
+            157,
+            107,
+            177,
+            133,
+            24,
+            124,
+            53,
+            112,
+            78,
+            123,
+            151,
+            108,
+            122,
+            17,
+            14,
+            47,
+            14,
+            171,
+            55,
+            195,
+            68,
+          ],
+          "type": "Buffer",
+        },
+        "_pubKey": undefined,
+        "signMessage": [Function],
+        "signRawTransaction": [Function],
+        "unlock": [Function],
+      },
+      "type": "WALLET_SET",
+    },
+    "channel": null,
+  },
+}
+`;
+
+exports[`unlockWeb3* should match setWallet snapshot 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "PUT": Object {
+    "action": Object {
+      "payload": Web3Wallet {
+        "address": "0xe2EdC95134bbD88443bc6D55b809F7d0C2f0C854",
+        "network": "ETH",
+      },
+      "type": "WALLET_SET",
+    },
+    "channel": null,
+  },
+}
+`;

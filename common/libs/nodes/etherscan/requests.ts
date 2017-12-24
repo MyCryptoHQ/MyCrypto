@@ -7,14 +7,15 @@ import {
   GetBalanceRequest,
   GetTokenBalanceRequest,
   GetTransactionCountRequest,
-  SendRawTxRequest
+  SendRawTxRequest,
+  GetCurrentBlockRequest
 } from './types';
 
 export default class EtherscanRequests extends RPCRequests {
   public sendRawTx(signedTx: string): SendRawTxRequest {
     return {
       module: 'proxy',
-      method: 'eth_sendRawTransaction',
+      action: 'eth_sendRawTransaction',
       hex: signedTx
     };
   }
@@ -22,7 +23,7 @@ export default class EtherscanRequests extends RPCRequests {
   public estimateGas(transaction): EstimateGasRequest {
     return {
       module: 'proxy',
-      method: 'eth_estimateGas',
+      action: 'eth_estimateGas',
       to: transaction.to,
       value: transaction.value,
       data: transaction.data,
@@ -57,13 +58,17 @@ export default class EtherscanRequests extends RPCRequests {
     };
   }
 
-  public getTokenBalance(
-    address: string,
-    token: Token
-  ): GetTokenBalanceRequest {
+  public getTokenBalance(address: string, token: Token): GetTokenBalanceRequest {
     return this.ethCall({
       to: token.address,
-      data: ERC20.balanceOf(address)
+      data: ERC20.balanceOf.encodeInput({ _owner: address })
     });
+  }
+
+  public getCurrentBlock(): GetCurrentBlockRequest {
+    return {
+      module: 'proxy',
+      action: 'eth_blockNumber'
+    };
   }
 }

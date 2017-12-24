@@ -2,7 +2,7 @@ import './LedgerNano.scss';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
-import LedgerWallet from 'libs/wallet/ledger';
+import { LedgerWallet } from 'libs/wallet';
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
 import DPATHS from 'config/dpaths';
@@ -66,9 +66,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
           </div>
         </div>
 
-        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
-          {error || '-'}
-        </div>
+        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <a
           className="LedgerDecrypt-buy btn btn-sm btn-default"
@@ -133,18 +131,23 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
   };
 
   private handleCancel = () => {
-    this.setState({
-      publicKey: '',
-      chainCode: '',
-      dPath: DEFAULT_PATH
-    });
+    this.reset();
   };
 
   private handleUnlock = (address: string, index: number) => {
     this.props.onUnlock(new LedgerWallet(address, this.state.dPath, index));
+    this.reset();
   };
 
   private handleNullConnect = (): void => {
     return this.handleConnect();
   };
+
+  private reset() {
+    this.setState({
+      publicKey: '',
+      chainCode: '',
+      dPath: DEFAULT_PATH
+    });
+  }
 }

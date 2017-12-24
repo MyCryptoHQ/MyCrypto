@@ -5,8 +5,10 @@ import { EtherscanRequest } from './types';
 export default class EtherscanClient extends RPCClient {
   public encodeRequest(request: EtherscanRequest): string {
     const encoded = new URLSearchParams();
-    Object.keys(request).forEach(key => {
-      encoded.set(key, request[key]);
+    Object.keys(request).forEach((key: keyof EtherscanRequest) => {
+      if (request[key]) {
+        encoded.set(key, request[key]);
+      }
     });
     return encoded.toString();
   }
@@ -14,9 +16,9 @@ export default class EtherscanClient extends RPCClient {
   public call = (request: EtherscanRequest): Promise<JsonRpcResponse> =>
     fetch(this.endpoint, {
       method: 'POST',
-      headers: {
+      headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
+      }),
       body: this.encodeRequest(request)
     }).then(r => r.json());
 

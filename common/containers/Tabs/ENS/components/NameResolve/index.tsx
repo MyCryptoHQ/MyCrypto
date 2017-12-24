@@ -25,11 +25,7 @@ export const NameResolve: React.SFC<Props> = props => {
   const { domainRequests, domainSelector } = props;
   const { currentDomain } = domainSelector;
 
-  if (
-    !currentDomain ||
-    !domainRequests[currentDomain] ||
-    domainRequests[currentDomain].error
-  ) {
+  if (!currentDomain || !domainRequests[currentDomain] || domainRequests[currentDomain].error) {
     return null;
   }
 

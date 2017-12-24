@@ -11,9 +11,7 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
         <strong>{props.name}.eth is available!</strong>
       </h1>
     </section>
-    <ENSWallet
-      text={`Do you want ${props.name}.eth? Unlock your wallet to start an auction.`}
-    >
+    <ENSWallet text={`Do you want ${props.name}.eth? Unlock your wallet to start an auction.`}>
       {wallet => {
         return (
           <div>

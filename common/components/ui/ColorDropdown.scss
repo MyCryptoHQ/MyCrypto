@@ -1,0 +1,23 @@
+.ColorDropdown {
+  &-item {
+    position: relative;
+    padding-right: 10px;
+    border-left: 2px solid;
+
+    &-remove {
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      width: 15px;
+      height: 15px;
+      opacity: 0.5;
+      cursor: pointer;
+      // Z fixes clipping issue
+      transform: translateY(-50%) translateZ(0);
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -4,32 +4,46 @@ exports[`render snapshot 1`] = `
 <Swap
   bityOrder={Object {}}
   bityOrderCreateRequestedSwap={[Function]}
-  bityRates={Object {}}
+  bityRates={
+    Object {
+      "allIds": Array [],
+      "byId": Object {},
+    }
+  }
   changeStepSwap={[Function]}
-  destinationAddress={Object {}}
+  destination={
+    Object {
+      "amount": NaN,
+      "id": "ETH",
+    }
+  }
+  destinationAddress=""
   destinationAddressSwap={[Function]}
-  destinationAmount={Object {}}
-  destinationAmountSwap={[Function]}
-  destinationKind={Object {}}
-  destinationKindOptions={Object {}}
-  destinationKindSwap={[Function]}
-  isFetchingRates={Object {}}
-  isPostingOrder={Object {}}
+  initSwap={[Function]}
+  isFetchingRates={null}
+  isPostingOrder={false}
   loadBityRatesRequestedSwap={[Function]}
-  orderStatus={Object {}}
-  originAmount={Object {}}
-  originAmountSwap={[Function]}
-  originKind={Object {}}
-  originKindOptions={Object {}}
-  originKindSwap={[Function]}
-  outputTx={Object {}}
-  paymentAddress={Object {}}
+  options={
+    Object {
+      "allIds": Array [],
+      "byId": Object {},
+    }
+  }
+  orderStatus={null}
+  origin={
+    Object {
+      "amount": NaN,
+      "id": "BTC",
+    }
+  }
+  outputTx={null}
+  paymentAddress={null}
   restartSwap={[Function]}
-  secondsRemaining={Object {}}
+  secondsRemaining={null}
   showNotification={[Function]}
   startOrderTimerSwap={[Function]}
   startPollBityOrderStatus={[Function]}
-  step={Object {}}
+  step={1}
   stopLoadBityRatesSwap={[Function]}
   stopOrderTimerSwap={[Function]}
   stopPollBityOrderStatus={[Function]}

@@ -16,7 +16,4 @@ export interface ResolveDomainFailed {
   payload: { domain: string; error: Error };
 }
 
-export type EnsAction =
-  | ResolveDomainRequested
-  | ResolveDomainSucceeded
-  | ResolveDomainFailed;
+export type EnsAction = ResolveDomainRequested | ResolveDomainSucceeded | ResolveDomainFailed;

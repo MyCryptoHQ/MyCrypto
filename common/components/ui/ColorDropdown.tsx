@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import DropdownShell from './DropdownShell';
+import removeIcon from 'assets/images/icon-remove.svg';
+import './ColorDropdown.scss';
 
 interface Option<T> {
   name: any;
   value: T;
   color?: string;
+  hidden: boolean | undefined;
+  onRemove?(): void;
 }
 
 interface Props<T> {
@@ -17,6 +21,7 @@ interface Props<T> {
   size?: string;
   color?: string;
   menuAlign?: string;
+  disabled?: boolean;
   onChange(value: T): void;
 }
 
@@ -24,7 +29,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   private dropdownShell: DropdownShell | null;
 
   public render() {
-    const { ariaLabel, color, size } = this.props;
+    const { ariaLabel, disabled, color, size } = this.props;
 
     return (
       <DropdownShell
@@ -34,6 +39,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
         color={color}
         ariaLabel={ariaLabel}
         ref={el => (this.dropdownShell = el)}
+        disabled={disabled}
       />
     );
   }
@@ -52,7 +58,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   private renderOptions = () => {
     const { options, value, menuAlign, extra } = this.props;
 
-    const listItems = options.reduce((prev: any[], opt) => {
+    const listItems = options.filter(opt => !opt.hidden).reduce((prev: any[], opt) => {
       const prevOpt = prev.length ? prev[prev.length - 1] : null;
       if (prevOpt && !prevOpt.divider && prevOpt.color !== opt.color) {
         prev.push({ divider: true });
@@ -62,6 +68,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
     }, []);
 
     const menuClass = classnames({
+      ColorDropdown: true,
       'dropdown-menu': true,
       [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
     });
@@ -73,12 +80,20 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
             return <li key={i} role="separator" className="divider" />;
           } else {
             return (
-              <li key={i} style={{ borderLeft: `2px solid ${option.color}` }}>
+              <li key={i} className="ColorDropdown-item" style={{ borderColor: option.color }}>
                 <a
                   className={option.value === value ? 'active' : ''}
                   onClick={this.onChange.bind(null, option.value)}
                 >
                   {option.name}
+
+                  {option.onRemove && (
+                    <img
+                      className="ColorDropdown-item-remove"
+                      onClick={this.onRemove.bind(null, option.onRemove)}
+                      src={removeIcon}
+                    />
+                  )}
                 </a>
               </li>
             );
@@ -96,6 +111,14 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
       this.dropdownShell.close();
     }
   };
+
+  private onRemove(onRemove: () => void, ev?: React.FormEvent<HTMLButtonElement>) {
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    onRemove();
+  }
 
   private getActiveOption() {
     return this.props.options.find(opt => opt.value === this.props.value);

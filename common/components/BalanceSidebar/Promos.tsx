@@ -1,29 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { knowledgeBaseURL } from 'config/data';
 import './Promos.scss';
 
 const promos = [
   {
     isExternal: true,
     color: '#6e9a3e',
-    href:
-      'https://myetherwallet.groovehq.com/knowledge_base/topics/protecting-yourself-and-your-funds',
+    href: `${knowledgeBaseURL}/security/securing-your-ethereum`,
 
     texts: [<h6 key="1">Learn more about protecting your funds.</h6>],
-    images: [
-      require('assets/images/logo-ledger.svg'),
-      require('assets/images/logo-trezor.svg')
-    ]
+    images: [require('assets/images/logo-ledger.svg'), require('assets/images/logo-trezor.svg')]
   },
   {
     isExternal: true,
     color: '#2b71b1',
     href:
       'https://buy.coinbase.com?code=a6e1bd98-6464-5552-84dd-b27f0388ac7d&address=0xA7DeFf12461661212734dB35AdE9aE7d987D648c&crypto_currency=ETH&currency=USD',
-    texts: [
-      <p key="1">It’s now easier to get more ETH</p>,
-      <h5 key="2">Buy ETH with USD</h5>
-    ],
+    texts: [<p key="1">It’s now easier to get more ETH</p>, <h5 key="2">Buy ETH with USD</h5>],
     images: [require('assets/images/logo-coinbase.svg')]
   },
   {
@@ -87,9 +81,7 @@ export default class Promos extends React.Component<{}, State> {
           {promos.map((_, index) => {
             return (
               <button
-                className={`Promos-nav-btn ${index === activePromo
-                  ? 'is-active'
-                  : ''}`}
+                className={`Promos-nav-btn ${index === activePromo ? 'is-active' : ''}`}
                 key={index}
                 onClick={this.navigateToPromo(index)}
               />

@@ -2,12 +2,12 @@ import { ReactElement } from 'react';
 import { TypeKeys } from './constants';
 /*** Shared types ***/
 export type NOTIFICATION_LEVEL = 'danger' | 'warning' | 'success' | 'info';
-export type INFINITY = 'infinity';
 
 export interface Notification {
   level: NOTIFICATION_LEVEL;
   msg: ReactElement<any> | string;
-  duration?: number | INFINITY;
+  id: number;
+  duration?: number;
 }
 
 /*** Close notification ***/
@@ -23,6 +23,4 @@ export interface ShowNotificationAction {
 }
 
 /*** Union Type ***/
-export type NotificationsAction =
-  | ShowNotificationAction
-  | CloseNotificationAction;
+export type NotificationsAction = ShowNotificationAction | CloseNotificationAction;
