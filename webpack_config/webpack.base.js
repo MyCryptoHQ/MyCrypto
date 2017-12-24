@@ -81,8 +81,12 @@ const webpackConfig = {
     loaders: [
       {
         test: /\.(ts|tsx)$/,
+        include: path.resolve(__dirname, '../common'),
         loader: 'awesome-typescript-loader',
-        exclude: [/node_modules/]
+        exclude: [
+          path.resolve(__dirname, '../node_modules'),
+          path.resolve(__dirname, '../common/assets')
+        ]
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,

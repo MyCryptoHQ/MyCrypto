@@ -39,7 +39,7 @@ const devMiddleWare = require('webpack-dev-middleware')(compiler, {
     'Access-Control-Allow-Headers': '*'
   },
   watchOptions: {
-    aggregateTimeout: 300
+    aggregateTimeout: 100
   }
 });
 app.use(devMiddleWare);
