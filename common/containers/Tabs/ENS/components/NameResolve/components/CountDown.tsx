@@ -61,7 +61,7 @@ interface ITime {
 }
 
 export const EnsTime: React.SFC<ITime> = ({ text, time }) => (
-  <section className="sm-6 col-xs-12 order-info">
+  <section className="order-info">
     <p>{text}</p>
     <h4>{moment(time).toString()}</h4>
     <CountDown initialTime={time} />
