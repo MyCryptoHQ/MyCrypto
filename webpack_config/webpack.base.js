@@ -7,56 +7,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const config = require('./config');
 const _ = require('./utils');
-const AutoDllPlugin = require('autodll-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-
-const isProd = process.env.NODE_ENV === 'production';
-const dllPlugin = new AutoDllPlugin({
-  inject: true, // will inject the DLL bundles to index.html
-  filename: '[name]_[hash].js',
-  debug: true,
-  context: path.join(__dirname, '..'),
-  entry: {
-    vendor: [
-      'babel-polyfill',
-      'bip39',
-      'bn.js',
-      'bootstrap-sass',
-      'classnames',
-      'ethereum-blockies',
-      'ethereumjs-abi',
-      'ethereumjs-tx',
-      'ethereumjs-util',
-      'ethereumjs-wallet',
-      'font-awesome',
-      'hdkey',
-      'idna-uts46',
-      'jsonschema',
-      'lodash',
-      'moment',
-      'normalizr',
-      'qrcode',
-      'qrcode.react',
-      'query-string',
-      'react',
-      'react-dom',
-      'react-markdown',
-      'react-redux',
-      'react-router-dom',
-      'react-router-redux',
-      'react-transition-group',
-      'redux',
-      'redux-logger',
-      'redux-promise-middleware',
-      'redux-saga',
-      'scryptsy',
-      'store2',
-      'uuid',
-      'wallet-address-validator',
-      'whatwg-fetch'
-    ]
-  }
-});
 
 const webpackConfig = {
   entry: {
@@ -68,7 +19,7 @@ const webpackConfig = {
     publicPath: config.publicPath
   },
   performance: {
-    hints: isProd ? 'warning' : false
+    hints: process.env.NODE_ENV === 'production' ? 'warning' : false
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
@@ -139,9 +90,5 @@ const webpackConfig = {
   ],
   target: _.target
 };
-
-if (!isProd) {
-  webpackConfig.plugins.unshift(dllPlugin);
-}
 
 module.exports = webpackConfig;
