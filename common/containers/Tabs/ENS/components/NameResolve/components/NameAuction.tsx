@@ -1,7 +1,9 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
-import { EnsTime } from './CountDown';
-import { ENSWallet } from './ENSWallet';
+import ENSTime from './components/ENSTime';
+import { ENSWallet } from './components/ENSWallet';
+import PlaceBid from './components/PlaceBid';
+import ENSUnlockLayout from './components/ENSUnlockLayout';
 import moment from 'moment';
 
 const getDeadlines = (registrationDate: string) => {
@@ -12,7 +14,8 @@ const getDeadlines = (registrationDate: string) => {
   return { auctionCloseTime, revealBidTime };
 };
 
-export const NameAuction: React.SFC<IBaseDomainRequest> = ({ registrationDate, name }) => {
+export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
+  const { registrationDate, name } = props;
   const { auctionCloseTime, revealBidTime } = getDeadlines(registrationDate);
   return (
     <section className="row">
@@ -22,16 +25,16 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = ({ registrationDate, n
         </h1>
       </div>
 
-      <section className="col-sm-6 col-xs-12 order-info ens-panel text-center">
-        <EnsTime text="Reveal Bids On" time={revealBidTime} />
+      <section className="col-sm-6 col-xs-12 order-info">
+        <ENSTime text="Reveal Bids On" time={revealBidTime} />
       </section>
-      <section className="col-sm-6 col-xs-12 order-info ens-panel ens-panel-light text-center">
-        <EnsTime text="Auction Closes On" time={auctionCloseTime} />
+      <section className="col-sm-6 col-xs-12 order-info">
+        <ENSTime text="Auction Closes On" time={auctionCloseTime} />
       </section>
       <ENSWallet text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}>
-        {wallet => {
-          return <p> Placeholder: {JSON.stringify(wallet)} </p>;
-        }}
+        <ENSUnlockLayout>
+          <PlaceBid buttonName="Place Bid" title="Place A Bid" {...props} />
+        </ENSUnlockLayout>
       </ENSWallet>
     </section>
   );
