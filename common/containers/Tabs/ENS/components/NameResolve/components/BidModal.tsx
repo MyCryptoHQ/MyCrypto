@@ -3,10 +3,7 @@ import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import { NodeConfig } from 'config/data';
 import EthTx from 'ethereumjs-tx';
-import {
-  BroadcastTransactionStatus,
-  decodeTransaction
-} from 'libs/transaction';
+import { BroadcastTransactionStatus, decodeTransaction } from 'libs/transaction';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getNodeConfig } from 'selectors/config';
@@ -67,20 +64,19 @@ class ConfirmationModal extends React.Component<Props, State> {
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const buttons: IButton[] = [
       {
-        text: (buttonPrefix + translate('SENDModal_Yes', true)) as string,
+        text: buttonPrefix + translate('SENDModal_Yes', true),
         type: 'primary',
         disabled: timeToRead > 0,
         onClick: this.confirm
       },
       {
-        text: translate('SENDModal_No', true) as string,
+        text: translate('SENDModal_No', true),
         type: 'default',
         onClick: onClose
       }
     ];
 
-    const isBroadcasting =
-      broadCastTxStatus && broadCastTxStatus.isBroadcasting;
+    const isBroadcasting = broadCastTxStatus && broadCastTxStatus.isBroadcasting;
 
     return (
       <section className="BidModalWrap">
@@ -110,34 +106,24 @@ class ConfirmationModal extends React.Component<Props, State> {
                   </section>
                 </section>
                 <ul className="BidModal-details">
-                  <li className="BidModal-details-detail">
-                    Name: {this.props.name}.eth
-                  </li>
-                  <li className="BidModal-details-detail">
-                    Actual Bid Amount:
-                  </li>
+                  <li className="BidModal-details-detail">Name: {this.props.name}.eth</li>
+                  <li className="BidModal-details-detail">Actual Bid Amount:</li>
                   <li className="BidModal-details-detail">Bid Mask:</li>
                   <li className="BidModal-details-detail">Reveal Date:</li>
                   <li className="BidModal-details-detail">Auction Ends:</li>
                   <li className="BidModal-details-detail">
                     Gas price of{' '}
                     <strong>
-                      <UnitDisplay
-                        unit={'gwei'}
-                        value={gasPrice}
-                        symbol={'gwei'}
-                      />
+                      <UnitDisplay unit={'gwei'} value={gasPrice} symbol={'gwei'} />
                     </strong>
                   </li>
                   <li className="BidModal-details-detail">
-                    You are interacting with the <strong>{node.network}</strong>{' '}
-                    network provided by <strong>{node.service}</strong>
+                    You are interacting with the <strong>{node.network}</strong> network provided by{' '}
+                    <strong>{node.service}</strong>
                   </li>
                 </ul>
 
-                <section className="BidModal-confirm">
-                  {translate('SENDModal_Content_3')}
-                </section>
+                <section className="BidModal-confirm">{translate('SENDModal_Content_3')}</section>
               </section>
             )}
           </section>
