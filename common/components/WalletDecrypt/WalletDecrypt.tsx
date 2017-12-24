@@ -180,6 +180,16 @@ export class WalletDecrypt extends Component<Props, State> {
     value: null
   };
 
+  public componentWillReceiveProps(nextProps) {
+    // Reset state when unlock is hidden / revealed
+    if (nextProps.hidden !== this.props.hidden) {
+      this.setState({
+        value: null,
+        selectedWalletKey: null
+      });
+    }
+  }
+
   public getSelectedWallet() {
     const { selectedWalletKey } = this.state;
     if (!selectedWalletKey) {
