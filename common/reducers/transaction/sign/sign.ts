@@ -20,7 +20,7 @@ const signLocalTransactionRequested = (state: State): State => ({
 });
 
 const signLocalTransactionSucceeded = (
-  _,
+  _: State,
   { payload }: SignLocalTransactionSucceededAction
 ): State => ({
   indexingHash: payload.indexingHash,
@@ -31,7 +31,7 @@ const signLocalTransactionSucceeded = (
 });
 
 const signWeb3TranscationRequested = (
-  _,
+  _: State,
   { payload }: SignWeb3TransactionSucceededAction
 ): State => ({
   indexingHash: payload.indexingHash,

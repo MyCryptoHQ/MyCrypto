@@ -20,7 +20,7 @@ enum KeystoreTypes {
 interface ISignWrapper {
   signRawTransaction(rawTx: Tx): Buffer;
   signMessage(msg: string): string;
-  unlock();
+  unlock(): Promise<void>;
 }
 
 export type WrappedWallet = IFullWallet & ISignWrapper;

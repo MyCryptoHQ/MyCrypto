@@ -112,7 +112,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
     }
   };
 
-  private onRemove(onRemove: () => void, ev?: React.SyntheticEvent<HTMLButtonElement>) {
+  private onRemove(onRemove: () => void, ev?: React.FormEvent<HTMLButtonElement>) {
     if (ev) {
       ev.preventDefault();
       ev.stopPropagation();

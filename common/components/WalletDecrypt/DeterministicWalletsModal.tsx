@@ -200,8 +200,8 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     }
   }
 
-  private handleChangePath = (ev: React.SyntheticEvent<HTMLSelectElement>) => {
-    const { value } = ev.target as HTMLSelectElement;
+  private handleChangePath = (ev: React.FormEvent<HTMLSelectElement>) => {
+    const { value } = ev.currentTarget;
 
     if (value === 'custom') {
       this.setState({ isCustomPath: true });
@@ -213,11 +213,11 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     }
   };
 
-  private handleChangeCustomPath = (ev: React.SyntheticEvent<HTMLInputElement>) => {
-    this.setState({ customPath: (ev.target as HTMLInputElement).value });
+  private handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ customPath: ev.currentTarget.value });
   };
 
-  private handleSubmitCustomPath = (ev: React.SyntheticEvent<HTMLFormElement>) => {
+  private handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!isValidPath(this.state.customPath)) {
       return;
@@ -225,8 +225,8 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     this.props.onPathChange(this.state.customPath);
   };
 
-  private handleChangeToken = (ev: React.SyntheticEvent<HTMLSelectElement>) => {
-    this.props.setDesiredToken((ev.target as HTMLSelectElement).value || undefined);
+  private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
+    this.props.setDesiredToken(ev.currentTarget.value || undefined);
   };
 
   private handleConfirmAddress = () => {

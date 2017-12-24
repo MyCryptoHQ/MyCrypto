@@ -4,15 +4,16 @@ import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import NotificationRow from './NotificationRow';
 import './Notifications.scss';
+import { AppState } from 'reducers';
 
 interface Props {
   notifications: Notification[];
   closeNotification: TCloseNotification;
 }
 
-const Transition = props => (
+const Transition: React.SFC<{}> = ({ children }) => (
   <CSSTransition
-    {...props}
+    children={children}
     classNames="NotificationAnimation"
     timeout={{ enter: 500, exit: 500 }}
   />
@@ -34,7 +35,7 @@ export class Notifications extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   notifications: state.notifications
 });
 
