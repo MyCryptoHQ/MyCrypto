@@ -10,7 +10,6 @@ import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
 import { setToField, TSetToField } from 'actions/transaction';
 import { connect } from 'react-redux';
-import { Aux } from 'components/ui';
 import { FullWalletOnly } from 'components/renderCbs';
 
 interface DispatchProps {
