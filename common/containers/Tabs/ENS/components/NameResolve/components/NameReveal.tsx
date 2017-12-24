@@ -1,6 +1,6 @@
 import React from 'react';
 import { IRevealDomainRequest } from 'libs/ens';
-import { EnsTime } from './components/ENSTime';
+import ENSTime from './components/ENSTime';
 import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
 import { ENSWallet } from './components/ENSWallet';
@@ -25,7 +25,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
         </strong>
       </p>
     </h1>
-    <EnsTime text="Auction closes on" time={+props.registrationDate * 1000} />
+    <ENSTime text="Auction closes on" time={+props.registrationDate * 1000} />
 
     <ENSWallet
       text={`Did you you bid on ${props.name}.eth? You must reveal your bid now.`}

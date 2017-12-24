@@ -10,7 +10,6 @@ import TabSection from 'containers/TabSection';
 interface Props {
   ensState: AppState['ens'];
   resolveDomainRequested(domain: string): void;
-  // TODO: Add open bid modal action to NameResolver
 }
 
 const ENS = (props: Props) => {

@@ -10,11 +10,10 @@ interface State {
 }
 
 class CountDown extends Component<Props, State> {
-  public state = { currentTime: 0 };
-
   constructor() {
     super();
     this.startCountDown();
+    this.state = { currentTime: 0 };
   }
 
   public render() {
@@ -62,10 +61,12 @@ interface ITime {
   time: number;
 }
 
-export const EnsTime: React.SFC<ITime> = ({ text, time }) => (
+const ENSTime: React.SFC<ITime> = ({ text, time }) => (
   <section className="sm-6 col-xs-12 order-info">
     <p>{text}</p>
     <h4>{moment(time).toString()}</h4>
     <CountDown initialTime={time} />
   </section>
 );
+
+export default ENSTime;

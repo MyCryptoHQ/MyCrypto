@@ -1,7 +1,7 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
 import { ENSWallet } from './components/ENSWallet';
-import { PlaceBid } from './components/PlaceBid';
+import PlaceBid from './components/PlaceBid';
 import ENSUnlockLayout from './components/ENSUnlockLayout';
 
 export const NameOpen: React.SFC<IBaseDomainRequest> = props => (

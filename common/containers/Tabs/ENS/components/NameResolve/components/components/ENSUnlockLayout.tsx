@@ -5,7 +5,8 @@ interface Props {
   children: JSX.Element;
 }
 
-const ENSUnlockLayout = ({ children }: Props) => {
+const ENSUnlockLayout = (props: Props) => {
+  const { children } = props;
   return (
     <div>
       <div className="col-sm-8">{children}</div>

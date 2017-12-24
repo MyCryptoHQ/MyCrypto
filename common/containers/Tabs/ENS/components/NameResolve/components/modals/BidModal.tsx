@@ -14,7 +14,7 @@ import { getTxFromState } from 'selectors/wallet';
 import translate from 'translations';
 import { UnitDisplay } from 'components/ui';
 import { IBaseDomainRequest } from 'libs/ens';
-import './BidModal.scss';
+import './Modals.scss';
 
 interface Props extends IBaseDomainRequest {
   signedTx: string;
@@ -30,7 +30,7 @@ interface State {
   hasBroadCasted: boolean;
 }
 
-class ConfirmationModal extends React.Component<Props, State> {
+class BidModal extends React.Component<Props, State> {
   public state = {
     timeToRead: 5,
     hasBroadCasted: false
@@ -172,4 +172,4 @@ function mapStateToProps(state, props) {
   };
 }
 
-export default connect(mapStateToProps)(ConfirmationModal);
+export default connect(mapStateToProps)(BidModal);

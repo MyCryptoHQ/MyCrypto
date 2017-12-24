@@ -1,8 +1,8 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
-import { EnsTime } from './components/EnsTime';
+import ENSTime from './components/ENSTime';
 import { ENSWallet } from './components/ENSWallet';
-import { PlaceBid } from './components/PlaceBid';
+import PlaceBid from './components/PlaceBid';
 import ENSUnlockLayout from './components/ENSUnlockLayout';
 import moment from 'moment';
 
@@ -24,20 +24,16 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
       </h1>
 
       <section className="col-sm-6 col-xs-12 order-info">
-        <EnsTime text="Reveal Bids On" time={revealBidTime} />
+        <ENSTime text="Reveal Bids On" time={revealBidTime} />
       </section>
       <section className="col-sm-6 col-xs-12 order-info">
-        <EnsTime text="Auction Closes On" time={auctionCloseTime} />
+        <ENSTime text="Auction Closes On" time={auctionCloseTime} />
       </section>
       <ENSWallet
         text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}
       >
         <ENSUnlockLayout>
-          <PlaceBid
-            buttonName="Start the Auction"
-            title="Start an Auction"
-            {...props}
-          />
+          <PlaceBid buttonName="Place Bid" title="Place A Bid" {...props} />
         </ENSUnlockLayout>
       </ENSWallet>
     </section>
