@@ -65,9 +65,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.BUILD_DOWNLOADABLE': JSON.stringify(!!process.env.BUILD_DOWNLOADABLE)
-    }),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, '../common/index.html'),
