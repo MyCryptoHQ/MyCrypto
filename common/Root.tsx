@@ -59,7 +59,7 @@ export default class Root extends Component<Props, State> {
     );
     return (
       <Provider store={store} key={Math.random()}>
-        {window.location.protocol.startsWith('file') ? (
+        {process.env.BUILD_DOWNLOADABLE ? (
           <HashRouter key={Math.random()}>{routes}</HashRouter>
         ) : (
           <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>

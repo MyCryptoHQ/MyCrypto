@@ -123,6 +123,7 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
+    "build:downloadable": "BUILD_DOWNLOADABLE=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test": "jest --config=jest_config/jest.config.json --coverage",
     "test:unit": "jest --config=jest_config/jest.config.json --coverage",
