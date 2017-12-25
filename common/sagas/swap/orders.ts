@@ -40,6 +40,8 @@ import {
 } from 'redux-saga/effects';
 import shapeshift from 'api/shapeshift';
 import { TypeKeys } from 'actions/swap/constants';
+import { resetWallet } from 'actions/wallet';
+import { reset } from 'actions/transaction';
 
 export const getSwap = (state: AppState): SwapState => state.swap;
 const ONE_SECOND = 1000;
@@ -199,6 +201,8 @@ export function* postShapeshiftOrderSaga(): SagaIterator {
 }
 
 export function* restartSwap() {
+  yield put(reset());
+  yield put(resetWallet());
   yield put(stopPollShapeshiftOrderStatus());
   yield put(stopPollBityOrderStatus());
   yield put(loadShapeshiftRatesRequestedSwap());

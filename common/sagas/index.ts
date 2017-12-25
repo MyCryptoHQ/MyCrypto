@@ -9,11 +9,13 @@ import {
   pollShapeshiftOrderStatusSaga,
   restartSwapSaga
 } from './swap/orders';
+import { liteSend } from './swap/liteSend';
 import { getBityRatesSaga, getShapeShiftRatesSaga, swapProviderSaga } from './swap/rates';
 import wallet from './wallet';
 import { transaction } from './transaction';
 
 export default {
+  liteSend,
   configSaga,
   postBityOrderSaga,
   postShapeshiftOrderSaga,

@@ -1,22 +1,31 @@
-import { SwapInput } from 'reducers/swap/types';
 import React, { Component } from 'react';
 import { OfflineAwareUnlockHeader } from 'components';
 import { OnlyUnlocked } from 'components/renderCbs';
 import { Aux } from 'components/ui';
 import { Fields } from './Fields';
+import { configureLiteSend, TConfigureLiteSend } from 'actions/swap';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
+import { shouldDisplayLiteSend } from 'selectors/swap';
 
-export interface OwnProps {
-  unit: SwapInput['id'];
-  amount: SwapInput['amount'];
-  address: string | null;
+interface DispatchProps {
+  configureLiteSend: TConfigureLiteSend;
 }
 
-class LiteSend extends Component<OwnProps> {
+interface StateProps {
+  shouldDisplay: boolean;
+}
+
+type Props = StateProps & DispatchProps;
+class LiteSendClass extends Component<Props> {
+  public componentDidMount() {
+    this.props.configureLiteSend();
+  }
+
   public render() {
-    if (!this.props.address) {
+    if (!this.props.shouldDisplay) {
       return null;
     }
-
     return (
       <Aux>
         <OfflineAwareUnlockHeader allowReadOnly={false} />
@@ -25,3 +34,8 @@ class LiteSend extends Component<OwnProps> {
     );
   }
 }
+
+export const LiteSend = connect(
+  (state: AppState) => ({ shouldDisplay: shouldDisplayLiteSend(state) }),
+  { configureLiteSend }
+)(LiteSendClass);

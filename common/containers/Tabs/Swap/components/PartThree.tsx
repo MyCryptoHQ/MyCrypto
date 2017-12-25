@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
 import SwapProgress from './SwapProgress';
-import { OwnProps as LiteSendProps } from './LiteSend';
+import { LiteSend } from './LiteSend';
 
 interface ReduxStateProps {
   destinationAddress: string;
@@ -91,20 +91,15 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
       destinationAmount: destination.amount
     };
 
-    const liteSendProps: LiteSendProps = {
-      unit: origin.id,
-      amount: origin.amount,
-      address: paymentAddress
-    };
-
     const OpenOrder = bityOrderStatus === 'OPEN' || shapeshiftOrderStatus === 'no_deposits';
 
     return (
       <div>
         <SwapProgress {...SwapProgressProps} />
-        hi
+
         <PaymentInfo {...PaymentInfoProps} />
-        hi
+
+        <LiteSend />
         {OpenOrder && origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
