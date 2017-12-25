@@ -237,6 +237,13 @@ export function configureLiteSend(): interfaces.ConfigureLiteSendAction {
   return { type: TypeKeys.SWAP_CONFIGURE_LITE_SEND };
 }
 
+export type TShowLiteSend = typeof showLiteSend;
+export function showLiteSend(
+  payload: interfaces.ShowLiteSendAction['payload']
+): interfaces.ShowLiteSendAction {
+  return { type: TypeKeys.SWAP_SHOW_LITE_SEND, payload };
+}
+
 export type TChangeSwapProvider = typeof changeSwapProvider;
 export function changeSwapProvider(
   payload: interfaces.ProviderName

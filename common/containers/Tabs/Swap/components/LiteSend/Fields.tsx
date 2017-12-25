@@ -13,6 +13,7 @@ class FieldsClass extends Component<DispatchProps> {
   public componentDidMount() {
     this.props.configureLiteSend();
   }
+
   public render() {
     return null;
   }

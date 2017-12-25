@@ -26,6 +26,7 @@ export interface State {
   paymentAddress: string | null;
   validFor: number | null;
   orderId: string | null;
+  showLiteSend: boolean;
 }
 
 export const INITIAL_STATE: State = {
@@ -57,7 +58,8 @@ export const INITIAL_STATE: State = {
   orderTimestampCreatedISOString: null,
   paymentAddress: null,
   validFor: null,
-  orderId: null
+  orderId: null,
+  showLiteSend: false
 };
 
 export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapAction) {
@@ -230,6 +232,11 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
       return {
         ...state,
         provider: action.payload
+      };
+    case TypeKeys.SWAP_SHOW_LITE_SEND:
+      return {
+        ...state,
+        showLiteSend: action.payload
       };
     default:
       return state;

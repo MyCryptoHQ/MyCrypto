@@ -231,6 +231,11 @@ export interface ConfigureLiteSendAction {
   type: TypeKeys.SWAP_CONFIGURE_LITE_SEND;
 }
 
+export interface ShowLiteSendAction {
+  type: TypeKeys.SWAP_SHOW_LITE_SEND;
+  payload: boolean;
+}
+
 /*** Action Type Union ***/
 export type SwapAction =
   | ChangeStepSwapAction
@@ -255,4 +260,5 @@ export type SwapAction =
   | ShapeshiftOrderCreateFailedSwapAction
   | OrderSwapTimeSwapAction
   | ChangeProviderSwapAcion
-  | ConfigureLiteSendAction;
+  | ConfigureLiteSendAction
+  | ShowLiteSendAction;
