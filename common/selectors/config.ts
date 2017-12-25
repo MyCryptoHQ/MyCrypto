@@ -41,6 +41,10 @@ export function getAllTokens(state: AppState): Token[] {
   return networkTokens.concat(state.customTokens);
 }
 
+export function tokenExists(state: AppState, token: string): boolean {
+  return !!getAllTokens(state).find(t => t.symbol === token);
+}
+
 export function getLanguageSelection(state: AppState): string {
   return state.config.languageSelection;
 }

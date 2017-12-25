@@ -227,6 +227,10 @@ export interface ChangeProviderSwapAcion {
   payload: ProviderName;
 }
 
+export interface ConfigureLiteSendAction {
+  type: TypeKeys.SWAP_CONFIGURE_LITE_SEND;
+}
+
 /*** Action Type Union ***/
 export type SwapAction =
   | ChangeStepSwapAction
@@ -250,4 +254,5 @@ export type SwapAction =
   | BityOrderCreateFailedSwapAction
   | ShapeshiftOrderCreateFailedSwapAction
   | OrderSwapTimeSwapAction
-  | ChangeProviderSwapAcion;
+  | ChangeProviderSwapAcion
+  | ConfigureLiteSendAction;

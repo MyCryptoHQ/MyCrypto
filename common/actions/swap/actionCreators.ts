@@ -232,6 +232,11 @@ export function stopPollShapeshiftOrderStatus(): interfaces.StopPollShapeshiftOr
   };
 }
 
+export type TConfigureLiteSend = typeof configureLiteSend;
+export function configureLiteSend(): interfaces.ConfigureLiteSendAction {
+  return { type: TypeKeys.SWAP_CONFIGURE_LITE_SEND };
+}
+
 export type TChangeSwapProvider = typeof changeSwapProvider;
 export function changeSwapProvider(
   payload: interfaces.ProviderName
