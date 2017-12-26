@@ -41,20 +41,5 @@ module.exports = {
     'uuid',
     'wallet-address-validator',
     'whatwg-fetch'
-  ],
-  // Settings for webpack-image-loader image compression
-  imageCompressionOptions: {
-    optipng: {
-      optimizationLevel: 4
-    },
-    gifsicle: {
-      interlaced: false
-    },
-    mozjpeg: {
-      quality: 80
-    },
-    svgo: {
-      plugins: [{ removeViewBox: true }, { removeEmptyAttrs: false }, { sortAttrs: true }]
-    }
-  }
+  ]
 };

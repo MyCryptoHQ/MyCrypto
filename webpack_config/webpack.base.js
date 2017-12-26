@@ -3,10 +3,22 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const config = require('./config');
 const _ = require('./utils');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const threadLoader = require('thread-loader');
+threadLoader.warmup(
+  {
+    // pool options, like passed to loader options
+    // must match loader options to boot the correct pool
+    happyPackMode: true,
+    logLevel: 'info'
+  },
+  [
+    // modules to load
+    // can be any module, i. e.
+    'ts-loader'
+  ]
+);
 
 const webpackConfig = {
   entry: {
@@ -16,9 +28,6 @@ const webpackConfig = {
     path: _.outputPath,
     filename: '[name].js',
     publicPath: config.publicPath
-  },
-  performance: {
-    hints: process.env.NODE_ENV === 'production' ? 'warning' : false
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
@@ -30,22 +39,36 @@ const webpackConfig = {
     ]
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(ts|tsx)$/,
         include: path.resolve(__dirname, '../common'),
-        loader: 'awesome-typescript-loader',
-        exclude: [
-          path.resolve(__dirname, '../node_modules'),
-          path.resolve(__dirname, '../common/assets')
-        ]
+        use: [
+          {
+            loader: 'thread-loader',
+            options: {
+              workers: 4
+            }
+          },
+          { loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }
+        ],
+        exclude: ['assets', 'sass', 'vendor', 'translations/lang']
+          .map(dir => path.resolve(__dirname, `../common/${dir}`))
+          .concat([path.resolve(__dirname, '../node_modules')])
       },
       {
+        include: [
+          path.resolve(__dirname, '../common/assets'),
+          path.resolve(__dirname, '../node_modules')
+        ],
+        exclude: function(modulePath) {
+          return /node_modules/.test(modulePath) && !/node_modules\/font-awesome/.test(modulePath);
+        },
         test: /\.(gif|png|jpe?g|svg)$/i,
-        loaders: [
+        use: [
           {
             loader: 'file-loader',
-            query: {
+            options: {
               hash: 'sha512',
               digest: 'hex',
               name: '[path][name].[ext]?[hash:6]'
@@ -53,41 +76,54 @@ const webpackConfig = {
           },
           {
             loader: 'image-webpack-loader',
-            query: config.imageCompressionOptions
+            options: {
+              bypassOnDebug: true,
+              optipng: {
+                optimizationLevel: 4
+              },
+              gifsicle: {
+                interlaced: false
+              },
+              mozjpeg: {
+                quality: 80
+              },
+              svgo: {
+                plugins: [{ removeViewBox: true }, { removeEmptyAttrs: false }, { sortAttrs: true }]
+              }
+            }
           }
         ]
       },
       {
+        include: [
+          path.resolve(__dirname, '../common/assets'),
+          path.resolve(__dirname, '../node_modules')
+        ],
+        exclude: function(modulePath) {
+          return /node_modules/.test(modulePath) && !/node_modules\/font-awesome/.test(modulePath);
+        },
         test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
-        loader: 'file-loader?limit=100000'
+        loader: 'file-loader'
       }
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.BUILD_DOWNLOADABLE': JSON.stringify(!!process.env.BUILD_DOWNLOADABLE)
-    }),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, '../common/index.html'),
       inject: true,
       filename: _.outputIndexPath
     }),
-    new HardSourceWebpackPlugin(),
-    new FaviconsWebpackPlugin({
-      logo: path.resolve(__dirname, '../static/favicon/android-chrome-384x384.png'),
-      background: '#163151'
-    }),
-    new webpack.LoaderOptionsPlugin(_.loadersOptions()),
     new CopyWebpackPlugin([
       {
         from: _.cwd('./static'),
         // to the root of dist path
         to: './'
       }
-    ])
+    ]),
+
+    new webpack.LoaderOptionsPlugin(_.loadersOptions())
   ],
   target: _.target
 };
-
 module.exports = webpackConfig;
