@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { showNotification, TShowNotification } from 'actions/notifications';
 import { AppState } from 'reducers';
 import Modal, { IButton } from 'components/ui/Modal';
 import Stepper from 'react-stepper-horizontal';
@@ -40,6 +41,7 @@ interface Props {
   resumeSlide: TResumeSlide;
   decrementSlide: TDecrementSlide;
   incrementSlide: TIncrementSlide;
+  showNotification: TShowNotification;
 }
 
 class OnboardModal extends React.Component<Props, State> {
@@ -69,6 +71,11 @@ class OnboardModal extends React.Component<Props, State> {
         });
 
         // notify message
+        this.props.showNotification(
+          'info',
+          'It looks like you did not finish reading through these slides last time. ProTip: Finish reading through the slides 😉',
+          Infinity
+        );
       }
     }
   }
@@ -76,8 +83,10 @@ class OnboardModal extends React.Component<Props, State> {
   public render() {
     const { isOpen } = this.state;
     const { slideNumber } = this.props;
-    const buttons: IButton[] = [
+
+    const firstButtons: IButton[] = [
       {
+        disabled: slideNumber === 10,
         text: 'Next',
         type: 'primary',
         onClick: this.handleNextSlide
@@ -89,10 +98,24 @@ class OnboardModal extends React.Component<Props, State> {
         onClick: this.handlePreviousSlide
       }
     ];
+    const lastButtons: IButton[] = [
+      {
+        text: 'Finish',
+        type: 'primary',
+        onClick: this.closeModal
+      },
+      {
+        text: 'Back',
+        type: 'default',
+        onClick: this.handlePreviousSlide
+      }
+    ];
+
+    const buttons = slideNumber === 10 ? lastButtons : firstButtons;
 
     return (
       <div className="OnboardModal">
-        <Modal isOpen={isOpen} handleClose={this.closeModal} buttons={buttons}>
+        <Modal isOpen={isOpen} buttons={buttons}>
           {/* {showOnboardMsg && this.renderOnboardMsg()} */}
           <div className="OnboardModal-stepper">
             <Stepper
@@ -121,8 +144,7 @@ class OnboardModal extends React.Component<Props, State> {
   //   return (
   //     <article className="onboarding__msg">
   //       {/* translate="ONBOARD_resume" */}
-  //       It looks like you didn't finish reading through these slides last time. ProTip: Finish
-  //       reading through the slides 😉
+  //
   //     </article>
   //   );
   // };
@@ -171,5 +193,6 @@ export default connect(mapStateToProps, {
   startOnboardSession,
   resumeSlide,
   decrementSlide,
-  incrementSlide
+  incrementSlide,
+  showNotification
 })(OnboardModal);

@@ -2,15 +2,7 @@
 @import 'common/sass/mixins';
 
 .OnboardSlide {
-  &-alert {
-    font-weight: 500;
-    color: #e74c3c;
-    border-style: solid;
-    padding: 10px;
-    border-radius: 5px;
-  }
-
-  &-title {
+  &-header {
     text-align: center;
   }
 }

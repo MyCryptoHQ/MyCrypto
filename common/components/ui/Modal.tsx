@@ -4,14 +4,7 @@ import './Modal.scss';
 
 export interface IButton {
   text: string | React.ReactElement<string>;
-  type?:
-    | 'default'
-    | 'primary'
-    | 'success'
-    | 'info'
-    | 'warning'
-    | 'danger'
-    | 'link';
+  type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link';
   disabled?: boolean;
   onClick?(): void;
 }
@@ -21,7 +14,7 @@ interface Props {
   disableButtons?: boolean;
   children: any;
   buttons?: IButton[];
-  handleClose(): void;
+  handleClose?(): void;
 }
 
 export default class Modal extends Component<Props, {}> {
@@ -51,16 +44,17 @@ export default class Modal extends Component<Props, {}> {
       <div>
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
         <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
-          <div className="Modal-header">
-            <h2 className="Modal-header-title">{title}</h2>
-            <button className="Modal-header-close" onClick={handleClose}>
-              <img className="Modal-header-close-icon" src={closeIcon} />
-            </button>
-          </div>
-          <div className="Modal-content">{isOpen && children}</div>
-          {hasButtons && (
-            <div className="Modal-footer">{this.renderButtons()}</div>
+          {title && (
+            <div className="Modal-header">
+              <h2 className="Modal-header-title">{title}</h2>
+              <button className="Modal-header-close" onClick={handleClose}>
+                <img className="Modal-header-close-icon" src={closeIcon} />
+              </button>
+            </div>
           )}
+
+          <div className="Modal-content">{isOpen && children}</div>
+          {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
         </div>
       </div>
     );

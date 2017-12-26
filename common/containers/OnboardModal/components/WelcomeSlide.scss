@@ -1,0 +1,12 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.WelcomeSlide {
+  &-alert {
+    font-weight: 500;
+    color: #e74c3c;
+    border-style: solid;
+    padding: 10px;
+    border-radius: 5px;
+  }
+}
