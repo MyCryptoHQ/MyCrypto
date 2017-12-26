@@ -1,5 +1,6 @@
 'use strict';
 process.env.NODE_ENV = 'production';
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -43,6 +44,14 @@ base.entry.vendor = config.vendor;
 // use hash filename to support long-term caching
 base.output.filename = '[name].[chunkhash:8].js';
 // add webpack plugins
+base.plugins.unshift(
+  new FaviconsWebpackPlugin({
+    logo: path.resolve(__dirname, '../static/favicon/android-chrome-384x384.png'),
+    background: '#163151',
+    inject: true
+  })
+);
+
 base.plugins.push(
   new ProgressPlugin(),
   new ExtractTextPlugin('[name].[chunkhash:8].css'),
