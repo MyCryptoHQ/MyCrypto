@@ -141,11 +141,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-<<<<<<< HEAD
-      "prettier --write",
-=======
       "prettier --write --config ./.prettierrc --config-precedence file-override",
->>>>>>> 6944889fe3b901e09a75db3996629fdeb3bb8a59
       "git add"
     ]
   }
