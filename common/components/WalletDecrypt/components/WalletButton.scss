@@ -39,6 +39,7 @@
   &:hover,
   &:focus {
     transform: translateY(-2px);
+    z-index: 2;
     box-shadow: 0 1px 4px rgba(#000, 0.12),
                 0 4px 6px rgba(#000, 0.12);
 
