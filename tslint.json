@@ -16,6 +16,7 @@
     "arrow-parens": false,
     "no-unnecessary-type-assertion": true,
     "array-type": [true, "array"],
+    "jsx-no-lambda": false,
     "interface-name": false,
     "no-duplicate-imports": true,
     "no-console": false,
