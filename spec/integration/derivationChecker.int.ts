@@ -25,9 +25,9 @@ function makeCommaSeparatedPrivateKeys(privKeyWallets: IFullWallet[]): string {
 }
 
 async function privToAddrViaDocker(privKeyWallets: IFullWallet[]): Promise<string> {
-  const command = `docker run -e key=${makeCommaSeparatedPrivateKeys(
-    privKeyWallets
-  )} ${dockerImage}:${dockerTag}`;
+  const command = `docker run -e key=${makeCommaSeparatedPrivateKeys(privKeyWallets)} ${
+    dockerImage
+  }:${dockerTag}`;
   const dockerOutput = await promiseFromChildProcess(command);
   const newlineStrippedDockerOutput = dockerOutput.replace(/(\r\n|\n|\r)/gm, '');
   return newlineStrippedDockerOutput;

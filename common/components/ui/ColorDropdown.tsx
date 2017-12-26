@@ -58,16 +58,14 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
   private renderOptions = () => {
     const { options, value, menuAlign, extra } = this.props;
 
-    const listItems = options
-      .filter(opt => !opt.hidden)
-      .reduce((prev: any[], opt) => {
-        const prevOpt = prev.length ? prev[prev.length - 1] : null;
-        if (prevOpt && !prevOpt.divider && prevOpt.color !== opt.color) {
-          prev.push({ divider: true });
-        }
-        prev.push(opt);
-        return prev;
-      }, []);
+    const listItems = options.filter(opt => !opt.hidden).reduce((prev: any[], opt) => {
+      const prevOpt = prev.length ? prev[prev.length - 1] : null;
+      if (prevOpt && !prevOpt.divider && prevOpt.color !== opt.color) {
+        prev.push({ divider: true });
+      }
+      prev.push(opt);
+      return prev;
+    }, []);
 
     const menuClass = classnames({
       ColorDropdown: true,
@@ -82,11 +80,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
             return <li key={i} role="separator" className="divider" />;
           } else {
             return (
-              <li
-                key={i}
-                className="ColorDropdown-item"
-                style={{ borderColor: option.color }}
-              >
+              <li key={i} className="ColorDropdown-item" style={{ borderColor: option.color }}>
                 <a
                   className={option.value === value ? 'active' : ''}
                   onClick={this.onChange.bind(null, option.value)}
@@ -118,10 +112,7 @@ export default class ColorDropdown<T> extends Component<Props<T>, {}> {
     }
   };
 
-  private onRemove(
-    onRemove: () => void,
-    ev?: React.SyntheticEvent<HTMLButtonElement>
-  ) {
+  private onRemove(onRemove: () => void, ev?: React.SyntheticEvent<HTMLButtonElement>) {
     if (ev) {
       ev.preventDefault();
       ev.stopPropagation();

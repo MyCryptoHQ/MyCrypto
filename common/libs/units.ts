@@ -1,9 +1,13 @@
 import BN from 'bn.js';
+import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
 type TokenValue = BN;
+type Address = Buffer;
+type Nonce = BN;
+type Data = Buffer;
 
 export const ETH_DECIMAL = 18;
 
@@ -42,15 +46,22 @@ const handleValues = (input: string | BN) => {
   }
   if (BN.isBN(input)) {
     return input;
+  } else {
+    throw Error('unsupported value conversion');
   }
-  throw Error('unsupported value conversion');
 };
+
+const Address = (input: string) => toBuffer(addHexPrefix(input));
+
+const Data = (input: string) => toBuffer(addHexPrefix(input));
+
+const Nonce = (input: string | BN) => handleValues(input);
 
 const Wei = (input: string | BN): Wei => handleValues(input);
 
 const TokenValue = (input: string | BN) => handleValues(input);
 
-const getDecimal = (key: UnitKey) => Units[key].length - 1;
+const getDecimalFromEtherUnit = (key: UnitKey) => Units[key].length - 1;
 
 const stripRightZeros = (str: string) => {
   const strippedStr = str.replace(/0+$/, '');
@@ -77,7 +88,7 @@ const convertedToBaseUnit = (value: string, decimal: number) => {
 };
 
 const fromWei = (wei: Wei, unit: UnitKey) => {
-  const decimal = getDecimal(unit);
+  const decimal = getDecimalFromEtherUnit(unit);
   return baseToConvertedUnit(wei.toString(), decimal);
 };
 
@@ -92,6 +103,8 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
+const isEtherUnit = (unit: string) => unit === 'ether';
+
 const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
   if (oldDecimal === newDecimal) {
     return value;
@@ -99,7 +112,12 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
   return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
 };
 
+const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
+
 export {
+  isEtherUnit,
+  Data,
+  Address,
   TokenValue,
   fromWei,
   toWei,
@@ -107,6 +125,9 @@ export {
   fromTokenBase,
   convertTokenBase,
   Wei,
-  getDecimal,
-  UnitKey
+  getDecimalFromEtherUnit,
+  UnitKey,
+  Nonce,
+  handleValues,
+  gasPricetoBase
 };

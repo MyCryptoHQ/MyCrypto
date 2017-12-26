@@ -5,7 +5,7 @@ import translate from 'translations';
 import printElement from 'utils/printElement';
 import { stripHexPrefix } from 'libs/values';
 
-const print = (address: string, privateKey: string) => () =>
+export const print = (address: string, privateKey: string) => () =>
   address &&
   privateKey &&
   printElement(<PaperWallet address={address} privateKey={privateKey} />, {

@@ -23,25 +23,34 @@ declare module 'ethereumjs-tx' {
   };
   */
 
-  type DataParamType = any; //TS complaining about big numbers heres
-  interface Data {
-    chainId: number;
-    gasLimit: DataParamType;
-    gasPrice: DataParamType;
-    to: DataParamType;
-    nonce: DataParamType;
-    data: DataParamType;
-    v?: DataParamType;
-    r?: DataParamType;
-    s?: DataParamType;
-    value: DataParamType;
+  export interface TxObj {
+    chainId?: number | null;
+    gasLimit?: Buffer | BN | string | number | null;
+    gasPrice?: Buffer | BN | string | number | null;
+    to?: Buffer | BN | string | number | null;
+    nonce?: Buffer | BN | string | number | null;
+    data?: Buffer | BN | string | number | null;
+    v?: Buffer | BN | string | number | null;
+    r?: Buffer | BN | string | number | null;
+    s?: Buffer | BN | string | number | null;
+    value?: Buffer | BN | string | number | null;
   }
 
-  export = ITx;
-  class ITx {
+  class EthereumJSTx {
+    public _chainId: number;
     public raw: Buffer;
+    public gasLimit: Buffer;
+    public gasPrice: Buffer;
+    public to: Buffer;
+    public nonce: Buffer;
+    public data: Buffer;
+    public value: Buffer;
+    public from: Buffer;
+    public v: Buffer;
+    public r: Buffer;
+    public s: Buffer;
+    constructor(data: TxObj | string | Buffer);
 
-    constructor(data: Data | string);
     /**
      * If the tx's `to` is to the creation address
      * @return {Boolean}
@@ -57,9 +66,9 @@ declare module 'ethereumjs-tx' {
 
     /**
      * returns the public key of the sender
-     * @return {Buffer}
+     * @return {number}
      */
-    public getChainId(): Buffer;
+    public getChainId(): number;
 
     /**
      * returns the sender's address
@@ -114,4 +123,6 @@ declare module 'ethereumjs-tx' {
 
     public serialize(): Buffer;
   }
+
+  export default EthereumJSTx;
 }

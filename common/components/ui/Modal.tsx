@@ -4,7 +4,14 @@ import './Modal.scss';
 
 export interface IButton {
   text: string | React.ReactElement<string>;
-  type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link';
+  type?:
+    | 'default'
+    | 'primary'
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'link';
   disabled?: boolean;
   onClick?(): void;
 }
@@ -13,13 +20,11 @@ interface Props {
   title?: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
-  buttons: IButton[];
+  buttons?: IButton[];
   handleClose(): void;
 }
 
 export default class Modal extends Component<Props, {}> {
-  public modalRef: HTMLDivElement | null;
-
   public componentDidMount() {
     this.updateBodyClass();
     document.addEventListener('keydown', this.escapeListner);
@@ -45,17 +50,17 @@ export default class Modal extends Component<Props, {}> {
     return (
       <div>
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
-        <div className={`Modal ${isOpen ? 'is-open' : ''}`} ref={node => (this.modalRef = node)}>
-          {title && (
-            <div className="Modal-header">
-              <h2 className="Modal-header-title">{title}</h2>
-              <button className="Modal-header-close" onClick={handleClose}>
-                <img className="Modal-header-close-icon" src={closeIcon} />
-              </button>
-            </div>
-          )}
+        <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
+          <div className="Modal-header">
+            <h2 className="Modal-header-title">{title}</h2>
+            <button className="Modal-header-close" onClick={handleClose}>
+              <img className="Modal-header-close-icon" src={closeIcon} />
+            </button>
+          </div>
           <div className="Modal-content">{isOpen && children}</div>
-          {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
+          {hasButtons && (
+            <div className="Modal-footer">{this.renderButtons()}</div>
+          )}
         </div>
       </div>
     );
@@ -80,7 +85,7 @@ export default class Modal extends Component<Props, {}> {
 
   private renderButtons = () => {
     const { disableButtons, buttons } = this.props;
-    if (!buttons) {
+    if (!buttons || !buttons.length) {
       return;
     }
 

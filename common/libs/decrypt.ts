@@ -13,10 +13,7 @@ export function decryptPrivKey(encprivkey: string, password: string): Buffer {
     ivsize: 16
   });
   const decipher = createDecipheriv('aes-256-cbc', evp.key, evp.iv);
-  const privKey = decipherBuffer(
-    decipher,
-    new Buffer(decryptedCipher.ciphertext)
-  );
+  const privKey = decipherBuffer(decipher, new Buffer(decryptedCipher.ciphertext));
 
   return new Buffer(privKey.toString(), 'hex');
 }

@@ -52,9 +52,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
           </a>
         </div>
 
-        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
-          {error || '-'}
-        </div>
+        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <a
           className="TrezorDecrypt-buy btn btn-sm btn-default"
@@ -114,16 +112,21 @@ export default class TrezorDecrypt extends Component<Props, State> {
   };
 
   private handleCancel = () => {
+    this.reset();
+  };
+
+  private handleUnlock = (address: string, index: number) => {
+    this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
+    this.reset();
+  };
+
+  private handleNullConnect = (): void => this.handleConnect();
+
+  private reset() {
     this.setState({
       publicKey: '',
       chainCode: '',
       dPath: DEFAULT_PATH
     });
-  };
-
-  private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
-  };
-
-  private handleNullConnect = (): void => this.handleConnect();
+  }
 }

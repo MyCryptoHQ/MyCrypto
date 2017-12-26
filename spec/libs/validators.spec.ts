@@ -7,31 +7,24 @@ import {
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
-const VALID_ETH_PRIVATE_KEY =
-  '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
-const INVALID_ETH_PRIVATE_KEY =
-  '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5ZZZZ';
+const VALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
+const INVALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5ZZZZ';
 const VALID_ETH_PRIVATE_BUFFER = Buffer.from(VALID_ETH_PRIVATE_KEY, 'hex');
-const VALID_ETH_PRIVATE_0X =
-  '0x3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
+const VALID_ETH_PRIVATE_0X = '0x3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
 
 describe('Validator', () => {
   it('should validate correct BTC address as true', () => {
     expect(isValidBTCAddress(VALID_BTC_ADDRESS)).toBeTruthy();
   });
   it('should validate incorrect BTC address as false', () => {
-    expect(
-      isValidBTCAddress('nonsense' + VALID_BTC_ADDRESS + 'nonsense')
-    ).toBeFalsy();
+    expect(isValidBTCAddress('nonsense' + VALID_BTC_ADDRESS + 'nonsense')).toBeFalsy();
   });
 
   it('should validate correct ETH address as true', () => {
     expect(isValidETHAddress(VALID_ETH_ADDRESS)).toBeTruthy();
   });
   it('should validate incorrect ETH address as false', () => {
-    expect(
-      isValidETHAddress('nonsense' + VALID_ETH_ADDRESS + 'nonsense')
-    ).toBeFalsy();
+    expect(isValidETHAddress('nonsense' + VALID_ETH_ADDRESS + 'nonsense')).toBeFalsy();
   });
   it('should validate a correct DPath as true', () => {
     expect(isValidPath("m/44'/60'/0'/0")).toBeTruthy();

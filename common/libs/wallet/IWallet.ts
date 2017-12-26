@@ -1,8 +1,9 @@
-import { RawTransaction } from 'libs/transaction';
+import Tx from 'ethereumjs-tx';
 
 interface IBaseWallet {
   isReadOnly?: boolean;
   getAddressString(): Promise<string> | string;
+  getPrivateKeyString?(): string;
 }
 
 export interface IReadOnlyWallet extends IBaseWallet {
@@ -11,7 +12,7 @@ export interface IReadOnlyWallet extends IBaseWallet {
 
 export interface IFullWallet extends IBaseWallet {
   isReadOnly?: false;
-  signRawTransaction(tx: RawTransaction): Promise<string> | string;
+  signRawTransaction(tx: Tx): Promise<Buffer> | Buffer;
   signMessage(msg: string): Promise<string> | string;
 }
 

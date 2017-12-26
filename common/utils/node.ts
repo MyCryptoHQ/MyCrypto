@@ -26,9 +26,7 @@ export function getNodeConfigFromId(
   }
 }
 
-export function makeNodeConfigFromCustomConfig(
-  config: CustomNodeConfig
-): NodeConfig {
+export function makeNodeConfigFromCustomConfig(config: CustomNodeConfig): NodeConfig {
   return {
     network: config.network,
     lib: new CustomNode(config),
