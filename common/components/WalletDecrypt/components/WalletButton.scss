@@ -28,7 +28,7 @@
   cursor: pointer;
   transition: transform 150ms ease, box-shadow 150ms ease;
   animation: wallet-button-enter 400ms ease 1;
-  animation-fill-mode: both;
+  animation-fill-mode: backwards;
 
   @for $i from 0 to 5 {
     &:nth-child(#{$i}) {
