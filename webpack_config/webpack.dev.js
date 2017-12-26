@@ -24,9 +24,7 @@ base.module.rules.push(
       .map(dir => path.resolve(__dirname, `../common/${dir}`))
       .concat([path.resolve(__dirname, '../node_modules')]),
 
-    exclude: function(modulePath) {
-      return /node_modules/.test(modulePath) && !/node_modules\/font-awesome/.test(modulePath);
-    },
+    exclude: /node_modules(?!\/font-awesome)/,
     use: ['style-loader', 'css-loader', 'sass-loader']
   },
   {

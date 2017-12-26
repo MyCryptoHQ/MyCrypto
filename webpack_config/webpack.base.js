@@ -61,9 +61,7 @@ const webpackConfig = {
           path.resolve(__dirname, '../common/assets'),
           path.resolve(__dirname, '../node_modules')
         ],
-        exclude: function(modulePath) {
-          return /node_modules/.test(modulePath) && !/node_modules\/font-awesome/.test(modulePath);
-        },
+        exclude: /node_modules(?!\/font-awesome)/,
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
           {
@@ -99,9 +97,7 @@ const webpackConfig = {
           path.resolve(__dirname, '../common/assets'),
           path.resolve(__dirname, '../node_modules')
         ],
-        exclude: function(modulePath) {
-          return /node_modules/.test(modulePath) && !/node_modules\/font-awesome/.test(modulePath);
-        },
+        exclude: /node_modules(?!\/font-awesome)/,
         test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
         loader: 'file-loader'
       }
