@@ -19,6 +19,7 @@ interface State {
   dPath: string;
   error: string | null;
   isLoading: boolean;
+  showTip: boolean;
 }
 
 export default class LedgerNanoSDecrypt extends Component<Props, State> {
@@ -27,15 +28,27 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
     chainCode: '',
     dPath: DEFAULT_PATH,
     error: null,
-    isLoading: false
+    isLoading: false,
+    showTip: false
+  };
+
+  public showTip = () => {
+    this.setState({
+      showTip: true
+    });
   };
 
   public render() {
-    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
-    const showErr = error ? 'is-showing' : '';
+    const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
 
     return (
       <section className="LedgerDecrypt col-md-4 col-sm-6">
+        {showTip && (
+          <p>
+            <strong>Tip: </strong>Make sure you're logged into the ethereum app on your hardware
+            wallet
+          </p>
+        )}
         <button
           className="LedgerDecrypt-decrypt btn btn-primary btn-lg"
           onClick={this.handleNullConnect}
@@ -65,9 +78,12 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
             </a>
           </div>
         </div>
-
-        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
+        {error && (
+          <p className="LedgerDecrypt-error alert alert-danger is-showing">
+            <strong>Error: </strong>
+            {error}
+          </p>
+        )}
         <a
           className="LedgerDecrypt-buy btn btn-sm btn-default"
           href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
@@ -76,7 +92,6 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
         >
           {translate('Don’t have a Ledger? Order one now!')}
         </a>
-
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
@@ -109,6 +124,9 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
       dPath,
       (res, err) => {
         if (err) {
+          if (err.errorCode === 5) {
+            this.showTip();
+          }
           err = ethApp.getError(err);
         }
 
