@@ -76,7 +76,8 @@ export function getTokenBalances(state: AppState, nonZeroOnly: boolean = false):
 }
 
 export const getTokenBalance = (state: AppState, unit: string): TokenValue | null => {
-  return getTokenWithBalance(state, unit).balance;
+  const token = getTokenWithBalance(state, unit);
+  return token ? token.balance : TokenValue('0');
 };
 
 export const getTokenWithBalance = (state: AppState, unit: string): TokenBalance => {
