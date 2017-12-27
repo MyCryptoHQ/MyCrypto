@@ -122,7 +122,8 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
   private handleConnect = (dPath: string = this.state.dPath) => {
     this.setState({
       isLoading: true,
-      error: null
+      error: null,
+      showTip: false
     });
 
     const ledger = new Ledger3('w0w');
