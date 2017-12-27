@@ -5,6 +5,7 @@ import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
+import { Spinner } from 'components/ui';
 const DEFAULT_PATH = DPATHS.TREZOR[0].value;
 
 interface Props {
@@ -38,7 +39,14 @@ export default class TrezorDecrypt extends Component<Props, State> {
           onClick={this.handleNullConnect}
           disabled={isLoading}
         >
-          {isLoading ? 'Unlocking...' : translate('ADD_Trezor_scan')}
+          {isLoading ? (
+            <div className="TrezorDecrypt-message">
+              <Spinner light={true} />
+              Unlocking...
+            </div>
+          ) : (
+            translate('ADD_Trezor_scan')
+          )}
         </button>
 
         <div className="TrezorDecrypt-help">

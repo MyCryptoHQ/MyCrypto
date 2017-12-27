@@ -6,6 +6,7 @@ import { LedgerWallet } from 'libs/wallet';
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
 import DPATHS from 'config/dpaths';
+import { Spinner } from 'components/ui';
 
 const DEFAULT_PATH = DPATHS.LEDGER[0].value;
 
@@ -54,7 +55,14 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
           onClick={this.handleNullConnect}
           disabled={isLoading}
         >
-          {isLoading ? 'Unlocking...' : translate('ADD_Ledger_scan')}
+          {isLoading ? (
+            <div className="LedgerDecrypt-message">
+              <Spinner light={true} />
+              Unlocking...
+            </div>
+          ) : (
+            translate('ADD_Ledger_scan')
+          )}
         </button>
 
         <div className="LedgerDecrypt-help">

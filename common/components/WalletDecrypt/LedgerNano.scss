@@ -23,4 +23,13 @@
   &-buy {
     margin-top: 10px;
   }
+
+  &-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      margin-right: 16px;
+    }
+  }
 }
