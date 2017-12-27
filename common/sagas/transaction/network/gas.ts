@@ -72,7 +72,6 @@ export function* estimateGas(): SagaIterator {
       yield put(estimateGasSucceeded());
     } catch (e) {
       yield put(estimateGasFailed());
-      console.error(e);
       // fallback for estimating locally
       const tx = yield call(makeTransaction, payload);
       const gasLimit = yield apply(tx, tx.getBaseFee);
