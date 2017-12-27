@@ -10,9 +10,7 @@ interface Props {
 export default function Identicon(props: Props) {
   const size = props.size || '4rem';
   // FIXME breaks on failed checksums
-  const identiconDataUrl = isValidETHAddress(props.address.toLowerCase())
-    ? toDataUrl(props.address.toLowerCase())
-    : '';
+  const identiconDataUrl = isValidETHAddress(props.address) ? toDataUrl(props.address) : '';
   return (
     <div style={{ position: 'relative', width: size, height: size }} title="Address Identicon">
       <div

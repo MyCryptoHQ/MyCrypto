@@ -10,6 +10,7 @@ import {
   NameReveal
 } from './components';
 import './NameResolve.scss';
+import { Spinner } from 'components/ui';
 
 type Props = AppState['ens'];
 
@@ -31,12 +32,8 @@ export const NameResolve: React.SFC<Props> = props => {
   }
 
   const domain = domainRequests[currentDomain];
-  const Component = modeResult[domain.data!.mode];
+  // TODO: make spinner better here
+  const Component = domain.data ? modeResult[domain.data!.mode] : Spinner;
 
-  return (
-    <div>
-      {/* TODO: spinner here if domain.state === 'pending' */}
-      <Component {...domain.data!} />
-    </div>
-  );
+  return <Component {...domain.data!} />;
 };
