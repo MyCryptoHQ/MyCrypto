@@ -11,7 +11,7 @@ import {
 import { TypeKeys as WalletTK, setTokenBalancePending } from 'actions/wallet';
 import { AppState } from 'reducers';
 import { showNotification } from 'actions/notifications';
-import { tokenExists } from 'selectors/config';
+import { isSupportedUnit } from 'selectors/config';
 import { isEtherUnit } from 'libs/units';
 import { showLiteSend } from 'actions/swap';
 import { TypeKeys as SwapTK } from 'actions/swap/constants';
@@ -28,7 +28,7 @@ function* configureLiteSend(): SagaIterator {
     return yield put(showLiteSend(false));
   }
 
-  const supportedUnit: boolean = yield call(isSupportedUnit, id);
+  const supportedUnit: boolean = yield select(isSupportedUnit, id);
   if (!supportedUnit) {
     return yield put(showLiteSend(false));
   }
@@ -99,15 +99,6 @@ function* fetchPaymentAddress() {
   }
   yield put(showNotification('danger', 'Payment address not found'));
   return false;
-}
-
-function* isSupportedUnit(unit: string) {
-  const isToken: boolean = yield select(tokenExists, unit);
-  const isEther: boolean = yield call(isEtherUnit, unit);
-  if (!isToken && !isEther) {
-    return false;
-  }
-  return true;
 }
 
 export function* liteSend() {
