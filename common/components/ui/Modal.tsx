@@ -73,6 +73,9 @@ export default class Modal extends Component<Props, {}> {
     }
 
     if (ev.key === 'Escape' || ev.keyCode === 27) {
+      if (!this.props.handleClose) {
+        return;
+      }
       this.props.handleClose();
     }
   };

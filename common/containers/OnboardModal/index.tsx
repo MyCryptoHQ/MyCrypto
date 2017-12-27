@@ -70,7 +70,6 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
 
-        // notify message
         this.props.showNotification(
           'info',
           'It looks like you did not finish reading through these slides last time. ProTip: Finish reading through the slides 😉',
@@ -116,7 +115,6 @@ class OnboardModal extends React.Component<Props, State> {
     return (
       <div className="OnboardModal">
         <Modal isOpen={isOpen} buttons={buttons}>
-          {/* {showOnboardMsg && this.renderOnboardMsg()} */}
           <div className="OnboardModal-stepper">
             <Stepper
               steps={[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]}
@@ -139,15 +137,6 @@ class OnboardModal extends React.Component<Props, State> {
   public changeOnboardStatus = (slideNumber: number) => {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(slideNumber));
   };
-
-  // private renderOnboardMsg = () => {
-  //   return (
-  //     <article className="onboarding__msg">
-  //       {/* translate="ONBOARD_resume" */}
-  //
-  //     </article>
-  //   );
-  // };
 
   private renderSlide = () => {
     const slides = [
