@@ -11,15 +11,6 @@ import { AppState } from 'reducers';
 import { getNetworkConfigFromId } from 'utils/network';
 import { isEtherUnit } from 'libs/units';
 
-export function isSupportedUnit(state: AppState, unit: string) {
-  const isToken: boolean = tokenExists(state, unit);
-  const isEther: boolean = isEtherUnit(unit);
-  if (!isToken && !isEther) {
-    return false;
-  }
-  return true;
-}
-
 export function getNode(state: AppState): string {
   return state.config.nodeSelection;
 }
@@ -76,3 +67,12 @@ export function getForceOffline(state: AppState): boolean {
 }
 
 export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);
+
+export function isSupportedUnit(state: AppState, unit: string) {
+  const isToken: boolean = tokenExists(state, unit);
+  const isEther: boolean = isEtherUnit(unit);
+  if (!isToken && !isEther) {
+    return false;
+  }
+  return true;
+}

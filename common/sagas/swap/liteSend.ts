@@ -1,5 +1,5 @@
-import { SagaIterator, delay, takeEvery } from 'redux-saga';
-import { select, put, call, take, race, fork, cancel } from 'redux-saga/effects';
+import { SagaIterator, delay } from 'redux-saga';
+import { select, put, call, take, race, fork, cancel, takeEvery } from 'redux-saga/effects';
 import { getOrigin, getPaymentAddress } from 'selectors/swap';
 import {
   setUnitMeta,
@@ -19,7 +19,7 @@ import { isUnlocked } from 'selectors/wallet';
 
 type SwapState = AppState['swap'];
 
-function* configureLiteSend(): SagaIterator {
+export function* configureLiteSend(): SagaIterator {
   const { amount, id }: SwapState['origin'] = yield select(getOrigin);
   const paymentAddress: SwapState['paymentAddress'] = yield call(fetchPaymentAddress);
 
@@ -55,7 +55,7 @@ function* configureLiteSend(): SagaIterator {
   yield put(setCurrentTo(paymentAddress));
 }
 
-function* handleConfigureLiteSend(): SagaIterator {
+export function* handleConfigureLiteSend(): SagaIterator {
   while (true) {
     const liteSendProc = yield fork(configureLiteSend);
     const result = yield race({
@@ -86,21 +86,22 @@ function* handleConfigureLiteSend(): SagaIterator {
   }
 }
 
-function* fetchPaymentAddress() {
+export function* fetchPaymentAddress(): SagaIterator {
   const MAX_RETRIES = 5;
   let currentTry = 0;
   while (currentTry <= MAX_RETRIES) {
-    yield delay(500);
+    yield call(delay, 500);
     const paymentAddress: SwapState['paymentAddress'] = yield select(getPaymentAddress);
     if (paymentAddress) {
       return paymentAddress;
     }
     currentTry++;
   }
+
   yield put(showNotification('danger', 'Payment address not found'));
   return false;
 }
 
-export function* liteSend() {
+export function* liteSend(): SagaIterator {
   yield takeEvery(SwapTK.SWAP_CONFIGURE_LITE_SEND, handleConfigureLiteSend);
 }
