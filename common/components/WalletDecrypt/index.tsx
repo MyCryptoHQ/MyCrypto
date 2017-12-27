@@ -160,15 +160,15 @@ export class WalletDecrypt extends Component<Props, State> {
     });
   }
 
-  public handleDecryptionChoiceChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const wallet = this.WALLETS[(event.target as HTMLInputElement).value];
+  public handleDecryptionChoiceChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const wallet = this.WALLETS[event.currentTarget.value];
 
     if (!wallet) {
       return;
     }
 
     this.setState({
-      selectedWalletKey: (event.target as HTMLInputElement).value,
+      selectedWalletKey: event.currentTarget.value,
       value: wallet.initialParams
     });
   };

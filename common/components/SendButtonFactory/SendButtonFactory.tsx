@@ -18,6 +18,7 @@ interface StateProps {
   walletType: IWalletType;
 }
 interface OwnProps {
+  onlyTransactionParameters?: boolean;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -27,11 +28,13 @@ const getStringifiedTx = (serializedTransaction: string) =>
 type Props = StateProps & OwnProps;
 class SendButtonFactoryClass extends Component<Props> {
   public render() {
+    const { onlyTransactionParameters } = this.props;
+    const columnSize = onlyTransactionParameters ? 12 : 6;
     return (
       <SerializedTransaction
         withSerializedTransaction={serializedTransaction => (
           <Aux>
-            <div className="col-sm-6">
+            <div className={`col-sm-${columnSize}`}>
               <label>
                 {this.props.walletType.isWeb3Wallet
                   ? 'Transaction Parameters'
@@ -44,19 +47,21 @@ class SendButtonFactoryClass extends Component<Props> {
                 readOnly={true}
               />
             </div>
-            <div className="col-sm-6">
-              <label>
-                {this.props.walletType.isWeb3Wallet
-                  ? 'Serialized Transaction Parameters'
-                  : translate('SEND_signed')}
-              </label>
-              <textarea
-                className="form-control"
-                value={addHexPrefix(serializedTransaction)}
-                rows={4}
-                readOnly={true}
-              />
-            </div>
+            {!onlyTransactionParameters && (
+              <div className="col-sm-6">
+                <label>
+                  {this.props.walletType.isWeb3Wallet
+                    ? 'Serialized Transaction Parameters'
+                    : translate('SEND_signed')}
+                </label>
+                <textarea
+                  className="form-control"
+                  value={addHexPrefix(serializedTransaction)}
+                  rows={4}
+                  readOnly={true}
+                />
+              </div>
+            )}
             <OfflineBroadcast />
             <OnlineSend withProps={this.props.withProps} />
           </Aux>

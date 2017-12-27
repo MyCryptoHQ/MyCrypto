@@ -9,9 +9,9 @@ export function loadState<T>(): T | undefined {
     if (serializedState === null) {
       return undefined;
     }
-    return JSON.parse(serializedState || '');
+    return JSON.parse(serializedState || '{}');
   } catch (err) {
-    console.warn(' Warning: corrupted local storage');
+    console.warn(' Warning: corrupted local storage', err);
   }
 }
 

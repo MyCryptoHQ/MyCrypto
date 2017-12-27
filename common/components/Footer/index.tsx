@@ -16,7 +16,7 @@ import Modal, { IButton } from 'components/ui/Modal';
 import { NewTabLink } from 'components/ui';
 import OnboardModal from 'containers/OnboardModal';
 
-const AffiliateTag = ({ link, text }) => {
+const AffiliateTag = ({ link, text }: Link) => {
   return (
     <li className="Footer-affiliate-tag" key={link}>
       <NewTabLink href={link}>{text}</NewTabLink>
@@ -24,7 +24,7 @@ const AffiliateTag = ({ link, text }) => {
   );
 };
 
-const SocialMediaLink = ({ link, text }) => {
+const SocialMediaLink = ({ link, text }: Link) => {
   return (
     <NewTabLink className="Footer-social-media-link" key={link} href={link}>
       <i className={`sm-icon sm-logo-${text} sm-24px`} />
@@ -109,7 +109,7 @@ interface State {
 }
 
 export default class Footer extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = { isOpen: false };
   }

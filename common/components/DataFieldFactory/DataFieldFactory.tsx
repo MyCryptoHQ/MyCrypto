@@ -9,10 +9,10 @@ export interface CallBackProps {
   data: AppState['transaction']['fields']['data'];
   dataExists: boolean;
   readOnly: boolean;
-  onChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>);
+  onChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
 interface DispatchProps {
-  isEtherTransaction;
+  isEtherTransaction: boolean;
   inputData: TInputData;
 }
 interface OwnProps {
