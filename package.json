@@ -70,7 +70,7 @@
     "copy-webpack-plugin": "4.3.1",
     "css-loader": "0.28.7",
     "empty": "0.10.1",
-    "enzyme": "3.2.0",
+    "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "enzyme-to-json": "3.3.0",
     "express": "4.16.2",
