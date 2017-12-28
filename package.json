@@ -25,7 +25,7 @@
     "lodash": "4.17.4",
     "moment": "2.20.1",
     "normalizr": "3.2.4",
-    "qrcode": "1.0.0",
+    "qrcode": "1.2.0",
     "qrcode.react": "0.7.2",
     "query-string": "5.0.1",
     "react": "16.2.0",
