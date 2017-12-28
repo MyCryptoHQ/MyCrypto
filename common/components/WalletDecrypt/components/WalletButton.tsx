@@ -36,26 +36,26 @@ export class WalletButton extends React.Component<Props, {}> {
         {example && <div className="WalletButton-example">{example}</div>}
         <div className="WalletButton-icons">
           {isSecure === true && (
-            <span className="WalletButton-icons-icon">
+            <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
               <i className="fa fa-shield" />
               <Tooltip>{translateRaw('This wallet type is secure')}</Tooltip>
             </span>
           )}
           {isSecure === false && (
-            <span className="WalletButton-icons-icon">
+            <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
               <i className="fa fa-exclamation-triangle" />
               <Tooltip>{translateRaw('This wallet type is insecure')}</Tooltip>
             </span>
           )}
           {isReadOnly === true && (
-            <span className="WalletButton-icons-icon">
+            <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
               <i className="fa fa-eye" />
               <Tooltip>{translateRaw('You cannot send using address only')}</Tooltip>
             </span>
           )}
           {helpLink && (
             <span className="WalletButton-icons-icon">
-              <NewTabLink href={helpLink}>
+              <NewTabLink href={helpLink} onClick={this.stopPropogation}>
                 <i className="fa fa-question-circle" />
               </NewTabLink>
               <Tooltip>{translateRaw('NAV_Help')}</Tooltip>
@@ -68,5 +68,9 @@ export class WalletButton extends React.Component<Props, {}> {
 
   private handleClick = () => {
     this.props.onClick(this.props.walletType);
+  };
+
+  private stopPropogation = (ev: React.SyntheticEvent<any>) => {
+    ev.stopPropagation();
   };
 }

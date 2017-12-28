@@ -167,9 +167,35 @@
     }
 
     &-icons {
-      top: 50%;
-      right: 8px;
-      transform: translateY(-50%);
+      top: 0;
+      right: 0;
+      bottom: 0;
+
+      &-icon {
+        float: left;
+        display: block;
+        height: 100%;
+        margin: 0;
+        width: 48px;
+        text-align: center;
+        border-left: 1px solid #F4F4F4;
+        background: #FEFEFE;
+
+        a {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+
+        .fa {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
     }
 
     &--small {
@@ -179,9 +205,10 @@
         margin: 0;
       }
 
-      &-icons {
-        bottom: 2px;
-        right: 2px;
+      .WalletButton-icons {
+        &-icon {
+          margin: 0;
+        }
       }
     }
   }
