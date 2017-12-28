@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import translate from 'translations';
+import Stepper from 'react-stepper-horizontal';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { AppState } from 'reducers';
 import Modal, { IButton } from 'components/ui/Modal';
-import Stepper from 'react-stepper-horizontal';
 import {
   startOnboardSession,
   TStartOnboardSession,
@@ -70,11 +70,9 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
 
-        this.props.showNotification(
-          'info',
-          'It looks like you did not finish reading through these slides last time. ProTip: Finish reading through the slides 😉',
-          Infinity
-        );
+        const onboardResumeMessage = translate('ONBOARD_resume');
+
+        this.props.showNotification('info', onboardResumeMessage, 30000);
       }
     }
   }

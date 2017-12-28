@@ -1,35 +1,29 @@
 import React from 'react';
 import OnboardSlide from './OnboardSlide';
+import translate from 'translations';
+
 import './WelcomeSlide.scss';
 
 const WelcomeSlide = () => {
   const header = (
     <div>
-      <span>Welcome to MyEtherWallet.com</span>
+      <span>{translate('ONBOARD_welcome_title')}</span>
       <br />
-      <small>We know this click-through shit is annoying. We are sorry.</small>
+      <small>{translate('ONBOARD_welcome_content__3')}</small>
     </div>
   );
   const content = (
     <div>
       <p className="WelcomeSlide-alert">
-        <span>Please take some time to understand this for your own safety. 🙏</span>
-        <span>Your funds will be stolen if you do not head these warnings.</span>
+        <span>{translate('ONBOARD_welcome_content__1')}</span>
+        <span>{translate('ONBOARD_welcome_content__2')}</span>
       </p>
-      <p className="WelcomeSlide-alert">
-        We cannot recover your funds or freeze your account if you visit a phishing site or lose
-        your private key.
-      </p>
-      <h5>What is MEW?</h5>
+      <p className="WelcomeSlide-alert">{translate('ONBOARD_welcome_content__8')}</p>
+      <h5>{translate('ONBOARD_welcome_content__4')}</h5>
       <ul>
-        <li>MyEtherWallet is a free, open-source, client-side interface.</li>
-        <li>
-          We allow you to interact directly with the blockchain while remaining in full control of
-          your keys &amp; your funds.
-        </li>
-        <li>
-          <strong>You</strong> and <strong>only you</strong> are responsible for your security.
-        </li>
+        <li>{translate('ONBOARD_welcome_content__5')}</li>
+        <li>{translate('ONBOARD_welcome_content__6')}</li>
+        <li>{translate('ONBOARD_welcome_content__7')}</li>
       </ul>
     </div>
   );

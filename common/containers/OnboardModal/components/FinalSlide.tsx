@@ -1,11 +1,12 @@
 import React from 'react';
+import translate from 'translations';
 import { Link } from 'react-router-dom';
 import OnboardSlide from './OnboardSlide';
 const FinalSlide = ({ closeModal }) => {
   const header = (
     <div>
-      <span>Alright, I'm done lecturing you!</span>
-      <p> Sorry for being like this. Onwards!</p>
+      <span>{translate('ONBOARD_final_title')}</span>
+      <p>{translate('ONBOARD_final_subtitle')}</p>
       <br />
     </div>
   );
@@ -19,7 +20,7 @@ const FinalSlide = ({ closeModal }) => {
           rel="noopener noreferrer"
           className="strong"
         >
-          Get a hardware wallet
+          {translate('ONBOARD_final_content__2')}
         </a>
       </li>
       <li>
@@ -29,7 +30,7 @@ const FinalSlide = ({ closeModal }) => {
           rel="noopener noreferrer"
           className="strong"
         >
-          How to Set up MEW + MetaMask
+          {translate('ONBOARD_final_content__3')}
         </a>
       </li>
       <li>
@@ -39,7 +40,7 @@ const FinalSlide = ({ closeModal }) => {
           rel="noopener noreferrer"
           className="strong"
         >
-          How to Run MEW Offline / Locally
+          {translate('ONBOARD_final_content__4')}
         </a>
       </li>
       <li>
@@ -49,7 +50,7 @@ const FinalSlide = ({ closeModal }) => {
           rel="noopener noreferrer"
           className="strong"
         >
-          How to Send via Ledger hardware wallet
+          {translate('ONBOARD_final_content__5')}
         </a>
       </li>
       <li>
@@ -59,7 +60,7 @@ const FinalSlide = ({ closeModal }) => {
           rel="noopener noreferrer"
           className="strong"
         >
-          How to Send via TREZOR hardware wallet
+          {translate('ONBOARD_final_content__6')}
         </a>
       </li>
       <li>
@@ -69,7 +70,7 @@ const FinalSlide = ({ closeModal }) => {
           rel="noopener noreferrer"
           className="strong"
         >
-          How to Send via MetaMask
+          {translate('ONBOARD_final_content__7')}
         </a>
       </li>
       <li>
@@ -79,12 +80,12 @@ const FinalSlide = ({ closeModal }) => {
           rel="noopener noreferrer"
           className="strong"
         >
-          Learn More or Contact Us
+          {translate('ONBOARD_final_content__8')}
         </a>
       </li>
       <li>
         <Link onClick={closeModal} to="/send-transaction" className="strong">
-          <span>OMG, please just let me send FFS.</span>
+          <span> {translate('ONBOARD_final_content__9')}</span>
         </Link>
       </li>
     </ul>

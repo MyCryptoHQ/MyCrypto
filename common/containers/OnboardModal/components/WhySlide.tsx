@@ -1,36 +1,29 @@
 import React from 'react';
+import translate from 'translations';
 import OnboardSlide from './OnboardSlide';
 
 const WhySlide = () => {
+  const header = translate('ONBOARD_why_title');
+
   const content = (
     <div>
-      <h5>
-        Because we need you to understand that we <strong>cannot</strong>...
-      </h5>
+      <h5>{translate('ONBOARD_why_content__1')}</h5>
       <ul>
-        <li className="text-danger">Access your account or send your funds for you.</li>
-        <li className="text-danger">Recover or change your private key.</li>
-        <li className="text-danger">Recover or reset your password.</li>
-        <li className="text-danger">Reverse, cancel, or refund transactions.</li>
-        <li className="text-danger">Freeze accounts.</li>
+        <li className="text-danger">{translate('ONBOARD_why_content__2')}</li>
+        <li className="text-danger">{translate('ONBOARD_why_content__3')}</li>
+        <li className="text-danger">{translate('ONBOARD_why_content__4')}</li>
+        <li className="text-danger">{translate('ONBOARD_why_content__5')}</li>
+        <li className="text-danger">{translate('ONBOARD_why_content__6')}</li>
       </ul>
-      <h5>
-        <strong>You</strong> and <strong>only you</strong> are responsible for your security.
-      </h5>
+      <h5>{translate('ONBOARD_why_content__7')}</h5>
       <ul>
-        <li>
-          Be diligent to keep your private key and password safe. Your private key is sometimes
-          called your mnemonic phrase, keystore file, UTC file, JSON file, wallet file.
-        </li>
-        <li>If lose your private key or password, no one can recover it.</li>
-        <li>
-          If you enter your private key on a phishing website, you will have{' '}
-          <strong>all your funds taken</strong>.
-        </li>
+        <li>{translate('ONBOARD_why_content__8')}</li>
+        <li>{translate('ONBOARD_why_content__9')}</li>
+        <li>{translate('ONBOARD_why_content__10')}</li>
       </ul>
     </div>
   );
-  return <OnboardSlide header="Why are you making me read all this?" content={content} />;
+  return <OnboardSlide header={header} content={content} />;
 };
 
 export default WhySlide;
