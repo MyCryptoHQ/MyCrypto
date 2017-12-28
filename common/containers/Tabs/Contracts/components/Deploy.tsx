@@ -5,7 +5,7 @@ import { GasFieldFactory } from 'components/GasFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import { SigningStatus } from 'components/SigningStatus';
 import { NonceField } from 'components/NonceField';
-import { WalletDecrypt } from 'components';
+import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
 import { setToField, TSetToField } from 'actions/transaction';
@@ -76,7 +76,7 @@ class DeployClass extends Component<DispatchProps> {
       </main>
     );
 
-    const makeDecrypt = () => <WalletDecrypt allowReadOnly={false} />;
+    const makeDecrypt = () => <WalletDecrypt disabledWallets={DISABLE_WALLETS.READ_ONLY} />;
 
     return <FullWalletOnly withFullWallet={makeContent} withoutFullWallet={makeDecrypt} />;
   }

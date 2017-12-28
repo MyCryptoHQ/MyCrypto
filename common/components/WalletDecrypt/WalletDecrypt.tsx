@@ -54,7 +54,7 @@ interface Props {
   wallet: IWallet;
   hidden?: boolean;
   offline: boolean;
-  allowReadOnly?: boolean;
+  disabledWallets?: string[];
 }
 
 interface State {
@@ -238,6 +238,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 helpLink={wallet.helpLink}
                 walletType={type}
                 isSecure={true}
+                isDisabled={this.isWalletDisabled(type)}
                 onClick={this.handleWalletChoice}
               />
             );
@@ -254,6 +255,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 helpLink={wallet.helpLink}
                 walletType={type}
                 isSecure={false}
+                isDisabled={this.isWalletDisabled(type)}
                 onClick={this.handleWalletChoice}
               />
             );
@@ -266,6 +268,7 @@ export class WalletDecrypt extends Component<Props, State> {
             helpLink={viewOnly.helpLink}
             walletType="view-only"
             isReadOnly={true}
+            isDisabled={this.isWalletDisabled('view-only')}
             onClick={this.handleWalletChoice}
           />
         </div>
@@ -351,6 +354,13 @@ export class WalletDecrypt extends Component<Props, State> {
     const unlockValue = value && !isEmpty(value) ? value : payload;
     this.WALLETS[selectedWalletKey].unlock(unlockValue);
     this.props.resetTransactionState();
+  };
+
+  private isWalletDisabled = (walletKey: string) => {
+    if (!this.props.disabledWallets) {
+      return false;
+    }
+    return this.props.disabledWallets.indexOf(walletKey) !== -1;
   };
 }
 

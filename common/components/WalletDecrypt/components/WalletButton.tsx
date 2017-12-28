@@ -13,20 +13,33 @@ interface Props {
   walletType: string;
   isSecure?: boolean;
   isReadOnly?: boolean;
+  isDisabled?: boolean;
   onClick(walletType: string): void;
 }
 
 export class WalletButton extends React.Component<Props, {}> {
   public render() {
-    const { name, description, example, icon, helpLink, isSecure, isReadOnly } = this.props;
+    const {
+      name,
+      description,
+      example,
+      icon,
+      helpLink,
+      isSecure,
+      isReadOnly,
+      isDisabled
+    } = this.props;
 
     return (
       <div
         className={classnames({
           WalletButton: true,
-          'WalletButton--small': !isSecure
+          'WalletButton--small': !isSecure,
+          'is-disabled': isDisabled
         })}
         onClick={this.handleClick}
+        tabIndex={isDisabled ? -1 : 0}
+        aria-disabled={isDisabled}
       >
         <div className="WalletButton-title">
           {icon && <img className="WalletButton-title-icon" src={icon} />}
@@ -67,6 +80,10 @@ export class WalletButton extends React.Component<Props, {}> {
   }
 
   private handleClick = () => {
+    if (this.props.isDisabled) {
+      return;
+    }
+
     this.props.onClick(this.props.walletType);
   };
 

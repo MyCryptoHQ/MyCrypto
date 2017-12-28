@@ -12,6 +12,16 @@
   }
 }
 
+@keyframes wallet-button-enter-disabled {
+  0% {
+    opacity: 0;
+  }
+  30%,
+  100% {
+    opacity: 0.3;
+  }
+}
+
 .WalletButton {
   position: relative;
   flex: 1;
@@ -36,20 +46,29 @@
     }
   }
 
-  &:hover,
-  &:focus {
-    transform: translateY(-2px);
-    z-index: 2;
-    box-shadow: 0 1px 4px rgba(#000, 0.12),
-                0 4px 6px rgba(#000, 0.12);
+  &:not(.is-disabled) {
+    &:hover,
+    &:focus {
+      transform: translateY(-2px);
+      z-index: 2;
+      box-shadow: 0 1px 4px rgba(#000, 0.12),
+                  0 4px 6px rgba(#000, 0.12);
 
-    .WalletButton-title {
-      color: $brand-primary;
+      .WalletButton-title {
+        color: $brand-primary;
 
-      &-icon {
-        opacity: 1;
+        &-icon {
+          opacity: 1;
+        }
       }
     }
+  }
+
+  &.is-disabled {
+    opacity: 0.3 !important;
+    outline: none;
+    cursor: not-allowed;
+    animation-name: wallet-button-enter, wallet-button-enter-disabled;
   }
 
   &-title {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import WalletDecrypt from 'components/WalletDecrypt';
+import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ISignedMessage } from 'libs/signing';
@@ -79,7 +79,7 @@ export class SignMessage extends Component<Props, State> {
             )}
           </div>
         ) : (
-          <WalletDecrypt hidden={unlocked} />
+          <WalletDecrypt hidden={unlocked} disabledWallets={DISABLE_WALLETS.UNABLE_TO_SIGN} />
         )}
       </div>
     );

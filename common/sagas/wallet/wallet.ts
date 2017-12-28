@@ -73,7 +73,6 @@ export function* updateTokenBalances(): SagaIterator {
     }
     yield put(setTokenBalancesPending());
     const tokenBalances: TokenBalanceLookup = yield call(getTokenBalances, wallet, tokens);
-    console.log(tokenBalances);
     yield put(setTokenBalancesFulfilled(tokenBalances));
   } catch (error) {
     console.error('Failed to get token balances', error);
