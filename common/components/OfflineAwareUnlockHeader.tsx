@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 
 interface Props {
-  disabledWallets: string[];
+  disabledWallets?: string[];
 }
 export const OfflineAwareUnlockHeader: React.SFC<Props> = ({ disabledWallets }) => (
   <UnlockHeader title={<Title />} disabledWallets={disabledWallets} />
