@@ -1,6 +1,7 @@
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
+import Spinner from 'components/ui/Spinner';
 
 export interface KeystoreValue {
   file: string;
@@ -21,12 +22,14 @@ function isPassRequired(file: string): boolean {
 export default class KeystoreDecrypt extends Component {
   public props: {
     value: KeystoreValue;
+    isWalletLoading: boolean;
     onChange(value: KeystoreValue): void;
     onUnlock(): void;
   };
 
   public render() {
     const { file, password } = this.props.value;
+    const isWalletLoading = this.props.isWalletLoading;
     const passReq = isPassRequired(file);
 
     return (
@@ -46,7 +49,7 @@ export default class KeystoreDecrypt extends Component {
                 {translate('ADD_Radio_2_short')}
               </a>
             </label>
-            <div className={file.length && passReq ? '' : 'hidden'}>
+            <div className={file.length && passReq && !isWalletLoading ? '' : 'hidden'}>
               <p>{translate('ADD_Label_3')}</p>
               <input
                 className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
@@ -57,6 +60,7 @@ export default class KeystoreDecrypt extends Component {
                 type="password"
               />
             </div>
+            {isWalletLoading ? <Spinner /> : ''}
           </div>
         </div>
       </section>
@@ -92,8 +96,12 @@ export default class KeystoreDecrypt extends Component {
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq
+        valid: keystore.length && !passReq,
+        password: ''
       });
+      if (isPassRequired(keystore)) {
+        this.props.onUnlock();
+      }
     };
 
     fileReader.readAsText(inputFile, 'utf-8');

@@ -43,6 +43,13 @@ export function setWallet(value: IWallet): types.SetWalletAction {
   };
 }
 
+export function setWalletLoading(loadingStatus: boolean): types.SetWalletLoadingAction {
+  return {
+    type: TypeKeys.WALLET_SET_LOADING,
+    payload: loadingStatus
+  };
+}
+
 export function setBalancePending(): types.SetBalancePendingAction {
   return {
     type: TypeKeys.WALLET_SET_BALANCE_PENDING

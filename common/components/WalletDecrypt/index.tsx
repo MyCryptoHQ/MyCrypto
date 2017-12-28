@@ -46,6 +46,7 @@ interface Props {
   offline: boolean;
   allowReadOnly?: boolean;
   disabledWallets?: string[];
+  isWalletLoading: AppState['wallet']['isWalletLoading'];
 }
 
 interface State {
@@ -125,7 +126,14 @@ export class WalletDecrypt extends Component<Props, State> {
       return null;
     }
     return (
-      <selectedWallet.component value={value} onChange={this.onChange} onUnlock={this.onUnlock} />
+      <selectedWallet.component
+        value={value}
+        onChange={this.onChange}
+        onUnlock={this.onUnlock}
+        isWalletLoading={
+          selectedWalletKey === 'keystore-file' ? this.props.isWalletLoading : undefined
+        }
+      />
     );
   }
 
@@ -235,7 +243,8 @@ export class WalletDecrypt extends Component<Props, State> {
 function mapStateToProps(state: AppState) {
   return {
     offline: state.config.offline,
-    wallet: state.wallet.inst
+    wallet: state.wallet.inst,
+    isWalletLoading: state.wallet.isWalletLoading
   };
 }
 

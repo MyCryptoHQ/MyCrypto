@@ -4,6 +4,7 @@ import {
   SetWalletAction,
   WalletAction,
   SetWalletConfigAction,
+  SetWalletLoadingAction,
   TypeKeys
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
@@ -20,6 +21,7 @@ export interface State {
       error: string | null;
     };
   };
+  isWalletLoading: boolean;
   isTokensLoading: boolean;
   tokensError: string | null;
   hasSavedWalletTokens: boolean;
@@ -30,6 +32,7 @@ export const INITIAL_STATE: State = {
   config: null,
   balance: { isPending: false, wei: null },
   tokens: {},
+  isWalletLoading: false,
   isTokensLoading: false,
   tokensError: null,
   hasSavedWalletTokens: true
@@ -58,6 +61,10 @@ function setBalanceFullfilled(state: State, action: SetBalanceFullfilledAction):
 
 function setBalanceRejected(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: false } };
+}
+
+function setWalletLoading(state: State, action: SetWalletLoadingAction): State {
+  return { ...state, isWalletLoading: action.payload };
 }
 
 function setTokenBalancesPending(state: State): State {
@@ -118,6 +125,8 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setBalanceFullfilled(state, action);
     case TypeKeys.WALLET_SET_BALANCE_REJECTED:
       return setBalanceRejected(state);
+    case TypeKeys.WALLET_SET_LOADING:
+      return setWalletLoading(state, action);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING:
       return setTokenBalancesPending(state);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED:

@@ -30,6 +30,10 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.worker\.js$/,
+        loader: 'worker-loader'
+      },
+      {
         test: /\.(ts|tsx)$/,
         loaders: [
           { loader: 'cache-loader' },

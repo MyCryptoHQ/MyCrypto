@@ -7,6 +7,7 @@ import {
   setTokenBalancesFulfilled,
   setTokenBalancesRejected,
   setWallet,
+  setWalletLoading,
   setWalletConfig,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
@@ -24,12 +25,16 @@ import {
   MnemonicWallet,
   getPrivKeyWallet,
   getKeystoreWallet,
+  determineKeystoreType,
+  KeystoreTypes,
+  getUtcWallet,
+  signWrapper,
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
 import { NODES, initWeb3Node } from 'config/data';
-import { SagaIterator } from 'redux-saga';
-import { apply, call, fork, put, select, takeEvery, take } from 'redux-saga/effects';
+import { SagaIterator, delay, Task } from 'redux-saga';
+import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
 import { getNodeLib } from 'selectors/config';
 import {
   getTokens,
@@ -141,18 +146,43 @@ export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator 
   yield put(setWallet(wallet));
 }
 
+export function* startLoadingSpinner(): SagaIterator {
+  yield call(delay, 1000);
+  yield put(setWalletLoading(true));
+}
+
+export function* stopLoadingSpinner(loadingFork: Task | null): SagaIterator {
+  if (loadingFork !== null) {
+    yield cancel(loadingFork);
+  }
+  yield put(setWalletLoading(false));
+}
+
 export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   const { file, password } = action.payload;
   let wallet: null | IWallet = null;
-
+  let spinnerTask: null | Task = null;
   try {
-    wallet = getKeystoreWallet(file, password);
+    if (determineKeystoreType(file) === KeystoreTypes.utc) {
+      spinnerTask = yield fork(startLoadingSpinner);
+      wallet = signWrapper(yield call(getUtcWallet, file, password));
+    } else {
+      yield call(stopLoadingSpinner, spinnerTask);
+      wallet = getKeystoreWallet(file, password);
+    }
   } catch (e) {
-    yield put(showNotification('danger', translate('ERROR_6')));
+    yield call(stopLoadingSpinner, spinnerTask);
+    if (
+      password !== '' ||
+      e.message !== 'Private key does not satisfy the curve requirements (ie. it is invalid)'
+    ) {
+      yield put(showNotification('danger', translate('ERROR_6')));
+    }
     return;
   }
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
+  yield put(setWalletLoading(false));
   yield put(setWallet(wallet));
 }
 
