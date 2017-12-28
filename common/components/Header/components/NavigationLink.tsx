@@ -16,6 +16,10 @@ interface Props extends RouteComponentProps<{}> {
 class NavigationLink extends React.Component<Props, {}> {
   public render() {
     const { link, location, isHomepage } = this.props;
+    // isActive if
+    // 1) Current path is the same as link
+    // 2) the first path is the same for both links (/account and /account/send)
+    // 3) we're at the root path and this is the "homepage" nav item
     const isActive =
       location.pathname === link.to ||
       (link.to && location.pathname.split('/')[1] === link.to.split('/')[1]) ||

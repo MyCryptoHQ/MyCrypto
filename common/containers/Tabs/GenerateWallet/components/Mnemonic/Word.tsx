@@ -30,11 +30,11 @@ export default class MnemonicWord extends React.Component<Props, State> {
         <span className="MnemonicWord-number">{index + 1}.</span>
         <div className="MnemonicWord-word input-group">
           <input
-            className={classnames({
-              'MnemonicWord-word-input': true,
-              'form-control': true,
-              'is-valid': word === value
-            })}
+            className={classnames(
+              'MnemonicWord-word-input',
+              'form-control',
+              word === value && 'is-valid'
+            )}
             value={readOnly ? word : value}
             onChange={this.handleChange}
             readOnly={readOnly}
@@ -46,7 +46,13 @@ export default class MnemonicWord extends React.Component<Props, State> {
               role="button"
               className="MnemonicWord-word-toggle input-group-addon"
             >
-              <i className={`fa fa-${isShowingWord ? 'eye-slash' : 'eye'}`} />
+              <i
+                className={classnames(
+                  'fa',
+                  isShowingWord && 'fa-eye-slash',
+                  !isShowingWord && 'fa-eye'
+                )}
+              />
             </span>
           )}
         </div>

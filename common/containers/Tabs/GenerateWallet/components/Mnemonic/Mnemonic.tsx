@@ -32,7 +32,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   }
 
   public render() {
-    const { words, confirmValues, isConfirming, isConfirmed } = this.state;
+    const { words, isConfirming, isConfirmed } = this.state;
     let content;
 
     if (isConfirmed) {
@@ -69,16 +69,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
           <div className="GenerateMnemonic-words">
             {[firstHalf, lastHalf].map((ws, i) => (
               <div key={i} className="GenerateMnemonic-words-column">
-                {ws.map(word => (
-                  <Word
-                    key={`${word.word}${word.index}`}
-                    index={word.index}
-                    word={word.word}
-                    value={confirmValues[word.index] || ''}
-                    isReadOnly={!isConfirming}
-                    onChange={this.handleConfirmChange}
-                  />
-                ))}
+                {ws.map(this.makeWord)}
               </div>
             ))}
           </div>
@@ -114,11 +105,11 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   };
 
   private handleConfirmChange = (index: number, value: string) => {
-    console.log(index, value);
-    const confirmValues = [...this.state.confirmValues];
-    confirmValues[index] = value;
-    console.log(confirmValues);
-    this.setState({ confirmValues });
+    this.setState((state: State) => {
+      const confirmValues = [...state.confirmValues];
+      confirmValues[index] = value;
+      this.setState({ confirmValues });
+    });
   };
 
   private goToNextStep = () => {
@@ -144,6 +135,17 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
       return !!words.length;
     }
   };
+
+  private makeWord = (word: WordTuple) => (
+    <Word
+      key={`${word.word}${word.index}`}
+      index={word.index}
+      word={word.word}
+      value={this.state.confirmValues[word.index] || ''}
+      isReadOnly={!this.state.isConfirming}
+      onChange={this.handleConfirmChange}
+    />
+  );
 
   private skip = () => {
     this.setState({ isConfirmed: true });
