@@ -1,0 +1,41 @@
+@import 'common/sass/variables';
+
+.GenerateMnemonic {
+  position: relative;
+  text-align: center;
+
+  &-title {
+    margin-bottom: $space-md;
+  }
+
+  &-help {
+    margin-bottom: $space * 2;
+  }
+
+  &-words {
+    display: flex;
+    margin: 0 auto $space;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    &-column {
+      max-width: 320px;
+      margin: 0 $space-md $space-md;
+    }
+  }
+
+  &-buttons {
+    &-btn {
+      margin: 0 5px;
+      width: 100%;
+      max-width: 260px;
+    }
+  }
+
+  &-skip {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+  }
+}

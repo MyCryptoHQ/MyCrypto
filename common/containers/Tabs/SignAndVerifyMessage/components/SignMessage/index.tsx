@@ -64,7 +64,7 @@ export class SignMessage extends Component<Props, State> {
               onSignMessage={this.onSignMessage}
             />
           )}
-          <WalletDecrypt hidden={unlocked} />
+          <WalletDecrypt hidden={unlocked} disabledWallets={['trezor']} />
 
           {!!signedMessage && (
             <div>
