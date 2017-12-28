@@ -32,10 +32,13 @@ const WalletTypes: React.SFC<{}> = () => {
   return (
     <div className="WalletTypes Tab-content-pane">
       <h1 className="WalletTypes-title">{translate('NAV_GenerateWallet')}</h1>
-      <p className="WalletTypes-subtitle">
-        Managing your own keys can be risky and a single mistake can lead to irrecoverable loss. If
-        you are new to cryptocurrencies, we strongly recommend using MetaMask, or purchasing a
-        Ledger or TREZOR hardware wallet.{' '}
+      <p className="WalletTypes-subtitle alert alert-warning">
+        <strong>Warning</strong>: Managing your own keys can be risky and a single mistake can lead
+        to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using{' '}
+        <NewTabLink href="https://metamask.io/">MetaMask</NewTabLink>, or purchasing a{' '}
+        <NewTabLink href="https://www.ledgerwallet.com/r/fa4b?path=/products/">Ledger</NewTabLink>{' '}
+        or <NewTabLink href="https://trezor.io/?a=myetherwallet.com">TREZOR</NewTabLink> hardware
+        wallet.{' '}
         <NewTabLink href="https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html">
           Learn more about different wallet types & staying secure.
         </NewTabLink>
