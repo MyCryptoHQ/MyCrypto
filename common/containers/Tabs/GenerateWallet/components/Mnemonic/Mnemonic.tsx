@@ -3,6 +3,7 @@ import { generateMnemonic } from 'bip39';
 import translate from 'translations';
 import Word from './Word';
 import FinalSteps from '../FinalSteps';
+import Template from '../Template';
 import { WalletType } from '../../GenerateWallet';
 import './Mnemonic.scss';
 
@@ -49,7 +50,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
       });
 
       content = (
-        <div>
+        <div className="GenerateMnemonic">
           <h1 className="GenerateMnemonic-title">Generate a {translate('x_Mnemonic')}</h1>
 
           <p className="GenerateMnemonic-help">
@@ -105,7 +106,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
       );
     }
 
-    return <div className="GenerateMnemonic Tab-content-pane">{content}</div>;
+    return <Template>{content}</Template>;
   }
 
   private regenerateWordArray = () => {

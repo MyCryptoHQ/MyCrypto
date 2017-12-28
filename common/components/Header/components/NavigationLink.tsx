@@ -10,16 +10,21 @@ interface Props extends RouteComponentProps<{}> {
     to?: string;
     external?: boolean;
   };
+  isHomepage: boolean;
 }
 
 class NavigationLink extends React.Component<Props, {}> {
   public render() {
-    const { link, location } = this.props;
+    const { link, location, isHomepage } = this.props;
+    const isActive =
+      location.pathname === link.to ||
+      (link.to && location.pathname.split('/')[1] === link.to.split('/')[1]) ||
+      (isHomepage && location.pathname === '/');
 
     const linkClasses = classnames({
       'NavigationLink-link': true,
       'is-disabled': !link.to,
-      'is-active': location.pathname === link.to
+      'is-active': isActive
     });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 

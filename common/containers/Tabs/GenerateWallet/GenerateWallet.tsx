@@ -4,23 +4,16 @@ import Mnemonic from './components/Mnemonic';
 import WalletTypes from './components/WalletTypes';
 import CryptoWarning from './components/CryptoWarning';
 import TabSection from 'containers/TabSection';
+import { RouteComponentProps } from 'react-router-dom';
 
 export enum WalletType {
   Keystore = 'keystore',
   Mnemonic = 'mnemonic'
 }
 
-interface State {
-  walletType: WalletType | null;
-}
-
-export default class GenerateWallet extends Component<{}, State> {
-  public state = {
-    walletType: null
-  };
-
+export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
   public render() {
-    const { walletType } = this.state;
+    const walletType = this.props.location.pathname.split('/')[2];
     let content;
 
     if (window.crypto) {
@@ -29,7 +22,7 @@ export default class GenerateWallet extends Component<{}, State> {
       } else if (walletType === WalletType.Keystore) {
         content = <Keystore />;
       } else {
-        content = <WalletTypes onSelect={this.changeWalletType} />;
+        content = <WalletTypes />;
       }
     } else {
       content = <CryptoWarning />;
@@ -41,8 +34,4 @@ export default class GenerateWallet extends Component<{}, State> {
       </TabSection>
     );
   }
-
-  private changeWalletType = (walletType: WalletType) => {
-    this.setState({ walletType });
-  };
 }

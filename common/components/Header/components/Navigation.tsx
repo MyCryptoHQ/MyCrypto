@@ -7,7 +7,7 @@ import './Navigation.scss';
 const tabs = [
   {
     name: 'NAV_GenerateWallet',
-    to: '/'
+    to: '/generate'
   },
 
   {
@@ -90,7 +90,7 @@ export default class Navigation extends Component<Props, State> {
         <div className="Navigation-scroll container">
           <ul className="Navigation-links">
             {tabs.map(link => {
-              return <NavigationLink key={link.name} link={link} />;
+              return <NavigationLink key={link.name} link={link} isHomepage={link === tabs[0]} />;
             })}
           </ul>
         </div>
