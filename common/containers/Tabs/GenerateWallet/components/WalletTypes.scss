@@ -1,0 +1,37 @@
+@import 'common/sass/variables';
+
+.WalletTypes {
+  &-title,
+  &-subtitle {
+    text-align: center;
+  }
+
+  &-title {
+    margin-bottom: $space;
+  }
+
+  &-subtitle {
+    max-width: 1040px;
+    margin: 0 auto;
+    margin-bottom: $space;
+  }
+}
+
+.WalletType {
+  margin-bottom: $space * 2;
+
+  &-features {
+    padding-left: 20px;
+  }
+
+  &-select {
+    @media screen and (min-width: $screen-md) {
+      padding: 0 10px;
+    }
+
+    &-btn {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}

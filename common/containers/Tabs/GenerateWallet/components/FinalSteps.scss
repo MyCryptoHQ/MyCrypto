@@ -1,0 +1,76 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+$step-number-size: 42px;
+
+.FinalSteps {
+  &-help {
+    margin-bottom: $space;
+  }
+
+  &-steps {
+    margin-bottom: $space;
+  }
+
+  &-buttons {
+    &-btn {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+}
+
+.StepBox {
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &-title {
+    margin-bottom: $space-md;
+    @include ellipsis;
+  }
+
+  &-screen {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto $space * 2;
+
+    // Keeps box height at a .8 ratio to width
+    &:after {
+      content: '';
+      display: block;
+      padding-top: 75%;
+    }
+
+    &-img {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background: #EEE;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(#000, 0.3);
+    }
+
+    &-number {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      width: $step-number-size;
+      height: $step-number-size;
+      line-height: $step-number-size;
+      font-size: 22px;
+      color: #FFF;
+      text-align: center;
+      background: $ether-navy;
+      box-shadow: 0 1px 2px rgba(#000, .3);
+      border-radius: 100%;
+    }
+  }
+}
