@@ -45,6 +45,7 @@ interface Props {
   hidden?: boolean;
   offline: boolean;
   allowReadOnly?: boolean;
+  disabledWallets?: string[];
 }
 
 interface State {
@@ -139,7 +140,8 @@ export class WalletDecrypt extends Component<Props, State> {
       const isSelected = this.state.selectedWalletKey === key;
       const isDisabled =
         this.isOnlineRequiredWalletAndOffline(key) ||
-        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt);
+        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt) ||
+        this.isWalletDisabled(key);
 
       return (
         <label className="radio" key={key}>
@@ -220,6 +222,13 @@ export class WalletDecrypt extends Component<Props, State> {
     const unlockValue = this.state.value && !isEmpty(this.state.value) ? this.state.value : payload;
     this.WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
     this.props.resetTransactionState();
+  };
+
+  private isWalletDisabled = (walletKey: string) => {
+    if (!this.props.disabledWallets) {
+      return false;
+    }
+    return this.props.disabledWallets.indexOf(walletKey) !== -1;
   };
 }
 
