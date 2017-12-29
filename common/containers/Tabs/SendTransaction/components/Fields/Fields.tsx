@@ -6,7 +6,7 @@ import {
   AddressField,
   AmountField,
   DataField,
-  GasField,
+  GasSlider,
   SendEverything,
   CurrentCustomMessage,
   GenerateTransaction,
@@ -23,30 +23,31 @@ const content = (
   <div className="Tab-content-pane">
     <AddressField />
     <div className="row form-group">
-      <div className="col-xs-11">
+      <div className="col-xs-12">
         <AmountField hasUnitDropdown={true} />
         <SendEverything />
       </div>
-      <div className="col-xs-1" />
     </div>
 
     <div className="row form-group">
-      <div className="col-xs-11">
-        <GasField />
+      <div className="col-xs-12">
+        <GasSlider />
       </div>
     </div>
     <div className="row form-group">
-      <div className="col-xs-11">
+      <div className="col-xs-12">
         <NonceField />
       </div>
     </div>
     <div className="row form-group">
-      <div className="col-xs-11">
+      <div className="col-xs-12">
         <DataField />
       </div>
     </div>
+
     <CurrentCustomMessage />
     <NonStandardTransaction />
+
     <div className="row form-group">
       <div className="col-xs-12 clearfix">
         <GenerateTransaction />

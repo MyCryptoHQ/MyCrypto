@@ -1,0 +1,42 @@
+@import 'common/sass/variables';
+
+.GasSlider {
+  &-simple {
+    &-label {
+      display: block;
+    }
+
+    &-slider {
+      padding-top: 8px;
+      margin-bottom: $space-xs;
+
+      &-labels {
+        margin-top: 4px;
+        display: flex;
+
+        > span {
+          flex: 1;
+          padding: 0 $space-xs;
+          text-align: center;
+          color: $gray-light;
+          font-size: $font-size-xs;
+
+          &:first-child {
+            text-align: left;
+          }
+
+          &:last-child {
+            text-align: right;
+          }
+        }
+      }
+    }
+
+    &-fee {
+      background: $gray-lighter;
+      padding: 8px 12px;
+      font-family: $font-family-monospace;
+      text-align: center;
+    }
+  }
+}

@@ -25,7 +25,7 @@ interface Props {
    * @memberof Props
    */
   displayShortBalance?: boolean | number;
-  checkOffline: boolean;
+  checkOffline?: boolean;
 }
 
 interface EthProps extends Props {
