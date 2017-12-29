@@ -24,7 +24,7 @@
     "jsx-wrap-multiline": false,
     "comment-format": false,
     "ordered-imports": false,
-    "no-imports": false
+    "anchor-blank-noopener": false
   },
   "rulesDirectory": ["custom_linting_rules/"]
 }
