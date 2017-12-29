@@ -69,6 +69,7 @@ interface BaseWalletInfo {
   unlock: any;
   helpLink?: string;
   isReadOnly?: boolean;
+  attemptUnlock?: boolean;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -105,6 +106,7 @@ export class WalletDecrypt extends Component<Props, State> {
       component: Web3Decrypt,
       initialParams: {},
       unlock: this.props.unlockWeb3,
+      attemptUnlock: true,
       helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
     },
     'ledger-nano-s': {
@@ -282,10 +284,19 @@ export class WalletDecrypt extends Component<Props, State> {
       return;
     }
 
-    this.setState({
-      selectedWalletKey: walletType,
-      value: wallet.initialParams
-    });
+    let timeout = 0;
+
+    if (wallet.attemptUnlock) {
+      timeout = 250;
+      wallet.unlock();
+    }
+
+    setTimeout(() => {
+      this.setState({
+        selectedWalletKey: walletType,
+        value: wallet.initialParams
+      });
+    }, timeout);
   };
 
   public clearWalletChoice = () => {
