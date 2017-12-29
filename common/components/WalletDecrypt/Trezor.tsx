@@ -94,8 +94,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
   private handleConnect = (dPath: string = this.state.dPath): void => {
     this.setState({
       isLoading: true,
-      error: null,
-      showTip: false
+      error: null
     });
 
     // TODO: type vendor file
