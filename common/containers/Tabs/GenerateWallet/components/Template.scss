@@ -1,26 +1,38 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .GenerateWallet {
-  &-column {
-    &-content {
-      text-align: center;
+  position: relative;
+  text-align: center;
+
+  h1 {
+    margin-top: 0;
+  }
+
+  &-back {
+    position: absolute;
+    top: 36px;
+    left: 30px;
+    opacity: 0.3;
+    outline: none;
+    color: $text-color;
+
+    @media (max-width: $screen-sm) {
+      display: none;
     }
 
-    &-help {
-      background-image: url('~assets/images/icon-help-2.svg');
-      background-size: 8rem;
-      background-position: 102% -5%;
-      background-repeat: no-repeat;
+    .fa {
+      margin-right: 5px;
+    }
 
-      h4 {
-        margin: 0 0 $space-sm;
-        font-weight: 400;
-      }
+    &:hover,
+    &:focus {
+      opacity: 0.8;
+      color: $text-color;
+    }
 
-      ul {
-        list-style: circle;
-        padding-left: $space;
-      }
+    &:active {
+      opacity: 1;
     }
   }
 }
