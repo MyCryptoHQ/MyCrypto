@@ -17,7 +17,6 @@ interface State {
   dPath: string;
   error: string | null;
   isLoading: boolean;
-  showTip: boolean;
 }
 
 export default class TrezorDecrypt extends Component<Props, State> {
@@ -26,28 +25,15 @@ export default class TrezorDecrypt extends Component<Props, State> {
     chainCode: '',
     dPath: DEFAULT_PATH,
     error: null,
-    isLoading: false,
-    showTip: false
-  };
-
-  public showTip = () => {
-    this.setState({
-      showTip: true
-    });
+    isLoading: false
   };
 
   public render() {
-    const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
+    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
 
     return (
       <section className="TrezorDecrypt col-md-4 col-sm-6">
-        {showTip && (
-          <p>
-            <strong>Tip: </strong>Make sure you're logged into the ethereum app on your hardware
-            wallet
-          </p>
-        )}
         <button
           className="TrezorDecrypt-decrypt btn btn-primary btn-lg"
           onClick={this.handleNullConnect}
@@ -124,9 +110,6 @@ export default class TrezorDecrypt extends Component<Props, State> {
             isLoading: false
           });
         } else {
-          if (res.error === 'TIMEOUT') {
-            this.showTip();
-          }
           this.setState({
             error: res.error,
             isLoading: false

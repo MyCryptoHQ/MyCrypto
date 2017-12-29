@@ -41,6 +41,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
 
   public render() {
     const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
+    const showErr = error ? 'is-showing' : '';
 
     return (
       <section className="LedgerDecrypt col-md-4 col-sm-6">
@@ -86,12 +87,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
             </a>
           </div>
         </div>
-        {error && (
-          <p className="LedgerDecrypt-error alert alert-danger is-showing">
-            <strong>Error: </strong>
-            {error}
-          </p>
-        )}
+        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
         <a
           className="LedgerDecrypt-buy btn btn-sm btn-default"
           href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
