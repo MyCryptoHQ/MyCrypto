@@ -39,9 +39,13 @@ export default class SimpleGas extends React.Component<Props> {
           </div>
         </div>
         <div className="col-md-4 col-sm-12">
-          <div className="SimpleGas-fee">
-            <FeeSummary render={({ feeEth, usd }) => <span>{feeEth}</span>} />
-          </div>
+          <FeeSummary
+            render={({ fee, usd }) => (
+              <span>
+                {fee} {usd && <span>/ ${usd}</span>}
+              </span>
+            )}
+          />
         </div>
       </div>
     );

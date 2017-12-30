@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import {
@@ -30,14 +31,12 @@ export function* handleGasLimitInput({ payload }: InputGasLimitAction): SagaIter
 export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIterator {
   const priceFloat = parseFloat(payload);
   const validGasPrice = validNumber(priceFloat) && isFinite(priceFloat) && priceFloat > 0;
-  if (validGasPrice) {
-    yield put(
-      setGasPriceField({
-        raw: payload,
-        value: gasPricetoBase(priceFloat)
-      })
-    );
-  }
+  yield put(
+    setGasPriceField({
+      raw: payload,
+      value: validGasPrice ? gasPricetoBase(priceFloat) : new BN(0)
+    })
+  );
 }
 
 export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {

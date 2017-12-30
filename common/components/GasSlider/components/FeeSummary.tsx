@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { UnitDisplay } from 'components/ui';
+import './FeeSummary.scss';
 
 interface RenderData {
   gasPriceWei: string;
   gasPriceGwei: string;
   gasLimit: string;
-  feeEth: React.ReactElement<string>;
-  usd: string | null;
+  fee: React.ReactElement<string>;
+  usd: React.ReactElement<string> | null;
 }
 
 interface Props {
@@ -23,20 +24,28 @@ interface Props {
 class FeeSummary extends React.Component<Props> {
   public render() {
     const { gasPrice, gasLimit, rates } = this.props;
-    const fee = gasPrice.value && gasLimit.value && gasPrice.value.mul(gasLimit.value);
-    const usd = fee && rates.ETH && fee.muln(rates.ETH.USD).toString();
-    const feeEth = <UnitDisplay value={fee} unit="ether" symbol="ETH" displayShortBalance={6} />;
+    const feeBig = gasPrice.value && gasLimit.value && gasPrice.value.mul(gasLimit.value);
+    const fee = <UnitDisplay value={feeBig} unit="ether" symbol="ETH" displayShortBalance={6} />;
+    const usdBig = feeBig && rates.ETH && feeBig.muln(rates.ETH.USD);
+    const usd = (
+      <UnitDisplay
+        value={usdBig}
+        unit="ether"
+        displayShortBalance={2}
+        displayTrailingZeroes={true}
+      />
+    );
 
     return (
-      <span>
+      <div className="FeeSummary">
         {this.props.render({
           gasPriceWei: gasPrice.value.toString(),
           gasPriceGwei: gasPrice.raw,
-          feeEth,
+          fee,
           usd,
           gasLimit: gasLimit.raw
         })}
-      </span>
+      </div>
     );
   }
 }
