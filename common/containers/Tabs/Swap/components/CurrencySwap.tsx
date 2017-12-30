@@ -12,7 +12,7 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { merge, reject } from 'lodash';
+import { merge, reject, debounce } from 'lodash';
 import './CurrencySwap.scss';
 
 export interface StateProps {
@@ -184,16 +184,21 @@ export default class CurrencySwap extends Component<Props, State> {
     };
 
     const showError = disabled && amountsValid;
-    const originErr = showError ? createErrString(origin.id, origin.amount, destination.id) : '';
-    const destinationErr = showError
-      ? createErrString(destination.id, destination.amount, origin.id)
-      : '';
 
-    this.setState({
-      disabled,
-      originErr,
-      destinationErr
-    });
+    const debouncedCreateErrString = debounce(() => {
+      const originErr = showError ? createErrString(origin.id, origin.amount, destination.id) : '';
+      const destinationErr = showError
+        ? createErrString(destination.id, destination.amount, origin.id)
+        : '';
+
+      this.setState({
+        disabled,
+        originErr,
+        destinationErr
+      });
+    }, 1000);
+
+    debouncedCreateErrString();
   }
 
   public onClickStartSwap = () => {
