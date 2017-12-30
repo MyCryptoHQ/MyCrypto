@@ -30,6 +30,7 @@ import Help from 'components/ui/Help';
 import { knowledgeBaseURL } from 'config/data';
 import NavigationPrompt from './NavigationPrompt';
 import { IWallet } from 'libs/wallet';
+import { showNotification, TShowNotification } from 'actions/notifications';
 
 type UnlockParams = {} | PrivateKeyValue;
 
@@ -41,6 +42,7 @@ interface Props {
   setWallet: TSetWallet;
   unlockWeb3: TUnlockWeb3;
   resetWallet: TResetWallet;
+  showNotification: TShowNotification;
   wallet: IWallet;
   hidden?: boolean;
   offline: boolean;
@@ -125,7 +127,12 @@ export class WalletDecrypt extends Component<Props, State> {
       return null;
     }
     return (
-      <selectedWallet.component value={value} onChange={this.onChange} onUnlock={this.onUnlock} />
+      <selectedWallet.component
+        value={value}
+        onChange={this.onChange}
+        onUnlock={this.onUnlock}
+        showNotification={this.props.showNotification}
+      />
     );
   }
 
@@ -246,5 +253,6 @@ export default connect(mapStateToProps, {
   unlockWeb3,
   setWallet,
   resetWallet,
-  resetTransactionState: reset
+  resetTransactionState: reset,
+  showNotification
 })(WalletDecrypt);
