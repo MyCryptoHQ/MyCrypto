@@ -30,6 +30,7 @@ import Help from 'components/ui/Help';
 import { knowledgeBaseURL } from 'config/data';
 import NavigationPrompt from './NavigationPrompt';
 import { IWallet } from 'libs/wallet';
+import { showNotification, TShowNotification } from 'actions/notifications';
 
 type UnlockParams = {} | PrivateKeyValue;
 
@@ -41,10 +42,12 @@ interface Props {
   setWallet: TSetWallet;
   unlockWeb3: TUnlockWeb3;
   resetWallet: TResetWallet;
+  showNotification: TShowNotification;
   wallet: IWallet;
   hidden?: boolean;
   offline: boolean;
   allowReadOnly?: boolean;
+  disabledWallets?: string[];
 }
 
 interface State {
@@ -124,7 +127,12 @@ export class WalletDecrypt extends Component<Props, State> {
       return null;
     }
     return (
-      <selectedWallet.component value={value} onChange={this.onChange} onUnlock={this.onUnlock} />
+      <selectedWallet.component
+        value={value}
+        onChange={this.onChange}
+        onUnlock={this.onUnlock}
+        showNotification={this.props.showNotification}
+      />
     );
   }
 
@@ -139,7 +147,8 @@ export class WalletDecrypt extends Component<Props, State> {
       const isSelected = this.state.selectedWalletKey === key;
       const isDisabled =
         this.isOnlineRequiredWalletAndOffline(key) ||
-        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt);
+        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt) ||
+        this.isWalletDisabled(key);
 
       return (
         <label className="radio" key={key}>
@@ -221,6 +230,13 @@ export class WalletDecrypt extends Component<Props, State> {
     this.WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
     this.props.resetTransactionState();
   };
+
+  private isWalletDisabled = (walletKey: string) => {
+    if (!this.props.disabledWallets) {
+      return false;
+    }
+    return this.props.disabledWallets.indexOf(walletKey) !== -1;
+  };
 }
 
 function mapStateToProps(state: AppState) {
@@ -237,5 +253,6 @@ export default connect(mapStateToProps, {
   unlockWeb3,
   setWallet,
   resetWallet,
-  resetTransactionState: reset
+  resetTransactionState: reset,
+  showNotification
 })(WalletDecrypt);
