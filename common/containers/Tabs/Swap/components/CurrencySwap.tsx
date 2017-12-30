@@ -184,6 +184,9 @@ export default class CurrencySwap extends Component<Props, State> {
     };
 
     const showError = disabled && amountsValid;
+    this.setState({
+      disabled
+    });
 
     const debouncedCreateErrString = debounce(() => {
       const originErr = showError ? createErrString(origin.id, origin.amount, destination.id) : '';
@@ -192,7 +195,6 @@ export default class CurrencySwap extends Component<Props, State> {
         : '';
 
       this.setState({
-        disabled,
         originErr,
         destinationErr
       });
