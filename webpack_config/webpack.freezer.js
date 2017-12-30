@@ -8,8 +8,8 @@ const freezerConfig = Object.assign({}, baseConfig, {
   target: undefined,
   performance: undefined,
   module: {
-    // Typescript loader
-    loaders: [baseConfig.module.loaders[0]]
+    // Typescript loader    
+    loaders: [baseConfig.module.rules[0]]
   },
 
   // Point at freezer, make sure it's setup to run in node
