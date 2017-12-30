@@ -7,8 +7,32 @@ const FriendlyErrors = require('friendly-errors-webpack-plugin');
 const AutoDllPlugin = require('autodll-webpack-plugin');
 const config = require('./config');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const threadLoader = require('thread-loader');
 
-base.devtool = process.env.SLOW_BUILD_SPEED ? 'source-map' : 'cheap-module-eval-source-map';
+const fullSourceMap = process.env.SLOW_BUILD_SPEED;
+if (fullSourceMap) {
+  base.devtool = fullSourceMap ? 'source-map' : 'cheap-module-eval-source-map';
+
+  threadLoader.warmup(
+    {
+      // pool options, like passed to loader options
+      // must match loader options to boot the correct pool
+      happyPackMode: true,
+      logLevel: 'info'
+    },
+    [
+      // modules to load
+      // can be any module, i. e.
+      'ts-loader'
+    ]
+  );
+  base.module.rules[0].use.unshift({
+    loader: 'thread-loader',
+    options: {
+      workers: 4
+    }
+  });
+}
 
 base.performance = { hints: false };
 

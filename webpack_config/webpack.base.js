@@ -5,20 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const config = require('./config');
 const _ = require('./utils');
-const threadLoader = require('thread-loader');
-threadLoader.warmup(
-  {
-    // pool options, like passed to loader options
-    // must match loader options to boot the correct pool
-    happyPackMode: true,
-    logLevel: 'info'
-  },
-  [
-    // modules to load
-    // can be any module, i. e.
-    'ts-loader'
-  ]
-);
 
 const webpackConfig = {
   entry: {
@@ -43,15 +29,7 @@ const webpackConfig = {
       {
         test: /\.(ts|tsx)$/,
         include: path.resolve(__dirname, '../common'),
-        use: [
-          {
-            loader: 'thread-loader',
-            options: {
-              workers: 4
-            }
-          },
-          { loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }
-        ],
+        use: [{ loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }],
         exclude: ['assets', 'sass', 'vendor', 'translations/lang']
           .map(dir => path.resolve(__dirname, `../common/${dir}`))
           .concat([path.resolve(__dirname, '../node_modules')])
