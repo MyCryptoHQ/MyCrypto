@@ -75,9 +75,12 @@
     "enzyme-to-json": "3.3.0",
     "express": "4.16.2",
     "extract-text-webpack-plugin": "3.0.2",
+    "favicons-webpack-plugin": "0.0.7",
     "file-loader": "1.1.6",
     "friendly-errors-webpack-plugin": "1.6.1",
     "glob": "7.1.2",
+    "hoist-non-react-statics": "2.3.1",
+    "html-webpack-include-assets-plugin": "1.0.2",
     "html-webpack-plugin": "2.30.1",
     "husky": "0.14.3",
     "image-webpack-loader": "3.4.2",
@@ -118,7 +121,7 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "build:demo": "BUILD_GH_PAGES=true webpack --config webpack_config/webpack.prod.js",
+    "build:downloadable": "BUILD_DOWNLOADABLE=true webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test:coverage": "jest --config=jest_config/jest.config.json --coverage",
     "test": "jest --config=jest_config/jest.config.json",
@@ -135,7 +138,8 @@
     "postinstall": "webpack --config=./webpack_config/webpack.dll.js",
     "start": "npm run dev",
     "precommit": "lint-staged",
-    "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "formatAll":
+      "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {
