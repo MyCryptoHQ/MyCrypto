@@ -7,6 +7,7 @@ import {
 } from 'reducers/swap/types';
 import { normalize } from 'normalizr';
 import * as schema from 'reducers/swap/schema';
+import { TypeKeys } from 'actions/swap/constants';
 
 describe('swap reducer', () => {
   const apiResponse = {
@@ -180,10 +181,32 @@ describe('swap reducer', () => {
     });
   });
 
+  it('should handle SWAP_LOAD_SHAPESHIFT_RATE_REQUESTED', () => {
+    expect(
+      swap(undefined, {
+        type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED
+      } as swapActions.SwapAction)
+    ).toEqual({
+      ...INITIAL_STATE,
+      isFetchingRates: true
+    });
+  });
+
   it('should handle SWAP_STOP_LOAD_BITY_RATES', () => {
     expect(
       swap(undefined, {
         type: 'SWAP_STOP_LOAD_BITY_RATES'
+      } as swapActions.SwapAction)
+    ).toEqual({
+      ...INITIAL_STATE,
+      isFetchingRates: false
+    });
+  });
+
+  it('should handle SWAP_STOP_LOAD_SHAPESHIFT_RATES', () => {
+    expect(
+      swap(undefined, {
+        type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES
       } as swapActions.SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
