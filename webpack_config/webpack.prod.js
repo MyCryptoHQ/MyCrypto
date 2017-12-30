@@ -1,6 +1,7 @@
 'use strict';
 process.env.NODE_ENV = 'production';
-
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
@@ -14,8 +15,8 @@ const distFolder = 'dist/';
 // Clear out build folder
 rimraf.sync(distFolder, { rmdirSync: true });
 
-base.devtool = 'source-map';
-base.module.loaders.push(
+base.devtool = false;
+base.module.rules.push(
   {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
@@ -43,15 +44,24 @@ base.entry.vendor = config.vendor;
 // use hash filename to support long-term caching
 base.output.filename = '[name].[chunkhash:8].js';
 // add webpack plugins
+base.plugins.unshift(
+  new FaviconsWebpackPlugin({
+    logo: path.resolve(__dirname, '../static/favicon/android-chrome-384x384.png'),
+    background: '#163151',
+    inject: true
+  })
+);
+
 base.plugins.push(
   new ProgressPlugin(),
   new ExtractTextPlugin('[name].[chunkhash:8].css'),
   new webpack.DefinePlugin({
+    'process.env.BUILD_DOWNLOADABLE': JSON.stringify(!!process.env.BUILD_DOWNLOADABLE)
+  }),
+  new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('production')
   }),
-  new BabelMinifyPlugin(undefined, {
-    comments: false
-  }),
+  new BabelMinifyPlugin(),
   // extract vendor chunks
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
