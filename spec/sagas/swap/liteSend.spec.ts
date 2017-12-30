@@ -1,9 +1,13 @@
+import { configuredStore } from 'store';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { take, race, fork } from 'redux-saga/effects';
 import { TypeKeys as TransactionTK } from 'actions/transaction';
 import { TypeKeys as WalletTK } from 'actions/wallet';
 import { TypeKeys as SwapTK } from 'actions/swap/constants';
 import { configureLiteSend, handleConfigureLiteSend } from 'sagas/swap/liteSend';
+
+// init module
+configuredStore.getState();
 
 describe('Testing handle configure lite send', () => {
   const generators = {
