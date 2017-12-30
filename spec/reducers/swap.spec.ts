@@ -22,11 +22,11 @@ describe('swap reducer', () => {
     }
   };
   const normalizedBityRates: NormalizedBityRates = {
-    byId: normalize(apiResponse, [schema.providerRate]).entities.bityRates,
+    byId: normalize(apiResponse, [schema.providerRate]).entities.providerRates,
     allIds: schema.allIds(normalize(apiResponse, [schema.providerRate]).entities.providerRates)
   };
   const normalizedShapeshiftRates: NormalizedShapeshiftRates = {
-    byId: normalize(apiResponse, [schema.providerRate]).entities.bityRates,
+    byId: normalize(apiResponse, [schema.providerRate]).entities.providerRates,
     allIds: schema.allIds(normalize(apiResponse, [schema.providerRate]).entities.providerRates)
   };
   const normalizedOptions: NormalizedOptions = {
@@ -157,7 +157,7 @@ describe('swap reducer', () => {
     expect(swap(undefined, swapActions.bityOrderStatusSucceededSwap(mockedBityResponse))).toEqual({
       ...INITIAL_STATE,
       outputTx: mockedBityResponse.output.reference,
-      orderStatus: mockedBityResponse.output.status
+      bityOrderStatus: mockedBityResponse.output.status
     });
   });
 

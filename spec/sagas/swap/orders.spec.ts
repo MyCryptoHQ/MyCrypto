@@ -266,15 +266,6 @@ describe('orderTimeRemaining*', () => {
     Math.random = random;
   });
 
-  it('should take SWAP_ORDER_START_TIMER', () => {
-    expect(data.gen.next().value).toEqual(take('SWAP_ORDER_START_TIMER'));
-  });
-
-  it('should break while loop when take SWAP_ORDER_START_TIMER is false', () => {
-    data.clone1 = data.gen.clone();
-    expect(data.clone1.next().done).toEqual(true);
-  });
-
   it('should call delay of one second', () => {
     expect(data.gen.next(true).value).toEqual(call(delay, ONE_SECOND));
   });
