@@ -20,6 +20,7 @@ import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
 import './RequestPayment.scss';
+import { reset, TReset } from 'actions/transaction';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -35,7 +36,11 @@ interface StateProps {
   tokenContractAddress: string;
 }
 
-type Props = OwnProps & StateProps;
+interface ActionProps {
+  reset: TReset;
+}
+
+type Props = OwnProps & StateProps & ActionProps;
 
 interface State {
   recipientAddress: string;
@@ -52,6 +57,11 @@ class RequestPayment extends React.Component<Props, State> {
     if (this.props.wallet) {
       this.setWalletAsyncState(this.props.wallet);
     }
+    this.props.reset();
+  }
+
+  public componentWillUnmount() {
+    this.props.reset();
   }
 
   public componentWillReceiveProps(nextProps: Props) {
@@ -178,4 +188,4 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps)(RequestPayment);
+export default connect(mapStateToProps, { reset })(RequestPayment);
