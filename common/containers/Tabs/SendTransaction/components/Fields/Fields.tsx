@@ -39,11 +39,6 @@ const content = (
         <NonceField />
       </div>
     </div>
-    <div className="row form-group">
-      <div className="col-xs-12">
-        <DataField />
-      </div>
-    </div>
 
     <CurrentCustomMessage />
     <NonStandardTransaction />

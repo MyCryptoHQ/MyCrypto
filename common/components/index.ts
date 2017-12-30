@@ -1,6 +1,6 @@
 export * from './AddressField';
 export * from './DataField';
-export * from './GasField';
+export * from './GasLimitField';
 export * from './NonceField';
 export * from './AmountField';
 export * from './SendEverything';

@@ -1,5 +1,5 @@
 import { Aux } from 'components/ui';
-import { GasField } from './GasField';
+import { GasLimitField } from './GasLimitField';
 import { AmountField } from './AmountField';
 import { NonceField } from 'components/NonceField';
 import { OfflineAwareUnlockHeader } from 'components/OfflineAwareUnlockHeader';
@@ -19,7 +19,7 @@ export class Fields extends Component<OwnProps> {
         <OnlyUnlocked
           whenUnlocked={
             <Aux>
-              <GasField />
+              <GasLimitField />
               <AmountField />
               <NonceField />
               {this.props.button}

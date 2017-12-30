@@ -1,84 +1,90 @@
 import React from 'react';
-import Slider from 'rc-slider';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
 import {
+  inputGasPrice,
+  TInputGasPrice,
   inputGasLimit,
   TInputGasLimit,
   inputNonce,
-  TInputNonce,
-  setGasPriceField,
-  TSetGasPriceField
+  TInputNonce
 } from 'actions/transaction';
 import { AppState } from 'reducers';
-import { gasPriceDefaults } from 'config/data';
-import { gasPricetoBase } from 'libs/units';
-import FeeSummary from './components/FeeSummary';
+import SimpleGas from './components/SimpleGas';
+import AdvancedGas from './components/AdvancedGas';
 import './GasSlider.scss';
 
 interface Props {
   // Data
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   gasLimit: AppState['transaction']['fields']['gasLimit'];
+  offline: AppState['config']['offline'];
   // Actions
+  inputGasPrice: TInputGasPrice;
   inputGasLimit: TInputGasLimit;
   inputNonce: TInputNonce;
-  setGasPriceField: TSetGasPriceField;
 }
 
-class GasSlider extends React.Component<Props> {
+interface State {
+  showAdvanced: boolean;
+}
+
+class GasSlider extends React.Component<Props, State> {
+  public state: State = {
+    showAdvanced: false
+  };
+
   public render() {
-    const { gasPrice, gasLimit } = this.props;
+    const { gasPrice, gasLimit, offline } = this.props;
+    const showAdvanced = this.state.showAdvanced || offline;
 
     return (
       <div className="GasSlider">
-        <div className="GasSlider-simple row form-group">
-          <div className="col-md-12">
-            <label className="GasSlider-simple-label">{translate('Transaction Fee')}</label>
-          </div>
+        {showAdvanced ? (
+          <AdvancedGas
+            gasPrice={gasPrice.raw}
+            gasLimit={gasLimit.raw}
+            changeGasPrice={this.props.inputGasPrice}
+            changeGasLimit={this.props.inputGasLimit}
+          />
+        ) : (
+          <SimpleGas
+            gasPrice={gasPrice.raw}
+            gasLimit={gasLimit.raw}
+            changeGasPrice={this.props.inputGasPrice}
+          />
+        )}
 
-          <div className="col-md-8 col-sm-12">
-            <div className="GasSlider-simple-slider">
-              <Slider
-                onChange={this.handleSlider}
-                min={gasPriceDefaults.gasPriceMinGwei}
-                max={gasPriceDefaults.gasPriceMaxGwei}
-                value={gasPrice.value.toNumber() / 1000000000}
-              />
-              <div className="GasSlider-simple-slider-labels">
-                <span>{translate('Cheap')}</span>
-                <span>{translate('Balanced')}</span>
-                <span>{translate('Fast')}</span>
-              </div>
-            </div>
+        {!offline && (
+          <div className="help-block">
+            <a className="GasSlider-toggle" onClick={this.toggleAdvanced}>
+              <strong>
+                {showAdvanced
+                  ? `- ${translateRaw('Back to simple')}`
+                  : `+ ${translateRaw('Advanced: Data, Gas Price, Gas Limit')}`}
+              </strong>
+            </a>
           </div>
-          <div className="col-md-4 col-sm-12">
-            <div className="GasSlider-simple-fee">
-              <FeeSummary gasPrice={gasPrice.value} gasLimit={gasLimit.value} exchangeRate={null} />
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     );
   }
 
-  private handleSlider = (gasGwei: number) => {
-    this.props.setGasPriceField({
-      raw: gasGwei.toString(),
-      value: gasPricetoBase(gasGwei)
-    });
+  private toggleAdvanced = () => {
+    this.setState({ showAdvanced: !this.state.showAdvanced });
   };
 }
 
 function mapStateToProps(state: AppState) {
   return {
     gasPrice: state.transaction.fields.gasPrice,
-    gasLimit: state.transaction.fields.gasLimit
+    gasLimit: state.transaction.fields.gasLimit,
+    offline: state.config.offline
   };
 }
 
 export default connect(mapStateToProps, {
+  inputGasPrice,
   inputGasLimit,
-  inputNonce,
-  setGasPriceField
+  inputNonce
 })(GasSlider);
