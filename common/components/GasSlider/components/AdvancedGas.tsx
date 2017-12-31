@@ -15,7 +15,7 @@ export default class AdvancedGas extends React.Component<Props> {
   public render() {
     return (
       <div className="AdvancedGas row form-group">
-        <div className="col-sm-3 col-xs-6">
+        <div className="col-md-3 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
           <input
             className="form-control"
@@ -24,7 +24,7 @@ export default class AdvancedGas extends React.Component<Props> {
           />
         </div>
 
-        <div className="col-sm-3 col-xs-6">
+        <div className="col-md-3 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_4')}</label>
           <input
             className="form-control"
@@ -33,7 +33,7 @@ export default class AdvancedGas extends React.Component<Props> {
           />
         </div>
 
-        <div className="col-sm-6 col-xs-12">
+        <div className="col-md-6 col-sm-12">
           <label>{translate('OFFLINE_Step2_Label_6')}</label>
           <DataFieldFactory
             withProps={({ data, onChange }) => (
