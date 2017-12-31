@@ -6,7 +6,8 @@
   }
 
   &-private {
-    margin-bottom: $space * 3;
+    max-width: 700px;
+    margin: 0 auto $space * 3;
   }
 
   &-paper,
