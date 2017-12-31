@@ -2,7 +2,7 @@
 
 import BN from 'bn.js';
 import { toBuffer, addHexPrefix, bufferToHex } from 'ethereumjs-util';
-import { trimStart } from 'lodash';
+import trimStart from 'lodash/trimStart';
 
 // When encoding QUANTITIES (integers, numbers): encode as hex, prefix with "0x", the most compact representation (slight exception: zero should be represented as "0x0").
 export function hexEncodeQuantity(value: BN | Buffer): string {

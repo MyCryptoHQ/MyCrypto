@@ -126,26 +126,26 @@ export interface BityOrderResponse {
 }
 
 export interface ShapeshiftOrderResponse {
-  apiPubyKey: string;
+  apiPubKey?: string;
   deposit: string;
   depositAmount: string;
   expiration: number;
-  expirationFormatted: string;
-  inputCurrency: string;
+  expirationFormatted?: string;
+  inputCurrency?: string;
   maxLimit: number;
   minerFee: string;
   orderId: string;
-  outputCurrency: string;
+  outputCurrency?: string;
   pair: string; // e.g. eth_bat
-  provider: ProviderName; // shapeshift
+  provider?: ProviderName; // shapeshift
   quotedRate: string;
-  withdrawl: string;
+  withdrawal: string;
   withdrawalAmount: string;
 }
 
 export interface ShapeshiftStatusResponse {
   status: string;
-  address: string;
+  address?: string;
   withdraw?: string;
   transaction: string;
 }

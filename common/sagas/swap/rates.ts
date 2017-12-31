@@ -13,7 +13,7 @@ import shapeshift from 'api/shapeshift';
 import { getSwap } from 'sagas/swap/orders';
 
 const POLLING_CYCLE = 30000;
-const SHAPESHIFT_TIMEOUT = 10000;
+export const SHAPESHIFT_TIMEOUT = 10000;
 
 export function* loadBityRates(): SagaIterator {
   while (true) {

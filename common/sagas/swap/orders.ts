@@ -174,7 +174,7 @@ export function* postShapeshiftOrderCreate(
       payload.destinationAmount
     ]);
     if (order.error) {
-      yield put(showNotification('danger', `Shapeshift Error: ${order.error}`));
+      yield put(showNotification('danger', `Shapeshift Error: ${order.error}`, TEN_SECONDS));
       yield put(shapeshiftOrderCreateFailedSwap());
     } else {
       yield put(shapeshiftOrderCreateSucceededSwap(order.success));

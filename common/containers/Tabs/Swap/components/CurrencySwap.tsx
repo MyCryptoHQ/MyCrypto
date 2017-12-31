@@ -12,7 +12,7 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { merge, reject } from 'lodash';
+import { merge, reject, debounce } from 'lodash';
 import './CurrencySwap.scss';
 
 export interface StateProps {
@@ -63,6 +63,28 @@ export default class CurrencySwap extends Component<Props, State> {
     timeout: false
   };
 
+  public debouncedCreateErrString = debounce((origin, destination, showError) => {
+    const createErrString = (
+      originKind: WhitelistedCoins,
+      amount: number,
+      destKind: WhitelistedCoins
+    ) => {
+      const rate = this.getMinMax(originKind, destKind);
+      let errString;
+      if (amount > rate.max) {
+        errString = `Maximum ${rate.max} ${originKind}`;
+      } else {
+        errString = `Minimum ${rate.min} ${originKind}`;
+      }
+      return errString;
+    };
+    const originErr = showError ? createErrString(origin.id, origin.amount, destination.id) : '';
+    const destinationErr = showError
+      ? createErrString(destination.id, destination.amount, origin.id)
+      : '';
+    this.setErrorMessages(originErr, destinationErr);
+  }, 1000);
+
   public componentDidMount() {
     setTimeout(() => {
       this.setState({
@@ -88,7 +110,7 @@ export default class CurrencySwap extends Component<Props, State> {
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
     const { origin, destination } = this.state;
-    const { options, bityRates } = this.props;
+    const { options, bityRates, shapeshiftRates } = this.props;
     if (origin !== prevState.origin) {
       this.setDisabled(origin, destination);
     }
@@ -101,12 +123,13 @@ export default class CurrencySwap extends Component<Props, State> {
       (originCap === 'BTC' && destCap === 'ETH') || (destCap === 'BTC' && originCap === 'ETH');
     const ensureBityRatesLoaded =
       bityRates.allIds.includes('ETHBTC') && bityRates.allIds.includes('BTCETH');
+    const ensureShapeshiftRatesLoaded = shapeshiftRates.allIds.length > 0;
 
     if (ensureBityRatesLoaded && ensureCorrectProvider) {
       if (provider === 'shapeshift') {
         this.props.swapProvider('bity');
       }
-    } else {
+    } else if (ensureShapeshiftRatesLoaded) {
       if (provider !== 'shapeshift') {
         this.props.swapProvider('shapeshift');
       }
@@ -163,38 +186,34 @@ export default class CurrencySwap extends Component<Props, State> {
   };
 
   public setDisabled(origin: SwapInput, destination: SwapInput) {
+    this.clearErrMessages();
     const amountsValid = origin.amount && destination.amount;
     const minMaxValid = this.isMinMaxValid(origin.amount, origin.id, destination.id);
 
     const disabled = !(amountsValid && minMaxValid);
 
-    const createErrString = (
-      originKind: WhitelistedCoins,
-      amount: number,
-      destKind: WhitelistedCoins
-    ) => {
-      const rate = this.getMinMax(originKind, destKind);
-      let errString;
-      if (amount > rate.max) {
-        errString = `Maximum ${rate.max} ${originKind}`;
-      } else {
-        errString = `Minimum ${rate.min} ${originKind}`;
-      }
-      return errString;
-    };
-
     const showError = disabled && amountsValid;
-    const originErr = showError ? createErrString(origin.id, origin.amount, destination.id) : '';
-    const destinationErr = showError
-      ? createErrString(destination.id, destination.amount, origin.id)
-      : '';
 
     this.setState({
-      disabled,
+      disabled
+    });
+
+    this.debouncedCreateErrString(origin, destination, showError);
+  }
+
+  public setErrorMessages = (originErr, destinationErr) => {
+    this.setState({
       originErr,
       destinationErr
     });
-  }
+  };
+
+  public clearErrMessages = () => {
+    this.setState({
+      originErr: '',
+      destinationErr: ''
+    });
+  };
 
   public onClickStartSwap = () => {
     const { origin, destination } = this.state;
