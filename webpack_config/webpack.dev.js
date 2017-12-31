@@ -4,31 +4,78 @@ const path = require('path');
 const webpack = require('webpack');
 const base = require('./webpack.base');
 const FriendlyErrors = require('friendly-errors-webpack-plugin');
+const AutoDllPlugin = require('autodll-webpack-plugin');
+const config = require('./config');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const threadLoader = require('thread-loader');
 
-base.devtool = process.env.SLOW_BUILD_SPEED
-  ? 'source-map'
-  : 'cheap-module-eval-source-map';
+const fullSourceMap = process.env.SLOW_BUILD_SPEED;
+if (fullSourceMap) {
+  base.devtool = fullSourceMap ? 'source-map' : 'cheap-module-eval-source-map';
 
-base.module.loaders.push(
+  threadLoader.warmup(
+    {
+      // pool options, like passed to loader options
+      // must match loader options to boot the correct pool
+      happyPackMode: true,
+      logLevel: 'info'
+    },
+    [
+      // modules to load
+      // can be any module, i. e.
+      'ts-loader'
+    ]
+  );
+  base.module.rules[0].use.unshift({
+    loader: 'thread-loader',
+    options: {
+      workers: 4
+    }
+  });
+}
+
+base.performance = { hints: false };
+
+base.module.rules.push(
   {
     test: /\.css$/,
-    loaders: ['style-loader', 'css-loader']
+    include: path.resolve(__dirname, '../common/vendor'),
+    use: ['style-loader', 'css-loader']
   },
   {
     test: /\.scss$/,
-    loaders: ['style-loader', 'css-loader', 'sass-loader']
+    include: ['components', 'containers', 'sass']
+      .map(dir => path.resolve(__dirname, `../common/${dir}`))
+      .concat([path.resolve(__dirname, '../node_modules')]),
+
+    exclude: /node_modules(?!\/font-awesome)/,
+    use: ['style-loader', 'css-loader', 'sass-loader']
   },
   {
     test: /\.less$/,
-    loaders: ['style-loader', 'css-loader', 'less-loader']
+    include: path.resolve(__dirname, '../common/assets/styles'),
+    use: ['style-loader', 'css-loader', 'less-loader']
   }
 );
 
 base.plugins.push(
-  new webpack.DllReferencePlugin({
-    context: path.join(__dirname, '../common'),
-    manifest: require('../dll/vendor-manifest.json')
+  new AutoDllPlugin({
+    inject: true, // will inject the DLL bundles to index.html
+    filename: '[name]_[hash].js',
+    debug: true,
+    context: path.join(__dirname, '..'),
+    entry: {
+      vendor: [...config.vendor, 'babel-polyfill', 'bootstrap-sass', 'font-awesome']
+    }
   }),
+  new HardSourceWebpackPlugin({
+    environmentHash: {
+      root: process.cwd(),
+      directories: ['webpack_config'],
+      files: ['package.json']
+    }
+  }),
+
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('development')
   }),

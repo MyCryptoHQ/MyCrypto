@@ -6,7 +6,7 @@ import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
 
 import { getTransactionFields } from 'libs/transaction';
-import { mapValues } from 'lodash';
+import mapValues from 'lodash/mapValues';
 
 import { IFullWallet } from '../IWallet';
 
