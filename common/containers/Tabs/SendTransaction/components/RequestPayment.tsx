@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet';
-import { Identicon, QRCode } from 'components/ui';
+import { QRCode } from 'components/ui';
 import { getUnit, getDecimal } from 'selectors/transaction/meta';
 import {
   getCurrentTo,
@@ -15,12 +15,12 @@ import BN from 'bn.js';
 import { NetworkConfig } from 'config/data';
 import { validNumber, validDecimal } from 'libs/validators';
 import { getGasLimit } from 'selectors/transaction';
-import { AmountField, GasField } from 'components';
+import { AddressField, AmountField, GasField } from 'components';
 import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
 import './RequestPayment.scss';
-import { reset, TReset } from 'actions/transaction';
+import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -38,17 +38,14 @@ interface StateProps {
 
 interface ActionProps {
   reset: TReset;
+  setCurrentTo: TSetCurrentTo;
 }
 
 type Props = OwnProps & StateProps & ActionProps;
 
-interface State {
-  recipientAddress: string;
-}
-
 const isValidAmount = decimal => amount => validNumber(+amount) && validDecimal(amount, decimal);
 
-class RequestPayment extends React.Component<Props, State> {
+class RequestPayment extends React.Component<Props, {}> {
   public state = {
     recipientAddress: ''
   };
@@ -71,10 +68,10 @@ class RequestPayment extends React.Component<Props, State> {
   }
 
   public render() {
-    const { recipientAddress } = this.state;
     const {
       tokenContractAddress,
       gasLimit,
+      currentTo,
       currentValue,
       networkConfig,
       unit,
@@ -83,7 +80,7 @@ class RequestPayment extends React.Component<Props, State> {
     const chainId = networkConfig ? networkConfig.chainId : undefined;
 
     const eip681String = this.generateEIP681String(
-      recipientAddress,
+      currentTo.raw,
       tokenContractAddress,
       currentValue,
       gasLimit,
@@ -95,15 +92,7 @@ class RequestPayment extends React.Component<Props, State> {
     return (
       <div className="RequestPayment">
         <div className="Tab-content-pane">
-          <div className="row form-group">
-            <div className="col-xs-11">
-              <label>{translate('Recipient Address')}</label>
-              <input className="form-control" disabled={true} value={recipientAddress} />
-            </div>
-            <div className="col-xs-1" style={{ padding: 0 }}>
-              <Identicon address={recipientAddress} />
-            </div>
-          </div>
+          <AddressField isReadOnly={true} />
 
           <div className="row form-group">
             <div className="col-xs-11">
@@ -144,8 +133,7 @@ class RequestPayment extends React.Component<Props, State> {
   }
 
   private async setWalletAsyncState(wallet: IWallet) {
-    const recipientAddress = await wallet.getAddressString();
-    this.setState({ recipientAddress });
+    this.props.setCurrentTo(await wallet.getAddressString());
   }
 
   private generateEIP681String(
@@ -157,7 +145,14 @@ class RequestPayment extends React.Component<Props, State> {
     decimal: number,
     chainId?: number
   ) {
-    if (!isValidAmount(decimal)(currentValue.raw) || !chainId) {
+    if (
+      !isValidAmount(decimal)(currentValue.raw) ||
+      !chainId ||
+      !gasLimit ||
+      !gasLimit.raw.length ||
+      !recipientAddress.length ||
+      !tokenContractAddress.length
+    ) {
       return '';
     }
 
@@ -188,4 +183,4 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, { reset })(RequestPayment);
+export default connect(mapStateToProps, { reset, setCurrentTo })(RequestPayment);
