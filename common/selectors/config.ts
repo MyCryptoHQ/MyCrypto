@@ -10,6 +10,7 @@ import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
 import { getNetworkConfigFromId } from 'utils/network';
 import { isEtherUnit } from 'libs/units';
+import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 
 export function getNode(state: AppState): string {
   return state.config.nodeSelection;
@@ -43,7 +44,9 @@ export function getAllTokens(state: AppState): Token[] {
 }
 
 export function tokenExists(state: AppState, token: string): boolean {
-  return !!getAllTokens(state).find(t => t.symbol === token);
+  const existInWhitelist = SHAPESHIFT_TOKEN_WHITELIST.includes(token);
+  const existsInNetwork = !!getAllTokens(state).find(t => t.symbol === token);
+  return existsInNetwork || existInWhitelist;
 }
 
 export function getLanguageSelection(state: AppState): string {

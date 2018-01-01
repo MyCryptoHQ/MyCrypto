@@ -1,8 +1,8 @@
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
 const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
-export const SHAPESHIFT_WHITELIST = [
-  'ETC',
+
+export const SHAPESHIFT_TOKEN_WHITELIST = [
   'OMG',
   'REP',
   'SNT',
@@ -22,9 +22,9 @@ export const SHAPESHIFT_WHITELIST = [
   'RLC',
   'TRST',
   'GUP',
-  'ETH',
-  'BTC'
+  'ETH'
 ];
+export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETC', 'BTC'];
 
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
