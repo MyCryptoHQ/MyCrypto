@@ -3,7 +3,7 @@ import { AddressFieldFactory } from './AddressFieldFactory';
 import { donationAddressMap } from 'config/data';
 
 interface Props {
-  isReadOnly: boolean;
+  isReadOnly?: boolean;
 }
 
 export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
