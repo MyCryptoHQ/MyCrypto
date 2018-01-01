@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
+import { resetWallet, TResetWallet } from 'actions/wallet';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { AppState } from 'reducers';
@@ -12,9 +13,10 @@ import { isWalletFullyUnlocked } from 'selectors/wallet';
 import './index.scss';
 
 interface Props {
-  showNotification: TShowNotification;
   wallet: IFullWallet;
   unlocked: boolean;
+  showNotification: TShowNotification;
+  resetWallet: TResetWallet;
 }
 
 interface State {
@@ -33,6 +35,10 @@ const messagePlaceholder =
 export class SignMessage extends Component<Props, State> {
   public state: State = initialState;
 
+  public componentWillUnmount() {
+    this.props.resetWallet();
+  }
+
   public render() {
     const { wallet, unlocked } = this.props;
     const { message, signedMessage } = this.state;
@@ -46,7 +52,14 @@ export class SignMessage extends Component<Props, State> {
       <div>
         {unlocked ? (
           <div className="Tab-content-pane">
-            <h4>{translate('MSG_message')}</h4>
+            <h3 className="SignMessage-label">{translate('MSG_message')}</h3>
+            <button
+              className="SignMessage-reset btn btn-default btn-sm"
+              onClick={this.changeWallet}
+            >
+              <i className="fa fa-refresh" />
+              {translate('Change Wallet')}
+            </button>
             <div className="form-group">
               <textarea
                 className={messageBoxClass}
@@ -93,6 +106,10 @@ export class SignMessage extends Component<Props, State> {
   private onSignMessage = (signedMessage: ISignedMessage) => {
     this.setState({ signedMessage });
   };
+
+  private changeWallet = () => {
+    this.props.resetWallet();
+  };
 }
 
 const mapStateToProps = (state: AppState) => ({
@@ -100,4 +117,7 @@ const mapStateToProps = (state: AppState) => ({
   unlocked: isWalletFullyUnlocked(state)
 });
 
-export default connect(mapStateToProps, { showNotification })(SignMessage);
+export default connect(mapStateToProps, {
+  showNotification,
+  resetWallet
+})(SignMessage);

@@ -9,19 +9,26 @@ import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
 import { setToField, TSetToField } from 'actions/transaction';
+import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
+import './Deploy.scss';
 
 interface DispatchProps {
   setToField: TSetToField;
+  resetWallet: TResetWallet;
 }
 
 class DeployClass extends Component<DispatchProps> {
   public render() {
     const makeContent = () => (
       <main className="Deploy Tab-content-pane" role="main">
-        <label className="Deploy-field form-group">
-          <h4 className="Deploy-field-label">{translate('CONTRACT_ByteCode')}</h4>
+        <div className="Deploy-field form-group">
+          <h3 className="Deploy-field-label">{translate('CONTRACT_ByteCode')}</h3>
+          <button className="Deploy-field-reset btn btn-default btn-sm" onClick={this.changeWallet}>
+            <i className="fa fa-refresh" />
+            {translate('Change Wallet')}
+          </button>
           <DataFieldFactory
             withProps={({ data: { raw, value }, onChange, readOnly }) => (
               <textarea
@@ -37,7 +44,7 @@ class DeployClass extends Component<DispatchProps> {
               />
             )}
           />
-        </label>
+        </div>
 
         <label className="Deploy-field form-group">
           <h4 className="Deploy-field-label">Gas Limit</h4>
@@ -80,8 +87,13 @@ class DeployClass extends Component<DispatchProps> {
 
     return <FullWalletOnly withFullWallet={makeContent} withoutFullWallet={makeDecrypt} />;
   }
+
+  private changeWallet = () => {
+    this.props.resetWallet();
+  };
 }
 
 export const Deploy = connect(null, {
-  setToField
+  setToField,
+  resetWallet
 })(DeployClass);
