@@ -1,0 +1,123 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+$speed: 500ms;
+
+@keyframes decrypt-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@mixin decrypt-title {
+  text-align: center;
+  line-height: 1;
+  margin: 0 0 30px;
+  font-weight: normal;
+  animation: decrypt-enter $speed ease 1;
+}
+
+.WalletDecrypt {
+  position: relative;
+
+  &-wallets {
+    &-title {
+      @include decrypt-title;
+    }
+
+    &-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+
+      @media screen and (max-width: $screen-xs) {
+        margin: 0;
+      }
+
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  &-decrypt {
+    position: relative;
+    text-align: center;
+    padding-bottom: $space;
+
+    &-back {
+      @include reset-button;
+      position: absolute;
+      top: 0;
+      left: 0;
+      line-height: $font-size-large;
+      opacity: 0.4;
+      transition: opacity 120ms ease, transform 120ms ease;
+
+      @media (max-width: $screen-md) {
+        top: auto;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      &:hover,
+      &:focus {
+        opacity: 0.8;
+      }
+
+      &:active {
+        outline: none;
+        opacity: 1;
+      }
+
+      .fa {
+        position: relative;
+        top: -2px;
+        font-size: 11px;
+      }
+    }
+
+    &-title {
+      @include decrypt-title;
+    }
+
+    &-form {
+      max-width: 360px;
+      margin: 0 auto;
+    }
+  }
+}
+
+// Animation between two slides
+.DecryptContent {
+  &-enter {
+    opacity: 0;
+    transition: opacity $speed * .25 ease $speed * .125;
+
+    &-active {
+      opacity: 1;
+    }
+  }
+
+  &-exit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 1;
+    transition: opacity $speed * .25 ease;
+    pointer-events: none;
+
+    &-active {
+      opacity: 0;
+    }
+  }
+}

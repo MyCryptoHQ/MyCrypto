@@ -3,7 +3,7 @@ import { TrezorWallet } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
+import { DeterministicWalletsModal } from './DeterministicWalletsModal';
 import './Trezor.scss';
 import { Spinner } from 'components/ui';
 const DEFAULT_PATH = DPATHS.TREZOR[0].value;
@@ -19,7 +19,7 @@ interface State {
   isLoading: boolean;
 }
 
-export default class TrezorDecrypt extends Component<Props, State> {
+export class TrezorDecrypt extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
@@ -33,9 +33,9 @@ export default class TrezorDecrypt extends Component<Props, State> {
     const showErr = error ? 'is-showing' : '';
 
     return (
-      <section className="TrezorDecrypt col-md-4 col-sm-6">
+      <div className="TrezorDecrypt">
         <button
-          className="TrezorDecrypt-decrypt btn btn-primary btn-lg"
+          className="TrezorDecrypt-decrypt btn btn-primary btn-lg btn-block"
           onClick={this.handleNullConnect}
           disabled={isLoading}
         >
@@ -49,6 +49,17 @@ export default class TrezorDecrypt extends Component<Props, State> {
           )}
         </button>
 
+        <a
+          className="TrezorDecrypt-buy btn btn-sm btn-default"
+          href="https://trezor.io/?a=myetherwallet.com"
+          target="_blank"
+          rel="noopener"
+        >
+          {translate('Don’t have a TREZOR? Order one now!')}
+        </a>
+
+        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
+
         <div className="TrezorDecrypt-help">
           Guide:{' '}
           <a
@@ -59,17 +70,6 @@ export default class TrezorDecrypt extends Component<Props, State> {
             How to use TREZOR with MyEtherWallet
           </a>
         </div>
-
-        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        <a
-          className="TrezorDecrypt-buy btn btn-sm btn-default"
-          href="https://trezor.io/?a=myetherwallet.com"
-          target="_blank"
-          rel="noopener"
-        >
-          {translate('Don’t have a TREZOR? Order one now!')}
-        </a>
 
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
@@ -82,7 +82,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
           onPathChange={this.handlePathChange}
           walletType={translateRaw('x_Trezor')}
         />
-      </section>
+      </div>
     );
   }
 

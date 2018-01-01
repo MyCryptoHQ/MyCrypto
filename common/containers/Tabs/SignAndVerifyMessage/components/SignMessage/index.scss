@@ -2,6 +2,18 @@
   text-align: center;
   padding-top: 30px;
 
+  &-label {
+    float: left;
+  }
+
+  &-reset {
+    float: right;
+
+    .fa {
+      margin-right: 8px;
+    }
+  }
+
   &-sign {
     width: 100%;
   }

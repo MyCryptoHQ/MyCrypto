@@ -140,8 +140,7 @@
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
     "precommit": "lint-staged",
-    "formatAll":
-      "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {

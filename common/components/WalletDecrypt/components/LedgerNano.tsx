@@ -1,7 +1,7 @@
 import './LedgerNano.scss';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
+import { DeterministicWalletsModal } from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
@@ -23,7 +23,7 @@ interface State {
   showTip: boolean;
 }
 
-export default class LedgerNanoSDecrypt extends Component<Props, State> {
+export class LedgerNanoSDecrypt extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
@@ -44,7 +44,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
     const showErr = error ? 'is-showing' : '';
 
     return (
-      <section className="LedgerDecrypt col-md-4 col-sm-6">
+      <div className="LedgerDecrypt">
         {showTip && (
           <p>
             <strong>Tip: </strong>Make sure you're logged into the ethereum app on your hardware
@@ -52,7 +52,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
           </p>
         )}
         <button
-          className="LedgerDecrypt-decrypt btn btn-primary btn-lg"
+          className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
           onClick={this.handleNullConnect}
           disabled={isLoading}
         >
@@ -65,6 +65,17 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
             translate('ADD_Ledger_scan')
           )}
         </button>
+
+        <a
+          className="LedgerDecrypt-buy btn btn-sm btn-default"
+          href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
+          target="_blank"
+          rel="noopener"
+        >
+          {translate('Don’t have a Ledger? Order one now!')}
+        </a>
+
+        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="LedgerDecrypt-help">
           Guides:
@@ -87,15 +98,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
             </a>
           </div>
         </div>
-        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-        <a
-          className="LedgerDecrypt-buy btn btn-sm btn-default"
-          href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
-          target="_blank"
-          rel="noopener"
-        >
-          {translate('Don’t have a Ledger? Order one now!')}
-        </a>
+
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
@@ -107,7 +110,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
           onPathChange={this.handlePathChange}
           walletType={translateRaw('x_Ledger')}
         />
-      </section>
+      </div>
     );
   }
 
