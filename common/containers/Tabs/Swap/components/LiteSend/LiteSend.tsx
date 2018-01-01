@@ -28,7 +28,7 @@ class LiteSendClass extends Component<Props> {
     }
     return (
       <Aux>
-        <OfflineAwareUnlockHeader allowReadOnly={false} />
+        <OfflineAwareUnlockHeader />
         <OnlyUnlocked whenUnlocked={<Fields />} />
       </Aux>
     );
