@@ -27,6 +27,7 @@ interface AAttributes {
   shape?: 'default' | 'rect' | 'circle' | 'poly';
   target?: '_blank' | '_parent' | '_self' | '_top';
   type?: string;
+  onClick?(ev: React.MouseEvent<HTMLAnchorElement>): void;
 }
 
 interface NewTabLinkProps extends AAttributes {
@@ -36,7 +37,7 @@ interface NewTabLinkProps extends AAttributes {
 
 const NewTabLink = ({ content, children, ...rest }: NewTabLinkProps) => (
   <a target="_blank" rel="noopener" {...rest}>
-    {content || children} {/* Keep content for short-hand text insertion */}
+    {content || children}
   </a>
 );
 

@@ -82,7 +82,7 @@
     "x_Json": "Arquivo JSON (não criptografada) ",
     "x_JsonDesc": "Este é o descriptografado, formato JSON da sua chave privada. Isto significa que você não precisa da senha, mas qualquer um que encontrar o seu JSON pode acessar sua carteira & Éter sem a senha. ",
     "x_Keystore": "Arquivo de armazenamento de chaves (UTC / JSON · Recomendado · Criptografado) ",
-    "x_Keystore2": "Arquivo de armazenamento de chaves (UTC / JSON) ",
+    "x_Keystore2": "Arquivo de armazenamento de chaves ",
     "x_KeystoreDesc": "Este arquivo de armazenamento de chaves corresponde ao formato usado pela Mist para que você possa facilmente importá-lo no futuro. É recomendado que o arquivo seja transferido e feito seu backup. ",
     "x_MetaMask": "Metamask / Mist ",
     "x_Mnemonic": "Frase Mnemonic ",

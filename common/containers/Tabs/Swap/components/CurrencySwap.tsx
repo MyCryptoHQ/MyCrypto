@@ -7,7 +7,8 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { Dropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { without, intersection } from 'lodash';
+import intersection from 'lodash/intersection';
+import without from 'lodash/without';
 import './CurrencySwap.scss';
 
 export interface StateProps {

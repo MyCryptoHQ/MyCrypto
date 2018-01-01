@@ -63,9 +63,7 @@ class Contracts extends Component<Props, State> {
             </h1>
           </div>
 
-          <main className="Tab-content-pane" role="main">
-            <div className="Contracts-content">{content}</div>
-          </main>
+          <div className="Contracts-content">{content}</div>
         </section>
       </TabSection>
     );

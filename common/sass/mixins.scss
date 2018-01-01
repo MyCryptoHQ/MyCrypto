@@ -69,3 +69,30 @@
     }
   }
 }
+
+@mixin triangle($size, $color, $direction) {
+  height: 0;
+  width: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: $size / 2;
+
+  @if $direction == up {
+    border-bottom-color: $color;
+  } @else if $direction == right {
+    border-left-color: $color;
+  } @else if $direction == down {
+    border-top-color: $color;
+  } @else if $direction == left {
+    border-right-color: $color;
+  }
+}
+
+@mixin show-tooltip-on-hover {
+  &:hover .Tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -100%) translateY(-8px);
+    transition-delay: 400ms, 400ms, 300ms;
+  }
+}

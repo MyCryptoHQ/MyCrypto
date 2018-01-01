@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="260px" height="260px" viewBox="0 0 260 260" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>mist</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mist">
+            <circle id="Oval-3" fill="#000000" cx="130" cy="130" r="130"></circle>
+            <g id="ether" transform="translate(66.000000, 26.000000)">
+                <polygon id="Path-4" fill="#DDDDDD" points="0 106 63.9893369 0 64 77.1016184"></polygon>
+                <polygon id="Path-5" fill="#AAAAAA" points="128 106 64.0106631 0 64 77.1016184"></polygon>
+                <polygon id="Path-6" fill="#AAAAAA" points="64 77 0 105.714286 64 144"></polygon>
+                <polygon id="Path-6" fill="#999999" points="64 77 128 105.714286 64 144"></polygon>
+                <polygon id="Path-7" fill="#888888" points="128 117 64.0106631 208 64 155.541176"></polygon>
+                <polygon id="Path-7" fill="#DDDDDD" points="0 117 63.9893369 208 64 155.541176"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

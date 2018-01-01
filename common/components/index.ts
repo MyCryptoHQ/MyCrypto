@@ -16,3 +16,4 @@ export { default as BalanceSidebar } from './BalanceSidebar';
 export { default as PaperWallet } from './PaperWallet';
 export { default as AlphaAgreement } from './AlphaAgreement';
 export { default as GasSlider } from './GasSlider';
+export { default as WalletDecrypt } from './WalletDecrypt';
