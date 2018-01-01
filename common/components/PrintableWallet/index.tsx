@@ -1,7 +1,7 @@
 import { PaperWallet } from 'components';
 import { IFullWallet } from 'ethereumjs-wallet';
 import React from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import printElement from 'utils/printElement';
 import { stripHexPrefix } from 'libs/values';
 
@@ -39,13 +39,13 @@ const PrintableWallet: React.SFC<{ wallet: IFullWallet }> = ({ wallet }) => {
       <PaperWallet address={address} privateKey={privateKey} />
       <a
         role="button"
-        aria-label={translate('x_Print')}
+        aria-label={translateRaw('x_Print')}
         aria-describedby="x_PrintDesc"
-        className={'btn btn-lg btn-primary'}
+        className="btn btn-lg btn-primary btn-block"
         onClick={print(address, privateKey)}
-        style={{ marginTop: 10 }}
+        style={{ margin: '10px auto 0', maxWidth: '260px' }}
       >
-        {translate('x_Print')}
+        {translateRaw('x_Print')}
       </a>
     </div>
   );

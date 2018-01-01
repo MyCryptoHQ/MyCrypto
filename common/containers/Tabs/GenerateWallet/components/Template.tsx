@@ -1,24 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Template.scss';
 
 interface Props {
-  content: React.ReactElement<any>;
-  help: React.ReactElement<any>;
+  children: React.ReactElement<any>;
 }
 
-export default class GenerateWalletTemplate extends React.Component<Props, {}> {
-  public render() {
-    const { content, help } = this.props;
-    return (
-      <div className="GenerateWallet row">
-        <div className="GenerateWallet-column col-md-9">
-          <main className="GenerateWallet-column-content Tab-content-pane">{content}</main>
-        </div>
+const GenerateWalletTemplate: React.SFC<Props> = ({ children }) => (
+  <div className="GenerateWallet Tab-content-pane">
+    {children}
+    <Link className="GenerateWallet-back" to="/generate">
+      <i className="fa fa-arrow-left" /> Back
+    </Link>
+  </div>
+);
 
-        <div className="GenerateWallet-column col-md-3">
-          <aside className="GenerateWallet-column-help Tab-content-pane">{help}</aside>
-        </div>
-      </div>
-    );
-  }
-}
+export default GenerateWalletTemplate;

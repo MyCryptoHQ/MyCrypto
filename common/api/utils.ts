@@ -1,4 +1,4 @@
-import { indexOf } from 'lodash';
+import indexOf from 'lodash/indexOf';
 
 export const filter = (i: any, arr: any[]) => {
   return -1 !== indexOf(arr, i) ? true : false;
