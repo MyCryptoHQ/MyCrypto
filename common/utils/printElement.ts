@@ -7,10 +7,7 @@ interface PrintOptions {
   popupFeatures?: object;
 }
 
-export default function(
-  element: React.ReactElement<any>,
-  opts: PrintOptions = {}
-) {
+export default function(element: React.ReactElement<any>, opts: PrintOptions = {}) {
   const options = {
     styles: '',
     printTimeout: 500,

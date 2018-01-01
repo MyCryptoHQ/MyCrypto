@@ -23,6 +23,4 @@ export interface ShowNotificationAction {
 }
 
 /*** Union Type ***/
-export type NotificationsAction =
-  | ShowNotificationAction
-  | CloseNotificationAction;
+export type NotificationsAction = ShowNotificationAction | CloseNotificationAction;

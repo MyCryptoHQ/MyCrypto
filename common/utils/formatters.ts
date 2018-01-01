@@ -21,9 +21,7 @@ const toFixed = (num: string, digits: number = 3) => {
 
   const formattedFraction = fractionPart.slice(0, digits);
 
-  const integerArr = `${integerPart}${formattedFraction}`
-    .split('')
-    .map(str => +str);
+  const integerArr = `${integerPart}${formattedFraction}`.split('').map(str => +str);
 
   let carryOver = Math.floor((+fractionPart[digits] + 5) / 10);
 
@@ -95,10 +93,10 @@ export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
   return limitStr;
 }
 
-// Regex modified from this stackoverflow answer 
-// https://stackoverflow.com/a/10805198, with the comma character added as a 
+// Regex modified from this stackoverflow answer
+// https://stackoverflow.com/a/10805198, with the comma character added as a
 // delimiter (in the case of csv style mnemonic phrases) as well as any stray
-// space characters. it should be fairly easy to add new delimiters as required 
+// space characters. it should be fairly easy to add new delimiters as required
 export function formatMnemonic(phrase: string) {
-  return phrase.replace(/(\r\n|\n|\r|\s+|,)/gm," ").trim();
-};
+  return phrase.replace(/(\r\n|\n|\r|\s+|,)/gm, ' ').trim();
+}

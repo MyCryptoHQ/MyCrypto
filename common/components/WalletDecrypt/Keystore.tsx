@@ -1,11 +1,19 @@
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
+import { TShowNotification } from 'actions/notifications';
 
 export interface KeystoreValue {
   file: string;
   password: string;
   valid: boolean;
+}
+
+interface Props {
+  value: KeystoreValue;
+  onChange(value: KeystoreValue): void;
+  onUnlock(): void;
+  showNotification(level: string, message: string): TShowNotification;
 }
 
 function isPassRequired(file: string): boolean {
@@ -18,13 +26,12 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
-export default class KeystoreDecrypt extends Component {
-  public props: {
-    value: KeystoreValue;
-    onChange(value: KeystoreValue): void;
-    onUnlock(): void;
-  };
+function isValidFile(rawFile: File): boolean {
+  const fileType = rawFile.type;
+  return fileType === '' || fileType === 'application/json';
+}
 
+export default class KeystoreDecrypt extends Component<Props> {
   public render() {
     const { file, password } = this.props.value;
     const passReq = isPassRequired(file);
@@ -42,21 +49,14 @@ export default class KeystoreDecrypt extends Component {
               onChange={this.handleFileSelection}
             />
             <label htmlFor="fselector" style={{ width: '100%' }}>
-              <a
-                className="btn btn-default btn-block"
-                id="aria1"
-                tabIndex={0}
-                role="button"
-              >
+              <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
                 {translate('ADD_Radio_2_short')}
               </a>
             </label>
             <div className={file.length && passReq ? '' : 'hidden'}>
               <p>{translate('ADD_Label_3')}</p>
               <input
-                className={`form-control ${
-                  password.length > 0 ? 'is-valid' : 'is-invalid'
-                }`}
+                className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
                 value={password}
                 onChange={this.onPasswordChange}
                 onKeyDown={this.onKeyDown}
@@ -103,6 +103,10 @@ export default class KeystoreDecrypt extends Component {
       });
     };
 
-    fileReader.readAsText(inputFile, 'utf-8');
+    if (isValidFile(inputFile)) {
+      fileReader.readAsText(inputFile, 'utf-8');
+    } else {
+      this.props.showNotification('danger', translateRaw('ERROR_3'));
+    }
   };
 }

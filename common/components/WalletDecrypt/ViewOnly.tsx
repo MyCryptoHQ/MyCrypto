@@ -49,7 +49,7 @@ export default class ViewOnlyDecrypt extends Component<Props, State> {
     this.setState({ address: ev.currentTarget.value });
   };
 
-  private openWallet = (ev: React.SyntheticEvent<HTMLFormElement>) => {
+  private openWallet = (ev: React.FormEvent<HTMLFormElement>) => {
     const { address } = this.state;
     ev.preventDefault();
     if (isValidETHAddress(address)) {

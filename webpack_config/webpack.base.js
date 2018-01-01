@@ -3,10 +3,11 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const config = require('./config');
 const _ = require('./utils');
-const { CheckerPlugin } = require('awesome-typescript-loader');
-module.exports = {
+
+const webpackConfig = {
   entry: {
     client: './common/index.tsx'
   },
@@ -14,9 +15,6 @@ module.exports = {
     path: _.outputPath,
     filename: '[name].js',
     publicPath: config.publicPath
-  },
-  performance: {
-    hints: process.env.NODE_ENV === 'production' ? 'warning' : false
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
@@ -28,23 +26,26 @@ module.exports = {
     ]
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(ts|tsx)$/,
-        loaders: [
-          { loader: 'cache-loader' },
-          {
-            loader: 'awesome-typescript-loader'
-          }
-        ],
-        exclude: [/node_modules/]
+        include: path.resolve(__dirname, '../common'),
+        use: [{ loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }],
+        exclude: ['assets', 'sass', 'vendor', 'translations/lang']
+          .map(dir => path.resolve(__dirname, `../common/${dir}`))
+          .concat([path.resolve(__dirname, '../node_modules')])
       },
       {
+        include: [
+          path.resolve(__dirname, '../common/assets'),
+          path.resolve(__dirname, '../node_modules')
+        ],
+        exclude: /node_modules(?!\/font-awesome)/,
         test: /\.(gif|png|jpe?g|svg)$/i,
-        loaders: [
+        use: [
           {
             loader: 'file-loader',
-            query: {
+            options: {
               hash: 'sha512',
               digest: 'hex',
               name: '[path][name].[ext]?[hash:6]'
@@ -52,33 +53,52 @@ module.exports = {
           },
           {
             loader: 'image-webpack-loader',
-            query: config.imageCompressionOptions
+            options: {
+              bypassOnDebug: true,
+              optipng: {
+                optimizationLevel: 4
+              },
+              gifsicle: {
+                interlaced: false
+              },
+              mozjpeg: {
+                quality: 80
+              },
+              svgo: {
+                plugins: [{ removeViewBox: true }, { removeEmptyAttrs: false }, { sortAttrs: true }]
+              }
+            }
           }
         ]
       },
       {
+        include: [
+          path.resolve(__dirname, '../common/assets'),
+          path.resolve(__dirname, '../node_modules')
+        ],
+        exclude: /node_modules(?!\/font-awesome)/,
         test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
-        loader: 'file-loader?limit=100000'
+        loader: 'file-loader'
       }
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.BUILD_GH_PAGES': JSON.stringify(!!process.env.BUILD_GH_PAGES)
-    }),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, '../common/index.html'),
+      inject: true,
       filename: _.outputIndexPath
     }),
-    new webpack.LoaderOptionsPlugin(_.loadersOptions()),
     new CopyWebpackPlugin([
       {
         from: _.cwd('./static'),
         // to the root of dist path
         to: './'
       }
-    ])
+    ]),
+
+    new webpack.LoaderOptionsPlugin(_.loadersOptions())
   ],
   target: _.target
 };
+module.exports = webpackConfig;

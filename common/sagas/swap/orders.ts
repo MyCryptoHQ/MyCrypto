@@ -17,16 +17,7 @@ import moment from 'moment';
 import { AppState } from 'reducers';
 import { State as SwapState } from 'reducers/swap';
 import { delay, SagaIterator } from 'redux-saga';
-import {
-  call,
-  cancel,
-  cancelled,
-  fork,
-  put,
-  select,
-  take,
-  takeEvery
-} from 'redux-saga/effects';
+import { call, cancel, cancelled, fork, put, select, take, takeEvery } from 'redux-saga/effects';
 
 export const getSwap = (state: AppState): SwapState => state.swap;
 const ONE_SECOND = 1000;
@@ -45,13 +36,7 @@ export function* pollBityOrderStatus(): SagaIterator {
       yield put(orderStatusRequestedSwap());
       const orderStatus = yield call(getOrderStatus, swap.orderId);
       if (orderStatus.error) {
-        yield put(
-          showNotification(
-            'danger',
-            `Bity Error: ${orderStatus.msg}`,
-            TEN_SECONDS
-          )
-        );
+        yield put(showNotification('danger', `Bity Error: ${orderStatus.msg}`, TEN_SECONDS));
       } else {
         yield put(orderStatusSucceededSwap(orderStatus.data));
         yield call(delay, ONE_SECOND * 5);
@@ -81,9 +66,7 @@ export function* pollBityOrderStatusSaga(): SagaIterator {
   }
 }
 
-export function* postBityOrderCreate(
-  action: BityOrderCreateRequestedSwapAction
-): SagaIterator {
+export function* postBityOrderCreate(action: BityOrderCreateRequestedSwapAction): SagaIterator {
   const payload = action.payload;
   try {
     yield put(stopLoadBityRatesSwap());
@@ -96,9 +79,7 @@ export function* postBityOrderCreate(
     );
     if (order.error) {
       // TODO - handle better / like existing site?
-      yield put(
-        showNotification('danger', `Bity Error: ${order.msg}`, TEN_SECONDS)
-      );
+      yield put(showNotification('danger', `Bity Error: ${order.msg}`, TEN_SECONDS));
       yield put(bityOrderCreateFailedSwap());
     } else {
       yield put(bityOrderCreateSucceededSwap(order.data));
@@ -127,9 +108,7 @@ export function* bityTimeRemaining(): SagaIterator {
       yield call(delay, ONE_SECOND);
       const swap = yield select(getSwap);
       // if (swap.bityOrder.status === 'OPEN') {
-      const createdTimeStampMoment = moment(
-        swap.orderTimestampCreatedISOString
-      );
+      const createdTimeStampMoment = moment(swap.orderTimestampCreatedISOString);
       const validUntil = moment(createdTimeStampMoment).add(swap.validFor, 's');
       const now = moment();
       if (validUntil.isAfter(now)) {
@@ -145,9 +124,7 @@ export function* bityTimeRemaining(): SagaIterator {
             yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
             if (!hasShownNotification) {
               hasShownNotification = true;
-              yield put(
-                showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity)
-              );
+              yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity));
             }
             break;
           case 'CANC':
@@ -155,17 +132,13 @@ export function* bityTimeRemaining(): SagaIterator {
             yield put({ type: 'SWAP_STOP_LOAD_BITY_RATES' });
             if (!hasShownNotification) {
               hasShownNotification = true;
-              yield put(
-                showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity)
-              );
+              yield put(showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity));
             }
             break;
           case 'RCVE':
             if (!hasShownNotification) {
               hasShownNotification = true;
-              yield put(
-                showNotification('warning', BITY_TIMEOUT_MESSAGE, Infinity)
-              );
+              yield put(showNotification('warning', BITY_TIMEOUT_MESSAGE, Infinity));
             }
             break;
           case 'FILL':

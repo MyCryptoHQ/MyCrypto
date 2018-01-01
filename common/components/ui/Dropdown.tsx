@@ -12,7 +12,7 @@ interface Props<T> {
   color?: string;
   menuAlign?: string;
   formatTitle?(option: T): any;
-  onChange(value: T): void;
+  onChange?(value: T): void;
 }
 
 export default class DropdownComponent<T> extends Component<Props<T>, {}> {
@@ -79,7 +79,9 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
   };
 
   private onChange = (value: any) => {
-    this.props.onChange(value);
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
     if (this.dropdownShell) {
       this.dropdownShell.close();
     }

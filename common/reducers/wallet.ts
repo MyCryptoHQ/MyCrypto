@@ -1,17 +1,17 @@
 import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
 import {
-  SetTokenBalancesAction,
+  SetTokenBalancesFulfilledAction,
   SetWalletAction,
   WalletAction,
+  SetWalletConfigAction,
   TypeKeys
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
-import { BroadcastTransactionStatus } from 'libs/transaction';
-import { IWallet, Balance } from 'libs/wallet';
-import { getTxFromBroadcastTransactionStatus } from 'selectors/wallet';
+import { IWallet, Balance, WalletConfig } from 'libs/wallet';
 
 export interface State {
   inst?: IWallet | null;
+  config?: WalletConfig | null;
   // in ETH
   balance: Balance | { wei: null };
   tokens: {
@@ -20,20 +20,26 @@ export interface State {
       error: string | null;
     };
   };
-  transactions: BroadcastTransactionStatus[];
+  isTokensLoading: boolean;
+  tokensError: string | null;
+  hasSavedWalletTokens: boolean;
 }
 
 export const INITIAL_STATE: State = {
   inst: null,
+  config: null,
   balance: { isPending: false, wei: null },
   tokens: {},
-  transactions: []
+  isTokensLoading: false,
+  tokensError: null,
+  hasSavedWalletTokens: true
 };
 
 function setWallet(state: State, action: SetWalletAction): State {
   return {
     ...state,
     inst: action.payload,
+    config: INITIAL_STATE.config,
     balance: INITIAL_STATE.balance,
     tokens: INITIAL_STATE.tokens
   };
@@ -43,10 +49,7 @@ function setBalancePending(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: true } };
 }
 
-function setBalanceFullfilled(
-  state: State,
-  action: SetBalanceFullfilledAction
-): State {
+function setBalanceFullfilled(state: State, action: SetBalanceFullfilledAction): State {
   return {
     ...state,
     balance: { wei: action.payload, isPending: false }
@@ -57,76 +60,53 @@ function setBalanceRejected(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
-function setTokenBalances(state: State, action: SetTokenBalancesAction): State {
-  return { ...state, tokens: { ...state.tokens, ...action.payload } };
+function setTokenBalancesPending(state: State): State {
+  return {
+    ...state,
+    tokens: {},
+    isTokensLoading: true,
+    tokensError: null
+  };
 }
 
-function handleUpdateTxArray(
-  transactions: BroadcastTransactionStatus[],
-  broadcastStatusTx: BroadcastTransactionStatus,
-  isBroadcasting: boolean,
-  successfullyBroadcast: boolean
-): BroadcastTransactionStatus[] {
-  return transactions.map(item => {
-    if (item === broadcastStatusTx) {
-      return { ...item, isBroadcasting, successfullyBroadcast };
-    } else {
-      return { ...item };
-    }
-  });
+function setTokenBalancesFulfilled(state: State, action: SetTokenBalancesFulfilledAction): State {
+  return {
+    ...state,
+    tokens: action.payload,
+    isTokensLoading: false
+  };
 }
 
-function handleTxBroadcastCompleted(
-  state: State,
-  signedTx: string,
-  successfullyBroadcast: boolean
-): BroadcastTransactionStatus[] {
-  const existingTx = getTxFromBroadcastTransactionStatus(
-    state.transactions,
-    signedTx
-  );
-  if (existingTx) {
-    const isBroadcasting = false;
-    return handleUpdateTxArray(
-      state.transactions,
-      existingTx,
-      isBroadcasting,
-      successfullyBroadcast
-    );
-  } else {
-    return state.transactions;
-  }
+function setTokenBalancesRejected(state: State): State {
+  return {
+    ...state,
+    isTokensLoading: false,
+    tokensError: 'Failed to fetch token values'
+  };
 }
 
-function handleBroadcastTxRequested(state: State, signedTx: string) {
-  const existingTx = getTxFromBroadcastTransactionStatus(
-    state.transactions,
-    signedTx
-  );
-  const isBroadcasting = true;
-  const successfullyBroadcast = false;
-  if (!existingTx) {
-    return state.transactions.concat([
-      {
-        signedTx,
-        isBroadcasting,
-        successfullyBroadcast
-      }
-    ]);
-  } else {
-    return handleUpdateTxArray(
-      state.transactions,
-      existingTx,
-      isBroadcasting,
-      successfullyBroadcast
-    );
-  }
+function scanWalletForTokens(state: State): State {
+  return {
+    ...state,
+    hasSavedWalletTokens: false
+  };
 }
 
-export function wallet(
-  state: State = INITIAL_STATE,
-  action: WalletAction
-): State {
+function setWalletTokens(state: State): State {
+  return {
+    ...state,
+    hasSavedWalletTokens: true
+  };
+}
+
+function setWalletConfig(state: State, action: SetWalletConfigAction): State {
+  return {
+    ...state,
+    config: action.payload
+  };
+}
+
+export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
     case TypeKeys.WALLET_SET:
       return setWallet(state, action);
@@ -138,31 +118,18 @@ export function wallet(
       return setBalanceFullfilled(state, action);
     case TypeKeys.WALLET_SET_BALANCE_REJECTED:
       return setBalanceRejected(state);
-    case TypeKeys.WALLET_SET_TOKEN_BALANCES:
-      return setTokenBalances(state, action);
-    case TypeKeys.WALLET_BROADCAST_TX_REQUESTED:
-      return {
-        ...state,
-        transactions: handleBroadcastTxRequested(state, action.payload.signedTx)
-      };
-    case TypeKeys.WALLET_BROADCAST_TX_SUCCEEDED:
-      return {
-        ...state,
-        transactions: handleTxBroadcastCompleted(
-          state,
-          action.payload.signedTx,
-          true
-        )
-      };
-    case TypeKeys.WALLET_BROADCAST_TX_FAILED:
-      return {
-        ...state,
-        transactions: handleTxBroadcastCompleted(
-          state,
-          action.payload.signedTx,
-          false
-        )
-      };
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING:
+      return setTokenBalancesPending(state);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED:
+      return setTokenBalancesFulfilled(state, action);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED:
+      return setTokenBalancesRejected(state);
+    case TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS:
+      return scanWalletForTokens(state);
+    case TypeKeys.WALLET_SET_WALLET_TOKENS:
+      return setWalletTokens(state);
+    case TypeKeys.WALLET_SET_CONFIG:
+      return setWalletConfig(state, action);
     default:
       return state;
   }

@@ -1,0 +1,17 @@
+@import "common/sass/variables";
+
+.GenPaper {
+  &-title {
+    margin: $space 0 $space;
+  }
+
+  &-private {
+    max-width: 700px;
+    margin: 0 auto $space * 3;
+  }
+
+  &-paper,
+  &-warning {
+    margin-bottom: $space * 3;
+  }
+}

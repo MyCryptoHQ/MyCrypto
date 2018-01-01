@@ -23,6 +23,19 @@
     margin-bottom: 0;
     margin-top: 0;
     font-size: $font-size-base;
-    padding: .55rem $space-xl;
+    padding: .5rem $space-xl;
+  }
+
+  // Fix for nested dropdown button
+  &:not(:first-child) > .dropdown > .btn {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &:not(:last-child) > .dropdown > .btn {
+    border-right: 0;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
   }
 }
