@@ -3,10 +3,10 @@ import { Identicon } from 'components/ui';
 import translate from 'translations';
 //import { EnsAddress } from './components';
 import { Query } from 'components/renderCbs';
-import { donationAddressMap } from 'config/data';
 import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import { CallbackProps } from 'components/AddressFieldFactory';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -14,14 +14,15 @@ interface StateProps {
 }
 interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
+  withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
 type Props = OwnProps & StateProps;
 
 //TODO: ENS handling
-class AddressInputClass extends Component<Props> {
+class AddressInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentTo, onChange, isValid } = this.props;
+    const { currentTo, onChange, isValid, withProps } = this.props;
     const { raw } = currentTo;
     return (
       <div className="row form-group">
@@ -29,16 +30,9 @@ class AddressInputClass extends Component<Props> {
           <label>{translate('SEND_addr')}:</label>
           <Query
             params={['readOnly']}
-            withQuery={({ readOnly }) => (
-              <input
-                className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
-                type="text"
-                value={raw}
-                placeholder={donationAddressMap.ETH}
-                readOnly={!!readOnly}
-                onChange={onChange}
-              />
-            )}
+            withQuery={({ readOnly }) =>
+              withProps({ currentTo, isValid, onChange, readOnly: !!readOnly })
+            }
           />
           {/*<EnsAddress ensAddress={ensAddress} />*/}
         </div>
@@ -50,7 +44,7 @@ class AddressInputClass extends Component<Props> {
   }
 }
 
-export const AddressInput = connect((state: AppState) => ({
+export const AddressInputFactory = connect((state: AppState) => ({
   currentTo: getCurrentTo(state),
   isValid: isValidCurrentTo(state)
-}))(AddressInputClass);
+}))(AddressInputFactoryClass);
