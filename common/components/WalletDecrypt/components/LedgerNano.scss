@@ -1,10 +1,5 @@
-.TrezorDecrypt {
+.LedgerDecrypt {
   text-align: center;
-  padding-top: 30px;
-
-  &-decrypt {
-    width: 100%;
-  }
 
   &-help {
     margin-top: 10px;
@@ -21,6 +16,16 @@
   }
 
   &-buy {
-    margin-top: 10px;
+    margin: 10px 0;
+  }
+
+  &-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .Spinner {
+      margin-right: 16px;
+    }
   }
 }
