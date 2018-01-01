@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="620px" height="620px" viewBox="0 0 620 620" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>swap</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="170" cy="170" r="170"></circle>
+        <circle id="path-3" cx="170" cy="170" r="170"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="swap">
+            <g id="Yellow-Coin" transform="translate(0.000000, 280.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <circle stroke="#0E97C0" stroke-width="20" cx="170" cy="170" r="160"></circle>
+                <rect id="Rectangle" fill="#FFE14D" mask="url(#mask-2)" x="-1.13333333" y="1.13333333" width="173.4" height="340"></rect>
+                <rect id="Rectangle" fill="#FFCC33" mask="url(#mask-2)" x="171.133333" y="1.13333333" width="173.4" height="340"></rect>
+                <circle id="Oval-2" stroke="#333333" stroke-width="20" mask="url(#mask-2)" cx="170" cy="170" r="160"></circle>
+                <circle id="Oval-3" stroke="#F28618" stroke-width="20" mask="url(#mask-2)" cx="170" cy="170" r="96.3333333"></circle>
+            </g>
+            <g id="Blue-Coin" transform="translate(280.000000, 0.000000)">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <circle stroke="#0E97C0" stroke-width="20" cx="170" cy="170" r="160"></circle>
+                <rect id="Rectangle" fill="#6EA6E8" mask="url(#mask-4)" x="-1.13333333" y="1.13333333" width="173.4" height="340"></rect>
+                <rect id="Rectangle" fill="#5C9BE4" mask="url(#mask-4)" x="171.133333" y="1.13333333" width="173.4" height="340"></rect>
+                <circle id="Oval-2" stroke="#333333" stroke-width="20" mask="url(#mask-4)" cx="170" cy="170" r="160"></circle>
+                <circle id="Oval-3" stroke="#2F79CF" stroke-width="20" mask="url(#mask-4)" cx="170" cy="170" r="96.3333333"></circle>
+            </g>
+            <g id="Group" transform="translate(226.000000, 320.000000)" fill-rule="nonzero">
+                <polygon id="Shape" fill="#0492BE" points="311.67 8 385.42 8 385.42 171.31 144.71 171.31 144.71 234.53 13 134.44 144.71 34.34 144.71 97.56 311.67 97.56"></polygon>
+                <polygon id="Shape" fill="#103957" opacity="0.2" points="348.54 134.44 13 134.44 144.71 234.53 144.71 171.31 385.42 171.31 385.42 8 348.54 8"></polygon>
+                <path d="M152.66,250.36 L0,134.36 L152.66,18.36 L152.66,89.61 L303.82,89.61 L303.82,0 L393.38,0 L393.38,179.11 L152.66,179.11 L152.66,250.36 Z M26.11,134.36 L136.85,218.52 L136.85,163.31 L377.58,163.31 L377.58,15.8 L319.63,15.8 L319.63,105.36 L136.86,105.36 L136.86,50.17 L26.11,134.36 Z" id="Shape" fill="#000000"></path>
+            </g>
+            <g id="Group" transform="translate(197.000000, 174.500000) rotate(180.000000) translate(-197.000000, -174.500000) translate(0.000000, 49.000000)" fill-rule="nonzero">
+                <polygon id="Shape" fill="#0492BE" points="311.67 8 385.42 8 385.42 171.31 144.71 171.31 144.71 234.53 13 134.44 144.71 34.34 144.71 97.56 311.67 97.56"></polygon>
+                <polygon id="Shape" fill="#103957" opacity="0.2" points="348.54 134.44 13 134.44 144.71 234.53 144.71 171.31 385.42 171.31 385.42 8 348.54 8"></polygon>
+                <path d="M152.66,250.36 L0,134.36 L152.66,18.36 L152.66,89.61 L303.82,89.61 L303.82,0 L393.38,0 L393.38,179.11 L152.66,179.11 L152.66,250.36 Z M26.11,134.36 L136.85,218.52 L136.85,163.31 L377.58,163.31 L377.58,15.8 L319.63,15.8 L319.63,105.36 L136.86,105.36 L136.86,50.17 L26.11,134.36 Z" id="Shape" fill="#000000"></path>
+            </g>
+        </g>
+    </g>
+</svg>
