@@ -5,13 +5,15 @@ import 'sass/styles.scss';
 import 'babel-polyfill';
 import 'whatwg-fetch';
 import React from 'react';
+import OfflineRuntime from 'offline-plugin/runtime';
 import { render } from 'react-dom';
 import Root from './Root';
 import { configuredStore } from './store';
 import consoleAdvertisement from './utils/consoleAdvertisement';
 
-const appEl = document.getElementById('app');
+OfflineRuntime.install();
 
+const appEl = document.getElementById('app');
 render(<Root store={configuredStore} />, appEl);
 
 if (module.hot) {
