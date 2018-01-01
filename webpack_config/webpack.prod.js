@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
-// const OfflinePlugin = require('offline-plugin')
+const OfflinePlugin = require('offline-plugin');
 const base = require('./webpack.base');
 const config = require('./config');
 const rimraf = require('rimraf');
@@ -66,15 +66,10 @@ base.plugins.push(
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     filename: 'vendor.[chunkhash:8].js'
+  }),
+  new OfflinePlugin({
+    appShell: '/'
   })
-  // For progressive web apps
-  // new OfflinePlugin({
-  //   relativePaths: false,
-  //   AppCache: false,
-  //   ServiceWorker: {
-  //     events: true
-  //   }
-  // })
 );
 
 // minimize webpack output
