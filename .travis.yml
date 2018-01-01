@@ -21,6 +21,8 @@ install:
 jobs:
   include:
     - stage: test
+      script: npm run prettier:diff
+    - stage: test
       script: npm run test
     - stage: test
       script: npm run tslint
