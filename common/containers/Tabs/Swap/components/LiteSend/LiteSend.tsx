@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { OfflineAwareUnlockHeader } from 'components';
+import WalletDecrypt from 'components/WalletDecrypt';
 import { OnlyUnlocked } from 'components/renderCbs';
 import { Aux } from 'components/ui';
 import { Fields } from './Fields';
@@ -28,7 +28,7 @@ class LiteSendClass extends Component<Props> {
     }
     return (
       <Aux>
-        <OfflineAwareUnlockHeader />
+        <WalletDecrypt />
         <OnlyUnlocked whenUnlocked={<Fields />} />
       </Aux>
     );
