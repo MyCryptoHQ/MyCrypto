@@ -2,7 +2,7 @@ import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import DPATHS from 'config/dpaths';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
+import { DeterministicWalletsModal } from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
 
 const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
@@ -18,7 +18,7 @@ interface State {
   dPath: string;
 }
 
-export default class MnemonicDecrypt extends Component<Props, State> {
+export class MnemonicDecrypt extends Component<Props, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',
@@ -32,9 +32,8 @@ export default class MnemonicDecrypt extends Component<Props, State> {
     const isValidMnemonic = validateMnemonic(formattedPhrase);
 
     return (
-      <section className="col-md-4 col-sm-6">
+      <div>
         <div id="selectedTypeKey">
-          <h4>{translate('ADD_Radio_5')}</h4>
           <div className="form-group">
             <textarea
               id="aria-private-key"
@@ -55,17 +54,16 @@ export default class MnemonicDecrypt extends Component<Props, State> {
               type="password"
             />
           </div>
-          {isValidMnemonic && (
-            <div className="form-group">
-              <button
-                style={{ width: '100%' }}
-                onClick={this.onDWModalOpen}
-                className="btn btn-primary btn-lg"
-              >
-                {translate('Choose Address')}
-              </button>
-            </div>
-          )}
+          <div className="form-group">
+            <button
+              style={{ width: '100%' }}
+              onClick={this.onDWModalOpen}
+              className="btn btn-primary btn-lg"
+              disabled={!isValidMnemonic}
+            >
+              {translate('Choose Address')}
+            </button>
+          </div>
         </div>
 
         <DeterministicWalletsModal
@@ -78,7 +76,7 @@ export default class MnemonicDecrypt extends Component<Props, State> {
           onPathChange={this.handlePathChange}
           walletType={translateRaw('x_Mnemonic')}
         />
-      </section>
+      </div>
     );
   }
 

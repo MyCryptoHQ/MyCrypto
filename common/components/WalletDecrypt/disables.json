@@ -1,0 +1,4 @@
+{
+  "READ_ONLY": ["view-only"],
+  "UNABLE_TO_SIGN": ["trezor", "view-only"]
+}

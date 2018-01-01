@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
 import { knowledgeBaseURL } from 'config/data';
-
 import './Navigation.scss';
 
-const tabs = [
+export interface TabLink {
+  name: string;
+  to: string;
+  external?: boolean;
+}
+
+const tabs: TabLink[] = [
   {
     name: 'NAV_GenerateWallet',
     to: '/generate'

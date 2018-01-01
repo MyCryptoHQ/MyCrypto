@@ -44,7 +44,7 @@ class SendTransaction extends React.Component<Props> {
     return (
       <TabSection>
         <section className="Tab-content">
-          <OfflineAwareUnlockHeader allowReadOnly={true} />
+          <OfflineAwareUnlockHeader />
           {wallet && <WalletTabs {...tabProps} />}
         </section>
       </TabSection>

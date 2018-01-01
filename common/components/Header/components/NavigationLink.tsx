@@ -2,28 +2,29 @@ import classnames from 'classnames';
 import React from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
+import { TabLink } from './Navigation';
 import './NavigationLink.scss';
 
 interface Props extends RouteComponentProps<{}> {
-  link: {
-    name: string;
-    to?: string;
-    external?: boolean;
-  };
+  link: TabLink;
   isHomepage: boolean;
 }
 
 class NavigationLink extends React.Component<Props, {}> {
   public render() {
     const { link, location, isHomepage } = this.props;
-    // isActive if
-    // 1) Current path is the same as link
-    // 2) the first path is the same for both links (/account and /account/send)
-    // 3) we're at the root path and this is the "homepage" nav item
-    const isActive =
-      location.pathname === link.to ||
-      (link.to && location.pathname.split('/')[1] === link.to.split('/')[1]) ||
-      (isHomepage && location.pathname === '/');
+    const isExternalLink = link.to.includes('http');
+    let isActive = false;
+
+    if (!isExternalLink) {
+      // isActive if
+      // 1) Current path is the same as link
+      // 2) the first path is the same for both links (/account and /account/send)
+      // 3) we're at the root path and this is the "homepage" nav item
+      const isSubRoute = location.pathname.split('/')[1] === link.to.split('/')[1];
+      isActive =
+        location.pathname === link.to || isSubRoute || (isHomepage && location.pathname === '/');
+    }
 
     const linkClasses = classnames({
       'NavigationLink-link': true,
