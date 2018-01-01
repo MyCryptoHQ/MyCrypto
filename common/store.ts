@@ -130,9 +130,18 @@ const configureStore = () => {
         },
         swap: {
           ...state.swap,
-          options: {},
-          bityRates: {},
-          shapeshiftRates: {}
+          options: {
+            byId: {},
+            allIds: []
+          },
+          bityRates: {
+            byId: {},
+            allIds: []
+          },
+          shapeshiftRates: {
+            byId: {},
+            allIds: []
+          }
         },
         customTokens: state.customTokens
       });
