@@ -36,9 +36,7 @@ interface Props {
   tokens: MergedToken[];
 
   // Redux actions
-  getDeterministicWallets(
-    args: GetDeterministicWalletsArgs
-  ): GetDeterministicWalletsAction;
+  getDeterministicWallets(args: GetDeterministicWalletsArgs): GetDeterministicWalletsAction;
   setDesiredToken(tkn: string | undefined): SetDesiredTokenAction;
 
   onCancel(): void;
@@ -115,10 +113,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
         handleClose={onCancel}
       >
         <div className="DWModal">
-          <form
-            className="DWModal-path form-group-sm"
-            onSubmit={this.handleSubmitCustomPath}
-          >
+          <form className="DWModal-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
             <span className="DWModal-path-label">Addresses for</span>
             <select
               className="form-control"
@@ -166,9 +161,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
                   <td>More</td>
                 </tr>
               </thead>
-              <tbody>
-                {wallets.map(wallet => this.renderWalletRow(wallet))}
-              </tbody>
+              <tbody>{wallets.map(wallet => this.renderWalletRow(wallet))}</tbody>
             </table>
 
             <div className="DWModal-addresses-nav">
@@ -207,8 +200,8 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     }
   }
 
-  private handleChangePath = (ev: React.SyntheticEvent<HTMLSelectElement>) => {
-    const { value } = ev.target as HTMLSelectElement;
+  private handleChangePath = (ev: React.FormEvent<HTMLSelectElement>) => {
+    const { value } = ev.currentTarget;
 
     if (value === 'custom') {
       this.setState({ isCustomPath: true });
@@ -220,15 +213,11 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     }
   };
 
-  private handleChangeCustomPath = (
-    ev: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    this.setState({ customPath: (ev.target as HTMLInputElement).value });
+  private handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ customPath: ev.currentTarget.value });
   };
 
-  private handleSubmitCustomPath = (
-    ev: React.SyntheticEvent<HTMLFormElement>
-  ) => {
+  private handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!isValidPath(this.state.customPath)) {
       return;
@@ -236,18 +225,13 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
     this.props.onPathChange(this.state.customPath);
   };
 
-  private handleChangeToken = (ev: React.SyntheticEvent<HTMLSelectElement>) => {
-    this.props.setDesiredToken(
-      (ev.target as HTMLSelectElement).value || undefined
-    );
+  private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
+    this.props.setDesiredToken(ev.currentTarget.value || undefined);
   };
 
   private handleConfirmAddress = () => {
     if (this.state.selectedAddress) {
-      this.props.onConfirmAddress(
-        this.state.selectedAddress,
-        this.state.selectedAddrIndex
-      );
+      this.props.onConfirmAddress(this.state.selectedAddress, this.state.selectedAddrIndex);
     }
   };
 
@@ -260,10 +244,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
   };
 
   private prevPage = () => {
-    this.setState(
-      { page: Math.max(this.state.page - 1, 0) },
-      this.getAddresses
-    );
+    this.setState({ page: Math.max(this.state.page - 1, 0) }, this.getAddresses);
   };
 
   private renderWalletRow(wallet: DeterministicWalletData) {
@@ -294,6 +275,7 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
             value={wallet.value}
             symbol={network.unit}
             displayShortBalance={true}
+            checkOffline={true}
           />
         </td>
         <td>
@@ -303,16 +285,14 @@ class DeterministicWalletsModal extends React.Component<Props, State> {
               value={token.value}
               symbol={desiredToken}
               displayShortBalance={true}
+              checkOffline={true}
             />
           ) : (
             '???'
           )}
         </td>
         <td>
-          <a
-            target="_blank"
-            href={`https://ethplorer.io/address/${wallet.address}`}
-          >
+          <a target="_blank" href={`https://ethplorer.io/address/${wallet.address}`}>
             <i className="DWModal-addresses-table-more" />
           </a>
         </td>

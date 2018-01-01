@@ -7,7 +7,8 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { Dropdown } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { without, intersection } from 'lodash';
+import intersection from 'lodash/intersection';
+import without from 'lodash/without';
 import './CurrencySwap.scss';
 
 export interface StateProps {
@@ -156,10 +157,10 @@ export default class CurrencySwap extends Component<Props, State> {
     }
   };
 
-  public onChangeAmount = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const type = (event.target as HTMLInputElement).id;
+  public onChangeAmount = (event: React.FormEvent<HTMLInputElement>) => {
+    const type = event.currentTarget.id;
     const { origin, destination } = this.state;
-    const amount = parseFloat((event.target as HTMLInputElement).value);
+    const amount = parseFloat(event.currentTarget.value);
     type === 'origin-swap-input'
       ? this.updateOriginAmount(origin, destination, amount)
       : this.updateDestinationAmount(origin, destination, amount);

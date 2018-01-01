@@ -11,9 +11,7 @@ export function fetchCCRates(symbols: string[] = []): interfaces.FetchCCRates {
 }
 
 export type TFetchCCRatesSucceeded = typeof fetchCCRatesSucceeded;
-export function fetchCCRatesSucceeded(
-  payload: CCResponse
-): interfaces.FetchCCRatesSucceeded {
+export function fetchCCRatesSucceeded(payload: CCResponse): interfaces.FetchCCRatesSucceeded {
   return {
     type: TypeKeys.RATES_FETCH_CC_SUCCEEDED,
     payload

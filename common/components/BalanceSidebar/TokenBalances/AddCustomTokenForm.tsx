@@ -1,25 +1,43 @@
+import React from 'react';
 import classnames from 'classnames';
 import { Token } from 'config/data';
 import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
-import React from 'react';
 import translate from 'translations';
+import NewTabLink from 'components/ui/NewTabLink';
+import './AddCustomTokenForm.scss';
 
 interface Props {
+  allTokens: Token[];
   onSave(params: Token): void;
+  toggleForm(): void;
+}
+
+interface IGenerateSymbolLookup {
+  [tokenSymbol: string]: boolean;
 }
 
 interface State {
+  tokenSymbolLookup: IGenerateSymbolLookup;
   address: string;
   symbol: string;
   decimal: string;
 }
 
 export default class AddCustomTokenForm extends React.Component<Props, State> {
-  public state = {
+  public state: State = {
+    tokenSymbolLookup: {},
     address: '',
     symbol: '',
     decimal: ''
   };
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      ...this.state,
+      tokenSymbolLookup: this.generateSymbolLookup(props.allTokens)
+    };
+  }
 
   public render() {
     const { address, symbol, decimal } = this.state;
@@ -28,14 +46,14 @@ export default class AddCustomTokenForm extends React.Component<Props, State> {
 
     const fields = [
       {
-        name: 'address',
-        value: address,
-        label: translate('TOKEN_Addr')
-      },
-      {
         name: 'symbol',
         value: symbol,
         label: translate('TOKEN_Symbol')
+      },
+      {
+        name: 'address',
+        value: address,
+        label: translate('TOKEN_Addr')
       },
       {
         name: 'decimal',
@@ -53,60 +71,77 @@ export default class AddCustomTokenForm extends React.Component<Props, State> {
               <input
                 className={classnames(
                   inputClasses,
-                  errors[field.name] ? 'is-invalid' : 'is-valid'
+                  errors[field.name] ? 'is-invalid' : field.value ? 'is-valid' : ''
                 )}
                 type="text"
                 name={field.name}
                 value={field.value}
                 onChange={this.onFieldChange}
               />
+              {typeof errors[field.name] === 'string' && (
+                <div className="AddCustom-field-error">{errors[field.name]}</div>
+              )}
             </label>
           );
         })}
 
-        <button
-          className="btn btn-primary btn-sm btn-block"
-          disabled={!this.isValid()}
-        >
-          {translate('x_Save')}
-        </button>
+        <div className="AddCustom-buttons">
+          <NewTabLink
+            href="https://myetherwallet.github.io/knowledge-base/send/adding-new-token-and-sending-custom-tokens.html"
+            className="AddCustom-buttons-help"
+          >
+            {translate('Need help? Learn how to add custom tokens.')}
+          </NewTabLink>
+          <button
+            className="AddCustom-buttons-btn btn btn-primary btn-sm"
+            disabled={!this.isValid()}
+          >
+            {translate('x_Save')}
+          </button>
+          <button
+            className="AddCustom-buttons-btn btn btn-sm btn-default"
+            onClick={this.props.toggleForm}
+          >
+            {translate('x_Cancel')}
+          </button>
+        </div>
       </form>
     );
   }
 
   public getErrors() {
     const { address, symbol, decimal } = this.state;
-    const errors = {
-      decimal: false,
-      address: false,
-      symbol: false
-    };
+    const errors: { [key: string]: boolean | string } = {};
 
-    if (!isPositiveIntegerOrZero(parseInt(decimal, 10))) {
+    // Formatting errors
+    if (decimal && !isPositiveIntegerOrZero(parseInt(decimal, 10))) {
       errors.decimal = true;
     }
-    if (!isValidETHAddress(address)) {
+    if (address && !isValidETHAddress(address)) {
       errors.address = true;
     }
-    if (!symbol) {
-      errors.symbol = true;
+
+    // Message errors
+    if (symbol && this.state.tokenSymbolLookup[symbol]) {
+      errors.symbol = 'A token with this symbol already exists';
     }
 
     return errors;
   }
 
   public isValid() {
-    return !Object.keys(this.getErrors()).length;
+    const { address, symbol, decimal } = this.state;
+    return !Object.keys(this.getErrors()).length && address && symbol && decimal;
   }
 
-  public onFieldChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  public onFieldChange = (e: React.FormEvent<HTMLInputElement>) => {
     // TODO: typescript bug: https://github.com/Microsoft/TypeScript/issues/13948
-    const name: any = (e.target as HTMLInputElement).name;
-    const value = (e.target as HTMLInputElement).value;
+    const name: any = e.currentTarget.name;
+    const value = e.currentTarget.value;
     this.setState({ [name]: value });
   };
 
-  public onSave = (ev: React.SyntheticEvent<HTMLFormElement>) => {
+  public onSave = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!this.isValid()) {
       return;
@@ -115,4 +150,14 @@ export default class AddCustomTokenForm extends React.Component<Props, State> {
     const { address, symbol, decimal } = this.state;
     this.props.onSave({ address, symbol, decimal: parseInt(decimal, 10) });
   };
+
+  private generateSymbolLookup(tokens: Token[]) {
+    return tokens.reduce(
+      (prev, tk) => {
+        prev[tk.symbol] = true;
+        return prev;
+      },
+      {} as IGenerateSymbolLookup
+    );
+  }
 }

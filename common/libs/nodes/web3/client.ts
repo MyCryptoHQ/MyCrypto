@@ -21,23 +21,16 @@ export default class Web3Client extends RPCClient {
     this.sendAsync(this.decorateRequest(request)) as Promise<JsonRpcResponse>;
 
   public batch = (requests: RPCRequest[] | any): Promise<JsonRpcResponse[]> =>
-    this.sendAsync(requests.map(this.decorateRequest)) as Promise<
-      JsonRpcResponse[]
-    >;
+    this.sendAsync(requests.map(this.decorateRequest)) as Promise<JsonRpcResponse[]>;
 
-  private sendAsync = (
-    request: any
-  ): Promise<JsonRpcResponse | JsonRpcResponse[]> => {
+  private sendAsync = (request: any): Promise<JsonRpcResponse | JsonRpcResponse[]> => {
     return new Promise((resolve, reject) => {
-      this.provider.sendAsync(
-        request,
-        (error, result: JsonRpcResponse | JsonRpcResponse[]) => {
-          if (error) {
-            return reject(error);
-          }
-          resolve(result);
+      this.provider.sendAsync(request, (error, result: JsonRpcResponse | JsonRpcResponse[]) => {
+        if (error) {
+          return reject(error);
         }
-      );
+        resolve(result);
+      });
     });
   };
 }

@@ -14,10 +14,7 @@ interface Props {
 export default class SignMessageButton extends React.Component<Props, {}> {
   public render() {
     return (
-      <button
-        className="SignMessage-sign btn btn-primary btn-lg"
-        onClick={this.handleSignMessage}
-      >
+      <button className="SignMessage-sign btn btn-primary btn-lg" onClick={this.handleSignMessage}>
         {translate('NAV_SignMsg')}
       </button>
     );

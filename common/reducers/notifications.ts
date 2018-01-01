@@ -13,16 +13,13 @@ function showNotification(state: State, action: ShowNotificationAction): State {
   return state.concat(action.payload);
 }
 
-function closeNotification(state, action: CloseNotificationAction): State {
+function closeNotification(state: State, action: CloseNotificationAction): State {
   state = [...state];
   state.splice(state.indexOf(action.payload), 1);
   return state;
 }
 
-export function notifications(
-  state: State = INITIAL_STATE,
-  action: NotificationsAction
-): State {
+export function notifications(state: State = INITIAL_STATE, action: NotificationsAction): State {
   switch (action.type) {
     case TypeKeys.SHOW_NOTIFICATION:
       return showNotification(state, action);

@@ -8,21 +8,11 @@ import {
   toBuffer,
   pubToAddress
 } from 'ethereumjs-util';
-import { RawTransaction } from 'libs/transaction';
-import { isValidRawTx } from 'libs/validators';
 import { stripHexPrefixAndLower } from 'libs/values';
 
-export function signRawTxWithPrivKey(
-  privKey: Buffer,
-  rawTx: RawTransaction
-): string {
-  if (!isValidRawTx(rawTx)) {
-    throw new Error('Invalid raw transaction');
-  }
-
-  const eTx = new EthTx(rawTx);
-  eTx.sign(privKey);
-  return '0x' + eTx.serialize().toString('hex');
+export function signRawTxWithPrivKey(privKey: Buffer, t: EthTx): Buffer {
+  t.sign(privKey);
+  return t.serialize();
 }
 
 // adapted from:
@@ -49,23 +39,15 @@ export interface ISignedMessage {
 
 // adapted from:
 // https://github.com/kvhnuke/etherwallet/blob/2a5bc0db1c65906b14d8c33ce9101788c70d3774/app/scripts/controllers/signMsgCtrl.js#L118
-export function verifySignedMessage({
-  address,
-  message,
-  signature,
-  version
-}: ISignedMessage) {
+export function verifySignedMessage({ address, message, signature, version }: ISignedMessage) {
   const sig = new Buffer(stripHexPrefixAndLower(signature), 'hex');
   if (sig.length !== 65) {
     return false;
   }
   //TODO: explain what's going on here
   sig[64] = sig[64] === 0 || sig[64] === 1 ? sig[64] + 27 : sig[64];
-  const hash =
-    version === '2' ? hashPersonalMessage(toBuffer(message)) : sha3(message);
+  const hash = version === '2' ? hashPersonalMessage(toBuffer(message)) : sha3(message);
   const pubKey = ecrecover(hash, sig[64], sig.slice(0, 32), sig.slice(32, 64));
 
-  return (
-    stripHexPrefixAndLower(address) === pubToAddress(pubKey).toString('hex')
-  );
+  return stripHexPrefixAndLower(address) === pubToAddress(pubKey).toString('hex');
 }

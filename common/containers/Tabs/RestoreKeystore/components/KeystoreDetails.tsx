@@ -26,7 +26,7 @@ const initialState: State = {
   wallet: null
 };
 
-const minLength = min => value => value && value.length >= min;
+const minLength = (min: number) => (value: string) => !!value && value.length >= min;
 const minLength9 = minLength(9);
 
 class KeystoreDetails extends Component<{}, State> {
@@ -100,9 +100,9 @@ class KeystoreDetails extends Component<{}, State> {
           </a>
         ) : (
           <p>
-            Error generating a valid keystore that matches your private key. In
-            order to protect our users, if our runtime check fails, we prevent
-            you from downloading a potentially corrupted wallet.
+            Error generating a valid keystore that matches your private key. In order to protect our
+            users, if our runtime check fails, we prevent you from downloading a potentially
+            corrupted wallet.
           </p>
         )}
       </div>

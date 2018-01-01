@@ -12,6 +12,7 @@ import {
   resetWallet,
   TResetWallet
 } from 'actions/wallet';
+import { reset, TReset } from 'actions/transaction';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import React, { Component } from 'react';
@@ -29,20 +30,24 @@ import Help from 'components/ui/Help';
 import { knowledgeBaseURL } from 'config/data';
 import NavigationPrompt from './NavigationPrompt';
 import { IWallet } from 'libs/wallet';
+import { showNotification, TShowNotification } from 'actions/notifications';
 
 type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
+  resetTransactionState: TReset;
   unlockKeystore: TUnlockKeystore;
   unlockMnemonic: TUnlockMnemonic;
   unlockPrivateKey: TUnlockPrivateKey;
   setWallet: TSetWallet;
   unlockWeb3: TUnlockWeb3;
   resetWallet: TResetWallet;
+  showNotification: TShowNotification;
   wallet: IWallet;
   hidden?: boolean;
   offline: boolean;
   allowReadOnly?: boolean;
+  disabledWallets?: string[];
 }
 
 interface State {
@@ -122,7 +127,12 @@ export class WalletDecrypt extends Component<Props, State> {
       return null;
     }
     return (
-      <selectedWallet.component value={value} onChange={this.onChange} onUnlock={this.onUnlock} />
+      <selectedWallet.component
+        value={value}
+        onChange={this.onChange}
+        onUnlock={this.onUnlock}
+        showNotification={this.props.showNotification}
+      />
     );
   }
 
@@ -137,7 +147,8 @@ export class WalletDecrypt extends Component<Props, State> {
       const isSelected = this.state.selectedWalletKey === key;
       const isDisabled =
         this.isOnlineRequiredWalletAndOffline(key) ||
-        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt);
+        (!this.props.allowReadOnly && wallet.component === ViewOnlyDecrypt) ||
+        this.isWalletDisabled(key);
 
       return (
         <label className="radio" key={key}>
@@ -158,15 +169,15 @@ export class WalletDecrypt extends Component<Props, State> {
     });
   }
 
-  public handleDecryptionChoiceChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const wallet = this.WALLETS[(event.target as HTMLInputElement).value];
+  public handleDecryptionChoiceChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const wallet = this.WALLETS[event.currentTarget.value];
 
     if (!wallet) {
       return;
     }
 
     this.setState({
-      selectedWalletKey: (event.target as HTMLInputElement).value,
+      selectedWalletKey: event.currentTarget.value,
       value: wallet.initialParams
     });
   };
@@ -178,30 +189,32 @@ export class WalletDecrypt extends Component<Props, State> {
     return (
       <div>
         <NavigationPrompt when={unlocked} onConfirm={this.props.resetWallet} />
-        <article hidden={hidden} className="Tab-content-pane row">
-          <section className="col-md-4 col-sm-6">
-            <h4>{translate('decrypt_Access')}</h4>
-
-            {this.buildWalletOptions()}
-          </section>
-
-          {decryptionComponent}
-          {!!(this.state.value as PrivateKeyValue).valid && (
+        {!hidden && (
+          <article className="Tab-content-pane row">
             <section className="col-md-4 col-sm-6">
-              <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
-              <div className="form-group">
-                <a
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-primary btn-block"
-                  onClick={this.onUnlock}
-                >
-                  {translate('ADD_Label_6_short')}
-                </a>
-              </div>
+              <h4>{translate('decrypt_Access')}</h4>
+
+              {this.buildWalletOptions()}
             </section>
-          )}
-        </article>
+
+            {decryptionComponent}
+            {!!(this.state.value as PrivateKeyValue).valid && (
+              <section className="col-md-4 col-sm-6">
+                <h4 id="uploadbtntxt-wallet">{translate('ADD_Label_6')}</h4>
+                <div className="form-group">
+                  <a
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-primary btn-block"
+                    onClick={this.onUnlock}
+                  >
+                    {translate('ADD_Label_6_short')}
+                  </a>
+                </div>
+              </section>
+            )}
+          </article>
+        )}
       </div>
     );
   }
@@ -215,6 +228,14 @@ export class WalletDecrypt extends Component<Props, State> {
     // in this case, we can expect the payload to contain the unlocked wallet info.
     const unlockValue = this.state.value && !isEmpty(this.state.value) ? this.state.value : payload;
     this.WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
+    this.props.resetTransactionState();
+  };
+
+  private isWalletDisabled = (walletKey: string) => {
+    if (!this.props.disabledWallets) {
+      return false;
+    }
+    return this.props.disabledWallets.indexOf(walletKey) !== -1;
   };
 }
 
@@ -231,5 +252,7 @@ export default connect(mapStateToProps, {
   unlockPrivateKey,
   unlockWeb3,
   setWallet,
-  resetWallet
+  resetWallet,
+  resetTransactionState: reset,
+  showNotification
 })(WalletDecrypt);

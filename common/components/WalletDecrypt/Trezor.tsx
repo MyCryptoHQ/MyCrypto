@@ -5,6 +5,7 @@ import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
+import { Spinner } from 'components/ui';
 const DEFAULT_PATH = DPATHS.TREZOR[0].value;
 
 interface Props {
@@ -38,7 +39,14 @@ export default class TrezorDecrypt extends Component<Props, State> {
           onClick={this.handleNullConnect}
           disabled={isLoading}
         >
-          {isLoading ? 'Unlocking...' : translate('ADD_Trezor_scan')}
+          {isLoading ? (
+            <div className="TrezorDecrypt-message">
+              <Spinner light={true} />
+              Unlocking...
+            </div>
+          ) : (
+            translate('ADD_Trezor_scan')
+          )}
         </button>
 
         <div className="TrezorDecrypt-help">
@@ -52,9 +60,7 @@ export default class TrezorDecrypt extends Component<Props, State> {
           </a>
         </div>
 
-        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
-          {error || '-'}
-        </div>
+        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <a
           className="TrezorDecrypt-buy btn btn-sm btn-default"
@@ -114,16 +120,21 @@ export default class TrezorDecrypt extends Component<Props, State> {
   };
 
   private handleCancel = () => {
+    this.reset();
+  };
+
+  private handleUnlock = (address: string, index: number) => {
+    this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
+    this.reset();
+  };
+
+  private handleNullConnect = (): void => this.handleConnect();
+
+  private reset() {
     this.setState({
       publicKey: '',
       chainCode: '',
       dPath: DEFAULT_PATH
     });
-  };
-
-  private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
-  };
-
-  private handleNullConnect = (): void => this.handleConnect();
+  }
 }

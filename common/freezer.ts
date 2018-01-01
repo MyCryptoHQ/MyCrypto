@@ -17,11 +17,7 @@ const start = async () => {
     const { frozen } = JSON.parse(packageStr);
 
     if (frozen === undefined) {
-      console.log(
-        `Freezer: No config found in package.json on branch ${
-          ORACLE_BRANCH
-        }. Exiting.`
-      );
+      console.log(`Freezer: No config found in package.json on branch ${ORACLE_BRANCH}. Exiting.`);
       return;
     }
 
@@ -119,11 +115,7 @@ const validateConfig = () => {
     const { frozen } = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
 
     if (frozen === undefined) {
-      console.log(
-        `Freezer: No config found in package.json on branch ${
-          ORACLE_BRANCH
-        }. Exiting.`
-      );
+      console.log(`Freezer: No config found in package.json on branch ${ORACLE_BRANCH}. Exiting.`);
       return;
     }
 

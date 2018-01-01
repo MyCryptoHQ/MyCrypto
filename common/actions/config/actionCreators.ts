@@ -25,21 +25,10 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
 }
 
 export type TChangeNode = typeof changeNode;
-export function changeNode(
-  nodeSelection: string,
-  node: NodeConfig
-): interfaces.ChangeNodeAction {
+export function changeNode(nodeSelection: string, node: NodeConfig): interfaces.ChangeNodeAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE,
     payload: { nodeSelection, node }
-  };
-}
-
-export type TChangeGasPrice = typeof changeGasPrice;
-export function changeGasPrice(value: number): interfaces.ChangeGasPriceAction {
-  return {
-    type: TypeKeys.CONFIG_GAS_PRICE,
-    payload: value
   };
 }
 
@@ -51,9 +40,7 @@ export function pollOfflineStatus(): interfaces.PollOfflineStatus {
 }
 
 export type TChangeNodeIntent = typeof changeNodeIntent;
-export function changeNodeIntent(
-  payload: string
-): interfaces.ChangeNodeIntentAction {
+export function changeNodeIntent(payload: string): interfaces.ChangeNodeIntentAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE_INTENT,
     payload
@@ -61,9 +48,7 @@ export function changeNodeIntent(
 }
 
 export type TAddCustomNode = typeof addCustomNode;
-export function addCustomNode(
-  payload: CustomNodeConfig
-): interfaces.AddCustomNodeAction {
+export function addCustomNode(payload: CustomNodeConfig): interfaces.AddCustomNodeAction {
   return {
     type: TypeKeys.CONFIG_ADD_CUSTOM_NODE,
     payload
@@ -71,9 +56,7 @@ export function addCustomNode(
 }
 
 export type TRemoveCustomNode = typeof removeCustomNode;
-export function removeCustomNode(
-  payload: CustomNodeConfig
-): interfaces.RemoveCustomNodeAction {
+export function removeCustomNode(payload: CustomNodeConfig): interfaces.RemoveCustomNodeAction {
   return {
     type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
     payload
@@ -81,9 +64,7 @@ export function removeCustomNode(
 }
 
 export type TAddCustomNetwork = typeof addCustomNetwork;
-export function addCustomNetwork(
-  payload: CustomNetworkConfig
-): interfaces.AddCustomNetworkAction {
+export function addCustomNetwork(payload: CustomNetworkConfig): interfaces.AddCustomNetworkAction {
   return {
     type: TypeKeys.CONFIG_ADD_CUSTOM_NETWORK,
     payload
@@ -101,9 +82,7 @@ export function removeCustomNetwork(
 }
 
 export type TSetLatestBlock = typeof setLatestBlock;
-export function setLatestBlock(
-  payload: string
-): interfaces.SetLatestBlockAction {
+export function setLatestBlock(payload: string): interfaces.SetLatestBlockAction {
   return {
     type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
     payload

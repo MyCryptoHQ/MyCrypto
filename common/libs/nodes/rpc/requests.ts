@@ -44,25 +44,20 @@ export default class RPCRequests {
     };
   }
 
-  public getTransactionCount(
-    address: string
-  ): GetTransactionCountRequest | any {
+  public getTransactionCount(address: string): GetTransactionCountRequest | any {
     return {
       method: 'eth_getTransactionCount',
       params: [address, 'pending']
     };
   }
 
-  public getTokenBalance(
-    address: string,
-    token: Token
-  ): GetTokenBalanceRequest | any {
+  public getTokenBalance(address: string, token: Token): GetTokenBalanceRequest | any {
     return {
       method: 'eth_call',
       params: [
         {
           to: token.address,
-          data: ERC20.balanceOf(address)
+          data: ERC20.balanceOf.encodeInput({ _owner: address })
         },
         'pending'
       ]
