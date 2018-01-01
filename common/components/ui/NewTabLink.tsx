@@ -27,6 +27,7 @@ interface AAttributes {
   shape?: 'default' | 'rect' | 'circle' | 'poly';
   target?: '_blank' | '_parent' | '_self' | '_top';
   type?: string;
+  onClick?(ev: React.MouseEvent<HTMLAnchorElement>): void;
 }
 
 interface NewTabLinkProps extends AAttributes {

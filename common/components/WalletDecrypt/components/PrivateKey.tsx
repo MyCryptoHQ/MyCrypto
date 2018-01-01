@@ -38,48 +38,49 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
   };
 }
 
-export default class PrivateKeyDecrypt extends Component {
-  public props: {
-    value: PrivateKeyValue;
-    onChange(value: PrivateKeyValue): void;
-    onUnlock(): void;
-  };
+interface Props {
+  value: PrivateKeyValue;
+  onChange(value: PrivateKeyValue): void;
+  onUnlock(): void;
+}
 
+export class PrivateKeyDecrypt extends Component<Props> {
   public render() {
     const { key, password } = this.props.value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
+    const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
     return (
-      <section className="col-md-4 col-sm-6">
-        <div id="selectedTypeKey">
-          <h4>{translate('ADD_Radio_3')}</h4>
-          <div className="form-group">
-            <textarea
-              id="aria-private-key"
-              className={`form-control ${isValidPkey ? 'is-valid' : 'is-invalid'}`}
-              value={key}
-              onChange={this.onPkeyChange}
-              onKeyDown={this.onKeyDown}
-              placeholder={translateRaw('x_PrivKey2')}
-              rows={4}
-            />
-          </div>
-          {isValidPkey &&
-            isPassRequired && (
-              <div className="form-group">
-                <p>{translate('ADD_Label_3')}</p>
-                <input
-                  className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
-                  value={password}
-                  onChange={this.onPasswordChange}
-                  onKeyDown={this.onKeyDown}
-                  placeholder={translateRaw('x_Password')}
-                  type="password"
-                />
-              </div>
-            )}
+      <form id="selectedTypeKey" onSubmit={this.unlock}>
+        <div className="form-group">
+          <textarea
+            id="aria-private-key"
+            className={`form-control ${isValidPkey ? 'is-valid' : 'is-invalid'}`}
+            value={key}
+            onChange={this.onPkeyChange}
+            onKeyDown={this.onKeyDown}
+            placeholder={translateRaw('x_PrivKey2')}
+            rows={4}
+          />
         </div>
-      </section>
+        {isValidPkey &&
+          isPassRequired && (
+            <div className="form-group">
+              <p>{translate('ADD_Label_3')}</p>
+              <input
+                className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
+                value={password}
+                onChange={this.onPasswordChange}
+                onKeyDown={this.onKeyDown}
+                placeholder={translateRaw('x_Password')}
+                type="password"
+              />
+            </div>
+          )}
+        <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
+          {translate('ADD_Label_6_short')}
+        </button>
+      </form>
     );
   }
 
@@ -103,11 +104,15 @@ export default class PrivateKeyDecrypt extends Component {
     });
   };
 
-  public onKeyDown = (e: any) => {
+  public onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.keyCode === 13) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.props.onUnlock();
+      this.unlock(e);
     }
+  };
+
+  private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onUnlock();
   };
 }

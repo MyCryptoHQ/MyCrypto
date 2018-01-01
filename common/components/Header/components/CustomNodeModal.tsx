@@ -233,7 +233,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
           'form-control': true,
           'is-invalid': this.state[input.name] && invalids[input.name]
         })}
-        value={this.state.name}
+        value={this.state[input.name]}
         onChange={this.handleChange}
         {...input}
       />
