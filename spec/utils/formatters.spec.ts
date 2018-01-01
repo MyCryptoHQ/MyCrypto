@@ -73,9 +73,9 @@ describe('formatNumber', () => {
 
   pairs.forEach(pair => {
     const digits = pair.digits;
-    it(`should convert ${pair.input.toString()} to ${pair.output} when using ${
-      digits
-    } digits`, () => {
+    it(`should convert ${pair.input.toString()} to ${
+      pair.output
+    } when using ${digits} digits`, () => {
       expect(formatNumber(pair.input, pair.digits)).toEqual(pair.output);
     });
   });
