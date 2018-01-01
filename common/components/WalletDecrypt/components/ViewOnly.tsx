@@ -24,13 +24,15 @@ export class ViewOnlyDecrypt extends Component<Props, State> {
     return (
       <div id="selectedUploadKey">
         <form className="form-group" onSubmit={this.openWallet}>
-          <input
+          <textarea
             className={`form-control
               ${isValid ? 'is-valid' : 'is-invalid'}
             `}
-            onChange={this.changeAddress}
             value={address}
+            onChange={this.changeAddress}
+            onKeyDown={this.handleEnterKey}
             placeholder={donationAddressMap.ETH}
+            rows={3}
           />
 
           <button className="btn btn-primary btn-block" disabled={!isValid}>
@@ -41,11 +43,17 @@ export class ViewOnlyDecrypt extends Component<Props, State> {
     );
   }
 
-  private changeAddress = (ev: React.FormEvent<HTMLInputElement>) => {
+  private changeAddress = (ev: React.FormEvent<HTMLTextAreaElement>) => {
     this.setState({ address: ev.currentTarget.value });
   };
 
-  private openWallet = (ev: React.FormEvent<HTMLFormElement>) => {
+  private handleEnterKey = (ev: React.KeyboardEvent<HTMLElement>) => {
+    if (ev.keyCode === 13) {
+      this.openWallet(ev);
+    }
+  };
+
+  private openWallet = (ev: React.FormEvent<HTMLElement>) => {
     const { address } = this.state;
     ev.preventDefault();
     if (isValidETHAddress(address)) {

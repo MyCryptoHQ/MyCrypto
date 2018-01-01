@@ -50,7 +50,7 @@ $speed: 500ms;
   &-decrypt {
     position: relative;
     text-align: center;
-    min-height: 370px;
+    padding-bottom: $space;
 
     &-back {
       @include reset-button;
