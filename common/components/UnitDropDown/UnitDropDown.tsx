@@ -49,7 +49,7 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
     this.props.setUnitMeta(unit);
   };
 }
-const getTokenSymbols = (tokens: TokenBalance[] | MergedToken[]) => tokens.map(t => t.symbol);
+const getTokenSymbols = (tokens: (TokenBalance | MergedToken)[]) => tokens.map(t => t.symbol);
 
 function mapStateToProps(state: AppState) {
   return {
