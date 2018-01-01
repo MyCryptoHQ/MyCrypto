@@ -16,6 +16,15 @@
   }
 
   &-buy {
-    margin-top: 10px;
+    margin: 10px 0;
+  }
+
+  &-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      margin-right: 16px;
+    }
   }
 }
