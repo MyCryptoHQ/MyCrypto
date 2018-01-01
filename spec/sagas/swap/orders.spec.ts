@@ -22,7 +22,9 @@ import {
   shapeshiftOrderCreateSucceededSwap,
   shapeshiftOrderCreateFailedSwap,
   stopLoadShapeshiftRatesSwap,
-  ShapeshiftOrderResponse
+  ShapeshiftOrderResponse,
+  stopPollShapeshiftOrderStatus,
+  stopOrderTimerSwap
 } from 'actions/swap';
 import { getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
@@ -48,9 +50,11 @@ import {
   pollShapeshiftOrderStatus,
   pollShapeshiftOrderStatusSaga,
   postShapeshiftOrderSaga,
-  orderTimeRemaining,
+  shapeshiftOrderTimeRemaining,
+  bityOrderTimeRemaining,
   ORDER_TIMEOUT_MESSAGE,
-  postShapeshiftOrderCreate
+  postShapeshiftOrderCreate,
+  ORDER_RECEIVED_MESSAGE
 } from 'sagas/swap/orders';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { TypeKeys } from 'actions/swap/constants';
@@ -471,7 +475,7 @@ describe('postShapeshiftOrderSaga*', () => {
   });
 });
 
-describe('orderTimeRemaining*', () => {
+describe('bityOrderTimeRemaining*', () => {
   const orderTime = new Date().toISOString();
   const orderTimeExpired = new Date().getTime() - ELEVEN_SECONDS;
   const swapValidFor = 10; //seconds
@@ -488,7 +492,7 @@ describe('orderTimeRemaining*', () => {
   let random;
 
   const data = {} as any;
-  data.gen = cloneableGenerator(orderTimeRemaining)();
+  data.gen = cloneableGenerator(bityOrderTimeRemaining)();
 
   beforeAll(() => {
     random = Math.random;
@@ -549,5 +553,89 @@ describe('orderTimeRemaining*', () => {
     data.FILL = data.gen.clone();
     expect(data.FILL.next(fillOrder).value).toEqual(put(stopPollBityOrderStatus()));
     expect(data.FILL.next().value).toEqual(put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES }));
+  });
+});
+
+describe('shapeshiftOrderTimeRemaining*', () => {
+  const orderTime = new Date().toISOString();
+  const orderTimeExpired = new Date().getTime() - ELEVEN_SECONDS;
+  const swapValidFor = 10; //seconds
+  const swapOrder = {
+    ...INITIAL_SWAP_STATE,
+    orderTimestampCreatedISOString: orderTime,
+    validFor: swapValidFor
+  };
+  const swapOrderExpired = {
+    ...INITIAL_SWAP_STATE,
+    orderTimestampCreatedISOString: new Date(orderTimeExpired).toISOString(),
+    validFor: swapValidFor
+  };
+  let random;
+
+  const data = {} as any;
+  data.gen = cloneableGenerator(shapeshiftOrderTimeRemaining)();
+
+  beforeAll(() => {
+    random = Math.random;
+    Math.random = () => 0.001;
+  });
+
+  afterAll(() => {
+    Math.random = random;
+  });
+
+  it('should call delay of one second', () => {
+    expect(data.gen.next(true).value).toEqual(call(delay, ONE_SECOND));
+  });
+
+  it('should select getSwap', () => {
+    expect(data.gen.next().value).toEqual(select(getSwap));
+  });
+
+  it('should handle if isValidUntil.isAfter(now)', () => {
+    data.clone2 = data.gen.clone();
+    const result = data.clone2.next(swapOrder).value;
+    expect(result).toHaveProperty('PUT');
+    expect(result.PUT.action.type).toEqual('SWAP_ORDER_TIME');
+    expect(result.PUT.action.payload).toBeGreaterThan(0);
+  });
+
+  it('should handle an no_deposits order state', () => {
+    const openOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'no_deposits' };
+    data.OPEN = data.gen.clone();
+    expect(data.OPEN.next(openOrder).value).toEqual(put(orderTimeSwap(0)));
+    expect(data.OPEN.next().value).toEqual(put(stopPollShapeshiftOrderStatus()));
+    expect(data.OPEN.next().value).toEqual(put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES }));
+    expect(data.OPEN.next().value).toEqual(
+      put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity))
+    );
+  });
+
+  it('should handle a failed order state', () => {
+    const cancOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'failed' };
+    data.CANC = data.gen.clone();
+    expect(data.CANC.next(cancOrder).value).toEqual(put(stopPollShapeshiftOrderStatus()));
+    expect(data.CANC.next().value).toEqual(put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES }));
+    expect(data.CANC.next().value).toEqual(
+      put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity))
+    );
+  });
+
+  it('should handle a received order state', () => {
+    const rcveOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'received' };
+    data.RCVE = data.gen.clone();
+    expect(data.RCVE.next(rcveOrder).value).toEqual(
+      put(showNotification('warning', ORDER_RECEIVED_MESSAGE, Infinity))
+    );
+  });
+
+  it('should handle a complete order state', () => {
+    const fillOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'complete' };
+    data.COMPLETE = data.gen.clone();
+    expect(data.COMPLETE.next(fillOrder).value).toEqual(put(stopPollShapeshiftOrderStatus()));
+    expect(data.COMPLETE.next().value).toEqual(
+      put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES })
+    );
+    expect(data.COMPLETE.next().value).toEqual(put(stopOrderTimerSwap()));
   });
 });

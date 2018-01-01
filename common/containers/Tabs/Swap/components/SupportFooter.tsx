@@ -72,7 +72,6 @@ Rate: ${rates[pair].rate} ${origin.id}/${destination.id}`;
       <section className="SupportFooter">
         <a
           className="btn-warning btn-sm"
-          // href="mailto:support@myetherwallet.com?Subject=%20Issue%20regarding%20my%20Swap%20via%20MEW%20&amp;Body=%0APlease%20include%20the%20below%20if%20this%20issue%20is%20regarding%20your%20order.%20%0A%0AREF%20ID%23%3A%20%0A%0AAmount%20to%20send%3A%20%20%0A%0AAmount%20to%20receive%3A%20%20%0A%0APayment%20Address%3A%20%0A%0ARate%3A%200.00000850%20SNGLS/BTC%0A%0A"
           href={`mailto:${emailTo}?Subject=${mailSubject}&Body=${mailBody}`}
           target="_blank"
           rel="noopener noreferrer"

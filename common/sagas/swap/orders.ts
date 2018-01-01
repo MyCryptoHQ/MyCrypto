@@ -212,13 +212,12 @@ export function* restartSwapSaga(): SagaIterator {
   yield takeEvery(TypeKeys.SWAP_RESTART, restartSwap);
 }
 
-export function* orderTimeRemaining(): SagaIterator {
+export function* bityOrderTimeRemaining(): SagaIterator {
   while (true) {
     let hasShownNotification = false;
     while (true) {
       yield call(delay, ONE_SECOND);
       const swap = yield select(getSwap);
-      // if (swap.bityOrder.status === 'OPEN') {
       const createdTimeStampMoment = moment(swap.orderTimestampCreatedISOString);
       const validUntil = moment(createdTimeStampMoment).add(swap.validFor, 's');
       const now = moment();
@@ -226,104 +225,118 @@ export function* orderTimeRemaining(): SagaIterator {
         const duration = moment.duration(validUntil.diff(now));
         const seconds = duration.asSeconds();
         yield put(orderTimeSwap(parseInt(seconds.toString(), 10)));
-        if (swap.provider === 'shapeshift') {
-          switch (swap.shapeshiftOrderStatus) {
-            case 'failed':
-              yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapeshiftRatesSwap());
-              yield put(stopOrderTimerSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'complete':
-              yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapeshiftRatesSwap());
-              yield put(stopOrderTimerSwap());
-              break;
-          }
-        } else {
-          switch (swap.bityOrderStatus) {
-            case 'CANC':
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              yield put(stopOrderTimerSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'FILL':
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              yield put(stopOrderTimerSwap());
-              break;
-          }
+
+        switch (swap.bityOrderStatus) {
+          case 'CANC':
+            yield put(stopPollBityOrderStatus());
+            yield put(stopLoadBityRatesSwap());
+            yield put(stopOrderTimerSwap());
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+            }
+            break;
+          case 'FILL':
+            yield put(stopPollBityOrderStatus());
+            yield put(stopLoadBityRatesSwap());
+            yield put(stopOrderTimerSwap());
+            break;
         }
       } else {
-        if (swap.provider === 'shapeshift') {
-          switch (swap.shapeshiftOrderStatus) {
-            case 'no_deposits':
-              yield put(orderTimeSwap(0));
-              yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapeshiftRatesSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'failed':
-              yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapeshiftRatesSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'received':
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('warning', ORDER_RECEIVED_MESSAGE, Infinity));
-              }
-              break;
-            case 'complete':
-              yield put(stopPollShapeshiftOrderStatus());
-              yield put(stopLoadShapeshiftRatesSwap());
-              yield put(stopOrderTimerSwap());
-              break;
-          }
-        } else {
-          switch (swap.bityOrderStatus) {
-            case 'OPEN':
-              yield put(orderTimeSwap(0));
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'CANC':
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'RCVE':
-              if (!hasShownNotification) {
-                hasShownNotification = true;
-                yield put(showNotification('warning', ORDER_TIMEOUT_MESSAGE, Infinity));
-              }
-              break;
-            case 'FILL':
-              yield put(stopPollBityOrderStatus());
-              yield put(stopLoadBityRatesSwap());
-              yield put(stopOrderTimerSwap());
-              break;
-          }
+        switch (swap.bityOrderStatus) {
+          case 'OPEN':
+            yield put(orderTimeSwap(0));
+            yield put(stopPollBityOrderStatus());
+            yield put(stopLoadBityRatesSwap());
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+            }
+            break;
+          case 'CANC':
+            yield put(stopPollBityOrderStatus());
+            yield put(stopLoadBityRatesSwap());
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+            }
+            break;
+          case 'RCVE':
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('warning', ORDER_TIMEOUT_MESSAGE, Infinity));
+            }
+            break;
+          case 'FILL':
+            yield put(stopPollBityOrderStatus());
+            yield put(stopLoadBityRatesSwap());
+            yield put(stopOrderTimerSwap());
+            break;
+        }
+      }
+    }
+  }
+}
+
+export function* shapeshiftOrderTimeRemaining(): SagaIterator {
+  while (true) {
+    let hasShownNotification = false;
+    while (true) {
+      yield call(delay, ONE_SECOND);
+      const swap = yield select(getSwap);
+      const createdTimeStampMoment = moment(swap.orderTimestampCreatedISOString);
+      const validUntil = moment(createdTimeStampMoment).add(swap.validFor, 's');
+      const now = moment();
+      if (validUntil.isAfter(now)) {
+        const duration = moment.duration(validUntil.diff(now));
+        const seconds = duration.asSeconds();
+        yield put(orderTimeSwap(parseInt(seconds.toString(), 10)));
+        switch (swap.shapeshiftOrderStatus) {
+          case 'failed':
+            yield put(stopPollShapeshiftOrderStatus());
+            yield put(stopLoadShapeshiftRatesSwap());
+            yield put(stopOrderTimerSwap());
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+            }
+            break;
+          case 'complete':
+            yield put(stopPollShapeshiftOrderStatus());
+            yield put(stopLoadShapeshiftRatesSwap());
+            yield put(stopOrderTimerSwap());
+            break;
+        }
+      } else {
+        switch (swap.shapeshiftOrderStatus) {
+          case 'no_deposits':
+            yield put(orderTimeSwap(0));
+            yield put(stopPollShapeshiftOrderStatus());
+            yield put(stopLoadShapeshiftRatesSwap());
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+            }
+            break;
+          case 'failed':
+            yield put(stopPollShapeshiftOrderStatus());
+            yield put(stopLoadShapeshiftRatesSwap());
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
+            }
+            break;
+          case 'received':
+            if (!hasShownNotification) {
+              hasShownNotification = true;
+              yield put(showNotification('warning', ORDER_RECEIVED_MESSAGE, Infinity));
+            }
+            break;
+          case 'complete':
+            yield put(stopPollShapeshiftOrderStatus());
+            yield put(stopLoadShapeshiftRatesSwap());
+            yield put(stopOrderTimerSwap());
+            break;
         }
       }
     }
@@ -331,7 +344,13 @@ export function* orderTimeRemaining(): SagaIterator {
 }
 
 export function* handleOrderTimeRemaining(): SagaIterator {
-  const orderTimeRemainingTask = yield fork(orderTimeRemaining);
+  const swap = yield select(getSwap);
+  let orderTimeRemainingTask;
+  if (swap.provider === 'shapeshift') {
+    orderTimeRemainingTask = yield fork(shapeshiftOrderTimeRemaining);
+  } else {
+    orderTimeRemainingTask = yield fork(bityOrderTimeRemaining);
+  }
   yield take(TypeKeys.SWAP_ORDER_STOP_TIMER);
   yield cancel(orderTimeRemainingTask);
 }

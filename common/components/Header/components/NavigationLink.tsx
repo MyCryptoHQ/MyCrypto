@@ -10,13 +10,12 @@ interface Props extends RouteComponentProps<{}> {
     to?: string;
     external?: boolean;
   };
-  id?: string;
   isHomepage: boolean;
 }
 
 class NavigationLink extends React.Component<Props, {}> {
   public render() {
-    const { link, location, isHomepage, id } = this.props;
+    const { link, location, isHomepage } = this.props;
     // isActive if
     // 1) Current path is the same as link
     // 2) the first path is the same for both links (/account and /account/send)
@@ -45,7 +44,7 @@ class NavigationLink extends React.Component<Props, {}> {
       );
 
     return (
-      <li id={id} className="NavigationLink">
+      <li id={link.name} className="NavigationLink">
         {linkEl}
       </li>
     );
