@@ -38,7 +38,15 @@ interface ActionProps {
 }
 type Props = StateProps & ActionProps;
 
-class TokenBalances extends React.Component<Props, {}> {
+interface State {
+  hasScanned: boolean;
+}
+
+class TokenBalances extends React.Component<Props, State> {
+  public state: State = {
+    hasScanned: false
+  };
+
   public render() {
     const {
       tokens,
@@ -48,6 +56,7 @@ class TokenBalances extends React.Component<Props, {}> {
       isTokensLoading,
       tokensError
     } = this.props;
+    const { hasScanned } = this.state;
 
     const walletTokens = walletConfig ? walletConfig.tokens : [];
 
@@ -60,15 +69,19 @@ class TokenBalances extends React.Component<Props, {}> {
           <Spinner size="x3" />
         </div>
       );
-    } else if (!walletTokens) {
-      content = (
-        <button
-          className="TokenBalances-scan btn btn-primary btn-block"
-          onClick={this.scanWalletForTokens}
-        >
-          {translate('Scan for my Tokens')}
-        </button>
-      );
+    } else if (!walletTokens || !walletTokens.length) {
+      if (hasScanned) {
+        content = <div className="TokenBalances-none alert alert-warning">No tokens found</div>;
+      } else {
+        content = (
+          <button
+            className="TokenBalances-scan btn btn-primary btn-block"
+            onClick={this.scanWalletForTokens}
+          >
+            {translate('Scan for my Tokens')}
+          </button>
+        );
+      }
     } else {
       const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
 
@@ -96,6 +109,7 @@ class TokenBalances extends React.Component<Props, {}> {
   private scanWalletForTokens = () => {
     if (this.props.wallet) {
       this.props.scanWalletForTokens(this.props.wallet);
+      this.setState({ hasScanned: true });
     }
   };
 }
