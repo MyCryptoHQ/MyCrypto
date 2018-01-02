@@ -189,9 +189,7 @@ export default class CurrencySwap extends Component<Props, State> {
     this.clearErrMessages();
     const amountsValid = origin.amount && destination.amount;
     const minMaxValid = this.isMinMaxValid(origin.amount, origin.id, destination.id);
-
     const disabled = !(amountsValid && minMaxValid);
-
     const showError = disabled && amountsValid;
 
     this.setState({
@@ -272,16 +270,11 @@ export default class CurrencySwap extends Component<Props, State> {
   public onChangeOriginKind = (newOption: WhitelistedCoins) => {
     const { origin, destination, destinationKindOptions } = this.state;
     const { options, initSwap } = this.props;
-    const newDestinationAmount = () => {
-      const pairName = combineAndUpper(destination.id, origin.id);
-      const rate = this.rateMixer().byId[pairName].rate;
-      return rate * origin.amount;
-    };
 
-    const newOrigin = { ...origin, id: newOption };
+    const newOrigin = { ...origin, id: newOption, amount: 0 };
     const newDest = {
       id: newOption === destination.id ? origin.id : destination.id,
-      amount: newDestinationAmount() ? newDestinationAmount() : destination.amount
+      amount: 0
     };
     this.setState({
       origin: newOrigin,
@@ -298,15 +291,10 @@ export default class CurrencySwap extends Component<Props, State> {
   public onChangeDestinationKind = (newOption: WhitelistedCoins) => {
     const { initSwap } = this.props;
     const { origin, destination } = this.state;
-    const newOriginAmount = () => {
-      const pairName = combineAndUpper(newOption, origin.id);
-      const rate = this.rateMixer().byId[pairName].rate;
-      return rate * destination.amount;
-    };
 
     const newOrigin = {
       ...origin,
-      amount: newOriginAmount() ? newOriginAmount() : origin.amount
+      amount: 0
     };
 
     const newDest = { ...destination, id: newOption };
