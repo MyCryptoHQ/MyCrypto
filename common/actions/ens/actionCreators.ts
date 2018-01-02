@@ -1,22 +1,27 @@
-import * as interfaces from './actionTypes';
-import * as constants from './constants';
+import * as ActionTypes from './actionTypes';
+import { TypeKeys } from './constants';
+import { DomainRequest } from 'libs/ens';
 
-export function resolveEnsName(name: string): interfaces.ResolveEnsNameAction {
-  return {
-    type: constants.ENS_RESOLVE,
-    payload: name
-  };
-}
+export type TResolveDomainRequested = typeof resolveDomainRequested;
+export const resolveDomainRequested = (domain: string): ActionTypes.ResolveDomainRequested => ({
+  type: TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED,
+  payload: { domain }
+});
 
-export function cacheEnsAddress(
-  ensName: string,
-  address: string
-): interfaces.CacheEnsAddressAction {
-  return {
-    type: constants.ENS_CACHE,
-    payload: {
-      ensName,
-      address
-    }
-  };
-}
+export type TResolveDomainSucceeded = typeof resolveDomainSucceeded;
+export const resolveDomainSucceeded = (
+  domain: string,
+  domainData: DomainRequest
+): ActionTypes.ResolveDomainSucceeded => ({
+  type: TypeKeys.ENS_RESOLVE_DOMAIN_SUCCEEDED,
+  payload: { domain, domainData }
+});
+
+export type TResolveDomainFailed = typeof resolveDomainFailed;
+export const resolveDomainFailed = (
+  domain: string,
+  error: Error
+): ActionTypes.ResolveDomainFailed => ({
+  type: TypeKeys.ENS_RESOLVE_DOMAIN_FAILED,
+  payload: { domain, error }
+});

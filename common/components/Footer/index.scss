@@ -142,13 +142,6 @@
     font-size: $font-size-small;
     margin: $space-sm 0;
   }
-
-  @media screen and (max-width: $grid-float-breakpoint) {
-    .row {
-      margin-left: -0.5rem;
-      margin-right: -0.5rem;
-    }
-  }
 }
 
 .Modal {

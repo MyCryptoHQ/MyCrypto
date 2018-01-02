@@ -1,0 +1,25 @@
+.ens-title {
+  margin: 2rem 0;
+  h2 {
+    margin: 0;
+  }
+}
+
+.ens-panel {
+  color: white;
+  padding: 1rem;
+  background-color: #185475;
+
+  p,
+  h4 {
+    margin: 0;
+  }
+
+  &-light {
+    background-color: #1e92ba;
+  }
+}
+
+.table-wrapper {
+  overflow-y: scroll;
+}

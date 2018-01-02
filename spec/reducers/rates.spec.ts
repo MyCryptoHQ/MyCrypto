@@ -15,9 +15,7 @@ describe('rates reducer', () => {
       }
     };
 
-    expect(
-      rates(undefined, ratesActions.fetchCCRatesSucceeded(fakeCCResp))
-    ).toEqual({
+    expect(rates(undefined, ratesActions.fetchCCRatesSucceeded(fakeCCResp))).toEqual({
       ...INITIAL_STATE,
       rates: {
         ...INITIAL_STATE.rates,
@@ -27,8 +25,6 @@ describe('rates reducer', () => {
   });
 
   it('should handle RATES_FETCH_CC_FAILED', () => {
-    expect(rates(undefined, ratesActions.fetchCCRatesFailed())).toHaveProperty(
-      'ratesError'
-    );
+    expect(rates(undefined, ratesActions.fetchCCRatesFailed())).toHaveProperty('ratesError');
   });
 });

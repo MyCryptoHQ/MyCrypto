@@ -17,21 +17,9 @@ import {
   stopPollBityOrderStatus
 } from 'actions/swap';
 import { getOrderStatus, postOrder } from 'api/bity';
-import {
-  State as SwapState,
-  INITIAL_STATE as INITIAL_SWAP_STATE
-} from 'reducers/swap';
+import { State as SwapState, INITIAL_STATE as INITIAL_SWAP_STATE } from 'reducers/swap';
 import { delay } from 'redux-saga';
-import {
-  call,
-  cancel,
-  cancelled,
-  fork,
-  put,
-  select,
-  take,
-  takeEvery
-} from 'redux-saga/effects';
+import { call, cancel, cancelled, fork, put, select, take, takeEvery } from 'redux-saga/effects';
 import {
   getSwap,
   pollBityOrderStatus,
@@ -97,27 +85,17 @@ describe('pollBityOrderStatus*', () => {
   });
 
   it('should put orderStatusRequestedSwap', () => {
-    expect(data.gen.next(fakeSwap).value).toEqual(
-      put(orderStatusRequestedSwap())
-    );
+    expect(data.gen.next(fakeSwap).value).toEqual(put(orderStatusRequestedSwap()));
   });
 
   it('should call getOrderStatus with swap.orderId', () => {
-    expect(data.gen.next().value).toEqual(
-      call(getOrderStatus, fakeSwap.orderId)
-    );
+    expect(data.gen.next().value).toEqual(call(getOrderStatus, fakeSwap.orderId));
   });
 
   it('should put showNotfication on error', () => {
     data.clone = data.gen.clone();
     expect(data.clone.next(errorStatus).value).toEqual(
-      put(
-        showNotification(
-          'danger',
-          `Bity Error: ${errorStatus.msg}`,
-          TEN_SECONDS
-        )
-      )
+      put(showNotification('danger', `Bity Error: ${errorStatus.msg}`, TEN_SECONDS))
     );
   });
 
@@ -142,9 +120,7 @@ describe('pollBityOrderStatus*', () => {
   });
 
   it('should restart loop', () => {
-    expect(data.gen.next(fakeSwap).value).toEqual(
-      put(orderStatusRequestedSwap())
-    );
+    expect(data.gen.next(fakeSwap).value).toEqual(put(orderStatusRequestedSwap()));
   });
 });
 
@@ -154,9 +130,7 @@ describe('pollBityOrderStatusSaga*', () => {
   const mockedTask = createMockTask();
 
   it('should take SWAP_START_POLL_BITY_ORDER_STATUS', () => {
-    expect(data.gen.next().value).toEqual(
-      take('SWAP_START_POLL_BITY_ORDER_STATUS')
-    );
+    expect(data.gen.next().value).toEqual(take('SWAP_START_POLL_BITY_ORDER_STATUS'));
   });
 
   it('should be done if order status is false', () => {
@@ -169,9 +143,7 @@ describe('pollBityOrderStatusSaga*', () => {
   });
 
   it('should take SWAP_STOP_POLL_BITY_ORDER_STATUS', () => {
-    expect(data.gen.next(mockedTask).value).toEqual(
-      take('SWAP_STOP_POLL_BITY_ORDER_STATUS')
-    );
+    expect(data.gen.next(mockedTask).value).toEqual(take('SWAP_STOP_POLL_BITY_ORDER_STATUS'));
   });
 
   it('should cancel pollBityOrderStatusTask', () => {
@@ -252,9 +224,7 @@ describe('postBityOrderCreate*', () => {
 
   it('should handle an errored order', () => {
     expect(data.clone2.next(errorOrder).value).toEqual(
-      put(
-        showNotification('danger', `Bity Error: ${errorOrder.msg}`, TEN_SECONDS)
-      )
+      put(showNotification('danger', `Bity Error: ${errorOrder.msg}`, TEN_SECONDS))
     );
     expect(data.clone2.next().value).toEqual(put(bityOrderCreateFailedSwap()));
   });
@@ -264,9 +234,7 @@ describe('postBityOrderSaga*', () => {
   const gen = postBityOrderSaga();
 
   it('should takeEvery SWAP_ORDER_CREATE_REQUESTED', () => {
-    expect(gen.next().value).toEqual(
-      takeEvery('SWAP_ORDER_CREATE_REQUESTED', postBityOrderCreate)
-    );
+    expect(gen.next().value).toEqual(takeEvery('SWAP_ORDER_CREATE_REQUESTED', postBityOrderCreate));
   });
 });
 
@@ -328,9 +296,7 @@ describe('bityTimeRemaining*', () => {
     data.OPEN = data.gen.clone();
     expect(data.OPEN.next(openOrder).value).toEqual(put(orderTimeSwap(0)));
     expect(data.OPEN.next().value).toEqual(put(stopPollBityOrderStatus()));
-    expect(data.OPEN.next().value).toEqual(
-      put({ type: 'SWAP_STOP_LOAD_BITY_RATES' })
-    );
+    expect(data.OPEN.next().value).toEqual(put({ type: 'SWAP_STOP_LOAD_BITY_RATES' }));
     expect(data.OPEN.next().value).toEqual(
       put(showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity))
     );
@@ -339,12 +305,8 @@ describe('bityTimeRemaining*', () => {
   it('should handle a CANC order state', () => {
     const cancOrder = { ...swapOrderExpired, orderStatus: 'CANC' };
     data.CANC = data.gen.clone();
-    expect(data.CANC.next(cancOrder).value).toEqual(
-      put(stopPollBityOrderStatus())
-    );
-    expect(data.CANC.next().value).toEqual(
-      put({ type: 'SWAP_STOP_LOAD_BITY_RATES' })
-    );
+    expect(data.CANC.next(cancOrder).value).toEqual(put(stopPollBityOrderStatus()));
+    expect(data.CANC.next().value).toEqual(put({ type: 'SWAP_STOP_LOAD_BITY_RATES' }));
     expect(data.CANC.next().value).toEqual(
       put(showNotification('danger', BITY_TIMEOUT_MESSAGE, Infinity))
     );
@@ -361,11 +323,7 @@ describe('bityTimeRemaining*', () => {
   it('should handle a FILL order state', () => {
     const fillOrder = { ...swapOrderExpired, orderStatus: 'FILL' };
     data.FILL = data.gen.clone();
-    expect(data.FILL.next(fillOrder).value).toEqual(
-      put(stopPollBityOrderStatus())
-    );
-    expect(data.FILL.next().value).toEqual(
-      put({ type: 'SWAP_STOP_LOAD_BITY_RATES' })
-    );
+    expect(data.FILL.next(fillOrder).value).toEqual(put(stopPollBityOrderStatus()));
+    expect(data.FILL.next().value).toEqual(put({ type: 'SWAP_STOP_LOAD_BITY_RATES' }));
   });
 });

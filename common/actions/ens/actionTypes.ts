@@ -1,17 +1,19 @@
-/*** Resolve ENS name ***/
-export interface ResolveEnsNameAction {
-  type: 'ENS_RESOLVE';
-  payload: string;
+import { TypeKeys } from './constants';
+import { DomainRequest } from 'libs/ens';
+
+export interface ResolveDomainRequested {
+  type: TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED;
+  payload: { domain: string };
 }
 
-/*** Cache ENS address ***/
-export interface CacheEnsAddressAction {
-  type: 'ENS_CACHE';
-  payload: {
-    ensName: string;
-    address: string;
-  };
+export interface ResolveDomainSucceeded {
+  type: TypeKeys.ENS_RESOLVE_DOMAIN_SUCCEEDED;
+  payload: { domain: string; domainData: DomainRequest };
 }
 
-/*** Union Type ***/
-export type EnsAction = ResolveEnsNameAction | CacheEnsAddressAction;
+export interface ResolveDomainFailed {
+  type: TypeKeys.ENS_RESOLVE_DOMAIN_FAILED;
+  payload: { domain: string; error: Error };
+}
+
+export type EnsAction = ResolveDomainRequested | ResolveDomainSucceeded | ResolveDomainFailed;
