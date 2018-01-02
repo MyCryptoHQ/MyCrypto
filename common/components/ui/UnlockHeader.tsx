@@ -9,7 +9,7 @@ import './UnlockHeader.scss';
 interface Props {
   title: React.ReactElement<any>;
   wallet: IWallet;
-  allowReadOnly: boolean;
+  disabledWallets?: string[];
 }
 interface State {
   isExpanded: boolean;
@@ -26,7 +26,7 @@ export class UnlockHeader extends React.Component<Props, State> {
   }
 
   public render() {
-    const { title, wallet, allowReadOnly } = this.props;
+    const { title, wallet, disabledWallets } = this.props;
     const { isExpanded } = this.state;
 
     return (
@@ -52,7 +52,7 @@ export class UnlockHeader extends React.Component<Props, State> {
               <i className="fa fa-times" />
             </button>
           )}
-        <WalletDecrypt hidden={!this.state.isExpanded} allowReadOnly={allowReadOnly} />
+        <WalletDecrypt hidden={!this.state.isExpanded} disabledWallets={disabledWallets} />
       </article>
     );
   }

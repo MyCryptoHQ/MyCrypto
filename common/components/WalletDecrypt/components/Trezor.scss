@@ -1,0 +1,31 @@
+.TrezorDecrypt {
+  text-align: center;
+
+  &-help {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  &-error {
+    opacity: 0;
+    transition: none;
+
+    &.is-showing {
+      opacity: 1;
+    }
+  }
+
+  &-buy {
+    margin: 10px 0;
+  }
+
+  &-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .Spinner {
+      margin-right: 16px;
+    }
+  }
+}

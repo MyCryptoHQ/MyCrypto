@@ -2,7 +2,6 @@ import { Wei } from 'libs/units';
 import * as eth from './ether';
 import { IFullWallet } from 'libs/wallet';
 import { ITransaction } from '../typings';
-export { signTransaction };
 export {
   enoughBalanceViaTx,
   validateTx,
@@ -12,7 +11,7 @@ export {
   computeIndexingHash
 } from './ether';
 export * from './token';
-const signTransaction = async (
+export const signTransaction = async (
   t: ITransaction,
   w: IFullWallet,
   accountBalance: Wei,

@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
 import { knowledgeBaseURL } from 'config/data';
-
 import './Navigation.scss';
 
-const tabs = [
+export interface TabLink {
+  name: string;
+  to: string;
+  external?: boolean;
+}
+
+const tabs: TabLink[] = [
   {
     name: 'NAV_GenerateWallet',
-    to: '/'
+    to: '/generate'
   },
 
   {
@@ -90,7 +95,7 @@ export default class Navigation extends Component<Props, State> {
         <div className="Navigation-scroll container">
           <ul className="Navigation-links">
             {tabs.map(link => {
-              return <NavigationLink key={link.name} link={link} />;
+              return <NavigationLink key={link.name} link={link} isHomepage={link === tabs[0]} />;
             })}
           </ul>
         </div>

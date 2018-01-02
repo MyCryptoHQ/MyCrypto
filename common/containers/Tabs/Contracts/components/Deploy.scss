@@ -1,0 +1,17 @@
+.Deploy {
+  &-field {
+    margin-top: 0;
+
+    &-label {
+      float: left;
+    }
+
+    &-reset {
+      float: right;
+
+      .fa {
+        margin-right: 8px;
+      }
+    }
+  }
+}

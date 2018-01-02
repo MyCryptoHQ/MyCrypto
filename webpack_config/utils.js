@@ -19,6 +19,7 @@ _.loadersOptions = () => {
 
   return {
     minimize: isProd,
+    debug: !isProd,
     options: {
       // css-loader relies on context
       context: process.cwd()

@@ -9,7 +9,7 @@ interface Props {
 class OnboardSlide extends React.Component<Props> {
   public render() {
     return (
-      <div>
+      <div className="OnboardSlide-container">
         <article className="OnboardSlide">
           <h3 className="OnboardSlide-header">{this.props.header}</h3>
           <section className="OnboardSlide-content">{this.props.content}</section>
