@@ -29,7 +29,9 @@ class SendTransaction extends React.Component<Props> {
 
     const tabProps: TabProps<SubTabProps> = {
       root: 'account',
-      activeTab: wallet ? (wallet.isReadOnly ? 'info' : activeTab) : activeTab,
+      activeTab: wallet
+        ? wallet.isReadOnly && activeTab === 'send' ? 'info' : activeTab
+        : activeTab,
       sideBar: <SideBar />,
       tabs,
       subTabProps: { wallet }
