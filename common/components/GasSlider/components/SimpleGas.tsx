@@ -1,21 +1,18 @@
 import React from 'react';
 import Slider from 'rc-slider';
-import BN from 'bn.js';
 import translate from 'translations';
 import { gasPriceDefaults } from 'config/data';
-import { gasPricetoBase } from 'libs/units';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
 
 interface Props {
   gasPrice: string;
-  gasLimit: string;
   changeGasPrice(gwei: string): void;
 }
 
 export default class SimpleGas extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasLimit } = this.props;
+    const { gasPrice } = this.props;
 
     return (
       <div className="SimpleGas row form-group">

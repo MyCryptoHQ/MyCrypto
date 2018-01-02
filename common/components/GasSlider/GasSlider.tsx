@@ -48,11 +48,7 @@ class GasSlider extends React.Component<Props, State> {
             changeGasLimit={this.props.inputGasLimit}
           />
         ) : (
-          <SimpleGas
-            gasPrice={gasPrice.raw}
-            gasLimit={gasLimit.raw}
-            changeGasPrice={this.props.inputGasPrice}
-          />
+          <SimpleGas gasPrice={gasPrice.raw} changeGasPrice={this.props.inputGasPrice} />
         )}
 
         {!offline && (
