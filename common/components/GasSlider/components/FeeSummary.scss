@@ -2,7 +2,10 @@
 
 .FeeSummary {
   background: $gray-lighter;
-  padding: 12px 12px;
+  height: 42px;
+  line-height: 42px;
+  padding: 0 12px;
   font-family: $font-family-monospace;
   text-align: center;
+  font-size: 14px;
 }

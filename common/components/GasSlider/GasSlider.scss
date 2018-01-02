@@ -1,9 +1,10 @@
 @import 'common/sass/variables';
-@import 'common/sass/mixins';
 
 .GasSlider {
   &-toggle {
+    display: inline-block;
     position: relative;
+    margin-top: $space-sm;
     left: -8px;
   }
 }
