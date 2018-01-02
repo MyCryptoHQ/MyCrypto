@@ -3,9 +3,10 @@
 .SwapDropdown {
   position: relative;
   button {
-    background-color: #c3c3c3;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #ccc;
     padding: 0.4rem 1rem;
-    border: none;
+    border-radius: 2px;
     &:focus {
       outline: none;
     }
