@@ -33,10 +33,6 @@ export function* configureLiteSendSaga(): SagaIterator {
     return yield put(showLiteSend(false));
   }
 
-  yield put(setCurrentTo(paymentAddress));
-  yield put(setUnitMeta(id));
-  yield put(setCurrentValue(amount.toString()));
-
   const unlocked: boolean = yield select(isUnlocked);
   yield put(showLiteSend(true));
 
@@ -53,6 +49,10 @@ export function* configureLiteSendSaga(): SagaIterator {
       WalletTK.WALLET_SET_TOKEN_BALANCE_REJECTED
     ]);
   }
+
+  yield put(setUnitMeta(id));
+  yield put(setCurrentValue(amount.toString()));
+  yield put(setCurrentTo(paymentAddress));
 }
 
 export function* handleConfigureLiteSend(): SagaIterator {

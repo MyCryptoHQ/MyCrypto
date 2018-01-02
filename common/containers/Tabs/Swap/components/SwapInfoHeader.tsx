@@ -22,7 +22,7 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
     if (!origin.amount || !destination.amount) {
       return;
     }
-    return destination.amount / origin.amount;
+    return (destination.amount as number) / (origin.amount as number);
   };
 
   public isExpanded = () => {
@@ -93,7 +93,7 @@ export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
           {/*Amount to Receive*/}
           <div className={this.computedClass()}>
             <h3 className="SwapInfo-details-block-value">
-              {` ${toFixedIfLarger(destination.amount, 4)} ${destination.id}`}
+              {` ${toFixedIfLarger(destination.amount as number, 4)} ${destination.id}`}
             </h3>
             <p className="SwapInfo-details-block-label">{translate('SWAP_rec_amt')}</p>
           </div>
