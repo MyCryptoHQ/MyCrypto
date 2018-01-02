@@ -13,7 +13,7 @@ interface State {
   openModal: boolean;
 }
 
-class NavigationPrompt extends React.Component<Props, State> {
+class NavigationPromptClass extends React.Component<Props, State> {
   public unblock;
 
   constructor(props) {
@@ -88,4 +88,4 @@ class NavigationPrompt extends React.Component<Props, State> {
   }
 }
 
-export default withRouter<Props>(NavigationPrompt);
+export const NavigationPrompt = withRouter<Props>(NavigationPromptClass);

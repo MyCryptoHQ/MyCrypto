@@ -54,7 +54,7 @@
     "@types/qrcode": "0.8.0",
     "@types/qrcode.react": "0.6.2",
     "@types/query-string": "5.0.1",
-    "@types/react": "16.0.29",
+    "@types/react": "16.0.31",
     "@types/react-dom": "16.0.3",
     "@types/react-redux": "5.0.14",
     "@types/react-router-dom": "4.2.3",
@@ -91,8 +91,9 @@
     "lint-staged": "6.0.0",
     "minimist": "1.2.0",
     "node-sass": "4.7.2",
-    "nodemon": "1.14.6",
+    "nodemon": "1.14.7",
     "null-loader": "0.1.1",
+    "offline-plugin": "4.9.0",
     "prettier": "1.9.2",
     "progress": "2.0.0",
     "react-hot-loader": "3.1.3",
@@ -142,6 +143,8 @@
     "precommit": "lint-staged",
     "formatAll":
       "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "prettier:diff":
+      "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {
