@@ -137,7 +137,7 @@ class RequestPayment extends React.Component<Props, {}> {
   }
 
   private generateEIP681String(
-    recipientAddress: string,
+    currentTo: string,
     tokenContractAddress: string,
     currentValue,
     gasLimit: { raw: string; value: BN | null },
@@ -150,17 +150,17 @@ class RequestPayment extends React.Component<Props, {}> {
       !chainId ||
       !gasLimit ||
       !gasLimit.raw.length ||
-      !recipientAddress.length ||
-      !tokenContractAddress.length
+      !currentTo.length ||
+      (unit !== 'ether' && !tokenContractAddress.length)
     ) {
       return '';
     }
 
     if (unit === 'ether') {
-      return buildEIP681EtherRequest(recipientAddress, chainId, currentValue);
+      return buildEIP681EtherRequest(currentTo, chainId, currentValue);
     } else {
       return buildEIP681TokenRequest(
-        recipientAddress,
+        currentTo,
         tokenContractAddress,
         chainId,
         currentValue,
