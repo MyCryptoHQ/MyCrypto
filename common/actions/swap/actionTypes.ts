@@ -9,7 +9,7 @@ export interface Pairs {
 
 export interface SwapInput {
   id: string;
-  amount: number;
+  amount: number | string;
 }
 
 export interface SwapInputs {

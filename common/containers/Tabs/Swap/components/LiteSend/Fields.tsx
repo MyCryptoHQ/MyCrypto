@@ -50,16 +50,18 @@ class FieldsClass extends Component<Props> {
                 <Aux>
                   {!isValid && (
                     <h5 style={{ color: 'red' }}>
-                      WARNING: Your balance is not high enough to complete this transaction! Please
-                      send more funds or switch to a different wallet
+                      WARNING: Your ether or token balance is not high enough to complete this
+                      transaction! Please send more funds or switch to a different wallet
                     </h5>
                   )}
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={`${currentValue.raw} ${this.props.unit}`}
-                    readOnly={true}
-                  />
+                  {isValid && (
+                    <input
+                      className="form-control"
+                      type="text"
+                      value={`${currentValue.raw} ${this.props.unit}`}
+                      readOnly={true}
+                    />
+                  )}
                 </Aux>
               )}
             />

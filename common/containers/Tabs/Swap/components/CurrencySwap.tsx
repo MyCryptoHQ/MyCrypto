@@ -188,7 +188,7 @@ export default class CurrencySwap extends Component<Props, State> {
   public setDisabled(origin: SwapInput, destination: SwapInput) {
     this.clearErrMessages();
     const amountsValid = origin.amount && destination.amount;
-    const minMaxValid = this.isMinMaxValid(origin.amount, origin.id, destination.id);
+    const minMaxValid = this.isMinMaxValid(origin.amount as number, origin.id, destination.id);
     const disabled = !(amountsValid && minMaxValid);
     const showError = disabled && amountsValid;
 
@@ -271,10 +271,10 @@ export default class CurrencySwap extends Component<Props, State> {
     const { origin, destination, destinationKindOptions } = this.state;
     const { options, initSwap } = this.props;
 
-    const newOrigin = { ...origin, id: newOption, amount: 0 };
+    const newOrigin = { ...origin, id: newOption, amount: '' };
     const newDest = {
       id: newOption === destination.id ? origin.id : destination.id,
-      amount: 0
+      amount: ''
     };
     this.setState({
       origin: newOrigin,
@@ -294,10 +294,10 @@ export default class CurrencySwap extends Component<Props, State> {
 
     const newOrigin = {
       ...origin,
-      amount: 0
+      amount: ''
     };
 
-    const newDest = { ...destination, id: newOption };
+    const newDest = { ...destination, id: newOption, amount: '' };
     this.setState({
       origin: newOrigin,
       destination: newDest
@@ -336,13 +336,13 @@ export default class CurrencySwap extends Component<Props, State> {
                 id="origin-swap-input"
                 className={`CurrencySwap-input form-control ${
                   String(origin.amount) !== '' &&
-                  this.isMinMaxValid(origin.amount, origin.id, destination.id)
+                  this.isMinMaxValid(origin.amount as number, origin.id, destination.id)
                     ? 'is-valid'
                     : 'is-invalid'
                 }`}
                 type="number"
                 placeholder="Amount"
-                value={isNaN(origin.amount) ? '' : origin.amount}
+                value={isNaN(origin.amount as number) ? '' : origin.amount}
                 onChange={this.onChangeAmount}
               />
               <div className="CurrencySwap-dropdown">
@@ -363,13 +363,13 @@ export default class CurrencySwap extends Component<Props, State> {
                 id="destination-swap-input"
                 className={`CurrencySwap-input form-control ${
                   String(destination.amount) !== '' &&
-                  this.isMinMaxValid(origin.amount, origin.id, destination.id)
+                  this.isMinMaxValid(origin.amount as number, origin.id, destination.id)
                     ? 'is-valid'
                     : 'is-invalid'
                 }`}
                 type="number"
                 placeholder="Amount"
-                value={isNaN(destination.amount) ? '' : destination.amount}
+                value={isNaN(destination.amount as number) ? '' : destination.amount}
                 onChange={this.onChangeAmount}
               />
               <div className="CurrencySwap-dropdown">
