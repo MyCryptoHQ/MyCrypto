@@ -43,7 +43,7 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
     const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
     const showErr = error ? 'is-showing' : '';
 
-    if (window.location.protocol !== 'https') {
+    if (window.location.protocol !== 'https:') {
       return (
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
