@@ -11,7 +11,7 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
-import PageNotFound from 'containers/PageNotFound';
+import PageNotFound from 'components/PageNotFound';
 import { Store } from 'redux';
 import { AppState } from 'reducers';
 
