@@ -52,7 +52,7 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
       );
     } else {
       this.props.bityOrderCreateRequestedSwap(
-        origin.amount,
+        origin.amount as number,
         this.props.destinationAddress,
         combineAndUpper(origin.id, destinationId)
       );

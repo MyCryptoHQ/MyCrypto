@@ -3,7 +3,7 @@ import { WhitelistedCoins } from 'config/bity';
 
 export interface SwapInput {
   id: WhitelistedCoins;
-  amount: number;
+  amount: number | string;
 }
 
 export interface NormalizedRate {

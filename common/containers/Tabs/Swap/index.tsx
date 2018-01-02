@@ -150,7 +150,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       isPostingOrder,
       origin,
       destinationId: destination.id,
-      destinationKind: destination.amount,
+      destinationKind: destination.amount as number,
       destinationAddressSwap,
       destinationAddress,
       stopLoadBityRatesSwap,

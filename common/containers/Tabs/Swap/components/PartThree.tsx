@@ -53,6 +53,7 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
   public componentWillUnmount() {
     this.props.stopOrderTimerSwap();
     this.props.stopPollBityOrderStatus();
+    this.props.stopPollShapeshiftOrderStatus();
   }
 
   public render() {
@@ -88,7 +89,7 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
 
     const BitcoinQRProps = {
       paymentAddress,
-      destinationAmount: destination.amount
+      destinationAmount: destination.amount as number
     };
 
     const OpenOrder = bityOrderStatus === 'OPEN' || shapeshiftOrderStatus === 'no_deposits';

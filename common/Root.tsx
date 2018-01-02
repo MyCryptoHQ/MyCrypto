@@ -11,6 +11,7 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
+import PageNotFound from 'components/PageNotFound';
 import { Store } from 'redux';
 import { AppState } from 'reducers';
 
@@ -41,7 +42,7 @@ export default class Root extends Component<Props, State> {
 
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
     const routes = (
-      <div>
+      <Switch>
         <Route exact={true} path="/" component={GenerateWallet} />
         <Route path="/generate" component={GenerateWallet}>
           <Route path="keystore" component={GenerateWallet} />
@@ -58,8 +59,9 @@ export default class Root extends Component<Props, State> {
         <Route path="/ens" component={ENS} />
         <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
         <Route path="/pushTx" component={BroadcastTx} />
+        <Route component={PageNotFound} />
         <LegacyRoutes />
-      </div>
+      </Switch>
     );
     return (
       <Provider store={store} key={Math.random()}>
