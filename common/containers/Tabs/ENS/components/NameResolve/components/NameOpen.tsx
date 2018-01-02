@@ -6,7 +6,7 @@ import ENSUnlockLayout from './components/ENSUnlockLayout';
 
 export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
   <section className="row">
-    <section className="col-xs-12 col-sm-6 col-sm-offset-3 text-center">
+    <section className="auction-info text-center">
       <div className="ens-title">
         <h1>
           <strong>{props.name}.eth</strong> is available!
