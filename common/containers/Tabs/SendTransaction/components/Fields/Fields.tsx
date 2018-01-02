@@ -5,7 +5,6 @@ import {
   NonceField,
   AddressField,
   AmountField,
-  DataField,
   GasSlider,
   SendEverything,
   CurrentCustomMessage,
