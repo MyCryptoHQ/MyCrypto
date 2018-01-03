@@ -1,11 +1,12 @@
 import './LedgerNano.scss';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
+import { DeterministicWalletsModal } from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
 import DPATHS from 'config/dpaths';
+import { Spinner } from 'components/ui';
 
 const DEFAULT_PATH = DPATHS.LEDGER[0].value;
 
@@ -19,30 +20,73 @@ interface State {
   dPath: string;
   error: string | null;
   isLoading: boolean;
+  showTip: boolean;
 }
 
-export default class LedgerNanoSDecrypt extends Component<Props, State> {
+export class LedgerNanoSDecrypt extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
     dPath: DEFAULT_PATH,
     error: null,
-    isLoading: false
+    isLoading: false,
+    showTip: false
+  };
+
+  public showTip = () => {
+    this.setState({
+      showTip: true
+    });
   };
 
   public render() {
-    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
+    const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
     const showErr = error ? 'is-showing' : '';
 
+    if (window.location.protocol !== 'https:') {
+      return (
+        <div className="LedgerDecrypt">
+          <div className="alert alert-danger">
+            Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
+            unlock your wallet at <a href="https://myetherwallet.com">MyEtherWallet.com</a>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <section className="LedgerDecrypt col-md-4 col-sm-6">
+      <div className="LedgerDecrypt">
+        {showTip && (
+          <p>
+            <strong>Tip: </strong>Make sure you're logged into the ethereum app on your hardware
+            wallet
+          </p>
+        )}
         <button
-          className="LedgerDecrypt-decrypt btn btn-primary btn-lg"
+          className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
           onClick={this.handleNullConnect}
           disabled={isLoading}
         >
-          {isLoading ? 'Unlocking...' : translate('ADD_Ledger_scan')}
+          {isLoading ? (
+            <div className="LedgerDecrypt-message">
+              <Spinner light={true} />
+              Unlocking...
+            </div>
+          ) : (
+            translate('ADD_Ledger_scan')
+          )}
         </button>
+
+        <a
+          className="LedgerDecrypt-buy btn btn-sm btn-default"
+          href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
+          target="_blank"
+          rel="noopener"
+        >
+          {translate('Don’t have a Ledger? Order one now!')}
+        </a>
+
+        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="LedgerDecrypt-help">
           Guides:
@@ -66,17 +110,6 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
           </div>
         </div>
 
-        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        <a
-          className="LedgerDecrypt-buy btn btn-sm btn-default"
-          href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
-          target="_blank"
-          rel="noopener"
-        >
-          {translate('Don’t have a Ledger? Order one now!')}
-        </a>
-
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
@@ -88,7 +121,7 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
           onPathChange={this.handlePathChange}
           walletType={translateRaw('x_Ledger')}
         />
-      </section>
+      </div>
     );
   }
 
@@ -99,7 +132,8 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
   private handleConnect = (dPath: string = this.state.dPath) => {
     this.setState({
       isLoading: true,
-      error: null
+      error: null,
+      showTip: false
     });
 
     const ledger = new Ledger3('w0w');
@@ -109,6 +143,9 @@ export default class LedgerNanoSDecrypt extends Component<Props, State> {
       dPath,
       (res, err) => {
         if (err) {
+          if (err.errorCode === 5) {
+            this.showTip();
+          }
           err = ethApp.getError(err);
         }
 

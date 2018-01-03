@@ -1,0 +1,11 @@
+.SupportFooter {
+  text-align: center;
+  padding-top: 80px;
+  &-fallback {
+    padding: 20px 0;
+    textarea {
+      max-width: 35rem;
+      margin: auto;
+    }
+  }
+}

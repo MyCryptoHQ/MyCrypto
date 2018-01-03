@@ -47,14 +47,14 @@ class InteractClass extends Component<DispatchProps, State> {
     const { showExplorer, currentContract } = this.state;
 
     return (
-      <div className="Interact">
+      <main className="Interact Tab-content-pane" role="main">
         <InteractForm accessContract={this.accessContract} resetState={this.resetState} />
         <hr />
         {showExplorer &&
           currentContract && (
             <InteractExplorer contractFunctions={Contract.getFunctions(currentContract)} />
           )}
-      </div>
+      </main>
     );
   }
 

@@ -82,7 +82,7 @@
     "x_Json": "JSON 檔 (未加密) ",
     "x_JsonDesc": "這是未加密的JSON格式私鑰檔。這表示你不需要密碼就可以控制錢包，但任何持有此JSON文件的人也都無須密碼便能控制你的錢包和乙太幣。 ",
     "x_Keystore": "Keystore 檔 (UTC / JSON · 推薦 · 經過加密) ",
-    "x_Keystore2": "Keystore 檔 (UTC / JSON) ",
+    "x_Keystore2": "Keystore 檔 ",
     "x_KeystoreDesc": "此Keystore檔和Mist錢包相容，因此你可以輕鬆地匯入錢包。我們推薦你下載並備份此檔案。 ",
     "x_MetaMask": "Metamask / Mist ",
     "x_Mnemonic": "助憶口令 ",
