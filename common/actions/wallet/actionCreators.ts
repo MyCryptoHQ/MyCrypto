@@ -88,6 +88,34 @@ export function setTokenBalancesRejected(): types.SetTokenBalancesRejectedAction
   };
 }
 
+export function setTokenBalancePending(
+  payload: types.SetTokenBalancePendingAction['payload']
+): types.SetTokenBalancePendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING,
+    payload
+  };
+}
+
+export type TSetTokenBalanceFulfilled = typeof setTokenBalanceFulfilled;
+export function setTokenBalanceFulfilled(payload: {
+  [key: string]: {
+    balance: TokenValue;
+    error: string | null;
+  };
+}): types.SetTokenBalanceFulfilledAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED,
+    payload
+  };
+}
+
+export function setTokenBalanceRejected(): types.SetTokenBalanceRejectedAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED
+  };
+}
+
 export type TScanWalletForTokens = typeof scanWalletForTokens;
 export function scanWalletForTokens(wallet: IWallet): types.ScanWalletForTokensAction {
   return {

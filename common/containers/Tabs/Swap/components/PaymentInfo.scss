@@ -9,14 +9,14 @@
     margin: $space auto 0;
     max-width: 620px;
     width: 100%;
-    font-size: $font-size-medium-bump;
+    font-size: $font-size-medium;
     text-align: center;
     @include mono;
   }
 
   @media screen and (max-width: $screen-sm) {
     h1 {
-      font-size: $font-size-medium;
+      font-size: $font-size-base;
     }
   }
 }

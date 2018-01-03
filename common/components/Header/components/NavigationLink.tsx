@@ -44,7 +44,11 @@ class NavigationLink extends React.Component<Props, {}> {
         </Link>
       );
 
-    return <li className="NavigationLink">{linkEl}</li>;
+    return (
+      <li id={link.name} className="NavigationLink">
+        {linkEl}
+      </li>
+    );
   }
 }
 
