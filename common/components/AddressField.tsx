@@ -2,7 +2,11 @@ import React from 'react';
 import { AddressFieldFactory } from './AddressFieldFactory';
 import { donationAddressMap } from 'config/data';
 
-export const AddressField: React.SFC<{}> = () => (
+interface Props {
+  isReadOnly?: boolean;
+}
+
+export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
   <AddressFieldFactory
     withProps={({ currentTo, isValid, onChange, readOnly }) => (
       <input
@@ -10,7 +14,7 @@ export const AddressField: React.SFC<{}> = () => (
         type="text"
         value={currentTo.raw}
         placeholder={donationAddressMap.ETH}
-        readOnly={!!readOnly}
+        readOnly={!!(isReadOnly || readOnly)}
         onChange={onChange}
       />
     )}

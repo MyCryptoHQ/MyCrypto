@@ -72,7 +72,6 @@ export function* handleConfigureLiteSend(): SagaIterator {
       yield put(showLiteSend(false));
       return yield put(reset());
     }
-
     if (result.transactionReset) {
       yield cancel(liteSendProc);
     }
