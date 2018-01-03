@@ -4,7 +4,8 @@ import {
   SetWalletAction,
   WalletAction,
   SetWalletConfigAction,
-  TypeKeys
+  TypeKeys,
+  SetTokenBalanceFulfilledAction
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
 import { IWallet, Balance, WalletConfig } from 'libs/wallet';
@@ -69,6 +70,30 @@ function setTokenBalancesPending(state: State): State {
   };
 }
 
+function setTokenBalancePending(state: State): State {
+  return {
+    ...state,
+    isTokensLoading: true,
+    tokensError: null
+  };
+}
+
+function setTokenBalanceFufilled(state: State, action: SetTokenBalanceFulfilledAction): State {
+  return {
+    ...state,
+    tokens: { ...state.tokens, ...action.payload },
+    isTokensLoading: false
+  };
+}
+
+function setTokenBalanceRejected(state: State): State {
+  return {
+    ...state,
+    isTokensLoading: false,
+    tokensError: 'Failed to fetch token value'
+  };
+}
+
 function setTokenBalancesFulfilled(state: State, action: SetTokenBalancesFulfilledAction): State {
   return {
     ...state,
@@ -124,6 +149,12 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setTokenBalancesFulfilled(state, action);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED:
       return setTokenBalancesRejected(state);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING:
+      return setTokenBalancePending(state);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED:
+      return setTokenBalanceFufilled(state, action);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED:
+      return setTokenBalanceRejected(state);
     case TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS:
       return scanWalletForTokens(state);
     case TypeKeys.WALLET_SET_WALLET_TOKENS:

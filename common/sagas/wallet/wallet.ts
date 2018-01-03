@@ -13,7 +13,10 @@ import {
   UnlockPrivateKeyAction,
   ScanWalletForTokensAction,
   SetWalletTokensAction,
-  TypeKeys
+  TypeKeys,
+  SetTokenBalancePendingAction,
+  setTokenBalanceFulfilled,
+  setTokenBalanceRejected
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode, TypeKeys as ConfigTypeKeys } from 'actions/config';
@@ -27,10 +30,10 @@ import {
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
-import { NODES, initWeb3Node } from 'config/data';
+import { NODES, initWeb3Node, Token } from 'config/data';
 import { SagaIterator } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take } from 'redux-saga/effects';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getAllTokens } from 'selectors/config';
 import {
   getTokens,
   getWalletInst,
@@ -73,11 +76,34 @@ export function* updateTokenBalances(): SagaIterator {
     }
     yield put(setTokenBalancesPending());
     const tokenBalances: TokenBalanceLookup = yield call(getTokenBalances, wallet, tokens);
-    console.log(tokenBalances);
     yield put(setTokenBalancesFulfilled(tokenBalances));
   } catch (error) {
     console.error('Failed to get token balances', error);
     yield put(setTokenBalancesRejected());
+  }
+}
+
+export function* updateTokenBalance(action: SetTokenBalancePendingAction): SagaIterator {
+  try {
+    const wallet: null | IWallet = yield select(getWalletInst);
+    const { tokenSymbol } = action.payload;
+    const allTokens: Token[] = yield select(getAllTokens);
+    const token = allTokens.find(t => t.symbol === tokenSymbol);
+
+    if (!wallet) {
+      return;
+    }
+
+    if (!token) {
+      throw Error('Token not found');
+    }
+
+    const tokenBalances: TokenBalanceLookup = yield call(getTokenBalances, wallet, [token]);
+
+    yield put(setTokenBalanceFulfilled(tokenBalances));
+  } catch (error) {
+    console.error('Failed to get token balance', error);
+    yield put(setTokenBalanceRejected());
   }
 }
 
@@ -230,6 +256,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SET, handleNewWallet),
     takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
-    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
+    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd),
+    takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance)
   ];
 }

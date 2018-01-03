@@ -76,11 +76,15 @@ export function getTokenBalances(state: AppState, nonZeroOnly: boolean = false):
 }
 
 export const getTokenBalance = (state: AppState, unit: string): TokenValue | null => {
-  return getTokenWithBalance(state, unit).balance;
+  const token = getTokenWithBalance(state, unit);
+  if (!token) {
+    return token;
+  }
+  return token.balance;
 };
 
 export const getTokenWithBalance = (state: AppState, unit: string): TokenBalance => {
-  const tokens = getTokenBalances(state, true);
+  const tokens = getTokenBalances(state, false);
   const currentToken = tokens.filter(t => t.symbol === unit);
   //TODO: getting the first index is kinda hacky
   return currentToken[0];

@@ -15,3 +15,4 @@ export { default as Footer } from './Footer';
 export { default as BalanceSidebar } from './BalanceSidebar';
 export { default as PaperWallet } from './PaperWallet';
 export { default as AlphaAgreement } from './AlphaAgreement';
+export { default as WalletDecrypt } from './WalletDecrypt';

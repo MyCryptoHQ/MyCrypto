@@ -1,8 +1,32 @@
 import bityConfig, { WhitelistedCoins } from 'config/bity';
 import { checkHttpStatus, parseJSON, filter } from './utils';
+import bitcoinIcon from 'assets/images/bitcoin.png';
+import repIcon from 'assets/images/augur.png';
+import etherIcon from 'assets/images/ether.png';
 
 const isCryptoPair = (from: string, to: string, arr: WhitelistedCoins[]) => {
   return filter(from, arr) && filter(to, arr);
+};
+
+const btcOptions = {
+  id: 'BTC',
+  status: 'available',
+  image: bitcoinIcon,
+  name: 'Bitcoin'
+};
+
+const ethOptions = {
+  id: 'ETH',
+  status: 'available',
+  image: etherIcon,
+  name: 'Ether'
+};
+
+const repOptions = {
+  id: 'REP',
+  status: 'available',
+  image: repIcon,
+  name: 'Augur'
 };
 
 export function getAllRates() {
@@ -14,9 +38,31 @@ export function getAllRates() {
       const to = { id: pairName.substring(3, 6) };
       // Check if rate exists= && check if the pair only crypto to crypto, not crypto to fiat, or any other combination
       if (parseFloat(each.rate_we_sell) && isCryptoPair(from.id, to.id, ['BTC', 'ETH', 'REP'])) {
+        let fromOptions;
+        let toOptions;
+        switch (from.id) {
+          case 'BTC':
+            fromOptions = btcOptions;
+            break;
+          case 'ETH':
+            fromOptions = ethOptions;
+            break;
+          case 'REP':
+            fromOptions = repOptions;
+        }
+        switch (to.id) {
+          case 'BTC':
+            toOptions = btcOptions;
+            break;
+          case 'ETH':
+            toOptions = ethOptions;
+            break;
+          case 'REP':
+            toOptions = repOptions;
+        }
         mappedRates[pairName] = {
           id: pairName,
-          options: [from, to],
+          options: [fromOptions, toOptions],
           rate: parseFloat(each.rate_we_sell)
         };
       }

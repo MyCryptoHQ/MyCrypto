@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180px" height="246px" viewBox="0 0 180 246" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>digital-bitbox</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="digital-bitbox">
+            <polygon id="Path-3" fill="#000000" points="90 0 126 17 126 107 180 132 180 206 90 246 0 206 0 132 54 107 54 17"></polygon>
+            <polygon id="Path-4" fill="#FFFFFF" points="170 136 89.7558594 171.179688 10 136 25 130 90 158 155 130"></polygon>
+            <polygon id="Path-5" fill="#FFFFFF" points="97 170 97 236 170 202"></polygon>
+            <polygon id="Path-5" fill="#FFFFFF" transform="translate(46.500000, 203.000000) scale(-1, 1) translate(-46.500000, -203.000000) " points="10 170 10 236 83 202"></polygon>
+        </g>
+    </g>
+</svg>

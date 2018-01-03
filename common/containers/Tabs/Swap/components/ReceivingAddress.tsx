@@ -2,6 +2,7 @@ import {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
+  TShapeshiftOrderCreateRequestedSwap,
   TStopLoadBityRatesSwap
 } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
@@ -19,6 +20,8 @@ export interface StateProps {
   destinationId: keyof typeof donationAddressMap;
   isPostingOrder: boolean;
   destinationAddress: string;
+  destinationKind: number;
+  provider: string;
 }
 
 export interface ActionProps {
@@ -26,6 +29,7 @@ export interface ActionProps {
   changeStepSwap: TChangeStepSwap;
   stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
   bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
+  shapeshiftOrderCreateRequestedSwap: TShapeshiftOrderCreateRequestedSwap;
 }
 
 export default class ReceivingAddress extends Component<StateProps & ActionProps, {}> {
@@ -35,15 +39,24 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
   };
 
   public onClickPartTwoComplete = () => {
-    const { origin, destinationId } = this.props;
+    const { origin, destinationId, destinationAddress, destinationKind, provider } = this.props;
     if (!origin) {
       return;
     }
-    this.props.bityOrderCreateRequestedSwap(
-      origin.amount,
-      this.props.destinationAddress,
-      combineAndUpper(origin.id, destinationId)
-    );
+    if (provider === 'shapeshift') {
+      this.props.shapeshiftOrderCreateRequestedSwap(
+        destinationAddress,
+        origin.id,
+        destinationId,
+        destinationKind
+      );
+    } else {
+      this.props.bityOrderCreateRequestedSwap(
+        origin.amount as number,
+        this.props.destinationAddress,
+        combineAndUpper(origin.id, destinationId)
+      );
+    }
   };
 
   public render() {
@@ -77,7 +90,11 @@ export default class ReceivingAddress extends Component<StateProps & ActionProps
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
-                placeholder={donationAddressMap[destinationId]}
+                placeholder={
+                  destinationId === 'BTC'
+                    ? donationAddressMap[destinationId]
+                    : donationAddressMap.ETH
+                }
               />
             </label>
           </div>

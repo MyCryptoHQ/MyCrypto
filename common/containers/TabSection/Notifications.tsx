@@ -11,23 +11,15 @@ interface Props {
   closeNotification: TCloseNotification;
 }
 
-const Transition: React.SFC<{}> = ({ children }) => (
-  <CSSTransition
-    children={children}
-    classNames="NotificationAnimation"
-    timeout={{ enter: 500, exit: 500 }}
-  />
-);
-
 export class Notifications extends React.Component<Props, {}> {
   public render() {
     return (
       <TransitionGroup className="Notifications">
         {this.props.notifications.map(n => {
           return (
-            <Transition key={n.id}>
+            <CSSTransition classNames="NotificationAnimation" timeout={500} key={n.id}>
               <NotificationRow notification={n} onClose={this.props.closeNotification} />
-            </Transition>
+            </CSSTransition>
           );
         })}
       </TransitionGroup>
