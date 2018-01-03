@@ -10,12 +10,12 @@ import {
   State as TransactionState
 } from 'reducers/transaction';
 import { State as SwapState, INITIAL_STATE as swapInitialState } from 'reducers/swap';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
-import RootReducer from './reducers';
+import RootReducer, { AppState } from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 import sagas from './sagas';
@@ -30,7 +30,7 @@ const configureStore = () => {
     promiseTypeSuffixes: ['REQUESTED', 'SUCCEEDED', 'FAILED']
   });
   let middleware;
-  let store;
+  let store: Store<AppState>;
 
   if (process.env.NODE_ENV !== 'production') {
     middleware = composeWithDevTools(
@@ -106,11 +106,11 @@ const configureStore = () => {
     persistedInitialState.config.nodeSelection = configInitialState.nodeSelection;
   }
 
-  store = createStore(RootReducer, persistedInitialState, middleware);
+  store = createStore<AppState>(RootReducer, persistedInitialState as AppState, middleware);
 
   // Add all of the sagas to the middleware
-  Object.keys(sagas).forEach(saga => {
-    sagaMiddleware.run(sagas[saga]);
+  Object.values(sagas).forEach(saga => {
+    sagaMiddleware.run(saga);
   });
 
   store.subscribe(

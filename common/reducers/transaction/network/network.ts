@@ -1,6 +1,5 @@
 import { State, RequestStatus } from './typings';
 import { TypeKeys as TK, ResetAction, NetworkAction } from 'actions/transaction';
-import { Action } from 'redux';
 
 const INITIAL_STATE: State = {
   gasEstimationStatus: null,
@@ -13,9 +12,9 @@ const getPostFix = (str: string) => {
   return arr[arr.length - 1];
 };
 
-const nextState = (field: keyof State) => (state: State, action: Action): State => ({
+const nextState = (field: keyof State) => (state: State, action: NetworkAction): State => ({
   ...state,
-  [field]: RequestStatus[getPostFix(action.type)]
+  [field]: RequestStatus[getPostFix(action.type) as keyof typeof RequestStatus]
 });
 
 const reset = () => INITIAL_STATE;

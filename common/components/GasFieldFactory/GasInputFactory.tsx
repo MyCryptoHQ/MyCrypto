@@ -10,7 +10,7 @@ interface StateProps {
 }
 
 interface OwnProps {
-  withProps(props: CallBackProps);
+  withProps(props: CallBackProps): React.ReactElement<any> | null;
   onChange(value: React.FormEvent<HTMLInputElement>): void;
 }
 

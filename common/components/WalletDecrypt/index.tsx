@@ -51,9 +51,11 @@ interface Props {
 }
 
 interface State {
-  selectedWalletKey: string;
+  selectedWalletKey: WalletKeys;
   value: UnlockParams;
 }
+
+type WalletKeys = keyof (WalletDecrypt['WALLETS']);
 
 export class WalletDecrypt extends Component<Props, State> {
   public WALLETS = {
@@ -64,7 +66,7 @@ export class WalletDecrypt extends Component<Props, State> {
       unlock: this.props.unlockWeb3,
       helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
     },
-    'ledger-nano-s': {
+    ledgerNanoS: {
       lid: 'x_Ledger',
       component: LedgerNanoSDecrypt,
       initialParams: {},
@@ -79,7 +81,7 @@ export class WalletDecrypt extends Component<Props, State> {
       unlock: this.props.setWallet,
       helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
     },
-    'keystore-file': {
+    keystoreFile: {
       lid: 'x_Keystore2',
       component: KeystoreDecrypt,
       initialParams: {
@@ -89,14 +91,14 @@ export class WalletDecrypt extends Component<Props, State> {
       unlock: this.props.unlockKeystore,
       helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
-    'mnemonic-phrase': {
+    mnemonicPhrase: {
       lid: 'x_Mnemonic',
       component: MnemonicDecrypt,
       initialParams: {},
       unlock: this.props.unlockMnemonic,
       helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
-    'private-key': {
+    privateKey: {
       lid: 'x_PrivKey2',
       component: PrivateKeyDecrypt,
       initialParams: {
@@ -106,7 +108,7 @@ export class WalletDecrypt extends Component<Props, State> {
       unlock: this.props.unlockPrivateKey,
       helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
     },
-    'view-only': {
+    viewOnly: {
       lid: 'View with Address Only',
       component: ViewOnlyDecrypt,
       initialParams: {},
@@ -115,8 +117,8 @@ export class WalletDecrypt extends Component<Props, State> {
     }
   };
   public state: State = {
-    selectedWalletKey: 'keystore-file',
-    value: this.WALLETS['keystore-file'].initialParams
+    selectedWalletKey: 'keystoreFile',
+    value: this.WALLETS.keystoreFile.initialParams
   };
 
   public getDecryptionComponent() {
@@ -136,7 +138,7 @@ export class WalletDecrypt extends Component<Props, State> {
     );
   }
 
-  public isOnlineRequiredWalletAndOffline(selectedWalletKey) {
+  public isOnlineRequiredWalletAndOffline(selectedWalletKey: string) {
     const onlineRequiredWallets = ['trezor', 'ledger-nano-s'];
     return this.props.offline && onlineRequiredWallets.includes(selectedWalletKey);
   }
@@ -170,15 +172,16 @@ export class WalletDecrypt extends Component<Props, State> {
   }
 
   public handleDecryptionChoiceChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const wallet = this.WALLETS[event.currentTarget.value];
+    const walletKey = event.currentTarget.value as WalletKeys;
+    const walletType = this.WALLETS[walletKey];
 
-    if (!wallet) {
+    if (!walletType) {
       return;
     }
 
     this.setState({
-      selectedWalletKey: event.currentTarget.value,
-      value: wallet.initialParams
+      selectedWalletKey: walletKey,
+      value: walletType.initialParams
     });
   };
 
@@ -227,7 +230,8 @@ export class WalletDecrypt extends Component<Props, State> {
     // some components (TrezorDecrypt) don't take an onChange prop, and thus this.state.value will remain unpopulated.
     // in this case, we can expect the payload to contain the unlocked wallet info.
     const unlockValue = this.state.value && !isEmpty(this.state.value) ? this.state.value : payload;
-    this.WALLETS[this.state.selectedWalletKey].unlock(unlockValue);
+    const wallet = this.WALLETS[this.state.selectedWalletKey];
+    wallet.unlock(unlockValue);
     this.props.resetTransactionState();
   };
 
