@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
+import { UnregisterCallback } from 'history';
 
 interface Props extends RouteComponentProps<{}> {
   when: boolean;
@@ -14,9 +15,9 @@ interface State {
 }
 
 class NavigationPromptClass extends React.Component<Props, State> {
-  public unblock;
+  public unblock: UnregisterCallback;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       nextLocation: null,

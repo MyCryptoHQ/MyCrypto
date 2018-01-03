@@ -2,7 +2,6 @@ import { Wei } from 'libs/units';
 import * as eth from './ether';
 import { IFullWallet } from 'libs/wallet';
 import { ITransaction } from '../typings';
-
 export const signTransaction = async (
   t: ITransaction,
   w: IFullWallet,

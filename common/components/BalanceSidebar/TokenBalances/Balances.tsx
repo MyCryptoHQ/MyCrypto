@@ -20,7 +20,7 @@ interface State {
   showCustomTokenForm: boolean;
 }
 export default class TokenBalances extends React.Component<Props, State> {
-  public state = {
+  public state: State = {
     trackedTokens: {},
     showCustomTokenForm: false
   };

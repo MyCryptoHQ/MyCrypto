@@ -19,7 +19,7 @@ interface State {
 }
 
 class InteractForm extends Component<Props, State> {
-  public state = {
+  public state: State = {
     address: '',
     abiJson: ''
   };
@@ -35,7 +35,11 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
     const validEthAddress = isValidETHAddress(address);
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
-    let contractOptions;
+    interface IContractOpts {
+      name: string;
+      value: string | null;
+    }
+    let contractOptions: IContractOpts[];
     if (contracts && contracts.length) {
       contractOptions = [
         {
@@ -86,8 +90,8 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
               onChange={this.handleSelectContract}
               disabled={!contracts || !contracts.length}
             >
-              {contractOptions.map(opt => (
-                <option key={opt.value} value={opt.value}>
+              {contractOptions.map((opt, idx) => (
+                <option key={opt.value || idx} value={opt.value || undefined}>
                   {opt.name}
                 </option>
               ))}
@@ -122,9 +126,12 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
     );
   }
 
-  private handleInput = name => (ev: any) => {
+  private handleInput = (name: keyof State) => (
+    ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     this.props.resetState();
-    this.setState({ [name]: ev.target.value });
+
+    this.setState({ [name as any]: ev.currentTarget.value });
   };
 
   private handleSelectContract = (ev: any) => {

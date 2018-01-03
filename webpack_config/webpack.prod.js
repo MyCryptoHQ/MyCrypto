@@ -61,11 +61,15 @@ base.plugins.push(
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('production')
   }),
-  new BabelMinifyPlugin({
-    mangle: false
-  }, {
-    comments: false
-  }),
+  new BabelMinifyPlugin(
+    {
+      mangle: false
+    },
+    {
+      comments: false
+    }
+  ),
+  new BabelMinifyPlugin(),
   // extract vendor chunks
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',

@@ -10,7 +10,7 @@ const NETWORK_KEYS = Object.keys(NETWORKS);
 const CUSTOM = 'custom';
 
 interface Input {
-  name: string;
+  name: keyof State;
   placeholder?: string;
   type?: string;
 }
@@ -231,7 +231,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       <input
         className={classnames({
           'form-control': true,
-          'is-invalid': this.state[input.name] && invalids[input.name]
+          'is-invalid': !!(this.state[input.name] && invalids[input.name])
         })}
         value={this.state[input.name]}
         onChange={this.handleChange}

@@ -10,7 +10,7 @@ import {
   select,
   race
 } from 'redux-saga/effects';
-import { NODES, NodeConfig } from 'config/data';
+import { NODES, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
 import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,
@@ -42,6 +42,7 @@ import { Web3Wallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+import { SetWalletAction } from 'actions/wallet';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -178,14 +179,20 @@ export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
   yield put(changeNodeIntent(nodeId));
 }
 
+interface INetworksInUse {
+  [networkName: string]: boolean;
+}
 // If there are any orphaned custom networks, purge them
 export function* cleanCustomNetworks(): SagaIterator {
-  const customNodes = yield select(getCustomNodeConfigs);
-  const customNetworks = yield select(getCustomNetworkConfigs);
-  const networksInUse = customNodes.reduce((prev, conf) => {
-    prev[conf.network] = true;
-    return prev;
-  }, {});
+  const customNodes: CustomNodeConfig[] = yield select(getCustomNodeConfigs);
+  const customNetworks: CustomNetworkConfig[] = yield select(getCustomNetworkConfigs);
+  const networksInUse = customNodes.reduce(
+    (prev, conf) => {
+      prev[conf.network] = true;
+      return prev;
+    },
+    {} as INetworksInUse
+  );
 
   for (const net of customNetworks) {
     if (!networksInUse[makeCustomNetworkId(net)]) {
@@ -195,7 +202,7 @@ export function* cleanCustomNetworks(): SagaIterator {
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
-export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
+export function* unsetWeb3NodeOnWalletEvent(action: SetWalletAction): SagaIterator {
   const node = yield select(getNode);
   const nodeConfig = yield select(getNodeConfig);
   const newWallet = action.payload;
