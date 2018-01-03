@@ -5,7 +5,7 @@ import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
 import { TokenBalance } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
-import { ETH_DECIMAL, convertTokenBase } from 'libs/units';
+import { ETH_DECIMAL, convertTokenBase, Wei, TokenValue } from 'libs/units';
 import Spinner from 'components/ui/Spinner';
 import UnitDisplay from 'components/ui/UnitDisplay';
 import './EquivalentValues.scss';
@@ -129,15 +129,19 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   };
 
   private makeBalanceLookup(props: Props) {
+    interface IBalanceLookup {
+      [unit: string]: Wei | TokenValue | undefined;
+    }
+
     const tokenBalances = props.tokenBalances || [];
     this.balanceLookup = tokenBalances.reduce(
-      (prev, tk) => {
+      (balanceLookup, currentToken) => {
         // Piggy-back off of this reduce to add to decimal lookup
-        this.decimalLookup[tk.symbol] = tk.decimal;
-        prev[tk.symbol] = tk.balance;
-        return prev;
+        this.decimalLookup[currentToken.symbol] = currentToken.decimal;
+        balanceLookup[currentToken.symbol] = currentToken.balance;
+        return balanceLookup;
       },
-      { ETH: props.balance && props.balance.wei }
+      { ETH: props.balance && props.balance.wei } as IBalanceLookup
     );
   }
 
@@ -168,18 +172,26 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   ): {
     [key: string]: BN | undefined;
   } {
+    interface IEquivalentValues {
+      [unit: string]: Wei | TokenValue;
+    }
     // Recursively call on all currencies
     if (currency === ALL_OPTION) {
       return ['ETH'].concat(this.requestedCurrencies || []).reduce(
         (prev, curr) => {
           const currValues = this.getEquivalentValues(curr);
-          rateSymbols.forEach(sym => (prev[sym] = prev[sym].add(currValues[sym] || new BN(0))));
+          rateSymbols.forEach(
+            sym => (prev[sym] = prev[sym].add(currValues[sym] || TokenValue('0')))
+          );
           return prev;
         },
-        rateSymbols.reduce((prev, sym) => {
-          prev[sym] = new BN(0);
-          return prev;
-        }, {})
+        rateSymbols.reduce(
+          (prev, sym) => {
+            prev[sym] = new BN(0);
+            return prev;
+          },
+          {} as IEquivalentValues
+        )
       );
     }
 
@@ -195,9 +207,12 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       this.decimalLookup[currency] === undefined ? ETH_DECIMAL : this.decimalLookup[currency];
     const adjustedBalance = convertTokenBase(balance, decimal, ETH_DECIMAL);
 
-    return rateSymbols.reduce((prev, sym) => {
-      prev[sym] = adjustedBalance.muln(rates[currency][sym]);
-      return prev;
-    }, {});
+    return rateSymbols.reduce(
+      (prev, sym) => {
+        prev[sym] = adjustedBalance.muln(rates[currency][sym]);
+        return prev;
+      },
+      {} as IEquivalentValues
+    );
   }
 }
