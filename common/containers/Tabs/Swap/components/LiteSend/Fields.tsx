@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
-import { GasFieldFactory } from 'components/GasFieldFactory';
+import { GasLimitFieldFactory } from 'components/GasLimitFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -71,7 +71,7 @@ class FieldsClass extends Component<Props> {
           <div className="col-xs-12">
             <label>{translate('TRANS_gas')} </label>
 
-            <GasFieldFactory
+            <GasLimitFieldFactory
               withProps={({ gasLimit }) => (
                 <input className="form-control" type="text" value={gasLimit.raw} readOnly={true} />
               )}
