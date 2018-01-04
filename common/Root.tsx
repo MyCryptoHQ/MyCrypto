@@ -12,6 +12,8 @@ import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
+import LogOutPrompt from 'components/LogOutPrompt';
+import { Aux } from 'components/ui';
 import { Store } from 'redux';
 import { AppState } from 'reducers';
 
@@ -60,16 +62,20 @@ export default class Root extends Component<Props, State> {
         <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
         <Route path="/pushTx" component={BroadcastTx} />
         <Route component={PageNotFound} />
-        <LegacyRoutes />
       </Switch>
     );
+
+    const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+
     return (
       <Provider store={store} key={Math.random()}>
-        {process.env.BUILD_DOWNLOADABLE ? (
-          <HashRouter key={Math.random()}>{routes}</HashRouter>
-        ) : (
-          <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>
-        )}
+        <Router key={Math.random()}>
+          <Aux>
+            {routes}
+            <LegacyRoutes />
+            <LogOutPrompt />
+          </Aux>
+        </Router>
       </Provider>
     );
   }
