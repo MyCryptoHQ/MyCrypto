@@ -62,7 +62,6 @@ export function* pollOfflineStatus(): SagaIterator {
     // Don't check if the user is in another tab or window
     const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
     if (shouldPing && !document.hidden) {
-      hasCheckedOnline = true;
       const { pingSucceeded } = yield race({
         pingSucceeded: call(node.lib.ping.bind(node.lib)),
         timeout: call(delay, 5000)
@@ -76,20 +75,33 @@ export function* pollOfflineStatus(): SagaIterator {
         yield put(toggleOfflineConfig());
       } else if (!pingSucceeded && !isOffline) {
         // If we were unable to ping but redux says we're online, mark offline
-        yield put(
-          showNotification(
-            'danger',
-            `You’ve lost your connection to the network, check your internet
-            connection or try changing networks from the dropdown at the
-            top right of the page.`,
-            Infinity
-          )
-        );
+        // If they had been online, show an error.
+        // If they hadn't been online, just inform them with a warning.
+        if (hasCheckedOnline) {
+          yield put(
+            showNotification(
+              'danger',
+              `You’ve lost your connection to the network, check your internet
+              connection or try changing networks from the dropdown at the
+              top right of the page.`,
+              Infinity
+            )
+          );
+        } else {
+          yield put(
+            showNotification(
+              'info',
+              'You are currently offline. Some features will be unavailable.',
+              5000
+            )
+          );
+        }
         yield put(toggleOfflineConfig());
       } else {
         // If neither case was true, try again in 5s
         yield call(delay, 5000);
       }
+      hasCheckedOnline = true;
     } else {
       yield call(delay, 1000);
     }
