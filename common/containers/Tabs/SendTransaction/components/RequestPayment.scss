@@ -1,0 +1,18 @@
+@import "common/sass/variables";
+
+.RequestPayment {
+  &-qr {
+    position: relative;
+    background: #FFF;
+    cursor: pointer;
+  }
+
+  &-codeContainer {
+    padding-top: 20px;
+  }
+
+  &-codeBox {
+    min-height: 180px;
+    overflow-x: hidden;
+  }
+}

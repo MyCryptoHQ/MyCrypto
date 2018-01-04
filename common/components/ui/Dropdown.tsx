@@ -15,7 +15,15 @@ interface Props<T> {
   onChange?(value: T): void;
 }
 
-export default class DropdownComponent<T> extends Component<Props<T>, {}> {
+interface State {
+  search: string;
+}
+
+export default class DropdownComponent<T> extends Component<Props<T>, State> {
+  public state = {
+    search: ''
+  };
+
   private dropdownShell: DropdownShell | null;
 
   public render() {
@@ -45,25 +53,51 @@ export default class DropdownComponent<T> extends Component<Props<T>, {}> {
 
   private renderOptions = () => {
     const { options, value, menuAlign, extra } = this.props;
+    const { search } = this.state;
+    const searchable = options.length > 20;
     const menuClass = classnames({
       'dropdown-menu': true,
       [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
     });
+    const searchableStyle = {
+      maxHeight: '300px',
+      overflowY: 'auto'
+    };
+    const searchRegex = new RegExp(search, 'gi');
+    const onSearchChange = e => {
+      this.setState({ search: e.target.value });
+    };
 
     return (
-      <ul className={menuClass}>
-        {options.map((option, i) => {
-          return (
-            <li key={i}>
-              <a
-                className={option === value ? 'active' : ''}
-                onClick={this.onChange.bind(null, option)}
-              >
-                {this.props.formatTitle ? this.formatTitle(option) : option}
-              </a>
-            </li>
-          );
-        })}
+      <ul className={menuClass} style={searchable ? searchableStyle : {}}>
+        {searchable && (
+          <input
+            className="form-control"
+            placeholder={'Search'}
+            onChange={onSearchChange}
+            value={search}
+          />
+        )}
+
+        {options
+          .filter(option => {
+            if (searchable && search.length) {
+              return option.toString().match(searchRegex);
+            }
+            return true;
+          })
+          .map((option, i) => {
+            return (
+              <li key={i}>
+                <a
+                  className={option === value ? 'active' : ''}
+                  onClick={this.onChange.bind(null, option)}
+                >
+                  {this.props.formatTitle ? this.formatTitle(option) : option}
+                </a>
+              </li>
+            );
+          })}
         {extra && <li key={'separator'} role="separator" className="divider" />}
         {extra}
       </ul>

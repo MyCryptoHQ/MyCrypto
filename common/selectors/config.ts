@@ -9,6 +9,9 @@ import {
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
 import { getNetworkConfigFromId } from 'utils/network';
+import { getUnit } from 'selectors/transaction/meta';
+import { isEtherUnit } from 'libs/units';
+import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 
 export function getNode(state: AppState): string {
   return state.config.nodeSelection;
@@ -41,6 +44,33 @@ export function getAllTokens(state: AppState): Token[] {
   return networkTokens.concat(state.customTokens);
 }
 
+export function getSelectedTokenContractAddress(state: AppState): string {
+  const allTokens = getAllTokens(state);
+  const currentUnit = getUnit(state);
+
+  if (currentUnit === 'ether') {
+    return '';
+  }
+
+  return allTokens.reduce((tokenAddr, tokenInfo) => {
+    if (tokenAddr && tokenAddr.length) {
+      return tokenAddr;
+    }
+
+    if (tokenInfo.symbol === currentUnit) {
+      return tokenInfo.address;
+    }
+
+    return tokenAddr;
+  }, '');
+}
+
+export function tokenExists(state: AppState, token: string): boolean {
+  const existInWhitelist = SHAPESHIFT_TOKEN_WHITELIST.includes(token);
+  const existsInNetwork = !!getAllTokens(state).find(t => t.symbol === token);
+  return existsInNetwork || existInWhitelist;
+}
+
 export function getLanguageSelection(state: AppState): string {
   return state.config.languageSelection;
 }
@@ -62,3 +92,12 @@ export function getForceOffline(state: AppState): boolean {
 }
 
 export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);
+
+export function isSupportedUnit(state: AppState, unit: string) {
+  const isToken: boolean = tokenExists(state, unit);
+  const isEther: boolean = isEtherUnit(unit);
+  if (!isToken && !isEther) {
+    return false;
+  }
+  return true;
+}

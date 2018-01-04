@@ -161,7 +161,16 @@ describe('updateWalletTokenValues*', () => {
     decimal: 16
   };
   const tokens = [token1, token2];
-  const tokenBalances = [TokenValue('100'), TokenValue('200')];
+  const tokenBalances = [
+    {
+      balance: TokenValue('100'),
+      error: null
+    },
+    {
+      balance: TokenValue('200'),
+      error: null
+    }
+  ];
   const desiredToken = 'OMG';
   const data = {} as any;
   data.gen = cloneableGenerator(updateWalletTokenValues)();
