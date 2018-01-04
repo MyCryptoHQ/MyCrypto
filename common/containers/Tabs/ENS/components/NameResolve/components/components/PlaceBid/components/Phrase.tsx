@@ -17,7 +17,7 @@ class PhraseClass extends React.Component<any, any> {
     }
   };
 
-  public render(): JSX.Element {
+  public render() {
     return (
       <section className="form-group">
         <label>Secret Phrase</label>

@@ -18,7 +18,7 @@ export interface State {
 
 const INITIAL_STATE: State = {};
 
-enum REQUEST_STATES {
+export enum REQUEST_STATES {
   pending = 'PENDING',
   success = 'SUCCESS',
   failed = 'FAILED'

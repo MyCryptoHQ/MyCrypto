@@ -34,6 +34,7 @@ export interface IBaseDomainRequest {
   deedAddress: string;
   registrationDate: string;
   nameHash: string;
+  mappedMode: string;
 }
 
 export interface IOwnedDomainRequest extends IBaseDomainRequest {
@@ -64,13 +65,32 @@ export enum NameState {
   NotYetAvailable = '5'
 }
 
+export const modeStrMap = name => [
+  `${name} is available and the auction hasn’t started`,
+  `${name} is available and the auction has been started`,
+  `${name} is taken and currently owned by someone`,
+  `${name} is forbidden`,
+  `${name} is currently in the ‘reveal’ stage of the auction`,
+  `${name} is not yet available due to the ‘soft launch’ of names.`
+];
+
+export interface IModeMap {
+  [x: string]: (
+    domainData: IDomainData<NameState>,
+    nameHash?: string,
+    hash?: Buffer
+  ) =>
+    | {}
+    | { ownerAddress: string; resolvedAddress: string }
+    | { auctionCloseTime: string; revealBidTime: string };
+}
+
 /*
 export const placeBid = async (
   config: ISetConfigForTx,
   { labelHash, ownerAddress }: IRevealDomainRequest,
   bidValue: BN,
   maskValue: BN,
-  gasLimit: BN
 ) => {
   Contract.setConfigForTx(ENS.auction, config);
   const secret = randomBytes(32).toString();
@@ -86,7 +106,6 @@ export const placeBid = async (
     ...await ENS.auction.newBid.send({
       input: { sealedBid },
       value: maskValue.toString(),
-      gasLimit
     }),
     sealedBid
   };
@@ -97,13 +116,11 @@ export const unsealBid = async (
   { labelHash }: IRevealDomainRequest,
   value: BN,
   salt: string,
-  gasLimit: BN
 ) => {
   Contract.setConfigForTx(ENS.auction, config);
   const sendParams = {
     input: { _hash: Buffer.from(labelHash, 'hex'), _value: value, _salt: salt },
     value: '0',
-    gasLimit
   };
 
   return ENS.auction.unsealBid.send(sendParams);

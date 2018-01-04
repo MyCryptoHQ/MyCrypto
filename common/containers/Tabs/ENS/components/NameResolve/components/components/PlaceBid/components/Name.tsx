@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export class Name extends React.Component<{ value: string }, any> {
-  public render(): JSX.Element {
+  public render() {
     return (
       <section className="form-group">
         <label>Name</label>

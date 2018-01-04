@@ -17,7 +17,7 @@ class BidMaskClass extends React.Component<any, any> {
     }
   };
 
-  public render(): JSX.Element {
+  public render() {
     return (
       <section className="form-group">
         <label>Bid Mask</label>
