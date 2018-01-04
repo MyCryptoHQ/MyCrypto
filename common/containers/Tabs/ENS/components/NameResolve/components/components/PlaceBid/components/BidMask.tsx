@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { bindActionCreators } from 'redux';
 
-class BidMaskClass extends React.Component<any, any> {
+export class BidMask extends React.Component<any, any> {
   public state = {
     value: ''
   };
@@ -41,13 +38,3 @@ class BidMaskClass extends React.Component<any, any> {
     );
   }
 }
-
-const mapStateToProps = (state: AppState) => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({}, dispatch);
-};
-
-export const BidMask = connect(mapStateToProps, mapDispatchToProps)(BidMaskClass);

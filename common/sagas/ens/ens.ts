@@ -8,7 +8,7 @@ import { TypeKeys } from 'actions/ens/constants';
 import { SagaIterator } from 'redux-saga';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
-import { DomainRequest, IBaseDomainRequest, IRevealDomainRequest, IDomainData } from 'libs/ens';
+import { DomainRequest, IRevealDomainRequest } from 'libs/ens';
 import { takeEvery, call, put, select, all } from 'redux-saga/effects';
 import { showNotification } from 'actions/notifications';
 import ENS from 'libs/ens/contracts';

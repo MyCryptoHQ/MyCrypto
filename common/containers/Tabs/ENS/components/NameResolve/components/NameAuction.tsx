@@ -38,7 +38,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
 
       <ENSWallet text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}>
         <ENSUnlockLayout>
-          <PlaceBid buttonName="Place Bid" title="Place A Bid" {...props} />
+          <PlaceBid domainName={name} buttonName="Place Bid" title="Place A Bid" />
         </ENSUnlockLayout>
       </ENSWallet>
     </section>

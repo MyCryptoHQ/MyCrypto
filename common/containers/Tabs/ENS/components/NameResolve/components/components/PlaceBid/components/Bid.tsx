@@ -1,20 +1,22 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { bindActionCreators } from 'redux';
-import { setCurrentValue } from 'actions/transaction';
+import { setCurrentValue, TSetCurrentValue } from 'actions/transaction';
 import { UnitDropDown } from 'components';
 
 interface Props {
   // Actions
-  setCurrentValue: any;
+  setCurrentValue: TSetCurrentValue;
   // Props
   hasUnitDropdown?: boolean;
 }
 
-class BidClass extends React.Component<Props, any> {
+interface State {
+  value: number | '';
+}
+
+class BidClass extends React.Component<Props, State> {
   public state = {
-    value: ''
+    value: '' as ''
   };
 
   public onChange = e => {
@@ -46,12 +48,4 @@ class BidClass extends React.Component<Props, any> {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ setCurrentValue }, dispatch);
-};
-
-export const Bid = connect(mapStateToProps, mapDispatchToProps)(BidClass);
+export const Bid = connect(null, { setCurrentValue })(BidClass);

@@ -18,7 +18,7 @@ export interface ResolveDomainFailed {
 }
 
 export interface BidPlaceRequested {
-  type: Typekeys.BidPlaceRequested;
+  type: TypeKeys.ENS_BID_PLACE_REQUESTED;
   payload: {
     bidValue: Wei;
     maskValue: Wei;
@@ -26,12 +26,18 @@ export interface BidPlaceRequested {
   };
 }
 export interface BidPlaceSucceeded {
-  type: Typekeys.BidPlaceSucceeded;
+  type: TypeKeys.ENS_BID_PLACE_SUCCEEDED;
   payload: {};
 }
 export interface BidPlaceFailed {
-  type: Typekeys.BidPlaceFailed;
+  type: TypeKeys.ENS_BID_PLACE_FAILED;
   payload: {};
 }
 
-export type EnsAction = ResolveDomainRequested | ResolveDomainSucceeded | ResolveDomainFailed;
+export type EnsAction =
+  | ResolveDomainRequested
+  | ResolveDomainSucceeded
+  | ResolveDomainFailed
+  | BidPlaceRequested
+  | BidPlaceSucceeded
+  | BidPlaceFailed;

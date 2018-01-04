@@ -31,9 +31,8 @@ export const NameResolve: React.SFC<Props> = props => {
     return null;
   }
 
-  const domain = domainRequests[currentDomain];
-  // TODO: make spinner better here
-  const Component = domain.data ? modeResult[domain.data!.mode] : Spinner;
+  const domainData = domainRequests[currentDomain].data! || false;
+  const Component = domainData ? modeResult[domainData.mode] : Spinner;
 
-  return <Component {...domain.data!} />;
+  return <Component {...domainData} />;
 };

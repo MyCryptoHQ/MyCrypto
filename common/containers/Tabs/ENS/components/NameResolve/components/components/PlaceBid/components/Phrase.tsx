@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { bindActionCreators } from 'redux';
 
-class PhraseClass extends React.Component<any, any> {
+export class Phrase extends React.Component<any, any> {
   public state = {
     value: ''
   };
@@ -37,13 +34,3 @@ class PhraseClass extends React.Component<any, any> {
     );
   }
 }
-
-const mapStateToProps = (state: AppState) => {
-  return {};
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({}, dispatch);
-};
-
-export const Phrase = connect(mapStateToProps, mapDispatchToProps)(PhraseClass);
