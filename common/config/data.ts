@@ -83,6 +83,7 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
+  isTestnet?: boolean;
 }
 
 export interface CustomNetworkConfig {
@@ -150,7 +151,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json')
+    contracts: require('./contracts/ropsten.json'),
+    isTestnet: true
   },
   Kovan: {
     name: 'Kovan',
@@ -159,7 +161,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://kovan.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json')
+    contracts: require('./contracts/ropsten.json'),
+    isTestnet: true
   },
   Rinkeby: {
     name: 'Rinkeby',
@@ -168,7 +171,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
     tokens: require('./tokens/rinkeby.json'),
-    contracts: require('./contracts/rinkeby.json')
+    contracts: require('./contracts/rinkeby.json'),
+    isTestnet: true
   },
   RSK: {
     name: 'RSK',

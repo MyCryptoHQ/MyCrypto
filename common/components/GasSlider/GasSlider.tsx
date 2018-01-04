@@ -10,6 +10,7 @@ import {
   TInputNonce
 } from 'actions/transaction';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
+import { getNetworkConfig } from 'selectors/config';
 import { AppState } from 'reducers';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas from './components/AdvancedGas';
@@ -22,6 +23,7 @@ interface Props {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   gasLimit: AppState['transaction']['fields']['gasLimit'];
   offline: AppState['config']['offline'];
+  network: AppState['config']['network'];
   // Actions
   inputGasPrice: TInputGasPrice;
   inputGasLimit: TInputGasLimit;
@@ -39,7 +41,7 @@ class GasSlider extends React.Component<Props, State> {
   };
 
   public componentDidMount() {
-    this.props.fetchCCRates(['ETH']);
+    this.props.fetchCCRates([this.props.network.unit]);
   }
 
   public render() {
@@ -84,7 +86,8 @@ function mapStateToProps(state: AppState) {
   return {
     gasPrice: state.transaction.fields.gasPrice,
     gasLimit: state.transaction.fields.gasLimit,
-    offline: state.config.offline
+    offline: state.config.offline,
+    network: getNetworkConfig(state)
   };
 }
 
