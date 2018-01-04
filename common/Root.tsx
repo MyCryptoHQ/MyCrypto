@@ -13,6 +13,7 @@ import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import { Store } from 'redux';
+import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 
 interface Props {
@@ -27,6 +28,10 @@ export default class Root extends Component<Props, State> {
   public state = {
     error: null
   };
+
+  public componentDidMount() {
+    this.props.store.dispatch(pollOfflineStatus());
+  }
 
   public componentDidCatch(error: Error) {
     this.setState({ error });
