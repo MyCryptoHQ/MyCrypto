@@ -9,7 +9,7 @@
 
   &-panel {
     position: relative;
-    margin: 0 auto $space * 2;
+    margin: 0 auto 0;
     background: linear-gradient(150deg, $ether-blue, $ether-navy);
     @include mono;
 

@@ -22,6 +22,14 @@ export type WalletTypes = IReadOnlyWallet | IFullWallet | undefined | null;
 
 type Props = StateProps & RouteComponentProps<{}>;
 
+const determineActiveTab = (wallet: WalletTypes, activeTab: string) => {
+  if (wallet && wallet.isReadOnly && (activeTab === 'send' || activeTab === undefined)) {
+    return 'info';
+  }
+
+  return activeTab;
+};
+
 class SendTransaction extends React.Component<Props> {
   public render() {
     const { wallet, location } = this.props;
@@ -29,7 +37,7 @@ class SendTransaction extends React.Component<Props> {
 
     const tabProps: TabProps<SubTabProps> = {
       root: 'account',
-      activeTab: wallet ? (wallet.isReadOnly ? 'info' : activeTab) : activeTab,
+      activeTab: determineActiveTab(wallet, activeTab),
       sideBar: <SideBar />,
       tabs,
       subTabProps: { wallet }
