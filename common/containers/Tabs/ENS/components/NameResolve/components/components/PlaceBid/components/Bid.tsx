@@ -20,10 +20,10 @@ class BidClass extends React.Component<Props, State> {
   };
 
   public onChange = e => {
-    this.props.setCurrentValue(e.target.value);
     this.setState({
       value: e.target.value
     });
+    this.props.setCurrentValue(e.target.value);
   };
 
   public render() {

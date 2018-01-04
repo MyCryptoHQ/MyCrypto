@@ -19,11 +19,19 @@ interface Props {
 
 interface State {
   openModal: boolean;
+  userInput: {
+    bidVMask: number | '';
+    secret: string;
+  };
 }
 
 class PlaceBid extends Component<Props, State> {
   public state = {
-    openModal: false
+    openModal: false,
+    userInput: {
+      bidVMask: '' as '',
+      secret: ''
+    }
   };
 
   public toggleModal = () => {
@@ -37,17 +45,25 @@ class PlaceBid extends Component<Props, State> {
     this.props.setCurrentTo(ropsten.public.ethAuction);
   }
 
+  public setMask = value => {
+    this.setState({ userInput: { ...this.state.userInput, bidMask: value } });
+  };
+
+  public setSecret = value => {
+    this.setState({ userInput: { ...this.state.userInput, secret: value } });
+  };
+
   public render() {
-    const { openModal } = this.state;
+    const { openModal, userInput } = this.state;
     const { domainName, title } = this.props;
     return (
       <div className="Tab-content-pane row text-left">
         <h2>{title}</h2>
         <Name value={domainName} />
         <Bid />
-        <BidMask />
-        <Phrase />
-        <GenerateBid onComplete={this.toggleModal} />
+        <BidMask onChange={this.setMask} />
+        <Phrase onChange={this.setSecret} />
+        <GenerateBid onComplete={this.toggleModal} userInput={userInput} isValid={false} />
         {/* TODO: should the bid modal have all its data given to it through props, or get it from the redux state itself? */}
         {openModal && <BidModal toggle={this.toggleModal} />}
       </div>

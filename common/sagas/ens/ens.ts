@@ -38,6 +38,7 @@ function* resolveDomain(action: ResolveDomainRequested): SagaIterator {
 
 function* placeBid({ payload }: BidPlaceRequested): SagaIterator {
   const { bidValue, maskValue, secret } = payload;
+  console.log(bidValue, maskValue, secret);
   const domainData: AppState['ens']['domainRequests'][string] = yield select(getCurrentDomainName);
   const { data } = domainData;
   if (!data) {

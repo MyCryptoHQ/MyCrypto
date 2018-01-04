@@ -1,8 +1,21 @@
 import * as React from 'react';
 
-export class BidMask extends React.Component<any, any> {
+type Callback = (value) => void;
+
+interface Props {
+  // Actions
+  onChange: Callback;
+  // Props
+  hasUnitDropdown?: boolean;
+}
+
+interface State {
+  value: number | '';
+}
+
+export class BidMask extends React.Component<Props, State> {
   public state = {
-    value: ''
+    value: '' as ''
   };
 
   public onChange = e => {

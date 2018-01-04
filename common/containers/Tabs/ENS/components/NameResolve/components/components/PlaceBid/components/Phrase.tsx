@@ -1,6 +1,19 @@
 import * as React from 'react';
 
-export class Phrase extends React.Component<any, any> {
+type Callback = (value) => void;
+
+interface Props {
+  // Actions
+  onChange: Callback;
+  // Props
+  hasUnitDropdown?: boolean;
+}
+
+interface State {
+  value: string;
+}
+
+export class Phrase extends React.Component<Props, State> {
   public state = {
     value: ''
   };
