@@ -48,6 +48,7 @@ interface SetToFieldAction {
   payload: {
     raw: string;
     value: Address | null;
+    error?: string | null;
   };
 }
 
