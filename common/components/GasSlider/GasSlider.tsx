@@ -9,12 +9,15 @@ import {
   inputNonce,
   TInputNonce
 } from 'actions/transaction';
+import { fetchCCRates, TFetchCCRates } from 'actions/rates';
 import { AppState } from 'reducers';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas from './components/AdvancedGas';
 import './GasSlider.scss';
 
 interface Props {
+  // Component configuration
+  disableAdvanced?: boolean;
   // Data
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   gasLimit: AppState['transaction']['fields']['gasLimit'];
@@ -23,6 +26,7 @@ interface Props {
   inputGasPrice: TInputGasPrice;
   inputGasLimit: TInputGasLimit;
   inputNonce: TInputNonce;
+  fetchCCRates: TFetchCCRates;
 }
 
 interface State {
@@ -34,9 +38,13 @@ class GasSlider extends React.Component<Props, State> {
     showAdvanced: false
   };
 
+  public componentDidMount() {
+    this.props.fetchCCRates(['ETH']);
+  }
+
   public render() {
-    const { gasPrice, gasLimit, offline } = this.props;
-    const showAdvanced = this.state.showAdvanced || offline;
+    const { gasPrice, gasLimit, offline, disableAdvanced } = this.props;
+    const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
     return (
       <div className="GasSlider">
@@ -51,17 +59,18 @@ class GasSlider extends React.Component<Props, State> {
           <SimpleGas gasPrice={gasPrice.raw} changeGasPrice={this.props.inputGasPrice} />
         )}
 
-        {!offline && (
-          <div className="help-block">
-            <a className="GasSlider-toggle" onClick={this.toggleAdvanced}>
-              <strong>
-                {showAdvanced
-                  ? `- ${translateRaw('Back to simple')}`
-                  : `+ ${translateRaw('Advanced: Data, Gas Price, Gas Limit')}`}
-              </strong>
-            </a>
-          </div>
-        )}
+        {!offline &&
+          !disableAdvanced && (
+            <div className="help-block">
+              <a className="GasSlider-toggle" onClick={this.toggleAdvanced}>
+                <strong>
+                  {showAdvanced
+                    ? `- ${translateRaw('Back to simple')}`
+                    : `+ ${translateRaw('Advanced: Data, Gas Price, Gas Limit')}`}
+                </strong>
+              </a>
+            </div>
+          )}
       </div>
     );
   }
@@ -82,5 +91,6 @@ function mapStateToProps(state: AppState) {
 export default connect(mapStateToProps, {
   inputGasPrice,
   inputGasLimit,
-  inputNonce
+  inputNonce,
+  fetchCCRates
 })(GasSlider);
