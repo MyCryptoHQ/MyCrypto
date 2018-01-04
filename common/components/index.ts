@@ -9,7 +9,6 @@ export * from './CurrentCustomMessage';
 export * from './GenerateTransaction';
 export * from './SendButton';
 export * from './SigningStatus';
-export * from './OfflineAwareUnlockHeader';
 export { default as Header } from './Header';
 export { default as Footer } from './Footer';
 export { default as BalanceSidebar } from './BalanceSidebar';
