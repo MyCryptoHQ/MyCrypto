@@ -60,8 +60,8 @@ export function* estimateGas(): SagaIterator {
 
   while (true) {
     const { payload }: EstimateGasRequestedAction = yield take(requestChan);
-    // debounce 1000 ms
-    yield call(delay, 1000);
+    // debounce 250 ms
+    yield call(delay, 250);
     const node: INode = yield select(getNodeLib);
     const walletInst: IWallet = yield select(getWalletInst);
     try {
@@ -72,7 +72,6 @@ export function* estimateGas(): SagaIterator {
       yield put(estimateGasSucceeded());
     } catch (e) {
       yield put(estimateGasFailed());
-      console.error(e);
       // fallback for estimating locally
       const tx = yield call(makeTransaction, payload);
       const gasLimit = yield apply(tx, tx.getBaseFee);

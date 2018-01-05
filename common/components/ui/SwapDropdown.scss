@@ -1,0 +1,112 @@
+@import 'common/sass/variables';
+
+.SwapDropdown {
+  position: relative;
+  button {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #ccc;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    &:focus {
+      outline: none;
+    }
+    &:active, &:hover {
+      opacity: 0.8;
+    }
+    > li {
+      margin: 0;
+      &:first-child {
+        padding-top: 4px;
+      }
+      &:last-child {
+        padding-bottom: 4px;
+      }
+      > a {
+        font-weight: 300;
+        &.active {
+          color: $link-color;
+        }
+      }
+    }
+  }
+}
+
+.SwapDropdown-grid {
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin-bottom: 0;
+  min-width: 500px;
+  left: 50%;
+
+  top: 50px;
+  transform: translateX(-50%);
+  list-style: none;
+  font-size: 0.8rem;
+  text-align: left;
+  z-index: 500;
+  background: white;
+  box-shadow: 2px 1px 60px rgba(0,0,0,.175);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+  }
+  
+  &.open {
+    display: block;
+  }
+  li {
+    display: inline-block;
+    width: 33.3%;
+    margin-bottom: 0;
+  }
+  li > a {
+    display: block;
+    clear: both;
+    padding: 5px 20px;
+    color: #163151;
+    &:hover {
+      opacity: .8;
+      background-color: #163151;
+      color: #fff;
+    }
+  }
+  .inactive {
+    a {
+      color: grey;
+      &:hover {
+        background-color: #fff;
+        color:#163151;
+        cursor: not-allowed;
+      }
+    }
+    img {
+      filter: grayscale(100%);
+    }
+  }
+  strong {
+    margin-left: 5px;
+  }
+  @media screen and (max-width: 800px) {
+    min-width: 300px;
+  }
+}
+
+.SwapDropdown-desc {
+  display: inline-block;
+}
+
+.SwapDropdown-item {
+  position: relative;
+  img {
+    padding-right: 1px;
+  }
+}

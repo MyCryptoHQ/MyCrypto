@@ -40,7 +40,9 @@ export default class TokenBalances extends React.Component<Props, State> {
     const { showCustomTokenForm, trackedTokens } = this.state;
 
     let bottom;
-    if (!hasSavedWalletTokens) {
+    let help;
+    if (tokenBalances.length && !hasSavedWalletTokens) {
+      help = 'Select which tokens you would like to keep track of';
       bottom = (
         <div className="TokenBalances-buttons">
           <button className="btn btn-primary btn-block" onClick={this.handleSetWalletTokens}>
@@ -76,28 +78,31 @@ export default class TokenBalances extends React.Component<Props, State> {
 
     return (
       <div>
-        {!hasSavedWalletTokens && (
-          <p className="TokenBalances-help">Select which tokens you would like to keep track of</p>
+        {help && <p className="TokenBalances-help">{help}</p>}
+
+        {tokenBalances.length ? (
+          <table className="TokenBalances-rows">
+            <tbody>
+              {tokenBalances.map(
+                token =>
+                  token ? (
+                    <TokenRow
+                      key={token.symbol}
+                      balance={token.balance}
+                      symbol={token.symbol}
+                      custom={token.custom}
+                      decimal={token.decimal}
+                      tracked={trackedTokens[token.symbol]}
+                      toggleTracked={!hasSavedWalletTokens && this.toggleTrack}
+                      onRemove={this.props.onRemoveCustomToken}
+                    />
+                  ) : null
+              )}
+            </tbody>
+          </table>
+        ) : (
+          <div className="well well-sm text-center">No tokens found</div>
         )}
-        <table className="TokenBalances-rows">
-          <tbody>
-            {tokenBalances.map(
-              token =>
-                token ? (
-                  <TokenRow
-                    key={token.symbol}
-                    balance={token.balance}
-                    symbol={token.symbol}
-                    custom={token.custom}
-                    decimal={token.decimal}
-                    tracked={trackedTokens[token.symbol]}
-                    toggleTracked={!hasSavedWalletTokens && this.toggleTrack}
-                    onRemove={this.props.onRemoveCustomToken}
-                  />
-                ) : null
-            )}
-          </tbody>
-        </table>
         {bottom}
       </div>
     );

@@ -75,6 +75,12 @@ $top-height: 40px;
         padding: 0 .5rem;
       }
 
+      &-shapeshift {
+        overflow: auto;
+        white-space: normal;
+        font-size: 1rem;
+      }
+
       &-label {
         font-weight: 100;
       }

@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 
 interface Props {
-  allowReadOnly: boolean;
+  disabledWallets?: string[];
 }
-export const OfflineAwareUnlockHeader: React.SFC<Props> = ({ allowReadOnly }) => (
-  <UnlockHeader title={<Title />} allowReadOnly={allowReadOnly} />
+export const OfflineAwareUnlockHeader: React.SFC<Props> = ({ disabledWallets }) => (
+  <UnlockHeader title={<Title />} disabledWallets={disabledWallets} />
 );
 
 interface StateProps {

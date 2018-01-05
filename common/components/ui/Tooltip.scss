@@ -1,0 +1,36 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.Tooltip {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 220px;
+  color: #FFF;
+  font-size: $font-size-xs;
+  font-family: $font-family-sans-serif;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -100%) translateY(-5px);
+  transition-property: opacity, transform, visibility;
+  transition-duration: 100ms, 100ms, 0ms;
+  transition-delay: 0ms, 0ms, 100ms;
+  z-index: $zindex-tooltip;
+
+  > span {
+    display: inline-block;
+    background: rgba(#000, 0.9);
+    border-radius: 2px;
+    padding: 4px 8px;
+
+    &:after {
+      position: absolute;
+      content: '';
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 100%);
+      @include triangle(8px, rgba(#000, 0.9), down);
+    }
+  }
+}

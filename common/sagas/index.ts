@@ -1,18 +1,33 @@
 import configSaga from './config';
 import deterministicWallets from './deterministicWallets';
 import notifications from './notifications';
-import { bityTimeRemaining, pollBityOrderStatusSaga, postBityOrderSaga } from './swap/orders';
-import { getBityRatesSaga } from './swap/rates';
+import {
+  swapTimerSaga,
+  pollBityOrderStatusSaga,
+  postBityOrderSaga,
+  postShapeshiftOrderSaga,
+  pollShapeshiftOrderStatusSaga,
+  restartSwapSaga
+} from './swap/orders';
+import { liteSend } from './swap/liteSend';
+import { getBityRatesSaga, getShapeShiftRatesSaga, swapProviderSaga } from './swap/rates';
 import wallet from './wallet';
 import { transaction } from './transaction';
+
 export default {
-  transaction,
-  bityTimeRemaining,
+  liteSend,
   configSaga,
   postBityOrderSaga,
+  postShapeshiftOrderSaga,
   pollBityOrderStatusSaga,
+  pollShapeshiftOrderStatusSaga,
   getBityRatesSaga,
+  getShapeShiftRatesSaga,
+  swapTimerSaga,
+  restartSwapSaga,
   notifications,
   wallet,
-  deterministicWallets
+  transaction,
+  deterministicWallets,
+  swapProviderSaga
 };

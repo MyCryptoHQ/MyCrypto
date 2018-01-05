@@ -96,18 +96,23 @@ export function* updateWalletTokenValues(): SagaIterator {
     const calls = wallets.map(w => {
       return apply(node, node.getTokenBalance, [w.address, token]);
     });
-    const tokenBalances: TokenValue[] = yield all(calls);
+    const tokenBalances: { balance: TokenValue; error: string | null } = yield all(calls);
 
     for (let i = 0; i < wallets.length; i++) {
-      yield put(
-        updateDeterministicWallet({
-          ...wallets[i],
-          tokenValues: {
-            ...wallets[i].tokenValues,
-            [desiredToken]: { value: tokenBalances[i], decimal: token.decimal }
-          }
-        })
-      );
+      if (!tokenBalances[i].error) {
+        yield put(
+          updateDeterministicWallet({
+            ...wallets[i],
+            tokenValues: {
+              ...wallets[i].tokenValues,
+              [desiredToken]: {
+                value: tokenBalances[i].balance,
+                decimal: token.decimal
+              }
+            }
+          })
+        );
+      }
     }
   } catch (err) {
     console.log(err);
