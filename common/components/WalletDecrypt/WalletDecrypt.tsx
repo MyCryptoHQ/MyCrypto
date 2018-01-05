@@ -28,7 +28,6 @@ import {
   TrezorDecrypt,
   ViewOnlyDecrypt,
   Web3Decrypt,
-  NavigationPrompt,
   WalletButton
 } from './components';
 import { AppState } from 'reducers';
@@ -307,13 +306,11 @@ export class WalletDecrypt extends Component<Props, State> {
   };
 
   public render() {
-    const { wallet, hidden } = this.props;
+    const { hidden } = this.props;
     const selectedWallet = this.getSelectedWallet();
     const decryptionComponent = this.getDecryptionComponent();
-    const unlocked = !!wallet;
     return (
       <div>
-        <NavigationPrompt when={unlocked} onConfirm={this.props.resetWallet} />
         {!hidden && (
           <article className="Tab-content-pane">
             <div className="WalletDecrypt">

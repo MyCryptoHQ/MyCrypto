@@ -1,11 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
+import { AppState } from 'reducers';
+import { resetWallet, TResetWallet } from 'actions/wallet';
 
 interface Props extends RouteComponentProps<{}> {
-  when: boolean;
-  onConfirm?: any;
-  onCancel?: any;
+  // State
+  wallet: AppState['wallet']['inst'];
+  // Actions
+  resetWallet: TResetWallet;
 }
 
 interface State {
@@ -13,20 +17,16 @@ interface State {
   openModal: boolean;
 }
 
-class NavigationPromptClass extends React.Component<Props, State> {
-  public unblock;
-
+class LogOutPromptClass extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       nextLocation: null,
       openModal: false
     };
-  }
 
-  public setupUnblock() {
-    this.unblock = this.props.history.block(nextLocation => {
-      if (this.props.when && nextLocation.pathname !== this.props.location.pathname) {
+    this.props.history.block(nextLocation => {
+      if (this.props.wallet && nextLocation.pathname !== this.props.location.pathname) {
         const isSubTab =
           nextLocation.pathname.split('/')[1] === this.props.location.pathname.split('/')[1];
         if (!isSubTab) {
@@ -38,36 +38,6 @@ class NavigationPromptClass extends React.Component<Props, State> {
         }
       }
     });
-  }
-
-  public componentDidMount() {
-    this.setupUnblock();
-  }
-
-  public componentWillUnmount() {
-    this.unblock();
-  }
-
-  public onCancel = () => {
-    if (this.props.onCancel) {
-      this.props.onCancel();
-    }
-    this.setState({ nextLocation: null, openModal: false });
-  };
-
-  public onConfirm = () => {
-    if (this.props.onConfirm) {
-      this.props.onConfirm();
-    }
-    // Lock Wallet
-    this.navigateToNextLocation();
-  };
-
-  public navigateToNextLocation() {
-    this.unblock();
-    if (this.state.nextLocation) {
-      this.props.history.push(this.state.nextLocation.pathname);
-    }
   }
 
   public render() {
@@ -86,6 +56,32 @@ class NavigationPromptClass extends React.Component<Props, State> {
       </Modal>
     );
   }
+
+  private onCancel = () => {
+    this.setState({ nextLocation: null, openModal: false });
+  };
+
+  private onConfirm = () => {
+    const { nextLocation } = this.state;
+    this.props.resetWallet();
+    this.setState(
+      {
+        openModal: false,
+        nextLocation: null
+      },
+      () => {
+        if (nextLocation) {
+          this.props.history.push(nextLocation.pathname);
+        }
+      }
+    );
+  };
 }
 
-export const NavigationPrompt = withRouter<Props>(NavigationPromptClass);
+function mapStateToProps(state: AppState) {
+  return { wallet: state.wallet.inst };
+}
+
+export default connect(mapStateToProps, {
+  resetWallet
+})(withRouter<Props>(LogOutPromptClass));
