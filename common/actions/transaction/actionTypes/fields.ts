@@ -6,6 +6,10 @@ interface InputGasLimitAction {
   type: TypeKeys.GAS_LIMIT_INPUT;
   payload: string;
 }
+interface InputGasPriceAction {
+  type: TypeKeys.GAS_PRICE_INPUT;
+  payload: string;
+}
 interface InputDataAction {
   type: TypeKeys.DATA_FIELD_INPUT;
   payload: string;
@@ -79,6 +83,7 @@ type FieldAction =
 
 export {
   InputGasLimitAction,
+  InputGasPriceAction,
   InputDataAction,
   InputNonceAction,
   SetGasLimitFieldAction,
