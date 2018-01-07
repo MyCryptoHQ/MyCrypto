@@ -7,7 +7,7 @@ import {
   setTokenBalancesFulfilled,
   setTokenBalancesRejected,
   setWallet,
-  setWalletLoading,
+  setWalletPending,
   setWalletConfig,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
@@ -175,14 +175,14 @@ export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator 
 
 export function* startLoadingSpinner(): SagaIterator {
   yield call(delay, 1000);
-  yield put(setWalletLoading(true));
+  yield put(setWalletPending(true));
 }
 
 export function* stopLoadingSpinner(loadingFork: Task | null): SagaIterator {
   if (loadingFork !== null) {
     yield cancel(loadingFork);
   }
-  yield put(setWalletLoading(false));
+  yield put(setWalletPending(false));
 }
 
 export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
@@ -209,7 +209,7 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   }
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
-  yield put(setWalletLoading(false));
+  yield put(setWalletPending(false));
   yield put(setWallet(wallet));
 }
 

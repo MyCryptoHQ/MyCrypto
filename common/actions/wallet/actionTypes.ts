@@ -32,8 +32,8 @@ export interface ResetWalletAction {
   type: TypeKeys.WALLET_RESET;
 }
 
-export interface SetWalletLoadingAction {
-  type: TypeKeys.WALLET_SET_LOADING;
+export interface SetWalletPendingAction {
+  type: TypeKeys.WALLET_SET_PENDING;
   payload: boolean;
 }
 
@@ -125,7 +125,7 @@ export interface SetWalletConfigAction {
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
-  | SetWalletLoadingAction
+  | SetWalletPendingAction
   | ResetWalletAction
   | SetBalancePendingAction
   | SetBalanceFullfilledAction
