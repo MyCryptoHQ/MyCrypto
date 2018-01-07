@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
-    "bip39": "2.4.0",
+    "bip39": "2.5.0",
     "bn.js": "4.11.8",
     "bootstrap-sass": "3.3.7",
     "classnames": "2.2.5",
