@@ -1,6 +1,8 @@
-import { isKeystorePassRequired } from 'libs/wallet';
-import React, { Component } from 'react';
+import { isKeystorePassRequired, isKeystoreValid } from 'libs/wallet';
+import React from 'react';
 import translate, { translateRaw } from 'translations';
+import { showNotification, TShowNotification } from 'actions/notifications';
+import { connect } from 'react-redux';
 
 export interface KeystoreValue {
   file: string;
@@ -8,27 +10,27 @@ export interface KeystoreValue {
   valid: boolean;
 }
 
-function isPassRequired(file: string): boolean {
-  let passReq = false;
-  try {
-    passReq = isKeystorePassRequired(file);
-  } catch (e) {
-    // TODO: communicate invalid file to user
-  }
-  return passReq;
+interface Props {
+  showNotification: TShowNotification;
+  value: KeystoreValue;
+  onChange(value: KeystoreValue): void;
+  onUnlock(): void;
 }
 
-export class KeystoreDecrypt extends Component {
-  public props: {
-    value: KeystoreValue;
-    onChange(value: KeystoreValue): void;
-    onUnlock(): void;
-  };
+class KeystoreDecryptClass extends React.Component<Props> {
+  public isFileValid(file: string): boolean {
+    try {
+      isKeystoreValid(file);
+    } catch (e) {
+      this.props.showNotification('danger', e.message);
+    }
+    return isKeystoreValid(file);
+  }
 
   public render() {
-    const { file, password } = this.props.value;
-    const passReq = isPassRequired(file);
-    const unlockDisabled = !file || (passReq && !password);
+    const { file, password, valid } = this.props.value;
+    const passReq = isKeystorePassRequired(file);
+    const unlockDisabled = !file || !valid || (passReq && !password);
 
     return (
       <form id="selectedUploadKey" onSubmit={this.unlock}>
@@ -92,15 +94,18 @@ export class KeystoreDecrypt extends Component {
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
-      const passReq = isPassRequired(keystore);
+      const passReq = isKeystorePassRequired(keystore);
+      const valid = this.isFileValid(keystore) && (passReq && this.props.value.password.length > 0);
 
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq
+        valid
       });
     };
 
     fileReader.readAsText(inputFile, 'utf-8');
   };
 }
+
+export const KeystoreDecrypt = connect(null, { showNotification })(KeystoreDecryptClass);
