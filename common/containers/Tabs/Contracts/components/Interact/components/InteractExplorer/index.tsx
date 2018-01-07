@@ -27,11 +27,17 @@ interface OwnProps {
 }
 type Props = StateProps & DispatchProps & OwnProps;
 
+interface InputOutput {
+  name: string;
+  type: string;
+}
 interface State {
   inputs: {
     [key: string]: { rawData: string; parsedData: string[] | string };
   };
-  outputs;
+  outputs: {
+    [decodedArgument: string]: string;
+  };
   selectedFunction: null | any;
   selectedFunctionName: string;
 }
@@ -81,7 +87,7 @@ class InteractExplorerClass extends Component<Props, State> {
         {selectedFunction && (
           <div key={selectedFunctionName} className="InteractExplorer-func">
             {/* TODO: Use reusable components with validation */}
-            {selectedFunction.inputs.map(input => {
+            {selectedFunction.inputs.map((input: InputOutput) => {
               const { type, name } = input;
 
               return (
@@ -99,7 +105,7 @@ class InteractExplorerClass extends Component<Props, State> {
                 </label>
               );
             })}
-            {selectedFunction.outputs.map((output, index) => {
+            {selectedFunction.outputs.map((output: InputOutput, index: number) => {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
 

@@ -21,7 +21,6 @@
   },
   "include": [
     "./common/",
-    "spec",
     "./node_modules/types-rlp/index.d.ts"
   ],
   "awesomeTypescriptLoaderOptions": {

@@ -11,6 +11,7 @@ import {
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
+import { IHexStrTransaction } from 'libs/transaction';
 export default class RPCRequests {
   public getNetVersion() {
     return { method: 'net_version' };
@@ -23,7 +24,7 @@ export default class RPCRequests {
     };
   }
 
-  public estimateGas(transaction): EstimateGasRequest | any {
+  public estimateGas(transaction: Partial<IHexStrTransaction>): EstimateGasRequest | any {
     return {
       method: 'eth_estimateGas',
       params: [transaction]

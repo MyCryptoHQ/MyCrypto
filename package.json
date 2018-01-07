@@ -47,6 +47,7 @@
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
+    "@types/bip39": "^2.4.0",
     "@types/classnames": "2.2.3",
     "@types/history": "4.6.2",
     "@types/jest": "22.0.0",
@@ -59,6 +60,7 @@
     "@types/react-redux": "5.0.14",
     "@types/react-router-dom": "4.2.3",
     "@types/react-router-redux": "5.0.11",
+    "@types/react-transition-group": "^2.0.6",
     "@types/redux-logger": "3.0.5",
     "@types/redux-promise-middleware": "0.0.9",
     "@types/uuid": "3.4.3",

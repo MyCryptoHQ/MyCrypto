@@ -15,6 +15,7 @@ import { ProviderName } from 'actions/swap';
 import sample from 'lodash/sample';
 import times from 'lodash/times';
 import Rates from './Rates';
+import { Optional } from 'utils/types';
 
 interface Props {
   provider: ProviderName;
@@ -53,7 +54,7 @@ export default class CurrentRates extends Component<Props> {
     };
   };
 
-  public isValidRates = rates => {
+  public isValidRates = (rates: Optional<NormalizedBityRates>) => {
     return rates && rates.allIds && rates.allIds.length > 0;
   };
 
@@ -81,7 +82,7 @@ export default class CurrentRates extends Component<Props> {
     return fixedRates;
   };
 
-  public swapEl = (providerURL, providerLogo, children) => {
+  public swapEl = (providerURL: string, providerLogo: string, children: React.ReactChild) => {
     return (
       <article className="SwapRates">
         <h3 className="SwapRates-title">{translate('SWAP_rates')}</h3>

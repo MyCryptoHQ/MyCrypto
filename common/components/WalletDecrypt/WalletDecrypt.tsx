@@ -91,7 +91,7 @@ const WEB3_TYPES = {
     icon: MistIcon
   }
 };
-const WEB3_TYPE: string | false =
+const WEB3_TYPE: keyof typeof WEB3_TYPES | false =
   (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
 
 const SECURE_WALLETS = ['web3', 'ledger-nano-s', 'trezor', 'digital-bitbox'];
@@ -182,7 +182,7 @@ export class WalletDecrypt extends Component<Props, State> {
     value: null
   };
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     // Reset state when unlock is hidden / revealed
     if (nextProps.hidden !== this.props.hidden) {
       this.setState({
@@ -216,7 +216,7 @@ export class WalletDecrypt extends Component<Props, State> {
     );
   }
 
-  public isOnlineRequiredWalletAndOffline(selectedWalletKey) {
+  public isOnlineRequiredWalletAndOffline(selectedWalletKey: string) {
     const onlineRequiredWallets = ['trezor', 'ledger-nano-s'];
     return this.props.offline && onlineRequiredWallets.includes(selectedWalletKey);
   }

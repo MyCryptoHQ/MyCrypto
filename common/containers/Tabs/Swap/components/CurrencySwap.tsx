@@ -153,7 +153,7 @@ export default class CurrencySwap extends Component<Props, State> {
     return merge(shapeshiftRates, bityRates);
   };
 
-  public getMinMax = (originKind: WhitelistedCoins, destinationKind) => {
+  public getMinMax = (originKind: WhitelistedCoins, destinationKind: string) => {
     let min;
     let max;
 
@@ -178,7 +178,11 @@ export default class CurrencySwap extends Component<Props, State> {
     return { min, max };
   };
 
-  public isMinMaxValid = (originAmount: number, originKind: WhitelistedCoins, destinationKind) => {
+  public isMinMaxValid = (
+    originAmount: number,
+    originKind: WhitelistedCoins,
+    destinationKind: string
+  ) => {
     const rate = this.getMinMax(originKind, destinationKind);
     const higherThanMin = originAmount >= rate.min;
     const lowerThanMax = originAmount <= rate.max;

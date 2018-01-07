@@ -1,12 +1,19 @@
 import has from 'lodash/has';
 
-export function objectContainsObjectKeys(checkingObject, containingObject) {
+interface IObjectValue {
+  [key: string]: any;
+}
+
+export function objectContainsObjectKeys(
+  checkingObject: IObjectValue,
+  containingObject: IObjectValue
+) {
   const checkingObjectKeys = Object.keys(checkingObject);
   const containsAll = checkingObjectKeys.map(key => has(containingObject, key));
   return containsAll.every(isTrue => isTrue);
 }
 
-export function getKeyByValue(object, value) {
+export function getKeyByValue(object: IObjectValue, value: any) {
   return Object.keys(object).find(key => object[key] === value);
 }
 
