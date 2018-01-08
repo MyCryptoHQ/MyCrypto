@@ -18,6 +18,7 @@ export interface CallbackProps {
   isValid: boolean;
   readOnly: boolean;
   currentTo: ICurrentTo;
+  errorMsg?: string | null;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 

@@ -7,6 +7,7 @@ interface SetTokenToMetaAction {
   payload: {
     raw: string;
     value: Address | null;
+    error?: string | null;
   };
 }
 
