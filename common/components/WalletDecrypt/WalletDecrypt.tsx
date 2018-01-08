@@ -284,9 +284,11 @@ export class WalletDecrypt extends Component<Props, State> {
     }
 
     let timeout = 0;
-
-    if (wallet.attemptUnlock && isWeb3NodeAvailable()) {
-      timeout = 500;
+    const web3Available = await isWeb3NodeAvailable();
+    if (wallet.attemptUnlock && web3Available) {
+      // timeout is only the maximum wait time before secondary view is shown
+      // send view will be shown immediately on web3 resolve
+      timeout = 1000;
       wallet.unlock();
     }
 
