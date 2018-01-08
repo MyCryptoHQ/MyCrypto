@@ -31,7 +31,7 @@ import {
   WalletButton
 } from './components';
 import { AppState } from 'reducers';
-import { knowledgeBaseURL } from 'config/data';
+import { knowledgeBaseURL, isWeb3NodeAvailable } from 'config/data';
 import { IWallet } from 'libs/wallet';
 import DigitalBitboxIcon from 'assets/images/wallets/digital-bitbox.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
@@ -39,7 +39,6 @@ import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
-import { isWeb3NodeAvailable } from 'config/data';
 type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
