@@ -70,10 +70,8 @@ describe('getDeterministicWallets*', () => {
   describe('starting from publicKey & chainCode', () => {
     const dWallet = {
       dPath: '',
-      publicKey:
-        '02fcba7ecf41bc7e1be4ee122d9d22e3333671eb0a3a87b5cdf099d59874e1940f',
-      chainCode:
-        '180c998615636cd875aa70c71cfa6b7bf570187a56d8c6d054e60b644d13e9d3',
+      publicKey: '02fcba7ecf41bc7e1be4ee122d9d22e3333671eb0a3a87b5cdf099d59874e1940f',
+      chainCode: '180c998615636cd875aa70c71cfa6b7bf570187a56d8c6d054e60b644d13e9d3',
       limit: 10,
       offset: 0
     };
@@ -98,10 +96,7 @@ describe('getDeterministicWallets*', () => {
 describe('updateWalletValues*', () => {
   const walletData1 = genWalletData1();
   const walletData2 = genWalletData2();
-  const wallets: dWalletActions.DeterministicWalletData[] = [
-    walletData1,
-    walletData2
-  ];
+  const wallets: dWalletActions.DeterministicWalletData[] = [walletData1, walletData2];
   const balances = genBalances();
   const node: INode = new RpcNode('');
   const gen = updateWalletValues();
@@ -153,10 +148,7 @@ describe('updateWalletValues*', () => {
 describe('updateWalletTokenValues*', () => {
   const walletData1 = genWalletData1();
   const walletData2 = genWalletData2();
-  const wallets: dWalletActions.DeterministicWalletData[] = [
-    walletData1,
-    walletData2
-  ];
+  const wallets: dWalletActions.DeterministicWalletData[] = [walletData1, walletData2];
   const node: INode = new RpcNode('');
   const token1: Token = {
     address: '0x2',
@@ -169,7 +161,16 @@ describe('updateWalletTokenValues*', () => {
     decimal: 16
   };
   const tokens = [token1, token2];
-  const tokenBalances = [TokenValue('100'), TokenValue('200')];
+  const tokenBalances = [
+    {
+      balance: TokenValue('100'),
+      error: null
+    },
+    {
+      balance: TokenValue('200'),
+      error: null
+    }
+  ];
   const desiredToken = 'OMG';
   const data = {} as any;
   data.gen = cloneableGenerator(updateWalletTokenValues)();

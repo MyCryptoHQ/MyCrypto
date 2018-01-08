@@ -54,7 +54,7 @@ export default class TokenRow extends React.Component<Props, State> {
           {!!custom && (
             <img
               src={removeIcon}
-              className="TokenRow-balance-remove"
+              className="TokenRow-symbol-remove"
               title="Remove Token"
               onClick={this.onRemove}
               tabIndex={0}
@@ -65,7 +65,7 @@ export default class TokenRow extends React.Component<Props, State> {
     );
   }
 
-  public toggleShowLongBalance = (e: React.SyntheticEvent<HTMLTableDataCellElement>) => {
+  public toggleShowLongBalance = (e: React.FormEvent<HTMLTableDataCellElement>) => {
     e.preventDefault();
     this.setState(state => {
       return {

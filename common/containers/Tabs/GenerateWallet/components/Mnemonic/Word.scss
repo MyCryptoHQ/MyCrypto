@@ -1,0 +1,61 @@
+@import 'common/sass/variables';
+
+$width: 320px;
+$number-width: 40px;
+$number-margin: 6px;
+
+@keyframes word-fade {
+  0% {
+    color: rgba($text-color, 0);
+  }
+  100% {
+    color: rgba($text-color, 1);
+  }
+}
+
+.MnemonicWord {
+  display: flex;
+  width: $width;
+  margin-bottom: $space-md;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &-number {
+    display: inline-block;
+    width: $number-width;
+    margin-right: $number-margin;
+    text-align: right;
+    font-size: 26px;
+    font-weight: 100;
+    line-height: 40px;
+    vertical-align: bottom;
+  }
+
+  &-word {
+    width: $width - $number-width - $number-margin;
+
+    &-input {
+      animation: word-fade 400ms ease 1;
+      animation-fill-mode: both;
+    }
+
+    &-toggle {
+      color: $gray-light;
+
+      &:hover {
+        color: $gray;
+      }
+    }
+  }
+
+  // Fade-in animation
+  @for $i from 1 to 12 {
+    &:nth-child(#{$i}) {
+      .MnemonicWord-word-input {
+        animation-delay: $i * 50ms;
+      }
+    }
+  }
+}

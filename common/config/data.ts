@@ -2,7 +2,7 @@ import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.6)';
+export const VERSION = '4.0.0 (Alpha 0.0.7)';
 export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -46,6 +46,8 @@ export const MINIMUM_PASSWORD_LENGTH = 9;
 
 export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
+// Note: add the real referral url once you know it
+export const shapeshiftReferralURL = 'https://shapeshift.io';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
 export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
@@ -81,6 +83,7 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
+  isTestnet?: boolean;
 }
 
 export interface CustomNetworkConfig {
@@ -148,7 +151,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json')
+    contracts: require('./contracts/ropsten.json'),
+    isTestnet: true
   },
   Kovan: {
     name: 'Kovan',
@@ -157,7 +161,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://kovan.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json')
+    contracts: require('./contracts/ropsten.json'),
+    isTestnet: true
   },
   Rinkeby: {
     name: 'Rinkeby',
@@ -166,7 +171,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
     tokens: require('./tokens/rinkeby.json'),
-    contracts: require('./contracts/rinkeby.json')
+    contracts: require('./contracts/rinkeby.json'),
+    isTestnet: true
   },
   RSK: {
     name: 'RSK',
@@ -272,7 +278,12 @@ export const NODES: { [key: string]: NodeConfig } = {
   }
 };
 
-export async function initWeb3Node(): Promise<void> {
+interface Web3NodeInfo {
+  networkId: string;
+  lib: Web3Node;
+}
+
+export async function setupWeb3Node(): Promise<Web3NodeInfo> {
   const { web3 } = window as any;
 
   if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
@@ -293,6 +304,20 @@ export async function initWeb3Node(): Promise<void> {
     throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
   }
 
+  return { networkId, lib };
+}
+
+export async function isWeb3NodeAvailable(): Promise<boolean> {
+  try {
+    await setupWeb3Node();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+export async function initWeb3Node(): Promise<void> {
+  const { networkId, lib } = await setupWeb3Node();
   NODES.web3 = {
     network: networkIdToName(networkId),
     service: 'MetaMask / Mist',

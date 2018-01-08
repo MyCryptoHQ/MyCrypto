@@ -63,6 +63,25 @@ export interface SetTokenBalancesRejectedAction {
   type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED;
 }
 
+export interface SetTokenBalancePendingAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING;
+  payload: { tokenSymbol: string };
+}
+
+export interface SetTokenBalanceFulfilledAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED;
+  payload: {
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
+  };
+}
+
+export interface SetTokenBalanceRejectedAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED;
+}
+
 export interface ScanWalletForTokensAction {
   type: TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS;
   payload: IWallet;
@@ -108,6 +127,9 @@ export type WalletAction =
   | SetTokenBalancesPendingAction
   | SetTokenBalancesFulfilledAction
   | SetTokenBalancesRejectedAction
+  | SetTokenBalancePendingAction
+  | SetTokenBalanceFulfilledAction
+  | SetTokenBalanceRejectedAction
   | ScanWalletForTokensAction
   | SetWalletTokensAction
   | SetWalletConfigAction;

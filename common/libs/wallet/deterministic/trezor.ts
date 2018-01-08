@@ -1,12 +1,11 @@
 import BN from 'bn.js';
-import EthTx from 'ethereumjs-tx';
+import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
-
 import { getTransactionFields } from 'libs/transaction';
-import { mapValues } from 'lodash';
+import mapValues from 'lodash/mapValues';
 
 import { IFullWallet } from '../IWallet';
 
@@ -35,8 +34,8 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
 
           // TODO: Explain what's going on here? Add tests? Adapted from:
           // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-          const txToSerialize = {
-            ...tx,
+          const txToSerialize: TxObj = {
+            ...strTx,
             v: addHexPrefix(new BN(result.v).toString(16)),
             r: addHexPrefix(result.r),
             s: addHexPrefix(result.s)

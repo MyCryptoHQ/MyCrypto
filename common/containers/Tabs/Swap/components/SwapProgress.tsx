@@ -9,7 +9,9 @@ export interface Props {
   originId: string;
   destinationAddress: string;
   outputTx: string;
-  orderStatus: string | null;
+  provider: string;
+  bityOrderStatus: string | null;
+  shapeshiftOrderStatus: string | null;
   // actions
   showNotification: TShowNotification;
 }
@@ -28,11 +30,19 @@ export default class SwapProgress extends Component<Props, State> {
 
   public showSwapNotification = () => {
     const { hasShownViewTx } = this.state;
-    const { destinationId, outputTx, showNotification, orderStatus } = this.props;
+    const {
+      destinationId,
+      outputTx,
+      showNotification,
+      provider,
+      bityOrderStatus,
+      shapeshiftOrderStatus
+    } = this.props;
+    const isShapeshift = provider === 'shapeshift';
 
-    if (orderStatus === 'FILL') {
+    if (isShapeshift ? shapeshiftOrderStatus === 'complete' : bityOrderStatus === 'FILL') {
       if (!hasShownViewTx) {
-        let linkElement;
+        let linkElement: React.ReactElement<HTMLAnchorElement>;
         let link;
         const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
         // everything but BTC is a token
@@ -40,7 +50,7 @@ export default class SwapProgress extends Component<Props, State> {
           link = bityConfig.ETHTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
-              ${notificationMessage}
+              {notificationMessage}
             </a>
           );
           // BTC uses a different explorer
@@ -48,7 +58,7 @@ export default class SwapProgress extends Component<Props, State> {
           link = bityConfig.BTCTxExplorer(outputTx);
           linkElement = (
             <a href={link} target="_blank" rel="noopener">
-              ${notificationMessage}
+              {notificationMessage}
             </a>
           );
         }
@@ -60,11 +70,12 @@ export default class SwapProgress extends Component<Props, State> {
   };
 
   public computedClass = (step: number) => {
-    const { orderStatus } = this.props;
+    const { bityOrderStatus, shapeshiftOrderStatus } = this.props;
 
     let cssClass = 'SwapProgress-item';
-
+    const orderStatus = bityOrderStatus || shapeshiftOrderStatus;
     switch (orderStatus) {
+      case 'no_deposits':
       case 'OPEN':
         if (step < 2) {
           return cssClass + ' is-complete';
@@ -73,6 +84,7 @@ export default class SwapProgress extends Component<Props, State> {
         } else {
           return cssClass;
         }
+      case 'received':
       case 'RCVE':
         if (step < 4) {
           return cssClass + ' is-complete';
@@ -81,9 +93,11 @@ export default class SwapProgress extends Component<Props, State> {
         } else {
           return cssClass;
         }
+      case 'complete':
       case 'FILL':
         cssClass += ' is-complete';
         return cssClass;
+      case 'failed':
       case 'CANC':
         return cssClass;
       default:

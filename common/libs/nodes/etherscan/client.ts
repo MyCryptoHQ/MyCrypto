@@ -5,7 +5,7 @@ import { EtherscanRequest } from './types';
 export default class EtherscanClient extends RPCClient {
   public encodeRequest(request: EtherscanRequest): string {
     const encoded = new URLSearchParams();
-    Object.keys(request).forEach(key => {
+    Object.keys(request).forEach((key: keyof EtherscanRequest) => {
       if (request[key]) {
         encoded.set(key, request[key]);
       }

@@ -233,7 +233,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
           'form-control': true,
           'is-invalid': this.state[input.name] && invalids[input.name]
         })}
-        value={this.state[name]}
+        value={this.state[input.name]}
         onChange={this.handleChange}
         {...input}
       />
@@ -252,7 +252,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
       customNetworkUnit,
       customNetworkChainId
     } = this.state;
-    const required = ['name', 'url', 'port', 'network'];
+    const required: (keyof State)[] = ['name', 'url', 'port', 'network'];
     const invalids: { [key: string]: boolean } = {};
 
     // Required fields
@@ -344,7 +344,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
 
   private handleCheckbox = (ev: React.FormEvent<HTMLInputElement>) => {
     const { name } = ev.currentTarget;
-    this.setState({ [name as any]: !this.state[name] });
+    this.setState({ [name as any]: !this.state[name as keyof State] });
   };
 
   private saveAndAdd = () => {

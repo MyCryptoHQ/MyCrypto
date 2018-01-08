@@ -10,7 +10,7 @@ import {
   select,
   race
 } from 'redux-saga/effects';
-import { NODES } from 'config/data';
+import { NODES, NodeConfig } from 'config/data';
 import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,
@@ -216,13 +216,13 @@ export function* unsetWeb3Node(): SagaIterator {
     return;
   }
 
-  const nodeConfig = yield select(getNodeConfig);
+  const nodeConfig: NodeConfig = yield select(getNodeConfig);
   const newNode = equivalentNodeOrDefault(nodeConfig);
 
   yield put(changeNodeIntent(newNode));
 }
 
-export const equivalentNodeOrDefault = nodeConfig => {
+export const equivalentNodeOrDefault = (nodeConfig: NodeConfig) => {
   const node = Object.keys(NODES)
     .filter(key => key !== 'web3')
     .reduce((found, key) => {

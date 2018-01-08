@@ -38,7 +38,7 @@ interface ActionProps {
 }
 type Props = StateProps & ActionProps;
 
-class TokenBalances extends React.Component<Props, {}> {
+class TokenBalances extends React.Component<Props> {
   public render() {
     const {
       tokens,
@@ -96,6 +96,7 @@ class TokenBalances extends React.Component<Props, {}> {
   private scanWalletForTokens = () => {
     if (this.props.wallet) {
       this.props.scanWalletForTokens(this.props.wallet);
+      this.setState({ hasScanned: true });
     }
   };
 }

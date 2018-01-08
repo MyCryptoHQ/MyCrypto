@@ -1,34 +1,29 @@
-import { Aux } from 'components/ui';
-import { GasField } from './GasField';
+import { GasLimitField } from './GasLimitField';
 import { AmountField } from './AmountField';
-import { NonceField } from 'components/NonceField';
-import { OfflineAwareUnlockHeader } from 'components/OfflineAwareUnlockHeader';
-import { SendButton } from 'components/SendButton';
 import React, { Component } from 'react';
-import { SigningStatus } from 'components/SigningStatus';
-import { OnlyUnlocked } from 'components/renderCbs';
+import { NonceField, SendButton, SigningStatus } from 'components';
+import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
+import { FullWalletOnly } from 'components/renderCbs';
+import { Aux } from 'components/ui';
 
 interface OwnProps {
   button: React.ReactElement<any>;
 }
 export class Fields extends Component<OwnProps> {
   public render() {
-    return (
+    const makeContent = () => (
       <Aux>
-        <OfflineAwareUnlockHeader allowReadOnly={false} />
-        <OnlyUnlocked
-          whenUnlocked={
-            <Aux>
-              <GasField />
-              <AmountField />
-              <NonceField />
-              {this.props.button}
-              <SigningStatus />
-              <SendButton />
-            </Aux>
-          }
-        />
+        <GasLimitField />
+        <AmountField />
+        <NonceField />
+        {this.props.button}
+        <SigningStatus />
+        <SendButton />
       </Aux>
     );
+
+    const makeDecrypt = () => <WalletDecrypt disabledWallets={DISABLE_WALLETS.READ_ONLY} />;
+
+    return <FullWalletOnly withFullWallet={makeContent} withoutFullWallet={makeDecrypt} />;
   }
 }

@@ -27,8 +27,8 @@ class NonceInputClass extends Component<Props> {
     const { nonce: { raw, value }, onChange, shouldDisplay } = this.props;
     const content = (
       <Aux>
-        {nonceHelp}
         <label>Nonce</label>
+        {nonceHelp}
 
         <Query
           params={['readOnly']}

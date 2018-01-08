@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { withRouter, Switch, Redirect, Router, Route } from 'react-router-dom';
+import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -11,11 +11,14 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
+import PageNotFound from 'components/PageNotFound';
+import LogOutPrompt from 'components/LogOutPrompt';
+import { Aux } from 'components/ui';
+import { Store } from 'redux';
+import { AppState } from 'reducers';
 
-// TODO: fix this
 interface Props {
-  store: any;
-  history: any;
+  store: Store<AppState>;
 }
 
 interface State {
@@ -27,12 +30,12 @@ export default class Root extends Component<Props, State> {
     error: null
   };
 
-  public componentDidCatch(error) {
+  public componentDidCatch(error: Error) {
     this.setState({ error });
   }
 
   public render() {
-    const { store, history } = this.props;
+    const { store } = this.props;
     const { error } = this.state;
 
     if (error) {
@@ -40,24 +43,38 @@ export default class Root extends Component<Props, State> {
     }
 
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
+    const routes = (
+      <Switch>
+        <Route exact={true} path="/" component={GenerateWallet} />
+        <Route path="/generate" component={GenerateWallet}>
+          <Route path="keystore" component={GenerateWallet} />
+          <Route path="mnemonic" component={GenerateWallet} />
+        </Route>
+        <Route path="/help" component={Help} />
+        <Route path="/swap" component={Swap} />
+        <Route path="/account" component={SendTransaction}>
+          <Route path="send" component={SendTransaction} />
+          <Route path="info" component={SendTransaction} />
+        </Route>
+        <Route path="/send-transaction" component={SendTransaction} />
+        <Route path="/contracts" component={Contracts} />
+        <Route path="/ens" component={ENS} />
+        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+        <Route path="/pushTx" component={BroadcastTx} />
+        <Route component={PageNotFound} />
+      </Switch>
+    );
+
+    const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+
     return (
       <Provider store={store} key={Math.random()}>
-        <Router history={history} key={Math.random()}>
-          <div>
-            <Route exact={true} path="/" component={GenerateWallet} />
-            <Route path="/help" component={Help} />
-            <Route path="/swap" component={Swap} />
-            <Route path="/account" component={SendTransaction}>
-              <Route path="send" component={SendTransaction} />
-              <Route path="info" component={SendTransaction} />
-            </Route>
-            <Route path="/send-transaction" component={SendTransaction} />
-            <Route path="/contracts" component={Contracts} />
-            <Route path="/ens" component={ENS} />
-            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-            <Route path="/pushTx" component={BroadcastTx} />
+        <Router key={Math.random()}>
+          <Aux>
+            {routes}
             <LegacyRoutes />
-          </div>
+            <LogOutPrompt />
+          </Aux>
         </Router>
       </Provider>
     );
