@@ -31,7 +31,7 @@ import {
   WalletButton
 } from './components';
 import { AppState } from 'reducers';
-import { knowledgeBaseURL } from 'config/data';
+import { knowledgeBaseURL, isWeb3NodeAvailable } from 'config/data';
 import { IWallet } from 'libs/wallet';
 import DigitalBitboxIcon from 'assets/images/wallets/digital-bitbox.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
@@ -39,7 +39,6 @@ import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
-
 type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
@@ -277,16 +276,18 @@ export class WalletDecrypt extends Component<Props, State> {
     );
   }
 
-  public handleWalletChoice = (walletType: string) => {
+  public handleWalletChoice = async (walletType: string) => {
     const wallet = this.WALLETS[walletType];
     if (!wallet) {
       return;
     }
 
     let timeout = 0;
-
-    if (wallet.attemptUnlock) {
-      timeout = 250;
+    const web3Available = await isWeb3NodeAvailable();
+    if (wallet.attemptUnlock && web3Available) {
+      // timeout is only the maximum wait time before secondary view is shown
+      // send view will be shown immediately on web3 resolve
+      timeout = 1000;
       wallet.unlock();
     }
 
