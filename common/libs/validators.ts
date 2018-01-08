@@ -116,9 +116,8 @@ export function isPositiveIntegerOrZero(num: number): boolean {
 // https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
 // normal path length is 4, ledger is the exception at 3
 export function isValidPath(dPath: string) {
-  // TODO: use a regex to detect proper paths
-  const len = dPath.split("'/").length;
-  return len === 3 || len === 4;
+  const regex = /m\/44'\/[0-9]+\'\/[0-9]+\'+$|m\/44'\/[0-9]+\'\/[0-9]+\'+(\/[0-1]+$)/;
+  return regex.test(dPath);
 }
 
 export const isValidValue = (value: string) =>
