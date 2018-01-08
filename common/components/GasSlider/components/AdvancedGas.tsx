@@ -19,6 +19,7 @@ export default class AdvancedGas extends React.Component<Props> {
           <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
           <input
             className="form-control"
+            type="number"
             value={this.props.gasPrice}
             onChange={this.handleGasPriceChange}
           />
@@ -28,6 +29,7 @@ export default class AdvancedGas extends React.Component<Props> {
           <label>{translate('OFFLINE_Step2_Label_4')}</label>
           <input
             className="form-control"
+            type="number"
             value={this.props.gasLimit}
             onChange={this.handleGasLimitChange}
           />
