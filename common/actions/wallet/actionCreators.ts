@@ -56,6 +56,12 @@ export function setBalancePending(): types.SetBalancePendingAction {
   };
 }
 
+export function setPasswordPrompt(): types.SetPasswordPendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_PASSWORD_PENDING
+  };
+}
+
 export type TSetBalance = typeof setBalanceFullfilled;
 export function setBalanceFullfilled(value: Wei): types.SetBalanceFullfilledAction {
   return {

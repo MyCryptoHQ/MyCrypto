@@ -57,6 +57,7 @@ interface Props {
   offline: boolean;
   disabledWallets?: string[];
   isWalletPending: AppState['wallet']['isWalletPending'];
+  isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
 
 interface State {
@@ -217,6 +218,11 @@ export class WalletDecrypt extends Component<Props, State> {
         showNotification={this.props.showNotification}
         isWalletPending={
           this.state.selectedWalletKey === 'keystore-file' ? this.props.isWalletPending : undefined
+        }
+        isPasswordPending={
+          this.state.selectedWalletKey === 'keystore-file'
+            ? this.props.isPasswordPending
+            : undefined
         }
       />
     );
@@ -383,7 +389,8 @@ function mapStateToProps(state: AppState) {
   return {
     offline: state.config.offline,
     wallet: state.wallet.inst,
-    isWalletPending: state.wallet.isWalletPending
+    isWalletPending: state.wallet.isWalletPending,
+    isPasswordPending: state.wallet.isPasswordPending
   };
 }
 

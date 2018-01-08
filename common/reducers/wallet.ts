@@ -24,6 +24,7 @@ export interface State {
   };
   isWalletPending: boolean;
   isTokensLoading: boolean;
+  isPasswordPending: boolean;
   tokensError: string | null;
   hasSavedWalletTokens: boolean;
 }
@@ -34,6 +35,7 @@ export const INITIAL_STATE: State = {
   balance: { isPending: false, wei: null },
   tokens: {},
   isWalletPending: false,
+  isPasswordPending: false,
   isTokensLoading: false,
   tokensError: null,
   hasSavedWalletTokens: true
@@ -66,6 +68,10 @@ function setBalanceRejected(state: State): State {
 
 function setWalletPending(state: State, action: SetWalletPendingAction): State {
   return { ...state, isWalletPending: action.payload };
+}
+
+function setPasswordPending(state: State): State {
+  return { ...state, isPasswordPending: true };
 }
 
 function setTokenBalancesPending(state: State): State {
@@ -170,6 +176,8 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setWalletTokens(state);
     case TypeKeys.WALLET_SET_CONFIG:
       return setWalletConfig(state, action);
+    case TypeKeys.WALLET_SET_PASSWORD_PENDING:
+      return setPasswordPending(state);
     default:
       return state;
   }

@@ -121,6 +121,10 @@ export interface SetWalletConfigAction {
   payload: WalletConfig;
 }
 
+export interface SetPasswordPendingAction {
+  type: TypeKeys.WALLET_SET_PASSWORD_PENDING;
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
@@ -138,4 +142,5 @@ export type WalletAction =
   | SetTokenBalanceRejectedAction
   | ScanWalletForTokensAction
   | SetWalletTokensAction
-  | SetWalletConfigAction;
+  | SetWalletConfigAction
+  | SetPasswordPendingAction;

@@ -17,7 +17,8 @@ import {
   TypeKeys,
   SetTokenBalancePendingAction,
   setTokenBalanceFulfilled,
-  setTokenBalanceRejected
+  setTokenBalanceRejected,
+  setPasswordPrompt
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode, TypeKeys as ConfigTypeKeys } from 'actions/config';
@@ -174,7 +175,7 @@ export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator 
 }
 
 export function* startLoadingSpinner(): SagaIterator {
-  yield call(delay, 1000);
+  yield call(delay, 400);
   yield put(setWalletPending(true));
 }
 
@@ -200,9 +201,11 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   } catch (e) {
     yield call(stopLoadingSpinner, spinnerTask);
     if (
-      password !== '' ||
-      e.message !== 'Private key does not satisfy the curve requirements (ie. it is invalid)'
+      password === '' &&
+      e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
     ) {
+      yield put(setPasswordPrompt());
+    } else {
       yield put(showNotification('danger', translate('ERROR_6')));
     }
     return;

@@ -29,14 +29,14 @@ export class KeystoreDecrypt extends Component {
   public props: {
     value: KeystoreValue;
     isWalletPending: boolean;
+    isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
     onUnlock(): void;
     showNotification(level: string, message: string): TShowNotification;
   };
 
   public render() {
-    const { file, password } = this.props.value;
-    const isWalletPending = this.props.isWalletPending;
+    const { isWalletPending, isPasswordPending, value: { file, password } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
@@ -55,7 +55,7 @@ export class KeystoreDecrypt extends Component {
             </a>
           </label>
           {isWalletPending ? <Spinner /> : ''}
-          <div className={file.length && passReq && !isWalletPending ? '' : 'hidden'}>
+          <div className={file.length && isPasswordPending ? '' : 'hidden'}>
             <p>{translate('ADD_Label_3')}</p>
             <input
               className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}

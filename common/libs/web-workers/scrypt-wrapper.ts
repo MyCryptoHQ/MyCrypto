@@ -11,8 +11,9 @@ export const fromV3 = (
     const scryptWorker = new Worker();
     scryptWorker.postMessage({ keystore, password, nonStrict });
     scryptWorker.onmessage = event => {
+      const data: string = event.data;
       try {
-        const wallet = fromPrivateKey(toBuffer(event.data));
+        const wallet = fromPrivateKey(toBuffer(data));
         resolve(wallet);
       } catch (e) {
         reject(e);
