@@ -1,11 +1,11 @@
 import React from 'react';
-import { GasFieldFactory } from 'components/GasFieldFactory';
+import { GasLimitFieldFactory } from 'components/GasLimitFieldFactory';
 import classnames from 'classnames';
 
-export const GasField: React.SFC<{}> = () => (
+export const GasLimitField: React.SFC<{}> = () => (
   <label className="InteractExplorer-field form-group">
     <h4 className="InteractExplorer-field-label">Gas Limit</h4>
-    <GasFieldFactory
+    <GasLimitFieldFactory
       withProps={({ gasLimit: { raw, value }, onChange, readOnly }) => (
         <input
           name="gasLimit"

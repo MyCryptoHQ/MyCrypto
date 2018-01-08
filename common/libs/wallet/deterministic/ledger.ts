@@ -1,6 +1,6 @@
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
-import EthTx from 'ethereumjs-tx';
+import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { getTransactionFields } from 'libs/transaction';
@@ -34,7 +34,7 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
           }
           const strTx = getTransactionFields(t);
 
-          const txToSerialize = {
+          const txToSerialize: TxObj = {
             ...strTx,
             v: addHexPrefix(result.v),
             r: addHexPrefix(result.r),
