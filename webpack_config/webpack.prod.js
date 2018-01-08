@@ -62,7 +62,8 @@ base.plugins.push(
     'process.env.NODE_ENV': JSON.stringify('production')
   }),
   new BabelMinifyPlugin({
-    mangle: false
+    mangle: false,
+    propertyLiterals: false
   }, {
     comments: false
   }),
