@@ -153,5 +153,12 @@
       "prettier --write --config ./.prettierrc --config-precedence file-override",
       "git add"
     ]
-  }
+  },
+  "freezer": [
+    "package.json",
+    "common/freezer.ts",
+    "common/store.ts",
+    "common/libs/decrypt.ts",
+    "common/libs/signing.ts"
+  ]
 }
