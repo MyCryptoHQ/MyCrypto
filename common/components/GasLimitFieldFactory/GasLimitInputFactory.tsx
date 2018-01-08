@@ -3,7 +3,7 @@ import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getGasLimit } from 'selectors/transaction';
-import { CallBackProps } from 'components/GasFieldFactory';
+import { CallBackProps } from 'components/GasLimitFieldFactory';
 
 interface StateProps {
   gasLimit: AppState['transaction']['fields']['gasLimit'];
@@ -15,7 +15,7 @@ interface OwnProps {
 }
 
 type Props = StateProps & OwnProps;
-class GasInputClass extends Component<Props> {
+class GasLimitInputClass extends Component<Props> {
   public render() {
     const { gasLimit, onChange } = this.props;
     return (
@@ -29,6 +29,6 @@ class GasInputClass extends Component<Props> {
   }
 }
 
-export const GasInput = connect((state: AppState) => ({ gasLimit: getGasLimit(state) }))(
-  GasInputClass
+export const GasLimitInput = connect((state: AppState) => ({ gasLimit: getGasLimit(state) }))(
+  GasLimitInputClass
 );

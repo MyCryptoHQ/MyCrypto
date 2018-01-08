@@ -1,4 +1,4 @@
-import { GasField } from './GasField';
+import { GasLimitField } from './GasLimitField';
 import { AmountField } from './AmountField';
 import React, { Component } from 'react';
 import { NonceField, SendButton, SigningStatus } from 'components';
@@ -13,7 +13,7 @@ export class Fields extends Component<OwnProps> {
   public render() {
     const makeContent = () => (
       <Aux>
-        <GasField />
+        <GasLimitField />
         <AmountField />
         <NonceField />
         {this.props.button}
