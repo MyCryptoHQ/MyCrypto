@@ -22,13 +22,15 @@ class AmountClass extends Component<StateProps> {
           const transactionInstance = makeTransaction(serializedTransaction);
           const { value, data } = getTransactionFields(transactionInstance);
           const { decimal, unit, network } = this.props;
-          const handledValue =
-            unit === 'ether' ? Wei(value) : TokenValue(ERC20.transfer.decodeInput(data)._value);
+          const isToken = unit !== 'ether';
+          const handledValue = isToken
+            ? TokenValue(ERC20.transfer.decodeInput(data)._value)
+            : Wei(value);
           return (
             <UnitDisplay
               decimal={decimal}
               value={handledValue}
-              symbol={network.unit}
+              symbol={isToken ? unit : network.unit}
               checkOffline={false}
             />
           );
