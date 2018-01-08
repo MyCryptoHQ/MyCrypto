@@ -13,20 +13,21 @@ import {
   unsetWeb3NodeOnWalletEvent,
   equivalentNodeOrDefault
 } from 'sagas/config';
-import { NODES, NodeConfig } from 'config/data';
+import { NODES, NodeConfig, NETWORKS } from 'config/data';
 import {
   getNode,
   getNodeConfig,
   getOffline,
   getForceOffline,
-  getCustomNodeConfigs
+  getCustomNodeConfigs,
+  getCustomNetworkConfigs
 } from 'selectors/config';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { getWalletInst } from 'selectors/wallet';
 import { Web3Wallet } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { showNotification } from 'actions/notifications';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 
 // init module
 configuredStore.getState();
@@ -181,10 +182,12 @@ describe('handleNodeChangeIntent*', () => {
   // normal operation variables
   const defaultNode = configInitialState.nodeSelection;
   const defaultNodeConfig = NODES[defaultNode];
+  const defaultNodeNetwork = NETWORKS[defaultNodeConfig.network];
   const newNode = Object.keys(NODES).reduce(
     (acc, cur) => (NODES[acc].network === defaultNodeConfig.network ? cur : acc)
   );
   const newNodeConfig = NODES[newNode];
+  const newNodeNetwork = NETWORKS[newNodeConfig.network];
   const changeNodeIntentAction = changeNodeIntent(newNode);
   const truthyWallet = true;
   const latestBlock = '0xa';
@@ -197,6 +200,14 @@ describe('handleNodeChangeIntent*', () => {
 
   const data = {} as any;
   data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeIntentAction);
+
+  function shouldBailOut(gen, nextVal, errMsg) {
+    expect(gen.next(nextVal).value).toEqual(put(showNotification('danger', errMsg, 5000)));
+    expect(gen.next().value).toEqual(
+      put(changeNode(defaultNode, defaultNodeConfig, defaultNodeNetwork))
+    );
+    expect(gen.next().done).toEqual(true);
+  }
 
   beforeAll(() => {
     originalRandom = Math.random;
@@ -219,13 +230,13 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.gen.next(defaultNodeConfig).value).toMatchSnapshot();
   });
 
-  it('should put showNotification and put changeNode if timeout', () => {
+  it('should show error and revert to previous node if check times out', () => {
     data.clone1 = data.gen.clone();
-    expect(data.clone1.next(raceFailure).value).toEqual(
-      put(showNotification('danger', translate('ERROR_32'), 5000))
-    );
-    expect(data.clone1.next().value).toEqual(put(changeNode(defaultNode, defaultNodeConfig)));
-    expect(data.clone1.next().done).toEqual(true);
+    shouldBailOut(data.clone1, raceFailure, translateRaw('ERROR_32'));
+  });
+
+  it('should select getCustomNetworkConfigs', () => {
+    expect(data.gen.next(raceSuccess).value).toEqual(select(getCustomNetworkConfigs));
   });
 
   it('should put setLatestBlock', () => {
@@ -234,7 +245,7 @@ describe('handleNodeChangeIntent*', () => {
 
   it('should put changeNode', () => {
     expect(data.gen.next().value).toEqual(
-      put(changeNode(changeNodeIntentAction.payload, newNodeConfig))
+      put(changeNode(changeNodeIntentAction.payload, newNodeConfig, newNodeNetwork))
     );
   });
 
@@ -277,25 +288,17 @@ describe('handleNodeChangeIntent*', () => {
   });
 
   // test custom node not found
-  it('should select getCustomNodeConfig, put showNotification, put changeNode', () => {
+  it('should handle unknown / missing custom node', () => {
     data.customNodeNotFound.next();
     data.customNodeNotFound.next(defaultNode);
     expect(data.customNodeNotFound.next(defaultNodeConfig).value).toEqual(
       select(getCustomNodeConfigs)
     );
-    expect(data.customNodeNotFound.next(customNodeConfigs).value).toEqual(
-      put(
-        showNotification(
-          'danger',
-          `Attempted to switch to unknown node '${customNodeNotFoundAction.payload}'`,
-          5000
-        )
-      )
+    shouldBailOut(
+      data.customNodeNotFound,
+      customNodeConfigs,
+      `Attempted to switch to unknown node '${customNodeNotFoundAction.payload}'`
     );
-    expect(data.customNodeNotFound.next().value).toEqual(
-      put(changeNode(defaultNode, defaultNodeConfig))
-    );
-    expect(data.customNodeNotFound.next().done).toEqual(true);
   });
 });
 

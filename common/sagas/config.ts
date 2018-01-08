@@ -16,7 +16,7 @@ import {
   getCustomNodeConfigFromId,
   makeNodeConfigFromCustomConfig
 } from 'utils/node';
-import { makeCustomNetworkId } from 'utils/network';
+import { makeCustomNetworkId, getNetworkConfigFromId } from 'utils/network';
 import {
   getNode,
   getNodeConfig,
@@ -37,7 +37,7 @@ import {
   ChangeNodeIntentAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { Web3Wallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
@@ -123,6 +123,11 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   const currentConfig = yield select(getNodeConfig);
   const currentNetwork = currentConfig.network;
 
+  function* bailOut(message: string) {
+    yield put(showNotification('danger', message, 5000));
+    yield put(changeNode(currentNode, currentConfig, currentNetwork));
+  }
+
   let actionConfig = NODES[action.payload];
   if (!actionConfig) {
     const customConfigs = yield select(getCustomNodeConfigs);
@@ -133,11 +138,7 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   }
 
   if (!actionConfig) {
-    yield put(
-      showNotification('danger', `Attempted to switch to unknown node '${action.payload}'`, 5000)
-    );
-    yield put(changeNode(currentNode, currentConfig));
-    return;
+    return bailOut(`Attempted to switch to unknown node '${action.payload}'`);
   }
 
   // Grab latest block from the node, before switching, to confirm it's online
@@ -157,13 +158,18 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   }
 
   if (timeout) {
-    yield put(showNotification('danger', translate('ERROR_32'), 5000));
-    yield put(changeNode(currentNode, currentConfig));
-    return;
+    return bailOut(translateRaw('ERROR_32'));
+  }
+
+  const customNets = yield select(getCustomNetworkConfigs);
+  const actionNetwork = getNetworkConfigFromId(actionConfig.network, customNets);
+
+  if (!actionNetwork) {
+    return bailOut(`Unknown custom network for your node '${action.payload}', try re-adding it`);
   }
 
   yield put(setLatestBlock(latestBlock));
-  yield put(changeNode(action.payload, actionConfig));
+  yield put(changeNode(action.payload, actionConfig, actionNetwork));
 
   const currentWallet = yield select(getWalletInst);
 
