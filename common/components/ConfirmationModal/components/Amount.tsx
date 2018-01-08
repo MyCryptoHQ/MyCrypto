@@ -11,6 +11,7 @@ import { getDecimal, getUnit } from 'selectors/transaction';
 interface StateProps {
   unit: string;
   decimal: number;
+  network: AppState['config']['network'];
 }
 
 class AmountClass extends Component<StateProps> {
@@ -20,14 +21,14 @@ class AmountClass extends Component<StateProps> {
         withSerializedTransaction={serializedTransaction => {
           const transactionInstance = makeTransaction(serializedTransaction);
           const { value, data } = getTransactionFields(transactionInstance);
-          const { decimal, unit } = this.props;
+          const { decimal, unit, network } = this.props;
+          const handledValue =
+            unit === 'ether' ? Wei(value) : TokenValue(ERC20.transfer.decodeInput(data)._value);
           return (
             <UnitDisplay
               decimal={decimal}
-              value={
-                unit === 'ether' ? Wei(value) : TokenValue(ERC20.transfer.decodeInput(data)._value)
-              }
-              symbol={unit}
+              value={handledValue}
+              symbol={network.unit}
               checkOffline={false}
             />
           );
@@ -39,5 +40,6 @@ class AmountClass extends Component<StateProps> {
 
 export const Amount = connect((state: AppState) => ({
   decimal: getDecimal(state),
-  unit: getUnit(state)
+  unit: getUnit(state),
+  network: state.config.network
 }))(AmountClass);
