@@ -39,7 +39,7 @@ import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
-
+import { isWeb3NodeAvailable } from 'config/data';
 type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
@@ -277,7 +277,7 @@ export class WalletDecrypt extends Component<Props, State> {
     );
   }
 
-  public handleWalletChoice = (walletType: string) => {
+  public handleWalletChoice = async (walletType: string) => {
     const wallet = this.WALLETS[walletType];
     if (!wallet) {
       return;
@@ -285,8 +285,8 @@ export class WalletDecrypt extends Component<Props, State> {
 
     let timeout = 0;
 
-    if (wallet.attemptUnlock) {
-      timeout = 250;
+    if (wallet.attemptUnlock && isWeb3NodeAvailable()) {
+      timeout = 500;
       wallet.unlock();
     }
 
