@@ -20,11 +20,6 @@ describe('setCurrentTo*', () => {
     value: Address(raw),
     error: null
   };
-  const ensErrPayload = {
-    raw,
-    value: null,
-    error: 'ENS is not supported yet'
-  };
 
   const gens: any = {};
   gens.gen = cloneableGenerator(setCurrentTo)(action);
