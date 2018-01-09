@@ -11,5 +11,5 @@ export { default as Spinner } from './Spinner';
 export { default as SwapDropdown } from './SwapDropdown';
 export { default as Tooltip } from './Tooltip';
 export * from './ConditionalInput';
-export * from './Aux';
+export * from './AuxComponent';
 export * from './Expandable';
