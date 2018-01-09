@@ -7,6 +7,7 @@ import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
 import TrezorConnect from 'vendor/trezor-connect';
 import LedgerEth from 'vendor/ledger-eth';
+import Ledger3 from 'vendor/ledger3';
 
 interface Props {
   balance: Balance;
@@ -51,14 +52,14 @@ export default class AccountInfo extends React.Component<Props, State> {
 
   public displayHWAddress = () => {
     const { hwType, wallet } = this.props;
-    const { dPath } = wallet as any;
+    const { dPath, index } = wallet as any;
+    const fullPath = dPath + '/' + index;
     if (hwType === 'ledger') {
-      // TODO: no any types
-      const ethApp = new LedgerEth((wallet as any).ethApp.comm);
+      const ethApp = new LedgerEth(new Ledger3('w0w'));
       ethApp.getAddress(
-        dPath,
-        () => {
-          // TODO: no empty callbacks
+        fullPath,
+        (result, error) => {
+          console.log(result, error);
         },
         true,
         false
@@ -66,9 +67,9 @@ export default class AccountInfo extends React.Component<Props, State> {
     } else if (hwType === 'trezor') {
       // TODO: update vendor types
       (TrezorConnect as any).ethereumGetAddress(
-        dPath,
-        () => {
-          // TODO: no empty callbacks
+        fullPath,
+        (result, error) => {
+          console.log(result, error);
         },
         undefined
       );
