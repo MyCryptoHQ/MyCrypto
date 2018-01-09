@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
-import Ledger3 from 'vendor/ledger3';
-import LedgerEth from 'vendor/ledger-eth';
+import LedgerComm from 'vendor/ledgerComm';
+import LedgerEth from 'vendor/ledgerEth';
 import DPATHS from 'config/dpaths';
 import { Spinner } from 'components/ui';
 
@@ -136,7 +136,7 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
       showTip: false
     });
 
-    const ledger = new Ledger3('w0w');
+    const ledger = new LedgerComm('w0w');
     const ethApp = new LedgerEth(ledger);
 
     ethApp.getAddress(

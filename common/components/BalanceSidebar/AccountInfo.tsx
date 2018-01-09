@@ -6,8 +6,8 @@ import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
 import TrezorConnect from 'vendor/trezor-connect';
-import LedgerEth from 'vendor/ledger-eth';
-import Ledger3 from 'vendor/ledger3';
+import LedgerEth from 'vendor/ledgerEth';
+import LedgerComm from 'vendor/ledgerComm';
 
 interface Props {
   balance: Balance;
@@ -55,11 +55,11 @@ export default class AccountInfo extends React.Component<Props, State> {
     const { dPath, index } = wallet as any;
     const fullPath = dPath + '/' + index;
     if (hwType === 'ledger') {
-      const ethApp = new LedgerEth(new Ledger3('w0w'));
+      const ethApp = new LedgerEth(new LedgerComm('w0w'));
       ethApp.getAddress(
         fullPath,
-        (result, error) => {
-          console.log(result, error);
+        () => {
+          //
         },
         true,
         false

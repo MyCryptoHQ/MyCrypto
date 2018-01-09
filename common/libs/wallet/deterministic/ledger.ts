@@ -1,5 +1,5 @@
-import Ledger3 from 'vendor/ledger3';
-import LedgerEth from 'vendor/ledger-eth';
+import LedgerComm from 'vendor/ledgerComm';
+import LedgerEth from 'vendor/ledgerEth';
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
@@ -12,7 +12,7 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
 
   constructor(address: string, dPath: string, index: number) {
     super(address, dPath, index);
-    this.ledger = new Ledger3('w0w');
+    this.ledger = new LedgerComm('w0w');
     this.ethApp = new LedgerEth(this.ledger);
   }
 
