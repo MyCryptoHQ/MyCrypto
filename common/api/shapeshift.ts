@@ -21,10 +21,9 @@ export const SHAPESHIFT_TOKEN_WHITELIST = [
   'FUN',
   'RLC',
   'TRST',
-  'GUP',
-  'ETH'
+  'GUP'
 ];
-export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETC', 'BTC'];
+export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC', 'BTC'];
 
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;

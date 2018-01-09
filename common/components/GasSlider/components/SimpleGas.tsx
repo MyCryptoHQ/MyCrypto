@@ -26,7 +26,7 @@ export default class SimpleGas extends React.Component<Props> {
               onChange={this.handleSlider}
               min={gasPriceDefaults.gasPriceMinGwei}
               max={gasPriceDefaults.gasPriceMaxGwei}
-              value={gasPrice}
+              value={parseFloat(gasPrice)}
             />
             <div className="SimpleGas-slider-labels">
               <span>{translate('Cheap')}</span>
