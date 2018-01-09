@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getDecimal, getUnit } from 'selectors/transaction';
+import { getNetworkConfig } from 'selectors/config';
 
 interface StateProps {
   unit: string;
@@ -43,5 +44,5 @@ class AmountClass extends Component<StateProps> {
 export const Amount = connect((state: AppState) => ({
   decimal: getDecimal(state),
   unit: getUnit(state),
-  network: state.config.network
+  network: getNetworkConfig(state)
 }))(AmountClass);

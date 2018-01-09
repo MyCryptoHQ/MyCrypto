@@ -182,6 +182,7 @@ describe('handleNodeChangeIntent*', () => {
   // normal operation variables
   const defaultNode = configInitialState.nodeSelection;
   const defaultNodeConfig = NODES[defaultNode];
+  const customNetworkConfigs = [];
   const defaultNodeNetwork = NETWORKS[defaultNodeConfig.network];
   const newNode = Object.keys(NODES).reduce(
     (acc, cur) => (NODES[acc].network === defaultNodeConfig.network ? cur : acc)
@@ -226,17 +227,17 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.gen.next(defaultNode).value).toEqual(select(getNodeConfig));
   });
 
+  it('should select getCustomNetworkConfigs', () => {
+    expect(data.gen.next(defaultNodeConfig).value).toEqual(select(getCustomNetworkConfigs));
+  });
+
   it('should race getCurrentBlock and delay', () => {
-    expect(data.gen.next(defaultNodeConfig).value).toMatchSnapshot();
+    expect(data.gen.next(customNetworkConfigs).value).toMatchSnapshot();
   });
 
   it('should show error and revert to previous node if check times out', () => {
     data.clone1 = data.gen.clone();
     shouldBailOut(data.clone1, raceFailure, translateRaw('ERROR_32'));
-  });
-
-  it('should select getCustomNetworkConfigs', () => {
-    expect(data.gen.next(raceSuccess).value).toEqual(select(getCustomNetworkConfigs));
   });
 
   it('should put setLatestBlock', () => {
@@ -283,7 +284,8 @@ describe('handleNodeChangeIntent*', () => {
   it('should select getCustomNodeConfig and match race snapshot', () => {
     data.customNode.next();
     data.customNode.next(defaultNode);
-    expect(data.customNode.next(defaultNodeConfig).value).toEqual(select(getCustomNodeConfigs));
+    data.customNode.next(defaultNodeConfig);
+    expect(data.customNode.next(customNetworkConfigs).value).toEqual(select(getCustomNodeConfigs));
     expect(data.customNode.next(customNodeConfigs).value).toMatchSnapshot();
   });
 
@@ -291,7 +293,8 @@ describe('handleNodeChangeIntent*', () => {
   it('should handle unknown / missing custom node', () => {
     data.customNodeNotFound.next();
     data.customNodeNotFound.next(defaultNode);
-    expect(data.customNodeNotFound.next(defaultNodeConfig).value).toEqual(
+    data.customNodeNotFound.next(defaultNodeConfig);
+    expect(data.customNodeNotFound.next(customNetworkConfigs).value).toEqual(
       select(getCustomNodeConfigs)
     );
     shouldBailOut(

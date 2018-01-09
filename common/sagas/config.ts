@@ -10,7 +10,7 @@ import {
   select,
   race
 } from 'redux-saga/effects';
-import { NODES, NodeConfig } from 'config/data';
+import { NODES, NETWORKS, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
 import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,
@@ -38,7 +38,7 @@ import {
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
-import { Web3Wallet } from 'libs/wallet';
+import { IWallet, Web3Wallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
@@ -48,9 +48,9 @@ export const getConfig = (state: AppState): ConfigState => state.config;
 let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
   while (true) {
-    const node = yield select(getNodeConfig);
-    const isOffline = yield select(getOffline);
-    const isForcedOffline = yield select(getForceOffline);
+    const node: NodeConfig = yield select(getNodeConfig);
+    const isOffline: boolean = yield select(getOffline);
+    const isForcedOffline: boolean = yield select(getForceOffline);
 
     // If they're forcing themselves offline, exit the loop. It will be
     // kicked off again if they toggle it in handleTogglePollOfflineStatus.
@@ -104,7 +104,7 @@ export function* handlePollOfflineStatus(): SagaIterator {
 }
 
 export function* handleTogglePollOfflineStatus(): SagaIterator {
-  const isForcedOffline = yield select(getForceOffline);
+  const isForcedOffline: boolean = yield select(getForceOffline);
   if (isForcedOffline) {
     yield fork(handlePollOfflineStatus);
   } else {
@@ -119,9 +119,11 @@ export function* reload(): SagaIterator {
 }
 
 export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {
-  const currentNode = yield select(getNode);
-  const currentConfig = yield select(getNodeConfig);
-  const currentNetwork = currentConfig.network;
+  const currentNode: string = yield select(getNode);
+  const currentConfig: NodeConfig = yield select(getNodeConfig);
+  const customNets: CustomNetworkConfig[] = yield select(getCustomNetworkConfigs);
+  const currentNetwork =
+    getNetworkConfigFromId(currentConfig.network, customNets) || NETWORKS[currentConfig.network];
 
   function* bailOut(message: string) {
     yield put(showNotification('danger', message, 5000));
@@ -130,7 +132,7 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
 
   let actionConfig = NODES[action.payload];
   if (!actionConfig) {
-    const customConfigs = yield select(getCustomNodeConfigs);
+    const customConfigs: CustomNodeConfig[] = yield select(getCustomNodeConfigs);
     const config = getCustomNodeConfigFromId(action.payload, customConfigs);
     if (config) {
       actionConfig = makeNodeConfigFromCustomConfig(config);
@@ -138,7 +140,7 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   }
 
   if (!actionConfig) {
-    return bailOut(`Attempted to switch to unknown node '${action.payload}'`);
+    return yield* bailOut(`Attempted to switch to unknown node '${action.payload}'`);
   }
 
   // Grab latest block from the node, before switching, to confirm it's online
@@ -158,23 +160,24 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   }
 
   if (timeout) {
-    return bailOut(translateRaw('ERROR_32'));
+    return yield* bailOut(translateRaw('ERROR_32'));
   }
 
-  const customNets = yield select(getCustomNetworkConfigs);
   const actionNetwork = getNetworkConfigFromId(actionConfig.network, customNets);
 
   if (!actionNetwork) {
-    return bailOut(`Unknown custom network for your node '${action.payload}', try re-adding it`);
+    return yield* bailOut(
+      `Unknown custom network for your node '${action.payload}', try re-adding it`
+    );
   }
 
   yield put(setLatestBlock(latestBlock));
   yield put(changeNode(action.payload, actionConfig, actionNetwork));
 
-  const currentWallet = yield select(getWalletInst);
+  const currentWallet: IWallet | null = yield select(getWalletInst);
 
   // if there's no wallet, do not reload as there's no component state to resync
-  if (currentWallet && currentNetwork !== actionConfig.network) {
+  if (currentWallet && currentConfig.network !== actionConfig.network) {
     yield call(reload);
   }
 }

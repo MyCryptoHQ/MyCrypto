@@ -7,6 +7,7 @@ import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
+import { getNetworkConfig } from 'selectors/config';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -57,7 +58,7 @@ function mapStateToProps(state: AppState) {
     tokens: getShownTokenBalances(state, true),
     allTokens: getTokens(state),
     unit: getUnit(state),
-    network: state.config.network
+    network: getNetworkConfig(state)
   };
 }
 
