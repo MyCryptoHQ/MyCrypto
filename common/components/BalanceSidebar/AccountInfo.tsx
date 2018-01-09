@@ -5,11 +5,14 @@ import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
+import TrezorConnect from 'vendor/trezor-connect';
+import LedgerEth from 'vendor/ledger-eth';
 
 interface Props {
   balance: Balance;
   wallet: IWallet;
   network: NetworkConfig;
+  hwType: string;
 }
 
 interface State {
@@ -46,22 +49,56 @@ export default class AccountInfo extends React.Component<Props, State> {
     });
   };
 
+  public displayHWAddress = () => {
+    const { hwType, wallet } = this.props;
+    const { dPath } = wallet as any;
+    if (hwType === 'ledger') {
+      // TODO: no any types
+      const ethApp = new LedgerEth((wallet as any).ethApp.comm);
+      ethApp.getAddress(
+        dPath,
+        () => {
+          // TODO: no empty callbacks
+        },
+        true,
+        false
+      );
+    } else if (hwType === 'trezor') {
+      // TODO: update vendor types
+      (TrezorConnect as any).ethereumGetAddress(
+        dPath,
+        () => {
+          // TODO: no empty callbacks
+        },
+        undefined
+      );
+    }
+  };
+
   public render() {
-    const { network, balance } = this.props;
+    const { network, balance, hwType } = this.props;
     const { blockExplorer, tokenExplorer } = network;
     const { address, showLongBalance } = this.state;
 
     return (
       <div className="AccountInfo">
-        <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
-          <div className="AccountInfo-address">
-            <div className="AccountInfo-address-icon">
-              <Identicon address={address} size="100%" />
-            </div>
+        <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
+        <div className="AccountInfo-section AccountInfo-address-section">
+          <div className="AccountInfo-address-icon">
+            <Identicon address={address} size="100%" />
+          </div>
+          <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">{address}</div>
           </div>
         </div>
+
+        {hwType && (
+          <div className="AccountInfo-section">
+            <a className="AccountInfo-address-hw-addr" onClick={this.displayHWAddress}>
+              Display address on {hwType}
+            </a>
+          </div>
+        )}
 
         <div className="AccountInfo-section">
           <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>

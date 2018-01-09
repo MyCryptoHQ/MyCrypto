@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import { getShownTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
+import { getShownTokenBalances, getWalletInst, TokenBalance, getHWType } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
@@ -20,6 +20,7 @@ interface Props {
   ratesError: AppState['rates']['ratesError'];
   fetchCCRates: TFetchCCRates;
   isOffline: AppState['config']['offline'];
+  hwType: string;
 }
 
 interface Block {
@@ -30,7 +31,16 @@ interface Block {
 
 export class BalanceSidebar extends React.Component<Props, {}> {
   public render() {
-    const { wallet, balance, network, tokenBalances, rates, ratesError, isOffline } = this.props;
+    const {
+      wallet,
+      balance,
+      network,
+      tokenBalances,
+      rates,
+      ratesError,
+      isOffline,
+      hwType
+    } = this.props;
 
     if (!wallet) {
       return null;
@@ -39,7 +49,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
     const blocks: Block[] = [
       {
         name: 'Account Info',
-        content: <AccountInfo wallet={wallet} balance={balance} network={network} />
+        content: <AccountInfo wallet={wallet} hwType={hwType} balance={balance} network={network} />
       },
       {
         name: 'Promos',
@@ -86,7 +96,8 @@ function mapStateToProps(state: AppState) {
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,
-    isOffline: state.config.offline
+    isOffline: state.config.offline,
+    hwType: getHWType(state)
   };
 }
 

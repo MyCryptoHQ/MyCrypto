@@ -106,6 +106,14 @@ export const getWalletType = (state: AppState): IWalletType => {
   return { isWeb3Wallet, isHardwareWallet };
 };
 
+export const getHWType = (state: AppState): string => {
+  const wallet = getWalletInst(state);
+  const isLedgerWallet = wallet instanceof LedgerWallet;
+  const isTrezorWallet = wallet instanceof TrezorWallet;
+  const type = isLedgerWallet ? 'ledger' : isTrezorWallet ? 'tezor' : '';
+  return type;
+};
+
 export const isUnlocked = (state: AppState) => !!getWalletInst(state);
 
 export const getEtherBalance = (state: AppState): Wei | null => getWallet(state).balance.wei;
