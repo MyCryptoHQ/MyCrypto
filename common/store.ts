@@ -20,6 +20,7 @@ import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 import sagas from './sagas';
 import { gasPricetoBase } from 'libs/units';
+import { NetworkConfig } from 'config/data';
 
 const configureStore = () => {
   const logger = createLogger({
@@ -58,7 +59,6 @@ const configureStore = () => {
         }
       : { ...swapInitialState };
 
-  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens');
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
 
@@ -76,6 +76,10 @@ const configureStore = () => {
       savedConfigState.nodeSelection = configInitialState.nodeSelection;
     }
   }
+
+  const localCustomTokens = loadAndDedupeCustomTokens(
+    (savedConfigState && savedConfigState.network) || configInitialState.network
+  );
 
   const persistedInitialState = {
     config: {
@@ -150,5 +154,24 @@ const configureStore = () => {
 
   return store;
 };
+
+function loadAndDedupeCustomTokens(network: NetworkConfig): CustomTokenState {
+  let localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || [];
+
+  // If any tokens have the same symbol or contract address, remove them
+  if (localCustomTokens.length) {
+    const tokenCollisionMap = network.tokens.reduce((prev, token) => {
+      prev[token.symbol] = true;
+      prev[token.address] = true;
+      return prev;
+    }, {});
+
+    localCustomTokens = localCustomTokens.filter(token => {
+      return !tokenCollisionMap[token.address] && !tokenCollisionMap[token.symbol];
+    });
+  }
+
+  return localCustomTokens;
+}
 
 export const configuredStore = configureStore();
