@@ -27,7 +27,6 @@
       max-width: 100%;
       flex-direction: row;
       flex-wrap: nowrap;
-      align-items: center;
     }
 
     &-wrapper {
@@ -43,9 +42,6 @@
     &-addr {
       word-wrap: break-word;
       @include mono;
-    }
-
-    &-hw-addr {
     }
   }
 
