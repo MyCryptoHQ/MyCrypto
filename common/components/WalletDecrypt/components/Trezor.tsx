@@ -53,7 +53,7 @@ export class TrezorDecrypt extends Component<Props, State> {
           className="TrezorDecrypt-buy btn btn-sm btn-default"
           href="https://trezor.io/?a=myetherwallet.com"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           {translate('Don’t have a TREZOR? Order one now!')}
         </a>
@@ -65,7 +65,7 @@ export class TrezorDecrypt extends Component<Props, State> {
           <a
             href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             How to use TREZOR with MyEtherWallet
           </a>
