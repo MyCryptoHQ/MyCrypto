@@ -53,6 +53,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         name: 'Equivalent Values',
         content: (
           <EquivalentValues
+            network={network}
             balance={balance}
             tokenBalances={tokenBalances}
             rates={rates}
