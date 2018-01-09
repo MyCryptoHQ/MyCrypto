@@ -5,6 +5,7 @@ import {
   SetNonceFieldAction,
   SetValueFieldAction,
   InputGasLimitAction,
+  InputGasPriceAction,
   InputDataAction,
   InputNonceAction,
   ResetAction,
@@ -15,6 +16,12 @@ import { TypeKeys } from 'actions/transaction/constants';
 type TInputGasLimit = typeof inputGasLimit;
 const inputGasLimit = (payload: InputGasLimitAction['payload']) => ({
   type: TypeKeys.GAS_LIMIT_INPUT,
+  payload
+});
+
+type TInputGasPrice = typeof inputGasPrice;
+const inputGasPrice = (payload: InputGasPriceAction['payload']) => ({
+  type: TypeKeys.GAS_PRICE_INPUT,
   payload
 });
 
@@ -71,6 +78,7 @@ const reset = (): ResetAction => ({ type: TypeKeys.RESET });
 
 export {
   TInputGasLimit,
+  TInputGasPrice,
   TInputNonce,
   TInputData,
   TSetGasLimitField,
@@ -81,6 +89,7 @@ export {
   TSetGasPriceField,
   TReset,
   inputGasLimit,
+  inputGasPrice,
   inputNonce,
   inputData,
   setGasLimitField,

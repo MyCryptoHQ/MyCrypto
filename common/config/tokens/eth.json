@@ -433,5 +433,20 @@
     "address": "0xb110ec7b1dcb8fab8dedbf28f53bc63ea5bedd84",
     "symbol": "XID",
     "decimal": 8
+  },
+  {
+    "address": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
+    "symbol": "ZRX",
+    "decimal": 18
+  },
+  {
+    "address": "0x41e5560054824eA6B0732E656E3Ad64E20e94E45",
+    "symbol": "CVC",
+    "decimal": 8
+  },
+  {
+    "address": "0x0AbdAce70D3790235af448C88547603b945604ea",
+    "symbol": "DNT",
+    "decimal": 18
   }
 ]
