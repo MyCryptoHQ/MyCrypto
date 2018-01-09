@@ -28,16 +28,16 @@ const webpackConfig = {
   module: {
     rules: [
       {
-        test: /\.worker\.js$/,
-        loader: 'worker-loader'
-      },
-      {
         test: /\.(ts|tsx)$/,
         include: path.resolve(__dirname, '../common'),
         use: [{ loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }],
         exclude: ['assets', 'sass', 'vendor', 'translations/lang']
           .map(dir => path.resolve(__dirname, `../common/${dir}`))
           .concat([path.resolve(__dirname, '../node_modules')])
+      },
+      {
+        test: /\.worker\.js$/,
+        loader: 'worker-loader'
       },
       {
         include: [
