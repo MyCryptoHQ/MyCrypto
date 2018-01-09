@@ -62,8 +62,12 @@ base.plugins.push(
     'process.env.NODE_ENV': JSON.stringify('production')
   }),
   new BabelMinifyPlugin({
+    // Mangle seems to be reusing variable identifiers, causing errors
     mangle: false,
-    propertyLiterals: false
+    // These two on top of a lodash file are causing illegal characters for
+    // safari and ios browsers
+    evaluate: false,
+    propertyLiterals: false,
   }, {
     comments: false
   }),
