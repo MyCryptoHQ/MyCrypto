@@ -292,7 +292,11 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
           )}
         </td>
         <td>
-          <a target="_blank" href={`https://ethplorer.io/address/${wallet.address}`}>
+          <a
+            target="_blank"
+            href={`https://ethplorer.io/address/${wallet.address}`}
+            rel="noopener noreferrer"
+          >
             <i className="DWModal-addresses-table-more" />
           </a>
         </td>
