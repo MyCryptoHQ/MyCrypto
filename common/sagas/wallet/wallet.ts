@@ -180,7 +180,7 @@ export function* startLoadingSpinner(): SagaIterator {
 }
 
 export function* stopLoadingSpinner(loadingFork: Task | null): SagaIterator {
-  if (loadingFork !== null) {
+  if (loadingFork !== null && loadingFork !== undefined) {
     yield cancel(loadingFork);
   }
   yield put(setWalletPending(false));
@@ -195,7 +195,6 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
       spinnerTask = yield fork(startLoadingSpinner);
       wallet = signWrapper(yield call(getUtcWallet, file, password));
     } else {
-      yield call(stopLoadingSpinner, spinnerTask);
       wallet = getKeystoreWallet(file, password);
     }
   } catch (e) {
@@ -212,7 +211,7 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   }
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
-  yield put(setWalletPending(false));
+  yield call(stopLoadingSpinner, spinnerTask);
   yield put(setWallet(wallet));
 }
 
