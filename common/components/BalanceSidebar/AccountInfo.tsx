@@ -5,9 +5,8 @@ import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
+import ledger from 'ledgerco';
 import TrezorConnect from 'vendor/trezor-connect';
-import LedgerEth from 'vendor/ledgerEth';
-import LedgerComm from 'vendor/ledgerComm';
 
 interface Props {
   balance: Balance;
@@ -55,15 +54,9 @@ export default class AccountInfo extends React.Component<Props, State> {
     const { dPath, index } = wallet as any;
     const fullPath = dPath + '/' + index;
     if (hwType === 'ledger') {
-      const ethApp = new LedgerEth(new LedgerComm('w0w'));
-      ethApp.getAddress(
-        fullPath,
-        () => {
-          //
-        },
-        true,
-        false
-      );
+      ledger.comm_u2f.create_async().then(comm => {
+        new ledger.eth(comm).getAddress_async(fullPath, true, false);
+      });
     } else if (hwType === 'trezor') {
       // TODO: update vendor types
       (TrezorConnect as any).ethereumGetAddress(
