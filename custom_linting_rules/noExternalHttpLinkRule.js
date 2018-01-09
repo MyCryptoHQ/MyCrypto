@@ -65,15 +65,9 @@ var NoExternalHttpLinkRuleWalker = /** @class */ (function (_super) {
     NoExternalHttpLinkRuleWalker.prototype.validateOpeningElement = function (openingElement) {
         if (openingElement.tagName.getText() === 'a') {
             var allAttributes = JsxAttribute_1.getJsxAttributesFromJsxElement(openingElement);
-            /* tslint:disable:no-string-literal */
-            var href = allAttributes['href'];
-            /* tslint:enable:no-string-literal */
-            // if (target != null && getStringLiteral(target) === '_blank' && !isRelAttributeValue(rel)) {
-            //     this.addFailureAt(openingElement.getStart(), openingElement.getWidth(), FAILURE_STRING);
-            // }
-            if (href != null && !isSafeHrefAttributeValue(href)) {
-                var fix = new Lint.Replacement(openingElement.getStart(), openingElement.getWidth(), "");
-                this.addFailureAt(openingElement.getStart(), openingElement.getWidth(), FAILURE_STRING, fix);
+            var href = allAttributes.href;
+            if (href !== null && !isSafeHrefAttributeValue(href)) {
+                this.addFailureAt(openingElement.getStart(), openingElement.getWidth(), FAILURE_STRING);
             }
         }
     };
@@ -85,7 +79,8 @@ function isSafeHrefAttributeValue(attribute) {
     }
     if (attribute.initializer.kind === ts.SyntaxKind.JsxExpression) {
         var expression = attribute.initializer;
-        if (expression.expression != null && expression.expression.kind !== ts.SyntaxKind.StringLiteral) {
+        if (expression.expression !== null &&
+            expression.expression.kind !== ts.SyntaxKind.StringLiteral) {
             return true; // attribute value is not a string literal, so do not validate
         }
     }
@@ -93,7 +88,7 @@ function isSafeHrefAttributeValue(attribute) {
     if (stringValue === '#') {
         return true;
     }
-    else if (stringValue == null || stringValue.length === 0) {
+    else if (stringValue === null || stringValue.length === 0) {
         return false;
     }
     return stringValue.indexOf('https://') >= 0;

@@ -11,7 +11,7 @@ import {
   isEmpty
 } from '../node_modules/tslint-microsoft-contrib/utils/JsxAttribute';
 
-const FAILURE_STRING: string = 'Anchor tags with an external link must use https';
+const FAILURE_STRING = 'Anchor tags with an external link must use https';
 
 /**
  * Implementation of the no-external-http-link rule.
@@ -58,16 +58,9 @@ class NoExternalHttpLinkRuleWalker extends ErrorTolerantWalker {
       const allAttributes: { [propName: string]: ts.JsxAttribute } = getJsxAttributesFromJsxElement(
         openingElement
       );
-      /* tslint:disable:no-string-literal */
-      const href: ts.JsxAttribute = allAttributes['href'];
-      /* tslint:enable:no-string-literal */
-      if (href != null && !isSafeHrefAttributeValue(href)) {
-        this.addFailureAt(
-          openingElement.getStart(),
-          openingElement.getWidth(),
-          FAILURE_STRING,
-          fix
-        );
+      const href: ts.JsxAttribute = allAttributes.href;
+      if (href !== null && !isSafeHrefAttributeValue(href)) {
+        this.addFailureAt(openingElement.getStart(), openingElement.getWidth(), FAILURE_STRING);
       }
     }
   }
@@ -81,7 +74,7 @@ function isSafeHrefAttributeValue(attribute: ts.JsxAttribute): boolean {
   if (attribute.initializer.kind === ts.SyntaxKind.JsxExpression) {
     const expression: ts.JsxExpression = <ts.JsxExpression>attribute.initializer;
     if (
-      expression.expression != null &&
+      expression.expression !== null &&
       expression.expression.kind !== ts.SyntaxKind.StringLiteral
     ) {
       return true; // attribute value is not a string literal, so do not validate
@@ -91,7 +84,7 @@ function isSafeHrefAttributeValue(attribute: ts.JsxAttribute): boolean {
   const stringValue = getStringLiteral(attribute);
   if (stringValue === '#') {
     return true;
-  } else if (stringValue == null || stringValue.length === 0) {
+  } else if (stringValue === null || stringValue.length === 0) {
     return false;
   }
 
