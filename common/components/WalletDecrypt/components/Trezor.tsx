@@ -3,7 +3,7 @@ import { TrezorWallet } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
-import { DeterministicWalletsModal } from './DeterministicWalletsModal';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
 import { Spinner } from 'components/ui';
 const DEFAULT_PATH = DPATHS.TREZOR[0].value;
