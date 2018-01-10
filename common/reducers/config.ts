@@ -60,6 +60,7 @@ function changeNode(state: State, action: ChangeNodeAction): State {
     ...state,
     nodeSelection: action.payload.nodeSelection,
     node: action.payload.node,
+    network: action.payload.network,
     isChangingNode: false
   };
 }
