@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-export class Name extends React.Component<{ value: string }, any> {
+interface Props {
+  value: string;
+}
+
+export class Name extends React.Component<Props> {
   public render() {
     return (
       <section className="form-group">

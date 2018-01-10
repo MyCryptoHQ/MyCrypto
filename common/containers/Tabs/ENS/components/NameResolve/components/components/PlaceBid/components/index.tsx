@@ -1,4 +1,4 @@
 export * from './Name';
-export * from './Bid';
+export * from './BidValue';
 export * from './BidMask';
-export * from './Phrase';
+export * from './SecretPhrase';

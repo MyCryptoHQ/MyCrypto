@@ -1,32 +1,12 @@
 import * as React from 'react';
 
-type Callback = (value) => void;
-
 interface Props {
-  // Actions
-  onChange: Callback;
-  // Props
   hasUnitDropdown?: boolean;
+  value: string;
+  onChange(ev: React.FormEvent<HTMLInputElement>);
 }
 
-interface State {
-  value: number | '';
-}
-
-export class BidMask extends React.Component<Props, State> {
-  public state = {
-    value: '' as ''
-  };
-
-  public onChange = e => {
-    this.setState({
-      value: e.target.value
-    });
-    if (this.props.onChange) {
-      this.props.onChange(e.target.value);
-    }
-  };
-
+export class BidMask extends React.Component<Props> {
   public render() {
     return (
       <section className="form-group">
@@ -41,9 +21,9 @@ export class BidMask extends React.Component<Props, State> {
         <section className="input-group col-xs-12">
           <input
             type="number"
-            className="form-control is-invalid"
-            value={this.state.value}
-            onChange={this.onChange}
+            className="form-control"
+            value={this.props.value}
+            onChange={this.props.onChange}
             placeholder="1.0"
           />
         </section>

@@ -1,47 +1,65 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { isNetworkRequestPending, getValue } from 'selectors/transaction';
-import { getWalletType } from 'selectors/wallet';
-import { placeBidRequested } from 'actions/ens';
+import { placeBidRequested, TPlaceBidRequested } from 'actions/ens';
+import { GenerateTransactionFactory, CallbackProps } from 'components/GenerateTransactionFactory';
+import { getBidDataEncoded } from 'selectors/ens';
 
-type Callback = () => void;
-
-interface Props {
-  // MapState
-  userInput: {
-    bidValue: any;
-    bidMask: any;
-    secret: any;
-  };
-  isValid: boolean;
-  isFullTransaction: boolean;
-  networkRequestPending: boolean;
+interface OwnProps {
+  bidMask: string;
+  secret: string;
+  bidValue: string;
   isWeb3Wallet: boolean;
-  // Actions
-  placeBidRequested: any;
-  // Props
-  onComplete?: Callback;
+  disabled: boolean;
+  generateTransaction(): void;
 }
 
-class GenerateBidClass extends Component<Props> {
-  public onClick = () => {
-    const { onComplete, userInput } = this.props;
-    const { bidValue, bidMask, secret } = userInput;
-    if (onComplete) {
-      onComplete();
-    }
-    this.props.placeBidRequested(bidValue, bidMask, secret);
+interface StateProps {
+  bidDataEncoded: boolean;
+}
+
+interface DispatchProps {
+  placeBidRequested: TPlaceBidRequested;
+}
+
+type Props = OwnProps & DispatchProps & StateProps & CallbackProps;
+
+enum GenerationStage {
+  WAITING_ON_USER_INPUT = 'WAITING_ON_USER_INPUT',
+  ENCODING_BID_DATA = 'ENCODING_BID_DATA',
+  READY_TO_GENERATE_TRANSACTION = 'READY_TO_GENERATE_TRANSACTION',
+  GENERATION_IN_PROGRESS = 'GENERATION_IN_PROGRESS'
+}
+
+interface State {
+  stage: GenerationStage;
+}
+
+class GenerateBidClass extends Component<Props, State> {
+  public state: State = {
+    stage: GenerationStage.WAITING_ON_USER_INPUT
   };
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.bidDataEncoded) {
+      this.setState({ stage: GenerationStage.READY_TO_GENERATE_TRANSACTION });
+      this.props.generateTransaction();
+    }
+  }
+
+  public handleOnClick = () => {
+    const { bidMask, bidValue, secret } = this.props;
+    this.props.placeBidRequested(bidValue, bidMask, secret);
+    this.setState({ stage: GenerationStage.ENCODING_BID_DATA });
+  };
+
   public render() {
-    const { isValid, userInput } = this.props;
-    console.log(!isValid, !!userInput.bidValue);
+    const { disabled } = this.props;
     return (
       <button
         className="btn btn-info btn-block"
-        onClick={this.onClick}
-        // TODO: reformat to remove negative conditions
-        disabled={!isValid && !userInput.bidValue}
+        onClick={this.handleOnClick}
+        disabled={disabled || this.state.stage === GenerationStage.READY_TO_GENERATE_TRANSACTION}
       >
         Place A Bid
       </button>
@@ -49,12 +67,12 @@ class GenerateBidClass extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState, props) => {
-  return {
-    networkRequestPending: isNetworkRequestPending(state),
-    isWeb3Wallet: getWalletType(state).isWeb3Wallet,
-    userInput: { ...props.userInput, bidValue: getValue(state).value }
-  };
-};
+const GenerateBidX = connect((state: AppState) => ({ bidDataEncoded: getBidDataEncoded(state) }), {
+  placeBidRequested
+})(GenerateBidClass);
 
-export const GenerateBid = connect(mapStateToProps, { placeBidRequested })(GenerateBidClass);
+export const GenerateBid: React.SFC<OwnProps> = props => (
+  <GenerateTransactionFactory
+    withProps={cbProps => <GenerateBidX {...{ ...props, ...cbProps }} />}
+  />
+);
