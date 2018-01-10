@@ -45,17 +45,17 @@ export default class Root extends Component<Props, State> {
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
     const routes = (
       <Switch>
-        <Route exact={true} path="/" component={GenerateWallet} />
+        <Route exact={true} path="/" component={SendTransaction} />
+        <Route path="/account" component={SendTransaction}>
+          <Route path="send" component={SendTransaction} />
+          <Route path="info" component={SendTransaction} />
+        </Route>
         <Route path="/generate" component={GenerateWallet}>
           <Route path="keystore" component={GenerateWallet} />
           <Route path="mnemonic" component={GenerateWallet} />
         </Route>
         <Route path="/help" component={Help} />
         <Route path="/swap" component={Swap} />
-        <Route path="/account" component={SendTransaction}>
-          <Route path="send" component={SendTransaction} />
-          <Route path="info" component={SendTransaction} />
-        </Route>
         <Route path="/send-transaction" component={SendTransaction} />
         <Route path="/contracts" component={Contracts} />
         <Route path="/ens" component={ENS} />

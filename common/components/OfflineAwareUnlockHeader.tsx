@@ -7,9 +7,17 @@ import { AppState } from 'reducers';
 
 interface Props {
   disabledWallets?: string[];
+  showGenerateLink?: boolean;
 }
-export const OfflineAwareUnlockHeader: React.SFC<Props> = ({ disabledWallets }) => (
-  <UnlockHeader title={<Title />} disabledWallets={disabledWallets} />
+export const OfflineAwareUnlockHeader: React.SFC<Props> = ({
+  disabledWallets,
+  showGenerateLink
+}) => (
+  <UnlockHeader
+    title={<Title />}
+    disabledWallets={disabledWallets}
+    showGenerateLink={showGenerateLink}
+  />
 );
 
 interface StateProps {
