@@ -19,6 +19,7 @@ import RootReducer from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
+import { dedupeCustomTokens } from 'utils/tokens';
 import sagas from './sagas';
 import { gasPricetoBase } from 'libs/units';
 import { NetworkConfig } from 'config/data';
@@ -82,9 +83,12 @@ const configureStore = () => {
     }
   }
 
-  const localCustomTokens = loadAndDedupeCustomTokens(
-    (savedConfigState && savedConfigState.network) || configInitialState.network
-  );
+  // Dedupe custom tokens initially
+  const savedCustomTokensState =
+    loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || [];
+  const initialNetwork =
+    (savedConfigState && savedConfigState.network) || configInitialState.network;
+  const customTokens = dedupeCustomTokens(initialNetwork.tokens, savedCustomTokensState);
 
   const persistedInitialState = {
     config: {
@@ -104,7 +108,7 @@ const configureStore = () => {
             : transactionInitialState.fields.gasPrice
       }
     },
-    customTokens: localCustomTokens || customTokensInitialState,
+    customTokens,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState
   };
@@ -159,24 +163,5 @@ const configureStore = () => {
 
   return store;
 };
-
-function loadAndDedupeCustomTokens(network: NetworkConfig): CustomTokenState {
-  let localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || [];
-
-  // If any tokens have the same symbol or contract address, remove them
-  if (localCustomTokens.length) {
-    const tokenCollisionMap = network.tokens.reduce((prev, token) => {
-      prev[token.symbol] = true;
-      prev[token.address] = true;
-      return prev;
-    }, {});
-
-    localCustomTokens = localCustomTokens.filter(token => {
-      return !tokenCollisionMap[token.address] && !tokenCollisionMap[token.symbol];
-    });
-  }
-
-  return localCustomTokens;
-}
 
 export const configuredStore = configureStore();
