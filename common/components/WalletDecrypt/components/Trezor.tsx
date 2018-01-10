@@ -97,8 +97,7 @@ export class TrezorDecrypt extends Component<Props, State> {
       error: null
     });
 
-    // TODO: type vendor file
-    (TrezorConnect as any).getXPubKey(
+    TrezorConnect.getXPubKey(
       dPath,
       res => {
         if (res.success) {

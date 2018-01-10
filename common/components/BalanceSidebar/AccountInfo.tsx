@@ -52,17 +52,19 @@ export default class AccountInfo extends React.Component<Props, State> {
   public displayHWAddress = () => {
     const { hwType, wallet } = this.props;
     const { dPath, index } = wallet as any;
-    const fullPath = dPath + '/' + index;
     if (hwType === 'ledger') {
       ledger.comm_u2f.create_async().then(comm => {
-        new ledger.eth(comm).getAddress_async(fullPath, true, false);
+        new ledger.eth(comm).getAddress_async(dPath + '/' + index, true, false);
       });
     } else if (hwType === 'trezor') {
-      // TODO: update vendor types
-      (TrezorConnect as any).ethereumGetAddress(
-        fullPath,
+      TrezorConnect.ethereumGetAddress(
+        dPath,
         (result, error) => {
-          console.log(result, error);
+          if (result) {
+            console.log(result);
+          } else {
+            throw new Error(error);
+          }
         },
         undefined
       );

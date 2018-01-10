@@ -16,7 +16,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
       const cleanedTx = mapValues(mapValues(strTx, stripHexPrefixAndLower), padLeftEven);
 
-      (TrezorConnect as any).ethereumSignTx(
+      TrezorConnect.ethereumSignTx(
         // Args
         this.getPath(),
         cleanedTx.nonce,
@@ -54,7 +54,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   /*
   public signMessage = (message: string): Promise<string> => {
     return new Promise((resolve, reject) => {
-      (TrezorConnect as any).ethereumSignMessage(
+      TrezorConnect.ethereumSignMessage(
         this.getPath(),
         message,
         response => {
