@@ -7,6 +7,7 @@ import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
+import { getNetworkConfig } from 'selectors/config';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -17,6 +18,7 @@ interface StateProps {
   tokens: TokenBalance[];
   allTokens: MergedToken[];
   showAllTokens?: boolean;
+  network: AppState['config']['network'];
 }
 
 const StringDropdown = Dropdown as new () => Dropdown<string>;
@@ -24,7 +26,7 @@ const ConditionalStringDropDown = withConditional(StringDropdown);
 
 class UnitDropdownClass extends Component<DispatchProps & StateProps> {
   public render() {
-    const { tokens, allTokens, showAllTokens, unit } = this.props;
+    const { tokens, allTokens, showAllTokens, unit, network } = this.props;
     const focusedTokens = showAllTokens ? allTokens : tokens;
     return (
       <div className="input-group-btn">
@@ -32,8 +34,8 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
           params={['readOnly']}
           withQuery={({ readOnly }) => (
             <ConditionalStringDropDown
-              options={['ether', ...getTokenSymbols(focusedTokens)]}
-              value={unit}
+              options={[network.unit, ...getTokenSymbols(focusedTokens)]}
+              value={unit === 'ether' ? network.unit : unit}
               condition={!readOnly}
               conditionalProps={{
                 onChange: this.handleOnChange
@@ -55,7 +57,8 @@ function mapStateToProps(state: AppState) {
   return {
     tokens: getShownTokenBalances(state, true),
     allTokens: getTokens(state),
-    unit: getUnit(state)
+    unit: getUnit(state),
+    network: getNetworkConfig(state)
   };
 }
 
