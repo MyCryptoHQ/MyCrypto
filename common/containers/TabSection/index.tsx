@@ -42,7 +42,7 @@ interface ActionProps {
 
 type Props = {
   isUnavailableOffline?: boolean;
-  children: string | React.ReactElement<string>;
+  children: string | React.ReactElement<string> | React.ReactElement<string>[];
 } & ReduxProps &
   ActionProps;
 
