@@ -314,7 +314,9 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export const DeterministicWalletsModal = connect(mapStateToProps, {
+const DeterministicWalletsModal = connect(mapStateToProps, {
   getDeterministicWallets,
   setDesiredToken
 })(DeterministicWalletsModalClass);
+
+export default DeterministicWalletsModal;

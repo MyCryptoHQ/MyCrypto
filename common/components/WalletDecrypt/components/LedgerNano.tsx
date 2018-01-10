@@ -92,7 +92,7 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
           Guides:
           <div>
             <a
-              href="http://support.ledgerwallet.com/knowledge_base/topics/how-to-use-myetherwallet-with-ledger"
+              href="https://support.ledgerwallet.com/knowledge_base/topics/how-to-use-myetherwallet-with-ledger"
               target="_blank"
               rel="noopener noreferrer"
             >
