@@ -66,7 +66,7 @@ var NoExternalHttpLinkRuleWalker = /** @class */ (function (_super) {
         if (openingElement.tagName.getText() === 'a') {
             var allAttributes = JsxAttribute_1.getJsxAttributesFromJsxElement(openingElement);
             var href = allAttributes.href;
-            if (href !== null && !isSafeHrefAttributeValue(href)) {
+            if (href !== null && !isSafeHrefAttributeValue(href) && JsxAttribute_1.getStringLiteral(href) !== 'undefined') {
                 this.addFailureAt(openingElement.getStart(), openingElement.getWidth(), FAILURE_STRING);
             }
         }

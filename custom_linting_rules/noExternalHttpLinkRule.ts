@@ -59,7 +59,11 @@ class NoExternalHttpLinkRuleWalker extends ErrorTolerantWalker {
         openingElement
       );
       const href: ts.JsxAttribute = allAttributes.href;
-      if (href !== null && !isSafeHrefAttributeValue(href)) {
+      if (
+        href !== null &&
+        !isSafeHrefAttributeValue(href) &&
+        getStringLiteral(href) !== 'undefined'
+      ) {
         this.addFailureAt(openingElement.getStart(), openingElement.getWidth(), FAILURE_STRING);
       }
     }
