@@ -1,6 +1,6 @@
 import { IFullWallet, fromPrivateKey } from 'ethereumjs-wallet';
 import { toBuffer } from 'ethereumjs-util';
-const Worker = require('worker-loader!./workers/scrypt-worker.worker.ts');
+import Worker from 'worker-loader!./workers/scrypt-worker.worker.ts';
 
 export const fromV3 = (
   keystore: string,
