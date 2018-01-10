@@ -23,7 +23,9 @@
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
     "comment-format": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "react-anchor-blank-noopener": true,
+    "no-external-http-link": true
   },
-  "rulesDirectory": []
+  "rulesDirectory": ["node_modules/tslint-microsoft-contrib", "custom_linting_rules"]
 }
