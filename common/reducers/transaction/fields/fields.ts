@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import {
   FieldAction,
   TypeKeys as TK,
@@ -12,11 +13,11 @@ import { State } from './typings';
 import { gasPricetoBase } from 'libs/units';
 
 const INITIAL_STATE: State = {
-  to: { raw: '', value: null },
+  to: { raw: '', value: null, error: null },
   data: { raw: '', value: null },
   nonce: { raw: '', value: null },
   value: { raw: '', value: null },
-  gasLimit: { raw: '', value: null },
+  gasLimit: { raw: '21000', value: new BN(21000) },
   gasPrice: { raw: '21', value: gasPricetoBase(21) }
 };
 

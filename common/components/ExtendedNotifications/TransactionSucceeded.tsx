@@ -14,7 +14,12 @@ const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededPro
   return (
     <div>
       <p>{translateRaw('SUCCESS_3') + txHash}</p>
-      <a className="btn btn-xs btn-info string" href={txHashLink} target="_blank" rel="noopener">
+      <a
+        className="btn btn-xs btn-info string"
+        href={txHashLink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Verify Transaction
       </a>
     </div>

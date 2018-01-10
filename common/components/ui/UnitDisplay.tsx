@@ -25,7 +25,8 @@ interface Props {
    * @memberof Props
    */
   displayShortBalance?: boolean | number;
-  checkOffline: boolean;
+  displayTrailingZeroes?: boolean;
+  checkOffline?: boolean;
 }
 
 interface EthProps extends Props {
@@ -39,7 +40,7 @@ const isEthereumUnit = (param: EthProps | TokenProps): param is EthProps =>
   !!(param as EthProps).unit;
 
 const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
-  const { value, symbol, displayShortBalance, checkOffline } = params;
+  const { value, symbol, displayShortBalance, displayTrailingZeroes, checkOffline } = params;
   let element;
 
   if (!value) {
@@ -58,6 +59,9 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
       if (parseFloat(formattedValue) === 0 && parseFloat(convertedValue) !== 0) {
         const padding = digits !== 0 ? `.${'0'.repeat(digits - 1)}1` : '';
         formattedValue = `< 0${padding}`;
+      } else if (displayTrailingZeroes) {
+        const [whole, deci] = formattedValue.split('.');
+        formattedValue = `${whole}.${(deci || '').padEnd(digits, '0')}`;
       }
     } else {
       formattedValue = convertedValue;

@@ -1,0 +1,36 @@
+@import 'common/sass/variables';
+
+.SimpleGas {
+  margin-top: 0;
+  margin-bottom: 0;
+
+  &-label {
+    display: block;
+  }
+
+  &-slider {
+    padding-top: 8px;
+    margin-bottom: $space-xs;
+
+    &-labels {
+      margin-top: 4px;
+      display: flex;
+
+      > span {
+        flex: 1;
+        padding: 0 $space-xs;
+        text-align: center;
+        color: $gray-light;
+        font-size: $font-size-xs;
+
+        &:first-child {
+          text-align: left;
+        }
+
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+  }
+}

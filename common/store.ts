@@ -18,6 +18,7 @@ import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
+import { getNetworkConfigFromId } from 'utils/network';
 import sagas from './sagas';
 import { gasPricetoBase } from 'libs/units';
 
@@ -72,6 +73,10 @@ const configureStore = () => {
     // If we couldn't find it, revert to defaults
     if (savedNode) {
       savedConfigState.node = savedNode;
+      const network = getNetworkConfigFromId(savedNode.network, savedConfigState.customNetworks);
+      if (network) {
+        savedConfigState.network = network;
+      }
     } else {
       savedConfigState.nodeSelection = configInitialState.nodeSelection;
     }

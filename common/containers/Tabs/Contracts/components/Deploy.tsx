@@ -1,7 +1,7 @@
 import translate from 'translations';
 import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
-import { GasFieldFactory } from 'components/GasFieldFactory';
+import { GasLimitFieldFactory } from 'components/GasLimitFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import { SigningStatus } from 'components/SigningStatus';
 import { NonceField } from 'components/NonceField';
@@ -48,7 +48,7 @@ class DeployClass extends Component<DispatchProps> {
 
         <label className="Deploy-field form-group">
           <h4 className="Deploy-field-label">Gas Limit</h4>
-          <GasFieldFactory
+          <GasLimitFieldFactory
             withProps={({ gasLimit: { raw, value }, onChange, readOnly }) => (
               <input
                 name="gasLimit"

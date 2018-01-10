@@ -1,0 +1,25 @@
+@import 'common/sass/variables';
+
+$rail-height: 4px;
+$handle-size: 22px;
+$speed: 70ms;
+
+.rc-slider {
+  &-rail {
+    background: $gray-lighter;
+  }
+
+  &-track {
+    background: $brand-primary;
+  }
+
+  &-handle {
+    top: 50%;
+    width: $handle-size;
+    height: $handle-size;
+    background: $brand-primary;
+    margin: 0;
+    border: none;
+    transform: translate(-50%, -50%);
+  }
+}
