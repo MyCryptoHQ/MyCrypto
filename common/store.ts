@@ -85,7 +85,7 @@ const configureStore = () => {
 
   // Dedupe custom tokens initially
   const savedCustomTokensState =
-    loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || [];
+    loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || customTokensInitialState;
   const initialNetwork =
     (savedConfigState && savedConfigState.network) || configInitialState.network;
   const customTokens = dedupeCustomTokens(initialNetwork.tokens, savedCustomTokensState);
