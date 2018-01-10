@@ -16,6 +16,7 @@ import { TSetGasPriceField, setGasPriceField as dSetGasPriceField } from 'action
 import { AlphaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
+import OfflineTab from './OfflineTab';
 import { getGasPrice } from 'selectors/transaction';
 
 interface ReduxProps {
@@ -40,14 +41,15 @@ interface ActionProps {
 }
 
 type Props = {
-  // FIXME
-  children: any;
+  isUnavailableOffline?: boolean;
+  children: string | React.ReactElement<string>;
 } & ReduxProps &
   ActionProps;
 
 class TabSection extends Component<Props, {}> {
   public render() {
     const {
+      isUnavailableOffline,
       children,
       // APP
       node,
@@ -88,7 +90,9 @@ class TabSection extends Component<Props, {}> {
       <div className="page-layout">
         <main>
           <Header {...headerProps} />
-          <div className="Tab container">{children}</div>
+          <div className="Tab container">
+            {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+          </div>
           <Footer latestBlock={latestBlock} />
         </main>
         <Notifications />

@@ -18,6 +18,7 @@ interface Props {
   rates: State['rates'];
   ratesError?: State['ratesError'];
   fetchCCRates: TFetchCCRates;
+  isOffline: boolean;
 }
 
 interface CmpState {
@@ -36,21 +37,25 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     super(props);
     this.makeBalanceLookup(props);
 
-    if (props.balance && props.tokenBalances) {
+    if (props.balance && props.tokenBalances && !props.isOffline) {
       this.fetchRates(props);
     }
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    const { balance, tokenBalances } = this.props;
-    if (nextProps.balance !== balance || nextProps.tokenBalances !== tokenBalances) {
+    const { balance, tokenBalances, isOffline } = this.props;
+    if (
+      nextProps.balance !== balance ||
+      nextProps.tokenBalances !== tokenBalances ||
+      (isOffline && !nextProps.isOffline)
+    ) {
       this.makeBalanceLookup(nextProps);
       this.fetchRates(nextProps);
     }
   }
 
   public render() {
-    const { balance, tokenBalances, rates, ratesError } = this.props;
+    const { balance, tokenBalances, rates, ratesError, isOffline } = this.props;
     const { currency } = this.state;
 
     // There are a bunch of reasons why the incorrect balances might be rendered
@@ -59,7 +64,9 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
 
     let valuesEl;
-    if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
+    if (isOffline) {
+      valuesEl = <div className="well well-sm">Equivalent values are unavailable offline</div>;
+    } else if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
       const values = this.getEquivalentValues(currency);
       valuesEl = rateSymbols.map(key => {
         if (!values[key] || key === currency) {
