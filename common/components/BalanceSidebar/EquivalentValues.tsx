@@ -64,9 +64,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
 
     let valuesEl;
-    if (isOffline) {
-      valuesEl = <div className="well well-sm">Equivalent values are unavailable offline</div>;
-    } else if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
+    if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
       const values = this.getEquivalentValues(currency);
       valuesEl = rateSymbols.map(key => {
         if (!values[key] || key === currency) {
@@ -125,7 +123,13 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           </select>
         </h5>
 
-        <ul className="EquivalentValues-values">{valuesEl}</ul>
+        {isOffline ? (
+          <div className="EquivalentValues-offline well well-sm">
+            Equivalent values are unavailable offline
+          </div>
+        ) : (
+          <ul className="EquivalentValues-values">{valuesEl}</ul>
+        )}
       </div>
     );
   }

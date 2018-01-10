@@ -55,7 +55,11 @@ class TokenBalances extends React.Component<Props> {
 
     let content;
     if (isOffline) {
-      content = <div className="well well-sm">Token balances are unavailable offline</div>;
+      content = (
+        <div className="TokenBalances-offline well well-sm">
+          Token balances are unavailable offline
+        </div>
+      );
     } else if (tokensError) {
       content = <h5>{tokensError}</h5>;
     } else if (isTokensLoading) {
