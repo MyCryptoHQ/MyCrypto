@@ -1,0 +1,51 @@
+@import 'common/sass/variables';
+
+.WalletWarning {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: left;
+
+  &-title {
+    color: $brand-danger;
+    margin-top: 0;
+  }
+
+  &-desc {
+    margin-bottom: $space;
+  }
+
+  &-check {
+    margin-bottom: $space * 2;
+  }
+
+  &-checkboxes {
+    margin-bottom: $space * 2;
+  }
+
+  &-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: -$space-sm;
+
+    .btn {
+      flex: 1;
+      min-width: 280px;
+      margin: 0 $space-sm $space-sm;
+    }
+  }
+}
+
+.AcknowledgeCheckbox {
+  margin-bottom: $space-sm;
+
+  &-checkbox[type="checkbox"] {
+    display: inline-block;
+    margin-right: $space-sm;
+    margin-top: 0;
+  }
+
+  &-label {
+    font-size: $font-size-bump-more;
+    font-weight: normal;
+  }
+}
