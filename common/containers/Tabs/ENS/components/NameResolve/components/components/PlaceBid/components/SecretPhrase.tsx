@@ -1,27 +1,33 @@
 import * as React from 'react';
 import { generateMnemonic } from 'bip39';
+import { connect } from 'react-redux';
+import { setSecretField, TSetSecretField } from 'actions/ens';
 
 interface Props {
   hasUnitDropdown?: boolean;
-  value: string;
-  onChange(ev: React.FormEvent<HTMLInputElement>);
+  setSecretField: TSetSecretField;
 }
 
-export class SecretPhrase extends React.Component<Props> {
+export class SecretPhraseClass extends React.Component<Props> {
+  public state = {
+    phrase: ''
+  };
   public componentDidMount() {
     const placeholderPhraseList = generateMnemonic().split(' ');
     const placeholderPhrase = placeholderPhraseList
       .splice(placeholderPhraseList.length - 3)
       .join(' ');
-
-    const fakeEvent = {
-      currentTarget: {
-        value: placeholderPhrase
-      }
-    };
-
-    this.props.onChange(fakeEvent as React.FormEvent<HTMLInputElement>);
+    this.setState({
+      phrase: placeholderPhrase
+    });
+    this.props.setSecretField(placeholderPhrase);
   }
+  public onChange = e => {
+    this.setState({
+      phrase: e.target.value
+    });
+    this.props.setSecretField(e.target.value);
+  };
   public render() {
     return (
       <section className="form-group">
@@ -33,11 +39,15 @@ export class SecretPhrase extends React.Component<Props> {
           <input
             type="text"
             className="form-control"
-            value={this.props.value}
-            onChange={this.props.onChange}
+            value={this.state.phrase}
+            onChange={this.onChange}
           />
         </section>
       </section>
     );
   }
 }
+
+export const SecretPhrase = connect(null, {
+  setSecretField
+})(SecretPhraseClass);

@@ -1,12 +1,17 @@
 import * as React from 'react';
+import { setBidMaskField, TSetBidMaskField } from 'actions/ens';
+import { connect } from 'react-redux';
 
 interface Props {
+  setBidMaskField: TSetBidMaskField;
   hasUnitDropdown?: boolean;
-  value: string;
-  onChange(ev: React.FormEvent<HTMLInputElement>);
 }
 
-export class BidMask extends React.Component<Props> {
+class BidMaskClass extends React.Component<Props> {
+  public onChange = e => {
+    this.props.setBidMaskField(e.target.value);
+  };
+
   public render() {
     return (
       <section className="form-group">
@@ -22,8 +27,7 @@ export class BidMask extends React.Component<Props> {
           <input
             type="number"
             className="form-control"
-            value={this.props.value}
-            onChange={this.props.onChange}
+            onChange={this.onChange}
             placeholder="1.0"
           />
         </section>
@@ -31,3 +35,7 @@ export class BidMask extends React.Component<Props> {
     );
   }
 }
+
+export const BidMask = connect(null, {
+  setBidMaskField
+})(BidMaskClass);

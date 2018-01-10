@@ -3,19 +3,18 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { placeBidRequested, TPlaceBidRequested } from 'actions/ens';
 import { GenerateTransactionFactory, CallbackProps } from 'components/GenerateTransactionFactory';
-import { getBidDataEncoded } from 'selectors/ens';
+import { getBidDataEncoded, getSecret, getBidMask, getBid } from 'selectors/ens';
 
 interface OwnProps {
-  bidMask: string;
-  secret: string;
-  bidValue: string;
-  isWeb3Wallet: boolean;
-  disabled: boolean;
+  disabled?: boolean;
   generateTransaction(): void;
 }
 
 interface StateProps {
   bidDataEncoded: boolean;
+  bidValue: string;
+  bidMask: string;
+  secret: string;
 }
 
 interface DispatchProps {
@@ -67,9 +66,17 @@ class GenerateBidClass extends Component<Props, State> {
   }
 }
 
-const GenerateBidX = connect((state: AppState) => ({ bidDataEncoded: getBidDataEncoded(state) }), {
-  placeBidRequested
-})(GenerateBidClass);
+const GenerateBidX = connect(
+  (state: AppState) => ({
+    bidDataEncoded: getBidDataEncoded(state),
+    bidValue: getBid(state),
+    bidMask: getBidMask(state),
+    secret: getSecret(state)
+  }),
+  {
+    placeBidRequested
+  }
+)(GenerateBidClass);
 
 export const GenerateBid: React.SFC<OwnProps> = props => (
   <GenerateTransactionFactory
