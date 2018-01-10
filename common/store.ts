@@ -22,7 +22,6 @@ import { getNetworkConfigFromId } from 'utils/network';
 import { dedupeCustomTokens } from 'utils/tokens';
 import sagas from './sagas';
 import { gasPricetoBase } from 'libs/units';
-import { NetworkConfig } from 'config/data';
 
 const configureStore = () => {
   const logger = createLogger({
