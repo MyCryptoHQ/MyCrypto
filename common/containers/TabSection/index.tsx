@@ -23,6 +23,7 @@ interface ReduxProps {
   node: AppState['config']['node'];
   nodeSelection: AppState['config']['nodeSelection'];
   isChangingNode: AppState['config']['isChangingNode'];
+  isOffline: AppState['config']['offline'];
   customNodes: AppState['config']['customNodes'];
   customNetworks: AppState['config']['customNetworks'];
   latestBlock: AppState['config']['latestBlock'];
@@ -52,6 +53,7 @@ class TabSection extends Component<Props, {}> {
       node,
       nodeSelection,
       isChangingNode,
+      isOffline,
       languageSelection,
       customNodes,
       customNetworks,
@@ -70,6 +72,7 @@ class TabSection extends Component<Props, {}> {
       node,
       nodeSelection,
       isChangingNode,
+      isOffline,
       gasPrice,
       customNodes,
       customNetworks,
@@ -100,6 +103,7 @@ function mapStateToProps(state: AppState): ReduxProps {
     node: state.config.node,
     nodeSelection: state.config.nodeSelection,
     isChangingNode: state.config.isChangingNode,
+    isOffline: state.config.offline,
     languageSelection: state.config.languageSelection,
     gasPrice: getGasPrice(state),
     customNodes: state.config.customNodes,
