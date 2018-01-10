@@ -4,6 +4,7 @@ import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { getTransactionFields } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
+import { translateRaw } from 'translations';
 
 export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   private ethApp: any;
@@ -62,5 +63,19 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
         }
       });
     });
+  }
+
+  public displayAddress = (dPath?: string, index?: number): void => {
+    if (!dPath) {
+      dPath = this.dPath;
+    }
+    if (!index) {
+      index = this.index;
+    }
+    this.ethApp.getAddress_async(dPath + '/' + index, true, false);
+  };
+
+  public getWalletType(): string {
+    return translateRaw('x_Ledger');
   }
 }

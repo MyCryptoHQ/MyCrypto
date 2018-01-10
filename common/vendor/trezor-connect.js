@@ -661,11 +661,12 @@ class TrezorConnect {
   /**
    * Display ethereum address on device
    *
-   * @param {array} address
-   * @param {?(string|array<number>)} requiredFirmware
+   * @param {string|array} address
+   * @param {string|array<number>} requiredFirmware
+   * @param {function()} callback
    *
    */
-  ethereumGetAddress(address, callback, requiredFirmware) {
+  ethereumGetAddress(address, requiredFirmware = undefined, callback = () => {}) {
     if (typeof address === 'string') {
       address = parseHDPath(address);
     }

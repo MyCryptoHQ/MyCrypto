@@ -1,18 +1,15 @@
 import { Identicon, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'config/data';
-import { IWallet, Balance } from 'libs/wallet';
+import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
-import ledger from 'ledgerco';
-import TrezorConnect from 'vendor/trezor-connect';
 
 interface Props {
   balance: Balance;
   wallet: IWallet;
   network: NetworkConfig;
-  hwType: string;
 }
 
 interface State {
@@ -49,33 +46,11 @@ export default class AccountInfo extends React.Component<Props, State> {
     });
   };
 
-  public displayHWAddress = () => {
-    const { hwType, wallet } = this.props;
-    const { dPath, index } = wallet as any;
-    if (hwType === 'ledger') {
-      ledger.comm_u2f.create_async().then(comm => {
-        new ledger.eth(comm).getAddress_async(dPath + '/' + index, true, false);
-      });
-    } else if (hwType === 'trezor') {
-      TrezorConnect.ethereumGetAddress(
-        dPath,
-        (result, error) => {
-          if (result) {
-            console.log(result);
-          } else {
-            throw new Error(error);
-          }
-        },
-        undefined
-      );
-    }
-  };
-
   public render() {
-    const { network, balance, hwType } = this.props;
-    const { blockExplorer, tokenExplorer } = network;
+    const { network, balance } = this.props;
     const { address, showLongBalance } = this.state;
-
+    const { blockExplorer, tokenExplorer } = network;
+    const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div className="AccountInfo">
         <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
@@ -88,10 +63,10 @@ export default class AccountInfo extends React.Component<Props, State> {
           </div>
         </div>
 
-        {hwType && (
+        {typeof wallet.displayAddress === 'function' && (
           <div className="AccountInfo-section">
-            <a className="AccountInfo-address-hw-addr" onClick={this.displayHWAddress}>
-              Display address on {hwType}
+            <a className="AccountInfo-address-hw-addr" onClick={() => wallet.displayAddress()}>
+              Display address on {wallet.getWalletType()}
             </a>
           </div>
         )}
