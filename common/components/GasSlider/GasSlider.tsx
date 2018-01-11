@@ -41,7 +41,15 @@ class GasSlider extends React.Component<Props, State> {
   };
 
   public componentDidMount() {
-    this.props.fetchCCRates([this.props.network.unit]);
+    if (!this.props.offline) {
+      this.props.fetchCCRates([this.props.network.unit]);
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.offline && !nextProps.offline) {
+      this.props.fetchCCRates([this.props.network.unit]);
+    }
   }
 
   public render() {

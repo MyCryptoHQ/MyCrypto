@@ -37,7 +37,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     super(props);
     this.makeBalanceLookup(props);
 
-    if (props.balance && props.tokenBalances && !props.isOffline) {
+    if (props.balance && props.tokenBalances) {
       this.fetchRates(props);
     }
   }
@@ -47,7 +47,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     if (
       nextProps.balance !== balance ||
       nextProps.tokenBalances !== tokenBalances ||
-      (isOffline && !nextProps.isOffline)
+      nextProps.isOffline !== isOffline
     ) {
       this.makeBalanceLookup(nextProps);
       this.fetchRates(nextProps);
@@ -153,8 +153,8 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   }
 
   private fetchRates(props: Props) {
-    // Duck out if we haven't gotten balances yet
-    if (!props.balance || !props.tokenBalances) {
+    // Duck out if we haven't gotten balances yet, or we're not going to
+    if (!props.balance || !props.tokenBalances || props.isOffline) {
       return;
     }
 
