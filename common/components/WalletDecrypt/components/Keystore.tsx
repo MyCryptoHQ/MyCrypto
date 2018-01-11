@@ -30,7 +30,7 @@ class KeystoreDecryptClass extends React.Component<Props> {
   public render() {
     const { file, password, valid } = this.props.value;
     const passReq = isKeystorePassRequired(file);
-    const unlockDisabled = !file || !valid || (passReq && !password);
+    const disabled = !file || !valid || (passReq && !password);
 
     return (
       <form id="selectedUploadKey" onSubmit={this.unlock}>
@@ -59,7 +59,7 @@ class KeystoreDecryptClass extends React.Component<Props> {
           </div>
         </div>
 
-        <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
+        <button className="btn btn-primary btn-block" disabled={disabled}>
           {translate('ADD_Label_6_short')}
         </button>
       </form>

@@ -32,7 +32,7 @@ export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
     unlock: () => Promise.resolve()
   });
 
-function determineKeystoreType(file: string): string {
+export const determineKeystoreType = (file: string): string => {
   try {
     const parsed = JSON.parse(file);
     if (parsed.encseed) {
@@ -51,16 +51,16 @@ function determineKeystoreType(file: string): string {
   } catch {
     return '';
   }
-}
+};
 
-const isKeystoreValid = (file: string): boolean => {
-  if (determineKeystoreType(file) === '') {
+export const isKeystoreValid = (file: string): boolean => {
+  if (determineKeystoreType(file)) {
     throw new Error('Invalid keystore');
   }
   return !!determineKeystoreType(file);
 };
 
-const isKeystorePassRequired = (file: string): boolean => {
+export const isKeystorePassRequired = (file: string): boolean => {
   const keystoreType = determineKeystoreType(file);
   return (
     keystoreType === KeystoreTypes.presale ||
@@ -69,12 +69,12 @@ const isKeystorePassRequired = (file: string): boolean => {
   );
 };
 
-const getPrivKeyWallet = (key: string, password: string) =>
+export const getPrivKeyWallet = (key: string, password: string) =>
   key.length === 64
     ? PrivKeyWallet(Buffer.from(key, 'hex'))
     : EncryptedPrivateKeyWallet(key, password);
 
-const getKeystoreWallet = (file: string, password: string) => {
+export const getKeystoreWallet = (file: string, password: string) => {
   const parsed = JSON.parse(file);
 
   switch (determineKeystoreType(file)) {
@@ -97,5 +97,3 @@ const getKeystoreWallet = (file: string, password: string) => {
       throw Error('Unknown wallet');
   }
 };
-
-export { isKeystorePassRequired, getPrivKeyWallet, getKeystoreWallet, isKeystoreValid };
