@@ -1,7 +1,6 @@
-const Electron = require('electron');
-const { app, BrowserWindow } = Electron;
+const { app, shell, BrowserWindow, Menu } = require('electron');
+const MENU = require('./menu');
 const isDevelopment = process.env.NODE_ENV !== 'production';
-const TITLE = 'MyEtherWallet';
 
 // Global reference to mainWindow
 // Necessary to prevent window from being garbage collected
@@ -10,13 +9,14 @@ let mainWindow;
 function createMainWindow() {
   // Construct new BrowserWindow
   const window = new BrowserWindow({
-    titleText: TITLE,
+    titleText: 'MyEtherWallet',
     backgroundColor: '#fbfbfb',
     width: 1220,
     height: 800,
     minWidth: 320,
     minHeight: 400,
     webPreferences: {
+      devTools: true,
       nodeIntegration: false
     }
   });
@@ -44,6 +44,8 @@ function createMainWindow() {
       }, 200);
     });
   }
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(MENU));
 
   return window;
 }

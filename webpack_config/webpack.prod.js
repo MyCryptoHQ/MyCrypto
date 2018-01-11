@@ -61,16 +61,16 @@ base.plugins.push(
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('production')
   }),
-  new BabelMinifyPlugin({
-    // Mangle seems to be reusing variable identifiers, causing errors
-    mangle: false,
-    // These two on top of a lodash file are causing illegal characters for
-    // safari and ios browsers
-    evaluate: false,
-    propertyLiterals: false,
-  }, {
-    comments: false
-  }),
+  // new BabelMinifyPlugin({
+  //   // Mangle seems to be reusing variable identifiers, causing errors
+  //   mangle: false,
+  //   // These two on top of a lodash file are causing illegal characters for
+  //   // safari and ios browsers
+  //   evaluate: false,
+  //   propertyLiterals: false,
+  // }, {
+  //   comments: false
+  // }),
   // extract vendor chunks
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
