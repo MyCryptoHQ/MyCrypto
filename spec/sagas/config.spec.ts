@@ -42,10 +42,12 @@ describe('pollOfflineStatus*', () => {
   };
   const isOffline = true;
   const raceSuccess = {
-    pingSucceeded: true
+    pingSucceeded: true,
+    timeout: false
   };
   const raceFailure = {
-    pingSucceeded: false
+    pingSucceeded: false,
+    timeout: true
   };
 
   let originalHidden;
@@ -86,37 +88,31 @@ describe('pollOfflineStatus*', () => {
   });
 
   it('should call delay if document is hidden', () => {
-    data.clone2 = data.gen.clone();
+    data.hiddenDoc = data.gen.clone();
     doc.hidden = true;
-
-    expect(data.clone2.next(!isOffline).value).toEqual(call(delay, 1000));
+    expect(data.hiddenDoc.next(!isOffline).value).toEqual(call(delay, 1000));
+    doc.hidden = false;
   });
 
   it('should race pingSucceeded and timeout', () => {
-    doc.hidden = false;
-    expect(data.gen.next(!isOffline).value).toMatchSnapshot();
+    data.isOfflineClone = data.gen.clone();
+    data.shouldDelayClone = data.gen.clone();
+    expect(data.gen.next(isOffline).value).toMatchSnapshot();
   });
 
-  it('should put showNotification and put toggleOfflineConfig if pingSucceeded && isOffline', () => {
+  it('should toggle offline and show notification if navigator disagrees with isOffline and ping succeeds', () => {
     expect(data.gen.next(raceSuccess).value).toEqual(
       put(showNotification('success', 'Your connection to the network has been restored!', 3000))
     );
     expect(data.gen.next().value).toEqual(put(toggleOfflineConfig()));
   });
 
-  it('should put showNotification and put toggleOfflineConfig if !pingSucceeded && !isOffline', () => {
-    nav.onLine = !isOffline;
-
-    data.isOfflineClone.next(!isOffline);
-
-    data.clone3 = data.isOfflineClone.clone();
-
+  it('should toggle offline and show notification if navigator agrees with isOffline and ping fails', () => {
+    nav.onLine = isOffline;
+    expect(data.isOfflineClone.next(!isOffline));
     expect(data.isOfflineClone.next(raceFailure).value).toMatchSnapshot();
     expect(data.isOfflineClone.next().value).toEqual(put(toggleOfflineConfig()));
-  });
-
-  it('should call delay when neither case is true', () => {
-    expect(data.clone3.next(raceSuccess).value).toEqual(call(delay, 5000));
+    nav.onLine = !isOffline;
   });
 });
 
