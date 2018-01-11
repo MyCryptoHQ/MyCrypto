@@ -59,10 +59,11 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     // while we have incomplete data that's being fetched.
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
-    const isEthereumMainnet = network.chainId === 1;
+    // Currency exists in rates or the all option is selected
+    const rateExistsOrAll = rates[currency] || currency === ALL_OPTION;
 
     let valuesEl;
-    if (!isFetching && (rates[currency] || currency === ALL_OPTION) && isEthereumMainnet) {
+    if (!isFetching && rateExistsOrAll && !network.isTestnet) {
       const values = this.getEquivalentValues(currency);
       valuesEl = rateSymbols.map(key => {
         if (!values[key] || key === currency) {
@@ -83,7 +84,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           </li>
         );
       });
-    } else if (isEthereumMainnet) {
+    } else if (network.isTestnet) {
       valuesEl = (
         <div className="text-center">
           <h5 style={{ color: 'red' }}>
