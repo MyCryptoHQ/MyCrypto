@@ -14,7 +14,7 @@ export interface State {
   inst?: IWallet | null;
   config?: WalletConfig | null;
   // in ETH
-  balance: Balance | { wei: null };
+  balance: Balance;
   tokens: {
     [key: string]: {
       balance: TokenValue;
