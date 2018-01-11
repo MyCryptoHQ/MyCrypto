@@ -1,0 +1,10 @@
+{
+  "commonSourceDirectory": "common",
+  "title": "MyEtherWallet",
+  "main": {
+    "sourceDirectory": "electron/main"
+  },
+  "renderer": {
+    "sourceDirectory": "electron/renderer"
+  }
+}
