@@ -10,7 +10,6 @@ import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import OfflineToggle from './OfflineToggle';
 
 interface Props {
   wallet: IWallet;
@@ -38,10 +37,6 @@ export class BalanceSidebar extends React.Component<Props, {}> {
 
     const blocks: Block[] = [
       {
-        name: 'Go Offline',
-        content: <OfflineToggle />
-      },
-      {
         name: 'Account Info',
         content: <AccountInfo wallet={wallet} balance={balance} network={network} />
       },
@@ -58,6 +53,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         name: 'Equivalent Values',
         content: (
           <EquivalentValues
+            network={network}
             balance={balance}
             tokenBalances={tokenBalances}
             rates={rates}

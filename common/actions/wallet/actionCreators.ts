@@ -43,9 +43,22 @@ export function setWallet(value: IWallet): types.SetWalletAction {
   };
 }
 
+export function setWalletPending(loadingStatus: boolean): types.SetWalletPendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_PENDING,
+    payload: loadingStatus
+  };
+}
+
 export function setBalancePending(): types.SetBalancePendingAction {
   return {
     type: TypeKeys.WALLET_SET_BALANCE_PENDING
+  };
+}
+
+export function setPasswordPrompt(): types.SetPasswordPendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_PASSWORD_PENDING
   };
 }
 
@@ -85,6 +98,34 @@ export function setTokenBalancesFulfilled(payload: {
 export function setTokenBalancesRejected(): types.SetTokenBalancesRejectedAction {
   return {
     type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED
+  };
+}
+
+export function setTokenBalancePending(
+  payload: types.SetTokenBalancePendingAction['payload']
+): types.SetTokenBalancePendingAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING,
+    payload
+  };
+}
+
+export type TSetTokenBalanceFulfilled = typeof setTokenBalanceFulfilled;
+export function setTokenBalanceFulfilled(payload: {
+  [key: string]: {
+    balance: TokenValue;
+    error: string | null;
+  };
+}): types.SetTokenBalanceFulfilledAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED,
+    payload
+  };
+}
+
+export function setTokenBalanceRejected(): types.SetTokenBalanceRejectedAction {
+  return {
+    type: TypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED
   };
 }
 

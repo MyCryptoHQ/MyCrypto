@@ -11,6 +11,9 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
+import PageNotFound from 'components/PageNotFound';
+import LogOutPrompt from 'components/LogOutPrompt';
+import { Aux } from 'components/ui';
 import { Store } from 'redux';
 import { AppState } from 'reducers';
 
@@ -41,7 +44,7 @@ export default class Root extends Component<Props, State> {
 
     // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
     const routes = (
-      <div>
+      <Switch>
         <Route exact={true} path="/" component={GenerateWallet} />
         <Route path="/generate" component={GenerateWallet}>
           <Route path="keystore" component={GenerateWallet} />
@@ -58,16 +61,21 @@ export default class Root extends Component<Props, State> {
         <Route path="/ens" component={ENS} />
         <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
         <Route path="/pushTx" component={BroadcastTx} />
-        <LegacyRoutes />
-      </div>
+        <Route component={PageNotFound} />
+      </Switch>
     );
+
+    const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+
     return (
       <Provider store={store} key={Math.random()}>
-        {process.env.BUILD_DOWNLOADABLE ? (
-          <HashRouter key={Math.random()}>{routes}</HashRouter>
-        ) : (
-          <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>
-        )}
+        <Router key={Math.random()}>
+          <Aux>
+            {routes}
+            <LegacyRoutes />
+            <LogOutPrompt />
+          </Aux>
+        </Router>
       </Provider>
     );
   }

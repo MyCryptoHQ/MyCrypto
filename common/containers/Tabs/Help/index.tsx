@@ -17,6 +17,7 @@ const Help = () => (
                     <a
                       href="https://www.reddit.com/r/ethereum/comments/47nkoi/psa_check_your_ethaddressorg_wallets_and_any/d0eo45o"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <span className="text-danger">{translate('HELP_Warning')}</span>
                     </a>
@@ -25,7 +26,7 @@ const Help = () => (
                 <li>
                   <h3>
                     This page is deprecated. Please check out our more up-to-date and searchable{' '}
-                    <a href={knowledgeBaseURL} target="_blank">
+                    <a href={knowledgeBaseURL} target="_blank" rel="noopener noreferrer">
                       Knowledge Base.{' '}
                     </a>
                   </h3>

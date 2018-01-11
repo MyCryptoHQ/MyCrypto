@@ -7,13 +7,18 @@ import {
   setTokenBalancesFulfilled,
   setTokenBalancesRejected,
   setWallet,
+  setWalletPending,
   setWalletConfig,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
   UnlockPrivateKeyAction,
   ScanWalletForTokensAction,
   SetWalletTokensAction,
-  TypeKeys
+  TypeKeys,
+  SetTokenBalancePendingAction,
+  setTokenBalanceFulfilled,
+  setTokenBalanceRejected,
+  setPasswordPrompt
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode, TypeKeys as ConfigTypeKeys } from 'actions/config';
@@ -24,13 +29,17 @@ import {
   MnemonicWallet,
   getPrivKeyWallet,
   getKeystoreWallet,
+  determineKeystoreType,
+  KeystoreTypes,
+  getUtcWallet,
+  signWrapper,
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
-import { NODES, initWeb3Node } from 'config/data';
-import { SagaIterator } from 'redux-saga';
-import { apply, call, fork, put, select, takeEvery, take } from 'redux-saga/effects';
-import { getNodeLib } from 'selectors/config';
+import { NODES, initWeb3Node, Token } from 'config/data';
+import { SagaIterator, delay, Task } from 'redux-saga';
+import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
+import { getNodeLib, getAllTokens } from 'selectors/config';
 import {
   getTokens,
   getWalletInst,
@@ -77,6 +86,30 @@ export function* updateTokenBalances(): SagaIterator {
   } catch (error) {
     console.error('Failed to get token balances', error);
     yield put(setTokenBalancesRejected());
+  }
+}
+
+export function* updateTokenBalance(action: SetTokenBalancePendingAction): SagaIterator {
+  try {
+    const wallet: null | IWallet = yield select(getWalletInst);
+    const { tokenSymbol } = action.payload;
+    const allTokens: Token[] = yield select(getAllTokens);
+    const token = allTokens.find(t => t.symbol === tokenSymbol);
+
+    if (!wallet) {
+      return;
+    }
+
+    if (!token) {
+      throw Error('Token not found');
+    }
+
+    const tokenBalances: TokenBalanceLookup = yield call(getTokenBalances, wallet, [token]);
+
+    yield put(setTokenBalanceFulfilled(tokenBalances));
+  } catch (error) {
+    console.error('Failed to get token balance', error);
+    yield put(setTokenBalanceRejected());
   }
 }
 
@@ -141,18 +174,44 @@ export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator 
   yield put(setWallet(wallet));
 }
 
+export function* startLoadingSpinner(): SagaIterator {
+  yield call(delay, 400);
+  yield put(setWalletPending(true));
+}
+
+export function* stopLoadingSpinner(loadingFork: Task | null): SagaIterator {
+  if (loadingFork !== null && loadingFork !== undefined) {
+    yield cancel(loadingFork);
+  }
+  yield put(setWalletPending(false));
+}
+
 export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   const { file, password } = action.payload;
   let wallet: null | IWallet = null;
-
+  let spinnerTask: null | Task = null;
   try {
-    wallet = getKeystoreWallet(file, password);
+    if (determineKeystoreType(file) === KeystoreTypes.utc) {
+      spinnerTask = yield fork(startLoadingSpinner);
+      wallet = signWrapper(yield call(getUtcWallet, file, password));
+    } else {
+      wallet = getKeystoreWallet(file, password);
+    }
   } catch (e) {
-    yield put(showNotification('danger', translate('ERROR_6')));
+    yield call(stopLoadingSpinner, spinnerTask);
+    if (
+      password === '' &&
+      e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
+    ) {
+      yield put(setPasswordPrompt());
+    } else {
+      yield put(showNotification('danger', translate('ERROR_6')));
+    }
     return;
   }
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
+  yield call(stopLoadingSpinner, spinnerTask);
   yield put(setWallet(wallet));
 }
 
@@ -229,6 +288,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SET, handleNewWallet),
     takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
-    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
+    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd),
+    takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance)
   ];
 }

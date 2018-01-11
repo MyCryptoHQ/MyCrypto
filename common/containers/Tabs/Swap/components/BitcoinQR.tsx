@@ -21,7 +21,7 @@ export default class BitcoinQR extends Component<Props, {}> {
             Orders that take too long will have to be processed manually &amp; and may delay the
             amount of time it takes to receive your coins.
             <br />
-            <a href="https://shapeshift.io/#/btcfee" target="_blank" rel="noopener">
+            <a href="https://shapeshift.io/#/btcfee" target="_blank" rel="noopener noreferrer">
               Please use the recommended TX fees seen here.
             </a>
           </p>

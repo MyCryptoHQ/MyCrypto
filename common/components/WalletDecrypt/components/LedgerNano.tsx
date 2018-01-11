@@ -1,7 +1,7 @@
 import './LedgerNano.scss';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import { DeterministicWalletsModal } from './DeterministicWalletsModal';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
 import Ledger3 from 'vendor/ledger3';
 import LedgerEth from 'vendor/ledger-eth';
@@ -43,6 +43,17 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
     const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
     const showErr = error ? 'is-showing' : '';
 
+    if (window.location.protocol !== 'https:') {
+      return (
+        <div className="LedgerDecrypt">
+          <div className="alert alert-danger">
+            Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
+            unlock your wallet at <a href="https://myetherwallet.com">MyEtherWallet.com</a>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="LedgerDecrypt">
         {showTip && (
@@ -70,7 +81,7 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
           className="LedgerDecrypt-buy btn btn-sm btn-default"
           href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           {translate('Don’t have a Ledger? Order one now!')}
         </a>
@@ -81,9 +92,9 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
           Guides:
           <div>
             <a
-              href="http://support.ledgerwallet.com/knowledge_base/topics/how-to-use-myetherwallet-with-ledger"
+              href="https://support.ledgerwallet.com/knowledge_base/topics/how-to-use-myetherwallet-with-ledger"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               How to use MyEtherWallet with your Nano S
             </a>
@@ -92,7 +103,7 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
             <a
               href="https://ledger.groovehq.com/knowledge_base/topics/how-to-secure-your-eth-tokens-augur-rep-dot-dot-dot-with-your-nano-s"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
             >
               How to secure your tokens with your Nano S
             </a>

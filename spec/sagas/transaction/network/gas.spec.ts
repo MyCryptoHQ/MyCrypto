@@ -107,7 +107,7 @@ describe('estimateGas*', () => {
   });
 
   it('should call delay', () => {
-    expect(gens.gen.next(action).value).toEqual(call(delay, 1000));
+    expect(gens.gen.next(action).value).toEqual(call(delay, 250));
   });
 
   it('should select getNodeLib', () => {

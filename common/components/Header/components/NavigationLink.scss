@@ -44,3 +44,17 @@
     }
   }
 }
+
+#NAV_Swap a:before {
+  content:"";
+  display: inline-block;
+  margin-top: -.1rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  background-image: url('~assets/images/swap.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+  margin-right: 4px;
+}

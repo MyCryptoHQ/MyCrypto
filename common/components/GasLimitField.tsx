@@ -1,12 +1,12 @@
 import React from 'react';
-import { GasFieldFactory } from './GasFieldFactory';
+import { GasLimitFieldFactory } from './GasLimitFieldFactory';
 import translate from 'translations';
 import { Aux } from 'components/ui';
 
-export const GasField: React.SFC<{}> = () => (
+export const GasLimitField: React.SFC<{}> = () => (
   <Aux>
     <label>{translate('TRANS_gas')} </label>
-    <GasFieldFactory
+    <GasLimitFieldFactory
       withProps={({ gasLimit: { raw, value }, onChange, readOnly }) => (
         <input
           className={`form-control ${!!value ? 'is-valid' : 'is-invalid'}`}

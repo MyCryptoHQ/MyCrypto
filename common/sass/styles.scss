@@ -21,6 +21,9 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/utilities";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
 
+// --- RC SLIDER ---
+@import "~rc-slider/assets/index.css";
+
 // --- CUSTOM ---
 @import "./styles/badbrowser";
 @import "./styles/noscript";

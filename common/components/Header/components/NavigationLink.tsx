@@ -35,7 +35,13 @@ class NavigationLink extends React.Component<Props, {}> {
 
     const linkEl =
       link.external || !link.to ? (
-        <a className={linkClasses} href={link.to} aria-label={linkLabel} target="_blank">
+        <a
+          className={linkClasses}
+          href={link.to}
+          aria-label={linkLabel}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {translate(link.name)}
         </a>
       ) : (
@@ -44,7 +50,11 @@ class NavigationLink extends React.Component<Props, {}> {
         </Link>
       );
 
-    return <li className="NavigationLink">{linkEl}</li>;
+    return (
+      <li id={link.name} className="NavigationLink">
+        {linkEl}
+      </li>
+    );
   }
 }
 

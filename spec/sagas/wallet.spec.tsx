@@ -25,14 +25,17 @@ import {
   unlockKeystore,
   unlockMnemonic,
   unlockWeb3,
-  getTokenBalances
+  getTokenBalances,
+  startLoadingSpinner,
+  stopLoadingSpinner
 } from 'sagas/wallet';
-import { PrivKeyWallet } from 'libs/wallet/non-deterministic';
+import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
 import Web3Node from 'libs/nodes/web3';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
+import { IFullWallet, fromV3 } from 'ethereumjs-wallet';
 
 // init module
 configuredStore.getState();
@@ -206,6 +209,24 @@ describe('unlockKeystore*', () => {
     password: 'testtesttest'
   });
   const gen = unlockKeystore(action);
+  const mockTask = createMockTask();
+  const spinnerFork = fork(startLoadingSpinner);
+
+  it('should fork startLoadingSpinner', () => {
+    expect(gen.next().value).toEqual(spinnerFork);
+  });
+
+  it('should call getUtcWallet', () => {
+    expect(gen.next(mockTask).value).toEqual(
+      call(getUtcWallet, action.payload.file, action.payload.password)
+    );
+  });
+
+  //keystore in this case decrypts quickly, so use fromV3 in ethjs-wallet to avoid testing with promises
+  it('should call stopLoadingSpinner', () => {
+    const mockWallet: IFullWallet = fromV3(action.payload.file, action.payload.password, true);
+    expect(gen.next(mockWallet).value).toEqual(call(stopLoadingSpinner, mockTask));
+  });
 
   it('should match put setWallet snapshot', () => {
     expect(gen.next().value).toMatchSnapshot();

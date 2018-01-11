@@ -32,6 +32,11 @@ export interface ResetWalletAction {
   type: TypeKeys.WALLET_RESET;
 }
 
+export interface SetWalletPendingAction {
+  type: TypeKeys.WALLET_SET_PENDING;
+  payload: boolean;
+}
+
 /*** Set Balance ***/
 export interface SetBalancePendingAction {
   type: TypeKeys.WALLET_SET_BALANCE_PENDING;
@@ -61,6 +66,25 @@ export interface SetTokenBalancesFulfilledAction {
 
 export interface SetTokenBalancesRejectedAction {
   type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED;
+}
+
+export interface SetTokenBalancePendingAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING;
+  payload: { tokenSymbol: string };
+}
+
+export interface SetTokenBalanceFulfilledAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED;
+  payload: {
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
+  };
+}
+
+export interface SetTokenBalanceRejectedAction {
+  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED;
 }
 
 export interface ScanWalletForTokensAction {
@@ -97,10 +121,15 @@ export interface SetWalletConfigAction {
   payload: WalletConfig;
 }
 
+export interface SetPasswordPendingAction {
+  type: TypeKeys.WALLET_SET_PASSWORD_PENDING;
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
+  | SetWalletPendingAction
   | ResetWalletAction
   | SetBalancePendingAction
   | SetBalanceFullfilledAction
@@ -108,6 +137,10 @@ export type WalletAction =
   | SetTokenBalancesPendingAction
   | SetTokenBalancesFulfilledAction
   | SetTokenBalancesRejectedAction
+  | SetTokenBalancePendingAction
+  | SetTokenBalanceFulfilledAction
+  | SetTokenBalanceRejectedAction
   | ScanWalletForTokensAction
   | SetWalletTokensAction
-  | SetWalletConfigAction;
+  | SetWalletConfigAction
+  | SetPasswordPendingAction;

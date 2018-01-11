@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { GasQuery } from 'components/renderCbs';
-import { GasInput } from './GasInputFactory';
+import { GasLimitInput } from './GasLimitInputFactory';
 import { inputGasLimit, TInputGasLimit } from 'actions/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -34,7 +34,7 @@ class GasLimitFieldClass extends Component<Props, {}> {
   }
 
   public render() {
-    return <GasInput onChange={this.setGas} withProps={this.props.withProps} />;
+    return <GasLimitInput onChange={this.setGas} withProps={this.props.withProps} />;
   }
 
   private setGas = (ev: React.FormEvent<HTMLInputElement>) => {
@@ -45,13 +45,13 @@ class GasLimitFieldClass extends Component<Props, {}> {
 
 const GasLimitField = connect(null, { inputGasLimit })(GasLimitFieldClass);
 
-interface DefaultGasFieldProps {
+interface DefaultGasLimitFieldProps {
   withProps(props: CallBackProps): React.ReactElement<any> | null;
 }
-const DefaultGasField: React.SFC<DefaultGasFieldProps> = ({ withProps }) => (
+const DefaultGasLimitField: React.SFC<DefaultGasLimitFieldProps> = ({ withProps }) => (
   <GasQuery
     withQuery={({ gasLimit }) => <GasLimitField gasLimit={gasLimit} withProps={withProps} />}
   />
 );
 
-export { DefaultGasField as GasFieldFactory };
+export { DefaultGasLimitField as GasLimitFieldFactory };

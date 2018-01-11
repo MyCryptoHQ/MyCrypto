@@ -14,8 +14,8 @@ const INITIAL_STATE: State = {
   pending: false
 };
 
-const signLocalTransactionRequested = (state: State): State => ({
-  ...state,
+const signLocalTransactionRequested = (): State => ({
+  ...INITIAL_STATE,
   pending: true
 });
 
@@ -48,7 +48,7 @@ const reset = () => INITIAL_STATE;
 export const sign = (state: State = INITIAL_STATE, action: SignAction | ResetAction) => {
   switch (action.type) {
     case TK.SIGN_LOCAL_TRANSACTION_REQUESTED:
-      return signLocalTransactionRequested(state);
+      return signLocalTransactionRequested();
     case TK.SIGN_LOCAL_TRANSACTION_SUCCEEDED:
       return signLocalTransactionSucceeded(state, action);
     case TK.SIGN_WEB3_TRANSACTION_SUCCEEDED:

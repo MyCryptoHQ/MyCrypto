@@ -4,7 +4,9 @@ import {
   SetWalletAction,
   WalletAction,
   SetWalletConfigAction,
-  TypeKeys
+  SetWalletPendingAction,
+  TypeKeys,
+  SetTokenBalanceFulfilledAction
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
 import { IWallet, Balance, WalletConfig } from 'libs/wallet';
@@ -20,7 +22,9 @@ export interface State {
       error: string | null;
     };
   };
+  isWalletPending: boolean;
   isTokensLoading: boolean;
+  isPasswordPending: boolean;
   tokensError: string | null;
   hasSavedWalletTokens: boolean;
 }
@@ -30,6 +34,8 @@ export const INITIAL_STATE: State = {
   config: null,
   balance: { isPending: false, wei: null },
   tokens: {},
+  isWalletPending: false,
+  isPasswordPending: false,
   isTokensLoading: false,
   tokensError: null,
   hasSavedWalletTokens: true
@@ -60,12 +66,44 @@ function setBalanceRejected(state: State): State {
   return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
+function setWalletPending(state: State, action: SetWalletPendingAction): State {
+  return { ...state, isWalletPending: action.payload };
+}
+
+function setPasswordPending(state: State): State {
+  return { ...state, isPasswordPending: true };
+}
+
 function setTokenBalancesPending(state: State): State {
   return {
     ...state,
     tokens: {},
     isTokensLoading: true,
     tokensError: null
+  };
+}
+
+function setTokenBalancePending(state: State): State {
+  return {
+    ...state,
+    isTokensLoading: true,
+    tokensError: null
+  };
+}
+
+function setTokenBalanceFufilled(state: State, action: SetTokenBalanceFulfilledAction): State {
+  return {
+    ...state,
+    tokens: { ...state.tokens, ...action.payload },
+    isTokensLoading: false
+  };
+}
+
+function setTokenBalanceRejected(state: State): State {
+  return {
+    ...state,
+    isTokensLoading: false,
+    tokensError: 'Failed to fetch token value'
   };
 }
 
@@ -118,18 +156,28 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setBalanceFullfilled(state, action);
     case TypeKeys.WALLET_SET_BALANCE_REJECTED:
       return setBalanceRejected(state);
+    case TypeKeys.WALLET_SET_PENDING:
+      return setWalletPending(state, action);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING:
       return setTokenBalancesPending(state);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED:
       return setTokenBalancesFulfilled(state, action);
     case TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED:
       return setTokenBalancesRejected(state);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING:
+      return setTokenBalancePending(state);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED:
+      return setTokenBalanceFufilled(state, action);
+    case TypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED:
+      return setTokenBalanceRejected(state);
     case TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS:
       return scanWalletForTokens(state);
     case TypeKeys.WALLET_SET_WALLET_TOKENS:
       return setWalletTokens(state);
     case TypeKeys.WALLET_SET_CONFIG:
       return setWalletConfig(state, action);
+    case TypeKeys.WALLET_SET_PASSWORD_PENDING:
+      return setPasswordPending(state);
     default:
       return state;
   }

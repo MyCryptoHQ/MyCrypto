@@ -30,8 +30,8 @@ interface Props {
   seed?: string;
 
   // Redux state
-  wallets: DeterministicWalletData[];
-  desiredToken: string;
+  wallets: AppState['deterministicWallets']['wallets'];
+  desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: NetworkConfig;
   tokens: MergedToken[];
 
@@ -252,7 +252,7 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
     const { selectedAddress } = this.state;
 
     // Get renderable values, but keep 'em short
-    const token = wallet.tokenValues[desiredToken];
+    const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
 
     return (
       <tr
@@ -292,7 +292,11 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
           )}
         </td>
         <td>
-          <a target="_blank" href={`https://ethplorer.io/address/${wallet.address}`}>
+          <a
+            target="_blank"
+            href={`https://ethplorer.io/address/${wallet.address}`}
+            rel="noopener noreferrer"
+          >
             <i className="DWModal-addresses-table-more" />
           </a>
         </td>
@@ -310,7 +314,9 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export const DeterministicWalletsModal = connect(mapStateToProps, {
+const DeterministicWalletsModal = connect(mapStateToProps, {
   getDeterministicWallets,
   setDesiredToken
 })(DeterministicWalletsModalClass);
+
+export default DeterministicWalletsModal;
