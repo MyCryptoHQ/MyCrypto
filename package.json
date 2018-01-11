@@ -36,7 +36,7 @@
     "react-redux": "5.0.6",
     "react-router-dom": "4.2.2",
     "react-router-redux": "4.0.8",
-    "react-stepper-horizontal": "^1.0.9",
+    "react-stepper-horizontal": "1.0.9",
     "react-transition-group": "2.2.1",
     "redux": "3.7.2",
     "redux-logger": "3.0.6",
