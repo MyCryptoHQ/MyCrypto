@@ -33,14 +33,15 @@ import {
 import { AppState } from 'reducers';
 import { knowledgeBaseURL, isWeb3NodeAvailable } from 'config/data';
 import { IWallet } from 'libs/wallet';
+import DISABLES from './disables.json';
 import { showNotification, TShowNotification } from 'actions/notifications';
+
 import DigitalBitboxIcon from 'assets/images/wallets/digital-bitbox.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
-type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
   resetTransactionState: TReset;
@@ -59,6 +60,7 @@ interface Props {
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
 
+type UnlockParams = {} | PrivateKeyValue;
 interface State {
   selectedWalletKey: string | null;
   value: UnlockParams | null;
@@ -227,11 +229,6 @@ export class WalletDecrypt extends Component<Props, State> {
     );
   }
 
-  public isOnlineRequiredWalletAndOffline(selectedWalletKey) {
-    const onlineRequiredWallets = ['trezor', 'ledger-nano-s'];
-    return this.props.offline && onlineRequiredWallets.includes(selectedWalletKey);
-  }
-
   public buildWalletOptions() {
     const viewOnly = this.WALLETS['view-only'] as InsecureWalletInfo;
 
@@ -379,6 +376,10 @@ export class WalletDecrypt extends Component<Props, State> {
   };
 
   private isWalletDisabled = (walletKey: string) => {
+    if (this.props.offline && DISABLES.ONLINE_ONLY.includes(walletKey)) {
+      return true;
+    }
+
     if (!this.props.disabledWallets) {
       return false;
     }

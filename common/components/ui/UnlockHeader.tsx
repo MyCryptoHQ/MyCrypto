@@ -7,7 +7,7 @@ import { IWallet } from 'libs/wallet/IWallet';
 import './UnlockHeader.scss';
 
 interface Props {
-  title: React.ReactElement<any>;
+  title: React.ReactElement<string> | string;
   wallet: IWallet;
   disabledWallets?: string[];
 }

@@ -1,7 +1,7 @@
 import { SagaIterator, buffers, delay } from 'redux-saga';
 import { apply, put, select, take, actionChannel, call, fork } from 'redux-saga/effects';
 import { INode } from 'libs/nodes/INode';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getTransaction, IGetTransaction } from 'selectors/transaction';
 import {
@@ -22,6 +22,11 @@ import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      continue;
+    }
+
     const action:
       | SetToFieldAction
       | SetDataFieldAction
@@ -59,6 +64,11 @@ export function* estimateGas(): SagaIterator {
   const requestChan = yield actionChannel(TypeKeys.ESTIMATE_GAS_REQUESTED, buffers.sliding(1));
 
   while (true) {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      continue;
+    }
+
     const { payload }: EstimateGasRequestedAction = yield take(requestChan);
     // debounce 250 ms
     yield call(delay, 250);
