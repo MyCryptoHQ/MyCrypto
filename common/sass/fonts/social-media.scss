@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'social-media';
-  src: url('../assets/fonts/social-media.woff2') format('woff2');
+  src: url('../assets/fonts/social-media.woff2') format('woff2'),
+    url('../assets/fonts/social-media.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
