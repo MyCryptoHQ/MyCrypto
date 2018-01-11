@@ -1,7 +1,7 @@
 export class DeterministicWallet {
-  public address: string;
-  public dPath: string;
-  public index: number;
+  protected address: string;
+  protected dPath: string;
+  protected index: number;
 
   constructor(address: string, dPath: string, index: number) {
     this.address = address;
