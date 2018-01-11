@@ -86,12 +86,6 @@ export function getOffline(state: AppState): boolean {
   return state.config.offline;
 }
 
-export function getForceOffline(state: AppState): boolean {
-  return state.config.forceOffline;
-}
-
-export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);
-
 export function isSupportedUnit(state: AppState, unit: string) {
   const isToken: boolean = tokenExists(state, unit);
   const isEther: boolean = isEtherUnit(unit);

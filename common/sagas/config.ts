@@ -22,8 +22,7 @@ import {
   getNodeConfig,
   getCustomNodeConfigs,
   getCustomNetworkConfigs,
-  getOffline,
-  getForceOffline
+  getOffline
 } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
@@ -50,13 +49,6 @@ export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     const node: NodeConfig = yield select(getNodeConfig);
     const isOffline: boolean = yield select(getOffline);
-    const isForcedOffline: boolean = yield select(getForceOffline);
-
-    // If they're forcing themselves offline, exit the loop. It will be
-    // kicked off again if they toggle it in handleTogglePollOfflineStatus.
-    if (isForcedOffline) {
-      return;
-    }
 
     // If our offline state disagrees with the browser, run a check
     // Don't check if the user is in another tab or window
@@ -113,15 +105,6 @@ export function* handlePollOfflineStatus(): SagaIterator {
   const pollOfflineStatusTask = yield fork(pollOfflineStatus);
   yield take('CONFIG_STOP_POLL_OFFLINE_STATE');
   yield cancel(pollOfflineStatusTask);
-}
-
-export function* handleTogglePollOfflineStatus(): SagaIterator {
-  const isForcedOffline: boolean = yield select(getForceOffline);
-  if (isForcedOffline) {
-    yield fork(handlePollOfflineStatus);
-  } else {
-    yield call(handlePollOfflineStatus);
-  }
 }
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
@@ -263,7 +246,6 @@ export const equivalentNodeOrDefault = (nodeConfig: NodeConfig) => {
 
 export default function* configSaga(): SagaIterator {
   yield takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus);
-  yield takeEvery(TypeKeys.CONFIG_FORCE_OFFLINE, handleTogglePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);

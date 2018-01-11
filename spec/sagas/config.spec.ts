@@ -7,7 +7,6 @@ import {
   pollOfflineStatus,
   handlePollOfflineStatus,
   handleNodeChangeIntent,
-  handleTogglePollOfflineStatus,
   reload,
   unsetWeb3Node,
   unsetWeb3NodeOnWalletEvent,
@@ -18,7 +17,6 @@ import {
   getNode,
   getNodeConfig,
   getOffline,
-  getForceOffline,
   getCustomNodeConfigs,
   getCustomNetworkConfigs
 } from 'selectors/config';
@@ -43,7 +41,6 @@ describe('pollOfflineStatus*', () => {
     }
   };
   const isOffline = true;
-  const isForcedOffline = true;
   const raceSuccess = {
     pingSucceeded: true
   };
@@ -88,26 +85,16 @@ describe('pollOfflineStatus*', () => {
     expect(data.gen.next(node).value).toEqual(select(getOffline));
   });
 
-  it('should select getForceOffline', () => {
-    data.isOfflineClone = data.gen.clone();
-    expect(data.gen.next(isOffline).value).toEqual(select(getForceOffline));
-  });
-
-  it('should be done if isForcedOffline', () => {
-    data.clone1 = data.gen.clone();
-    expect(data.clone1.next(isForcedOffline).done).toEqual(true);
-  });
-
   it('should call delay if document is hidden', () => {
     data.clone2 = data.gen.clone();
     doc.hidden = true;
 
-    expect(data.clone2.next(!isForcedOffline).value).toEqual(call(delay, 1000));
+    expect(data.clone2.next(!isOffline).value).toEqual(call(delay, 1000));
   });
 
   it('should race pingSucceeded and timeout', () => {
     doc.hidden = false;
-    expect(data.gen.next(!isForcedOffline).value).toMatchSnapshot();
+    expect(data.gen.next(!isOffline).value).toMatchSnapshot();
   });
 
   it('should put showNotification and put toggleOfflineConfig if pingSucceeded && isOffline', () => {
@@ -121,7 +108,6 @@ describe('pollOfflineStatus*', () => {
     nav.onLine = !isOffline;
 
     data.isOfflineClone.next(!isOffline);
-    data.isOfflineClone.next(!isForcedOffline);
 
     data.clone3 = data.isOfflineClone.clone();
 
@@ -149,30 +135,6 @@ describe('handlePollOfflineStatus*', () => {
 
   it('should cancel pollOfflineStatus', () => {
     expect(gen.next().value).toEqual(cancel(mockTask));
-  });
-});
-
-describe('handleTogglePollOfflineStatus*', () => {
-  const data = {} as any;
-  data.gen = cloneableGenerator(handleTogglePollOfflineStatus)();
-  const isForcedOffline = true;
-
-  it('should select getForceOffline', () => {
-    expect(data.gen.next().value).toEqual(select(getForceOffline));
-  });
-
-  it('should fork handlePollOfflineStatus when isForcedOffline', () => {
-    data.clone = data.gen.clone();
-    expect(data.gen.next(isForcedOffline).value).toEqual(fork(handlePollOfflineStatus));
-  });
-
-  it('should call handlePollOfflineStatus when !isForcedOffline', () => {
-    expect(data.clone.next(!isForcedOffline).value).toEqual(call(handlePollOfflineStatus));
-  });
-
-  it('should be done', () => {
-    expect(data.gen.next().done).toEqual(true);
-    expect(data.clone.next().done).toEqual(true);
   });
 });
 
