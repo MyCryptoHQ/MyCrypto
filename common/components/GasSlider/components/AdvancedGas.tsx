@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import translate from 'translations';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import FeeSummary from './FeeSummary';
@@ -15,15 +16,18 @@ interface Props {
 
 export default class AdvancedGas extends React.Component<Props> {
   public render() {
+    // Can't shadow var names for data & fee summary
+    const vals = this.props;
+
     return (
       <div className="AdvancedGas row form-group">
         <div className="col-md-4 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
           <input
-            className="form-control"
+            className={classnames('form-control', !vals.gasPrice && 'is-invalid')}
             type="number"
             placeholder="e.g. 40"
-            value={this.props.gasPrice}
+            value={vals.gasPrice}
             onChange={this.handleGasPriceChange}
           />
         </div>
@@ -31,10 +35,10 @@ export default class AdvancedGas extends React.Component<Props> {
         <div className="col-md-4 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_4')}</label>
           <input
-            className="form-control"
+            className={classnames('form-control', !vals.gasLimit && 'is-invalid')}
             type="number"
             placeholder="e.g. 21000"
-            value={this.props.gasLimit}
+            value={vals.gasLimit}
             onChange={this.handleGasLimitChange}
           />
         </div>
@@ -42,10 +46,10 @@ export default class AdvancedGas extends React.Component<Props> {
         <div className="col-md-4 col-sm-12">
           <label>{translate('OFFLINE_Step2_Label_5')}</label>
           <input
-            className="form-control"
+            className={classnames('form-control', !vals.nonce && 'is-invalid')}
             type="number"
             placeholder="e.g. 7"
-            value={this.props.nonce}
+            value={vals.nonce}
             onChange={this.handleNonceChange}
           />
         </div>
