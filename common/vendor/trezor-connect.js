@@ -1063,4 +1063,6 @@ function PopupManager() {
   };
 }
 
-export default new TrezorConnect();
+var connect = new TrezorConnect();
+
+module.exports = connect;
