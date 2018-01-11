@@ -2,6 +2,8 @@ import React from 'react';
 import translate from 'translations';
 import { Link } from 'react-router-dom';
 import OnboardSlide from './OnboardSlide';
+import onboardIconTen from 'assets/images/onboarding_icon-10.svg';
+
 const FinalSlide = ({ closeModal }) => {
   const header = (
     <div>
@@ -90,6 +92,6 @@ const FinalSlide = ({ closeModal }) => {
       </li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} />;
+  return <OnboardSlide header={header} content={content} slideImage={onboardIconTen} />;
 };
 export default FinalSlide;

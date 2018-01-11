@@ -1,6 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import OnboardSlide from './OnboardSlide';
+import onboardIconThree from 'assets/images/onboarding_icon-03.svg';
 
 const InterfaceSlide = () => {
   const header = translate('ONBOARD_interface_title');
@@ -16,6 +17,6 @@ const InterfaceSlide = () => {
       <li>{translate('ONBOARD_interface_content__7')}</li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} />;
+  return <OnboardSlide header={header} content={content} slideImage={onboardIconThree} />;
 };
 export default InterfaceSlide;

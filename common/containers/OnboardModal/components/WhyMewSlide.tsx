@@ -1,6 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import OnboardSlide from './OnboardSlide';
+import onboardIconSix from 'assets/images/onboarding_icon-06.svg';
 
 const WhyMewSlide = () => {
   const header = translate('ONBOARD_whymew_title');
@@ -15,6 +16,6 @@ const WhyMewSlide = () => {
       <li>{translate('ONBOARD_whymew_content__6')}</li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} />;
+  return <OnboardSlide header={header} content={content} slideImage={onboardIconSix} />;
 };
 export default WhyMewSlide;

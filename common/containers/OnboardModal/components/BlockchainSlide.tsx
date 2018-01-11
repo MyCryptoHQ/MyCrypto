@@ -1,6 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import OnboardSlide from './OnboardSlide';
+import onboardIconFour from 'assets/images/onboarding_icon-04.svg';
 
 const BlockchainSlide = () => {
   const header = translate('ONBOARD_blockchain_title');
@@ -14,6 +15,6 @@ const BlockchainSlide = () => {
       <li>{translate('ONBOARD_blockchain_content__6')}</li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} />;
+  return <OnboardSlide header={header} content={content} slideImage={onboardIconFour} />;
 };
 export default BlockchainSlide;

@@ -1,6 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import OnboardSlide from './OnboardSlide';
+import onboardIconNine from 'assets/images/onboarding_icon-09.svg';
 
 interface Props {
   site?: string;
@@ -26,6 +27,6 @@ const SecureSlideThree: React.SFC<Props> = ({ site }) => {
       <h5 className="text-center">{translate('ONBOARD_secure_3_content__6')} </h5>
     </div>
   );
-  return <OnboardSlide header={header} content={content} />;
+  return <OnboardSlide header={header} content={content} slideImage={onboardIconNine} />;
 };
 export default SecureSlideThree;

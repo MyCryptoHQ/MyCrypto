@@ -5,6 +5,7 @@ import Stepper from 'react-stepper-horizontal';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { AppState } from 'reducers';
 import Modal, { IButton } from 'components/ui/Modal';
+import './index.scss';
 import {
   startOnboardSession,
   TStartOnboardSession,
@@ -29,6 +30,7 @@ import {
 } from './components';
 
 const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
+const NUMBER_OF_SLIDES = 10;
 
 interface State {
   isOpen: boolean;
@@ -64,7 +66,7 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
       }
-      if (currentSlide > 0 && currentSlide < 10) {
+      if (currentSlide > 0 && currentSlide < NUMBER_OF_SLIDES) {
         this.props.resumeSlide(currentSlide);
         this.setState({
           isOpen: true
@@ -83,7 +85,7 @@ class OnboardModal extends React.Component<Props, State> {
 
     const firstButtons: IButton[] = [
       {
-        disabled: slideNumber === 10,
+        disabled: slideNumber === NUMBER_OF_SLIDES,
         text: 'Next',
         type: 'primary',
         onClick: this.handleNextSlide
@@ -108,14 +110,15 @@ class OnboardModal extends React.Component<Props, State> {
       }
     ];
 
-    const buttons = slideNumber === 10 ? lastButtons : firstButtons;
+    const buttons = slideNumber === NUMBER_OF_SLIDES ? lastButtons : firstButtons;
+    const steps = new Array(NUMBER_OF_SLIDES).fill({});
 
     return (
       <div className="OnboardModal">
         <Modal isOpen={isOpen} buttons={buttons}>
           <div className="OnboardModal-stepper">
             <Stepper
-              steps={[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]}
+              steps={steps}
               activeColor="#0e97c0"
               activeStep={slideNumber - 1}
               completeColor="#0e97c0"
@@ -149,6 +152,10 @@ class OnboardModal extends React.Component<Props, State> {
       <SecureSlideThree key={9} />,
       <FinalSlide key={10} closeModal={this.closeModal} />
     ];
+
+    if (slides.length !== NUMBER_OF_SLIDES) {
+      console.log('Slides length do not match const NUMBER_OF_SLIDES');
+    }
     const currentSlideIndex = this.props.slideNumber - 1;
 
     return slides[currentSlideIndex];

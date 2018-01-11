@@ -1,6 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import OnboardSlide from './OnboardSlide';
+import onboardIconEight from 'assets/images/onboarding_icon-08.svg';
 
 const SecureSlideTwo = () => {
   const header = (
@@ -19,6 +20,6 @@ const SecureSlideTwo = () => {
       <li>{translate('ONBOARD_secure_2_content__5')}</li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} />;
+  return <OnboardSlide header={header} content={content} slideImage={onboardIconEight} />;
 };
 export default SecureSlideTwo;

@@ -1,6 +1,7 @@
 import React from 'react';
 import OnboardSlide from './OnboardSlide';
 import translate from 'translations';
+import onboardIconOne from 'assets/images/onboarding_icon-01.svg';
 
 import './WelcomeSlide.scss';
 
@@ -27,7 +28,7 @@ const WelcomeSlide = () => {
       </ul>
     </div>
   );
-  return <OnboardSlide header={header} content={content} />;
+  return <OnboardSlide header={header} content={content} slideImage={onboardIconOne} />;
 };
 
 export default WelcomeSlide;
