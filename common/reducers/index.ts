@@ -9,10 +9,13 @@ import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
 import { State as TransactionState, transaction } from './transaction';
+import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
+
 export interface AppState {
   // Custom reducers
   config: ConfigState;
   notifications: NotificationsState;
+  onboardStatus: OnboardStatusState;
   ens: EnsState;
   wallet: WalletState;
   customTokens: CustomTokensState;
@@ -29,6 +32,7 @@ export default combineReducers({
   config,
   swap,
   notifications,
+  onboardStatus,
   ens,
   wallet,
   customTokens,
