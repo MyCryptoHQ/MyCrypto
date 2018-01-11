@@ -32,6 +32,11 @@ export interface ResetWalletAction {
   type: TypeKeys.WALLET_RESET;
 }
 
+export interface SetWalletPendingAction {
+  type: TypeKeys.WALLET_SET_PENDING;
+  payload: boolean;
+}
+
 /*** Set Balance ***/
 export interface SetBalancePendingAction {
   type: TypeKeys.WALLET_SET_BALANCE_PENDING;
@@ -116,10 +121,15 @@ export interface SetWalletConfigAction {
   payload: WalletConfig;
 }
 
+export interface SetPasswordPendingAction {
+  type: TypeKeys.WALLET_SET_PASSWORD_PENDING;
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
   | SetWalletAction
+  | SetWalletPendingAction
   | ResetWalletAction
   | SetBalancePendingAction
   | SetBalanceFullfilledAction
@@ -132,4 +142,5 @@ export type WalletAction =
   | SetTokenBalanceRejectedAction
   | ScanWalletForTokensAction
   | SetWalletTokensAction
-  | SetWalletConfigAction;
+  | SetWalletConfigAction
+  | SetPasswordPendingAction;
