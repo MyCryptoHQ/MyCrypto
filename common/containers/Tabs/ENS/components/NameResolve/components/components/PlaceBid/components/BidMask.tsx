@@ -1,15 +1,26 @@
 import * as React from 'react';
 import { setBidMaskField, TSetBidMaskField } from 'actions/ens';
 import { connect } from 'react-redux';
+import { AppState } from 'reducers';
+import { getBidMask } from 'selectors/ens';
 
-interface Props {
-  setBidMaskField: TSetBidMaskField;
+interface OwnProps {
   hasUnitDropdown?: boolean;
 }
 
+interface DispatchProps {
+  setBidMaskField: TSetBidMaskField;
+}
+
+interface StateProps {
+  bidMask: AppState['ens']['fields']['bidMask'];
+}
+
+type Props = OwnProps & DispatchProps & StateProps;
+
 class BidMaskClass extends React.Component<Props> {
-  public onChange = e => {
-    this.props.setBidMaskField(e.target.value);
+  public onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    this.props.setBidMaskField(e.currentTarget.value);
   };
 
   public render() {
@@ -28,6 +39,7 @@ class BidMaskClass extends React.Component<Props> {
             type="number"
             className="form-control"
             onChange={this.onChange}
+            value={this.props.bidMask || ''}
             placeholder="1.0"
           />
         </section>
@@ -36,6 +48,6 @@ class BidMaskClass extends React.Component<Props> {
   }
 }
 
-export const BidMask = connect(null, {
+export const BidMask = connect((state: AppState) => ({ bidMask: getBidMask(state) }), {
   setBidMaskField
 })(BidMaskClass);

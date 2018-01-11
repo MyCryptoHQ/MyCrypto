@@ -2,21 +2,21 @@ import * as React from 'react';
 import { isValidAmount } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { setBidField, TSetBidField } from 'actions/ens';
+import { setBidValueField, TSetBidValueField } from 'actions/ens';
 
 interface StateProps {
   isValid: boolean;
 }
 
 interface OwnProps {
-  setBidField: TSetBidField;
+  setBidField: TSetBidValueField;
 }
 
 type Props = StateProps & OwnProps;
 
 class BidValueClass extends React.Component<Props> {
-  public onChange = e => {
-    this.props.setBidField(e.target.value);
+  public onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    this.props.setBidField(e.currentTarget.value);
   };
 
   public render() {
@@ -39,5 +39,5 @@ class BidValueClass extends React.Component<Props> {
 }
 
 export const BidValue = connect((state: AppState) => ({ isValid: isValidAmount(state) }), {
-  setBidField
+  setBidValueField
 })(BidValueClass);

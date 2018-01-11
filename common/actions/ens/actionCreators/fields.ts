@@ -1,9 +1,20 @@
-import { SetBidFieldAction, SetBidMaskFieldAction, SetSecretFieldAction } from '../actionTypes';
+import {
+  SetBidValueFieldAction,
+  SetBidMaskFieldAction,
+  SetSecretFieldAction
+} from '../actionTypes';
 import { TypeKeys } from '../constants';
+import {
+  InputSecretFieldAction,
+  InputBidMaskFieldAction,
+  InputBidValueFieldAction
+} from 'actions/ens';
 
-export type TSetBidField = typeof setBidField;
-export const setBidField = (payload: SetBidFieldAction['payload']): SetBidFieldAction => ({
-  type: TypeKeys.BID_FIELD_SET,
+export type TSetBidValueField = typeof setBidValueField;
+export const setBidValueField = (
+  payload: SetBidValueFieldAction['payload']
+): SetBidValueFieldAction => ({
+  type: TypeKeys.BID_VALUE_FIELD_SET,
   payload
 });
 
@@ -20,3 +31,18 @@ export const setSecretField = (payload: SetSecretFieldAction['payload']): SetSec
   type: TypeKeys.SECRET_FIELD_SET,
   payload
 });
+
+export type TInputSecretField = typeof inputSecretField;
+export const inputSecretField = (
+  payload: InputSecretFieldAction['payload']
+): InputSecretFieldAction => ({ type: TypeKeys.SECRET_FIELD_INPUT, payload });
+
+export type TInputBidMaskField = typeof inputBidMaskField;
+export const inputBidMaskField = (
+  payload: InputBidMaskFieldAction['payload']
+): InputBidMaskFieldAction => ({ type: TypeKeys.BID_MASK_FIELD_INPUT, payload });
+
+export type TInputBidValueField = typeof inputBidValueField;
+export const inputBidValueField = (
+  payload: InputBidValueFieldAction['payload']
+): InputBidValueFieldAction => ({ payload, type: TypeKeys.BID_VALUE_FIELD_INPUT });

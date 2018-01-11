@@ -12,6 +12,6 @@ export const getCurrentDomainData = (state: AppState) => {
 export const getBidDataEncoded = (state: AppState) => getEns(state).placeBid.bidPlaced;
 
 export const getFields = (state: AppState) => getEns(state).fields;
-export const getBid = (state: AppState) => getFields(state).bid;
+export const getBid = (state: AppState) => getFields(state).bidValue;
 export const getBidMask = (state: AppState) => getFields(state).bidMask;
-export const getSecret = (state: AppState) => getFields(state).secret;
+export const getSecret = (state: AppState) => getFields(state).secretPhrase;

@@ -23,6 +23,7 @@ import { AppState } from 'reducers';
 import ethUtil from 'ethereumjs-util';
 import { setDataField, setValueField } from 'actions/transaction';
 import { Data } from 'libs/units';
+
 const { main } = networkConfigs;
 
 function* resolveDomain(action: ResolveDomainRequested): SagaIterator {

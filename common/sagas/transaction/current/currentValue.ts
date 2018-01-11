@@ -12,11 +12,20 @@ import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput, IInput } from 'sagas/transaction/validationHelpers';
 import { validNumber, validDecimal } from 'libs/validators';
-export function* setCurrentValue({ payload }: SetCurrentValueAction): SagaIterator {
+import { InputBidMaskFieldAction, InputBidValueFieldAction } from 'actions/ens';
+
+export function* setCurrentValue(action: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
+  const setter = etherTransaction ? setValueField : setTokenValue;
+  return yield call(valueHandler, action, setter);
+}
+
+export function* valueHandler(
+  { payload }: SetCurrentValueAction | InputBidMaskFieldAction | InputBidValueFieldAction,
+  setter
+) {
   const decimal: number = yield select(getDecimal);
   const unit: string = yield select(getUnit);
-  const setter = etherTransaction ? setValueField : setTokenValue;
 
   if (!validNumber(+payload) || !validDecimal(payload, decimal)) {
     return yield put(setter({ raw: payload, value: null }));
@@ -51,6 +60,7 @@ export function* reparseCurrentValue(value: IInput): SagaIterator {
     return null;
   }
 }
+
 export const currentValue = [
   takeEvery([TypeKeys.CURRENT_VALUE_SET], setCurrentValue),
   takeEvery([TypeKeys.GAS_LIMIT_FIELD_SET, TypeKeys.GAS_PRICE_FIELD_SET], revalidateCurrentValue)
