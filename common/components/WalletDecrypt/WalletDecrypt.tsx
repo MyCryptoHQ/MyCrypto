@@ -16,6 +16,7 @@ import {
   resetWallet,
   TResetWallet
 } from 'actions/wallet';
+import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
 import { reset, TReset } from 'actions/transaction';
 import translate from 'translations';
 import {
@@ -42,6 +43,7 @@ import './WalletDecrypt.scss';
 type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
+  pollOfflineStatus: TPollOfflineStatus;
   resetTransactionState: TReset;
   unlockKeystore: TUnlockKeystore;
   unlockMnemonic: TUnlockMnemonic;
@@ -175,10 +177,15 @@ export class WalletDecrypt extends Component<Props, State> {
       isReadOnly: true
     }
   };
+
   public state: State = {
     selectedWalletKey: null,
     value: null
   };
+
+  public componentDidMount() {
+    this.props.pollOfflineStatus();
+  }
 
   public componentWillReceiveProps(nextProps) {
     // Reset state when unlock is hidden / revealed
@@ -387,5 +394,6 @@ export default connect(mapStateToProps, {
   unlockWeb3,
   setWallet,
   resetWallet,
+  pollOfflineStatus,
   resetTransactionState: reset
 })(WalletDecrypt);
