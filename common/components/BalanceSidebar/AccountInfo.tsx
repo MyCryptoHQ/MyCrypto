@@ -15,11 +15,13 @@ interface Props {
 interface State {
   showLongBalance: boolean;
   address: string;
+  confirmAddr: boolean;
 }
 export default class AccountInfo extends React.Component<Props, State> {
   public state = {
     showLongBalance: false,
-    address: ''
+    address: '',
+    confirmAddr: false
   };
 
   public async setAddressFromWallet() {
@@ -37,6 +39,12 @@ export default class AccountInfo extends React.Component<Props, State> {
     this.setAddressFromWallet();
   }
 
+  public toggleConfirmAddr = () => {
+    this.setState(state => {
+      return { confirmAddr: !state.confirmAddr };
+    });
+  };
+
   public toggleShowLongBalance = (e: React.FormEvent<HTMLSpanElement>) => {
     e.preventDefault();
     this.setState(state => {
@@ -48,7 +56,7 @@ export default class AccountInfo extends React.Component<Props, State> {
 
   public render() {
     const { network, balance } = this.props;
-    const { address, showLongBalance } = this.state;
+    const { address, showLongBalance, confirmAddr } = this.state;
     const { blockExplorer, tokenExplorer } = network;
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
@@ -65,9 +73,26 @@ export default class AccountInfo extends React.Component<Props, State> {
 
         {typeof wallet.displayAddress === 'function' && (
           <div className="AccountInfo-section">
-            <a className="AccountInfo-address-hw-addr" onClick={() => wallet.displayAddress()}>
-              Display address on {wallet.getWalletType()}
+            <a
+              className="AccountInfo-address-hw-addr"
+              onClick={() => {
+                this.toggleConfirmAddr();
+                wallet
+                  .displayAddress()
+                  .then(() => this.toggleConfirmAddr())
+                  .catch(e => {
+                    this.toggleConfirmAddr();
+                    throw new Error(e);
+                  });
+              }}
+            >
+              {confirmAddr ? null : 'Display address on ' + wallet.getWalletType()}
             </a>
+            {confirmAddr ? (
+              <span className="AccountInfo-address-confirm">
+                <Spinner /> Confirm address on {wallet.getWalletType()}
+              </span>
+            ) : null}
           </div>
         )}
 

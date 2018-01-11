@@ -43,6 +43,14 @@
       word-wrap: break-word;
       @include mono;
     }
+
+    &-confirm {
+      display: flex;
+      align-items: center;
+      .Spinner {
+        margin-right: 16px;
+      }
+    }
   }
 
   &-list {

@@ -65,14 +65,21 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     });
   }
 
-  public displayAddress = (dPath?: string, index?: number): void => {
+  public displayAddress = (
+    dPath?: string,
+    index?: number
+  ): Promise<{
+    publicKey: string;
+    address: string;
+    chainCode?: string;
+  }> => {
     if (!dPath) {
       dPath = this.dPath;
     }
     if (!index) {
       index = this.index;
     }
-    this.ethApp.getAddress_async(dPath + '/' + index, true, false);
+    return this.ethApp.getAddress_async(dPath + '/' + index, true, false);
   };
 
   public getWalletType(): string {

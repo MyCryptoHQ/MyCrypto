@@ -666,21 +666,28 @@ class TrezorConnect {
    * @param {function()} callback
    *
    */
-  ethereumGetAddress(address, requiredFirmware = undefined, callback = () => {}) {
+  ethereumGetAddress(address, requiredFirmware = undefined) {
     if (typeof address === 'string') {
       address = parseHDPath(address);
     }
-
-    this.manager.sendWithChannel(
-      _fwStrFix(
-        {
-          type: 'ethgetaddress',
-          address_n: address
-        },
-        requiredFirmware
-      ),
-      callback
-    );
+    return new Promise((resolve, reject) => {
+      this.manager.sendWithChannel(
+        _fwStrFix(
+          {
+            type: 'ethgetaddress',
+            address_n: address
+          },
+          requiredFirmware
+        ),
+        response => {
+          if (response.error) {
+            reject(response.error.message);
+          } else {
+            resolve(response);
+          }
+        }
+      );
+    });
   }
 
   /**
