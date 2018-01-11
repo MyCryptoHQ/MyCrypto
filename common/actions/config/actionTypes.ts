@@ -6,11 +6,6 @@ export interface ToggleOfflineAction {
   type: TypeKeys.CONFIG_TOGGLE_OFFLINE;
 }
 
-/*** Force Offline ***/
-export interface ForceOfflineAction {
-  type: TypeKeys.CONFIG_FORCE_OFFLINE;
-}
-
 /*** Change Language ***/
 export interface ChangeLanguageAction {
   type: TypeKeys.CONFIG_LANGUAGE_CHANGE;
@@ -80,7 +75,6 @@ export type ConfigAction =
   | ChangeLanguageAction
   | ToggleOfflineAction
   | PollOfflineStatus
-  | ForceOfflineAction
   | ChangeNodeIntentAction
   | AddCustomNodeAction
   | RemoveCustomNodeAction

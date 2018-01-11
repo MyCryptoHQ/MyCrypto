@@ -52,26 +52,6 @@ Object {
 }
 `;
 
-exports[`pollOfflineStatus* should put showNotification and put toggleOfflineConfig if !pingSucceeded && !isOffline 1`] = `
-Object {
-  "@@redux-saga/IO": true,
-  "PUT": Object {
-    "action": Object {
-      "payload": Object {
-        "duration": Infinity,
-        "id": 0.001,
-        "level": "danger",
-        "msg": "You’ve lost your connection to the network, check your internet
-            connection or try changing networks from the dropdown at the
-            top right of the page.",
-      },
-      "type": "SHOW_NOTIFICATION",
-    },
-    "channel": null,
-  },
-}
-`;
-
 exports[`pollOfflineStatus* should race pingSucceeded and timeout 1`] = `
 Object {
   "@@redux-saga/IO": true,
@@ -94,6 +74,24 @@ Object {
         "fn": [Function],
       },
     },
+  },
+}
+`;
+
+exports[`pollOfflineStatus* should toggle offline and show notification if navigator agrees with isOffline and ping fails 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "PUT": Object {
+    "action": Object {
+      "payload": Object {
+        "duration": 5000,
+        "id": 0.001,
+        "level": "info",
+        "msg": "You are currently offline. Some features will be unavailable.",
+      },
+      "type": "SHOW_NOTIFICATION",
+    },
+    "channel": null,
   },
 }
 `;

@@ -39,7 +39,7 @@ import {
 import { NODES, initWeb3Node, Token } from 'config/data';
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
-import { getNodeLib, getAllTokens } from 'selectors/config';
+import { getNodeLib, getAllTokens, getOffline } from 'selectors/config';
 import {
   getTokens,
   getWalletInst,
@@ -58,6 +58,11 @@ export interface TokenBalanceLookup {
 
 export function* updateAccountBalance(): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     yield put(setBalancePending());
     const wallet: null | IWallet = yield select(getWalletInst);
     if (!wallet) {
@@ -75,6 +80,11 @@ export function* updateAccountBalance(): SagaIterator {
 
 export function* updateTokenBalances(): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     const wallet: null | IWallet = yield select(getWalletInst);
     const tokens: MergedToken[] = yield select(getWalletConfigTokens);
     if (!wallet || !tokens.length) {
@@ -91,6 +101,11 @@ export function* updateTokenBalances(): SagaIterator {
 
 export function* updateTokenBalance(action: SetTokenBalancePendingAction): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     const wallet: null | IWallet = yield select(getWalletInst);
     const { tokenSymbol } = action.payload;
     const allTokens: Token[] = yield select(getAllTokens);
@@ -115,6 +130,11 @@ export function* updateTokenBalance(action: SetTokenBalancePendingAction): SagaI
 
 export function* scanWalletForTokens(action: ScanWalletForTokensAction): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     const wallet = action.payload;
     const tokens: MergedToken[] = yield select(getTokens);
     yield put(setTokenBalancesPending());
@@ -288,7 +308,9 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SET, handleNewWallet),
     takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
-    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd),
-    takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance)
+    takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
+    // Foreign actions
+    takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
+    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
   ];
 }

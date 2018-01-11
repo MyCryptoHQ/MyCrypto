@@ -1,0 +1,26 @@
+@import 'common/sass/variables';
+
+@keyframes ban-wifi {
+  0% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.OfflineTab {
+  text-align: center;
+
+  &-icon {
+    opacity: 0.8;
+
+    .fa-ban {
+      color: $brand-danger;
+      animation: ban-wifi 500ms ease 200ms 1;
+      animation-fill-mode: both;
+    }
+  }
+}

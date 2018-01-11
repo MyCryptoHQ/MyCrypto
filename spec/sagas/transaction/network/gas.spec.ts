@@ -1,6 +1,6 @@
 import { buffers, delay } from 'redux-saga';
 import { apply, put, select, take, actionChannel, call } from 'redux-saga/effects';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getTransaction } from 'selectors/transaction';
 import {
@@ -16,6 +16,7 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
 
 describe('shouldEstimateGas*', () => {
+  const offline = false;
   const transaction: any = 'transaction';
   const tx = { transaction };
   const rest: any = {
@@ -39,8 +40,12 @@ describe('shouldEstimateGas*', () => {
 
   const gen = shouldEstimateGas();
 
+  it('should select getOffline', () => {
+    expect(gen.next().value).toEqual(select(getOffline));
+  });
+
   it('should take expected types', () => {
-    expect(gen.next().value).toEqual(
+    expect(gen.next(offline).value).toEqual(
       take([
         TypeKeys.TO_FIELD_SET,
         TypeKeys.DATA_FIELD_SET,
@@ -65,6 +70,7 @@ describe('shouldEstimateGas*', () => {
 });
 
 describe('estimateGas*', () => {
+  const offline = false;
   const requestChan = 'requestChan';
   const payload: any = {
     mock1: 'mock1',
@@ -102,8 +108,12 @@ describe('estimateGas*', () => {
     expect(expected).toEqual(result);
   });
 
+  it('should select getOffline', () => {
+    expect(gens.gen.next(requestChan).value).toEqual(select(getOffline));
+  });
+
   it('should take requestChan', () => {
-    expect(gens.gen.next(requestChan).value).toEqual(take(requestChan));
+    expect(gens.gen.next(offline).value).toEqual(take(requestChan));
   });
 
   it('should call delay', () => {
