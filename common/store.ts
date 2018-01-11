@@ -19,6 +19,7 @@ import RootReducer from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
+import { dedupeCustomTokens } from 'utils/tokens';
 import sagas from './sagas';
 import { gasPricetoBase } from 'libs/units';
 
@@ -59,7 +60,6 @@ const configureStore = () => {
         }
       : { ...swapInitialState };
 
-  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens');
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
 
@@ -82,6 +82,13 @@ const configureStore = () => {
     }
   }
 
+  // Dedupe custom tokens initially
+  const savedCustomTokensState =
+    loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || customTokensInitialState;
+  const initialNetwork =
+    (savedConfigState && savedConfigState.network) || configInitialState.network;
+  const customTokens = dedupeCustomTokens(initialNetwork.tokens, savedCustomTokensState);
+
   const persistedInitialState = {
     config: {
       ...configInitialState,
@@ -100,7 +107,7 @@ const configureStore = () => {
             : transactionInitialState.fields.gasPrice
       }
     },
-    customTokens: localCustomTokens || customTokensInitialState,
+    customTokens,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState
   };
