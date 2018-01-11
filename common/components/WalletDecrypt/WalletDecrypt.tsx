@@ -33,6 +33,7 @@ import {
 import { AppState } from 'reducers';
 import { knowledgeBaseURL, isWeb3NodeAvailable } from 'config/data';
 import { IWallet } from 'libs/wallet';
+import { showNotification, TShowNotification } from 'actions/notifications';
 import DigitalBitboxIcon from 'assets/images/wallets/digital-bitbox.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
@@ -49,10 +50,13 @@ interface Props {
   setWallet: TSetWallet;
   unlockWeb3: TUnlockWeb3;
   resetWallet: TResetWallet;
+  showNotification: TShowNotification;
   wallet: IWallet;
   hidden?: boolean;
   offline: boolean;
   disabledWallets?: string[];
+  isWalletPending: AppState['wallet']['isWalletPending'];
+  isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
 
 interface State {
@@ -210,6 +214,15 @@ export class WalletDecrypt extends Component<Props, State> {
         value={this.state.value}
         onChange={this.onChange}
         onUnlock={this.onUnlock}
+        showNotification={this.props.showNotification}
+        isWalletPending={
+          this.state.selectedWalletKey === 'keystore-file' ? this.props.isWalletPending : undefined
+        }
+        isPasswordPending={
+          this.state.selectedWalletKey === 'keystore-file'
+            ? this.props.isPasswordPending
+            : undefined
+        }
       />
     );
   }
@@ -376,7 +389,9 @@ export class WalletDecrypt extends Component<Props, State> {
 function mapStateToProps(state: AppState) {
   return {
     offline: state.config.offline,
-    wallet: state.wallet.inst
+    wallet: state.wallet.inst,
+    isWalletPending: state.wallet.isWalletPending,
+    isPasswordPending: state.wallet.isPasswordPending
   };
 }
 
@@ -387,5 +402,6 @@ export default connect(mapStateToProps, {
   unlockWeb3,
   setWallet,
   resetWallet,
-  resetTransactionState: reset
+  resetTransactionState: reset,
+  showNotification
 })(WalletDecrypt);
