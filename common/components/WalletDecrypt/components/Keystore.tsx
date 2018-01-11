@@ -1,6 +1,8 @@
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
+import Spinner from 'components/ui/Spinner';
+import { TShowNotification } from 'actions/notifications';
 
 export interface KeystoreValue {
   file: string;
@@ -18,15 +20,23 @@ function isPassRequired(file: string): boolean {
   return passReq;
 }
 
+function isValidFile(rawFile: File): boolean {
+  const fileType = rawFile.type;
+  return fileType === '' || fileType === 'application/json';
+}
+
 export class KeystoreDecrypt extends Component {
   public props: {
     value: KeystoreValue;
+    isWalletPending: boolean;
+    isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
     onUnlock(): void;
+    showNotification(level: string, message: string): TShowNotification;
   };
 
   public render() {
-    const { file, password } = this.props.value;
+    const { isWalletPending, isPasswordPending, value: { file, password } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
@@ -44,7 +54,8 @@ export class KeystoreDecrypt extends Component {
               {translate('ADD_Radio_2_short')}
             </a>
           </label>
-          <div className={file.length && passReq ? '' : 'hidden'}>
+          {isWalletPending ? <Spinner /> : ''}
+          <div className={file.length && isPasswordPending ? '' : 'hidden'}>
             <p>{translate('ADD_Label_3')}</p>
             <input
               className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
@@ -97,10 +108,15 @@ export class KeystoreDecrypt extends Component {
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq
+        valid: keystore.length && !passReq,
+        password: ''
       });
+      this.props.onUnlock();
     };
-
-    fileReader.readAsText(inputFile, 'utf-8');
+    if (isValidFile(inputFile)) {
+      fileReader.readAsText(inputFile, 'utf-8');
+    } else {
+      this.props.showNotification('danger', translateRaw('ERROR_3'));
+    }
   };
 }
