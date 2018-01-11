@@ -7,35 +7,50 @@ import './AdvancedGas.scss';
 interface Props {
   gasPrice: string;
   gasLimit: string;
+  nonce: string;
   changeGasPrice(gwei: string): void;
   changeGasLimit(wei: string): void;
+  changeNonce(nonce: string): void;
 }
 
 export default class AdvancedGas extends React.Component<Props> {
   public render() {
     return (
       <div className="AdvancedGas row form-group">
-        <div className="col-md-3 col-sm-6 col-xs-12">
+        <div className="col-md-4 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
           <input
             className="form-control"
             type="number"
+            placeholder="e.g. 40"
             value={this.props.gasPrice}
             onChange={this.handleGasPriceChange}
           />
         </div>
 
-        <div className="col-md-3 col-sm-6 col-xs-12">
+        <div className="col-md-4 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_4')}</label>
           <input
             className="form-control"
             type="number"
+            placeholder="e.g. 21000"
             value={this.props.gasLimit}
             onChange={this.handleGasLimitChange}
           />
         </div>
 
-        <div className="col-md-6 col-sm-12">
+        <div className="col-md-4 col-sm-12">
+          <label>{translate('OFFLINE_Step2_Label_5')}</label>
+          <input
+            className="form-control"
+            type="number"
+            placeholder="e.g. 7"
+            value={this.props.nonce}
+            onChange={this.handleNonceChange}
+          />
+        </div>
+
+        <div className="col-md-12">
           <label>{translate('OFFLINE_Step2_Label_6')}</label>
           <DataFieldFactory
             withProps={({ data, onChange }) => (
@@ -68,5 +83,9 @@ export default class AdvancedGas extends React.Component<Props> {
 
   private handleGasLimitChange = (ev: React.FormEvent<HTMLInputElement>) => {
     this.props.changeGasLimit(ev.currentTarget.value);
+  };
+
+  private handleNonceChange = (ev: React.FormEvent<HTMLInputElement>) => {
+    this.props.changeNonce(ev.currentTarget.value);
   };
 }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import {
-  NonceField,
   AddressField,
   AmountField,
   GasSlider,
@@ -31,11 +30,6 @@ const content = (
     <div className="row form-group">
       <div className="col-xs-12">
         <GasSlider />
-      </div>
-    </div>
-    <div className="row form-group">
-      <div className="col-xs-12">
-        <NonceField />
       </div>
     </div>
 

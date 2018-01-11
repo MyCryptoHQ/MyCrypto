@@ -22,6 +22,7 @@ interface Props {
   // Data
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   gasLimit: AppState['transaction']['fields']['gasLimit'];
+  nonce: AppState['transaction']['fields']['nonce'];
   offline: AppState['config']['offline'];
   network: AppState['config']['network'];
   // Actions
@@ -53,7 +54,7 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   public render() {
-    const { gasPrice, gasLimit, offline, disableAdvanced } = this.props;
+    const { gasPrice, gasLimit, nonce, offline, disableAdvanced } = this.props;
     const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
     return (
@@ -62,8 +63,10 @@ class GasSlider extends React.Component<Props, State> {
           <AdvancedGas
             gasPrice={gasPrice.raw}
             gasLimit={gasLimit.raw}
+            nonce={nonce.raw}
             changeGasPrice={this.props.inputGasPrice}
             changeGasLimit={this.props.inputGasLimit}
+            changeNonce={this.props.inputNonce}
           />
         ) : (
           <SimpleGas gasPrice={gasPrice.raw} changeGasPrice={this.props.inputGasPrice} />
@@ -94,6 +97,7 @@ function mapStateToProps(state: AppState) {
   return {
     gasPrice: state.transaction.fields.gasPrice,
     gasLimit: state.transaction.fields.gasLimit,
+    nonce: state.transaction.fields.nonce,
     offline: state.config.offline,
     network: getNetworkConfig(state)
   };
