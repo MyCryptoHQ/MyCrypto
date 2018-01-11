@@ -93,14 +93,22 @@ export default class AccountInfo extends React.Component<Props, State> {
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a href={blockExplorer.address(address)} target="_blank">
+                  <a
+                    href={blockExplorer.address(address)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {`${network.name} (${blockExplorer.name})`}
                   </a>
                 </li>
               )}
               {!!tokenExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a href={tokenExplorer.address(address)} target="_blank">
+                  <a
+                    href={tokenExplorer.address(address)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {`Tokens (${tokenExplorer.name})`}
                   </a>
                 </li>

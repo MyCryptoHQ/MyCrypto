@@ -27,7 +27,12 @@ export default class SwapInfoHeaderTitle extends Component<SwapInfoHeaderTitlePr
           <h3 className="SwapInfo-top-title">{translate('SWAP_information')}</h3>
         </div>
         <div className="col-xs-3">
-          <a className="SwapInfo-top-logo" href={bityReferralURL} target="_blank" rel="noopener">
+          <a
+            className="SwapInfo-top-logo"
+            href={bityReferralURL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img className="SwapInfo-top-logo-img" src={logoToRender} />
           </a>
         </div>

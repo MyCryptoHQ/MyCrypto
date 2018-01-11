@@ -36,7 +36,7 @@ interface NewTabLinkProps extends AAttributes {
 }
 
 const NewTabLink = ({ content, children, ...rest }: NewTabLinkProps) => (
-  <a target="_blank" rel="noopener" {...rest}>
+  <a target="_blank" rel="noopener noreferrer" {...rest}>
     {content || children}
   </a>
 );

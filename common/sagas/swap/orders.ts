@@ -301,6 +301,9 @@ export function* shapeshiftOrderTimeRemaining(): SagaIterator {
               yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
             }
             break;
+          case 'received':
+            yield put(stopOrderTimerSwap());
+            break;
           case 'complete':
             yield put(stopPollShapeshiftOrderStatus());
             yield put(stopLoadShapeshiftRatesSwap());
