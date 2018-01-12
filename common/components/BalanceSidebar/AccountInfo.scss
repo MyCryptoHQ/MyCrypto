@@ -1,5 +1,5 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .AccountInfo {
   &-section {
@@ -22,17 +22,34 @@
   &-address {
     @include clearfix;
 
+    &-section {
+      display: flex;
+      max-width: 100%;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+
+    &-wrapper {
+      max-width: calc(100% - 44px - 24px);
+    }
+
     &-icon {
-      float: left;
       width: 44px;
       height: 44px;
       margin-right: $space-md;
     }
 
     &-addr {
-      width: 100%;
       word-wrap: break-word;
       @include mono;
+    }
+
+    &-confirm {
+      display: flex;
+      align-items: center;
+      .Spinner {
+        margin-right: 16px;
+      }
     }
   }
 
@@ -53,10 +70,8 @@
 .account-info {
   padding-left: 1em;
   margin: 0;
-  li {
-  }
   table {
-    font-weight: 200;
+    font-weight: 300;
     border-bottom: 0;
     min-width: 200px;
     td {

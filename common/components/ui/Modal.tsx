@@ -10,11 +10,11 @@ export interface IButton {
 }
 interface Props {
   isOpen?: boolean;
-  title: string | React.ReactElement<any>;
+  title?: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
   buttons?: IButton[];
-  handleClose(): void;
+  handleClose?(): void;
 }
 
 export default class Modal extends Component<Props, {}> {
@@ -44,12 +44,15 @@ export default class Modal extends Component<Props, {}> {
       <div>
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
         <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
-          <div className="Modal-header">
-            <h2 className="Modal-header-title">{title}</h2>
-            <button className="Modal-header-close" onClick={handleClose}>
-              <img className="Modal-header-close-icon" src={closeIcon} />
-            </button>
-          </div>
+          {title && (
+            <div className="Modal-header">
+              <h2 className="Modal-header-title">{title}</h2>
+              <button className="Modal-header-close" onClick={handleClose}>
+                <img className="Modal-header-close-icon" src={closeIcon} />
+              </button>
+            </div>
+          )}
+
           <div className="Modal-content">{isOpen && children}</div>
           {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
         </div>
@@ -70,6 +73,9 @@ export default class Modal extends Component<Props, {}> {
     }
 
     if (ev.key === 'Escape' || ev.keyCode === 27) {
+      if (!this.props.handleClose) {
+        return;
+      }
       this.props.handleClose();
     }
   };

@@ -20,6 +20,7 @@ interface Props {
   ratesError?: State['ratesError'];
   fetchCCRates: TFetchCCRates;
   network: NetworkConfig;
+  isOffline: boolean;
 }
 
 interface CmpState {
@@ -44,15 +45,19 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    const { balance, tokenBalances } = this.props;
-    if (nextProps.balance !== balance || nextProps.tokenBalances !== tokenBalances) {
+    const { balance, tokenBalances, isOffline } = this.props;
+    if (
+      nextProps.balance !== balance ||
+      nextProps.tokenBalances !== tokenBalances ||
+      nextProps.isOffline !== isOffline
+    ) {
       this.makeBalanceLookup(nextProps);
       this.fetchRates(nextProps);
     }
   }
 
   public render() {
-    const { balance, tokenBalances, rates, ratesError, network } = this.props;
+    const { balance, tokenBalances, rates, ratesError, isOffline, network } = this.props;
     const { currency } = this.state;
 
     // There are a bunch of reasons why the incorrect balances might be rendered
@@ -130,7 +135,13 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           </select>
         </h5>
 
-        <ul className="EquivalentValues-values">{valuesEl}</ul>
+        {isOffline ? (
+          <div className="EquivalentValues-offline well well-sm">
+            Equivalent values are unavailable offline
+          </div>
+        ) : (
+          <ul className="EquivalentValues-values">{valuesEl}</ul>
+        )}
       </div>
     );
   }
@@ -154,8 +165,8 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   }
 
   private fetchRates(props: Props) {
-    // Duck out if we haven't gotten balances yet
-    if (!props.balance || !props.tokenBalances) {
+    // Duck out if we haven't gotten balances yet, or we're not going to
+    if (!props.balance || !props.tokenBalances || props.isOffline) {
       return;
     }
 

@@ -53,28 +53,6 @@ describe('config reducer', () => {
     });
   });
 
-  it('should handle CONFIG_FORCE_OFFLINE', () => {
-    const forceOfflineTrue = {
-      ...INITIAL_STATE,
-      forceOffline: true
-    };
-
-    const forceOfflineFalse = {
-      ...INITIAL_STATE,
-      forceOffline: false
-    };
-
-    expect(config(forceOfflineTrue, configActions.forceOfflineConfig())).toEqual({
-      ...forceOfflineTrue,
-      forceOffline: false
-    });
-
-    expect(config(forceOfflineFalse, configActions.forceOfflineConfig())).toEqual({
-      ...forceOfflineFalse,
-      forceOffline: true
-    });
-  });
-
   it('should handle CONFIG_ADD_CUSTOM_NODE', () => {
     expect(config(undefined, configActions.addCustomNode(custNode))).toEqual({
       ...INITIAL_STATE,
