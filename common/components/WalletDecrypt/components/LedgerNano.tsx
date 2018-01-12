@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
-import Ledger3 from 'vendor/ledger3';
-import LedgerEth from 'vendor/ledger-eth';
+import ledger from 'ledgerco';
 import DPATHS from 'config/dpaths';
 import { Spinner } from 'components/ui';
 
@@ -136,35 +135,26 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
       showTip: false
     });
 
-    const ledger = new Ledger3('w0w');
-    const ethApp = new LedgerEth(ledger);
-
-    ethApp.getAddress(
-      dPath,
-      (res, err) => {
-        if (err) {
-          if (err.errorCode === 5) {
-            this.showTip();
-          }
-          err = ethApp.getError(err);
-        }
-
-        if (res) {
+    ledger.comm_u2f.create_async().then(comm => {
+      new ledger.eth(comm)
+        .getAddress_async(dPath, false, true)
+        .then(res => {
           this.setState({
             publicKey: res.publicKey,
             chainCode: res.chainCode,
             isLoading: false
           });
-        } else {
+        })
+        .catch(err => {
+          if (err.metaData.code === 5) {
+            this.showTip();
+          }
           this.setState({
-            error: err,
+            error: err.metaData.type,
             isLoading: false
           });
-        }
-      },
-      false,
-      true
-    );
+        });
+    });
   };
 
   private handleCancel = () => {
