@@ -73,6 +73,7 @@ interface ReduxStateProps {
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
   paymentAddress: string | null;
+  isOffline: boolean;
 }
 
 interface ReduxActionProps {
@@ -98,13 +99,25 @@ interface ReduxActionProps {
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
-    this.props.loadBityRatesRequestedSwap();
-    this.props.loadShapeshiftRatesRequestedSwap();
+    if (!this.props.isOffline) {
+      this.loadRates();
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: ReduxStateProps) {
+    if (this.props.isOffline && !nextProps.isOffline) {
+      this.loadRates();
+    }
   }
 
   public componentWillUnmount() {
     this.props.stopLoadBityRatesSwap();
     this.props.stopLoadShapeshiftRatesSwap();
+  }
+
+  public loadRates() {
+    this.props.loadBityRatesRequestedSwap();
+    this.props.loadShapeshiftRatesRequestedSwap();
   }
 
   public render() {
@@ -222,7 +235,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     const CurrentRatesProps = { provider, bityRates, shapeshiftRates };
 
     return (
-      <TabSection>
+      <TabSection isUnavailableOffline={true}>
         <section className="Tab-content swap-tab">
           {step === 1 && <CurrentRates {...CurrentRatesProps} />}
           {step === 1 && <ShapeshiftBanner />}
@@ -257,7 +270,8 @@ function mapStateToProps(state: AppState) {
     isPostingOrder: state.swap.isPostingOrder,
     bityOrderStatus: state.swap.bityOrderStatus,
     shapeshiftOrderStatus: state.swap.shapeshiftOrderStatus,
-    paymentAddress: state.swap.paymentAddress
+    paymentAddress: state.swap.paymentAddress,
+    isOffline: state.config.offline
   };
 }
 

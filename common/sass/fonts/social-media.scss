@@ -1,11 +1,7 @@
 @font-face {
   font-family: 'social-media';
-  src: url('../assets/fonts/social-media.eot');
-  src: url('../assets/fonts/social-media.eot') format('embedded-opentype'),
-    url('../assets/fonts/social-media.woff2') format('woff2'),
-    url('../assets/fonts/social-media.woff') format('woff'),
-    url('../assets/fonts/social-media.ttf') format('truetype'),
-    url('../assets/fonts/social-media.svg') format('svg');
+  src: url('../assets/fonts/social-media.woff2') format('woff2'),
+    url('../assets/fonts/social-media.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }

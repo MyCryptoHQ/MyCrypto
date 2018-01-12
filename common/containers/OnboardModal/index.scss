@@ -1,0 +1,18 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.OnboardModal {
+  // Additional styles for the Stepper Component
+  &-stepper {
+    a,
+    span {
+      position: relative;
+      bottom: 3px;
+    }
+  }
+  @media screen and (max-width: $screen-xs) {
+    &-stepper {
+      display: none;
+    }
+  }
+}

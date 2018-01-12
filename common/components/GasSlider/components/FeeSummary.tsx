@@ -20,13 +20,14 @@ interface Props {
   gasLimit: AppState['transaction']['fields']['gasLimit'];
   rates: AppState['rates']['rates'];
   network: AppState['config']['network'];
+  isOffline: AppState['config']['offline'];
   // Component props
   render(data: RenderData): React.ReactElement<string> | string;
 }
 
 class FeeSummary extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasLimit, rates, network } = this.props;
+    const { gasPrice, gasLimit, rates, network, isOffline } = this.props;
 
     const feeBig = gasPrice.value && gasLimit.value && gasPrice.value.mul(gasLimit.value);
     const fee = (
@@ -42,7 +43,7 @@ class FeeSummary extends React.Component<Props> {
     const usdBig = network.isTestnet
       ? new BN(0)
       : feeBig && rates[network.unit] && feeBig.muln(rates[network.unit].USD);
-    const usd = (
+    const usd = isOffline ? null : (
       <UnitDisplay
         value={usdBig}
         unit="ether"
@@ -71,7 +72,8 @@ function mapStateToProps(state: AppState) {
     gasPrice: state.transaction.fields.gasPrice,
     gasLimit: state.transaction.fields.gasLimit,
     rates: state.rates.rates,
-    network: getNetworkConfig(state)
+    network: getNetworkConfig(state),
+    isOffline: state.config.offline
   };
 }
 

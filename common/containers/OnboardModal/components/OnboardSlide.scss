@@ -1,0 +1,42 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.OnboardSlide {
+  height: 400px;
+  width: 650px;
+
+  &-body {
+    display: flex;
+  }
+
+  &-content {
+    flex: 0.7;
+  }
+
+  &-image {
+    flex: 0.3;
+  }
+
+  &-header {
+    text-align: center;
+  }
+
+  @media screen and (max-width: $screen-xs) {
+    width: 100%;
+
+    &-body {
+      flex-direction: column;
+    }
+
+    &-content {
+      order: 2;
+    }
+
+    &-image {
+      order: 1;
+      align-self: center;
+      width: 130px;
+      max-height: 200px;
+    }
+  }
+}

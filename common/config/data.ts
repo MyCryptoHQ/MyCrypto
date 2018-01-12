@@ -67,7 +67,7 @@ export interface Token {
 
 export interface NetworkContract {
   name: string;
-  address: string;
+  address?: string;
   abi: string;
 }
 

@@ -7,7 +7,6 @@ import {
   pollOfflineStatus,
   handlePollOfflineStatus,
   handleNodeChangeIntent,
-  handleTogglePollOfflineStatus,
   reload,
   unsetWeb3Node,
   unsetWeb3NodeOnWalletEvent,
@@ -18,7 +17,6 @@ import {
   getNode,
   getNodeConfig,
   getOffline,
-  getForceOffline,
   getCustomNodeConfigs,
   getCustomNetworkConfigs
 } from 'selectors/config';
@@ -43,12 +41,13 @@ describe('pollOfflineStatus*', () => {
     }
   };
   const isOffline = true;
-  const isForcedOffline = true;
   const raceSuccess = {
-    pingSucceeded: true
+    pingSucceeded: true,
+    timeout: false
   };
   const raceFailure = {
-    pingSucceeded: false
+    pingSucceeded: false,
+    timeout: true
   };
 
   let originalHidden;
@@ -88,49 +87,32 @@ describe('pollOfflineStatus*', () => {
     expect(data.gen.next(node).value).toEqual(select(getOffline));
   });
 
-  it('should select getForceOffline', () => {
-    data.isOfflineClone = data.gen.clone();
-    expect(data.gen.next(isOffline).value).toEqual(select(getForceOffline));
-  });
-
-  it('should be done if isForcedOffline', () => {
-    data.clone1 = data.gen.clone();
-    expect(data.clone1.next(isForcedOffline).done).toEqual(true);
-  });
-
   it('should call delay if document is hidden', () => {
-    data.clone2 = data.gen.clone();
+    data.hiddenDoc = data.gen.clone();
     doc.hidden = true;
-
-    expect(data.clone2.next(!isForcedOffline).value).toEqual(call(delay, 1000));
+    expect(data.hiddenDoc.next(!isOffline).value).toEqual(call(delay, 1000));
+    doc.hidden = false;
   });
 
   it('should race pingSucceeded and timeout', () => {
-    doc.hidden = false;
-    expect(data.gen.next(!isForcedOffline).value).toMatchSnapshot();
+    data.isOfflineClone = data.gen.clone();
+    data.shouldDelayClone = data.gen.clone();
+    expect(data.gen.next(isOffline).value).toMatchSnapshot();
   });
 
-  it('should put showNotification and put toggleOfflineConfig if pingSucceeded && isOffline', () => {
+  it('should toggle offline and show notification if navigator disagrees with isOffline and ping succeeds', () => {
     expect(data.gen.next(raceSuccess).value).toEqual(
       put(showNotification('success', 'Your connection to the network has been restored!', 3000))
     );
     expect(data.gen.next().value).toEqual(put(toggleOfflineConfig()));
   });
 
-  it('should put showNotification and put toggleOfflineConfig if !pingSucceeded && !isOffline', () => {
-    nav.onLine = !isOffline;
-
-    data.isOfflineClone.next(!isOffline);
-    data.isOfflineClone.next(!isForcedOffline);
-
-    data.clone3 = data.isOfflineClone.clone();
-
+  it('should toggle offline and show notification if navigator agrees with isOffline and ping fails', () => {
+    nav.onLine = isOffline;
+    expect(data.isOfflineClone.next(!isOffline));
     expect(data.isOfflineClone.next(raceFailure).value).toMatchSnapshot();
     expect(data.isOfflineClone.next().value).toEqual(put(toggleOfflineConfig()));
-  });
-
-  it('should call delay when neither case is true', () => {
-    expect(data.clone3.next(raceSuccess).value).toEqual(call(delay, 5000));
+    nav.onLine = !isOffline;
   });
 });
 
@@ -149,30 +131,6 @@ describe('handlePollOfflineStatus*', () => {
 
   it('should cancel pollOfflineStatus', () => {
     expect(gen.next().value).toEqual(cancel(mockTask));
-  });
-});
-
-describe('handleTogglePollOfflineStatus*', () => {
-  const data = {} as any;
-  data.gen = cloneableGenerator(handleTogglePollOfflineStatus)();
-  const isForcedOffline = true;
-
-  it('should select getForceOffline', () => {
-    expect(data.gen.next().value).toEqual(select(getForceOffline));
-  });
-
-  it('should fork handlePollOfflineStatus when isForcedOffline', () => {
-    data.clone = data.gen.clone();
-    expect(data.gen.next(isForcedOffline).value).toEqual(fork(handlePollOfflineStatus));
-  });
-
-  it('should call handlePollOfflineStatus when !isForcedOffline', () => {
-    expect(data.clone.next(!isForcedOffline).value).toEqual(call(handlePollOfflineStatus));
-  });
-
-  it('should be done', () => {
-    expect(data.gen.next().done).toEqual(true);
-    expect(data.clone.next().done).toEqual(true);
   });
 });
 
