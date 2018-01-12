@@ -22,9 +22,8 @@ export interface CallbackProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
-type Props = DispatchProps & DispatchProps & OwnProps;
+type Props = DispatchProps & OwnProps;
 
-//TODO: add ens resolving
 class AddressFieldFactoryClass extends React.Component<Props, {}> {
   public componentDidMount() {
     // this 'to' parameter can be either token or actual field related

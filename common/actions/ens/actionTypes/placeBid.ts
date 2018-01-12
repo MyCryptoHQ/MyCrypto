@@ -9,6 +9,7 @@ export interface BidPlaceRequested {
     secret: string;
   };
 }
+
 export interface BidPlaceSucceeded {
   type: TypeKeys.ENS_BID_PLACE_SUCCEEDED;
   payload: {};

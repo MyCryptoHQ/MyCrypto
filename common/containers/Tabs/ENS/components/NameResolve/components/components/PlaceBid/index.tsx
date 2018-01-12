@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { BidMask, BidValue, Name, SecretPhrase } from './components';
 import { GenerateBid } from 'components/GenerateBid';
 import { setCurrentValue, TSetCurrentValue } from 'actions/transaction';
-import { GasField, NonceField } from 'components';
+import { GasLimitField, NonceField } from 'components';
 
 interface DispatchProps {
   setCurrentValue: TSetCurrentValue;
@@ -44,7 +44,7 @@ class PlaceBid extends Component<Props, State> {
         <BidValue />
         <BidMask />
         <SecretPhrase />
-        <GasField />
+        <GasLimitField />
         <NonceField />
         <GenerateBid onComplete={this.toggleModal} />
         {/* TODO: should the bid modal have all its data given to it through props, or get it from the redux state itself? */}

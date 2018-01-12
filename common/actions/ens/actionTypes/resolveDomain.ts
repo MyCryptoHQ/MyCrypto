@@ -11,6 +11,11 @@ export interface ResolveDomainSucceeded {
   payload: { domain: string; domainData: DomainRequest };
 }
 
+export interface ResolveDomainCached {
+  type: TypeKeys.ENS_RESOLVE_DOMAIN_CACHED;
+  payload: { domain: string };
+}
+
 export interface ResolveDomainFailed {
   type: TypeKeys.ENS_RESOLVE_DOMAIN_FAILED;
   payload: { domain: string; error: Error };
@@ -19,4 +24,5 @@ export interface ResolveDomainFailed {
 export type ResolveDomainAction =
   | ResolveDomainRequested
   | ResolveDomainSucceeded
-  | ResolveDomainFailed;
+  | ResolveDomainFailed
+  | ResolveDomainCached;

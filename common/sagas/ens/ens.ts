@@ -1,22 +1,34 @@
 import {
-  ResolveDomainRequested,
   resolveDomainFailed,
   resolveDomainSucceeded,
   BidPlaceRequested,
   placeBidSucceeded,
-  placeBidFailed
+  placeBidFailed,
+  ResolveDomainRequested,
+  resolveDomainCached
 } from 'actions/ens';
 import { TypeKeys } from 'actions/ens/constants';
 import { getWalletInst } from 'selectors/wallet';
-import { SagaIterator } from 'redux-saga';
+import { SagaIterator, delay, buffers } from 'redux-saga';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
 import { DomainRequest } from 'libs/ens';
-import { takeEvery, call, put, select, all, apply } from 'redux-saga/effects';
+import {
+  takeEvery,
+  call,
+  put,
+  select,
+  all,
+  apply,
+  actionChannel,
+  take,
+  fork,
+  race
+} from 'redux-saga/effects';
 import { showNotification } from 'actions/notifications';
 import ENS from 'libs/ens/contracts';
 import { resolveDomainRequest } from './modeMap';
-import { getCurrentDomainName } from 'selectors/ens';
+import { getCurrentDomainName, getCurrentDomainData } from 'selectors/ens';
 import { makeEthCallAndDecode } from 'sagas/ens/helpers';
 import networkConfigs from 'libs/ens/networkConfigs';
 import { AppState } from 'reducers';
@@ -26,17 +38,57 @@ import { Data } from 'libs/units';
 
 const { main } = networkConfigs;
 
-function* resolveDomain(action: ResolveDomainRequested): SagaIterator {
-  const { domain } = action.payload;
-  const node: INode = yield select(getNodeLib);
+function* shouldResolveDomain(domain: string) {
   try {
-    const domainData: DomainRequest = yield call(resolveDomainRequest, domain, node);
-    const domainSuccessAction = resolveDomainSucceeded(domain, domainData);
-    yield put(domainSuccessAction);
+    const currentDomainName = yield select(getCurrentDomainName);
+    if (currentDomainName === domain) {
+      const currentDomainData = yield select(getCurrentDomainData);
+      if (currentDomainData) {
+        return false;
+      }
+    }
+    return true;
   } catch (e) {
-    const domainFailAction = resolveDomainFailed(domain, e);
-    yield put(domainFailAction);
-    yield put(showNotification('danger', e.message, 5000));
+    console.log(e);
+  }
+}
+
+function* resolveDomain(): SagaIterator {
+  const requestChan = yield actionChannel(
+    TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED,
+    buffers.sliding(1)
+  );
+
+  while (true) {
+    const { payload }: ResolveDomainRequested = yield take(requestChan);
+
+    const { domain } = payload;
+
+    try {
+      const shouldResolve = yield call(shouldResolveDomain, domain);
+      if (!shouldResolve) {
+        yield put(resolveDomainCached({ domain }));
+        continue;
+      }
+
+      const node: INode = yield select(getNodeLib);
+
+      const result = yield race({
+        domainData: call(resolveDomainRequest, domain, node),
+        err: call(delay, 2000)
+      });
+      const { domainData } = result;
+      if (!domainData) {
+        throw Error();
+      }
+      const domainSuccessAction = resolveDomainSucceeded(domain, domainData);
+      yield put(domainSuccessAction);
+      yield;
+    } catch (e) {
+      const domainFailAction = resolveDomainFailed(domain, e);
+      yield put(domainFailAction);
+      yield put(showNotification('danger', e.message, 5000));
+    }
   }
 }
 
@@ -85,8 +137,5 @@ function* placeBid({ payload }: BidPlaceRequested): SagaIterator {
 }
 
 export function* ens(): SagaIterator {
-  yield all([
-    takeEvery(TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED, resolveDomain),
-    takeEvery(TypeKeys.ENS_BID_PLACE_REQUESTED, placeBid)
-  ]);
+  yield all([fork(resolveDomain), takeEvery(TypeKeys.ENS_BID_PLACE_REQUESTED, placeBid)]);
 }

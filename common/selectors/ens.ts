@@ -1,12 +1,38 @@
 import { AppState } from 'reducers';
+import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 
 export const getEns = (state: AppState) => state.ens;
 
 export const getCurrentDomainName = (state: AppState) => getEns(state).domainSelector.currentDomain;
 
+export const getDomainRequests = (state: AppState) => getEns(state).domainRequests;
+
 export const getCurrentDomainData = (state: AppState) => {
-  const currentName = getCurrentDomainName(state);
-  return currentName ? getEns(state).domainRequests[currentName] : null;
+  const currentDomain = getCurrentDomainName(state);
+  const domainRequests = getDomainRequests(state);
+
+  if (!currentDomain || !domainRequests[currentDomain] || domainRequests[currentDomain].error) {
+    return null;
+  }
+
+  const domainData = domainRequests[currentDomain].data || null;
+  return domainData;
+};
+
+export const getResolvedAddress = (state: AppState) => {
+  const data = getCurrentDomainData(state);
+  if (!data) {
+    return null;
+  }
+
+  if (isOwned(data)) {
+    return data.resolvedAddress;
+  }
+  return null;
+};
+
+const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
+  return !!(data as IOwnedDomainRequest).ownerAddress;
 };
 
 export const getBidDataEncoded = (state: AppState) => getEns(state).placeBid.bidPlaced;

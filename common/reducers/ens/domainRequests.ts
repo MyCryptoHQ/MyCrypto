@@ -2,7 +2,8 @@ import {
   EnsAction,
   ResolveDomainRequested,
   ResolveDomainFailed,
-  ResolveDomainSucceeded
+  ResolveDomainSucceeded,
+  ResolveDomainCached
 } from 'actions/ens';
 import { DomainRequest } from 'libs/ens';
 import { TypeKeys } from 'actions/ens/constants';
@@ -27,6 +28,7 @@ export enum REQUEST_STATES {
 const resolveDomainRequested = (state: State, action: ResolveDomainRequested): State => {
   const { domain } = action.payload;
   const nextDomain = {
+    ...state[domain],
     state: REQUEST_STATES.pending
   };
 
@@ -37,6 +39,16 @@ const resolveDomainSuccess = (state: State, action: ResolveDomainSucceeded): Sta
   const { domain, domainData } = action.payload;
   const nextDomain = {
     data: domainData,
+    state: REQUEST_STATES.success
+  };
+
+  return { ...state, [domain]: nextDomain };
+};
+
+const resolveDomainCached = (state: State, action: ResolveDomainCached): State => {
+  const { domain } = action.payload;
+  const nextDomain = {
+    ...state[domain],
     state: REQUEST_STATES.success
   };
 
@@ -62,6 +74,8 @@ export default (state: State = INITIAL_STATE, action: EnsAction): State => {
       return resolveDomainSuccess(state, action);
     case TypeKeys.ENS_RESOLVE_DOMAIN_FAILED:
       return resolveDomainFailed(state, action);
+    case TypeKeys.ENS_RESOLVE_DOMAIN_CACHED:
+      return resolveDomainCached(state, action);
     default:
       return state;
   }

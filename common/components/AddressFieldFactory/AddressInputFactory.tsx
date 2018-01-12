@@ -7,6 +7,7 @@ import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transactio
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
+import { addHexPrefix } from 'ethereumjs-util';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -23,7 +24,8 @@ type Props = OwnProps & StateProps;
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
     const { currentTo, onChange, isValid, withProps } = this.props;
-    const { raw } = currentTo;
+    const { value } = currentTo;
+    const addr = addHexPrefix(value ? value.toString('hex') : '0');
     return (
       <div className="row form-group">
         <div className="col-xs-11">
@@ -43,7 +45,7 @@ class AddressInputFactoryClass extends Component<Props> {
           {/*<EnsAddress ensAddress={ensAddress} />*/}
         </div>
         <div className="col-xs-1" style={{ padding: 0 }}>
-          <Identicon address={/*ensAddress ||*/ raw} />
+          <Identicon address={addr} />
         </div>
       </div>
     );
