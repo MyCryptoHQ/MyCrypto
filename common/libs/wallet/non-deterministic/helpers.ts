@@ -32,7 +32,7 @@ export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
     unlock: () => Promise.resolve()
   });
 
-export const determineKeystoreType = (file: string): string => {
+const determineKeystoreType = (file: string): string => {
   try {
     const parsed = JSON.parse(file);
     if (parsed.encseed) {
@@ -54,7 +54,7 @@ export const determineKeystoreType = (file: string): string => {
 };
 
 export const isKeystoreValid = (file: string): boolean => {
-  if (determineKeystoreType(file)) {
+  if (!determineKeystoreType(file)) {
     throw new Error('Invalid keystore');
   }
   return !!determineKeystoreType(file);
