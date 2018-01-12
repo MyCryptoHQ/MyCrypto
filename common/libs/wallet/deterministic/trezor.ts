@@ -52,11 +52,14 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
 
   // trezor-connect.js doesn't provide the promise return type
-  public displayAddress = (dPath?: string): Promise<any> => {
+  public displayAddress = (dPath?: string, index?: number): Promise<any> => {
     if (!dPath) {
       dPath = this.dPath;
     }
-    return TrezorConnect.ethereumGetAddress(dPath);
+    if (!index) {
+      index = this.index;
+    }
+    return TrezorConnect.ethereumGetAddress(dPath + '/' + index);
   };
 
   public getWalletType(): string {
