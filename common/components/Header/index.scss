@@ -1,5 +1,5 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 $small-size: 900px;
 
@@ -16,7 +16,8 @@ $small-size: 900px;
 }
 
 @keyframes dropdown-is-flashing {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.8;
   }
   50% {
@@ -109,7 +110,7 @@ $small-size: 900px;
 
     &-right {
       font-size: 18px;
-      font-weight: 200;
+      font-weight: 300;
       color: white;
       flex: 1 auto;
       text-align: right;
@@ -139,7 +140,7 @@ $small-size: 900px;
 
         @media screen and (max-width: $screen-xs) {
           .btn {
-            padding: .3rem .5rem;
+            padding: 0.3rem 0.5rem;
           }
         }
 
