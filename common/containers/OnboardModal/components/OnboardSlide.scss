@@ -69,9 +69,13 @@
       order: 1;
       align-self: center;
       width: auto;
-      padding: 0;
-      height: 200px;
-      margin-bottom: $space * 1.5;
+      height: 180px;
+      margin-bottom: $space * 2;
+
+      &.is-left,
+      &.is-right {
+        padding: 0;
+      }
 
       &-img {
         width: auto;
