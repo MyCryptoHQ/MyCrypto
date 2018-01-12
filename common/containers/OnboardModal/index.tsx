@@ -76,7 +76,10 @@ class OnboardModal extends React.Component<Props, State> {
 
         const onboardResumeMessage = translate('ONBOARD_resume');
 
-        this.props.showNotification('info', onboardResumeMessage, 30000);
+        // Wait a sec so it doesn't get lost in the page-load
+        setTimeout(() => {
+          this.props.showNotification('info', onboardResumeMessage, 6000);
+        }, 1200);
       }
     }
   }
