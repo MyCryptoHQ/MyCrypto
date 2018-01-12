@@ -16,7 +16,8 @@ const webpackConfig = {
   output: {
     path: _.outputPath,
     filename: '[name].js',
-    publicPath: config.publicPath
+    publicPath: config.publicPath,
+    crossOriginLoading: "anonymous"
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
