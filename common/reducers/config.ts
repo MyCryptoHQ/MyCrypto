@@ -28,7 +28,6 @@ export interface State {
   network: NetworkConfig;
   isChangingNode: boolean;
   offline: boolean;
-  forceOffline: boolean;
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
   latestBlock: string;
@@ -42,7 +41,6 @@ export const INITIAL_STATE: State = {
   network: NETWORKS[NODES[defaultNode].network],
   isChangingNode: false,
   offline: false,
-  forceOffline: false,
   customNodes: [],
   customNetworks: [],
   latestBlock: '???'
@@ -60,6 +58,7 @@ function changeNode(state: State, action: ChangeNodeAction): State {
     ...state,
     nodeSelection: action.payload.nodeSelection,
     node: action.payload.node,
+    network: action.payload.network,
     isChangingNode: false
   };
 }
@@ -75,13 +74,6 @@ function toggleOffline(state: State): State {
   return {
     ...state,
     offline: !state.offline
-  };
-}
-
-function forceOffline(state: State): State {
-  return {
-    ...state,
-    forceOffline: !state.forceOffline
   };
 }
 
@@ -140,8 +132,6 @@ export function config(state: State = INITIAL_STATE, action: ConfigAction): Stat
       return changeNodeIntent(state);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
       return toggleOffline(state);
-    case TypeKeys.CONFIG_FORCE_OFFLINE:
-      return forceOffline(state);
     case TypeKeys.CONFIG_ADD_CUSTOM_NODE:
       return addCustomNode(state, action);
     case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:

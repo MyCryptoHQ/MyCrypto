@@ -19,7 +19,7 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           Please contact{' '}
           <a
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             href={`mailto:support@myetherwallet.com?Subject=${SUBJECT}&body=${DESCRIPTION}`}
           >
             support@myetherwallet.com

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
-import { GasFieldFactory } from 'components/GasFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 
 import { Aux } from 'components/ui';
-import { GenerateTransaction, SendButton, SigningStatus } from 'components';
+import { GenerateTransaction, SendButton, SigningStatus, GasSlider } from 'components';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import translate from 'translations';
 import { getUnit } from 'selectors/transaction';
@@ -69,13 +68,7 @@ class FieldsClass extends Component<Props> {
         </div>
         <div className="row form-group">
           <div className="col-xs-12">
-            <label>{translate('TRANS_gas')} </label>
-
-            <GasFieldFactory
-              withProps={({ gasLimit }) => (
-                <input className="form-control" type="text" value={gasLimit.raw} readOnly={true} />
-              )}
-            />
+            <GasSlider disableAdvanced={true} />
           </div>
         </div>
         <SigningStatus />

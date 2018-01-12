@@ -7,10 +7,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getDecimal, getUnit } from 'selectors/transaction';
+import { getNetworkConfig } from 'selectors/config';
 
 interface StateProps {
   unit: string;
   decimal: number;
+  network: AppState['config']['network'];
 }
 
 class AmountClass extends Component<StateProps> {
@@ -20,14 +22,16 @@ class AmountClass extends Component<StateProps> {
         withSerializedTransaction={serializedTransaction => {
           const transactionInstance = makeTransaction(serializedTransaction);
           const { value, data } = getTransactionFields(transactionInstance);
-          const { decimal, unit } = this.props;
+          const { decimal, unit, network } = this.props;
+          const isToken = unit !== 'ether';
+          const handledValue = isToken
+            ? TokenValue(ERC20.transfer.decodeInput(data)._value)
+            : Wei(value);
           return (
             <UnitDisplay
               decimal={decimal}
-              value={
-                unit === 'ether' ? Wei(value) : TokenValue(ERC20.transfer.decodeInput(data)._value)
-              }
-              symbol={unit}
+              value={handledValue}
+              symbol={isToken ? unit : network.unit}
               checkOffline={false}
             />
           );
@@ -39,5 +43,6 @@ class AmountClass extends Component<StateProps> {
 
 export const Amount = connect((state: AppState) => ({
   decimal: getDecimal(state),
-  unit: getUnit(state)
+  unit: getUnit(state),
+  network: getNetworkConfig(state)
 }))(AmountClass);

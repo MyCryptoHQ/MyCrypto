@@ -18,7 +18,7 @@ const INITIAL_STATE: State = {
   previousUnit: 'ether',
   decimal: getDecimalFromEtherUnit('ether'),
   tokenValue: { raw: '', value: null },
-  tokenTo: { raw: '', value: null },
+  tokenTo: { raw: '', value: null, error: null },
   from: null
 };
 

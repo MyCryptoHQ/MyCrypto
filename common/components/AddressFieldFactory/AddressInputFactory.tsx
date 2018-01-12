@@ -31,7 +31,13 @@ class AddressInputFactoryClass extends Component<Props> {
           <Query
             params={['readOnly']}
             withQuery={({ readOnly }) =>
-              withProps({ currentTo, isValid, onChange, readOnly: !!readOnly })
+              withProps({
+                currentTo,
+                isValid,
+                onChange,
+                readOnly: !!readOnly,
+                errorMsg: currentTo.error
+              })
             }
           />
           {/*<EnsAddress ensAddress={ensAddress} />*/}

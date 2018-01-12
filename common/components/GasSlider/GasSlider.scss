@@ -1,0 +1,10 @@
+@import 'common/sass/variables';
+
+.GasSlider {
+  &-toggle {
+    display: inline-block;
+    position: relative;
+    margin-top: $space-sm;
+    left: -8px;
+  }
+}

@@ -1,6 +1,6 @@
 import { config, INITIAL_STATE } from 'reducers/config';
 import * as configActions from 'actions/config';
-import { NODES } from 'config/data';
+import { NODES, NETWORKS } from 'config/data';
 import { makeCustomNodeId, makeNodeConfigFromCustomConfig } from 'utils/node';
 
 const custNode = {
@@ -21,8 +21,10 @@ describe('config reducer', () => {
 
   it('should handle CONFIG_NODE_CHANGE', () => {
     const key = Object.keys(NODES)[0];
+    const node = NODES[key];
+    const network = NETWORKS[node.network];
 
-    expect(config(undefined, configActions.changeNode(key, NODES[key]))).toEqual({
+    expect(config(undefined, configActions.changeNode(key, node, network))).toEqual({
       ...INITIAL_STATE,
       node: NODES[key],
       nodeSelection: key
@@ -51,28 +53,6 @@ describe('config reducer', () => {
     });
   });
 
-  it('should handle CONFIG_FORCE_OFFLINE', () => {
-    const forceOfflineTrue = {
-      ...INITIAL_STATE,
-      forceOffline: true
-    };
-
-    const forceOfflineFalse = {
-      ...INITIAL_STATE,
-      forceOffline: false
-    };
-
-    expect(config(forceOfflineTrue, configActions.forceOfflineConfig())).toEqual({
-      ...forceOfflineTrue,
-      forceOffline: false
-    });
-
-    expect(config(forceOfflineFalse, configActions.forceOfflineConfig())).toEqual({
-      ...forceOfflineFalse,
-      forceOffline: true
-    });
-  });
-
   it('should handle CONFIG_ADD_CUSTOM_NODE', () => {
     expect(config(undefined, configActions.addCustomNode(custNode))).toEqual({
       ...INITIAL_STATE,
@@ -85,7 +65,11 @@ describe('config reducer', () => {
     const addedState = config(undefined, configActions.addCustomNode(custNode));
     const addedAndActiveState = config(
       addedState,
-      configActions.changeNode(customNodeId, makeNodeConfigFromCustomConfig(custNode))
+      configActions.changeNode(
+        customNodeId,
+        makeNodeConfigFromCustomConfig(custNode),
+        NETWORKS[custNode.network]
+      )
     );
     const removedState = config(addedAndActiveState, configActions.removeCustomNode(custNode));
 
