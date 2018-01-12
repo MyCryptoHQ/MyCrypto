@@ -15,6 +15,7 @@ function createMainWindow() {
     height: 800,
     minWidth: 320,
     minHeight: 400,
+    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
       nodeIntegration: false

@@ -13,7 +13,7 @@ import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
-import { Aux } from 'components/ui';
+import { Aux, TitleBar } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
@@ -72,10 +72,13 @@ export default class Root extends Component<Props, State> {
 
     const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
 
+    console.log(process.env.BUILD_DOWNLOADABLE);
+    console.log(process.env.BUILD_ELECTRON);
     return (
       <Provider store={store} key={Math.random()}>
         <Router key={Math.random()}>
           <Aux>
+            {process.env.BUILD_ELECTRON && <TitleBar />}
             {routes}
             <LegacyRoutes />
             <LogOutPrompt />

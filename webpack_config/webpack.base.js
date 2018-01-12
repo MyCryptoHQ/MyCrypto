@@ -100,8 +100,11 @@ const webpackConfig = {
         to: './'
       }
     ]),
-
-    new webpack.LoaderOptionsPlugin(_.loadersOptions())
+    new webpack.LoaderOptionsPlugin(_.loadersOptions()),
+    new webpack.DefinePlugin({
+      'process.env.BUILD_DOWNLOADABLE': JSON.stringify(!!process.env.BUILD_DOWNLOADABLE),
+      'process.env.BUILD_ELECTRON': JSON.stringify(!!process.env.BUILD_ELECTRON)
+    }),
   ],
   target: _.target
 };

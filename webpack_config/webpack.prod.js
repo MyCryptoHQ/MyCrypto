@@ -56,9 +56,6 @@ base.plugins.push(
   new ProgressPlugin(),
   new ExtractTextPlugin('[name].[chunkhash:8].css'),
   new webpack.DefinePlugin({
-    'process.env.BUILD_DOWNLOADABLE': JSON.stringify(!!process.env.BUILD_DOWNLOADABLE)
-  }),
-  new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('production')
   }),
   // new BabelMinifyPlugin({
