@@ -3,6 +3,7 @@ import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
 import { getDataExists, getValidGasCost } from 'selectors/transaction';
+import BN from 'bn.js';
 
 interface ICurrentValue {
   raw: string;
@@ -50,6 +51,12 @@ const isValidAmount = (state: AppState) => {
 
     return !!currentValue.value;
   } else {
+    // This conditional block ensures that the raw string value to be
+    // transacted is less than the value avl in the eth's token address.
+    if (currentValue.value && currentValue.raw !== '') {
+      const rawValue = new BN(currentValue.raw);
+      return !!rawValue.cmp(currentValue.value);
+    }
     return !!currentValue.value;
   }
 };
