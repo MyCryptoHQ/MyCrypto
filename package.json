@@ -129,8 +129,7 @@
     "db": "nodemon ./db",
     "build": "rimraf dist && webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "build:downloadable":
-      "BUILD_DOWNLOADABLE=true rimraf dist && webpack --config webpack_config/webpack.prod.js",
+    "build:downloadable": "BUILD_DOWNLOADABLE=true rimraf dist && webpack --config webpack_config/webpack.prod.js",
     "prebuild:demo": "check-node-version --package",
     "test:coverage": "jest --config=jest_config/jest.config.json --coverage",
     "test": "jest --config=jest_config/jest.config.json",
@@ -146,10 +145,8 @@
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
     "precommit": "lint-staged",
-    "formatAll":
-      "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
-    "prettier:diff":
-      "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
+    "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
     "prepush": "npm run tslint && npm run tscheck"
   },
   "lint-staged": {

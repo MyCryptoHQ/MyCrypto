@@ -4,6 +4,9 @@ import { AddressInputFactory } from './AddressInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
 import { ICurrentTo } from 'selectors/transaction';
+import { getResolvingDomain } from 'selectors/ens';
+import { AppState } from 'reducers';
+import { Spinner } from 'components/ui';
 
 interface DispatchProps {
   setCurrentTo: TSetCurrentTo;
@@ -22,9 +25,9 @@ export interface CallbackProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
-type Props = DispatchProps & OwnProps;
+type Props = DispatchProps & OwnProps & StateProps;
 
-class AddressFieldFactoryClass extends React.Component<Props, {}> {
+class AddressFieldFactoryClass extends React.Component<Props> {
   public componentDidMount() {
     // this 'to' parameter can be either token or actual field related
     const { to } = this.props;
@@ -43,7 +46,10 @@ class AddressFieldFactoryClass extends React.Component<Props, {}> {
   };
 }
 
-const AddressField = connect(null, { setCurrentTo })(AddressFieldFactoryClass);
+const AddressField = connect(
+  (state: AppState) => ({ isResolvingDomain: getResolvingDomain(state) }),
+  { setCurrentTo }
+)(AddressFieldFactoryClass);
 
 interface DefaultAddressFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;

@@ -1,5 +1,6 @@
 import { AppState } from 'reducers';
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
+import { REQUEST_STATES } from 'reducers/ens/domainRequests';
 
 export const getEns = (state: AppState) => state.ens;
 
@@ -16,6 +17,7 @@ export const getCurrentDomainData = (state: AppState) => {
   }
 
   const domainData = domainRequests[currentDomain].data || null;
+
   return domainData;
 };
 
@@ -31,6 +33,17 @@ export const getResolvedAddress = (state: AppState) => {
   return null;
 };
 
+export const getResolvingDomain = (state: AppState) => {
+  const currentDomain = getCurrentDomainName(state);
+  const domainRequests = getDomainRequests(state);
+
+  if (!currentDomain || !domainRequests[currentDomain]) {
+    return null;
+  }
+
+  return domainRequests[currentDomain].state === REQUEST_STATES.pending;
+};
+
 const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
   return !!(data as IOwnedDomainRequest).ownerAddress;
 };
@@ -38,6 +51,9 @@ const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
 export const getBidDataEncoded = (state: AppState) => getEns(state).placeBid.bidPlaced;
 
 export const getFields = (state: AppState) => getEns(state).fields;
+
 export const getBid = (state: AppState) => getFields(state).bidValue;
+
 export const getBidMask = (state: AppState) => getFields(state).bidMask;
+
 export const getSecret = (state: AppState) => getFields(state).secretPhrase;

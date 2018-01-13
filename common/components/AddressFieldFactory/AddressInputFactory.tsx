@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Identicon } from 'components/ui';
+import { Identicon, Spinner } from 'components/ui';
 import translate from 'translations';
 //import { EnsAddress } from './components';
 import { Query } from 'components/renderCbs';
@@ -8,22 +8,43 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
 import { addHexPrefix } from 'ethereumjs-util';
+import { getResolvingDomain } from 'selectors/ens';
+import { isValidENSAddress } from 'libs/validators';
 
 interface StateProps {
   currentTo: ICurrentTo;
   isValid: boolean;
+  isResolving: boolean;
 }
+
 interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
+const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress: string }> = ({
+  isLoading,
+  ensAddress,
+  rawAddress
+}) => {
+  const isENS = isValidENSAddress(ensAddress);
+  const text = 'Loading ENS address...';
+  if (isLoading) {
+    return (
+      <>
+        <Spinner /> {text}
+      </>
+    );
+  } else {
+    return isENS && rawAddress !== '0x0' ? <>{rawAddress}</> : null;
+  }
+};
+
 type Props = OwnProps & StateProps;
 
-//TODO: ENS handling
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentTo, onChange, isValid, withProps } = this.props;
+    const { currentTo, onChange, isValid, withProps, isResolving } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     return (
@@ -37,11 +58,13 @@ class AddressInputFactoryClass extends Component<Props> {
                 currentTo,
                 isValid,
                 onChange,
-                readOnly: !!readOnly,
+                readOnly: !!readOnly || this.props.isResolving,
                 errorMsg: currentTo.error
               })
             }
           />
+          <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
+
           {/*<EnsAddress ensAddress={ensAddress} />*/}
         </div>
         <div className="col-xs-1" style={{ padding: 0 }}>
@@ -54,5 +77,6 @@ class AddressInputFactoryClass extends Component<Props> {
 
 export const AddressInputFactory = connect((state: AppState) => ({
   currentTo: getCurrentTo(state),
+  isResolving: getResolvingDomain(state),
   isValid: isValidCurrentTo(state)
 }))(AddressInputFactoryClass);

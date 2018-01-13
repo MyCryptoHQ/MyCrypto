@@ -12,7 +12,6 @@ import { getWalletInst } from 'selectors/wallet';
 import { SagaIterator, delay, buffers } from 'redux-saga';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
-import { DomainRequest } from 'libs/ens';
 import {
   takeEvery,
   call,
@@ -39,18 +38,14 @@ import { Data } from 'libs/units';
 const { main } = networkConfigs;
 
 function* shouldResolveDomain(domain: string) {
-  try {
-    const currentDomainName = yield select(getCurrentDomainName);
-    if (currentDomainName === domain) {
-      const currentDomainData = yield select(getCurrentDomainData);
-      if (currentDomainData) {
-        return false;
-      }
+  const currentDomainName = yield select(getCurrentDomainName);
+  if (currentDomainName === domain) {
+    const currentDomainData = yield select(getCurrentDomainData);
+    if (currentDomainData) {
+      return false;
     }
-    return true;
-  } catch (e) {
-    console.log(e);
   }
+  return true;
 }
 
 function* resolveDomain(): SagaIterator {
@@ -72,11 +67,11 @@ function* resolveDomain(): SagaIterator {
       }
 
       const node: INode = yield select(getNodeLib);
-
       const result = yield race({
         domainData: call(resolveDomainRequest, domain, node),
         err: call(delay, 2000)
       });
+
       const { domainData } = result;
       if (!domainData) {
         throw Error();
@@ -97,6 +92,7 @@ function* placeBid({ payload }: BidPlaceRequested): SagaIterator {
 
   const domainData: AppState['ens']['domainRequests'][string] = yield select(getCurrentDomainName);
   const { data } = domainData;
+
   if (!data) {
     yield put(placeBidFailed());
     return -1;
