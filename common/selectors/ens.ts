@@ -47,13 +47,3 @@ export const getResolvingDomain = (state: AppState) => {
 const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
   return !!(data as IOwnedDomainRequest).ownerAddress;
 };
-
-export const getBidDataEncoded = (state: AppState) => getEns(state).placeBid.bidPlaced;
-
-export const getFields = (state: AppState) => getEns(state).fields;
-
-export const getBid = (state: AppState) => getFields(state).bidValue;
-
-export const getBidMask = (state: AppState) => getFields(state).bidMask;
-
-export const getSecret = (state: AppState) => getFields(state).secretPhrase;
