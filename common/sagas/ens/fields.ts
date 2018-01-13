@@ -7,7 +7,7 @@ import {
   setBidValueField,
   setSecretField
 } from 'actions/ens';
-import { put, takeEvery, call, select } from 'redux-saga/effects';
+import { put, takeEvery, call } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { valueHandler } from 'sagas/transaction/current/currentValue';
 
@@ -22,7 +22,7 @@ function* handleBidValueInput(action: InputBidValueFieldAction): SagaIterator {
 }
 
 function* handleSecretFieldInput(action: InputSecretFieldAction): SagaIterator {
-  yield put(setSecretField(action.payload));
+  yield put(setSecretField({ raw: action.payload, value: action.payload }));
 }
 
 export const fields = [

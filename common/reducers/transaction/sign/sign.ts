@@ -14,9 +14,20 @@ const INITIAL_STATE: State = {
   pending: false
 };
 
-const signLocalTransactionRequested = (): State => ({
+const signTransactionRequested = (): State => ({
   ...INITIAL_STATE,
   pending: true
+});
+
+const signWeb3TranscationSucceeded = (
+  _: State,
+  { payload }: SignWeb3TransactionSucceededAction
+): State => ({
+  indexingHash: payload.indexingHash,
+  pending: false,
+
+  local: { signedTransaction: null },
+  web3: { transaction: payload.transaction }
 });
 
 const signLocalTransactionSucceeded = (
@@ -30,29 +41,18 @@ const signLocalTransactionSucceeded = (
   web3: { transaction: null }
 });
 
-const signWeb3TranscationRequested = (
-  _: State,
-  { payload }: SignWeb3TransactionSucceededAction
-): State => ({
-  indexingHash: payload.indexingHash,
-  pending: false,
-
-  local: { signedTransaction: null },
-  web3: { transaction: payload.transaction }
-});
-
 const signTransactionFailed = () => INITIAL_STATE;
 
 const reset = () => INITIAL_STATE;
 
 export const sign = (state: State = INITIAL_STATE, action: SignAction | ResetAction) => {
   switch (action.type) {
-    case TK.SIGN_LOCAL_TRANSACTION_REQUESTED:
-      return signLocalTransactionRequested();
+    case TK.SIGN_TRANSACTION_REQUESTED:
+      return signTransactionRequested();
     case TK.SIGN_LOCAL_TRANSACTION_SUCCEEDED:
       return signLocalTransactionSucceeded(state, action);
     case TK.SIGN_WEB3_TRANSACTION_SUCCEEDED:
-      return signWeb3TranscationRequested(state, action);
+      return signWeb3TranscationSucceeded(state, action);
     case TK.SIGN_TRANSACTION_FAILED:
       return signTransactionFailed();
     case TK.RESET:
