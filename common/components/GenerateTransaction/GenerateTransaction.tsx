@@ -1,3 +1,4 @@
+import translate from 'translations';
 import { WithSigner } from './Container';
 import EthTx from 'ethereumjs-tx';
 import React, { Component } from 'react';
@@ -6,12 +7,6 @@ import { AppState } from 'reducers';
 import { getTransaction, isNetworkRequestPending } from 'selectors/transaction';
 import { getWalletType } from 'selectors/wallet';
 
-export interface CallbackProps {
-  disabled: boolean;
-  isWeb3Wallet: boolean;
-  onClick(): void;
-}
-
 interface StateProps {
   transaction: EthTx;
   networkRequestPending: boolean;
@@ -19,36 +14,28 @@ interface StateProps {
   isWeb3Wallet: boolean;
 }
 
-interface OwnProps {
-  withProps(props: CallbackProps): React.ReactElement<any> | null;
-}
-
-type Props = OwnProps & StateProps;
-
-class GenerateTransactionFactoryClass extends Component<Props> {
+class GenerateTransactionClass extends Component<StateProps> {
   public render() {
     const { isFullTransaction, isWeb3Wallet, transaction, networkRequestPending } = this.props;
-
     return (
       <WithSigner
         isWeb3={isWeb3Wallet}
-        withSigner={signer => {
-          const disabled = !isFullTransaction || !!networkRequestPending;
-          const onClick = () => signer(transaction);
-
-          return this.props.withProps({
-            disabled,
-            isWeb3Wallet,
-            onClick
-          });
-        }}
+        withSigner={signer => (
+          <button
+            disabled={!isFullTransaction || networkRequestPending}
+            className="btn btn-info btn-block"
+            onClick={signer(transaction)}
+          >
+            {isWeb3Wallet ? translate('Send to MetaMask / Mist') : translate('DEP_signtx')}
+          </button>
+        )}
       />
     );
   }
 }
 
-export const GenerateTransactionFactory = connect((state: AppState) => ({
+export const GenerateTransaction = connect((state: AppState) => ({
   ...getTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
   isWeb3Wallet: getWalletType(state).isWeb3Wallet
-}))(GenerateTransactionFactoryClass);
+}))(GenerateTransactionClass);
