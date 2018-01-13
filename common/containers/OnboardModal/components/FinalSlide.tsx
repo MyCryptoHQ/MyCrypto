@@ -5,13 +5,8 @@ import OnboardSlide from './OnboardSlide';
 import onboardIconTen from 'assets/images/onboarding_icon-10.svg';
 
 const FinalSlide = ({ closeModal }) => {
-  const header = (
-    <div>
-      <span>{translate('ONBOARD_final_title')}</span>
-      <p>{translate('ONBOARD_final_subtitle')}</p>
-      <br />
-    </div>
-  );
+  const header = translate('ONBOARD_final_title');
+  const subheader = translate('ONBOARD_final_subtitle');
 
   const content = (
     <ul>
@@ -92,6 +87,14 @@ const FinalSlide = ({ closeModal }) => {
       </li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconTen} />;
+  return (
+    <OnboardSlide
+      header={header}
+      subheader={subheader}
+      content={content}
+      image={onboardIconTen}
+      imageSide="left"
+    />
+  );
 };
 export default FinalSlide;

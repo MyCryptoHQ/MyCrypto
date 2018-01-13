@@ -17,6 +17,8 @@ const InterfaceSlide = () => {
       <li>{translate('ONBOARD_interface_content__7')}</li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconThree} />;
+  return (
+    <OnboardSlide header={header} content={content} image={onboardIconThree} imageSide="left" />
+  );
 };
 export default InterfaceSlide;
