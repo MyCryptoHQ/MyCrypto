@@ -18,18 +18,20 @@ class GenerateTransactionClass extends Component<StateProps> {
   public render() {
     const { isFullTransaction, isWeb3Wallet, transaction, networkRequestPending } = this.props;
     return (
-      <WithSigner
-        isWeb3={isWeb3Wallet}
-        withSigner={signer => (
-          <button
-            disabled={!isFullTransaction || networkRequestPending}
-            className="btn btn-info btn-block"
-            onClick={signer(transaction)}
-          >
-            {isWeb3Wallet ? translate('Send to MetaMask / Mist') : translate('DEP_signtx')}
-          </button>
-        )}
-      />
+      <div>
+        <WithSigner
+          isWeb3={isWeb3Wallet}
+          withSigner={signer => (
+            <button
+              disabled={!isFullTransaction || networkRequestPending}
+              className="btn btn-info btn-block"
+              onClick={signer(transaction)}
+            >
+              {isWeb3Wallet ? translate('Send to MetaMask / Mist') : translate('DEP_signtx')}
+            </button>
+          )}
+        />
+      </div>
     );
   }
 }

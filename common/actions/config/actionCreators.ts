@@ -9,6 +9,13 @@ export function toggleOfflineConfig(): interfaces.ToggleOfflineAction {
   };
 }
 
+export type TToggleSetGasLimit = typeof toggleSetGasLimit;
+export function toggleSetGasLimit(): interfaces.ToggleSetGasLimitAction {
+  return {
+    type: TypeKeys.CONFIG_TOGGLE_SET_GAS_LIMIT
+  };
+}
+
 export type TChangeLanguage = typeof changeLanguage;
 export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
   return {

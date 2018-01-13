@@ -86,6 +86,10 @@ export function getOffline(state: AppState): boolean {
   return state.config.offline;
 }
 
+export function getSetGasLimit(state: AppState): boolean {
+  return state.config.setGasLimit;
+}
+
 export function isSupportedUnit(state: AppState, unit: string) {
   const isToken: boolean = tokenExists(state, unit);
   const isEther: boolean = isEtherUnit(unit);
