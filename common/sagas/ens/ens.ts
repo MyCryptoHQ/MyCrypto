@@ -45,7 +45,7 @@ function* resolveDomain(): SagaIterator {
       const node: INode = yield select(getNodeLib);
       const result = yield race({
         domainData: call(resolveDomainRequest, domain, node),
-        err: call(delay, 2000)
+        err: call(delay, 4000)
       });
 
       const { domainData } = result;
@@ -58,7 +58,7 @@ function* resolveDomain(): SagaIterator {
     } catch (e) {
       const domainFailAction = resolveDomainFailed(domain, e);
       yield put(domainFailAction);
-      yield put(showNotification('danger', e.message, 5000));
+      yield put(showNotification('danger', e.message || 'Could not resolve ENS address', 5000));
     }
   }
 }
