@@ -185,10 +185,13 @@ export function* postShapeshiftOrderCreate(
       yield put(startPollShapeshiftOrderStatus());
     }
   } catch (e) {
-    const message =
-      'Connection Error. Please check the developer console for more details and/or contact support';
-    yield put(showNotification('danger', message, TEN_SECONDS));
-    yield put(shapeshiftOrderCreateFailedSwap());
+    if (e.message) {
+      yield put(showNotification('danger', e.message, TEN_SECONDS));
+    } else {
+      const message = `Connection Error. ${e}`;
+      yield put(showNotification('danger', message, TEN_SECONDS));
+      yield put(shapeshiftOrderCreateFailedSwap());
+    }
   }
 }
 
