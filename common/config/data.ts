@@ -249,12 +249,6 @@ export const NODES: { [key: string]: NodeConfig } = {
     lib: new InfuraNode('https://rinkeby.infura.io/mew'),
     estimateGas: false
   },
-  rsk: {
-    network: 'RSK',
-    service: 'GK2.sk',
-    lib: new RPCNode('https://rsk-test.gk2.sk/'),
-    estimateGas: true
-  },
   exp: {
     network: 'EXP',
     service: 'Expanse.tech',
