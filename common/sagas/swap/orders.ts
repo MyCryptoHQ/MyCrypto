@@ -186,7 +186,7 @@ export function* postShapeshiftOrderCreate(
       yield put(startPollShapeshiftOrderStatus());
     }
   } catch (e) {
-    if (e.message) {
+    if (e && e.message) {
       yield put(showNotification('danger', e.message, TEN_SECONDS));
     } else {
       const message =
