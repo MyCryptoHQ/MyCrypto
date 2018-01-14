@@ -36,6 +36,10 @@ const webpackConfig = {
           .concat([path.resolve(__dirname, '../node_modules')])
       },
       {
+        test: /\.worker\.js$/,
+        loader: 'worker-loader'
+      },
+      {
         include: [
           path.resolve(__dirname, '../common/assets'),
           path.resolve(__dirname, '../node_modules')

@@ -1,0 +1,86 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.OnboardSlide {
+  font-size: 1.15rem;
+
+  &-header {
+    text-align: center;
+    margin-bottom: $space * 2;
+    font-size: 1.65rem;
+    font-weight: bold;
+  }
+
+  &-subheader {
+    text-align: center;
+    margin-top: -$space * 1.5;
+    margin-bottom: $space * 2;
+    color: $gray;
+  }
+
+  &-body {
+    display: flex;
+  }
+
+  &-content {
+    flex: 1;
+
+    > *:first-child,
+    > div > *:first-child {
+      margin-top: 0;
+    }
+
+    ul {
+      padding-left: 30px;
+    }
+  }
+
+  &-image {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    min-width: 250px;
+
+    &.is-left {
+      padding-right: $space * 1.5;
+    }
+
+    &.is-right {
+      padding-left: $space * 1.5;
+    }
+
+    &-img {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: $screen-sm) {
+    width: 100%;
+
+    &-body {
+      flex-direction: column;
+    }
+
+    &-content {
+      order: 2;
+    }
+
+    &-image {
+      order: 1;
+      align-self: center;
+      width: auto;
+      height: 180px;
+      margin-bottom: $space * 2;
+
+      &.is-left,
+      &.is-right {
+        padding: 0;
+      }
+
+      &-img {
+        width: auto;
+        height: 100%;
+      }
+    }
+  }
+}
