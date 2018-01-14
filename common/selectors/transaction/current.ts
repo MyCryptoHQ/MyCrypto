@@ -64,14 +64,14 @@ const isValidAmount = (state: AppState): boolean => {
     }
     // if the currentValue.value is not null, then compare it against the walletBalance.
     if (currentValue.value) {
-      return walletBalance.cmp(currentValue.value) > 0 ? true : false;
+      return walletBalance.cmp(currentValue.value) > 0;
     }
 
     return !!currentValue.value;
   } else {
     // if the currentValue.value is not null, then compare it against the walletBalance.
     if (currentValue.value) {
-      return walletBalance.cmp(currentValue.value) > 0 ? true : false;
+      return walletBalance.cmp(currentValue.value) > 0;
     }
     return !!currentValue.value;
   }
