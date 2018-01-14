@@ -173,24 +173,6 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     tokens: require('./tokens/rinkeby.json'),
     contracts: require('./contracts/rinkeby.json'),
     isTestnet: true
-  },
-  EXP: {
-    name: 'EXP',
-    unit: 'EXP',
-    chainId: 2,
-    color: '#673ab7',
-    blockExplorer: makeExplorer('http://www.gander.tech'),
-    tokens: require('./tokens/exp.json'),
-    contracts: require('./contracts/exp.json')
-  },
-  UBQ: {
-    name: 'UBQ',
-    unit: 'UBQ',
-    chainId: 8,
-    color: '#b37aff',
-    blockExplorer: makeExplorer('https://ubiqscan.io/en'),
-    tokens: require('./tokens/ubq.json'),
-    contracts: require('./contracts/ubq.json')
   }
 };
 
@@ -248,18 +230,6 @@ export const NODES: { [key: string]: NodeConfig } = {
     service: 'infura.io',
     lib: new InfuraNode('https://rinkeby.infura.io/mew'),
     estimateGas: false
-  },
-  exp: {
-    network: 'EXP',
-    service: 'Expanse.tech',
-    lib: new RPCNode('https://node.expanse.tech/'),
-    estimateGas: true
-  },
-  ubq: {
-    network: 'UBQ',
-    service: 'ubiqscan.io',
-    lib: new RPCNode('https://pyrus2.ubiqscan.io'),
-    estimateGas: true
   }
 };
 
