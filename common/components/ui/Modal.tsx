@@ -18,6 +18,8 @@ interface Props {
 }
 
 export default class Modal extends Component<Props, {}> {
+  private modalContent: HTMLElement | null = null;
+
   public componentDidMount() {
     this.updateBodyClass();
     document.addEventListener('keydown', this.escapeListner);
@@ -53,12 +55,21 @@ export default class Modal extends Component<Props, {}> {
             </div>
           )}
 
-          <div className="Modal-content">{isOpen && children}</div>
+          <div className="Modal-content" ref={el => (this.modalContent = el)}>
+            {isOpen && children}
+          </div>
           {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
         </div>
       </div>
     );
   }
+
+  public scrollContentToTop = () => {
+    if (this.modalContent) {
+      this.modalContent.scrollTop = 0;
+    }
+  };
+
   private escapeListner = (ev: KeyboardEvent) => {
     // Don't trigger if they hit escape while on an input
     if (ev.target) {

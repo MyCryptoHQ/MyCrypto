@@ -15,6 +15,8 @@ const BlockchainSlide = () => {
       <li>{translate('ONBOARD_blockchain_content__6')}</li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconFour} />;
+  return (
+    <OnboardSlide header={header} content={content} image={onboardIconFour} imageSide="right" />
+  );
 };
 export default BlockchainSlide;

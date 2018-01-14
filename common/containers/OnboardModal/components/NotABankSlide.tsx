@@ -16,7 +16,7 @@ const NotABankSlide = () => {
     </ul>
   );
 
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconTwo} />;
+  return <OnboardSlide header={header} content={content} image={onboardIconTwo} imageSide="left" />;
 };
 
 export default NotABankSlide;
