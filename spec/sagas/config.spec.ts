@@ -7,7 +7,6 @@ import {
   pollOfflineStatus,
   handlePollOfflineStatus,
   handleNodeChangeIntent,
-  reload,
   unsetWeb3Node,
   unsetWeb3NodeOnWalletEvent,
   equivalentNodeOrDefault
