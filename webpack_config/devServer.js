@@ -6,7 +6,7 @@ const https = require('https');
 const fs = require('fs');
 const webpackConfig = require('./webpack.dev');
 const config = require('./config');
-const LogPlugin = require('./log-plugin');
+const LogPlugin = require('./plugins/serverLog');
 
 const app = express();
 
@@ -31,7 +31,7 @@ try {
 
 const devMiddleWare = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
-  quiet: true,
+  logLevel: 'warn',
   inline: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
