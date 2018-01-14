@@ -111,7 +111,7 @@
     "ts-loader": "3.2.0",
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.6.0",
-    "tslint-microsoft-contrib": "5.0.1",
+    "tslint-microsoft-contrib": "5.0.2",
     "tslint-react": "3.4.0",
     "types-rlp": "0.0.1",
     "typescript": "2.6.2",
