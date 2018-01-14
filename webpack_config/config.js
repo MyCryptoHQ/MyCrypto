@@ -7,6 +7,7 @@ const paths = {
   output: path.join(__dirname, '../dist'),
   assets: path.join(__dirname, '../common/assets'),
   static: path.join(__dirname, '../static'),
+  electron: path.join(__dirname, '../electron'),
   modules: path.join(__dirname, '../node_modules'),
 }
 

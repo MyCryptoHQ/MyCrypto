@@ -13,6 +13,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const ElectronPackagerPlugin = require('./plugins/electronPackager');
+const ElectronBuilderPlugin = require('./plugins/electronBuilder');
 const ClearDistPlugin = require('./plugins/clearDist');
 
 const config = require('./config');
@@ -252,7 +253,8 @@ module.exports = function(opts = {}) {
   }
 
   if (options.isElectronBuild) {
-    plugins.push(new ElectronPackagerPlugin());
+    // plugins.push(new ElectronPackagerPlugin());
+    plugins.push(new ElectronBuilderPlugin());
   }
 
   // ====================

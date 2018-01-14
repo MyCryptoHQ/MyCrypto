@@ -1,8 +1,10 @@
 {
   "name": "MyEtherWallet",
+  "author": "MyEtherWallet",
   "version": "4.0.0-alpha.8",
   "main": "main.js",
   "description": "MyEtherWallet v4",
+  "repository": "https://github.com/MyEtherWallet/MyEtherWallet",
   "engines": {
     "node": ">= 8.0.0",
     "npm": ">= 5.0.0"
@@ -76,6 +78,7 @@
     "copy-webpack-plugin": "4.3.1",
     "css-loader": "0.28.8",
     "electron": "1.7.10",
+    "electron-builder": "19.52.1",
     "electron-packager": "10.1.1",
     "empty": "0.10.1",
     "enzyme": "3.3.0",
