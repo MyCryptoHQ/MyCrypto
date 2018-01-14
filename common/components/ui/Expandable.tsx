@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Aux } from 'components/ui';
 
 export type ExpandHandler = (ev: React.FormEvent<HTMLAnchorElement>) => void;
 

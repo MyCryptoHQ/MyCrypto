@@ -1,6 +1,5 @@
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { SerializedTransaction } from 'components/renderCbs';
-import { Aux } from 'components/ui';
 import ERC20 from 'libs/erc20';
 import { From } from '../From';
 import React, { Component } from 'react';

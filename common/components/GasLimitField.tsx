@@ -1,7 +1,6 @@
 import React from 'react';
 import { GasLimitFieldFactory } from './GasLimitFieldFactory';
 import translate from 'translations';
-import { Aux } from 'components/ui';
 
 export const GasLimitField: React.SFC<{}> = () => (
   <React.Fragment>

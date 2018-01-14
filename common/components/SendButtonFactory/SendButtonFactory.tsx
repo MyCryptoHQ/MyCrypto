@@ -1,5 +1,4 @@
 import translate from 'translations';
-import { Aux } from 'components/ui';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { OfflineBroadcast } from './OfflineBroadcast';
 import { SerializedTransaction } from 'components/renderCbs';

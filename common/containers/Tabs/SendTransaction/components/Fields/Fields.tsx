@@ -13,7 +13,7 @@ import {
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
-import { Aux } from 'components/ui';
+
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import WalletDecrypt from 'components/WalletDecrypt';
 import { OnlyUnlocked } from 'components/renderCbs';
-import { Aux } from 'components/ui';
 import { Fields } from './Fields';
 import { isUnlocked as isUnlockedSelector } from 'selectors/wallet';
 import { getNetworkConfig } from 'selectors/config';

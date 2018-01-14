@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Aux } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import Help from 'components/ui/Help';
 import { getNonce, nonceRequestFailed } from 'selectors/transaction';

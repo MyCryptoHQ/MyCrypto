@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { NonceField, SendButton, SigningStatus } from 'components';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { FullWalletOnly } from 'components/renderCbs';
-import { Aux } from 'components/ui';
 
 interface OwnProps {
   button: React.ReactElement<any>;

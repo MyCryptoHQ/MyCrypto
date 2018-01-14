@@ -1,6 +1,5 @@
 import React from 'react';
 import { AmountFieldFactory } from './AmountFieldFactory';
-import { Aux } from 'components/ui';
 import { UnitDropDown } from 'components';
 import translate, { translateRaw } from 'translations';
 

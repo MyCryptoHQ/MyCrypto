@@ -3,8 +3,6 @@ import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-
-import { Aux } from 'components/ui';
 import { GenerateTransaction, SendButton, SigningStatus, GasSlider } from 'components';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import translate from 'translations';
