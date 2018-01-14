@@ -10,14 +10,16 @@ export interface IButton {
 }
 interface Props {
   isOpen?: boolean;
-  title: string | React.ReactElement<any>;
+  title?: string | React.ReactElement<any>;
   disableButtons?: boolean;
   children: any;
   buttons?: IButton[];
-  handleClose(): void;
+  handleClose?(): void;
 }
 
 export default class Modal extends Component<Props, {}> {
+  private modalContent: HTMLElement | null = null;
+
   public componentDidMount() {
     this.updateBodyClass();
     document.addEventListener('keydown', this.escapeListner);
@@ -44,18 +46,30 @@ export default class Modal extends Component<Props, {}> {
       <div>
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
         <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
-          <div className="Modal-header">
-            <h2 className="Modal-header-title">{title}</h2>
-            <button className="Modal-header-close" onClick={handleClose}>
-              <img className="Modal-header-close-icon" src={closeIcon} />
-            </button>
+          {title && (
+            <div className="Modal-header">
+              <h2 className="Modal-header-title">{title}</h2>
+              <button className="Modal-header-close" onClick={handleClose}>
+                <img className="Modal-header-close-icon" src={closeIcon} />
+              </button>
+            </div>
+          )}
+
+          <div className="Modal-content" ref={el => (this.modalContent = el)}>
+            {isOpen && children}
           </div>
-          <div className="Modal-content">{isOpen && children}</div>
           {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
         </div>
       </div>
     );
   }
+
+  public scrollContentToTop = () => {
+    if (this.modalContent) {
+      this.modalContent.scrollTop = 0;
+    }
+  };
+
   private escapeListner = (ev: KeyboardEvent) => {
     // Don't trigger if they hit escape while on an input
     if (ev.target) {
@@ -70,6 +84,9 @@ export default class Modal extends Component<Props, {}> {
     }
 
     if (ev.key === 'Escape' || ev.keyCode === 27) {
+      if (!this.props.handleClose) {
+        return;
+      }
       this.props.handleClose();
     }
   };

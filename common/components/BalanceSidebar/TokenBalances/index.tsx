@@ -29,6 +29,7 @@ interface StateProps {
   tokensError: AppState['wallet']['tokensError'];
   isTokensLoading: AppState['wallet']['isTokensLoading'];
   hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
+  isOffline: AppState['config']['offline'];
 }
 interface ActionProps {
   addCustomToken: TAddCustomToken;
@@ -46,13 +47,20 @@ class TokenBalances extends React.Component<Props> {
       tokenBalances,
       hasSavedWalletTokens,
       isTokensLoading,
-      tokensError
+      tokensError,
+      isOffline
     } = this.props;
 
     const walletTokens = walletConfig ? walletConfig.tokens : [];
 
     let content;
-    if (tokensError) {
+    if (isOffline) {
+      content = (
+        <div className="TokenBalances-offline well well-sm">
+          Token balances are unavailable offline
+        </div>
+      );
+    } else if (tokensError) {
       content = <h5>{tokensError}</h5>;
     } else if (isTokensLoading) {
       content = (
@@ -109,7 +117,8 @@ function mapStateToProps(state: AppState): StateProps {
     tokenBalances: getTokenBalances(state),
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
-    hasSavedWalletTokens: state.wallet.hasSavedWalletTokens
+    hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
+    isOffline: state.config.offline
   };
 }
 

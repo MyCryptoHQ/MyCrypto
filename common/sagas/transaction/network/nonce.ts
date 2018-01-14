@@ -12,9 +12,13 @@ import { Nonce } from 'libs/units';
 export function* handleNonceRequest(): SagaIterator {
   const nodeLib: INode = yield select(getNodeLib);
   const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
-  const offline: boolean = yield select(getOffline);
+  const isOffline: boolean = yield select(getOffline);
   try {
-    if (!walletInst || offline) {
+    if (isOffline) {
+      return;
+    }
+
+    if (!walletInst) {
       throw Error();
     }
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);

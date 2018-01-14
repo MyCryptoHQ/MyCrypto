@@ -1,7 +1,8 @@
-import TabSection from 'containers/TabSection';
-import { OfflineAwareUnlockHeader } from 'components';
 import React from 'react';
 import { connect } from 'react-redux';
+import translate from 'translations';
+import TabSection from 'containers/TabSection';
+import { UnlockHeader } from 'components/ui';
 import { SideBar } from './components/index';
 import { IReadOnlyWallet, IFullWallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
@@ -52,7 +53,7 @@ class SendTransaction extends React.Component<Props> {
     return (
       <TabSection>
         <section className="Tab-content">
-          <OfflineAwareUnlockHeader />
+          <UnlockHeader title={translate('Account')} />
           {wallet && <WalletTabs {...tabProps} />}
         </section>
       </TabSection>
