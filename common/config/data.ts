@@ -174,15 +174,6 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     contracts: require('./contracts/rinkeby.json'),
     isTestnet: true
   },
-  RSK: {
-    name: 'RSK',
-    unit: 'RSK',
-    chainId: 31,
-    color: '#ff794f',
-    blockExplorer: makeExplorer('https://explorer.rsk.co'),
-    tokens: require('./tokens/rsk.json'),
-    contracts: require('./contracts/rsk.json')
-  },
   EXP: {
     name: 'EXP',
     unit: 'EXP',
