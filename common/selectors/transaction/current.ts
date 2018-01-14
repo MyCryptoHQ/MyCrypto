@@ -3,7 +3,7 @@ import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
 import { getDataExists, getValidGasCost } from 'selectors/transaction';
-import BN from 'bn.js';
+import { getCurrentBalance } from 'selectors/wallet';
 
 interface ICurrentValue {
   raw: string;
@@ -39,23 +39,31 @@ const isValidCurrentTo = (state: AppState) => {
   }
 };
 
-const isValidAmount = (state: AppState) => {
+const isValidAmount = (state: AppState): boolean => {
   const currentValue = getCurrentValue(state);
   const dataExists = getDataExists(state);
   const validGasCost = getValidGasCost(state);
+
+  // Validation
+  const walletBalance = getCurrentBalance(state);
+
+  if (!walletBalance) {
+    return false;
+  }
+
   if (isEtherTransaction(state)) {
     // if data exists with no value, just check if gas is enough
     if (dataExists && !currentValue.value && currentValue.raw === '') {
       return validGasCost;
     }
+    if (currentValue.value) {
+      return walletBalance.cmp(currentValue.value) > 0 ? true : false;
+    }
 
     return !!currentValue.value;
   } else {
-    // This conditional block ensures that the raw string value to be
-    // transacted is less than the value avl in the eth's token address.
-    if (currentValue.value && currentValue.raw !== '') {
-      const rawValue = new BN(currentValue.raw);
-      return !!rawValue.cmp(currentValue.value);
+    if (currentValue.value) {
+      return walletBalance.cmp(currentValue.value) > 0 ? true : false;
     }
     return !!currentValue.value;
   }
