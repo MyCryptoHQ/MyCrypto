@@ -44,9 +44,15 @@ const isValidAmount = (state: AppState): boolean => {
   const dataExists = getDataExists(state);
   const validGasCost = getValidGasCost(state);
 
-  // Validation
+  // We do some wallet validation here.
+  // For some reason with MetaMask, sometimes the currentValue.value is not a null
+  // but instead a BN with a value equal to currentValue.raw - even though the wallet
+  // doesn't have enough of a balance.
+
+  // Get the wallet balance (token value or ether value)
   const walletBalance = getCurrentBalance(state);
 
+  // We ensure that we have a valid walletBalance (token or Ether is fine)
   if (!walletBalance) {
     return false;
   }
@@ -56,12 +62,14 @@ const isValidAmount = (state: AppState): boolean => {
     if (dataExists && !currentValue.value && currentValue.raw === '') {
       return validGasCost;
     }
+    // if the currentValue.value is not null, then compare it against the walletBalance.
     if (currentValue.value) {
       return walletBalance.cmp(currentValue.value) > 0 ? true : false;
     }
 
     return !!currentValue.value;
   } else {
+    // if the currentValue.value is not null, then compare it against the walletBalance.
     if (currentValue.value) {
       return walletBalance.cmp(currentValue.value) > 0 ? true : false;
     }
