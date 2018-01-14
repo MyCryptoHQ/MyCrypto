@@ -126,9 +126,9 @@ class InteractExplorerClass extends Component<Props, State> {
                 {translate('CONTRACT_Read')}
               </button>
             ) : (
-              <Aux>
+              <React.Fragment>
                 <Fields button={generateOrWriteButton} />
-              </Aux>
+              </React.Fragment>
             )}
           </div>
         )}

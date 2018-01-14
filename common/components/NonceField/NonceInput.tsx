@@ -26,7 +26,7 @@ class NonceInputClass extends Component<Props> {
   public render() {
     const { nonce: { raw, value }, onChange, shouldDisplay } = this.props;
     const content = (
-      <Aux>
+      <React.Fragment>
         <label>Nonce</label>
         {nonceHelp}
 
@@ -42,7 +42,7 @@ class NonceInputClass extends Component<Props> {
             />
           )}
         />
-      </Aux>
+      </React.Fragment>
     );
 
     return shouldDisplay ? content : null;

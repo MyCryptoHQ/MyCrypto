@@ -46,7 +46,7 @@ class FieldsClass extends Component<Props> {
 
             <AmountFieldFactory
               withProps={({ currentValue, isValid }) => (
-                <Aux>
+                <React.Fragment>
                   {!isValid && (
                     <h5 style={{ color: 'red' }}>
                       WARNING: Your ether or token balance is not high enough to complete this
@@ -61,7 +61,7 @@ class FieldsClass extends Component<Props> {
                       readOnly={true}
                     />
                   )}
-                </Aux>
+                </React.Fragment>
               )}
             />
           </div>

@@ -12,14 +12,14 @@ interface OwnProps {
 export class Fields extends Component<OwnProps> {
   public render() {
     const makeContent = () => (
-      <Aux>
+      <React.Fragment>
         <GasLimitField />
         <AmountField />
         <NonceField />
         {this.props.button}
         <SigningStatus />
         <SendButton />
-      </Aux>
+      </React.Fragment>
     );
 
     const makeDecrypt = () => <WalletDecrypt disabledWallets={DISABLE_WALLETS.READ_ONLY} />;

@@ -68,10 +68,10 @@ class FieldsClass extends Component<StateProps> {
     return (
       <OnlyUnlocked
         whenUnlocked={
-          <Aux>
+          <React.Fragment>
             <QueryWarning />
             {shouldDisplay ? content : null}
-          </Aux>
+          </React.Fragment>
         }
       />
     );

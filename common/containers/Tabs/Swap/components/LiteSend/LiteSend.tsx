@@ -48,7 +48,7 @@ class LiteSendClass extends Component<Props> {
       renderMe = isUnlocked ? <OnlyUnlocked whenUnlocked={<Fields />} /> : <WalletDecrypt />;
     }
 
-    return <Aux>{renderMe}</Aux>;
+    return <React.Fragment>{renderMe}</React.Fragment>;
   }
 }
 

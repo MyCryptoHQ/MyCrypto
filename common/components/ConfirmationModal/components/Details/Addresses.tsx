@@ -21,7 +21,7 @@ class AddressesClass extends Component<StateProps> {
           const { to, data } = getTransactionFields(transactionInstance);
 
           return (
-            <Aux>
+            <React.Fragment>
               <li className="ConfModal-details-detail">
                 You are sending from <From withFrom={from => <code>{from}</code>} />
               </li>
@@ -32,7 +32,7 @@ class AddressesClass extends Component<StateProps> {
                   {this.props.unit === 'ether' ? to : ERC20.transfer.decodeInput(data)._to}
                 </code>
               </li>
-            </Aux>
+            </React.Fragment>
           );
         }}
       />

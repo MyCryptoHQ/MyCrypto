@@ -40,10 +40,10 @@ class OnlineSendClass extends Component<Props, State> {
     ) : null;
 
     return !this.props.offline ? (
-      <Aux>
+      <React.Fragment>
         {this.props.withProps({ onClick: this.openModal })}
         {displayModal}
-      </Aux>
+      </React.Fragment>
     ) : null;
   }
   private openModal = () => {

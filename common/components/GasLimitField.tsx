@@ -4,7 +4,7 @@ import translate from 'translations';
 import { Aux } from 'components/ui';
 
 export const GasLimitField: React.SFC<{}> = () => (
-  <Aux>
+  <React.Fragment>
     <label>{translate('TRANS_gas')} </label>
     <GasLimitFieldFactory
       withProps={({ gasLimit: { raw, value }, onChange, readOnly }) => (
@@ -17,5 +17,5 @@ export const GasLimitField: React.SFC<{}> = () => (
         />
       )}
     />
-  </Aux>
+  </React.Fragment>
 );

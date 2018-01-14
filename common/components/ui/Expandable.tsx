@@ -19,10 +19,10 @@ export class Expandable extends Component<Props, State> {
 
   public render() {
     return (
-      <Aux>
+      <React.Fragment>
         {this.props.expandLabel(this.expandHandler)}
         {this.state.expanded && this.props.children}
-      </Aux>
+      </React.Fragment>
     );
   }
 
