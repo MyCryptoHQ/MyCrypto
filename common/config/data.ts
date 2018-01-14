@@ -135,15 +135,6 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     tokens: require('./tokens/eth.json'),
     contracts: require('./contracts/eth.json')
   },
-  ETC: {
-    name: 'ETC',
-    unit: 'ETC',
-    chainId: 61,
-    color: '#669073',
-    blockExplorer: makeExplorer('https://gastracker.io'),
-    tokens: require('./tokens/etc.json'),
-    contracts: require('./contracts/etc.json')
-  },
   Ropsten: {
     name: 'Ropsten',
     unit: 'ETH',
@@ -193,12 +184,6 @@ export const NODES: { [key: string]: NodeConfig } = {
     network: 'ETH',
     service: 'infura.io',
     lib: new InfuraNode('https://mainnet.infura.io/mew'),
-    estimateGas: false
-  },
-  etc_epool: {
-    network: 'ETC',
-    service: 'Epool.io',
-    lib: new RPCNode('https://mewapi.epool.io'),
     estimateGas: false
   },
   rop_mew: {
