@@ -21,7 +21,7 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
 
     builder.build({
       mac: ['dmg'],
-      win: ['msi'],
+      win: ['nsis'],
       linux: ['AppImage'],
       config: {
         appId: 'com.myetherwallet',

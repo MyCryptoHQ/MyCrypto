@@ -70,10 +70,11 @@ export default class Root extends Component<Props, State> {
       </Switch>
     );
 
-    const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+    const Router =
+      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
+        ? HashRouter
+        : BrowserRouter;
 
-    console.log(process.env.BUILD_DOWNLOADABLE);
-    console.log(process.env.BUILD_ELECTRON);
     return (
       <Provider store={store} key={Math.random()}>
         <Router key={Math.random()}>

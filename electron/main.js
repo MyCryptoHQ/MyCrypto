@@ -1,5 +1,8 @@
+'use strict';
 const { app, shell, BrowserWindow, Menu } = require('electron');
+const updater = require('./updater');
 const MENU = require('./menu');
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Global reference to mainWindow
@@ -65,10 +68,12 @@ app.on('activate', () => {
   // even after all windows have been closed
   if (mainWindow === null) {
     mainWindow = createMainWindow();
+    updater(mainWindow);
   }
 });
 
 // Create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow();
+  updater(mainWindow);
 });

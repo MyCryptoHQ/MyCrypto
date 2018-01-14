@@ -25,7 +25,7 @@ let compiler;
 try {
   compiler = webpack(webpackConfig);
 } catch (err) {
-  console.log(err.message);
+  console.error(err.message);
   process.exit(1);
 }
 
@@ -45,7 +45,7 @@ const devMiddleWare = require('webpack-dev-middleware')(compiler, {
 app.use(devMiddleWare);
 app.use(
   require('webpack-hot-middleware')(compiler, {
-    log: console.log
+    log: console.info
   })
 );
 
