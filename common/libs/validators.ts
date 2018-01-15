@@ -11,6 +11,7 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'config/constants';
+import { dPathRegex } from 'config/dpaths';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -121,12 +122,8 @@ export function isPositiveIntegerOrZero(num: number): boolean {
   return num >= 0 && parseInt(num.toString(), 10) === num;
 }
 
-// Full length deterministic wallet paths from BIP44
-// https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
-// normal path length is 4, ledger is the exception at 3
 export function isValidPath(dPath: string) {
-  const regex = /m\/44'\/[0-9]+\'\/[0-9]+\'+$|m\/44'\/[0-9]+\'\/[0-9]+\'+(\/[0-1]+$)/;
-  return regex.test(dPath);
+  return dPathRegex.test(dPath);
 }
 
 export const isValidValue = (value: string) =>
