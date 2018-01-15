@@ -28,7 +28,7 @@ export interface State {
   network: NetworkConfig;
   isChangingNode: boolean;
   offline: boolean;
-  setGasLimit: boolean;
+  autoGasLimit: boolean;
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
   latestBlock: string;
@@ -42,7 +42,7 @@ export const INITIAL_STATE: State = {
   network: NETWORKS[NODES[defaultNode].network],
   isChangingNode: false,
   offline: false,
-  setGasLimit: true,
+  autoGasLimit: true,
   customNodes: [],
   customNetworks: [],
   latestBlock: '???'
@@ -79,10 +79,10 @@ function toggleOffline(state: State): State {
   };
 }
 
-function toggleSetGasLimit(state: State): State {
+function toggleAutoGasLimitEstimation(state: State): State {
   return {
     ...state,
-    setGasLimit: !state.setGasLimit
+    autoGasLimit: !state.autoGasLimit
   };
 }
 
@@ -141,8 +141,8 @@ export function config(state: State = INITIAL_STATE, action: ConfigAction): Stat
       return changeNodeIntent(state);
     case TypeKeys.CONFIG_TOGGLE_OFFLINE:
       return toggleOffline(state);
-    case TypeKeys.CONFIG_TOGGLE_SET_GAS_LIMIT:
-      return toggleSetGasLimit(state);
+    case TypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT:
+      return toggleAutoGasLimitEstimation(state);
     case TypeKeys.CONFIG_ADD_CUSTOM_NODE:
       return addCustomNode(state, action);
     case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:

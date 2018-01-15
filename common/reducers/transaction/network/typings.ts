@@ -2,7 +2,7 @@ export enum RequestStatus {
   REQUESTED = 'PENDING',
   SUCCEEDED = 'SUCCESS',
   FAILED = 'FAIL',
-  TIMEOUT = 'TIMEOUT'
+  TIMEDOUT = 'TIMEDOUT'
 }
 export interface State {
   gasEstimationStatus: RequestStatus | null;

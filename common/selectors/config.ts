@@ -86,8 +86,8 @@ export function getOffline(state: AppState): boolean {
   return state.config.offline;
 }
 
-export function getSetGasLimit(state: AppState): boolean {
-  return state.config.setGasLimit;
+export function getAutoGasLimitEnabled(state: AppState): boolean {
+  return state.config.autoGasLimit;
 }
 
 export function isSupportedUnit(state: AppState, unit: string) {

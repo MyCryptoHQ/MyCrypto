@@ -9,10 +9,10 @@ export function toggleOfflineConfig(): interfaces.ToggleOfflineAction {
   };
 }
 
-export type TToggleSetGasLimit = typeof toggleSetGasLimit;
-export function toggleSetGasLimit(): interfaces.ToggleSetGasLimitAction {
+export type TToggleAutoGasLimit = typeof toggleAutoGasLimit;
+export function toggleAutoGasLimit(): interfaces.ToggleAutoGasLimit {
   return {
-    type: TypeKeys.CONFIG_TOGGLE_SET_GAS_LIMIT
+    type: TypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT
   };
 }
 

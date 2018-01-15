@@ -6,8 +6,8 @@ export interface ToggleOfflineAction {
   type: TypeKeys.CONFIG_TOGGLE_OFFLINE;
 }
 
-export interface ToggleSetGasLimitAction {
-  type: TypeKeys.CONFIG_TOGGLE_SET_GAS_LIMIT;
+export interface ToggleAutoGasLimit {
+  type: TypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT;
 }
 
 /*** Change Language ***/
@@ -78,7 +78,7 @@ export type ConfigAction =
   | ChangeNodeAction
   | ChangeLanguageAction
   | ToggleOfflineAction
-  | ToggleSetGasLimitAction
+  | ToggleAutoGasLimit
   | PollOfflineStatus
   | ChangeNodeIntentAction
   | AddCustomNodeAction

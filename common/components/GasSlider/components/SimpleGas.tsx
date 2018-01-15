@@ -3,35 +3,37 @@ import Slider from 'rc-slider';
 import translate from 'translations';
 import { gasPriceDefaults } from 'config/data';
 import FeeSummary from './FeeSummary';
-import { Spinner } from 'components/ui';
-import { CSSTransition } from 'react-transition-group';
-import { State as NetworkState } from 'reducers/transaction/network';
+import { TInputGasPrice } from 'actions/transaction';
 import './SimpleGas.scss';
+import { AppState } from 'reducers';
+import { getGasLimitEstimationTimedOut } from 'selectors/transaction';
+import { connect } from 'react-redux';
+import { GasLimitField } from 'components/GasLimitField';
 
-interface Props {
-  gasPrice: string;
-  gasEstimationStatus: NetworkState['gasEstimationStatus'];
-  changeGasPrice(gwei: string): void;
+interface OwnProps {
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
+  inputGasPrice: TInputGasPrice;
 }
 
-export default class SimpleGas extends React.Component<Props> {
+interface StateProps {
+  gasLimitEstimationTimedOut: boolean;
+}
+
+type Props = OwnProps & StateProps;
+
+class SimpleGas extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasEstimationStatus } = this.props;
-    const estimatingGas = gasEstimationStatus === 'PENDING' ? true : false;
-    const estimatingGasTimeout = gasEstimationStatus === 'TIMEOUT' ? true : false;
+    const { gasPrice, gasLimitEstimationTimedOut } = this.props;
+
     return (
       <div className="SimpleGas row form-group">
         <div className="col-md-12 SimpleGas-title">
           <label className="SimpleGas-label">{translate('Transaction Fee')}</label>
           <div className="SimpleGas-flex-spacer" />
-          <CSSTransition in={estimatingGas} timeout={300} classNames="fade">
-            <div className={`SimpleGas-estimating small ${estimatingGas ? 'active' : ''}`}>
-              Setting gas limit
-              <Spinner />
-            </div>
-          </CSSTransition>
+          <GasLimitField includeLabel={false} onlyIncludeLoader={true} />
         </div>
-        {estimatingGasTimeout && (
+
+        {gasLimitEstimationTimedOut && (
           <div className="col-md-12 prompt-toggle-gas-limit">
             <p className="small">
               Couldn't set gas limit, try setting manually in advanced settings
@@ -45,7 +47,7 @@ export default class SimpleGas extends React.Component<Props> {
               onChange={this.handleSlider}
               min={gasPriceDefaults.gasPriceMinGwei}
               max={gasPriceDefaults.gasPriceMaxGwei}
-              value={parseFloat(gasPrice)}
+              value={parseFloat(gasPrice.raw)}
             />
             <div className="SimpleGas-slider-labels">
               <span>{translate('Cheap')}</span>
@@ -68,6 +70,9 @@ export default class SimpleGas extends React.Component<Props> {
   }
 
   private handleSlider = (gasGwei: number) => {
-    this.props.changeGasPrice(gasGwei.toString());
+    this.props.inputGasPrice(gasGwei.toString());
   };
 }
+export default connect((state: AppState) => ({
+  gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state)
+}))(SimpleGas);
