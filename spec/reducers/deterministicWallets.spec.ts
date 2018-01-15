@@ -1,7 +1,4 @@
-import {
-  deterministicWallets,
-  INITIAL_STATE
-} from 'reducers/deterministicWallets';
+import { deterministicWallets, INITIAL_STATE } from 'reducers/deterministicWallets';
 import * as dWalletActions from 'actions/deterministicWallets';
 import { TokenValue } from 'libs/units';
 
@@ -23,10 +20,7 @@ describe('deterministicWallets reducer', () => {
   it('should handle DW_SET_WALLETS', () => {
     const wallets = [wallet];
     expect(
-      deterministicWallets(
-        undefined,
-        dWalletActions.setDeterministicWallets(wallets)
-      )
+      deterministicWallets(undefined, dWalletActions.setDeterministicWallets(wallets))
     ).toEqual({
       ...INITIAL_STATE,
       wallets
@@ -35,12 +29,7 @@ describe('deterministicWallets reducer', () => {
 
   it('should handle DW_SET_DESIRED_TOKEN', () => {
     const desiredToken = 'OMG';
-    expect(
-      deterministicWallets(
-        undefined,
-        dWalletActions.setDesiredToken(desiredToken)
-      )
-    ).toEqual({
+    expect(deterministicWallets(undefined, dWalletActions.setDesiredToken(desiredToken))).toEqual({
       ...INITIAL_STATE,
       desiredToken
     });
@@ -56,10 +45,7 @@ describe('deterministicWallets reducer', () => {
       address: 'wallet2'
     };
     const wallets = [wallet1, wallet2];
-    const state = deterministicWallets(
-      undefined,
-      dWalletActions.setDeterministicWallets(wallets)
-    );
+    const state = deterministicWallets(undefined, dWalletActions.setDeterministicWallets(wallets));
 
     const wallet2Update = {
       ...wallet,
@@ -69,10 +55,7 @@ describe('deterministicWallets reducer', () => {
     };
 
     expect(
-      deterministicWallets(
-        state,
-        dWalletActions.updateDeterministicWallet(wallet2Update)
-      )
+      deterministicWallets(state, dWalletActions.updateDeterministicWallet(wallet2Update))
     ).toEqual({
       ...INITIAL_STATE,
       wallets: [wallet1, wallet2Update]
