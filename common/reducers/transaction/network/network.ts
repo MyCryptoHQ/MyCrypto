@@ -26,7 +26,7 @@ export const network = (state: State = INITIAL_STATE, action: NetworkAction | Re
       return nextState('gasEstimationStatus')(state, action);
     case TK.ESTIMATE_GAS_FAILED:
       return nextState('gasEstimationStatus')(state, action);
-    case TK.ESTIMATE_GAS_TIMEOUT:
+    case TK.ESTIMATE_GAS_TIMEDOUT:
       return nextState('gasEstimationStatus')(state, action);
     case TK.ESTIMATE_GAS_SUCCEEDED:
       return nextState('gasEstimationStatus')(state, action);

@@ -12,7 +12,7 @@ interface EstimateGasFailedAction {
   type: TypeKeys.ESTIMATE_GAS_FAILED;
 }
 interface EstimateGasTimeoutAction {
-  type: TypeKeys.ESTIMATE_GAS_TIMEOUT;
+  type: TypeKeys.ESTIMATE_GAS_TIMEDOUT;
 }
 interface GetFromRequestedAction {
   type: TypeKeys.GET_FROM_REQUESTED;

@@ -1,7 +1,6 @@
 import { AppState } from 'reducers';
 import { getTransactionState } from 'selectors/transaction';
 import { RequestStatus } from 'reducers/transaction/network';
-import { getAutoGasLimitEnabled } from 'selectors/config';
 
 export const getNetworkStatus = (state: AppState) => getTransactionState(state).network;
 

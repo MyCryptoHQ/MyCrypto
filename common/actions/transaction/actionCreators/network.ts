@@ -32,7 +32,7 @@ const estimateGasFailed = (): EstimateGasFailedAction => ({
 
 type TEstimateGasTimeout = typeof estimateGasTimeout;
 const estimateGasTimeout = (): EstimateGasTimeoutAction => ({
-  type: TypeKeys.ESTIMATE_GAS_TIMEOUT
+  type: TypeKeys.ESTIMATE_GAS_TIMEDOUT
 });
 
 type TGetFromRequested = typeof getFromRequested;
