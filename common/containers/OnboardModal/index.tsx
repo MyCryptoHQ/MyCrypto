@@ -47,6 +47,8 @@ interface Props {
 }
 
 class OnboardModal extends React.Component<Props, State> {
+  private modal: Modal | null = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -74,7 +76,10 @@ class OnboardModal extends React.Component<Props, State> {
 
         const onboardResumeMessage = translate('ONBOARD_resume');
 
-        this.props.showNotification('info', onboardResumeMessage, 30000);
+        // Wait a sec so it doesn't get lost in the page-load
+        setTimeout(() => {
+          this.props.showNotification('info', onboardResumeMessage, 6000);
+        }, 1200);
       }
     }
   }
@@ -115,7 +120,7 @@ class OnboardModal extends React.Component<Props, State> {
 
     return (
       <div className="OnboardModal">
-        <Modal isOpen={isOpen} buttons={buttons}>
+        <Modal isOpen={isOpen} buttons={buttons} ref={el => (this.modal = el)}>
           <div className="OnboardModal-stepper">
             <Stepper
               steps={steps}
@@ -163,16 +168,20 @@ class OnboardModal extends React.Component<Props, State> {
 
   private handlePreviousSlide = () => {
     const prevSlideNum = this.props.slideNumber - 1;
-
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(prevSlideNum));
     this.props.decrementSlide();
+    if (this.modal) {
+      this.modal.scrollContentToTop();
+    }
   };
 
   private handleNextSlide = () => {
     const nextSlideNum = this.props.slideNumber + 1;
-
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(nextSlideNum));
     this.props.incrementSlide();
+    if (this.modal) {
+      this.modal.scrollContentToTop();
+    }
   };
 }
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import WalletDecrypt from 'components/WalletDecrypt';
 import { OnlyUnlocked } from 'components/renderCbs';
-import { Aux } from 'components/ui';
 import { Fields } from './Fields';
 import { isUnlocked as isUnlockedSelector } from 'selectors/wallet';
 import { getNetworkConfig } from 'selectors/config';
@@ -48,7 +47,7 @@ class LiteSendClass extends Component<Props> {
       renderMe = isUnlocked ? <OnlyUnlocked whenUnlocked={<Fields />} /> : <WalletDecrypt />;
     }
 
-    return <Aux>{renderMe}</Aux>;
+    return <React.Fragment>{renderMe}</React.Fragment>;
   }
 }
 

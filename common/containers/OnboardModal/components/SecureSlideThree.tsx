@@ -8,12 +8,8 @@ interface Props {
 }
 
 const SecureSlideThree: React.SFC<Props> = ({ site }) => {
-  const header = (
-    <div>
-      <span>{translate('ONBOARD_secure_3_title')}</span>
-      <p>{translate('ONBOARD_secure_3_content__1')}</p>
-    </div>
-  );
+  const header = translate('ONBOARD_secure_3_title');
+  const subheader = translate('ONBOARD_secure_3_content__1');
 
   const content = (
     <div>
@@ -27,6 +23,15 @@ const SecureSlideThree: React.SFC<Props> = ({ site }) => {
       <h5 className="text-center">{translate('ONBOARD_secure_3_content__6')} </h5>
     </div>
   );
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconNine} />;
+
+  return (
+    <OnboardSlide
+      header={header}
+      subheader={subheader}
+      content={content}
+      image={onboardIconNine}
+      imageSide="right"
+    />
+  );
 };
 export default SecureSlideThree;

@@ -2,26 +2,59 @@
 @import 'common/sass/mixins';
 
 .OnboardSlide {
-  height: 400px;
-  width: 650px;
+  font-size: 1.15rem;
+
+  &-header {
+    text-align: center;
+    margin-bottom: $space * 2;
+    font-size: 1.65rem;
+    font-weight: bold;
+  }
+
+  &-subheader {
+    text-align: center;
+    margin-top: -$space * 1.5;
+    margin-bottom: $space * 2;
+    color: $gray;
+  }
 
   &-body {
     display: flex;
   }
 
   &-content {
-    flex: 0.7;
+    flex: 1;
+
+    > *:first-child,
+    > div > *:first-child {
+      margin-top: 0;
+    }
+
+    ul {
+      padding-left: 30px;
+    }
   }
 
   &-image {
-    flex: 0.3;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    min-width: 250px;
+
+    &.is-left {
+      padding-right: $space * 1.5;
+    }
+
+    &.is-right {
+      padding-left: $space * 1.5;
+    }
+
+    &-img {
+      width: 100%;
+    }
   }
 
-  &-header {
-    text-align: center;
-  }
-
-  @media screen and (max-width: $screen-xs) {
+  @media screen and (max-width: $screen-sm) {
     width: 100%;
 
     &-body {
@@ -35,8 +68,19 @@
     &-image {
       order: 1;
       align-self: center;
-      width: 130px;
-      max-height: 200px;
+      width: auto;
+      height: 180px;
+      margin-bottom: $space * 2;
+
+      &.is-left,
+      &.is-right {
+        padding: 0;
+      }
+
+      &-img {
+        width: auto;
+        height: 100%;
+      }
     }
   }
 }

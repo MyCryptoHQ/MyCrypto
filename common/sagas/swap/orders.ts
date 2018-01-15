@@ -156,6 +156,7 @@ export function* postBityOrderCreate(action: BityOrderCreateRequestedSwapAction)
   } catch (e) {
     const message =
       'Connection Error. Please check the developer console for more details and/or contact support';
+    console.error(e);
     yield put(showNotification('danger', message, TEN_SECONDS));
     yield put(bityOrderCreateFailedSwap());
   }
@@ -185,9 +186,14 @@ export function* postShapeshiftOrderCreate(
       yield put(startPollShapeshiftOrderStatus());
     }
   } catch (e) {
-    const message =
-      'Connection Error. Please check the developer console for more details and/or contact support';
-    yield put(showNotification('danger', message, TEN_SECONDS));
+    if (e && e.message) {
+      yield put(showNotification('danger', e.message, TEN_SECONDS));
+    } else {
+      const message =
+        'Connection Error. Please check the developer console for more details and/or contact support';
+      console.error(e);
+      yield put(showNotification('danger', message, TEN_SECONDS));
+    }
     yield put(shapeshiftOrderCreateFailedSwap());
   }
 }

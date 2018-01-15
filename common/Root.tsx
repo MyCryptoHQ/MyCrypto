@@ -13,7 +13,6 @@ import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
-import { Aux } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
@@ -75,11 +74,11 @@ export default class Root extends Component<Props, State> {
     return (
       <Provider store={store} key={Math.random()}>
         <Router key={Math.random()}>
-          <Aux>
+          <React.Fragment>
             {routes}
             <LegacyRoutes />
             <LogOutPrompt />
-          </Aux>
+          </React.Fragment>
         </Router>
       </Provider>
     );
