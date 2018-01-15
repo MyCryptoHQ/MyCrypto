@@ -1,6 +1,5 @@
 import React from 'react';
 import { AmountFieldFactory } from './AmountFieldFactory';
-import { Aux } from 'components/ui';
 import { UnitDropDown } from 'components';
 import translate, { translateRaw } from 'translations';
 
@@ -17,7 +16,7 @@ export const AmountField: React.SFC<Props> = ({
 }) => (
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
-      <Aux>
+      <React.Fragment>
         <label>{translate('SEND_amount')}</label>
         <div className="input-group">
           <input
@@ -32,7 +31,7 @@ export const AmountField: React.SFC<Props> = ({
           />
           {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
         </div>
-      </Aux>
+      </React.Fragment>
     )}
   />
 );
