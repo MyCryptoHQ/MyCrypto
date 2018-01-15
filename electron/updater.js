@@ -2,7 +2,7 @@
 const { autoUpdater } = require('electron-updater');
 const { ipcMain } = require('electron');
 const testRelease = require('./testrelease.json');
-autoUpdater.autoDownload = false;
+// autoUpdater.autoDownload = false;
 
 
 module.exports = function(app, window) {

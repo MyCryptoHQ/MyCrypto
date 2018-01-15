@@ -1,11 +1,18 @@
 'use strict';
 const path = require('path');
 const fs = require('fs');
+const rimraf = require('rimraf');
 const builder = require('electron-builder');
 const config = require('../config');
 
 function ElectronBuilderPlugin() {};
 ElectronBuilderPlugin.prototype.apply = function(compiler) {
+  const electronBuildsDir = path.join(config.path.output, 'electron-builds');
+
+  compiler.plugin('before-run', (params, done) => {
+    rimraf(electronBuildsDir, () => done());
+  });
+
   compiler.plugin('done', (stats) => {
     const buildDir = stats.compilation.compiler.outputPath;
     const compression = 'store';
@@ -20,7 +27,7 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
     process.env.ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = true;
 
     builder.build({
-      mac: ['zip'],
+      mac: ['zip', 'dmg'],
       win: ['nsis'],
       linux: ['AppImage'],
       config: {
@@ -28,7 +35,7 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
         productName: 'MyEtherWallet',
         directories: {
           app: buildDir,
-          output: path.join(config.path.output, 'electron-builds'),
+          output: electronBuildsDir,
         },
         mac: {
           category: 'public.app-category.finance',
