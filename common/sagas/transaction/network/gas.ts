@@ -1,13 +1,14 @@
 import { SagaIterator, buffers, delay } from 'redux-saga';
 import { apply, put, select, take, actionChannel, call, fork } from 'redux-saga/effects';
 import { INode } from 'libs/nodes/INode';
-import { getNodeLib, getOffline } from 'selectors/config';
+import { getNodeLib, getOffline, getSetGasLimit } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getTransaction, IGetTransaction } from 'selectors/transaction';
 import {
   EstimateGasRequestedAction,
   setGasLimitField,
   estimateGasFailed,
+  estimateGasTimeout,
   estimateGasSucceeded,
   TypeKeys,
   estimateGasRequested,
@@ -56,7 +57,9 @@ export function* shouldEstimateGas(): SagaIterator {
       getTransactionFields,
       transaction
     );
-    yield put(estimateGasRequested(rest));
+    if (yield select(getSetGasLimit)) {
+      yield put(estimateGasRequested(rest));
+    }
   }
 }
 
@@ -81,7 +84,11 @@ export function* estimateGas(): SagaIterator {
       yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
       yield put(estimateGasSucceeded());
     } catch (e) {
-      yield put(estimateGasFailed());
+      if (e && e.message === 'Request Timeout') {
+        yield put(estimateGasTimeout());
+      } else {
+        yield put(estimateGasFailed());
+      }
       // fallback for estimating locally
       const tx = yield call(makeTransaction, payload);
       const gasLimit = yield apply(tx, tx.getBaseFee);

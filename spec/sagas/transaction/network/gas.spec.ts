@@ -8,7 +8,8 @@ import {
   estimateGasFailed,
   estimateGasSucceeded,
   TypeKeys,
-  estimateGasRequested
+  estimateGasRequested,
+  estimateGasTimeout
 } from 'actions/transaction';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import { shouldEstimateGas, estimateGas } from 'sagas/transaction/network/gas';
@@ -158,7 +159,9 @@ describe('estimateGas*', () => {
     };
 
     it('should catch and put estimateGasFailed', () => {
-      expect(gens.clone.throw().value).toEqual(put(estimateGasFailed()));
+      expect(gens.clone.throw().value).toEqual(
+        put(estimateGasFailed()) || put(estimateGasTimeout())
+      );
     });
 
     it('should call makeTransaction with payload', () => {

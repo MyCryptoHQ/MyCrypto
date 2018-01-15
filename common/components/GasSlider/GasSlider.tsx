@@ -9,23 +9,30 @@ import {
   inputNonce,
   TInputNonce
 } from 'actions/transaction';
+import { toggleSetGasLimit, TToggleSetGasLimit } from 'actions/config';
+import { State as NetworkState } from 'reducers/transaction/network';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getNode } from 'selectors/config';
 import { AppState } from 'reducers';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas from './components/AdvancedGas';
 import './GasSlider.scss';
+import { getNetworkStatus } from 'selectors/transaction';
 
 interface Props {
   // Component configuration
   disableAdvanced?: boolean;
   // Data
+  setGasLimit: AppState['config']['setGasLimit'];
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   gasLimit: AppState['transaction']['fields']['gasLimit'];
   nonce: AppState['transaction']['fields']['nonce'];
   offline: AppState['config']['offline'];
   network: AppState['config']['network'];
+  gasEstimationStatus: NetworkState['gasEstimationStatus'];
+  node: AppState['config']['nodeSelection'];
   // Actions
+  toggleSetGasLimit: TToggleSetGasLimit;
   inputGasPrice: TInputGasPrice;
   inputGasLimit: TInputGasLimit;
   inputNonce: TInputNonce;
@@ -54,22 +61,39 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   public render() {
-    const { gasPrice, gasLimit, nonce, offline, disableAdvanced } = this.props;
+    const {
+      gasPrice,
+      gasLimit,
+      nonce,
+      offline,
+      disableAdvanced,
+      gasEstimationStatus,
+      setGasLimit,
+      node
+    } = this.props;
     const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
     return (
       <div className="GasSlider">
         {showAdvanced ? (
           <AdvancedGas
+            gasEstimationStatus={gasEstimationStatus}
+            setGasLimit={setGasLimit}
             gasPrice={gasPrice.raw}
             gasLimit={gasLimit.raw}
             nonce={nonce.raw}
+            toggleSetGasLimit={this.props.toggleSetGasLimit}
             changeGasPrice={this.props.inputGasPrice}
             changeGasLimit={this.props.inputGasLimit}
             changeNonce={this.props.inputNonce}
           />
         ) : (
-          <SimpleGas gasPrice={gasPrice.raw} changeGasPrice={this.props.inputGasPrice} />
+          <SimpleGas
+            node={node}
+            gasPrice={gasPrice.raw}
+            gasEstimationStatus={gasEstimationStatus}
+            changeGasPrice={this.props.inputGasPrice}
+          />
         )}
 
         {!offline &&
@@ -79,7 +103,7 @@ class GasSlider extends React.Component<Props, State> {
                 <strong>
                   {showAdvanced
                     ? `- ${translateRaw('Back to simple')}`
-                    : `+ ${translateRaw('Advanced: Data, Gas Price, Gas Limit')}`}
+                    : `+ ${translateRaw('Advanced Settings')}`}
                 </strong>
               </a>
             </div>
@@ -99,11 +123,15 @@ function mapStateToProps(state: AppState) {
     gasLimit: state.transaction.fields.gasLimit,
     nonce: state.transaction.fields.nonce,
     offline: state.config.offline,
-    network: getNetworkConfig(state)
+    setGasLimit: state.config.setGasLimit,
+    network: getNetworkConfig(state),
+    gasEstimationStatus: getNetworkStatus(state).gasEstimationStatus,
+    node: getNode(state)
   };
 }
 
 export default connect(mapStateToProps, {
+  toggleSetGasLimit,
   inputGasPrice,
   inputGasLimit,
   inputNonce,
