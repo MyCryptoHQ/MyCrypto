@@ -39,7 +39,7 @@ class BidMaskClass extends React.Component<Props> {
             type="number"
             className="form-control"
             onChange={this.onChange}
-            value={this.props.bidMask || ''}
+            value={this.props.bidMask}
             placeholder="1.0"
           />
         </section>

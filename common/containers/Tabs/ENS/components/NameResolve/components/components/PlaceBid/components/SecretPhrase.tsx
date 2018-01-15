@@ -14,7 +14,7 @@ interface DispatchProps {
 }
 
 interface StateProps {
-  secretPhrase: AppState['ens']['fields']['secret'];
+  secretPhrase: AppState['ens']['fields']['secretPhrase'];
 }
 
 type Props = OwnProps & DispatchProps & StateProps;
@@ -43,7 +43,7 @@ export class SecretPhraseClass extends React.Component<Props> {
           <input
             type="text"
             className="form-control"
-            value={this.props.secretPhrase || ''}
+            value={this.props.secretPhrase}
             onChange={this.onChange}
           />
         </section>

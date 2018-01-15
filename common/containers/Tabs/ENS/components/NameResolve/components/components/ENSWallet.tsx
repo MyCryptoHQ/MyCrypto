@@ -2,7 +2,6 @@ import WalletDecrypt from 'components/WalletDecrypt';
 import { AppState } from 'reducers';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Aux } from 'components/ui';
 
 interface Props {
   text: string;
@@ -37,10 +36,10 @@ class ENSWalletClass extends Component<Props, State> {
     );
 
     const DecryptComponent = (
-      <Aux>
+      <>
         {CollapseButton}
         {!isHidden && <WalletDecrypt />}
-      </Aux>
+      </>
     );
 
     return wallet.inst ? (

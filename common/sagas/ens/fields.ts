@@ -7,7 +7,7 @@ import {
   setBidValueField,
   setSecretField
 } from 'actions/ens';
-import { put, takeEvery, call, select } from 'redux-saga/effects';
+import { put, takeEvery, call } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { valueHandler } from 'sagas/transaction/current/currentValue';
 
