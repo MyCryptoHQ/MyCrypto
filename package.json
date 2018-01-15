@@ -1,6 +1,6 @@
 {
   "name": "MyEtherWallet",
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.1",
   "main": "common/index.jsx",
   "description": "MyEtherWallet v4",
   "engines": {
