@@ -24,7 +24,7 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
       win: ['nsis'],
       linux: ['AppImage'],
       config: {
-        appId: 'com.myetherwallet',
+        appId: 'com.github.myetherwallet.myetherwallet',
         productName: 'MyEtherWallet',
         directories: {
           app: buildDir,
@@ -46,6 +46,7 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
         publish: {
           provider: 'github',
           owner: 'MyEtherWallet',
+          repo: 'MyEtherWallet',
           vPrefixedTagName: false
         }
       },
