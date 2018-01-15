@@ -18,10 +18,9 @@ import {
   SwapTokenToTokenAction,
   SwapTokenToEtherAction
 } from 'actions/transaction';
-import { TypeKeys as ConfigTypeKeys } from 'actions/config';
+import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'actions/config';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
-import { ToggleAutoGasLimit } from 'actions/config';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
@@ -31,7 +30,7 @@ export function* shouldEstimateGas(): SagaIterator {
       | SwapEtherToTokenAction
       | SwapTokenToTokenAction
       | SwapTokenToEtherAction
-      | ToggleAutoGasLimit = yield take([
+      | ToggleAutoGasLimitAction = yield take([
       TypeKeys.TO_FIELD_SET,
       TypeKeys.DATA_FIELD_SET,
       TypeKeys.ETHER_TO_TOKEN_SWAP,

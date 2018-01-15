@@ -10,15 +10,7 @@ export const nonceRequestFailed = (state: AppState) =>
 
 export const isNetworkRequestPending = (state: AppState) => {
   const network = getNetworkStatus(state);
-  const autoGasLimitEnabled = getAutoGasLimitEnabled(state);
-
-  // Don't check the status of gasEstimation if we're not automatically setting gas limit
-  const filteredNetwork = Object.keys(network).reduce((obj, key) => {
-    obj[key] = network[key];
-    return obj;
-  }, {});
-
-  const states: RequestStatus[] = Object.values(autoGasLimitEnabled ? network : filteredNetwork);
+  const states: RequestStatus[] = Object.values(network);
   return states.reduce(
     (anyPending, currRequestState) => anyPending || currRequestState === RequestStatus.REQUESTED,
     false
