@@ -45,8 +45,8 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
         },
         publish: {
           provider: 'github',
-          owner: 'MyEtherWallet',
-          repo: 'MyEtherWallet',
+          owner: 'wbobeirne',
+          repo: 'MyEtherWallet-electron',
           vPrefixedTagName: false
         }
       },

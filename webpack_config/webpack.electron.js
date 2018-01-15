@@ -18,7 +18,7 @@ const electronConfig = {
   entry: {
     main: './electron/main.js',
     preload: './electron/preload.js'
-  }
+  },
   target: 'electron-main',
   output: {
     filename: '[name].js',

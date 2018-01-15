@@ -1,7 +1,7 @@
 {
   "name": "MyEtherWallet",
   "author": "MyEtherWallet",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "main": "main.js",
   "description": "MyEtherWallet v4",
   "repository": "https://github.com/wbobeirne/MyEtherWallet-electron",
