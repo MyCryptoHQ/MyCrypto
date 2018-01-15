@@ -14,7 +14,7 @@ export const GaslimitLoading: React.SFC<{ gasEstimationPending: boolean }> = ({
 }) => (
   <CSSTransition in={gasEstimationPending} timeout={300} classNames="fade">
     <div className={`SimpleGas-estimating small ${gasEstimationPending ? 'active' : ''}`}>
-      Setting gas limit
+      Calculating gas limit
       <Spinner />
     </div>
   </CSSTransition>

@@ -15,7 +15,8 @@
       font-weight: 400;
     }
   }
-  .gasLimit-input-grp {
+
+  &-gasLimit {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;

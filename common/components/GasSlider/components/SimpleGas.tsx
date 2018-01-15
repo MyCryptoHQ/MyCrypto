@@ -13,6 +13,7 @@ import { GasLimitField } from 'components/GasLimitField';
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   inputGasPrice: TInputGasPrice;
+  node: string;
 }
 
 interface StateProps {
@@ -23,7 +24,7 @@ type Props = OwnProps & StateProps;
 
 class SimpleGas extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasLimitEstimationTimedOut } = this.props;
+    const { gasPrice, gasLimitEstimationTimedOut, node } = this.props;
 
     return (
       <div className="SimpleGas row form-group">
@@ -36,7 +37,9 @@ class SimpleGas extends React.Component<Props> {
         {gasLimitEstimationTimedOut && (
           <div className="col-md-12 prompt-toggle-gas-limit">
             <p className="small">
-              Couldn't set gas limit, try setting manually in advanced settings
+              {node === 'web3'
+                ? "Couldn't calculate gas limit, if you know what your doing, try setting manually in Advanced settings"
+                : "Couldn't calculate gas limit, try switching nodes"}
             </p>
           </div>
         )}
