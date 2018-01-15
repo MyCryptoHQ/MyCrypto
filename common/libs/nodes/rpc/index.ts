@@ -19,7 +19,7 @@ import {
 const timeout = (ms, promise: Promise<any>): any => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject(new Error('timeout'));
+      reject(new Error('Request Timeout'));
     }, ms);
     promise.then(resolve, reject);
   });

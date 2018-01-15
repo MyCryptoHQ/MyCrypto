@@ -84,7 +84,7 @@ export function* estimateGas(): SagaIterator {
       yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
       yield put(estimateGasSucceeded());
     } catch (e) {
-      if (e && e.message === 'timeout') {
+      if (e && e.message === 'Request Timeout') {
         yield put(estimateGasTimeout());
       } else {
         yield put(estimateGasFailed());
