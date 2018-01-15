@@ -9,16 +9,18 @@ import { isValidENSAddress, isValidETHAddress } from 'libs/validators';
 import { TypeKeys } from 'actions/transaction/constants';
 import { getResolvedAddress } from 'selectors/ens';
 import { resolveDomainRequested, TypeKeys as ENSTypekeys } from 'actions/ens';
+import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
 
 export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
   const validAddress: boolean = yield call(isValidETHAddress, raw);
   const validEns: boolean = yield call(isValidENSAddress, raw);
-  const etherTransaction: boolean = yield select(isEtherTransaction);
 
   let value: Buffer | null = null;
   if (validAddress) {
     value = Address(raw);
   } else if (validEns) {
+    yield call(setField, { value, raw });
+
     const [domain] = raw.split('.');
     yield put(resolveDomainRequested(domain));
     yield take([
@@ -32,7 +34,12 @@ export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterato
     }
   }
 
-  const payload = { raw, value };
+  yield call(setField, { value, raw });
+}
+
+export function* setField(payload: SetToFieldAction['payload'] | SetTokenToMetaAction['payload']) {
+  const etherTransaction: boolean = yield select(isEtherTransaction);
+
   if (etherTransaction) {
     yield put(setToField(payload));
   } else {
