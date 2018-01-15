@@ -26,6 +26,14 @@ export const SHAPESHIFT_TOKEN_WHITELIST = [
 ];
 export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETC', 'BTC'];
 
+interface ShapeshiftMarketInfo {
+  rate: string;
+  limit: number;
+  pair: string;
+  maxLimit: number;
+  min: number;
+  minerFee: number;
+}
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
@@ -34,13 +42,18 @@ class ShapeshiftService {
     'Content-Type': 'application/json'
   };
 
-  public checkStatus(address) {
+  public checkStatus(address: string) {
     return fetch(`${this.url}/txStat/${address}`)
       .then(checkHttpStatus)
       .then(parseJSON);
   }
 
-  public sendAmount(withdrawal, originKind, destinationKind, destinationAmount) {
+  public sendAmount(
+    withdrawal: string,
+    originKind: string,
+    destinationKind: string,
+    destinationAmount: number
+  ) {
     const pair = `${originKind.toLowerCase()}_${destinationKind.toLowerCase()}`;
 
     return fetch(`${this.url}/sendamount`, {
@@ -71,7 +84,7 @@ class ShapeshiftService {
     return mappedRates;
   };
 
-  private getPairRates(marketInfo) {
+  private getPairRates(marketInfo: ShapeshiftMarketInfo[]) {
     const filteredMarketInfo = marketInfo.filter(obj => {
       const { pair } = obj;
       const pairArr = pair.split('_');
