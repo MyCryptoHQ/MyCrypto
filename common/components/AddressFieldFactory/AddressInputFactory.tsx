@@ -57,14 +57,11 @@ class AddressInputFactoryClass extends Component<Props> {
                 currentTo,
                 isValid,
                 onChange,
-                readOnly: !!readOnly || this.props.isResolving,
-                errorMsg: currentTo.error
+                readOnly: !!readOnly || this.props.isResolving
               })
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
-
-          {/*<EnsAddress ensAddress={ensAddress} />*/}
         </div>
         <div className="col-xs-1" style={{ padding: 0 }}>
           <Identicon address={addr} />

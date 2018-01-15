@@ -18,7 +18,6 @@ export interface CallbackProps {
   isValid: boolean;
   readOnly: boolean;
   currentTo: ICurrentTo;
-  errorMsg?: string | null;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
@@ -43,14 +42,17 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   };
 }
 
-const AddressField = connect(null, { setCurrentTo })(AddressFieldFactoryClass);
+const AddressFieldFactory = connect(null, { setCurrentTo })(AddressFieldFactoryClass);
 
 interface DefaultAddressFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
 const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({ withProps }) => (
-  <Query params={['to']} withQuery={({ to }) => <AddressField to={to} withProps={withProps} />} />
+  <Query
+    params={['to']}
+    withQuery={({ to }) => <AddressFieldFactory to={to} withProps={withProps} />}
+  />
 );
 
 export { DefaultAddressField as AddressFieldFactory };
