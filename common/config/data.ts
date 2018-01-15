@@ -135,15 +135,6 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     tokens: require('./tokens/eth.json'),
     contracts: require('./contracts/eth.json')
   },
-  ETC: {
-    name: 'ETC',
-    unit: 'ETC',
-    chainId: 61,
-    color: '#669073',
-    blockExplorer: makeExplorer('https://gastracker.io'),
-    tokens: require('./tokens/etc.json'),
-    contracts: require('./contracts/etc.json')
-  },
   Ropsten: {
     name: 'Ropsten',
     unit: 'ETH',
@@ -173,33 +164,6 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     tokens: require('./tokens/rinkeby.json'),
     contracts: require('./contracts/rinkeby.json'),
     isTestnet: true
-  },
-  RSK: {
-    name: 'RSK',
-    unit: 'RSK',
-    chainId: 31,
-    color: '#ff794f',
-    blockExplorer: makeExplorer('https://explorer.rsk.co'),
-    tokens: require('./tokens/rsk.json'),
-    contracts: require('./contracts/rsk.json')
-  },
-  EXP: {
-    name: 'EXP',
-    unit: 'EXP',
-    chainId: 2,
-    color: '#673ab7',
-    blockExplorer: makeExplorer('http://www.gander.tech'),
-    tokens: require('./tokens/exp.json'),
-    contracts: require('./contracts/exp.json')
-  },
-  UBQ: {
-    name: 'UBQ',
-    unit: 'UBQ',
-    chainId: 8,
-    color: '#b37aff',
-    blockExplorer: makeExplorer('https://ubiqscan.io/en'),
-    tokens: require('./tokens/ubq.json'),
-    contracts: require('./contracts/ubq.json')
   }
 };
 
@@ -220,12 +184,6 @@ export const NODES: { [key: string]: NodeConfig } = {
     network: 'ETH',
     service: 'infura.io',
     lib: new InfuraNode('https://mainnet.infura.io/mew'),
-    estimateGas: false
-  },
-  etc_epool: {
-    network: 'ETC',
-    service: 'Epool.io',
-    lib: new RPCNode('https://mewapi.epool.io'),
     estimateGas: false
   },
   rop_mew: {
@@ -257,24 +215,6 @@ export const NODES: { [key: string]: NodeConfig } = {
     service: 'infura.io',
     lib: new InfuraNode('https://rinkeby.infura.io/mew'),
     estimateGas: false
-  },
-  rsk: {
-    network: 'RSK',
-    service: 'GK2.sk',
-    lib: new RPCNode('https://rsk-test.gk2.sk/'),
-    estimateGas: true
-  },
-  exp: {
-    network: 'EXP',
-    service: 'Expanse.tech',
-    lib: new RPCNode('https://node.expanse.tech/'),
-    estimateGas: true
-  },
-  ubq: {
-    network: 'UBQ',
-    service: 'ubiqscan.io',
-    lib: new RPCNode('https://pyrus2.ubiqscan.io'),
-    estimateGas: true
   }
 };
 

@@ -7,7 +7,6 @@ import {
   pollOfflineStatus,
   handlePollOfflineStatus,
   handleNodeChangeIntent,
-  reload,
   unsetWeb3Node,
   unsetWeb3NodeOnWalletEvent,
   equivalentNodeOrDefault
@@ -26,7 +25,8 @@ import { Web3Wallet } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
-
+import { resetWallet } from 'actions/wallet';
+import { reset as resetTransaction } from 'actions/transaction';
 // init module
 configuredStore.getState();
 
@@ -214,7 +214,8 @@ describe('handleNodeChangeIntent*', () => {
 
   it('should call reload if wallet exists and network is new', () => {
     data.clone2 = data.gen.clone();
-    expect(data.clone2.next(truthyWallet).value).toEqual(call(reload));
+    expect(data.clone2.next(truthyWallet).value).toEqual(put(resetWallet()));
+    expect(data.clone2.next(truthyWallet).value).toEqual(put(resetTransaction()));
     expect(data.clone2.next().done).toEqual(true);
   });
 
