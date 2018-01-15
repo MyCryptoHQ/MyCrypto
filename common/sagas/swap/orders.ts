@@ -193,8 +193,8 @@ export function* postShapeshiftOrderCreate(
         'Connection Error. Please check the developer console for more details and/or contact support';
       console.error(e);
       yield put(showNotification('danger', message, TEN_SECONDS));
-      yield put(shapeshiftOrderCreateFailedSwap());
     }
+    yield put(shapeshiftOrderCreateFailedSwap());
   }
 }
 
