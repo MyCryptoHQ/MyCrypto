@@ -4,6 +4,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const SriPlugin = require('webpack-subresource-integrity');
+
 const config = require('./config');
 const _ = require('./utils');
 
@@ -14,7 +16,8 @@ const webpackConfig = {
   output: {
     path: _.outputPath,
     filename: '[name].js',
-    publicPath: config.publicPath
+    publicPath: config.publicPath,
+    crossOriginLoading: "anonymous"
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
@@ -87,6 +90,10 @@ const webpackConfig = {
     ]
   },
   plugins: [
+    new SriPlugin({
+      hashFuncNames: ['sha256', 'sha384'],
+      enabled: true
+    }),
     new HtmlWebpackPlugin({
       title: config.title,
       template: path.resolve(__dirname, '../common/index.html'),
