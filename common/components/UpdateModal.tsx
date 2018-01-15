@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from 'components/ui/Modal';
+import Modal, { IButton } from 'components/ui/Modal';
 import moment from 'moment';
 import { electronListen, electronSend } from 'utils/electron';
 import './UpdateModal.scss';
@@ -46,7 +46,7 @@ export default class UpdateModal extends React.Component<Props, State> {
   public render() {
     const { isOpen, updateInfo, handleClose } = this.props;
     const { downloadProgress } = this.state;
-    const buttons = downloadProgress
+    const buttons: IButton[] | undefined = downloadProgress
       ? undefined
       : [
           {

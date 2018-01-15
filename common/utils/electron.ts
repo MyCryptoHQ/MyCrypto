@@ -6,6 +6,7 @@ type ElectronCallback = (data?: any) => void;
 
 export function electronListen(event: string, cb: ElectronCallback) {
   if (win.electronListen) {
+    // @ts-ignore unused ev
     win.electronListen(event, (ev, data) => cb(data));
   }
 }
