@@ -8,7 +8,7 @@ interface Props {
 
 export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
   <AddressFieldFactory
-    withProps={({ currentTo, isValid, onChange, readOnly, errorMsg }) => (
+    withProps={({ currentTo, isValid, onChange, readOnly }) => (
       <React.Fragment>
         <input
           className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
@@ -18,11 +18,6 @@ export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
           readOnly={!!(isReadOnly || readOnly)}
           onChange={onChange}
         />
-        {errorMsg && (
-          <div className="has-error">
-            <span className="help-block">{errorMsg}</span>
-          </div>
-        )}
       </React.Fragment>
     )}
   />
