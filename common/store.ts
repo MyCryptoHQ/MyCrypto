@@ -18,6 +18,8 @@ import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
+import { getNetworkConfigFromId } from 'utils/network';
+import { dedupeCustomTokens } from 'utils/tokens';
 import sagas from './sagas';
 import { gasPricetoBase } from 'libs/units';
 
@@ -58,7 +60,6 @@ const configureStore = () => {
         }
       : { ...swapInitialState };
 
-  const localCustomTokens = loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens');
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
 
@@ -72,10 +73,21 @@ const configureStore = () => {
     // If we couldn't find it, revert to defaults
     if (savedNode) {
       savedConfigState.node = savedNode;
+      const network = getNetworkConfigFromId(savedNode.network, savedConfigState.customNetworks);
+      if (network) {
+        savedConfigState.network = network;
+      }
     } else {
       savedConfigState.nodeSelection = configInitialState.nodeSelection;
     }
   }
+
+  // Dedupe custom tokens initially
+  const savedCustomTokensState =
+    loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || customTokensInitialState;
+  const initialNetwork =
+    (savedConfigState && savedConfigState.network) || configInitialState.network;
+  const customTokens = dedupeCustomTokens(initialNetwork.tokens, savedCustomTokensState);
 
   const persistedInitialState = {
     config: {
@@ -95,7 +107,7 @@ const configureStore = () => {
             : transactionInitialState.fields.gasPrice
       }
     },
-    customTokens: localCustomTokens || customTokensInitialState,
+    customTokens,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState
   };
@@ -121,7 +133,8 @@ const configureStore = () => {
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
           customNodes: state.config.customNodes,
-          customNetworks: state.config.customNetworks
+          customNetworks: state.config.customNetworks,
+          setGasLimit: state.config.setGasLimit
         },
         transaction: {
           fields: {

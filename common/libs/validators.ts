@@ -22,6 +22,9 @@ export function isValidETHAddress(address: string): boolean {
   }
 }
 
+export const isCreationAddress = (address: string): boolean =>
+  address === '0x0' || address === '0x0000000000000000000000000000000000000000';
+
 export function isValidBTCAddress(address: string): boolean {
   return WalletAddressValidator.validate(address, 'BTC');
 }

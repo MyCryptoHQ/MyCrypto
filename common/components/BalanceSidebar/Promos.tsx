@@ -58,6 +58,7 @@ export default class Promos extends React.Component<{}, State> {
         className="Promos-promo"
         key={promo.href}
         target="_blank"
+        rel="noopener noreferrer"
         href={promo.href}
         style={{ backgroundColor: promo.color }}
       >

@@ -43,7 +43,7 @@ class Contracts extends Component<Props, State> {
     }
 
     return (
-      <TabSection>
+      <TabSection isUnavailableOffline={true}>
         <section className="Tab-content Contracts">
           <div className="Tab-content-pane">
             <h1 className="Contracts-header">

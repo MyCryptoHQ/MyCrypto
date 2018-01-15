@@ -2,7 +2,8 @@
 @import 'common/sass/mixins';
 
 $m-background: #fff;
-$m-window-padding: 20px;
+$m-window-padding-w: 20px;
+$m-window-padding-h: 30px;
 $m-header-padding: 15px;
 $m-header-height: 62px;
 $m-content-padding: 20px;
@@ -49,12 +50,12 @@ $m-anim-speed: 400ms;
 
 .Modal {
   position: fixed;
-  top: 30px;
+  top: $m-window-padding-h;
   left: 50%;
   max-width: 95%;
-  max-width: calc(100% - #{$m-window-padding * 2});
+  max-width: calc(100% - #{$m-window-padding-w * 2});
   max-height: 95%;
-  max-height: calc(100% - #{$m-window-padding * 2});
+  max-height: calc(100% - #{$m-window-padding-h * 2});
   background: $m-background;
   border-radius: 4px;
   transform: translateX(-50%);

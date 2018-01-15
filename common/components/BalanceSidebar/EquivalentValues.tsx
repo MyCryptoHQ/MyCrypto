@@ -5,6 +5,7 @@ import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
 import { TokenBalance } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
+import { NetworkConfig } from 'config/data';
 import { ETH_DECIMAL, convertTokenBase } from 'libs/units';
 import Spinner from 'components/ui/Spinner';
 import UnitDisplay from 'components/ui/UnitDisplay';
@@ -18,6 +19,8 @@ interface Props {
   rates: State['rates'];
   ratesError?: State['ratesError'];
   fetchCCRates: TFetchCCRates;
+  network: NetworkConfig;
+  isOffline: boolean;
 }
 
 interface CmpState {
@@ -42,24 +45,30 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    const { balance, tokenBalances } = this.props;
-    if (nextProps.balance !== balance || nextProps.tokenBalances !== tokenBalances) {
+    const { balance, tokenBalances, isOffline } = this.props;
+    if (
+      nextProps.balance !== balance ||
+      nextProps.tokenBalances !== tokenBalances ||
+      nextProps.isOffline !== isOffline
+    ) {
       this.makeBalanceLookup(nextProps);
       this.fetchRates(nextProps);
     }
   }
 
   public render() {
-    const { balance, tokenBalances, rates, ratesError } = this.props;
+    const { balance, tokenBalances, rates, ratesError, isOffline, network } = this.props;
     const { currency } = this.state;
 
     // There are a bunch of reasons why the incorrect balances might be rendered
     // while we have incomplete data that's being fetched.
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
+    // Currency exists in rates or the all option is selected
+    const rateExistsOrAll = rates[currency] || currency === ALL_OPTION;
 
     let valuesEl;
-    if (!isFetching && (rates[currency] || currency === ALL_OPTION)) {
+    if (!isFetching && rateExistsOrAll && !network.isTestnet) {
       const values = this.getEquivalentValues(currency);
       valuesEl = rateSymbols.map(key => {
         if (!values[key] || key === currency) {
@@ -80,6 +89,14 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           </li>
         );
       });
+    } else if (network.isTestnet) {
+      valuesEl = (
+        <div className="text-center">
+          <h5 style={{ color: 'red' }}>
+            On test network, equivalent values will not be displayed.
+          </h5>
+        </div>
+      );
     } else if (ratesError) {
       valuesEl = <h5>{ratesError}</h5>;
     } else if (tokenBalances && tokenBalances.length === 0) {
@@ -118,7 +135,13 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
           </select>
         </h5>
 
-        <ul className="EquivalentValues-values">{valuesEl}</ul>
+        {isOffline ? (
+          <div className="EquivalentValues-offline well well-sm">
+            Equivalent values are unavailable offline
+          </div>
+        ) : (
+          <ul className="EquivalentValues-values">{valuesEl}</ul>
+        )}
       </div>
     );
   }
@@ -142,8 +165,8 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   }
 
   private fetchRates(props: Props) {
-    // Duck out if we haven't gotten balances yet
-    if (!props.balance || !props.tokenBalances) {
+    // Duck out if we haven't gotten balances yet, or we're not going to
+    if (!props.balance || !props.tokenBalances || props.isOffline) {
       return;
     }
 

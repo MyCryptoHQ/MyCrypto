@@ -1,14 +1,13 @@
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
+import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config/data';
 
 /*** Toggle Offline ***/
 export interface ToggleOfflineAction {
   type: TypeKeys.CONFIG_TOGGLE_OFFLINE;
 }
 
-/*** Force Offline ***/
-export interface ForceOfflineAction {
-  type: TypeKeys.CONFIG_FORCE_OFFLINE;
+export interface ToggleAutoGasLimitAction {
+  type: TypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT;
 }
 
 /*** Change Language ***/
@@ -24,6 +23,7 @@ export interface ChangeNodeAction {
   payload: {
     nodeSelection: string;
     node: NodeConfig;
+    network: NetworkConfig;
   };
 }
 
@@ -78,8 +78,8 @@ export type ConfigAction =
   | ChangeNodeAction
   | ChangeLanguageAction
   | ToggleOfflineAction
+  | ToggleAutoGasLimitAction
   | PollOfflineStatus
-  | ForceOfflineAction
   | ChangeNodeIntentAction
   | AddCustomNodeAction
   | RemoveCustomNodeAction

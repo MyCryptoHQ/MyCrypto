@@ -40,18 +40,23 @@ describe('handleNonceRequest*', () => {
     expect(gens.gen.next(nodeLib).value).toEqual(select(getWalletInst));
   });
 
+  it('should handle being called without wallet inst correctly', () => {
+    gens.noWallet = gens.gen.clone();
+    gens.noWallet.next();
+    expect(gens.noWallet.next(offline).value).toEqual(
+      put(showNotification('warning', 'Your addresses nonce could not be fetched'))
+    );
+    expect(gens.noWallet.next().value).toEqual(put(getNonceFailed()));
+    expect(gens.noWallet.next().done).toEqual(true);
+  });
+
   it('should select getOffline', () => {
-    gens.clone = gens.gen.clone();
     expect(gens.gen.next(walletInst).value).toEqual(select(getOffline));
   });
 
-  it('should handle errors correctly', () => {
-    gens.clone.next();
-    expect(gens.clone.next().value).toEqual(
-      put(showNotification('warning', 'Your addresses nonce could not be fetched'))
-    );
-    expect(gens.clone.next().value).toEqual(put(getNonceFailed()));
-    expect(gens.clone.next().done).toEqual(true);
+  it('should exit if being called while offline', () => {
+    gens.offline = gens.gen.clone();
+    expect(gens.offline.next(true).done).toEqual(true);
   });
 
   it('should apply walletInst.getAddressString', () => {

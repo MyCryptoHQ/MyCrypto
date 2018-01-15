@@ -7,7 +7,7 @@ import { IWallet } from 'libs/wallet/IWallet';
 import './UnlockHeader.scss';
 
 interface Props {
-  title: React.ReactElement<any>;
+  title: React.ReactElement<string> | string;
   wallet: IWallet;
   disabledWallets?: string[];
 }
@@ -20,7 +20,7 @@ export class UnlockHeader extends React.Component<Props, State> {
   };
 
   public componentDidUpdate(prevProps: Props) {
-    if (this.props.wallet && this.props.wallet !== prevProps.wallet) {
+    if (this.props.wallet !== prevProps.wallet) {
       this.setState({ isExpanded: !this.state.isExpanded });
     }
   }
