@@ -98,7 +98,7 @@ const WEB3_TYPES = {
 const WEB3_TYPE: string | false =
   (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
 
-const SECURE_WALLETS = ['web3', 'ledger-nano-s', 'trezor', 'digital-bitbox'];
+const SECURE_WALLETS = ['web3', 'ledger-nano-s', 'trezor'];
 const INSECURE_WALLETS = ['private-key', 'keystore-file', 'mnemonic-phrase'];
 
 export class WalletDecrypt extends Component<Props, State> {

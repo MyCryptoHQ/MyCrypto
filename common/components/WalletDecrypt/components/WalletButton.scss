@@ -31,7 +31,7 @@
   padding: 25px 15px;
   margin: 0 $space-md $space;
 
-  background: #FFF;
+  background: #fff;
   box-shadow: 0 1px 4px rgba(#000, 0.2);
   border-radius: 8px;
   text-align: center;
@@ -52,8 +52,7 @@
     &:focus {
       transform: translateY(-2px);
       z-index: 2;
-      box-shadow: 0 1px 4px rgba(#000, 0.12),
-                  0 4px 6px rgba(#000, 0.12);
+      box-shadow: 0 1px 4px rgba(#000, 0.12), 0 4px 6px rgba(#000, 0.12);
 
       .WalletButton-title {
         color: $brand-primary;
@@ -66,8 +65,7 @@
 
     &:active {
       transform: translateY(-1px);
-      box-shadow: 0 1px 2px rgba(#000, 0.2),
-                  0 3px 4px rgba(#000, 0.2);
+      box-shadow: 0 1px 2px rgba(#000, 0.2), 0 3px 4px rgba(#000, 0.2);
     }
   }
 
@@ -173,7 +171,8 @@
   @media screen and (max-width: $screen-xs) {
     padding: 16px;
 
-    &, &--small {
+    &,
+    &--small {
       height: auto;
       width: 100%;
       min-width: 100%;
@@ -204,8 +203,8 @@
         margin: 0;
         width: 48px;
         text-align: center;
-        border-left: 1px solid #F4F4F4;
-        background: #FEFEFE;
+        border-left: 1px solid #f4f4f4;
+        background: #fefefe;
 
         a {
           position: absolute;

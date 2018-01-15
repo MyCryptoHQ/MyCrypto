@@ -4,11 +4,7 @@ import OnboardSlide from './OnboardSlide';
 import onboardIconSeven from 'assets/images/onboarding_icon-07.svg';
 
 const SecureSlideOne = () => {
-  const header = (
-    <div>
-      <span>{translate('ONBOARD_secure_1_title')}</span>
-    </div>
-  );
+  const header = translate('ONBOARD_secure_1_title');
 
   const content = (
     <div>
@@ -23,6 +19,8 @@ const SecureSlideOne = () => {
       </ul>
     </div>
   );
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconSeven} />;
+  return (
+    <OnboardSlide header={header} content={content} image={onboardIconSeven} imageSide="right" />
+  );
 };
 export default SecureSlideOne;

@@ -16,6 +16,6 @@ const WhyMewSlide = () => {
       <li>{translate('ONBOARD_whymew_content__6')}</li>
     </ul>
   );
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconSix} />;
+  return <OnboardSlide header={header} content={content} image={onboardIconSix} imageSide="left" />;
 };
 export default WhyMewSlide;

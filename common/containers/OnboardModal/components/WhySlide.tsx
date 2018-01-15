@@ -24,7 +24,9 @@ const WhySlide = () => {
       </ul>
     </div>
   );
-  return <OnboardSlide header={header} content={content} slideImage={onboardIconFive} />;
+  return (
+    <OnboardSlide header={header} content={content} image={onboardIconFive} imageSide="left" />
+  );
 };
 
 export default WhySlide;
