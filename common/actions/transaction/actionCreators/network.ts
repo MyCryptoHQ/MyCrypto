@@ -1,7 +1,8 @@
 import {
+  TypeKeys,
   EstimateGasFailedAction,
   EstimateGasRequestedAction,
-  TypeKeys,
+  EstimateGasTimeoutAction,
   EstimateGasSucceededAction,
   GetFromRequestedAction,
   GetFromSucceededAction,
@@ -27,6 +28,11 @@ const estimateGasSucceeded = (): EstimateGasSucceededAction => ({
 type TEstimateGasFailed = typeof estimateGasFailed;
 const estimateGasFailed = (): EstimateGasFailedAction => ({
   type: TypeKeys.ESTIMATE_GAS_FAILED
+});
+
+type TEstimateGasTimedout = typeof estimateGasTimedout;
+const estimateGasTimedout = (): EstimateGasTimeoutAction => ({
+  type: TypeKeys.ESTIMATE_GAS_TIMEDOUT
 });
 
 type TGetFromRequested = typeof getFromRequested;
@@ -63,6 +69,7 @@ const getNonceFailed = (): GetNonceFailedAction => ({
 export {
   estimateGasRequested,
   estimateGasFailed,
+  estimateGasTimedout,
   estimateGasSucceeded,
   getFromRequested,
   getFromSucceeded,
@@ -73,6 +80,7 @@ export {
   TEstimateGasRequested,
   TEstimateGasFailed,
   TEstimateGasSucceeded,
+  TEstimateGasTimedout,
   TGetFromRequested,
   TGetFromSucceeded,
   TGetNonceRequested,

@@ -64,7 +64,7 @@ class DeployClass extends Component<DispatchProps> {
         </label>
         <div className="row form-group">
           <div className="col-xs-11">
-            <NonceField />
+            <NonceField alwaysDisplay={false} />
           </div>
         </div>
         <div className="row form-group">

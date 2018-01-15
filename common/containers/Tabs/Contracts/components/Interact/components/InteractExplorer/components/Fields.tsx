@@ -14,7 +14,7 @@ export class Fields extends Component<OwnProps> {
       <React.Fragment>
         <GasLimitField />
         <AmountField />
-        <NonceField />
+        <NonceField alwaysDisplay={false} />
         {this.props.button}
         <SigningStatus />
         <SendButton />

@@ -16,6 +16,10 @@ export function getNode(state: AppState): string {
   return state.config.nodeSelection;
 }
 
+export function getIsWeb3Node(state: AppState): boolean {
+  return getNode(state) === 'web3';
+}
+
 export function getNodeConfig(state: AppState): NodeConfig {
   return state.config.node;
 }
@@ -84,6 +88,10 @@ export function getCustomNetworkConfigs(state: AppState): CustomNetworkConfig[] 
 
 export function getOffline(state: AppState): boolean {
   return state.config.offline;
+}
+
+export function getAutoGasLimitEnabled(state: AppState): boolean {
+  return state.config.autoGasLimit;
 }
 
 export function isSupportedUnit(state: AppState, unit: string) {

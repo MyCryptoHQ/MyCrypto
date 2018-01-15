@@ -133,7 +133,8 @@ const configureStore = () => {
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
           customNodes: state.config.customNodes,
-          customNetworks: state.config.customNetworks
+          customNetworks: state.config.customNetworks,
+          setGasLimit: state.config.setGasLimit
         },
         transaction: {
           fields: {
