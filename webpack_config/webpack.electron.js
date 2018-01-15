@@ -15,10 +15,13 @@ DelayPlugin.prototype.apply = function(compiler) {
 
 
 const electronConfig = {
-  entry: './electron/main.js',
+  entry: {
+    main: './electron/main.js',
+    preload: './electron/preload.js'
+  }
   target: 'electron-main',
   output: {
-    filename: 'main.js',
+    filename: '[name].js',
     path: path.resolve(config.path.output, 'electron-js')
   },
   plugins: [

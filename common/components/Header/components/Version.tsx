@@ -1,34 +1,52 @@
 import React from 'react';
-// import { ipcRenderer } from 'electron';
 import { VERSION } from 'config/data';
 import UpdateModal, { UpdateInfo } from 'components/UpdateModal';
+import { electronListen } from 'utils/electron';
+import './Version.scss';
 
 interface State {
   updateInfo: UpdateInfo | null;
+  isModalOpen: boolean;
 }
 
 export default class Version extends React.Component<{}, State> {
   public state: State = {
-    updateInfo: null
+    updateInfo: null,
+    isModalOpen: false
   };
 
   public componentDidMount() {
-    if (!process.env.BUILD_ELECTRON) {
-      return;
-    }
+    electronListen('UPDATE:checking-for-update', () => {
+      console.log('Checking for update!');
+    });
 
-    // ipcRenderer.on('UPDATE:update-available', (updateInfo) => {
-    //   this.setState({ updateInfo });
-    // });
+    electronListen('UPDATE:update-available', updateInfo => {
+      console.log('Update info', updateInfo);
+      this.setState({ updateInfo });
+    });
   }
 
   public render() {
-    const { updateInfo } = this.state;
+    const { updateInfo, isModalOpen } = this.state;
     return (
       <div className="Version">
-        v{VERSION}
-        {updateInfo && '(UPDATE)'}
+        <span className="Version-text" onClick={this.openModal}>
+          v{VERSION}
+        </span>
+        {updateInfo && (
+          <span>
+            <span className="Version-new" />
+            <UpdateModal
+              isOpen={isModalOpen}
+              updateInfo={updateInfo}
+              handleClose={this.closeModal}
+            />
+          </span>
+        )}
       </div>
     );
   }
+
+  private openModal = () => this.setState({ isModalOpen: true });
+  private closeModal = () => this.setState({ isModalOpen: false });
 }

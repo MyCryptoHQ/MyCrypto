@@ -253,8 +253,26 @@ module.exports = function(opts = {}) {
   }
 
   if (options.isElectronBuild) {
-    // plugins.push(new ElectronPackagerPlugin());
-    plugins.push(new ElectronBuilderPlugin());
+    // target: 'electron-renderer' kills scrypt, so manually pull in some
+    // of its configuration instead
+    plugins.push(new webpack.ExternalsPlugin("commonjs", [
+			"desktop-capturer",
+			"electron",
+			"ipc",
+			"ipc-renderer",
+			"remote",
+			"web-frame",
+			"clipboard",
+			"crash-reporter",
+			"native-image",
+			"screen",
+			"shell"
+		]));
+
+    if (options.isProduction) {
+      // plugins.push(new ElectronPackagerPlugin());
+      plugins.push(new ElectronBuilderPlugin());
+    }
   }
 
   // ====================
@@ -276,7 +294,7 @@ module.exports = function(opts = {}) {
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
     filename: options.isProduction ? '[name].[chunkhash:8].js' : '[name].js',
-    publicPath: isDownloadable ? './' : '/'
+    publicPath: isDownloadable && options.isProduction ? './' : '/'
   }
 
 

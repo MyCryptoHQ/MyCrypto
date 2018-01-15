@@ -1,5 +1,6 @@
 'use strict';
 const { app, shell, BrowserWindow, Menu } = require('electron');
+const path = require('path');
 const updater = require('./updater');
 const MENU = require('./menu');
 
@@ -21,7 +22,8 @@ function createMainWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
@@ -75,5 +77,7 @@ app.on('activate', () => {
 // Create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow();
-  updater(mainWindow);
+  mainWindow.webContents.on('did-finish-load', () => {
+    updater(app, mainWindow);
+  });
 });
