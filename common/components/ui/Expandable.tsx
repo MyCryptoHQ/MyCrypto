@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Aux } from 'components/ui';
 
 export type ExpandHandler = (ev: React.FormEvent<HTMLAnchorElement>) => void;
 
@@ -19,10 +18,10 @@ export class Expandable extends Component<Props, State> {
 
   public render() {
     return (
-      <Aux>
+      <React.Fragment>
         {this.props.expandLabel(this.expandHandler)}
         {this.state.expanded && this.props.children}
-      </Aux>
+      </React.Fragment>
     );
   }
 

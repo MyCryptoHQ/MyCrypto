@@ -1,7 +1,6 @@
 import React from 'react';
 import { AddressFieldFactory } from './AddressFieldFactory';
 import { donationAddressMap } from 'config/data';
-import { Aux } from 'components/ui';
 
 interface Props {
   isReadOnly?: boolean;
@@ -10,7 +9,7 @@ interface Props {
 export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
   <AddressFieldFactory
     withProps={({ currentTo, isValid, onChange, readOnly, errorMsg }) => (
-      <Aux>
+      <React.Fragment>
         <input
           className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
           type="text"
@@ -24,7 +23,7 @@ export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
             <span className="help-block">{errorMsg}</span>
           </div>
         )}
-      </Aux>
+      </React.Fragment>
     )}
   />
 );
