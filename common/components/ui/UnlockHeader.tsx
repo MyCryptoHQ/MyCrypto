@@ -20,7 +20,7 @@ export class UnlockHeader extends React.Component<Props, State> {
   };
 
   public componentDidUpdate(prevProps: Props) {
-    if (this.props.wallet && this.props.wallet !== prevProps.wallet) {
+    if (this.props.wallet !== prevProps.wallet) {
       this.setState({ isExpanded: !this.state.isExpanded });
     }
   }

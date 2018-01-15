@@ -12,9 +12,11 @@ import {
 import { liteSend } from './swap/liteSend';
 import { getBityRatesSaga, getShapeShiftRatesSaga, swapProviderSaga } from './swap/rates';
 import wallet from './wallet';
+import { ens } from './ens';
 import { transaction } from './transaction';
 
 export default {
+  ens,
   liteSend,
   configSaga,
   postBityOrderSaga,

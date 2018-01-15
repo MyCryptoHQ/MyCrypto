@@ -41,6 +41,8 @@ import { IWallet, Web3Wallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+import { resetWallet } from 'actions/wallet';
+import { reset as resetTransaction } from 'actions/transaction';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -173,7 +175,8 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
 
   // if there's no wallet, do not reload as there's no component state to resync
   if (currentWallet && currentConfig.network !== actionConfig.network) {
-    yield call(reload);
+    yield put(resetWallet());
+    yield put(resetTransaction());
   }
 }
 

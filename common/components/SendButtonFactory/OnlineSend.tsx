@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Aux } from 'components/ui';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
@@ -40,10 +39,10 @@ class OnlineSendClass extends Component<Props, State> {
     ) : null;
 
     return !this.props.offline ? (
-      <Aux>
+      <React.Fragment>
         {this.props.withProps({ onClick: this.openModal })}
         {displayModal}
-      </Aux>
+      </React.Fragment>
     ) : null;
   }
   private openModal = () => {

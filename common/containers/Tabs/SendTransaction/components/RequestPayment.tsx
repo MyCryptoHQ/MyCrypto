@@ -106,7 +106,7 @@ class RequestPayment extends React.Component<Props, {}> {
 
           <div className="row form-group">
             <div className="col-xs-11">
-              <GasLimitField />
+              <GasLimitField includeLabel={true} onlyIncludeLoader={false} />
             </div>
           </div>
 

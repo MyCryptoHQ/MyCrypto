@@ -1,7 +1,8 @@
 $table-cell-padding: $space-sm;
 $table-condensed-cell-padding: $space-xs;
 $table-bg: transparent;
-$table-bg-accent: #f9f9f9;
+$table-bg-accent: #f5f5f5;
 $table-bg-hover: $gray-lightest;
 $table-bg-active: $table-bg-hover;
-$table-border-color: #ddd;
+$table-border-color: transparent;
+$table-cell-padding: 0.75rem 1rem;

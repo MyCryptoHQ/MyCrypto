@@ -6,7 +6,6 @@ const ABIFUNC_METHOD_NAMES = ['encodeInput', 'decodeInput', 'decodeOutput'];
 enum ABIMethodTypes {
   FUNC = 'function'
 }
-
 export type TContract = typeof Contract;
 
 export default class Contract {
