@@ -14,6 +14,7 @@ import './index.scss';
 import PreFooter from './PreFooter';
 import Modal, { IButton } from 'components/ui/Modal';
 import { NewTabLink } from 'components/ui';
+import OnboardModal from 'containers/OnboardModal';
 
 const AffiliateTag = ({ link, text }: Link) => {
   return (
@@ -125,6 +126,7 @@ export default class Footer extends React.Component<Props, State> {
     const buttons: IButton[] = [{ text: 'Okay', type: 'default', onClick: this.closeModal }];
     return (
       <div>
+        <OnboardModal />
         <PreFooter />
         <footer className="Footer" role="contentinfo" aria-label="footer">
           <div className="Footer-about">

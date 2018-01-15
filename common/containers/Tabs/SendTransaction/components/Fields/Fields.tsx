@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import {
-  NonceField,
   AddressField,
   AmountField,
   GasSlider,
@@ -14,7 +13,7 @@ import {
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
-import { Aux } from 'components/ui';
+
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
 
@@ -31,11 +30,6 @@ const content = (
     <div className="row form-group">
       <div className="col-xs-12">
         <GasSlider />
-      </div>
-    </div>
-    <div className="row form-group">
-      <div className="col-xs-12">
-        <NonceField />
       </div>
     </div>
 
@@ -74,10 +68,10 @@ class FieldsClass extends Component<StateProps> {
     return (
       <OnlyUnlocked
         whenUnlocked={
-          <Aux>
+          <React.Fragment>
             <QueryWarning />
             {shouldDisplay ? content : null}
-          </Aux>
+          </React.Fragment>
         }
       />
     );

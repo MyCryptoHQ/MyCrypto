@@ -22,8 +22,7 @@ import {
   getNodeConfig,
   getCustomNodeConfigs,
   getCustomNetworkConfigs,
-  getOffline,
-  getForceOffline
+  getOffline
 } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
@@ -42,6 +41,8 @@ import { IWallet, Web3Wallet } from 'libs/wallet';
 import { getWalletInst } from 'selectors/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+import { resetWallet } from 'actions/wallet';
+import { reset as resetTransaction } from 'actions/transaction';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -50,19 +51,11 @@ export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     const node: NodeConfig = yield select(getNodeConfig);
     const isOffline: boolean = yield select(getOffline);
-    const isForcedOffline: boolean = yield select(getForceOffline);
-
-    // If they're forcing themselves offline, exit the loop. It will be
-    // kicked off again if they toggle it in handleTogglePollOfflineStatus.
-    if (isForcedOffline) {
-      return;
-    }
 
     // If our offline state disagrees with the browser, run a check
     // Don't check if the user is in another tab or window
     const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
     if (shouldPing && !document.hidden) {
-      hasCheckedOnline = true;
       const { pingSucceeded } = yield race({
         pingSucceeded: call(node.lib.ping.bind(node.lib)),
         timeout: call(delay, 5000)
@@ -76,20 +69,33 @@ export function* pollOfflineStatus(): SagaIterator {
         yield put(toggleOfflineConfig());
       } else if (!pingSucceeded && !isOffline) {
         // If we were unable to ping but redux says we're online, mark offline
-        yield put(
-          showNotification(
-            'danger',
-            `You’ve lost your connection to the network, check your internet
-            connection or try changing networks from the dropdown at the
-            top right of the page.`,
-            Infinity
-          )
-        );
+        // If they had been online, show an error.
+        // If they hadn't been online, just inform them with a warning.
+        if (hasCheckedOnline) {
+          yield put(
+            showNotification(
+              'danger',
+              `You’ve lost your connection to the network, check your internet
+              connection or try changing networks from the dropdown at the
+              top right of the page.`,
+              Infinity
+            )
+          );
+        } else {
+          yield put(
+            showNotification(
+              'info',
+              'You are currently offline. Some features will be unavailable.',
+              5000
+            )
+          );
+        }
         yield put(toggleOfflineConfig());
       } else {
         // If neither case was true, try again in 5s
         yield call(delay, 5000);
       }
+      hasCheckedOnline = true;
     } else {
       yield call(delay, 1000);
     }
@@ -101,15 +107,6 @@ export function* handlePollOfflineStatus(): SagaIterator {
   const pollOfflineStatusTask = yield fork(pollOfflineStatus);
   yield take('CONFIG_STOP_POLL_OFFLINE_STATE');
   yield cancel(pollOfflineStatusTask);
-}
-
-export function* handleTogglePollOfflineStatus(): SagaIterator {
-  const isForcedOffline: boolean = yield select(getForceOffline);
-  if (isForcedOffline) {
-    yield fork(handlePollOfflineStatus);
-  } else {
-    yield call(handlePollOfflineStatus);
-  }
 }
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
@@ -178,7 +175,8 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
 
   // if there's no wallet, do not reload as there's no component state to resync
   if (currentWallet && currentConfig.network !== actionConfig.network) {
-    yield call(reload);
+    yield put(resetWallet());
+    yield put(resetTransaction());
   }
 }
 
@@ -251,7 +249,6 @@ export const equivalentNodeOrDefault = (nodeConfig: NodeConfig) => {
 
 export default function* configSaga(): SagaIterator {
   yield takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus);
-  yield takeEvery(TypeKeys.CONFIG_FORCE_OFFLINE, handleTogglePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);

@@ -9,7 +9,7 @@ interface ContainerTabPaneActiveProps {
 }
 
 const ContainerTabPaneActive = ({ children }: ContainerTabPaneActiveProps) => (
-  <TabSection>
+  <TabSection isUnavailableOffline={true}>
     <section className="container">
       <div className="tab-content">
         <main className="tab-pane active">

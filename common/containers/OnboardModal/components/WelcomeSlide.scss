@@ -1,0 +1,27 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.WelcomeSlide {
+  &-alert {
+    display: flex;
+    border-top: 2px solid $brand-danger;
+    padding: $space-sm;
+    font-size: $font-size-base;
+    line-height: 1.5;
+    font-weight: 500;
+    box-shadow: 0 1px 1px 1px rgba(#000, 0.12);
+    margin-bottom: $space;
+
+    &-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 32px;
+      margin-left: $space * 0.4;
+      margin-right: $space * 0.8;
+      text-align: center;
+      font-size: 32px;
+      color: $brand-danger;
+    }
+  }
+}

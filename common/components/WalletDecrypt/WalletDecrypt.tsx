@@ -33,13 +33,15 @@ import {
 import { AppState } from 'reducers';
 import { knowledgeBaseURL, isWeb3NodeAvailable } from 'config/data';
 import { IWallet } from 'libs/wallet';
+import DISABLES from './disables.json';
+import { showNotification, TShowNotification } from 'actions/notifications';
+
 import DigitalBitboxIcon from 'assets/images/wallets/digital-bitbox.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
-type UnlockParams = {} | PrivateKeyValue;
 
 interface Props {
   resetTransactionState: TReset;
@@ -49,12 +51,16 @@ interface Props {
   setWallet: TSetWallet;
   unlockWeb3: TUnlockWeb3;
   resetWallet: TResetWallet;
+  showNotification: TShowNotification;
   wallet: IWallet;
   hidden?: boolean;
   offline: boolean;
   disabledWallets?: string[];
+  isWalletPending: AppState['wallet']['isWalletPending'];
+  isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
 
+type UnlockParams = {} | PrivateKeyValue;
 interface State {
   selectedWalletKey: string | null;
   value: UnlockParams | null;
@@ -92,7 +98,7 @@ const WEB3_TYPES = {
 const WEB3_TYPE: string | false =
   (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
 
-const SECURE_WALLETS = ['web3', 'ledger-nano-s', 'trezor', 'digital-bitbox'];
+const SECURE_WALLETS = ['web3', 'ledger-nano-s', 'trezor'];
 const INSECURE_WALLETS = ['private-key', 'keystore-file', 'mnemonic-phrase'];
 
 export class WalletDecrypt extends Component<Props, State> {
@@ -210,13 +216,17 @@ export class WalletDecrypt extends Component<Props, State> {
         value={this.state.value}
         onChange={this.onChange}
         onUnlock={this.onUnlock}
+        showNotification={this.props.showNotification}
+        isWalletPending={
+          this.state.selectedWalletKey === 'keystore-file' ? this.props.isWalletPending : undefined
+        }
+        isPasswordPending={
+          this.state.selectedWalletKey === 'keystore-file'
+            ? this.props.isPasswordPending
+            : undefined
+        }
       />
     );
-  }
-
-  public isOnlineRequiredWalletAndOffline(selectedWalletKey) {
-    const onlineRequiredWallets = ['trezor', 'ledger-nano-s'];
-    return this.props.offline && onlineRequiredWallets.includes(selectedWalletKey);
   }
 
   public buildWalletOptions() {
@@ -366,6 +376,10 @@ export class WalletDecrypt extends Component<Props, State> {
   };
 
   private isWalletDisabled = (walletKey: string) => {
+    if (this.props.offline && DISABLES.ONLINE_ONLY.includes(walletKey)) {
+      return true;
+    }
+
     if (!this.props.disabledWallets) {
       return false;
     }
@@ -376,7 +390,9 @@ export class WalletDecrypt extends Component<Props, State> {
 function mapStateToProps(state: AppState) {
   return {
     offline: state.config.offline,
-    wallet: state.wallet.inst
+    wallet: state.wallet.inst,
+    isWalletPending: state.wallet.isWalletPending,
+    isPasswordPending: state.wallet.isPasswordPending
   };
 }
 
@@ -387,5 +403,6 @@ export default connect(mapStateToProps, {
   unlockWeb3,
   setWallet,
   resetWallet,
-  resetTransactionState: reset
+  resetTransactionState: reset,
+  showNotification
 })(WalletDecrypt);

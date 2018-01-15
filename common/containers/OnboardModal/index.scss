@@ -1,0 +1,39 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.OnboardModal {
+  // Additional styles for the Stepper Component
+  &-stepper {
+    a,
+    span {
+      position: relative;
+      bottom: 3px;
+    }
+  }
+  @media screen and (max-width: $screen-sm) {
+    &-stepper {
+      // The markup is inline style'd with no classes, so we're doing this in a
+      // horrible, horrible way
+      > div > div > div {
+        // Lines
+        > div {
+          opacity: 0;
+        }
+        // Circle
+        > div:nth-child(1) {
+          opacity: 1;
+          height: 8px !important;
+          width: 8px !important;
+          color: transparent !important;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: $screen-sm) {
+    .Modal {
+      max-width: 800px;
+      width: 100%;
+    }
+  }
+}

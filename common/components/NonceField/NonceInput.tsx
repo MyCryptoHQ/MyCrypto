@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Aux } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import Help from 'components/ui/Help';
 import { getNonce, nonceRequestFailed } from 'selectors/transaction';
-import { isAnyOffline } from 'selectors/config';
+import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 const nonceHelp = (
@@ -26,7 +25,7 @@ class NonceInputClass extends Component<Props> {
   public render() {
     const { nonce: { raw, value }, onChange, shouldDisplay } = this.props;
     const content = (
-      <Aux>
+      <React.Fragment>
         <label>Nonce</label>
         {nonceHelp}
 
@@ -42,7 +41,7 @@ class NonceInputClass extends Component<Props> {
             />
           )}
         />
-      </Aux>
+      </React.Fragment>
     );
 
     return shouldDisplay ? content : null;
@@ -50,6 +49,6 @@ class NonceInputClass extends Component<Props> {
 }
 
 export const NonceInput = connect((state: AppState) => ({
-  shouldDisplay: isAnyOffline(state) || nonceRequestFailed(state),
+  shouldDisplay: getOffline(state) || nonceRequestFailed(state),
   nonce: getNonce(state)
 }))(NonceInputClass);
