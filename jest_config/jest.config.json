@@ -12,7 +12,6 @@
     "\\.(css|scss|less)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
     "\\.worker.ts": "<rootDir>/jest_config/__mocks__/workerMock.js"
   },
-  "testPathIgnorePatterns": ["<rootDir>/common/config"],
   "setupFiles": [
     "<rootDir>/jest_config/setupJest.js",
     "<rootDir>/jest_config/__mocks__/localStorage.ts"
