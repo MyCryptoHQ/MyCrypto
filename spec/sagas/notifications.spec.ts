@@ -1,26 +1,14 @@
 import { delay } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import { handleNotification } from 'sagas/notifications';
-import {
-  ShowNotificationAction,
-  showNotification,
-  closeNotification
-} from 'actions/notifications';
+import { ShowNotificationAction, showNotification, closeNotification } from 'actions/notifications';
 
 describe('handleNotification*', () => {
   const level = 'success';
   const msg = 'msg';
   const duration = 10;
-  const notificationAction1: ShowNotificationAction = showNotification(
-    level,
-    msg,
-    duration
-  );
-  const notificationAction2: ShowNotificationAction = showNotification(
-    level,
-    msg,
-    0
-  );
+  const notificationAction1: ShowNotificationAction = showNotification(level, msg, duration);
+  const notificationAction2: ShowNotificationAction = showNotification(level, msg, 0);
   const gen1 = handleNotification(notificationAction1);
   const gen2 = handleNotification(notificationAction2);
 

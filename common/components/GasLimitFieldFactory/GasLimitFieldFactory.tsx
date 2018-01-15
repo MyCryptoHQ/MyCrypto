@@ -10,6 +10,7 @@ const defaultGasLimit = '21000';
 export interface CallBackProps {
   readOnly: boolean;
   gasLimit: AppState['transaction']['fields']['gasLimit'];
+  gasEstimationPending: boolean;
   onChange(value: React.FormEvent<HTMLInputElement>): void;
 }
 

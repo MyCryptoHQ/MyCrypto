@@ -19,10 +19,7 @@ describe('customTokens reducer', () => {
     const state2 = notifications(state1, notification2);
 
     expect(
-      notifications(
-        state2,
-        notificationsActions.closeNotification(notification2.payload)
-      )
+      notifications(state2, notificationsActions.closeNotification(notification2.payload))
     ).toEqual([notification1.payload]);
   });
 });

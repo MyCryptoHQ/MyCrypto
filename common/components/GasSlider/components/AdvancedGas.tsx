@@ -1,71 +1,69 @@
 import React from 'react';
 import classnames from 'classnames';
 import translate from 'translations';
-import { DataFieldFactory } from 'components/DataFieldFactory';
 import FeeSummary from './FeeSummary';
 import './AdvancedGas.scss';
+import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'actions/config';
+import { AppState } from 'reducers';
+import { TInputGasPrice } from 'actions/transaction';
+import { NonceField, GasLimitField, DataField } from 'components';
+import { connect } from 'react-redux';
+import { getAutoGasLimitEnabled } from 'selectors/config';
 
-interface Props {
-  gasPrice: string;
-  gasLimit: string;
-  nonce: string;
-  changeGasPrice(gwei: string): void;
-  changeGasLimit(wei: string): void;
-  changeNonce(nonce: string): void;
+interface OwnProps {
+  inputGasPrice: TInputGasPrice;
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
 }
 
-export default class AdvancedGas extends React.Component<Props> {
-  public render() {
-    // Can't shadow var names for data & fee summary
-    const vals = this.props;
+interface StateProps {
+  autoGasLimitEnabled: AppState['config']['autoGasLimit'];
+}
 
+interface DispatchProps {
+  toggleAutoGasLimit: TToggleAutoGasLimit;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
+
+class AdvancedGas extends React.Component<Props> {
+  public render() {
+    const { autoGasLimitEnabled, gasPrice } = this.props;
     return (
       <div className="AdvancedGas row form-group">
+        <div className="col-md-12">
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              defaultChecked={autoGasLimitEnabled}
+              onChange={this.handleToggleAutoGasLimit}
+            />
+            <span>Automatically Calculate Gas Limit</span>
+          </label>
+        </div>
+
         <div className="col-md-4 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
           <input
-            className={classnames('form-control', !vals.gasPrice && 'is-invalid')}
+            className={classnames('form-control', { 'is-invalid': !gasPrice.value })}
             type="number"
             placeholder="e.g. 40"
-            value={vals.gasPrice}
+            value={gasPrice.raw}
             onChange={this.handleGasPriceChange}
           />
         </div>
 
-        <div className="col-md-4 col-sm-6 col-xs-12">
+        <div className="col-md-4 col-sm-6 col-xs-12 AdvancedGas-gasLimit">
           <label>{translate('OFFLINE_Step2_Label_4')}</label>
-          <input
-            className={classnames('form-control', !vals.gasLimit && 'is-invalid')}
-            type="number"
-            placeholder="e.g. 21000"
-            value={vals.gasLimit}
-            onChange={this.handleGasLimitChange}
-          />
+          <div className="SimpleGas-flex-spacer" />
+          <GasLimitField includeLabel={false} onlyIncludeLoader={false} />
         </div>
 
         <div className="col-md-4 col-sm-12">
-          <label>{translate('OFFLINE_Step2_Label_5')}</label>
-          <input
-            className={classnames('form-control', !vals.nonce && 'is-invalid')}
-            type="number"
-            placeholder="e.g. 7"
-            value={vals.nonce}
-            onChange={this.handleNonceChange}
-          />
+          <NonceField alwaysDisplay={true} />
         </div>
 
         <div className="col-md-12">
-          <label>{translate('OFFLINE_Step2_Label_6')}</label>
-          <DataFieldFactory
-            withProps={({ data, onChange }) => (
-              <input
-                className="form-control"
-                value={data.raw}
-                onChange={onChange}
-                placeholder="0x7cB57B5A..."
-              />
-            )}
-          />
+          <DataField />
         </div>
 
         <div className="col-sm-12">
@@ -82,14 +80,15 @@ export default class AdvancedGas extends React.Component<Props> {
   }
 
   private handleGasPriceChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.props.changeGasPrice(ev.currentTarget.value);
+    this.props.inputGasPrice(ev.currentTarget.value);
   };
 
-  private handleGasLimitChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.props.changeGasLimit(ev.currentTarget.value);
-  };
-
-  private handleNonceChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.props.changeNonce(ev.currentTarget.value);
+  private handleToggleAutoGasLimit = (_: React.FormEvent<HTMLInputElement>) => {
+    this.props.toggleAutoGasLimit();
   };
 }
+
+export default connect(
+  (state: AppState) => ({ autoGasLimitEnabled: getAutoGasLimitEnabled(state) }),
+  { toggleAutoGasLimit }
+)(AdvancedGas);
