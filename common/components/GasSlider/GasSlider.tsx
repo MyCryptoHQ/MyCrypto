@@ -12,7 +12,7 @@ import {
 import { toggleSetGasLimit, TToggleSetGasLimit } from 'actions/config';
 import { State as NetworkState } from 'reducers/transaction/network';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getNode } from 'selectors/config';
 import { AppState } from 'reducers';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas from './components/AdvancedGas';
@@ -30,6 +30,7 @@ interface Props {
   offline: AppState['config']['offline'];
   network: AppState['config']['network'];
   gasEstimationStatus: NetworkState['gasEstimationStatus'];
+  node: AppState['config']['nodeSelection'];
   // Actions
   toggleSetGasLimit: TToggleSetGasLimit;
   inputGasPrice: TInputGasPrice;
@@ -67,7 +68,8 @@ class GasSlider extends React.Component<Props, State> {
       offline,
       disableAdvanced,
       gasEstimationStatus,
-      setGasLimit
+      setGasLimit,
+      node
     } = this.props;
     const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
@@ -87,6 +89,7 @@ class GasSlider extends React.Component<Props, State> {
           />
         ) : (
           <SimpleGas
+            node={node}
             gasPrice={gasPrice.raw}
             gasEstimationStatus={gasEstimationStatus}
             changeGasPrice={this.props.inputGasPrice}
@@ -122,7 +125,8 @@ function mapStateToProps(state: AppState) {
     offline: state.config.offline,
     setGasLimit: state.config.setGasLimit,
     network: getNetworkConfig(state),
-    gasEstimationStatus: getNetworkStatus(state).gasEstimationStatus
+    gasEstimationStatus: getNetworkStatus(state).gasEstimationStatus,
+    node: getNode(state)
   };
 }
 

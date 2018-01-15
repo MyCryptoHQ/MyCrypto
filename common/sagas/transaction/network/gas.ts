@@ -57,7 +57,7 @@ export function* shouldEstimateGas(): SagaIterator {
       getTransactionFields,
       transaction
     );
-    if (select(getSetGasLimit)) {
+    if (yield select(getSetGasLimit)) {
       yield put(estimateGasRequested(rest));
     }
   }

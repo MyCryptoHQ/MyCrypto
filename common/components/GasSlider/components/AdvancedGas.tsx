@@ -31,11 +31,11 @@ export default class AdvancedGas extends React.Component<Props> {
           <label className="checkbox">
             <input
               type="checkbox"
-              className="form-check-input"
+              className=""
               defaultChecked={setGasLimit}
               onChange={this.handleToggleSetGasLimit}
             />
-            <span>Automatically Set Gas Limit</span>
+            <span>Automatically Calculate Gas Limit</span>
           </label>
         </div>
 
@@ -50,12 +50,12 @@ export default class AdvancedGas extends React.Component<Props> {
           />
         </div>
 
-        <div className="col-md-4 col-sm-6 col-xs-12 gasLimit-input-grp">
+        <div className="col-md-4 col-sm-6 col-xs-12 AdvancedGas-gasLimit">
           <label>{translate('OFFLINE_Step2_Label_4')}</label>
           <div className="SimpleGas-flex-spacer" />
           <CSSTransition in={estimatingGas} timeout={300} classNames="fade">
             <div className={`SimpleGas-estimating small ${estimatingGas ? 'active' : ''}`}>
-              Setting gas limit
+              Calculating gas limit
               <Spinner />
             </div>
           </CSSTransition>

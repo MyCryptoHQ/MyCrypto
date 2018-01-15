@@ -10,13 +10,14 @@ import './SimpleGas.scss';
 
 interface Props {
   gasPrice: string;
+  node: string;
   gasEstimationStatus: NetworkState['gasEstimationStatus'];
   changeGasPrice(gwei: string): void;
 }
 
 export default class SimpleGas extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasEstimationStatus } = this.props;
+    const { gasPrice, gasEstimationStatus, node } = this.props;
     const estimatingGas = gasEstimationStatus === 'PENDING' ? true : false;
     const estimatingGasTimeout = gasEstimationStatus === 'TIMEOUT' ? true : false;
     return (
@@ -26,15 +27,17 @@ export default class SimpleGas extends React.Component<Props> {
           <div className="SimpleGas-flex-spacer" />
           <CSSTransition in={estimatingGas} timeout={300} classNames="fade">
             <div className={`SimpleGas-estimating small ${estimatingGas ? 'active' : ''}`}>
-              Setting gas limit
+              Calculating gas limit
               <Spinner />
             </div>
           </CSSTransition>
         </div>
         {estimatingGasTimeout && (
-          <div className="col-md-12 prompt-toggle-gas-limit">
+          <div className="col-md-12">
             <p className="small">
-              Couldn't set gas limit, try setting manually in advanced settings
+              {node === 'web3'
+                ? "Couldn't calculate gas limit, try switching nodes"
+                : "Couldn't calculate gas limit, if you know what your doing, try setting manually in Advanced settings"}
             </p>
           </div>
         )}
