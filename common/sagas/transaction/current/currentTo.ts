@@ -26,7 +26,7 @@ export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterato
       ENSTypekeys.ENS_RESOLVE_DOMAIN_SUCCEEDED,
       ENSTypekeys.ENS_RESOLVE_DOMAIN_CACHED
     ]);
-    const resolvedAddress: string | null = yield select(getResolvedAddress);
+    const resolvedAddress: string | null = yield select(getResolvedAddress, true);
     if (resolvedAddress) {
       value = Address(resolvedAddress);
     }

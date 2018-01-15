@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Identicon, Spinner } from 'components/ui';
 import translate from 'translations';
-//import { EnsAddress } from './components';
 import { Query } from 'components/renderCbs';
 import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
 import { connect } from 'react-redux';
@@ -36,7 +35,7 @@ const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress:
       </>
     );
   } else {
-    return isENS && rawAddress !== '0x0' ? <>{rawAddress}</> : null;
+    return isENS ? <>{`Resolved Address: ${rawAddress}`}</> : null;
   }
 };
 
