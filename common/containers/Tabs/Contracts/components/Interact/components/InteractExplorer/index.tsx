@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractExplorer.scss';
 import { TShowNotification, showNotification } from 'actions/notifications';
-import { Aux } from 'components/ui';
 import { getNodeLib } from 'selectors/config';
 import { getTo, getDataExists } from 'selectors/transaction';
 import { INode } from 'libs/nodes/INode';
@@ -126,9 +125,9 @@ class InteractExplorerClass extends Component<Props, State> {
                 {translate('CONTRACT_Read')}
               </button>
             ) : (
-              <Aux>
+              <React.Fragment>
                 <Fields button={generateOrWriteButton} />
-              </Aux>
+              </React.Fragment>
             )}
           </div>
         )}

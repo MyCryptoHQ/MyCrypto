@@ -3,8 +3,6 @@ import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-
-import { Aux } from 'components/ui';
 import { GenerateTransaction, SendButton, SigningStatus, GasSlider } from 'components';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import translate from 'translations';
@@ -46,7 +44,7 @@ class FieldsClass extends Component<Props> {
 
             <AmountFieldFactory
               withProps={({ currentValue, isValid }) => (
-                <Aux>
+                <React.Fragment>
                   {!isValid && (
                     <h5 style={{ color: 'red' }}>
                       WARNING: Your ether or token balance is not high enough to complete this
@@ -61,7 +59,7 @@ class FieldsClass extends Component<Props> {
                       readOnly={true}
                     />
                   )}
-                </Aux>
+                </React.Fragment>
               )}
             />
           </div>

@@ -1,5 +1,4 @@
 import translate from 'translations';
-import { Aux } from 'components/ui';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { OfflineBroadcast } from './OfflineBroadcast';
 import { SerializedTransaction } from 'components/renderCbs';
@@ -33,7 +32,7 @@ class SendButtonFactoryClass extends Component<Props> {
     return (
       <SerializedTransaction
         withSerializedTransaction={serializedTransaction => (
-          <Aux>
+          <React.Fragment>
             <div className={`col-sm-${columnSize}`}>
               <label>
                 {this.props.walletType.isWeb3Wallet
@@ -64,7 +63,7 @@ class SendButtonFactoryClass extends Component<Props> {
             )}
             <OfflineBroadcast />
             <OnlineSend withProps={this.props.withProps} />
-          </Aux>
+          </React.Fragment>
         )}
       />
     );
