@@ -17,8 +17,7 @@ describe('setCurrentTo*', () => {
   const etherTransaction = true;
   const payload = {
     raw,
-    value: Address(raw),
-    error: null
+    value: Address(raw)
   };
 
   const gens: any = {};

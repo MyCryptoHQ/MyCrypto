@@ -32,7 +32,7 @@ export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterato
     }
   }
 
-  const payload = { raw, value, error: null };
+  const payload = { raw, value };
   if (etherTransaction) {
     yield put(setToField(payload));
   } else {
