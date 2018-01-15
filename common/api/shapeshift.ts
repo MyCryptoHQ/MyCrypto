@@ -53,7 +53,15 @@ class ShapeshiftService {
       headers: new Headers(this.postHeaders)
     })
       .then(checkHttpStatus)
-      .then(parseJSON);
+      .then(parseJSON)
+      .catch(err => {
+        // CORS rejection, meaning metamask don't want us
+        if (err.name === 'TypeError') {
+          throw new Error(
+            'Shapeshift has blocked this request, visit shapeshift.io for more information or contact support'
+          );
+        }
+      });
   }
 
   public getCoins() {
