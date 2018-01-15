@@ -20,7 +20,7 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
     process.env.ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = true;
 
     builder.build({
-      mac: ['dmg'],
+      mac: ['zip'],
       win: ['nsis'],
       linux: ['AppImage'],
       config: {
