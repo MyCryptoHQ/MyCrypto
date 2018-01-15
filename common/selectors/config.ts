@@ -16,6 +16,10 @@ export function getNode(state: AppState): string {
   return state.config.nodeSelection;
 }
 
+export function getIsWeb3Node(state: AppState): boolean {
+  return getNode(state) === 'web3';
+}
+
 export function getNodeConfig(state: AppState): NodeConfig {
   return state.config.node;
 }

@@ -9,14 +9,15 @@ import { AppState } from 'reducers';
 import { getGasLimitEstimationTimedOut } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { GasLimitField } from 'components/GasLimitField';
+import { getIsWeb3Node } from 'selectors/config';
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   inputGasPrice: TInputGasPrice;
-  node: string;
 }
 
 interface StateProps {
+  isWeb3Node: boolean;
   gasLimitEstimationTimedOut: boolean;
 }
 
@@ -24,7 +25,7 @@ type Props = OwnProps & StateProps;
 
 class SimpleGas extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasLimitEstimationTimedOut, node } = this.props;
+    const { gasPrice, gasLimitEstimationTimedOut, isWeb3Node } = this.props;
 
     return (
       <div className="SimpleGas row form-group">
@@ -37,7 +38,7 @@ class SimpleGas extends React.Component<Props> {
         {gasLimitEstimationTimedOut && (
           <div className="col-md-12 prompt-toggle-gas-limit">
             <p className="small">
-              {node === 'web3'
+              {isWeb3Node
                 ? "Couldn't calculate gas limit, if you know what your doing, try setting manually in Advanced settings"
                 : "Couldn't calculate gas limit, try switching nodes"}
             </p>
@@ -77,5 +78,6 @@ class SimpleGas extends React.Component<Props> {
   };
 }
 export default connect((state: AppState) => ({
-  gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state)
+  gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
+  isWeb3Node: getIsWeb3Node(state)
 }))(SimpleGas);

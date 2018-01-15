@@ -3,7 +3,7 @@ import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
 import { inputGasPrice, TInputGasPrice } from 'actions/transaction';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
-import { getNetworkConfig, getOffline, getNode } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas from './components/AdvancedGas';
@@ -14,7 +14,6 @@ interface StateProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   offline: AppState['config']['offline'];
   network: AppState['config']['network'];
-  node: AppState['config']['nodeSelection'];
 }
 
 interface DispatchProps {
@@ -50,7 +49,7 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableAdvanced, gasPrice, node } = this.props;
+    const { offline, disableAdvanced, gasPrice } = this.props;
     const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
     return (
@@ -58,7 +57,7 @@ class GasSlider extends React.Component<Props, State> {
         {showAdvanced ? (
           <AdvancedGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
         ) : (
-          <SimpleGas node={node} gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
+          <SimpleGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
         )}
 
         {!offline &&
@@ -86,8 +85,7 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     gasPrice: getGasPrice(state),
     offline: getOffline(state),
-    network: getNetworkConfig(state),
-    node: getNode(state)
+    network: getNetworkConfig(state)
   };
 }
 
