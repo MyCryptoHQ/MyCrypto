@@ -1,8 +1,8 @@
-import { isKeystorePassRequired, isKeystoreValid } from 'libs/wallet';
+import { isKeystorePassRequired } from 'libs/wallet';
 import React from 'react';
 import translate, { translateRaw } from 'translations';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { connect } from 'react-redux';
+import Spinner from 'components/ui/Spinner';
+import { TShowNotification } from 'actions/notifications';
 
 export interface KeystoreValue {
   file: string;
@@ -10,27 +10,35 @@ export interface KeystoreValue {
   valid: boolean;
 }
 
-interface Props {
-  showNotification: TShowNotification;
-  value: KeystoreValue;
-  onChange(value: KeystoreValue): void;
-  onUnlock(): void;
+function isPassRequired(file: string): boolean {
+  let passReq = false;
+  try {
+    passReq = isKeystorePassRequired(file);
+  } catch (e) {
+    // TODO: communicate invalid file to user
+  }
+  return passReq;
 }
 
-class KeystoreDecryptClass extends React.Component<Props> {
-  public isFileValid(file: string): boolean {
-    try {
-      isKeystoreValid(file);
-    } catch (e) {
-      this.props.showNotification('danger', e.message);
-    }
-    return isKeystoreValid(file);
-  }
+function isValidFile(rawFile: File): boolean {
+  const fileType = rawFile.type;
+  return fileType === '' || fileType === 'application/json';
+}
 
+interface Props {
+  value: KeystoreValue;
+  isWalletPending: boolean;
+  isPasswordPending: boolean;
+  onChange(value: KeystoreValue): void;
+  onUnlock(): void;
+  showNotification(level: string, message: string): TShowNotification;
+}
+
+export class KeystoreDecrypt extends React.Component<Props> {
   public render() {
-    const { file, password, valid } = this.props.value;
-    const passReq = isKeystorePassRequired(file);
-    const disabled = !file || !valid || (passReq && !password);
+    const { isWalletPending, isPasswordPending, value: { file, password } } = this.props;
+    const passReq = isPassRequired(file);
+    const disabled = !file || (passReq && !password);
 
     return (
       <form id="selectedUploadKey" onSubmit={this.unlock}>
@@ -46,7 +54,8 @@ class KeystoreDecryptClass extends React.Component<Props> {
               {translate('ADD_Radio_2_short')}
             </a>
           </label>
-          <div className={file.length && passReq ? '' : 'hidden'}>
+          {isWalletPending ? <Spinner /> : ''}
+          <div className={file.length && isPasswordPending ? '' : 'hidden'}>
             <p>{translate('ADD_Label_3')}</p>
             <input
               className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
@@ -94,18 +103,20 @@ class KeystoreDecryptClass extends React.Component<Props> {
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
-      const passReq = isKeystorePassRequired(keystore);
-      const valid = this.isFileValid(keystore) && (passReq && this.props.value.password.length > 0);
+      const passReq = isPassRequired(keystore);
 
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid
+        valid: keystore.length && !passReq,
+        password: ''
       });
+      this.props.onUnlock();
     };
-
-    fileReader.readAsText(inputFile, 'utf-8');
+    if (isValidFile(inputFile)) {
+      fileReader.readAsText(inputFile, 'utf-8');
+    } else {
+      this.props.showNotification('danger', translateRaw('ERROR_3'));
+    }
   };
 }
-
-export const KeystoreDecrypt = connect(null, { showNotification })(KeystoreDecryptClass);

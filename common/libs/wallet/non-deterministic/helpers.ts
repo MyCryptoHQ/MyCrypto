@@ -9,7 +9,7 @@ import {
 } from './wallets';
 import Tx from 'ethereumjs-tx';
 
-enum KeystoreTypes {
+export enum KeystoreTypes {
   presale = 'presale',
   utc = 'v2-v3-utc',
   v1Unencrypted = 'v1-unencrypted',
@@ -32,7 +32,7 @@ export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
     unlock: () => Promise.resolve()
   });
 
-const determineKeystoreType = (file: string): string => {
+export const determineKeystoreType = (file: string): string => {
   try {
     const parsed = JSON.parse(file);
     if (parsed.encseed) {
@@ -69,6 +69,10 @@ export const isKeystorePassRequired = (file: string): boolean => {
   );
 };
 
+export const getUtcWallet = (file: string, password: string): Promise<IFullWallet> => {
+  return UtcWallet(file, password);
+};
+
 export const getPrivKeyWallet = (key: string, password: string) =>
   key.length === 64
     ? PrivKeyWallet(Buffer.from(key, 'hex'))
@@ -89,9 +93,6 @@ export const getKeystoreWallet = (file: string, password: string) => {
 
     case KeystoreTypes.v2Unencrypted:
       return PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
-
-    case KeystoreTypes.utc:
-      return UtcWallet(file, password);
 
     default:
       throw Error('Unknown wallet');

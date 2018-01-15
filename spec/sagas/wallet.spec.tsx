@@ -15,7 +15,7 @@ import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
 import { initWeb3Node, Token, N_FACTOR } from 'config/data';
 import { apply, call, fork, put, select, take } from 'redux-saga/effects';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
 import {
   updateAccountBalance,
@@ -25,18 +25,21 @@ import {
   unlockKeystore,
   unlockMnemonic,
   unlockWeb3,
-  getTokenBalances
+  getTokenBalances,
+  startLoadingSpinner,
+  stopLoadingSpinner
 } from 'sagas/wallet';
-import { PrivKeyWallet } from 'libs/wallet/non-deterministic';
+import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
 import Web3Node from 'libs/nodes/web3';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
+import { IFullWallet, fromV3 } from 'ethereumjs-wallet';
 
 // init module
 configuredStore.getState();
-
+const offline = false;
 const pkey = '31e97f395cabc6faa37d8a9d6bb185187c35704e7b976c7a110e2f0eab37c344';
 const wallet = PrivKeyWallet(Buffer.from(pkey, 'hex'));
 const address = '0xe2EdC95134bbD88443bc6D55b809F7d0C2f0C854';
@@ -80,90 +83,108 @@ const utcKeystore = {
 // necessary so we can later inject a mocked web3 to the window
 
 describe('updateAccountBalance*', () => {
-  const gen1 = updateAccountBalance();
-  const gen2 = updateAccountBalance();
+  const gen = updateAccountBalance();
+
+  it('should select offline', () => {
+    expect(gen.next().value).toEqual(select(getOffline));
+  });
 
   it('should put setBalancePending', () => {
-    expect(gen1.next().value).toEqual(put(setBalancePending()));
+    expect(gen.next(false).value).toEqual(put(setBalancePending()));
   });
 
   it('should select getWalletInst', () => {
-    expect(gen1.next().value).toEqual(select(getWalletInst));
-  });
-
-  it('should return if wallet is falsey', () => {
-    gen2.next();
-    gen2.next();
-    gen2.next(null);
-    expect(gen2.next().done).toBe(true);
+    expect(gen.next(false).value).toEqual(select(getWalletInst));
   });
 
   it('should select getNodeLib', () => {
-    expect(gen1.next(wallet).value).toEqual(select(getNodeLib));
+    expect(gen.next(wallet).value).toEqual(select(getNodeLib));
   });
 
   it('should apply wallet.getAddressString', () => {
-    expect(gen1.next(node).value).toEqual(apply(wallet, wallet.getAddressString));
+    expect(gen.next(node).value).toEqual(apply(wallet, wallet.getAddressString));
   });
 
   it('should apply node.getBalance', () => {
-    expect(gen1.next(address).value).toEqual(apply(node, node.getBalance, [address]));
+    expect(gen.next(address).value).toEqual(apply(node, node.getBalance, [address]));
   });
 
   it('should put setBalanceFulfilled', () => {
-    expect(gen1.next(balance).value).toEqual(put(setBalanceFullfilled(balance)));
+    expect(gen.next(balance).value).toEqual(put(setBalanceFullfilled(balance)));
   });
 
   it('should be done', () => {
-    expect(gen1.next().done).toEqual(true);
+    expect(gen.next().done).toEqual(true);
+  });
+
+  it('should bail out if offline', () => {
+    const offlineGen = updateAccountBalance();
+    offlineGen.next();
+    expect(offlineGen.next(true).done).toBe(true);
+  });
+
+  it('should bail out if wallet inst is missing', () => {
+    const noWalletGen = updateAccountBalance();
+    noWalletGen.next();
+    noWalletGen.next(false);
+    noWalletGen.next(false);
+    expect(noWalletGen.next(null).done).toBe(true);
   });
 });
 
 describe('updateTokenBalances*', () => {
-  const gen1 = cloneableGenerator(updateTokenBalances)();
-  const gen2 = updateTokenBalances();
-  const gen3 = updateTokenBalances();
+  const gen = cloneableGenerator(updateTokenBalances)();
 
-  it('should select getWalletInst', () => {
-    expect(gen1.next().value).toEqual(select(getWalletInst));
+  it('should bail out if offline', () => {
+    const offlineGen = gen.clone();
+    expect(offlineGen.next());
+    expect(offlineGen.next(true).done).toBe(true);
   });
 
-  it('should select getWalletConfigTokens', () => {
-    expect(gen1.next(wallet).value).toEqual(select(getWalletConfigTokens));
+  it('should select getOffline', () => {
+    expect(gen.next().value).toEqual(select(getOffline));
+  });
+
+  it('should select getWalletInst', () => {
+    expect(gen.next(offline).value).toEqual(select(getWalletInst));
   });
 
   it('should return if wallet is falsey', () => {
-    gen2.next();
-    gen2.next(null);
-    expect(gen2.next().done).toEqual(true);
+    const noWalletGen = gen.clone();
+    noWalletGen.next(null);
+    expect(noWalletGen.next().done).toEqual(true);
   });
 
-  it('should return if tokens are falsey', () => {
-    gen3.next();
-    gen3.next(wallet);
-    expect(gen3.next({}).done).toEqual(true);
+  it('should select getWalletConfigTokens', () => {
+    expect(gen.next(wallet).value).toEqual(select(getWalletConfigTokens));
+  });
+
+  it('should return if no tokens are requested', () => {
+    const noTokensGen = gen.clone();
+    noTokensGen.next({});
+    expect(noTokensGen.next().done).toEqual(true);
   });
 
   it('should put setTokenBalancesPending', () => {
-    expect(gen1.next(tokens).value).toEqual(put(setTokenBalancesPending()));
+    expect(gen.next(tokens).value).toEqual(put(setTokenBalancesPending()));
   });
 
-  it('should throw and put setTokenBalancesRejected', () => {
-    const gen4 = gen1.clone();
-    if (gen4.throw) {
-      expect(gen4.throw().value).toEqual(put(setTokenBalancesRejected()));
+  it('should put setTokenBalancesRejected on throw', () => {
+    const throwGen = gen.clone();
+    if (throwGen.throw) {
+      expect(throwGen.throw().value).toEqual(put(setTokenBalancesRejected()));
     }
   });
 
   it('should call getTokenBalances', () => {
-    expect(gen1.next().value).toEqual(call(getTokenBalances, wallet, tokens));
+    expect(gen.next().value).toEqual(call(getTokenBalances, wallet, tokens));
   });
 
   it('should put setTokenBalancesFufilled', () => {
-    expect(gen1.next({}).value).toEqual(put(setTokenBalancesFulfilled({})));
+    expect(gen.next({}).value).toEqual(put(setTokenBalancesFulfilled({})));
   });
   it('should be done', () => {
-    expect(gen1.next().done).toEqual(true);
+    expect(gen.next().done).toEqual(true);
   });
 });
 
@@ -206,6 +227,24 @@ describe('unlockKeystore*', () => {
     password: 'testtesttest'
   });
   const gen = unlockKeystore(action);
+  const mockTask = createMockTask();
+  const spinnerFork = fork(startLoadingSpinner);
+
+  it('should fork startLoadingSpinner', () => {
+    expect(gen.next().value).toEqual(spinnerFork);
+  });
+
+  it('should call getUtcWallet', () => {
+    expect(gen.next(mockTask).value).toEqual(
+      call(getUtcWallet, action.payload.file, action.payload.password)
+    );
+  });
+
+  //keystore in this case decrypts quickly, so use fromV3 in ethjs-wallet to avoid testing with promises
+  it('should call stopLoadingSpinner', () => {
+    const mockWallet: IFullWallet = fromV3(action.payload.file, action.payload.password, true);
+    expect(gen.next(mockWallet).value).toEqual(call(stopLoadingSpinner, mockTask));
+  });
 
   it('should match put setWallet snapshot', () => {
     expect(gen.next().value).toMatchSnapshot();

@@ -19,6 +19,7 @@ interface Props {
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
   fetchCCRates: TFetchCCRates;
+  isOffline: AppState['config']['offline'];
 }
 
 interface Block {
@@ -29,7 +30,7 @@ interface Block {
 
 export class BalanceSidebar extends React.Component<Props, {}> {
   public render() {
-    const { wallet, balance, network, tokenBalances, rates, ratesError } = this.props;
+    const { wallet, balance, network, tokenBalances, rates, ratesError, isOffline } = this.props;
 
     if (!wallet) {
       return null;
@@ -53,11 +54,13 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         name: 'Equivalent Values',
         content: (
           <EquivalentValues
+            network={network}
             balance={balance}
             tokenBalances={tokenBalances}
             rates={rates}
             ratesError={ratesError}
             fetchCCRates={this.props.fetchCCRates}
+            isOffline={isOffline}
           />
         )
       }
@@ -82,7 +85,8 @@ function mapStateToProps(state: AppState) {
     tokenBalances: getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
-    ratesError: state.rates.ratesError
+    ratesError: state.rates.ratesError,
+    isOffline: state.config.offline
   };
 }
 
