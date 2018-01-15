@@ -12,7 +12,6 @@ interface ICurrentValue {
 interface ICurrentTo {
   raw: string;
   value: Address | null;
-  error?: string | null;
 }
 
 const isEtherTransaction = (state: AppState) => {
