@@ -12,7 +12,9 @@ import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
+import LogOutPrompt from 'components/LogOutPrompt';
 import { Store } from 'redux';
+import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 
 interface Props {
@@ -27,6 +29,10 @@ export default class Root extends Component<Props, State> {
   public state = {
     error: null
   };
+
+  public componentDidMount() {
+    this.props.store.dispatch(pollOfflineStatus());
+  }
 
   public componentDidCatch(error: Error) {
     this.setState({ error });
@@ -60,16 +66,20 @@ export default class Root extends Component<Props, State> {
         <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
         <Route path="/pushTx" component={BroadcastTx} />
         <Route component={PageNotFound} />
-        <LegacyRoutes />
       </Switch>
     );
+
+    const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+
     return (
       <Provider store={store} key={Math.random()}>
-        {process.env.BUILD_DOWNLOADABLE ? (
-          <HashRouter key={Math.random()}>{routes}</HashRouter>
-        ) : (
-          <BrowserRouter key={Math.random()}>{routes}</BrowserRouter>
-        )}
+        <Router key={Math.random()}>
+          <React.Fragment>
+            {routes}
+            <LegacyRoutes />
+            <LogOutPrompt />
+          </React.Fragment>
+        </Router>
       </Provider>
     );
   }

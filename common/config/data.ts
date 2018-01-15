@@ -2,7 +2,7 @@ import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
 export const languages = require('./languages.json');
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.0.6)';
+export const VERSION = '4.0.0 (Alpha 0.1.0)';
 export const N_FACTOR = 1024;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -67,7 +67,7 @@ export interface Token {
 
 export interface NetworkContract {
   name: string;
-  address: string;
+  address?: string;
   abi: string;
 }
 
@@ -83,6 +83,7 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
+  isTestnet?: boolean;
 }
 
 export interface CustomNetworkConfig {
@@ -134,15 +135,6 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     tokens: require('./tokens/eth.json'),
     contracts: require('./contracts/eth.json')
   },
-  ETC: {
-    name: 'ETC',
-    unit: 'ETC',
-    chainId: 61,
-    color: '#669073',
-    blockExplorer: makeExplorer('https://gastracker.io'),
-    tokens: require('./tokens/etc.json'),
-    contracts: require('./contracts/etc.json')
-  },
   Ropsten: {
     name: 'Ropsten',
     unit: 'ETH',
@@ -150,7 +142,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json')
+    contracts: require('./contracts/ropsten.json'),
+    isTestnet: true
   },
   Kovan: {
     name: 'Kovan',
@@ -159,7 +152,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://kovan.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json')
+    contracts: require('./contracts/ropsten.json'),
+    isTestnet: true
   },
   Rinkeby: {
     name: 'Rinkeby',
@@ -168,34 +162,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
     color: '#adc101',
     blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
     tokens: require('./tokens/rinkeby.json'),
-    contracts: require('./contracts/rinkeby.json')
-  },
-  RSK: {
-    name: 'RSK',
-    unit: 'RSK',
-    chainId: 31,
-    color: '#ff794f',
-    blockExplorer: makeExplorer('https://explorer.rsk.co'),
-    tokens: require('./tokens/rsk.json'),
-    contracts: require('./contracts/rsk.json')
-  },
-  EXP: {
-    name: 'EXP',
-    unit: 'EXP',
-    chainId: 2,
-    color: '#673ab7',
-    blockExplorer: makeExplorer('http://www.gander.tech'),
-    tokens: require('./tokens/exp.json'),
-    contracts: require('./contracts/exp.json')
-  },
-  UBQ: {
-    name: 'UBQ',
-    unit: 'UBQ',
-    chainId: 8,
-    color: '#b37aff',
-    blockExplorer: makeExplorer('https://ubiqscan.io/en'),
-    tokens: require('./tokens/ubq.json'),
-    contracts: require('./contracts/ubq.json')
+    contracts: require('./contracts/rinkeby.json'),
+    isTestnet: true
   }
 };
 
@@ -216,12 +184,6 @@ export const NODES: { [key: string]: NodeConfig } = {
     network: 'ETH',
     service: 'infura.io',
     lib: new InfuraNode('https://mainnet.infura.io/mew'),
-    estimateGas: false
-  },
-  etc_epool: {
-    network: 'ETC',
-    service: 'Epool.io',
-    lib: new RPCNode('https://mewapi.epool.io'),
     estimateGas: false
   },
   rop_mew: {
@@ -253,28 +215,15 @@ export const NODES: { [key: string]: NodeConfig } = {
     service: 'infura.io',
     lib: new InfuraNode('https://rinkeby.infura.io/mew'),
     estimateGas: false
-  },
-  rsk: {
-    network: 'RSK',
-    service: 'GK2.sk',
-    lib: new RPCNode('https://rsk-test.gk2.sk/'),
-    estimateGas: true
-  },
-  exp: {
-    network: 'EXP',
-    service: 'Expanse.tech',
-    lib: new RPCNode('https://node.expanse.tech/'),
-    estimateGas: true
-  },
-  ubq: {
-    network: 'UBQ',
-    service: 'ubiqscan.io',
-    lib: new RPCNode('https://pyrus2.ubiqscan.io'),
-    estimateGas: true
   }
 };
 
-export async function initWeb3Node(): Promise<void> {
+interface Web3NodeInfo {
+  networkId: string;
+  lib: Web3Node;
+}
+
+export async function setupWeb3Node(): Promise<Web3NodeInfo> {
   const { web3 } = window as any;
 
   if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
@@ -295,6 +244,20 @@ export async function initWeb3Node(): Promise<void> {
     throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
   }
 
+  return { networkId, lib };
+}
+
+export async function isWeb3NodeAvailable(): Promise<boolean> {
+  try {
+    await setupWeb3Node();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+export async function initWeb3Node(): Promise<void> {
+  const { networkId, lib } = await setupWeb3Node();
   NODES.web3 = {
     network: networkIdToName(networkId),
     service: 'MetaMask / Mist',

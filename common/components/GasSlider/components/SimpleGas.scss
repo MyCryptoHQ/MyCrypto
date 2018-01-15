@@ -1,0 +1,75 @@
+@import 'common/sass/variables';
+
+.SimpleGas {
+  margin-top: 0;
+  margin-bottom: 0;
+
+  &-flex-spacer {
+    flex-grow: 2;
+  }
+  &-title {
+    display: flex;
+  }
+  &-estimating {
+    color: rgba(51, 51, 51, 0.7);
+    display: flex;
+    align-items: baseline;
+    font-weight: 400;
+    opacity: 0;
+    &.active {
+      opacity: 1;
+    }
+    .Spinner {
+      margin-left: 8px;
+    }
+  }
+
+  &-slider {
+    padding-top: 8px;
+    margin-bottom: $space-xs;
+
+    &-labels {
+      margin-top: 4px;
+      display: flex;
+
+      > span {
+        flex: 1;
+        padding: 0 $space-xs;
+        text-align: center;
+        color: $gray-light;
+        font-size: $font-size-xs;
+
+        &:first-child {
+          text-align: left;
+        }
+
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+.fade {
+  &-enter,
+  &-exit {
+    transition: opacity 300ms;
+  }
+
+  &-enter {
+    opacity: 0;
+
+    &-active {
+      opacity: 1;
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+
+    &-active {
+      opacity: 0;
+    }
+  }
+}

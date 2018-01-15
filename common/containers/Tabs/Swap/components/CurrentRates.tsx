@@ -88,7 +88,12 @@ export default class CurrentRates extends Component<Props> {
 
         <section className="SwapRates-panel row">
           {children}
-          <a className="SwapRates-panel-logo" href={providerURL} target="_blank">
+          <a
+            className="SwapRates-panel-logo"
+            href={providerURL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img src={providerLogo} width={120} height={49} />
           </a>
         </section>

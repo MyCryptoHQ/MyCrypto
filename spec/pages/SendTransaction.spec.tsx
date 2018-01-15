@@ -17,8 +17,7 @@ it('render snapshot', () => {
     nodeSelection: testNode,
     node: NODES[testNode],
     gasPriceGwei: 21,
-    offline: false,
-    forceOffline: false
+    offline: false
   };
   const testState = {
     wallet: {},
@@ -31,7 +30,6 @@ it('render snapshot', () => {
     gasPrice: {},
     transactions: {},
     offline: {},
-    forceOffline: {},
     config: testStateConfig,
     customTokens: []
   };

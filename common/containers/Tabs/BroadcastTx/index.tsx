@@ -43,7 +43,7 @@ class BroadcastTx extends Component<DispatchProps & StateProps> {
     });
 
     return (
-      <TabSection>
+      <TabSection isUnavailableOffline={true}>
         <div className="Tab-content-pane row block text-center">
           <div className="BroadcastTx">
             <h1 className="BroadcastTx-title">Broadcast Signed Transaction</h1>
