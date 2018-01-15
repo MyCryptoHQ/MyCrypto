@@ -1,7 +1,7 @@
-import { NODES, NodeConfig } from '../../common/config/data';
-import { RPCNode } from '../../common/libs/nodes';
+import { NODES, NodeConfig } from 'config/data';
+import { RPCNode } from 'libs/nodes';
 import { Validator } from 'jsonschema';
-import { schema } from '../../common/libs/validators';
+import { schema } from 'libs/validators';
 import 'url-search-params-polyfill';
 import EtherscanNode from 'libs/nodes/etherscan';
 import InfuraNode from 'libs/nodes/infura';
@@ -52,6 +52,10 @@ const RPCTests = {
 function testRpcRequests(node: RPCNode, service: string) {
   Object.keys(RPCTests).forEach(testType => {
     describe(`RPC (${service}) should work`, () => {
+      beforeEach(() => {
+        // increase timer to prevent early timeout
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
+      });
       it(
         `RPC: ${testType} ${service}`,
         () => {
@@ -65,7 +69,6 @@ function testRpcRequests(node: RPCNode, service: string) {
 
 const mapNodeEndpoints = (nodes: { [key: string]: NodeConfig }) => {
   const { RpcNodes, EtherscanNodes, InfuraNodes } = RpcNodeTestConfig;
-
   RpcNodes.forEach(n => {
     testRpcRequests(nodes[n].lib as RPCNode, `${nodes[n].service} ${nodes[n].network}`);
   });
