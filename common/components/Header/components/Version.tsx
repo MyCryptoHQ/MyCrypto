@@ -24,6 +24,10 @@ export default class Version extends React.Component<{}, State> {
       console.log('Update info', updateInfo);
       this.setState({ updateInfo });
     });
+
+    electronListen('UPDATE:error', err => {
+      console.error('Update failed', err);
+    });
   }
 
   public render() {
