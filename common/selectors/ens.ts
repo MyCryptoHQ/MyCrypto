@@ -1,7 +1,7 @@
 import { AppState } from 'reducers';
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { REQUEST_STATES } from 'reducers/ens/domainRequests';
-import { isGenesisAddress } from 'libs/validators';
+import { isCreationAddress } from 'libs/validators';
 
 export const getEns = (state: AppState) => state.ens;
 
@@ -31,7 +31,7 @@ export const getResolvedAddress = (state: AppState, noGenesisAddress: boolean = 
   if (isOwned(data)) {
     const { resolvedAddress } = data;
     if (noGenesisAddress) {
-      return !isGenesisAddress(resolvedAddress) ? resolvedAddress : null;
+      return !isCreationAddress(resolvedAddress) ? resolvedAddress : null;
     }
     return data.resolvedAddress;
   }
