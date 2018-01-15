@@ -9,7 +9,8 @@ describe('customTokens reducer', () => {
     const ensName = 'ensName';
     expect(ens(undefined as any, ensActions.resolveDomainRequested(ensName))).toEqual({
       ...INITIAL_STATE,
-      domainRequests: { ensName: { state: 'PENDING' } }
+      domainRequests: { ensName: { state: 'PENDING' } },
+      domainSelector: { currentDomain: 'ensName' }
     });
   });
 });
