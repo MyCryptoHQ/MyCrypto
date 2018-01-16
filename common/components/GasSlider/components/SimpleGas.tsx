@@ -1,7 +1,7 @@
 import React from 'react';
 import Slider from 'rc-slider';
-import translate from 'translations';
-import { gasPriceDefaults } from 'config';
+import translate, { translateRaw } from 'translations';
+import { gasPriceDefaults } from 'config/data';
 import FeeSummary from './FeeSummary';
 import { TInputGasPrice } from 'actions/transaction';
 import './SimpleGas.scss';
@@ -29,10 +29,12 @@ class SimpleGas extends React.Component<Props> {
 
     return (
       <div className="SimpleGas row form-group">
-        <div className="col-md-12 SimpleGas-title">
-          <label className="SimpleGas-label">{translate('Transaction Fee')}</label>
-          <div className="SimpleGas-flex-spacer" />
-          <GasLimitField includeLabel={false} onlyIncludeLoader={true} />
+        <div className="col-md-12 SimpleGas">
+          <GasLimitField
+            includeLabel={true}
+            customLabel={translateRaw('Transaction Fee')}
+            onlyIncludeLoader={true}
+          />
         </div>
 
         {gasLimitEstimationTimedOut && (
