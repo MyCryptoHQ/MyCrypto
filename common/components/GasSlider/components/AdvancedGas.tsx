@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import FeeSummary from './FeeSummary';
 import './AdvancedGas.scss';
 import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'actions/config';
@@ -55,10 +55,12 @@ class AdvancedGas extends React.Component<Props> {
           />
         </div>
 
-        <div className="col-md-4 col-sm-6 col-xs-12 AdvancedGas-gasLimit">
-          <label>{translate('OFFLINE_Step2_Label_4')}</label>
-          <div className="SimpleGas-flex-spacer" />
-          <GasLimitField includeLabel={false} onlyIncludeLoader={false} />
+        <div className="col-md-4 col-sm-6 col-xs-12">
+          <GasLimitField
+            includeLabel={true}
+            customLabel={translateRaw('OFFLINE_Step2_Label_4')}
+            onlyIncludeLoader={false}
+          />
         </div>
 
         <div className="col-md-4 col-sm-12 col-xs-12">

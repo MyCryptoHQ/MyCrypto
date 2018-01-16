@@ -15,17 +15,4 @@
       font-weight: 400;
     }
   }
-
-  &-gasLimit {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    .flex-spacer {
-      flex-grow: 2;
-    }
-    input {
-      width: 100%;
-      margin-top: 0;
-    }
-  }
 }
