@@ -11,17 +11,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { TSetGasPriceField } from 'actions/transaction';
-import {
-  ANNOUNCEMENT_MESSAGE,
-  ANNOUNCEMENT_TYPE,
-  languages,
-  NODES,
-  VERSION,
-  NodeConfig,
-  CustomNodeConfig,
-  CustomNetworkConfig
-} from 'config';
-import GasPriceDropdown from './components/GasPriceDropdown';
+import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages, VERSION } from 'config/data';
+import { NODES, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
@@ -132,13 +123,6 @@ export default class Header extends Component<Props, State> {
 
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
-              </div>
-
-              <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown
-                  value={this.props.gasPrice.raw}
-                  onChange={this.props.setGasPriceField}
-                />
               </div>
 
               <div className="Header-branding-right-dropdown">

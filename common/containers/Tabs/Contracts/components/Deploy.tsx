@@ -1,10 +1,8 @@
 import translate from 'translations';
 import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
-import { GasLimitFieldFactory } from 'components/GasLimitFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import { SigningStatus } from 'components/SigningStatus';
-import { NonceField } from 'components/NonceField';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
@@ -13,6 +11,7 @@ import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
 import './Deploy.scss';
+import GasSlider from 'components/GasSlider/GasSlider';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -46,27 +45,7 @@ class DeployClass extends Component<DispatchProps> {
           />
         </div>
 
-        <label className="Deploy-field form-group">
-          <h4 className="Deploy-field-label">Gas Limit</h4>
-          <GasLimitFieldFactory
-            withProps={({ gasLimit: { raw, value }, onChange, readOnly }) => (
-              <input
-                name="gasLimit"
-                value={raw}
-                disabled={readOnly}
-                onChange={onChange}
-                className={classnames('Deploy-field-input', 'form-control', {
-                  'is-invalid': !value
-                })}
-              />
-            )}
-          />
-        </label>
-        <div className="row form-group">
-          <div className="col-xs-11">
-            <NonceField alwaysDisplay={false} />
-          </div>
-        </div>
+        <GasSlider />
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
             <GenerateTransaction />

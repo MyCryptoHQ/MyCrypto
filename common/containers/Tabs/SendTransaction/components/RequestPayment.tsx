@@ -15,12 +15,13 @@ import BN from 'bn.js';
 import { NetworkConfig } from 'config';
 import { validNumber, validDecimal } from 'libs/validators';
 import { getGasLimit } from 'selectors/transaction';
-import { AddressField, AmountField, GasLimitField } from 'components';
+import { AddressField, AmountField } from 'components';
 import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
+import GasSlider from 'components/GasSlider/GasSlider';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -104,11 +105,7 @@ class RequestPayment extends React.Component<Props, {}> {
             </div>
           </div>
 
-          <div className="row form-group">
-            <div className="col-xs-11">
-              <GasLimitField includeLabel={true} onlyIncludeLoader={false} />
-            </div>
-          </div>
+          <GasSlider />
 
           {!!eip681String.length && (
             <div className="row form-group">
