@@ -9,7 +9,7 @@ import {
 } from './wallets';
 import Tx from 'ethereumjs-tx';
 
-enum KeystoreTypes {
+export enum KeystoreTypes {
   presale = 'presale',
   utc = 'v2-v3-utc',
   v1Unencrypted = 'v1-unencrypted',
@@ -32,24 +32,35 @@ export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
     unlock: () => Promise.resolve()
   });
 
-function determineKeystoreType(file: string): string {
-  const parsed = JSON.parse(file);
-  if (parsed.encseed) {
-    return KeystoreTypes.presale;
-  } else if (parsed.Crypto || parsed.crypto) {
-    return KeystoreTypes.utc;
-  } else if (parsed.hash && parsed.locked === true) {
-    return KeystoreTypes.v1Encrypted;
-  } else if (parsed.hash && parsed.locked === false) {
-    return KeystoreTypes.v1Unencrypted;
-  } else if (parsed.publisher === 'MyEtherWallet') {
-    return KeystoreTypes.v2Unencrypted;
-  } else {
+export const determineKeystoreType = (file: string): string => {
+  try {
+    const parsed = JSON.parse(file);
+    if (parsed.encseed) {
+      return KeystoreTypes.presale;
+    } else if (parsed.Crypto || parsed.crypto) {
+      return KeystoreTypes.utc;
+    } else if (parsed.hash && parsed.locked === true) {
+      return KeystoreTypes.v1Encrypted;
+    } else if (parsed.hash && parsed.locked === false) {
+      return KeystoreTypes.v1Unencrypted;
+    } else if (parsed.publisher === 'MyEtherWallet') {
+      return KeystoreTypes.v2Unencrypted;
+    } else {
+      return '';
+    }
+  } catch {
+    return '';
+  }
+};
+
+export const isKeystoreValid = (file: string): boolean => {
+  if (!determineKeystoreType(file)) {
     throw new Error('Invalid keystore');
   }
-}
+  return !!determineKeystoreType(file);
+};
 
-const isKeystorePassRequired = (file: string): boolean => {
+export const isKeystorePassRequired = (file: string): boolean => {
   const keystoreType = determineKeystoreType(file);
   return (
     keystoreType === KeystoreTypes.presale ||
@@ -58,16 +69,16 @@ const isKeystorePassRequired = (file: string): boolean => {
   );
 };
 
-const getUtcWallet = (file: string, password: string): Promise<IFullWallet> => {
+export const getUtcWallet = (file: string, password: string): Promise<IFullWallet> => {
   return UtcWallet(file, password);
 };
 
-const getPrivKeyWallet = (key: string, password: string) =>
+export const getPrivKeyWallet = (key: string, password: string) =>
   key.length === 64
     ? PrivKeyWallet(Buffer.from(key, 'hex'))
     : EncryptedPrivateKeyWallet(key, password);
 
-const getKeystoreWallet = (file: string, password: string) => {
+export const getKeystoreWallet = (file: string, password: string) => {
   const parsed = JSON.parse(file);
 
   switch (determineKeystoreType(file)) {
@@ -86,13 +97,4 @@ const getKeystoreWallet = (file: string, password: string) => {
     default:
       throw Error('Unknown wallet');
   }
-};
-
-export {
-  isKeystorePassRequired,
-  determineKeystoreType,
-  getPrivKeyWallet,
-  getKeystoreWallet,
-  getUtcWallet,
-  KeystoreTypes
 };

@@ -1,5 +1,5 @@
 import { isKeystorePassRequired } from 'libs/wallet';
-import React, { Component } from 'react';
+import React from 'react';
 import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
@@ -25,20 +25,20 @@ function isValidFile(rawFile: File): boolean {
   return fileType === '' || fileType === 'application/json';
 }
 
-export class KeystoreDecrypt extends Component {
-  public props: {
-    value: KeystoreValue;
-    isWalletPending: boolean;
-    isPasswordPending: boolean;
-    onChange(value: KeystoreValue): void;
-    onUnlock(): void;
-    showNotification(level: string, message: string): TShowNotification;
-  };
+interface Props {
+  value: KeystoreValue;
+  isWalletPending: boolean;
+  isPasswordPending: boolean;
+  onChange(value: KeystoreValue): void;
+  onUnlock(): void;
+  showNotification(level: string, message: string): TShowNotification;
+}
 
+export class KeystoreDecrypt extends React.Component<Props> {
   public render() {
     const { isWalletPending, isPasswordPending, value: { file, password } } = this.props;
     const passReq = isPassRequired(file);
-    const unlockDisabled = !file || (passReq && !password);
+    const disabled = !file || (passReq && !password);
 
     return (
       <form id="selectedUploadKey" onSubmit={this.unlock}>
@@ -68,7 +68,7 @@ export class KeystoreDecrypt extends Component {
           </div>
         </div>
 
-        <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
+        <button className="btn btn-primary btn-block" disabled={disabled}>
           {translate('ADD_Label_6_short')}
         </button>
       </form>

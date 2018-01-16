@@ -5,6 +5,7 @@ import { normalise } from './ens';
 import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
 import { isPositiveInteger } from 'utils/helpers';
+import { dPathRegex } from 'config/dpaths';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -115,13 +116,8 @@ export function isPositiveIntegerOrZero(num: number): boolean {
   return num >= 0 && parseInt(num.toString(), 10) === num;
 }
 
-// Full length deterministic wallet paths from BIP44
-// https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
-// normal path length is 4, ledger is the exception at 3
 export function isValidPath(dPath: string) {
-  // TODO: use a regex to detect proper paths
-  const len = dPath.split("'/").length;
-  return len === 3 || len === 4;
+  return dPathRegex.test(dPath);
 }
 
 export const isValidValue = (value: string) =>
