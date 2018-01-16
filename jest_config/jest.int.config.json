@@ -3,14 +3,13 @@
   "transform": {
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
   },
-  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  "testRegex": "(/__tests__/.*|(\\.|/)(int))\\.(jsx?|tsx?)$",
   "moduleDirectories": ["node_modules", "common"],
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts"],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
   "moduleNameMapper": {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "<rootDir>/jest_config/__mocks__/fileMock.ts",
-    "\\.(css|scss|less)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
-    "\\.worker.ts": "<rootDir>/jest_config/__mocks__/workerMock.js"
+    "\\.(css|scss|less)$": "<rootDir>/jest_config/__mocks__/styleMock.ts"
   },
   "setupFiles": [
     "<rootDir>/jest_config/setupJest.js",

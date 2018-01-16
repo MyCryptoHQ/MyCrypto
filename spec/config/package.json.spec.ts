@@ -1,4 +1,4 @@
-import packageJSON from '../../package.json';
+import packageJSON from '../package.json';
 
 // from https://docs.npmjs.com/files/package.json#dependencies
 const nonExactPrefixes = ['~', '^', '>', '>=', '<', '<='];

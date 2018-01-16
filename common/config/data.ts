@@ -170,8 +170,8 @@ export const NETWORKS: { [key: string]: NetworkConfig } = {
 export const NODES: { [key: string]: NodeConfig } = {
   eth_mew: {
     network: 'ETH',
-    service: 'MyEtherWallet',
     lib: new RPCNode('https://api.myetherapi.com/eth'),
+    service: 'MyEtherWallet',
     estimateGas: true
   },
   eth_ethscan: {
