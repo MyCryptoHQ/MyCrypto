@@ -45,7 +45,12 @@ class DeployClass extends Component<DispatchProps> {
           />
         </div>
 
-        <GasSlider />
+        <div className="row form-group">
+          <div className="col-xs-12 clearfix">
+            <GasSlider />
+          </div>
+        </div>
+
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
             <GenerateTransaction />

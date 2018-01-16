@@ -105,7 +105,11 @@ class RequestPayment extends React.Component<Props, {}> {
             </div>
           </div>
 
-          <GasSlider />
+          <div className="row form-group">
+            <div className="col-xs-11">
+              <GasSlider />
+            </div>
+          </div>
 
           {!!eip681String.length && (
             <div className="row form-group">
