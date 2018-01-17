@@ -1,7 +1,7 @@
 import React from 'react';
 import { VERSION } from 'config/data';
 import UpdateModal, { UpdateInfo } from 'components/UpdateModal';
-import { electronListen } from 'utils/electron';
+import { addListener } from 'utils/electron';
 import './Version.scss';
 
 interface State {
@@ -16,17 +16,8 @@ export default class Version extends React.Component<{}, State> {
   };
 
   public componentDidMount() {
-    electronListen('UPDATE:checking-for-update', () => {
-      console.log('Checking for update!');
-    });
-
-    electronListen('UPDATE:update-available', updateInfo => {
-      console.log('Update info', updateInfo);
+    addListener('UPDATE:update-available', updateInfo => {
       this.setState({ updateInfo });
-    });
-
-    electronListen('UPDATE:error', err => {
-      console.error('Update failed', err);
     });
   }
 
@@ -34,7 +25,7 @@ export default class Version extends React.Component<{}, State> {
     const { updateInfo, isModalOpen } = this.state;
     return (
       <div className="Version">
-        <span className="Version-text" onClick={this.openModal}>
+        <span className={`Version-text ${updateInfo ? 'has-update' : ''}`} onClick={this.openModal}>
           v{VERSION}
         </span>
         {updateInfo && (

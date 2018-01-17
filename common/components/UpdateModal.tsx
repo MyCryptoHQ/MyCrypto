@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { showNotification, TShowNotification } from 'actions/notifications';
+import { Spinner, NewTabLink } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
 import moment from 'moment';
-import { electronListen, electronSend } from 'utils/electron';
+import { addListener, sendEvent } from 'utils/electron';
 import './UpdateModal.scss';
 
 export interface UpdateInfo {
@@ -29,28 +30,34 @@ interface Props {
 }
 
 interface State {
+  isDownloading: boolean;
   downloadProgress: DownloadProgress | null;
 }
 
 class UpdateModal extends React.Component<Props, State> {
   public state: State = {
+    isDownloading: false,
     downloadProgress: null
   };
 
   public componentDidMount() {
-    electronListen('UPDATE:download-progress', downloadProgress => {
+    addListener('UPDATE:update-downloaded', () => {
+      this.setState({ isDownloading: true });
+      sendEvent('UPDATE:quit-and-install');
+    });
+    addListener('UPDATE:download-progress', downloadProgress => {
       this.setState({ downloadProgress });
     });
-    electronListen('UPDATE:update-downloaded', () => {
-      electronSend('UPDATE:quit-and-install');
-    });
-    electronListen('UPDATE:error', err => {
+    addListener('UPDATE:error', err => {
       console.error('Update failed:', err);
+      this.setState({ isDownloading: false });
       this.props.showNotification(
         'danger',
         <span>
-          Update could not be downloaded, please visit
-          <a href="https://github.com/MyEtherWallet/MyEtherWallet/releases">our github</a>
+          Update could not be downloaded, please visit{' '}
+          <NewTabLink href="https://github.com/MyEtherWallet/MyEtherWallet/releases">
+            our github
+          </NewTabLink>{' '}
           to download the latest release
         </span>,
         Infinity
@@ -60,14 +67,15 @@ class UpdateModal extends React.Component<Props, State> {
 
   public render() {
     const { isOpen, updateInfo, handleClose } = this.props;
-    const { downloadProgress } = this.state;
+    const { isDownloading, downloadProgress } = this.state;
     const buttons: IButton[] | undefined = downloadProgress
       ? undefined
       : [
           {
-            text: 'Download Update',
+            text: <span>{isDownloading && <Spinner />} Download Update</span>,
             type: 'primary',
-            onClick: this.downloadUpdate
+            onClick: this.downloadUpdate,
+            disabled: isDownloading
           },
           {
             text: 'Close',
@@ -114,7 +122,7 @@ class UpdateModal extends React.Component<Props, State> {
   }
 
   private downloadUpdate = () => {
-    electronSend('UPDATE:download-update');
+    sendEvent('UPDATE:download-update');
   };
 }
 

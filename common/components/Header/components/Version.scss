@@ -29,9 +29,11 @@
 .Version {
   position: relative;
 
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
+  &-text {
+    &.has-update:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
 
   &-new {

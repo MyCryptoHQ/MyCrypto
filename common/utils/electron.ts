@@ -4,15 +4,23 @@ const win = window as any;
 
 type ElectronCallback = (data?: any) => void;
 
-export function electronListen(event: string, cb: ElectronCallback) {
+export function addListener(event: string, cb: ElectronCallback) {
   if (win.electronListen) {
     // @ts-ignore unused ev
     win.electronListen(event, (ev, data) => cb(data));
   }
 }
 
-export function electronSend(event: string, data?: any) {
+export function sendEvent(event: string, data?: any) {
   if (win.electronSend) {
     win.electronSend(event, data);
   }
+}
+
+export function openInBrowser(url: string) {
+  if (win.electronOpenInBrowser) {
+    win.electronOpenInBrowser(url);
+    return true;
+  }
+  return false;
 }
