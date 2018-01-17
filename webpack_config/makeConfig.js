@@ -12,6 +12,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
+const SriPlugin = require('webpack-subresource-integrity');
 const ElectronPackagerPlugin = require('./plugins/electronPackager');
 const ElectronBuilderPlugin = require('./plugins/electronBuilder');
 const ClearDistPlugin = require('./plugins/clearDist');
@@ -218,6 +219,10 @@ module.exports = function(opts = {}) {
         background: '#163151',
         inject: true
       }),
+      new SriPlugin({
+        hashFuncNames: ['sha256', 'sha384'],
+        enabled: true
+      }),
       new ProgressPlugin(),
       new ClearDistPlugin()
     )
@@ -293,7 +298,8 @@ module.exports = function(opts = {}) {
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
     filename: options.isProduction ? '[name].[chunkhash:8].js' : '[name].js',
-    publicPath: isDownloadable && options.isProduction ? './' : '/'
+    publicPath: isDownloadable && options.isProduction ? './' : '/',
+    crossOriginLoading: 'anonymous'
   }
 
 
