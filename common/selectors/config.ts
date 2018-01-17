@@ -8,7 +8,9 @@ import {
   NetworkKeys,
   Wallets,
   SecureWallets,
-  InsecureWallets
+  InsecureWallets,
+  NETWORKS,
+  DPathFormats
 } from 'config';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
@@ -16,7 +18,6 @@ import { getUnit } from 'selectors/transaction/meta';
 import { isEtherUnit } from 'libs/units';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { DPath } from 'config/dpaths';
-import { NETWORKS, DPathFormats } from 'config';
 import sortedUniq from 'lodash/sortedUniq';
 
 export function getNode(state: AppState): string {
