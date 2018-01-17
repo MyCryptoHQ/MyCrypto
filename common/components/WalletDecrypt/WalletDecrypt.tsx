@@ -43,6 +43,7 @@ import {
   SecureWallets,
   InsecureWallets,
   MiscWallets,
+  Wallets,
   isWeb3NodeAvailable,
   knowledgeBaseURL
 } from 'config';
@@ -241,7 +242,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 description={translate(wallet.description)}
                 icon={wallet.icon}
                 helpLink={wallet.helpLink}
-                walletType={type}
+                walletType={type as Wallets}
                 isSecure={true}
                 isDisabled={this.isWalletDisabled(type)}
                 onClick={this.handleWalletChoice}
@@ -258,7 +259,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 name={translate(wallet.lid)}
                 example={wallet.example}
                 helpLink={wallet.helpLink}
-                walletType={type}
+                walletType={type as Wallets}
                 isSecure={false}
                 isDisabled={this.isWalletDisabled(type)}
                 onClick={this.handleWalletChoice}
@@ -274,7 +275,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 name={translate(wallet.lid)}
                 example={wallet.example}
                 helpLink={wallet.helpLink}
-                walletType={type}
+                walletType={type as Wallets}
                 isReadOnly={true}
                 isDisabled={this.isWalletDisabled(type)}
                 onClick={this.handleWalletChoice}

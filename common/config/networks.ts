@@ -14,7 +14,7 @@ import {
 } from 'config/dpaths';
 
 export interface BlockExplorerConfig {
-  name: NetworkKeys;
+  name: NetworkKeys | string;
   tx(txHash: string): string;
   address(address: string): string;
 }
@@ -27,7 +27,7 @@ export interface Token {
 }
 
 export interface NetworkContract {
-  name: NetworkKeys;
+  name: NetworkKeys | string;
   address?: string;
   abi: string;
 }
@@ -39,7 +39,8 @@ export interface DPathFormats {
 }
 
 export interface NetworkConfig {
-  name: NetworkKeys;
+  // TODO really try not to allow strings due to custom networks
+  name: NetworkKeys | string;
   unit: string;
   color?: string;
   blockExplorer?: BlockExplorerConfig;
@@ -50,7 +51,7 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
-  dPathFormats: DPathFormats;
+  dPathFormats: DPathFormats | null;
   isTestnet?: boolean;
 }
 
@@ -61,7 +62,7 @@ export interface CustomNetworkConfig {
 }
 
 export interface NodeConfig {
-  network: NetworkKeys;
+  network: NetworkKeys | string;
   lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
@@ -72,7 +73,7 @@ export interface CustomNodeConfig {
   name: string;
   url: string;
   port: number;
-  network: NetworkKeys;
+  network: NetworkKeys | string;
   auth?: {
     username: string;
     password: string;
@@ -171,13 +172,45 @@ const ETC: NetworkConfig = {
   }
 };
 
+const UBQ: NetworkConfig = {
+  name: 'UBQ',
+  unit: 'UBQ',
+  chainId: 8,
+  color: '#b37aff',
+  blockExplorer: makeExplorer('https://ubiqscan.io/en'),
+  tokens: require('./tokens/ubq.json'),
+  contracts: require('./contracts/ubq.json'),
+  dPathFormats: {
+    trezor: UBIQ_DEFAULT,
+    mnemonicPhrase: [UBIQ_DEFAULT],
+    ledgerNanoS: UBIQ_DEFAULT
+  }
+};
+
+const EXP: NetworkConfig = {
+  name: 'EXP',
+  unit: 'EXP',
+  chainId: 2,
+  color: '#673ab7',
+  blockExplorer: makeExplorer('http://www.gander.tech'),
+  tokens: require('./tokens/exp.json'),
+  contracts: require('./contracts/exp.json'),
+  dPathFormats: {
+    trezor: EXP_DEFAULT,
+    mnemonicPhrase: [EXP_DEFAULT],
+    ledgerNanoS: EXP_DEFAULT
+  }
+};
+
 export type NetworkKeys = keyof typeof NETWORKS;
 export const NETWORKS = {
   ETH,
   Ropsten,
   Kovan,
   Rinkeby,
-  ETC
+  ETC,
+  UBQ,
+  EXP
 };
 
 export const NODES: { [key: string]: NodeConfig } = {
@@ -234,6 +267,18 @@ export const NODES: { [key: string]: NodeConfig } = {
     service: 'Epool.io',
     lib: new RPCNode('https://mewapi.epool.io'),
     estimateGas: false
+  },
+  ubq: {
+    network: 'UBQ',
+    service: 'ubiqscan.io',
+    lib: new RPCNode('https://pyrus2.ubiqscan.io'),
+    estimateGas: true
+  },
+  exp_tech: {
+    network: 'EXP',
+    service: 'Expanse.tech',
+    lib: new RPCNode('https://node.expanse.tech/'),
+    estimateGas: true
   }
 };
 

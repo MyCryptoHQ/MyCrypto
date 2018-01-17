@@ -28,7 +28,7 @@ type PathType = keyof DPathFormats;
 export function getPaths(pathType: PathType): DPath[] {
   const paths: DPath[] = [];
   Object.values(NETWORKS).forEach(each => {
-    const path = each.dPathFormats[pathType];
+    const path = each.dPathFormats ? each.dPathFormats[pathType] : [];
     if (!Array.isArray(path)) {
       paths.push(path);
     } else {
@@ -40,7 +40,10 @@ export function getPaths(pathType: PathType): DPath[] {
 
 type SingleDPathFormat = SecureWallets.TREZOR | SecureWallets.LEDGER_NANO_S;
 
-export function getSingleDPathValue(format: SingleDPathFormat, network: NetworkKeys): string {
+export function getSingleDPathValue(
+  format: SingleDPathFormat,
+  network: NetworkKeys | string
+): string {
   return NETWORKS[network].dPathFormats[format].value;
 }
 
@@ -49,11 +52,14 @@ type AnyDPathFormat =
   | SecureWallets.LEDGER_NANO_S
   | InsecureWallets.MNEMONIC_PHRASE;
 
-export function getAnyDPath(format: AnyDPathFormat, network: NetworkKeys): DPath | DPath[] | null {
+export function getAnyDPath(
+  format: AnyDPathFormat,
+  network: NetworkKeys | string
+): DPath | DPath[] | null {
   return NETWORKS[network].dPathFormats[format];
 }
 
-export function isSupportedWalletFormat(format: Wallets, network: NetworkKeys): boolean {
+export function isSupportedWalletFormat(format: Wallets, network: NetworkKeys | string): boolean {
   const CHECK_FORMATS = [
     SecureWallets.LEDGER_NANO_S,
     SecureWallets.TREZOR,
@@ -61,6 +67,12 @@ export function isSupportedWalletFormat(format: Wallets, network: NetworkKeys): 
   ] as any; // TODO understand why "as Wallets" is a type error
   if (CHECK_FORMATS.includes(format)) {
     return !!getAnyDPath(format as AnyDPathFormat, network);
+  }
+  if (format === SecureWallets.WEB3) {
+    if (network !== 'ETH') {
+      // TODO -- determine if we can select testnets via MetaMask
+      return false;
+    }
   }
   return true;
 }

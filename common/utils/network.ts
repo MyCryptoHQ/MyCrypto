@@ -9,7 +9,8 @@ export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): 
     ...config,
     color: '#000',
     tokens: [],
-    contracts: []
+    contracts: [],
+    dPathFormats: null
   };
 }
 

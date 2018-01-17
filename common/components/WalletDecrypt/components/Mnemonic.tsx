@@ -71,7 +71,7 @@ export class MnemonicDecrypt extends Component<Props, State> {
           isOpen={!!seed}
           seed={seed}
           dPath={dPath}
-          dPaths={getPaths('mnemonic')}
+          dPaths={getPaths('mnemonicPhrase')}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}

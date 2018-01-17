@@ -27,11 +27,6 @@ interface StateProps {
 }
 
 class WalletButtonClass extends React.PureComponent<Props & StateProps, {}> {
-  public componentDidMount() {
-    const { isDisabled } = this.props;
-    console.log('isDisabled', isDisabled);
-  }
-
   public render() {
     const {
       name,
@@ -46,6 +41,7 @@ class WalletButtonClass extends React.PureComponent<Props & StateProps, {}> {
     } = this.props;
 
     const disabled = isDisabled || isFormatDisabled;
+
     return (
       <div
         className={classnames({
@@ -111,10 +107,6 @@ class WalletButtonClass extends React.PureComponent<Props & StateProps, {}> {
 function mapStateToProps(state: AppState, ownProps: Props): StateProps {
   const { walletType } = ownProps;
   const network = getNetworkConfig(state).name;
-  console.log(
-    `isSupportedWalletFormat(walletType, network) ${walletType}`,
-    isSupportedWalletFormat(walletType, network)
-  );
   return {
     isFormatDisabled: !isSupportedWalletFormat(walletType, network)
   };
