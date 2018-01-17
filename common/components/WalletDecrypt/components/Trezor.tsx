@@ -83,7 +83,7 @@ class TrezorDecryptClass extends Component<Props & StateProps, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={getPaths('trezor')}
+          dPaths={getPaths(SecureWallets.TREZOR)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}

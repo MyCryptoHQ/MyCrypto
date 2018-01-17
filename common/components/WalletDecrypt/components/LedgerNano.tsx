@@ -119,7 +119,7 @@ class LedgerNanoSDecryptClass extends Component<Props & StateProps, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={getPaths('ledgerNanoS')}
+          dPaths={getPaths(SecureWallets.LEDGER_NANO_S)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
