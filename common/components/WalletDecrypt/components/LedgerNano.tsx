@@ -4,14 +4,18 @@ import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
 import ledger from 'ledgerco';
-import { DPATHS } from 'config/dpaths';
-import { SecureWallets } from 'config';
 import { Spinner } from 'components/ui';
-
-const DEFAULT_PATH = DPATHS[SecureWallets.LEDGER_NANO_S][0].value;
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
+import { getSingleDPathValue, getNetworkConfig, getPaths } from 'selectors/config';
+import { SecureWallets } from 'config';
 
 interface Props {
   onUnlock(param: any): void;
+}
+
+interface StateProps {
+  dPath: string;
 }
 
 interface State {
@@ -23,11 +27,11 @@ interface State {
   showTip: boolean;
 }
 
-export class LedgerNanoSDecrypt extends Component<Props, State> {
+class LedgerNanoSDecryptClass extends Component<Props & StateProps, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: DEFAULT_PATH,
+    dPath: this.props.dPath,
     error: null,
     isLoading: false,
     showTip: false
@@ -115,7 +119,7 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={DPATHS.LEDGER}
+          dPaths={getPaths('ledgerNanoS')}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -175,7 +179,16 @@ export class LedgerNanoSDecrypt extends Component<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: DEFAULT_PATH
+      dPath: this.props.dPath
     });
   }
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  const network = getNetworkConfig(state).name;
+  return {
+    dPath: getSingleDPathValue(SecureWallets.LEDGER_NANO_S, network)
+  };
+}
+
+export const LedgerNanoSDecrypt = connect(mapStateToProps, {})(LedgerNanoSDecryptClass);

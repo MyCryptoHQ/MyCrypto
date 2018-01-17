@@ -1,6 +1,17 @@
 import { ethPlorer, ETHTokenExplorer } from './data';
 import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
+import {
+  ETH_DEFAULT,
+  ETH_TREZOR,
+  ETH_LEDGER,
+  ETC_LEDGER,
+  ETC_TREZOR,
+  ETH_TESTNET,
+  EXP_DEFAULT,
+  UBIQ_DEFAULT,
+  DPath
+} from 'config/dpaths';
 
 export interface BlockExplorerConfig {
   name: NetworkKeys;
@@ -21,6 +32,12 @@ export interface NetworkContract {
   abi: string;
 }
 
+export interface DPathFormats {
+  trezor: DPath;
+  ledgerNanoS: DPath;
+  mnemonicPhrase: DPath[];
+}
+
 export interface NetworkConfig {
   name: NetworkKeys;
   unit: string;
@@ -33,6 +50,7 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
+  dPathFormats: DPathFormats;
   isTestnet?: boolean;
 }
 
@@ -54,7 +72,7 @@ export interface CustomNodeConfig {
   name: string;
   url: string;
   port: number;
-  network: string;
+  network: NetworkKeys;
   auth?: {
     username: string;
     password: string;
@@ -71,60 +89,95 @@ function makeExplorer(url): BlockExplorerConfig {
   };
 }
 
+const ETH: NetworkConfig = {
+  name: 'ETH',
+  unit: 'ETH',
+  chainId: 1,
+  color: '#0e97c0',
+  blockExplorer: makeExplorer('https://etherscan.io'),
+  tokenExplorer: {
+    name: ethPlorer,
+    address: ETHTokenExplorer
+  },
+  tokens: require('./tokens/eth.json'),
+  contracts: require('./contracts/eth.json'),
+  dPathFormats: {
+    trezor: ETH_TREZOR,
+    ledgerNanoS: ETH_LEDGER,
+    mnemonicPhrase: [ETH_DEFAULT, ETH_LEDGER, ETH_TREZOR]
+  }
+};
+
+const Ropsten: NetworkConfig = {
+  name: 'Ropsten',
+  unit: 'ETH',
+  chainId: 3,
+  color: '#adc101',
+  blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
+  tokens: require('./tokens/ropsten.json'),
+  contracts: require('./contracts/ropsten.json'),
+  isTestnet: true,
+  dPathFormats: {
+    trezor: ETH_TESTNET,
+    ledgerNanoS: ETH_TESTNET,
+    mnemonicPhrase: [ETH_TESTNET]
+  }
+};
+
+const Kovan: NetworkConfig = {
+  name: 'Kovan',
+  unit: 'ETH',
+  chainId: 42,
+  color: '#adc101',
+  blockExplorer: makeExplorer('https://kovan.etherscan.io'),
+  tokens: require('./tokens/ropsten.json'),
+  contracts: require('./contracts/ropsten.json'),
+  isTestnet: true,
+  dPathFormats: {
+    trezor: ETH_TESTNET,
+    ledgerNanoS: ETH_TESTNET,
+    mnemonicPhrase: [ETH_TESTNET]
+  }
+};
+
+const Rinkeby: NetworkConfig = {
+  name: 'Rinkeby',
+  unit: 'ETH',
+  chainId: 4,
+  color: '#adc101',
+  blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
+  tokens: require('./tokens/rinkeby.json'),
+  contracts: require('./contracts/rinkeby.json'),
+  isTestnet: true,
+  dPathFormats: {
+    trezor: ETH_TESTNET,
+    ledgerNanoS: ETH_TESTNET,
+    mnemonicPhrase: [ETH_TESTNET]
+  }
+};
+
+const ETC: NetworkConfig = {
+  name: 'ETC',
+  unit: 'ETC',
+  chainId: 61,
+  color: '#669073',
+  blockExplorer: makeExplorer('https://gastracker.io'),
+  tokens: require('./tokens/etc.json'),
+  contracts: require('./contracts/etc.json'),
+  dPathFormats: {
+    trezor: ETC_TREZOR,
+    ledgerNanoS: ETC_LEDGER,
+    mnemonicPhrase: [ETC_TREZOR, ETC_LEDGER]
+  }
+};
+
 export type NetworkKeys = keyof typeof NETWORKS;
 export const NETWORKS = {
-  ETH: {
-    name: 'ETH',
-    unit: 'ETH',
-    chainId: 1,
-    color: '#0e97c0',
-    blockExplorer: makeExplorer('https://etherscan.io'),
-    tokenExplorer: {
-      name: ethPlorer,
-      address: ETHTokenExplorer
-    },
-    tokens: require('./tokens/eth.json'),
-    contracts: require('./contracts/eth.json')
-  },
-  Ropsten: {
-    name: 'Ropsten',
-    unit: 'ETH',
-    chainId: 3,
-    color: '#adc101',
-    blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
-    tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json'),
-    isTestnet: true
-  },
-  Kovan: {
-    name: 'Kovan',
-    unit: 'ETH',
-    chainId: 42,
-    color: '#adc101',
-    blockExplorer: makeExplorer('https://kovan.etherscan.io'),
-    tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json'),
-    isTestnet: true
-  },
-  Rinkeby: {
-    name: 'Rinkeby',
-    unit: 'ETH',
-    chainId: 4,
-    color: '#adc101',
-    blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
-    tokens: require('./tokens/rinkeby.json'),
-    contracts: require('./contracts/rinkeby.json'),
-    isTestnet: true
-  },
-  ETC: {
-    name: 'ETC',
-    unit: 'ETC',
-    chainId: 61,
-    color: '#669073',
-    blockExplorer: makeExplorer('https://gastracker.io'),
-    tokens: require('./tokens/etc.json'),
-    contracts: require('./contracts/etc.json')
-  }
+  ETH,
+  Ropsten,
+  Kovan,
+  Rinkeby,
+  ETC
 };
 
 export const NODES: { [key: string]: NodeConfig } = {

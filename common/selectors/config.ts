@@ -15,24 +15,42 @@ import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction/meta';
 import { isEtherUnit } from 'libs/units';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
-import { DPath, DPATHS } from 'config/dpaths';
+import { DPath } from 'config/dpaths';
+import { NETWORKS, DPathFormats } from 'config';
+import sortedUniq from 'lodash/sortedUniq';
 
 export function getNode(state: AppState): string {
   return state.config.nodeSelection;
 }
 
-export function getDPath(format: Wallets, network: NetworkKeys): DPath | null {
-  console.log('DPATHS', DPATHS);
-  const dPathFormats = DPATHS[format];
-  console.log('dPathFormats', dPathFormats);
-  console.log(network);
-  for (const dPathFormat of dPathFormats) {
-    if (dPathFormat.network === network) {
-      console.log(dPathFormat);
-      return dPathFormat;
+type PathType = keyof DPathFormats;
+
+export function getPaths(pathType: PathType): DPath[] {
+  const paths: DPath[] = [];
+  Object.values(NETWORKS).forEach(each => {
+    const path = each.dPathFormats[pathType];
+    if (!Array.isArray(path)) {
+      paths.push(path);
+    } else {
+      paths.concat(path);
     }
-  }
-  return null;
+  });
+  return sortedUniq(paths);
+}
+
+type SingleDPathFormat = SecureWallets.TREZOR | SecureWallets.LEDGER_NANO_S;
+
+export function getSingleDPathValue(format: SingleDPathFormat, network: NetworkKeys): string {
+  return NETWORKS[network].dPathFormats[format].value;
+}
+
+type AnyDPathFormat =
+  | SecureWallets.TREZOR
+  | SecureWallets.LEDGER_NANO_S
+  | InsecureWallets.MNEMONIC_PHRASE;
+
+export function getAnyDPath(format: AnyDPathFormat, network: NetworkKeys): DPath | DPath[] | null {
+  return NETWORKS[network].dPathFormats[format];
 }
 
 export function isSupportedWalletFormat(format: Wallets, network: NetworkKeys): boolean {
@@ -42,16 +60,7 @@ export function isSupportedWalletFormat(format: Wallets, network: NetworkKeys): 
     InsecureWallets.MNEMONIC_PHRASE
   ] as any; // TODO understand why "as Wallets" is a type error
   if (CHECK_FORMATS.includes(format)) {
-    switch (format) {
-      case SecureWallets.LEDGER_NANO_S:
-        return !!getDPath(SecureWallets.LEDGER_NANO_S, network);
-      case SecureWallets.TREZOR:
-        return !!getDPath(SecureWallets.TREZOR, network);
-      case InsecureWallets.MNEMONIC_PHRASE:
-        return !!getDPath(InsecureWallets.MNEMONIC_PHRASE, network);
-      default:
-        return false;
-    }
+    return !!getAnyDPath(format as AnyDPathFormat, network);
   }
   return true;
 }

@@ -1,4 +1,3 @@
-import { DPATHS } from 'config/dpaths';
 import { TrezorWallet } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
@@ -6,13 +5,19 @@ import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
 import { Spinner } from 'components/ui';
-import { SecureWallets } from '../../../config';
-
-const DEFAULT_PATH = DPATHS[SecureWallets.TREZOR][0].value;
+import { getSingleDPathValue, getNetworkConfig, getPaths } from 'selectors/config';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
+import { SecureWallets } from 'config';
 
 interface Props {
   onUnlock(param: any): void;
 }
+
+interface StateProps {
+  dPath: string;
+}
+
 interface State {
   publicKey: string;
   chainCode: string;
@@ -21,11 +26,11 @@ interface State {
   isLoading: boolean;
 }
 
-export class TrezorDecrypt extends Component<Props, State> {
+class TrezorDecryptClass extends Component<Props & StateProps, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: DEFAULT_PATH,
+    dPath: this.props.dPath,
     error: null,
     isLoading: false
   };
@@ -78,7 +83,7 @@ export class TrezorDecrypt extends Component<Props, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={DPATHS.TREZOR}
+          dPaths={getPaths('trezor')}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -135,7 +140,16 @@ export class TrezorDecrypt extends Component<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: DEFAULT_PATH
+      dPath: this.props.dPath
     });
   }
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  const network = getNetworkConfig(state).name;
+  return {
+    dPath: getSingleDPathValue(SecureWallets.TREZOR, network)
+  };
+}
+
+export const TrezorDecrypt = connect(mapStateToProps, {})(TrezorDecryptClass);
