@@ -27,7 +27,7 @@ interface State {
   showTip: boolean;
 }
 
-type Props = OwnProps & StateProps & DispatchProps;
+type Props = OwnProps & StateProps;
 
 class LedgerNanoSDecryptClass extends Component<Props, State> {
   public state: State = {
