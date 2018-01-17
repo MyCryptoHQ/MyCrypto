@@ -2,6 +2,12 @@
 
 $height: 22px;
 
+// TODO - Implement styles for custom title bar on all platforms
+.TitleBar,
+.TitleBarPlaceholder {
+  display: none;
+}
+
 .TitleBar {
   position: fixed;
   top: 0;

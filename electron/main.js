@@ -19,7 +19,9 @@ function createMainWindow() {
     height: 800,
     minWidth: 320,
     minHeight: 400,
-    titleBarStyle: 'hidden',
+    // TODO - Implement styles for custom title bar in components/ui/TitleBar.scss
+    // frame: false,
+    // titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
