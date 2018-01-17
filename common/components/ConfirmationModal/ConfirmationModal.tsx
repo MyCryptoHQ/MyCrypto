@@ -1,7 +1,7 @@
+import React from 'react';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
-import { Details, Summary } from './components';
-import React from 'react';
+import { Body } from './components';
 import { connect } from 'react-redux';
 import { getWalletType, IWalletType } from 'selectors/wallet';
 import { getLanguageSelection } from 'selectors/config';
@@ -16,7 +16,7 @@ import {
   currentTransactionBroadcasted,
   currentTransactionFailed
 } from 'selectors/transaction';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import './ConfirmationModal.scss';
 import { AppState } from 'reducers';
 
@@ -104,10 +104,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
               </div>
             ) : (
               <div>
-                <Summary />
-                <Details />
-
-                <div className="ConfModal-confirm">{translate('SENDModal_Content_3')}</div>
+                <Body />
               </div>
             )}
           </div>
