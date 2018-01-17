@@ -14,9 +14,9 @@ import {
 } from 'config/dpaths';
 
 export interface BlockExplorerConfig {
-  name: NetworkKeys | string;
-  tx(txHash: string): string;
-  address(address: string): string;
+  origin: string;
+  txUrl(txHash: string): string;
+  addressUrl(address: string): string;
 }
 
 export interface Token {
@@ -27,7 +27,7 @@ export interface Token {
 }
 
 export interface NetworkContract {
-  name: NetworkKeys | string;
+  name: NetworkKeys;
   address?: string;
   abi: string;
 }
@@ -40,7 +40,7 @@ export interface DPathFormats {
 
 export interface NetworkConfig {
   // TODO really try not to allow strings due to custom networks
-  name: NetworkKeys | string;
+  name: NetworkKeys;
   unit: string;
   color?: string;
   blockExplorer?: BlockExplorerConfig;
@@ -62,7 +62,7 @@ export interface CustomNetworkConfig {
 }
 
 export interface NodeConfig {
-  network: NetworkKeys | string;
+  network: NetworkKeys;
   lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
@@ -73,7 +73,7 @@ export interface CustomNodeConfig {
   name: string;
   url: string;
   port: number;
-  network: NetworkKeys | string;
+  network: string;
   auth?: {
     username: string;
     password: string;
@@ -82,11 +82,11 @@ export interface CustomNodeConfig {
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
-function makeExplorer(url): BlockExplorerConfig {
+function makeExplorer(origin: string): BlockExplorerConfig {
   return {
-    name: url,
-    tx: hash => `${url}/tx/${hash}`,
-    address: address => `${url}/address/${address}`
+    origin,
+    txUrl: hash => `${origin}/tx/${hash}`,
+    addressUrl: address => `${origin}/address/${address}`
   };
 }
 
@@ -203,6 +203,7 @@ const EXP: NetworkConfig = {
 };
 
 export type NetworkKeys = keyof typeof NETWORKS;
+
 export const NETWORKS = {
   ETH,
   Ropsten,
@@ -213,7 +214,29 @@ export const NETWORKS = {
   EXP
 };
 
-export const NODES: { [key: string]: NodeConfig } = {
+enum NodeName {
+  ETH_MEW = 'eth_mew',
+  ETH_ETHSCAN = 'eth_ethscan',
+  ETH_INFURA = 'eth_infura',
+  ROP_MEW = 'rop_mew',
+  ROP_INFURA = 'rop_infura',
+  KOV_ETHSCAN = 'kov_ethscan',
+  RIN_ETHSCAN = 'rin_ethscan',
+  RIN_INFURA = 'rin_infura',
+  ETC_EPOOL = 'etc_epool',
+  UBQ = 'ubq',
+  EXP_TECH = 'exp_tech'
+}
+
+type NonWeb3NodeConfigs = { [key in NodeName]: NodeConfig };
+
+interface Web3NodeConfig {
+  web3?: NodeConfig;
+}
+
+type NodeConfigs = NonWeb3NodeConfigs & Web3NodeConfig;
+
+export const NODES: NodeConfigs = {
   eth_mew: {
     network: 'ETH',
     lib: new RPCNode('https://api.myetherapi.com/eth'),

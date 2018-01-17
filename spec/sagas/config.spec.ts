@@ -366,7 +366,7 @@ describe('equivalentNodeOrDefault', () => {
     const node = equivalentNodeOrDefault({
       ...mockNodeConfig,
       network: 'noEqivalentExists'
-    });
+    } as any);
     expect(node).toEqual(appDefaultNode);
   });
 
@@ -374,12 +374,12 @@ describe('equivalentNodeOrDefault', () => {
     NODES.web3 = {
       ...mockNodeConfig,
       network: 'uniqueToWeb3'
-    };
+    } as any;
 
     const node = equivalentNodeOrDefault({
       ...mockNodeConfig,
       network: 'uniqueToWeb3'
-    });
+    } as any);
     expect(node).toEqual(appDefaultNode);
   });
 });

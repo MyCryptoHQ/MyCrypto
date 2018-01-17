@@ -127,11 +127,11 @@ export default class AccountInfo extends React.Component<Props, State> {
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
                   <a
-                    href={blockExplorer.address(address)}
+                    href={blockExplorer.addressUrl(address)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {`${network.name} (${blockExplorer.name})`}
+                    {`${network.name} (${blockExplorer.origin})`}
                   </a>
                 </li>
               )}

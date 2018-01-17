@@ -6,9 +6,9 @@ import {
   CustomNetworkConfig,
   Token,
   NetworkKeys,
-  Wallets,
-  SecureWallets,
-  InsecureWallets,
+  WalletName,
+  SecureWalletName,
+  InsecureWalletName,
   NETWORKS,
   DPathFormats
 } from 'config';
@@ -28,8 +28,8 @@ type PathType = keyof DPathFormats;
 
 export function getPaths(pathType: PathType): DPath[] {
   const paths: DPath[] = [];
-  Object.values(NETWORKS).forEach(each => {
-    const path = each.dPathFormats ? each.dPathFormats[pathType] : [];
+  Object.values(NETWORKS).forEach(networkConfig => {
+    const path = networkConfig.dPathFormats ? networkConfig.dPathFormats[pathType] : [];
     if (!Array.isArray(path)) {
       paths.push(path);
     } else {
@@ -39,37 +39,36 @@ export function getPaths(pathType: PathType): DPath[] {
   return sortedUniq(paths);
 }
 
-type SingleDPathFormat = SecureWallets.TREZOR | SecureWallets.LEDGER_NANO_S;
+type SingleDPathFormat = SecureWalletName.TREZOR | SecureWalletName.LEDGER_NANO_S;
 
-export function getSingleDPathValue(
-  format: SingleDPathFormat,
-  network: NetworkKeys | string
-): string {
+export function getSingleDPathValue(format: SingleDPathFormat, network: NetworkKeys) {
   return NETWORKS[network].dPathFormats[format].value;
 }
 
 type AnyDPathFormat =
-  | SecureWallets.TREZOR
-  | SecureWallets.LEDGER_NANO_S
-  | InsecureWallets.MNEMONIC_PHRASE;
+  | SecureWalletName.TREZOR
+  | SecureWalletName.LEDGER_NANO_S
+  | InsecureWalletName.MNEMONIC_PHRASE;
 
-export function getAnyDPath(
-  format: AnyDPathFormat,
-  network: NetworkKeys | string
-): DPath | DPath[] | null {
+export function getAnyDPath(format: AnyDPathFormat, network: NetworkKeys) {
   return NETWORKS[network].dPathFormats[format];
 }
 
-export function isSupportedWalletFormat(format: Wallets, network: NetworkKeys | string): boolean {
-  const CHECK_FORMATS = [
-    SecureWallets.LEDGER_NANO_S,
-    SecureWallets.TREZOR,
-    InsecureWallets.MNEMONIC_PHRASE
-  ] as any; // TODO understand why "as Wallets" is a type error
-  if (CHECK_FORMATS.includes(format)) {
-    return !!getAnyDPath(format as AnyDPathFormat, network);
+export function isSupportedWalletFormat(format: WalletName, network: NetworkKeys): boolean {
+  const CHECK_FORMATS: AnyDPathFormat[] = [
+    SecureWalletName.LEDGER_NANO_S,
+    SecureWalletName.TREZOR,
+    InsecureWalletName.MNEMONIC_PHRASE
+  ];
+
+  const validWalletFormat = (f: string): f is AnyDPathFormat =>
+    CHECK_FORMATS.includes(f as AnyDPathFormat);
+
+  if (validWalletFormat(format)) {
+    return !!getAnyDPath(format, network);
   }
-  if (format === SecureWallets.WEB3) {
+
+  if (format === SecureWalletName.WEB3) {
     if (network !== 'ETH') {
       // TODO -- determine if we can select testnets via MetaMask
       return false;

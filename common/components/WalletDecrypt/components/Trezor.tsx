@@ -8,9 +8,10 @@ import { Spinner } from 'components/ui';
 import { getSingleDPathValue, getNetworkConfig, getPaths } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { SecureWallets } from 'config';
+import { SecureWalletName } from 'config';
 
-interface Props {
+//todo: conflicts with comment in walletDecrypt -> onUnlock method
+interface OwnProps {
   onUnlock(param: any): void;
 }
 
@@ -18,6 +19,7 @@ interface StateProps {
   dPath: string;
 }
 
+// todo: nearly duplicates ledger component props
 interface State {
   publicKey: string;
   chainCode: string;
@@ -26,7 +28,9 @@ interface State {
   isLoading: boolean;
 }
 
-class TrezorDecryptClass extends Component<Props & StateProps, State> {
+type Props = OwnProps & StateProps;
+
+class TrezorDecryptClass extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
@@ -83,7 +87,7 @@ class TrezorDecryptClass extends Component<Props & StateProps, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={getPaths(SecureWallets.TREZOR)}
+          dPaths={getPaths(SecureWalletName.TREZOR)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -148,8 +152,8 @@ class TrezorDecryptClass extends Component<Props & StateProps, State> {
 function mapStateToProps(state: AppState): StateProps {
   const network = getNetworkConfig(state).name;
   return {
-    dPath: getSingleDPathValue(SecureWallets.TREZOR, network)
+    dPath: getSingleDPathValue(SecureWalletName.TREZOR, network)
   };
 }
 
-export const TrezorDecrypt = connect(mapStateToProps, {})(TrezorDecryptClass);
+export const TrezorDecrypt = connect(mapStateToProps)(TrezorDecryptClass);

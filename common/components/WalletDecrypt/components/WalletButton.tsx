@@ -1,21 +1,20 @@
 import React from 'react';
 import classnames from 'classnames';
-import { translateRaw } from 'translations';
+import { translateRaw, TranslateType } from 'translations';
 import { NewTabLink, Tooltip } from 'components/ui';
 import './WalletButton.scss';
 import { connect } from 'react-redux';
 import { isSupportedWalletFormat, getNetworkConfig } from 'selectors/config';
-import { Wallets } from 'config';
-
+import { WalletName } from 'config';
 import { AppState } from 'reducers';
 
-interface Props {
-  name: React.ReactElement<string> | string;
-  description?: React.ReactElement<string> | string;
-  example?: React.ReactElement<string> | string;
-  icon?: string | null;
-  helpLink?: string;
-  walletType: Wallets;
+interface OwnProps {
+  name: TranslateType;
+  description?: TranslateType;
+  example?: TranslateType;
+  icon?: string;
+  helpLink: string;
+  walletType: WalletName;
   isSecure?: boolean;
   isReadOnly?: boolean;
   isDisabled?: boolean;
@@ -26,7 +25,9 @@ interface StateProps {
   isFormatDisabled?: boolean;
 }
 
-class WalletButtonClass extends React.PureComponent<Props & StateProps, {}> {
+type Props = OwnProps & StateProps;
+
+class WalletButtonClass extends React.PureComponent<Props> {
   public render() {
     const {
       name,
@@ -57,27 +58,29 @@ class WalletButtonClass extends React.PureComponent<Props & StateProps, {}> {
           {icon && <img className="WalletButton-title-icon" src={icon} />}
           <span>{name}</span>
         </div>
+
         {description && <div className="WalletButton-description">{description}</div>}
         {example && <div className="WalletButton-example">{example}</div>}
+
         <div className="WalletButton-icons">
-          {isSecure === true && (
+          {isSecure ? (
             <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
               <i className="fa fa-shield" />
               <Tooltip>{translateRaw('This wallet type is secure')}</Tooltip>
             </span>
-          )}
-          {isSecure === false && (
+          ) : (
             <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
               <i className="fa fa-exclamation-triangle" />
               <Tooltip>{translateRaw('This wallet type is insecure')}</Tooltip>
             </span>
           )}
-          {isReadOnly === true && (
+          {isReadOnly && (
             <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
               <i className="fa fa-eye" />
               <Tooltip>{translateRaw('You cannot send using address only')}</Tooltip>
             </span>
           )}
+
           {helpLink && (
             <span className="WalletButton-icons-icon">
               <NewTabLink href={helpLink} onClick={this.stopPropogation}>
@@ -99,12 +102,12 @@ class WalletButtonClass extends React.PureComponent<Props & StateProps, {}> {
     this.props.onClick(this.props.walletType);
   };
 
-  private stopPropogation = (ev: React.SyntheticEvent<any>) => {
+  private stopPropogation = (ev: React.FormEvent<HTMLAnchorElement | HTMLSpanElement>) => {
     ev.stopPropagation();
   };
 }
 
-function mapStateToProps(state: AppState, ownProps: Props): StateProps {
+function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
   const { walletType } = ownProps;
   const network = getNetworkConfig(state).name;
   return {
@@ -112,4 +115,4 @@ function mapStateToProps(state: AppState, ownProps: Props): StateProps {
   };
 }
 
-export const WalletButton = connect(mapStateToProps, {})(WalletButtonClass);
+export const WalletButton = connect(mapStateToProps)(WalletButtonClass);

@@ -9,7 +9,7 @@ export interface TransactionSucceededProps {
 
 const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededProps) => {
   // const checkTxLink = `https://www.myetherwallet.com?txHash=${txHash}/#check-tx-status`;
-  const txHashLink = blockExplorer.tx(txHash);
+  const txHashLink = blockExplorer.txUrl(txHash);
 
   return (
     <div>

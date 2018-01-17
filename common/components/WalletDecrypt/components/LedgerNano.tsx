@@ -8,9 +8,9 @@ import { Spinner } from 'components/ui';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getSingleDPathValue, getNetworkConfig, getPaths } from 'selectors/config';
-import { SecureWallets } from 'config';
+import { SecureWalletName } from 'config';
 
-interface Props {
+interface OwnProps {
   onUnlock(param: any): void;
 }
 
@@ -27,7 +27,9 @@ interface State {
   showTip: boolean;
 }
 
-class LedgerNanoSDecryptClass extends Component<Props & StateProps, State> {
+type Props = OwnProps & StateProps;
+
+class LedgerNanoSDecryptClass extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
@@ -119,7 +121,7 @@ class LedgerNanoSDecryptClass extends Component<Props & StateProps, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={getPaths(SecureWallets.LEDGER_NANO_S)}
+          dPaths={getPaths(SecureWalletName.LEDGER_NANO_S)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -187,7 +189,7 @@ class LedgerNanoSDecryptClass extends Component<Props & StateProps, State> {
 function mapStateToProps(state: AppState): StateProps {
   const network = getNetworkConfig(state).name;
   return {
-    dPath: getSingleDPathValue(SecureWallets.LEDGER_NANO_S, network)
+    dPath: getSingleDPathValue(SecureWalletName.LEDGER_NANO_S, network)
   };
 }
 

@@ -5,7 +5,7 @@ import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
 import { ETH_DEFAULT } from 'config/dpaths';
 import { getPaths } from 'selectors/config';
-import { InsecureWallets } from 'config';
+import { InsecureWalletName } from 'config';
 
 const DEFAULT_PATH = ETH_DEFAULT.value;
 
@@ -72,7 +72,7 @@ export class MnemonicDecrypt extends Component<Props, State> {
           isOpen={!!seed}
           seed={seed}
           dPath={dPath}
-          dPaths={getPaths(InsecureWallets.MNEMONIC_PHRASE)}
+          dPaths={getPaths(InsecureWalletName.MNEMONIC_PHRASE)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}

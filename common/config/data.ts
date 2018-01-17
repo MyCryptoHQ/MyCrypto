@@ -51,20 +51,20 @@ export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/prod
 export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
-export enum SecureWallets {
+export enum SecureWalletName {
   WEB3 = 'web3',
   LEDGER_NANO_S = 'ledgerNanoS',
   TREZOR = 'trezor'
 }
 
-export enum InsecureWallets {
+export enum InsecureWalletName {
   PRIVATE_KEY = 'privateKey',
   KEYSTORE_FILE = 'keystoreFile',
   MNEMONIC_PHRASE = 'mnemonicPhrase'
 }
 
-export enum MiscWallets {
+export enum MiscWalletName {
   VIEW_ONLY = 'viewOnly'
 }
 
-export type Wallets = SecureWallets | InsecureWallets | MiscWallets;
+export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName;

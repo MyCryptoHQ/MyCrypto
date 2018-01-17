@@ -261,6 +261,9 @@ export function* unlockWeb3(): SagaIterator {
         action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
     );
 
+    if (!NODES.web3) {
+      throw Error('Web3 node config not found!');
+    }
     const network = NODES.web3.network;
     const nodeLib: INode | Web3Node = yield select(getNodeLib);
 

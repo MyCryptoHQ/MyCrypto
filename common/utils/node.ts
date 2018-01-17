@@ -27,10 +27,16 @@ export function getNodeConfigFromId(
 }
 
 export function makeNodeConfigFromCustomConfig(config: CustomNodeConfig): NodeConfig {
-  return {
+  interface Override extends NodeConfig {
+    network: any;
+  }
+
+  const customConfig: Override = {
     network: config.network,
     lib: new CustomNode(config),
     service: 'your custom node',
     estimateGas: true
   };
+
+  return customConfig;
 }
