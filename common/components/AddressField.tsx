@@ -1,6 +1,6 @@
 import React from 'react';
 import { AddressFieldFactory } from './AddressFieldFactory';
-import { donationAddressMap } from 'config/data';
+import { donationAddressMap } from 'config';
 
 interface Props {
   isReadOnly?: boolean;

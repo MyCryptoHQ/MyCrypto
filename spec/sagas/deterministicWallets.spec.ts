@@ -7,7 +7,7 @@ import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import { getNodeLib } from 'selectors/config';
 import * as dWalletActions from 'actions/deterministicWallets';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import {
   getDeterministicWallets,
   updateWalletValues,

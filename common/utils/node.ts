@@ -1,5 +1,5 @@
 import { CustomNode } from 'libs/nodes';
-import { NODES, NodeConfig, CustomNodeConfig } from 'config/data';
+import { NODES, NodeConfig, CustomNodeConfig } from 'config';
 
 export function makeCustomNodeId(config: CustomNodeConfig): string {
   return `${config.url}:${config.port}`;

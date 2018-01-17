@@ -3,6 +3,11 @@ import classnames from 'classnames';
 import { translateRaw } from 'translations';
 import { NewTabLink, Tooltip } from 'components/ui';
 import './WalletButton.scss';
+import { connect } from 'react-redux';
+import { isSupportedWalletFormat, getNetworkConfig } from 'selectors/config';
+import { Wallets } from 'config';
+
+import { AppState } from 'reducers';
 
 interface Props {
   name: React.ReactElement<string> | string;
@@ -10,14 +15,23 @@ interface Props {
   example?: React.ReactElement<string> | string;
   icon?: string | null;
   helpLink?: string;
-  walletType: string;
+  walletType: Wallets;
   isSecure?: boolean;
   isReadOnly?: boolean;
   isDisabled?: boolean;
   onClick(walletType: string): void;
 }
 
-export class WalletButton extends React.Component<Props, {}> {
+interface State {
+  isDisabled?: boolean;
+}
+
+class WalletButtonClass extends React.PureComponent<Props, State> {
+  public componentDidMount() {
+    const { walletType, isDisabled } = this.props;
+    console.log('isDisabled', isDisabled);
+  }
+
   public render() {
     const {
       name,
@@ -91,3 +105,17 @@ export class WalletButton extends React.Component<Props, {}> {
     ev.stopPropagation();
   };
 }
+
+function mapStateToProps(state: AppState, ownProps: Props): State {
+  const { walletType } = ownProps;
+  const network = getNetworkConfig(state).name;
+  console.log(
+    'isSupportedWalletFormat(walletType, network)',
+    isSupportedWalletFormat(walletType, network)
+  );
+  return {
+    isDisabled: !isSupportedWalletFormat(walletType, network)
+  };
+}
+
+export const WalletButton = connect(mapStateToProps, {})(WalletButtonClass);

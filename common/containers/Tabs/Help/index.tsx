@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
-import { knowledgeBaseURL } from 'config/data';
+import { knowledgeBaseURL } from 'config';
 
 const Help = () => (
   <TabSection>

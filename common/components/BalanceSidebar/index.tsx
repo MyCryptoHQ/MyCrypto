@@ -1,5 +1,5 @@
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import { connect } from 'react-redux';

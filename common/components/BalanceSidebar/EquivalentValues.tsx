@@ -5,7 +5,7 @@ import { State } from 'reducers/rates';
 import { rateSymbols, TFetchCCRates } from 'actions/rates';
 import { TokenBalance } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { ETH_DECIMAL, convertTokenBase } from 'libs/units';
 import Spinner from 'components/ui/Spinner';
 import UnitDisplay from 'components/ui/UnitDisplay';

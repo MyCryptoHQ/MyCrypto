@@ -1,4 +1,4 @@
-import { BlockExplorerConfig } from 'config/data';
+import { BlockExplorerConfig } from 'config';
 import React from 'react';
 import { translateRaw } from 'translations';
 

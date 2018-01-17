@@ -1,11 +1,12 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
-import DPATHS from 'config/dpaths';
+import { DPATHS } from 'config/dpaths';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
+import { InsecureWallets } from '../../../config';
 
-const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
+const DEFAULT_PATH = DPATHS[InsecureWallets.MNEMONIC_PHRASE][0].value;
 
 interface Props {
   onUnlock(param: any): void;
@@ -70,7 +71,7 @@ export class MnemonicDecrypt extends Component<Props, State> {
           isOpen={!!seed}
           seed={seed}
           dPath={dPath}
-          dPaths={DPATHS.MNEMONIC}
+          dPaths={DPATHS[InsecureWallets.MNEMONIC_PHRASE]}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}

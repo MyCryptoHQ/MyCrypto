@@ -4,10 +4,11 @@ import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
 import ledger from 'ledgerco';
-import DPATHS from 'config/dpaths';
+import { DPATHS } from 'config/dpaths';
+import { SecureWallets } from 'config';
 import { Spinner } from 'components/ui';
 
-const DEFAULT_PATH = DPATHS.LEDGER[0].value;
+const DEFAULT_PATH = DPATHS[SecureWallets.LEDGER_NANO_S][0].value;
 
 interface Props {
   onUnlock(param: any): void;

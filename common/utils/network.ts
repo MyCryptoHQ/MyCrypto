@@ -1,4 +1,4 @@
-import { NETWORKS, NetworkConfig, CustomNetworkConfig } from 'config/data';
+import { NETWORKS, NetworkConfig, CustomNetworkConfig } from 'config';
 
 export function makeCustomNetworkId(config: CustomNetworkConfig): string {
   return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;

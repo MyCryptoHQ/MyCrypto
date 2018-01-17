@@ -4,16 +4,55 @@ import {
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig,
-  Token
-} from 'config/data';
+  Token,
+  NetworkKeys,
+  Wallets,
+  SecureWallets,
+  InsecureWallets
+} from 'config';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction/meta';
 import { isEtherUnit } from 'libs/units';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
+import { DPath, DPATHS } from 'config/dpaths';
 
 export function getNode(state: AppState): string {
   return state.config.nodeSelection;
+}
+
+export function getDPath(format: Wallets, network: NetworkKeys): DPath | null {
+  console.log('DPATHS', DPATHS);
+  const dPathFormats = DPATHS[format];
+  console.log('dPathFormats', dPathFormats);
+  console.log(network);
+  for (const dPathFormat of dPathFormats) {
+    if (dPathFormat.network === network) {
+      return dPathFormat;
+    }
+  }
+  return null;
+}
+
+export function isSupportedWalletFormat(format: Wallets, network: NetworkKeys): boolean {
+  const CHECK_FORMATS = [
+    SecureWallets.LEDGER_NANO_S,
+    SecureWallets.TREZOR,
+    InsecureWallets.MNEMONIC_PHRASE
+  ] as any; // TODO understand why "as Wallets" is a type error
+  if (CHECK_FORMATS.includes(format)) {
+    switch (format) {
+      case SecureWallets.LEDGER_NANO_S:
+        return !!getDPath(SecureWallets.LEDGER_NANO_S, network);
+      case SecureWallets.TREZOR:
+        return !!getDPath(SecureWallets.TREZOR, network);
+      case InsecureWallets.MNEMONIC_PHRASE:
+        return !!getDPath(InsecureWallets.MNEMONIC_PHRASE, network);
+      default:
+        return false;
+    }
+  }
+  return true;
 }
 
 export function getIsWeb3Node(state: AppState): boolean {

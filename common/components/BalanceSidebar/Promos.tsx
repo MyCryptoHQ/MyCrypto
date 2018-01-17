@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { knowledgeBaseURL } from 'config/data';
+import { knowledgeBaseURL } from 'config';
 import './Promos.scss';
 
 const promos = [

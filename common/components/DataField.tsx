@@ -1,7 +1,7 @@
 import { DataFieldFactory } from './DataFieldFactory';
 import React from 'react';
 import translate from 'translations';
-import { donationAddressMap } from 'config/data';
+import { donationAddressMap } from 'config';
 
 export const DataField: React.SFC<{}> = () => (
   <DataFieldFactory

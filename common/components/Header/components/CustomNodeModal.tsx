@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Modal, { IButton } from 'components/ui/Modal';
 import translate from 'translations';
-import { NETWORKS, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
+import { NETWORKS, CustomNodeConfig, CustomNetworkConfig } from 'config';
 import { makeCustomNodeId } from 'utils/node';
 import { makeCustomNetworkId } from 'utils/network';
 

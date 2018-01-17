@@ -10,7 +10,7 @@ import {
   select,
   race
 } from 'redux-saga/effects';
-import { NODES, NETWORKS, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
+import { NODES, NETWORKS, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config';
 import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,

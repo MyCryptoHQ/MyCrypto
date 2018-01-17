@@ -8,7 +8,7 @@ import {
 } from 'actions/deterministicWallets';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { isValidPath } from 'libs/validators';
 import React from 'react';
 import { connect } from 'react-redux';

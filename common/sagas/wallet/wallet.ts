@@ -36,7 +36,7 @@ import {
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
-import { NODES, initWeb3Node, Token } from 'config/data';
+import { NODES, initWeb3Node, Token } from 'config';
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getAllTokens, getOffline } from 'selectors/config';

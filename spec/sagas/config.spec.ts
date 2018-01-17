@@ -11,7 +11,7 @@ import {
   unsetWeb3NodeOnWalletEvent,
   equivalentNodeOrDefault
 } from 'sagas/config';
-import { NODES, NodeConfig, NETWORKS } from 'config/data';
+import { NODES, NodeConfig, NETWORKS } from 'config';
 import {
   getNode,
   getNodeConfig,
