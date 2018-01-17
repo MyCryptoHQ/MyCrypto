@@ -45,8 +45,10 @@ import {
   MiscWalletName,
   WalletName,
   isWeb3NodeAvailable,
-  knowledgeBaseURL
+  knowledgeBaseURL,
+  HardwareWalletName
 } from 'config';
+import { getNetworkConfig } from 'selectors/config';
 
 interface Props {
   resetTransactionState: TReset;
@@ -58,6 +60,7 @@ interface Props {
   resetWallet: TResetWallet;
   showNotification: TShowNotification;
   wallet: IWallet;
+  networkConfig: AppState['config']['network'];
   hidden?: boolean;
   offline: boolean;
   disabledWallets?: WalletName[];
@@ -395,15 +398,24 @@ export class WalletDecrypt extends Component<Props, State> {
       return true;
     }
 
+    if (
+      !this.props.networkConfig.dPathFormats &&
+      Object.values(HardwareWalletName).includes(walletKey)
+    ) {
+      return true;
+    }
+
     if (!this.props.disabledWallets) {
       return false;
     }
+
     return this.props.disabledWallets.indexOf(walletKey) !== -1;
   };
 }
 
 function mapStateToProps(state: AppState) {
   return {
+    networkConfig: getNetworkConfig(state),
     offline: state.config.offline,
     wallet: state.wallet.inst,
     isWalletPending: state.wallet.isWalletPending,

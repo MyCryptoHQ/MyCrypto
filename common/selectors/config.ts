@@ -42,7 +42,8 @@ export function getPaths(pathType: PathType): DPath[] {
 type SingleDPathFormat = SecureWalletName.TREZOR | SecureWalletName.LEDGER_NANO_S;
 
 export function getSingleDPathValue(format: SingleDPathFormat, network: NetworkKeys) {
-  return NETWORKS[network].dPathFormats[format].value;
+  const dPathFormats = NETWORKS[network].dPathFormats;
+  return dPathFormats ? dPathFormats[format].value : null;
 }
 
 type AnyDPathFormat =
@@ -51,7 +52,9 @@ type AnyDPathFormat =
   | InsecureWalletName.MNEMONIC_PHRASE;
 
 export function getAnyDPath(format: AnyDPathFormat, network: NetworkKeys) {
-  return NETWORKS[network].dPathFormats[format];
+  const dPathFormats = NETWORKS[network].dPathFormats;
+
+  return dPathFormats ? dPathFormats[format] : null;
 }
 
 export function isSupportedWalletFormat(format: WalletName, network: NetworkKeys): boolean {

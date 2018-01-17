@@ -15,19 +15,19 @@ interface OwnProps {
 }
 
 interface StateProps {
-  dPath: string;
+  dPath: string | null;
 }
 
 interface State {
   publicKey: string;
   chainCode: string;
-  dPath: string;
+  dPath: string | null;
   error: string | null;
   isLoading: boolean;
   showTip: boolean;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 class LedgerNanoSDecryptClass extends Component<Props, State> {
   public state: State = {
@@ -120,7 +120,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
           chainCode={chainCode}
-          dPath={dPath}
+          dPath={dPath!}
           dPaths={getPaths(SecureWalletName.LEDGER_NANO_S)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
@@ -135,7 +135,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
     this.handleConnect(dPath);
   };
 
-  private handleConnect = (dPath: string = this.state.dPath) => {
+  private handleConnect = (dPath: string = this.state.dPath!) => {
     this.setState({
       isLoading: true,
       error: null,
@@ -153,11 +153,11 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
           });
         })
         .catch(err => {
-          if (err.metaData.code === 5) {
+          if (err.metaData && err.metaData.code === 5) {
             this.showTip();
           }
           this.setState({
-            error: err.metaData.type,
+            error: err.metaData ? err.metaData.type : err,
             isLoading: false
           });
         });
@@ -169,7 +169,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new LedgerWallet(address, this.state.dPath, index));
+    this.props.onUnlock(new LedgerWallet(address, this.state.dPath!, index));
     this.reset();
   };
 
@@ -193,4 +193,4 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export const LedgerNanoSDecrypt = connect(mapStateToProps, {})(LedgerNanoSDecryptClass);
+export const LedgerNanoSDecrypt = connect(mapStateToProps)(LedgerNanoSDecryptClass);

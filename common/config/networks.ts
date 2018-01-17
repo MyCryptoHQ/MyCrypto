@@ -59,6 +59,7 @@ export interface CustomNetworkConfig {
   name: string;
   unit: string;
   chainId: number;
+  dPathFormats: DPathFormats | null;
 }
 
 export interface NodeConfig {

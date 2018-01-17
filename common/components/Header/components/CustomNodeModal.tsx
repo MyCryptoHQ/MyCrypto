@@ -303,10 +303,16 @@ export default class CustomNodeModal extends React.Component<Props, State> {
   }
 
   private makeCustomNetworkConfigFromState(): CustomNetworkConfig {
+    const similarNetworkConfig = Object.values(NETWORKS).find(
+      n => n.chainId === +this.state.customNetworkChainId
+    );
+    const dPathFormats = similarNetworkConfig ? similarNetworkConfig.dPathFormats : null;
+
     return {
       name: this.state.customNetworkName,
       unit: this.state.customNetworkUnit,
-      chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0
+      chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0,
+      dPathFormats
     };
   }
 
@@ -352,6 +358,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
 
     if (this.state.network === CUSTOM) {
       const network = this.makeCustomNetworkConfigFromState();
+
       this.props.handleAddCustomNetwork(network);
     }
 

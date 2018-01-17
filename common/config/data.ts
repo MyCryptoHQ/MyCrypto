@@ -57,6 +57,11 @@ export enum SecureWalletName {
   TREZOR = 'trezor'
 }
 
+export enum HardwareWalletName {
+  LEDGER_NANO_S = 'ledgerNanoS',
+  TREZOR = 'trezor'
+}
+
 export enum InsecureWalletName {
   PRIVATE_KEY = 'privateKey',
   KEYSTORE_FILE = 'keystoreFile',
