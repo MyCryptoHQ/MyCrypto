@@ -11,10 +11,12 @@ interface Props {
   wallet: IWallet;
   disabledWallets?: string[];
 }
+
 interface State {
   isExpanded: boolean;
 }
-export class UnlockHeader extends React.Component<Props, State> {
+
+export class UnlockHeader extends React.PureComponent<Props, State> {
   public state = {
     isExpanded: !this.props.wallet
   };
