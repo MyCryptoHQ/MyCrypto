@@ -28,6 +28,7 @@
       height: 16px;
       border-radius: 4px;
       background: $gray-lighter;
+      margin-bottom: $space-sm;
 
       &-inner {
         position: absolute;
@@ -37,6 +38,24 @@
         border-radius: 4px;
         background: $brand-primary;
         transition: width 100ms ease;
+      }
+    }
+
+    &-info {
+      color: $gray-light;
+      font-size: $font-size-xs;
+
+      &-bit {
+        &:after {
+          display: inline-block;
+          content: "•";
+          padding: 0 $space-xs;
+          opacity: 0.8;
+        }
+
+        &:last-child:after {
+          display: none;
+        }
       }
     }
   }

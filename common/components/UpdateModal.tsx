@@ -5,6 +5,7 @@ import { Spinner, NewTabLink } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
 import moment from 'moment';
 import { addListener, sendEvent } from 'utils/electron';
+import { bytesToHuman } from 'utils/formatters';
 import './UpdateModal.scss';
 
 export interface UpdateInfo {
@@ -42,7 +43,6 @@ class UpdateModal extends React.Component<Props, State> {
 
   public componentDidMount() {
     addListener('UPDATE:update-downloaded', () => {
-      this.setState({ isDownloading: true });
       sendEvent('UPDATE:quit-and-install');
     });
     addListener('UPDATE:download-progress', downloadProgress => {
@@ -103,6 +103,17 @@ class UpdateModal extends React.Component<Props, State> {
                   }}
                 />
               </div>
+              <div className="UpdateModal-downloader-info">
+                <span className="UpdateModal-downloader-info-bit">
+                  Downloaded {downloadProgress.percent.toFixed(1)}%
+                </span>
+                <span className="UpdateModal-downloader-info-bit">
+                  {bytesToHuman(downloadProgress.bytesPerSecond)}/s
+                </span>
+                <span className="UpdateModal-downloader-info-bit">
+                  Total Size {bytesToHuman(downloadProgress.total)}
+                </span>
+              </div>
             </div>
           ) : (
             <div>
@@ -122,6 +133,7 @@ class UpdateModal extends React.Component<Props, State> {
   }
 
   private downloadUpdate = () => {
+    this.setState({ isDownloading: true });
     sendEvent('UPDATE:download-update');
   };
 }
