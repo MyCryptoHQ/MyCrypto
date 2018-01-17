@@ -22,13 +22,13 @@ interface Props {
   onClick(walletType: string): void;
 }
 
-interface State {
-  isDisabled?: boolean;
+interface StateProps {
+  isFormatDisabled?: boolean;
 }
 
-class WalletButtonClass extends React.PureComponent<Props, State> {
+class WalletButtonClass extends React.PureComponent<Props & StateProps, {}> {
   public componentDidMount() {
-    const { walletType, isDisabled } = this.props;
+    const { isDisabled } = this.props;
     console.log('isDisabled', isDisabled);
   }
 
@@ -41,19 +41,21 @@ class WalletButtonClass extends React.PureComponent<Props, State> {
       helpLink,
       isSecure,
       isReadOnly,
-      isDisabled
+      isDisabled,
+      isFormatDisabled
     } = this.props;
 
+    const disabled = isDisabled || isFormatDisabled;
     return (
       <div
         className={classnames({
           WalletButton: true,
           'WalletButton--small': !isSecure,
-          'is-disabled': isDisabled
+          'is-disabled': disabled
         })}
         onClick={this.handleClick}
-        tabIndex={isDisabled ? -1 : 0}
-        aria-disabled={isDisabled}
+        tabIndex={disabled ? -1 : 0}
+        aria-disabled={disabled}
       >
         <div className="WalletButton-title">
           {icon && <img className="WalletButton-title-icon" src={icon} />}
@@ -94,7 +96,7 @@ class WalletButtonClass extends React.PureComponent<Props, State> {
   }
 
   private handleClick = () => {
-    if (this.props.isDisabled) {
+    if (this.props.isDisabled || this.props.isFormatDisabled) {
       return;
     }
 
@@ -106,15 +108,15 @@ class WalletButtonClass extends React.PureComponent<Props, State> {
   };
 }
 
-function mapStateToProps(state: AppState, ownProps: Props): State {
+function mapStateToProps(state: AppState, ownProps: Props): StateProps {
   const { walletType } = ownProps;
   const network = getNetworkConfig(state).name;
   console.log(
-    'isSupportedWalletFormat(walletType, network)',
+    `isSupportedWalletFormat(walletType, network) ${walletType}`,
     isSupportedWalletFormat(walletType, network)
   );
   return {
-    isDisabled: !isSupportedWalletFormat(walletType, network)
+    isFormatDisabled: !isSupportedWalletFormat(walletType, network)
   };
 }
 

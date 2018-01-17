@@ -28,6 +28,7 @@ export function getDPath(format: Wallets, network: NetworkKeys): DPath | null {
   console.log(network);
   for (const dPathFormat of dPathFormats) {
     if (dPathFormat.network === network) {
+      console.log(dPathFormat);
       return dPathFormat;
     }
   }
