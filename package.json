@@ -138,7 +138,6 @@
     "db": "nodemon ./db",
     "build": "webpack --config webpack_config/webpack.prod.js",
     "prebuild": "check-node-version --package",
-    "postbuild": "node ./utils/postBuild.js",
     "build:downloadable": "webpack --config webpack_config/webpack.html.js",
     "prebuild:downloadable": "check-node-version --package",
     "build:electron": "webpack --config webpack_config/webpack.electron.js",

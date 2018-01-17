@@ -16,6 +16,7 @@ const SriPlugin = require('webpack-subresource-integrity');
 const ElectronPackagerPlugin = require('./plugins/electronPackager');
 const ElectronBuilderPlugin = require('./plugins/electronBuilder');
 const ClearDistPlugin = require('./plugins/clearDist');
+const SortCachePlugin = require('./plugins/sortCache');
 
 const config = require('./config');
 
@@ -224,7 +225,8 @@ module.exports = function(opts = {}) {
         enabled: true
       }),
       new ProgressPlugin(),
-      new ClearDistPlugin()
+      new ClearDistPlugin(),
+      new SortCachePlugin()
     )
   }
   else {
