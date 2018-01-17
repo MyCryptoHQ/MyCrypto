@@ -16,6 +16,7 @@ import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
 import { UnitDisplay } from 'components/ui';
 import './DeterministicWalletsModal.scss';
+import { DPath } from 'config/dpaths';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -45,6 +46,7 @@ interface Props {
 }
 
 interface State {
+  currentLabel: string;
   selectedAddress: string;
   selectedAddrIndex: number;
   isCustomPath: boolean;
@@ -52,12 +54,18 @@ interface State {
   page: number;
 }
 
+const customDPath: DPath = {
+  label: 'custom',
+  value: 'custom'
+};
+
 class DeterministicWalletsModalClass extends React.Component<Props, State> {
-  public state = {
+  public state: State = {
     selectedAddress: '',
     selectedAddrIndex: 0,
     isCustomPath: false,
     customPath: '',
+    currentLabel: '',
     page: 0
   };
 
@@ -118,14 +126,16 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
             <select
               className="form-control"
               onChange={this.handleChangePath}
-              value={isCustomPath ? 'custom' : dPath}
+              value={this.state.currentLabel || this.findDPath('value', dPath).value}
             >
               {dPaths.map(dp => (
-                <option key={dp.value} value={dp.value}>
+                <option key={dp.value} value={dp.label}>
                   {dp.label}
                 </option>
               ))}
-              <option value="custom">Custom path...</option>
+              <option key={'custom'} value="custom">
+                Custom path...
+              </option>
             </select>
             {isCustomPath && (
               <input
@@ -200,16 +210,19 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
     }
   }
 
+  private findDPath = (prop: keyof DPath, cmp: string) =>
+    this.props.dPaths.find(d => d[prop] === cmp) || customDPath;
+
   private handleChangePath = (ev: React.FormEvent<HTMLSelectElement>) => {
-    const { value } = ev.currentTarget;
+    const { value: dPathLabel } = ev.currentTarget;
+    const { value } = this.findDPath('label', dPathLabel);
 
     if (value === 'custom') {
-      this.setState({ isCustomPath: true });
+      this.setState({ isCustomPath: true, currentLabel: dPathLabel });
     } else {
-      this.setState({ isCustomPath: false });
-      if (this.props.dPath !== value) {
-        this.props.onPathChange(value);
-      }
+      this.setState({ isCustomPath: false, currentLabel: dPathLabel });
+
+      this.props.onPathChange(value);
     }
   };
 
