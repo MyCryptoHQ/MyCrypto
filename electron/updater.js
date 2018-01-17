@@ -7,7 +7,7 @@ autoUpdater.autoDownload = false;
 
 module.exports = function(app, window) {
   // Set to 'true' if you want to test update behavior. Requires a recompile.
-  const shouldMockUpdate = true && process.env.NODE_ENV !== 'production';
+  const shouldMockUpdate = false && process.env.NODE_ENV !== 'production';
 
   // Report update status
   autoUpdater.on('checking-for-update', () => {
