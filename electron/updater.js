@@ -33,8 +33,10 @@ module.exports = function(app, window) {
     window.webContents.send('UPDATE:update-downloaded');
   });
 
-  autoUpdater.on('error', (err) => {
-    window.webContents.send('UPDATE:error', err);
+  autoUpdater.on('error', (err, msg) => {
+    console.error('Update failed with an error');
+    console.error(err);
+    window.webContents.send('UPDATE:error', msg);
   });
 
   autoUpdater.checkForUpdatesAndNotify();

@@ -5,6 +5,10 @@ const rimraf = require('rimraf');
 const builder = require('electron-builder');
 const config = require('../config');
 
+function shouldBuildOs(os) {
+  return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
+}
+
 function ElectronBuilderPlugin() {};
 ElectronBuilderPlugin.prototype.apply = function(compiler) {
   const electronBuildsDir = path.join(config.path.output, 'electron-builds');
@@ -27,9 +31,11 @@ ElectronBuilderPlugin.prototype.apply = function(compiler) {
     process.env.ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = true;
 
     builder.build({
-      mac: ['zip', 'dmg'],
-      win: ['nsis'],
-      linux: ['AppImage'],
+      mac: shouldBuildOs('mac') ? ['zip', 'dmg'] : undefined,
+      win: shouldBuildOs('windows') ? ['nsis'] : undefined,
+      linux: shouldBuildOs('linux') ? ['AppImage'] : undefined,
+      x64: true,
+      ia32: true,
       config: {
         appId: 'com.github.myetherwallet.myetherwallet',
         productName: 'MyEtherWallet',

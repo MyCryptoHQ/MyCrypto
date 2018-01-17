@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { showNotification, TShowNotification } from 'actions/notifications';
 import Modal, { IButton } from 'components/ui/Modal';
 import moment from 'moment';
 import { electronListen, electronSend } from 'utils/electron';
@@ -22,6 +24,7 @@ export interface DownloadProgress {
 interface Props {
   isOpen: boolean;
   updateInfo: UpdateInfo;
+  showNotification: TShowNotification;
   handleClose(): void;
 }
 
@@ -29,7 +32,7 @@ interface State {
   downloadProgress: DownloadProgress | null;
 }
 
-export default class UpdateModal extends React.Component<Props, State> {
+class UpdateModal extends React.Component<Props, State> {
   public state: State = {
     downloadProgress: null
   };
@@ -40,6 +43,18 @@ export default class UpdateModal extends React.Component<Props, State> {
     });
     electronListen('UPDATE:update-downloaded', () => {
       electronSend('UPDATE:quit-and-install');
+    });
+    electronListen('UPDATE:error', err => {
+      console.error('Update failed:', err);
+      this.props.showNotification(
+        'danger',
+        <span>
+          Update could not be downloaded, please visit
+          <a href="https://github.com/MyEtherWallet/MyEtherWallet/releases">our github</a>
+          to download the latest release
+        </span>,
+        Infinity
+      );
     });
   }
 
@@ -102,3 +117,5 @@ export default class UpdateModal extends React.Component<Props, State> {
     electronSend('UPDATE:download-update');
   };
 }
+
+export default connect(undefined, { showNotification })(UpdateModal);

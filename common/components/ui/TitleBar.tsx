@@ -1,12 +1,11 @@
 import React from 'react';
-import { Aux } from './AuxComponent';
 import './TitleBar.scss';
 
 const TitleBar: React.SFC<{}> = () => (
-  <Aux>
+  <React.Fragment>
     <div className="TitleBar" />
     <div className="TitleBarPlaceholder" />
-  </Aux>
+  </React.Fragment>
 );
 
 export default TitleBar;
