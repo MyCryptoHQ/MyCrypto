@@ -37,9 +37,19 @@ interface State {
 }
 
 export default class Promos extends React.Component<{}, State> {
+  public timer: any = null;
+
   public state = {
     activePromo: parseInt(String(Math.random() * promos.length), 10)
   };
+
+  public componentDidMount() {
+    this.timer = setInterval(() => this.rotate(), 10000);
+  }
+
+  public componentWillUnmount() {
+    clearInterval(this.timer);
+  }
 
   public render() {
     const { activePromo } = this.state;
@@ -94,6 +104,15 @@ export default class Promos extends React.Component<{}, State> {
   }
 
   private navigateToPromo = (idx: number) => () => {
+    // stop rotating when user begins interacting with promos
+    clearInterval(this.timer);
     this.setState({ activePromo: Math.max(0, Math.min(promos.length, idx)) });
+  };
+
+  private rotate = () => {
+    const previousIndex = this.state.activePromo;
+    const nextIndex = previousIndex + 1;
+    const nextIndexExists = typeof promos[nextIndex] !== 'undefined' ? true : false;
+    nextIndexExists ? this.setState({ activePromo: nextIndex }) : this.setState({ activePromo: 0 });
   };
 }
