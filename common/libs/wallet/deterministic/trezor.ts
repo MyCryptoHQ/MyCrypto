@@ -10,6 +10,8 @@ import mapValues from 'lodash/mapValues';
 import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
 
+export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
+
 export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   public signRawTransaction(tx: EthTx): Promise<Buffer> {
     return new Promise((resolve, reject) => {
@@ -17,7 +19,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
       const cleanedTx = mapValues(mapValues(strTx, stripHexPrefixAndLower), padLeftEven);
 
-      TrezorConnect.ethereumSignTx(
+      (TrezorConnect as any).ethereumSignTx(
         // Args
         this.getPath(),
         cleanedTx.nonce,
@@ -51,7 +53,6 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
 
   public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
 
-  // trezor-connect.js doesn't provide the promise return type
   public displayAddress = (dPath?: string, index?: number): Promise<any> => {
     if (!dPath) {
       dPath = this.dPath;
@@ -59,7 +60,20 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
     if (!index) {
       index = this.index;
     }
-    return TrezorConnect.ethereumGetAddress(dPath + '/' + index);
+
+    return new Promise((resolve, reject) => {
+      (TrezorConnect as any).ethereumGetAddress(
+        dPath + '/' + index,
+        res => {
+          if (res.error) {
+            reject(res.error);
+          } else {
+            resolve(res);
+          }
+        },
+        TREZOR_MINIMUM_FIRMWARE
+      );
+    });
   };
 
   public getWalletType(): string {
