@@ -5,7 +5,6 @@ import {
   CustomNodeConfig,
   CustomNetworkConfig,
   Token,
-  NetworkKeys,
   WalletName,
   SecureWalletName,
   InsecureWalletName,
@@ -20,64 +19,57 @@ import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { DPath } from 'config/dpaths';
 import sortedUniq from 'lodash/sortedUniq';
 
-export function getNode(state: AppState): string {
-  return state.config.nodeSelection;
-}
-
 type PathType = keyof DPathFormats;
 
+type DPathFormat =
+  | SecureWalletName.TREZOR
+  | SecureWalletName.LEDGER_NANO_S
+  | InsecureWalletName.MNEMONIC_PHRASE;
+
 export function getPaths(pathType: PathType): DPath[] {
-  let paths: DPath[] = [];
+  const paths: DPath[] = [];
   Object.values(NETWORKS).forEach(networkConfig => {
     const path = networkConfig.dPathFormats ? networkConfig.dPathFormats[pathType] : [];
-    if (!Array.isArray(path)) {
-      paths.push(path);
-    } else {
-      paths = paths.concat(path);
+    if (path) {
+      paths.push(path as DPath);
     }
   });
   return sortedUniq(paths);
 }
 
-type SingleDPathFormat = SecureWalletName.TREZOR | SecureWalletName.LEDGER_NANO_S;
-
-export function getSingleDPathValue(format: SingleDPathFormat, network: NetworkConfig) {
+export function getSingleDPathValue(format: DPathFormat, network: NetworkConfig): string | null {
   const dPathFormats = network.dPathFormats;
   return dPathFormats ? dPathFormats[format].value : null;
 }
 
-type AnyDPathFormat =
-  | SecureWalletName.TREZOR
-  | SecureWalletName.LEDGER_NANO_S
-  | InsecureWalletName.MNEMONIC_PHRASE;
-
-export function getAnyDPath(format: AnyDPathFormat, network: NetworkConfig) {
-  const dPathFormats = network.dPathFormats;
-
-  return dPathFormats ? dPathFormats[format] : null;
-}
-
 export function isSupportedWalletFormat(format: WalletName, network: NetworkConfig): boolean {
-  const CHECK_FORMATS: AnyDPathFormat[] = [
+  const CHECK_FORMATS: DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
     SecureWalletName.TREZOR,
     InsecureWalletName.MNEMONIC_PHRASE
   ];
 
-  const validWalletFormat = (f: string): f is AnyDPathFormat =>
-    CHECK_FORMATS.includes(f as AnyDPathFormat);
+  const isHDFormat = (f: string): f is DPathFormat => CHECK_FORMATS.includes(f as DPathFormat);
 
-  if (validWalletFormat(format)) {
+  // Ensure DPath's are found
+  if (isHDFormat(format)) {
     return !!(network.dPathFormats && network.dPathFormats[format]);
   }
 
+  // Ensure Web3 is only enabled on ETH
+  // TODO -- determine if we can select testnets via MetaMask
   if (format === SecureWalletName.WEB3) {
     if (network.name !== 'ETH') {
-      // TODO -- determine if we can select testnets via MetaMask
       return false;
     }
   }
+
+  // All other wallet formats are supported
   return true;
+}
+
+export function getNode(state: AppState): string {
+  return state.config.nodeSelection;
 }
 
 export function getIsWeb3Node(state: AppState): boolean {

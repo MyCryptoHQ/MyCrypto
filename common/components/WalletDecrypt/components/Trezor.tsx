@@ -23,7 +23,7 @@ interface StateProps {
 interface State {
   publicKey: string;
   chainCode: string;
-  dPath: string | null;
+  dPath: string;
   error: string | null;
   isLoading: boolean;
 }
@@ -34,7 +34,7 @@ class TrezorDecryptClass extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath,
+    dPath: this.props.dPath || '',
     error: null,
     isLoading: false
   };
@@ -144,13 +144,13 @@ class TrezorDecryptClass extends Component<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath
+      dPath: this.props.dPath || ''
     });
   }
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  const network = getNetworkConfig(state).name;
+  const network = getNetworkConfig(state);
   return {
     dPath: getSingleDPathValue(SecureWalletName.TREZOR, network)
   };

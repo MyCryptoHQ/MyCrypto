@@ -3,15 +3,20 @@ import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
-import { ETH_DEFAULT } from 'config/dpaths';
 import { getPaths } from 'selectors/config';
 import { InsecureWalletName } from 'config';
-
-const DEFAULT_PATH = ETH_DEFAULT.value;
+import { AppState } from '../../../reducers';
+import { getNetworkConfig, getSingleDPathValue } from '../../../selectors/config';
+import { connect } from 'react-redux';
 
 interface Props {
   onUnlock(param: any): void;
 }
+
+interface StateProps {
+  dPath: string | null;
+}
+
 interface State {
   phrase: string;
   formattedPhrase: string;
@@ -20,13 +25,13 @@ interface State {
   dPath: string;
 }
 
-export class MnemonicDecrypt extends Component<Props, State> {
+class MnemonicDecryptClass extends Component<Props & StateProps, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',
     pass: '',
     seed: '',
-    dPath: DEFAULT_PATH
+    dPath: this.props.dPath || ''
   };
 
   public render() {
@@ -137,3 +142,12 @@ export class MnemonicDecrypt extends Component<Props, State> {
     });
   };
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  const network = getNetworkConfig(state);
+  return {
+    dPath: getSingleDPathValue(InsecureWalletName.MNEMONIC_PHRASE, network)
+  };
+}
+
+export const MnemonicDecrypt = connect(mapStateToProps)(MnemonicDecryptClass);

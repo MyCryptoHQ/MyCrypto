@@ -35,7 +35,7 @@ export interface NetworkContract {
 export interface DPathFormats {
   trezor: DPath;
   ledgerNanoS: DPath;
-  mnemonicPhrase: DPath[];
+  mnemonicPhrase: DPath;
 }
 
 export interface NetworkConfig {
@@ -106,7 +106,7 @@ const ETH: NetworkConfig = {
   dPathFormats: {
     [SecureWalletName.TREZOR]: ETH_TREZOR,
     [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
-    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_DEFAULT, ETH_LEDGER, ETH_TREZOR]
+    [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
   }
 };
 
@@ -122,7 +122,7 @@ const Ropsten: NetworkConfig = {
   dPathFormats: {
     [SecureWalletName.TREZOR]: ETH_TESTNET,
     [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
-    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_TESTNET]
+    [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
   }
 };
 
@@ -138,7 +138,7 @@ const Kovan: NetworkConfig = {
   dPathFormats: {
     [SecureWalletName.TREZOR]: ETH_TESTNET,
     [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
-    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_TESTNET]
+    [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
   }
 };
 
@@ -154,7 +154,7 @@ const Rinkeby: NetworkConfig = {
   dPathFormats: {
     [SecureWalletName.TREZOR]: ETH_TESTNET,
     [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
-    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_TESTNET]
+    [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
   }
 };
 
@@ -169,7 +169,7 @@ const ETC: NetworkConfig = {
   dPathFormats: {
     [SecureWalletName.TREZOR]: ETC_TREZOR,
     [SecureWalletName.LEDGER_NANO_S]: ETC_LEDGER,
-    [InsecureWalletName.MNEMONIC_PHRASE]: [ETC_TREZOR, ETC_LEDGER]
+    [InsecureWalletName.MNEMONIC_PHRASE]: ETC_TREZOR
   }
 };
 
@@ -184,7 +184,7 @@ const UBQ: NetworkConfig = {
   dPathFormats: {
     [SecureWalletName.TREZOR]: UBIQ_DEFAULT,
     [SecureWalletName.LEDGER_NANO_S]: UBIQ_DEFAULT,
-    [InsecureWalletName.MNEMONIC_PHRASE]: [UBIQ_DEFAULT]
+    [InsecureWalletName.MNEMONIC_PHRASE]: UBIQ_DEFAULT
   }
 };
 
@@ -199,7 +199,7 @@ const EXP: NetworkConfig = {
   dPathFormats: {
     [SecureWalletName.TREZOR]: EXP_DEFAULT,
     [SecureWalletName.LEDGER_NANO_S]: EXP_DEFAULT,
-    [InsecureWalletName.MNEMONIC_PHRASE]: [EXP_DEFAULT]
+    [InsecureWalletName.MNEMONIC_PHRASE]: EXP_DEFAULT
   }
 };
 

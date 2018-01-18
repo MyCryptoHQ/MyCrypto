@@ -21,7 +21,7 @@ interface StateProps {
 interface State {
   publicKey: string;
   chainCode: string;
-  dPath: string | null;
+  dPath: string;
   error: string | null;
   isLoading: boolean;
   showTip: boolean;
@@ -33,7 +33,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath,
+    dPath: this.props.dPath || '',
     error: null,
     isLoading: false,
     showTip: false
@@ -181,7 +181,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath
+      dPath: this.props.dPath || ''
     });
   }
 }
