@@ -9,7 +9,7 @@ import {
   ETC_TREZOR,
   ETH_TESTNET,
   EXP_DEFAULT,
-  UBIQ_DEFAULT,
+  UBQ_DEFAULT,
   DPath
 } from 'config/dpaths';
 
@@ -40,7 +40,7 @@ export interface DPathFormats {
 
 export interface NetworkConfig {
   // TODO really try not to allow strings due to custom networks
-  name: NetworkKeys;
+  name: NetworkKeys | string;
   unit: string;
   color?: string;
   blockExplorer?: BlockExplorerConfig;
@@ -51,7 +51,7 @@ export interface NetworkConfig {
   chainId: number;
   tokens: Token[];
   contracts: NetworkContract[] | null;
-  dPathFormats: DPathFormats | null;
+  dPathFormats: DPathFormats;
   isTestnet?: boolean;
 }
 
@@ -63,7 +63,7 @@ export interface CustomNetworkConfig {
 }
 
 export interface NodeConfig {
-  network: NetworkKeys;
+  network: NetworkKeys | string;
   lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
@@ -182,9 +182,9 @@ const UBQ: NetworkConfig = {
   tokens: require('./tokens/ubq.json'),
   contracts: require('./contracts/ubq.json'),
   dPathFormats: {
-    [SecureWalletName.TREZOR]: UBIQ_DEFAULT,
-    [SecureWalletName.LEDGER_NANO_S]: UBIQ_DEFAULT,
-    [InsecureWalletName.MNEMONIC_PHRASE]: UBIQ_DEFAULT
+    [SecureWalletName.TREZOR]: UBQ_DEFAULT,
+    [SecureWalletName.LEDGER_NANO_S]: UBQ_DEFAULT,
+    [InsecureWalletName.MNEMONIC_PHRASE]: UBQ_DEFAULT
   }
 };
 

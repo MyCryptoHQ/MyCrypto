@@ -9,12 +9,14 @@ export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): 
   // as we know config coming in is CustomNetworkConfig
   // meaning name will be a string
   // then we cast it as any to keep it as a network key
+  // interface Override extends NetworkConfig {
+  //   name: any;
+  // }
 
-  interface Override extends NetworkConfig {
-    name: any;
-  }
+  // TODO - allow for user-inputted dpaths so we don't need to use any below and can use supplied dPaths
+  // In the meantime, networks with an unknown chainId will have HD wallets disabled
 
-  const customConfig: Override = {
+  const customConfig: any = {
     ...config,
     color: '#000',
     tokens: [],

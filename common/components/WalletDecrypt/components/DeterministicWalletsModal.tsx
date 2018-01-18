@@ -17,6 +17,7 @@ import { getTokens, MergedToken } from 'selectors/wallet';
 import { UnitDisplay } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 import { DPath } from 'config/dpaths';
+import Select from 'react-select';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -25,7 +26,7 @@ interface Props {
   isOpen?: boolean;
   walletType?: string;
   dPath: string;
-  dPaths: { label: string; value: string }[];
+  dPaths: DPath[];
   publicKey?: string;
   chainCode?: string;
   seed?: string;
@@ -123,21 +124,15 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
         <div className="DWModal">
           <form className="DWModal-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
             <span className="DWModal-path-label">Addresses for</span>
-            <select
-              className="form-control"
-              onChange={this.handleChangePath}
+            <Select
+              name="fieldDPath"
+              className=""
               value={this.state.currentLabel || this.findDPath('value', dPath).value}
-            >
-              {dPaths.map(dp => (
-                <option key={`${dp.value}${dp.label}`} value={dp.label}>
-                  {dp.label}
-                </option>
-              ))}
-              <option key={'custom'} value="custom">
-                Custom path...
-              </option>
-            </select>
-            {isCustomPath && (
+              onChange={this.handleChangePath}
+              options={dPaths}
+            />
+            {/* TODO/Hack - Custom Paths are temporarily disabled. `false` is used for smallest diff */}
+            {false && (
               <input
                 className={`form-control ${validPathClass}`}
                 value={customPath}
@@ -210,18 +205,18 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
     }
   }
 
-  private findDPath = (prop: keyof DPath, cmp: string) =>
-    this.props.dPaths.find(d => d[prop] === cmp) || customDPath;
+  private findDPath = (prop: keyof DPath, cmp: string) => {
+    return this.props.dPaths.find(d => d[prop] === cmp) || customDPath;
+  };
 
-  private handleChangePath = (ev: React.FormEvent<HTMLSelectElement>) => {
-    const { value: dPathLabel } = ev.currentTarget;
-    const { value } = this.findDPath('label', dPathLabel);
+  private handleChangePath = (newPath: DPath) => {
+    const { value: dPathLabel } = newPath;
+    const { value } = this.findDPath('value', dPathLabel);
 
     if (value === 'custom') {
       this.setState({ isCustomPath: true, currentLabel: dPathLabel });
     } else {
       this.setState({ isCustomPath: false, currentLabel: dPathLabel });
-
       this.props.onPathChange(value);
     }
   };

@@ -38,7 +38,7 @@ export const EXP_DEFAULT: DPath = {
   value: "m/44'/40'/0'/0"
 };
 
-export const UBIQ_DEFAULT: DPath = {
-  label: 'Default (UBIQ)',
+export const UBQ_DEFAULT: DPath = {
+  label: 'Default (UBQ)',
   value: "m/44'/108'/0'/0"
 };

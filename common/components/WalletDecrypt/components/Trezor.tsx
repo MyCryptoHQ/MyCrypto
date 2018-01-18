@@ -5,10 +5,11 @@ import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
 import { Spinner } from 'components/ui';
-import { getSingleDPathValue, getNetworkConfig, getPaths } from 'selectors/config';
+import { getSingleDPath, getNetworkConfig, getPaths } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName } from 'config';
+import { DPath } from 'config/dpaths';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -16,7 +17,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  dPath: string | null;
+  dPath: DPath;
 }
 
 // todo: nearly duplicates ledger component props
@@ -34,7 +35,7 @@ class TrezorDecryptClass extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath || '',
+    dPath: this.props.dPath.value,
     error: null,
     isLoading: false
   };
@@ -144,7 +145,7 @@ class TrezorDecryptClass extends Component<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath || ''
+      dPath: this.props.dPath.value
     });
   }
 }
@@ -152,7 +153,7 @@ class TrezorDecryptClass extends Component<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   const network = getNetworkConfig(state);
   return {
-    dPath: getSingleDPathValue(SecureWalletName.TREZOR, network)
+    dPath: getSingleDPath(SecureWalletName.TREZOR, network)
   };
 }
 

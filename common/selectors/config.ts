@@ -37,9 +37,9 @@ export function getPaths(pathType: PathType): DPath[] {
   return sortedUniq(paths);
 }
 
-export function getSingleDPathValue(format: DPathFormat, network: NetworkConfig): string | null {
+export function getSingleDPath(format: DPathFormat, network: NetworkConfig): DPath {
   const dPathFormats = network.dPathFormats;
-  return dPathFormats ? dPathFormats[format].value : null;
+  return dPathFormats[format];
 }
 
 export function isSupportedWalletFormat(format: WalletName, network: NetworkConfig): boolean {
