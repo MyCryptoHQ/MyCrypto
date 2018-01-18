@@ -21,7 +21,6 @@ import {
   getCustomNetworkConfigs
 } from 'selectors/config';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
-import { getWalletInst } from 'selectors/wallet';
 import { Web3Wallet } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { showNotification } from 'actions/notifications';

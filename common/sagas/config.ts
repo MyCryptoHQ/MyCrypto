@@ -40,8 +40,6 @@ import { translateRaw } from 'translations';
 import { Web3Wallet } from 'libs/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
-import { resetWallet } from 'actions/wallet';
-import { reset as resetTransaction } from 'actions/transaction';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -172,15 +170,12 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
 
   // TODO - renable once DeterministicWallet state is fixed to flush properly.
   // TODO DeterministicWallet keeps path related state we need to flush before we can stop reloading
-
   // const currentWallet: IWallet | null = yield select(getWalletInst);
   // if there's no wallet, do not reload as there's no component state to resync
   // if (currentWallet && currentConfig.network !== actionConfig.network) {
 
   if (currentConfig.network !== actionConfig.network) {
     yield call(reload);
-    // yield put(resetWallet());
-    // yield put(resetTransaction());
   }
 }
 
