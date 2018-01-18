@@ -29,7 +29,7 @@ class TransactionFeeClass extends React.Component<Props> {
 
           return (
             <React.Fragment>
-              <UnitDisplay unit={'ether'} value={fee} symbol={'ETH'} checkOffline={false} />{' '}
+              <UnitDisplay unit={'ether'} value={fee} symbol={network.unit} checkOffline={false} />{' '}
               {!isOffline && (
                 <span>
                   ($
