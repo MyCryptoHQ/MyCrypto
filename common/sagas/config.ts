@@ -179,8 +179,8 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
 
   if (currentConfig.network !== actionConfig.network) {
     yield call(reload);
-    yield put(resetWallet());
-    yield put(resetTransaction());
+    // yield put(resetWallet());
+    // yield put(resetTransaction());
   }
 }
 
