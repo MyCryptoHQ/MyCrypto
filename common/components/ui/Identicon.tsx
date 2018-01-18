@@ -1,4 +1,4 @@
-// import { toDataUrl } from 'ethereum-blockies';
+import { toDataUrl } from 'ethereum-blockies';
 import { isValidETHAddress } from 'libs/validators';
 import React from 'react';
 
@@ -10,7 +10,6 @@ interface Props {
 export default function Identicon(props: Props) {
   const size = props.size || '4rem';
   // FIXME breaks on failed checksums
-  const toDataUrl = (any2: any) => any;
   const identiconDataUrl = isValidETHAddress(props.address) ? toDataUrl(props.address) : '';
   return (
     <div style={{ position: 'relative', width: size, height: size }} title="Address Identicon">
