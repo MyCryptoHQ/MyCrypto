@@ -5,6 +5,7 @@ import WalletTypes from './components/WalletTypes';
 import CryptoWarning from './components/CryptoWarning';
 import TabSection from 'containers/TabSection';
 import { RouteComponentProps } from 'react-router-dom';
+import { Route, Switch } from 'react-router';
 
 export enum WalletType {
   Keystore = 'keystore',
@@ -13,25 +14,23 @@ export enum WalletType {
 
 export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
   public render() {
-    const walletType = this.props.location.pathname.split('/')[2];
-    let content;
-
-    if (window.crypto) {
-      if (walletType === WalletType.Mnemonic) {
-        content = <Mnemonic />;
-      } else if (walletType === WalletType.Keystore) {
-        content = <Keystore />;
-      } else {
-        content = <WalletTypes />;
-      }
-    } else {
-      content = <CryptoWarning />;
-    }
-
+    const currentPath = this.props.match.url;
     return (
-      <TabSection>
-        <section className="Tab-content">{content}</section>
-      </TabSection>
+      <React.Fragment>
+        <TabSection>
+          <section className="Tab-content">
+            {window.crypto ? (
+              <Switch>
+                <Route exact={true} path={currentPath} component={WalletTypes} />
+                <Route path={`${currentPath}/keystore`} component={Keystore} />
+                <Route path={`${currentPath}/Mnemonic`} component={Mnemonic} />
+              </Switch>
+            ) : (
+              <Route component={CryptoWarning} />
+            )}
+          </section>
+        </TabSection>
+      </React.Fragment>
     );
   }
 }

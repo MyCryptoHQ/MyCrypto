@@ -50,16 +50,10 @@ export default class Root extends Component<Props, State> {
     const routes = (
       <Switch>
         <Route exact={true} path="/" component={GenerateWallet} />
-        <Route path="/generate" component={GenerateWallet}>
-          <Route path="keystore" component={GenerateWallet} />
-          <Route path="mnemonic" component={GenerateWallet} />
-        </Route>
+        <Route path="/generate" component={GenerateWallet} />
         <Route path="/help" component={Help} />
         <Route path="/swap" component={Swap} />
-        <Route path="/account" component={SendTransaction}>
-          <Route path="send" component={SendTransaction} />
-          <Route path="info" component={SendTransaction} />
-        </Route>
+        <Route path="/account" component={SendTransaction} />
         <Route path="/send-transaction" component={SendTransaction} />
         <Route path="/contracts" component={Contracts} />
         <Route path="/ens" component={ENS} />
