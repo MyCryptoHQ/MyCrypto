@@ -37,8 +37,7 @@ import {
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
-import { IWallet, Web3Wallet } from 'libs/wallet';
-import { getWalletInst } from 'selectors/wallet';
+import { Web3Wallet } from 'libs/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
 import { resetWallet } from 'actions/wallet';
