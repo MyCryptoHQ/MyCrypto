@@ -97,7 +97,7 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
       onCancel,
       walletType
     } = this.props;
-    const { selectedAddress, isCustomPath, customPath, page } = this.state;
+    const { selectedAddress, customPath, page } = this.state;
     const validPathClass = isValidPath(customPath) ? 'is-valid' : 'is-invalid';
 
     const buttons: IButton[] = [

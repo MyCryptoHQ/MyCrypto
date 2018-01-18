@@ -87,7 +87,7 @@ class TrezorDecryptClass extends Component<Props, State> {
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
           chainCode={chainCode}
-          dPath={dPath!}
+          dPath={dPath}
           dPaths={getPaths(SecureWalletName.TREZOR)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
@@ -103,7 +103,7 @@ class TrezorDecryptClass extends Component<Props, State> {
     this.handleConnect(dPath);
   };
 
-  private handleConnect = (dPath: string = this.state.dPath!): void => {
+  private handleConnect = (dPath: string = this.state.dPath): void => {
     this.setState({
       isLoading: true,
       error: null
@@ -135,7 +135,7 @@ class TrezorDecryptClass extends Component<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new TrezorWallet(address, this.state.dPath!, index));
+    this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
     this.reset();
   };
 

@@ -121,7 +121,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}
           chainCode={chainCode}
-          dPath={dPath!}
+          dPath={dPath}
           dPaths={getPaths(SecureWalletName.LEDGER_NANO_S)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
@@ -136,7 +136,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
     this.handleConnect(dPath);
   };
 
-  private handleConnect = (dPath: string = this.state.dPath!) => {
+  private handleConnect = (dPath: string = this.state.dPath) => {
     this.setState({
       isLoading: true,
       error: null,
@@ -170,7 +170,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new LedgerWallet(address, this.state.dPath!, index));
+    this.props.onUnlock(new LedgerWallet(address, this.state.dPath, index));
     this.reset();
   };
 

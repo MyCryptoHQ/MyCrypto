@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
-import { getPaths } from 'selectors/config';
 import { InsecureWalletName } from 'config';
 import { AppState } from 'reducers';
-import { getNetworkConfig, getSingleDPath } from 'selectors/config';
+import { getNetworkConfig, getSingleDPath, getPaths } from 'selectors/config';
 import { connect } from 'react-redux';
 import { DPath } from 'config/dpaths';
 
