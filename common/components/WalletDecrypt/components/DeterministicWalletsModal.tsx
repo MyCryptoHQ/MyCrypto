@@ -122,14 +122,17 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
         handleClose={onCancel}
       >
         <div className="DWModal">
+          {/* TODO: replace styles for flexbox with flexbox classes in https://github.com/MyEtherWallet/MyEtherWallet/pull/850/files#diff-2150778b9391533fec7b8afd060c7672 */}
           <form className="DWModal-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
-            <span className="DWModal-path-label">Addresses for</span>
+            <span className="DWModal-path-label">Addresses </span>
             <Select
               name="fieldDPath"
               className=""
               value={this.state.currentLabel || this.findDPath('value', dPath).value}
               onChange={this.handleChangePath}
               options={dPaths}
+              clearable={false}
+              searchable={false}
             />
             {/* TODO/Hack - Custom Paths are temporarily disabled. `false` is used for smallest diff */}
             {false && (
@@ -168,22 +171,21 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
               </thead>
               <tbody>{wallets.map(wallet => this.renderWalletRow(wallet))}</tbody>
             </table>
-
-            <div className="DWModal-addresses-nav">
-              <button
-                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
-                disabled={page === 0}
-                onClick={this.prevPage}
-              >
-                ← Back
-              </button>
-              <button
-                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
-                onClick={this.nextPage}
-              >
-                More →
-              </button>
-            </div>
+          </div>
+          <div className="DWModal-addresses-nav">
+            <button
+              className="DWModal-addresses-nav-btn btn btn-sm btn-default"
+              disabled={page === 0}
+              onClick={this.prevPage}
+            >
+              ← Back
+            </button>
+            <button
+              className="DWModal-addresses-nav-btn btn btn-sm btn-default"
+              onClick={this.nextPage}
+            >
+              More →
+            </button>
           </div>
         </div>
       </Modal>
