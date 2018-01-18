@@ -1,4 +1,4 @@
-import { ethPlorer, ETHTokenExplorer } from './data';
+import { ethPlorer, ETHTokenExplorer, SecureWalletName, InsecureWalletName } from './data';
 import { EtherscanNode, InfuraNode, RPCNode, Web3Node } from 'libs/nodes';
 import { networkIdToName } from 'libs/values';
 import {
@@ -104,9 +104,9 @@ const ETH: NetworkConfig = {
   tokens: require('./tokens/eth.json'),
   contracts: require('./contracts/eth.json'),
   dPathFormats: {
-    trezor: ETH_TREZOR,
-    ledgerNanoS: ETH_LEDGER,
-    mnemonicPhrase: [ETH_DEFAULT, ETH_LEDGER, ETH_TREZOR]
+    [SecureWalletName.TREZOR]: ETH_TREZOR,
+    [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_DEFAULT, ETH_LEDGER, ETH_TREZOR]
   }
 };
 
@@ -120,9 +120,9 @@ const Ropsten: NetworkConfig = {
   contracts: require('./contracts/ropsten.json'),
   isTestnet: true,
   dPathFormats: {
-    trezor: ETH_TESTNET,
-    ledgerNanoS: ETH_TESTNET,
-    mnemonicPhrase: [ETH_TESTNET]
+    [SecureWalletName.TREZOR]: ETH_TESTNET,
+    [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_TESTNET]
   }
 };
 
@@ -136,9 +136,9 @@ const Kovan: NetworkConfig = {
   contracts: require('./contracts/ropsten.json'),
   isTestnet: true,
   dPathFormats: {
-    trezor: ETH_TESTNET,
-    ledgerNanoS: ETH_TESTNET,
-    mnemonicPhrase: [ETH_TESTNET]
+    [SecureWalletName.TREZOR]: ETH_TESTNET,
+    [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_TESTNET]
   }
 };
 
@@ -152,9 +152,9 @@ const Rinkeby: NetworkConfig = {
   contracts: require('./contracts/rinkeby.json'),
   isTestnet: true,
   dPathFormats: {
-    trezor: ETH_TESTNET,
-    ledgerNanoS: ETH_TESTNET,
-    mnemonicPhrase: [ETH_TESTNET]
+    [SecureWalletName.TREZOR]: ETH_TESTNET,
+    [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+    [InsecureWalletName.MNEMONIC_PHRASE]: [ETH_TESTNET]
   }
 };
 
@@ -167,9 +167,9 @@ const ETC: NetworkConfig = {
   tokens: require('./tokens/etc.json'),
   contracts: require('./contracts/etc.json'),
   dPathFormats: {
-    trezor: ETC_TREZOR,
-    ledgerNanoS: ETC_LEDGER,
-    mnemonicPhrase: [ETC_TREZOR, ETC_LEDGER]
+    [SecureWalletName.TREZOR]: ETC_TREZOR,
+    [SecureWalletName.LEDGER_NANO_S]: ETC_LEDGER,
+    [InsecureWalletName.MNEMONIC_PHRASE]: [ETC_TREZOR, ETC_LEDGER]
   }
 };
 
@@ -182,9 +182,9 @@ const UBQ: NetworkConfig = {
   tokens: require('./tokens/ubq.json'),
   contracts: require('./contracts/ubq.json'),
   dPathFormats: {
-    trezor: UBIQ_DEFAULT,
-    mnemonicPhrase: [UBIQ_DEFAULT],
-    ledgerNanoS: UBIQ_DEFAULT
+    [SecureWalletName.TREZOR]: UBIQ_DEFAULT,
+    [SecureWalletName.LEDGER_NANO_S]: UBIQ_DEFAULT,
+    [InsecureWalletName.MNEMONIC_PHRASE]: [UBIQ_DEFAULT]
   }
 };
 
@@ -197,9 +197,9 @@ const EXP: NetworkConfig = {
   tokens: require('./tokens/exp.json'),
   contracts: require('./contracts/exp.json'),
   dPathFormats: {
-    trezor: EXP_DEFAULT,
-    mnemonicPhrase: [EXP_DEFAULT],
-    ledgerNanoS: EXP_DEFAULT
+    [SecureWalletName.TREZOR]: EXP_DEFAULT,
+    [SecureWalletName.LEDGER_NANO_S]: EXP_DEFAULT,
+    [InsecureWalletName.MNEMONIC_PHRASE]: [EXP_DEFAULT]
   }
 };
 

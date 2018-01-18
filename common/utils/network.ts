@@ -18,8 +18,7 @@ export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): 
     ...config,
     color: '#000',
     tokens: [],
-    contracts: [],
-    dPathFormats: null
+    contracts: []
   };
 
   return customConfig;
