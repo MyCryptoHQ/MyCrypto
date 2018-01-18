@@ -1,3 +1,6 @@
+/* eslint-ignore */
+/* prettier-ignore */
+
 /**
  * (C) 2017 SatoshiLabs
  *
