@@ -41,7 +41,7 @@ class AdvancedGas extends React.Component<Props> {
           </label>
         </div>
 
-        <div className="col-md-4 col-sm-6 col-xs-12">
+        <div className="col-md-4 col-sm-6 col-xs-12 AdvancedGas-boostZIndex">
           <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
           <input
             className={classnames('form-control', { 'is-invalid': !gasPrice.value })}
@@ -52,7 +52,7 @@ class AdvancedGas extends React.Component<Props> {
           />
         </div>
 
-        <div className="col-md-4 col-sm-6 col-xs-12 AdvancedGas-gasLimit">
+        <div className="col-md-4 col-sm-6 col-xs-12 AdvancedGas-boostZIndex AdvancedGas-gasLimit">
           <label>{translate('OFFLINE_Step2_Label_4')}</label>
           <div className="SimpleGas-flex-spacer" />
           <GasLimitField includeLabel={false} onlyIncludeLoader={false} />
