@@ -1,4 +1,4 @@
-import { TrezorWallet } from 'libs/wallet';
+import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
@@ -109,7 +109,7 @@ class TrezorDecryptClass extends Component<Props, State> {
       error: null
     });
 
-    TrezorConnect.getXPubKey(
+    (TrezorConnect as any).getXPubKey(
       dPath,
       res => {
         if (res.success) {
@@ -126,7 +126,7 @@ class TrezorDecryptClass extends Component<Props, State> {
           });
         }
       },
-      '1.5.2'
+      TREZOR_MINIMUM_FIRMWARE
     );
   };
 
