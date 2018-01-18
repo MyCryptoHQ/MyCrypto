@@ -142,7 +142,7 @@ describe('handleNodeChangeIntent*', () => {
   const customNetworkConfigs = [];
   const defaultNodeNetwork = NETWORKS[defaultNodeConfig.network];
   const newNode = Object.keys(NODES).reduce(
-    (acc, cur) => (NODES[acc].network !== defaultNodeConfig.network ? cur : acc)
+    (acc, cur) => (NODES[cur].network !== defaultNodeConfig.network ? cur : acc)
   );
   const newNodeConfig = NODES[newNode];
   const newNodeNetwork = NETWORKS[newNodeConfig.network];
