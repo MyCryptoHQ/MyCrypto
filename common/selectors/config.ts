@@ -27,13 +27,13 @@ export function getNode(state: AppState): string {
 type PathType = keyof DPathFormats;
 
 export function getPaths(pathType: PathType): DPath[] {
-  const paths: DPath[] = [];
+  let paths: DPath[] = [];
   Object.values(NETWORKS).forEach(networkConfig => {
     const path = networkConfig.dPathFormats ? networkConfig.dPathFormats[pathType] : [];
     if (!Array.isArray(path)) {
       paths.push(path);
     } else {
-      paths.concat(path);
+      paths = paths.concat(path);
     }
   });
   return sortedUniq(paths);
@@ -41,8 +41,8 @@ export function getPaths(pathType: PathType): DPath[] {
 
 type SingleDPathFormat = SecureWalletName.TREZOR | SecureWalletName.LEDGER_NANO_S;
 
-export function getSingleDPathValue(format: SingleDPathFormat, network: NetworkKeys) {
-  const dPathFormats = NETWORKS[network].dPathFormats;
+export function getSingleDPathValue(format: SingleDPathFormat, network: NetworkConfig) {
+  const dPathFormats = network.dPathFormats;
   return dPathFormats ? dPathFormats[format].value : null;
 }
 
@@ -51,13 +51,13 @@ type AnyDPathFormat =
   | SecureWalletName.LEDGER_NANO_S
   | InsecureWalletName.MNEMONIC_PHRASE;
 
-export function getAnyDPath(format: AnyDPathFormat, network: NetworkKeys) {
-  const dPathFormats = NETWORKS[network].dPathFormats;
+export function getAnyDPath(format: AnyDPathFormat, network: NetworkConfig) {
+  const dPathFormats = network.dPathFormats;
 
   return dPathFormats ? dPathFormats[format] : null;
 }
 
-export function isSupportedWalletFormat(format: WalletName, network: NetworkKeys): boolean {
+export function isSupportedWalletFormat(format: WalletName, network: NetworkConfig): boolean {
   const CHECK_FORMATS: AnyDPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
     SecureWalletName.TREZOR,
@@ -68,11 +68,11 @@ export function isSupportedWalletFormat(format: WalletName, network: NetworkKeys
     CHECK_FORMATS.includes(f as AnyDPathFormat);
 
   if (validWalletFormat(format)) {
-    return !!getAnyDPath(format, network);
+    return !!(network.dPathFormats && network.dPathFormats[format]);
   }
 
   if (format === SecureWalletName.WEB3) {
-    if (network !== 'ETH') {
+    if (network.name !== 'ETH') {
       // TODO -- determine if we can select testnets via MetaMask
       return false;
     }

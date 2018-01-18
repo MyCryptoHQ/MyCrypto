@@ -109,7 +109,7 @@ class WalletButtonClass extends React.PureComponent<Props> {
 
 function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
   const { walletType } = ownProps;
-  const network = getNetworkConfig(state).name;
+  const network = getNetworkConfig(state);
   return {
     isFormatDisabled: !isSupportedWalletFormat(walletType, network)
   };

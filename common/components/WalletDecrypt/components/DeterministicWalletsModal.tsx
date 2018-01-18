@@ -129,7 +129,7 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
               value={this.state.currentLabel || this.findDPath('value', dPath).value}
             >
               {dPaths.map(dp => (
-                <option key={dp.value} value={dp.label}>
+                <option key={`${dp.value}${dp.label}`} value={dp.label}>
                   {dp.label}
                 </option>
               ))}

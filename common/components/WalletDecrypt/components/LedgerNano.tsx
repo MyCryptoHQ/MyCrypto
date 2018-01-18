@@ -187,7 +187,7 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  const network = getNetworkConfig(state).name;
+  const network = getNetworkConfig(state);
   return {
     dPath: getSingleDPathValue(SecureWalletName.LEDGER_NANO_S, network)
   };
