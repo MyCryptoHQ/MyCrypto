@@ -173,8 +173,7 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
 
   const currentWallet: IWallet | null = yield select(getWalletInst);
 
-  // if there's no wallet, do not reload as there's no component state to resync
-  if (currentWallet && currentConfig.network !== actionConfig.network) {
+  if (currentConfig.network !== actionConfig.network) {
     // TODO DeterministicWallet keeps path related state we need to flush before we can stop reloading
     yield call(reload);
     yield put(resetWallet());
