@@ -10,6 +10,7 @@ import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
+import Equiv from 'components/BalanceSidebar/Equiv';
 
 interface Props {
   wallet: IWallet;
@@ -53,15 +54,24 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       {
         name: 'Equivalent Values',
         content: (
-          <EquivalentValues
-            network={network}
-            balance={balance}
-            tokenBalances={tokenBalances}
+          <Equiv
+            offline={isOffline}
             rates={rates}
-            ratesError={ratesError}
+            balance={balance}
+            network={network}
+            tokenBalances={tokenBalances}
+            // ratesError={ratesError}
             fetchCCRates={this.props.fetchCCRates}
-            isOffline={isOffline}
           />
+          // <EquivalentValues
+          //   network={network}
+          //   balance={balance}
+          //   tokenBalances={tokenBalances}
+          //   rates={rates}
+          //   ratesError={ratesError}
+          //   fetchCCRates={this.props.fetchCCRates}
+          //   isOffline={isOffline}
+          // />
         )
       }
     ];

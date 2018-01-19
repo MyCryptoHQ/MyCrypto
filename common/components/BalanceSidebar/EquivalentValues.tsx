@@ -193,7 +193,7 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
   } {
     // Recursively call on all currencies
     if (currency === ALL_OPTION) {
-      return ['ETH'].concat(this.requestedCurrencies || []).reduce(
+      return [this.props.network.unit].concat(this.requestedCurrencies || []).reduce(
         (prev, curr) => {
           const currValues = this.getEquivalentValues(curr);
           rateSymbols.forEach(sym => (prev[sym] = prev[sym].add(currValues[sym] || new BN(0))));
