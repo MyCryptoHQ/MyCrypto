@@ -64,9 +64,7 @@ export default class Promos extends React.Component<{}, State> {
   };
 
   private rotate = () => {
-    const previousIndex = this.state.activePromo;
-    const nextIndex = previousIndex + 1;
-    const nextIndexExists = typeof promos[nextIndex] !== 'undefined' ? true : false;
-    nextIndexExists ? this.setState({ activePromo: nextIndex }) : this.setState({ activePromo: 0 });
+    const activePromo = (this.state.activePromo + 1) % promos.length;
+    this.setState({ activePromo });
   };
 }

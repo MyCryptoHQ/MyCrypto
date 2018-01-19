@@ -114,6 +114,6 @@
   transition: opacity 300ms;
   pointer-events: none;
   &.carousel-exit-active {
-    opacity: 0.01;
+    opacity: 0;
   }
 }
