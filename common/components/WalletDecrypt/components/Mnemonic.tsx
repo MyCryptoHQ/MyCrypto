@@ -5,9 +5,10 @@ import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
 import { InsecureWalletName } from 'config';
 import { AppState } from 'reducers';
-import { getNetworkConfig, getSingleDPath, getPaths } from 'selectors/config';
+import { getNetworkConfig } from 'selectors/config';
 import { connect } from 'react-redux';
 import { DPath } from 'config/dpaths';
+import { getPaths, getSingleDPath } from 'utils/network';
 
 interface Props {
   onUnlock(param: any): void;

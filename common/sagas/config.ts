@@ -116,7 +116,7 @@ export function* handlePollOfflineStatus(): SagaIterator {
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.
 export function* reload(): SagaIterator {
-  setTimeout(() => location.reload(), 11150);
+  setTimeout(() => location.reload(), 1150);
 }
 
 export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {

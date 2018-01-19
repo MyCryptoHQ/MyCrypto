@@ -4,9 +4,10 @@ import { translateRaw, TranslateType } from 'translations';
 import { NewTabLink, Tooltip } from 'components/ui';
 import './WalletButton.scss';
 import { connect } from 'react-redux';
-import { isSupportedWalletFormat, getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig } from 'selectors/config';
 import { WalletName } from 'config';
 import { AppState } from 'reducers';
+import { isSupportedWalletFormat } from 'utils/network';
 
 interface OwnProps {
   name: TranslateType;

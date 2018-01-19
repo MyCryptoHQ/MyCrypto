@@ -7,9 +7,10 @@ import ledger from 'ledgerco';
 import { Spinner } from 'components/ui';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { getSingleDPath, getNetworkConfig, getPaths } from 'selectors/config';
+import { getNetworkConfig } from 'selectors/config';
 import { SecureWalletName } from 'config';
 import { DPath } from 'config/dpaths';
+import { getPaths, getSingleDPath } from 'utils/network';
 
 interface OwnProps {
   onUnlock(param: any): void;
