@@ -24,30 +24,29 @@ const Send = () => (
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
-  network: AppState['config']['network'];
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
-
-const tabs = [
-  {
-    path: 'send',
-    name: translate('NAV_SendEther')
-  },
-  {
-    path: 'request',
-    name: translate('Request Payment')
-  },
-  {
-    path: 'info',
-    name: translate('NAV_ViewWallet')
-  }
-];
 
 class SendTransaction extends React.Component<Props> {
   public render() {
     const { wallet, match } = this.props;
     const currentPath = match.url;
+    const tabs = [
+      {
+        path: 'send',
+        name: translate('NAV_SendEther'),
+        disabled: !!wallet && !!wallet.isReadOnly
+      },
+      {
+        path: 'request',
+        name: translate('Request Payment')
+      },
+      {
+        path: 'info',
+        name: translate('NAV_ViewWallet')
+      }
+    ];
 
     return (
       <TabSection>
@@ -63,7 +62,12 @@ class SendTransaction extends React.Component<Props> {
                   <Route
                     exact={true}
                     path={currentPath}
-                    render={() => <Redirect from={`${currentPath}`} to={`${currentPath}/send`} />}
+                    render={() => (
+                      <Redirect
+                        from={`${currentPath}`}
+                        to={`${wallet.isReadOnly ? currentPath + '/info' : currentPath + '/send'}`}
+                      />
+                    )}
                   />
                   <Route path={`${currentPath}/send`} component={Send} />
                   <Route
@@ -86,6 +90,5 @@ class SendTransaction extends React.Component<Props> {
 }
 
 export default connect((state: AppState) => ({
-  wallet: getWalletInst(state),
-  network: getNetworkConfig(state)
+  wallet: getWalletInst(state)
 }))(SendTransaction);
