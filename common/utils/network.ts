@@ -15,6 +15,8 @@ export function makeCustomNetworkId(config: CustomNetworkConfig): string {
 }
 
 export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): NetworkConfig {
+  // TODO - re-enable this block and classify customConfig after user-inputted dPaths are implemented
+  // -------------------------------------------------
   // this still provides the type safety we want
   // as we know config coming in is CustomNetworkConfig
   // meaning name will be a string
@@ -22,10 +24,10 @@ export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): 
   // interface Override extends NetworkConfig {
   //   name: any;
   // }
+  // -------------------------------------------------
 
-  // TODO - allow for user-inputted dpaths so we don't need to use any below and can use supplied dPaths
+  // TODO - allow for user-inputted dPaths so we don't need to use any below and can use supplied dPaths
   // In the meantime, networks with an unknown chainId will have HD wallets disabled
-
   const customConfig: any = {
     ...config,
     color: '#000',
@@ -89,7 +91,8 @@ export function isSupportedWalletFormat(format: WalletName, network: NetworkConf
 
   // Ensure DPath's are found
   if (isHDFormat(format)) {
-    return !!(network.dPathFormats && network.dPathFormats[format]);
+    const dPath = network.dPathFormats && network.dPathFormats[format];
+    return !!dPath;
   }
 
   // Ensure Web3 is only enabled on ETH or ETH Testnets (MetaMask does not support other networks)
