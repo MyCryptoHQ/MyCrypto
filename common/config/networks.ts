@@ -40,7 +40,7 @@ export interface DPathFormats {
 
 export interface NetworkConfig {
   // TODO really try not to allow strings due to custom networks
-  name: NetworkKeys | string;
+  name: NetworkKeys;
   unit: string;
   color?: string;
   blockExplorer?: BlockExplorerConfig;
@@ -63,7 +63,7 @@ export interface CustomNetworkConfig {
 }
 
 export interface NodeConfig {
-  network: NetworkKeys | string;
+  network: NetworkKeys;
   lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
@@ -346,13 +346,19 @@ export async function isWeb3NodeAvailable(): Promise<boolean> {
 
 export const Web3Service = 'MetaMask / Mist';
 
+export interface NodeConfigOverride extends NodeConfig {
+  network: any;
+}
+
 export async function initWeb3Node(): Promise<void> {
   const { networkId, lib } = await setupWeb3Node();
-  NODES.web3 = {
+  const web3: NodeConfigOverride = {
     network: networkIdToName(networkId),
     service: Web3Service,
     lib,
     estimateGas: false,
     hidden: true
   };
+
+  NODES.web3 = web3;
 }
