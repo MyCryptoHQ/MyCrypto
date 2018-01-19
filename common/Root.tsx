@@ -78,7 +78,11 @@ export default class Root extends Component<Props, State> {
           subRoutes={['/account/send', '/account/info', '/account/request']}
         />
         <Route path="/send-transaction" component={SendTransaction} />
-        <Route path="/contracts" component={Contracts} />
+        <RouteWithSubRoutes
+          path="/contracts"
+          BaseComponent={Contracts}
+          subRoutes={['/contracts/interact', '/contracts/deploy']}
+        />
         <Route path="/ens" component={ENS} />
         <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
         <Route path="/pushTx" component={BroadcastTx} />

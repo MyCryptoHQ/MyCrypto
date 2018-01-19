@@ -7,63 +7,56 @@ import { resetWallet, TResetWallet } from 'actions/wallet';
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-interface State {
-  activeTab: 'interact' | 'deploy';
-}
+import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 interface Props {
   reset: TReset;
   resetWallet: TResetWallet;
 }
 
-class Contracts extends Component<Props, State> {
-  public state: State = {
-    activeTab: 'interact'
-  };
+const tabs = [
+  {
+    path: 'interact',
+    name: translate('Interact')
+  },
+  {
+    path: 'deploy',
+    name: translate('Deploy')
+  }
+];
 
-  public changeTab = (activeTab: State['activeTab']) => () => {
-    this.props.reset();
-    this.props.resetWallet();
-    this.setState({ activeTab });
-  };
-
+class Contracts extends Component<Props & RouteComponentProps<{}>> {
   public render() {
-    const { activeTab } = this.state;
-    let content;
-    let interactActive = '';
-    let deployActive = '';
-
-    if (activeTab === 'interact') {
-      content = <Interact />;
-      interactActive = 'is-active';
-    } else {
-      content = <Deploy />;
-      deployActive = 'is-active';
-    }
+    const currentPath = this.props.match.url;
 
     return (
       <TabSection isUnavailableOffline={true}>
+        <div className="SubTabs-tabs col-sm-8">
+          {tabs.map((t, i) => (
+            // Same as normal Link, but knows when it's active, and applies activeClassName
+            <NavLink
+              className="SubTabs-tabs-link"
+              activeClassName="is-active"
+              to={currentPath + '/' + t.path}
+              key={i}
+            >
+              {t.name}
+            </NavLink>
+          ))}
+        </div>
         <section className="Tab-content Contracts">
-          <div className="Tab-content-pane">
-            <h1 className="Contracts-header">
-              <button
-                className={`Contracts-header-tab ${interactActive}`}
-                onClick={this.changeTab('interact')}
-              >
-                {translate('NAV_InteractContract')}
-              </button>{' '}
-              <span>or</span>{' '}
-              <button
-                className={`Contracts-header-tab ${deployActive}`}
-                onClick={this.changeTab('deploy')}
-              >
-                {translate('NAV_DeployContract')}
-              </button>
-            </h1>
+          <div className="Contracts-content">
+            <Switch>
+              <Route
+                exact={true}
+                path={currentPath}
+                render={() => <Redirect from={`${currentPath}`} to={`${currentPath}/interact`} />}
+              />
+              <Route path={`${currentPath}/interact`} component={Interact} />
+              <Route path={`${currentPath}/deploy`} component={Deploy} />
+            </Switch>
           </div>
-
-          <div className="Contracts-content">{content}</div>
         </section>
       </TabSection>
     );
