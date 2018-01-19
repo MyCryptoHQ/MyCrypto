@@ -1,15 +1,34 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .Promos {
+  overflow: hidden;
+
+  &-promo-wrapper {
+    height: 6rem;
+    overflow: hidden;
+  }
+
+  &-Bity {
+    background-color: #006e79;
+  }
+
+  &-Coinbase {
+    background-color: #2b71b1;
+  }
+
+  &-HardwareWallets {
+    background-color: #6e9a3e;
+  }
+
   &-promo {
     position: relative;
-    height: 6rem;
+    height: inherit;
     display: block;
     color: #fff;
     text-decoration: none;
     text-align: center;
-    transition-duration: 200ms;
+    transition: opacity 200ms;
     @include clearfix;
 
     &:hover,
@@ -41,7 +60,7 @@
       h4,
       h5,
       h6 {
-        margin: .15rem 0;
+        margin: 0.15rem 0;
       }
 
       p {
@@ -86,5 +105,15 @@
         opacity: 1;
       }
     }
+  }
+}
+
+.carousel-exit {
+  opacity: 1;
+  transform: translate(0%, -100%);
+  transition: opacity 300ms;
+  pointer-events: none;
+  &.carousel-exit-active {
+    opacity: 0;
   }
 }
