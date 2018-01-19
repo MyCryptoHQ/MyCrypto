@@ -42,3 +42,11 @@ export const UBQ_DEFAULT: DPath = {
   label: 'Default (UBQ)',
   value: "m/44'/108'/0'/0"
 };
+
+export const ETH_SINGULAR: DPath = {
+  label: 'SingularDTV',
+  value: "m/0'/0'/0'"
+};
+
+// PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
+export const EXTRA_PATHS = [ETH_SINGULAR];

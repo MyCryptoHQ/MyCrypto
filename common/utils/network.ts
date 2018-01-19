@@ -11,6 +11,7 @@ import {
 import { DPath } from 'config/dpaths';
 import sortedUniq from 'lodash/sortedUniq';
 import difference from 'lodash/difference';
+import { EXTRA_PATHS } from 'config/dpaths';
 
 export function makeCustomNetworkId(config: CustomNetworkConfig): string {
   return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
@@ -62,13 +63,14 @@ type DPathFormat =
   | InsecureWalletName.MNEMONIC_PHRASE;
 
 export function getPaths(pathType: PathType): DPath[] {
-  const paths: DPath[] = [];
+  const networkPaths: DPath[] = [];
   Object.values(NETWORKS).forEach(networkConfig => {
     const path = networkConfig.dPathFormats ? networkConfig.dPathFormats[pathType] : [];
     if (path) {
-      paths.push(path as DPath);
+      networkPaths.push(path as DPath);
     }
   });
+  const paths = networkPaths.concat(EXTRA_PATHS);
   return sortedUniq(paths);
 }
 
