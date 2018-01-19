@@ -50,7 +50,7 @@ import {
 import { unSupportedOnNetwork } from 'utils/network';
 import { getNetworkConfig } from '../../selectors/config';
 
-interface Props {
+interface OwnProps {
   resetTransactionState: TReset;
   unlockKeystore: TUnlockKeystore;
   unlockMnemonic: TUnlockMnemonic;
@@ -59,14 +59,19 @@ interface Props {
   unlockWeb3: TUnlockWeb3;
   resetWallet: TResetWallet;
   showNotification: TShowNotification;
-  wallet: IWallet;
   hidden?: boolean;
-  offline: boolean;
   disabledWallets?: WalletName[];
+}
+
+interface StateProps {
   computedDisabledWallets: WalletName[];
+  offline: boolean;
+  wallet: IWallet;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
+
+type Props = OwnProps & StateProps;
 
 type UnlockParams = {} | PrivateKeyValue;
 interface State {
