@@ -13,7 +13,7 @@ import {
   Fields,
   UnavailableWallets
 } from 'containers/Tabs/SendTransaction/components';
-import SubTabs from 'components/Subtabs';
+import SubTabs from 'components/SubTabs';
 
 const Send = () => (
   <React.Fragment>
