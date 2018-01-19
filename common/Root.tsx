@@ -46,14 +46,37 @@ export default class Root extends Component<Props, State> {
       return <ErrorScreen error={error} />;
     }
 
-    // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
+    const RouteWithSubRoutes = ({ path, subRoutes, BaseComponent }) => (
+      <Route
+        path={path}
+        render={props => {
+          const validRoutes = [path, ...subRoutes].filter(
+            route => subRoutes.includes(route) || route === path
+          );
+          return validRoutes.includes(props.location.pathname) ? (
+            <BaseComponent {...props} />
+          ) : (
+            <PageNotFound {...props} />
+          );
+        }}
+      />
+    );
+
     const routes = (
       <Switch>
         <Route exact={true} path="/" component={GenerateWallet} />
-        <Route path="/generate" component={GenerateWallet} />
+        <RouteWithSubRoutes
+          path="/generate"
+          BaseComponent={GenerateWallet}
+          subRoutes={['/generate/keystore', '/generate/mnemonic']}
+        />
         <Route path="/help" component={Help} />
         <Route path="/swap" component={Swap} />
-        <Route path="/account" component={SendTransaction} />
+        <RouteWithSubRoutes
+          path="/account"
+          BaseComponent={SendTransaction}
+          subRoutes={['/account/send', '/account/info', '/account/request']}
+        />
         <Route path="/send-transaction" component={SendTransaction} />
         <Route path="/contracts" component={Contracts} />
         <Route path="/ens" component={ENS} />

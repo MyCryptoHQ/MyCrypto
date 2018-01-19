@@ -23,10 +23,10 @@ export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
               <Switch>
                 <Route exact={true} path={currentPath} component={WalletTypes} />
                 <Route path={`${currentPath}/keystore`} component={Keystore} />
-                <Route path={`${currentPath}/Mnemonic`} component={Mnemonic} />
+                <Route path={`${currentPath}/mnemonic`} component={Mnemonic} />
               </Switch>
             ) : (
-              <Route component={CryptoWarning} />
+              <CryptoWarning />
             )}
           </section>
         </TabSection>
