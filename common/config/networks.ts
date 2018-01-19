@@ -203,8 +203,6 @@ const EXP: NetworkConfig = {
   }
 };
 
-export type NetworkKeys = keyof typeof NETWORKS;
-
 export const NETWORKS = {
   ETH,
   Ropsten,
@@ -214,6 +212,8 @@ export const NETWORKS = {
   UBQ,
   EXP
 };
+
+export type NetworkKeys = keyof typeof NETWORKS;
 
 enum NodeName {
   ETH_MEW = 'eth_mew',
@@ -344,11 +344,13 @@ export async function isWeb3NodeAvailable(): Promise<boolean> {
   }
 }
 
+export const Web3Service = 'MetaMask / Mist';
+
 export async function initWeb3Node(): Promise<void> {
   const { networkId, lib } = await setupWeb3Node();
   NODES.web3 = {
     network: networkIdToName(networkId),
-    service: 'MetaMask / Mist',
+    service: Web3Service,
     lib,
     estimateGas: false,
     hidden: true

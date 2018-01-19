@@ -10,7 +10,14 @@ import {
   select,
   race
 } from 'redux-saga/effects';
-import { NODES, NETWORKS, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config';
+import {
+  NODES,
+  NETWORKS,
+  NodeConfig,
+  CustomNodeConfig,
+  CustomNetworkConfig,
+  Web3Service
+} from 'config';
 import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,
@@ -109,7 +116,7 @@ export function* handlePollOfflineStatus(): SagaIterator {
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.
 export function* reload(): SagaIterator {
-  setTimeout(() => location.reload(), 1150);
+  setTimeout(() => location.reload(), 11150);
 }
 
 export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {
@@ -168,13 +175,17 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   yield put(setLatestBlock(latestBlock));
   yield put(changeNode(action.payload, actionConfig, actionNetwork));
 
-  // TODO - renable once DeterministicWallet state is fixed to flush properly.
-  // TODO DeterministicWallet keeps path related state we need to flush before we can stop reloading
+  // TODO - re-enable once DeterministicWallet state is fixed to flush properly.
+  // DeterministicWallet keeps path related state we need to flush before we can stop reloading
+
   // const currentWallet: IWallet | null = yield select(getWalletInst);
   // if there's no wallet, do not reload as there's no component state to resync
   // if (currentWallet && currentConfig.network !== actionConfig.network) {
 
-  if (currentConfig.network !== actionConfig.network) {
+  const isNewNetwork = currentConfig.network !== actionConfig.network;
+  const newIsWeb3 = actionConfig.service === Web3Service;
+  // don't reload when web3 is selected; node will automatically re-set and state is not an issue here
+  if (isNewNetwork && !newIsWeb3) {
     yield call(reload);
   }
 }

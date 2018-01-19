@@ -42,6 +42,11 @@ export function getSingleDPath(format: DPathFormat, network: NetworkConfig): DPa
   return dPathFormats[format];
 }
 
+export function isNetworkUnit(network: NetworkConfig, unit: string) {
+  const validNetworks = Object.values(NETWORKS).filter((n: NetworkConfig) => n.unit === unit);
+  return validNetworks.includes(network);
+}
+
 export function isSupportedWalletFormat(format: WalletName, network: NetworkConfig): boolean {
   const CHECK_FORMATS: DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
@@ -56,12 +61,9 @@ export function isSupportedWalletFormat(format: WalletName, network: NetworkConf
     return !!(network.dPathFormats && network.dPathFormats[format]);
   }
 
-  // Ensure Web3 is only enabled on ETH
-  // TODO -- determine if we can select testnets via MetaMask
+  // Ensure Web3 is only enabled on ETH or ETH Testnets (MetaMask does not support other networks)
   if (format === SecureWalletName.WEB3) {
-    if (network.name !== 'ETH') {
-      return false;
-    }
+    return isNetworkUnit(network, 'ETH');
   }
 
   // All other wallet formats are supported
