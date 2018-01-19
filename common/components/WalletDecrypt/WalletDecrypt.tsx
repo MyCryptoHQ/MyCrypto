@@ -51,16 +51,19 @@ import { unSupportedOnNetwork } from 'utils/network';
 import { getNetworkConfig } from '../../selectors/config';
 
 interface OwnProps {
-  resetTransactionState: TReset;
+  hidden?: boolean;
+  disabledWallets?: WalletName[];
+}
+
+interface DispatchProps {
   unlockKeystore: TUnlockKeystore;
   unlockMnemonic: TUnlockMnemonic;
   unlockPrivateKey: TUnlockPrivateKey;
-  setWallet: TSetWallet;
   unlockWeb3: TUnlockWeb3;
+  setWallet: TSetWallet;
   resetWallet: TResetWallet;
+  resetTransactionState: TReset;
   showNotification: TShowNotification;
-  hidden?: boolean;
-  disabledWallets?: WalletName[];
 }
 
 interface StateProps {
@@ -71,7 +74,7 @@ interface StateProps {
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 type UnlockParams = {} | PrivateKeyValue;
 interface State {
@@ -423,7 +426,7 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   };
 }
 
-export default connect(mapStateToProps, {
+export default connect<StateProps, DispatchProps>(mapStateToProps, {
   unlockKeystore,
   unlockMnemonic,
   unlockPrivateKey,
