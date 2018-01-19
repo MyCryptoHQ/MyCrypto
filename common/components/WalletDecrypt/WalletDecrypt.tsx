@@ -30,7 +30,6 @@ import {
   WalletButton
 } from './components';
 import { AppState } from 'reducers';
-import { IWallet } from 'libs/wallet';
 import DISABLES from './disables';
 import { showNotification, TShowNotification } from 'actions/notifications';
 
@@ -69,7 +68,6 @@ interface DispatchProps {
 interface StateProps {
   computedDisabledWallets: WalletName[];
   offline: boolean;
-  wallet: IWallet;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
@@ -420,7 +418,6 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   return {
     computedDisabledWallets,
     offline: state.config.offline,
-    wallet: state.wallet.inst,
     isWalletPending: state.wallet.isWalletPending,
     isPasswordPending: state.wallet.isPasswordPending
   };
