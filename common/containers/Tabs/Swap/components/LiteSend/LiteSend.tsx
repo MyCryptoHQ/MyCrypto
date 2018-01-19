@@ -36,10 +36,7 @@ class LiteSendClass extends Component<Props> {
       renderMe = (
         <div className="row">
           <div className="col-xs-8 col-xs-push-2 text-center">
-            <h5 style={{ color: 'red' }}>
-              WARNING: You are currently not on the Ethereum Mainnet. Please switch nodes in order
-              for the token swap to function as intended.
-            </h5>
+            <h5>Note: Send is only supported on Ethereum Mainnet.</h5>
           </div>
         </div>
       );
