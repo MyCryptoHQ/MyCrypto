@@ -5,10 +5,12 @@ import {
   NetworkConfig,
   NETWORKS,
   SecureWalletName,
-  WalletName
+  WalletName,
+  walletNames
 } from 'config';
 import { DPath } from 'config/dpaths';
 import sortedUniq from 'lodash/sortedUniq';
+import difference from 'lodash/difference';
 
 export function makeCustomNetworkId(config: CustomNetworkConfig): string {
   return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
@@ -80,7 +82,7 @@ export function isNetworkUnit(network: NetworkConfig, unit: string) {
   return validNetworks.includes(network);
 }
 
-export function isSupportedWalletFormat(format: WalletName, network: NetworkConfig): boolean {
+export function isSupportedOnNetwork(format: WalletName, network: NetworkConfig): boolean {
   const CHECK_FORMATS: DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
     SecureWalletName.TREZOR,
@@ -102,4 +104,13 @@ export function isSupportedWalletFormat(format: WalletName, network: NetworkConf
 
   // All other wallet formats are supported
   return true;
+}
+
+export function allSupportedOnNetwork(network: NetworkConfig): WalletName[] {
+  return walletNames.filter(walletName => isSupportedOnNetwork(walletName, network));
+}
+
+export function unSupportedOnNetwork(network: NetworkConfig): WalletName[] {
+  const supportedFormats = allSupportedOnNetwork(network);
+  return difference(walletNames, supportedFormats);
 }

@@ -47,6 +47,8 @@ import {
   isWeb3NodeAvailable,
   knowledgeBaseURL
 } from 'config';
+import { unSupportedOnNetwork } from 'utils/network';
+import { getNetworkConfig } from '../../selectors/config';
 
 interface Props {
   resetTransactionState: TReset;
@@ -61,6 +63,7 @@ interface Props {
   hidden?: boolean;
   offline: boolean;
   disabledWallets?: WalletName[];
+  computedDisabledWallets: WalletName[];
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
@@ -395,16 +398,19 @@ export class WalletDecrypt extends Component<Props, State> {
       return true;
     }
 
-    if (!this.props.disabledWallets) {
-      return false;
-    }
-
-    return this.props.disabledWallets.indexOf(walletKey) !== -1;
+    return this.props.computedDisabledWallets.indexOf(walletKey) !== -1;
   };
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState, ownProps: Props) {
+  const { disabledWallets } = ownProps;
+  const network = getNetworkConfig(state);
+  const networkDisabledFormats = unSupportedOnNetwork(network);
+  const computedDisabledWallets = disabledWallets
+    ? disabledWallets.concat(networkDisabledFormats)
+    : networkDisabledFormats;
   return {
+    computedDisabledWallets,
     offline: state.config.offline,
     wallet: state.wallet.inst,
     isWalletPending: state.wallet.isWalletPending,

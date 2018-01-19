@@ -3,11 +3,8 @@ import classnames from 'classnames';
 import { translateRaw, TranslateType } from 'translations';
 import { NewTabLink, Tooltip } from 'components/ui';
 import './WalletButton.scss';
-import { connect } from 'react-redux';
-import { getNetworkConfig } from 'selectors/config';
+
 import { WalletName } from 'config';
-import { AppState } from 'reducers';
-import { isSupportedWalletFormat } from 'utils/network';
 
 interface OwnProps {
   name: TranslateType;
@@ -28,7 +25,7 @@ interface StateProps {
 
 type Props = OwnProps & StateProps;
 
-class WalletButtonClass extends React.PureComponent<Props> {
+export class WalletButton extends React.PureComponent<Props> {
   public render() {
     const {
       name,
@@ -38,22 +35,19 @@ class WalletButtonClass extends React.PureComponent<Props> {
       helpLink,
       isSecure,
       isReadOnly,
-      isDisabled,
-      isFormatDisabled
+      isDisabled
     } = this.props;
-
-    const disabled = isDisabled || isFormatDisabled;
 
     return (
       <div
         className={classnames({
           WalletButton: true,
           'WalletButton--small': !isSecure,
-          'is-disabled': disabled
+          'is-disabled': isDisabled
         })}
         onClick={this.handleClick}
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled}
+        tabIndex={isDisabled ? -1 : 0}
+        aria-disabled={isDisabled}
       >
         <div className="WalletButton-title">
           {icon && <img className="WalletButton-title-icon" src={icon} />}
@@ -107,13 +101,3 @@ class WalletButtonClass extends React.PureComponent<Props> {
     ev.stopPropagation();
   };
 }
-
-function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
-  const { walletType } = ownProps;
-  const network = getNetworkConfig(state);
-  return {
-    isFormatDisabled: !isSupportedWalletFormat(walletType, network)
-  };
-}
-
-export const WalletButton = connect(mapStateToProps)(WalletButtonClass);

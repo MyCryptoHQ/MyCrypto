@@ -1,3 +1,5 @@
+import { getValues } from '../utils/helpers';
+
 export const languages = require('./languages.json');
 
 // Displays in the header
@@ -71,5 +73,12 @@ export enum InsecureWalletName {
 export enum MiscWalletName {
   VIEW_ONLY = 'viewOnly'
 }
+
+export const walletNames = getValues(
+  SecureWalletName,
+  HardwareWalletName,
+  InsecureWalletName,
+  MiscWalletName
+);
 
 export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName;
