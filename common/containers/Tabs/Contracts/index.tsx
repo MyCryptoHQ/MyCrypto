@@ -8,7 +8,7 @@ import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import SubTabs from 'components/SubTabs';
 
 interface Props {
   reset: TReset;
@@ -28,22 +28,13 @@ const tabs = [
 
 class Contracts extends Component<Props & RouteComponentProps<{}>> {
   public render() {
-    const currentPath = this.props.match.url;
+    const { match } = this.props;
+    const currentPath = match.url;
 
     return (
       <TabSection isUnavailableOffline={true}>
-        <div className="SubTabs-tabs col-sm-8">
-          {tabs.map((t, i) => (
-            // Same as normal Link, but knows when it's active, and applies activeClassName
-            <NavLink
-              className="SubTabs-tabs-link"
-              activeClassName="is-active"
-              to={currentPath + '/' + t.path}
-              key={i}
-            >
-              {t.name}
-            </NavLink>
-          ))}
+        <div className="SubTabs-tabs">
+          <SubTabs tabs={tabs} match={match} />
         </div>
         <section className="Tab-content Contracts">
           <div className="Contracts-content">

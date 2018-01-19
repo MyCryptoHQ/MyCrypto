@@ -13,8 +13,7 @@ import {
   Fields,
   UnavailableWallets
 } from 'containers/Tabs/SendTransaction/components';
-import { NavLink } from 'react-router-dom';
-import './SendTransaction.scss';
+import SubTabs from 'components/Subtabs';
 
 const Send = () => (
   <React.Fragment>
@@ -47,8 +46,8 @@ const tabs = [
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const currentPath = this.props.match.url;
-    const { wallet } = this.props;
+    const { wallet, match } = this.props;
+    const currentPath = match.url;
 
     return (
       <TabSection>
@@ -56,21 +55,10 @@ class SendTransaction extends React.Component<Props> {
           <UnlockHeader title={translate('Account')} />
           {wallet && (
             <div className="SubTabs row">
-              <div className="SubTabs-tabs col-sm-8">
-                {tabs.map((t, i) => (
-                  // Same as normal Link, but knows when it's active, and applies activeClassName
-                  <NavLink
-                    className="SubTabs-tabs-link"
-                    activeClassName="is-active"
-                    to={currentPath + '/' + t.path}
-                    key={i}
-                  >
-                    {t.name}
-                  </NavLink>
-                ))}
+              <div className="col-sm-8">
+                <SubTabs tabs={tabs} match={match} />
               </div>
-
-              <main className="SubTabs-tabs col-sm-8">
+              <div className="col-sm-8">
                 <Switch>
                   <Route
                     exact={true}
@@ -87,7 +75,7 @@ class SendTransaction extends React.Component<Props> {
                     render={() => <RequestPayment wallet={wallet} />}
                   />
                 </Switch>
-              </main>
+              </div>
               <SideBar />
             </div>
           )}
