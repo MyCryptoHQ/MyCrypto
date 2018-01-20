@@ -198,16 +198,16 @@ module.exports = function(opts = {}) {
 
   if (options.isProduction) {
     plugins.push(
-      // new BabelMinifyPlugin({
-      //   // Mangle seems to be reusing variable identifiers, causing errors
-      //   mangle: false,
-      //   // These two on top of a lodash file are causing illegal characters for
-      //   // safari and ios browsers
-      //   evaluate: false,
-      //   propertyLiterals: false,
-      // }, {
-      //   comments: false
-      // }),
+      new BabelMinifyPlugin({
+        // Mangle seems to be reusing variable identifiers, causing errors
+        mangle: false,
+        // These two on top of a lodash file are causing illegal characters for
+        // safari and ios browsers
+        evaluate: false,
+        propertyLiterals: false,
+      }, {
+        comments: false
+      }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         filename: 'vendor.[chunkhash:8].js'
