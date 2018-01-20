@@ -20,10 +20,10 @@ interface ISymbol {
   USD: number;
   EUR: number;
   GBP: number;
-  BTC: number;
   CHF: number;
-  REP: number;
+  BTC: number;
   ETH: number;
+  REP: number;
 }
 
 interface IRates extends ISymbol {
@@ -60,10 +60,10 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
             USD: rates.USD,
             EUR: rates.EUR,
             GBP: rates.GBP,
-            BTC: rates.BTC,
             CHF: rates.CHF,
-            REP: rates.REP,
-            ETH: 1
+            BTC: rates.BTC,
+            ETH: 1,
+            REP: rates.REP
           }
         } as CCResponse
       );
