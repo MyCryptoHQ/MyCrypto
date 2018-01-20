@@ -1,46 +1,52 @@
-const ETH_DEFAULT = {
+export interface DPath {
+  label: string;
+  value: string; // TODO determine method for more precise typing for path
+}
+
+export const ETH_DEFAULT: DPath = {
   label: 'Default (ETH)',
   value: "m/44'/60'/0'/0"
 };
 
-const ETH_TREZOR = {
+export const ETH_TREZOR: DPath = {
   label: 'TREZOR (ETH)',
   value: "m/44'/60'/0'/0"
 };
 
-const ETH_LEDGER = {
+export const ETH_LEDGER: DPath = {
   label: 'Ledger (ETH)',
   value: "m/44'/60'/0'"
 };
 
-const ETC_LEDGER = {
+export const ETC_LEDGER: DPath = {
   label: 'Ledger (ETC)',
   value: "m/44'/60'/160720'/0'"
 };
 
-const ETC_TREZOR = {
+export const ETC_TREZOR: DPath = {
   label: 'TREZOR (ETC)',
   value: "m/44'/61'/0'/0"
 };
 
-const TESTNET = {
-  label: 'Testnet',
+export const ETH_TESTNET: DPath = {
+  label: 'Testnet (ETH)',
   value: "m/44'/1'/0'/0"
 };
 
-const EXPANSE = {
-  label: 'Expanse',
+export const EXP_DEFAULT: DPath = {
+  label: 'Default (EXP)',
   value: "m/44'/40'/0'/0"
 };
 
-const TREZOR = [ETH_TREZOR, ETC_TREZOR, TESTNET];
-
-const MNEMONIC = [ETH_DEFAULT, ETH_LEDGER, ETC_LEDGER, ETC_TREZOR, TESTNET, EXPANSE];
-
-const LEDGER = [ETH_LEDGER, ETC_LEDGER, TESTNET];
-
-export default {
-  TREZOR,
-  MNEMONIC,
-  LEDGER
+export const UBQ_DEFAULT: DPath = {
+  label: 'Default (UBQ)',
+  value: "m/44'/108'/0'/0"
 };
+
+export const ETH_SINGULAR: DPath = {
+  label: 'SingularDTV',
+  value: "m/0'/0'/0'"
+};
+
+// PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
+export const EXTRA_PATHS = [ETH_SINGULAR];

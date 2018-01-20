@@ -8,7 +8,7 @@ import {
 } from 'actions/deterministicWallets';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { isValidPath } from 'libs/validators';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -16,6 +16,8 @@ import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
 import { UnitDisplay } from 'components/ui';
 import './DeterministicWalletsModal.scss';
+import { DPath } from 'config/dpaths';
+import Select from 'react-select';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -24,7 +26,7 @@ interface Props {
   isOpen?: boolean;
   walletType?: string;
   dPath: string;
-  dPaths: { label: string; value: string }[];
+  dPaths: DPath[];
   publicKey?: string;
   chainCode?: string;
   seed?: string;
@@ -45,6 +47,7 @@ interface Props {
 }
 
 interface State {
+  currentLabel: string;
   selectedAddress: string;
   selectedAddrIndex: number;
   isCustomPath: boolean;
@@ -52,12 +55,18 @@ interface State {
   page: number;
 }
 
+const customDPath: DPath = {
+  label: 'custom',
+  value: 'custom'
+};
+
 class DeterministicWalletsModalClass extends React.Component<Props, State> {
-  public state = {
+  public state: State = {
     selectedAddress: '',
     selectedAddrIndex: 0,
     isCustomPath: false,
     customPath: '',
+    currentLabel: '',
     page: 0
   };
 
@@ -88,7 +97,7 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
       onCancel,
       walletType
     } = this.props;
-    const { selectedAddress, isCustomPath, customPath, page } = this.state;
+    const { selectedAddress, customPath, page } = this.state;
     const validPathClass = isValidPath(customPath) ? 'is-valid' : 'is-invalid';
 
     const buttons: IButton[] = [
@@ -113,21 +122,20 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
         handleClose={onCancel}
       >
         <div className="DWModal">
+          {/* TODO: replace styles for flexbox with flexbox classes in https://github.com/MyEtherWallet/MyEtherWallet/pull/850/files#diff-2150778b9391533fec7b8afd060c7672 */}
           <form className="DWModal-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
-            <span className="DWModal-path-label">Addresses for</span>
-            <select
-              className="form-control"
+            <span className="DWModal-path-label">Addresses </span>
+            <Select
+              name="fieldDPath"
+              className=""
+              value={this.state.currentLabel || this.findDPath('value', dPath).value}
               onChange={this.handleChangePath}
-              value={isCustomPath ? 'custom' : dPath}
-            >
-              {dPaths.map(dp => (
-                <option key={dp.value} value={dp.value}>
-                  {dp.label}
-                </option>
-              ))}
-              <option value="custom">Custom path...</option>
-            </select>
-            {isCustomPath && (
+              options={dPaths}
+              clearable={false}
+              searchable={false}
+            />
+            {/* TODO/Hack - Custom Paths are temporarily disabled. `false` is used for smallest diff */}
+            {false && (
               <input
                 className={`form-control ${validPathClass}`}
                 value={customPath}
@@ -163,22 +171,21 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
               </thead>
               <tbody>{wallets.map(wallet => this.renderWalletRow(wallet))}</tbody>
             </table>
-
-            <div className="DWModal-addresses-nav">
-              <button
-                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
-                disabled={page === 0}
-                onClick={this.prevPage}
-              >
-                ← Back
-              </button>
-              <button
-                className="DWModal-addresses-nav-btn btn btn-sm btn-default"
-                onClick={this.nextPage}
-              >
-                More →
-              </button>
-            </div>
+          </div>
+          <div className="DWModal-addresses-nav">
+            <button
+              className="DWModal-addresses-nav-btn btn btn-sm btn-default"
+              disabled={page === 0}
+              onClick={this.prevPage}
+            >
+              ← Back
+            </button>
+            <button
+              className="DWModal-addresses-nav-btn btn btn-sm btn-default"
+              onClick={this.nextPage}
+            >
+              More →
+            </button>
           </div>
         </div>
       </Modal>
@@ -200,16 +207,19 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
     }
   }
 
-  private handleChangePath = (ev: React.FormEvent<HTMLSelectElement>) => {
-    const { value } = ev.currentTarget;
+  private findDPath = (prop: keyof DPath, cmp: string) => {
+    return this.props.dPaths.find(d => d[prop] === cmp) || customDPath;
+  };
+
+  private handleChangePath = (newPath: DPath) => {
+    const { value: dPathLabel } = newPath;
+    const { value } = this.findDPath('value', dPathLabel);
 
     if (value === 'custom') {
-      this.setState({ isCustomPath: true });
+      this.setState({ isCustomPath: true, currentLabel: dPathLabel });
     } else {
-      this.setState({ isCustomPath: false });
-      if (this.props.dPath !== value) {
-        this.props.onPathChange(value);
-      }
+      this.setState({ isCustomPath: false, currentLabel: dPathLabel });
+      this.props.onPathChange(value);
     }
   };
 

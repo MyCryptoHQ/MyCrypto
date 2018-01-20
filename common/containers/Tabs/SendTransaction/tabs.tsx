@@ -5,6 +5,7 @@ import translate from 'translations';
 import { Fields, UnavailableWallets, WalletInfo, RequestPayment } from './components/index';
 import { Tab } from 'components/SubTabs';
 import { SubTabProps } from 'containers/Tabs/SendTransaction';
+import { isNetworkUnit } from 'utils/network';
 
 const SendTab: Tab<SubTabProps> = {
   path: 'send',
@@ -41,6 +42,10 @@ const InfoTab: Tab<SubTabProps> = {
 const RequestTab: Tab<SubTabProps> = {
   path: 'request',
   name: translate('Request Payment'),
+  isDisabled: (props: SubTabProps) => {
+    const isETHNetwork = isNetworkUnit(props.network, 'ETH');
+    return !isETHNetwork;
+  },
   render(props: SubTabProps) {
     const content = props && props.wallet ? <RequestPayment wallet={props.wallet} /> : null;
     return <div>{content}</div>;
