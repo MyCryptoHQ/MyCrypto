@@ -142,8 +142,6 @@ class Equiv extends React.Component<Props, State> {
           <h5>{ratesError}</h5>
         ) : isFetching ? (
           <Spinner size="x2" />
-        ) : tokenBalances && tokenBalances.length === 0 ? (
-          <h5>No tokens found!</h5>
         ) : (
           <div className="EquivalentValues-values">
             {this.generateValues(equivalentValues.label, equivalentValues.value).map((equiv, i) => (
