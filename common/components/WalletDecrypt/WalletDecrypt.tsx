@@ -46,7 +46,7 @@ import {
   isWeb3NodeAvailable,
   knowledgeBaseURL
 } from 'config';
-import { unSupportedOnNetwork } from 'utils/network';
+import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
 import { getNetworkConfig } from '../../selectors/config';
 
 interface OwnProps {
@@ -411,7 +411,7 @@ export class WalletDecrypt extends Component<Props, State> {
 function mapStateToProps(state: AppState, ownProps: Props) {
   const { disabledWallets } = ownProps;
   const network = getNetworkConfig(state);
-  const networkDisabledFormats = unSupportedOnNetwork(network);
+  const networkDisabledFormats = unSupportedWalletFormatsOnNetwork(network);
   const computedDisabledWallets = disabledWallets
     ? disabledWallets.concat(networkDisabledFormats)
     : networkDisabledFormats;

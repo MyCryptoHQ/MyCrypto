@@ -83,7 +83,10 @@ export function isNetworkUnit(network: NetworkConfig, unit: string) {
   return validNetworks.includes(network);
 }
 
-export function isSupportedOnNetwork(format: WalletName, network: NetworkConfig): boolean {
+export function isWalletFormatSupportedOnNetwork(
+  format: WalletName,
+  network: NetworkConfig
+): boolean {
   const CHECK_FORMATS: DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
     SecureWalletName.TREZOR,
@@ -107,11 +110,11 @@ export function isSupportedOnNetwork(format: WalletName, network: NetworkConfig)
   return true;
 }
 
-export function allSupportedOnNetwork(network: NetworkConfig): WalletName[] {
-  return walletNames.filter(walletName => isSupportedOnNetwork(walletName, network));
+export function allWalletFormatsSupportedOnNetwork(network: NetworkConfig): WalletName[] {
+  return walletNames.filter(walletName => isWalletFormatSupportedOnNetwork(walletName, network));
 }
 
-export function unSupportedOnNetwork(network: NetworkConfig): WalletName[] {
-  const supportedFormats = allSupportedOnNetwork(network);
+export function unSupportedWalletFormatsOnNetwork(network: NetworkConfig): WalletName[] {
+  const supportedFormats = allWalletFormatsSupportedOnNetwork(network);
   return difference(walletNames, supportedFormats);
 }
