@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { placeBidRequested, TPlaceBidRequested } from 'actions/ens';
 import { GenerateTransactionFactory, CallbackProps } from 'components/GenerateTransactionFactory';
-import { getBidDataEncoded, getSecret, getBidMask, getBid } from 'selectors/ens';
+import { getBidDataEncoded, getSecret, getBidMask, getBidValue } from 'selectors/ens';
 
 interface OwnProps {
   disabled?: boolean;
@@ -69,7 +69,7 @@ class GenerateBidClass extends Component<Props, State> {
 const GenerateBidX = connect(
   (state: AppState) => ({
     bidDataEncoded: getBidDataEncoded(state),
-    bidValue: getBid(state),
+    bidValue: getBidValue(state),
     bidMask: getBidMask(state),
     secret: getSecret(state)
   }),

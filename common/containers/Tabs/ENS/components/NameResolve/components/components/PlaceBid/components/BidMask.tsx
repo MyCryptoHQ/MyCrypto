@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { setBidMaskField, TSetBidMaskField } from 'actions/ens';
+import { inputBidMaskField, TInputBidMaskField } from 'actions/ens';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getBidMask } from 'selectors/ens';
@@ -9,7 +9,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  setBidMaskField: TSetBidMaskField;
+  inputBidMaskField: TInputBidMaskField;
 }
 
 interface StateProps {
@@ -20,7 +20,7 @@ type Props = OwnProps & DispatchProps & StateProps;
 
 class BidMaskClass extends React.Component<Props> {
   public onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    this.props.setBidMaskField(e.currentTarget.value);
+    this.props.inputBidMaskField(e.currentTarget.value);
   };
 
   public render() {
@@ -37,9 +37,9 @@ class BidMaskClass extends React.Component<Props> {
         <section className="input-group col-xs-12">
           <input
             type="number"
-            className="form-control"
+            className={`form-control ${this.props.bidMask.value ? 'is-valid' : 'is-invalid'}`}
             onChange={this.onChange}
-            value={this.props.bidMask}
+            value={this.props.bidMask.raw}
             placeholder="1.0"
           />
         </section>
@@ -49,5 +49,5 @@ class BidMaskClass extends React.Component<Props> {
 }
 
 export const BidMask = connect((state: AppState) => ({ bidMask: getBidMask(state) }), {
-  setBidMaskField
+  inputBidMaskField
 })(BidMaskClass);

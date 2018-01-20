@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { isValidAmount } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { setBidValueField, TSetBidValueField } from 'actions/ens';
+import { inputBidValueField, TInputBidValueField } from 'actions/ens';
+import { getBidValue } from 'selectors/ens';
 
 interface StateProps {
-  isValid: boolean;
+  bidValue: AppState['ens']['fields']['bidValue'];
 }
 
 interface OwnProps {
-  setBidField: TSetBidValueField;
+  inputBidValueField: TInputBidValueField;
 }
 
 type Props = StateProps & OwnProps;
 
 class BidValueClass extends React.Component<Props> {
   public onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    this.props.setBidField(e.currentTarget.value);
+    this.props.inputBidValueField(e.currentTarget.value);
   };
 
   public render() {
@@ -29,8 +29,9 @@ class BidValueClass extends React.Component<Props> {
         <section className="input-group col-xs-12">
           <input
             type="number"
-            className={`form-control ${this.props.isValid ? 'is-valid' : 'is-invalid'}`}
+            className={`form-control ${!this.props.bidValue.value ? 'is-valid' : 'is-invalid'}`}
             onChange={this.onChange}
+            value={this.props.bidValue.raw}
           />
         </section>
       </section>
@@ -38,6 +39,6 @@ class BidValueClass extends React.Component<Props> {
   }
 }
 
-export const BidValue = connect((state: AppState) => ({ isValid: isValidAmount(state) }), {
-  setBidValueField
+export const BidValue = connect((state: AppState) => ({ bidValue: getBidValue(state) }), {
+  inputBidValueField
 })(BidValueClass);

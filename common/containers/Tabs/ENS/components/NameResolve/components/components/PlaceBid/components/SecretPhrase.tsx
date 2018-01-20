@@ -2,7 +2,7 @@ import * as React from 'react';
 import { generateMnemonic } from 'bip39';
 import { connect } from 'react-redux';
 import { getSecret } from 'selectors/ens';
-import { setSecretField, TSetSecretField } from 'actions/ens';
+import { inputSecretField, TInputSecretField } from 'actions/ens';
 import { AppState } from 'reducers';
 
 interface OwnProps {
@@ -10,7 +10,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  setSecretField: TSetSecretField;
+  inputSecretField: TInputSecretField;
 }
 
 interface StateProps {
@@ -25,11 +25,11 @@ export class SecretPhraseClass extends React.Component<Props> {
     const placeholderPhrase = placeholderPhraseList
       .splice(placeholderPhraseList.length - 3)
       .join(' ');
-    this.props.setSecretField(placeholderPhrase);
+    this.props.inputSecretField(placeholderPhrase);
   }
 
   public onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    this.props.setSecretField(e.currentTarget.value);
+    this.props.inputSecretField(e.currentTarget.value);
   };
 
   public render() {
@@ -42,8 +42,8 @@ export class SecretPhraseClass extends React.Component<Props> {
         <section className="input-group col-xs-12">
           <input
             type="text"
-            className="form-control"
-            value={this.props.secretPhrase}
+            className={`form-control ${this.props.secretPhrase.value ? 'is-valid' : 'is-invalid'}`}
+            value={this.props.secretPhrase.raw}
             onChange={this.onChange}
           />
         </section>
@@ -53,5 +53,5 @@ export class SecretPhraseClass extends React.Component<Props> {
 }
 
 export const SecretPhrase = connect((state: AppState) => ({ secretPhrase: getSecret(state) }), {
-  setSecretField
+  inputSecretField
 })(SecretPhraseClass);

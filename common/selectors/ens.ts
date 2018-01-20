@@ -55,7 +55,20 @@ const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
 
 export const getBidDataEncoded = (state: AppState) => getEns(state).placeBid.bidPlaced;
 
+type EnsFields = AppState['ens']['fields'];
+
+export type FieldValues = { [field in keyof EnsFields]: EnsFields[field]['value'] };
+
+export const getFieldValues = (state: AppState) =>
+  Object.entries(getFields(state)).reduce(
+    (acc, [field, fieldValue]: [string, EnsFields[keyof EnsFields]]) => ({
+      ...acc,
+      [field]: fieldValue.value
+    }),
+    {} as FieldValues
+  );
+
 export const getFields = (state: AppState) => getEns(state).fields;
-export const getBid = (state: AppState) => getFields(state).bidValue;
+export const getBidValue = (state: AppState) => getFields(state).bidValue;
 export const getBidMask = (state: AppState) => getFields(state).bidMask;
 export const getSecret = (state: AppState) => getFields(state).secretPhrase;

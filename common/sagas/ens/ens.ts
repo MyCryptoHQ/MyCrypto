@@ -4,8 +4,7 @@ import {
   ResolveDomainRequested,
   resolveDomainCached,
   placeBidSucceeded,
-  placeBidFailed,
-  BidPlaceRequested
+  placeBidFailed
 } from 'actions/ens';
 import { TypeKeys } from 'actions/ens/constants';
 import { SagaIterator, delay, buffers } from 'redux-saga';
@@ -25,7 +24,12 @@ import {
 } from 'redux-saga/effects';
 import { showNotification } from 'actions/notifications';
 import { resolveDomainRequest } from './modeMap';
-import { getCurrentDomainName, getCurrentDomainData } from 'selectors/ens';
+import {
+  getCurrentDomainName,
+  getCurrentDomainData,
+  getFieldValues,
+  FieldValues
+} from 'selectors/ens';
 import { setDataField, setValueField } from 'actions/transaction';
 import { Data } from 'libs/units';
 import { makeEthCallAndDecode } from 'sagas/ens/helpers';
@@ -34,6 +38,7 @@ import { AppState } from 'reducers';
 import ENS from 'libs/ens/contracts';
 import * as ethUtil from 'ethereumjs-util';
 import ENSNetworks from 'libs/ens/networkConfigs';
+import { fields } from './fields';
 
 const { main } = ENSNetworks;
 function* shouldResolveDomain(domain: string) {
@@ -86,22 +91,23 @@ function* resolveDomain(): SagaIterator {
   }
 }
 
-function* placeBid({ payload }: BidPlaceRequested): SagaIterator {
-  const { bidValue, maskValue, secret } = payload;
-
+function* placeBid(): SagaIterator {
+  const { bidMask, bidValue, secretPhrase }: FieldValues = yield select(getFieldValues);
   const domainData: AppState['ens']['domainRequests'][string] = yield select(getCurrentDomainName);
   const { data } = domainData;
-  if (!data) {
+
+  if (!(bidMask && bidValue && secretPhrase && data)) {
     yield put(placeBidFailed());
     return -1;
   }
 
   const { labelHash } = data;
-  const salt = ethUtil.sha3(secret);
+  const salt = ethUtil.sha3(secretPhrase);
   const hash = Buffer.from(labelHash, 'hex');
 
   try {
     const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
+
     if (!walletInst) {
       throw Error('No wallet instance found');
     }
@@ -121,7 +127,7 @@ function* placeBid({ payload }: BidPlaceRequested): SagaIterator {
 
     const encodedData = ENS.auction.newBid.encodeInput({ sealedBid });
     yield put(setDataField({ raw: encodedData, value: Data(encodedData) }));
-    yield put(setValueField({ raw: maskValue.toString(), value: maskValue }));
+    yield put(setValueField({ raw: bidMask.toString(), value: bidMask }));
     yield put(placeBidSucceeded());
     return 1;
   } catch {
@@ -131,5 +137,9 @@ function* placeBid({ payload }: BidPlaceRequested): SagaIterator {
 }
 
 export function* ens(): SagaIterator {
-  yield all([fork(resolveDomain), takeEvery(TypeKeys.ENS_BID_PLACE_REQUESTED, placeBid)]);
+  yield all([
+    fork(resolveDomain),
+    takeEvery(TypeKeys.ENS_BID_PLACE_REQUESTED, placeBid),
+    ...fields
+  ]);
 }
