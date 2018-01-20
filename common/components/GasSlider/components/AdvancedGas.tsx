@@ -58,15 +58,15 @@ class AdvancedGas extends React.Component<Props> {
           <GasLimitField includeLabel={false} onlyIncludeLoader={false} />
         </div>
 
-        <div className="col-md-4 col-sm-12">
+        <div className="col-md-4 col-sm-12 col-xs-12">
           <NonceField alwaysDisplay={true} />
         </div>
 
-        <div className="col-md-12">
+        <div className="col-md-12 col-xs-12">
           <DataField />
         </div>
 
-        <div className="col-sm-12">
+        <div className="col-sm-12 col-xs-12">
           <FeeSummary
             render={({ gasPriceWei, gasLimit, fee, usd }) => (
               <span>

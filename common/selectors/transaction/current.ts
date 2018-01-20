@@ -4,6 +4,7 @@ import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
 import { getDataExists, getValidGasCost } from 'selectors/transaction';
 import { getCurrentBalance } from 'selectors/wallet';
+import { getOffline } from 'selectors/config';
 
 interface ICurrentValue {
   raw: string;
@@ -42,6 +43,17 @@ const isValidAmount = (state: AppState): boolean => {
   const currentValue = getCurrentValue(state);
   const dataExists = getDataExists(state);
   const validGasCost = getValidGasCost(state);
+  const isOffline = getOffline(state);
+
+  // If value is an empty string, mark as invalid
+  if (!currentValue.raw) {
+    return false;
+  }
+
+  // If offline, assume amount is valid
+  if (isOffline) {
+    return true;
+  }
 
   // We do some wallet validation here.
   // For some reason with MetaMask, sometimes the currentValue.value is not a null
