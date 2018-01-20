@@ -44,7 +44,7 @@ class SendTransaction extends React.Component<Props> {
       {
         path: 'request',
         name: translate('Request Payment'),
-        disabled: !!isNetworkUnit(this.props.network, 'ETH')
+        disabled: !isNetworkUnit(this.props.network, 'ETH')
       },
       {
         path: 'info',
