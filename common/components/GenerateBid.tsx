@@ -3,25 +3,17 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { placeBidRequested, TPlaceBidRequested } from 'actions/ens';
 import { GenerateTransactionFactory, CallbackProps } from 'components/GenerateTransactionFactory';
-import { getBidDataEncoded, getSecret, getBidMask, getBidValue } from 'selectors/ens';
-
-interface OwnProps {
-  disabled?: boolean;
-  generateTransaction(): void;
-}
+import { getBidDataEncoded } from 'selectors/ens';
 
 interface StateProps {
   bidDataEncoded: boolean;
-  bidValue: string;
-  bidMask: string;
-  secret: string;
 }
 
 interface DispatchProps {
   placeBidRequested: TPlaceBidRequested;
 }
 
-type Props = OwnProps & DispatchProps & StateProps & CallbackProps;
+type Props = DispatchProps & StateProps & CallbackProps;
 
 enum GenerationStage {
   WAITING_ON_USER_INPUT = 'WAITING_ON_USER_INPUT',
@@ -42,13 +34,12 @@ class GenerateBidClass extends Component<Props, State> {
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.bidDataEncoded) {
       this.setState({ stage: GenerationStage.READY_TO_GENERATE_TRANSACTION });
-      this.props.generateTransaction();
+      this.props.onClick();
     }
   }
 
   public handleOnClick = () => {
-    const { bidMask, bidValue, secret } = this.props;
-    this.props.placeBidRequested(bidValue, bidMask, secret);
+    this.props.placeBidRequested();
     this.setState({ stage: GenerationStage.ENCODING_BID_DATA });
   };
 
@@ -68,17 +59,14 @@ class GenerateBidClass extends Component<Props, State> {
 
 const GenerateBidX = connect(
   (state: AppState) => ({
-    bidDataEncoded: getBidDataEncoded(state),
-    bidValue: getBidValue(state),
-    bidMask: getBidMask(state),
-    secret: getSecret(state)
+    bidDataEncoded: getBidDataEncoded(state)
   }),
   {
     placeBidRequested
   }
 )(GenerateBidClass);
 
-export const GenerateBid: React.SFC<OwnProps> = props => (
+export const GenerateBid: React.SFC<{}> = props => (
   <GenerateTransactionFactory
     withProps={cbProps => <GenerateBidX {...{ ...props, ...cbProps }} />}
   />

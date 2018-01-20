@@ -2,13 +2,8 @@ import * as ActionTypes from '../actionTypes';
 import { TypeKeys } from '../constants';
 
 export type TPlaceBidRequested = typeof placeBidRequested;
-export const placeBidRequested = (bidValue, maskValue, secret): ActionTypes.BidPlaceRequested => ({
-  type: TypeKeys.ENS_BID_PLACE_REQUESTED,
-  payload: {
-    bidValue,
-    maskValue,
-    secret
-  }
+export const placeBidRequested = (): ActionTypes.BidPlaceRequested => ({
+  type: TypeKeys.ENS_BID_PLACE_REQUESTED
 });
 
 export type TPlaceBidSucceeded = typeof placeBidSucceeded;
