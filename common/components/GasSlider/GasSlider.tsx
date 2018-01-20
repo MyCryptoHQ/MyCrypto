@@ -9,6 +9,7 @@ import SimpleGas from './components/SimpleGas';
 import AdvancedGas from './components/AdvancedGas';
 import './GasSlider.scss';
 import { getGasPrice } from 'selectors/transaction';
+import { GasLimitField } from 'components';
 
 interface StateProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
@@ -23,6 +24,7 @@ interface DispatchProps {
 
 interface OwnProps {
   disableAdvanced?: boolean;
+  lockData?: boolean;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
@@ -49,18 +51,26 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableAdvanced, gasPrice } = this.props;
+    const { offline, disableAdvanced, gasPrice, lockData } = this.props;
     const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
     return (
       <div className="GasSlider">
-        {showAdvanced ? (
+        {lockData ? (
+          <GasLimitField
+            includeLabel={true}
+            customLabel={translateRaw('OFFLINE_Step2_Label_4')}
+            onlyIncludeLoader={false}
+            disabled={lockData}
+          />
+        ) : showAdvanced ? (
           <AdvancedGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
         ) : (
           <SimpleGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
         )}
 
         {!offline &&
+          !lockData &&
           !disableAdvanced && (
             <div className="help-block">
               <a className="GasSlider-toggle" onClick={this.toggleAdvanced}>

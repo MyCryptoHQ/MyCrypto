@@ -30,18 +30,19 @@ class TransactionFeeClass extends React.Component<Props> {
           return (
             <React.Fragment>
               <UnitDisplay unit={'ether'} value={fee} symbol={network.unit} checkOffline={false} />{' '}
-              {!isOffline && (
-                <span>
-                  ($
-                  <UnitDisplay
-                    value={usdBN}
-                    unit="ether"
-                    displayShortBalance={2}
-                    displayTrailingZeroes={true}
-                    checkOffline={true}
-                  />)
-                </span>
-              )}
+              {!isOffline &&
+                rates[network.unit] && (
+                  <span>
+                    ($
+                    <UnitDisplay
+                      value={usdBN}
+                      unit="ether"
+                      displayShortBalance={2}
+                      displayTrailingZeroes={true}
+                      checkOffline={true}
+                    />)
+                  </span>
+                )}
             </React.Fragment>
           );
         }}

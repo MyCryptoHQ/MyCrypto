@@ -9,13 +9,14 @@ interface Props {
   includeLabel: boolean;
   onlyIncludeLoader: boolean;
   customLabel?: string;
+  disabled?: boolean;
 }
 
 export const GaslimitLoading: React.SFC<{ gasEstimationPending: boolean }> = ({
   gasEstimationPending
 }) => (
   <CSSTransition in={gasEstimationPending} timeout={300} classNames="fade">
-    <div className={`calculating-gas-limit small ${gasEstimationPending ? 'active' : ''}`}>
+    <div className={`Calculating-limit small ${gasEstimationPending ? 'active' : ''}`}>
       Calculating gas limit
       <Spinner />
     </div>
@@ -25,13 +26,14 @@ export const GaslimitLoading: React.SFC<{ gasEstimationPending: boolean }> = ({
 export const GasLimitField: React.SFC<Props> = ({
   includeLabel,
   onlyIncludeLoader,
-  customLabel
+  customLabel,
+  disabled
 }) => (
   <React.Fragment>
     <GasLimitFieldFactory
       withProps={({ gasLimit: { raw }, onChange, readOnly, gasEstimationPending }) => (
-        <>
-          <div className="label-wraper flex-wrapper">
+        <React.Fragment>
+          <div className="flex-wrapper">
             {includeLabel ? (
               customLabel ? (
                 <label>{customLabel} </label>
@@ -50,9 +52,10 @@ export const GasLimitField: React.SFC<Props> = ({
               readOnly={!!readOnly}
               value={raw}
               onChange={onChange}
+              disabled={disabled}
             />
           )}
-        </>
+        </React.Fragment>
       )}
     />
   </React.Fragment>

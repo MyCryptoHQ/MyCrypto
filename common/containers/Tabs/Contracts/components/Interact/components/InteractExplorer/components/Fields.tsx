@@ -11,7 +11,7 @@ export class Fields extends Component<OwnProps> {
   public render() {
     const makeContent = () => (
       <React.Fragment>
-        <GasSlider />
+        <GasSlider lockData={true} />
         <AmountField />
         {this.props.button}
         <SigningStatus />
