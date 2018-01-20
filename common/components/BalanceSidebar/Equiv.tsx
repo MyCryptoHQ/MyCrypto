@@ -3,7 +3,12 @@ import translate from 'translations';
 import { UnitDisplay, Spinner } from 'components/ui';
 import Select from 'react-select';
 import './Equiv.scss';
-import { TFetchCCRates } from 'actions/rates';
+import { TFetchCCRates, rateSymbols } from 'actions/rates';
+import { chain, flatMap } from 'lodash';
+
+const isFiat = (rate: string): boolean => {
+  return rateSymbols.slice(0, 4).includes(rate as any);
+};
 
 interface Option {
   label: string;
@@ -12,6 +17,7 @@ interface Option {
 
 interface State {
   equivalentValues: Option;
+  options: Option[];
 }
 
 interface Props {
@@ -23,23 +29,26 @@ interface Props {
   fetchCCRates: TFetchCCRates;
 }
 
-const defaultOption = {
-  label: 'All',
-  value: 'all'
-};
-
 class Equiv extends React.Component<any, any> {
   private requestedCurrencies: string[] | null = null;
-
   public constructor(props: Props) {
     super(props);
+    const { balance, tokenBalances, network } = this.props;
     this.state = {
-      equivalentValues: defaultOption
+      equivalentValues: this.defaultOption(balance, tokenBalances, network),
+      options: null
     };
 
     if (props.balance && props.tokenBalances) {
       this.fetchRates(props);
     }
+  }
+
+  public defaultOption(balance, tokenBalances, network) {
+    return {
+      label: 'All',
+      value: [{ symbol: network.unit, balance: balance.wei }, ...tokenBalances]
+    };
   }
 
   public componentWillReceiveProps(nextProps: Props) {
@@ -50,6 +59,19 @@ class Equiv extends React.Component<any, any> {
       nextProps.offline !== offline
     ) {
       // this.makeBalanceLookup(nextProps);
+      const options: Option[] = [
+        this.defaultOption(nextProps.balance, nextProps.tokenBalances, nextProps.network),
+        { label: nextProps.network.unit, value: nextProps.balance.wei },
+        ...Object.values(nextProps.tokenBalances).map(token => {
+          return { label: token.symbol, value: token.balance };
+        })
+      ];
+      const equivalentValues = options.find(opt => opt.label === this.state.equivalentValues.label);
+      console.log(equivalentValues, options);
+      this.setState({
+        equivalentValues,
+        options
+      });
       this.fetchRates(nextProps);
     }
   }
@@ -59,24 +81,21 @@ class Equiv extends React.Component<any, any> {
   };
 
   public render(): JSX.Element {
-    const { balance, offline, network, tokenBalances } = this.props;
-    const { equivalentValues } = this.state;
-
-    const options: Option[] = [
-      defaultOption,
-      { label: network.unit, value: balance.wei },
-      ...Object.values(tokenBalances).map(token => {
-        return { label: token.symbol, value: token.balance };
-      })
-    ].filter(equivalent => {
-      return equivalent.value !== equivalentValues.value;
-    });
+    const { balance, offline, network, tokenBalances, rates } = this.props;
+    const { equivalentValues, options } = this.state;
+    const isFetching =
+      !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
 
     const Value = ({ rate, value }) => (
       <div className="EquivalentValues-values-currency">
         <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
-          <UnitDisplay unit={'ether'} value={value} displayShortBalance={3} checkOffline={true} />
+          <UnitDisplay
+            unit={'ether'}
+            value={value}
+            displayShortBalance={isFiat(rate) ? 2 : 3}
+            checkOffline={true}
+          />
         </span>
       </div>
     );
@@ -99,7 +118,7 @@ class Equiv extends React.Component<any, any> {
           <div className="EquivalentValues-offline well well-sm">
             Equivalent values are unavailable offline
           </div>
-        ) : balance.isPending ? (
+        ) : isFetching ? (
           <Spinner size="x2" />
         ) : (
           <div className="EquivalentValues-values">
@@ -114,10 +133,39 @@ class Equiv extends React.Component<any, any> {
 
   private generateValues = (unit, balance) => {
     const { rates } = this.props;
+    // TODO: Clean this up, add comments to clarify
+    if (unit === 'All') {
+      const allRates = Object.values(balance).map(
+        value => !!rates[value.symbol] && rates[value.symbol]
+      );
+      const vals = allRates.map((rateType, i) => {
+        return {
+          symbol: Object.keys(rates)[i],
+          equivalentValues: [
+            ...Object.keys(rateType).map(rate => {
+              const value =
+                balance[i] && !!balance[i].balance ? balance[i].balance.muln(rateType[rate]) : null;
+              return { rate, value };
+            })
+          ]
+        };
+      });
+      const collection = flatMap([...Object.values(vals).map(v => v.equivalentValues)]);
+      const o = chain(collection)
+        .groupBy('rate')
+        .mapValues(v => Object.values(v).map(s => s.value))
+        .value();
+      return Object.values(o).map((v, i) => {
+        return {
+          rate: Object.keys(o)[i],
+          value: v.reduce((acc, curr) => acc && curr && acc.add(curr))
+        };
+      });
+    }
     const ratesObj = { ...rates[unit] };
     const equivValues = Object.keys(ratesObj).map(key => {
       const value = balance !== null ? balance.muln(ratesObj[key]) : null;
-      return { unit, rate: key, value };
+      return { rate: key, value };
     });
     return equivValues;
   };
