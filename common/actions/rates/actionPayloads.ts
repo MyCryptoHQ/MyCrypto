@@ -1,6 +1,6 @@
 import { handleJSONResponse } from 'api/utils';
 
-export const rateSymbols: Symbols = ['USD', 'EUR', 'GBP', 'BTC', 'CHF', 'REP', 'ETH'];
+export const rateSymbols: Symbols = ['USD', 'EUR', 'GBP', 'CHF', 'BTC', 'ETH', 'REP'];
 
 export type Symbols = (keyof ISymbol)[];
 // TODO - internationalize
