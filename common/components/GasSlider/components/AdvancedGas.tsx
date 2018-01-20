@@ -9,6 +9,7 @@ import { TInputGasPrice } from 'actions/transaction';
 import { NonceField, GasLimitField, DataField } from 'components';
 import { connect } from 'react-redux';
 import { getAutoGasLimitEnabled } from 'selectors/config';
+import { isValidGasPrice } from 'selectors/transaction';
 
 interface OwnProps {
   inputGasPrice: TInputGasPrice;
@@ -17,6 +18,7 @@ interface OwnProps {
 
 interface StateProps {
   autoGasLimitEnabled: AppState['config']['autoGasLimit'];
+  validGasPrice: boolean;
 }
 
 interface DispatchProps {
@@ -27,7 +29,7 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 class AdvancedGas extends React.Component<Props> {
   public render() {
-    const { autoGasLimitEnabled, gasPrice } = this.props;
+    const { autoGasLimitEnabled, gasPrice, validGasPrice } = this.props;
     return (
       <div className="AdvancedGas row form-group">
         <div className="col-md-12">
@@ -44,7 +46,7 @@ class AdvancedGas extends React.Component<Props> {
         <div className="col-md-4 col-sm-6 col-xs-12">
           <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
           <input
-            className={classnames('form-control', { 'is-invalid': !gasPrice.value })}
+            className={classnames('form-control', { 'is-invalid': !validGasPrice })}
             type="number"
             placeholder="e.g. 40"
             value={gasPrice.raw}
@@ -89,6 +91,9 @@ class AdvancedGas extends React.Component<Props> {
 }
 
 export default connect(
-  (state: AppState) => ({ autoGasLimitEnabled: getAutoGasLimitEnabled(state) }),
+  (state: AppState) => ({
+    autoGasLimitEnabled: getAutoGasLimitEnabled(state),
+    validGasPrice: isValidGasPrice(state)
+  }),
   { toggleAutoGasLimit }
 )(AdvancedGas);
