@@ -5,5 +5,5 @@ export type ElectronBridgeCallback = (data?: any) => void;
 export interface ElectronBridgeFunctions {
   addListener(event: string, cb: ElectronBridgeCallback);
   sendEvent(event: string, data?: any);
-  openInBrowser(url: string);
+  openInBrowser(url: string): boolean;
 }

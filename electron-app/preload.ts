@@ -12,7 +12,7 @@ const functions: ElectronBridgeFunctions = {
     ipcRenderer.send(event, data);
   },
   openInBrowser(url) {
-    shell.openExternal(url);
+    return shell.openExternal(url);
   }
 };
 
