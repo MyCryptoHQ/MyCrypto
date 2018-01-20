@@ -1,4 +1,3 @@
-'use strict';
 import { app, BrowserWindow, Menu } from 'electron';
 import * as path from 'path';
 import updater from './updater';

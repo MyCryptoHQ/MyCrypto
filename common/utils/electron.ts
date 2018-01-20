@@ -1,27 +1,25 @@
 // Handles integrations with Electron. Wherever possible, should stub out
 // behavior with noop's if not in the Electron environment, to simplify code.
-const win = window as any;
+import { ElectronBridgeFunctions } from 'shared/electronBridge';
+const bridge = (window as any).electronBridge || {};
 
-type ElectronCallback = (data?: any) => void;
-
-export function addListener(event: string, cb: ElectronCallback) {
-  console.log(win.electronListen);
-  if (win.electronListen) {
+export const addListener: ElectronBridgeFunctions['addListener'] = (event, cb) => {
+  if (bridge.addListener) {
     // @ts-ignore unused ev
-    win.electronListen(event, (ev, data) => cb(data));
+    bridge.addListener(event, (ev, data) => cb(data));
   }
-}
+};
 
-export function sendEvent(event: string, data?: any) {
-  if (win.electronSend) {
-    win.electronSend(event, data);
+export const sendEvent: ElectronBridgeFunctions['sendEvent'] = (event, data) => {
+  if (bridge.sendEvent) {
+    bridge.sendEvent(event, data);
   }
-}
+};
 
-export function openInBrowser(url: string) {
-  if (win.electronOpenInBrowser) {
-    win.electronOpenInBrowser(url);
+export const openInBrowser: ElectronBridgeFunctions['openInBrowser'] = url => {
+  if (bridge.openInBrowser) {
+    bridge.openInBrowser(url);
     return true;
   }
   return false;
-}
+};

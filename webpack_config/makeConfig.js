@@ -13,7 +13,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
-const ElectronPackagerPlugin = require('./plugins/electronPackager');
 const ClearDistPlugin = require('./plugins/clearDist');
 const SortCachePlugin = require('./plugins/sortCache');
 
