@@ -14,7 +14,6 @@ const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const ElectronPackagerPlugin = require('./plugins/electronPackager');
-const ElectronBuilderPlugin = require('./plugins/electronBuilder');
 const ClearDistPlugin = require('./plugins/clearDist');
 const SortCachePlugin = require('./plugins/sortCache');
 
@@ -200,16 +199,16 @@ module.exports = function(opts = {}) {
 
   if (options.isProduction) {
     plugins.push(
-      new BabelMinifyPlugin({
-        // Mangle seems to be reusing variable identifiers, causing errors
-        mangle: false,
-        // These two on top of a lodash file are causing illegal characters for
-        // safari and ios browsers
-        evaluate: false,
-        propertyLiterals: false,
-      }, {
-        comments: false
-      }),
+      // new BabelMinifyPlugin({
+      //   // Mangle seems to be reusing variable identifiers, causing errors
+      //   mangle: false,
+      //   // These two on top of a lodash file are causing illegal characters for
+      //   // safari and ios browsers
+      //   evaluate: false,
+      //   propertyLiterals: false,
+      // }, {
+      //   comments: false
+      // }),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         filename: 'vendor.[chunkhash:8].js'
@@ -274,11 +273,6 @@ module.exports = function(opts = {}) {
 			"screen",
 			"shell"
 		]));
-
-    if (options.isProduction) {
-      // plugins.push(new ElectronPackagerPlugin());
-      plugins.push(new ElectronBuilderPlugin());
-    }
   }
 
   // ====================
@@ -312,14 +306,7 @@ module.exports = function(opts = {}) {
     module: { rules },
     plugins,
     target: 'web',
-    resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
-      modules: [
-        config.path.src,
-        config.path.modules,
-        config.path.root,
-      ]
-    },
+    resolve: config.resolve,
     performance: {
       hints: options.isProduction ? 'warning' : false
     },

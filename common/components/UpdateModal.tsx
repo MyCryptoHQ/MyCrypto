@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { Spinner, NewTabLink } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
-import moment from 'moment';
 import { addListener, sendEvent } from 'utils/electron';
+import EVENTS from 'shared/electronEvents';
 import { bytesToHuman } from 'utils/formatters';
 import './UpdateModal.scss';
 
@@ -42,13 +43,13 @@ class UpdateModal extends React.Component<Props, State> {
   };
 
   public componentDidMount() {
-    addListener('UPDATE:update-downloaded', () => {
-      sendEvent('UPDATE:quit-and-install');
+    addListener(EVENTS.UPDATE.UPDATE_DOWNLOADED, () => {
+      sendEvent(EVENTS.UPDATE.QUIT_AND_INSTALL);
     });
-    addListener('UPDATE:download-progress', downloadProgress => {
+    addListener(EVENTS.UPDATE.DOWNLOAD_PROGRESS, downloadProgress => {
       this.setState({ downloadProgress });
     });
-    addListener('UPDATE:error', err => {
+    addListener(EVENTS.UPDATE.ERROR, err => {
       console.error('Update failed:', err);
       this.setState({ isDownloading: false });
       this.props.showNotification(

@@ -15,11 +15,14 @@ DelayPlugin.prototype.apply = function(compiler) {
 
 
 const electronConfig = {
-  entry: {
-    main: './electron/main.js',
-    preload: './electron/preload.js'
-  },
   target: 'electron-main',
+  entry: {
+    main: './electron/main.ts',
+    preload: './electron/preload.ts'
+  },
+  module: {
+    rules: [config.typescriptRule]
+  },
   output: {
     filename: '[name].js',
     path: path.resolve(config.path.output, 'electron-js')
@@ -37,7 +40,7 @@ const electronConfig = {
 };
 
 const jsConfig = makeConfig({
-  isProduction: true,
+  isProduction: process.env.NODE_ENV,
   isElectronBuild: true,
   outputDir: 'electron-js'
 });

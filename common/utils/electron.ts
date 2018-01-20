@@ -5,6 +5,7 @@ const win = window as any;
 type ElectronCallback = (data?: any) => void;
 
 export function addListener(event: string, cb: ElectronCallback) {
+  console.log(win.electronListen);
   if (win.electronListen) {
     // @ts-ignore unused ev
     win.electronListen(event, (ev, data) => cb(data));

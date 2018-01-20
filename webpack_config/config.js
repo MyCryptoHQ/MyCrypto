@@ -7,7 +7,8 @@ const paths = {
   output: path.join(__dirname, '../dist'),
   assets: path.join(__dirname, '../common/assets'),
   static: path.join(__dirname, '../static'),
-  electron: path.join(__dirname, '../electron'),
+  electron: path.join(__dirname, '../electron-app'),
+  shared: path.join(__dirname, '../shared'),
   modules: path.join(__dirname, '../node_modules'),
 }
 
@@ -20,7 +21,7 @@ module.exports = {
   // Typescript rule config
   typescriptRule: {
     test: /\.(ts|tsx)$/,
-    include: paths.src,
+    include: [paths.src, paths.shared, paths.electron],
     use: [{ loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }],
     exclude: ['assets', 'sass', 'vendor', 'translations/lang']
       .map(dir => path.resolve(paths.src, dir))
