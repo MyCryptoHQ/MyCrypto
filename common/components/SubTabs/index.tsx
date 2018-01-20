@@ -2,14 +2,15 @@ import React from 'react';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import './SubTabs.scss';
 
-interface Tabs {
+export interface Tab {
   name: string | React.ReactElement<any>;
   path: string;
   disabled?: boolean;
+  redirect?: string;
 }
 
 interface Props {
-  tabs: Tabs[];
+  tabs: Tab[];
   match: RouteComponentProps<{}>['match'];
 }
 

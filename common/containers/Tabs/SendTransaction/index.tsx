@@ -13,7 +13,9 @@ import {
   Fields,
   UnavailableWallets
 } from 'containers/Tabs/SendTransaction/components';
-import SubTabs from 'components/SubTabs';
+import SubTabs, { Tab } from 'components/SubTabs';
+import { getNetworkConfig } from 'selectors/config';
+import { isNetworkUnit } from 'utils/network';
 
 const Send = () => (
   <React.Fragment>
@@ -24,6 +26,7 @@ const Send = () => (
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
+  network: AppState['config']['network'];
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
@@ -32,7 +35,7 @@ class SendTransaction extends React.Component<Props> {
   public render() {
     const { wallet, match } = this.props;
     const currentPath = match.url;
-    const tabs = [
+    const tabs: Tab[] = [
       {
         path: 'send',
         name: translate('NAV_SendEther'),
@@ -40,7 +43,8 @@ class SendTransaction extends React.Component<Props> {
       },
       {
         path: 'request',
-        name: translate('Request Payment')
+        name: translate('Request Payment'),
+        disabled: !!isNetworkUnit(this.props.network, 'ETH')
       },
       {
         path: 'info',
@@ -90,5 +94,6 @@ class SendTransaction extends React.Component<Props> {
 }
 
 export default connect((state: AppState) => ({
-  wallet: getWalletInst(state)
+  wallet: getWalletInst(state),
+  network: getNetworkConfig(state)
 }))(SendTransaction);
