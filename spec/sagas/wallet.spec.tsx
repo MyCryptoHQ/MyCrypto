@@ -8,13 +8,14 @@ import {
   unlockMnemonic as unlockMnemonicActionGen,
   setTokenBalancesFulfilled,
   setTokenBalancesPending,
-  setTokenBalancesRejected
+  setTokenBalancesRejected,
+  TypeKeys
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
 import { initWeb3Node, Token, N_FACTOR } from 'config';
-import { apply, call, fork, put, select, take } from 'redux-saga/effects';
+import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
 import {
@@ -190,13 +191,24 @@ describe('updateTokenBalances*', () => {
 
 describe('updateBalances*', () => {
   const gen = updateBalances();
+  const updateAccount = createMockTask();
+  const updateToken = createMockTask();
 
   it('should fork updateAccountBalance', () => {
     expect(gen.next().value).toEqual(fork(updateAccountBalance));
   });
 
   it('should fork updateTokenBalances', () => {
-    expect(gen.next().value).toEqual(fork(updateTokenBalances));
+    expect(gen.next(updateAccount).value).toEqual(fork(updateTokenBalances));
+  });
+
+  it('should take on WALLET_SET', () => {
+    expect(gen.next(updateToken).value).toEqual(take(TypeKeys.WALLET_SET));
+  });
+
+  it('should cancel updates', () => {
+    expect(gen.next().value).toEqual(cancel(updateAccount));
+    expect(gen.next().value).toEqual(cancel(updateToken));
   });
 
   it('should be done', () => {
