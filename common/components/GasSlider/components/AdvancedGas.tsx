@@ -10,6 +10,7 @@ import { NonceField, GasLimitField, DataField } from 'components';
 import { connect } from 'react-redux';
 import { getAutoGasLimitEnabled } from 'selectors/config';
 import { isValidGasPrice } from 'selectors/transaction';
+import { sanitizeNumericalInput } from 'libs/values';
 
 interface OwnProps {
   inputGasPrice: TInputGasPrice;
@@ -82,7 +83,8 @@ class AdvancedGas extends React.Component<Props> {
   }
 
   private handleGasPriceChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.props.inputGasPrice(ev.currentTarget.value);
+    const { value } = ev.currentTarget;
+    this.props.inputGasPrice(sanitizeNumericalInput(value));
   };
 
   private handleToggleAutoGasLimit = (_: React.FormEvent<HTMLInputElement>) => {

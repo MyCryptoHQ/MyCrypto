@@ -3,6 +3,7 @@ import { inputNonce, TInputNonce } from 'actions/transaction';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import { sanitizeNumericalInput } from 'libs/values';
 
 export interface CallbackProps {
   nonce: AppState['transaction']['fields']['nonce'];
@@ -28,7 +29,7 @@ class NonceFieldClass extends Component<Props> {
 
   private setNonce = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    this.props.inputNonce(value);
+    this.props.inputNonce(sanitizeNumericalInput(value));
   };
 }
 
