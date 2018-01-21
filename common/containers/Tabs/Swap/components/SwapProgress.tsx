@@ -1,5 +1,5 @@
 import { TShowNotification } from 'actions/notifications';
-import bityConfig from 'config/bity';
+import { bityConfig } from 'config/bity';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import './SwapProgress.scss';
@@ -49,7 +49,7 @@ export default class SwapProgress extends Component<Props, State> {
         if (destinationId !== 'BTC') {
           link = bityConfig.ETHTxExplorer(outputTx);
           linkElement = (
-            <a href={link} target="_blank" rel="noopener">
+            <a href={link} target="_blank" rel="noopener noreferrer">
               {notificationMessage}
             </a>
           );
@@ -57,7 +57,7 @@ export default class SwapProgress extends Component<Props, State> {
         } else {
           link = bityConfig.BTCTxExplorer(outputTx);
           linkElement = (
-            <a href={link} target="_blank" rel="noopener">
+            <a href={link} target="_blank" rel="noopener noreferrer">
               {notificationMessage}
             </a>
           );

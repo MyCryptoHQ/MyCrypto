@@ -1,5 +1,5 @@
 import { Option } from 'actions/swap/actionTypes';
-import { WhitelistedCoins } from 'config/bity';
+import { WhitelistedCoins } from 'config';
 
 export interface SwapInput {
   id: WhitelistedCoins;

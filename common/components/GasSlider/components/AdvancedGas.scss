@@ -1,0 +1,31 @@
+.AdvancedGas {
+  margin-top: 0;
+  margin-bottom: 0;
+  .checkbox {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    input[type='checkbox'] {
+      position: initial;
+      margin: 0;
+      margin-right: 8px;
+    }
+    span {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+  }
+
+  &-gasLimit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    .flex-spacer {
+      flex-grow: 2;
+    }
+    input {
+      width: 100%;
+      margin-top: 0;
+    }
+  }
+}

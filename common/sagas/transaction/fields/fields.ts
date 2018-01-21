@@ -1,14 +1,21 @@
+import BN from 'bn.js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
+import {
+  setDataField,
+  setGasLimitField,
+  setGasPriceField,
+  setNonceField
+} from 'actions/transaction/actionCreators';
 import {
   InputDataAction,
   InputGasLimitAction,
+  InputGasPriceAction,
   InputNonceAction,
   TypeKeys
 } from 'actions/transaction';
-import { isValidHex, isValidNonce, validNumber } from 'libs/validators';
-import { Data, Wei, Nonce } from 'libs/units';
+import { isValidHex, isValidNonce, gasPriceValidator, gasLimitValidator } from 'libs/validators';
+import { Data, Wei, Nonce, gasPricetoBase } from 'libs/units';
 
 export function* handleDataInput({ payload }: InputDataAction): SagaIterator {
   const validData: boolean = yield call(isValidHex, payload);
@@ -16,9 +23,19 @@ export function* handleDataInput({ payload }: InputDataAction): SagaIterator {
 }
 
 export function* handleGasLimitInput({ payload }: InputGasLimitAction): SagaIterator {
-  const validGasLimit =
-    validNumber(+payload) && isFinite(parseFloat(payload)) && parseFloat(payload);
+  const validGasLimit: boolean = yield call(gasLimitValidator, payload);
   yield put(setGasLimitField({ raw: payload, value: validGasLimit ? Wei(payload) : null }));
+}
+
+export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIterator {
+  const priceFloat = parseFloat(payload);
+  const validGasPrice: boolean = yield call(gasPriceValidator, priceFloat);
+  yield put(
+    setGasPriceField({
+      raw: payload,
+      value: validGasPrice ? gasPricetoBase(priceFloat) : new BN(0)
+    })
+  );
 }
 
 export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
@@ -29,5 +46,6 @@ export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
 export const fields = [
   takeEvery(TypeKeys.DATA_FIELD_INPUT, handleDataInput),
   takeEvery(TypeKeys.GAS_LIMIT_INPUT, handleGasLimitInput),
+  takeEvery(TypeKeys.GAS_PRICE_INPUT, handleGasPriceInput),
   takeEvery(TypeKeys.NONCE_INPUT, handleNonceInput)
 ];

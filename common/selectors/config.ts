@@ -1,19 +1,23 @@
 import {
+  CustomNetworkConfig,
+  CustomNodeConfig,
   NetworkConfig,
   NetworkContract,
   NodeConfig,
-  CustomNodeConfig,
-  CustomNetworkConfig,
   Token
-} from 'config/data';
+} from 'config';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
-import { getNetworkConfigFromId } from 'utils/network';
+import { getUnit } from 'selectors/transaction/meta';
 import { isEtherUnit } from 'libs/units';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 
 export function getNode(state: AppState): string {
   return state.config.nodeSelection;
+}
+
+export function getIsWeb3Node(state: AppState): boolean {
+  return getNode(state) === 'web3';
 }
 
 export function getNodeConfig(state: AppState): NodeConfig {
@@ -24,8 +28,8 @@ export function getNodeLib(state: AppState): INode {
   return getNodeConfig(state).lib;
 }
 
-export function getNetworkConfig(state: AppState): NetworkConfig | undefined {
-  return getNetworkConfigFromId(getNodeConfig(state).network, getCustomNetworkConfigs(state));
+export function getNetworkConfig(state: AppState): NetworkConfig {
+  return state.config.network;
 }
 
 export function getNetworkContracts(state: AppState): NetworkContract[] | null {
@@ -41,6 +45,27 @@ export function getNetworkTokens(state: AppState): Token[] {
 export function getAllTokens(state: AppState): Token[] {
   const networkTokens = getNetworkTokens(state);
   return networkTokens.concat(state.customTokens);
+}
+
+export function getSelectedTokenContractAddress(state: AppState): string {
+  const allTokens = getAllTokens(state);
+  const currentUnit = getUnit(state);
+
+  if (currentUnit === 'ether') {
+    return '';
+  }
+
+  return allTokens.reduce((tokenAddr, tokenInfo) => {
+    if (tokenAddr && tokenAddr.length) {
+      return tokenAddr;
+    }
+
+    if (tokenInfo.symbol === currentUnit) {
+      return tokenInfo.address;
+    }
+
+    return tokenAddr;
+  }, '');
 }
 
 export function tokenExists(state: AppState, token: string): boolean {
@@ -65,11 +90,9 @@ export function getOffline(state: AppState): boolean {
   return state.config.offline;
 }
 
-export function getForceOffline(state: AppState): boolean {
-  return state.config.forceOffline;
+export function getAutoGasLimitEnabled(state: AppState): boolean {
+  return state.config.autoGasLimit;
 }
-
-export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);
 
 export function isSupportedUnit(state: AppState, unit: string) {
   const isToken: boolean = tokenExists(state, unit);

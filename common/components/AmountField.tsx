@@ -1,31 +1,40 @@
 import React from 'react';
 import { AmountFieldFactory } from './AmountFieldFactory';
-import { Aux } from 'components/ui';
 import { UnitDropDown } from 'components';
 import translate, { translateRaw } from 'translations';
 
 interface Props {
   hasUnitDropdown?: boolean;
+  showAllTokens?: boolean;
+  customValidator?(rawAmount: string): boolean;
 }
 
-export const AmountField: React.SFC<Props> = ({ hasUnitDropdown }) => (
+export const AmountField: React.SFC<Props> = ({
+  hasUnitDropdown,
+  showAllTokens,
+  customValidator
+}) => (
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
-      <Aux>
+      <React.Fragment>
         <label>{translate('SEND_amount')}</label>
-
         <div className="input-group">
           <input
-            className={`form-control ${isValid ? 'is-valid' : 'is-invalid'}`}
+            className={`form-control ${
+              isAmountValid(raw, customValidator, isValid) ? 'is-valid' : 'is-invalid'
+            }`}
             type="number"
             placeholder={translateRaw('SEND_amount_short')}
             value={raw}
             readOnly={!!readOnly}
             onChange={onChange}
           />
-          {hasUnitDropdown && <UnitDropDown />}
+          {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
         </div>
-      </Aux>
+      </React.Fragment>
     )}
   />
 );
+
+const isAmountValid = (raw, customValidator, isValid) =>
+  customValidator ? customValidator(raw) : isValid;

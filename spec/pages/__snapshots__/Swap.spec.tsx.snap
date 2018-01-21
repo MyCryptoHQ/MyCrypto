@@ -22,6 +22,7 @@ exports[`render snapshot 1`] = `
   destinationAddressSwap={[Function]}
   initSwap={[Function]}
   isFetchingRates={null}
+  isOffline={false}
   isPostingOrder={false}
   loadBityRatesRequestedSwap={[Function]}
   loadShapeshiftRatesRequestedSwap={[Function]}

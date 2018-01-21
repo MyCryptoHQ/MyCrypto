@@ -1,14 +1,16 @@
 import BN from 'bn.js';
-import EthTx from 'ethereumjs-tx';
+import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
 import TrezorConnect from 'vendor/trezor-connect';
 import { DeterministicWallet } from './deterministic';
-
 import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
 
 import { IFullWallet } from '../IWallet';
+import { translateRaw } from 'translations';
+
+export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 
 export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   public signRawTransaction(tx: EthTx): Promise<Buffer> {
@@ -35,8 +37,8 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
 
           // TODO: Explain what's going on here? Add tests? Adapted from:
           // https://github.com/kvhnuke/etherwallet/blob/v3.10.2.6/app/scripts/uiFuncs.js#L24
-          const txToSerialize = {
-            ...tx,
+          const txToSerialize: TxObj = {
+            ...strTx,
             v: addHexPrefix(new BN(result.v).toString(16)),
             r: addHexPrefix(result.r),
             s: addHexPrefix(result.s)
@@ -51,11 +53,38 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
 
   public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
 
+  public displayAddress = (dPath?: string, index?: number): Promise<any> => {
+    if (!dPath) {
+      dPath = this.dPath;
+    }
+    if (!index) {
+      index = this.index;
+    }
+
+    return new Promise((resolve, reject) => {
+      (TrezorConnect as any).ethereumGetAddress(
+        dPath + '/' + index,
+        res => {
+          if (res.error) {
+            reject(res.error);
+          } else {
+            resolve(res);
+          }
+        },
+        TREZOR_MINIMUM_FIRMWARE
+      );
+    });
+  };
+
+  public getWalletType(): string {
+    return translateRaw('x_Trezor');
+  }
+
   // works, but returns a signature that can only be verified with a Trezor device
   /*
   public signMessage = (message: string): Promise<string> => {
     return new Promise((resolve, reject) => {
-      (TrezorConnect as any).ethereumSignMessage(
+      TrezorConnect.ethereumSignMessage(
         this.getPath(),
         message,
         response => {

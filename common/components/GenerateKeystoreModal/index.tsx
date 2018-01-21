@@ -3,7 +3,7 @@ import { generateKeystoreFileInfo, KeystoreFile } from 'utils/keystore';
 import Modal from 'components/ui/Modal';
 import Input from './Input';
 import translate, { translateRaw } from 'translations';
-import { MINIMUM_PASSWORD_LENGTH } from 'config/data';
+import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { isValidPrivKey } from 'libs/validators';
 import './index.scss';
 

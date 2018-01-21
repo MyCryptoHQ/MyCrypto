@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
 import Dropdown from 'components/ui/Dropdown';
 import { withConditional } from 'components/hocs';
-import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
+import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'selectors/wallet';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
+import { getNetworkConfig } from 'selectors/config';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -15,6 +16,9 @@ interface DispatchProps {
 interface StateProps {
   unit: string;
   tokens: TokenBalance[];
+  allTokens: MergedToken[];
+  showAllTokens?: boolean;
+  network: AppState['config']['network'];
 }
 
 const StringDropdown = Dropdown as new () => Dropdown<string>;
@@ -22,15 +26,16 @@ const ConditionalStringDropDown = withConditional(StringDropdown);
 
 class UnitDropdownClass extends Component<DispatchProps & StateProps> {
   public render() {
-    const { tokens, unit } = this.props;
+    const { tokens, allTokens, showAllTokens, unit, network } = this.props;
+    const focusedTokens = showAllTokens ? allTokens : tokens;
     return (
       <div className="input-group-btn">
         <Query
           params={['readOnly']}
           withQuery={({ readOnly }) => (
             <ConditionalStringDropDown
-              options={['ether', ...getTokenSymbols(tokens)]}
-              value={unit}
+              options={[network.unit, ...getTokenSymbols(focusedTokens)]}
+              value={unit === 'ether' ? network.unit : unit}
               condition={!readOnly}
               conditionalProps={{
                 onChange: this.handleOnChange
@@ -46,12 +51,14 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
     this.props.setUnitMeta(unit);
   };
 }
-const getTokenSymbols = (tokens: TokenBalance[]) => tokens.map(t => t.symbol);
+const getTokenSymbols = (tokens: (TokenBalance | MergedToken)[]) => tokens.map(t => t.symbol);
 
 function mapStateToProps(state: AppState) {
   return {
     tokens: getShownTokenBalances(state, true),
-    unit: getUnit(state)
+    allTokens: getTokens(state),
+    unit: getUnit(state),
+    network: getNetworkConfig(state)
   };
 }
 

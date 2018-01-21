@@ -7,6 +7,7 @@ import {
   setTokenBalancesFulfilled,
   setTokenBalancesRejected,
   setWallet,
+  setWalletPending,
   setWalletConfig,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
@@ -16,7 +17,8 @@ import {
   TypeKeys,
   SetTokenBalancePendingAction,
   setTokenBalanceFulfilled,
-  setTokenBalanceRejected
+  setTokenBalanceRejected,
+  setPasswordPrompt
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode, TypeKeys as ConfigTypeKeys } from 'actions/config';
@@ -27,13 +29,17 @@ import {
   MnemonicWallet,
   getPrivKeyWallet,
   getKeystoreWallet,
+  determineKeystoreType,
+  KeystoreTypes,
+  getUtcWallet,
+  signWrapper,
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
-import { NODES, initWeb3Node, Token } from 'config/data';
-import { SagaIterator } from 'redux-saga';
-import { apply, call, fork, put, select, takeEvery, take } from 'redux-saga/effects';
-import { getNodeLib, getAllTokens } from 'selectors/config';
+import { NODES, initWeb3Node, Token } from 'config';
+import { SagaIterator, delay, Task } from 'redux-saga';
+import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
+import { getNodeLib, getAllTokens, getOffline } from 'selectors/config';
 import {
   getTokens,
   getWalletInst,
@@ -53,6 +59,11 @@ export interface TokenBalanceLookup {
 
 export function* updateAccountBalance(): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     yield put(setBalancePending());
     const wallet: null | IWallet = yield select(getWalletInst);
     if (!wallet) {
@@ -70,6 +81,11 @@ export function* updateAccountBalance(): SagaIterator {
 
 export function* updateTokenBalances(): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     const wallet: null | IWallet = yield select(getWalletInst);
     const tokens: MergedToken[] = yield select(getWalletConfigTokens);
     if (!wallet || !tokens.length) {
@@ -86,6 +102,11 @@ export function* updateTokenBalances(): SagaIterator {
 
 export function* updateTokenBalance(action: SetTokenBalancePendingAction): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     const wallet: null | IWallet = yield select(getWalletInst);
     const { tokenSymbol } = action.payload;
     const allTokens: Token[] = yield select(getAllTokens);
@@ -110,6 +131,11 @@ export function* updateTokenBalance(action: SetTokenBalancePendingAction): SagaI
 
 export function* scanWalletForTokens(action: ScanWalletForTokensAction): SagaIterator {
   try {
+    const isOffline = yield select(getOffline);
+    if (isOffline) {
+      return;
+    }
+
     const wallet = action.payload;
     const tokens: MergedToken[] = yield select(getTokens);
     yield put(setTokenBalancesPending());
@@ -138,8 +164,12 @@ export function* handleSetWalletTokens(action: SetWalletTokensAction): SagaItera
 }
 
 export function* updateBalances(): SagaIterator {
-  yield fork(updateAccountBalance);
-  yield fork(updateTokenBalances);
+  const updateAccount = yield fork(updateAccountBalance);
+  const updateToken = yield fork(updateTokenBalances);
+
+  yield take(TypeKeys.WALLET_SET);
+  yield cancel(updateAccount);
+  yield cancel(updateToken);
 }
 
 export function* handleNewWallet(): SagaIterator {
@@ -169,18 +199,44 @@ export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator 
   yield put(setWallet(wallet));
 }
 
+export function* startLoadingSpinner(): SagaIterator {
+  yield call(delay, 400);
+  yield put(setWalletPending(true));
+}
+
+export function* stopLoadingSpinner(loadingFork: Task | null): SagaIterator {
+  if (loadingFork !== null && loadingFork !== undefined) {
+    yield cancel(loadingFork);
+  }
+  yield put(setWalletPending(false));
+}
+
 export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
   const { file, password } = action.payload;
   let wallet: null | IWallet = null;
-
+  let spinnerTask: null | Task = null;
   try {
-    wallet = getKeystoreWallet(file, password);
+    if (determineKeystoreType(file) === KeystoreTypes.utc) {
+      spinnerTask = yield fork(startLoadingSpinner);
+      wallet = signWrapper(yield call(getUtcWallet, file, password));
+    } else {
+      wallet = getKeystoreWallet(file, password);
+    }
   } catch (e) {
-    yield put(showNotification('danger', translate('ERROR_6')));
+    yield call(stopLoadingSpinner, spinnerTask);
+    if (
+      password === '' &&
+      e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
+    ) {
+      yield put(setPasswordPrompt());
+    } else {
+      yield put(showNotification('danger', translate('ERROR_6')));
+    }
     return;
   }
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
+  yield call(stopLoadingSpinner, spinnerTask);
   yield put(setWallet(wallet));
 }
 
@@ -210,6 +266,9 @@ export function* unlockWeb3(): SagaIterator {
         action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
     );
 
+    if (!NODES.web3) {
+      throw Error('Web3 node config not found!');
+    }
     const network = NODES.web3.network;
     const nodeLib: INode | Web3Node = yield select(getNodeLib);
 
@@ -257,7 +316,9 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SET, handleNewWallet),
     takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
-    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd),
-    takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance)
+    takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
+    // Foreign actions
+    takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
+    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
   ];
 }

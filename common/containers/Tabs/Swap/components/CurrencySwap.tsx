@@ -6,7 +6,7 @@ import {
   SwapInput
 } from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
-import bityConfig, { generateKindMax, generateKindMin, WhitelistedCoins } from 'config/bity';
+import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';

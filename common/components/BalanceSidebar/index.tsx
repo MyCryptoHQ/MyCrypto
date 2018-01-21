@@ -1,5 +1,5 @@
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -10,7 +10,6 @@ import AccountInfo from './AccountInfo';
 import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import OfflineToggle from './OfflineToggle';
 
 interface Props {
   wallet: IWallet;
@@ -20,6 +19,7 @@ interface Props {
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
   fetchCCRates: TFetchCCRates;
+  isOffline: AppState['config']['offline'];
 }
 
 interface Block {
@@ -30,17 +30,13 @@ interface Block {
 
 export class BalanceSidebar extends React.Component<Props, {}> {
   public render() {
-    const { wallet, balance, network, tokenBalances, rates, ratesError } = this.props;
+    const { wallet, balance, network, tokenBalances, rates, ratesError, isOffline } = this.props;
 
     if (!wallet) {
       return null;
     }
 
     const blocks: Block[] = [
-      {
-        name: 'Go Offline',
-        content: <OfflineToggle />
-      },
       {
         name: 'Account Info',
         content: <AccountInfo wallet={wallet} balance={balance} network={network} />
@@ -58,11 +54,13 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         name: 'Equivalent Values',
         content: (
           <EquivalentValues
+            network={network}
             balance={balance}
             tokenBalances={tokenBalances}
             rates={rates}
             ratesError={ratesError}
             fetchCCRates={this.props.fetchCCRates}
+            isOffline={isOffline}
           />
         )
       }
@@ -87,7 +85,8 @@ function mapStateToProps(state: AppState) {
     tokenBalances: getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
-    ratesError: state.rates.ratesError
+    ratesError: state.rates.ratesError,
+    isOffline: state.config.offline
   };
 }
 

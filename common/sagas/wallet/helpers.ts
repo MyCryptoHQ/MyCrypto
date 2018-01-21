@@ -1,6 +1,6 @@
 import { apply, select, call } from 'redux-saga/effects';
 import { AppState } from 'reducers';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { INode } from 'libs/nodes/INode';
 import { IWallet, WalletConfig } from 'libs/wallet';
 import { TokenBalance } from 'selectors/wallet';

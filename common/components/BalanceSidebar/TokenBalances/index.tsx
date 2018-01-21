@@ -15,7 +15,7 @@ import {
 } from 'actions/wallet';
 import { getAllTokens } from 'selectors/config';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';
@@ -29,6 +29,7 @@ interface StateProps {
   tokensError: AppState['wallet']['tokensError'];
   isTokensLoading: AppState['wallet']['isTokensLoading'];
   hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
+  isOffline: AppState['config']['offline'];
 }
 interface ActionProps {
   addCustomToken: TAddCustomToken;
@@ -38,7 +39,7 @@ interface ActionProps {
 }
 type Props = StateProps & ActionProps;
 
-class TokenBalances extends React.Component<Props, {}> {
+class TokenBalances extends React.Component<Props> {
   public render() {
     const {
       tokens,
@@ -46,13 +47,20 @@ class TokenBalances extends React.Component<Props, {}> {
       tokenBalances,
       hasSavedWalletTokens,
       isTokensLoading,
-      tokensError
+      tokensError,
+      isOffline
     } = this.props;
 
     const walletTokens = walletConfig ? walletConfig.tokens : [];
 
     let content;
-    if (tokensError) {
+    if (isOffline) {
+      content = (
+        <div className="TokenBalances-offline well well-sm">
+          Token balances are unavailable offline
+        </div>
+      );
+    } else if (tokensError) {
       content = <h5>{tokensError}</h5>;
     } else if (isTokensLoading) {
       content = (
@@ -96,6 +104,7 @@ class TokenBalances extends React.Component<Props, {}> {
   private scanWalletForTokens = () => {
     if (this.props.wallet) {
       this.props.scanWalletForTokens(this.props.wallet);
+      this.setState({ hasScanned: true });
     }
   };
 }
@@ -108,7 +117,8 @@ function mapStateToProps(state: AppState): StateProps {
     tokenBalances: getTokenBalances(state),
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
-    hasSavedWalletTokens: state.wallet.hasSavedWalletTokens
+    hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
+    isOffline: state.config.offline
   };
 }
 

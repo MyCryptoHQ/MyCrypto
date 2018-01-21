@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { NetworkContract } from 'config/data';
+import { NetworkContract } from 'config';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -50,9 +50,10 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
 
       contractOptions = contractOptions.concat(
         contracts.map(contract => {
+          const addr = contract.address ? `(${contract.address.substr(0, 10)}...)` : '';
           return {
-            name: `${contract.name} (${contract.address.substr(0, 10)}...)`,
-            value: contract.address
+            name: `${contract.name} ${addr}`,
+            value: this.makeContractValue(contract)
           };
         })
       );
@@ -126,26 +127,26 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
     );
   }
 
-  private handleInput = (name: keyof State) => (
-    ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  private handleInput = name => (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     this.props.resetState();
-
-    this.setState({ [name as any]: ev.currentTarget.value });
+    this.setState({ [name]: ev.currentTarget.value });
   };
 
-  private handleSelectContract = (ev: any) => {
+  private handleSelectContract = (ev: React.FormEvent<HTMLSelectElement>) => {
     this.props.resetState();
-    const addr = ev.target.value;
-    const contract = this.props.contracts.reduce((prev, currContract) => {
-      return currContract.address === addr ? currContract : prev;
+    const contract = this.props.contracts.find(currContract => {
+      return this.makeContractValue(currContract) === ev.currentTarget.value;
     });
 
     this.setState({
-      address: contract.address,
-      abiJson: contract.abi
+      address: contract && contract.address ? contract.address : '',
+      abiJson: contract && contract.abi ? contract.abi : ''
     });
   };
+
+  private makeContractValue(contract: NetworkContract) {
+    return `${contract.name}:${contract.address}`;
+  }
 }
 
 const mapStateToProps = (state: AppState) => ({

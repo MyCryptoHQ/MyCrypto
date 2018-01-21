@@ -8,6 +8,17 @@ import {
 import { normalize } from 'normalizr';
 import * as schema from 'reducers/swap/schema';
 import { TypeKeys } from 'actions/swap/constants';
+import tokens from 'config/tokens/eth.json';
+import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
+
+describe('ensure whitelist', () => {
+  const findToken = (tkn: string) => tokens.find(t => t.symbol === tkn);
+  SHAPESHIFT_TOKEN_WHITELIST.forEach(t => {
+    it(`Should find Token ${t}`, () => {
+      expect(findToken(t)).toBeTruthy();
+    });
+  });
+});
 
 describe('swap reducer', () => {
   const shapeshiftApiResponse = {
