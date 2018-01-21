@@ -11,8 +11,16 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { TSetGasPriceField } from 'actions/transaction';
-import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages, VERSION } from 'config/data';
-import { NODES, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config';
+import {
+  ANNOUNCEMENT_MESSAGE,
+  ANNOUNCEMENT_TYPE,
+  languages,
+  NODES,
+  VERSION,
+  NodeConfig,
+  CustomNodeConfig,
+  CustomNetworkConfig
+} from 'config';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
