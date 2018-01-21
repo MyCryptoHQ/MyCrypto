@@ -58,3 +58,19 @@ export const buildEIP681TokenRequest = (
   }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue.raw, decimal)}&gas=${
     gasLimit.raw
   }`;
+
+export const sanitizeNumericalInput = (input: string): string => {
+  const inputFloat = parseFloat(input);
+
+  if (!input || isNaN(inputFloat)) {
+    return input;
+  }
+
+  // limit input field decrement to 0
+  if (inputFloat === -1) {
+    return '0';
+  }
+
+  // convert negative values to positive
+  return Math.abs(inputFloat).toString();
+};
