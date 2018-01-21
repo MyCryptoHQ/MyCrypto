@@ -5,14 +5,6 @@ export const languages = require('./languages.json');
 export const VERSION = '4.0.0 (Alpha 0.1.0)';
 export const N_FACTOR = 1024;
 
-// Lower/upper ranges for gas limit
-export const GAS_LIMIT_LOWER_BOUND = 21000;
-export const GAS_LIMIT_UPPER_BOUND = 8000000;
-
-// Lower/upper ranges for gas price in gwei
-export const GAS_PRICE_GWEI_LOWER_BOUND = 1;
-export const GAS_PRICE_GWEI_UPPER_BOUND = 10000;
-
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
 // HTML is allowed inside of the message.

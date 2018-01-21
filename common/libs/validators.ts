@@ -10,7 +10,7 @@ import {
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
-} from 'config/data';
+} from 'config/constants';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
