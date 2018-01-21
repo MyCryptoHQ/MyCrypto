@@ -21,6 +21,7 @@ interface StateProps {
   validAmount: boolean;
   validGasPrice: boolean;
   validGasLimit: boolean;
+  checkValidAmount?: boolean;
 }
 
 class GenerateTransactionClass extends Component<StateProps> {
@@ -32,13 +33,14 @@ class GenerateTransactionClass extends Component<StateProps> {
       networkRequestPending,
       validAmount,
       validGasPrice,
-      validGasLimit
+      validGasLimit,
+      checkValidAmount
     } = this.props;
 
     const isButtonDisabled =
       !isFullTransaction ||
       networkRequestPending ||
-      !validAmount ||
+      (checkValidAmount && !validAmount) ||
       !validGasPrice ||
       !validGasLimit;
     return (

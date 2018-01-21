@@ -53,7 +53,7 @@ class DeployClass extends Component<DispatchProps> {
 
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
-            <GenerateTransaction />
+            <GenerateTransaction checkValidAmount={false} />
           </div>
         </div>
         <SigningStatus />
