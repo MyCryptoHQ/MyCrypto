@@ -6,6 +6,7 @@ import CryptoWarning from './components/CryptoWarning';
 import TabSection from 'containers/TabSection';
 import { RouteComponentProps } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
+import { RouteNotFound } from 'components/RouteNotFound';
 
 export enum WalletType {
   Keystore = 'keystore',
@@ -22,8 +23,9 @@ export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
             {window.crypto ? (
               <Switch>
                 <Route exact={true} path={currentPath} component={WalletTypes} />
-                <Route path={`${currentPath}/keystore`} component={Keystore} />
-                <Route path={`${currentPath}/mnemonic`} component={Mnemonic} />
+                <Route exact={true} path={`${currentPath}/keystore`} component={Keystore} />
+                <Route exact={true} path={`${currentPath}/mnemonic`} component={Mnemonic} />
+                <RouteNotFound />
               </Switch>
             ) : (
               <CryptoWarning />

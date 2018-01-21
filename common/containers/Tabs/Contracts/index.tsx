@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import SubTabs from 'components/SubTabs';
+import { RouteNotFound } from 'components/RouteNotFound';
 
 interface Props {
   reset: TReset;
@@ -44,8 +45,9 @@ class Contracts extends Component<Props & RouteComponentProps<{}>> {
                 path={currentPath}
                 render={() => <Redirect from={`${currentPath}`} to={`${currentPath}/interact`} />}
               />
-              <Route path={`${currentPath}/interact`} component={Interact} />
-              <Route path={`${currentPath}/deploy`} component={Deploy} />
+              <Route exact={true} path={`${currentPath}/interact`} component={Interact} />
+              <Route exact={true} path={`${currentPath}/deploy`} component={Deploy} />
+              <RouteNotFound />
             </Switch>
           </div>
         </section>

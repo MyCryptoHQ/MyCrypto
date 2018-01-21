@@ -16,6 +16,7 @@ import LogOutPrompt from 'components/LogOutPrompt';
 import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
+import { RouteNotFound } from 'components/RouteNotFound';
 
 interface Props {
   store: Store<AppState>;
@@ -46,48 +47,26 @@ export default class Root extends Component<Props, State> {
       return <ErrorScreen error={error} />;
     }
 
-    const RouteWithSubRoutes = ({ path, subRoutes, BaseComponent }) => (
-      <Route
-        path={path}
-        render={props => {
-          const validRoutes = [path, ...subRoutes].filter(
-            route => subRoutes.includes(route) || route === path
-          );
-          return validRoutes.includes(props.location.pathname) ? (
-            <BaseComponent {...props} />
-          ) : (
-            <PageNotFound {...props} />
-          );
-        }}
-      />
-    );
+    const CaptureRouteNotFound = withRouter(({ children, location }): any => {
+      return location && location.state && location.state.error ? <PageNotFound /> : children;
+    });
 
     const routes = (
-      <Switch>
-        <Route exact={true} path="/" component={GenerateWallet} />
-        <RouteWithSubRoutes
-          path="/generate"
-          BaseComponent={GenerateWallet}
-          subRoutes={['/generate/keystore', '/generate/mnemonic']}
-        />
-        <Route path="/help" component={Help} />
-        <Route path="/swap" component={Swap} />
-        <RouteWithSubRoutes
-          path="/account"
-          BaseComponent={SendTransaction}
-          subRoutes={['/account/send', '/account/info', '/account/request']}
-        />
-        <Route path="/send-transaction" component={SendTransaction} />
-        <RouteWithSubRoutes
-          path="/contracts"
-          BaseComponent={Contracts}
-          subRoutes={['/contracts/interact', '/contracts/deploy']}
-        />
-        <Route path="/ens" component={ENS} />
-        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-        <Route path="/pushTx" component={BroadcastTx} />
-        <Route component={PageNotFound} />
-      </Switch>
+      <CaptureRouteNotFound>
+        <Switch>
+          <Route exact={true} path="/" component={GenerateWallet} />
+          <Route path="/generate" component={GenerateWallet} />
+          <Route path="/account" component={SendTransaction} />
+          <Route path="/swap" component={Swap} />
+          <Route path="/contracts" component={Contracts} />
+          <Route path="/ens" component={ENS} />
+          <Route path="/help" component={Help} />
+          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+          <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/send-transaction" component={SendTransaction} />
+          <RouteNotFound />
+        </Switch>
+      </CaptureRouteNotFound>
     );
 
     const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;

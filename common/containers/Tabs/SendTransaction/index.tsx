@@ -16,6 +16,7 @@ import {
 import SubTabs, { Tab } from 'components/SubTabs';
 import { getNetworkConfig } from 'selectors/config';
 import { isNetworkUnit } from 'utils/network';
+import { RouteNotFound } from 'components/RouteNotFound';
 
 const Send = () => (
   <React.Fragment>
@@ -73,15 +74,18 @@ class SendTransaction extends React.Component<Props> {
                       />
                     )}
                   />
-                  <Route path={`${currentPath}/send`} component={Send} />
+                  <Route exact={true} path={`${currentPath}/send`} component={Send} />
                   <Route
                     path={`${currentPath}/info`}
+                    exact={true}
                     render={() => <WalletInfo wallet={wallet} />}
                   />
                   <Route
                     path={`${currentPath}/request`}
+                    exact={true}
                     render={() => <RequestPayment wallet={wallet} />}
                   />
+                  <RouteNotFound />
                 </Switch>
               </div>
               <SideBar />
