@@ -1,6 +1,6 @@
 import { getNonceSucceeded, getNonceFailed, TypeKeys as TK, inputNonce } from 'actions/transaction';
 import { SagaIterator } from 'redux-saga';
-import { apply, put, select, takeEvery } from 'redux-saga/effects';
+import { apply, put, select, takeEvery, fork, cancel, take } from 'redux-saga/effects';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
 import { getNodeLib, getOffline } from 'selectors/config';
@@ -33,5 +33,15 @@ export function* handleNonceRequest(): SagaIterator {
   }
 }
 
+export function* handleNonceRequestWrapper(): SagaIterator {
+  const nonceRequest = yield fork(handleNonceRequest);
+
+  yield take(WalletTK.WALLET_SET);
+  yield cancel(nonceRequest);
+}
+
 //leave get nonce requested for nonce refresh later on
-export const nonce = takeEvery([TK.GET_NONCE_REQUESTED, WalletTK.WALLET_SET], handleNonceRequest);
+export const nonce = takeEvery(
+  [TK.GET_NONCE_REQUESTED, WalletTK.WALLET_SET],
+  handleNonceRequestWrapper
+);
