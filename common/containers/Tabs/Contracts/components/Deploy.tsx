@@ -47,7 +47,7 @@ class DeployClass extends Component<DispatchProps> {
 
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
-            <GasSlider lockData={true} />
+            <GasSlider readOnly={true} />
           </div>
         </div>
 

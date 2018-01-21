@@ -24,7 +24,7 @@ interface DispatchProps {
 
 interface OwnProps {
   disableAdvanced?: boolean;
-  lockData?: boolean;
+  readOnly?: boolean;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
@@ -51,17 +51,17 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableAdvanced, gasPrice, lockData } = this.props;
+    const { offline, disableAdvanced, gasPrice, readOnly } = this.props;
     const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
     return (
       <div className="GasSlider">
-        {lockData ? (
+        {readOnly ? (
           <GasLimitField
             includeLabel={true}
             customLabel={translateRaw('OFFLINE_Step2_Label_4')}
             onlyIncludeLoader={false}
-            disabled={lockData}
+            disabled={readOnly}
           />
         ) : showAdvanced ? (
           <AdvancedGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
@@ -70,7 +70,7 @@ class GasSlider extends React.Component<Props, State> {
         )}
 
         {!offline &&
-          !lockData &&
+          !readOnly &&
           !disableAdvanced && (
             <div className="help-block">
               <a className="GasSlider-toggle" onClick={this.toggleAdvanced}>
