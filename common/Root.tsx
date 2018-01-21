@@ -47,8 +47,12 @@ export default class Root extends Component<Props, State> {
       return <ErrorScreen error={error} />;
     }
 
-    const CaptureRouteNotFound = withRouter(({ children, location }): any => {
-      return location && location.state && location.state.error ? <PageNotFound /> : children;
+    const CaptureRouteNotFound = withRouter(({ children, location }) => {
+      return location && location.state && location.state.error ? (
+        <PageNotFound />
+      ) : (
+        (children as JSX.Element)
+      );
     });
 
     const routes = (
