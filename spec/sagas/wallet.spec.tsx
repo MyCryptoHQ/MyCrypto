@@ -14,7 +14,7 @@ import {
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
-import { initWeb3Node, Token, N_FACTOR } from 'config/data';
+import { initWeb3Node, Token, N_FACTOR } from 'config';
 import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';

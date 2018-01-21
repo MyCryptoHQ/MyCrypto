@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config/data';
+import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config';
 
 /*** Toggle Offline ***/
 export interface ToggleOfflineAction {

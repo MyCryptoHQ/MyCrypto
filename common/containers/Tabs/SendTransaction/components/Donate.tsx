@@ -1,4 +1,4 @@
-import { donationAddressMap } from 'config/data';
+import { donationAddressMap } from 'config';
 import React from 'react';
 import translate from 'translations';
 

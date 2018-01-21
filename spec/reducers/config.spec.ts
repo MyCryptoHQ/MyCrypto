@@ -1,6 +1,6 @@
 import { config, INITIAL_STATE } from 'reducers/config';
 import * as configActions from 'actions/config';
-import { NODES, NETWORKS } from 'config/data';
+import { NODES, NETWORKS } from 'config';
 import { makeCustomNodeId, makeNodeConfigFromCustomConfig } from 'utils/node';
 
 const custNode = {

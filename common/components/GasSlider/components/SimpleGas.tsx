@@ -1,7 +1,7 @@
 import React from 'react';
 import Slider from 'rc-slider';
 import translate from 'translations';
-import { gasPriceDefaults } from 'config/data';
+import { gasPriceDefaults } from 'config';
 import FeeSummary from './FeeSummary';
 import { TInputGasPrice } from 'actions/transaction';
 import './SimpleGas.scss';

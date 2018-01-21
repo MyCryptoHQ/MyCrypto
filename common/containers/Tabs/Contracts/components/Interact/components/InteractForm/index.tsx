@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { NetworkContract } from 'config/data';
+import { NetworkContract } from 'config';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
