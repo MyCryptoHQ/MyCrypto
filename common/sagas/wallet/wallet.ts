@@ -163,8 +163,12 @@ export function* handleSetWalletTokens(action: SetWalletTokensAction): SagaItera
 }
 
 export function* updateBalances(): SagaIterator {
-  yield fork(updateAccountBalance);
-  yield fork(updateTokenBalances);
+  const updateAccount = yield fork(updateAccountBalance);
+  const updateToken = yield fork(updateTokenBalances);
+
+  yield take(TypeKeys.WALLET_SET);
+  yield cancel(updateAccount);
+  yield cancel(updateToken);
 }
 
 export function* handleNewWallet(): SagaIterator {
