@@ -1,5 +1,5 @@
 import { customTokens } from 'reducers/customTokens';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import * as customTokensActions from 'actions/customTokens';
 
 describe('customTokens reducer', () => {

@@ -26,7 +26,7 @@ export function generateKindMax(BTCKINDRate: number, kind: keyof typeof buffers)
   return kindMax - kindMax * buffers[kind];
 }
 
-const info = {
+export const bityConfig = {
   serverURL,
   bityURL,
   ETHTxExplorer,
@@ -41,5 +41,3 @@ const info = {
     }
   }
 };
-
-export default info;

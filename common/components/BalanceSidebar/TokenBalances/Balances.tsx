@@ -1,6 +1,6 @@
 import React from 'react';
 import translate from 'translations';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { TokenBalance } from 'selectors/wallet';
 import AddCustomTokenForm from './AddCustomTokenForm';
 import TokenRow from './TokenRow';

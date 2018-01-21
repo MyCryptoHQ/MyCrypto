@@ -1,5 +1,5 @@
 import { TokenValue, Wei } from 'libs/units';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';

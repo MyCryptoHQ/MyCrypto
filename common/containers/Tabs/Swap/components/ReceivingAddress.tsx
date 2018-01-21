@@ -8,7 +8,7 @@ import {
 import { SwapInput } from 'reducers/swap/types';
 import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
-import { donationAddressMap } from 'config/data';
+import { donationAddressMap } from 'config';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import React, { Component } from 'react';
 import translate from 'translations';
