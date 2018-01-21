@@ -23,13 +23,13 @@ export function* handleDataInput({ payload }: InputDataAction): SagaIterator {
 }
 
 export function* handleGasLimitInput({ payload }: InputGasLimitAction): SagaIterator {
-  const validGasLimit = yield call(gasLimitValidator, payload);
+  const validGasLimit: boolean = yield call(gasLimitValidator, payload);
   yield put(setGasLimitField({ raw: payload, value: validGasLimit ? Wei(payload) : null }));
 }
 
 export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIterator {
   const priceFloat = parseFloat(payload);
-  const validGasPrice = yield call(gasPriceValidator, priceFloat);
+  const validGasPrice: boolean = yield call(gasPriceValidator, priceFloat);
   yield put(
     setGasPriceField({
       raw: payload,
