@@ -39,6 +39,7 @@ import ENS from 'libs/ens/contracts';
 import * as ethUtil from 'ethereumjs-util';
 import ENSNetworks from 'libs/ens/networkConfigs';
 import { fields } from './fields';
+import { IBaseDomainRequest } from 'libs/ens';
 
 const { main } = ENSNetworks;
 function* shouldResolveDomain(domain: string) {
@@ -71,12 +72,14 @@ function* resolveDomain(): SagaIterator {
       }
 
       const node: INode = yield select(getNodeLib);
-      const result = yield race({
+
+      const result: { domainData: IBaseDomainRequest; error } = yield race({
         domainData: call(resolveDomainRequest, domain, node),
         err: call(delay, 4000)
       });
 
       const { domainData } = result;
+
       if (!domainData) {
         throw Error();
       }

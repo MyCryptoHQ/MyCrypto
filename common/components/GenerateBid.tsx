@@ -2,24 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { placeBidRequested, TPlaceBidRequested } from 'actions/ens';
-import { GenerateTransactionFactory, CallbackProps } from 'components/GenerateTransactionFactory';
-import { getBidDataEncoded } from 'selectors/ens';
+import { getBidPlaceFailed, getBidPlaceSucceeded, getAllFieldsValid } from 'selectors/ens';
+import { GenerateTransaction, SigningStatus } from 'components';
+import Spinner from 'components/ui/Spinner';
 
 interface StateProps {
-  bidDataEncoded: boolean;
+  bidPlaceFailed: boolean;
+  bidPlaceSucceeded: boolean;
+  allFieldsValid: boolean;
 }
 
 interface DispatchProps {
   placeBidRequested: TPlaceBidRequested;
 }
 
-type Props = DispatchProps & StateProps & CallbackProps;
+type Props = DispatchProps & StateProps;
 
 enum GenerationStage {
   WAITING_ON_USER_INPUT = 'WAITING_ON_USER_INPUT',
   ENCODING_BID_DATA = 'ENCODING_BID_DATA',
   READY_TO_GENERATE_TRANSACTION = 'READY_TO_GENERATE_TRANSACTION',
-  GENERATION_IN_PROGRESS = 'GENERATION_IN_PROGRESS'
+  FAILED = 'FAILED'
 }
 
 interface State {
@@ -32,9 +35,10 @@ class GenerateBidClass extends Component<Props, State> {
   };
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.bidDataEncoded) {
+    if (nextProps.bidPlaceSucceeded) {
       this.setState({ stage: GenerationStage.READY_TO_GENERATE_TRANSACTION });
-      this.props.onClick();
+    } else if (nextProps.bidPlaceFailed) {
+      this.setState({ stage: GenerationStage.FAILED });
     }
   }
 
@@ -44,30 +48,40 @@ class GenerateBidClass extends Component<Props, State> {
   };
 
   public render() {
-    const { disabled } = this.props;
-    return (
+    const { allFieldsValid } = this.props;
+    const bidGeneratorButton = (
       <button
         className="btn btn-info btn-block"
         onClick={this.handleOnClick}
-        disabled={disabled || this.state.stage === GenerationStage.READY_TO_GENERATE_TRANSACTION}
+        disabled={!allFieldsValid}
       >
         Place A Bid
       </button>
     );
+
+    const renderObj: { [key in GenerationStage]: JSX.Element } = {
+      [GenerationStage.WAITING_ON_USER_INPUT]: bidGeneratorButton,
+      [GenerationStage.ENCODING_BID_DATA]: <Spinner />,
+      [GenerationStage.READY_TO_GENERATE_TRANSACTION]: (
+        <>
+          <SigningStatus />
+          <GenerateTransaction />
+        </>
+      ),
+      [GenerationStage.FAILED]: (
+        <> Bid generation failed, please try again :D {bidGeneratorButton}</>
+      )
+    };
+    return renderObj[this.state.stage];
   }
 }
 
-const GenerateBidX = connect(
-  (state: AppState) => ({
-    bidDataEncoded: getBidDataEncoded(state)
-  }),
-  {
-    placeBidRequested
-  }
-)(GenerateBidClass);
+const mapStateToProps = (state: AppState): StateProps => ({
+  bidPlaceFailed: getBidPlaceFailed(state),
+  bidPlaceSucceeded: getBidPlaceSucceeded(state),
+  allFieldsValid: getAllFieldsValid(state)
+});
 
-export const GenerateBid: React.SFC<{}> = props => (
-  <GenerateTransactionFactory
-    withProps={cbProps => <GenerateBidX {...{ ...props, ...cbProps }} />}
-  />
-);
+export const GenerateBid = connect(mapStateToProps, {
+  placeBidRequested
+})(GenerateBidClass);

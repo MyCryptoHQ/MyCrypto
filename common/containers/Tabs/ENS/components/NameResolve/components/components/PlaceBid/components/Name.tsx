@@ -1,16 +1,24 @@
 import * as React from 'react';
+import { getCurrentDomainName } from 'selectors/ens';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 
-interface Props {
-  value: string;
+interface StateProps {
+  name: AppState['ens']['domainSelector']['currentDomain'];
 }
 
-export class Name extends React.Component<Props> {
+class NameClass extends React.Component<StateProps> {
   public render() {
     return (
       <section className="form-group">
         <label>Name</label>
         <section className="input-group col-xs-12">
-          <input readOnly={true} type="text" className="form-control" value={this.props.value} />
+          <input
+            readOnly={true}
+            type="text"
+            className="form-control"
+            value={this.props.name || ''}
+          />
           <div className="input-group-btn">
             <a className="btn btn-default">.eth</a>
           </div>
@@ -19,3 +27,7 @@ export class Name extends React.Component<Props> {
     );
   }
 }
+
+const mapStateToProps = (state: AppState): StateProps => ({ name: getCurrentDomainName(state) });
+
+export const Name = connect(mapStateToProps)(NameClass);

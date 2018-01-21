@@ -29,7 +29,7 @@ class BidValueClass extends React.Component<Props> {
         <section className="input-group col-xs-12">
           <input
             type="number"
-            className={`form-control ${!this.props.bidValue.value ? 'is-valid' : 'is-invalid'}`}
+            className={`form-control ${this.props.bidValue.value ? 'is-valid' : 'is-invalid'}`}
             onChange={this.onChange}
             value={this.props.bidValue.raw}
           />
