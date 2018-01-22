@@ -2,7 +2,13 @@
 import React from 'react';
 // REDUX
 import translate from 'translations';
-import { Fields, UnavailableWallets, WalletInfo, RequestPayment } from './components/index';
+import {
+  Fields,
+  UnavailableWallets,
+  WalletInfo,
+  RequestPayment,
+  TokenSweeper
+} from './components/index';
 import { Tab } from 'components/SubTabs';
 import { SubTabProps } from 'containers/Tabs/SendTransaction';
 import { isNetworkUnit } from 'utils/network';
@@ -52,6 +58,15 @@ const RequestTab: Tab<SubTabProps> = {
   }
 };
 
-const tabs: Tab<SubTabProps>[] = [SendTab, RequestTab, InfoTab];
+const SweepTab: Tab<SubTabProps> = {
+  path: 'sweeper',
+  name: 'Sweep All Tokens, ETH & Batch Send',
+  render(props: SubTabProps) {
+    const content = props && props.wallet ? <TokenSweeper wallet={props.wallet} /> : null;
+    return <div>{content}</div>;
+  }
+};
+
+const tabs: Tab<SubTabProps>[] = [SendTab, RequestTab, InfoTab, SweepTab];
 
 export default tabs;
