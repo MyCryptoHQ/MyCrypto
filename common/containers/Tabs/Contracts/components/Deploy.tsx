@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
 import './Deploy.scss';
 import GasSlider from 'components/GasSlider/GasSlider';
+import { NonceField } from 'components';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -43,6 +44,12 @@ class DeployClass extends Component<DispatchProps> {
               />
             )}
           />
+        </div>
+
+        <div className="row form-group">
+          <div className="col-xs-12 clearfix">
+            <NonceField alwaysDisplay={false} />
+          </div>
         </div>
 
         <div className="row form-group">
