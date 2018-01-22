@@ -1,22 +1,19 @@
 // Compile freezer using the (mostly) same webpack config
 'use strict';
-const baseConfig = require('./webpack.base');
+const path = require('path');
+const config = require('./config');
 
-const freezerConfig = Object.assign({}, baseConfig, {
-  // Remove the cruft we don't need
-  plugins: undefined,
-  target: undefined,
-  performance: undefined,
-  module: {
-    // Typescript loader    
-    loaders: [baseConfig.module.rules[0]]
-  },
-
-  // Point at freezer, make sure it's setup to run in node
+const freezerConfig = {
   target: 'node',
-  entry: {
-    'freezer': './common/freezer'
-  }
-});
+  entry: './common/freezer',
+  output: {
+    path: config.path.output,
+    filename: 'freezer.js'
+  },
+  module: {
+    rules: [config.typescriptRule],
+  },
+  resolve: config.resolve,
+};
 
 module.exports = freezerConfig;
