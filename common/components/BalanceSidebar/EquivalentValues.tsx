@@ -9,23 +9,25 @@ import { State as RatesState } from 'reducers/rates';
 import { TokenBalance } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
 import './EquivalentValues.scss';
+import { Wei } from 'libs/units';
 
-const isFiat = (rate: string): boolean => {
-  return rateSymbols.slice(0, 4).includes(rate as any);
-};
+interface AllValue {
+  symbol: string;
+  balance: Balance['wei'];
+}
 
 interface DefaultOption {
   label: string;
-  value: any;
+  value: AllValue[];
 }
 
 interface Option {
   label: string;
-  value: string;
+  value: Balance['wei'] | AllValue[];
 }
 
 interface State {
-  equivalentValues: Option | DefaultOption;
+  equivalentValues: Option;
   options: Option[];
 }
 
@@ -54,7 +56,11 @@ class Equiv extends React.Component<Props, State> {
     }
   }
 
-  public defaultOption(balance, tokenBalances, network): DefaultOption {
+  public defaultOption(
+    balance: Balance,
+    tokenBalances: TokenBalance[],
+    network: NetworkConfig
+  ): DefaultOption {
     return {
       label: 'All',
       value: [{ symbol: network.unit, balance: balance.wei }, ...tokenBalances]
@@ -107,7 +113,7 @@ class Equiv extends React.Component<Props, State> {
           <UnitDisplay
             unit={'ether'}
             value={value}
-            displayShortBalance={isFiat(rate) ? 2 : 3}
+            displayShortBalance={rateSymbols.isFiat(rate) ? 2 : 3}
             checkOffline={true}
           />
         </span>
@@ -120,8 +126,9 @@ class Equiv extends React.Component<Props, State> {
           <h5 className="EquivalentValues-title">{translate('sidebar_Equiv')}</h5>
           <Select
             name="equivalentValues"
-            value={equivalentValues}
-            options={options}
+            // TODO: Update type
+            value={equivalentValues as any}
+            options={options as any}
             onChange={this.selectOption}
             clearable={false}
             searchable={false}
@@ -153,47 +160,64 @@ class Equiv extends React.Component<Props, State> {
     );
   }
 
-  private generateValues = (unit: string, balance) => {
+  // return the sum of all equivalent values (unit * rate * balance) grouped by rate (USD, EUR, ETH, etc...)
+  private handleAllValues = (balance: AllValue[]) => {
     const { rates } = this.props;
-    if (unit === 'All') {
-      const allRates = Object.values(balance).map(
-        value => !!rates[value.symbol] && rates[value.symbol]
-      );
-      const allEquivalentValues = allRates.map((rateType, i) => {
-        return {
-          symbol: Object.keys(rates)[i],
-          equivalentValues: [
-            ...Object.keys(rateType).map(rate => {
-              const value =
-                balance[i] && !!balance[i].balance ? balance[i].balance.muln(rateType[rate]) : null;
-              return { rate, value };
-            })
-          ]
-        };
-      });
-      // flatten all equivalent values for each unit (ETH, ETC, OMG, etc...) into an array
-      const collection = flatMap([
-        ...Object.values(allEquivalentValues).map(v => v.equivalentValues)
-      ]);
-      // group equivalent values by rate (USD, EUR, etc...)
-      const groupedCollection = chain(collection)
-        .groupBy('rate')
-        .mapValues(v => Object.values(v).map(s => s.value))
-        .value();
-      // finally, add all the equivalent values together and return an array of objects with the sum of equivalent values for each rate
-      return Object.values(groupedCollection).map((v, i) => {
-        return {
-          rate: Object.keys(groupedCollection)[i],
-          value: v.reduce((acc, curr) => acc && curr && acc.add(curr))
-        };
-      });
-    }
+    const allRates = Object.values(balance).map(
+      value => !!rates[value.symbol] && rates[value.symbol]
+    );
+    const allEquivalentValues = allRates.map((rateType, i) => {
+      return {
+        symbol: Object.keys(rates)[i],
+        equivalentValues: [
+          ...Object.keys(rateType).map(rate => {
+            const balanceIndex: AllValue = balance[i];
+            const value =
+              balanceIndex && !!balanceIndex.balance
+                ? balanceIndex.balance.muln(rateType[rate])
+                : null;
+            return { rate, value };
+          })
+        ]
+      };
+    });
+    // flatten all equivalent values for each unit (ETH, ETC, OMG, etc...) into an array
+    const collection = flatMap([
+      ...Object.values(allEquivalentValues).map(v => v.equivalentValues)
+    ]);
+    // group equivalent values by rate (USD, EUR, etc...)
+    const groupedCollection = chain(collection)
+      .groupBy('rate')
+      .mapValues(v => Object.values(v).map(s => s.value))
+      .value();
+    // finally, add all the equivalent values together and return an array of objects with the sum of equivalent values for each rate
+    return Object.values(groupedCollection).map((v, i) => {
+      return {
+        rate: Object.keys(groupedCollection)[i],
+        value: v.reduce((acc, curr) => acc && curr && acc.add(curr))
+      };
+    });
+  };
+
+  // return equivalent value (unit * rate * balance)
+  private handleValues(unit: string, balance: Balance['wei']) {
+    const { rates } = this.props;
     const ratesObj = { ...rates[unit] };
-    const equivValues = Object.keys(ratesObj).map(key => {
-      const value = balance !== null ? balance.muln(ratesObj[key]) : null;
+    return Object.keys(ratesObj).map(key => {
+      const value = (balance as Wei).muln(ratesObj[key]);
       return { rate: key, value };
     });
-    return equivValues;
+  }
+
+  private generateValues = (
+    unit: string,
+    balance: Balance['wei'] | AllValue[]
+  ): { rate: string; value: Balance['wei'] }[] => {
+    if (unit === 'All') {
+      return this.handleAllValues(balance as AllValue[]);
+    } else {
+      return this.handleValues(unit, balance as Balance['wei']);
+    }
   };
 
   private fetchRates(props: Props) {

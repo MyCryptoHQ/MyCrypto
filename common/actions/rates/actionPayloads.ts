@@ -1,21 +1,18 @@
 import { handleJSONResponse } from 'api/utils';
-
-export const rateSymbols: Symbols = ['USD', 'EUR', 'GBP', 'CHF', 'BTC', 'ETH', 'REP'];
-
-export type Symbols = (keyof ISymbol)[];
-// TODO - internationalize
-const ERROR_MESSAGE = 'Could not fetch rate data.';
-const CCApi = 'https://min-api.cryptocompare.com';
-
-const CCRates = (symbols: string[]) => {
-  const tsyms = rateSymbols.concat(symbols as any).join(',');
-  return `${CCApi}/data/price?fsym=ETH&tsyms=${tsyms}`;
-};
-
-export interface CCResponse {
-  [symbol: string]: ISymbol;
+interface IRateSymbols {
+  symbols: {
+    all: TAllSymbols;
+    fiat: TFiatSymbols;
+    coinAndToken: TCoinAndTokenSymbols;
+  };
+  isFiat: isFiat;
 }
 
+type isFiat = (rate: string) => boolean;
+
+export type TAllSymbols = (keyof ISymbol)[];
+export type TFiatSymbols = (keyof IFiatSymbols)[];
+export type TCoinAndTokenSymbols = (keyof ICoinAndTokenSymbols)[];
 interface ISymbol {
   USD: number;
   EUR: number;
@@ -24,6 +21,41 @@ interface ISymbol {
   BTC: number;
   ETH: number;
   REP: number;
+}
+interface IFiatSymbols {
+  USD: number;
+  EUR: number;
+  GBP: number;
+  CHF: number;
+}
+interface ICoinAndTokenSymbols {
+  BTC: number;
+  ETH: number;
+  REP: number;
+}
+
+const fiat: TFiatSymbols = ['USD', 'EUR', 'GBP', 'CHF'];
+const coinAndToken: TCoinAndTokenSymbols = ['BTC', 'ETH', 'REP'];
+export const rateSymbols: IRateSymbols = {
+  symbols: {
+    all: [...fiat, ...coinAndToken],
+    fiat,
+    coinAndToken
+  },
+  isFiat: (rate: string) => (fiat as string[]).includes(rate)
+};
+
+// TODO - internationalize
+const ERROR_MESSAGE = 'Could not fetch rate data.';
+const CCApi = 'https://min-api.cryptocompare.com';
+
+const CCRates = (symbols: string[]) => {
+  const tsyms = rateSymbols.symbols.all.concat(symbols as any).join(',');
+  return `${CCApi}/data/price?fsym=ETH&tsyms=${tsyms}`;
+};
+
+export interface CCResponse {
+  [symbol: string]: ISymbol;
 }
 
 interface IRates extends ISymbol {
@@ -45,7 +77,7 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
       return symbols.reduce(
         (eqRates, sym: keyof ISymbol) => {
           if (rates[sym]) {
-            eqRates[sym] = rateSymbols.reduce(
+            eqRates[sym] = rateSymbols.symbols.all.reduce(
               (symRates, rateSym) => {
                 symRates[rateSym] = 1 / rates[sym] * rates[rateSym];
                 return symRates;
