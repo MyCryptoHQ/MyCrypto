@@ -8,6 +8,9 @@
     "target": "es2015",
     "allowJs": true,
     "baseUrl": "./common/",
+    "paths": {
+      "shared*": ["../shared*"]
+    },
     "lib": [
       "es2017",
       "dom"
@@ -20,6 +23,7 @@
   },
   "include": [
     "./common/",
+    "./electron/",
     "spec",
     "./node_modules/types-rlp/index.d.ts"
   ],

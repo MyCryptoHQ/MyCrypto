@@ -2,6 +2,7 @@ import React from 'react';
 import { VERSION } from 'config/data';
 import UpdateModal, { UpdateInfo } from 'components/UpdateModal';
 import { addListener } from 'utils/electron';
+import EVENTS from 'shared/electronEvents';
 import './Version.scss';
 
 interface State {
@@ -16,7 +17,7 @@ export default class Version extends React.Component<{}, State> {
   };
 
   public componentDidMount() {
-    addListener('UPDATE:update-available', updateInfo => {
+    addListener(EVENTS.UPDATE.UPDATE_AVAILABLE, updateInfo => {
       this.setState({ updateInfo });
     });
   }

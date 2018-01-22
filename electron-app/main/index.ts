@@ -1,8 +1,7 @@
-'use strict';
-const { app, shell, BrowserWindow, Menu } = require('electron');
-const path = require('path');
-const updater = require('./updater');
-const MENU = require('./menu');
+import { app, BrowserWindow, Menu } from 'electron';
+import * as path from 'path';
+import updater from './updater';
+import MENU from './menu';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -13,7 +12,7 @@ let mainWindow;
 function createMainWindow() {
   // Construct new BrowserWindow
   const window = new BrowserWindow({
-    titleText: 'MyEtherWallet',
+    title: 'MyEtherWallet',
     backgroundColor: '#fbfbfb',
     width: 1220,
     height: 800,
@@ -25,7 +24,7 @@ function createMainWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.resolve(__dirname, 'preload.js')
     }
   });
 
@@ -48,8 +47,10 @@ function createMainWindow() {
   if (isDevelopment) {
     window.webContents.on('did-fail-load', () => {
       setTimeout(() => {
-        window.webContents.reload()
-      }, 200);
+        if (window && window.webContents) {
+          window.webContents.reload();
+        }
+      }, 500);
     });
   }
 
@@ -72,7 +73,7 @@ app.on('activate', () => {
   // even after all windows have been closed
   if (mainWindow === null) {
     mainWindow = createMainWindow();
-    updater(mainWindow);
+    updater(app, mainWindow);
   }
 });
 
