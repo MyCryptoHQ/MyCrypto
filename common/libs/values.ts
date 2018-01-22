@@ -2,6 +2,7 @@ import { Wei, toTokenBase } from 'libs/units';
 import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import { NetworkKeys } from 'config';
+import { AppState } from 'reducers';
 
 export function stripHexPrefix(value: string) {
   return value.replace('0x', '');
@@ -42,16 +43,16 @@ export function networkIdToName(networkId: string | number): NetworkKeys {
 export const buildEIP681EtherRequest = (
   recipientAddr: string,
   chainId: number,
-  etherValue: { raw: string; value: Wei | '' }
+  etherValue: AppState['transaction']['fields']['value']
 ) => `ethereum:${recipientAddr}${chainId !== 1 ? `@${chainId}` : ''}?value=${etherValue.raw}e18`;
 
 export const buildEIP681TokenRequest = (
   recipientAddr: string,
   contractAddr: string,
   chainId: number,
-  tokenValue: { raw: string; value: Wei | '' },
+  tokenValue: AppState['transaction']['meta']['tokenTo'],
   decimal: number,
-  gasLimit: { raw: string; value: BN | null }
+  gasLimit: AppState['transaction']['fields']['gasLimit']
 ) =>
   `ethereum:${contractAddr}${
     chainId !== 1 ? `@${chainId}` : ''

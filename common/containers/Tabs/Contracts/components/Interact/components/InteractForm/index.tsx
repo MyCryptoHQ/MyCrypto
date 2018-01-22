@@ -9,7 +9,10 @@ import classnames from 'classnames';
 
 interface Props {
   contracts: NetworkContract[];
-  accessContract(abiJson: string, address: string): (ev) => void;
+  accessContract(
+    abiJson: string,
+    address: string
+  ): (ev: React.FormEvent<HTMLButtonElement>) => void;
   resetState(): void;
 }
 
@@ -127,9 +130,11 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
     );
   }
 
-  private handleInput = name => (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  private handleInput = (name: keyof State) => (
+    ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     this.props.resetState();
-    this.setState({ [name]: ev.currentTarget.value });
+    this.setState({ [name as any]: ev.currentTarget.value });
   };
 
   private handleSelectContract = (ev: React.FormEvent<HTMLSelectElement>) => {

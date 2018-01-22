@@ -16,7 +16,8 @@ import {
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig,
-  Web3Service
+  Web3Service,
+  NodeConfigs
 } from 'config';
 import {
   makeCustomNodeId,
@@ -24,6 +25,7 @@ import {
   makeNodeConfigFromCustomConfig
 } from 'utils/node';
 import { makeCustomNetworkId, getNetworkConfigFromId } from 'utils/network';
+import { Omit } from 'react-redux';
 import {
   getNode,
   getNodeConfig,
@@ -133,6 +135,7 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   }
 
   let actionConfig = NODES[action.payload];
+
   if (!actionConfig) {
     const customConfigs: CustomNodeConfig[] = yield select(getCustomNodeConfigs);
     const config = getCustomNodeConfigFromId(action.payload, customConfigs);
@@ -246,10 +249,10 @@ export function* unsetWeb3Node(): SagaIterator {
   yield put(changeNodeIntent(newNode));
 }
 
-export const equivalentNodeOrDefault = (nodeConfig: NodeConfig) => {
-  const node = Object.keys(NODES)
+export const equivalentNodeOrDefault = (nodeConfig: NodeConfig): keyof NodeConfigs => {
+  const node: keyof Omit<NodeConfigs, 'web3'> | '' = Object.keys(NODES)
     .filter(key => key !== 'web3')
-    .reduce((found, key) => {
+    .reduce<keyof Omit<NodeConfigs, 'web3'> | ''>((found, key: keyof Omit<NodeConfigs, 'web3'>) => {
       const config = NODES[key];
       if (found.length) {
         return found;
@@ -261,7 +264,7 @@ export const equivalentNodeOrDefault = (nodeConfig: NodeConfig) => {
     }, '');
 
   // if no equivalent node was found, use the app default
-  return node.length ? node : configInitialState.nodeSelection;
+  return node ? node : (configInitialState.nodeSelection as keyof NodeConfigs);
 };
 
 export default function* configSaga(): SagaIterator {

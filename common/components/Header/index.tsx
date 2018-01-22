@@ -19,7 +19,8 @@ import {
   VERSION,
   NodeConfig,
   CustomNodeConfig,
-  CustomNetworkConfig
+  CustomNetworkConfig,
+  NodeConfigs
 } from 'config';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
@@ -73,37 +74,45 @@ export default class Header extends Component<Props, State> {
     const selectedNetwork = getNetworkConfigFromId(node.network, customNetworks);
     const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
 
-    const nodeOptions = Object.keys(NODES)
-      .map(key => {
-        const n = NODES[key];
-        const network = getNetworkConfigFromId(n.network, customNetworks);
-        return {
-          value: key,
-          name: (
-            <span>
-              {network && network.name} <small>({n.service})</small>
-            </span>
-          ),
-          color: network && network.color,
-          hidden: n.hidden
-        };
-      })
-      .concat(
-        customNodes.map(cn => {
-          const network = getNetworkConfigFromId(cn.network, customNetworks);
-          return {
-            value: makeCustomNodeId(cn),
-            name: (
-              <span>
-                {network && network.name} - {cn.name} <small>(custom)</small>
-              </span>
-            ),
-            color: network && network.color,
-            hidden: false,
-            onRemove: () => this.props.removeCustomNode(cn)
-          };
-        })
-      );
+    const defaultNodeOptions = Object.keys(NODES).map((key: keyof NodeConfigs) => {
+      const n = NODES[key];
+      if (!n) {
+        throw Error(`Node ${key} not found`);
+      }
+      const network = getNetworkConfigFromId(n.network, customNetworks);
+      return {
+        value: key,
+        name: (
+          <span>
+            {network && network.name} <small>({n.service})</small>
+          </span>
+        ),
+        color: network && network.color,
+        hidden: n.hidden
+      };
+    });
+    const customNodeOptions = customNodes.map(cn => {
+      const network = getNetworkConfigFromId(cn.network, customNetworks);
+      return {
+        value: makeCustomNodeId(cn),
+        name: (
+          <span>
+            {network && network.name} - {cn.name} <small>(custom)</small>
+          </span>
+        ),
+        color: network && network.color,
+        hidden: false,
+        onRemove: () => this.props.removeCustomNode(cn)
+      };
+    });
+
+    type DefaultNodeOption = typeof defaultNodeOptions[number];
+    type CustomNodeOption = typeof customNodeOptions[number];
+
+    const nodeOptions: (DefaultNodeOption | CustomNodeOption)[] = [
+      ...defaultNodeOptions,
+      ...customNodeOptions
+    ];
 
     return (
       <div className="Header">

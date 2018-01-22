@@ -215,7 +215,7 @@ export const NETWORKS = {
 
 export type NetworkKeys = keyof typeof NETWORKS;
 
-enum NodeName {
+export enum NodeName {
   ETH_MEW = 'eth_mew',
   ETH_ETHSCAN = 'eth_ethscan',
   ETH_INFURA = 'eth_infura',
@@ -235,7 +235,7 @@ interface Web3NodeConfig {
   web3?: NodeConfig;
 }
 
-type NodeConfigs = NonWeb3NodeConfigs & Web3NodeConfig;
+export type NodeConfigs = NonWeb3NodeConfigs & Web3NodeConfig;
 
 export const NODES: NodeConfigs = {
   eth_mew: {

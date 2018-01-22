@@ -6,7 +6,7 @@ export interface TxObj {
   to: string;
   data: string;
 }
-interface TokenBalanceResult {
+export interface TokenBalanceResult {
   balance: TokenValue;
   error: string | null;
 }

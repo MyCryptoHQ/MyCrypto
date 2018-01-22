@@ -21,6 +21,7 @@ import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
+import { isEtherUnit } from 'libs/units';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -43,7 +44,8 @@ interface ActionProps {
 
 type Props = OwnProps & StateProps & ActionProps;
 
-const isValidAmount = decimal => amount => validNumber(+amount) && validDecimal(amount, decimal);
+const isValidAmount = (decimal: number) => (amount: string) =>
+  validNumber(+amount) && validDecimal(amount, decimal);
 
 class RequestPayment extends React.Component<Props, {}> {
   public state = {
@@ -139,7 +141,9 @@ class RequestPayment extends React.Component<Props, {}> {
   private generateEIP681String(
     currentTo: string,
     tokenContractAddress: string,
-    currentValue,
+    currentValue:
+      | AppState['transaction']['fields']['value']
+      | AppState['transaction']['meta']['tokenTo'],
     gasLimit: { raw: string; value: BN | null },
     unit: string,
     decimal: number,
@@ -155,8 +159,12 @@ class RequestPayment extends React.Component<Props, {}> {
     ) {
       return '';
     }
+    const currentValueIsEther = (
+      u: string,
+      _: AppState['transaction']['fields']['value'] | AppState['transaction']['meta']['tokenTo']
+    ): _ is AppState['transaction']['fields']['value'] => isEtherUnit(u);
 
-    if (unit === 'ether') {
+    if (currentValueIsEther(unit, currentValue)) {
       return buildEIP681EtherRequest(currentTo, chainId, currentValue);
     } else {
       return buildEIP681TokenRequest(

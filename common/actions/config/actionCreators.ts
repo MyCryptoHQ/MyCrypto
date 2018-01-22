@@ -44,7 +44,9 @@ export function pollOfflineStatus(): interfaces.PollOfflineStatus {
 }
 
 export type TChangeNodeIntent = typeof changeNodeIntent;
-export function changeNodeIntent(payload: string): interfaces.ChangeNodeIntentAction {
+export function changeNodeIntent(
+  payload: interfaces.ChangeNodeIntentAction['payload']
+): interfaces.ChangeNodeIntentAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE_INTENT,
     payload

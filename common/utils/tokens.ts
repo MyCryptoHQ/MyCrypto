@@ -6,7 +6,7 @@ export function dedupeCustomTokens(networkTokens: Token[], customTokens: Token[]
   }
 
   // If any tokens have the same symbol or contract address, remove them
-  const tokenCollisionMap = networkTokens.reduce((prev, token) => {
+  const tokenCollisionMap = networkTokens.reduce<{ [tokenKey: string]: boolean }>((prev, token) => {
     prev[token.symbol] = true;
     prev[token.address] = true;
     return prev;

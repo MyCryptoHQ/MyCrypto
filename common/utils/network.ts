@@ -41,7 +41,7 @@ export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): 
 }
 
 export function getNetworkConfigFromId(
-  id: string,
+  id: keyof typeof NETWORKS,
   configs: CustomNetworkConfig[]
 ): NetworkConfig | undefined {
   if (NETWORKS[id]) {
@@ -111,7 +111,9 @@ export function isWalletFormatSupportedOnNetwork(
 }
 
 export function allWalletFormatsSupportedOnNetwork(network: NetworkConfig): WalletName[] {
-  return walletNames.filter(walletName => isWalletFormatSupportedOnNetwork(walletName, network));
+  return walletNames.filter((walletName: WalletName) =>
+    isWalletFormatSupportedOnNetwork(walletName, network)
+  );
 }
 
 export function unSupportedWalletFormatsOnNetwork(network: NetworkConfig): WalletName[] {

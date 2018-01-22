@@ -1,5 +1,11 @@
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config';
+import {
+  NodeConfig,
+  CustomNodeConfig,
+  NetworkConfig,
+  CustomNetworkConfig,
+  NodeConfigs
+} from 'config';
 
 /*** Toggle Offline ***/
 export interface ToggleOfflineAction {
@@ -35,7 +41,7 @@ export interface PollOfflineStatus {
 /*** Change Node ***/
 export interface ChangeNodeIntentAction {
   type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
-  payload: string;
+  payload: keyof NodeConfigs | string;
 }
 
 /*** Add Custom Node ***/

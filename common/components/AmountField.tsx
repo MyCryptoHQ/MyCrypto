@@ -2,6 +2,7 @@ import React from 'react';
 import { AmountFieldFactory } from './AmountFieldFactory';
 import { UnitDropDown } from 'components';
 import translate, { translateRaw } from 'translations';
+import { AppState } from 'reducers';
 
 interface Props {
   hasUnitDropdown?: boolean;
@@ -36,5 +37,10 @@ export const AmountField: React.SFC<Props> = ({
   />
 );
 
-const isAmountValid = (raw, customValidator, isValid) =>
-  customValidator ? customValidator(raw) : isValid;
+const isAmountValid = (
+  raw: (
+    | AppState['transaction']['fields']['value']
+    | AppState['transaction']['meta']['tokenValue'])['raw'],
+  customValidator: ((rawAmount: string) => boolean) | undefined,
+  isValid: boolean
+) => (customValidator ? customValidator(raw) : isValid);
