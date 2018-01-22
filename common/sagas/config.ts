@@ -10,7 +10,14 @@ import {
   select,
   race
 } from 'redux-saga/effects';
-import { NODES, NETWORKS, NodeConfig, CustomNodeConfig, CustomNetworkConfig } from 'config/data';
+import {
+  NODES,
+  NETWORKS,
+  NodeConfig,
+  CustomNodeConfig,
+  CustomNetworkConfig,
+  Web3Service
+} from 'config';
 import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,
@@ -37,12 +44,9 @@ import {
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
-import { IWallet, Web3Wallet } from 'libs/wallet';
-import { getWalletInst } from 'selectors/wallet';
+import { Web3Wallet } from 'libs/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
-import { resetWallet } from 'actions/wallet';
-import { reset as resetTransaction } from 'actions/transaction';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -171,12 +175,18 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   yield put(setLatestBlock(latestBlock));
   yield put(changeNode(action.payload, actionConfig, actionNetwork));
 
-  const currentWallet: IWallet | null = yield select(getWalletInst);
+  // TODO - re-enable once DeterministicWallet state is fixed to flush properly.
+  // DeterministicWallet keeps path related state we need to flush before we can stop reloading
 
+  // const currentWallet: IWallet | null = yield select(getWalletInst);
   // if there's no wallet, do not reload as there's no component state to resync
-  if (currentWallet && currentConfig.network !== actionConfig.network) {
-    yield put(resetWallet());
-    yield put(resetTransaction());
+  // if (currentWallet && currentConfig.network !== actionConfig.network) {
+
+  const isNewNetwork = currentConfig.network !== actionConfig.network;
+  const newIsWeb3 = actionConfig.service === Web3Service;
+  // don't reload when web3 is selected; node will automatically re-set and state is not an issue here
+  if (isNewNetwork && !newIsWeb3) {
+    yield call(reload);
   }
 }
 

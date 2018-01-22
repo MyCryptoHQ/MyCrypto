@@ -1,4 +1,4 @@
-import bityConfig, { WhitelistedCoins } from 'config/bity';
+import { WhitelistedCoins, bityConfig } from 'config';
 import { checkHttpStatus, parseJSON, filter } from './utils';
 import bitcoinIcon from 'assets/images/bitcoin.png';
 import repIcon from 'assets/images/augur.png';

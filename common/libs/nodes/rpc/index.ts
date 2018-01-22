@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { IHexStrTransaction } from 'libs/transaction';
 import { Wei, TokenValue } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';

@@ -1,4 +1,4 @@
-import { gasPriceDefaults, knowledgeBaseURL } from 'config/data';
+import { gasPriceDefaults, knowledgeBaseURL } from 'config';
 import throttle from 'lodash/throttle';
 import React, { Component } from 'react';
 import DropdownShell from 'components/ui/DropdownShell';

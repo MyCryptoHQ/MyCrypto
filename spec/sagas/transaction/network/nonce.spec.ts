@@ -1,10 +1,11 @@
 import { getNonceSucceeded, getNonceFailed, inputNonce } from 'actions/transaction';
-import { apply, put, select } from 'redux-saga/effects';
+import { apply, put, select, fork, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { showNotification } from 'actions/notifications';
-import { handleNonceRequest } from 'sagas/transaction/network/nonce';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { handleNonceRequest, handleNonceRequestWrapper } from 'sagas/transaction/network/nonce';
+import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
+import { TypeKeys as WalletTK } from 'actions/wallet';
 import { Nonce } from 'libs/units';
 
 describe('handleNonceRequest*', () => {
@@ -75,5 +76,26 @@ describe('handleNonceRequest*', () => {
 
   it('should put getNonceSucceeded', () => {
     expect(gens.gen.next().value).toEqual(put(getNonceSucceeded(retrievedNonce)));
+  });
+});
+
+describe('handleNonceRequestWrapper*', () => {
+  const gen = handleNonceRequestWrapper();
+  const nonceRequest = createMockTask();
+
+  it('should fork handleNonceRequest', () => {
+    expect(gen.next().value).toEqual(fork(handleNonceRequest));
+  });
+
+  it('should take on WALLET_SET', () => {
+    expect(gen.next(nonceRequest).value).toEqual(take(WalletTK.WALLET_SET));
+  });
+
+  it('should cancel nonceRequest', () => {
+    expect(gen.next().value).toEqual(cancel(nonceRequest));
+  });
+
+  it('should be done', () => {
+    expect(gen.next().done).toEqual(true);
   });
 });

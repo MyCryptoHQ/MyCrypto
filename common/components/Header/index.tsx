@@ -20,7 +20,7 @@ import {
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig
-} from 'config/data';
+} from 'config';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';

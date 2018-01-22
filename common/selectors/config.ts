@@ -1,11 +1,11 @@
 import {
+  CustomNetworkConfig,
+  CustomNodeConfig,
   NetworkConfig,
   NetworkContract,
   NodeConfig,
-  CustomNodeConfig,
-  CustomNetworkConfig,
   Token
-} from 'config/data';
+} from 'config';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction/meta';

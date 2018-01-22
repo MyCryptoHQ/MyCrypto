@@ -16,7 +16,7 @@ import {
   CustomNodeConfig,
   NetworkConfig,
   CustomNetworkConfig
-} from '../config/data';
+} from 'config';
 import { makeCustomNodeId } from 'utils/node';
 import { makeCustomNetworkId } from 'utils/network';
 

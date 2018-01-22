@@ -1,4 +1,4 @@
-import { NodeConfig } from 'config/data';
+import { NodeConfig } from 'config';
 import React, { Component } from 'react';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';

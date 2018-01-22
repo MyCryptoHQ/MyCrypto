@@ -42,6 +42,12 @@ input[readonly] {
   }
 }
 
+input.form-control,
+select.form-control {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .form-group {
   display: block;
   margin-top: $form-group-margin-bottom * 2;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { MINIMUM_PASSWORD_LENGTH } from 'config/data';
+import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import './EnterPassword.scss';
 import PasswordInput from './PasswordInput';
 import Template from '../Template';
