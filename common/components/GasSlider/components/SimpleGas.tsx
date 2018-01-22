@@ -3,7 +3,6 @@ import Slider from 'rc-slider';
 import translate from 'translations';
 import { gasPriceDefaults } from 'config';
 import FeeSummary from './FeeSummary';
-import { TInputGasPrice } from 'actions/transaction';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
 import { getGasLimitEstimationTimedOut } from 'selectors/transaction';
@@ -13,7 +12,7 @@ import { getIsWeb3Node } from 'selectors/config';
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
-  inputGasPrice: TInputGasPrice;
+  inputGasPrice(rawGas: string);
 }
 
 interface StateProps {
@@ -39,7 +38,7 @@ class SimpleGas extends React.Component<Props> {
           <div className="col-md-12 prompt-toggle-gas-limit">
             <p className="small">
               {isWeb3Node
-                ? "Couldn't calculate gas limit, if you know what your doing, try setting manually in Advanced settings"
+                ? "Couldn't calculate gas limit, if you know what you're doing, try setting manually in Advanced settings"
                 : "Couldn't calculate gas limit, try switching nodes"}
             </p>
           </div>
@@ -62,6 +61,7 @@ class SimpleGas extends React.Component<Props> {
         </div>
         <div className="col-md-4 col-sm-12">
           <FeeSummary
+            gasPrice={gasPrice}
             render={({ fee, usd }) => (
               <span>
                 {fee} {usd && <span>/ ${usd}</span>}

@@ -1,10 +1,13 @@
 import React from 'react';
+import BN from 'bn.js';
 import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
+import debounce from 'lodash/debounce';
 import { inputGasPrice, TInputGasPrice } from 'actions/transaction';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
+import { Units } from 'libs/units';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas from './components/AdvancedGas';
 import './GasSlider.scss';
@@ -29,12 +32,15 @@ type Props = DispatchProps & OwnProps & StateProps;
 
 interface State {
   showAdvanced: boolean;
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
 }
 
 class GasSlider extends React.Component<Props, State> {
   public state: State = {
-    showAdvanced: false
+    showAdvanced: false,
+    gasPrice: this.props.gasPrice
   };
+  private debouncedGasPriceInput = debounce(this.props.inputGasPrice, 300);
 
   public componentDidMount() {
     if (!this.props.offline) {
@@ -46,10 +52,14 @@ class GasSlider extends React.Component<Props, State> {
     if (this.props.offline && !nextProps.offline) {
       this.props.fetchCCRates([this.props.network.unit]);
     }
+    if (this.props.gasPrice !== nextProps.gasPrice) {
+      this.setState({ gasPrice: nextProps.gasPrice });
+    }
   }
 
   public render() {
-    const { offline, disableAdvanced, gasPrice } = this.props;
+    const { offline, disableAdvanced } = this.props;
+    const { gasPrice } = this.state;
     const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
 
     return (
@@ -57,7 +67,7 @@ class GasSlider extends React.Component<Props, State> {
         {showAdvanced ? (
           <AdvancedGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
         ) : (
-          <SimpleGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
+          <SimpleGas gasPrice={gasPrice} inputGasPrice={this.handleGasPriceInput} />
         )}
 
         {!offline &&
@@ -78,6 +88,15 @@ class GasSlider extends React.Component<Props, State> {
 
   private toggleAdvanced = () => {
     this.setState({ showAdvanced: !this.state.showAdvanced });
+  };
+
+  private handleGasPriceInput = (raw: string) => {
+    const gasBn = new BN(raw);
+    const value = gasBn.mul(new BN(Units.gwei));
+    this.setState({
+      gasPrice: { raw, value }
+    });
+    this.debouncedGasPriceInput(raw);
   };
 }
 
