@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
-import { NODES } from 'config/data';
+import { NODES } from 'config';
 import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
 

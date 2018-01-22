@@ -1,7 +1,7 @@
 import { NewTabLink } from 'components/ui';
 import React from 'react';
 import GeneralInfoNode from './GeneralInfoNode';
-import { knowledgeBaseURL } from 'config/data';
+import { knowledgeBaseURL } from 'config';
 import { InfoNode } from './types';
 
 const generalInfoNodes: InfoNode[] = [

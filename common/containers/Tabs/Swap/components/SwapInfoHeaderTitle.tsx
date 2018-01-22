@@ -1,7 +1,7 @@
 import { RestartSwapAction } from 'actions/swap';
 import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
-import { bityReferralURL } from 'config/data';
+import { bityReferralURL } from 'config';
 import React, { Component } from 'react';
 import translate from 'translations';
 import './SwapInfoHeader.scss';

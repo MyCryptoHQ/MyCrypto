@@ -22,3 +22,6 @@ export function getParam(query: { [key: string]: string }, key: string) {
 export function isPositiveInteger(n: number) {
   return Number.isInteger(n) && n > 0;
 }
+
+export const getValues = (...args) =>
+  args.reduce((acc, currArg) => [...acc, ...Object.values(currArg)], []);

@@ -1,5 +1,5 @@
 import { Identicon, UnitDisplay } from 'components/ui';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
@@ -127,11 +127,11 @@ export default class AccountInfo extends React.Component<Props, State> {
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
                   <a
-                    href={blockExplorer.address(address)}
+                    href={blockExplorer.addressUrl(address)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {`${network.name} (${blockExplorer.name})`}
+                    {`${network.name} (${blockExplorer.origin})`}
                   </a>
                 </li>
               )}

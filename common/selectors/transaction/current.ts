@@ -2,7 +2,8 @@ import { getTo, getValue } from './fields';
 import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
-import { getDataExists, getValidGasCost } from 'selectors/transaction';
+import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
+import { getDataExists, getValidGasCost, getGasPrice, getGasLimit } from 'selectors/transaction';
 import { getCurrentBalance } from 'selectors/wallet';
 import { getOffline } from 'selectors/config';
 
@@ -88,6 +89,10 @@ const isValidAmount = (state: AppState): boolean => {
   }
 };
 
+const isValidGasPrice = (state: AppState): boolean => gasPriceValidator(getGasPrice(state).raw);
+
+const isValidGasLimit = (state: AppState): boolean => gasLimitValidator(getGasLimit(state).raw);
+
 export {
   getCurrentValue,
   getCurrentTo,
@@ -95,5 +100,7 @@ export {
   ICurrentTo,
   isEtherTransaction,
   isValidCurrentTo,
-  isValidAmount
+  isValidAmount,
+  isValidGasPrice,
+  isValidGasLimit
 };

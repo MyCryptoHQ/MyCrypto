@@ -1,20 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import translate from 'translations';
+import translate, { TranslateType } from 'translations';
 import WalletDecrypt from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
 import './UnlockHeader.scss';
+import { WalletName } from 'config';
 
 interface Props {
-  title: React.ReactElement<string> | string;
+  title: TranslateType;
   wallet: IWallet;
-  disabledWallets?: string[];
+  disabledWallets?: WalletName[];
 }
+
 interface State {
   isExpanded: boolean;
 }
-export class UnlockHeader extends React.Component<Props, State> {
+
+export class UnlockHeader extends React.PureComponent<Props, State> {
   public state = {
     isExpanded: !this.props.wallet
   };
@@ -57,7 +60,7 @@ export class UnlockHeader extends React.Component<Props, State> {
     );
   }
 
-  public toggleisExpanded = () => {
+  public toggleisExpanded = (_: React.FormEvent<HTMLButtonElement>) => {
     this.setState(state => {
       return { isExpanded: !state.isExpanded };
     });

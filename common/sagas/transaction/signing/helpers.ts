@@ -12,7 +12,7 @@ import {
   TypeKeys as TK
 } from 'actions/transaction';
 import Tx from 'ethereumjs-tx';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { SagaIterator } from 'redux-saga';
 import { showNotification } from 'actions/notifications';
 

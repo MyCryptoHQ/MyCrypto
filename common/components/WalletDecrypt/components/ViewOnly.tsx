@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { donationAddressMap } from 'config/data';
+import { donationAddressMap } from 'config';
 import { isValidETHAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
 

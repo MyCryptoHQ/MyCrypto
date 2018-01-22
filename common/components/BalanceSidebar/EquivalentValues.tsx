@@ -4,10 +4,10 @@ import { UnitDisplay, Spinner } from 'components/ui';
 import Select from 'react-select';
 import { TFetchCCRates, rateSymbols } from 'actions/rates';
 import { chain, flatMap } from 'lodash';
-import { NetworkConfig } from 'config/data';
 import { State as RatesState } from 'reducers/rates';
 import { TokenBalance } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
+import { NetworkConfig } from 'config';
 import './EquivalentValues.scss';
 import { Wei } from 'libs/units';
 

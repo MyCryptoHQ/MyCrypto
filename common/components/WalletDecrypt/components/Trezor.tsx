@@ -1,4 +1,3 @@
-import DPATHS from 'config/dpaths';
 import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
@@ -6,11 +5,23 @@ import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
 import { Spinner } from 'components/ui';
-const DEFAULT_PATH = DPATHS.TREZOR[0].value;
+import { getNetworkConfig } from 'selectors/config';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
+import { SecureWalletName } from 'config';
+import { DPath } from 'config/dpaths';
+import { getPaths, getSingleDPath } from 'utils/network';
 
-interface Props {
+//todo: conflicts with comment in walletDecrypt -> onUnlock method
+interface OwnProps {
   onUnlock(param: any): void;
 }
+
+interface StateProps {
+  dPath: DPath;
+}
+
+// todo: nearly duplicates ledger component props
 interface State {
   publicKey: string;
   chainCode: string;
@@ -19,11 +30,13 @@ interface State {
   isLoading: boolean;
 }
 
-export class TrezorDecrypt extends Component<Props, State> {
+type Props = OwnProps & StateProps;
+
+class TrezorDecryptClass extends Component<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: DEFAULT_PATH,
+    dPath: this.props.dPath.value,
     error: null,
     isLoading: false
   };
@@ -76,7 +89,7 @@ export class TrezorDecrypt extends Component<Props, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={DPATHS.TREZOR}
+          dPaths={getPaths(SecureWalletName.TREZOR)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -133,7 +146,16 @@ export class TrezorDecrypt extends Component<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: DEFAULT_PATH
+      dPath: this.props.dPath.value
     });
   }
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  const network = getNetworkConfig(state);
+  return {
+    dPath: getSingleDPath(SecureWalletName.TREZOR, network)
+  };
+}
+
+export const TrezorDecrypt = connect(mapStateToProps)(TrezorDecryptClass);

@@ -15,7 +15,7 @@ import {
 } from 'actions/wallet';
 import { getAllTokens } from 'selectors/config';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';

@@ -6,7 +6,7 @@ import {
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
-import { bityReferralURL, shapeshiftReferralURL } from 'config/data';
+import { bityReferralURL, shapeshiftReferralURL } from 'config';
 import React, { Component } from 'react';
 import translate from 'translations';
 import './CurrentRates.scss';
