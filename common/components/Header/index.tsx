@@ -16,7 +16,6 @@ import {
   ANNOUNCEMENT_TYPE,
   languages,
   NODES,
-  VERSION,
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig
@@ -25,6 +24,7 @@ import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
+import Version from './components/Version';
 import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
@@ -128,7 +128,9 @@ export default class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
+              <span className="Header-branding-right-version hidden-xs">
+                <Version />
+              </span>
 
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
