@@ -1,6 +1,6 @@
 import { gasPriceDefaults, knowledgeBaseURL } from 'config';
 import throttle from 'lodash/throttle';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import DropdownShell from 'components/ui/DropdownShell';
 import './GasPriceDropdown.scss';
 import { SetGasLimitFieldAction } from 'actions/transaction';
@@ -11,7 +11,7 @@ interface Props {
   onChange(payload: SetGasLimitFieldAction['payload']): void;
 }
 
-export default class GasPriceDropdown extends Component<Props> {
+export default class GasPriceDropdown extends PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     this.updateGasPrice = throttle(this.updateGasPrice, 50);
