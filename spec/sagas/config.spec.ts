@@ -9,9 +9,10 @@ import {
   handleNodeChangeIntent,
   unsetWeb3Node,
   unsetWeb3NodeOnWalletEvent,
-  equivalentNodeOrDefault
+  equivalentNodeOrDefault,
+  reload
 } from 'sagas/config';
-import { NODES, NodeConfig, NETWORKS } from 'config/data';
+import { NODES, NodeConfig, NETWORKS } from 'config';
 import {
   getNode,
   getNodeConfig,
@@ -20,13 +21,10 @@ import {
   getCustomNetworkConfigs
 } from 'selectors/config';
 import { INITIAL_STATE as configInitialState } from 'reducers/config';
-import { getWalletInst } from 'selectors/wallet';
 import { Web3Wallet } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
-import { resetWallet } from 'actions/wallet';
-import { reset as resetTransaction } from 'actions/transaction';
 // init module
 configuredStore.getState();
 
@@ -143,12 +141,12 @@ describe('handleNodeChangeIntent*', () => {
   const customNetworkConfigs = [];
   const defaultNodeNetwork = NETWORKS[defaultNodeConfig.network];
   const newNode = Object.keys(NODES).reduce(
-    (acc, cur) => (NODES[acc].network === defaultNodeConfig.network ? cur : acc)
+    (acc, cur) => (NODES[cur].network !== defaultNodeConfig.network ? cur : acc)
   );
   const newNodeConfig = NODES[newNode];
   const newNodeNetwork = NETWORKS[newNodeConfig.network];
+
   const changeNodeIntentAction = changeNodeIntent(newNode);
-  const truthyWallet = true;
   const latestBlock = '0xa';
   const raceSuccess = {
     lb: latestBlock
@@ -208,15 +206,9 @@ describe('handleNodeChangeIntent*', () => {
     );
   });
 
-  it('should select getWalletInst', () => {
-    expect(data.gen.next().value).toEqual(select(getWalletInst));
-  });
-
-  it('should call reload if wallet exists and network is new', () => {
-    data.clone2 = data.gen.clone();
-    expect(data.clone2.next(truthyWallet).value).toEqual(put(resetWallet()));
-    expect(data.clone2.next(truthyWallet).value).toEqual(put(resetTransaction()));
-    expect(data.clone2.next().done).toEqual(true);
+  it('should call reload if network is new', () => {
+    expect(data.gen.next().value).toEqual(call(reload));
+    expect(data.gen.next().done).toEqual(true);
   });
 
   it('should be done', () => {
@@ -366,7 +358,7 @@ describe('equivalentNodeOrDefault', () => {
     const node = equivalentNodeOrDefault({
       ...mockNodeConfig,
       network: 'noEqivalentExists'
-    });
+    } as any);
     expect(node).toEqual(appDefaultNode);
   });
 
@@ -374,12 +366,12 @@ describe('equivalentNodeOrDefault', () => {
     NODES.web3 = {
       ...mockNodeConfig,
       network: 'uniqueToWeb3'
-    };
+    } as any;
 
     const node = equivalentNodeOrDefault({
       ...mockNodeConfig,
       network: 'uniqueToWeb3'
-    });
+    } as any);
     expect(node).toEqual(appDefaultNode);
   });
 });

@@ -1,15 +1,23 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
-import DPATHS from 'config/dpaths';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
-
-const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
+import { InsecureWalletName } from 'config';
+import { AppState } from 'reducers';
+import { getNetworkConfig } from 'selectors/config';
+import { connect } from 'react-redux';
+import { DPath } from 'config/dpaths';
+import { getPaths, getSingleDPath } from 'utils/network';
 
 interface Props {
   onUnlock(param: any): void;
 }
+
+interface StateProps {
+  dPath: DPath;
+}
+
 interface State {
   phrase: string;
   formattedPhrase: string;
@@ -18,13 +26,13 @@ interface State {
   dPath: string;
 }
 
-export class MnemonicDecrypt extends Component<Props, State> {
+class MnemonicDecryptClass extends Component<Props & StateProps, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',
     pass: '',
     seed: '',
-    dPath: DEFAULT_PATH
+    dPath: this.props.dPath.value
   };
 
   public render() {
@@ -70,7 +78,7 @@ export class MnemonicDecrypt extends Component<Props, State> {
           isOpen={!!seed}
           seed={seed}
           dPath={dPath}
-          dPaths={DPATHS.MNEMONIC}
+          dPaths={getPaths(InsecureWalletName.MNEMONIC_PHRASE)}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -135,3 +143,12 @@ export class MnemonicDecrypt extends Component<Props, State> {
     });
   };
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  const network = getNetworkConfig(state);
+  return {
+    dPath: getSingleDPath(InsecureWalletName.MNEMONIC_PHRASE, network)
+  };
+}
+
+export const MnemonicDecrypt = connect(mapStateToProps)(MnemonicDecryptClass);

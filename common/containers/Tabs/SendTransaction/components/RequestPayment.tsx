@@ -12,7 +12,7 @@ import {
   ICurrentValue
 } from 'selectors/transaction/current';
 import BN from 'bn.js';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { validNumber, validDecimal } from 'libs/validators';
 import { getGasLimit } from 'selectors/transaction';
 import { AddressField, AmountField, GasLimitField } from 'components';

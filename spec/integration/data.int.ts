@@ -1,4 +1,4 @@
-import { NODES, NodeConfig } from '../../common/config/data';
+import { NODES, NodeConfig } from 'config';
 import { RPCNode } from '../../common/libs/nodes';
 import { Validator } from 'jsonschema';
 import { schema } from '../../common/libs/validators';

@@ -3,6 +3,7 @@ import { GasLimitFieldFactory } from './GasLimitFieldFactory';
 import translate from 'translations';
 import { CSSTransition } from 'react-transition-group';
 import { Spinner } from 'components/ui';
+import { gasLimitValidator } from 'libs/validators';
 
 interface Props {
   includeLabel: boolean;
@@ -25,12 +26,12 @@ export const GasLimitField: React.SFC<Props> = ({ includeLabel, onlyIncludeLoade
     {includeLabel ? <label>{translate('TRANS_gas')} </label> : null}
 
     <GasLimitFieldFactory
-      withProps={({ gasLimit: { raw, value }, onChange, readOnly, gasEstimationPending }) => (
+      withProps={({ gasLimit: { raw }, onChange, readOnly, gasEstimationPending }) => (
         <>
           <GaslimitLoading gasEstimationPending={gasEstimationPending} />
           {onlyIncludeLoader ? null : (
             <input
-              className={`form-control ${!!value ? 'is-valid' : 'is-invalid'}`}
+              className={`form-control ${gasLimitValidator(raw) ? 'is-valid' : 'is-invalid'}`}
               type="number"
               placeholder="e.g. 21000"
               readOnly={!!readOnly}

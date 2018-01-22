@@ -1,6 +1,7 @@
 import { Wei, toTokenBase } from 'libs/units';
 import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
+import { NetworkKeys } from 'config';
 
 export function stripHexPrefix(value: string) {
   return value.replace('0x', '');
@@ -23,7 +24,7 @@ export function sanitizeHex(hex: string) {
   return hex !== '' ? `0x${padLeftEven(hexStr)}` : '';
 }
 
-export function networkIdToName(networkId: string | number): string {
+export function networkIdToName(networkId: string | number): NetworkKeys {
   switch (networkId.toString()) {
     case '1':
       return 'ETH';
@@ -57,3 +58,19 @@ export const buildEIP681TokenRequest = (
   }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue.raw, decimal)}&gas=${
     gasLimit.raw
   }`;
+
+export const sanitizeNumericalInput = (input: string): string => {
+  const inputFloat = parseFloat(input);
+
+  if (!input || isNaN(inputFloat)) {
+    return input;
+  }
+
+  // limit input field decrement to 0
+  if (inputFloat === -1) {
+    return '0';
+  }
+
+  // convert negative values to positive
+  return Math.abs(inputFloat).toString();
+};

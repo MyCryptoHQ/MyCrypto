@@ -1,13 +1,16 @@
+import BN from 'bn.js';
 import { call, put } from 'redux-saga/effects';
 import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
-import { isValidHex, isValidNonce } from 'libs/validators';
-import { Data, Wei, Nonce } from 'libs/units';
+import { isValidHex, isValidNonce, gasPriceValidator, gasLimitValidator } from 'libs/validators';
+import { Data, Wei, Nonce, gasPricetoBase } from 'libs/units';
 import {
   handleDataInput,
   handleGasLimitInput,
-  handleNonceInput
+  handleNonceInput,
+  handleGasPriceInput
 } from 'sagas/transaction/fields/fields';
 import { cloneableGenerator } from 'redux-saga/utils';
+import { setGasPriceField } from 'actions/transaction';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -54,38 +57,86 @@ describe('handleDataInput*', () => {
 });
 
 describe('handleGasLimitInput*', () => {
-  const payload1 = 'invalidPayload';
-  const action1: any = { payload: payload1 };
-  const payload2 = '100.111';
-  const action2: any = { payload: payload2 };
+  const payload = '100.111';
+  const action: any = { payload };
 
-  const gen1 = handleGasLimitInput(action1);
-  const gen2 = handleGasLimitInput(action2);
+  const gens: any = {};
+  gens.gen = cloneableGenerator(handleGasLimitInput)(action);
 
-  it('should put setNonceField with null value when payload is invalid', () => {
-    expect(gen1.next().value).toEqual(
+  it('should call gasLimitValidator', () => {
+    expect(gens.gen.next().value).toEqual(call(gasLimitValidator, payload));
+  });
+
+  it('should put setGasLimitField with null value when payload is invalid', () => {
+    gens.gen.invalid = gens.gen.clone();
+    expect(gens.gen.invalid.next(false).value).toEqual(
       put(
         setGasLimitField({
-          raw: payload1,
+          raw: payload,
           value: null
         })
       )
     );
   });
 
-  it('should put setNonceField with Wei value', () => {
-    expect(gen2.next().value).toEqual(
+  it('should put setGasLimitField with Wei value', () => {
+    gens.gen.valid = gens.gen.clone();
+    expect(gens.gen.valid.next(true).value).toEqual(
       put(
         setGasLimitField({
-          raw: payload2,
-          value: Wei(payload2)
+          raw: payload,
+          value: Wei(payload)
         })
       )
     );
   });
 
-  itShouldBeDone(gen1);
-  itShouldBeDone(gen2);
+  it('should be done', () => {
+    expect(gens.gen.invalid.next().done).toEqual(true);
+    expect(gens.gen.valid.next().done).toEqual(true);
+  });
+});
+
+describe('handleGasPriceInput*', () => {
+  const payload = '100.111';
+  const action: any = { payload };
+  const priceFloat = parseFloat(payload);
+
+  const gens: any = {};
+  gens.gen = cloneableGenerator(handleGasPriceInput)(action);
+
+  it('should call gasPriceValidator', () => {
+    expect(gens.gen.next().value).toEqual(call(gasPriceValidator, priceFloat));
+  });
+
+  it('should put setGasPriceField with 0 value when payload is invalid', () => {
+    gens.gen.invalid = gens.gen.clone();
+    expect(gens.gen.invalid.next(false).value).toEqual(
+      put(
+        setGasPriceField({
+          raw: payload,
+          value: new BN(0)
+        })
+      )
+    );
+  });
+
+  it('should put setGasPriceField with base gas price value', () => {
+    gens.gen.valid = gens.gen.clone();
+    expect(gens.gen.valid.next(true).value).toEqual(
+      put(
+        setGasPriceField({
+          raw: payload,
+          value: gasPricetoBase(priceFloat)
+        })
+      )
+    );
+  });
+
+  it('should be done', () => {
+    expect(gens.gen.invalid.next().done).toEqual(true);
+    expect(gens.gen.valid.next().done).toEqual(true);
+  });
 });
 
 describe('handleNonceInput*', () => {
