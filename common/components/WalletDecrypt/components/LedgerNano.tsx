@@ -155,11 +155,11 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
           });
         })
         .catch(err => {
-          if (err.metaData && err.metaData.code === 5) {
+          if (err && err.metaData && err.metaData.code === 5) {
             this.showTip();
           }
           this.setState({
-            error: err.metaData ? err.metaData.type : err,
+            error: err && err.metaData ? err.metaData.type : err.toString(),
             isLoading: false
           });
         });
