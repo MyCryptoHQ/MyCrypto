@@ -15,7 +15,7 @@ interface State {
   activePromo: number;
 }
 
-export default class Promos extends React.Component<{}, State> {
+export default class Promos extends React.PureComponent<{}, State> {
   public timer: any = null;
 
   public state = {
