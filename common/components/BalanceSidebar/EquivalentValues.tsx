@@ -1,33 +1,51 @@
 import * as React from 'react';
 import BN from 'bn.js';
 import translate from 'translations';
-import { State } from 'reducers/rates';
-import { rateSymbols, TFetchCCRates } from 'actions/rates';
-import { TokenBalance } from 'selectors/wallet';
+import { rateSymbols, TFetchCCRates, fetchCCRates } from 'actions/rates';
+import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
 import { NetworkConfig } from 'config/data';
 import { ETH_DECIMAL, convertTokenBase } from 'libs/units';
+import { connect } from 'react-redux';
+import { AppState } from 'reducers';
 import Spinner from 'components/ui/Spinner';
 import UnitDisplay from 'components/ui/UnitDisplay';
 import './EquivalentValues.scss';
+import { getNetworkConfig } from 'selectors/config';
 
 const ALL_OPTION = 'All';
 
-interface Props {
-  balance?: Balance;
-  tokenBalances?: TokenBalance[];
-  rates: State['rates'];
-  ratesError?: State['ratesError'];
-  fetchCCRates: TFetchCCRates;
+interface StateProps {
+  balance: Balance;
   network: NetworkConfig;
-  isOffline: boolean;
+  tokenBalances: TokenBalance[];
+  rates: AppState['rates']['rates'];
+  ratesError: AppState['rates']['ratesError'];
+  isOffline: AppState['config']['offline'];
+}
+
+interface DispatchProps {
+  fetchCCRates: TFetchCCRates;
 }
 
 interface CmpState {
   currency: string;
 }
 
-export default class EquivalentValues extends React.Component<Props, CmpState> {
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    balance: state.wallet.balance,
+    tokenBalances: getShownTokenBalances(state, true),
+    network: getNetworkConfig(state),
+    rates: state.rates.rates,
+    ratesError: state.rates.ratesError,
+    isOffline: state.config.offline
+  };
+}
+
+type Props = StateProps & DispatchProps;
+
+class EquivalentValues extends React.Component<Props, CmpState> {
   public state = {
     currency: ALL_OPTION
   };
@@ -224,3 +242,5 @@ export default class EquivalentValues extends React.Component<Props, CmpState> {
     }, {});
   }
 }
+
+export default connect(mapStateToProps, { fetchCCRates })(EquivalentValues);
