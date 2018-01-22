@@ -20,8 +20,13 @@ const initialState: State = {
   signature: ''
 };
 
-const signaturePlaceholder =
-  '{"address":"0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8","message":"asdfasdfasdf","signature":"0x4771d78f13ba8abf608457f12471f427ca8f2fb046c1acb3f5969eefdfe452a10c9154136449f595a654b44b3b0163e86dd099beaca83bfd52d64c21da2221bb1c","version":"2"}';
+const signatureExample: ISignedMessage = {
+  address: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
+  msg: 'asdfasdfasdf',
+  sig: '0x4771d78f13ba...',
+  version: '2'
+};
+const signaturePlaceholder = JSON.stringify(signatureExample, null, 2);
 
 export class VerifyMessage extends Component<Props, State> {
   public state: State = initialState;
@@ -82,10 +87,10 @@ export class VerifyMessage extends Component<Props, State> {
         throw Error();
       }
 
-      const { address, message } = parsedSignature;
+      const { address, msg } = parsedSignature;
       this.setState({
         verifiedAddress: address,
-        verifiedMessage: message
+        verifiedMessage: msg
       });
       this.props.showNotification('success', translate('SUCCESS_7'));
     } catch (err) {
