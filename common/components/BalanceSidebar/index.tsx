@@ -7,9 +7,9 @@ import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { getShownTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
-import EquivalentValues from './EquivalentValues';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
+import EquivalentValues from 'components/BalanceSidebar/EquivalentValues';
 
 interface Props {
   wallet: IWallet;
@@ -54,13 +54,13 @@ export class BalanceSidebar extends React.Component<Props, {}> {
         name: 'Equivalent Values',
         content: (
           <EquivalentValues
-            network={network}
-            balance={balance}
-            tokenBalances={tokenBalances}
+            offline={isOffline}
             rates={rates}
+            balance={balance}
+            network={network}
+            tokenBalances={tokenBalances}
             ratesError={ratesError}
             fetchCCRates={this.props.fetchCCRates}
-            isOffline={isOffline}
           />
         )
       }

@@ -2,42 +2,43 @@
 @import 'common/sass/mixins';
 
 .EquivalentValues {
-  &-title {
-    margin-top: 0;
+  &-header {
+    display: flex;
+    align-items: center;
     margin-bottom: $space;
+
+    .Select {
+      flex-grow: 1;
+    }
+  }
+
+  .Spinner {
+    display: block;
+    margin: auto;
+  }
+
+  &-title {
+    margin: 0;
+    margin-right: 16px;
   }
 
   &-values {
-    list-style: none;
-    padding: 0;
-    @include clearfix;
-
+    display: flex;
+    flex-wrap: wrap;
     &-currency {
-      float: left;
       width: 50%;
       margin-bottom: $space-xs;
-
-      &:nth-child(odd) {
-        padding-right: $space-sm;
-      }
-      &:nth-child(even) {
-        padding-left: $space-sm;
-      }
-
       &-label {
         white-space: pre-wrap;
         display: inline-block;
         min-width: 36px;
+        opacity: 0.54;
+        margin-right: 8px;
       }
       &-value {
         font-weight: 600;
         @include mono;
       }
-    }
-
-    &-loader {
-      padding: 25px 0;
-      text-align: center;
     }
   }
 
