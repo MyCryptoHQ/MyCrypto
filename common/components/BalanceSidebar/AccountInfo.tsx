@@ -17,7 +17,7 @@ interface State {
   address: string;
   confirmAddr: boolean;
 }
-export default class AccountInfo extends React.Component<Props, State> {
+export default class AccountInfo extends React.PureComponent<Props, State> {
   public state = {
     showLongBalance: false,
     address: '',

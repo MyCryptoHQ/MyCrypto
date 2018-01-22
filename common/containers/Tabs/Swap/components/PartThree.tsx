@@ -9,7 +9,7 @@ import {
   TStopPollShapeshiftOrderStatus
 } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
 import SwapProgress from './SwapProgress';
@@ -39,7 +39,7 @@ interface ReduxActionProps {
   showNotification: TShowNotification;
 }
 
-export default class PartThree extends Component<ReduxActionProps & ReduxStateProps, {}> {
+export default class PartThree extends PureComponent<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
     const { provider } = this.props;
     if (provider === 'shapeshift') {

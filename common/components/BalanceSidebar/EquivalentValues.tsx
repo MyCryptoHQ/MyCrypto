@@ -41,7 +41,7 @@ interface Props {
   offline: boolean;
 }
 
-class Equiv extends React.Component<Props, State> {
+class Equiv extends React.PureComponent<Props, State> {
   private requestedCurrencies: string[] | null = null;
   public constructor(props: Props) {
     super(props);
