@@ -4,9 +4,12 @@ import shapeshiftSvg from 'assets/images/logo-shapeshift.svg';
 
 export default () => (
   <div className="ShapeshiftBanner">
-    <p>
-      <b style={{ paddingRight: '8px' }}>New Feature: </b>Exchange coins & tokens
-    </p>
-    <img src={shapeshiftSvg} />
+    <div className="ShapeshiftBanner-banner">
+      <p>
+        <b className="ShapeshiftBanner-banner-new">New Feature:</b>
+        Exchange coins & tokens with
+      </p>
+      <img src={shapeshiftSvg} />
+    </div>
   </div>
 );
