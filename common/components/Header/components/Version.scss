@@ -1,0 +1,61 @@
+@import 'common/sass/variables';
+
+@keyframes new-update-popin {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes new-update-glow {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  },
+  80%, 100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+}
+
+.Version {
+  position: relative;
+
+  &-text {
+    &.has-update:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  &-new {
+    position: absolute;
+    top: 0px;
+    left: -12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    background: $brand-warning;
+    animation: new-update-popin 500ms ease 1;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      box-shadow: 0 0 3px $brand-warning;
+      animation: new-update-glow 1200ms ease infinite;
+    }
+  }
+}

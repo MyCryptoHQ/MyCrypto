@@ -1,26 +1,11 @@
-import { fetchCCRates, TFetchCCRates } from 'actions/rates';
-import { NetworkConfig } from 'config';
-import { IWallet, Balance } from 'libs/wallet';
 import React from 'react';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
-import { getShownTokenBalances, getWalletInst, TokenBalance } from 'selectors/wallet';
 import AccountInfo from './AccountInfo';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import EquivalentValues from 'components/BalanceSidebar/EquivalentValues';
-
-interface Props {
-  wallet: IWallet;
-  balance: Balance;
-  network: NetworkConfig;
-  tokenBalances: TokenBalance[];
-  rates: AppState['rates']['rates'];
-  ratesError: AppState['rates']['ratesError'];
-  fetchCCRates: TFetchCCRates;
-  isOffline: AppState['config']['offline'];
-}
+import { AppState } from 'reducers';
+import { getWalletInst } from 'selectors/wallet';
+import { connect } from 'react-redux';
+import EquivalentValues from './EquivalentValues';
 
 interface Block {
   name: string;
@@ -28,9 +13,13 @@ interface Block {
   isFullWidth?: boolean;
 }
 
-export class BalanceSidebar extends React.Component<Props, {}> {
+interface StateProps {
+  wallet: AppState['wallet']['inst'];
+}
+
+export class BalanceSidebar extends React.Component<StateProps> {
   public render() {
-    const { wallet, balance, network, tokenBalances, rates, ratesError, isOffline } = this.props;
+    const { wallet } = this.props;
 
     if (!wallet) {
       return null;
@@ -39,7 +28,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
     const blocks: Block[] = [
       {
         name: 'Account Info',
-        content: <AccountInfo wallet={wallet} balance={balance} network={network} />
+        content: <AccountInfo wallet={wallet} />
       },
       {
         name: 'Promos',
@@ -52,17 +41,7 @@ export class BalanceSidebar extends React.Component<Props, {}> {
       },
       {
         name: 'Equivalent Values',
-        content: (
-          <EquivalentValues
-            offline={isOffline}
-            rates={rates}
-            balance={balance}
-            network={network}
-            tokenBalances={tokenBalances}
-            ratesError={ratesError}
-            fetchCCRates={this.props.fetchCCRates}
-          />
-        )
+        content: <EquivalentValues />
       }
     ];
 
@@ -78,18 +57,6 @@ export class BalanceSidebar extends React.Component<Props, {}> {
   }
 }
 
-function mapStateToProps(state: AppState) {
-  return {
-    wallet: getWalletInst(state),
-    balance: state.wallet.balance,
-    tokenBalances: getShownTokenBalances(state, true),
-    network: getNetworkConfig(state),
-    rates: state.rates.rates,
-    ratesError: state.rates.ratesError,
-    isOffline: state.config.offline
-  };
-}
+const mapStateToProps = (state: AppState): StateProps => ({ wallet: getWalletInst(state) });
 
-export default connect(mapStateToProps, {
-  fetchCCRates
-})(BalanceSidebar);
+export default connect(mapStateToProps)(BalanceSidebar);

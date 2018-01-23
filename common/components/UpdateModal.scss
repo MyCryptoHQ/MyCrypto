@@ -1,0 +1,62 @@
+@import 'common/sass/variables';
+
+.UpdateModal {
+  cursor: default;
+  @media (min-width: 680px) {
+    min-width: 680px;
+  }
+
+  &-title {
+    margin-top: 0;
+    margin-bottom: $space-xs;
+  }
+
+  &-date {
+    font-size: $font-size-small;
+    color: $gray;
+    padding-bottom: $space-sm;
+    border-bottom: 1px solid $gray-lighter;
+  }
+
+  &-downloader {
+    padding: 50px 30px 80px;
+    text-align: center;
+
+    &-bar {
+      position: relative;
+      margin: 0 20px;
+      height: 16px;
+      border-radius: 4px;
+      background: $gray-lighter;
+      margin-bottom: $space-sm;
+
+      &-inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        border-radius: 4px;
+        background: $brand-primary;
+        transition: width 100ms ease;
+      }
+    }
+
+    &-info {
+      color: $gray-light;
+      font-size: $font-size-xs;
+
+      &-bit {
+        &:after {
+          display: inline-block;
+          content: "•";
+          padding: 0 $space-xs;
+          opacity: 0.8;
+        }
+
+        &:last-child:after {
+          display: none;
+        }
+      }
+    }
+  }
+}

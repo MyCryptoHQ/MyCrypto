@@ -13,6 +13,7 @@ import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
+import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
@@ -73,12 +74,16 @@ export default class Root extends Component<Props, State> {
       </CaptureRouteNotFound>
     );
 
-    const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+    const Router =
+      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
+        ? HashRouter
+        : BrowserRouter;
 
     return (
       <Provider store={store} key={Math.random()}>
         <Router key={Math.random()}>
           <React.Fragment>
+            {process.env.BUILD_ELECTRON && <TitleBar />}
             {routes}
             <LegacyRoutes />
             <LogOutPrompt />

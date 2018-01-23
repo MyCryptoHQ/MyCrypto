@@ -2,14 +2,16 @@ import React from 'react';
 import translate from 'translations';
 import { UnitDisplay, Spinner } from 'components/ui';
 import Select from 'react-select';
-import { TFetchCCRates, rateSymbols } from 'actions/rates';
+import { TFetchCCRates, fetchCCRates, rateSymbols } from 'actions/rates';
 import { chain, flatMap } from 'lodash';
-import { State as RatesState } from 'reducers/rates';
-import { TokenBalance } from 'selectors/wallet';
+import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
 import { NetworkConfig } from 'config';
 import './EquivalentValues.scss';
 import { Wei } from 'libs/units';
+import { AppState } from 'reducers';
+import { getNetworkConfig } from 'selectors/config';
+import { connect } from 'react-redux';
 
 interface AllValue {
   symbol: string;
@@ -31,18 +33,24 @@ interface State {
   options: Option[];
 }
 
-interface Props {
+interface StateProps {
   balance: Balance;
-  tokenBalances: TokenBalance[];
-  rates: RatesState['rates'];
-  fetchCCRates: TFetchCCRates;
-  ratesError: RatesState['ratesError'];
   network: NetworkConfig;
-  offline: boolean;
+  tokenBalances: TokenBalance[];
+  rates: AppState['rates']['rates'];
+  ratesError: AppState['rates']['ratesError'];
+  isOffline: AppState['config']['offline'];
 }
 
-class Equiv extends React.Component<Props, State> {
+interface DispatchProps {
+  fetchCCRates: TFetchCCRates;
+}
+
+type Props = StateProps & DispatchProps;
+
+class EquivalentValues extends React.Component<Props, State> {
   private requestedCurrencies: string[] | null = null;
+
   public constructor(props: Props) {
     super(props);
     const { balance, tokenBalances, network } = this.props;
@@ -68,11 +76,11 @@ class Equiv extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    const { balance, tokenBalances, offline } = this.props;
+    const { balance, tokenBalances, isOffline } = this.props;
     if (
       nextProps.balance !== balance ||
       nextProps.tokenBalances !== tokenBalances ||
-      nextProps.offline !== offline
+      nextProps.isOffline !== isOffline
     ) {
       const defaultOption = this.defaultOption(
         nextProps.balance,
@@ -101,7 +109,7 @@ class Equiv extends React.Component<Props, State> {
   };
 
   public render(): JSX.Element {
-    const { balance, offline, tokenBalances, rates, network, ratesError } = this.props;
+    const { balance, isOffline, tokenBalances, rates, network, ratesError } = this.props;
     const { equivalentValues, options } = this.state;
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
@@ -135,7 +143,7 @@ class Equiv extends React.Component<Props, State> {
           />
         </div>
 
-        {offline ? (
+        {isOffline ? (
           <div className="EquivalentValues-offline well well-sm">
             Equivalent values are unavailable offline
           </div>
@@ -221,9 +229,9 @@ class Equiv extends React.Component<Props, State> {
   };
 
   private fetchRates(props: Props) {
-    const { balance, tokenBalances, offline, fetchCCRates } = props;
+    const { balance, tokenBalances, isOffline } = props;
     // Duck out if we haven't gotten balances yet, or we're not going to
-    if (!balance || !tokenBalances || offline) {
+    if (!balance || !tokenBalances || isOffline) {
       return;
     }
 
@@ -239,9 +247,20 @@ class Equiv extends React.Component<Props, State> {
     }
 
     // Fire off the request and save the currencies requested
-    fetchCCRates(currencies);
+    props.fetchCCRates(currencies);
     this.requestedCurrencies = currencies;
   }
 }
 
-export default Equiv;
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    balance: state.wallet.balance,
+    tokenBalances: getShownTokenBalances(state, true),
+    network: getNetworkConfig(state),
+    rates: state.rates.rates,
+    ratesError: state.rates.ratesError,
+    isOffline: state.config.offline
+  };
+}
+
+export default connect(mapStateToProps, { fetchCCRates })(EquivalentValues);
