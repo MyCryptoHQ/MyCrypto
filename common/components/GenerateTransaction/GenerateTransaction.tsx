@@ -21,7 +21,6 @@ interface StateProps {
   validAmount: boolean;
   validGasPrice: boolean;
   validGasLimit: boolean;
-  checkValidAmount?: boolean;
 }
 
 class GenerateTransactionClass extends Component<StateProps> {
@@ -33,14 +32,13 @@ class GenerateTransactionClass extends Component<StateProps> {
       networkRequestPending,
       validAmount,
       validGasPrice,
-      validGasLimit,
-      checkValidAmount
+      validGasLimit
     } = this.props;
 
     const isButtonDisabled =
       !isFullTransaction ||
       networkRequestPending ||
-      (checkValidAmount && !validAmount) ||
+      !validAmount ||
       !validGasPrice ||
       !validGasLimit;
     return (
@@ -64,7 +62,7 @@ export const GenerateTransaction = connect((state: AppState) => ({
   ...getTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
   isWeb3Wallet: getWalletType(state).isWeb3Wallet,
-  validAmount: isValidAmount(state),
+  validAmount: isValidAmount(state, false),
   validGasPrice: isValidGasPrice(state),
   validGasLimit: isValidGasLimit(state)
 }))(GenerateTransactionClass);

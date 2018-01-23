@@ -40,14 +40,14 @@ const isValidCurrentTo = (state: AppState) => {
   }
 };
 
-const isValidAmount = (state: AppState): boolean => {
+const isValidAmount = (state: AppState, checkValue: boolean = true): boolean => {
   const currentValue = getCurrentValue(state);
   const dataExists = getDataExists(state);
   const validGasCost = getValidGasCost(state);
   const isOffline = getOffline(state);
 
   // If value is an empty string, mark as invalid
-  if (!currentValue.raw) {
+  if (checkValue && !currentValue.raw) {
     return false;
   }
 
