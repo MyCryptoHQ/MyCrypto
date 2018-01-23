@@ -1,7 +1,12 @@
 import React from 'react';
 import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
-import { inputGasPrice, TInputGasPrice } from 'actions/transaction';
+import {
+  inputGasPrice,
+  TInputGasPrice,
+  getNonceRequested,
+  TGetNonceRequested
+} from 'actions/transaction';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
@@ -20,6 +25,7 @@ interface StateProps {
 interface DispatchProps {
   inputGasPrice: TInputGasPrice;
   fetchCCRates: TFetchCCRates;
+  getNonceRequested: TGetNonceRequested;
 }
 
 interface OwnProps {
@@ -41,6 +47,7 @@ class GasSlider extends React.Component<Props, State> {
   public componentDidMount() {
     if (!this.props.offline) {
       this.props.fetchCCRates([this.props.network.unit]);
+      this.props.getNonceRequested();
     }
   }
 
@@ -101,5 +108,6 @@ function mapStateToProps(state: AppState): StateProps {
 
 export default connect(mapStateToProps, {
   inputGasPrice,
-  fetchCCRates
+  fetchCCRates,
+  getNonceRequested
 })(GasSlider);

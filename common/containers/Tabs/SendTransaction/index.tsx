@@ -17,7 +17,6 @@ import SubTabs, { Tab } from 'components/SubTabs';
 import { getNetworkConfig } from 'selectors/config';
 import { isNetworkUnit } from 'utils/network';
 import { RouteNotFound } from 'components/RouteNotFound';
-import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
 
 const Send = () => (
   <React.Fragment>
@@ -31,17 +30,9 @@ interface StateProps {
   network: AppState['config']['network'];
 }
 
-interface ActionProps {
-  getNonceRequested: TGetNonceRequested;
-}
-
-type Props = StateProps & RouteComponentProps<{}> & ActionProps;
+type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
-  public componentWillUpdate() {
-    this.props.getNonceRequested();
-  }
-
   public render() {
     const { wallet, match } = this.props;
     const currentPath = match.url;
@@ -104,10 +95,7 @@ class SendTransaction extends React.Component<Props> {
   }
 }
 
-export default connect(
-  (state: AppState) => ({
-    wallet: getWalletInst(state),
-    network: getNetworkConfig(state)
-  }),
-  { getNonceRequested }
-)(SendTransaction);
+export default connect((state: AppState) => ({
+  wallet: getWalletInst(state),
+  network: getNetworkConfig(state)
+}))(SendTransaction);
