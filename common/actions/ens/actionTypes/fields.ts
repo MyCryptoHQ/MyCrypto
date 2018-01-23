@@ -30,6 +30,10 @@ export interface InputSecretFieldAction {
   payload: string;
 }
 
+export interface InitializeInputsAction {
+  type: TypeKeys.INITIALIZE_INPUTS;
+}
+
 export interface InputBidMaskFieldAction {
   type: TypeKeys.BID_MASK_FIELD_INPUT;
   payload: string;

@@ -4,12 +4,12 @@ import BidModal from '../../modals/BidModal';
 import { connect } from 'react-redux';
 import { BidMask, BidValue, Name, SecretPhrase } from './components';
 import { GenerateBid } from 'components/GenerateBid';
-import { setCurrentValue, TSetCurrentValue } from 'actions/transaction';
 import { GasLimitField, NonceField } from 'components';
+import { TInitializeInputs, initializeInputs } from 'actions/ens';
 
 interface DispatchProps {
-  setCurrentValue: TSetCurrentValue;
   showNotification: TShowNotification;
+  initializeInputs: TInitializeInputs;
 }
 
 interface OwnProps {
@@ -29,6 +29,10 @@ class PlaceBid extends Component<Props, State> {
     openModal: false
   };
 
+  public componentDidMount() {
+    this.props.initializeInputs();
+  }
+
   public toggleModal = () => {
     this.setState({ openModal: !this.state.openModal });
     // this.props.showNotification('danger', 'Bid Mask must be greater than Bid Value', 5000);
@@ -36,11 +40,11 @@ class PlaceBid extends Component<Props, State> {
 
   public render() {
     const { openModal } = this.state;
-    const { domainName, title } = this.props;
+    const { title } = this.props;
     return (
       <div className="Tab-content-pane row text-left">
         <h2>{title}</h2>
-        <Name value={domainName} />
+        <Name />
         <BidValue />
         <BidMask />
         <SecretPhrase />
@@ -56,5 +60,5 @@ class PlaceBid extends Component<Props, State> {
 
 export default connect(null, {
   showNotification,
-  setCurrentValue
+  initializeInputs
 })(PlaceBid);

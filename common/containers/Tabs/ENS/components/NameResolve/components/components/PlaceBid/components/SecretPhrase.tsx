@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { generateMnemonic } from 'bip39';
 import { connect } from 'react-redux';
 import { getSecret } from 'selectors/ens';
 import { inputSecretField, TInputSecretField } from 'actions/ens';
@@ -20,14 +19,6 @@ interface StateProps {
 type Props = OwnProps & DispatchProps & StateProps;
 
 export class SecretPhraseClass extends React.Component<Props> {
-  public componentDidMount() {
-    const placeholderPhraseList = generateMnemonic().split(' ');
-    const placeholderPhrase = placeholderPhraseList
-      .splice(placeholderPhraseList.length - 3)
-      .join(' ');
-    this.props.inputSecretField(placeholderPhrase);
-  }
-
   public onChange = (e: React.FormEvent<HTMLInputElement>) => {
     this.props.inputSecretField(e.currentTarget.value);
   };

@@ -7,7 +7,8 @@ import { TypeKeys } from '../constants';
 import {
   InputSecretFieldAction,
   InputBidMaskFieldAction,
-  InputBidValueFieldAction
+  InputBidValueFieldAction,
+  InitializeInputsAction
 } from 'actions/ens';
 
 export type TSetBidValueField = typeof setBidValueField;
@@ -24,6 +25,11 @@ export const setBidMaskField = (
 ): SetBidMaskFieldAction => ({
   type: TypeKeys.BID_MASK_FIELD_SET,
   payload
+});
+
+export type TInitializeInputs = typeof initializeInputs;
+export const initializeInputs = (): InitializeInputsAction => ({
+  type: TypeKeys.INITIALIZE_INPUTS
 });
 
 export type TSetSecretField = typeof setSecretField;

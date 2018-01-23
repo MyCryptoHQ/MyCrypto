@@ -2,6 +2,7 @@ import { AppState } from 'reducers';
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { REQUEST_STATES } from 'reducers/ens/domainRequests';
 import { isCreationAddress } from 'libs/validators';
+import { GenerationStage } from 'reducers/ens/placeBid';
 
 export const getEns = (state: AppState) => state.ens;
 
@@ -66,11 +67,8 @@ export const getFieldValues = (state: AppState) =>
     {} as FieldValues
   );
 
-export const getBidPlaceSucceeded = (state: AppState): boolean =>
-  getEns(state).placeBid.bidPlaced && !getEns(state).placeBid.bidPlaceFailed;
-
-export const getBidPlaceFailed = (state: AppState): boolean =>
-  getEns(state).placeBid.bidPlaced && getEns(state).placeBid.bidPlaceFailed;
+export const getBidPlaceStage = (state: AppState): GenerationStage =>
+  getEns(state).placeBid.bidGenerationStage;
 
 export const getAllFieldsValid = (state: AppState): boolean =>
   Object.values(getFields(state)).reduce<boolean>(

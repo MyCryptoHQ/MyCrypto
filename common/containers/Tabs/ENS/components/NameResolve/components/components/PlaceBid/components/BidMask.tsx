@@ -40,7 +40,6 @@ class BidMaskClass extends React.Component<Props> {
             className={`form-control ${this.props.bidMask.value ? 'is-valid' : 'is-invalid'}`}
             onChange={this.onChange}
             value={this.props.bidMask.raw}
-            placeholder="1.0"
           />
         </section>
       </section>
