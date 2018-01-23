@@ -138,7 +138,6 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
   };
 
   private handleSelectContract = (contract: ContractOption) => {
-    console.log(contract);
     this.props.resetState();
     const fullContract = this.props.contracts.find(currContract => {
       return this.makeContractValue(currContract) === contract.value;
