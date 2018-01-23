@@ -39,7 +39,7 @@ import ENS from 'libs/ens/contracts';
 import * as ethUtil from 'ethereumjs-util';
 import ENSNetworks from 'libs/ens/networkConfigs';
 import { fields } from './fields';
-import { IBaseDomainRequest } from 'libs/ens';
+import { IBaseDomainRequest, NameState } from 'libs/ens';
 
 const { main } = ENSNetworks;
 function* shouldResolveDomain(domain: string) {
@@ -104,7 +104,7 @@ function* placeBid(): SagaIterator {
     return -1;
   }
 
-  const { labelHash } = domainData;
+  const { labelHash, mode } = domainData;
   const salt = ethUtil.sha3(secretPhrase);
   const hash = Buffer.from(labelHash, 'hex');
 
@@ -128,10 +128,18 @@ function* placeBid(): SagaIterator {
       to: main.public.ethAuction
     });
 
-    const encodedData = ENS.auction.startAuctionsAndBid.encodeInput({
-      sealedBid,
-      hashes: [hash]
-    });
+    let encodedData;
+
+    if (mode === NameState.Open) {
+      encodedData = ENS.auction.startAuctionsAndBid.encodeInput({
+        sealedBid,
+        hashes: [hash]
+      });
+    } else if (mode === NameState.Auction) {
+      encodedData = ENS.auction.newBid.encodeInput({ sealedBid });
+    } else {
+      throw Error(`${domainData.name} is not in a biddable state`);
+    }
 
     yield put(setDataField({ raw: encodedData, value: Data(encodedData) }));
     yield put(setValueField({ raw: fromWei(bidMask, 'ether'), value: bidMask }));
