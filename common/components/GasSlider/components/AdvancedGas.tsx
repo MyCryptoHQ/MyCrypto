@@ -61,7 +61,7 @@ class AdvancedGas extends React.Component<Props> {
           <GasLimitField includeLabel={false} onlyIncludeLoader={false} />
         </div>
 
-        <div className="col-md-4 col-sm-12 col-xs-12">
+        <div className="col-md-4 col-sm-12 col-xs-12 AdvancedGas-nonce">
           <NonceField alwaysDisplay={true} />
         </div>
 
