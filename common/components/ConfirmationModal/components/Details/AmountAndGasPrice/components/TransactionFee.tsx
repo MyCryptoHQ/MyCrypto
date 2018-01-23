@@ -1,8 +1,7 @@
 import React from 'react';
-import { getTransactionFields, makeTransaction } from 'libs/transaction';
+import { getTransactionFee, makeTransaction } from 'libs/transaction';
 import { SerializedTransaction } from 'components/renderCbs';
 import { UnitDisplay } from 'components/ui';
-import { Wei } from 'libs/units';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
@@ -21,11 +20,8 @@ class TransactionFeeClass extends React.Component<Props> {
       <SerializedTransaction
         withSerializedTransaction={serializedTransaction => {
           const transactionInstance = makeTransaction(serializedTransaction);
-          const { gasPrice, gasLimit } = getTransactionFields(transactionInstance);
-          const fee = Wei(gasPrice).mul(Wei(gasLimit));
-          const usdBN = network.isTestnet
-            ? new BN(0)
-            : fee && rates[network.unit] && fee.muln(rates[network.unit].USD);
+          const fee = getTransactionFee(transactionInstance);
+          const usdFee = network.isTestnet ? new BN(0) : fee.muln(rates[network.unit].USD);
 
           return (
             <React.Fragment>
@@ -35,7 +31,7 @@ class TransactionFeeClass extends React.Component<Props> {
                   <span>
                     ($
                     <UnitDisplay
-                      value={usdBN}
+                      value={usdFee}
                       unit="ether"
                       displayShortBalance={2}
                       displayTrailingZeroes={true}
