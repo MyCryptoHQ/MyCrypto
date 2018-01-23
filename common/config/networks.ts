@@ -217,6 +217,7 @@ export type NetworkKeys = keyof typeof NETWORKS;
 
 enum NodeName {
   ETH_MEW = 'eth_mew',
+  ETH_MYCRYPTO = 'eth_mycrypto',
   ETH_ETHSCAN = 'eth_ethscan',
   ETH_INFURA = 'eth_infura',
   ROP_MEW = 'rop_mew',
@@ -242,6 +243,12 @@ export const NODES: NodeConfigs = {
     network: 'ETH',
     lib: new RPCNode('https://api.myetherapi.com/eth'),
     service: 'MyEtherWallet',
+    estimateGas: true
+  },
+  eth_mycrypto: {
+    network: 'ETH',
+    lib: new RPCNode('https://api.mycryptoapi.com/eth'),
+    service: 'MyCrypto',
     estimateGas: true
   },
   eth_ethscan: {
