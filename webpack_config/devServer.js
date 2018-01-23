@@ -6,7 +6,7 @@ const https = require('https');
 const fs = require('fs');
 const webpackConfig = require('./webpack.dev');
 const config = require('./config');
-const LogPlugin = require('./log-plugin');
+const LogPlugin = require('./plugins/serverLog');
 
 const app = express();
 
@@ -25,13 +25,13 @@ let compiler;
 try {
   compiler = webpack(webpackConfig);
 } catch (err) {
-  console.log(err.message);
+  console.error(err.message);
   process.exit(1);
 }
 
 const devMiddleWare = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
-  quiet: true,
+  logLevel: 'warn',
   inline: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
@@ -45,7 +45,7 @@ const devMiddleWare = require('webpack-dev-middleware')(compiler, {
 app.use(devMiddleWare);
 app.use(
   require('webpack-hot-middleware')(compiler, {
-    log: console.log
+    log: console.info
   })
 );
 

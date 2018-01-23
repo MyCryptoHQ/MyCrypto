@@ -16,7 +16,6 @@ import {
   ANNOUNCEMENT_TYPE,
   languages,
   NODES,
-  VERSION,
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig
@@ -25,11 +24,11 @@ import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
+import Version from './components/Version';
 import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
-import { AppState } from 'reducers';
 
 interface Props {
   languageSelection: string;
@@ -37,7 +36,6 @@ interface Props {
   nodeSelection: string;
   isChangingNode: boolean;
   isOffline: boolean;
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
   changeLanguage: TChangeLanguage;
@@ -128,17 +126,16 @@ export default class Header extends PureComponent<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
+              <span className="Header-branding-right-version hidden-xs">
+                <Version />
+              </span>
 
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
               </div>
 
               <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown
-                  value={this.props.gasPrice.raw}
-                  onChange={this.props.setGasPriceField}
-                />
+                <GasPriceDropdown onChange={this.props.setGasPriceField} />
               </div>
 
               <div className="Header-branding-right-dropdown">
