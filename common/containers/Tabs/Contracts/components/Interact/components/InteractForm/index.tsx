@@ -31,11 +31,17 @@ interface State {
   contractPlaceholder: string;
 }
 
+const abiJsonPlaceholder = [
+  {
+    type: 'constructor',
+    inputs: [{ name: 'param1', type: 'uint256', indexed: true }],
+    name: 'Event'
+  },
+  { type: 'function', inputs: [{ name: 'a', type: 'uint256' }], name: 'foo', outputs: [] }
+];
+
 class InteractForm extends Component<Props, State> {
-  private abiJsonPlaceholder = '[{ "type":"contructor", "inputs":\
- [{ "name":"param1","type":"uint256", "indexed":true }],\
-"name":"Event" }, { "type":"function", "inputs": [{"nam\
-e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
+  private abiJsonPlaceholder = JSON.stringify(abiJsonPlaceholder, null, 0);
 
   constructor(props) {
     super(props);
