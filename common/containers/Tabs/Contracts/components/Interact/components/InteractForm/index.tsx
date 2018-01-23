@@ -61,6 +61,7 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
     let contractOptions: ContractOption[] = [];
+
     if (this.isContractsValid()) {
       contractOptions = contracts.map(con => {
         const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
@@ -91,19 +92,16 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
 
           <label className="InteractForm-address-contract form-group col-sm-6">
             <h4>{translate('CONTRACT_Title_2')}</h4>
-
-            {
-              <Select
-                name="interactContract"
-                value={contract as any}
-                placeholder={this.state.contractPlaceholder}
-                onChange={this.handleSelectContract}
-                options={contractOptions}
-                clearable={false}
-                searchable={false}
-                labelKey="name"
-              />
-            }
+            <Select
+              name="interactContract"
+              value={contract as any}
+              placeholder={this.state.contractPlaceholder}
+              onChange={this.handleSelectContract}
+              options={contractOptions}
+              clearable={false}
+              searchable={false}
+              labelKey="name"
+            />
           </label>
         </div>
 
