@@ -31,7 +31,7 @@ import {
   FieldValues
 } from 'selectors/ens';
 import { setDataField, setValueField } from 'actions/transaction';
-import { Data } from 'libs/units';
+import { Data, fromWei } from 'libs/units';
 import { makeEthCallAndDecode } from 'sagas/ens/helpers';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
@@ -85,7 +85,6 @@ function* resolveDomain(): SagaIterator {
       }
       const domainSuccessAction = resolveDomainSucceeded(domain, domainData);
       yield put(domainSuccessAction);
-      yield;
     } catch (e) {
       const domainFailAction = resolveDomainFailed(domain, e);
       yield put(domainFailAction);
@@ -96,15 +95,16 @@ function* resolveDomain(): SagaIterator {
 
 function* placeBid(): SagaIterator {
   const { bidMask, bidValue, secretPhrase }: FieldValues = yield select(getFieldValues);
-  const domainData: AppState['ens']['domainRequests'][string] = yield select(getCurrentDomainName);
-  const { data } = domainData;
+  const domainData: AppState['ens']['domainRequests'][string]['data'] = yield select(
+    getCurrentDomainData
+  );
 
-  if (!(bidMask && bidValue && secretPhrase && data)) {
+  if (!(bidMask && bidValue && secretPhrase && domainData)) {
     yield put(placeBidFailed());
     return -1;
   }
 
-  const { labelHash } = data;
+  const { labelHash } = domainData;
   const salt = ethUtil.sha3(secretPhrase);
   const hash = Buffer.from(labelHash, 'hex');
 
@@ -128,9 +128,13 @@ function* placeBid(): SagaIterator {
       to: main.public.ethAuction
     });
 
-    const encodedData = ENS.auction.newBid.encodeInput({ sealedBid });
+    const encodedData = ENS.auction.startAuctionsAndBid.encodeInput({
+      sealedBid,
+      hashes: [hash]
+    });
+
     yield put(setDataField({ raw: encodedData, value: Data(encodedData) }));
-    yield put(setValueField({ raw: bidMask.toString(), value: bidMask }));
+    yield put(setValueField({ raw: fromWei(bidMask, 'ether'), value: bidMask }));
     yield put(placeBidSucceeded());
     return 1;
   } catch {
