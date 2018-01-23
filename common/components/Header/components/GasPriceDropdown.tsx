@@ -1,6 +1,6 @@
 import { gasPriceDefaults, knowledgeBaseURL } from 'config';
 import throttle from 'lodash/throttle';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import DropdownShell from 'components/ui/DropdownShell';
 import './GasPriceDropdown.scss';
 import { SetGasLimitFieldAction } from 'actions/transaction';
