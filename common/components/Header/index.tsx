@@ -29,7 +29,6 @@ import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
-import { AppState } from 'reducers';
 
 interface Props {
   languageSelection: string;
@@ -37,7 +36,6 @@ interface Props {
   nodeSelection: string;
   isChangingNode: boolean;
   isOffline: boolean;
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
   changeLanguage: TChangeLanguage;
@@ -137,10 +135,7 @@ export default class Header extends Component<Props, State> {
               </div>
 
               <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown
-                  value={this.props.gasPrice.raw}
-                  onChange={this.props.setGasPriceField}
-                />
+                <GasPriceDropdown onChange={this.props.setGasPriceField} />
               </div>
 
               <div className="Header-branding-right-dropdown">
