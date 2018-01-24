@@ -3,12 +3,12 @@
 
 .DWModal {
   &-path {
-    display: flex;
     margin-bottom: 20px;
 
     &-label {
       font-size: $font-size-medium;
       margin-right: 16px;
+      line-height: $input-height-base;
     }
 
     .form-control {
@@ -25,7 +25,7 @@
   &-addresses {
     overflow-y: scroll;
     &-table {
-      width: 695px;
+      width: 732px;
       text-align: center;
       margin: auto;
       margin-bottom: 10px;
