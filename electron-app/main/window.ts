@@ -27,8 +27,7 @@ export default function getWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
-      contextIsolation: true,
-      preload: path.resolve(__dirname, 'preload.js')
+      contextIsolation: true
     }
   });
 
@@ -51,7 +50,7 @@ export default function getWindow() {
   });
 
   window.webContents.on('did-finish-load', () => {
-    updater(app, window);
+    updater(window);
   });
 
   window.webContents.on('devtools-opened', () => {
