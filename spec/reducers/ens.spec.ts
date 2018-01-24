@@ -1,15 +1,16 @@
-import { ens, INITIAL_STATE } from 'reducers/ens';
+import { ens } from 'reducers/ens';
 import * as ensActions from 'actions/ens';
+import { createStore } from 'redux';
+const store = createStore(ens);
+const INITIAL_STATE = store.getState();
 
 describe('customTokens reducer', () => {
-  it('should handle ENS_CACHE', () => {
+  it('handles resolveDomainRequested', () => {
     const ensName = 'ensName';
-    const address = 'address';
-    expect(
-      ens(undefined, ensActions.cacheEnsAddress(ensName, address))
-    ).toEqual({
+    expect(ens(undefined as any, ensActions.resolveDomainRequested(ensName))).toEqual({
       ...INITIAL_STATE,
-      [ensName]: address
+      domainRequests: { ensName: { state: 'PENDING' } },
+      domainSelector: { currentDomain: 'ensName' }
     });
   });
 });

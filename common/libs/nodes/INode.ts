@@ -1,4 +1,4 @@
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { Wei, TokenValue } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
 

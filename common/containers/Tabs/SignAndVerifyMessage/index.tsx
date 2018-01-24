@@ -4,12 +4,15 @@ import SignMessage from './components/SignMessage';
 import VerifyMessage from './components/VerifyMessage';
 import TabSection from 'containers/TabSection';
 import './index.scss';
+import { RouteComponentProps, Switch, Route, Redirect } from 'react-router';
+import SubTabs from 'components/SubTabs';
+import { RouteNotFound } from 'components/RouteNotFound';
 
 interface State {
   activeTab: 'sign' | 'verify';
 }
 
-export default class SignAndVerifyMessage extends Component<{}, State> {
+export default class SignAndVerifyMessage extends Component<RouteComponentProps<{}>, State> {
   public state: State = {
     activeTab: 'sign'
   };
@@ -17,41 +20,34 @@ export default class SignAndVerifyMessage extends Component<{}, State> {
   public changeTab = (activeTab: State['activeTab']) => () => this.setState({ activeTab });
 
   public render() {
-    const { activeTab } = this.state;
-    let content;
-    let signActive = '';
-    let verifyActive = '';
+    const { match } = this.props;
+    const currentPath = match.url;
 
-    if (activeTab === 'sign') {
-      content = <SignMessage />;
-      signActive = 'is-active';
-    } else {
-      content = <VerifyMessage />;
-      verifyActive = 'is-active';
-    }
+    const tabs = [
+      {
+        path: 'sign',
+        name: translate('NAV_SignMsg')
+      },
+      {
+        path: 'verify',
+        name: translate('MSG_verify')
+      }
+    ];
 
     return (
       <TabSection>
         <section className="Tab-content SignAndVerifyMsg">
-          <div className="Tab-content-pane">
-            <h1 className="SignAndVerifyMsg-header">
-              <button
-                className={`SignAndVerifyMsg-header-tab ${signActive}`}
-                onClick={this.changeTab('sign')}
-              >
-                {translate('Sign Message')}
-              </button>{' '}
-              <span>or</span>{' '}
-              <button
-                className={`SignAndVerifyMsg-header-tab ${verifyActive}`}
-                onClick={this.changeTab('verify')}
-              >
-                {translate('Verify Message')}
-              </button>
-            </h1>
-          </div>
-
-          <main role="main">{content}</main>
+          <SubTabs tabs={tabs} match={match} />
+          <Switch>
+            <Route
+              exact={true}
+              path={currentPath}
+              render={() => <Redirect from={`${currentPath}`} to={`${currentPath}/sign`} />}
+            />
+            <Route exact={true} path={`${currentPath}/sign`} component={SignMessage} />
+            <Route exact={true} path={`${currentPath}/verify`} component={VerifyMessage} />
+            <RouteNotFound />
+          </Switch>
         </section>
       </TabSection>
     );

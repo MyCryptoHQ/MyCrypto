@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { IHexStrTransaction } from 'libs/transaction';
 import { Wei, TokenValue } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';
@@ -46,10 +46,15 @@ export default class RpcNode implements INode {
   }
 
   public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<Wei> {
+    // Timeout after 10 seconds
+
     return this.client
       .call(this.requests.estimateGas(transaction))
       .then(isValidEstimateGas)
-      .then(({ result }) => Wei(result));
+      .then(({ result }) => Wei(result))
+      .catch(error => {
+        throw new Error(error.message);
+      });
   }
 
   public getTokenBalance(

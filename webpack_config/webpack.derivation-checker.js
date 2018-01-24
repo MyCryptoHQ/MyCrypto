@@ -1,22 +1,19 @@
 // Compile derivation checker using the (mostly) same webpack config
 'use strict';
-const baseConfig = require('./webpack.base');
+const path = require('path');
+const config = require('./config');
 
-const derivationConfig = Object.assign({}, baseConfig, {
-  // Remove the cruft we don't need
-  plugins: undefined,
-  target: undefined,
-  performance: undefined,
-  module: {
-    // Typescript loader
-    loaders: [baseConfig.module.loaders[0]]
-  },
-
-  // Point at derivation checker, make sure it's setup to run in node
+const derivationConfig = {
   target: 'node',
-  entry: {
-    'derivation-checker': './common/derivation-checker.ts'
-  }
-});
+  entry: './common/derivation-checker.ts',
+  output: {
+    path: config.path.output,
+    filename: 'derivation-checker.js'
+  },
+  module: {
+    rules: [config.typescriptRule],
+  },
+  resolve: config.resolve,
+};
 
 module.exports = derivationConfig;

@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { NonceField, SendButton, SigningStatus } from 'components';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { FullWalletOnly } from 'components/renderCbs';
-import { Aux } from 'components/ui';
 
 interface OwnProps {
   button: React.ReactElement<any>;
@@ -12,14 +11,14 @@ interface OwnProps {
 export class Fields extends Component<OwnProps> {
   public render() {
     const makeContent = () => (
-      <Aux>
+      <React.Fragment>
         <GasLimitField />
         <AmountField />
-        <NonceField />
+        <NonceField alwaysDisplay={false} />
         {this.props.button}
         <SigningStatus />
         <SendButton />
-      </Aux>
+      </React.Fragment>
     );
 
     const makeDecrypt = () => <WalletDecrypt disabledWallets={DISABLE_WALLETS.READ_ONLY} />;

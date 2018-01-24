@@ -58,6 +58,10 @@ const isKeystorePassRequired = (file: string): boolean => {
   );
 };
 
+const getUtcWallet = (file: string, password: string): Promise<IFullWallet> => {
+  return UtcWallet(file, password);
+};
+
 const getPrivKeyWallet = (key: string, password: string) =>
   key.length === 64
     ? PrivKeyWallet(Buffer.from(key, 'hex'))
@@ -79,12 +83,16 @@ const getKeystoreWallet = (file: string, password: string) => {
     case KeystoreTypes.v2Unencrypted:
       return PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
 
-    case KeystoreTypes.utc:
-      return UtcWallet(file, password);
-
     default:
       throw Error('Unknown wallet');
   }
 };
 
-export { isKeystorePassRequired, getPrivKeyWallet, getKeystoreWallet };
+export {
+  isKeystorePassRequired,
+  determineKeystoreType,
+  getPrivKeyWallet,
+  getKeystoreWallet,
+  getUtcWallet,
+  KeystoreTypes
+};

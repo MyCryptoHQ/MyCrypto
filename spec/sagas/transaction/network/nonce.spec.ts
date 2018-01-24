@@ -1,10 +1,11 @@
 import { getNonceSucceeded, getNonceFailed, inputNonce } from 'actions/transaction';
-import { apply, put, select } from 'redux-saga/effects';
+import { apply, put, select, fork, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { showNotification } from 'actions/notifications';
-import { handleNonceRequest } from 'sagas/transaction/network/nonce';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { handleNonceRequest, handleNonceRequestWrapper } from 'sagas/transaction/network/nonce';
+import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
+import { TypeKeys as WalletTK } from 'actions/wallet';
 import { Nonce } from 'libs/units';
 
 describe('handleNonceRequest*', () => {
@@ -40,18 +41,23 @@ describe('handleNonceRequest*', () => {
     expect(gens.gen.next(nodeLib).value).toEqual(select(getWalletInst));
   });
 
+  it('should handle being called without wallet inst correctly', () => {
+    gens.noWallet = gens.gen.clone();
+    gens.noWallet.next();
+    expect(gens.noWallet.next(offline).value).toEqual(
+      put(showNotification('warning', 'Your addresses nonce could not be fetched'))
+    );
+    expect(gens.noWallet.next().value).toEqual(put(getNonceFailed()));
+    expect(gens.noWallet.next().done).toEqual(true);
+  });
+
   it('should select getOffline', () => {
-    gens.clone = gens.gen.clone();
     expect(gens.gen.next(walletInst).value).toEqual(select(getOffline));
   });
 
-  it('should handle errors correctly', () => {
-    gens.clone.next();
-    expect(gens.clone.next().value).toEqual(
-      put(showNotification('warning', 'Your addresses nonce could not be fetched'))
-    );
-    expect(gens.clone.next().value).toEqual(put(getNonceFailed()));
-    expect(gens.clone.next().done).toEqual(true);
+  it('should exit if being called while offline', () => {
+    gens.offline = gens.gen.clone();
+    expect(gens.offline.next(true).done).toEqual(true);
   });
 
   it('should apply walletInst.getAddressString', () => {
@@ -70,5 +76,26 @@ describe('handleNonceRequest*', () => {
 
   it('should put getNonceSucceeded', () => {
     expect(gens.gen.next().value).toEqual(put(getNonceSucceeded(retrievedNonce)));
+  });
+});
+
+describe('handleNonceRequestWrapper*', () => {
+  const gen = handleNonceRequestWrapper();
+  const nonceRequest = createMockTask();
+
+  it('should fork handleNonceRequest', () => {
+    expect(gen.next().value).toEqual(fork(handleNonceRequest));
+  });
+
+  it('should take on WALLET_SET', () => {
+    expect(gen.next(nonceRequest).value).toEqual(take(WalletTK.WALLET_SET));
+  });
+
+  it('should cancel nonceRequest', () => {
+    expect(gen.next().value).toEqual(cancel(nonceRequest));
+  });
+
+  it('should be done', () => {
+    expect(gen.next().done).toEqual(true);
   });
 });

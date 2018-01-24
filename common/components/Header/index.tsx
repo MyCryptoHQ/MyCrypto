@@ -16,26 +16,26 @@ import {
   ANNOUNCEMENT_TYPE,
   languages,
   NODES,
-  VERSION,
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig
-} from 'config/data';
+} from 'config';
 import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
+import OnlineStatus from './components/OnlineStatus';
+import Version from './components/Version';
 import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
-import { AppState } from 'reducers';
 
 interface Props {
   languageSelection: string;
   node: NodeConfig;
   nodeSelection: string;
   isChangingNode: boolean;
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
+  isOffline: boolean;
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
   changeLanguage: TChangeLanguage;
@@ -62,6 +62,7 @@ export default class Header extends Component<Props, State> {
       node,
       nodeSelection,
       isChangingNode,
+      isOffline,
       customNodes,
       customNetworks
     } = this.props;
@@ -125,13 +126,16 @@ export default class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
+              <span className="Header-branding-right-version hidden-xs">
+                <Version />
+              </span>
+
+              <div className="Header-branding-right-online">
+                <OnlineStatus isOffline={isOffline} />
+              </div>
 
               <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown
-                  value={this.props.gasPrice.raw}
-                  onChange={this.props.setGasPriceField}
-                />
+                <GasPriceDropdown onChange={this.props.setGasPriceField} />
               </div>
 
               <div className="Header-branding-right-dropdown">

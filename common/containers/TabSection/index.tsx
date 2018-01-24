@@ -16,17 +16,17 @@ import { TSetGasPriceField, setGasPriceField as dSetGasPriceField } from 'action
 import { AlphaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
-import { getGasPrice } from 'selectors/transaction';
+import OfflineTab from './OfflineTab';
 
 interface ReduxProps {
   languageSelection: AppState['config']['languageSelection'];
   node: AppState['config']['node'];
   nodeSelection: AppState['config']['nodeSelection'];
   isChangingNode: AppState['config']['isChangingNode'];
+  isOffline: AppState['config']['offline'];
   customNodes: AppState['config']['customNodes'];
   customNetworks: AppState['config']['customNetworks'];
   latestBlock: AppState['config']['latestBlock'];
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
 }
 
 interface ActionProps {
@@ -39,25 +39,26 @@ interface ActionProps {
 }
 
 type Props = {
-  // FIXME
-  children: any;
+  isUnavailableOffline?: boolean;
+  children: string | React.ReactElement<string> | React.ReactElement<string>[];
 } & ReduxProps &
   ActionProps;
 
 class TabSection extends Component<Props, {}> {
   public render() {
     const {
+      isUnavailableOffline,
       children,
       // APP
       node,
       nodeSelection,
       isChangingNode,
+      isOffline,
       languageSelection,
       customNodes,
       customNetworks,
       latestBlock,
       setGasPriceField,
-      gasPrice,
       changeLanguage,
       changeNodeIntent,
       addCustomNode,
@@ -70,7 +71,7 @@ class TabSection extends Component<Props, {}> {
       node,
       nodeSelection,
       isChangingNode,
-      gasPrice,
+      isOffline,
       customNodes,
       customNetworks,
       changeLanguage,
@@ -85,7 +86,9 @@ class TabSection extends Component<Props, {}> {
       <div className="page-layout">
         <main>
           <Header {...headerProps} />
-          <div className="Tab container">{children}</div>
+          <div className="Tab container">
+            {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+          </div>
           <Footer latestBlock={latestBlock} />
         </main>
         <Notifications />
@@ -100,8 +103,8 @@ function mapStateToProps(state: AppState): ReduxProps {
     node: state.config.node,
     nodeSelection: state.config.nodeSelection,
     isChangingNode: state.config.isChangingNode,
+    isOffline: state.config.offline,
     languageSelection: state.config.languageSelection,
-    gasPrice: getGasPrice(state),
     customNodes: state.config.customNodes,
     customNetworks: state.config.customNetworks,
     latestBlock: state.config.latestBlock

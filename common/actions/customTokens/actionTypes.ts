@@ -1,4 +1,4 @@
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { TypeKeys } from './constants';
 /*** Add custom token ***/
 export interface AddCustomTokenAction {

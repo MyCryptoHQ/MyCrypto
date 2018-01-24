@@ -1,5 +1,5 @@
 import { CustomNode } from 'libs/nodes';
-import { NODES, NodeConfig, CustomNodeConfig } from 'config/data';
+import { NODES, NodeConfig, CustomNodeConfig } from 'config';
 
 export function makeCustomNodeId(config: CustomNodeConfig): string {
   return `${config.url}:${config.port}`;
@@ -27,10 +27,16 @@ export function getNodeConfigFromId(
 }
 
 export function makeNodeConfigFromCustomConfig(config: CustomNodeConfig): NodeConfig {
-  return {
+  interface Override extends NodeConfig {
+    network: any;
+  }
+
+  const customConfig: Override = {
     network: config.network,
     lib: new CustomNode(config),
     service: 'your custom node',
     estimateGas: true
   };
+
+  return customConfig;
 }

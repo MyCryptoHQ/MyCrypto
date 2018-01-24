@@ -12,7 +12,7 @@ import {
   ICurrentValue
 } from 'selectors/transaction/current';
 import BN from 'bn.js';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { validNumber, validDecimal } from 'libs/validators';
 import { getGasLimit } from 'selectors/transaction';
 import { AddressField, AmountField, GasLimitField } from 'components';
@@ -106,7 +106,7 @@ class RequestPayment extends React.Component<Props, {}> {
 
           <div className="row form-group">
             <div className="col-xs-11">
-              <GasLimitField />
+              <GasLimitField includeLabel={true} onlyIncludeLoader={false} />
             </div>
           </div>
 

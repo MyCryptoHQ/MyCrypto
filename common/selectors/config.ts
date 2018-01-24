@@ -1,11 +1,11 @@
 import {
+  CustomNetworkConfig,
+  CustomNodeConfig,
   NetworkConfig,
   NetworkContract,
   NodeConfig,
-  CustomNodeConfig,
-  CustomNetworkConfig,
   Token
-} from 'config/data';
+} from 'config';
 import { INode } from 'libs/nodes/INode';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction/meta';
@@ -14,6 +14,10 @@ import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 
 export function getNode(state: AppState): string {
   return state.config.nodeSelection;
+}
+
+export function getIsWeb3Node(state: AppState): boolean {
+  return getNode(state) === 'web3';
 }
 
 export function getNodeConfig(state: AppState): NodeConfig {
@@ -86,11 +90,9 @@ export function getOffline(state: AppState): boolean {
   return state.config.offline;
 }
 
-export function getForceOffline(state: AppState): boolean {
-  return state.config.forceOffline;
+export function getAutoGasLimitEnabled(state: AppState): boolean {
+  return state.config.autoGasLimit;
 }
-
-export const isAnyOffline = (state: AppState) => getOffline(state) || getForceOffline(state);
 
 export function isSupportedUnit(state: AppState, unit: string) {
   const isToken: boolean = tokenExists(state, unit);

@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
-import { NODES } from 'config/data';
+import { NODES } from 'config';
 import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
 
@@ -17,8 +17,7 @@ it('render snapshot', () => {
     nodeSelection: testNode,
     node: NODES[testNode],
     gasPriceGwei: 21,
-    offline: false,
-    forceOffline: false
+    offline: false
   };
   const testState = {
     wallet: {},
@@ -31,7 +30,6 @@ it('render snapshot', () => {
     gasPrice: {},
     transactions: {},
     offline: {},
-    forceOffline: {},
     config: testStateConfig,
     customTokens: []
   };

@@ -8,6 +8,9 @@ import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
 
 import { IFullWallet } from '../IWallet';
+import { translateRaw } from 'translations';
+
+export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 
 export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   public signRawTransaction(tx: EthTx): Promise<Buffer> {
@@ -50,11 +53,38 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
 
   public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
 
+  public displayAddress = (dPath?: string, index?: number): Promise<any> => {
+    if (!dPath) {
+      dPath = this.dPath;
+    }
+    if (!index) {
+      index = this.index;
+    }
+
+    return new Promise((resolve, reject) => {
+      (TrezorConnect as any).ethereumGetAddress(
+        dPath + '/' + index,
+        res => {
+          if (res.error) {
+            reject(res.error);
+          } else {
+            resolve(res);
+          }
+        },
+        TREZOR_MINIMUM_FIRMWARE
+      );
+    });
+  };
+
+  public getWalletType(): string {
+    return translateRaw('x_Trezor');
+  }
+
   // works, but returns a signature that can only be verified with a Trezor device
   /*
   public signMessage = (message: string): Promise<string> => {
     return new Promise((resolve, reject) => {
-      (TrezorConnect as any).ethereumSignMessage(
+      TrezorConnect.ethereumSignMessage(
         this.getPath(),
         message,
         response => {

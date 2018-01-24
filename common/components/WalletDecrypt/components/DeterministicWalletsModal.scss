@@ -1,15 +1,14 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .DWModal {
-  width: 690px;
-
   &-path {
-    display: block;
+    display: flex;
     margin-bottom: 20px;
 
     &-label {
       font-size: $font-size-medium;
+      margin-right: 16px;
     }
 
     .form-control {
@@ -17,12 +16,18 @@
       width: auto;
       margin: 0 0 0 10px;
     }
+
+    .Select {
+      flex-grow: 1;
+    }
   }
 
   &-addresses {
+    overflow-y: scroll;
     &-table {
-      width: 100%;
+      width: 695px;
       text-align: center;
+      margin: auto;
       margin-bottom: 10px;
 
       &-token {

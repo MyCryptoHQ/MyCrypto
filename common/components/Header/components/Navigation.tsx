@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
-import { knowledgeBaseURL } from 'config/data';
+import { knowledgeBaseURL } from 'config';
 import './Navigation.scss';
 
 export interface TabLink {

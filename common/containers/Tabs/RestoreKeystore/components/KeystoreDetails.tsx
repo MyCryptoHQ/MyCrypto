@@ -7,7 +7,7 @@ import { isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/values';
 import translate from 'translations';
 import './KeystoreDetails.scss';
-import { N_FACTOR } from 'config/data';
+import { N_FACTOR } from 'config';
 
 interface State {
   secretKey: string;

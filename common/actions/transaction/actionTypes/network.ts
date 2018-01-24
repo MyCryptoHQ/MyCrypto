@@ -11,6 +11,9 @@ interface EstimateGasSucceededAction {
 interface EstimateGasFailedAction {
   type: TypeKeys.ESTIMATE_GAS_FAILED;
 }
+interface EstimateGasTimeoutAction {
+  type: TypeKeys.ESTIMATE_GAS_TIMEDOUT;
+}
 interface GetFromRequestedAction {
   type: TypeKeys.GET_FROM_REQUESTED;
 }
@@ -36,6 +39,7 @@ type NetworkAction =
   | EstimateGasFailedAction
   | EstimateGasRequestedAction
   | EstimateGasSucceededAction
+  | EstimateGasTimeoutAction
   | GetFromRequestedAction
   | GetFromSucceededAction
   | GetFromFailedAction
@@ -47,6 +51,7 @@ export {
   EstimateGasRequestedAction,
   EstimateGasSucceededAction,
   EstimateGasFailedAction,
+  EstimateGasTimeoutAction,
   GetFromRequestedAction,
   GetFromSucceededAction,
   GetFromFailedAction,

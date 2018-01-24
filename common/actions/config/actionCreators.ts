@@ -1,18 +1,18 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config/data';
-
-export type TForceOfflineConfig = typeof forceOfflineConfig;
-export function forceOfflineConfig(): interfaces.ForceOfflineAction {
-  return {
-    type: TypeKeys.CONFIG_FORCE_OFFLINE
-  };
-}
+import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config';
 
 export type TToggleOfflineConfig = typeof toggleOfflineConfig;
 export function toggleOfflineConfig(): interfaces.ToggleOfflineAction {
   return {
     type: TypeKeys.CONFIG_TOGGLE_OFFLINE
+  };
+}
+
+export type TToggleAutoGasLimit = typeof toggleAutoGasLimit;
+export function toggleAutoGasLimit(): interfaces.ToggleAutoGasLimitAction {
+  return {
+    type: TypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT
   };
 }
 

@@ -1,6 +1,6 @@
 import { config, INITIAL_STATE } from 'reducers/config';
 import * as configActions from 'actions/config';
-import { NODES, NETWORKS } from 'config/data';
+import { NODES, NETWORKS } from 'config';
 import { makeCustomNodeId, makeNodeConfigFromCustomConfig } from 'utils/node';
 
 const custNode = {
@@ -50,28 +50,6 @@ describe('config reducer', () => {
     expect(config(onlineState, configActions.toggleOfflineConfig())).toEqual({
       ...onlineState,
       offline: true
-    });
-  });
-
-  it('should handle CONFIG_FORCE_OFFLINE', () => {
-    const forceOfflineTrue = {
-      ...INITIAL_STATE,
-      forceOffline: true
-    };
-
-    const forceOfflineFalse = {
-      ...INITIAL_STATE,
-      forceOffline: false
-    };
-
-    expect(config(forceOfflineTrue, configActions.forceOfflineConfig())).toEqual({
-      ...forceOfflineTrue,
-      forceOffline: false
-    });
-
-    expect(config(forceOfflineFalse, configActions.forceOfflineConfig())).toEqual({
-      ...forceOfflineFalse,
-      forceOffline: true
     });
   });
 

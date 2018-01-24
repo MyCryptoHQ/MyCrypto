@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import TabSection from '../../containers/TabSection/index';
 import './PageNotFound.scss';
 
-const PageNotFound: React.SFC<RouteComponentProps<{}>> = () => (
+const PageNotFound: React.SFC = () => (
   <TabSection>
     <section className="Tab-content PageNotFound">
       <div className="Tab-content-pane">
