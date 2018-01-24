@@ -1,6 +1,5 @@
-import { app, BrowserWindow, Menu, shell } from 'electron';
+import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
-import * as path from 'path';
 import MENU from './menu';
 import updater from './updater';
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -31,9 +30,8 @@ export default function getWindow() {
     }
   });
 
-  const appUrl = isDevelopment
-    ? `http://localhost:${process.env.HTTPS ? 3443 : 3000}`
-    : `file://${__dirname}/index.html`;
+  const port = process.env.HTTPS ? '3443' : '3000';
+  const appUrl = isDevelopment ? `http://localhost:${port}` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {
@@ -41,12 +39,16 @@ export default function getWindow() {
   });
 
   window.webContents.on('new-window', (ev, urlStr) => {
-    const url = new URL(urlStr);
-    if (url.protocol === 'file' || url.hostname === 'localhost') {
-      return;
-    }
+    // Kill all new window requests by default
     ev.preventDefault();
-    shell.openExternal(urlStr);
+
+    // Only allow HTTPS urls to actually be opened
+    const url = new URL(urlStr);
+    if (url.protocol === 'https') {
+      shell.openExternal(urlStr);
+    } else {
+      console.warn(`Blocked request to open new window '${urlStr}'`);
+    }
   });
 
   window.webContents.on('did-finish-load', () => {

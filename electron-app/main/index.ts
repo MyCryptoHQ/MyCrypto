@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, shell } from 'electron';
+import { app } from 'electron';
 import getWindow from './window';
 
 // Quit application when all windows are closed

@@ -1,6 +1,5 @@
 import { app, dialog, BrowserWindow } from 'electron';
 import { autoUpdater, UpdateInfo } from 'electron-updater';
-import getWindow from './window';
 import TEST_RELEASE from './testrelease.json';
 autoUpdater.autoDownload = false;
 
@@ -8,6 +7,7 @@ autoUpdater.autoDownload = false;
 const shouldMockUpdate = false && process.env.NODE_ENV !== 'production';
 const shouldMockUpdateError = false && process.env.NODE_ENV !== 'production';
 let hasRunUpdater = false;
+let hasStartedUpdating = false;
 
 enum AutoUpdaterEvents {
   CHECKING_FOR_UPDATE = 'checking-for-update',
@@ -43,6 +43,7 @@ export default function(mainWindow: BrowserWindow) {
         }
       }
     );
+    hasStartedUpdating = true;
   });
 
   autoUpdater.on(AutoUpdaterEvents.DOWNLOAD_PROGRESS, progress => {
@@ -73,13 +74,21 @@ export default function(mainWindow: BrowserWindow) {
     );
   });
 
-  autoUpdater.on(AutoUpdaterEvents.ERROR, (err, msg) => {
-    resetWindowFromUpdates(mainWindow);
+  autoUpdater.on(AutoUpdaterEvents.ERROR, (err: Error) => {
     console.error('Update failed with an error');
     console.error(err);
+
+    // If they haven't started updating yet, just fail silently
+    if (!hasStartedUpdating) {
+      return;
+    }
+
+    resetWindowFromUpdates(mainWindow);
     dialog.showErrorBox(
       'Downloading Update has Failed',
-      'The update could not be downloaded. Restart the app and try again later, or manually install the new update at https://github.com/MyEtherWallet/MyEtherWallet/releases'
+      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at https://github.com/MyEtherWallet/MyEtherWallet/releases\n\n(${
+        err.name
+      }: ${err.message})`
     );
   });
 
@@ -111,7 +120,10 @@ function mockDownload() {
     setTimeout(() => {
       if (i >= 5 && shouldMockUpdateError) {
         if (i === 5) {
-          autoUpdater.emit(AutoUpdaterEvents.ERROR, new Error('Testing!'));
+          autoUpdater.emit(
+            AutoUpdaterEvents.ERROR,
+            new Error('Test error, nothing actually failed')
+          );
         }
         return;
       }
