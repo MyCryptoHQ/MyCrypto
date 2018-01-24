@@ -44,10 +44,10 @@ export default function getWindow() {
 
     // Only allow HTTPS urls to actually be opened
     const url = new URL(urlStr);
-    if (url.protocol === 'https') {
+    if (url.protocol === 'https:') {
       shell.openExternal(urlStr);
     } else {
-      console.warn(`Blocked request to open new window '${urlStr}'`);
+      console.warn(`Blocked request to open new window '${urlStr}', only HTTPS links are allowed`);
     }
   });
 
