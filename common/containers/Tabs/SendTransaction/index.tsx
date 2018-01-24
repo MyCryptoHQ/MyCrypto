@@ -56,39 +56,41 @@ class SendTransaction extends React.Component<Props> {
     return (
       <TabSection>
         <section className="Tab-content">
-          <UnlockHeader title={translate('Account')} />
-          <div className="SubTabs row">
-            <div className="col-sm-8">{wallet && <SubTabs tabs={tabs} match={match} />}</div>
-            <div className="col-sm-8">
-              <Switch>
-                <Route
-                  exact={true}
-                  path={currentPath}
-                  render={() => (
-                    <Redirect
-                      from={`${currentPath}`}
-                      to={`${
-                        wallet && wallet.isReadOnly ? currentPath + '/info' : currentPath + '/send'
-                      }`}
-                    />
-                  )}
-                />
-                <Route exact={true} path={`${currentPath}/send`} component={Send} />
-                <Route
-                  path={`${currentPath}/info`}
-                  exact={true}
-                  render={() => wallet && <WalletInfo wallet={wallet} />}
-                />
-                <Route
-                  path={`${currentPath}/request`}
-                  exact={true}
-                  render={() => <RequestPayment wallet={wallet} />}
-                />
-                <RouteNotFound />
-              </Switch>
+          <UnlockHeader title={translate('Account')} showGenerateLink={true} />
+          {wallet && (
+            <div className="SubTabs row">
+              <div className="col-sm-8">
+                <SubTabs tabs={tabs} match={match} />
+              </div>
+              <div className="col-sm-8">
+                <Switch>
+                  <Route
+                    exact={true}
+                    path={currentPath}
+                    render={() => (
+                      <Redirect
+                        from={`${currentPath}`}
+                        to={`${wallet.isReadOnly ? `${currentPath}/info` : `${currentPath}/send`}`}
+                      />
+                    )}
+                  />
+                  <Route exact={true} path={`${currentPath}/send`} component={Send} />
+                  <Route
+                    path={`${currentPath}/info`}
+                    exact={true}
+                    render={() => <WalletInfo wallet={wallet} />}
+                  />
+                  <Route
+                    path={`${currentPath}/request`}
+                    exact={true}
+                    render={() => <RequestPayment wallet={wallet} />}
+                  />
+                  <RouteNotFound />
+                </Switch>
+              </div>
+              <SideBar />
             </div>
-            <SideBar />
-          </div>
+          )}
         </section>
       </TabSection>
     );
