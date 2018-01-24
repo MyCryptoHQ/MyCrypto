@@ -93,6 +93,8 @@ export class PrivateKeyDecrypt extends Component<Props> {
   };
 
   public onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+    // NOTE: Textareas don't support password type, so we replace the value
+    // with an equal length number of dots. On change, we replace
     const pkey = this.props.value.key;
     const pass = e.currentTarget.value;
     const { valid } = validatePkeyAndPass(pkey, pass);
