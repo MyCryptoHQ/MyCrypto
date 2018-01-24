@@ -100,6 +100,7 @@ class InteractForm extends Component<Props, State> {
             <h4>{translate('CONTRACT_Title_2')}</h4>
             <Select
               name="interactContract"
+              className={`${!contract ? 'is-invalid' : ''}`}
               value={contract as any}
               placeholder={this.state.contractPlaceholder}
               onChange={this.handleSelectContract}
