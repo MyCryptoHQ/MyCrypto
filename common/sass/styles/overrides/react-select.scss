@@ -3,7 +3,8 @@
   font-size: 1rem;
   .Select-control {
     height: $input-height-base;
-    box-sizing: content-box;
+    display: block;
+    box-sizing: border-box;
     font-weight: 400;
     border-radius: 0px;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -19,6 +20,12 @@
       .Select-value-label {
         vertical-align: middle;
       }
+    }
+    .Select-arrow-zone {
+      float: right;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
   .Select-menu-outer {
