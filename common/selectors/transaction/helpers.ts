@@ -23,7 +23,7 @@ export const isFullTx = (
   const partialParamsToCheck = { ...rest };
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
     (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
-      isValid && !!v.value,
+      console.log(v) || (isValid && !!v.value),
     true
   );
   if (isEtherUnit(unit)) {

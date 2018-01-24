@@ -2,8 +2,12 @@ import React from 'react';
 import BN from 'bn.js';
 import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
-import debounce from 'lodash/debounce';
-import { inputGasPrice, TInputGasPrice } from 'actions/transaction';
+import {
+  inputGasPrice,
+  TInputGasPrice,
+  inputGasPriceIntent,
+  TInputGasPriceIntent
+} from 'actions/transaction';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
@@ -21,6 +25,7 @@ interface StateProps {
 
 interface DispatchProps {
   inputGasPrice: TInputGasPrice;
+  inputGasPriceIntent: TInputGasPriceIntent;
   fetchCCRates: TFetchCCRates;
 }
 
@@ -40,7 +45,6 @@ class GasSlider extends React.Component<Props, State> {
     showAdvanced: false,
     gasPrice: this.props.gasPrice
   };
-  private debouncedGasPriceInput = debounce(this.props.inputGasPrice, 300);
 
   public componentDidMount() {
     if (!this.props.offline) {
@@ -96,7 +100,7 @@ class GasSlider extends React.Component<Props, State> {
     this.setState({
       gasPrice: { raw, value }
     });
-    this.debouncedGasPriceInput(raw);
+    this.props.inputGasPriceIntent(raw);
   };
 }
 
@@ -110,5 +114,6 @@ function mapStateToProps(state: AppState): StateProps {
 
 export default connect(mapStateToProps, {
   inputGasPrice,
+  inputGasPriceIntent,
   fetchCCRates
 })(GasSlider);
