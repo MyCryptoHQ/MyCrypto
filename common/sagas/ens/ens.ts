@@ -20,7 +20,7 @@ import {
   fork,
   race,
   apply,
-  takeEvery
+  throttle
 } from 'redux-saga/effects';
 import { showNotification } from 'actions/notifications';
 import { resolveDomainRequest } from './modeMap';
@@ -108,6 +108,8 @@ function* placeBid(): SagaIterator {
   );
 
   if (!(bidMask && bidValue && secretPhrase && domainData)) {
+    yield put(setDataField({ raw: '', value: null }));
+    yield put(setValueField({ raw: '', value: null }));
     yield put(placeBidFailed());
     return -1;
   }
@@ -154,6 +156,8 @@ function* placeBid(): SagaIterator {
     yield put(placeBidSucceeded());
     return 1;
   } catch {
+    yield put(setDataField({ raw: '', value: null }));
+    yield put(setValueField({ raw: '', value: null }));
     yield put(placeBidFailed());
     return -1;
   }
@@ -162,7 +166,8 @@ function* placeBid(): SagaIterator {
 export function* ens(): SagaIterator {
   yield all([
     fork(resolveDomain),
-    takeEvery(
+    throttle(
+      400,
       [TypeKeys.BID_MASK_FIELD_SET, TypeKeys.BID_VALUE_FIELD_SET, TypeKeys.SECRET_FIELD_SET],
       placeBid
     ),
