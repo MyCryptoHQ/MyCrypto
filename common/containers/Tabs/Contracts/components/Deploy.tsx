@@ -10,9 +10,8 @@ import { setToField, TSetToField } from 'actions/transaction';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
+import { NonceField, Gas } from 'components';
 import './Deploy.scss';
-import GasSlider from 'components/GasSlider/GasSlider';
-import { NonceField } from 'components';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -54,7 +53,11 @@ class DeployClass extends Component<DispatchProps> {
 
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
-            <GasSlider readOnly={true} />
+            <Gas
+              initialState="advanced"
+              disableToggle={true}
+              advancedGasOptions={{ dataField: false }}
+            />
           </div>
         </div>
 

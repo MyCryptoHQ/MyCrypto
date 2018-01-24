@@ -5,16 +5,19 @@ import {
   inputGasPrice,
   TInputGasPrice,
   getNonceRequested,
-  TGetNonceRequested
+  TGetNonceRequested,
+  reset,
+  TReset
 } from 'actions/transaction';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import SimpleGas from './components/SimpleGas';
-import AdvancedGas from './components/AdvancedGas';
-import './GasSlider.scss';
+import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
+import './Gas.scss';
 import { getGasPrice } from 'selectors/transaction';
-import { GasLimitField } from 'components';
+
+type SliderStates = 'simple' | 'advanced';
 
 interface StateProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
@@ -26,26 +29,38 @@ interface DispatchProps {
   inputGasPrice: TInputGasPrice;
   fetchCCRates: TFetchCCRates;
   getNonceRequested: TGetNonceRequested;
+  reset: TReset;
+}
+
+// Set default props for props that can't be truthy or falsy
+interface DefaultProps {
+  initialState: SliderStates;
 }
 
 interface OwnProps {
-  disableAdvanced?: boolean;
-  readOnly?: boolean;
+  initialState?: SliderStates;
+  disableToggle?: boolean;
+  advancedGasOptions?: AdvancedOptions;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
 
 interface State {
-  showAdvanced: boolean;
+  sliderState: SliderStates;
 }
 
-class GasSlider extends React.Component<Props, State> {
+class Gas extends React.Component<Props, State> {
+  public static defaultProps: DefaultProps = {
+    initialState: 'simple'
+  };
+
   public state: State = {
-    showAdvanced: false
+    sliderState: (this.props as DefaultProps).initialState
   };
 
   public componentDidMount() {
     if (!this.props.offline) {
+      this.props.reset();
       this.props.fetchCCRates([this.props.network.unit]);
       this.props.getNonceRequested();
     }
@@ -58,29 +73,25 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableAdvanced, gasPrice, readOnly } = this.props;
-    const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
+    const { offline, disableToggle, gasPrice, advancedGasOptions } = this.props;
+    const showAdvanced = this.state.sliderState === 'advanced' || offline;
 
     return (
-      <div className="GasSlider">
-        {readOnly ? (
-          <GasLimitField
-            includeLabel={true}
-            customLabel={translateRaw('OFFLINE_Step2_Label_4')}
-            onlyIncludeLoader={false}
-            disabled={readOnly}
+      <div className="Gas">
+        {showAdvanced ? (
+          <AdvancedGas
+            gasPrice={gasPrice}
+            inputGasPrice={this.props.inputGasPrice}
+            options={advancedGasOptions}
           />
-        ) : showAdvanced ? (
-          <AdvancedGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
         ) : (
           <SimpleGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
         )}
 
         {!offline &&
-          !readOnly &&
-          !disableAdvanced && (
+          !disableToggle && (
             <div className="help-block">
-              <a className="GasSlider-toggle" onClick={this.toggleAdvanced}>
+              <a className="Gas-toggle" onClick={this.toggleAdvanced}>
                 <strong>
                   {showAdvanced
                     ? `- ${translateRaw('Back to simple')}`
@@ -94,7 +105,7 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   private toggleAdvanced = () => {
-    this.setState({ showAdvanced: !this.state.showAdvanced });
+    this.setState({ sliderState: this.state.sliderState === 'advanced' ? 'simple' : 'advanced' });
   };
 }
 
@@ -109,5 +120,6 @@ function mapStateToProps(state: AppState): StateProps {
 export default connect(mapStateToProps, {
   inputGasPrice,
   fetchCCRates,
-  getNonceRequested
-})(GasSlider);
+  getNonceRequested,
+  reset
+})(Gas);

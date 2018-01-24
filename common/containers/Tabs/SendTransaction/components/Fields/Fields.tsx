@@ -4,7 +4,7 @@ import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import {
   AddressField,
   AmountField,
-  GasSlider,
+  Gas,
   SendEverything,
   CurrentCustomMessage,
   GenerateTransaction,
@@ -29,7 +29,7 @@ const content = (
 
     <div className="row form-group">
       <div className="col-xs-12">
-        <GasSlider />
+        <Gas />
       </div>
     </div>
 

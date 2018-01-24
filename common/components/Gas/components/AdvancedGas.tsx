@@ -12,9 +12,18 @@ import { getAutoGasLimitEnabled } from 'selectors/config';
 import { isValidGasPrice } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
 
+export interface AdvancedOptions {
+  gasPriceField?: boolean;
+  gasLimitField?: boolean;
+  nonceField?: boolean;
+  dataField?: boolean;
+  feeSummary?: boolean;
+}
+
 interface OwnProps {
   inputGasPrice: TInputGasPrice;
   gasPrice: AppState['transaction']['fields']['gasPrice'];
+  options?: AdvancedOptions;
 }
 
 interface StateProps {
@@ -26,11 +35,27 @@ interface DispatchProps {
   toggleAutoGasLimit: TToggleAutoGasLimit;
 }
 
+interface State {
+  options: AdvancedOptions;
+}
+
 type Props = OwnProps & StateProps & DispatchProps;
 
-class AdvancedGas extends React.Component<Props> {
+class AdvancedGas extends React.Component<Props, State> {
+  public state = {
+    options: {
+      gasPriceField: true,
+      gasLimitField: true,
+      nonceField: true,
+      dataField: true,
+      feeSummary: true,
+      ...this.props.options
+    }
+  };
+
   public render() {
     const { autoGasLimitEnabled, gasPrice, validGasPrice } = this.props;
+    const { gasPriceField, gasLimitField, nonceField, dataField, feeSummary } = this.state.options;
     return (
       <div className="AdvancedGas row form-group">
         <div className="col-md-12">
@@ -44,42 +69,51 @@ class AdvancedGas extends React.Component<Props> {
           </label>
         </div>
 
-        <div className="col-md-4 col-sm-6 col-xs-12">
-          <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
-          <input
-            className={classnames('form-control', { 'is-invalid': !validGasPrice })}
-            type="number"
-            placeholder="e.g. 40"
-            value={gasPrice.raw}
-            onChange={this.handleGasPriceChange}
-          />
-        </div>
+        {gasPriceField && (
+          <div className="col-md-4 col-sm-6 col-xs-12">
+            <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
+            <input
+              className={classnames('form-control', { 'is-invalid': !validGasPrice })}
+              type="number"
+              placeholder="e.g. 40"
+              value={gasPrice.raw}
+              onChange={this.handleGasPriceChange}
+            />
+          </div>
+        )}
 
-        <div className="col-md-4 col-sm-6 col-xs-12">
-          <GasLimitField
-            includeLabel={true}
-            customLabel={translateRaw('OFFLINE_Step2_Label_4')}
-            onlyIncludeLoader={false}
-          />
-        </div>
+        {gasLimitField && (
+          <div className="col-md-4 col-sm-6 col-xs-12">
+            <GasLimitField
+              includeLabel={true}
+              customLabel={translateRaw('OFFLINE_Step2_Label_4')}
+              onlyIncludeLoader={false}
+            />
+          </div>
+        )}
+        {nonceField && (
+          <div className="col-md-4 col-sm-12 col-xs-12">
+            <NonceField alwaysDisplay={true} />
+          </div>
+        )}
 
-        <div className="col-md-4 col-sm-12 col-xs-12">
-          <NonceField alwaysDisplay={true} />
-        </div>
+        {dataField && (
+          <div className="col-md-12 col-xs-12">
+            <DataField />
+          </div>
+        )}
 
-        <div className="col-md-12 col-xs-12">
-          <DataField />
-        </div>
-
-        <div className="col-sm-12 col-xs-12">
-          <FeeSummary
-            render={({ gasPriceWei, gasLimit, fee, usd }) => (
-              <span>
-                {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}
-              </span>
-            )}
-          />
-        </div>
+        {feeSummary && (
+          <div className="col-sm-12 col-xs-12">
+            <FeeSummary
+              render={({ gasPriceWei, gasLimit, fee, usd }) => (
+                <span>
+                  {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}
+                </span>
+              )}
+            />
+          </div>
+        )}
       </div>
     );
   }
