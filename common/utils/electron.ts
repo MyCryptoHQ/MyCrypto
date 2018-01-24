@@ -15,11 +15,3 @@ export const sendEvent: ElectronBridgeFunctions['sendEvent'] = (event, data) => 
     bridge.sendEvent(event, data);
   }
 };
-
-export const openInBrowser: ElectronBridgeFunctions['openInBrowser'] = url => {
-  if (bridge && bridge.openInBrowser) {
-    bridge.openInBrowser(url);
-    return true;
-  }
-  return false;
-};
