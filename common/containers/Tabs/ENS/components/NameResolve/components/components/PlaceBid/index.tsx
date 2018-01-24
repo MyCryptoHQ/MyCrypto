@@ -3,8 +3,7 @@ import { TShowNotification, showNotification } from 'actions/notifications';
 import BidModal from '../../modals/BidModal';
 import { connect } from 'react-redux';
 import { BidMask, BidValue, Name, SecretPhrase } from './components';
-import { GenerateBid } from 'components/GenerateBid';
-import { GasLimitField, NonceField } from 'components';
+import { GasLimitField, NonceField, GenerateTransaction } from 'components';
 import { TInitializeInputs, initializeInputs } from 'actions/ens';
 
 interface DispatchProps {
@@ -50,7 +49,7 @@ class PlaceBid extends Component<Props, State> {
         <SecretPhrase />
         <GasLimitField includeLabel={true} onlyIncludeLoader={false} />
         <NonceField alwaysDisplay={false} />
-        <GenerateBid onComplete={this.toggleModal} />
+        <GenerateTransaction />
         {/* TODO: should the bid modal have all its data given to it through props, or get it from the redux state itself? */}
         {openModal && <BidModal toggle={this.toggleModal} />}
       </div>

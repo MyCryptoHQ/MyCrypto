@@ -28,7 +28,8 @@ import {
   getCurrentDomainName,
   getCurrentDomainData,
   getFieldValues,
-  FieldValues
+  FieldValues,
+  getAllFieldsValid
 } from 'selectors/ens';
 import { setDataField, setValueField } from 'actions/transaction';
 import { Data, fromWei } from 'libs/units';
@@ -94,7 +95,14 @@ function* resolveDomain(): SagaIterator {
 }
 
 function* placeBid(): SagaIterator {
+  const fieldsAreValid: boolean = yield select(getAllFieldsValid);
+
+  if (!fieldsAreValid) {
+    return;
+  }
+
   const { bidMask, bidValue, secretPhrase }: FieldValues = yield select(getFieldValues);
+
   const domainData: AppState['ens']['domainRequests'][string]['data'] = yield select(
     getCurrentDomainData
   );
@@ -154,7 +162,10 @@ function* placeBid(): SagaIterator {
 export function* ens(): SagaIterator {
   yield all([
     fork(resolveDomain),
-    takeEvery(TypeKeys.ENS_BID_PLACE_REQUESTED, placeBid),
+    takeEvery(
+      [TypeKeys.BID_MASK_FIELD_SET, TypeKeys.BID_VALUE_FIELD_SET, TypeKeys.SECRET_FIELD_SET],
+      placeBid
+    ),
     ...fields
   ]);
 }
