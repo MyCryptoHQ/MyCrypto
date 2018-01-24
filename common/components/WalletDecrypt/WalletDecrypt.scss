@@ -45,6 +45,12 @@ $speed: 500ms;
         margin: 0;
       }
     }
+
+    &-generate {
+      text-align: center;
+      font-weight: 300;
+      margin-top: $space;
+    }
   }
 
   &-decrypt {

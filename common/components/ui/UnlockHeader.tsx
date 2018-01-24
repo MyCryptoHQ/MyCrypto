@@ -11,6 +11,7 @@ interface Props {
   title: TranslateType;
   wallet: IWallet;
   disabledWallets?: WalletName[];
+  showGenerateLink?: boolean;
 }
 
 interface State {
@@ -29,7 +30,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { title, wallet, disabledWallets } = this.props;
+    const { title, wallet, disabledWallets, showGenerateLink } = this.props;
     const { isExpanded } = this.state;
 
     return (
@@ -55,7 +56,11 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
               <i className="fa fa-times" />
             </button>
           )}
-        <WalletDecrypt hidden={!this.state.isExpanded} disabledWallets={disabledWallets} />
+        <WalletDecrypt
+          hidden={!this.state.isExpanded}
+          disabledWallets={disabledWallets}
+          showGenerateLink={showGenerateLink}
+        />
       </article>
     );
   }
