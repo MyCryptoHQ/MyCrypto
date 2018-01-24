@@ -159,18 +159,16 @@ class InteractExplorerClass extends Component<Props, State> {
 
   private contractOptions = () => {
     const { contractFunctions } = this.props;
-    let transformedContractFunctions: ContractOption[] = [];
-    Object.keys(contractFunctions).forEach(contractFunction => {
-      const contract = contractFunctions[contractFunction];
-      if (contract) {
-        transformedContractFunctions = transformedContractFunctions.concat({
+    const transformedContractFunction: ContractOption[] = Object.keys(contractFunctions).map(
+      contractFunction => {
+        const contract = contractFunctions[contractFunction];
+        return {
           name: contractFunction,
           contract
-        });
+        };
       }
-    });
-
-    return transformedContractFunctions;
+    );
+    return transformedContractFunction;
   };
 
   private handleFunctionCall = async (_: React.FormEvent<HTMLButtonElement>) => {
