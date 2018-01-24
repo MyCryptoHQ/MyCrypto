@@ -2,7 +2,7 @@
 
 exports[`render snapshot 1`] = `
 <SendTransaction
-  getNonceRequested={[Function]}
+  dispatch={[Function]}
   history={
     Object {
       "action": "PUSH",
