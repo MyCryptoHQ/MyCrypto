@@ -21,7 +21,7 @@ export default class SubTabs extends React.Component<Props> {
 
     return (
       <div className="SubTabs row">
-        <div className="SubTabs-tabs col-sm-8">
+        <div className="SubTabs-tabs col-sm-12">
           {tabs.map((t, i) => (
             // Same as normal Link, but knows when it's active, and applies activeClassName
             <NavLink
