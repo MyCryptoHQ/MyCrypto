@@ -20,7 +20,6 @@ import {
   CustomNodeConfig,
   CustomNetworkConfig
 } from 'config';
-import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
@@ -132,10 +131,6 @@ export default class Header extends Component<Props, State> {
 
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
-              </div>
-
-              <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown onChange={this.props.setGasPriceField} />
               </div>
 
               <div className="Header-branding-right-dropdown">

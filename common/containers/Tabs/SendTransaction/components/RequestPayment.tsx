@@ -15,7 +15,7 @@ import BN from 'bn.js';
 import { NetworkConfig } from 'config';
 import { validNumber, validDecimal } from 'libs/validators';
 import { getGasLimit } from 'selectors/transaction';
-import { AddressField, AmountField, GasLimitField } from 'components';
+import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
@@ -106,7 +106,16 @@ class RequestPayment extends React.Component<Props, {}> {
 
           <div className="row form-group">
             <div className="col-xs-11">
-              <GasLimitField includeLabel={true} onlyIncludeLoader={false} />
+              <TXMetaDataPanel
+                initialState="advanced"
+                disableToggle={true}
+                advancedGasOptions={{
+                  gasPriceField: false,
+                  nonceField: false,
+                  dataField: false,
+                  feeSummary: false
+                }}
+              />
             </div>
           </div>
 

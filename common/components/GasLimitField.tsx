@@ -8,27 +8,46 @@ import { gasLimitValidator } from 'libs/validators';
 interface Props {
   includeLabel: boolean;
   onlyIncludeLoader: boolean;
+  customLabel?: string;
+  disabled?: boolean;
 }
 
-export const GaslimitLoading: React.SFC<{ gasEstimationPending: boolean }> = ({
-  gasEstimationPending
-}) => (
+export const GaslimitLoading: React.SFC<{
+  gasEstimationPending: boolean;
+  onlyIncludeLoader?: boolean;
+}> = ({ gasEstimationPending, onlyIncludeLoader }) => (
   <CSSTransition in={gasEstimationPending} timeout={300} classNames="fade">
-    <div className={`SimpleGas-estimating small ${gasEstimationPending ? 'active' : ''}`}>
-      Calculating gas limit
+    <div className={`Calculating-limit small ${gasEstimationPending ? 'active' : ''}`}>
+      {!!onlyIncludeLoader ? 'Calculating gas limit' : 'Calculating'}
       <Spinner />
     </div>
   </CSSTransition>
 );
 
-export const GasLimitField: React.SFC<Props> = ({ includeLabel, onlyIncludeLoader }) => (
+export const GasLimitField: React.SFC<Props> = ({
+  includeLabel,
+  onlyIncludeLoader,
+  customLabel,
+  disabled
+}) => (
   <React.Fragment>
-    {includeLabel ? <label>{translate('TRANS_gas')} </label> : null}
-
     <GasLimitFieldFactory
       withProps={({ gasLimit: { raw }, onChange, readOnly, gasEstimationPending }) => (
-        <>
-          <GaslimitLoading gasEstimationPending={gasEstimationPending} />
+        <React.Fragment>
+          <div className="flex-wrapper">
+            {includeLabel ? (
+              customLabel ? (
+                <label>{customLabel} </label>
+              ) : (
+                <label>{translate('TRANS_gas')} </label>
+              )
+            ) : null}
+            <div className="flex-spacer" />
+            <GaslimitLoading
+              gasEstimationPending={gasEstimationPending}
+              onlyIncludeLoader={false}
+            />
+          </div>
           {onlyIncludeLoader ? null : (
             <input
               className={`form-control ${gasLimitValidator(raw) ? 'is-valid' : 'is-invalid'}`}
@@ -37,9 +56,10 @@ export const GasLimitField: React.SFC<Props> = ({ includeLabel, onlyIncludeLoade
               readOnly={!!readOnly}
               value={raw}
               onChange={onChange}
+              disabled={disabled}
             />
           )}
-        </>
+        </React.Fragment>
       )}
     />
   </React.Fragment>
