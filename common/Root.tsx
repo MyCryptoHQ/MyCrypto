@@ -59,16 +59,15 @@ export default class Root extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          <Route exact={true} path="/" component={GenerateWallet} />
-          <Route path="/generate" component={GenerateWallet} />
+          <Redirect exact={true} from="/" to="/account" />
           <Route path="/account" component={SendTransaction} />
+          <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} />
           <Route path="/help" component={Help} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/pushTx" component={BroadcastTx} />
-          <Route path="/send-transaction" component={SendTransaction} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
