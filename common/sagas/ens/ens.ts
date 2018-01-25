@@ -31,8 +31,8 @@ import {
   FieldValues,
   getAllFieldsValid
 } from 'selectors/ens';
-import { setDataField, setValueField } from 'actions/transaction';
-import { Data, fromWei } from 'libs/units';
+import { setDataField, setValueField, setToField } from 'actions/transaction';
+import { Data, fromWei, Address } from 'libs/units';
 import { makeEthCallAndDecode } from 'sagas/ens/helpers';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
@@ -108,6 +108,7 @@ function* placeBid(): SagaIterator {
   );
 
   if (!(bidMask && bidValue && secretPhrase && domainData)) {
+    yield put(setToField({ raw: '', value: null }));
     yield put(setDataField({ raw: '', value: null }));
     yield put(setValueField({ raw: '', value: null }));
     yield put(placeBidFailed());
@@ -151,6 +152,7 @@ function* placeBid(): SagaIterator {
       throw Error(`${domainData.name} is not in a biddable state`);
     }
 
+    yield put(setToField({ raw: main.public.ethAuction, value: Address(main.public.ethAuction) }));
     yield put(setDataField({ raw: encodedData, value: Data(encodedData) }));
     yield put(setValueField({ raw: fromWei(bidMask, 'ether'), value: bidMask }));
     yield put(placeBidSucceeded());

@@ -13,6 +13,7 @@ import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
 import './Deploy.scss';
+import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -74,6 +75,7 @@ class DeployClass extends Component<DispatchProps> {
         </div>
         <SigningStatus />
         <SendButtonFactory
+          Modal={ConfirmationModal}
           withProps={({ onClick }) => (
             <button className="Deploy-submit btn btn-primary" onClick={onClick}>
               {translate('NAV_DeployContract')}
