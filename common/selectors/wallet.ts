@@ -1,10 +1,11 @@
 import { TokenValue, Wei } from 'libs/units';
-import { Token, WalletName, SecureWalletName } from 'config';
+import { Token, SecureWalletName, WalletName } from 'config';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';
 import { isEtherTransaction, getUnit } from './transaction';
 import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
+import { DisabledWallets } from 'components/WalletDecrypt';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
@@ -138,35 +139,52 @@ export function getShownTokenBalances(
   return tokenBalances.filter(t => walletTokens.includes(t.symbol));
 }
 
-interface DisabledWallets {
-  wallets: WalletName[];
-  reasons: {
-    [key: string]: string;
-  };
-}
-
 // TODO: Convert to reselect selector (Issue #884)
-export function getDisabledWallets(state: AppState): WalletName[] {
+export function getDisabledWallets(state: AppState): DisabledWallets {
   const network = getNetworkConfig(state);
   const isOffline = getOffline(state);
+  const disabledWallets: DisabledWallets = {
+    wallets: [],
+    reasons: {}
+  };
+
+  const addReason = (wallets: WalletName[], reason: string) => {
+    if (!wallets.length) {
+      return;
+    }
+
+    disabledWallets.wallets = disabledWallets.wallets.concat(wallets);
+    wallets.forEach(wallet => {
+      disabledWallets.reasons[wallet] = reason;
+    });
+  };
 
   // Some wallets don't support some networks
-  const disabledWallets = unSupportedWalletFormatsOnNetwork(network);
+  addReason(
+    unSupportedWalletFormatsOnNetwork(network),
+    `${network.name} does not support this wallet`
+  );
 
   // Some wallets are unavailable offline
   if (isOffline) {
-    disabledWallets.push(SecureWalletName.WEB3);
-    disabledWallets.push(SecureWalletName.TREZOR);
+    addReason(
+      [SecureWalletName.WEB3, SecureWalletName.TREZOR],
+      'This wallet cannot be accessed offline'
+    );
   }
 
   // Some wallets are disabled on certain platforms
   if (process.env.BUILD_DOWNLOADABLE) {
-    disabledWallets.push(SecureWalletName.LEDGER_NANO_S);
+    addReason([SecureWalletName.LEDGER_NANO_S], 'This wallet is only supported on the website');
   }
   if (process.env.BUILD_ELECTRON) {
-    disabledWallets.push(SecureWalletName.WEB3);
+    addReason([SecureWalletName.WEB3], 'This wallet is not supported in the MyEtherWallet app');
   }
 
   // Dedupe and sort for consistency
-  return disabledWallets.filter((name, idx) => disabledWallets.indexOf(name) === idx).sort();
+  disabledWallets.wallets = disabledWallets.wallets
+    .filter((name, idx) => disabledWallets.wallets.indexOf(name) === idx)
+    .sort();
+
+  return disabledWallets;
 }
