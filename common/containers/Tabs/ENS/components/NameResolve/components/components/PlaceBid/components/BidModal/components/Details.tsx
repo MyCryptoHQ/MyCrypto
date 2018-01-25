@@ -3,7 +3,11 @@ import { getBidModalFields, ModalFields } from 'selectors/ens';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNodeConfig } from 'selectors/config';
-import { From } from 'components/ConfirmationModal/components/From';
+import { getFrom } from 'selectors/transaction';
+import { makeBlob } from 'utils/blob';
+
+import moment from 'moment';
+import { EnsUserDownloadedBidAction } from 'actions/ens';
 
 const MonoTd = ({ children }) => <td className="mono">{children}</td>;
 
@@ -16,13 +20,21 @@ export const ModalHeader = (
   </div>
 );
 
-interface StateProps extends ModalFields {
-  node: AppState['config']['node'];
+interface OwnProps {
+  userDownloadedBid(unsealDetails: EnsUserDownloadedBidAction['payload']): void;
 }
 
-class DetailsClass extends Component<StateProps> {
+interface StateProps extends ModalFields {
+  node: AppState['config']['node'];
+  from: AppState['transaction']['meta']['from'];
+}
+
+type Props = StateProps & OwnProps;
+
+class DetailsClass extends Component<Props> {
+  private currentDate = Date.now();
   public render() {
-    const { bidMask, bidValue, endDate, secretPhrase, revealDate, node, name } = this.props;
+    const { bidMask, bidValue, endDate, secretPhrase, revealDate, node, name, from } = this.props;
     return (
       <div className="table-wrapper">
         <table className="table table-striped">
@@ -45,10 +57,7 @@ class DetailsClass extends Component<StateProps> {
             </tr>
             <tr>
               <td>From:</td>
-
-              <MonoTd>
-                <From withFrom={from => <>{from}</>} />
-              </MonoTd>
+              <MonoTd>{from}</MonoTd>
             </tr>
             <tr>
               <td>Reveal Date:</td>
@@ -64,8 +73,19 @@ class DetailsClass extends Component<StateProps> {
         </table>
         {/* use css not br's */}
         <br />
-        <p>Copy and save this:</p>
-        <textarea className="form-control" readOnly={true} value={JSON.stringify('transaction')} />
+        <p>Click here to save this as a file:</p>
+        <a
+          href={this.getBlob()}
+          download={this.generateFileName()}
+          onClick={() => this.props.userDownloadedBid(this.generateBidPayload())}
+        >
+          <textarea
+            rows={6}
+            className="form-control"
+            readOnly={true}
+            value={JSON.stringify(this.generateBidPayload(), null, 1)}
+          />
+        </a>
 
         <div className="BidModal-details-detail text-center">
           You are interacting with the <strong>{node.network}</strong> network provided by{' '}
@@ -74,10 +94,24 @@ class DetailsClass extends Component<StateProps> {
       </div>
     );
   }
+
+  private generateFileName = () =>
+    `ENSBid-${this.props.from}-${moment(this.currentDate).format(
+      'dddd, MMMM Do YYYY, h:mm:ss a'
+    )}-${this.props.unsealDetails.name}`;
+
+  private generateBidPayload = (): EnsUserDownloadedBidAction['payload'] => ({
+    from: this.props.from!,
+    ...this.props.unsealDetails,
+    date: this.currentDate
+  });
+
+  private getBlob = () => makeBlob('text/json;charset=UTF-8', this.generateBidPayload());
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
   node: getNodeConfig(state),
+  from: getFrom(state),
   ...getBidModalFields(state)
 });
 export const Details = connect(mapStateToProps)(DetailsClass);
