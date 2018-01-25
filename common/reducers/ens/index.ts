@@ -1,6 +1,6 @@
 import domainSelector, { State as DSState } from './domainSelector';
 import domainRequests, { State as DRState } from './domainRequests';
-import placeBid, { State as BidState } from './placeBid';
+import bidding, { State as BiddingState } from './bidding';
 import fields, { State as FieldsState } from './fields';
 
 import { combineReducers } from 'redux';
@@ -8,8 +8,8 @@ import { combineReducers } from 'redux';
 export interface State {
   domainSelector: DSState;
   domainRequests: DRState;
-  placeBid: BidState;
   fields: FieldsState;
+  bidding: BiddingState;
 }
 
-export const ens = combineReducers({ domainSelector, domainRequests, placeBid, fields });
+export const ens = combineReducers<State>({ domainSelector, domainRequests, fields, bidding });

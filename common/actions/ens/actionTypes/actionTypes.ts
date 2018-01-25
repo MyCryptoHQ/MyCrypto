@@ -1,8 +1,8 @@
-import { PlaceBidAction } from './placeBid';
 import { ResolveDomainAction } from './resolveDomain';
+import { FieldAction, BiddingAction } from 'actions/ens';
 
-export * from './placeBid';
 export * from './resolveDomain';
 export * from './fields';
+export * from './bidding';
 
-export type EnsAction = PlaceBidAction | ResolveDomainAction;
+export type EnsAction = ResolveDomainAction | BiddingAction | FieldAction;
