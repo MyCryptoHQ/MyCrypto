@@ -175,7 +175,10 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
 
   // Some wallets are disabled on certain platforms
   if (process.env.BUILD_DOWNLOADABLE) {
-    addReason([SecureWalletName.LEDGER_NANO_S], 'This wallet is only supported on the website');
+    addReason(
+      [SecureWalletName.LEDGER_NANO_S],
+      'This wallet is only supported at MyEtherWallet.com'
+    );
   }
   if (process.env.BUILD_ELECTRON) {
     addReason([SecureWalletName.WEB3], 'This wallet is not supported in the MyEtherWallet app');

@@ -47,22 +47,23 @@ export class WalletButton extends React.PureComponent<Props> {
     } = this.props;
 
     const icons: Icon[] = [];
-    if (isSecure) {
-      icons.push({
-        icon: 'shield',
-        tooltip: translateRaw('This wallet type is secure')
-      });
-    } else {
-      icons.push({
-        icon: 'exclamation-triangle',
-        tooltip: translateRaw('This wallet type is insecure')
-      });
-    }
     if (isReadOnly) {
       icons.push({
         icon: 'eye',
         tooltip: translateRaw('You cannot send using address only')
       });
+    } else {
+      if (isSecure) {
+        icons.push({
+          icon: 'shield',
+          tooltip: translateRaw('This wallet type is secure')
+        });
+      } else {
+        icons.push({
+          icon: 'exclamation-triangle',
+          tooltip: translateRaw('This wallet type is insecure')
+        });
+      }
     }
     if (helpLink) {
       icons.push({
