@@ -10,7 +10,7 @@ import { setToField, TSetToField } from 'actions/transaction';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
-import { NonceField, Gas } from 'components';
+import { NonceField, TXMetaDataPanel } from 'components';
 import './Deploy.scss';
 
 interface DispatchProps {
@@ -53,7 +53,7 @@ class DeployClass extends Component<DispatchProps> {
 
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
-            <Gas
+            <TXMetaDataPanel
               initialState="advanced"
               disableToggle={true}
               advancedGasOptions={{ dataField: false }}

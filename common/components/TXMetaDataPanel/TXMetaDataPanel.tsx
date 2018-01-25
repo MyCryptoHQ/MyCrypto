@@ -14,7 +14,7 @@ import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
-import './Gas.scss';
+import './TXMetaDataPanel.scss';
 import { getGasPrice } from 'selectors/transaction';
 
 type SliderStates = 'simple' | 'advanced';
@@ -50,7 +50,7 @@ interface State {
   sliderState: SliderStates;
 }
 
-class Gas extends React.Component<Props, State> {
+class TXMetaDataPanel extends React.Component<Props, State> {
   public static defaultProps: DefaultProps = {
     initialState: 'simple'
   };
@@ -122,4 +122,4 @@ export default connect(mapStateToProps, {
   fetchCCRates,
   getNonceRequested,
   reset
-})(Gas);
+})(TXMetaDataPanel);

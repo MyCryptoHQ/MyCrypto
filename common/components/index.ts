@@ -14,5 +14,5 @@ export { default as Footer } from './Footer';
 export { default as BalanceSidebar } from './BalanceSidebar';
 export { default as PaperWallet } from './PaperWallet';
 export { default as AlphaAgreement } from './AlphaAgreement';
-export { default as Gas } from './Gas';
+export { default as TXMetaDataPanel } from './TXMetaDataPanel';
 export { default as WalletDecrypt } from './WalletDecrypt';

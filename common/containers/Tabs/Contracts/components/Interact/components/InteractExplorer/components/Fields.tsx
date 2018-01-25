@@ -1,6 +1,6 @@
 import { AmountField } from './AmountField';
 import React, { Component } from 'react';
-import { SendButton, SigningStatus, Gas } from 'components';
+import { SendButton, SigningStatus, TXMetaDataPanel } from 'components';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { FullWalletOnly } from 'components/renderCbs';
 
@@ -12,7 +12,7 @@ export class Fields extends Component<OwnProps> {
     const makeContent = () => (
       <React.Fragment>
         <AmountField />
-        <Gas
+        <TXMetaDataPanel
           className="form-group"
           initialState="advanced"
           disableToggle={true}
