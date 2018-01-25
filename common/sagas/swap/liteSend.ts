@@ -15,7 +15,7 @@ import { isSupportedUnit } from 'selectors/config';
 import { isEtherUnit } from 'libs/units';
 import { showLiteSend, configureLiteSend } from 'actions/swap';
 import { TypeKeys as SwapTK } from 'actions/swap/constants';
-import { isUnlocked } from 'selectors/wallet';
+import { isUnlocked, isEtherBalancePending } from 'selectors/wallet';
 
 type SwapState = AppState['swap'];
 
@@ -48,6 +48,11 @@ export function* configureLiteSendSaga(): SagaIterator {
       WalletTK.WALLET_SET_TOKEN_BALANCE_FULFILLED,
       WalletTK.WALLET_SET_TOKEN_BALANCE_REJECTED
     ]);
+  } else {
+    const etherBalanceResolving: boolean = yield select(isEtherBalancePending);
+    if (etherBalanceResolving) {
+      yield take([WalletTK.WALLET_SET_BALANCE_FULFILLED, WalletTK.WALLET_SET_BALANCE_REJECTED]);
+    }
   }
 
   yield put(setUnitMeta(id));
