@@ -46,9 +46,14 @@ class InteractClass extends Component<DispatchProps, State> {
   public render() {
     const { showExplorer, currentContract } = this.state;
 
+    const interactProps = {
+      accessContract: this.accessContract,
+      resetState: this.resetState
+    };
+
     return (
       <main className="Interact Tab-content-pane" role="main">
-        <InteractForm accessContract={this.accessContract} resetState={this.resetState} />
+        <InteractForm {...interactProps} />
         <hr />
         {showExplorer &&
           currentContract && (

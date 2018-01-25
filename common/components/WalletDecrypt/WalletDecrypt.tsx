@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import {
@@ -27,7 +28,8 @@ import {
   TrezorDecrypt,
   ViewOnlyDecrypt,
   Web3Decrypt,
-  WalletButton
+  WalletButton,
+  InsecureWalletWarning
 } from './components';
 import { AppState } from 'reducers';
 import DISABLES from './disables';
@@ -52,6 +54,7 @@ import { getNetworkConfig } from '../../selectors/config';
 interface OwnProps {
   hidden?: boolean;
   disabledWallets?: WalletName[];
+  showGenerateLink?: boolean;
 }
 
 interface DispatchProps {
@@ -78,6 +81,7 @@ type UnlockParams = {} | PrivateKeyValue;
 interface State {
   selectedWalletKey: WalletName | null;
   value: UnlockParams | null;
+  hasAcknowledgedInsecure: boolean;
 }
 
 interface BaseWalletInfo {
@@ -120,6 +124,10 @@ type Wallets = SecureWallets & InsecureWallets & MiscWallet;
 
 const WEB3_TYPE: string | false =
   (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
+
+const SECURE_WALLETS = Object.values(SecureWalletName);
+const INSECURE_WALLETS = Object.values(InsecureWalletName);
+const MISC_WALLETS = Object.values(MiscWalletName);
 
 export class WalletDecrypt extends Component<Props, State> {
   // https://github.com/Microsoft/TypeScript/issues/13042
@@ -197,7 +205,8 @@ export class WalletDecrypt extends Component<Props, State> {
 
   public state: State = {
     selectedWalletKey: null,
-    value: null
+    value: null,
+    hasAcknowledgedInsecure: false
   };
 
   public componentWillReceiveProps(nextProps: Props) {
@@ -220,36 +229,59 @@ export class WalletDecrypt extends Component<Props, State> {
   }
 
   public getDecryptionComponent() {
+    const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
     const selectedWallet = this.getSelectedWallet();
-    if (!selectedWallet) {
+    if (!selectedWalletKey || !selectedWallet) {
       return null;
     }
 
+    if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
+      return (
+        <div className="WalletDecrypt-decrypt">
+          <InsecureWalletWarning
+            walletType={translate(selectedWallet.lid)}
+            onContinue={this.handleAcknowledgeInsecure}
+            onCancel={this.clearWalletChoice}
+          />
+        </div>
+      );
+    }
+
     return (
-      <selectedWallet.component
-        value={this.state.value}
-        onChange={this.onChange}
-        onUnlock={this.onUnlock}
-        showNotification={this.props.showNotification}
-        isWalletPending={
-          this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-            ? this.props.isWalletPending
-            : undefined
-        }
-        isPasswordPending={
-          this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-            ? this.props.isPasswordPending
-            : undefined
-        }
-      />
+      <div className="WalletDecrypt-decrypt">
+        <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
+          <i className="fa fa-arrow-left" /> {translate('Change Wallet')}
+        </button>
+        <h2 className="WalletDecrypt-decrypt-title">
+          {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
+        </h2>
+        <section className="WalletDecrypt-decrypt-form">
+          <selectedWallet.component
+            value={this.state.value}
+            onChange={this.onChange}
+            onUnlock={this.onUnlock}
+            showNotification={this.props.showNotification}
+            isWalletPending={
+              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                ? this.props.isWalletPending
+                : undefined
+            }
+            isPasswordPending={
+              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                ? this.props.isPasswordPending
+                : undefined
+            }
+          />
+        </section>
+      </div>
     );
   }
 
-  public buildWalletOptions() {
-    const SECURE_WALLETS = Object.values(SecureWalletName);
-    const INSECURE_WALLETS = Object.values(InsecureWalletName);
-    const MISC_WALLETS = Object.values(MiscWalletName);
+  public handleAcknowledgeInsecure = () => {
+    this.setState({ hasAcknowledgedInsecure: true });
+  };
 
+  public buildWalletOptions() {
     return (
       <div className="WalletDecrypt-wallets">
         <h2 className="WalletDecrypt-wallets-title">{translate('decrypt_Access')}</h2>
@@ -305,6 +337,12 @@ export class WalletDecrypt extends Component<Props, State> {
             );
           })}
         </div>
+
+        {this.props.showGenerateLink && (
+          <div className="WalletDecrypt-wallets-generate">
+            Don’t have a wallet? <Link to="/generate">Click here to get one</Link>.
+          </div>
+        )}
       </div>
     );
   }
@@ -328,7 +366,8 @@ export class WalletDecrypt extends Component<Props, State> {
     window.setTimeout(() => {
       this.setState({
         selectedWalletKey: walletType,
-        value: wallet.initialParams
+        value: wallet.initialParams,
+        hasAcknowledgedInsecure: false
       });
     }, timeout);
   };
@@ -336,7 +375,8 @@ export class WalletDecrypt extends Component<Props, State> {
   public clearWalletChoice = () => {
     this.setState({
       selectedWalletKey: null,
-      value: null
+      value: null,
+      hasAcknowledgedInsecure: false
     });
   };
 
@@ -352,21 +392,7 @@ export class WalletDecrypt extends Component<Props, State> {
               <TransitionGroup>
                 {decryptionComponent && selectedWallet ? (
                   <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
-                    <div className="WalletDecrypt-decrypt">
-                      <button
-                        className="WalletDecrypt-decrypt-back"
-                        onClick={this.clearWalletChoice}
-                      >
-                        <i className="fa fa-arrow-left" /> {translate('Change Wallet')}
-                      </button>
-                      <h2 className="WalletDecrypt-decrypt-title">
-                        {!selectedWallet.isReadOnly && 'Unlock your'}{' '}
-                        {translate(selectedWallet.lid)}
-                      </h2>
-                      <section className="WalletDecrypt-decrypt-form">
-                        {decryptionComponent}
-                      </section>
-                    </div>
+                    {decryptionComponent}
                   </CSSTransition>
                 ) : (
                   <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
