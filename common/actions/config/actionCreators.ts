@@ -1,6 +1,6 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config/data';
+import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config';
 
 export type TToggleOfflineConfig = typeof toggleOfflineConfig;
 export function toggleOfflineConfig(): interfaces.ToggleOfflineAction {

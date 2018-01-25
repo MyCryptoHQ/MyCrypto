@@ -1,0 +1,92 @@
+// This syntax is necessary to override css styles in react-select
+.Select {
+  font-size: 1rem;
+  .Select-control {
+    height: $input-height-base;
+    display: block;
+    box-sizing: border-box;
+    font-weight: 400;
+    border-radius: 0px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    border: 1px solid $input-border;
+    transition: $transition;
+    &:hover {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      border: 1px solid $input-border;
+    }
+    .Select-value {
+      padding-left: $input-padding-x;
+      padding-right: $input-padding-x;
+      .Select-value-label {
+        vertical-align: middle;
+      }
+    }
+    .Select-arrow-zone {
+      float: right;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .Select-menu-outer {
+    box-sizing: content-box;
+    font-weight: 400;
+    border: 1px solid $input-border;
+    width: calc(100% - 1px);
+  }
+  .Select-placeholder {
+    color: #d3d3d3;
+    padding: 0px $input-padding-x;
+    line-height: $input-height-base;
+  }
+  .Select-input {
+    opacity: 0;
+  }
+  &.is-open {
+    .Select-control {
+      border: 1px solid $input-border;
+    }
+  }
+  &.is-focused {
+    &:not(.is-open):not(.is-invalid) {
+      .Select-control {
+        border-color: $brand-primary;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px rgba(14, 151, 192, 0.5);
+      }
+    }
+  }
+
+  @mixin react-select-control-state($color) {
+    .Select-control {
+      border-color: lighten($color, 20%);
+      @include input-shadow($color);
+    }
+    .Select-menu-outer {
+      border-color: lighten($color, 20%);
+      @include input-shadow($color);
+    }
+
+    &.is-focused {
+      .Select-control {
+        border-color: lighten($color, 5%);
+        @include input-focus-shadow($color);
+      }
+      .Select-menu-outer {
+        border-color: lighten($color, 5%);
+        @include input-focus-shadow($color);
+      }
+    }
+  }
+
+  &.is-valid {
+    @include react-select-control-state($brand-success);
+  }
+
+  &.is-invalid {
+    @include react-select-control-state($brand-danger);
+  }
+
+  &.is-warning {
+    @include react-select-control-state($brand-warning);
+  }
+}

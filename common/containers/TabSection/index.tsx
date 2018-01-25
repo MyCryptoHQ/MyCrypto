@@ -17,7 +17,6 @@ import { AlphaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
-import { getGasPrice } from 'selectors/transaction';
 
 interface ReduxProps {
   languageSelection: AppState['config']['languageSelection'];
@@ -28,7 +27,6 @@ interface ReduxProps {
   customNodes: AppState['config']['customNodes'];
   customNetworks: AppState['config']['customNetworks'];
   latestBlock: AppState['config']['latestBlock'];
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
 }
 
 interface ActionProps {
@@ -61,7 +59,6 @@ class TabSection extends Component<Props, {}> {
       customNetworks,
       latestBlock,
       setGasPriceField,
-      gasPrice,
       changeLanguage,
       changeNodeIntent,
       addCustomNode,
@@ -75,7 +72,6 @@ class TabSection extends Component<Props, {}> {
       nodeSelection,
       isChangingNode,
       isOffline,
-      gasPrice,
       customNodes,
       customNetworks,
       changeLanguage,
@@ -109,7 +105,6 @@ function mapStateToProps(state: AppState): ReduxProps {
     isChangingNode: state.config.isChangingNode,
     isOffline: state.config.offline,
     languageSelection: state.config.languageSelection,
-    gasPrice: getGasPrice(state),
     customNodes: state.config.customNodes,
     customNetworks: state.config.customNetworks,
     latestBlock: state.config.latestBlock

@@ -4,6 +4,9 @@ $input-color: #333333;
 $input-border: $gray-lighter;
 $input-border-focus: rgba($brand-primary, 0.6);
 $input-color-placeholder: darken($gray-lighter, 10%);
+$input-padding-x: 1rem;
+$input-padding-y: 0.75rem;
+$input-padding: $input-padding-y $input-padding-x;
 
 $input-height-base: 2.55rem;
 $input-height-large: 4rem;
@@ -20,7 +23,7 @@ $input-group-addon-border-color: $input-border;
 $cursor-disabled: default;
 
 $dropdown-bg: #fff;
-$dropdown-border: rgba(0, 0, 0, .15);
+$dropdown-border: rgba(0, 0, 0, 0.15);
 $dropdown-fallback-border: $gray-lighter;
 $dropdown-divider-bg: #e5e5e5;
 $dropdown-link-color: $ether-navy;

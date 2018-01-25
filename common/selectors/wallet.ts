@@ -1,5 +1,5 @@
 import { TokenValue, Wei } from 'libs/units';
-import { Token } from 'config/data';
+import { Token } from 'config';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';
@@ -107,6 +107,9 @@ export const getWalletType = (state: AppState): IWalletType => {
 };
 
 export const isUnlocked = (state: AppState) => !!getWalletInst(state);
+
+export const isEtherBalancePending = (state: AppState): boolean =>
+  getWallet(state).balance.isPending;
 
 export const getEtherBalance = (state: AppState): Wei | null => getWallet(state).balance.wei;
 

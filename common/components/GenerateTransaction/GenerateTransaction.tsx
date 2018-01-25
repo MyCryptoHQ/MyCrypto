@@ -4,7 +4,12 @@ import EthTx from 'ethereumjs-tx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { getTransaction, isNetworkRequestPending, isValidAmount } from 'selectors/transaction';
+import {
+  getTransaction,
+  isNetworkRequestPending,
+  isValidGasPrice,
+  isValidGasLimit
+} from 'selectors/transaction';
 import { getWalletType } from 'selectors/wallet';
 
 interface StateProps {
@@ -12,7 +17,8 @@ interface StateProps {
   networkRequestPending: boolean;
   isFullTransaction: boolean;
   isWeb3Wallet: boolean;
-  validAmount: boolean;
+  validGasPrice: boolean;
+  validGasLimit: boolean;
 }
 
 class GenerateTransactionClass extends Component<StateProps> {
@@ -22,14 +28,19 @@ class GenerateTransactionClass extends Component<StateProps> {
       isWeb3Wallet,
       transaction,
       networkRequestPending,
-      validAmount
+
+      validGasPrice,
+      validGasLimit
     } = this.props;
+
+    const isButtonDisabled =
+      !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit;
     return (
       <WithSigner
         isWeb3={isWeb3Wallet}
         withSigner={signer => (
           <button
-            disabled={!isFullTransaction || networkRequestPending || !validAmount}
+            disabled={isButtonDisabled}
             className="btn btn-info btn-block"
             onClick={signer(transaction)}
           >
@@ -45,5 +56,6 @@ export const GenerateTransaction = connect((state: AppState) => ({
   ...getTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
   isWeb3Wallet: getWalletType(state).isWeb3Wallet,
-  validAmount: isValidAmount(state)
+  validGasPrice: isValidGasPrice(state),
+  validGasLimit: isValidGasLimit(state)
 }))(GenerateTransactionClass);

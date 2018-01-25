@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NavigationLink from './NavigationLink';
-import { knowledgeBaseURL } from 'config/data';
+import { knowledgeBaseURL } from 'config';
 import './Navigation.scss';
 
 export interface TabLink {
@@ -11,13 +11,12 @@ export interface TabLink {
 
 const tabs: TabLink[] = [
   {
-    name: 'NAV_GenerateWallet',
-    to: '/generate'
-  },
-
-  {
     name: 'Account View & Send',
     to: '/account'
+  },
+  {
+    name: 'NAV_GenerateWallet',
+    to: '/generate'
   },
   {
     name: 'NAV_Swap',

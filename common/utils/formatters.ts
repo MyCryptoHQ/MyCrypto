@@ -100,3 +100,12 @@ export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
 export function formatMnemonic(phrase: string) {
   return phrase.replace(/(\r\n|\n|\r|\s+|,)/gm, ' ').trim();
 }
+
+export function bytesToHuman(bytes: number) {
+  if (bytes <= 0) {
+    return '0 b';
+  }
+  const sizes = ['b', 'kb', 'mb', 'gb', 'tb'];
+  const i = Math.round(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i];
+}

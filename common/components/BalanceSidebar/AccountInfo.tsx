@@ -1,14 +1,20 @@
 import { Identicon, UnitDisplay } from 'components/ui';
-import { NetworkConfig } from 'config/data';
+import { NetworkConfig } from 'config';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
+import { getNetworkConfig } from 'selectors/config';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
 
-interface Props {
-  balance: Balance;
+interface OwnProps {
   wallet: IWallet;
+}
+
+interface StateProps {
+  balance: Balance;
   network: NetworkConfig;
 }
 
@@ -17,7 +23,10 @@ interface State {
   address: string;
   confirmAddr: boolean;
 }
-export default class AccountInfo extends React.Component<Props, State> {
+
+type Props = OwnProps & StateProps;
+
+class AccountInfo extends React.Component<Props, State> {
   public state = {
     showLongBalance: false,
     address: '',
@@ -127,11 +136,11 @@ export default class AccountInfo extends React.Component<Props, State> {
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
                   <a
-                    href={blockExplorer.address(address)}
+                    href={blockExplorer.addressUrl(address)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {`${network.name} (${blockExplorer.name})`}
+                    {`${network.name} (${blockExplorer.origin})`}
                   </a>
                 </li>
               )}
@@ -153,3 +162,12 @@ export default class AccountInfo extends React.Component<Props, State> {
     );
   }
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    balance: state.wallet.balance,
+    network: getNetworkConfig(state)
+  };
+}
+
+export default connect(mapStateToProps)(AccountInfo);

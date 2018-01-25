@@ -1,7 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`render snapshot 1`] = `
-<ENS
-  dispatch={[Function]}
-/>
+exports[`snapshot test ENS component 1`] = `
+<Connect(TabSection)
+  isUnavailableOffline={true}
+>
+  <section
+    className="container"
+  >
+    <Switch>
+      <Route
+        exact={true}
+        path="/ens"
+        render={[Function]}
+      />
+      <Component />
+    </Switch>
+  </section>
+</Connect(TabSection)>
 `;
