@@ -1,6 +1,10 @@
 @import 'common/sass/variables';
 
 .Amount {
+  &-testnet-warn {
+    text-align: center;
+    margin-bottom: 24px;
+  }
   &-send,
   &-fee,
   &-total {

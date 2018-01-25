@@ -1,45 +1,60 @@
 import React from 'react';
 import { UnitDisplay } from 'components/ui';
-import { Wei, TokenValue } from 'libs/units';
 import { AppState } from 'reducers';
-import ERC20 from 'libs/erc20';
 import './Amounts.scss';
+import BN from 'bn.js';
 
 interface Props {
-  value: string;
-  gasPrice: string;
-  gasLimit: string;
+  sendValue: BN;
+  fee: BN;
+  sendValueUSD: BN;
+  transactionFeeUSD: BN;
   network: AppState['config']['network'];
   decimal: number;
   unit: string;
   data: string;
+  isToken: boolean;
+  isTestnet: boolean | undefined;
 }
 
 export const Amounts: React.SFC<Props> = ({
-  value,
-  gasPrice,
-  gasLimit,
+  sendValue,
+  fee,
+  sendValueUSD,
+  transactionFeeUSD,
   network,
   decimal,
   unit,
+  isToken,
+  isTestnet,
   data
 }) => {
-  const isToken = unit !== 'ether';
-  const fee = Wei(gasPrice).mul(Wei(gasLimit));
-  const handledValue = isToken ? TokenValue(ERC20.transfer.decodeInput(data)._value) : Wei(value);
-  const total = fee.add(handledValue);
+  const total = sendValue.add(fee);
+  const totalUSD = sendValueUSD.add(transactionFeeUSD);
   return (
     <div className="Amount">
+      {isTestnet && <p className="Amount-testnet-warn small">Test Network Transaction</p>}
       <div className="Amount-send">
         <div className="Amount-send-positioning-wrapper">
           <h5>You'll Send: </h5>
           <h5>
             <UnitDisplay
               decimal={decimal}
-              value={handledValue}
+              value={sendValue}
               symbol={isToken ? unit : network.unit}
               checkOffline={false}
             />
+            {!isTestnet && (
+              <span style={{ 'margin-left': '8px' }} className="small">
+                $<UnitDisplay
+                  value={sendValueUSD}
+                  unit="ether"
+                  displayShortBalance={2}
+                  displayTrailingZeroes={true}
+                  checkOffline={true}
+                />
+              </span>
+            )}
           </h5>
         </div>
       </div>
@@ -54,6 +69,17 @@ export const Amounts: React.SFC<Props> = ({
               displayShortBalance={6}
               checkOffline={false}
             />
+            {!isTestnet && (
+              <span style={{ 'margin-left': '8px' }} className="small">
+                $<UnitDisplay
+                  value={transactionFeeUSD}
+                  unit="ether"
+                  displayShortBalance={2}
+                  displayTrailingZeroes={true}
+                  checkOffline={true}
+                />
+              </span>
+            )}
           </h5>
         </div>
       </div>
@@ -67,6 +93,17 @@ export const Amounts: React.SFC<Props> = ({
               symbol={isToken ? unit : network.unit}
               checkOffline={false}
             />
+            {!isTestnet && (
+              <span style={{ 'margin-left': '8px' }} className="small">
+                $<UnitDisplay
+                  value={totalUSD}
+                  unit="ether"
+                  displayShortBalance={2}
+                  displayTrailingZeroes={true}
+                  checkOffline={true}
+                />
+              </span>
+            )}
           </h5>
         </div>
       </div>
