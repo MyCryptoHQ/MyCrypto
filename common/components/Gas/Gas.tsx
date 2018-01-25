@@ -41,6 +41,7 @@ interface OwnProps {
   initialState?: SliderStates;
   disableToggle?: boolean;
   advancedGasOptions?: AdvancedOptions;
+  className?: string;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
@@ -73,11 +74,10 @@ class Gas extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableToggle, gasPrice, advancedGasOptions } = this.props;
+    const { offline, disableToggle, gasPrice, advancedGasOptions, className = '' } = this.props;
     const showAdvanced = this.state.sliderState === 'advanced' || offline;
-
     return (
-      <div className="Gas">
+      <div className={`Gas col-md-12 ${className}`}>
         {showAdvanced ? (
           <AdvancedGas
             gasPrice={gasPrice}

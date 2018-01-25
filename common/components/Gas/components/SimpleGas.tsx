@@ -29,7 +29,7 @@ class SimpleGas extends React.Component<Props> {
 
     return (
       <div className="SimpleGas row form-group">
-        <div className="col-md-12 SimpleGas">
+        <div className="SimpleGas-title">
           <GasLimitField
             includeLabel={true}
             customLabel={translateRaw('Transaction Fee')}
@@ -38,7 +38,7 @@ class SimpleGas extends React.Component<Props> {
         </div>
 
         {gasLimitEstimationTimedOut && (
-          <div className="col-md-12 prompt-toggle-gas-limit">
+          <div className="prompt-toggle-gas-limit">
             <p className="small">
               {isWeb3Node
                 ? "Couldn't calculate gas limit, if you know what your doing, try setting manually in Advanced settings"
@@ -47,7 +47,7 @@ class SimpleGas extends React.Component<Props> {
           </div>
         )}
 
-        <div className="col-md-8 col-sm-12">
+        <div className="SimpleGas-input-group">
           <div className="SimpleGas-slider">
             <Slider
               onChange={this.handleSlider}
@@ -61,8 +61,6 @@ class SimpleGas extends React.Component<Props> {
               <span>{translate('Fast')}</span>
             </div>
           </div>
-        </div>
-        <div className="col-md-4 col-sm-12">
           <FeeSummary
             render={({ fee, usd }) => (
               <span>

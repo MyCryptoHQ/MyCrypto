@@ -12,12 +12,13 @@ interface Props {
   disabled?: boolean;
 }
 
-export const GaslimitLoading: React.SFC<{ gasEstimationPending: boolean }> = ({
-  gasEstimationPending
-}) => (
+export const GaslimitLoading: React.SFC<{
+  gasEstimationPending: boolean;
+  onlyIncludeLoader?: boolean;
+}> = ({ gasEstimationPending, onlyIncludeLoader }) => (
   <CSSTransition in={gasEstimationPending} timeout={300} classNames="fade">
     <div className={`Calculating-limit small ${gasEstimationPending ? 'active' : ''}`}>
-      Calculating gas limit
+      {!!onlyIncludeLoader ? 'Calculating gas limit' : 'Calculating'}
       <Spinner />
     </div>
   </CSSTransition>
@@ -42,7 +43,10 @@ export const GasLimitField: React.SFC<Props> = ({
               )
             ) : null}
             <div className="flex-spacer" />
-            <GaslimitLoading gasEstimationPending={gasEstimationPending} />
+            <GaslimitLoading
+              gasEstimationPending={gasEstimationPending}
+              onlyIncludeLoader={false}
+            />
           </div>
           {onlyIncludeLoader ? null : (
             <input

@@ -1,6 +1,6 @@
 import { AmountField } from './AmountField';
 import React, { Component } from 'react';
-import { SendButton, SigningStatus, Gas, NonceField } from 'components';
+import { SendButton, SigningStatus, Gas } from 'components';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { FullWalletOnly } from 'components/renderCbs';
 
@@ -12,8 +12,7 @@ export class Fields extends Component<OwnProps> {
     const makeContent = () => (
       <React.Fragment>
         <AmountField />
-        <NonceField alwaysDisplay={false} />
-        <Gas initialState="advanced" disableToggle={true} />
+        <Gas className="form-group" initialState="advanced" disableToggle={true} />
         {this.props.button}
         <SigningStatus />
         <SendButton />

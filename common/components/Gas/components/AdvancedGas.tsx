@@ -58,7 +58,7 @@ class AdvancedGas extends React.Component<Props, State> {
     const { gasPriceField, gasLimitField, nonceField, dataField, feeSummary } = this.state.options;
     return (
       <div className="AdvancedGas row form-group">
-        <div className="col-md-12">
+        <div className="AdvancedGas-calculate-limit">
           <label className="checkbox">
             <input
               type="checkbox"
@@ -69,42 +69,44 @@ class AdvancedGas extends React.Component<Props, State> {
           </label>
         </div>
 
-        {gasPriceField && (
-          <div className="col-md-4 col-sm-6 col-xs-12">
-            <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
-            <input
-              className={classnames('form-control', { 'is-invalid': !validGasPrice })}
-              type="number"
-              placeholder="e.g. 40"
-              value={gasPrice.raw}
-              onChange={this.handleGasPriceChange}
-            />
-          </div>
-        )}
+        <div className="AdvancedGas-flex-wrapper flex-wrapper">
+          {gasPriceField && (
+            <div className="AdvancedGas-gas-price">
+              <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
+              <input
+                className={classnames('form-control', { 'is-invalid': !validGasPrice })}
+                type="number"
+                placeholder="40"
+                value={gasPrice.raw}
+                onChange={this.handleGasPriceChange}
+              />
+            </div>
+          )}
 
-        {gasLimitField && (
-          <div className="col-md-4 col-sm-6 col-xs-12">
-            <GasLimitField
-              includeLabel={true}
-              customLabel={translateRaw('OFFLINE_Step2_Label_4')}
-              onlyIncludeLoader={false}
-            />
-          </div>
-        )}
-        {nonceField && (
-          <div className="col-md-4 col-sm-12 col-xs-12">
-            <NonceField alwaysDisplay={true} />
-          </div>
-        )}
+          {gasLimitField && (
+            <div className="AdvancedGas-gas-limit">
+              <GasLimitField
+                includeLabel={true}
+                customLabel={translateRaw('OFFLINE_Step2_Label_4')}
+                onlyIncludeLoader={false}
+              />
+            </div>
+          )}
+          {nonceField && (
+            <div className="AdvancedGas-nonce">
+              <NonceField alwaysDisplay={true} />
+            </div>
+          )}
+        </div>
 
         {dataField && (
-          <div className="col-md-12 col-xs-12">
+          <div className="AdvancedGas-data">
             <DataField />
           </div>
         )}
 
         {feeSummary && (
-          <div className="col-sm-12 col-xs-12">
+          <div className="AdvancedGas-fee-summary">
             <FeeSummary
               render={({ gasPriceWei, gasLimit, fee, usd }) => (
                 <span>

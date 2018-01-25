@@ -4,6 +4,29 @@
   margin-top: 0;
   margin-bottom: 0;
 
+  &-input-group {
+    display: flex;
+    > .SimpleGas-slider {
+      flex-grow: 1;
+      margin-right: $input-padding-x;
+    }
+    > .FeeSummary {
+      margin-left: $input-padding-x;
+      min-width: 224px;
+    }
+    @media screen and (max-width: $screen-md) {
+      flex-wrap: wrap;
+      > .SimpleGas-slider {
+        width: 100%;
+        margin-right: 0;
+      }
+      > .FeeSummary {
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+  }
+
   &-slider {
     padding-top: 8px;
     margin-bottom: $space-xs;
