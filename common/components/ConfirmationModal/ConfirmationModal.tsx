@@ -89,7 +89,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
     ];
 
     return (
-      <div className="ConfModalWrap">
+      <React.Fragment>
         <Modal
           title="Confirm Your Transaction"
           buttons={buttons}
@@ -97,19 +97,17 @@ class ConfirmationModalClass extends React.Component<Props, State> {
           disableButtons={transactionBroadcasting}
           isOpen={true}
         >
-          <div className="ConfModal">
-            {transactionBroadcasting ? (
-              <div className="ConfModal-loading">
-                <Spinner size="x5" />
-              </div>
-            ) : (
-              <div>
-                <Body />
-              </div>
-            )}
-          </div>
+          {transactionBroadcasting ? (
+            <React.Fragment>
+              <Spinner size="x5" />
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Body />
+            </React.Fragment>
+          )}
         </Modal>
-      </div>
+      </React.Fragment>
     );
   }
 

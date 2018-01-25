@@ -44,7 +44,6 @@ class BodyClass extends React.Component<Props, State> {
 
           return (
             <React.Fragment>
-              <Addresses to={to} from={from} unit={unit} data={data} />
               <Amounts
                 value={value}
                 gasPrice={gasPrice}
@@ -54,6 +53,7 @@ class BodyClass extends React.Component<Props, State> {
                 unit={unit}
                 data={data}
               />
+              <Addresses to={to} from={from} unit={unit} data={data} />
               <a onClick={this.toggleDetails}>+ Details</a>
               {showDetails ? <Details /> : null}
             </React.Fragment>
