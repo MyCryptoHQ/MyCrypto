@@ -32,8 +32,8 @@ import {
   InsecureWalletWarning
 } from './components';
 import { AppState } from 'reducers';
-import DISABLES from './disables';
 import { showNotification, TShowNotification } from 'actions/notifications';
+import { getDisabledWallets } from 'selectors/wallet';
 
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
@@ -48,8 +48,6 @@ import {
   isWeb3NodeAvailable,
   knowledgeBaseURL
 } from 'config';
-import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
-import { getNetworkConfig } from '../../selectors/config';
 
 interface OwnProps {
   hidden?: boolean;
@@ -70,7 +68,6 @@ interface DispatchProps {
 
 interface StateProps {
   computedDisabledWallets: WalletName[];
-  offline: boolean;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
@@ -426,24 +423,15 @@ export class WalletDecrypt extends Component<Props, State> {
   };
 
   private isWalletDisabled = (walletKey: WalletName) => {
-    if (this.props.offline && DISABLES.ONLINE_ONLY.includes(walletKey)) {
-      return true;
-    }
-
     return this.props.computedDisabledWallets.indexOf(walletKey) !== -1;
   };
 }
 
 function mapStateToProps(state: AppState, ownProps: Props) {
-  const { disabledWallets } = ownProps;
-  const network = getNetworkConfig(state);
-  const networkDisabledFormats = unSupportedWalletFormatsOnNetwork(network);
-  const computedDisabledWallets = disabledWallets
-    ? disabledWallets.concat(networkDisabledFormats)
-    : networkDisabledFormats;
+  const disabledWallets = ownProps.disabledWallets || [];
+  const computedDisabledWallets = disabledWallets.concat(getDisabledWallets(state));
   return {
     computedDisabledWallets,
-    offline: state.config.offline,
     isWalletPending: state.wallet.isWalletPending,
     isPasswordPending: state.wallet.isPasswordPending
   };

@@ -1,9 +1,10 @@
 import { TokenValue, Wei } from 'libs/units';
-import { Token } from 'config';
+import { Token, WalletName, SecureWalletName } from 'config';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';
 import { isEtherTransaction, getUnit } from './transaction';
+import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
@@ -135,4 +136,37 @@ export function getShownTokenBalances(
   }
 
   return tokenBalances.filter(t => walletTokens.includes(t.symbol));
+}
+
+interface DisabledWallets {
+  wallets: WalletName[];
+  reasons: {
+    [key: string]: string;
+  };
+}
+
+// TODO: Convert to reselect selector (Issue #884)
+export function getDisabledWallets(state: AppState): WalletName[] {
+  const network = getNetworkConfig(state);
+  const isOffline = getOffline(state);
+
+  // Some wallets don't support some networks
+  const disabledWallets = unSupportedWalletFormatsOnNetwork(network);
+
+  // Some wallets are unavailable offline
+  if (isOffline) {
+    disabledWallets.push(SecureWalletName.WEB3);
+    disabledWallets.push(SecureWalletName.TREZOR);
+  }
+
+  // Some wallets are disabled on certain platforms
+  if (process.env.BUILD_DOWNLOADABLE) {
+    disabledWallets.push(SecureWalletName.LEDGER_NANO_S);
+  }
+  if (process.env.BUILD_ELECTRON) {
+    disabledWallets.push(SecureWalletName.WEB3);
+  }
+
+  // Dedupe and sort for consistency
+  return disabledWallets.filter((name, idx) => disabledWallets.indexOf(name) === idx).sort();
 }
