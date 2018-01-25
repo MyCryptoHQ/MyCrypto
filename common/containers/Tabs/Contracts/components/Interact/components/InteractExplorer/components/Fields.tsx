@@ -12,7 +12,12 @@ export class Fields extends Component<OwnProps> {
     const makeContent = () => (
       <React.Fragment>
         <AmountField />
-        <Gas className="form-group" initialState="advanced" disableToggle={true} />
+        <Gas
+          className="form-group"
+          initialState="advanced"
+          disableToggle={true}
+          advancedGasOptions={{ dataField: false }}
+        />
         {this.props.button}
         <SigningStatus />
         <SendButton />
