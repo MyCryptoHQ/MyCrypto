@@ -32,9 +32,19 @@ interface StateProps {
   transactionFailed: boolean;
 }
 
+export interface ConfirmButtonCBProps {
+  type: IButton['type'];
+  timeLocked: boolean;
+  timeLeft: number;
+  timePrefix: string;
+  defaultText: string;
+  onConfirm: ConfirmationModalTemplateClass['confirm'];
+}
+
 export interface OwnProps {
   summary: React.ReactElement<any> | null;
   details: React.ReactElement<any> | null;
+  withConfirmButton?(props: ConfirmButtonCBProps): IButton;
   onClose(): void;
 }
 interface State {
@@ -75,15 +85,27 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
   public render() {
     const { onClose, transactionBroadcasting } = this.props;
     const { timeToRead } = this.state;
-
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
+    const defaultConfirmButton = {
+      text: buttonPrefix + translateRaw('SENDModal_Yes'),
+      type: 'primary' as IButton['type'],
+      disabled: timeToRead > 0,
+      onClick: this.confirm
+    };
+
+    const confirmButton: IButton = this.props.withConfirmButton
+      ? this.props.withConfirmButton({
+          onConfirm: defaultConfirmButton.onClick,
+          timeLeft: timeToRead,
+          timePrefix: buttonPrefix,
+          timeLocked: defaultConfirmButton.disabled,
+          defaultText: translateRaw('SENDModal_Yes'),
+          type: defaultConfirmButton.type
+        })
+      : defaultConfirmButton;
+
     const buttons: IButton[] = [
-      {
-        text: buttonPrefix + translateRaw('SENDModal_Yes'),
-        type: 'primary',
-        disabled: timeToRead > 0,
-        onClick: this.confirm
-      },
+      confirmButton,
       {
         text: translateRaw('SENDModal_No'),
         type: 'default',
