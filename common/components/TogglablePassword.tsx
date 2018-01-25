@@ -6,6 +6,7 @@ interface Props {
   value: string;
   placeholder?: string;
   name?: string;
+  disabled?: boolean;
   ariaLabel?: string;
   toggleAriaLabel?: string;
   isValid?: boolean;
@@ -33,6 +34,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       value,
       placeholder,
       name,
+      disabled,
       ariaLabel,
       isTextareaWhenVisible,
       onChange,
@@ -49,6 +51,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
             className={`form-control ${validClass}`}
             value={value}
             name={name}
+            disabled={disabled}
             onChange={onChange}
             onKeyDown={this.handleTextareaKeyDown}
             placeholder={placeholder}
@@ -59,6 +62,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
           <input
             value={value}
             name={name}
+            disabled={disabled}
             type={isVisible ? 'text' : 'password'}
             className={`form-control ${validClass}`}
             placeholder={placeholder}
