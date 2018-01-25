@@ -11,13 +11,12 @@ export interface TabLink {
 
 const tabs: TabLink[] = [
   {
-    name: 'NAV_GenerateWallet',
-    to: '/generate'
-  },
-
-  {
     name: 'Account View & Send',
     to: '/account'
+  },
+  {
+    name: 'NAV_GenerateWallet',
+    to: '/generate'
   },
   {
     name: 'NAV_Swap',
