@@ -3,6 +3,8 @@ import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { REQUEST_STATES } from 'reducers/ens/domainRequests';
 import { isCreationAddress } from 'libs/validators';
 import { GenerationStage } from 'reducers/ens/placeBid';
+import moment from 'moment';
+import { Wei } from 'libs/units';
 
 export const getEns = (state: AppState) => state.ens;
 
@@ -75,6 +77,33 @@ export const getAllFieldsValid = (state: AppState): boolean =>
     (isValid: boolean, currField: EnsFields[keyof EnsFields]) => isValid && !!currField.value,
     true
   );
+
+export interface ModalFields {
+  name: string;
+  revealDate: string;
+  endDate: string;
+  bidMask: Wei;
+  bidValue: Wei;
+  secretPhrase: string;
+}
+export const getBidModalFields = (state: AppState): ModalFields => {
+  const data = getCurrentDomainData(state);
+  if (!data) {
+    throw Error();
+  }
+  const { name, registrationDate } = data;
+  const revealDate = moment(registrationDate)
+    .add(3, 'days')
+    .format('dddd, MMMM Do YYYY, h:mm:ss a');
+  const endDate = moment(registrationDate)
+    .add(5, 'days')
+    .format('dddd, MMMM Do YYYY, h:mm:ss a');
+  const { bidMask, bidValue, secretPhrase } = getFieldValues(state);
+  if (!(bidMask && bidValue && secretPhrase)) {
+    throw Error();
+  }
+  return { name, revealDate, endDate, bidMask, bidValue, secretPhrase };
+};
 
 export const getFields = (state: AppState) => getEns(state).fields;
 export const getBidValue = (state: AppState) => getFields(state).bidValue;

@@ -11,7 +11,7 @@ const threadLoader = require('thread-loader');
 
 const fullSourceMap = process.env.SLOW_BUILD_SPEED;
 if (fullSourceMap) {
-  base.devtool = fullSourceMap ? 'source-map' : 'cheap-module-eval-source-map';
+  base.devtool = fullSourceMap ? 'cheap-module-source-map' : 'cheap-module-eval-source-map';
 
   threadLoader.warmup(
     {
