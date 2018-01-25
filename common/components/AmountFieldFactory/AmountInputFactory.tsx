@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
-import { ICurrentValue, getCurrentValue, isValidAmount } from 'selectors/transaction';
+import { ICurrentValue, getCurrentValue, nonStandardTransaction } from 'selectors/transaction';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { CallbackProps } from 'components/AmountFieldFactory';
@@ -11,15 +11,15 @@ interface OwnProps {
 }
 
 interface StateProps {
+  isNonStandard: boolean;
   currentValue: ICurrentValue;
-  validAmount: boolean;
 }
 
 type Props = OwnProps & StateProps;
 
 class AmountInputClass extends Component<Props> {
   public render() {
-    const { currentValue, onChange, withProps, validAmount } = this.props;
+    const { currentValue, onChange, withProps, isNonStandard } = this.props;
 
     return (
       <Query
@@ -27,7 +27,7 @@ class AmountInputClass extends Component<Props> {
         withQuery={({ readOnly }) =>
           withProps({
             currentValue,
-            isValid: validAmount,
+            isValid: !!currentValue.value || isNonStandard,
             readOnly: !!readOnly,
             onChange
           })
@@ -39,5 +39,5 @@ class AmountInputClass extends Component<Props> {
 
 export const AmountInput = connect((state: AppState) => ({
   currentValue: getCurrentValue(state),
-  validAmount: isValidAmount(state)
+  isNonStandard: nonStandardTransaction(state)
 }))(AmountInputClass);

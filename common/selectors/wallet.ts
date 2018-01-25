@@ -108,6 +108,9 @@ export const getWalletType = (state: AppState): IWalletType => {
 
 export const isUnlocked = (state: AppState) => !!getWalletInst(state);
 
+export const isEtherBalancePending = (state: AppState): boolean =>
+  getWallet(state).balance.isPending;
+
 export const getEtherBalance = (state: AppState): Wei | null => getWallet(state).balance.wei;
 
 export const getCurrentBalance = (state: AppState): Wei | TokenValue | null => {

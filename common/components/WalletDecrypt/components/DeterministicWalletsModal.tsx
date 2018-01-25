@@ -122,8 +122,10 @@ class DeterministicWalletsModalClass extends React.Component<Props, State> {
         handleClose={onCancel}
       >
         <div className="DWModal">
-          {/* TODO: replace styles for flexbox with flexbox classes in https://github.com/MyEtherWallet/MyEtherWallet/pull/850/files#diff-2150778b9391533fec7b8afd060c7672 */}
-          <form className="DWModal-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
+          <form
+            className="DWModal-path form-group-sm flex-wrapper"
+            onSubmit={this.handleSubmitCustomPath}
+          >
             <span className="DWModal-path-label">Addresses </span>
             <Select
               name="fieldDPath"
