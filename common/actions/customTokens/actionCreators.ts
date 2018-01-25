@@ -1,4 +1,4 @@
-import { Token } from 'config/data';
+import { Token } from 'config';
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
 

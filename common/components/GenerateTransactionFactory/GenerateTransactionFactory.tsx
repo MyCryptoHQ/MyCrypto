@@ -3,7 +3,12 @@ import EthTx from 'ethereumjs-tx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { getTransaction, isNetworkRequestPending, isValidAmount } from 'selectors/transaction';
+import {
+  getTransaction,
+  isNetworkRequestPending,
+  isValidGasPrice,
+  isValidGasLimit
+} from 'selectors/transaction';
 import { getWalletType } from 'selectors/wallet';
 
 export interface CallbackProps {
@@ -17,7 +22,8 @@ interface StateProps {
   networkRequestPending: boolean;
   isFullTransaction: boolean;
   isWeb3Wallet: boolean;
-  validAmount: boolean;
+  validGasPrice: boolean;
+  validGasLimit: boolean;
 }
 
 interface OwnProps {
@@ -31,24 +37,24 @@ class GenerateTransactionFactoryClass extends Component<Props> {
     const {
       isFullTransaction,
       isWeb3Wallet,
-      transaction,
       networkRequestPending,
-      validAmount
+      validGasPrice,
+      validGasLimit,
+      transaction
     } = this.props;
 
+    const isButtonDisabled =
+      !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit;
     return (
       <WithSigner
         isWeb3={isWeb3Wallet}
-        withSigner={signer => {
-          const disabled = !isFullTransaction || !!networkRequestPending || !validAmount;
-          const onClick = () => signer(transaction);
-
-          return this.props.withProps({
-            disabled,
+        withSigner={signer =>
+          this.props.withProps({
+            disabled: isButtonDisabled,
             isWeb3Wallet,
-            onClick
-          });
-        }}
+            onClick: () => signer(transaction)
+          })
+        }
       />
     );
   }
@@ -58,5 +64,6 @@ export const GenerateTransactionFactory = connect((state: AppState) => ({
   ...getTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
   isWeb3Wallet: getWalletType(state).isWeb3Wallet,
-  validAmount: isValidAmount(state)
+  validGasPrice: isValidGasPrice(state),
+  validGasLimit: isValidGasLimit(state)
 }))(GenerateTransactionFactoryClass);

@@ -1,5 +1,5 @@
 import { TShowNotification } from 'actions/notifications';
-import bityConfig from 'config/bity';
+import { bityConfig } from 'config/bity';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import './SwapProgress.scss';

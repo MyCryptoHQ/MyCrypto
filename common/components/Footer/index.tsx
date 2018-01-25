@@ -7,7 +7,7 @@ import {
   donationAddressMap,
   VERSION,
   knowledgeBaseURL
-} from 'config/data';
+} from 'config';
 import React from 'react';
 import translate from 'translations';
 import './index.scss';

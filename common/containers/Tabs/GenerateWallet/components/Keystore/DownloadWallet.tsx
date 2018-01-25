@@ -5,7 +5,7 @@ import translate from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from '../Template';
-import { N_FACTOR } from 'config/data';
+import { N_FACTOR } from 'config';
 
 interface Props {
   wallet: IFullWallet;
