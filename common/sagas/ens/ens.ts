@@ -2,9 +2,7 @@ import {
   resolveDomainFailed,
   resolveDomainSucceeded,
   ResolveDomainRequested,
-  resolveDomainCached,
-  placeBidSucceeded,
-  placeBidFailed
+  resolveDomainCached
 } from 'actions/ens';
 import { TypeKeys } from 'actions/ens/constants';
 import { SagaIterator, delay, buffers } from 'redux-saga';
@@ -111,7 +109,6 @@ function* placeBid(): SagaIterator {
     yield put(setToField({ raw: '', value: null }));
     yield put(setDataField({ raw: '', value: null }));
     yield put(setValueField({ raw: '', value: null }));
-    yield put(placeBidFailed());
     return -1;
   }
 
@@ -152,15 +149,13 @@ function* placeBid(): SagaIterator {
       throw Error(`${domainData.name} is not in a biddable state`);
     }
 
+    yield put(setValueField({ raw: fromWei(bidMask, 'ether'), value: bidMask }));
     yield put(setToField({ raw: main.public.ethAuction, value: Address(main.public.ethAuction) }));
     yield put(setDataField({ raw: encodedData, value: Data(encodedData) }));
-    yield put(setValueField({ raw: fromWei(bidMask, 'ether'), value: bidMask }));
-    yield put(placeBidSucceeded());
     return 1;
   } catch {
     yield put(setDataField({ raw: '', value: null }));
     yield put(setValueField({ raw: '', value: null }));
-    yield put(placeBidFailed());
     return -1;
   }
 }
