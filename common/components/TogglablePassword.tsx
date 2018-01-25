@@ -1,3 +1,7 @@
+// Either self contained, or controlled component for having a password field
+// with a toggle to turn it into a visible text field.
+// Pass `isVisible` and `handleToggleVisibility` to control the visibility
+// yourself, otherwise all visibiility changes are managed in internal state.
 import React from 'react';
 import './TogglablePassword.scss';
 
@@ -10,6 +14,7 @@ interface Props {
   ariaLabel?: string;
   toggleAriaLabel?: string;
   isValid?: boolean;
+  isVisible?: boolean;
 
   // Textarea-only props
   isTextareaWhenVisible?: boolean;
@@ -17,7 +22,8 @@ interface Props {
   onEnter?(): void;
 
   // Shared callbacks
-  onChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  onChange?(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  handleToggleVisibility?(): void;
 }
 
 interface State {
@@ -26,8 +32,14 @@ interface State {
 
 export default class TogglablePassword extends React.PureComponent<Props, State> {
   public state: State = {
-    isVisible: false
+    isVisible: !!this.props.isVisible
   };
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.isVisible !== nextProps.isVisible) {
+      this.setState({ isVisible: !!nextProps.isVisible });
+    }
+  }
 
   public render() {
     const {
@@ -37,8 +49,9 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       disabled,
       ariaLabel,
       isTextareaWhenVisible,
+      isValid,
       onChange,
-      isValid
+      handleToggleVisibility
     } = this.props;
     const { isVisible } = this.state;
     const validClass =
@@ -71,7 +84,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
           />
         )}
         <span
-          onClick={this.toggleVisibility}
+          onClick={handleToggleVisibility || this.toggleVisibility}
           aria-label="show private key"
           role="button"
           className="TogglablePassword-toggle input-group-addon"
