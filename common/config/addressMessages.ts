@@ -1,11 +1,17 @@
+import { toChecksumAddress } from 'ethereumjs-util';
+
 export interface AddressMessage {
-  gasLimit: number;
-  data?: string;
   msg: string;
+  gasLimit?: number;
+  data?: string;
+  severity?: 'warning' | 'danger' | 'success' | 'info';
 }
 
-// MAKE SURE THE ADDRESS KEY IS LOWER CASE, NOT CHECKSUMMED.
+// MAKE SURE THE ADDRESS KEY IS EITHER LOWER CASED OR CHECKSUMMED.
 export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
+  '0x7cb57b5a97eabe94205c07890be4c1ad31e486a8': {
+    msg: 'Thank you for donating to MyEtherWallet. TO THE MOON!'
+  },
   '0x75aa7b0d02532f3833b66c7f0ad35376d373ddf8': {
     gasLimit: 300000,
     msg: 'Accord (ARD) ERC20 token sale - http://accordtoken.com'
@@ -175,3 +181,9 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     msg: 'HEdpAY (Hdp.ф) sale. Official sale website: https://ibiginvestments.com/hedpay'
   }
 };
+
+export function getAddressMessage(address: string): AddressMessage | undefined {
+  const lowerAddr = address.toLowerCase();
+  const checksumAddr = toChecksumAddress(address);
+  return ADDRESS_MESSAGES[lowerAddr] || ADDRESS_MESSAGES[checksumAddr];
+}

@@ -1,5 +1,6 @@
 import { SagaIterator, buffers, delay } from 'redux-saga';
 import { apply, put, select, take, actionChannel, call, fork, race } from 'redux-saga/effects';
+import BN from 'bn.js';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
@@ -21,6 +22,7 @@ import {
 import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'actions/config';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
+import { getAddressMessage } from 'config';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
@@ -45,6 +47,18 @@ export function* shouldEstimateGas(): SagaIterator {
     const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
 
     if (isOffline || !autoGasLimitEnabled) {
+      continue;
+    }
+
+    // If we have a hard-coded limit, use it immediately and skip estimate
+    const msg = action.type === TypeKeys.TO_FIELD_SET && getAddressMessage(action.payload.raw);
+    if (msg && msg.gasLimit) {
+      yield put(
+        setGasLimitField({
+          raw: msg.gasLimit.toString(),
+          value: new BN(msg.gasLimit)
+        })
+      );
       continue;
     }
 

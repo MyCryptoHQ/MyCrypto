@@ -4,7 +4,7 @@ import { AppState } from 'reducers';
 import { getCurrentTo, ICurrentTo } from 'selectors/transaction';
 import { getAllTokens } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { ADDRESS_MESSAGES, Token } from 'config';
+import { getAddressMessage, Token } from 'config';
 
 interface ReduxProps {
   currentTo: ICurrentTo;
@@ -48,18 +48,22 @@ class CurrentCustomMessageClass extends PureComponent<ReduxProps, State> {
     const address = currentTo.raw.toLowerCase();
 
     let message;
-    let severity = 'info';
+    let severity;
 
     // First check against our hard-coded messages
-    if (ADDRESS_MESSAGES[address]) {
+    const msg = getAddressMessage(address);
+    if (msg) {
       message = (
         <React.Fragment>
           <p>
-            A message from <strong>{address}</strong>:
+            <small>
+              A message regarding <strong>{address}</strong>:
+            </small>
           </p>
-          <p>{ADDRESS_MESSAGES[address].msg}</p>
+          <p>{msg.msg}</p>
         </React.Fragment>
       );
+      severity = msg.severity || 'info';
     }
 
     // Otherwise check if any of our tokens match the address
