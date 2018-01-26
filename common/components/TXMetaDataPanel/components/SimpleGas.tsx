@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from 'rc-slider';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { gasPriceDefaults } from 'config';
 import FeeSummary from './FeeSummary';
 import { TInputGasPrice } from 'actions/transaction';
@@ -29,14 +29,16 @@ class SimpleGas extends React.Component<Props> {
 
     return (
       <div className="SimpleGas row form-group">
-        <div className="col-md-12 SimpleGas-title">
-          <label className="SimpleGas-label">{translate('Transaction Fee')}</label>
-          <div className="SimpleGas-flex-spacer" />
-          <GasLimitField includeLabel={false} onlyIncludeLoader={true} />
+        <div className="SimpleGas-title">
+          <GasLimitField
+            includeLabel={true}
+            customLabel={translateRaw('Transaction Fee')}
+            onlyIncludeLoader={true}
+          />
         </div>
 
         {gasLimitEstimationTimedOut && (
-          <div className="col-md-12 prompt-toggle-gas-limit">
+          <div className="prompt-toggle-gas-limit">
             <p className="small">
               {isWeb3Node
                 ? "Couldn't calculate gas limit, if you know what your doing, try setting manually in Advanced settings"
@@ -45,7 +47,7 @@ class SimpleGas extends React.Component<Props> {
           </div>
         )}
 
-        <div className="col-md-8 col-sm-12">
+        <div className="SimpleGas-input-group">
           <div className="SimpleGas-slider">
             <Slider
               onChange={this.handleSlider}
@@ -59,8 +61,6 @@ class SimpleGas extends React.Component<Props> {
               <span>{translate('Fast')}</span>
             </div>
           </div>
-        </div>
-        <div className="col-md-4 col-sm-12">
           <FeeSummary
             render={({ fee, usd }) => (
               <span>

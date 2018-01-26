@@ -34,13 +34,14 @@
   }
   &-dropdown {
     display: inline-block;
-    margin: 0.5rem 0;
+    margin: 0 0;
   }
 
   &-input {
     width: 100%;
     max-width: 10rem;
     margin-right: $space-sm;
+    margin-bottom: 0;
   }
 
   &-divider {
@@ -54,6 +55,3 @@
     margin-top: $space * 2.5;
   }
 }
-
-
-

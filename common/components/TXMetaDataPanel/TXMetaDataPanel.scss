@@ -1,0 +1,26 @@
+@import 'common/sass/variables';
+
+.Gas {
+  &-toggle {
+    display: inline-block;
+    position: relative;
+    margin-top: $space-sm;
+    left: -8px;
+  }
+}
+
+.Calculating-limit {
+  color: rgba(51, 51, 51, 0.7);
+  display: flex;
+  align-items: baseline;
+  font-weight: 400;
+  opacity: 0;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+  }
+  .Spinner {
+    margin-left: 8px;
+  }
+}
