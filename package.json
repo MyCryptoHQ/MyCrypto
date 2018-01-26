@@ -114,7 +114,7 @@
     "resolve-url-loader": "2.2.1",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",
-    "style-loader": "0.19.1",
+    "style-loader": "0.20.0",
     "thread-loader": "1.1.2",
     "ts-jest": "22.0.1",
     "ts-loader": "3.3.1",
