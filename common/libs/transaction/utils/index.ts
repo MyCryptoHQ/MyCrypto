@@ -20,6 +20,7 @@ export {
   validGasLimit,
   makeTransaction,
   getTransactionFields,
+  getTransactionFee,
   computeIndexingHash
 } from './ether';
 export * from './token';

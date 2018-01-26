@@ -329,7 +329,7 @@ export default class CurrencySwap extends Component<Props, State> {
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
         {loaded || timeoutLoaded ? (
-          <div className="form-inline CurrencySwap-inner-wrap">
+          <div className="CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
               {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
               <input
