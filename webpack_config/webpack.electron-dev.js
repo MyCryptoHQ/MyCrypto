@@ -8,8 +8,7 @@ const makeConfig = require('./makeConfig');
 const electronConfig = {
   target: 'electron-main',
   entry: {
-    main: path.join(config.path.electron, 'main/index.ts'),
-    preload: path.join(config.path.electron, 'preload.ts')
+    main: path.join(config.path.electron, 'main/index.ts')
   },
   module: {
     rules: [config.typescriptRule]
