@@ -44,7 +44,8 @@ class CurrentCustomMessageClass extends PureComponent<ReduxProps, State> {
   private getMessage() {
     const { currentTo, tokens } = this.props;
     const { walletAddress } = this.state;
-    const address = currentTo.raw;
+    // Make sure all comparisons are lower-cased.
+    const address = currentTo.raw.toLowerCase();
 
     let message;
     let severity = 'info';
@@ -56,14 +57,14 @@ class CurrentCustomMessageClass extends PureComponent<ReduxProps, State> {
           <p>
             A message from <strong>{address}</strong>:
           </p>
-          <p>{message.msg}</p>
+          <p>{ADDRESS_MESSAGES[address].msg}</p>
         </React.Fragment>
       );
     }
 
     // Otherwise check if any of our tokens match the address
     if (!message) {
-      const token = tokens.find(tk => tk.address === address);
+      const token = tokens.find(tk => tk.address.toLowerCase() === address);
       if (token) {
         message = `
           You’re currently sending to the ${token.symbol} contract. If you

@@ -4,25 +4,26 @@ export interface AddressMessage {
   msg: string;
 }
 
+// MAKE SURE THE ADDRESS KEY IS LOWER CASE, NOT CHECKSUMMED.
 export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
   '0x75aa7b0d02532f3833b66c7f0ad35376d373ddf8': {
     gasLimit: 300000,
-    msg: ' Accord (ARD) ERC20 token sale - http://accordtoken.com'
+    msg: 'Accord (ARD) ERC20 token sale - http://accordtoken.com'
   },
-  '0x16B0E62aC13a2fAeD36D18bce2356d25Ab3CfAD3': {
+  '0x16b0e62ac13a2faed36d18bce2356d25ab3cfad3': {
     gasLimit: 200000,
     msg:
       "BTQ ICO ends February 1, 2018. btc btq is your exclusive bitcoin boutique and world's premier cryptocurrency lifestyle brand. https://thebtcbtq.com/btq"
   },
-  '0xA9877b1e05D035899131DBd1e403825166D09f92': {
+  '0xa9877b1e05d035899131dbd1e403825166d09f92': {
     gasLimit: 200000,
     msg: 'MNT Token Sale - http://mnt.coinjoker.com'
   },
-  '0xEf6B4cE8C9Bc83744fbcdE2657b32eC18790458A': {
+  '0xef6b4ce8c9bc83744fbcde2657b32ec18790458a': {
     gasLimit: 930000,
     msg: 'PUC Token Sale - http://price-s.info'
   },
-  '0x13f11C9905A08ca76e3e853bE63D4f0944326C72': {
+  '0x13f11c9905a08ca76e3e853be63d4f0944326c72': {
     gasLimit: 300000,
     data: '0xb4427263',
     msg: 'DIVX Token Sale - www.diviproject.org'
@@ -31,26 +32,26 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     gasLimit: 114293,
     msg: 'NOX Token Sale'
   },
-  '0xF5DFFdEAEA54bB56156B47de1C7b4346c7dBa69C': {
+  '0xf5dffdeaea54bb56156b47de1c7b4346c7dba69c': {
     gasLimit: 180000,
     msg: 'GEE Token Sale'
   },
-  '0xc88c7e1AEbd89187d13bD42e1ff814d32f492BF6': {
+  '0xc88c7e1aebd89187d13bd42e1ff814d32f492bf6': {
     gasLimit: 250000,
     msg:
       'STORM token sale: gamified micro-tasks - Earn anywhere, anytime, from any device. https://www.stormtoken.com, NOV 7, 2017'
   },
-  '0xDd64EF0c8a41d8a17F09ce2279D79b3397184A10': {
+  '0xdd64ef0c8a41d8a17f09ce2279d79b3397184a10': {
     gasLimit: 200000,
     msg:
       'RVL token sale: PRE-ICO SUPER SALE, SHARING ECONOMY PIATTAFORM,  https://www.R-EVOLUTIONCOIN.COM.com, DIC 15, 2017'
   },
-  ' 0xeA0c348A297084BFFbddad7f89216F24a2106E58': {
+  ' 0xea0c348a297084bffbddad7f89216f24a2106e58': {
     gasLimit: 300000,
     msg:
       'Aigang token sale contract. Autonomous insurance network - fully automated insurance for IoT devices and a platform for insurance innovation built around data: https://aigang.network . Ends 12/15/2017'
   },
-  '0x17681500757628C7AA56d7E6546E119f94Dd9479': {
+  '0x17681500757628c7aa56d7e6546e119f94dd9479': {
     gasLimit: 170000,
     msg:
       'Confideal token sale. Confideal is a platform for making deals. https://confideal.io, ends Jan 31, 2018'
@@ -71,11 +72,11 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     gasLimit: 200000,
     msg: 'Substratum Network ICO Sale. Thank you for your support!'
   },
-  '0x0F33bb20a282A7649C7B3AFf644F084a9348e933': {
+  '0x0f33bb20a282a7649c7b3aff644f084a9348e933': {
     gasLimit: 400000,
     msg: 'YUPIE (YUPIE) ICO'
   },
-  '0xbD2ED3E85faa3433c068c7B3f9C8C7d839CE88d7': {
+  '0xbd2ed3e85faa3433c068c7b3f9c8c7d839ce88d7': {
     gasLimit: 69153,
     msg: 'Horizon State Token Sale. Thank you for your support. '
   },
@@ -83,19 +84,19 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     gasLimit: 200000,
     msg: 'DataBrokerDAO. https://databrokerdao.com'
   },
-  '0xeaAf270436a0ed397ED23BBF64DF7b1DCAfF142F': {
+  '0xeaaf270436a0ed397ed23bbf64df7b1dcaff142f': {
     gasLimit: 85000,
     msg: 'BattleDrome ICO/Crowdsale. Thanks for your support!'
   },
-  '0x58b7056DeB51eD292614F0DA1E94E7e9c589828d': {
+  '0x58b7056deb51ed292614f0da1e94e7e9c589828d': {
     gasLimit: 150000,
     msg: 'Simple Token — the cryptocurrency that powers digital communities.'
   },
-  '0x5fb3D432bae33FCd418edE263D98D7440E7fA3ea': {
+  '0x5fb3d432bae33fcd418ede263d98d7440e7fa3ea': {
     gasLimit: 200000,
     msg: 'SunContract ICO address - suncontract.org'
   },
-  '0xd88755197e107603C139df6E709ed09EEC6b6bB3': {
+  '0xd88755197e107603c139df6e709ed09eec6b6bb3': {
     gasLimit: 200000,
     msg: 'NVC Fund'
   },
@@ -103,15 +104,15 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     gasLimit: 200000,
     msg: 'OHNI ICO. Restoration of our communities!'
   },
-  '0xf9F0FC7167c311Dd2F1e21E9204F87EBA9012fB2': {
+  '0xf9f0fc7167c311dd2f1e21e9204f87eba9012fb2': {
     gasLimit: 200000,
     msg: 'Easy Homes ICO. Thank you!'
   },
-  '0x7FC408011165760eE31bE2BF20dAf450356692Af': {
+  '0x7fc408011165760ee31be2bf20daf450356692af': {
     gasLimit: 200000,
     msg: 'Mitrav ICO Sale. Thank you for your support!'
   },
-  '0xA5DD8cDe486436F0Cfd62652952E1fcEC5A61CAe': {
+  '0xa5dd8cde486436f0cfd62652952e1fcec5a61cae': {
     gasLimit: 300000,
     msg: 'WinBitcoin ICO Sale. Thank you for your support!'
   },
@@ -119,16 +120,16 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     gasLimit: 100000,
     msg: 'BMChain ICO - Platform of digital reputation - Official site https://bmchain.io'
   },
-  '0xAFe60511341a37488de25Bef351952562E31fCc1': {
+  '0xafe60511341a37488de25bef351952562e31fcc1': {
     gasLimit: 200000,
     msg: 'Tbot ICO Sale.'
   },
-  '0xe386B139Ed3715Ca4B18Fd52671bDcea1cdFE4b1': {
+  '0xe386b139ed3715ca4b18fd52671bdcea1cdfe4b1': {
     gasLimit: 200000,
     msg:
       'Zeus Exchange - The First Hybrid Trading Platform for Traditional Stock Investors and Crypto Traders. Official site https://zeus.exchange'
   },
-  '0xB70835D7822eBB9426B56543E391846C107bd32C': {
+  '0xb70835d7822ebb9426b56543e391846c107bd32c': {
     gasLimit: 200000,
     msg: 'Game Token Sale'
   },
@@ -136,24 +137,24 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     gasLimit: 200000,
     msg: 'Rebellious Token'
   },
-  '0xd5E3036d5CE7eC222379D16f6ffC38C38c55BF7f': {
+  '0xd5e3036d5ce7ec222379d16f6ffc38c38c55bf7f': {
     gasLimit: 200000,
     msg:
       'Ethereum High HIG is a robust and feather-light cryptocurrency designed to hedge the risk of your portfolio'
   },
-  '0x2a3Aa9ECA41E720Ed46B5A70D6C37EfA47f768Ac': {
+  '0x2a3aa9eca41e720ed46b5a70d6c37efa47f768ac': {
     gasLimit: 200000,
     msg: 'REAL CHAIN TOKEN!'
   },
-  '0x7705FaA34B16EB6d77Dfc7812be2367ba6B0248e': {
+  '0x7705faa34b16eb6d77dfc7812be2367ba6b0248e': {
     gasLimit: 200000,
     msg: 'Artex - Art Provenance Blockchain. Official site https://artex.global'
   },
-  '0x29AfA3443f752eb29d814d9042Fd88A4a2dc0F1e': {
+  '0x29afa3443f752eb29d814d9042fd88a4a2dc0f1e': {
     gasLimit: 200000,
     msg: 'SIRIN LABS official crowdsale address. Official website https://sirinlabs.com'
   },
-  '0xA671f2914Ba0e73979FFc47cD350801d1714b18f': {
+  '0xa671f2914ba0e73979ffc47cd350801d1714b18f': {
     gasLimit: 150000,
     msg: 'TRV Ongoing Sale.'
   },
@@ -161,15 +162,15 @@ export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
     gasLimit: 150000,
     msg: 'The World News Pre-ICO.'
   },
-  '0x92685E93956537c25Bb75D5d47fca4266dd628B8': {
+  '0x92685e93956537c25bb75d5d47fca4266dd628b8': {
     gasLimit: 200000,
     msg: 'Bitlle Token. Official website https://bitlle.com'
   },
-  '0x2097175d0abb8258f2468E3487F8db776E29D076': {
+  '0x2097175d0abb8258f2468e3487f8db776e29d076': {
     gasLimit: 200000,
     msg: 'LiveEdu EDU token sale. Official website: https://tokensale.liveedu.tv/'
   },
-  '0x4F8B6cA78711207E1B281DB63e8d6EAA1ce2F63E': {
+  '0x4f8b6ca78711207e1b281db63e8d6eaa1ce2f63e': {
     gasLimit: 230000,
     msg: 'HEdpAY (Hdp.ф) sale. Official sale website: https://ibiginvestments.com/hedpay'
   }
