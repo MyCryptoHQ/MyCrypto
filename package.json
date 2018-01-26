@@ -66,7 +66,7 @@
     "@types/react-redux": "5.0.14",
     "@types/react-router-dom": "4.2.3",
     "@types/react-router-redux": "5.0.11",
-    "@types/react-select": "1.1.1",
+    "@types/react-select": "1.2.0",
     "@types/redux-logger": "3.0.5",
     "@types/redux-promise-middleware": "0.0.9",
     "@types/uuid": "3.4.3",
