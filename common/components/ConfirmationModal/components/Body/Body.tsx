@@ -6,12 +6,13 @@ import { SerializedTransaction } from 'components/renderCbs';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { getFrom, getUnit, getDecimal } from 'selectors/transaction';
+import { getFrom, getUnit, getDecimal, getTo } from 'selectors/transaction';
 import { getNetworkConfig } from 'selectors/config';
 import { getTransactionFee } from 'libs/transaction/utils/ether';
 import BN from 'bn.js';
 import { Wei, TokenValue } from 'libs/units';
 import ERC20 from 'libs/erc20';
+import './Body.scss';
 
 interface State {
   showDetails: boolean;
@@ -20,6 +21,7 @@ interface State {
 interface Props {
   rates: AppState['rates']['rates'];
   from: string;
+  to: string;
   unit: string;
   network: AppState['config']['network'];
   decimal: number;
@@ -37,13 +39,13 @@ class BodyClass extends React.Component<Props, State> {
   };
 
   public render() {
-    const { rates, from, unit, network, decimal } = this.props;
+    const { rates, from, to, unit, network, decimal } = this.props;
     const { showDetails } = this.state;
     return (
       <SerializedTransaction
         withSerializedTransaction={serializedTransaction => {
           const transactionInstance = makeTransaction(serializedTransaction);
-          const { value, data, to, nonce, chainId } = getTransactionFields(transactionInstance);
+          const { value, data, nonce, chainId } = getTransactionFields(transactionInstance);
           const isToken = unit !== 'ether';
           const isTestnet = network.isTestnet;
           const sendValue = isToken
@@ -56,7 +58,7 @@ class BodyClass extends React.Component<Props, State> {
             : transactionFee.muln(rates[network.unit].USD);
 
           return (
-            <React.Fragment>
+            <div className="Body">
               <Amounts
                 isToken={isToken}
                 isTestnet={isTestnet}
@@ -67,12 +69,11 @@ class BodyClass extends React.Component<Props, State> {
                 network={network}
                 decimal={decimal}
                 unit={unit}
-                data={data}
               />
               <Addresses to={to} from={from} unit={unit} data={data} />
               <a onClick={this.toggleDetails}>+ Details</a>
               {showDetails ? <Details /> : null}
-            </React.Fragment>
+            </div>
           );
         }}
       />
@@ -84,6 +85,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     rates: state.rates.rates,
     from: getFrom(state),
+    to: getTo(state).raw,
     unit: getUnit(state),
     network: getNetworkConfig(state),
     decimal: getDecimal(state)

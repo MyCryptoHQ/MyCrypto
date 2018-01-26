@@ -1,0 +1,86 @@
+@import 'common/sass/variables';
+
+.Body {
+  margin: auto;
+  max-width: 35rem;
+  width: 100%;
+}
+
+.Amount,
+.Address {
+  padding: 1rem 0rem;
+  &:first-child {
+    padding-top: 0rem;
+  }
+}
+
+.Amount {
+  &-testnet-warn {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  &-send,
+  &-fee,
+  &-total {
+    display: flex;
+    justify-content: center;
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    &-positioning-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      > h5 {
+        margin: 0px 0px;
+      }
+    }
+  }
+
+  &-total {
+    &-positioning-wrapper {
+      padding: 1rem 0rem;
+      padding-bottom: 0;
+      background-image: linear-gradient(to right, #c2cfd6 33%, #fff0 0%);
+      background-position: top;
+      background-size: 5px 1px;
+      background-repeat: repeat-x;
+      > h5:not(:first-child) {
+        padding: 0.5rem 1rem;
+        background-color: change-color($color: $brand-primary, $saturation: 10, $lightness: 97);
+        border: 1px solid change-color($color: $brand-primary, $saturation: 10, $lightness: 80);
+        border-radius: 5px;
+      }
+    }
+  }
+}
+
+.Address {
+  &-from,
+  &-to {
+    display: flex;
+    justify-content: center;
+    &-positioning-wrapper {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      > h5 {
+        margin: 0;
+        margin-bottom: 0.5rem;
+        &:first-child {
+          margin-right: 16px;
+        }
+        &:last-child {
+          font-family: $font-family-monospace;
+          font-weight: 300;
+          padding: 0.5rem 1rem;
+          background-color: hsl(180, 7%, 97%);
+          border: 1px solid hsl(192, 10%, 80%);
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}

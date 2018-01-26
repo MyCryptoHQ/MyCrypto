@@ -1,7 +1,6 @@
 import React from 'react';
 import { UnitDisplay } from 'components/ui';
 import { AppState } from 'reducers';
-import './Amounts.scss';
 import BN from 'bn.js';
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
   network: AppState['config']['network'];
   decimal: number;
   unit: string;
-  data: string;
   isToken: boolean;
   isTestnet: boolean | undefined;
 }
@@ -26,8 +24,7 @@ export const Amounts: React.SFC<Props> = ({
   decimal,
   unit,
   isToken,
-  isTestnet,
-  data
+  isTestnet
 }) => {
   const total = sendValue.add(fee);
   const totalUSD = sendValueUSD.add(transactionFeeUSD);
@@ -45,7 +42,7 @@ export const Amounts: React.SFC<Props> = ({
               checkOffline={false}
             />
             {!isTestnet && (
-              <span style={{ 'margin-left': '8px' }} className="small">
+              <span style={{ marginLeft: '8px' }} className="small">
                 $<UnitDisplay
                   value={sendValueUSD}
                   unit="ether"
@@ -70,7 +67,7 @@ export const Amounts: React.SFC<Props> = ({
               checkOffline={false}
             />
             {!isTestnet && (
-              <span style={{ 'margin-left': '8px' }} className="small">
+              <span style={{ marginLeft: '8px' }} className="small">
                 $<UnitDisplay
                   value={transactionFeeUSD}
                   unit="ether"
@@ -94,7 +91,7 @@ export const Amounts: React.SFC<Props> = ({
               checkOffline={false}
             />
             {!isTestnet && (
-              <span style={{ 'margin-left': '8px' }} className="small">
+              <span style={{ marginLeft: '8px' }} className="small">
                 $<UnitDisplay
                   value={totalUSD}
                   unit="ether"
