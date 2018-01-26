@@ -12,16 +12,6 @@
   }
 }
 
-@keyframes wallet-button-enter-disabled {
-  0% {
-    opacity: 0;
-  }
-  30%,
-  100% {
-    opacity: 0.3;
-  }
-}
-
 .WalletButton {
   position: relative;
   flex: 1;
@@ -70,10 +60,17 @@
   }
 
   &.is-disabled {
-    opacity: 0.3 !important;
     outline: none;
     cursor: not-allowed;
-    animation-name: wallet-button-enter, wallet-button-enter-disabled;
+    @include show-tooltip-on-hover;
+
+    .WalletButton-inner {
+      opacity: 0.3;
+    }
+  }
+
+  &-inner {
+    transition: opacity 200ms ease;
   }
 
   &-title {
