@@ -41,6 +41,7 @@ class BodyClass extends React.Component<Props, State> {
   public render() {
     const { rates, from, to, unit, network, decimal } = this.props;
     const { showDetails } = this.state;
+    const networkUnit = network.unit;
     return (
       <SerializedTransaction
         withSerializedTransaction={serializedTransaction => {
@@ -59,6 +60,16 @@ class BodyClass extends React.Component<Props, State> {
 
           return (
             <div className="Body">
+              <Addresses
+                to={to}
+                from={from}
+                amount={sendValue}
+                unit={unit}
+                decimal={decimal}
+                networkUnit={networkUnit}
+                data={data}
+                isToken={isToken}
+              />
               <Amounts
                 isToken={isToken}
                 isTestnet={isTestnet}
@@ -66,11 +77,11 @@ class BodyClass extends React.Component<Props, State> {
                 fee={transactionFee}
                 sendValueUSD={sendValueUSD}
                 transactionFeeUSD={transactionFeeUSD}
-                network={network}
+                networkUnit={networkUnit}
                 decimal={decimal}
                 unit={unit}
               />
-              <Addresses to={to} from={from} unit={unit} data={data} />
+              {isTestnet && <p className="Testnet-warn small">Testnet Transaction</p>}
               <a onClick={this.toggleDetails}>+ Details</a>
               {showDetails ? <Details /> : null}
             </div>

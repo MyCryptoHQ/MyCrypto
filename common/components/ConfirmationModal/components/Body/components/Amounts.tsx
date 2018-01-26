@@ -1,6 +1,5 @@
 import React from 'react';
 import { UnitDisplay } from 'components/ui';
-import { AppState } from 'reducers';
 import BN from 'bn.js';
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
   fee: BN;
   sendValueUSD: BN;
   transactionFeeUSD: BN;
-  network: AppState['config']['network'];
+  networkUnit: string;
   decimal: number;
   unit: string;
   isToken: boolean;
@@ -20,7 +19,7 @@ export const Amounts: React.SFC<Props> = ({
   fee,
   sendValueUSD,
   transactionFeeUSD,
-  network,
+  networkUnit,
   decimal,
   unit,
   isToken,
@@ -30,7 +29,6 @@ export const Amounts: React.SFC<Props> = ({
   const totalUSD = sendValueUSD.add(transactionFeeUSD);
   return (
     <div className="Amount">
-      {isTestnet && <p className="Amount-testnet-warn small">Test Network Transaction</p>}
       <div className="Amount-send">
         <div className="Amount-send-positioning-wrapper">
           <h5>You'll Send: </h5>
@@ -38,7 +36,7 @@ export const Amounts: React.SFC<Props> = ({
             <UnitDisplay
               decimal={decimal}
               value={sendValue}
-              symbol={isToken ? unit : network.unit}
+              symbol={isToken ? unit : networkUnit}
               checkOffline={false}
             />
             {!isTestnet && (
@@ -62,7 +60,7 @@ export const Amounts: React.SFC<Props> = ({
             <UnitDisplay
               value={fee}
               unit="ether"
-              symbol={network.unit}
+              symbol={networkUnit}
               displayShortBalance={6}
               checkOffline={false}
             />
@@ -87,7 +85,7 @@ export const Amounts: React.SFC<Props> = ({
             <UnitDisplay
               value={total}
               decimal={decimal}
-              symbol={isToken ? unit : network.unit}
+              symbol={isToken ? unit : networkUnit}
               checkOffline={false}
             />
             {!isTestnet && (
