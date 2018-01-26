@@ -16,11 +16,18 @@ interface OwnProps {
   isSecure?: boolean;
   isReadOnly?: boolean;
   isDisabled?: boolean;
+  disableReason?: string;
   onClick(walletType: string): void;
 }
 
 interface StateProps {
   isFormatDisabled?: boolean;
+}
+
+interface Icon {
+  icon: string;
+  tooltip: string;
+  href?: string;
 }
 
 type Props = OwnProps & StateProps;
@@ -35,8 +42,36 @@ export class WalletButton extends React.PureComponent<Props> {
       helpLink,
       isSecure,
       isReadOnly,
-      isDisabled
+      isDisabled,
+      disableReason
     } = this.props;
+
+    const icons: Icon[] = [];
+    if (isReadOnly) {
+      icons.push({
+        icon: 'eye',
+        tooltip: translateRaw('You cannot send using address only')
+      });
+    } else {
+      if (isSecure) {
+        icons.push({
+          icon: 'shield',
+          tooltip: translateRaw('This wallet type is secure')
+        });
+      } else {
+        icons.push({
+          icon: 'exclamation-triangle',
+          tooltip: translateRaw('This wallet type is insecure')
+        });
+      }
+    }
+    if (helpLink) {
+      icons.push({
+        icon: 'question-circle',
+        tooltip: translateRaw('NAV_Help'),
+        href: helpLink
+      });
+    }
 
     return (
       <div
@@ -49,42 +84,32 @@ export class WalletButton extends React.PureComponent<Props> {
         tabIndex={isDisabled ? -1 : 0}
         aria-disabled={isDisabled}
       >
-        <div className="WalletButton-title">
-          {icon && <img className="WalletButton-title-icon" src={icon} />}
-          <span>{name}</span>
+        <div className="WalletButton-inner">
+          <div className="WalletButton-title">
+            {icon && <img className="WalletButton-title-icon" src={icon} />}
+            <span>{name}</span>
+          </div>
+
+          {description && <div className="WalletButton-description">{description}</div>}
+          {example && <div className="WalletButton-example">{example}</div>}
+
+          <div className="WalletButton-icons">
+            {icons.map(i => (
+              <span className="WalletButton-icons-icon" key={i.icon} onClick={this.stopPropogation}>
+                {i.href ? (
+                  <NewTabLink href={i.href} onClick={this.stopPropogation}>
+                    <i className={`fa fa-${i.icon}`} />
+                  </NewTabLink>
+                ) : (
+                  <i className={`fa fa-${i.icon}`} />
+                )}
+                {!isDisabled && <Tooltip size="sm">{i.tooltip}</Tooltip>}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {description && <div className="WalletButton-description">{description}</div>}
-        {example && <div className="WalletButton-example">{example}</div>}
-
-        <div className="WalletButton-icons">
-          {isSecure ? (
-            <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
-              <i className="fa fa-shield" />
-              <Tooltip>{translateRaw('This wallet type is secure')}</Tooltip>
-            </span>
-          ) : (
-            <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
-              <i className="fa fa-exclamation-triangle" />
-              <Tooltip>{translateRaw('This wallet type is insecure')}</Tooltip>
-            </span>
-          )}
-          {isReadOnly && (
-            <span className="WalletButton-icons-icon" onClick={this.stopPropogation}>
-              <i className="fa fa-eye" />
-              <Tooltip>{translateRaw('You cannot send using address only')}</Tooltip>
-            </span>
-          )}
-
-          {helpLink && (
-            <span className="WalletButton-icons-icon">
-              <NewTabLink href={helpLink} onClick={this.stopPropogation}>
-                <i className="fa fa-question-circle" />
-              </NewTabLink>
-              <Tooltip>{translateRaw('NAV_Help')}</Tooltip>
-            </span>
-          )}
-        </div>
+        {isDisabled && disableReason && <Tooltip>{disableReason}</Tooltip>}
       </div>
     );
   }
