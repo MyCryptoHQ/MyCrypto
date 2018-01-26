@@ -1,6 +1,6 @@
 import { DPath } from 'config/dpaths';
 
-export type DefaultNetworkKeys = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
+export type DefaultNetworkNames = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
 
 export interface BlockExplorerConfig {
   origin: string;
@@ -16,7 +16,7 @@ export interface Token {
 }
 
 export interface NetworkContract {
-  name: DefaultNetworkKeys;
+  name: DefaultNetworkNames;
   address?: string;
   abi: string;
 }
@@ -29,7 +29,7 @@ export interface DPathFormats {
 
 export interface NetworkConfig {
   // TODO really try not to allow strings due to custom networks
-  name: DefaultNetworkKeys;
+  name: DefaultNetworkNames;
   unit: string;
   color?: string;
   blockExplorer?: BlockExplorerConfig;

@@ -1,5 +1,6 @@
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config';
+import { CustomNodeConfig } from 'config';
+import { CustomNetworkConfig } from 'reducers/config/networks/typings';
 
 /*** Toggle Offline ***/
 export interface ToggleOfflineAction {
@@ -21,9 +22,8 @@ export interface ChangeNodeAction {
   type: TypeKeys.CONFIG_NODE_CHANGE;
   // FIXME $keyof?
   payload: {
-    nodeSelection: string;
-    node: NodeConfig;
-    network: NetworkConfig;
+    nodeName: string;
+    networkName: string;
   };
 }
 
@@ -41,25 +41,25 @@ export interface ChangeNodeIntentAction {
 /*** Add Custom Node ***/
 export interface AddCustomNodeAction {
   type: TypeKeys.CONFIG_ADD_CUSTOM_NODE;
-  payload: CustomNodeConfig;
+  payload: { id: string; config: CustomNodeConfig };
 }
 
 /*** Remove Custom Node ***/
 export interface RemoveCustomNodeAction {
   type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE;
-  payload: CustomNodeConfig;
+  payload: { id: string };
 }
 
 /*** Add Custom Network ***/
 export interface AddCustomNetworkAction {
   type: TypeKeys.CONFIG_ADD_CUSTOM_NETWORK;
-  payload: CustomNetworkConfig;
+  payload: { id: string; config: CustomNetworkConfig };
 }
 
 /*** Remove Custom Network ***/
 export interface RemoveCustomNetworkAction {
   type: TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK;
-  payload: CustomNetworkConfig;
+  payload: { id: string };
 }
 
 /*** Set Latest Block ***/
@@ -73,17 +73,18 @@ export interface Web3UnsetNodeAction {
   type: TypeKeys.CONFIG_NODE_WEB3_UNSET;
 }
 
-/*** Union Type ***/
-export type ConfigAction =
-  | ChangeNodeAction
+export type CustomNetworkAction = AddCustomNetworkAction | RemoveCustomNetworkAction;
+
+export type CustomNodeAction = AddCustomNodeAction | RemoveCustomNodeAction;
+
+export type NodeAction = ChangeNodeAction | ChangeNodeIntentAction | Web3UnsetNodeAction;
+
+export type MetaAction =
   | ChangeLanguageAction
   | ToggleOfflineAction
   | ToggleAutoGasLimitAction
   | PollOfflineStatus
-  | ChangeNodeIntentAction
-  | AddCustomNodeAction
-  | RemoveCustomNodeAction
-  | AddCustomNetworkAction
-  | RemoveCustomNetworkAction
-  | SetLatestBlockAction
-  | Web3UnsetNodeAction;
+  | SetLatestBlockAction;
+
+/*** Union Type ***/
+export type ConfigAction = CustomNetworkAction | CustomNodeAction | NodeAction | MetaAction;

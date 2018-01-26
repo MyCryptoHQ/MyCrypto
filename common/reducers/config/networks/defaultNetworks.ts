@@ -12,13 +12,15 @@ import {
 import {
   NetworkConfig,
   BlockExplorerConfig,
-  DefaultNetworkKeys
+  DefaultNetworkNames
 } from 'reducers/config/networks/typings';
+import { ConfigAction } from 'actions/config';
 
-export type State = { [key in DefaultNetworkKeys]: NetworkConfig };
+export type State = { [key in DefaultNetworkNames]: NetworkConfig };
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
+// TODO: put this in utils / libs
 function makeExplorer(origin: string): BlockExplorerConfig {
   return {
     origin,
@@ -27,7 +29,7 @@ function makeExplorer(origin: string): BlockExplorerConfig {
   };
 }
 
-const INITIAL_STATE = {
+const INITIAL_STATE: State = {
   ETH: {
     name: 'ETH',
     unit: 'ETH',
@@ -132,5 +134,12 @@ const INITIAL_STATE = {
       [SecureWalletName.LEDGER_NANO_S]: EXP_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EXP_DEFAULT
     }
+  }
+};
+
+export const defaultNetworks = (state: State = INITIAL_STATE, action: ConfigAction) => {
+  switch (action.type) {
+    default:
+      return state;
   }
 };

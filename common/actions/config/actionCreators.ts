@@ -32,7 +32,7 @@ export function changeNode(
 ): interfaces.ChangeNodeAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE,
-    payload: { nodeSelection, node, network }
+    payload: { nodeSelection, nodeName, networkName }
   };
 }
 
