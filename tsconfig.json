@@ -23,7 +23,7 @@
   },
   "include": [
     "./common/",
-    "./electron/",
+    "./electron-app/",
     "spec",
     "./node_modules/types-rlp/index.d.ts"
   ],
