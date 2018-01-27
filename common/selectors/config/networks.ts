@@ -35,7 +35,7 @@ export const getNetworkContracts = (state: AppState): NetworkContract[] | null =
   return network ? network.contracts : [];
 };
 
-export const getCustomNetworkConfigs = (state: AppState): (CustomNetworkConfig | undefined)[] => {
+export const getCustomNetworkConfigs = (state: AppState): CustomNetworkConfig[] => {
   const { customNetworks } = getNetworks(state);
   return Object.values(customNetworks);
 };
