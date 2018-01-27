@@ -27,7 +27,7 @@ export interface DPathFormats {
   mnemonicPhrase: DPath;
 }
 
-export interface NetworkConfig {
+export interface DefaultNetworkConfig {
   // TODO really try not to allow strings due to custom networks
   name: DefaultNetworkNames;
   unit: string;

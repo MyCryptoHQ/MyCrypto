@@ -25,7 +25,7 @@ import {
 } from 'utils/node';
 import { makeCustomNetworkId, getNetworkConfigFromId } from 'utils/network';
 import {
-  getNode,
+  getNodeName,
   getNodeConfig,
   getCustomNodeConfigs,
   getCustomNetworkConfigs,
@@ -120,7 +120,7 @@ export function* reload(): SagaIterator {
 }
 
 export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {
-  const currentNode: string = yield select(getNode);
+  const currentNode: string = yield select(getNodeName);
   const currentConfig: NodeConfig = yield select(getNodeConfig);
   const customNets: CustomNetworkConfig[] = yield select(getCustomNetworkConfigs);
   const currentNetwork =
@@ -213,7 +213,7 @@ export function* cleanCustomNetworks(): SagaIterator {
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
 export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
-  const node = yield select(getNode);
+  const node = yield select(getNodeName);
   const nodeConfig = yield select(getNodeConfig);
   const newWallet = action.payload;
   const isWeb3Wallet = newWallet instanceof Web3Wallet;
@@ -227,7 +227,7 @@ export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
 }
 
 export function* unsetWeb3Node(): SagaIterator {
-  const node = yield select(getNode);
+  const node = yield select(getNodeName);
 
   if (node !== 'web3') {
     return;

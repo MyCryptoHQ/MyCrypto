@@ -14,7 +14,7 @@ import {
 } from 'sagas/config';
 import { NODES, NodeConfig, NETWORKS } from 'config';
 import {
-  getNode,
+  getNodeName,
   getNodeConfig,
   getOffline,
   getCustomNodeConfigs,
@@ -176,7 +176,7 @@ describe('handleNodeChangeIntent*', () => {
   });
 
   it('should select getNode', () => {
-    expect(data.gen.next().value).toEqual(select(getNode));
+    expect(data.gen.next().value).toEqual(select(getNodeName));
   });
 
   it('should select nodeConfig', () => {
@@ -263,7 +263,7 @@ describe('unsetWeb3Node*', () => {
   const gen = unsetWeb3Node();
 
   it('should select getNode', () => {
-    expect(gen.next().value).toEqual(select(getNode));
+    expect(gen.next().value).toEqual(select(getNodeName));
   });
 
   it('should select getNodeConfig', () => {
@@ -293,7 +293,7 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {
-    expect(gen.next().value).toEqual(select(getNode));
+    expect(gen.next().value).toEqual(select(getNodeName));
   });
 
   it('should select getNodeConfig', () => {

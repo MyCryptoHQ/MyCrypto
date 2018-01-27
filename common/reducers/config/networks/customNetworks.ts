@@ -6,9 +6,12 @@ import {
 } from 'actions/config';
 import { CustomNetworkConfig } from 'reducers/config/networks/typings';
 
-export interface State {
+// TODO: this doesn't accurately represent state, as
+interface State1 {
   [customNetworkId: string]: CustomNetworkConfig;
 }
+
+export type State = Partial<State1>;
 
 const addCustomNetwork = (state: State, { payload }: AddCustomNetworkAction): State => ({
   ...state,

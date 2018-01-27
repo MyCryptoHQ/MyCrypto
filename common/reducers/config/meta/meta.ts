@@ -1,27 +1,18 @@
-import { ChangeLanguageAction, SetLatestBlockAction, ConfigAction } from 'actions/config';
+import { ChangeLanguageAction, SetLatestBlockAction, MetaAction } from 'actions/config';
 import { TypeKeys } from 'actions/config/constants';
 
 export interface State {
   // FIXME
   languageSelection: string;
-  nodeSelection: string;
-  isChangingNode: boolean;
   offline: boolean;
   autoGasLimit: boolean;
   latestBlock: string;
 }
 
-const defaultNode = 'eth_mew';
-export const INITIAL_STATE: State = {
+const INITIAL_STATE: State = {
   languageSelection: 'en',
-  nodeSelection: defaultNode,
-  node: NODES[defaultNode],
-  network: NETWORKS[NODES[defaultNode].network],
-  isChangingNode: false,
   offline: false,
   autoGasLimit: true,
-  customNodes: [],
-  customNetworks: [],
   latestBlock: '???'
 };
 
@@ -53,7 +44,7 @@ function setLatestBlock(state: State, action: SetLatestBlockAction): State {
   };
 }
 
-export function config(state: State = INITIAL_STATE, action: ConfigAction): State {
+export function meta(state: State = INITIAL_STATE, action: MetaAction): State {
   switch (action.type) {
     case TypeKeys.CONFIG_LANGUAGE_CHANGE:
       return changeLanguage(state, action);

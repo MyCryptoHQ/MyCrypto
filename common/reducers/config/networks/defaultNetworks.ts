@@ -10,13 +10,13 @@ import {
   UBQ_DEFAULT
 } from 'config/dpaths';
 import {
-  NetworkConfig,
+  DefaultNetworkConfig,
   BlockExplorerConfig,
   DefaultNetworkNames
 } from 'reducers/config/networks/typings';
 import { ConfigAction } from 'actions/config';
 
-export type State = { [key in DefaultNetworkNames]: NetworkConfig };
+export type State = { [key in DefaultNetworkNames]: DefaultNetworkConfig };
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
