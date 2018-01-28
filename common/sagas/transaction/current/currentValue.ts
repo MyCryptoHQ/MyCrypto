@@ -12,7 +12,6 @@ import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput, IInput } from 'sagas/transaction/validationHelpers';
 import { validNumber, validDecimal } from 'libs/validators';
-import { InputBidMaskFieldAction, InputBidValueFieldAction } from 'actions/ens';
 
 export function* setCurrentValue(action: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
@@ -20,10 +19,7 @@ export function* setCurrentValue(action: SetCurrentValueAction): SagaIterator {
   return yield call(valueHandler, action, setter);
 }
 
-export function* valueHandler(
-  { payload }: SetCurrentValueAction | InputBidMaskFieldAction | InputBidValueFieldAction,
-  setter
-) {
+export function* valueHandler({ payload }: SetCurrentValueAction, setter) {
   const decimal: number = yield select(getDecimal);
   const unit: string = yield select(getUnit);
 

@@ -8,7 +8,6 @@ import { getCurrentTransactionStatus } from 'selectors/transaction';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ITransactionStatus } from 'reducers/transaction/broadcast';
 import { reset, TReset } from 'actions/transaction';
-import { BidModal } from 'containers/Tabs/ENS/components/NameResolve/components/components/PlaceBid/components';
 
 interface StateProps {
   offline: boolean;
@@ -25,7 +24,7 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  Modal: typeof BidModal | typeof ConfirmationModal;
+  Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 

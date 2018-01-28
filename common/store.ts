@@ -10,7 +10,6 @@ import {
   State as TransactionState
 } from 'reducers/transaction';
 import { State as SwapState, INITIAL_STATE as swapInitialState } from 'reducers/swap';
-import { State as ENSState, ens as ENSReducer } from 'reducers/ens';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
@@ -63,7 +62,6 @@ const configureStore = () => {
 
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
-  const savedENSState = loadStatePropertyOrEmptyObject<ENSState['bidding']>('ens');
 
   // If they have a saved node, make sure we assign that too. The node selected
   // isn't serializable, so we have to assign it here.
@@ -109,15 +107,10 @@ const configureStore = () => {
             : transactionInitialState.fields.gasPrice
       }
     },
-    ens: ENSReducer(undefined as any, {} as any),
     customTokens,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState
   };
-
-  if (savedENSState) {
-    persistedInitialState.ens.bidding = savedENSState;
-  }
   // if 'web3' has persisted as node selection, reset to app default
   // necessary because web3 is only initialized as a node upon MetaMask / Mist unlock
   if (persistedInitialState.config.nodeSelection === 'web3') {
@@ -139,8 +132,7 @@ const configureStore = () => {
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
           customNodes: state.config.customNodes,
-          customNetworks: state.config.customNetworks,
-          setGasLimit: state.config.setGasLimit
+          customNetworks: state.config.customNetworks
         },
         transaction: {
           fields: {
@@ -162,8 +154,7 @@ const configureStore = () => {
             allIds: []
           }
         },
-        customTokens: state.customTokens,
-        ens: state.ens.bidding
+        customTokens: state.customTokens
       });
     }, 50)
   );

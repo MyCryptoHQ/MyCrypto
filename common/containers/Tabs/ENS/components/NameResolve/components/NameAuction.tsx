@@ -2,7 +2,6 @@ import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
 import ENSTime from './components/ENSTime';
 import { ENSWallet } from './components/ENSWallet';
-import PlaceBid from './components/PlaceBid';
 import ENSUnlockLayout from './components/ENSUnlockLayout';
 import moment from 'moment';
 
@@ -38,7 +37,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
 
       <ENSWallet text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}>
         <ENSUnlockLayout>
-          <PlaceBid domainName={name} buttonName="Place Bid" title="Place A Bid" />
+          {/* <PlaceBid domainName={name} buttonName="Place Bid" title="Place A Bid" /> */}
         </ENSUnlockLayout>
       </ENSWallet>
     </section>

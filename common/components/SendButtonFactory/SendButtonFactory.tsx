@@ -9,7 +9,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import { BidModal } from 'containers/Tabs/ENS/components/NameResolve/components/components/PlaceBid/components';
 
 export interface CallbackProps {
   onClick(): void;
@@ -20,7 +19,7 @@ interface StateProps {
 }
 interface OwnProps {
   onlyTransactionParameters?: boolean;
-  Modal: typeof ConfirmationModal | typeof BidModal;
+  Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
