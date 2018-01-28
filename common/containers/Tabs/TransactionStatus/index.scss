@@ -1,0 +1,10 @@
+@import "common/sass/variables";
+
+.TransactionStatus {
+  max-width: 700px;
+  margin: 0 auto;
+
+  &-help {
+    margin-bottom: $space * 1.5;
+  }
+}

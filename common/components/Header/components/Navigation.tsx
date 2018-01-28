@@ -40,6 +40,10 @@ const tabs: TabLink[] = [
     to: '/pushTx'
   },
   {
+    name: 'Check TX Status',
+    to: '/status'
+  },
+  {
     name: 'NAV_Help',
     to: `${knowledgeBaseURL}`,
     external: true

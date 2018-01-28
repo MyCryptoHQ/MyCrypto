@@ -6,6 +6,7 @@ import { default as Swap } from './Swap';
 import { default as ViewWallet } from './ViewWallet';
 import { default as SignAndVerifyMessage } from './SignAndVerifyMessage';
 import { default as RestoreKeystore } from './RestoreKeystore';
+import { default as TransactionStatus } from './TransactionStatus';
 
 export default {
   RestoreKeystore,
@@ -15,5 +16,6 @@ export default {
   SendTransaction,
   Swap,
   ViewWallet,
-  SignAndVerifyMessage
+  SignAndVerifyMessage,
+  TransactionStatus
 };
