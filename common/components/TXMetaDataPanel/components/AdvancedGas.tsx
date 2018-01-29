@@ -108,6 +108,7 @@ class AdvancedGas extends React.Component<Props, State> {
         {feeSummary && (
           <div className="AdvancedGas-fee-summary">
             <FeeSummary
+              gasPrice={gasPrice}
               render={({ gasPriceWei, gasLimit, fee, usd }) => (
                 <span>
                   {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}

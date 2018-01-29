@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Dropdown from './Dropdown';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   onChange(value: string): void;
 }
 
-export default class SimpleDropdown extends Component<Props, void> {
+export default class SimpleDropdown extends PureComponent<Props, void> {
   public render() {
     const { options, value, onChange, ariaLabel } = this.props;
 

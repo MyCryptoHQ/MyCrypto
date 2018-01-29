@@ -113,6 +113,7 @@ class EquivalentValues extends React.Component<Props, State> {
     const { equivalentValues, options } = this.state;
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
+    const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
 
     const Value = ({ rate, value }) => (
       <div className="EquivalentValues-values-currency">
@@ -159,9 +160,11 @@ class EquivalentValues extends React.Component<Props, State> {
           <Spinner size="x2" />
         ) : (
           <div className="EquivalentValues-values">
-            {this.generateValues(equivalentValues.label, equivalentValues.value).map((equiv, i) => (
-              <Value rate={equiv.rate} value={equiv.value} key={i} />
-            ))}
+            {pairRates.length ? (
+              pairRates.map((equiv, i) => <Value rate={equiv.rate} value={equiv.value} key={i} />)
+            ) : (
+              <p>Sorry, equivalent values are not supported for this unit.</p>
+            )}
           </div>
         )}
       </div>

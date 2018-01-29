@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import DropdownShell from './DropdownShell';
 import removeIcon from 'assets/images/icon-remove.svg';
@@ -25,7 +25,7 @@ interface Props<T> {
   onChange(value: T): void;
 }
 
-export default class ColorDropdown<T> extends Component<Props<T>, {}> {
+export default class ColorDropdown<T> extends PureComponent<Props<T>, {}> {
   private dropdownShell: DropdownShell | null;
 
   public render() {

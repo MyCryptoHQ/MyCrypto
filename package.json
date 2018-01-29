@@ -48,7 +48,7 @@
     "redux-promise-middleware": "4.4.2",
     "redux-saga": "0.16.0",
     "scryptsy": "2.0.0",
-    "uuid": "3.1.0",
+    "uuid": "3.2.1",
     "wallet-address-validator": "0.1.1",
     "whatwg-fetch": "2.0.3"
   },
@@ -115,7 +115,7 @@
     "sass-loader": "6.0.6",
     "style-loader": "0.20.0",
     "thread-loader": "1.1.2",
-    "ts-jest": "22.0.1",
+    "ts-jest": "22.0.2",
     "ts-loader": "3.3.1",
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.6.0",

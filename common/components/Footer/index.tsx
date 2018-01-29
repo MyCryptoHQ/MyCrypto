@@ -108,7 +108,7 @@ interface State {
   isOpen: boolean;
 }
 
-export default class Footer extends React.Component<Props, State> {
+export default class Footer extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isOpen: false };

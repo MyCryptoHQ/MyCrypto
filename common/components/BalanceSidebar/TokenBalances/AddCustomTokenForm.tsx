@@ -23,7 +23,7 @@ interface State {
   decimal: string;
 }
 
-export default class AddCustomTokenForm extends React.Component<Props, State> {
+export default class AddCustomTokenForm extends React.PureComponent<Props, State> {
   public state: State = {
     tokenSymbolLookup: {},
     address: '',
