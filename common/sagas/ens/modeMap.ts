@@ -48,7 +48,7 @@ function* nameStateReveal({ deedAddress }: IDomainData<NameState.Reveal>): SagaI
     data: ENS.deed.owner.encodeInput(),
     decoder: ENS.deed.owner.decodeOutput
   });
-  return ownerAddress;
+  return { ownerAddress };
 }
 
 interface IModeMap {
