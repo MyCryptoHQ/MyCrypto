@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import NavigationLink from './NavigationLink';
 import { knowledgeBaseURL } from 'config';
 import './Navigation.scss';
@@ -58,7 +58,7 @@ interface BorderStyle {
   borderTopColor?: string;
 }
 
-export default class Navigation extends Component<Props, State> {
+export default class Navigation extends PureComponent<Props, State> {
   public state = {
     showLeftArrow: false,
     showRightArrow: false

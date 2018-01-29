@@ -1,5 +1,5 @@
 import { isKeystorePassRequired } from 'libs/wallet';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
@@ -25,7 +25,7 @@ function isValidFile(rawFile: File): boolean {
   return fileType === '' || fileType === 'application/json';
 }
 
-export class KeystoreDecrypt extends Component {
+export class KeystoreDecrypt extends PureComponent {
   public props: {
     value: KeystoreValue;
     isWalletPending: boolean;
