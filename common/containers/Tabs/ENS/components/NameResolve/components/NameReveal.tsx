@@ -4,7 +4,6 @@ import ENSTime from './components/ENSTime';
 import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
 import { ENSWallet } from './components/ENSWallet';
-import { RevealBid } from './components/RevealBid';
 import ENSUnlockLayout from './components/ENSUnlockLayout';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
@@ -38,9 +37,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     </div>
 
     <ENSWallet text={`Did you you bid on ${props.name}.eth? You must reveal your bid now.`}>
-      <ENSUnlockLayout>
-        <RevealBid buttonName="Start the Auction" title="Reveal Your Bid" {...props} />
-      </ENSUnlockLayout>
+      <ENSUnlockLayout>{}</ENSUnlockLayout>
     </ENSWallet>
   </section>
 );
