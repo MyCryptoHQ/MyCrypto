@@ -3,7 +3,7 @@ import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
 import { Identicon, QRCode } from 'components/ui';
-import GenerateKeystoreModal from 'components/GenerateKeystoreModal';
+import { GenerateKeystoreModal, TogglablePassword } from 'components';
 import './WalletInfo.scss';
 
 interface Props {
@@ -55,20 +55,13 @@ export default class WalletInfo extends React.Component<Props, State> {
             <div className="row form-group">
               <div className="col-xs-12">
                 <label>{translate('x_PrivKey')}</label>
-                <div className="input-group">
-                  <input
-                    className="form-control"
-                    disabled={true}
-                    type={isPrivateKeyVisible ? 'text' : 'password'}
-                    value={privateKey}
-                  />
-                  <span
-                    onClick={this.togglePrivateKey}
-                    aria-label={translateRaw('GEN_Aria_2')}
-                    role="button"
-                    className="input-group-addon eye"
-                  />
-                </div>
+                <TogglablePassword
+                  disabled={true}
+                  value={privateKey}
+                  isVisible={isPrivateKeyVisible}
+                  toggleAriaLabel={translateRaw('GEN_Aria_2')}
+                  handleToggleVisibility={this.togglePrivateKey}
+                />
               </div>
             </div>
           )}

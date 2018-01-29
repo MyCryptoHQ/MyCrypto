@@ -16,3 +16,5 @@ export { default as PaperWallet } from './PaperWallet';
 export { default as AlphaAgreement } from './AlphaAgreement';
 export { default as TXMetaDataPanel } from './TXMetaDataPanel';
 export { default as WalletDecrypt } from './WalletDecrypt';
+export { default as TogglablePassword } from './TogglablePassword';
+export { default as GenerateKeystoreModal } from './GenerateKeystoreModal';
