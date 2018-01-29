@@ -7,7 +7,6 @@ import { AppState } from 'reducers';
 import {
   getTransaction,
   isNetworkRequestPending,
-  isValidAmount,
   isValidGasPrice,
   isValidGasLimit
 } from 'selectors/transaction';
@@ -18,7 +17,6 @@ interface StateProps {
   networkRequestPending: boolean;
   isFullTransaction: boolean;
   isWeb3Wallet: boolean;
-  validAmount: boolean;
   validGasPrice: boolean;
   validGasLimit: boolean;
 }
@@ -30,17 +28,13 @@ class GenerateTransactionClass extends Component<StateProps> {
       isWeb3Wallet,
       transaction,
       networkRequestPending,
-      validAmount,
+
       validGasPrice,
       validGasLimit
     } = this.props;
 
     const isButtonDisabled =
-      !isFullTransaction ||
-      networkRequestPending ||
-      !validAmount ||
-      !validGasPrice ||
-      !validGasLimit;
+      !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit;
     return (
       <WithSigner
         isWeb3={isWeb3Wallet}
@@ -62,7 +56,6 @@ export const GenerateTransaction = connect((state: AppState) => ({
   ...getTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
   isWeb3Wallet: getWalletType(state).isWeb3Wallet,
-  validAmount: isValidAmount(state),
   validGasPrice: isValidGasPrice(state),
   validGasLimit: isValidGasLimit(state)
 }))(GenerateTransactionClass);

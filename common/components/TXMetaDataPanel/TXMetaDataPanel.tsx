@@ -6,16 +6,22 @@ import {
   inputGasPrice,
   TInputGasPrice,
   inputGasPriceIntent,
-  TInputGasPriceIntent
+  TInputGasPriceIntent,
+  getNonceRequested,
+  TGetNonceRequested,
+  reset,
+  TReset
 } from 'actions/transaction';
 import { fetchCCRates, TFetchCCRates } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { Units } from 'libs/units';
 import SimpleGas from './components/SimpleGas';
-import AdvancedGas from './components/AdvancedGas';
-import './GasSlider.scss';
+import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
+import './TXMetaDataPanel.scss';
 import { getGasPrice } from 'selectors/transaction';
+
+type SliderStates = 'simple' | 'advanced';
 
 interface StateProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
@@ -27,28 +33,44 @@ interface DispatchProps {
   inputGasPrice: TInputGasPrice;
   inputGasPriceIntent: TInputGasPriceIntent;
   fetchCCRates: TFetchCCRates;
+  getNonceRequested: TGetNonceRequested;
+  reset: TReset;
+}
+
+// Set default props for props that can't be truthy or falsy
+interface DefaultProps {
+  initialState: SliderStates;
 }
 
 interface OwnProps {
-  disableAdvanced?: boolean;
+  initialState?: SliderStates;
+  disableToggle?: boolean;
+  advancedGasOptions?: AdvancedOptions;
+  className?: string;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
 
 interface State {
-  showAdvanced: boolean;
   gasPrice: AppState['transaction']['fields']['gasPrice'];
+  sliderState: SliderStates;
 }
 
-class GasSlider extends React.Component<Props, State> {
+class TXMetaDataPanel extends React.Component<Props, State> {
+  public static defaultProps: DefaultProps = {
+    initialState: 'simple'
+  };
+
   public state: State = {
-    showAdvanced: false,
-    gasPrice: this.props.gasPrice
+    gasPrice: this.props.gasPrice,
+    sliderState: (this.props as DefaultProps).initialState
   };
 
   public componentDidMount() {
     if (!this.props.offline) {
+      this.props.reset();
       this.props.fetchCCRates([this.props.network.unit]);
+      this.props.getNonceRequested();
     }
   }
 
@@ -62,22 +84,25 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableAdvanced } = this.props;
+    const { offline, disableToggle, advancedGasOptions, className = '' } = this.props;
     const { gasPrice } = this.state;
-    const showAdvanced = (this.state.showAdvanced || offline) && !disableAdvanced;
-
+    const showAdvanced = this.state.sliderState === 'advanced' || offline;
     return (
-      <div className="GasSlider">
+      <div className={`Gas col-md-12 ${className}`}>
         {showAdvanced ? (
-          <AdvancedGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
+          <AdvancedGas
+            gasPrice={gasPrice}
+            inputGasPrice={this.props.inputGasPrice}
+            options={advancedGasOptions}
+          />
         ) : (
           <SimpleGas gasPrice={gasPrice} inputGasPrice={this.handleGasPriceInput} />
         )}
 
         {!offline &&
-          !disableAdvanced && (
+          !disableToggle && (
             <div className="help-block">
-              <a className="GasSlider-toggle" onClick={this.toggleAdvanced}>
+              <a className="Gas-toggle" onClick={this.toggleAdvanced}>
                 <strong>
                   {showAdvanced
                     ? `- ${translateRaw('Back to simple')}`
@@ -91,7 +116,7 @@ class GasSlider extends React.Component<Props, State> {
   }
 
   private toggleAdvanced = () => {
-    this.setState({ showAdvanced: !this.state.showAdvanced });
+    this.setState({ sliderState: this.state.sliderState === 'advanced' ? 'simple' : 'advanced' });
   };
 
   private handleGasPriceInput = (raw: string) => {
@@ -115,5 +140,7 @@ function mapStateToProps(state: AppState): StateProps {
 export default connect(mapStateToProps, {
   inputGasPrice,
   inputGasPriceIntent,
-  fetchCCRates
-})(GasSlider);
+  fetchCCRates,
+  getNonceRequested,
+  reset
+})(TXMetaDataPanel);

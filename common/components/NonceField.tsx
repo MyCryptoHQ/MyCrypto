@@ -17,7 +17,7 @@ export const NonceField: React.SFC<Props> = ({ alwaysDisplay }) => (
   <NonceFieldFactory
     withProps={({ nonce: { raw, value }, onChange, readOnly, shouldDisplay }) => {
       const content = (
-        <>
+        <div>
           <label>Nonce</label>
           {nonceHelp}
 
@@ -29,7 +29,7 @@ export const NonceField: React.SFC<Props> = ({ alwaysDisplay }) => (
             readOnly={readOnly}
             onChange={onChange}
           />
-        </>
+        </div>
       );
 
       return alwaysDisplay || shouldDisplay ? content : null;

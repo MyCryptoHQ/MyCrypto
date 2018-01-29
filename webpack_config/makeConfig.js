@@ -48,62 +48,71 @@ module.exports = function(opts = {}) {
   // Typescript
   if (options.isProduction || !process.env.SLOW_BUILD_SPEED) {
     rules.push(config.typescriptRule);
-  }
-  else {
-    threadLoader.warmup(
-      config.typescriptRule.use[0].options,
-      [config.typescriptRule.use[0].loader]
-    );
+  } else {
+    threadLoader.warmup(config.typescriptRule.use[0].options, [
+      config.typescriptRule.use[0].loader
+    ]);
     rules.push({
       ...config.typescriptRule,
-      use: [{
-        loader: 'thread-loader',
-        options: {
-          workers: 4
-        }
-      }, ...config.typescriptRule.use],
+      use: [
+        {
+          loader: 'thread-loader',
+          options: {
+            workers: 4
+          }
+        },
+        ...config.typescriptRule.use
+      ]
     });
   }
 
   // Styles (CSS, SCSS, LESS)
   if (options.isProduction) {
-    rules.push({
-      test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader'
-      })
-    }, {
-      test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: ['css-loader', 'sass-loader']
-      })
-    }, {
-      test: /\.less$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: ['css-loader', 'less-loader']
-      })
-    });
+    rules.push(
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
+      },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
+      },
+      {
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'less-loader']
+        })
+      }
+    );
   } else {
-    rules.push({
-      test: /\.css$/,
-      include: path.resolve(config.path.src, 'vendor'),
-      use: ['style-loader', 'css-loader']
-    }, {
-      test: /\.scss$/,
-      include: ['components', 'containers', 'sass']
-        .map(dir => path.resolve(config.path.src, dir))
-        .concat([config.path.modules]),
+    rules.push(
+      {
+        test: /\.css$/,
+        include: path.resolve(config.path.src, 'vendor'),
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.scss$/,
+        include: ['components', 'containers', 'sass']
+          .map(dir => path.resolve(config.path.src, dir))
+          .concat([config.path.modules]),
 
-      exclude: /node_modules(?!\/font-awesome)/,
-      use: ['style-loader', 'css-loader', 'sass-loader']
-    }, {
-      test: /\.less$/,
-      include: path.resolve(config.path.assets, 'styles'),
-      use: ['style-loader', 'css-loader', 'less-loader']
-    });
+        exclude: /node_modules(?!\/font-awesome)/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.less$/,
+        include: path.resolve(config.path.assets, 'styles'),
+        use: ['style-loader', 'css-loader', 'less-loader']
+      }
+    );
   }
 
   // Web workers
@@ -114,10 +123,7 @@ module.exports = function(opts = {}) {
 
   // Images
   rules.push({
-    include: [
-      path.resolve(config.path.assets),
-      path.resolve(config.path.modules)
-    ],
+    include: [path.resolve(config.path.assets), path.resolve(config.path.modules)],
     exclude: /node_modules(?!\/font-awesome)/,
     test: /\.(gif|png|jpe?g|svg)$/i,
     use: [
@@ -152,10 +158,7 @@ module.exports = function(opts = {}) {
 
   // Fonts
   rules.push({
-    include: [
-      path.resolve(config.path.assets),
-      path.resolve(config.path.modules)
-    ],
+    include: [path.resolve(config.path.assets), path.resolve(config.path.modules)],
     exclude: /node_modules(?!\/font-awesome)/,
     test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
     loader: 'file-loader'
@@ -193,21 +196,24 @@ module.exports = function(opts = {}) {
       'process.env.BUILD_DOWNLOADABLE': JSON.stringify(isDownloadable),
       'process.env.BUILD_HTML': JSON.stringify(options.isHTMLBuild),
       'process.env.BUILD_ELECTRON': JSON.stringify(options.isElectronBuild)
-    }),
+    })
   ];
 
   if (options.isProduction) {
     plugins.push(
-      new BabelMinifyPlugin({
-        // Mangle seems to be reusing variable identifiers, causing errors
-        mangle: false,
-        // These two on top of a lodash file are causing illegal characters for
-        // safari and ios browsers
-        evaluate: false,
-        propertyLiterals: false,
-      }, {
-        comments: false
-      }),
+      new BabelMinifyPlugin(
+        {
+          // Mangle seems to be reusing variable identifiers, causing errors
+          mangle: false,
+          // These two on top of a lodash file are causing illegal characters for
+          // safari and ios browsers
+          evaluate: false,
+          propertyLiterals: false
+        },
+        {
+          comments: false
+        }
+      ),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         filename: 'vendor.[chunkhash:8].js'
@@ -225,9 +231,8 @@ module.exports = function(opts = {}) {
       new ProgressPlugin(),
       new ClearDistPlugin(),
       new SortCachePlugin()
-    )
-  }
-  else {
+    );
+  } else {
     plugins.push(
       new AutoDllPlugin({
         inject: true, // will inject the DLL bundles to index.html
@@ -235,12 +240,7 @@ module.exports = function(opts = {}) {
         debug: true,
         context: path.join(config.path.root),
         entry: {
-          vendor: [
-            ...config.vendorModules,
-            'babel-polyfill',
-            'bootstrap-sass',
-            'font-awesome'
-          ]
+          vendor: [...config.vendorModules, 'babel-polyfill', 'bootstrap-sass', 'font-awesome']
         }
       }),
       new HardSourceWebpackPlugin({
@@ -259,19 +259,21 @@ module.exports = function(opts = {}) {
   if (options.isElectronBuild) {
     // target: 'electron-renderer' kills scrypt, so manually pull in some
     // of its configuration instead
-    plugins.push(new webpack.ExternalsPlugin("commonjs", [
-			"desktop-capturer",
-			"electron",
-			"ipc",
-			"ipc-renderer",
-			"remote",
-			"web-frame",
-			"clipboard",
-			"crash-reporter",
-			"native-image",
-			"screen",
-			"shell"
-		]));
+    plugins.push(
+      new webpack.ExternalsPlugin('commonjs', [
+        'desktop-capturer',
+        'electron',
+        'ipc',
+        'ipc-renderer',
+        'remote',
+        'web-frame',
+        'clipboard',
+        'crash-reporter',
+        'native-image',
+        'screen',
+        'shell'
+      ])
+    );
   }
 
   // ====================
@@ -281,8 +283,7 @@ module.exports = function(opts = {}) {
   if (!options.isProduction) {
     if (process.env.SLOW_BUILD_SPEED) {
       devtool = 'source-map';
-    }
-    else {
+    } else {
       devtool = 'cheap-module-eval-source-map';
     }
   }
@@ -295,11 +296,11 @@ module.exports = function(opts = {}) {
     filename: options.isProduction ? '[name].[chunkhash:8].js' : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
     crossOriginLoading: 'anonymous'
-  }
-
+  };
 
   // The final bundle
   return {
+    devtool,
     entry,
     output,
     module: { rules },
@@ -318,4 +319,4 @@ module.exports = function(opts = {}) {
       modules: false
     }
   };
-}
+};

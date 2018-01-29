@@ -1,5 +1,4 @@
 import React from 'react';
-import { openInBrowser } from 'utils/electron';
 
 interface AAttributes {
   charset?: string;
@@ -40,16 +39,10 @@ export class NewTabLink extends React.Component<NewTabLinkProps> {
   public render() {
     const { content, children, ...rest } = this.props;
     return (
-      <a target="_blank" rel="noopener noreferrer" onClick={this.handleClick} {...rest}>
+      <a target="_blank" rel="noopener noreferrer" {...rest}>
         {content || children}
       </a>
     );
-  }
-
-  private handleClick(ev: React.MouseEvent<HTMLAnchorElement>) {
-    if (openInBrowser(ev.currentTarget.href)) {
-      ev.preventDefault();
-    }
   }
 }
 
