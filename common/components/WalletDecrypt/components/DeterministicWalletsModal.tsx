@@ -60,7 +60,7 @@ const customDPath: DPath = {
   value: 'custom'
 };
 
-class DeterministicWalletsModalClass extends React.Component<Props, State> {
+class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   public state: State = {
     selectedAddress: '',
     selectedAddrIndex: 0,

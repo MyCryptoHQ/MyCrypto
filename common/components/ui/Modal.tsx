@@ -1,5 +1,5 @@
 import closeIcon from 'assets/images/icon-x.svg';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import './Modal.scss';
 
 export interface IButton {
@@ -17,7 +17,7 @@ interface Props {
   handleClose?(): void;
 }
 
-export default class Modal extends Component<Props, {}> {
+export default class Modal extends PureComponent<Props, {}> {
   private modalContent: HTMLElement | null = null;
 
   public componentDidMount() {

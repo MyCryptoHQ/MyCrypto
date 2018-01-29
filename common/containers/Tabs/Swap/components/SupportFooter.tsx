@@ -14,7 +14,7 @@ interface Props {
   bityRates: NormalizedBityRates;
 }
 
-class SupportFooter extends React.Component<Props, {}> {
+class SupportFooter extends React.PureComponent<Props, {}> {
   public state = {
     open: false
   };

@@ -1,7 +1,8 @@
 import BN from 'bn.js';
-import { call, put, takeEvery } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { SagaIterator, delay } from 'redux-saga';
 import {
+  inputGasPrice,
   setDataField,
   setGasLimitField,
   setGasPriceField,
@@ -11,6 +12,7 @@ import {
   InputDataAction,
   InputGasLimitAction,
   InputGasPriceAction,
+  InputGasPriceIntentAction,
   InputNonceAction,
   TypeKeys
 } from 'actions/transaction';
@@ -38,6 +40,13 @@ export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIter
   );
 }
 
+export function* handleGasPriceInputIntent({ payload }: InputGasPriceIntentAction): SagaIterator {
+  yield call(delay, 300);
+  // Important to put and not fork handleGasPriceInput, we want
+  // action to go to reducers.
+  yield put(inputGasPrice(payload));
+}
+
 export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
   const validNonce: boolean = yield call(isValidNonce, payload);
   yield put(setNonceField({ raw: payload, value: validNonce ? Nonce(payload) : null }));
@@ -47,5 +56,6 @@ export const fields = [
   takeEvery(TypeKeys.DATA_FIELD_INPUT, handleDataInput),
   takeEvery(TypeKeys.GAS_LIMIT_INPUT, handleGasLimitInput),
   takeEvery(TypeKeys.GAS_PRICE_INPUT, handleGasPriceInput),
-  takeEvery(TypeKeys.NONCE_INPUT, handleNonceInput)
+  takeEvery(TypeKeys.NONCE_INPUT, handleNonceInput),
+  takeLatest(TypeKeys.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent)
 ];

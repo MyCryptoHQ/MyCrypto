@@ -1,5 +1,5 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
@@ -27,7 +27,7 @@ interface State {
   dPath: string;
 }
 
-class MnemonicDecryptClass extends Component<Props & StateProps, State> {
+class MnemonicDecryptClass extends PureComponent<Props & StateProps, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',

@@ -1,7 +1,7 @@
 import React from 'react';
 import './PreFooter.scss';
 
-const PreFooter = () => {
+const PreFooter: React.SFC<{}> = () => {
   return (
     <section className="pre-footer">
       <div className="container">

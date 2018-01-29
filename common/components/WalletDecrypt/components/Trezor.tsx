@@ -1,5 +1,5 @@
 import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
@@ -32,7 +32,7 @@ interface State {
 
 type Props = OwnProps & StateProps;
 
-class TrezorDecryptClass extends Component<Props, State> {
+class TrezorDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
