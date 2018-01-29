@@ -9,7 +9,8 @@ import {
   reparseCurrentValue,
   valueHandler
 } from 'sagas/transaction/current/currentValue';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
+import { SagaIterator } from 'redux-saga';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -18,29 +19,56 @@ const itShouldBeDone = gen => {
 };
 
 describe('valueHandler', () => {
-  const action: any = { payload: '5' };
+  const action: any = { payload: '5.1' };
   const setter = setValueField;
   const decimal = 1;
-  const gen: any = {};
-  gen.case1 = cloneableGenerator(valueHandler)(action, setter);
+  const gen: { [key: string]: SagaIteratorClone } = {};
+
+  const failCases = {
+    invalidDecimal: 0,
+    invalidNumber: {
+      decimal: 1,
+      action: { payload: 'x' }
+    }
+  };
+
+  gen.pass = cloneableGenerator(valueHandler)(action, setter);
+  gen.invalidNumber = cloneableGenerator(valueHandler)(
+    failCases.invalidNumber.action as any,
+    setter
+  );
   const value = toTokenBase(action.payload, decimal);
   const unit = 'eth';
 
   it('should select getDecimal', () => {
-    expect(gen.case1.next().value).toEqual(select(getDecimal));
+    expect(gen.pass.next().value).toEqual(select(getDecimal));
+    expect(gen.invalidNumber.next().value).toEqual(select(getDecimal));
   });
   it('should select getUnit', () => {
-    expect(gen.case1.next(decimal).value).toEqual(select(getUnit));
+    gen.invalidDecimal = gen.pass.clone();
+
+    expect(gen.pass.next(decimal).value).toEqual(select(getUnit));
+    expect(gen.invalidNumber.next(decimal).value).toEqual(select(getUnit));
+    expect(gen.invalidDecimal.next(failCases.invalidDecimal).value).toEqual(select(getUnit));
+  });
+
+  it('should fail on invalid number or decimal and put null as a value', () => {
+    expect(gen.invalidNumber.next(unit).value).toEqual(
+      put(setter({ raw: failCases.invalidNumber.action.payload, value: null }))
+    );
+    expect(gen.invalidDecimal.next(unit).value).toEqual(
+      put(setter({ raw: action.payload, value: null }))
+    );
   });
 
   it('should call isValid', () => {
-    expect(gen.case1.next(unit).value).toEqual(call(validateInput, value, unit));
+    expect(gen.pass.next(unit).value).toEqual(call(validateInput, value, unit));
   });
   it('should put setter', () => {
-    expect(gen.case1.next(true).value).toEqual(put(setter({ raw: action.payload, value })));
+    expect(gen.pass.next(true).value).toEqual(put(setter({ raw: action.payload, value })));
   });
 
-  itShouldBeDone(gen.case1);
+  itShouldBeDone(gen.pass);
 });
 
 describe('setCurrentValue*', () => {
