@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
-import './EnterPassword.scss';
-import PasswordInput from './PasswordInput';
+import { TogglablePassword } from 'components';
 import Template from '../Template';
+import './EnterPassword.scss';
 
 interface Props {
   continue(pw: string): void;
@@ -12,17 +12,15 @@ interface Props {
 interface State {
   password: string;
   isPasswordValid: boolean;
-  isPasswordVisible: boolean;
 }
 export default class EnterPassword extends Component<Props, State> {
   public state = {
     password: '',
-    isPasswordValid: false,
-    isPasswordVisible: false
+    isPasswordValid: false
   };
 
   public render() {
-    const { password, isPasswordValid, isPasswordVisible } = this.state;
+    const { password, isPasswordValid } = this.state;
 
     return (
       <Template>
@@ -33,12 +31,13 @@ export default class EnterPassword extends Component<Props, State> {
 
           <label className="EnterPw-password">
             <h4 className="EnterPw-password-label">{translate('GEN_Label_1')}</h4>
-            <PasswordInput
-              password={password}
-              onPasswordChange={this.onPasswordChange}
-              isPasswordVisible={isPasswordVisible}
-              togglePassword={this.togglePassword}
-              isPasswordValid={isPasswordValid}
+            <TogglablePassword
+              value={password}
+              placeholder={translateRaw('GEN_Placeholder_1')}
+              ariaLabel={translateRaw('GEN_Aria_1')}
+              toggleAriaLabel={translateRaw('GEN_Aria_2')}
+              isValid={isPasswordValid}
+              onChange={this.onPasswordChange}
             />
           </label>
 
@@ -57,10 +56,6 @@ export default class EnterPassword extends Component<Props, State> {
   }
   private onClickGenerateFile = () => {
     this.props.continue(this.state.password);
-  };
-
-  private togglePassword = () => {
-    this.setState({ isPasswordVisible: !this.state.isPasswordVisible });
   };
 
   private onPasswordChange = (e: any) => {

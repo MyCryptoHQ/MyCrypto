@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WalletDecrypt from 'components/WalletDecrypt';
+import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { OnlyUnlocked } from 'components/renderCbs';
 import { Fields } from './Fields';
 import { isUnlocked as isUnlockedSelector } from 'selectors/wallet';
@@ -41,7 +41,11 @@ class LiteSendClass extends Component<Props> {
         </div>
       );
     } else {
-      renderMe = isUnlocked ? <OnlyUnlocked whenUnlocked={<Fields />} /> : <WalletDecrypt />;
+      renderMe = isUnlocked ? (
+        <OnlyUnlocked whenUnlocked={<Fields />} />
+      ) : (
+        <WalletDecrypt disabledWallets={DISABLE_WALLETS.READ_ONLY} />
+      );
     }
 
     return <React.Fragment>{renderMe}</React.Fragment>;
