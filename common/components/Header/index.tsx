@@ -105,12 +105,9 @@ export default class Header extends PureComponent<Props, State> {
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE && (
-          <div
-            className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}
-            dangerouslySetInnerHTML={{
-              __html: ANNOUNCEMENT_MESSAGE
-            }}
-          />
+          <div className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}>
+            {ANNOUNCEMENT_MESSAGE}
+          </div>
         )}
 
         <section className="Header-branding">
