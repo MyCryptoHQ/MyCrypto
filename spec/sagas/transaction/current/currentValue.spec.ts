@@ -1,13 +1,15 @@
 import { isEtherTransaction, getUnit, getDecimal, getCurrentValue } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
-import { toTokenBase } from 'libs/units';
+import { toTokenBase, Wei } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
 import {
   setCurrentValue,
   revalidateCurrentValue,
-  reparseCurrentValue
+  reparseCurrentValue,
+  valueHandler
 } from 'sagas/transaction/current/currentValue';
+import { cloneableGenerator } from 'redux-saga/utils';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -15,77 +17,42 @@ const itShouldBeDone = gen => {
   });
 };
 
+describe('valueHandler', () => {
+  const action: any = { payload: '5' };
+  const setter = setValueField;
+  const decimal = 1;
+  const gen: any = {};
+  gen.case1 = cloneableGenerator(valueHandler)(action, setter);
+  const value = toTokenBase(action.payload, decimal);
+  const unit = 'eth';
+
+  it('should select getDecimal', () => {
+    expect(gen.case1.next().value).toEqual(select(getDecimal));
+  });
+  it('should select getUnit', () => {
+    expect(gen.case1.next(decimal).value).toEqual(select(getUnit));
+  });
+
+  it('should call isValid', () => {
+    expect(gen.case1.next(unit).value).toEqual(call(validateInput, value, unit));
+  });
+  it('should put setter', () => {
+    expect(gen.case1.next(true).value).toEqual(put(setter({ raw: action.payload, value })));
+  });
+
+  itShouldBeDone(gen.case1);
+});
+
 describe('setCurrentValue*', () => {
-  const sharedLogic = (gen, etherTransaction, decimal: number) => {
-    it('should select isEtherTransaction', () => {
-      expect(gen.next().value).toEqual(select(isEtherTransaction));
-    });
-
-    it('should select getDecimal', () => {
-      expect(gen.next(etherTransaction).value).toEqual(select(getDecimal));
-    });
-    it('should select getUnit', () => {
-      expect(gen.next(decimal).value).toEqual(select(getUnit));
-    });
-  };
-
-  describe('when invalid number or decimal', () => {
-    const invalidDecimal: any = {
-      payload: '10.01'
-    };
-    const invalidNumber: any = {
-      payload: 'invalidNumber'
-    };
-    const etherTransaction = true;
-    const decimal = 1;
-    const gen1 = setCurrentValue(invalidNumber);
-    const gen2 = setCurrentValue(invalidDecimal);
-
-    sharedLogic(gen2, etherTransaction, decimal);
-    sharedLogic(gen1, etherTransaction, decimal);
-
-    it('should put setter', () => {
-      expect(gen1.next().value).toEqual(
-        put(setValueField({ raw: invalidNumber.payload, value: null }))
-      );
-      expect(gen2.next().value).toEqual(
-        put(setValueField({ raw: invalidDecimal.payload, value: null }))
-      );
-    });
-
-    itShouldBeDone(gen1);
-    itShouldBeDone(gen2);
+  const action: any = { payload: '5' };
+  const gen = setCurrentValue(action);
+  it('should select isEtherTransaction', () => {
+    expect(gen.next().value).toEqual(select(isEtherTransaction));
   });
-
-  describe('when valid number and decimal', () => {
-    const payload = '100';
-    const action: any = { payload };
-    const etherTransaction = true;
-    const unit = 'ether';
-    const decimal = 0;
-    const value = toTokenBase(payload, decimal);
-    const isValid = true;
-
-    const gen = setCurrentValue(action);
-
-    sharedLogic(gen, etherTransaction, decimal);
-    it('should call validateInput', () => {
-      expect(gen.next(unit).value).toEqual(call(validateInput, value, unit));
-    });
-
-    it('should put setter', () => {
-      expect(gen.next(isValid).value).toEqual(
-        put(
-          setValueField({
-            raw: payload,
-            value
-          })
-        )
-      );
-    });
-
-    itShouldBeDone(gen);
+  it('should call valueHandler', () => {
+    expect(gen.next(isEtherTransaction).value).toEqual(call(valueHandler, action, setValueField));
   });
+  itShouldBeDone(gen);
 });
 
 describe('revalidateCurrentValue*', () => {
