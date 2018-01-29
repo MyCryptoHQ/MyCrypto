@@ -1,10 +1,10 @@
-import { SagaIterator, buffers, delay } from 'redux-saga';
+import { SagaIterator, buffers, delay, takeEvery } from 'redux-saga';
 import { apply, put, select, take, actionChannel, call, fork, race } from 'redux-saga/effects';
 import BN from 'bn.js';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { getTransaction, IGetTransaction } from 'selectors/transaction';
+import { getTransaction, IGetTransaction, getCurrentToAddressMessage } from 'selectors/transaction';
 import {
   EstimateGasRequestedAction,
   setGasLimitField,
@@ -22,7 +22,7 @@ import {
 import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'actions/config';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
-import { getAddressMessage } from 'config';
+import { AddressMessage } from 'config';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
@@ -40,28 +40,17 @@ export function* shouldEstimateGas(): SagaIterator {
       TypeKeys.TOKEN_TO_ETHER_SWAP,
       ConfigTypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT
     ]);
-    // invalid field is a field that the value is null and the input box isnt empty
-    // reason being is an empty field is valid because it'll be null
 
     const isOffline: boolean = yield select(getOffline);
     const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
+    const message: AddressMessage | undefined = yield select(getCurrentToAddressMessage);
 
-    if (isOffline || !autoGasLimitEnabled) {
+    if (isOffline || !autoGasLimitEnabled || (message && message.gasLimit)) {
       continue;
     }
 
-    // If we have a hard-coded limit, use it immediately and skip estimate
-    const msg = action.type === TypeKeys.TO_FIELD_SET && getAddressMessage(action.payload.raw);
-    if (msg && msg.gasLimit) {
-      yield put(
-        setGasLimitField({
-          raw: msg.gasLimit.toString(),
-          value: new BN(msg.gasLimit)
-        })
-      );
-      continue;
-    }
-
+    // invalid field is a field that the value is null and the input box isnt empty
+    // reason being is an empty field is valid because it'll be null
     const invalidField =
       (action.type === TypeKeys.TO_FIELD_SET || action.type === TypeKeys.DATA_FIELD_SET) &&
       !action.payload.value &&
@@ -124,4 +113,21 @@ export function* localGasEstimation(payload: EstimateGasRequestedAction['payload
   yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
 }
 
-export const gas = [fork(shouldEstimateGas), fork(estimateGas)];
+export function* setAddressMessageGasLimit() {
+  const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
+  const message: AddressMessage | undefined = yield select(getCurrentToAddressMessage);
+  if (autoGasLimitEnabled && message && message.gasLimit) {
+    yield put(
+      setGasLimitField({
+        raw: message.gasLimit.toString(),
+        value: new BN(message.gasLimit)
+      })
+    );
+  }
+}
+
+export const gas = [
+  fork(shouldEstimateGas),
+  fork(estimateGas),
+  takeEvery(TypeKeys.TO_FIELD_SET, setAddressMessageGasLimit)
+];
