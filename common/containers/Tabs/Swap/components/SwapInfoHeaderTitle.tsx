@@ -1,8 +1,8 @@
 import { RestartSwapAction } from 'actions/swap';
 import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
-import { bityReferralURL } from 'config/data';
-import React, { Component } from 'react';
+import { bityReferralURL } from 'config';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import './SwapInfoHeader.scss';
 
@@ -11,7 +11,7 @@ export interface SwapInfoHeaderTitleProps {
   restartSwap(): RestartSwapAction;
 }
 
-export default class SwapInfoHeaderTitle extends Component<SwapInfoHeaderTitleProps, {}> {
+export default class SwapInfoHeaderTitle extends PureComponent<SwapInfoHeaderTitleProps, {}> {
   public render() {
     const { provider } = this.props;
     const logoToRender = provider === 'shapeshift' ? shapeshiftLogo : bityLogo;

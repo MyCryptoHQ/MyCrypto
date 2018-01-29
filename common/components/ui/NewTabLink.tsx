@@ -35,10 +35,15 @@ interface NewTabLinkProps extends AAttributes {
   children?: React.ReactElement<any> | string;
 }
 
-const NewTabLink = ({ content, children, ...rest }: NewTabLinkProps) => (
-  <a target="_blank" rel="noopener noreferrer" {...rest}>
-    {content || children}
-  </a>
-);
+export class NewTabLink extends React.Component<NewTabLinkProps> {
+  public render() {
+    const { content, children, ...rest } = this.props;
+    return (
+      <a target="_blank" rel="noopener noreferrer" {...rest}>
+        {content || children}
+      </a>
+    );
+  }
+}
 
 export default NewTabLink;

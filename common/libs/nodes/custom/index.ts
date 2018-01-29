@@ -1,6 +1,6 @@
 import RPCNode from '../rpc';
 import RPCClient from '../rpc/client';
-import { CustomNodeConfig } from 'config/data';
+import { CustomNodeConfig } from 'config';
 
 export default class CustomNode extends RPCNode {
   constructor(config: CustomNodeConfig) {

@@ -13,9 +13,11 @@ import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
+import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
+import { RouteNotFound } from 'components/RouteNotFound';
 
 interface Props {
   store: Store<AppState>;
@@ -46,35 +48,41 @@ export default class Root extends Component<Props, State> {
       return <ErrorScreen error={error} />;
     }
 
-    // key={Math.random()} = hack for HMR from https://github.com/webpack/webpack-dev-server/issues/395
+    const CaptureRouteNotFound = withRouter(({ children, location }) => {
+      return location && location.state && location.state.error ? (
+        <PageNotFound />
+      ) : (
+        (children as JSX.Element)
+      );
+    });
+
     const routes = (
-      <Switch>
-        <Route exact={true} path="/" component={GenerateWallet} />
-        <Route path="/generate" component={GenerateWallet}>
-          <Route path="keystore" component={GenerateWallet} />
-          <Route path="mnemonic" component={GenerateWallet} />
-        </Route>
-        <Route path="/help" component={Help} />
-        <Route path="/swap" component={Swap} />
-        <Route path="/account" component={SendTransaction}>
-          <Route path="send" component={SendTransaction} />
-          <Route path="info" component={SendTransaction} />
-        </Route>
-        <Route path="/send-transaction" component={SendTransaction} />
-        <Route path="/contracts" component={Contracts} />
-        <Route path="/ens" component={ENS} />
-        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-        <Route path="/pushTx" component={BroadcastTx} />
-        <Route component={PageNotFound} />
-      </Switch>
+      <CaptureRouteNotFound>
+        <Switch>
+          <Redirect exact={true} from="/" to="/account" />
+          <Route path="/account" component={SendTransaction} />
+          <Route path="/generate" component={GenerateWallet} />
+          <Route path="/swap" component={Swap} />
+          <Route path="/contracts" component={Contracts} />
+          <Route path="/ens" component={ENS} />
+          <Route path="/help" component={Help} />
+          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+          <Route path="/pushTx" component={BroadcastTx} />
+          <RouteNotFound />
+        </Switch>
+      </CaptureRouteNotFound>
     );
 
-    const Router = process.env.BUILD_DOWNLOADABLE ? HashRouter : BrowserRouter;
+    const Router =
+      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
+        ? HashRouter
+        : BrowserRouter;
 
     return (
       <Provider store={store} key={Math.random()}>
         <Router key={Math.random()}>
           <React.Fragment>
+            {process.env.BUILD_ELECTRON && <TitleBar />}
             {routes}
             <LegacyRoutes />
             <LogOutPrompt />

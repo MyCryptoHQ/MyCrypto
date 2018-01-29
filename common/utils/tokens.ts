@@ -1,4 +1,4 @@
-import { Token } from 'config/data';
+import { Token } from 'config';
 
 export function dedupeCustomTokens(networkTokens: Token[], customTokens: Token[]): Token[] {
   if (!customTokens.length) {

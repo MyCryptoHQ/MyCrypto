@@ -32,22 +32,22 @@ export function signMessageWithPrivKeyV2(privKey: Buffer, msg: string): string {
 
 export interface ISignedMessage {
   address: string;
-  message: string;
-  signature: string;
+  msg: string;
+  sig: string;
   version: string;
 }
 
 // adapted from:
 // https://github.com/kvhnuke/etherwallet/blob/2a5bc0db1c65906b14d8c33ce9101788c70d3774/app/scripts/controllers/signMsgCtrl.js#L118
-export function verifySignedMessage({ address, message, signature, version }: ISignedMessage) {
-  const sig = new Buffer(stripHexPrefixAndLower(signature), 'hex');
-  if (sig.length !== 65) {
+export function verifySignedMessage({ address, msg, sig, version }: ISignedMessage) {
+  const sigb = new Buffer(stripHexPrefixAndLower(sig), 'hex');
+  if (sigb.length !== 65) {
     return false;
   }
   //TODO: explain what's going on here
-  sig[64] = sig[64] === 0 || sig[64] === 1 ? sig[64] + 27 : sig[64];
-  const hash = version === '2' ? hashPersonalMessage(toBuffer(message)) : sha3(message);
-  const pubKey = ecrecover(hash, sig[64], sig.slice(0, 32), sig.slice(32, 64));
+  sigb[64] = sigb[64] === 0 || sigb[64] === 1 ? sigb[64] + 27 : sigb[64];
+  const hash = version === '2' ? hashPersonalMessage(toBuffer(msg)) : sha3(msg);
+  const pubKey = ecrecover(hash, sigb[64], sigb.slice(0, 32), sigb.slice(32, 64));
 
   return stripHexPrefixAndLower(address) === pubToAddress(pubKey).toString('hex');
 }

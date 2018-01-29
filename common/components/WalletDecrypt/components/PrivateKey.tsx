@@ -1,7 +1,8 @@
 import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/values';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
+import { TogglablePassword } from 'components';
 
 export interface PrivateKeyValue {
   key: string;
@@ -17,7 +18,7 @@ interface Validated {
 }
 
 function validatePkeyAndPass(pkey: string, pass: string): Validated {
-  const fixedPkey = stripHexPrefix(pkey);
+  const fixedPkey = stripHexPrefix(pkey).trim();
   const validPkey = isValidPrivKey(fixedPkey);
   const validEncPkey = isValidEncryptedPrivKey(fixedPkey);
   const isValidPkey = validPkey || validEncPkey;
@@ -44,7 +45,7 @@ interface Props {
   onUnlock(): void;
 }
 
-export class PrivateKeyDecrypt extends Component<Props> {
+export class PrivateKeyDecrypt extends PureComponent<Props> {
   public render() {
     const { key, password } = this.props.value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
@@ -53,14 +54,14 @@ export class PrivateKeyDecrypt extends Component<Props> {
     return (
       <form id="selectedTypeKey" onSubmit={this.unlock}>
         <div className="form-group">
-          <textarea
-            id="aria-private-key"
-            className={`form-control ${isValidPkey ? 'is-valid' : 'is-invalid'}`}
+          <TogglablePassword
             value={key}
-            onChange={this.onPkeyChange}
-            onKeyDown={this.onKeyDown}
-            placeholder={translateRaw('x_PrivKey2')}
             rows={4}
+            placeholder={translateRaw('x_PrivKey2')}
+            isValid={isValidPkey}
+            isTextareaWhenVisible={true}
+            onChange={this.onPkeyChange}
+            onEnter={this.props.onUnlock}
           />
         </div>
         {isValidPkey &&
@@ -84,7 +85,7 @@ export class PrivateKeyDecrypt extends Component<Props> {
     );
   }
 
-  public onPkeyChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+  private onPkeyChange = (e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const pkey = e.currentTarget.value;
     const pass = this.props.value.password;
     const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
@@ -92,7 +93,9 @@ export class PrivateKeyDecrypt extends Component<Props> {
     this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
   };
 
-  public onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+  private onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
+    // NOTE: Textareas don't support password type, so we replace the value
+    // with an equal length number of dots. On change, we replace
     const pkey = this.props.value.key;
     const pass = e.currentTarget.value;
     const { valid } = validatePkeyAndPass(pkey, pass);
@@ -104,7 +107,7 @@ export class PrivateKeyDecrypt extends Component<Props> {
     });
   };
 
-  public onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+  private onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.keyCode === 13) {
       this.unlock(e);
     }

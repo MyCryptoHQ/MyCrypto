@@ -7,7 +7,7 @@ import {
 } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { TSetGasPriceField } from 'actions/transaction';
@@ -16,20 +16,18 @@ import {
   ANNOUNCEMENT_TYPE,
   languages,
   NODES,
-  VERSION,
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig
-} from 'config/data';
-import GasPriceDropdown from './components/GasPriceDropdown';
+} from 'config';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
+import Version from './components/Version';
 import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
-import { AppState } from 'reducers';
 
 interface Props {
   languageSelection: string;
@@ -37,7 +35,6 @@ interface Props {
   nodeSelection: string;
   isChangingNode: boolean;
   isOffline: boolean;
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
   changeLanguage: TChangeLanguage;
@@ -52,7 +49,7 @@ interface State {
   isAddingCustomNode: boolean;
 }
 
-export default class Header extends Component<Props, State> {
+export default class Header extends PureComponent<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
@@ -128,17 +125,12 @@ export default class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
+              <span className="Header-branding-right-version hidden-xs">
+                <Version />
+              </span>
 
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
-              </div>
-
-              <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown
-                  value={this.props.gasPrice.raw}
-                  onChange={this.props.setGasPriceField}
-                />
               </div>
 
               <div className="Header-branding-right-dropdown">

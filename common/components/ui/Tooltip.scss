@@ -1,13 +1,15 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
+$tooltip-bg: rgba(#222, 0.95);
+
 .Tooltip {
   position: absolute;
   top: 0;
   left: 50%;
   width: 220px;
   color: #FFF;
-  font-size: $font-size-xs;
+  font-size: $font-size-small;
   font-family: $font-family-sans-serif;
   pointer-events: none;
   opacity: 0;
@@ -20,9 +22,9 @@
 
   > span {
     display: inline-block;
-    background: rgba(#000, 0.9);
-    border-radius: 2px;
-    padding: 4px 8px;
+    background: $tooltip-bg;
+    border-radius: 3px;
+    padding: 6px 10px;
 
     &:after {
       position: absolute;
@@ -30,7 +32,36 @@
       bottom: 0;
       left: 50%;
       transform: translate(-50%, 100%);
-      @include triangle(8px, rgba(#000, 0.9), down);
+      @include triangle(10px, $tooltip-bg, down);
+    }
+  }
+
+  // Sizing, medium is default
+  &.is-size-sm {
+    width: 200px;
+    font-size: $font-size-xs;
+
+    > span {
+      padding: 4px 8px;
+      border-radius: 2px;
+
+      &:after {
+        @include triangle(8px, $tooltip-bg, down);
+      }
+    }
+  }
+
+  &.is-size-lg {
+    width: 240px;
+    font-size: $font-size-base;
+
+    > span {
+      padding: 8px 12px;
+      border-radius: 4px;
+
+      &:after {
+        @include triangle(12px, $tooltip-bg, down);
+      }
     }
   }
 }

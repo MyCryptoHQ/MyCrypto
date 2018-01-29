@@ -17,6 +17,8 @@ import { toBuffer, bufferToHex } from 'ethereumjs-util';
 import { getSerializedTransaction } from 'selectors/transaction';
 import { AppState } from 'reducers';
 import './index.scss';
+import { Switch, Route, RouteComponentProps } from 'react-router';
+import { RouteNotFound } from 'components/RouteNotFound';
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -30,7 +32,9 @@ interface State {
 }
 const INITIAL_STATE: State = { userInput: '' };
 
-class BroadcastTx extends Component<DispatchProps & StateProps> {
+type Props = DispatchProps & StateProps & RouteComponentProps<{}>;
+
+class BroadcastTx extends Component<Props> {
   public state: State = INITIAL_STATE;
 
   public render() {
@@ -41,28 +45,37 @@ class BroadcastTx extends Component<DispatchProps & StateProps> {
       'is-valid': !!stateTransaction,
       'is-invalid': !stateTransaction
     });
-
+    const currentPath = this.props.match.url;
     return (
       <TabSection isUnavailableOffline={true}>
         <div className="Tab-content-pane row block text-center">
-          <div className="BroadcastTx">
-            <h1 className="BroadcastTx-title">Broadcast Signed Transaction</h1>
-            <p className="BroadcastTx-help">
-              Paste a signed transaction and press the "SEND TRANSACTION" button.
-            </p>
-            <label>{translateRaw('SEND_signed')}</label>
-            <textarea
-              className={inputClasses}
-              rows={7}
-              value={userInput}
-              onChange={this.handleChange}
-            />
-            <SendButton onlyTransactionParameters={true} />
+          <Switch>
+            <Route
+              exact={true}
+              path={currentPath}
+              render={() => (
+                <div className="BroadcastTx">
+                  <h1 className="BroadcastTx-title">Broadcast Signed Transaction</h1>
+                  <p className="BroadcastTx-help">
+                    Paste a signed transaction and press the "SEND TRANSACTION" button.
+                  </p>
+                  <label>{translateRaw('SEND_signed')}</label>
+                  <textarea
+                    className={inputClasses}
+                    rows={7}
+                    value={userInput}
+                    onChange={this.handleChange}
+                  />
+                  <SendButton onlyTransactionParameters={true} />
 
-            <div className="BroadcastTx-qr">
-              {stateTransaction && <QRCode data={bufferToHex(stateTransaction)} />}
-            </div>
-          </div>
+                  <div className="BroadcastTx-qr">
+                    {stateTransaction && <QRCode data={bufferToHex(stateTransaction)} />}
+                  </div>
+                </div>
+              )}
+            />
+            <RouteNotFound />
+          </Switch>
         </div>
       </TabSection>
     );

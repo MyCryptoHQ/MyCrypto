@@ -36,7 +36,7 @@ import {
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
-import { NODES, initWeb3Node, Token } from 'config/data';
+import { NODES, initWeb3Node, Token } from 'config';
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getAllTokens, getOffline } from 'selectors/config';
@@ -163,8 +163,12 @@ export function* handleSetWalletTokens(action: SetWalletTokensAction): SagaItera
 }
 
 export function* updateBalances(): SagaIterator {
-  yield fork(updateAccountBalance);
-  yield fork(updateTokenBalances);
+  const updateAccount = yield fork(updateAccountBalance);
+  const updateToken = yield fork(updateTokenBalances);
+
+  yield take(TypeKeys.WALLET_SET);
+  yield cancel(updateAccount);
+  yield cancel(updateToken);
 }
 
 export function* handleNewWallet(): SagaIterator {
@@ -261,6 +265,9 @@ export function* unlockWeb3(): SagaIterator {
         action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
     );
 
+    if (!NODES.web3) {
+      throw Error('Web3 node config not found!');
+    }
     const network = NODES.web3.network;
     const nodeLib: INode | Web3Node = yield select(getNodeLib);
 
