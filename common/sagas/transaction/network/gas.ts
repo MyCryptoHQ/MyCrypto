@@ -1,5 +1,15 @@
-import { SagaIterator, buffers, delay, takeEvery } from 'redux-saga';
-import { apply, put, select, take, actionChannel, call, fork, race } from 'redux-saga/effects';
+import { SagaIterator, buffers, delay } from 'redux-saga';
+import {
+  apply,
+  put,
+  select,
+  take,
+  actionChannel,
+  call,
+  fork,
+  race,
+  takeEvery
+} from 'redux-saga/effects';
 import BN from 'bn.js';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
