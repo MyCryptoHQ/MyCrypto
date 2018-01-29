@@ -1,12 +1,16 @@
 import React from 'react';
 import { SendButtonFactory } from './SendButtonFactory';
 import translate from 'translations';
+import { ConfirmationModal } from 'components/ConfirmationModal';
+import { BidModal } from 'containers/Tabs/ENS/components/NameResolve/components/components/PlaceBid/components';
 
-export const SendButton: React.SFC<{ onlyTransactionParameters?: boolean }> = ({
-  onlyTransactionParameters
-}) => (
+export const SendButton: React.SFC<{
+  onlyTransactionParameters?: boolean;
+  customModal?: typeof BidModal;
+}> = ({ onlyTransactionParameters, customModal }) => (
   <SendButtonFactory
     onlyTransactionParameters={!!onlyTransactionParameters}
+    Modal={customModal ? customModal : ConfirmationModal}
     withProps={({ onClick }) => (
       <div className="row form-group">
         <div className="col-xs-12">

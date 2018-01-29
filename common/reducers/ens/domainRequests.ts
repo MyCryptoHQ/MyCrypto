@@ -1,9 +1,9 @@
 import {
-  EnsAction,
   ResolveDomainRequested,
   ResolveDomainFailed,
   ResolveDomainSucceeded,
-  ResolveDomainCached
+  ResolveDomainCached,
+  ResolveDomainAction
 } from 'actions/ens';
 import { DomainRequest } from 'libs/ens';
 import { TypeKeys } from 'actions/ens/constants';
@@ -66,7 +66,7 @@ const resolveDomainFailed = (state: State, action: ResolveDomainFailed): State =
   return { ...state, [domain]: nextDomain };
 };
 
-export default (state: State = INITIAL_STATE, action: EnsAction): State => {
+export default (state: State = INITIAL_STATE, action: ResolveDomainAction): State => {
   switch (action.type) {
     case TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED:
       return resolveDomainRequested(state, action);

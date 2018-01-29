@@ -4,12 +4,11 @@ import { getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
 import {
   signTransactionFailed,
-  SignWeb3TransactionRequestedAction,
-  SignLocalTransactionRequestedAction,
   GetFromFailedAction,
   GetFromSucceededAction,
   getFromRequested,
-  TypeKeys as TK
+  TypeKeys as TK,
+  SignTransactionRequestedAction
 } from 'actions/transaction';
 import Tx from 'ethereumjs-tx';
 import { NetworkConfig } from 'config';
@@ -22,7 +21,7 @@ interface IFullWalletAndTransaction {
 }
 
 const signTransactionWrapper = (func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator) =>
-  function*(partialTx: SignLocalTransactionRequestedAction | SignWeb3TransactionRequestedAction) {
+  function*(partialTx: SignTransactionRequestedAction) {
     try {
       const IWalletAndTx: IFullWalletAndTransaction = yield call(
         getWalletAndTransaction,
@@ -40,9 +39,7 @@ const signTransactionWrapper = (func: (IWalletAndTx: IFullWalletAndTransaction) 
  * the rest of the tx parameters from the action
  * @param partialTx
  */
-function* getWalletAndTransaction(
-  partialTx: (SignLocalTransactionRequestedAction | SignWeb3TransactionRequestedAction)['payload']
-) {
+function* getWalletAndTransaction(partialTx: SignTransactionRequestedAction['payload']) {
   // get the wallet we're going to sign with
   const wallet: null | IFullWallet = yield select(getWalletInst);
   if (!wallet) {

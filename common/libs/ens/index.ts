@@ -84,3 +84,45 @@ export interface IModeMap {
     | { ownerAddress: string; resolvedAddress: string }
     | { auctionCloseTime: string; revealBidTime: string };
 }
+
+/*
+export const placeBid = async (
+  config: ISetConfigForTx,
+  { labelHash, ownerAddress }: IRevealDomainRequest,
+  bidValue: BN,
+  maskValue: BN,
+) => {
+  Contract.setConfigForTx(ENS.auction, config);
+  const secret = randomBytes(32).toString();
+
+  const { sealedBid }: { sealedBid: string } = await ENS.auction.shaBid.call({
+    hash: Buffer.from(labelHash, 'hex'),
+    owner: ownerAddress,
+    value: bidValue,
+    salt: ethUtil.sha3(secret)
+  });
+
+  return {
+    ...await ENS.auction.newBid.send({
+      input: { sealedBid },
+      value: maskValue.toString(),
+    }),
+    sealedBid
+  };
+};
+
+export const unsealBid = async (
+  config: ISetConfigForTx,
+  { labelHash }: IRevealDomainRequest,
+  value: BN,
+  salt: string,
+) => {
+  Contract.setConfigForTx(ENS.auction, config);
+  const sendParams = {
+    input: { _hash: Buffer.from(labelHash, 'hex'), _value: value, _salt: salt },
+    value: '0',
+  };
+
+  return ENS.auction.unsealBid.send(sendParams);
+};
+*/
