@@ -2,7 +2,7 @@ import React from 'react';
 import './ShapeshiftBanner.scss';
 import shapeshiftSvg from 'assets/images/logo-shapeshift.svg';
 
-export default () => (
+const ShapeshiftBanner: React.SFC<{}> = () => (
   <div className="ShapeshiftBanner">
     <div className="ShapeshiftBanner-banner">
       <p>
@@ -13,3 +13,5 @@ export default () => (
     </div>
   </div>
 );
+
+export default ShapeshiftBanner;

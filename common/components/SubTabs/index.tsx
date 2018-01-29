@@ -14,7 +14,7 @@ interface Props {
   match: RouteComponentProps<{}>['match'];
 }
 
-export default class SubTabs extends React.Component<Props> {
+export default class SubTabs extends React.PureComponent<Props> {
   public render() {
     const { tabs, match } = this.props;
     const currentPath = match.url;
