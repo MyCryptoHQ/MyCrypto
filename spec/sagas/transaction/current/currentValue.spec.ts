@@ -1,7 +1,7 @@
 import { isEtherTransaction, getUnit, getDecimal, getCurrentValue } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
-import { toTokenBase, Wei } from 'libs/units';
+import { toTokenBase } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
 import {
   setCurrentValue,
@@ -10,7 +10,6 @@ import {
   valueHandler
 } from 'sagas/transaction/current/currentValue';
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
-import { SagaIterator } from 'redux-saga';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
