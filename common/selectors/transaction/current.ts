@@ -4,6 +4,7 @@ import { AppState } from 'reducers';
 import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
 import { getDataExists, getGasPrice, getGasLimit } from 'selectors/transaction';
+import { getAddressMessage, AddressMessage } from 'config';
 
 interface ICurrentValue {
   raw: string;
@@ -42,6 +43,11 @@ const isValidGasPrice = (state: AppState): boolean => gasPriceValidator(getGasPr
 
 const isValidGasLimit = (state: AppState): boolean => gasLimitValidator(getGasLimit(state).raw);
 
+function getCurrentToAddressMessage(state: AppState): AddressMessage | undefined {
+  const to = getCurrentTo(state);
+  return getAddressMessage(to.raw);
+}
+
 export {
   getCurrentValue,
   getCurrentTo,
@@ -50,5 +56,6 @@ export {
   isEtherTransaction,
   isValidCurrentTo,
   isValidGasPrice,
-  isValidGasLimit
+  isValidGasLimit,
+  getCurrentToAddressMessage
 };

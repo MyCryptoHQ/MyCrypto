@@ -7,7 +7,7 @@ interface State {
   isFading: boolean;
   hasAcknowledged: boolean;
 }
-export default class AlphaAgreement extends React.Component<{}, State> {
+export default class AlphaAgreement extends React.PureComponent<{}, State> {
   public state = {
     hasAcknowledged: !!localStorage.getItem(LS_KEY),
     isFading: false

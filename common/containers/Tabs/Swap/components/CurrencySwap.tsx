@@ -7,7 +7,7 @@ import {
 } from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
 import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown } from 'components/ui';
@@ -41,7 +41,7 @@ interface State {
 
 type Props = StateProps & ActionProps;
 
-export default class CurrencySwap extends Component<Props, State> {
+export default class CurrencySwap extends PureComponent<Props, State> {
   public state = {
     disabled: true,
     origin: {
@@ -329,7 +329,7 @@ export default class CurrencySwap extends Component<Props, State> {
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
         {loaded || timeoutLoaded ? (
-          <div className="form-inline CurrencySwap-inner-wrap">
+          <div className="CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
               {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
               <input
