@@ -1,6 +1,6 @@
 import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/values';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import { TogglablePassword } from 'components';
 
@@ -45,7 +45,7 @@ interface Props {
   onUnlock(): void;
 }
 
-export class PrivateKeyDecrypt extends Component<Props> {
+export class PrivateKeyDecrypt extends PureComponent<Props> {
   public render() {
     const { key, password } = this.props.value;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);

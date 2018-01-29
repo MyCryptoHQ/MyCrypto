@@ -7,7 +7,7 @@ import {
 } from 'actions/config';
 import logo from 'assets/images/logo-myetherwallet.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { TSetGasPriceField } from 'actions/transaction';
@@ -49,7 +49,7 @@ interface State {
   isAddingCustomNode: boolean;
 }
 
-export default class Header extends Component<Props, State> {
+export default class Header extends PureComponent<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
