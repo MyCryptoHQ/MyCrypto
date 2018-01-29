@@ -57,7 +57,7 @@ const SweepTab: Tab<SubTabProps> = {
   path: 'sweeper',
   name: 'Sweep All Tokens, ETH & Batch Send',
   render(props: SubTabProps) {
-    const content = props && props.wallet ? <TokenSweeper wallet={props.wallet} /> : null;
+    const content = props && props.wallet ? <TokenSweeper /> : null;
     return <div>{content}</div>;
   }
 };

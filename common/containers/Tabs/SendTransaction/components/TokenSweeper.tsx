@@ -18,7 +18,7 @@ import { AddressField, GasSlider } from 'components';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
 import { Token } from 'config/data';
 import translate from 'translations';
-// import Balances from './Balances';
+import Balances from 'components/BalanceSidebar/TokenBalances/Balances';
 import Spinner from 'components/ui/Spinner';
 // import './index.scss';
 
@@ -61,8 +61,14 @@ class TokenSweeper extends React.Component<Props, State> {
     } = this.props;
 
     const { hasScanned } = this.state;
+    let walletTokens;
+    let shownBalances;
 
-    const walletTokens = walletConfig ? walletConfig.tokens : [];
+    walletTokens = walletConfig ? walletConfig.tokens : [''];
+
+    if (walletTokens) {
+      shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
+    }
 
     let content;
     if (isOffline) {
@@ -79,36 +85,48 @@ class TokenSweeper extends React.Component<Props, State> {
           <Spinner size="x3" />
         </div>
       );
-    } else if (!hasScanned) {
+    } else {
       content = (
         <div className="Tab-content-pane">
+          <h4>How to transfer all tokens from one wallet to another wallet</h4>
+          <ol>
+            <li>Enter the address you want to transfer to</li>
+            <li>Scan All Tokens</li>
+            <li>
+              For each token a different transaction broadcast will need to be confirm, So 10 tokens
+              will be 10 transactions that need confirmation approval before being sent
+            </li>
+          </ol>
           <AddressField />
-          <button
-            className="TokenBalances-scan btn btn-primary btn-block"
-            onClick={this.scanWalletForTokens}
-          >
-            {translate('Scan for my Tokens')}
-          </button>
+
+          {!hasScanned && (
+            <button
+              className="TokenBalances-scan btn btn-primary btn-block"
+              onClick={this.scanWalletForTokens}
+            >
+              {translate('Scan for my Tokens')}
+            </button>
+          )}
+
+          {hasScanned && (
+            <Balances
+              allTokens={tokens}
+              tokenBalances={shownBalances}
+              hasSavedWalletTokens={hasSavedWalletTokens}
+              scanWalletForTokens={this.scanWalletForTokens}
+              setWalletTokens={this.props.setWalletTokens}
+              onAddCustomToken={this.props.addCustomToken}
+              onRemoveCustomToken={this.props.removeCustomToken}
+            />
+          )}
+
           <div className="row form-group">
             <div className="col-xs-12">
-              <GasSlider />
+              <GasSlider disableAdvanced={true} />
             </div>
           </div>
         </div>
       );
-    } else {
-      //   const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
-      //   content = (
-      //     <Balances
-      //       allTokens={tokens}
-      //       tokenBalances={shownBalances}
-      //       hasSavedWalletTokens={hasSavedWalletTokens}
-      //       scanWalletForTokens={this.scanWalletForTokens}
-      //       setWalletTokens={this.props.setWalletTokens}
-      //       onAddCustomToken={this.props.addCustomToken}
-      //       onRemoveCustomToken={this.props.removeCustomToken}
-      //     />
-      //   );
     }
 
     return <section className="TokenSweeper">{content}</section>;
