@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
 import { NonceField, TXMetaDataPanel } from 'components';
 import './Deploy.scss';
+import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -73,6 +74,7 @@ class DeployClass extends Component<DispatchProps> {
               {translate('NAV_DeployContract')}
             </button>
           )}
+          Modal={ConfirmationModal}
         />
       </main>
     );
