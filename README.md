@@ -4,7 +4,7 @@
 
 ## Running the App
 
-This codebase targets Node 8.9.4 (LTS). After `npm install`ing all dependencies (And potentially installing additional dependencies required by various modules) you can run various commands depending on what you want to do:
+This codebase targets Node 8.9.4 (LTS). After `npm install`ing all dependencies (You may be required to install additional system dependencies, due to some node modules relying on them) you can run various commands depending on what you want to do:
 
 #### Development
 
