@@ -7,7 +7,7 @@ import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
 import { bityReferralURL, shapeshiftReferralURL } from 'config';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import './CurrentRates.scss';
 import { SHAPESHIFT_WHITELIST } from 'api/shapeshift';
@@ -22,7 +22,7 @@ interface Props {
   shapeshiftRates: NormalizedShapeshiftRates;
 }
 
-export default class CurrentRates extends Component<Props> {
+export default class CurrentRates extends PureComponent<Props> {
   private shapeShiftRateCache = null;
 
   public getRandomSSPairData = (

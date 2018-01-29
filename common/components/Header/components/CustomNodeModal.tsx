@@ -36,7 +36,7 @@ interface State {
   password: string;
 }
 
-export default class CustomNodeModal extends React.Component<Props, State> {
+export default class CustomNodeModal extends React.PureComponent<Props, State> {
   public state: State = {
     name: '',
     url: '',

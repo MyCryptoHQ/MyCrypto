@@ -17,7 +17,7 @@ interface State {
   isKeystoreModalOpen: boolean;
 }
 
-export default class WalletInfo extends React.Component<Props, State> {
+export default class WalletInfo extends React.PureComponent<Props, State> {
   public state = {
     address: '',
     privateKey: '',

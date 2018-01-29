@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
 interface Props {
@@ -14,7 +14,7 @@ interface State {
   expanded: boolean;
 }
 
-export default class DropdownComponent extends Component<Props, State> {
+export default class DropdownComponent extends PureComponent<Props, State> {
   public static defaultProps = {
     color: 'default',
     size: 'sm'

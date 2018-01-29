@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { donationAddressMap } from 'config';
 import { isValidETHAddress } from 'libs/validators';
@@ -12,7 +12,7 @@ interface State {
   address: string;
 }
 
-export class ViewOnlyDecrypt extends Component<Props, State> {
+export class ViewOnlyDecrypt extends PureComponent<Props, State> {
   public state = {
     address: ''
   };

@@ -14,16 +14,19 @@ interface RenderData {
   usd: React.ReactElement<string> | null;
 }
 
-interface Props {
-  // Redux props
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
+interface ReduxStateProps {
   gasLimit: AppState['transaction']['fields']['gasLimit'];
   rates: AppState['rates']['rates'];
   network: AppState['config']['network'];
   isOffline: AppState['config']['offline'];
-  // Component props
+}
+
+interface OwnProps {
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
   render(data: RenderData): React.ReactElement<string> | string;
 }
+
+type Props = OwnProps & ReduxStateProps;
 
 class FeeSummary extends React.Component<Props> {
   public render() {
@@ -67,9 +70,8 @@ class FeeSummary extends React.Component<Props> {
   }
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState): ReduxStateProps {
   return {
-    gasPrice: state.transaction.fields.gasPrice,
     gasLimit: state.transaction.fields.gasLimit,
     rates: state.rates.rates,
     network: getNetworkConfig(state),

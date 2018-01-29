@@ -1,8 +1,9 @@
 import { buffers, delay } from 'redux-saga';
 import { apply, put, select, take, actionChannel, call, race } from 'redux-saga/effects';
+import BN from 'bn.js';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { getTransaction } from 'selectors/transaction';
+import { getTransaction, getCurrentToAddressMessage } from 'selectors/transaction';
 import {
   setGasLimitField,
   estimateGasFailed,
@@ -12,7 +13,12 @@ import {
   estimateGasTimedout
 } from 'actions/transaction';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
-import { shouldEstimateGas, estimateGas, localGasEstimation } from 'sagas/transaction/network/gas';
+import {
+  shouldEstimateGas,
+  estimateGas,
+  localGasEstimation,
+  setAddressMessageGasLimit
+} from 'sagas/transaction/network/gas';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
@@ -20,6 +26,7 @@ import { TypeKeys as ConfigTypeKeys } from 'actions/config';
 describe('shouldEstimateGas*', () => {
   const offline = false;
   const autoGasLimitEnabled = true;
+  const addressMessage = undefined;
   const transaction: any = 'transaction';
   const tx = { transaction };
   const rest: any = {
@@ -64,8 +71,12 @@ describe('shouldEstimateGas*', () => {
     expect(gen.next(offline).value).toEqual(select(getAutoGasLimitEnabled));
   });
 
+  it('should select getCurrentToAddressMessage', () => {
+    expect(gen.next(autoGasLimitEnabled).value).toEqual(select(getCurrentToAddressMessage));
+  });
+
   it('should select getTransaction', () => {
-    expect(gen.next(autoGasLimitEnabled).value).toEqual(select(getTransaction));
+    expect(gen.next(addressMessage).value).toEqual(select(getTransaction));
   });
 
   it('should call getTransactionFields with transaction', () => {
@@ -234,5 +245,46 @@ describe('localGasEstimation', () => {
         })
       )
     );
+  });
+});
+
+describe('setAddressMessageGasLimit*', () => {
+  const gens = cloneableGenerator(setAddressMessageGasLimit)();
+  const gen = gens.clone();
+  let noAutoGen;
+  let noMessageGen;
+  const addressMessage = {
+    gasLimit: 123456,
+    msg: 'Thanks for donating, er, investing in SCAM'
+  };
+
+  it('should select getAutoGasLimitEnabled', () => {
+    expect(gen.next().value).toEqual(select(getAutoGasLimitEnabled));
+  });
+
+  it('should select getCurrentToAddressMessage', () => {
+    noAutoGen = gen.clone();
+    expect(gen.next(true).value).toEqual(select(getCurrentToAddressMessage));
+  });
+
+  it('should put setGasLimitField', () => {
+    noMessageGen = gen.clone();
+    expect(gen.next(addressMessage).value).toEqual(
+      put(
+        setGasLimitField({
+          raw: addressMessage.gasLimit.toString(),
+          value: new BN(addressMessage.gasLimit)
+        })
+      )
+    );
+  });
+
+  it('should do nothing if getAutoGasLimitEnabled is false', () => {
+    noAutoGen.next(false);
+    expect(noAutoGen.next(addressMessage).done).toBeTruthy();
+  });
+
+  it('should do nothing if getCurrentToAddressMessage is undefined', () => {
+    expect(noMessageGen.next(undefined).done).toBeTruthy();
   });
 });
