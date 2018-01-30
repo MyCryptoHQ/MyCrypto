@@ -9,7 +9,6 @@ import { getNetworkConfig } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName } from 'config';
-import { DPath } from 'config/dpaths';
 import { getPaths, getSingleDPath } from 'utils/network';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method

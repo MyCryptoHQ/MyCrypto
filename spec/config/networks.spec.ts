@@ -1,9 +1,9 @@
-import { NETWORKS, NetworkConfig } from 'config';
+import { StaticNetworkConfig } from 'types/network';
 
 describe('Networks', () => {
   Object.keys(NETWORKS).forEach(networkId => {
     it(`${networkId} contains non-null dPathFormats`, () => {
-      const network: NetworkConfig = NETWORKS[networkId];
+      const network: StaticNetworkConfig = NETWORKS[networkId];
       Object.values(network.dPathFormats).forEach(dPathFormat => {
         expect(dPathFormat).toBeTruthy();
       });

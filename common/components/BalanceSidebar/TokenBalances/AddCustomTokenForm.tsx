@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Token } from 'config';
 import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
 import NewTabLink from 'components/ui/NewTabLink';
+import { Token } from 'types/network';
 import './AddCustomTokenForm.scss';
 
 interface Props {

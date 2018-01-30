@@ -9,14 +9,10 @@ import {
   EXP_DEFAULT,
   UBQ_DEFAULT
 } from 'config/dpaths';
-import {
-  DefaultNetworkConfig,
-  BlockExplorerConfig,
-  DefaultNetworkNames
-} from 'reducers/config/networks/typings';
 import { ConfigAction } from 'actions/config';
+import { StaticNetworkNames, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
 
-export type State = { [key in DefaultNetworkNames]: DefaultNetworkConfig };
+export type State = { [key in StaticNetworkNames]: StaticNetworkConfig };
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
@@ -34,6 +30,7 @@ const INITIAL_STATE: State = {
     name: 'ETH',
     unit: 'ETH',
     chainId: 1,
+    isCustom: false,
     color: '#0e97c0',
     blockExplorer: makeExplorer('https://etherscan.io'),
     tokenExplorer: {
@@ -52,6 +49,7 @@ const INITIAL_STATE: State = {
     name: 'Ropsten',
     unit: 'ETH',
     chainId: 3,
+    isCustom: false,
     color: '#adc101',
     blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
@@ -67,6 +65,7 @@ const INITIAL_STATE: State = {
     name: 'Kovan',
     unit: 'ETH',
     chainId: 42,
+    isCustom: false,
     color: '#adc101',
     blockExplorer: makeExplorer('https://kovan.etherscan.io'),
     tokens: require('./tokens/ropsten.json'),
@@ -82,6 +81,7 @@ const INITIAL_STATE: State = {
     name: 'Rinkeby',
     unit: 'ETH',
     chainId: 4,
+    isCustom: false,
     color: '#adc101',
     blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
     tokens: require('./tokens/rinkeby.json'),
@@ -97,6 +97,7 @@ const INITIAL_STATE: State = {
     name: 'ETC',
     unit: 'ETC',
     chainId: 61,
+    isCustom: false,
     color: '#669073',
     blockExplorer: makeExplorer('https://gastracker.io'),
     tokens: require('./tokens/etc.json'),
@@ -111,6 +112,7 @@ const INITIAL_STATE: State = {
     name: 'UBQ',
     unit: 'UBQ',
     chainId: 8,
+    isCustom: false,
     color: '#b37aff',
     blockExplorer: makeExplorer('https://ubiqscan.io/en'),
     tokens: require('./tokens/ubq.json'),
@@ -125,6 +127,7 @@ const INITIAL_STATE: State = {
     name: 'EXP',
     unit: 'EXP',
     chainId: 2,
+    isCustom: false,
     color: '#673ab7',
     blockExplorer: makeExplorer('http://www.gander.tech'),
     tokens: require('./tokens/exp.json'),
@@ -137,7 +140,7 @@ const INITIAL_STATE: State = {
   }
 };
 
-export const defaultNetworks = (state: State = INITIAL_STATE, action: ConfigAction) => {
+export const staticNetworks = (state: State = INITIAL_STATE, action: ConfigAction) => {
   switch (action.type) {
     default:
       return state;

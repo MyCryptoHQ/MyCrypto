@@ -45,11 +45,10 @@ import {
   InsecureWalletName,
   MiscWalletName,
   WalletName,
-  isWeb3NodeAvailable,
   knowledgeBaseURL
 } from 'config';
 import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
-import { getNetworkConfig } from '../../selectors/config';
+import { getNetworkConfig, getOffline } from '../../selectors/config';
 
 interface OwnProps {
   hidden?: boolean;
@@ -443,7 +442,7 @@ function mapStateToProps(state: AppState, ownProps: Props) {
     : networkDisabledFormats;
   return {
     computedDisabledWallets,
-    offline: state.config.offline,
+    offline: getOffline(state),
     isWalletPending: state.wallet.isWalletPending,
     isPasswordPending: state.wallet.isPasswordPending
   };

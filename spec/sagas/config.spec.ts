@@ -12,7 +12,6 @@ import {
   equivalentNodeOrDefault,
   reload
 } from 'sagas/config';
-import { NODES, NodeConfig, NETWORKS } from 'config';
 import {
   getNodeName,
   getNodeConfig,
@@ -20,11 +19,12 @@ import {
   getCustomNodeConfigs,
   getCustomNetworkConfigs
 } from 'selectors/config';
-import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { Web3Wallet } from 'libs/wallet';
 import { RPCNode } from 'libs/nodes';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
+import { StaticNodeConfig } from 'types/node';
+
 // init module
 configuredStore.getState();
 
@@ -289,7 +289,7 @@ describe('unsetWeb3Node*', () => {
 describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction = {};
   const mockNode = 'web3';
-  const mockNodeConfig: Partial<NodeConfig> = { network: 'ETH' };
+  const mockNodeConfig: Partial<StaticNodeConfig> = { network: 'ETH' };
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {

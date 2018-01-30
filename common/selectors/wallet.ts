@@ -1,9 +1,9 @@
 import { TokenValue, Wei } from 'libs/units';
-import { Token } from 'config';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getStaticNetworkConfig } from 'selectors/config';
 import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';
 import { isEtherTransaction, getUnit } from './transaction';
+import { Token } from 'types/network';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
@@ -30,7 +30,7 @@ export type MergedToken = Token & {
 };
 
 export function getTokens(state: AppState): MergedToken[] {
-  const network = getNetworkConfig(state);
+  const network = getStaticNetworkConfig(state);
   const tokens: Token[] = network ? network.tokens : [];
   return tokens.concat(
     state.customTokens.map((token: Token) => {

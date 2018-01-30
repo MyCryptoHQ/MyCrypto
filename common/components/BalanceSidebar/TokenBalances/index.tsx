@@ -13,12 +13,12 @@ import {
   setWalletTokens,
   TSetWalletTokens
 } from 'actions/wallet';
-import { getAllTokens } from 'selectors/config';
+import { getAllTokens, getOffline } from 'selectors/config';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
-import { Token } from 'config';
 import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';
+import { Token } from 'types/network';
 import './index.scss';
 
 interface StateProps {
@@ -29,7 +29,7 @@ interface StateProps {
   tokensError: AppState['wallet']['tokensError'];
   isTokensLoading: AppState['wallet']['isTokensLoading'];
   hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
-  isOffline: AppState['config']['offline'];
+  isOffline: AppState['config']['meta']['offline'];
 }
 interface ActionProps {
   addCustomToken: TAddCustomToken;
@@ -118,7 +118,7 @@ function mapStateToProps(state: AppState): StateProps {
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
     hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 

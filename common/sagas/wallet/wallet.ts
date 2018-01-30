@@ -36,7 +36,6 @@ import {
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
-import { NODES, initWeb3Node, Token } from 'config';
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getAllTokens, getOffline } from 'selectors/config';
@@ -51,6 +50,7 @@ import translate from 'translations';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { getTokenBalances, filterScannedTokenBalances } from './helpers';
+import { Token } from 'types/network';
 
 export interface TokenBalanceLookup {
   [symbol: string]: TokenBalance;

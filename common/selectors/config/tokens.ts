@@ -2,11 +2,11 @@ import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction/meta';
 import { isEtherUnit } from 'libs/units';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
-import { isCurrentNetworkDefault } from 'selectors/config';
-import { Token } from 'reducers/config/networks/typings';
+import { getStaticNetworkConfig } from 'selectors/config';
+import { Token } from 'types/network';
 
 export function getNetworkTokens(state: AppState): Token[] {
-  const network = isCurrentNetworkDefault(state);
+  const network = getStaticNetworkConfig(state);
   return network ? network.tokens : [];
 }
 

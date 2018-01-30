@@ -14,7 +14,7 @@ import {
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
-import { initWeb3Node, Token, N_FACTOR } from 'config';
+import { N_FACTOR } from 'config';
 import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
@@ -37,7 +37,7 @@ import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
 import { IFullWallet, fromV3 } from 'ethereumjs-wallet';
-
+import { Token } from 'types/network';
 // init module
 configuredStore.getState();
 const offline = false;

@@ -1,5 +1,5 @@
 import { CustomNode } from 'libs/nodes';
-import { NODES, NodeConfig, CustomNodeConfig } from 'config';
+import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
 
 export function makeCustomNodeId(config: CustomNodeConfig): string {
   return `${config.url}:${config.port}`;
@@ -15,7 +15,7 @@ export function getCustomNodeConfigFromId(
 export function getNodeConfigFromId(
   id: string,
   configs: CustomNodeConfig[]
-): NodeConfig | undefined {
+): StaticNodeConfig | undefined {
   if (NODES[id]) {
     return NODES[id];
   }
@@ -26,8 +26,8 @@ export function getNodeConfigFromId(
   }
 }
 
-export function makeNodeConfigFromCustomConfig(config: CustomNodeConfig): NodeConfig {
-  interface Override extends NodeConfig {
+export function makeNodeConfigFromCustomConfig(config: CustomNodeConfig): StaticNodeConfig {
+  interface Override extends StaticNodeConfig {
     network: any;
   }
 

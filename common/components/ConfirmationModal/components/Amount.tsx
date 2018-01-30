@@ -8,11 +8,12 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getDecimal, getUnit } from 'selectors/transaction';
 import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   unit: string;
   decimal: number;
-  network: AppState['config']['network'];
+  network: NetworkConfig;
 }
 
 class AmountClass extends Component<StateProps> {

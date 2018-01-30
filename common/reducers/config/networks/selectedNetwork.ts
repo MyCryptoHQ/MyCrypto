@@ -1,14 +1,14 @@
 import { NodeAction, TypeKeys, ChangeNodeAction } from 'actions/config';
-import { DefaultNetworkNames } from 'reducers/config/networks/typings';
 import { INITIAL_STATE as INITIAL_NODE_STATE } from '../nodes/selectedNode'; // could probably consolidate this in the index file of 'nodes' to make it easier to import
-import { INITIAL_STATE as INITIAL_DEFAULT_NODE_STATE } from '../nodes/defaultNodes';
-import { NonWeb3NodeConfigs } from 'reducers/config/nodes/typings';
+import { INITIAL_STATE as INITIAL_DEFAULT_NODE_STATE } from '../nodes/staticNodes';
+import { NonWeb3NodeConfigs } from 'types/node';
+import { StaticNetworkNames } from 'types/network';
 
 const initalNode =
   INITIAL_DEFAULT_NODE_STATE[INITIAL_NODE_STATE.nodeName as keyof NonWeb3NodeConfigs];
 
-export type State = string | DefaultNetworkNames;
-const INITIAL_STATE: State = initalNode.networkName;
+export type State = string | StaticNetworkNames;
+const INITIAL_STATE: State = initalNode.network;
 
 const handleNodeChange = (_: State, { payload }: ChangeNodeAction) => payload.networkName;
 

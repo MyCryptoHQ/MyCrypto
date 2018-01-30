@@ -85,7 +85,7 @@ export default UnitDisplay;
  * Circumvents typescript issue with union props on connected components.
  */
 interface OfflineProps {
-  offline: AppState['config']['offline'];
+  offline: AppState['config']['meta']['offline'];
   children: React.ReactElement<string>;
 }
 

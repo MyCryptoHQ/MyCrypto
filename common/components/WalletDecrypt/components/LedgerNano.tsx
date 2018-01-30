@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { SecureWalletName } from 'config';
-import { DPath } from 'config/dpaths';
 import { getPaths, getSingleDPath } from 'utils/network';
 
 interface OwnProps {

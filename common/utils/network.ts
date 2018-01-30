@@ -1,29 +1,28 @@
-import {
-  CustomNetworkConfig,
-  DPathFormats,
-  InsecureWalletName,
-  NetworkConfig,
-  NETWORKS,
-  SecureWalletName,
-  WalletName,
-  walletNames
-} from 'config';
-import { DPath, EXTRA_PATHS } from 'config/dpaths';
+import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
+import { EXTRA_PATHS } from 'config/dpaths';
 import sortedUniq from 'lodash/sortedUniq';
 import difference from 'lodash/difference';
+import {
+  CustomNetworkConfig,
+  StaticNetworkConfig,
+  NetworkConfig,
+  DPathFormats
+} from 'types/network';
 
 export function makeCustomNetworkId(config: CustomNetworkConfig): string {
   return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
 }
 
-export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): NetworkConfig {
+export function makeNetworkConfigFromCustomConfig(
+  config: CustomNetworkConfig
+): StaticNetworkConfig {
   // TODO - re-enable this block and classify customConfig after user-inputted dPaths are implemented
   // -------------------------------------------------
   // this still provides the type safety we want
   // as we know config coming in is CustomNetworkConfig
   // meaning name will be a string
   // then we cast it as any to keep it as a network key
-  // interface Override extends NetworkConfig {
+  // interface Override extends StaticNetworkConfig {
   //   name: any;
   // }
   // -------------------------------------------------
@@ -43,7 +42,7 @@ export function makeNetworkConfigFromCustomConfig(config: CustomNetworkConfig): 
 export function getNetworkConfigFromId(
   id: string,
   configs: CustomNetworkConfig[]
-): NetworkConfig | undefined {
+): StaticNetworkConfig | undefined {
   if (NETWORKS[id]) {
     return NETWORKS[id];
   }

@@ -7,7 +7,6 @@ import { InsecureWalletName } from 'config';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { connect } from 'react-redux';
-import { DPath } from 'config/dpaths';
 import { getPaths, getSingleDPath } from 'utils/network';
 
 interface Props {

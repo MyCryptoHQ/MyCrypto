@@ -1,4 +1,3 @@
-import { NODES, NodeConfig } from 'config';
 import { RPCNode } from '../../common/libs/nodes';
 import { Validator } from 'jsonschema';
 import { schema } from '../../common/libs/validators';
@@ -6,6 +5,7 @@ import 'url-search-params-polyfill';
 import EtherscanNode from 'libs/nodes/etherscan';
 import InfuraNode from 'libs/nodes/infura';
 import RpcNodeTestConfig from './RpcNodeTestConfig';
+import { StaticNodeConfig } from 'types/node';
 
 const v = new Validator();
 
@@ -63,7 +63,7 @@ function testRpcRequests(node: RPCNode, service: string) {
   });
 }
 
-const mapNodeEndpoints = (nodes: { [key: string]: NodeConfig }) => {
+const mapNodeEndpoints = (nodes: { [key: string]: StaticNodeConfig }) => {
   const { RpcNodes, EtherscanNodes, InfuraNodes } = RpcNodeTestConfig;
 
   RpcNodes.forEach(n => {

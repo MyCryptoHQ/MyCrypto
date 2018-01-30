@@ -4,13 +4,14 @@ import { SerializedTransaction } from 'components/renderCbs';
 import { UnitDisplay } from 'components/ui';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 import BN from 'bn.js';
 
 interface Props {
   rates: AppState['rates']['rates'];
-  network: AppState['config']['network'];
-  isOffline: AppState['config']['offline'];
+  network: NetworkConfig;
+  isOffline: AppState['config']['meta']['offline'];
 }
 
 class TransactionFeeClass extends React.Component<Props> {
@@ -51,7 +52,7 @@ function mapStateToProps(state: AppState) {
   return {
     rates: state.rates.rates,
     network: getNetworkConfig(state),
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 export const TransactionFee = connect(mapStateToProps)(TransactionFeeClass);

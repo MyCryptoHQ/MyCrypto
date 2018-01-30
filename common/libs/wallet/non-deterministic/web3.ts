@@ -29,6 +29,9 @@ export default class Web3Wallet implements IFullWallet {
     const state = configuredStore.getState();
     const nodeLib: Web3Node | INode = getNodeLib(state);
 
+    if (!nodeLib) {
+      throw new Error('');
+    }
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Web3 wallets can only be used with a Web3 node.');
     }
@@ -55,7 +58,7 @@ export default class Web3Wallet implements IFullWallet {
     };
 
     const state = configuredStore.getState();
-    const nodeLib: Web3Node | INode = getNodeLib(state);
+    const nodeLib: Web3Node | INode | undefined = getNodeLib(state);
 
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Web3 wallets can only be used with a Web3 node.');

@@ -17,6 +17,7 @@ import SubTabs, { Tab } from 'components/SubTabs';
 import { getNetworkConfig } from 'selectors/config';
 import { isNetworkUnit } from 'utils/network';
 import { RouteNotFound } from 'components/RouteNotFound';
+import { NetworkConfig } from 'types/network';
 
 const Send = () => (
   <React.Fragment>
@@ -27,7 +28,7 @@ const Send = () => (
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
-  network: AppState['config']['network'];
+  network: NetworkConfig;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;

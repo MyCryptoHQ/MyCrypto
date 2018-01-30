@@ -4,7 +4,7 @@ import {
   CustomNetworkAction,
   TypeKeys
 } from 'actions/config';
-import { CustomNetworkConfig } from 'reducers/config/networks/typings';
+import { CustomNetworkConfig } from 'types/network';
 
 // TODO: this doesn't accurately represent state, as
 export interface State {

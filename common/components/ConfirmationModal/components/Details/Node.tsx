@@ -1,11 +1,11 @@
-import { NodeConfig } from 'config';
 import React, { Component } from 'react';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { getNodeConfig } from 'selectors/config';
+import { StaticNodeConfig } from 'types/node';
 
 interface StateProps {
-  node: NodeConfig;
+  node: StaticNodeConfig;
 }
 
 class NodeClass extends Component<StateProps, {}> {

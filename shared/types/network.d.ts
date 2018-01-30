@@ -1,35 +1,36 @@
-import { DPath } from 'config/dpaths';
+import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
 
-export type DefaultNetworkNames = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
+type StaticNetworkNames = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
 
-export interface BlockExplorerConfig {
+interface BlockExplorerConfig {
   origin: string;
   txUrl(txHash: string): string;
   addressUrl(address: string): string;
 }
 
-export interface Token {
+interface Token {
   address: string;
   symbol: string;
   decimal: number;
   error?: string | null;
 }
 
-export interface NetworkContract {
-  name: DefaultNetworkNames;
+interface NetworkContract {
+  name: StaticNetworkNames;
   address?: string;
   abi: string;
 }
 
-export interface DPathFormats {
+interface DPathFormats {
   trezor: DPath;
   ledgerNanoS: DPath;
   mnemonicPhrase: DPath;
 }
 
-export interface DefaultNetworkConfig {
+interface StaticNetworkConfig {
   // TODO really try not to allow strings due to custom networks
-  name: DefaultNetworkNames;
+  isCustom: false; // used for type guards
+  name: StaticNetworkNames;
   unit: string;
   color?: string;
   blockExplorer?: BlockExplorerConfig;
@@ -44,9 +45,13 @@ export interface DefaultNetworkConfig {
   isTestnet?: boolean;
 }
 
-export interface CustomNetworkConfig {
+interface CustomNetworkConfig {
+  isCustom: true; // used for type guards
+  isTestnet?: boolean;
   name: string;
   unit: string;
   chainId: number;
   dPathFormats: DPathFormats | null;
 }
+
+type NetworkConfig = StaticNetworksState[StaticNetworkNames] | CustomNetworksState[string];

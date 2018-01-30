@@ -11,14 +11,6 @@ import {
   race
 } from 'redux-saga/effects';
 import {
-  NODES,
-  NETWORKS,
-  NodeConfig,
-  CustomNodeConfig,
-  CustomNetworkConfig,
-  Web3Service
-} from 'config';
-import {
   makeCustomNodeId,
   getCustomNodeConfigFromId,
   makeNodeConfigFromCustomConfig
@@ -47,13 +39,15 @@ import { translateRaw } from 'translations';
 import { Web3Wallet } from 'libs/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
+import { CustomNetworkConfig } from 'types/network';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
 let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
   while (true) {
-    const node: NodeConfig = yield select(getNodeConfig);
+    const node: StaticNodeConfig = yield select(getNodeConfig);
     const isOffline: boolean = yield select(getOffline);
 
     // If our offline state disagrees with the browser, run a check
@@ -121,7 +115,7 @@ export function* reload(): SagaIterator {
 
 export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {
   const currentNode: string = yield select(getNodeName);
-  const currentConfig: NodeConfig = yield select(getNodeConfig);
+  const currentConfig: StaticNodeConfig = yield select(getNodeConfig);
   const customNets: CustomNetworkConfig[] = yield select(getCustomNetworkConfigs);
   const currentNetwork =
     getNetworkConfigFromId(currentConfig.network, customNets) || NETWORKS[currentConfig.network];
@@ -233,13 +227,13 @@ export function* unsetWeb3Node(): SagaIterator {
     return;
   }
 
-  const nodeConfig: NodeConfig = yield select(getNodeConfig);
+  const nodeConfig: StaticNodeConfig = yield select(getNodeConfig);
   const newNode = equivalentNodeOrDefault(nodeConfig);
 
   yield put(changeNodeIntent(newNode));
 }
 
-export const equivalentNodeOrDefault = (nodeConfig: NodeConfig) => {
+export const equivalentNodeOrDefault = (nodeConfig: StaticNodeConfig) => {
   const node = Object.keys(NODES)
     .filter(key => key !== 'web3')
     .reduce((found, key) => {

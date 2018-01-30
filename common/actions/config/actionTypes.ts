@@ -1,6 +1,6 @@
 import { TypeKeys } from './constants';
-import { CustomNodeConfig } from 'config';
-import { CustomNetworkConfig } from 'reducers/config/networks/typings';
+import { CustomNodeConfig } from 'types/node';
+import { CustomNetworkConfig } from 'types/network';
 
 /*** Toggle Offline ***/
 export interface ToggleOfflineAction {

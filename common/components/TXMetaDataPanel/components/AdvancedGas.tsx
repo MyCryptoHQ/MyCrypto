@@ -27,7 +27,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  autoGasLimitEnabled: AppState['config']['autoGasLimit'];
+  autoGasLimitEnabled: AppState['config']['meta']['autoGasLimit'];
   validGasPrice: boolean;
 }
 

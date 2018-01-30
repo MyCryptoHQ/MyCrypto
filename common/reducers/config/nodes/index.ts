@@ -1,12 +1,14 @@
-import { customNodes, State as CustomNodeState } from './customNodes';
-import { defaultNodes, State as DefaultNodeState } from './defaultNodes';
+import { customNodes, State as CustomNodesState } from './customNodes';
+import { staticNodes, State as StaticNodesState } from './staticNodes';
 import { selectedNode, State as SelectedNodeState } from './selectedNode';
 import { combineReducers } from 'redux';
 
-export interface State {
-  customNodes: CustomNodeState;
-  defaultNodes: DefaultNodeState;
+interface State {
+  customNodes: CustomNodesState;
+  staticNodes: StaticNodesState;
   selectedNode: SelectedNodeState;
 }
 
-export const nodes = combineReducers<State>({ customNodes, defaultNodes, selectedNode });
+const nodes = combineReducers<State>({ customNodes, staticNodes, selectedNode });
+
+export { State, nodes, CustomNodesState, StaticNodesState, SelectedNodeState };

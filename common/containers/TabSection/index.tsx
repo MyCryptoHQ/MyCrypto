@@ -17,32 +17,21 @@ import { AlphaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
+import {
+  getOffline,
+  getLanguageSelection,
+  getCustomNodeConfigs,
+  getCustomNetworkConfigs,
+  getLatestBlock,
+  isNodeChanging
+} from 'selectors/config';
+import { NodeConfig, CustomNodeConfig } from 'types/node';
+import { CustomNetworkConfig } from 'types/network';
 
-interface ReduxProps {
-  languageSelection: AppState['config']['languageSelection'];
-  node: AppState['config']['node'];
-  nodeSelection: AppState['config']['nodeSelection'];
-  isChangingNode: AppState['config']['isChangingNode'];
-  isOffline: AppState['config']['offline'];
-  customNodes: AppState['config']['customNodes'];
-  customNetworks: AppState['config']['customNetworks'];
-  latestBlock: AppState['config']['latestBlock'];
-}
-
-interface ActionProps {
-  changeLanguage: TChangeLanguage;
-  changeNodeIntent: TChangeNodeIntent;
-  addCustomNode: TAddCustomNode;
-  removeCustomNode: TRemoveCustomNode;
-  addCustomNetwork: TAddCustomNetwork;
-  setGasPriceField: TSetGasPriceField;
-}
-
-type Props = {
+interface Props {
   isUnavailableOffline?: boolean;
   children: string | React.ReactElement<string> | React.ReactElement<string>[];
-} & ReduxProps &
-  ActionProps;
+}
 
 class TabSection extends Component<Props, {}> {
   public render() {
@@ -50,37 +39,8 @@ class TabSection extends Component<Props, {}> {
       isUnavailableOffline,
       children,
       // APP
-      node,
-      nodeSelection,
-      isChangingNode,
-      isOffline,
-      languageSelection,
-      customNodes,
-      customNetworks,
-      latestBlock,
-      setGasPriceField,
-      changeLanguage,
-      changeNodeIntent,
-      addCustomNode,
-      removeCustomNode,
-      addCustomNetwork
+      isOffline
     } = this.props;
-
-    const headerProps = {
-      languageSelection,
-      node,
-      nodeSelection,
-      isChangingNode,
-      isOffline,
-      customNodes,
-      customNetworks,
-      changeLanguage,
-      changeNodeIntent,
-      setGasPriceField,
-      addCustomNode,
-      removeCustomNode,
-      addCustomNetwork
-    };
 
     return (
       <div className="page-layout">
@@ -102,20 +62,13 @@ function mapStateToProps(state: AppState): ReduxProps {
   return {
     node: state.config.node,
     nodeSelection: state.config.nodeSelection,
-    isChangingNode: state.config.isChangingNode,
-    isOffline: state.config.offline,
-    languageSelection: state.config.languageSelection,
-    customNodes: state.config.customNodes,
-    customNetworks: state.config.customNetworks,
-    latestBlock: state.config.latestBlock
+    isChangingNode: isNodeChanging(state),
+    isOffline: getOffline(state),
+    languageSelection: getLanguageSelection(state),
+    customNodes: getCustomNodeConfigs(state),
+    customNetworks: getCustomNetworkConfigs(state),
+    latestBlock: getLatestBlock(state)
   };
 }
 
-export default connect(mapStateToProps, {
-  setGasPriceField: dSetGasPriceField,
-  changeLanguage: dChangeLanguage,
-  changeNodeIntent: dChangeNodeIntent,
-  addCustomNode: dAddCustomNode,
-  removeCustomNode: dRemoveCustomNode,
-  addCustomNetwork: dAddCustomNetwork
-})(TabSection);
+export default connect(mapStateToProps, {})(TabSection);

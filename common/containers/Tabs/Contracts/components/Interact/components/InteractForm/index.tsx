@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { NetworkContract } from 'config';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
 import Select from 'react-select';
+import { NetworkContract } from 'types/network';
 
 interface ContractOption {
   name: string;
