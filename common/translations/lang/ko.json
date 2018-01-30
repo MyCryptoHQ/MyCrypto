@@ -52,7 +52,7 @@
     "GAS_PRICE_Desc": "Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.",
     "GAS_LIMIT_Desc": "Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.",
     "NONCE_Desc": "The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.",
-    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)",
+    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.mycrypto.com/helpers.html)",
     "NAV_AddWallet": "지갑 추가 ",
     "NAV_BulkGenerate": "대량 생성 ",
     "NAV_Contact": "문의하기 ",
@@ -316,7 +316,7 @@
     "ERROR_25": "올바른 체인 ID를 입력해주세요 ",
     "ERROR_26": "올바른 ABI를 입력해주세요 ",
     "ERROR_27": "최소량: 0.01. 최대량: ",
-    "ERROR_28": "지갑에 액세스하기 위해서는 **Keystore 파일과 비밀번호** (또는 개인키)가 필요합니다. 별도로 저장하여 백업해주세요. 만약 그것을 저장하지 않으면 지갑을 복원할 방법이 없습니다. 자세한 내용은 [도움말 페이지](https://www.myetherwallet.com/#help)를 참고해주세요. ",
+    "ERROR_28": "지갑에 액세스하기 위해서는 **Keystore 파일과 비밀번호** (또는 개인키)가 필요합니다. 별도로 저장하여 백업해주세요. 만약 그것을 저장하지 않으면 지갑을 복원할 방법이 없습니다. 자세한 내용은 [도움말 페이지](https://www.mycrypto.com/#help)를 참고해주세요. ",
     "ERROR_29": "올바른 사용자와 패스워드를 입력해주세요 ",
     "ERROR_30": "올바른 ENS 이름을 입력해주세요 ",
     "ERROR_31": "잘못된 비밀 문구입니다. ",
@@ -353,18 +353,18 @@
     "PARITY_InvalidGasLimit": "공급 된 가스가 한도를 초과했습니다. ",
     "translate_version": "0.5 ",
     "Translator_Desc": "번역에 기여해주신 분들 ",
-    "TranslatorName_1": "[CoinKorea](https://www.myetherwallet.com/?gaslimit=21000&to=0x0080782b9A9A14f7871Bb765eF7041e784D03F00&value=1.0#send-transaction) · [kanghamin](https://www.myetherwallet.com/?gaslimit=21000&to=0x7B12655A5aada0b3c053C7ff5aa444Bd666A0163&value=1.0#send-transaction) · [maa](https://www.myetherwallet.com/?gaslimit=21000&to=0x14036e41ddb2bd408eaf91597e6dc5220f776ae0&value=1.0#send-transaction) ",
+    "TranslatorName_1": "[CoinKorea](https://www.mycrypto.com/?gaslimit=21000&to=0x0080782b9A9A14f7871Bb765eF7041e784D03F00&value=1.0#send-transaction) · [kanghamin](https://www.mycrypto.com/?gaslimit=21000&to=0x7B12655A5aada0b3c053C7ff5aa444Bd666A0163&value=1.0#send-transaction) · [maa](https://www.mycrypto.com/?gaslimit=21000&to=0x14036e41ddb2bd408eaf91597e6dc5220f776ae0&value=1.0#send-transaction) ",
     "TranslatorAddr_1": "0x0080782b9A9A14f7871Bb765eF7041e784D03F00 ",
-    "TranslatorName_2": "· [Issac](https://www.myetherwallet.com/?gaslimit=21000&to=0x594a7773f4e062ccf644e8f122d5612b5f0db3b2&value=1.0#send-transaction) ",
+    "TranslatorName_2": "· [Issac](https://www.mycrypto.com/?gaslimit=21000&to=0x594a7773f4e062ccf644e8f122d5612b5f0db3b2&value=1.0#send-transaction) ",
     "TranslatorAddr_2": "0x594a7773f4e062ccf644e8f122d5612b5f0db3b2 ",
-    "TranslatorName_3": "· [coinmaker](https://www.myetherwallet.com/?gaslimit=21000&to=0x80B65285607BAbC4b60a7179A0fa8EB42232b9ad&value=1.0#send-transaction) ",
+    "TranslatorName_3": "· [coinmaker](https://www.mycrypto.com/?gaslimit=21000&to=0x80B65285607BAbC4b60a7179A0fa8EB42232b9ad&value=1.0#send-transaction) ",
     "TranslatorAddr_3": "0x80B65285607BAbC4b60a7179A0fa8EB42232b9ad ",
-    "TranslatorName_4": "· [csjune](https://www.myetherwallet.com/?gaslimit=21000&to=0xfc465E0545c1024d04ceA2d6D154F20E7C67C66f&value=1.0#send-transaction) ",
+    "TranslatorName_4": "· [csjune](https://www.mycrypto.com/?gaslimit=21000&to=0xfc465E0545c1024d04ceA2d6D154F20E7C67C66f&value=1.0#send-transaction) ",
     "TranslatorAddr_4": "0xfc465E0545c1024d04ceA2d6D154F20E7C67C66f ",
-    "TranslatorName_5": "· [sadfrog](https://www.myetherwallet.com/?gaslimit=21000&to=0x608c96865c3d1364ffc5137e5ac78b57e58714d4&value=1.0#send-transaction) ",
+    "TranslatorName_5": "· [sadfrog](https://www.mycrypto.com/?gaslimit=21000&to=0x608c96865c3d1364ffc5137e5ac78b57e58714d4&value=1.0#send-transaction) ",
     "TranslatorAddr_5": "0x608c96865c3d1364ffc5137e5ac78b57e58714d4 ",
     "HELP_Warning": "**2015년 3월** 이전에 지갑을 만들었거나 저장소를 다운로드했다면, 지갑 &amp; 저장소의 새 버전을 확인하고 다운로드해주세요. 자세한 내용을 보려면 클릭해주세요. ",
-    "HELP_Desc": "잘못된 부분이나 다른 질문이 있으신가요? [우리에게 연락해주세요] (mailto : support@myetherwallet.com), 당신의 질문에 답변하는 것 뿐만 아니라, 향후 사용자들에게 더 유용할 수 있도록 페이지를 업데이트할 것입니다. ",
+    "HELP_Desc": "잘못된 부분이나 다른 질문이 있으신가요? [우리에게 연락해주세요] (mailto : support@mycrypto.com), 당신의 질문에 답변하는 것 뿐만 아니라, 향후 사용자들에게 더 유용할 수 있도록 페이지를 업데이트할 것입니다. ",
     "HELP_Remind_Title": "몇 가지 알림 ",
     "HELP_Remind_Desc_1": "**이더리움, MyCrypto.com & MyCrypto CX, 그리고 우리가 사용하는 JavaScript 라이브러리는 활발하게 개발되고 있습니다. ** 우리가 철저하게 테스트를 진행하여 수만 개의 지갑이 전 세계 사람들에 의해 성공적으로 만들어졌지만 예상치 못한 일이 발생하여 ETH를 잃을 가능성이 항상 존재합니다. 항상 조심해주세요. 만약 무슨 일이 발생한다면, 유감스럽지만 **우리는 잃어버린 이더리움에 대한 책임을 지지 않습니다.** ",
     "HELP_Remind_Desc_2": "MyCrypto.com 과 MyCrypto CX는 웹 지갑이 아닙니다. 계정을 만들거나 우리에게 당신이 가진 이더리움을 주면 안 됩니다. 모든 데이터는 당신의 컴퓨터와 브라우저에 남아 있을 것입니다. 우리는 당신이 쉽게 당신의 정보를 만들고, 저장하고, 접근하고 블록체인과 상호 작용할 수 있도록 도울 것입니다. ",
@@ -550,7 +550,7 @@
     "HELP_Sec_Desc_1": "당신의 첫 번째 질문이 \"이 사람들을 신뢰할 수 있나요?\"라는 질문이라면 매우 타당한 질문입니다. 다음 내용이 당신의 질문에 대한 답변이 되기를 바랍니다. ",
     "HELP_Sec_Desc_2": "우리는 2015년 8월부터 운영되어 왔습니다. [www.reddit.com 에서 myetherwallet](https://www.reddit.com/search?q=myetherwalle)을 검색하면 많은 사용자들을 볼 수 있습니다. ",
     "HELP_Sec_Desc_3": "우리는 절대 돈을 빼가거나 개인 키를 훔치지 않습니다. 이 사이트에 악의적인 코드는 없습니다. 실제로 지갑 생성 페이지는 완전하게 클라이언트 측에서 작동합니다. 즉, 모든 코드가 **사용자 컴퓨터**에서 실행되며 절대 다른 곳에 정보가 저장되거나 전송되지 않습니다. ",
-    "HELP_Sec_Desc_4": "이 URL을 확인해보세요. -- 이 사이트는 GitHub를 통해 소스가 공개되어 있으며 다음 링크에서 확인하실 수 있습니다. : [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) to [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_4": "이 URL을 확인해보세요. -- 이 사이트는 GitHub를 통해 소스가 공개되어 있으며 다음 링크에서 확인하실 수 있습니다. : [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) to [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_Sec_Desc_5": "지갑을 생성하려면, [소스 코드를 다운로드하여 로컬에서 실행하십시오](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). 위의 #5를 참조해주세요 ",
     "HELP_Sec_Desc_6": "테스트 지갑을 생성하고 어떤 네트워크 활동이 진행되는지 확인할 수 있습니다. 가장 쉬운 방법은 페이지를 마우스 오른쪽 버튼을 클릭하여 \"요소 검사\"를 클릭합니다. \"네트워크\" 탭으로 이동합니다. 테스트 지갑을 생성하면 네트워크 탭에서 네트워크 활동이 없음을 확인할 수 있습니다. data:image/gif, data:image/png 생성도 역시 네트워크를 사용하지 않는 것을 확인하실 수 있습니다. QR 코드는 컴퓨터에서 생성됩니다. 당신의 컴퓨터에서 아무것도 전송되지 않는 것을 확인하실 수 있습니다. ",
     "HELP_Sec_Desc_8": "이 도구를 사용하는 것이 내키지 않는다면 사용하지 않아도 됩니다. 우리는 사람들이 커맨드 명령을 입력이나 풀 노드를 실행할 필요 없이 지갑을 생성하고 트랜잭션을 생성하는 데 도움이 되었으면 하는 바램으로 이 도구를 제작하였습니다. 다시 말씀드리자면, 이상한 점을 발견하신다면 우리에게 연락해주세요. 가능한 빨리 답변드리겠습니다. 감사합니다! ",
@@ -615,7 +615,7 @@
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
-    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.myetherwallet.com`.",
+    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
     "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
@@ -651,6 +651,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 
 
 

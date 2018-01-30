@@ -52,7 +52,7 @@
     "GAS_PRICE_Desc": "Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.",
     "GAS_LIMIT_Desc": "Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.",
     "NONCE_Desc": "The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.",
-    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)",
+    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.mycrypto.com/helpers.html)",
     "NAV_AddWallet": "Thêm Ví ",
     "NAV_BulkGenerate": "Tạo Nhiều Ví ",
     "NAV_Contact": "Liên Hệ ",
@@ -326,7 +326,7 @@
     "ERROR_25": "Please enter a valid chain ID. ",
     "ERROR_26": "Please enter a valid ABI. ",
     "ERROR_27": "Minimum amount: 0.01. Max amount: ",
-    "ERROR_28": "**Bạn cần sử dụng tập tin chứa định dạng Keystore/JSON cùng với Mật khẩu hoặc Private Key của bạn** cho việc đăng nhập vào ví này trong tương lai. Hãy sao lưu và cất giữ nó cẩn thận tại kho lưu trữ của bạn! Không có cách nào đễ khôi phục Ví của bạn nếu bạn không sao lưu dữ liệu ví lại. Đọc Thêm [trang trợ giúp] (https://www.myetherwallet.com/#help) đễ được hướng dẫn cụ thể. ",
+    "ERROR_28": "**Bạn cần sử dụng tập tin chứa định dạng Keystore/JSON cùng với Mật khẩu hoặc Private Key của bạn** cho việc đăng nhập vào ví này trong tương lai. Hãy sao lưu và cất giữ nó cẩn thận tại kho lưu trữ của bạn! Không có cách nào đễ khôi phục Ví của bạn nếu bạn không sao lưu dữ liệu ví lại. Đọc Thêm [trang trợ giúp] (https://www.mycrypto.com/#help) đễ được hướng dẫn cụ thể. ",
     "ERROR_29": "Please enter a valid user and password. ",
     "ERROR_30": "Please enter a valid name (7+ characters, limited punctuation) ",
     "ERROR_31": "Please enter a valid secret phrase. ",
@@ -374,7 +374,7 @@
     "TranslatorName_5": "",
     "TranslatorAddr_5": "",
     "HELP_Warning": "Nếu bạn đã khởi tạo Ví -hoặc- đã tải về máy tập tin có chứa dữ liệu ví trước **Ngày 31 Tháng 12 năm 2015**, xin vui lòng kiễm tra lại dữ liệu Ví; dễ tải về phiên bản mới của tập tin Ví. Chi tiết xem tại. ",
-    "HELP_Desc": "Nếu bạn thấy có gì sai sót và có những câu hỏi nào khác cần được giải đáp. [Xin Liên Lạc Với Chúng Tôi](mailto:support@myetherwallet.com), và chúng tôi sẽ giải đáp những thắc mắc từ bạn, ngoài ra chúng tôi sẽ cập nhật lại trang web nhằm đem lại nhiều tiện lợi nhất có thể cho người sử dụng trong tương lai! ",
+    "HELP_Desc": "Nếu bạn thấy có gì sai sót và có những câu hỏi nào khác cần được giải đáp. [Xin Liên Lạc Với Chúng Tôi](mailto:support@mycrypto.com), và chúng tôi sẽ giải đáp những thắc mắc từ bạn, ngoài ra chúng tôi sẽ cập nhật lại trang web nhằm đem lại nhiều tiện lợi nhất có thể cho người sử dụng trong tương lai! ",
     "HELP_Remind_Title": "Một số lưu ý! ",
     "HELP_Remind_Desc_1": "**Ethereum, MyCrypto.com & MyCrypto CX, và các nền tảng khác từ Javascript libraries mà chúng tôi sử dụng đang được phát triển một cách tích cực.** Mặc dù toàn bộ đã được chúng tôi kiễm tra rất kỹ lưỡng và hàng chục nghìn địa chỉ Ví đã được tạo thành công từ người sử dụng trên toàn cầu, nhưng vẫn có những vấn đề có thể xảy ra làm cho ETH của bạn bị mất đi. Xin vui lòng không nên đầu tư với số tiền nhiều hơn khả năng mà bạn đã cho rằng nó sẽ mất và hãy luôn cẩn thận. Trong trường hợp rủi ro xảy ra, chung tôi rất chân thành xin lỗi. Tuy nhiên **Chúng tôi sẽ không chịu bất cứ một trách nhiệm nào đối với số lượng Ether mà bạn đã bị mất!**. ",
     "HELP_Remind_Desc_2": "MyCrypto.com & MyCrypto CX không phải \"Ví Web\". Vì vậy bạn không tạo tài khoản sau đó gửi số Ether của bạn cho chúng tôi dễ giữ hộ. Toàn bộ Dữ liệu sẽ không bao giờ bị rò rỉ ra khỏi máy tính/trình duyệt của bạn. Chúng tôi xây dựng nó nhằm giúp người sử dụng có thể đễ dàng tạo mới, lưu trữ và truy cập thông tin Ví của bạn và tương tác với Blockchain. ",
@@ -560,7 +560,7 @@
     "HELP_Sec_Desc_1": "Nếu câu hỏi đầu tiên mà bạn đặt ra đó là \"Vì sao tôi phải tin vào những người tạo ra trang này?\", thì đó là một câu hỏi tốt. Hi vọng rằng những thông tin sau đây sẽ làm giảm bớt sự lo ngại từ phía bạn. ",
     "HELP_Sec_Desc_2": "Chúng tôi đã bất đầu đưa trang của chúng tôi ra thị trường vào tháng 8 năm 2015. Nếu bạn tìm kiếm trên nguồn [\"myetherwallet\" tại reddit](https://www.reddit.com/search?q=myetherwallet), bạn sẽ thấy được lượng người hiện tại đang sử dụng và sự thành công của trang myetherwallet. ",
     "HELP_Sec_Desc_3": "Chúng tôi không dùng trang này nhằm mục đích sử dụng tiền của bạn hoặc đánh cắp các Private key của bạn. Và trên trang của chúng tôi hoàn toàn không xuất hiện mã độc. Trong thực tế tại trang \"Tạo Ví\" là hoàn toàn được thực hiện từ người sử dụng. Việc này có nghĩa tất cả các đoạn mã và mật khẩu sẽ được thực hiện hoàn toàn trên **Máy tính cá nhân của bạn** và nó hoàn toàn không lưu lại hoặc chuyển đi bất cứ một dữ liệu nào ra khỏi máy tính của bạn. ",
-    "HELP_Sec_Desc_4": "Hãy kiễm tra URL -- Trang của chúng tôi được cung cấp thông qua Github và bạn có thể kiễm tra lại toàn bộ mã nguồn ở đây: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) đến các tên miền: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_4": "Hãy kiễm tra URL -- Trang của chúng tôi được cung cấp thông qua Github và bạn có thể kiễm tra lại toàn bộ mã nguồn ở đây: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) đến các tên miền: [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_Sec_Desc_5": "Đối với việc khởi tạo Ví, bạn có thể tải về [Mã nguồn](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). Xem phần #5 phía trên. ",
     "HELP_Sec_Desc_6": "Bạn hãy cho chạy thử đễ kiễm tra lại toàn bộ hoạt động của nó. Cách đơn giản nhất đễ bạn kiễm tra là nhấn chuột phải vào trang của chúng tôi vào chọn mục \"inspect element\". đi đến mục \"Network\". Khởi tạo thử một Ví. Lúc này bạn sẽ thấy được các hoạt động của hệ thống sẽ diễn ra như thế nào. Bạn sẽ thấy được dữ liệu sau: image/gif và image/png. Nó chính là mã QR đã được khởi tạo...trên máy tính của bạn. Và không có một dung lượng dữ liệu nào được chuyển ra khỏi máy của bạn. ",
     "HELP_Sec_Desc_8": "Nếu bạn cảm thấy không an tâm khi sử dụng công cụ của chúng tôi, bạn có quyền không sử dụng nó. Chúng tôi tạo ra ứng dụng này nhằm giúp người sử dụng dễ dàng tạo Ví mới và lập giao dịch mà không cần dùng đến những câu lệnh trên Terminal hoặc tải về đầy đủ các node. Một lần nữa xin nhắc lại, bạn hoàn toàn có thể ngưng sử dụng và báo lại với chúng tôi nếu bạn có một mối quan ngại nào đó, chúng tôi sẽ chịu trách nhiệm chỉnh sửa hoặc giải đáp thắc mắc từ nơi bạn một cách sớm nhất có thể. Xin Chân Thành Cảm Ơn! ",
@@ -625,7 +625,7 @@
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
-    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.myetherwallet.com`.",
+    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
     "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
@@ -661,6 +661,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 
 
 

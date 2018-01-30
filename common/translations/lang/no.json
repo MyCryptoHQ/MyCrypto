@@ -52,7 +52,7 @@
     "GAS_PRICE_Desc": "Gas-pris er beløpet du betaler per gas-enhet. `Transaksjonsavgift = gas-pris * gas-grense` & betales til \"utgraverne\" for å inkludere transaksjonen din i en blokk. Høyere gas-pris = raskere transaksjon, men dyrere. Standardinnstillingen er `21 GWEI`. ",
     "GAS_LIMIT_Desc": "Gas-grense er mengden gas som sendes med transaksjonen din. `Tr.avg.` = gas-pris * gas-grense & betales til \"utgraverne\" for å inkludere transaksjonen din i en blokk. Å øke dette tallet vil ikke få gjennom transaksjonen din raskere. Ulike typer transaksjoner krever ulik mengde gas. F.eks. koster det `21 000` å sende ETH og ~`200 000` å sende tokens. ",
     "NONCE_Desc": "\"Nonce\" er antall transaksjoner som noensinne har blitt sendt fra en gitt adresse. Det sikrer at transaksjoner sendes i riktig rekkefølge, og ikke mer enn én gang. ",
-    "TXFEE_Desc": "Transaksjonsavgiften betales til \"utgraverne\" for å inkludere transaksjonen din i en blokk. Det er `gas-grense` * `gas-pris`. [Du kan regne om GWEI -> ETH her](https://www.myetherwallet.com/helpers.html)",
+    "TXFEE_Desc": "Transaksjonsavgiften betales til \"utgraverne\" for å inkludere transaksjonen din i en blokk. Det er `gas-grense` * `gas-pris`. [Du kan regne om GWEI -> ETH her](https://www.mycrypto.com/helpers.html)",
     "NAV_AddWallet": "Legg til lommebok ",
     "NAV_BulkGenerate": "Opprett flere lommebøker ",
     "NAV_Contact": "Kontakt ",
@@ -326,7 +326,7 @@
     "ERROR_25": "Vennligst oppgi gyldig kjede-ID ",
     "ERROR_26": "Vennligst oppgi gyldig ABI ",
     "ERROR_27": "Minimumsbeløp 0.01 ",
-    "ERROR_28": "**Du trenger din Keystore-fil & passord eller din private nøkkel** for å få tilgang til denne lommeboken i framtiden. Vennligst lagre og sikkerhetskopier den eksternt! Det finnes ingen måte å gjenopprette en lommebok på hvis du ikke lagrer den. Les [hjelpesiden](https://www.myetherwallet.com/#help) for ytterligere instruksjoner (foreløpig kun på engelsk). ",
+    "ERROR_28": "**Du trenger din Keystore-fil & passord eller din private nøkkel** for å få tilgang til denne lommeboken i framtiden. Vennligst lagre og sikkerhetskopier den eksternt! Det finnes ingen måte å gjenopprette en lommebok på hvis du ikke lagrer den. Les [hjelpesiden](https://www.mycrypto.com/#help) for ytterligere instruksjoner (foreløpig kun på engelsk). ",
     "ERROR_29": "Vennligst oppgi gyldig brukernavn og passord ",
     "ERROR_30": "Vennligst oppgi et gyldig ENS-navn ",
     "ERROR_31": "Ugyldig hemmelig frase ",
@@ -363,7 +363,7 @@
     "PARITY_InvalidGasLimit": "Tilført mengde gas er over grensen.",
     "translate_version": "0.4 ",
     "Translator_Desc": "Takk til oversetterne våre ",
-    "TranslatorName_1": "[mrstormlars](https://www.myetherwallet.com/?gaslimit=21000&to=mrstormlars.eth&value=1.0#send-transaction) ",
+    "TranslatorName_1": "[mrstormlars](https://www.mycrypto.com/?gaslimit=21000&to=mrstormlars.eth&value=1.0#send-transaction) ",
     "TranslatorAddr_1": "",
     "TranslatorName_2": "",
     "TranslatorAddr_2": "",
@@ -374,7 +374,7 @@
     "TranslatorName_5": "",
     "TranslatorAddr_5": "",
     "HELP_Warning": "Hvis du opprettet en lommebok -eller- lastet ned repoet før **31. desember 2015**, vennligst sjekk lommebøkene dine &amp; last ned en ny versjon av repoet. Klikk for detaljer. ",
-    "HELP_Desc": "Ser du noe som mangler? Har du flere spørsmål? [Ta kontakt med oss](mailto:support@myetherwallet.com), så vil vi ikke bare besvare spørsmålet ditt, men vi vil også oppdatere denne siden så den blir mer nyttig i framtiden! ",
+    "HELP_Desc": "Ser du noe som mangler? Har du flere spørsmål? [Ta kontakt med oss](mailto:support@mycrypto.com), så vil vi ikke bare besvare spørsmålet ditt, men vi vil også oppdatere denne siden så den blir mer nyttig i framtiden! ",
     "HELP_Remind_Title": "Noen påminnelser ",
     "HELP_Remind_Desc_1": "**Ethereum, MyCrypto.com & MyCrypto CX, og noen av de underliggende Javascript-bibliotekene vi benytter er under aktiv utvikling.** Selv om vi har testet grundig, og titusenvis av lommebøker har blitt opprettet uten feil av folk over hele kloden, så er det alltid en liten mulighet for at noe uventet kan skje som kan medføre at dine ETH kan tapes. Vennligst ikke invester mer enn du er villig til å tape, and vær så snill å være forsiktig. Hvis noe skulle skje, er vi lei oss for det, men **vi er ikke ansvarlige for eventuelt tapte etere**. ",
     "HELP_Remind_Desc_2": "MyCrypto.com & MyCrypto CX er ikke \"web wallets\" (internettlommebøker). Du oppretter ikke en konto eller gir oss dine ethere for oppbevaring hos oss. Alle data forblir på din PC / i din nettleser. Vi gjør det enkelt for deg å opprette, lagre og få tilgang til din informasjon og samhogle med blokkjeden. ",
@@ -560,7 +560,7 @@
     "HELP_Sec_Desc_1": "Hvis en av dine første spørsmål er \"Hvorfor skulle jeg stole på disse folkene?\", så er det en god ting. Forhåpentligvis vil følgende bidra til å lette på frykten din. ",
     "HELP_Sec_Desc_2": "Vi har vært oppe-og-gå siden august 2015. Hvis du søker etter [\"myetherwallet\" på reddit](https://www.reddit.com/search?q=myetherwallet), så kan du se mange folk som bruker oss med stor suksess. ",
     "HELP_Sec_Desc_3": "Vi kommer ikke til å ta pengene dine eller stjele dine private nøkler. Det er ingen ondsinnet kode på denne siden. Faktisk er \"Send Ether & Tokens\"-siden fullstendig klient-drevet. Det betyr at all koden blir kjørt på ** din datamaskin ** og det blir aldri lagret eller overført noe sted. ",
-    "HELP_Sec_Desc_4": "Sjekk nettsideadressen (URL) -- Denne siden blir drevet gjennom GitHub og du kan se kildekoden her: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) til domenet: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_4": "Sjekk nettsideadressen (URL) -- Denne siden blir drevet gjennom GitHub og du kan se kildekoden her: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) til domenet: [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_Sec_Desc_5": "For å generere lommebøker, kan du laste ned [kildekoden](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). Se #5 ovenfor. ",
     "HELP_Sec_Desc_6": "Kjør en test og sjekk hvilken nettverksaktivitet som skjer. Den enkleste måten som du kan gjøre dette på er å høyreklikke på siden og klikke \"inspiser element\". Gå til \"Nettverk\"-flippen. Generer en test-lommebok. Du vil se at det ikke er noen nettverksaktivitet. Du vil se at noe som ser ut som data:image/gif og data:image/png skjer. Disse er QR-kodene som blir generert...på din datamaskin...av din datamaskin. Ingen bytes ble overført. ",
     "HELP_Sec_Desc_8": "Hvis du ikke er komfortabel med å bruke dette verktøyet, så for all del, ikke bruk det. Vi laget dette verktøyet som et hjelpemiddel for folk som vil opprette lommebøker og utføre transaksjoner uten å måtte dykke ned i kommandolinjeoperasjoner eller kjøre en full node. Igjen, ta gjerne kontakt hvis du har bekymringer og vi vil gi tilbakemelding så snart som mulig. Takk! ",
@@ -625,7 +625,7 @@
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
-    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.myetherwallet.com`.",
+    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
     "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
@@ -661,6 +661,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 
 
 

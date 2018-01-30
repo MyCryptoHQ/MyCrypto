@@ -52,7 +52,7 @@
     "GAS_PRICE_Desc": "Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.",
     "GAS_LIMIT_Desc": "Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.",
     "NONCE_Desc": "The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.",
-    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)",
+    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.mycrypto.com/helpers.html)",
     "NAV_AddWallet": "Añadir cartera ",
     "NAV_BulkGenerate": "Generar en masa ",
     "NAV_Contact": "Contacto ",
@@ -326,7 +326,7 @@
     "ERROR_25": "Introduce un chain ID válido ",
     "ERROR_26": "Introduce un ABI válido ",
     "ERROR_27": "Cantidad mínima 0.01 ",
-    "ERROR_28": "**Necesitas tu archivo Keystore/JSON y la contraseña** (o clave privada) para acceder a esta cartera en el futuro. Por favor ¡guárdala y respáldala externamente! No hay modo de recuperar una cartera si no la guardas. Lee la [página de ayuda](https://www.myetherwallet.com/#help) para instrucciones. ",
+    "ERROR_28": "**Necesitas tu archivo Keystore/JSON y la contraseña** (o clave privada) para acceder a esta cartera en el futuro. Por favor ¡guárdala y respáldala externamente! No hay modo de recuperar una cartera si no la guardas. Lee la [página de ayuda](https://www.mycrypto.com/#help) para instrucciones. ",
     "ERROR_29": "Introduce un user & password válido. ",
     "ERROR_30": "Introduce un name válido (7+ characters, limited punctuation) ",
     "ERROR_31": "Introduce un secret phrase válido. ",
@@ -374,7 +374,7 @@
     "TranslatorName_5": "",
     "TranslatorAddr_5": "",
     "HELP_Warning": "Si creaste una cartera -o- descargaste el repositorio antes del **31 de diciembre de 2015**, por favor comprueba tus carteras y descarga una nueva versión del repositorio. Haz clic para más información. ",
-    "HELP_Desc": "¿Echas algo en falta? ¿Tienes alguna otra pregunta? [Contacta con nosotros](mailto:support@myetherwallet.com) y no solamente contestaremos tu pregunta, sino que mejoraremos esta página para que sea más útil en el futuro. ",
+    "HELP_Desc": "¿Echas algo en falta? ¿Tienes alguna otra pregunta? [Contacta con nosotros](mailto:support@mycrypto.com) y no solamente contestaremos tu pregunta, sino que mejoraremos esta página para que sea más útil en el futuro. ",
     "HELP_Remind_Title": "Algunos recordatorios ",
     "HELP_Remind_Desc_1": "**Ethereum, MyCrypto.com y MyCrypto CX, así como algunas de las librerías JavaScript que utilizamos están en desarrollo activo.** Aunque hemos testeado ampliamente y decenas de miles de carteras han sido creadas exitosamente por personas en todo el planeta, siempre existe la remota posibilidad de que ocurra algo inesperado que haga que se pierdan tus ETH. Por favor no inviertas más de lo que estés dispuesto a perder y, por favor, sé cuidadoso. Si algo ocurriera, lo lamentamos, pero **no somos responsables del Ether perdido**. ",
     "HELP_Remind_Desc_2": "MyCrypto.com y MyCrypto CX no son \"carteras web\". No estás creando una cuenta ni nos estás entregando tus Ether para que los guardemos. Toda tu información nunca abandona tu equipo o tu navegador. Te facilitamos que puedas crear, guardar y acceder a tu información e interactuar con la blockchain. ",
@@ -560,7 +560,7 @@
     "HELP_Sec_Desc_1": "Si una de tus primeras preguntas es \"¿Por qué debería confiar en estas personas?, se trata de algo bueno. Esperamos que lo que sigue te sirva de ayuda para disminuir tus preocupaciones. ",
     "HELP_Sec_Desc_2": "Hemos estado funcionando desde agosto de 2015. Si buscas [\"myetherwallet\" en reddit](https://www.reddit.com/search?q=myetherwallet), puedes encontrar numerosas personas que nos utilizan con gran éxito. ",
     "HELP_Sec_Desc_3": "No vamos a quitarte tu dinero ni a robar tus claves privadas. No hay código malicioso en este sitio. De hecho, las páginas \"Generar Cartera\" se ejecutan por completo en el cliente. Esto significa que todo el código se ejecuta en ** tu ordenador** y nunca se graba o se transmite a ningún lugar. ",
-    "HELP_Sec_Desc_4": "Comprueba la URL -- Este sitio se sirve a través de GitHub y puedes ver el código fuente aquí: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) a [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_4": "Comprueba la URL -- Este sitio se sirve a través de GitHub y puedes ver el código fuente aquí: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) a [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_Sec_Desc_5": "Para generar carteras, puedes descargar el [código fuente](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). Ver #5 más arriba. ",
     "HELP_Sec_Desc_6": "Haz una prueba y observa qué actividad de red ocurre. La manera más fácil de hacer esto es hacer clic con el botón derecho en la página y hacer clic en \"inspeccionar elemento\". Ve a la pestaña \"Red\". Genera una cartera de prueba. Verás que no hay actividad de red. Puede que veas algo que aparece como data:image/gif y data:image/png. Se trata de los códigos QR generándose en tu ordenador y por tu ordenador. No se ha transferido ni un solo byte. ",
     "HELP_Sec_Desc_8": "Si no te encuentras cómodo utilizando esta herramienta, no la utilices bajo ningún concepto. Hemos creado esta herramienta como una manera útil para que la gente pueda generar carteras y hacer transacciones sin tener que utilizar la línea de comandos o ejecutar un nodo completo. De nuevo, por favor contáctanos si tienes inquietudes y responderemos lo más pronto posible. ¡Gracias! ",
@@ -625,7 +625,7 @@
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
-    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.myetherwallet.com`.",
+    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
     "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
@@ -661,6 +661,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 
 
 

@@ -52,7 +52,7 @@
     "GAS_PRICE_Desc": "Gas Price is the amount you pay per unit of gas. `TX fee = gas price * gas limit` & is paid to miners for including your TX in a block. Higher the gas price = faster transaction, but more expensive. Default is `21 GWEI`.",
     "GAS_LIMIT_Desc": "Gas limit is the amount of gas to send with your TX. `TX fee` = gas price * gas limit & is paid to miners for including your TX in a block. Increasing this number will not get your TX mined faster. Sending ETH = `21000`. Sending Tokens = ~`200000`.",
     "NONCE_Desc": "The nonce is the number of transactions sent from a given address. It ensures transactions are sent in order & not more than once.",
-    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.myetherwallet.com/helpers.html)",
+    "TXFEE_Desc": "The TX Fee is paid to miners for including your TX in a block. Is is the `gas limit` * `gas price`. [You can convert GWEI -> ETH here](https://www.mycrypto.com/helpers.html)",
     "NAV_YourWallets": "Tárcáid ",
     "NAV_AddWallet": "Tárca hozzáadása ",
     "NAV_GenerateWallet_alt": "New Wallet ",
@@ -328,7 +328,7 @@
     "ERROR_25": "Please enter a valid chain ID. ",
     "ERROR_26": "Please enter a valid ABI. ",
     "ERROR_27": "Minimum amount: 0.01. Max amount: ",
-    "ERROR_28": "**Szükséged lesz a Keystore Fájlra és a jelszóra vagy a Privát Kulcsra**, ahhoz, hogy hozzáférj ehhez a tárcához a jövőben. Kérlek mentsd el és készíts külső biztonsági mentést is! Nincs lehetőség egy tárca visszaszerzésére, ha nem mented el. Olvasd el a [Segítség lapot](https://www.myetherwallet.com/#help) további instrukciókért. ",
+    "ERROR_28": "**Szükséged lesz a Keystore Fájlra és a jelszóra vagy a Privát Kulcsra**, ahhoz, hogy hozzáférj ehhez a tárcához a jövőben. Kérlek mentsd el és készíts külső biztonsági mentést is! Nincs lehetőség egy tárca visszaszerzésére, ha nem mented el. Olvasd el a [Segítség lapot](https://www.mycrypto.com/#help) további instrukciókért. ",
     "ERROR_29": "Please enter a valid user and password. ",
     "ERROR_30": "Please enter a valid name (7+ characters, limited punctuation) ",
     "ERROR_31": "Please enter a valid secret phrase. ",
@@ -364,9 +364,9 @@
     "PARITY_InvalidGasLimit": "Supplied gas is beyond limit.",
     "translate_version": "0.4.3 ",
     "Translator_Desc": "Köszönet a fordításért ",
-    "TranslatorName_1": "[belpheg](https://www.myetherwallet.com/?gaslimit=21000&to=0xBF8C35176eAD29257834D5A1592ed50Adb0b6e4f&value=1.0#send-transaction) · ",
+    "TranslatorName_1": "[belpheg](https://www.mycrypto.com/?gaslimit=21000&to=0xBF8C35176eAD29257834D5A1592ed50Adb0b6e4f&value=1.0#send-transaction) · ",
     "TranslatorAddr_1": "0xBF8C35176eAD29257834D5A1592ed50Adb0b6e4f ",
-    "TranslatorName_2": "[bluqesh](https://www.myetherwallet.com/?gaslimit=21000&to=0x4270A331d14CcdB6FB941f3f5De9Cf01607Bff9F&value=1.0#send-transaction) ",
+    "TranslatorName_2": "[bluqesh](https://www.mycrypto.com/?gaslimit=21000&to=0x4270A331d14CcdB6FB941f3f5De9Cf01607Bff9F&value=1.0#send-transaction) ",
     "TranslatorAddr_2": "0x4270A331d14CcdB6FB941f3f5De9Cf01607Bff9F ",
     "TranslatorName_3": "",
     "TranslatorAddr_3": "",
@@ -375,7 +375,7 @@
     "TranslatorName_5": "",
     "TranslatorAddr_5": "",
     "HELP_Warning": "Ha **2015 december 31** előtt készítettél egy tárcát vagy töltötted le a repo-t, akkor ellenőrizd a tárcáidat és töltsd le a repo új verzióját. Kattints a részletekért. ",
-    "HELP_Desc": "Valamit hiányolsz? Egyéb kérdésed lenne? [Írj nekünk](mailto:support@myetherwallet.com), és nem csak választ fogsz kapni, de még ezt az oldalt is frissítjük, hogy másoknak is hasznosabb legyen. ",
+    "HELP_Desc": "Valamit hiányolsz? Egyéb kérdésed lenne? [Írj nekünk](mailto:support@mycrypto.com), és nem csak választ fogsz kapni, de még ezt az oldalt is frissítjük, hogy másoknak is hasznosabb legyen. ",
     "HELP_Remind_Title": "Néhány emlékeztető ",
     "HELP_Remind_Desc_1": "Az **Ethereum, MyCrypto.com és MyCrypto CX, továbbá néhány, az oldal által használt JavaScript könyvtár aktív fejlesztés alatt állnak.** Az alapos tesztelés és a világszerte több tízezer sikeresen létrehozott tárca ellenére mindig fennáll az apró lehetőség arra, hogy valami váratlan esemény miatt elveszted az ETH-id. Ne fektess be annál többet, mint amit hajlandó lennél elveszítnei. Ha esetleg bármi ilyen történne, nagyon sajnáljuk, de **nem vagyunk a felősek az elvesztett Etherekért**. ",
     "HELP_Remind_Desc_2": "A MyCrypto.com és a MyCrypto CX nem \"web tárcák\". Nem kell nálunk regisztrálnod, vagy ránk bízni az Ethereid megőrzésre. Semmilyen adat nem hagyja el a gépedet/böngésződet. Abban segítünk, hogy egyszerűen tudd az tárcáid látrehozni, lementeni és hozzájuk férni, és egyéb módon használni a blokkláncot. ",
@@ -561,7 +561,7 @@
     "HELP_Sec_Desc_1": "If one of your first questions is \"Why should I trust these people?\", that is a good thing. Hopefully the following will help ease your fears. ",
     "HELP_Sec_Desc_2": "We've been up and running since August 2015. If you search for [\"myetherwallet\" on reddit](https://www.reddit.com/search?q=myetherwallet), you can see numerous people who use us with great success. ",
     "HELP_Sec_Desc_3": "We aren't going to take your money or steal your private key(s). There is no malicious code on this site. In fact the \"GENERATE WALLET\" pages are completely client-side. That means that all the code is executed on ** your computer** and it is never saved and transmitted anywhere. ",
-    "HELP_Sec_Desc_4": "Check the URL -- This site is being served through GitHub and you can see the source code here: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) to [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_4": "Check the URL -- This site is being served through GitHub and you can see the source code here: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) to [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_Sec_Desc_5": "For generating wallets, you can download the [source code and run it locally](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). See #5 above. ",
     "HELP_Sec_Desc_6": "Generate a test wallet and check and see what network activity is happening. The easiest way for you to do this is to right click on the page and click \"inspect element\". Go to the \"Network\" tab. Generate a test wallet. You will see there is no network activity. You may see something happening that looks like data:image/gif and data:image/png. Those are the QR codes being generated...on your computer...by your computer. No bytes were transferred. ",
     "HELP_Sec_Desc_8": "If you do not feel comfortable using this tool, then by all means, do not use it. We created this tool as a helpful way for people to generate wallets and make transactions without needing to dive into command line or run a full node. Again, feel free to reach out if you have concerns and we will respond as quickly as possible. Thanks! ",
@@ -626,7 +626,7 @@
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
-    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.myetherwallet.com`.",
+    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
     "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
@@ -662,6 +662,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 
 
 

@@ -52,7 +52,7 @@
     "GAS_PRICE_Desc": "Il prezzo gas è la somma che paghi per unità di gas. `Commissione transazione = prezzo gas * limite gas` e si paga ai *miner* perché includano la tua transazione in un blocco. Più alto il prezzo gas = più veloce la transazione, ma più costosa. Di default è `21 GWEI`.",
     "GAS_LIMIT_Desc": "Il limite gas è la quantità di gas da inviare con la transazione. `Commissione transazione` = prezzo gas * limite gas e si paga ai *miner* perché includano la tua transazione in un blocco. Aumentare questo numero non farà in modo che la tua transazione sia inclusa prima. Invio di ETH = `21000`. Invio di token = ~`200000`.",
     "NONCE_Desc": "Il *nonce* è il numero di transazioni inviate da un certo indirizzo. Fa in modo che le transazioni siano inviate nel giusto ordine e non più di una volta.",
-    "TXFEE_Desc": "La commissione transazione si paga ai *miner* perché includano la transazione in un blocco. Si calcola come `limite gas` * `prezzo gas`. [Puoi calcolare la conversione GWEI -> ETH qui](https://www.myetherwallet.com/helpers.html)",
+    "TXFEE_Desc": "La commissione transazione si paga ai *miner* perché includano la transazione in un blocco. Si calcola come `limite gas` * `prezzo gas`. [Puoi calcolare la conversione GWEI -> ETH qui](https://www.mycrypto.com/helpers.html)",
     "NAV_AddWallet": "Aggiungi portafoglio ",
     "NAV_BulkGenerate": "Generazione multipla ",
     "NAV_Contact": "Contatti ",
@@ -352,7 +352,7 @@
     "PARITY_InvalidGasLimit": "Il gas fornito supera il limite.",
     "translate_version": "0.3 ",
     "Translator_Desc": "Grazie ai nostri traduttori ",
-    "TranslatorName_1": "[ugilio](https://www.myetherwallet.com/?gaslimit=21000&to=0x07932bc1c68c8ff188f4225e892178ab6d8c4eaa&value=1.0#send-transaction) ",
+    "TranslatorName_1": "[ugilio](https://www.mycrypto.com/?gaslimit=21000&to=0x07932bc1c68c8ff188f4225e892178ab6d8c4eaa&value=1.0#send-transaction) ",
     "TranslatorAddr_1": "0x07932bc1c68c8ff188f4225e892178ab6d8c4eaa ",
     "TranslatorName_2": "",
     "TranslatorAddr_2": "",
@@ -363,7 +363,7 @@
     "TranslatorName_5": "",
     "TranslatorAddr_5": "",
     "HELP_Warning": "Se hai creato un portafoglio -oppure- hai scaricato il repository prima del **31 Dicembre 2015**, controlla i tuoi portafogli e scarica una nuova versione del repository. Fai clic qui per i dettagli. ",
-    "HELP_Desc": "Vedi che manca qualcosa? Hai un'altra domanda? [Mettiti in contatto con noi](mailto:support@myetherwallet.com), e non solo risponderemo alla tua domanda, ma aggiorneremo anche questa pagina in modo che sia più utile ad altri in futuro! ",
+    "HELP_Desc": "Vedi che manca qualcosa? Hai un'altra domanda? [Mettiti in contatto con noi](mailto:support@mycrypto.com), e non solo risponderemo alla tua domanda, ma aggiorneremo anche questa pagina in modo che sia più utile ad altri in futuro! ",
     "HELP_Remind_Title": "Qualche promemoria ",
     "HELP_Remind_Desc_1": "**Ethereum, MyCrypto.com & MyCrypto CX, e alcune delle librerie Javascript che utilizziamo sono in continuo sviluppo.** Anche se abbiamo testato approfonditamente e persone di tutto il mondo hanno correttamente creato decine di migliaia di portafogli, c'è sempre la remota possibilità che accada qualcosa di imprevisto che provochi la perdita dei tuoi ETH. Ti preghiamo di non investire più di quello che sei disposto a perdere, e di fare attenzione. Se dovesse capitare qualcosa, ci dispiace, ma **non siamo responsabili per gli ether perduti**. ",
     "HELP_Remind_Desc_2": "MyCrypto.com & MyCrypto CX non sono \"portafogli web\". Non stai creando un account né ci stai dando i tuoi ether da custodire. Tutti i dati non lasciano mai il tuo computer/il tuo browser. Quello che facciamo è renderti facile creare, salvare, e accedere alle tue informazioni e interagire con la *blockchain*. ",
@@ -549,7 +549,7 @@
     "HELP_Sec_Desc_1": "Se una delle prime domande che ti poni è \"Perché dovrei fidarmi di questa gente?\", è una cosa buona. Quanto segue dovrebbe aiutarti a calmare i tuoi timori. ",
     "HELP_Sec_Desc_2": "Siamo attivi da agosto 2015. Se cerchi [\"myetherwallet\" su reddit](https://www.reddit.com/search?q=myetherwallet), puoi vedere che molte persone ci utilizzano con grande successo. ",
     "HELP_Sec_Desc_3": "Non prenderemo i tuoi soldi né ruberemo le tue chiavi private. Non c'è codice malevolo su questo sito. Infatti le pagine \"Genera portafoglio\" sono completamente lato client. Ciò significa che tutto il codice è eseguito sul ** tuo computer** e non viene mai salvato e trasmesso da nessuna parte. ",
-    "HELP_Sec_Desc_4": "Controlla l'URL -- Questo sito viene servito attraverso GitHub e puoi vederne il codice sorgente qui: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) su [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_4": "Controlla l'URL -- Questo sito viene servito attraverso GitHub e puoi vederne il codice sorgente qui: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) su [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_Sec_Desc_5": "Per la generazione dei portafogli, puoi scaricare il [codice sorgente](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) ed eseguirlo in locale. Vedi la domanda 5 qui sopra. ",
     "HELP_Sec_Desc_6": "Genera un portafoglio di prova e controlla che attività di rete sono in corso. Il modo più facile e fare clic destro sulla pagina e scegliere \"Analizza elemento\". Vai sulla scheda \"Rete\". Genera un portafoglio di prova. Vedrai che non c'è attività di rete. Potresti vedere accadere qualcosa che assomiglia a  data:image/gif e data:image/png. Sono i QR code che vengono generati...sul tuo computer...dal tuo computer. Non sono stati trasferiti byte. ",
     "HELP_Sec_Desc_8": "Se non ti senti a tuo agio a usare questo strumento, allora certo, non usarlo. Abbiamo creato questo strumento per aiutare la gente a generare portafogli ed eseguire transazioni senza bisogno di usare la riga di comando o far girare un nodo completo. Di nuovo, sentiti libero di contattarci se hai dubbi e ti risponderemo appena possibile. Grazie! ",
@@ -614,7 +614,7 @@
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
-    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.myetherwallet.com`.",
+    "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
     "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
@@ -650,6 +650,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 
 
 
