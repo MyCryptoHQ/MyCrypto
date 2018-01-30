@@ -8,20 +8,22 @@ import {
   takeLatest,
   takeEvery,
   select,
-  race
+  race,
+  apply
 } from 'redux-saga/effects';
-import {
-  makeCustomNodeId,
-  getCustomNodeConfigFromId,
-  makeNodeConfigFromCustomConfig
-} from 'utils/node';
-import { makeCustomNetworkId, getNetworkConfigFromId } from 'utils/network';
+import { makeCustomNetworkId } from 'utils/network';
 import {
   getNodeName,
   getNodeConfig,
   getCustomNodeConfigs,
   getCustomNetworkConfigs,
-  getOffline
+  getOffline,
+  getNetworkConfig,
+  isStaticNodeName,
+  getCustomNodeFromId,
+  getStaticNodeFromId,
+  getNetworkConfigById,
+  getStaticAltNodeToWeb3
 } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
@@ -38,9 +40,10 @@ import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
 import { Web3Wallet } from 'libs/wallet';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
-import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
-import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
-import { CustomNetworkConfig } from 'types/network';
+import { State as ConfigState } from 'reducers/config';
+import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
+import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
+import { Web3Service } from 'reducers/config/nodes/typings';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
@@ -113,41 +116,45 @@ export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 1150);
 }
 
-export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIterator {
-  const currentNode: string = yield select(getNodeName);
-  const currentConfig: StaticNodeConfig = yield select(getNodeConfig);
-  const customNets: CustomNetworkConfig[] = yield select(getCustomNetworkConfigs);
-  const currentNetwork =
-    getNetworkConfigFromId(currentConfig.network, customNets) || NETWORKS[currentConfig.network];
+export function* handleNodeChangeIntent({
+  payload: nodeIdToSwitchTo
+}: ChangeNodeIntentAction): SagaIterator {
+  const isStaticNode: boolean = yield select(isStaticNodeName, nodeIdToSwitchTo);
+  const currentConfig: NodeConfig = yield select(getNodeConfig);
 
   function* bailOut(message: string) {
+    const currentNodeName: string = yield select(getNodeName);
     yield put(showNotification('danger', message, 5000));
-    yield put(changeNode(currentNode, currentConfig, currentNetwork));
+    yield put(changeNode({ networkName: currentConfig.network, nodeName: currentNodeName }));
   }
 
-  let actionConfig = NODES[action.payload];
-  if (!actionConfig) {
-    const customConfigs: CustomNodeConfig[] = yield select(getCustomNodeConfigs);
-    const config = getCustomNodeConfigFromId(action.payload, customConfigs);
+  let nextNodeConfig: CustomNodeConfig | StaticNodeConfig;
+
+  if (!isStaticNode) {
+    const config: CustomNodeConfig | undefined = yield select(
+      getCustomNodeFromId,
+      nodeIdToSwitchTo
+    );
+
     if (config) {
-      actionConfig = makeNodeConfigFromCustomConfig(config);
+      nextNodeConfig = config;
+    } else {
+      return yield* bailOut(`Attempted to switch to unknown node '${nodeIdToSwitchTo}'`);
     }
+  } else {
+    nextNodeConfig = yield select(getStaticNodeFromId, nodeIdToSwitchTo);
   }
 
-  if (!actionConfig) {
-    return yield* bailOut(`Attempted to switch to unknown node '${action.payload}'`);
-  }
-
-  // Grab latest block from the node, before switching, to confirm it's online
+  // Grab current block from the node, before switching, to confirm it's online
   // Give it 5 seconds before we call it offline
-  let latestBlock;
+  let currentBlock;
   let timeout;
   try {
     const { lb, to } = yield race({
-      lb: call(actionConfig.lib.getCurrentBlock.bind(actionConfig.lib)),
+      lb: apply(nextNodeConfig, nextNodeConfig.lib.getCurrentBlock),
       to: call(delay, 5000)
     });
-    latestBlock = lb;
+    currentBlock = lb;
     timeout = to;
   } catch (err) {
     // Whether it times out or errors, same message
@@ -158,16 +165,19 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
     return yield* bailOut(translateRaw('ERROR_32'));
   }
 
-  const actionNetwork = getNetworkConfigFromId(actionConfig.network, customNets);
+  const nextNetwork: StaticNetworkConfig | CustomNetworkConfig = yield select(
+    getNetworkConfigById,
+    nextNodeConfig.network
+  );
 
-  if (!actionNetwork) {
+  if (!nextNetwork) {
     return yield* bailOut(
-      `Unknown custom network for your node '${action.payload}', try re-adding it`
+      `Unknown custom network for your node '${nodeIdToSwitchTo}', try re-adding it`
     );
   }
 
-  yield put(setLatestBlock(latestBlock));
-  yield put(changeNode(action.payload, actionConfig, actionNetwork));
+  yield put(setLatestBlock(currentBlock));
+  yield put(changeNode({ networkName: nextNodeConfig.network, nodeName: nodeIdToSwitchTo }));
 
   // TODO - re-enable once DeterministicWallet state is fixed to flush properly.
   // DeterministicWallet keeps path related state we need to flush before we can stop reloading
@@ -176,8 +186,8 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
   // if there's no wallet, do not reload as there's no component state to resync
   // if (currentWallet && currentConfig.network !== actionConfig.network) {
 
-  const isNewNetwork = currentConfig.network !== actionConfig.network;
-  const newIsWeb3 = actionConfig.service === Web3Service;
+  const isNewNetwork = currentConfig.network !== nextNodeConfig.network;
+  const newIsWeb3 = nextNodeConfig.service === Web3Service;
   // don't reload when web3 is selected; node will automatically re-set and state is not an issue here
   if (isNewNetwork && !newIsWeb3) {
     yield call(reload);
@@ -185,8 +195,7 @@ export function* handleNodeChangeIntent(action: ChangeNodeIntentAction): SagaIte
 }
 
 export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
-  const nodeId = makeCustomNodeId(action.payload);
-  yield put(changeNodeIntent(nodeId));
+  yield put(changeNodeIntent(action.payload.id));
 }
 
 // If there are any orphaned custom networks, purge them
@@ -208,7 +217,6 @@ export function* cleanCustomNetworks(): SagaIterator {
 // unset web3 as the selected node if a non-web3 wallet has been selected
 export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
   const node = yield select(getNodeName);
-  const nodeConfig = yield select(getNodeConfig);
   const newWallet = action.payload;
   const isWeb3Wallet = newWallet instanceof Web3Wallet;
 
@@ -216,8 +224,9 @@ export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
     return;
   }
 
+  const altNode = yield select(getStaticAltNodeToWeb3);
   // switch back to a node with the same network as MetaMask/Mist
-  yield put(changeNodeIntent(equivalentNodeOrDefault(nodeConfig)));
+  yield put(changeNodeIntent(altNode));
 }
 
 export function* unsetWeb3Node(): SagaIterator {
@@ -227,29 +236,10 @@ export function* unsetWeb3Node(): SagaIterator {
     return;
   }
 
-  const nodeConfig: StaticNodeConfig = yield select(getNodeConfig);
-  const newNode = equivalentNodeOrDefault(nodeConfig);
-
-  yield put(changeNodeIntent(newNode));
+  const altNode = yield select(getStaticAltNodeToWeb3);
+  // switch back to a node with the same network as MetaMask/Mist
+  yield put(changeNodeIntent(altNode));
 }
-
-export const equivalentNodeOrDefault = (nodeConfig: StaticNodeConfig) => {
-  const node = Object.keys(NODES)
-    .filter(key => key !== 'web3')
-    .reduce((found, key) => {
-      const config = NODES[key];
-      if (found.length) {
-        return found;
-      }
-      if (nodeConfig.network === config.network) {
-        return (found = key);
-      }
-      return found;
-    }, '');
-
-  // if no equivalent node was found, use the app default
-  return node.length ? node : configInitialState.nodeSelection;
-};
 
 export default function* configSaga(): SagaIterator {
   yield takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus);

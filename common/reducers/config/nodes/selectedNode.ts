@@ -7,7 +7,7 @@ interface NodeLoaded {
 
 interface NodeChangePending {
   pending: true;
-  nodeName: undefined;
+  nodeName: string;
 }
 
 export type State = NodeLoaded | NodeChangePending;
@@ -22,8 +22,8 @@ const changeNode = (_: State, { payload }: ChangeNodeAction): State => ({
   pending: false
 });
 
-const changeNodeIntent = (_: State, _2: ChangeNodeIntentAction): State => ({
-  nodeName: undefined,
+const changeNodeIntent = (state: State, _: ChangeNodeIntentAction): State => ({
+  ...state,
   pending: true
 });
 

@@ -28,7 +28,6 @@ interface DPathFormats {
 }
 
 interface StaticNetworkConfig {
-  // TODO really try not to allow strings due to custom networks
   isCustom: false; // used for type guards
   name: StaticNetworkNames;
   unit: string;

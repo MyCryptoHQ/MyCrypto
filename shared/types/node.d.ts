@@ -1,9 +1,14 @@
 import { RPCNode, Web3Node } from 'libs/nodes';
 import { StaticNetworkNames } from './network';
 import { StaticNodesState, CustomNodesState } from 'reducers/config/nodes';
+import CustomNode from 'libs/nodes/custom';
 
 interface CustomNodeConfig {
+  id: string;
+  isCustom: true;
   name: string;
+  lib: CustomNode;
+  service: 'your custom node';
   url: string;
   port: number;
   network: string;
@@ -14,11 +19,16 @@ interface CustomNodeConfig {
 }
 
 interface StaticNodeConfig {
+  isCustom: false;
   network: StaticNetworkNames;
   lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
   hidden?: boolean;
+}
+
+interface Web3NodeConfig extends StaticNodeConfig {
+  lib: Web3Node;
 }
 
 declare enum StaticNodeName {
@@ -39,7 +49,7 @@ declare enum StaticNodeName {
 type NonWeb3NodeConfigs = { [key in StaticNodeName]: StaticNodeConfig };
 
 interface Web3NodeConfig {
-  web3?: StaticNodeConfig;
+  web3?: Web3NodeConfig;
 }
 
 type NodeConfig = StaticNodesState[StaticNodeName] | CustomNodesState[string];

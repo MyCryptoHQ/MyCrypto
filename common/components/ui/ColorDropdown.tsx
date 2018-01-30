@@ -8,7 +8,7 @@ interface Option<T> {
   name: any;
   value: T;
   color?: string;
-  hidden: boolean | undefined;
+  hidden?: boolean | undefined;
   onRemove?(): void;
 }
 

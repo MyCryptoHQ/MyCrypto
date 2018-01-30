@@ -39,20 +39,6 @@ export function makeNetworkConfigFromCustomConfig(
   return customConfig;
 }
 
-export function getNetworkConfigFromId(
-  id: string,
-  configs: CustomNetworkConfig[]
-): StaticNetworkConfig | undefined {
-  if (NETWORKS[id]) {
-    return NETWORKS[id];
-  }
-
-  const customConfig = configs.find(conf => makeCustomNetworkId(conf) === id);
-  if (customConfig) {
-    return makeNetworkConfigFromCustomConfig(customConfig);
-  }
-}
-
 type PathType = keyof DPathFormats;
 
 type DPathFormat =

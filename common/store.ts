@@ -65,7 +65,7 @@ const configureStore = () => {
 
   // If they have a saved node, make sure we assign that too. The node selected
   // isn't serializable, so we have to assign it here.
-  if (savedConfigState && savedConfigState.nodeSelection) {
+  if (savedConfigState && savedConfigState.nodes.selectedNode.nodeName) {
     const savedNode = getNodeConfigFromId(
       savedConfigState.nodeSelection,
       savedConfigState.customNodes

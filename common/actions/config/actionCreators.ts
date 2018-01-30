@@ -24,10 +24,12 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
 }
 
 export type TChangeNode = typeof changeNode;
-export function changeNode(networkName: string, nodeName: string): interfaces.ChangeNodeAction {
+export function changeNode(
+  payload: interfaces.ChangeNodeAction['payload']
+): interfaces.ChangeNodeAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE,
-    payload: { networkName, nodeName }
+    payload
   };
 }
 

@@ -9,14 +9,24 @@ import {
 
 export const getNetworks = (state: AppState) => getConfig(state).networks;
 
+export const getNetworkConfigById = (state: AppState, networkId: string) =>
+  isStaticNetworkName(state, networkId)
+    ? getStaticNetworkConfigs(state)[networkId]
+    : getCustomNetworkConfigs(state)[networkId];
+
 export const getStaticNetworkNames = (state: AppState): StaticNetworkNames[] =>
   Object.keys(getNetworks(state).staticNetworks) as StaticNetworkNames[];
 
+export const isStaticNetworkName = (
+  state: AppState,
+  networkName: string
+): networkName is StaticNetworkNames =>
+  Object.keys(getStaticNetworkConfigs(state)).includes(networkName);
+
 export const getStaticNetworkConfig = (state: AppState): StaticNetworkConfig | undefined => {
   const { staticNetworks, selectedNetwork } = getNetworks(state);
-  const isDefaultNetworkName = (networkName: string): networkName is StaticNetworkNames =>
-    Object.keys(staticNetworks).includes(networkName);
-  const defaultNetwork = isDefaultNetworkName(selectedNetwork)
+
+  const defaultNetwork = isStaticNetworkName(state, selectedNetwork)
     ? staticNetworks[selectedNetwork]
     : undefined;
   return defaultNetwork;

@@ -38,7 +38,7 @@ import {
 } from 'libs/wallet';
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
-import { getNodeLib, getAllTokens, getOffline } from 'selectors/config';
+import { getNodeLib, getAllTokens, getOffline, getWeb3Node } from 'selectors/config';
 import {
   getTokens,
   getWalletInst,
@@ -51,6 +51,7 @@ import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { getTokenBalances, filterScannedTokenBalances } from './helpers';
 import { Token } from 'types/network';
+import { Web3NodeConfig } from '../../../shared/types/node';
 
 export interface TokenBalanceLookup {
   [symbol: string]: TokenBalance;
@@ -265,11 +266,12 @@ export function* unlockWeb3(): SagaIterator {
         action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
     );
 
-    if (!NODES.web3) {
+    const web3Node: Web3NodeConfig | null = yield select(getWeb3Node);
+    if (!web3Node) {
       throw Error('Web3 node config not found!');
     }
-    const network = NODES.web3.network;
-    const nodeLib: INode | Web3Node = yield select(getNodeLib);
+    const network = web3Node.network;
+    const nodeLib: Web3Node = web3Node.lib;
 
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
