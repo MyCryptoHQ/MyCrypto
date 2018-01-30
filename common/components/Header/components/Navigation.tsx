@@ -40,8 +40,8 @@ const tabs: TabLink[] = [
     to: '/pushTx'
   },
   {
-    name: 'Check TX Status',
-    to: '/status'
+    name: 'NAV_CheckTxStatus',
+    to: '/check-tx-status'
   },
   {
     name: 'NAV_Help',

@@ -67,7 +67,7 @@ export default class Root extends Component<Props, State> {
         <Route path="/ens" component={ENS} />
         <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
         <Route path="/pushTx" component={BroadcastTx} />
-        <Route path="/status" component={TransactionStatus} />
+        <Route path="/check-tx-status" component={TransactionStatus} />
         <Route component={PageNotFound} />
       </Switch>
     );
