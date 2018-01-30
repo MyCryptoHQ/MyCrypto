@@ -1,0 +1,30 @@
+@import 'common/sass/variables';
+
+.tx-modal-details {
+  margin-top: 1rem;
+  &-button {
+    display: block;
+    margin: auto;
+    width: 100%;
+    padding: 8px 32px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 300ms;
+    &:hover {
+      background-color: rgba(153, 153, 153, 0.12);
+    }
+  }
+  &-pair {
+    margin-bottom: 1rem;
+    > h5 {
+      display: inline-block;
+      margin: 0;
+      &:nth-child(0n + 2) {
+        font-family: $font-family-monospace;
+        font-weight: 300;
+        letter-spacing: 0px;
+        margin-left: 8px;
+      }
+    }
+  }
+}

@@ -40,16 +40,15 @@ class BodyClass extends React.Component<Props, State> {
   };
 
   public render() {
-    const { rates, from, to, unit, network, decimal, node } = this.props;
+    const { rates, from, to, unit, node, network, decimal } = this.props;
     const { showDetails } = this.state;
     const networkUnit = network.unit;
     return (
       <SerializedTransaction
         withSerializedTransaction={serializedTransaction => {
           const transactionInstance = makeTransaction(serializedTransaction);
-          const { value, gasPrice, gasLimit, data, nonce, chainId } = getTransactionFields(
-            transactionInstance
-          );
+          const rawTx = getTransactionFields(transactionInstance);
+          const { value, gasPrice, gasLimit, data, nonce, chainId } = rawTx;
           const isToken = unit !== 'ether';
           const isTestnet = network.isTestnet;
           const sendValue = isToken
@@ -66,8 +65,14 @@ class BodyClass extends React.Component<Props, State> {
           return (
             <div className="tx-modal-body">
               {isTestnet && <p className="tx-modal-testnet-warn small">Testnet Transaction</p>}
-              {/* TODO: add tkn contract addr */}
-              <Addresses to={to} from={from} unit={unit} data={data} isToken={isToken} />
+              <Addresses
+                to={to}
+                from={from}
+                unit={unit}
+                data={data}
+                isToken={isToken}
+                rawTo={rawTx.to}
+              />
               <Amounts
                 isToken={isToken}
                 isTestnet={isTestnet}
@@ -88,6 +93,8 @@ class BodyClass extends React.Component<Props, State> {
               </button>
               {showDetails && (
                 <Details
+                  network={node.network}
+                  provider={node.service}
                   gasPrice={gasPrice}
                   gasLimit={gasLimit}
                   nonce={nonce}

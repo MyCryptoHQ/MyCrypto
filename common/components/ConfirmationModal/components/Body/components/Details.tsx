@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { fromTokenBase, getDecimalFromEtherUnit, Wei, Nonce, Data } from 'libs/units';
 import Code from 'components/ui/Code';
+import './Details.scss';
 
 interface Props {
+  network: string;
+  provider: string;
   gasPrice: any;
   gasLimit: any;
   nonce: any;
@@ -10,9 +13,20 @@ interface Props {
   chainId: any;
 }
 
-export const Details: React.SFC<Props> = ({ gasPrice, gasLimit, nonce, data, chainId }) => {
+export const Details: React.SFC<Props> = ({
+  network,
+  provider,
+  gasPrice,
+  gasLimit,
+  nonce,
+  data,
+  chainId
+}) => {
   return (
     <div className="tx-modal-details">
+      <p>
+        Your interacting with the {network} network provided by {provider}
+      </p>
       <Code>
         {JSON.stringify(
           {

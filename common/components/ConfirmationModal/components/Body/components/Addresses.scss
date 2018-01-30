@@ -1,0 +1,46 @@
+@import 'common/sass/variables';
+
+.tx-modal-address {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: auto;
+  .Identicon {
+    margin-right: 1rem;
+  }
+  &-from,
+  &-to,
+  &-send-amount {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 1rem 0rem;
+    &:first-child {
+      margin-top: 0;
+    }
+    > img {
+      margin-right: 1rem;
+    }
+    > div > h5 {
+      margin: 0;
+      &:first-child {
+        margin-right: 16px;
+        padding-bottom: 0.25rem;
+      }
+      &:nth-child(0n + 2) {
+        font-family: $font-family-monospace;
+        font-weight: 400;
+        opacity: 0.74;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  &-send-amount {
+    > img {
+      height: 3rem;
+      width: 3rem;
+      transform: scale(0.75);
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { UnitDisplay } from 'components/ui';
 import BN from 'bn.js';
-
+import './Amounts.scss';
 interface Props {
   sendValue: BN;
   fee: BN;
@@ -31,7 +31,7 @@ export const Amounts: React.SFC<Props> = ({
     <div className="tx-modal-amount">
       <div className="tx-modal-amount-send">
         <div className="tx-modal-amount-send-positioning-wrapper">
-          <h5>You'll Send: </h5>
+          <h5>You'll Send </h5>
           <h5>
             <UnitDisplay
               decimal={decimal}
@@ -55,7 +55,7 @@ export const Amounts: React.SFC<Props> = ({
       </div>
       <div className="tx-modal-amount-fee">
         <div className="tx-modal-amount-fee-positioning-wrapper">
-          <h5>Transaction Fee: </h5>
+          <h5>Transaction Fee </h5>
           <h5>
             <UnitDisplay
               value={fee}
@@ -78,30 +78,32 @@ export const Amounts: React.SFC<Props> = ({
           </h5>
         </div>
       </div>
-      <div className="tx-modal-amount-total">
-        <div className="tx-modal-amount-total-positioning-wrapper">
-          <h5>Total: </h5>
-          <h5>
-            <UnitDisplay
-              value={total}
-              decimal={decimal}
-              symbol={isToken ? unit : networkUnit}
-              checkOffline={false}
-            />
-            {!isTestnet && (
-              <span style={{ marginLeft: '8px' }} className="small">
-                $<UnitDisplay
-                  value={totalUSD}
-                  unit="ether"
-                  displayShortBalance={2}
-                  displayTrailingZeroes={true}
-                  checkOffline={true}
-                />
-              </span>
-            )}
-          </h5>
+      {unit === 'ether' && (
+        <div className="tx-modal-amount-total">
+          <div className="tx-modal-amount-total-positioning-wrapper">
+            <h5>Total </h5>
+            <h5>
+              <UnitDisplay
+                value={total}
+                decimal={decimal}
+                symbol={isToken ? unit : networkUnit}
+                checkOffline={false}
+              />
+              {!isTestnet && (
+                <span style={{ marginLeft: '8px' }} className="small">
+                  $<UnitDisplay
+                    value={totalUSD}
+                    unit="ether"
+                    displayShortBalance={2}
+                    displayTrailingZeroes={true}
+                    checkOffline={true}
+                  />
+                </span>
+              )}
+            </h5>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
