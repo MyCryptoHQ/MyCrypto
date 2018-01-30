@@ -2,15 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate, { TranslateType } from 'translations';
-import WalletDecrypt from 'components/WalletDecrypt';
+import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
 import './UnlockHeader.scss';
-import { WalletName } from 'config';
 
 interface Props {
   title: TranslateType;
   wallet: IWallet;
-  disabledWallets?: WalletName[];
+  disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
 }
 
