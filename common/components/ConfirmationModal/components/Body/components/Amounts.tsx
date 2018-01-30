@@ -28,9 +28,9 @@ export const Amounts: React.SFC<Props> = ({
   const total = sendValue.add(fee);
   const totalUSD = sendValueUSD.add(transactionFeeUSD);
   return (
-    <div className="Amount">
-      <div className="Amount-send">
-        <div className="Amount-send-positioning-wrapper">
+    <div className="tx-modal-amount">
+      <div className="tx-modal-amount-send">
+        <div className="tx-modal-amount-send-positioning-wrapper">
           <h5>You'll Send: </h5>
           <h5>
             <UnitDisplay
@@ -53,8 +53,8 @@ export const Amounts: React.SFC<Props> = ({
           </h5>
         </div>
       </div>
-      <div className="Amount-fee">
-        <div className="Amount-fee-positioning-wrapper">
+      <div className="tx-modal-amount-fee">
+        <div className="tx-modal-amount-fee-positioning-wrapper">
           <h5>Transaction Fee: </h5>
           <h5>
             <UnitDisplay
@@ -78,8 +78,8 @@ export const Amounts: React.SFC<Props> = ({
           </h5>
         </div>
       </div>
-      <div className="Amount-total">
-        <div className="Amount-total-positioning-wrapper">
+      <div className="tx-modal-amount-total">
+        <div className="tx-modal-amount-total-positioning-wrapper">
           <h5>Total: </h5>
           <h5>
             <UnitDisplay

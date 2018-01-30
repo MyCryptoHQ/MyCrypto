@@ -1,9 +1,31 @@
 import * as React from 'react';
+import { fromTokenBase, getDecimalFromEtherUnit, Wei, Nonce, Data } from 'libs/units';
+import Code from 'components/ui/Code';
 
-export const Details: React.SFC = () => {
+interface Props {
+  gasPrice: any;
+  gasLimit: any;
+  nonce: any;
+  data: any;
+  chainId: any;
+}
+
+export const Details: React.SFC<Props> = ({ gasPrice, gasLimit, nonce, data, chainId }) => {
   return (
-    <React.Fragment>
-      <div>details</div>
-    </React.Fragment>
+    <div className="tx-modal-details">
+      <Code>
+        {JSON.stringify(
+          {
+            gasPrice: fromTokenBase(Wei(gasPrice), getDecimalFromEtherUnit('gwei')),
+            gasLimit: Wei(gasLimit).toString(),
+            nonce: Nonce(nonce).toString(),
+            chainId,
+            data: !!Data(data).toJSON().data.length ? data : ''
+          },
+          undefined,
+          2
+        )}
+      </Code>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
 @import 'common/sass/variables';
 
-.Body {
+.tx-modal-body {
   margin: auto;
   max-width: 35rem;
   width: 100%;
@@ -9,12 +9,12 @@
   }
 }
 
-.Testnet-warn {
+.tx-modal-testnet-warn {
   text-align: center;
   margin: 0;
 }
 
-.Address {
+.tx-modal-address {
   display: flex;
   flex-direction: column;
   width: fit-content;
@@ -58,15 +58,15 @@
   }
 }
 
-.Amount,
-.Address {
+.tx-modal-amount,
+.tx-modal-address {
   padding: 1rem 0rem;
   &:first-child {
     padding-top: 0rem;
   }
 }
 
-.Amount {
+.tx-modal-amount {
   &-send,
   &-fee,
   &-total {
@@ -81,6 +81,16 @@
       justify-content: space-between;
       > h5 {
         margin: 0px 0px;
+        &:last-child {
+          font-weight: 300;
+          & span {
+            font-weight: 300;
+            letter-spacing: 1px;
+            > span {
+              letter-spacing: 0px;
+            }
+          }
+        }
       }
     }
   }
@@ -93,11 +103,39 @@
       background-position: top;
       background-size: 5px 1px;
       background-repeat: repeat-x;
-      > h5:not(:first-child) {
-        padding: 0.5rem 1rem;
-        background-color: change-color($color: $brand-primary, $saturation: 10, $lightness: 97);
-        border: 1px solid change-color($color: $brand-primary, $saturation: 10, $lightness: 80);
-        border-radius: 5px;
+      > h5:last-child {
+        & span {
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
+
+.tx-modal-details {
+  margin-top: 1rem;
+  &-button {
+    display: block;
+    margin: auto;
+    width: 100%;
+    padding: 8px 32px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 300ms;
+    &:hover {
+      background-color: rgba(153, 153, 153, 0.12);
+    }
+  }
+  &-pair {
+    margin-bottom: 1rem;
+    > h5 {
+      display: inline-block;
+      margin: 0;
+      &:nth-child(0n + 2) {
+        font-family: $font-family-monospace;
+        font-weight: 300;
+        letter-spacing: 0px;
+        margin-left: 8px;
       }
     }
   }

@@ -1,18 +1,14 @@
 import React from 'react';
 import ERC20 from 'libs/erc20';
-import { Identicon, UnitDisplay } from 'components/ui';
-import arrow from 'assets/images/tail-triangle-down.svg';
-import BN from 'bn.js';
+import { Identicon } from 'components/ui';
 
 interface Props {
   to: string;
   from: string;
-  amount: BN;
   data: string;
-  networkUnit: string;
   unit: string;
-  decimal: number;
   isToken: boolean;
+  tknContractAddr: string;
 }
 
 const size = '3rem';
@@ -20,40 +16,34 @@ const size = '3rem';
 export const Addresses: React.SFC<Props> = ({
   from,
   to,
-  amount,
   data,
   unit,
-  networkUnit,
-  decimal,
-  isToken
+  isToken,
+  tknContractAddr = '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07'
 }) => (
-  <div className="Address">
-    <div className="Address-from">
+  <div className="tx-modal-address">
+    <div className="tx-modal-address-from">
       <Identicon size={size} address={from} />
       <div>
         <h5>From: </h5>
         <h5 className="small">{from}</h5>
       </div>
     </div>
-    <div className="Address-send-amount">
-      <img src={arrow} alt="arrow down" />
-      <div>
-        <h5>Amount: </h5>
-        <h5 className="small">
-          <UnitDisplay
-            decimal={decimal}
-            value={amount}
-            symbol={isToken ? unit : networkUnit}
-            checkOffline={false}
-          />
-        </h5>
-      </div>
-    </div>
-    <div className="Address-to">
+    <div className="tx-modal-address-to">
       <Identicon size={size} address={to} />
       <div>
         <h5>To: </h5>
         <h5 className="small">{unit === 'ether' ? to : ERC20.transfer.decodeInput(data)._to}</h5>
+        {isToken && (
+          <React.Fragment>
+            <p className="small">
+              └ via{' '}
+              <span>
+                <a href={`https://etherscan.io/address/${tknContractAddr}`}>{tknContractAddr}</a>
+              </span>{' '}
+            </p>
+          </React.Fragment>
+        )}
       </div>
     </div>
   </div>
