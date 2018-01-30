@@ -239,7 +239,7 @@
     "CX_quicksend": "Enviar ",
     "NODE_Title": "Configurar nodo personalizado",
     "NODE_Subtitle": "Para conectar a un nodo local...",
-    "NODE_Warning": "Tu nodo debe ser HTTPS para poder conectar a él desde MyCrypto.com. Para conectarte a cualquier nodo, puedes [descargar el repositorio de MyCrypto y ejecutarlo localmente](https://github.com/kvhnuke/etherwallet/releases/latest). También puedes conseguir un certificado SSL gratuito a través de [Let's Encrypt](https://letsencrypt.org/)",
+    "NODE_Warning": "Tu nodo debe ser HTTPS para poder conectar a él desde MyCrypto.com. Para conectarte a cualquier nodo, puedes [descargar el repositorio de MyCrypto y ejecutarlo localmente](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). También puedes conseguir un certificado SSL gratuito a través de [Let's Encrypt](https://letsencrypt.org/)",
     "NODE_Name": "Nombre del nodo",
     "NODE_Port": "Puerto del nodo",
     "NODE_CTA": "Guardar y usar nodo personalizado",
@@ -399,7 +399,7 @@
     "HELP_2a_Desc_5": "Imprime la cartera si dispones de impresora. En caso contrario, escribe tu clave privada y tu dirección en una hoja de papel. Almacénalas en un lugar seguro y separado de tu equipo y de la unidad USB. ",
     "HELP_2a_Desc_6": "Recuerda, debes evitar la pérdida de las claves y la contraseña frente a una pérdida o fallo en tu unidad de disco duro, unidad USB u hoja de papel. Debes tener en cuenta también la posibilidad de pérdida o daño en una zona amplia (piensa en un incendio o una inundación). ",
     "HELP_2b_Title": "2b) ¿Cómo almaceno con seguridad/sin conexión/en frío con MyCrypto? ",
-    "HELP_2b_Desc_1": "Ve a nuestro github: [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ",
+    "HELP_2b_Desc_1": "Ve a nuestro github: [https://github.com/MyCryptoHQ/MyCrypto/releases/latest](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). ",
     "HELP_2b_Desc_2": "Haz clic en `etherwallet-vX.X.X.X.zip` en la parte inferior. ",
     "HELP_2b_Desc_3": "Mueve el ZIP a un equipo aislado de internet (airgapped). ",
     "HELP_2b_Desc_4": "Descomprímelo y haz doble clic en `index.html`. ",
@@ -476,7 +476,7 @@
     "HELP_8_Desc_1": "MyCrypto no es una cartera web. No tienes un login y nunca se graba nada en nuestros servidores. You don't have a login and nothing ever gets saved to our servers. Simplemente es una interfaz que te permite interactuar con la cadena de bloques. ",
     "HELP_8_Desc_2": "Si MyCrypto.com desapareciera, tendrías que encontrar otra manera de poder hacer lo que haces con nosotros (como por ejemplo obtener geth o Ethereum Wallet / Mist). Pero no necesitarías retirar tus ether de MyCrypto porque no están en MyCrypto. Están en la cartera que hayas generado a través de nuestro sitio. ",
     "HELP_8_Desc_3": "Puedes importar tu clave privada sin cifrar y tus archivos en formato Geth/Mist (cifrados) directamente en geth / Ethereum Wallet / Mist con mucha facilidad actualmente. Ver más abajo la pregunta #12. ",
-    "HELP_8_Desc_4": "Además, la probabilidad de que cerremos MyCrypto es casi nula. No nos cuesta prácticamente nada mantenerlo ya que no almacenamos ninguna información. Si borramos el dominio, continúa estando disponible y siempre lo estará en [https://github.com/kvhnuke/etherwallet](https://github.com/kvhnuke/etherwallet/tree/gh-pages). Puedes descargar desde ahí el archivo ZIP y ejecutarlo localmente. ",
+    "HELP_8_Desc_4": "Además, la probabilidad de que cerremos MyCrypto es casi nula. No nos cuesta prácticamente nada mantenerlo ya que no almacenamos ninguna información. Si borramos el dominio, continúa estando disponible y siempre lo estará en [https://github.com/MyCryptoHQ/MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages). Puedes descargar desde ahí el archivo ZIP y ejecutarlo localmente. ",
     "HELP_8CX_Title": "8) ¿Qué ocurre si MyCrypto CX desaparece? ",
     "HELP_8CX_Desc_1": "En primer lugar, los datos se guardan en tu equipo, no en nuestros servidores. Sabemos que puede parecer confuso, pero si miras nuestra extensión de Chrome, NO estás mirando a algo almacenado en nuestros servidores en alguna parte - todo se guarda en tu equipo. ",
     "HELP_8CX_Desc_2": "Dicho esto, es **muy importante** que respaldes toda tu información para todas las nuevas carteras generadas con MyCrypto CX. De este modo, si algo le ocurre a MyCrypto CX o a tu equipo, seguirás teniendo toda la información necesaria para poder acceder a tus ether. Ver la pregunta #2a sobre cómo respaldar tus carteras. ",
@@ -560,8 +560,8 @@
     "HELP_Sec_Desc_1": "Si una de tus primeras preguntas es \"¿Por qué debería confiar en estas personas?, se trata de algo bueno. Esperamos que lo que sigue te sirva de ayuda para disminuir tus preocupaciones. ",
     "HELP_Sec_Desc_2": "Hemos estado funcionando desde agosto de 2015. Si buscas [\"myetherwallet\" en reddit](https://www.reddit.com/search?q=myetherwallet), puedes encontrar numerosas personas que nos utilizan con gran éxito. ",
     "HELP_Sec_Desc_3": "No vamos a quitarte tu dinero ni a robar tus claves privadas. No hay código malicioso en este sitio. De hecho, las páginas \"Generar Cartera\" se ejecutan por completo en el cliente. Esto significa que todo el código se ejecuta en ** tu ordenador** y nunca se graba o se transmite a ningún lugar. ",
-    "HELP_Sec_Desc_4": "Comprueba la URL -- Este sitio se sirve a través de GitHub y puedes ver el código fuente aquí: [https://github.com/kvhnuke/etherwallet/tree/gh-pages](https://github.com/kvhnuke/etherwallet/tree/gh-pages) a [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
-    "HELP_Sec_Desc_5": "Para generar carteras, puedes descargar el [código fuente](https://github.com/kvhnuke/etherwallet/releases/latest). Ver #5 más arriba. ",
+    "HELP_Sec_Desc_4": "Comprueba la URL -- Este sitio se sirve a través de GitHub y puedes ver el código fuente aquí: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) a [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_5": "Para generar carteras, puedes descargar el [código fuente](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). Ver #5 más arriba. ",
     "HELP_Sec_Desc_6": "Haz una prueba y observa qué actividad de red ocurre. La manera más fácil de hacer esto es hacer clic con el botón derecho en la página y hacer clic en \"inspeccionar elemento\". Ve a la pestaña \"Red\". Genera una cartera de prueba. Verás que no hay actividad de red. Puede que veas algo que aparece como data:image/gif y data:image/png. Se trata de los códigos QR generándose en tu ordenador y por tu ordenador. No se ha transferido ni un solo byte. ",
     "HELP_Sec_Desc_8": "Si no te encuentras cómodo utilizando esta herramienta, no la utilices bajo ningún concepto. Hemos creado esta herramienta como una manera útil para que la gente pueda generar carteras y hacer transacciones sin tener que utilizar la línea de comandos o ejecutar un nodo completo. De nuevo, por favor contáctanos si tienes inquietudes y responderemos lo más pronto posible. ¡Gracias! ",
     "HELP_FAQ_Title": "Más respuestas útiles a preguntas frecuentes ",
@@ -661,4 +661,5 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 

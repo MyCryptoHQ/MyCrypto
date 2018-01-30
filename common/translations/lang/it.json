@@ -263,7 +263,7 @@
     "DEP_interface": "Interfaccia generata ",
     "NODE_Title": "Configura nodo personalizzato",
     "NODE_Subtitle": "Per collegarti a un nodo locale...",
-    "NODE_Warning": "Il tuo nodo deve utilizzare HTTPS per potertici collegare da MyCrypto.com. Puoi [scaricare il repository di MyCrypto ed eseguirlo in locale](https://github.com/kvhnuke/etherwallet/releases/latest) per collegarti ad altri tipi di nodo. Oppure, ottieni un certificato SSL gratuito tramite [LetsEncrypt](https://letsencrypt.org/)",
+    "NODE_Warning": "Il tuo nodo deve utilizzare HTTPS per potertici collegare da MyCrypto.com. Puoi [scaricare il repository di MyCrypto ed eseguirlo in locale](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) per collegarti ad altri tipi di nodo. Oppure, ottieni un certificato SSL gratuito tramite [LetsEncrypt](https://letsencrypt.org/)",
     "NODE_Name": "Nome del nodo",
     "NODE_Port": "Porta del nodo",
     "NODE_CTA": "Salva & utilizza il nodo",
@@ -388,7 +388,7 @@
     "HELP_2a_Desc_5": "Stampa il portafoglio se hai una stampante. In alternativa, trascrivi la tua chiave privata e l'indirizzo su un pezzo di carta. Conserva questo foglio in un posto sicuro, separato dal tuo computer e dalla penna USB. ",
     "HELP_2a_Desc_6": "Ricorda, devi evitare la perdita delle chiavi e della password in caso di smarrimento o malfunzionamento del tuo hard disk, penna USB, o pezzo di carta. Devi anche considerare la perdita fisica o il danneggiamento di una intera area (pensa a incendi o inondazioni). ",
     "HELP_2b_Title": "2b) Come implemento un portafoglio offline in maniera sicura con MyCrypto? ",
-    "HELP_2b_Desc_1": "Vai su [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ",
+    "HELP_2b_Desc_1": "Vai su [https://github.com/MyCryptoHQ/MyCrypto/releases/latest](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). ",
     "HELP_2b_Desc_2": "Fai clic su `etherwallet-vX.X.X.X.zip`. ",
     "HELP_2b_Desc_3": "Sposta il file zip su un computer *air-gapped*. ",
     "HELP_2b_Desc_4": "Decomprimilo e fai doppio clic su `index.html`. ",
@@ -465,7 +465,7 @@
     "HELP_8_Desc_1": "MyCrypto non è un portafoglio web. Non hai un login e niente viene mai salvato nei nostri server. È semplicemente un'interfaccia che ti consente di interagire con la *blockchain*. ",
     "HELP_8_Desc_2": "Se MyCrypto.com va giù, dovrai trovare un altro modo (come geth o Ethereum Wallet / Mist) per fare quello che facciamo noi. Ma non dovrai \"tirare fuori\" i tuoi ether da MyCrypto perché non si trovano in MyCrypto. Sono in qualunque portafoglio tu abbia generato tramite il nostro sito. ",
     "HELP_8_Desc_3": "Ora puoi importare direttamente e molto facilmente in geth / Ethereum Wallet / Mist la tua chiave privata non crittografata e i tuoi file in formato Geth/Mist (crittografati). Vedi la domanda n. 12 qui sotto. ",
-    "HELP_8_Desc_4": "Inoltre, la probabilità che tiriamo giù MyCrypto è prossima allo zero. Non ci costa praticamente nulla mantenerlo dal momento che non stiamo memorizzando alcuna informazione. Se anche disattivassimo il dominio, è ancora, e sarà sempre, disponibile pubblicamente su [https://github.com/kvhnuke/etherwallet](https://github.com/kvhnuke/etherwallet/tree/gh-pages). Puoi scaricare lo ZIP da lì ed eseguirlo in locale. ",
+    "HELP_8_Desc_4": "Inoltre, la probabilità che tiriamo giù MyCrypto è prossima allo zero. Non ci costa praticamente nulla mantenerlo dal momento che non stiamo memorizzando alcuna informazione. Se anche disattivassimo il dominio, è ancora, e sarà sempre, disponibile pubblicamente su [https://github.com/MyCryptoHQ/MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages). Puoi scaricare lo ZIP da lì ed eseguirlo in locale. ",
     "HELP_8CX_Title": "8) Che succede se MyCrypto CX sparisce? ",
     "HELP_8CX_Desc_1": "Innanzitutto, tutti i dati sono salvati sul tuo computer, non sui nostri server. So che può essere disorientante, ma quando utilizzi l'estensione Chrome NON stai guardando qualcosa che è salvato da qualche parte sui nostri server - è tutto salvato sul tuo computer. ",
     "HELP_8CX_Desc_2": "Detto ciò, è **molto importante** che tu faccia un backup di tutte le informazioni relative a ogni nuovo portafoglio generato con MyCrypto CX. In questo modo se succede qualcosa a MyCrypto CX or al tuo computer avrai ancora tutte le informazioni necessarie ad accedere ai tuoi ether. Vedi la domanda n. 2a per come salvare i tuoi portafogli. ",
@@ -549,8 +549,8 @@
     "HELP_Sec_Desc_1": "Se una delle prime domande che ti poni è \"Perché dovrei fidarmi di questa gente?\", è una cosa buona. Quanto segue dovrebbe aiutarti a calmare i tuoi timori. ",
     "HELP_Sec_Desc_2": "Siamo attivi da agosto 2015. Se cerchi [\"myetherwallet\" su reddit](https://www.reddit.com/search?q=myetherwallet), puoi vedere che molte persone ci utilizzano con grande successo. ",
     "HELP_Sec_Desc_3": "Non prenderemo i tuoi soldi né ruberemo le tue chiavi private. Non c'è codice malevolo su questo sito. Infatti le pagine \"Genera portafoglio\" sono completamente lato client. Ciò significa che tutto il codice è eseguito sul ** tuo computer** e non viene mai salvato e trasmesso da nessuna parte. ",
-    "HELP_Sec_Desc_4": "Controlla l'URL -- Questo sito viene servito attraverso GitHub e puoi vederne il codice sorgente qui: [https://github.com/kvhnuke/etherwallet/tree/gh-pages](https://github.com/kvhnuke/etherwallet/tree/gh-pages) su [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
-    "HELP_Sec_Desc_5": "Per la generazione dei portafogli, puoi scaricare il [codice sorgente](https://github.com/kvhnuke/etherwallet/releases/latest) ed eseguirlo in locale. Vedi la domanda 5 qui sopra. ",
+    "HELP_Sec_Desc_4": "Controlla l'URL -- Questo sito viene servito attraverso GitHub e puoi vederne il codice sorgente qui: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) su [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_5": "Per la generazione dei portafogli, puoi scaricare il [codice sorgente](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) ed eseguirlo in locale. Vedi la domanda 5 qui sopra. ",
     "HELP_Sec_Desc_6": "Genera un portafoglio di prova e controlla che attività di rete sono in corso. Il modo più facile e fare clic destro sulla pagina e scegliere \"Analizza elemento\". Vai sulla scheda \"Rete\". Genera un portafoglio di prova. Vedrai che non c'è attività di rete. Potresti vedere accadere qualcosa che assomiglia a  data:image/gif e data:image/png. Sono i QR code che vengono generati...sul tuo computer...dal tuo computer. Non sono stati trasferiti byte. ",
     "HELP_Sec_Desc_8": "Se non ti senti a tuo agio a usare questo strumento, allora certo, non usarlo. Abbiamo creato questo strumento per aiutare la gente a generare portafogli ed eseguire transazioni senza bisogno di usare la riga di comando o far girare un nodo completo. Di nuovo, sentiti libero di contattarci se hai dubbi e ti risponderemo appena possibile. Grazie! ",
     "HELP_FAQ_Title": "Risposte più utili alle domande frequenti (in Inglese) ",
@@ -650,4 +650,5 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 

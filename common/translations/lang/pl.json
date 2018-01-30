@@ -266,7 +266,7 @@
     "CX_quicksend": "Wyślij ",
     "NODE_Title": "Zmień Domyślny Węzeł",
     "NODE_Subtitle": "Aby połączyć się z lokalnym węzłem...",
-    "NODE_Warning": "Twój węzeł musi obsługiwać HTTPS, aby można było się połączyć z nim przez MyCrypto.com. Możesz pobrać [repozytorium MyCrypto](https://github.com/kvhnuke/etherwallet/releases/latest) i uruchomić lokalnie aby połączyć się z dowolnym węzłem. Możesz też pobrać darmowy certyfikat SSL przez [LetsEncrypt](https://letsencrypt.org/)",
+    "NODE_Warning": "Twój węzeł musi obsługiwać HTTPS, aby można było się połączyć z nim przez MyCrypto.com. Możesz pobrać [repozytorium MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) i uruchomić lokalnie aby połączyć się z dowolnym węzłem. Możesz też pobrać darmowy certyfikat SSL przez [LetsEncrypt](https://letsencrypt.org/)",
     "NODE_Name": "Nazwa Węzła",
     "NODE_Port": "Port Węzła",
     "NODE_CTA": "Zapisz i Używaj Węzła",
@@ -399,7 +399,7 @@
     "HELP_2a_Desc_5": "Wydrukuj portfel jeżeli posiadasz drukarkę. Jeżeli nie, zapisz klucz prywatny i adres na kartce papieru. Umieść go w bezpiecznym miejscu oddzielnie od komputera i nośnika USB. ",
     "HELP_2a_Desc_6": "Pamiętaj, że musisz się zabezpieczyć przed utratą kluczy i hasła z powodu zagubienia, uszkodzenia lub zniszczenia dysku twardego, nośnika USB lub kartki z zapisanymi danymi. Przewiduj również możliwość wystąpienia katastrof obejmujących większe obszary (pożar, powódź). ",
     "HELP_2b_Title": "2b) Jak mogę utworzyć portfel w 100% odizolowany od sieci globalnej (Cold Wallet) wykorzystując MyCrypto? ",
-    "HELP_2b_Desc_1": "Wejdź na nasze konto github: [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ",
+    "HELP_2b_Desc_1": "Wejdź na nasze konto github: [https://github.com/MyCryptoHQ/MyCrypto/releases/latest](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). ",
     "HELP_2b_Desc_2": "Pobierz `etherwallet-vX.X.X.X.zip`. ",
     "HELP_2b_Desc_3": "Przenieś paczkę zip na odizolowany system. ",
     "HELP_2b_Desc_4": "Rozpakuj paczkę i kliknij 2-krotnie `index.html`. ",
@@ -476,7 +476,7 @@
     "HELP_8_Desc_1": "MyCrypto nie jest usługą portfela internetowego. Nie posiadasz loginu i nic nie jest zapisywane na naszych serwerach. To tylko interfejs, który pozwala korzystać z sieci Ethereum. ",
     "HELP_8_Desc_2": "Jeżeli MyCrypto.com zostanie wyłączona, musiałbyś znaleźć inny sposób (jak Ethereum Wallet / Mist) na korzystanie z sieci Ethereum. Nie musiałbyś jednak wypłacić swoich środków z MyCrypto, ponieważ one nie znajdują się na MyCrypto, a na portfelach, które zostały wygenerowane za pomocą naszej strony. ",
     "HELP_8_Desc_3": "Możesz w każdej chwili, w bardzo prosty sposób, zaimportować swoje nieszyfrowane klucze prywatne lub szyfrowane pliki w formacie Geth/Mist wprost do geth / Ethereum Wallet / Mist. Zobacz pytanie 12 poniżej. ",
-    "HELP_8_Desc_4": "W dodatku prawdopodobieństwo zamknięcia przez nas strony MyCrypto.com jest bliskie zeru. Koszty utrzymania strony są prawie żadne, ponieważ nie przechowujmy żadnych informacji. Jeśli nawet strona zostanie zamknięta, jest ona również i zawsze będzie publicznie dostępna na [https://github.com/kvhnuke/etherwallet](https://github.com/kvhnuke/etherwallet/tree/gh-pages). Możesz ściągnąć paczkę ZIP i uruchomić MyCrypto lokalnie na własnym komputerze. ",
+    "HELP_8_Desc_4": "W dodatku prawdopodobieństwo zamknięcia przez nas strony MyCrypto.com jest bliskie zeru. Koszty utrzymania strony są prawie żadne, ponieważ nie przechowujmy żadnych informacji. Jeśli nawet strona zostanie zamknięta, jest ona również i zawsze będzie publicznie dostępna na [https://github.com/MyCryptoHQ/MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages). Możesz ściągnąć paczkę ZIP i uruchomić MyCrypto lokalnie na własnym komputerze. ",
     "HELP_8CX_Title": "8) Co się stanie jeżeli MyCrypto CX zniknie? ",
     "HELP_8CX_Desc_1": "Po pierwsze, wszystkie dane są zapisane na Twoim komputerze, nie na naszych serwerach. Wiem, że może Ci się to wydawać dziwne, ale kiedy patrzysz na Rozszerzenie Chrome, NIE patrzysz na coś zapisanego gdzieś na naszych serwerach - wszystko to jest na Twoim własnym komputerze. ",
     "HELP_8CX_Desc_2": "Z tego powodu, jest **niezmiernie ważnym** aby wykonywać kopie bezpieczeństwa wszystkich nowych portfeli wygenerowanych za pomocą MyCrypto CX. W ten sposób, jeżeli cokolwiek stanie się MyCrypto CX lub Twojemu komputerowi, wciąż będziesz miał wszelkie niezbędne informacje potrzebne aby odzyskać dostęp do Twoich portfeli. Zobacz punkt 2a aby dowiedzieć się jak wykonać kopie bezpieczeństwa. ",
@@ -560,8 +560,8 @@
     "HELP_Sec_Desc_1": "Jeśli pierwszym pytaniem jakie Ci się nasuwa jest \"Dlaczego miałbym zaufać tym gościom?\", to prawidłowy odruch. Być może to pozwoli Ci załagodzić obawy: ",
     "HELP_Sec_Desc_2": "Działamy od sierpnia 2015. Jeśli wyszukasz [\"myetherwallet\" na reddit](https://www.reddit.com/search?q=myetherwallet), możesz znaleźć wielu ludzi, którzy używają naszego kodu bez najmniejszych problemów. ",
     "HELP_Sec_Desc_3": "Nie ukradniemy Twoich pieniędzy ani Twoich kluczy prywatnych. Ta strona nie zawiera złośliwego kodu. W zasadzie, zakładka \"Generuj Portfel\" działa w pełni po stronie klienckiej. Oznacza to, że cały kod jest uruchamiany wyłącznie na **Twoim komputerze**, a jego rezultat nigdzie nie jest zapisywany ani nigdzie przesyłany. ",
-    "HELP_Sec_Desc_4": "Sprawdź adres URL -- Ta strona jest serwowana przez GitHub. Kod źródłowy jest dostępny pod: [https://github.com/kvhnuke/etherwallet/tree/gh-pages](https://github.com/kvhnuke/etherwallet/tree/gh-pages). Strona jest dostępna pod domenami: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
-    "HELP_Sec_Desc_5": "Do generowania portfeli możesz pobrać [kod źródłowy](https://github.com/kvhnuke/etherwallet/releases/latest). Zobacz punkt 5 powyżej. ",
+    "HELP_Sec_Desc_4": "Sprawdź adres URL -- Ta strona jest serwowana przez GitHub. Kod źródłowy jest dostępny pod: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages). Strona jest dostępna pod domenami: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_5": "Do generowania portfeli możesz pobrać [kod źródłowy](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). Zobacz punkt 5 powyżej. ",
     "HELP_Sec_Desc_6": "Wykonaj test i sprawdź jakie połączenia sieciowe są aktywowane. Najprostszą metodą jest kliknięcie prawym przyciskiem myszy na stronie i \"Zbadaj\". Przejdź na zakładkę \"Network\". Wygeneruj testowy portfel. Zobaczysz, że nie są aktywowane żadne połączenia. Możesz zobaczyć coś wyglądającego jak data:image/gif i data:image/png. To są kody QR generowane... na Twoim komputerze... przez Twój komputer. Żadne dane nie były transferowane. ",
     "HELP_Sec_Desc_8": "Jeśli nie czujesz się komfortowo używając tego oprogramowania, bez względu na wszystko, nie używaj go. Stworzyliśmy te narzędzia jako pomoc w generowaniu nowych portfeli i wykonywaniu transakcji bez potrzeby zagłębiania się w linię poleceń lub prowadzenia pełnego węzła. Jeszcze raz, nie krępuj się z nami skontaktować jeżeli masz jakieś wątpliwości. Postaramy się odpowiedzieć tak szybko jak to możliwe. Dzięki! ",
     "HELP_FAQ_Title": "Więcej Pomocnych Odpowiedzi na Często Zadawane Pytania (tylko angielski) ",
@@ -661,4 +661,5 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 

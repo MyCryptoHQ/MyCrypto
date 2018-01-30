@@ -240,7 +240,7 @@
     "MNEM_prev": "Forrige Adresse ",
     "NODE_Title": "Sett opp en alternativ node",
     "NODE_Subtitle": "For å koble til en lokal node...",
-    "NODE_Warning": "Noden din må være HTTPS for å muliggjøre tilkobling via MyCrypto.com. Du kan [laste ned MyCrypto-repoet & kjøre det lokalt](https://github.com/kvhnuke/etherwallet/releases/latest) for å koble til en hvilken som helst node. Eller du kan skaffe deg et gratis SSL-sertifikat via [LetsEncrypt](https://letsencrypt.org/)",
+    "NODE_Warning": "Noden din må være HTTPS for å muliggjøre tilkobling via MyCrypto.com. Du kan [laste ned MyCrypto-repoet & kjøre det lokalt](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) for å koble til en hvilken som helst node. Eller du kan skaffe deg et gratis SSL-sertifikat via [LetsEncrypt](https://letsencrypt.org/)",
     "NODE_Name": "Nodens navn",
     "NODE_Port": "Nodens port",
     "NODE_CTA": "Lagre & bruk alternativ node",
@@ -399,7 +399,7 @@
     "HELP_2a_Desc_5": "Skriv ut lommeboken hvis du har en skriver. Hvis ikke, skriv ned adressen og den private nøkkelen din på et papirark. Lagre dette på et sikkert sted, separat fra datamaskinen og USB-disken. ",
     "HELP_2a_Desc_6": "Husk at du må unngå tap av nøklene og passordet pga. tap av, eller feil på, harddisk, USB-disk eller paperlommebok. Du må også ta i betraktning at det kan oppstå fysisk tap/skade på et helt område (tenk på brann eller flom). ",
     "HELP_2b_Title": "2b) Hvordan kan jeg lagre ether sikkert / offline / \"kaldt\" med MyCrypto? ",
-    "HELP_2b_Desc_1": "Gå til vår github: [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ",
+    "HELP_2b_Desc_1": "Gå til vår github: [https://github.com/MyCryptoHQ/MyCrypto/releases/latest](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). ",
     "HELP_2b_Desc_2": "Klikk `etherwallet-vX.X.X.X.zip`. ",
     "HELP_2b_Desc_3": "Flytt zip-fila til en frakoblet datamaskin. ",
     "HELP_2b_Desc_4": "Pakk ut zip-fila (unzip) og dobbeltklikk `index.html`. ",
@@ -476,7 +476,7 @@
     "HELP_8_Desc_1": "MyCrypto er ikke en nett-lommebok (web wallet). Du har ingen innlogging og ingenting blir noensinne lagret på våre servere. Det er ganske enkelt et grensesnitt som tillater deg å samhandle med blokkjeden. ",
     "HELP_8_Desc_2": "Hvis MyCrypto.com går ned, må du finne en annen måte (som f.eks. geth eller Ethereum Wallet / Mist) å gjøre det på. Men du vil ikke trenge å \"hente\" eteren din ut av MyCrypto, fordi den ikke befinner seg i MyCrypto. Den befinner seg i den lommeboka/kontoen som du opprettet ved hjelp av nettsiden vår. ",
     "HELP_8_Desc_3": "Du kan nå svært enkelt importere din ukrypterte private nøkkel og dine Geth/Mist-format (krypterte) filer direkte inn i geth / Ethereum Wallet / Mist. Se spørsmål #12 nedenfor. ",
-    "HELP_8_Desc_4": "I tillegg er sannsynligheten for at vi tar ned MyCrypto svært liten. Det koster oss nesten ingenting å opprettholde den siden vi ikke lagrer noen informasjon. Hvis vi tar ned domenet, er det fortsatt, og vil alltid være, offentlig tilgjengelig på [https://github.com/kvhnuke/etherwallet](https://github.com/kvhnuke/etherwallet/tree/gh-pages). Du kan laste ned zip-fila der og kjøre den lokalt. ",
+    "HELP_8_Desc_4": "I tillegg er sannsynligheten for at vi tar ned MyCrypto svært liten. Det koster oss nesten ingenting å opprettholde den siden vi ikke lagrer noen informasjon. Hvis vi tar ned domenet, er det fortsatt, og vil alltid være, offentlig tilgjengelig på [https://github.com/MyCryptoHQ/MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages). Du kan laste ned zip-fila der og kjøre den lokalt. ",
     "HELP_8CX_Title": "8) Hva skjer hvis MyCrypto CX (Chrome-utvidelsen) forsvinner? ",
     "HELP_8CX_Desc_1": "For det første er alle data lagret på din datamaskin, ikke på våre servere. Jeg vet det kan være forvirrende, men når du ser på Chrome-utvidelsen, så ser du IKKE på ting som er lagret på våre servere et eller annet sted - det er alt sammen lagret på din egen datamaskin. ",
     "HELP_8CX_Desc_2": "Når det er sagt, så er det **svært viktig** at du sikkerhetskopierer all din informasjon for alle lommebøkene som du har opprettet med MyCrypto CX. På den måten vil du fortsatt ha all nødvendig informasjon for å få tilgang til eteren din selv om noe skulle hende med MyCrypto CX eller datamaskinen din. Se spørsmål #2a ang. hvordan du sikkerhetskopierer lommebøkene dine. ",
@@ -560,8 +560,8 @@
     "HELP_Sec_Desc_1": "Hvis en av dine første spørsmål er \"Hvorfor skulle jeg stole på disse folkene?\", så er det en god ting. Forhåpentligvis vil følgende bidra til å lette på frykten din. ",
     "HELP_Sec_Desc_2": "Vi har vært oppe-og-gå siden august 2015. Hvis du søker etter [\"myetherwallet\" på reddit](https://www.reddit.com/search?q=myetherwallet), så kan du se mange folk som bruker oss med stor suksess. ",
     "HELP_Sec_Desc_3": "Vi kommer ikke til å ta pengene dine eller stjele dine private nøkler. Det er ingen ondsinnet kode på denne siden. Faktisk er \"Send Ether & Tokens\"-siden fullstendig klient-drevet. Det betyr at all koden blir kjørt på ** din datamaskin ** og det blir aldri lagret eller overført noe sted. ",
-    "HELP_Sec_Desc_4": "Sjekk nettsideadressen (URL) -- Denne siden blir drevet gjennom GitHub og du kan se kildekoden her: [https://github.com/kvhnuke/etherwallet/tree/gh-pages](https://github.com/kvhnuke/etherwallet/tree/gh-pages) til domenet: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
-    "HELP_Sec_Desc_5": "For å generere lommebøker, kan du laste ned [kildekoden](https://github.com/kvhnuke/etherwallet/releases/latest). Se #5 ovenfor. ",
+    "HELP_Sec_Desc_4": "Sjekk nettsideadressen (URL) -- Denne siden blir drevet gjennom GitHub og du kan se kildekoden her: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) til domenet: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_5": "For å generere lommebøker, kan du laste ned [kildekoden](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). Se #5 ovenfor. ",
     "HELP_Sec_Desc_6": "Kjør en test og sjekk hvilken nettverksaktivitet som skjer. Den enkleste måten som du kan gjøre dette på er å høyreklikke på siden og klikke \"inspiser element\". Gå til \"Nettverk\"-flippen. Generer en test-lommebok. Du vil se at det ikke er noen nettverksaktivitet. Du vil se at noe som ser ut som data:image/gif og data:image/png skjer. Disse er QR-kodene som blir generert...på din datamaskin...av din datamaskin. Ingen bytes ble overført. ",
     "HELP_Sec_Desc_8": "Hvis du ikke er komfortabel med å bruke dette verktøyet, så for all del, ikke bruk det. Vi laget dette verktøyet som et hjelpemiddel for folk som vil opprette lommebøker og utføre transaksjoner uten å måtte dykke ned i kommandolinjeoperasjoner eller kjøre en full node. Igjen, ta gjerne kontakt hvis du har bekymringer og vi vil gi tilbakemelding så snart som mulig. Takk! ",
     "HELP_FAQ_Title": "Flere nyttige svar på hyppige spørsmål ",
@@ -661,4 +661,5 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 

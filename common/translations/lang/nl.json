@@ -249,7 +249,7 @@
     "DEP_interface": "Gegenereerde Interface ",
     "NODE_Title": "Stel je Custom Node in",
     "NODE_Subtitle": "Om met een lokale node te verbinden...",
-    "NODE_Warning": "Je node dient HTTPS te zijn om met MyCrypto.com te kunnen verbinden. Je kunt de [MyCrypto repo downloaden](https://github.com/kvhnuke/etherwallet/releases/latest) en lokaal uitvoeren en vervolgens met iedere node verbinden. Of, verkrijg een gratis SSL certificaat via [LetsEncrypt](https://letsencrypt.org/)",
+    "NODE_Warning": "Je node dient HTTPS te zijn om met MyCrypto.com te kunnen verbinden. Je kunt de [MyCrypto repo downloaden](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) en lokaal uitvoeren en vervolgens met iedere node verbinden. Of, verkrijg een gratis SSL certificaat via [LetsEncrypt](https://letsencrypt.org/)",
     "NODE_Name": "Node Naam",
     "NODE_Port": "Node Poort",
     "NODE_CTA": "Opslaan & Custom Node gebruiken",
@@ -388,7 +388,7 @@
     "HELP_2a_Desc_5": "Druk je wallet af als je een printer hebt. Zo niet, schrijf dan je prive sleutel en adres op een vel papier. Bewaar dit op een veilige lokatie, ergens anders dan je computer en de USB drive. ",
     "HELP_2a_Desc_6": "Houd in gedachte dat je moet voorkomen dan je je sleutels en wachtwoord kwijt raakt door een defect of verlies van je harde schijf, USB drive, of vel papier. Denk ook aan het fysieke verlies / schade van een complete ruimte (denk aan brand of overstroming). ",
     "HELP_2b_Title": "2b) Hoe doe ik veilig / offline / cold storage met MyCrypto? ",
-    "HELP_2b_Desc_1": "Ga naar onze github: [https://github.com/kvhnuke/etherwallet/releases/latest](https://github.com/kvhnuke/etherwallet/releases/latest). ",
+    "HELP_2b_Desc_1": "Ga naar onze github: [https://github.com/MyCryptoHQ/MyCrypto/releases/latest](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). ",
     "HELP_2b_Desc_2": "Klik `etherwallet-vX.X.X.X.zip`. ",
     "HELP_2b_Desc_3": "Verplaats de zip naar een offline (airgapped) computer. ",
     "HELP_2b_Desc_4": "Unzip het en dubbel-klik `index.html`. ",
@@ -465,7 +465,7 @@
     "HELP_8_Desc_1": "MyCrypto is geen web wallet. Je hoeft niet in te loggen en er zal nooit iets van je op onze servers worden bewaard. Onze website is enkel een interface om toegang te verkrijgen tot de blockchain. ",
     "HELP_8_Desc_2": "Als MyCrypto.com er mee stopt, zul je een andere manier moeten zien te vinden (zoals geth of Ethereum Wallet / Mist) om te doen wat wij doen. Maar wat je niet zult hoeven te doen is je Ether uit MyCrypto halen omdat het niet in MyCrypto zit. Je Ether zit in in welk wallet dan ook je op onze site hebt gegenereerd. ",
     "HELP_8_Desc_3": "Je kunt je  onversleutelde (unencrypted) prive sleutel en je Geth/Mist Formaat (encrypted) bestanden heel gemakkelijk en direct in geth / Ethereum Wallet / Mist importeren. Zie onderstaande vraag #12. ",
-    "HELP_8_Desc_4": "Daarnaast is de kans dat wij MyCrypto offline halen is miniem tot onmogelijk. Het kost ons vrijwel niets om de site in stand te houden omdat we geen informatie opslaan. Als we toch het domijn offline halen, is het ook altijd nog publiekelijk beschikbaar op [https://github.com/kvhnuke/etherwallet](https://github.com/kvhnuke/etherwallet/tree/gh-pages). Je kunt daar de ZIP downloaden en het lokaal draaien. ",
+    "HELP_8_Desc_4": "Daarnaast is de kans dat wij MyCrypto offline halen is miniem tot onmogelijk. Het kost ons vrijwel niets om de site in stand te houden omdat we geen informatie opslaan. Als we toch het domijn offline halen, is het ook altijd nog publiekelijk beschikbaar op [https://github.com/MyCryptoHQ/MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages). Je kunt daar de ZIP downloaden en het lokaal draaien. ",
     "HELP_8CX_Title": "8) Wat gebeurd er als MyCrypto CX verdwijnt? ",
     "HELP_8CX_Desc_1": "Ten eerste is alle je data op jouw computer opgeslagen, niet op onze servers. We snappen dat het verwarrend kan zijn, maar als je naar de Chrome Extensie kijkt, kijk je NIET naar dingen die ergens op onze servers staan opgeslagen - alles is bewaard op je eigen computer. ",
     "HELP_8CX_Desc_2": "Dat gezegd hebbende, is het dan ook **erg belangrijk** dat je een back-up maakt van je wallets die met MyCrypto CX zijn gegenereerd. Als er iets met MyCrypto CX of jouw computer gebeurd blijft op die manier je wallet bewaard, en heb alle noodzakelijke informatie bij de hand om toegang tot je Ether te verkrijgen. Zie vraag #2a om te leren hoe een back-up van je wallet kunt maken. ",
@@ -549,8 +549,8 @@
     "HELP_Sec_Desc_1": "Als een van je eerste vragen is: \"Waarom zou ik deze mensen moeten vertrouwen?\", dan is dat alleen maar goed. Hopelijk zal het volgende je angst verminderen. ",
     "HELP_Sec_Desc_2": "We zijn up en running sinds augustus 2015. Als je zoekt naar [\"myetherwallet\" on reddit](https://www.reddit.com/search?q=myetherwallet), zul je tal van mensen vinden die ons met groot succes gebruiken. ",
     "HELP_Sec_Desc_3": "We gaan je niet je geld afnemen of je prive sleutel(s) stelen. Onze website bevat geen kwaadaardige code. Sterker nog, de \"GENEREER WALLET\" paginas zijn volledig client-side. Dit betekend dat alle code wordt uitgevoerd op ** jouw computer** en dat het buiten jouw computer niets bewaard of verstuurd. ",
-    "HELP_Sec_Desc_4": "Controleer de URL -- Deze website draait vanaf GitHub en je kunt de bron code hier vinden: [https://github.com/kvhnuke/etherwallet/tree/gh-pages](https://github.com/kvhnuke/etherwallet/tree/gh-pages) naar de domein namen: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
-    "HELP_Sec_Desc_5": "Om wallets te genereren, kun je ook de [source code](https://github.com/kvhnuke/etherwallet/releases/latest) downloaden. Zie #5 hierboven. ",
+    "HELP_Sec_Desc_4": "Controleer de URL -- Deze website draait vanaf GitHub en je kunt de bron code hier vinden: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) naar de domein namen: [https://www.myetherwallet.com](https://www.myetherwallet.com). ",
+    "HELP_Sec_Desc_5": "Om wallets te genereren, kun je ook de [source code](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) downloaden. Zie #5 hierboven. ",
     "HELP_Sec_Desc_6": "Doe een test ronde en controleer wat voor netwerk activiteit er plaats vind. De makkelijkste manier om dit te doen is door met de rechtermuisknop op de pagina de klikken en te kiezen voor \"inspecteer element\". Ga naar het \"Netwerk\" tab. Genereer een test wallet. Je zult zien dat er geen netwerk activiteit is. Je zou kunnen zien dat er iets gebeurd wat er als volgt uitziet: data:image/gif and data:image/png. Dit zijn de QR codes die worden gegenereerd...op jouw computer...door jouw computer. Er werden geen bytes overgedragen. ",
     "HELP_Sec_Desc_8": "Als je je niet pettig voelt bij het gebruikt van deze tool, gebruik hem dan vooral niet. We hebben deze tool voor mensen gemaakt als een handige manier om wallets te genereren en transacties te maken zonder dat je in de command prompt hoeft te duiken of een \"full node\" moet draaien. Nogmaals, voel je vrij om contact met ons op te nemen als je je zorgen maakt en we zullen zo snel mogelijk reageren. Bedankt! ",
     "HELP_FAQ_Title": "Meer hulpzame antwoorden op veel voorkomende vragen: ",
@@ -650,4 +650,5 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
 
