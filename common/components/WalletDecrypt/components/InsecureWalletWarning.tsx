@@ -45,12 +45,11 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
       },
       {
         name: 'hasAcknowledgedDownload',
-        label: 'I acknowledge that I can and should download and run MyEtherWallet locally'
+        label: 'I acknowledge that I can and should download and run MyCrypto locally'
       },
       {
         name: 'hasConfirmedSite',
-        label:
-          'I have checked the URL and SSL certificate to make sure this is the real MyEtherWallet'
+        label: 'I have checked the URL and SSL certificate to make sure this is the real MyCrypto'
       }
     ];
     const canContinue = checkboxes.reduce(

@@ -1,10 +1,10 @@
 {
-  "name": "MyEtherWallet",
-  "author": "MyEtherWallet",
+  "name": "MyCrypto",
+  "author": "MyCryptoHQ",
   "version": "4.0.0-alpha.1",
   "main": "main.js",
-  "description": "MyEtherWallet v4",
-  "repository": "https://github.com/wbobeirne/MyEtherWallet-electron",
+  "description": "MyCrypto web and electron app",
+  "repository": "https://github.com/MyCryptoHQ/MyCrypto",
   "engines": {
     "node": ">= 8.0.0",
     "npm": ">= 5.0.0"
@@ -16,7 +16,7 @@
     "bootstrap-sass": "3.3.7",
     "classnames": "2.2.5",
     "electron-updater": "2.20.1",
-    "ethereum-blockies": "git+https://github.com/MyEtherWallet/blockies.git",
+    "ethereum-blockies": "git+https://github.com/MyCryptoHQ/blockies.git",
     "ethereumjs-abi": "0.6.5",
     "ethereumjs-tx": "1.3.3",
     "ethereumjs-util": "5.1.3",

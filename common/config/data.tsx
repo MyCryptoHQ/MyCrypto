@@ -13,12 +13,11 @@ export const N_FACTOR = 1024;
 export const ANNOUNCEMENT_TYPE = 'warning';
 export const ANNOUNCEMENT_MESSAGE = (
   <div>
-    This is an Alpha build of MyEtherWallet v4. Please only use for testing, or use v3 at{' '}
+    This is an Alpha build of MyCrypto v4. Please only use for testing, or use v3 at{' '}
     <a href="https://myetherwallet.com">{'https://myetherwallet.com'}</a>.
     <br />
     <span className="hidden-xs">
-      If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe
-      via{' '}
+      If you're interested in recieving updates about the MyCrypto V4 Alpha, you can subscribe via{' '}
       <a href="https://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">
         mailchimp
       </a>{' '}

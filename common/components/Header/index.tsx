@@ -118,7 +118,7 @@ export default class Header extends PureComponent<Props, State> {
                 src={logo}
                 height="64px"
                 width="245px"
-                alt="MyEtherWallet"
+                alt="MyCrypto logo"
               />
             </Link>
             <div className="Header-branding-right">
