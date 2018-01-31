@@ -76,7 +76,7 @@ const PRODUCT_INFO: Link[] = [
   },
   {
     link: 'https://github.com/MyCryptoHQ',
-    text: 'Github: MEW Org'
+    text: 'Github: MyCrypto Org'
   },
   {
     link: 'https://github.com/MyCryptoHQ/MyCrypto/releases/latest',

@@ -81,7 +81,7 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
           </li>
           <li>
             <a href="https://myetherwallet.github.io/knowledge-base/offline/running-myetherwallet-locally.html">
-              Downloading MEW and running it offline & locally
+              Downloading MyCrypto and running it offline & locally
             </a>
           </li>
           <li>

@@ -603,13 +603,13 @@
     "ONBOARD_why_content__10": "If you enter your private key on a phishing website, you will have **all your funds taken**.",
     "ONBOARD_blockchain_title__alt": "WTF is a Blockchain?",
     "ONBOARD_point_title__alt": "What's the Point of MyCrypto then?",
-    "ONBOARD_whymew_title": "If MyCrypto can't do those things, what's the point?",
-    "ONBOARD_whymew_content__1": "Because that is the point of decentralization and the blockchain.",
-    "ONBOARD_whymew_content__2": "You don't have to rely on your bank, government, or anyone else when you want to move your funds.",
-    "ONBOARD_whymew_content__3": "You don't have to rely on the security of an exchange or bank to keep your funds safe.",
-    "ONBOARD_whymew_content__4": "If you don't find these things valuable, ask yourself why you think the blockchain and cryptocurrencies are valuable. 😉",
-    "ONBOARD_whymew_content__5": "If you don't like the sound of this, consider using [Coinbase](https://www.coinbase.com/) or [Blockchain.info](https://blockchain.info/wallet/#/signup). They have more familiar accounts with usernames & passwords.",
-    "ONBOARD_whymew_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
+    "ONBOARD_whymyc_title": "If MyCrypto can't do those things, what's the point?",
+    "ONBOARD_whymyc_content__1": "Because that is the point of decentralization and the blockchain.",
+    "ONBOARD_whymyc_content__2": "You don't have to rely on your bank, government, or anyone else when you want to move your funds.",
+    "ONBOARD_whymyc_content__3": "You don't have to rely on the security of an exchange or bank to keep your funds safe.",
+    "ONBOARD_whymyc_content__4": "If you don't find these things valuable, ask yourself why you think the blockchain and cryptocurrencies are valuable. 😉",
+    "ONBOARD_whymyc_content__5": "If you don't like the sound of this, consider using [Coinbase](https://www.coinbase.com/) or [Blockchain.info](https://blockchain.info/wallet/#/signup). They have more familiar accounts with usernames & passwords.",
+    "ONBOARD_whymyc_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
     "ONBOARD_why_title__alt": "But...why?",
     "ONBOARD_secure_title": "How To Protect Yourself & Your Funds",
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
@@ -651,3 +651,4 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
