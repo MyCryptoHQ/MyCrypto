@@ -5,7 +5,7 @@ import {
   TRemoveCustomNode,
   TAddCustomNetwork
 } from 'actions/config';
-import logo from 'assets/images/logo-myetherwallet.svg';
+import logo from 'assets/images/logo-mycrypto.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';

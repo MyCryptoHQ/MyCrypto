@@ -1,4 +1,4 @@
-import logo from 'assets/images/logo-myetherwallet.svg';
+import logo from 'assets/images/logo-mycrypto.svg';
 import {
   bityReferralURL,
   ledgerReferralURL,
