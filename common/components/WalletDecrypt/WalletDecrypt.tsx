@@ -49,6 +49,7 @@ import {
 } from 'config';
 import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
 import { getNetworkConfig, getOffline } from '../../selectors/config';
+import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 
 interface OwnProps {
   hidden?: boolean;

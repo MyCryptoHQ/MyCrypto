@@ -10,9 +10,9 @@ import {
   UBQ_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
-import { StaticNetworkNames, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
+import { StaticNetworkIds, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
 
-export type State = { [key in StaticNetworkNames]: StaticNetworkConfig };
+export type State = { [key in StaticNetworkIds]: StaticNetworkConfig };
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.

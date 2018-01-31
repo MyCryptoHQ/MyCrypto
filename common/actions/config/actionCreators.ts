@@ -96,6 +96,13 @@ export function setLatestBlock(payload: string): interfaces.SetLatestBlockAction
   };
 }
 
+export function web3SetNode(payload: interfaces.Web3setNodeAction['payload']) {
+  return {
+    type: TypeKeys.CONFIG_NODE_WEB3_SET,
+    payload
+  };
+}
+
 export type TWeb3UnsetNode = typeof web3UnsetNode;
 export function web3UnsetNode(): interfaces.Web3UnsetNodeAction {
   return {

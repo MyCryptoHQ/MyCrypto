@@ -17,8 +17,6 @@ import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
-import { getNodeConfigFromId } from 'utils/node';
-import { getNetworkConfigFromId } from 'utils/network';
 import { dedupeCustomTokens } from 'utils/tokens';
 import sagas from './sagas';
 import { gasPricetoBase } from 'libs/units';
@@ -62,7 +60,7 @@ const configureStore = () => {
 
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
-
+  /*
   // If they have a saved node, make sure we assign that too. The node selected
   // isn't serializable, so we have to assign it here.
   if (savedConfigState && savedConfigState.nodes.selectedNode.nodeName) {
@@ -88,7 +86,7 @@ const configureStore = () => {
   const initialNetwork =
     (savedConfigState && savedConfigState.network) || configInitialState.network;
   const customTokens = dedupeCustomTokens(initialNetwork.tokens, savedCustomTokensState);
-
+*/
   const persistedInitialState = {
     config: {
       ...configInitialState,
@@ -107,7 +105,7 @@ const configureStore = () => {
             : transactionInitialState.fields.gasPrice
       }
     },
-    customTokens,
+    // customTokens,
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState
   };
@@ -129,13 +127,14 @@ const configureStore = () => {
     throttle(() => {
       const state = store.getState();
       saveState({
+        /*
         config: {
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
           customNodes: state.config.customNodes,
           customNetworks: state.config.customNetworks,
           setGasLimit: state.config.setGasLimit
-        },
+        },*/
         transaction: {
           fields: {
             gasPrice: state.transaction.fields.gasPrice

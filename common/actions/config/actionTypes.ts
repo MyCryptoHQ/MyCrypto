@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { CustomNodeConfig } from 'types/node';
+import { CustomNodeConfig, Web3NodeConfig } from 'types/node';
 import { CustomNetworkConfig } from 'types/network';
 
 /*** Toggle Offline ***/
@@ -22,8 +22,8 @@ export interface ChangeNodeAction {
   type: TypeKeys.CONFIG_NODE_CHANGE;
   // FIXME $keyof?
   payload: {
-    nodeName: string;
-    networkName: string;
+    nodeId: string;
+    networkId: string;
   };
 }
 
@@ -73,11 +73,21 @@ export interface Web3UnsetNodeAction {
   type: TypeKeys.CONFIG_NODE_WEB3_UNSET;
 }
 
+/*** Set Web3 as a Node ***/
+export interface Web3setNodeAction {
+  type: TypeKeys.CONFIG_NODE_WEB3_SET;
+  payload: { id: 'web3'; config: Web3NodeConfig };
+}
+
 export type CustomNetworkAction = AddCustomNetworkAction | RemoveCustomNetworkAction;
 
 export type CustomNodeAction = AddCustomNodeAction | RemoveCustomNodeAction;
 
-export type NodeAction = ChangeNodeAction | ChangeNodeIntentAction | Web3UnsetNodeAction;
+export type NodeAction =
+  | ChangeNodeAction
+  | ChangeNodeIntentAction
+  | Web3UnsetNodeAction
+  | Web3setNodeAction;
 
 export type MetaAction =
   | ChangeLanguageAction

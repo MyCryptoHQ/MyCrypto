@@ -3,69 +3,64 @@ import {
   getConfig,
   getStaticNetworkConfigs,
   getCustomNetworkConfigs,
-  isStaticNetworkName
+  isStaticNetworkId
 } from 'selectors/config';
-import { CustomNodeConfig, StaticNodeConfig, StaticNodeName, Web3NodeConfig } from 'types/node';
+import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, Web3NodeConfig } from 'types/node';
 import { INITIAL_STATE as SELECTED_NODE_INITIAL_STATE } from 'reducers/config/nodes/selectedNode';
 
 export const getNodes = (state: AppState) => getConfig(state).nodes;
 
-export function isNodeCustom(state: AppState, nodeName: string): CustomNodeConfig | undefined {
-  return getCustomNodeConfigs(state)[nodeName];
+export function isNodeCustom(state: AppState, nodeId: string): CustomNodeConfig | undefined {
+  return getCustomNodeConfigs(state)[nodeId];
 }
 
 export const getCustomNodeFromId = (
   state: AppState,
-  nodeName: string
-): CustomNodeConfig | undefined => getCustomNodeConfigs(state)[nodeName];
+  nodeId: string
+): CustomNodeConfig | undefined => getCustomNodeConfigs(state)[nodeId];
 
 export const getStaticAltNodeToWeb3 = (state: AppState) => {
   const { web3, ...configs } = getStaticNodeConfigs(state);
   if (!web3) {
-    return SELECTED_NODE_INITIAL_STATE.nodeName;
+    return SELECTED_NODE_INITIAL_STATE.nodeId;
   }
   const res = Object.entries(configs).find(
-    ([_, config]: [StaticNodeName, StaticNodeConfig]) => web3.network === config.network
+    ([_, config]: [StaticNodeId, StaticNodeConfig]) => web3.network === config.network
   );
   if (res) {
     return res[0];
   }
-  return SELECTED_NODE_INITIAL_STATE.nodeName;
+  return SELECTED_NODE_INITIAL_STATE.nodeId;
 };
 
-export const getStaticNodeFromId = (state: AppState, nodeName: StaticNodeName) =>
-  getStaticNodeConfigs(state)[nodeName];
+export const getStaticNodeFromId = (state: AppState, nodeId: StaticNodeId) =>
+  getStaticNodeConfigs(state)[nodeId];
 
-export const isStaticNodeName = (state: AppState, nodeName: string): nodeName is StaticNodeName =>
-  Object.keys(getStaticNodeConfigs(state)).includes(nodeName);
+export const isStaticNodeId = (state: AppState, nodeId: string): nodeId is StaticNodeId =>
+  Object.keys(getStaticNodeConfigs(state)).includes(nodeId);
 
 const getStaticNodeConfigs = (state: AppState) => getNodes(state).staticNodes;
 
 export const getStaticNodeConfig = (state: AppState): StaticNodeConfig | undefined => {
-  const { staticNodes, selectedNode: { nodeName } } = getNodes(state);
+  const { staticNodes, selectedNode: { nodeId } } = getNodes(state);
 
-  const defaultNetwork = isStaticNodeName(state, nodeName) ? staticNodes[nodeName] : undefined;
+  const defaultNetwork = isStaticNodeId(state, nodeId) ? staticNodes[nodeId] : undefined;
   return defaultNetwork;
 };
 
 export const getWeb3Node = (state: AppState): Web3NodeConfig | null => {
   const currNode = getStaticNodeConfig(state);
-  const currNodeName = getNodeName(state);
-  if (
-    currNode &&
-    currNodeName &&
-    isStaticNodeName(state, currNodeName) &&
-    currNodeName === 'web3'
-  ) {
+  const currNodeId = getNodeId(state);
+  if (currNode && currNodeId && isStaticNodeId(state, currNodeId) && currNodeId === 'web3') {
     return currNode;
   }
   return null;
 };
 
 export const getCustomNodeConfig = (state: AppState): CustomNodeConfig | undefined => {
-  const { customNodes, selectedNode: { nodeName } } = getNodes(state);
+  const { customNodes, selectedNode: { nodeId } } = getNodes(state);
 
-  const customNode = customNodes[nodeName];
+  const customNode = customNodes[nodeId];
   return customNode;
 };
 
@@ -81,12 +76,12 @@ export function isNodeChanging(state): boolean {
   return getNodes(state).selectedNode.pending;
 }
 
-export function getNodeName(state: AppState): string {
-  return getNodes(state).selectedNode.nodeName;
+export function getNodeId(state: AppState): string {
+  return getNodes(state).selectedNode.nodeId;
 }
 
 export function getIsWeb3Node(state: AppState): boolean {
-  return getNodeName(state) === 'web3';
+  return getNodeId(state) === 'web3';
 }
 
 export function getNodeConfig(state: AppState): StaticNodeConfig | CustomNodeConfig {
@@ -94,9 +89,7 @@ export function getNodeConfig(state: AppState): StaticNodeConfig | CustomNodeCon
 
   if (!config) {
     const { selectedNode } = getNodes(state);
-    throw Error(
-      `No node config found for ${selectedNode.nodeName} in either static or custom nodes`
-    );
+    throw Error(`No node config found for ${selectedNode.nodeId} in either static or custom nodes`);
   }
   return config;
 }
@@ -112,34 +105,32 @@ export function getNodeLib(state: AppState) {
 export interface NodeOption {
   isCustom: false;
   value: string;
-  name: { networkName?: string; service: string };
+  name: { networkId?: string; service: string };
   color?: string;
   hidden?: boolean;
 }
 
 export function getStaticNodeOptions(state: AppState): NodeOption[] {
   const staticNetworkConfigs = getStaticNetworkConfigs(state);
-  return Object.entries(getStaticNodes(state)).map(
-    ([nodeName, node]: [string, StaticNodeConfig]) => {
-      const networkName = node.network;
-      const associatedNetwork = staticNetworkConfigs[networkName];
-      const opt: NodeOption = {
-        isCustom: node.isCustom,
-        value: nodeName,
-        name: { networkName, service: node.service },
-        color: associatedNetwork.color,
-        hidden: node.hidden
-      };
-      return opt;
-    }
-  );
+  return Object.entries(getStaticNodes(state)).map(([nodeId, node]: [string, StaticNodeConfig]) => {
+    const networkId = node.network;
+    const associatedNetwork = staticNetworkConfigs[networkId];
+    const opt: NodeOption = {
+      isCustom: node.isCustom,
+      value: nodeId,
+      name: { networkId, service: node.service },
+      color: associatedNetwork.color,
+      hidden: node.hidden
+    };
+    return opt;
+  });
 }
 
 export interface CustomNodeOption {
   isCustom: true;
   id: string;
   value: string;
-  name: { networkName?: string; nodeName: string };
+  name: { networkId?: string; nodeId: string };
   color?: string;
   hidden?: boolean;
 }
@@ -148,15 +139,15 @@ export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
   const staticNetworkConfigs = getStaticNetworkConfigs(state);
   const customNetworkConfigs = getCustomNetworkConfigs(state);
   return Object.entries(getCustomNodeConfigs(state)).map(
-    ([nodeName, node]: [string, CustomNodeConfig]) => {
-      const networkName = node.network;
-      const associatedNetwork = isStaticNetworkName(state, networkName)
-        ? staticNetworkConfigs[networkName]
-        : customNetworkConfigs[networkName];
+    ([nodeId, node]: [string, CustomNodeConfig]) => {
+      const networkId = node.network;
+      const associatedNetwork = isStaticNetworkId(state, networkId)
+        ? staticNetworkConfigs[networkId]
+        : customNetworkConfigs[networkId];
       const opt: CustomNodeOption = {
         isCustom: node.isCustom,
         value: node.id,
-        name: { networkName, nodeName },
+        name: { networkId, nodeId },
         color: associatedNetwork.isCustom ? undefined : associatedNetwork.color,
         hidden: false,
         id: node.id

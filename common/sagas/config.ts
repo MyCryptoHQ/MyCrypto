@@ -13,19 +13,16 @@ import {
 } from 'redux-saga/effects';
 import { makeCustomNetworkId } from 'utils/network';
 import {
-  getNodeName,
+  getNodeId,
   getNodeConfig,
   getCustomNodeConfigs,
   getCustomNetworkConfigs,
   getOffline,
-  getNetworkConfig,
-  isStaticNodeName,
+  isStaticNodeId,
   getCustomNodeFromId,
   getStaticNodeFromId,
-  getNetworkConfigById,
-  getStaticAltNodeToWeb3
+  getNetworkConfigById
 } from 'selectors/config';
-import { AppState } from 'reducers';
 import { TypeKeys } from 'actions/config/constants';
 import {
   toggleOfflineConfig,
@@ -38,14 +35,9 @@ import {
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
-import { Web3Wallet } from 'libs/wallet';
-import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
-import { State as ConfigState } from 'reducers/config';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
-import { Web3Service } from 'reducers/config/nodes/typings';
-
-export const getConfig = (state: AppState): ConfigState => state.config;
+import { Web3Service } from 'libs/nodes/web3';
 
 let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
@@ -119,13 +111,13 @@ export function* reload(): SagaIterator {
 export function* handleNodeChangeIntent({
   payload: nodeIdToSwitchTo
 }: ChangeNodeIntentAction): SagaIterator {
-  const isStaticNode: boolean = yield select(isStaticNodeName, nodeIdToSwitchTo);
+  const isStaticNode: boolean = yield select(isStaticNodeId, nodeIdToSwitchTo);
   const currentConfig: NodeConfig = yield select(getNodeConfig);
 
   function* bailOut(message: string) {
-    const currentNodeName: string = yield select(getNodeName);
+    const currentNodeId: string = yield select(getNodeId);
     yield put(showNotification('danger', message, 5000));
-    yield put(changeNode({ networkName: currentConfig.network, nodeName: currentNodeName }));
+    yield put(changeNode({ networkId: currentConfig.network, nodeId: currentNodeId }));
   }
 
   let nextNodeConfig: CustomNodeConfig | StaticNodeConfig;
@@ -177,7 +169,7 @@ export function* handleNodeChangeIntent({
   }
 
   yield put(setLatestBlock(currentBlock));
-  yield put(changeNode({ networkName: nextNodeConfig.network, nodeName: nodeIdToSwitchTo }));
+  yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
 
   // TODO - re-enable once DeterministicWallet state is fixed to flush properly.
   // DeterministicWallet keeps path related state we need to flush before we can stop reloading
@@ -214,40 +206,10 @@ export function* cleanCustomNetworks(): SagaIterator {
   }
 }
 
-// unset web3 as the selected node if a non-web3 wallet has been selected
-export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
-  const node = yield select(getNodeName);
-  const newWallet = action.payload;
-  const isWeb3Wallet = newWallet instanceof Web3Wallet;
-
-  if (node !== 'web3' || isWeb3Wallet) {
-    return;
-  }
-
-  const altNode = yield select(getStaticAltNodeToWeb3);
-  // switch back to a node with the same network as MetaMask/Mist
-  yield put(changeNodeIntent(altNode));
-}
-
-export function* unsetWeb3Node(): SagaIterator {
-  const node = yield select(getNodeName);
-
-  if (node !== 'web3') {
-    return;
-  }
-
-  const altNode = yield select(getStaticAltNodeToWeb3);
-  // switch back to a node with the same network as MetaMask/Mist
-  yield put(changeNodeIntent(altNode));
-}
-
 export default function* configSaga(): SagaIterator {
   yield takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus);
   yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
   yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
   yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
   yield takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, cleanCustomNetworks);
-  yield takeEvery(TypeKeys.CONFIG_NODE_WEB3_UNSET, unsetWeb3Node);
-  yield takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3NodeOnWalletEvent);
-  yield takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3NodeOnWalletEvent);
 }

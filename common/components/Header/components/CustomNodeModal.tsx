@@ -43,7 +43,7 @@ interface State {
   url: string;
   port: string;
   network: string;
-  customNetworkName: string;
+  customNetworkId: string;
   customNetworkUnit: string;
   customNetworkChainId: string;
   hasAuth: boolean;
@@ -59,7 +59,7 @@ class CustomNodeModal extends React.Component<Props, State> {
     url: '',
     port: '',
     network: Object.keys(this.props.staticNetworks)[0],
-    customNetworkName: '',
+    customNetworkId: '',
     customNetworkUnit: '',
     customNetworkChainId: '',
     hasAuth: false,
@@ -150,7 +150,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                   <label className="is-required">Network Name</label>
                   {this.renderInput(
                     {
-                      name: 'customNetworkName',
+                      name: 'customNetworkId',
                       placeholder: 'My Custom Network'
                     },
                     invalids
@@ -265,7 +265,7 @@ class CustomNodeModal extends React.Component<Props, State> {
       username,
       password,
       network,
-      customNetworkName,
+      customNetworkId,
       customNetworkUnit,
       customNetworkChainId
     } = this.state;
@@ -302,8 +302,8 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     // If they have a custom network, make sure info is provided
     if (network === CUSTOM) {
-      if (!customNetworkName) {
-        invalids.customNetworkName = true;
+      if (!customNetworkId) {
+        invalids.customNetworkId = true;
       }
       if (!customNetworkUnit) {
         invalids.customNetworkUnit = true;
@@ -327,7 +327,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     return {
       isCustom: true,
-      name: this.state.customNetworkName,
+      name: this.state.customNetworkId,
       unit: this.state.customNetworkUnit,
       chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0,
       dPathFormats

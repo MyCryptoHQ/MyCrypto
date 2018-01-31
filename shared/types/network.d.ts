@@ -1,6 +1,6 @@
 import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
 
-type StaticNetworkNames = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
+type StaticNetworkIds = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
 
 interface BlockExplorerConfig {
   origin: string;
@@ -16,7 +16,7 @@ interface Token {
 }
 
 interface NetworkContract {
-  name: StaticNetworkNames;
+  name: StaticNetworkIds;
   address?: string;
   abi: string;
 }
@@ -29,7 +29,7 @@ interface DPathFormats {
 
 interface StaticNetworkConfig {
   isCustom: false; // used for type guards
-  name: StaticNetworkNames;
+  name: StaticNetworkIds;
   unit: string;
   color?: string;
   blockExplorer?: BlockExplorerConfig;
@@ -53,4 +53,4 @@ interface CustomNetworkConfig {
   dPathFormats: DPathFormats | null;
 }
 
-type NetworkConfig = StaticNetworksState[StaticNetworkNames] | CustomNetworksState[string];
+type NetworkConfig = StaticNetworksState[StaticNetworkIds] | CustomNetworksState[string];

@@ -53,3 +53,38 @@ export default class Web3Node extends RPCNode {
 export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
   return nodeLib instanceof Web3Node;
 }
+
+export const Web3Service = 'MetaMask / Mist';
+
+export async function setupWeb3Node() {
+  const { web3 } = window as any;
+
+  if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
+    throw new Error(
+      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
+    );
+  }
+
+  const lib = new Web3Node();
+  const networkId = await lib.getNetVersion();
+  const accounts = await lib.getAccounts();
+
+  if (!accounts.length) {
+    throw new Error('No accounts found in MetaMask / Mist.');
+  }
+
+  if (networkId === 'loading') {
+    throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
+  }
+
+  return { networkId, lib };
+}
+
+export async function isWeb3NodeAvailable(): Promise<boolean> {
+  try {
+    await setupWeb3Node();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

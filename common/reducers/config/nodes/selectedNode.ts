@@ -2,23 +2,23 @@ import { ChangeNodeAction, ChangeNodeIntentAction, NodeAction, TypeKeys } from '
 
 interface NodeLoaded {
   pending: false;
-  nodeName: string;
+  nodeId: string;
 }
 
 interface NodeChangePending {
   pending: true;
-  nodeName: string;
+  nodeId: string;
 }
 
 export type State = NodeLoaded | NodeChangePending;
 
 export const INITIAL_STATE: NodeLoaded = {
-  nodeName: 'eth_mew',
+  nodeId: 'eth_mew',
   pending: false
 };
 
 const changeNode = (_: State, { payload }: ChangeNodeAction): State => ({
-  nodeName: payload.networkName,
+  nodeId: payload.networkId,
   pending: false
 });
 

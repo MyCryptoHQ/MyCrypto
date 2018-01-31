@@ -1,5 +1,5 @@
 import { RPCNode, Web3Node } from 'libs/nodes';
-import { StaticNetworkNames } from './network';
+import { StaticNetworkIds } from './network';
 import { StaticNodesState, CustomNodesState } from 'reducers/config/nodes';
 import CustomNode from 'libs/nodes/custom';
 
@@ -20,7 +20,7 @@ interface CustomNodeConfig {
 
 interface StaticNodeConfig {
   isCustom: false;
-  network: StaticNetworkNames;
+  network: StaticNetworkIds;
   lib: RPCNode | Web3Node;
   service: string;
   estimateGas?: boolean;
@@ -31,7 +31,7 @@ interface Web3NodeConfig extends StaticNodeConfig {
   lib: Web3Node;
 }
 
-declare enum StaticNodeName {
+declare enum StaticNodeId {
   ETH_MEW = 'eth_mew',
   ETH_MYCRYPTO = 'eth_mycrypto',
   ETH_ETHSCAN = 'eth_ethscan',
@@ -46,10 +46,10 @@ declare enum StaticNodeName {
   EXP_TECH = 'exp_tech'
 }
 
-type NonWeb3NodeConfigs = { [key in StaticNodeName]: StaticNodeConfig };
+type NonWeb3NodeConfigs = { [key in StaticNodeId]: StaticNodeConfig };
 
-interface Web3NodeConfig {
+interface Web3NodeConfigs {
   web3?: Web3NodeConfig;
 }
 
-type NodeConfig = StaticNodesState[StaticNodeName] | CustomNodesState[string];
+type NodeConfig = StaticNodesState[StaticNodeId] | CustomNodesState[string];

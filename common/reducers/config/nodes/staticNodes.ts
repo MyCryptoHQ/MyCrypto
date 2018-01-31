@@ -1,8 +1,8 @@
 import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
-import { ConfigAction } from 'actions/config';
-import { Web3NodeConfig, NonWeb3NodeConfigs } from 'types/node';
+import { ConfigAction, TypeKeys } from 'actions/config';
+import { NonWeb3NodeConfigs, Web3NodeConfigs } from 'types/node';
 
-export type State = NonWeb3NodeConfigs & Web3NodeConfig;
+export type State = NonWeb3NodeConfigs & Web3NodeConfigs;
 
 export const INITIAL_STATE: State = {
   eth_mew: {
@@ -93,6 +93,12 @@ export const INITIAL_STATE: State = {
 
 export const staticNodes = (state: State = INITIAL_STATE, action: ConfigAction) => {
   switch (action.type) {
+    case TypeKeys.CONFIG_NODE_WEB3_SET:
+      return { ...state, [action.payload.id]: action.payload.config };
+    case TypeKeys.CONFIG_NODE_WEB3_UNSET:
+      const stateCopy = { ...state };
+      Reflect.deleteProperty(stateCopy, 'web3');
+      return stateCopy;
     default:
       return state;
   }

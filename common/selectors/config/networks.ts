@@ -3,30 +3,29 @@ import { getConfig } from 'selectors/config';
 import {
   CustomNetworkConfig,
   StaticNetworkConfig,
-  StaticNetworkNames,
+  StaticNetworkIds,
   NetworkContract
 } from 'types/network';
 
 export const getNetworks = (state: AppState) => getConfig(state).networks;
 
 export const getNetworkConfigById = (state: AppState, networkId: string) =>
-  isStaticNetworkName(state, networkId)
+  isStaticNetworkId(state, networkId)
     ? getStaticNetworkConfigs(state)[networkId]
     : getCustomNetworkConfigs(state)[networkId];
 
-export const getStaticNetworkNames = (state: AppState): StaticNetworkNames[] =>
-  Object.keys(getNetworks(state).staticNetworks) as StaticNetworkNames[];
+export const getStaticNetworkIds = (state: AppState): StaticNetworkIds[] =>
+  Object.keys(getNetworks(state).staticNetworks) as StaticNetworkIds[];
 
-export const isStaticNetworkName = (
+export const isStaticNetworkId = (
   state: AppState,
-  networkName: string
-): networkName is StaticNetworkNames =>
-  Object.keys(getStaticNetworkConfigs(state)).includes(networkName);
+  networkId: string
+): networkId is StaticNetworkIds => Object.keys(getStaticNetworkConfigs(state)).includes(networkId);
 
 export const getStaticNetworkConfig = (state: AppState): StaticNetworkConfig | undefined => {
   const { staticNetworks, selectedNetwork } = getNetworks(state);
 
-  const defaultNetwork = isStaticNetworkName(state, selectedNetwork)
+  const defaultNetwork = isStaticNetworkId(state, selectedNetwork)
     ? staticNetworks[selectedNetwork]
     : undefined;
   return defaultNetwork;

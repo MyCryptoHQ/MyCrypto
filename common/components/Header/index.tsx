@@ -30,7 +30,7 @@ import {
   getOffline,
   isNodeChanging,
   getLanguageSelection,
-  getNodeName,
+  getNodeId,
   getNodeConfig,
   CustomNodeOption,
   NodeOption,
@@ -53,7 +53,7 @@ interface StateProps {
   network: NetworkConfig;
   languageSelection: AppState['config']['meta']['languageSelection'];
   node: NodeConfig;
-  nodeSelection: AppState['config']['nodes']['selectedNode']['nodeName'];
+  nodeSelection: AppState['config']['nodes']['selectedNode']['nodeId'];
   isChangingNode: AppState['config']['nodes']['selectedNode']['pending'];
   isOffline: AppState['config']['meta']['offline'];
   nodeOptions: (CustomNodeOption | NodeOption)[];
@@ -63,7 +63,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
   isOffline: getOffline(state),
   isChangingNode: isNodeChanging(state),
   languageSelection: getLanguageSelection(state),
-  nodeSelection: getNodeName(state),
+  nodeSelection: getNodeId(state),
   node: getNodeConfig(state),
   nodeOptions: getNodeOptions(state),
   network: getNetworkConfig(state)
@@ -104,23 +104,23 @@ class Header extends Component<Props, State> {
     const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
     const options = nodeOptions.map(n => {
       if (n.isCustom) {
-        const { name: { networkName, nodeName }, isCustom, id, ...rest } = n;
+        const { name: { networkId, nodeId }, isCustom, id, ...rest } = n;
         return {
           ...rest,
           name: (
             <span>
-              {networkName} - {nodeName} <small>(custom)</small>
+              {networkId} - {nodeId} <small>(custom)</small>
             </span>
           ),
           onRemove: () => this.props.removeCustomNode({ id })
         };
       } else {
-        const { name: { networkName, service }, isCustom, ...rest } = n;
+        const { name: { networkId, service }, isCustom, ...rest } = n;
         return {
           ...rest,
           name: (
             <span>
-              {networkName} <small>({service})</small>
+              {networkId} <small>({service})</small>
             </span>
           )
         };
