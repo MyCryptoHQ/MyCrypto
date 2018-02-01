@@ -31,7 +31,7 @@ export const Amounts: React.SFC<Props> = ({
     : sendValue.muln(rates[isToken ? unit : networkUnit].USD);
   const transactionFeeUSD = isTestnet ? new BN(0) : fee.muln(rates[networkUnit].USD);
   const totalUSD = sendValueUSD.add(transactionFeeUSD);
-  const showConversion = !isTestnet && rates && rates.networkUnit;
+  const showConversion = !isTestnet && rates && isToken ? rates[unit] : rates[networkUnit];
   return (
     <div className="tx-modal-amount">
       <div className="tx-modal-amount-send">
