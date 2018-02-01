@@ -1,6 +1,6 @@
-# MyCrypto V4+ (ALPHA - VISIT [V3](https://github.com/kvhnuke/etherwallet) for the current site)<br/>Just looking to download? Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases)
+# MyCrypto V4+ (ALPHA - VISIT [V3](https://github.com/MyCryptoHQ/etherwallet) for the current site)<br/>Just looking to download? Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/MyCryptoHQ/MyCrypto.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/MyCrypto/MyCrypto.svg)](https://greenkeeper.io/)
 
 ## Running the App
 
