@@ -4,33 +4,11 @@
 $m-background: #fff;
 $m-window-padding-w: 20px;
 $m-window-padding-h: 30px;
-$m-header-padding: 2rem;
+$m-header-padding: 1.5rem 2rem 0rem 2rem;
 $m-header-height: 62px;
 $m-content-padding: 2rem 2rem;
 $m-close-size: 26px;
 $m-anim-speed: 400ms;
-
-@keyframes modalshade-open {
-  0% {
-    opacity: 0;
-  }
-  70%,
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes modal-open {
-  0%,
-  30% {
-    opacity: 0;
-    transform: translateX(-50%) scale(0.88);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
-}
 
 .Modalshade {
   position: fixed;
@@ -38,10 +16,9 @@ $m-anim-speed: 400ms;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(#000, 0.82);
+  background-color: rgba(#000, 0.54);
   z-index: $zindex-modal-background;
   display: none;
-  animation: modalshade-open $m-anim-speed ease 1;
 
   &.is-open {
     display: block;
@@ -50,39 +27,38 @@ $m-anim-speed: 400ms;
 
 .Modal {
   position: fixed;
-  top: $m-window-padding-h;
+  top: 50%;
   left: 50%;
   max-width: 95%;
   max-width: calc(100% - #{$m-window-padding-w * 2});
   max-height: 95%;
   max-height: calc(100% - #{$m-window-padding-h * 2});
   background: $m-background;
-  border-radius: 4px;
-  transform: translateX(-50%);
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
   z-index: $zindex-modal;
   overflow: hidden;
   display: none;
   flex-direction: column;
   animation: modal-open $m-anim-speed ease 1;
   text-align: left;
+  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14),
+    0px 6px 30px 5px rgba(0, 0, 0, 0.12);
 
   &.is-open {
     display: flex;
   }
 
   &-header {
-    position: relative;
-    padding: 0 $m-header-padding;
-    height: $m-header-height;
-    border-bottom: 1px solid $gray-lighter;
-    background: $m-background;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: $m-header-padding;
+    align-items: center;
 
     &-title {
+      font-size: 26px;
+      font-weight: 400;
       margin: 0;
-      padding-right: $m-close-size;
-      font-size: $font-size-large;
-      line-height: $m-header-height;
-      height: $m-header-height;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -91,13 +67,10 @@ $m-anim-speed: 400ms;
 
     &-close {
       @include reset-button;
-      position: absolute;
-      top: 50%;
-      right: $m-header-padding;
       height: $m-close-size;
       width: $m-close-size;
-      opacity: 0.8;
-      transform: translateY(-50%) translateZ(0);
+      opacity: 0.54;
+      transition: opacity 120ms;
 
       &:hover {
         opacity: 1;
@@ -121,8 +94,7 @@ $m-anim-speed: 400ms;
   }
 
   &-footer {
-    padding: 7px 10px;
-    border-top: 1px solid $gray-lighter;
+    padding: 0rem 2rem 1.5rem 2rem;
     background: $m-background;
 
     // Selector needs a little extra oomph to override bootstrap

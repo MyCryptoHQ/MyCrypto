@@ -1,4 +1,4 @@
-import closeIcon from 'assets/images/icon-x.svg';
+import closeIcon from 'assets/images/close.svg';
 import React, { Component } from 'react';
 import './Modal.scss';
 
@@ -47,8 +47,9 @@ export default class Modal extends Component<Props, {}> {
         <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
         <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
           {title && (
-            <div className="Modal-header">
+            <div className="Modal-header flex-wrapper">
               <h2 className="Modal-header-title">{title}</h2>
+              <div className="flex-spacer" />
               <button className="Modal-header-close" onClick={handleClose}>
                 <img className="Modal-header-close-icon" src={closeIcon} />
               </button>
