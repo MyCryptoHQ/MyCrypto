@@ -193,7 +193,9 @@ const EXP: NetworkConfig = {
   unit: 'EXP',
   chainId: 2,
   color: '#673ab7',
+  // tslint:disable:no-http-string - Unavailable behind HTTPS right now
   blockExplorer: makeExplorer('http://www.gander.tech'),
+  // tslint:enable:no-http-string
   tokens: require('./tokens/exp.json'),
   contracts: require('./contracts/exp.json'),
   dPathFormats: {

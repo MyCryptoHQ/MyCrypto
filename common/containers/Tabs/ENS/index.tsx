@@ -9,7 +9,7 @@ import translate from 'translations';
 
 const ENSDocsLink = () => (
   <NewTabLink
-    href="http://ens.readthedocs.io/en/latest/introduction.html"
+    href="https://ens.readthedocs.io/en/latest/introduction.html"
     content="Ethereum Name Service"
   />
 );

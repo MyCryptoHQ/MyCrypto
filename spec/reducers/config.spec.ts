@@ -5,7 +5,7 @@ import { makeCustomNodeId, makeNodeConfigFromCustomConfig } from 'utils/node';
 
 const custNode = {
   name: 'Test Config',
-  url: 'http://somecustomconfig.org/',
+  url: 'https://somecustomconfig.org/',
   port: 443,
   network: 'ETH'
 };
