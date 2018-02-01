@@ -40,7 +40,7 @@ export const Amounts: React.SFC<Props> = ({
               checkOffline={false}
             />
             {!isTestnet && (
-              <span style={{ marginLeft: '8px' }} className="small">
+              <span className="tx-modal-amount-send-usd small">
                 $<UnitDisplay
                   value={sendValueUSD}
                   unit="ether"
@@ -65,7 +65,7 @@ export const Amounts: React.SFC<Props> = ({
               checkOffline={false}
             />
             {!isTestnet && (
-              <span style={{ marginLeft: '8px' }} className="small">
+              <span className="tx-modal-amount-fee-usd small">
                 $<UnitDisplay
                   value={transactionFeeUSD}
                   unit="ether"
@@ -90,7 +90,7 @@ export const Amounts: React.SFC<Props> = ({
                 checkOffline={false}
               />
               {!isTestnet && (
-                <span style={{ marginLeft: '8px' }} className="small">
+                <span className="tx-modal-amount-total-usd small">
                   $<UnitDisplay
                     value={totalUSD}
                     unit="ether"
