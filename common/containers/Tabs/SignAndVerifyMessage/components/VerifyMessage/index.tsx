@@ -50,6 +50,7 @@ export class VerifyMessage extends Component<Props, State> {
               placeholder={signaturePlaceholder}
               value={signature}
               onChange={this.handleSignatureChange}
+              onPaste={this.handleSignaturePaste}
             />
           </div>
 
@@ -102,6 +103,19 @@ export class VerifyMessage extends Component<Props, State> {
   private handleSignatureChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const signature = e.currentTarget.value;
     this.setState({ signature });
+  };
+
+  private handleSignaturePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const text = e.clipboardData.getData('Text');
+    if (text) {
+      try {
+        const signature = JSON.stringify(JSON.parse(text), null, 2);
+        this.setState({ signature });
+        e.preventDefault();
+      } catch (err) {
+        // Do nothing, it wasn't json they pasted
+      }
+    }
   };
 }
 

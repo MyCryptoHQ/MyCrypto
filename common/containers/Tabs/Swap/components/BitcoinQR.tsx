@@ -1,12 +1,12 @@
 import QRCode from 'qrcode.react';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 interface Props {
   paymentAddress: string | null;
   destinationAmount: number;
 }
 
-export default class BitcoinQR extends Component<Props, {}> {
+export default class BitcoinQR extends PureComponent<Props, {}> {
   public render() {
     const { paymentAddress, destinationAmount } = this.props;
     return (

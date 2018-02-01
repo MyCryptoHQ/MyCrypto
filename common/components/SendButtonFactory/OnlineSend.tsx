@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ConfirmationModal } from 'components/ConfirmationModal';
+import { ConfirmationModalTemplate } from 'components/ConfirmationModalTemplate';
 import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
@@ -22,14 +22,18 @@ interface DispatchProps {
   showNotification: TShowNotification;
   reset: TReset;
 }
+
 interface OwnProps {
+  Modal: typeof ConfirmationModalTemplate;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
+
 const INITIAL_STATE: State = {
   showModal: false
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
+
 class OnlineSendClass extends Component<Props, State> {
   public state: State = INITIAL_STATE;
 
@@ -37,7 +41,7 @@ class OnlineSendClass extends Component<Props, State> {
     return !this.props.offline ? (
       <React.Fragment>
         {this.props.withProps({ onClick: this.openModal })}
-        <ConfirmationModal isOpen={this.state.showModal} onClose={this.toggleModal} />
+        <ConfirmationModalTemplate isOpen={this.state.showModal} onClose={this.toggleModal} />
       </React.Fragment>
     ) : null;
   }

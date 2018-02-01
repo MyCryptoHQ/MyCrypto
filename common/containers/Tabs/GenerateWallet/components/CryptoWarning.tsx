@@ -20,7 +20,7 @@ const BROWSERS = [
   },
   {
     name: 'Opera',
-    href: 'http://www.opera.com/',
+    href: 'https://www.opera.com/',
     icon: operaIcon
   }
 ];

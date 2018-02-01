@@ -1,5 +1,5 @@
 import closeIcon from 'assets/images/close.svg';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './Modal.scss';
 
@@ -24,7 +24,7 @@ const Fade = ({ children, ...props }) => (
   </CSSTransition>
 );
 
-export default class Modal extends Component<Props, {}> {
+export default class Modal extends PureComponent<Props, {}> {
   private modalContent: HTMLElement | null = null;
 
   public componentDidMount() {

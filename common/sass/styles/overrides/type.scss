@@ -144,5 +144,5 @@ li {
 
 // Blockquotes
 blockquote {
-  padding: $space-sm $line-height-computed;
+  padding: $space-sm #{$line-height-computed}rem;
 }

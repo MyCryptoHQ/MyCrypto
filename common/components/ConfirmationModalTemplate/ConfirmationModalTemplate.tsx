@@ -17,13 +17,14 @@ import {
   currentTransactionFailed
 } from 'selectors/transaction';
 import { translateRaw } from 'translations';
-import './ConfirmationModal.scss';
+import './ConfirmationModalTemplate.scss';
 import { AppState } from 'reducers';
 
 interface DispatchProps {
   broadcastLocalTransactionRequested: TBroadcastLocalTransactionRequested;
   broadcastWeb3TransactionRequested: TBroadcastWeb3TransactionRequested;
 }
+
 interface StateProps {
   lang: string;
   walletTypes: IWalletType;
@@ -31,8 +32,19 @@ interface StateProps {
   transactionBroadcasted: boolean;
   transactionFailed: boolean;
 }
-interface OwnProps {
+
+export interface ConfirmButtonCBProps {
+  type: IButton['type'];
+  timeLocked: boolean;
+  timeLeft: number;
+  timePrefix: string;
+  defaultText: string;
+  onConfirm: ConfirmationModalTemplateClass['confirm'];
+}
+
+export interface OwnProps {
   isOpen?: boolean;
+  withConfirmButton?(props: ConfirmButtonCBProps): IButton;
   onClose(): void;
 }
 interface State {
@@ -42,7 +54,7 @@ interface State {
 
 type Props = DispatchProps & StateProps & OwnProps;
 
-class ConfirmationModalClass extends React.Component<Props, State> {
+class ConfirmationModalTemplateClass extends React.Component<Props, State> {
   private readTimer = 0;
   public constructor(props: Props) {
     super(props);
@@ -73,15 +85,27 @@ class ConfirmationModalClass extends React.Component<Props, State> {
   public render() {
     const { onClose, transactionBroadcasting, isOpen } = this.props;
     const { timeToRead } = this.state;
-
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
+    const defaultConfirmButton = {
+      text: buttonPrefix + translateRaw('SENDModal_Yes'),
+      type: 'primary' as IButton['type'],
+      disabled: timeToRead > 0,
+      onClick: this.confirm
+    };
+
+    const confirmButton: IButton = this.props.withConfirmButton
+      ? this.props.withConfirmButton({
+          onConfirm: defaultConfirmButton.onClick,
+          timeLeft: timeToRead,
+          timePrefix: buttonPrefix,
+          timeLocked: defaultConfirmButton.disabled,
+          defaultText: translateRaw('SENDModal_Yes'),
+          type: defaultConfirmButton.type
+        })
+      : defaultConfirmButton;
+
     const buttons: IButton[] = [
-      {
-        text: buttonPrefix + translateRaw('SENDModal_Yes'),
-        type: 'primary',
-        disabled: timeToRead > 0,
-        onClick: this.confirm
-      },
+      confirmButton,
       {
         text: translateRaw('SENDModal_No'),
         type: 'default',
@@ -124,7 +148,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
   };
 }
 
-export const ConfirmationModal = connect(
+export const ConfirmationModalTemplate = connect(
   (state: AppState) => ({
     transactionBroadcasting: currentTransactionBroadcasting(state),
     transactionBroadcasted: currentTransactionBroadcasted(state),
@@ -133,4 +157,4 @@ export const ConfirmationModal = connect(
     walletTypes: getWalletType(state)
   }),
   { broadcastLocalTransactionRequested, broadcastWeb3TransactionRequested }
-)(ConfirmationModalClass);
+)(ConfirmationModalTemplateClass);

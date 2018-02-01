@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { SwapInput } from 'reducers/swap/types';
 import './PaymentInfo.scss';
@@ -8,7 +8,7 @@ export interface Props {
   paymentAddress: string | null;
 }
 
-export default class PaymentInfo extends Component<Props, {}> {
+export default class PaymentInfo extends PureComponent<Props, {}> {
   public render() {
     const { origin } = this.props;
     return (
