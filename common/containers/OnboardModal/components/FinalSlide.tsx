@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { HelpLink } from 'components/ui';
 import { HELP_ARTICLE } from 'config';
 import OnboardSlide from './OnboardSlide';
-import onboardIconTen from 'assets/images/onboarding_icon-10.svg';
+import onboardIconTen from 'assets/images/onboarding/slide-10.svg';
 
 const FinalSlide = ({ closeModal }) => {
   const header = translate('ONBOARD_final_title');
