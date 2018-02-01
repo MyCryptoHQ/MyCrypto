@@ -2,31 +2,36 @@ import React from 'react';
 import { UnitDisplay } from 'components/ui';
 import BN from 'bn.js';
 import './Amounts.scss';
+import { AppState } from 'reducers';
+
 interface Props {
   sendValue: BN;
   fee: BN;
-  sendValueUSD: BN;
-  transactionFeeUSD: BN;
   networkUnit: string;
   decimal: number;
   unit: string;
   isToken: boolean;
   isTestnet: boolean | undefined;
+  rates: AppState['rates']['rates'];
 }
 
 export const Amounts: React.SFC<Props> = ({
   sendValue,
   fee,
-  sendValueUSD,
-  transactionFeeUSD,
   networkUnit,
   decimal,
   unit,
   isToken,
-  isTestnet
+  isTestnet,
+  rates
 }) => {
   const total = sendValue.add(fee);
+  const sendValueUSD = isTestnet
+    ? new BN(0)
+    : sendValue.muln(rates[isToken ? unit : networkUnit].USD);
+  const transactionFeeUSD = isTestnet ? new BN(0) : fee.muln(rates[networkUnit].USD);
   const totalUSD = sendValueUSD.add(transactionFeeUSD);
+  const showConversion = !isTestnet && rates && rates.networkUnit;
   return (
     <div className="tx-modal-amount">
       <div className="tx-modal-amount-send">
@@ -39,7 +44,7 @@ export const Amounts: React.SFC<Props> = ({
               symbol={isToken ? unit : networkUnit}
               checkOffline={false}
             />
-            {!isTestnet && (
+            {showConversion && (
               <span className="tx-modal-amount-send-usd small">
                 $<UnitDisplay
                   value={sendValueUSD}
@@ -64,7 +69,7 @@ export const Amounts: React.SFC<Props> = ({
               displayShortBalance={6}
               checkOffline={false}
             />
-            {!isTestnet && (
+            {showConversion && (
               <span className="tx-modal-amount-fee-usd small">
                 $<UnitDisplay
                   value={transactionFeeUSD}
@@ -89,7 +94,7 @@ export const Amounts: React.SFC<Props> = ({
                 symbol={isToken ? unit : networkUnit}
                 checkOffline={false}
               />
-              {!isTestnet && (
+              {showConversion && (
                 <span className="tx-modal-amount-total-usd small">
                   $<UnitDisplay
                     value={totalUSD}

@@ -9,7 +9,6 @@ import { AppState } from 'reducers';
 import { getFrom, getUnit, getDecimal, getTo } from 'selectors/transaction';
 import { getNetworkConfig, getNodeConfig } from 'selectors/config';
 import { getTransactionFee } from 'libs/transaction/utils/ether';
-import BN from 'bn.js';
 import { Wei, TokenValue } from 'libs/units';
 import ERC20 from 'libs/erc20';
 import './Body.scss';
@@ -54,13 +53,7 @@ class BodyClass extends React.Component<Props, State> {
           const sendValue = isToken
             ? TokenValue(ERC20.transfer.decodeInput(data)._value)
             : Wei(value);
-          const sendValueUSD = isTestnet
-            ? new BN(0)
-            : sendValue.muln(rates[isToken ? unit : network.unit].USD);
           const transactionFee = getTransactionFee(gasPrice, gasLimit);
-          const transactionFeeUSD = isTestnet
-            ? new BN(0)
-            : transactionFee.muln(rates[network.unit].USD);
 
           return (
             <div className="tx-modal-body">
@@ -78,11 +71,10 @@ class BodyClass extends React.Component<Props, State> {
                 isTestnet={isTestnet}
                 sendValue={sendValue}
                 fee={transactionFee}
-                sendValueUSD={sendValueUSD}
-                transactionFeeUSD={transactionFeeUSD}
                 networkUnit={networkUnit}
                 decimal={decimal}
                 unit={unit}
+                rates={rates}
               />
               <button
                 className={`tx-modal-details-button ${showDetails &&

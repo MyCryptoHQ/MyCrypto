@@ -89,25 +89,23 @@ class ConfirmationModalClass extends React.Component<Props, State> {
     ];
 
     return (
-      <React.Fragment>
-        <Modal
-          title="Confirm Your Transaction"
-          buttons={buttons}
-          handleClose={onClose}
-          disableButtons={transactionBroadcasting}
-          isOpen={true}
-        >
-          {transactionBroadcasting ? (
-            <React.Fragment>
-              <Spinner size="x5" />
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Body />
-            </React.Fragment>
-          )}
-        </Modal>
-      </React.Fragment>
+      <Modal
+        title="Confirm Your Transaction"
+        buttons={buttons}
+        handleClose={onClose}
+        disableButtons={transactionBroadcasting}
+        isOpen={true}
+      >
+        {transactionBroadcasting ? (
+          <React.Fragment>
+            <Spinner size="x5" />
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Body />
+          </React.Fragment>
+        )}
+      </Modal>
     );
   }
 
