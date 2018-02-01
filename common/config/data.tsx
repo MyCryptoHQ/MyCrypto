@@ -47,7 +47,7 @@ export const gasPriceDefaults = {
   gasPriceMaxGwei: 60
 };
 
-export const MINIMUM_PASSWORD_LENGTH = 9;
+export const MINIMUM_PASSWORD_LENGTH = 12;
 
 export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';

@@ -50,7 +50,8 @@
     "scryptsy": "2.0.0",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.1.1",
-    "whatwg-fetch": "2.0.3"
+    "whatwg-fetch": "2.0.3",
+    "zxcvbn": "4.4.2"
   },
   "devDependencies": {
     "@types/classnames": "2.2.3",
@@ -70,6 +71,7 @@
     "@types/redux-promise-middleware": "0.0.9",
     "@types/uuid": "3.4.3",
     "@types/webpack-env": "1.13.4",
+    "@types/zxcvbn": "4.4.0",
     "autodll-webpack-plugin": "0.3.8",
     "awesome-typescript-loader": "3.4.1",
     "babel-minify-webpack-plugin": "0.2.0",
