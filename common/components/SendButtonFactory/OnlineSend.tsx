@@ -34,14 +34,10 @@ class OnlineSendClass extends Component<Props, State> {
   public state: State = INITIAL_STATE;
 
   public render() {
-    const displayModal = this.state.showModal ? (
-      <ConfirmationModal onClose={this.toggleModal} />
-    ) : null;
-
     return !this.props.offline ? (
       <React.Fragment>
         {this.props.withProps({ onClick: this.openModal })}
-        {displayModal}
+        <ConfirmationModal isOpen={this.state.showModal} onClose={this.toggleModal} />
       </React.Fragment>
     ) : null;
   }

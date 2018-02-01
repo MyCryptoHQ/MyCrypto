@@ -32,6 +32,7 @@ interface StateProps {
   transactionFailed: boolean;
 }
 interface OwnProps {
+  isOpen?: boolean;
   onClose(): void;
 }
 interface State {
@@ -70,7 +71,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
   }
 
   public render() {
-    const { onClose, transactionBroadcasting } = this.props;
+    const { onClose, transactionBroadcasting, isOpen } = this.props;
     const { timeToRead } = this.state;
 
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
@@ -94,7 +95,7 @@ class ConfirmationModalClass extends React.Component<Props, State> {
         buttons={buttons}
         handleClose={onClose}
         disableButtons={transactionBroadcasting}
-        isOpen={true}
+        isOpen={isOpen}
       >
         {transactionBroadcasting ? (
           <React.Fragment>
