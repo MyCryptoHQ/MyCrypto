@@ -9,29 +9,50 @@
     margin-right: 1rem;
   }
   &-from,
+  &-tkn-contract,
   &-to,
   &-send-amount {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     margin: 1rem 0rem;
+    &-icon {
+      margin-right: 1rem;
+    }
     &:first-child {
       margin-top: 0;
     }
-    > img {
-      margin-right: 1rem;
-    }
-    > div > h5 {
-      margin: 0;
-      &:first-child {
-        margin-right: 16px;
-        padding-bottom: 0.25rem;
+    &-content {
+      > h5 {
+        margin: 0;
+        &:first-child {
+          margin-right: 16px;
+          padding-bottom: 0.25rem;
+        }
+        &:nth-child(0n + 2) {
+          font-family: $font-family-monospace;
+          font-weight: 400;
+          opacity: 0.54;
+        }
       }
-      &:nth-child(0n + 2) {
+    }
+  }
+
+  &-tkn-contract {
+    &-icon {
+      > img {
+        transform: scale(0.75);
+      }
+    }
+    &-content {
+      > p {
+        margin: 0;
+        font-weight: 400;
+        color: rgba(0, 0, 0, 0.54);
+      }
+      > a {
         font-family: $font-family-monospace;
         font-weight: 400;
-        opacity: 0.74;
-        border-radius: 5px;
       }
     }
   }

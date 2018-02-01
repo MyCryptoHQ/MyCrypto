@@ -11,15 +11,16 @@
       width: 100%;
       display: flex;
       justify-content: space-between;
-      > h5 {
-        margin: 0px 0px;
-        &:last-child {
-          font-weight: 300;
-          & span {
-            font-weight: 300;
-            letter-spacing: 1px;
-          }
-        }
+    }
+    &-title,
+    &-value {
+      font-weight: 400;
+      margin: 0px 0px;
+    }
+    &-value {
+      > span {
+        color: rgba(0, 0, 0, 0.54);
+        letter-spacing: 1px;
       }
     }
     &-usd {

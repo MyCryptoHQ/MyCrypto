@@ -24,8 +24,8 @@ export const Details: React.SFC<Props> = ({
 }) => {
   return (
     <div className="tx-modal-details">
-      <p>
-        Your interacting with the {network} network provided by {provider}
+      <p className="tx-modal-details-network-info">
+        Interacting with the {network} network provided by {provider}
       </p>
       <Code>
         {JSON.stringify(

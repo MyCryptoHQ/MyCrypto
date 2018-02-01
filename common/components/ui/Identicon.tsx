@@ -4,17 +4,19 @@ import React from 'react';
 
 interface Props {
   address: string;
+  className?: string;
   size?: string;
 }
 
 export default function Identicon(props: Props) {
   const size = props.size || '4rem';
+  const { address, className } = props;
   // FIXME breaks on failed checksums
-  const identiconDataUrl = isValidETHAddress(props.address) ? toDataUrl(props.address) : '';
+  const identiconDataUrl = isValidETHAddress(address) ? toDataUrl(address) : '';
   return (
     // Use inline styles for printable wallets
     <div
-      className="Identicon"
+      className={`Identicon ${className}`}
       title="Address Identicon"
       style={{ width: size, height: size, position: 'relative' }}
     >

@@ -36,8 +36,8 @@ export const Amounts: React.SFC<Props> = ({
     <div className="tx-modal-amount">
       <div className="tx-modal-amount-send">
         <div className="tx-modal-amount-send-positioning-wrapper">
-          <h5>You'll Send </h5>
-          <h5>
+          <p className="tx-modal-amount-send-title">You'll Send </p>
+          <p className="tx-modal-amount-send-value">
             <UnitDisplay
               decimal={decimal}
               value={sendValue}
@@ -55,13 +55,13 @@ export const Amounts: React.SFC<Props> = ({
                 />
               </span>
             )}
-          </h5>
+          </p>
         </div>
       </div>
       <div className="tx-modal-amount-fee">
         <div className="tx-modal-amount-fee-positioning-wrapper">
-          <h5>Transaction Fee </h5>
-          <h5>
+          <p className="tx-modal-amount-fee-title">Transaction Fee </p>
+          <p className="tx-modal-amount-fee-value">
             <UnitDisplay
               value={fee}
               unit="ether"
@@ -80,14 +80,14 @@ export const Amounts: React.SFC<Props> = ({
                 />
               </span>
             )}
-          </h5>
+          </p>
         </div>
       </div>
       {unit === 'ether' && (
         <div className="tx-modal-amount-total">
           <div className="tx-modal-amount-total-positioning-wrapper">
-            <h5>Total </h5>
-            <h5>
+            <h5 className="tx-modal-amount-total-title">Total </h5>
+            <h5 className="tx-modal-amount-total-value">
               <UnitDisplay
                 value={total}
                 decimal={decimal}
