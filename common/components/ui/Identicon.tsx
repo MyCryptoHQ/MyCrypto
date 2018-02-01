@@ -1,7 +1,6 @@
 import { toDataUrl } from 'ethereum-blockies';
 import { isValidETHAddress } from 'libs/validators';
 import React from 'react';
-import './Identicon.scss';
 
 interface Props {
   address: string;
@@ -13,11 +12,34 @@ export default function Identicon(props: Props) {
   // FIXME breaks on failed checksums
   const identiconDataUrl = isValidETHAddress(props.address) ? toDataUrl(props.address) : '';
   return (
-    <div className="Identicon" title="Address Identicon" style={{ width: size, height: size }}>
+    // Use inline styles for printable wallets
+    <div
+      className="Identicon"
+      title="Address Identicon"
+      style={{ width: size, height: size, position: 'relative' }}
+    >
       {identiconDataUrl && (
         <React.Fragment>
-          <img src={identiconDataUrl} />
-          <div className="border" />
+          <img
+            src={identiconDataUrl}
+            style={{
+              height: '100%',
+              width: '100%',
+              padding: '0px',
+              'border-radius': '50%'
+            }}
+          />
+          <div
+            className="border"
+            style={{
+              position: 'absolute',
+              height: 'inherit',
+              width: 'inherit',
+              top: 0,
+              'box-shadow': '0 3px 8px 0 rgba(0, 0, 0, 0.1), inset 0 0 3px 0 rgba(0, 0, 0, 0.1)',
+              'border-radius': '50%'
+            }}
+          />
         </React.Fragment>
       )}
     </div>
