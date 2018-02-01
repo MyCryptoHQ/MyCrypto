@@ -1,6 +1,6 @@
 # MyEtherWallet V4+ (ALPHA - VISIT [V3](https://github.com/kvhnuke/etherwallet) for the current site)<br/>Just looking to download? Grab our [latest release](https://github.com/MyEtherWallet/MyEtherWallet/releases)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/MyEtherWallet/MyEtherWallet.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/MyCrypto/MyCrypto.svg)](https://greenkeeper.io/)
 
 ## Running the App
 
