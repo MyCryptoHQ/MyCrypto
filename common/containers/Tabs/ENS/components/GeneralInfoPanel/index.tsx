@@ -1,8 +1,8 @@
-import { NewTabLink } from 'components/ui';
 import React from 'react';
 import GeneralInfoNode from './GeneralInfoNode';
-import { knowledgeBaseURL } from 'config';
+import { HELP_ARTICLE } from 'config';
 import { InfoNode } from './types';
+import { NewTabLink, HelpLink } from 'components/ui';
 
 const generalInfoNodes: InfoNode[] = [
   {
@@ -100,12 +100,11 @@ export const GeneralInfoPanel = () => (
       <h4> What is the process like? </h4>
       <GeneralInfoList />
       <h6>
-        <NewTabLink content="Help Center: ENS" href={`${knowledgeBaseURL}/ens`} />
+        <HelpLink article={HELP_ARTICLE.ENS}>Help Center: ENS</HelpLink>
         &nbsp;&middot;&nbsp;
-        <NewTabLink
-          content="Debugging a [BAD INSTRUCTION] Reveal"
-          href={`${knowledgeBaseURL}/ens/ens-debugging-a-bad-instruction-reveal`}
-        />
+        <HelpLink article={HELP_ARTICLE.ENS_BAD_REVEAL}>
+          Debugging a [BAD INSTRUCTION] Reveal
+        </HelpLink>
       </h6>
       <p>
         Please try the above before relying on support for reveal issues as we are severely

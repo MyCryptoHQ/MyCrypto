@@ -48,7 +48,7 @@ export const gasPriceDefaults = {
 
 export const MINIMUM_PASSWORD_LENGTH = 9;
 
-export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
+export const knowledgeBaseURL = 'https://support.mycrypto.com';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
 // Note: add the real referral url once you know it
 export const shapeshiftReferralURL = 'https://shapeshift.io';

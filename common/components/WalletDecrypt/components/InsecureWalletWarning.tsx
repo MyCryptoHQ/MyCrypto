@@ -1,4 +1,6 @@
 import React from 'react';
+import { HelpLink } from 'components/ui';
+import { HELP_ARTICLE } from 'config';
 import './InsecureWalletWarning.scss';
 
 interface Props {
@@ -69,32 +71,28 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
         </p>
         <ul className="WalletWarning-bullets">
           <li>
-            Using{' '}
-            <a href="https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html">
-              MetaMask
-            </a>{' '}
-            or a{' '}
-            <a href="https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html">
+            Using <HelpLink article={HELP_ARTICLE.MIGRATE_TO_METAMASK}>MetaMask</HelpLink> or a{' '}
+            <HelpLink article={HELP_ARTICLE.HARDWARE_WALLET_RECOMMENDATIONS}>
               Hardware Wallet
-            </a>{' '}
+            </HelpLink>{' '}
             to access your wallet
           </li>
           <li>
-            <a href="https://myetherwallet.github.io/knowledge-base/offline/running-myetherwallet-locally.html">
+            <HelpLink article={HELP_ARTICLE.RUNNING_LOCALLY}>
               Downloading MyCrypto and running it offline & locally
-            </a>
+            </HelpLink>
           </li>
           <li>
             Reading{' '}
-            <a href="https://myetherwallet.github.io/knowledge-base/security/securing-your-ethereum.html">
+            <HelpLink article={HELP_ARTICLE.SECURING_YOUR_ETH}>
               How to Protect Yourself and Your Funds
-            </a>
+            </HelpLink>
           </li>
         </ul>
         <p className="WalletWarning-check">
           If you must use your {walletType} online, please double-check the URL & SSL certificate.
-          It should say <code>{'https://www.myetherwallet.com'}</code>
-          & <code>MYETHERWALLET LLC [US]</code> in your URL bar.
+          It should say <code>{'https://www.mycrypto.com'}</code>
+          & <code>MyCrypto, LLC [US]</code> in your URL bar.
         </p>
         <div className="WalletWarning-checkboxes">{checkboxes.map(this.makeCheckbox)}</div>
 
