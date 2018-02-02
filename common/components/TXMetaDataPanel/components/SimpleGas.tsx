@@ -9,10 +9,12 @@ import { getGasLimitEstimationTimedOut } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { GasLimitField } from 'components/GasLimitField';
 import { getIsWeb3Node } from 'selectors/config';
+import { Wei, fromWei } from 'libs/units';
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   inputGasPrice(rawGas: string);
+  setGasPrice(rawGas: string);
 }
 
 interface StateProps {
@@ -23,6 +25,10 @@ interface StateProps {
 type Props = OwnProps & StateProps;
 
 class SimpleGas extends React.Component<Props> {
+  public componentDidMount() {
+    this.fixGasPrice(this.props.gasPrice);
+  }
+
   public render() {
     const { gasPrice, gasLimitEstimationTimedOut, isWeb3Node } = this.props;
 
@@ -52,7 +58,7 @@ class SimpleGas extends React.Component<Props> {
               onChange={this.handleSlider}
               min={gasPriceDefaults.gasPriceMinGwei}
               max={gasPriceDefaults.gasPriceMaxGwei}
-              value={parseFloat(gasPrice.raw)}
+              value={this.getGasPriceGwei(gasPrice.value)}
             />
             <div className="SimpleGas-slider-labels">
               <span>{translate('Cheap')}</span>
@@ -76,6 +82,20 @@ class SimpleGas extends React.Component<Props> {
   private handleSlider = (gasGwei: number) => {
     this.props.inputGasPrice(gasGwei.toString());
   };
+
+  private fixGasPrice(gasPrice: AppState['transaction']['fields']['gasPrice']) {
+    // If the gas price is above or below our minimum, bring it in line
+    const gasPriceGwei = this.getGasPriceGwei(gasPrice.value);
+    if (gasPriceGwei > gasPriceDefaults.gasPriceMaxGwei) {
+      this.props.setGasPrice(gasPriceDefaults.gasPriceMaxGwei.toString());
+    } else if (gasPriceGwei < gasPriceDefaults.gasPriceMinGwei) {
+      this.props.setGasPrice(gasPriceDefaults.gasPriceMinGwei.toString());
+    }
+  }
+
+  private getGasPriceGwei(gasPriceValue: Wei) {
+    return parseFloat(fromWei(gasPriceValue, 'gwei'));
+  }
 }
 export default connect((state: AppState) => ({
   gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
