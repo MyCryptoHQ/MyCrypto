@@ -348,16 +348,18 @@ class CustomNodeModal extends React.Component<Props, State> {
       name: this.state.name.trim(),
       url,
       port,
-      network: networkId
+      network: networkId,
+      ...(this.state.hasAuth
+        ? {
+            auth: {
+              username: this.state.username,
+              password: this.state.password
+            }
+          }
+        : {})
     };
 
     const lib = new CustomNode(node);
-    if (this.state.hasAuth) {
-      node.auth = {
-        username: this.state.username,
-        password: this.state.password
-      };
-    }
 
     return { ...node, lib };
   }
