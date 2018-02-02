@@ -26,29 +26,25 @@ export const print = (address: string, privateKey: string) => () =>
     `
   });
 
-const PrintableWallet: React.SFC<{ wallet: IFullWallet }> = ({ wallet }) => {
-  const address = wallet.getAddressString();
-  const privateKey = stripHexPrefix(wallet.getPrivateKeyString());
+interface Props {
+  address: string;
+  privateKey: string;
+}
 
-  if (!address || !privateKey) {
-    return null;
-  }
-
-  return (
-    <div>
-      <PaperWallet address={address} privateKey={privateKey} />
-      <a
-        role="button"
-        aria-label={translateRaw('x_Print')}
-        aria-describedby="x_PrintDesc"
-        className="btn btn-lg btn-primary btn-block"
-        onClick={print(address, privateKey)}
-        style={{ margin: '10px auto 0', maxWidth: '260px' }}
-      >
-        {translateRaw('x_Print')}
-      </a>
-    </div>
-  );
-};
+const PrintableWallet: React.SFC<Props> = ({ address, privateKey }) => (
+  <div>
+    <PaperWallet address={address} privateKey={privateKey} />
+    <a
+      role="button"
+      aria-label={translateRaw('x_Print')}
+      aria-describedby="x_PrintDesc"
+      className="btn btn-lg btn-primary btn-block"
+      onClick={print(address, privateKey)}
+      style={{ margin: '10px auto 0', maxWidth: '260px' }}
+    >
+      {translateRaw('x_Print')}
+    </a>
+  </div>
+);
 
 export default PrintableWallet;

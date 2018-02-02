@@ -3,10 +3,12 @@ import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
 import translate, { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { TogglablePassword } from 'components';
+import { Spinner } from 'components/ui';
 import Template from '../Template';
 import './EnterPassword.scss';
 
 interface Props {
+  isGenerating: boolean;
   continue(pw: string): void;
 }
 
@@ -25,6 +27,7 @@ export default class EnterPassword extends Component<Props, State> {
   };
 
   public render() {
+    const { isGenerating } = this.props;
     const { password, confirmedPassword, feedback } = this.state;
     const passwordValidity = this.getPasswordValidity();
     const isPasswordValid = passwordValidity === 'valid';
@@ -70,10 +73,10 @@ export default class EnterPassword extends Component<Props, State> {
 
           <button
             onClick={this.onClickGenerateFile}
-            disabled={!isPasswordValid || !isConfirmValid}
+            disabled={!isPasswordValid || !isConfirmValid || isGenerating}
             className="EnterPw-submit btn btn-primary btn-lg btn-block"
           >
-            {translate('NAV_GenerateWallet')}
+            {translate('NAV_GenerateWallet')} {isGenerating && <Spinner light={true} />}
           </button>
 
           <p className="EnterPw-warning">{translate('x_PasswordDesc')}</p>
