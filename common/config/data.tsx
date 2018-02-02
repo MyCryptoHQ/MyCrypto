@@ -49,12 +49,13 @@ export const gasPriceDefaults = {
 export const MINIMUM_PASSWORD_LENGTH = 9;
 
 export const knowledgeBaseURL = 'https://support.mycrypto.com';
+export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
+export const trezorReferralURL = 'https://trezor.io/?a=mycrypto.com';
+export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
+// TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
-// Note: add the real referral url once you know it
+// TODO - add the real referral url once you know it
 export const shapeshiftReferralURL = 'https://shapeshift.io';
-export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
-export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
-export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
 export enum SecureWalletName {
   WEB3 = 'web3',

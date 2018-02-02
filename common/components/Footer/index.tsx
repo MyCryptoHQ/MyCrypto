@@ -34,22 +34,17 @@ const SocialMediaLink = ({ link, text }: Link) => {
 
 const SOCIAL_MEDIA: Link[] = [
   {
-    link: 'https://myetherwallet.herokuapp.com/',
-    text: 'slack'
-  },
-
-  {
-    link: 'https://www.reddit.com/r/MyEtherWallet/',
+    link: 'https://www.reddit.com/r/mycrypto/',
     text: 'reddit'
   },
 
   {
-    link: 'https://twitter.com/mycryptohq',
+    link: 'https://twitter.com/mycrypto',
     text: 'twitter'
   },
 
   {
-    link: 'https://www.facebook.com/MyEtherWallet',
+    link: 'https://www.facebook.com/MyCrypto/',
     text: 'facebook'
   },
 
@@ -59,7 +54,7 @@ const SOCIAL_MEDIA: Link[] = [
   },
 
   {
-    link: 'https://www.linkedin.com/company/myetherwallet/',
+    link: 'https://www.linkedin.com/company/mycrypto',
     text: 'linkedin'
   },
 
