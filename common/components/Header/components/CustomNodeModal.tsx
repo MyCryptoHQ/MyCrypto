@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import Modal, { IButton } from 'components/ui/Modal';
 import translate from 'translations';
-import { makeCustomNetworkId } from 'utils/network';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
@@ -131,14 +130,11 @@ class CustomNodeModal extends React.Component<Props, State> {
                       {net}
                     </option>
                   ))}
-                  {Object.values(customNetworks).map(net => {
-                    const id = makeCustomNetworkId(net);
-                    return (
-                      <option key={id} value={id}>
-                        {net.name} (Custom)
-                      </option>
-                    );
-                  })}
+                  {Object.entries(customNetworks).map(([id, net]) => (
+                    <option key={id} value={id}>
+                      {net.name} (Custom)
+                    </option>
+                  ))}
                   <option value={CUSTOM}>Custom...</option>
                 </select>
               </div>
@@ -336,8 +332,11 @@ class CustomNodeModal extends React.Component<Props, State> {
 
   private makeCustomNodeConfigFromState(): CustomNodeConfig {
     const { network } = this.state;
+
     const networkId =
-      network === CUSTOM ? makeCustomNetworkId(this.makeCustomNetworkConfigFromState()) : network;
+      network === CUSTOM
+        ? this.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
+        : network;
 
     const port = parseInt(this.state.port, 10);
     const url = this.state.url.trim();
@@ -392,6 +391,10 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     this.props.addCustomNode({ config: node, id: node.id });
   };
+
+  private makeCustomNetworkId(config: CustomNetworkConfig): string {
+    return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
+  }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({

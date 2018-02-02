@@ -52,7 +52,7 @@ import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { getTokenBalances, filterScannedTokenBalances } from './helpers';
 import { Token } from 'types/network';
 import { Web3NodeConfig } from '../../../shared/types/node';
-import { initWeb3Node } from 'sagas/web3';
+import { initWeb3Node } from 'sagas/config/web3';
 
 export interface TokenBalanceLookup {
   [symbol: string]: TokenBalance;
@@ -264,7 +264,7 @@ export function* unlockWeb3(): SagaIterator {
     yield put(changeNodeIntent('web3'));
     yield take(
       action =>
-        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
+        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeId === 'web3'
     );
 
     const web3Node: Web3NodeConfig | null = yield select(getWeb3Node);

@@ -5,18 +5,15 @@ import {
   fork,
   put,
   take,
-  takeLatest,
   takeEvery,
   select,
   race,
-  apply
+  apply,
+  takeLatest
 } from 'redux-saga/effects';
-import { makeCustomNetworkId } from 'utils/network';
 import {
   getNodeId,
   getNodeConfig,
-  getCustomNodeConfigs,
-  getCustomNetworkConfigs,
   getOffline,
   isStaticNodeId,
   getCustomNodeFromId,
@@ -29,7 +26,6 @@ import {
   changeNode,
   changeNodeIntent,
   setLatestBlock,
-  removeCustomNetwork,
   AddCustomNodeAction,
   ChangeNodeIntentAction
 } from 'actions/config';
@@ -42,7 +38,7 @@ import { Web3Service } from 'libs/nodes/web3';
 let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
   while (true) {
-    const node: StaticNodeConfig = yield select(getNodeConfig);
+    const nodeConfig: StaticNodeConfig = yield select(getNodeConfig);
     const isOffline: boolean = yield select(getOffline);
 
     // If our offline state disagrees with the browser, run a check
@@ -50,7 +46,7 @@ export function* pollOfflineStatus(): SagaIterator {
     const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
     if (shouldPing && !document.hidden) {
       const { pingSucceeded } = yield race({
-        pingSucceeded: call(node.lib.ping.bind(node.lib)),
+        pingSucceeded: call(nodeConfig.lib.ping.bind(nodeConfig.lib)),
         timeout: call(delay, 5000)
       });
 
@@ -190,26 +186,9 @@ export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
   yield put(changeNodeIntent(action.payload.id));
 }
 
-// If there are any orphaned custom networks, purge them
-export function* cleanCustomNetworks(): SagaIterator {
-  const customNodes = yield select(getCustomNodeConfigs);
-  const customNetworks = yield select(getCustomNetworkConfigs);
-  const networksInUse = customNodes.reduce((prev, conf) => {
-    prev[conf.network] = true;
-    return prev;
-  }, {});
-
-  for (const net of customNetworks) {
-    if (!networksInUse[makeCustomNetworkId(net)]) {
-      yield put(removeCustomNetwork(net));
-    }
-  }
-}
-
-export default function* configSaga(): SagaIterator {
-  yield takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus);
-  yield takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent);
-  yield takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload);
-  yield takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode);
-  yield takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, cleanCustomNetworks);
-}
+export const node = [
+  takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
+  takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
+  takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
+  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode)
+];

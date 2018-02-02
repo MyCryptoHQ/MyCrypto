@@ -6,7 +6,7 @@ import { select, put, takeEvery, call } from 'redux-saga/effects';
 import { changeNodeIntent, TypeKeys, web3SetNode } from 'actions/config';
 import { getNodeId, getStaticAltNodeToWeb3 } from 'selectors/config';
 import { setupWeb3Node, Web3Service } from 'libs/nodes/web3';
-import { Web3NodeConfig } from '../../shared/types/node';
+import { Web3NodeConfig } from 'types/node';
 
 export function* initWeb3Node(): SagaIterator {
   const { networkId, lib } = yield call(setupWeb3Node);
@@ -50,7 +50,6 @@ export function* unsetWeb3Node(): SagaIterator {
 }
 
 export const web3 = [
-  takeEvery(TypeKeys.CONFIG_NODE_WEB3_SET, initWeb3Node),
   takeEvery(TypeKeys.CONFIG_NODE_WEB3_UNSET, unsetWeb3Node),
   takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3NodeOnWalletEvent),
   takeEvery(WalletTypeKeys.WALLET_RESET, unsetWeb3NodeOnWalletEvent)
