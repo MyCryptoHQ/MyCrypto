@@ -13,7 +13,7 @@
     "NAV_CheckTxStatus": "Έλεγχος κατάστασης συναλλαγής",
     "NAV_TxStatus": "Κατάσταση συναλλαγής",
     "tx_Details": "Λεπτομέρειες συναλλαγής",
-    "tx_Summary": "Σε στιγμές υψηλού όγκου συναλλαγών (όπως κατά τη διάρκεια ενός ICO) οι συναλλαγές μπορεί να εκκρεμούν για ώρες, αν όχι ημέρες. Αυτό το εργαλείο αποσκοπεί στο να σας δώσει τη δυνατότητα να βρείτε και να «ακυρώσετε» / αντικαταστήσετε αυτές τις συναλλαγές. ** Αυτό δεν είναι κάτι που μπορείτε συνήθως να κάνετε. Δεν πρέπει να βασίζεστε σε αυτό και θα δουλέψει μόνο όταν οι δεξαμενές συναλλαγών είναι πλήρεις. [Παρακαλούμε, διαβάστε για αυτό το εργαλείο εδώ.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**",
+    "tx_Summary": "Σε στιγμές υψηλού όγκου συναλλαγών (όπως κατά τη διάρκεια ενός ICO) οι συναλλαγές μπορεί να εκκρεμούν για ώρες, αν όχι ημέρες. Αυτό το εργαλείο αποσκοπεί στο να σας δώσει τη δυνατότητα να βρείτε και να «ακυρώσετε» / αντικαταστήσετε αυτές τις συναλλαγές. ** Αυτό δεν είναι κάτι που μπορείτε συνήθως να κάνετε. Δεν πρέπει να βασίζεστε σε αυτό και θα δουλέψει μόνο όταν οι δεξαμενές συναλλαγών είναι πλήρεις. [Παρακαλούμε, διαβάστε για αυτό το εργαλείο εδώ.](https://support.mycrypto.com/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**",
     "tx_notFound": "Δεν βρέθηκε συναλλαγή",
     "tx_notFound_1": "Αυτή η συναλλαγή δεν ήταν δυνατόν να βρεθεί στη δεξαμενή συναλλαγών του κόμβου στον οποίον έχετε συνδεθεί.",
     "tx_notFound_2": "Αν μόλις στείλατε τη συναλλαγή, παρακαλούμε περιμένετε 15 δευτερόλεπτα και πατήστε ξανά το κουμπί «Έλεγχος κατάστασης συναλλαγής». ",
@@ -26,7 +26,7 @@
     "tx_FoundOnChain": "Βρέθηκε συναλλαγή",
     "tx_FoundOnChain_1": "Η συναλλαγή σας εξορύχθηκε επιτυχώς και βρίσκεται πάνω στο blockchain.",
     "tx_FoundOnChain_2": "**Αν δείτε κόκκινο μήνυμα λάθους `( ! )`, `BAD INSTRUCTION` ή `OUT OF GAS`**, σημαίνει ότι η συναλλαγή *δεν εστάλη* επιτυχώς. Δεν μπορείτε να ακυρώσετε ή να αντικαταστήσετε αυτήν τη συναλλαγή. Αντί αυτού, στείλτε μια νέα συναλλαγή. Αν λάβατε σφάλμα «Out of Gas», πρέπει να διπλασιάσετε το όριο αερίου που καθορίσατε αρχικά.",
-    "tx_FoundOnChain_3": "**Αν δεν βλέπετε σφάλματα, η συναλλαγή σας εστάλη επιτυχώς.** Τα ETH σας ή οι μάρκες σας βρίσκονται εκεί που τα στείλατε. Αν δεν μπορείτε να δείτε αυτά τα ETH ή τις μάρκες να έχουν πιστωθεί στο άλλο σας πορτοφόλι ή στο λογαριασμό του ανταλλακτηρίου σας, και έχουν περάσει 24+ ώρες από τότε που τα στείλατε, παρακαλούμε [επικοινωνήστε με αυτήν την υπηρεσία](https://myetherwallet.groovehq.com/knowledge_base/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Στείλτε τους το *σύνδεσμο* προς τη συναλλαγή σας και ζητήστε τους ευγενικά να ρίξουν μια ματιά στο θέμα σας.",
+    "tx_FoundOnChain_3": "**Αν δεν βλέπετε σφάλματα, η συναλλαγή σας εστάλη επιτυχώς.** Τα ETH σας ή οι μάρκες σας βρίσκονται εκεί που τα στείλατε. Αν δεν μπορείτε να δείτε αυτά τα ETH ή τις μάρκες να έχουν πιστωθεί στο άλλο σας πορτοφόλι ή στο λογαριασμό του ανταλλακτηρίου σας, και έχουν περάσει 24+ ώρες από τότε που τα στείλατε, παρακαλούμε [επικοινωνήστε με αυτήν την υπηρεσία](https://support.mycrypto.com/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Στείλτε τους το *σύνδεσμο* προς τη συναλλαγή σας και ζητήστε τους ευγενικά να ρίξουν μια ματιά στο θέμα σας.",
     "GEN_Help_1": "Χρησιμοποιήστε το",
     "GEN_Help_2": "σας για να αποκτήσετε πρόσβαση στο λογαριασμό σας.",
     "GEN_Help_3": "Η συσκευή σας * είναι * το πορτοφόλι σας.",
@@ -226,7 +226,7 @@
     "MYWAL_Name": "Όνομα πορτοφολιού ",
     "MYWAL_Content_1": "Προσοχή! Πρόκειται να αφαιρέσετε το πορτοφόλι σας. ",
     "MYWAL_Content_2": "Σιγουρευτείτε ότι έχετε **αποθηκεύσει το αρχείο keystore/JSON και το συνθηματικό** του πορτοφολιού αυτού πριν το αφαιρέσετε. ",
-    "MYWAL_Content_3": "Αν θέλετε να χρησιμοποιήσετε το πορτοφόλι αυτό με το MyEtherWalletCX στο μέλλον, θα χρειαστεί να το ξαναπροσθέσετε χειροκίνητα χρησιμοποιώντας το ιδιωτικό κλειδί/JSON και το συνθηματικό. ",
+    "MYWAL_Content_3": "Αν θέλετε να χρησιμοποιήσετε το πορτοφόλι αυτό με το MyCryptoCX στο μέλλον, θα χρειαστεί να το ξαναπροσθέσετε χειροκίνητα χρησιμοποιώντας το ιδιωτικό κλειδί/JSON και το συνθηματικό. ",
     "VIEWWALLET_Subtitle": "Αυτό σας επιτρέπει να κατεβάσετε διαφορετικές εκδοχές των ιδιωτικών κλειδιών σας και να επανεκτυπώσετε το χάρτινο πορτοφόλι σας. Ίσως επιθυμείτε να το κάνετε προκειμένου να [εισαγάγετε το λογαριασμό σας στο Geth/Mist](https://ethereum.stackexchange.com/questions/465/how-to-import-a-plain-private-key-into-geth/). Αν επιθυμείτε να ελέγξετε το υπόλοιπό σας, συνιστούμε να χρησιμοποιήσετε ένα εργαλείο εξερεύνησης blockchain όπως το [etherscan.io](https://etherscan.io/). ",
     "VIEWWALLET_Subtitle_Short": "Αυτό σας επιτρέπει να κατεβάσετε διαφορετικές εκδοχές των ιδιωτικών κλειδιών σας και να επανεκτυπώσετε το χάρτινο πορτοφόλι σας. ",
     "VIEWWALLET_SuccessMsg": "Επιτυχία! Εδώ είναι οι πληροφορίες για το πορτοφόλι σας. ",
@@ -334,7 +334,7 @@
     "ERROR_32": "Δεν ήταν δυνατή η σύνδεση στον κόμβο. Ανανεώστε τη σελίδα σας, δοκιμάστε κάποιον διαφορετικό κόμβο (πάνω δεξιά γωνία), ελέγξτε τις ρυθμίσεις του τείχους προστασίας. Εάν πρόκειται για προσαρμοσμένο κόμβο, ελέγξτε τις διαμορφώσεις σας.",
     "ERROR_33": "The wallet you have unlocked does not match the owner's address. ",
     "ERROR_34": "Το όνομα που προσπαθείτε να αποκαλύψετε δεν ταιριάζει με το όνομα που έχετε εισαγάγει. ",
-    "ERROR_35": "Η διεύθυνση εισόδου δεν περιέχει άθροισμα ελέγχου. <a href=\"https://myetherwallet.groovehq.com/knowledge_base/topics/not-checksummed-shows-when-i-enter-an-address\" target=\"_blank\" rel=\"noopener\"> Περισσότερες πληροφορίες</a>",
+    "ERROR_35": "Η διεύθυνση εισόδου δεν περιέχει άθροισμα ελέγχου. <a href=\"https://support.mycrypto.com/topics/not-checksummed-shows-when-i-enter-an-address\" target=\"_blank\" rel=\"noopener\"> Περισσότερες πληροφορίες</a>",
     "ERROR_36": "Enter valid TX hash",
     "ERROR_37": "Enter valid hex string (0-9, a-f)",
     "SUCCESS_1": "Έγκυρη διεύθυνση ",
@@ -619,14 +619,14 @@
     "ONBOARD_whymyc_content__3": "You don't have to rely on the security of an exchange or bank to keep your funds safe.",
     "ONBOARD_whymyc_content__4": "If you don't find these things valuable, ask yourself why you think the blockchain and cryptocurrencies are valuable. 😉",
     "ONBOARD_whymyc_content__5": "If you don't like the sound of this, consider using [Coinbase](https://www.coinbase.com/) or [Blockchain.info](https://blockchain.info/wallet/#/signup). They have more familiar accounts with usernames & passwords.",
-    "ONBOARD_whymyc_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
+    "ONBOARD_whymyc_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://support.mycrypto.com/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
     "ONBOARD_why_title__alt": "But...why?",
     "ONBOARD_secure_title": "How To Protect Yourself & Your Funds",
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
     "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
-    "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
+    "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYCRYPTO, LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
     "ONBOARD_secure_1_content__7": "[Install an AdBlocker](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en) and do not click ads on your search engine (e.g. Google).",
@@ -644,7 +644,7 @@
     "ONBOARD_secure_3_content__3": "Store this paper or USB drive in a different physical location. A backup is not useful if it is destroyed by a fire or flood along with your laptop.",
     "ONBOARD_secure_3_content__4": "Do not store your private key in Dropbox, Google Drive, or other cloud storage. If that account is compromised, your funds will be stolen.",
     "ONBOARD_secure_3_content__5": "If you have more than 1-week's worth of pay worth of cryptocurrency, get a hardware wallet. No excuses. It's worth it. I promise.",
-    "ONBOARD_secure_3_content__6": "[Even more Security Tips!](https://myetherwallet.github.io/knowledge-base/getting-started/protecting-yourself-and-your-funds.html)",
+    "ONBOARD_secure_3_content__6": "[Even more Security Tips!](https://support.mycrypto.com/getting-started/protecting-yourself-and-your-funds.html)",
     "ONBOARD_secure_2_title__alt_2": "Screw Scams",
     "ONBOARD_final_title__alt": "One more click & you're done! 🤘",
     "ONBOARD_final_title": "Alright, I'm done lecturing you!",
@@ -661,4 +661,8 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
+
+
+
 

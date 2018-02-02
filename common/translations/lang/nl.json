@@ -12,7 +12,7 @@
     "NAV_CheckTxStatus": "Check TX Status",
     "NAV_TxStatus": "TX Status",
     "tx_Details": "Transactie Details",
-    "tx_Summary": "Ten tijden van hoog transactie volume (zoals tijdens ICOs) kunnen transacties voor uren, zo niet dagen, \"pending\" blijven. Deze tool heeft als doel om je de mogelijkheid te geven om deze TXs op te sporen en ze te \"annuleren\" / vervangen. ** Dit is niet typisch iets wat je kunt doen. Je zou er niet op moeten vertrouwen dat dit werkt & het kan alleen werken als de TX Pools vol zitten. [Lees hier meer over deze tool.](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**",
+    "tx_Summary": "Ten tijden van hoog transactie volume (zoals tijdens ICOs) kunnen transacties voor uren, zo niet dagen, \"pending\" blijven. Deze tool heeft als doel om je de mogelijkheid te geven om deze TXs op te sporen en ze te \"annuleren\" / vervangen. ** Dit is niet typisch iets wat je kunt doen. Je zou er niet op moeten vertrouwen dat dit werkt & het kan alleen werken als de TX Pools vol zitten. [Lees hier meer over deze tool.](https://support.mycrypto.com/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**",
     "tx_notFound": "Transactie Niet Gevonden",
     "tx_notFound_1": "Deze TX werd niet gevonden in de TX Pool van de node waarmee je bent verbonden.",
     "tx_notFound_2": "Als je deze transactie zojuist hebt verzonden, wacht dan eerst 15 seconden en druk nogmaals op de \"Check TX Status\" knop. ",
@@ -25,7 +25,7 @@
     "tx_FoundOnChain": "Transactie Gevonden",
     "tx_FoundOnChain_1": "Je transactie was succesvol ge-mined en is in de blockchain opgenomen.",
     "tx_FoundOnChain_2": "**Als je een rood `( ! )`, een `BAD INSTRUCTION` of een `OUT OF GAS` foutmelding**, betekend dat dat de transactie niet succesvol is *verzonden*. Je kunt deze transactie niet annuleren of vervangen. Verzend in plaats daarvan een nieuwe transactie. Als je een \"Out of Gas\" foutmelding krijgt, zou je de oorspronkelijke gas limit moeten verdubbelen.",
-    "tx_FoundOnChain_3": "**Als je geen enkele foutmelding ziet is je transactie met succes verzonden.** Je ETH of Tokens zijn waar je ze naar verzonden hebt. Als je je verzonden ETH of Tokens niet gecrediteerd ziet in je andere wallet / exchange account, en het is inmiddels al 24+ uur geleden sinds je de transactie verzonden hebt, neem dan [contact op met die service](https://myetherwallet.groovehq.com/knowledge_base/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Geef ze de *link* naar je transactie en vraag ze op je allerliefste manier om naar je situatie te kijken.",
+    "tx_FoundOnChain_3": "**Als je geen enkele foutmelding ziet is je transactie met succes verzonden.** Je ETH of Tokens zijn waar je ze naar verzonden hebt. Als je je verzonden ETH of Tokens niet gecrediteerd ziet in je andere wallet / exchange account, en het is inmiddels al 24+ uur geleden sinds je de transactie verzonden hebt, neem dan [contact op met die service](https://support.mycrypto.com/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do). Geef ze de *link* naar je transactie en vraag ze op je allerliefste manier om naar je situatie te kijken.",
     "GEN_Help_1": "gebruik jouw",
     "GEN_Help_2": "om toegang tot je account te verkrijgen.",
     "GEN_Help_3": "Jouw device * is * je wallet.",
@@ -322,7 +322,7 @@
     "ERROR_32": "Kon niet met de node verbinden. Ververs de pagina, probeer een andere node (rechterbovenhoek) en/of check je firewall instellingen. Check bij een custom node je configuratie.",
     "ERROR_33": "De wallet die je hebt geopend matched niet bij het adres van de eigenaar owner's. ",
     "ERROR_34": "De naam die je probeert de onthullen (\"reveal\") matched niet met de naam die je hebt ingevoerd. ",
-    "ERROR_35": "Input adres is niet ge-checksummed. <a href=\"https://myetherwallet.groovehq.com/knowledge_base/topics/not-checksummed-shows-when-i-enter-an-address\" target=\"_blank\" rel=\"noopener\"> Meer info</a>",
+    "ERROR_35": "Input adres is niet ge-checksummed. <a href=\"https://support.mycrypto.com/topics/not-checksummed-shows-when-i-enter-an-address\" target=\"_blank\" rel=\"noopener\"> Meer info</a>",
     "ERROR_36": "Voer een geldige TX hash in",
     "ERROR_37": "Voer een geldige hex string in (0-9, a-f)",
     "SUCCESS_1": "Geldig adres ",
@@ -608,14 +608,14 @@
     "ONBOARD_whymyc_content__3": "You don't have to rely on the security of an exchange or bank to keep your funds safe.",
     "ONBOARD_whymyc_content__4": "If you don't find these things valuable, ask yourself why you think the blockchain and cryptocurrencies are valuable. 😉",
     "ONBOARD_whymyc_content__5": "If you don't like the sound of this, consider using [Coinbase](https://www.coinbase.com/) or [Blockchain.info](https://blockchain.info/wallet/#/signup). They have more familiar accounts with usernames & passwords.",
-    "ONBOARD_whymyc_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
+    "ONBOARD_whymyc_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://support.mycrypto.com/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
     "ONBOARD_why_title__alt": "But...why?",
     "ONBOARD_secure_title": "How To Protect Yourself & Your Funds",
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
     "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
-    "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
+    "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYCRYPTO, LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
     "ONBOARD_secure_1_content__7": "[Install an AdBlocker](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en) and do not click ads on your search engine (e.g. Google).",
@@ -633,7 +633,7 @@
     "ONBOARD_secure_3_content__3": "Store this paper or USB drive in a different physical location. A backup is not useful if it is destroyed by a fire or flood along with your laptop.",
     "ONBOARD_secure_3_content__4": "Do not store your private key in Dropbox, Google Drive, or other cloud storage. If that account is compromised, your funds will be stolen.",
     "ONBOARD_secure_3_content__5": "If you have more than 1-week's worth of pay worth of cryptocurrency, get a hardware wallet. No excuses. It's worth it. I promise.",
-    "ONBOARD_secure_3_content__6": "[Even more Security Tips!](https://myetherwallet.github.io/knowledge-base/getting-started/protecting-yourself-and-your-funds.html)",
+    "ONBOARD_secure_3_content__6": "[Even more Security Tips!](https://support.mycrypto.com/getting-started/protecting-yourself-and-your-funds.html)",
     "ONBOARD_secure_2_title__alt_2": "Screw Scams",
     "ONBOARD_final_title__alt": "One more click & you're done! 🤘",
     "ONBOARD_final_title": "Alright, I'm done lecturing you!",
@@ -650,4 +650,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
+
+
 

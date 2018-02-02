@@ -13,7 +13,7 @@
     "NAV_CheckTxStatus": "処理状況を確認",
     "NAV_TxStatus": "処理状況",
     "tx_Details": "処理内容詳細",
-    "tx_Summary": "もし数日経ってから処理状況を確認した場合でなければ、大量の処理発生時(ICO期間など)には、数時間待たされることがあります。本ツールは、そのような状況において処理待ちのものを探し出し取り消す、あるいは新しくする機能を提供します。＊＊これは一般的な操作ではありませんが、処理プールが満杯の場合にのみ有効です。  [このツールに関しては、こちらを参考にしてください。](https://myetherwallet.groovehq.com/knowledge_base/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**",
+    "tx_Summary": "もし数日経ってから処理状況を確認した場合でなければ、大量の処理発生時(ICO期間など)には、数時間待たされることがあります。本ツールは、そのような状況において処理待ちのものを探し出し取り消す、あるいは新しくする機能を提供します。＊＊これは一般的な操作ではありませんが、処理プールが満杯の場合にのみ有効です。  [このツールに関しては、こちらを参考にしてください。](https://support.mycrypto.com/topics/how-can-i-check-on-the-status-of-my-transaction-can-i-cancel-override-overwrite-replace-or-do-anything-once-a-transaction-has-been-sent)**",
     "tx_notFound": "対象の処理が見つかりません",
     "tx_notFound_1": "この処理は、現在接続中の処理プールの中にありませんでした。",
     "tx_notFound_2": "もし今、処理を送出した直後であれば、１５秒待ってから「処理状況を確認」ボタンを再度押してください。",
@@ -26,7 +26,7 @@
     "tx_FoundOnChain": "処理が見つかりました",
     "tx_FoundOnChain_1": "あなたの待機中の処理は発掘されてブロックチェーンに載りました。",
     "tx_FoundOnChain_2": "**もし赤い `( ! )`, `BAD INSTRUCTION` あるいは `OUT OF GAS` のエラーメッセージを見つけたら**, これは、処理送出に失敗したということです。処理の取り消しや置き換えはできません。代わりに、新しい処理を送出してください。 \"Out of Gas\" エラーの場合には, ガスリミットをはじめに指定した値の倍にしてください。",
-    "tx_FoundOnChain_3": "**何もエラーメッセージが返ってこなければ、あなたの処理は正しく送出されています。** ETHあるいはトークンは、送ろうとしたあて先の場所にあります。 もし、ETHやトークンが他のお財布や交換所のお財布に見つからず、処理を開始してから２４時間以上経っていたら、 [そのサービスに連絡](https://myetherwallet.groovehq.com/knowledge_base/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do)してください。状況を確認してもらうために、自分の処理のリンクをうまく知らせてください。",
+    "tx_FoundOnChain_3": "**何もエラーメッセージが返ってこなければ、あなたの処理は正しく送出されています。** ETHあるいはトークンは、送ろうとしたあて先の場所にあります。 もし、ETHやトークンが他のお財布や交換所のお財布に見つからず、処理を開始してから２４時間以上経っていたら、 [そのサービスに連絡](https://support.mycrypto.com/topics/i-have-a-question-but-its-not-about-myetherwallet-dot-com-what-do-i-do)してください。状況を確認してもらうために、自分の処理のリンクをうまく知らせてください。",
     "GEN_Help_1": "この",
     "GEN_Help_2": "で自分の口座にアクセスしてください。",
     "GEN_Help_3": "自分のデバイスそのものが、自分のお財布です。",
@@ -334,7 +334,7 @@
     "ERROR_32": "ノードに接続できませんでした。Refresh your page, try a different node (upper right corner), check your firewall settings. If custom node, check your configs.",
     "ERROR_33": "The wallet you have unlocked does not match the owner's address. ",
     "ERROR_34": "The name you are attempting to reveal does not match the name you have entered. ",
-    "ERROR_35": "Input address is not checksummed. <a href=\"https://myetherwallet.groovehq.com/knowledge_base/topics/not-checksummed-shows-when-i-enter-an-address\" target=\"_blank\" rel=\"noopener\"> More info</a>",
+    "ERROR_35": "Input address is not checksummed. <a href=\"https://support.mycrypto.com/topics/not-checksummed-shows-when-i-enter-an-address\" target=\"_blank\" rel=\"noopener\"> More info</a>",
     "ERROR_36": "Enter valid TX hash",
     "ERROR_37": "Enter valid hex string (0-9, a-f)",
     "SUCCESS_1": "有効なアドレス ",
@@ -619,14 +619,14 @@
     "ONBOARD_whymyc_content__3": "You don't have to rely on the security of an exchange or bank to keep your funds safe.",
     "ONBOARD_whymyc_content__4": "If you don't find these things valuable, ask yourself why you think the blockchain and cryptocurrencies are valuable. 😉",
     "ONBOARD_whymyc_content__5": "If you don't like the sound of this, consider using [Coinbase](https://www.coinbase.com/) or [Blockchain.info](https://blockchain.info/wallet/#/signup). They have more familiar accounts with usernames & passwords.",
-    "ONBOARD_whymyc_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
+    "ONBOARD_whymyc_content__6": "If you are scared but want to use MyCrypto, [get a hardware wallet](https://support.mycrypto.com/hardware-wallets/hardware-wallet-recommendations.html)! These keep your keys secure.",
     "ONBOARD_why_title__alt": "But...why?",
     "ONBOARD_secure_title": "How To Protect Yourself & Your Funds",
     "ONBOARD_secure_1_title": "How To Protect Yourself from Phishers",
     "ONBOARD_secure_1_content__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
     "ONBOARD_secure_1_content__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
     "ONBOARD_secure_1_content__3": "Always check the URL: `https://www.mycrypto.com`.",
-    "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYETHERWALLET LLC [US]` in green.",
+    "ONBOARD_secure_1_content__4": "Always make sure the URL bar has `MYCRYPTO, LLC [US]` in green.",
     "ONBOARD_secure_1_content__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",
     "ONBOARD_secure_1_content__6": "Always navigate directly to a site before you enter information. Do not enter information after clicking a link from a message or email.",
     "ONBOARD_secure_1_content__7": "[Install an AdBlocker](https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en) and do not click ads on your search engine (e.g. Google).",
@@ -644,7 +644,7 @@
     "ONBOARD_secure_3_content__3": "Store this paper or USB drive in a different physical location. A backup is not useful if it is destroyed by a fire or flood along with your laptop.",
     "ONBOARD_secure_3_content__4": "Do not store your private key in Dropbox, Google Drive, or other cloud storage. If that account is compromised, your funds will be stolen.",
     "ONBOARD_secure_3_content__5": "If you have more than 1-week's worth of pay worth of cryptocurrency, get a hardware wallet. No excuses. It's worth it. I promise.",
-    "ONBOARD_secure_3_content__6": "[Even more Security Tips!](https://myetherwallet.github.io/knowledge-base/getting-started/protecting-yourself-and-your-funds.html)",
+    "ONBOARD_secure_3_content__6": "[Even more Security Tips!](https://support.mycrypto.com/getting-started/protecting-yourself-and-your-funds.html)",
     "ONBOARD_secure_2_title__alt_2": "Screw Scams",
     "ONBOARD_final_title__alt": "One more click & you're done! 🤘",
     "ONBOARD_final_title": "Alright, I'm done lecturing you!",
@@ -661,4 +661,7 @@
     "ONBOARD_resume": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
   }
 }
+
+
+
 
