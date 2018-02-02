@@ -1,4 +1,4 @@
-import { generate, IV3Wallet } from 'ethereumjs-wallet';
+import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
 import { generateKeystore } from 'libs/web-workers';
 import { WalletType } from '../../GenerateWallet';
