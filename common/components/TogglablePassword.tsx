@@ -15,6 +15,7 @@ interface Props {
   toggleAriaLabel?: string;
   isValid?: boolean;
   isVisible?: boolean;
+  validity?: 'valid' | 'invalid' | 'semivalid';
 
   // Textarea-only props
   isTextareaWhenVisible?: boolean;
@@ -23,6 +24,8 @@ interface Props {
 
   // Shared callbacks
   onChange?(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  onFocus?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  onBlur?(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void;
   handleToggleVisibility?(): void;
 }
 
@@ -48,14 +51,19 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       name,
       disabled,
       ariaLabel,
+      toggleAriaLabel,
+      validity,
       isTextareaWhenVisible,
       isValid,
       onChange,
+      onFocus,
+      onBlur,
       handleToggleVisibility
     } = this.props;
     const { isVisible } = this.state;
-    const validClass =
-      isValid === null || isValid === undefined ? '' : isValid ? 'is-valid' : 'is-invalid';
+    const validClass = validity
+      ? `is-${validity}`
+      : isValid === null || isValid === undefined ? '' : isValid ? 'is-valid' : 'is-invalid';
 
     return (
       <div className="TogglablePassword input-group">
@@ -67,6 +75,8 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
             disabled={disabled}
             onChange={onChange}
             onKeyDown={this.handleTextareaKeyDown}
+            onFocus={onFocus}
+            onBlur={onBlur}
             placeholder={placeholder}
             rows={this.props.rows || 3}
             aria-label={ariaLabel}
@@ -80,12 +90,14 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
             className={`form-control ${validClass}`}
             placeholder={placeholder}
             onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
             aria-label={ariaLabel}
           />
         )}
         <span
           onClick={handleToggleVisibility || this.toggleVisibility}
-          aria-label="show private key"
+          aria-label={toggleAriaLabel}
           role="button"
           className="TogglablePassword-toggle input-group-addon"
         >

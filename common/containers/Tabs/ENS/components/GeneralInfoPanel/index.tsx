@@ -75,7 +75,7 @@ const generalInfoNodes: InfoNode[] = [
       <li key="ensMore-2">
         <NewTabLink
           content="ENS: Read the Docs"
-          href="http://docs.ens.domains/en/latest/userguide.html#registering-a-name-with-the-auction-registrar"
+          href="https://docs.ens.domains/en/latest/userguide.html#registering-a-name-with-the-auction-registrar"
         />
       </li>,
       <li key="ensMore-3">
