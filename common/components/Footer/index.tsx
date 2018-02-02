@@ -236,12 +236,7 @@ export default class Footer extends React.PureComponent<Props, State> {
             </h5>
             <ul>
               <li>
-                ETH: mewtopia.eth{' '}
-                <span className="mono wrap">
-                  <NewTabLink href={`https://etherscan.io/address/${donationAddressMap.ETH}`}>
-                    {donationAddressMap.ETH}
-                  </NewTabLink>
-                </span>
+                ETH: <span className="mono wrap">{donationAddressMap.ETH}</span>
               </li>
               <li>
                 {' '}

@@ -36,9 +36,9 @@ export const ETHAddressExplorer = (address: string): string => `${etherScan}/add
 export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
 
 export const donationAddressMap = {
-  BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
-  ETH: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
-  REP: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8'
+  BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',
+  ETH: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+  REP: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520'
 };
 
 export const gasPriceDefaults = {
