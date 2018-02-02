@@ -82,12 +82,16 @@ export function getStaticNodes(state: AppState) {
   return getNodes(state).staticNodes;
 }
 
+export function getSelectedNode(state: AppState) {
+  return getNodes(state).selectedNode;
+}
+
 export function isNodeChanging(state): boolean {
-  return getNodes(state).selectedNode.pending;
+  return getSelectedNode(state).pending;
 }
 
 export function getNodeId(state: AppState): string {
-  return getNodes(state).selectedNode.nodeId;
+  return getSelectedNode(state).nodeId;
 }
 
 export function getIsWeb3Node(state: AppState): boolean {

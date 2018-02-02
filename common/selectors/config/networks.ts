@@ -31,6 +31,8 @@ export const getStaticNetworkConfig = (state: AppState): StaticNetworkConfig | u
   return defaultNetwork;
 };
 
+export const getSelectedNetwork = (state: AppState) => getNetworks(state).selectedNetwork;
+
 export const getCustomNetworkConfig = (state: AppState): CustomNetworkConfig | undefined => {
   const { customNetworks, selectedNetwork } = getNetworks(state);
   const customNetwork = customNetworks[selectedNetwork];
