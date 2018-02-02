@@ -83,3 +83,17 @@ select.form-control {
     @include form-control-state($brand-warning);
   }
 }
+
+.help-block {
+  &.is-valid {
+    color: $brand-success;
+  }
+
+  &.is-invalid {
+    color: $brand-danger;
+  }
+
+  &.is-semivalid {
+    color: $brand-warning;
+  }
+}

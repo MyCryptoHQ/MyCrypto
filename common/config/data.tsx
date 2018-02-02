@@ -5,7 +5,7 @@ export const languages = require('./languages.json');
 
 // Displays in the header
 export const VERSION = '4.0.0 (Alpha 0.1.0)';
-export const N_FACTOR = 1024;
+export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, or info.
@@ -47,7 +47,7 @@ export const gasPriceDefaults = {
   gasPriceMaxGwei: 60
 };
 
-export const MINIMUM_PASSWORD_LENGTH = 9;
+export const MINIMUM_PASSWORD_LENGTH = 12;
 
 export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
