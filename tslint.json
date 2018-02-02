@@ -25,8 +25,8 @@
     "comment-format": false,
     "ordered-imports": false,
     "react-anchor-blank-noopener": true,
-    "no-external-http-link": true,
+    "no-http-string": [true, "http://localhost:.*"],
     "react-no-dangerous-html": true
   },
-  "rulesDirectory": ["node_modules/tslint-microsoft-contrib", "custom_linting_rules"]
+  "rulesDirectory": ["node_modules/tslint-microsoft-contrib"]
 }
