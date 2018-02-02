@@ -32,10 +32,11 @@ export default class EnterPassword extends Component<Props, State> {
     const passwordValidity = this.getPasswordValidity();
     const isPasswordValid = passwordValidity === 'valid';
     const isConfirmValid = confirmedPassword ? password === confirmedPassword : undefined;
+    const canSubmit = isPasswordValid && isConfirmValid && !isGenerating;
 
     return (
       <Template>
-        <div className="EnterPw">
+        <form className="EnterPw" onSubmit={canSubmit ? this.handleSubmit : undefined}>
           <h1 className="EnterPw-title" aria-live="polite">
             Generate a {translate('x_Keystore2')}
           </h1>
@@ -71,16 +72,12 @@ export default class EnterPassword extends Component<Props, State> {
             />
           </label>
 
-          <button
-            onClick={this.onClickGenerateFile}
-            disabled={!isPasswordValid || !isConfirmValid || isGenerating}
-            className="EnterPw-submit btn btn-primary btn-lg btn-block"
-          >
-            {translate('NAV_GenerateWallet')} {isGenerating && <Spinner light={true} />}
+          <button disabled={!canSubmit} className="EnterPw-submit btn btn-primary btn-lg btn-block">
+            {isGenerating ? <Spinner light={true} /> : translate('NAV_GenerateWallet')}
           </button>
 
           <p className="EnterPw-warning">{translate('x_PasswordDesc')}</p>
-        </div>
+        </form>
       </Template>
     );
   }
@@ -122,7 +119,8 @@ export default class EnterPassword extends Component<Props, State> {
     return feedback;
   }
 
-  private onClickGenerateFile = () => {
+  private handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
     this.props.continue(this.state.password);
   };
 
