@@ -75,7 +75,6 @@ class DeployClass extends Component<DispatchProps> {
               {translate('NAV_DeployContract')}
             </button>
           )}
-          Modal={ConfirmationModal}
         />
       </main>
     );

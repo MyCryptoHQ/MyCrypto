@@ -1,2 +1,1 @@
-import Input from './components/NameInput';
-export default Input;
+export { default as NameInput } from './components/NameInput';
