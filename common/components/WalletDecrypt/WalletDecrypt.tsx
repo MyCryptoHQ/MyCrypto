@@ -35,21 +35,21 @@ import { AppState } from 'reducers';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { getDisabledWallets } from 'selectors/wallet';
 import { DisabledWallets } from './disables';
-import { donationAddressMap } from 'config';
-
-import LedgerIcon from 'assets/images/wallets/ledger.svg';
-import MetamaskIcon from 'assets/images/wallets/metamask.svg';
-import MistIcon from 'assets/images/wallets/mist.svg';
-import TrezorIcon from 'assets/images/wallets/trezor.svg';
-import './WalletDecrypt.scss';
 import {
   SecureWalletName,
   InsecureWalletName,
   MiscWalletName,
   WalletName,
   isWeb3NodeAvailable,
-  knowledgeBaseURL
+  knowledgeBaseURL,
+  donationAddressMap
 } from 'config';
+
+import LedgerIcon from 'assets/images/wallets/ledger.svg';
+import MetamaskIcon from 'assets/images/wallets/metamask.svg';
+import MistIcon from 'assets/images/wallets/mist.svg';
+import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import './WalletDecrypt.scss';
 
 interface OwnProps {
   hidden?: boolean;
