@@ -5,8 +5,6 @@ import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { getStaticNetworkConfig } from 'selectors/config';
 import { Token } from 'types/network';
 
-const getConfig = (state: AppState) => state.config;
-
 export function getNetworkTokens(state: AppState): Token[] {
   const network = getStaticNetworkConfig(state);
   return network ? network.tokens : [];
