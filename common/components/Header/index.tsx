@@ -195,7 +195,7 @@ class Header extends Component<Props, State> {
                     </li>
                   }
                   disabled={nodeSelection === 'web3'}
-                  onChange={changeNodeIntent}
+                  onChange={this.props.changeNodeIntent}
                   size="smr"
                   color="white"
                   menuAlign="right"

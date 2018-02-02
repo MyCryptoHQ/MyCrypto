@@ -5,9 +5,8 @@ import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
 import { InsecureWalletName } from 'config';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
 import { connect } from 'react-redux';
-import { getPaths, getSingleDPath } from 'utils/network';
+import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 
 interface Props {
   onUnlock(param: any): void;
@@ -15,6 +14,7 @@ interface Props {
 
 interface StateProps {
   dPath: DPath;
+  dPaths: DPath[];
 }
 
 interface State {
@@ -77,7 +77,7 @@ class MnemonicDecryptClass extends Component<Props & StateProps, State> {
           isOpen={!!seed}
           seed={seed}
           dPath={dPath}
-          dPaths={getPaths(InsecureWalletName.MNEMONIC_PHRASE)}
+          dPaths={this.props.dPaths}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -144,9 +144,9 @@ class MnemonicDecryptClass extends Component<Props & StateProps, State> {
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  const network = getNetworkConfig(state);
   return {
-    dPath: getSingleDPath(InsecureWalletName.MNEMONIC_PHRASE, network)
+    dPath: getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE),
+    dPaths: getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
   };
 }
 

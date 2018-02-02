@@ -2,14 +2,11 @@ import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'c
 import { EXTRA_PATHS } from 'config/dpaths';
 import sortedUniq from 'lodash/sortedUniq';
 import difference from 'lodash/difference';
-import {
-  CustomNetworkConfig,
-  StaticNetworkConfig,
-  NetworkConfig,
-  DPathFormats
-} from 'types/network';
+import { StaticNetworkConfig, DPathFormats } from 'types/network';
 import { AppState } from 'reducers';
 import { getStaticNetworkConfigs, getStaticNetworkConfig } from 'selectors/config';
+const getConfig = (state: AppState) => state.config;
+
 type PathType = keyof DPathFormats;
 
 type DPathFormat =

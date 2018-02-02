@@ -1,6 +1,9 @@
 import throttle from 'lodash/throttle';
 import { routerMiddleware } from 'react-router-redux';
+
+/*
 import { State as ConfigState, INITIAL_STATE as configInitialState } from 'reducers/config';
+*/
 import {
   State as CustomTokenState,
   INITIAL_STATE as customTokensInitialState
@@ -88,10 +91,11 @@ const configureStore = () => {
   const customTokens = dedupeCustomTokens(initialNetwork.tokens, savedCustomTokensState);
 */
   const persistedInitialState = {
+    /*
     config: {
       ...configInitialState,
       ...savedConfigState
-    },
+    },*/
     transaction: {
       ...transactionInitialState,
       fields: {
@@ -112,10 +116,11 @@ const configureStore = () => {
 
   // if 'web3' has persisted as node selection, reset to app default
   // necessary because web3 is only initialized as a node upon MetaMask / Mist unlock
+  /*
   if (persistedInitialState.config.nodeSelection === 'web3') {
     persistedInitialState.config.nodeSelection = configInitialState.nodeSelection;
   }
-
+*/
   store = createStore(RootReducer, persistedInitialState, middleware);
 
   // Add all of the sagas to the middleware

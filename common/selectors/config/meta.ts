@@ -1,5 +1,5 @@
 import { AppState } from 'reducers';
-import { getConfig } from 'sagas/config';
+const getConfig = (state: AppState) => state.config;
 
 export const getMeta = (state: AppState) => getConfig(state).meta;
 
@@ -8,7 +8,8 @@ export function getOffline(state: AppState): boolean {
 }
 
 export function getAutoGasLimitEnabled(state: AppState): boolean {
-  return getMeta(state).autoGasLimit;
+  const meta = getMeta(state);
+  return meta.autoGasLimit;
 }
 
 export function getLanguageSelection(state: AppState): string {

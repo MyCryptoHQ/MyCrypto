@@ -8,6 +8,7 @@ const initalNode =
   INITIAL_DEFAULT_NODE_STATE[INITIAL_NODE_STATE.nodeId as keyof NonWeb3NodeConfigs];
 
 export type State = string | StaticNetworkIds;
+
 const INITIAL_STATE: State = initalNode.network;
 
 const handleNodeChange = (_: State, { payload }: ChangeNodeAction) => payload.networkId;
@@ -17,6 +18,6 @@ export const selectedNetwork = (state: State = INITIAL_STATE, action: NodeAction
     case TypeKeys.CONFIG_NODE_CHANGE:
       return handleNodeChange(state, action);
     default:
-      break;
+      return state;
   }
 };

@@ -18,7 +18,7 @@ export const INITIAL_STATE: NodeLoaded = {
 };
 
 const changeNode = (_: State, { payload }: ChangeNodeAction): State => ({
-  nodeId: payload.networkId,
+  nodeId: payload.nodeId,
   pending: false
 });
 

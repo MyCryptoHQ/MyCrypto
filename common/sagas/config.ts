@@ -143,7 +143,7 @@ export function* handleNodeChangeIntent({
   let timeout;
   try {
     const { lb, to } = yield race({
-      lb: apply(nextNodeConfig, nextNodeConfig.lib.getCurrentBlock),
+      lb: apply(nextNodeConfig.lib, nextNodeConfig.lib.getCurrentBlock),
       to: call(delay, 5000)
     });
     currentBlock = lb;

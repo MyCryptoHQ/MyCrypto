@@ -1,11 +1,11 @@
 import { AppState } from 'reducers';
-import { getConfig } from 'selectors/config';
 import {
   CustomNetworkConfig,
   StaticNetworkConfig,
   StaticNetworkIds,
   NetworkContract
 } from 'types/network';
+const getConfig = (state: AppState) => state.config;
 
 export const getNetworks = (state: AppState) => getConfig(state).networks;
 

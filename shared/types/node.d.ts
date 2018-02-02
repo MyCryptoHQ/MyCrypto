@@ -46,6 +46,8 @@ declare enum StaticNodeId {
   EXP_TECH = 'exp_tech'
 }
 
+type StaticNodeWithWeb3Id = StaticNodeId | 'web3';
+
 type NonWeb3NodeConfigs = { [key in StaticNodeId]: StaticNodeConfig };
 
 interface Web3NodeConfigs {

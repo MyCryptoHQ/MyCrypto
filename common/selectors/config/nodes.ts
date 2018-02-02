@@ -1,11 +1,19 @@
 import { AppState } from 'reducers';
 import {
-  getConfig,
   getStaticNetworkConfigs,
   getCustomNetworkConfigs,
   isStaticNetworkId
 } from 'selectors/config';
-import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, Web3NodeConfig } from 'types/node';
+import {
+  CustomNodeConfig,
+  StaticNodeConfig,
+  StaticNodeId,
+  Web3NodeConfig,
+  StaticNodeWithWeb3Id
+} from 'types/node';
+
+const getConfig = (state: AppState) => state.config;
+
 import { INITIAL_STATE as SELECTED_NODE_INITIAL_STATE } from 'reducers/config/nodes/selectedNode';
 
 export const getNodes = (state: AppState) => getConfig(state).nodes;
@@ -36,12 +44,12 @@ export const getStaticAltNodeToWeb3 = (state: AppState) => {
 export const getStaticNodeFromId = (state: AppState, nodeId: StaticNodeId) =>
   getStaticNodeConfigs(state)[nodeId];
 
-export const isStaticNodeId = (state: AppState, nodeId: string): nodeId is StaticNodeId =>
+export const isStaticNodeId = (state: AppState, nodeId: string): nodeId is StaticNodeWithWeb3Id =>
   Object.keys(getStaticNodeConfigs(state)).includes(nodeId);
 
 const getStaticNodeConfigs = (state: AppState) => getNodes(state).staticNodes;
 
-export const getStaticNodeConfig = (state: AppState): StaticNodeConfig | undefined => {
+export const getStaticNodeConfig = (state: AppState) => {
   const { staticNodes, selectedNode: { nodeId } } = getNodes(state);
 
   const defaultNetwork = isStaticNodeId(state, nodeId) ? staticNodes[nodeId] : undefined;
@@ -49,9 +57,11 @@ export const getStaticNodeConfig = (state: AppState): StaticNodeConfig | undefin
 };
 
 export const getWeb3Node = (state: AppState): Web3NodeConfig | null => {
+  const isWeb3Node = (nodeId: string, _: StaticNodeConfig | Web3NodeConfig): _ is Web3NodeConfig =>
+    nodeId === 'web3';
   const currNode = getStaticNodeConfig(state);
   const currNodeId = getNodeId(state);
-  if (currNode && currNodeId && isStaticNodeId(state, currNodeId) && currNodeId === 'web3') {
+  if (currNode && currNodeId && isWeb3Node(currNodeId, currNode)) {
     return currNode;
   }
   return null;

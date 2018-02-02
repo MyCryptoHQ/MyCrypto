@@ -37,8 +37,8 @@ const INITIAL_STATE: State = {
       name: ethPlorer,
       address: ETHTokenExplorer
     },
-    tokens: require('./tokens/eth.json'),
-    contracts: require('./contracts/eth.json'),
+    tokens: require('config/tokens/eth.json'),
+    contracts: require('config/contracts/eth.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TREZOR,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
@@ -52,8 +52,8 @@ const INITIAL_STATE: State = {
     isCustom: false,
     color: '#adc101',
     blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
-    tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json'),
+    tokens: require('config/tokens/ropsten.json'),
+    contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
@@ -68,8 +68,8 @@ const INITIAL_STATE: State = {
     isCustom: false,
     color: '#adc101',
     blockExplorer: makeExplorer('https://kovan.etherscan.io'),
-    tokens: require('./tokens/ropsten.json'),
-    contracts: require('./contracts/ropsten.json'),
+    tokens: require('config/tokens/ropsten.json'),
+    contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
@@ -84,8 +84,8 @@ const INITIAL_STATE: State = {
     isCustom: false,
     color: '#adc101',
     blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
-    tokens: require('./tokens/rinkeby.json'),
-    contracts: require('./contracts/rinkeby.json'),
+    tokens: require('config/tokens/rinkeby.json'),
+    contracts: require('config/contracts/rinkeby.json'),
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
@@ -100,8 +100,8 @@ const INITIAL_STATE: State = {
     isCustom: false,
     color: '#669073',
     blockExplorer: makeExplorer('https://gastracker.io'),
-    tokens: require('./tokens/etc.json'),
-    contracts: require('./contracts/etc.json'),
+    tokens: require('config/tokens/etc.json'),
+    contracts: require('config/contracts/etc.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETC_TREZOR,
       [SecureWalletName.LEDGER_NANO_S]: ETC_LEDGER,
@@ -115,8 +115,8 @@ const INITIAL_STATE: State = {
     isCustom: false,
     color: '#b37aff',
     blockExplorer: makeExplorer('https://ubiqscan.io/en'),
-    tokens: require('./tokens/ubq.json'),
-    contracts: require('./contracts/ubq.json'),
+    tokens: require('config/tokens/ubq.json'),
+    contracts: require('config/contracts/ubq.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: UBQ_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: UBQ_DEFAULT,
@@ -130,8 +130,8 @@ const INITIAL_STATE: State = {
     isCustom: false,
     color: '#673ab7',
     blockExplorer: makeExplorer('http://www.gander.tech'),
-    tokens: require('./tokens/exp.json'),
-    contracts: require('./contracts/exp.json'),
+    tokens: require('config/tokens/exp.json'),
+    contracts: require('config/contracts/exp.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: EXP_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: EXP_DEFAULT,
