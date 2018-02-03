@@ -3,6 +3,7 @@ import ERC20 from 'libs/erc20';
 import { Identicon } from 'components/ui';
 import arrow from 'assets/images/tail-triangle-down.svg';
 import './Addresses.scss';
+import { ETHAddressExplorer } from 'config';
 
 interface Props {
   to: string;
@@ -35,7 +36,7 @@ export const Addresses: React.SFC<Props> = ({ from, to, rawTo, data, unit, isTok
             <p className="tx-modal-address-tkn-contract-title">via the {unit} contract</p>
             <a
               className="small tx-modal-address-tkn-contract-link"
-              href={`https://etherscan.io/address/${rawTo}`}
+              href={ETHAddressExplorer(rawTo)}
             >
               {rawTo}
             </a>

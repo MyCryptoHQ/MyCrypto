@@ -64,7 +64,7 @@ class SendButtonFactoryClass extends Component<Props> {
               </div>
             )}
             <OfflineBroadcast />
-            <OnlineSend withProps={this.props.withProps} Modal={this.props.Modal} />
+            <OnlineSend withProps={this.props.withProps} />
           </React.Fragment>
         )}
       />

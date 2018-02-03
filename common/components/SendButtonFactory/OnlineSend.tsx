@@ -24,7 +24,6 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  Modal: typeof ConfirmationModalTemplate;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 

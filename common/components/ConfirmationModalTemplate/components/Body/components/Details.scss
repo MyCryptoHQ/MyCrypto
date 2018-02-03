@@ -18,17 +18,4 @@
       background-color: rgba(153, 153, 153, 0.12);
     }
   }
-  &-pair {
-    margin-bottom: 1rem;
-    > h5 {
-      display: inline-block;
-      margin: 0;
-      &:nth-child(0n + 2) {
-        font-family: $font-family-monospace;
-        font-weight: 300;
-        letter-spacing: 0px;
-        margin-left: 8px;
-      }
-    }
-  }
 }

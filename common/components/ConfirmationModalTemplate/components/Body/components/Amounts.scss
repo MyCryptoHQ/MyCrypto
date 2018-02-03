@@ -15,7 +15,7 @@
     &-title,
     &-value {
       font-weight: 400;
-      margin: 0px 0px;
+      margin: 0;
     }
     &-value {
       > span {
@@ -37,11 +37,6 @@
       background-position: top;
       background-size: 5px 1px;
       background-repeat: repeat-x;
-      > h5:nth-child(0n + 2) {
-        & span {
-          font-weight: 400;
-        }
-      }
     }
   }
 }
