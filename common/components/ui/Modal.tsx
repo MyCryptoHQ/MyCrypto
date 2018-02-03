@@ -68,6 +68,7 @@ export default class Modal extends PureComponent<Props, {}> {
 
                 <div className="Modal-content" ref={el => (this.modalContent = el)}>
                   {isOpen && children}
+                  <div className="Modal-fade" />
                 </div>
                 {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
               </div>
