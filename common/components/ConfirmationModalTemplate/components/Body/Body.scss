@@ -4,9 +4,6 @@
   margin: auto;
   max-width: 35rem;
   width: 100%;
-  @media screen and (min-width: $screen-sm) {
-    min-width: 32rem;
-  }
 }
 
 .tx-modal-testnet-warn {

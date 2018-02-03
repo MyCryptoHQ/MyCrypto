@@ -39,8 +39,9 @@ export const Amounts: React.SFC<Props> = ({
           <p className="tx-modal-amount-send-title">You'll Send </p>
           <p className="tx-modal-amount-send-value">
             <UnitDisplay
-              decimal={decimal}
               value={sendValue}
+              decimal={decimal}
+              displayShortBalance={6}
               symbol={isToken ? unit : networkUnit}
               checkOffline={false}
             />
@@ -91,6 +92,7 @@ export const Amounts: React.SFC<Props> = ({
               <UnitDisplay
                 value={total}
                 decimal={decimal}
+                displayShortBalance={6}
                 symbol={isToken ? unit : networkUnit}
                 checkOffline={false}
               />

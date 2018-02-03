@@ -22,8 +22,8 @@ export const Addresses: React.SFC<Props> = ({ from, to, rawTo, data, unit, isTok
       <div className="tx-modal-address-from">
         <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
         <div className="tx-modal-address-from-content">
-          <h5>From </h5>
-          <h5 className="small">{from}</h5>
+          <h5 className="tx-modal-address-from-title">From </h5>
+          <h5 className="tx-modal-address-from-address small">{from}</h5>
         </div>
       </div>
       {isToken && (
@@ -32,8 +32,11 @@ export const Addresses: React.SFC<Props> = ({ from, to, rawTo, data, unit, isTok
             <img src={arrow} alt="arrow" />
           </div>
           <div className="tx-modal-address-tkn-contract-content">
-            <p>via the {unit} contract</p>
-            <a className="small" href={`https://etherscan.io/address/${rawTo}`}>
+            <p className="tx-modal-address-tkn-contract-title">via the {unit} contract</p>
+            <a
+              className="small tx-modal-address-tkn-contract-link"
+              href={`https://etherscan.io/address/${rawTo}`}
+            >
               {rawTo}
             </a>
           </div>
@@ -42,8 +45,8 @@ export const Addresses: React.SFC<Props> = ({ from, to, rawTo, data, unit, isTok
       <div className="tx-modal-address-to">
         <Identicon className="tx-modal-address-from-icon" size={size} address={toFormatted} />
         <div className="tx-modal-address-to-content">
-          <h5>To </h5>
-          <h5 className="small">{toFormatted}</h5>
+          <h5 className="tx-modal-address-to-title">To </h5>
+          <h5 className="small tx-modal-address-to-address">{toFormatted}</h5>
         </div>
       </div>
     </div>

@@ -85,6 +85,9 @@ class BodyClass extends React.Component<Props, State> {
               </button>
               {showDetails && (
                 <Details
+                  sendValue={sendValue}
+                  decimal={decimal}
+                  symbol={isToken ? unit : networkUnit}
                   network={node.network}
                   provider={node.service}
                   gasPrice={gasPrice}

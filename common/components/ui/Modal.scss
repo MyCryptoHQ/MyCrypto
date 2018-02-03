@@ -4,9 +4,10 @@
 $m-background: #fff;
 $m-window-padding-w: 20px;
 $m-window-padding-h: 30px;
-$m-header-padding: 1rem 2rem 1rem 2rem;
 $m-header-height: 62px;
-$m-content-padding: 1rem 2rem;
+$m-header-padding: 1rem 2rem 0.5rem 2rem;
+$m-content-padding: 1.5rem 2rem;
+$m-footer-padding: 0.5rem 2rem 1rem 2rem;
 $m-close-size: 26px;
 $m-anim-speed: 400ms;
 
@@ -43,8 +44,8 @@ $m-anim-speed: 400ms;
 
   &-fade {
     background: linear-gradient(to bottom, #fff0, #fff);
-    bottom: 5rem;
-    height: 30px;
+    bottom: 4.5rem;
+    height: 25px;
     left: 0;
     position: fixed;
     width: 100%;
@@ -57,7 +58,7 @@ $m-anim-speed: 400ms;
     align-items: center;
 
     &-title {
-      font-size: 26px;
+      font-size: 1.625rem;
       font-weight: 400;
       margin: 0;
       white-space: nowrap;
@@ -95,7 +96,7 @@ $m-anim-speed: 400ms;
   }
 
   &-footer {
-    padding: 1rem 2rem 1rem 2rem;
+    padding: $m-footer-padding;
     background: $m-background;
 
     // Selector needs a little extra oomph to override bootstrap

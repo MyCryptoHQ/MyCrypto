@@ -16,6 +16,7 @@
     flex-wrap: wrap;
     align-items: center;
     margin: 1rem 0rem;
+    width: inherit;
     &-icon {
       margin-right: 1rem;
     }
@@ -23,18 +24,19 @@
       margin-top: 0;
     }
     &-content {
-      > h5 {
-        margin: 0;
-        &:first-child {
-          margin-right: 16px;
-          padding-bottom: 0.25rem;
-        }
-        &:nth-child(0n + 2) {
-          font-family: $font-family-monospace;
-          font-weight: 400;
-          opacity: 0.54;
-        }
-      }
+      width: inherit;
+    }
+    &-title {
+      margin: 0;
+      margin-right: 16px;
+      padding-bottom: 0.25rem;
+    }
+    &-address {
+      margin: 0;
+      font-family: $font-family-monospace;
+      font-weight: 400;
+      opacity: 0.54;
+      word-wrap: break-word;
     }
   }
 
@@ -44,16 +46,15 @@
         transform: scale(0.75);
       }
     }
-    &-content {
-      > p {
-        margin: 0;
-        font-weight: 400;
-        color: rgba(0, 0, 0, 0.54);
-      }
-      > a {
-        font-family: $font-family-monospace;
-        font-weight: 400;
-      }
+    &-title {
+      margin: 0;
+      padding: 0;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.54);
+    }
+    &-link {
+      font-family: $font-family-monospace;
+      font-weight: 400;
     }
   }
 
@@ -62,6 +63,22 @@
       height: 3rem;
       width: 3rem;
       transform: scale(0.75);
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    width: inherit;
+    .Identicon {
+      display: none;
+    }
+    &-tkn-contract {
+      &-icon {
+        display: none;
+      }
+      &-link {
+        width: inherit;
+        word-wrap: break-word;
+      }
     }
   }
 }
