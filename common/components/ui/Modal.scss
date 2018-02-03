@@ -71,11 +71,11 @@ $m-anim-speed: 400ms;
       @include reset-button;
       height: $m-close-size;
       width: $m-close-size;
-      opacity: 0.54;
+      opacity: 0.3;
       transition: opacity 120ms;
 
       &:hover {
-        opacity: 1;
+        opacity: 0.87;
       }
 
       &-icon {
