@@ -28,7 +28,7 @@ export default function Identicon(props: Props) {
               height: '100%',
               width: '100%',
               padding: '0px',
-              'border-radius': '50%'
+              borderRadius: '50%'
             }}
           />
           <div
@@ -38,8 +38,8 @@ export default function Identicon(props: Props) {
               height: 'inherit',
               width: 'inherit',
               top: 0,
-              'box-shadow': '0 3px 8px 0 rgba(0, 0, 0, 0.1), inset 0 0 3px 0 rgba(0, 0, 0, 0.1)',
-              'border-radius': '50%'
+              boxShadow: '0 3px 8px 0 rgba(0, 0, 0, 0.1), inset 0 0 3px 0 rgba(0, 0, 0, 0.1)',
+              borderRadius: '50%'
             }}
           />
         </React.Fragment>
