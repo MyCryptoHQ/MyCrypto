@@ -17,7 +17,7 @@ interface Props {
 const size = '3rem';
 
 export const Addresses: React.SFC<Props> = ({ from, to, rawTo, data, unit, isToken }) => {
-  const toFormatted = unit === 'ether' ? to : ERC20.transfer.decodeInput(data)._to;
+  const toFormatted = isToken ? ERC20.transfer.decodeInput(data)._to : to;
   return (
     <div className="tx-modal-address">
       <div className="tx-modal-address-from">

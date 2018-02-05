@@ -48,13 +48,12 @@ class BodyClass extends React.Component<Props, State> {
           const transactionInstance = makeTransaction(serializedTransaction);
           const rawTx = getTransactionFields(transactionInstance);
           const { value, gasPrice, gasLimit, data, nonce, chainId } = rawTx;
-          const isToken = unit !== 'ether';
+          const isToken = !(unit === 'ether' || unit === 'ETH');
           const isTestnet = network.isTestnet;
           const sendValue = isToken
             ? TokenValue(ERC20.transfer.decodeInput(data)._value)
             : Wei(value);
           const transactionFee = getTransactionFee(gasPrice, gasLimit);
-
           return (
             <div className="tx-modal-body">
               {isTestnet && <p className="tx-modal-testnet-warn small">Testnet Transaction</p>}
