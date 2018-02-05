@@ -18,7 +18,6 @@ import { AddressField, GasSlider, SendButton } from 'components';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
 import { Token } from 'config/data';
 import translate from 'translations';
-import Balances from 'components/BalanceSidebar/TokenBalances/Balances';
 import Spinner from 'components/ui/Spinner';
 import SweeperList from 'containers/Tabs/SendTransaction/components/SweeperList';
 // import './index.scss';
