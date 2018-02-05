@@ -1,7 +1,6 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
-import { ENSWallet } from './components/ENSWallet';
-import ENSUnlockLayout from './components/ENSUnlockLayout';
+import { NewTabLink } from 'components/ui';
 
 export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
   <section className="row">
@@ -11,11 +10,14 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
           <strong>{props.name}.eth</strong> is available!
         </h1>
       </div>
+
+      <NewTabLink
+        className="text-center"
+        content={`Do you want ${
+          props.name
+        }.eth? You'll need open an auction on MyCrypto V3 by clicking here`}
+        href="https://mycrypto.com/#ens"
+      />
     </section>
-    <ENSWallet text={`Do you want ${props.name}.eth? Unlock your wallet to start an auction.`}>
-      <ENSUnlockLayout>
-        {/*<PlaceBid domainName={name} buttonName="Start the Auction" title="Start an Auction" />*/}
-      </ENSUnlockLayout>
-    </ENSWallet>
   </section>
 );

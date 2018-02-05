@@ -1,9 +1,8 @@
 import React from 'react';
 import { IBaseDomainRequest } from 'libs/ens';
 import ENSTime from './components/ENSTime';
-import { ENSWallet } from './components/ENSWallet';
-import ENSUnlockLayout from './components/ENSUnlockLayout';
 import moment from 'moment';
+import { NewTabLink } from 'components/ui';
 
 const getDeadlines = (registrationDate: string) => {
   // Get the time to reveal bids, and the time when the action closes
@@ -33,13 +32,12 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
             <ENSTime text="Auction Closes On" time={auctionCloseTime} />
           </section>
         </div>
-      </div>
 
-      <ENSWallet text={`Do you want ${name}.eth? Unlock your wallet to place a bid.`}>
-        <ENSUnlockLayout>
-          {/* <PlaceBid domainName={name} buttonName="Place Bid" title="Place A Bid" /> */}
-        </ENSUnlockLayout>
-      </ENSWallet>
+        <NewTabLink
+          content={`Do you want to place a bid on ${name}.eth? You'll need to bid on MyCrypto V3 by clicking here: `}
+          href="https://mycrypto.com/#ens"
+        />
+      </div>
     </section>
   );
 };

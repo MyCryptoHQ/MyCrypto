@@ -1,10 +1,8 @@
 import React from 'react';
 import { IRevealDomainRequest } from 'libs/ens';
 import ENSTime from './components/ENSTime';
-import { UnitDisplay } from 'components/ui';
+import { UnitDisplay, NewTabLink } from 'components/ui';
 import { Wei } from 'libs/units';
-import { ENSWallet } from './components/ENSWallet';
-import ENSUnlockLayout from './components/ENSUnlockLayout';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
   <section className="row text-center">
@@ -35,9 +33,11 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
         </section>
       </div>
     </div>
-
-    <ENSWallet text={`Did you you bid on ${props.name}.eth? You must reveal your bid now.`}>
-      <ENSUnlockLayout>{}</ENSUnlockLayout>
-    </ENSWallet>
+    <NewTabLink
+      content={`Did you you bid on ${
+        props.name
+      }.eth? You must reveal your bid now. You'll need reveal your bid on MyCrypto V3 by clicking here`}
+      href="https://mycrypto.com/#ens"
+    />
   </section>
 );
