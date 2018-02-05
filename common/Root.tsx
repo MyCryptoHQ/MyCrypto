@@ -95,7 +95,7 @@ export default class Root extends Component<Props, State> {
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
-  const { pathname, hash } = props.location;
+  const { pathname, hash, search } = props.location;
 
   if (pathname === '/') {
     switch (hash) {
@@ -128,7 +128,7 @@ const LegacyRoutes = withRouter(props => {
     <Switch>
       <Redirect from="/signmsg.html" to="/sign-and-verify-message" />
       <Redirect from="/helpers.html" to="/helpers" />
-      <Redirect from="/send-transaction" to="/account/send" />
+      <Redirect from="/send-transaction" to={'/account/send' + search} />
     </Switch>
   );
 });

@@ -34,7 +34,8 @@ type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match } = this.props;
+    const { wallet, match, location } = this.props;
+    const { search } = location;
     const currentPath = match.url;
     const tabs: Tab[] = [
       {
@@ -70,7 +71,11 @@ class SendTransaction extends React.Component<Props> {
                     render={() => (
                       <Redirect
                         from={`${currentPath}`}
-                        to={`${wallet.isReadOnly ? `${currentPath}/info` : `${currentPath}/send`}`}
+                        to={`${
+                          wallet.isReadOnly
+                            ? `${currentPath}/info` + search
+                            : `${currentPath}/send` + search
+                        }`}
                       />
                     )}
                   />
