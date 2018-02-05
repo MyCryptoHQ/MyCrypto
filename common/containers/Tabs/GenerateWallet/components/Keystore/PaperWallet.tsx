@@ -20,7 +20,7 @@ const PaperWallet: React.SFC<Props> = props => (
       <input
         className="GenPaper-private form-control"
         value={stripHexPrefix(props.privateKey)}
-        aria-label={translate('x_PrivKey')}
+        aria-label={translate('x_PrivKey', true)}
         aria-describedby="x_PrivKeyDesc"
         type="text"
         readOnly={true}
