@@ -1,5 +1,7 @@
+@import 'common/sass/variables';
+
 .tx-modal-amount {
-  width: 100%;
+  width: inherit;
   border-collapse: separate;
   padding-top: 1rem;
   padding-bottom: 0;
@@ -7,16 +9,22 @@
   &-fee,
   &-total {
     font-size: 1.15rem;
+    @media screen and (max-width: 525px) {
+      font-size: 1rem;
+    }
     > td {
       padding: 0.5rem 0;
       text-align: right;
       opacity: 0.54;
+      &:not(:first-child) {
+        padding-left: 0.5rem;
+      }
       &:first-child {
         text-align: left;
         opacity: 1;
       }
       &:last-child {
-        font-size: 90%;
+        font-size: 85%;
       }
     }
   }
