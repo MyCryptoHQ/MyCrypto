@@ -5,7 +5,7 @@ import { SagaIterator } from 'redux-saga';
 import { AppState } from 'reducers';
 
 // If there are any orphaned custom networks, purge them
-export function* cleanCustomNetworks(): SagaIterator {
+export function* pruneCustomNetworks(): SagaIterator {
   const customNodes: AppState['config']['nodes']['customNodes'] = yield select(
     getCustomNodeConfigs
   );
@@ -13,11 +13,11 @@ export function* cleanCustomNetworks(): SagaIterator {
     getCustomNetworkConfigs
   );
 
-  Object.values(customNodes).forEach(function*(n) {
+  for (const n of Object.values(customNodes)) {
     if (!customNetworks[n.network]) {
       yield put(removeCustomNetwork({ id: n.network }));
     }
-  });
+  }
 }
 
-export const network = [takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, cleanCustomNetworks)];
+export const network = [takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, pruneCustomNetworks)];
