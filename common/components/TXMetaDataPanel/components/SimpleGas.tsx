@@ -9,6 +9,7 @@ import { getGasLimitEstimationTimedOut } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { GasLimitField } from 'components/GasLimitField';
 import { getIsWeb3Node } from 'selectors/config';
+const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
@@ -48,11 +49,12 @@ class SimpleGas extends React.Component<Props> {
 
         <div className="SimpleGas-input-group">
           <div className="SimpleGas-slider">
-            <Slider
+            <SliderWithTooltip
               onChange={this.handleSlider}
               min={gasPriceDefaults.gasPriceMinGwei}
               max={gasPriceDefaults.gasPriceMaxGwei}
               value={parseFloat(gasPrice.raw)}
+              tipFormatter={gas => `${gas} Gwei`}
             />
             <div className="SimpleGas-slider-labels">
               <span>{translate('Cheap')}</span>
