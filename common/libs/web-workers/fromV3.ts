@@ -1,17 +1,17 @@
 import { IFullWallet, fromPrivateKey } from 'ethereumjs-wallet';
 import { toBuffer } from 'ethereumjs-util';
-import Worker from 'worker-loader!./workers/scrypt-worker.worker.ts';
+import Worker from 'worker-loader!./workers/fromV3.worker.ts';
 
-export const fromV3 = (
+export default function fromV3(
   keystore: string,
   password: string,
   nonStrict: boolean
-): Promise<IFullWallet> => {
+): Promise<IFullWallet> {
   return new Promise((resolve, reject) => {
-    const scryptWorker = new Worker();
-    scryptWorker.postMessage({ keystore, password, nonStrict });
-    scryptWorker.onmessage = event => {
-      const data: string = event.data;
+    const worker = new Worker();
+    worker.postMessage({ keystore, password, nonStrict });
+    worker.onmessage = (ev: MessageEvent) => {
+      const data = ev.data;
       try {
         const wallet = fromPrivateKey(toBuffer(data));
         resolve(wallet);
@@ -20,4 +20,4 @@ export const fromV3 = (
       }
     };
   });
-};
+}

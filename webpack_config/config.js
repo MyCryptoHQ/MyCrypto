@@ -69,7 +69,6 @@ module.exports = {
     'redux-promise-middleware',
     'redux-saga',
     'scryptsy',
-    'store2',
     'uuid',
     'wallet-address-validator',
     'whatwg-fetch'
