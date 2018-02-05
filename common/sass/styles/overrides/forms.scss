@@ -30,7 +30,6 @@ input[readonly] {
 }
 
 .form-control {
-  margin-top: $space-sm;
   margin-bottom: $space-sm;
   transition: $transition;
   padding: $input-padding;
@@ -82,5 +81,19 @@ select.form-control {
 
   &.is-semivalid {
     @include form-control-state($brand-warning);
+  }
+}
+
+.help-block {
+  &.is-valid {
+    color: $brand-success;
+  }
+
+  &.is-invalid {
+    color: $brand-danger;
+  }
+
+  &.is-semivalid {
+    color: $brand-warning;
   }
 }

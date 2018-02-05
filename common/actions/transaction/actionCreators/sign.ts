@@ -1,9 +1,8 @@
 import {
   SignTransactionFailedAction,
-  SignLocalTransactionRequestedAction,
-  SignWeb3TransactionRequestedAction,
   SignLocalTransactionSucceededAction,
-  SignWeb3TransactionSucceededAction
+  SignWeb3TransactionSucceededAction,
+  SignTransactionRequestedAction
 } from '../actionTypes';
 import { TypeKeys } from '../constants';
 
@@ -12,19 +11,17 @@ const signTransactionFailed = (): SignTransactionFailedAction => ({
   type: TypeKeys.SIGN_TRANSACTION_FAILED
 });
 
+type TSignTransactionRequested = typeof signTransactionRequested;
+const signTransactionRequested = (payload: SignTransactionRequestedAction['payload']) => ({
+  type: TypeKeys.SIGN_TRANSACTION_REQUESTED,
+  payload
+});
+
 type TSignLocalTransactionSucceeded = typeof signLocalTransactionSucceeded;
 const signLocalTransactionSucceeded = (
   payload: SignLocalTransactionSucceededAction['payload']
 ): SignLocalTransactionSucceededAction => ({
   type: TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-  payload
-});
-
-type TSignLocalTransactionRequested = typeof signLocalTransactionRequested;
-const signLocalTransactionRequested = (
-  payload: SignLocalTransactionRequestedAction['payload']
-): SignLocalTransactionRequestedAction => ({
-  type: TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED,
   payload
 });
 
@@ -36,23 +33,13 @@ const signWeb3TransactionSucceeded = (
   payload
 });
 
-type TSignWeb3TransactionRequested = typeof signWeb3TransactionRequested;
-const signWeb3TransactionRequested = (
-  payload: SignWeb3TransactionRequestedAction['payload']
-): SignWeb3TransactionRequestedAction => ({
-  type: TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED,
-  payload
-});
-
 export {
+  signTransactionRequested,
   signTransactionFailed,
   signLocalTransactionSucceeded,
-  signLocalTransactionRequested,
   signWeb3TransactionSucceeded,
-  signWeb3TransactionRequested,
   TSignLocalTransactionSucceeded,
-  TSignLocalTransactionRequested,
   TSignWeb3TransactionSucceeded,
-  TSignWeb3TransactionRequested,
-  TSignTransactionFailed
+  TSignTransactionFailed,
+  TSignTransactionRequested
 };

@@ -1,97 +1,144 @@
-import { App, BrowserWindow, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import EVENTS from '../../shared/electronEvents';
+import { app, dialog, BrowserWindow } from 'electron';
+import { autoUpdater, UpdateInfo } from 'electron-updater';
 import TEST_RELEASE from './testrelease.json';
 autoUpdater.autoDownload = false;
 
+// Set to 'true' if you want to test update behavior. Requires a recompile.
+const shouldMockUpdate = false && process.env.NODE_ENV !== 'production';
+const shouldMockUpdateError = false && process.env.NODE_ENV !== 'production';
+let hasRunUpdater = false;
+let hasStartedUpdating = false;
+
 enum AutoUpdaterEvents {
   CHECKING_FOR_UPDATE = 'checking-for-update',
-  UPDATE_NOT_AVAILABLE = 'update-not-available',
   UPDATE_AVAILABLE = 'update-available',
   DOWNLOAD_PROGRESS = 'download-progress',
   UPDATE_DOWNLOADED = 'update-downloaded',
   ERROR = 'error'
 }
 
-export default (app: App, window: BrowserWindow) => {
-  // Set to 'true' if you want to test update behavior. Requires a recompile.
-  const shouldMockUpdate = true && process.env.NODE_ENV !== 'production';
+export default function(mainWindow: BrowserWindow) {
+  if (hasRunUpdater) {
+    return;
+  }
+  hasRunUpdater = true;
 
-  // Report update status
-  autoUpdater.on(AutoUpdaterEvents.CHECKING_FOR_UPDATE, () => {
-    window.webContents.send(EVENTS.UPDATE.CHECKING_FOR_UPDATE);
-  });
-
-  autoUpdater.on(AutoUpdaterEvents.UPDATE_NOT_AVAILABLE, () => {
-    window.webContents.send(EVENTS.UPDATE.UPDATE_NOT_AVAILABLE);
-  });
-
-  autoUpdater.on(AutoUpdaterEvents.UPDATE_AVAILABLE, info => {
-    window.webContents.send(EVENTS.UPDATE.UPDATE_AVAILABLE, info);
+  autoUpdater.on(AutoUpdaterEvents.UPDATE_AVAILABLE, (info: UpdateInfo) => {
+    dialog.showMessageBox(
+      {
+        type: 'question',
+        buttons: ['Yes, start downloading', 'Maybe later'],
+        title: `An Update is Available (v${info.version})`,
+        message: `An Update is Available (v${info.version})`,
+        detail:
+          'A new version has been released. Would you like to start downloading the update? You will be notified when the download is finished.'
+      },
+      response => {
+        if (response === 0) {
+          if (shouldMockUpdate) {
+            mockDownload();
+          } else {
+            autoUpdater.downloadUpdate();
+          }
+        }
+      }
+    );
+    hasStartedUpdating = true;
   });
 
   autoUpdater.on(AutoUpdaterEvents.DOWNLOAD_PROGRESS, progress => {
-    window.webContents.send(EVENTS.UPDATE.DOWNLOAD_PROGRESS, progress);
+    mainWindow.setTitle(`MyEtherWallet (Downloading update... ${Math.round(progress.percent)}%)`);
+    mainWindow.setProgressBar(progress.percent / 100);
   });
 
   autoUpdater.on(AutoUpdaterEvents.UPDATE_DOWNLOADED, () => {
-    window.webContents.send(EVENTS.UPDATE.UPDATE_DOWNLOADED);
+    resetWindowFromUpdates(mainWindow);
+    dialog.showMessageBox(
+      {
+        type: 'question',
+        buttons: ['Yes, restart now', 'Maybe later'],
+        title: 'Update Has Been Downloaded',
+        message: 'Download complete!',
+        detail:
+          'The new version of MyEtherWallet has finished downloading. Would you like to restart to complete the installation?'
+      },
+      response => {
+        if (response === 0) {
+          if (shouldMockUpdate) {
+            app.quit();
+          } else {
+            autoUpdater.quitAndInstall();
+          }
+        }
+      }
+    );
   });
 
-  autoUpdater.on(AutoUpdaterEvents.ERROR, (err, msg) => {
+  autoUpdater.on(AutoUpdaterEvents.ERROR, (err: Error) => {
     console.error('Update failed with an error');
     console.error(err);
-    window.webContents.send(EVENTS.UPDATE.ERROR, msg);
+
+    // If they haven't started updating yet, just fail silently
+    if (!hasStartedUpdating) {
+      return;
+    }
+
+    resetWindowFromUpdates(mainWindow);
+    dialog.showErrorBox(
+      'Downloading Update has Failed',
+      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at https://github.com/MyEtherWallet/MyEtherWallet/releases\n\n(${
+        err.name
+      }: ${err.message})`
+    );
   });
 
+  // Kick off the check
   autoUpdater.checkForUpdatesAndNotify();
-
-  // Listen for restart request
-  ipcMain.on(EVENTS.UPDATE.DOWNLOAD_UPDATE, () => {
-    if (shouldMockUpdate) {
-      mockDownload(window);
-    } else {
-      autoUpdater.downloadUpdate();
-    }
-  });
-
-  ipcMain.on(EVENTS.UPDATE.QUIT_AND_INSTALL, () => {
-    if (shouldMockUpdate) {
-      app.quit();
-    } else {
-      autoUpdater.quitAndInstall();
-    }
-  });
 
   // Simulate a test release
   if (shouldMockUpdate) {
-    mockUpdateCheck(window);
+    mockUpdateCheck();
   }
-};
+}
+
+function resetWindowFromUpdates(window: BrowserWindow) {
+  window.setTitle('MyEtherWallet');
+  window.setProgressBar(-1); // Clears progress bar
+}
 
 // Mock functions for dev testing
-function mockUpdateCheck(window: BrowserWindow) {
-  window.webContents.send(EVENTS.UPDATE.CHECKING_FOR_UPDATE);
+function mockUpdateCheck() {
+  autoUpdater.emit(AutoUpdaterEvents.CHECKING_FOR_UPDATE);
 
   setTimeout(() => {
-    window.webContents.send(EVENTS.UPDATE.UPDATE_AVAILABLE, TEST_RELEASE);
+    autoUpdater.emit(AutoUpdaterEvents.UPDATE_AVAILABLE, TEST_RELEASE);
   }, 3000);
 }
 
-function mockDownload(window: BrowserWindow) {
-  for (let i = 0; i < 101; i++) {
+function mockDownload() {
+  for (let i = 0; i < 11; i++) {
     setTimeout(() => {
+      if (i >= 5 && shouldMockUpdateError) {
+        if (i === 5) {
+          autoUpdater.emit(
+            AutoUpdaterEvents.ERROR,
+            new Error('Test error, nothing actually failed')
+          );
+        }
+        return;
+      }
+
       const total = 150000000;
-      window.webContents.send(EVENTS.UPDATE.DOWNLOAD_PROGRESS, {
-        bytesPerSecond: Math.round(Math.random() * 100000),
-        percent: i,
+      autoUpdater.emit(AutoUpdaterEvents.DOWNLOAD_PROGRESS, {
+        bytesPerSecond: Math.round(Math.random() * 100000000),
+        percent: i * 10,
         transferred: total / i,
         total
       });
 
-      if (i === 100) {
-        window.webContents.send(EVENTS.UPDATE.UPDATE_DOWNLOADED);
+      if (i === 10) {
+        autoUpdater.emit(AutoUpdaterEvents.UPDATE_DOWNLOADED);
       }
-    }, 50 * i);
+    }, 500 * i);
   }
 }

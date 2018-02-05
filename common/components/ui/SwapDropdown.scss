@@ -7,10 +7,12 @@
     border: 1px solid #ccc;
     padding: 0.4rem 1rem;
     border-radius: 2px;
+    height: 2.5rem;
     &:focus {
       outline: none;
     }
-    &:active, &:hover {
+    &:active,
+    &:hover {
       opacity: 0.8;
     }
     > li {
@@ -46,10 +48,10 @@
   text-align: left;
   z-index: 500;
   background: white;
-  box-shadow: 2px 1px 60px rgba(0,0,0,.175);
+  box-shadow: 2px 1px 60px rgba(0, 0, 0, 0.175);
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -20px;
     left: 50%;
@@ -59,7 +61,7 @@
     border-top: 10px solid transparent;
     border-bottom: 10px solid #fff;
   }
-  
+
   &.open {
     display: block;
   }
@@ -74,7 +76,7 @@
     padding: 5px 20px;
     color: #163151;
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
       background-color: #163151;
       color: #fff;
     }
@@ -84,7 +86,7 @@
       color: grey;
       &:hover {
         background-color: #fff;
-        color:#163151;
+        color: #163151;
         cursor: not-allowed;
       }
     }

@@ -9,7 +9,7 @@ import {
   isValidSignMessage,
   isValidGetAccounts,
   isValidGetNetVersion
-} from '../../validators';
+} from 'libs/validators';
 
 export default class Web3Node extends RPCNode {
   public client: Web3Client;

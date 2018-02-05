@@ -10,11 +10,10 @@ const Translate = ({ translationKey }: Props) => {
   const source = translateRaw(translationKey);
   return (
     <Markdown
-      containerTagName="span"
-      containerProps={{ 'data-l10n-key': translationKey }}
       escapeHtml={true}
       unwrapDisallowed={true}
-      allowedTypes={['Text', 'Link', 'Emph', 'Strong', 'Code']}
+      allowedTypes={['link', 'emphasis', 'strong', 'code', 'root']}
+      renderers={{ root: 'span' }}
       source={source}
     />
   );

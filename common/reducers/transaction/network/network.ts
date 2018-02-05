@@ -1,11 +1,18 @@
 import { State, RequestStatus } from './typings';
-import { TypeKeys as TK, ResetAction, NetworkAction } from 'actions/transaction';
+import {
+  TypeKeys as TK,
+  ResetAction,
+  NetworkAction,
+  InputGasPriceAction,
+  InputGasPriceIntentAction
+} from 'actions/transaction';
 import { Action } from 'redux';
 
 const INITIAL_STATE: State = {
   gasEstimationStatus: null,
   getFromStatus: null,
-  getNonceStatus: null
+  getNonceStatus: null,
+  gasPriceStatus: null
 };
 
 const getPostFix = (str: string) => {
@@ -18,9 +25,17 @@ const nextState = (field: keyof State) => (state: State, action: Action): State 
   [field]: RequestStatus[getPostFix(action.type)]
 });
 
+const setGasPriceStatus = (state: State, gasPriceStatus: RequestStatus) => ({
+  ...state,
+  gasPriceStatus
+});
+
 const reset = () => INITIAL_STATE;
 
-export const network = (state: State = INITIAL_STATE, action: NetworkAction | ResetAction) => {
+export const network = (
+  state: State = INITIAL_STATE,
+  action: NetworkAction | ResetAction | InputGasPriceAction | InputGasPriceIntentAction
+) => {
   switch (action.type) {
     case TK.ESTIMATE_GAS_REQUESTED:
       return nextState('gasEstimationStatus')(state, action);
@@ -42,6 +57,14 @@ export const network = (state: State = INITIAL_STATE, action: NetworkAction | Re
       return nextState('getNonceStatus')(state, action);
     case TK.GET_NONCE_FAILED:
       return nextState('getNonceStatus')(state, action);
+
+    // Not exactly "network" requests, but we want to show pending while
+    // gas price is subject to change
+    case TK.GAS_PRICE_INPUT_INTENT:
+      return setGasPriceStatus(state, RequestStatus.REQUESTED);
+    case TK.GAS_PRICE_INPUT:
+      return setGasPriceStatus(state, RequestStatus.SUCCEEDED);
+
     case TK.RESET:
       return reset();
     default:

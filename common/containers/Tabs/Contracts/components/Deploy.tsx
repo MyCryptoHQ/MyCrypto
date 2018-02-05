@@ -1,10 +1,8 @@
 import translate from 'translations';
 import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
-import { GasLimitFieldFactory } from 'components/GasLimitFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import { SigningStatus } from 'components/SigningStatus';
-import { NonceField } from 'components/NonceField';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
@@ -12,7 +10,9 @@ import { setToField, TSetToField } from 'actions/transaction';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
+import { NonceField, TXMetaDataPanel } from 'components';
 import './Deploy.scss';
+import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -46,27 +46,22 @@ class DeployClass extends Component<DispatchProps> {
           />
         </div>
 
-        <label className="Deploy-field form-group">
-          <h4 className="Deploy-field-label">Gas Limit</h4>
-          <GasLimitFieldFactory
-            withProps={({ gasLimit: { raw, value }, onChange, readOnly }) => (
-              <input
-                name="gasLimit"
-                value={raw}
-                disabled={readOnly}
-                onChange={onChange}
-                className={classnames('Deploy-field-input', 'form-control', {
-                  'is-invalid': !value
-                })}
-              />
-            )}
-          />
-        </label>
         <div className="row form-group">
-          <div className="col-xs-11">
+          <div className="col-xs-12 clearfix">
             <NonceField alwaysDisplay={false} />
           </div>
         </div>
+
+        <div className="row form-group">
+          <div className="col-xs-12 clearfix">
+            <TXMetaDataPanel
+              initialState="advanced"
+              disableToggle={true}
+              advancedGasOptions={{ dataField: false }}
+            />
+          </div>
+        </div>
+
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
             <GenerateTransaction />
@@ -74,6 +69,7 @@ class DeployClass extends Component<DispatchProps> {
         </div>
         <SigningStatus />
         <SendButtonFactory
+          Modal={ConfirmationModal}
           withProps={({ onClick }) => (
             <button className="Deploy-submit btn btn-primary" onClick={onClick}>
               {translate('NAV_DeployContract')}

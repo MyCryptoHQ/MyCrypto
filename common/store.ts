@@ -15,7 +15,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
-import RootReducer from './reducers';
+import RootReducer, { AppState } from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
@@ -111,7 +111,6 @@ const configureStore = () => {
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState
   };
-
   // if 'web3' has persisted as node selection, reset to app default
   // necessary because web3 is only initialized as a node upon MetaMask / Mist unlock
   if (persistedInitialState.config.nodeSelection === 'web3') {
@@ -127,14 +126,13 @@ const configureStore = () => {
 
   store.subscribe(
     throttle(() => {
-      const state = store.getState();
+      const state: AppState = store.getState();
       saveState({
         config: {
           nodeSelection: state.config.nodeSelection,
           languageSelection: state.config.languageSelection,
           customNodes: state.config.customNodes,
-          customNetworks: state.config.customNetworks,
-          setGasLimit: state.config.setGasLimit
+          customNetworks: state.config.customNetworks
         },
         transaction: {
           fields: {

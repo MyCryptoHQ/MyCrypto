@@ -1,0 +1,12 @@
+.flex-wrapper {
+  display: flex;
+  &-wrap {
+    flex-wrap: wrap;
+  }
+  &-nowrap {
+    flex-wrap: nowrap;
+  }
+  .flex-spacer {
+    flex-grow: 2;
+  }
+}

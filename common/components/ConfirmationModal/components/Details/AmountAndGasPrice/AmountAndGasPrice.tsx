@@ -1,4 +1,4 @@
-import { GasPrice } from './components';
+import { TransactionFee } from './components';
 import { Amount } from '../../Amount';
 import React from 'react';
 
@@ -9,9 +9,9 @@ export const AmountAndGasPrice: React.SFC<{}> = () => (
       <strong>
         <Amount />
       </strong>{' '}
-      with a gas price of{' '}
+      with a transaction fee of{' '}
       <strong>
-        <GasPrice />
+        <TransactionFee />
       </strong>
     </p>
   </li>

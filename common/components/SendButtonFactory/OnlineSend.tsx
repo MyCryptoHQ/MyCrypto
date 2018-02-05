@@ -22,20 +22,24 @@ interface DispatchProps {
   showNotification: TShowNotification;
   reset: TReset;
 }
+
 interface OwnProps {
+  Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
+
 const INITIAL_STATE: State = {
   showModal: false
 };
 
 type Props = OwnProps & StateProps & DispatchProps;
+
 class OnlineSendClass extends Component<Props, State> {
   public state: State = INITIAL_STATE;
 
   public render() {
     const displayModal = this.state.showModal ? (
-      <ConfirmationModal onClose={this.toggleModal} />
+      <this.props.Modal onClose={this.toggleModal} />
     ) : null;
 
     return !this.props.offline ? (
