@@ -1,4 +1,6 @@
+import { staticNetworks, makeExplorer } from 'reducers/config/networks/staticNetworks';
 import { ethPlorer, ETHTokenExplorer, SecureWalletName, InsecureWalletName } from 'config/data';
+import { StaticNetworkConfig } from 'types/network';
 import {
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -9,23 +11,8 @@ import {
   EXP_DEFAULT,
   UBQ_DEFAULT
 } from 'config/dpaths';
-import { ConfigAction } from 'actions/config';
-import { StaticNetworkIds, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
 
-export type State = { [key in StaticNetworkIds]: StaticNetworkConfig };
-
-// Must be a website that follows the ethplorer convention of /tx/[hash] and
-// address/[address] to generate the correct functions.
-// TODO: put this in utils / libs
-export function makeExplorer(origin: string): BlockExplorerConfig {
-  return {
-    origin,
-    txUrl: hash => `${origin}/tx/${hash}`,
-    addressUrl: address => `${origin}/address/${address}`
-  };
-}
-
-const INITIAL_STATE: State = {
+const expectedInitialState = {
   ETH: {
     name: 'ETH',
     unit: 'ETH',
@@ -140,9 +127,22 @@ const INITIAL_STATE: State = {
   }
 };
 
-export const staticNetworks = (state: State = INITIAL_STATE, action: ConfigAction) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
+const expectedState = {
+  initialState: expectedInitialState
 };
+
+describe('Testing contained data', () => {
+  it(`contain unique chainIds`, () => {
+    const networkValues = Object.values(expectedInitialState);
+    const chainIds = networkValues.map(a => a.chainId);
+    const chainIdsSet = new Set(chainIds);
+    expect(Array.from(chainIdsSet).length).toEqual(chainIds.length);
+  });
+});
+
+describe('static networks reducer', () => {
+  it('should return the initial state', () =>
+    expect(JSON.stringify(staticNetworks(undefined, {} as any))).toEqual(
+      JSON.stringify(expectedState.initialState)
+    ));
+});

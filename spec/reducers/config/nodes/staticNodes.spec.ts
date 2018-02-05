@@ -1,10 +1,11 @@
+import { web3SetNode, web3UnsetNode } from 'actions/config';
+import { staticNodes, INITIAL_STATE } from 'reducers/config/nodes/staticNodes';
 import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
-import { TypeKeys, NodeAction } from 'actions/config';
-import { NonWeb3NodeConfigs, Web3NodeConfigs } from 'types/node';
+import { Web3NodeConfig } from 'types/node';
+import { networkIdToName } from 'libs/values';
+import { Web3Service } from 'libs/nodes/web3';
 
-export type State = NonWeb3NodeConfigs & Web3NodeConfigs;
-
-export const INITIAL_STATE: State = {
+const expectedInitialState = JSON.stringify({
   eth_mew: {
     network: 'ETH',
     isCustom: false,
@@ -89,17 +90,39 @@ export const INITIAL_STATE: State = {
     lib: new RPCNode('https://node.expanse.tech/'),
     estimateGas: true
   }
+});
+
+const web3Id = 'web3';
+const web3NetworkId = 1;
+const web3Node: Web3NodeConfig = {
+  isCustom: false,
+  network: networkIdToName(web3NetworkId),
+  service: Web3Service,
+  lib: jest.fn() as any,
+  estimateGas: false,
+  hidden: true
 };
 
-export const staticNodes = (state: State = INITIAL_STATE, action: NodeAction) => {
-  switch (action.type) {
-    case TypeKeys.CONFIG_NODE_WEB3_SET:
-      return { ...state, [action.payload.id]: action.payload.config };
-    case TypeKeys.CONFIG_NODE_WEB3_UNSET:
-      const stateCopy = { ...state };
-      Reflect.deleteProperty(stateCopy, 'web3');
-      return stateCopy;
-    default:
-      return state;
-  }
+const expectedStates = {
+  initialState: expectedInitialState,
+  setWeb3: { ...INITIAL_STATE, [web3Id]: web3Node },
+  unsetWeb3: { ...INITIAL_STATE }
 };
+
+const actions = {
+  web3SetNode: web3SetNode({ id: web3Id, config: web3Node }),
+  web3UnsetNode: web3UnsetNode()
+};
+
+describe('static nodes reducer', () => {
+  it('should return the inital state', () =>
+    // turn the JSON into a string because we're storing function in the state
+    expect(JSON.stringify(staticNodes(undefined, {} as any))).toEqual(expectedStates.initialState));
+  it('should handle setting the web3 node', () =>
+    expect(staticNodes(INITIAL_STATE, actions.web3SetNode)).toEqual(expectedStates.setWeb3));
+
+  it('should handle unsetting the web3 node', () =>
+    expect(staticNodes(expectedStates.setWeb3, actions.web3UnsetNode)).toEqual(
+      expectedStates.unsetWeb3
+    ));
+});

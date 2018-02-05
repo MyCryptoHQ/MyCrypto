@@ -2,7 +2,7 @@ import { configuredStore } from 'store';
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
-import { toggleOfflineConfig, changeNode, changeNodeIntent, setLatestBlock } from 'actions/config';
+import { toggleOffline, changeNode, changeNodeIntent, setLatestBlock } from 'actions/config';
 import {
   pollOfflineStatus,
   handlePollOfflineStatus,
@@ -102,14 +102,14 @@ describe('pollOfflineStatus*', () => {
     expect(data.gen.next(raceSuccess).value).toEqual(
       put(showNotification('success', 'Your connection to the network has been restored!', 3000))
     );
-    expect(data.gen.next().value).toEqual(put(toggleOfflineConfig()));
+    expect(data.gen.next().value).toEqual(put(toggleOffline()));
   });
 
   it('should toggle offline and show notification if navigator agrees with isOffline and ping fails', () => {
     nav.onLine = isOffline;
     expect(data.isOfflineClone.next(!isOffline));
     expect(data.isOfflineClone.next(raceFailure).value).toMatchSnapshot();
-    expect(data.isOfflineClone.next().value).toEqual(put(toggleOfflineConfig()));
+    expect(data.isOfflineClone.next().value).toEqual(put(toggleOffline()));
     nav.onLine = !isOffline;
   });
 });

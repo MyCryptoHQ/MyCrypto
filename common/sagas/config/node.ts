@@ -22,7 +22,7 @@ import {
 } from 'selectors/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
-  toggleOfflineConfig,
+  toggleOffline,
   changeNode,
   changeNodeIntent,
   setLatestBlock,
@@ -55,7 +55,7 @@ export function* pollOfflineStatus(): SagaIterator {
         yield put(
           showNotification('success', 'Your connection to the network has been restored!', 3000)
         );
-        yield put(toggleOfflineConfig());
+        yield put(toggleOffline());
       } else if (!pingSucceeded && !isOffline) {
         // If we were unable to ping but redux says we're online, mark offline
         // If they had been online, show an error.
@@ -79,7 +79,7 @@ export function* pollOfflineStatus(): SagaIterator {
             )
           );
         }
-        yield put(toggleOfflineConfig());
+        yield put(toggleOffline());
       } else {
         // If neither case was true, try again in 5s
         yield call(delay, 5000);
