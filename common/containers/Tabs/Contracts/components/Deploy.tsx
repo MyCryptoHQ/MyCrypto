@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
 import { NonceField, TXMetaDataPanel } from 'components';
 import './Deploy.scss';
-import { ConfirmationModalTemplate } from 'components/ConfirmationModalTemplate';
+import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface DispatchProps {
   setToField: TSetToField;

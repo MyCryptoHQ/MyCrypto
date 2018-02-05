@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ConfirmationModalTemplate } from 'components/ConfirmationModalTemplate';
 import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
@@ -8,6 +7,7 @@ import { getCurrentTransactionStatus } from 'selectors/transaction';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ITransactionStatus } from 'reducers/transaction/broadcast';
 import { reset, TReset } from 'actions/transaction';
+import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {
   offline: boolean;
@@ -24,6 +24,7 @@ interface DispatchProps {
 }
 
 interface OwnProps {
+  Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -40,7 +41,7 @@ class OnlineSendClass extends Component<Props, State> {
     return !this.props.offline ? (
       <React.Fragment>
         {this.props.withProps({ onClick: this.openModal })}
-        <ConfirmationModalTemplate isOpen={this.state.showModal} onClose={this.toggleModal} />
+        {this.props.Modal}
       </React.Fragment>
     ) : null;
   }

@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
-import { Body } from './components';
 import { connect } from 'react-redux';
 import { getWalletType, IWalletType } from 'selectors/wallet';
 import { getLanguageSelection } from 'selectors/config';
@@ -44,6 +43,7 @@ export interface ConfirmButtonCBProps {
 
 export interface OwnProps {
   isOpen?: boolean;
+  Body: React.ReactElement<any>;
   withConfirmButton?(props: ConfirmButtonCBProps): IButton;
   onClose(): void;
 }
@@ -126,9 +126,7 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
             <Spinner size="x5" />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <Body />
-          </React.Fragment>
+          <React.Fragment>{this.props.Body}</React.Fragment>
         )}
       </Modal>
     );
