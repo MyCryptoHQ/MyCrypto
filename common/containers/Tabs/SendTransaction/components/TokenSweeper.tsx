@@ -14,12 +14,13 @@ import {
   TSetWalletTokens
 } from 'actions/wallet';
 import { getAllTokens } from 'selectors/config';
-import { AddressField, GasSlider } from 'components';
+import { AddressField, GasSlider, SendButton } from 'components';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
 import { Token } from 'config/data';
 import translate from 'translations';
 import Balances from 'components/BalanceSidebar/TokenBalances/Balances';
 import Spinner from 'components/ui/Spinner';
+import SweeperList from 'containers/Tabs/SendTransaction/components/SweeperList';
 // import './index.scss';
 
 interface StateProps {
@@ -109,15 +110,17 @@ class TokenSweeper extends React.Component<Props, State> {
           )}
 
           {hasScanned && (
-            <Balances
-              allTokens={tokens}
-              tokenBalances={shownBalances}
-              hasSavedWalletTokens={hasSavedWalletTokens}
-              scanWalletForTokens={this.scanWalletForTokens}
-              setWalletTokens={this.props.setWalletTokens}
-              onAddCustomToken={this.props.addCustomToken}
-              onRemoveCustomToken={this.props.removeCustomToken}
-            />
+            <div>
+              <SweeperList
+                allTokens={tokens}
+                tokenBalances={shownBalances}
+                hasSavedWalletTokens={hasSavedWalletTokens}
+                scanWalletForTokens={this.scanWalletForTokens}
+                setWalletTokens={this.props.setWalletTokens}
+                onAddCustomToken={this.props.addCustomToken}
+                onRemoveCustomToken={this.props.removeCustomToken}
+              />
+            </div>
           )}
 
           <div className="row form-group">
@@ -125,11 +128,14 @@ class TokenSweeper extends React.Component<Props, State> {
               <GasSlider disableAdvanced={true} />
             </div>
           </div>
+          <div className="row form-group">
+            <SendButton />
+          </div>
         </div>
       );
     }
 
-    return <section className="TokenSweeper">{content}</section>;
+    return <section className="TokenBalances">{content}</section>;
   }
 
   private scanWalletForTokens = () => {
