@@ -96,7 +96,11 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             options={advancedGasOptions}
           />
         ) : (
-          <SimpleGas gasPrice={gasPrice} inputGasPrice={this.handleGasPriceInput} />
+          <SimpleGas
+            gasPrice={gasPrice}
+            inputGasPrice={this.handleGasPriceInput}
+            setGasPrice={this.props.inputGasPrice}
+          />
         )}
 
         {!offline &&
