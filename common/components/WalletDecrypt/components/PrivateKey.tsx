@@ -8,6 +8,7 @@ export interface PrivateKeyValue {
   key: string;
   password: string;
   valid: boolean;
+  attemptEmptyPass: boolean;
 }
 
 interface Validated {

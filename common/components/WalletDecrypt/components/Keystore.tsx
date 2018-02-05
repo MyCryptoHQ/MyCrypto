@@ -8,6 +8,7 @@ export interface KeystoreValue {
   file: string;
   password: string;
   valid: boolean;
+  attemptEmptyPass: boolean;
 }
 
 function isPassRequired(file: string): boolean {
@@ -29,48 +30,49 @@ export class KeystoreDecrypt extends PureComponent {
   public props: {
     value: KeystoreValue;
     isWalletPending: boolean;
-    isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
     onUnlock(): void;
     showNotification(level: string, message: string): TShowNotification;
   };
 
   public render() {
-    const { isWalletPending, isPasswordPending, value: { file, password } } = this.props;
+    const { isWalletPending, value: { file, password } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
     return (
       <form id="selectedUploadKey" onSubmit={this.unlock}>
-        <div className="form-group">
-          <input
-            className={'hidden'}
-            type="file"
-            id="fselector"
-            onChange={this.handleFileSelection}
-          />
-          <label htmlFor="fselector" style={{ width: '100%' }}>
-            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              {translate('ADD_Radio_2_short')}
-            </a>
-          </label>
-          {isWalletPending ? <Spinner /> : ''}
-          <div className={file.length && isPasswordPending ? '' : 'hidden'}>
-            <p>{translate('ADD_Label_3')}</p>
+        {isWalletPending ? (
+          <Spinner size="x2" />
+        ) : (
+          <div className="form-group">
             <input
-              className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
-              value={password}
-              onChange={this.onPasswordChange}
-              onKeyDown={this.onKeyDown}
-              placeholder={translateRaw('x_Password')}
-              type="password"
+              className={'hidden'}
+              type="file"
+              id="fselector"
+              onChange={this.handleFileSelection}
             />
+            <label htmlFor="fselector" style={{ width: '100%', marginBottom: '0.5rem' }}>
+              <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+                {translate('ADD_Radio_2_short')}
+              </a>
+            </label>
+            <div className={file.length ? '' : 'hidden'}>
+              <p>{translate('ADD_Label_3')}</p>
+              <input
+                className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
+                value={password}
+                onChange={this.onPasswordChange}
+                onKeyDown={this.onKeyDown}
+                placeholder={translateRaw('x_Password')}
+                type="password"
+              />
+            </div>
+            <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
+              {translate('ADD_Label_6_short')}
+            </button>
           </div>
-        </div>
-
-        <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-          {translate('ADD_Label_6_short')}
-        </button>
+        )}
       </form>
     );
   }
@@ -84,6 +86,10 @@ export class KeystoreDecrypt extends PureComponent {
   private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    this.props.onChange({
+      ...this.props.value,
+      attemptEmptyPass: false
+    });
     this.props.onUnlock();
   };
 
@@ -92,7 +98,8 @@ export class KeystoreDecrypt extends PureComponent {
     this.props.onChange({
       ...this.props.value,
       password: e.target.value,
-      valid
+      valid,
+      attemptEmptyPass: false
     });
   };
 
@@ -109,7 +116,7 @@ export class KeystoreDecrypt extends PureComponent {
         ...this.props.value,
         file: keystore,
         valid: keystore.length && !passReq,
-        password: ''
+        attemptEmptyPass: true
       });
       this.props.onUnlock();
     };
