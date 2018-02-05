@@ -1,11 +1,13 @@
 import React from 'react';
-import { GeneralInfoPanel } from './components/GeneralInfoPanel';
-import UnfinishedBanner from './components/UnfinishedBanner';
+import { GeneralInfoPanel, NameInput, NameResolve } from './components';
 import TabSection from 'containers/TabSection';
 import { Route, Switch, RouteComponentProps } from 'react-router';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { NewTabLink } from 'components/ui';
 import translate from 'translations';
+import { connect } from 'react-redux';
+import { resolveDomainRequested, TResolveDomainRequested } from 'actions/ens';
+import { AppState } from 'reducers';
 
 const ENSDocsLink = () => (
   <NewTabLink
@@ -26,7 +28,17 @@ const ENSTitle = () => (
   </article>
 );
 
-class ENSClass extends React.Component<RouteComponentProps<{}>> {
+interface StateProps {
+  ens: AppState['ens'];
+}
+
+interface DispatchProps {
+  resolveDomainRequested: TResolveDomainRequested;
+}
+
+type Props = StateProps & DispatchProps;
+
+class ENSClass extends React.Component<RouteComponentProps<any> & Props> {
   public render() {
     const { match } = this.props;
     const currentPath = match.url;
@@ -39,8 +51,9 @@ class ENSClass extends React.Component<RouteComponentProps<{}>> {
               path={currentPath}
               render={() => (
                 <section role="main" className="row">
-                  <UnfinishedBanner />
                   <ENSTitle />
+                  <NameInput resolveDomainRequested={this.props.resolveDomainRequested} />
+                  <NameResolve {...this.props.ens} />
                   <GeneralInfoPanel />
                 </section>
               )}
@@ -53,4 +66,7 @@ class ENSClass extends React.Component<RouteComponentProps<{}>> {
   }
 }
 
-export default ENSClass;
+const mapStateToProps = (state: AppState): StateProps => ({ ens: state.ens });
+const mapDispatchToProps: DispatchProps = { resolveDomainRequested };
+
+export default connect(mapStateToProps, mapDispatchToProps)(ENSClass);
