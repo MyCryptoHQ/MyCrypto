@@ -3,7 +3,6 @@
 .tx-modal-address {
   display: flex;
   flex-direction: column;
-  width: fit-content;
   margin: auto;
   padding: 1rem 0;
   .Identicon {
@@ -14,7 +13,6 @@
   &-to,
   &-send-amount {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     margin: 1rem 0rem;
     width: inherit;
@@ -67,7 +65,7 @@
     }
   }
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 525px) {
     width: inherit;
     .Identicon {
       display: none;
