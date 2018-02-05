@@ -203,7 +203,12 @@ export class WalletDecrypt extends Component<Props, State> {
 
   public state: State = {
     selectedWalletKey: null,
-    value: null,
+    value: {
+      key: '',
+      password: '',
+      valid: false,
+      attemptEmptyPass: false
+    },
     hasAcknowledgedInsecure: false
   };
 
@@ -424,7 +429,11 @@ export class WalletDecrypt extends Component<Props, State> {
     // some components (TrezorDecrypt) don't take an onChange prop, and thus
     // this.state.value will remain unpopulated. in this case, we can expect
     // the payload to contain the unlocked wallet info.
-    const unlockValue = value && !isEmpty(value) ? value : payload;
+    const unlockValue =
+      value && !isEmpty(value)
+        ? (value as PrivateKeyValue).attemptEmptyPass ? { ...value, password: '' } : value
+        : payload;
+    console.log(unlockValue);
     this.WALLETS[selectedWalletKey].unlock(unlockValue);
     this.props.resetTransactionState();
   };
