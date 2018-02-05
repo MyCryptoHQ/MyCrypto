@@ -33,84 +33,72 @@ export const Amounts: React.SFC<Props> = ({
   const totalUSD = sendValueUSD.add(transactionFeeUSD);
   const showConversion = !isTestnet && rates && isToken ? rates[unit] : rates[networkUnit];
   return (
-    <div className="tx-modal-amount">
-      <div className="tx-modal-amount-send">
-        <div className="tx-modal-amount-send-positioning-wrapper">
-          <p className="tx-modal-amount-send-title">You'll Send </p>
-          <p className="tx-modal-amount-send-value">
+    <table className="tx-modal-amount">
+      <tbody>
+        <tr className="tx-modal-amount-send">
+          <td>You'll Send</td>
+          <td>
             <UnitDisplay
               value={sendValue}
               decimal={decimal}
               displayShortBalance={6}
               symbol={isToken ? unit : networkUnit}
-              checkOffline={false}
             />
-            {showConversion && (
-              <span className="tx-modal-amount-send-usd small">
-                $<UnitDisplay
-                  value={sendValueUSD}
-                  unit="ether"
-                  displayShortBalance={2}
-                  displayTrailingZeroes={true}
-                  checkOffline={true}
-                />
-              </span>
-            )}
-          </p>
-        </div>
-      </div>
-      <div className="tx-modal-amount-fee">
-        <div className="tx-modal-amount-fee-positioning-wrapper">
-          <p className="tx-modal-amount-fee-title">Transaction Fee </p>
-          <p className="tx-modal-amount-fee-value">
-            <UnitDisplay
-              value={fee}
-              unit="ether"
-              symbol={networkUnit}
-              displayShortBalance={6}
-              checkOffline={false}
-            />
-            {showConversion && (
-              <span className="tx-modal-amount-fee-usd small">
-                $<UnitDisplay
-                  value={transactionFeeUSD}
-                  unit="ether"
-                  displayShortBalance={2}
-                  displayTrailingZeroes={true}
-                  checkOffline={true}
-                />
-              </span>
-            )}
-          </p>
-        </div>
-      </div>
-      {unit === 'ether' && (
-        <div className="tx-modal-amount-total">
-          <div className="tx-modal-amount-total-positioning-wrapper">
-            <h5 className="tx-modal-amount-total-title">Total </h5>
-            <h5 className="tx-modal-amount-total-value">
+          </td>
+          {showConversion && (
+            <td>
+              $<UnitDisplay
+                value={sendValueUSD}
+                unit="ether"
+                displayShortBalance={2}
+                displayTrailingZeroes={true}
+                checkOffline={true}
+              />
+            </td>
+          )}
+        </tr>
+        <tr className="tx-modal-amount-fee">
+          <td>Transaction Fee</td>
+          <td>
+            <UnitDisplay value={fee} unit={'ether'} displayShortBalance={6} symbol={networkUnit} />
+          </td>
+          {showConversion && (
+            <td>
+              $<UnitDisplay
+                value={transactionFeeUSD}
+                unit="ether"
+                displayShortBalance={2}
+                displayTrailingZeroes={true}
+                checkOffline={true}
+              />
+            </td>
+          )}
+        </tr>
+        {!isToken && (
+          <tr className="tx-modal-amount-total">
+            <td>Total</td>
+            <td>
               <UnitDisplay
                 value={total}
                 decimal={decimal}
                 displayShortBalance={6}
-                symbol={isToken ? unit : networkUnit}
-                checkOffline={false}
+                symbol={networkUnit}
               />
-              {showConversion && (
-                <span className="tx-modal-amount-total-usd small">
-                  $<UnitDisplay
-                    value={totalUSD}
-                    unit="ether"
-                    displayShortBalance={2}
-                    displayTrailingZeroes={true}
-                    checkOffline={true}
-                  />
-                </span>
-              )}
-            </h5>
-          </div>
-        </div>
-      )}
-    </div>
+            </td>
+            {showConversion && (
+              <td>
+                $<UnitDisplay
+                  value={totalUSD}
+                  unit="ether"
+                  displayShortBalance={2}
+                  displayTrailingZeroes={true}
+                  checkOffline={true}
+                />
+              </td>
+            )}
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 };

@@ -1,42 +1,40 @@
 .tx-modal-amount {
+  width: 100%;
+  border-collapse: separate;
+  padding-top: 1rem;
+  padding-bottom: 0;
   &-send,
   &-fee,
   &-total {
-    display: flex;
-    justify-content: center;
-    &:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-    &-positioning-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    &-title,
-    &-value {
-      font-weight: 400;
-      margin: 0;
-    }
-    &-value {
-      > span {
-        color: rgba(0, 0, 0, 0.54);
-        letter-spacing: 1px;
+    font-size: 1.15rem;
+    > td {
+      padding: 0.5rem 0;
+      text-align: right;
+      opacity: 0.54;
+      &:first-child {
+        text-align: left;
+        opacity: 1;
+      }
+      &:last-child {
+        font-size: 90%;
       }
     }
-    &-usd {
-      margin-left: 8px;
-      letter-spacing: 0px;
+  }
+
+  &-fee {
+    > td {
+      padding-bottom: 1rem;
     }
   }
 
   &-total {
-    &-positioning-wrapper {
-      padding: 1rem 0rem;
-      padding-bottom: 0;
-      background-image: linear-gradient(to right, #c2cfd6 33%, #fff0 0%);
-      background-position: top;
-      background-size: 5px 1px;
-      background-repeat: repeat-x;
+    background-image: linear-gradient(to right, #c2cfd6 33%, #fff0 0%);
+    background-position: top;
+    background-size: 5px 1px;
+    background-repeat: repeat-x;
+    > td {
+      padding-top: 1rem;
+      padding-bottom: 1.5rem;
     }
   }
 }
