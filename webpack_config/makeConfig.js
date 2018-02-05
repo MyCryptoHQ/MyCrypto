@@ -294,7 +294,7 @@ module.exports = function(opts = {}) {
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
     filename: options.isProduction ? '[name].[chunkhash:8].js' : '[name].js',
-    publicPath: isDownloadable && options.isProduction ? './' : '/',
+    publicPath: isDownloadable && options.isProduction ? './' : '',
     crossOriginLoading: 'anonymous'
   };
 
