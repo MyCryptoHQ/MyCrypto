@@ -35,8 +35,7 @@ type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match, location } = this.props;
-    const { search } = location;
+    const { wallet, match } = this.props;
     const currentPath = match.url;
     const tabs: Tab[] = [
       {
