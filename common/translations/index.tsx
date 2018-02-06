@@ -42,18 +42,20 @@ export function getTranslators() {
     'TranslatorName_5'
   ].filter(x => {
     const translated = translate(x);
-    if (typeof translated === 'string') {
-      return !!translated.trim();
-    }
     return !!translated;
   });
 }
 
 export type TranslateType = React.ReactElement<any> | string;
 
-export default function translate(key: string, textOnly: boolean = false): TranslateType {
+function translate(key: string, textOnly?: false): React.ReactElement<any>;
+function translate(key: string, textOnly: true): string;
+
+function translate(key: string, textOnly: boolean = false) {
   return textOnly ? translateRaw(key) : <Translate translationKey={key} />;
 }
+
+export default translate;
 
 export function translateRaw(key: string) {
   const lang = getLanguageSelection(configuredStore.getState());
