@@ -66,8 +66,11 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
     };
   }
 
-  public componentDidUpdate() {
-    if (this.props.transactionBroadcasted && !this.state.retryingFailedBroadcast) {
+  public componentWillReceiveProps(nextProps: Props) {
+    if (!nextProps.isOpen) {
+      return;
+    }
+    if (nextProps.transactionBroadcasted && !this.state.retryingFailedBroadcast) {
       this.props.onClose();
     }
   }
