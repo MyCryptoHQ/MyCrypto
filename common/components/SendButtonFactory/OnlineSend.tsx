@@ -41,10 +41,11 @@ class OnlineSendClass extends Component<Props, State> {
     return !this.props.offline ? (
       <React.Fragment>
         {this.props.withProps({ onClick: this.openModal })}
-        {this.props.Modal}
+        <this.props.Modal isOpen={this.state.showModal} onClose={this.toggleModal} />
       </React.Fragment>
     ) : null;
   }
+
   private openModal = () => {
     const { currentTransaction } = this.props;
 
@@ -59,6 +60,7 @@ class OnlineSendClass extends Component<Props, State> {
     }
     this.toggleModal();
   };
+
   private toggleModal = () =>
     this.setState((prevState: State) => ({ showModal: !prevState.showModal }));
 }

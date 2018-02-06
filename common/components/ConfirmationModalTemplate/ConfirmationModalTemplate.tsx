@@ -47,6 +47,7 @@ export interface OwnProps {
   withConfirmButton?(props: ConfirmButtonCBProps): IButton;
   onClose(): void;
 }
+
 interface State {
   retryingFailedBroadcast: boolean;
   timeToRead: number;

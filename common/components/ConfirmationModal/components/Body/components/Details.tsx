@@ -1,54 +1,44 @@
-import * as React from 'react';
-import { fromTokenBase, getDecimalFromEtherUnit, Wei, Nonce, Data } from 'libs/units';
+import React, { Component } from 'react';
 import Code from 'components/ui/Code';
 import './Details.scss';
-import BN from 'bn.js';
-import { rawUnitConversion } from 'utils/rawUnitConversion';
+import { SerializedTransaction } from 'components/renderCbs';
+import { AppState } from 'reducers';
+import { getNodeConfig } from 'selectors/config';
+import { NodeConfig } from 'config';
+import { connect } from 'react-redux';
+import { TokenValue } from 'libs/units';
 
-interface Props {
-  sendValue: BN;
-  network: string;
-  provider: string;
-  gasPrice: any;
-  gasLimit: any;
-  nonce: any;
-  data: any;
-  chainId: any;
-  decimal: number;
-  symbol: string;
+interface StateProps {
+  node: NodeConfig;
 }
 
-export const Details: React.SFC<Props> = ({
-  sendValue,
-  network,
-  provider,
-  gasPrice,
-  gasLimit,
-  nonce,
-  data,
-  chainId,
-  decimal,
-  symbol
-}) => {
-  return (
-    <div className="tx-modal-details">
-      <p className="tx-modal-details-network-info">
-        Interacting with the {network} network provided by {provider}
-      </p>
-      <Code>
-        {JSON.stringify(
-          {
-            amount: rawUnitConversion({ value: sendValue, decimal, symbol }),
-            gasPrice: fromTokenBase(Wei(gasPrice), getDecimalFromEtherUnit('gwei')),
-            gasLimit: Wei(gasLimit).toString(),
-            nonce: Nonce(nonce).toString(),
-            chainId,
-            data: !!Data(data).toJSON().data.length ? data : ''
-          },
-          undefined,
-          2
-        )}
-      </Code>
-    </div>
-  );
-};
+class DetailsClass extends Component<StateProps> {
+  public render() {
+    const { node: { network, service } } = this.props;
+    return (
+      <div className="tx-modal-details">
+        <p className="tx-modal-details-network-info">
+          Interacting with the {network} network provided by {service}
+        </p>
+
+        <SerializedTransaction
+          withSerializedTransaction={(_, fields) => {
+            const { chainId, data, to, ...convertRestToBase10 } = fields;
+            const base10Fields = Object.entries(convertRestToBase10).reduce(
+              (convertedFields, [currName, currValue]) => ({
+                ...convertedFields,
+                [currName]: TokenValue(currValue).toString()
+              }),
+              {} as typeof convertRestToBase10
+            );
+            return <Code>{JSON.stringify({ chainId, data, to, ...base10Fields }, null, 2)} </Code>;
+          }}
+        />
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state: AppState) => ({ node: getNodeConfig(state) });
+
+export const Details = connect(mapStateToProps)(DetailsClass);
