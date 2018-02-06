@@ -74,7 +74,9 @@ class AdvancedGas extends React.Component<Props, State> {
             <div className="AdvancedGas-gas-price">
               <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
               <input
-                className={classnames('form-control', { 'is-invalid': !validGasPrice })}
+                className={classnames('form-control', {
+                  'is-invalid': !!gasPrice.raw && !validGasPrice
+                })}
                 type="number"
                 placeholder="40"
                 value={gasPrice.raw}

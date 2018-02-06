@@ -281,8 +281,8 @@ module.exports = function(opts = {}) {
   // ====================
   let devtool = false;
   if (!options.isProduction) {
-    if (process.env.SLOW_BUILD_SPEED) {
-      devtool = 'source-map';
+    if (process.env.VSCODE_DEBUG) {
+      devtool = 'cheap-module-source-map';
     } else {
       devtool = 'cheap-module-eval-source-map';
     }

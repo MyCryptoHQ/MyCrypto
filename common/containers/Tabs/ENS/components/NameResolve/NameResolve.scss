@@ -1,0 +1,40 @@
+.auction-info {
+  margin-bottom: 32px;
+}
+
+.ens-title {
+  margin: 2rem 0;
+  h2 {
+    margin: 0;
+  }
+}
+
+.ens-panel-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  .ens-panel {
+    flex-grow: 1;
+    color: white;
+    padding: 1rem;
+    background-color: #185475;
+
+    p,
+    h4 {
+      margin: 0;
+    }
+
+    &-light {
+      background-color: #1e92ba;
+    }
+  }
+}
+
+.table-wrapper {
+  overflow-y: scroll;
+}
+
+@media (max-width: 820px) {
+  .ens-panel {
+    width: 100%;
+  }
+}

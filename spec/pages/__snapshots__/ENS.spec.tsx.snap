@@ -1,20 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`snapshot test ENS component 1`] = `
-<Connect(TabSection)
-  isUnavailableOffline={true}
->
-  <section
-    className="container"
-  >
-    <Switch>
-      <Route
-        exact={true}
-        path="/ens"
-        render={[Function]}
-      />
-      <Component />
-    </Switch>
-  </section>
-</Connect(TabSection)>
+<ENSClass
+  history={
+    Object {
+      "action": "PUSH",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 2,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "e08jz7",
+        "pathname": "/ens",
+        "search": "",
+        "state": Object {},
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+  location={
+    Object {
+      "hash": "",
+      "key": "e08jz7",
+      "pathname": "/ens",
+      "search": "",
+      "state": Object {},
+    }
+  }
+  match={
+    Object {
+      "isExact": false,
+      "params": Object {},
+      "path": "/ens",
+      "url": "/ens",
+    }
+  }
+  resolveDomainRequested={[Function]}
+/>
 `;
