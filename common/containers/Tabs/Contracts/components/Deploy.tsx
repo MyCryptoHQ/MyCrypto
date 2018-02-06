@@ -69,12 +69,12 @@ class DeployClass extends Component<DispatchProps> {
         </div>
         <SigningStatus />
         <SendButtonFactory
+          Modal={ConfirmationModal}
           withProps={({ onClick }) => (
             <button className="Deploy-submit btn btn-primary" onClick={onClick}>
               {translate('NAV_DeployContract')}
             </button>
           )}
-          Modal={ConfirmationModal}
         />
       </main>
     );
