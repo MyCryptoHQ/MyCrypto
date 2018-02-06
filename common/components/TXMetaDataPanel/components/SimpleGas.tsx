@@ -5,15 +5,21 @@ import { gasPriceDefaults } from 'config';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
-import { getGasLimitEstimationTimedOut } from 'selectors/transaction';
+import {
+  getGasLimitEstimationTimedOut,
+  getGasEstimationPending,
+  nonceRequestPending
+} from 'selectors/transaction';
 import { connect } from 'react-redux';
-import { GasLimitField } from 'components/GasLimitField';
 import { getIsWeb3Node } from 'selectors/config';
 import { Wei, fromWei } from 'libs/units';
+import { InlineSpinner } from 'components/ui/InlineSpinner';
 const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
+  noncePending: boolean;
+  gasLimitPending: boolean;
   inputGasPrice(rawGas: string);
   setGasPrice(rawGas: string);
 }
@@ -31,16 +37,22 @@ class SimpleGas extends React.Component<Props> {
   }
 
   public render() {
-    const { gasPrice, gasLimitEstimationTimedOut, isWeb3Node } = this.props;
+    const {
+      gasPrice,
+      gasLimitEstimationTimedOut,
+      isWeb3Node,
+      noncePending,
+      gasLimitPending
+    } = this.props;
 
     return (
       <div className="SimpleGas row form-group">
         <div className="SimpleGas-title">
-          <GasLimitField
-            includeLabel={true}
-            customLabel={translateRaw('Transaction Fee')}
-            onlyIncludeLoader={true}
-          />
+          <div className="flex-wrapper">
+            <label>{translateRaw('Transaction Fee')} </label>
+            <div className="flex-spacer" />
+            <InlineSpinner active={noncePending || gasLimitPending} text="Calculating" />
+          </div>
         </div>
 
         {gasLimitEstimationTimedOut && (
@@ -101,6 +113,8 @@ class SimpleGas extends React.Component<Props> {
 }
 
 export default connect((state: AppState) => ({
+  noncePending: nonceRequestPending(state),
+  gasLimitPending: getGasEstimationPending(state),
   gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
   isWeb3Node: getIsWeb3Node(state)
 }))(SimpleGas);
