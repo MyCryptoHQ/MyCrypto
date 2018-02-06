@@ -41,7 +41,7 @@ class OnlineSendClass extends Component<Props, State> {
     return !this.props.offline ? (
       <React.Fragment>
         {this.props.withProps({ onClick: this.openModal })}
-        <this.props.Modal isOpen={this.state.showModal} onClose={this.toggleModal} />
+        <this.props.Modal isOpen={this.state.showModal} onClose={this.closeModal} />
       </React.Fragment>
     ) : null;
   }
@@ -58,11 +58,10 @@ class OnlineSendClass extends Component<Props, State> {
         'The current transaction is already broadcasting or has been successfully broadcasted'
       );
     }
-    this.toggleModal();
+    this.setState({ showModal: true });
   };
 
-  private toggleModal = () =>
-    this.setState((prevState: State) => ({ showModal: !prevState.showModal }));
+  private closeModal = () => this.setState({ showModal: false });
 }
 
 export const OnlineSend = connect(
