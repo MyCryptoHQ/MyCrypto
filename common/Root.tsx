@@ -17,6 +17,7 @@ import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
+import 'what-input';
 
 interface Props {
   store: Store<AppState>;

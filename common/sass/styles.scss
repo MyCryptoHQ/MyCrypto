@@ -35,3 +35,7 @@
 @import './styles/tab';
 @import './styles/flexbox';
 @import './fonts';
+
+[data-whatintent='mouse'] *:focus {
+  outline: none;
+}
