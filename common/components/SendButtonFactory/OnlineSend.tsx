@@ -3,7 +3,7 @@ import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { CallbackProps } from '../SendButtonFactory';
-import { getCurrentTransactionStatus } from 'selectors/transaction';
+import { getCurrentTransactionStatus, currentTransactionBroadcasted } from 'selectors/transaction';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ITransactionStatus } from 'reducers/transaction/broadcast';
 import { reset, TReset } from 'actions/transaction';
@@ -12,6 +12,7 @@ import { ConfirmationModal } from 'components/ConfirmationModal';
 interface StateProps {
   offline: boolean;
   currentTransaction: false | ITransactionStatus | null;
+  transactionBroadcasted: boolean;
 }
 
 interface State {
@@ -46,6 +47,11 @@ class OnlineSendClass extends Component<Props, State> {
     ) : null;
   }
 
+  public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.transactionBroadcasted && this.state.showModal) {
+      this.closeModal();
+    }
+  }
   private openModal = () => {
     const { currentTransaction } = this.props;
 
@@ -67,7 +73,8 @@ class OnlineSendClass extends Component<Props, State> {
 export const OnlineSend = connect(
   (state: AppState) => ({
     offline: getOffline(state),
-    currentTransaction: getCurrentTransactionStatus(state)
+    currentTransaction: getCurrentTransactionStatus(state),
+    transactionBroadcasted: currentTransactionBroadcasted(state)
   }),
   { showNotification, reset }
 )(OnlineSendClass);

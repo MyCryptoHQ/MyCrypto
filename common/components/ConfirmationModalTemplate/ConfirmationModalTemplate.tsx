@@ -10,11 +10,7 @@ import {
   broadcastWeb3TransactionRequested,
   TBroadcastWeb3TransactionRequested
 } from 'actions/transaction';
-import {
-  currentTransactionBroadcasting,
-  currentTransactionBroadcasted,
-  currentTransactionFailed
-} from 'selectors/transaction';
+import { currentTransactionBroadcasting } from 'selectors/transaction';
 import { translateRaw } from 'translations';
 import './ConfirmationModalTemplate.scss';
 import { AppState } from 'reducers';
@@ -28,8 +24,6 @@ interface StateProps {
   lang: string;
   walletTypes: IWalletType;
   transactionBroadcasting: boolean;
-  transactionBroadcasted: boolean;
-  transactionFailed: boolean;
 }
 
 export interface ConfirmButtonCBProps {
@@ -49,7 +43,6 @@ export interface OwnProps {
 }
 
 interface State {
-  retryingFailedBroadcast: boolean;
   timeToRead: number;
 }
 
@@ -59,20 +52,9 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
   private readTimer = 0;
   public constructor(props: Props) {
     super(props);
-    const { transactionFailed } = props;
     this.state = {
-      timeToRead: 5,
-      retryingFailedBroadcast: transactionFailed
+      timeToRead: 5
     };
-  }
-
-  public componentWillReceiveProps(nextProps: Props) {
-    if (!nextProps.isOpen) {
-      return;
-    }
-    if (nextProps.transactionBroadcasted && !this.state.retryingFailedBroadcast) {
-      this.props.onClose();
-    }
   }
 
   // Count down 5 seconds before allowing them to confirm
@@ -145,7 +127,6 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
       this.props.walletTypes.isWeb3Wallet
         ? this.props.broadcastWeb3TransactionRequested()
         : this.props.broadcastLocalTransactionRequested();
-      this.setState({ retryingFailedBroadcast: false });
     }
   };
 }
@@ -153,8 +134,6 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
 export const ConfirmationModalTemplate = connect(
   (state: AppState) => ({
     transactionBroadcasting: currentTransactionBroadcasting(state),
-    transactionBroadcasted: currentTransactionBroadcasted(state),
-    transactionFailed: currentTransactionFailed(state),
     lang: getLanguageSelection(state),
     walletTypes: getWalletType(state)
   }),
