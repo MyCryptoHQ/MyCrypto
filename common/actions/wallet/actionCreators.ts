@@ -159,3 +159,10 @@ export function setWalletConfig(config: WalletConfig): types.SetWalletConfigActi
     payload: config
   };
 }
+
+export type TSetAccountBalance = typeof setAccountBalance;
+export function setAccountBalance(): types.SetAccountBalanceAction {
+  return {
+    type: TypeKeys.WALLET_SET_ACCOUNT_BALANCE
+  };
+}

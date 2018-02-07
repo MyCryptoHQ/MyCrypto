@@ -11,6 +11,19 @@
 
     &-header {
       margin-top: 0;
+      display:inline-block;
+    }
+
+    &-refresh {
+      background: transparent;
+      border: none;
+      margin: 0px 0.5rem;
+      padding: 0;
+      margin-bottom: 0.5rem;
+      > img {
+        height: 22px;
+        width: 22px;
+      }
     }
   }
 
