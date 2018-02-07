@@ -145,6 +145,7 @@ export function* handleNodeChangeIntent({
     currentBlock = lb;
     timeout = to;
   } catch (err) {
+    console.error(err);
     // Whether it times out or errors, same message
     timeout = true;
   }
