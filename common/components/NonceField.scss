@@ -1,4 +1,13 @@
+@import 'common/sass/variables';
+
 .nonce {
+  &-label-wrapper {
+    align-items: center;
+    margin-bottom: $space-xs;
+    > label {
+      margin-bottom: 0;
+    }
+  }
   &-input-wrapper {
     position: relative;
   }

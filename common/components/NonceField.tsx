@@ -31,7 +31,7 @@ class NonceField extends React.Component<Props> {
         withProps={({ nonce: { raw, value }, onChange, readOnly, shouldDisplay }) => {
           return alwaysDisplay || shouldDisplay ? (
             <React.Fragment>
-              <div className="flex-wrapper">
+              <div className="nonce-label-wrapper flex-wrapper">
                 <label className="nonce-label">Nonce</label>
                 <Help
                   size={'x1'}

@@ -3,6 +3,7 @@ import { GasLimitFieldFactory } from './GasLimitFieldFactory';
 import translate from 'translations';
 import { gasLimitValidator } from 'libs/validators';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
+import './GasLimitField.scss';
 
 interface Props {
   customLabel?: string;
@@ -13,7 +14,7 @@ export const GasLimitField: React.SFC<Props> = ({ customLabel, disabled }) => (
   <GasLimitFieldFactory
     withProps={({ gasLimit: { raw }, onChange, readOnly, gasEstimationPending }) => (
       <React.Fragment>
-        <div className="flex-wrapper">
+        <div className="gaslimit-label-wrapper flex-wrapper">
           {customLabel ? <label>{customLabel} </label> : <label>{translate('TRANS_gas')} </label>}
           <div className="flex-spacer" />
           <InlineSpinner active={gasEstimationPending} text="Calculating" />
