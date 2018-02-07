@@ -5,7 +5,7 @@ import RefreshIcon from 'assets/images/refresh.svg';
 import './NonceField.scss';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import { connect } from 'react-redux';
-import { getNonceRequested } from 'actions/transaction';
+import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
 import { nonceRequestPending } from 'selectors/transaction';
 import { AppState } from 'reducers';
 
@@ -14,11 +14,11 @@ interface OwnProps {
 }
 
 interface StateProps {
-  nonePending: any;
+  nonePending: boolean;
 }
 
 interface DispatchProps {
-  requestNonce: any;
+  requestNonce: TGetNonceRequested;
 }
 
 type Props = OwnProps & DispatchProps & StateProps;
