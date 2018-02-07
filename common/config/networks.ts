@@ -325,7 +325,7 @@ export async function setupWeb3Node(): Promise<Web3NodeInfo> {
 
   if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
     throw new Error(
-      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
+      'Web3 not found. Please check that MetaMask is installed, or that MyCrypto is open in Mist.'
     );
   }
 
