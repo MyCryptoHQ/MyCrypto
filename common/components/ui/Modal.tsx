@@ -1,5 +1,6 @@
-import closeIcon from 'assets/images/icon-x.svg';
+import closeIcon from 'assets/images/close.svg';
 import React, { PureComponent } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './Modal.scss';
 
 export interface IButton {
@@ -16,6 +17,12 @@ interface Props {
   buttons?: IButton[];
   handleClose?(): void;
 }
+
+const Fade = ({ children, ...props }) => (
+  <CSSTransition {...props} timeout={300} classNames="animate-modal">
+    {children}
+  </CSSTransition>
+);
 
 export default class Modal extends PureComponent<Props, {}> {
   private modalContent: HTMLElement | null = null;
@@ -43,24 +50,32 @@ export default class Modal extends PureComponent<Props, {}> {
     const hasButtons = buttons && buttons.length;
 
     return (
-      <div>
-        <div className={`Modalshade ${isOpen ? 'is-open' : ''}`} />
-        <div className={`Modal ${isOpen ? 'is-open' : ''}`}>
-          {title && (
-            <div className="Modal-header">
-              <h2 className="Modal-header-title">{title}</h2>
-              <button className="Modal-header-close" onClick={handleClose}>
-                <img className="Modal-header-close-icon" src={closeIcon} />
-              </button>
-            </div>
-          )}
+      <TransitionGroup>
+        {isOpen && (
+          <Fade>
+            <div>
+              <div className={`Modalshade`} />
+              <div className={`Modal`}>
+                {title && (
+                  <div className="Modal-header flex-wrapper">
+                    <h2 className="Modal-header-title">{title}</h2>
+                    <div className="flex-spacer" />
+                    <button className="Modal-header-close" onClick={handleClose}>
+                      <img className="Modal-header-close-icon" src={closeIcon} />
+                    </button>
+                  </div>
+                )}
 
-          <div className="Modal-content" ref={el => (this.modalContent = el)}>
-            {isOpen && children}
-          </div>
-          {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
-        </div>
-      </div>
+                <div className="Modal-content" ref={el => (this.modalContent = el)}>
+                  {isOpen && children}
+                  <div className="Modal-fade" />
+                </div>
+                {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
+              </div>
+            </div>
+          </Fade>
+        )}
+      </TransitionGroup>
     );
   }
 
