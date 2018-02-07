@@ -66,7 +66,6 @@ module.exports = {
     'react-transition-group',
     'redux',
     'redux-logger',
-    'redux-promise-middleware',
     'redux-saga',
     'scryptsy',
     'uuid',

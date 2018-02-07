@@ -12,7 +12,7 @@ import {
   reset,
   TReset
 } from 'actions/transaction';
-import { fetchCCRates, TFetchCCRates } from 'actions/rates';
+import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { Units } from 'libs/units';
@@ -32,7 +32,7 @@ interface StateProps {
 interface DispatchProps {
   inputGasPrice: TInputGasPrice;
   inputGasPriceIntent: TInputGasPriceIntent;
-  fetchCCRates: TFetchCCRates;
+  fetchCCRates: TFetchCCRatesRequested;
   getNonceRequested: TGetNonceRequested;
   reset: TReset;
 }
@@ -144,7 +144,7 @@ function mapStateToProps(state: AppState): StateProps {
 export default connect(mapStateToProps, {
   inputGasPrice,
   inputGasPriceIntent,
-  fetchCCRates,
+  fetchCCRates: fetchCCRatesRequested,
   getNonceRequested,
   reset
 })(TXMetaDataPanel);

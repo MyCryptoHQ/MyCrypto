@@ -1,4 +1,5 @@
-import { FetchCCRatesSucceeded, RatesAction, CCResponse } from 'actions/rates';
+import { FetchCCRatesSucceeded, RatesAction } from 'actions/rates';
+import { CCResponse } from 'api/rates';
 import { TypeKeys } from 'actions/rates/constants';
 
 // SYMBOL -> PRICE TO BUY 1 ETH
