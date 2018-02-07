@@ -1,4 +1,5 @@
 import { MenuItemConstructorOptions, shell } from 'electron';
+import { APP_TITLE, REPOSITORY } from '../constants';
 
 const MENU: MenuItemConstructorOptions[] = [
   {
@@ -43,7 +44,7 @@ const HELP_MENU = {
     {
       label: 'Report a Bug',
       click() {
-        shell.openExternal('https://github.com/MyEtherWallet/MyEtherWallet/issues/new');
+        shell.openExternal(`${REPOSITORY}/issues/new`);
       }
     }
   ]
@@ -51,7 +52,7 @@ const HELP_MENU = {
 
 if (process.platform === 'darwin') {
   MENU.unshift({
-    label: 'MyEtherWallet',
+    label: APP_TITLE,
     submenu: [
       { role: 'about' },
       { type: 'separator' },

@@ -17,7 +17,7 @@ interface Props {
 const FinalSteps: React.SFC<Props> = ({ walletType }) => {
   const steps = [
     {
-      name: 'Open MyEtherWallet',
+      name: 'Open MyCrypto',
       image: SiteImage
     },
     {

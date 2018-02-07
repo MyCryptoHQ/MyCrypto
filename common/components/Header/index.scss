@@ -98,13 +98,14 @@ $small-size: 900px;
 
     &-title {
       @include big-query {
-        flex-basis: 245px;
+        text-align: left;
       }
 
       &-logo {
-        max-width: 1000px;
-        padding: 5px 0;
-        min-width: 220px;
+        height: 64px;
+        width: auto;
+        padding: 8px;
+        padding-right: 0;
       }
     }
 
