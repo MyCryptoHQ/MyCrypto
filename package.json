@@ -50,7 +50,6 @@
     "scryptsy": "2.0.0",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.1.1",
-    "what-input": "5.0.5",
     "whatwg-fetch": "2.0.3",
     "zxcvbn": "4.4.2"
   },
@@ -133,7 +132,8 @@
     "webpack-hot-middleware": "2.21.0",
     "webpack-sources": "1.0.1",
     "webpack-subresource-integrity": "1.0.3",
-    "worker-loader": "1.1.0"
+    "worker-loader": "1.1.0",
+    "what-input": "5.0.5"
   },
   "scripts": {
     "freezer": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js",
@@ -190,5 +190,3 @@
     "common/libs/signing.ts"
   ]
 }
-
-
