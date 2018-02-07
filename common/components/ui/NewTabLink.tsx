@@ -1,11 +1,10 @@
 import React from 'react';
 
-interface AAttributes {
+export interface AAttributes {
   charset?: string;
   className?: string;
   coords?: string;
   download?: string;
-  href: string;
   hreflang?: string;
   media?: string;
   name?: string;
@@ -31,6 +30,7 @@ interface AAttributes {
 }
 
 interface NewTabLinkProps extends AAttributes {
+  href: string;
   content?: React.ReactElement<any> | string;
   children?: React.ReactElement<any> | string;
 }
