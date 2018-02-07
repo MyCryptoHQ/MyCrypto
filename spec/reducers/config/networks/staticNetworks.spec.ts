@@ -146,3 +146,5 @@ describe('static networks reducer', () => {
       JSON.stringify(expectedState.initialState)
     ));
 });
+
+export { expectedState as staticNetworksExpectedState };

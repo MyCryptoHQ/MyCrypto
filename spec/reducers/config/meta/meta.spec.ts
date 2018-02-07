@@ -72,3 +72,5 @@ describe('meta reducer', () => {
       expectedState.settingLatestBlock
     ));
 });
+
+export { actions as metaActions, expectedState as metaExpectedState };

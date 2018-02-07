@@ -58,3 +58,5 @@ describe('custom networks reducer', () => {
       customNetworks(expectedState.addSecondCustomNetwork, actions.removeFirstCustomNetwork)
     ).toEqual(expectedState.removeFirstCustomNetwork));
 });
+
+export { actions as customNetworksActions, expectedState as customNetworksExpectedState };

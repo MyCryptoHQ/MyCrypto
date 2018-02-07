@@ -14,3 +14,5 @@ describe('selected network reducer', () => {
       expectedState.nodeChange
     ));
 });
+
+export { actions as selectedNetworkActions, expectedState as selectedNetworkExpectedState };

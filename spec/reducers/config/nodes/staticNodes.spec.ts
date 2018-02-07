@@ -5,7 +5,7 @@ import { Web3NodeConfig } from 'types/node';
 import { networkIdToName } from 'libs/values';
 import { Web3Service } from 'libs/nodes/web3';
 
-const expectedInitialState = JSON.stringify({
+const expectedInitialState = {
   eth_mew: {
     network: 'ETH',
     isCustom: false,
@@ -90,7 +90,7 @@ const expectedInitialState = JSON.stringify({
     lib: new RPCNode('https://node.expanse.tech/'),
     estimateGas: true
   }
-});
+};
 
 const web3Id = 'web3';
 const web3NetworkId = 1;
@@ -103,7 +103,7 @@ const web3Node: Web3NodeConfig = {
   hidden: true
 };
 
-const expectedStates = {
+const expectedState = {
   initialState: expectedInitialState,
   setWeb3: { ...INITIAL_STATE, [web3Id]: web3Node },
   unsetWeb3: { ...INITIAL_STATE }
@@ -117,12 +117,16 @@ const actions = {
 describe('static nodes reducer', () => {
   it('should return the inital state', () =>
     // turn the JSON into a string because we're storing function in the state
-    expect(JSON.stringify(staticNodes(undefined, {} as any))).toEqual(expectedStates.initialState));
+    expect(JSON.stringify(staticNodes(undefined, {} as any))).toEqual(
+      JSON.stringify(expectedState.initialState)
+    ));
   it('should handle setting the web3 node', () =>
-    expect(staticNodes(INITIAL_STATE, actions.web3SetNode)).toEqual(expectedStates.setWeb3));
+    expect(staticNodes(INITIAL_STATE, actions.web3SetNode)).toEqual(expectedState.setWeb3));
 
   it('should handle unsetting the web3 node', () =>
-    expect(staticNodes(expectedStates.setWeb3, actions.web3UnsetNode)).toEqual(
-      expectedStates.unsetWeb3
+    expect(staticNodes(expectedState.setWeb3, actions.web3UnsetNode)).toEqual(
+      expectedState.unsetWeb3
     ));
 });
+
+export { actions as staticNodesActions, expectedState as staticNodesExpectedState };
