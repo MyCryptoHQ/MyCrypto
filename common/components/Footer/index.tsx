@@ -1,6 +1,5 @@
 import logo from 'assets/images/logo-mycrypto.svg';
 import {
-  bityReferralURL,
   ledgerReferralURL,
   trezorReferralURL,
   bitboxReferralURL,
