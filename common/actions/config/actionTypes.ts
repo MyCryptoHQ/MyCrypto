@@ -20,7 +20,6 @@ export interface ChangeLanguageAction {
 /*** Change Node ***/
 export interface ChangeNodeAction {
   type: TypeKeys.CONFIG_NODE_CHANGE;
-  // FIXME $keyof?
   payload: {
     nodeId: string;
     networkId: string;
