@@ -1,6 +1,6 @@
 # MyCrypto V4+ (ALPHA - VISIT [V3](https://github.com/MyCryptoHQ/mycrypto.com) for the current site)<br/>Just looking to download? Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/MyCrypto/MyCrypto.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/MyCryptoHq/MyCrypto.svg)](https://greenkeeper.io/)
 
 ## Running the App
 
