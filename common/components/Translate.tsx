@@ -12,7 +12,7 @@ const Translate = ({ translationKey }: Props) => {
     <Markdown
       escapeHtml={true}
       unwrapDisallowed={true}
-      allowedTypes={['link', 'emphasis', 'strong', 'code', 'root']}
+      allowedTypes={['link', 'emphasis', 'strong', 'code', 'root', 'inlineCode']}
       renderers={{ root: 'span' }}
       source={source}
     />
