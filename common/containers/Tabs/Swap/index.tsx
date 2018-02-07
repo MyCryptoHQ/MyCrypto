@@ -113,12 +113,10 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
   }
 
   public componentWillUnmount() {
-    this.props.stopLoadBityRatesSwap();
     this.props.stopLoadShapeshiftRatesSwap();
   }
 
   public loadRates() {
-    this.props.loadBityRatesRequestedSwap();
     this.props.loadShapeshiftRatesRequestedSwap();
   }
 
