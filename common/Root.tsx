@@ -63,7 +63,7 @@ export default class Root extends Component<Props, State> {
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />
-          <Route path="/ens" component={ENS} />
+          <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/pushTx" component={BroadcastTx} />
           <RouteNotFound />
