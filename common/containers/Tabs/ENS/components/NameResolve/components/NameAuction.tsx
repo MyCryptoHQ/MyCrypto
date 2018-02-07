@@ -38,7 +38,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
           Do you want to place a bid on {name}.eth?{' '}
           <strong>
             <NewTabLink href={ensV3Url(name)}>
-              You do that on MyCrypto V3 by clicking here!
+              You can do that on MyCrypto V3 by clicking here!
             </NewTabLink>
           </strong>
         </p>
