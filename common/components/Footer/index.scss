@@ -139,8 +139,8 @@
     margin: 0 0 $space-xs 0;
   }
 
-  li,
-  p {
+  > li,
+  > p {
     font-size: $font-size-small;
     margin: $space-sm 0;
   }
