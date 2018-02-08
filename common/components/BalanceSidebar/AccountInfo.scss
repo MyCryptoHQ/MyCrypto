@@ -11,7 +11,7 @@
 
     &-header {
       margin-top: 0;
-      display:inline-block;
+      display: inline-block;
     }
 
     &-refresh {
@@ -19,10 +19,21 @@
       border: none;
       margin: 0px 0.5rem;
       padding: 0;
-      margin-bottom: 0.5rem;
+      height: 1.4rem;
+      width: 1.2rem;
+      opacity: 0.3;
+      transition: opacity 0.3s;
       > img {
-        height: 22px;
-        width: 22px;
+        height: inherit;
+        width: inherit;
+        vertical-align: top;
+      }
+      &:hover {
+        opacity: 0.54;
+      }
+      &:active {
+        transition: opacity 120ms;
+        opacity: 1;
       }
     }
   }
@@ -64,6 +75,11 @@
         margin-right: 16px;
       }
     }
+  }
+
+  &-balance-wrapper {
+    display: flex;
+    align-items: flex-end;
   }
 
   &-list {
