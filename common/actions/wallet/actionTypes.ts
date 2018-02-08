@@ -125,6 +125,10 @@ export interface SetPasswordPendingAction {
   type: TypeKeys.WALLET_SET_PASSWORD_PENDING;
 }
 
+export interface SetAccountBalanceAction {
+  type: TypeKeys.WALLET_SET_ACCOUNT_BALANCE;
+}
+
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
@@ -143,4 +147,5 @@ export type WalletAction =
   | ScanWalletForTokensAction
   | SetWalletTokensAction
   | SetWalletConfigAction
-  | SetPasswordPendingAction;
+  | SetPasswordPendingAction
+  | SetAccountBalanceAction;

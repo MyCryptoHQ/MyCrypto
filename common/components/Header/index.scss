@@ -80,10 +80,15 @@ $small-size: 900px;
   &-branding {
     color: white;
     padding: 0;
-    @include bg-gradient;
+    background: #274e7e;
+    background-image: url('~assets/images/header-bg.jpg'),
+                      linear-gradient(130deg, #37709e, #274e7e);
+    background-size: cover;
+    background-position: left;
 
     @include small-query {
       text-align: center;
+      background-position: center;
     }
 
     &-inner {
@@ -106,6 +111,8 @@ $small-size: 900px;
         width: auto;
         padding: 8px;
         padding-right: 0;
+        filter: drop-shadow(0 1px 0 rgba(#000, 0.12))
+                drop-shadow(1px 1px 0 rgba(#000, 0.12));
       }
     }
 
