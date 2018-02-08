@@ -11,7 +11,7 @@ import { config } from 'reducers/config';
 Enzyme.configure({ adapter: new Adapter() });
 
 it('render snapshot', () => {
-  const testStateConfig = config(undefined, {});
+  const testStateConfig = config(undefined as any, {} as any);
   const testState = {
     wallet: {},
     balance: {},

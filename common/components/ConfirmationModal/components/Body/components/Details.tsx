@@ -4,9 +4,9 @@ import './Details.scss';
 import { SerializedTransaction } from 'components/renderCbs';
 import { AppState } from 'reducers';
 import { getNodeConfig } from 'selectors/config';
-import { NodeConfig } from 'config';
 import { connect } from 'react-redux';
 import { TokenValue } from 'libs/units';
+import { NodeConfig } from 'types/node';
 
 interface StateProps {
   node: NodeConfig;

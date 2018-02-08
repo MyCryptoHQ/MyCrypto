@@ -115,7 +115,7 @@ const expectedInitialState = {
     chainId: 2,
     isCustom: false,
     color: '#673ab7',
-    blockExplorer: makeExplorer('http://www.gander.tech'),
+    blockExplorer: makeExplorer('https://www.gander.tech'),
     tokens: require('config/tokens/exp.json'),
     contracts: require('config/contracts/exp.json'),
     dPathFormats: {
