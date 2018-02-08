@@ -4,7 +4,7 @@ import { AppState } from 'reducers';
 import { getOffline } from 'selectors/config';
 
 interface StateProps {
-  offline: AppState['config']['offline'];
+  offline: AppState['config']['meta']['offline'];
 }
 class OfflineBroadcastClass extends Component<StateProps> {
   public render() {

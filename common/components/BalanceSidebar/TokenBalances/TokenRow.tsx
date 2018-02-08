@@ -19,7 +19,7 @@ interface State {
   showLongBalance: boolean;
 }
 
-export default class TokenRow extends React.Component<Props, State> {
+export default class TokenRow extends React.PureComponent<Props, State> {
   public state = {
     showLongBalance: false
   };

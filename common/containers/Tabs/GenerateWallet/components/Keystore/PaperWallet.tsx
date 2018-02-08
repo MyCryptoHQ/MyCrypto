@@ -1,5 +1,5 @@
 import PrintableWallet from 'components/PrintableWallet';
-import { IFullWallet } from 'ethereumjs-wallet';
+import { IV3Wallet } from 'ethereumjs-wallet';
 import React from 'react';
 import translate from 'translations';
 import { stripHexPrefix } from 'libs/values';
@@ -7,7 +7,8 @@ import './PaperWallet.scss';
 import Template from '../Template';
 
 interface Props {
-  wallet: IFullWallet;
+  keystore: IV3Wallet;
+  privateKey: string;
   continue(): void;
 }
 
@@ -18,8 +19,8 @@ const PaperWallet: React.SFC<Props> = props => (
       <h1 className="GenPaper-title">{translate('GEN_Label_5')}</h1>
       <input
         className="GenPaper-private form-control"
-        value={stripHexPrefix(props.wallet.getPrivateKeyString())}
-        aria-label={translate('x_PrivKey')}
+        value={stripHexPrefix(props.privateKey)}
+        aria-label={translate('x_PrivKey', true)}
         aria-describedby="x_PrivKeyDesc"
         type="text"
         readOnly={true}
@@ -28,7 +29,7 @@ const PaperWallet: React.SFC<Props> = props => (
       {/* Download Paper Wallet */}
       <h1 className="GenPaper-title">{translate('x_Print')}</h1>
       <div className="GenPaper-paper">
-        <PrintableWallet wallet={props.wallet} />
+        <PrintableWallet address={props.keystore.address} privateKey={props.privateKey} />
       </div>
 
       {/* Warning */}

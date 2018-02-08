@@ -220,7 +220,7 @@ module.exports = function(opts = {}) {
       }),
       new ExtractTextPlugin('[name].[chunkhash:8].css'),
       new FaviconsWebpackPlugin({
-        logo: path.resolve(config.path.static, 'favicon/android-chrome-384x384.png'),
+        logo: path.resolve(config.path.assets, 'images/favicon.png'),
         background: '#163151',
         inject: true
       }),
@@ -281,8 +281,8 @@ module.exports = function(opts = {}) {
   // ====================
   let devtool = false;
   if (!options.isProduction) {
-    if (process.env.SLOW_BUILD_SPEED) {
-      devtool = 'source-map';
+    if (process.env.VSCODE_DEBUG) {
+      devtool = 'cheap-module-source-map';
     } else {
       devtool = 'cheap-module-eval-source-map';
     }

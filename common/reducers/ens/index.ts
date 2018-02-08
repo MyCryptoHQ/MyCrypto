@@ -8,4 +8,4 @@ export interface State {
   domainRequests: DRState;
 }
 
-export const ens = combineReducers({ domainSelector, domainRequests });
+export const ens = combineReducers<State>({ domainSelector, domainRequests });

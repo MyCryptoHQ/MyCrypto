@@ -2,8 +2,9 @@ import React from 'react';
 import BN from 'bn.js';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { UnitDisplay } from 'components/ui';
+import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
 
 interface RenderData {
@@ -14,16 +15,19 @@ interface RenderData {
   usd: React.ReactElement<string> | null;
 }
 
-interface Props {
-  // Redux props
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
+interface ReduxStateProps {
   gasLimit: AppState['transaction']['fields']['gasLimit'];
   rates: AppState['rates']['rates'];
-  network: AppState['config']['network'];
-  isOffline: AppState['config']['offline'];
-  // Component props
+  network: NetworkConfig;
+  isOffline: AppState['config']['meta']['offline'];
+}
+
+interface OwnProps {
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
   render(data: RenderData): React.ReactElement<string> | string;
 }
+
+type Props = OwnProps & ReduxStateProps;
 
 class FeeSummary extends React.Component<Props> {
   public render() {
@@ -67,13 +71,12 @@ class FeeSummary extends React.Component<Props> {
   }
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState): ReduxStateProps {
   return {
-    gasPrice: state.transaction.fields.gasPrice,
     gasLimit: state.transaction.fields.gasLimit,
     rates: state.rates.rates,
     network: getNetworkConfig(state),
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 

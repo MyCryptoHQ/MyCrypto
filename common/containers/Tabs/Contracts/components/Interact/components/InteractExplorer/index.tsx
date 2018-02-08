@@ -4,7 +4,6 @@ import './InteractExplorer.scss';
 import { TShowNotification, showNotification } from 'actions/notifications';
 import { getNodeLib } from 'selectors/config';
 import { getTo, getDataExists } from 'selectors/transaction';
-import { INode } from 'libs/nodes/INode';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
@@ -12,9 +11,11 @@ import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
 import Select from 'react-select';
+import { Web3Node } from 'libs/nodes';
+import RpcNode from 'libs/nodes/rpc';
 
 interface StateProps {
-  nodeLib: INode;
+  nodeLib: RpcNode | Web3Node;
   to: AppState['transaction']['fields']['to'];
   dataExists: boolean;
 }

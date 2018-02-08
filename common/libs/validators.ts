@@ -192,7 +192,16 @@ function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
 
 function formatErrors(response: JsonRpcResponse, apiType: string) {
   if (response.error) {
-    return `${response.error.message} ${response.error.data || ''}`;
+    // Metamask errors are sometimes full-blown stacktraces, no bueno. Instead,
+    // We'll just take the first line of it, and the last thing after all of
+    // the colons. An example error message would be:
+    // "Error: Metamask Sign Tx Error: User rejected the signature."
+    const lines = response.error.message.split('\n');
+    if (lines.length > 2) {
+      return lines[0].split(':').pop();
+    } else {
+      return `${response.error.message} ${response.error.data || ''}`;
+    }
   }
   return `Invalid ${apiType} Error`;
 }

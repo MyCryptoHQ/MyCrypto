@@ -1,16 +1,18 @@
 import { customNetworks, State as CustomNetworksState } from './customNetworks';
-import { defaultNetworks, State as DefaultNetworksState } from './defaultNetworks';
+import { staticNetworks, State as StaticNetworksState } from './staticNetworks';
 import { selectedNetwork, State as SelectedNetworkState } from './selectedNetwork';
 import { combineReducers } from 'redux';
 
-export interface State {
+interface State {
   customNetworks: CustomNetworksState;
-  defaultNetworks: DefaultNetworksState;
+  staticNetworks: StaticNetworksState;
   selectedNetwork: SelectedNetworkState;
 }
 
-export const networks = combineReducers<State>({
+const networks = combineReducers<State>({
   customNetworks,
-  defaultNetworks,
+  staticNetworks,
   selectedNetwork
 });
+
+export { State, networks, StaticNetworksState, SelectedNetworkState, CustomNetworksState };

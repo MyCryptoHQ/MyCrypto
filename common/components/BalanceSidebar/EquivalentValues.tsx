@@ -2,16 +2,17 @@ import React from 'react';
 import translate from 'translations';
 import { UnitDisplay, Spinner } from 'components/ui';
 import Select from 'react-select';
-import { TFetchCCRates, fetchCCRates, rateSymbols } from 'actions/rates';
+import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'actions/rates';
+import { rateSymbols } from 'api/rates';
 import { chain, flatMap } from 'lodash';
 import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
-import { NetworkConfig } from 'config';
 import './EquivalentValues.scss';
 import { Wei } from 'libs/units';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { connect } from 'react-redux';
+import { NetworkConfig } from 'types/network';
 
 interface AllValue {
   symbol: string;
@@ -36,14 +37,15 @@ interface State {
 interface StateProps {
   balance: Balance;
   network: NetworkConfig;
+
   tokenBalances: TokenBalance[];
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
-  isOffline: AppState['config']['offline'];
+  isOffline: AppState['config']['meta']['offline'];
 }
 
 interface DispatchProps {
-  fetchCCRates: TFetchCCRates;
+  fetchCCRates: TFetchCCRatesRequested;
 }
 
 type Props = StateProps & DispatchProps;
@@ -67,7 +69,7 @@ class EquivalentValues extends React.Component<Props, State> {
   public defaultOption(
     balance: Balance,
     tokenBalances: TokenBalance[],
-    network: NetworkConfig
+    network: StateProps['network']
   ): DefaultOption {
     return {
       label: 'All',
@@ -113,6 +115,7 @@ class EquivalentValues extends React.Component<Props, State> {
     const { equivalentValues, options } = this.state;
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
+    const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
 
     const Value = ({ rate, value }) => (
       <div className="EquivalentValues-values-currency">
@@ -159,9 +162,11 @@ class EquivalentValues extends React.Component<Props, State> {
           <Spinner size="x2" />
         ) : (
           <div className="EquivalentValues-values">
-            {this.generateValues(equivalentValues.label, equivalentValues.value).map((equiv, i) => (
-              <Value rate={equiv.rate} value={equiv.value} key={i} />
-            ))}
+            {pairRates.length ? (
+              pairRates.map((equiv, i) => <Value rate={equiv.rate} value={equiv.value} key={i} />)
+            ) : (
+              <p>Sorry, equivalent values are not supported for this unit.</p>
+            )}
           </div>
         )}
       </div>
@@ -251,7 +256,6 @@ class EquivalentValues extends React.Component<Props, State> {
     this.requestedCurrencies = currencies;
   }
 }
-
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
@@ -259,8 +263,8 @@ function mapStateToProps(state: AppState): StateProps {
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 
-export default connect(mapStateToProps, { fetchCCRates })(EquivalentValues);
+export default connect(mapStateToProps, { fetchCCRates: fetchCCRatesRequested })(EquivalentValues);

@@ -1,10 +1,10 @@
-import { CustomNodeConfig } from 'reducers/config/nodes/typings';
 import {
   TypeKeys,
   CustomNodeAction,
   AddCustomNodeAction,
   RemoveCustomNodeAction
 } from 'actions/config';
+import { CustomNodeConfig } from 'types/node';
 
 export interface State {
   [customNodeId: string]: CustomNodeConfig;

@@ -29,6 +29,9 @@ export default class Web3Wallet implements IFullWallet {
     const state = configuredStore.getState();
     const nodeLib: Web3Node | INode = getNodeLib(state);
 
+    if (!nodeLib) {
+      throw new Error('');
+    }
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Web3 wallets can only be used with a Web3 node.');
     }
@@ -55,7 +58,7 @@ export default class Web3Wallet implements IFullWallet {
     };
 
     const state = configuredStore.getState();
-    const nodeLib: Web3Node | INode = getNodeLib(state);
+    const nodeLib: Web3Node | INode | undefined = getNodeLib(state);
 
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Web3 wallets can only be used with a Web3 node.');
@@ -67,12 +70,12 @@ export default class Web3Wallet implements IFullWallet {
 
   private async networkCheck(lib: Web3Node) {
     const netId = await lib.getNetVersion();
-    const netName = networkIdToName(netId);
+    const netName = networkIdToName(netId as any);
     if (this.network !== netName) {
       throw new Error(
         `Expected MetaMask / Mist network to be ${
           this.network
-        }, but got ${netName}. Please change the network or restart MyEtherWallet.`
+        }, but got ${netName}. Please change the network or refresh the page.`
       );
     }
   }

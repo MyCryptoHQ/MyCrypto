@@ -1,5 +1,4 @@
 import { Identicon, UnitDisplay } from 'components/ui';
-import { NetworkConfig } from 'config';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
@@ -8,6 +7,9 @@ import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
+import { NetworkConfig } from 'types/network';
+import refreshIcon from 'assets/images/refresh.svg';
+import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
 
 interface OwnProps {
   wallet: IWallet;
@@ -24,7 +26,11 @@ interface State {
   confirmAddr: boolean;
 }
 
-type Props = OwnProps & StateProps;
+interface DispatchProps {
+  setAccountBalance: TSetAccountBalance;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
 
 class AccountInfo extends React.Component<Props, State> {
   public state = {
@@ -66,7 +72,14 @@ class AccountInfo extends React.Component<Props, State> {
   public render() {
     const { network, balance } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
-    const { blockExplorer, tokenExplorer } = network;
+    let blockExplorer;
+    let tokenExplorer;
+    if (!network.isCustom) {
+      // this is kind of ugly but its the result of typeguards, maybe we can find a cleaner solution later on such as just dedicating it to a selector
+      blockExplorer = network.blockExplorer;
+      tokenExplorer = network.tokenExplorer;
+    }
+
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div className="AccountInfo">
@@ -108,23 +121,31 @@ class AccountInfo extends React.Component<Props, State> {
         <div className="AccountInfo-section">
           <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
           <ul className="AccountInfo-list">
-            <li className="AccountInfo-list-item">
-              <span
-                className="AccountInfo-list-item-clickable mono wrap"
-                onClick={this.toggleShowLongBalance}
-              >
-                {balance.isPending ? (
-                  <Spinner />
-                ) : (
-                  <UnitDisplay
-                    value={balance.wei}
-                    unit={'ether'}
-                    displayShortBalance={!showLongBalance}
-                    checkOffline={true}
-                  />
-                )}
-              </span>
-              {!balance.isPending ? balance.wei ? <span> {network.name}</span> : null : null}
+            <li className="AccountInfo-list-item AccountInfo-balance-wrapper">
+              {balance.isPending ? (
+                <Spinner />
+              ) : (
+                <React.Fragment>
+                  <span
+                    className="AccountInfo-list-item-clickable mono wrap"
+                    onClick={this.toggleShowLongBalance}
+                  >
+                    <UnitDisplay
+                      value={balance.wei}
+                      unit={'ether'}
+                      displayShortBalance={!showLongBalance}
+                      checkOffline={true}
+                      symbol={balance.wei ? network.name : null}
+                    />
+                  </span>
+                  <button
+                    className="AccountInfo-section-refresh"
+                    onClick={this.props.setAccountBalance}
+                  >
+                    <img src={refreshIcon} />
+                  </button>
+                </React.Fragment>
+              )}
             </li>
           </ul>
         </div>
@@ -162,12 +183,11 @@ class AccountInfo extends React.Component<Props, State> {
     );
   }
 }
-
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
     network: getNetworkConfig(state)
   };
 }
-
-export default connect(mapStateToProps)(AccountInfo);
+const mapDispatchToProps: DispatchProps = { setAccountBalance };
+export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);
