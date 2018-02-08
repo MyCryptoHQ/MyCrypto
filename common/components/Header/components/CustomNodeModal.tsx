@@ -186,7 +186,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                     placeholder: 'https://127.0.0.1/'
                   },
                   invalids
-                )}node
+                )}
               </div>
 
               <div className="col-sm-3">
