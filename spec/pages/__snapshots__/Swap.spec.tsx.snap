@@ -20,12 +20,50 @@ exports[`render snapshot 1`] = `
   }
   destinationAddress=""
   destinationAddressSwap={[Function]}
+  history={
+    Object {
+      "action": "PUSH",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 2,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "e08jz7",
+        "pathname": "/swap",
+        "search": "",
+        "state": Object {},
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
   initSwap={[Function]}
   isFetchingRates={null}
   isOffline={false}
   isPostingOrder={false}
   loadBityRatesRequestedSwap={[Function]}
   loadShapeshiftRatesRequestedSwap={[Function]}
+  location={
+    Object {
+      "hash": "",
+      "key": "e08jz7",
+      "pathname": "/swap",
+      "search": "",
+      "state": Object {},
+    }
+  }
+  match={
+    Object {
+      "isExact": true,
+      "params": Object {},
+      "path": "/swap",
+      "url": "/swap",
+    }
+  }
   options={
     Object {
       "allIds": Array [],
@@ -40,7 +78,7 @@ exports[`render snapshot 1`] = `
   }
   outputTx={null}
   paymentAddress={null}
-  provider="bity"
+  provider="shapeshift"
   restartSwap={[Function]}
   secondsRemaining={null}
   shapeshiftOrder={Object {}}

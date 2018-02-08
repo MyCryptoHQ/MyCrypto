@@ -36,7 +36,7 @@ interface State {
   password: string;
 }
 
-export default class CustomNodeModal extends React.Component<Props, State> {
+export default class CustomNodeModal extends React.PureComponent<Props, State> {
   public state: State = {
     name: '',
     url: '',
@@ -170,7 +170,7 @@ export default class CustomNodeModal extends React.Component<Props, State> {
                 {this.renderInput(
                   {
                     name: 'url',
-                    placeholder: 'http://127.0.0.1/'
+                    placeholder: 'https://127.0.0.1/'
                   },
                   invalids
                 )}

@@ -39,7 +39,7 @@
     display: flex;
     flex-flow: column;
     justify-content: center;
-    min-width: 250px;
+    width: 250px;
 
     &.is-left {
       padding-right: $space * 1.5;

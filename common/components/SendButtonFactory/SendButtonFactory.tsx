@@ -8,6 +8,7 @@ import { getWalletType, IWalletType } from 'selectors/wallet';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import { ConfirmationModal } from 'components/ConfirmationModal';
 
 export interface CallbackProps {
   onClick(): void;
@@ -16,8 +17,10 @@ export interface CallbackProps {
 interface StateProps {
   walletType: IWalletType;
 }
+
 interface OwnProps {
   onlyTransactionParameters?: boolean;
+  Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -62,7 +65,7 @@ class SendButtonFactoryClass extends Component<Props> {
               </div>
             )}
             <OfflineBroadcast />
-            <OnlineSend withProps={this.props.withProps} />
+            <OnlineSend withProps={this.props.withProps} Modal={this.props.Modal} />
           </React.Fragment>
         )}
       />

@@ -10,7 +10,6 @@ const getTokenTo = (state: AppState) => getMetaState(state).tokenTo;
 const getTokenValue = (state: AppState) => getMetaState(state).tokenValue;
 const getUnit = (state: AppState) => getMetaState(state).unit;
 const getPreviousUnit = (state: AppState) => getMetaState(state).previousUnit;
-
 const getDecimalFromUnit = (state: AppState, unit: string) => {
   if (isEtherUnit(unit)) {
     return getDecimalFromEtherUnit('ether');

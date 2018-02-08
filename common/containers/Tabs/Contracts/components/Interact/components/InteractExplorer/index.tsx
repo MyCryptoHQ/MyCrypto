@@ -11,19 +11,23 @@ import { connect } from 'react-redux';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
+import Select from 'react-select';
 
 interface StateProps {
   nodeLib: INode;
   to: AppState['transaction']['fields']['to'];
   dataExists: boolean;
 }
+
 interface DispatchProps {
   showNotification: TShowNotification;
   setDataField: TSetDataField;
 }
+
 interface OwnProps {
   contractFunctions: any;
 }
+
 type Props = StateProps & DispatchProps & OwnProps;
 
 interface InputOutput {
@@ -34,11 +38,22 @@ interface State {
   inputs: {
     [key: string]: { rawData: string; parsedData: string[] | string };
   };
-  outputs: {
-    [decodedArgument: string]: string;
-  };
-  selectedFunction: null | any;
-  selectedFunctionName: string;
+  outputs;
+  selectedFunction: null | ContractOption;
+}
+
+interface ContractFunction {
+  constant: boolean;
+  decodeInput: any;
+  decodeOutput: any;
+  encodeInput: any;
+  inputs: any[];
+  outputs: any;
+}
+
+interface ContractOption {
+  contract: ContractFunction;
+  name: string;
 }
 
 class InteractExplorerClass extends Component<Props, State> {
@@ -48,15 +63,16 @@ class InteractExplorerClass extends Component<Props, State> {
 
   public state: State = {
     selectedFunction: null,
-    selectedFunctionName: '',
     inputs: {},
     outputs: {}
   };
 
   public render() {
-    const { inputs, outputs, selectedFunction, selectedFunctionName } = this.state;
+    const { inputs, outputs, selectedFunction } = this.state;
+    const contractFunctionsOptions = this.contractOptions();
 
     const { to } = this.props;
+
     const generateOrWriteButton = this.props.dataExists ? (
       <GenerateTransaction />
     ) : (
@@ -67,6 +83,7 @@ class InteractExplorerClass extends Component<Props, State> {
         {translate('CONTRACT_Write')}
       </button>
     );
+
     return (
       <div className="InteractExplorer">
         <h3 className="InteractExplorer-title">
@@ -74,19 +91,22 @@ class InteractExplorerClass extends Component<Props, State> {
           <span className="InteractExplorer-title-address">{to.raw}</span>
         </h3>
 
-        <select
-          value={selectedFunction ? selectedFunction.name : ''}
-          className="InteractExplorer-fnselect form-control"
+        <Select
+          name="exploreContract"
+          value={selectedFunction as any}
+          placeholder="Please select a function..."
           onChange={this.handleFunctionSelect}
-        >
-          <option>{translate('CONTRACT_Interact_CTA', true)}</option>
-          {this.contractOptions()}
-        </select>
+          options={contractFunctionsOptions}
+          clearable={false}
+          searchable={false}
+          labelKey="name"
+          valueKey="contract"
+        />
 
         {selectedFunction && (
-          <div key={selectedFunctionName} className="InteractExplorer-func">
+          <div key={selectedFunction.name} className="InteractExplorer-func">
             {/* TODO: Use reusable components with validation */}
-            {selectedFunction.inputs.map((input: InputOutput) => {
+            {selectedFunction.contract.inputs.map(input => {
               const { type, name } = input;
 
               return (
@@ -104,7 +124,7 @@ class InteractExplorerClass extends Component<Props, State> {
                 </label>
               );
             })}
-            {selectedFunction.outputs.map((output: InputOutput, index: number) => {
+            {selectedFunction.contract.outputs.map((output, index) => {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
 
@@ -123,7 +143,7 @@ class InteractExplorerClass extends Component<Props, State> {
               );
             })}
 
-            {selectedFunction.constant ? (
+            {selectedFunction.contract.constant ? (
               <button
                 className="InteractExplorer-func-submit btn btn-primary"
                 onClick={this.handleFunctionCall}
@@ -143,14 +163,16 @@ class InteractExplorerClass extends Component<Props, State> {
 
   private contractOptions = () => {
     const { contractFunctions } = this.props;
-
-    return Object.keys(contractFunctions).map(name => {
-      return (
-        <option key={name} value={name}>
-          {name}
-        </option>
-      );
-    });
+    const transformedContractFunction: ContractOption[] = Object.keys(contractFunctions).map(
+      contractFunction => {
+        const contract = contractFunctions[contractFunction];
+        return {
+          name: contractFunction,
+          contract
+        };
+      }
+    );
+    return transformedContractFunction;
   };
 
   private handleFunctionCall = async (_: React.FormEvent<HTMLButtonElement>) => {
@@ -166,7 +188,7 @@ class InteractExplorerClass extends Component<Props, State> {
       const callData = { to: to.raw, data };
       const results = await nodeLib.sendCallRequest(callData);
 
-      const parsedResult = selectedFunction.decodeOutput(results);
+      const parsedResult = selectedFunction!.contract.decodeOutput(results);
       this.setState({ outputs: parsedResult });
     } catch (e) {
       this.props.showNotification(
@@ -190,14 +212,9 @@ class InteractExplorerClass extends Component<Props, State> {
     }
   };
 
-  private handleFunctionSelect = (ev: React.FormEvent<HTMLSelectElement>) => {
-    const { contractFunctions } = this.props;
-    const selectedFunctionName = ev.currentTarget.value;
-    const selectedFunction = contractFunctions[selectedFunctionName];
-
+  private handleFunctionSelect = (selectedFunction: ContractOption) => {
     this.setState({
       selectedFunction,
-      selectedFunctionName,
       outputs: {},
       inputs: {}
     });
@@ -209,8 +226,7 @@ class InteractExplorerClass extends Component<Props, State> {
       (accu, key) => ({ ...accu, [key]: inputs[key].parsedData }),
       {}
     );
-    const data = selectedFunction.encodeInput(parsedInputs);
-    return data;
+    return selectedFunction!.contract.encodeInput(parsedInputs);
   }
 
   private tryParseJSON(input: string) {

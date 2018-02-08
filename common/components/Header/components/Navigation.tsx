@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import NavigationLink from './NavigationLink';
 import { knowledgeBaseURL } from 'config';
 import './Navigation.scss';
@@ -11,13 +11,12 @@ export interface TabLink {
 
 const tabs: TabLink[] = [
   {
-    name: 'NAV_GenerateWallet',
-    to: '/generate'
-  },
-
-  {
     name: 'Account View & Send',
     to: '/account'
+  },
+  {
+    name: 'NAV_GenerateWallet',
+    to: '/generate'
   },
   {
     name: 'NAV_Swap',
@@ -59,7 +58,7 @@ interface BorderStyle {
   borderTopColor?: string;
 }
 
-export default class Navigation extends Component<Props, State> {
+export default class Navigation extends PureComponent<Props, State> {
   public state = {
     showLeftArrow: false,
     showRightArrow: false

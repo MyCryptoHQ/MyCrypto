@@ -193,7 +193,9 @@ const EXP: NetworkConfig = {
   unit: 'EXP',
   chainId: 2,
   color: '#673ab7',
+  // tslint:disable:no-http-string - Unavailable behind HTTPS right now
   blockExplorer: makeExplorer('http://www.gander.tech'),
+  // tslint:enable:no-http-string
   tokens: require('./tokens/exp.json'),
   contracts: require('./contracts/exp.json'),
   dPathFormats: {
@@ -217,6 +219,7 @@ export type NetworkKeys = keyof typeof NETWORKS;
 
 export enum NodeName {
   ETH_MEW = 'eth_mew',
+  ETH_MYCRYPTO = 'eth_mycrypto',
   ETH_ETHSCAN = 'eth_ethscan',
   ETH_INFURA = 'eth_infura',
   ROP_MEW = 'rop_mew',
@@ -242,6 +245,12 @@ export const NODES: NodeConfigs = {
     network: 'ETH',
     lib: new RPCNode('https://api.myetherapi.com/eth'),
     service: 'MyEtherWallet',
+    estimateGas: true
+  },
+  eth_mycrypto: {
+    network: 'ETH',
+    lib: new RPCNode('https://api.mycryptoapi.com/eth'),
+    service: 'MyCrypto',
     estimateGas: true
   },
   eth_ethscan: {
@@ -316,7 +325,7 @@ export async function setupWeb3Node(): Promise<Web3NodeInfo> {
 
   if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
     throw new Error(
-      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
+      'Web3 not found. Please check that MetaMask is installed, or that MyCrypto is open in Mist.'
     );
   }
 

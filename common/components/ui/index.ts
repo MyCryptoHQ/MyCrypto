@@ -10,5 +10,7 @@ export { default as UnitDisplay } from './UnitDisplay';
 export { default as Spinner } from './Spinner';
 export { default as SwapDropdown } from './SwapDropdown';
 export { default as Tooltip } from './Tooltip';
+export { default as TitleBar } from './TitleBar';
+export { default as HelpLink } from './HelpLink';
 export * from './ConditionalInput';
 export * from './Expandable';

@@ -5,9 +5,9 @@ import {
   TRemoveCustomNode,
   TAddCustomNetwork
 } from 'actions/config';
-import logo from 'assets/images/logo-myetherwallet.svg';
+import logo from 'assets/images/logo-mycrypto.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { TSetGasPriceField } from 'actions/transaction';
@@ -16,13 +16,11 @@ import {
   ANNOUNCEMENT_TYPE,
   languages,
   NODES,
-  VERSION,
   NodeConfig,
   CustomNodeConfig,
   CustomNetworkConfig,
   NodeConfigs
 } from 'config';
-import GasPriceDropdown from './components/GasPriceDropdown';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
@@ -30,7 +28,6 @@ import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import './index.scss';
-import { AppState } from 'reducers';
 
 interface Props {
   languageSelection: string;
@@ -38,7 +35,6 @@ interface Props {
   nodeSelection: string;
   isChangingNode: boolean;
   isOffline: boolean;
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
   customNodes: CustomNodeConfig[];
   customNetworks: CustomNetworkConfig[];
   changeLanguage: TChangeLanguage;
@@ -53,7 +49,7 @@ interface State {
   isAddingCustomNode: boolean;
 }
 
-export default class Header extends Component<Props, State> {
+export default class Header extends PureComponent<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
@@ -117,12 +113,9 @@ export default class Header extends Component<Props, State> {
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE && (
-          <div
-            className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}
-            dangerouslySetInnerHTML={{
-              __html: ANNOUNCEMENT_MESSAGE
-            }}
-          />
+          <div className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}>
+            {ANNOUNCEMENT_MESSAGE}
+          </div>
         )}
 
         <section className="Header-branding">
@@ -133,21 +126,12 @@ export default class Header extends Component<Props, State> {
                 src={logo}
                 height="64px"
                 width="245px"
-                alt="MyEtherWallet"
+                alt="MyCrypto logo"
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
-
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
-              </div>
-
-              <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown
-                  value={this.props.gasPrice.raw}
-                  onChange={this.props.setGasPriceField}
-                />
               </div>
 
               <div className="Header-branding-right-dropdown">

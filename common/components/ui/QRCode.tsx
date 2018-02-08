@@ -13,7 +13,7 @@ interface State {
   qr?: string;
 }
 
-export default class QRCode extends React.Component<Props, State> {
+export default class QRCode extends React.PureComponent<Props, State> {
   public state: State = {};
   public componentWillMount() {
     // Start generating QR codes immediately

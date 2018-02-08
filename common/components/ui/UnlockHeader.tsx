@@ -2,15 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate, { TranslateType } from 'translations';
-import WalletDecrypt from 'components/WalletDecrypt';
+import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
+import closeIcon from 'assets/images/close.svg';
 import './UnlockHeader.scss';
-import { WalletName } from 'config';
 
 interface Props {
   title: TranslateType;
   wallet: IWallet;
-  disabledWallets?: WalletName[];
+  disabledWallets?: DisabledWallets;
+  showGenerateLink?: boolean;
 }
 
 interface State {
@@ -29,7 +30,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { title, wallet, disabledWallets } = this.props;
+    const { title, wallet, disabledWallets, showGenerateLink } = this.props;
     const { isExpanded } = this.state;
 
     return (
@@ -52,10 +53,14 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
         {wallet &&
           isExpanded && (
             <button className="UnlockHeader-close" onClick={this.toggleisExpanded}>
-              <i className="fa fa-times" />
+              <img src={closeIcon} alt="close" />
             </button>
           )}
-        <WalletDecrypt hidden={!this.state.isExpanded} disabledWallets={disabledWallets} />
+        <WalletDecrypt
+          hidden={!this.state.isExpanded}
+          disabledWallets={disabledWallets}
+          showGenerateLink={showGenerateLink}
+        />
       </article>
     );
   }

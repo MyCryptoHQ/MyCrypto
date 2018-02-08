@@ -64,7 +64,7 @@ const styles: any = {
     margin: '0 0 8px',
     textAlign: 'left',
     fontSize: '14px',
-    fontFamily: 'Menlo, Monaco, Consolas, "Courier New", monospace',
+    fontFamily: '"Roboto Mono", Menlo, Monaco, Consolas, "Courier New", monospace',
     fontWeight: 300
   },
   infoLabel: {

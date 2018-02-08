@@ -1,14 +1,13 @@
 import React from 'react';
-import { knowledgeBaseURL } from 'config/data';
+import { HELP_ARTICLE } from 'config';
+import { HelpLink } from 'components/ui';
 import ledgerLogo from 'assets/images/logo-ledger.svg';
 import trezorLogo from 'assets/images/logo-trezor.svg';
 
 export const HardwareWallets: React.SFC = () => (
-  <a
+  <HelpLink
     className="Promos-promo Promos-HardwareWallets"
-    target="_blank"
-    rel="noopener noreferrer"
-    href={`${knowledgeBaseURL}/security/securing-your-ethereum`}
+    article={HELP_ARTICLE.PROTECT_YOUR_FUNDS}
   >
     <div className="Promos-promo-inner">
       <div className="Promos-promo-text">
@@ -19,5 +18,5 @@ export const HardwareWallets: React.SFC = () => (
         <img src={trezorLogo} />
       </div>
     </div>
-  </a>
+  </HelpLink>
 );

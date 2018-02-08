@@ -1,5 +1,6 @@
 export * from './DeterministicWalletsModal';
 export * from './DigitalBitbox';
+export * from './InsecureWalletWarning';
 export * from './Keystore';
 export * from './LedgerNano';
 export * from './Mnemonic';

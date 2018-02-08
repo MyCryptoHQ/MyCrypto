@@ -3,6 +3,7 @@
 $rail-height: 4px;
 $handle-size: 22px;
 $speed: 70ms;
+$tooltip-bg: rgba(#222, 0.95);
 
 .rc-slider {
   &-rail {
@@ -21,5 +22,21 @@ $speed: 70ms;
     margin: 0;
     border: none;
     transform: translate(-50%, -50%);
+  }
+
+  &-tooltip {
+    &-arrow {
+      .rc-slider-tooltip-placement-top & {
+        border-top-color: $tooltip-bg;
+      }
+    }
+
+    &-inner {
+      background: $tooltip-bg;
+      padding: 7px 8px;
+      height: 26px;
+      box-shadow: none;
+      border-radius: 3px;
+    }
   }
 }

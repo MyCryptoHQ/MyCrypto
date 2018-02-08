@@ -23,9 +23,8 @@ interface State {
   trackedTokens: TrackedTokens;
   showCustomTokenForm: boolean;
 }
-
-export default class TokenBalances extends React.Component<Props, State> {
-  public state: State = {
+export default class TokenBalances extends React.PureComponent<Props, State> {
+  public state = {
     trackedTokens: {},
     showCustomTokenForm: false
   };

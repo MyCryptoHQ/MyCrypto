@@ -30,6 +30,10 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
   };
 };
 
+const getTransactionFee = (gasPrice: string, gasLimit: string) => {
+  return Wei(gasPrice).mul(Wei(gasLimit));
+};
+
 /**
  * @description Return the minimum amount of ether needed
  * @param t
@@ -101,5 +105,6 @@ export {
   validateTx,
   makeTransaction,
   getTransactionFields,
+  getTransactionFee,
   computeIndexingHash
 };

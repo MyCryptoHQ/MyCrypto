@@ -1,6 +1,7 @@
 import configSaga from './config';
 import deterministicWallets from './deterministicWallets';
 import notifications from './notifications';
+import rates from './rates';
 import {
   swapTimerSaga,
   pollBityOrderStatusSaga,
@@ -31,5 +32,6 @@ export default {
   wallet,
   transaction,
   deterministicWallets,
-  swapProviderSaga
+  swapProviderSaga,
+  rates
 };

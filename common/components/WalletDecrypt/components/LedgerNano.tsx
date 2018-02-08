@@ -1,5 +1,5 @@
 import './LedgerNano.scss';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
@@ -31,7 +31,7 @@ interface State {
 
 type Props = OwnProps & StateProps;
 
-class LedgerNanoSDecryptClass extends Component<Props, State> {
+class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
@@ -155,11 +155,11 @@ class LedgerNanoSDecryptClass extends Component<Props, State> {
           });
         })
         .catch(err => {
-          if (err.metaData && err.metaData.code === 5) {
+          if (err && err.metaData && err.metaData.code === 5) {
             this.showTip();
           }
           this.setState({
-            error: err.metaData ? err.metaData.type : err,
+            error: err && err.metaData ? err.metaData.type : err.toString(),
             isLoading: false
           });
         });

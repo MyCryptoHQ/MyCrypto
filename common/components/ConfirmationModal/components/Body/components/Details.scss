@@ -1,0 +1,21 @@
+@import 'common/sass/variables';
+
+.tx-modal-details {
+  margin-top: 1rem;
+  &-network-info {
+    text-align: center;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.54);
+  }
+  &-button {
+    display: block;
+    margin: auto;
+    padding: 8px 32px;
+    border: none;
+    border-radius: 2px;
+    transition: background-color 300ms;
+    &:hover {
+      background-color: rgba(153, 153, 153, 0.12);
+    }
+  }
+}

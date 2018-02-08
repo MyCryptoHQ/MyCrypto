@@ -7,11 +7,11 @@ import {
 
 const custNode = {
   name: 'Test Config',
-  url: 'http://somecustomconfig.org/',
+  url: 'https://somecustomconfig.org/',
   port: 443,
   network: 'ETH'
 };
-const custNodeId = 'http://somecustomconfig.org/:443';
+const custNodeId = 'https://somecustomconfig.org/:443';
 
 describe('makeCustomNodeId', () => {
   it('should construct an ID from url:port', () => {

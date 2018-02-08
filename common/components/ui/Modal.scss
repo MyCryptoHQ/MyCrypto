@@ -4,33 +4,12 @@
 $m-background: #fff;
 $m-window-padding-w: 20px;
 $m-window-padding-h: 30px;
-$m-header-padding: 15px;
 $m-header-height: 62px;
-$m-content-padding: 20px;
+$m-header-padding: 1rem 2rem 0.5rem 2rem;
+$m-content-padding: 1.5rem 2rem;
+$m-footer-padding: 0.5rem 2rem 1rem 2rem;
 $m-close-size: 26px;
 $m-anim-speed: 400ms;
-
-@keyframes modalshade-open {
-  0% {
-    opacity: 0;
-  }
-  70%,
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes modal-open {
-  0%,
-  30% {
-    opacity: 0;
-    transform: translateX(-50%) scale(0.88);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
-}
 
 .Modalshade {
   position: fixed;
@@ -38,68 +17,67 @@ $m-anim-speed: 400ms;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(#000, 0.82);
+  background-color: rgba(#000, 0.54);
   z-index: $zindex-modal-background;
-  display: none;
-  animation: modalshade-open $m-anim-speed ease 1;
-
-  &.is-open {
-    display: block;
-  }
+  display: block;
 }
 
 .Modal {
   position: fixed;
-  top: $m-window-padding-h;
+  top: 50%;
   left: 50%;
+  width: initial;
   max-width: 95%;
   max-width: calc(100% - #{$m-window-padding-w * 2});
   max-height: 95%;
   max-height: calc(100% - #{$m-window-padding-h * 2});
   background: $m-background;
-  border-radius: 4px;
-  transform: translateX(-50%);
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
   z-index: $zindex-modal;
   overflow: hidden;
-  display: none;
+  display: flex;
   flex-direction: column;
   animation: modal-open $m-anim-speed ease 1;
   text-align: left;
+  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14),
+    0px 6px 30px 5px rgba(0, 0, 0, 0.12);
 
-  &.is-open {
-    display: flex;
+  &-fade {
+    background: linear-gradient(to bottom, #fff0, #fff);
+    position: fixed;
+    height: 25px;
+    width: calc(100% - 3rem);
+    bottom: 4.5rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   &-header {
-    position: relative;
-    padding: 0 $m-header-padding;
-    height: $m-header-height;
-    border-bottom: 1px solid $gray-lighter;
-    background: $m-background;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: $m-header-padding;
+    align-items: center;
 
     &-title {
+      font-size: 1.625rem;
+      font-weight: 400;
       margin: 0;
-      padding-right: $m-close-size;
-      font-size: $font-size-large;
-      line-height: $m-header-height;
-      height: $m-header-height;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      letter-spacing: 0;
     }
 
     &-close {
       @include reset-button;
-      position: absolute;
-      top: 50%;
-      right: $m-header-padding;
       height: $m-close-size;
       width: $m-close-size;
-      opacity: 0.8;
-      transform: translateY(-50%) translateZ(0);
+      opacity: 0.3;
+      transition: opacity 120ms;
 
       &:hover {
-        opacity: 1;
+        opacity: 0.87;
       }
 
       &-icon {
@@ -114,11 +92,13 @@ $m-anim-speed: 400ms;
     flex-direction: column;
     padding: $m-content-padding;
     overflow: auto;
+    > .Spinner {
+      margin: 2.5rem auto;
+    }
   }
 
   &-footer {
-    padding: 7px 10px;
-    border-top: 1px solid $gray-lighter;
+    padding: $m-footer-padding;
     background: $m-background;
 
     // Selector needs a little extra oomph to override bootstrap
@@ -128,8 +108,29 @@ $m-anim-speed: 400ms;
       min-width: 100px;
     }
   }
+}
 
-  @media(max-width: 820px) {
-    width: calc(100% - 40px);
+.animate-modal {
+  &-enter,
+  &-exit {
+    position: relative;
+    z-index: 3;
+    transition: opacity 300ms;
+  }
+
+  &-enter {
+    opacity: 0;
+
+    &-active {
+      opacity: 1;
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+
+    &-active {
+      opacity: 0;
+    }
   }
 }
