@@ -1,7 +1,7 @@
 import React from 'react';
 import OnboardSlide from './OnboardSlide';
 import translate from 'translations';
-import onboardIconOne from 'assets/images/onboarding_icon-01.svg';
+import onboardIconOne from 'assets/images/onboarding/slide-01.svg';
 
 import './WelcomeSlide.scss';
 

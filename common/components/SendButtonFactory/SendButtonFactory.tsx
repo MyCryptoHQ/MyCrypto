@@ -17,6 +17,7 @@ export interface CallbackProps {
 interface StateProps {
   walletType: IWalletType;
 }
+
 interface OwnProps {
   onlyTransactionParameters?: boolean;
   Modal: typeof ConfirmationModal;

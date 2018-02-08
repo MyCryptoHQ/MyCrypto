@@ -4,6 +4,7 @@ import { AppState } from 'reducers';
 import translate, { TranslateType } from 'translations';
 import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
+import closeIcon from 'assets/images/close.svg';
 import './UnlockHeader.scss';
 
 interface Props {
@@ -52,7 +53,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
         {wallet &&
           isExpanded && (
             <button className="UnlockHeader-close" onClick={this.toggleisExpanded}>
-              <i className="fa fa-times" />
+              <img src={closeIcon} alt="close" />
             </button>
           )}
         <WalletDecrypt

@@ -1,4 +1,4 @@
-import { IDomainData, NameState, getNameHash } from 'libs/ens';
+import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
 import ENS from 'libs/ens/contracts';
 import { SagaIterator } from 'redux-saga';
 import { call } from 'redux-saga/effects';
@@ -48,7 +48,7 @@ function* nameStateReveal({ deedAddress }: IDomainData<NameState.Reveal>): SagaI
     data: ENS.deed.owner.encodeInput(),
     decoder: ENS.deed.owner.decodeOutput
   });
-  return ownerAddress;
+  return { ownerAddress };
 }
 
 interface IModeMap {
@@ -83,11 +83,12 @@ export function* resolveDomainRequest(name: string): SagaIterator {
   const nameStateHandler = modeMap[domainData.mode];
   const result = yield call(nameStateHandler, domainData, nameHash);
 
-  return {
+  const returnValue: IBaseDomainRequest = {
     name,
     ...domainData,
     ...result,
     labelHash: hash.toString('hex'),
     nameHash
   };
+  return returnValue;
 }

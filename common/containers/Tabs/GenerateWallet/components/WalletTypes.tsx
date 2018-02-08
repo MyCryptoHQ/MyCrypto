@@ -1,7 +1,8 @@
 import React from 'react';
 import translate from 'translations';
 import { WalletType } from '../GenerateWallet';
-import { NewTabLink } from 'components/ui';
+import { NewTabLink, HelpLink } from 'components/ui';
+import { HELP_ARTICLE } from 'config';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
 
@@ -39,9 +40,9 @@ const WalletTypes: React.SFC<{}> = () => {
         <NewTabLink href="https://www.ledgerwallet.com/r/fa4b?path=/products/">Ledger</NewTabLink>{' '}
         or <NewTabLink href="https://trezor.io/?a=myetherwallet.com">TREZOR</NewTabLink> hardware
         wallet.{' '}
-        <NewTabLink href="https://myetherwallet.github.io/knowledge-base/private-keys-passwords/difference-beween-private-key-and-keystore-file.html">
+        <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
           Learn more about different wallet types & staying secure.
-        </NewTabLink>
+        </HelpLink>
       </p>
 
       <div className="WalletTypes-types row">

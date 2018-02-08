@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { NetworkContract } from 'config';
+import { NetworkContract, donationAddressMap } from 'config';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -85,7 +85,7 @@ class InteractForm extends Component<Props, State> {
           <label className="InteractForm-address-field form-group col-sm-6">
             <h4>{translate('CONTRACT_Title')}</h4>
             <input
-              placeholder="mewtopia.eth or 0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
+              placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
               name="contract_address"
               autoComplete="off"
               value={address}

@@ -1,5 +1,6 @@
 import { app, dialog, BrowserWindow } from 'electron';
 import { autoUpdater, UpdateInfo } from 'electron-updater';
+import { APP_TITLE, REPOSITORY } from '../constants';
 import TEST_RELEASE from './testrelease.json';
 autoUpdater.autoDownload = false;
 
@@ -47,7 +48,7 @@ export default function(mainWindow: BrowserWindow) {
   });
 
   autoUpdater.on(AutoUpdaterEvents.DOWNLOAD_PROGRESS, progress => {
-    mainWindow.setTitle(`MyEtherWallet (Downloading update... ${Math.round(progress.percent)}%)`);
+    mainWindow.setTitle(`${APP_TITLE} (Downloading update... ${Math.round(progress.percent)}%)`);
     mainWindow.setProgressBar(progress.percent / 100);
   });
 
@@ -59,8 +60,7 @@ export default function(mainWindow: BrowserWindow) {
         buttons: ['Yes, restart now', 'Maybe later'],
         title: 'Update Has Been Downloaded',
         message: 'Download complete!',
-        detail:
-          'The new version of MyEtherWallet has finished downloading. Would you like to restart to complete the installation?'
+        detail: `The new version of ${APP_TITLE} has finished downloading. Would you like to restart to complete the installation?`
       },
       response => {
         if (response === 0) {
@@ -86,7 +86,7 @@ export default function(mainWindow: BrowserWindow) {
     resetWindowFromUpdates(mainWindow);
     dialog.showErrorBox(
       'Downloading Update has Failed',
-      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at https://github.com/MyEtherWallet/MyEtherWallet/releases\n\n(${
+      `The update could not be downloaded. Restart the app and try again later, or manually install the new update at ${REPOSITORY}/releases\n\n(${
         err.name
       }: ${err.message})`
     );
@@ -102,7 +102,7 @@ export default function(mainWindow: BrowserWindow) {
 }
 
 function resetWindowFromUpdates(window: BrowserWindow) {
-  window.setTitle('MyEtherWallet');
+  window.setTitle('MyCrypto');
   window.setProgressBar(-1); // Clears progress bar
 }
 
