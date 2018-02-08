@@ -1,3 +1,3 @@
-export { GeneralInfoPanel } from './GeneralInfoPanel';
-export { NameInput } from './NameInput';
-export { NameResolve } from './NameResolve';
+export { default as GeneralInfoPanel } from './GeneralInfoPanel';
+export { default as NameInput } from './NameInput';
+export { default as NameResolve } from './NameResolve';

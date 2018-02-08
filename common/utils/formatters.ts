@@ -109,3 +109,7 @@ export function bytesToHuman(bytes: number) {
   const i = Math.round(Math.floor(Math.log(bytes) / Math.log(1024)));
   return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i];
 }
+
+export function ensV3Url(name: string) {
+  return `https://mycrypto.com/?ensname=${name}#ens`;
+}

@@ -94,7 +94,7 @@ const GeneralInfoList = () => (
   </section>
 );
 
-export const GeneralInfoPanel = () => (
+const GeneralInfoPanel = () => (
   <article className="block">
     <div className="cont-md">
       <h4> What is the process like? </h4>
@@ -113,3 +113,5 @@ export const GeneralInfoPanel = () => (
     </div>
   </article>
 );
+
+export default GeneralInfoPanel;

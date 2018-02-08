@@ -1,19 +1,30 @@
-.auction-info {
-  margin-bottom: 32px;
+@import 'common/sass/variables';
+
+.NameResolve {
+  &-loader {
+    text-align: center;
+    padding: 4rem;
+  }
 }
 
 .ens-title {
-  margin: 2rem 0;
+  margin: 0 0 1.5rem;
   h2 {
     margin: 0;
+    line-height: 2.8rem;
   }
 }
 
 .ens-panel-wrapper {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+
   .ens-panel {
     flex-grow: 1;
+    max-width: 540px;
+    min-width: 360px;
     color: white;
     padding: 1rem;
     background-color: #185475;
@@ -23,14 +34,14 @@
       margin: 0;
     }
 
-    &-light {
+    &.is-light {
       background-color: #1e92ba;
     }
   }
 }
 
-.table-wrapper {
-  overflow-y: scroll;
+.ens-table-wrapper {
+  overflow: auto;
 }
 
 @media (max-width: 820px) {
