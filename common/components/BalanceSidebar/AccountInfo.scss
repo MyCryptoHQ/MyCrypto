@@ -11,6 +11,30 @@
 
     &-header {
       margin-top: 0;
+      display: inline-block;
+    }
+
+    &-refresh {
+      background: transparent;
+      border: none;
+      margin: 0px 0.5rem;
+      padding: 0;
+      height: 1.4rem;
+      width: 1.2rem;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+      > img {
+        height: inherit;
+        width: inherit;
+        vertical-align: top;
+      }
+      &:hover {
+        opacity: 0.54;
+      }
+      &:active {
+        transition: opacity 120ms;
+        opacity: 1;
+      }
     }
   }
 
@@ -51,6 +75,11 @@
         margin-right: 16px;
       }
     }
+  }
+
+  &-balance-wrapper {
+    display: flex;
+    align-items: flex-end;
   }
 
   &-list {
