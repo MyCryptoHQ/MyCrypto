@@ -1,45 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`snapshot test ENS component 1`] = `
-<ENSClass
-  history={
-    Object {
-      "action": "PUSH",
-      "block": [Function],
-      "createHref": [Function],
-      "go": [Function],
-      "goBack": [Function],
-      "goForward": [Function],
-      "length": 2,
-      "listen": [Function],
-      "location": Object {
-        "hash": "",
-        "key": "e08jz7",
-        "pathname": "/ens",
-        "search": "",
-        "state": Object {},
-      },
-      "push": [Function],
-      "replace": [Function],
-    }
-  }
-  location={
-    Object {
-      "hash": "",
-      "key": "e08jz7",
-      "pathname": "/ens",
-      "search": "",
-      "state": Object {},
-    }
-  }
-  match={
-    Object {
-      "isExact": false,
-      "params": Object {},
-      "path": "/ens",
-      "url": "/ens",
-    }
-  }
-  resolveDomainRequested={[Function]}
-/>
+<Connect(TabSection)
+  isUnavailableOffline={true}
+>
+  <div
+    className="Tab-content"
+  >
+    <section
+      className="Tab-content-pane"
+    >
+      <div
+        className="ENS"
+      >
+        <h1
+          className="ENS-title"
+        >
+          Ethereum Name Service
+        </h1>
+        <p
+          className="ENS-description"
+        >
+          The 
+          <ENSDocsLink />
+           is a distributed, open, and extensible naming system based on the Ethereum blockchain. Once you have a name, you can tell your friends to send ETH to 
+          <code>
+            ensdomain.eth
+          </code>
+           instead of
+          <code>
+            0x4bbeEB066e
+            ...
+          </code>
+        </p>
+        <Connect(NameInput) />
+      </div>
+    </section>
+    <Connect(NameResolve) />
+  </div>
+</Connect(TabSection)>
 `;

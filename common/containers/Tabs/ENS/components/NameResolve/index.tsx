@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { NameState } from 'libs/ens';
 import {
@@ -9,8 +10,8 @@ import {
   NameOpen,
   NameReveal
 } from './components';
-import './NameResolve.scss';
 import { Spinner } from 'components/ui';
+import './NameResolve.scss';
 
 type Props = AppState['ens'];
 
@@ -23,7 +24,7 @@ const modeResult = {
   [NameState.Reveal]: NameReveal
 };
 
-export const NameResolve: React.SFC<Props> = props => {
+const NameResolve: React.SFC<Props> = props => {
   const { domainRequests, domainSelector } = props;
   const { currentDomain } = domainSelector;
 
@@ -32,7 +33,20 @@ export const NameResolve: React.SFC<Props> = props => {
   }
 
   const domainData = domainRequests[currentDomain].data! || false;
-  const Component = domainData ? modeResult[domainData.mode] : Spinner;
+  let content;
 
-  return <Component {...domainData} />;
+  if (domainData) {
+    const Component = modeResult[domainData.mode];
+    content = <Component {...domainData} />;
+  } else {
+    content = (
+      <div className="NameResolve-loader">
+        <Spinner size="x3" />
+      </div>
+    );
+  }
+
+  return <div className="Tab-content-pane">{content}</div>;
 };
+
+export default connect((state: AppState): Props => ({ ...state.ens }))(NameResolve);

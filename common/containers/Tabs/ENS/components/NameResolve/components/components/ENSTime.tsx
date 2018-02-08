@@ -6,53 +6,46 @@ interface Props {
 }
 
 interface State {
-  currentTime: number;
+  timeDisplay: string;
 }
 
 class CountDown extends Component<Props, State> {
-  public state = { currentTime: 0 };
+  public state = { timeDisplay: '' };
 
-  constructor(props: Props) {
-    super(props);
+  public componentDidMount() {
     this.startCountDown();
-    this.state = { currentTime: 0 };
   }
 
   public render() {
-    const { currentTime } = this.state;
-    return <p>{this.humanizeTime(currentTime)}</p>;
+    return <p>{this.state.timeDisplay}</p>;
   }
 
-  private humanizeTime = (time: number) => {
-    let timeRemaining = time;
-    const floorTime = unit => Math.floor(timeRemaining / unit);
-    const pad = (num: number) => num.toString().padStart(2, '0');
-    const second = 1000;
-    const minute = second * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-
-    const days = floorTime(day);
-    timeRemaining -= days * day;
-    const hours = floorTime(hour);
-    timeRemaining -= hours * hour;
-    const minutes = floorTime(minute);
-    timeRemaining -= minutes * minute;
-    const seconds = floorTime(second);
-
-    return `${pad(days)} Days ${pad(hours)} Hours ${pad(minutes)} Minutes ${pad(seconds)} Seconds `;
-  };
-
   private startCountDown = () => {
-    const intervalId = window.setInterval(() => {
-      const nextTime = +moment(this.props.initialTime).diff(+moment(), 'ms');
+    const time = moment(this.props.initialTime);
+    let intervalId;
 
-      if (nextTime < 0) {
-        return clearInterval(intervalId);
+    const setTimeDisplay = () => {
+      const diff = moment.duration(time.diff(moment()));
+      let timeDisplay;
+
+      if (diff) {
+        const pieces = [
+          diff.days() > 0 && `${diff.days()} days`,
+          diff.hours() > 0 && `${diff.hours()} hours`,
+          diff.minutes() > 0 && `${diff.minutes()} minutes`,
+          diff.seconds() > 0 && `${diff.seconds()} seconds`
+        ].filter(piece => !!piece);
+        timeDisplay = `in ${pieces.join(', ')}`;
+      } else {
+        clearInterval(intervalId);
+        timeDisplay = 'Auction is over!';
       }
 
-      this.setState({ currentTime: nextTime });
-    }, 1000);
+      this.setState({ timeDisplay });
+    };
+
+    intervalId = setInterval(setTimeDisplay, 1000);
+    setTimeDisplay();
   };
 }
 
@@ -62,9 +55,9 @@ interface ITime {
 }
 
 const ENSTime: React.SFC<ITime> = ({ text, time }) => (
-  <section className="sm-6 col-xs-12 order-info">
+  <section>
     <p>{text}</p>
-    <h4>{moment(time).toString()}</h4>
+    <h4>{moment(time).format('LLLL')}</h4>
     <CountDown initialTime={time} />
   </section>
 );

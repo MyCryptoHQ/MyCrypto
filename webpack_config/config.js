@@ -15,7 +15,7 @@ const paths = {
 module.exports = {
   // Configuration
   port: process.env.HTTPS ? 3443 : 3000,
-  title: 'MEW',
+  title: 'MyCrypto',
   path: paths,
 
   // Typescript rule config
@@ -66,7 +66,6 @@ module.exports = {
     'react-transition-group',
     'redux',
     'redux-logger',
-    'redux-promise-middleware',
     'redux-saga',
     'scryptsy',
     'uuid',
