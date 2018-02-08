@@ -27,7 +27,8 @@ class NameInput extends Component<Props, State> {
   public render() {
     const { domainRequests } = this.props;
     const { isValidDomain, domainToCheck, isFocused } = this.state;
-    const isLoading = domainRequests[domainToCheck] && !domainRequests[domainToCheck].data;
+    const req = domainRequests[domainToCheck];
+    const isLoading = req && !req.data && !req.error;
 
     return (
       <form className="ENSInput" onSubmit={this.onSubmit}>
