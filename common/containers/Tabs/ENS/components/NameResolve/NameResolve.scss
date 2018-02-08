@@ -40,6 +40,10 @@
   }
 }
 
+.ens-table-wrapper {
+  overflow: auto;
+}
+
 @media (max-width: 820px) {
   .ens-panel {
     width: 100%;
