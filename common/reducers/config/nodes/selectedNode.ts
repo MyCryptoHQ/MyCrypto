@@ -1,4 +1,11 @@
-import { ChangeNodeAction, ChangeNodeIntentAction, NodeAction, TypeKeys } from 'actions/config';
+import {
+  ChangeNodeAction,
+  ChangeNodeIntentAction,
+  NodeAction,
+  TypeKeys,
+  RemoveCustomNodeAction,
+  CustomNodeAction
+} from 'actions/config';
 
 interface NodeLoaded {
   pending: false;
@@ -27,12 +34,19 @@ const changeNodeIntent = (state: State, _: ChangeNodeIntentAction): State => ({
   pending: true
 });
 
-export const selectedNode = (state: State = INITIAL_STATE, action: NodeAction) => {
+const handleRemoveCustomNode = (state: State, _: RemoveCustomNodeAction): State => INITIAL_STATE;
+
+export const selectedNode = (
+  state: State = INITIAL_STATE,
+  action: NodeAction | CustomNodeAction
+) => {
   switch (action.type) {
     case TypeKeys.CONFIG_NODE_CHANGE:
       return changeNode(state, action);
     case TypeKeys.CONFIG_NODE_CHANGE_INTENT:
       return changeNodeIntent(state, action);
+    case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:
+      return handleRemoveCustomNode(state, action);
     default:
       return state;
   }
