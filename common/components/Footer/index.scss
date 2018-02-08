@@ -11,6 +11,7 @@
   justify-content: space-around;
   text-align: center;
   align-items: center;
+  border-top: 3px solid $brand-primary;
 
   @media (min-width: $screen-sm-min) {
     flex-direction: row;
@@ -23,7 +24,12 @@
   }
 
   &-social-media-wrap {
-    margin-top: 32px;
+    margin-top: $space;
+
+    @media (min-width: $screen-sm-min) {
+      margin-top: $space-md;
+    }
+
     & .Footer-social-media-link {
       transition: opacity 0.3s;
       color: white;
@@ -40,24 +46,23 @@
     }
   }
 
-  &-affiliate-wrap {
-    & .Footer-affiliate-tag {
-      background-color: #0e97c0;
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 30px;
-      margin: 0rem 0.5rem 0.5rem 0px;
-      transition: color 0.3s, background-color 0.3s;
+  // Don't use &, needs to override styles
+  .Footer-affiliate-tag {
+    background-color: #0e97c0;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 30px;
+    margin: 0rem 0.5rem 0.5rem 0px;
+    transition: color 0.3s, background-color 0.3s;
+    &:hover {
+      background-color: white;
+      color: #0e97c0;
+    }
+    & a {
+      transition: color 0s;
+      color: inherit;
       &:hover {
-        background-color: white;
-        color: #0e97c0;
-      }
-      & a {
-        transition: color 0s;
         color: inherit;
-        &:hover {
-          color: inherit;
-        }
       }
     }
   }
@@ -69,10 +74,10 @@
   &-about {
     &-logo {
       width: 100%;
-      padding: 0 10px;
+      padding: 0 10px 0 0;
       padding-top: 0;
       height: auto;
-      max-width: 20rem;
+      max-width: 12rem;
     }
     &-text {
       max-width: 50ch;
@@ -84,7 +89,7 @@
   &-info {
     & > a {
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
     }
@@ -101,6 +106,12 @@
     transition: 500ms all ease-in-out;
     &:hover {
       color: #0e97c0;
+    }
+  }
+
+  &-copyright {
+    &-spacer {
+      margin: 0 $space-xs;
     }
   }
 
@@ -122,26 +133,22 @@
 
   h5 {
     font-size: $font-size-bump;
-    margin: $font-size-small 0 0;
+    margin: $space-md 0;
 
     i {
       margin-right: 0.25em;
-
-      @media (min-width: $screen-sm-min) {
-        margin-left: -1.5em;
-      }
     }
   }
 
   ul {
     list-style: none;
     padding-left: 0;
-    margin: 0 0 $space-xs 0;
+    margin: 0 0 $space-md 0;
   }
 
   li,
   p {
-    font-size: $font-size-small;
+    font-size: 0.8rem;
     margin: $space-sm 0;
   }
 }
