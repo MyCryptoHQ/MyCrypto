@@ -110,29 +110,9 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
     const { origin, destination } = this.state;
-    const { options, bityRates, shapeshiftRates } = this.props;
+    const { options } = this.props;
     if (origin !== prevState.origin) {
       this.setDisabled(origin, destination);
-    }
-
-    const originCap = origin.id.toUpperCase();
-    const destCap = destination.id.toUpperCase();
-    const { provider } = this.props;
-
-    const ensureCorrectProvider =
-      (originCap === 'BTC' && destCap === 'ETH') || (destCap === 'BTC' && originCap === 'ETH');
-    const ensureBityRatesLoaded =
-      bityRates.allIds.includes('ETHBTC') && bityRates.allIds.includes('BTCETH');
-    const ensureShapeshiftRatesLoaded = shapeshiftRates.allIds.length > 0;
-
-    if (ensureBityRatesLoaded && ensureCorrectProvider) {
-      if (provider === 'shapeshift') {
-        this.props.swapProvider('bity');
-      }
-    } else if (ensureShapeshiftRatesLoaded) {
-      if (provider !== 'shapeshift') {
-        this.props.swapProvider('shapeshift');
-      }
     }
 
     if (options.allIds !== prevProps.options.allIds && options.byId) {
