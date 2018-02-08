@@ -109,7 +109,7 @@ export function getNodeConfig(state: AppState): StaticNodeConfig | CustomNodeCon
 }
 
 export function getNodeLib(state: AppState) {
-  const config = getStaticNodeConfig(state);
+  const config = getNodeConfig(state);
   if (!config) {
     throw Error('No node lib found when trying to select from state');
   }
