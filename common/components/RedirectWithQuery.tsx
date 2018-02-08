@@ -12,15 +12,10 @@ interface RouterProps {
 export class RedirectWithQuery extends React.Component<RouterProps> {
   public render() {
     const { from, to, strictArg, exactArg, pushArg } = this.props;
-    let searchString = window.location.search;
-    if (window.location.hash) {
-      const hashString = window.location.hash.replace('?', ',?').split(',');
-      searchString = hashString[1];
-    }
     return (
       <Redirect
         from={from}
-        to={{ pathname: to, search: searchString }}
+        to={{ pathname: to, search: window.location.search }}
         strict={strictArg}
         exact={exactArg}
         push={pushArg}
