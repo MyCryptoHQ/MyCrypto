@@ -149,4 +149,3 @@ export type WalletAction =
   | SetWalletConfigAction
   | SetPasswordPendingAction
   | SetAccountBalanceAction;
-
