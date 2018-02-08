@@ -14,3 +14,4 @@ export { default as TitleBar } from './TitleBar';
 export { default as HelpLink } from './HelpLink';
 export * from './ConditionalInput';
 export * from './Expandable';
+export * from './InlineSpinner';
