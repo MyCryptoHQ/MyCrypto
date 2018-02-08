@@ -32,8 +32,8 @@ async function build() {
     x64: true,
     ia32: true,
     config: {
-      appId: 'com.github.myetherwallet.myetherwallet',
-      productName: 'MyEtherWallet',
+      appId: 'com.github.mycrypto.mycryptohq',
+      productName: 'MyCrypto',
       directories: {
         app: jsBuildDir,
         output: electronBuildsDir,
@@ -53,8 +53,8 @@ async function build() {
       },
       publish: {
         provider: 'github',
-        owner: 'MyEtherWallet',
-        repo: 'MyEtherWallet',
+        owner: 'MyCryptoHQ',
+        repo: 'MyCrypto',
         vPrefixedTagName: false
       },
       // IMPORTANT: Prevents extending configs in node_modules

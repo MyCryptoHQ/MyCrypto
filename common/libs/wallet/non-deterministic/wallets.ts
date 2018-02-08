@@ -2,7 +2,7 @@ import { fromPrivateKey, fromEthSale } from 'ethereumjs-wallet';
 import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
 import { signWrapper } from './helpers';
 import { decryptPrivKey } from 'libs/decrypt';
-import { fromV3 } from 'libs/web-workers/scrypt-wrapper';
+import { fromV3 } from 'libs/web-workers';
 import Web3Wallet from './web3';
 import AddressOnlyWallet from './address';
 

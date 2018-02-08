@@ -1,5 +1,5 @@
 import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
-import { ConfigAction, TypeKeys } from 'actions/config';
+import { TypeKeys, NodeAction } from 'actions/config';
 import { NonWeb3NodeConfigs, Web3NodeConfigs } from 'types/node';
 
 export type State = NonWeb3NodeConfigs & Web3NodeConfigs;
@@ -91,7 +91,7 @@ export const INITIAL_STATE: State = {
   }
 };
 
-export const staticNodes = (state: State = INITIAL_STATE, action: ConfigAction) => {
+export const staticNodes = (state: State = INITIAL_STATE, action: NodeAction) => {
   switch (action.type) {
     case TypeKeys.CONFIG_NODE_WEB3_SET:
       return { ...state, [action.payload.id]: action.payload.config };

@@ -24,7 +24,9 @@ export function sanitizeHex(hex: string) {
   return hex !== '' ? `0x${padLeftEven(hexStr)}` : '';
 }
 
-export function networkIdToName(networkId: string | number): StaticNetworkIds {
+export function networkIdToName(
+  networkId: 1 | 3 | 4 | 42 | '1' | '3' | '4' | '42'
+): StaticNetworkIds {
   switch (networkId.toString()) {
     case '1':
       return 'ETH';

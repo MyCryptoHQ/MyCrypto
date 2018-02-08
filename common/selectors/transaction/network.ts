@@ -4,6 +4,9 @@ import { RequestStatus } from 'reducers/transaction/network';
 
 export const getNetworkStatus = (state: AppState) => getTransactionState(state).network;
 
+export const nonceRequestPending = (state: AppState) =>
+  getNetworkStatus(state).getNonceStatus === RequestStatus.REQUESTED;
+
 export const nonceRequestFailed = (state: AppState) =>
   getNetworkStatus(state).getNonceStatus === RequestStatus.FAILED;
 

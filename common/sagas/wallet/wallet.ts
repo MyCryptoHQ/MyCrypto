@@ -287,6 +287,7 @@ export function* unlockWeb3(): SagaIterator {
     const wallet = new Web3Wallet(address, network);
     yield put(setWallet(wallet));
   } catch (err) {
+    console.error(err);
     // unset web3 node so node dropdown isn't disabled
     yield put(web3UnsetNode());
     yield put(showNotification('danger', translate(err.message)));
@@ -319,6 +320,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
     takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
+    takeEvery(TypeKeys.WALLET_SET_ACCOUNT_BALANCE, updateAccountBalance),
     // Foreign actions
     takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
     takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)

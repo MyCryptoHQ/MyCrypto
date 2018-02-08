@@ -183,7 +183,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                 {this.renderInput(
                   {
                     name: 'url',
-                    placeholder: 'http://127.0.0.1/'
+                    placeholder: 'https://127.0.0.1/'
                   },
                   invalids
                 )}node

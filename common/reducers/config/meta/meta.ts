@@ -2,7 +2,6 @@ import { ChangeLanguageAction, SetLatestBlockAction, MetaAction } from 'actions/
 import { TypeKeys } from 'actions/config/constants';
 
 export interface State {
-  // FIXME
   languageSelection: string;
   offline: boolean;
   autoGasLimit: boolean;

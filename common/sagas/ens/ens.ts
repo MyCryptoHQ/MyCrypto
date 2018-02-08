@@ -12,6 +12,7 @@ import { call, put, select, all, actionChannel, take, fork, race } from 'redux-s
 import { showNotification } from 'actions/notifications';
 import { resolveDomainRequest } from './modeMap';
 import { getCurrentDomainName, getCurrentDomainData } from 'selectors/ens';
+import { IBaseDomainRequest } from 'libs/ens';
 
 function* shouldResolveDomain(domain: string) {
   const currentDomainName = yield select(getCurrentDomainName);
@@ -43,18 +44,19 @@ function* resolveDomain(): SagaIterator {
       }
 
       const node: INode = yield select(getNodeLib);
-      const result = yield race({
+
+      const result: { domainData: IBaseDomainRequest; error } = yield race({
         domainData: call(resolveDomainRequest, domain, node),
-        err: call(delay, 4000)
+        err: call(delay, 10000)
       });
 
       const { domainData } = result;
+
       if (!domainData) {
         throw Error();
       }
       const domainSuccessAction = resolveDomainSucceeded(domain, domainData);
       yield put(domainSuccessAction);
-      yield;
     } catch (e) {
       const domainFailAction = resolveDomainFailed(domain, e);
       yield put(domainFailAction);

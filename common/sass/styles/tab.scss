@@ -1,4 +1,5 @@
-@import "common/sass/mixins";
+@import 'common/sass/mixins';
+@import 'common/sass/variables';
 
 .Tab {
   &-content {
@@ -9,8 +10,7 @@
       min-height: 1.5rem;
       padding: 1.5rem 2rem;
       margin: 0 auto 1rem;
-      box-shadow: 0 1px rgba(0, 0, 0, 0.1),
-                  0 1px 4px rgba(0, 0, 0, 0.12);
+      box-shadow: $tab-box-shadow;
       border-radius: 2px;
 
       &.is-full-width {

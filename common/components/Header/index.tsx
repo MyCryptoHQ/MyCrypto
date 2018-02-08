@@ -11,7 +11,7 @@ import {
   removeCustomNode,
   addCustomNetwork
 } from 'actions/config';
-import logo from 'assets/images/logo-myetherwallet.svg';
+import logo from 'assets/images/logo-mycrypto.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
@@ -21,7 +21,6 @@ import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
-import Version from './components/Version';
 import { getKeyByValue } from 'utils/helpers';
 import { NodeConfig } from 'types/node';
 import './index.scss';
@@ -130,12 +129,9 @@ class Header extends Component<Props, State> {
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE && (
-          <div
-            className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}
-            dangerouslySetInnerHTML={{
-              __html: ANNOUNCEMENT_MESSAGE
-            }}
-          />
+          <div className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}>
+            {ANNOUNCEMENT_MESSAGE}
+          </div>
         )}
 
         <section className="Header-branding">
@@ -146,14 +142,10 @@ class Header extends Component<Props, State> {
                 src={logo}
                 height="64px"
                 width="245px"
-                alt="MyEtherWallet"
+                alt="MyCrypto logo"
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">
-                <Version />
-              </span>
-
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
               </div>

@@ -21,8 +21,8 @@
   },
   "include": [
     "./common/",
+    "./electron-app/",
     "./shared/",
-    "./electron/",
     "spec",
     "./node_modules/types-rlp/index.d.ts"
   ],

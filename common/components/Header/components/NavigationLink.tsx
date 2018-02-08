@@ -10,7 +10,7 @@ interface Props extends RouteComponentProps<{}> {
   isHomepage: boolean;
 }
 
-class NavigationLink extends React.Component<Props, {}> {
+class NavigationLink extends React.PureComponent<Props, {}> {
   public render() {
     const { link, location, isHomepage } = this.props;
     const isExternalLink = link.to.includes('http');

@@ -17,7 +17,7 @@ export type State = { [key in StaticNetworkIds]: StaticNetworkConfig };
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
 // TODO: put this in utils / libs
-function makeExplorer(origin: string): BlockExplorerConfig {
+export function makeExplorer(origin: string): BlockExplorerConfig {
   return {
     origin,
     txUrl: hash => `${origin}/tx/${hash}`,
@@ -129,7 +129,7 @@ const INITIAL_STATE: State = {
     chainId: 2,
     isCustom: false,
     color: '#673ab7',
-    blockExplorer: makeExplorer('http://www.gander.tech'),
+    blockExplorer: makeExplorer('https://www.gander.tech'),
     tokens: require('config/tokens/exp.json'),
     contracts: require('config/contracts/exp.json'),
     dPathFormats: {

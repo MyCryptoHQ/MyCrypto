@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import './SwapDropdown.scss';
 import classnames from 'classnames';
 
@@ -16,7 +16,7 @@ interface Props<T> {
   onChange(value: T): void;
 }
 
-class SwapDropdown<T> extends Component<Props<T>, {}> {
+class SwapDropdown<T> extends PureComponent<Props<T>, {}> {
   public state = {
     open: false
   };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import DropdownShell from './DropdownShell';
 
@@ -19,7 +19,7 @@ interface State {
   search: string;
 }
 
-export default class DropdownComponent<T> extends Component<Props<T>, State> {
+export default class DropdownComponent<T> extends PureComponent<Props<T>, State> {
   public state = {
     search: ''
   };

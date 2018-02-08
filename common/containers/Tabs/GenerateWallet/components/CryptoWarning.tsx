@@ -20,7 +20,7 @@ const BROWSERS = [
   },
   {
     name: 'Opera',
-    href: 'http://www.opera.com/',
+    href: 'https://www.opera.com/',
     icon: operaIcon
   }
 ];
@@ -32,13 +32,13 @@ const CryptoWarning: React.SFC<{}> = () => (
       <p className="CryptoWarning-text">
         {isMobile
           ? `
-          MyEtherWallet requires certain features for secure wallet generation
+          MyCrypto requires certain features for secure wallet generation
           that your browser doesn't offer. You can still securely use the site
           otherwise. To generate a wallet, please use your device's default
           browser, or switch to a laptop or desktop computer.
         `
           : `
-          MyEtherWallet requires certain features for secure wallet generation
+          MyCrypto requires certain features for secure wallet generation
           that your browser doesn't offer. You can still securely use the site
           otherwise. To generate a wallet, upgrade to one of the following
           browsers:

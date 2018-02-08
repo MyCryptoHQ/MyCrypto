@@ -1,9 +1,9 @@
 import { TypeKeys } from './constants';
-import { CCResponse } from './actionPayloads';
+import { CCResponse } from 'api/rates';
 
-export interface FetchCCRates {
-  type: TypeKeys.RATES_FETCH_CC;
-  payload: Promise<CCResponse>;
+export interface FetchCCRatesRequested {
+  type: TypeKeys.RATES_FETCH_CC_REQUESTED;
+  payload: string[];
 }
 
 /*** Set rates ***/
@@ -17,4 +17,4 @@ export interface FetchCCRatesFailed {
 }
 
 /*** Union Type ***/
-export type RatesAction = FetchCCRates | FetchCCRatesSucceeded | FetchCCRatesFailed;
+export type RatesAction = FetchCCRatesRequested | FetchCCRatesSucceeded | FetchCCRatesFailed;

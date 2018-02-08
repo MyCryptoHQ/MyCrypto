@@ -1,5 +1,5 @@
 import { NodeAction, TypeKeys, ChangeNodeAction } from 'actions/config';
-import { INITIAL_STATE as INITIAL_NODE_STATE } from '../nodes/selectedNode'; // could probably consolidate this in the index file of 'nodes' to make it easier to import
+import { INITIAL_STATE as INITIAL_NODE_STATE } from '../nodes/selectedNode';
 import { INITIAL_STATE as INITIAL_DEFAULT_NODE_STATE } from '../nodes/staticNodes';
 import { NonWeb3NodeConfigs } from 'types/node';
 import { StaticNetworkIds } from 'types/network';

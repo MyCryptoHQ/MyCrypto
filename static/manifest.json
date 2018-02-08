@@ -1,11 +1,11 @@
 {
-  "name": "MyEtherWallet",
+  "name": "MyCrypto",
   "manifest_version": 1,
   "start_url": ".",
   "theme_color": "#163151",
   "background_color": "#163151",
   "display": "standalone",
-  "description": "MyEtherWallet.com is a free, open-source, client-side interface for generating Ethereum wallets & more",
+  "description": "MyCrypto.com is a free, open-source, client-side interface for generating Ethereum wallets & more",
   "default_locale": "en",
   "icons": [
     {
