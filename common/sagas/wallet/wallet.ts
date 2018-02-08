@@ -287,6 +287,7 @@ export function* unlockWeb3(): SagaIterator {
     const wallet = new Web3Wallet(address, network);
     yield put(setWallet(wallet));
   } catch (err) {
+    console.error(err);
     // unset web3 node so node dropdown isn't disabled
     yield put(web3UnsetNode());
     yield put(showNotification('danger', translate(err.message)));
