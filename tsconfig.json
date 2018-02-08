@@ -24,11 +24,8 @@
   },
   "include": [
     "./common/",
-<<<<<<< HEAD
-=======
     "./electron-app/",
     "spec",
->>>>>>> develop
     "./node_modules/types-rlp/index.d.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
