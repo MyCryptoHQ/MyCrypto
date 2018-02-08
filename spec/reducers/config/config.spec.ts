@@ -7,32 +7,28 @@ import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
   pollOfflineStatus,
-  reload,
-  switchToNewNode
+  reload
 } from 'sagas/config/node';
 import {
   getNodeId,
   getNodeConfig,
   getOffline,
-  getCustomNodeConfigs,
-  getCustomNetworkConfigs,
   isStaticNodeId,
   getStaticNodeFromId,
   getNetworkConfigById,
-  getCustomNodeFromId
+  getCustomNodeFromId,
+  getStaticAltNodeIdToWeb3
 } from 'selectors/config';
 import { Web3Wallet } from 'libs/wallet';
-import { RPCNode } from 'libs/nodes';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig } from 'types/node';
 import { staticNodesExpectedState } from './nodes/staticNodes.spec';
 import { metaExpectedState } from './meta/meta.spec';
 import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
-import { staticNetworksExpectedState } from './networks/staticNetworks.spec';
-import { customNetworksExpectedState } from './networks/customNetworks.spec';
-import { StaticNetworkConfig } from '../../../shared/types/network';
 import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
+import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
+
 // init module
 configuredStore.getState();
 
@@ -268,20 +264,19 @@ describe('handleNodeChangeIntent*', () => {
 
 describe('unsetWeb3Node*', () => {
   const node = 'web3';
-  const mockNodeConfig = { network: 'ETH' } as any;
-  const newNode = equivalentNodeOrDefault(mockNodeConfig);
+  const alternativeNodeId = 'eth_mew';
   const gen = unsetWeb3Node();
 
   it('should select getNode', () => {
     expect(gen.next().value).toEqual(select(getNodeId));
   });
 
-  it('should select getNodeConfig', () => {
-    expect(gen.next(node).value).toEqual(select(getNodeConfig));
+  it('should select an alternative node to web3', () => {
+    expect(gen.next(node).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
   it('should put changeNodeIntent', () => {
-    expect(gen.next(mockNodeConfig).value).toEqual(put(changeNodeIntent(newNode)));
+    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeIntent(alternativeNodeId)));
   });
 
   it('should be done', () => {
@@ -298,22 +293,20 @@ describe('unsetWeb3Node*', () => {
 
 describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction = {};
-  const mockNode = 'web3';
-  const mockNodeConfig: Partial<StaticNodeConfig> = { network: 'ETH' };
+  const mockNodeId = 'web3';
+  const alternativeNodeId = 'eth_mew';
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {
     expect(gen.next().value).toEqual(select(getNodeId));
   });
 
-  it('should select getNodeConfig', () => {
-    expect(gen.next(mockNode).value).toEqual(select(getNodeConfig));
+  it('should select an alternative node to web3', () => {
+    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
   it('should put changeNodeIntent', () => {
-    expect(gen.next(mockNodeConfig).value).toEqual(
-      put(changeNodeIntent(equivalentNodeOrDefault(mockNodeConfig as any)))
-    );
+    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeIntent(alternativeNodeId)));
   });
 
   it('should be done', () => {
@@ -335,53 +328,5 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
     gen2.next(); //getNode
     gen2.next('web3'); //getNodeConfig
     expect(gen2.next().done).toEqual(true);
-  });
-});
-
-describe('equivalentNodeOrDefault', () => {
-  const originalNodeList = Object.keys(NODES);
-  const appDefaultNode = configInitialState.nodeSelection;
-  const mockNodeConfig = {
-    network: 'ETH',
-    service: 'fakeService',
-    lib: new RPCNode('fakeEndpoint'),
-    estimateGas: false
-  };
-
-  afterEach(() => {
-    Object.keys(NODES).forEach(node => {
-      if (originalNodeList.indexOf(node) === -1) {
-        delete NODES[node];
-      }
-    });
-  });
-
-  it('should return node with equivalent network', () => {
-    const node = equivalentNodeOrDefault({
-      ...mockNodeConfig,
-      network: 'Kovan'
-    });
-    expect(NODES[node].network).toEqual('Kovan');
-  });
-
-  it('should return app default if no eqivalent is found', () => {
-    const node = equivalentNodeOrDefault({
-      ...mockNodeConfig,
-      network: 'noEqivalentExists'
-    } as any);
-    expect(node).toEqual(appDefaultNode);
-  });
-
-  it('should ignore web3 from node list', () => {
-    NODES.web3 = {
-      ...mockNodeConfig,
-      network: 'uniqueToWeb3'
-    } as any;
-
-    const node = equivalentNodeOrDefault({
-      ...mockNodeConfig,
-      network: 'uniqueToWeb3'
-    } as any);
-    expect(node).toEqual(appDefaultNode);
   });
 });

@@ -4,7 +4,7 @@ import { Web3Wallet } from 'libs/wallet';
 import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery, call } from 'redux-saga/effects';
 import { changeNodeIntent, TypeKeys, web3SetNode } from 'actions/config';
-import { getNodeId, getStaticAltNodeToWeb3 } from 'selectors/config';
+import { getNodeId, getStaticAltNodeIdToWeb3 } from 'selectors/config';
 import { setupWeb3Node, Web3Service } from 'libs/nodes/web3';
 import { Web3NodeConfig } from 'types/node';
 
@@ -32,7 +32,7 @@ export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
     return;
   }
 
-  const altNode = yield select(getStaticAltNodeToWeb3);
+  const altNode = yield select(getStaticAltNodeIdToWeb3);
   // switch back to a node with the same network as MetaMask/Mist
   yield put(changeNodeIntent(altNode));
 }
@@ -44,7 +44,7 @@ export function* unsetWeb3Node(): SagaIterator {
     return;
   }
 
-  const altNode = yield select(getStaticAltNodeToWeb3);
+  const altNode = yield select(getStaticAltNodeIdToWeb3);
   // switch back to a node with the same network as MetaMask/Mist
   yield put(changeNodeIntent(altNode));
 }

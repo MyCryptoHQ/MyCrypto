@@ -27,7 +27,7 @@ export const getCustomNodeFromId = (
   nodeId: string
 ): CustomNodeConfig | undefined => getCustomNodeConfigs(state)[nodeId];
 
-export const getStaticAltNodeToWeb3 = (state: AppState) => {
+export const getStaticAltNodeIdToWeb3 = (state: AppState) => {
   const { web3, ...configs } = getStaticNodeConfigs(state);
   if (!web3) {
     return SELECTED_NODE_INITIAL_STATE.nodeId;
