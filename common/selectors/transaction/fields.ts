@@ -10,10 +10,12 @@ const getGasLimit = (state: AppState) => getFields(state).gasLimit;
 const getGasPrice = (state: AppState) => getFields(state).gasPrice;
 const getValue = (state: AppState) => getFields(state).value;
 const getNonce = (state: AppState) => getFields(state).nonce;
+
 const getDataExists = (state: AppState) => {
   const { value } = getData(state);
   return !!value && value.length > 0;
 };
+
 const getValidGasCost = (state: AppState) => {
   const gasCost = getGasCost(state);
   const etherBalance = getEtherBalance(state);

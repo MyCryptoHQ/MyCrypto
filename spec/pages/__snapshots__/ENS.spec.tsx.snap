@@ -4,17 +4,39 @@ exports[`snapshot test ENS component 1`] = `
 <Connect(TabSection)
   isUnavailableOffline={true}
 >
-  <section
-    className="container"
+  <div
+    className="Tab-content"
   >
-    <Switch>
-      <Route
-        exact={true}
-        path="/ens"
-        render={[Function]}
-      />
-      <Component />
-    </Switch>
-  </section>
+    <section
+      className="Tab-content-pane"
+    >
+      <div
+        className="ENS"
+      >
+        <h1
+          className="ENS-title"
+        >
+          Ethereum Name Service
+        </h1>
+        <p
+          className="ENS-description"
+        >
+          The 
+          <ENSDocsLink />
+           is a distributed, open, and extensible naming system based on the Ethereum blockchain. Once you have a name, you can tell your friends to send ETH to 
+          <code>
+            ensdomain.eth
+          </code>
+           instead of
+          <code>
+            0x4bbeEB066e
+            ...
+          </code>
+        </p>
+        <Connect(NameInput) />
+      </div>
+    </section>
+    <Connect(NameResolve) />
+  </div>
 </Connect(TabSection)>
 `;

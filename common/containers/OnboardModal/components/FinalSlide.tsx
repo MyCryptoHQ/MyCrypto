@@ -1,8 +1,10 @@
 import React from 'react';
 import translate from 'translations';
 import { Link } from 'react-router-dom';
+import { HelpLink } from 'components/ui';
+import { HELP_ARTICLE } from 'config';
 import OnboardSlide from './OnboardSlide';
-import onboardIconTen from 'assets/images/onboarding_icon-10.svg';
+import onboardIconTen from 'assets/images/onboarding/slide-10.svg';
 
 const FinalSlide = ({ closeModal }) => {
   const header = translate('ONBOARD_final_title');
@@ -11,77 +13,42 @@ const FinalSlide = ({ closeModal }) => {
   const content = (
     <ul>
       <li>
-        <a
-          href="https://myetherwallet.github.io/knowledge-base/hardware-wallets/hardware-wallet-recommendations.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="strong"
-        >
+        <HelpLink article={HELP_ARTICLE.HARDWARE_WALLET_RECOMMENDATIONS} className="strong">
           {translate('ONBOARD_final_content__2')}
-        </a>
+        </HelpLink>
       </li>
       <li>
-        <a
-          href="https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="strong"
-        >
+        <HelpLink article={HELP_ARTICLE.MIGRATE_TO_METAMASK} className="strong">
           {translate('ONBOARD_final_content__3')}
-        </a>
+        </HelpLink>
       </li>
       <li>
-        <a
-          href="https://myetherwallet.github.io/knowledge-base/offline/running-myetherwallet-locally.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="strong"
-        >
+        <HelpLink article={HELP_ARTICLE.RUNNING_LOCALLY} className="strong">
           {translate('ONBOARD_final_content__4')}
-        </a>
+        </HelpLink>
       </li>
       <li>
-        <a
-          href="https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-ledger-hardware-wallet.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="strong"
-        >
+        <HelpLink article={HELP_ARTICLE.MIGRATE_TO_LEDGER} className="strong">
           {translate('ONBOARD_final_content__5')}
-        </a>
+        </HelpLink>
       </li>
       <li>
-        <a
-          href="https://myetherwallet.github.io/knowledge-base/hardware-wallets/trezor-sending-to-trezor-device.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="strong"
-        >
+        <HelpLink article={HELP_ARTICLE.SENDING_TO_TREZOR} className="strong">
           {translate('ONBOARD_final_content__6')}
-        </a>
+        </HelpLink>
       </li>
       <li>
-        <a
-          href="https://myetherwallet.github.io/knowledge-base/migration/moving-from-private-key-to-metamask.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="strong"
-        >
+        <HelpLink article={HELP_ARTICLE.MIGRATE_TO_METAMASK} className="strong">
           {translate('ONBOARD_final_content__7')}
-        </a>
+        </HelpLink>
       </li>
       <li>
-        <a
-          href="https://myetherwallet.github.io/knowledge-base/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="strong"
-        >
+        <HelpLink article={HELP_ARTICLE.HOME} className="strong">
           {translate('ONBOARD_final_content__8')}
-        </a>
+        </HelpLink>
       </li>
       <li>
-        <Link onClick={closeModal} to="/send-transaction" className="strong">
+        <Link onClick={closeModal} to="/account" className="strong">
           <span> {translate('ONBOARD_final_content__9')}</span>
         </Link>
       </li>

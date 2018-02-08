@@ -2,7 +2,8 @@ import React from 'react';
 import translate from 'translations';
 import { UnitDisplay, Spinner } from 'components/ui';
 import Select from 'react-select';
-import { TFetchCCRates, fetchCCRates, rateSymbols } from 'actions/rates';
+import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'actions/rates';
+import { rateSymbols } from 'api/rates';
 import { chain, flatMap } from 'lodash';
 import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
@@ -44,7 +45,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  fetchCCRates: TFetchCCRates;
+  fetchCCRates: TFetchCCRatesRequested;
 }
 
 type Props = StateProps & DispatchProps;
@@ -114,6 +115,7 @@ class EquivalentValues extends React.Component<Props, State> {
     const { equivalentValues, options } = this.state;
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
+    const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
 
     const Value = ({ rate, value }) => (
       <div className="EquivalentValues-values-currency">
@@ -160,9 +162,11 @@ class EquivalentValues extends React.Component<Props, State> {
           <Spinner size="x2" />
         ) : (
           <div className="EquivalentValues-values">
-            {this.generateValues(equivalentValues.label, equivalentValues.value).map((equiv, i) => (
-              <Value rate={equiv.rate} value={equiv.value} key={i} />
-            ))}
+            {pairRates.length ? (
+              pairRates.map((equiv, i) => <Value rate={equiv.rate} value={equiv.value} key={i} />)
+            ) : (
+              <p>Sorry, equivalent values are not supported for this unit.</p>
+            )}
           </div>
         )}
       </div>
@@ -263,4 +267,4 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, { fetchCCRates })(EquivalentValues);
+export default connect(mapStateToProps, { fetchCCRates: fetchCCRatesRequested })(EquivalentValues);

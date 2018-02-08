@@ -74,7 +74,9 @@ class AdvancedGas extends React.Component<Props, State> {
             <div className="AdvancedGas-gas-price">
               <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
               <input
-                className={classnames('form-control', { 'is-invalid': !validGasPrice })}
+                className={classnames('form-control', {
+                  'is-invalid': !!gasPrice.raw && !validGasPrice
+                })}
                 type="number"
                 placeholder="40"
                 value={gasPrice.raw}
@@ -85,11 +87,7 @@ class AdvancedGas extends React.Component<Props, State> {
 
           {gasLimitField && (
             <div className="AdvancedGas-gas-limit">
-              <GasLimitField
-                includeLabel={true}
-                customLabel={translateRaw('OFFLINE_Step2_Label_4')}
-                onlyIncludeLoader={false}
-              />
+              <GasLimitField customLabel={translateRaw('OFFLINE_Step2_Label_4')} />
             </div>
           )}
           {nonceField && (
@@ -108,6 +106,7 @@ class AdvancedGas extends React.Component<Props, State> {
         {feeSummary && (
           <div className="AdvancedGas-fee-summary">
             <FeeSummary
+              gasPrice={gasPrice}
               render={({ gasPriceWei, gasLimit, fee, usd }) => (
                 <span>
                   {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}

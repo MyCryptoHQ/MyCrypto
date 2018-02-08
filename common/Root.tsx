@@ -5,7 +5,6 @@ import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from '
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
-import Help from 'containers/Tabs/Help';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
@@ -18,6 +17,7 @@ import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
+import 'what-input';
 
 interface Props {
   store: Store<AppState>;
@@ -64,8 +64,7 @@ export default class Root extends Component<Props, State> {
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />
-          <Route path="/ens" component={ENS} />
-          <Route path="/help" component={Help} />
+          <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/pushTx" component={BroadcastTx} />
           <RouteNotFound />

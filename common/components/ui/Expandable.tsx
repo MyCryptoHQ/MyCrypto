@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 export type ExpandHandler = (ev: React.FormEvent<HTMLAnchorElement>) => void;
 
@@ -13,7 +13,7 @@ interface State {
 
 const initialState: State = { expanded: false };
 
-export class Expandable extends Component<Props, State> {
+export class Expandable extends PureComponent<Props, State> {
   public state: State = initialState;
 
   public render() {

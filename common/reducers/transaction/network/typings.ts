@@ -8,4 +8,5 @@ export interface State {
   gasEstimationStatus: RequestStatus | null;
   getFromStatus: RequestStatus | null;
   getNonceStatus: RequestStatus | null;
+  gasPriceStatus: RequestStatus | null;
 }

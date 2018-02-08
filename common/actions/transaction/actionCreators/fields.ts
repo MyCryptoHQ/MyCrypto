@@ -6,6 +6,7 @@ import {
   SetValueFieldAction,
   InputGasLimitAction,
   InputGasPriceAction,
+  InputGasPriceIntentAction,
   InputDataAction,
   InputNonceAction,
   ResetAction,
@@ -22,6 +23,12 @@ const inputGasLimit = (payload: InputGasLimitAction['payload']) => ({
 type TInputGasPrice = typeof inputGasPrice;
 const inputGasPrice = (payload: InputGasPriceAction['payload']) => ({
   type: TypeKeys.GAS_PRICE_INPUT,
+  payload
+});
+
+type TInputGasPriceIntent = typeof inputGasPrice;
+const inputGasPriceIntent = (payload: InputGasPriceIntentAction['payload']) => ({
+  type: TypeKeys.GAS_PRICE_INPUT_INTENT,
   payload
 });
 
@@ -79,6 +86,7 @@ const reset = (): ResetAction => ({ type: TypeKeys.RESET });
 export {
   TInputGasLimit,
   TInputGasPrice,
+  TInputGasPriceIntent,
   TInputNonce,
   TInputData,
   TSetGasLimitField,
@@ -90,6 +98,7 @@ export {
   TReset,
   inputGasLimit,
   inputGasPrice,
+  inputGasPriceIntent,
   inputNonce,
   inputData,
   setGasLimitField,
