@@ -1,6 +1,6 @@
 import { TShowNotification } from 'actions/notifications';
 import { bityConfig } from 'config/bity';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import './SwapProgress.scss';
 
@@ -19,7 +19,7 @@ export interface Props {
 interface State {
   hasShownViewTx: boolean;
 }
-export default class SwapProgress extends Component<Props, State> {
+export default class SwapProgress extends PureComponent<Props, State> {
   public state = {
     hasShownViewTx: false
   };

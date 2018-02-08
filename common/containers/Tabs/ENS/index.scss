@@ -1,0 +1,12 @@
+@import 'common/sass/variables';
+
+.ENS {
+  &-title {
+    text-align: center;
+  }
+
+  &-description {
+    max-width: 800px;
+    margin: 0 auto $space;
+  }
+}

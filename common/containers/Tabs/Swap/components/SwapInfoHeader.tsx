@@ -1,6 +1,6 @@
 import { RestartSwapAction } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import classnames from 'classnames';
 import { toFixedIfLarger } from 'utils/formatters';
@@ -16,7 +16,7 @@ export interface SwapInfoHeaderProps {
   restartSwap(): RestartSwapAction;
 }
 
-export default class SwapInfoHeader extends Component<SwapInfoHeaderProps, {}> {
+export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {}> {
   public computedOriginDestinationRatio = () => {
     const { origin, destination } = this.props;
     if (!origin.amount || !destination.amount) {

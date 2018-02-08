@@ -6,6 +6,7 @@ import EtherscanNode from 'libs/nodes/etherscan';
 import InfuraNode from 'libs/nodes/infura';
 import RpcNodeTestConfig from './RpcNodeTestConfig';
 import { StaticNodeConfig } from 'types/node';
+import { staticNodesExpectedState } from '../reducers/config/nodes/staticNodes.spec';
 
 const v = new Validator();
 
@@ -79,4 +80,6 @@ const mapNodeEndpoints = (nodes: { [key: string]: StaticNodeConfig }) => {
   });
 };
 
-mapNodeEndpoints(NODES);
+mapNodeEndpoints((staticNodesExpectedState.initialState as any) as {
+  [key: string]: StaticNodeConfig;
+});

@@ -1,17 +1,21 @@
 import React from 'react';
+import BN from 'bn.js';
 import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
 import {
   inputGasPrice,
   TInputGasPrice,
+  inputGasPriceIntent,
+  TInputGasPriceIntent,
   getNonceRequested,
   TGetNonceRequested,
   reset,
   TReset
 } from 'actions/transaction';
-import { fetchCCRates, TFetchCCRates } from 'actions/rates';
+import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
+import { Units } from 'libs/units';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import './TXMetaDataPanel.scss';
@@ -28,7 +32,8 @@ interface StateProps {
 
 interface DispatchProps {
   inputGasPrice: TInputGasPrice;
-  fetchCCRates: TFetchCCRates;
+  inputGasPriceIntent: TInputGasPriceIntent;
+  fetchCCRates: TFetchCCRatesRequested;
   getNonceRequested: TGetNonceRequested;
   reset: TReset;
 }
@@ -48,6 +53,7 @@ interface OwnProps {
 type Props = DispatchProps & OwnProps & StateProps;
 
 interface State {
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
   sliderState: SliderStates;
 }
 
@@ -57,6 +63,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   };
 
   public state: State = {
+    gasPrice: this.props.gasPrice,
     sliderState: (this.props as DefaultProps).initialState
   };
 
@@ -72,10 +79,14 @@ class TXMetaDataPanel extends React.Component<Props, State> {
     if (this.props.offline && !nextProps.offline) {
       this.props.fetchCCRates([this.props.network.unit]);
     }
+    if (this.props.gasPrice !== nextProps.gasPrice) {
+      this.setState({ gasPrice: nextProps.gasPrice });
+    }
   }
 
   public render() {
-    const { offline, disableToggle, gasPrice, advancedGasOptions, className = '' } = this.props;
+    const { offline, disableToggle, advancedGasOptions, className = '' } = this.props;
+    const { gasPrice } = this.state;
     const showAdvanced = this.state.sliderState === 'advanced' || offline;
     return (
       <div className={`Gas col-md-12 ${className}`}>
@@ -86,7 +97,11 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             options={advancedGasOptions}
           />
         ) : (
-          <SimpleGas gasPrice={gasPrice} inputGasPrice={this.props.inputGasPrice} />
+          <SimpleGas
+            gasPrice={gasPrice}
+            inputGasPrice={this.handleGasPriceInput}
+            setGasPrice={this.props.inputGasPrice}
+          />
         )}
 
         {!offline &&
@@ -108,6 +123,15 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   private toggleAdvanced = () => {
     this.setState({ sliderState: this.state.sliderState === 'advanced' ? 'simple' : 'advanced' });
   };
+
+  private handleGasPriceInput = (raw: string) => {
+    const gasBn = new BN(raw);
+    const value = gasBn.mul(new BN(Units.gwei));
+    this.setState({
+      gasPrice: { raw, value }
+    });
+    this.props.inputGasPriceIntent(raw);
+  };
 }
 
 function mapStateToProps(state: AppState): StateProps {
@@ -120,7 +144,8 @@ function mapStateToProps(state: AppState): StateProps {
 
 export default connect(mapStateToProps, {
   inputGasPrice,
-  fetchCCRates,
+  inputGasPriceIntent,
+  fetchCCRates: fetchCCRatesRequested,
   getNonceRequested,
   reset
 })(TXMetaDataPanel);

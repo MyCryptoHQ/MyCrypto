@@ -70,12 +70,12 @@ export default class Web3Wallet implements IFullWallet {
 
   private async networkCheck(lib: Web3Node) {
     const netId = await lib.getNetVersion();
-    const netName = networkIdToName(netId);
+    const netName = networkIdToName(netId as any);
     if (this.network !== netName) {
       throw new Error(
         `Expected MetaMask / Mist network to be ${
           this.network
-        }, but got ${netName}. Please change the network or restart MyEtherWallet.`
+        }, but got ${netName}. Please change the network or refresh the page.`
       );
     }
   }

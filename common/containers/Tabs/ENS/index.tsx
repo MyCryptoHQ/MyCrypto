@@ -1,56 +1,39 @@
 import React from 'react';
-import { GeneralInfoPanel } from './components/GeneralInfoPanel';
-import UnfinishedBanner from './components/UnfinishedBanner';
+import { NameInput, NameResolve } from './components';
 import TabSection from 'containers/TabSection';
-import { Route, Switch, RouteComponentProps } from 'react-router';
-import { RouteNotFound } from 'components/RouteNotFound';
 import { NewTabLink } from 'components/ui';
-import translate from 'translations';
+import { donationAddressMap } from 'config';
+import './index.scss';
 
 const ENSDocsLink = () => (
   <NewTabLink
-    href="http://ens.readthedocs.io/en/latest/introduction.html"
+    href="https://ens.readthedocs.io/en/latest/introduction.html"
     content="Ethereum Name Service"
   />
 );
 
-const ENSTitle = () => (
-  <article className="cont-md">
-    <h1 className="text-center">{translate('NAV_ENS')}</h1>
-    <p>
-      The <ENSDocsLink /> is a distributed, open, and extensible naming system based on the Ethereum
-      blockchain. Once you have a name, you can tell your friends to send ETH to{' '}
-      <code>mewtopia.eth</code> instead of
-      <code>0x7cB57B5A97eAbe942.....</code>.
-    </p>
-  </article>
-);
-
-class ENSClass extends React.Component<RouteComponentProps<{}>> {
+export default class ENSClass extends React.Component<{}> {
   public render() {
-    const { match } = this.props;
-    const currentPath = match.url;
     return (
       <TabSection isUnavailableOffline={true}>
-        <section className="container">
-          <Switch>
-            <Route
-              exact={true}
-              path={currentPath}
-              render={() => (
-                <section role="main" className="row">
-                  <UnfinishedBanner />
-                  <ENSTitle />
-                  <GeneralInfoPanel />
-                </section>
-              )}
-            />
-            <RouteNotFound />
-          </Switch>
-        </section>
+        <div className="Tab-content">
+          <section className="Tab-content-pane">
+            <div className="ENS">
+              <h1 className="ENS-title">Ethereum Name Service</h1>
+              <p className="ENS-description">
+                The <ENSDocsLink /> is a distributed, open, and extensible naming system based on
+                the Ethereum blockchain. Once you have a name, you can tell your friends to send ETH
+                to <code>ensdomain.eth</code> instead of
+                <code>{donationAddressMap.ETH.substr(0, 12)}...</code>
+              </p>
+
+              <NameInput />
+            </div>
+          </section>
+
+          <NameResolve />
+        </div>
       </TabSection>
     );
   }
 }
-
-export default ENSClass;

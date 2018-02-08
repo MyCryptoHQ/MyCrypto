@@ -14,9 +14,8 @@ import {
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
-import { N_FACTOR } from 'config';
 import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
-import { getNodeLib, getOffline } from 'selectors/config';
+import { getNodeLib, getOffline, getWeb3Node } from 'selectors/config';
 import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
 import {
   updateAccountBalance,
@@ -36,8 +35,10 @@ import Web3Node from 'libs/nodes/web3';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
-import { IFullWallet, fromV3 } from 'ethereumjs-wallet';
+import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
 import { Token } from 'types/network';
+import { initWeb3Node } from 'sagas/config/web3';
+
 // init module
 configuredStore.getState();
 const offline = false;
@@ -59,11 +60,11 @@ const token2: Token = {
 };
 const tokens = [token1, token2];
 
-const utcKeystore = {
+const utcKeystore: IV3Wallet = {
   version: 3,
   id: 'cb788af4-993d-43ad-851b-0d2031e52c61',
   address: '25a24679f35e447f778cf54a3823facf39904a63',
-  Crypto: {
+  crypto: {
     ciphertext: '4193915c560835d00b2b9ff5dd20f3e13793b2a3ca8a97df649286063f27f707',
     cipherparams: {
       iv: 'dccb8c009b11d1c6226ba19b557dce4c'
@@ -73,7 +74,7 @@ const utcKeystore = {
     kdfparams: {
       dklen: 32,
       salt: '037a53e520f2d00fb70f02f39b31b77374de9e0e1d35fd7cbe9c8a8b21d6b0ab',
-      n: N_FACTOR,
+      n: 1024,
       r: 8,
       p: 1
     },
@@ -339,13 +340,13 @@ describe('unlockWeb3*', () => {
     expect(JSON.stringify(expected)).toEqual(JSON.stringify(result));
   });
 
-  it('should select getNodeLib', () => {
-    expect(data.gen.next().value).toEqual(select(getNodeLib));
+  it('should select getWeb3Node', () => {
+    expect(data.gen.next().value).toEqual(select(getWeb3Node));
   });
 
   it('should throw & catch if node is not web3 node', () => {
     data.clone = data.gen.clone();
-    expect(data.clone.next().value).toEqual(put(web3UnsetNode()));
+    expect(data.clone.next(nodeLib).value).toEqual(put(web3UnsetNode()));
     expect(data.clone.next().value).toEqual(
       put(showNotification('danger', translate('Cannot use Web3 wallet without a Web3 node.')))
     );
@@ -353,7 +354,7 @@ describe('unlockWeb3*', () => {
   });
 
   it('should apply nodeLib.getAccounts', () => {
-    expect(data.gen.next(nodeLib).value).toEqual(apply(nodeLib, nodeLib.getAccounts));
+    expect(data.gen.next({ lib: nodeLib }).value).toEqual(apply(nodeLib, nodeLib.getAccounts));
   });
 
   it('should throw & catch if no accounts found', () => {

@@ -1,12 +1,12 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { fetchRates, CCResponse } from './actionPayloads';
+import { CCResponse } from 'api/rates';
 
-export type TFetchCCRates = typeof fetchCCRates;
-export function fetchCCRates(symbols: string[] = []): interfaces.FetchCCRates {
+export type TFetchCCRatesRequested = typeof fetchCCRatesRequested;
+export function fetchCCRatesRequested(symbols: string[] = []): interfaces.FetchCCRatesRequested {
   return {
-    type: TypeKeys.RATES_FETCH_CC,
-    payload: fetchRates(symbols)
+    type: TypeKeys.RATES_FETCH_CC_REQUESTED,
+    payload: symbols
   };
 }
 

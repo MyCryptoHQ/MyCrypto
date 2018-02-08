@@ -11,7 +11,7 @@ type Data = Buffer;
 
 export const ETH_DECIMAL = 18;
 
-const Units = {
+export const Units = {
   wei: '1',
   kwei: '1000',
   ada: '1000',

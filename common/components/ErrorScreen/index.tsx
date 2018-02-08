@@ -3,7 +3,7 @@ import './index.scss';
 
 const SUBJECT = 'Error!';
 const DESCRIPTION =
-  'I encountered an error while using MyEtherWallet. Here are the steps to re-create the issue:\n\nThe full error message:';
+  'I encountered an error while using MyCrypto. Here are the steps to re-create the issue:\n\nThe full error message:';
 
 interface Props {
   error: Error;

@@ -7,11 +7,13 @@ import {
   TypeKeys,
   reset,
   SignWeb3TransactionSucceededAction,
-  SignLocalTransactionSucceededAction
+  SignLocalTransactionSucceededAction,
+  SignTransactionRequestedAction
 } from 'actions/transaction';
 import { computeIndexingHash } from 'libs/transaction';
 import { serializedAndTransactionFieldsMatch } from 'selectors/transaction';
 import { showNotification } from 'actions/notifications';
+import { getWalletType, IWalletType } from 'selectors/wallet';
 
 export function* signLocalTransactionHandler({
   tx,
@@ -64,9 +66,15 @@ function* verifyTransaction({
     yield put(reset());
   }
 }
+
+function* handleTransactionRequest(action: SignTransactionRequestedAction): SagaIterator {
+  const walletType: IWalletType = yield select(getWalletType);
+  const signingHandler = walletType.isWeb3Wallet ? signWeb3Transaction : signLocalTransaction;
+  return yield call(signingHandler, action);
+}
+
 export const signing = [
-  takeEvery(TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED, signLocalTransaction),
-  takeEvery(TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED, signWeb3Transaction),
+  takeEvery(TypeKeys.SIGN_TRANSACTION_REQUESTED, handleTransactionRequest),
   takeEvery(
     [TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED, TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED],
     verifyTransaction

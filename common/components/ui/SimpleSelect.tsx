@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 interface Props {
   value?: string;
@@ -6,7 +6,7 @@ interface Props {
   onChange(event: React.FormEvent<HTMLSpanElement>): void;
 }
 
-export default class SimpleSelect extends Component<Props, {}> {
+export default class SimpleSelect extends PureComponent<Props, {}> {
   public render() {
     return (
       <select

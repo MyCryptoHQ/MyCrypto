@@ -32,27 +32,27 @@ import {
   InsecureWalletWarning
 } from './components';
 import { AppState } from 'reducers';
-import DISABLES from './disables';
 import { showNotification, TShowNotification } from 'actions/notifications';
-
-import LedgerIcon from 'assets/images/wallets/ledger.svg';
-import MetamaskIcon from 'assets/images/wallets/metamask.svg';
-import MistIcon from 'assets/images/wallets/mist.svg';
-import TrezorIcon from 'assets/images/wallets/trezor.svg';
-import './WalletDecrypt.scss';
+import { getDisabledWallets } from 'selectors/wallet';
+import { DisabledWallets } from './disables';
 import {
   SecureWalletName,
   InsecureWalletName,
   MiscWalletName,
   WalletName,
-  knowledgeBaseURL
+  knowledgeBaseURL,
+  donationAddressMap
 } from 'config';
-import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
-import { getNetworkConfig, getOffline } from '../../selectors/config';
+import { isWeb3NodeAvailable } from 'libs/nodes/web3';
+import LedgerIcon from 'assets/images/wallets/ledger.svg';
+import MetamaskIcon from 'assets/images/wallets/metamask.svg';
+import MistIcon from 'assets/images/wallets/mist.svg';
+import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import './WalletDecrypt.scss';
 
 interface OwnProps {
   hidden?: boolean;
-  disabledWallets?: WalletName[];
+  disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
 }
 
@@ -68,8 +68,7 @@ interface DispatchProps {
 }
 
 interface StateProps {
-  computedDisabledWallets: WalletName[];
-  offline: boolean;
+  computedDisabledWallets: DisabledWallets;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
@@ -193,7 +192,7 @@ export class WalletDecrypt extends Component<Props, State> {
     },
     [MiscWalletName.VIEW_ONLY]: {
       lid: 'View Address',
-      example: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
+      example: donationAddressMap.ETH,
       component: ViewOnlyDecrypt,
       initialParams: {},
       unlock: this.props.setWallet,
@@ -281,6 +280,9 @@ export class WalletDecrypt extends Component<Props, State> {
   };
 
   public buildWalletOptions() {
+    const { computedDisabledWallets } = this.props;
+    const { reasons } = computedDisabledWallets;
+
     return (
       <div className="WalletDecrypt-wallets">
         <h2 className="WalletDecrypt-wallets-title">{translate('decrypt_Access')}</h2>
@@ -298,6 +300,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 walletType={walletType}
                 isSecure={true}
                 isDisabled={this.isWalletDisabled(walletType)}
+                disableReason={reasons[walletType]}
                 onClick={this.handleWalletChoice}
               />
             );
@@ -315,6 +318,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 walletType={walletType}
                 isSecure={false}
                 isDisabled={this.isWalletDisabled(walletType)}
+                disableReason={reasons[walletType]}
                 onClick={this.handleWalletChoice}
               />
             );
@@ -331,6 +335,7 @@ export class WalletDecrypt extends Component<Props, State> {
                 walletType={walletType}
                 isReadOnly={true}
                 isDisabled={this.isWalletDisabled(walletType)}
+                disableReason={reasons[walletType]}
                 onClick={this.handleWalletChoice}
               />
             );
@@ -425,24 +430,26 @@ export class WalletDecrypt extends Component<Props, State> {
   };
 
   private isWalletDisabled = (walletKey: WalletName) => {
-    if (this.props.offline && DISABLES.ONLINE_ONLY.includes(walletKey)) {
-      return true;
-    }
-
-    return this.props.computedDisabledWallets.indexOf(walletKey) !== -1;
+    return this.props.computedDisabledWallets.wallets.indexOf(walletKey) !== -1;
   };
 }
 
 function mapStateToProps(state: AppState, ownProps: Props) {
   const { disabledWallets } = ownProps;
-  const network = getNetworkConfig(state);
-  const networkDisabledFormats = unSupportedWalletFormatsOnNetwork(network);
-  const computedDisabledWallets = disabledWallets
-    ? disabledWallets.concat(networkDisabledFormats)
-    : networkDisabledFormats;
+  let computedDisabledWallets = getDisabledWallets(state);
+
+  if (disabledWallets) {
+    computedDisabledWallets = {
+      wallets: [...computedDisabledWallets.wallets, ...disabledWallets.wallets],
+      reasons: {
+        ...computedDisabledWallets.reasons,
+        ...disabledWallets.reasons
+      }
+    };
+  }
+
   return {
     computedDisabledWallets,
-    offline: getOffline(state),
     isWalletPending: state.wallet.isWalletPending,
     isPasswordPending: state.wallet.isPasswordPending
   };

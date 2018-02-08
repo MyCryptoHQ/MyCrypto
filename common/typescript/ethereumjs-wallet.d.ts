@@ -165,14 +165,14 @@ declare module 'ethereumjs-wallet' {
     version: 3;
     id: string;
     address: string;
-    Crypto: {
+    crypto: {
       ciphertext: string;
-      cipherParams: {
+      cipherparams: {
         iv: string;
       };
       cipher: string | 'aes-128-ctr';
       kdf: 'scrypt' | 'pbkdf2';
-      kfdparams: IScryptKdfParams | IPbkdf2KdfParams;
+      kdfparams: IScryptKdfParams | IPbkdf2KdfParams;
       mac: string;
     };
   }

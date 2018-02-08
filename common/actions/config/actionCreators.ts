@@ -1,8 +1,8 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
 
-export type TToggleOfflineConfig = typeof toggleOfflineConfig;
-export function toggleOfflineConfig(): interfaces.ToggleOfflineAction {
+export type TToggleOffline = typeof toggleOffline;
+export function toggleOffline(): interfaces.ToggleOfflineAction {
   return {
     type: TypeKeys.CONFIG_TOGGLE_OFFLINE
   };
@@ -24,10 +24,12 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
 }
 
 export type TChangeNode = typeof changeNode;
-export function changeNode(networkName: string, nodeName: string): interfaces.ChangeNodeAction {
+export function changeNode(
+  payload: interfaces.ChangeNodeAction['payload']
+): interfaces.ChangeNodeAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE,
-    payload: { networkName, nodeName }
+    payload
   };
 }
 
@@ -90,6 +92,15 @@ export type TSetLatestBlock = typeof setLatestBlock;
 export function setLatestBlock(payload: string): interfaces.SetLatestBlockAction {
   return {
     type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
+    payload
+  };
+}
+
+export function web3SetNode(
+  payload: interfaces.Web3setNodeAction['payload']
+): interfaces.Web3setNodeAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_WEB3_SET,
     payload
   };
 }
