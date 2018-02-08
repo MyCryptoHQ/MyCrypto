@@ -78,7 +78,7 @@ exports[`render snapshot 1`] = `
   }
   outputTx={null}
   paymentAddress={null}
-  provider="bity"
+  provider="shapeshift"
   restartSwap={[Function]}
   secondsRemaining={null}
   shapeshiftOrder={Object {}}

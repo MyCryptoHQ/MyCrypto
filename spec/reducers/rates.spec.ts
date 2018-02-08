@@ -1,9 +1,10 @@
 import { rates, INITIAL_STATE } from 'reducers/rates';
 import * as ratesActions from 'actions/rates';
+import { CCResponse } from 'api/rates';
 
 describe('rates reducer', () => {
   it('should handle RATES_FETCH_CC_SUCCEEDED', () => {
-    const fakeCCResp: ratesActions.CCResponse = {
+    const fakeCCResp: CCResponse = {
       ETH: {
         USD: 0,
         BTC: 1,

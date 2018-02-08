@@ -33,10 +33,8 @@ class SupportFooter extends React.PureComponent<Props, {}> {
     const pair = origin && destination ? origin.id + destination.id : 'BTCETH';
     const rates = provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
     const emailTo =
-      provider === 'shapeshift'
-        ? 'support@myetherwallet.com'
-        : 'support@myetherwallet.com,mew@bity.com';
-    const mailSubject = encodeURI('Issue regarding my Swap via MEW');
+      provider === 'shapeshift' ? 'support@mycrypto.com' : 'support@mycrypto.com,mew@bity.com';
+    const mailSubject = encodeURI('Issue regarding my Swap via MyCrypto');
     const serviceProvider = provider.charAt(0).toUpperCase() + provider.slice(1);
     let mailBody;
     let fallbackBody;
@@ -58,7 +56,7 @@ Receiving Address: ${destinationAddress || ''}
 Rate: ${rates[pair].rate} ${origin.id}/${destination.id}
         `);
       fallbackBody = `To: ${emailTo}
-Subject: Issue regarding my Swap via MEW
+Subject: Issue regarding my Swap via MyCrypto
 Message:
 Provider: ${serviceProvider}
 REF ID#: ${reference || ''}

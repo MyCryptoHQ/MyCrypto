@@ -72,7 +72,7 @@ export default class Web3Wallet implements IFullWallet {
       throw new Error(
         `Expected MetaMask / Mist network to be ${
           this.network
-        }, but got ${netName}. Please change the network or restart MyEtherWallet.`
+        }, but got ${netName}. Please change the network or refresh the page.`
       );
     }
   }

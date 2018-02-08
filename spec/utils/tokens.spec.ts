@@ -26,7 +26,7 @@ describe('dedupeCustomTokens', () => {
   };
   const NONDUPLICATE_CUSTOM = {
     address: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
-    symbol: 'MEW',
+    symbol: 'TEST',
     decimal: 0
   };
 

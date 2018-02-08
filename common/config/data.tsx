@@ -13,12 +13,11 @@ export const N_FACTOR = 8192;
 export const ANNOUNCEMENT_TYPE = 'warning';
 export const ANNOUNCEMENT_MESSAGE = (
   <div>
-    This is an Alpha build of MyEtherWallet v4. Please only use for testing, or use v3 at{' '}
+    This is an Alpha build of MyCrypto v4. Please only use for testing, or use v3 at{' '}
     <a href="https://myetherwallet.com">{'https://myetherwallet.com'}</a>.
     <br />
     <span className="hidden-xs">
-      If you're interested in recieving updates about the MyEtherWallet V4 Alpha, you can subscribe
-      via{' '}
+      If you're interested in recieving updates about the MyCrypto V4 Alpha, you can subscribe via{' '}
       <a href="https://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">
         mailchimp
       </a>{' '}
@@ -37,9 +36,9 @@ export const ETHAddressExplorer = (address: string): string => `${etherScan}/add
 export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
 
 export const donationAddressMap = {
-  BTC: '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6',
-  ETH: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
-  REP: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8'
+  BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',
+  ETH: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+  REP: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520'
 };
 
 export const gasPriceDefaults = {
@@ -49,13 +48,14 @@ export const gasPriceDefaults = {
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
-export const knowledgeBaseURL = 'https://myetherwallet.github.io/knowledge-base';
+export const knowledgeBaseURL = 'https://support.mycrypto.com';
+export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
+export const trezorReferralURL = 'https://trezor.io/?a=mycrypto.com';
+export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
+// TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
-// Note: add the real referral url once you know it
+// TODO - add the real referral url once you know it
 export const shapeshiftReferralURL = 'https://shapeshift.io';
-export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/fa4b?path=/products/';
-export const trezorReferralURL = 'https://trezor.io/?a=myetherwallet.com';
-export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mew';
 
 export enum SecureWalletName {
   WEB3 = 'web3',

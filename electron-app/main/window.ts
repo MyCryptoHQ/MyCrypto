@@ -2,6 +2,7 @@ import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
 import MENU from './menu';
 import updater from './updater';
+import { APP_TITLE } from '../constants';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Cached reference, preventing recreations
@@ -14,7 +15,7 @@ export default function getWindow() {
   }
 
   window = new BrowserWindow({
-    title: 'MyEtherWallet',
+    title: APP_TITLE,
     backgroundColor: '#fbfbfb',
     width: 1220,
     height: 800,

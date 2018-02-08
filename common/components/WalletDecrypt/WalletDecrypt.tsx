@@ -35,20 +35,21 @@ import { AppState } from 'reducers';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { getDisabledWallets } from 'selectors/wallet';
 import { DisabledWallets } from './disables';
-
-import LedgerIcon from 'assets/images/wallets/ledger.svg';
-import MetamaskIcon from 'assets/images/wallets/metamask.svg';
-import MistIcon from 'assets/images/wallets/mist.svg';
-import TrezorIcon from 'assets/images/wallets/trezor.svg';
-import './WalletDecrypt.scss';
 import {
   SecureWalletName,
   InsecureWalletName,
   MiscWalletName,
   WalletName,
   isWeb3NodeAvailable,
-  knowledgeBaseURL
+  knowledgeBaseURL,
+  donationAddressMap
 } from 'config';
+
+import LedgerIcon from 'assets/images/wallets/ledger.svg';
+import MetamaskIcon from 'assets/images/wallets/metamask.svg';
+import MistIcon from 'assets/images/wallets/mist.svg';
+import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import './WalletDecrypt.scss';
 
 interface OwnProps {
   hidden?: boolean;
@@ -192,7 +193,7 @@ export class WalletDecrypt extends Component<Props, State> {
     },
     [MiscWalletName.VIEW_ONLY]: {
       lid: 'View Address',
-      example: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
+      example: donationAddressMap.ETH,
       component: ViewOnlyDecrypt,
       initialParams: {},
       unlock: this.props.setWallet,
