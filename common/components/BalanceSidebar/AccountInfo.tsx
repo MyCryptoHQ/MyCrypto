@@ -113,27 +113,34 @@ class AccountInfo extends React.Component<Props, State> {
 
         <div className="AccountInfo-section">
           <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
-          <button className="AccountInfo-section-refresh" onClick={this.props.setAccountBalance}>
-            <img src={refreshIcon} />
-          </button>
           <ul className="AccountInfo-list">
             <li className="AccountInfo-list-item">
-              <span
-                className="AccountInfo-list-item-clickable mono wrap"
-                onClick={this.toggleShowLongBalance}
-              >
+              <span>
                 {balance.isPending ? (
                   <Spinner />
                 ) : (
-                  <UnitDisplay
-                    value={balance.wei}
-                    unit={'ether'}
-                    displayShortBalance={!showLongBalance}
-                    checkOffline={true}
-                  />
+                  <React.Fragment>
+                    <span
+                      className="AccountInfo-list-item-clickable mono wrap"
+                      onClick={this.toggleShowLongBalance}
+                    >
+                      <UnitDisplay
+                        value={balance.wei}
+                        unit={'ether'}
+                        displayShortBalance={!showLongBalance}
+                        checkOffline={true}
+                        symbol={balance.wei ? network.name : null}
+                      />
+                    </span>
+                    <button
+                      className="AccountInfo-section-refresh"
+                      onClick={this.props.setAccountBalance}
+                    >
+                      <img src={refreshIcon} />
+                    </button>
+                  </React.Fragment>
                 )}
               </span>
-              {!balance.isPending ? balance.wei ? <span> {network.name}</span> : null : null}
             </li>
           </ul>
         </div>
