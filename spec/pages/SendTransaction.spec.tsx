@@ -10,14 +10,7 @@ import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps'
 Enzyme.configure({ adapter: new Adapter() });
 
 it('render snapshot', () => {
-  const testNode = 'rop_mew';
-  const testStateConfig = {
-    languageSelection: 'en',
-    nodeSelection: testNode,
-    node: NODES[testNode],
-    gasPriceGwei: 21,
-    offline: false
-  };
+  const testStateConfig = {};
   const testState = {
     wallet: {},
     balance: {},

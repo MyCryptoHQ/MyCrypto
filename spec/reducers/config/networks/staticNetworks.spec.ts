@@ -1,6 +1,5 @@
 import { staticNetworks, makeExplorer } from 'reducers/config/networks/staticNetworks';
 import { ethPlorer, ETHTokenExplorer, SecureWalletName, InsecureWalletName } from 'config/data';
-import { StaticNetworkConfig } from 'types/network';
 import {
   ETH_DEFAULT,
   ETH_TREZOR,
