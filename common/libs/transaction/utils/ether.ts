@@ -30,8 +30,7 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
   };
 };
 
-const getTransactionFee = (t: Tx) => {
-  const { gasPrice, gasLimit } = getTransactionFields(t);
+const getTransactionFee = (gasPrice: string, gasLimit: string) => {
   return Wei(gasPrice).mul(Wei(gasLimit));
 };
 

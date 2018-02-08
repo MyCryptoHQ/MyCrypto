@@ -4,6 +4,7 @@ import TabSection from 'containers/TabSection';
 import { Route, Switch, RouteComponentProps } from 'react-router';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { NewTabLink } from 'components/ui';
+import { donationAddressMap } from 'config';
 import translate from 'translations';
 import { connect } from 'react-redux';
 import { resolveDomainRequested, TResolveDomainRequested } from 'actions/ens';
@@ -22,8 +23,8 @@ const ENSTitle = () => (
     <p>
       The <ENSDocsLink /> is a distributed, open, and extensible naming system based on the Ethereum
       blockchain. Once you have a name, you can tell your friends to send ETH to{' '}
-      <code>mewtopia.eth</code> instead of
-      <code>0x7cB57B5A97eAbe942.....</code>.
+      <code>ensdomain.eth</code> instead of
+      <code>{donationAddressMap.ETH.substr(0, 12)}...</code>
     </p>
   </article>
 );

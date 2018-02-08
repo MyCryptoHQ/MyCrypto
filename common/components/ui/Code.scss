@@ -2,13 +2,13 @@ pre {
   color: #333;
   background-color: #fafafa;
   border: 1px solid #ececec;
-  border-radius: 0px;
-  padding: 8px;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  font-size: 1rem;
+  border-radius: 5px;
   code {
     font-size: 14px;
     line-height: 20px;
-    word-break: break-all;
-    word-wrap: break-word;
     white-space: pre;
   }
 }

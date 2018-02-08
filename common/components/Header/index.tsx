@@ -5,7 +5,7 @@ import {
   TRemoveCustomNode,
   TAddCustomNetwork
 } from 'actions/config';
-import logo from 'assets/images/logo-myetherwallet.svg';
+import logo from 'assets/images/logo-mycrypto.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
@@ -23,7 +23,6 @@ import {
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
-import Version from './components/Version';
 import { getKeyByValue } from 'utils/helpers';
 import { makeCustomNodeId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
@@ -118,14 +117,10 @@ export default class Header extends PureComponent<Props, State> {
                 src={logo}
                 height="64px"
                 width="245px"
-                alt="MyEtherWallet"
+                alt="MyCrypto logo"
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">
-                <Version />
-              </span>
-
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
               </div>

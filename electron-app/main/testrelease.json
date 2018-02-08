@@ -2,16 +2,16 @@
   "version": "5.0.0",
   "files": [
     {
-      "url": "MyEtherWallet-5.0.0-mac.zip",
+      "url": "MyCrypto-5.0.0-mac.zip",
       "sha512": "b95kHlKspcJTo3Bh5tYAZKOrpjncOGOpS2GVA+nRPw6sLy/90SR/alijbe96m+T2CB9ajxDbYMBfs+wknBHZ4g=="
     },
     {
-      "url": "MyEtherWallet-5.0.0.dmg",
+      "url": "MyCrypto-5.0.0.dmg",
       "sha512": "p+tMwE0t2svyppZVK1pFXVLEspRsVPYJtGIp07ppRtQWzkz+krz+dyU9sn2wMdtfIVpSjAGWDpoS2nhvLbHb5A==",
       "size": 49786443
     }
   ],
-  "path": "MyEtherWallet-5.0.0-mac.zip",
+  "path": "MyCrypto-5.0.0-mac.zip",
   "sha512": "b95kHlKspcJTo3Bh5tYAZKOrpjncOGOpS2GVA+nRPw6sLy/90SR/alijbe96m+T2CB9ajxDbYMBfs+wknBHZ4g==",
   "releaseDate": "2018-01-14T20:45:04.007Z",
   "releaseName": "v5.0.0 - Fake Test Release",

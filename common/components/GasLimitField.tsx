@@ -18,7 +18,7 @@ export const GaslimitLoading: React.SFC<{
 }> = ({ gasEstimationPending, onlyIncludeLoader }) => (
   <CSSTransition in={gasEstimationPending} timeout={300} classNames="fade">
     <div className={`Calculating-limit small ${gasEstimationPending ? 'active' : ''}`}>
-      {!!onlyIncludeLoader ? 'Calculating gas limit' : 'Calculating'}
+      {onlyIncludeLoader ? 'Calculating gas limit' : 'Calculating'}
       <Spinner />
     </div>
   </CSSTransition>
@@ -45,7 +45,7 @@ export const GasLimitField: React.SFC<Props> = ({
             <div className="flex-spacer" />
             <GaslimitLoading
               gasEstimationPending={gasEstimationPending}
-              onlyIncludeLoader={false}
+              onlyIncludeLoader={onlyIncludeLoader}
             />
           </div>
           {onlyIncludeLoader ? null : (

@@ -1,1 +1,89 @@
-@import './fonts/social-media';
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/Lato-Light.woff2') format('woff2'),
+    url('../assets/fonts/Lato-Light.woff') format('woff');
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/Lato-Regular.woff2') format('woff2'),
+    url('../assets/fonts/Lato-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../assets/fonts/Lato-Bold.woff2') format('woff2'),
+    url('../assets/fonts/Lato-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../assets/fonts/Roboto-Mono-Light.woff2') format('woff2'),
+    url('../assets/fonts/Roboto-Mono-Light.woff') format('woff');
+}
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/Roboto-Mono-Regular.woff2') format('woff2'),
+    url('../assets/fonts/Roboto-Mono-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'social-media';
+  src: url('../assets/fonts/social-media.woff2') format('woff2'),
+    url('../assets/fonts/social-media.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+.sm-icon {
+  display: inline-block;
+  font: normal normal normal 32px/1 'social-media';
+  text-transform: none;
+  /* Better Font Rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &.sm-16px {
+    font-size: 16px;
+  }
+  &.sm-24px {
+    font-size: 24px;
+  }
+  &.sm-32px {
+    font-size: 32px;
+  }
+  &.sm-48px {
+    font-size: 48px;
+  }
+  // Refer to docs for updating icon-fonts
+  &.sm-logo-facebook:before {
+    content: '\ea02';
+  }
+  &.sm-logo-reddit:before {
+    content: '\ea03';
+  }
+  &.sm-logo-github:before {
+    content: '\ea04';
+  }
+  &.sm-logo-twitter:before {
+    content: '\ea05';
+  }
+  &.sm-logo-linkedin:before {
+    content: '\ea06';
+  }
+  &.sm-logo-slack:before {
+    content: '\ea07';
+  }
+  &.sm-logo-medium:before {
+    content: '\ea08';
+  }
+}

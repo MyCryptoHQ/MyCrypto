@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Token } from 'config';
+import { Token, HELP_ARTICLE } from 'config';
 import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
-import NewTabLink from 'components/ui/NewTabLink';
+import { HelpLink } from 'components/ui';
 import './AddCustomTokenForm.scss';
 
 interface Props {
@@ -86,12 +86,9 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
         })}
 
         <div className="AddCustom-buttons">
-          <NewTabLink
-            href="https://myetherwallet.github.io/knowledge-base/send/adding-new-token-and-sending-custom-tokens.html"
-            className="AddCustom-buttons-help"
-          >
+          <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
             {translate('Need help? Learn how to add custom tokens.')}
-          </NewTabLink>
+          </HelpLink>
           <button
             className="AddCustom-buttons-btn btn btn-primary btn-sm"
             disabled={!this.isValid()}

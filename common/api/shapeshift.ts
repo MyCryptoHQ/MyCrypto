@@ -1,5 +1,8 @@
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
+const SHAPESHIFT_API_KEY =
+  '8abde0f70ca69d5851702d57b10305705d7333e93263124cc2a2649dab7ff9cf86401fc8de7677e8edcd0e7f1eed5270b1b49be8806937ef95d64839e319e6d9';
+
 const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
 
 export const SHAPESHIFT_TOKEN_WHITELIST = [
@@ -28,7 +31,7 @@ export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC'
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
-  private apiKey = '0ca1ccd50b708a3f8c02327f0caeeece06d3ddc1b0ac749a987b453ee0f4a29bdb5da2e53bc35e57fb4bb7ae1f43c93bb098c3c4716375fc1001c55d8c94c160';
+  private apiKey = SHAPESHIFT_API_KEY;
   private postHeaders = {
     'Content-Type': 'application/json'
   };
