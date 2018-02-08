@@ -1,27 +1,24 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
-.nonce {
-  &-label-wrapper {
+.Nonce {
+  &-label {
     align-items: center;
     margin-bottom: $space-xs;
-    > label {
+    &-text {
       margin-bottom: 0;
     }
   }
-  &-input-wrapper {
+  &-field {
     position: relative;
   }
+
   &-refresh {
-    position: absolute;
-    right: 0;
-    top: 0;
-    border: none;
-    background: transparent;
-    padding: 0;
-    margin: 0 1rem;
-    height: 2.55rem;
+    @include reset-button;
+    height: $input-height-base;
     opacity: 0.3;
     transition: opacity 300ms;
+
     > img {
       height: 1.4rem;
     }
@@ -32,5 +29,18 @@
       transition: opacity 120ms;
       opacity: 1;
     }
+  }
+
+  &-spinner {
+    height: 1rem;
+  }
+
+  &-spinner,
+  &-refresh {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) translateZ(0);
+    margin: 0 1rem;
   }
 }

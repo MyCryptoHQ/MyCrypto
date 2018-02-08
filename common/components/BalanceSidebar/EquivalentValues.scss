@@ -12,9 +12,9 @@
     }
   }
 
-  .Spinner {
-    display: block;
-    margin: auto;
+  &-spinner {
+    text-align: center;
+    padding: 1.6rem;
   }
 
   &-title {

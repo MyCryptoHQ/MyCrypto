@@ -8,7 +8,6 @@ import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import refreshIcon from 'assets/images/refresh.svg';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
 
 interface OwnProps {
@@ -114,30 +113,28 @@ class AccountInfo extends React.Component<Props, State> {
         <div className="AccountInfo-section">
           <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
           <ul className="AccountInfo-list">
-            <li className="AccountInfo-list-item AccountInfo-balance-wrapper">
+            <li className="AccountInfo-list-item AccountInfo-balance">
+              <span
+                className="AccountInfo-list-item-clickable AccountInfo-balance-amount mono wrap"
+                onClick={this.toggleShowLongBalance}
+              >
+                <UnitDisplay
+                  value={balance.wei}
+                  unit={'ether'}
+                  displayShortBalance={!showLongBalance}
+                  checkOffline={true}
+                  symbol={balance.wei ? network.name : null}
+                />
+              </span>
               {balance.isPending ? (
                 <Spinner />
               ) : (
-                <React.Fragment>
-                  <span
-                    className="AccountInfo-list-item-clickable mono wrap"
-                    onClick={this.toggleShowLongBalance}
-                  >
-                    <UnitDisplay
-                      value={balance.wei}
-                      unit={'ether'}
-                      displayShortBalance={!showLongBalance}
-                      checkOffline={true}
-                      symbol={balance.wei ? network.name : null}
-                    />
-                  </span>
-                  <button
-                    className="AccountInfo-section-refresh"
-                    onClick={this.props.setAccountBalance}
-                  >
-                    <img src={refreshIcon} />
-                  </button>
-                </React.Fragment>
+                <button
+                  className="AccountInfo-section-refresh"
+                  onClick={this.props.setAccountBalance}
+                >
+                  <i className="fa fa-refresh" />
+                </button>
               )}
             </li>
           </ul>
