@@ -45,7 +45,7 @@ export const INITIAL_STATE: State = {
     byId: {},
     allIds: []
   },
-  provider: 'bity',
+  provider: 'shapeshift',
   destinationAddress: '',
   bityOrder: {},
   shapeshiftOrder: {},

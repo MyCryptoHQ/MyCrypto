@@ -12,7 +12,6 @@ import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer, { AppState } from './reducers';
-import promiseMiddleware from 'redux-promise-middleware';
 import { getNodeConfigFromId } from 'utils/node';
 import { getNetworkConfigFromId } from 'utils/network';
 import { dedupeCustomTokens } from 'utils/tokens';
@@ -23,27 +22,15 @@ const configureStore = () => {
     collapsed: true
   });
   const sagaMiddleware = createSagaMiddleware();
-  const reduxPromiseMiddleWare = promiseMiddleware({
-    promiseTypeSuffixes: ['REQUESTED', 'SUCCEEDED', 'FAILED']
-  });
   let middleware;
   let store;
 
   if (process.env.NODE_ENV !== 'production') {
     middleware = composeWithDevTools(
-      applyMiddleware(
-        sagaMiddleware,
-        logger,
-        reduxPromiseMiddleWare,
-        routerMiddleware(history as any)
-      )
+      applyMiddleware(sagaMiddleware, logger, routerMiddleware(history as any))
     );
   } else {
-    middleware = applyMiddleware(
-      sagaMiddleware,
-      reduxPromiseMiddleWare,
-      routerMiddleware(history as any)
-    );
+    middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history as any));
   }
 
   const localSwapState = loadStatePropertyOrEmptyObject<SwapState>('swap');
