@@ -138,7 +138,9 @@ function rehydrateCustomNodes(
   state: ConfigState['nodes']['customNodes'],
   networkState: ConfigState['networks']
 ) {
-  const networkExists = (networkId: string) => Object.keys(networkState).includes(networkId);
+  const networkExists = (networkId: string) =>
+    Object.keys(networkState.customNetworks).includes(networkId) ||
+    Object.keys(networkState.staticNetworks).includes(networkId);
 
   const rehydratedCustomNodes = Object.entries(state).reduce(
     (hydratedNodes, [customNodeId, configToHydrate]) => {
