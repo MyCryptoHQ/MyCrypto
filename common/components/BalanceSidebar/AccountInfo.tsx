@@ -5,7 +5,7 @@ import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
@@ -17,6 +17,7 @@ interface OwnProps {
 interface StateProps {
   balance: Balance;
   network: NetworkConfig;
+  isOffline: boolean;
 }
 
 interface State {
@@ -69,7 +70,7 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, balance } = this.props;
+    const { network, balance, isOffline } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
     const { blockExplorer, tokenExplorer } = network;
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
@@ -129,12 +130,14 @@ class AccountInfo extends React.Component<Props, State> {
               {balance.isPending ? (
                 <Spinner />
               ) : (
-                <button
-                  className="AccountInfo-section-refresh"
-                  onClick={this.props.setAccountBalance}
-                >
-                  <i className="fa fa-refresh" />
-                </button>
+                !isOffline && (
+                  <button
+                    className="AccountInfo-section-refresh"
+                    onClick={this.props.setAccountBalance}
+                  >
+                    <i className="fa fa-refresh" />
+                  </button>
+                )
               )}
             </li>
           </ul>
@@ -176,7 +179,8 @@ class AccountInfo extends React.Component<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
-    network: getNetworkConfig(state)
+    network: getNetworkConfig(state),
+    isOffline: getOffline(state)
   };
 }
 const mapDispatchToProps: DispatchProps = { setAccountBalance };

@@ -6,6 +6,7 @@ import { Spinner } from 'components/ui';
 import { connect } from 'react-redux';
 import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
 import { nonceRequestPending } from 'selectors/transaction';
+import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 
 interface OwnProps {
@@ -13,6 +14,7 @@ interface OwnProps {
 }
 
 interface StateProps {
+  isOffline: boolean;
   noncePending: boolean;
 }
 
@@ -24,7 +26,7 @@ type Props = OwnProps & DispatchProps & StateProps;
 
 class NonceField extends React.Component<Props> {
   public render() {
-    const { alwaysDisplay, requestNonce, noncePending } = this.props;
+    const { alwaysDisplay, requestNonce, noncePending, isOffline } = this.props;
     return (
       <NonceFieldFactory
         withProps={({ nonce: { raw, value }, onChange, readOnly, shouldDisplay }) => {
@@ -56,9 +58,11 @@ class NonceField extends React.Component<Props> {
                     <Spinner />
                   </div>
                 ) : (
-                  <button className="Nonce-refresh" onClick={requestNonce}>
-                    <i className="fa fa-refresh" />
-                  </button>
+                  !isOffline && (
+                    <button className="Nonce-refresh" onClick={requestNonce}>
+                      <i className="fa fa-refresh" />
+                    </button>
+                  )
                 )}
               </div>
             </React.Fragment>
@@ -69,8 +73,9 @@ class NonceField extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState): StateProps => {
   return {
+    isOffline: getOffline(state),
     noncePending: nonceRequestPending(state)
   };
 };
