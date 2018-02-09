@@ -25,7 +25,7 @@ export default class AlphaAgreement extends React.PureComponent<{}, State> {
         <div className="AlphaAgreement-content">
           <h2>This is an Unstable Version of MyCrypto</h2>
           <p>
-            You are about to access an beta version of MyCrypto that is currently in development. In
+            You are about to access a beta version of MyCrypto that is currently in development. In
             its current state, it should only be used for testing, not for important transactions.
           </p>
           <p>
