@@ -17,7 +17,6 @@
     &-refresh {
       background: transparent;
       border: none;
-      margin: 0px 0.5rem;
       padding: 0;
       height: 1.4rem;
       width: 1.2rem;
@@ -77,9 +76,14 @@
     }
   }
 
-  &-balance-wrapper {
+  &-balance {
     display: flex;
-    align-items: flex-end;
+    justify-content: flex-start;
+    align-items: center;
+
+    &-amount {
+      margin-right: $space-sm;
+    }
   }
 
   &-list {

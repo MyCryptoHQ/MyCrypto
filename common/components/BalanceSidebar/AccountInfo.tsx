@@ -5,10 +5,9 @@ import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import refreshIcon from 'assets/images/refresh.svg';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
 
 interface OwnProps {
@@ -18,6 +17,7 @@ interface OwnProps {
 interface StateProps {
   balance: Balance;
   network: NetworkConfig;
+  isOffline: boolean;
 }
 
 interface State {
@@ -70,7 +70,7 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, balance } = this.props;
+    const { network, balance, isOffline } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
     const { blockExplorer, tokenExplorer } = network;
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
@@ -114,30 +114,30 @@ class AccountInfo extends React.Component<Props, State> {
         <div className="AccountInfo-section">
           <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
           <ul className="AccountInfo-list">
-            <li className="AccountInfo-list-item AccountInfo-balance-wrapper">
+            <li className="AccountInfo-list-item AccountInfo-balance">
+              <span
+                className="AccountInfo-list-item-clickable AccountInfo-balance-amount mono wrap"
+                onClick={this.toggleShowLongBalance}
+              >
+                <UnitDisplay
+                  value={balance.wei}
+                  unit={'ether'}
+                  displayShortBalance={!showLongBalance}
+                  checkOffline={true}
+                  symbol={balance.wei ? network.name : null}
+                />
+              </span>
               {balance.isPending ? (
                 <Spinner />
               ) : (
-                <React.Fragment>
-                  <span
-                    className="AccountInfo-list-item-clickable mono wrap"
-                    onClick={this.toggleShowLongBalance}
-                  >
-                    <UnitDisplay
-                      value={balance.wei}
-                      unit={'ether'}
-                      displayShortBalance={!showLongBalance}
-                      checkOffline={true}
-                      symbol={balance.wei ? network.name : null}
-                    />
-                  </span>
+                !isOffline && (
                   <button
                     className="AccountInfo-section-refresh"
                     onClick={this.props.setAccountBalance}
                   >
-                    <img src={refreshIcon} />
+                    <i className="fa fa-refresh" />
                   </button>
-                </React.Fragment>
+                )
               )}
             </li>
           </ul>
@@ -179,7 +179,8 @@ class AccountInfo extends React.Component<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
-    network: getNetworkConfig(state)
+    network: getNetworkConfig(state),
+    isOffline: getOffline(state)
   };
 }
 const mapDispatchToProps: DispatchProps = { setAccountBalance };

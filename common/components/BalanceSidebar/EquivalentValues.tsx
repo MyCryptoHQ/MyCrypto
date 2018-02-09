@@ -158,7 +158,9 @@ class EquivalentValues extends React.Component<Props, State> {
         ) : ratesError ? (
           <h5>{ratesError}</h5>
         ) : isFetching ? (
-          <Spinner size="x2" />
+          <div className="EquivalentValues-spinner">
+            <Spinner size="x3" />
+          </div>
         ) : (
           <div className="EquivalentValues-values">
             {pairRates.length ? (

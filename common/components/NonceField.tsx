@@ -1,12 +1,12 @@
 import React from 'react';
 import { NonceFieldFactory } from 'components/NonceFieldFactory';
 import Help from 'components/ui/Help';
-import RefreshIcon from 'assets/images/refresh.svg';
 import './NonceField.scss';
-import { InlineSpinner } from 'components/ui/InlineSpinner';
+import { Spinner } from 'components/ui';
 import { connect } from 'react-redux';
 import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
 import { nonceRequestPending } from 'selectors/transaction';
+import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 
 interface OwnProps {
@@ -14,7 +14,8 @@ interface OwnProps {
 }
 
 interface StateProps {
-  nonePending: boolean;
+  isOffline: boolean;
+  noncePending: boolean;
 }
 
 interface DispatchProps {
@@ -25,35 +26,44 @@ type Props = OwnProps & DispatchProps & StateProps;
 
 class NonceField extends React.Component<Props> {
   public render() {
-    const { alwaysDisplay, requestNonce, nonePending } = this.props;
+    const { alwaysDisplay, requestNonce, noncePending, isOffline } = this.props;
     return (
       <NonceFieldFactory
         withProps={({ nonce: { raw, value }, onChange, readOnly, shouldDisplay }) => {
           return alwaysDisplay || shouldDisplay ? (
             <React.Fragment>
-              <div className="nonce-label-wrapper flex-wrapper">
-                <label className="nonce-label">Nonce</label>
+              <div className="Nonce-label flex-wrapper">
+                <label className="Nonce-label-text">Nonce</label>
                 <Help
                   size={'x1'}
                   link={
                     'https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html'
                   }
                 />
-                <div className="flex-spacer" />
-                <InlineSpinner active={nonePending} text="Calculating" />
               </div>
-              <div className="nonce-input-wrapper">
+              <div className="Nonce-field">
                 <input
-                  className={`form-control nonce-input ${!!value ? 'is-valid' : 'is-invalid'}`}
+                  className={`Nonce-field-input form-control ${
+                    !!value ? 'is-valid' : 'is-invalid'
+                  }`}
                   type="number"
                   placeholder="e.g. 7"
                   value={raw}
                   readOnly={readOnly}
                   onChange={onChange}
+                  disabled={noncePending}
                 />
-                <button className="nonce-refresh" onClick={requestNonce}>
-                  <img src={RefreshIcon} alt="refresh" />
-                </button>
+                {noncePending ? (
+                  <div className="Nonce-spinner">
+                    <Spinner />
+                  </div>
+                ) : (
+                  !isOffline && (
+                    <button className="Nonce-refresh" onClick={requestNonce}>
+                      <i className="fa fa-refresh" />
+                    </button>
+                  )
+                )}
               </div>
             </React.Fragment>
           ) : null;
@@ -63,9 +73,10 @@ class NonceField extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState): StateProps => {
   return {
-    nonePending: nonceRequestPending(state)
+    isOffline: getOffline(state),
+    noncePending: nonceRequestPending(state)
   };
 };
 
