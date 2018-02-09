@@ -15,7 +15,7 @@ myyyyyyyy.     -+oo/.        .+ooo:`    `oyyyyyyyh    _   | |/ _ \| | '_ \  | | 
 hyyyyyyy+    -syyyyyyo-    .oyyyyyyy/`   /yyyyyyyy   | |__| | (_) | | | | | | |__| \__ \_|
 yyyyyyyyy+::syyyyyyyyyyo::oyyyyyyyyyyy/:+yyyyyyyyy    \____/ \___/|_|_| |_|  \____/|___(_)
 yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
-yyyyyyyyyyyyyyyyysyyyyyyyyyyyyyysyyyyyyyyyyyyyyyyy    https://github.com/MyCrypto/MyCrypto
+yyyyyyyyyyyyyyyyysyyyyyyyyyyyyyysyyyyyyyyyyyyyyyyy    https://github.com/MyCrypto/mycrypto.com
 hyyyyyyyyyyyyyys. `:syyyyyyyyy/` `+yyyyyyyyyyyyyyy
 myyyyyyyyyyyyyy/     :syyyyy/`    .yyyyyyyyyyyyyyh
  hyyyyyyyyyyyyyy:      .::-`     -syyyyyyyyyyyyyhd
