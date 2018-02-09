@@ -54,7 +54,7 @@ export default class DisclaimerModal extends React.Component<{}, State> {
             text.
           </p>
           <p>
-            <b>MIT License</b> Copyright © 2015-2017 MyCrypto LLC
+            <b>MIT License</b> Copyright © 2015-2018 MyCrypto Inc.
           </p>
           <p>
             Permission is hereby granted, free of charge, to any person obtaining a copy of this
