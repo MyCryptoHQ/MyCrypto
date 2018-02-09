@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
 import { getNetworkConfig } from 'selectors/config';
+import { isEtherUnit } from 'libs/units';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -35,7 +36,7 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
           withQuery={({ readOnly }) => (
             <ConditionalStringDropDown
               options={[network.unit, ...getTokenSymbols(focusedTokens)]}
-              value={unit === 'ETH' ? network.unit : unit}
+              value={isEtherUnit(unit) ? network.unit : unit}
               condition={!readOnly}
               conditionalProps={{
                 onChange: this.handleOnChange

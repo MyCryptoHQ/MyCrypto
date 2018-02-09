@@ -51,7 +51,7 @@ export function getSelectedTokenContractAddress(state: AppState): string {
   const allTokens = getAllTokens(state);
   const currentUnit = getUnit(state);
 
-  if (currentUnit === 'ETH') {
+  if (isEtherUnit(currentUnit)) {
     return '';
   }
 

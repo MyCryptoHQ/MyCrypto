@@ -103,7 +103,7 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
-const isEtherUnit = (unit: string) => unit === 'ETH';
+const isEtherUnit = (unit: string) => unit === 'ETH' || unit === 'ether';
 
 const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
   if (oldDecimal === newDecimal) {
