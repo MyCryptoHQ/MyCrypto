@@ -1,4 +1,4 @@
-import { dPathRegex, whitespaceDPathRegex } from 'config/dPaths';
+import { dPathRegex, whitespaceDPathRegex } from 'config';
 import { nospaceValid, nospaceInvalid, whitespaceValid, whitespaceInvalid } from './testStrings';
 
 describe('dPath regex', () => {
