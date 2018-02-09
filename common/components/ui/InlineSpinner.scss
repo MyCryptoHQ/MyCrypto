@@ -1,8 +1,21 @@
-.inline-spinner {
+@import 'common/sass/variables';
+
+.InlineSpinner {
+  color: $gray-light;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  opacity: 0;
+  pointer-events: none;
+
+  .Spinner {
+    margin-left: 8px;
+  }
+
   &--fade {
     &-enter,
     &-exit {
-      transition: opacity 300ms;
+      transition: opacity $transition-speed;
     }
 
     &-enter {

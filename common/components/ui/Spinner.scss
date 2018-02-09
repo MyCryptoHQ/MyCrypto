@@ -1,3 +1,5 @@
+@import 'common/sass/variables';
+
 .Spinner {
   animation: rotate 2s linear infinite;
 
@@ -39,7 +41,7 @@
 
   &-dark {
     & .path {
-      stroke: #163151;
+      stroke: $ether-navy;
     }
   }
 }
