@@ -319,19 +319,19 @@ export function* shapeshiftOrderTimeRemaining(): SagaIterator {
       } else {
         switch (swap.shapeshiftOrderStatus) {
           case 'no_deposits':
-            yield put(orderTimeSwap(0));
-            yield put(stopPollShapeshiftOrderStatus());
-            yield put(stopLoadShapeshiftRatesSwap());
             if (!hasShownNotification) {
               hasShownNotification = true;
+              yield put(orderTimeSwap(0));
+              yield put(stopPollShapeshiftOrderStatus());
+              yield put(stopLoadShapeshiftRatesSwap());
               yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
             }
             break;
           case 'failed':
-            yield put(stopPollShapeshiftOrderStatus());
-            yield put(stopLoadShapeshiftRatesSwap());
             if (!hasShownNotification) {
               hasShownNotification = true;
+              yield put(stopPollShapeshiftOrderStatus());
+              yield put(stopLoadShapeshiftRatesSwap());
               yield put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity));
             }
             break;

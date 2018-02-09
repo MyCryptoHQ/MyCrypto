@@ -1,7 +1,6 @@
 import { TShowNotification } from 'actions/notifications';
 import {
   TRestartSwap,
-  TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
   TStartPollShapeshiftOrderStatus,
   TStopOrderTimerSwap,
@@ -30,7 +29,6 @@ interface ReduxStateProps {
 
 interface ReduxActionProps {
   restartSwap: TRestartSwap;
-  startOrderTimerSwap: TStartOrderTimerSwap;
   startPollBityOrderStatus: TStartPollBityOrderStatus;
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
   startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
@@ -47,7 +45,6 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
     } else {
       this.props.startPollBityOrderStatus();
     }
-    this.props.startOrderTimerSwap();
   }
 
   public componentWillUnmount() {
