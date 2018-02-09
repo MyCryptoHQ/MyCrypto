@@ -115,11 +115,17 @@ class EquivalentValues extends React.Component<Props, State> {
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
     const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
+    const fiatSymbols = {
+      USD: '$',
+      EUR: '€',
+      GBP: '£'
+    };
 
-    const Value = ({ rate, value }) => (
+    const Value = ({ rate, value, symbol = '' }) => (
       <div className="EquivalentValues-values-currency">
         <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
+          {symbol}
           <UnitDisplay
             unit={'ether'}
             value={value}
@@ -168,7 +174,12 @@ class EquivalentValues extends React.Component<Props, State> {
                 {pairRates.map(
                   (equiv, i) =>
                     (rateSymbols.symbols.fiat as string[]).includes(equiv.rate) && (
-                      <Value rate={equiv.rate} value={equiv.value} key={i} />
+                      <Value
+                        rate={equiv.rate}
+                        value={equiv.value}
+                        symbol={fiatSymbols[equiv.rate]}
+                        key={i}
+                      />
                     )
                 )}
                 <div className="EquivalentValues-values-spacer" />
