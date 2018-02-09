@@ -125,7 +125,7 @@ export default class Footer extends React.PureComponent<Props> {
 
             <p className="Footer-copyright">
               &copy; {new Date().getFullYear()} MyCrypto, LLC{' '}
-              <span className="Footer-copyright-spacer">&middot;</span> v{VERSION}
+              <span className="Footer-copyright-spacer">&middot;</span> {VERSION}
             </p>
 
             <Disclaimer />

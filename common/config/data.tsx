@@ -4,7 +4,7 @@ import { getValues } from '../utils/helpers';
 export const languages = require('./languages.json');
 
 // Displays in the header
-export const VERSION = '4.0.0 (Alpha 0.1.0)';
+export const VERSION = '(BETA) 0.1.0';
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -13,12 +13,12 @@ export const N_FACTOR = 8192;
 export const ANNOUNCEMENT_TYPE = 'warning';
 export const ANNOUNCEMENT_MESSAGE = (
   <div>
-    This is an Alpha build of MyCrypto v4. Please only use for testing, or use v3 at{' '}
-    <a href="https://myetherwallet.com">{'https://myetherwallet.com'}</a>.
+    This is an early build of MyCrypto Beta. Please only use for testing, or use production at{' '}
+    <a href="https://mycrypto.com">{'https://mycrypto.com'}</a>.
     <br />
     <span className="hidden-xs">
-      If you're interested in recieving updates about the MyCrypto V4 Alpha, you can subscribe via{' '}
-      <a href="https://myetherwallet.us16.list-manage.com/subscribe?u=afced8afb6eb2968ba407a144&id=15a7c74eab">
+      If you're interested in recieving updates about the MyCrypto Beta, you can subscribe via{' '}
+      <a href="https://mycrypto.us17.list-manage.com/subscribe?u=6092be560275431280b0ffbc1&id=a03ef384e4">
         mailchimp
       </a>{' '}
       :)
