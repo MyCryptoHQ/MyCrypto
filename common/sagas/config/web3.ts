@@ -1,18 +1,19 @@
-import { networkIdToName } from 'libs/values';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet/constants';
 import { Web3Wallet } from 'libs/wallet';
 import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery, call } from 'redux-saga/effects';
 import { changeNodeIntent, TypeKeys, web3SetNode } from 'actions/config';
-import { getNodeId, getStaticAltNodeIdToWeb3 } from 'selectors/config';
+import { getNodeId, getStaticAltNodeIdToWeb3, getNetworkNameByChainId } from 'selectors/config';
 import { setupWeb3Node, Web3Service } from 'libs/nodes/web3';
 import { Web3NodeConfig } from 'types/node';
 
 export function* initWeb3Node(): SagaIterator {
   const { networkId, lib } = yield call(setupWeb3Node);
+  const network = yield select(getNetworkNameByChainId, networkId);
+
   const config: Web3NodeConfig = {
     isCustom: false,
-    network: networkIdToName(networkId),
+    network,
     service: Web3Service,
     lib,
     estimateGas: false,

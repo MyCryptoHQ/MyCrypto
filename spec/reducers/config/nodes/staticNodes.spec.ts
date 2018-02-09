@@ -93,10 +93,9 @@ const expectedInitialState = {
 };
 
 const web3Id = 'web3';
-const web3NetworkId = 1;
 const web3Node: Web3NodeConfig = {
   isCustom: false,
-  network: networkIdToName(web3NetworkId),
+  network: 'ETH',
   service: Web3Service,
   lib: jest.fn() as any,
   estimateGas: false,

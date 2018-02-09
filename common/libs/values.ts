@@ -24,23 +24,6 @@ export function sanitizeHex(hex: string) {
   return hex !== '' ? `0x${padLeftEven(hexStr)}` : '';
 }
 
-export function networkIdToName(
-  networkId: 1 | 3 | 4 | 42 | '1' | '3' | '4' | '42'
-): StaticNetworkIds {
-  switch (networkId.toString()) {
-    case '1':
-      return 'ETH';
-    case '3':
-      return 'Ropsten';
-    case '4':
-      return 'Rinkeby';
-    case '42':
-      return 'Kovan';
-    default:
-      throw new Error(`Network ${networkId} is unsupported.`);
-  }
-}
-
 export const buildEIP681EtherRequest = (
   recipientAddr: string,
   chainId: number,
