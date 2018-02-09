@@ -13,7 +13,7 @@ export const N_FACTOR = 8192;
 export const ANNOUNCEMENT_TYPE = 'warning';
 export const ANNOUNCEMENT_MESSAGE = (
   <div>
-    This is an Beta build of MyCrypto Beta. Please only use for testing, or use production at{' '}
+    This is an early build of MyCrypto Beta. Please only use for testing, or use production at{' '}
     <a href="https://mycrypto.com">{'https://mycrypto.com'}</a>.
     <br />
     <span className="hidden-xs">
