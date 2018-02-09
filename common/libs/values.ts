@@ -1,7 +1,6 @@
 import { Wei, toTokenBase } from 'libs/units';
 import { addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
-import { StaticNetworkIds } from 'types/network';
 
 export function stripHexPrefix(value: string) {
   return value.replace('0x', '');
