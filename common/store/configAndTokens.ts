@@ -11,8 +11,7 @@ import {
   getLanguageSelection,
   getCustomNodeConfigs,
   getSelectedNode,
-  getCustomNetworkConfigs,
-  getSelectedNetwork
+  getCustomNetworkConfigs
 } from 'selectors/config';
 import RootReducer, { AppState } from 'reducers';
 import CustomNode from 'libs/nodes/custom';
@@ -27,8 +26,7 @@ export function getConfigAndCustomTokensStateToSubscribe(
     meta: { languageSelection: getLanguageSelection(state) },
     nodes: { customNodes: getCustomNodeConfigs(state), selectedNode: getSelectedNode(state) },
     networks: {
-      customNetworks: getCustomNetworkConfigs(state),
-      selectedNetwork: getSelectedNetwork(state)
+      customNetworks: getCustomNetworkConfigs(state)
     }
   };
 
@@ -58,20 +56,33 @@ export function rehydrateConfigAndCustomTokenState() {
     nextConfigState.meta = { ...nextConfigState.meta, ...savedConfigState.meta };
   }
 
-  const nextCustomTokenState = rehydrateCustomTokens(nextConfigState.networks);
+  const { customNodes, selectedNode: { nodeId }, staticNodes } = nextConfigState.nodes;
+  const selectedNode = isStaticNodeId(appInitialState, nodeId)
+    ? staticNodes[nodeId]
+    : customNodes[nodeId];
+
+  if (!selectedNode) {
+    return { config: configInitialState, customTokens: customTokensInitialState };
+  }
+
+  const nextCustomTokenState = rehydrateCustomTokens(
+    nextConfigState.networks,
+    selectedNode.network
+  );
 
   return { config: nextConfigState, customTokens: nextCustomTokenState };
 }
 
-function rehydrateCustomTokens(networkState: ConfigState['networks']) {
+function rehydrateCustomTokens(networkState: ConfigState['networks'], selectedNetwork: string) {
   // Dedupe custom tokens initially
   const savedCustomTokensState =
     loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || customTokensInitialState;
 
-  const { customNetworks, selectedNetwork, staticNetworks } = networkState;
+  const { customNetworks, staticNetworks } = networkState;
   const network = isStaticNetworkId(appInitialState, selectedNetwork)
     ? staticNetworks[selectedNetwork]
     : customNetworks[selectedNetwork];
+
   return network.isCustom
     ? savedCustomTokensState
     : dedupeCustomTokens(network.tokens, savedCustomTokensState);
@@ -83,13 +94,6 @@ function rehydrateNetworks(
 ): ConfigState['networks'] {
   const nextNetworkState = { ...initialState };
   nextNetworkState.customNetworks = savedState.customNetworks;
-  const { customNetworks, selectedNetwork, staticNetworks } = nextNetworkState;
-  const nextSelectedNetwork = isStaticNetworkId(appInitialState, savedState.selectedNetwork)
-    ? staticNetworks[selectedNetwork]
-    : customNetworks[selectedNetwork];
-  nextNetworkState.selectedNetwork = nextSelectedNetwork
-    ? savedState.selectedNetwork
-    : initialState.selectedNetwork;
   return nextNetworkState;
 }
 
