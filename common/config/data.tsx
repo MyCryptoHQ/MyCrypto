@@ -13,11 +13,11 @@ export const N_FACTOR = 8192;
 export const ANNOUNCEMENT_TYPE = 'warning';
 export const ANNOUNCEMENT_MESSAGE = (
   <div>
-    This is an Beta build of MyCrypto v4. Please only use for testing, or use production at{' '}
+    This is an Beta build of MyCrypto Beta. Please only use for testing, or use production at{' '}
     <a href="https://mycrypto.com">{'https://mycrypto.com'}</a>.
     <br />
     <span className="hidden-xs">
-      If you're interested in recieving updates about the MyCrypto V4 Beta, you can subscribe via{' '}
+      If you're interested in recieving updates about the MyCrypto Beta, you can subscribe via{' '}
       <a href="https://mycrypto.us17.list-manage.com/subscribe?u=6092be560275431280b0ffbc1&id=a03ef384e4">
         mailchimp
       </a>{' '}
