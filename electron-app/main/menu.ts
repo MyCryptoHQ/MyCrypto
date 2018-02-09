@@ -38,7 +38,7 @@ const HELP_MENU = {
     {
       label: 'Help / FAQ',
       click() {
-        shell.openExternal('https://myetherwallet.github.io/knowledge-base/');
+      shell.openExternal('https://support.mycrypto.com/');
       }
     },
     {
