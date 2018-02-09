@@ -9,8 +9,8 @@ export interface AddressMessage {
 
 // MAKE SURE THE ADDRESS KEY IS EITHER LOWER CASED OR CHECKSUMMED.
 export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
-  '0x7cb57b5a97eabe94205c07890be4c1ad31e486a8': {
-    msg: 'Thank you for donating to MyEtherWallet. TO THE MOON!'
+  '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520': {
+    msg: 'Thank you for donating to MyCrypto. TO THE MOON!'
   },
   '0x75aa7b0d02532f3833b66c7f0ad35376d373ddf8': {
     gasLimit: 300000,
