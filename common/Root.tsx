@@ -17,6 +17,7 @@ import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
+import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
 
 interface Props {
@@ -94,14 +95,15 @@ export default class Root extends Component<Props, State> {
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
-  const { pathname, hash } = props.location;
+  const { pathname } = props.location;
+  let { hash } = props.location;
 
   if (pathname === '/') {
+    hash = hash.split('?')[0];
     switch (hash) {
       case '#send-transaction':
       case '#offline-transaction':
-        history.push('/send-transaction');
-        break;
+        return <RedirectWithQuery from={pathname} to={'account/send'} />;
       case '#generate-wallet':
         history.push('/');
         break;
@@ -125,9 +127,9 @@ const LegacyRoutes = withRouter(props => {
 
   return (
     <Switch>
-      <Redirect from="/signmsg.html" to="/sign-and-verify-message" />
-      <Redirect from="/helpers.html" to="/helpers" />
-      <Redirect from="/send-transaction" to="/account/send" />
+      <RedirectWithQuery from="/signmsg.html" to="/sign-and-verify-message" />
+      <RedirectWithQuery from="/helpers.html" to="/helpers" />
+      <RedirectWithQuery from="/send-transaction" to={'/account/send'} />
     </Switch>
   );
 });
