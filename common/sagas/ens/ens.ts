@@ -47,7 +47,7 @@ function* resolveDomain(): SagaIterator {
 
       const result: { domainData: IBaseDomainRequest; error } = yield race({
         domainData: call(resolveDomainRequest, domain, node),
-        err: call(delay, 4000)
+        err: call(delay, 10000)
       });
 
       const { domainData } = result;

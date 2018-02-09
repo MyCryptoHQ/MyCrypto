@@ -18,7 +18,7 @@ interface Props {
    * @type {string}
    * @memberof Props
    */
-  symbol?: string;
+  symbol?: string | null;
   /**
    * @description display the long balance, if false, trims it to 3 decimal places, if a number is specified then that number is the number of digits to be displayed.
    * @type {boolean}

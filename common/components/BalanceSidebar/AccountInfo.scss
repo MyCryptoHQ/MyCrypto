@@ -11,6 +11,29 @@
 
     &-header {
       margin-top: 0;
+      display: inline-block;
+    }
+
+    &-refresh {
+      background: transparent;
+      border: none;
+      padding: 0;
+      height: 1.4rem;
+      width: 1.2rem;
+      opacity: 0.3;
+      transition: opacity 0.3s;
+      > img {
+        height: inherit;
+        width: inherit;
+        vertical-align: top;
+      }
+      &:hover {
+        opacity: 0.54;
+      }
+      &:active {
+        transition: opacity 120ms;
+        opacity: 1;
+      }
     }
   }
 
@@ -50,6 +73,16 @@
       .Spinner {
         margin-right: 16px;
       }
+    }
+  }
+
+  &-balance {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    &-amount {
+      margin-right: $space-sm;
     }
   }
 

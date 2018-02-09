@@ -1,0 +1,46 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.Nonce {
+  &-label {
+    align-items: center;
+    margin-bottom: $space-xs;
+    &-text {
+      margin-bottom: 0;
+    }
+  }
+  &-field {
+    position: relative;
+  }
+
+  &-refresh {
+    @include reset-button;
+    height: $input-height-base;
+    opacity: 0.3;
+    transition: opacity 300ms;
+
+    > img {
+      height: 1.4rem;
+    }
+    &:hover {
+      opacity: 0.54;
+    }
+    &:active {
+      transition: opacity 120ms;
+      opacity: 1;
+    }
+  }
+
+  &-spinner {
+    height: 1rem;
+  }
+
+  &-spinner,
+  &-refresh {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) translateZ(0);
+    margin: 0 1rem;
+  }
+}

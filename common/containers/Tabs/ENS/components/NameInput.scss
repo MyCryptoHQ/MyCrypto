@@ -1,0 +1,17 @@
+@import 'common/sass/variables';
+
+.ENSInput {
+  max-width: 520px;
+  padding: $space-sm 0;
+  margin: 0 auto;
+
+  &-name {
+    margin-bottom: $space-md;
+  }
+
+  &-button {
+    .Spinner {
+      margin-left: $space-md;
+    }
+  }
+}
