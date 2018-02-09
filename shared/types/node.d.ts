@@ -32,11 +32,9 @@ interface Web3NodeConfig extends StaticNodeConfig {
 }
 
 declare enum StaticNodeId {
-  ETH_MEW = 'eth_mew',
   ETH_MYCRYPTO = 'eth_mycrypto',
   ETH_ETHSCAN = 'eth_ethscan',
   ETH_INFURA = 'eth_infura',
-  ROP_MEW = 'rop_mew',
   ROP_INFURA = 'rop_infura',
   KOV_ETHSCAN = 'kov_ethscan',
   RIN_ETHSCAN = 'rin_ethscan',

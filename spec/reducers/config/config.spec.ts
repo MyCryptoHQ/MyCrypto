@@ -264,7 +264,7 @@ describe('handleNodeChangeIntent*', () => {
 
 describe('unsetWeb3Node*', () => {
   const node = 'web3';
-  const alternativeNodeId = 'eth_mew';
+  const alternativeNodeId = 'eth_mycrypto';
   const gen = unsetWeb3Node();
 
   it('should select getNode', () => {
@@ -294,7 +294,7 @@ describe('unsetWeb3Node*', () => {
 describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction = {};
   const mockNodeId = 'web3';
-  const alternativeNodeId = 'eth_mew';
+  const alternativeNodeId = 'eth_mycrypto';
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {

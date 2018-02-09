@@ -5,13 +5,6 @@ import { NonWeb3NodeConfigs, Web3NodeConfigs } from 'types/node';
 export type State = NonWeb3NodeConfigs & Web3NodeConfigs;
 
 export const INITIAL_STATE: State = {
-  eth_mew: {
-    network: 'ETH',
-    isCustom: false,
-    lib: new RPCNode('https://api.myetherapi.com/eth'),
-    service: 'MyEtherWallet',
-    estimateGas: true
-  },
   eth_mycrypto: {
     network: 'ETH',
     isCustom: false,
@@ -31,13 +24,6 @@ export const INITIAL_STATE: State = {
     isCustom: false,
     service: 'infura.io',
     lib: new InfuraNode('https://mainnet.infura.io/mew'),
-    estimateGas: false
-  },
-  rop_mew: {
-    network: 'Ropsten',
-    isCustom: false,
-    service: 'MyEtherWallet',
-    lib: new RPCNode('https://api.myetherapi.com/rop'),
     estimateGas: false
   },
   rop_infura: {

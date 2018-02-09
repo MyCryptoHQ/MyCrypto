@@ -20,7 +20,7 @@ interface NodeChangePending {
 export type State = NodeLoaded | NodeChangePending;
 
 export const INITIAL_STATE: NodeLoaded = {
-  nodeId: 'eth_mew',
+  nodeId: 'eth_mycrypto',
   pending: false
 };
 

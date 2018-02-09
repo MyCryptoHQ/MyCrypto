@@ -2,14 +2,14 @@ import { changeNodeIntent, changeNode } from 'actions/config';
 import { State, selectedNode } from 'reducers/config/nodes/selectedNode';
 
 export const expectedState = {
-  initialState: { nodeId: 'eth_mew', pending: false },
+  initialState: { nodeId: 'eth_mycrypto', pending: false },
   nodeChange: { nodeId: 'nodeToChangeTo', pending: false },
-  nodeChangeIntent: { nodeId: 'eth_mew', pending: true }
+  nodeChangeIntent: { nodeId: 'eth_mycrypto', pending: true }
 };
 
 export const actions = {
   changeNode: changeNode({ nodeId: 'nodeToChangeTo', networkId: 'networkToChangeTo' }),
-  changeNodeIntent: changeNodeIntent('eth_mew')
+  changeNodeIntent: changeNodeIntent('eth_mycrypto')
 };
 
 describe('selected node reducer', () => {
