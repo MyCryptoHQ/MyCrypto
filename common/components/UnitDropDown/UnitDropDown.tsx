@@ -35,7 +35,7 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
           withQuery={({ readOnly }) => (
             <ConditionalStringDropDown
               options={[network.unit, ...getTokenSymbols(focusedTokens)]}
-              value={unit === 'ether' ? network.unit : unit}
+              value={unit === 'ETH' ? network.unit : unit}
               condition={!readOnly}
               conditionalProps={{
                 onChange: this.handleOnChange
