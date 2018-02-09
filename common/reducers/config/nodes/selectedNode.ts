@@ -34,7 +34,7 @@ const changeNodeIntent = (state: State, _: ChangeNodeIntentAction): State => ({
   pending: true
 });
 
-const handleRemoveCustomNode = (state: State, _: RemoveCustomNodeAction): State => INITIAL_STATE;
+const handleRemoveCustomNode = (_: State, _1: RemoveCustomNodeAction): State => INITIAL_STATE;
 
 export const selectedNode = (
   state: State = INITIAL_STATE,
