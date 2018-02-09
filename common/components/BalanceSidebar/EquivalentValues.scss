@@ -25,6 +25,15 @@
   &-values {
     display: flex;
     flex-wrap: wrap;
+    &-spacer {
+      height: 1px;
+      width: 100%;
+      margin: 0.5rem 0rem;
+      margin-bottom: 0.75rem;
+      background-color: #ececec;
+      background-position: center;
+      background-size: 1px 1px;
+    }
     &-currency {
       width: 50%;
       margin-bottom: $space-xs;
@@ -33,7 +42,6 @@
         display: inline-block;
         min-width: 36px;
         opacity: 0.54;
-        margin-right: 8px;
       }
       &-value {
         font-weight: 600;

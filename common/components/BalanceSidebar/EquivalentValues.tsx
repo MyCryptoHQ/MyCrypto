@@ -164,7 +164,21 @@ class EquivalentValues extends React.Component<Props, State> {
         ) : (
           <div className="EquivalentValues-values">
             {pairRates.length ? (
-              pairRates.map((equiv, i) => <Value rate={equiv.rate} value={equiv.value} key={i} />)
+              <React.Fragment>
+                {pairRates.map(
+                  (equiv, i) =>
+                    (rateSymbols.symbols.fiat as string[]).includes(equiv.rate) && (
+                      <Value rate={equiv.rate} value={equiv.value} key={i} />
+                    )
+                )}
+                <div className="EquivalentValues-values-spacer" />
+                {pairRates.map(
+                  (equiv, i) =>
+                    (rateSymbols.symbols.coinAndToken as string[]).includes(equiv.rate) && (
+                      <Value rate={equiv.rate} value={equiv.value} key={i} />
+                    )
+                )}
+              </React.Fragment>
             ) : (
               <p>Sorry, equivalent values are not supported for this unit.</p>
             )}
