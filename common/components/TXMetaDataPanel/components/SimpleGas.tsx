@@ -94,12 +94,11 @@ class SimpleGas extends React.Component<Props> {
               min={bounds.min}
               max={bounds.max}
               value={this.getGasPriceGwei(gasPrice.value)}
-              tipFormatter={gas => `${gas} Gwei`}
+              tipFormatter={this.formatTooltip}
               disabled={isGasEstimating}
             />
             <div className="SimpleGas-slider-labels">
               <span>{translate('Cheap')}</span>
-              <span>{translate('Balanced')}</span>
               <span>{translate('Fast')}</span>
             </div>
           </div>
@@ -133,6 +132,16 @@ class SimpleGas extends React.Component<Props> {
   private getGasPriceGwei(gasPriceValue: Wei) {
     return parseFloat(fromWei(gasPriceValue, 'gwei'));
   }
+
+  private formatTooltip = (gas: number) => {
+    const { gasEstimates } = this.props;
+    let recommended = '';
+    if (gasEstimates && !gasEstimates.isDefault && gas === gasEstimates.fast) {
+      recommended = '(Recommended)';
+    }
+
+    return `${gas} Gwei ${recommended}`;
+  };
 }
 
 export default connect(

@@ -15,6 +15,7 @@ export interface GasEstimates {
   fast: number;
   fastest: number;
   time: number;
+  isDefault: boolean;
 }
 
 export function fetchGasEstimates(): Promise<GasEstimates> {
@@ -25,6 +26,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
     .then(parseJSON)
     .then((req: RawGasEstimates) => ({
       ...req,
-      time: Date.now()
+      time: Date.now(),
+      isDefault: false
     }));
 }

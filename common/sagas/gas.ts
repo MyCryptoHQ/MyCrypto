@@ -17,6 +17,7 @@ export function* setDefaultEstimates(): SagaIterator {
       standard: gasPriceDefaults.default,
       fast: gasPriceDefaults.default,
       fastest: gasPriceDefaults.maxGwei,
+      isDefault: true,
       time
     })
   );
