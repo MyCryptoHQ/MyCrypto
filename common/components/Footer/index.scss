@@ -1,158 +1,172 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
-// footer
+$footer-link-color: #fff;
+
 .Footer {
   background-color: $ether-navy;
-  color: white;
-  padding-top: $space-xs;
-  padding-bottom: $space-sm;
+  padding: $space-sm $space-sm 0;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  text-align: center;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
   border-top: 3px solid $brand-primary;
 
-  @media (min-width: $screen-sm-min) {
-    flex-direction: row;
+  &-section {
+    color: #fff;
+    padding: $space;
+  }
+
+  // Responsive ordering behavior
+  &-links {
+    order: 1;
     text-align: left;
-    align-items: flex-start;
+  }
+  &-about {
+    order: 2;
+    text-align: center;
+  }
+  &-support {
+    order: 3;
+    text-align: right;
   }
 
-  & > div {
-    padding: 8px 16px;
-  }
+  @media (max-width: 75rem) {
+    justify-content: center;
 
-  &-social-media-wrap {
-    margin-top: $space;
-
-    @media (min-width: $screen-sm-min) {
-      margin-top: $space-md;
+    &-links {
+      text-align: center;
+      order: 2;
     }
-
-    & .Footer-social-media-link {
-      transition: opacity 0.3s;
-      color: white;
-      margin: 1rem;
-      margin-left: 0;
-      &:hover {
-        opacity: 0.8;
-        color: white;
-      }
-      &:focus {
-        opacity: 0.8;
-        color: white;
-      }
+    &-about {
+      order: 1;
+      width: 100%;
+      padding-bottom: $space * 2;
+      margin-bottom: $space * 2;
+      border-bottom: 1px solid rgba(#fff, 0.2);
+    }
+    &-support {
+      text-align: center;
+      order: 3;
     }
   }
 
-  // Don't use &, needs to override styles
-  .Footer-affiliate-tag {
-    background-color: #0e97c0;
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 30px;
-    margin: 0rem 0.5rem 0.5rem 0px;
-    transition: color 0.3s, background-color 0.3s;
-    &:hover {
-      background-color: white;
-      color: #0e97c0;
+
+  &-links {
+    &-social {
+      margin-bottom: $space;
+      margin-left: -$space-xs;
     }
-    & a {
-      transition: color 0s;
-      color: inherit;
-      &:hover {
-        color: inherit;
+
+    &-links {
+      a {
+        display: block;
+        font-size: $font-size-small;
+        color: $footer-link-color;
+        margin-bottom: $space-md;
       }
     }
   }
 
-  &-column {
-    padding: 1rem 2rem;
-  }
 
   &-about {
     &-logo {
-      width: 100%;
-      padding: 0 10px 0 0;
-      padding-top: 0;
-      height: auto;
-      max-width: 12rem;
-    }
-    &-text {
-      max-width: 50ch;
-    }
-  }
-
-  &-about,
-  &-links,
-  &-info {
-    & > a {
       display: block;
-      font-size: 0.8rem;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      width: 100%;
+      max-width: 245px;
+      margin: -$space-xs auto $space * 1.25;
+      text-align: center;
+    }
+
+    &-links {
+      margin-bottom: $space;
+
+      > a {
+        margin: 0 $space-md;
+        color: $footer-link-color;
+        font-size: $font-size-bump;
+      }
+    }
+
+    &-text {
+      font-size: $font-size-xs;
+      opacity: 0.8;
+      margin: 0 auto $space;
+      max-width: 530px;
+    }
+
+    &-legal {
+      font-size: $font-size-xs-bump;
+
+      &-text {
+        display: inline-block;
+        margin: 0 $space-sm;
+
+        > a {
+          color: $footer-link-color;
+        }
+      }
     }
   }
 
-  &-modal-button {
-    color: #4ac8ed;
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
-    text-align: left;
-    padding: 0;
-    margin: 0;
-    font-weight: 300;
-    transition: 500ms all ease-in-out;
-    &:hover {
-      color: #0e97c0;
+
+  &-support {
+    &-title {
+      margin: 0 0 $space-sm;
+      font-size: $font-size-base;
     }
-  }
 
-  &-copyright {
-    &-spacer {
-      margin: 0 $space-xs;
+    &-affiliates {
+      margin-bottom: $space-sm;
+
+      > a {
+        display: block;
+        font-size: $font-size-xs-bump;
+        margin-bottom: $space-xs;
+        color: $footer-link-color;
+      }
     }
-  }
 
-  p {
-    margin: $space-xs 0 $space-sm;
-  }
+    &-donate {
+      margin-bottom: $space-sm;
 
-  a,
-  .Footer-modal-button {
-    color: #7fe5ff;
-    font-weight: 400;
-    transition: color 0.3s;
-    &:hover,
-    &:focus {
-      opacity: 1;
-      color: darken(#4ac8ed, 5%);
+      &-address {
+        font-size: 0.7rem;
+        opacity: 0.8;
+      }
     }
-  }
 
-  h5 {
-    font-size: $font-size-bump;
-    margin: $space-md 0;
+    &-friends {
+      > a {
+        display: inline-block;
+        font-size: $font-size-xs;
+        color: $footer-link-color;
 
-    i {
-      margin-right: 0.25em;
+        &:after {
+          content: '·';
+          margin: 0 $space-sm;
+        }
+
+        &:last-child:after {
+          display: none;
+        }
+      }
     }
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0 0 $space-md 0;
-  }
-
-  > li,
-  > p {
-    font-size: 0.8rem;
-    margin: $space-sm 0;
   }
 }
 
-.Modal {
-  color: #000;
+.SocialMediaLink {
+  transition: opacity 0.3s;
+  color: #fff;
+  margin: 0.65rem;
+
+  > i {
+    font-size: 1.2rem;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+    color: #fff;
+  }
 }
