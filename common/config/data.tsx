@@ -3,8 +3,8 @@ import { getValues } from '../utils/helpers';
 
 export const languages = require('./languages.json');
 
-// Displays in the header
-export const VERSION = '(BETA) 0.1.0';
+// Displays in the footer
+export const VERSION = '0.1.0 (BETA)';
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -56,6 +56,8 @@ export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
 // TODO - add the real referral url once you know it
 export const shapeshiftReferralURL = 'https://shapeshift.io';
+export const ethercardReferralURL =
+  'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
 
 export enum SecureWalletName {
   WEB3 = 'web3',
