@@ -54,7 +54,8 @@ $tooltip-bg: rgba(#222, 0.95);
     background: none;
 
     .rc-slider {
-      &-handle {
+      &-handle,
+      &-track {
         display: none;
       }
 
