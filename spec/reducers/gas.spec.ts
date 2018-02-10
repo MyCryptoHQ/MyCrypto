@@ -17,7 +17,8 @@ describe('gas reducer', () => {
       standard: 1,
       fast: 4,
       fastest: 20,
-      time: Date.now()
+      time: Date.now(),
+      isDefault: false
     };
     const state = gas(undefined, setGasEstimates(estimates));
     expect(state).toEqual({

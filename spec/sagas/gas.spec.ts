@@ -15,14 +15,16 @@ describe('fetchEstimates*', () => {
     standard: 1,
     fast: 4,
     fastest: 20,
-    time: Date.now() - gasEstimateCacheTime - 1000
+    time: Date.now() - gasEstimateCacheTime - 1000,
+    isDefault: false
   };
   const newEstimates: GasEstimates = {
     safeLow: 2,
     standard: 2,
     fast: 8,
     fastest: 80,
-    time: Date.now()
+    time: Date.now(),
+    isDefault: false
   };
 
   it('Should select getOffline', () => {
@@ -83,6 +85,7 @@ describe('setDefaultEstimates*', () => {
           standard: gasPriceDefaults.default,
           fast: gasPriceDefaults.default,
           fastest: gasPriceDefaults.maxGwei,
+          isDefault: true,
           time
         })
       )
