@@ -125,7 +125,7 @@
     "typescript": "2.6.2",
     "url-loader": "0.6.2",
     "url-search-params-polyfill": "2.0.3",
-    "webpack": "3.10.0",
+    "webpack": "3.11.0",
     "webpack-dev-middleware": "2.0.5",
     "webpack-hot-middleware": "2.21.0",
     "webpack-sources": "1.0.1",
