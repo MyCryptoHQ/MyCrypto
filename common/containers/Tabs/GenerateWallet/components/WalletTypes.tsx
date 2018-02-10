@@ -2,7 +2,7 @@ import React from 'react';
 import translate from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { NewTabLink, HelpLink } from 'components/ui';
-import { HELP_ARTICLE } from 'config';
+import { HELP_ARTICLE, trezorReferralURL, ledgerReferralURL } from 'config';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
 
@@ -37,9 +37,8 @@ const WalletTypes: React.SFC<{}> = () => {
         <strong>Warning</strong>: Managing your own keys can be risky and a single mistake can lead
         to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using{' '}
         <NewTabLink href="https://metamask.io/">MetaMask</NewTabLink>, or purchasing a{' '}
-        <NewTabLink href="https://www.ledgerwallet.com/r/fa4b?path=/products/">Ledger</NewTabLink>{' '}
-        or <NewTabLink href="https://trezor.io/?a=myetherwallet.com">TREZOR</NewTabLink> hardware
-        wallet.{' '}
+        <NewTabLink href={ledgerReferralURL}>Ledger</NewTabLink> or{' '}
+        <NewTabLink href={trezorReferralURL}>TREZOR</NewTabLink> hardware wallet.{' '}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
           Learn more about different wallet types & staying secure.
         </HelpLink>
