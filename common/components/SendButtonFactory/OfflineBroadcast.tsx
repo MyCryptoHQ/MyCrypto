@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { AppState } from 'reducers';
 import { getOffline } from 'selectors/config';
+import { NewTabLink } from 'components/ui';
 
 interface StateProps {
   offline: AppState['config']['offline'];
@@ -17,8 +19,8 @@ export const OfflineBroadcast = connect((state: AppState) => ({ offline: getOffl
 );
 const BroadCast: React.SFC<{}> = () => (
   <p>
-    To broadcast this transaction, paste the above into{' '}
-    <a href="https://myetherwallet.com/pushTx"> myetherwallet.com/pushTx</a> or{' '}
-    <a href="https://etherscan.io/pushTx"> etherscan.io/pushTx</a>
+    To broadcast this transaction, paste the above into the{' '}
+    <Link to="pushTx">Broadcast Transaction tab</Link> or{' '}
+    <NewTabLink href="https://etherscan.io/pushTx">etherscan.io/pushTx</NewTabLink>
   </p>
 );
