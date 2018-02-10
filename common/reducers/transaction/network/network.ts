@@ -6,7 +6,6 @@ import {
   InputGasPriceAction,
   InputGasPriceIntentAction
 } from 'actions/transaction';
-import { Action } from 'redux';
 
 const INITIAL_STATE: State = {
   gasEstimationStatus: null,

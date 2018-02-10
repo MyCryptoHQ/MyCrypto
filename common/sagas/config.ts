@@ -53,6 +53,10 @@ import { SetWalletAction } from 'actions/wallet';
 
 export const getConfig = (state: AppState): ConfigState => state.config;
 
+export default interface NodeConfigs {
+  [key: string]: any;
+};
+
 let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
   while (true) {

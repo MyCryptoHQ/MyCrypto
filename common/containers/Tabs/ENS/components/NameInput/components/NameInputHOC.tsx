@@ -9,7 +9,7 @@ interface Props {
   resolveDomainRequested(domain: string): void;
 }
 
-const NameInputHoc = PassedComponent =>
+const NameInputHoc = (PassedComponent: any) =>
   class HOC extends Component<Props, State> {
     public state = {
       isValidDomain: false,

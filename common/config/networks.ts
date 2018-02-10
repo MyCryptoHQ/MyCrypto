@@ -237,8 +237,9 @@ type NonWeb3NodeConfigs = { [key in NodeName]: NodeConfig };
 interface Web3NodeConfig {
   web3?: NodeConfig;
 }
-
-export type NodeConfigs = NonWeb3NodeConfigs & Web3NodeConfig;
+export interface NodeConfigs extends NonWeb3NodeConfigs, Web3NodeConfig {
+  [key: string]: any;
+}
 
 export const NODES: NodeConfigs = {
   eth_mew: {

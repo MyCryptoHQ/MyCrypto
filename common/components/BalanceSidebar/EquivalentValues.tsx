@@ -9,10 +9,11 @@ import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
 import { NetworkConfig } from 'config';
 import './EquivalentValues.scss';
-import { Wei } from 'libs/units';
+import { Wei, UnitKey } from 'libs/units';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { connect } from 'react-redux';
+import BN from 'bn.js';
 
 interface AllValue {
   symbol: string;
@@ -34,6 +35,11 @@ interface State {
   options: Option[];
 }
 
+interface RateType {
+  rate: string;
+  value: BN;
+}
+
 interface StateProps {
   balance: Balance;
   network: NetworkConfig;
@@ -45,6 +51,10 @@ interface StateProps {
 
 interface DispatchProps {
   fetchCCRates: TFetchCCRatesRequested;
+}
+
+interface Rates {
+  [rate: string]: number;
 }
 
 type Props = StateProps & DispatchProps;
@@ -105,7 +115,7 @@ class EquivalentValues extends React.Component<Props, State> {
     }
   }
 
-  public selectOption = equivalentValues => {
+  public selectOption = (equivalentValues: Option) => {
     this.setState({ equivalentValues });
   };
 
@@ -115,13 +125,12 @@ class EquivalentValues extends React.Component<Props, State> {
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
     const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
-
-    const Value = ({ rate, value }) => (
+    const Value = ({ rate, value }: RateType) => (
       <div className="EquivalentValues-values-currency">
         <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
           <UnitDisplay
-            unit={'ether'}
+            unit={'ether' as UnitKey}
             value={value}
             displayShortBalance={rateSymbols.isFiat(rate) ? 2 : 3}
             checkOffline={true}
@@ -139,7 +148,7 @@ class EquivalentValues extends React.Component<Props, State> {
             // TODO: Update type
             value={equivalentValues as any}
             options={options as any}
-            onChange={this.selectOption}
+            onChange={this.selectOption as any}
             clearable={false}
             searchable={false}
           />
@@ -162,7 +171,9 @@ class EquivalentValues extends React.Component<Props, State> {
         ) : (
           <div className="EquivalentValues-values">
             {pairRates.length ? (
-              pairRates.map((equiv, i) => <Value rate={equiv.rate} value={equiv.value} key={i} />)
+              pairRates.map((equiv, i) => (
+                <Value rate={equiv.rate as any} value={equiv.value as any} key={i} />
+              ))
             ) : (
               <p>Sorry, equivalent values are not supported for this unit.</p>
             )}
@@ -178,7 +189,7 @@ class EquivalentValues extends React.Component<Props, State> {
     const allRates = Object.values(balance).map(
       value => !!rates[value.symbol] && rates[value.symbol]
     );
-    const allEquivalentValues = allRates.map((rateType, i) => {
+    const allEquivalentValues = allRates.map((rateType: any, i) => {
       return {
         symbol: Object.keys(rates)[i],
         equivalentValues: [
@@ -214,7 +225,7 @@ class EquivalentValues extends React.Component<Props, State> {
   // return equivalent value (unit * rate * balance)
   private handleValues(unit: string, balance: Balance['wei']) {
     const { rates } = this.props;
-    const ratesObj = { ...rates[unit] };
+    const ratesObj: Rates = { ...rates[unit] };
     return Object.keys(ratesObj).map(key => {
       const value = (balance as Wei).muln(ratesObj[key]);
       return { rate: key, value };

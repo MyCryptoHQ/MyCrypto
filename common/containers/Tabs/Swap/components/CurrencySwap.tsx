@@ -183,7 +183,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     this.debouncedCreateErrString(origin, destination, showError);
   }
 
-  public setErrorMessages = (originErr, destinationErr) => {
+  public setErrorMessages = (originErr: any, destinationErr: any) => {
     this.setState({
       originErr,
       destinationErr

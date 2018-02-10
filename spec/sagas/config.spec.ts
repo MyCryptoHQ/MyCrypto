@@ -48,9 +48,9 @@ describe('pollOfflineStatus*', () => {
     timeout: true
   };
 
-  let originalHidden;
-  let originalOnLine;
-  let originalRandom;
+  let originalHidden: any;
+  let originalOnLine: any;
+  let originalRandom: any;
 
   beforeAll(() => {
     // backup global config
@@ -133,12 +133,12 @@ describe('handlePollOfflineStatus*', () => {
 });
 
 describe('handleNodeChangeIntent*', () => {
-  let originalRandom;
+  let originalRandom: any;
 
   // normal operation variables
   const defaultNode = configInitialState.nodeSelection;
   const defaultNodeConfig = NODES[defaultNode];
-  const customNetworkConfigs = [];
+  const customNetworkConfigs: any = [];
   const defaultNodeNetwork = NETWORKS[defaultNodeConfig.network];
   const newNode = Object.keys(NODES).reduce(
     (acc, cur) => (NODES[cur].network !== defaultNodeConfig.network ? cur : acc)

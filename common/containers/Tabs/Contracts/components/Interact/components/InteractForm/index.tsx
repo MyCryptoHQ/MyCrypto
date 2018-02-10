@@ -18,7 +18,7 @@ interface StateProps {
 }
 
 interface OwnProps {
-  accessContract(contractAbi: string, address: string): (ev) => void;
+  accessContract(contractAbi: string, address: string): (ev: any) => void;
   resetState(): void;
 }
 
@@ -43,7 +43,7 @@ const abiJsonPlaceholder = [
 class InteractForm extends Component<Props, State> {
   private abiJsonPlaceholder = JSON.stringify(abiJsonPlaceholder, null, 0);
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       address: '',

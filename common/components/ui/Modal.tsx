@@ -18,7 +18,7 @@ interface Props {
   handleClose?(): void;
 }
 
-const Fade = ({ children, ...props }) => (
+const Fade = ({ children, ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="animate-modal">
     {children}
   </CSSTransition>

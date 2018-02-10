@@ -25,7 +25,7 @@ class CountDown extends Component<Props, State> {
 
   private humanizeTime = (time: number) => {
     let timeRemaining = time;
-    const floorTime = unit => Math.floor(timeRemaining / unit);
+    const floorTime = (unit: any) => Math.floor(timeRemaining / unit);
     const pad = (num: number) => num.toString().padStart(2, '0');
     const second = 1000;
     const minute = second * 60;
@@ -44,7 +44,7 @@ class CountDown extends Component<Props, State> {
   };
 
   private startCountDown = () => {
-    const intervalId = window.setInterval(() => {
+    const intervalId: any = window.setInterval(() => {
       const nextTime = +moment(this.props.initialTime).diff(+moment(), 'ms');
 
       if (nextTime < 0) {

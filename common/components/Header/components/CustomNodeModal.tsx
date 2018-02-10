@@ -233,7 +233,7 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
           'form-control': true,
           'is-invalid': !!(this.state[input.name] && invalids[input.name])
         })}
-        value={this.state[input.name]}
+        value={this.state[input.name] as string}
         onChange={this.handleChange}
         {...input}
       />
