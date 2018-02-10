@@ -1,23 +1,46 @@
 import { setGasEstimates, TypeKeys } from 'actions/gas';
 import { SagaIterator } from 'redux-saga';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { AppState } from 'reducers';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
-import { gasPriceDefaults } from 'config';
+import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
+import { getEstimates } from 'selectors/gas';
+import { getOffline } from 'selectors/config';
+
+function* defaultEstimates(): SagaIterator {
+  yield put(
+    setGasEstimates({
+      safeLow: gasPriceDefaults.minGwei,
+      standard: gasPriceDefaults.default,
+      fast: gasPriceDefaults.default,
+      fastest: gasPriceDefaults.maxGwei,
+      time: Date.now()
+    })
+  );
+}
 
 export function* fetchEstimates(): SagaIterator {
+  // Don't even try offline
+  const isOffline: boolean = yield select(getOffline);
+  if (isOffline) {
+    yield call(defaultEstimates);
+    return;
+  }
+
+  // Cache estimates for a bit
+  const oldEstimates: AppState['gas']['estimates'] = yield select(getEstimates);
+  if (oldEstimates && oldEstimates.time + gasEstimateCacheTime > Date.now()) {
+    yield put(setGasEstimates(oldEstimates));
+    return;
+  }
+
+  // Try to fetch new estimates
   try {
     const estimates: GasEstimates = yield call(fetchGasEstimates);
     yield put(setGasEstimates(estimates));
   } catch (err) {
     console.warn('Failed to fetch gas estimates', err);
-    yield put(
-      setGasEstimates({
-        safeLow: gasPriceDefaults.minGwei,
-        standard: gasPriceDefaults.default,
-        fast: gasPriceDefaults.default,
-        fastest: gasPriceDefaults.maxGwei
-      })
-    );
+    yield call(defaultEstimates);
   }
 }
 

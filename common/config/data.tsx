@@ -46,6 +46,7 @@ export const gasPriceDefaults = {
   maxGwei: 60,
   default: 21
 };
+export const gasEstimateCacheTime = 60000;
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 

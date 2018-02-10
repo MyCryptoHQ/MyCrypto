@@ -1,10 +1,20 @@
 import { checkHttpStatus, parseJSON } from './utils';
 
+interface RawGasEstimates {
+  safeLow: number;
+  standard: number;
+  fast: number;
+  fastest: number;
+  block_time: number;
+  blockNum: number;
+}
+
 export interface GasEstimates {
   safeLow: number;
   standard: number;
   fast: number;
   fastest: number;
+  time: number;
 }
 
 export function fetchGasEstimates(): Promise<GasEstimates> {
@@ -12,5 +22,9 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
     mode: 'cors'
   })
     .then(checkHttpStatus)
-    .then(parseJSON);
+    .then(parseJSON)
+    .then((req: RawGasEstimates) => ({
+      ...req,
+      time: Date.now()
+    }));
 }
