@@ -4,11 +4,11 @@ import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
 import ledger from 'ledgerco';
-import { Spinner } from 'components/ui';
+import { Spinner, NewTabLink } from 'components/ui';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import { SecureWalletName } from 'config';
+import { SecureWalletName, ledgerReferralURL } from 'config';
 import { DPath } from 'config/dpaths';
 import { getPaths, getSingleDPath } from 'utils/network';
 
@@ -56,7 +56,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
             Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
-            unlock your wallet at <a href="https://myetherwallet.com">MyEtherWallet.com</a>
+            unlock your wallet at <a href="https://mycrypto.com">MyCrypto.com</a>
           </div>
         </div>
       );
@@ -85,37 +85,17 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           )}
         </button>
 
-        <a
-          className="LedgerDecrypt-buy btn btn-sm btn-default"
-          href="https://www.ledgerwallet.com/r/fa4b?path=/products/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <NewTabLink className="LedgerDecrypt-buy btn btn-sm btn-default" href={ledgerReferralURL}>
           {translate('Don’t have a Ledger? Order one now!')}
-        </a>
+        </NewTabLink>
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="LedgerDecrypt-help">
-          Guides:
-          <div>
-            <a
-              href="https://support.ledgerwallet.com/knowledge_base/topics/how-to-use-myetherwallet-with-ledger"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              How to use MyEtherWallet with your Nano S
-            </a>
-          </div>
-          <div>
-            <a
-              href="https://ledger.groovehq.com/knowledge_base/topics/how-to-secure-your-eth-tokens-augur-rep-dot-dot-dot-with-your-nano-s"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              How to secure your tokens with your Nano S
-            </a>
-          </div>
+          Guide:{' '}
+          <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
+            How to use MyCrypto with your Nano S
+          </NewTabLink>
         </div>
 
         <DeterministicWalletsModal
