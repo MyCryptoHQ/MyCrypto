@@ -7,7 +7,7 @@ import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { getEstimates } from 'selectors/gas';
 import { getOffline } from 'selectors/config';
 
-function* defaultEstimates(): SagaIterator {
+export function* setDefaultEstimates(): SagaIterator {
   yield put(
     setGasEstimates({
       safeLow: gasPriceDefaults.minGwei,
@@ -23,7 +23,7 @@ export function* fetchEstimates(): SagaIterator {
   // Don't even try offline
   const isOffline: boolean = yield select(getOffline);
   if (isOffline) {
-    yield call(defaultEstimates);
+    yield call(setDefaultEstimates);
     return;
   }
 
@@ -40,7 +40,7 @@ export function* fetchEstimates(): SagaIterator {
     yield put(setGasEstimates(estimates));
   } catch (err) {
     console.warn('Failed to fetch gas estimates', err);
-    yield call(defaultEstimates);
+    yield call(setDefaultEstimates);
   }
 }
 
