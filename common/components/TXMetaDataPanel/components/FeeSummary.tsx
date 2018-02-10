@@ -3,7 +3,8 @@ import BN from 'bn.js';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import { UnitDisplay } from 'components/ui';
+import { getIsEstimating } from 'selectors/gas';
+import { UnitDisplay, Spinner } from 'components/ui';
 import './FeeSummary.scss';
 
 interface RenderData {
@@ -19,6 +20,7 @@ interface ReduxStateProps {
   rates: AppState['rates']['rates'];
   network: AppState['config']['network'];
   isOffline: AppState['config']['offline'];
+  isGasEstimating: AppState['gas']['isEstimating'];
 }
 
 interface OwnProps {
@@ -30,7 +32,15 @@ type Props = OwnProps & ReduxStateProps;
 
 class FeeSummary extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasLimit, rates, network, isOffline } = this.props;
+    const { gasPrice, gasLimit, rates, network, isOffline, isGasEstimating } = this.props;
+
+    if (isGasEstimating) {
+      return (
+        <div className="FeeSummary is-loading">
+          <Spinner />
+        </div>
+      );
+    }
 
     const feeBig = gasPrice.value && gasLimit.value && gasPrice.value.mul(gasLimit.value);
     const fee = (
@@ -75,7 +85,8 @@ function mapStateToProps(state: AppState): ReduxStateProps {
     gasLimit: state.transaction.fields.gasLimit,
     rates: state.rates.rates,
     network: getNetworkConfig(state),
-    isOffline: state.config.offline
+    isOffline: state.config.offline,
+    isGasEstimating: getIsEstimating(state)
   };
 }
 

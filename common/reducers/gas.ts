@@ -21,7 +21,8 @@ function fetchGasEstimates(state: State): State {
 function setGasEstimates(state: State, action: SetGasEstimatesAction): State {
   return {
     ...state,
-    estimates: action.payload
+    estimates: action.payload,
+    isEstimating: false
   };
 }
 

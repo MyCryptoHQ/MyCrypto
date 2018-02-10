@@ -7,8 +7,10 @@ export interface GasEstimates {
   fastest: number;
 }
 
-export function getGasEstimates(): Promise<GasEstimates> {
-  return fetch('https://dev.blockscale.net/api/gasexpress.json')
+export function fetchGasEstimates(): Promise<GasEstimates> {
+  return fetch('https://dev.blockscale.net/api/gasexpress.json', {
+    mode: 'cors'
+  })
     .then(checkHttpStatus)
     .then(parseJSON);
 }

@@ -42,8 +42,9 @@ export const donationAddressMap = {
 };
 
 export const gasPriceDefaults = {
-  gasPriceMinGwei: 1,
-  gasPriceMaxGwei: 60
+  minGwei: 1,
+  maxGwei: 60,
+  default: 21
 };
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
