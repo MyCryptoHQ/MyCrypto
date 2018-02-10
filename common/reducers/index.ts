@@ -9,6 +9,7 @@ import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
 import { State as TransactionState, transaction } from './transaction';
+import { State as GasState, gas } from './gas';
 import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 
 export interface AppState {
@@ -21,6 +22,7 @@ export interface AppState {
   customTokens: CustomTokensState;
   rates: RatesState;
   deterministicWallets: DeterministicWalletsState;
+  gas: GasState;
   // Third party reducers (TODO: Fill these out)
   form: any;
   routing: any;
@@ -38,6 +40,7 @@ export default combineReducers({
   customTokens,
   rates,
   deterministicWallets,
+  gas,
   routing: routerReducer,
   transaction
 });
