@@ -5,7 +5,7 @@ import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { setGasEstimates } from 'actions/gas';
 import { getEstimates } from 'selectors/gas';
 import { getOffline } from 'selectors/config';
-import { gasEstimateCacheTime } from 'config';
+import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 
 describe('fetchEstimates*', () => {
   const gen = cloneableGenerator(fetchEstimates)();
@@ -67,5 +67,25 @@ describe('fetchEstimates*', () => {
   it('Should use fetched estimates', () => {
     expect(gen.next(newEstimates).value).toEqual(put(setGasEstimates(newEstimates)));
     expect(gen.next().done).toBeTruthy();
+  });
+});
+
+describe('setDefaultEstimates*', () => {
+  const gen = cloneableGenerator(setDefaultEstimates)();
+
+  it('Should put setGasEstimates with config defaults', () => {
+    const time = Date.now();
+    gen.next();
+    expect(gen.next(time).value).toEqual(
+      put(
+        setGasEstimates({
+          safeLow: gasPriceDefaults.minGwei,
+          standard: gasPriceDefaults.default,
+          fast: gasPriceDefaults.default,
+          fastest: gasPriceDefaults.maxGwei,
+          time
+        })
+      )
+    );
   });
 });

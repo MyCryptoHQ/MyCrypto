@@ -8,13 +8,16 @@ import { getEstimates } from 'selectors/gas';
 import { getOffline } from 'selectors/config';
 
 export function* setDefaultEstimates(): SagaIterator {
+  // Must yield time for testability
+  const time = yield call(Date.now);
+
   yield put(
     setGasEstimates({
       safeLow: gasPriceDefaults.minGwei,
       standard: gasPriceDefaults.default,
       fast: gasPriceDefaults.default,
       fastest: gasPriceDefaults.maxGwei,
-      time: Date.now()
+      time
     })
   );
 }
@@ -39,7 +42,7 @@ export function* fetchEstimates(): SagaIterator {
     const estimates: GasEstimates = yield call(fetchGasEstimates);
     yield put(setGasEstimates(estimates));
   } catch (err) {
-    console.warn('Failed to fetch gas estimates', err);
+    console.warn('Failed to fetch gas estimates:', err);
     yield call(setDefaultEstimates);
   }
 }
