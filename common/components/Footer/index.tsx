@@ -2,94 +2,105 @@ import logo from 'assets/images/logo-mycrypto.svg';
 import {
   ledgerReferralURL,
   trezorReferralURL,
-  bitboxReferralURL,
+  ethercardReferralURL,
   donationAddressMap,
   VERSION,
   knowledgeBaseURL
 } from 'config';
 import React from 'react';
-import translate from 'translations';
-import './index.scss';
 import PreFooter from './PreFooter';
-import Disclaimer from './Disclaimer';
+import DisclaimerModal from './DisclaimerModal';
 import { NewTabLink } from 'components/ui';
 import OnboardModal from 'containers/OnboardModal';
-
-const AffiliateTag = ({ link, text }: Link) => {
-  return (
-    <li className="Footer-affiliate-tag" key={link}>
-      <NewTabLink href={link}>{text}</NewTabLink>
-    </li>
-  );
-};
+import './index.scss';
 
 const SocialMediaLink = ({ link, text }: Link) => {
   return (
-    <NewTabLink className="Footer-social-media-link" key={link} href={link}>
-      <i className={`sm-icon sm-logo-${text} sm-24px`} />
+    <NewTabLink className="SocialMediaLink" key={link} href={link} aria-label={text}>
+      <i className={`sm-icon sm-logo-${text}`} />
     </NewTabLink>
   );
 };
 
 const SOCIAL_MEDIA: Link[] = [
   {
-    link: 'https://www.reddit.com/r/mycrypto/',
-    text: 'reddit'
-  },
-
-  {
     link: 'https://twitter.com/mycrypto',
     text: 'twitter'
   },
-
   {
     link: 'https://www.facebook.com/MyCrypto/',
     text: 'facebook'
   },
-
   {
     link: 'https://medium.com/@mycrypto',
     text: 'medium'
   },
-
   {
     link: 'https://www.linkedin.com/company/mycrypto',
     text: 'linkedin'
   },
-
   {
     link: 'https://github.com/MyCryptoHQ',
     text: 'github'
+  },
+  {
+    link: 'https://www.reddit.com/r/mycrypto/',
+    text: 'reddit'
   }
 ];
 
 const PRODUCT_INFO: Link[] = [
   {
-    link: knowledgeBaseURL,
-    text: 'Knowledge Base'
+    link:
+      'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
+    text: 'Ether Address Lookup'
+  },
+  {
+    link:
+      'https://chrome.google.com/webstore/detail/ethersecuritylookup/bhhfhgpgmifehjdghlbbijjaimhmcgnf',
+    text: 'Ether Security Lookup'
+  },
+  {
+    link: 'https://etherscamdb.info/',
+    text: 'EtherScamDB'
   },
   {
     link: 'https://www.mycrypto.com/helpers.html',
     text: 'Helpers & ENS Debugging'
   },
+  {
+    link: 'mailto:press@mycrypto.com',
+    text: 'Press Inquiries'
+  }
+];
 
+const AFFILIATES: Link[] = [
   {
-    link: 'https://github.com/MyCryptoHQ/MyCrypto',
-    text: 'Github: Current Site'
+    link: ledgerReferralURL,
+    text: 'Buy a Ledger Wallet'
   },
   {
-    link: 'https://github.com/MyCryptoHQ',
-    text: 'Github: MyCrypto Org'
+    link: trezorReferralURL,
+    text: 'Buy a TREZOR'
   },
   {
-    link: 'https://github.com/MyCryptoHQ/MyCrypto/releases/latest',
-    text: 'Github: Latest Release'
-  },
+    link: ethercardReferralURL,
+    text: 'Get an ether.card'
+  }
+];
 
+const FRIENDS: Link[] = [
   {
-    link:
-      'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-    text: 'Anti - Phishing Extension'
+    link: 'https://metamask.io/',
+    text: 'MetaMask'
+  },
+  {
+    link: 'https://infura.io/',
+    text: 'Infura'
+  },
+  {
+    link: 'https://etherscan.io/',
+    text: 'Etherscan'
   }
 ];
 
@@ -102,66 +113,22 @@ interface Props {
   latestBlock: string;
 }
 
-export default class Footer extends React.PureComponent<Props> {
+interface State {
+  isDisclaimerOpen: boolean;
+}
+
+export default class Footer extends React.PureComponent<Props, State> {
+  public state: State = {
+    isDisclaimerOpen: false
+  };
+
   public render() {
     return (
       <div>
-        <OnboardModal />
-        <PreFooter />
+        <PreFooter openModal={this.toggleModal} />
         <footer className="Footer" role="contentinfo" aria-label="footer">
-          <div className="Footer-about">
-            <p aria-hidden="true">
-              <NewTabLink href="/">
-                <img
-                  className="Footer-about-logo"
-                  src={logo}
-                  height="55px"
-                  width="auto"
-                  alt="MyCrypto logo"
-                />
-              </NewTabLink>
-            </p>
-            <p className="Footer-about-text">{translate('FOOTER_1')}</p>
-
-            <p className="Footer-copyright">
-              &copy; {new Date().getFullYear()} MyCrypto, LLC{' '}
-              <span className="Footer-copyright-spacer">&middot;</span> {VERSION}
-            </p>
-
-            <Disclaimer />
-          </div>
-
-          <div className="Footer-info">
-            <h5>You can support us by buying a...</h5>
-            <ul>
-              <AffiliateTag link={ledgerReferralURL} text="Ledger Nano S" />
-              <AffiliateTag link={trezorReferralURL} text="TREZOR" />
-              <AffiliateTag link={bitboxReferralURL} text="Digital Bitbox" />
-            </ul>
-
-            <h5>
-              <i aria-hidden="true">💝</i>
-              {translate('FOOTER_2')}
-            </h5>
-            <ul>
-              <li>
-                ETH: <span className="mono wrap">{donationAddressMap.ETH}</span>
-              </li>
-              <li>
-                {' '}
-                BTC: <span className="mono wrap">{donationAddressMap.BTC}</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="Footer-links">
-            {PRODUCT_INFO.map((productInfoItem, idx) => (
-              <NewTabLink target="_blank" key={idx} href={productInfoItem.link}>
-                {productInfoItem.text}
-              </NewTabLink>
-            ))}
-
-            <div className="Footer-social-media-wrap">
+          <div className="Footer-links Footer-section">
+            <div className="Footer-links-social">
               {SOCIAL_MEDIA.map((socialMediaItem, idx) => (
                 <SocialMediaLink
                   link={socialMediaItem.link}
@@ -170,9 +137,90 @@ export default class Footer extends React.PureComponent<Props> {
                 />
               ))}
             </div>
+
+            <div className="Footer-links-links">
+              {PRODUCT_INFO.map((productInfoItem, idx) => (
+                <NewTabLink key={idx} href={productInfoItem.link}>
+                  {productInfoItem.text}
+                </NewTabLink>
+              ))}
+            </div>
+          </div>
+
+          <div className="Footer-about Footer-section">
+            <NewTabLink className="Footer-about-logo" href="/">
+              <img
+                className="Footer-about-logo-img"
+                src={logo}
+                height="55px"
+                width="auto"
+                alt="MyCrypto logo"
+              />
+            </NewTabLink>
+
+            <div className="Footer-about-links">
+              <a href="https://mycrypto.com">MyCrypto.com</a>
+              <NewTabLink href={knowledgeBaseURL}>Help & Support</NewTabLink>
+              <NewTabLink href="https://about.mycrypto.com">Our Team</NewTabLink>
+            </div>
+
+            <p className="Footer-about-text">
+              MyCrypto is an open-source, client-side tool for generating Ether Wallets, handling
+              ERC-20 tokens, and interacting with the blockchain more easily. Developed by and for
+              the community since 2015, we’re focused on building awesome products that put the
+              power in people’s hands.
+            </p>
+
+            <div className="Footer-about-legal">
+              <div className="Footer-about-legal-text">
+                © {new Date().getFullYear()} MyCrypto, Inc.
+              </div>
+              <div className="Footer-about-legal-text">
+                <a onClick={this.toggleModal}>Disclaimer</a>
+              </div>
+              <div className="Footer-about-legal-text">v{VERSION}</div>
+            </div>
+          </div>
+
+          <div className="Footer-support Footer-section">
+            <h5 className="Footer-support-title">Support Us & Our Friends</h5>
+            <div className="Footer-support-affiliates">
+              {AFFILIATES.map(link => (
+                <NewTabLink key={link.text} href={link.link}>
+                  {link.text}
+                </NewTabLink>
+              ))}
+            </div>
+
+            <div className="Footer-support-donate">
+              <div className="Footer-support-donate-currency">Donate ETH</div>
+              <div className="Footer-support-donate-address">{donationAddressMap.ETH}</div>
+            </div>
+
+            <div className="Footer-support-donate">
+              <div className="Footer-support-donate-currency">Donate BTC</div>
+              <div className="Footer-support-donate-address">{donationAddressMap.BTC}</div>
+            </div>
+
+            <div className="Footer-support-friends">
+              {FRIENDS.map(link => (
+                <NewTabLink key={link.text} href={link.link}>
+                  {link.text}
+                </NewTabLink>
+              ))}
+            </div>
           </div>
         </footer>
+
+        <OnboardModal />
+        <DisclaimerModal isOpen={this.state.isDisclaimerOpen} handleClose={this.toggleModal} />
       </div>
     );
   }
+
+  private toggleModal = () => {
+    this.setState(state => {
+      this.setState({ isDisclaimerOpen: !state.isDisclaimerOpen });
+    });
+  };
 }
