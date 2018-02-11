@@ -97,7 +97,7 @@
     "image-webpack-loader": "4.0.0",
     "jest": "22.1.4",
     "klaw-sync": "3.0.2",
-    "less": "2.7.3",
+    "less": "3.0.0",
     "less-loader": "4.0.5",
     "lint-staged": "6.1.0",
     "minimist": "1.2.0",
