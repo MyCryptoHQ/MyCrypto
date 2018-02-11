@@ -5,8 +5,8 @@ describe('Tokens JSON', () => {
   Object.keys(TOKENS).forEach(network => {
     it(`${network} tokens array properly formatted`, () => {
       const tokens = TOKENS[network];
-      const addressCollisionMap = {};
-      const symbolCollisionMap = {};
+      const addressCollisionMap: any = {};
+      const symbolCollisionMap: any = {};
 
       tokens.forEach(token => {
         if (!isValidETHAddress(token.address)) {

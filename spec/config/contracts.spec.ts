@@ -5,7 +5,7 @@ describe('Contracts JSON', () => {
   Object.keys(CONTRACTS).forEach(network => {
     it(`${network} contracts array properly formatted`, () => {
       const contracts = CONTRACTS[network];
-      const addressCollisionMap = {};
+      const addressCollisionMap: any = {};
 
       contracts.forEach(contract => {
         if (contract.address && !isValidETHAddress(contract.address)) {

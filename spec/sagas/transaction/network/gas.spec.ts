@@ -19,7 +19,7 @@ import {
   localGasEstimation,
   setAddressMessageGasLimit
 } from 'sagas/transaction/network/gas';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
 
@@ -117,7 +117,7 @@ describe('estimateGas*', () => {
   const gens: { [name: string]: any } = {};
   gens.successCase = cloneableGenerator(estimateGas)();
 
-  let random;
+  let random: () => number;
   beforeAll(() => {
     random = Math.random;
     Math.random = () => 0.001;
@@ -251,8 +251,8 @@ describe('localGasEstimation', () => {
 describe('setAddressMessageGasLimit*', () => {
   const gens = cloneableGenerator(setAddressMessageGasLimit)();
   const gen = gens.clone();
-  let noAutoGen;
-  let noMessageGen;
+  let noAutoGen: SagaIteratorClone;
+  let noMessageGen: SagaIteratorClone;
   const addressMessage = {
     gasLimit: 123456,
     msg: 'Thanks for donating, er, investing in SCAM'

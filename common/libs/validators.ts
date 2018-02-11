@@ -222,7 +222,7 @@ function formatErrors(response: JsonRpcResponse, apiType: string) {
 
 const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.RpcNode) => (
   apiName: API_NAME,
-  cb?: () => any
+  cb?: (res: JsonRpcResponse) => any
 ) => {
   if (!isValidResult(response, schemaType)) {
     if (cb) {

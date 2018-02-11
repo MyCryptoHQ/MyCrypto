@@ -7,7 +7,7 @@ import { getTokenTo, getData } from 'selectors/transaction';
 import { handleTokenTo, handleTokenValue } from 'sagas/transaction/meta/token';
 import { cloneableGenerator } from 'redux-saga/utils';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: any) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });

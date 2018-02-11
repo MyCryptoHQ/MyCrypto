@@ -30,10 +30,6 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-interface InputOutput {
-  name: string;
-  type: string;
-}
 interface State {
   inputs: {
     [key: string]: { rawData: string; parsedData: string[] | string };

@@ -1,5 +1,4 @@
 import { isEtherTransaction, getUnit, getDecimal, getCurrentValue } from 'selectors/transaction';
-import { select, call, put } from 'redux-saga/effects';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
 import { toTokenBase } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
@@ -9,9 +8,11 @@ import {
   reparseCurrentValue,
   valueHandler
 } from 'sagas/transaction/current/currentValue';
+import { SagaIterator } from 'redux-saga';
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
+import { select, call, put } from 'redux-saga/effects';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: any) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });
@@ -83,7 +84,12 @@ describe('setCurrentValue*', () => {
 });
 
 describe('revalidateCurrentValue*', () => {
-  const sharedLogic = (gen, etherTransaction, currVal, reparsedValue) => {
+  const sharedLogic = (
+    gen: any,
+    etherTransaction: boolean,
+    currVal: any,
+    reparsedValue: boolean
+  ) => {
     it('should select isEtherTransaction', () => {
       expect(gen.next().value).toEqual(select(isEtherTransaction));
     });
@@ -159,7 +165,7 @@ describe('revalidateCurrentValue*', () => {
 });
 
 describe('reparseCurrentValue*', () => {
-  const sharedLogic = gen => {
+  const sharedLogic = (gen: any) => {
     it('should select getDecimal', () => {
       expect(gen.next().value).toEqual(select(getDecimal));
     });

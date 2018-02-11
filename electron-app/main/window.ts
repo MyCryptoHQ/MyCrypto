@@ -6,7 +6,7 @@ import { APP_TITLE } from '../constants';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Cached reference, preventing recreations
-let window;
+let window: BrowserWindow | null;
 
 // Construct new BrowserWindow
 export default function getWindow() {

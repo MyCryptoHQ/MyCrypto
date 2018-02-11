@@ -11,9 +11,10 @@ import { getEtherBalance, getCurrentBalance } from 'selectors/wallet';
 import { fromTokenBase, fromWei, Wei } from 'libs/units';
 import { handleSendEverything } from 'sagas/transaction/sendEverything';
 import { cloneableGenerator } from 'redux-saga/utils';
+import BN from 'bn.js';
 
 describe('handleSendEverything*', () => {
-  let random;
+  let random: () => number;
   beforeAll(() => {
     random = Math.random;
     Math.random = () => 0.001;
@@ -23,7 +24,7 @@ describe('handleSendEverything*', () => {
     Math.random = random;
   });
 
-  const sharedStart = (gen, transactionObj, currentBalance) => {
+  const sharedStart = (gen: any, transactionObj: any, currentBalance: BN | null) => {
     it('should select getTransaction', () => {
       expect(gen.next().value).toEqual(select(getTransaction));
     });

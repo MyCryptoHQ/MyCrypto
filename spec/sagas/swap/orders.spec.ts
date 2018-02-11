@@ -97,7 +97,7 @@ describe('pollBityOrderStatus*', () => {
     error: true,
     msg: 'error message'
   };
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;
@@ -168,7 +168,7 @@ describe('pollShapeshiftOrderStatus*', () => {
     error: 'Shapeshift error',
     status: 'failed'
   };
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;
@@ -305,7 +305,7 @@ describe('postBityOrderCreate*', () => {
   const data = {} as any;
   data.gen = cloneableGenerator(postBityOrderCreate)(action);
 
-  let random;
+  let random: () => number;
   beforeAll(() => {
     random = Math.random;
     Math.random = () => 0.001;
@@ -393,7 +393,7 @@ describe('postShapeshiftOrderCreate*', () => {
   const data = {} as any;
   data.gen = cloneableGenerator(postShapeshiftOrderCreate)(action);
 
-  let random;
+  let random: () => number;
   beforeAll(() => {
     random = Math.random;
     Math.random = () => 0.001;
@@ -489,7 +489,7 @@ describe('bityOrderTimeRemaining*', () => {
     orderTimestampCreatedISOString: new Date(orderTimeExpired).toISOString(),
     validFor: swapValidFor
   };
-  let random;
+  let random: () => number;
 
   const data = {} as any;
   data.gen = cloneableGenerator(bityOrderTimeRemaining)();
@@ -570,7 +570,7 @@ describe('shapeshiftOrderTimeRemaining*', () => {
     orderTimestampCreatedISOString: new Date(orderTimeExpired).toISOString(),
     validFor: swapValidFor
   };
-  let random;
+  let random: () => number;
 
   const data = {} as any;
   data.gen = cloneableGenerator(shapeshiftOrderTimeRemaining)();
