@@ -30,5 +30,5 @@ export function isPositiveInteger(n: number) {
   return Number.isInteger(n) && n > 0;
 }
 
-export const getValues = ({ ...args }: any[]) =>
+export const getValues = (...args: any[]) =>
   args.reduce((acc, currArg) => [...acc, ...Object.values(currArg)], []);

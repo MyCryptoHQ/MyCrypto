@@ -53,7 +53,7 @@
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
-    "@types/bip39": "^2.4.0",
+    "@types/bip39": "2.4.0",
     "@types/classnames": "2.2.3",
     "@types/history": "4.6.2",
     "@types/jest": "22.1.1",
