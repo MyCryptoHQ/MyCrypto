@@ -81,6 +81,10 @@ export interface CustomNodeConfig {
   };
 }
 
+export interface Networks {
+  [key: string]: NetworkConfig;
+}
+
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
 function makeExplorer(origin: string): BlockExplorerConfig {
@@ -205,7 +209,7 @@ const EXP: NetworkConfig = {
   }
 };
 
-export const NETWORKS = {
+export const NETWORKS: Networks = {
   ETH,
   Ropsten,
   Kovan,

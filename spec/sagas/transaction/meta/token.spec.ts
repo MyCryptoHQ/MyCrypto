@@ -1,3 +1,4 @@
+import { SagaIterator } from 'redux-saga';
 import { select, call, put } from 'redux-saga/effects';
 import { setDataField } from 'actions/transaction';
 import { encodeTransfer } from 'libs/transaction/utils/token';
@@ -7,7 +8,7 @@ import { getTokenTo, getData } from 'selectors/transaction';
 import { handleTokenTo, handleTokenValue } from 'sagas/transaction/meta/token';
 import { cloneableGenerator } from 'redux-saga/utils';
 
-const itShouldBeDone = (gen: any) => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });

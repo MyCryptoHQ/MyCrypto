@@ -16,7 +16,7 @@ interface Props {
 }
 
 interface TrackedTokens {
-  [symbol: string]: any;
+  [symbol: string]: boolean;
 }
 
 interface State {
@@ -25,7 +25,7 @@ interface State {
 }
 export default class TokenBalances extends React.PureComponent<Props, State> {
   public state = {
-    trackedTokens: {},
+    trackedTokens: {} as TrackedTokens,
     showCustomTokenForm: false
   };
 

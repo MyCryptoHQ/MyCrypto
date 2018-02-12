@@ -1,4 +1,5 @@
 import BN from 'bn.js';
+import { SagaIterator } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
 import { isValidHex, isValidNonce, gasPriceValidator, gasLimitValidator } from 'libs/validators';
@@ -12,7 +13,7 @@ import {
 import { cloneableGenerator } from 'redux-saga/utils';
 import { setGasPriceField } from 'actions/transaction';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });

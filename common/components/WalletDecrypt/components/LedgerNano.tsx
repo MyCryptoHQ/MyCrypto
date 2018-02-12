@@ -147,7 +147,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     ledger.comm_u2f.create_async().then((comm: any) => {
       new ledger.eth(comm)
         .getAddress_async(dPath, false, true)
-        .then((res: any) => {
+        .then(res => {
           this.setState({
             publicKey: res.publicKey,
             chainCode: res.chainCode,

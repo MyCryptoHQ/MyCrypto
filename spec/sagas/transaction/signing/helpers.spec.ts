@@ -95,7 +95,7 @@ describe('getWalletAndTransaction*', () => {
 describe('handleFailedTransaction*', () => {
   const err = new Error('Message');
   const gen = handleFailedTransaction(err);
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;

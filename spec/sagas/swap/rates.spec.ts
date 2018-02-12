@@ -31,7 +31,7 @@ describe('loadBityRates*', () => {
       rate: 0.042958
     }
   };
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;
@@ -87,7 +87,7 @@ describe('loadShapeshiftRates*', () => {
       min: 7.86382979
     }
   };
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;

@@ -1,3 +1,4 @@
+import { SagaIterator } from 'redux-saga';
 import { select, call } from 'redux-saga/effects';
 import { getUnit, getDecimalFromUnit, getGasLimit, getGasPrice } from 'selectors/transaction';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
@@ -11,7 +12,7 @@ import {
 import { cloneableGenerator } from 'redux-saga/utils';
 import { getOffline } from 'selectors/config';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });

@@ -1,3 +1,4 @@
+import { SagaIterator } from 'redux-saga';
 import { apply, put, select } from 'redux-saga/effects';
 import {
   sendEverythingFailed,
@@ -24,7 +25,7 @@ describe('handleSendEverything*', () => {
     Math.random = random;
   });
 
-  const sharedStart = (gen: any, transactionObj: any, currentBalance: BN | null) => {
+  const sharedStart = (gen: SagaIterator, transactionObj: any, currentBalance: BN | null) => {
     it('should select getTransaction', () => {
       expect(gen.next().value).toEqual(select(getTransaction));
     });

@@ -22,14 +22,14 @@ import { rebaseUserInput, validateInput } from 'sagas/transaction/validationHelp
 import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
 import BN from 'bn.js';
 
-const itShouldBeDone = (gen: any) => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });
 };
 
 describe('handleSetUnitMeta*', () => {
-  const expectedStart = (gen: any, previousUnit: string, currentUnit: string) => {
+  const expectedStart = (gen: SagaIterator, previousUnit: string, currentUnit: string) => {
     it('should select getPreviousUnit', () => {
       expect(gen.next().value).toEqual(select(getPreviousUnit));
     });
@@ -118,7 +118,7 @@ describe('handleSetUnitMeta*', () => {
     };
 
     const sharedLogicB = (
-      gen: any,
+      gen: SagaIterator,
       input: string,
       raw: string,
       value: BN,

@@ -1,5 +1,5 @@
 import { configuredStore } from 'store';
-import { delay } from 'redux-saga';
+import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { toggleOfflineConfig, changeNode, changeNodeIntent, setLatestBlock } from 'actions/config';
@@ -158,7 +158,7 @@ describe('handleNodeChangeIntent*', () => {
   const data = {} as any;
   data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeIntentAction);
 
-  function shouldBailOut(gen, nextVal, errMsg) {
+  function shouldBailOut(gen: SagaIterator, nextVal: any, errMsg: any) {
     expect(gen.next(nextVal).value).toEqual(put(showNotification('danger', errMsg, 5000)));
     expect(gen.next().value).toEqual(
       put(changeNode(defaultNode, defaultNodeConfig, defaultNodeNetwork))
@@ -287,7 +287,7 @@ describe('unsetWeb3Node*', () => {
 });
 
 describe('unsetWeb3NodeOnWalletEvent*', () => {
-  const fakeAction = {};
+  const fakeAction = {} as any;
   const mockNode = 'web3';
   const mockNodeConfig: Partial<NodeConfig> = { network: 'ETH' };
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
