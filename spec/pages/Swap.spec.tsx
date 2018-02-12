@@ -5,7 +5,7 @@ import Swap from 'containers/Tabs/Swap';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
 import { INITIAL_STATE as swap } from 'reducers/swap';
-import { INITIAL_STATE as config } from 'reducers/config';
+import { config } from 'reducers/config';
 import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
 
@@ -22,7 +22,7 @@ const routeProps: RouteComponentProps<any> = createMockRouteComponentProps({
 });
 
 it('render snapshot', () => {
-  const store = createMockStore({ swap, config });
+  const store = createMockStore({ swap, config: config(undefined as any, {} as any) });
   const component = shallowWithStore(<Swap {...routeProps} />, store);
 
   expect(component).toMatchSnapshot();

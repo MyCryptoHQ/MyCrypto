@@ -1,5 +1,4 @@
 import BN from 'bn.js';
-import { Token } from 'config';
 import { IHexStrTransaction } from 'libs/transaction';
 import { Wei, TokenValue } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';
@@ -15,6 +14,7 @@ import {
   isValidCurrentBlock,
   isValidRawTxApi
 } from '../../validators';
+import { Token } from 'types/network';
 
 export default class RpcNode implements INode {
   public client: RPCClient;

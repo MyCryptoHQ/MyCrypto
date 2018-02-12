@@ -1,6 +1,5 @@
 import { apply, select, call } from 'redux-saga/effects';
 import { AppState } from 'reducers';
-import { Token } from 'config';
 import { INode } from 'libs/nodes/INode';
 import { IWallet, WalletConfig } from 'libs/wallet';
 import { TokenBalance } from 'selectors/wallet';
@@ -8,6 +7,7 @@ import { getCustomTokens } from 'selectors/customTokens';
 import { getNodeLib } from 'selectors/config';
 import { loadWalletConfig } from 'utils/localStorage';
 import { TokenBalanceLookup } from './wallet';
+import { Token } from 'types/network';
 
 export function* getTokenBalances(wallet: IWallet, tokens: Token[]) {
   const node: INode = yield select(getNodeLib);

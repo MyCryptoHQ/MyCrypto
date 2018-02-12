@@ -1,11 +1,11 @@
 import RPCNode from '../rpc';
 import RPCClient from '../rpc/client';
-import { CustomNodeConfig } from 'config';
+import { CustomNodeConfig } from 'types/node';
+import { Omit } from 'react-router';
 
 export default class CustomNode extends RPCNode {
-  constructor(config: CustomNodeConfig) {
-    const endpoint = `${config.url}:${config.port}`;
-    super(endpoint);
+  constructor(config: Omit<CustomNodeConfig, 'lib'>) {
+    super(config.id);
 
     const headers: { [key: string]: string } = {};
     if (config.auth) {
@@ -13,6 +13,6 @@ export default class CustomNode extends RPCNode {
       headers.Authorization = `Basic ${btoa(`${username}:${password}`)}`;
     }
 
-    this.client = new RPCClient(endpoint, headers);
+    this.client = new RPCClient(config.id, headers);
   }
 }

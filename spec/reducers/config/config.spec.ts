@@ -2,33 +2,38 @@ import { configuredStore } from 'store';
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
-import { toggleOfflineConfig, changeNode, changeNodeIntent, setLatestBlock } from 'actions/config';
+import { toggleOffline, changeNode, changeNodeIntent, setLatestBlock } from 'actions/config';
 import {
-  pollOfflineStatus,
-  handlePollOfflineStatus,
   handleNodeChangeIntent,
-  unsetWeb3Node,
-  unsetWeb3NodeOnWalletEvent,
-  equivalentNodeOrDefault,
+  handlePollOfflineStatus,
+  pollOfflineStatus,
   reload
-} from 'sagas/config';
-import { NODES, NodeConfig, NETWORKS } from 'config';
+} from 'sagas/config/node';
 import {
-  getNode,
+  getNodeId,
   getNodeConfig,
   getOffline,
-  getCustomNodeConfigs,
-  getCustomNetworkConfigs
+  isStaticNodeId,
+  getStaticNodeFromId,
+  getNetworkConfigById,
+  getCustomNodeFromId,
+  getStaticAltNodeIdToWeb3
 } from 'selectors/config';
-import { INITIAL_STATE as configInitialState } from 'reducers/config';
 import { Web3Wallet } from 'libs/wallet';
-import { RPCNode } from 'libs/nodes';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
+import { StaticNodeConfig } from 'types/node';
+import { staticNodesExpectedState } from './nodes/staticNodes.spec';
+import { metaExpectedState } from './meta/meta.spec';
+import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
+import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
+import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
+
 // init module
 configuredStore.getState();
 
 describe('pollOfflineStatus*', () => {
+  const { togglingToOffline, togglingToOnline } = metaExpectedState;
   const nav = navigator as any;
   const doc = document as any;
   const data = {} as any;
@@ -38,7 +43,6 @@ describe('pollOfflineStatus*', () => {
       ping: jest.fn()
     }
   };
-  const isOffline = true;
   const raceSuccess = {
     pingSucceeded: true,
     timeout: false
@@ -88,29 +92,29 @@ describe('pollOfflineStatus*', () => {
   it('should call delay if document is hidden', () => {
     data.hiddenDoc = data.gen.clone();
     doc.hidden = true;
-    expect(data.hiddenDoc.next(!isOffline).value).toEqual(call(delay, 1000));
+    expect(data.hiddenDoc.next(togglingToOnline.offline).value).toEqual(call(delay, 1000));
     doc.hidden = false;
   });
 
   it('should race pingSucceeded and timeout', () => {
     data.isOfflineClone = data.gen.clone();
     data.shouldDelayClone = data.gen.clone();
-    expect(data.gen.next(isOffline).value).toMatchSnapshot();
+    expect(data.gen.next(togglingToOffline.offline).value).toMatchSnapshot();
   });
 
   it('should toggle offline and show notification if navigator disagrees with isOffline and ping succeeds', () => {
     expect(data.gen.next(raceSuccess).value).toEqual(
       put(showNotification('success', 'Your connection to the network has been restored!', 3000))
     );
-    expect(data.gen.next().value).toEqual(put(toggleOfflineConfig()));
+    expect(data.gen.next().value).toEqual(put(toggleOffline()));
   });
 
   it('should toggle offline and show notification if navigator agrees with isOffline and ping fails', () => {
-    nav.onLine = isOffline;
-    expect(data.isOfflineClone.next(!isOffline));
+    nav.onLine = togglingToOffline.offline;
+    expect(data.isOfflineClone.next(togglingToOnline.offline));
     expect(data.isOfflineClone.next(raceFailure).value).toMatchSnapshot();
-    expect(data.isOfflineClone.next().value).toEqual(put(toggleOfflineConfig()));
-    nav.onLine = !isOffline;
+    expect(data.isOfflineClone.next().value).toEqual(put(toggleOffline()));
+    nav.onLine = togglingToOnline.offline;
   });
 });
 
@@ -136,17 +140,15 @@ describe('handleNodeChangeIntent*', () => {
   let originalRandom;
 
   // normal operation variables
-  const defaultNode = configInitialState.nodeSelection;
-  const defaultNodeConfig = NODES[defaultNode];
-  const customNetworkConfigs = [];
-  const defaultNodeNetwork = NETWORKS[defaultNodeConfig.network];
-  const newNode = Object.keys(NODES).reduce(
-    (acc, cur) => (NODES[cur].network !== defaultNodeConfig.network ? cur : acc)
+  const defaultNodeId = selectedNodeExpectedState.initialState.nodeId;
+  const defaultNodeConfig: StaticNodeConfig = staticNodesExpectedState.initialState[defaultNodeId];
+  const newNodeId = Object.keys(staticNodesExpectedState.initialState).reduce(
+    (acc, cur) =>
+      staticNodesExpectedState.initialState[cur].network !== defaultNodeConfig.network ? cur : acc
   );
-  const newNodeConfig = NODES[newNode];
-  const newNodeNetwork = NETWORKS[newNodeConfig.network];
+  const newNodeConfig: StaticNodeConfig = staticNodesExpectedState.initialState[newNodeId];
 
-  const changeNodeIntentAction = changeNodeIntent(newNode);
+  const changeNodeIntentAction = changeNodeIntent(newNodeId);
   const latestBlock = '0xa';
   const raceSuccess = {
     lb: latestBlock
@@ -159,9 +161,10 @@ describe('handleNodeChangeIntent*', () => {
   data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeIntentAction);
 
   function shouldBailOut(gen, nextVal, errMsg) {
-    expect(gen.next(nextVal).value).toEqual(put(showNotification('danger', errMsg, 5000)));
+    expect(gen.next(nextVal).value).toEqual(select(getNodeId));
+    expect(gen.next(defaultNodeId).value).toEqual(put(showNotification('danger', errMsg, 5000)));
     expect(gen.next().value).toEqual(
-      put(changeNode(defaultNode, defaultNodeConfig, defaultNodeNetwork))
+      put(changeNode({ networkId: defaultNodeConfig.network, nodeId: defaultNodeId }))
     );
     expect(gen.next().done).toEqual(true);
   }
@@ -175,34 +178,38 @@ describe('handleNodeChangeIntent*', () => {
     Math.random = originalRandom;
   });
 
-  it('should select getNode', () => {
-    expect(data.gen.next().value).toEqual(select(getNode));
+  it('should select is static node', () => {
+    expect(data.gen.next().value).toEqual(select(isStaticNodeId, newNodeId));
   });
 
   it('should select nodeConfig', () => {
-    expect(data.gen.next(defaultNode).value).toEqual(select(getNodeConfig));
+    expect(data.gen.next(defaultNodeId).value).toEqual(select(getNodeConfig));
   });
 
-  it('should select getCustomNetworkConfigs', () => {
-    expect(data.gen.next(defaultNodeConfig).value).toEqual(select(getCustomNetworkConfigs));
+  it('should select getStaticNodeFromId', () => {
+    expect(data.gen.next(defaultNodeConfig).value).toEqual(select(getStaticNodeFromId, newNodeId));
   });
 
   it('should race getCurrentBlock and delay', () => {
-    expect(data.gen.next(customNetworkConfigs).value).toMatchSnapshot();
+    expect(data.gen.next(newNodeConfig).value).toMatchSnapshot();
   });
 
   it('should show error and revert to previous node if check times out', () => {
     data.clone1 = data.gen.clone();
     shouldBailOut(data.clone1, raceFailure, translateRaw('ERROR_32'));
   });
-
+  it('should getNetworkConfigById', () => {
+    expect(data.gen.next(raceSuccess).value).toEqual(
+      select(getNetworkConfigById, newNodeConfig.network)
+    );
+  });
   it('should put setLatestBlock', () => {
     expect(data.gen.next(raceSuccess).value).toEqual(put(setLatestBlock(latestBlock)));
   });
 
   it('should put changeNode', () => {
     expect(data.gen.next().value).toEqual(
-      put(changeNode(changeNodeIntentAction.payload, newNodeConfig, newNodeNetwork))
+      put(changeNode({ networkId: newNodeConfig.network, nodeId: newNodeId }))
     );
   });
 
@@ -216,41 +223,40 @@ describe('handleNodeChangeIntent*', () => {
   });
 
   // custom node variables
-  const customNodeConfigs = [
-    {
-      name: 'name',
-      url: 'url',
-      port: 443,
-      network: 'network'
-    }
-  ];
-  const customNodeIdFound = 'url:443';
-  const customNodeIdNotFound = 'notFound';
-  const customNodeAction = changeNodeIntent(customNodeIdFound);
-  const customNodeNotFoundAction = changeNodeIntent(customNodeIdNotFound);
+  const customNodeConfigs = customNodesExpectedState.addFirstCustomNode;
+  const customNodeAction = changeNodeIntent(firstCustomNodeId);
   data.customNode = handleNodeChangeIntent(customNodeAction);
-  data.customNodeNotFound = handleNodeChangeIntent(customNodeNotFoundAction);
 
   // test custom node
   it('should select getCustomNodeConfig and match race snapshot', () => {
     data.customNode.next();
-    data.customNode.next(defaultNode);
-    data.customNode.next(defaultNodeConfig);
-    expect(data.customNode.next(customNetworkConfigs).value).toEqual(select(getCustomNodeConfigs));
+    data.customNode.next(false);
+    expect(data.customNode.next(defaultNodeConfig).value).toEqual(
+      select(getCustomNodeFromId, firstCustomNodeId)
+    );
     expect(data.customNode.next(customNodeConfigs).value).toMatchSnapshot();
   });
+
+  const customNodeIdNotFound = firstCustomNodeId + 'notFound';
+  const customNodeNotFoundAction = changeNodeIntent(customNodeIdNotFound);
+  data.customNodeNotFound = handleNodeChangeIntent(customNodeNotFoundAction);
 
   // test custom node not found
   it('should handle unknown / missing custom node', () => {
     data.customNodeNotFound.next();
-    data.customNodeNotFound.next(defaultNode);
-    data.customNodeNotFound.next(defaultNodeConfig);
-    expect(data.customNodeNotFound.next(customNetworkConfigs).value).toEqual(
-      select(getCustomNodeConfigs)
+    data.customNodeNotFound.next(false);
+  });
+
+  it('should blah', () => {
+    expect(data.customNodeNotFound.next(defaultNodeConfig).value).toEqual(
+      select(getCustomNodeFromId, customNodeIdNotFound)
     );
+  });
+
+  it('should blahah', () => {
     shouldBailOut(
       data.customNodeNotFound,
-      customNodeConfigs,
+      null,
       `Attempted to switch to unknown node '${customNodeNotFoundAction.payload}'`
     );
   });
@@ -258,20 +264,19 @@ describe('handleNodeChangeIntent*', () => {
 
 describe('unsetWeb3Node*', () => {
   const node = 'web3';
-  const mockNodeConfig = { network: 'ETH' } as any;
-  const newNode = equivalentNodeOrDefault(mockNodeConfig);
+  const alternativeNodeId = 'eth_mycrypto';
   const gen = unsetWeb3Node();
 
   it('should select getNode', () => {
-    expect(gen.next().value).toEqual(select(getNode));
+    expect(gen.next().value).toEqual(select(getNodeId));
   });
 
-  it('should select getNodeConfig', () => {
-    expect(gen.next(node).value).toEqual(select(getNodeConfig));
+  it('should select an alternative node to web3', () => {
+    expect(gen.next(node).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
   it('should put changeNodeIntent', () => {
-    expect(gen.next(mockNodeConfig).value).toEqual(put(changeNodeIntent(newNode)));
+    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeIntent(alternativeNodeId)));
   });
 
   it('should be done', () => {
@@ -288,22 +293,20 @@ describe('unsetWeb3Node*', () => {
 
 describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction = {};
-  const mockNode = 'web3';
-  const mockNodeConfig: Partial<NodeConfig> = { network: 'ETH' };
+  const mockNodeId = 'web3';
+  const alternativeNodeId = 'eth_mycrypto';
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {
-    expect(gen.next().value).toEqual(select(getNode));
+    expect(gen.next().value).toEqual(select(getNodeId));
   });
 
-  it('should select getNodeConfig', () => {
-    expect(gen.next(mockNode).value).toEqual(select(getNodeConfig));
+  it('should select an alternative node to web3', () => {
+    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
   it('should put changeNodeIntent', () => {
-    expect(gen.next(mockNodeConfig).value).toEqual(
-      put(changeNodeIntent(equivalentNodeOrDefault(mockNodeConfig as any)))
-    );
+    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeIntent(alternativeNodeId)));
   });
 
   it('should be done', () => {
@@ -325,53 +328,5 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
     gen2.next(); //getNode
     gen2.next('web3'); //getNodeConfig
     expect(gen2.next().done).toEqual(true);
-  });
-});
-
-describe('equivalentNodeOrDefault', () => {
-  const originalNodeList = Object.keys(NODES);
-  const appDefaultNode = configInitialState.nodeSelection;
-  const mockNodeConfig = {
-    network: 'ETH',
-    service: 'fakeService',
-    lib: new RPCNode('fakeEndpoint'),
-    estimateGas: false
-  };
-
-  afterEach(() => {
-    Object.keys(NODES).forEach(node => {
-      if (originalNodeList.indexOf(node) === -1) {
-        delete NODES[node];
-      }
-    });
-  });
-
-  it('should return node with equivalent network', () => {
-    const node = equivalentNodeOrDefault({
-      ...mockNodeConfig,
-      network: 'Kovan'
-    });
-    expect(NODES[node].network).toEqual('Kovan');
-  });
-
-  it('should return app default if no eqivalent is found', () => {
-    const node = equivalentNodeOrDefault({
-      ...mockNodeConfig,
-      network: 'noEqivalentExists'
-    } as any);
-    expect(node).toEqual(appDefaultNode);
-  });
-
-  it('should ignore web3 from node list', () => {
-    NODES.web3 = {
-      ...mockNodeConfig,
-      network: 'uniqueToWeb3'
-    } as any;
-
-    const node = equivalentNodeOrDefault({
-      ...mockNodeConfig,
-      network: 'uniqueToWeb3'
-    } as any);
-    expect(node).toEqual(appDefaultNode);
   });
 });
