@@ -13,6 +13,7 @@ import { Wei } from 'libs/units';
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { connect } from 'react-redux';
+import SelfHideImg from 'components/ui/SelfHidingImg';
 
 interface AllValue {
   symbol: string;
@@ -39,6 +40,7 @@ interface StateProps {
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
   rates: AppState['rates']['rates'];
+  details: AppState['rates']['details'];
   ratesError: AppState['rates']['ratesError'];
   isOffline: AppState['config']['offline'];
 }
@@ -110,7 +112,7 @@ class EquivalentValues extends React.Component<Props, State> {
   };
 
   public render(): JSX.Element {
-    const { balance, isOffline, tokenBalances, rates, network, ratesError } = this.props;
+    const { balance, isOffline, tokenBalances, rates, details, network, ratesError } = this.props;
     const { equivalentValues, options } = this.state;
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
@@ -183,6 +185,7 @@ class EquivalentValues extends React.Component<Props, State> {
                     )
                 )}
                 <div className="EquivalentValues-values-spacer" />
+                {console.log(details)}
                 {pairRates.map(
                   (equiv, i) =>
                     (rateSymbols.symbols.coinAndToken as string[]).includes(equiv.rate) && (
@@ -289,6 +292,7 @@ function mapStateToProps(state: AppState): StateProps {
     tokenBalances: getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
+    details: state.rates.details,
     ratesError: state.rates.ratesError,
     isOffline: state.config.offline
   };
