@@ -115,7 +115,7 @@
     "sass-loader": "6.0.6",
     "style-loader": "0.20.0",
     "thread-loader": "1.1.2",
-    "ts-jest": "22.0.3",
+    "ts-jest": "22.0.4",
     "ts-loader": "3.3.1",
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.7.0",
