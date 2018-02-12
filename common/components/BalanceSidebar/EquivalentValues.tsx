@@ -40,7 +40,6 @@ interface StateProps {
   network: NetworkConfig;
   tokenBalances: TokenBalance[];
   rates: AppState['rates']['rates'];
-  details: AppState['rates']['details'];
   ratesError: AppState['rates']['ratesError'];
   isOffline: AppState['config']['offline'];
 }
@@ -112,7 +111,7 @@ class EquivalentValues extends React.Component<Props, State> {
   };
 
   public render(): JSX.Element {
-    const { balance, isOffline, tokenBalances, rates, details, network, ratesError } = this.props;
+    const { balance, isOffline, tokenBalances, rates, network, ratesError } = this.props;
     const { equivalentValues, options } = this.state;
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
@@ -123,8 +122,9 @@ class EquivalentValues extends React.Component<Props, State> {
       GBP: '£'
     };
 
-    const Value = ({ rate, value, symbol = '' }) => (
-      <div className="EquivalentValues-values-currency">
+    const Value = ({ className = '', rate, value, symbol = '', icon = '' }) => (
+      <div className={`EquivalentValues-values-currency ${className}`}>
+        <SelfHideImg src={icon} />
         <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
           {symbol}
@@ -177,6 +177,7 @@ class EquivalentValues extends React.Component<Props, State> {
                   (equiv, i) =>
                     (rateSymbols.symbols.fiat as string[]).includes(equiv.rate) && (
                       <Value
+                        className="EquivalentValues-values-currency-fiat"
                         rate={equiv.rate}
                         value={equiv.value}
                         symbol={fiatSymbols[equiv.rate]}
@@ -185,11 +186,15 @@ class EquivalentValues extends React.Component<Props, State> {
                     )
                 )}
                 <div className="EquivalentValues-values-spacer" />
-                {console.log(details)}
                 {pairRates.map(
                   (equiv, i) =>
                     (rateSymbols.symbols.coinAndToken as string[]).includes(equiv.rate) && (
-                      <Value rate={equiv.rate} value={equiv.value} key={i} />
+                      <Value
+                        className="EquivalentValues-values-currency-coin-and-token"
+                        rate={equiv.rate}
+                        value={equiv.value}
+                        key={i}
+                      />
                     )
                 )}
               </React.Fragment>
@@ -292,7 +297,6 @@ function mapStateToProps(state: AppState): StateProps {
     tokenBalances: getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
-    details: state.rates.details,
     ratesError: state.rates.ratesError,
     isOffline: state.config.offline
   };
