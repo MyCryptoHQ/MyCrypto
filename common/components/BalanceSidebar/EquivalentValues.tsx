@@ -119,15 +119,16 @@ class EquivalentValues extends React.Component<Props, State> {
     const fiatSymbols = {
       USD: '$',
       EUR: '€',
-      GBP: '£'
+      GBP: '£',
+      CHF: ' '
     };
 
     const Value = ({ className = '', rate, value, symbol = '', icon = '' }) => (
       <div className={`EquivalentValues-values-currency ${className}`}>
         <SelfHideImg src={icon} />
+        {!!symbol && <span className="EquivalentValues-values-currency-fiat-symbol">{symbol}</span>}
         <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
-          {symbol}
           <UnitDisplay
             unit={'ether'}
             value={value}
