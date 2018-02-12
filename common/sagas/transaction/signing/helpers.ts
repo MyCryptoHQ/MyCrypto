@@ -4,17 +4,16 @@ import { getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
 import {
   signTransactionFailed,
-  SignWeb3TransactionRequestedAction,
-  SignLocalTransactionRequestedAction,
   GetFromFailedAction,
   GetFromSucceededAction,
   getFromRequested,
-  TypeKeys as TK
+  TypeKeys as TK,
+  SignTransactionRequestedAction
 } from 'actions/transaction';
 import Tx from 'ethereumjs-tx';
-import { NetworkConfig } from 'config/data';
 import { SagaIterator } from 'redux-saga';
 import { showNotification } from 'actions/notifications';
+import { StaticNetworkConfig } from 'types/network';
 
 interface IFullWalletAndTransaction {
   wallet: IFullWallet;
@@ -22,7 +21,7 @@ interface IFullWalletAndTransaction {
 }
 
 const signTransactionWrapper = (func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator) =>
-  function*(partialTx: SignLocalTransactionRequestedAction | SignWeb3TransactionRequestedAction) {
+  function*(partialTx: SignTransactionRequestedAction) {
     try {
       const IWalletAndTx: IFullWalletAndTransaction = yield call(
         getWalletAndTransaction,
@@ -40,16 +39,14 @@ const signTransactionWrapper = (func: (IWalletAndTx: IFullWalletAndTransaction) 
  * the rest of the tx parameters from the action
  * @param partialTx
  */
-function* getWalletAndTransaction(
-  partialTx: (SignLocalTransactionRequestedAction | SignWeb3TransactionRequestedAction)['payload']
-) {
+function* getWalletAndTransaction(partialTx: SignTransactionRequestedAction['payload']) {
   // get the wallet we're going to sign with
   const wallet: null | IFullWallet = yield select(getWalletInst);
   if (!wallet) {
     throw Error('Could not get wallet instance to sign transaction');
   }
   // get the chainId
-  const { chainId }: NetworkConfig = yield select(getNetworkConfig);
+  const { chainId }: StaticNetworkConfig = yield select(getNetworkConfig);
 
   // get the rest of the transaction parameters
   partialTx._chainId = chainId;

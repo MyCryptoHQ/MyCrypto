@@ -1,6 +1,6 @@
-import { Token } from 'config/data';
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
+import { Token } from 'types/network';
 
 export type TAddCustomToken = typeof addCustomToken;
 export function addCustomToken(payload: Token): interfaces.AddCustomTokenAction {

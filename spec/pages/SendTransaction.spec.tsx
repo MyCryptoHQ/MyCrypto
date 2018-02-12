@@ -4,21 +4,14 @@ import Adapter from 'enzyme-adapter-react-16';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
-import { NODES } from 'config/data';
 import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
+import { config } from 'reducers/config';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 it('render snapshot', () => {
-  const testNode = 'rop_mew';
-  const testStateConfig = {
-    languageSelection: 'en',
-    nodeSelection: testNode,
-    node: NODES[testNode],
-    gasPriceGwei: 21,
-    offline: false
-  };
+  const testStateConfig = config(undefined as any, {} as any);
   const testState = {
     wallet: {},
     balance: {},

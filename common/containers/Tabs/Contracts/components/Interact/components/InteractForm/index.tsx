@@ -1,65 +1,82 @@
 import React, { Component } from 'react';
 import translate from 'translations';
-import { NetworkContract } from 'config/data';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
+import Select from 'react-select';
+import { NetworkContract } from 'types/network';
+import { donationAddressMap } from 'config';
 
-interface Props {
+interface ContractOption {
+  name: string;
+  value: string;
+}
+
+interface StateProps {
   contracts: NetworkContract[];
-  accessContract(abiJson: string, address: string): (ev) => void;
+}
+
+interface OwnProps {
+  accessContract(contractAbi: string, address: string): (ev) => void;
   resetState(): void;
 }
+
+type Props = OwnProps & StateProps;
 
 interface State {
   address: string;
   abiJson: string;
+  contract: ContractOption | null;
+  contractPlaceholder: string;
 }
 
-class InteractForm extends Component<Props, State> {
-  public state = {
-    address: '',
-    abiJson: ''
-  };
+const abiJsonPlaceholder = [
+  {
+    type: 'constructor',
+    inputs: [{ name: 'param1', type: 'uint256', indexed: true }],
+    name: 'Event'
+  },
+  { type: 'function', inputs: [{ name: 'a', type: 'uint256' }], name: 'foo', outputs: [] }
+];
 
-  private abiJsonPlaceholder = '[{ "type":"contructor", "inputs":\
- [{ "name":"param1","type":"uint256", "indexed":true }],\
-"name":"Event" }, { "type":"function", "inputs": [{"nam\
-e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
+class InteractForm extends Component<Props, State> {
+  private abiJsonPlaceholder = JSON.stringify(abiJsonPlaceholder, null, 0);
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      address: '',
+      abiJson: '',
+      contract: null,
+      contractPlaceholder: this.isContractsValid()
+        ? 'Please select a contract...'
+        : 'No contracts available'
+    };
+  }
+
+  public isContractsValid = () => {
+    const { contracts } = this.props;
+    return contracts && contracts.length;
+  };
 
   public render() {
     const { contracts, accessContract } = this.props;
-    const { address, abiJson } = this.state;
+    const { address, abiJson, contract } = this.state;
     const validEthAddress = isValidETHAddress(address);
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
-    let contractOptions;
-    if (contracts && contracts.length) {
-      contractOptions = [
-        {
-          name: 'Select a contract...',
-          value: null
-        }
-      ];
+    let contractOptions: ContractOption[] = [];
 
-      contractOptions = contractOptions.concat(
-        contracts.map(contract => {
-          const addr = contract.address ? `(${contract.address.substr(0, 10)}...)` : '';
-          return {
-            name: `${contract.name} ${addr}`,
-            value: this.makeContractValue(contract)
-          };
-        })
-      );
-    } else {
-      contractOptions = [
-        {
-          name: 'No contracts available',
-          value: null
-        }
-      ];
+    if (this.isContractsValid()) {
+      contractOptions = contracts.map(con => {
+        const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
+        return {
+          name: `${con.name} ${addr}`,
+          value: this.makeContractValue(con)
+        };
+      });
     }
 
     // TODO: Use common components for address, abi json
@@ -69,7 +86,7 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
           <label className="InteractForm-address-field form-group col-sm-6">
             <h4>{translate('CONTRACT_Title')}</h4>
             <input
-              placeholder="mewtopia.eth or 0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8"
+              placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
               name="contract_address"
               autoComplete="off"
               value={address}
@@ -82,17 +99,17 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
 
           <label className="InteractForm-address-contract form-group col-sm-6">
             <h4>{translate('CONTRACT_Title_2')}</h4>
-            <select
-              className="InteractForm-address-field-input form-control"
+            <Select
+              name="interactContract"
+              className={`${!contract ? 'is-invalid' : ''}`}
+              value={contract as any}
+              placeholder={this.state.contractPlaceholder}
               onChange={this.handleSelectContract}
-              disabled={!contracts || !contracts.length}
-            >
-              {contractOptions.map(opt => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.name}
-                </option>
-              ))}
-            </select>
+              options={contractOptions}
+              clearable={false}
+              searchable={false}
+              labelKey="name"
+            />
           </label>
         </div>
 
@@ -128,15 +145,16 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
     this.setState({ [name]: ev.currentTarget.value });
   };
 
-  private handleSelectContract = (ev: React.FormEvent<HTMLSelectElement>) => {
+  private handleSelectContract = (contract: ContractOption) => {
     this.props.resetState();
-    const contract = this.props.contracts.find(currContract => {
-      return this.makeContractValue(currContract) === ev.currentTarget.value;
+    const fullContract = this.props.contracts.find(currContract => {
+      return this.makeContractValue(currContract) === contract.value;
     });
 
     this.setState({
-      address: contract && contract.address ? contract.address : '',
-      abiJson: contract && contract.abi ? contract.abi : ''
+      address: fullContract && fullContract.address ? fullContract.address : '',
+      abiJson: fullContract && fullContract.abi ? fullContract.abi : '',
+      contract
     });
   };
 
@@ -146,7 +164,7 @@ e":"a", "type":"uint256"}], "name":"foo", "outputs": [] }]';
 }
 
 const mapStateToProps = (state: AppState) => ({
-  contracts: getNetworkContracts(state)
+  contracts: getNetworkContracts(state) || []
 });
 
-export default connect(mapStateToProps)(InteractForm);
+export default connect<StateProps, {}>(mapStateToProps)(InteractForm);

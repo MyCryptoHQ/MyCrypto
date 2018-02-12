@@ -1,5 +1,6 @@
-import { Token } from 'config/data';
 import { TypeKeys } from './constants';
+import { Token } from 'types/network';
+
 /*** Add custom token ***/
 export interface AddCustomTokenAction {
   type: TypeKeys.CUSTOM_TOKEN_ADD;

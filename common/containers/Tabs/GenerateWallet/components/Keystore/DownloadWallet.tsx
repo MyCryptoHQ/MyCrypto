@@ -1,42 +1,28 @@
-import { IFullWallet, IV3Wallet } from 'ethereumjs-wallet';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
 import translate from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from '../Template';
-import { N_FACTOR } from 'config/data';
 
 interface Props {
-  wallet: IFullWallet;
-  password: string;
+  keystore: IV3Wallet;
+  filename: string;
   continue(): void;
 }
 
 interface State {
   hasDownloadedWallet: boolean;
-  keystore: IV3Wallet | null;
 }
 
 export default class DownloadWallet extends Component<Props, State> {
   public state: State = {
-    hasDownloadedWallet: false,
-    keystore: null
+    hasDownloadedWallet: false
   };
 
-  public componentWillMount() {
-    this.setWallet(this.props.wallet, this.props.password);
-  }
-
-  public componentWillUpdate(nextProps: Props) {
-    if (this.props.wallet !== nextProps.wallet) {
-      this.setWallet(nextProps.wallet, nextProps.password);
-    }
-  }
-
   public render() {
+    const { filename } = this.props;
     const { hasDownloadedWallet } = this.state;
-    const filename = this.props.wallet.getV3Filename();
 
     return (
       <Template>
@@ -47,7 +33,7 @@ export default class DownloadWallet extends Component<Props, State> {
             role="button"
             className="DlWallet-download btn btn-primary btn-lg"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-            aria-describedby={translate('x_KeystoreDesc')}
+            aria-describedby={translate('x_KeystoreDesc', true)}
             download={filename}
             href={this.getBlob()}
             onClick={this.handleDownloadKeystore}
@@ -82,20 +68,9 @@ export default class DownloadWallet extends Component<Props, State> {
     );
   }
 
-  public getBlob = () =>
-    (this.state.keystore && makeBlob('text/json;charset=UTF-8', this.state.keystore)) || undefined;
-
-  private markDownloaded = () =>
-    this.state.keystore && this.setState({ hasDownloadedWallet: true });
+  public getBlob = () => makeBlob('text/json;charset=UTF-8', this.props.keystore);
 
   private handleContinue = () => this.state.hasDownloadedWallet && this.props.continue();
 
-  private setWallet(wallet: IFullWallet, password: string) {
-    const keystore = wallet.toV3(password, { n: N_FACTOR });
-    keystore.address = toChecksumAddress(keystore.address);
-    this.setState({ keystore });
-  }
-
-  private handleDownloadKeystore = (e: React.FormEvent<HTMLAnchorElement>) =>
-    this.state.keystore ? this.markDownloaded() : e.preventDefault();
+  private handleDownloadKeystore = () => this.setState({ hasDownloadedWallet: true });
 }

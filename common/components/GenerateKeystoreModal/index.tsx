@@ -1,9 +1,9 @@
 import React from 'react';
 import { generateKeystoreFileInfo, KeystoreFile } from 'utils/keystore';
 import Modal from 'components/ui/Modal';
-import Input from './Input';
+import { TogglablePassword } from 'components';
 import translate, { translateRaw } from 'translations';
-import { MINIMUM_PASSWORD_LENGTH } from 'config/data';
+import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { isValidPrivKey } from 'libs/validators';
 import './index.scss';
 
@@ -16,8 +16,6 @@ interface Props {
 interface State {
   privateKey: string;
   password: string;
-  isPrivateKeyVisible: boolean;
-  isPasswordVisible: boolean;
   keystoreFile: KeystoreFile | null;
   hasError: boolean;
 }
@@ -25,8 +23,6 @@ interface State {
 const initialState: State = {
   privateKey: '',
   password: '',
-  isPrivateKeyVisible: false,
-  isPasswordVisible: false,
   keystoreFile: null,
   hasError: false
 };
@@ -52,14 +48,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
   }
 
   public render() {
-    const {
-      privateKey,
-      password,
-      isPrivateKeyVisible,
-      isPasswordVisible,
-      keystoreFile,
-      hasError
-    } = this.state;
+    const { privateKey, password, keystoreFile, hasError } = this.state;
 
     const isPrivateKeyValid = isValidPrivKey(privateKey);
     const isPasswordValid = password.length >= MINIMUM_PASSWORD_LENGTH;
@@ -73,27 +62,23 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
         <form className="GenKeystore" onSubmit={this.handleSubmit}>
           <label className="GenKeystore-field">
             <h4 className="GenKeystore-field-label">Private Key</h4>
-            <Input
-              isValid={isPrivateKeyValid}
-              isVisible={isPrivateKeyVisible}
+            <TogglablePassword
               name="privateKey"
               value={privateKey}
-              handleInput={this.handleInput}
+              disabled={!!privateKey}
+              onChange={this.handleInput}
               placeholder="f1d0e0789c6d40f39..."
-              handleToggle={this.togglePrivateKey}
-              disabled={!!this.props.privateKey}
+              isValid={isPrivateKeyValid}
             />
           </label>
           <label className="GenKeystore-field">
             <h4 className="GenKeystore-field-label">Password</h4>
-            <Input
-              isValid={isPasswordValid}
-              isVisible={isPasswordVisible}
+            <TogglablePassword
               name="password"
               value={password}
+              onChange={this.handleInput}
               placeholder={translateRaw('Minimum 9 characters')}
-              handleInput={this.handleInput}
-              handleToggle={this.togglePassword}
+              isValid={isPasswordValid}
             />
           </label>
 
@@ -126,18 +111,6 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
       </Modal>
     );
   }
-
-  private togglePrivateKey = () => {
-    this.setState({
-      isPrivateKeyVisible: !this.state.isPrivateKeyVisible
-    });
-  };
-
-  private togglePassword = () => {
-    this.setState({
-      isPasswordVisible: !this.state.isPasswordVisible
-    });
-  };
 
   private handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;

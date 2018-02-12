@@ -1,95 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  changeLanguage as dChangeLanguage,
-  changeNodeIntent as dChangeNodeIntent,
-  addCustomNode as dAddCustomNode,
-  removeCustomNode as dRemoveCustomNode,
-  addCustomNetwork as dAddCustomNetwork,
-  TChangeLanguage,
-  TChangeNodeIntent,
-  TAddCustomNode,
-  TRemoveCustomNode,
-  TAddCustomNetwork
-} from 'actions/config';
-import { TSetGasPriceField, setGasPriceField as dSetGasPriceField } from 'actions/transaction';
 import { AlphaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
-import { getGasPrice } from 'selectors/transaction';
+import { getOffline, getLatestBlock } from 'selectors/config';
 
-interface ReduxProps {
-  languageSelection: AppState['config']['languageSelection'];
-  node: AppState['config']['node'];
-  nodeSelection: AppState['config']['nodeSelection'];
-  isChangingNode: AppState['config']['isChangingNode'];
-  isOffline: AppState['config']['offline'];
-  customNodes: AppState['config']['customNodes'];
-  customNetworks: AppState['config']['customNetworks'];
-  latestBlock: AppState['config']['latestBlock'];
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
+interface StateProps {
+  isOffline: AppState['config']['meta']['offline'];
+  latestBlock: AppState['config']['meta']['latestBlock'];
 }
 
-interface ActionProps {
-  changeLanguage: TChangeLanguage;
-  changeNodeIntent: TChangeNodeIntent;
-  addCustomNode: TAddCustomNode;
-  removeCustomNode: TRemoveCustomNode;
-  addCustomNetwork: TAddCustomNetwork;
-  setGasPriceField: TSetGasPriceField;
-}
-
-type Props = {
+interface OwnProps {
   isUnavailableOffline?: boolean;
   children: string | React.ReactElement<string> | React.ReactElement<string>[];
-} & ReduxProps &
-  ActionProps;
+}
+
+type Props = OwnProps & StateProps;
 
 class TabSection extends Component<Props, {}> {
   public render() {
-    const {
-      isUnavailableOffline,
-      children,
-      // APP
-      node,
-      nodeSelection,
-      isChangingNode,
-      isOffline,
-      languageSelection,
-      customNodes,
-      customNetworks,
-      latestBlock,
-      setGasPriceField,
-      gasPrice,
-      changeLanguage,
-      changeNodeIntent,
-      addCustomNode,
-      removeCustomNode,
-      addCustomNetwork
-    } = this.props;
-
-    const headerProps = {
-      languageSelection,
-      node,
-      nodeSelection,
-      isChangingNode,
-      isOffline,
-      gasPrice,
-      customNodes,
-      customNetworks,
-      changeLanguage,
-      changeNodeIntent,
-      setGasPriceField,
-      addCustomNode,
-      removeCustomNode,
-      addCustomNetwork
-    };
+    const { isUnavailableOffline, children, isOffline, latestBlock } = this.props;
 
     return (
       <div className="page-layout">
         <main>
-          <Header {...headerProps} />
+          <Header />
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
@@ -102,25 +38,11 @@ class TabSection extends Component<Props, {}> {
   }
 }
 
-function mapStateToProps(state: AppState): ReduxProps {
+function mapStateToProps(state: AppState): StateProps {
   return {
-    node: state.config.node,
-    nodeSelection: state.config.nodeSelection,
-    isChangingNode: state.config.isChangingNode,
-    isOffline: state.config.offline,
-    languageSelection: state.config.languageSelection,
-    gasPrice: getGasPrice(state),
-    customNodes: state.config.customNodes,
-    customNetworks: state.config.customNetworks,
-    latestBlock: state.config.latestBlock
+    isOffline: getOffline(state),
+    latestBlock: getLatestBlock(state)
   };
 }
 
-export default connect(mapStateToProps, {
-  setGasPriceField: dSetGasPriceField,
-  changeLanguage: dChangeLanguage,
-  changeNodeIntent: dChangeNodeIntent,
-  addCustomNode: dAddCustomNode,
-  removeCustomNode: dRemoveCustomNode,
-  addCustomNetwork: dAddCustomNetwork
-})(TabSection);
+export default connect(mapStateToProps, {})(TabSection);

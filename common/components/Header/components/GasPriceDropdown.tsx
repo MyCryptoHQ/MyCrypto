@@ -1,29 +1,36 @@
-import { gasPriceDefaults, knowledgeBaseURL } from 'config/data';
+import { gasPriceDefaults, HELP_ARTICLE } from 'config';
 import throttle from 'lodash/throttle';
 import React, { Component } from 'react';
-import DropdownShell from 'components/ui/DropdownShell';
+import { DropdownShell, HelpLink } from 'components/ui';
 import './GasPriceDropdown.scss';
 import { SetGasLimitFieldAction } from 'actions/transaction';
 import { gasPricetoBase } from 'libs/units';
+import { AppState } from 'reducers';
+import { getGasPrice } from 'selectors/transaction';
+import { connect } from 'react-redux';
 
-interface Props {
-  value: string;
+interface OwnProps {
   onChange(payload: SetGasLimitFieldAction['payload']): void;
 }
 
-export default class GasPriceDropdown extends Component<Props> {
+interface StateProps {
+  gasPrice: AppState['transaction']['fields']['gasPrice'];
+}
+
+type Props = OwnProps & StateProps;
+
+class GasPriceDropdown extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.updateGasPrice = throttle(this.updateGasPrice, 50);
   }
 
   public render() {
-    const { value } = this.props;
     return (
       <DropdownShell
         color="white"
         size="smr"
-        ariaLabel={`adjust gas price. current price is ${value} gwei`}
+        ariaLabel={`adjust gas price. current price is ${this.props.gasPrice.raw} gwei`}
         renderLabel={this.renderLabel}
         renderOptions={this.renderOptions}
       />
@@ -33,20 +40,19 @@ export default class GasPriceDropdown extends Component<Props> {
   private renderLabel = () => {
     return (
       <span>
-        Gas Price<span className="hidden-xs">: {this.props.value} Gwei</span>
+        Gas Price<span className="hidden-xs">: {this.props.gasPrice.raw} Gwei</span>
       </span>
     );
   };
 
   private renderOptions = () => {
-    const { value } = this.props;
     return (
       <div className="GasPrice-dropdown-menu dropdown-menu dropdown-menu-right">
         <div className="GasPrice-header">
-          <span>Gas Price</span>: {value} Gwei
+          <span>Gas Price</span>: {this.props.gasPrice.raw} Gwei
           <input
             type="range"
-            value={value}
+            value={this.props.gasPrice.raw}
             min={gasPriceDefaults.gasPriceMinGwei}
             max={gasPriceDefaults.gasPriceMaxGwei}
             onChange={this.handleGasPriceChange}
@@ -61,13 +67,7 @@ export default class GasPriceDropdown extends Component<Props> {
             <code>21 GWEI</code>.
           </p>
           <p>
-            <a
-              href={`${knowledgeBaseURL}/gas/what-is-gas-ethereum`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Read more
-            </a>
+            <HelpLink article={HELP_ARTICLE.WHAT_IS_GAS}>Read more</HelpLink>
           </p>
         </div>
       </div>
@@ -82,3 +82,7 @@ export default class GasPriceDropdown extends Component<Props> {
     this.updateGasPrice(e.currentTarget.value);
   };
 }
+
+const mapStateToProps = (state: AppState): StateProps => ({ gasPrice: getGasPrice(state) });
+
+export default connect(mapStateToProps)(GasPriceDropdown);

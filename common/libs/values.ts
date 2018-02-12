@@ -23,21 +23,6 @@ export function sanitizeHex(hex: string) {
   return hex !== '' ? `0x${padLeftEven(hexStr)}` : '';
 }
 
-export function networkIdToName(networkId: string | number): string {
-  switch (networkId.toString()) {
-    case '1':
-      return 'ETH';
-    case '3':
-      return 'Ropsten';
-    case '4':
-      return 'Rinkeby';
-    case '42':
-      return 'Kovan';
-    default:
-      throw new Error(`Network ${networkId} is unsupported.`);
-  }
-}
-
 export const buildEIP681EtherRequest = (
   recipientAddr: string,
   chainId: number,
@@ -57,3 +42,19 @@ export const buildEIP681TokenRequest = (
   }/transfer?address=${recipientAddr}&uint256=${toTokenBase(tokenValue.raw, decimal)}&gas=${
     gasLimit.raw
   }`;
+
+export const sanitizeNumericalInput = (input: string): string => {
+  const inputFloat = parseFloat(input);
+
+  if (!input || isNaN(inputFloat)) {
+    return input;
+  }
+
+  // limit input field decrement to 0
+  if (inputFloat === -1) {
+    return '0';
+  }
+
+  // convert negative values to positive
+  return Math.abs(inputFloat).toString();
+};

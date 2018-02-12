@@ -1,15 +1,23 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
-import DPATHS from 'config/dpaths';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
-
-const DEFAULT_PATH = DPATHS.MNEMONIC[0].value;
+import { InsecureWalletName } from 'config';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
+import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import { TogglablePassword } from 'components';
 
 interface Props {
   onUnlock(param: any): void;
 }
+
+interface StateProps {
+  dPath: DPath;
+  dPaths: DPath[];
+}
+
 interface State {
   phrase: string;
   formattedPhrase: string;
@@ -18,13 +26,13 @@ interface State {
   dPath: string;
 }
 
-export class MnemonicDecrypt extends Component<Props, State> {
+class MnemonicDecryptClass extends PureComponent<Props & StateProps, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',
     pass: '',
     seed: '',
-    dPath: DEFAULT_PATH
+    dPath: this.props.dPath.value
   };
 
   public render() {
@@ -35,13 +43,14 @@ export class MnemonicDecrypt extends Component<Props, State> {
       <div>
         <div id="selectedTypeKey">
           <div className="form-group">
-            <textarea
-              id="aria-private-key"
-              className={`form-control ${isValidMnemonic ? 'is-valid' : 'is-invalid'}`}
+            <TogglablePassword
               value={phrase}
-              onChange={this.onMnemonicChange}
-              placeholder={translateRaw('x_Mnemonic')}
               rows={4}
+              placeholder={translateRaw('x_Mnemonic')}
+              isValid={isValidMnemonic}
+              isTextareaWhenVisible={true}
+              onChange={this.onMnemonicChange}
+              onEnter={isValidMnemonic && this.onDWModalOpen}
             />
           </div>
           <div className="form-group">
@@ -70,7 +79,7 @@ export class MnemonicDecrypt extends Component<Props, State> {
           isOpen={!!seed}
           seed={seed}
           dPath={dPath}
-          dPaths={DPATHS.MNEMONIC}
+          dPaths={this.props.dPaths}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -135,3 +144,12 @@ export class MnemonicDecrypt extends Component<Props, State> {
     });
   };
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    dPath: getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE),
+    dPaths: getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
+  };
+}
+
+export const MnemonicDecrypt = connect(mapStateToProps)(MnemonicDecryptClass);

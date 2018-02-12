@@ -8,10 +8,11 @@
     "target": "es2015",
     "allowJs": true,
     "baseUrl": "./common/",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "paths": {
+      "shared*": ["../shared*"],
+      "types*": ["../shared/types*"]
+    },
+    "lib": ["es2017", "dom"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "noEmitOnError": false,
@@ -20,6 +21,8 @@
   },
   "include": [
     "./common/",
+    "./electron-app/",
+    "./shared/",
     "spec",
     "./node_modules/types-rlp/index.d.ts"
   ],

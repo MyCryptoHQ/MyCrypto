@@ -3,7 +3,7 @@ import './index.scss';
 
 const SUBJECT = 'Error!';
 const DESCRIPTION =
-  'I encountered an error while using MyEtherWallet. Here are the steps to re-create the issue:\n\nThe full error message:';
+  'I encountered an error while using MyCrypto. Here are the steps to re-create the issue:\n\nThe full error message:';
 
 interface Props {
   error: Error;
@@ -20,9 +20,9 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={`mailto:support@myetherwallet.com?Subject=${SUBJECT}&body=${DESCRIPTION}`}
+            href={`mailto:support@mycrypto.com?Subject=${SUBJECT}&body=${DESCRIPTION}`}
           >
-            support@myetherwallet.com
+            support@mycrypto.com
           </a>{' '}
           if a refresh doesn't fix it (or click it anyway to open a ticket 😊). If you attach the
           following error, you'll make it a ton easier to fix the issue.

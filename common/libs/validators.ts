@@ -5,6 +5,12 @@ import { normalise } from './ens';
 import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
 import { isPositiveInteger } from 'utils/helpers';
+import {
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_LIMIT_UPPER_BOUND,
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND
+} from 'config/constants';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -127,8 +133,23 @@ export function isValidPath(dPath: string) {
 export const isValidValue = (value: string) =>
   !!(value && isFinite(parseFloat(value)) && parseFloat(value) >= 0);
 
-export const isValidGasPrice = (gasLimit: string) =>
-  !!(gasLimit && isFinite(parseFloat(gasLimit)) && parseFloat(gasLimit) > 0);
+export const gasLimitValidator = (gasLimit: number | string) => {
+  const gasLimitFloat = typeof gasLimit === 'string' ? parseFloat(gasLimit) : gasLimit;
+  return (
+    validNumber(gasLimitFloat) &&
+    gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
+    gasLimitFloat <= GAS_LIMIT_UPPER_BOUND
+  );
+};
+
+export const gasPriceValidator = (gasPrice: number | string): boolean => {
+  const gasPriceFloat = typeof gasPrice === 'string' ? parseFloat(gasPrice) : gasPrice;
+  return (
+    validNumber(gasPriceFloat) &&
+    gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
+    gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND
+  );
+};
 
 export const isValidByteCode = (byteCode: string) =>
   byteCode && byteCode.length > 0 && byteCode.length % 2 === 0;
@@ -171,7 +192,16 @@ function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
 
 function formatErrors(response: JsonRpcResponse, apiType: string) {
   if (response.error) {
-    return `${response.error.message} ${response.error.data || ''}`;
+    // Metamask errors are sometimes full-blown stacktraces, no bueno. Instead,
+    // We'll just take the first line of it, and the last thing after all of
+    // the colons. An example error message would be:
+    // "Error: Metamask Sign Tx Error: User rejected the signature."
+    const lines = response.error.message.split('\n');
+    if (lines.length > 2) {
+      return lines[0].split(':').pop();
+    } else {
+      return `${response.error.message} ${response.error.data || ''}`;
+    }
   }
   return `Invalid ${apiType} Error`;
 }

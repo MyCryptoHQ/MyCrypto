@@ -18,7 +18,7 @@ interface Props {
    * @type {string}
    * @memberof Props
    */
-  symbol?: string;
+  symbol?: string | null;
   /**
    * @description display the long balance, if false, trims it to 3 decimal places, if a number is specified then that number is the number of digits to be displayed.
    * @type {boolean}
@@ -70,7 +70,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
     element = (
       <span>
         {formattedValue}
-        {symbol ? ` ${symbol}` : ''}
+        <span>{symbol ? ` ${symbol}` : ''}</span>
       </span>
     );
   }
@@ -85,7 +85,7 @@ export default UnitDisplay;
  * Circumvents typescript issue with union props on connected components.
  */
 interface OfflineProps {
-  offline: AppState['config']['offline'];
+  offline: AppState['config']['meta']['offline'];
   children: React.ReactElement<string>;
 }
 

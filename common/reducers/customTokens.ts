@@ -4,7 +4,7 @@ import {
   RemoveCustomTokenAction
 } from 'actions/customTokens';
 import { TypeKeys } from 'actions/customTokens/constants';
-import { Token } from 'config/data';
+import { Token } from 'types/network';
 
 export type State = Token[];
 

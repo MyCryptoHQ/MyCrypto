@@ -7,7 +7,7 @@ interface State {
   isFading: boolean;
   hasAcknowledged: boolean;
 }
-export default class AlphaAgreement extends React.Component<{}, State> {
+export default class AlphaAgreement extends React.PureComponent<{}, State> {
   public state = {
     hasAcknowledged: !!localStorage.getItem(LS_KEY),
     isFading: false
@@ -23,28 +23,27 @@ export default class AlphaAgreement extends React.Component<{}, State> {
     return (
       <div className={`AlphaAgreement ${isFading}`}>
         <div className="AlphaAgreement-content">
-          <h2>This is an Unstable Version of MEW</h2>
+          <h2>This is an Unstable Version of MyCrypto</h2>
           <p>
-            You are about to access an alpha version of MyEtherWallet that is currently in
-            development. In its current state, it should only be used for testing, not for important
-            transactions.
+            You are about to access a beta version of MyCrypto that is currently in development. In
+            its current state, it should only be used for testing, not for important transactions.
           </p>
           <p>
             Any wallets you generate should not hold a significant value, and any transactions you
-            make should be for small amounts. MEW does not claim responsibility for any issues that
-            happen while using the alpha version.
+            make should be for small amounts. MyCrypto does not claim responsibility for any issues
+            that happen while using the beta version.
           </p>
           <p>Are you sure you would like to continue?</p>
 
           <div className="AlphaAgreement-content-buttons">
             <button className="AlphaAgreement-content-buttons-btn is-reject" onClick={this.reject}>
-              No, Take Me to v3
+              No, take me to prod
             </button>
             <button
               className="AlphaAgreement-content-buttons-btn is-continue"
               onClick={this.doContinue}
             >
-              Yes, Continue to v4
+              Yes, continue to beta
             </button>
           </div>
         </div>
@@ -62,6 +61,6 @@ export default class AlphaAgreement extends React.Component<{}, State> {
   };
 
   private reject = () => {
-    window.location.assign('https://myetherwallet.com');
+    window.location.assign('https://mycrypto.com');
   };
 }

@@ -1,15 +1,23 @@
 import { Identicon, UnitDisplay } from 'components/ui';
-import { NetworkConfig } from 'config/data';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
 import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
+import { getNetworkConfig, getOffline } from 'selectors/config';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
+import { NetworkConfig } from 'types/network';
+import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
 
-interface Props {
-  balance: Balance;
+interface OwnProps {
   wallet: IWallet;
+}
+
+interface StateProps {
+  balance: Balance;
   network: NetworkConfig;
+  isOffline: boolean;
 }
 
 interface State {
@@ -17,7 +25,14 @@ interface State {
   address: string;
   confirmAddr: boolean;
 }
-export default class AccountInfo extends React.Component<Props, State> {
+
+interface DispatchProps {
+  setAccountBalance: TSetAccountBalance;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
+
+class AccountInfo extends React.Component<Props, State> {
   public state = {
     showLongBalance: false,
     address: '',
@@ -55,9 +70,16 @@ export default class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, balance } = this.props;
+    const { network, balance, isOffline } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
-    const { blockExplorer, tokenExplorer } = network;
+    let blockExplorer;
+    let tokenExplorer;
+    if (!network.isCustom) {
+      // this is kind of ugly but its the result of typeguards, maybe we can find a cleaner solution later on such as just dedicating it to a selector
+      blockExplorer = network.blockExplorer;
+      tokenExplorer = network.tokenExplorer;
+    }
+
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div className="AccountInfo">
@@ -99,23 +121,31 @@ export default class AccountInfo extends React.Component<Props, State> {
         <div className="AccountInfo-section">
           <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
           <ul className="AccountInfo-list">
-            <li className="AccountInfo-list-item">
+            <li className="AccountInfo-list-item AccountInfo-balance">
               <span
-                className="AccountInfo-list-item-clickable mono wrap"
+                className="AccountInfo-list-item-clickable AccountInfo-balance-amount mono wrap"
                 onClick={this.toggleShowLongBalance}
               >
-                {balance.isPending ? (
-                  <Spinner />
-                ) : (
-                  <UnitDisplay
-                    value={balance.wei}
-                    unit={'ether'}
-                    displayShortBalance={!showLongBalance}
-                    checkOffline={true}
-                  />
-                )}
+                <UnitDisplay
+                  value={balance.wei}
+                  unit={'ether'}
+                  displayShortBalance={!showLongBalance}
+                  checkOffline={true}
+                  symbol={balance.wei ? network.name : null}
+                />
               </span>
-              {!balance.isPending ? balance.wei ? <span> {network.name}</span> : null : null}
+              {balance.isPending ? (
+                <Spinner />
+              ) : (
+                !isOffline && (
+                  <button
+                    className="AccountInfo-section-refresh"
+                    onClick={this.props.setAccountBalance}
+                  >
+                    <i className="fa fa-refresh" />
+                  </button>
+                )
+              )}
             </li>
           </ul>
         </div>
@@ -127,11 +157,11 @@ export default class AccountInfo extends React.Component<Props, State> {
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
                   <a
-                    href={blockExplorer.address(address)}
+                    href={blockExplorer.addressUrl(address)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {`${network.name} (${blockExplorer.name})`}
+                    {`${network.name} (${blockExplorer.origin})`}
                   </a>
                 </li>
               )}
@@ -153,3 +183,12 @@ export default class AccountInfo extends React.Component<Props, State> {
     );
   }
 }
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    balance: state.wallet.balance,
+    network: getNetworkConfig(state),
+    isOffline: getOffline(state)
+  };
+}
+const mapDispatchToProps: DispatchProps = { setAccountBalance };
+export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

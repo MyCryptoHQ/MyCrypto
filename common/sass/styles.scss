@@ -1,33 +1,41 @@
 // Where shared common styles live
 
 // --- BOOTSTRAP ---
-@import "./variables";
-@import "./mixins";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/normalize";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/print";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/type";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/code";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/grid";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/tables";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/forms";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/buttons";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/alerts";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/wells";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/close";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/utilities";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
+@import './variables';
+@import './mixins';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/normalize';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/print';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/type';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/code';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/grid';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/tables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/forms';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/buttons';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/dropdowns';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/button-groups';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/input-groups';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/alerts';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/wells';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/close';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/utilities';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities';
 
 // --- RC SLIDER ---
-@import "~rc-slider/assets/index.css";
+@import '~rc-slider/assets/index.css';
+
+// --- React Select ---
+@import '~react-select/dist/react-select.css';
 
 // --- CUSTOM ---
-@import "./styles/badbrowser";
-@import "./styles/noscript";
-@import "./styles/overrides";
-@import "./styles/scaffolding";
-@import "./styles/tab";
-@import "./fonts";
+@import './styles/badbrowser';
+@import './styles/noscript';
+@import './styles/overrides';
+@import './styles/scaffolding';
+@import './styles/tab';
+@import './styles/flexbox';
+@import './fonts';
+
+[data-whatintent='mouse'] *:focus {
+  outline: none;
+}

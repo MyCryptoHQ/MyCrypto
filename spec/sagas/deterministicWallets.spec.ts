@@ -7,13 +7,13 @@ import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import { getNodeLib } from 'selectors/config';
 import * as dWalletActions from 'actions/deterministicWallets';
-import { Token } from 'config/data';
 import {
   getDeterministicWallets,
   updateWalletValues,
   updateWalletTokenValues
 } from 'sagas/deterministicWallets';
 import { TokenValue, Wei } from 'libs/units';
+import { Token } from 'types/network';
 
 // init module
 configuredStore.getState();

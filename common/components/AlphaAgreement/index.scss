@@ -3,7 +3,7 @@
 
 .AlphaAgreement {
   @include cover-message;
-  background: $brand-warning;
+  background: $brand-info;
 
   &-content {
     &-buttons {

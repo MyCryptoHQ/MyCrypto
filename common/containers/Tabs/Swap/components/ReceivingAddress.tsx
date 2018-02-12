@@ -8,9 +8,9 @@ import {
 import { SwapInput } from 'reducers/swap/types';
 import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
-import { donationAddressMap } from 'config/data';
+import { donationAddressMap } from 'config';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
@@ -32,7 +32,7 @@ export interface ActionProps {
   shapeshiftOrderCreateRequestedSwap: TShapeshiftOrderCreateRequestedSwap;
 }
 
-export default class ReceivingAddress extends Component<StateProps & ActionProps, {}> {
+export default class ReceivingAddress extends PureComponent<StateProps & ActionProps, {}> {
   public onChangeDestinationAddress = (event: React.FormEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     this.props.destinationAddressSwap(value);

@@ -1,16 +1,26 @@
-import DPATHS from 'config/dpaths';
-import { TrezorWallet } from 'libs/wallet';
-import React, { Component } from 'react';
+import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
+import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
-import { Spinner } from 'components/ui';
-const DEFAULT_PATH = DPATHS.TREZOR[0].value;
+import { Spinner, NewTabLink } from 'components/ui';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
+import { SecureWalletName, trezorReferralURL } from 'config';
+import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 
-interface Props {
+//todo: conflicts with comment in walletDecrypt -> onUnlock method
+interface OwnProps {
   onUnlock(param: any): void;
 }
+
+interface StateProps {
+  dPath: DPath;
+  dPaths: DPath[];
+}
+
+// todo: nearly duplicates ledger component props
 interface State {
   publicKey: string;
   chainCode: string;
@@ -19,11 +29,13 @@ interface State {
   isLoading: boolean;
 }
 
-export class TrezorDecrypt extends Component<Props, State> {
+type Props = OwnProps & StateProps;
+
+class TrezorDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: DEFAULT_PATH,
+    dPath: this.props.dPath.value,
     error: null,
     isLoading: false
   };
@@ -49,26 +61,17 @@ export class TrezorDecrypt extends Component<Props, State> {
           )}
         </button>
 
-        <a
-          className="TrezorDecrypt-buy btn btn-sm btn-default"
-          href="https://trezor.io/?a=myetherwallet.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <NewTabLink className="TrezorDecrypt-buy btn btn-sm btn-default" href={trezorReferralURL}>
           {translate('Don’t have a TREZOR? Order one now!')}
-        </a>
+        </NewTabLink>
 
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
           Guide:{' '}
-          <a
-            href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            How to use TREZOR with MyEtherWallet
-          </a>
+          <NewTabLink href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08">
+            How to use TREZOR with MyCrypto
+          </NewTabLink>
         </div>
 
         <DeterministicWalletsModal
@@ -76,7 +79,7 @@ export class TrezorDecrypt extends Component<Props, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={DPATHS.TREZOR}
+          dPaths={this.props.dPaths}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -97,7 +100,7 @@ export class TrezorDecrypt extends Component<Props, State> {
       error: null
     });
 
-    TrezorConnect.getXPubKey(
+    (TrezorConnect as any).getXPubKey(
       dPath,
       res => {
         if (res.success) {
@@ -114,7 +117,7 @@ export class TrezorDecrypt extends Component<Props, State> {
           });
         }
       },
-      '1.5.2'
+      TREZOR_MINIMUM_FIRMWARE
     );
   };
 
@@ -133,7 +136,16 @@ export class TrezorDecrypt extends Component<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: DEFAULT_PATH
+      dPath: this.props.dPath.value
     });
   }
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    dPath: getSingleDPath(state, SecureWalletName.TREZOR),
+    dPaths: getPaths(state, SecureWalletName.TREZOR)
+  };
+}
+
+export const TrezorDecrypt = connect(mapStateToProps)(TrezorDecryptClass);

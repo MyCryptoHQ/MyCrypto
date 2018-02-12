@@ -5,7 +5,6 @@ import {
   updateDeterministicWallet
 } from 'actions/deterministicWallets';
 import { showNotification } from 'actions/notifications';
-import { Token } from 'config/data';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 import { INode } from 'libs/nodes/INode';
@@ -16,6 +15,7 @@ import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
+import { Token } from 'types/network';
 
 export function* getDeterministicWallets(action: GetDeterministicWalletsAction): SagaIterator {
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;

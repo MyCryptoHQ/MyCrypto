@@ -1,7 +1,6 @@
 import { TShowNotification } from 'actions/notifications';
 import {
   TRestartSwap,
-  TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
   TStartPollShapeshiftOrderStatus,
   TStopOrderTimerSwap,
@@ -9,7 +8,7 @@ import {
   TStopPollShapeshiftOrderStatus
 } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
 import SwapProgress from './SwapProgress';
@@ -30,7 +29,6 @@ interface ReduxStateProps {
 
 interface ReduxActionProps {
   restartSwap: TRestartSwap;
-  startOrderTimerSwap: TStartOrderTimerSwap;
   startPollBityOrderStatus: TStartPollBityOrderStatus;
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
   startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
@@ -39,7 +37,7 @@ interface ReduxActionProps {
   showNotification: TShowNotification;
 }
 
-export default class PartThree extends Component<ReduxActionProps & ReduxStateProps, {}> {
+export default class PartThree extends PureComponent<ReduxActionProps & ReduxStateProps, {}> {
   public componentDidMount() {
     const { provider } = this.props;
     if (provider === 'shapeshift') {
@@ -47,7 +45,6 @@ export default class PartThree extends Component<ReduxActionProps & ReduxStatePr
     } else {
       this.props.startPollBityOrderStatus();
     }
-    this.props.startOrderTimerSwap();
   }
 
   public componentWillUnmount() {

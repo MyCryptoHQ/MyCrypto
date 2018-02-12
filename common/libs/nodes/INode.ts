@@ -1,6 +1,6 @@
-import { Token } from 'config/data';
 import { Wei, TokenValue } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
+import { Token } from 'types/network';
 
 export interface TxObj {
   to: string;

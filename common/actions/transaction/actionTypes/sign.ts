@@ -8,8 +8,8 @@ import { TypeKeys } from 'actions/transaction/constants';
  */
 
 /* Signing / Async actions */
-interface SignLocalTransactionRequestedAction {
-  type: TypeKeys.SIGN_LOCAL_TRANSACTION_REQUESTED;
+interface SignTransactionRequestedAction {
+  type: TypeKeys.SIGN_TRANSACTION_REQUESTED;
   payload: EthTx;
 }
 interface SignLocalTransactionSucceededAction {
@@ -17,10 +17,6 @@ interface SignLocalTransactionSucceededAction {
   payload: { signedTransaction: Buffer; indexingHash: string; noVerify?: boolean }; // dont verify against fields, for pushTx
 }
 
-interface SignWeb3TransactionRequestedAction {
-  type: TypeKeys.SIGN_WEB3_TRANSACTION_REQUESTED;
-  payload: EthTx;
-}
 interface SignWeb3TransactionSucceededAction {
   type: TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED;
   payload: { transaction: Buffer; indexingHash: string; noVerify?: boolean };
@@ -30,16 +26,14 @@ interface SignTransactionFailedAction {
 }
 
 type SignAction =
-  | SignLocalTransactionRequestedAction
+  | SignTransactionRequestedAction
   | SignLocalTransactionSucceededAction
-  | SignWeb3TransactionRequestedAction
   | SignWeb3TransactionSucceededAction
   | SignTransactionFailedAction;
 
 export {
-  SignLocalTransactionRequestedAction,
+  SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
-  SignWeb3TransactionRequestedAction,
   SignWeb3TransactionSucceededAction,
   SignTransactionFailedAction,
   SignAction

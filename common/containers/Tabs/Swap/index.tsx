@@ -54,6 +54,9 @@ import SwapInfoHeader from './components/SwapInfoHeader';
 import ShapeshiftBanner from './components/ShapeshiftBanner';
 import TabSection from 'containers/TabSection';
 import { merge } from 'lodash';
+import { RouteNotFound } from 'components/RouteNotFound';
+import { Switch, Route, RouteComponentProps } from 'react-router';
+import { getOffline } from 'selectors/config';
 
 interface ReduxStateProps {
   step: number;
@@ -97,7 +100,7 @@ interface ReduxActionProps {
   swapProvider: TChangeSwapProvider;
 }
 
-class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
+class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponentProps<{}>, {}> {
   public componentDidMount() {
     if (!this.props.isOffline) {
       this.loadRates();
@@ -111,12 +114,10 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
   }
 
   public componentWillUnmount() {
-    this.props.stopLoadBityRatesSwap();
     this.props.stopLoadShapeshiftRatesSwap();
   }
 
   public loadRates() {
-    this.props.loadBityRatesRequestedSwap();
     this.props.loadShapeshiftRatesRequestedSwap();
   }
 
@@ -156,6 +157,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
       stopPollBityOrderStatus,
       swapProvider
     } = this.props;
+
+    const currentPath = this.props.match.url;
 
     const reference = provider === 'shapeshift' ? shapeshiftOrder.orderId : bityOrder.reference;
 
@@ -237,14 +240,25 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps, {}> {
     return (
       <TabSection isUnavailableOffline={true}>
         <section className="Tab-content swap-tab">
-          {step === 1 && <CurrentRates {...CurrentRatesProps} />}
-          {step === 1 && <ShapeshiftBanner />}
-          {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
-          <main className="Tab-content-pane">
-            {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
-            {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
-            {step === 3 && <PartThree {...PartThreeProps} />}
-          </main>
+          <Switch>
+            <Route
+              exact={true}
+              path={`${currentPath}`}
+              render={() => (
+                <React.Fragment>
+                  {step === 1 && <CurrentRates {...CurrentRatesProps} />}
+                  {step === 1 && <ShapeshiftBanner />}
+                  {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
+                  <main className="Tab-content-pane">
+                    {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
+                    {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
+                    {step === 3 && <PartThree {...PartThreeProps} />}
+                  </main>
+                </React.Fragment>
+              )}
+            />
+            <RouteNotFound />
+          </Switch>
         </section>
         <SupportFooter {...SupportProps} />
       </TabSection>
@@ -271,7 +285,7 @@ function mapStateToProps(state: AppState) {
     bityOrderStatus: state.swap.bityOrderStatus,
     shapeshiftOrderStatus: state.swap.shapeshiftOrderStatus,
     paymentAddress: state.swap.paymentAddress,
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 

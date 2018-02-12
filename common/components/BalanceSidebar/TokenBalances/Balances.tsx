@@ -1,9 +1,9 @@
 import React from 'react';
 import translate from 'translations';
-import { Token } from 'config/data';
 import { TokenBalance } from 'selectors/wallet';
 import AddCustomTokenForm from './AddCustomTokenForm';
 import TokenRow from './TokenRow';
+import { Token } from 'types/network';
 
 interface Props {
   allTokens: Token[];
@@ -19,7 +19,7 @@ interface State {
   trackedTokens: { [symbol: string]: boolean };
   showCustomTokenForm: boolean;
 }
-export default class TokenBalances extends React.Component<Props, State> {
+export default class TokenBalances extends React.PureComponent<Props, State> {
   public state = {
     trackedTokens: {},
     showCustomTokenForm: false

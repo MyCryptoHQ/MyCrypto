@@ -3,43 +3,43 @@ import {
   TChangeNodeIntent,
   TAddCustomNode,
   TRemoveCustomNode,
-  TAddCustomNetwork
+  TAddCustomNetwork,
+  AddCustomNodeAction,
+  changeLanguage,
+  changeNodeIntent,
+  addCustomNode,
+  removeCustomNode,
+  addCustomNetwork
 } from 'actions/config';
-import logo from 'assets/images/logo-myetherwallet.svg';
+import logo from 'assets/images/logo-mycrypto.svg';
 import { Dropdown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { TSetGasPriceField } from 'actions/transaction';
-import {
-  ANNOUNCEMENT_MESSAGE,
-  ANNOUNCEMENT_TYPE,
-  languages,
-  NODES,
-  VERSION,
-  NodeConfig,
-  CustomNodeConfig,
-  CustomNetworkConfig
-} from 'config/data';
-import GasPriceDropdown from './components/GasPriceDropdown';
+import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
+import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
 import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
 import { getKeyByValue } from 'utils/helpers';
-import { makeCustomNodeId } from 'utils/node';
-import { getNetworkConfigFromId } from 'utils/network';
+import { NodeConfig } from 'types/node';
 import './index.scss';
 import { AppState } from 'reducers';
+import {
+  getOffline,
+  isNodeChanging,
+  getLanguageSelection,
+  getNodeId,
+  getNodeConfig,
+  CustomNodeOption,
+  NodeOption,
+  getNodeOptions,
+  getNetworkConfig
+} from 'selectors/config';
+import { NetworkConfig } from 'types/network';
+import { connect } from 'react-redux';
 
-interface Props {
-  languageSelection: string;
-  node: NodeConfig;
-  nodeSelection: string;
-  isChangingNode: boolean;
-  isOffline: boolean;
-  gasPrice: AppState['transaction']['fields']['gasPrice'];
-  customNodes: CustomNodeConfig[];
-  customNetworks: CustomNetworkConfig[];
+interface DispatchProps {
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
   setGasPriceField: TSetGasPriceField;
@@ -48,11 +48,42 @@ interface Props {
   addCustomNetwork: TAddCustomNetwork;
 }
 
+interface StateProps {
+  network: NetworkConfig;
+  languageSelection: AppState['config']['meta']['languageSelection'];
+  node: NodeConfig;
+  nodeSelection: AppState['config']['nodes']['selectedNode']['nodeId'];
+  isChangingNode: AppState['config']['nodes']['selectedNode']['pending'];
+  isOffline: AppState['config']['meta']['offline'];
+  nodeOptions: (CustomNodeOption | NodeOption)[];
+}
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  isOffline: getOffline(state),
+  isChangingNode: isNodeChanging(state),
+  languageSelection: getLanguageSelection(state),
+  nodeSelection: getNodeId(state),
+  node: getNodeConfig(state),
+  nodeOptions: getNodeOptions(state),
+  network: getNetworkConfig(state)
+});
+
+const mapDispatchToProps: DispatchProps = {
+  setGasPriceField,
+  changeLanguage,
+  changeNodeIntent,
+  addCustomNode,
+  removeCustomNode,
+  addCustomNetwork
+};
+
 interface State {
   isAddingCustomNode: boolean;
 }
 
-export default class Header extends Component<Props, State> {
+type Props = StateProps & DispatchProps;
+
+class Header extends Component<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
@@ -60,60 +91,47 @@ export default class Header extends Component<Props, State> {
   public render() {
     const {
       languageSelection,
-      changeNodeIntent,
       node,
       nodeSelection,
       isChangingNode,
       isOffline,
-      customNodes,
-      customNetworks
+      nodeOptions,
+      network
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const selectedNetwork = getNetworkConfigFromId(node.network, customNetworks);
     const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
-
-    const nodeOptions = Object.keys(NODES)
-      .map(key => {
-        const n = NODES[key];
-        const network = getNetworkConfigFromId(n.network, customNetworks);
+    const options = nodeOptions.map(n => {
+      if (n.isCustom) {
+        const { name: { networkId, nodeId }, isCustom, id, ...rest } = n;
         return {
-          value: key,
+          ...rest,
           name: (
             <span>
-              {network && network.name} <small>({n.service})</small>
+              {networkId} - {nodeId} <small>(custom)</small>
             </span>
           ),
-          color: network && network.color,
-          hidden: n.hidden
+          onRemove: () => this.props.removeCustomNode({ id })
         };
-      })
-      .concat(
-        customNodes.map(cn => {
-          const network = getNetworkConfigFromId(cn.network, customNetworks);
-          return {
-            value: makeCustomNodeId(cn),
-            name: (
-              <span>
-                {network && network.name} - {cn.name} <small>(custom)</small>
-              </span>
-            ),
-            color: network && network.color,
-            hidden: false,
-            onRemove: () => this.props.removeCustomNode(cn)
-          };
-        })
-      );
+      } else {
+        const { name: { networkId, service }, isCustom, ...rest } = n;
+        return {
+          ...rest,
+          name: (
+            <span>
+              {networkId} <small>({service})</small>
+            </span>
+          )
+        };
+      }
+    });
 
     return (
       <div className="Header">
         {ANNOUNCEMENT_MESSAGE && (
-          <div
-            className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}
-            dangerouslySetInnerHTML={{
-              __html: ANNOUNCEMENT_MESSAGE
-            }}
-          />
+          <div className={`Header-announcement is-${ANNOUNCEMENT_TYPE}`}>
+            {ANNOUNCEMENT_MESSAGE}
+          </div>
         )}
 
         <section className="Header-branding">
@@ -124,21 +142,12 @@ export default class Header extends Component<Props, State> {
                 src={logo}
                 height="64px"
                 width="245px"
-                alt="MyEtherWallet"
+                alt="MyCrypto logo"
               />
             </Link>
             <div className="Header-branding-right">
-              <span className="Header-branding-right-version hidden-xs">v{VERSION}</span>
-
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
-              </div>
-
-              <div className="Header-branding-right-dropdown">
-                <GasPriceDropdown
-                  value={this.props.gasPrice.raw}
-                  onChange={this.props.setGasPriceField}
-                />
               </div>
 
               <div className="Header-branding-right-dropdown">
@@ -170,15 +179,15 @@ export default class Header extends Component<Props, State> {
                     change node. current node is on the ${node.network} network
                     provided by ${node.service}
                   `}
-                  options={nodeOptions}
-                  value={nodeSelection}
+                  options={options}
+                  value={nodeSelection || ''}
                   extra={
                     <li>
                       <a onClick={this.openCustomNodeModal}>Add Custom Node</a>
                     </li>
                   }
                   disabled={nodeSelection === 'web3'}
-                  onChange={changeNodeIntent}
+                  onChange={this.props.changeNodeIntent}
                   size="smr"
                   color="white"
                   menuAlign="right"
@@ -188,14 +197,11 @@ export default class Header extends Component<Props, State> {
           </section>
         </section>
 
-        <Navigation color={selectedNetwork && selectedNetwork.color} />
+        <Navigation color={!network.isCustom && network.color} />
 
         {isAddingCustomNode && (
           <CustomNodeModal
-            customNodes={customNodes}
-            customNetworks={customNetworks}
-            handleAddCustomNode={this.addCustomNode}
-            handleAddCustomNetwork={this.props.addCustomNetwork}
+            addCustomNode={this.addCustomNode}
             handleClose={this.closeCustomNodeModal}
           />
         )}
@@ -218,8 +224,10 @@ export default class Header extends Component<Props, State> {
     this.setState({ isAddingCustomNode: false });
   };
 
-  private addCustomNode = (node: CustomNodeConfig) => {
+  private addCustomNode = (payload: AddCustomNodeAction['payload']) => {
     this.setState({ isAddingCustomNode: false });
-    this.props.addCustomNode(node);
+    this.props.addCustomNode(payload);
   };
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

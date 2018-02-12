@@ -36,10 +36,9 @@ import {
   Web3Wallet,
   WalletConfig
 } from 'libs/wallet';
-import { NODES, initWeb3Node, Token } from 'config/data';
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
-import { getNodeLib, getAllTokens, getOffline } from 'selectors/config';
+import { getNodeLib, getAllTokens, getOffline, getWeb3Node } from 'selectors/config';
 import {
   getTokens,
   getWalletInst,
@@ -51,6 +50,9 @@ import translate from 'translations';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { getTokenBalances, filterScannedTokenBalances } from './helpers';
+import { Token } from 'types/network';
+import { Web3NodeConfig } from '../../../shared/types/node';
+import { initWeb3Node } from 'sagas/config/web3';
 
 export interface TokenBalanceLookup {
   [symbol: string]: TokenBalance;
@@ -163,8 +165,12 @@ export function* handleSetWalletTokens(action: SetWalletTokensAction): SagaItera
 }
 
 export function* updateBalances(): SagaIterator {
-  yield fork(updateAccountBalance);
-  yield fork(updateTokenBalances);
+  const updateAccount = yield fork(updateAccountBalance);
+  const updateToken = yield fork(updateTokenBalances);
+
+  yield take(TypeKeys.WALLET_SET);
+  yield cancel(updateAccount);
+  yield cancel(updateToken);
 }
 
 export function* handleNewWallet(): SagaIterator {
@@ -258,11 +264,15 @@ export function* unlockWeb3(): SagaIterator {
     yield put(changeNodeIntent('web3'));
     yield take(
       action =>
-        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
+        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeId === 'web3'
     );
 
-    const network = NODES.web3.network;
-    const nodeLib: INode | Web3Node = yield select(getNodeLib);
+    const web3Node: Web3NodeConfig | null = yield select(getWeb3Node);
+    if (!web3Node) {
+      throw Error('Web3 node config not found!');
+    }
+    const network = web3Node.network;
+    const nodeLib: Web3Node = web3Node.lib;
 
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
@@ -277,6 +287,7 @@ export function* unlockWeb3(): SagaIterator {
     const wallet = new Web3Wallet(address, network);
     yield put(setWallet(wallet));
   } catch (err) {
+    console.error(err);
     // unset web3 node so node dropdown isn't disabled
     yield put(web3UnsetNode());
     yield put(showNotification('danger', translate(err.message)));
@@ -309,6 +320,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
     takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
+    takeEvery(TypeKeys.WALLET_SET_ACCOUNT_BALANCE, updateAccountBalance),
     // Foreign actions
     takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
     takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)

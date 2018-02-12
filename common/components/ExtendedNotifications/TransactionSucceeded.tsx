@@ -1,6 +1,6 @@
-import { BlockExplorerConfig } from 'config/data';
 import React from 'react';
 import { translateRaw } from 'translations';
+import { BlockExplorerConfig } from 'types/network';
 
 export interface TransactionSucceededProps {
   txHash: string;
@@ -8,8 +8,7 @@ export interface TransactionSucceededProps {
 }
 
 const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededProps) => {
-  // const checkTxLink = `https://www.myetherwallet.com?txHash=${txHash}/#check-tx-status`;
-  const txHashLink = blockExplorer.tx(txHash);
+  const txHashLink = blockExplorer.txUrl(txHash);
 
   return (
     <div>

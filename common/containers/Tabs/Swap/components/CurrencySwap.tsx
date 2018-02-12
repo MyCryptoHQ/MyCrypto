@@ -6,8 +6,8 @@ import {
   SwapInput
 } from 'reducers/swap/types';
 import SimpleButton from 'components/ui/SimpleButton';
-import bityConfig, { generateKindMax, generateKindMin, WhitelistedCoins } from 'config/bity';
-import React, { Component } from 'react';
+import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
+import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown } from 'components/ui';
@@ -41,7 +41,7 @@ interface State {
 
 type Props = StateProps & ActionProps;
 
-export default class CurrencySwap extends Component<Props, State> {
+export default class CurrencySwap extends PureComponent<Props, State> {
   public state = {
     disabled: true,
     origin: {
@@ -110,29 +110,9 @@ export default class CurrencySwap extends Component<Props, State> {
 
   public componentDidUpdate(prevProps: Props, prevState: State) {
     const { origin, destination } = this.state;
-    const { options, bityRates, shapeshiftRates } = this.props;
+    const { options } = this.props;
     if (origin !== prevState.origin) {
       this.setDisabled(origin, destination);
-    }
-
-    const originCap = origin.id.toUpperCase();
-    const destCap = destination.id.toUpperCase();
-    const { provider } = this.props;
-
-    const ensureCorrectProvider =
-      (originCap === 'BTC' && destCap === 'ETH') || (destCap === 'BTC' && originCap === 'ETH');
-    const ensureBityRatesLoaded =
-      bityRates.allIds.includes('ETHBTC') && bityRates.allIds.includes('BTCETH');
-    const ensureShapeshiftRatesLoaded = shapeshiftRates.allIds.length > 0;
-
-    if (ensureBityRatesLoaded && ensureCorrectProvider) {
-      if (provider === 'shapeshift') {
-        this.props.swapProvider('bity');
-      }
-    } else if (ensureShapeshiftRatesLoaded) {
-      if (provider !== 'shapeshift') {
-        this.props.swapProvider('shapeshift');
-      }
     }
 
     if (options.allIds !== prevProps.options.allIds && options.byId) {
@@ -329,7 +309,7 @@ export default class CurrencySwap extends Component<Props, State> {
       <article className="CurrencySwap">
         <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
         {loaded || timeoutLoaded ? (
-          <div className="form-inline CurrencySwap-inner-wrap">
+          <div className="CurrencySwap-inner-wrap">
             <div className="CurrencySwap-input-group">
               {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
               <input

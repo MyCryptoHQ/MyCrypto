@@ -4,6 +4,7 @@ import { GasLimitInput } from './GasLimitInputFactory';
 import { inputGasLimit, TInputGasLimit } from 'actions/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import { sanitizeNumericalInput } from 'libs/values';
 
 const defaultGasLimit = '21000';
 
@@ -40,7 +41,7 @@ class GasLimitFieldClass extends Component<Props, {}> {
 
   private setGas = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    this.props.inputGasLimit(value);
+    this.props.inputGasLimit(sanitizeNumericalInput(value));
   };
 }
 

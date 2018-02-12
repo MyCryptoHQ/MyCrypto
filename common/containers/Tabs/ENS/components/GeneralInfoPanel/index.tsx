@@ -1,8 +1,8 @@
-import { NewTabLink } from 'components/ui';
 import React from 'react';
 import GeneralInfoNode from './GeneralInfoNode';
-import { knowledgeBaseURL } from 'config/data';
+import { HELP_ARTICLE } from 'config';
 import { InfoNode } from './types';
+import { NewTabLink, HelpLink } from 'components/ui';
 
 const generalInfoNodes: InfoNode[] = [
   {
@@ -75,7 +75,7 @@ const generalInfoNodes: InfoNode[] = [
       <li key="ensMore-2">
         <NewTabLink
           content="ENS: Read the Docs"
-          href="http://docs.ens.domains/en/latest/userguide.html#registering-a-name-with-the-auction-registrar"
+          href="https://docs.ens.domains/en/latest/userguide.html#registering-a-name-with-the-auction-registrar"
         />
       </li>,
       <li key="ensMore-3">
@@ -94,18 +94,17 @@ const GeneralInfoList = () => (
   </section>
 );
 
-export const GeneralInfoPanel = () => (
+const GeneralInfoPanel = () => (
   <article className="block">
     <div className="cont-md">
       <h4> What is the process like? </h4>
       <GeneralInfoList />
       <h6>
-        <NewTabLink content="Help Center: ENS" href={`${knowledgeBaseURL}/ens`} />
+        <HelpLink article={HELP_ARTICLE.ENS}>Help Center: ENS</HelpLink>
         &nbsp;&middot;&nbsp;
-        <NewTabLink
-          content="Debugging a [BAD INSTRUCTION] Reveal"
-          href={`${knowledgeBaseURL}/ens/ens-debugging-a-bad-instruction-reveal`}
-        />
+        <HelpLink article={HELP_ARTICLE.ENS_BAD_REVEAL}>
+          Debugging a [BAD INSTRUCTION] Reveal
+        </HelpLink>
       </h6>
       <p>
         Please try the above before relying on support for reveal issues as we are severely
@@ -114,3 +113,5 @@ export const GeneralInfoPanel = () => (
     </div>
   </article>
 );
+
+export default GeneralInfoPanel;
