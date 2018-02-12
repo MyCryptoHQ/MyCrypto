@@ -14,6 +14,9 @@ import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
 import { connect } from 'react-redux';
 import SelfHideImg from 'components/ui/SelfHidingImg';
+import btcIco from 'assets/images/bitcoin.png';
+import ethIco from 'assets/images/ether.png';
+import repIco from 'assets/images/augur.png';
 
 interface AllValue {
   symbol: string;
@@ -122,6 +125,11 @@ class EquivalentValues extends React.Component<Props, State> {
       GBP: '£',
       CHF: ' '
     };
+    const coinAndTokenSymbols = {
+      BTC: btcIco,
+      ETH: ethIco,
+      REP: repIco
+    };
 
     const Value = ({ className = '', rate, value, symbol = '', icon = '' }) => (
       <div className={`EquivalentValues-values-currency ${className}`}>
@@ -194,6 +202,7 @@ class EquivalentValues extends React.Component<Props, State> {
                         className="EquivalentValues-values-currency-coin-and-token"
                         rate={equiv.rate}
                         value={equiv.value}
+                        icon={coinAndTokenSymbols[equiv.rate]}
                         key={i}
                       />
                     )
