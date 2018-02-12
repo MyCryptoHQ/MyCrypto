@@ -25,26 +25,25 @@ export default class AlphaAgreement extends React.PureComponent<{}, State> {
         <div className="AlphaAgreement-content">
           <h2>This is an Unstable Version of MyCrypto</h2>
           <p>
-            You are about to access an alpha version of MyCrypto that is currently in development.
-            In its current state, it should only be used for testing, not for important
-            transactions.
+            You are about to access a beta version of MyCrypto that is currently in development. In
+            its current state, it should only be used for testing, not for important transactions.
           </p>
           <p>
             Any wallets you generate should not hold a significant value, and any transactions you
             make should be for small amounts. MyCrypto does not claim responsibility for any issues
-            that happen while using the alpha version.
+            that happen while using the beta version.
           </p>
           <p>Are you sure you would like to continue?</p>
 
           <div className="AlphaAgreement-content-buttons">
             <button className="AlphaAgreement-content-buttons-btn is-reject" onClick={this.reject}>
-              No, Take Me to v3
+              No, take me to prod
             </button>
             <button
               className="AlphaAgreement-content-buttons-btn is-continue"
               onClick={this.doContinue}
             >
-              Yes, Continue to v4
+              Yes, continue to beta
             </button>
           </div>
         </div>

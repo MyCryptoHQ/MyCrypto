@@ -60,5 +60,5 @@ export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {
 
 async function getWalletConfigKey(wallet: IWallet): Promise<string> {
   const address = await wallet.getAddressString();
-  return sha256(`${address}-mew`).toString('hex');
+  return sha256(`${address}-mycrypto`).toString('hex');
 }
