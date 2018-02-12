@@ -14,9 +14,8 @@ import {
 import { Wei } from 'libs/units';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
-import { initWeb3Node, Token } from 'config';
 import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
-import { getNodeLib, getOffline } from 'selectors/config';
+import { getNodeLib, getOffline, getWeb3Node } from 'selectors/config';
 import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
 import {
   updateAccountBalance,
@@ -37,6 +36,8 @@ import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
 import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
+import { Token } from 'types/network';
+import { initWeb3Node } from 'sagas/config/web3';
 
 // init module
 configuredStore.getState();
@@ -339,13 +340,13 @@ describe('unlockWeb3*', () => {
     expect(JSON.stringify(expected)).toEqual(JSON.stringify(result));
   });
 
-  it('should select getNodeLib', () => {
-    expect(data.gen.next().value).toEqual(select(getNodeLib));
+  it('should select getWeb3Node', () => {
+    expect(data.gen.next().value).toEqual(select(getWeb3Node));
   });
 
   it('should throw & catch if node is not web3 node', () => {
     data.clone = data.gen.clone();
-    expect(data.clone.next().value).toEqual(put(web3UnsetNode()));
+    expect(data.clone.next(nodeLib).value).toEqual(put(web3UnsetNode()));
     expect(data.clone.next().value).toEqual(
       put(showNotification('danger', translate('Cannot use Web3 wallet without a Web3 node.')))
     );
@@ -353,7 +354,7 @@ describe('unlockWeb3*', () => {
   });
 
   it('should apply nodeLib.getAccounts', () => {
-    expect(data.gen.next(nodeLib).value).toEqual(apply(nodeLib, nodeLib.getAccounts));
+    expect(data.gen.next({ lib: nodeLib }).value).toEqual(apply(nodeLib, nodeLib.getAccounts));
   });
 
   it('should throw & catch if no accounts found', () => {

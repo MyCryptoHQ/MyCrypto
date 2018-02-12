@@ -7,16 +7,16 @@ import { rateSymbols } from 'api/rates';
 import { chain, flatMap } from 'lodash';
 import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
-import { NetworkConfig } from 'config';
 import './EquivalentValues.scss';
 import { Wei } from 'libs/units';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { connect } from 'react-redux';
 import SelfHideImg from 'components/ui/SelfHidingImg';
 import btcIco from 'assets/images/bitcoin.png';
 import ethIco from 'assets/images/ether.png';
 import repIco from 'assets/images/augur.png';
+import { NetworkConfig } from 'types/network';
 
 interface AllValue {
   symbol: string;
@@ -41,10 +41,11 @@ interface State {
 interface StateProps {
   balance: Balance;
   network: NetworkConfig;
+
   tokenBalances: TokenBalance[];
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
-  isOffline: AppState['config']['offline'];
+  isOffline: AppState['config']['meta']['offline'];
 }
 
 interface DispatchProps {
@@ -72,7 +73,7 @@ class EquivalentValues extends React.Component<Props, State> {
   public defaultOption(
     balance: Balance,
     tokenBalances: TokenBalance[],
-    network: NetworkConfig
+    network: StateProps['network']
   ): DefaultOption {
     return {
       label: 'All',
@@ -300,7 +301,6 @@ class EquivalentValues extends React.Component<Props, State> {
     this.requestedCurrencies = currencies;
   }
 }
-
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
@@ -308,7 +308,7 @@ function mapStateToProps(state: AppState): StateProps {
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 

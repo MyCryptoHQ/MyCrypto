@@ -1,4 +1,3 @@
-import { Token } from 'config';
 import ERC20 from 'libs/erc20';
 import RPCRequests from '../rpc/requests';
 import {
@@ -10,6 +9,7 @@ import {
   SendRawTxRequest,
   GetCurrentBlockRequest
 } from './types';
+import { Token } from 'types/network';
 
 export default class EtherscanRequests extends RPCRequests {
   public sendRawTx(signedTx: string): SendRawTxRequest {
