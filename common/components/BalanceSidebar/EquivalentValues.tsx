@@ -12,7 +12,6 @@ import { Wei } from 'libs/units';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { connect } from 'react-redux';
-import SelfHideImg from 'components/ui/SelfHidingImg';
 import btcIco from 'assets/images/bitcoin.png';
 import ethIco from 'assets/images/ether.png';
 import repIco from 'assets/images/augur.png';
@@ -134,7 +133,7 @@ class EquivalentValues extends React.Component<Props, State> {
 
     const Value = ({ className = '', rate, value, symbol = '', icon = '' }) => (
       <div className={`EquivalentValues-values-currency ${className}`}>
-        <SelfHideImg src={icon} />
+        <img src={icon} />
         {!!symbol && <span className="EquivalentValues-values-currency-fiat-symbol">{symbol}</span>}
         <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
