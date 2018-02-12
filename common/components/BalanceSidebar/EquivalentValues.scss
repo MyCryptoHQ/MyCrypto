@@ -35,12 +35,11 @@
       background-size: 1px 1px;
     }
     &-currency {
-      width: 50%;
+      min-width: 50%;
       margin-bottom: $space-xs;
       display: flex;
+      flex-wrap: nowrap;
       align-items: center;
-      &-fiat {
-      }
       &-coin-and-token {
         img {
           height: 18px;
