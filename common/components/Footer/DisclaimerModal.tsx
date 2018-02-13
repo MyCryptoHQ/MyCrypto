@@ -41,7 +41,9 @@ const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
         English and, because of this, the English version of our website is the official text.
       </p>
       <p>
-        <b>MIT License</b> Copyright © 2015-2017 MyCrypto LLC
+        <b>MIT License</b>
+        Copyright © 2015-2017 MyEtherWallet LLC
+        Copyright © 2018 MyCrypto, Inc.
       </p>
       <p>
         Permission is hereby granted, free of charge, to any person obtaining a copy of this
