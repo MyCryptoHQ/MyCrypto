@@ -14,8 +14,8 @@ import {
 import { Reducer } from 'redux';
 
 const INITIAL_STATE: State = {
-  unit: 'ETH',
-  previousUnit: 'ETH',
+  unit: '',
+  previousUnit: '',
   decimal: getDecimalFromEtherUnit('ether'),
   tokenValue: { raw: '', value: null },
   tokenTo: { raw: '', value: null },
@@ -53,7 +53,9 @@ const tokenToToken = (
   { payload: { data: _, to: __, ...rest } }: SwapTokenToTokenAction
 ): State => ({ ...state, ...rest });
 
-const reset = () => INITIAL_STATE;
+const reset = state => {
+  return { ...INITIAL_STATE, unit: state.unit };
+};
 
 const unitMeta = (state: State, { payload }: SetUnitMetaAction): State => ({
   ...state,
@@ -81,7 +83,7 @@ export const meta = (
     case TK.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
     case TK.RESET:
-      return reset();
+      return reset(state);
     default:
       return state;
   }

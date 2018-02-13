@@ -66,6 +66,10 @@ export const getNetworkConfig = (state: AppState): StaticNetworkConfig | CustomN
   return config;
 };
 
+export const getNetworkUnit = (state: AppState): string => {
+  return getNetworkConfig(state).unit;
+};
+
 export const getNetworkContracts = (state: AppState): NetworkContract[] | null => {
   const network = getStaticNetworkConfig(state);
   return network ? network.contracts : [];

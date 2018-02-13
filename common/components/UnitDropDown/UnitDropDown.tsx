@@ -7,9 +7,7 @@ import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
-import { getNetworkConfig } from 'selectors/config';
-import { isEtherUnit } from 'libs/units';
-import { NetworkConfig } from 'types/network';
+import { getNetworkUnit } from 'selectors/config';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -20,15 +18,19 @@ interface StateProps {
   tokens: TokenBalance[];
   allTokens: MergedToken[];
   showAllTokens?: boolean;
-  network: NetworkConfig;
+  networkUnit: string;
 }
 
 const StringDropdown = Dropdown as new () => Dropdown<string>;
 const ConditionalStringDropDown = withConditional(StringDropdown);
 
 class UnitDropdownClass extends Component<DispatchProps & StateProps> {
+  public componentDidMount() {
+    this.props.setUnitMeta(this.props.networkUnit);
+  }
+
   public render() {
-    const { tokens, allTokens, showAllTokens, unit, network } = this.props;
+    const { tokens, allTokens, showAllTokens, unit, networkUnit } = this.props;
     const focusedTokens = showAllTokens ? allTokens : tokens;
     return (
       <div className="input-group-btn">
@@ -36,8 +38,8 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
           params={['readOnly']}
           withQuery={({ readOnly }) => (
             <ConditionalStringDropDown
-              options={[network.unit, ...getTokenSymbols(focusedTokens)]}
-              value={isEtherUnit(unit) ? network.unit : unit}
+              options={[networkUnit, ...getTokenSymbols(focusedTokens)]}
+              value={unit}
               condition={!readOnly}
               conditionalProps={{
                 onChange: this.handleOnChange
@@ -60,7 +62,7 @@ function mapStateToProps(state: AppState) {
     tokens: getShownTokenBalances(state, true),
     allTokens: getTokens(state),
     unit: getUnit(state),
-    network: getNetworkConfig(state)
+    networkUnit: getNetworkUnit(state)
   };
 }
 
