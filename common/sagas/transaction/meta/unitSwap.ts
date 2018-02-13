@@ -10,7 +10,7 @@ import {
   getDecimalFromUnit
 } from 'selectors/transaction';
 import { getToken, MergedToken } from 'selectors/wallet';
-import { isEtherUnit, TokenValue, Address } from 'libs/units';
+import { isNetworkUnit, TokenValue, Address } from 'libs/units';
 import {
   swapTokenToEther,
   swapEtherToToken,
@@ -23,10 +23,10 @@ import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/valida
 
 export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
   const previousUnit: string = yield select(getPreviousUnit);
-  const etherToEther = isEtherUnit(currentUnit) && isEtherUnit(previousUnit);
-  const etherToToken = !isEtherUnit(currentUnit) && isEtherUnit(previousUnit);
-  const tokenToEther = isEtherUnit(currentUnit) && !isEtherUnit(previousUnit);
-  const tokenToToken = !isEtherUnit(currentUnit) && !isEtherUnit(previousUnit);
+  const etherToEther = isNetworkUnit(currentUnit) && isNetworkUnit(previousUnit);
+  const etherToToken = !isNetworkUnit(currentUnit) && isNetworkUnit(previousUnit);
+  const tokenToEther = isNetworkUnit(currentUnit) && !isNetworkUnit(previousUnit);
+  const tokenToToken = !isNetworkUnit(currentUnit) && !isNetworkUnit(previousUnit);
   const decimal: number = yield select(getDecimalFromUnit, currentUnit);
 
   if (etherToEther) {

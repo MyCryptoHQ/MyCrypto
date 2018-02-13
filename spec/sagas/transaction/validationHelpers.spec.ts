@@ -1,7 +1,7 @@
 import { select, call } from 'redux-saga/effects';
 import { getUnit, getDecimalFromUnit, getGasLimit, getGasPrice } from 'selectors/transaction';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
-import { isEtherUnit, toTokenBase, Wei } from 'libs/units';
+import { isNetworkUnit, toTokenBase, Wei } from 'libs/units';
 import { makeTransaction } from 'libs/transaction';
 import {
   rebaseUserInput,
@@ -107,7 +107,7 @@ describe('validateInput*', () => {
   });
 
   it('should call isEtherUnit', () => {
-    expect(gens.gen.next(isOffline).value).toEqual(call(isEtherUnit, unit));
+    expect(gens.gen.next(isOffline).value).toEqual(call(isNetworkUnit, unit));
     gens.clone3 = gens.gen.clone();
   });
 

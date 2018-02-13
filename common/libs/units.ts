@@ -103,7 +103,9 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
-const isEtherUnit = (unit: string) => unit === 'ETH';
+const isNetworkUnit = (unit: string) =>
+  // TODO: find a better strategy for determining if unit is network unit
+  unit === 'ETH' || unit === 'ETC' || unit === 'UBQ' || unit === 'EXP';
 
 const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
   if (oldDecimal === newDecimal) {
@@ -115,7 +117,7 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
 const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 export {
-  isEtherUnit,
+  isNetworkUnit,
   Data,
   Address,
   TokenValue,

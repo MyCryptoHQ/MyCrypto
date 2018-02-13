@@ -1,7 +1,7 @@
 import { getTo, getValue } from './fields';
 import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
-import { isEtherUnit, TokenValue, Wei, Address } from 'libs/units';
+import { isNetworkUnit, TokenValue, Wei, Address } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
 import { getDataExists, getGasPrice, getGasLimit } from 'selectors/transaction';
 import { getAddressMessage, AddressMessage } from 'config';
@@ -18,7 +18,7 @@ interface ICurrentTo {
 
 const isEtherTransaction = (state: AppState) => {
   const unit = getUnit(state);
-  const etherUnit = isEtherUnit(unit);
+  const etherUnit = isNetworkUnit(unit);
   return etherUnit;
 };
 

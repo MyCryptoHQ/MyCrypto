@@ -20,7 +20,7 @@ import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
-import { isEtherUnit } from 'libs/units';
+import { isNetworkUnit } from 'libs/units';
 import { NetworkConfig } from 'types/network';
 
 interface OwnProps {
@@ -166,7 +166,7 @@ class RequestPayment extends React.Component<Props, {}> {
       return '';
     }
 
-    if (isEtherUnit(unit)) {
+    if (isNetworkUnit(unit)) {
       return buildEIP681EtherRequest(currentTo, chainId, currentValue);
     } else {
       return buildEIP681TokenRequest(

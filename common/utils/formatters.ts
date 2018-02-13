@@ -1,4 +1,4 @@
-import { Wei, isEtherUnit } from 'libs/units';
+import { Wei, isNetworkUnit } from 'libs/units';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -77,7 +77,7 @@ export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
   // I'm guessing this is some known off-by-one-error from the node?
   // 21k is only the limit for ethereum though, so make sure they're
   // sending ether if we're going to fix it for them.
-  if (limitStr === '21001' && isEtherUnit(transactionUnit)) {
+  if (limitStr === '21001' && isNetworkUnit(transactionUnit)) {
     limitStr = '21000';
   }
 
