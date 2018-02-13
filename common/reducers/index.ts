@@ -28,7 +28,7 @@ export interface AppState {
   transaction: TransactionState;
 }
 
-export default combineReducers({
+export default combineReducers<AppState>({
   config,
   swap,
   notifications,

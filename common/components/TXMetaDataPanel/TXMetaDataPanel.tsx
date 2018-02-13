@@ -20,13 +20,14 @@ import SimpleGas from './components/SimpleGas';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import './TXMetaDataPanel.scss';
 import { getGasPrice } from 'selectors/transaction';
+import { NetworkConfig } from 'types/network';
 
 type SliderStates = 'simple' | 'advanced';
 
 interface StateProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
-  offline: AppState['config']['offline'];
-  network: AppState['config']['network'];
+  offline: AppState['config']['meta']['offline'];
+  network: NetworkConfig;
 }
 
 interface DispatchProps {

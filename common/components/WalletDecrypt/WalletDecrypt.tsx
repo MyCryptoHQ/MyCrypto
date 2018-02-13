@@ -40,11 +40,10 @@ import {
   InsecureWalletName,
   MiscWalletName,
   WalletName,
-  isWeb3NodeAvailable,
   knowledgeBaseURL,
   donationAddressMap
 } from 'config';
-
+import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
@@ -149,8 +148,7 @@ export class WalletDecrypt extends Component<Props, State> {
       component: LedgerNanoSDecrypt,
       initialParams: {},
       unlock: this.props.setWallet,
-      helpLink:
-        'https://ledger.zendesk.com/hc/en-us/articles/115005200009-How-to-use-MyEtherWallet-with-Ledger'
+      helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009'
     },
     [SecureWalletName.TREZOR]: {
       lid: 'x_Trezor',

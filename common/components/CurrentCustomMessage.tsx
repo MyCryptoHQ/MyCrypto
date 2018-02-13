@@ -4,7 +4,8 @@ import { AppState } from 'reducers';
 import { getCurrentTo, ICurrentTo } from 'selectors/transaction';
 import { getAllTokens } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { getAddressMessage, Token } from 'config';
+import { getAddressMessage } from 'config';
+import { Token } from 'types/network';
 
 interface ReduxProps {
   currentTo: ICurrentTo;

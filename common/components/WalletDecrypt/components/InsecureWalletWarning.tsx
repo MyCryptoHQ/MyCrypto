@@ -92,7 +92,7 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
         <p className="WalletWarning-check">
           If you must use your {walletType} online, please double-check the URL & SSL certificate.
           It should say <code>{'https://www.mycrypto.com'}</code>
-          & <code>MyCrypto, LLC [US]</code> in your URL bar.
+          & <code>MyCrypto, Inc (US)</code> in your URL bar.
         </p>
         <div className="WalletWarning-checkboxes">{checkboxes.map(this.makeCheckbox)}</div>
 

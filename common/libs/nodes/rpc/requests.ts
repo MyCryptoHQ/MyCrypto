@@ -1,4 +1,3 @@
-import { Token } from 'config';
 import ERC20 from 'libs/erc20';
 import {
   CallRequest,
@@ -11,6 +10,8 @@ import {
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
+import { Token } from 'types/network';
+
 export default class RPCRequests {
   public getNetVersion() {
     return { method: 'net_version' };

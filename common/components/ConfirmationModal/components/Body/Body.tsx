@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import './Body.scss';
 import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface State {
   showDetails: boolean;
 }
 
 interface StateProps {
-  network: AppState['config']['network'];
+  network: NetworkConfig;
 }
 
 class BodyClass extends React.Component<StateProps, State> {

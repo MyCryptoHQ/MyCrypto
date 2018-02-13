@@ -1,13 +1,14 @@
 import React from 'react';
+import translate from 'translations';
 import { NonceFieldFactory } from 'components/NonceFieldFactory';
 import Help from 'components/ui/Help';
-import './NonceField.scss';
 import { Spinner } from 'components/ui';
 import { connect } from 'react-redux';
 import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
 import { nonceRequestPending } from 'selectors/transaction';
 import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
+import './NonceField.scss';
 
 interface OwnProps {
   alwaysDisplay: boolean;
@@ -33,12 +34,10 @@ class NonceField extends React.Component<Props> {
           return alwaysDisplay || shouldDisplay ? (
             <React.Fragment>
               <div className="Nonce-label flex-wrapper">
-                <label className="Nonce-label-text">Nonce</label>
+                <label className="Nonce-label-text">{translate('OFFLINE_Step2_Label_5')}</label>
                 <Help
-                  size={'x1'}
-                  link={
-                    'https://myetherwallet.github.io/knowledge-base/transactions/what-is-nonce.html'
-                  }
+                  size="x1"
+                  link="https://support.mycrypto.com/transactions/what-is-nonce.html"
                 />
               </div>
               <div className="Nonce-field">

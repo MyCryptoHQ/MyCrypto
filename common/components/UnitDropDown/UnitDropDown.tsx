@@ -9,6 +9,7 @@ import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
 import { getNetworkConfig } from 'selectors/config';
 import { isEtherUnit } from 'libs/units';
+import { NetworkConfig } from 'types/network';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -19,7 +20,7 @@ interface StateProps {
   tokens: TokenBalance[];
   allTokens: MergedToken[];
   showAllTokens?: boolean;
-  network: AppState['config']['network'];
+  network: NetworkConfig;
 }
 
 const StringDropdown = Dropdown as new () => Dropdown<string>;

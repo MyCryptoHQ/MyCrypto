@@ -12,7 +12,6 @@ import {
   ICurrentValue
 } from 'selectors/transaction/current';
 import BN from 'bn.js';
-import { NetworkConfig } from 'config';
 import { validNumber, validDecimal } from 'libs/validators';
 import { getGasLimit } from 'selectors/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
@@ -22,6 +21,7 @@ import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/con
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { isEtherUnit } from 'libs/units';
+import { NetworkConfig } from 'types/network';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -32,7 +32,7 @@ interface StateProps {
   currentTo: ICurrentTo;
   currentValue: ICurrentValue;
   gasLimit: SetGasLimitFieldAction['payload'];
-  networkConfig: NetworkConfig | undefined;
+  networkConfig: NetworkConfig;
   decimal: number;
   tokenContractAddress: string;
 }

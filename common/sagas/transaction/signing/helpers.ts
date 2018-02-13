@@ -11,9 +11,9 @@ import {
   SignTransactionRequestedAction
 } from 'actions/transaction';
 import Tx from 'ethereumjs-tx';
-import { NetworkConfig } from 'config';
 import { SagaIterator } from 'redux-saga';
 import { showNotification } from 'actions/notifications';
+import { StaticNetworkConfig } from 'types/network';
 
 interface IFullWalletAndTransaction {
   wallet: IFullWallet;
@@ -46,7 +46,7 @@ function* getWalletAndTransaction(partialTx: SignTransactionRequestedAction['pay
     throw Error('Could not get wallet instance to sign transaction');
   }
   // get the chainId
-  const { chainId }: NetworkConfig = yield select(getNetworkConfig);
+  const { chainId }: StaticNetworkConfig = yield select(getNetworkConfig);
 
   // get the rest of the transaction parameters
   partialTx._chainId = chainId;
