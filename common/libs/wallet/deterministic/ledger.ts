@@ -16,8 +16,6 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     });
   }
 
-  // modeled after
-  // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/uiFuncs.js#L58
   public signRawTransaction(t: EthTx): Promise<Buffer> {
     t.v = Buffer.from([t._chainId]);
     t.r = toBuffer(0);

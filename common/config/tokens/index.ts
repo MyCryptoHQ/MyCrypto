@@ -14,7 +14,7 @@ export interface Token {
   error?: string | null;
 }
 export interface Tokens {
-  [key: string]: Token;
+  [key: string]: Token[];
 }
 
 const TokenTypes: Tokens = {

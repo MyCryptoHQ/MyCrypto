@@ -1,4 +1,4 @@
-import TOKENS from 'config/tokens';
+import TOKENS, { Token } from 'config/tokens';
 import { isValidETHAddress } from 'libs/validators';
 
 describe('Tokens JSON', () => {
@@ -8,7 +8,7 @@ describe('Tokens JSON', () => {
       const addressCollisionMap: any = {};
       const symbolCollisionMap: any = {};
 
-      tokens.forEach(token => {
+      tokens.forEach((token: Token) => {
         if (!isValidETHAddress(token.address)) {
           throw Error(`Token ${token.symbol} has invalid contract address '${token.address}'`);
         }
