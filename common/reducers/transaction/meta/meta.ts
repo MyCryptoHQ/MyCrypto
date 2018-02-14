@@ -53,9 +53,7 @@ const tokenToToken = (
   { payload: { data: _, to: __, ...rest } }: SwapTokenToTokenAction
 ): State => ({ ...state, ...rest });
 
-const reset = state => {
-  return { ...INITIAL_STATE, unit: state.unit };
-};
+const reset = () => INITIAL_STATE;
 
 const unitMeta = (state: State, { payload }: SetUnitMetaAction): State => ({
   ...state,
@@ -83,7 +81,7 @@ export const meta = (
     case TK.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
     case TK.RESET:
-      return reset(state);
+      return reset();
     default:
       return state;
   }

@@ -25,10 +25,6 @@ const StringDropdown = Dropdown as new () => Dropdown<string>;
 const ConditionalStringDropDown = withConditional(StringDropdown);
 
 class UnitDropdownClass extends Component<DispatchProps & StateProps> {
-  public componentDidMount() {
-    this.props.setUnitMeta(this.props.networkUnit);
-  }
-
   public render() {
     const { tokens, allTokens, showAllTokens, unit, networkUnit } = this.props;
     const focusedTokens = showAllTokens ? allTokens : tokens;
