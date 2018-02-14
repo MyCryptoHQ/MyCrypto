@@ -1,5 +1,7 @@
 import { checkHttpStatus, parseJSON } from './utils';
 
+const MAX_GAS_FAST = 250;
+
 interface RawGasEstimates {
   safeLow: number;
   standard: number;
@@ -24,8 +26,33 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
   })
     .then(checkHttpStatus)
     .then(parseJSON)
-    .then((req: RawGasEstimates) => ({
-      ...req,
+    .then((res: object) => {
+      // Make sure it looks like a raw gas estimate, and it has valid values
+      const keys = ['safeLow', 'standard', 'fast', 'fastest'];
+      keys.forEach(key => {
+        if (typeof res[key] !== 'number') {
+          throw new Error(
+            `Gas estimate API has invalid shape: Expected numeric key '${key}' in response, got '${
+              res[key]
+            }' instead`
+          );
+        }
+      });
+
+      // Make sure the estimate isn't totally crazy
+      const estimateRes = res as RawGasEstimates;
+      if (estimateRes.fast > MAX_GAS_FAST) {
+        throw new Error(
+          `Gas estimate response estimate too high: Max fast is ${MAX_GAS_FAST}, was given ${
+            estimateRes.fast
+          }`
+        );
+      }
+
+      return estimateRes;
+    })
+    .then((res: RawGasEstimates) => ({
+      ...res,
       time: Date.now(),
       isDefault: false
     }));
