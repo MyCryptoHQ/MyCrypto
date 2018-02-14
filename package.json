@@ -120,7 +120,7 @@
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.7.0",
     "tslint-microsoft-contrib": "5.0.3",
-    "tslint-react": "3.5.0",
+    "tslint-react": "3.5.1",
     "types-rlp": "0.0.1",
     "typescript": "2.6.2",
     "url-loader": "0.6.2",
