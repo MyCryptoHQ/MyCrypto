@@ -253,3 +253,6 @@ export const isValidGetAccounts = (response: JsonRpcResponse) =>
 
 export const isValidGetNetVersion = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Net Version');
+
+export const isValidTxHash = (hash: string) =>
+  hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);

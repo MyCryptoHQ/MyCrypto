@@ -35,6 +35,10 @@ const tabs: TabLink[] = [
     to: '/sign-and-verify-message'
   },
   {
+    name: 'NAV_TxStatus',
+    to: '/tx-status'
+  },
+  {
     name: 'Broadcast Transaction',
     to: '/pushTx'
   },
