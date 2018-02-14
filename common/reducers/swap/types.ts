@@ -29,7 +29,7 @@ export interface NormalizedBityRates {
 }
 
 export interface NormalizedShapeshiftRate extends NormalizedRate {
-  id: string;
+  id: number;
   options: WhitelistedCoins[];
   rate: number;
   limit: number;

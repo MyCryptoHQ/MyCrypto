@@ -31,7 +31,9 @@ export interface Option {
 export interface ApiResponseObj {
   id: string;
   options: Option[];
-  rate: number;
+  rate: string;
+  limit?: number;
+  min?: number;
 }
 
 export interface ApiResponse {
