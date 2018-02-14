@@ -3,7 +3,7 @@ import { Token } from 'config';
 import { IHexStrTransaction } from 'libs/transaction';
 import { Wei, TokenValue } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';
-import { INode, TxObj } from '../INode';
+import { INode, TxObj, TransactionData } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
 import {
@@ -12,9 +12,10 @@ import {
   isValidCallRequest,
   isValidTokenBalance,
   isValidTransactionCount,
+  isValidTransactionByHash,
   isValidCurrentBlock,
   isValidRawTxApi
-} from '../../validators';
+} from 'libs/validators';
 
 export default class RpcNode implements INode {
   public client: RPCClient;
@@ -104,6 +105,19 @@ export default class RpcNode implements INode {
       .call(this.requests.getTransactionCount(address))
       .then(isValidTransactionCount)
       .then(({ result }) => result);
+  }
+
+  public getTransactionByHash(txhash: string): Promise<TransactionData> {
+    return this.client
+      .call(this.requests.getTransactionData(txhash))
+      .then(isValidTransactionByHash)
+      .then(({ result }) => ({
+        ...result,
+        to: result.to || '0x0',
+        value: Wei(result.value),
+        gasPrice: Wei(result.gasPrice),
+        gas: Wei(result.gas)
+      }));
   }
 
   public getCurrentBlock(): Promise<string> {

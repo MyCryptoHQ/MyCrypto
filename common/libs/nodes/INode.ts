@@ -6,10 +6,26 @@ export interface TxObj {
   to: string;
   data: string;
 }
+
 interface TokenBalanceResult {
   balance: TokenValue;
   error: string | null;
 }
+
+export interface TransactionData {
+  hash: string;
+  nonce: number;
+  blockHash: string | null;
+  blockNumber: string | null;
+  transactionIndex: number | null;
+  from: string;
+  to: string;
+  value: Wei;
+  gasPrice: Wei;
+  gas: Wei;
+  input: string;
+}
+
 export interface INode {
   ping(): Promise<boolean>;
   getBalance(address: string): Promise<Wei>;
@@ -17,6 +33,7 @@ export interface INode {
   getTokenBalances(address: string, tokens: Token[]): Promise<TokenBalanceResult[]>;
   estimateGas(tx: Partial<IHexStrTransaction>): Promise<Wei>;
   getTransactionCount(address: string): Promise<string>;
+  getTransactionByHash(txhash: string): Promise<TransactionData>;
   sendRawTx(tx: string): Promise<string>;
   sendCallRequest(txObj: TxObj): Promise<string>;
   getCurrentBlock(): Promise<string>;

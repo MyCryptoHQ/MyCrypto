@@ -236,6 +236,9 @@ export const isValidTokenBalance = (response: JsonRpcResponse) =>
 export const isValidTransactionCount = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Transaction Count');
 
+export const isValidTransactionByHash = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Transaction By Hash');
+
 export const isValidCurrentBlock = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Current Block');
 

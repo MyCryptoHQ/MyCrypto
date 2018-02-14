@@ -69,6 +69,11 @@ export interface GetTransactionCountRequest extends RPCRequestBase {
   params: [DATA, DEFAULT_BLOCK];
 }
 
+export interface GetTransactionByHashRequest extends RPCRequestBase {
+  method: 'eth_getTransactionByHash';
+  params: [string];
+}
+
 export interface GetCurrentBlockRequest extends RPCRequestBase {
   method: 'eth_blockNumber';
 }
@@ -80,4 +85,5 @@ export type RPCRequest =
   | CallRequest
   | EstimateGasRequest
   | GetTransactionCountRequest
+  | GetTransactionByHashRequest
   | GetCurrentBlockRequest;

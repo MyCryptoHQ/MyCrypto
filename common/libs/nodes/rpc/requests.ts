@@ -7,7 +7,8 @@ import {
   GetTokenBalanceRequest,
   GetTransactionCountRequest,
   SendRawTxRequest,
-  GetCurrentBlockRequest
+  GetCurrentBlockRequest,
+  GetTransactionByHashRequest
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
@@ -48,6 +49,13 @@ export default class RPCRequests {
     return {
       method: 'eth_getTransactionCount',
       params: [address, 'pending']
+    };
+  }
+
+  public getTransactionData(txhash: string): GetTransactionByHashRequest | any {
+    return {
+      method: 'eth_getTransactionByHash',
+      params: [txhash]
     };
   }
 

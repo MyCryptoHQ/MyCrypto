@@ -6,7 +6,7 @@ import {
   NodeConfig,
   Token
 } from 'config';
-import { INode } from 'libs/nodes/INode';
+import { INode } from 'libs/nodes';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction/meta';
 import { isEtherUnit } from 'libs/units';
