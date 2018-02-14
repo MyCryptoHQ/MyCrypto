@@ -24,7 +24,7 @@ interface Props {
 }
 
 export default class CurrentRates extends PureComponent<Props> {
-  private shapeShiftRateCache = null;
+  private shapeShiftRateCache: any;
 
   public getRandomSSPairData = (
     shapeshiftRates: NormalizedShapeshiftRates
@@ -54,7 +54,7 @@ export default class CurrentRates extends PureComponent<Props> {
     };
   };
 
-  public isValidRates = (rates: Optional<NormalizedBityRates>) => {
+  public isValidRates = (rates: Optional<NormalizedShapeshiftRates>) => {
     return rates && rates.allIds && rates.allIds.length > 0;
   };
 

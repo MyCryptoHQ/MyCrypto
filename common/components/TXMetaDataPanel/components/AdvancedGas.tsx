@@ -27,7 +27,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  autoGasLimitEnabled: AppState['config']['autoGasLimit'];
+  autoGasLimitEnabled: AppState['config']['meta']['autoGasLimit'];
   validGasPrice: boolean;
 }
 
@@ -87,11 +87,7 @@ class AdvancedGas extends React.Component<Props, State> {
 
           {gasLimitField && (
             <div className="AdvancedGas-gas-limit">
-              <GasLimitField
-                includeLabel={true}
-                customLabel={translateRaw('OFFLINE_Step2_Label_4')}
-                onlyIncludeLoader={false}
-              />
+              <GasLimitField customLabel={translateRaw('OFFLINE_Step2_Label_4')} />
             </div>
           )}
           {nonceField && (

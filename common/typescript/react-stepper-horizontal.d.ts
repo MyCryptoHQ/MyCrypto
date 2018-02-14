@@ -31,8 +31,5 @@ interface PropTypes {
 }
 
 declare module 'react-stepper-horizontal' {
-  export class Stepper extends React.Component<PropTypes> {
-    constructor();
-    render(): any;
-  }
+  export const Stepper: any;
 }

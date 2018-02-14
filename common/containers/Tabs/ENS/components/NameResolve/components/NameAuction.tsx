@@ -3,6 +3,7 @@ import { IBaseDomainRequest } from 'libs/ens';
 import ENSTime from './components/ENSTime';
 import moment from 'moment';
 import { NewTabLink } from 'components/ui';
+import { ensV3Url } from 'utils/formatters';
 
 const getDeadlines = (registrationDate: string) => {
   // Get the time to reveal bids, and the time when the action closes
@@ -28,15 +29,19 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
           <section className="ens-panel">
             <ENSTime text="Reveal Bids On" time={revealBidTime} />
           </section>
-          <section className="ens-panel ens-panel-light">
+          <section className="ens-panel is-light">
             <ENSTime text="Auction Closes On" time={auctionCloseTime} />
           </section>
         </div>
 
-        <NewTabLink
-          content={`Do you want to place a bid on ${name}.eth? You'll need to bid on MyCrypto V3 by clicking here: `}
-          href="https://mycrypto.com/#ens"
-        />
+        <p>
+          Do you want to place a bid on {name}.eth?{' '}
+          <strong>
+            <NewTabLink href={ensV3Url(name)}>
+              You can do that on MyCrypto V3 by clicking here!
+            </NewTabLink>
+          </strong>
+        </p>
       </div>
     </section>
   );

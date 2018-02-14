@@ -6,7 +6,8 @@ import { UnlockHeader } from 'components/ui';
 import { SideBar } from './components/index';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
-import { RouteComponentProps, Route, Switch, Redirect } from 'react-router';
+import { RouteComponentProps, Route, Switch } from 'react-router';
+import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import {
   WalletInfo,
   RequestPayment,
@@ -14,9 +15,8 @@ import {
   UnavailableWallets
 } from 'containers/Tabs/SendTransaction/components';
 import SubTabs, { Tab } from 'components/SubTabs';
-import { getNetworkConfig } from 'selectors/config';
-import { isNetworkUnit } from 'utils/network';
 import { RouteNotFound } from 'components/RouteNotFound';
+import { isNetworkUnit } from 'selectors/config/wallet';
 
 const Send = () => (
   <React.Fragment>
@@ -27,7 +27,7 @@ const Send = () => (
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
-  network: AppState['config']['network'];
+  requestDisabled: boolean;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
@@ -45,7 +45,7 @@ class SendTransaction extends React.Component<Props> {
       {
         path: 'request',
         name: translate('Request Payment'),
-        disabled: !isNetworkUnit(this.props.network, 'ETH')
+        disabled: this.props.requestDisabled
       },
       {
         path: 'info',
@@ -68,7 +68,7 @@ class SendTransaction extends React.Component<Props> {
                     exact={true}
                     path={currentPath}
                     render={() => (
-                      <Redirect
+                      <RedirectWithQuery
                         from={`${currentPath}`}
                         to={`${wallet.isReadOnly ? `${currentPath}/info` : `${currentPath}/send`}`}
                       />
@@ -99,5 +99,5 @@ class SendTransaction extends React.Component<Props> {
 
 export default connect((state: AppState) => ({
   wallet: getWalletInst(state),
-  network: getNetworkConfig(state)
+  requestDisabled: !isNetworkUnit(state, 'ETH')
 }))(SendTransaction);

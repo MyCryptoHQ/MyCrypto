@@ -21,7 +21,7 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
         <strong>{name}.eth</strong> is already owned
       </h1>
     </div>
-    <div className="table-wrapper">
+    <div className="ens-table-wrapper">
       <table className="table table-striped">
         <tbody>
           <tr>

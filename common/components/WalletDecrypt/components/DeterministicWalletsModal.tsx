@@ -8,7 +8,6 @@ import {
 } from 'actions/deterministicWallets';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
-import { NetworkConfig } from 'config';
 import { isValidPath } from 'libs/validators';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -16,7 +15,7 @@ import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
 import { UnitDisplay } from 'components/ui';
 import './DeterministicWalletsModal.scss';
-import { DPath } from 'config/dpaths';
+import { StaticNetworkConfig } from 'types/network';
 import Select from 'react-select';
 
 const WALLETS_PER_PAGE = 5;
@@ -34,7 +33,7 @@ interface Props {
   // Redux state
   wallets: AppState['deterministicWallets']['wallets'];
   desiredToken: AppState['deterministicWallets']['desiredToken'];
-  network: NetworkConfig;
+  network: StaticNetworkConfig;
   tokens: MergedToken[];
 
   // Redux actions

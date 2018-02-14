@@ -4,13 +4,11 @@ import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
-import { Spinner } from 'components/ui';
-import { getNetworkConfig } from 'selectors/config';
+import { Spinner, NewTabLink } from 'components/ui';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { SecureWalletName } from 'config';
-import { DPath } from 'config/dpaths';
-import { getPaths, getSingleDPath } from 'utils/network';
+import { SecureWalletName, trezorReferralURL } from 'config';
+import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -19,6 +17,7 @@ interface OwnProps {
 
 interface StateProps {
   dPath: DPath;
+  dPaths: DPath[];
 }
 
 // todo: nearly duplicates ledger component props
@@ -69,26 +68,17 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           )}
         </button>
 
-        <a
-          className="TrezorDecrypt-buy btn btn-sm btn-default"
-          href="https://trezor.io/?a=myetherwallet.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <NewTabLink className="TrezorDecrypt-buy btn btn-sm btn-default" href={trezorReferralURL}>
           {translate('Don’t have a TREZOR? Order one now!')}
-        </a>
+        </NewTabLink>
 
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
           Guide:{' '}
-          <a
-            href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            How to use TREZOR with MyEtherWallet
-          </a>
+          <NewTabLink href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08">
+            How to use TREZOR with MyCrypto
+          </NewTabLink>
         </div>
 
         <DeterministicWalletsModal
@@ -96,7 +86,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
-          dPaths={getPaths(SecureWalletName.TREZOR)}
+          dPaths={this.props.dPaths}
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
@@ -159,9 +149,9 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  const network = getNetworkConfig(state);
   return {
-    dPath: getSingleDPath(SecureWalletName.TREZOR, network)
+    dPath: getSingleDPath(state, SecureWalletName.TREZOR),
+    dPaths: getPaths(state, SecureWalletName.TREZOR)
   };
 }
 

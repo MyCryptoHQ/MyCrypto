@@ -2,8 +2,9 @@ import React from 'react';
 import BN from 'bn.js';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { UnitDisplay } from 'components/ui';
+import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
 
 interface RenderData {
@@ -17,8 +18,8 @@ interface RenderData {
 interface ReduxStateProps {
   gasLimit: AppState['transaction']['fields']['gasLimit'];
   rates: AppState['rates']['rates'];
-  network: AppState['config']['network'];
-  isOffline: AppState['config']['offline'];
+  network: NetworkConfig;
+  isOffline: AppState['config']['meta']['offline'];
 }
 
 interface OwnProps {
@@ -75,7 +76,7 @@ function mapStateToProps(state: AppState): ReduxStateProps {
     gasLimit: state.transaction.fields.gasLimit,
     rates: state.rates.rates,
     network: getNetworkConfig(state),
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 

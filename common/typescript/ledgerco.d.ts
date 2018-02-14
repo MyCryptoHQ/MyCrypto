@@ -1,4 +1,5 @@
 declare module 'ledgerco' {
+  export const comm_u2f: any;
   export class eth {
     constructor(transport: any);
     getAddress_async(
@@ -8,7 +9,7 @@ declare module 'ledgerco' {
     ): Promise<{
       publicKey: string;
       address: string;
-      chainCode?: string;
+      chainCode: string;
     }>;
 
     signTransaction_async(

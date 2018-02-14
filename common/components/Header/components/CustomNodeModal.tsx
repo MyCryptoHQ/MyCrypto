@@ -2,11 +2,18 @@ import React from 'react';
 import classnames from 'classnames';
 import Modal, { IButton } from 'components/ui/Modal';
 import translate from 'translations';
-import { NETWORKS, CustomNodeConfig, CustomNetworkConfig } from 'config';
-import { makeCustomNodeId } from 'utils/node';
-import { makeCustomNetworkId } from 'utils/network';
+import { CustomNetworkConfig } from 'types/network';
+import { CustomNodeConfig } from 'types/node';
+import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
+import { connect, Omit } from 'react-redux';
+import { AppState } from 'reducers';
+import {
+  getCustomNetworkConfigs,
+  getCustomNodeConfigs,
+  getStaticNetworkConfigs
+} from 'selectors/config';
+import { CustomNode } from 'libs/nodes';
 
-const NETWORK_KEYS = Object.keys(NETWORKS);
 const CUSTOM = 'custom';
 
 interface Input {
@@ -15,12 +22,19 @@ interface Input {
   type?: string;
 }
 
-interface Props {
-  customNodes: CustomNodeConfig[];
-  customNetworks: CustomNetworkConfig[];
-  handleAddCustomNode(node: CustomNodeConfig): void;
-  handleAddCustomNetwork(node: CustomNetworkConfig): void;
+interface OwnProps {
+  addCustomNode(payload: AddCustomNodeAction['payload']): void;
   handleClose(): void;
+}
+
+interface DispatchProps {
+  addCustomNetwork: TAddCustomNetwork;
+}
+
+interface StateProps {
+  customNodes: AppState['config']['nodes']['customNodes'];
+  customNetworks: AppState['config']['networks']['customNetworks'];
+  staticNetworks: AppState['config']['networks']['staticNetworks'];
 }
 
 interface State {
@@ -28,7 +42,7 @@ interface State {
   url: string;
   port: string;
   network: string;
-  customNetworkName: string;
+  customNetworkId: string;
   customNetworkUnit: string;
   customNetworkChainId: string;
   hasAuth: boolean;
@@ -36,13 +50,15 @@ interface State {
   password: string;
 }
 
-export default class CustomNodeModal extends React.PureComponent<Props, State> {
+type Props = OwnProps & StateProps & DispatchProps;
+
+class CustomNodeModal extends React.Component<Props, State> {
   public state: State = {
     name: '',
     url: '',
     port: '',
-    network: NETWORK_KEYS[0],
-    customNetworkName: '',
+    network: Object.keys(this.props.staticNetworks)[0],
+    customNetworkId: '',
     customNetworkUnit: '',
     customNetworkChainId: '',
     hasAuth: false,
@@ -51,7 +67,7 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
   };
 
   public render() {
-    const { customNetworks, handleClose } = this.props;
+    const { customNetworks, handleClose, staticNetworks } = this.props;
     const { network } = this.state;
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
@@ -109,19 +125,16 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
                   value={network}
                   onChange={this.handleChange}
                 >
-                  {NETWORK_KEYS.map(net => (
+                  {Object.keys(staticNetworks).map(net => (
                     <option key={net} value={net}>
                       {net}
                     </option>
                   ))}
-                  {customNetworks.map(net => {
-                    const id = makeCustomNetworkId(net);
-                    return (
-                      <option key={id} value={id}>
-                        {net.name} (Custom)
-                      </option>
-                    );
-                  })}
+                  {Object.entries(customNetworks).map(([id, net]) => (
+                    <option key={id} value={id}>
+                      {net.name} (Custom)
+                    </option>
+                  ))}
                   <option value={CUSTOM}>Custom...</option>
                 </select>
               </div>
@@ -133,7 +146,7 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
                   <label className="is-required">Network Name</label>
                   {this.renderInput(
                     {
-                      name: 'customNetworkName',
+                      name: 'customNetworkId',
                       placeholder: 'My Custom Network'
                     },
                     invalids
@@ -248,7 +261,7 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
       username,
       password,
       network,
-      customNetworkName,
+      customNetworkId,
       customNetworkUnit,
       customNetworkChainId
     } = this.state;
@@ -285,8 +298,8 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
 
     // If they have a custom network, make sure info is provided
     if (network === CUSTOM) {
-      if (!customNetworkName) {
-        invalids.customNetworkName = true;
+      if (!customNetworkId) {
+        invalids.customNetworkId = true;
       }
       if (!customNetworkUnit) {
         invalids.customNetworkUnit = true;
@@ -303,13 +316,14 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
   }
 
   private makeCustomNetworkConfigFromState(): CustomNetworkConfig {
-    const similarNetworkConfig = Object.values(NETWORKS).find(
+    const similarNetworkConfig = Object.values(this.props.staticNetworks).find(
       n => n.chainId === +this.state.customNetworkChainId
     );
     const dPathFormats = similarNetworkConfig ? similarNetworkConfig.dPathFormats : null;
 
     return {
-      name: this.state.customNetworkName,
+      isCustom: true,
+      name: this.state.customNetworkId,
       unit: this.state.customNetworkUnit,
       chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0,
       dPathFormats
@@ -318,29 +332,42 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
 
   private makeCustomNodeConfigFromState(): CustomNodeConfig {
     const { network } = this.state;
-    const node: CustomNodeConfig = {
+
+    const networkId =
+      network === CUSTOM
+        ? this.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
+        : network;
+
+    const port = parseInt(this.state.port, 10);
+    const url = this.state.url.trim();
+    const node: Omit<CustomNodeConfig, 'lib'> = {
+      isCustom: true,
+      service: 'your custom node',
+      id: `${url}:${port}`,
       name: this.state.name.trim(),
-      url: this.state.url.trim(),
-      port: parseInt(this.state.port, 10),
-      network:
-        network === CUSTOM ? makeCustomNetworkId(this.makeCustomNetworkConfigFromState()) : network
+      url,
+      port,
+      network: networkId,
+      ...(this.state.hasAuth
+        ? {
+            auth: {
+              username: this.state.username,
+              password: this.state.password
+            }
+          }
+        : {})
     };
 
-    if (this.state.hasAuth) {
-      node.auth = {
-        username: this.state.username,
-        password: this.state.password
-      };
-    }
+    const lib = new CustomNode(node);
 
-    return node;
+    return { ...node, lib };
   }
 
   private getConflictedNode(): CustomNodeConfig | undefined {
     const { customNodes } = this.props;
     const config = this.makeCustomNodeConfigFromState();
-    const thisId = makeCustomNodeId(config);
-    return customNodes.find(conf => makeCustomNodeId(conf) === thisId);
+
+    return customNodes[config.id];
   }
 
   private handleChange = (ev: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -359,9 +386,25 @@ export default class CustomNodeModal extends React.PureComponent<Props, State> {
     if (this.state.network === CUSTOM) {
       const network = this.makeCustomNetworkConfigFromState();
 
-      this.props.handleAddCustomNetwork(network);
+      this.props.addCustomNetwork({ config: network, id: node.network });
     }
 
-    this.props.handleAddCustomNode(node);
+    this.props.addCustomNode({ config: node, id: node.id });
   };
+
+  private makeCustomNetworkId(config: CustomNetworkConfig): string {
+    return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
+  }
 }
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  customNetworks: getCustomNetworkConfigs(state),
+  customNodes: getCustomNodeConfigs(state),
+  staticNetworks: getStaticNetworkConfigs(state)
+});
+
+const mapDispatchToProps: DispatchProps = {
+  addCustomNetwork
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomNodeModal);

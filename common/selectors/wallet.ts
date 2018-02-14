@@ -1,11 +1,12 @@
 import { TokenValue, Wei } from 'libs/units';
-import { Token, SecureWalletName, WalletName } from 'config';
+import { SecureWalletName, WalletName } from 'config';
 import { AppState } from 'reducers';
-import { getNetworkConfig, getOffline } from 'selectors/config';
+import { getNetworkConfig, getOffline, getStaticNetworkConfig } from 'selectors/config';
 import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';
 import { isEtherTransaction, getUnit } from './transaction';
-import { unSupportedWalletFormatsOnNetwork } from 'utils/network';
 import { DisabledWallets } from 'components/WalletDecrypt';
+import { Token } from 'types/network';
+import { unSupportedWalletFormatsOnNetwork } from 'selectors/config/wallet';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
@@ -32,7 +33,7 @@ export type MergedToken = Token & {
 };
 
 export function getTokens(state: AppState): MergedToken[] {
-  const network = getNetworkConfig(state);
+  const network = getStaticNetworkConfig(state);
   const tokens: Token[] = network ? network.tokens : [];
   return tokens.concat(
     state.customTokens.map((token: Token) => {
@@ -164,7 +165,7 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
 
   // Some wallets don't support some networks
   addReason(
-    unSupportedWalletFormatsOnNetwork(network),
+    unSupportedWalletFormatsOnNetwork(state),
     `${network.name} does not support this wallet`
   );
 
