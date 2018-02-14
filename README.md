@@ -1,6 +1,7 @@
 # MyCrypto Beta (VISIT [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com) for the current site)<br/>Just looking to download? Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/MyCryptoHq/MyCrypto.svg)](https://greenkeeper.io/)
+[![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=develop)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
 
 ## Running the App
 
