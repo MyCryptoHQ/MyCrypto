@@ -129,7 +129,7 @@
     "webpack-dev-middleware": "2.0.5",
     "webpack-hot-middleware": "2.21.0",
     "webpack-sources": "1.0.1",
-    "webpack-subresource-integrity": "1.0.3",
+    "webpack-subresource-integrity": "1.0.4",
     "worker-loader": "1.1.0",
     "what-input": "5.0.5"
   },
