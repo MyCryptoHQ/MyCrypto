@@ -16,7 +16,7 @@ export interface TransactionData {
   hash: string;
   nonce: number;
   blockHash: string | null;
-  blockNumber: string | null;
+  blockNumber: number | null;
   transactionIndex: number | null;
   from: string;
   to: string;
@@ -24,6 +24,19 @@ export interface TransactionData {
   gasPrice: Wei;
   gas: Wei;
   input: string;
+}
+
+export interface TransactionReceipt {
+  transactionHash: string;
+  transactionIndex: number;
+  blockHash: string;
+  blockNumber: number;
+  cumulativeGasUsed: Wei;
+  gasUsed: Wei;
+  contractAddress: string | null;
+  logs: string[];
+  logsBloom: string;
+  status: number;
 }
 
 export interface INode {
@@ -34,6 +47,7 @@ export interface INode {
   estimateGas(tx: Partial<IHexStrTransaction>): Promise<Wei>;
   getTransactionCount(address: string): Promise<string>;
   getTransactionByHash(txhash: string): Promise<TransactionData>;
+  getTransactionReceipt(txhash: string): Promise<TransactionReceipt>;
   sendRawTx(tx: string): Promise<string>;
   sendCallRequest(txObj: TxObj): Promise<string>;
   getCurrentBlock(): Promise<string>;

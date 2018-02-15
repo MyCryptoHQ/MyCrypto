@@ -1,6 +1,7 @@
 import React from 'react';
 import translate from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
+import './TxHashInput.scss';
 
 interface Props {
   hash?: string;
@@ -42,8 +43,8 @@ export default class TxHashInput extends React.Component<Props, State> {
           </p>
         )}
 
-        <button className="TxHashInput-submit btn btn-primary">
-          {translate('Find My Transaction')}
+        <button className="TxHashInput-submit btn btn-primary btn-block">
+          {translate('NAV_CheckTxStatus')}
         </button>
       </form>
     );

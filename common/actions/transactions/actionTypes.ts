@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { TransactionData } from 'libs/nodes';
+import { TransactionData, TransactionReceipt } from 'libs/nodes';
 
 export interface FetchTransactionDataAction {
   type: TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA;
@@ -11,6 +11,7 @@ export interface SetTransactionDataAction {
   payload: {
     txhash: string;
     data: TransactionData | null;
+    receipt: TransactionReceipt | null;
     error: string | null;
   };
 }

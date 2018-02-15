@@ -4,16 +4,17 @@ import {
   TransactionsAction,
   TypeKeys
 } from 'actions/transactions';
-import { TransactionData } from 'libs/nodes';
+import { TransactionData, TransactionReceipt } from 'libs/nodes';
+
+export interface TransactionState {
+  data: TransactionData | null;
+  receipt: TransactionReceipt | null;
+  error: string | null;
+  isLoading: boolean;
+}
 
 export interface State {
-  txData: {
-    [txhash: string]: {
-      data: TransactionData | null;
-      error: string | null;
-      isLoading: boolean;
-    };
-  };
+  txData: { [txhash: string]: TransactionState };
 }
 
 export const INITIAL_STATE: State = {
@@ -27,6 +28,7 @@ function fetchTxData(state: State, action: FetchTransactionDataAction): State {
       ...state.txData,
       [action.payload]: {
         data: null,
+        receipt: null,
         error: null,
         isLoading: true
       }
@@ -41,6 +43,7 @@ function setTxData(state: State, action: SetTransactionDataAction): State {
       ...state.txData,
       [action.payload.txhash]: {
         data: action.payload.data,
+        receipt: action.payload.receipt,
         error: action.payload.error,
         isLoading: false
       }
@@ -48,7 +51,7 @@ function setTxData(state: State, action: SetTransactionDataAction): State {
   };
 }
 
-export function gas(state: State = INITIAL_STATE, action: TransactionsAction): State {
+export function transactions(state: State = INITIAL_STATE, action: TransactionsAction): State {
   switch (action.type) {
     case TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA:
       return fetchTxData(state, action);
