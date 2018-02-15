@@ -35,7 +35,7 @@ interface State {
   inputs: {
     [key: string]: { rawData: string; parsedData: string[] | string };
   };
-  outputs;
+  outputs: any;
   selectedFunction: null | ContractOption;
 }
 
@@ -121,7 +121,7 @@ class InteractExplorerClass extends Component<Props, State> {
                 </label>
               );
             })}
-            {selectedFunction.contract.outputs.map((output, index) => {
+            {selectedFunction.contract.outputs.map((output: any, index: any) => {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
 

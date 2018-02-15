@@ -47,7 +47,7 @@ export default function(mainWindow: BrowserWindow) {
     hasStartedUpdating = true;
   });
 
-  autoUpdater.on(AutoUpdaterEvents.DOWNLOAD_PROGRESS, progress => {
+  autoUpdater.on(AutoUpdaterEvents.DOWNLOAD_PROGRESS, (progress: any) => {
     mainWindow.setTitle(`${APP_TITLE} (Downloading update... ${Math.round(progress.percent)}%)`);
     mainWindow.setProgressBar(progress.percent / 100);
   });

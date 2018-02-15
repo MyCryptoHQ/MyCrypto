@@ -15,19 +15,23 @@ interface Props {
   onRemoveCustomToken(symbol: string): any;
 }
 
+interface TrackedTokens {
+  [symbol: string]: boolean;
+}
+
 interface State {
-  trackedTokens: { [symbol: string]: boolean };
+  trackedTokens: TrackedTokens;
   showCustomTokenForm: boolean;
 }
 export default class TokenBalances extends React.PureComponent<Props, State> {
   public state = {
-    trackedTokens: {},
+    trackedTokens: {} as TrackedTokens,
     showCustomTokenForm: false
   };
 
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.tokenBalances !== this.props.tokenBalances) {
-      const trackedTokens = nextProps.tokenBalances.reduce((prev, t) => {
+      const trackedTokens = nextProps.tokenBalances.reduce<TrackedTokens>((prev, t) => {
         prev[t.symbol] = !t.balance.isZero();
         return prev;
       }, {});
@@ -37,7 +41,8 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
 
   public render() {
     const { allTokens, tokenBalances, hasSavedWalletTokens } = this.props;
-    const { showCustomTokenForm, trackedTokens } = this.state;
+    const { showCustomTokenForm } = this.state;
+    const trackedTokens: TrackedTokens = this.state.trackedTokens;
 
     let bottom;
     let help;
@@ -129,7 +134,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
   };
 
   private handleSetWalletTokens = () => {
-    const { trackedTokens } = this.state;
+    const trackedTokens: TrackedTokens = this.state.trackedTokens;
     const desiredTokens = Object.keys(trackedTokens).filter(t => trackedTokens[t]);
     this.props.setWalletTokens(desiredTokens);
   };

@@ -23,7 +23,8 @@ export interface IInput {
  * @param {IInput} value
  * @returns {SagaIterator}
  */
-export function* rebaseUserInput(value: IInput): SagaIterator {
+export function* rebaseUserInput(value: any): SagaIterator {
+  //TODO need to change call on unitSwap spec to use IInput typing
   const unit: string = yield select(getUnit);
   // get decimal
   const newDecimal: number = yield select(getDecimalFromUnit, unit);

@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { CustomNodeConfig, Web3NodeConfig } from 'types/node';
+import { CustomNodeConfig, Web3NodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig } from 'types/network';
 
 /*** Toggle Offline ***/
@@ -34,7 +34,7 @@ export interface PollOfflineStatus {
 /*** Change Node ***/
 export interface ChangeNodeIntentAction {
   type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
-  payload: string;
+  payload: keyof NodeConfig | string;
 }
 
 /*** Add Custom Node ***/

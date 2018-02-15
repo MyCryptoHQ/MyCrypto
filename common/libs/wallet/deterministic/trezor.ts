@@ -30,7 +30,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
         cleanedTx.data,
         chainId,
         // Callback
-        result => {
+        (result: any) => {
           if (!result.success) {
             return reject(Error(result.error));
           }
@@ -64,7 +64,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
     return new Promise((resolve, reject) => {
       (TrezorConnect as any).ethereumGetAddress(
         dPath + '/' + index,
-        res => {
+        (res: any) => {
           if (res.error) {
             reject(res.error);
           } else {

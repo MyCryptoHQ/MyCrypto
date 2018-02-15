@@ -6,7 +6,16 @@ import Ropsten from './ropsten.json';
 import RSK from './rsk.json';
 import UBQ from './ubq.json';
 
-export default {
+export interface ContractData {
+  name: string;
+  address: string;
+  abi: string;
+}
+export interface Networks {
+  [key: string]: ContractData[];
+}
+
+const NetworkTypes: Networks = {
   ETC,
   ETH,
   EXP,
@@ -15,3 +24,5 @@ export default {
   RSK,
   UBQ
 };
+
+export default NetworkTypes;

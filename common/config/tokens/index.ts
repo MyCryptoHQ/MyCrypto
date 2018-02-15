@@ -7,7 +7,17 @@ import Ropsten from './ropsten.json';
 import RSK from './rsk.json';
 import UBQ from './ubq.json';
 
-export default {
+export interface Token {
+  address: string;
+  symbol: string;
+  decimal: number;
+  error?: string | null;
+}
+export interface Tokens {
+  [key: string]: Token[];
+}
+
+const TokenTypes: Tokens = {
   ETC,
   ETH,
   EXP,
@@ -17,3 +27,5 @@ export default {
   RSK,
   UBQ
 };
+
+export default TokenTypes;

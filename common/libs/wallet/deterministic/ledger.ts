@@ -11,13 +11,11 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
 
   constructor(address: string, dPath: string, index: number) {
     super(address, dPath, index);
-    ledger.comm_u2f.create_async().then(comm => {
+    ledger.comm_u2f.create_async().then((comm: any) => {
       this.ethApp = new ledger.eth(comm);
     });
   }
 
-  // modeled after
-  // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/uiFuncs.js#L58
   public signRawTransaction(t: EthTx): Promise<Buffer> {
     t.v = Buffer.from([t._chainId]);
     t.r = toBuffer(0);
@@ -26,7 +24,7 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     return new Promise((resolve, reject) => {
       this.ethApp
         .signTransaction_async(this.getPath(), t.serialize().toString('hex'))
-        .then(result => {
+        .then((result: any) => {
           const strTx = getTransactionFields(t);
           const txToSerialize: TxObj = {
             ...strTx,
@@ -38,7 +36,7 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
           const serializedTx = new EthTx(txToSerialize).serialize();
           resolve(serializedTx);
         })
-        .catch(err => {
+        .catch((err: any) => {
           return reject(Error(err + '. Check to make sure contract data is on'));
         });
     });
@@ -50,18 +48,22 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     const msgHex = Buffer.from(msg).toString('hex');
 
     return new Promise((resolve, reject) => {
-      this.ethApp.signPersonalMessage_async(this.getPath(), msgHex, async (signed, error) => {
-        if (error) {
-          return reject(this.ethApp.getError(error));
-        }
+      this.ethApp.signPersonalMessage_async(
+        this.getPath(),
+        msgHex,
+        async ({ signed, error }: any) => {
+          if (error) {
+            return reject(this.ethApp.getError(error));
+          }
 
-        try {
-          const combined = signed.r + signed.s + signed.v;
-          resolve(bufferToHex(combined));
-        } catch (err) {
-          reject(err);
+          try {
+            const combined = signed.r + signed.s + signed.v;
+            resolve(bufferToHex(combined));
+          } catch (err) {
+            reject(err);
+          }
         }
-      });
+      );
     });
   }
 

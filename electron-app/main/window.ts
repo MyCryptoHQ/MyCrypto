@@ -1,12 +1,11 @@
 import { BrowserWindow, Menu, shell } from 'electron';
-import { URL } from 'url';
 import MENU from './menu';
 import updater from './updater';
 import { APP_TITLE } from '../constants';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Cached reference, preventing recreations
-let window;
+let window: any;
 
 // Construct new BrowserWindow
 export default function getWindow() {
@@ -39,7 +38,7 @@ export default function getWindow() {
     window = null;
   });
 
-  window.webContents.on('new-window', (ev, urlStr) => {
+  window.webContents.on('new-window', (ev: any, urlStr: any) => {
     // Kill all new window requests by default
     ev.preventDefault();
 

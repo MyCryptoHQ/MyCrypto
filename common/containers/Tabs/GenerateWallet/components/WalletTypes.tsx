@@ -46,11 +46,11 @@ const WalletTypes: React.SFC<{}> = () => {
 
       <div className="WalletTypes-types row">
         <div className="col-md-1" />
-        {Object.keys(typeInfo).map(type => (
-          <div key={type} className="WalletType col-md-5">
-            <h2 className="WalletType-title">{translate(typeInfo[type].name)}</h2>
+        {Object.entries(typeInfo).map(([typeName, type]) => (
+          <div key={typeName} className="WalletType col-md-5">
+            <h2 className="WalletType-title">{translate(type.name)}</h2>
             <ul className="WalletType-features">
-              {typeInfo[type].bullets.map(bullet => (
+              {type.bullets.map(bullet => (
                 <li key={bullet} className="WalletType-features-feature">
                   {translate(bullet)}
                 </li>
@@ -61,7 +61,7 @@ const WalletTypes: React.SFC<{}> = () => {
                 className="WalletType-select-btn btn btn-primary btn-block"
                 to={`/generate/${type}`}
               >
-                Generate a {translate(typeInfo[type].name)}
+                Generate a {translate(type.name)}
               </Link>
             </div>
           </div>

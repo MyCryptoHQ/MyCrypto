@@ -29,6 +29,13 @@ interface State {
   isLoading: boolean;
 }
 
+interface XPubKeyResult {
+  success: boolean;
+  publicKey: any;
+  chainCode: any;
+  error: any;
+}
+
 type Props = OwnProps & StateProps;
 
 class TrezorDecryptClass extends PureComponent<Props, State> {
@@ -102,7 +109,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     (TrezorConnect as any).getXPubKey(
       dPath,
-      res => {
+      (res: XPubKeyResult) => {
         if (res.success) {
           this.setState({
             dPath,

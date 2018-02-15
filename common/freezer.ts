@@ -85,13 +85,13 @@ const runShCommand = (cmd: string): Promise<string> =>
     const stdout: string[] = [];
     const stderr: string[] = [];
 
-    sh.stdout.on('data', data => {
+    sh.stdout.on('data', (data: any) => {
       stdout.push(data.toString());
     });
-    sh.stderr.on('data', data => {
+    sh.stderr.on('data', (data: any) => {
       stderr.push(data.toString());
     });
-    sh.on('close', code => {
+    sh.on('close', (code: any) => {
       if (code !== 0) {
         console.error(stderr.join(''));
         reject(`Child process closed with code ${code}`);

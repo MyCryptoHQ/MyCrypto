@@ -50,7 +50,7 @@ class MnemonicDecryptClass extends PureComponent<Props & StateProps, State> {
               isValid={isValidMnemonic}
               isTextareaWhenVisible={true}
               onChange={this.onMnemonicChange}
-              onEnter={isValidMnemonic && this.onDWModalOpen}
+              onEnter={isValidMnemonic ? this.onDWModalOpen : () => null}
             />
           </div>
           <div className="form-group">
@@ -126,7 +126,7 @@ class MnemonicDecryptClass extends PureComponent<Props & StateProps, State> {
     this.setState({ dPath });
   };
 
-  private handleUnlock = (address, index) => {
+  private handleUnlock = (address: string, index: number) => {
     const { formattedPhrase, pass, dPath } = this.state;
 
     this.props.onUnlock({

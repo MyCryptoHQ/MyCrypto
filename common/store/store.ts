@@ -24,7 +24,7 @@ const configureStore = () => {
   });
   const sagaMiddleware = createSagaMiddleware();
   let middleware;
-  let store;
+  let store: any;
 
   if (process.env.NODE_ENV !== 'production') {
     middleware = composeWithDevTools(

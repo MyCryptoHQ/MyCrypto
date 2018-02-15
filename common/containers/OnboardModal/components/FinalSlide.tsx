@@ -6,7 +6,7 @@ import { HELP_ARTICLE } from 'config';
 import OnboardSlide from './OnboardSlide';
 import onboardIconTen from 'assets/images/onboarding/slide-10.svg';
 
-const FinalSlide = ({ closeModal }) => {
+const FinalSlide = ({ closeModal }: any) => {
   const header = translate('ONBOARD_final_title');
   const subheader = translate('ONBOARD_final_subtitle');
 

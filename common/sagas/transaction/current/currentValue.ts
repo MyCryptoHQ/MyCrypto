@@ -19,7 +19,7 @@ export function* setCurrentValue(action: SetCurrentValueAction): SagaIterator {
   return yield call(valueHandler, action, setter);
 }
 
-export function* valueHandler({ payload }: SetCurrentValueAction, setter) {
+export function* valueHandler({ payload }: SetCurrentValueAction, setter: any) {
   const decimal: number = yield select(getDecimal);
   const unit: string = yield select(getUnit);
 

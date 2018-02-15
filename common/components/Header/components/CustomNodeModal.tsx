@@ -17,7 +17,7 @@ import { CustomNode } from 'libs/nodes';
 const CUSTOM = 'custom';
 
 interface Input {
-  name: string;
+  name: keyof State;
   placeholder?: string;
   type?: string;
 }
@@ -244,9 +244,9 @@ class CustomNodeModal extends React.Component<Props, State> {
       <input
         className={classnames({
           'form-control': true,
-          'is-invalid': this.state[input.name] && invalids[input.name]
+          'is-invalid': !!(this.state[input.name] && invalids[input.name])
         })}
-        value={this.state[input.name]}
+        value={this.state[input.name] as string}
         onChange={this.handleChange}
         {...input}
       />

@@ -1,4 +1,6 @@
+import { SagaIterator } from 'redux-saga';
 import { select, call, put } from 'redux-saga/effects';
+import { cloneableGenerator } from 'redux-saga/utils';
 import {
   getTokenTo,
   getTokenValue,
@@ -17,17 +19,17 @@ import {
 import { encodeTransfer } from 'libs/transaction';
 import { bufferToHex } from 'ethereumjs-util';
 import { rebaseUserInput, validateInput } from 'sagas/transaction/validationHelpers';
-import { cloneableGenerator } from 'redux-saga/utils';
 import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
+import BN from 'bn.js';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });
 };
 
 describe('handleSetUnitMeta*', () => {
-  const expectedStart = (gen, previousUnit, currentUnit) => {
+  const expectedStart = (gen: SagaIterator, previousUnit: string, currentUnit: string) => {
     it('should select getPreviousUnit', () => {
       expect(gen.next().value).toEqual(select(getPreviousUnit));
     });
@@ -104,7 +106,7 @@ describe('handleSetUnitMeta*', () => {
   });
 
   describe('etherToToken || tokenToToken', () => {
-    const sharedLogicA = (gen, decimal, currentUnit) => {
+    const sharedLogicA = (gen: any, decimal: number, currentUnit: string) => {
       it('should select getToken with currentUnit', () => {
         expect(gen.next(decimal).value).toEqual(select(getToken, currentUnit));
       });
@@ -115,7 +117,14 @@ describe('handleSetUnitMeta*', () => {
       });
     };
 
-    const sharedLogicB = (gen, input, raw, value, currentUnit, isValid) => {
+    const sharedLogicB = (
+      gen: SagaIterator,
+      input: string,
+      raw: string,
+      value: BN,
+      currentUnit: string,
+      isValid: boolean
+    ) => {
       it('should call rebaseUserInput with input', () => {
         expect(gen.next(input).value).toEqual(call(rebaseUserInput, input));
       });
@@ -129,7 +138,14 @@ describe('handleSetUnitMeta*', () => {
       });
     };
 
-    const constructExpectedPayload = (data, toAddress, raw, value, decimal, tokenTo?) => {
+    const constructExpectedPayload = (
+      data: Buffer,
+      toAddress: string,
+      raw: string,
+      value: BN,
+      decimal: number,
+      tokenTo?: any
+    ) => {
       const base = {
         data: { raw: bufferToHex(data), value: data },
         to: { raw: '', value: Address(toAddress) },

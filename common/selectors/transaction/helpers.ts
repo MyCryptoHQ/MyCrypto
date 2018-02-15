@@ -2,13 +2,18 @@ import { AppState } from 'reducers';
 import { ICurrentTo, ICurrentValue } from 'selectors/transaction';
 import { isEtherUnit } from 'libs/units';
 
-export const reduceToValues = (transactionFields: AppState['transaction']['fields']) =>
-  Object.keys(transactionFields).reduce(
-    (obj, currFieldName) => {
+type TransactionFields = AppState['transaction']['fields'];
+export type TransactionFieldValues = {
+  [field in keyof TransactionFields]: TransactionFields[field]['value']
+};
+
+export const reduceToValues = (transactionFields: TransactionFields) =>
+  Object.keys(transactionFields).reduce<TransactionFieldValues>(
+    (obj, currFieldName: keyof TransactionFields) => {
       const currField = transactionFields[currFieldName];
       return { ...obj, [currFieldName]: currField.value };
     },
-    {} as any //TODO: Fix types
+    {} as TransactionFieldValues
   );
 
 export const isFullTx = (

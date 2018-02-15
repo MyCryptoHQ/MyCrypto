@@ -37,7 +37,7 @@ export function decodeCryptojsSalt(input: string): any {
 export function evp_kdf(data: Buffer, salt: Buffer, opts: any) {
   // A single EVP iteration, returns `D_i`, where block equlas to `D_(i-1)`
 
-  function iter(block) {
+  function iter(block: Buffer) {
     let hash = createHash(opts.digest || 'md5');
     hash.update(block);
     hash.update(data);

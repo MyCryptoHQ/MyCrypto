@@ -8,7 +8,7 @@ import { chain, flatMap } from 'lodash';
 import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
 import './EquivalentValues.scss';
-import { Wei } from 'libs/units';
+import { Wei, UnitKey } from 'libs/units';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { connect } from 'react-redux';
@@ -16,6 +16,7 @@ import btcIco from 'assets/images/bitcoin.png';
 import ethIco from 'assets/images/ether.png';
 import repIco from 'assets/images/augur.png';
 import { NetworkConfig } from 'types/network';
+import BN from 'bn.js';
 
 interface AllValue {
   symbol: string;
@@ -49,6 +50,18 @@ interface StateProps {
 
 interface DispatchProps {
   fetchCCRates: TFetchCCRatesRequested;
+}
+
+interface Rates {
+  [rate: string]: number;
+}
+
+interface FiatSymbols {
+  [key: string]: string;
+}
+
+interface Icons {
+  [key: string]: any;
 }
 
 type Props = StateProps & DispatchProps;
@@ -109,7 +122,7 @@ class EquivalentValues extends React.Component<Props, State> {
     }
   }
 
-  public selectOption = equivalentValues => {
+  public selectOption = (equivalentValues: Option) => {
     this.setState({ equivalentValues });
   };
 
@@ -119,28 +132,39 @@ class EquivalentValues extends React.Component<Props, State> {
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
     const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
-    const fiatSymbols = {
+    const fiatSymbols: FiatSymbols = {
       USD: '$',
       EUR: '€',
       GBP: '£',
       CHF: ' '
     };
-    const coinAndTokenSymbols = {
+    const coinAndTokenSymbols: Icons = {
       BTC: btcIco,
       ETH: ethIco,
       REP: repIco
     };
 
-    const Value = ({ className = '', rate, value, symbol = '', icon = '' }) => (
-      <div className={`EquivalentValues-values-currency ${className}`}>
-        <img src={icon} />
-        {!!symbol && <span className="EquivalentValues-values-currency-fiat-symbol">{symbol}</span>}
-        <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
+    interface ValueProps {
+      className: string;
+      rate: string;
+      value: BN | null;
+      symbol?: string;
+      icon?: string;
+      key?: number | string;
+    }
+
+    const Value = (props: ValueProps) => (
+      <div className={`EquivalentValues-values-currency ${props.className}`}>
+        <img src={props.icon} />
+        {!!props.symbol && (
+          <span className="EquivalentValues-values-currency-fiat-symbol">{props.symbol}</span>
+        )}
+        <span className="EquivalentValues-values-currency-label">{props.rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
           <UnitDisplay
-            unit={'ether'}
-            value={value}
-            displayShortBalance={rateSymbols.isFiat(rate) ? 2 : 3}
+            unit={'ether' as UnitKey}
+            value={props.value}
+            displayShortBalance={rateSymbols.isFiat(props.rate) ? 2 : 3}
             checkOffline={true}
           />
         </span>
@@ -156,7 +180,7 @@ class EquivalentValues extends React.Component<Props, State> {
             // TODO: Update type
             value={equivalentValues as any}
             options={options as any}
-            onChange={this.selectOption}
+            onChange={this.selectOption as any}
             clearable={false}
             searchable={false}
           />
@@ -223,7 +247,7 @@ class EquivalentValues extends React.Component<Props, State> {
     const allRates = Object.values(balance).map(
       value => !!rates[value.symbol] && rates[value.symbol]
     );
-    const allEquivalentValues = allRates.map((rateType, i) => {
+    const allEquivalentValues = allRates.map((rateType: any, i) => {
       return {
         symbol: Object.keys(rates)[i],
         equivalentValues: [
@@ -259,7 +283,7 @@ class EquivalentValues extends React.Component<Props, State> {
   // return equivalent value (unit * rate * balance)
   private handleValues(unit: string, balance: Balance['wei']) {
     const { rates } = this.props;
-    const ratesObj = { ...rates[unit] };
+    const ratesObj: Rates = { ...rates[unit] };
     return Object.keys(ratesObj).map(key => {
       const value = (balance as Wei).muln(ratesObj[key]);
       return { rate: key, value };

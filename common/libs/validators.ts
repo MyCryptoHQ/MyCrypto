@@ -186,7 +186,21 @@ export const isValidNonce = (value: string): boolean => {
   return valid;
 };
 
-function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
+enum API_NAME {
+  Get_Balance = 'Get Balance',
+  Estimate_Gas = 'Estimate Gas',
+  Call_Request = 'Call Request',
+  Token_Balance = 'Token Balance',
+  Transaction_Count = 'Transaction Count',
+  Current_Block = 'Current Block',
+  Raw_Tx = 'Raw Tx',
+  Send_Transaction = 'Send Transaction',
+  Sign_Message = 'Sign Message',
+  Get_Accounts = 'Get Accounts',
+  Net_Version = 'Net Version'
+}
+
+function isValidResult(response: JsonRpcResponse, schemaFormat: typeof schema.RpcNode): boolean {
   return v.validate(response, schemaFormat).valid;
 }
 
@@ -207,8 +221,8 @@ function formatErrors(response: JsonRpcResponse, apiType: string) {
 }
 
 const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.RpcNode) => (
-  apiName,
-  cb?
+  apiName: API_NAME,
+  cb?: (res: JsonRpcResponse) => any
 ) => {
   if (!isValidResult(response, schemaType)) {
     if (cb) {
@@ -220,36 +234,36 @@ const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.Rpc
 };
 
 export const isValidGetBalance = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Get Balance');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Balance);
 
 export const isValidEstimateGas = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Estimate Gas');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Estimate_Gas);
 
 export const isValidCallRequest = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Call Request');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Call_Request);
 
 export const isValidTokenBalance = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Token Balance', () => ({
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Token_Balance, () => ({
     result: 'Failed'
   }));
 
 export const isValidTransactionCount = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Transaction Count');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_Count);
 
 export const isValidCurrentBlock = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Current Block');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Current_Block);
 
 export const isValidRawTxApi = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Raw Tx');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Raw_Tx);
 
 export const isValidSendTransaction = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Send Transaction');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Send_Transaction);
 
 export const isValidSignMessage = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Sign Message');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Sign_Message);
 
 export const isValidGetAccounts = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Get Accounts');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Accounts);
 
 export const isValidGetNetVersion = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Net Version');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);

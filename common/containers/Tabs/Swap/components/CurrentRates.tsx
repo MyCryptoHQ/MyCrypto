@@ -15,6 +15,7 @@ import { ProviderName } from 'actions/swap';
 import sample from 'lodash/sample';
 import times from 'lodash/times';
 import Rates from './Rates';
+import { Optional } from 'utils/types';
 
 interface Props {
   provider: ProviderName;
@@ -23,7 +24,7 @@ interface Props {
 }
 
 export default class CurrentRates extends PureComponent<Props> {
-  private shapeShiftRateCache = null;
+  private shapeShiftRateCache: any;
 
   public getRandomSSPairData = (
     shapeshiftRates: NormalizedShapeshiftRates
@@ -42,7 +43,7 @@ export default class CurrentRates extends PureComponent<Props> {
 
   public buildSSPairs = (shapeshiftRates: NormalizedShapeshiftRates, n: number = 4) => {
     const pairCollection = times(n, () => this.getRandomSSPairData(shapeshiftRates));
-    const byId = pairCollection.reduce((acc, cur) => {
+    const byId = pairCollection.reduce((acc: NormalizedShapeshiftRate[], cur) => {
       acc[cur.id] = cur;
       return acc;
     }, {});
@@ -53,7 +54,7 @@ export default class CurrentRates extends PureComponent<Props> {
     };
   };
 
-  public isValidRates = rates => {
+  public isValidRates = (rates: Optional<NormalizedShapeshiftRates>) => {
     return rates && rates.allIds && rates.allIds.length > 0;
   };
 
@@ -81,7 +82,7 @@ export default class CurrentRates extends PureComponent<Props> {
     return fixedRates;
   };
 
-  public swapEl = (providerURL, providerLogo, children) => {
+  public swapEl = (providerURL: string, providerLogo: string, children: React.ReactChild) => {
     return (
       <article className="SwapRates">
         <h3 className="SwapRates-title">{translate('SWAP_rates')}</h3>

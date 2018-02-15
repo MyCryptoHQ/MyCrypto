@@ -5,7 +5,7 @@ import './Promos.scss';
 
 const promos = [HardwareWallets, Coinbase, Bity];
 
-const CarouselAnimation = ({ children, ...props }) => (
+const CarouselAnimation = ({ children, ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="carousel">
     {children}
   </CSSTransition>

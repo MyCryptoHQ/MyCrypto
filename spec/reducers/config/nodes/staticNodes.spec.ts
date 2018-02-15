@@ -4,7 +4,19 @@ import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 import { Web3NodeConfig } from 'types/node';
 import { Web3Service } from 'libs/nodes/web3';
 
-const expectedInitialState = {
+export interface InitialStates {
+  [network: string]: Network;
+}
+
+interface Network {
+  network: string;
+  isCustom: boolean;
+  lib: RPCNode;
+  service: string;
+  estimateGas: boolean;
+}
+
+const expectedInitialState: InitialStates = {
   eth_mycrypto: {
     network: 'ETH',
     isCustom: false,

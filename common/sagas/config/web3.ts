@@ -24,7 +24,7 @@ export function* initWeb3Node(): SagaIterator {
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
-export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
+export function* unsetWeb3NodeOnWalletEvent(action: any): SagaIterator {
   const node = yield select(getNodeId);
   const newWallet = action.payload;
   const isWeb3Wallet = newWallet instanceof Web3Wallet;

@@ -8,11 +8,12 @@ import {
 import { normalize } from 'normalizr';
 import * as schema from 'reducers/swap/schema';
 import { TypeKeys } from 'actions/swap/constants';
+import { Token } from 'config/tokens';
 import tokens from 'config/tokens/eth.json';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 
 describe('ensure whitelist', () => {
-  const findToken = (tkn: string) => tokens.find(t => t.symbol === tkn);
+  const findToken = (tkn: string) => tokens.find((t: Token) => t.symbol === tkn);
   SHAPESHIFT_TOKEN_WHITELIST.forEach(t => {
     it(`Should find Token ${t}`, () => {
       expect(findToken(t)).toBeTruthy();
@@ -21,7 +22,7 @@ describe('ensure whitelist', () => {
 });
 
 describe('swap reducer', () => {
-  const shapeshiftApiResponse = {
+  const shapeshiftApiResponse: swapActions.ShapeshiftResponse = {
     ['1SSTANT']: {
       id: '1STANT',
       options: [
@@ -44,7 +45,7 @@ describe('swap reducer', () => {
     }
   };
 
-  const bityApiResponse = {
+  const bityApiResponse: swapActions.BityResponse = {
     BTCETH: {
       id: 'BTCETH',
       options: [{ id: 'BTC' }, { id: 'ETH' }],

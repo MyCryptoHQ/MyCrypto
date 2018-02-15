@@ -1,5 +1,5 @@
 import React from 'react';
-import Slider from 'rc-slider';
+import Slider, { createSliderWithTooltip } from 'rc-slider';
 import translate, { translateRaw } from 'translations';
 import { gasPriceDefaults } from 'config';
 import FeeSummary from './FeeSummary';
@@ -14,14 +14,14 @@ import { connect } from 'react-redux';
 import { getIsWeb3Node } from 'selectors/config';
 import { Wei, fromWei } from 'libs/units';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
-const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
+const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   noncePending: boolean;
   gasLimitPending: boolean;
-  inputGasPrice(rawGas: string);
-  setGasPrice(rawGas: string);
+  inputGasPrice(rawGas: string): void;
+  setGasPrice(rawGas: string): void;
 }
 
 interface StateProps {

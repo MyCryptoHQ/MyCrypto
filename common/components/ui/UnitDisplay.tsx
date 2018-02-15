@@ -28,7 +28,6 @@ interface Props {
   displayTrailingZeroes?: boolean;
   checkOffline?: boolean;
 }
-
 interface EthProps extends Props {
   unit: UnitKey;
 }

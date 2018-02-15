@@ -13,10 +13,16 @@ export function* getTokenBalances(wallet: IWallet, tokens: Token[]) {
   const node: INode = yield select(getNodeLib);
   const address: string = yield apply(wallet, wallet.getAddressString);
   const tokenBalances: TokenBalance[] = yield apply(node, node.getTokenBalances, [address, tokens]);
-  return tokens.reduce((acc, t, i) => {
-    acc[t.symbol] = tokenBalances[i];
-    return acc;
-  }, {});
+  interface ITokenbalances {
+    [tokenSymbol: string]: TokenBalance;
+  }
+  return tokens.reduce(
+    (acc, currentToken, i) => {
+      acc[currentToken.symbol] = tokenBalances[i];
+      return acc;
+    },
+    {} as ITokenbalances
+  );
 }
 
 // Return an array of the tokens that meet any of the following conditions:

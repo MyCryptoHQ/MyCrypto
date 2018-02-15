@@ -7,14 +7,13 @@ import {
 import { showNotification } from 'actions/notifications';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
-import { INode } from 'libs/nodes/INode';
+import { INode, TokenBalanceResult } from 'libs/nodes/INode';
 import { SagaIterator } from 'redux-saga';
 import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { getNodeLib } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
-import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
 
 export function* getDeterministicWallets(action: GetDeterministicWalletsAction): SagaIterator {
@@ -96,7 +95,7 @@ export function* updateWalletTokenValues(): SagaIterator {
     const calls = wallets.map(w => {
       return apply(node, node.getTokenBalance, [w.address, token]);
     });
-    const tokenBalances: { balance: TokenValue; error: string | null } = yield all(calls);
+    const tokenBalances: TokenBalanceResult[] = yield all(calls);
 
     for (let i = 0; i < wallets.length; i++) {
       if (!tokenBalances[i].error) {

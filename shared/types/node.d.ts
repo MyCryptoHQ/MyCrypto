@@ -1,3 +1,4 @@
+import { NodeConfig } from 'types/node';
 import { RPCNode, Web3Node } from 'libs/nodes';
 import { StaticNetworkIds } from './network';
 import { StaticNodesState, CustomNodesState } from 'reducers/config/nodes';
