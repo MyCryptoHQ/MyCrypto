@@ -19,7 +19,7 @@ export function initSwap(payload: interfaces.SwapInputs): interfaces.InitSwap {
 
 export type TLoadBityRatesSucceededSwap = typeof loadBityRatesSucceededSwap;
 export function loadBityRatesSucceededSwap(
-  payload: interfaces.ApiResponse
+  payload: interfaces.BityResponse
 ): interfaces.LoadBityRatesSucceededSwapAction {
   return {
     type: TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED,

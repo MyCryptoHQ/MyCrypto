@@ -3,7 +3,7 @@ import { ICurrentTo, ICurrentValue } from 'selectors/transaction';
 import { isEtherUnit } from 'libs/units';
 
 type TransactionFields = AppState['transaction']['fields'];
-type TransactionFieldValues = {
+export type TransactionFieldValues = {
   [field in keyof TransactionFields]: TransactionFields[field]['value']
 };
 

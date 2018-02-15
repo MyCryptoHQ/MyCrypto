@@ -22,28 +22,30 @@ describe('ensure whitelist', () => {
 });
 
 describe('swap reducer', () => {
-  const shapeshiftApiResponse = {
-    id: '1STANT',
-    options: [
-      {
-        id: '1ST',
-        status: 'available',
-        image: 'https://shapeshift.io/images/coins/firstblood.png',
-        name: 'FirstBlood'
-      },
-      {
-        id: 'ANT',
-        status: 'available',
-        image: 'https://shapeshift.io/images/coins/aragon.png',
-        name: 'Aragon'
-      }
-    ],
-    rate: '0.24707537',
-    limit: 5908.29166225,
-    min: 7.86382979
+  const shapeshiftApiResponse: swapActions.ShapeshiftResponse = {
+    ['1SSTANT']: {
+      id: '1STANT',
+      options: [
+        {
+          id: '1ST',
+          status: 'available',
+          image: 'https://shapeshift.io/images/coins/firstblood.png',
+          name: 'FirstBlood'
+        },
+        {
+          id: 'ANT',
+          status: 'available',
+          image: 'https://shapeshift.io/images/coins/aragon.png',
+          name: 'Aragon'
+        }
+      ],
+      rate: '0.24707537',
+      limit: 5908.29166225,
+      min: 7.86382979
+    }
   };
 
-  const bityApiResponse = {
+  const bityApiResponse: swapActions.BityResponse = {
     BTCETH: {
       id: 'BTCETH',
       options: [{ id: 'BTC' }, { id: 'ETH' }],

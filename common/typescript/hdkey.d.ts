@@ -1,18 +1,11 @@
-interface HDKeyProps {
-  versions: any[];
-  depth: number;
-  index: number;
-  _privateKey: any;
-  _publicKey: any;
-  chainCode: any;
-  _fingerprint: any;
-  parentFingerprint: number;
-}
-
-declare class HDCLass<HDKeyProps> {
-  constructor();
-}
-
-declare namespace HDKey {
-
+declare module 'hdkey' {
+  export default class HDKey {
+    privateKey: Buffer;
+    publicKey: Buffer;
+    chainCode: Buffer | string;
+    fromMasterSeed(seedBuffer: Buffer, versions?: any[]): HDKey;
+    fromExtendedKey(base58key: any, versions?: any[]): HDKey;
+    fromJSON(obj: any): HDKey;
+    derive(path: string): HDKey;
+  }
 }

@@ -16,7 +16,11 @@ import wallet from './wallet';
 import { ens } from './ens';
 import { transaction } from './transaction';
 
-export default {
+interface Sagas {
+  [saga: string]: any;
+}
+
+const sagas: Sagas = {
   ens,
   liteSend,
   configSaga,
@@ -35,3 +39,5 @@ export default {
   swapProviderSaga,
   rates
 };
+
+export default sagas;

@@ -28,26 +28,37 @@ export interface Option {
   image?: string;
 }
 
-export interface ApiResponseObj {
-  id: string;
-  options: Option[];
-  rate: string;
-  limit?: number;
-  min?: number;
+export interface ShapeshiftResponse {
+  [key: string]: {
+    id: string;
+    options: {
+      id: string;
+      status: string;
+      name: string;
+      image: string;
+    }[];
+    rate: string;
+    limit: number;
+    min: number;
+  };
 }
 
-export interface ApiResponse {
-  [name: string]: ApiResponseObj;
+export interface BityResponse {
+  [name: string]: {
+    id: string;
+    options: { id: string }[];
+    rate: number;
+  };
 }
 
 export interface LoadBityRatesSucceededSwapAction {
   type: TypeKeys.SWAP_LOAD_BITY_RATES_SUCCEEDED;
-  payload: ApiResponse;
+  payload: BityResponse;
 }
 
 export interface LoadShapshiftRatesSucceededSwapAction {
   type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED;
-  payload: ApiResponse;
+  payload: ShapeshiftResponse;
 }
 
 export interface DestinationAddressSwapAction {

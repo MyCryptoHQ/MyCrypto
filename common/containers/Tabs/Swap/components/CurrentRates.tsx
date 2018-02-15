@@ -43,7 +43,7 @@ export default class CurrentRates extends PureComponent<Props> {
 
   public buildSSPairs = (shapeshiftRates: NormalizedShapeshiftRates, n: number = 4) => {
     const pairCollection = times(n, () => this.getRandomSSPairData(shapeshiftRates));
-    const byId = pairCollection.reduce((acc: any, cur) => {
+    const byId = pairCollection.reduce((acc: NormalizedShapeshiftRate[], cur) => {
       acc[cur.id] = cur;
       return acc;
     }, {});

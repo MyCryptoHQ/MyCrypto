@@ -47,7 +47,9 @@ describe('loadBityRates*', () => {
   });
 
   it('should put loadBityRatesSucceededSwap', () => {
-    expect(gen1.next(apiResponse).value).toEqual(put(loadBityRatesSucceededSwap(apiResponse)));
+    expect(gen1.next(apiResponse).value).toEqual(
+      put(loadBityRatesSucceededSwap(apiResponse as any))
+    );
   });
 
   it('should call delay for 5 seconds', () => {

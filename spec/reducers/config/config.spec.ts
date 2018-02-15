@@ -22,7 +22,6 @@ import {
 import { Web3Wallet } from 'libs/wallet';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
-import { StaticNodeConfig } from 'types/node';
 import { staticNodesExpectedState } from './nodes/staticNodes.spec';
 import { metaExpectedState } from './meta/meta.spec';
 import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
@@ -141,12 +140,12 @@ describe('handleNodeChangeIntent*', () => {
 
   // normal operation variables
   const defaultNodeId = selectedNodeExpectedState.initialState.nodeId;
-  const defaultNodeConfig: StaticNodeConfig = staticNodesExpectedState.initialState[defaultNodeId];
+  const defaultNodeConfig = staticNodesExpectedState.initialState[defaultNodeId];
   const newNodeId = Object.keys(staticNodesExpectedState.initialState).reduce(
     (acc, cur) =>
       staticNodesExpectedState.initialState[cur].network !== defaultNodeConfig.network ? cur : acc
   );
-  const newNodeConfig: StaticNodeConfig = staticNodesExpectedState.initialState[newNodeId];
+  const newNodeConfig = staticNodesExpectedState.initialState[newNodeId];
 
   const changeNodeIntentAction = changeNodeIntent(newNodeId);
   const latestBlock = '0xa';

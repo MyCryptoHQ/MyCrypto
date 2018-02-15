@@ -20,7 +20,7 @@ interface TrackedTokens {
 }
 
 interface State {
-  trackedTokens: any;
+  trackedTokens: TrackedTokens;
   showCustomTokenForm: boolean;
 }
 export default class TokenBalances extends React.PureComponent<Props, State> {
@@ -42,7 +42,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
   public render() {
     const { allTokens, tokenBalances, hasSavedWalletTokens } = this.props;
     const { showCustomTokenForm } = this.state;
-    const trackedTokens: any = this.state.trackedTokens;
+    const trackedTokens: TrackedTokens = this.state.trackedTokens;
 
     let bottom;
     let help;
@@ -134,7 +134,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
   };
 
   private handleSetWalletTokens = () => {
-    const trackedTokens: any = this.state.trackedTokens;
+    const trackedTokens: TrackedTokens = this.state.trackedTokens;
     const desiredTokens = Object.keys(trackedTokens).filter(t => trackedTokens[t]);
     this.props.setWalletTokens(desiredTokens);
   };

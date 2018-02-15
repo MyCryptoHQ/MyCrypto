@@ -56,6 +56,14 @@ interface Rates {
   [rate: string]: number;
 }
 
+interface FiatSymbols {
+  [key: string]: string;
+}
+
+interface Icons {
+  [key: string]: any;
+}
+
 type Props = StateProps & DispatchProps;
 
 class EquivalentValues extends React.Component<Props, State> {
@@ -124,13 +132,13 @@ class EquivalentValues extends React.Component<Props, State> {
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
     const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
-    const fiatSymbols = {
+    const fiatSymbols: FiatSymbols = {
       USD: '$',
       EUR: '€',
       GBP: '£',
       CHF: ' '
     };
-    const coinAndTokenSymbols = {
+    const coinAndTokenSymbols: Icons = {
       BTC: btcIco,
       ETH: ethIco,
       REP: repIco
@@ -140,8 +148,8 @@ class EquivalentValues extends React.Component<Props, State> {
       className: string;
       rate: string;
       value: BN | null;
-      symbol: string;
-      icon: string;
+      symbol?: string;
+      icon?: string;
       key?: number | string;
     }
 
