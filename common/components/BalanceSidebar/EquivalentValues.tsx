@@ -7,12 +7,15 @@ import { rateSymbols } from 'api/rates';
 import { chain, flatMap } from 'lodash';
 import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
-import { NetworkConfig } from 'config';
 import './EquivalentValues.scss';
 import { Wei } from 'libs/units';
 import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'selectors/config';
 import { connect } from 'react-redux';
+import btcIco from 'assets/images/bitcoin.png';
+import ethIco from 'assets/images/ether.png';
+import repIco from 'assets/images/augur.png';
+import { NetworkConfig } from 'types/network';
 
 interface AllValue {
   symbol: string;
@@ -37,10 +40,11 @@ interface State {
 interface StateProps {
   balance: Balance;
   network: NetworkConfig;
+
   tokenBalances: TokenBalance[];
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
-  isOffline: AppState['config']['offline'];
+  isOffline: AppState['config']['meta']['offline'];
 }
 
 interface DispatchProps {
@@ -68,7 +72,7 @@ class EquivalentValues extends React.Component<Props, State> {
   public defaultOption(
     balance: Balance,
     tokenBalances: TokenBalance[],
-    network: NetworkConfig
+    network: StateProps['network']
   ): DefaultOption {
     return {
       label: 'All',
@@ -115,9 +119,22 @@ class EquivalentValues extends React.Component<Props, State> {
     const isFetching =
       !balance || balance.isPending || !tokenBalances || Object.keys(rates).length === 0;
     const pairRates = this.generateValues(equivalentValues.label, equivalentValues.value);
+    const fiatSymbols = {
+      USD: '$',
+      EUR: '€',
+      GBP: '£',
+      CHF: ' '
+    };
+    const coinAndTokenSymbols = {
+      BTC: btcIco,
+      ETH: ethIco,
+      REP: repIco
+    };
 
-    const Value = ({ rate, value }) => (
-      <div className="EquivalentValues-values-currency">
+    const Value = ({ className = '', rate, value, symbol = '', icon = '' }) => (
+      <div className={`EquivalentValues-values-currency ${className}`}>
+        <img src={icon} />
+        {!!symbol && <span className="EquivalentValues-values-currency-fiat-symbol">{symbol}</span>}
         <span className="EquivalentValues-values-currency-label">{rate}</span>{' '}
         <span className="EquivalentValues-values-currency-value">
           <UnitDisplay
@@ -164,7 +181,33 @@ class EquivalentValues extends React.Component<Props, State> {
         ) : (
           <div className="EquivalentValues-values">
             {pairRates.length ? (
-              pairRates.map((equiv, i) => <Value rate={equiv.rate} value={equiv.value} key={i} />)
+              <React.Fragment>
+                {pairRates.map(
+                  (equiv, i) =>
+                    (rateSymbols.symbols.fiat as string[]).includes(equiv.rate) && (
+                      <Value
+                        className="EquivalentValues-values-currency-fiat"
+                        rate={equiv.rate}
+                        value={equiv.value}
+                        symbol={fiatSymbols[equiv.rate]}
+                        key={i}
+                      />
+                    )
+                )}
+                <div className="EquivalentValues-values-spacer" />
+                {pairRates.map(
+                  (equiv, i) =>
+                    (rateSymbols.symbols.coinAndToken as string[]).includes(equiv.rate) && (
+                      <Value
+                        className="EquivalentValues-values-currency-coin-and-token"
+                        rate={equiv.rate}
+                        value={equiv.value}
+                        icon={coinAndTokenSymbols[equiv.rate]}
+                        key={i}
+                      />
+                    )
+                )}
+              </React.Fragment>
             ) : (
               <p>Sorry, equivalent values are not supported for this unit.</p>
             )}
@@ -257,7 +300,6 @@ class EquivalentValues extends React.Component<Props, State> {
     this.requestedCurrencies = currencies;
   }
 }
-
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
@@ -265,7 +307,7 @@ function mapStateToProps(state: AppState): StateProps {
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 

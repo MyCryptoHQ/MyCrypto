@@ -6,7 +6,7 @@ import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'selectors/rates';
 import { SerializedTxParams, getParamsFromSerializedTx } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'config';
+import { NetworkConfig } from 'types/network';
 
 interface StateProps extends SerializedTxParams, AllUSDValues {
   network: NetworkConfig;

@@ -46,7 +46,7 @@ const tabs: TabLink[] = [
 ];
 
 interface Props {
-  color?: string;
+  color?: string | false;
 }
 
 interface State {

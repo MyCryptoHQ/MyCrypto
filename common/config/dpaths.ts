@@ -1,8 +1,3 @@
-export interface DPath {
-  label: string;
-  value: string; // TODO determine method for more precise typing for path
-}
-
 export const ETH_DEFAULT: DPath = {
   label: 'Default (ETH)',
   value: "m/44'/60'/0'/0"

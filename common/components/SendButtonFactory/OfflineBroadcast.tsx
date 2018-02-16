@@ -6,7 +6,7 @@ import { getOffline } from 'selectors/config';
 import { NewTabLink } from 'components/ui';
 
 interface StateProps {
-  offline: AppState['config']['offline'];
+  offline: AppState['config']['meta']['offline'];
 }
 class OfflineBroadcastClass extends Component<StateProps> {
   public render() {
