@@ -1,9 +1,8 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
-import { NodeConfig, CustomNodeConfig, NetworkConfig, CustomNetworkConfig } from 'config';
 
-export type TToggleOfflineConfig = typeof toggleOfflineConfig;
-export function toggleOfflineConfig(): interfaces.ToggleOfflineAction {
+export type TToggleOffline = typeof toggleOffline;
+export function toggleOffline(): interfaces.ToggleOfflineAction {
   return {
     type: TypeKeys.CONFIG_TOGGLE_OFFLINE
   };
@@ -26,13 +25,11 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
 
 export type TChangeNode = typeof changeNode;
 export function changeNode(
-  nodeSelection: string,
-  node: NodeConfig,
-  network: NetworkConfig
+  payload: interfaces.ChangeNodeAction['payload']
 ): interfaces.ChangeNodeAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE,
-    payload: { nodeSelection, node, network }
+    payload
   };
 }
 
@@ -52,7 +49,9 @@ export function changeNodeIntent(payload: string): interfaces.ChangeNodeIntentAc
 }
 
 export type TAddCustomNode = typeof addCustomNode;
-export function addCustomNode(payload: CustomNodeConfig): interfaces.AddCustomNodeAction {
+export function addCustomNode(
+  payload: interfaces.AddCustomNodeAction['payload']
+): interfaces.AddCustomNodeAction {
   return {
     type: TypeKeys.CONFIG_ADD_CUSTOM_NODE,
     payload
@@ -60,7 +59,9 @@ export function addCustomNode(payload: CustomNodeConfig): interfaces.AddCustomNo
 }
 
 export type TRemoveCustomNode = typeof removeCustomNode;
-export function removeCustomNode(payload: CustomNodeConfig): interfaces.RemoveCustomNodeAction {
+export function removeCustomNode(
+  payload: interfaces.RemoveCustomNodeAction['payload']
+): interfaces.RemoveCustomNodeAction {
   return {
     type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
     payload
@@ -68,7 +69,9 @@ export function removeCustomNode(payload: CustomNodeConfig): interfaces.RemoveCu
 }
 
 export type TAddCustomNetwork = typeof addCustomNetwork;
-export function addCustomNetwork(payload: CustomNetworkConfig): interfaces.AddCustomNetworkAction {
+export function addCustomNetwork(
+  payload: interfaces.AddCustomNetworkAction['payload']
+): interfaces.AddCustomNetworkAction {
   return {
     type: TypeKeys.CONFIG_ADD_CUSTOM_NETWORK,
     payload
@@ -77,7 +80,7 @@ export function addCustomNetwork(payload: CustomNetworkConfig): interfaces.AddCu
 
 export type TRemoveCustomNetwork = typeof removeCustomNetwork;
 export function removeCustomNetwork(
-  payload: CustomNetworkConfig
+  payload: interfaces.RemoveCustomNetworkAction['payload']
 ): interfaces.RemoveCustomNetworkAction {
   return {
     type: TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK,
@@ -89,6 +92,15 @@ export type TSetLatestBlock = typeof setLatestBlock;
 export function setLatestBlock(payload: string): interfaces.SetLatestBlockAction {
   return {
     type: TypeKeys.CONFIG_SET_LATEST_BLOCK,
+    payload
+  };
+}
+
+export function web3SetNode(
+  payload: interfaces.Web3setNodeAction['payload']
+): interfaces.Web3setNodeAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_WEB3_SET,
     payload
   };
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import translate from 'translations';
 import { Identicon, UnitDisplay, NewTabLink } from 'components/ui';
 import { TransactionData, TransactionReceipt } from 'libs/nodes';
-import { NetworkConfig } from 'config';
+import { NetworkConfig } from 'types/network';
 import './TransactionDataTable.scss';
 
 interface TableRow {
@@ -28,17 +28,23 @@ interface Props {
 }
 
 const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
-  const txUrl = network.blockExplorer && network.blockExplorer.txUrl(data.hash);
-  const blockUrl =
-    network.blockExplorer && !!data.blockNumber && network.blockExplorer.blockUrl(data.blockNumber);
-  const toUrl = network.blockExplorer && network.blockExplorer.addressUrl(data.to);
-  const fromUrl = network.blockExplorer && network.blockExplorer.addressUrl(data.from);
-  const contractUrl =
-    network.blockExplorer &&
-    receipt &&
-    receipt.contractAddress &&
-    network.blockExplorer.addressUrl(receipt.contractAddress);
+  const explorer: { [key: string]: string | false | null } = {};
   const hasInputData = data.input && data.input !== '0x';
+
+  if (!network.isCustom) {
+    explorer.tx = network.blockExplorer && network.blockExplorer.txUrl(data.hash);
+    explorer.block =
+      network.blockExplorer &&
+      !!data.blockNumber &&
+      network.blockExplorer.blockUrl(data.blockNumber);
+    explorer.to = network.blockExplorer && network.blockExplorer.addressUrl(data.to);
+    explorer.from = network.blockExplorer && network.blockExplorer.addressUrl(data.from);
+    explorer.contract =
+      network.blockExplorer &&
+      receipt &&
+      receipt.contractAddress &&
+      network.blockExplorer.addressUrl(receipt.contractAddress);
+  }
 
   let statusMsg = '';
   let statusType = '';
@@ -70,9 +76,9 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
         <React.Fragment>
           <strong className={`TxData-row-data-status is-${statusType}`}>{statusMsg}</strong>
           {statusSeeMore &&
-            txUrl &&
-            network.blockExplorer && (
-              <NewTabLink className="TxData-row-data-more" href={txUrl}>
+            explorer.tx &&
+            !network.isCustom && (
+              <NewTabLink className="TxData-row-data-more" href={explorer.tx as string}>
                 (See more on {network.blockExplorer.name})
               </NewTabLink>
             )}
@@ -81,16 +87,16 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
     },
     {
       label: translate('x_TxHash'),
-      data: <MaybeLink href={txUrl}>{data.hash}</MaybeLink>
+      data: <MaybeLink href={explorer.tx}>{data.hash}</MaybeLink>
     },
     {
       label: 'Block Number',
-      data: receipt && <MaybeLink href={blockUrl}>{receipt.blockNumber}</MaybeLink>
+      data: receipt && <MaybeLink href={explorer.block}>{receipt.blockNumber}</MaybeLink>
     },
     {
       label: translate('OFFLINE_Step1_Label_1'),
       data: (
-        <MaybeLink href={fromUrl}>
+        <MaybeLink href={explorer.from}>
           <Identicon address={data.from} size="26px" />
           {data.from}
         </MaybeLink>
@@ -99,7 +105,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
     {
       label: translate('OFFLINE_Step2_Label_1'),
       data: (
-        <MaybeLink href={toUrl}>
+        <MaybeLink href={explorer.to}>
           <Identicon address={data.to} size="26px" />
           {data.to}
         </MaybeLink>
@@ -135,7 +141,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('New contract address'),
       data: receipt &&
         receipt.contractAddress && (
-          <MaybeLink href={contractUrl}>{receipt.contractAddress}</MaybeLink>
+          <MaybeLink href={explorer.contract}>{receipt.contractAddress}</MaybeLink>
         )
     },
     {

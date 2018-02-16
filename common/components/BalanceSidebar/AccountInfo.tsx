@@ -1,5 +1,4 @@
 import { Identicon, UnitDisplay } from 'components/ui';
-import { NetworkConfig } from 'config';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
@@ -8,6 +7,7 @@ import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
+import { NetworkConfig } from 'types/network';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
 
 interface OwnProps {
@@ -72,7 +72,14 @@ class AccountInfo extends React.Component<Props, State> {
   public render() {
     const { network, balance, isOffline } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
-    const { blockExplorer, tokenExplorer } = network;
+    let blockExplorer;
+    let tokenExplorer;
+    if (!network.isCustom) {
+      // this is kind of ugly but its the result of typeguards, maybe we can find a cleaner solution later on such as just dedicating it to a selector
+      blockExplorer = network.blockExplorer;
+      tokenExplorer = network.tokenExplorer;
+    }
+
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div className="AccountInfo">

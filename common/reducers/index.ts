@@ -29,7 +29,7 @@ export interface AppState {
   routing: any;
 }
 
-export default combineReducers({
+export default combineReducers<AppState>({
   config,
   swap,
   notifications,

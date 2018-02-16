@@ -7,6 +7,7 @@ import { getNetworkConfig } from 'selectors/config';
 import { Spinner } from 'components/ui';
 import TransactionDataTable from './TransactionDataTable';
 import { AppState } from 'reducers';
+import { NetworkConfig } from 'types/network';
 import { TransactionState } from 'reducers/transactions';
 import './TransactionStatus.scss';
 
@@ -16,7 +17,7 @@ interface OwnProps {
 
 interface StateProps {
   tx: TransactionState | null;
-  network: AppState['config']['network'];
+  network: NetworkConfig;
 }
 
 interface ActionProps {

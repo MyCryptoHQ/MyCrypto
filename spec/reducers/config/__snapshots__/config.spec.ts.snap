@@ -8,7 +8,17 @@ Object {
       "@@redux-saga/IO": true,
       "CALL": Object {
         "args": Array [],
-        "context": null,
+        "context": RpcNode {
+          "client": RPCClient {
+            "batch": [Function],
+            "call": [Function],
+            "createHeaders": [Function],
+            "decorateRequest": [Function],
+            "endpoint": "https://node.expanse.tech/",
+            "headers": Object {},
+          },
+          "requests": RPCRequests {},
+        },
         "fn": [Function],
       },
     },
@@ -29,25 +39,9 @@ Object {
 exports[`handleNodeChangeIntent* should select getCustomNodeConfig and match race snapshot 1`] = `
 Object {
   "@@redux-saga/IO": true,
-  "RACE": Object {
-    "lb": Object {
-      "@@redux-saga/IO": true,
-      "CALL": Object {
-        "args": Array [],
-        "context": null,
-        "fn": [Function],
-      },
-    },
-    "to": Object {
-      "@@redux-saga/IO": true,
-      "CALL": Object {
-        "args": Array [
-          5000,
-        ],
-        "context": null,
-        "fn": [Function],
-      },
-    },
+  "SELECT": Object {
+    "args": Array [],
+    "selector": [Function],
   },
 }
 `;

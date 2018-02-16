@@ -38,7 +38,7 @@ const HELP_MENU = {
     {
       label: 'Help / FAQ',
       click() {
-      shell.openExternal('https://support.mycrypto.com/');
+        shell.openExternal('https://support.mycrypto.com/');
       }
     },
     {

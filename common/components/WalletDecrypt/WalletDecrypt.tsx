@@ -40,11 +40,10 @@ import {
   InsecureWalletName,
   MiscWalletName,
   WalletName,
-  isWeb3NodeAvailable,
   knowledgeBaseURL,
   donationAddressMap
 } from 'config';
-
+import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';

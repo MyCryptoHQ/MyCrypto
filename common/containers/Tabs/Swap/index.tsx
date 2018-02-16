@@ -56,6 +56,7 @@ import TabSection from 'containers/TabSection';
 import { merge } from 'lodash';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { Switch, Route, RouteComponentProps } from 'react-router';
+import { getOffline } from 'selectors/config';
 
 interface ReduxStateProps {
   step: number;
@@ -284,7 +285,7 @@ function mapStateToProps(state: AppState) {
     bityOrderStatus: state.swap.bityOrderStatus,
     shapeshiftOrderStatus: state.swap.shapeshiftOrderStatus,
     paymentAddress: state.swap.paymentAddress,
-    isOffline: state.config.offline
+    isOffline: getOffline(state)
   };
 }
 

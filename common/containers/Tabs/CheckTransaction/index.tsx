@@ -6,10 +6,11 @@ import { TransactionStatus as TransactionStatusComponent } from 'components';
 import { NewTabLink } from 'components/ui';
 import { getNetworkConfig } from 'selectors/config';
 import { AppState } from 'reducers';
+import { NetworkConfig } from 'types/network';
 import './index.scss';
 
 interface Props {
-  network: AppState['config']['network'];
+  network: NetworkConfig;
 }
 
 interface State {
@@ -32,7 +33,7 @@ class CheckTransaction extends React.Component<Props, State> {
             <h1 className="CheckTransaction-form-title">Check Transaction Status</h1>
             <p className="CheckTransaction-form-desc">
               Enter your Transaction Hash to check on its status.{' '}
-              {network.blockExplorer && (
+              {!network.isCustom && (
                 <React.Fragment>
                   If you don’t know your Transaction Hash, you can look it up on the{' '}
                   <NewTabLink href={network.blockExplorer.origin}>
