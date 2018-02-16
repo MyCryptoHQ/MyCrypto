@@ -9,18 +9,6 @@
     overflow: hidden;
   }
 
-  &-Bity {
-    background-color: #006e79;
-  }
-
-  &-Coinbase {
-    background-color: #2b71b1;
-  }
-
-  &-HardwareWallets {
-    background-color: #6e9a3e;
-  }
-
   &-promo {
     position: relative;
     height: inherit;
@@ -42,19 +30,18 @@
       position: absolute;
       display: flex;
       align-items: center;
+      justify-content: center;
       top: 50%;
       left: 0;
       width: 100%;
       transform: translateY(-50%);
-    }
-
-    &-text,
-    &-images {
-      padding: 0 $space-sm;
+      padding: 0 $space;
     }
 
     &-text {
-      flex: 1;
+      flex: 5;
+      padding-right: $space-xs;
+      max-width: 220px;
 
       p,
       h4,
@@ -73,15 +60,15 @@
     }
 
     &-images {
-      padding: 0 $space * 1.5;
+      flex: 3;
+      max-width: 108px;
+      padding-left: $space-xs;
 
       img {
         display: block;
         margin: 0 auto;
         width: 100%;
-        max-width: 96px;
         height: auto;
-        padding: $space-xs;
       }
     }
   }
@@ -105,6 +92,23 @@
         opacity: 1;
       }
     }
+  }
+
+  // Per-promo customizations
+  &--shapeshift {
+    background-color: #263A52;
+
+    .Promos-promo-images {
+      max-width: 130px;
+    }
+  }
+
+  &--coinbase {
+    background-color: #2b71b1;
+  }
+
+  &--hardware {
+    background-color: #6e9a3e;
   }
 }
 
