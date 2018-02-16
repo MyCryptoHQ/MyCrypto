@@ -10,6 +10,7 @@ import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
 import { State as TransactionState, transaction } from './transaction';
 import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
+import { State as TransactionsState, transactions } from './transactions';
 
 export interface AppState {
   // Custom reducers
@@ -21,11 +22,11 @@ export interface AppState {
   customTokens: CustomTokensState;
   rates: RatesState;
   deterministicWallets: DeterministicWalletsState;
-  // Third party reducers (TODO: Fill these out)
-  form: any;
-  routing: any;
   swap: SwapState;
   transaction: TransactionState;
+  transactions: TransactionsState;
+  // Third party reducers (TODO: Fill these out)
+  routing: any;
 }
 
 export default combineReducers<AppState>({
@@ -38,6 +39,7 @@ export default combineReducers<AppState>({
   customTokens,
   rates,
   deterministicWallets,
-  routing: routerReducer,
-  transaction
+  transaction,
+  transactions,
+  routing: routerReducer
 });

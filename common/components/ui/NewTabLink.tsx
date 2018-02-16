@@ -31,8 +31,8 @@ export interface AAttributes {
 
 interface NewTabLinkProps extends AAttributes {
   href: string;
-  content?: React.ReactElement<any> | string | string[];
-  children?: React.ReactElement<any> | string | string[];
+  content?: React.ReactElement<any> | string | string[] | number;
+  children?: React.ReactElement<any> | string | string[] | number;
 }
 
 export class NewTabLink extends React.Component<NewTabLinkProps> {
