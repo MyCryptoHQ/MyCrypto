@@ -49,6 +49,18 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
         );
       }
 
+      if (
+        estimateRes.safeLow > estimateRes.standard ||
+        estimateRes.standard > estimateRes.fast ||
+        estimateRes.fast > estimateRes.fastest
+      ) {
+        throw new Error(
+          `Gas esimates are in illogical order: should be safeLow < standard < fast < fastest, received ${
+            estimateRes.safeLow
+          } < ${estimateRes.standard} < ${estimateRes.fast} < ${estimateRes.fastest}`
+        );
+      }
+
       return estimateRes;
     })
     .then((res: RawGasEstimates) => ({
