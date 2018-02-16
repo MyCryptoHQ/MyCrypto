@@ -1,0 +1,12 @@
+@import 'common/sass/variables';
+
+.CheckTransaction {
+  &-form {
+    text-align: center;
+
+    &-desc {
+      max-width: 580px;
+      margin: 0 auto $space;
+    }
+  }
+}
