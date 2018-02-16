@@ -5,7 +5,6 @@ import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { getIsEstimating } from 'selectors/gas';
 import { getGasLimit } from 'selectors/transaction';
-import { getRates } from 'selectors/rates';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
