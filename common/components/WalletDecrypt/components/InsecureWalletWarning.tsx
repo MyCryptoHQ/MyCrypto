@@ -114,7 +114,7 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
 
   private makeCheckbox = (checkbox: Checkbox) => {
     return (
-      <label className="AcknowledgeCheckbox">
+      <label className="AcknowledgeCheckbox" key={checkbox.name}>
         <input
           type="checkbox"
           name={checkbox.name}
