@@ -16,6 +16,7 @@ import wallet from './wallet';
 import { ens } from './ens';
 import { transaction } from './transaction';
 import transactions from './transactions';
+import gas from './gas';
 
 export default {
   ens,
@@ -35,5 +36,6 @@ export default {
   deterministicWallets,
   swapProviderSaga,
   rates,
-  transactions
+  transactions,
+  gas
 };
