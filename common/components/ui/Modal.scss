@@ -108,6 +108,11 @@ $m-anim-speed: 400ms;
       min-width: 100px;
     }
   }
+
+  // Mobile styles
+  @media(max-width: $screen-sm) {
+    width: calc(100% - 40px);
+  }
 }
 
 .animate-modal {
