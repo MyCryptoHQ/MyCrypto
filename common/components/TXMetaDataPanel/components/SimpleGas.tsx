@@ -11,39 +11,61 @@ import {
   nonceRequestPending
 } from 'selectors/transaction';
 import { connect } from 'react-redux';
+import { fetchGasEstimates, TFetchGasEstimates } from 'actions/gas';
 import { getIsWeb3Node } from 'selectors/config';
+import { getEstimates, getIsEstimating } from 'selectors/gas';
 import { Wei, fromWei } from 'libs/units';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
-  noncePending: boolean;
-  gasLimitPending: boolean;
   inputGasPrice(rawGas: string);
   setGasPrice(rawGas: string);
 }
 
 interface StateProps {
+  gasEstimates: AppState['gas']['estimates'];
+  isGasEstimating: AppState['gas']['isEstimating'];
+  noncePending: boolean;
+  gasLimitPending: boolean;
   isWeb3Node: boolean;
   gasLimitEstimationTimedOut: boolean;
 }
 
-type Props = OwnProps & StateProps;
+interface ActionProps {
+  fetchGasEstimates: TFetchGasEstimates;
+}
+
+type Props = OwnProps & StateProps & ActionProps;
 
 class SimpleGas extends React.Component<Props> {
   public componentDidMount() {
     this.fixGasPrice(this.props.gasPrice);
+    this.props.fetchGasEstimates();
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (!this.props.gasEstimates && nextProps.gasEstimates) {
+      this.props.setGasPrice(nextProps.gasEstimates.fast.toString());
+    }
   }
 
   public render() {
     const {
+      isGasEstimating,
+      gasEstimates,
       gasPrice,
       gasLimitEstimationTimedOut,
       isWeb3Node,
       noncePending,
       gasLimitPending
     } = this.props;
+
+    const bounds = {
+      max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.minGwei,
+      min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.maxGwei
+    };
 
     return (
       <div className="SimpleGas row form-group">
@@ -69,14 +91,14 @@ class SimpleGas extends React.Component<Props> {
           <div className="SimpleGas-slider">
             <SliderWithTooltip
               onChange={this.handleSlider}
-              min={gasPriceDefaults.gasPriceMinGwei}
-              max={gasPriceDefaults.gasPriceMaxGwei}
+              min={bounds.min}
+              max={bounds.max}
               value={this.getGasPriceGwei(gasPrice.value)}
-              tipFormatter={gas => `${gas} Gwei`}
+              tipFormatter={this.formatTooltip}
+              disabled={isGasEstimating}
             />
             <div className="SimpleGas-slider-labels">
               <span>{translate('Cheap')}</span>
-              <span>{translate('Balanced')}</span>
               <span>{translate('Fast')}</span>
             </div>
           </div>
@@ -100,21 +122,38 @@ class SimpleGas extends React.Component<Props> {
   private fixGasPrice(gasPrice: AppState['transaction']['fields']['gasPrice']) {
     // If the gas price is above or below our minimum, bring it in line
     const gasPriceGwei = this.getGasPriceGwei(gasPrice.value);
-    if (gasPriceGwei > gasPriceDefaults.gasPriceMaxGwei) {
-      this.props.setGasPrice(gasPriceDefaults.gasPriceMaxGwei.toString());
-    } else if (gasPriceGwei < gasPriceDefaults.gasPriceMinGwei) {
-      this.props.setGasPrice(gasPriceDefaults.gasPriceMinGwei.toString());
+    if (gasPriceGwei > gasPriceDefaults.maxGwei) {
+      this.props.setGasPrice(gasPriceDefaults.maxGwei.toString());
+    } else if (gasPriceGwei < gasPriceDefaults.minGwei) {
+      this.props.setGasPrice(gasPriceDefaults.minGwei.toString());
     }
   }
 
   private getGasPriceGwei(gasPriceValue: Wei) {
     return parseFloat(fromWei(gasPriceValue, 'gwei'));
   }
+
+  private formatTooltip = (gas: number) => {
+    const { gasEstimates } = this.props;
+    let recommended = '';
+    if (gasEstimates && !gasEstimates.isDefault && gas === gasEstimates.fast) {
+      recommended = '(Recommended)';
+    }
+
+    return `${gas} Gwei ${recommended}`;
+  };
 }
 
-export default connect((state: AppState) => ({
-  noncePending: nonceRequestPending(state),
-  gasLimitPending: getGasEstimationPending(state),
-  gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
-  isWeb3Node: getIsWeb3Node(state)
-}))(SimpleGas);
+export default connect(
+  (state: AppState): StateProps => ({
+    gasEstimates: getEstimates(state),
+    isGasEstimating: getIsEstimating(state),
+    noncePending: nonceRequestPending(state),
+    gasLimitPending: getGasEstimationPending(state),
+    gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
+    isWeb3Node: getIsWeb3Node(state)
+  }),
+  {
+    fetchGasEstimates
+  }
+)(SimpleGas);
