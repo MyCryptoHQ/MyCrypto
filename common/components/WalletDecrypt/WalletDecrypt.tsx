@@ -44,6 +44,7 @@ import {
   donationAddressMap
 } from 'config';
 import { isWeb3NodeAvailable } from 'libs/nodes/web3';
+import CipherIcon from 'assets/images/wallets/cipher.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
@@ -105,6 +106,10 @@ export interface InsecureWalletInfo extends BaseWalletInfo {
 interface MiscWalletInfo extends InsecureWalletInfo {}
 
 const WEB3_TYPES = {
+  CipherProvider: {
+    lid: 'x_Cipher',
+    icon: CipherIcon
+  },
   MetamaskInpageProvider: {
     lid: 'x_MetaMask',
     icon: MetamaskIcon
