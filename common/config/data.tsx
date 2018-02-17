@@ -4,7 +4,7 @@ import { getValues } from '../utils/helpers';
 export const languages = require('./languages.json');
 
 // Displays in the footer
-export const VERSION = '0.2.1 (BETA)';
+export const VERSION = '0.3.0 (BETA)';
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
