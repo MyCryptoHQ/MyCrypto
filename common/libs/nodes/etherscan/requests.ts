@@ -6,6 +6,7 @@ import {
   GetBalanceRequest,
   GetTokenBalanceRequest,
   GetTransactionCountRequest,
+  GetTransactionByHashRequest,
   SendRawTxRequest,
   GetCurrentBlockRequest
 } from './types';
@@ -55,6 +56,14 @@ export default class EtherscanRequests extends RPCRequests {
       action: 'eth_getTransactionCount',
       tag: 'latest',
       address
+    };
+  }
+
+  public getTransactionByHash(txhash: string): GetTransactionByHashRequest {
+    return {
+      module: 'proxy',
+      action: 'eth_getTransactionByHash',
+      txhash
     };
   }
 

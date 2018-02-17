@@ -23,14 +23,14 @@ export const INITIAL_STATE: State = {
     network: 'ETH',
     isCustom: false,
     service: 'infura.io',
-    lib: new InfuraNode('https://mainnet.infura.io/mew'),
+    lib: new InfuraNode('https://mainnet.infura.io/mycrypto'),
     estimateGas: false
   },
   rop_infura: {
     network: 'Ropsten',
     isCustom: false,
     service: 'infura.io',
-    lib: new InfuraNode('https://ropsten.infura.io/mew'),
+    lib: new InfuraNode('https://ropsten.infura.io/mycrypto'),
     estimateGas: false
   },
   kov_ethscan: {
@@ -51,7 +51,7 @@ export const INITIAL_STATE: State = {
     network: 'Rinkeby',
     isCustom: false,
     service: 'infura.io',
-    lib: new InfuraNode('https://rinkeby.infura.io/mew'),
+    lib: new InfuraNode('https://rinkeby.infura.io/mycrypto'),
     estimateGas: false
   },
   etc_epool: {

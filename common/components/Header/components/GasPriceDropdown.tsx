@@ -53,8 +53,8 @@ class GasPriceDropdown extends Component<Props> {
           <input
             type="range"
             value={this.props.gasPrice.raw}
-            min={gasPriceDefaults.gasPriceMinGwei}
-            max={gasPriceDefaults.gasPriceMaxGwei}
+            min={gasPriceDefaults.minGwei}
+            max={gasPriceDefaults.maxGwei}
             onChange={this.handleGasPriceChange}
           />
           <p className="small col-xs-4 text-left GasPrice-padding-reset">Not So Fast</p>
