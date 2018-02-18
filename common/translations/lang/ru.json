@@ -77,6 +77,7 @@
     "x_AddessDesc": "Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere. Это можно назвать \"номер Вашего счёта\" или \"Ваш открытый ключ\". Вы сообщаете этот адрес людям, чтобы они могли отправлять Вам эфир (ether). Картинка позволяет легко опознать Ваш адрес среди других адресов. ",
     "x_Address": "Ваш адрес ",
     "x_Cancel": "Отменить ",
+    "x_Cipher": "Cipher Browser",
     "x_CSV": "Файл CSV (не зашифрован) ",
     "x_Download": "Скачать ",
     "x_Json": "Файл JSON (не зашифрован) ",
