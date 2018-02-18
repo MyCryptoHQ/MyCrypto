@@ -3,9 +3,11 @@ import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networ
 type StaticNetworkIds = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
 
 interface BlockExplorerConfig {
+  name: string;
   origin: string;
   txUrl(txHash: string): string;
   addressUrl(address: string): string;
+  blockUrl(blockNum: string | number): string;
 }
 
 interface Token {
@@ -32,7 +34,7 @@ interface StaticNetworkConfig {
   name: StaticNetworkIds;
   unit: string;
   color?: string;
-  blockExplorer?: BlockExplorerConfig;
+  blockExplorer: BlockExplorerConfig;
   tokenExplorer?: {
     name: string;
     address(address: string): string;
