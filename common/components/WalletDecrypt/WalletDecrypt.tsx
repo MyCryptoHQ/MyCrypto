@@ -137,8 +137,8 @@ export class WalletDecrypt extends Component<Props, State> {
   // index signature should become [key: Wallets] (from config) once typescript bug is fixed
   public WALLETS: Wallets = {
     [SecureWalletName.WEB3]: {
-      lid: WEB3_TYPE && WEB3_TYPES ? WEB3_TYPES[WEB3_TYPE].lid : 'x_Web3',
-      icon: WEB3_TYPE && WEB3_TYPES && WEB3_TYPES[WEB3_TYPE].icon,
+      lid: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] ? WEB3_TYPES[WEB3_TYPE].lid : 'x_Web3',
+      icon: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] && WEB3_TYPES[WEB3_TYPE].icon,
       description: 'ADD_Web3Desc',
       component: Web3Decrypt,
       initialParams: {},
