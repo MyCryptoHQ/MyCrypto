@@ -13,19 +13,24 @@ interface ReduxProps {
   wallet: AppState['wallet']['inst'];
 }
 
+type Props = ReduxProps;
+
 interface State {
   walletAddress: string | null;
 }
 
-class CurrentCustomMessageClass extends PureComponent<ReduxProps, State> {
+class CurrentCustomMessageClass extends PureComponent<Props, State> {
   public state: State = {
     walletAddress: null
   };
 
   public async componentDidMount() {
-    if (this.props.wallet) {
-      const walletAddress = await this.props.wallet.getAddressString();
-      this.setState({ walletAddress });
+    this.setAddressState(this.props);
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.wallet !== nextProps.wallet) {
+      this.setAddressState(nextProps);
     }
   }
 
@@ -39,6 +44,15 @@ class CurrentCustomMessageClass extends PureComponent<ReduxProps, State> {
       );
     } else {
       return null;
+    }
+  }
+
+  private async setAddressState(props: Props) {
+    if (props.wallet) {
+      const walletAddress = await props.wallet.getAddressString();
+      this.setState({ walletAddress });
+    } else {
+      this.setState({ walletAddress: '' });
     }
   }
 

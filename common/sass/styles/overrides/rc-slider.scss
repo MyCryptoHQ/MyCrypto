@@ -5,6 +5,15 @@ $handle-size: 22px;
 $speed: 70ms;
 $tooltip-bg: rgba(#222, 0.95);
 
+@keyframes slider-loading {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
 .rc-slider {
   &-rail {
     background: $gray-lighter;
@@ -37,6 +46,22 @@ $tooltip-bg: rgba(#222, 0.95);
       height: 26px;
       box-shadow: none;
       border-radius: 3px;
+    }
+  }
+
+  // Disabled styles
+  &-disabled {
+    background: none;
+
+    .rc-slider {
+      &-handle,
+      &-track {
+        display: none;
+      }
+
+      &-rail {
+        animation: slider-loading 1s ease infinite;
+      }
     }
   }
 }
