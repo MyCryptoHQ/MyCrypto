@@ -6,8 +6,7 @@ import { toggleOffline, changeNode, changeNodeIntent, setLatestBlock } from 'act
 import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
-  pollOfflineStatus,
-  reload
+  pollOfflineStatus
 } from 'sagas/config/node';
 import {
   getNodeId,

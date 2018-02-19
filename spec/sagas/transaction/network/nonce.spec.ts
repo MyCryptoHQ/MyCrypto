@@ -1,8 +1,7 @@
-import { getNonceSucceeded, getNonceFailed, inputNonce } from 'actions/transaction';
+import { getNonceSucceeded, inputNonce } from 'actions/transaction';
 import { apply, put, select, fork, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { showNotification } from 'actions/notifications';
 import { handleNonceRequest, handleNonceRequestWrapper } from 'sagas/transaction/network/nonce';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { TypeKeys as WalletTK } from 'actions/wallet';
