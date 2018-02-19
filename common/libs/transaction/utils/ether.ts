@@ -15,12 +15,6 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
   // For some crazy reason, toJSON spits out an array, not keyed values.
   const { data, gasLimit, gasPrice, to, nonce, value } = t;
   const chainId = t.getChainId();
-  let from = '';
-  try {
-    from = hexEncodeData(t.getSenderAddress());
-  } catch (err) {
-    // no-op
-  }
 
   return {
     value: hexEncodeQuantity(value),
@@ -31,8 +25,7 @@ const getTransactionFields = (t: Tx): IHexStrTransaction => {
     nonce: hexEncodeQuantity(nonce),
     gasPrice: hexEncodeQuantity(gasPrice),
     gasLimit: hexEncodeQuantity(gasLimit),
-    chainId,
-    from
+    chainId
   };
 };
 

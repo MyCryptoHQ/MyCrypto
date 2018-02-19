@@ -17,7 +17,6 @@ export interface ITransaction {
 
 export interface IHexStrTransaction {
   to: string;
-  from: string;
   value: string;
   data: string;
   gasLimit: string;
