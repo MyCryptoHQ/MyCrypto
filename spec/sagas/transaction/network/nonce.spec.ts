@@ -41,14 +41,10 @@ describe('handleNonceRequest*', () => {
     expect(gens.gen.next(nodeLib).value).toEqual(select(getWalletInst));
   });
 
-  it('should handle being called without wallet inst correctly', () => {
+  it('should exit if being called without a wallet inst', () => {
     gens.noWallet = gens.gen.clone();
-    gens.noWallet.next();
-    expect(gens.noWallet.next(offline).value).toEqual(
-      put(showNotification('warning', 'Your addresses nonce could not be fetched'))
-    );
-    expect(gens.noWallet.next().value).toEqual(put(getNonceFailed()));
-    expect(gens.noWallet.next().done).toEqual(true);
+    gens.noWallet.next(null); // No wallet inst
+    expect(gens.noWallet.next(offline).done).toEqual(true);
   });
 
   it('should select getOffline', () => {

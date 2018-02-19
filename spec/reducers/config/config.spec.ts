@@ -213,11 +213,6 @@ describe('handleNodeChangeIntent*', () => {
     );
   });
 
-  it('should call reload if network is new', () => {
-    expect(data.gen.next().value).toEqual(call(reload));
-    expect(data.gen.next().done).toEqual(true);
-  });
-
   it('should be done', () => {
     expect(data.gen.next().done).toEqual(true);
   });
