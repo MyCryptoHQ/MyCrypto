@@ -25,6 +25,8 @@ interface State {
   showLongBalance: boolean;
   address: string;
   confirmAddr: boolean;
+  copied: boolean;
+  currentColor: string;
 }
 
 interface DispatchProps {
