@@ -77,6 +77,7 @@
     "x_AddessDesc": "Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere. Saatat tuntea tämän \"Tilinumeronasi\" tai \"Julkisena Salausavaimenasi\". Tämä on se jonka jaat ihmisille, jotta he voivat lähettää sinulle ETHiä. Tuo kuvake on helppo tapa tunnistaa sinun osoitteesi. ",
     "x_Address": "Sinun osoitteesi ",
     "x_Cancel": "Peruuta ",
+    "x_Cipher": "Cipher Browser",
     "x_CSV": "CSV tiedosto (salaamaton) ",
     "x_Download": "Lataa ",
     "x_Json": "JSON Tiedosto (salaamaton) ",
