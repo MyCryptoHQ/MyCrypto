@@ -1,4 +1,4 @@
-import { sha256 } from 'ethereumjs-util';
+import { sha256, toChecksumAddress } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
 import { State as SwapState } from 'reducers/swap';
 import { IWallet, WalletConfig } from 'libs/wallet';
@@ -66,7 +66,7 @@ async function getWalletConfigKey(wallet: IWallet): Promise<string> {
   return sha256(`${address}-mycrypto`).toString('hex');
 }
 
-interface SavedTransaction {
+export interface SavedTransaction {
   hash: string;
   to: string;
   from: string;
@@ -79,8 +79,8 @@ export function saveRecentTransaction(hash: string, tx: EthTx) {
   const fields = getTransactionFields(tx);
   const txObj: SavedTransaction = {
     hash,
-    to: fields.to,
-    from: fields.from,
+    to: toChecksumAddress(fields.to),
+    from: toChecksumAddress(fields.from),
     value: fields.value,
     chainId: fields.chainId,
     time: Date.now()

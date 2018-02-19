@@ -22,6 +22,13 @@ class CheckTransaction extends React.Component<Props, State> {
     hash: ''
   };
 
+  public componentWillReceiveProps(nextProps: Props) {
+    const { network } = this.props;
+    if (network.chainId !== nextProps.network.chainId) {
+      this.setState({ hash: '' });
+    }
+  }
+
   public render() {
     const { network } = this.props;
     const { hash } = this.state;
@@ -48,7 +55,7 @@ class CheckTransaction extends React.Component<Props, State> {
 
           {hash && (
             <section className="CheckTransaction-tx Tab-content-pane">
-              <TransactionStatusComponent txHash={hash} />
+              <TransactionStatusComponent key={network.chainId} txHash={hash} />
             </section>
           )}
         </div>

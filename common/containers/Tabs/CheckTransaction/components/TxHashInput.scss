@@ -1,4 +1,17 @@
+@import 'common/sass/variables';
+
 .TxHashInput {
   max-width: 700px;
   margin: 0 auto;
+
+  &-recent {
+    text-align: left;
+
+    &-separator {
+      display: block;
+      margin: $space-sm 0;
+      text-align: center;
+      color: $gray-light;
+    }
+  }
 }

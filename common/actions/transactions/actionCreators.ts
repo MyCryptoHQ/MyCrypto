@@ -18,3 +18,18 @@ export function setTransactionData(
     payload
   };
 }
+
+export type TResetTransactionData = typeof resetTransactionData;
+export function resetTransactionData(): interfaces.ResetTransactionDataAction {
+  return { type: TypeKeys.TRANSACTIONS_RESET_TRANSACTION_DATA };
+}
+
+export type TSetRecentTransactions = typeof setRecentTransactions;
+export function setRecentTransactions(
+  payload: interfaces.SetRecentTransactionsAction['payload']
+): interfaces.SetRecentTransactionsAction {
+  return {
+    type: TypeKeys.TRANSACTIONS_SET_RECENT_TRANSACTIONS,
+    payload
+  };
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { toChecksumAddress } from 'ethereumjs-util';
 import translate from 'translations';
 import { Identicon, UnitDisplay, NewTabLink } from 'components/ui';
 import { TransactionData, TransactionReceipt } from 'libs/nodes';
@@ -98,7 +99,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: (
         <MaybeLink href={explorer.from}>
           <Identicon address={data.from} size="26px" />
-          {data.from}
+          {toChecksumAddress(data.from)}
         </MaybeLink>
       )
     },
@@ -107,7 +108,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: (
         <MaybeLink href={explorer.to}>
           <Identicon address={data.to} size="26px" />
-          {data.to}
+          {toChecksumAddress(data.to)}
         </MaybeLink>
       )
     },
@@ -141,7 +142,9 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('New contract address'),
       data: receipt &&
         receipt.contractAddress && (
-          <MaybeLink href={explorer.contract}>{receipt.contractAddress}</MaybeLink>
+          <MaybeLink href={explorer.contract}>
+            {toChecksumAddress(receipt.contractAddress)}
+          </MaybeLink>
         )
     },
     {
