@@ -323,6 +323,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SET_ACCOUNT_BALANCE, updateAccountBalance),
     // Foreign actions
     takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
+    takeEvery(ConfigTypeKeys.CONFIG_NODE_CHANGE, updateBalances),
     takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
   ];
 }

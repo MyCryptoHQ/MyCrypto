@@ -7,6 +7,7 @@ import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { showNotification } from 'actions/notifications';
 import { TypeKeys as WalletTK } from 'actions/wallet';
+import { TypeKeys as ConfigTK } from 'actions/config';
 import { Nonce } from 'libs/units';
 
 export function* handleNonceRequest(): SagaIterator {
@@ -14,13 +15,10 @@ export function* handleNonceRequest(): SagaIterator {
   const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
   const isOffline: boolean = yield select(getOffline);
   try {
-    if (isOffline) {
+    if (isOffline || !walletInst) {
       return;
     }
 
-    if (!walletInst) {
-      throw Error();
-    }
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
 
     const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);
@@ -42,6 +40,6 @@ export function* handleNonceRequestWrapper(): SagaIterator {
 
 //leave get nonce requested for nonce refresh later on
 export const nonce = takeEvery(
-  [TK.GET_NONCE_REQUESTED, WalletTK.WALLET_SET],
+  [TK.GET_NONCE_REQUESTED, WalletTK.WALLET_SET, ConfigTK.CONFIG_NODE_CHANGE],
   handleNonceRequestWrapper
 );

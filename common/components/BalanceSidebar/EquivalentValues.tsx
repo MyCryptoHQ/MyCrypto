@@ -81,11 +81,12 @@ class EquivalentValues extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    const { balance, tokenBalances, isOffline } = this.props;
+    const { balance, tokenBalances, isOffline, network } = this.props;
     if (
       nextProps.balance !== balance ||
       nextProps.tokenBalances !== tokenBalances ||
-      nextProps.isOffline !== isOffline
+      nextProps.isOffline !== isOffline ||
+      nextProps.network.unit !== network.unit
     ) {
       const defaultOption = this.defaultOption(
         nextProps.balance,
@@ -288,7 +289,8 @@ class EquivalentValues extends React.Component<Props, State> {
     const currencies = tokenBalances
       .filter(tk => !tk.balance.isZero())
       .map(tk => tk.symbol)
-      .sort();
+      .sort()
+      .concat([props.network.unit]);
 
     // If it's the same currencies as we have, skip it
     if (this.requestedCurrencies && currencies.join() === this.requestedCurrencies.join()) {

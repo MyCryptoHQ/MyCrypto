@@ -33,7 +33,6 @@ import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
-import { Web3Service } from 'libs/nodes/web3';
 
 let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
@@ -167,20 +166,6 @@ export function* handleNodeChangeIntent({
 
   yield put(setLatestBlock(currentBlock));
   yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
-
-  // TODO - re-enable once DeterministicWallet state is fixed to flush properly.
-  // DeterministicWallet keeps path related state we need to flush before we can stop reloading
-
-  // const currentWallet: IWallet | null = yield select(getWalletInst);
-  // if there's no wallet, do not reload as there's no component state to resync
-  // if (currentWallet && currentConfig.network !== actionConfig.network) {
-
-  const isNewNetwork = currentConfig.network !== nextNodeConfig.network;
-  const newIsWeb3 = nextNodeConfig.service === Web3Service;
-  // don't reload when web3 is selected; node will automatically re-set and state is not an issue here
-  if (isNewNetwork && !newIsWeb3) {
-    yield call(reload);
-  }
 }
 
 export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
