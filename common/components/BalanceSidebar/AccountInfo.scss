@@ -2,6 +2,12 @@
 @import 'common/sass/mixins';
 
 .AccountInfo {
+  .copy-clipboard{
+    width: 15px;
+    &:hover{
+      cursor: pointer;
+    }
+  }
   &-section {
     margin-top: $space * 1.5;
 
