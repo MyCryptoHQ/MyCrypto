@@ -1,7 +1,10 @@
-export const REDUX_STATE = 'REDUX_STATE';
+import { sha256 } from 'ethereumjs-util';
+import EthTx from 'ethereumjs-tx';
 import { State as SwapState } from 'reducers/swap';
 import { IWallet, WalletConfig } from 'libs/wallet';
-import { sha256 } from 'ethereumjs-util';
+import { getTransactionFields } from 'libs/transaction';
+
+export const REDUX_STATE = 'REDUX_STATE';
 
 export function loadState<T>(): T | undefined {
   try {
@@ -61,4 +64,36 @@ export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {
 async function getWalletConfigKey(wallet: IWallet): Promise<string> {
   const address = await wallet.getAddressString();
   return sha256(`${address}-mycrypto`).toString('hex');
+}
+
+interface SavedTransaction {
+  hash: string;
+  to: string;
+  from: string;
+  value: string;
+  chainId: number;
+  time: number;
+}
+
+export function saveRecentTransaction(hash: string, tx: EthTx) {
+  const fields = getTransactionFields(tx);
+  const txObj: SavedTransaction = {
+    hash,
+    to: fields.to,
+    from: fields.from,
+    value: fields.value,
+    chainId: fields.chainId,
+    time: Date.now()
+  };
+  const recentTxs = [txObj, ...loadRecentTransactions()];
+  localStorage.setItem('recent-transactions', JSON.stringify(recentTxs));
+}
+
+export function loadRecentTransactions(): SavedTransaction[] {
+  try {
+    const json = localStorage.getItem('recent-transactions');
+    return json ? JSON.parse(json) : [];
+  } catch (err) {
+    return [];
+  }
 }
