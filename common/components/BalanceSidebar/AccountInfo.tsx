@@ -77,7 +77,7 @@ class AccountInfo extends React.Component<Props, State> {
   public onCopy = () => {
     this.setState(state => {
       return {
-        copied: true,
+        copied: !state.copied,
         currentColor: 'blue'
       };
     });
