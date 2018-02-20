@@ -12,6 +12,7 @@ interface StateProps {
 }
 
 interface OwnProps {
+  hideHeader?: boolean;
   isUnavailableOffline?: boolean;
   children: string | React.ReactElement<string> | React.ReactElement<string>[];
 }
@@ -20,12 +21,12 @@ type Props = OwnProps & StateProps;
 
 class TabSection extends Component<Props, {}> {
   public render() {
-    const { isUnavailableOffline, children, isOffline, latestBlock } = this.props;
+    const { isUnavailableOffline, children, isOffline, latestBlock, hideHeader } = this.props;
 
     return (
       <div className="page-layout">
         <main>
-          <Header />
+          {!hideHeader && <Header />}
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
