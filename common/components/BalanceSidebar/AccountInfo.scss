@@ -4,13 +4,14 @@
 .AccountInfo {
   &-copy-icon{
     width: 15px;
-    color: black;
+    color: $gray-light;
     &-copied{
-      color: red;
+      color: $brand-success;
       cursor: pointer;
     }
     &:hover{
       cursor: pointer;
+      color: $text-color;
     }
   }
   &-section {
