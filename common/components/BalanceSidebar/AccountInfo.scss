@@ -3,11 +3,17 @@
 
 .AccountInfo {
   &-copy-icon{
-    width: 15px;
+    display: inline;
     color: $gray-light;
+    .fa{
+      margin-right: 3px;
+    }
     &-copied{
       color: $brand-success;
       cursor: pointer;
+      .fa{
+        margin-right: 3px;
+      }
     }
     &:hover{
       cursor: pointer;
