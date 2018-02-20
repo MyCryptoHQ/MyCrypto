@@ -26,7 +26,6 @@ interface State {
   address: string;
   confirmAddr: boolean;
   copied: boolean;
-  currentColor: string;
 }
 
 interface DispatchProps {
@@ -40,8 +39,7 @@ class AccountInfo extends React.Component<Props, State> {
     showLongBalance: false,
     address: '',
     confirmAddr: false,
-    copied: false,
-    currentColor: 'black'
+    copied: false
   };
 
   public async setAddressFromWallet() {
@@ -77,8 +75,7 @@ class AccountInfo extends React.Component<Props, State> {
   public onCopy = () => {
     this.setState(state => {
       return {
-        copied: !state.copied,
-        currentColor: 'blue'
+        copied: !state.copied
       };
     });
   };
