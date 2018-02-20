@@ -4,6 +4,11 @@
 .AccountInfo {
   &-copy-icon{
     width: 15px;
+    color: black;
+    &-copied{
+      color: red;
+      cursor: pointer;
+    }
     &:hover{
       cursor: pointer;
     }
