@@ -105,7 +105,7 @@ class AccountInfo extends React.Component<Props, State> {
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">{address}</div>
             <CopyToClipboard onCopy={this.onCopy} text={address}>
-              <div className="copy-clipboard" title="copy to clipboard">
+              <div className="AccountInfo-copy-icon" title="Copy To Clipboard">
                 <i className="fa fa-copy" />
                 <p>{this.state.copied ? 'copied!' : null}</p>
               </div>
