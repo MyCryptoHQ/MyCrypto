@@ -2,7 +2,7 @@
 @import 'common/sass/mixins';
 
 .AccountInfo {
-  .copy-clipboard{
+  &-copy-icon{
     width: 15px;
     &:hover{
       cursor: pointer;
