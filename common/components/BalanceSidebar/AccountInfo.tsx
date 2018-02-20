@@ -78,6 +78,9 @@ class AccountInfo extends React.Component<Props, State> {
         copied: !state.copied
       };
     });
+    setTimeout(() => {
+      this.setState({ copied: false });
+    }, 2000);
   };
 
   public render() {
