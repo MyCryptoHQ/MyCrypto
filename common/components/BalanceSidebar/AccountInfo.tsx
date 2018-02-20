@@ -107,7 +107,7 @@ class AccountInfo extends React.Component<Props, State> {
                 title="Copy To Clipboard"
               >
                 <i className="fa fa-copy" />
-                <p>{this.state.copied ? 'copied!' : null}</p>
+                <span>{this.state.copied ? 'copied!' : 'copy address'}</span>
               </div>
             </CopyToClipboard>
           </div>
