@@ -20,6 +20,7 @@ export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
       fast: gasSettings.initial,
       fastest: gasSettings.max,
       isDefault: true,
+      chainId: network.chainId,
       time
     })
   );
@@ -42,7 +43,11 @@ export function* fetchEstimates(): SagaIterator {
 
   // Cache estimates for a bit
   const oldEstimates: AppState['gas']['estimates'] = yield select(getEstimates);
-  if (oldEstimates && oldEstimates.time + gasEstimateCacheTime > Date.now()) {
+  if (
+    oldEstimates &&
+    oldEstimates.chainId === network.chainId &&
+    oldEstimates.time + gasEstimateCacheTime > Date.now()
+  ) {
     yield put(setGasEstimates(oldEstimates));
     return;
   }

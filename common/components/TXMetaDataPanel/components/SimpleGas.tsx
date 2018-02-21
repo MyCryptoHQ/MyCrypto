@@ -128,9 +128,9 @@ class SimpleGas extends React.Component<Props> {
 
     // If the gas price is above or below our minimum, bring it in line
     const gasPriceGwei = this.getGasPriceGwei(gasPrice.value);
-    if (gasPriceGwei > gasEstimates.safeLow) {
+    if (gasPriceGwei < gasEstimates.safeLow) {
       this.props.setGasPrice(gasEstimates.safeLow.toString());
-    } else if (gasPriceGwei < gasEstimates.fastest) {
+    } else if (gasPriceGwei > gasEstimates.fastest) {
       this.props.setGasPrice(gasEstimates.fastest.toString());
     }
   }
