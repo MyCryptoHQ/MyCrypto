@@ -36,10 +36,7 @@ export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
   return undefined;
 }
 
-export async function saveWalletConfig(
-  wallet: IWallet,
-  state: Partial<WalletConfig>
-): Promise<WalletConfig> {
+export function saveWalletConfig(wallet: IWallet, state: Partial<WalletConfig>): WalletConfig {
   const oldState = loadWalletConfig(wallet);
   const newState = { ...oldState, ...state };
   const key = getWalletConfigKey(wallet);
