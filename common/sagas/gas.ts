@@ -5,18 +5,20 @@ import { AppState } from 'reducers';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { getEstimates } from 'selectors/gas';
-import { getOffline } from 'selectors/config';
+import { getOffline, getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
-export function* setDefaultEstimates(): SagaIterator {
+export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
   // Must yield time for testability
   const time = yield call(Date.now);
+  const gasSettings = network.isCustom ? gasPriceDefaults : network.gasPriceSettings;
 
   yield put(
     setGasEstimates({
-      safeLow: gasPriceDefaults.minGwei,
-      standard: gasPriceDefaults.default,
-      fast: gasPriceDefaults.default,
-      fastest: gasPriceDefaults.maxGwei,
+      safeLow: gasSettings.min,
+      standard: gasSettings.initial,
+      fast: gasSettings.initial,
+      fastest: gasSettings.max,
       isDefault: true,
       time
     })
@@ -24,10 +26,17 @@ export function* setDefaultEstimates(): SagaIterator {
 }
 
 export function* fetchEstimates(): SagaIterator {
-  // Don't even try offline
+  // Don't try on non-estimating network
+  const network: NetworkConfig = yield select(getNetworkConfig);
+  if (network.isCustom || !network.shouldEstimateGasPrice) {
+    yield call(setDefaultEstimates, network);
+    return;
+  }
+
+  // Don't try while offline
   const isOffline: boolean = yield select(getOffline);
   if (isOffline) {
-    yield call(setDefaultEstimates);
+    yield call(setDefaultEstimates, network);
     return;
   }
 
@@ -44,7 +53,7 @@ export function* fetchEstimates(): SagaIterator {
     yield put(setGasEstimates(estimates));
   } catch (err) {
     console.warn('Failed to fetch gas estimates:', err);
-    yield call(setDefaultEstimates);
+    yield call(setDefaultEstimates, network);
   }
 }
 

@@ -6,6 +6,9 @@ import { setGasEstimates } from 'actions/gas';
 import { getEstimates } from 'selectors/gas';
 import { getOffline } from 'selectors/config';
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
+import { staticNetworks } from 'reducers/config/networks/staticNetworks';
+
+const network = staticNetworks(undefined, {} as any).ETH;
 
 describe('fetchEstimates*', () => {
   const gen = cloneableGenerator(fetchEstimates)();
@@ -31,9 +34,9 @@ describe('fetchEstimates*', () => {
     expect(gen.next().value).toEqual(select(getOffline));
   });
 
-  it('Should use default estimates if offline', () => {
+  it('Should use network default gas price settings if offline', () => {
     const offlineGen = gen.clone();
-    expect(offlineGen.next(true).value).toEqual(call(setDefaultEstimates));
+    expect(offlineGen.next(true).value).toEqual(call(setDefaultEstimates, network));
     expect(offlineGen.next().done).toBeTruthy();
   });
 
@@ -59,7 +62,7 @@ describe('fetchEstimates*', () => {
     const failedReqGen = gen.clone();
     // Not sure why, but typescript seems to think throw might be missing.
     if (failedReqGen.throw) {
-      expect(failedReqGen.throw('test').value).toEqual(call(setDefaultEstimates));
+      expect(failedReqGen.throw('test').value).toEqual(call(setDefaultEstimates, network));
       expect(failedReqGen.next().done).toBeTruthy();
     } else {
       throw new Error('SagaIterator didn’t have throw');
@@ -73,7 +76,7 @@ describe('fetchEstimates*', () => {
 });
 
 describe('setDefaultEstimates*', () => {
-  const gen = cloneableGenerator(setDefaultEstimates)();
+  const gen = setDefaultEstimates(network);
 
   it('Should put setGasEstimates with config defaults', () => {
     const time = Date.now();
@@ -81,10 +84,10 @@ describe('setDefaultEstimates*', () => {
     expect(gen.next(time).value).toEqual(
       put(
         setGasEstimates({
-          safeLow: gasPriceDefaults.minGwei,
-          standard: gasPriceDefaults.default,
-          fast: gasPriceDefaults.default,
-          fastest: gasPriceDefaults.maxGwei,
+          safeLow: gasPriceDefaults.min,
+          standard: gasPriceDefaults.initial,
+          fast: gasPriceDefaults.initial,
+          fastest: gasPriceDefaults.max,
           isDefault: true,
           time
         })
