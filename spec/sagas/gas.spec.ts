@@ -4,11 +4,13 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { setGasEstimates } from 'actions/gas';
 import { getEstimates } from 'selectors/gas';
-import { getOffline } from 'selectors/config';
+import { getOffline, getNetworkConfig } from 'selectors/config';
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { staticNetworks } from 'reducers/config/networks/staticNetworks';
 
-const network = staticNetworks(undefined, {} as any).ETH;
+const networkState = staticNetworks(undefined, {} as any);
+const network = networkState.ETH;
+const nonEstimateNetwork = networkState.ETC;
 
 describe('fetchEstimates*', () => {
   const gen = cloneableGenerator(fetchEstimates)();
@@ -19,19 +21,37 @@ describe('fetchEstimates*', () => {
     fast: 4,
     fastest: 20,
     time: Date.now() - gasEstimateCacheTime - 1000,
+    chainId: network.chainId,
     isDefault: false
   };
-  const newEstimates: GasEstimates = {
+  const newTimeEstimates: GasEstimates = {
     safeLow: 2,
     standard: 2,
     fast: 8,
     fastest: 80,
     time: Date.now(),
+    chainId: network.chainId,
     isDefault: false
   };
+  const newChainIdEstimates: GasEstimates = {
+    ...oldEstimates,
+    chainId: network.chainId + 1
+  };
+
+  it('Should select getNetworkConfig', () => {
+    expect(gen.next().value).toEqual(select(getNetworkConfig));
+  });
+
+  it('Should use network default gas price settings if network shouldn’t estimate', () => {
+    const noEstimateGen = gen.clone();
+    expect(noEstimateGen.next(nonEstimateNetwork).value).toEqual(
+      call(setDefaultEstimates, nonEstimateNetwork)
+    );
+    expect(noEstimateGen.next().done).toBeTruthy();
+  });
 
   it('Should select getOffline', () => {
-    expect(gen.next().value).toEqual(select(getOffline));
+    expect(gen.next(network).value).toEqual(select(getOffline));
   });
 
   it('Should use network default gas price settings if offline', () => {
@@ -69,17 +89,51 @@ describe('fetchEstimates*', () => {
     }
   });
 
+  it('Should use new estimates if chainId changed, even if time is similar', () => {
+    const newChainGen = gen.clone();
+    expect(newChainGen.next(newChainIdEstimates).value).toEqual(
+      put(setGasEstimates(newChainIdEstimates))
+    );
+    expect(newChainGen.next().done).toBeTruthy();
+  });
+
   it('Should use fetched estimates', () => {
-    expect(gen.next(newEstimates).value).toEqual(put(setGasEstimates(newEstimates)));
+    expect(gen.next(newTimeEstimates).value).toEqual(put(setGasEstimates(newTimeEstimates)));
     expect(gen.next().done).toBeTruthy();
   });
 });
 
 describe('setDefaultEstimates*', () => {
-  const gen = setDefaultEstimates(network);
+  const time = Date.now();
 
   it('Should put setGasEstimates with config defaults', () => {
-    const time = Date.now();
+    const gen = setDefaultEstimates(network);
+    gen.next();
+    expect(gen.next(time).value).toEqual(
+      put(
+        setGasEstimates({
+          safeLow: network.gasPriceSettings.min,
+          standard: network.gasPriceSettings.initial,
+          fast: network.gasPriceSettings.initial,
+          fastest: network.gasPriceSettings.max,
+          chainId: network.chainId,
+          isDefault: true,
+          time
+        })
+      )
+    );
+  });
+
+  it('Should use config defaults if network has no defaults', () => {
+    const customNetwork = {
+      isCustom: true as true,
+      name: 'Custon',
+      unit: 'CST',
+      chainId: 123,
+      dPathFormats: null
+    };
+    const gen = setDefaultEstimates(customNetwork);
+
     gen.next();
     expect(gen.next(time).value).toEqual(
       put(
@@ -88,6 +142,7 @@ describe('setDefaultEstimates*', () => {
           standard: gasPriceDefaults.initial,
           fast: gasPriceDefaults.initial,
           fastest: gasPriceDefaults.max,
+          chainId: customNetwork.chainId,
           isDefault: true,
           time
         })
