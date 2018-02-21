@@ -8,46 +8,44 @@ import {
 import { TypeKeys } from 'actions/swap/constants';
 import { getAllRates } from 'api/bity';
 import { delay, SagaIterator } from 'redux-saga';
-import { call, select, cancel, fork, put, take, takeLatest, race } from 'redux-saga/effects';
+import { call, select, put, takeLatest, race } from 'redux-saga/effects';
 import shapeshift from 'api/shapeshift';
 import { getSwap } from 'sagas/swap/orders';
 
-const POLLING_CYCLE = 30000;
 export const SHAPESHIFT_TIMEOUT = 10000;
 
 export function* loadBityRates(): SagaIterator {
-  while (true) {
-    try {
-      const data = yield call(getAllRates);
-      yield put(loadBityRatesSucceededSwap(data));
-    } catch (error) {
-      yield put(showNotification('danger', error.message));
-    }
-    yield call(delay, POLLING_CYCLE);
+  try {
+    const data = yield call(getAllRates);
+    yield put(loadBityRatesSucceededSwap(data));
+  } catch (error) {
+    console.error('Failed to load rates from Bity:', error);
+    yield put(showNotification('danger', error.message));
   }
 }
 
 export function* loadShapeshiftRates(): SagaIterator {
-  while (true) {
-    try {
-      // Race b/w api call and timeout
-      // getShapeShiftRates should be an api call that accepts a whitelisted arr of symbols
-      const { tokens } = yield race({
-        tokens: call(shapeshift.getAllRates),
-        timeout: call(delay, SHAPESHIFT_TIMEOUT)
-      });
-      // If tokens exist, put it into the redux state, otherwise switch to bity.
-      if (tokens) {
-        yield put(loadShapeshiftRatesSucceededSwap(tokens));
-      } else {
-        yield put(
-          showNotification('danger', 'Error loading ShapeShift tokens - reverting to Bity')
-        );
-      }
-    } catch (error) {
-      yield put(showNotification('danger', `Error loading ShapeShift tokens - ${error}`));
+  try {
+    // Race b/w api call and timeout
+    // getShapeShiftRates should be an api call that accepts a whitelisted arr of symbols
+    const { tokens } = yield race({
+      tokens: call(shapeshift.getAllRates),
+      timeout: call(delay, SHAPESHIFT_TIMEOUT)
+    });
+    // If tokens exist, put it into the redux state, otherwise switch to bity.
+    if (tokens) {
+      yield put(loadShapeshiftRatesSucceededSwap(tokens));
+    } else {
+      throw new Error('ShapeShift rates request timed out.');
     }
-    yield call(delay, POLLING_CYCLE);
+  } catch (error) {
+    console.error('Failed to fetch rates from shapeshift:', error);
+    yield put(
+      showNotification(
+        'danger',
+        'Failed to load swap rates from ShapeShift, please try again later'
+      )
+    );
   }
 }
 
@@ -58,31 +56,8 @@ export function* swapProvider(action: ChangeProviderSwapAcion): SagaIterator {
   }
 }
 
-// Fork our recurring API call, watch for the need to cancel.
-export function* handleBityRates(): SagaIterator {
-  const loadBityRatesTask = yield fork(loadBityRates);
-  yield take(TypeKeys.SWAP_STOP_LOAD_BITY_RATES);
-  yield cancel(loadBityRatesTask);
-}
-
-// Watch for latest SWAP_LOAD_BITY_RATES_REQUESTED action.
-export function* getBityRatesSaga(): SagaIterator {
-  yield takeLatest(TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED, handleBityRates);
-}
-
-// Fork our API call
-export function* handleShapeShiftRates(): SagaIterator {
-  const loadShapeShiftRatesTask = yield fork(loadShapeshiftRates);
-  yield take(TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES);
-  yield cancel(loadShapeShiftRatesTask);
-}
-
-// Watch for SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED action.
-export function* getShapeShiftRatesSaga(): SagaIterator {
-  yield takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeShiftRates);
-}
-
-// Watch for provider swaps
-export function* swapProviderSaga(): SagaIterator {
+export default function* swapRates(): SagaIterator {
+  yield takeLatest(TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED, loadBityRates);
+  yield takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, loadShapeshiftRates);
   yield takeLatest(TypeKeys.SWAP_CHANGE_PROVIDER, swapProvider);
 }

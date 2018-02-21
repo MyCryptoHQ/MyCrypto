@@ -198,24 +198,12 @@ export function* postShapeshiftOrderCreate(
   }
 }
 
-export function* postBityOrderSaga(): SagaIterator {
-  yield takeEvery(TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED, postBityOrderCreate);
-}
-
-export function* postShapeshiftOrderSaga(): SagaIterator {
-  yield takeEvery(TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED, postShapeshiftOrderCreate);
-}
-
 export function* restartSwap() {
   yield put(reset());
   yield put(resetWallet());
   yield put(stopPollShapeshiftOrderStatus());
   yield put(stopPollBityOrderStatus());
   yield put(loadShapeshiftRatesRequestedSwap());
-}
-
-export function* restartSwapSaga(): SagaIterator {
-  yield takeEvery(TypeKeys.SWAP_RESTART, restartSwap);
 }
 
 export function* bityOrderTimeRemaining(): SagaIterator {
@@ -364,6 +352,12 @@ export function* handleOrderTimeRemaining(): SagaIterator {
   yield cancel(orderTimeRemainingTask);
 }
 
-export function* swapTimerSaga(): SagaIterator {
+export default function* swapOrders(): SagaIterator {
+  yield fork(handleOrderTimeRemaining);
+  yield fork(pollShapeshiftOrderStatusSaga);
+  yield fork(pollBityOrderStatusSaga);
+  yield takeEvery(TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED, postBityOrderCreate);
+  yield takeEvery(TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED, postShapeshiftOrderCreate);
   yield takeEvery(TypeKeys.SWAP_ORDER_START_TIMER, handleOrderTimeRemaining);
+  yield takeEvery(TypeKeys.SWAP_RESTART, restartSwap);
 }
