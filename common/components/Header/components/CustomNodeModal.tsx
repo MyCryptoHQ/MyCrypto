@@ -95,6 +95,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         isOpen={true}
         buttons={buttons}
         handleClose={handleClose}
+        maxWidth={580}
       >
         <div>
           {isHttps && <div className="alert alert-warning small">{translate('NODE_Warning')}</div>}
