@@ -62,8 +62,18 @@ export interface LoadBityRatesRequestedSwapAction {
   payload?: null;
 }
 
-export interface LoadShapeshiftRequestedSwapAction {
+export interface LoadShapeshiftRatesRequestedSwapAction {
   type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED;
+  payload?: null;
+}
+
+export interface LoadBityRatesFailedSwapAction {
+  type: TypeKeys.SWAP_LOAD_BITY_RATES_FAILED;
+  payload?: null;
+}
+
+export interface LoadShapeshiftRatesFailedSwapAction {
+  type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_FAILED;
   payload?: null;
 }
 
