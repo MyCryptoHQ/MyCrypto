@@ -2,19 +2,9 @@ import { showNotification } from 'actions/notifications';
 import { loadBityRatesSucceededSwap, loadShapeshiftRatesSucceededSwap } from 'actions/swap';
 import { getAllRates } from 'api/bity';
 import { delay } from 'redux-saga';
-import { call, cancel, fork, put, race, take, takeLatest } from 'redux-saga/effects';
-import { createMockTask } from 'redux-saga/utils';
-import {
-  loadBityRates,
-  handleBityRates,
-  getBityRatesSaga,
-  loadShapeshiftRates,
-  getShapeShiftRatesSaga,
-  SHAPESHIFT_TIMEOUT,
-  handleShapeShiftRates
-} from 'sagas/swap/rates';
+import { call, put, race } from 'redux-saga/effects';
+import { loadBityRates, loadShapeshiftRates, SHAPESHIFT_TIMEOUT } from 'sagas/swap/rates';
 import shapeshift from 'api/shapeshift';
-import { TypeKeys } from 'actions/swap/constants';
 
 describe('loadBityRates*', () => {
   const gen1 = loadBityRates();
@@ -122,68 +112,6 @@ describe('loadShapeshiftRates*', () => {
     gen2.next();
     expect((gen2 as any).throw(err).value).toEqual(
       put(showNotification('danger', `Error loading ShapeShift tokens - ${err}`))
-    );
-  });
-});
-
-describe('handleBityRates*', () => {
-  const gen = handleBityRates();
-  const mockTask = createMockTask();
-
-  it('should fork loadBityRates', () => {
-    expect(gen.next().value).toEqual(fork(loadBityRates));
-  });
-
-  it('should take SWAP_STOP_LOAD_BITY_RATES', () => {
-    expect(gen.next(mockTask).value).toEqual(take(TypeKeys.SWAP_STOP_LOAD_BITY_RATES));
-  });
-
-  it('should cancel loadBityRatesTask', () => {
-    expect(gen.next().value).toEqual(cancel(mockTask));
-  });
-
-  it('should be done', () => {
-    expect(gen.next().done).toEqual(true);
-  });
-});
-
-describe('handleShapeshiftRates*', () => {
-  const gen = handleShapeShiftRates();
-  const mockTask = createMockTask();
-
-  it('should fork loadShapeshiftRates', () => {
-    expect(gen.next().value).toEqual(fork(loadShapeshiftRates));
-  });
-
-  it('should take SWAP_STOP_LOAD_BITY_RATES', () => {
-    expect(gen.next(mockTask).value).toEqual(take(TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES));
-  });
-
-  it('should cancel loadShapeShiftRatesTask', () => {
-    expect(gen.next().value).toEqual(cancel(mockTask));
-  });
-
-  it('should be done', () => {
-    expect(gen.next().done).toEqual(true);
-  });
-});
-
-describe('getBityRatesSaga*', () => {
-  const gen = getBityRatesSaga();
-
-  it('should takeLatest SWAP_LOAD_BITY_RATES_REQUESTED', () => {
-    expect(gen.next().value).toEqual(
-      takeLatest(TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED, handleBityRates)
-    );
-  });
-});
-
-describe('getShapeshiftRatesSaga*', () => {
-  const gen = getShapeShiftRatesSaga();
-
-  it('should takeLatest SWAP_LOAD_BITY_RATES_REQUESTED', () => {
-    expect(gen.next().value).toEqual(
-      takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeShiftRates)
     );
   });
 });
