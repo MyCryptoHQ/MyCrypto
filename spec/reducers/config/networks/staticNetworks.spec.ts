@@ -17,7 +17,7 @@ const expectedInitialState = {
     unit: 'ETH',
     chainId: 1,
     isCustom: false,
-    color: '#0e97c0',
+    color: '#007896',
     blockExplorer: makeExplorer('Etherscan', 'https://etherscan.io'),
     tokenExplorer: {
       name: ethPlorer,
