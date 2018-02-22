@@ -30,6 +30,7 @@ import {
   ChangeNodeIntentAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
+import { resetWallet } from 'actions/wallet';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
@@ -166,10 +167,18 @@ export function* handleNodeChangeIntent({
 
   yield put(setLatestBlock(currentBlock));
   yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
+
+  if (currentConfig.network !== nextNodeConfig.network) {
+    yield fork(handleNewNetwork);
+  }
 }
 
 export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
   yield put(changeNodeIntent(action.payload.id));
+}
+
+export function* handleNewNetwork() {
+  yield put(resetWallet());
 }
 
 export const node = [

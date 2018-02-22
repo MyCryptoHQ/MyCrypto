@@ -7,7 +7,6 @@ import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { showNotification } from 'actions/notifications';
 import { TypeKeys as WalletTK } from 'actions/wallet';
-import { TypeKeys as ConfigTK } from 'actions/config';
 import { Nonce } from 'libs/units';
 
 export function* handleNonceRequest(): SagaIterator {
@@ -40,6 +39,6 @@ export function* handleNonceRequestWrapper(): SagaIterator {
 
 //leave get nonce requested for nonce refresh later on
 export const nonce = takeEvery(
-  [TK.GET_NONCE_REQUESTED, WalletTK.WALLET_SET, ConfigTK.CONFIG_NODE_CHANGE],
+  [TK.GET_NONCE_REQUESTED, WalletTK.WALLET_SET],
   handleNonceRequestWrapper
 );
