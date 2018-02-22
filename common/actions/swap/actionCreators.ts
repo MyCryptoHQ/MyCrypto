@@ -27,10 +27,10 @@ export function loadBityRatesSucceededSwap(
   };
 }
 
-export type TLoadShapeshiftSucceededSwap = typeof loadShapeshiftRatesSucceededSwap;
+export type TLoadShapeshiftRatesSucceededSwap = typeof loadShapeshiftRatesSucceededSwap;
 export function loadShapeshiftRatesSucceededSwap(
   payload
-): interfaces.LoadShapshiftRatesSucceededSwapAction {
+): interfaces.LoadShapeshiftRatesSucceededSwapAction {
   return {
     type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED,
     payload
@@ -59,7 +59,7 @@ export function loadBityRatesRequestedSwap(): interfaces.LoadBityRatesRequestedS
   };
 }
 
-export type TLoadShapeshiftRequestedSwap = typeof loadShapeshiftRatesRequestedSwap;
+export type TLoadShapeshiftRatesRequestedSwap = typeof loadShapeshiftRatesRequestedSwap;
 export function loadShapeshiftRatesRequestedSwap(): interfaces.LoadShapeshiftRatesRequestedSwapAction {
   return {
     type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED

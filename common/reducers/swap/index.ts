@@ -11,8 +11,8 @@ export interface State {
   options: stateTypes.NormalizedOptions;
   bityRates: stateTypes.NormalizedBityRates;
   // Change this
-  shapeshiftRates: stateTypes.NormalizedBityRates;
-  provider: string;
+  shapeshiftRates: stateTypes.NormalizedShapeshiftRates;
+  provider: stateTypes.ProviderName;
   bityOrder: any;
   shapeshiftOrder: any;
   destinationAddress: string;
