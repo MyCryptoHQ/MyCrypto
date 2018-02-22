@@ -155,13 +155,6 @@ class Header extends Component<Props, State> {
                   ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
                   options={Object.values(languages)}
                   value={languages[selectedLanguage]}
-                  extra={
-                    <li key="disclaimer">
-                      <a data-toggle="modal" data-target="#disclaimerModal">
-                        Disclaimer
-                      </a>
-                    </li>
-                  }
                   onChange={this.changeLanguage}
                   size="smr"
                   color="white"
