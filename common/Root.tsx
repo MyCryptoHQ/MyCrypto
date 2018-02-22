@@ -13,6 +13,7 @@ import CheckTransaction from 'containers/Tabs/CheckTransaction';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
+import DownloadPage from 'components/DownloadPage';
 import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus } from 'actions/config';
@@ -70,6 +71,7 @@ export default class Root extends Component<Props, State> {
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/download" component={DownloadPage} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>

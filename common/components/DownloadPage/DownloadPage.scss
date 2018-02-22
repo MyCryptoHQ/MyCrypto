@@ -1,0 +1,122 @@
+@import 'common/sass/variables';
+
+$screenshot-bleed: 200px;
+
+@keyframes background-gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes screenshot-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.DownloadPage {
+  position: relative;
+  text-align: center;
+  margin: 0 -3% -5rem;
+
+  @media (min-width: $screen-md) {
+    margin: 0 -5rem -5rem;
+  }
+
+  &-top {
+    padding: $space * 2 $space $screenshot-bleed;
+    color: #FFF;
+    background: linear-gradient(-120deg, $ether-navy, $brand-primary, $ether-navy);
+    background-size: 400% 400%;
+    animation: background-gradient 40s ease infinite;
+  }
+
+  &-title {
+    margin-bottom: $space;
+  }
+
+  &-description {
+    font-size: $font-size-medium;
+    max-width: 660px;
+    margin: 0 auto $space * 2.5;
+    opacity: 0.92;
+  }
+
+  &-download {
+    margin-bottom: $space * 2;
+
+    &-button {
+      display: block;
+      max-width: 320px;
+      margin: 0 auto $space-sm;
+      padding: $space 0;
+      font-size: $font-size-medium;
+      background: #FFF;
+      border-radius: 4px;
+      color: $text-color;
+      transition: color 100ms ease, transform 100ms ease;
+
+      &:hover {
+        color: $brand-primary;
+        transform: translateY(-1px);
+        opacity: 1;
+      }
+
+      .fa {
+        margin-left: $space-sm;
+      }
+    }
+
+    &-link {
+      margin: 0 $space-sm;
+      color: #FFF;
+      opacity: 0.5;
+
+      &:hover,
+      &:active {
+        color: #FFF;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &-screenshot {
+    display: block;
+    max-width: 1020px;
+    width: 100%;
+    margin: -$screenshot-bleed auto $space * 4;
+    animation: screenshot-slide 800ms ease 1;
+    animation-delay: 1200ms;
+    animation-fill-mode: both;
+  }
+
+  &-features {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: $space * 4;
+
+    &-feature {
+      max-width: 320px;
+      margin: 0 $space $space;
+
+      &-icon {
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        margin: 0 auto $space-sm;
+        color: #FFF;
+        font-size: 42px;
+        border-radius: 100%;
+      }
+    }
+  }
+}
