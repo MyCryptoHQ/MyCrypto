@@ -133,13 +133,6 @@ describe('loadShapeshiftRates*', () => {
     expect(gen1.next().value).toEqual(call(delay, POLLING_CYCLE));
   });
 
-  // it('should handle an exception', () => {
-  //   gen2.next();
-  //   expect((gen2 as any).throw(err).value).toEqual(
-  //     put(showNotification('danger', `Error loading ShapeShift tokens - ${err}`))
-  //   );
-  // });
-
   it('should handle an exception', () => {
     const errGen = loadShapeshiftRates();
     errGen.next();
