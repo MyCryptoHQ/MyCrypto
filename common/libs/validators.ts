@@ -167,7 +167,9 @@ export const schema = {
     properties: {
       jsonrpc: { type: 'string' },
       id: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
-      result: { oneOf: [{ type: 'string' }, { type: 'array' }] },
+      result: {
+        oneOf: [{ type: 'string' }, { type: 'array' }, { type: 'object' }]
+      },
       status: { type: 'string' },
       message: { type: 'string', maxLength: 2 }
     }
@@ -236,6 +238,12 @@ export const isValidTokenBalance = (response: JsonRpcResponse) =>
 export const isValidTransactionCount = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Transaction Count');
 
+export const isValidTransactionByHash = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Transaction By Hash');
+
+export const isValidTransactionReceipt = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)('Transaction Receipt');
+
 export const isValidCurrentBlock = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Current Block');
 
@@ -253,3 +261,6 @@ export const isValidGetAccounts = (response: JsonRpcResponse) =>
 
 export const isValidGetNetVersion = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)('Net Version');
+
+export const isValidTxHash = (hash: string) =>
+  hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);

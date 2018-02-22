@@ -76,6 +76,7 @@
     "x_AddessDesc": "Dies ist deine \"Kontonummer\" oder dein \"Öffentlicher Schlüssel\". Du benötigst diese Adresse, wenn dir jemand Ether oder Tokens senden möchte. Das Icon ist eine einfache Möglichkeit, die Adresse zu überprüfen ",
     "x_Address": "Deine Adresse ",
     "x_Cancel": "Abbrechen ",
+    "x_Cipher": "Cipher Browser",
     "x_CSV": "CSV-Datei (unverschlüsselt) ",
     "x_Download": "Herunterladen ",
     "x_Json": "JSON-Datei (unverschlüsselt) ",

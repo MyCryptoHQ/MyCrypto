@@ -18,7 +18,7 @@ const expectedInitialState = {
     chainId: 1,
     isCustom: false,
     color: '#0e97c0',
-    blockExplorer: makeExplorer('https://etherscan.io'),
+    blockExplorer: makeExplorer('Etherscan', 'https://etherscan.io'),
     tokenExplorer: {
       name: ethPlorer,
       address: ETHTokenExplorer
@@ -37,7 +37,7 @@ const expectedInitialState = {
     chainId: 3,
     isCustom: false,
     color: '#adc101',
-    blockExplorer: makeExplorer('https://ropsten.etherscan.io'),
+    blockExplorer: makeExplorer('Etherscan', 'https://ropsten.etherscan.io'),
     tokens: require('config/tokens/ropsten.json'),
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
@@ -53,7 +53,7 @@ const expectedInitialState = {
     chainId: 42,
     isCustom: false,
     color: '#adc101',
-    blockExplorer: makeExplorer('https://kovan.etherscan.io'),
+    blockExplorer: makeExplorer('Etherscan', 'https://kovan.etherscan.io'),
     tokens: require('config/tokens/ropsten.json'),
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
@@ -69,7 +69,7 @@ const expectedInitialState = {
     chainId: 4,
     isCustom: false,
     color: '#adc101',
-    blockExplorer: makeExplorer('https://rinkeby.etherscan.io'),
+    blockExplorer: makeExplorer('Etherscan', 'https://rinkeby.etherscan.io'),
     tokens: require('config/tokens/rinkeby.json'),
     contracts: require('config/contracts/rinkeby.json'),
     isTestnet: true,
@@ -85,7 +85,7 @@ const expectedInitialState = {
     chainId: 61,
     isCustom: false,
     color: '#669073',
-    blockExplorer: makeExplorer('https://gastracker.io'),
+    blockExplorer: makeExplorer('GasTracker', 'https://gastracker.io'),
     tokens: require('config/tokens/etc.json'),
     contracts: require('config/contracts/etc.json'),
     dPathFormats: {
@@ -100,7 +100,7 @@ const expectedInitialState = {
     chainId: 8,
     isCustom: false,
     color: '#b37aff',
-    blockExplorer: makeExplorer('https://ubiqscan.io/en'),
+    blockExplorer: makeExplorer('Ubiqscan', 'https://ubiqscan.io/en'),
     tokens: require('config/tokens/ubq.json'),
     contracts: require('config/contracts/ubq.json'),
     dPathFormats: {
@@ -115,7 +115,7 @@ const expectedInitialState = {
     chainId: 2,
     isCustom: false,
     color: '#673ab7',
-    blockExplorer: makeExplorer('https://www.gander.tech'),
+    blockExplorer: makeExplorer('Gander', 'https://www.gander.tech'),
     tokens: require('config/tokens/exp.json'),
     contracts: require('config/contracts/exp.json'),
     dPathFormats: {

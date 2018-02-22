@@ -6,7 +6,9 @@ import {
   GetTokenBalanceRequest,
   GetTransactionCountRequest,
   SendRawTxRequest,
-  GetCurrentBlockRequest
+  GetCurrentBlockRequest,
+  GetTransactionByHashRequest,
+  GetTransactionReceiptRequest
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
@@ -16,6 +18,8 @@ export default class RPCRequests {
   public getNetVersion() {
     return { method: 'net_version' };
   }
+
+  /* TODO: Fix `| any` on all of these */
 
   public sendRawTx(signedTx: string): SendRawTxRequest | any {
     return {
@@ -49,6 +53,20 @@ export default class RPCRequests {
     return {
       method: 'eth_getTransactionCount',
       params: [address, 'pending']
+    };
+  }
+
+  public getTransactionByHash(txhash: string): GetTransactionByHashRequest | any {
+    return {
+      method: 'eth_getTransactionByHash',
+      params: [txhash]
+    };
+  }
+
+  public getTransactionReceipt(txhash: string): GetTransactionReceiptRequest | any {
+    return {
+      method: 'eth_getTransactionReceipt',
+      params: [txhash]
     };
   }
 

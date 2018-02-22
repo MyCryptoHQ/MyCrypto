@@ -1,10 +1,11 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 import { getValues } from '../utils/helpers';
+import packageJson from '../../package.json';
 
 export const languages = require('./languages.json');
 
 // Displays in the footer
-export const VERSION = '0.2.1 (BETA)';
+export const VERSION = `${packageJson.version} (BETA)`;
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -42,9 +43,11 @@ export const donationAddressMap = {
 };
 
 export const gasPriceDefaults = {
-  gasPriceMinGwei: 1,
-  gasPriceMaxGwei: 60
+  minGwei: 1,
+  maxGwei: 60,
+  default: 21
 };
+export const gasEstimateCacheTime = 60000;
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
