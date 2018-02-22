@@ -6,7 +6,8 @@ import { toggleOffline, changeNode, changeNodeIntent, setLatestBlock } from 'act
 import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
-  pollOfflineStatus
+  pollOfflineStatus,
+  handleNewNetwork
 } from 'sagas/config/node';
 import {
   getNodeId,
@@ -210,6 +211,10 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.gen.next().value).toEqual(
       put(changeNode({ networkId: newNodeConfig.network, nodeId: newNodeId }))
     );
+  });
+
+  it('should fork handleNewNetwork', () => {
+    expect(data.gen.next().value).toEqual(fork(handleNewNetwork));
   });
 
   it('should be done', () => {
