@@ -1,14 +1,14 @@
-import { Identicon, UnitDisplay } from 'components/ui';
+import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
-import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { NetworkConfig } from 'types/network';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
+import './AccountInfo.scss';
 
 interface OwnProps {
   wallet: IWallet;
@@ -89,7 +89,9 @@ class AccountInfo extends React.Component<Props, State> {
             <Identicon address={address} size="100%" />
           </div>
           <div className="AccountInfo-address-wrapper">
-            <div className="AccountInfo-address-addr">{address}</div>
+            <div className="AccountInfo-address-addr">
+              <Address address={address} />
+            </div>
           </div>
         </div>
 
@@ -160,24 +162,16 @@ class AccountInfo extends React.Component<Props, State> {
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={blockExplorer.addressUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={blockExplorer.addressUrl(address)}>
                     {`${network.name} (${blockExplorer.origin})`}
-                  </a>
+                  </NewTabLink>
                 </li>
               )}
               {!!tokenExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={tokenExplorer.address(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={tokenExplorer.address(address)}>
                     {`Tokens (${tokenExplorer.name})`}
-                  </a>
+                  </NewTabLink>
                 </li>
               )}
             </ul>

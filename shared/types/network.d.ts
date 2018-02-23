@@ -2,7 +2,7 @@ import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networ
 
 type StaticNetworkIds = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
 
-interface BlockExplorerConfig {
+export interface BlockExplorerConfig {
   name: string;
   origin: string;
   txUrl(txHash: string): string;

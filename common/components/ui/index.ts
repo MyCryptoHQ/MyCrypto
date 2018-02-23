@@ -12,6 +12,7 @@ export { default as SwapDropdown } from './SwapDropdown';
 export { default as Tooltip } from './Tooltip';
 export { default as TitleBar } from './TitleBar';
 export { default as HelpLink } from './HelpLink';
+export { default as Address } from './Address';
 export * from './ConditionalInput';
 export * from './Expandable';
 export * from './InlineSpinner';
