@@ -98,10 +98,10 @@ const inValidPaths = [
   ...inValidChange
 ];
 
-export const nospaceValid = [...length4, ...length3, ...validPaths];
-export const whitespaceValid = [...length4, ...length3, ...wsLength4, ...wsLength3, ...validPaths];
+export const valid = [...length4, ...length3, ...validPaths];
+export const invalid = [...wsLength4, ...wsLength3, ...inValidPaths];
 
 // whitespace strings are evaluated the same way as nospace strings, except they allow optional spaces between each portion of the string
 // ie. "m / 44' / 0' / 0'" is valid, "m / 4 4' / 0' / 0'" is invalid
-export const nospaceInvalid = [...wsLength4, ...wsLength3, ...inValidPaths];
-export const whitespaceInvalid = [...inValidPaths];
+export const whitespaceValid = [...wsLength4, ...wsLength3, ...valid];
+export const whitespaceInvalid = [...invalid];
