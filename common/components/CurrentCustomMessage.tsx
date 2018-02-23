@@ -4,7 +4,8 @@ import { AppState } from 'reducers';
 import { getCurrentTo, ICurrentTo } from 'selectors/transaction';
 import { getAllTokens } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { getAddressMessage, Token } from 'config';
+import { getAddressMessage } from 'config';
+import { Token } from 'types/network';
 
 interface ReduxProps {
   currentTo: ICurrentTo;
@@ -12,19 +13,24 @@ interface ReduxProps {
   wallet: AppState['wallet']['inst'];
 }
 
+type Props = ReduxProps;
+
 interface State {
   walletAddress: string | null;
 }
 
-class CurrentCustomMessageClass extends PureComponent<ReduxProps, State> {
+class CurrentCustomMessageClass extends PureComponent<Props, State> {
   public state: State = {
     walletAddress: null
   };
 
   public async componentDidMount() {
-    if (this.props.wallet) {
-      const walletAddress = await this.props.wallet.getAddressString();
-      this.setState({ walletAddress });
+    this.setAddressState(this.props);
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.wallet !== nextProps.wallet) {
+      this.setAddressState(nextProps);
     }
   }
 
@@ -38,6 +44,15 @@ class CurrentCustomMessageClass extends PureComponent<ReduxProps, State> {
       );
     } else {
       return null;
+    }
+  }
+
+  private setAddressState(props: Props) {
+    if (props.wallet) {
+      const walletAddress = props.wallet.getAddressString();
+      this.setState({ walletAddress });
+    } else {
+      this.setState({ walletAddress: '' });
     }
   }
 

@@ -76,6 +76,7 @@
     "x_AddessDesc": "Je Adres wordt ook wel je `Account #` of je Publieke Sleutel (\"Public Key\") genoemd. Dit is wat je deelt met anderen zodat ze je Ether of Tokens kunnen toesturen. Zie ook je kleurrijke adres icoon. Zorg ervoor dat het matched met je paper wallet & waar dan ook wanneer je je adres ergens invoerd. Dit icoon is een makkelijke manier om je adres te herkennen. ",
     "x_Address": "Je Adres ",
     "x_Cancel": "Annuleren ",
+    "x_Cipher": "Cipher Browser",
     "x_CSV": "CSV bestand (onversleuteld) ",
     "x_Download": "Download ",
     "x_Json": "JSON Bestand (onversleuteld) ",

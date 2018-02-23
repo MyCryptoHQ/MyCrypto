@@ -8,7 +8,7 @@ import { configureLiteSend, TConfigureLiteSend } from 'actions/swap';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { shouldDisplayLiteSend } from 'selectors/swap';
-import { NetworkConfig } from 'config';
+import { NetworkConfig } from 'types/network';
 
 interface DispatchProps {
   configureLiteSend: TConfigureLiteSend;

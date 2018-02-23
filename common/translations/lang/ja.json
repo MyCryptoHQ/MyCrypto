@@ -77,6 +77,7 @@
     "x_AddessDesc": "Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere. これは自分のアカウント番号と公開鍵になります。ETHを送信するために必要な情報です。アイコンは自分のアドレスを識別するものです。 ",
     "x_Address": "自分のアドレス ",
     "x_Cancel": "取り消す ",
+    "x_Cipher": "Cipher Browser",
     "x_CSV": "CSV ファイル (未暗号化) ",
     "x_Download": "ダウンロード ",
     "x_Json": "JSON ファイル (未暗号化) ",
