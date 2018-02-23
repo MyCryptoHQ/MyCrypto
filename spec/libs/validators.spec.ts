@@ -4,6 +4,7 @@ import {
   isValidPath,
   isValidPrivKey
 } from '../../common/libs/validators';
+import { DPaths } from 'config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
@@ -53,6 +54,11 @@ describe('Validator', () => {
   it('should validate incorrect DPaths as false', () => {
     invalid.forEach(path => {
       expect(isValidPath(path)).toBeFalsy();
+    });
+  });
+  it('should validate hardcoded DPaths as true', () => {
+    DPaths.forEach(DPath => {
+      expect(isValidPath(DPath.value)).toBeTruthy();
     });
   });
 });
