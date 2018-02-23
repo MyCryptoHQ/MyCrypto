@@ -39,8 +39,8 @@ class AccountInfo extends React.Component<Props, State> {
     confirmAddr: false
   };
 
-  public async setAddressFromWallet() {
-    const address = await this.props.wallet.getAddressString();
+  public setAddressFromWallet() {
+    const address = this.props.wallet.getAddressString();
     if (address !== this.state.address) {
       this.setState({ address });
     }
@@ -134,17 +134,21 @@ class AccountInfo extends React.Component<Props, State> {
                   symbol={balance.wei ? network.name : null}
                 />
               </span>
-              {balance.isPending ? (
-                <Spinner />
-              ) : (
-                !isOffline && (
-                  <button
-                    className="AccountInfo-section-refresh"
-                    onClick={this.props.setAccountBalance}
-                  >
-                    <i className="fa fa-refresh" />
-                  </button>
-                )
+              {balance.wei && (
+                <React.Fragment>
+                  {balance.isPending ? (
+                    <Spinner />
+                  ) : (
+                    !isOffline && (
+                      <button
+                        className="AccountInfo-section-refresh"
+                        onClick={this.props.setAccountBalance}
+                      >
+                        <i className="fa fa-refresh" />
+                      </button>
+                    )
+                  )}
+                </React.Fragment>
               )}
             </li>
           </ul>

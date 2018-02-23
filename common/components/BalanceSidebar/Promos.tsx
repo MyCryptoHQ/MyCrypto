@@ -1,9 +1,9 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { HardwareWallets, Coinbase, Bity } from './PromoComponents';
+import { HardwareWallets, Coinbase, Shapeshift } from './PromoComponents';
 import './Promos.scss';
 
-const promos = [HardwareWallets, Coinbase, Bity];
+const promos = [HardwareWallets, Coinbase, Shapeshift];
 
 const CarouselAnimation = ({ children, ...props }) => (
   <CSSTransition {...props} timeout={300} classNames="carousel">
@@ -36,11 +36,7 @@ export default class Promos extends React.PureComponent<{}, State> {
     return (
       <div className="Promos">
         <TransitionGroup className="Promos-promo-wrapper">
-          {promos
-            .filter(i => {
-              return i === promos[activePromo];
-            })
-            .map(promo => <CarouselAnimation key={Math.random()}>{promo}</CarouselAnimation>)}
+          <CarouselAnimation key={Math.random()}>{promos[activePromo]}</CarouselAnimation>
         </TransitionGroup>
         <div className="Promos-nav">
           {promos.map((_, index) => {

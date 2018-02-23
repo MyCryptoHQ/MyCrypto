@@ -9,6 +9,7 @@ import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
+import CheckTransaction from 'containers/Tabs/CheckTransaction';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
@@ -81,6 +82,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+          <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
           <RouteNotFound />
         </Switch>
@@ -134,8 +136,7 @@ const LegacyRoutes = withRouter(props => {
         history.push('/account/info');
         break;
       case '#check-tx-status':
-        history.push('/check-tx-status');
-        break;
+        return <RedirectWithQuery from={pathname} to={'/tx-status'} />;
     }
   }
 

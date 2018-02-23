@@ -36,20 +36,17 @@ export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
   return undefined;
 }
 
-export async function saveWalletConfig(
-  wallet: IWallet,
-  state: Partial<WalletConfig>
-): Promise<WalletConfig> {
-  const oldState = await loadWalletConfig(wallet);
+export function saveWalletConfig(wallet: IWallet, state: Partial<WalletConfig>): WalletConfig {
+  const oldState = loadWalletConfig(wallet);
   const newState = { ...oldState, ...state };
-  const key = await getWalletConfigKey(wallet);
+  const key = getWalletConfigKey(wallet);
   localStorage.setItem(key, JSON.stringify(newState));
   return newState;
 }
 
-export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {
+export function loadWalletConfig(wallet: IWallet): WalletConfig {
   try {
-    const key = await getWalletConfigKey(wallet);
+    const key = getWalletConfigKey(wallet);
     const state = localStorage.getItem(key);
     return state ? JSON.parse(state) : {};
   } catch (err) {
@@ -58,7 +55,7 @@ export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {
   }
 }
 
-async function getWalletConfigKey(wallet: IWallet): Promise<string> {
-  const address = await wallet.getAddressString();
+function getWalletConfigKey(wallet: IWallet): string {
+  const address = wallet.getAddressString();
   return sha256(`${address}-mycrypto`).toString('hex');
 }
