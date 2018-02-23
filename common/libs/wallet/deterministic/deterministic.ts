@@ -9,8 +9,8 @@ export class DeterministicWallet {
     this.index = index;
   }
 
-  public getAddressString(): Promise<string> {
-    return Promise.resolve(this.address);
+  public getAddressString(): string {
+    return this.address;
   }
 
   public getPath(): string {

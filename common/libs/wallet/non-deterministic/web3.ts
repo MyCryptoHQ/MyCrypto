@@ -15,8 +15,8 @@ export default class Web3Wallet implements IFullWallet {
     this.network = network;
   }
 
-  public getAddressString(): Promise<string> {
-    return Promise.resolve(this.address);
+  public getAddressString(): string {
+    return this.address;
   }
 
   public signRawTransaction(): Promise<Buffer> {
