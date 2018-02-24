@@ -73,7 +73,7 @@ export function formatNumber(num: string, digits?: number): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
+export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?

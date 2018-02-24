@@ -38,8 +38,8 @@ describe('handleSetUnitMeta*', () => {
   };
 
   describe('etherToEther', () => {
-    const currentUnit = 'ether';
-    const previousUnit = 'ether';
+    const currentUnit = 'ETH';
+    const previousUnit = 'ETH';
     const action: any = {
       payload: currentUnit
     };
@@ -56,7 +56,7 @@ describe('handleSetUnitMeta*', () => {
 
   describe('tokenToEther', () => {
     const previousUnit = 'token';
-    const currentUnit = 'ether';
+    const currentUnit = 'ETH';
     const action: any = {
       payload: currentUnit
     };
@@ -146,7 +146,7 @@ describe('handleSetUnitMeta*', () => {
     };
 
     describe('etherToToken', () => {
-      const previousUnit = 'ether';
+      const previousUnit = 'ETH';
       const currentUnit = 'token';
       const action: any = {
         payload: currentUnit
