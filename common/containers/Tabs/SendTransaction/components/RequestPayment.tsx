@@ -121,8 +121,8 @@ class RequestPayment extends React.Component<Props, {}> {
 
           {!!eip681String.length && (
             <div className="row form-group">
+              <label className="RequestPayment-title">{translate('Payment QR & Code')}</label>
               <div className="col-xs-6">
-                <label>{translate('Payment QR & Code')}</label>
                 <div className="RequestPayment-qr well well-lg">
                   <QRCode data={eip681String} />
                 </div>
