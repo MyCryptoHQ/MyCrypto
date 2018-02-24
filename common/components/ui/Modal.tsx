@@ -15,7 +15,12 @@ interface Props {
   disableButtons?: boolean;
   children: any;
   buttons?: IButton[];
+  maxWidth?: number;
   handleClose?(): void;
+}
+interface ModalStyle {
+  width?: string;
+  maxWidth?: string;
 }
 
 const Fade = ({ children, ...props }) => (
@@ -46,16 +51,22 @@ export default class Modal extends PureComponent<Props, {}> {
   }
 
   public render() {
-    const { isOpen, title, children, buttons, handleClose } = this.props;
+    const { isOpen, title, children, buttons, handleClose, maxWidth } = this.props;
     const hasButtons = buttons && buttons.length;
+    const modalStyle: ModalStyle = {};
+
+    if (maxWidth) {
+      modalStyle.width = '100%';
+      modalStyle.maxWidth = `${maxWidth}px`;
+    }
 
     return (
       <TransitionGroup>
         {isOpen && (
           <Fade>
             <div>
-              <div className={`Modalshade`} />
-              <div className={`Modal`}>
+              <div className="Modalshade" />
+              <div className="Modal" style={modalStyle}>
                 {title && (
                   <div className="Modal-header flex-wrapper">
                     <h2 className="Modal-header-title">{title}</h2>
