@@ -1,5 +1,9 @@
 // Input groups overrides
-@import "common/sass/variables";
+@import 'common/sass/variables';
+
+label {
+  font-weight: normal;
+}
 
 .input-group {
   > * {
@@ -23,7 +27,7 @@
     margin-bottom: 0;
     margin-top: 0;
     font-size: $font-size-base;
-    padding: .5rem $space-xl;
+    padding: 0.5rem $space-xl;
   }
 
   // Fix for nested dropdown button
