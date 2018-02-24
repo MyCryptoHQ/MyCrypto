@@ -39,8 +39,8 @@ class AccountInfo extends React.Component<Props, State> {
     confirmAddr: false
   };
 
-  public async setAddressFromWallet() {
-    const address = await this.props.wallet.getAddressString();
+  public setAddressFromWallet() {
+    const address = this.props.wallet.getAddressString();
     if (address !== this.state.address) {
       this.setState({ address });
     }
