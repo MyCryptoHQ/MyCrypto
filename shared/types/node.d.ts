@@ -35,6 +35,7 @@ declare enum StaticNodeId {
   ETH_MYCRYPTO = 'eth_mycrypto',
   ETH_ETHSCAN = 'eth_ethscan',
   ETH_INFURA = 'eth_infura',
+  ETH_BLOCKSCALE = 'eth_blockscale',
   ROP_INFURA = 'rop_infura',
   KOV_ETHSCAN = 'kov_ethscan',
   RIN_ETHSCAN = 'rin_ethscan',
