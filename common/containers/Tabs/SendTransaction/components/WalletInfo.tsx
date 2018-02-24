@@ -115,7 +115,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
   }
 
   private async setWalletAsyncState(wallet: IWallet) {
-    const address = await wallet.getAddressString();
+    const address = wallet.getAddressString();
     const privateKey = wallet.getPrivateKeyString ? await wallet.getPrivateKeyString() : '';
     this.setState({ address, privateKey });
   }
