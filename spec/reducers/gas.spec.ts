@@ -18,6 +18,7 @@ describe('gas reducer', () => {
       fast: 4,
       fastest: 20,
       time: Date.now(),
+      chainId: 1,
       isDefault: false
     };
     const state = gas(undefined, setGasEstimates(estimates));

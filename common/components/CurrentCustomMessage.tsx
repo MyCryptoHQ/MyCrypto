@@ -47,9 +47,9 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
     }
   }
 
-  private async setAddressState(props: Props) {
+  private setAddressState(props: Props) {
     if (props.wallet) {
-      const walletAddress = await props.wallet.getAddressString();
+      const walletAddress = props.wallet.getAddressString();
       this.setState({ walletAddress });
     } else {
       this.setState({ walletAddress: '' });
