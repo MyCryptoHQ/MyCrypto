@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
-import Select from 'react-select';
 import { Web3Node } from 'libs/nodes';
 import RpcNode from 'libs/nodes/rpc';
 import { Input } from 'components/ui';
