@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
 import translate, { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
-import { TogglablePassword } from 'components';
-import { Spinner } from 'components/ui';
+import { Spinner, Input } from 'components/ui';
 import Template from '../Template';
 import './EnterPassword.scss';
 
@@ -41,36 +40,38 @@ export default class EnterPassword extends Component<Props, State> {
             Generate a {translate('x_Keystore2')}
           </h1>
 
-          <label className="EnterPw-password">
-            <h4 className="EnterPw-password-label">{translate('GEN_Label_1')}</h4>
-            <TogglablePassword
-              value={password}
-              placeholder={`Password must be uncommon and ${MINIMUM_PASSWORD_LENGTH}+ characters long`}
-              validity={passwordValidity}
-              ariaLabel={translateRaw('GEN_Aria_1')}
-              toggleAriaLabel={translateRaw('GEN_Aria_2')}
-              onChange={this.onPasswordChange}
-              onBlur={this.showFeedback}
-            />
-            {!isPasswordValid &&
-              feedback && (
-                <p className={`EnterPw-password-feedback help-block is-${passwordValidity}`}>
-                  {feedback}
-                </p>
-              )}
-          </label>
+          <div className="input-group-wrapper EnterPw-password">
+            <label className="input-group">
+              <div className="input-group-header">{translate('GEN_Label_1')}</div>
+              <Input
+                className={!isPasswordValid && password.length > 0 ? 'invalid' : ''}
+                type="password"
+                value={password}
+                placeholder={`Password must be uncommon and ${MINIMUM_PASSWORD_LENGTH}+ characters long`}
+                onChange={this.onPasswordChange}
+                onBlur={this.showFeedback}
+              />
+              {!isPasswordValid &&
+                feedback && (
+                  <p className={`EnterPw-password-feedback help-block is-${passwordValidity}`}>
+                    {feedback}
+                  </p>
+                )}
+            </label>
+          </div>
 
-          <label className="EnterPw-password">
-            <h4 className="EnterPw-password-label">Confirm password</h4>
-            <TogglablePassword
-              value={confirmedPassword}
-              placeholder={translateRaw('GEN_Placeholder_1')}
-              ariaLabel="Confirm Password"
-              toggleAriaLabel="toggle confirm password visibility"
-              isValid={isConfirmValid}
-              onChange={this.onConfirmChange}
-            />
-          </label>
+          <div className="input-group-wrapper EnterPw-password">
+            <label className="input-group">
+              <div className="input-group-header">Confirm password</div>
+              <Input
+                className={!isConfirmValid && password.length > 0 ? 'invalid' : ''}
+                type="password"
+                value={confirmedPassword}
+                placeholder={translateRaw('GEN_Placeholder_1')}
+                onChange={this.onConfirmChange}
+              />
+            </label>
+          </div>
 
           <button disabled={!canSubmit} className="EnterPw-submit btn btn-primary btn-lg btn-block">
             {isGenerating ? <Spinner light={true} /> : translate('NAV_GenerateWallet')}
@@ -147,6 +148,7 @@ export default class EnterPassword extends Component<Props, State> {
   };
 
   private showFeedback = () => {
+    console.log('s');
     const { password, passwordValidation } = this.state;
     if (!password) {
       return;

@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { translateRaw } from 'translations';
 import './Word.scss';
+import { Input } from 'components/ui';
 
 interface Props {
   index: number;
@@ -29,12 +30,8 @@ export default class MnemonicWord extends React.Component<Props, State> {
       <div className="MnemonicWord">
         <span className="MnemonicWord-number">{index + 1}.</span>
         <div className="MnemonicWord-word input-group">
-          <input
-            className={classnames(
-              'MnemonicWord-word-input',
-              'form-control',
-              word === value && 'is-valid'
-            )}
+          <Input
+            className={classnames('MnemonicWord-word-input', word === value && 'valid')}
             value={readOnly ? word : value}
             onChange={this.handleChange}
             readOnly={readOnly}

@@ -13,7 +13,12 @@ class Input extends React.Component<HTMLProps<HTMLInputElement>, State> {
     return (
       <input
         {...this.props}
-        onBlur={() => this.setState({ hasBlurred: true })}
+        onBlur={e => {
+          this.setState({ hasBlurred: true });
+          if (this.props && this.props.onBlur) {
+            this.props.onBlur(e);
+          }
+        }}
         className={`input-group-input  ${this.props.className} ${
           this.state.hasBlurred ? 'has-blurred' : ''
         }`}
