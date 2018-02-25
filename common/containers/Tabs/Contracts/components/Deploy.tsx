@@ -13,7 +13,7 @@ import { FullWalletOnly } from 'components/renderCbs';
 import { NonceField, TXMetaDataPanel } from 'components';
 import './Deploy.scss';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import Textarea from 'components/ui/Textarea';
+import { TextArea } from 'components/ui';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -34,7 +34,7 @@ class DeployClass extends Component<DispatchProps> {
             <div className="input-group-header">{translate('CONTRACT_ByteCode')}</div>
             <DataFieldFactory
               withProps={({ data: { raw, value }, onChange, readOnly }) => (
-                <Textarea
+                <TextArea
                   name="byteCode"
                   placeholder="0x8f87a973e..."
                   rows={6}

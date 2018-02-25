@@ -7,9 +7,8 @@ import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
 import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
-import { Input } from 'components/ui';
+import { Input, TextArea } from 'components/ui';
 import Dropdown from 'components/ui/Dropdown';
-import Textarea from 'components/ui/Textarea';
 
 interface ContractOption {
   name: string;
@@ -121,7 +120,7 @@ class InteractForm extends Component<Props, State> {
         <div className="input-group-wrapper InteractForm-interface">
           <label className="input-group">
             <div className="input-group-header">{translate('CONTRACT_Json')}</div>
-            <Textarea
+            <TextArea
               placeholder={this.abiJsonPlaceholder}
               className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
               onChange={this.handleInput('abiJson')}

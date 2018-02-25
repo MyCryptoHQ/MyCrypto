@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet';
-import { QRCode } from 'components/ui';
+import { QRCode, TextArea } from 'components/ui';
 import { getUnit, getDecimal } from 'selectors/transaction/meta';
 import {
   getCurrentTo,
@@ -21,7 +21,6 @@ import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/con
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { NetworkConfig } from 'types/network';
-import Textarea from 'components/ui/Textarea';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -129,7 +128,7 @@ class RequestPayment extends React.Component<Props, {}> {
                 </div>
               </div>
               <div className="col-xs-6 RequestPayment-codeContainer">
-                <Textarea className="RequestPayment-codeBox" value={eip681String} disabled={true} />
+                <TextArea className="RequestPayment-codeBox" value={eip681String} disabled={true} />
               </div>
             </div>
           )}

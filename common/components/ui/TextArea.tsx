@@ -5,7 +5,7 @@ interface State {
   hasBlurred: boolean;
 }
 
-class Textarea extends React.Component<HTMLProps<HTMLTextAreaElement>, State> {
+class TextArea extends React.Component<HTMLProps<HTMLTextAreaElement>, State> {
   public state: State = {
     hasBlurred: false
   };
@@ -27,4 +27,4 @@ class Textarea extends React.Component<HTMLProps<HTMLTextAreaElement>, State> {
   }
 }
 
-export default Textarea;
+export default TextArea;

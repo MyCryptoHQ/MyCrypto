@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import Textarea from 'components/ui/Textarea';
+import { TextArea } from 'components/ui';
 
 export interface CallbackProps {
   onClick(): void;
@@ -43,7 +43,7 @@ class SendButtonFactoryClass extends Component<Props> {
                   ? 'Transaction Parameters'
                   : translate('SEND_raw')}
               </label>
-              <Textarea value={getStringifiedTx(serializedTransaction)} rows={4} readOnly={true} />
+              <TextArea value={getStringifiedTx(serializedTransaction)} rows={4} readOnly={true} />
             </div>
             {!onlyTransactionParameters && (
               <div className="col-sm-6">
@@ -52,7 +52,7 @@ class SendButtonFactoryClass extends Component<Props> {
                     ? 'Serialized Transaction Parameters'
                     : translate('SEND_signed')}
                 </label>
-                <Textarea value={addHexPrefix(serializedTransaction)} rows={4} readOnly={true} />
+                <TextArea value={addHexPrefix(serializedTransaction)} rows={4} readOnly={true} />
               </div>
             )}
             <OfflineBroadcast />

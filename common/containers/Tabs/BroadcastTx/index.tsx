@@ -9,7 +9,7 @@ import {
   TSignTransactionFailed
 } from 'actions/transaction';
 import { computeIndexingHash } from 'libs/transaction';
-import { QRCode } from 'components/ui';
+import { QRCode, TextArea } from 'components/ui';
 import EthTx from 'ethereumjs-tx';
 import { SendButton } from 'components/SendButton';
 import { toBuffer, bufferToHex } from 'ethereumjs-util';
@@ -18,7 +18,6 @@ import { AppState } from 'reducers';
 import './index.scss';
 import { Switch, Route, RouteComponentProps } from 'react-router';
 import { RouteNotFound } from 'components/RouteNotFound';
-import Textarea from 'components/ui/Textarea';
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -58,7 +57,7 @@ class BroadcastTx extends Component<Props> {
                   <div className="input-group-wrapper InteractForm-interface">
                     <label className="input-group">
                       <div className="input-group-header">{translateRaw('SEND_signed')}</div>
-                      <Textarea
+                      <TextArea
                         className={stateTransaction ? '' : 'invalid'}
                         rows={7}
                         value={userInput}

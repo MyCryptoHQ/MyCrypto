@@ -4,7 +4,7 @@ import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
 import './index.scss';
-import Textarea from 'components/ui/Textarea';
+import { TextArea } from 'components/ui';
 
 interface Props {
   showNotification: TShowNotification;
@@ -40,7 +40,7 @@ export class VerifyMessage extends Component<Props, State> {
           <div className="input-group-wrapper ">
             <label className="input-group">
               <div className="input-group-header">{translate('MSG_signature')}</div>
-              <Textarea
+              <TextArea
                 className={`VerifyMessage-inputBox ${signature ? 'is-valid' : 'is-invalid'}`}
                 placeholder={signaturePlaceholder}
                 value={signature}
