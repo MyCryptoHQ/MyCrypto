@@ -30,26 +30,14 @@ import { getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import { State as SwapState, INITIAL_STATE as INITIAL_SWAP_STATE } from 'reducers/swap';
 import { delay } from 'redux-saga';
-import {
-  call,
-  cancel,
-  apply,
-  cancelled,
-  fork,
-  put,
-  select,
-  take,
-  takeEvery
-} from 'redux-saga/effects';
+import { call, cancel, apply, cancelled, fork, put, select, take } from 'redux-saga/effects';
 import {
   getSwap,
   pollBityOrderStatus,
   pollBityOrderStatusSaga,
   postBityOrderCreate,
-  postBityOrderSaga,
   pollShapeshiftOrderStatus,
   pollShapeshiftOrderStatusSaga,
-  postShapeshiftOrderSaga,
   shapeshiftOrderTimeRemaining,
   bityOrderTimeRemaining,
   ORDER_TIMEOUT_MESSAGE,
@@ -452,26 +440,6 @@ describe('postShapeshiftOrderCreate*', () => {
       put(showNotification('danger', `Shapeshift Error: ${errorOrder.error}`, TEN_SECONDS))
     );
     expect(data.clone2.next().value).toEqual(put(shapeshiftOrderCreateFailedSwap()));
-  });
-});
-
-describe('postBityOrderSaga*', () => {
-  const gen = postBityOrderSaga();
-
-  it('should takeEvery SWAP_BITY_ORDER_CREATE_REQUESTED', () => {
-    expect(gen.next().value).toEqual(
-      takeEvery(TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED, postBityOrderCreate)
-    );
-  });
-});
-
-describe('postShapeshiftOrderSaga*', () => {
-  const gen = postShapeshiftOrderSaga();
-
-  it('should takeEvery SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED', () => {
-    expect(gen.next().value).toEqual(
-      takeEvery(TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED, postShapeshiftOrderCreate)
-    );
   });
 });
 

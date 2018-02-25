@@ -10,7 +10,6 @@ interface CustomNodeConfig {
   lib: CustomNode;
   service: 'your custom node';
   url: string;
-  port: number;
   network: string;
   auth?: {
     username: string;
