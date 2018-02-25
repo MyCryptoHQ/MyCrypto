@@ -1,24 +1,28 @@
 import { showNotification } from 'actions/notifications';
-import { loadBityRatesSucceededSwap, loadShapeshiftRatesSucceededSwap } from 'actions/swap';
+import {
+  loadBityRatesSucceededSwap,
+  loadShapeshiftRatesSucceededSwap,
+  loadShapeshiftRatesFailedSwap,
+  loadBityRatesFailedSwap
+} from 'actions/swap';
 import { getAllRates } from 'api/bity';
 import { delay } from 'redux-saga';
-import { call, cancel, fork, put, race, take, takeLatest } from 'redux-saga/effects';
+import { call, cancel, fork, put, race, take, select } from 'redux-saga/effects';
 import { createMockTask } from 'redux-saga/utils';
 import {
   loadBityRates,
-  handleBityRates,
-  getBityRatesSaga,
   loadShapeshiftRates,
-  getShapeShiftRatesSaga,
+  handleBityRates,
+  handleShapeshiftRates,
   SHAPESHIFT_TIMEOUT,
-  handleShapeShiftRates
+  POLLING_CYCLE
 } from 'sagas/swap/rates';
 import shapeshift from 'api/shapeshift';
 import { TypeKeys } from 'actions/swap/constants';
+import { getHasNotifiedRatesFailure } from 'selectors/swap';
 
 describe('loadBityRates*', () => {
   const gen1 = loadBityRates();
-  const gen2 = loadBityRates();
   const apiResponse = {
     BTCETH: {
       id: 'BTCETH',
@@ -31,6 +35,7 @@ describe('loadBityRates*', () => {
       rate: 0.042958
     }
   };
+  const err = { message: 'error' };
   let random;
 
   beforeAll(() => {
@@ -50,20 +55,30 @@ describe('loadBityRates*', () => {
     expect(gen1.next(apiResponse).value).toEqual(put(loadBityRatesSucceededSwap(apiResponse)));
   });
 
-  it('should call delay for 5 seconds', () => {
-    expect(gen1.next().value).toEqual(call(delay, 30000));
+  it(`should delay for ${POLLING_CYCLE}ms`, () => {
+    expect(gen1.next().value).toEqual(call(delay, POLLING_CYCLE));
   });
 
   it('should handle an exception', () => {
-    const err = { message: 'error' };
-    gen2.next();
-    expect((gen2 as any).throw(err).value).toEqual(put(showNotification('danger', err.message)));
+    const errGen = loadBityRates();
+    errGen.next();
+    expect((errGen as any).throw(err).value).toEqual(select(getHasNotifiedRatesFailure));
+    expect(errGen.next(false).value).toEqual(put(showNotification('danger', err.message)));
+    expect(errGen.next().value).toEqual(put(loadBityRatesFailedSwap()));
+    expect(errGen.next().value).toEqual(call(delay, POLLING_CYCLE));
+  });
+
+  it('should not notify on subsequent exceptions', () => {
+    const noNotifyErrGen = loadBityRates();
+    noNotifyErrGen.next();
+    expect((noNotifyErrGen as any).throw(err).value).toEqual(select(getHasNotifiedRatesFailure));
+    expect(noNotifyErrGen.next(true).value).toEqual(put(loadBityRatesFailedSwap()));
+    expect(noNotifyErrGen.next().value).toEqual(call(delay, POLLING_CYCLE));
   });
 });
 
 describe('loadShapeshiftRates*', () => {
   const gen1 = loadShapeshiftRates();
-  const gen2 = loadShapeshiftRates();
 
   const apiResponse = {
     ['1SSTANT']: {
@@ -87,6 +102,7 @@ describe('loadShapeshiftRates*', () => {
       min: 7.86382979
     }
   };
+  const err = 'error';
   let random;
 
   beforeAll(() => {
@@ -113,16 +129,30 @@ describe('loadShapeshiftRates*', () => {
     );
   });
 
-  it('should call delay for 30 seconds', () => {
-    expect(gen1.next().value).toEqual(call(delay, 30000));
+  it(`should delay for ${POLLING_CYCLE}ms`, () => {
+    expect(gen1.next().value).toEqual(call(delay, POLLING_CYCLE));
   });
 
   it('should handle an exception', () => {
-    const err = 'error';
-    gen2.next();
-    expect((gen2 as any).throw(err).value).toEqual(
-      put(showNotification('danger', `Error loading ShapeShift tokens - ${err}`))
+    const errGen = loadShapeshiftRates();
+    errGen.next();
+    expect((errGen as any).throw(err).value).toEqual(select(getHasNotifiedRatesFailure));
+    expect(errGen.next(false).value).toEqual(
+      put(
+        showNotification(
+          'danger',
+          'Failed to load swap rates from ShapeShift, please try again later'
+        )
+      )
     );
+    expect(errGen.next().value).toEqual(put(loadShapeshiftRatesFailedSwap()));
+  });
+
+  it('should not notify on subsequent exceptions', () => {
+    const noNotifyErrGen = loadShapeshiftRates();
+    noNotifyErrGen.next();
+    expect((noNotifyErrGen as any).throw(err).value).toEqual(select(getHasNotifiedRatesFailure));
+    expect(noNotifyErrGen.next(true).value).toEqual(put(loadShapeshiftRatesFailedSwap()));
   });
 });
 
@@ -148,7 +178,7 @@ describe('handleBityRates*', () => {
 });
 
 describe('handleShapeshiftRates*', () => {
-  const gen = handleShapeShiftRates();
+  const gen = handleShapeshiftRates();
   const mockTask = createMockTask();
 
   it('should fork loadShapeshiftRates', () => {
@@ -165,25 +195,5 @@ describe('handleShapeshiftRates*', () => {
 
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
-  });
-});
-
-describe('getBityRatesSaga*', () => {
-  const gen = getBityRatesSaga();
-
-  it('should takeLatest SWAP_LOAD_BITY_RATES_REQUESTED', () => {
-    expect(gen.next().value).toEqual(
-      takeLatest(TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED, handleBityRates)
-    );
-  });
-});
-
-describe('getShapeshiftRatesSaga*', () => {
-  const gen = getShapeShiftRatesSaga();
-
-  it('should takeLatest SWAP_LOAD_BITY_RATES_REQUESTED', () => {
-    expect(gen.next().value).toEqual(
-      takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeShiftRates)
-    );
   });
 });
