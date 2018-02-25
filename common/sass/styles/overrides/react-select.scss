@@ -45,6 +45,7 @@
     padding: 0.75rem 1rem;
   }
   &-menu-outer {
+    z-index: 3;
     width: calc(100% + 2px);
     left: -1px;
     border-radius: 2px;
@@ -59,10 +60,9 @@
     border-bottom-right-radius: 2px;
     border-color: inherit;
   }
-  &.invalid,
-  &.invalid.has-value {
-    border-color: #ec4d3c;
-    box-shadow: inset 0px 0px 0px 1px #ec4d3c;
+  &.invalid.has-blurred {
+    border-color: $brand-danger;
+    box-shadow: inset 0px 0px 0px 1px $brand-danger;
   }
   &.is-focused {
     border-color: #4295bc;

@@ -17,24 +17,22 @@ export const AmountField: React.SFC<Props> = ({
 }) => (
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
-      <React.Fragment>
-        <div className="input-group-wrapper">
-          <label className="input-group input-group-inline-dropdown">
-            <div className="input-group-header">{translate('SEND_amount')}</div>
-            <Input
-              className={`input-group-input ${
-                isAmountValid(raw, customValidator, isValid) ? '' : 'invalid'
-              }`}
-              type="number"
-              placeholder={translateRaw('SEND_amount_short')}
-              value={raw}
-              readOnly={!!readOnly}
-              onChange={onChange}
-            />
-            {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
-          </label>
-        </div>
-      </React.Fragment>
+      <div className="input-group-wrapper">
+        <label className="input-group input-group-inline-dropdown">
+          <div className="input-group-header">{translate('SEND_amount')}</div>
+          <Input
+            className={`input-group-input ${
+              isAmountValid(raw, customValidator, isValid) ? '' : 'invalid'
+            }`}
+            type="number"
+            placeholder={translateRaw('SEND_amount_short')}
+            value={raw}
+            readOnly={!!readOnly}
+            onChange={onChange}
+          />
+          {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
+        </label>
+      </div>
     )}
   />
 );

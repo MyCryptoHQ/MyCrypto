@@ -1,3 +1,5 @@
+@import 'common/sass/variables';
+
 .example-form {
   max-width: 744px;
   margin: auto;
@@ -8,13 +10,22 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
-  &-header > label,
   &-header {
     display: flex;
     font-size: 1rem;
     margin-bottom: 8px;
     font-weight: 400;
     align-items: center;
+    flex-wrap: wrap;
+    > *:first-child {
+      margin-right: 8px;
+    }
+    > .flex-spacer {
+      flex-grow: 1;
+    }
+    > .small {
+      color: rgba(0, 0, 0, 0.54);
+    }
   }
   &-input {
     width: 100%;
@@ -27,8 +38,8 @@
     box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
     transition: border-color 120ms, box-shadow 120ms;
     &.invalid.has-blurred {
-      border-color: #ec4d3c;
-      box-shadow: inset 0px 0px 0px 1px #ec4d3c;
+      border-color: $brand-danger;
+      box-shadow: inset 0px 0px 0px 1px $brand-danger;
     }
     &::placeholder {
       color: rgba(0, 0, 0, 0.3);

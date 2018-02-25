@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
-import Select from 'react-select';
 import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
+import { Input } from 'components/ui';
+import Dropdown from 'components/ui/Dropdown';
+import Textarea from 'components/ui/Textarea';
 
 interface ContractOption {
   name: string;
@@ -83,43 +85,45 @@ class InteractForm extends Component<Props, State> {
     return (
       <div className="InteractForm">
         <div className="InteractForm-address row">
-          <label className="InteractForm-address-field form-group col-sm-6">
-            <h4>{translate('CONTRACT_Title')}</h4>
-            <input
-              placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
-              name="contract_address"
-              autoComplete="off"
-              value={address}
-              className={classnames('InteractForm-address-field-input', 'form-control', {
-                'is-invalid': !validEthAddress
-              })}
-              onChange={this.handleInput('address')}
-            />
-          </label>
+          <div className="input-group-wrapper InteractForm-address-field col-sm-6">
+            <label className="input-group">
+              <div className="input-group-header">{translate('CONTRACT_Title')}</div>
+              <Input
+                placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
+                name="contract_address"
+                autoComplete="off"
+                value={address}
+                className={classnames('InteractForm-address-field-input', {
+                  invalid: !validEthAddress
+                })}
+                onChange={this.handleInput('address')}
+              />
+            </label>
+          </div>
 
-          <label className="InteractForm-address-contract form-group col-sm-6">
-            <h4>{translate('CONTRACT_Title_2')}</h4>
-            <Select
-              name="interactContract"
-              className={`${!contract ? 'is-invalid' : ''}`}
-              value={contract as any}
-              placeholder={this.state.contractPlaceholder}
-              onChange={this.handleSelectContract}
-              options={contractOptions}
-              clearable={false}
-              searchable={false}
-              labelKey="name"
-            />
-          </label>
+          <div className="input-group-wrapper InteractForm-address-field col-sm-6">
+            <label className="input-group">
+              <div className="input-group-header">{translate('CONTRACT_Title_2')}</div>
+              <Dropdown
+                className={`${!contract ? 'invalid' : ''}`}
+                value={contract as any}
+                placeholder={this.state.contractPlaceholder}
+                onChange={this.handleSelectContract}
+                options={contractOptions}
+                clearable={false}
+                searchable={false}
+                labelKey="name"
+              />
+            </label>
+          </div>
         </div>
 
-        <div className="InteractForm-interface">
-          <label className="InteractForm-interface-field form-group">
-            <h4 className="InteractForm-interface-field-label">{translate('CONTRACT_Json')}</h4>
-            <textarea
+        <div className="input-group-wrapper InteractForm-interface">
+          <label className="input-group">
+            <div className="input-group-header">{translate('CONTRACT_Json')}</div>
+            <Textarea
               placeholder={this.abiJsonPlaceholder}
-              name="abiJson"
-              className={classnames('InteractForm-interface-field-input', 'form-control', {
+              className={classnames('InteractForm-interface-field-input', {
                 'is-invalid': !validAbiJson
               })}
               onChange={this.handleInput('abiJson')}
