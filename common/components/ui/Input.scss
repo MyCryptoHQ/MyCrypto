@@ -10,9 +10,11 @@
   margin-bottom: 1rem;
   &-header > label,
   &-header {
+    display: flex;
     font-size: 1rem;
     margin-bottom: 8px;
     font-weight: 400;
+    align-items: center;
   }
   &-input {
     width: 100%;
@@ -31,12 +33,14 @@
     &::placeholder {
       color: rgba(0, 0, 0, 0.3);
     }
-    &:focus {
-      border-color: #4295bc;
-      box-shadow: inset 0px 0px 0px 1px #4295bc;
-      &.valid {
-        border-color: #8dd17b;
-        box-shadow: inset 0px 0px 0px 1px #8dd17b;
+    &:not([disabled]):not([readonly]) {
+      &:focus {
+        border-color: #4295bc;
+        box-shadow: inset 0px 0px 0px 1px #4295bc;
+        &.valid {
+          border-color: #8dd17b;
+          box-shadow: inset 0px 0px 0px 1px #8dd17b;
+        }
       }
     }
   }

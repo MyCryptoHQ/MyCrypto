@@ -11,22 +11,20 @@ interface Props {
 export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
   <AddressFieldFactory
     withProps={({ currentTo, isValid, onChange, readOnly }) => (
-      <React.Fragment>
-        <div className="input-group-wrapper">
-          <label className="input-group">
-            <div className="input-group-header">{translate('SEND_addr')}</div>
-            <Input
-              className={`input-group-input ${isValid ? '' : 'invalid'}`}
-              type="text"
-              value={currentTo.raw}
-              placeholder={donationAddressMap.ETH}
-              readOnly={!!(isReadOnly || readOnly)}
-              spellCheck={false}
-              onChange={onChange}
-            />
-          </label>
-        </div>
-      </React.Fragment>
+      <div className="input-group-wrapper">
+        <label className="input-group">
+          <div className="input-group-header">{translate('SEND_addr')}</div>
+          <Input
+            className={`input-group-input ${isValid ? '' : 'invalid'}`}
+            type="text"
+            value={currentTo.raw}
+            placeholder={donationAddressMap.ETH}
+            readOnly={!!(isReadOnly || readOnly)}
+            spellCheck={false}
+            onChange={onChange}
+          />
+        </label>
+      </div>
     )}
   />
 );
