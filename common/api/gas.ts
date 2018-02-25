@@ -17,6 +17,7 @@ export interface GasEstimates {
   fast: number;
   fastest: number;
   time: number;
+  chainId: number;
   isDefault: boolean;
 }
 
@@ -66,6 +67,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
     .then((res: RawGasEstimates) => ({
       ...res,
       time: Date.now(),
+      chainId: 1,
       isDefault: false
     }));
 }
