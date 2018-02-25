@@ -1,10 +1,12 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 import { getValues } from '../utils/helpers';
+import packageJson from '../../package.json';
+import { GasPriceSetting } from 'types/network';
 
 export const languages = require('./languages.json');
 
 // Displays in the footer
-export const VERSION = '0.3.2 (BETA)';
+export const VERSION = `${packageJson.version} (BETA)`;
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -41,12 +43,12 @@ export const donationAddressMap = {
   REP: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520'
 };
 
-export const gasPriceDefaults = {
-  minGwei: 1,
-  maxGwei: 60,
-  default: 21
-};
 export const gasEstimateCacheTime = 60000;
+export const gasPriceDefaults: GasPriceSetting = {
+  min: 1,
+  max: 60,
+  initial: 20
+};
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 

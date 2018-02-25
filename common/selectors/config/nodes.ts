@@ -119,7 +119,7 @@ export function getNodeLib(state: AppState) {
 export interface NodeOption {
   isCustom: false;
   value: string;
-  name: { networkId?: string; service: string };
+  label: { network: string; service: string };
   color?: string;
   hidden?: boolean;
 }
@@ -127,12 +127,14 @@ export interface NodeOption {
 export function getStaticNodeOptions(state: AppState): NodeOption[] {
   const staticNetworkConfigs = getStaticNetworkConfigs(state);
   return Object.entries(getStaticNodes(state)).map(([nodeId, node]: [string, StaticNodeConfig]) => {
-    const networkId = node.network;
-    const associatedNetwork = staticNetworkConfigs[networkId];
+    const associatedNetwork = staticNetworkConfigs[node.network];
     const opt: NodeOption = {
       isCustom: node.isCustom,
       value: nodeId,
-      name: { networkId, service: node.service },
+      label: {
+        network: node.network,
+        service: node.service
+      },
       color: associatedNetwork.color,
       hidden: node.hidden
     };
@@ -144,7 +146,10 @@ export interface CustomNodeOption {
   isCustom: true;
   id: string;
   value: string;
-  name: { networkId?: string; nodeId: string };
+  label: {
+    network: string;
+    nodeName: string;
+  };
   color?: string;
   hidden?: boolean;
 }
@@ -153,15 +158,18 @@ export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
   const staticNetworkConfigs = getStaticNetworkConfigs(state);
   const customNetworkConfigs = getCustomNetworkConfigs(state);
   return Object.entries(getCustomNodeConfigs(state)).map(
-    ([nodeId, node]: [string, CustomNodeConfig]) => {
-      const networkId = node.network;
-      const associatedNetwork = isStaticNetworkId(state, networkId)
-        ? staticNetworkConfigs[networkId]
-        : customNetworkConfigs[networkId];
+    ([_, node]: [string, CustomNodeConfig]) => {
+      const chainId = node.network;
+      const associatedNetwork = isStaticNetworkId(state, chainId)
+        ? staticNetworkConfigs[chainId]
+        : customNetworkConfigs[chainId];
       const opt: CustomNodeOption = {
         isCustom: node.isCustom,
         value: node.id,
-        name: { networkId, nodeId },
+        label: {
+          network: associatedNetwork.unit,
+          nodeName: node.name
+        },
         color: associatedNetwork.isCustom ? undefined : associatedNetwork.color,
         hidden: false,
         id: node.id
