@@ -40,6 +40,12 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     isLoading: false
   };
 
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.dPath !== nextProps.dPath) {
+      this.setState({ dPath: nextProps.dPath.value });
+    }
+  }
+
   public render() {
     const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
