@@ -11,12 +11,13 @@ export interface State {
   options: stateTypes.NormalizedOptions;
   bityRates: stateTypes.NormalizedBityRates;
   // Change this
-  shapeshiftRates: stateTypes.NormalizedBityRates;
-  provider: string;
+  shapeshiftRates: stateTypes.NormalizedShapeshiftRates;
+  provider: stateTypes.ProviderName;
   bityOrder: any;
   shapeshiftOrder: any;
   destinationAddress: string;
   isFetchingRates: boolean | null;
+  hasNotifiedRatesFailure: boolean;
   secondsRemaining: number | null;
   outputTx: string | null;
   isPostingOrder: boolean;
@@ -50,6 +51,7 @@ export const INITIAL_STATE: State = {
   bityOrder: {},
   shapeshiftOrder: {},
   isFetchingRates: null,
+  hasNotifiedRatesFailure: false,
   secondsRemaining: null,
   outputTx: null,
   isPostingOrder: false,
@@ -209,14 +211,17 @@ export function swap(state: State = INITIAL_STATE, action: actionTypes.SwapActio
       };
 
     case TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED:
-      return {
-        ...state,
-        isFetchingRates: true
-      };
     case TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED:
       return {
         ...state,
-        isFetchingRates: true
+        isFetchingRates: true,
+        hasNotifiedRatesFailure: false
+      };
+    case TypeKeys.SWAP_LOAD_BITY_RATES_FAILED:
+    case TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_FAILED:
+      return {
+        ...state,
+        hasNotifiedRatesFailure: true
       };
     case TypeKeys.SWAP_STOP_LOAD_BITY_RATES:
       return {

@@ -2,18 +2,21 @@ import { showNotification } from 'actions/notifications';
 import {
   loadBityRatesSucceededSwap,
   loadShapeshiftRatesSucceededSwap,
+  loadBityRatesFailedSwap,
+  loadShapeshiftRatesFailedSwap,
   changeSwapProvider,
   ChangeProviderSwapAcion
 } from 'actions/swap';
 import { TypeKeys } from 'actions/swap/constants';
 import { getAllRates } from 'api/bity';
 import { delay, SagaIterator } from 'redux-saga';
-import { call, select, cancel, fork, put, take, takeLatest, race } from 'redux-saga/effects';
+import { call, select, put, takeLatest, race, take, cancel, fork } from 'redux-saga/effects';
 import shapeshift from 'api/shapeshift';
 import { getSwap } from 'sagas/swap/orders';
+import { getHasNotifiedRatesFailure } from 'selectors/swap';
 
-const POLLING_CYCLE = 30000;
 export const SHAPESHIFT_TIMEOUT = 10000;
+export const POLLING_CYCLE = 30000;
 
 export function* loadBityRates(): SagaIterator {
   while (true) {
@@ -21,10 +24,21 @@ export function* loadBityRates(): SagaIterator {
       const data = yield call(getAllRates);
       yield put(loadBityRatesSucceededSwap(data));
     } catch (error) {
-      yield put(showNotification('danger', error.message));
+      const hasNotified = yield select(getHasNotifiedRatesFailure);
+      if (!hasNotified) {
+        console.error('Failed to load rates from Bity:', error);
+        yield put(showNotification('danger', error.message));
+      }
+      yield put(loadBityRatesFailedSwap());
     }
     yield call(delay, POLLING_CYCLE);
   }
+}
+
+export function* handleBityRates(): SagaIterator {
+  const loadBityRatesTask = yield fork(loadBityRates);
+  yield take(TypeKeys.SWAP_STOP_LOAD_BITY_RATES);
+  yield cancel(loadBityRatesTask);
 }
 
 export function* loadShapeshiftRates(): SagaIterator {
@@ -40,15 +54,29 @@ export function* loadShapeshiftRates(): SagaIterator {
       if (tokens) {
         yield put(loadShapeshiftRatesSucceededSwap(tokens));
       } else {
-        yield put(
-          showNotification('danger', 'Error loading ShapeShift tokens - reverting to Bity')
-        );
+        throw new Error('ShapeShift rates request timed out.');
       }
     } catch (error) {
-      yield put(showNotification('danger', `Error loading ShapeShift tokens - ${error}`));
+      const hasNotified = yield select(getHasNotifiedRatesFailure);
+      if (!hasNotified) {
+        console.error('Failed to fetch rates from shapeshift:', error);
+        yield put(
+          showNotification(
+            'danger',
+            'Failed to load swap rates from ShapeShift, please try again later'
+          )
+        );
+      }
+      yield put(loadShapeshiftRatesFailedSwap());
     }
     yield call(delay, POLLING_CYCLE);
   }
+}
+
+export function* handleShapeshiftRates(): SagaIterator {
+  const loadShapeshiftRatesTask = yield fork(loadShapeshiftRates);
+  yield take(TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES);
+  yield cancel(loadShapeshiftRatesTask);
 }
 
 export function* swapProvider(action: ChangeProviderSwapAcion): SagaIterator {
@@ -58,31 +86,8 @@ export function* swapProvider(action: ChangeProviderSwapAcion): SagaIterator {
   }
 }
 
-// Fork our recurring API call, watch for the need to cancel.
-export function* handleBityRates(): SagaIterator {
-  const loadBityRatesTask = yield fork(loadBityRates);
-  yield take(TypeKeys.SWAP_STOP_LOAD_BITY_RATES);
-  yield cancel(loadBityRatesTask);
-}
-
-// Watch for latest SWAP_LOAD_BITY_RATES_REQUESTED action.
-export function* getBityRatesSaga(): SagaIterator {
+export default function* swapRates(): SagaIterator {
   yield takeLatest(TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED, handleBityRates);
-}
-
-// Fork our API call
-export function* handleShapeShiftRates(): SagaIterator {
-  const loadShapeShiftRatesTask = yield fork(loadShapeshiftRates);
-  yield take(TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES);
-  yield cancel(loadShapeShiftRatesTask);
-}
-
-// Watch for SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED action.
-export function* getShapeShiftRatesSaga(): SagaIterator {
-  yield takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeShiftRates);
-}
-
-// Watch for provider swaps
-export function* swapProviderSaga(): SagaIterator {
+  yield takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeshiftRates);
   yield takeLatest(TypeKeys.SWAP_CHANGE_PROVIDER, swapProvider);
 }
