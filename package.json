@@ -126,7 +126,7 @@
     "url-loader": "0.6.2",
     "url-search-params-polyfill": "2.0.3",
     "webpack": "3.11.0",
-    "webpack-dev-middleware": "2.0.5",
+    "webpack-dev-middleware": "2.0.6",
     "webpack-hot-middleware": "2.21.0",
     "webpack-sources": "1.0.1",
     "webpack-subresource-integrity": "1.0.4",
