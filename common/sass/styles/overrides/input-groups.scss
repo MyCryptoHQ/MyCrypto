@@ -19,7 +19,15 @@ label {
 
 // Align with inputs
 .input-group-addon {
-  padding: 0 $padding-base-horizontal;
+  width: auto;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  &--transparent {
+    background-color: transparent;
+    border: none;
+  }
 }
 
 .input-group-btn {

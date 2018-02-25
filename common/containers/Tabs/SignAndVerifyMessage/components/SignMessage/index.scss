@@ -7,7 +7,9 @@
   }
 
   &-reset {
-    float: right;
+    display: block;
+    margin: auto;
+    margin-bottom: 0.25rem;
 
     .fa {
       margin-right: 8px;
@@ -19,9 +21,9 @@
   }
 
   &-help {
-    margin-top: 10px;
     font-size: 13px;
     font-style: italic;
+    margin-bottom: 1rem;
   }
 
   &-inputBox {

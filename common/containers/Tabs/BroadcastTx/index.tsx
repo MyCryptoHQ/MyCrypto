@@ -11,7 +11,6 @@ import {
 import { computeIndexingHash } from 'libs/transaction';
 import { QRCode } from 'components/ui';
 import EthTx from 'ethereumjs-tx';
-import classnames from 'classnames';
 import { SendButton } from 'components/SendButton';
 import { toBuffer, bufferToHex } from 'ethereumjs-util';
 import { getSerializedTransaction } from 'selectors/transaction';
@@ -19,6 +18,7 @@ import { AppState } from 'reducers';
 import './index.scss';
 import { Switch, Route, RouteComponentProps } from 'react-router';
 import { RouteNotFound } from 'components/RouteNotFound';
+import Textarea from 'components/ui/Textarea';
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -40,11 +40,6 @@ class BroadcastTx extends Component<Props> {
   public render() {
     const { userInput } = this.state;
     const { stateTransaction } = this.props;
-    const inputClasses = classnames({
-      'form-control': true,
-      'is-valid': !!stateTransaction,
-      'is-invalid': !stateTransaction
-    });
     const currentPath = this.props.match.url;
     return (
       <TabSection isUnavailableOffline={true}>
@@ -59,13 +54,19 @@ class BroadcastTx extends Component<Props> {
                   <p className="BroadcastTx-help">
                     Paste a signed transaction and press the "SEND TRANSACTION" button.
                   </p>
-                  <label>{translateRaw('SEND_signed')}</label>
-                  <textarea
-                    className={inputClasses}
-                    rows={7}
-                    value={userInput}
-                    onChange={this.handleChange}
-                  />
+
+                  <div className="input-group-wrapper InteractForm-interface">
+                    <label className="input-group">
+                      <div className="input-group-header">{translateRaw('SEND_signed')}</div>
+                      <Textarea
+                        className={stateTransaction ? '' : 'invalid'}
+                        rows={7}
+                        value={userInput}
+                        onChange={this.handleChange}
+                      />
+                    </label>
+                  </div>
+
                   <SendButton onlyTransactionParameters={true} />
 
                   <div className="BroadcastTx-qr">

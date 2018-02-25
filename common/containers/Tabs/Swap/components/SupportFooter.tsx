@@ -2,6 +2,7 @@ import React from 'react';
 import './SupportFooter.scss';
 import { SwapInput } from 'actions/swap';
 import { NormalizedBityRates, NormalizedShapeshiftRates } from 'reducers/swap/types';
+import Textarea from 'components/ui/Textarea';
 
 interface Props {
   origin: SwapInput;
@@ -81,7 +82,7 @@ Rate: ${rates[pair].rate} ${origin.id}/${destination.id}`;
             <small>Click here if link doesn't work</small>
           </p>
           {open ? (
-            <textarea defaultValue={fallbackBody} className="form-control input-sm" rows={9} />
+            <Textarea defaultValue={fallbackBody} className="form-control input-sm" rows={9} />
           ) : null}
         </div>
       </section>

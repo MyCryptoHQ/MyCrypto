@@ -123,9 +123,7 @@ class InteractForm extends Component<Props, State> {
             <div className="input-group-header">{translate('CONTRACT_Json')}</div>
             <Textarea
               placeholder={this.abiJsonPlaceholder}
-              className={classnames('InteractForm-interface-field-input', {
-                'is-invalid': !validAbiJson
-              })}
+              className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
               onChange={this.handleInput('abiJson')}
               value={abiJson}
               rows={6}

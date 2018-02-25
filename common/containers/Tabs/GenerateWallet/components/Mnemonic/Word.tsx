@@ -27,9 +27,9 @@ export default class MnemonicWord extends React.Component<Props, State> {
     const readOnly = isReadOnly || isShowingWord;
 
     return (
-      <div className="MnemonicWord">
-        <span className="MnemonicWord-number">{index + 1}.</span>
-        <div className="MnemonicWord-word input-group">
+      <div className="input-group-wrapper MnemonicWord">
+        <label className="input-group input-group-inline-dropdown ENSInput-name">
+          <span className="input-group-addon input-group-addon--transparent">{index + 1}.</span>
           <Input
             className={classnames('MnemonicWord-word-input', word === value && 'valid')}
             value={readOnly ? word : value}
@@ -52,7 +52,7 @@ export default class MnemonicWord extends React.Component<Props, State> {
               />
             </span>
           )}
-        </div>
+        </label>
       </div>
     );
   }

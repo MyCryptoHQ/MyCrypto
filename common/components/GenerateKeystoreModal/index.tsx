@@ -60,27 +60,31 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
         handleClose={this.handleClose}
       >
         <form className="GenKeystore" onSubmit={this.handleSubmit}>
-          <label className="GenKeystore-field">
-            <h4 className="GenKeystore-field-label">Private Key</h4>
-            <TogglablePassword
-              name="privateKey"
-              value={privateKey}
-              disabled={!!privateKey}
-              onChange={this.handleInput}
-              placeholder="f1d0e0789c6d40f39..."
-              isValid={isPrivateKeyValid}
-            />
-          </label>
-          <label className="GenKeystore-field">
-            <h4 className="GenKeystore-field-label">Password</h4>
-            <TogglablePassword
-              name="password"
-              value={password}
-              onChange={this.handleInput}
-              placeholder={translateRaw('Minimum 9 characters')}
-              isValid={isPasswordValid}
-            />
-          </label>
+          <div className="input-group-wrapper GenKeystore-field">
+            <label className="input-group input-group-inline-dropdown">
+              <div className="input-group-header">Private Key</div>
+              <TogglablePassword
+                name="privateKey"
+                value={privateKey}
+                disabled={!!privateKey}
+                onChange={this.handleInput}
+                placeholder="f1d0e0789c6d40f39..."
+                isValid={isPrivateKeyValid}
+              />
+            </label>
+          </div>
+          <div className="input-group-wrapper GenKeystore-field">
+            <label className="input-group input-group-inline-dropdown">
+              <div className="input-group-header">Password</div>
+              <TogglablePassword
+                name="password"
+                value={password}
+                onChange={this.handleInput}
+                placeholder={translateRaw('Minimum 9 characters')}
+                isValid={isPasswordValid}
+              />
+            </label>
+          </div>
 
           {!keystoreFile ? (
             <button

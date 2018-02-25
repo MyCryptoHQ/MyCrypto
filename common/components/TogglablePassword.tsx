@@ -4,6 +4,8 @@
 // yourself, otherwise all visibiility changes are managed in internal state.
 import React from 'react';
 import './TogglablePassword.scss';
+import Textarea from 'components/ui/Textarea';
+import { Input } from 'components/ui';
 
 interface Props {
   // Shared props
@@ -66,10 +68,10 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       : isValid === null || isValid === undefined ? '' : isValid ? 'is-valid' : 'is-invalid';
 
     return (
-      <div className="TogglablePassword input-group">
+      <div className="TogglablePassword input-group input-group-inline-dropdown">
         {isTextareaWhenVisible && isVisible ? (
-          <textarea
-            className={`form-control ${validClass}`}
+          <Textarea
+            className={validClass}
             value={value}
             name={name}
             disabled={disabled}
@@ -82,12 +84,12 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
             aria-label={ariaLabel}
           />
         ) : (
-          <input
+          <Input
             value={value}
             name={name}
             disabled={disabled}
             type={isVisible ? 'text' : 'password'}
-            className={`form-control ${validClass}`}
+            className={`${validClass}`}
             placeholder={placeholder}
             onChange={onChange}
             onFocus={onFocus}

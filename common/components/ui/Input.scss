@@ -9,7 +9,6 @@
   margin: auto;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
   &-header {
     display: flex;
     font-size: 1rem;
@@ -26,6 +25,10 @@
     > .small {
       color: rgba(0, 0, 0, 0.54);
     }
+  }
+  > .Select,
+  &-input {
+    margin-bottom: 1rem;
   }
   &-input {
     width: 100%;

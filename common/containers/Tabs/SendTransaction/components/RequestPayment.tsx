@@ -21,6 +21,7 @@ import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/con
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { NetworkConfig } from 'types/network';
+import Textarea from 'components/ui/Textarea';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -128,11 +129,7 @@ class RequestPayment extends React.Component<Props, {}> {
                 </div>
               </div>
               <div className="col-xs-6 RequestPayment-codeContainer">
-                <textarea
-                  className="RequestPayment-codeBox form-control"
-                  value={eip681String}
-                  disabled={true}
-                />
+                <Textarea className="RequestPayment-codeBox" value={eip681String} disabled={true} />
               </div>
             </div>
           )}
