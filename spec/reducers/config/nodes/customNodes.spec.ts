@@ -9,7 +9,6 @@ const firstCustomNode: CustomNodeConfig = {
   lib: jest.fn() as any,
   name: 'My cool custom node',
   network: 'CustomNetworkId',
-  port: 8080,
   service: 'your custom node',
   url: '127.0.0.1'
 };

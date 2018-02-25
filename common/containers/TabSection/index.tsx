@@ -24,13 +24,12 @@ class TabSection extends Component<Props, {}> {
 
     return (
       <div className="page-layout">
-        <main>
-          <Header />
-          <div className="Tab container">
-            {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
-          </div>
-          <Footer latestBlock={latestBlock} />
-        </main>
+        <Header />
+        <div className="Tab container">
+          {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+        </div>
+        <div className="flex-spacer" />
+        <Footer latestBlock={latestBlock} />
         <Notifications />
         <AlphaAgreement />
       </div>

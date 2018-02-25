@@ -108,6 +108,6 @@ export function* fetchPaymentAddress(): SagaIterator {
   return false;
 }
 
-export function* liteSend(): SagaIterator {
+export default function* swapLiteSend(): SagaIterator {
   yield takeEvery(SwapTK.SWAP_CONFIGURE_LITE_SEND, handleConfigureLiteSend);
 }

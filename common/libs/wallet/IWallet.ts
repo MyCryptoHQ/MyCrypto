@@ -2,7 +2,7 @@ import Tx from 'ethereumjs-tx';
 
 interface IBaseWallet {
   isReadOnly?: boolean;
-  getAddressString(): Promise<string> | string;
+  getAddressString(): string;
   getPrivateKeyString?(): string;
 }
 
