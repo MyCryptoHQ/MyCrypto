@@ -56,3 +56,5 @@ webpack_config/server.csr
 
 v8-compile-cache-0/
 package-lock.json
+
+yarn.lock
