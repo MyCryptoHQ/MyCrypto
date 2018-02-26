@@ -131,8 +131,8 @@
     "webpack-hot-middleware": "2.21.0",
     "webpack-sources": "1.0.1",
     "webpack-subresource-integrity": "1.0.4",
-    "what-input": "5.0.5",
-    "worker-loader": "1.1.0"
+    "worker-loader": "1.1.1",
+    "what-input": "5.0.5"
   },
   "scripts": {
     "freezer": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js",
