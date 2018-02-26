@@ -85,8 +85,9 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     this.setErrorMessages(originErr, destinationErr);
   }, 1000);
 
+  private timeoutId: NodeJS.Timer | null;
   public componentDidMount() {
-    setTimeout(() => {
+    this.timeoutId = setTimeout(() => {
       this.setState({
         timeout: true
       });
@@ -105,6 +106,12 @@ export default class CurrencySwap extends PureComponent<Props, State> {
         originKindOptions,
         destinationKindOptions
       });
+    }
+  }
+
+  public componentWillUnmount() {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
     }
   }
 
