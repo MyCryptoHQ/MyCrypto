@@ -19,7 +19,7 @@
     "ethereum-blockies": "git+https://github.com/MyCryptoHQ/blockies.git",
     "ethereumjs-abi": "0.6.5",
     "ethereumjs-tx": "1.3.3",
-    "ethereumjs-util": "5.1.4",
+    "ethereumjs-util": "5.1.5",
     "ethereumjs-wallet": "0.6.0",
     "font-awesome": "4.7.0",
     "hard-source-webpack-plugin": "0.5.16",
