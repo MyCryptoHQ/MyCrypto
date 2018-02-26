@@ -45,7 +45,7 @@ export class KeystoreDecrypt extends PureComponent {
       <form id="selectedUploadKey" onSubmit={this.unlock}>
         <div className="form-group">
           <input
-            className={'hidden'}
+            className="hidden"
             type="file"
             id="fselector"
             onChange={this.handleFileSelection}
