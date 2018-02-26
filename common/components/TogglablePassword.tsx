@@ -8,6 +8,7 @@ import { Input, TextArea } from 'components/ui';
 
 interface Props {
   // Shared props
+  className?: string;
   value: string;
   placeholder?: string;
   name?: string;
@@ -47,6 +48,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
 
   public render() {
     const {
+      className,
       value,
       placeholder,
       name,
@@ -67,7 +69,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       : isValid === null || isValid === undefined ? '' : isValid ? 'is-valid' : 'is-invalid';
 
     return (
-      <div className="TogglablePassword input-group input-group-inline-dropdown">
+      <div className={`TogglablePassword input-group input-group-inline-dropdown ${className}`}>
         {isTextareaWhenVisible && isVisible ? (
           <TextArea
             className={validClass}

@@ -9,6 +9,9 @@
   margin: auto;
   display: flex;
   flex-direction: column;
+  > .TogglablePassword {
+    width: 100%;
+  }
   &-header {
     display: flex;
     font-size: 1rem;

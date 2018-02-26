@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
 import translate, { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
-import { Spinner, Input } from 'components/ui';
+import { Spinner } from 'components/ui';
 import Template from '../Template';
 import './EnterPassword.scss';
+import { TogglablePassword } from 'components';
 
 interface Props {
   isGenerating: boolean;
@@ -43,9 +44,8 @@ export default class EnterPassword extends Component<Props, State> {
           <div className="input-group-wrapper EnterPw-password">
             <label className="input-group">
               <div className="input-group-header">{translate('GEN_Label_1')}</div>
-              <Input
+              <TogglablePassword
                 className={!isPasswordValid && password.length > 0 ? 'invalid' : ''}
-                type="password"
                 value={password}
                 placeholder={`Password must be uncommon and ${MINIMUM_PASSWORD_LENGTH}+ characters long`}
                 onChange={this.onPasswordChange}
@@ -63,9 +63,8 @@ export default class EnterPassword extends Component<Props, State> {
           <div className="input-group-wrapper EnterPw-password">
             <label className="input-group">
               <div className="input-group-header">Confirm password</div>
-              <Input
+              <TogglablePassword
                 className={!isConfirmValid && password.length > 0 ? 'invalid' : ''}
-                type="password"
                 value={confirmedPassword}
                 placeholder={translateRaw('GEN_Placeholder_1')}
                 onChange={this.onConfirmChange}
