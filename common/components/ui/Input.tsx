@@ -21,7 +21,7 @@ class Input extends React.Component<HTMLProps<HTMLInputElement>, State> {
         }}
         className={`input-group-input  ${this.props.className} ${
           this.state.hasBlurred ? 'has-blurred' : ''
-        }`}
+        } ${!!this.props.value && this.props.value.toString().length > 0 ? 'has-value' : ''}`}
       />
     );
   }

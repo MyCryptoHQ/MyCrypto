@@ -30,7 +30,7 @@
     }
   }
   > .Select,
-  &-input {
+  > input {
     margin-bottom: 1rem;
   }
   &-input {
@@ -47,7 +47,7 @@
       color: rgba(0, 0, 0, 0.3);
     }
     &:not([disabled]):not([readonly]) {
-      &.invalid.has-blurred {
+      &.invalid.has-blurred.has-value {
         border-color: $brand-danger;
         box-shadow: inset 0px 0px 0px 1px $brand-danger;
       }

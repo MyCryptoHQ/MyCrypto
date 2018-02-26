@@ -147,7 +147,6 @@ export default class EnterPassword extends Component<Props, State> {
   };
 
   private showFeedback = () => {
-    console.log('s');
     const { password, passwordValidation } = this.state;
     if (!password) {
       return;
