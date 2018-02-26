@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import { AppState } from 'reducers';
 import { getCurrentTo, getCurrentValue } from './current';
 import { getFields } from './fields';
@@ -53,14 +54,9 @@ const nonStandardTransaction = (state: AppState): boolean => {
 };
 
 const getGasCost = (state: AppState) => {
-  const gasPrice = getGasPrice(state);
-  const gasLimit = getGasLimit(state);
-  if (!gasLimit.value) {
-    return Wei('0');
-  }
-  const cost = gasLimit.value.mul(gasPrice.value);
-
-  return cost;
+  const gasPrice = new BN(getGasPrice(state).value);
+  const gasLimit = getGasLimit(state).value ? getGasLimit(state).value : null;
+  return gasLimit ? gasPrice.mul(gasLimit) : Wei('0');
 };
 
 const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: boolean) => {

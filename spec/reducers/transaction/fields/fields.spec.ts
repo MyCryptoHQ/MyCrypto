@@ -1,6 +1,5 @@
 import { TypeKeys } from 'actions/transaction/constants';
 import { gasPricetoBase } from 'libs/units';
-import { gasPriceDefaults } from 'config/data';
 import { fields, State } from 'reducers/transaction/fields';
 import * as txActions from 'actions/transaction';
 import BN from 'bn.js';
@@ -12,10 +11,7 @@ describe('fields reducer', () => {
     nonce: { raw: '', value: null },
     value: { raw: '', value: null },
     gasLimit: { raw: '21000', value: new BN(21000) },
-    gasPrice: {
-      raw: gasPriceDefaults.default.toString(),
-      value: gasPricetoBase(gasPriceDefaults.default)
-    }
+    gasPrice: { raw: '20', value: gasPricetoBase(20) }
   };
   const testPayload = { raw: 'test', value: null };
 
