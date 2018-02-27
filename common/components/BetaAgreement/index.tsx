@@ -32,11 +32,12 @@ export default class BetaAgreement extends React.PureComponent<{}, State> {
             production site for larger or more time-sensitive transactions.
           </p>
           <p>
-            Any feedback or bug reports are greatly appreciated. You can file issues on our{' '}
+            Feedback and bug reports are greatly appreciated. You can file issues on our{' '}
             <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">
-              GitHub Repository
+              GitHub repository
             </NewTabLink>{' '}
-            or join our <NewTabLink href={discordURL}>Discord chat</NewTabLink> to discuss the beta.
+            or join our <NewTabLink href={discordURL}>Discord server</NewTabLink> to discuss the
+            beta.
           </p>
           <p>Are you sure you would like to continue?</p>
 
