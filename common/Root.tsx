@@ -46,7 +46,7 @@ export default class Root extends Component<Props, State> {
     const { store } = this.props;
     const { error } = this.state;
 
-    if (true || error) {
+    if (error) {
       return <ErrorScreen error={error} />;
     }
 
