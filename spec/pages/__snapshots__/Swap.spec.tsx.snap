@@ -45,8 +45,6 @@ exports[`render snapshot 1`] = `
   isFetchingRates={null}
   isOffline={false}
   isPostingOrder={false}
-  loadBityRatesRequestedSwap={[Function]}
-  loadShapeshiftRatesRequestedSwap={[Function]}
   location={
     Object {
       "hash": "",

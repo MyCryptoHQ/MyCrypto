@@ -8,10 +8,10 @@
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
   "moduleNameMapper": {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-    "<rootDir>/jest_config/__mocks__/fileMock.ts",
+      "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss|less)$": "<rootDir>/jest_config/__mocks__/styleMock.ts"
   },
-  "testPathIgnorePatterns": ["<rootDir>/common/config"],
+  "testPathIgnorePatterns": [],
   "setupFiles": [
     "<rootDir>/jest_config/setupJest.js",
     "<rootDir>/jest_config/__mocks__/localStorage.ts"

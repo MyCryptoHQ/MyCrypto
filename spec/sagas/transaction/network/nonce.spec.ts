@@ -1,8 +1,7 @@
-import { getNonceSucceeded, getNonceFailed, inputNonce } from 'actions/transaction';
+import { getNonceSucceeded, inputNonce } from 'actions/transaction';
 import { apply, put, select, fork, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
-import { showNotification } from 'actions/notifications';
 import { handleNonceRequest, handleNonceRequestWrapper } from 'sagas/transaction/network/nonce';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { TypeKeys as WalletTK } from 'actions/wallet';
@@ -41,14 +40,10 @@ describe('handleNonceRequest*', () => {
     expect(gens.gen.next(nodeLib).value).toEqual(select(getWalletInst));
   });
 
-  it('should handle being called without wallet inst correctly', () => {
+  it('should exit if being called without a wallet inst', () => {
     gens.noWallet = gens.gen.clone();
-    gens.noWallet.next();
-    expect(gens.noWallet.next(offline).value).toEqual(
-      put(showNotification('warning', 'Your addresses nonce could not be fetched'))
-    );
-    expect(gens.noWallet.next().value).toEqual(put(getNonceFailed()));
-    expect(gens.noWallet.next().done).toEqual(true);
+    gens.noWallet.next(null); // No wallet inst
+    expect(gens.noWallet.next(offline).done).toEqual(true);
   });
 
   it('should select getOffline', () => {

@@ -9,6 +9,7 @@ import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { NetworkConfig } from 'types/network';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 interface OwnProps {
   wallet: IWallet;
@@ -24,6 +25,7 @@ interface State {
   showLongBalance: boolean;
   address: string;
   confirmAddr: boolean;
+  copied: boolean;
 }
 
 interface DispatchProps {
@@ -36,7 +38,8 @@ class AccountInfo extends React.Component<Props, State> {
   public state = {
     showLongBalance: false,
     address: '',
-    confirmAddr: false
+    confirmAddr: false,
+    copied: false
   };
 
   public setAddressFromWallet() {
@@ -69,6 +72,17 @@ class AccountInfo extends React.Component<Props, State> {
     });
   };
 
+  public onCopy = () => {
+    this.setState(state => {
+      return {
+        copied: !state.copied
+      };
+    });
+    setTimeout(() => {
+      this.setState({ copied: false });
+    }, 2000);
+  };
+
   public render() {
     const { network, balance, isOffline } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
@@ -90,6 +104,15 @@ class AccountInfo extends React.Component<Props, State> {
           </div>
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">{address}</div>
+            <CopyToClipboard onCopy={this.onCopy} text={address}>
+              <div
+                className={`AccountInfo-copy-icon${this.state.copied ? '-copied' : ''}`}
+                title="Copy To Clipboard"
+              >
+                <i className="fa fa-copy" />
+                <span>{this.state.copied ? 'copied!' : 'copy address'}</span>
+              </div>
+            </CopyToClipboard>
           </div>
         </div>
 

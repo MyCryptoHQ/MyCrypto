@@ -1,7 +1,6 @@
 import React from 'react';
 import Slider from 'rc-slider';
 import translate, { translateRaw } from 'translations';
-import { gasPriceDefaults } from 'config';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
@@ -15,6 +14,7 @@ import { fetchGasEstimates, TFetchGasEstimates } from 'actions/gas';
 import { getIsWeb3Node } from 'selectors/config';
 import { getEstimates, getIsEstimating } from 'selectors/gas';
 import { Wei, fromWei } from 'libs/units';
+import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
 
@@ -41,7 +41,7 @@ type Props = OwnProps & StateProps & ActionProps;
 
 class SimpleGas extends React.Component<Props> {
   public componentDidMount() {
-    this.fixGasPrice(this.props.gasPrice);
+    this.fixGasPrice();
     this.props.fetchGasEstimates();
   }
 
@@ -63,8 +63,8 @@ class SimpleGas extends React.Component<Props> {
     } = this.props;
 
     const bounds = {
-      max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.minGwei,
-      min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.maxGwei
+      max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.max,
+      min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
     };
 
     return (
@@ -93,6 +93,7 @@ class SimpleGas extends React.Component<Props> {
               onChange={this.handleSlider}
               min={bounds.min}
               max={bounds.max}
+              step={bounds.min < 1 ? 0.1 : 1}
               value={this.getGasPriceGwei(gasPrice.value)}
               tipFormatter={this.formatTooltip}
               disabled={isGasEstimating}
@@ -119,13 +120,18 @@ class SimpleGas extends React.Component<Props> {
     this.props.inputGasPrice(gasGwei.toString());
   };
 
-  private fixGasPrice(gasPrice: AppState['transaction']['fields']['gasPrice']) {
+  private fixGasPrice() {
+    const { gasPrice, gasEstimates } = this.props;
+    if (!gasEstimates) {
+      return;
+    }
+
     // If the gas price is above or below our minimum, bring it in line
     const gasPriceGwei = this.getGasPriceGwei(gasPrice.value);
-    if (gasPriceGwei > gasPriceDefaults.maxGwei) {
-      this.props.setGasPrice(gasPriceDefaults.maxGwei.toString());
-    } else if (gasPriceGwei < gasPriceDefaults.minGwei) {
-      this.props.setGasPrice(gasPriceDefaults.minGwei.toString());
+    if (gasPriceGwei < gasEstimates.safeLow) {
+      this.props.setGasPrice(gasEstimates.safeLow.toString());
+    } else if (gasPriceGwei > gasEstimates.fastest) {
+      this.props.setGasPrice(gasEstimates.fastest.toString());
     }
   }
 
