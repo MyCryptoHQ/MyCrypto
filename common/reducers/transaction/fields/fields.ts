@@ -11,7 +11,6 @@ import {
 import { Reducer } from 'redux';
 import { State } from './typings';
 import { gasPricetoBase } from 'libs/units';
-import { gasPriceDefaults } from 'config';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -19,10 +18,7 @@ const INITIAL_STATE: State = {
   nonce: { raw: '', value: null },
   value: { raw: '', value: null },
   gasLimit: { raw: '21000', value: new BN(21000) },
-  gasPrice: {
-    raw: gasPriceDefaults.default.toString(),
-    value: gasPricetoBase(gasPriceDefaults.default)
-  }
+  gasPrice: { raw: '20', value: gasPricetoBase(20) }
 };
 
 const updateField = (key: keyof State): Reducer<State> => (state: State, action: FieldAction) => ({

@@ -1,3 +1,7 @@
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import sample from 'lodash/sample';
+import times from 'lodash/times';
 import {
   NormalizedBityRates,
   NormalizedShapeshiftRates,
@@ -7,23 +11,56 @@ import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
 import { bityReferralURL, shapeshiftReferralURL } from 'config';
-import React, { PureComponent } from 'react';
 import translate from 'translations';
-import './CurrentRates.scss';
 import { SHAPESHIFT_WHITELIST } from 'api/shapeshift';
-import { ProviderName } from 'actions/swap';
-import sample from 'lodash/sample';
-import times from 'lodash/times';
+import {
+  loadShapeshiftRatesRequestedSwap,
+  TLoadShapeshiftRatesRequestedSwap,
+  stopLoadShapeshiftRatesSwap,
+  TStopLoadShapeshiftRatesSwap,
+  ProviderName
+} from 'actions/swap';
+import { getOffline } from 'selectors/config';
 import Rates from './Rates';
+import { AppState } from 'reducers';
+import './CurrentRates.scss';
 
-interface Props {
+interface StateProps {
+  isOffline: boolean;
   provider: ProviderName;
   bityRates: NormalizedBityRates;
   shapeshiftRates: NormalizedShapeshiftRates;
 }
 
-export default class CurrentRates extends PureComponent<Props> {
+interface ActionProps {
+  loadShapeshiftRatesRequestedSwap: TLoadShapeshiftRatesRequestedSwap;
+  stopLoadShapeshiftRatesSwap: TStopLoadShapeshiftRatesSwap;
+}
+
+type Props = StateProps & ActionProps;
+
+class CurrentRates extends PureComponent<Props> {
   private shapeShiftRateCache = null;
+
+  public componentDidMount() {
+    if (!this.props.isOffline) {
+      this.loadRates();
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.isOffline && !nextProps.isOffline) {
+      this.loadRates();
+    }
+  }
+
+  public componentWillUnmount() {
+    this.props.stopLoadShapeshiftRatesSwap();
+  }
+
+  public loadRates() {
+    this.props.loadShapeshiftRatesRequestedSwap();
+  }
 
   public getRandomSSPairData = (
     shapeshiftRates: NormalizedShapeshiftRates
@@ -139,3 +176,17 @@ export default class CurrentRates extends PureComponent<Props> {
     return this.swapEl(providerURL, providerLogo, children);
   }
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    isOffline: getOffline(state),
+    provider: state.swap.provider,
+    bityRates: state.swap.bityRates,
+    shapeshiftRates: state.swap.shapeshiftRates
+  };
+}
+
+export default connect(mapStateToProps, {
+  loadShapeshiftRatesRequestedSwap,
+  stopLoadShapeshiftRatesSwap
+})(CurrentRates);
