@@ -111,7 +111,7 @@ $m-anim-speed: 400ms;
 
   // Mobile styles
   @media(max-width: $screen-sm) {
-    width: calc(100% - 40px);
+    width: calc(100% - 40px) !important;
   }
 }
 

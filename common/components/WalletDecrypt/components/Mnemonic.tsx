@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 import { TogglablePassword } from 'components';
 
-interface Props {
+interface OwnProps {
   onUnlock(param: any): void;
 }
 
@@ -17,6 +17,8 @@ interface StateProps {
   dPath: DPath;
   dPaths: DPath[];
 }
+
+type Props = OwnProps & StateProps;
 
 interface State {
   phrase: string;
@@ -26,7 +28,7 @@ interface State {
   dPath: string;
 }
 
-class MnemonicDecryptClass extends PureComponent<Props & StateProps, State> {
+class MnemonicDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',
@@ -34,6 +36,12 @@ class MnemonicDecryptClass extends PureComponent<Props & StateProps, State> {
     seed: '',
     dPath: this.props.dPath.value
   };
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.dPath !== nextProps.dPath) {
+      this.setState({ dPath: nextProps.dPath.value });
+    }
+  }
 
   public render() {
     const { phrase, formattedPhrase, seed, dPath, pass } = this.state;
