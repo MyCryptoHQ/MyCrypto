@@ -55,8 +55,8 @@ const nonStandardTransaction = (state: AppState): boolean => {
 
 const getGasCost = (state: AppState) => {
   const gasPrice = new BN(getGasPrice(state).value);
-  const gasLimit = getGasLimit(state).value ? getGasLimit(state).value : null;
-  return gasLimit ? gasPrice.mul(gasLimit) : Wei('0');
+  const gasLimit = getGasLimit(state);
+  return gasLimit.value ? gasPrice.mul(new BN(gasLimit.value)) : Wei('0');
 };
 
 const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: boolean) => {

@@ -42,6 +42,16 @@ describe('fields selector', () => {
     expect(getGasPrice(TEST_STATE)).toEqual(fieldState.gasPrice);
   });
 
+  it('should check when gas cost is valid', () => {
+    expect(getValidGasCost(TEST_STATE)).toEqual(true);
+  });
+
+  it('should check when gas cost is invalid', () => {
+    const { wallet, ...rest } = TEST_STATE;
+    const ModifiedState = { ...rest, wallet: { balance: { wei: '0' } } };
+    expect(getValidGasCost(ModifiedState)).toEqual(false);
+  });
+
   it('should check getDataExists', () => {
     expect(getDataExists(TEST_STATE)).toEqual(false);
   });
