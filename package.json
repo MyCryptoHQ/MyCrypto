@@ -72,7 +72,7 @@
     "@types/webpack-env": "1.13.4",
     "@types/zxcvbn": "4.4.0",
     "autodll-webpack-plugin": "0.3.8",
-    "awesome-typescript-loader": "3.4.1",
+    "awesome-typescript-loader": "3.5.0",
     "babel-minify-webpack-plugin": "0.3.0",
     "bs58": "4.0.1",
     "cache-loader": "1.2.0",
