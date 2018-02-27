@@ -6,10 +6,9 @@ const threadLoader = require('thread-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const AutoDllPlugin = require('autodll-webpack-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
@@ -214,10 +213,6 @@ module.exports = function(opts = {}) {
           comments: false
         }
       ),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        filename: 'vendor.[chunkhash:8].js'
-      }),
       new ExtractTextPlugin('[name].[chunkhash:8].css'),
       new FaviconsWebpackPlugin({
         logo: path.resolve(config.path.assets, 'images/favicon.png'),
@@ -234,24 +229,14 @@ module.exports = function(opts = {}) {
     );
   } else {
     plugins.push(
-      new AutoDllPlugin({
-        inject: true, // will inject the DLL bundles to index.html
-        filename: '[name]_[hash].js',
-        debug: true,
-        context: path.join(config.path.root),
-        entry: {
-          vendor: [...config.vendorModules, 'babel-polyfill', 'bootstrap-sass', 'font-awesome']
-        }
-      }),
       new HardSourceWebpackPlugin({
         environmentHash: {
           root: process.cwd(),
-          directories: ['webpack_config'],
+          directories: ['common/webpack_config'],
           files: ['package.json']
         }
       }),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
       new FriendlyErrorsPlugin()
     );
   }
@@ -274,6 +259,16 @@ module.exports = function(opts = {}) {
         'shell'
       ])
     );
+  }
+
+  // ====================
+  // === Optimization ===
+  // ====================
+  const optimization = {};
+  if (options.isProduction) {
+    optimization.splitChunks = {
+      chunks: 'all'
+    };
   }
 
   // ====================
@@ -310,6 +305,8 @@ module.exports = function(opts = {}) {
     performance: {
       hints: options.isProduction ? 'warning' : false
     },
+    optimization,
+    mode: options.isProduction ? 'production' : 'development',
     stats: {
       // Reduce build output
       children: false,
