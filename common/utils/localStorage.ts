@@ -1,9 +1,6 @@
-import { sha256, toChecksumAddress } from 'ethereumjs-util';
-import EthTx from 'ethereumjs-tx';
+import { sha256 } from 'ethereumjs-util';
 import { State as SwapState } from 'reducers/swap';
 import { IWallet, WalletConfig } from 'libs/wallet';
-import { getTransactionFields } from 'libs/transaction';
-import { hexEncodeData } from 'libs/nodes/rpc/utils';
 
 export const REDUX_STATE = 'REDUX_STATE';
 
@@ -62,41 +59,4 @@ export function loadWalletConfig(wallet: IWallet): WalletConfig {
 function getWalletConfigKey(wallet: IWallet): string {
   const address = wallet.getAddressString();
   return sha256(`${address}-mycrypto`).toString('hex');
-}
-
-export interface SavedTransaction {
-  hash: string;
-  to: string;
-  from: string;
-  value: string;
-  chainId: number;
-  time: number;
-}
-
-export function saveRecentTransaction(hash: string, tx: EthTx) {
-  try {
-    const fields = getTransactionFields(tx);
-    const from = hexEncodeData(tx.getSenderAddress());
-    const txObj: SavedTransaction = {
-      hash,
-      to: toChecksumAddress(fields.to),
-      from: toChecksumAddress(from),
-      value: fields.value,
-      chainId: fields.chainId,
-      time: Date.now()
-    };
-    const recentTxs = [txObj, ...loadRecentTransactions()];
-    localStorage.setItem('recent-transactions', JSON.stringify(recentTxs));
-  } catch (err) {
-    console.warn('Failed to save transaction to localStorage', err);
-  }
-}
-
-export function loadRecentTransactions(): SavedTransaction[] {
-  try {
-    const json = localStorage.getItem('recent-transactions');
-    return json ? JSON.parse(json) : [];
-  } catch (err) {
-    return [];
-  }
 }

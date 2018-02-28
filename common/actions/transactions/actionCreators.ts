@@ -24,12 +24,12 @@ export function resetTransactionData(): interfaces.ResetTransactionDataAction {
   return { type: TypeKeys.TRANSACTIONS_RESET_TRANSACTION_DATA };
 }
 
-export type TSetRecentTransactions = typeof setRecentTransactions;
-export function setRecentTransactions(
-  payload: interfaces.SetRecentTransactionsAction['payload']
-): interfaces.SetRecentTransactionsAction {
+export type TAddRecentTransaction = typeof addRecentTransaction;
+export function addRecentTransaction(
+  payload: interfaces.AddRecentTransactionAction['payload']
+): interfaces.AddRecentTransactionAction {
   return {
-    type: TypeKeys.TRANSACTIONS_SET_RECENT_TRANSACTIONS,
+    type: TypeKeys.TRANSACTIONS_ADD_RECENT_TRANSACTION,
     payload
   };
 }

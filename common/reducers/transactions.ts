@@ -1,12 +1,12 @@
 import {
   FetchTransactionDataAction,
   SetTransactionDataAction,
-  SetRecentTransactionsAction,
+  AddRecentTransactionAction,
   TransactionsAction,
   TypeKeys
 } from 'actions/transactions';
 import { TransactionData, TransactionReceipt } from 'libs/nodes';
-import { SavedTransaction } from 'utils/localStorage';
+import { SavedTransaction } from 'types/transactions';
 
 export interface TransactionState {
   data: TransactionData | null;
@@ -62,10 +62,10 @@ function resetTxData(state: State): State {
   };
 }
 
-function setRecentTxs(state: State, action: SetRecentTransactionsAction): State {
+function addRecentTx(state: State, action: AddRecentTransactionAction): State {
   return {
     ...state,
-    recent: action.payload
+    recent: [action.payload, ...state.recent].slice(0, 50)
   };
 }
 
@@ -77,8 +77,8 @@ export function transactions(state: State = INITIAL_STATE, action: TransactionsA
       return setTxData(state, action);
     case TypeKeys.TRANSACTIONS_RESET_TRANSACTION_DATA:
       return resetTxData(state);
-    case TypeKeys.TRANSACTIONS_SET_RECENT_TRANSACTIONS:
-      return setRecentTxs(state, action);
+    case TypeKeys.TRANSACTIONS_ADD_RECENT_TRANSACTION:
+      return addRecentTx(state, action);
     default:
       return state;
   }

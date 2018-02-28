@@ -1,10 +1,10 @@
 import { SagaIterator } from 'redux-saga';
-import { put, select, apply, take, call, takeEvery } from 'redux-saga/effects';
+import { put, select, apply, take, takeEvery } from 'redux-saga/effects';
 import EthTx from 'ethereumjs-tx';
 import {
   setTransactionData,
   FetchTransactionDataAction,
-  setRecentTransactions,
+  addRecentTransaction,
   resetTransactionData,
   TypeKeys
 } from 'actions/transactions';
@@ -16,7 +16,7 @@ import {
 } from 'actions/transaction';
 import { getNodeLib } from 'selectors/config';
 import { INode, TransactionData, TransactionReceipt } from 'libs/nodes';
-import { saveRecentTransaction, loadRecentTransactions } from 'utils/localStorage';
+import { ethtxToRecentTransaction } from 'utils/formatters';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
 
 export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
@@ -50,8 +50,7 @@ export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
 }
 
 export function* saveBroadcastedTx(action: BroadcastTransactionQueuedAction) {
-  const txBuffer = action.payload.serializedTransaction;
-  const txIdx = action.payload.indexingHash;
+  const { serializedTransaction: txBuffer, indexingHash: txIdx } = action.payload;
 
   const res: BroadcastTransactionSucceededAction | BroadcastTransactionFailedAction = yield take([
     TxTypeKeys.BROADCAST_TRANSACTION_SUCCEEDED,
@@ -64,14 +63,9 @@ export function* saveBroadcastedTx(action: BroadcastTransactionQueuedAction) {
     res.payload.indexingHash === txIdx
   ) {
     const tx = new EthTx(txBuffer);
-    saveRecentTransaction(res.payload.broadcastedHash, tx);
-    yield call(loadRecentTxs);
+    const recentTx = ethtxToRecentTransaction(tx, res.payload.broadcastedHash);
+    yield put(addRecentTransaction(recentTx));
   }
-}
-
-export function* loadRecentTxs() {
-  const recentTxs = loadRecentTransactions();
-  yield put(setRecentTransactions(recentTxs));
 }
 
 export function* resetTxData() {
@@ -79,7 +73,6 @@ export function* resetTxData() {
 }
 
 export default function* transactions(): SagaIterator {
-  yield call(loadRecentTxs);
   yield takeEvery(TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(TxTypeKeys.BROADCAST_TRANSACTION_QUEUED, saveBroadcastedTx);
   yield takeEvery(ConfigTypeKeys.CONFIG_NODE_CHANGE, resetTxData);
