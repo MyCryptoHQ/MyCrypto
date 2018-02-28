@@ -27,7 +27,7 @@ export default class DropdownComponent<T> extends PureComponent<Props<T>, State>
 
   public render() {
     const { ariaLabel, color, size, value } = this.props;
-    const labelStr = !!this.props.label ? this.props.label : '';
+    const labelStr = this.props.label || '';
     return (
       <DropdownShell
         renderLabel={() => <span>{labelStr + ' ' + value}</span>}

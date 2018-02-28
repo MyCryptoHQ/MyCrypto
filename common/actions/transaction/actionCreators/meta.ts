@@ -11,7 +11,7 @@ export const setTokenTo = (payload: SetTokenToMetaAction['payload']): SetTokenTo
   payload
 });
 
-export type TSetTokenBalance = typeof setTokenValue;
+export type TSetTokenValue = typeof setTokenValue;
 export const setTokenValue = (
   payload: SetTokenValueMetaAction['payload']
 ): SetTokenValueMetaAction => ({
