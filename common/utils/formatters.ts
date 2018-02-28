@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { Wei, isNetworkUnit } from 'libs/units';
+import { Wei } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
@@ -79,7 +79,7 @@ export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
   // I'm guessing this is some known off-by-one-error from the node?
   // 21k is only the limit for ethereum though, so make sure they're
   // sending ether if we're going to fix it for them.
-  if (limitStr === '21001' && isNetworkUnit(transactionUnit)) {
+  if (limitStr === '21001' && transactionUnit === 'ETH') {
     limitStr = '21000';
   }
 

@@ -20,13 +20,20 @@ import { encodeTransfer } from 'libs/transaction';
 import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
 import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/validationHelpers';
+import { getNetworks, getNodes } from 'selectors/config';
 
 export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
   const previousUnit: string = yield select(getPreviousUnit);
-  const etherToEther = isNetworkUnit(currentUnit) && isNetworkUnit(previousUnit);
-  const etherToToken = !isNetworkUnit(currentUnit) && isNetworkUnit(previousUnit);
-  const tokenToEther = isNetworkUnit(currentUnit) && !isNetworkUnit(previousUnit);
-  const tokenToToken = !isNetworkUnit(currentUnit) && !isNetworkUnit(previousUnit);
+  const networks = yield select(getNetworks);
+  const nodes = yield select(getNodes);
+  const etherToEther =
+    isNetworkUnit(currentUnit, networks, nodes) && isNetworkUnit(previousUnit, networks, nodes);
+  const etherToToken =
+    !isNetworkUnit(currentUnit, networks, nodes) && isNetworkUnit(previousUnit, networks, nodes);
+  const tokenToEther =
+    isNetworkUnit(currentUnit, networks, nodes) && !isNetworkUnit(previousUnit, networks, nodes);
+  const tokenToToken =
+    !isNetworkUnit(currentUnit, networks, nodes) && !isNetworkUnit(previousUnit, networks, nodes);
   const decimal: number = yield select(getDecimalFromUnit, currentUnit);
 
   if (etherToEther) {

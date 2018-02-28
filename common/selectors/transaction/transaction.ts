@@ -15,7 +15,7 @@ import {
 } from 'selectors/transaction';
 import { Wei } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getNetworks, getNodes } from 'selectors/config';
 
 const getTransactionState = (state: AppState) => state.transaction;
 
@@ -33,7 +33,11 @@ const getTransaction = (state: AppState): IGetTransaction => {
   const transaction: EthTx = makeTransaction(reducedValues);
   const dataExists = getDataExists(state);
   const validGasCost = getValidGasCost(state);
+  const networks = getNetworks(state);
+  const nodes = getNodes(state);
   const isFullTransaction = isFullTx(
+    networks,
+    nodes,
     transactionFields,
     currentTo,
     currentValue,

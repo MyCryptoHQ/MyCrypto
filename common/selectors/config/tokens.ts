@@ -2,7 +2,7 @@ import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction/meta';
 import { isNetworkUnit } from 'libs/units';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
-import { getStaticNetworkConfig } from 'selectors/config';
+import { getStaticNetworkConfig, getNodes, getNetworks } from 'selectors/config';
 import { Token } from 'types/network';
 
 export function getNetworkTokens(state: AppState): Token[] {
@@ -18,8 +18,10 @@ export function getAllTokens(state: AppState): Token[] {
 export function getSelectedTokenContractAddress(state: AppState): string {
   const allTokens = getAllTokens(state);
   const currentUnit = getUnit(state);
+  const networks = getNetworks(state);
+  const nodes = getNodes(state);
 
-  if (isNetworkUnit(currentUnit)) {
+  if (isNetworkUnit(currentUnit, networks, nodes)) {
     return '';
   }
 
@@ -44,7 +46,9 @@ export function tokenExists(state: AppState, token: string): boolean {
 
 export function isSupportedUnit(state: AppState, unit: string) {
   const isToken: boolean = tokenExists(state, unit);
-  const isEther: boolean = isNetworkUnit(unit);
+  const networks = getNetworks(state);
+  const nodes = getNodes(state);
+  const isEther: boolean = isNetworkUnit(unit, networks, nodes);
   if (!isToken && !isEther) {
     return false;
   }

@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
+import { AppState } from 'reducers';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -103,9 +104,17 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
-const isNetworkUnit = (unit: string) =>
-  // TODO: find a better strategy for determining if unit is network unit
-  unit === 'ETH' || unit === 'ETC' || unit === 'UBQ' || unit === 'EXP';
+const isNetworkUnit = (
+  unit: string,
+  networks: AppState['config']['networks'],
+  nodes: AppState['config']['nodes']
+) => {
+  const selectedNode =
+    nodes.staticNodes[nodes.selectedNode.nodeId] || nodes.customNodes[nodes.selectedNode.nodeId];
+  const selectedNetwork =
+    networks.staticNetworks[selectedNode.network] || networks.customNetworks[selectedNode.network];
+  return unit === selectedNetwork.unit;
+};
 
 const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
   if (oldDecimal === newDecimal) {
