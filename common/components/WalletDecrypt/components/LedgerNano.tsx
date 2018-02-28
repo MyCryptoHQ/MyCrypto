@@ -46,6 +46,12 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     });
   };
 
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.dPath !== nextProps.dPath) {
+      this.setState({ dPath: nextProps.dPath.value });
+    }
+  }
+
   public render() {
     const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
     const showErr = error ? 'is-showing' : '';

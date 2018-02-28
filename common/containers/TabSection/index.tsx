@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AlphaAgreement, Footer, Header } from 'components';
+import { BetaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
@@ -24,15 +24,14 @@ class TabSection extends Component<Props, {}> {
 
     return (
       <div className="page-layout">
-        <main>
-          <Header />
-          <div className="Tab container">
-            {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
-          </div>
-          <Footer latestBlock={latestBlock} />
-        </main>
+        <Header />
+        <div className="Tab container">
+          {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+        </div>
+        <div className="flex-spacer" />
+        <Footer latestBlock={latestBlock} />
         <Notifications />
-        <AlphaAgreement />
+        <BetaAgreement />
       </div>
     );
   }

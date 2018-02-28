@@ -26,6 +26,13 @@ const expectedInitialState = {
     lib: new InfuraNode('https://mainnet.infura.io/mycrypto'),
     estimateGas: false
   },
+  eth_blockscale: {
+    network: 'ETH',
+    isCustom: false,
+    lib: new RPCNode('https://api.dev.blockscale.net/dev/parity'),
+    service: 'Blockscale beta',
+    estimateGas: true
+  },
   rop_infura: {
     network: 'Ropsten',
     isCustom: false,

@@ -14,13 +14,10 @@ export function* handleNonceRequest(): SagaIterator {
   const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
   const isOffline: boolean = yield select(getOffline);
   try {
-    if (isOffline) {
+    if (isOffline || !walletInst) {
       return;
     }
 
-    if (!walletInst) {
-      throw Error();
-    }
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
 
     const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);

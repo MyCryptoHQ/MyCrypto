@@ -76,6 +76,7 @@
     "x_AddessDesc": "Aussi appelé `numéro de compte` ou `clé publique`. C'est ce que vous donnez aux gens pour qu'ils puissent vous envoyer des Ethers ou des Tokens. Prenez note de l'icône colorée. Cette icône doit être identique quand vous entrez votre adresse quelque part.",
     "x_Address": "Votre adresse ",
     "x_Cancel": "Annuler ",
+    "x_Cipher": "Cipher Browser",
     "x_CSV": "Fichier CSV (non-chiffré) ",
     "x_Download": "Télécharger ",
     "x_Json": "Fichier JSON (non-chiffré) ",
