@@ -1,4 +1,5 @@
 import React from 'react';
+import { NewTabLink } from 'components/ui';
 import './index.scss';
 
 const SUBJECT = 'Error!';
@@ -24,14 +25,17 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           >
             support@mycrypto.com
           </a>{' '}
-          if a refresh doesn't fix it (or click it anyway to open a ticket 😊). If you attach the
-          following error, you'll make it a ton easier to fix the issue.
+          if a refresh doesn't fix it (or click it anyway to open a ticket 😊). You can also submit
+          an issue on our{' '}
+          <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">
+            GitHub Repository
+          </NewTabLink>. Please attach the following error to help our team solve your issue.
         </p>
+        <code>{error.message}</code>
         <h5>
           Please make sure the error message does not include any sensitive information before
-          sending it us. We don't want your private keys!
+          sending it to us. We don't want your private keys!
         </h5>
-        <code>{error.message}</code>
       </div>
     </div>
   );

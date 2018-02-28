@@ -41,6 +41,7 @@ $small-size: 900px;
     font-weight: 300;
     color: #fff;
     transition: background-color 80ms ease;
+    background: $gray-darker;
 
     a {
       color: #fff;
@@ -54,7 +55,6 @@ $small-size: 900px;
     }
 
     // Colors
-    &,
     &.is-primary {
       background: $brand-primary;
     }
