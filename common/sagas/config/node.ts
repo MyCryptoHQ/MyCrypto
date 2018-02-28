@@ -198,8 +198,8 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
   // force the node change
   yield put(changeNode({ networkId: nodeConfig.network, nodeId: staticNodeIdToSwitchTo }));
 
-  // also put the change through as usual so error messages and
-  // status check occurs if the node is unavailable
+  // also put the change through as usual so status check and
+  // error messages occur if the node is unavailable
   yield put(changeNodeIntent(staticNodeIdToSwitchTo));
 }
 
