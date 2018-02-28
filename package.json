@@ -75,7 +75,7 @@
     "awesome-typescript-loader": "3.5.0",
     "babel-minify-webpack-plugin": "0.3.0",
     "bs58": "4.0.1",
-    "cache-loader": "1.2.1",
+    "cache-loader": "1.2.2",
     "check-node-version": "3.2.0",
     "concurrently": "3.5.1",
     "copy-webpack-plugin": "4.4.2",
