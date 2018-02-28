@@ -9,10 +9,10 @@ import { changeNode, changeNodeIntent } from 'actions/config';
 configuredStore.getState();
 
 describe('handleNodeChangeForce*', () => {
-  const payload = 'nodeId';
-  const action = { payload };
+  const payload: any = 'nodeId';
+  const action: any = { payload };
   const gen = cloneableGenerator(handleNodeChangeForce)(action);
-  const nodeConfig = { network: 'network' };
+  const nodeConfig: any = { network: 'network' };
 
   it('should select isStaticNodeId', () => {
     expect(gen.next().value).toEqual(select(isStaticNodeId, payload));
