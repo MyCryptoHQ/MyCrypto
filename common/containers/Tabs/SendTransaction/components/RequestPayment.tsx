@@ -32,11 +32,10 @@ interface StateProps {
   currentTo: ICurrentTo;
   currentValue: ICurrentValue;
   gasLimit: SetGasLimitFieldAction['payload'];
-  networks: AppState['config']['networks'];
-  nodes: AppState['config']['nodes'];
   networkConfig: NetworkConfig;
   decimal: number;
   tokenContractAddress: string;
+  isNetworkUnit: boolean;
 }
 
 interface ActionProps {
@@ -76,8 +75,6 @@ class RequestPayment extends React.Component<Props, {}> {
       gasLimit,
       currentTo,
       currentValue,
-      networks,
-      nodes,
       networkConfig,
       unit,
       decimal
@@ -85,8 +82,6 @@ class RequestPayment extends React.Component<Props, {}> {
     const chainId = networkConfig ? networkConfig.chainId : undefined;
 
     const eip681String = this.generateEIP681String(
-      networks,
-      nodes,
       currentTo.raw,
       tokenContractAddress,
       currentValue,
@@ -153,8 +148,6 @@ class RequestPayment extends React.Component<Props, {}> {
   }
 
   private generateEIP681String(
-    networks: AppState['config']['networks'],
-    nodes: AppState['config']['nodes'],
     currentTo: string,
     tokenContractAddress: string,
     currentValue,
@@ -174,7 +167,7 @@ class RequestPayment extends React.Component<Props, {}> {
       return '';
     }
 
-    if (isNetworkUnit(unit, networks, nodes)) {
+    if (this.props.isNetworkUnit) {
       return buildEIP681EtherRequest(currentTo, chainId, currentValue);
     } else {
       return buildEIP681TokenRequest(
@@ -195,11 +188,10 @@ function mapStateToProps(state: AppState): StateProps {
     currentTo: getCurrentTo(state),
     currentValue: getCurrentValue(state),
     gasLimit: getGasLimit(state),
-    networks: state.config.networks,
-    nodes: state.config.nodes,
     networkConfig: getNetworkConfig(state),
     decimal: getDecimal(state),
-    tokenContractAddress: getSelectedTokenContractAddress(state)
+    tokenContractAddress: getSelectedTokenContractAddress(state),
+    isNetworkUnit: isNetworkUnit(getUnit(state), state)
   };
 }
 

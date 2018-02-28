@@ -5,7 +5,6 @@ import { isNetworkUnit, TokenValue, Wei, Address } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
 import { getDataExists, getGasPrice, getGasLimit } from 'selectors/transaction';
 import { getAddressMessage, AddressMessage } from 'config';
-import { getNetworks, getNodes } from 'selectors/config';
 
 interface ICurrentValue {
   raw: string;
@@ -19,9 +18,7 @@ interface ICurrentTo {
 
 const isEtherTransaction = (state: AppState) => {
   const unit = getUnit(state);
-  const networks = getNetworks(state);
-  const nodes = getNodes(state);
-  const etherUnit = isNetworkUnit(unit, networks, nodes);
+  const etherUnit = isNetworkUnit(unit, state);
   return etherUnit;
 };
 

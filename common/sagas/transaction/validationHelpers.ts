@@ -1,7 +1,7 @@
 import { TokenValue, Wei, isNetworkUnit, toTokenBase } from 'libs/units';
 import { SagaIterator } from 'redux-saga';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
-import { getOffline, getNetworks, getNodes } from 'selectors/config';
+import { getOffline } from 'selectors/config';
 import { select, call } from 'redux-saga/effects';
 import { AppState } from 'reducers';
 import { getGasLimit, getGasPrice, getUnit, getDecimalFromUnit } from 'selectors/transaction';
@@ -48,9 +48,8 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
 
   const etherBalance: Wei | null = yield select(getEtherBalance);
   const isOffline: boolean = yield select(getOffline);
-  const networks = yield select(getNetworks);
-  const nodes = yield select(getNodes);
-  const etherTransaction: boolean = yield call(isNetworkUnit, unit, networks, nodes);
+  const state = yield select();
+  const networkUnitTransaction: boolean = yield call(isNetworkUnit, unit, state);
 
   if (isOffline || !etherBalance) {
     return true;
@@ -61,14 +60,14 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
   // TODO: do gas estimation here if we're switching to a token too, it should cover the last edge case
 
   //make a new transaction for validating ether balances
-  const validationTx = etherTransaction
+  const validationTx = networkUnitTransaction
     ? yield call(makeCostCalculationTx, input)
     : yield call(makeCostCalculationTx, null);
 
   // check that they have enough ether, this checks gas cost too
   valid = valid && enoughBalanceViaTx(validationTx, etherBalance);
 
-  if (!etherTransaction) {
+  if (!networkUnitTransaction) {
     const tokenBalance: TokenValue | null = yield select(getTokenBalance, unit);
     valid = valid && enoughTokensViaInput(input, tokenBalance);
   }

@@ -106,8 +106,8 @@ describe('validateInput*', () => {
     expect(gens.gen.next(etherBalance).value).toEqual(select(getOffline));
   });
 
-  it('should call isEtherUnit', () => {
-    expect(gens.gen.next(isOffline).value).toEqual(call(isNetworkUnit, unit));
+  it('should call isNetworkUnit', () => {
+    expect(gens.gen.next(isOffline).value).toEqual(call(isNetworkUnit, unit, {}));
     gens.clone3 = gens.gen.clone();
   });
 

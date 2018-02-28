@@ -12,8 +12,7 @@ export const reduceToValues = (transactionFields: AppState['transaction']['field
   );
 
 export const isFullTx = (
-  networks: AppState['config']['networks'],
-  nodes: AppState['config']['nodes'],
+  state: AppState,
   transactionFields: AppState['transaction']['fields'],
   currentTo: ICurrentTo,
   currentValue: ICurrentValue,
@@ -28,7 +27,7 @@ export const isFullTx = (
       isValid && !!v.value,
     true
   );
-  if (isNetworkUnit(unit, networks, nodes)) {
+  if (isNetworkUnit(unit, state)) {
     // if theres data we can have no current value, and we dont have to check for a to address
     if (dataExists && validGasCost && !currentValue.value && currentValue.raw === '') {
       return validPartialParams;
