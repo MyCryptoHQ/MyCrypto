@@ -5,15 +5,7 @@ import {
   TransactionsAction,
   TypeKeys
 } from 'actions/transactions';
-import { TransactionData, TransactionReceipt } from 'libs/nodes';
-import { SavedTransaction } from 'types/transactions';
-
-export interface TransactionState {
-  data: TransactionData | null;
-  receipt: TransactionReceipt | null;
-  error: string | null;
-  isLoading: boolean;
-}
+import { SavedTransaction, TransactionState } from 'types/transactions';
 
 export interface State {
   txData: { [txhash: string]: TransactionState };

@@ -15,9 +15,10 @@ import {
   BroadcastTransactionFailedAction
 } from 'actions/transaction';
 import { getNodeLib } from 'selectors/config';
-import { INode, TransactionData, TransactionReceipt } from 'libs/nodes';
+import { INode } from 'libs/nodes';
 import { ethtxToRecentTransaction } from 'utils/formatters';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
+import { TransactionData, TransactionReceipt } from 'types/transactions';
 
 export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
   const txhash = action.payload;

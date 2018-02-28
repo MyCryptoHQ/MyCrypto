@@ -1,6 +1,5 @@
 import { TypeKeys } from './constants';
-import { TransactionData, TransactionReceipt } from 'libs/nodes';
-import { SavedTransaction } from 'utils/localStorage';
+import { SavedTransaction, TransactionData, TransactionReceipt } from 'types/transactions';
 
 export interface FetchTransactionDataAction {
   type: TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA;

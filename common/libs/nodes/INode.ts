@@ -1,6 +1,7 @@
 import { Wei, TokenValue } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
 import { Token } from 'types/network';
+import { TransactionData, TransactionReceipt } from 'types/transactions';
 
 export interface TxObj {
   to: string;
@@ -10,33 +11,6 @@ export interface TxObj {
 interface TokenBalanceResult {
   balance: TokenValue;
   error: string | null;
-}
-
-export interface TransactionData {
-  hash: string;
-  nonce: number;
-  blockHash: string | null;
-  blockNumber: number | null;
-  transactionIndex: number | null;
-  from: string;
-  to: string;
-  value: Wei;
-  gasPrice: Wei;
-  gas: Wei;
-  input: string;
-}
-
-export interface TransactionReceipt {
-  transactionHash: string;
-  transactionIndex: number;
-  blockHash: string;
-  blockNumber: number;
-  cumulativeGasUsed: Wei;
-  gasUsed: Wei;
-  contractAddress: string | null;
-  logs: string[];
-  logsBloom: string;
-  status: number;
 }
 
 export interface INode {

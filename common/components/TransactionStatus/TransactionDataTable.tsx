@@ -2,7 +2,7 @@ import React from 'react';
 import { toChecksumAddress } from 'ethereumjs-util';
 import translate from 'translations';
 import { Identicon, UnitDisplay, NewTabLink } from 'components/ui';
-import { TransactionData, TransactionReceipt } from 'libs/nodes';
+import { TransactionData, TransactionReceipt } from 'types/transactions';
 import { NetworkConfig } from 'types/network';
 import './TransactionDataTable.scss';
 

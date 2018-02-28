@@ -1,5 +1,5 @@
 import { AppState } from 'reducers';
-import { SavedTransaction } from 'utils/localStorage';
+import { SavedTransaction } from 'types/transactions';
 import { getNetworkConfig } from './config';
 
 export function getTransactionDatas(state: AppState) {
