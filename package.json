@@ -79,7 +79,7 @@
     "check-node-version": "3.2.0",
     "concurrently": "3.5.1",
     "copy-webpack-plugin": "4.4.2",
-    "css-loader": "0.28.9",
+    "css-loader": "0.28.10",
     "electron": "1.8.2",
     "electron-builder": "20.2.0",
     "empty": "0.10.1",
