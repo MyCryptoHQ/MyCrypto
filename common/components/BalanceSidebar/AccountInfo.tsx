@@ -1,4 +1,4 @@
-import { Identicon, UnitDisplay } from 'components/ui';
+import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
 import translate from 'translations';
@@ -103,7 +103,9 @@ class AccountInfo extends React.Component<Props, State> {
             <Identicon address={address} size="100%" />
           </div>
           <div className="AccountInfo-address-wrapper">
-            <div className="AccountInfo-address-addr">{address}</div>
+            <div className="AccountInfo-address-addr">
+              <Address address={address} />
+            </div>
             <CopyToClipboard onCopy={this.onCopy} text={address}>
               <div
                 className={`AccountInfo-copy-icon${this.state.copied ? '-copied' : ''}`}
@@ -183,24 +185,16 @@ class AccountInfo extends React.Component<Props, State> {
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={blockExplorer.addressUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={blockExplorer.addressUrl(address)}>
                     {`${network.name} (${blockExplorer.origin})`}
-                  </a>
+                  </NewTabLink>
                 </li>
               )}
               {!!tokenExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={tokenExplorer.address(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={tokenExplorer.address(address)}>
                     {`Tokens (${tokenExplorer.name})`}
-                  </a>
+                  </NewTabLink>
                 </li>
               )}
             </ul>
