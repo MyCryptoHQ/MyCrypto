@@ -1,5 +1,6 @@
 import React from 'react';
 import { withConditional } from 'components/hocs';
+import { Input } from 'components/ui';
 
-const Input: React.SFC<React.InputHTMLAttributes<any>> = props => <input {...props} />;
-export const ConditionalInput = withConditional(Input);
+const inpt: React.SFC<React.InputHTMLAttributes<any>> = props => <Input {...props} />;
+export const ConditionalInput = withConditional(inpt);

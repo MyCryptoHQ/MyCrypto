@@ -69,7 +69,9 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
           {/*Amount to send*/}
           {!this.isExpanded() && (
             <div className={this.computedClass()}>
-              <h3 className="SwapInfo-details-block-value">{` ${origin.amount} ${origin.id}`}</h3>
+              <h3 className="SwapInfo-details-block-value">{` ${origin.amount} ${
+                origin.label
+              }`}</h3>
               <p className="SwapInfo-details-block-label">{translate('SEND_amount')}</p>
             </div>
           )}
@@ -93,7 +95,7 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
           {/*Amount to Receive*/}
           <div className={this.computedClass()}>
             <h3 className="SwapInfo-details-block-value">
-              {` ${toFixedIfLarger(destination.amount as number, 4)} ${destination.id}`}
+              {` ${toFixedIfLarger(destination.amount as number, 4)} ${destination.label}`}
             </h3>
             <p className="SwapInfo-details-block-label">{translate('SWAP_rec_amt')}</p>
           </div>
@@ -102,7 +104,9 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
           <div className={this.computedClass()}>
             <h3 className="SwapInfo-details-block-value">
               {`${computedOriginDestinationRatio &&
-                toFixedIfLarger(computedOriginDestinationRatio, 4)} ${destination.id}/${origin.id}`}
+                toFixedIfLarger(computedOriginDestinationRatio, 4)} ${destination.label}/${
+                origin.label
+              }`}
             </h3>
             <p className="SwapInfo-details-block-label">{translate('SWAP_your_rate')}</p>
           </div>

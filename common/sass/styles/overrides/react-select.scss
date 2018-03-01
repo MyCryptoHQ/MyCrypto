@@ -1,92 +1,92 @@
-// This syntax is necessary to override css styles in react-select
+@import 'common/sass/variables';
+
 .Select {
+  border-radius: 2px;
+  background-color: white;
+  border: 1px solid #e5ecf3;
+  border-radius: 2px;
+  font-weight: 400;
   font-size: 1rem;
-  .Select-control {
-    height: $input-height-base;
-    display: block;
-    box-sizing: border-box;
-    font-weight: 400;
-    border-radius: 0px;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    border: 1px solid $input-border;
-    transition: $transition;
+  box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
+  transition: border-color 120ms, box-shadow 120ms;
+  height: 3rem;
+  &-control {
+    min-width: 7.5rem;
+    height: inherit;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border: none !important;
     &:hover {
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      border: 1px solid $input-border;
+      box-shadow: none;
     }
-    .Select-value {
-      padding-left: $input-padding-x;
-      padding-right: $input-padding-x;
-      .Select-value-label {
-        vertical-align: middle;
-      }
+  }
+  &-placeholder {
+    line-height: $line-height-base;
+  }
+  &-input {
+    position: absolute;
+    > input {
+      line-height: $line-height-base;
+      padding: 0;
     }
-    .Select-arrow-zone {
-      float: right;
+  }
+  &-placeholder,
+  &-input {
+    padding-left: 0;
+    padding-right: 0;
+    padding: 0rem 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    height: auto;
+  }
+  &-option {
+    padding: 0.75rem 1rem;
+  }
+  &-menu-outer {
+    z-index: 3;
+    width: calc(100% + 2px);
+    left: -1px;
+    border-radius: 2px;
+    background-color: white;
+    border: none;
+    border-left: 2px solid #5694b8;
+    border-right: 2px solid #5694b8;
+    border-bottom: 2px solid #5694b8;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-color: inherit;
+  }
+  &.invalid.has-blurred {
+    border-color: $brand-danger;
+    box-shadow: inset 0px 0px 0px 1px $brand-danger;
+  }
+  &.is-focused {
+    border-color: #4295bc;
+    box-shadow: inset 0px 0px 0px 1px #4295bc;
+    &.valid {
+      border-color: #8dd17b;
+      box-shadow: inset 0px 0px 0px 1px #8dd17b;
+    }
+  }
+  &-value {
+    line-height: $line-height-base !important;
+    padding-left: 0 !important;
+    padding: 0.75rem 1rem !important;
+    height: inherit !important;
+    &-label {
       position: relative;
       top: 50%;
       transform: translateY(-50%);
+      display: block;
     }
   }
-  .Select-menu-outer {
-    box-sizing: content-box;
-    font-weight: 400;
-    border: 1px solid $input-border;
-    width: calc(100% - 1px);
-  }
-  .Select-placeholder {
-    color: #d3d3d3;
-    padding: 0px $input-padding-x;
-    line-height: $input-height-base;
-  }
-  .Select-input {
-    opacity: 0;
-  }
-  &.is-open {
-    .Select-control {
-      border: 1px solid $input-border;
-    }
-  }
-  &.is-focused {
-    &:not(.is-open):not(.is-invalid) {
-      .Select-control {
-        border-color: $brand-primary;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px rgba(14, 151, 192, 0.5);
-      }
-    }
-  }
-
-  @mixin react-select-control-state($color) {
-    .Select-control {
-      border-color: lighten($color, 20%);
-      @include input-shadow($color);
-    }
-    .Select-menu-outer {
-      border-color: lighten($color, 20%);
-      @include input-shadow($color);
-    }
-
-    &.is-focused {
-      .Select-control {
-        border-color: lighten($color, 5%);
-        @include input-focus-shadow($color);
-      }
-      .Select-menu-outer {
-        border-color: lighten($color, 5%);
-        @include input-focus-shadow($color);
-      }
-    }
-  }
-
-  &.is-valid {
-    @include react-select-control-state($brand-success);
-  }
-
-  &.is-invalid {
-    @include react-select-control-state($brand-danger);
-  }
-
-  &.is-warning {
-    @include react-select-control-state($brand-warning);
+  &-multi-value-wrapper {
+    display: block;
+    position: relative;
+    height: inherit;
   }
 }

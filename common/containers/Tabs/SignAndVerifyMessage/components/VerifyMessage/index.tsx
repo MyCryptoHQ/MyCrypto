@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
 import './index.scss';
+import { TextArea } from 'components/ui';
 
 interface Props {
   showNotification: TShowNotification;
@@ -34,24 +34,20 @@ export class VerifyMessage extends Component<Props, State> {
   public render() {
     const { verifiedAddress, verifiedMessage, signature } = this.state;
 
-    const signatureBoxClass = classnames([
-      'VerifyMessage-inputBox',
-      'form-control',
-      signature ? 'is-valid' : 'is-invalid'
-    ]);
-
     return (
       <div>
         <div className="Tab-content-pane">
-          <h4>{translate('MSG_signature')}</h4>
-          <div className="form-group">
-            <textarea
-              className={signatureBoxClass}
-              placeholder={signaturePlaceholder}
-              value={signature}
-              onChange={this.handleSignatureChange}
-              onPaste={this.handleSignaturePaste}
-            />
+          <div className="input-group-wrapper ">
+            <label className="input-group">
+              <div className="input-group-header">{translate('MSG_signature')}</div>
+              <TextArea
+                className={`VerifyMessage-inputBox ${signature ? 'is-valid' : 'is-invalid'}`}
+                placeholder={signaturePlaceholder}
+                value={signature}
+                onChange={this.handleSignatureChange}
+                onPaste={this.handleSignaturePaste}
+              />
+            </label>
           </div>
 
           <button

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
@@ -11,6 +10,7 @@ import { AppState } from 'reducers';
 import SignButton from './SignButton';
 import { isWalletFullyUnlocked } from 'selectors/wallet';
 import './index.scss';
+import { TextArea } from 'components/ui';
 
 interface Props {
   wallet: IFullWallet;
@@ -42,17 +42,11 @@ export class SignMessage extends Component<Props, State> {
   public render() {
     const { wallet, unlocked } = this.props;
     const { message, signedMessage } = this.state;
-    const messageBoxClass = classnames([
-      'SignMessage-inputBox',
-      'form-control',
-      message ? 'is-valid' : 'is-invalid'
-    ]);
 
     return (
       <div>
         {unlocked ? (
           <div className="Tab-content-pane">
-            <h3 className="SignMessage-label">{translate('MSG_message')}</h3>
             <button
               className="SignMessage-reset btn btn-default btn-sm"
               onClick={this.changeWallet}
@@ -60,13 +54,17 @@ export class SignMessage extends Component<Props, State> {
               <i className="fa fa-refresh" />
               {translate('Change Wallet')}
             </button>
-            <div className="form-group">
-              <textarea
-                className={messageBoxClass}
-                placeholder={messagePlaceholder}
-                value={message}
-                onChange={this.handleMessageChange}
-              />
+
+            <div className="input-group-wrapper Deploy-field">
+              <label className="input-group">
+                <div className="input-group-header">{translate('MSG_message')}</div>
+                <TextArea
+                  className={`SignMessage-inputBox ${message ? 'is-valid' : 'is-invalid'}`}
+                  placeholder={messagePlaceholder}
+                  value={message}
+                  onChange={this.handleMessageChange}
+                />
+              </label>
               <div className="SignMessage-help">{translate('MSG_info2')}</div>
             </div>
 
@@ -78,16 +76,16 @@ export class SignMessage extends Component<Props, State> {
             />
 
             {!!signedMessage && (
-              <div>
-                <h4>{translate('MSG_signature')}</h4>
-                <div className="form-group">
-                  <textarea
-                    className="SignMessage-inputBox form-control"
+              <div className="input-group-wrapper SignMessage-inputBox">
+                <label className="input-group">
+                  <div className="input-group-header">{translate('MSG_signature')}</div>
+                  <TextArea
+                    className="SignMessage-inputBox"
                     value={JSON.stringify(signedMessage, null, 2)}
                     disabled={true}
                     onChange={this.handleMessageChange}
                   />
-                </div>
+                </label>
               </div>
             )}
           </div>

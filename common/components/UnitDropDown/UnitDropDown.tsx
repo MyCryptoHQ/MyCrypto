@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
 import Dropdown from 'components/ui/Dropdown';
-import { withConditional } from 'components/hocs';
 import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'selectors/wallet';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
@@ -21,34 +20,29 @@ interface StateProps {
   networkUnit: string;
 }
 
-const StringDropdown = Dropdown as new () => Dropdown<string>;
-const ConditionalStringDropDown = withConditional(StringDropdown);
-
 class UnitDropdownClass extends Component<DispatchProps & StateProps> {
   public render() {
     const { tokens, allTokens, showAllTokens, unit, networkUnit } = this.props;
     const focusedTokens = showAllTokens ? allTokens : tokens;
+    const options = [networkUnit, ...getTokenSymbols(focusedTokens)];
     return (
-      <div className="input-group-btn">
-        <Query
-          params={['readOnly']}
-          withQuery={({ readOnly }) => (
-            <ConditionalStringDropDown
-              options={[networkUnit, ...getTokenSymbols(focusedTokens)]}
-              value={unit}
-              condition={!readOnly}
-              conditionalProps={{
-                onChange: this.handleOnChange
-              }}
-              ariaLabel={'dropdown'}
-            />
-          )}
-        />
-      </div>
+      <Query
+        params={['readOnly']}
+        withQuery={({ readOnly }) => (
+          <Dropdown
+            options={options}
+            value={unit === 'ether' ? networkUnit : unit}
+            onChange={this.handleOnChange}
+            clearable={false}
+            searchable={options.length > 10}
+            disabled={!!readOnly}
+          />
+        )}
+      />
     );
   }
-  private handleOnChange = (unit: string) => {
-    this.props.setUnitMeta(unit);
+  private handleOnChange = unit => {
+    this.props.setUnitMeta(unit.value);
   };
 }
 const getTokenSymbols = (tokens: (TokenBalance | MergedToken)[]) => tokens.map(t => t.symbol);

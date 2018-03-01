@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import Modal, { IButton } from 'components/ui/Modal';
 import translate from 'translations';
 import { CustomNetworkConfig } from 'types/network';
@@ -13,10 +12,11 @@ import {
   getStaticNetworkConfigs
 } from 'selectors/config';
 import { CustomNode } from 'libs/nodes';
+import { Input } from 'components/ui';
 
 const CUSTOM = 'custom';
 
-interface Input {
+interface InputProps {
   name: string;
   placeholder?: string;
   type?: string;
@@ -228,13 +228,10 @@ class CustomNodeModal extends React.Component<Props, State> {
     );
   }
 
-  private renderInput(input: Input, invalids: { [key: string]: boolean }) {
+  private renderInput(input: InputProps, invalids: { [key: string]: boolean }) {
     return (
-      <input
-        className={classnames({
-          'form-control': true,
-          'is-invalid': this.state[input.name] && invalids[input.name]
-        })}
+      <Input
+        className={`${this.state[input.name] && invalids[input.name] ? 'invalid' : ''}`}
         value={this.state[input.name]}
         onChange={this.handleChange}
         autoComplete="off"
