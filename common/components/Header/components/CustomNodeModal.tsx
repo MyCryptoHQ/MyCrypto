@@ -20,6 +20,9 @@ interface Input {
   name: string;
   placeholder?: string;
   type?: string;
+  autoComplete?: 'off';
+  onFocus?(): void;
+  onBlur?(): void;
 }
 
 interface OwnProps {
@@ -40,7 +43,6 @@ interface StateProps {
 interface State {
   name: string;
   url: string;
-  port: string;
   network: string;
   customNetworkId: string;
   customNetworkUnit: string;
@@ -56,7 +58,6 @@ class CustomNodeModal extends React.Component<Props, State> {
   public state: State = {
     name: '',
     url: '',
-    port: '',
     network: Object.keys(this.props.staticNetworks)[0],
     customNetworkId: '',
     customNetworkUnit: '',
@@ -94,6 +95,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         isOpen={true}
         buttons={buttons}
         handleClose={handleClose}
+        maxWidth={580}
       >
         <div>
           {isHttps && <div className="alert alert-warning small">{translate('NODE_Warning')}</div>}
@@ -175,27 +177,14 @@ class CustomNodeModal extends React.Component<Props, State> {
               </div>
             )}
 
-            <hr />
-
             <div className="row">
-              <div className="col-sm-9">
+              <div className="col-sm-12">
                 <label>URL</label>
                 {this.renderInput(
                   {
                     name: 'url',
-                    placeholder: 'https://127.0.0.1/'
-                  },
-                  invalids
-                )}
-              </div>
-
-              <div className="col-sm-3">
-                <label>{translate('NODE_Port')}</label>
-                {this.renderInput(
-                  {
-                    name: 'port',
-                    placeholder: '8545',
-                    type: 'number'
+                    placeholder: 'e.g. https://127.0.0.1:8545/',
+                    autoComplete: 'off'
                   },
                   invalids
                 )}
@@ -248,6 +237,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         })}
         value={this.state[input.name]}
         onChange={this.handleChange}
+        autoComplete="off"
         {...input}
       />
     );
@@ -256,7 +246,6 @@ class CustomNodeModal extends React.Component<Props, State> {
   private getInvalids(): { [key: string]: boolean } {
     const {
       url,
-      port,
       hasAuth,
       username,
       password,
@@ -265,7 +254,7 @@ class CustomNodeModal extends React.Component<Props, State> {
       customNetworkUnit,
       customNetworkChainId
     } = this.state;
-    const required: (keyof State)[] = ['name', 'url', 'port', 'network'];
+    const required: (keyof State)[] = ['name', 'url', 'network'];
     const invalids: { [key: string]: boolean } = {};
 
     // Required fields
@@ -275,15 +264,10 @@ class CustomNodeModal extends React.Component<Props, State> {
       }
     });
 
-    // Somewhat valid URL, not 100% fool-proof
-    if (!/https?\:\/\/\w+/i.test(url)) {
+    // Parse the URL, and make sure what they typed isn't parsed as relative.
+    // Not a perfect regex, just checks for protocol + any char
+    if (!/^https?:\/\/.+/i.test(url)) {
       invalids.url = true;
-    }
-
-    // Numeric port within range
-    const iport = parseInt(port, 10);
-    if (!iport || iport < 1 || iport > 65535) {
-      invalids.port = true;
     }
 
     // If they have auth, make sure it's provided
@@ -331,28 +315,25 @@ class CustomNodeModal extends React.Component<Props, State> {
   }
 
   private makeCustomNodeConfigFromState(): CustomNodeConfig {
-    const { network } = this.state;
+    const { network, url, name, username, password } = this.state;
 
     const networkId =
       network === CUSTOM
         ? this.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
         : network;
 
-    const port = parseInt(this.state.port, 10);
-    const url = this.state.url.trim();
     const node: Omit<CustomNodeConfig, 'lib'> = {
       isCustom: true,
       service: 'your custom node',
-      id: `${url}:${port}`,
-      name: this.state.name.trim(),
+      id: url,
+      name: name.trim(),
       url,
-      port,
       network: networkId,
       ...(this.state.hasAuth
         ? {
             auth: {
-              username: this.state.username,
-              password: this.state.password
+              username,
+              password
             }
           }
         : {})

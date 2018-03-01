@@ -25,7 +25,7 @@ export default class SignMessageButton extends React.Component<Props, {}> {
 
     try {
       const signedMessage: ISignedMessage = {
-        address: await wallet.getAddressString(),
+        address: wallet.getAddressString(),
         msg: message,
         sig: await wallet.signMessage(message),
         version: '2'
