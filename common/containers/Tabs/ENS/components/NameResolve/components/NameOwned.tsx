@@ -1,6 +1,6 @@
 import React from 'react';
 import { IOwnedDomainRequest } from 'libs/ens';
-import { NewTabLink } from 'components/ui';
+import { NewTabLink, Address } from 'components/ui';
 const lookupLink = name => `https://etherscan.io/enslookup?q=${name}`;
 
 type ChildrenProps = any;
@@ -40,7 +40,9 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
           </tr>
           <tr>
             <td>Owner:</td>
-            <MonoTd>{ownerAddress}</MonoTd>
+            <MonoTd>
+              <Address address={ownerAddress} />
+            </MonoTd>
           </tr>
           <tr>
             <td>Highest Bidder (Deed Owner): </td>
@@ -50,7 +52,9 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
           </tr>
           <tr>
             <td>Resolved Address: </td>
-            <MonoTd>{resolvedAddress}</MonoTd>
+            <MonoTd>
+              <Address address={resolvedAddress} />
+            </MonoTd>
           </tr>
         </tbody>
       </table>
