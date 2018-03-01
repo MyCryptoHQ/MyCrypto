@@ -1,15 +1,16 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { toChecksumAddress } from 'ethereumjs-util';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
-import React from 'react';
 import translate from 'translations';
-import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
-import { connect } from 'react-redux';
 import { NetworkConfig } from 'types/network';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import './AccountInfo.scss';
 
 interface OwnProps {
   wallet: IWallet;
@@ -106,10 +107,10 @@ class AccountInfo extends React.Component<Props, State> {
             <div className="AccountInfo-address-addr">
               <Address address={address} />
             </div>
-            <CopyToClipboard onCopy={this.onCopy} text={address}>
+            <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>
               <div
-                className={`AccountInfo-copy-icon${this.state.copied ? '-copied' : ''}`}
-                title="Copy To Clipboard"
+                className={`AccountInfo-copy ${this.state.copied ? 'is-copied' : ''}`}
+                title="Copy To clipboard"
               >
                 <i className="fa fa-copy" />
                 <span>{this.state.copied ? 'copied!' : 'copy address'}</span>
