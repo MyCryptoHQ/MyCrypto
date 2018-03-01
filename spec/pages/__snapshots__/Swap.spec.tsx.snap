@@ -15,7 +15,7 @@ exports[`render snapshot 1`] = `
   destination={
     Object {
       "amount": NaN,
-      "id": "ETH",
+      "label": "ETH",
     }
   }
   destinationAddress=""
@@ -45,8 +45,6 @@ exports[`render snapshot 1`] = `
   isFetchingRates={null}
   isOffline={false}
   isPostingOrder={false}
-  loadBityRatesRequestedSwap={[Function]}
-  loadShapeshiftRatesRequestedSwap={[Function]}
   location={
     Object {
       "hash": "",
@@ -73,7 +71,7 @@ exports[`render snapshot 1`] = `
   origin={
     Object {
       "amount": NaN,
-      "id": "BTC",
+      "label": "BTC",
     }
   }
   outputTx={null}

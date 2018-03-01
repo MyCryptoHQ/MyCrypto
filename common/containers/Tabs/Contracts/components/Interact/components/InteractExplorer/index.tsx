@@ -10,9 +10,10 @@ import { connect } from 'react-redux';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
-import Select from 'react-select';
 import { Web3Node } from 'libs/nodes';
 import RpcNode from 'libs/nodes/rpc';
+import { Input } from 'components/ui';
+import Dropdown from 'components/ui/Dropdown';
 
 interface StateProps {
   nodeLib: RpcNode | Web3Node;
@@ -83,22 +84,25 @@ class InteractExplorerClass extends Component<Props, State> {
 
     return (
       <div className="InteractExplorer">
-        <h3 className="InteractExplorer-title">
-          {translate('CONTRACT_Interact_Title')}
-          <span className="InteractExplorer-title-address">{to.raw}</span>
-        </h3>
-
-        <Select
-          name="exploreContract"
-          value={selectedFunction as any}
-          placeholder="Please select a function..."
-          onChange={this.handleFunctionSelect}
-          options={contractFunctionsOptions}
-          clearable={false}
-          searchable={false}
-          labelKey="name"
-          valueKey="contract"
-        />
+        <div className="input-group-wrapper">
+          <label className="input-group">
+            <div className="input-group-header">
+              {translate('CONTRACT_Interact_Title')}
+              <div className="flex-spacer" />
+              <span className="small">{to.raw}</span>
+            </div>
+            <Dropdown
+              name="exploreContract"
+              value={selectedFunction as any}
+              placeholder="Please select a function..."
+              onChange={this.handleFunctionSelect}
+              options={contractFunctionsOptions}
+              clearable={false}
+              labelKey="name"
+              valueKey="contract"
+            />
+          </label>
+        </div>
 
         {selectedFunction && (
           <div key={selectedFunction.name} className="InteractExplorer-func">
@@ -107,18 +111,17 @@ class InteractExplorerClass extends Component<Props, State> {
               const { type, name } = input;
 
               return (
-                <label key={name} className="InteractExplorer-func-in form-group">
-                  <h4 className="InteractExplorer-func-in-label">
-                    {name}
-                    <span className="InteractExplorer-func-in-label-type">{type}</span>
-                  </h4>
-                  <input
-                    className="InteractExplorer-func-in-input form-control"
-                    name={name}
-                    value={(inputs[name] && inputs[name].rawData) || ''}
-                    onChange={this.handleInputChange}
-                  />
-                </label>
+                <div key={name} className="input-group-wrapper InteractExplorer-func-in">
+                  <label className="input-group">
+                    <div className="input-group-header">{name + ' ' + type}</div>
+                    <Input
+                      className="InteractExplorer-func-in-input"
+                      name={name}
+                      value={(inputs[name] && inputs[name].rawData) || ''}
+                      onChange={this.handleInputChange}
+                    />
+                  </label>
+                </div>
               );
             })}
             {selectedFunction.contract.outputs.map((output, index) => {
@@ -126,17 +129,16 @@ class InteractExplorerClass extends Component<Props, State> {
               const parsedName = name === '' ? index : name;
 
               return (
-                <label key={parsedName} className="InteractExplorer-func-out form-group">
-                  <h4 className="InteractExplorer-func-out-label">
-                    ↳ {name}
-                    <span className="InteractExplorer-func-out-label-type">{type}</span>
-                  </h4>
-                  <input
-                    className="InteractExplorer-func-out-input form-control"
-                    value={outputs[parsedName] || ''}
-                    disabled={true}
-                  />
-                </label>
+                <div key={parsedName} className="input-group-wrapper InteractExplorer-func-out">
+                  <label className="input-group">
+                    <div className="input-group-header"> ↳ {name + ' ' + type}</div>
+                    <Input
+                      className="InteractExplorer-func-out-input "
+                      value={outputs[parsedName] || ''}
+                      disabled={true}
+                    />
+                  </label>
+                </div>
               );
             })}
 

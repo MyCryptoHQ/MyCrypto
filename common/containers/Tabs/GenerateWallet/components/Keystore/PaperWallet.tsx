@@ -5,6 +5,7 @@ import translate from 'translations';
 import { stripHexPrefix } from 'libs/values';
 import './PaperWallet.scss';
 import Template from '../Template';
+import { Input } from 'components/ui';
 
 interface Props {
   keystore: IV3Wallet;
@@ -17,8 +18,8 @@ const PaperWallet: React.SFC<Props> = props => (
     <div className="GenPaper">
       {/* Private Key */}
       <h1 className="GenPaper-title">{translate('GEN_Label_5')}</h1>
-      <input
-        className="GenPaper-private form-control"
+      <Input
+        className="GenPaper-private"
         value={stripHexPrefix(props.privateKey)}
         aria-label={translate('x_PrivKey', true)}
         aria-describedby="x_PrivKeyDesc"

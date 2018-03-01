@@ -1,4 +1,10 @@
-import { ethPlorer, ETHTokenExplorer, SecureWalletName, InsecureWalletName } from 'config/data';
+import {
+  ethPlorer,
+  ETHTokenExplorer,
+  SecureWalletName,
+  InsecureWalletName,
+  gasPriceDefaults
+} from 'config/data';
 import {
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -27,7 +33,13 @@ export function makeExplorer(name: string, origin: string): BlockExplorerConfig 
   };
 }
 
-const INITIAL_STATE: State = {
+const testnetDefaultGasPrice = {
+  min: 0.1,
+  max: 40,
+  initial: 4
+};
+
+export const INITIAL_STATE: State = {
   ETH: {
     name: 'ETH',
     unit: 'ETH',
@@ -45,7 +57,9 @@ const INITIAL_STATE: State = {
       [SecureWalletName.TREZOR]: ETH_TREZOR,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
-    }
+    },
+    gasPriceSettings: gasPriceDefaults,
+    shouldEstimateGasPrice: true
   },
   Ropsten: {
     name: 'Ropsten',
@@ -61,7 +75,8 @@ const INITIAL_STATE: State = {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
-    }
+    },
+    gasPriceSettings: testnetDefaultGasPrice
   },
   Kovan: {
     name: 'Kovan',
@@ -77,7 +92,8 @@ const INITIAL_STATE: State = {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
-    }
+    },
+    gasPriceSettings: testnetDefaultGasPrice
   },
   Rinkeby: {
     name: 'Rinkeby',
@@ -93,7 +109,8 @@ const INITIAL_STATE: State = {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
-    }
+    },
+    gasPriceSettings: testnetDefaultGasPrice
   },
   ETC: {
     name: 'ETC',
@@ -108,6 +125,11 @@ const INITIAL_STATE: State = {
       [SecureWalletName.TREZOR]: ETC_TREZOR,
       [SecureWalletName.LEDGER_NANO_S]: ETC_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETC_TREZOR
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 10,
+      initial: 1
     }
   },
   UBQ: {
@@ -123,6 +145,11 @@ const INITIAL_STATE: State = {
       [SecureWalletName.TREZOR]: UBQ_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: UBQ_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: UBQ_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
     }
   },
   EXP: {
@@ -138,6 +165,11 @@ const INITIAL_STATE: State = {
       [SecureWalletName.TREZOR]: EXP_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: EXP_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EXP_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 20,
+      initial: 2
     }
   }
 };
