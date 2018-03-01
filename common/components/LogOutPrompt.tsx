@@ -41,7 +41,6 @@ class LogOutPromptClass extends React.Component<Props, State> {
   }
 
   public render() {
-    console.log(this.state.nextLocation);
     const buttons: IButton[] = [
       { text: 'Log Out', type: 'primary', onClick: this.onConfirm },
       { text: 'Cancel', type: 'default', onClick: this.onCancel }
