@@ -1,31 +1,26 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
+import NewTabLink from 'components/ui/NewTabLink';
 import { getValues } from '../utils/helpers';
 import packageJson from '../../package.json';
 import { GasPriceSetting } from 'types/network';
 
 export const languages = require('./languages.json');
+export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
 export const VERSION = `${packageJson.version} (BETA)`;
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
-// Type can be primary, warning, danger, success, or info.
+// Type can be primary, warning, danger, success, info, or blank for grey.
 // Message must be a JSX element if you want to use HTML.
-export const ANNOUNCEMENT_TYPE = 'warning';
+export const ANNOUNCEMENT_TYPE = '';
 export const ANNOUNCEMENT_MESSAGE = (
-  <div>
-    This is an early build of MyCrypto Beta. Please only use for testing, or use production at{' '}
-    <a href="https://mycrypto.com">{'https://mycrypto.com'}</a>.
-    <br />
-    <span className="hidden-xs">
-      If you're interested in recieving updates about the MyCrypto Beta, you can subscribe via{' '}
-      <a href="https://mycrypto.us17.list-manage.com/subscribe?u=6092be560275431280b0ffbc1&id=a03ef384e4">
-        mailchimp
-      </a>{' '}
-      :)
-    </span>
-  </div>
+  <React.Fragment>
+    This is a Beta version of MyCrypto. Please submit any bug reports to our{' '}
+    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink>, and join
+    the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
+  </React.Fragment>
 );
 
 const etherScan = 'https://etherscan.io';

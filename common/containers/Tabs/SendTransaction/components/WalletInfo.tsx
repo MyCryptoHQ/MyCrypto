@@ -1,4 +1,5 @@
 import React from 'react';
+import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
@@ -26,12 +27,12 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
   };
 
   public componentDidMount() {
-    this.setWalletAsyncState(this.props.wallet);
+    this.setStateFromWallet(this.props.wallet);
   }
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
-      this.setWalletAsyncState(nextProps.wallet);
+      this.setStateFromWallet(nextProps.wallet);
     }
   }
 
@@ -114,9 +115,9 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     );
   }
 
-  private async setWalletAsyncState(wallet: IWallet) {
-    const address = wallet.getAddressString();
-    const privateKey = wallet.getPrivateKeyString ? await wallet.getPrivateKeyString() : '';
+  private setStateFromWallet(wallet: IWallet) {
+    const address = toChecksumAddress(wallet.getAddressString());
+    const privateKey = wallet.getPrivateKeyString ? wallet.getPrivateKeyString() : '';
     this.setState({ address, privateKey });
   }
 
