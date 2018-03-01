@@ -29,6 +29,12 @@ interface DPathFormats {
   mnemonicPhrase: DPath;
 }
 
+export interface GasPriceSetting {
+  min: number;
+  max: number;
+  initial: number;
+}
+
 interface StaticNetworkConfig {
   isCustom: false; // used for type guards
   name: StaticNetworkIds;
@@ -44,6 +50,8 @@ interface StaticNetworkConfig {
   contracts: NetworkContract[] | null;
   dPathFormats: DPathFormats;
   isTestnet?: boolean;
+  gasPriceSettings: GasPriceSetting;
+  shouldEstimateGasPrice?: boolean;
 }
 
 interface CustomNetworkConfig {
