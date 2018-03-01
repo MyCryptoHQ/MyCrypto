@@ -25,15 +25,16 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
   public render() {
     const { tokens, allTokens, showAllTokens, unit, network } = this.props;
     const focusedTokens = showAllTokens ? allTokens : tokens;
+    const options = [network.unit, ...getTokenSymbols(focusedTokens)];
     return (
       <Query
         params={['readOnly']}
         withQuery={({ readOnly }) => (
           <Dropdown
-            options={[network.unit, ...getTokenSymbols(focusedTokens)]}
+            options={options}
             value={unit === 'ether' ? network.unit : unit}
             onChange={this.handleOnChange}
-            searchable={false}
+            searchable={options.length > 1}
             clearable={false}
             disabled={!!readOnly}
           />
