@@ -5,7 +5,8 @@ import {
   ethercardReferralURL,
   donationAddressMap,
   VERSION,
-  knowledgeBaseURL
+  knowledgeBaseURL,
+  discordURL
 } from 'config';
 import React from 'react';
 import PreFooter from './PreFooter';
@@ -46,6 +47,10 @@ const SOCIAL_MEDIA: Link[] = [
   {
     link: 'https://www.reddit.com/r/mycrypto/',
     text: 'reddit'
+  },
+  {
+    link: discordURL,
+    text: 'discord'
   }
 ];
 
