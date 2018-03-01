@@ -100,7 +100,7 @@
     "klaw-sync": "3.0.2",
     "less": "2.7.3",
     "less-loader": "4.0.6",
-    "lint-staged": "6.1.1",
+    "lint-staged": "7.0.0",
     "minimist": "1.2.0",
     "node-sass": "4.7.2",
     "nodemon": "1.17.1",
