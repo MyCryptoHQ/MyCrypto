@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import translate, { translateRaw } from 'translations';
 import FeeSummary from './FeeSummary';
 import './AdvancedGas.scss';
@@ -11,6 +10,7 @@ import { connect } from 'react-redux';
 import { getAutoGasLimitEnabled } from 'selectors/config';
 import { isValidGasPrice } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
+import { Input } from 'components/ui';
 
 export interface AdvancedOptions {
   gasPriceField?: boolean;
@@ -71,17 +71,19 @@ class AdvancedGas extends React.Component<Props, State> {
 
         <div className="AdvancedGas-flex-wrapper flex-wrapper">
           {gasPriceField && (
-            <div className="AdvancedGas-gas-price">
-              <label>{translate('OFFLINE_Step2_Label_3')} (gwei)</label>
-              <input
-                className={classnames('form-control', {
-                  'is-invalid': !!gasPrice.raw && !validGasPrice
-                })}
-                type="number"
-                placeholder="40"
-                value={gasPrice.raw}
-                onChange={this.handleGasPriceChange}
-              />
+            <div className="input-group-wrapper AdvancedGas-gas-price">
+              <label className="input-group">
+                <div className="input-group-header">
+                  {translate('OFFLINE_Step2_Label_3')} (gwei)
+                </div>
+                <Input
+                  className={!!gasPrice.raw && !validGasPrice ? 'is-invalid' : ''}
+                  type="number"
+                  placeholder="40"
+                  value={gasPrice.raw}
+                  onChange={this.handleGasPriceChange}
+                />
+              </label>
             </div>
           )}
 

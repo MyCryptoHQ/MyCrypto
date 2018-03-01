@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
+import { Input } from 'components/ui';
 
 export interface KeystoreValue {
   file: string;
@@ -36,7 +37,7 @@ export class KeystoreDecrypt extends PureComponent {
   };
 
   public render() {
-    const { isWalletPending, isPasswordPending, value: { file, password } } = this.props;
+    const { isWalletPending, value: { file, password } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
@@ -44,7 +45,7 @@ export class KeystoreDecrypt extends PureComponent {
       <form id="selectedUploadKey" onSubmit={this.unlock}>
         <div className="form-group">
           <input
-            className={'hidden'}
+            className="hidden"
             type="file"
             id="fselector"
             onChange={this.handleFileSelection}
@@ -55,17 +56,16 @@ export class KeystoreDecrypt extends PureComponent {
             </a>
           </label>
           {isWalletPending ? <Spinner /> : ''}
-          <div className={file.length && isPasswordPending ? '' : 'hidden'}>
-            <p>{translate('ADD_Label_3')}</p>
-            <input
-              className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
-              value={password}
-              onChange={this.onPasswordChange}
-              onKeyDown={this.onKeyDown}
-              placeholder={translateRaw('x_Password')}
-              type="password"
-            />
-          </div>
+          <Input
+            className={`${password.length > 0 ? 'is-valid' : 'is-invalid'} ${
+              file.length && isWalletPending ? 'hidden' : ''
+            }`}
+            value={password}
+            onChange={this.onPasswordChange}
+            onKeyDown={this.onKeyDown}
+            placeholder={translateRaw('x_Password')}
+            type="password"
+          />
         </div>
 
         <button className="btn btn-primary btn-block" disabled={unlockDisabled}>

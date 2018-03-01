@@ -3,7 +3,6 @@
 
 label {
   margin-bottom: $space-xs;
-  font-size: $font-size-bump-more;
 
   &.is-required:after {
     content: '*';
@@ -49,7 +48,6 @@ select.form-control {
 
 .form-group {
   display: block;
-  margin-top: $form-group-margin-bottom * 2;
   margin-bottom: $form-group-margin-bottom;
 }
 

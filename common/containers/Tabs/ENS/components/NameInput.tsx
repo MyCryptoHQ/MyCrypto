@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { resolveDomainRequested, TResolveDomainRequested } from 'actions/ens';
 import { isValidENSName } from 'libs/validators';
 import './NameInput.scss';
+import { Input } from 'components/ui';
 
 interface State {
   domainToCheck: string;
@@ -32,21 +32,20 @@ class NameInput extends Component<Props, State> {
 
     return (
       <form className="ENSInput" onSubmit={this.onSubmit}>
-        <div className="ENSInput-name input-group">
-          <input
-            value={domainToCheck}
-            className={classnames(
-              'form-control',
-              !domainToCheck ? '' : isValidDomain ? 'is-valid' : 'is-invalid'
-            )}
-            type="text"
-            placeholder="mycrypto"
-            onChange={this.onChange}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-            disabled={isLoading}
-          />
-          <span className="input-group-addon">.eth</span>
+        <div className="input-group-wrapper">
+          <label className="input-group input-group-inline-dropdown ENSInput-name">
+            <Input
+              value={domainToCheck}
+              className={!domainToCheck ? '' : isValidDomain ? 'is-valid' : 'is-invalid'}
+              type="text"
+              placeholder="mycrypto"
+              onChange={this.onChange}
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
+              disabled={isLoading}
+            />
+            <span className="input-group-addon">.eth</span>
+          </label>
         </div>
         {domainToCheck &&
           !isValidDomain &&

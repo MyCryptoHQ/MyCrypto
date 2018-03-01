@@ -4,7 +4,7 @@ import { WhitelistedCoins } from 'config';
 export type ProviderName = ProviderName;
 
 export interface SwapInput {
-  id: WhitelistedCoins;
+  label: WhitelistedCoins;
   amount: number | string;
 }
 
