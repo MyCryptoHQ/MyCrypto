@@ -1,6 +1,6 @@
 import React from 'react';
 import translate from 'translations';
-import { Identicon, UnitDisplay, NewTabLink } from 'components/ui';
+import { Identicon, UnitDisplay, NewTabLink, Address } from 'components/ui';
 import { TransactionData, TransactionReceipt } from 'libs/nodes';
 import { NetworkConfig } from 'types/network';
 import './TransactionDataTable.scss';
@@ -98,7 +98,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: (
         <MaybeLink href={explorer.from}>
           <Identicon address={data.from} size="26px" />
-          {data.from}
+          <Address address={data.from} />
         </MaybeLink>
       )
     },
@@ -107,7 +107,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: (
         <MaybeLink href={explorer.to}>
           <Identicon address={data.to} size="26px" />
-          {data.to}
+          <Address address={data.to} />
         </MaybeLink>
       )
     },
@@ -141,7 +141,9 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('New contract address'),
       data: receipt &&
         receipt.contractAddress && (
-          <MaybeLink href={explorer.contract}>{receipt.contractAddress}</MaybeLink>
+          <MaybeLink href={explorer.contract}>
+            <Address address={receipt.contractAddress} />
+          </MaybeLink>
         )
     },
     {
