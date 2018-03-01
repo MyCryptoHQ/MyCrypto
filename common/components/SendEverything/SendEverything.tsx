@@ -27,7 +27,7 @@ class SendEverythingClass extends Component<Props> {
           !readOnly ? (
             <span className="help-block">
               <a onClick={this.onSendEverything}>
-                <span className="strong">{translate('SEND_TransferTotal')}</span>
+                <span className="">{translate('SEND_TransferTotal')}</span>
               </a>
             </span>
           ) : null

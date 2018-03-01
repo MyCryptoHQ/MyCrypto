@@ -13,6 +13,7 @@ import { FullWalletOnly } from 'components/renderCbs';
 import { NonceField, TXMetaDataPanel } from 'components';
 import './Deploy.scss';
 import { ConfirmationModal } from 'components/ConfirmationModal';
+import { TextArea } from 'components/ui';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -23,27 +24,30 @@ class DeployClass extends Component<DispatchProps> {
   public render() {
     const makeContent = () => (
       <main className="Deploy Tab-content-pane" role="main">
-        <div className="Deploy-field form-group">
-          <h3 className="Deploy-field-label">{translate('CONTRACT_ByteCode')}</h3>
-          <button className="Deploy-field-reset btn btn-default btn-sm" onClick={this.changeWallet}>
-            <i className="fa fa-refresh" />
-            {translate('Change Wallet')}
-          </button>
-          <DataFieldFactory
-            withProps={({ data: { raw, value }, onChange, readOnly }) => (
-              <textarea
-                name="byteCode"
-                placeholder="0x8f87a973e..."
-                rows={6}
-                onChange={onChange}
-                disabled={readOnly}
-                className={classnames('Deploy-field-input', 'form-control', {
-                  'is-valid': value && value.length > 0
-                })}
-                value={raw}
-              />
-            )}
-          />
+        <button className="Deploy-field-reset btn btn-default btn-sm" onClick={this.changeWallet}>
+          <i className="fa fa-refresh" />
+          {translate('Change Wallet')}
+        </button>
+
+        <div className="input-group-wrapper Deploy-field">
+          <label className="input-group">
+            <div className="input-group-header">{translate('CONTRACT_ByteCode')}</div>
+            <DataFieldFactory
+              withProps={({ data: { raw, value }, onChange, readOnly }) => (
+                <TextArea
+                  name="byteCode"
+                  placeholder="0x8f87a973e..."
+                  rows={6}
+                  onChange={onChange}
+                  disabled={readOnly}
+                  className={classnames('Deploy-field-input', 'form-control', {
+                    'is-valid': value && value.length > 0
+                  })}
+                  value={raw}
+                />
+              )}
+            />
+          </label>
         </div>
 
         <div className="row form-group">

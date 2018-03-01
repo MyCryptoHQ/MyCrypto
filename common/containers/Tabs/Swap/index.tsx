@@ -139,7 +139,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
     const ReceivingAddressProps = {
       isPostingOrder,
       origin,
-      destinationId: destination.id,
+      destinationId: destination.label,
       destinationKind: destination.amount as number,
       destinationAddressSwap,
       destinationAddress,

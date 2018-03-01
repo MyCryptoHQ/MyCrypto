@@ -3,7 +3,7 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
-import { Identicon, QRCode } from 'components/ui';
+import { Identicon, QRCode, Input } from 'components/ui';
 import { GenerateKeystoreModal, TogglablePassword } from 'components';
 import './WalletInfo.scss';
 
@@ -44,8 +44,12 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
         <div className="Tab-content-pane">
           <div className="row form-group">
             <div className="col-xs-11">
-              <label>{translate('x_Address')}</label>
-              <input className="form-control" disabled={true} value={address} />
+              <div className="input-group-wrapper">
+                <label className="input-group">
+                  <div className="input-group-header">{translate('x_Address')}</div>
+                  <Input readOnly={true} value={address} />
+                </label>
+              </div>
             </div>
             <div className="col-xs-1" style={{ padding: 0 }}>
               <Identicon address={address} />

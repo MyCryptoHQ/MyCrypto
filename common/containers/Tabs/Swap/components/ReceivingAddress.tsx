@@ -6,7 +6,6 @@ import {
   TStopLoadBityRatesSwap
 } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
-import classnames from 'classnames';
 import SimpleButton from 'components/ui/SimpleButton';
 import { donationAddressMap } from 'config';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
@@ -14,6 +13,7 @@ import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
+import { Input } from 'components/ui';
 
 export interface StateProps {
   origin: SwapInput;
@@ -46,7 +46,7 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
     if (provider === 'shapeshift') {
       this.props.shapeshiftOrderCreateRequestedSwap(
         destinationAddress,
-        origin.id,
+        origin.label,
         destinationId,
         destinationKind
       );
@@ -54,7 +54,7 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
       this.props.bityOrderCreateRequestedSwap(
         origin.amount as number,
         this.props.destinationAddress,
-        combineAndUpper(origin.id, destinationId)
+        combineAndUpper(origin.label, destinationId)
       );
     }
   };
@@ -69,13 +69,6 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
       validAddress = isValidETHAddress(destinationAddress);
     }
 
-    const inputClasses = classnames({
-      'SwapAddress-address-input': true,
-      'form-control': true,
-      'is-valid': validAddress,
-      'is-invalid': !validAddress
-    });
-
     return (
       <section className="SwapAddress block">
         <section className="row">
@@ -85,8 +78,8 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
                 {translate('SWAP_rec_add')} ({destinationId})
               </h4>
 
-              <input
-                className={inputClasses}
+              <Input
+                className={`SwapAddress-address-input ${!validAddress ? 'invalid' : ''}`}
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}

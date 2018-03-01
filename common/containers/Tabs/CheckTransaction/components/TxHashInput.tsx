@@ -2,6 +2,7 @@ import React from 'react';
 import translate from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
 import './TxHashInput.scss';
+import { Input } from 'components/ui';
 
 interface Props {
   hash?: string;
@@ -26,14 +27,14 @@ export default class TxHashInput extends React.Component<Props, State> {
 
   public render() {
     const { hash } = this.state;
-    const validClass = hash ? (isValidTxHash(hash) ? 'is-valid' : 'is-invalid') : '';
+    const validClass = hash ? (isValidTxHash(hash) ? '' : 'invalid') : '';
 
     return (
       <form className="TxHashInput" onSubmit={this.handleSubmit}>
-        <input
+        <Input
           value={hash}
           placeholder="0x16e521..."
-          className={`TxHashInput-field form-control ${validClass}`}
+          className={`TxHashInput-field ${validClass}`}
           onChange={this.handleChange}
         />
 

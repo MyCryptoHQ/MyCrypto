@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet';
-import { QRCode } from 'components/ui';
+import { QRCode, TextArea } from 'components/ui';
 import { getUnit, getDecimal } from 'selectors/transaction/meta';
 import {
   getCurrentTo,
@@ -51,10 +51,10 @@ class RequestPayment extends React.Component<Props, {}> {
   };
 
   public componentDidMount() {
+    this.props.reset();
     if (this.props.wallet) {
       this.setWalletAsyncState(this.props.wallet);
     }
-    this.props.reset();
   }
 
   public componentWillUnmount() {
@@ -121,18 +121,14 @@ class RequestPayment extends React.Component<Props, {}> {
 
           {!!eip681String.length && (
             <div className="row form-group">
+              <label className="RequestPayment-title">{translate('Payment QR & Code')}</label>
               <div className="col-xs-6">
-                <label>{translate('Payment QR & Code')}</label>
                 <div className="RequestPayment-qr well well-lg">
                   <QRCode data={eip681String} />
                 </div>
               </div>
               <div className="col-xs-6 RequestPayment-codeContainer">
-                <textarea
-                  className="RequestPayment-codeBox form-control"
-                  value={eip681String}
-                  disabled={true}
-                />
+                <TextArea className="RequestPayment-codeBox" value={eip681String} disabled={true} />
               </div>
             </div>
           )}
