@@ -18,8 +18,9 @@ export const ANNOUNCEMENT_TYPE = '';
 export const ANNOUNCEMENT_MESSAGE = (
   <React.Fragment>
     This is a Beta version of MyCrypto. Please submit any bug reports to our{' '}
-    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink>, and join
-    the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
+    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink> and use{' '}
+    <NewTabLink href="https://hackerone.com/mycrypto">HackerOne</NewTabLink> for critical
+    vulnerabilities. Join the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
   </React.Fragment>
 );
 
