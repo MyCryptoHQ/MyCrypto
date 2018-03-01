@@ -36,6 +36,11 @@ export interface ChangeNodeIntentAction {
   type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
   payload: string;
 }
+/*** Force Change Node ***/
+export interface ChangeNodeForceAction {
+  type: TypeKeys.CONFIG_NODE_CHANGE_FORCE;
+  payload: string;
+}
 
 /*** Add Custom Node ***/
 export interface AddCustomNodeAction {

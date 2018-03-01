@@ -2,12 +2,18 @@ import { configuredStore } from 'store';
 import { delay } from 'redux-saga';
 import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
-import { toggleOffline, changeNode, changeNodeIntent, setLatestBlock } from 'actions/config';
+import {
+  toggleOffline,
+  changeNode,
+  changeNodeIntent,
+  changeNodeForce,
+  setLatestBlock
+} from 'actions/config';
 import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
   pollOfflineStatus,
-  reload
+  handleNewNetwork
 } from 'sagas/config/node';
 import {
   getNodeId,
@@ -213,9 +219,8 @@ describe('handleNodeChangeIntent*', () => {
     );
   });
 
-  it('should call reload if network is new', () => {
-    expect(data.gen.next().value).toEqual(call(reload));
-    expect(data.gen.next().done).toEqual(true);
+  it('should fork handleNewNetwork', () => {
+    expect(data.gen.next().value).toEqual(fork(handleNewNetwork));
   });
 
   it('should be done', () => {
@@ -275,8 +280,8 @@ describe('unsetWeb3Node*', () => {
     expect(gen.next(node).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
-  it('should put changeNodeIntent', () => {
-    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeIntent(alternativeNodeId)));
+  it('should put changeNodeForce', () => {
+    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeForce(alternativeNodeId)));
   });
 
   it('should be done', () => {
@@ -305,8 +310,8 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
     expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
-  it('should put changeNodeIntent', () => {
-    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeIntent(alternativeNodeId)));
+  it('should put changeNodeForce', () => {
+    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeForce(alternativeNodeId)));
   });
 
   it('should be done', () => {
