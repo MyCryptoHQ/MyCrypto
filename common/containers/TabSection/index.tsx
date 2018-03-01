@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AlphaAgreement, Footer, Header } from 'components';
+import { BetaAgreement, Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
@@ -31,7 +31,7 @@ class TabSection extends Component<Props, {}> {
         <div className="flex-spacer" />
         <Footer latestBlock={latestBlock} />
         <Notifications />
-        <AlphaAgreement />
+        <BetaAgreement />
       </div>
     );
   }
