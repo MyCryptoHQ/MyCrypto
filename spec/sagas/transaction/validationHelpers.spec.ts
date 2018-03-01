@@ -100,30 +100,24 @@ describe('validateInput*', () => {
   });
 
   it('should select getOffline', () => {
-    gens.clone1 = gens.gen.clone();
     gens.clone2 = gens.gen.clone();
     expect(gens.gen.next(etherBalance).value).toEqual(select(getOffline));
-    gens.gen.next();
+    gens.clone1 = gens.gen.clone();
   });
 
   it('should call isNetworkUnit', () => {
-    expect(gens.gen.next({}).value).toEqual(select(isNetworkUnit, unit));
+    expect(gens.gen.next(false).value).toEqual(select(isNetworkUnit, unit));
     gens.clone3 = gens.gen.clone();
   });
 
   it('should return true when offline', () => {
-    gens.clone1.next();
-    gens.clone1.next();
-    gens.clone1.next(true);
-    expect(gens.clone1.next(true).value).toEqual(true);
+    expect(gens.clone1.next(true).value).toEqual(select(isNetworkUnit, unit));
     expect(gens.clone1.next().done).toEqual(true);
   });
 
   it('should return when !etherBalance', () => {
-    gens.clone2.next(null);
-    gens.clone2.next();
-    gens.clone2.next(false);
-    expect(gens.clone2.next().value).toEqual(true);
+    expect(gens.clone2.next(null).value).toEqual(select(getOffline));
+    expect(gens.clone2.next(true).value).toEqual(select(isNetworkUnit, unit));
     expect(gens.clone2.next().done).toEqual(true);
   });
 
