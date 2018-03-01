@@ -60,12 +60,12 @@ class SwapDropdown<T> extends PureComponent<Props<T>> {
     });
     return (
       <DropDown
+        className="Swap-dropdown"
         options={mappedOptions}
         optionComponent={(props: any) => {
           return <OptionComp {...props} />;
         }}
         value={value}
-        searchable={false}
         clearable={false}
         onChange={onChange}
         valueComponent={(props: any) => {

@@ -34,8 +34,8 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
             options={options}
             value={unit === 'ether' ? network.unit : unit}
             onChange={this.handleOnChange}
-            searchable={options.length > 10}
             clearable={false}
+            searchable={options.length > 10}
             disabled={!!readOnly}
           />
         )}

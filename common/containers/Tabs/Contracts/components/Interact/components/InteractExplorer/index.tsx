@@ -98,7 +98,6 @@ class InteractExplorerClass extends Component<Props, State> {
               onChange={this.handleFunctionSelect}
               options={contractFunctionsOptions}
               clearable={false}
-              searchable={false}
               labelKey="name"
               valueKey="contract"
             />

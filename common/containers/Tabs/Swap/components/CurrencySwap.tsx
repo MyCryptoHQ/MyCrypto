@@ -330,73 +330,74 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     return (
       <article className="CurrencySwap">
         {loaded || timeoutLoaded ? (
-          <div className="CurrencySwap-inner-wrap">
-            <div className="flex-spacer" />
-            <div className="input-group-wrapper">
-              <div className="input-group-header">Deposit</div>
-              <label className="input-group input-group-inline-dropdown">
-                <Input
-                  id="origin-swap-input"
-                  className={`input-group-input ${
-                    String(origin.amount) !== '' &&
-                    this.isMinMaxValid(origin.amount, origin.label, destination.label)
-                      ? ''
-                      : 'invalid'
-                  }`}
-                  type="number"
-                  placeholder="Amount"
-                  value={isNaN(origin.amount) ? '' : origin.amount}
-                  onChange={this.onChangeAmount}
-                />
-                <SwapDropdown
-                  options={originKindOptions}
-                  value={origin.value}
-                  onChange={this.onChangeOriginKind}
-                />
-              </label>
-              {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
-            </div>
+          <React.Fragment>
+            <div className="CurrencySwap-inner-wrap">
+              <div className="flex-spacer" />
+              <div className="input-group-wrapper">
+                <div className="input-group-header">Deposit</div>
+                <label className="input-group input-group-inline-dropdown">
+                  <Input
+                    id="origin-swap-input"
+                    className={`input-group-input ${
+                      String(origin.amount) !== '' &&
+                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
+                        ? ''
+                        : 'invalid'
+                    }`}
+                    type="number"
+                    placeholder="Amount"
+                    value={isNaN(origin.amount) ? '' : origin.amount}
+                    onChange={this.onChangeAmount}
+                  />
+                  <SwapDropdown
+                    options={originKindOptions}
+                    value={origin.value}
+                    onChange={this.onChangeOriginKind}
+                  />
+                </label>
+                {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
+              </div>
 
-            <div className="input-group-wrapper">
-              <label className="input-group input-group-inline-dropdown">
-                <div className="input-group-header">Recieve</div>
-                <Input
-                  id="destination-swap-input"
-                  className={`${
-                    String(destination.amount) !== '' &&
-                    this.isMinMaxValid(origin.amount, origin.label, destination.label)
-                      ? ''
-                      : 'invalid'
-                  }`}
-                  type="number"
-                  placeholder="Amount"
-                  value={isNaN(destination.amount) ? '' : destination.amount}
-                  onChange={this.onChangeAmount}
-                />
-                <SwapDropdown
-                  options={destinationKindOptions}
-                  value={destination.value}
-                  onChange={this.onChangeDestinationKind}
-                />
-              </label>
-              {destinationErr && (
-                <span className="CurrencySwap-error-message">{destinationErr}</span>
-              )}
+              <div className="input-group-wrapper">
+                <label className="input-group input-group-inline-dropdown">
+                  <div className="input-group-header">Recieve</div>
+                  <Input
+                    id="destination-swap-input"
+                    className={`${
+                      String(destination.amount) !== '' &&
+                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
+                        ? ''
+                        : 'invalid'
+                    }`}
+                    type="number"
+                    placeholder="Amount"
+                    value={isNaN(destination.amount) ? '' : destination.amount}
+                    onChange={this.onChangeAmount}
+                  />
+                  <SwapDropdown
+                    options={destinationKindOptions}
+                    value={destination.value}
+                    onChange={this.onChangeDestinationKind}
+                  />
+                </label>
+                {destinationErr && (
+                  <span className="CurrencySwap-error-message">{destinationErr}</span>
+                )}
+              </div>
+              <div className="flex-spacer" />
             </div>
-            <div className="flex-spacer" />
-          </div>
+            <div className="CurrencySwap-submit">
+              <SimpleButton
+                onClick={this.onClickStartSwap}
+                text={translate('SWAP_init_CTA')}
+                disabled={this.state.disabled}
+                type="primary"
+              />
+            </div>
+          </React.Fragment>
         ) : (
           <Spinner />
         )}
-
-        <div className="CurrencySwap-submit">
-          <SimpleButton
-            onClick={this.onClickStartSwap}
-            text={translate('SWAP_init_CTA')}
-            disabled={this.state.disabled}
-            type="primary"
-          />
-        </div>
       </article>
     );
   }

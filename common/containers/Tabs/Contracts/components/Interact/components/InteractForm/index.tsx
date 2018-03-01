@@ -110,7 +110,6 @@ class InteractForm extends Component<Props, State> {
                 onChange={this.handleSelectContract}
                 options={contractOptions}
                 clearable={false}
-                searchable={false}
                 labelKey="name"
               />
             </label>
