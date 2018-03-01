@@ -51,10 +51,10 @@ class RequestPayment extends React.Component<Props, {}> {
   };
 
   public componentDidMount() {
+    this.props.reset();
     if (this.props.wallet) {
       this.setWalletAsyncState(this.props.wallet);
     }
-    this.props.reset();
   }
 
   public componentWillUnmount() {
