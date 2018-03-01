@@ -27,6 +27,7 @@ import {
   changeNodeIntent,
   setLatestBlock,
   AddCustomNodeAction,
+  ChangeNodeForceAction,
   ChangeNodeIntentAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
@@ -181,8 +182,30 @@ export function* handleNewNetwork() {
   yield put(resetWallet());
 }
 
+export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: ChangeNodeForceAction) {
+  // does not perform node online check before changing nodes
+  // necessary when switching back from Web3 provider so node
+  // dropdown does not get stuck if node is offline
+
+  const isStaticNode: boolean = yield select(isStaticNodeId, staticNodeIdToSwitchTo);
+
+  if (!isStaticNode) {
+    return;
+  }
+
+  const nodeConfig = yield select(getStaticNodeFromId, staticNodeIdToSwitchTo);
+
+  // force the node change
+  yield put(changeNode({ networkId: nodeConfig.network, nodeId: staticNodeIdToSwitchTo }));
+
+  // also put the change through as usual so status check and
+  // error messages occur if the node is unavailable
+  yield put(changeNodeIntent(staticNodeIdToSwitchTo));
+}
+
 export const node = [
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
+  takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
   takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode)
