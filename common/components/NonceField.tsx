@@ -2,7 +2,7 @@ import React from 'react';
 import translate from 'translations';
 import { NonceFieldFactory } from 'components/NonceFieldFactory';
 import Help from 'components/ui/Help';
-import { Spinner } from 'components/ui';
+import { Spinner, Input } from 'components/ui';
 import { connect } from 'react-redux';
 import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
 import { nonceRequestPending } from 'selectors/transaction';
@@ -32,19 +32,17 @@ class NonceField extends React.Component<Props> {
       <NonceFieldFactory
         withProps={({ nonce: { raw, value }, onChange, readOnly, shouldDisplay }) => {
           return alwaysDisplay || shouldDisplay ? (
-            <React.Fragment>
-              <div className="Nonce-label flex-wrapper">
-                <label className="Nonce-label-text">{translate('OFFLINE_Step2_Label_5')}</label>
-                <Help
-                  size="x1"
-                  link="https://support.mycrypto.com/transactions/what-is-nonce.html"
-                />
-              </div>
-              <div className="Nonce-field">
-                <input
-                  className={`Nonce-field-input form-control ${
-                    !!value ? 'is-valid' : 'is-invalid'
-                  }`}
+            <div className="input-group-wrapper Nonce-label">
+              <label className="input-group">
+                <div className="input-group-header">
+                  {translate('OFFLINE_Step2_Label_5')}
+                  <Help
+                    size="x1"
+                    link="https://support.mycrypto.com/transactions/what-is-nonce.html"
+                  />
+                </div>
+                <Input
+                  className={`Nonce-field-input  ${!!value ? 'is-valid' : 'is-invalid'}`}
                   type="number"
                   placeholder="e.g. 7"
                   value={raw}
@@ -63,8 +61,8 @@ class NonceField extends React.Component<Props> {
                     </button>
                   )
                 )}
-              </div>
-            </React.Fragment>
+              </label>
+            </div>
           ) : null;
         }}
       />

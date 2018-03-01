@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { SwapInput } from 'reducers/swap/types';
 import './PaymentInfo.scss';
+import { Input } from 'components/ui';
 
 export interface Props {
   origin: SwapInput;
@@ -17,11 +18,11 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
           <span>{translate('SWAP_order_CTA')}</span>
           <strong>
             {' '}
-            {origin.amount} {origin.id}
+            {origin.amount} {origin.label}
           </strong>
           <span> {translate('SENDModal_Content_2')}</span>
-          <input
-            className="SwapPayment-address form-control"
+          <Input
+            className="SwapPayment-address"
             value={this.props.paymentAddress || undefined}
             disabled={true}
           />

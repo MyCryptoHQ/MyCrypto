@@ -12,7 +12,7 @@ import {
   addCustomNetwork
 } from 'actions/config';
 import logo from 'assets/images/logo-mycrypto.svg';
-import { Dropdown, ColorDropdown } from 'components/ui';
+import { OldDropDown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -100,7 +100,7 @@ class Header extends Component<Props, State> {
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
+    const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
     const options = nodeOptions.map(n => {
       if (n.isCustom) {
         const { label, isCustom, id, ...rest } = n;

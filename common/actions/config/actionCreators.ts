@@ -48,6 +48,14 @@ export function changeNodeIntent(payload: string): interfaces.ChangeNodeIntentAc
   };
 }
 
+export type TChangeNodeForce = typeof changeNodeForce;
+export function changeNodeForce(payload: string): interfaces.ChangeNodeForceAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_CHANGE_FORCE,
+    payload
+  };
+}
+
 export type TAddCustomNode = typeof addCustomNode;
 export function addCustomNode(
   payload: interfaces.AddCustomNodeAction['payload']
