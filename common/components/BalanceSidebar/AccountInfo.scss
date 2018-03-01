@@ -85,6 +85,7 @@
     }
 
     &-addr {
+      margin-top: -$space-xs;
       word-wrap: break-word;
       @include mono;
     }
