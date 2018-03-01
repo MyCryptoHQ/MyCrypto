@@ -1,8 +1,6 @@
 import BN from 'bn.js';
 import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
-import { AppState } from 'reducers';
-import { getNetworkUnit } from 'selectors/config';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -105,10 +103,6 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
-const isNetworkUnit = (unit: string, state: AppState) => {
-  return unit === getNetworkUnit(state);
-};
-
 const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
   if (oldDecimal === newDecimal) {
     return value;
@@ -119,7 +113,6 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
 const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 export {
-  isNetworkUnit,
   Data,
   Address,
   TokenValue,

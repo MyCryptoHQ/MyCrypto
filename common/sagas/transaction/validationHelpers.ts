@@ -1,7 +1,7 @@
-import { TokenValue, Wei, isNetworkUnit, toTokenBase } from 'libs/units';
+import { TokenValue, Wei, toTokenBase } from 'libs/units';
 import { SagaIterator } from 'redux-saga';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
-import { getOffline } from 'selectors/config';
+import { getOffline, isNetworkUnit } from 'selectors/config';
 import { select, call } from 'redux-saga/effects';
 import { AppState } from 'reducers';
 import { getGasLimit, getGasPrice, getUnit, getDecimalFromUnit } from 'selectors/transaction';
@@ -48,8 +48,7 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
 
   const etherBalance: Wei | null = yield select(getEtherBalance);
   const isOffline: boolean = yield select(getOffline);
-  const state = yield select();
-  const networkUnitTransaction: boolean = yield call(isNetworkUnit, unit, state);
+  const networkUnitTransaction: boolean = yield select(isNetworkUnit, unit);
 
   if (isOffline || !etherBalance) {
     return true;

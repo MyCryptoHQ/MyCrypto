@@ -78,3 +78,7 @@ export const getNetworkContracts = (state: AppState): NetworkContract[] | null =
 export const getCustomNetworkConfigs = (state: AppState) => getNetworks(state).customNetworks;
 
 export const getStaticNetworkConfigs = (state: AppState) => getNetworks(state).staticNetworks;
+
+export const isNetworkUnit = (state: AppState, unit: string) => {
+  return unit === getNetworkUnit(state);
+};

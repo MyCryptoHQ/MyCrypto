@@ -1,7 +1,6 @@
 import { AppState } from 'reducers';
 import { ICurrentTo, ICurrentValue } from 'selectors/transaction';
-import { isNetworkUnit } from 'libs/units';
-
+import { isNetworkUnit } from 'selectors/config';
 export const reduceToValues = (transactionFields: AppState['transaction']['fields']) =>
   Object.keys(transactionFields).reduce(
     (obj, currFieldName) => {
@@ -27,7 +26,7 @@ export const isFullTx = (
       isValid && !!v.value,
     true
   );
-  if (isNetworkUnit(unit, state)) {
+  if (isNetworkUnit(state, unit)) {
     // if theres data we can have no current value, and we dont have to check for a to address
     if (dataExists && validGasCost && !currentValue.value && currentValue.raw === '') {
       return validPartialParams;

@@ -11,8 +11,7 @@ import {
 import { TypeKeys as WalletTK, setTokenBalancePending } from 'actions/wallet';
 import { AppState } from 'reducers';
 import { showNotification } from 'actions/notifications';
-import { isSupportedUnit } from 'selectors/config';
-import { isNetworkUnit } from 'libs/units';
+import { isSupportedUnit, isNetworkUnit } from 'selectors/config';
 import { showLiteSend, configureLiteSend } from 'actions/swap';
 import { TypeKeys as SwapTK } from 'actions/swap/constants';
 import { isUnlocked, isEtherBalancePending } from 'selectors/wallet';
@@ -22,7 +21,6 @@ type SwapState = AppState['swap'];
 export function* configureLiteSendSaga(): SagaIterator {
   const { amount, id }: SwapState['origin'] = yield select(getOrigin);
   const paymentAddress: SwapState['paymentAddress'] = yield call(fetchPaymentAddress);
-  const state = yield select();
 
   if (!paymentAddress) {
     yield put(showNotification('danger', 'Could not fetch payment address'));
@@ -41,9 +39,9 @@ export function* configureLiteSendSaga(): SagaIterator {
   if (!unlocked) {
     yield take(WalletTK.WALLET_SET);
   }
-
+  const isNetwrkUnit = yield select(isNetworkUnit, id);
   //if it's a token, manually scan for that tokens balance and wait for it to resolve
-  if (!isNetworkUnit(id, state)) {
+  if (!isNetwrkUnit) {
     yield put(setTokenBalancePending({ tokenSymbol: id }));
     yield take([
       WalletTK.WALLET_SET_TOKEN_BALANCE_FULFILLED,

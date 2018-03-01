@@ -1,7 +1,7 @@
 import { select, call } from 'redux-saga/effects';
 import { getUnit, getDecimalFromUnit, getGasLimit, getGasPrice } from 'selectors/transaction';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
-import { isNetworkUnit, toTokenBase, Wei } from 'libs/units';
+import { toTokenBase, Wei } from 'libs/units';
 import { makeTransaction } from 'libs/transaction';
 import {
   rebaseUserInput,
@@ -9,7 +9,7 @@ import {
   makeCostCalculationTx
 } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { getOffline } from 'selectors/config';
+import { getOffline, isNetworkUnit } from 'selectors/config';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -107,7 +107,7 @@ describe('validateInput*', () => {
   });
 
   it('should call isNetworkUnit', () => {
-    expect(gens.gen.next({}).value).toEqual(call(isNetworkUnit, unit, {}));
+    expect(gens.gen.next({}).value).toEqual(select(isNetworkUnit, unit));
     gens.clone3 = gens.gen.clone();
   });
 

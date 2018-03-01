@@ -17,10 +17,9 @@ import { getGasLimit } from 'selectors/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
-import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
+import { getNetworkConfig, getSelectedTokenContractAddress, isNetworkUnit } from 'selectors/config';
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
-import { isNetworkUnit } from 'libs/units';
 import { NetworkConfig } from 'types/network';
 
 interface OwnProps {
@@ -191,7 +190,7 @@ function mapStateToProps(state: AppState): StateProps {
     networkConfig: getNetworkConfig(state),
     decimal: getDecimal(state),
     tokenContractAddress: getSelectedTokenContractAddress(state),
-    isNetworkUnit: isNetworkUnit(getUnit(state), state)
+    isNetworkUnit: isNetworkUnit(state, getUnit(state))
   };
 }
 
