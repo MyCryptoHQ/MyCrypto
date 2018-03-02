@@ -11,6 +11,7 @@ import {
 import { Reducer } from 'redux';
 import { State } from './typings';
 import { gasPricetoBase } from 'libs/units';
+import { resetHOF } from 'reducers/transaction/shared';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -49,7 +50,7 @@ const tokenToToken = (
   { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
 ): State => ({ ...state, ...rest });
 
-const reset = (state: State): State => ({ ...INITIAL_STATE, gasPrice: state.gasPrice });
+const reset = resetHOF('fields', INITIAL_STATE);
 
 export const fields = (
   state: State = INITIAL_STATE,
@@ -75,7 +76,7 @@ export const fields = (
     case TK.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
     case TK.RESET:
-      return reset(state);
+      return reset(state, action);
     default:
       return state;
   }

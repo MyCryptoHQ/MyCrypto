@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
@@ -15,27 +15,41 @@ import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
-import { pollOfflineStatus } from 'actions/config';
+import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
+import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
+import { getNetworkUnit } from 'selectors/config';
 
-interface Props {
+interface OwnProps {
   store: Store<AppState>;
 }
+
+interface StateProps {
+  networkUnit: string;
+}
+
+interface DispatchProps {
+  pollOfflineStatus: TPollOfflineStatus;
+  setUnitMeta: TSetUnitMeta;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
 }
 
-export default class Root extends Component<Props, State> {
+class RootClass extends Component<Props, State> {
   public state = {
     error: null
   };
 
   public componentDidMount() {
-    this.props.store.dispatch(pollOfflineStatus());
+    this.props.pollOfflineStatus();
+    this.props.setUnitMeta(this.props.networkUnit);
   }
 
   public componentDidCatch(error: Error) {
@@ -134,3 +148,14 @@ const LegacyRoutes = withRouter(props => {
     </Switch>
   );
 });
+
+const mapStateToProps = (state: AppState) => {
+  return {
+    networkUnit: getNetworkUnit(state)
+  };
+};
+
+export default connect(mapStateToProps, {
+  pollOfflineStatus,
+  setUnitMeta
+})(RootClass);

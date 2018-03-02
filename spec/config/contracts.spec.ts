@@ -1,5 +1,7 @@
+import { configuredStore } from 'store';
 import CONTRACTS from 'config/contracts';
 import { isValidETHAddress } from 'libs/validators';
+configuredStore.getState();
 
 describe('Contracts JSON', () => {
   Object.keys(CONTRACTS).forEach(network => {
