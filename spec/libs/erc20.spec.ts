@@ -1,5 +1,7 @@
+import { configuredStore } from 'store';
 import { toWei } from 'libs/units';
 import ERC20 from 'libs/erc20';
+configuredStore.getState();
 const MYCRYPTO_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 
 describe('ERC20', () => {
