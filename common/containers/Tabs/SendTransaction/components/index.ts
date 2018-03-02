@@ -4,3 +4,4 @@ export * from './UnavailableWallets';
 export * from './SideBar';
 export { default as WalletInfo } from './WalletInfo';
 export { default as RequestPayment } from './RequestPayment';
+export { default as RecentTransactions } from './RecentTransactions';
