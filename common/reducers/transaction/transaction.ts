@@ -4,6 +4,8 @@ import { network, State as NetworkState } from './network';
 import { sign, State as SignState } from './sign';
 import { broadcast, State as BroadcastState } from './broadcast';
 import { combineReducers } from 'redux';
+import { Omit } from 'react-router';
+import { ResetAction } from 'actions/transaction';
 
 export const transaction = combineReducers({
   fields,
