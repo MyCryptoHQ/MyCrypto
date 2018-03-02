@@ -28,10 +28,11 @@ class Input extends React.Component<HTMLProps<HTMLInputElement>, State> {
     );
   }
 
-  // When number inputs are scrolled on while in focus, the number changes.
+  // When number inputs are scrolled on while in focus, the number changes. So we blur
+  // it if it's focused to prevent that behavior, without preventing the scroll.
   private preventNumberScroll(ev: React.WheelEvent<HTMLInputElement>) {
     if (document.activeElement === ev.currentTarget) {
-      ev.preventDefault();
+      ev.currentTarget.blur();
     }
   }
 }
