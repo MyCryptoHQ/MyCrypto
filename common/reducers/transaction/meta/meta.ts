@@ -14,8 +14,8 @@ import {
 import { Reducer } from 'redux';
 
 const INITIAL_STATE: State = {
-  unit: 'ether',
-  previousUnit: 'ether',
+  unit: '',
+  previousUnit: '',
   decimal: getDecimalFromEtherUnit('ether'),
   tokenValue: { raw: '', value: null },
   tokenTo: { raw: '', value: null },

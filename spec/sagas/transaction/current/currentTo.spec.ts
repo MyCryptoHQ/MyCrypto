@@ -1,3 +1,4 @@
+import { configuredStore } from 'store';
 import { Address } from 'libs/units';
 import { call, select, put } from 'redux-saga/effects';
 import { isValidETHAddress, isValidENSAddress } from 'libs/validators';
@@ -5,6 +6,7 @@ import { setCurrentTo, setField } from 'sagas/transaction/current/currentTo';
 import { isEtherTransaction } from 'selectors/transaction';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { setToField, setTokenTo } from 'actions/transaction';
+configuredStore.getState();
 const raw = '0xa';
 
 const payload = {

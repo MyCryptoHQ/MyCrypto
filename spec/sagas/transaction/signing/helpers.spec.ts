@@ -1,8 +1,10 @@
+import { configuredStore } from 'store';
 import { getWalletInst } from 'selectors/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import { select, call, put, take } from 'redux-saga/effects';
 import { signTransactionFailed, getFromRequested, TypeKeys as TK } from 'actions/transaction';
 import { showNotification } from 'actions/notifications';
+configuredStore.getState();
 
 /* tslint:disable */
 import 'actions/transaction';
