@@ -22,7 +22,7 @@
     "ethereumjs-util": "5.1.5",
     "ethereumjs-wallet": "0.6.0",
     "font-awesome": "4.7.0",
-    "hard-source-webpack-plugin": "0.5.16",
+    "hard-source-webpack-plugin": "0.6.1",
     "hdkey": "0.8.0",
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.2",
