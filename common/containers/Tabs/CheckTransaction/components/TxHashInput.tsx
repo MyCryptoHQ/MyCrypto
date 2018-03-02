@@ -7,6 +7,7 @@ import { isValidTxHash, isValidETHAddress } from 'libs/validators';
 import { getRecentNetworkTransactions } from 'selectors/transactions';
 import { AppState } from 'reducers';
 import './TxHashInput.scss';
+import { Input } from 'components/ui';
 
 interface OwnProps {
   hash?: string;
@@ -68,10 +69,10 @@ class TxHashInput extends React.Component<Props, State> {
           </div>
         )}
 
-        <input
+        <Input
           value={hash}
           placeholder="0x16e521..."
-          className={`TxHashInput-field form-control ${validClass}`}
+          className={`TxHashInput-field ${validClass}`}
           onChange={this.handleChange}
         />
 

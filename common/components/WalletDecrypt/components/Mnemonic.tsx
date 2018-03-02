@@ -8,6 +8,7 @@ import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 import { TogglablePassword } from 'components';
+import { Input } from 'components/ui';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -63,8 +64,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
           </div>
           <div className="form-group">
             <p>Password (optional):</p>
-            <input
-              className="form-control"
+            <Input
               value={pass}
               onChange={this.onPasswordChange}
               placeholder={translateRaw('x_Password')}

@@ -20,7 +20,7 @@ import { isUnlocked, isEtherBalancePending } from 'selectors/wallet';
 type SwapState = AppState['swap'];
 
 export function* configureLiteSendSaga(): SagaIterator {
-  const { amount, id }: SwapState['origin'] = yield select(getOrigin);
+  const { amount, label }: SwapState['origin'] = yield select(getOrigin);
   const paymentAddress: SwapState['paymentAddress'] = yield call(fetchPaymentAddress);
 
   if (!paymentAddress) {
@@ -28,7 +28,7 @@ export function* configureLiteSendSaga(): SagaIterator {
     return yield put(showLiteSend(false));
   }
 
-  const supportedUnit: boolean = yield select(isSupportedUnit, id);
+  const supportedUnit: boolean = yield select(isSupportedUnit, label);
   if (!supportedUnit) {
     return yield put(showLiteSend(false));
   }
@@ -42,8 +42,8 @@ export function* configureLiteSendSaga(): SagaIterator {
   }
 
   //if it's a token, manually scan for that tokens balance and wait for it to resolve
-  if (!isEtherUnit(id)) {
-    yield put(setTokenBalancePending({ tokenSymbol: id }));
+  if (!isEtherUnit(label)) {
+    yield put(setTokenBalancePending({ tokenSymbol: label }));
     yield take([
       WalletTK.WALLET_SET_TOKEN_BALANCE_FULFILLED,
       WalletTK.WALLET_SET_TOKEN_BALANCE_REJECTED
@@ -55,7 +55,7 @@ export function* configureLiteSendSaga(): SagaIterator {
     }
   }
 
-  yield put(setUnitMeta(id));
+  yield put(setUnitMeta(label));
   yield put(setCurrentValue(amount.toString()));
   yield put(setCurrentTo(paymentAddress));
 }

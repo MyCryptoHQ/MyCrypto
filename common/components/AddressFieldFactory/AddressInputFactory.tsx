@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Identicon, Spinner } from 'components/ui';
-import translate from 'translations';
 import { Query } from 'components/renderCbs';
 import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
 import { connect } from 'react-redux';
@@ -49,7 +48,6 @@ class AddressInputFactoryClass extends Component<Props> {
     return (
       <div className="row form-group">
         <div className="col-xs-11">
-          <label>{translate('SEND_addr')}:</label>
           <Query
             params={['readOnly']}
             withQuery={({ readOnly }) =>

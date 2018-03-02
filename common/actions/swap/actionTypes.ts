@@ -8,7 +8,7 @@ export interface Pairs {
 }
 
 export interface SwapInput {
-  id: string;
+  label: string;
   amount: number | string;
 }
 
