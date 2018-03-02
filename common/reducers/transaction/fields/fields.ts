@@ -52,8 +52,6 @@ const tokenToToken = (
 
 const reset = resetHOF('fields', INITIAL_STATE);
 
-console.error(reset);
-
 export const fields = (
   state: State = INITIAL_STATE,
   action: FieldAction | SwapAction | ResetAction
