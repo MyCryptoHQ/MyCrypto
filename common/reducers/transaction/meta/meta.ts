@@ -12,6 +12,7 @@ import {
   NetworkAction
 } from 'actions/transaction';
 import { Reducer } from 'redux';
+import { resetHOF } from 'reducers/transaction/shared';
 
 const INITIAL_STATE: State = {
   unit: '',
@@ -53,7 +54,7 @@ const tokenToToken = (
   { payload: { data: _, to: __, ...rest } }: SwapTokenToTokenAction
 ): State => ({ ...state, ...rest });
 
-const reset = () => INITIAL_STATE;
+const reset = resetHOF('meta', INITIAL_STATE);
 
 const unitMeta = (state: State, { payload }: SetUnitMetaAction): State => ({
   ...state,
@@ -81,7 +82,7 @@ export const meta = (
     case TK.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
     case TK.RESET:
-      return reset();
+      return reset(state, action);
     default:
       return state;
   }

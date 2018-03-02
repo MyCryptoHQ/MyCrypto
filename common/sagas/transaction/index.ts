@@ -7,7 +7,7 @@ import { meta } from './meta';
 import { network } from './network';
 import { signing } from './signing';
 import { sendEverything } from './sendEverything';
-import { reset, setDefaultUnit } from './reset';
+import { reset } from './reset';
 
 export function* transaction(): SagaIterator {
   yield all([
@@ -18,7 +18,6 @@ export function* transaction(): SagaIterator {
     ...network,
     ...signing,
     ...sendEverything,
-    ...reset,
-    setDefaultUnit
+    ...reset
   ]);
 }
