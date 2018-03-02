@@ -4,7 +4,8 @@ import { takeEvery, put, take, race, fork, select } from 'redux-saga/effects';
 import {
   setUnitMeta,
   TypeKeys as TransactionTypeKeys,
-  reset as resetActionCreator
+  reset as resetActionCreator,
+  ResetAction
 } from 'actions/transaction';
 import { getNetworkUnit } from 'selectors/config';
 
@@ -61,7 +62,13 @@ export function* watchTransactionState(): SagaIterator {
   }
 }
 
-export function* setNetworkUnit(): SagaIterator {
+export function* setNetworkUnit({ payload: { exclude, include } }: ResetAction): SagaIterator {
+  if (exclude.meta && exclude.meta.includes('unit')) {
+    return;
+  }
+  if (include.meta && !include.meta.includes('unit')) {
+    return;
+  }
   const networkUnit = yield select(getNetworkUnit);
   yield put(setUnitMeta(networkUnit));
 }
