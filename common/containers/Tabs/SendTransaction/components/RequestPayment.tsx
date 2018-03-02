@@ -157,7 +157,7 @@ class RequestPayment extends React.Component<Props, {}> {
       !gasLimit ||
       !gasLimit.raw.length ||
       !currentTo.length ||
-      (unit !== 'ether' && !tokenContractAddress.length)
+      (unit !== 'ETH' && !tokenContractAddress.length)
     ) {
       return '';
     }
