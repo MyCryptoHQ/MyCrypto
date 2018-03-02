@@ -32,7 +32,7 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
   const tokenToToken = !currUnit && !prevUnit;
   const decimal: number = yield select(getDecimalFromUnit, currentUnit);
 
-  if (etherToEther) {
+  if (etherToEther || previousUnit === '') {
     return;
   }
 
