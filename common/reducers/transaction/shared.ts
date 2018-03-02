@@ -17,21 +17,21 @@ export const resetHOF = (
   if (includeFields && excludeFields) {
     throw Error('Cant have include and exclude fields at the same time');
   }
-
+  const returnState = { ...initialState };
   const stateCopy = { ...state };
 
   if (includeFields) {
     (includeFields as any[]).forEach(fieldName => {
-      stateCopy[fieldName] = initialState[fieldName];
+      stateCopy[fieldName] = returnState[fieldName];
     });
-    return returnCb ? returnCb(state, initialState) : { ...stateCopy };
+    return returnCb ? returnCb(state, returnState) : { ...stateCopy };
   }
 
   if (excludeFields) {
     (excludeFields as any[]).forEach(fieldName => {
-      initialState[fieldName] = state[fieldName];
+      returnState[fieldName] = state[fieldName];
     });
   }
 
-  return returnCb ? returnCb(state, initialState) : initialState;
+  return returnCb ? returnCb(state, returnState) : returnState;
 };
