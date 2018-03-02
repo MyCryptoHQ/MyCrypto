@@ -1,3 +1,4 @@
+import { configuredStore } from 'store';
 import BN from 'bn.js';
 import { call, put } from 'redux-saga/effects';
 import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
@@ -11,6 +12,7 @@ import {
 } from 'sagas/transaction/fields/fields';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { setGasPriceField } from 'actions/transaction';
+configuredStore.getState();
 
 const itShouldBeDone = gen => {
   it('should be done', () => {

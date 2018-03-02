@@ -1,8 +1,10 @@
-import { Option } from 'actions/swap/actionTypes';
+import { Option, ProviderName } from 'actions/swap/actionTypes';
 import { WhitelistedCoins } from 'config';
 
+export type ProviderName = ProviderName;
+
 export interface SwapInput {
-  id: WhitelistedCoins;
+  label: WhitelistedCoins;
   amount: number | string;
 }
 

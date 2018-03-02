@@ -3,6 +3,7 @@ import translate from 'translations';
 import { donationAddressMap } from 'config';
 import { isValidETHAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
+import { TextArea } from 'components/ui';
 
 interface Props {
   onUnlock(param: any): void;
@@ -24,10 +25,8 @@ export class ViewOnlyDecrypt extends PureComponent<Props, State> {
     return (
       <div id="selectedUploadKey">
         <form className="form-group" onSubmit={this.openWallet}>
-          <textarea
-            className={`form-control
-              ${isValid ? 'is-valid' : 'is-invalid'}
-            `}
+          <TextArea
+            className={isValid ? 'is-valid' : 'is-invalid'}
             value={address}
             onChange={this.changeAddress}
             onKeyDown={this.handleEnterKey}

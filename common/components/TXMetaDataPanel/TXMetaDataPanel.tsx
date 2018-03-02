@@ -76,7 +76,10 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (this.props.offline && !nextProps.offline) {
+    if (
+      (this.props.offline && !nextProps.offline) ||
+      this.props.network.unit !== nextProps.network.unit
+    ) {
       this.props.fetchCCRates([this.props.network.unit]);
     }
     if (this.props.gasPrice !== nextProps.gasPrice) {
@@ -108,11 +111,9 @@ class TXMetaDataPanel extends React.Component<Props, State> {
           !disableToggle && (
             <div className="help-block">
               <a className="Gas-toggle" onClick={this.toggleAdvanced}>
-                <strong>
-                  {showAdvanced
-                    ? `- ${translateRaw('Back to simple')}`
-                    : `+ ${translateRaw('Advanced Settings')}`}
-                </strong>
+                {showAdvanced
+                  ? `- ${translateRaw('Back to simple')}`
+                  : `+ ${translateRaw('Advanced Settings')}`}
               </a>
             </div>
           )}
@@ -125,8 +126,10 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   };
 
   private handleGasPriceInput = (raw: string) => {
-    const gasBn = new BN(raw);
-    const value = gasBn.mul(new BN(Units.gwei));
+    // Realistically, we're not going to end up with a > 32 bit int, so it's
+    // safe to cast to float, multiply by gwei units, then big number, since
+    // some of the inputs may be sub-one float values.
+    const value = new BN(parseFloat(raw) * parseFloat(Units.gwei));
     this.setState({
       gasPrice: { raw, value }
     });

@@ -1,8 +1,9 @@
 import React from 'react';
+import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
-import { Identicon, QRCode } from 'components/ui';
+import { Identicon, QRCode, Input } from 'components/ui';
 import { GenerateKeystoreModal, TogglablePassword } from 'components';
 import './WalletInfo.scss';
 
@@ -26,12 +27,12 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
   };
 
   public componentDidMount() {
-    this.setWalletAsyncState(this.props.wallet);
+    this.setStateFromWallet(this.props.wallet);
   }
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
-      this.setWalletAsyncState(nextProps.wallet);
+      this.setStateFromWallet(nextProps.wallet);
     }
   }
 
@@ -43,8 +44,12 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
         <div className="Tab-content-pane">
           <div className="row form-group">
             <div className="col-xs-11">
-              <label>{translate('x_Address')}</label>
-              <input className="form-control" disabled={true} value={address} />
+              <div className="input-group-wrapper">
+                <label className="input-group">
+                  <div className="input-group-header">{translate('x_Address')}</div>
+                  <Input readOnly={true} value={address} />
+                </label>
+              </div>
             </div>
             <div className="col-xs-1" style={{ padding: 0 }}>
               <Identicon address={address} />
@@ -114,9 +119,9 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     );
   }
 
-  private async setWalletAsyncState(wallet: IWallet) {
-    const address = await wallet.getAddressString();
-    const privateKey = wallet.getPrivateKeyString ? await wallet.getPrivateKeyString() : '';
+  private setStateFromWallet(wallet: IWallet) {
+    const address = toChecksumAddress(wallet.getAddressString());
+    const privateKey = wallet.getPrivateKeyString ? wallet.getPrivateKeyString() : '';
     this.setState({ address, privateKey });
   }
 

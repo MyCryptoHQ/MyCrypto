@@ -27,13 +27,14 @@ import {
   changeNodeIntent,
   setLatestBlock,
   AddCustomNodeAction,
+  ChangeNodeForceAction,
   ChangeNodeIntentAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
+import { resetWallet } from 'actions/wallet';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
-import { Web3Service } from 'libs/nodes/web3';
 
 let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
@@ -168,18 +169,8 @@ export function* handleNodeChangeIntent({
   yield put(setLatestBlock(currentBlock));
   yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
 
-  // TODO - re-enable once DeterministicWallet state is fixed to flush properly.
-  // DeterministicWallet keeps path related state we need to flush before we can stop reloading
-
-  // const currentWallet: IWallet | null = yield select(getWalletInst);
-  // if there's no wallet, do not reload as there's no component state to resync
-  // if (currentWallet && currentConfig.network !== actionConfig.network) {
-
-  const isNewNetwork = currentConfig.network !== nextNodeConfig.network;
-  const newIsWeb3 = nextNodeConfig.service === Web3Service;
-  // don't reload when web3 is selected; node will automatically re-set and state is not an issue here
-  if (isNewNetwork && !newIsWeb3) {
-    yield call(reload);
+  if (currentConfig.network !== nextNodeConfig.network) {
+    yield fork(handleNewNetwork);
   }
 }
 
@@ -187,8 +178,34 @@ export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
   yield put(changeNodeIntent(action.payload.id));
 }
 
+export function* handleNewNetwork() {
+  yield put(resetWallet());
+}
+
+export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: ChangeNodeForceAction) {
+  // does not perform node online check before changing nodes
+  // necessary when switching back from Web3 provider so node
+  // dropdown does not get stuck if node is offline
+
+  const isStaticNode: boolean = yield select(isStaticNodeId, staticNodeIdToSwitchTo);
+
+  if (!isStaticNode) {
+    return;
+  }
+
+  const nodeConfig = yield select(getStaticNodeFromId, staticNodeIdToSwitchTo);
+
+  // force the node change
+  yield put(changeNode({ networkId: nodeConfig.network, nodeId: staticNodeIdToSwitchTo }));
+
+  // also put the change through as usual so status check and
+  // error messages occur if the node is unavailable
+  yield put(changeNodeIntent(staticNodeIdToSwitchTo));
+}
+
 export const node = [
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
+  takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
   takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode)

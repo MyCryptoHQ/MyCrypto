@@ -11,7 +11,7 @@ import {
 import { Reducer } from 'redux';
 import { State } from './typings';
 import { gasPricetoBase } from 'libs/units';
-import { gasPriceDefaults } from 'config';
+import { resetHOF } from 'reducers/transaction/shared';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -19,10 +19,7 @@ const INITIAL_STATE: State = {
   nonce: { raw: '', value: null },
   value: { raw: '', value: null },
   gasLimit: { raw: '21000', value: new BN(21000) },
-  gasPrice: {
-    raw: gasPriceDefaults.default.toString(),
-    value: gasPricetoBase(gasPriceDefaults.default)
-  }
+  gasPrice: { raw: '20', value: gasPricetoBase(20) }
 };
 
 const updateField = (key: keyof State): Reducer<State> => (state: State, action: FieldAction) => ({
@@ -53,7 +50,7 @@ const tokenToToken = (
   { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
 ): State => ({ ...state, ...rest });
 
-const reset = (state: State): State => ({ ...INITIAL_STATE, gasPrice: state.gasPrice });
+const reset = resetHOF('fields', INITIAL_STATE);
 
 export const fields = (
   state: State = INITIAL_STATE,
@@ -79,7 +76,7 @@ export const fields = (
     case TK.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
     case TK.RESET:
-      return reset(state);
+      return reset(state, action);
     default:
       return state;
   }

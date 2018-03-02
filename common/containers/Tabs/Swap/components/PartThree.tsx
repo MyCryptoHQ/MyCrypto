@@ -69,8 +69,8 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
     } = this.props;
 
     const SwapProgressProps = {
-      originId: origin.id,
-      destinationId: destination.id,
+      originId: origin.label,
+      destinationId: destination.label,
       provider,
       bityOrderStatus,
       shapeshiftOrderStatus,
@@ -98,7 +98,7 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
         <PaymentInfo {...PaymentInfoProps} />
 
         <LiteSend />
-        {OpenOrder && origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
+        {OpenOrder && origin.label === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
   }

@@ -5,8 +5,6 @@ import {
   shapeshiftOrderCreateRequestedSwap as dShapeshiftOrderCreateRequestedSwap,
   changeStepSwap as dChangeStepSwap,
   destinationAddressSwap as dDestinationAddressSwap,
-  loadBityRatesRequestedSwap as dLoadBityRatesRequestedSwap,
-  loadShapeshiftRatesRequestedSwap as dLoadShapeshiftRatesRequestedSwap,
   restartSwap as dRestartSwap,
   startOrderTimerSwap as dStartOrderTimerSwap,
   startPollBityOrderStatus as dStartPollBityOrderStatus,
@@ -21,9 +19,7 @@ import {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
-  TLoadBityRatesRequestedSwap,
   TShapeshiftOrderCreateRequestedSwap,
-  TLoadShapeshiftRequestedSwap,
   TRestartSwap,
   TStartOrderTimerSwap,
   TStartPollBityOrderStatus,
@@ -81,8 +77,6 @@ interface ReduxStateProps {
 
 interface ReduxActionProps {
   changeStepSwap: TChangeStepSwap;
-  loadBityRatesRequestedSwap: TLoadBityRatesRequestedSwap;
-  loadShapeshiftRatesRequestedSwap: TLoadShapeshiftRequestedSwap;
   destinationAddressSwap: TDestinationAddressSwap;
   restartSwap: TRestartSwap;
   stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
@@ -101,26 +95,6 @@ interface ReduxActionProps {
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponentProps<{}>, {}> {
-  public componentDidMount() {
-    if (!this.props.isOffline) {
-      this.loadRates();
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: ReduxStateProps) {
-    if (this.props.isOffline && !nextProps.isOffline) {
-      this.loadRates();
-    }
-  }
-
-  public componentWillUnmount() {
-    this.props.stopLoadShapeshiftRatesSwap();
-  }
-
-  public loadRates() {
-    this.props.loadShapeshiftRatesRequestedSwap();
-  }
-
   public render() {
     const {
       // STATE
@@ -165,7 +139,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
     const ReceivingAddressProps = {
       isPostingOrder,
       origin,
-      destinationId: destination.id,
+      destinationId: destination.label,
       destinationKind: destination.amount as number,
       destinationAddressSwap,
       destinationAddress,
@@ -235,8 +209,6 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       bityRates
     };
 
-    const CurrentRatesProps = { provider, bityRates, shapeshiftRates };
-
     return (
       <TabSection isUnavailableOffline={true}>
         <section className="Tab-content swap-tab">
@@ -246,7 +218,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
               path={`${currentPath}`}
               render={() => (
                 <React.Fragment>
-                  {step === 1 && <CurrentRates {...CurrentRatesProps} />}
+                  {step === 1 && <CurrentRates />}
                   {step === 1 && <ShapeshiftBanner />}
                   {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
                   <main className="Tab-content-pane">
@@ -294,8 +266,6 @@ export default connect(mapStateToProps, {
   initSwap: dInitSwap,
   bityOrderCreateRequestedSwap: dBityOrderCreateRequestedSwap,
   shapeshiftOrderCreateRequestedSwap: dShapeshiftOrderCreateRequestedSwap,
-  loadBityRatesRequestedSwap: dLoadBityRatesRequestedSwap,
-  loadShapeshiftRatesRequestedSwap: dLoadShapeshiftRatesRequestedSwap,
   destinationAddressSwap: dDestinationAddressSwap,
   restartSwap: dRestartSwap,
   startOrderTimerSwap: dStartOrderTimerSwap,

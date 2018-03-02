@@ -2,6 +2,7 @@ import React from 'react';
 import './SupportFooter.scss';
 import { SwapInput } from 'actions/swap';
 import { NormalizedBityRates, NormalizedShapeshiftRates } from 'reducers/swap/types';
+import { TextArea } from 'components/ui';
 
 interface Props {
   origin: SwapInput;
@@ -30,7 +31,7 @@ class SupportFooter extends React.PureComponent<Props, {}> {
       shapeshiftRates,
       bityRates
     } = this.props;
-    const pair = origin && destination ? origin.id + destination.id : 'BTCETH';
+    const pair = origin && destination ? origin.label + destination.label : 'BTCETH';
     const rates = provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
     const emailTo =
       provider === 'shapeshift' ? 'support@mycrypto.com' : 'support@mycrypto.com,mew@bity.com';
@@ -45,26 +46,26 @@ Provider: ${serviceProvider}
 
 REF ID#: ${reference || ''}
 
-Amount to send: ${origin.amount || ''} ${origin.id}
+Amount to send: ${origin.amount || ''} ${origin.label}
 
-Amount to receive: ${destination.amount || ''} ${destination.id}
+Amount to receive: ${destination.amount || ''} ${destination.label}
 
 Payment Address: ${paymentAddress || ''}
 
 Receiving Address: ${destinationAddress || ''}
 
-Rate: ${rates[pair].rate} ${origin.id}/${destination.id}
+Rate: ${rates[pair].rate} ${origin.label}/${destination.label}
         `);
       fallbackBody = `To: ${emailTo}
 Subject: Issue regarding my Swap via MyCrypto
 Message:
 Provider: ${serviceProvider}
 REF ID#: ${reference || ''}
-Amount to send: ${origin.amount || ''} ${origin.id}
-Amount to receive: ${destination.amount || ''} ${destination.id}
+Amount to send: ${origin.amount || ''} ${origin.label}
+Amount to receive: ${destination.amount || ''} ${destination.label}
 Payment Address: ${paymentAddress || ''}
 Receiving Address: ${destinationAddress || ''}
-Rate: ${rates[pair].rate} ${origin.id}/${destination.id}`;
+Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
     }
     return (
       <section className="SupportFooter">
@@ -81,7 +82,7 @@ Rate: ${rates[pair].rate} ${origin.id}/${destination.id}`;
             <small>Click here if link doesn't work</small>
           </p>
           {open ? (
-            <textarea defaultValue={fallbackBody} className="form-control input-sm" rows={9} />
+            <TextArea defaultValue={fallbackBody} className="form-control input-sm" rows={9} />
           ) : null}
         </div>
       </section>

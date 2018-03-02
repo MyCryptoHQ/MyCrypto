@@ -104,7 +104,6 @@ module.exports = function(opts = {}) {
           .map(dir => path.resolve(config.path.src, dir))
           .concat([config.path.modules]),
 
-        exclude: /node_modules(?!\/font-awesome)/,
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
@@ -124,7 +123,6 @@ module.exports = function(opts = {}) {
   // Images
   rules.push({
     include: [path.resolve(config.path.assets), path.resolve(config.path.modules)],
-    exclude: /node_modules(?!\/font-awesome)/,
     test: /\.(gif|png|jpe?g|svg)$/i,
     use: [
       {
@@ -159,7 +157,6 @@ module.exports = function(opts = {}) {
   // Fonts
   rules.push({
     include: [path.resolve(config.path.assets), path.resolve(config.path.modules)],
-    exclude: /node_modules(?!\/font-awesome)/,
     test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
     loader: 'file-loader'
   });

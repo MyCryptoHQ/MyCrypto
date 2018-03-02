@@ -1,8 +1,10 @@
+import { configuredStore } from 'store';
 import { web3SetNode, web3UnsetNode } from 'actions/config';
 import { staticNodes, INITIAL_STATE } from 'reducers/config/nodes/staticNodes';
 import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 import { Web3NodeConfig } from 'types/node';
 import { Web3Service } from 'libs/nodes/web3';
+configuredStore.getState();
 
 const expectedInitialState = {
   eth_mycrypto: {
@@ -25,6 +27,13 @@ const expectedInitialState = {
     service: 'infura.io',
     lib: new InfuraNode('https://mainnet.infura.io/mycrypto'),
     estimateGas: false
+  },
+  eth_blockscale: {
+    network: 'ETH',
+    isCustom: false,
+    lib: new RPCNode('https://api.dev.blockscale.net/dev/parity'),
+    service: 'Blockscale beta',
+    estimateGas: true
   },
   rop_infura: {
     network: 'Ropsten',

@@ -5,6 +5,7 @@ import { getCurrentTo, ICurrentTo } from 'selectors/transaction';
 import { getAllTokens } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getAddressMessage } from 'config';
+import { Address } from 'components/ui';
 import { Token } from 'types/network';
 
 interface ReduxProps {
@@ -47,9 +48,9 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
     }
   }
 
-  private async setAddressState(props: Props) {
+  private setAddressState(props: Props) {
     if (props.wallet) {
-      const walletAddress = await props.wallet.getAddressString();
+      const walletAddress = props.wallet.getAddressString();
       this.setState({ walletAddress });
     } else {
       this.setState({ walletAddress: '' });
@@ -72,7 +73,10 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
         <React.Fragment>
           <p>
             <small>
-              A message regarding <strong>{address}</strong>:
+              A message regarding{' '}
+              <strong>
+                <Address address={address} />
+              </strong>:
             </small>
           </p>
           <p>{msg.msg}</p>

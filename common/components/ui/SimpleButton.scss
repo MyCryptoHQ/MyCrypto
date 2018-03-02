@@ -1,0 +1,7 @@
+.SimpleButton {
+  display: flex;
+  align-items: center;
+  > .Spinner {
+    margin-right: 16px;
+  }
+}

@@ -12,7 +12,7 @@ import {
   addCustomNetwork
 } from 'actions/config';
 import logo from 'assets/images/logo-mycrypto.svg';
-import { Dropdown, ColorDropdown } from 'components/ui';
+import { OldDropDown, ColorDropdown } from 'components/ui';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -100,26 +100,26 @@ class Header extends Component<Props, State> {
     } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
+    const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
     const options = nodeOptions.map(n => {
       if (n.isCustom) {
-        const { name: { networkId, nodeId }, isCustom, id, ...rest } = n;
+        const { label, isCustom, id, ...rest } = n;
         return {
           ...rest,
           name: (
             <span>
-              {networkId} - {nodeId} <small>(custom)</small>
+              {label.network} - {label.nodeName} <small>(custom)</small>
             </span>
           ),
           onRemove: () => this.props.removeCustomNode({ id })
         };
       } else {
-        const { name: { networkId, service }, isCustom, ...rest } = n;
+        const { label, isCustom, ...rest } = n;
         return {
           ...rest,
           name: (
             <span>
-              {networkId} <small>({service})</small>
+              {label.network} <small>({label.service})</small>
             </span>
           )
         };
@@ -155,13 +155,6 @@ class Header extends Component<Props, State> {
                   ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
                   options={Object.values(languages)}
                   value={languages[selectedLanguage]}
-                  extra={
-                    <li key="disclaimer">
-                      <a data-toggle="modal" data-target="#disclaimerModal">
-                        Disclaimer
-                      </a>
-                    </li>
-                  }
                   onChange={this.changeLanguage}
                   size="smr"
                   color="white"
