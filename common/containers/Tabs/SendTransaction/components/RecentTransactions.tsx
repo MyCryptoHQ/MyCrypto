@@ -87,7 +87,9 @@ class RecentTransactions extends React.Component<Props> {
           </table>
         ) : (
           <div className="RecentTxs-empty well">
-            <h2>No recent transactions found</h2>
+            <h2 className="RecentTxs-empty-text">
+              No recent MyCrypto transactions found, try checking on {explorer}.
+            </h2>
           </div>
         )}
         <p className="RecentTxs-help">

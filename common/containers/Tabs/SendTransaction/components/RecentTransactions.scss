@@ -45,6 +45,16 @@
     }
   }
 
+  &-empty {
+    padding: $space * 3;
+    text-align: center;
+
+    &-text {
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+
   &-help {
     max-width: 540px;
     margin: $space * 2 auto 0;
