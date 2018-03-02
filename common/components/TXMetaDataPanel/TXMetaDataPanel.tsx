@@ -45,7 +45,7 @@ interface DefaultProps {
 }
 
 interface OwnProps {
-  resetIncludeExcludeProperties: ResetAction['payload'];
+  resetIncludeExcludeProperties?: ResetAction['payload'];
   initialState?: SliderStates;
   disableToggle?: boolean;
   advancedGasOptions?: AdvancedOptions;
