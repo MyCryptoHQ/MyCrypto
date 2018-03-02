@@ -15,8 +15,8 @@ import { Reducer } from 'redux';
 import { resetHOF } from 'reducers/transaction/shared';
 
 const INITIAL_STATE: State = {
-  unit: 'ether',
-  previousUnit: 'ether',
+  unit: '',
+  previousUnit: '',
   decimal: getDecimalFromEtherUnit('ether'),
   tokenValue: { raw: '', value: null },
   tokenTo: { raw: '', value: null },

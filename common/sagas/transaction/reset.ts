@@ -1,7 +1,12 @@
 import { SagaIterator } from 'redux-saga';
 import { TypeKeys as WalletTypeKeys } from 'actions/wallet';
-import { takeEvery, put, take, race, fork } from 'redux-saga/effects';
-import { TypeKeys as TransactionTypeKeys, reset as resetActionCreator } from 'actions/transaction';
+import { takeEvery, put, take, race, fork, select } from 'redux-saga/effects';
+import {
+  setUnitMeta,
+  TypeKeys as TransactionTypeKeys,
+  reset as resetActionCreator
+} from 'actions/transaction';
+import { getNetworkUnit } from 'selectors/config';
 
 export function* resetTransactionState(): SagaIterator {
   yield put(resetActionCreator());
@@ -56,7 +61,13 @@ export function* watchTransactionState(): SagaIterator {
   }
 }
 
+export function* setNetworkUnit(): SagaIterator {
+  const networkUnit = yield select(getNetworkUnit);
+  yield put(setUnitMeta(networkUnit));
+}
+
 export const reset = [
   takeEvery([WalletTypeKeys.WALLET_RESET], resetTransactionState),
-  fork(watchTransactionState)
+  fork(watchTransactionState),
+  takeEvery(TransactionTypeKeys.RESET, setNetworkUnit)
 ];

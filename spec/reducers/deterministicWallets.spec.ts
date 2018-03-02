@@ -1,6 +1,8 @@
+import { configuredStore } from 'store';
 import { deterministicWallets, INITIAL_STATE } from 'reducers/deterministicWallets';
 import * as dWalletActions from 'actions/deterministicWallets';
 import { TokenValue } from 'libs/units';
+configuredStore.getState();
 
 describe('deterministicWallets reducer', () => {
   const tokenValues: dWalletActions.ITokenValues = {

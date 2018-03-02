@@ -6,8 +6,7 @@ import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
-import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
+import { getNetworkUnit } from 'selectors/config';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -18,21 +17,21 @@ interface StateProps {
   tokens: TokenBalance[];
   allTokens: MergedToken[];
   showAllTokens?: boolean;
-  network: NetworkConfig;
+  networkUnit: string;
 }
 
 class UnitDropdownClass extends Component<DispatchProps & StateProps> {
   public render() {
-    const { tokens, allTokens, showAllTokens, unit, network } = this.props;
+    const { tokens, allTokens, showAllTokens, unit, networkUnit } = this.props;
     const focusedTokens = showAllTokens ? allTokens : tokens;
-    const options = [network.unit, ...getTokenSymbols(focusedTokens)];
+    const options = [networkUnit, ...getTokenSymbols(focusedTokens)];
     return (
       <Query
         params={['readOnly']}
         withQuery={({ readOnly }) => (
           <Dropdown
             options={options}
-            value={unit === 'ether' ? network.unit : unit}
+            value={unit === 'ether' ? networkUnit : unit}
             onChange={this.handleOnChange}
             clearable={false}
             searchable={options.length > 10}
@@ -53,7 +52,7 @@ function mapStateToProps(state: AppState) {
     tokens: getShownTokenBalances(state, true),
     allTokens: getTokens(state),
     unit: getUnit(state),
-    network: getNetworkConfig(state)
+    networkUnit: getNetworkUnit(state)
   };
 }
 

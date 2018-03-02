@@ -1,7 +1,7 @@
 import { select, call } from 'redux-saga/effects';
 import { getUnit, getDecimalFromUnit, getGasLimit, getGasPrice } from 'selectors/transaction';
 import { getEtherBalance, getTokenBalance } from 'selectors/wallet';
-import { isEtherUnit, toTokenBase, Wei } from 'libs/units';
+import { toTokenBase, Wei } from 'libs/units';
 import { makeTransaction } from 'libs/transaction';
 import {
   rebaseUserInput,
@@ -9,7 +9,7 @@ import {
   makeCostCalculationTx
 } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { getOffline } from 'selectors/config';
+import { getOffline, isNetworkUnit } from 'selectors/config';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -80,7 +80,6 @@ describe('validateInput*', () => {
   const input: any = 'input';
   const unit = 'unit';
   const etherBalance = Wei('1000');
-  const isOffline = false;
   const etherTransaction = true;
   const validationTx = {
     gasLimit: Wei('30'),
@@ -101,27 +100,24 @@ describe('validateInput*', () => {
   });
 
   it('should select getOffline', () => {
-    gens.clone1 = gens.gen.clone();
     gens.clone2 = gens.gen.clone();
     expect(gens.gen.next(etherBalance).value).toEqual(select(getOffline));
+    gens.clone1 = gens.gen.clone();
   });
 
-  it('should call isEtherUnit', () => {
-    expect(gens.gen.next(isOffline).value).toEqual(call(isEtherUnit, unit));
+  it('should call isNetworkUnit', () => {
+    expect(gens.gen.next(false).value).toEqual(select(isNetworkUnit, unit));
     gens.clone3 = gens.gen.clone();
   });
 
   it('should return true when offline', () => {
-    gens.clone1.next();
-    gens.clone1.next(true);
-    expect(gens.clone1.next(true).value).toEqual(true);
+    expect(gens.clone1.next(true).value).toEqual(select(isNetworkUnit, unit));
     expect(gens.clone1.next().done).toEqual(true);
   });
 
   it('should return when !etherBalance', () => {
-    gens.clone2.next(null);
-    gens.clone2.next(false);
-    expect(gens.clone2.next().value).toEqual(true);
+    expect(gens.clone2.next(null).value).toEqual(select(getOffline));
+    expect(gens.clone2.next(true).value).toEqual(select(isNetworkUnit, unit));
     expect(gens.clone2.next().done).toEqual(true);
   });
 
