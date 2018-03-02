@@ -7,37 +7,59 @@ import {
   isValidGasLimit,
   getCurrentToAddressMessage
 } from 'selectors/transaction';
-import TEST_STATE from './TestState.json';
+import { getInitialState } from '../helpers';
 
 describe('current selector', () => {
-  const fieldState = TEST_STATE.transaction.fields;
+  const state = getInitialState();
+  state.transaction.fields = {
+    to: {
+      raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+      value: {
+        type: 'Buffer',
+        data: [0, 1, 2, 3]
+      }
+    },
+    data: {
+      raw: '',
+      value: null
+    },
+    gasPrice: {
+      raw: '15',
+      value: '37e11d600'
+    },
+    gasLimit: {
+      raw: '21000',
+      value: '5208'
+    }
+  };
+
   it('should get stored receiver address on getCurrentTo', () => {
-    expect(getCurrentTo(TEST_STATE)).toEqual(fieldState.to);
+    expect(getCurrentTo(state)).toEqual(state.transaction.fields.to);
   });
 
   it('should get stored value on getCurrentValue', () => {
-    expect(getCurrentValue(TEST_STATE)).toEqual(fieldState.value);
+    expect(getCurrentValue(state)).toEqual(state.transaction.fields.value);
   });
 
   it('should get message to the receiver', () => {
-    expect(getCurrentToAddressMessage(TEST_STATE)).toEqual({
+    expect(getCurrentToAddressMessage(state)).toEqual({
       msg: 'Thank you for donating to MyCrypto. TO THE MOON!'
     });
   });
 
   it('should check isValidGasPrice', () => {
-    expect(isValidGasPrice(TEST_STATE)).toEqual(true);
+    expect(isValidGasPrice(state)).toEqual(true);
   });
 
   it('should check isEtherTransaction', () => {
-    expect(isEtherTransaction(TEST_STATE)).toEqual(true);
+    expect(isEtherTransaction(state)).toEqual(true);
   });
 
   it('should check isValidGasLimit', () => {
-    expect(isValidGasLimit(TEST_STATE)).toEqual(true);
+    expect(isValidGasLimit(state)).toEqual(true);
   });
 
   it('should check isValidCurrentTo', () => {
-    expect(isValidCurrentTo(TEST_STATE)).toEqual(true);
+    expect(isValidCurrentTo(state)).toEqual(true);
   });
 });

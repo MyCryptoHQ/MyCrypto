@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 import { AppState } from 'reducers';
 import { getTransactionState, getGasCost } from 'selectors/transaction';
 import { getEtherBalance } from 'selectors/wallet';
@@ -24,7 +23,7 @@ const getValidGasCost = (state: AppState) => {
   if (isOffline || !etherBalance) {
     return true;
   }
-  return gasCost.lte(new BN(etherBalance)); //TODO actually pass big numbers along the call stack instead of casting at the final getter
+  return gasCost.lte(etherBalance);
 };
 
 export {

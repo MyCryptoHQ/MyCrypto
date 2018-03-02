@@ -1,3 +1,4 @@
+import { Wei } from 'libs/units';
 import {
   getData,
   getFields,
@@ -9,50 +10,81 @@ import {
   getDataExists,
   getValidGasCost
 } from 'selectors/transaction';
-import TEST_STATE from './TestState.json';
+import { getInitialState } from '../helpers';
 
 describe('fields selector', () => {
-  const fieldState = TEST_STATE.transaction.fields;
+  const state = getInitialState();
+  state.transaction.fields = {
+    to: {
+      raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+      value: {
+        type: 'Buffer',
+        data: [0, 1, 2, 3]
+      }
+    },
+    data: {
+      raw: '',
+      value: null
+    },
+    nonce: {
+      raw: '0',
+      value: '0'
+    },
+    value: {
+      raw: '0.01',
+      value: '2386f26fc10000'
+    },
+    gasLimit: {
+      raw: '21000',
+      value: Wei('21000')
+    },
+    gasPrice: {
+      raw: '15',
+      value: Wei('15')
+    }
+  };
 
   it('should get fields from fields store', () => {
-    expect(getFields(TEST_STATE)).toEqual(fieldState);
+    expect(getFields(state)).toEqual(state.transaction.fields);
   });
 
   it('should get data from fields store', () => {
-    expect(getData(TEST_STATE)).toEqual(fieldState.data);
+    expect(getData(state)).toEqual(state.transaction.fields.data);
   });
 
   it('should get gas limit from fields store', () => {
-    expect(getGasLimit(TEST_STATE)).toEqual(fieldState.gasLimit);
+    expect(getGasLimit(state)).toEqual(state.transaction.fields.gasLimit);
   });
 
   it('should get value from fields store', () => {
-    expect(getValue(TEST_STATE)).toEqual(fieldState.value);
+    expect(getValue(state)).toEqual(state.transaction.fields.value);
   });
 
   it('sould get receiver address from fields store', () => {
-    expect(getTo(TEST_STATE)).toEqual(fieldState.to);
+    expect(getTo(state)).toEqual(state.transaction.fields.to);
   });
 
   it('should get nonce from fields store', () => {
-    expect(getNonce(TEST_STATE)).toEqual(fieldState.nonce);
+    expect(getNonce(state)).toEqual(state.transaction.fields.nonce);
   });
 
   it('should get gas price from fields store', () => {
-    expect(getGasPrice(TEST_STATE)).toEqual(fieldState.gasPrice);
-  });
-
-  it('should check when gas cost is valid', () => {
-    expect(getValidGasCost(TEST_STATE)).toEqual(true);
-  });
-
-  it('should check when gas cost is invalid', () => {
-    const { wallet, ...rest } = TEST_STATE;
-    const ModifiedState = { ...rest, wallet: { balance: { wei: '0' } } };
-    expect(getValidGasCost(ModifiedState)).toEqual(false);
+    expect(getGasPrice(state)).toEqual(state.transaction.fields.gasPrice);
   });
 
   it('should check getDataExists', () => {
-    expect(getDataExists(TEST_STATE)).toEqual(false);
+    expect(getDataExists(state)).toEqual(false);
+  });
+
+  it('should check when gas cost is valid', () => {
+    expect(getValidGasCost(state)).toEqual(true);
+  });
+
+  it('should check when gas cost is invalid', () => {
+    state.wallet.balance = {
+      wei: '0',
+      isPending: false
+    };
+    expect(getValidGasCost(state)).toEqual(false);
   });
 });

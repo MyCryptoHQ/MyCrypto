@@ -5,35 +5,59 @@ import {
   currentTransactionBroadcasted,
   getCurrentTransactionStatus
 } from 'selectors/transaction';
-import TEST_STATE from './TestState.json';
+import { getInitialState } from '../helpers';
 
 describe('broadcast selector', () => {
-  const broadcastState = TEST_STATE.transaction.broadcast;
-  const indexingHash = 'testIndexingHash';
+  const state = getInitialState();
 
-  it('should check getBroadcastState', () => {
-    expect(getTransactionStatus(TEST_STATE, indexingHash)).toEqual(broadcastState[indexingHash]);
+  state.transaction = {
+    ...state.transaction,
+    broadcast: {
+      testIndexingHash1: {
+        broadcastedHash: 'testBroadcastedHash',
+        broadcastSuccessful: true,
+        isBroadcasting: false
+      },
+      testIndexingHash2: {
+        broadcastedHash: 'testBroadcastedHash',
+        broadcastSuccessful: true,
+        isBroadcasting: false
+      }
+    },
+    sign: {
+      indexingHash: 'testIndexingHash1',
+      pending: false
+    }
+  };
+  it('should check getTransactionState with an indexing hash', () => {
+    expect(getTransactionStatus(state, 'testIndexingHash1')).toEqual(
+      state.transaction.broadcast.testIndexingHash1
+    );
+  });
+
+  it('should check getCurrentTransactionStatus', () => {
+    expect(getCurrentTransactionStatus(state)).toEqual(
+      state.transaction.broadcast.testIndexingHash2
+    );
   });
 
   it('should check currentTransactionFailed', () => {
-    expect(currentTransactionFailed(TEST_STATE)).toEqual(false);
+    expect(currentTransactionFailed(state)).toEqual(false);
   });
 
   it('should check currentTransactionBroadcasting', () => {
-    expect(currentTransactionBroadcasting(TEST_STATE)).toEqual(false);
+    expect(currentTransactionBroadcasting(state)).toEqual(false);
   });
 
   it('should check currentTransactionBroadcasted', () => {
-    expect(currentTransactionBroadcasted(TEST_STATE)).toEqual(true);
-  });
-
-  it('should check getCurrentTransactionStatus with an indexingHash', () => {
-    expect(getCurrentTransactionStatus(TEST_STATE)).toEqual(broadcastState[indexingHash]);
+    expect(currentTransactionBroadcasted(state)).toEqual(true);
   });
 
   it('should return false on getCurrentTransactionStatus if no index hash present', () => {
-    const { sign, ...rest } = TEST_STATE.transaction;
-    const ModifiedState = { ...TEST_STATE, transaction: { ...rest, sign: '' } };
-    expect(getCurrentTransactionStatus(ModifiedState)).toEqual(false);
+    state.transaction = {
+      ...state.transaction,
+      sign: {}
+    };
+    expect(getCurrentTransactionStatus(state)).toEqual(false);
   });
 });
