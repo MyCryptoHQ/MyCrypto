@@ -1,5 +1,5 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .BetaAgreement {
   @include cover-message;
@@ -20,7 +20,6 @@
         margin: 0 auto;
         border: none;
         padding: 0;
-        outline: none;
         transition: $transition;
 
         &.is-continue {

@@ -16,7 +16,7 @@ interface Props {
   children: any;
   buttons?: IButton[];
   maxWidth?: number;
-  handleClose?(): void;
+  handleClose(): void;
 }
 interface ModalStyle {
   width?: string;
@@ -30,23 +30,47 @@ const Fade = ({ children, ...props }) => (
 );
 
 export default class Modal extends PureComponent<Props, {}> {
+  private modal: HTMLElement;
   private modalContent: HTMLElement | null = null;
+  private focusedElementBeforeModal: HTMLElement;
+  private focusableElementsString: string;
+  private focusableElements: HTMLElement[];
+  private firstTabStop: HTMLElement;
+  private lastTabStop: HTMLElement;
 
   public componentDidMount() {
-    this.updateBodyClass();
-    document.addEventListener('keydown', this.escapeListner);
+    this.toggleScroll();
+    this.focusedElementBeforeModal = document.activeElement as HTMLElement;
   }
 
   public componentDidUpdate() {
-    this.updateBodyClass();
+    console.log('Component did update');
+    this.toggleScroll();
+    if (this.props.isOpen) {
+      // Find all focusable children
+      this.focusableElementsString =
+        'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+      this.focusableElements = Array.prototype.slice.call(
+        this.modal.querySelectorAll(this.focusableElementsString)
+      );
+
+      // Convert NodeList to Array
+      this.firstTabStop = this.focusableElements[0];
+      this.lastTabStop = this.focusableElements[this.focusableElements.length - 1];
+
+      // Focus first child
+      this.firstTabStop.focus();
+
+      this.modal.addEventListener('keydown', this.keyDownListener);
+    }
   }
 
-  public updateBodyClass() {
+  public toggleScroll() {
     document.body.classList.toggle('no-scroll', !!this.props.isOpen);
   }
 
   public componentWillUnmount() {
-    document.removeEventListener('keydown', this.escapeListner);
+    document.removeEventListener('keydown', this.keyDownListener);
     document.body.classList.remove('no-scroll');
   }
 
@@ -65,8 +89,17 @@ export default class Modal extends PureComponent<Props, {}> {
         {isOpen && (
           <Fade>
             <div>
-              <div className="Modalshade" />
-              <div className="Modal" style={modalStyle}>
+              <div className="Modal-overlay" onClick={handleClose} />
+              <div
+                className="Modal"
+                style={modalStyle}
+                role="dialog"
+                aria-labelledby="Modal-header-title"
+                tabIndex={1}
+                ref={div => {
+                  this.modal = div as HTMLElement;
+                }}
+              >
                 {title && (
                   <div className="Modal-header flex-wrapper">
                     <h2 className="Modal-header-title">{title}</h2>
@@ -96,23 +129,28 @@ export default class Modal extends PureComponent<Props, {}> {
     }
   };
 
-  private escapeListner = (ev: KeyboardEvent) => {
-    // Don't trigger if they hit escape while on an input
-    if (ev.target) {
-      if (
-        (ev.target as HTMLElement).tagName === 'INPUT' ||
-        (ev.target as HTMLElement).tagName === 'SELECT' ||
-        (ev.target as HTMLElement).tagName === 'TEXTAREA' ||
-        (ev.target as HTMLElement).isContentEditable
-      ) {
-        return;
+  private keyDownListener = (e: KeyboardEvent) => {
+    // Check for TAB key press
+    if (e.keyCode === 9) {
+      // SHIFT + TAB
+      if (e.shiftKey) {
+        if (document.activeElement === this.firstTabStop) {
+          e.preventDefault();
+          this.lastTabStop.focus();
+        }
+
+        // TAB
+      } else {
+        if (document.activeElement === this.lastTabStop) {
+          e.preventDefault();
+          this.firstTabStop.focus();
+        }
       }
     }
 
-    if (ev.key === 'Escape' || ev.keyCode === 27) {
-      if (!this.props.handleClose) {
-        return;
-      }
+    // Check for ESC key press
+    if (e.keyCode === 27) {
+      this.focusedElementBeforeModal.focus();
       this.props.handleClose();
     }
   };
