@@ -39,3 +39,8 @@
 [data-whatintent='mouse'] *:focus {
   outline: none;
 }
+
+// This is fine because the outline effect is reproduced with border and box-shadow styles on input elements
+input {
+  outline: none;
+}
