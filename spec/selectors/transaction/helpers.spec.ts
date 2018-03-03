@@ -12,35 +12,50 @@ import { getInitialState } from '../helpers';
 
 describe('helpers selector', () => {
   const state = getInitialState();
-  state.transaction.fields = {
-    to: {
-      raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+  state.transaction = {
+    ...state.transaction,
+    meta: {
+      ...state.transaction.meta,
+      unit: 'ETH'
+    },
+    fields: {
+      to: {
+        raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+        value: {
+          type: 'Buffer',
+          data: [0, 1, 2, 3]
+        }
+      },
+      data: {
+        raw: '',
+        value: null
+      },
+      nonce: {
+        raw: '0',
+        value: '0'
+      },
       value: {
-        type: 'Buffer',
-        data: [0, 1, 2, 3]
+        raw: '0.01',
+        value: '2386f26fc10000'
+      },
+      gasLimit: {
+        raw: '21000',
+        value: Wei('21000')
+      },
+      gasPrice: {
+        raw: '15',
+        value: Wei('15')
       }
-    },
-    data: {
-      raw: '',
-      value: null
-    },
-    nonce: {
-      raw: '0',
-      value: '0'
-    },
-    value: {
-      raw: '0.01',
-      value: '2386f26fc10000'
-    },
-    gasLimit: {
-      raw: '21000',
-      value: Wei('21000')
-    },
-    gasPrice: {
-      raw: '15',
-      value: Wei('15')
     }
   };
+  console.log(state);
+  state.config.networks.staticNetworks = {
+    ETH: {
+      name: 'ETH',
+      unit: 'ETH'
+    }
+  };
+
   it('should reduce the fields state to its base values', () => {
     const values = {
       data: null,
@@ -61,6 +76,7 @@ describe('helpers selector', () => {
     const dataExists = getDataExists(state);
     const validGasCost = getValidGasCost(state);
     const isFullTransaction = isFullTx(
+      state,
       transactionFields,
       currentTo,
       currentValue,
@@ -79,6 +95,7 @@ describe('helpers selector', () => {
     const dataExists = getDataExists(state);
     const validGasCost = getValidGasCost(state);
     const isFullTransaction = isFullTx(
+      state,
       transactionFields,
       currentTo,
       currentValue,

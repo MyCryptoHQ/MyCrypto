@@ -110,7 +110,8 @@ describe('fields reducer', () => {
 
   it('should reset', () => {
     const resetAction: txActions.ResetAction = {
-      type: TypeKeys.RESET
+      type: TypeKeys.RESET,
+      payload: { include: {}, exclude: {} }
     };
     const modifiedState: State = {
       ...INITIAL_STATE,

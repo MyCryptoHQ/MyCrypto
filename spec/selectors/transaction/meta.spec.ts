@@ -12,8 +12,8 @@ import { getInitialState } from '../helpers';
 describe('meta tests', () => {
   const state = getInitialState();
   (state.transaction.meta = {
-    unit: 'ether',
-    previousUnit: 'ether',
+    unit: 'ETH',
+    previousUnit: 'ETH',
     decimal: 18,
     tokenValue: {
       raw: '',

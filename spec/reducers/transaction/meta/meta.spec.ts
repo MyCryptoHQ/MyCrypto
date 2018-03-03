@@ -5,8 +5,8 @@ import * as txActions from 'actions/transaction';
 
 describe('meta reducer', () => {
   const INITIAL_STATE: State = {
-    unit: 'ether',
-    previousUnit: 'ether',
+    unit: '',
+    previousUnit: '',
     decimal: getDecimalFromEtherUnit('ether'),
     tokenValue: { raw: '', value: null },
     tokenTo: { raw: '', value: null },
@@ -97,7 +97,8 @@ describe('meta reducer', () => {
 
   it('should reset', () => {
     const resetAction: txActions.ResetAction = {
-      type: TypeKeys.RESET
+      type: TypeKeys.RESET,
+      payload: { include: {}, exclude: {} }
     };
     const modifiedState: State = {
       ...INITIAL_STATE,

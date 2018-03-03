@@ -11,25 +11,30 @@ import { getInitialState } from '../helpers';
 
 describe('current selector', () => {
   const state = getInitialState();
-  state.transaction.fields = {
-    to: {
-      raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-      value: {
-        type: 'Buffer',
-        data: [0, 1, 2, 3]
+  state.transaction = {
+    ...state.transaction,
+    fields: {
+      ...state.transaction.fields,
+      to: {
+        raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
+        value: {
+          type: 'Buffer',
+          data: [0, 1, 2, 3]
+        }
+      },
+      gasLimit: {
+        raw: '21000',
+        value: '5208'
+      },
+      gasPrice: {
+        raw: '4',
+        value: 'ee6b2800'
       }
     },
-    data: {
-      raw: '',
-      value: null
-    },
-    gasPrice: {
-      raw: '15',
-      value: '37e11d600'
-    },
-    gasLimit: {
-      raw: '21000',
-      value: '5208'
+    meta: {
+      ...state.transaction.meta,
+      unit: 'ETH',
+      previousUnit: 'ETH'
     }
   };
 
