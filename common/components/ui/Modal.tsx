@@ -95,7 +95,7 @@ export default class Modal extends PureComponent<Props, {}> {
                 style={modalStyle}
                 role="dialog"
                 aria-labelledby="Modal-header-title"
-                tabIndex={1}
+                onClick={() => this.firstTabStop.focus()}
                 ref={div => {
                   this.modal = div as HTMLElement;
                 }}
@@ -132,6 +132,7 @@ export default class Modal extends PureComponent<Props, {}> {
   private keyDownListener = (e: KeyboardEvent) => {
     // Check for TAB key press
     if (e.keyCode === 9) {
+      console.log('s');
       // SHIFT + TAB
       if (e.shiftKey) {
         if (document.activeElement === this.firstTabStop) {

@@ -26,6 +26,7 @@ interface InputProps {
 }
 
 interface OwnProps {
+  isOpen: boolean;
   addCustomNode(payload: AddCustomNodeAction['payload']): void;
   handleClose(): void;
 }
@@ -68,7 +69,7 @@ class CustomNodeModal extends React.Component<Props, State> {
   };
 
   public render() {
-    const { customNetworks, handleClose, staticNetworks } = this.props;
+    const { customNetworks, handleClose, staticNetworks, isOpen } = this.props;
     const { network } = this.state;
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
@@ -92,7 +93,7 @@ class CustomNodeModal extends React.Component<Props, State> {
     return (
       <Modal
         title={translate('NODE_Title')}
-        isOpen={true}
+        isOpen={isOpen}
         buttons={buttons}
         handleClose={handleClose}
         maxWidth={580}
