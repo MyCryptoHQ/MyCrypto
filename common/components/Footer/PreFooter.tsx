@@ -12,7 +12,7 @@ const PreFooter: React.SFC<Props> = ({ openModal }) => {
         <p>
           MyCrypto.com does not hold your keys for you. We cannot access accounts, recover keys,
           reset passwords, nor reverse transactions. Protect your keys & always check that you are
-          on correct URL. <a onClick={openModal}>You are responsible for your security.</a>
+          on the correct URL. <a onClick={openModal}>You are responsible for your security.</a>
         </p>
       </div>
     </section>
