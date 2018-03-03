@@ -10,7 +10,7 @@ import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from '
 import React, { PureComponent } from 'react';
 import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
-import { SwapDropdown } from 'components/ui';
+import { SwapDropdown, Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
 import { merge, reject, debounce } from 'lodash';
 import './CurrencySwap.scss';
@@ -41,21 +41,30 @@ interface State {
 
 type Props = StateProps & ActionProps;
 
+interface SwapOpt extends SwapInput {
+  value: string;
+  status: string;
+  image: string;
+  amount: number;
+}
+
 export default class CurrencySwap extends PureComponent<Props, State> {
   public state = {
     disabled: true,
     origin: {
-      id: 'BTC',
+      label: 'BTC',
+      value: 'Bitcoin',
       status: 'available',
       image: 'https://shapeshift.io/images/coins/bitcoin.png',
       amount: NaN
-    } as SwapInput,
+    } as SwapOpt,
     destination: {
-      id: 'ETH',
+      label: 'ETH',
+      value: 'Ether',
       status: 'available',
       image: 'https://shapeshift.io/images/coins/ether.png',
       amount: NaN
-    } as SwapInput,
+    } as SwapOpt,
     originKindOptions: [],
     destinationKindOptions: [],
     originErr: '',
@@ -78,9 +87,11 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       }
       return errString;
     };
-    const originErr = showError ? createErrString(origin.id, origin.amount, destination.id) : '';
+    const originErr = showError
+      ? createErrString(origin.label, origin.amount, destination.label)
+      : '';
     const destinationErr = showError
-      ? createErrString(destination.id, destination.amount, origin.id)
+      ? createErrString(destination.label, destination.amount, origin.label)
       : '';
     this.setErrorMessages(originErr, destinationErr);
   }, 1000);
@@ -99,7 +110,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     if (options.allIds && options.byId) {
       const originKindOptions: any[] = Object.values(options.byId);
       const destinationKindOptions: any[] = Object.values(
-        reject<any>(options.byId, o => o.id === origin.id)
+        reject<any>(options.byId, o => o.id === origin.label)
       );
 
       this.setState({
@@ -125,7 +136,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     if (options.allIds !== prevProps.options.allIds && options.byId) {
       const originKindOptions: any[] = Object.values(options.byId);
       const destinationKindOptions: any[] = Object.values(
-        reject<any>(options.byId, o => o.id === origin.id)
+        reject<any>(options.byId, o => o.id === origin.label)
       );
 
       this.setState({
@@ -175,7 +186,11 @@ export default class CurrencySwap extends PureComponent<Props, State> {
   public setDisabled(origin: SwapInput, destination: SwapInput) {
     this.clearErrMessages();
     const amountsValid = origin.amount && destination.amount;
-    const minMaxValid = this.isMinMaxValid(origin.amount as number, origin.id, destination.id);
+    const minMaxValid = this.isMinMaxValid(
+      origin.amount as number,
+      origin.label,
+      destination.label
+    );
     const disabled = !(amountsValid && minMaxValid);
     const showError = disabled && amountsValid;
 
@@ -216,7 +231,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
   public updateOriginAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
-      const pairName = combineAndUpper(origin.id, destination.id);
+      const pairName = combineAndUpper(origin.label, destination.label);
       const rate = this.rateMixer().byId[pairName].rate;
       const destinationAmount = amount * rate;
       this.setState({
@@ -230,7 +245,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
   public updateDestinationAmount = (origin: SwapInput, destination: SwapInput, amount: number) => {
     if (amount || amount === 0) {
-      const pairNameReversed = combineAndUpper(destination.id, origin.id);
+      const pairNameReversed = combineAndUpper(destination.label, origin.label);
       const rate = this.rateMixer().byId[pairNameReversed].rate;
       const originAmount = amount * rate;
       this.setState({
@@ -254,28 +269,30 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       : this.updateDestinationAmount(origin, destination, amount);
   };
 
-  public onChangeOriginKind = (newOption: WhitelistedCoins) => {
+  public onChangeOriginKind = newOption => {
     const { origin, destination, destinationKindOptions } = this.state;
     const { options, initSwap } = this.props;
 
-    const newOrigin = { ...origin, id: newOption, amount: '' };
+    const newOrigin = { ...origin, label: newOption.label, value: newOption.value, amount: '' };
     const newDest = {
-      id: newOption === destination.id ? origin.id : destination.id,
+      label: newOption.label === destination.label ? origin.label : destination.label,
+      value: newOption.value === destination.value ? origin.value : destination.value,
       amount: ''
     };
+
     this.setState({
       origin: newOrigin,
       destination: newDest,
       destinationKindOptions: reject(
-        [...destinationKindOptions, options.byId[origin.id]],
-        o => o.id === newOption
+        [...destinationKindOptions, options.byId[origin.label]],
+        o => o.id === newOption.label
       )
     });
 
     initSwap({ origin: newOrigin, destination: newDest });
   };
 
-  public onChangeDestinationKind = (newOption: WhitelistedCoins) => {
+  public onChangeDestinationKind = newOption => {
     const { initSwap } = this.props;
     const { origin, destination } = this.state;
 
@@ -284,7 +301,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       amount: ''
     };
 
-    const newDest = { ...destination, id: newOption, amount: '' };
+    const newDest = { ...destination, label: newOption.label, value: newOption.value, amount: '' };
     this.setState({
       origin: newOrigin,
       destination: newDest
@@ -304,9 +321,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       destinationErr,
       timeout
     } = this.state;
-    const OriginKindDropDown = SwapDropdown as new () => SwapDropdown<any>;
-    const DestinationKindDropDown = SwapDropdown as new () => SwapDropdown<any>;
-    const pairName = combineAndUpper(origin.id, destination.id);
+    const pairName = combineAndUpper(origin.label, destination.label);
     const bityLoaded = bityRates.byId && bityRates.byId[pairName] ? true : false;
     const shapeshiftLoaded = shapeshiftRates.byId && shapeshiftRates.byId[pairName] ? true : false;
     // This ensures both are loaded
@@ -314,73 +329,75 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     const timeoutLoaded = (bityLoaded && timeout) || (shapeshiftLoaded && timeout);
     return (
       <article className="CurrencySwap">
-        <h1 className="CurrencySwap-title">{translate('SWAP_init_1')}</h1>
         {loaded || timeoutLoaded ? (
-          <div className="CurrencySwap-inner-wrap">
-            <div className="CurrencySwap-input-group">
-              {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
-              <input
-                id="origin-swap-input"
-                className={`CurrencySwap-input form-control ${
-                  String(origin.amount) !== '' &&
-                  this.isMinMaxValid(origin.amount as number, origin.id, destination.id)
-                    ? 'is-valid'
-                    : 'is-invalid'
-                }`}
-                type="number"
-                placeholder="Amount"
-                value={isNaN(origin.amount as number) ? '' : origin.amount}
-                onChange={this.onChangeAmount}
-              />
-              <div className="CurrencySwap-dropdown">
-                <OriginKindDropDown
-                  ariaLabel={`change origin kind. current origin kind ${origin.id}`}
-                  options={originKindOptions}
-                  value={origin.id}
-                  onChange={this.onChangeOriginKind}
-                />
+          <React.Fragment>
+            <div className="CurrencySwap-inner-wrap">
+              <div className="flex-spacer" />
+              <div className="input-group-wrapper">
+                <div className="input-group-header">Deposit</div>
+                <label className="input-group input-group-inline-dropdown">
+                  <Input
+                    id="origin-swap-input"
+                    className={`input-group-input ${
+                      String(origin.amount) !== '' &&
+                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
+                        ? ''
+                        : 'invalid'
+                    }`}
+                    type="number"
+                    placeholder="Amount"
+                    value={isNaN(origin.amount) ? '' : origin.amount}
+                    onChange={this.onChangeAmount}
+                  />
+                  <SwapDropdown
+                    options={originKindOptions}
+                    value={origin.value}
+                    onChange={this.onChangeOriginKind}
+                  />
+                </label>
+                {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
               </div>
-            </div>
-            <h1 className="CurrencySwap-divider">{translate('SWAP_init_2')}</h1>
-            <div className="CurrencySwap-input-group">
-              {destinationErr && (
-                <span className="CurrencySwap-error-message">{destinationErr}</span>
-              )}
-              <input
-                id="destination-swap-input"
-                className={`CurrencySwap-input form-control ${
-                  String(destination.amount) !== '' &&
-                  this.isMinMaxValid(origin.amount as number, origin.id, destination.id)
-                    ? 'is-valid'
-                    : 'is-invalid'
-                }`}
-                type="number"
-                placeholder="Amount"
-                value={isNaN(destination.amount as number) ? '' : destination.amount}
-                onChange={this.onChangeAmount}
-              />
-              <div className="CurrencySwap-dropdown">
-                <DestinationKindDropDown
-                  ariaLabel={`change destination kind. current destination kind ${destination.id}`}
-                  options={destinationKindOptions}
-                  value={destination.id}
-                  onChange={this.onChangeDestinationKind}
-                />
+
+              <div className="input-group-wrapper">
+                <label className="input-group input-group-inline-dropdown">
+                  <div className="input-group-header">Recieve</div>
+                  <Input
+                    id="destination-swap-input"
+                    className={`${
+                      String(destination.amount) !== '' &&
+                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
+                        ? ''
+                        : 'invalid'
+                    }`}
+                    type="number"
+                    placeholder="Amount"
+                    value={isNaN(destination.amount) ? '' : destination.amount}
+                    onChange={this.onChangeAmount}
+                  />
+                  <SwapDropdown
+                    options={destinationKindOptions}
+                    value={destination.value}
+                    onChange={this.onChangeDestinationKind}
+                  />
+                </label>
+                {destinationErr && (
+                  <span className="CurrencySwap-error-message">{destinationErr}</span>
+                )}
               </div>
+              <div className="flex-spacer" />
             </div>
-          </div>
+            <div className="CurrencySwap-submit">
+              <SimpleButton
+                onClick={this.onClickStartSwap}
+                text={translate('SWAP_init_CTA')}
+                disabled={this.state.disabled}
+                type="primary"
+              />
+            </div>
+          </React.Fragment>
         ) : (
           <Spinner />
         )}
-
-        <div className="CurrencySwap-submit">
-          <SimpleButton
-            onClick={this.onClickStartSwap}
-            text={translate('SWAP_init_CTA')}
-            disabled={this.state.disabled}
-            type="primary"
-          />
-        </div>
       </article>
     );
   }

@@ -1,5 +1,7 @@
+import { configuredStore } from 'store';
 import TOKENS from 'config/tokens';
 import { isValidETHAddress } from 'libs/validators';
+configuredStore.getState();
 
 describe('Tokens JSON', () => {
   Object.keys(TOKENS).forEach(network => {

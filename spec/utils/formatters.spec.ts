@@ -1,3 +1,4 @@
+import { configuredStore } from 'store';
 import { Wei } from 'libs/units';
 import {
   toFixedIfLarger,
@@ -5,6 +6,7 @@ import {
   formatGasLimit,
   formatMnemonic
 } from '../../common/utils/formatters';
+configuredStore.getState();
 
 describe('toFixedIfLarger', () => {
   it('should return same value if decimal isnt longer than default', () => {
@@ -83,11 +85,11 @@ describe('formatNumber', () => {
 
 describe('formatGasLimit', () => {
   it('should fix transaction gas limit off-by-one errors', () => {
-    expect(formatGasLimit(Wei('21001'), 'ether')).toEqual('21000');
+    expect(formatGasLimit(Wei('21001'), 'ETH')).toEqual('21000');
   });
 
   it('should mark the gas limit `-1` if you exceed the limit per block', () => {
-    expect(formatGasLimit(Wei('999999999999999'), 'ether')).toEqual('-1');
+    expect(formatGasLimit(Wei('999999999999999'), 'ETH')).toEqual('-1');
   });
 
   it('should not alter a valid gas limit', () => {

@@ -34,6 +34,7 @@ const getTransaction = (state: AppState): IGetTransaction => {
   const dataExists = getDataExists(state);
   const validGasCost = getValidGasCost(state);
   const isFullTransaction = isFullTx(
+    state,
     transactionFields,
     currentTo,
     currentValue,
