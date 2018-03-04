@@ -48,7 +48,6 @@ describe('helpers selector', () => {
       }
     }
   };
-  console.log(state);
   state.config.networks.staticNetworks = {
     ETH: {
       name: 'ETH',
