@@ -97,6 +97,10 @@ export default class Modal extends PureComponent<Props, {}> {
   };
 
   private escapeListner = (ev: KeyboardEvent) => {
+    if (!this.props.isOpen) {
+      return;
+    }
+
     // Don't trigger if they hit escape while on an input
     if (ev.target) {
       if (
@@ -110,6 +114,7 @@ export default class Modal extends PureComponent<Props, {}> {
     }
 
     if (ev.key === 'Escape' || ev.keyCode === 27) {
+      console.log(this.props.isOpen);
       if (!this.props.handleClose) {
         return;
       }
