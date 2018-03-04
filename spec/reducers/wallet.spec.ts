@@ -1,6 +1,8 @@
+import { configuredStore } from 'store';
 import { wallet, INITIAL_STATE } from 'reducers/wallet';
 import { Wei } from 'libs/units';
 import * as walletActions from 'actions/wallet';
+configuredStore.getState();
 
 describe('wallet reducer', () => {
   it('should handle WALLET_SET', () => {

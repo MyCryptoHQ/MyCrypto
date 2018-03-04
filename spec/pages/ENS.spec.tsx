@@ -1,3 +1,4 @@
+import { configuredStore } from 'store';
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -6,6 +7,7 @@ import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
 import { RouteComponentProps } from 'react-router';
+configuredStore.getState();
 
 Enzyme.configure({ adapter: new Adapter() });
 
