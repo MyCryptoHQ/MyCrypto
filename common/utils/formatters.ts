@@ -1,11 +1,6 @@
 import BN from 'bn.js';
-import EthTx from 'ethereumjs-tx';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';
-import { SavedTransaction } from 'types/transactions';
-import { getTransactionFields } from 'libs/transaction';
-import { hexEncodeData } from 'libs/nodes/rpc/utils';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -123,17 +118,4 @@ export function ensV3Url(name: string) {
 
 export function hexToNumber(hex: string) {
   return new BN(stripHexPrefix(hex)).toNumber();
-}
-
-export function ethtxToRecentTransaction(tx: EthTx, hash: string): SavedTransaction {
-  const fields = getTransactionFields(tx);
-  const from = hexEncodeData(tx.getSenderAddress());
-  return {
-    hash,
-    to: toChecksumAddress(fields.to),
-    from: toChecksumAddress(from),
-    value: fields.value,
-    chainId: fields.chainId,
-    time: Date.now()
-  };
 }
