@@ -51,7 +51,7 @@ async function run() {
   const tokens = tokensJson.map(t => ({
     address: t.address,
     symbol: t.symbol,
-    decimal: t.decimals
+    decimal: parseInt(t.decimals, 10)
   }));
 
   // Write to the file
