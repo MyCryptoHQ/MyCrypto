@@ -5,23 +5,22 @@ import {
   SetTokenToMetaAction
 } from 'actions/transaction';
 
-type TSetTokenBalance = typeof setTokenValue;
-type TSetUnitMeta = typeof setUnitMeta;
-type TSetTokenTo = typeof setTokenTo;
-
-const setTokenTo = (payload: SetTokenToMetaAction['payload']): SetTokenToMetaAction => ({
+export type TSetTokenTo = typeof setTokenTo;
+export const setTokenTo = (payload: SetTokenToMetaAction['payload']): SetTokenToMetaAction => ({
   type: TypeKeys.TOKEN_TO_META_SET,
   payload
 });
 
-const setTokenValue = (payload: SetTokenValueMetaAction['payload']): SetTokenValueMetaAction => ({
+export type TSetTokenValue = typeof setTokenValue;
+export const setTokenValue = (
+  payload: SetTokenValueMetaAction['payload']
+): SetTokenValueMetaAction => ({
   type: TypeKeys.TOKEN_VALUE_META_SET,
   payload
 });
 
-const setUnitMeta = (payload: SetUnitMetaAction['payload']): SetUnitMetaAction => ({
+export type TSetUnitMeta = typeof setUnitMeta;
+export const setUnitMeta = (payload: SetUnitMetaAction['payload']): SetUnitMetaAction => ({
   type: TypeKeys.UNIT_META_SET,
   payload
 });
-
-export { TSetUnitMeta, TSetTokenBalance, TSetTokenTo, setUnitMeta, setTokenValue, setTokenTo };

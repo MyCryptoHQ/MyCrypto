@@ -1,3 +1,4 @@
+import { configuredStore } from 'store';
 import { select, call, put } from 'redux-saga/effects';
 import { setDataField } from 'actions/transaction';
 import { encodeTransfer } from 'libs/transaction/utils/token';
@@ -6,6 +7,7 @@ import { bufferToHex, toBuffer } from 'ethereumjs-util';
 import { getTokenTo, getData } from 'selectors/transaction';
 import { handleTokenTo, handleTokenValue } from 'sagas/transaction/meta/token';
 import { cloneableGenerator } from 'redux-saga/utils';
+configuredStore.getState();
 
 const itShouldBeDone = gen => {
   it('should be done', () => {

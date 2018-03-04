@@ -32,8 +32,8 @@ export interface State {
 
 export const INITIAL_STATE: State = {
   step: 1,
-  origin: { id: 'BTC', amount: NaN },
-  destination: { id: 'ETH', amount: NaN },
+  origin: { label: 'BTC', amount: NaN },
+  destination: { label: 'ETH', amount: NaN },
   options: {
     byId: {},
     allIds: []
