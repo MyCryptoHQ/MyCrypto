@@ -114,7 +114,6 @@ export default class Modal extends PureComponent<Props, {}> {
     }
 
     if (ev.key === 'Escape' || ev.keyCode === 27) {
-      console.log(this.props.isOpen);
       if (!this.props.handleClose) {
         return;
       }
