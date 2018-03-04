@@ -165,7 +165,8 @@
     "precommit": "lint-staged",
     "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
-    "prepush": "npm run tslint && npm run tscheck"
+    "prepush": "npm run tslint && npm run tscheck",
+    "update:tokens": "node scripts/update-tokens.js"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
