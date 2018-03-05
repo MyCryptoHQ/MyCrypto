@@ -1,5 +1,5 @@
 import { configuredStore } from 'store';
-import { delay } from 'redux-saga';
+import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import {
@@ -58,9 +58,9 @@ describe('pollOfflineStatus*', () => {
     timeout: true
   };
 
-  let originalHidden;
-  let originalOnLine;
-  let originalRandom;
+  let originalHidden: any;
+  let originalOnLine: any;
+  let originalRandom: any;
 
   beforeAll(() => {
     // backup global config
@@ -143,16 +143,18 @@ describe('handlePollOfflineStatus*', () => {
 });
 
 describe('handleNodeChangeIntent*', () => {
-  let originalRandom;
+  let originalRandom: any;
 
   // normal operation variables
-  const defaultNodeId = selectedNodeExpectedState.initialState.nodeId;
-  const defaultNodeConfig: StaticNodeConfig = staticNodesExpectedState.initialState[defaultNodeId];
+  const defaultNodeId: any = selectedNodeExpectedState.initialState.nodeId;
+  const defaultNodeConfig: any = (staticNodesExpectedState as any).initialState[defaultNodeId];
   const newNodeId = Object.keys(staticNodesExpectedState.initialState).reduce(
     (acc, cur) =>
-      staticNodesExpectedState.initialState[cur].network !== defaultNodeConfig.network ? cur : acc
+      (staticNodesExpectedState as any).initialState[cur].network !== defaultNodeConfig.network
+        ? cur
+        : acc
   );
-  const newNodeConfig: StaticNodeConfig = staticNodesExpectedState.initialState[newNodeId];
+  const newNodeConfig: StaticNodeConfig = (staticNodesExpectedState as any).initialState[newNodeId];
 
   const changeNodeIntentAction = changeNodeIntent(newNodeId);
   const latestBlock = '0xa';
@@ -166,7 +168,7 @@ describe('handleNodeChangeIntent*', () => {
   const data = {} as any;
   data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeIntentAction);
 
-  function shouldBailOut(gen, nextVal, errMsg) {
+  function shouldBailOut(gen: SagaIterator, nextVal: any, errMsg: string) {
     expect(gen.next(nextVal).value).toEqual(select(getNodeId));
     expect(gen.next(defaultNodeId).value).toEqual(put(showNotification('danger', errMsg, 5000)));
     expect(gen.next().value).toEqual(

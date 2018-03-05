@@ -7,7 +7,7 @@ import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
 
 export class LedgerWallet extends DeterministicWallet implements IFullWallet {
-  private ethApp: any;
+  private ethApp: ledger.eth;
 
   constructor(address: string, dPath: string, index: number) {
     super(address, dPath, index);
