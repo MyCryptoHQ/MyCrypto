@@ -1,26 +1,33 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import { Link } from 'react-router-dom';
+import translate from 'translations';
+import { NewTabLink } from 'components/ui';
 import { BlockExplorerConfig } from 'types/network';
 
 export interface TransactionSucceededProps {
   txHash: string;
-  blockExplorer: BlockExplorerConfig;
+  blockExplorer?: BlockExplorerConfig;
 }
 
 const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededProps) => {
-  const txHashLink = blockExplorer.txUrl(txHash);
+  let verifyBtn: React.ReactElement<string> | undefined;
+  if (blockExplorer) {
+    verifyBtn = (
+      <NewTabLink className="btn btn-xs" href={blockExplorer.txUrl(txHash)}>
+        Verify Transaction on {blockExplorer.name}
+      </NewTabLink>
+    );
+  }
 
   return (
     <div>
-      <p>{translateRaw('SUCCESS_3') + txHash}</p>
-      <a
-        className="btn btn-xs btn-info string"
-        href={txHashLink}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Verify Transaction
-      </a>
+      <p>
+        {translate('SUCCESS_3')} {txHash}
+      </p>
+      {verifyBtn}
+      <Link to={`/tx-status?txHash=${txHash}`} className="btn btn-xs">
+        {translate('NAV_CheckTxStatus')}
+      </Link>
     </div>
   );
 };
