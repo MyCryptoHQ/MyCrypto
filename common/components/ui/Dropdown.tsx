@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { ReactSelectProps } from 'react-select';
+import Select, { ReactSelectProps, Option } from 'react-select';
 
 interface Props extends ReactSelectProps {
   className?: string;
@@ -13,11 +13,11 @@ export default class Dropdown extends React.Component<Props> {
     hasBlurred: false
   };
 
-  public handleChange = selectedOption => {
+  public handleChange = (selectedOption: Option) => {
     this.setState({ selectedOption });
   };
 
-  public formatOptions = options => {
+  public formatOptions = (options: Option[]) => {
     if (typeof options[0] === 'object') {
       return options;
     }
@@ -38,7 +38,7 @@ export default class Dropdown extends React.Component<Props> {
         // use ref to prevent <label /> from stealing focus when used inline with an input
         ref={el => {
           if (!!el && !!(el as any).control) {
-            (el as any).control.addEventListener('click', e => {
+            (el as any).control.addEventListener('click', (e: React.FormEvent<any>) => {
               e.preventDefault();
             });
           }
@@ -46,7 +46,7 @@ export default class Dropdown extends React.Component<Props> {
         className={`${this.props.className} ${this.state.hasBlurred ? 'has-blurred' : ''}`}
         value={value}
         onChange={obj => {
-          this.handleChange(obj);
+          this.handleChange(obj as any);
           onChange();
         }}
         {...this.props}
@@ -56,7 +56,7 @@ export default class Dropdown extends React.Component<Props> {
             this.props.onBlur(e);
           }
         }}
-        options={options}
+        options={options as any}
       />
     );
   }

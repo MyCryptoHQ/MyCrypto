@@ -134,7 +134,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     this.setState({ dPath });
   };
 
-  private handleUnlock = (address, index) => {
+  private handleUnlock = (address: string, index: number) => {
     const { formattedPhrase, pass, dPath } = this.state;
 
     this.props.onUnlock({

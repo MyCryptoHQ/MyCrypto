@@ -16,12 +16,13 @@ import { getEstimates, getIsEstimating } from 'selectors/gas';
 import { Wei, fromWei } from 'libs/units';
 import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
+import { TInputGasPrice } from 'actions/transaction';
 const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
-  inputGasPrice(rawGas: string);
-  setGasPrice(rawGas: string);
+  inputGasPrice(rawGas: string): void;
+  setGasPrice: TInputGasPrice;
 }
 
 interface StateProps {
