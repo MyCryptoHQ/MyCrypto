@@ -13,7 +13,11 @@ import {
   ETC_TREZOR,
   ETH_TESTNET,
   EXP_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  POA_DEFAULT,
+  TOMO_DEFAULT,
+  ELLA_DEFAULT,
+  ETSC_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { StaticNetworkIds, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
@@ -170,6 +174,83 @@ export const INITIAL_STATE: State = {
       min: 0.1,
       max: 20,
       initial: 2
+    }
+  },
+  POA: {
+    name: 'POA',
+    unit: 'POA',
+    chainId: 99,
+    isCustom: false,
+    color: '#4568bb',
+    blockExplorer: makeExplorer('Etherchain Light', 'https://core-explorer.poa.network'),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: POA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: POA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: POA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  TOMO: {
+    name: 'TOMO',
+    unit: 'TOMO',
+    chainId: 40686,
+    isCustom: false,
+    color: '#6a488d',
+    blockExplorer: makeExplorer('Tomochain Explorer', 'https://explorer.tomocoin.io/#'),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: TOMO_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: TOMO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: TOMO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ELLA: {
+    name: 'ELLA',
+    unit: 'ELLA',
+    chainId: 64,
+    isCustom: false,
+    color: '#046111',
+    blockExplorer: makeExplorer('Ellaism Explorer', 'https://explorer.ellaism.org'),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ELLA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ETSC: {
+    name: 'ETSC',
+    unit: 'ETSC',
+    chainId: 214,
+    isCustom: false,
+    color: '#673ab7',
+    blockExplorer: makeExplorer('Ethereum Social Explorer', 'https://explorer.ethereumsocial.kr/#'),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETSC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
     }
   }
 };
