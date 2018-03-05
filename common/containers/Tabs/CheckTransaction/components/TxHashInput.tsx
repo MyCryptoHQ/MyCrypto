@@ -6,8 +6,8 @@ import translate from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
 import { getRecentNetworkTransactions } from 'selectors/transactions';
 import { AppState } from 'reducers';
-import './TxHashInput.scss';
 import { Input } from 'components/ui';
+import './TxHashInput.scss';
 
 interface OwnProps {
   hash?: string;
@@ -47,10 +47,11 @@ class TxHashInput extends React.Component<Props, State> {
 
     if (recentTxs && recentTxs.length) {
       selectOptions = recentTxs.map(tx => ({
-        label: `${moment(tx.time).format('lll')} - ${tx.from.substr(0, 8)} to ${tx.to.substr(
-          0,
-          8
-        )}`,
+        label: (
+          <span>
+            {moment(tx.time).format('lll')} - {tx.from.substr(0, 8)}... to {tx.to.substr(0, 8)}...
+          </span>
+        ),
         value: tx.hash
       }));
     }
@@ -94,8 +95,12 @@ class TxHashInput extends React.Component<Props, State> {
   };
 
   private handleSelectTx = (option: Option) => {
-    this.setState({ hash: option.value });
-    this.props.onSubmit(option.value);
+    if (option && option.value) {
+      this.setState({ hash: option.value });
+      this.props.onSubmit(option.value);
+    } else {
+      this.setState({ hash: '' });
+    }
   };
 
   private handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
