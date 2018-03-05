@@ -30,6 +30,8 @@ const Fade = ({ children, ...props }) => (
 );
 
 export default class Modal extends PureComponent<Props, {}> {
+  public modalBody: ModalBody;
+
   public componentDidMount() {
     this.toggleScroll();
   }
@@ -64,7 +66,7 @@ export default class Modal extends PureComponent<Props, {}> {
           <Fade>
             <div>
               <div className="Modal-overlay" onClick={handleClose} />
-              <ModalBody {...modalBodyProps} />
+              <ModalBody {...modalBodyProps} ref={div => (this.modalBody = div as ModalBody)} />
             </div>
           </Fade>
         )}

@@ -3,6 +3,7 @@ import closeIcon from 'assets/images/close.svg';
 
 export default class ModalBody extends React.Component<any, any> {
   private modal: HTMLElement;
+  private modalContent: HTMLElement;
   private focusedElementBeforeModal: HTMLElement;
   private focusableElementsString: string;
   private focusableElements: HTMLElement[];
@@ -32,6 +33,10 @@ export default class ModalBody extends React.Component<any, any> {
     document.removeEventListener('keydown', this.keyDownListener);
   }
 
+  public scrollContentToTop = () => {
+    this.modalContent.scrollTop = 0;
+  };
+
   public render() {
     const { title, children, modalStyle, hasButtons, handleClose } = this.props;
     return (
@@ -54,7 +59,7 @@ export default class ModalBody extends React.Component<any, any> {
           </div>
         )}
 
-        <div className="Modal-content">
+        <div className="Modal-content" ref={div => (this.modalContent = div as HTMLElement)}>
           {children}
           <div className="Modal-fade" />
         </div>

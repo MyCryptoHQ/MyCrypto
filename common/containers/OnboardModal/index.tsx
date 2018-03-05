@@ -175,7 +175,7 @@ class OnboardModal extends React.Component<Props, State> {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(prevSlideNum));
     this.props.decrementSlide();
     if (this.modal) {
-      this.modal.scrollContentToTop();
+      this.modal.modalBody.scrollContentToTop();
     }
   };
 
@@ -184,7 +184,7 @@ class OnboardModal extends React.Component<Props, State> {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(nextSlideNum));
     this.props.incrementSlide();
     if (this.modal) {
-      this.modal.scrollContentToTop();
+      this.modal.modalBody.scrollContentToTop();
     }
   };
 }
