@@ -48,7 +48,7 @@ export default class ModalBody extends React.Component<any, any> {
           <div className="Modal-header flex-wrapper">
             <h2 className="Modal-header-title">{title}</h2>
             <div className="flex-spacer" />
-            <button className="Modal-header-close" onClick={handleClose}>
+            <button className="Modal-header-close" aria-label="Close" onClick={handleClose}>
               <img className="Modal-header-close-icon" src={closeIcon} />
             </button>
           </div>
