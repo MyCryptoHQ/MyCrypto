@@ -111,7 +111,7 @@
     "react-test-renderer": "16.2.0",
     "redux-devtools-extension": "2.13.2",
     "redux-test-utils": "0.2.2",
-    "resolve-url-loader": "2.2.1",
+    "resolve-url-loader": "2.3.0",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.7",
     "style-loader": "0.20.2",
