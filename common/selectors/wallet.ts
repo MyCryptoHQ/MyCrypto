@@ -166,7 +166,7 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
   // Some wallets don't support some networks
   addReason(
     unSupportedWalletFormatsOnNetwork(state),
-    `${network.name} does not support this wallet`
+    `This wallet doesn’t support the ${network.name} network`
   );
 
   // Some wallets are unavailable offline

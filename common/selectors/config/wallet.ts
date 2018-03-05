@@ -15,17 +15,17 @@ type DPathFormat =
 
 export function getPaths(state: AppState, pathType: PathType): DPath[] {
   const paths = Object.values(getStaticNetworkConfigs(state))
-    .reduce(
-      (networkPaths: DPath[], { dPathFormats }) =>
-        dPathFormats ? [...networkPaths, dPathFormats[pathType]] : networkPaths,
-
-      []
-    )
+    .reduce((networkPaths: DPath[], { dPathFormats }): DPath[] => {
+      if (dPathFormats && dPathFormats[pathType]) {
+        return [...networkPaths, dPathFormats[pathType] as DPath];
+      }
+      return networkPaths;
+    }, [])
     .concat(EXTRA_PATHS);
   return sortedUniq(paths);
 }
 
-export function getSingleDPath(state: AppState, format: DPathFormat): DPath {
+export function getSingleDPath(state: AppState, format: DPathFormat): DPath | undefined {
   const network = getStaticNetworkConfig(state);
   if (!network) {
     throw Error('No static network config loaded');
