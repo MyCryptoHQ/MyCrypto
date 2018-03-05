@@ -16,7 +16,7 @@ import {
 } from 'actions/transaction';
 import { getNodeLib } from 'selectors/config';
 import { INode } from 'libs/nodes';
-import { ethtxToRecentTransaction } from 'utils/formatters';
+import { ethtxToRecentTransaction } from 'utils/transactions';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
 

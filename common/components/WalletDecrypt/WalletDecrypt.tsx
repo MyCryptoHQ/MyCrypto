@@ -17,7 +17,7 @@ import {
   resetWallet,
   TResetWallet
 } from 'actions/wallet';
-import { reset, TReset } from 'actions/transaction';
+import { reset, TReset, ResetAction } from 'actions/transaction';
 import translate from 'translations';
 import {
   KeystoreDecrypt,
@@ -55,6 +55,7 @@ interface OwnProps {
   hidden?: boolean;
   disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
+  resetIncludeExcludeProperties?: ResetAction['payload'];
 }
 
 interface DispatchProps {
@@ -348,7 +349,7 @@ export class WalletDecrypt extends Component<Props, State> {
 
         {this.props.showGenerateLink && (
           <div className="WalletDecrypt-wallets-generate">
-            Don’t have a wallet? <Link to="/generate">Click here to get one</Link>.
+            Don’t have an account yet? <Link to="/generate">Click here to get one</Link>.
           </div>
         )}
       </div>
@@ -430,7 +431,7 @@ export class WalletDecrypt extends Component<Props, State> {
     // the payload to contain the unlocked wallet info.
     const unlockValue = value && !isEmpty(value) ? value : payload;
     this.WALLETS[selectedWalletKey].unlock(unlockValue);
-    this.props.resetTransactionState();
+    this.props.resetTransactionState(this.props.resetIncludeExcludeProperties);
   };
 
   private isWalletDisabled = (walletKey: WalletName) => {

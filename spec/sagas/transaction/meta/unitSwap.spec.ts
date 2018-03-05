@@ -19,6 +19,7 @@ import { bufferToHex } from 'ethereumjs-util';
 import { rebaseUserInput, validateInput } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
+import { isNetworkUnit } from 'selectors/config';
 
 const itShouldBeDone = gen => {
   it('should be done', () => {
@@ -27,25 +28,41 @@ const itShouldBeDone = gen => {
 };
 
 describe('handleSetUnitMeta*', () => {
-  const expectedStart = (gen, previousUnit, currentUnit) => {
+  const expectedStart = (
+    gen,
+    previousUnit,
+    currentUnit,
+    prevUnitIsNetworkUnit,
+    currUnitIsNetworkUnit
+  ) => {
     it('should select getPreviousUnit', () => {
       expect(gen.next().value).toEqual(select(getPreviousUnit));
     });
 
+    it('should check if prevUnit is a network unit', () => {
+      expect(gen.next(previousUnit).value).toEqual(select(isNetworkUnit, previousUnit));
+    });
+
+    it('should check if currUnit is a network unit', () => {
+      expect(gen.next(prevUnitIsNetworkUnit).value).toEqual(select(isNetworkUnit, currentUnit));
+    });
+
     it('should select getDeciimalFromUnit with currentUnit', () => {
-      expect(gen.next(previousUnit).value).toEqual(select(getDecimalFromUnit, currentUnit));
+      expect(gen.next(currUnitIsNetworkUnit).value).toEqual(
+        select(getDecimalFromUnit, currentUnit)
+      );
     });
   };
 
   describe('etherToEther', () => {
-    const currentUnit = 'ether';
-    const previousUnit = 'ether';
+    const currentUnit = 'ETH';
+    const previousUnit = 'ETH';
     const action: any = {
       payload: currentUnit
     };
     const gen = handleSetUnitMeta(action);
 
-    expectedStart(gen, previousUnit, currentUnit);
+    expectedStart(gen, previousUnit, currentUnit, true, true);
 
     it('should return correctly', () => {
       expect(gen.next().value).toEqual(undefined);
@@ -56,7 +73,7 @@ describe('handleSetUnitMeta*', () => {
 
   describe('tokenToEther', () => {
     const previousUnit = 'token';
-    const currentUnit = 'ether';
+    const currentUnit = 'ETH';
     const action: any = {
       payload: currentUnit
     };
@@ -67,7 +84,7 @@ describe('handleSetUnitMeta*', () => {
     const value: any = 'value';
     const gen = handleSetUnitMeta(action);
 
-    expectedStart(gen, previousUnit, currentUnit);
+    expectedStart(gen, previousUnit, currentUnit, false, true);
 
     it('should select getTokenTo', () => {
       expect(gen.next(decimal).value).toEqual(select(getTokenTo));
@@ -146,7 +163,7 @@ describe('handleSetUnitMeta*', () => {
     };
 
     describe('etherToToken', () => {
-      const previousUnit = 'ether';
+      const previousUnit = 'ETH';
       const currentUnit = 'token';
       const action: any = {
         payload: currentUnit
@@ -164,7 +181,7 @@ describe('handleSetUnitMeta*', () => {
       const gens: any = {};
       gens.gen = cloneableGenerator(handleSetUnitMeta)(action);
 
-      expectedStart(gens.gen, previousUnit, currentUnit);
+      expectedStart(gens.gen, previousUnit, currentUnit, true, false);
 
       sharedLogicA(gens.gen, decimal, currentUnit);
 
@@ -211,7 +228,7 @@ describe('handleSetUnitMeta*', () => {
       const gens: any = {};
       gens.gen = cloneableGenerator(handleSetUnitMeta)(action);
 
-      expectedStart(gens.gen, previousUnit, currentUnit);
+      expectedStart(gens.gen, previousUnit, currentUnit, false, false);
 
       sharedLogicA(gens.gen, decimal, currentUnit);
 

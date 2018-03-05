@@ -1,11 +1,6 @@
 import BN from 'bn.js';
-import EthTx from 'ethereumjs-tx';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';
-import { SavedTransaction } from 'types/transactions';
-import { getTransactionFields } from 'libs/transaction';
-import { hexEncodeData } from 'libs/nodes/rpc/utils';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -78,13 +73,13 @@ export function formatNumber(num: string, digits?: number): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
+export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?
   // 21k is only the limit for ethereum though, so make sure they're
   // sending ether if we're going to fix it for them.
-  if (limitStr === '21001' && transactionUnit === 'ether') {
+  if (limitStr === '21001' && transactionUnit === 'ETH') {
     limitStr = '21000';
   }
 
@@ -123,17 +118,4 @@ export function ensV3Url(name: string) {
 
 export function hexToNumber(hex: string) {
   return new BN(stripHexPrefix(hex)).toNumber();
-}
-
-export function ethtxToRecentTransaction(tx: EthTx, hash: string): SavedTransaction {
-  const fields = getTransactionFields(tx);
-  const from = hexEncodeData(tx.getSenderAddress());
-  return {
-    hash,
-    to: toChecksumAddress(fields.to),
-    from: toChecksumAddress(from),
-    value: fields.value,
-    chainId: fields.chainId,
-    time: Date.now()
-  };
 }
