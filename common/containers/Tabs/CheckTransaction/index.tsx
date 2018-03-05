@@ -1,15 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import TabSection from 'containers/TabSection';
 import TxHashInput from './components/TxHashInput';
 import { TransactionStatus as TransactionStatusComponent } from 'components';
 import { NewTabLink } from 'components/ui';
 import { getNetworkConfig } from 'selectors/config';
+import { getParamFromURL } from 'utils/helpers';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import './index.scss';
 
-interface Props {
+interface StateProps {
   network: NetworkConfig;
 }
 
@@ -17,10 +19,19 @@ interface State {
   hash: string;
 }
 
+type Props = StateProps & RouteComponentProps<{}>;
+
 class CheckTransaction extends React.Component<Props, State> {
   public state: State = {
     hash: ''
   };
+
+  public componentDidMount() {
+    const hash = getParamFromURL(this.props.location.search, 'txHash');
+    if (hash) {
+      this.setState({ hash });
+    }
+  }
 
   public render() {
     const { network } = this.props;
@@ -43,7 +54,7 @@ class CheckTransaction extends React.Component<Props, State> {
                 </React.Fragment>
               )}
             </p>
-            <TxHashInput onSubmit={this.handleHashSubmit} />
+            <TxHashInput hash={hash} onSubmit={this.handleHashSubmit} />
           </section>
 
           {hash && (
@@ -64,6 +75,6 @@ class CheckTransaction extends React.Component<Props, State> {
   };
 }
 
-export default connect((state: AppState) => ({
+export default connect((state: AppState): StateProps => ({
   network: getNetworkConfig(state)
 }))(CheckTransaction);
