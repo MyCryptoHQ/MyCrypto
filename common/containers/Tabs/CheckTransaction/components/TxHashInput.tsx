@@ -47,11 +47,13 @@ class TxHashInput extends React.Component<Props, State> {
 
     if (recentTxs && recentTxs.length) {
       selectOptions = recentTxs.map(tx => ({
-        label: (
-          <span>
-            {moment(tx.time).format('lll')} - {tx.from.substr(0, 8)}... to {tx.to.substr(0, 8)}...
-          </span>
-        ),
+        label: `
+          ${moment(tx.time).format('lll')}
+          -
+          ${tx.from.substr(0, 8)}...
+          to
+          ${tx.to.substr(0, 8)}...
+        `,
         value: tx.hash
       }));
     }
@@ -65,6 +67,7 @@ class TxHashInput extends React.Component<Props, State> {
               onChange={this.handleSelectTx}
               options={selectOptions}
               placeholder="Select a recent transaction..."
+              searchable={false}
             />
             <em className="TxHashInput-recent-separator">or</em>
           </div>
