@@ -60,6 +60,9 @@
     border-bottom-right-radius: 2px;
     border-color: inherit;
   }
+  &-menu {
+    max-height: 8.625rem;
+  }
   &.invalid.has-blurred {
     border-color: $brand-danger;
     box-shadow: inset 0px 0px 0px 1px $brand-danger;
