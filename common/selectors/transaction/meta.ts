@@ -22,7 +22,9 @@ const getFrom = (state: AppState) => {
       if (from) {
         return toChecksumAddress(from.toString('hex'));
       }
-    } catch {}
+    } catch (e) {
+      console.warn(e);
+    }
   }
   return getMetaState(state).from;
 };
