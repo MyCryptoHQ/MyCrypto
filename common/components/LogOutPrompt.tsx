@@ -62,7 +62,7 @@ class LogOutPromptClass extends React.Component<Props, State> {
   };
 
   private onConfirm = () => {
-    const { nextLocation } = this.state;
+    const { nextLocation: next } = this.state;
     this.props.resetWallet();
     this.setState(
       {
@@ -70,8 +70,8 @@ class LogOutPromptClass extends React.Component<Props, State> {
         nextLocation: null
       },
       () => {
-        if (nextLocation) {
-          this.props.history.push(nextLocation.pathname);
+        if (next) {
+          this.props.history.push(`${next.pathname}${next.search}${next.hash}`);
         }
       }
     );
