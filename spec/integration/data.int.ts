@@ -1,5 +1,5 @@
 import { RPCNode } from '../../common/libs/nodes';
-import { Validator } from 'jsonschema';
+import { Validator, ValidatorResult } from 'jsonschema';
 import { schema } from '../../common/libs/validators';
 import 'url-search-params-polyfill';
 import EtherscanNode from 'libs/nodes/etherscan';
@@ -25,6 +25,10 @@ const validRequests = {
   }
 };
 
+interface RPCTestList {
+  [key: string]: ((n: RPCNode) => Promise<ValidatorResult>);
+}
+
 const testGetBalance = (n: RPCNode) => {
   return n.client
     .call(n.requests.getBalance(validRequests.address))
@@ -44,7 +48,7 @@ const testGetTokenBalance = (n: RPCNode) => {
     .then(data => v.validate(data, schema.RpcNode));
 };
 
-const RPCTests = {
+const RPCTests: RPCTestList = {
   getBalance: testGetBalance,
   estimateGas: testEstimateGas,
   getTokenBalance: testGetTokenBalance

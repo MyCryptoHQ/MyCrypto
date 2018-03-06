@@ -3,9 +3,9 @@ declare module 'hdkey' {
     privateKey: Buffer;
     publicKey: Buffer;
     chainCode: Buffer | string;
-    fromMasterSeed(seedBuffer: Buffer, versions?: any[]): HDKey;
-    fromExtendedKey(base58key: any, versions?: any[]): HDKey;
-    fromJSON(obj: any): HDKey;
+    static fromMasterSeed(seedBuffer: Buffer, versions?: any[]): HDKey;
+    static fromExtendedKey(base58key: any, versions?: any[]): HDKey;
+    static fromJSON(obj: any): HDKey;
     derive(path: string): HDKey;
   }
 }
