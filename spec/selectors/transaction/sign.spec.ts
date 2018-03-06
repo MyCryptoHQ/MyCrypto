@@ -15,7 +15,7 @@ describe('sign tests', () => {
     local: {
       signedTransaction: {
         type: 'Buffer',
-        data: [4, 5, 6, 7]
+        data: new Buffer([4, 5, 6, 7])
       }
     },
     web3: {
@@ -42,6 +42,9 @@ describe('sign tests', () => {
   });
 
   it('should get the serialized transaction state', () => {
-    expect(getSerializedTransaction(state)).toEqual({ data: [4, 5, 6, 7], type: 'Buffer' });
+    expect(getSerializedTransaction(state)).toEqual({
+      data: new Buffer([4, 5, 6, 7]),
+      type: 'Buffer'
+    });
   });
 });

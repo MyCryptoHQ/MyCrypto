@@ -19,7 +19,7 @@ describe('fields selector', () => {
       raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
       value: {
         type: 'Buffer',
-        data: [0, 1, 2, 3]
+        data: new Buffer([0, 1, 2, 3])
       }
     },
     data: {
@@ -32,7 +32,7 @@ describe('fields selector', () => {
     },
     value: {
       raw: '0.01',
-      value: '2386f26fc10000'
+      value: Wei('0.01')
     },
     gasLimit: {
       raw: '21000',

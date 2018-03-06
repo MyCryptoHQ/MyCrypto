@@ -1,3 +1,4 @@
+import { Wei } from 'libs/units';
 import {
   getCurrentValue,
   getCurrentTo,
@@ -19,16 +20,16 @@ describe('current selector', () => {
         raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
         value: {
           type: 'Buffer',
-          data: [0, 1, 2, 3]
+          data: new Buffer([0, 1, 2, 3])
         }
       },
       gasLimit: {
         raw: '21000',
-        value: '5208'
+        value: Wei('5208')
       },
       gasPrice: {
         raw: '4',
-        value: 'ee6b2800'
+        value: Wei('4')
       }
     },
     meta: {

@@ -23,7 +23,7 @@ describe('helpers selector', () => {
         raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
         value: {
           type: 'Buffer',
-          data: [0, 1, 2, 3]
+          data: new Buffer([0, 1, 2, 3])
         }
       },
       data: {
@@ -36,7 +36,7 @@ describe('helpers selector', () => {
       },
       value: {
         raw: '0.01',
-        value: '2386f26fc10000'
+        value: Wei('0.01')
       },
       gasLimit: {
         raw: '21000',
@@ -61,8 +61,8 @@ describe('helpers selector', () => {
       gasLimit: Wei('21000'),
       gasPrice: Wei('15'),
       nonce: '0',
-      to: { data: [0, 1, 2, 3], type: 'Buffer' },
-      value: '2386f26fc10000'
+      to: { data: new Buffer([0, 1, 2, 3]), type: 'Buffer' },
+      value: Wei('0.01')
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);
   });
