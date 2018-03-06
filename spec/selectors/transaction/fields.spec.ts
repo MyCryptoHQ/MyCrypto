@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import { Wei } from 'libs/units';
 import {
   getData,
@@ -28,7 +29,7 @@ describe('fields selector', () => {
     },
     nonce: {
       raw: '0',
-      value: Wei('0')
+      value: new BN('0')
     },
     value: {
       raw: '0.01',
@@ -82,7 +83,7 @@ describe('fields selector', () => {
 
   it('should check when gas cost is invalid', () => {
     state.wallet.balance = {
-      wei: '0',
+      wei: Wei('0'),
       isPending: false
     };
     expect(getValidGasCost(state)).toEqual(false);

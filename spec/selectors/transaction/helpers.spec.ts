@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import { Wei } from 'libs/units';
 import { reduceToValues, isFullTx } from 'selectors/transaction/helpers';
 import {
@@ -32,7 +33,7 @@ describe('helpers selector', () => {
       },
       nonce: {
         raw: '0',
-        value: '0'
+        value: new BN('0')
       },
       value: {
         raw: '0.01',
@@ -60,7 +61,7 @@ describe('helpers selector', () => {
       data: null,
       gasLimit: Wei('21000'),
       gasPrice: Wei('15'),
-      nonce: '0',
+      nonce: new BN('0'),
       to: { data: new Buffer([0, 1, 2, 3]), type: 'Buffer' },
       value: Wei('0.01')
     };
