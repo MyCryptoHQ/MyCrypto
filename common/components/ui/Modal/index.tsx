@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import './index.scss';
 import ModalBody from './ModalBody';
+import './index.scss';
 
 export interface IButton {
   text: string | React.ReactElement<string>;
@@ -32,16 +32,10 @@ const Fade = ({ children, ...props }) => (
 export default class Modal extends PureComponent<Props, {}> {
   public modalBody: ModalBody;
 
-  public componentDidMount() {
-    this.toggleScroll();
-  }
-
-  public componentDidUpdate() {
-    this.toggleScroll();
-  }
-
-  public toggleScroll() {
-    document.body.classList.toggle('no-scroll', !!this.props.isOpen);
+  public componentDidUpdate(prevProps) {
+    if (prevProps.isOpen !== this.props.isOpen) {
+      document.body.classList.toggle('no-scroll', !!this.props.isOpen);
+    }
   }
 
   public componentWillUnmount() {

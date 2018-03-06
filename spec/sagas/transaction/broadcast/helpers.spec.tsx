@@ -128,7 +128,7 @@ describe('broadcastTransactionWrapper*', () => {
         showNotification(
           'success',
           <TransactionSucceeded txHash={broadcastedHash} blockExplorer={network.blockExplorer} />,
-          0
+          Infinity
         )
       )
     );
