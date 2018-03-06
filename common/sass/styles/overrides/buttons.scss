@@ -100,24 +100,6 @@
 }
 
 // Contextual color overrides (?)
-.alert .btn-info {
-  background-color: white;
-  text-decoration: none;
-  color: $brand-info;
-  &:hover,
-  &:focus,
-  &.focus {
-    text-decoration: none;
-    opacity: 1;
-  }
-  &.disabled {
-    background-color: white;
-    text-decoration: none;
-    color: $brand-info;
-    opacity: 0.6;
-  }
-}
-
 .btn-group .btn-default {
   border-bottom-width: 1px;
   border-color: transparent;
