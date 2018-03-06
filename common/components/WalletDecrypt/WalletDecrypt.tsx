@@ -50,6 +50,7 @@ import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
+import { Route } from 'react-router';
 
 interface OwnProps {
   hidden?: boolean;
@@ -92,6 +93,7 @@ interface BaseWalletInfo {
   helpLink: string;
   isReadOnly?: boolean;
   attemptUnlock?: boolean;
+  redirect?: string;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -202,7 +204,8 @@ export class WalletDecrypt extends Component<Props, State> {
       initialParams: {},
       unlock: this.props.setWallet,
       helpLink: '',
-      isReadOnly: true
+      isReadOnly: true,
+      redirect: '/account/info'
     }
   };
 
@@ -259,21 +262,30 @@ export class WalletDecrypt extends Component<Props, State> {
           {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
         </h2>
         <section className="WalletDecrypt-decrypt-form">
-          <selectedWallet.component
-            value={this.state.value}
-            onChange={this.onChange}
-            onUnlock={this.onUnlock}
-            showNotification={this.props.showNotification}
-            isWalletPending={
-              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                ? this.props.isWalletPending
-                : undefined
-            }
-            isPasswordPending={
-              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                ? this.props.isPasswordPending
-                : undefined
-            }
+          <Route
+            render={routerProps => (
+              <selectedWallet.component
+                value={this.state.value}
+                onChange={this.onChange}
+                onUnlock={value => {
+                  if (selectedWallet.redirect) {
+                    routerProps.history.push(selectedWallet.redirect);
+                  }
+                  this.onUnlock(value);
+                }}
+                showNotification={this.props.showNotification}
+                isWalletPending={
+                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                    ? this.props.isWalletPending
+                    : undefined
+                }
+                isPasswordPending={
+                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                    ? this.props.isPasswordPending
+                    : undefined
+                }
+              />
+            )}
           />
         </section>
       </div>
