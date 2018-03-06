@@ -14,7 +14,7 @@ interface Props {
 export class Notifications extends React.Component<Props, {}> {
   public render() {
     return (
-      <TransitionGroup className="Notifications">
+      <TransitionGroup className="Notifications" aria-live="polite">
         {this.props.notifications.map(n => {
           return (
             <CSSTransition classNames="NotificationAnimation" timeout={500} key={n.id}>
