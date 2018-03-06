@@ -28,7 +28,7 @@ describe('fields selector', () => {
     },
     nonce: {
       raw: '0',
-      value: '0'
+      value: Wei('0')
     },
     value: {
       raw: '0.01',
