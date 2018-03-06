@@ -32,16 +32,16 @@ describe('fields selector', () => {
       value: new BN('0')
     },
     value: {
-      raw: '0.01',
-      value: Wei('0.01')
+      raw: '1000000000',
+      value: Wei('1000000000')
     },
     gasLimit: {
       raw: '21000',
       value: Wei('21000')
     },
     gasPrice: {
-      raw: '15',
-      value: Wei('15')
+      raw: '1500',
+      value: Wei('1500')
     }
   };
 

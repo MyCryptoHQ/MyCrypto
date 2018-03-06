@@ -25,11 +25,11 @@ describe('current selector', () => {
       },
       gasLimit: {
         raw: '21000',
-        value: Wei('5208')
+        value: Wei('21000')
       },
       gasPrice: {
-        raw: '4',
-        value: Wei('4')
+        raw: '1500',
+        value: Wei('1500')
       }
     },
     meta: {

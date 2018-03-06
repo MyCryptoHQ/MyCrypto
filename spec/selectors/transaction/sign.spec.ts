@@ -13,10 +13,7 @@ describe('sign tests', () => {
     indexingHash: 'testIndexingHash',
     pending: false,
     local: {
-      signedTransaction: {
-        type: 'Buffer',
-        data: new Buffer([4, 5, 6, 7])
-      }
+      signedTransaction: new Buffer([4, 5, 6, 7])
     },
     web3: {
       transaction: null
@@ -42,9 +39,6 @@ describe('sign tests', () => {
   });
 
   it('should get the serialized transaction state', () => {
-    expect(getSerializedTransaction(state)).toEqual({
-      data: new Buffer([4, 5, 6, 7]),
-      type: 'Buffer'
-    });
+    expect(getSerializedTransaction(state)).toEqual(new Buffer([4, 5, 6, 7]));
   });
 });
