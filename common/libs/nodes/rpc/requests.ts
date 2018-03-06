@@ -13,13 +13,12 @@ import {
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
 import { Token } from 'types/network';
+import { IHexStrTransaction } from 'libs/transaction';
 
 export default class RPCRequests {
   public getNetVersion() {
     return { method: 'net_version' };
   }
-
-  /* TODO: Fix `| any` on all of these */
 
   public sendRawTx(signedTx: string): SendRawTxRequest | any {
     return {
@@ -28,7 +27,7 @@ export default class RPCRequests {
     };
   }
 
-  public estimateGas(transaction): EstimateGasRequest | any {
+  public estimateGas(transaction: Partial<IHexStrTransaction>): EstimateGasRequest | any {
     return {
       method: 'eth_estimateGas',
       params: [transaction]
