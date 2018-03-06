@@ -1,4 +1,5 @@
 declare module 'ledgerco' {
+  // TODO: fill the library typings out
   export const comm_u2f: any;
   export class eth {
     constructor(transport: any);
@@ -34,5 +35,11 @@ declare module 'ledgerco' {
       s: string;
       r: string;
     }>;
+
+    signPersonalMessage_async(
+      path: string,
+      messageHex: string,
+      cb: (signed: any, error: any) => any
+    ): void;
   }
 }

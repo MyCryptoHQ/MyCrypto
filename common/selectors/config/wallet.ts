@@ -75,7 +75,7 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
 }
 
 export function unSupportedWalletFormatsOnNetwork(state: AppState): WalletName[] {
-  const supportedFormats = walletNames.filter(walletName =>
+  const supportedFormats = walletNames.filter((walletName: WalletName) =>
     isWalletFormatSupportedOnNetwork(state, walletName)
   );
   return difference(walletNames, supportedFormats);

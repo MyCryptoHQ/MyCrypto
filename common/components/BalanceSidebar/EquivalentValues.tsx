@@ -8,7 +8,6 @@ import { chain, flatMap } from 'lodash';
 import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
 import { Balance } from 'libs/wallet';
 import './EquivalentValues.scss';
-import { Wei } from 'libs/units';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { connect } from 'react-redux';

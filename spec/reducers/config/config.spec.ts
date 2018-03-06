@@ -299,7 +299,7 @@ describe('unsetWeb3Node*', () => {
 });
 
 describe('unsetWeb3NodeOnWalletEvent*', () => {
-  const fakeAction = {};
+  const fakeAction: any = {};
   const mockNodeId = 'web3';
   const alternativeNodeId = 'eth_mycrypto';
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
@@ -321,7 +321,7 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
   });
 
   it('should return early if node type is not web3', () => {
-    const gen1 = unsetWeb3NodeOnWalletEvent({ payload: false });
+    const gen1 = unsetWeb3NodeOnWalletEvent({ payload: false } as any);
     gen1.next(); //getNode
     gen1.next('notWeb3'); //getNodeConfig
     expect(gen1.next().done).toEqual(true);
@@ -331,7 +331,7 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
     const mockAddress = '0x0';
     const mockNetwork = 'ETH';
     const mockWeb3Wallet = new Web3Wallet(mockAddress, mockNetwork);
-    const gen2 = unsetWeb3NodeOnWalletEvent({ payload: mockWeb3Wallet });
+    const gen2 = unsetWeb3NodeOnWalletEvent({ payload: mockWeb3Wallet } as any);
     gen2.next(); //getNode
     gen2.next('web3'); //getNodeConfig
     expect(gen2.next().done).toEqual(true);

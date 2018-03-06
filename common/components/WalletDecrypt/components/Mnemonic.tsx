@@ -59,7 +59,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               isValid={isValidMnemonic}
               isTextareaWhenVisible={true}
               onChange={this.onMnemonicChange}
-              onEnter={isValidMnemonic && this.onDWModalOpen}
+              onEnter={isValidMnemonic ? this.onDWModalOpen : undefined}
             />
           </div>
           <div className="form-group">

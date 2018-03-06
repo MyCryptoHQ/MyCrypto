@@ -64,8 +64,8 @@ export default class DropdownComponent<T> extends PureComponent<Props<T>, State>
       overflowY: 'auto'
     };
     const searchRegex = new RegExp(search, 'gi');
-    const onSearchChange = e => {
-      this.setState({ search: e.target.value });
+    const onSearchChange = (e: React.FormEvent<HTMLInputElement>) => {
+      this.setState({ search: e.currentTarget.value });
     };
 
     return (

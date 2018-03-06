@@ -6,6 +6,7 @@ import { changeNodeForce, TypeKeys, web3SetNode } from 'actions/config';
 import { getNodeId, getStaticAltNodeIdToWeb3, getNetworkNameByChainId } from 'selectors/config';
 import { setupWeb3Node, Web3Service } from 'libs/nodes/web3';
 import { Web3NodeConfig } from 'types/node';
+import { ResetWalletAction, SetWalletAction } from 'actions/wallet';
 
 export function* initWeb3Node(): SagaIterator {
   const { networkId, lib } = yield call(setupWeb3Node);
@@ -24,8 +25,13 @@ export function* initWeb3Node(): SagaIterator {
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
-export function* unsetWeb3NodeOnWalletEvent(action): SagaIterator {
+export function* unsetWeb3NodeOnWalletEvent(
+  action: ResetWalletAction | SetWalletAction
+): SagaIterator {
   const node = yield select(getNodeId);
+  if (action.type === WalletTypeKeys.WALLET_RESET) {
+    return;
+  }
   const newWallet = action.payload;
   const isWeb3Wallet = newWallet instanceof Web3Wallet;
 

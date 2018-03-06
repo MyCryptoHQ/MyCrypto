@@ -30,7 +30,7 @@ interface PropTypes {
   activeBorderStyle?: string;
 }
 declare module 'react-stepper-horizontal' {
-  import React from 'React';
+  import React from 'react';
   class Stepper extends React.Component<PropTypes> {
     constructor();
   }
