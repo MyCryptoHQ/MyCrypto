@@ -86,24 +86,47 @@ export class WalletButton extends React.PureComponent<Props> {
       >
         <div className="WalletButton-inner">
           <div className="WalletButton-title">
-            {icon && <img className="WalletButton-title-icon" src={icon} alt={name + ' Logo'} />}
+            {icon && <img className="WalletButton-title-icon" src={icon} alt="Logo" />}
             <span>{name}</span>
           </div>
 
-          {description && <div className="WalletButton-description">{description}</div>}
-          {example && <div className="WalletButton-example">{example}</div>}
+          {description && (
+            <div
+              className="WalletButton-description"
+              aria-label="description"
+              aria-hidden={!isSecure}
+            >
+              {description}
+            </div>
+          )}
+          {example && (
+            <div
+              className="WalletButton-example"
+              aria-label="example"
+              aria-hidden={!isSecure ? true : false}
+            >
+              {example}
+            </div>
+          )}
 
           <div className="WalletButton-icons">
             {icons.map(i => (
               <span className="WalletButton-icons-icon" key={i.icon} onClick={this.stopPropogation}>
                 {i.href ? (
-                  <NewTabLink href={i.href} onClick={this.stopPropogation}>
+                  <NewTabLink href={i.href} onClick={this.stopPropogation} aria-label="More Info">
                     <i className={`fa fa-${i.icon}`} />
                   </NewTabLink>
                 ) : (
-                  <i className={`fa fa-${i.icon}`} />
+                  <i
+                    className={`fa fa-${i.icon}`}
+                    aria-label={isSecure ? 'Secure wallet type' : 'Insecure wallet type'}
+                  />
                 )}
-                {!isDisabled && <Tooltip size="sm">{i.tooltip}</Tooltip>}
+                {!isDisabled && (
+                  <Tooltip size="sm" aria-hidden={isDisabled}>
+                    {i.tooltip}
+                  </Tooltip>
+                )}
               </span>
             ))}
           </div>
