@@ -50,12 +50,15 @@ import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
+import { withRouter } from 'react-router';
+import { History } from 'history';
 
 interface OwnProps {
   hidden?: boolean;
   disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
   resetIncludeExcludeProperties?: ResetAction['payload'];
+  history: History;
 }
 
 interface DispatchProps {
@@ -92,6 +95,7 @@ interface BaseWalletInfo {
   helpLink: string;
   isReadOnly?: boolean;
   attemptUnlock?: boolean;
+  redirect?: string;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -202,7 +206,8 @@ export class WalletDecrypt extends Component<Props, State> {
       initialParams: {},
       unlock: this.props.setWallet,
       helpLink: '',
-      isReadOnly: true
+      isReadOnly: true,
+      redirect: '/account/info'
     }
   };
 
@@ -262,7 +267,12 @@ export class WalletDecrypt extends Component<Props, State> {
           <selectedWallet.component
             value={this.state.value}
             onChange={this.onChange}
-            onUnlock={this.onUnlock}
+            onUnlock={value => {
+              if (selectedWallet.redirect) {
+                this.props.history.push(selectedWallet.redirect);
+              }
+              this.onUnlock(value);
+            }}
             showNotification={this.props.showNotification}
             isWalletPending={
               this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
@@ -460,7 +470,7 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   };
 }
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, {
+export default withRouter(connect<StateProps, DispatchProps>(mapStateToProps, {
   unlockKeystore,
   unlockMnemonic,
   unlockPrivateKey,
@@ -469,4 +479,4 @@ export default connect<StateProps, DispatchProps>(mapStateToProps, {
   resetWallet,
   resetTransactionState: reset,
   showNotification
-})(WalletDecrypt);
+})(WalletDecrypt) as React.ComponentClass<any>);
