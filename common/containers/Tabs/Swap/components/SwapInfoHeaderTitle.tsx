@@ -1,7 +1,7 @@
 import { RestartSwapAction } from 'actions/swap';
 import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
-import { bityReferralURL } from 'config';
+import { shapeshiftReferralURL } from 'config';
 import React, { PureComponent } from 'react';
 import translate from 'translations';
 import './SwapInfoHeader.scss';
@@ -29,7 +29,7 @@ export default class SwapInfoHeaderTitle extends PureComponent<SwapInfoHeaderTit
         <div className="col-xs-3">
           <a
             className="SwapInfo-top-logo"
-            href={bityReferralURL}
+            href={shapeshiftReferralURL}
             target="_blank"
             rel="noopener noreferrer"
           >
