@@ -11,8 +11,8 @@ export const HardwareWallets: React.SFC = () => (
         <h6>Learn more about protecting your funds.</h6>
       </div>
       <div className="Promos-promo-images">
-        <img src={ledgerLogo} />
-        <img src={trezorLogo} />
+        <img src={ledgerLogo} alt="Ledger Logo" />
+        <img src={trezorLogo} alt="Trezor Logo" />
       </div>
     </div>
   </HelpLink>

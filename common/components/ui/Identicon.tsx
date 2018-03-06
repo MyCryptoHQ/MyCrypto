@@ -24,6 +24,7 @@ export default function Identicon(props: Props) {
         <React.Fragment>
           <img
             src={identiconDataUrl}
+            alt="Unique Address Image"
             style={{
               height: '100%',
               width: '100%',

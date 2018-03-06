@@ -86,7 +86,7 @@ export class WalletButton extends React.PureComponent<Props> {
       >
         <div className="WalletButton-inner">
           <div className="WalletButton-title">
-            {icon && <img className="WalletButton-title-icon" src={icon} />}
+            {icon && <img className="WalletButton-title-icon" src={icon} alt={name + ' Logo'} />}
             <span>{name}</span>
           </div>
 

@@ -92,6 +92,7 @@ export default class ColorDropdown<T> extends PureComponent<Props<T>, {}> {
                       className="ColorDropdown-item-remove"
                       onClick={this.onRemove.bind(null, option.onRemove)}
                       src={removeIcon}
+                      alt="remove"
                     />
                   )}
                 </a>

@@ -9,7 +9,7 @@ const ShapeshiftBanner: React.SFC<{}> = () => (
         <b className="ShapeshiftBanner-banner-new">New Feature:</b>
         Exchange coins & tokens with
       </p>
-      <img src={shapeshiftSvg} />
+      <img src={shapeshiftSvg} alt="Shapeshift Logo" />
     </div>
   </div>
 );

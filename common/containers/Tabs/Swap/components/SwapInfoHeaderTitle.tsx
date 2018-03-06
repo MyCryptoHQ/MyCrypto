@@ -33,7 +33,7 @@ export default class SwapInfoHeaderTitle extends PureComponent<SwapInfoHeaderTit
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img className="SwapInfo-top-logo-img" src={logoToRender} />
+            <img className="SwapInfo-top-logo-img" src={logoToRender} alt="Shapeshift Logo" />
           </a>
         </div>
       </section>
