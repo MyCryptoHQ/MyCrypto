@@ -1,4 +1,4 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
 
 .AddCustom {
   &-field {
@@ -11,23 +11,20 @@
 
   &-buttons {
     padding-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 
     &-help {
+      text-align: center;
       display: block;
       font-size: 13px;
       margin-bottom: 10px;
     }
 
     &-btn {
-      margin-right: 10px;
-
-      &.btn-primary {
-        width: 120px;
-      }
-
-      &.btn-default {
-        width: 110px;
-      }
+      padding: 0.5rem 1.5rem;
+      margin: 0.25rem 0.5rem;
     }
   }
 }
