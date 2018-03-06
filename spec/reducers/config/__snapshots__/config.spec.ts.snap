@@ -14,7 +14,7 @@ Object {
             "call": [Function],
             "createHeaders": [Function],
             "decorateRequest": [Function],
-            "endpoint": "https://node.expanse.tech/",
+            "endpoint": "https://node.ethereumsocial.kr",
             "headers": Object {},
           },
           "requests": RPCRequests {},
