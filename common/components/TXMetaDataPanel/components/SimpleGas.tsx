@@ -40,14 +40,22 @@ interface ActionProps {
 
 type Props = OwnProps & StateProps & ActionProps;
 
+interface State {
+  hasSetRecommendedGasPrice: boolean;
+}
+
 class SimpleGas extends React.Component<Props> {
+  public state: State = {
+    hasSetRecommendedGasPrice: false
+  };
+
   public componentDidMount() {
-    this.fixGasPrice();
     this.props.fetchGasEstimates();
   }
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (!this.props.gasEstimates && nextProps.gasEstimates) {
+    if (!this.state.hasSetRecommendedGasPrice && nextProps.gasEstimates) {
+      this.setState({ hasSetRecommendedGasPrice: true });
       this.props.setGasPrice(nextProps.gasEstimates.fast.toString());
     }
   }
@@ -120,21 +128,6 @@ class SimpleGas extends React.Component<Props> {
   private handleSlider = (gasGwei: number) => {
     this.props.inputGasPrice(gasGwei.toString());
   };
-
-  private fixGasPrice() {
-    const { gasPrice, gasEstimates } = this.props;
-    if (!gasEstimates) {
-      return;
-    }
-
-    // If the gas price is above or below our minimum, bring it in line
-    const gasPriceGwei = this.getGasPriceGwei(gasPrice.value);
-    if (gasPriceGwei < gasEstimates.safeLow) {
-      this.props.setGasPrice(gasEstimates.safeLow.toString());
-    } else if (gasPriceGwei > gasEstimates.fastest) {
-      this.props.setGasPrice(gasEstimates.fastest.toString());
-    }
-  }
 
   private getGasPriceGwei(gasPriceValue: Wei) {
     return parseFloat(fromWei(gasPriceValue, 'gwei'));
