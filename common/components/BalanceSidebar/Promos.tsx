@@ -42,8 +42,12 @@ class PromosClass extends React.PureComponent<StateProps, State> {
   public getPromo() {
     const { activePromo } = this.state;
     const { wallet } = this.props;
-    if (activePromo === 1 && wallet) {
-      return <Coinbase address={wallet.getAddressString()} />;
+    if (activePromo === 1) {
+      if (wallet) {
+        return <Coinbase address={wallet.getAddressString()} />;
+      } else {
+        return <Shapeshift />;
+      }
     } else {
       return promos[activePromo];
     }
