@@ -93,7 +93,7 @@ class RecentTransactions extends React.Component<Props> {
           </div>
         )}
         <p className="RecentTxs-help">
-          Only recent transactions sent from this wallet via MyCrypto on the {network.name} network
+          Only recent transactions sent from this address via MyCrypto on the {network.name} network
           are listed here. If you don't see your transaction, you can view all of them on {explorer}.
         </p>
       </React.Fragment>
