@@ -1,9 +1,8 @@
 import React from 'react';
-import classnames from 'classnames';
 import { HELP_ARTICLE } from 'config';
 import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
 import translate from 'translations';
-import { HelpLink } from 'components/ui';
+import { HelpLink, Input } from 'components/ui';
 import './AddCustomTokenForm.scss';
 import { Token } from 'types/network';
 
@@ -42,7 +41,6 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
 
   public render() {
     const { address, symbol, decimal } = this.state;
-    const inputClasses = 'AddCustom-field-input form-control input-sm';
     const errors = this.getErrors();
 
     const fields = [
@@ -69,11 +67,10 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
           return (
             <label className="AddCustom-field form-group" key={field.name}>
               <span className="AddCustom-field-label">{field.label}</span>
-              <input
-                className={classnames(
-                  inputClasses,
-                  errors[field.name] ? 'is-invalid' : field.value ? 'is-valid' : ''
-                )}
+              <Input
+                className={`${
+                  errors[field.name] ? 'invalid' : field.value ? 'valid' : ''
+                } AddCustom-field-input input-sm`}
                 type="text"
                 name={field.name}
                 value={field.value}

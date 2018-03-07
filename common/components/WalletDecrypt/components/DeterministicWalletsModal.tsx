@@ -13,7 +13,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
-import { UnitDisplay } from 'components/ui';
+import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 import { StaticNetworkConfig } from 'types/network';
 import Select from 'react-select';
@@ -97,7 +97,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
       walletType
     } = this.props;
     const { selectedAddress, customPath, page } = this.state;
-    const validPathClass = isValidPath(customPath) ? 'is-valid' : 'is-invalid';
 
     const buttons: IButton[] = [
       {
@@ -137,8 +136,8 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             />
             {/* TODO/Hack - Custom Paths are temporarily disabled. `false` is used for smallest diff */}
             {false && (
-              <input
-                className={`form-control ${validPathClass}`}
+              <Input
+                className={isValidPath(customPath) ? '' : 'invalid'}
                 value={customPath}
                 placeholder="m/44'/60'/0'/0"
                 onChange={this.handleChangeCustomPath}

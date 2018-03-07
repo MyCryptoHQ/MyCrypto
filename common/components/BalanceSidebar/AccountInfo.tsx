@@ -1,15 +1,16 @@
-import { Identicon, UnitDisplay } from 'components/ui';
-import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
+import { connect } from 'react-redux';
+import { toChecksumAddress } from 'ethereumjs-util';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
+import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import translate from 'translations';
-import './AccountInfo.scss';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
-import { connect } from 'react-redux';
 import { NetworkConfig } from 'types/network';
 import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import './AccountInfo.scss';
 
 interface OwnProps {
   wallet: IWallet;
@@ -103,11 +104,13 @@ class AccountInfo extends React.Component<Props, State> {
             <Identicon address={address} size="100%" />
           </div>
           <div className="AccountInfo-address-wrapper">
-            <div className="AccountInfo-address-addr">{address}</div>
-            <CopyToClipboard onCopy={this.onCopy} text={address}>
+            <div className="AccountInfo-address-addr">
+              <Address address={address} />
+            </div>
+            <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>
               <div
-                className={`AccountInfo-copy-icon${this.state.copied ? '-copied' : ''}`}
-                title="Copy To Clipboard"
+                className={`AccountInfo-copy ${this.state.copied ? 'is-copied' : ''}`}
+                title="Copy To clipboard"
               >
                 <i className="fa fa-copy" />
                 <span>{this.state.copied ? 'copied!' : 'copy address'}</span>
@@ -183,24 +186,16 @@ class AccountInfo extends React.Component<Props, State> {
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={blockExplorer.addressUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={blockExplorer.addressUrl(address)}>
                     {`${network.name} (${blockExplorer.origin})`}
-                  </a>
+                  </NewTabLink>
                 </li>
               )}
               {!!tokenExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={tokenExplorer.address(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={tokenExplorer.address(address)}>
                     {`Tokens (${tokenExplorer.name})`}
-                  </a>
+                  </NewTabLink>
                 </li>
               )}
             </ul>

@@ -7,6 +7,9 @@ import { SignAction } from './sign';
 import { SwapAction } from './swap';
 import { CurrentAction } from './current';
 import { SendEverythingAction } from './sendEverything';
+import { State as FieldState } from 'reducers/transaction/fields';
+import { State as MetaState } from 'reducers/transaction/meta';
+import { State as SignState } from 'reducers/transaction/sign';
 
 export * from './broadcast';
 export * from './fields';
@@ -19,6 +22,18 @@ export * from './sendEverything';
 
 export interface ResetAction {
   type: TypeKeys.RESET;
+  payload: {
+    include: {
+      fields?: (keyof FieldState)[];
+      meta?: (keyof MetaState)[];
+      sign?: (keyof SignState)[];
+    };
+    exclude: {
+      fields?: (keyof FieldState)[];
+      meta?: (keyof MetaState)[];
+      sign?: (keyof SignState)[];
+    };
+  };
 }
 
 export type TransactionAction =

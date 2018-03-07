@@ -47,7 +47,6 @@ import PartThree from './components/PartThree';
 import SupportFooter from './components/SupportFooter';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
-import ShapeshiftBanner from './components/ShapeshiftBanner';
 import TabSection from 'containers/TabSection';
 import { merge } from 'lodash';
 import { RouteNotFound } from 'components/RouteNotFound';
@@ -139,7 +138,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
     const ReceivingAddressProps = {
       isPostingOrder,
       origin,
-      destinationId: destination.id,
+      destinationId: destination.label,
       destinationKind: destination.amount as number,
       destinationAddressSwap,
       destinationAddress,
@@ -219,7 +218,6 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
               render={() => (
                 <React.Fragment>
                   {step === 1 && <CurrentRates />}
-                  {step === 1 && <ShapeshiftBanner />}
                   {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
                   <main className="Tab-content-pane">
                     {step === 1 && <CurrencySwap {...CurrencySwapProps} />}

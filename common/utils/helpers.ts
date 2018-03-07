@@ -1,3 +1,4 @@
+import qs from 'query-string';
 import has from 'lodash/has';
 
 export function objectContainsObjectKeys(checkingObject, containingObject) {
@@ -17,6 +18,10 @@ export function getParam(query: { [key: string]: string }, key: string) {
     return null;
   }
   return query[keys[index]];
+}
+
+export function getParamFromURL(url: string, param: string): string | undefined {
+  return qs.parse(qs.extract(url))[param];
 }
 
 export function isPositiveInteger(n: number) {

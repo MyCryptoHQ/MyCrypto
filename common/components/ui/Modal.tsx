@@ -97,6 +97,10 @@ export default class Modal extends PureComponent<Props, {}> {
   };
 
   private escapeListner = (ev: KeyboardEvent) => {
+    if (!this.props.isOpen) {
+      return;
+    }
+
     // Don't trigger if they hit escape while on an input
     if (ev.target) {
       if (

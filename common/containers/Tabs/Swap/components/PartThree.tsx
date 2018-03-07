@@ -5,7 +5,8 @@ import {
   TStartPollShapeshiftOrderStatus,
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus,
-  TStopPollShapeshiftOrderStatus
+  TStopPollShapeshiftOrderStatus,
+  TStartOrderTimerSwap
 } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
 import React, { PureComponent } from 'react';
@@ -28,6 +29,7 @@ interface ReduxStateProps {
 }
 
 interface ReduxActionProps {
+  startOrderTimerSwap: TStartOrderTimerSwap;
   restartSwap: TRestartSwap;
   startPollBityOrderStatus: TStartPollBityOrderStatus;
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
@@ -45,6 +47,7 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
     } else {
       this.props.startPollBityOrderStatus();
     }
+    this.props.startOrderTimerSwap();
   }
 
   public componentWillUnmount() {
@@ -69,8 +72,8 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
     } = this.props;
 
     const SwapProgressProps = {
-      originId: origin.id,
-      destinationId: destination.id,
+      originId: origin.label,
+      destinationId: destination.label,
       provider,
       bityOrderStatus,
       shapeshiftOrderStatus,
@@ -98,7 +101,7 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
         <PaymentInfo {...PaymentInfoProps} />
 
         <LiteSend />
-        {OpenOrder && origin.id === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
+        {OpenOrder && origin.label === 'BTC' && <BitcoinQR {...BitcoinQRProps} />}
       </div>
     );
   }

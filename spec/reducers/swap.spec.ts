@@ -119,8 +119,8 @@ describe('swap reducer', () => {
           ...INITIAL_STATE,
           bityRates: normalizedBityRates,
           shapeshiftRates: normalizedShapeshiftRates,
-          origin: { id: 'BTC', amount: 1 },
-          destination: { id: 'ETH', amount: 3 }
+          origin: { label: 'BTC', amount: 1 },
+          destination: { label: 'ETH', amount: 3 }
         },
         swapActions.restartSwap()
       )
