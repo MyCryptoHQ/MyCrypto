@@ -6,12 +6,12 @@ const builder = require('electron-builder');
 const config = require('./config');
 
 function shouldBuildOs(os) {
-  const { ELECTRON_OS } = process.env
+  const { ELECTRON_OS } = process.env;
 
-  if ( ELECTRON_OS === 'JENKINS_LINUX') {
-    return os === 'linux' || os === 'windows'
-  } else if ( ELECTRON_OS === 'JENKINS_MAC') {
-    return os === 'mac'
+  if (ELECTRON_OS === 'JENKINS_LINUX') {
+    return os === 'linux' || os === 'windows';
+  } else if (ELECTRON_OS === 'JENKINS_MAC') {
+    return os === 'mac';
   } else {
     return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
   }
@@ -44,7 +44,7 @@ async function build() {
       productName: 'MyCrypto',
       directories: {
         app: jsBuildDir,
-        output: electronBuildsDir,
+        output: electronBuildsDir
       },
       mac: {
         category: 'public.app-category.finance',
