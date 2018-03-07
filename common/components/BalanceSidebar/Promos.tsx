@@ -2,8 +2,9 @@ import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { HardwareWallets, Coinbase, Shapeshift } from './PromoComponents';
 import './Promos.scss';
-
-const promos = [HardwareWallets, Coinbase, Shapeshift];
+import { connect } from 'react-redux';
+import { AppState } from '../../reducers';
+import { IWallet } from 'libs/wallet';
 
 const CarouselAnimation = ({ children, ...props }) => (
   <CSSTransition {...props} timeout={300} classNames="carousel">
@@ -11,12 +12,20 @@ const CarouselAnimation = ({ children, ...props }) => (
   </CSSTransition>
 );
 
+// Don't change Coinbase index
+const promos = [HardwareWallets, Coinbase, Shapeshift];
+
 interface State {
   activePromo: number;
 }
 
-export default class Promos extends React.PureComponent<{}, State> {
+interface StateProps {
+  wallet: IWallet | undefined | null;
+}
+
+class PromosClass extends React.PureComponent<StateProps, State> {
   public timer: any = null;
+  public promos = [HardwareWallets, Coinbase, Shapeshift];
 
   public state = {
     activePromo: parseInt(String(Math.random() * promos.length), 10)
@@ -30,13 +39,23 @@ export default class Promos extends React.PureComponent<{}, State> {
     clearInterval(this.timer);
   }
 
+  public getPromo() {
+    const { activePromo } = this.state;
+    const { wallet } = this.props;
+    if (activePromo === 1 && wallet) {
+      return <Coinbase address={wallet.getAddressString()} />;
+    } else {
+      return promos[activePromo];
+    }
+  }
+
   public render() {
     const { activePromo } = this.state;
 
     return (
       <div className="Promos">
         <TransitionGroup className="Promos-promo-wrapper">
-          <CarouselAnimation key={Math.random()}>{promos[activePromo]}</CarouselAnimation>
+          <CarouselAnimation key={Math.random()}>{this.getPromo()}</CarouselAnimation>
         </TransitionGroup>
         <div className="Promos-nav">
           {promos.map((_, index) => {
@@ -64,3 +83,11 @@ export default class Promos extends React.PureComponent<{}, State> {
     this.setState({ activePromo });
   };
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    wallet: state.wallet.inst
+  };
+}
+
+export default connect(mapStateToProps, {})(PromosClass);
