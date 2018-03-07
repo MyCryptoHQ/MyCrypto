@@ -1,7 +1,7 @@
 {
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "main": "main.js",
   "description": "MyCrypto web and electron app",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
@@ -22,7 +22,7 @@
     "ethereumjs-util": "5.1.5",
     "ethereumjs-wallet": "0.6.0",
     "font-awesome": "4.7.0",
-    "hard-source-webpack-plugin": "0.6.4",
+    "hard-source-webpack-plugin": "0.5.16",
     "hdkey": "0.8.0",
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.2",
@@ -56,7 +56,7 @@
   "devDependencies": {
     "@types/classnames": "2.2.3",
     "@types/history": "4.6.2",
-    "@types/jest": "22.1.4",
+    "@types/jest": "22.2.0",
     "@types/lodash": "4.14.104",
     "@types/qrcode": "0.8.0",
     "@types/qrcode.react": "0.6.3",
