@@ -4,7 +4,6 @@ import { HardwareWallets, Coinbase, Shapeshift } from './PromoComponents';
 import './Promos.scss';
 import { connect } from 'react-redux';
 import { AppState } from '../../reducers';
-import { IWallet } from 'libs/wallet';
 
 const CarouselAnimation = ({ children, ...props }) => (
   <CSSTransition {...props} timeout={300} classNames="carousel">
@@ -20,7 +19,7 @@ interface State {
 }
 
 interface StateProps {
-  wallet: IWallet | undefined | null;
+  wallet: AppState['wallet']['inst'];
 }
 
 class PromosClass extends React.PureComponent<StateProps, State> {
