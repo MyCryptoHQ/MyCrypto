@@ -7,9 +7,10 @@ import { bufferToHex, toBuffer } from 'ethereumjs-util';
 import { getTokenTo, getData } from 'selectors/transaction';
 import { handleTokenTo, handleTokenValue } from 'sagas/transaction/meta/token';
 import { cloneableGenerator } from 'redux-saga/utils';
+import { SagaIterator } from 'redux-saga';
 configuredStore.getState();
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });

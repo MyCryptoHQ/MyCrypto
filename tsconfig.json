@@ -17,7 +17,8 @@
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "noImplicitAny": true
   },
   "include": [
     "./common/",

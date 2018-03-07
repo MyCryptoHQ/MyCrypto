@@ -47,7 +47,7 @@ interface State {
 }
 
 export default class Rates extends Component<Props, State> {
-  public state = {
+  public state: State = {
     pairs: {}
   };
 
@@ -72,7 +72,7 @@ export default class Rates extends Component<Props, State> {
   public getPairs = () => {
     const { rates } = this.props;
     const { allIds } = rates;
-    return allIds.reduce((acc, cur) => {
+    return allIds.reduce<{ [id: string]: 1 }>((acc, cur) => {
       acc[cur] = 1;
       return acc;
     }, {});

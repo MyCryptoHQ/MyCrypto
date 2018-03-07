@@ -6,6 +6,11 @@ const ABIFUNC_METHOD_NAMES = ['encodeInput', 'decodeInput', 'decodeOutput'];
 enum ABIMethodTypes {
   FUNC = 'function'
 }
+
+export default interface Contract {
+  [key: string]: any;
+};
+
 export type TContract = typeof Contract;
 
 export default class Contract {
@@ -22,14 +27,14 @@ export default class Contract {
       return isFunc ? { ...accu, [currContractMethodName]: currContractMethod } : accu;
     }, {});
 
-  public abi;
+  public abi: any;
 
-  constructor(abi, outputMappings: ContractOutputMappings = {}) {
+  constructor(abi: any, outputMappings: ContractOutputMappings = {}) {
     this.assignABIFuncs(abi, outputMappings);
   }
 
-  private assignABIFuncs = (abi, outputMappings: ContractOutputMappings) => {
-    abi.forEach(currentABIMethod => {
+  private assignABIFuncs = (abi: any, outputMappings: ContractOutputMappings) => {
+    abi.forEach((currentABIMethod: any) => {
       const { name, type } = currentABIMethod;
       if (type === ABIMethodTypes.FUNC) {
         //only grab the functions we need

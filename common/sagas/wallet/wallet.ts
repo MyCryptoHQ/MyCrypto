@@ -263,7 +263,7 @@ export function* unlockWeb3(): SagaIterator {
     yield call(initWeb3Node);
     yield put(changeNodeIntent('web3'));
     yield take(
-      action =>
+      (action: any) =>
         action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeId === 'web3'
     );
 

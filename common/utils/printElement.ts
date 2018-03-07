@@ -18,8 +18,8 @@ export default function(element: React.ReactElement<any>, opts: PrintOptions = {
   // Convert popupFeatures into a key=value,key=value string. See
   // https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Window_features
   // for more information.
-  const featuresStr = Object.keys(options.popupFeatures)
-    .map(key => `${key}=${options.popupFeatures[key]}`)
+  const featuresStr = Object.entries(options.popupFeatures)
+    .map(([key, value]) => `${key}=${value}`)
     .join(',');
 
   const popup = window.open('about:blank', 'printWindow', featuresStr);
