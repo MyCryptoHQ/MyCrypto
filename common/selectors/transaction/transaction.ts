@@ -81,7 +81,10 @@ const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: b
 
   const t2 = getTransactionFields(makeTransaction(serialzedTransaction));
   const checkValidity = (tx: IHexStrTransaction) =>
-    Object.keys(tx).reduce((match, currField) => match && t1[currField] === t2[currField], true);
+    Object.keys(tx).reduce(
+      (match, currField: keyof IHexStrTransaction) => match && t1[currField] === t2[currField],
+      true
+    );
   //reduce both ways to make sure both are exact same
   const transactionsMatch = checkValidity(t1) && checkValidity(t2);
   // if its signed then verify the signature too

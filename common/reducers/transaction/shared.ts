@@ -22,14 +22,14 @@ export const resetHOF = (
 
   if (includeFields) {
     (includeFields as any[]).forEach(fieldName => {
-      stateCopy[fieldName] = returnState[fieldName];
+      (stateCopy as any)[fieldName] = (returnState as any)[fieldName];
     });
     return returnCb ? returnCb(state, returnState) : { ...stateCopy };
   }
 
   if (excludeFields) {
     (excludeFields as any[]).forEach(fieldName => {
-      returnState[fieldName] = state[fieldName];
+      (returnState as any)[fieldName] = (state as any)[fieldName];
     });
   }
 

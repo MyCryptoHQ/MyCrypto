@@ -6,6 +6,7 @@ import { IFullWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
+import { TransactionFieldValues } from 'selectors/transaction/helpers';
 
 // we dont include the signature paramaters because web3 transactions are unsigned
 const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));
@@ -75,7 +76,13 @@ const validAddress = (t: ITransaction) => {
 };
 
 const makeTransaction = (
-  t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
+  t:
+    | Partial<Tx>
+    | Partial<ITransaction>
+    | Partial<IHexStrTransaction>
+    | Buffer
+    | string
+    | TransactionFieldValues
 ) => new Tx(t);
 
 //TODO: check that addresses are always checksummed

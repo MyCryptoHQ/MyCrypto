@@ -12,7 +12,7 @@ import tokens from 'config/tokens/eth.json';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 
 describe('ensure whitelist', () => {
-  const findToken = (tkn: string) => tokens.find(t => t.symbol === tkn);
+  const findToken = (tkn: string) => tokens.find((t: any) => t.symbol === tkn);
   SHAPESHIFT_TOKEN_WHITELIST.forEach(t => {
     it(`Should find Token ${t}`, () => {
       expect(findToken(t)).toBeTruthy();
@@ -87,7 +87,7 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED', () => {
     expect(
-      swap(undefined, swapActions.loadShapeshiftRatesSucceededSwap(shapeshiftApiResponse))
+      swap(undefined, swapActions.loadShapeshiftRatesSucceededSwap(shapeshiftApiResponse as any))
     ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false,

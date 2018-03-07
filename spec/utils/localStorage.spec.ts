@@ -11,9 +11,7 @@ describe('saveState', () => {
       foo: 'bar'
     };
     saveState(persistMe);
-    expect(JSON.parse(localStorage.getItem(REDUX_STATE) as string)).toEqual(
-      persistMe
-    );
+    expect(JSON.parse(localStorage.getItem(REDUX_STATE) as string)).toEqual(persistMe);
   });
 });
 
@@ -32,6 +30,6 @@ describe('loadStatePropertyOrEmptyObject', () => {
       two: 'bar'
     };
     saveState(serializeThis);
-    expect(loadStatePropertyOrEmptyObject('one')).toEqual(serializeThis.one);
+    expect(loadStatePropertyOrEmptyObject('one' as any)).toEqual(serializeThis.one);
   });
 });

@@ -22,7 +22,7 @@ class CountDown extends Component<Props, State> {
 
   private startCountDown = () => {
     const time = moment(this.props.initialTime);
-    let intervalId;
+    let intervalId: number;
 
     const setTimeDisplay = () => {
       const diff = moment.duration(time.diff(moment()));
@@ -44,7 +44,7 @@ class CountDown extends Component<Props, State> {
       this.setState({ timeDisplay });
     };
 
-    intervalId = setInterval(setTimeDisplay, 1000);
+    intervalId = window.setInterval(setTimeDisplay, 1000);
     setTimeDisplay();
   };
 }

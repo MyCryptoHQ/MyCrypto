@@ -6,11 +6,11 @@ configuredStore.getState();
 describe('Tokens JSON', () => {
   Object.keys(TOKENS).forEach(network => {
     it(`${network} tokens array properly formatted`, () => {
-      const tokens = TOKENS[network];
-      const addressCollisionMap = {};
-      const symbolCollisionMap = {};
+      const tokens = (TOKENS as any)[network];
+      const addressCollisionMap: any = {};
+      const symbolCollisionMap: any = {};
 
-      tokens.forEach(token => {
+      tokens.forEach((token: any) => {
         if (!isValidETHAddress(token.address)) {
           throw Error(`Token ${token.symbol} has invalid contract address '${token.address}'`);
         }

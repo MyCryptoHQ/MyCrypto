@@ -1,5 +1,5 @@
 import React from 'react';
-import Slider from 'rc-slider';
+import Slider, { createSliderWithTooltip } from 'rc-slider';
 import translate, { translateRaw } from 'translations';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
@@ -16,12 +16,13 @@ import { getEstimates, getIsEstimating } from 'selectors/gas';
 import { Wei, fromWei } from 'libs/units';
 import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
-const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
+import { TInputGasPrice } from 'actions/transaction';
+const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
-  inputGasPrice(rawGas: string);
-  setGasPrice(rawGas: string);
+  setGasPrice: TInputGasPrice;
+  inputGasPrice(rawGas: string): void;
 }
 
 interface StateProps {
