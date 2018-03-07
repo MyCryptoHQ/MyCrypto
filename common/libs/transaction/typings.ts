@@ -10,9 +10,9 @@ export interface ITransaction {
   gasPrice: Wei;
   nonce: BN;
   chainId: number;
-  v;
-  r;
-  s;
+  v: Buffer;
+  r: Buffer;
+  s: Buffer;
 }
 
 export interface IHexStrTransaction {

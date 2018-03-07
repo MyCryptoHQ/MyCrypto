@@ -37,5 +37,8 @@ export const AmountField: React.SFC<Props> = ({
   />
 );
 
-const isAmountValid = (raw, customValidator, isValid) =>
-  customValidator ? customValidator(raw) : isValid;
+const isAmountValid = (
+  raw: string,
+  customValidator: ((rawAmount: string) => boolean) | undefined,
+  isValid: boolean
+) => (customValidator ? customValidator(raw) : isValid);

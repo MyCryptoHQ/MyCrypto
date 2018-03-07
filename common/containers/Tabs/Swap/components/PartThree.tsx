@@ -5,7 +5,8 @@ import {
   TStartPollShapeshiftOrderStatus,
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus,
-  TStopPollShapeshiftOrderStatus
+  TStopPollShapeshiftOrderStatus,
+  TStartOrderTimerSwap
 } from 'actions/swap';
 import { SwapInput } from 'reducers/swap/types';
 import React, { PureComponent } from 'react';
@@ -28,6 +29,7 @@ interface ReduxStateProps {
 }
 
 interface ReduxActionProps {
+  startOrderTimerSwap: TStartOrderTimerSwap;
   restartSwap: TRestartSwap;
   startPollBityOrderStatus: TStartPollBityOrderStatus;
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
@@ -45,6 +47,7 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
     } else {
       this.props.startPollBityOrderStatus();
     }
+    this.props.startOrderTimerSwap();
   }
 
   public componentWillUnmount() {

@@ -15,19 +15,23 @@ interface Props {
   onRemoveCustomToken(symbol: string): any;
 }
 
+interface TrackedTokens {
+  [symbol: string]: boolean;
+}
+
 interface State {
   trackedTokens: { [symbol: string]: boolean };
   showCustomTokenForm: boolean;
 }
 export default class TokenBalances extends React.PureComponent<Props, State> {
-  public state = {
+  public state: State = {
     trackedTokens: {},
     showCustomTokenForm: false
   };
 
   public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.tokenBalances !== this.props.tokenBalances) {
-      const trackedTokens = nextProps.tokenBalances.reduce((prev, t) => {
+      const trackedTokens = nextProps.tokenBalances.reduce<TrackedTokens>((prev, t) => {
         prev[t.symbol] = !t.balance.isZero();
         return prev;
       }, {});

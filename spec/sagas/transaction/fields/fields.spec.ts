@@ -12,9 +12,10 @@ import {
 } from 'sagas/transaction/fields/fields';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { setGasPriceField } from 'actions/transaction';
+import { SagaIterator } from 'redux-saga';
 configuredStore.getState();
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });
