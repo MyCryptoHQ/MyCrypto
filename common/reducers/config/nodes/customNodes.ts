@@ -4,11 +4,7 @@ import {
   AddCustomNodeAction,
   RemoveCustomNodeAction
 } from 'actions/config';
-import { CustomNodeConfig } from 'types/node';
-
-export interface State {
-  [customNodeId: string]: CustomNodeConfig;
-}
+import { CustomNodesState as State } from './types';
 
 const addCustomNode = (state: State, { payload }: AddCustomNodeAction): State => ({
   ...state,
