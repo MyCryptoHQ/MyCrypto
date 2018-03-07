@@ -15,7 +15,7 @@ export function* pruneCustomNetworks(): SagaIterator {
 
   //construct lookup table of networks
 
-  const linkedNetworks = Object.values(customNodes).reduce(
+  const linkedNetworks: { [key: string]: boolean } = Object.values(customNodes).reduce(
     (networkMap, currentNode) => ({ ...networkMap, [currentNode.network]: true }),
     {}
   );

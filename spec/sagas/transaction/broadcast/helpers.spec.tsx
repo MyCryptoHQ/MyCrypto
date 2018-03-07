@@ -36,7 +36,7 @@ describe('broadcastTransactionWrapper*', () => {
     blockExplorer: 'blockExplorer'
   };
 
-  let random;
+  let random: () => number;
   const func: any = () => undefined;
   const action: any = {};
   const gens: any = {};

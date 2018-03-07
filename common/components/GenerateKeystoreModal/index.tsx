@@ -41,9 +41,9 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
     }
   }
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.privateKey !== this.props.privateKey) {
-      this.setState({ privateKey: nextProps.privateKey });
+      this.setState({ privateKey: nextProps.privateKey || '' });
     }
   }
 
