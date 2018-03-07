@@ -36,3 +36,11 @@ export interface FuncParams {
     processInput(value: any): any;
   };
 }
+
+export interface ITypeMapping {
+  [type: string]: (value: any) => any;
+}
+
+export interface ISuppliedArgs {
+  [argumentName: string]: any;
+}

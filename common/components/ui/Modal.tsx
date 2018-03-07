@@ -23,7 +23,7 @@ interface ModalStyle {
   maxWidth?: string;
 }
 
-const Fade = ({ children, ...props }) => (
+const Fade = ({ children, ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="animate-modal">
     {children}
   </CSSTransition>

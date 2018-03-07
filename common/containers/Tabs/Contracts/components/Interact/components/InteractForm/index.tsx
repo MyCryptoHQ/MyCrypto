@@ -20,7 +20,7 @@ interface StateProps {
 }
 
 interface OwnProps {
-  accessContract(contractAbi: string, address: string): (ev) => void;
+  accessContract(contractAbi: string, address: string): (ev: any) => void;
   resetState(): void;
 }
 
@@ -45,7 +45,7 @@ const abiJsonPlaceholder = [
 class InteractForm extends Component<Props, State> {
   private abiJsonPlaceholder = JSON.stringify(abiJsonPlaceholder, null, 0);
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       address: '',
@@ -140,7 +140,9 @@ class InteractForm extends Component<Props, State> {
     );
   }
 
-  private handleInput = name => (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  private handleInput = (name: any) => (
+    ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     this.props.resetState();
     this.setState({ [name]: ev.currentTarget.value });
   };

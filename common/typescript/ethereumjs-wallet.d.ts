@@ -65,7 +65,7 @@ declare module 'ethereumjs-wallet/hdkey' {
     /**
      * @description derive a node based on a child index
      */
-    deriveChild(index): IHDNodePublic;
+    deriveChild(index: any): IHDNodePublic;
 
     /**
      * @description return a Wallet instance
@@ -97,7 +97,7 @@ declare module 'ethereumjs-wallet/hdkey' {
     /**
      * @description derive a node based on a child index
      */
-    deriveChild(index): IHDNodePrivate | IHDNodePublic;
+    deriveChild(index: any): IHDNodePrivate | IHDNodePublic;
 
     /**
      * @description return a Wallet instance
