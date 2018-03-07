@@ -6,7 +6,15 @@ const builder = require('electron-builder');
 const config = require('./config');
 
 function shouldBuildOs(os) {
-  return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
+  const { ELECTRON_OS } = process.env
+
+  if ( ELECTRON_OS === 'JENKINS_LINUX') {
+    return os === 'linux' || os === 'windows'
+  } else if ( ELECTRON_OS === 'JENKINS_MAC') {
+    return os === 'mac'
+  } else {
+    return !process.env.ELECTRON_OS || process.env.ELECTRON_OS === os;
+  }
 }
 
 async function build() {
@@ -49,14 +57,11 @@ async function build() {
       },
       linux: {
         category: 'Finance',
+        icon: path.join(config.path.electron, 'icons/icon.png'),
         compression
       },
-      publish: {
-        provider: 'github',
-        owner: 'MyCryptoHQ',
-        repo: 'MyCrypto',
-        vPrefixedTagName: false
-      },
+      // IMPORTANT: Prevents from auto publishing to GitHub in CI environments
+      publish: null,
       // IMPORTANT: Prevents extending configs in node_modules
       extends: null
     }
