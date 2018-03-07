@@ -5,7 +5,7 @@ import './Promos.scss';
 import { connect } from 'react-redux';
 import { AppState } from '../../reducers';
 
-const CarouselAnimation = ({ children, ...props }) => (
+const CarouselAnimation = ({ children, ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="carousel">
     {children}
   </CSSTransition>
