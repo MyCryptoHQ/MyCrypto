@@ -35,7 +35,7 @@ type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match } = this.props;
+    const { wallet, match, location, history } = this.props;
     const currentPath = match.url;
     const tabs: Tab[] = [
       {
@@ -65,7 +65,7 @@ class SendTransaction extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                <SubTabs tabs={tabs} match={match} />
+                <SubTabs tabs={tabs} match={match} location={location} history={history} />
               </div>
               <div className="col-sm-8">
                 <Switch>
