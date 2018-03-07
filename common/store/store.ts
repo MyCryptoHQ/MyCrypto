@@ -45,7 +45,7 @@ const configureStore = () => {
 
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
 
-  const persistedInitialState = {
+  const persistedInitialState: Partial<AppState> = {
     transaction: {
       ...transactionInitialState,
       fields: {

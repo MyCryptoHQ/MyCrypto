@@ -6,7 +6,7 @@ import { APP_TITLE } from '../constants';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Cached reference, preventing recreations
-let window: any;
+let window: BrowserWindow | null;
 
 // Construct new BrowserWindow
 export default function getWindow() {
@@ -53,13 +53,13 @@ export default function getWindow() {
   });
 
   window.webContents.on('did-finish-load', () => {
-    updater(window);
+    updater(window!);
   });
 
   window.webContents.on('devtools-opened', () => {
-    window.focus();
+    window!.focus();
     setImmediate(() => {
-      window.focus();
+      window!.focus();
     });
   });
 
