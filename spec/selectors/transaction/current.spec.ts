@@ -18,10 +18,7 @@ describe('current selector', () => {
       ...state.transaction.fields,
       to: {
         raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
-        value: {
-          type: 'Buffer',
-          data: new Buffer([0, 1, 2, 3])
-        }
+        value: new Buffer([0, 1, 2, 3])
       },
       gasLimit: {
         raw: '21000',

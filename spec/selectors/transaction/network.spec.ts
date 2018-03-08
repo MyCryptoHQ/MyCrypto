@@ -1,3 +1,4 @@
+import { RequestStatus } from 'reducers/transaction/network';
 import {
   getNetworkStatus,
   nonceRequestPending,
@@ -11,10 +12,11 @@ import { getInitialState } from '../helpers';
 describe('current selector', () => {
   const state = getInitialState();
   state.transaction.network = {
-    gasEstimationStatus: 'PENDING',
-    getFromStatus: 'SUCCESS',
-    getNonceStatus: 'PENDING',
-    gasPriceStatus: 'SUCCESS'
+    ...state.transaction.network,
+    gasEstimationStatus: RequestStatus.REQUESTED,
+    getFromStatus: RequestStatus.SUCCEEDED,
+    getNonceStatus: RequestStatus.REQUESTED,
+    gasPriceStatus: RequestStatus.SUCCEEDED
   };
 
   it('should get network status', () => {
@@ -26,7 +28,7 @@ describe('current selector', () => {
   });
 
   it('should check with the store if the nonce request failed', () => {
-    state.transaction.network.getNonceStatus = 'FAIL';
+    state.transaction.network.getNonceStatus = RequestStatus.FAILED;
     expect(nonceRequestFailed(state)).toEqual(true);
   });
 
@@ -35,12 +37,12 @@ describe('current selector', () => {
   });
 
   it('should check with the store if gas limit estimation timed out', () => {
-    state.transaction.network.gasEstimationStatus = 'TIMEDOUT';
+    state.transaction.network.gasEstimationStatus = RequestStatus.TIMEDOUT;
     expect(getGasLimitEstimationTimedOut(state)).toEqual(true);
   });
 
   it('should check with the store if network request is pending', () => {
-    state.transaction.network.gasEstimationStatus = 'PENDING';
+    state.transaction.network.gasEstimationStatus = RequestStatus.REQUESTED;
     expect(isNetworkRequestPending(state)).toEqual(true);
   });
 });

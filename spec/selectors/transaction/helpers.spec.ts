@@ -46,12 +46,6 @@ describe('helpers selector', () => {
       }
     }
   };
-  state.config.networks.staticNetworks = {
-    ETH: {
-      name: 'ETH',
-      unit: 'ETH'
-    }
-  };
 
   it('should reduce the fields state to its base values', () => {
     const values = {

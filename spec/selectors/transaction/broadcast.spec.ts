@@ -9,22 +9,25 @@ import { getInitialState } from '../helpers';
 
 describe('broadcast selector', () => {
   const state = getInitialState();
-
   state.transaction = {
     ...state.transaction,
     broadcast: {
+      ...state.transaction.broadcast,
       testIndexingHash1: {
         broadcastedHash: 'testBroadcastedHash',
         broadcastSuccessful: true,
-        isBroadcasting: false
+        isBroadcasting: false,
+        serializedTransaction: new Buffer([1, 2, 3])
       },
       testIndexingHash2: {
         broadcastedHash: 'testBroadcastedHash',
         broadcastSuccessful: true,
-        isBroadcasting: false
+        isBroadcasting: false,
+        serializedTransaction: new Buffer([1, 2, 3])
       }
     },
     sign: {
+      ...state.transaction.sign,
       indexingHash: 'testIndexingHash1',
       pending: false
     }
@@ -54,10 +57,7 @@ describe('broadcast selector', () => {
   });
 
   it('should return false on getCurrentTransactionStatus if no index hash present', () => {
-    state.transaction = {
-      ...state.transaction,
-      sign: {}
-    };
+    state.transaction.sign.indexingHash = null;
     expect(getCurrentTransactionStatus(state)).toEqual(false);
   });
 });
