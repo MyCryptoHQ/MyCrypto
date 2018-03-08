@@ -25,15 +25,15 @@ const ValueComp: React.SFC = (props: any) => {
 };
 
 const OptionComp: React.SFC = (props: any) => {
-  const handleMouseDown = event => {
+  const handleMouseDown = (event: React.MouseEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
     props.onSelect(props.option, event);
   };
-  const handleMouseEnter = event => {
+  const handleMouseEnter = (event: React.MouseEvent<any>) => {
     props.onFocus(props.option, event);
   };
-  const handleMouseMove = event => {
+  const handleMouseMove = (event: React.MouseEvent<any>) => {
     if (props.isFocused) {
       return;
     }

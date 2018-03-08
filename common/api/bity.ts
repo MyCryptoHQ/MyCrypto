@@ -29,10 +29,14 @@ const repOptions = {
   name: 'Augur'
 };
 
+export interface MappedRates {
+  [key: string]: any;
+}
+
 export function getAllRates() {
-  const mappedRates = {};
+  const mappedRates: MappedRates = {};
   return _getAllRates().then(bityRates => {
-    bityRates.objects.forEach(each => {
+    bityRates.objects.forEach((each: any) => {
       const pairName = each.pair;
       const from = { id: pairName.substring(0, 3) };
       const to = { id: pairName.substring(3, 6) };

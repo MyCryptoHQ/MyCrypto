@@ -292,9 +292,9 @@ describe('unlockWeb3*', () => {
   data.gen = cloneableGenerator(unlockWeb3)();
   const accounts = [address];
   const { random } = Math;
-  let nodeLib;
+  let nodeLib: Web3Node;
 
-  function sendAsync(options, cb) {
+  function sendAsync(options: any, cb: any) {
     const resp = {
       id: 'id'
     };
@@ -333,7 +333,7 @@ describe('unlockWeb3*', () => {
 
   it('should yield take on node change', () => {
     const expected = take(
-      action =>
+      (action: any) =>
         action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
     );
     const result = data.gen.next().value;

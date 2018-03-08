@@ -49,7 +49,7 @@ interface Props {
 class OnboardModal extends React.Component<Props, State> {
   private modal: Modal | null = null;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       isOpen: false
