@@ -108,7 +108,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     (TrezorConnect as any).getXPubKey(
       dPath,
-      res => {
+      (res: any) => {
         if (res.success) {
           this.setState({
             dPath,

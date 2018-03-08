@@ -128,7 +128,7 @@ type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
 type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
 type Wallets = SecureWallets & InsecureWallets & MiscWallet;
 
-const WEB3_TYPE: string | false =
+const WEB3_TYPE: keyof typeof WEB3_TYPES | false =
   (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
 
 const SECURE_WALLETS = Object.values(SecureWalletName);
@@ -267,7 +267,7 @@ export class WalletDecrypt extends Component<Props, State> {
               <selectedWallet.component
                 value={this.state.value}
                 onChange={this.onChange}
-                onUnlock={value => {
+                onUnlock={(value: any) => {
                   if (selectedWallet.redirect) {
                     routerProps.history.push(selectedWallet.redirect);
                   }

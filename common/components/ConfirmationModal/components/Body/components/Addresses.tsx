@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { SerializedTransaction } from 'components/renderCbs';
 import { AppState } from 'reducers';
 import { getFrom, getUnit, isEtherTransaction } from 'selectors/transaction';
+import { toChecksumAddress } from 'ethereumjs-util';
 
 interface StateProps {
   from: AppState['transaction']['meta']['from'];
@@ -24,7 +25,9 @@ class AddressesClass extends Component<StateProps> {
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {
-          const toFormatted = isToken ? ERC20.transfer.decodeInput(data)._to : to;
+          const toFormatted = toChecksumAddress(
+            isToken ? ERC20.transfer.decodeInput(data)._to : to
+          );
           return (
             <div className="tx-modal-address">
               <div className="tx-modal-address-from">

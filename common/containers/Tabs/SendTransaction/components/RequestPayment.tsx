@@ -44,7 +44,8 @@ interface ActionProps {
 
 type Props = OwnProps & StateProps & ActionProps;
 
-const isValidAmount = decimal => amount => validNumber(+amount) && validDecimal(amount, decimal);
+const isValidAmount = (decimal: number) => (amount: string) =>
+  validNumber(+amount) && validDecimal(amount, decimal);
 
 class RequestPayment extends React.Component<Props, {}> {
   public state = {
@@ -145,7 +146,7 @@ class RequestPayment extends React.Component<Props, {}> {
   private generateEIP681String(
     currentTo: string,
     tokenContractAddress: string,
-    currentValue,
+    currentValue: { raw: string; value: BN | null },
     gasLimit: { raw: string; value: BN | null },
     unit: string,
     decimal: number,
@@ -162,7 +163,11 @@ class RequestPayment extends React.Component<Props, {}> {
       return '';
     }
 
-    if (this.props.isNetworkUnit) {
+    const currentValueIsEther = (
+      _: AppState['transaction']['fields']['value'] | AppState['transaction']['meta']['tokenTo']
+    ): _ is AppState['transaction']['fields']['value'] => this.props.isNetworkUnit;
+
+    if (currentValueIsEther(currentValue)) {
       return buildEIP681EtherRequest(currentTo, chainId, currentValue);
     } else {
       return buildEIP681TokenRequest(

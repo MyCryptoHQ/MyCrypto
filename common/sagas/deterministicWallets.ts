@@ -96,7 +96,7 @@ export function* updateWalletTokenValues(): SagaIterator {
     const calls = wallets.map(w => {
       return apply(node, node.getTokenBalance, [w.address, token]);
     });
-    const tokenBalances: { balance: TokenValue; error: string | null } = yield all(calls);
+    const tokenBalances: { balance: TokenValue; error: string | null }[] = yield all(calls);
 
     for (let i = 0; i < wallets.length; i++) {
       if (!tokenBalances[i].error) {
