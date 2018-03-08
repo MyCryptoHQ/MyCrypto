@@ -12,7 +12,7 @@ interface Props {
 const Help = ({ size = 'x1', link }: Props) => {
   return (
     <a href={link} className={`Help Help-${size}`} target="_blank" rel="noopener noreferrer">
-      <img src={icon} />
+      <img src={icon} alt="help" />
     </a>
   );
 };
