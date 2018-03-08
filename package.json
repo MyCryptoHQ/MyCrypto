@@ -85,7 +85,7 @@
     "concurrently": "3.5.1",
     "copy-webpack-plugin": "4.5.0",
     "css-loader": "0.28.10",
-    "electron": "1.8.2",
+    "electron": "1.8.3",
     "electron-builder": "20.2.1",
     "empty": "0.10.1",
     "enzyme": "3.3.0",
