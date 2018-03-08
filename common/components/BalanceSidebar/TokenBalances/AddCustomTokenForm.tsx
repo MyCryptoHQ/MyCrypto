@@ -66,11 +66,11 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
         {fields.map(field => {
           return (
             <label className="AddCustom-field form-group" key={field.name}>
-              <span className="AddCustom-field-label">{field.label}</span>
+              <div className="input-group-header">{field.label}</div>
               <Input
                 className={`${
                   errors[field.name] ? 'invalid' : field.value ? 'valid' : ''
-                } AddCustom-field-input input-sm`}
+                } input-group-input-small`}
                 type="text"
                 name={field.name}
                 value={field.value}

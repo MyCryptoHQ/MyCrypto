@@ -29,7 +29,7 @@ export function loadBityRatesSucceededSwap(
 
 export type TLoadShapeshiftRatesSucceededSwap = typeof loadShapeshiftRatesSucceededSwap;
 export function loadShapeshiftRatesSucceededSwap(
-  payload
+  payload: interfaces.LoadShapeshiftRatesSucceededSwapAction['payload']
 ): interfaces.LoadShapeshiftRatesSucceededSwapAction {
   return {
     type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED,

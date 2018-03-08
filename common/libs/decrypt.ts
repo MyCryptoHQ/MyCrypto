@@ -1,7 +1,7 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { createDecipheriv, createHash } from 'crypto';
 import { privateToAddress } from 'ethereumjs-util';
-import { fromMasterSeed } from 'hdkey';
+import HDkey from 'hdkey';
 import { stripHexPrefixAndLower } from 'libs/values';
 
 // adapted from https://github.com/kvhnuke/etherwallet/blob/de536ffebb4f2d1af892a32697e89d1a0d906b01/app/scripts/myetherwallet.js#L230
@@ -37,7 +37,7 @@ export function decodeCryptojsSalt(input: string): any {
 export function evp_kdf(data: Buffer, salt: Buffer, opts: any) {
   // A single EVP iteration, returns `D_i`, where block equlas to `D_(i-1)`
 
-  function iter(block) {
+  function iter(block: Buffer) {
     let hash = createHash(opts.digest || 'md5');
     hash.update(block);
     hash.update(data);
@@ -83,7 +83,7 @@ export function decryptMnemonicToPrivKey(
   }
 
   const seed = mnemonicToSeed(phrase, pass);
-  const derived = fromMasterSeed(seed).derive(path);
+  const derived = HDkey.fromMasterSeed(seed).derive(path);
   const dPrivKey = derived.privateKey;
   const dAddress = privateToAddress(dPrivKey).toString('hex');
 
