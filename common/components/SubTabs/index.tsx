@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
+import Select, { Option } from 'react-select';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import './SubTabs.scss';
 
@@ -97,7 +97,7 @@ export default class SubTabs extends React.PureComponent<Props, State> {
     );
   }
 
-  private handleSelect = ({ value }) => {
+  private handleSelect = ({ value }: Option) => {
     this.props.history.push(`${this.props.match.url}/${value}`);
   };
 
