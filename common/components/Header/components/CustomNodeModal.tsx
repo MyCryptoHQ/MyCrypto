@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal, { IButton } from 'components/ui/Modal';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
@@ -62,7 +62,7 @@ class CustomNodeModal extends React.Component<Props, State> {
   };
   public state: State = this.INITIAL_STATE;
 
-  public componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps: Props) {
     // Reset state when modal opens
     if (!prevProps.isOpen && prevProps.isOpen !== this.props.isOpen) {
       this.setState(this.INITIAL_STATE);
@@ -99,7 +99,7 @@ class CustomNodeModal extends React.Component<Props, State> {
     const options = [...staticNetwrks, ...customNetwrks, CUSTOM];
     return (
       <Modal
-        title={translate('NODE_Title')}
+        title={translateRaw('NODE_Title')}
         isOpen={isOpen}
         buttons={buttons}
         handleClose={handleClose}
@@ -133,7 +133,9 @@ class CustomNodeModal extends React.Component<Props, State> {
                 value={network}
                 options={options}
                 clearable={false}
-                onChange={e => this.setState({ network: e.value })}
+                onChange={(e: { label: string; value: string }) =>
+                  this.setState({ network: e.value })
+                }
               />
             </label>
           </div>

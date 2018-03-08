@@ -30,8 +30,8 @@ export interface ActionProps {
 
 interface State {
   disabled: boolean;
-  origin: SwapInput;
-  destination: SwapInput;
+  origin: SwapOpt;
+  destination: SwapOpt;
   originKindOptions: any[];
   destinationKindOptions: any[];
   originErr: string;
@@ -49,7 +49,7 @@ interface SwapOpt extends SwapInput {
 }
 
 export default class CurrencySwap extends PureComponent<Props, State> {
-  public state = {
+  public state: State = {
     disabled: true,
     origin: {
       label: 'BTC',
@@ -57,14 +57,14 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       status: 'available',
       image: 'https://shapeshift.io/images/coins/bitcoin.png',
       amount: NaN
-    } as SwapOpt,
+    },
     destination: {
       label: 'ETH',
       value: 'Ether',
       status: 'available',
       image: 'https://shapeshift.io/images/coins/ether.png',
       amount: NaN
-    } as SwapOpt,
+    },
     originKindOptions: [],
     destinationKindOptions: [],
     originErr: '',
@@ -151,7 +151,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     return merge(shapeshiftRates, bityRates);
   };
 
-  public getMinMax = (originKind: WhitelistedCoins, destinationKind) => {
+  public getMinMax = (originKind: WhitelistedCoins, destinationKind: string) => {
     let min;
     let max;
 
@@ -176,7 +176,11 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     return { min, max };
   };
 
-  public isMinMaxValid = (originAmount: number, originKind: WhitelistedCoins, destinationKind) => {
+  public isMinMaxValid = (
+    originAmount: number,
+    originKind: WhitelistedCoins,
+    destinationKind: string
+  ) => {
     const rate = this.getMinMax(originKind, destinationKind);
     const higherThanMin = originAmount >= rate.min;
     const lowerThanMax = originAmount <= rate.max;
@@ -201,7 +205,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     this.debouncedCreateErrString(origin, destination, showError);
   }
 
-  public setErrorMessages = (originErr, destinationErr) => {
+  public setErrorMessages = (originErr: string, destinationErr: string) => {
     this.setState({
       originErr,
       destinationErr
@@ -269,15 +273,17 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       : this.updateDestinationAmount(origin, destination, amount);
   };
 
-  public onChangeOriginKind = newOption => {
+  public onChangeOriginKind = (newOption: any) => {
     const { origin, destination, destinationKindOptions } = this.state;
     const { options, initSwap } = this.props;
 
-    const newOrigin = { ...origin, label: newOption.label, value: newOption.value, amount: '' };
+    const newOrigin = { ...origin, label: newOption.label, value: newOption.value, amount: 0 };
     const newDest = {
       label: newOption.label === destination.label ? origin.label : destination.label,
       value: newOption.value === destination.value ? origin.value : destination.value,
-      amount: ''
+      amount: 0,
+      status: '',
+      image: ''
     };
 
     this.setState({
@@ -292,16 +298,16 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     initSwap({ origin: newOrigin, destination: newDest });
   };
 
-  public onChangeDestinationKind = newOption => {
+  public onChangeDestinationKind = (newOption: any) => {
     const { initSwap } = this.props;
     const { origin, destination } = this.state;
 
     const newOrigin = {
       ...origin,
-      amount: ''
+      amount: 0
     };
 
-    const newDest = { ...destination, label: newOption.label, value: newOption.value, amount: '' };
+    const newDest = { ...destination, label: newOption.label, value: newOption.value, amount: 0 };
     this.setState({
       origin: newOrigin,
       destination: newDest
@@ -339,7 +345,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                   <Input
                     id="origin-swap-input"
                     className={`input-group-input ${
-                      String(origin.amount) !== '' &&
+                      !origin.amount &&
                       this.isMinMaxValid(origin.amount, origin.label, destination.label)
                         ? ''
                         : 'invalid'
@@ -364,7 +370,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                   <Input
                     id="destination-swap-input"
                     className={`${
-                      String(destination.amount) !== '' &&
+                      !destination.amount &&
                       this.isMinMaxValid(origin.amount, origin.label, destination.label)
                         ? ''
                         : 'invalid'

@@ -41,9 +41,9 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
     }
   }
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     if (nextProps.privateKey !== this.props.privateKey) {
-      this.setState({ privateKey: nextProps.privateKey });
+      this.setState({ privateKey: nextProps.privateKey || '' });
     }
   }
 
@@ -55,7 +55,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
 
     return (
       <Modal
-        title={translate('Generate Keystore File')}
+        title={translateRaw('Generate Keystore File')}
         isOpen={this.props.isOpen}
         handleClose={this.handleClose}
       >

@@ -11,7 +11,7 @@ export interface IButton {
 }
 interface Props {
   isOpen?: boolean;
-  title?: string | React.ReactElement<any>;
+  title?: string;
   disableButtons?: boolean;
   children: any;
   buttons?: IButton[];
@@ -23,7 +23,7 @@ interface ModalStyle {
   maxWidth?: string;
 }
 
-const Fade = ({ children, ...props }) => (
+const Fade = ({ children, ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="animate-modal">
     {children}
   </CSSTransition>
@@ -32,7 +32,7 @@ const Fade = ({ children, ...props }) => (
 export default class Modal extends PureComponent<Props, {}> {
   public modalBody: ModalBody;
 
-  public componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps: Props) {
     if (prevProps.isOpen !== this.props.isOpen) {
       document.body.classList.toggle('no-scroll', !!this.props.isOpen);
     }

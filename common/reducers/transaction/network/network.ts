@@ -15,9 +15,9 @@ const INITIAL_STATE: State = {
   gasPriceStatus: null
 };
 
-const getPostFix = (str: string) => {
+const getPostFix = (str: string): keyof typeof RequestStatus => {
   const arr = str.split('_');
-  return arr[arr.length - 1];
+  return arr[arr.length - 1] as any;
 };
 
 const nextState = (field: keyof State) => (state: State, action: Action): State => ({

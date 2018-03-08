@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import closeIcon from 'assets/images/close.svg';
+import { IButton } from 'components/ui/Modal';
 
-export default class ModalBody extends React.Component<any, any> {
+interface Props {
+  title?: string;
+  children: any;
+  modalStyle?: CSSProperties;
+  hasButtons?: number;
+  buttons?: IButton[];
+  disableButtons?: any;
+  handleClose(): void;
+}
+
+export default class ModalBody extends React.Component<Props> {
   private modal: HTMLElement;
   private modalContent: HTMLElement;
   private focusedElementBeforeModal: HTMLElement;
-  private focusableElementsString: string;
-  private focusableElements: HTMLElement[];
   private firstTabStop: HTMLElement;
   private lastTabStop: HTMLElement;
 
   public componentDidMount() {
     this.focusedElementBeforeModal = document.activeElement as HTMLElement;
     // Find all focusable children
-    this.focusableElementsString =
+    const focusableElementsString =
       'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
-    this.focusableElements = Array.prototype.slice.call(
-      this.modal.querySelectorAll(this.focusableElementsString)
+    const focusableElements = Array.prototype.slice.call(
+      this.modal.querySelectorAll(focusableElementsString)
     );
 
     // Convert NodeList to Array
-    this.firstTabStop = this.focusableElements[0];
-    this.lastTabStop = this.focusableElements[this.focusableElements.length - 1];
+    this.firstTabStop = focusableElements[0];
+    this.lastTabStop = focusableElements[focusableElements.length - 1];
 
     // Focus first child
     this.firstTabStop.focus();
@@ -74,7 +83,7 @@ export default class ModalBody extends React.Component<any, any> {
       return;
     }
 
-    return buttons.map((btn, idx) => {
+    return buttons.map((btn, idx: number) => {
       let btnClass = 'Modal-footer-btn btn';
 
       if (btn.type) {

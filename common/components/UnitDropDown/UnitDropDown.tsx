@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
 import { getNetworkUnit } from 'selectors/config';
+import { Option } from 'react-select';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -41,7 +42,10 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
       />
     );
   }
-  private handleOnChange = unit => {
+  private handleOnChange = (unit: Option<string>) => {
+    if (!unit.value) {
+      throw Error('No unit value found');
+    }
     this.props.setUnitMeta(unit.value);
   };
 }
