@@ -46,7 +46,7 @@ const WalletTypes: React.SFC<{}> = () => {
 
       <div className="WalletTypes-types row">
         <div className="col-md-1" />
-        {Object.keys(typeInfo).map(type => (
+        {Object.keys(typeInfo).map((type: keyof typeof typeInfo) => (
           <div key={type} className="WalletType col-md-5">
             <h2 className="WalletType-title">{translate(typeInfo[type].name)}</h2>
             <ul className="WalletType-features">

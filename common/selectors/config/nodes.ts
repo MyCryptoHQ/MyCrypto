@@ -86,7 +86,7 @@ export function getSelectedNode(state: AppState) {
   return getNodes(state).selectedNode;
 }
 
-export function isNodeChanging(state): boolean {
+export function isNodeChanging(state: AppState): boolean {
   return getSelectedNode(state).pending;
 }
 
