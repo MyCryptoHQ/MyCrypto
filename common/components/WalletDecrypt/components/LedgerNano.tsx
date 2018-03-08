@@ -134,7 +134,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       showTip: false
     });
 
-    ledger.comm_u2f.create_async().then(comm => {
+    ledger.comm_u2f.create_async().then((comm: any) => {
       new ledger.eth(comm)
         .getAddress_async(dPath, false, true)
         .then(res => {
@@ -144,7 +144,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
             isLoading: false
           });
         })
-        .catch(err => {
+        .catch((err: any) => {
           if (err && err.metaData && err.metaData.code === 5) {
             this.showTip();
           }

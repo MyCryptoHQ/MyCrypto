@@ -1,5 +1,5 @@
-import { configuredStore } from 'store';
 import BN from 'bn.js';
+import { SagaIterator, delay } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
 import { isValidHex, isValidNonce, gasPriceValidator, gasLimitValidator } from 'libs/validators';
@@ -8,13 +8,13 @@ import {
   handleDataInput,
   handleGasLimitInput,
   handleNonceInput,
-  handleGasPriceInput
+  handleGasPriceInput,
+  handleGasPriceInputIntent
 } from 'sagas/transaction/fields/fields';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { setGasPriceField } from 'actions/transaction';
-configuredStore.getState();
+import { setGasPriceField, inputGasPrice } from 'actions/transaction';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });
@@ -138,6 +138,19 @@ describe('handleGasPriceInput*', () => {
   it('should be done', () => {
     expect(gens.gen.invalid.next().done).toEqual(true);
     expect(gens.gen.valid.next().done).toEqual(true);
+  });
+});
+
+describe('handleGasPriceInputIntent*', () => {
+  const payload = '100.111';
+  const action: any = { payload };
+  const gen = handleGasPriceInputIntent(action);
+  it('should call delay', () => {
+    expect(gen.next().value).toEqual(call(delay, 300));
+  });
+
+  it('should put inputGasPrice', () => {
+    expect(gen.next().value).toEqual(put(inputGasPrice(payload)));
   });
 });
 

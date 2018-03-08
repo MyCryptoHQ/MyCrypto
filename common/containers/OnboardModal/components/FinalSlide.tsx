@@ -6,7 +6,11 @@ import { HELP_ARTICLE } from 'config';
 import OnboardSlide from './OnboardSlide';
 import onboardIconTen from 'assets/images/onboarding/slide-10.svg';
 
-const FinalSlide = ({ closeModal }) => {
+interface Props {
+  closeModal(): void;
+}
+
+const FinalSlide: React.SFC<Props> = ({ closeModal }) => {
   const header = translate('ONBOARD_final_title');
   const subheader = translate('ONBOARD_final_subtitle');
 

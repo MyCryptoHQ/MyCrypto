@@ -36,7 +36,7 @@ describe('loadBityRates*', () => {
     }
   };
   const err = { message: 'error' };
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;
@@ -103,7 +103,7 @@ describe('loadShapeshiftRates*', () => {
     }
   };
   const err = 'error';
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;
@@ -125,7 +125,7 @@ describe('loadShapeshiftRates*', () => {
 
   it('should put loadShapeshiftRatesSucceededSwap', () => {
     expect(gen1.next({ tokens: apiResponse }).value).toEqual(
-      put(loadShapeshiftRatesSucceededSwap(apiResponse))
+      put(loadShapeshiftRatesSucceededSwap(apiResponse as any))
     );
   });
 

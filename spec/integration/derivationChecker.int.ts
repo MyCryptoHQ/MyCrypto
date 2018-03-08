@@ -9,7 +9,7 @@ const dockerTag = 'latest';
 
 function promiseFromChildProcess(command: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    return exec(command, (err, stdout) => {
+    return exec(command, (err: string, stdout: string) => {
       err ? reject(err) : resolve(stdout);
     });
   });

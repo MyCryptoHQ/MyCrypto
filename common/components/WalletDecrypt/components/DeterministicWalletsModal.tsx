@@ -73,7 +73,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     this.getAddresses();
   }
 
-  public componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps: Props) {
     const { publicKey, chainCode, seed, dPath } = this.props;
     if (
       nextProps.publicKey !== publicKey ||
@@ -245,7 +245,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     }
   };
 
-  private selectAddress(selectedAddress, selectedAddrIndex) {
+  private selectAddress(selectedAddress: string, selectedAddrIndex: number) {
     this.setState({ selectedAddress, selectedAddrIndex });
   }
 

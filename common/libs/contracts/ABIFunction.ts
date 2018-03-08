@@ -1,7 +1,14 @@
 import abi from 'ethereumjs-abi';
 import { toChecksumAddress, addHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
-import { FuncParams, FunctionOutputMappings, Output, Input } from './types';
+import {
+  FuncParams,
+  FunctionOutputMappings,
+  Output,
+  Input,
+  ITypeMapping,
+  ISuppliedArgs
+} from './types';
 
 export default class AbiFunction {
   public constant: boolean;
@@ -53,7 +60,6 @@ export default class AbiFunction {
 
     // Convert argdata to a hex buffer for ethereumjs-abi
     const argBuffer = new Buffer(argString, 'hex');
-
     // Decode!
     const argArr = abi.rawDecode(this.outputTypes, argBuffer);
 
@@ -80,13 +86,13 @@ export default class AbiFunction {
   }
 
   private parsePostDecodedValue = (type: string, value: any) => {
-    const valueMapping = {
-      address: val => toChecksumAddress(val.toString(16))
+    const valueMapping: ITypeMapping = {
+      address: (val: any) => toChecksumAddress(val.toString(16))
     };
 
-    return valueMapping[type]
-      ? valueMapping[type](value)
-      : BN.isBN(value) ? value.toString() : value;
+    const mapppedType = valueMapping[type];
+
+    return mapppedType ? mapppedType(value) : BN.isBN(value) ? value.toString() : value;
   };
 
   private parsePreEncodedValue = (_: string, value: any) =>
@@ -95,7 +101,7 @@ export default class AbiFunction {
   private makeFuncParams = () =>
     this.inputs.reduce((accumulator, currInput) => {
       const { name, type } = currInput;
-      const inputHandler = inputToParse =>
+      const inputHandler = (inputToParse: any) =>
         //TODO: introduce typechecking and typecasting mapping for inputs
         ({ name, type, value: this.parsePreEncodedValue(type, inputToParse) });
 
@@ -110,7 +116,7 @@ export default class AbiFunction {
     return addHexPrefix(`${this.methodSelector}${encodedArgs}`);
   };
 
-  private processSuppliedArgs = (suppliedArgs: object) =>
+  private processSuppliedArgs = (suppliedArgs: ISuppliedArgs) =>
     this.inputNames.map(name => {
       const type = this.funcParams[name].type;
       //TODO: parse args based on type
