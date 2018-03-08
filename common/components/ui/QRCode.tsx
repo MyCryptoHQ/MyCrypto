@@ -35,6 +35,7 @@ export default class QRCode extends React.PureComponent<Props, State> {
     return (
       <img
         src={qr}
+        alt="QR Code"
         style={{
           width: '100%',
           height: '100%'

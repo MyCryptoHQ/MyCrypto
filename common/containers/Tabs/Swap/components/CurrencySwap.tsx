@@ -341,7 +341,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
               <div className="flex-spacer" />
               <div className="input-group-wrapper">
                 <div className="input-group-header">Deposit</div>
-                <label className="input-group input-group-inline-dropdown">
+                <label className="input-group input-group-inline">
                   <Input
                     id="origin-swap-input"
                     className={`input-group-input ${
@@ -365,7 +365,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
               </div>
 
               <div className="input-group-wrapper">
-                <label className="input-group input-group-inline-dropdown">
+                <label className="input-group input-group-inline">
                   <div className="input-group-header">Recieve</div>
                   <Input
                     id="destination-swap-input"
