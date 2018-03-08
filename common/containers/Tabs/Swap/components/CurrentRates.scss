@@ -2,6 +2,8 @@
 @import "common/sass/mixins";
 
 .SwapRates {
+  margin-bottom: $space;
+
   &-title {
     margin-top: 0;
     text-align: center;

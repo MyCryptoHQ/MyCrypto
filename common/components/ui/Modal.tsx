@@ -23,7 +23,7 @@ interface ModalStyle {
   maxWidth?: string;
 }
 
-const Fade = ({ children, ...props }) => (
+const Fade = ({ children, ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="animate-modal">
     {children}
   </CSSTransition>
@@ -97,6 +97,10 @@ export default class Modal extends PureComponent<Props, {}> {
   };
 
   private escapeListner = (ev: KeyboardEvent) => {
+    if (!this.props.isOpen) {
+      return;
+    }
+
     // Don't trigger if they hit escape while on an input
     if (ev.target) {
       if (

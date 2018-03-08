@@ -10,8 +10,9 @@ import {
 } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { getOffline, isNetworkUnit } from 'selectors/config';
+import { SagaIterator } from 'redux-saga';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });

@@ -27,7 +27,7 @@ export interface GetAccountsRequest extends RPCRequestBase {
   method: 'eth_accounts';
 }
 
-type TWeb3ProviderCallback = (error, result: JsonRpcResponse | JsonRpcResponse[]) => any;
+type TWeb3ProviderCallback = (error: string, result: JsonRpcResponse | JsonRpcResponse[]) => any;
 type TSendAsync = (request: RPCRequest | any, callback: TWeb3ProviderCallback) => void;
 
 export interface IWeb3Provider {

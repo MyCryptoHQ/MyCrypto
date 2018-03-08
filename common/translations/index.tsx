@@ -3,9 +3,20 @@ import React from 'react';
 import { getLanguageSelection } from 'selectors/config';
 import { configuredStore } from '../store';
 const fallbackLanguage = 'en';
-const repository = {};
+const repository: {
+  [language: string]: {
+    [translationName: string]: string;
+  };
+} = {};
 
-const languages = [
+interface ILanguage {
+  code: string;
+  data: {
+    [translationName: string]: string;
+  };
+}
+
+const languages: ILanguage[] = [
   require('./lang/de.json'),
   require('./lang/el.json'),
   require('./lang/en.json'),

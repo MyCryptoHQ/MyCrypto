@@ -20,6 +20,7 @@ import React from 'react';
 import { getNetworkConfig } from 'selectors/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { computeIndexingHash } from 'libs/transaction';
+import { NetworkConfig } from 'types/network';
 
 export const broadcastTransactionWrapper = (func: (serializedTx: string) => SagaIterator) =>
   function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
@@ -29,7 +30,7 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
     );
 
     try {
-      const shouldBroadcast = yield call(shouldBroadcastTransaction, indexingHash);
+      const shouldBroadcast: boolean = yield call(shouldBroadcastTransaction, indexingHash);
       if (!shouldBroadcast) {
         yield put(
           showNotification(
@@ -46,16 +47,19 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       });
       yield put(queueAction);
       const stringTx: string = yield call(bufferToHex, serializedTransaction);
-      const broadcastedHash = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
+      const broadcastedHash: string = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
       yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
 
-      const network = yield select(getNetworkConfig);
-      //TODO: make this not ugly
+      const network: NetworkConfig = yield select(getNetworkConfig);
+
       yield put(
         showNotification(
           'success',
-          <TransactionSucceeded txHash={broadcastedHash} blockExplorer={network.blockExplorer} />,
-          0
+          <TransactionSucceeded
+            txHash={broadcastedHash}
+            blockExplorer={network.isCustom ? undefined : network.blockExplorer}
+          />,
+          Infinity
         )
       );
     } catch (error) {

@@ -14,7 +14,7 @@ describe('handleFromRequest*', () => {
   const fromAddress = '0xa';
   const gens: any = {};
   gens.gen = cloneableGenerator(handleFromRequest)();
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;

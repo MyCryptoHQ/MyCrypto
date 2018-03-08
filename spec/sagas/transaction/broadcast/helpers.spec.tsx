@@ -36,7 +36,7 @@ describe('broadcastTransactionWrapper*', () => {
     blockExplorer: 'blockExplorer'
   };
 
-  let random;
+  let random: () => number;
   const func: any = () => undefined;
   const action: any = {};
   const gens: any = {};
@@ -128,7 +128,7 @@ describe('broadcastTransactionWrapper*', () => {
         showNotification(
           'success',
           <TransactionSucceeded txHash={broadcastedHash} blockExplorer={network.blockExplorer} />,
-          0
+          Infinity
         )
       )
     );

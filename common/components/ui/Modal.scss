@@ -4,6 +4,8 @@
 $m-background: #fff;
 $m-window-padding-w: 20px;
 $m-window-padding-h: 30px;
+$m-window-padding-w-mobile: 10px;
+$m-window-padding-h-mobile: 10px;
 $m-header-height: 62px;
 $m-header-padding: 1rem 2rem 0.5rem 2rem;
 $m-content-padding: 1.5rem 2rem;
@@ -24,7 +26,7 @@ $m-anim-speed: 400ms;
 
 .Modal {
   position: fixed;
-  top: 50%;
+  top: $m-window-padding-h;
   left: 50%;
   width: initial;
   max-width: 95%;
@@ -33,7 +35,7 @@ $m-anim-speed: 400ms;
   max-height: calc(100% - #{$m-window-padding-h * 2});
   background: $m-background;
   border-radius: 2px;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   z-index: $zindex-modal;
   overflow: hidden;
   display: flex;
@@ -111,7 +113,10 @@ $m-anim-speed: 400ms;
 
   // Mobile styles
   @media(max-width: $screen-sm) {
-    width: calc(100% - 40px) !important;
+    top: $m-window-padding-h-mobile;
+    width: calc(100% - #{$m-window-padding-w-mobile}) !important;
+    max-width: calc(100% - #{$m-window-padding-w-mobile * 2});
+    max-height: calc(100% - #{$m-window-padding-h-mobile * 2});
   }
 }
 
