@@ -55,13 +55,13 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
 
     return (
       <Modal
-        title={translate('Generate Keystore File')}
+        title={translateRaw('Generate Keystore File')}
         isOpen={this.props.isOpen}
         handleClose={this.handleClose}
       >
         <form className="GenKeystore" onSubmit={this.handleSubmit}>
           <div className="input-group-wrapper GenKeystore-field">
-            <label className="input-group input-group-inline-dropdown">
+            <label className="input-group input-group-inline">
               <div className="input-group-header">Private Key</div>
               <TogglablePassword
                 name="privateKey"
@@ -74,7 +74,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
             </label>
           </div>
           <div className="input-group-wrapper GenKeystore-field">
-            <label className="input-group input-group-inline-dropdown">
+            <label className="input-group input-group-inline">
               <div className="input-group-header">Password</div>
               <TogglablePassword
                 name="password"

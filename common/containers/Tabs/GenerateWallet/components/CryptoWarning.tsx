@@ -53,7 +53,11 @@ const CryptoWarning: React.SFC<{}> = () => (
             className="CryptoWarning-browsers-browser"
           >
             <div>
-              <img className="CryptoWarning-browsers-browser-icon" src={browser.icon} />
+              <img
+                className="CryptoWarning-browsers-browser-icon"
+                src={browser.icon}
+                alt={browser.name + ' logo'}
+              />
               <div className="CryptoWarning-browsers-browser-name">{browser.name}</div>
             </div>
           </NewTabLink>
