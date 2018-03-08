@@ -9,8 +9,9 @@
     max-width: 680px;
     margin: 0 auto $space * 3;
     margin-top: 12px;
-    > h1.input-group-header {
+    > .input-group-header {
       margin-bottom: 1rem;
+      // This selector is an exception, it targets the span returned using `translate`.
       > span {
         font-size: 2rem;
         margin: auto;

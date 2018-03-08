@@ -140,7 +140,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
           {network === CUSTOM.value && (
             <div className="flex-wrapper">
-              <label className="col-sm-6 input-group input-group-inline-dropdown">
+              <label className="col-sm-6 input-group input-group-inline">
                 <div className="input-group-header">Network Name</div>
                 <Input
                   className={`input-group-input ${
@@ -152,7 +152,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                   onChange={e => this.setState({ customNetworkId: e.currentTarget.value })}
                 />
               </label>
-              <label className="col-sm-3 input-group input-group-inline-dropdown">
+              <label className="col-sm-3 input-group input-group-inline">
                 <div className="input-group-header">Currency</div>
                 <Input
                   className={`input-group-input ${
@@ -164,7 +164,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                   onChange={e => this.setState({ customNetworkUnit: e.currentTarget.value })}
                 />
               </label>
-              <label className="col-sm-3 input-group input-group-inline-dropdown">
+              <label className="col-sm-3 input-group input-group-inline">
                 <div className="input-group-header">Chain ID</div>
                 <Input
                   className={`input-group-input ${
@@ -181,7 +181,7 @@ class CustomNodeModal extends React.Component<Props, State> {
             </div>
           )}
 
-          <label className="input-group input-group-inline-dropdown">
+          <label className="input-group input-group-inline">
             <div className="input-group-header">URL</div>
             <Input
               className={`input-group-input ${this.state.url && invalids.url ? 'invalid' : ''}`}
@@ -205,7 +205,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
           {this.state.hasAuth && (
             <div className="flex-wrapper ">
-              <label className="col-sm-6 input-group input-group-inline-dropdown">
+              <label className="col-sm-6 input-group input-group-inline">
                 <div className="input-group-header">Username</div>
                 <Input
                   className={`input-group-input ${
@@ -216,7 +216,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                   onChange={e => this.setState({ username: e.currentTarget.value })}
                 />
               </label>
-              <label className="col-sm-6 input-group input-group-inline-dropdown">
+              <label className="col-sm-6 input-group input-group-inline">
                 <div className="input-group-header">Password</div>
                 <Input
                   className={`input-group-input ${

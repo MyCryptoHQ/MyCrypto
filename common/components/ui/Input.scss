@@ -12,6 +12,22 @@
   > .TogglablePassword {
     width: 100%;
   }
+  &-inline {
+    display: flex;
+    flex-direction: row;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    > .input-group-header {
+      width: 100%;
+    }
+    > .input-group-input {
+      flex-grow: 1;
+      width: auto;
+    }
+    > .Select {
+      margin-left: 8px;
+    }
+  }
   &-header {
     display: flex;
     font-size: 1rem;
@@ -43,6 +59,14 @@
     box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
     transition: border-color 120ms, box-shadow 120ms;
     margin-bottom: 1rem;
+    &.border-rad-right-0 {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &.border-rad-left-0 {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
     &-small {
       padding: 0.5rem 0.75rem;
     }
@@ -63,23 +87,6 @@
         }
       }
     }
-  }
-}
-
-.input-group-inline-dropdown {
-  display: flex;
-  flex-direction: row;
-  font-size: 1rem;
-  flex-wrap: wrap;
-  > .input-group-header {
-    width: 100%;
-  }
-  > .input-group-input {
-    flex-grow: 1;
-    width: auto;
-  }
-  > .Select {
-    margin-left: 8px;
   }
 }
 

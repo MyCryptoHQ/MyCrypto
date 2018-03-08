@@ -18,6 +18,7 @@ interface Props {
   isValid?: boolean;
   isVisible?: boolean;
   validity?: 'valid' | 'invalid' | 'semivalid';
+  readOnly?: boolean;
 
   // Textarea-only props
   isTextareaWhenVisible?: boolean;
@@ -61,18 +62,16 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       onChange,
       onFocus,
       onBlur,
-      handleToggleVisibility
+      handleToggleVisibility,
+      readOnly
     } = this.props;
     const { isVisible } = this.state;
-    const validClass = validity
-      ? `is-${validity}`
-      : isValid === null || isValid === undefined ? '' : isValid ? 'is-valid' : 'is-invalid';
 
     return (
-      <div className={`TogglablePassword input-group input-group-inline-dropdown ${className}`}>
+      <div className={`TogglablePassword input-group input-group-inline ${className}`}>
         {isTextareaWhenVisible && isVisible ? (
           <TextArea
-            className={validClass}
+            className={validity || !isValid ? 'invalid' : ''}
             value={value}
             name={name}
             disabled={disabled}
@@ -83,6 +82,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
             placeholder={placeholder}
             rows={this.props.rows || 3}
             aria-label={ariaLabel}
+            readOnly={readOnly}
           />
         ) : (
           <Input
@@ -90,12 +90,13 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
             name={name}
             disabled={disabled}
             type={isVisible ? 'text' : 'password'}
-            className={`${validClass}`}
+            className={`${validity || !isValid ? 'invalid' : ''} border-rad-right-0`}
             placeholder={placeholder}
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
             aria-label={ariaLabel}
+            readOnly={readOnly}
           />
         )}
         <span
