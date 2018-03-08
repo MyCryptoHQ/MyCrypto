@@ -17,7 +17,7 @@ import { Input } from 'components/ui';
 const CUSTOM = 'custom';
 
 interface InputProps {
-  name: string;
+  name: keyof Omit<State, 'hasAuth'>;
   placeholder?: string;
   type?: string;
   autoComplete?: 'off';
