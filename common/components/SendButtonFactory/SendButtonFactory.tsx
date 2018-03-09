@@ -70,7 +70,7 @@ class SendButtonFactoryClass extends Component<Props> {
                   withOnClick={({ onClick }) =>
                     this.props.withProps({
                       disabled: toggleDisabled ? (stateTransaction !== null ? false : true) : false,
-                      onClick: onClick
+                      onClick
                     })
                   }
                   Modal={this.props.Modal}
@@ -84,7 +84,7 @@ class SendButtonFactoryClass extends Component<Props> {
             withOnClick={({ onClick }) =>
               this.props.withProps({
                 disabled: toggleDisabled ? (stateTransaction !== null ? false : true) : false,
-                onClick: onClick
+                onClick
               })
             }
             Modal={this.props.Modal}
