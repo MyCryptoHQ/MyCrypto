@@ -10,17 +10,21 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { TextArea } from 'components/ui';
+import { getSerializedTransaction } from 'selectors/transaction';
 
 export interface CallbackProps {
+  disabled: boolean;
   onClick(): void;
 }
 
 interface StateProps {
   walletType: IWalletType;
+  stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
 }
 
 interface OwnProps {
   onlyTransactionParameters?: boolean;
+  toggleDisabled?: boolean;
   Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
@@ -31,39 +35,67 @@ const getStringifiedTx = (serializedTransaction: string) =>
 type Props = StateProps & OwnProps;
 class SendButtonFactoryClass extends Component<Props> {
   public render() {
-    const { onlyTransactionParameters } = this.props;
+    const { onlyTransactionParameters, stateTransaction, toggleDisabled } = this.props;
     const columnSize = onlyTransactionParameters ? 12 : 6;
     return (
-      <SerializedTransaction
-        withSerializedTransaction={serializedTransaction => (
-          <React.Fragment>
-            <div className={`col-sm-${columnSize}`}>
-              <label>
-                {this.props.walletType.isWeb3Wallet
-                  ? 'Transaction Parameters'
-                  : translate('SEND_raw')}
-              </label>
-              <TextArea value={getStringifiedTx(serializedTransaction)} rows={4} readOnly={true} />
-            </div>
-            {!onlyTransactionParameters && (
-              <div className="col-sm-6">
+      <div>
+        <SerializedTransaction
+          withSerializedTransaction={serializedTransaction => (
+            <React.Fragment>
+              <div className={`col-sm-${columnSize}`}>
                 <label>
                   {this.props.walletType.isWeb3Wallet
-                    ? 'Serialized Transaction Parameters'
-                    : translate('SEND_signed')}
+                    ? 'Transaction Parameters'
+                    : translate('SEND_raw')}
                 </label>
-                <TextArea value={addHexPrefix(serializedTransaction)} rows={4} readOnly={true} />
+                <TextArea
+                  value={getStringifiedTx(serializedTransaction)}
+                  rows={4}
+                  readOnly={true}
+                />
               </div>
-            )}
-            <OfflineBroadcast />
-            <OnlineSend withProps={this.props.withProps} Modal={this.props.Modal} />
-          </React.Fragment>
-        )}
-      />
+              {!onlyTransactionParameters && (
+                <div className="col-sm-6">
+                  <label>
+                    {this.props.walletType.isWeb3Wallet
+                      ? 'Serialized Transaction Parameters'
+                      : translate('SEND_signed')}
+                  </label>
+                  <TextArea value={addHexPrefix(serializedTransaction)} rows={4} readOnly={true} />
+                </div>
+              )}
+              <OfflineBroadcast />
+              {!toggleDisabled ? (
+                <OnlineSend
+                  withOnClick={({ onClick }) =>
+                    this.props.withProps({
+                      disabled: toggleDisabled ? (stateTransaction !== null ? false : true) : false,
+                      onClick: onClick
+                    })
+                  }
+                  Modal={this.props.Modal}
+                />
+              ) : null}
+            </React.Fragment>
+          )}
+        />
+        {toggleDisabled ? (
+          <OnlineSend
+            withOnClick={({ onClick }) =>
+              this.props.withProps({
+                disabled: toggleDisabled ? (stateTransaction !== null ? false : true) : false,
+                onClick: onClick
+              })
+            }
+            Modal={this.props.Modal}
+          />
+        ) : null}
+      </div>
     );
   }
 }
 
 export const SendButtonFactory = connect((state: AppState) => ({
-  walletType: getWalletType(state)
+  walletType: getWalletType(state),
+  stateTransaction: getSerializedTransaction(state)
 }))(SendButtonFactoryClass);
