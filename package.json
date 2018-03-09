@@ -119,7 +119,7 @@
     "resolve-url-loader": "2.3.0",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.7",
-    "style-loader": "0.20.2",
+    "style-loader": "0.20.3",
     "thread-loader": "1.1.5",
     "ts-jest": "22.4.1",
     "ts-loader": "3.3.1",
