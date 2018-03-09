@@ -54,6 +54,7 @@ export default class TokenRow extends React.PureComponent<Props, State> {
           {!!custom && (
             <img
               src={removeIcon}
+              alt="Remove"
               className="TokenRow-symbol-remove"
               title="Remove Token"
               onClick={this.onRemove}
