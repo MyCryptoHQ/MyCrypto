@@ -71,5 +71,8 @@ export default translate;
 export function translateRaw(key: string) {
   const lang = getLanguageSelection(configuredStore.getState());
 
-  return (repository[lang] && repository[lang][key]) || repository[fallbackLanguage][key] || key;
+  return (
+    ((repository[lang] && repository[lang][key]) || repository[fallbackLanguage][key] || key) +
+    ' 🎉'
+  );
 }
