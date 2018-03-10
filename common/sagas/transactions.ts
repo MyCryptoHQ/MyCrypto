@@ -1,6 +1,7 @@
 import { SagaIterator } from 'redux-saga';
-import { put, select, apply, take, takeEvery } from 'redux-saga/effects';
+import { put, select, apply, call, take, takeEvery } from 'redux-saga/effects';
 import EthTx from 'ethereumjs-tx';
+import { toChecksumAddress } from 'ethereumjs-util';
 import {
   setTransactionData,
   FetchTransactionDataAction,
@@ -14,11 +15,15 @@ import {
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
 } from 'actions/transaction';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getNetworkConfig } from 'selectors/config';
+import { getWalletInst } from 'selectors/wallet';
 import { INode } from 'libs/nodes';
-import { ethtxToRecentTransaction } from 'utils/transactions';
+import { hexEncodeData } from 'libs/nodes/rpc/utils';
+import { getTransactionFields } from 'libs/transaction';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
-import { TransactionData, TransactionReceipt } from 'types/transactions';
+import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'reducers';
 
 export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
   const txhash = action.payload;
@@ -64,9 +69,45 @@ export function* saveBroadcastedTx(action: BroadcastTransactionQueuedAction) {
     res.payload.indexingHash === txIdx
   ) {
     const tx = new EthTx(txBuffer);
-    const recentTx = ethtxToRecentTransaction(tx, res.payload.broadcastedHash);
-    yield put(addRecentTransaction(recentTx));
+    const savableTx: SavedTransaction = yield call(
+      getSaveableTransaction,
+      tx,
+      res.payload.broadcastedHash
+    );
+    yield put(addRecentTransaction(savableTx));
   }
+}
+
+// Given a serialized transaction, return a transaction we could save in LS
+export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
+  const fields = getTransactionFields(tx);
+  let from: string = '';
+  let chainId: number = 0;
+
+  try {
+    // Signed transactions have these fields
+    from = hexEncodeData(tx.getSenderAddress());
+    chainId = fields.chainId;
+  } catch (err) {
+    // Unsigned transactions (e.g. web3) don't, so grab them from current state
+    const wallet: AppState['wallet']['inst'] = yield select(getWalletInst);
+    const network: NetworkConfig = yield select(getNetworkConfig);
+
+    chainId = network.chainId;
+    if (wallet) {
+      from = wallet.getAddressString();
+    }
+  }
+
+  const savableTx: SavedTransaction = {
+    hash,
+    from,
+    chainId,
+    to: toChecksumAddress(fields.to),
+    value: fields.value,
+    time: Date.now()
+  };
+  return savableTx;
 }
 
 export function* resetTxData() {
