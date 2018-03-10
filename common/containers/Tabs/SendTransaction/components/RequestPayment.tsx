@@ -17,7 +17,7 @@ import { getGasLimit } from 'selectors/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
-import { getNetworkConfig, getSelectedTokenContractAddress } from 'selectors/config';
+import { getNetworkConfig, getSelectedTokenContractAddress, isNetworkUnit } from 'selectors/config';
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { NetworkConfig } from 'types/network';
@@ -34,6 +34,7 @@ interface StateProps {
   networkConfig: NetworkConfig;
   decimal: number;
   tokenContractAddress: string;
+  isNetworkUnit: boolean;
 }
 
 interface ActionProps {
@@ -43,7 +44,8 @@ interface ActionProps {
 
 type Props = OwnProps & StateProps & ActionProps;
 
-const isValidAmount = decimal => amount => validNumber(+amount) && validDecimal(amount, decimal);
+const isValidAmount = (decimal: number) => (amount: string) =>
+  validNumber(+amount) && validDecimal(amount, decimal);
 
 class RequestPayment extends React.Component<Props, {}> {
   public state = {
@@ -144,7 +146,7 @@ class RequestPayment extends React.Component<Props, {}> {
   private generateEIP681String(
     currentTo: string,
     tokenContractAddress: string,
-    currentValue,
+    currentValue: { raw: string; value: BN | null },
     gasLimit: { raw: string; value: BN | null },
     unit: string,
     decimal: number,
@@ -156,12 +158,16 @@ class RequestPayment extends React.Component<Props, {}> {
       !gasLimit ||
       !gasLimit.raw.length ||
       !currentTo.length ||
-      (unit !== 'ether' && !tokenContractAddress.length)
+      (unit !== 'ETH' && !tokenContractAddress.length)
     ) {
       return '';
     }
 
-    if (unit === 'ether') {
+    const currentValueIsEther = (
+      _: AppState['transaction']['fields']['value'] | AppState['transaction']['meta']['tokenTo']
+    ): _ is AppState['transaction']['fields']['value'] => this.props.isNetworkUnit;
+
+    if (currentValueIsEther(currentValue)) {
       return buildEIP681EtherRequest(currentTo, chainId, currentValue);
     } else {
       return buildEIP681TokenRequest(
@@ -184,7 +190,8 @@ function mapStateToProps(state: AppState): StateProps {
     gasLimit: getGasLimit(state),
     networkConfig: getNetworkConfig(state),
     decimal: getDecimal(state),
-    tokenContractAddress: getSelectedTokenContractAddress(state)
+    tokenContractAddress: getSelectedTokenContractAddress(state),
+    isNetworkUnit: isNetworkUnit(state, getUnit(state))
   };
 }
 

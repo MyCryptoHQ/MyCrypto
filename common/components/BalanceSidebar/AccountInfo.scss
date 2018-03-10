@@ -2,24 +2,28 @@
 @import 'common/sass/mixins';
 
 .AccountInfo {
-  &-copy-icon{
-    display: inline;
-    color: $gray-light;
-    .fa{
-      margin-right: 3px;
-    }
-    &-copied{
-      color: $brand-success;
-      cursor: pointer;
-      .fa{
-        margin-right: 3px;
-      }
-    }
+  &-copy {
+    display: inline-block;
+    cursor: pointer;
+    color: $text-color;
+    font-size: $font-size-xs;
+    opacity: 0.5;
+    transition: $transition;
+
     &:hover{
-      cursor: pointer;
-      color: $text-color;
+      opacity: 1;
+    }
+
+    &.is-copied{
+      color: $brand-success;
+      opacity: 1;
+    }
+
+    .fa {
+      margin-right: $space-xs;
     }
   }
+
   &-section {
     margin-top: $space * 1.5;
 
@@ -81,6 +85,7 @@
     }
 
     &-addr {
+      margin-top: -$space-xs;
       word-wrap: break-word;
       @include mono;
     }

@@ -13,7 +13,7 @@ export const Shapeshift: React.SFC = () => (
         </h5>
       </div>
       <div className="Promos-promo-images">
-        <img src={ShapeshiftLogo} />
+        <img src={ShapeshiftLogo} alt="Shapeshift Logo" />
       </div>
     </div>
   </Link>

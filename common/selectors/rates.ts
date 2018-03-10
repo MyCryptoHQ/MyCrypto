@@ -1,6 +1,6 @@
 import { AppState } from 'reducers';
 import { getNetworkConfig } from 'selectors/config';
-import { getUnit, isEtherTransaction, getParamsFromSerializedTx } from 'selectors/transaction';
+import { getUnit, getParamsFromSerializedTx } from 'selectors/transaction';
 import BN from 'bn.js';
 import { Wei, TokenValue } from 'libs/units';
 
@@ -9,13 +9,11 @@ export const getRates = (state: AppState) => state.rates;
 const getUSDConversionRate = (state: AppState, unit: string) => {
   const { isTestnet } = getNetworkConfig(state);
   const { rates } = getRates(state);
-  const isEther = isEtherTransaction(state);
-  const conversionUnit = isEther ? 'ETH' : unit;
   if (isTestnet) {
     return null;
   }
 
-  const conversionRate = rates[conversionUnit];
+  const conversionRate = rates[unit];
 
   if (!conversionRate) {
     return null;
@@ -29,7 +27,6 @@ export const getValueInUSD = (state: AppState, value: TokenValue | Wei) => {
   if (!conversionRate) {
     return null;
   }
-
   const sendValueUSD = value.muln(conversionRate);
   return sendValueUSD;
 };

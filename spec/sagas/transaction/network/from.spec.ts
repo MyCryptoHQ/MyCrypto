@@ -1,9 +1,11 @@
+import { configuredStore } from 'store';
 import { apply, put, select } from 'redux-saga/effects';
 import { getWalletInst } from 'selectors/wallet';
 import { getFromSucceeded, getFromFailed } from 'actions/transaction';
 import { showNotification } from 'actions/notifications';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { handleFromRequest } from 'sagas/transaction/network/from';
+configuredStore.getState();
 
 describe('handleFromRequest*', () => {
   const walletInst: any = {
@@ -12,7 +14,7 @@ describe('handleFromRequest*', () => {
   const fromAddress = '0xa';
   const gens: any = {};
   gens.gen = cloneableGenerator(handleFromRequest)();
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;

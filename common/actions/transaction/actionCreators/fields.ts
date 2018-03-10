@@ -81,7 +81,10 @@ const setGasPriceField = (payload: SetGasPriceFieldAction['payload']): SetGasPri
 });
 
 type TReset = typeof reset;
-const reset = (): ResetAction => ({ type: TypeKeys.RESET });
+const reset = (payload: ResetAction['payload'] = { include: {}, exclude: {} }): ResetAction => ({
+  type: TypeKeys.RESET,
+  payload
+});
 
 export {
   TInputGasLimit,

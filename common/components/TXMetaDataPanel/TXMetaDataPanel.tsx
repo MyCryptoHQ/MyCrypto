@@ -10,7 +10,8 @@ import {
   getNonceRequested,
   TGetNonceRequested,
   reset,
-  TReset
+  TReset,
+  ResetAction
 } from 'actions/transaction';
 import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
@@ -44,6 +45,7 @@ interface DefaultProps {
 }
 
 interface OwnProps {
+  resetIncludeExcludeProperties?: ResetAction['payload'];
   initialState?: SliderStates;
   disableToggle?: boolean;
   advancedGasOptions?: AdvancedOptions;
@@ -69,7 +71,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 
   public componentDidMount() {
     if (!this.props.offline) {
-      this.props.reset();
+      this.props.reset(this.props.resetIncludeExcludeProperties);
       this.props.fetchCCRates([this.props.network.unit]);
       this.props.getNonceRequested();
     }

@@ -6,6 +6,7 @@ import {
   SignAction,
   ResetAction
 } from 'actions/transaction';
+import { resetHOF } from 'reducers/transaction/shared';
 
 const INITIAL_STATE: State = {
   local: { signedTransaction: null },
@@ -43,7 +44,7 @@ const signWeb3TranscationSucceeded = (
 
 const signTransactionFailed = () => INITIAL_STATE;
 
-const reset = () => INITIAL_STATE;
+const reset = resetHOF('sign', INITIAL_STATE);
 
 export const sign = (state: State = INITIAL_STATE, action: SignAction | ResetAction) => {
   switch (action.type) {
@@ -56,7 +57,7 @@ export const sign = (state: State = INITIAL_STATE, action: SignAction | ResetAct
     case TK.SIGN_TRANSACTION_FAILED:
       return signTransactionFailed();
     case TK.RESET:
-      return reset();
+      return reset(state, action);
     default:
       return state;
   }

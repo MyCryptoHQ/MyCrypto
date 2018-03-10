@@ -1,3 +1,4 @@
+import { configuredStore } from 'store';
 import { put, apply, call } from 'redux-saga/effects';
 import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from 'actions/transaction';
 import { computeIndexingHash } from 'libs/transaction';
@@ -5,6 +6,7 @@ import {
   signLocalTransactionHandler,
   signWeb3TransactionHandler
 } from 'sagas/transaction/signing/signing';
+configuredStore.getState();
 
 describe('signLocalTransactionHandler*', () => {
   const tx = 'tx';

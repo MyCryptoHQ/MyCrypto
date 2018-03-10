@@ -18,7 +18,7 @@ export const AmountField: React.SFC<Props> = ({
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
       <div className="input-group-wrapper">
-        <label className="input-group input-group-inline-dropdown">
+        <label className="input-group input-group-inline">
           <div className="input-group-header">{translate('SEND_amount')}</div>
           <Input
             className={`input-group-input ${
@@ -37,5 +37,8 @@ export const AmountField: React.SFC<Props> = ({
   />
 );
 
-const isAmountValid = (raw, customValidator, isValid) =>
-  customValidator ? customValidator(raw) : isValid;
+const isAmountValid = (
+  raw: string,
+  customValidator: ((rawAmount: string) => boolean) | undefined,
+  isValid: boolean
+) => (customValidator ? customValidator(raw) : isValid);

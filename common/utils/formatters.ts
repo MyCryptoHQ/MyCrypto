@@ -73,13 +73,13 @@ export function formatNumber(num: string, digits?: number): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
+export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?
   // 21k is only the limit for ethereum though, so make sure they're
   // sending ether if we're going to fix it for them.
-  if (limitStr === '21001' && transactionUnit === 'ether') {
+  if (limitStr === '21001' && transactionUnit === 'ETH') {
     limitStr = '21000';
   }
 

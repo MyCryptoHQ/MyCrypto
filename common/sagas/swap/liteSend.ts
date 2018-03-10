@@ -11,8 +11,7 @@ import {
 import { TypeKeys as WalletTK, setTokenBalancePending } from 'actions/wallet';
 import { AppState } from 'reducers';
 import { showNotification } from 'actions/notifications';
-import { isSupportedUnit } from 'selectors/config';
-import { isEtherUnit } from 'libs/units';
+import { isSupportedUnit, isNetworkUnit } from 'selectors/config';
 import { showLiteSend, configureLiteSend } from 'actions/swap';
 import { TypeKeys as SwapTK } from 'actions/swap/constants';
 import { isUnlocked, isEtherBalancePending } from 'selectors/wallet';
@@ -40,9 +39,9 @@ export function* configureLiteSendSaga(): SagaIterator {
   if (!unlocked) {
     yield take(WalletTK.WALLET_SET);
   }
-
+  const isNetwrkUnit = yield select(isNetworkUnit, label);
   //if it's a token, manually scan for that tokens balance and wait for it to resolve
-  if (!isEtherUnit(label)) {
+  if (!isNetwrkUnit) {
     yield put(setTokenBalancePending({ tokenSymbol: label }));
     yield take([
       WalletTK.WALLET_SET_TOKEN_BALANCE_FULFILLED,

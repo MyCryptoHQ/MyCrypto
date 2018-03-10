@@ -192,12 +192,11 @@ class Header extends Component<Props, State> {
 
         <Navigation color={!network.isCustom && network.color} />
 
-        {isAddingCustomNode && (
-          <CustomNodeModal
-            addCustomNode={this.addCustomNode}
-            handleClose={this.closeCustomNodeModal}
-          />
-        )}
+        <CustomNodeModal
+          isOpen={isAddingCustomNode}
+          addCustomNode={this.addCustomNode}
+          handleClose={this.closeCustomNodeModal}
+        />
       </div>
     );
   }

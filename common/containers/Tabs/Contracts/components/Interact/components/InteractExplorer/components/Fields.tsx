@@ -7,6 +7,7 @@ import { FullWalletOnly } from 'components/renderCbs';
 interface OwnProps {
   button: React.ReactElement<any>;
 }
+
 export class Fields extends Component<OwnProps> {
   public render() {
     const makeContent = () => (
@@ -17,6 +18,7 @@ export class Fields extends Component<OwnProps> {
           initialState="advanced"
           disableToggle={true}
           advancedGasOptions={{ dataField: false }}
+          resetIncludeExcludeProperties={{ exclude: { fields: ['to'] }, include: {} }}
         />
         {this.props.button}
         <SigningStatus />
@@ -24,7 +26,12 @@ export class Fields extends Component<OwnProps> {
       </React.Fragment>
     );
 
-    const makeDecrypt = () => <WalletDecrypt disabledWallets={DISABLE_WALLETS.READ_ONLY} />;
+    const makeDecrypt = () => (
+      <WalletDecrypt
+        disabledWallets={DISABLE_WALLETS.READ_ONLY}
+        resetIncludeExcludeProperties={{ exclude: { fields: ['to'] }, include: {} }}
+      />
+    );
 
     return <FullWalletOnly withFullWallet={makeContent} withoutFullWallet={makeDecrypt} />;
   }

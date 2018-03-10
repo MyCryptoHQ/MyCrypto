@@ -1,7 +1,6 @@
 import translate from 'translations';
 import { Interact } from './components/Interact';
 import { Deploy } from './components/Deploy';
-import './index.scss';
 import { reset, TReset } from 'actions/transaction';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import TabSection from 'containers/TabSection';
