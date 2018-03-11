@@ -1,4 +1,4 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
 
 .TokenBalances {
   &-title {
@@ -34,6 +34,12 @@
   }
 
   &-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    & > &-btn {
+      margin: 0.25rem 0.5rem;
+    }
     &-help {
       padding-top: 10px;
       text-align: center;
