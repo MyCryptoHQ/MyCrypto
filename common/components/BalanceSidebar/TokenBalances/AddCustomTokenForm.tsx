@@ -66,11 +66,11 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
         {fields.map(field => {
           return (
             <label className="AddCustom-field form-group" key={field.name}>
-              <span className="AddCustom-field-label">{field.label}</span>
+              <div className="input-group-header">{field.label}</div>
               <Input
                 className={`${
                   errors[field.name] ? 'invalid' : field.value ? 'valid' : ''
-                } AddCustom-field-input input-sm`}
+                } input-group-input-small`}
                 type="text"
                 name={field.name}
                 value={field.value}
@@ -83,21 +83,21 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
           );
         })}
 
+        <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
+          {translate('Need help? Learn how to add custom tokens.')}
+        </HelpLink>
         <div className="AddCustom-buttons">
-          <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
-            {translate('Need help? Learn how to add custom tokens.')}
-          </HelpLink>
-          <button
-            className="AddCustom-buttons-btn btn btn-primary btn-sm"
-            disabled={!this.isValid()}
-          >
-            {translate('x_Save')}
-          </button>
           <button
             className="AddCustom-buttons-btn btn btn-sm btn-default"
             onClick={this.props.toggleForm}
           >
             {translate('x_Cancel')}
+          </button>
+          <button
+            className="AddCustom-buttons-btn btn btn-primary btn-sm"
+            disabled={!this.isValid()}
+          >
+            {translate('x_Save')}
           </button>
         </div>
       </form>

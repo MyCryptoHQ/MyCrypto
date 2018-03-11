@@ -46,7 +46,6 @@ describe('valueHandler', () => {
   });
   it('should select getUnit', () => {
     gen.invalidDecimal = gen.pass.clone();
-
     expect(gen.pass.next(decimal).value).toEqual(select(getUnit));
     expect(gen.invalidNumber.next(decimal).value).toEqual(select(getUnit));
     expect(gen.invalidDecimal.next(failCases.invalidDecimal).value).toEqual(select(getUnit));

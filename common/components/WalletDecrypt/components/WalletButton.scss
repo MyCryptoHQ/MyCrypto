@@ -29,7 +29,6 @@
   transition: transform 150ms ease, box-shadow 150ms ease;
   animation: wallet-button-enter 400ms ease 1;
   animation-fill-mode: backwards;
-  outline: none;
 
   @for $i from 0 to 5 {
     &:nth-child(#{$i}) {
@@ -60,7 +59,6 @@
   }
 
   &.is-disabled {
-    outline: none;
     cursor: not-allowed;
     @include show-tooltip-on-hover;
 
