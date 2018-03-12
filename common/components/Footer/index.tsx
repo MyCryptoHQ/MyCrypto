@@ -138,7 +138,7 @@ export default class Footer extends React.PureComponent<Props, State> {
           const condition = el.innerText.length > 0;
           return condition;
         },
-        replace: (portion: any, match: any) => {
+        replace: (portion: any) => {
           return portion.text + ' ☠';
         }
       });
