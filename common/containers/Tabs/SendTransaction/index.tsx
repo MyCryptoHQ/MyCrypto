@@ -12,7 +12,8 @@ import {
   WalletInfo,
   RequestPayment,
   Fields,
-  UnavailableWallets
+  UnavailableWallets,
+  SchedulePayment
 } from 'containers/Tabs/SendTransaction/components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
@@ -46,6 +47,11 @@ class SendTransaction extends React.Component<Props> {
         path: 'request',
         name: translate('Request Payment'),
         disabled: this.props.requestDisabled
+      },
+      {
+        path: 'schedule',
+        name: translate('NAV_SchedulePayment'),
+        disabled: !!wallet && !!wallet.isReadOnly
       },
       {
         path: 'info',
@@ -90,6 +96,11 @@ class SendTransaction extends React.Component<Props> {
                     path={`${currentPath}/request`}
                     exact={true}
                     render={() => <RequestPayment wallet={wallet} />}
+                  />
+                  <Route
+                    path={`${currentPath}/schedule`}
+                    exact={true}
+                    render={() => <SchedulePayment wallet={wallet} />}
                   />
                   <RouteNotFound />
                 </Switch>
