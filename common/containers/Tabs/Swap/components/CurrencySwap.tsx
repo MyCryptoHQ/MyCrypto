@@ -81,9 +81,15 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       const rate = this.getMinMax(originKind, destKind);
       let errString;
       if (amount > rate.max) {
-        errString = `Maximum ${rate.max} ${originKind}`;
+        errString = translateRaw('SWAP_MAX_ERROR', {
+          var_rate_max: rate.max.toString(),
+          var_origin_id: originKind
+        });
       } else {
-        errString = `Minimum ${rate.min} ${originKind}`;
+        errString = translateRaw('SWAP_MIN_ERROR', {
+          var_rate_max: rate.min.toString(),
+          var_origin_id: originKind
+        });
       }
       return errString;
     };
@@ -340,7 +346,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
             <div className="CurrencySwap-inner-wrap">
               <div className="flex-spacer" />
               <div className="input-group-wrapper">
-                <div className="input-group-header">Deposit</div>
+                <div className="input-group-header">{translateRaw('SWAP_DEPOSIT_INPUT_LABEL')}</div>
                 <label className="input-group input-group-inline">
                   <Input
                     id="origin-swap-input"
@@ -351,7 +357,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder="Amount"
+                    placeholder={translateRaw('SEND_amount_short')}
                     value={isNaN(origin.amount) ? '' : origin.amount}
                     onChange={this.onChangeAmount}
                   />
@@ -366,7 +372,9 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
               <div className="input-group-wrapper">
                 <label className="input-group input-group-inline">
-                  <div className="input-group-header">Recieve</div>
+                  <div className="input-group-header">
+                    {translateRaw('SWAP_RECIEVE_INPUT_LABEL')}
+                  </div>
                   <Input
                     id="destination-swap-input"
                     className={`${
@@ -376,7 +384,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder="Amount"
+                    placeholder={translateRaw('SEND_amount_short')}
                     value={isNaN(destination.amount) ? '' : destination.amount}
                     onChange={this.onChangeAmount}
                   />

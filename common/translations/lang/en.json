@@ -224,7 +224,7 @@
     "BULK_SuccessMsg": "Success! Your wallets have been generated. ",
     "SEND_addr": "To ",
     "SEND_amount": "Amount to Send ",
-    "SEND_amount_short": "Amount ",
+    "SEND_amount_short": "Amount",
     "SEND_custom": "Add Custom Token",
     "SCAN_TOKENS": "Scan For Tokens",
     "SCAN_TOKENS_FAIL": "Failed to fetch token values",
@@ -862,7 +862,7 @@
     "DONATE_CURRENCY": "Donate",
     "NOTIFICATION_TYPE_WARNING": "Warning",
     "GENERATE_WALLET_WARNING":
-      "Managing your own keys can be risky and a single mistake can lead to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using [MetaMask](https://metamask.io/) or purchasing a [Ledger](https://www.ledgerwallet.com/r/1985?path=/products/) or [TREZOR](https://trezor.io/?a=mycrypto.com) hardware wallet.",
+      "Managing your own keys can be risky and a single mistake can lead to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using [MetaMask](var_metamask_link) or purchasing a [Ledger](var_ledger_link) or [TREZOR](var_trezor_link) hardware wallet.",
     "GENERATE_WALLET_HELPLINK_1": "Learn more about different wallet types & staying secure",
     "PREFOOTER_WARNING":
       "MyCrypto.com does not hold your keys for you. We cannot access accounts, recover keys, reset passwords, nor reverse transactions. Protect your keys & always check that you are on correct URL.",
@@ -977,6 +977,10 @@
     "TX_STATUS": "Status",
     "TX_BLOCK_NUMB": "Block Number",
     "TX_GAS_USED": "Gas Used",
-    "VERIFY_TX": "Verify transaction on var_block_explorere"
+    "VERIFY_TX": "Verify transaction on var_block_explorere",
+    "SWAP_DEPOSIT_INPUT_LABEL": "Deposit",
+    "SWAP_RECIEVE_INPUT_LABEL": "Recieve",
+    "SWAP_MAX_ERROR": "Maximum var_rate_max var_origin_id",
+    "SWAP_MIN_ERROR": "Minimum var_rate_max var_origin_id"
   }
 }

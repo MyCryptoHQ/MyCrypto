@@ -4,7 +4,7 @@ import { WalletType } from '../GenerateWallet';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
 import { HelpLink } from 'components/ui';
-import { HELP_ARTICLE } from 'config';
+import { HELP_ARTICLE, ledgerReferralURL, trezorReferralURL } from 'config';
 
 const WalletTypes: React.SFC<{}> = () => {
   const typeInfo = {
@@ -35,7 +35,11 @@ const WalletTypes: React.SFC<{}> = () => {
       <h1 className="WalletTypes-title">{translateRaw('NAV_GenerateWallet')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
         <strong>{translateRaw('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
-        {translateMarkdown('GENERATE_WALLET_WARNING')}
+        {translateMarkdown('GENERATE_WALLET_WARNING', {
+          var_metamask_link: 'https://metamask.io/',
+          var_ledger_link: ledgerReferralURL,
+          var_trezor_link: trezorReferralURL
+        })}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
           {translateRaw('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>
