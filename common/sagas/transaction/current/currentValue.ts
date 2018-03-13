@@ -33,7 +33,7 @@ export function* valueHandler(
   const isEth = yield select(isEtherTransaction);
   const validNum = isEth ? validNumber : validPositiveNumber;
 
-  if (!validNum(+payload) || !validDecimal(payload, decimal)) {
+  if (!validNum(parseInt(payload, 10)) || !validDecimal(payload, decimal)) {
     return yield put(setter({ raw: payload, value: null }));
   }
   const value = toTokenBase(payload, decimal);
@@ -59,7 +59,7 @@ export function* reparseCurrentValue(value: IInput): SagaIterator {
   const decimal = yield select(getDecimal);
   const validNum = isEth ? validNumber : validPositiveNumber;
 
-  if (validNum(+value.raw) && validDecimal(value.raw, decimal)) {
+  if (validNum(parseInt(value.raw, 10)) && validDecimal(value.raw, decimal)) {
     return {
       raw: value.raw,
       value: toTokenBase(value.raw, decimal)
