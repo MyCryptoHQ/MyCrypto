@@ -13,11 +13,12 @@ import {
   RecentTransactions,
   Fields,
   UnavailableWallets,
-  SideBar
-} from './components';
+  SchedulePayment
+} from 'containers/Tabs/SendTransaction/components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
+import { getNetworkConfig } from 'selectors/config/networks';
 
 const Send = () => (
   <React.Fragment>
@@ -29,6 +30,7 @@ const Send = () => (
 interface StateProps {
   wallet: AppState['wallet']['inst'];
   requestDisabled: boolean;
+  scheduleDisabled: boolean;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
@@ -44,8 +46,13 @@ class SendTransaction extends React.Component<Props> {
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
+        path: 'schedule',
+        name: translate('NAV_SchedulePayment'),
+        disabled: (!!wallet && !!wallet.isReadOnly) || this.props.scheduleDisabled
+      },
+      {
         path: 'request',
-        name: translate('NAV_REQUESTPAYMENT'),
+        name: translate('Request Payment'),
         disabled: this.props.requestDisabled
       },
       {
@@ -97,9 +104,15 @@ class SendTransaction extends React.Component<Props> {
                     render={() => <RequestPayment wallet={wallet} />}
                   />
                   <Route
-                    path={`${currentPath}/recent-txs`}
+                    path={`${currentPath}/schedule`}
                     exact={true}
-                    render={() => <RecentTransactions wallet={wallet} />}
+                    render={() => {
+                      return wallet.isReadOnly || this.props.scheduleDisabled ? (
+                        <Redirect to={`${currentPath}/info`} />
+                      ) : (
+                        <SchedulePayment />
+                      );
+                    }}
                   />
                   <RouteNotFound />
                 </Switch>
@@ -115,5 +128,6 @@ class SendTransaction extends React.Component<Props> {
 
 export default connect((state: AppState) => ({
   wallet: getWalletInst(state),
-  requestDisabled: !isNetworkUnit(state, 'ETH')
+  requestDisabled: !isNetworkUnit(state, 'ETH'),
+  scheduleDisabled: getNetworkConfig(state).name !== 'Kovan'
 }))(SendTransaction);

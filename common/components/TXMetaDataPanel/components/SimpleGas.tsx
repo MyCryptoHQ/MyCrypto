@@ -1,7 +1,6 @@
 import React from 'react';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
-import translate from 'translations';
-import FeeSummary from './FeeSummary';
+import translate, { translateRaw } from 'translations';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
 import {
@@ -17,11 +16,14 @@ import { Wei, fromWei } from 'libs/units';
 import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import { TInputGasPrice } from 'actions/transaction';
+import SchedulingFeeSummary from './SchedulingFeeSummary';
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   setGasPrice: TInputGasPrice;
+  scheduling?: boolean;
+
   inputGasPrice(rawGas: string): void;
 }
 
@@ -112,7 +114,7 @@ class SimpleGas extends React.Component<Props> {
               <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
             </div>
           </div>
-          <FeeSummary
+          <SchedulingFeeSummary
             gasPrice={gasPrice}
             render={({ fee, usd }) => (
               <span>

@@ -75,6 +75,14 @@ interface SetValueFieldAction {
   };
 }
 
+interface SetWindowStartFieldAction {
+  type: TypeKeys.WINDOW_START_FIELD_SET;
+  payload: {
+    raw: string;
+    value: number | null;
+  };
+}
+
 type InputFieldAction = InputNonceAction | InputGasLimitAction | InputDataAction;
 
 type FieldAction =
@@ -83,7 +91,8 @@ type FieldAction =
   | SetToFieldAction
   | SetNonceFieldAction
   | SetValueFieldAction
-  | SetGasPriceFieldAction;
+  | SetGasPriceFieldAction
+  | SetWindowStartFieldAction;
 
 export {
   InputGasLimitAction,
@@ -98,5 +107,6 @@ export {
   SetValueFieldAction,
   FieldAction,
   InputFieldAction,
-  SetGasPriceFieldAction
+  SetGasPriceFieldAction,
+  SetWindowStartFieldAction
 };

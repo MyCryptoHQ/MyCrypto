@@ -10,7 +10,8 @@ import {
   InputDataAction,
   InputNonceAction,
   ResetAction,
-  SetGasPriceFieldAction
+  SetGasPriceFieldAction,
+  SetWindowStartFieldAction
 } from '../actionTypes';
 import { TypeKeys } from 'actions/transaction/constants';
 
@@ -80,6 +81,14 @@ const setGasPriceField = (payload: SetGasPriceFieldAction['payload']): SetGasPri
   payload
 });
 
+type TSetWindowStartField = typeof setWindowStartField;
+const setWindowStartField = (
+  payload: SetWindowStartFieldAction['payload']
+): SetWindowStartFieldAction => ({
+  type: TypeKeys.WINDOW_START_FIELD_SET,
+  payload
+});
+
 type TReset = typeof reset;
 const reset = (payload: ResetAction['payload'] = { include: {}, exclude: {} }): ResetAction => ({
   type: TypeKeys.RESET,
@@ -98,6 +107,7 @@ export {
   TSetNonceField,
   TSetValueField,
   TSetGasPriceField,
+  TSetWindowStartField,
   TReset,
   inputGasLimit,
   inputGasPrice,
@@ -110,5 +120,6 @@ export {
   setNonceField,
   setValueField,
   setGasPriceField,
+  setWindowStartField,
   reset
 };

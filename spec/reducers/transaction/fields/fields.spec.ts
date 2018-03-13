@@ -11,7 +11,8 @@ describe('fields reducer', () => {
     nonce: { raw: '', value: null },
     value: { raw: '', value: null },
     gasLimit: { raw: '21000', value: new BN(21000) },
-    gasPrice: { raw: '20', value: gasPricetoBase(20) }
+    gasPrice: { raw: '20', value: gasPricetoBase(20) },
+    windowStart: { raw: '', value: null }
   };
   const testPayload = { raw: 'test', value: null };
 

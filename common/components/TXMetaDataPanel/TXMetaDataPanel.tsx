@@ -50,6 +50,7 @@ interface OwnProps {
   disableToggle?: boolean;
   advancedGasOptions?: AdvancedOptions;
   className?: string;
+  scheduling?: boolean;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
@@ -90,7 +91,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableToggle, advancedGasOptions, className = '' } = this.props;
+    const { offline, disableToggle, advancedGasOptions, className = '', scheduling } = this.props;
     const { gasPrice } = this.state;
     const showAdvanced = this.state.sliderState === 'advanced' || offline;
     return (
@@ -100,12 +101,14 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             gasPrice={gasPrice}
             inputGasPrice={this.props.inputGasPrice}
             options={advancedGasOptions}
+            scheduling={scheduling}
           />
         ) : (
           <SimpleGas
             gasPrice={gasPrice}
             inputGasPrice={this.handleGasPriceInput}
             setGasPrice={this.props.inputGasPrice}
+            scheduling={scheduling}
           />
         )}
 

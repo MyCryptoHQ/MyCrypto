@@ -11,6 +11,8 @@ import { getAutoGasLimitEnabled } from 'selectors/config';
 import { isValidGasPrice } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
 import { Input } from 'components/ui';
+import SchedulingFeeSummary from './SchedulingFeeSummary';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
 export interface AdvancedOptions {
   gasPriceField?: boolean;
@@ -24,6 +26,7 @@ interface OwnProps {
   inputGasPrice: TInputGasPrice;
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   options?: AdvancedOptions;
+  scheduling?: boolean;
 }
 
 interface StateProps {
@@ -54,8 +57,9 @@ class AdvancedGas extends React.Component<Props, State> {
   };
 
   public render() {
-    const { autoGasLimitEnabled, gasPrice, validGasPrice } = this.props;
+    const { autoGasLimitEnabled, gasPrice, validGasPrice, scheduling } = this.props;
     const { gasPriceField, gasLimitField, nonceField, dataField, feeSummary } = this.state.options;
+
     return (
       <div className="AdvancedGas row form-group">
         <div className="AdvancedGas-calculate-limit">
@@ -107,18 +111,39 @@ class AdvancedGas extends React.Component<Props, State> {
           </div>
         )}
 
-        {feeSummary && (
-          <div className="AdvancedGas-fee-summary">
-            <FeeSummary
-              gasPrice={gasPrice}
-              render={({ gasPriceWei, gasLimit, fee, usd }) => (
-                <span>
-                  {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}
-                </span>
-              )}
-            />
-          </div>
-        )}
+        {!scheduling &&
+          feeSummary && (
+            <div className="AdvancedGas-fee-summary">
+              <FeeSummary
+                gasPrice={gasPrice}
+                render={({ gasPriceWei, gasLimit, fee, usd }) => (
+                  <span>
+                    {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}
+                  </span>
+                )}
+              />
+            </div>
+          )}
+
+        {scheduling &&
+          feeSummary && (
+            <div className="AdvancedGas-fee-summary">
+              <SchedulingFeeSummary
+                gasPrice={gasPrice}
+                render={({ gasPriceWei, gasLimit, fee, usd }) => (
+                  <div>
+                    <span>
+                      {EAC_SCHEDULING_CONFIG.PAYMENT} + {gasPriceWei} * ({
+                        EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
+                      }{' '}
+                      + {EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST} + {gasLimit}) = {fee}{' '}
+                      {usd && <span>~= ${usd} USD</span>}
+                    </span>
+                  </div>
+                )}
+              />
+            </div>
+          )}
       </div>
     );
   }

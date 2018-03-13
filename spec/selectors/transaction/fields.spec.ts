@@ -39,6 +39,10 @@ describe('fields selector', () => {
     gasPrice: {
       raw: '1500',
       value: Wei('1500')
+    },
+    windowStart: {
+      raw: '',
+      value: null
     }
   };
 

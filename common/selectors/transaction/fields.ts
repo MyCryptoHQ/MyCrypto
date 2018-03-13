@@ -10,6 +10,7 @@ const getGasLimit = (state: AppState) => getFields(state).gasLimit;
 const getGasPrice = (state: AppState) => getFields(state).gasPrice;
 const getValue = (state: AppState) => getFields(state).value;
 const getNonce = (state: AppState) => getFields(state).nonce;
+const getWindowStart = (state: AppState) => getFields(state).windowStart;
 
 const getDataExists = (state: AppState) => {
   const { value } = getData(state);
@@ -35,5 +36,6 @@ export {
   getNonce,
   getGasPrice,
   getDataExists,
-  getValidGasCost
+  getValidGasCost,
+  getWindowStart
 };
