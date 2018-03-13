@@ -29,8 +29,7 @@ const initialState: State = {
   signedMessage: null
 };
 
-const messagePlaceholder =
-  'This is a sweet message that you are signing to prove that you own the address you say you own.';
+const messagePlaceholder = translateRaw('SIGN_MSG_PLACEHOLDER');
 
 export class SignMessage extends Component<Props, State> {
   public state: State = initialState;

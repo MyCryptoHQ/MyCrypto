@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
-import { translateRaw } from 'translations';
+import { translateRaw, translateMarkdown } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { Spinner } from 'components/ui';
 import Template from '../Template';
@@ -78,7 +78,7 @@ export default class EnterPassword extends Component<Props, State> {
             {isGenerating ? <Spinner light={true} /> : translateRaw('NAV_GenerateWallet')}
           </button>
 
-          <p className="EnterPw-warning">{translateRaw('x_PasswordDesc')}</p>
+          <p className="EnterPw-warning">{translateMarkdown('x_PasswordDesc')}</p>
         </form>
       </Template>
     );

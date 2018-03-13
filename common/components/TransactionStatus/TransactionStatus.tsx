@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translateRaw } from 'translations';
+import { translateRaw, translateMarkdown } from 'translations';
 import { fetchTransactionData, TFetchTransactionData } from 'actions/transactions';
 import { getTransactionDatas } from 'selectors/transactions';
 import { getNetworkConfig } from 'selectors/config';
@@ -44,7 +44,6 @@ class TransactionStatus extends React.Component<Props> {
     if (tx && tx.data) {
       content = (
         <React.Fragment>
-          <h2 className="TxStatus-title">Transaction Found</h2>
           <div className="TxStatus-data">
             <TransactionDataTable network={network} data={tx.data} receipt={tx.receipt} />
           </div>
@@ -56,10 +55,10 @@ class TransactionStatus extends React.Component<Props> {
           <h2 className="TxStatus-error-title">{translateRaw('tx_notFound')}</h2>
           <p className="TxStatus-error-desc">{translateRaw('tx_notFound_1')}</p>
           <ul className="TxStatus-error-list">
-            <li>Make sure you copied the Transaction Hash correctly</li>
-            <li>{translateRaw('tx_notFound_2')}</li>
-            <li>{translateRaw('tx_notFound_3')}</li>
-            <li>{translateRaw('tx_notFound_4')}</li>
+            <li>{translateMarkdown('tx_notFound_5')}</li>
+            <li>{translateMarkdown('tx_notFound_2')}</li>
+            <li>{translateMarkdown('tx_notFound_3')}</li>
+            <li>{translateMarkdown('tx_notFound_4')}</li>
           </ul>
         </div>
       );

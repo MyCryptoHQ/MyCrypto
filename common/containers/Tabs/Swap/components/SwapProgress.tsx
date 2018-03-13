@@ -112,18 +112,18 @@ export default class SwapProgress extends PureComponent<Props, State> {
       // 1
       translateRaw('SWAP_progress_1'),
       // 2
-      <span key="1">
-        {translateRaw('SWAP_progress_2')} {originId}...
-      </span>,
+      <span key="1">{translateRaw('SWAP_progress_2', { var_origin_id: originId })}</span>,
       // 3
-      <span key="2">
-        {originId} {translateRaw('SWAP_progress_3')}
-      </span>,
+      <span key="2">{translateRaw('SWAP_progress_3', { var_origin_id: originId })}</span>,
       // 4 TODO: Translate me
       <span key="3">
-        Sending your {destinationId}
+        {translateRaw('SWAP_progress_4', { var_destination_id: destinationId })}
         <br />
-        <small>Waiting for {numberOfConfirmations} confirmations...</small>
+        <small>
+          {translateRaw('SWAP_progress_confirmations', {
+            var_number_confirmations: numberOfConfirmations
+          })}
+        </small>
       </span>,
       // 5
       translateRaw('SWAP_progress_5')

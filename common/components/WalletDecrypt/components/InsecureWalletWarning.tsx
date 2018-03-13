@@ -1,8 +1,8 @@
 import React from 'react';
-import { HelpLink } from 'components/ui';
 import { HELP_ARTICLE } from 'config';
 import './InsecureWalletWarning.scss';
-import { translateRaw } from 'translations';
+import { translateRaw, translateMarkdown } from 'translations';
+import { knowledgeBaseURL } from 'config/data';
 
 interface Props {
   walletType: string | React.ReactElement<string>;
@@ -44,15 +44,15 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
     const checkboxes: Checkbox[] = [
       {
         name: 'hasAcknowledgedWallets',
-        label: 'I acknowledge that I can and should use MetaMask or a Hardware Wallet'
+        label: translateRaw('INSECURE_WALLET_WARNING_1')
       },
       {
         name: 'hasAcknowledgedDownload',
-        label: 'I acknowledge that I can and should download and run MyCrypto locally'
+        label: translateRaw('INSECURE_WALLET_WARNING_2')
       },
       {
         name: 'hasConfirmedSite',
-        label: 'I have checked the URL and SSL certificate to make sure this is the real MyCrypto'
+        label: translateRaw('INSECURE_WALLET_WARNING_3')
       }
     ];
     const canContinue = checkboxes.reduce(
@@ -68,28 +68,25 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
         </p>
         <ul className="WalletWarning-bullets">
           <li>
-            Using <HelpLink article={HELP_ARTICLE.MIGRATE_TO_METAMASK}>MetaMask</HelpLink> or a{' '}
-            <HelpLink article={HELP_ARTICLE.HARDWARE_WALLET_RECOMMENDATIONS}>
-              Hardware Wallet
-            </HelpLink>{' '}
-            to access your wallet
+            {translateMarkdown('INSECURE_WALLET_RECOMMEND_1', {
+              var_metamask_article: knowledgeBaseURL + HELP_ARTICLE.MIGRATE_TO_METAMASK,
+              var_hardware_wallet_article:
+                knowledgeBaseURL + HELP_ARTICLE.HARDWARE_WALLET_RECOMMENDATIONS
+            })}
           </li>
           <li>
-            <HelpLink article={HELP_ARTICLE.RUNNING_LOCALLY}>
-              Downloading MyCrypto and running it offline & locally
-            </HelpLink>
+            {translateMarkdown('INSECURE_WALLET_RECOMMEND_2', {
+              var_run_local_article: knowledgeBaseURL + HELP_ARTICLE.RUNNING_LOCALLY
+            })}
           </li>
           <li>
-            Reading{' '}
-            <HelpLink article={HELP_ARTICLE.SECURING_YOUR_ETH}>
-              How to Protect Yourself and Your Funds
-            </HelpLink>
+            {translateMarkdown('INSECURE_WALLET_RECOMMEND_3', {
+              var_secure_your_eth_article: knowledgeBaseURL + HELP_ARTICLE.SECURING_YOUR_ETH
+            })}
           </li>
         </ul>
         <p className="WalletWarning-check">
-          If you must use your {walletType} online, please double-check the URL & SSL certificate.
-          It should say <code>{'https://www.mycrypto.com'}</code>
-          & <code>MyCrypto, Inc (US)</code> in your URL bar.
+          {translateMarkdown('WALLET_WARNING_CHECK', { var_wallet_type: walletType as string })}
         </p>
         <div className="WalletWarning-checkboxes">{checkboxes.map(this.makeCheckbox)}</div>
 

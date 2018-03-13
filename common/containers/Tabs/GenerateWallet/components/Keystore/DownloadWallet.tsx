@@ -1,6 +1,6 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
-import { translateRaw } from 'translations';
+import { translateRaw, translateMarkdown } from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from '../Template';
@@ -42,17 +42,9 @@ export default class DownloadWallet extends Component<Props, State> {
           </a>
 
           <div className="DlWallet-warning">
-            <p>
-              <strong>Do not lose it!</strong> It cannot be recovered if you lose it.
-            </p>
-            <p>
-              <strong>Do not share it!</strong> Your funds will be stolen if you use this file on a
-              malicious/phishing site.
-            </p>
-            <p>
-              <strong>Make a backup!</strong> Secure it like the millions of dollars it may one day
-              be worth.
-            </p>
+            <p>{translateMarkdown('DL_WALLET_WARNING_1')}</p>
+            <p>{translateMarkdown('DL_WALLET_WARNING_2')}</p>
+            <p>{translateMarkdown('DL_WALLET_WARNING_3')}</p>
           </div>
 
           <button
@@ -61,7 +53,7 @@ export default class DownloadWallet extends Component<Props, State> {
             onClick={this.handleContinue}
             disabled={!hasDownloadedWallet}
           >
-            I understand. Continue.
+            {translateRaw('GET_ConfButton')}
           </button>
         </div>
       </Template>

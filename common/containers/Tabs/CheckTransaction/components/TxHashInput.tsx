@@ -31,12 +31,15 @@ export default class TxHashInput extends React.Component<Props, State> {
 
     return (
       <form className="TxHashInput" onSubmit={this.handleSubmit}>
-        <Input
-          value={hash}
-          placeholder="0x16e521..."
-          className={`TxHashInput-field ${validClass}`}
-          onChange={this.handleChange}
-        />
+        <label className="input-group">
+          <div className="input-group-header" />
+          <Input
+            value={hash}
+            placeholder="0x16e521..."
+            className={`TxHashInput-field ${validClass}`}
+            onChange={this.handleChange}
+          />
+        </label>
 
         {isValidETHAddress(hash) && (
           <p className="TxHashInput-message help-block is-invalid">

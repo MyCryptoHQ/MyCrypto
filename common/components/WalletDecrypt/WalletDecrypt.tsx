@@ -358,7 +358,7 @@ const WalletDecrypt = withRouter<Props>(
 
           {this.props.showGenerateLink && (
             <div className="WalletDecrypt-wallets-generate">
-              Don’t have an account yet? <Link to="/generate">Click here to get one</Link>.
+              <Link to="/generate">{translateRaw('DONT_HAVE_WALLET_PROMPT')}</Link>
             </div>
           )}
         </div>

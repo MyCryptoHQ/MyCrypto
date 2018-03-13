@@ -1,7 +1,7 @@
 import PrintableWallet from 'components/PrintableWallet';
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React from 'react';
-import { translateRaw } from 'translations';
+import { translateRaw, translateMarkdown } from 'translations';
 import { stripHexPrefix } from 'libs/values';
 import './PaperWallet.scss';
 import Template from '../Template';
@@ -37,17 +37,9 @@ const PaperWallet: React.SFC<Props> = props => (
 
       {/* Warning */}
       <div className="GenPaper-warning">
-        <p>
-          <strong>Do not lose it!</strong> It cannot be recovered if you lose it.
-        </p>
-        <p>
-          <strong>Do not share it!</strong> Your funds will be stolen if you use this file on a
-          malicious/phishing site.
-        </p>
-        <p>
-          <strong>Make a backup!</strong> Secure it like the millions of dollars it may one day be
-          worth.
-        </p>
+        <p>{translateMarkdown('DL_WALLET_WARNING_1')}</p>
+        <p>{translateMarkdown('DL_WALLET_WARNING_2')}</p>
+        <p>{translateMarkdown('DL_WALLET_WARNING_3')}</p>
       </div>
 
       {/* Continue button */}

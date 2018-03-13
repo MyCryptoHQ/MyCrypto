@@ -71,7 +71,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
 
   const rows: TableRow[] = [
     {
-      label: 'Status',
+      label: translateRaw('TX_STATUS'),
       data: (
         <React.Fragment>
           <strong className={`TxData-row-data-status is-${statusType}`}>{statusMsg}</strong>
@@ -90,7 +90,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: <MaybeLink href={explorer.tx}>{data.hash}</MaybeLink>
     },
     {
-      label: 'Block Number',
+      label: translateRaw('TX_BLOCK_NUMB'),
       data: receipt && <MaybeLink href={explorer.block}>{receipt.blockNumber}</MaybeLink>
     },
     {
@@ -124,11 +124,11 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: <UnitDisplay value={data.gas} unit="wei" />
     },
     {
-      label: 'Gas Used',
+      label: translateRaw('TX_GAS_USED'),
       data: receipt && <UnitDisplay value={receipt.gasUsed} unit="wei" />
     },
     {
-      label: 'Transaction Fee',
+      label: translateRaw('CONFIRM_TX_FEE'),
       data: receipt && (
         <UnitDisplay
           value={receipt.gasUsed.mul(data.gasPrice)}

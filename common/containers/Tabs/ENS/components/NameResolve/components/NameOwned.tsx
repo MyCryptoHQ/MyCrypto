@@ -1,6 +1,7 @@
 import React from 'react';
 import { IOwnedDomainRequest } from 'libs/ens';
 import { NewTabLink, Address } from 'components/ui';
+import { translateMarkdown } from 'translations';
 const lookupLink = (name: string) => `https://etherscan.io/enslookup?q=${name}`;
 
 type ChildrenProps = any;
@@ -18,7 +19,7 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
   <section>
     <div className="ens-title">
       <h1 className="text-center">
-        <strong>{name}.eth</strong> is already owned
+        {translateMarkdown('ENS_DOMAIN_OWNED', { var_name: name + '.eth' })}
       </h1>
     </div>
     <div className="ens-table-wrapper">

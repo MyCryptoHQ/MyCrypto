@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import { translateRaw, translateMarkdown } from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
@@ -35,7 +35,7 @@ const WalletTypes: React.SFC<{}> = () => {
       <h1 className="WalletTypes-title">{translateRaw('NAV_GenerateWallet')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
         <strong>{translateRaw('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
-        {translateRaw('GENERATE_WALLET_WARNING')}
+        {translateMarkdown('GENERATE_WALLET_WARNING')}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
           {translateRaw('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>

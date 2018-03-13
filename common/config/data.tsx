@@ -47,7 +47,7 @@ export const gasPriceDefaults: GasPriceSetting = {
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
-export const knowledgeBaseURL = 'https://support.mycrypto.com';
+export const knowledgeBaseURL = 'https://support.mycrypto.com/';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://trezor.io/?a=mycrypto.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
