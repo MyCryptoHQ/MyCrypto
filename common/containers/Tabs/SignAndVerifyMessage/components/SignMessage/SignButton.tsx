@@ -1,5 +1,5 @@
 import React from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { TShowNotification } from 'actions/notifications';
@@ -15,7 +15,7 @@ export default class SignMessageButton extends React.Component<Props, {}> {
   public render() {
     return (
       <button className="SignMessage-sign btn btn-primary btn-lg" onClick={this.handleSignMessage}>
-        {translate('NAV_SignMsg')}
+        {translateRaw('NAV_SignMsg')}
       </button>
     );
   }

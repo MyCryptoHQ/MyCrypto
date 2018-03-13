@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { donationAddressMap } from 'config';
 import { isValidETHAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
@@ -35,7 +35,7 @@ export class ViewOnlyDecrypt extends PureComponent<Props, State> {
           />
 
           <button className="btn btn-primary btn-block" disabled={!isValid}>
-            {translate('NAV_ViewWallet')}
+            {translateRaw('NAV_ViewWallet')}
           </button>
         </form>
       </div>

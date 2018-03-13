@@ -12,7 +12,7 @@ import {
   SigningStatus
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
@@ -52,7 +52,7 @@ const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
     whenQueryExists={
       <div className="alert alert-info">
-        <p>{translate('WARN_Send_Link')}</p>
+        <p>{translateRaw('WARN_Send_Link')}</p>
       </div>
     }
   />

@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import { TabLink } from './Navigation';
 import './NavigationLink.scss';
 
@@ -42,11 +42,11 @@ class NavigationLink extends React.PureComponent<Props, {}> {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {translate(link.name)}
+          {translateRaw(link.name)}
         </a>
       ) : (
         <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>
-          {translate(link.name)}
+          {translateRaw(link.name)}
         </Link>
       );
 

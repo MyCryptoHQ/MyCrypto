@@ -1,6 +1,6 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from '../Template';
@@ -27,18 +27,18 @@ export default class DownloadWallet extends Component<Props, State> {
     return (
       <Template>
         <div className="DlWallet">
-          <h1 className="DlWallet-title">{translate('GEN_Label_2')}</h1>
+          <h1 className="DlWallet-title">{translateRaw('GEN_Label_2')}</h1>
 
           <a
             role="button"
             className="DlWallet-download btn btn-primary btn-lg"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-            aria-describedby={translate('x_KeystoreDesc', true)}
+            aria-describedby={translateRaw('x_KeystoreDesc')}
             download={filename}
             href={this.getBlob()}
             onClick={this.handleDownloadKeystore}
           >
-            {translate('x_Download')} {translate('x_Keystore2')}
+            {translateRaw('x_Download')} {translateRaw('x_Keystore2')}
           </a>
 
           <div className="DlWallet-warning">

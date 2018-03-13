@@ -1,6 +1,6 @@
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
 import { Input } from 'components/ui';
@@ -52,7 +52,7 @@ export class KeystoreDecrypt extends PureComponent {
           />
           <label htmlFor="fselector" style={{ width: '100%' }}>
             <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              {translate('ADD_Radio_2_short')}
+              {translateRaw('ADD_Radio_2_short')}
             </a>
           </label>
           {isWalletPending ? <Spinner /> : ''}
@@ -69,7 +69,7 @@ export class KeystoreDecrypt extends PureComponent {
         </div>
 
         <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-          {translate('ADD_Label_6_short')}
+          {translateRaw('ADD_Label_6_short')}
         </button>
       </form>
     );

@@ -1,7 +1,7 @@
 import { Query } from 'components/renderCbs';
 import React, { Component } from 'react';
 import { TokenValue, Wei } from 'libs/units';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
 import { sendEverythingRequested, TSendEverythingRequested } from 'actions/transaction';
 import { getCurrentBalance } from 'selectors/wallet';
@@ -27,7 +27,7 @@ class SendEverythingClass extends Component<Props> {
           !readOnly ? (
             <span className="help-block">
               <a onClick={this.onSendEverything}>
-                <span className="">{translate('SEND_TransferTotal')}</span>
+                <span className="">{translateRaw('SEND_TransferTotal')}</span>
               </a>
             </span>
           ) : null

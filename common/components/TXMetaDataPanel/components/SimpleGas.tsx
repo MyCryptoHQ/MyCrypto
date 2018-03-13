@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
@@ -108,8 +108,8 @@ class SimpleGas extends React.Component<Props> {
               disabled={isGasEstimating}
             />
             <div className="SimpleGas-slider-labels">
-              <span>{translate('Cheap')}</span>
-              <span>{translate('Fast')}</span>
+              <span>{translateRaw('Cheap')}</span>
+              <span>{translateRaw('Fast')}</span>
             </div>
           </div>
           <FeeSummary

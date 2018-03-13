@@ -1,10 +1,10 @@
 import React from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { WalletType } from '../GenerateWallet';
-import { NewTabLink, HelpLink } from 'components/ui';
-import { HELP_ARTICLE, trezorReferralURL, ledgerReferralURL } from 'config';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
+import { HelpLink } from 'components/ui';
+import { HELP_ARTICLE } from 'config';
 
 const WalletTypes: React.SFC<{}> = () => {
   const typeInfo = {
@@ -32,15 +32,12 @@ const WalletTypes: React.SFC<{}> = () => {
 
   return (
     <div className="WalletTypes Tab-content-pane">
-      <h1 className="WalletTypes-title">{translate('NAV_GenerateWallet')}</h1>
+      <h1 className="WalletTypes-title">{translateRaw('NAV_GenerateWallet')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
-        <strong>Warning</strong>: Managing your own keys can be risky and a single mistake can lead
-        to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using{' '}
-        <NewTabLink href="https://metamask.io/">MetaMask</NewTabLink>, or purchasing a{' '}
-        <NewTabLink href={ledgerReferralURL}>Ledger</NewTabLink> or{' '}
-        <NewTabLink href={trezorReferralURL}>TREZOR</NewTabLink> hardware wallet.{' '}
+        <strong>{translateRaw('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
+        {translateRaw('GENERATE_WALLET_WARNING')}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
-          Learn more about different wallet types & staying secure.
+          {translateRaw('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>
       </p>
 
@@ -48,11 +45,11 @@ const WalletTypes: React.SFC<{}> = () => {
         <div className="col-md-1" />
         {Object.keys(typeInfo).map((type: keyof typeof typeInfo) => (
           <div key={type} className="WalletType col-md-5">
-            <h2 className="WalletType-title">{translate(typeInfo[type].name)}</h2>
+            <h2 className="WalletType-title">{translateRaw(typeInfo[type].name)}</h2>
             <ul className="WalletType-features">
               {typeInfo[type].bullets.map(bullet => (
                 <li key={bullet} className="WalletType-features-feature">
-                  {translate(bullet)}
+                  {translateRaw(bullet)}
                 </li>
               ))}
             </ul>
@@ -61,7 +58,7 @@ const WalletTypes: React.SFC<{}> = () => {
                 className="WalletType-select-btn btn btn-primary btn-block"
                 to={`/generate/${type}`}
               >
-                Generate a {translate(typeInfo[type].name)}
+                Generate a {translateRaw(typeInfo[type].name)}
               </Link>
             </div>
           </div>

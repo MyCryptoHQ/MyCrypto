@@ -2,6 +2,7 @@ import React from 'react';
 import { HelpLink } from 'components/ui';
 import { HELP_ARTICLE } from 'config';
 import './InsecureWalletWarning.scss';
+import { translateRaw } from 'translations';
 
 interface Props {
   walletType: string | React.ReactElement<string>;
@@ -61,13 +62,9 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
 
     return (
       <div className="WalletWarning">
-        <h2 className="WalletWarning-title">
-          This is <u>not</u> a recommended way to access your wallet
-        </h2>
+        <h2 className="WalletWarning-title">{translateRaw('INSECURE_WALLET_TYPE_TITLE')}</h2>
         <p className="WalletWarning-desc">
-          Entering your {walletType} on a website is <strong>dangerous</strong>. If our website is
-          compromised, or you accidentally visit a phishing website, you could{' '}
-          <strong>lose all of your funds</strong>. Before you continue, please consider:
+          {translateRaw('INSECURE_WALLET_TYPE_DESC', { var_wallet_type: walletType as string })}
         </p>
         <ul className="WalletWarning-bullets">
           <li>

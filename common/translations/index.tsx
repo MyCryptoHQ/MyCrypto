@@ -1,7 +1,7 @@
-import Translate from 'components/Translate';
+import TranslateMarkdown from 'components/Translate';
 import React from 'react';
-import { getLanguageSelection } from 'selectors/config';
-import { configuredStore } from '../store';
+// import { getLanguageSelection } from 'selectors/config';
+// import { configuredStore } from '../store';
 const fallbackLanguage = 'en';
 const repository: {
   [language: string]: {
@@ -52,27 +52,32 @@ export function getTranslators() {
     'TranslatorName_4',
     'TranslatorName_5'
   ].filter(x => {
-    const translated = translate(x);
+    const translated = translateMarkdown(x);
     return !!translated;
   });
 }
 
 export type TranslateType = React.ReactElement<any> | string;
 
-function translate(key: string, textOnly?: false): React.ReactElement<any>;
-function translate(key: string, textOnly: true): string;
+export const translateRaw = (key: string, variables?: { [name: string]: string }) => {
+  // const lang = getLanguageSelection(configuredStore.getState());
+  const lang = 'en';
 
-function translate(key: string, textOnly: boolean = false) {
-  return textOnly ? translateRaw(key) : <Translate translationKey={key} />;
-}
-
-export default translate;
-
-export function translateRaw(key: string) {
-  const lang = getLanguageSelection(configuredStore.getState());
-
-  return (
+  const translatedString =
     ((repository[lang] && repository[lang][key]) || repository[fallbackLanguage][key] || key) +
-    ' 🎉'
-  );
-}
+    ' 🎉';
+
+  if (variables) {
+    // Find each variable and replace it in the translated string
+    let str = translatedString;
+    Object.keys(variables).forEach(v => {
+      str = str.replace(v, variables[v]);
+    });
+    return str;
+  }
+
+  return translatedString;
+};
+export const translateMarkdown = (key: string, variables?: { [name: string]: string }) => {
+  return <TranslateMarkdown source={translateRaw(key, variables)} />;
+};

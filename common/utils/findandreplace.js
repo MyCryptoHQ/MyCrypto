@@ -51,7 +51,7 @@
       prepMatch: function(m, mi) {
         // Support captureGroup (a deprecated feature)
 
-        if (!m[0]) throw 'findAndReplaceDOMText cannot handle zero-length matches';
+        // if (!m[0]) throw 'findAndReplaceDOMText cannot handle zero-length matches';
 
         if (captureGroup > 0) {
           var cg = m[captureGroup];
@@ -285,7 +285,7 @@
      */
     prepMatch: function(match, matchIndex, characterOffset) {
       if (!match[0]) {
-        throw new Error('findAndReplaceDOMText cannot handle zero-length matches');
+        // throw new Error('findAndReplaceDOMText cannot handle zero-length matches');
       }
 
       match.endIndex = characterOffset + match.index + match[0].length;

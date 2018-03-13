@@ -1,4 +1,4 @@
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { OfflineBroadcast } from './OfflineBroadcast';
 import { SerializedTransaction } from 'components/renderCbs';
@@ -41,7 +41,7 @@ class SendButtonFactoryClass extends Component<Props> {
               <label>
                 {this.props.walletType.isWeb3Wallet
                   ? 'Transaction Parameters'
-                  : translate('SEND_raw')}
+                  : translateRaw('SEND_raw')}
               </label>
               <TextArea value={getStringifiedTx(serializedTransaction)} rows={4} readOnly={true} />
             </div>
@@ -50,7 +50,7 @@ class SendButtonFactoryClass extends Component<Props> {
                 <label>
                   {this.props.walletType.isWeb3Wallet
                     ? 'Serialized Transaction Parameters'
-                    : translate('SEND_signed')}
+                    : translateRaw('SEND_signed')}
                 </label>
                 <TextArea value={addHexPrefix(serializedTransaction)} rows={4} readOnly={true} />
               </div>

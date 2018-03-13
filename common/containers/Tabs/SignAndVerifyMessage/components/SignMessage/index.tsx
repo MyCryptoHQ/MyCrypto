@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { ISignedMessage } from 'libs/signing';
@@ -52,12 +52,12 @@ export class SignMessage extends Component<Props, State> {
               onClick={this.changeWallet}
             >
               <i className="fa fa-refresh" />
-              {translate('Change Wallet')}
+              {translateRaw('Change Wallet')}
             </button>
 
             <div className="input-group-wrapper Deploy-field">
               <label className="input-group">
-                <div className="input-group-header">{translate('MSG_message')}</div>
+                <div className="input-group-header">{translateRaw('MSG_message')}</div>
                 <TextArea
                   className={`SignMessage-inputBox ${message ? 'is-valid' : 'is-invalid'}`}
                   placeholder={messagePlaceholder}
@@ -65,7 +65,7 @@ export class SignMessage extends Component<Props, State> {
                   onChange={this.handleMessageChange}
                 />
               </label>
-              <div className="SignMessage-help">{translate('MSG_info2')}</div>
+              <div className="SignMessage-help">{translateRaw('MSG_info2')}</div>
             </div>
 
             <SignButton
@@ -78,7 +78,7 @@ export class SignMessage extends Component<Props, State> {
             {!!signedMessage && (
               <div className="input-group-wrapper SignMessage-inputBox">
                 <label className="input-group">
-                  <div className="input-group-header">{translate('MSG_signature')}</div>
+                  <div className="input-group-header">{translateRaw('MSG_signature')}</div>
                   <TextArea
                     className="SignMessage-inputBox"
                     value={JSON.stringify(signedMessage, null, 2)}

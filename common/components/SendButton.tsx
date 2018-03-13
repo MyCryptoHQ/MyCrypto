@@ -1,6 +1,6 @@
 import React from 'react';
 import { SendButtonFactory } from './SendButtonFactory';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 export const SendButton: React.SFC<{
@@ -14,7 +14,7 @@ export const SendButton: React.SFC<{
       <div className="row form-group">
         <div className="col-xs-12">
           <button className="btn btn-primary btn-block" onClick={onClick}>
-            {translate('SEND_trans')}
+            {translateRaw('SEND_trans')}
           </button>
         </div>
       </div>

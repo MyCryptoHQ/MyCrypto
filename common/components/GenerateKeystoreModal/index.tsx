@@ -2,7 +2,7 @@ import React from 'react';
 import { generateKeystoreFileInfo, KeystoreFile } from 'utils/keystore';
 import Modal from 'components/ui/Modal';
 import { TogglablePassword } from 'components';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { isValidPrivKey } from 'libs/validators';
 import './index.scss';
@@ -91,7 +91,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
               className="GenKeystore-button btn btn-primary btn-block"
               disabled={!isPrivateKeyValid || !isPasswordValid}
             >
-              {translate('Generate Keystore File')}
+              {translateRaw('Generate Keystore File')}
             </button>
           ) : hasError ? (
             <p className="alert alert-danger">
@@ -108,7 +108,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
               aria-describedby={translateRaw('x_KeystoreDesc')}
               download={keystoreFile.filename}
             >
-              {translate('Download Keystore File')}
+              {translateRaw('Download Keystore File')}
             </a>
           )}
         </form>

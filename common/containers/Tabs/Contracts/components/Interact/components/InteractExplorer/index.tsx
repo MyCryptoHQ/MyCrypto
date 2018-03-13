@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import './InteractExplorer.scss';
 import { TShowNotification, showNotification } from 'actions/notifications';
 import { getNodeLib } from 'selectors/config';
@@ -78,7 +78,7 @@ class InteractExplorerClass extends Component<Props, State> {
         className="InteractExplorer-func-submit btn btn-primary"
         onClick={this.handleFunctionSend}
       >
-        {translate('CONTRACT_Write')}
+        {translateRaw('CONTRACT_Write')}
       </button>
     );
 
@@ -87,7 +87,7 @@ class InteractExplorerClass extends Component<Props, State> {
         <div className="input-group-wrapper">
           <label className="input-group">
             <div className="input-group-header">
-              {translate('CONTRACT_Interact_Title')}
+              {translateRaw('CONTRACT_Interact_Title')}
               <div className="flex-spacer" />
               <span className="small">{to.raw}</span>
             </div>
@@ -147,7 +147,7 @@ class InteractExplorerClass extends Component<Props, State> {
                 className="InteractExplorer-func-submit btn btn-primary"
                 onClick={this.handleFunctionCall}
               >
-                {translate('CONTRACT_Read')}
+                {translateRaw('CONTRACT_Read')}
               </button>
             ) : (
               <React.Fragment>

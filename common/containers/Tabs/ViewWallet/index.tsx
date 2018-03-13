@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import TabSection from 'containers/TabSection';
 
 export default class ViewWallet extends Component {
@@ -14,7 +14,7 @@ export default class ViewWallet extends Component {
                   <h1>View Wallet Info</h1>
                 </div>
                 <div>
-                  <p>{translate('VIEWWALLET_Subtitle')}</p>
+                  <p>{translateRaw('VIEWWALLET_Subtitle')}</p>
                 </div>
               </article>
             </article>

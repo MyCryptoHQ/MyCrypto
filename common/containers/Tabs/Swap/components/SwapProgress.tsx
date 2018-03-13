@@ -1,7 +1,7 @@
 import { TShowNotification } from 'actions/notifications';
 import { bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import './SwapProgress.scss';
 
 export interface Props {
@@ -110,14 +110,14 @@ export default class SwapProgress extends PureComponent<Props, State> {
     const numberOfConfirmations = originId === 'BTC' ? '3' : '10';
     const steps = [
       // 1
-      translate('SWAP_progress_1'),
+      translateRaw('SWAP_progress_1'),
       // 2
       <span key="1">
-        {translate('SWAP_progress_2')} {originId}...
+        {translateRaw('SWAP_progress_2')} {originId}...
       </span>,
       // 3
       <span key="2">
-        {originId} {translate('SWAP_progress_3')}
+        {originId} {translateRaw('SWAP_progress_3')}
       </span>,
       // 4 TODO: Translate me
       <span key="3">
@@ -126,7 +126,7 @@ export default class SwapProgress extends PureComponent<Props, State> {
         <small>Waiting for {numberOfConfirmations} confirmations...</small>
       </span>,
       // 5
-      translate('SWAP_progress_5')
+      translateRaw('SWAP_progress_5')
     ];
 
     return (

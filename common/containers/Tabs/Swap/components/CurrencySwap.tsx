@@ -8,7 +8,7 @@ import {
 import SimpleButton from 'components/ui/SimpleButton';
 import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown, Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
@@ -395,7 +395,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
             <div className="CurrencySwap-submit">
               <SimpleButton
                 onClick={this.onClickStartSwap}
-                text={translate('SWAP_init_CTA')}
+                text={translateRaw('SWAP_init_CTA')}
                 disabled={this.state.disabled}
                 type="primary"
               />

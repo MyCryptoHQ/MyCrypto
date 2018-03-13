@@ -1,6 +1,6 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
 import { InsecureWalletName } from 'config';
@@ -78,7 +78,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               className="btn btn-primary btn-lg"
               disabled={!isValidMnemonic}
             >
-              {translate('Choose Address')}
+              {translateRaw('Choose Address')}
             </button>
           </div>
         </div>
@@ -91,7 +91,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={translateRaw('x_Mnemonic')}
+          walletType={'MNEMONIC'}
         />
       </div>
     );

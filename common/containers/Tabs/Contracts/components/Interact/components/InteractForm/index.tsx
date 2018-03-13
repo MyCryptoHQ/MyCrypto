@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -86,7 +86,7 @@ class InteractForm extends Component<Props, State> {
         <div className="InteractForm-address row">
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_Title')}</div>
+              <div className="input-group-header">{translateRaw('CONTRACT_Title')}</div>
               <Input
                 placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
                 name="contract_address"
@@ -102,7 +102,7 @@ class InteractForm extends Component<Props, State> {
 
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_Title_2')}</div>
+              <div className="input-group-header">{translateRaw('CONTRACT_Title_2')}</div>
               <Dropdown
                 className={`${!contract ? 'invalid' : ''}`}
                 value={contract as any}
@@ -118,7 +118,7 @@ class InteractForm extends Component<Props, State> {
 
         <div className="input-group-wrapper InteractForm-interface">
           <label className="input-group">
-            <div className="input-group-header">{translate('CONTRACT_Json')}</div>
+            <div className="input-group-header">{translateRaw('CONTRACT_Json')}</div>
             <TextArea
               placeholder={this.abiJsonPlaceholder}
               className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
@@ -134,7 +134,7 @@ class InteractForm extends Component<Props, State> {
           disabled={!showContractAccessButton}
           onClick={accessContract(abiJson, address)}
         >
-          {translate('x_Access')}
+          {translateRaw('x_Access')}
         </button>
       </div>
     );

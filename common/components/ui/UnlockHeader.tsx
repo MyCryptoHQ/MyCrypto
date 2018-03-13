@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import translate, { TranslateType } from 'translations';
+import { TranslateType, translateRaw } from 'translations';
 import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
 import closeIcon from 'assets/images/close.svg';
@@ -44,7 +44,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
             >
               <span>
                 <span className="hidden-xs UnlockHeader-open-text">
-                  {translate('Change Wallet')}
+                  {translateRaw('Change Wallet')}
                 </span>
                 <i className="fa fa-refresh" />
               </span>

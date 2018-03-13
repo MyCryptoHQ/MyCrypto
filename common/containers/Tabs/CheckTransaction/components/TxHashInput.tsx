@@ -1,5 +1,5 @@
 import React from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
 import './TxHashInput.scss';
 import { Input } from 'components/ui';
@@ -45,7 +45,7 @@ export default class TxHashInput extends React.Component<Props, State> {
         )}
 
         <button className="TxHashInput-submit btn btn-primary btn-block">
-          {translate('NAV_CheckTxStatus')}
+          {translateRaw('NAV_CheckTxStatus')}
         </button>
       </form>
     );

@@ -101,7 +101,7 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
 
     return (
       <Modal
-        title="Confirm Transaction"
+        title={translateRaw('CONFIRM_TX_MODAL_TITLE')}
         buttons={buttons}
         handleClose={onClose}
         disableButtons={transactionBroadcasting}

@@ -3,7 +3,7 @@ import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
 import { shapeshiftReferralURL, bitboxReferralURL } from 'config';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import './SwapInfoHeader.scss';
 
 export interface SwapInfoHeaderTitleProps {
@@ -24,7 +24,7 @@ export default class SwapInfoHeaderTitle extends PureComponent<SwapInfoHeaderTit
           </button>
         </div>
         <div className="col-xs-6">
-          <h3 className="SwapInfo-top-title">{translate('SWAP_information')}</h3>
+          <h3 className="SwapInfo-top-title">{translateRaw('SWAP_information')}</h3>
         </div>
         <div className="col-xs-3">
           <a

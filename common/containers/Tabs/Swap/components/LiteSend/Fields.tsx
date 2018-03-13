@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { GenerateTransaction, SendButton, SigningStatus, TXMetaDataPanel } from 'components';
 import { resetWallet, TResetWallet } from 'actions/wallet';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { getUnit } from 'selectors/transaction';
 import { getCurrentBalance } from 'selectors/wallet';
 import Spinner from 'components/ui/Spinner';
@@ -31,7 +31,7 @@ class FieldsClass extends Component<Props> {
               onClick={this.changeWallet}
             >
               <i className="fa fa-refresh" />
-              {translate('Change Wallet')}
+              {translateRaw('Change Wallet')}
             </button>
           </div>
           <div className="col-xs-12">
@@ -46,7 +46,7 @@ class FieldsClass extends Component<Props> {
 
         <div className="row form-group">
           <div className="col-xs-12">
-            <label>{translate('SEND_amount')}</label>
+            <label>{translateRaw('SEND_amount')}</label>
             {currentBalance === null ? (
               <div className="row text-center">
                 <Spinner />

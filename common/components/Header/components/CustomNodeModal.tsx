@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal, { IButton } from 'components/ui/Modal';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
@@ -78,13 +78,13 @@ class CustomNodeModal extends React.Component<Props, State> {
     const buttons: IButton[] = [
       {
         type: 'primary',
-        text: translate('NODE_CTA'),
+        text: translateRaw('NODE_CTA'),
         onClick: this.saveAndAdd,
         disabled: !!Object.keys(invalids).length
       },
       {
         type: 'default',
-        text: translate('x_Cancel'),
+        text: translateRaw('x_Cancel'),
         onClick: handleClose
       }
     ];
@@ -105,7 +105,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         handleClose={handleClose}
         maxWidth={580}
       >
-        {isHttps && <div className="alert alert-warning small">{translate('NODE_Warning')}</div>}
+        {isHttps && <div className="alert alert-warning small">{translateRaw('NODE_Warning')}</div>}
 
         {conflictedNode && (
           <div className="alert alert-warning small">

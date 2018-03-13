@@ -1,7 +1,7 @@
 import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/values';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 
@@ -70,7 +70,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
           isPassRequired && (
             <div className="input-group-wrapper">
               <label className="input-group">
-                <div className="input-group-header">{translate('ADD_Label_3')}</div>
+                <div className="input-group-header">{translateRaw('ADD_Label_3')}</div>
                 <Input
                   className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
                   value={password}
@@ -83,7 +83,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
             </div>
           )}
         <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
-          {translate('ADD_Label_6_short')}
+          {translateRaw('ADD_Label_6_short')}
         </button>
       </form>
     );

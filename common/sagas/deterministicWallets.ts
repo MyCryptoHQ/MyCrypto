@@ -13,7 +13,7 @@ import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga
 import { getNodeLib } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
 
@@ -72,7 +72,7 @@ export function* updateWalletValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(showNotification('danger', translate('ERROR_32')));
+    yield put(showNotification('danger', translateRaw('ERROR_32')));
   }
 }
 
@@ -116,7 +116,7 @@ export function* updateWalletTokenValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(showNotification('danger', translate('ERROR_32')));
+    yield put(showNotification('danger', translateRaw('ERROR_32')));
   }
 }
 

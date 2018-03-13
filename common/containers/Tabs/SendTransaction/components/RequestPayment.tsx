@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { QRCode, TextArea } from 'components/ui';
 import { getUnit, getDecimal } from 'selectors/transaction/meta';
@@ -123,7 +123,7 @@ class RequestPayment extends React.Component<Props, {}> {
 
           {!!eip681String.length && (
             <div className="row form-group">
-              <label className="RequestPayment-title">{translate('Payment QR & Code')}</label>
+              <label className="RequestPayment-title">{translateRaw('Payment QR & Code')}</label>
               <div className="col-xs-6">
                 <div className="RequestPayment-qr well well-lg">
                   <QRCode data={eip681String} />

@@ -1,4 +1,4 @@
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
@@ -26,12 +26,12 @@ class DeployClass extends Component<DispatchProps> {
       <main className="Deploy Tab-content-pane" role="main">
         <button className="Deploy-field-reset btn btn-default btn-sm" onClick={this.changeWallet}>
           <i className="fa fa-refresh" />
-          {translate('Change Wallet')}
+          {translateRaw('Change Wallet')}
         </button>
 
         <div className="input-group-wrapper Deploy-field">
           <label className="input-group">
-            <div className="input-group-header">{translate('CONTRACT_ByteCode')}</div>
+            <div className="input-group-header">{translateRaw('CONTRACT_ByteCode')}</div>
             <DataFieldFactory
               withProps={({ data: { raw, value }, onChange, readOnly }) => (
                 <TextArea
@@ -76,7 +76,7 @@ class DeployClass extends Component<DispatchProps> {
           Modal={ConfirmationModal}
           withProps={({ onClick }) => (
             <button className="Deploy-submit btn btn-primary" onClick={onClick}>
-              {translate('NAV_DeployContract')}
+              {translateRaw('NAV_DeployContract')}
             </button>
           )}
         />

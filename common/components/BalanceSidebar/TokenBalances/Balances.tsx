@@ -1,5 +1,5 @@
 import React from 'react';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { TokenBalance } from 'selectors/wallet';
 import AddCustomTokenForm from './AddCustomTokenForm';
 import TokenRow from './TokenRow';
@@ -50,10 +50,10 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
       bottom = (
         <div className="TokenBalances-buttons">
           <button className="btn btn-primary btn-block" onClick={this.handleSetWalletTokens}>
-            <span>{translate('x_Save')}</span>
+            <span>{translateRaw('x_Save')}</span>
           </button>
           <p className="TokenBalances-buttons-help">
-            {translate('Missing tokens? You can add custom tokens next.')}
+            {translateRaw('Missing tokens? You can add custom tokens next.')}
           </p>
         </div>
       );
@@ -71,10 +71,10 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
       bottom = (
         <div className="TokenBalances-buttons">
           <button className="btn btn-default btn-xs" onClick={this.toggleShowCustomTokenForm}>
-            <span>{translate('SEND_custom')}</span>
-          </button>{' '}
+            <span>{translateRaw('SEND_custom')}</span>
+          </button>
           <button className="btn btn-default btn-xs" onClick={this.props.scanWalletForTokens}>
-            <span>Scan for New Tokens</span>
+            <span>{translateRaw('SCAN_TOKENS')}</span>
           </button>
         </div>
       );

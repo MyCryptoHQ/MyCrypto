@@ -11,7 +11,7 @@ import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
 import { bityReferralURL, shapeshiftReferralURL } from 'config';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { SHAPESHIFT_WHITELIST } from 'api/shapeshift';
 import {
   loadShapeshiftRatesRequestedSwap,
@@ -122,7 +122,7 @@ class CurrentRates extends PureComponent<Props> {
   public swapEl = (providerURL: string, providerLogo: string, children: any) => {
     return (
       <article className="SwapRates">
-        <h3 className="SwapRates-title">{translate('SWAP_rates')}</h3>
+        <h3 className="SwapRates-title">{translateRaw('SWAP_rates')}</h3>
 
         <section className="SwapRates-panel row">
           {children}
