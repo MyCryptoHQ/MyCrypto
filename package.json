@@ -108,7 +108,7 @@
     "lint-staged": "7.0.0",
     "minimist": "1.2.0",
     "node-sass": "4.7.2",
-    "nodemon": "1.17.1",
+    "nodemon": "1.17.2",
     "null-loader": "0.1.1",
     "prettier": "1.11.1",
     "progress": "2.0.0",
