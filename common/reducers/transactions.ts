@@ -1,24 +1,20 @@
 import {
   FetchTransactionDataAction,
   SetTransactionDataAction,
+  AddRecentTransactionAction,
   TransactionsAction,
   TypeKeys
 } from 'actions/transactions';
-import { TransactionData, TransactionReceipt } from 'libs/nodes';
-
-export interface TransactionState {
-  data: TransactionData | null;
-  receipt: TransactionReceipt | null;
-  error: string | null;
-  isLoading: boolean;
-}
+import { SavedTransaction, TransactionState } from 'types/transactions';
 
 export interface State {
   txData: { [txhash: string]: TransactionState };
+  recent: SavedTransaction[];
 }
 
 export const INITIAL_STATE: State = {
-  txData: {}
+  txData: {},
+  recent: []
 };
 
 function fetchTxData(state: State, action: FetchTransactionDataAction): State {
@@ -51,12 +47,30 @@ function setTxData(state: State, action: SetTransactionDataAction): State {
   };
 }
 
+function resetTxData(state: State): State {
+  return {
+    ...state,
+    txData: INITIAL_STATE.txData
+  };
+}
+
+function addRecentTx(state: State, action: AddRecentTransactionAction): State {
+  return {
+    ...state,
+    recent: [action.payload, ...state.recent].slice(0, 50)
+  };
+}
+
 export function transactions(state: State = INITIAL_STATE, action: TransactionsAction): State {
   switch (action.type) {
     case TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA:
       return fetchTxData(state, action);
     case TypeKeys.TRANSACTIONS_SET_TRANSACTION_DATA:
       return setTxData(state, action);
+    case TypeKeys.TRANSACTIONS_RESET_TRANSACTION_DATA:
+      return resetTxData(state);
+    case TypeKeys.TRANSACTIONS_ADD_RECENT_TRANSACTION:
+      return addRecentTx(state, action);
     default:
       return state;
   }
