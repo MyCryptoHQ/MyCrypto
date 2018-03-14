@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { CallbackProps } from '../SendButtonFactory';
 import { getCurrentTransactionStatus, currentTransactionBroadcasted } from 'selectors/transaction';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ITransactionStatus } from 'reducers/transaction/broadcast';
@@ -26,7 +25,7 @@ interface DispatchProps {
 
 interface OwnProps {
   Modal: typeof ConfirmationModal;
-  withProps(props: CallbackProps): React.ReactElement<any> | null;
+  withOnClick(onClick: { onClick(): void }): React.ReactElement<any> | null;
 }
 
 const INITIAL_STATE: State = {
@@ -41,7 +40,7 @@ class OnlineSendClass extends Component<Props, State> {
   public render() {
     return !this.props.offline ? (
       <React.Fragment>
-        {this.props.withProps({ onClick: this.openModal })}
+        {this.props.withOnClick({ onClick: this.openModal })}
         <this.props.Modal isOpen={this.state.showModal} onClose={this.closeModal} />
       </React.Fragment>
     ) : null;

@@ -6,7 +6,7 @@ import { UnlockHeader } from 'components/ui';
 import { SideBar } from './components/index';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
-import { RouteComponentProps, Route, Switch } from 'react-router';
+import { RouteComponentProps, Route, Switch, Redirect } from 'react-router';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import {
   WalletInfo,
@@ -74,7 +74,13 @@ class SendTransaction extends React.Component<Props> {
                       />
                     )}
                   />
-                  <Route exact={true} path={`${currentPath}/send`} component={Send} />
+                  <Route
+                    exact={true}
+                    path={`${currentPath}/send`}
+                    render={() => {
+                      return wallet.isReadOnly ? <Redirect to={`${currentPath}/info`} /> : <Send />;
+                    }}
+                  />
                   <Route
                     path={`${currentPath}/info`}
                     exact={true}

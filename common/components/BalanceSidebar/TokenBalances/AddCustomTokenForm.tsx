@@ -83,21 +83,21 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
           );
         })}
 
+        <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
+          {translateRaw('ADD_CUSTOM_TKN_HELP')}
+        </HelpLink>
         <div className="AddCustom-buttons">
-          <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
-            {translateRaw('Need help? Learn how to add custom tokens.')}
-          </HelpLink>
-          <button
-            className="AddCustom-buttons-btn btn btn-primary btn-sm"
-            disabled={!this.isValid()}
-          >
-            {translateRaw('x_Save')}
-          </button>
           <button
             className="AddCustom-buttons-btn btn btn-sm btn-default"
             onClick={this.props.toggleForm}
           >
             {translateRaw('x_Cancel')}
+          </button>
+          <button
+            className="AddCustom-buttons-btn btn btn-primary btn-sm"
+            disabled={!this.isValid()}
+          >
+            {translateRaw('x_Save')}
           </button>
         </div>
       </form>

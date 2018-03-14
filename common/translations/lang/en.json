@@ -970,6 +970,7 @@
     "SWAP_DEPOSIT_INPUT_LABEL": "Deposit",
     "SWAP_RECIEVE_INPUT_LABEL": "Recieve",
     "SWAP_MAX_ERROR": "Maximum var_rate_max var_origin_id",
-    "SWAP_MIN_ERROR": "Minimum var_rate_max var_origin_id"
+    "SWAP_MIN_ERROR": "Minimum var_rate_max var_origin_id",
+    "ADD_CUSTOM_TKN_HELP": "Need help? Learn how to add custom tokens."
   }
 }
