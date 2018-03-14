@@ -1,7 +1,7 @@
 import TranslateMarkdown from 'components/Translate';
 import React from 'react';
-import { getLanguageSelection } from 'selectors/config';
-import { configuredStore } from '../store';
+import { State as ConfigState } from 'reducers/config';
+import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 const fallbackLanguage = 'en';
 const repository: {
   [language: string]: {
@@ -59,17 +59,10 @@ export function getTranslators() {
 
 export type TranslateType = React.ReactElement<any> | string;
 
-const getLanguage = () => {
-  try {
-    // const language = getLanguageSelection(configuredStore.getState());
-    // return language;
-  } catch {
-    return fallbackLanguage;
-  }
-};
-
 export const translateRaw = (key: string, variables?: { [name: string]: string }) => {
-  const language = getLanguage();
+  // redux store isn't initialized in time which throws errors, instead we get the language selection from localstorage
+  const lsConfig = loadStatePropertyOrEmptyObject('config');
+  const language = !!lsConfig ? (lsConfig as ConfigState).meta.languageSelection : fallbackLanguage;
   const translatedString =
     ((repository[language] && repository[language][key]) ||
       repository[fallbackLanguage][key] ||
