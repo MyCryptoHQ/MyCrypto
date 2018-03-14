@@ -104,7 +104,7 @@ class OnboardModal extends React.Component<Props, State> {
     ];
     const lastButtons: IButton[] = [
       {
-        text: 'Finish',
+        text: translateRaw('ACTION_10'),
         type: 'primary',
         onClick: this.closeModal
       },

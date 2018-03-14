@@ -8,7 +8,7 @@ const WhySlide = () => {
 
   const content = (
     <div>
-      <h5>{translateRaw('ONBOARD_why_content__1')}</h5>
+      <h5>{translateMarkdown('ONBOARD_why_content__1')}</h5>
       <ul>
         <li className="text-danger">{translateMarkdown('ONBOARD_why_content__2')}</li>
         <li className="text-danger">{translateMarkdown('ONBOARD_why_content__3')}</li>

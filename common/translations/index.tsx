@@ -1,7 +1,7 @@
 import TranslateMarkdown from 'components/Translate';
 import React from 'react';
-// import { getLanguageSelection } from 'selectors/config';
-// import { configuredStore } from '../store';
+import { getLanguageSelection } from 'selectors/config';
+import { configuredStore } from '../store';
 const fallbackLanguage = 'en';
 const repository: {
   [language: string]: {
@@ -59,13 +59,21 @@ export function getTranslators() {
 
 export type TranslateType = React.ReactElement<any> | string;
 
-export const translateRaw = (key: string, variables?: { [name: string]: string }) => {
-  // const lang = getLanguageSelection(configuredStore.getState());
-  const lang = 'en';
+const getLanguage = () => {
+  try {
+    // const language = getLanguageSelection(configuredStore.getState());
+    // return language;
+  } catch {
+    return fallbackLanguage;
+  }
+};
 
+export const translateRaw = (key: string, variables?: { [name: string]: string }) => {
+  const language = getLanguage();
   const translatedString =
-    ((repository[lang] && repository[lang][key]) || repository[fallbackLanguage][key] || key) +
-    ' 🎉';
+    ((repository[language] && repository[language][key]) ||
+      repository[fallbackLanguage][key] ||
+      key) + ' 🎉';
 
   if (variables) {
     // Find each variable and replace it in the translated string
