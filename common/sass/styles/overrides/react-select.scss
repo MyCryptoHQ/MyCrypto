@@ -92,4 +92,12 @@
     position: relative;
     height: inherit;
   }
+
+  // Identicons need to fit into the select
+  .Identicon {
+    display: inline-block;
+    width: 22px !important;
+    height: 22px !important;
+    top: -1px;
+  }
 }
