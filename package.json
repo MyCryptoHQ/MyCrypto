@@ -100,7 +100,7 @@
     "hoist-non-react-statics": "2.5.0",
     "html-webpack-plugin": "3.0.3",
     "husky": "0.14.3",
-    "image-webpack-loader": "4.1.0",
+    "image-webpack-loader": "4.2.0",
     "jest": "22.1.4",
     "klaw-sync": "3.0.2",
     "less": "2.7.3",
