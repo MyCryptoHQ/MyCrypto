@@ -103,7 +103,8 @@ export function isValidEncryptedPrivKey(privkey: string): boolean {
   }
 }
 
-export const validNumber = (num: number) => isFinite(num) && num > 0;
+export const validNumber = (num: number) => isFinite(num) && num >= 0;
+export const validPositiveNumber = (num: number) => validNumber(num) && num !== 0;
 
 export const validDecimal = (input: string, decimal: number) => {
   const arr = input.split('.');
