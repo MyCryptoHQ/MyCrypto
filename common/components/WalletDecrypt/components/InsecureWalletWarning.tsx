@@ -1,7 +1,7 @@
 import React from 'react';
 import { HELP_ARTICLE } from 'config';
 import './InsecureWalletWarning.scss';
-import { translateRaw, translateMarkdown } from 'translations';
+import translate from 'translations';
 import { knowledgeBaseURL } from 'config/data';
 
 interface Props {
@@ -44,15 +44,15 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
     const checkboxes: Checkbox[] = [
       {
         name: 'hasAcknowledgedWallets',
-        label: translateRaw('INSECURE_WALLET_WARNING_1')
+        label: translate('INSECURE_WALLET_WARNING_1')
       },
       {
         name: 'hasAcknowledgedDownload',
-        label: translateRaw('INSECURE_WALLET_WARNING_2')
+        label: translate('INSECURE_WALLET_WARNING_2')
       },
       {
         name: 'hasConfirmedSite',
-        label: translateRaw('INSECURE_WALLET_WARNING_3')
+        label: translate('INSECURE_WALLET_WARNING_3')
       }
     ];
     const canContinue = checkboxes.reduce(
@@ -62,31 +62,31 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
 
     return (
       <div className="WalletWarning">
-        <h2 className="WalletWarning-title">{translateRaw('INSECURE_WALLET_TYPE_TITLE')}</h2>
+        <h2 className="WalletWarning-title">{translate('INSECURE_WALLET_TYPE_TITLE')}</h2>
         <p className="WalletWarning-desc">
-          {translateRaw('INSECURE_WALLET_TYPE_DESC', { var_wallet_type: walletType as string })}
+          {translate('INSECURE_WALLET_TYPE_DESC', { $wallet_type: walletType as string })}
         </p>
         <ul className="WalletWarning-bullets">
           <li>
-            {translateMarkdown('INSECURE_WALLET_RECOMMEND_1', {
-              var_metamask_article: knowledgeBaseURL + HELP_ARTICLE.MIGRATE_TO_METAMASK,
-              var_hardware_wallet_article:
-                knowledgeBaseURL + HELP_ARTICLE.HARDWARE_WALLET_RECOMMENDATIONS
+            {translate('INSECURE_WALLET_RECOMMEND_1', {
+              $metamask_article: knowledgeBaseURL + '/' + HELP_ARTICLE.MIGRATE_TO_METAMASK,
+              $hardware_wallet_article:
+                knowledgeBaseURL + '/' + HELP_ARTICLE.HARDWARE_WALLET_RECOMMENDATIONS
             })}
           </li>
           <li>
-            {translateMarkdown('INSECURE_WALLET_RECOMMEND_2', {
-              var_run_local_article: knowledgeBaseURL + HELP_ARTICLE.RUNNING_LOCALLY
+            {translate('INSECURE_WALLET_RECOMMEND_2', {
+              $run_local_article: knowledgeBaseURL + '/' + HELP_ARTICLE.RUNNING_LOCALLY
             })}
           </li>
           <li>
-            {translateMarkdown('INSECURE_WALLET_RECOMMEND_3', {
-              var_secure_your_eth_article: knowledgeBaseURL + HELP_ARTICLE.SECURING_YOUR_ETH
+            {translate('INSECURE_WALLET_RECOMMEND_3', {
+              $secure_your_eth_article: knowledgeBaseURL + '/' + HELP_ARTICLE.SECURING_YOUR_ETH
             })}
           </li>
         </ul>
         <p className="WalletWarning-check">
-          {translateMarkdown('WALLET_WARNING_CHECK', { var_wallet_type: walletType as string })}
+          {translate('WALLET_WARNING_CHECK', { $wallet_type: walletType as string })}
         </p>
         <div className="WalletWarning-checkboxes">{checkboxes.map(this.makeCheckbox)}</div>
 

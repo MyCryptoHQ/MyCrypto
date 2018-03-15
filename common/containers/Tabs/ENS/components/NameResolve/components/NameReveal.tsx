@@ -4,16 +4,16 @@ import ENSTime from './components/ENSTime';
 import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
 import { ensV3Url } from 'utils/formatters';
-import { translateMarkdown, translateRaw } from 'translations';
+import translate from 'translations';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
   <section className="row text-center">
     <div className="auction-info text-center">
       <div className="ens-title">
         <h2>
-          {translateMarkdown('ENS_DOMAIN_REVEAL', { var_name: props.name + '.eth' })}
+          {translate('ENS_DOMAIN_REVEAL', { $name: props.name + '.eth' })}
           <br />
-          {translateRaw('ENS_DOMAIN_HIGHEST_BID')}
+          {translate('ENS_DOMAIN_HIGHEST_BID')}
           <strong>
             <UnitDisplay
               value={Wei(props.highestBid)}
@@ -34,9 +34,9 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     </div>
 
     <p>
-      {translateMarkdown('ENS_DOMAIN_PROMPT_REVEAL', {
-        var_name: props.name + '.eth',
-        var_link: ensV3Url(props.name)
+      {translate('ENS_DOMAIN_PROMPT_REVEAL', {
+        $name: props.name + '.eth',
+        $link: ensV3Url(props.name)
       })}
     </p>
   </section>

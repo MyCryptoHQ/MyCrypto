@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import Stepper from 'react-stepper-horizontal';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { AppState } from 'reducers';
@@ -74,7 +74,7 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
 
-        const onboardResumeMessage = translateRaw('ONBOARD_resume');
+        const onboardResumeMessage = translate('ONBOARD_resume');
 
         // Wait a sec so it doesn't get lost in the page-load
         setTimeout(() => {
@@ -91,25 +91,25 @@ class OnboardModal extends React.Component<Props, State> {
     const firstButtons: IButton[] = [
       {
         disabled: slideNumber === NUMBER_OF_SLIDES,
-        text: translateRaw('ACTION_6'),
+        text: translate('ACTION_6'),
         type: 'primary',
         onClick: this.handleNextSlide
       },
       {
         disabled: slideNumber === 1,
-        text: translateRaw('ACTION_4'),
+        text: translate('ACTION_4'),
         type: 'default',
         onClick: this.handlePreviousSlide
       }
     ];
     const lastButtons: IButton[] = [
       {
-        text: translateRaw('ACTION_10'),
+        text: translate('ACTION_10'),
         type: 'primary',
         onClick: this.closeModal
       },
       {
-        text: translateRaw('ACTION_4'),
+        text: translate('ACTION_4'),
         type: 'default',
         onClick: this.handlePreviousSlide
       }

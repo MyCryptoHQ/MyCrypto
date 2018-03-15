@@ -15,7 +15,7 @@ import {
 } from 'actions/wallet';
 import { getAllTokens, getOffline } from 'selectors/config';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';
 import { Token } from 'types/network';
@@ -74,7 +74,7 @@ class TokenBalances extends React.Component<Props> {
           className="TokenBalances-scan btn btn-primary btn-block"
           onClick={this.scanWalletForTokens}
         >
-          {translateRaw('Scan for my Tokens')}
+          {translate('Scan for my Tokens')}
         </button>
       );
     } else {
@@ -95,7 +95,7 @@ class TokenBalances extends React.Component<Props> {
 
     return (
       <section className="TokenBalances">
-        <h5 className="TokenBalances-title">{translateRaw('sidebar_TokenBal')}</h5>
+        <h5 className="TokenBalances-title">{translate('sidebar_TokenBal')}</h5>
         {content}
       </section>
     );

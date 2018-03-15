@@ -8,7 +8,7 @@ import {
 import SimpleButton from 'components/ui/SimpleButton';
 import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown, Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
@@ -81,14 +81,14 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       const rate = this.getMinMax(originKind, destKind);
       let errString;
       if (amount > rate.max) {
-        errString = translateRaw('SWAP_MAX_ERROR', {
-          var_rate_max: rate.max.toString(),
-          var_origin_id: originKind
+        errString = translate('SWAP_MAX_ERROR', {
+          $rate_max: rate.max.toString(),
+          $origin_id: originKind
         });
       } else {
-        errString = translateRaw('SWAP_MIN_ERROR', {
-          var_rate_max: rate.min.toString(),
-          var_origin_id: originKind
+        errString = translate('SWAP_MIN_ERROR', {
+          $rate_max: rate.min.toString(),
+          $origin_id: originKind
         });
       }
       return errString;
@@ -346,7 +346,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
             <div className="CurrencySwap-inner-wrap">
               <div className="flex-spacer" />
               <div className="input-group-wrapper">
-                <div className="input-group-header">{translateRaw('SWAP_DEPOSIT_INPUT_LABEL')}</div>
+                <div className="input-group-header">{translate('SWAP_DEPOSIT_INPUT_LABEL')}</div>
                 <label className="input-group input-group-inline">
                   <Input
                     id="origin-swap-input"
@@ -357,7 +357,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder={translateRaw('SEND_amount_short')}
+                    placeholder={translate('SEND_amount_short')}
                     value={isNaN(origin.amount) ? '' : origin.amount}
                     onChange={this.onChangeAmount}
                   />
@@ -372,9 +372,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
               <div className="input-group-wrapper">
                 <label className="input-group input-group-inline">
-                  <div className="input-group-header">
-                    {translateRaw('SWAP_RECIEVE_INPUT_LABEL')}
-                  </div>
+                  <div className="input-group-header">{translate('SWAP_RECIEVE_INPUT_LABEL')}</div>
                   <Input
                     id="destination-swap-input"
                     className={`${
@@ -384,7 +382,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder={translateRaw('SEND_amount_short')}
+                    placeholder={translate('SEND_amount_short')}
                     value={isNaN(destination.amount) ? '' : destination.amount}
                     onChange={this.onChangeAmount}
                   />
@@ -403,7 +401,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
             <div className="CurrencySwap-submit">
               <SimpleButton
                 onClick={this.onClickStartSwap}
-                text={translateRaw('SWAP_init_CTA')}
+                text={translate('SWAP_init_CTA')}
                 disabled={this.state.disabled}
                 type="primary"
               />

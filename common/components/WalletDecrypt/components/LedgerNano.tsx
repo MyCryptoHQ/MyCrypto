@@ -1,6 +1,6 @@
 import './LedgerNano.scss';
 import React, { PureComponent } from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { LedgerWallet } from 'libs/wallet';
 import ledger from 'ledgerco';
@@ -83,22 +83,22 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           {isLoading ? (
             <div className="LedgerDecrypt-message">
               <Spinner light={true} />
-              {translateRaw('WALLET_UNLOCKING')}
+              {translate('WALLET_UNLOCKING')}
             </div>
           ) : (
-            translateRaw('ADD_Ledger_scan')
+            translate('ADD_Ledger_scan')
           )}
         </button>
 
         <NewTabLink className="LedgerDecrypt-buy btn btn-sm btn-default" href={ledgerReferralURL}>
-          {translateRaw('LEDGER_REFERAL_2')}
+          {translate('LEDGER_REFERAL_2')}
         </NewTabLink>
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="LedgerDecrypt-help">
           <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
-            {translateRaw('HELP_ARTICLE_1')}
+            {translate('HELP_ARTICLE_1')}
           </NewTabLink>
         </div>
 

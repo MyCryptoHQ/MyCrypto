@@ -1,6 +1,6 @@
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
 import { Input } from 'components/ui';
@@ -52,7 +52,7 @@ export class KeystoreDecrypt extends PureComponent {
           />
           <label htmlFor="fselector" style={{ width: '100%' }}>
             <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              {translateRaw('ADD_Radio_2_short')}
+              {translate('ADD_Radio_2_short')}
             </a>
           </label>
           {isWalletPending ? <Spinner /> : ''}
@@ -63,13 +63,13 @@ export class KeystoreDecrypt extends PureComponent {
             value={password}
             onChange={this.onPasswordChange}
             onKeyDown={this.onKeyDown}
-            placeholder={translateRaw('x_Password')}
+            placeholder={translate('INPUT_PASSWORD_LABEL')}
             type="password"
           />
         </div>
 
         <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-          {translateRaw('ADD_Label_6_short')}
+          {translate('ADD_Label_6_short')}
         </button>
       </form>
     );
@@ -116,7 +116,7 @@ export class KeystoreDecrypt extends PureComponent {
     if (isValidFile(inputFile)) {
       fileReader.readAsText(inputFile, 'utf-8');
     } else {
-      this.props.showNotification('danger', translateRaw('ERROR_3'));
+      this.props.showNotification('danger', translate('ERROR_3'));
     }
   };
 }

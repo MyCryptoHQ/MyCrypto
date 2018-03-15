@@ -1,4 +1,4 @@
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { OfflineBroadcast } from './OfflineBroadcast';
 import { OnlineSend } from './OnlineSend';
@@ -49,9 +49,7 @@ class SendButtonFactoryClass extends Component<Props> {
     // shows the json representation of the transaction
     const leftTxCompare = serializedTransaction && (
       <div className={`col-sm-${columnSize}`}>
-        <label>
-          {walletType.isWeb3Wallet ? 'Transaction Parameters' : translateRaw('SEND_raw')}
-        </label>
+        <label>{walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_raw')}</label>
         <TextArea value={getStringifiedTx(serializedTransaction)} rows={4} readOnly={true} />
       </div>
     );
@@ -65,7 +63,7 @@ class SendButtonFactoryClass extends Component<Props> {
           <label>
             {walletType.isWeb3Wallet
               ? 'Serialized Transaction Parameters'
-              : translateRaw('SEND_signed')}
+              : translate('SEND_signed')}
           </label>
           <TextArea
             value={addHexPrefix(serializedTransaction.toString('hex'))}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw, translateMarkdown } from 'translations';
+import translate from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
@@ -32,16 +32,16 @@ const WalletTypes: React.SFC<{}> = () => {
 
   return (
     <div className="WalletTypes Tab-content-pane">
-      <h1 className="WalletTypes-title">{translateRaw('NAV_GenerateWallet')}</h1>
+      <h1 className="WalletTypes-title">{translate('NAV_GenerateWallet')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
-        <strong>{translateRaw('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
-        {translateMarkdown('GENERATE_WALLET_WARNING', {
-          var_metamask_link: 'https://metamask.io/',
-          var_ledger_link: ledgerReferralURL,
-          var_trezor_link: trezorReferralURL
+        <strong>{translate('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
+        {translate('GENERATE_WALLET_WARNING', {
+          $metamask_link: 'https://metamask.io/',
+          $ledger_link: ledgerReferralURL,
+          $trezor_link: trezorReferralURL
         })}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
-          {translateRaw('GENERATE_WALLET_HELPLINK_1')}
+          {translate('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>
       </p>
 
@@ -49,11 +49,11 @@ const WalletTypes: React.SFC<{}> = () => {
         <div className="col-md-1" />
         {Object.keys(typeInfo).map((type: keyof typeof typeInfo) => (
           <div key={type} className="WalletType col-md-5">
-            <h2 className="WalletType-title">{translateRaw(typeInfo[type].name)}</h2>
+            <h2 className="WalletType-title">{translate(typeInfo[type].name)}</h2>
             <ul className="WalletType-features">
               {typeInfo[type].bullets.map(bullet => (
                 <li key={bullet} className="WalletType-features-feature">
-                  {translateRaw(bullet)}
+                  {translate(bullet)}
                 </li>
               ))}
             </ul>
@@ -62,7 +62,7 @@ const WalletTypes: React.SFC<{}> = () => {
                 className="WalletType-select-btn btn btn-primary btn-block"
                 to={`/generate/${type}`}
               >
-                Generate a {translateRaw(typeInfo[type].name)}
+                Generate a {translate(typeInfo[type].name)}
               </Link>
             </div>
           </div>

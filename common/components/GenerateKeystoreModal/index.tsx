@@ -2,7 +2,7 @@ import React from 'react';
 import { generateKeystoreFileInfo, KeystoreFile } from 'utils/keystore';
 import Modal from 'components/ui/Modal';
 import { TogglablePassword } from 'components';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { isValidPrivKey } from 'libs/validators';
 import './index.scss';
@@ -55,14 +55,14 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
 
     return (
       <Modal
-        title={translateRaw('Generate Keystore File')}
+        title={translate('Generate Keystore File')}
         isOpen={this.props.isOpen}
         handleClose={this.handleClose}
       >
         <form className="GenKeystore" onSubmit={this.handleSubmit}>
           <div className="input-group-wrapper GenKeystore-field">
             <label className="input-group input-group-inline">
-              <div className="input-group-header">Private Key</div>
+              <div className="input-group-header">{translate('x_PrivKey2')}</div>
               <TogglablePassword
                 name="privateKey"
                 value={privateKey}
@@ -75,12 +75,14 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
           </div>
           <div className="input-group-wrapper GenKeystore-field">
             <label className="input-group input-group-inline">
-              <div className="input-group-header">Password</div>
+              <div className="input-group-header">{translate('INPUT_PASSWORD_LABEL')}</div>
               <TogglablePassword
                 name="password"
                 value={password}
                 onChange={this.handleInput}
-                placeholder={translateRaw('Minimum 9 characters')}
+                placeholder={translate('INPUT_PASSWORD_PLACEHOLDER', {
+                  $pass_length: MINIMUM_PASSWORD_LENGTH.toString()
+                })}
                 isValid={isPasswordValid}
               />
             </label>
@@ -91,24 +93,20 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
               className="GenKeystore-button btn btn-primary btn-block"
               disabled={!isPrivateKeyValid || !isPasswordValid}
             >
-              {translateRaw('Generate Keystore File')}
+              {translate('GENERATE_KEYSTORE_ACTION')}
             </button>
           ) : hasError ? (
-            <p className="alert alert-danger">
-              Keystore generation failed or was invalid. In order to prevent loss of funds, we
-              cannot provide you with a keystore file that may be corrupted. Refresh the page or use
-              a different browser, and try again.
-            </p>
+            <p className="alert alert-danger">{translate('GENERATE_KEYSTORE_FAILED')}</p>
           ) : (
             <a
               onClick={this.handleClose}
               href={keystoreFile.blob}
               className="GenKeystore-button btn btn-success btn-block"
-              aria-label={translateRaw('x_Keystore')}
-              aria-describedby={translateRaw('x_KeystoreDesc')}
+              aria-label={translate('x_Keystore')}
+              aria-describedby={translate('x_KeystoreDesc')}
               download={keystoreFile.filename}
             >
-              {translateRaw('Download Keystore File')}
+              {translate('ACTION_12')}
             </a>
           )}
         </form>

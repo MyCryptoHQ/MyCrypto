@@ -9,7 +9,7 @@ type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'dang
 type ButtonSize = 'lg' | 'sm' | 'xs';
 
 interface Props {
-  text: React.ReactElement<any> | string;
+  text: string;
   loading?: boolean;
   disabled?: boolean;
   loadingText?: string;

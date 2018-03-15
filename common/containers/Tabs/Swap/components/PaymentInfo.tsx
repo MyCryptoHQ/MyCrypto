@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { translateMarkdown } from 'translations';
+import translate from 'translations';
 import { SwapInput } from 'reducers/swap/types';
 import './PaymentInfo.scss';
 import { Input } from 'components/ui';
@@ -15,9 +15,9 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
     return (
       <section className="SwapPayment">
         <h2>
-          {translateMarkdown('SWAP_SEND_TO', {
-            var_origin_amount: origin.amount.toString(),
-            var_origin_label: origin.label
+          {translate('SWAP_SEND_TO', {
+            $origin_amount: origin.amount.toString(),
+            $origin_label: origin.label
           })}
           <Input
             className="SwapPayment-address"

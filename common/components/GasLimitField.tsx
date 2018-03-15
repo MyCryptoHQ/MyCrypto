@@ -1,6 +1,6 @@
 import React from 'react';
 import { GasLimitFieldFactory } from './GasLimitFieldFactory';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { gasLimitValidator } from 'libs/validators';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import './GasLimitField.scss';
@@ -17,7 +17,7 @@ export const GasLimitField: React.SFC<Props> = ({ customLabel, disabled }) => (
       <div className="input-group-wrapper AdvancedGas-gas-price">
         <label className="input-group">
           <div className="input-group-header">
-            {customLabel ? customLabel : translateRaw('TRANS_gas')}
+            {customLabel ? customLabel : translate('TRANS_gas')}
             <div className="flex-spacer" />
             <InlineSpinner active={gasEstimationPending} text="Calculating" />
           </div>

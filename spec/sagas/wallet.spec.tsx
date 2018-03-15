@@ -34,7 +34,7 @@ import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
 import Web3Node from 'libs/nodes/web3';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { showNotification } from 'actions/notifications';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
 import { Token } from 'types/network';
 import { initWeb3Node } from 'sagas/config/web3';
@@ -348,7 +348,7 @@ describe('unlockWeb3*', () => {
     data.clone = data.gen.clone();
     expect(data.clone.next(nodeLib).value).toEqual(put(web3UnsetNode()));
     expect(data.clone.next().value).toEqual(
-      put(showNotification('danger', translateRaw('Cannot use Web3 wallet without a Web3 node.')))
+      put(showNotification('danger', translate('Cannot use Web3 wallet without a Web3 node.')))
     );
     expect(data.clone.next().done).toEqual(true);
   });
@@ -361,7 +361,7 @@ describe('unlockWeb3*', () => {
     data.clone1 = data.gen.clone();
     expect(data.clone1.next([]).value).toEqual(put(web3UnsetNode()));
     expect(data.clone1.next().value).toEqual(
-      put(showNotification('danger', translateRaw('No accounts found in MetaMask / Mist.')))
+      put(showNotification('danger', translate('No accounts found in MetaMask / Mist.')))
     );
     expect(data.clone1.next().done).toEqual(true);
   });

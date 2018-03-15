@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import SignMessage from './components/SignMessage';
 import VerifyMessage from './components/VerifyMessage';
 import TabSection from 'containers/TabSection';
@@ -25,11 +25,11 @@ export default class SignAndVerifyMessage extends Component<RouteComponentProps<
     const tabs = [
       {
         path: 'sign',
-        name: translateRaw('NAV_SignMsg')
+        name: translate('NAV_SignMsg')
       },
       {
         path: 'verify',
-        name: translateRaw('MSG_verify')
+        name: translate('MSG_verify')
       }
     ];
 

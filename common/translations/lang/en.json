@@ -82,6 +82,7 @@
     "NAV_Offline": "Send Offline ",
     "NAV_SendEther": "Send Ether & Tokens ",
     "NAV_SendTokens": "Send Tokens ",
+    "NAV_RequestPayment": "Request Payment",
     "NAV_SignMsg": "Sign Message ",
     "NAV_Swap": "Swap ",
     "NAV_ViewWallet": "View Wallet Info ",
@@ -90,10 +91,9 @@
     "x_AddessDesc":
       "Your Address can also be known as you `Account #` or your `Public Key`. It is what you share with people so they can send you Ether or Tokens. Find the colorful address icon. Make sure it matches your paper wallet & whenever you enter your address somewhere.",
     "x_Address": "Your Address ",
-    "x_Cancel": "Cancel ",
     "x_Cipher": "Cipher Browser",
     "x_CSV": "CSV file (unencrypted) ",
-    "x_Download": "Download ",
+    "x_Download": "Download",
     "x_Json": "JSON File (unencrypted) ",
     "x_JsonDesc":
       "This is the unencrypted, JSON format of your private key. This means you do not need the password but anyone who finds your JSON can access your wallet & Ether without the password. ",
@@ -106,12 +106,11 @@
     "x_Web3": "Web3",
     "x_Mnemonic": "Mnemonic Phrase ",
     "x_ParityPhrase": "Parity Phrase ",
-    "x_Password": "Password ",
     "x_Print": "Print Paper Wallet ",
     "x_PrintDesc": "ProTip: Click print and save this as a PDF, even if you do not own a printer! ",
     "x_PrintShort": "Print ",
     "x_PrivKey": "Private Key (unencrypted) ",
-    "x_PrivKey2": "Private Key ",
+    "x_PrivKey2": "Private Key",
     "x_PrivKeyDesc":
       "This is the unencrypted text version of your private key, meaning no password is necessary. If someone were to find your unencrypted private key, they could access your wallet without a password. For this reason, encrypted versions are typically recommended. ",
     "x_Save": "Save ",
@@ -222,7 +221,8 @@
     "BULK_Label_1": "Number of Wallets To Generate ",
     "BULK_Label_2": "Generate Wallets ",
     "BULK_SuccessMsg": "Success! Your wallets have been generated. ",
-    "SEND_addr": "To ",
+    "SEND_addr": "To Address",
+    "SEND_addr_short": "To ",
     "SEND_amount": "Amount to Send ",
     "SEND_amount_short": "Amount",
     "SEND_custom": "Add Custom Token",
@@ -240,15 +240,14 @@
     "SENDModal_Content_3": "Are you sure you want to do this? ",
     "SENDModal_Content_4":
       "NOTE: If you encounter an error, you most likely need to add ether to your account to cover the gas cost of sending tokens. Gas is paid in ether. ",
-    "SENDModal_No": "Cancel",
-    "SENDModal_Yes": "Send",
     "TOKEN_Addr": "Address ",
     "TOKEN_Symbol": "Token Symbol ",
     "TOKEN_Dec": "Decimals ",
     "TOKEN_show": "Show All Tokens ",
     "TOKEN_hide": "Hide Tokens ",
     "TRANS_desc": "If you want to send Tokens, please use the \"Send Token\" page instead. ",
-    "TRANS_advanced": "+Advanced: Add Data ",
+    "TRANS_advanced": "Advanced",
+    "TRANS_simple": "Simple",
     "TRANS_data": "Data ",
     "TRANS_gas": "Gas Limit ",
     "TRANS_sendInfo":
@@ -847,7 +846,7 @@
       "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉",
     "BETA_ANNOUNCEMENT_MESSAGE":
       "This is a Beta version of MyCrypto. Please submit any bug reports to our [GitHub](https://github.com/MyCryptoHQ/MyCrypto/issues), and join the discussion on [Discord](https://discord.gg/VSaTXEA)",
-    "DONATE_CURRENCY": "Donate",
+    "DONATE_CURRENCY": "Donate var_currency",
     "NOTIFICATION_TYPE_WARNING": "Warning",
     "GENERATE_WALLET_WARNING":
       "Managing your own keys can be risky and a single mistake can lead to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using [MetaMask](var_metamask_link) or purchasing a [Ledger](var_ledger_link) or [TREZOR](var_trezor_link) hardware wallet.",
@@ -859,7 +858,7 @@
       "MyCrypto is an open-source, client-side tool for generating Ether Wallets, handling ERC-20 tokens, and interacting with the blockchain more easily. Developed by and for the community since 2015, we’re focused on building awesome products that put the power in people’s hands.",
     "FOOTER_SUPPORT": "Help & Support",
     "FOOTER_TEAM": "Our Team",
-    "FOOTER_AFFILIAT_TITLE": "Support Us & Our Friends",
+    "FOOTER_AFFILIATE_TITLE": "Support Us & Our Friends",
     "FOOTER_PRESS": "Press Inquiries",
     "FOOTER_HELP_AND_DEBUGGING": "Helpers & ENS Debugging",
     "ETHERSCAMDB": "EtherScamDB",
@@ -872,13 +871,17 @@
     "DISCLAIMER": "Disclaimer",
     "INPUT_CONFIRM_PASSWORD_LABEL": "Confirm password",
     "INPUT_PASSWORD_LABEL": "Password",
-    "INPUT_PASSWORD_PLACEHOLDER": "Password must be 12+ characters",
+    "INPUT_PASSWORD_PLACEHOLDER": "Password must use at least var_pass_length characters",
     "GENERATE_KEYSTORE_TITLE": "Generate a Keystore File",
+    "GENERATE_KEYSTORE_ACTION": "Generate Keystore File",
+    "GENERATE_KEYSTORE_FAILED":
+      "Keystore generation failed or was invalid. In order to prevent loss of funds, we cannot provide you with a keystore file that may be corrupted. Refresh the page or use a different browser, and try again.",
     "WEAK_PASSWORD": "This password isn't strong enough.",
     "INVALID_PASSWORD": "Invalid password",
     "GENERATE_MNEMONIC_TITLE": "Generate a Mnemonic Phrase",
     "REGENERATE_MNEMONIC": "Regenerate Phrase",
     "CONFIRM_MNEMONIC": "Confirm Phrase",
+    "MNEMONIC_CHOOSE_ADDR": "Choose address",
     "MNEMONIC_DESCRIPTOION_1":
       "Re-enter your phrase to confirm you copied it correctly. If you forgot one of your words, just click the button beside the input to reveal it.",
     "MNEMONIC_DESCRIPTOION_2":
@@ -899,6 +902,9 @@
     "ACTION_8": "Details",
     "ACTION_9": "Check Availability",
     "ACTION_10": "Done",
+    "ACTION_11": "Send",
+    "ACTION_12": "Download",
+    "ACTION_13": "Download var_thing",
     "CONFIRM_HARDWARE_WALLET_TRANSACTION": "Confirm transaction on hardware wallet",
     "WALLET_LOGOUT_MODAL_TITLE": "You are about to log out",
     "WALLET_LOGOUT_MODAL_DESC":
@@ -971,6 +977,11 @@
     "SWAP_RECIEVE_INPUT_LABEL": "Recieve",
     "SWAP_MAX_ERROR": "Maximum var_rate_max var_origin_id",
     "SWAP_MIN_ERROR": "Minimum var_rate_max var_origin_id",
-    "ADD_CUSTOM_TKN_HELP": "Need help? Learn how to add custom tokens."
+    "ADD_CUSTOM_TKN_HELP": "Need help? Learn how to add custom tokens.",
+    "TX_FEE_SCALE_LEFT": "Cheap",
+    "TX_FEE_SCALE_RIGHT": "Fast",
+    "CHANGE_WALLET": "Change Wallet",
+    "REQUEST_PAYMENT_QR_TITLE": "Payment QR & Code",
+    "ACCOUNT": "Account"
   }
 }

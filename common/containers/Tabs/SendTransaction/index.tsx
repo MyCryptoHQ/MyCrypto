@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import { UnlockHeader } from 'components/ui';
 import { SideBar } from './components/index';
@@ -39,24 +39,24 @@ class SendTransaction extends React.Component<Props> {
     const tabs: Tab[] = [
       {
         path: 'send',
-        name: translateRaw('NAV_SendEther'),
+        name: translate('NAV_SendEther'),
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
         path: 'request',
-        name: translateRaw('Request Payment'),
+        name: translate('NAV_RequestPayment'),
         disabled: this.props.requestDisabled
       },
       {
         path: 'info',
-        name: translateRaw('NAV_ViewWallet')
+        name: translate('NAV_ViewWallet')
       }
     ];
 
     return (
       <TabSection>
         <section className="Tab-content">
-          <UnlockHeader title={translateRaw('Account')} showGenerateLink={true} />
+          <UnlockHeader title={translate('ACCOUNT')} showGenerateLink={true} />
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">

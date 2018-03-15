@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { Identicon, UnitDisplay, NewTabLink, TextArea, Address } from 'components/ui';
 import { TransactionData, TransactionReceipt } from 'libs/nodes';
 import { NetworkConfig } from 'types/network';
@@ -71,7 +71,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
 
   const rows: TableRow[] = [
     {
-      label: translateRaw('TX_STATUS'),
+      label: translate('TX_STATUS'),
       data: (
         <React.Fragment>
           <strong className={`TxData-row-data-status is-${statusType}`}>{statusMsg}</strong>
@@ -86,15 +86,15 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translateRaw('x_TxHash'),
+      label: translate('x_TxHash'),
       data: <MaybeLink href={explorer.tx}>{data.hash}</MaybeLink>
     },
     {
-      label: translateRaw('TX_BLOCK_NUMB'),
+      label: translate('TX_BLOCK_NUMB'),
       data: receipt && <MaybeLink href={explorer.block}>{receipt.blockNumber}</MaybeLink>
     },
     {
-      label: translateRaw('OFFLINE_Step1_Label_1'),
+      label: translate('OFFLINE_Step1_Label_1'),
       data: (
         <MaybeLink href={explorer.from}>
           <Identicon address={data.from} size="26px" />
@@ -103,7 +103,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translateRaw('OFFLINE_Step2_Label_1'),
+      label: translate('OFFLINE_Step2_Label_1'),
       data: (
         <MaybeLink href={explorer.to}>
           <Identicon address={data.to} size="26px" />
@@ -112,23 +112,23 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translateRaw('SEND_amount_short'),
+      label: translate('SEND_amount_short'),
       data: <UnitDisplay value={data.value} unit="ether" symbol={network.unit} />
     },
     {
-      label: translateRaw('OFFLINE_Step2_Label_3'),
+      label: translate('OFFLINE_Step2_Label_3'),
       data: <UnitDisplay value={data.gasPrice} unit="gwei" symbol="Gwei" />
     },
     {
-      label: translateRaw('OFFLINE_Step2_Label_4'),
+      label: translate('OFFLINE_Step2_Label_4'),
       data: <UnitDisplay value={data.gas} unit="wei" />
     },
     {
-      label: translateRaw('TX_GAS_USED'),
+      label: translate('TX_GAS_USED'),
       data: receipt && <UnitDisplay value={receipt.gasUsed} unit="wei" />
     },
     {
-      label: translateRaw('CONFIRM_TX_FEE'),
+      label: translate('CONFIRM_TX_FEE'),
       data: receipt && (
         <UnitDisplay
           value={receipt.gasUsed.mul(data.gasPrice)}
@@ -138,7 +138,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translateRaw('New contract address'),
+      label: translate('New contract address'),
       data: receipt &&
         receipt.contractAddress && (
           <MaybeLink href={explorer.contract}>
@@ -147,11 +147,11 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
         )
     },
     {
-      label: translateRaw('OFFLINE_Step2_Label_5'),
+      label: translate('OFFLINE_Step2_Label_5'),
       data: data.nonce
     },
     {
-      label: translateRaw('TRANS_data'),
+      label: translate('TRANS_data'),
       data: hasInputData ? <TextArea value={data.input} disabled={true} /> : null
     }
   ];

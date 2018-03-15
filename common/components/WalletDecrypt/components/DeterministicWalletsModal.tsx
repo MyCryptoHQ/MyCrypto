@@ -17,7 +17,7 @@ import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 import { StaticNetworkConfig } from 'types/network';
 import Select from 'react-select';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -101,13 +101,13 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
     const buttons: IButton[] = [
       {
-        text: translateRaw('ACTION_3'),
+        text: translate('ACTION_3'),
         type: 'primary',
         onClick: this.handleConfirmAddress,
         disabled: !selectedAddress
       },
       {
-        text: translateRaw('ACTION_2'),
+        text: translate('ACTION_2'),
         type: 'default',
         onClick: onCancel
       }
@@ -115,7 +115,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
     return (
       <Modal
-        title={translateRaw(`DECRYPT_PROMPT_UNLOCK_${walletType}`)}
+        title={translate(`DECRYPT_PROMPT_UNLOCK_${walletType}`)}
         isOpen={this.props.isOpen}
         buttons={buttons}
         handleClose={onCancel}
@@ -125,7 +125,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             className="DWModal-path form-group-sm flex-wrapper"
             onSubmit={this.handleSubmitCustomPath}
           >
-            <span className="DWModal-path-label">{translateRaw('DECRYPT_DROPDOWN_LABEL')} </span>
+            <span className="DWModal-path-label">{translate('DECRYPT_DROPDOWN_LABEL')} </span>
             <Select
               name="fieldDPath"
               className=""
@@ -167,7 +167,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
                       ))}
                     </select>
                   </td>
-                  <td>{translateRaw('ACTION_5')}</td>
+                  <td>{translate('ACTION_5')}</td>
                 </tr>
               </thead>
               <tbody>{wallets.map(wallet => this.renderWalletRow(wallet))}</tbody>
@@ -179,13 +179,13 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
               disabled={page === 0}
               onClick={this.prevPage}
             >
-              ← {translateRaw('ACTION_4')}
+              ← {translate('ACTION_4')}
             </button>
             <button
               className="DWModal-addresses-nav-btn btn btn-sm btn-default"
               onClick={this.nextPage}
             >
-              {translateRaw('ACTION_5')} →
+              {translate('ACTION_5')} →
             </button>
           </div>
         </div>

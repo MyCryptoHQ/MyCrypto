@@ -3,7 +3,7 @@ import './SupportFooter.scss';
 import { SwapInput } from 'actions/swap';
 import { NormalizedBityRates, NormalizedShapeshiftRates } from 'reducers/swap/types';
 import { TextArea } from 'components/ui';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 
 interface Props {
   origin: SwapInput;
@@ -76,11 +76,11 @@ Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
           target="_blank"
           rel="noopener noreferrer"
         >
-          {translateRaw('SWAP_SUPPORT')}
+          {translate('SWAP_SUPPORT')}
         </a>
         <div className="SupportFooter-fallback">
           <p onClick={this.toggleFallback}>
-            <small>{translateRaw('SWAP_SUPPORT_LINK_BROKEN')}</small>
+            <small>{translate('SWAP_SUPPORT_LINK_BROKEN')}</small>
           </p>
           {open ? (
             <TextArea defaultValue={fallbackBody} className="form-control input-sm" rows={9} />

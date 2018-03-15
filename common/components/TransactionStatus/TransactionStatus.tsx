@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { translateRaw, translateMarkdown } from 'translations';
+import translate from 'translations';
 import { fetchTransactionData, TFetchTransactionData } from 'actions/transactions';
 import { getTransactionDatas } from 'selectors/transactions';
 import { getNetworkConfig } from 'selectors/config';
@@ -52,13 +52,13 @@ class TransactionStatus extends React.Component<Props> {
     } else if (tx && tx.error) {
       content = (
         <div className="TxStatus-error">
-          <h2 className="TxStatus-error-title">{translateRaw('tx_notFound')}</h2>
-          <p className="TxStatus-error-desc">{translateRaw('tx_notFound_1')}</p>
+          <h2 className="TxStatus-error-title">{translate('tx_notFound')}</h2>
+          <p className="TxStatus-error-desc">{translate('tx_notFound_1')}</p>
           <ul className="TxStatus-error-list">
-            <li>{translateMarkdown('tx_notFound_5')}</li>
-            <li>{translateMarkdown('tx_notFound_2')}</li>
-            <li>{translateMarkdown('tx_notFound_3')}</li>
-            <li>{translateMarkdown('tx_notFound_4')}</li>
+            <li>{translate('tx_notFound_5')}</li>
+            <li>{translate('tx_notFound_2')}</li>
+            <li>{translate('tx_notFound_3')}</li>
+            <li>{translate('tx_notFound_4')}</li>
           </ul>
         </div>
       );

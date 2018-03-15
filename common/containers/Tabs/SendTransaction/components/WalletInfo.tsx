@@ -1,6 +1,6 @@
 import React from 'react';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
 import { Identicon, QRCode, Input } from 'components/ui';
@@ -46,7 +46,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
             <div className="col-xs-11">
               <div className="input-group-wrapper">
                 <label className="input-group">
-                  <div className="input-group-header">{translateRaw('x_Address')}</div>
+                  <div className="input-group-header">{translate('x_Address')}</div>
                   <Input readOnly={true} value={address} />
                 </label>
               </div>
@@ -59,12 +59,12 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
           {privateKey && (
             <div className="row form-group">
               <div className="col-xs-12">
-                <label>{translateRaw('x_PrivKey')}</label>
+                <label>{translate('x_PrivKey')}</label>
                 <TogglablePassword
                   disabled={true}
                   value={privateKey}
                   isVisible={isPrivateKeyVisible}
-                  toggleAriaLabel={translateRaw('GEN_Aria_2')}
+                  toggleAriaLabel={translate('GEN_Aria_2')}
                   handleToggleVisibility={this.togglePrivateKey}
                 />
               </div>
@@ -98,7 +98,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
                   <label>Utilities</label>
 
                   <button className="btn btn-info btn-block" onClick={print(address, privateKey)}>
-                    {translateRaw('x_Print')}
+                    {translate('x_Print')}
                   </button>
 
                   <button className="btn btn-info btn-block" onClick={this.toggleKeystoreModal}>

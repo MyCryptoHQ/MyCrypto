@@ -1,6 +1,6 @@
 import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
@@ -63,12 +63,12 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
               Unlocking...
             </div>
           ) : (
-            translateRaw('ADD_Trezor_scan')
+            translate('ADD_Trezor_scan')
           )}
         </button>
 
         <NewTabLink className="TrezorDecrypt-buy btn btn-sm btn-default" href={trezorReferralURL}>
-          {translateRaw('Don’t have a TREZOR? Order one now!')}
+          {translate('Don’t have a TREZOR? Order one now!')}
         </NewTabLink>
 
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>

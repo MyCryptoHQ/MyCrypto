@@ -1,6 +1,6 @@
 import React from 'react';
 import { generateMnemonic } from 'bip39';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import Word from './Word';
 import FinalSteps from '../FinalSteps';
 import Template from '../Template';
@@ -51,12 +51,12 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
 
       content = (
         <div className="GenerateMnemonic">
-          <h1 className="GenerateMnemonic-title">{translateRaw('GENERATE_MNEMONIC_TITLE')}</h1>
+          <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
 
           <p className="GenerateMnemonic-help">
             {isConfirming
-              ? translateRaw('MNEMONIC_DESCRIPTOION_1')
-              : translateRaw('MNEMONIC_DESCRIPTOION_2')}
+              ? translate('MNEMONIC_DESCRIPTOION_1')
+              : translate('MNEMONIC_DESCRIPTOION_2')}
           </p>
 
           <div className="GenerateMnemonic-words">
@@ -73,7 +73,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
                 className="GenerateMnemonic-buttons-btn btn btn-default"
                 onClick={this.regenerateWordArray}
               >
-                <i className="fa fa-refresh" /> {translateRaw('REGENERATE_MNEMONIC')}
+                <i className="fa fa-refresh" /> {translate('REGENERATE_MNEMONIC')}
               </button>
             )}
             <button
@@ -81,7 +81,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
               disabled={!canContinue}
               onClick={this.goToNextStep}
             >
-              {translateRaw('CONFIRM_MNEMONIC')}
+              {translate('CONFIRM_MNEMONIC')}
             </button>
           </div>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import BN from 'bn.js';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { connect } from 'react-redux';
 import {
   inputGasPrice,
@@ -114,8 +114,8 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             <div className="help-block">
               <a className="Gas-toggle" onClick={this.toggleAdvanced}>
                 {showAdvanced
-                  ? `- ${translateRaw('ACTION_4')}`
-                  : `+ ${translateRaw('Advanced Settings')}`}
+                  ? `- ${translate('TRANS_simple')}`
+                  : `+ ${translate('TRANS_advanced')}`}
               </a>
             </div>
           )}

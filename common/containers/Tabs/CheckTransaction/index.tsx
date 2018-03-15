@@ -9,7 +9,7 @@ import { getParamFromURL } from 'utils/helpers';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import './index.scss';
-import { translateRaw, translateMarkdown } from 'translations';
+import translate from 'translations';
 
 interface StateProps {
   network: NetworkConfig;
@@ -41,13 +41,13 @@ class CheckTransaction extends React.Component<Props, State> {
       <TabSection>
         <div className="CheckTransaction Tab-content">
           <section className="CheckTransaction-form Tab-content-pane">
-            <h1 className="CheckTransaction-form-title">{translateRaw('CHECK_TX_STATUS_TITLE')}</h1>
+            <h1 className="CheckTransaction-form-title">{translate('CHECK_TX_STATUS_TITLE')}</h1>
             <p className="CheckTransaction-form-desc">
-              {translateRaw('CHECK_TX_STATUS_DESCRIPTION_1')}
+              {translate('CHECK_TX_STATUS_DESCRIPTION_1')}
               {!network.isCustom &&
-                translateMarkdown('CHECK_TX_STATUS_DESCRIPTION_2', {
-                  var_block_explorer: network.blockExplorer.name,
-                  var_block_explorer_link: network.blockExplorer.origin
+                translate('CHECK_TX_STATUS_DESCRIPTION_2', {
+                  $block_explorer: network.blockExplorer.name,
+                  $block_explorer_link: network.blockExplorer.origin
                 })}
             </p>
             <TxHashInput hash={hash} onSubmit={this.handleHashSubmit} />

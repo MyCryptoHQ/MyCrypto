@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { NewTabLink } from 'components/ui';
 import { BlockExplorerConfig } from 'types/network';
 
@@ -14,7 +14,7 @@ const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededPro
   if (blockExplorer) {
     verifyBtn = (
       <NewTabLink className="btn btn-xs" href={blockExplorer.txUrl(txHash)}>
-        {translateRaw('VERIFY_TX', { var_block_explorer: blockExplorer.name })}
+        {translate('VERIFY_TX', { $block_explorer: blockExplorer.name })}
       </NewTabLink>
     );
   }
@@ -22,11 +22,11 @@ const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededPro
   return (
     <div>
       <p>
-        {translateRaw('SUCCESS_3')} {txHash}
+        {translate('SUCCESS_3')} {txHash}
       </p>
       {verifyBtn}
       <Link to={`/tx-status?txHash=${txHash}`} className="btn btn-xs">
-        {translateRaw('NAV_CheckTxStatus')}
+        {translate('NAV_CheckTxStatus')}
       </Link>
     </div>
   );

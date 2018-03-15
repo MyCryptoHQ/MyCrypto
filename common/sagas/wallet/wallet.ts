@@ -46,7 +46,7 @@ import {
   MergedToken,
   TokenBalance
 } from 'selectors/wallet';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { getTokenBalances, filterScannedTokenBalances } from './helpers';
@@ -194,7 +194,7 @@ export function* unlockPrivateKey(action: UnlockPrivateKeyAction): SagaIterator 
   try {
     wallet = getPrivKeyWallet(key, password);
   } catch (e) {
-    yield put(showNotification('danger', translateRaw('INVALID_PKEY')));
+    yield put(showNotification('danger', translate('INVALID_PKEY')));
     return;
   }
   yield put(setWallet(wallet));
@@ -231,7 +231,7 @@ export function* unlockKeystore(action: UnlockKeystoreAction): SagaIterator {
     ) {
       yield put(setPasswordPrompt());
     } else {
-      yield put(showNotification('danger', translateRaw('ERROR_6')));
+      yield put(showNotification('danger', translate('ERROR_6')));
     }
     return;
   }
@@ -249,7 +249,7 @@ export function* unlockMnemonic(action: UnlockMnemonicAction): SagaIterator {
     wallet = MnemonicWallet(phrase, pass, path, address);
   } catch (err) {
     // TODO: use better error than 'ERROR_14' (wallet not found)
-    yield put(showNotification('danger', translateRaw('ERROR_14')));
+    yield put(showNotification('danger', translate('ERROR_14')));
     return;
   }
 
@@ -290,7 +290,7 @@ export function* unlockWeb3(): SagaIterator {
     console.error(err);
     // unset web3 node so node dropdown isn't disabled
     yield put(web3UnsetNode());
-    yield put(showNotification('danger', translateRaw(err.message)));
+    yield put(showNotification('danger', translate(err.message)));
   }
 }
 

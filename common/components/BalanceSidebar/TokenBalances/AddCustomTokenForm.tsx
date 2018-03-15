@@ -1,7 +1,7 @@
 import React from 'react';
 import { HELP_ARTICLE } from 'config';
 import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { HelpLink, Input } from 'components/ui';
 import './AddCustomTokenForm.scss';
 import { Token } from 'types/network';
@@ -47,17 +47,17 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
       {
         name: 'symbol',
         value: symbol,
-        label: translateRaw('TOKEN_Symbol')
+        label: translate('TOKEN_Symbol')
       },
       {
         name: 'address',
         value: address,
-        label: translateRaw('TOKEN_Addr')
+        label: translate('TOKEN_Addr')
       },
       {
         name: 'decimal',
         value: decimal,
-        label: translateRaw('TOKEN_Dec')
+        label: translate('TOKEN_Dec')
       }
     ];
 
@@ -84,20 +84,20 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
         })}
 
         <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
-          {translateRaw('ADD_CUSTOM_TKN_HELP')}
+          {translate('ADD_CUSTOM_TKN_HELP')}
         </HelpLink>
         <div className="AddCustom-buttons">
           <button
             className="AddCustom-buttons-btn btn btn-sm btn-default"
             onClick={this.props.toggleForm}
           >
-            {translateRaw('x_Cancel')}
+            {translate('ACTION_2')}
           </button>
           <button
             className="AddCustom-buttons-btn btn btn-primary btn-sm"
             disabled={!this.isValid()}
           >
-            {translateRaw('x_Save')}
+            {translate('x_Save')}
           </button>
         </div>
       </form>

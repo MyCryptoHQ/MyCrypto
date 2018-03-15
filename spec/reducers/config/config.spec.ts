@@ -27,7 +27,7 @@ import {
 } from 'selectors/config';
 import { Web3Wallet } from 'libs/wallet';
 import { showNotification } from 'actions/notifications';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { StaticNodeConfig } from 'types/node';
 import { staticNodesExpectedState } from './nodes/staticNodes.spec';
 import { metaExpectedState } from './meta/meta.spec';
@@ -204,7 +204,7 @@ describe('handleNodeChangeIntent*', () => {
 
   it('should show error and revert to previous node if check times out', () => {
     data.clone1 = data.gen.clone();
-    shouldBailOut(data.clone1, raceFailure, translateRaw('ERROR_32'));
+    shouldBailOut(data.clone1, raceFailure, translate('ERROR_32'));
   });
   it('should getNetworkConfigById', () => {
     expect(data.gen.next(raceSuccess).value).toEqual(

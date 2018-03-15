@@ -4,7 +4,7 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
@@ -98,7 +98,7 @@ class AccountInfo extends React.Component<Props, State> {
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div className="AccountInfo">
-        <h5 className="AccountInfo-section-header">{translateRaw('sidebar_AccountAddr')}</h5>
+        <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">
             <Identicon address={address} size="100%" />
@@ -145,7 +145,7 @@ class AccountInfo extends React.Component<Props, State> {
         )}
 
         <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">{translateRaw('sidebar_AccountBal')}</h5>
+          <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
           <ul className="AccountInfo-list">
             <li className="AccountInfo-list-item AccountInfo-balance">
               <span
@@ -182,7 +182,7 @@ class AccountInfo extends React.Component<Props, State> {
 
         {(!!blockExplorer || !!tokenExplorer) && (
           <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">{translateRaw('sidebar_TransHistory')}</h5>
+            <h5 className="AccountInfo-section-header">{translate('sidebar_TransHistory')}</h5>
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">

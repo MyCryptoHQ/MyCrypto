@@ -1,7 +1,7 @@
 import { TShowNotification } from 'actions/notifications';
 import { bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import './SwapProgress.scss';
 
 export interface Props {
@@ -44,7 +44,7 @@ export default class SwapProgress extends PureComponent<Props, State> {
       if (!hasShownViewTx) {
         let linkElement: React.ReactElement<HTMLAnchorElement>;
         let link;
-        const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
+        const notificationMessage = translate('SUCCESS_3') + outputTx;
         // everything but BTC is a token
         if (destinationId !== 'BTC') {
           link = bityConfig.ETHTxExplorer(outputTx);
@@ -110,23 +110,23 @@ export default class SwapProgress extends PureComponent<Props, State> {
     const numberOfConfirmations = originId === 'BTC' ? '3' : '10';
     const steps = [
       // 1
-      translateRaw('SWAP_progress_1'),
+      translate('SWAP_progress_1'),
       // 2
-      <span key="1">{translateRaw('SWAP_progress_2', { var_origin_id: originId })}</span>,
+      <span key="1">{translate('SWAP_progress_2', { $origin_id: originId })}</span>,
       // 3
-      <span key="2">{translateRaw('SWAP_progress_3', { var_origin_id: originId })}</span>,
+      <span key="2">{translate('SWAP_progress_3', { $origin_id: originId })}</span>,
       // 4 TODO: Translate me
       <span key="3">
-        {translateRaw('SWAP_progress_4', { var_destination_id: destinationId })}
+        {translate('SWAP_progress_4', { $destination_id: destinationId })}
         <br />
         <small>
-          {translateRaw('SWAP_progress_confirmations', {
-            var_number_confirmations: numberOfConfirmations
+          {translate('SWAP_progress_confirmations', {
+            $number_confirmations: numberOfConfirmations
           })}
         </small>
       </span>,
       // 5
-      translateRaw('SWAP_progress_5')
+      translate('SWAP_progress_5')
     ];
 
     return (

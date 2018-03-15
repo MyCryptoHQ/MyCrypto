@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { NonceFieldFactory } from 'components/NonceFieldFactory';
 import Help from 'components/ui/Help';
 import { Spinner, Input } from 'components/ui';
@@ -35,7 +35,7 @@ class NonceField extends React.Component<Props> {
             <div className="input-group-wrapper Nonce-label">
               <label className="input-group">
                 <div className="input-group-header">
-                  {translateRaw('OFFLINE_Step2_Label_5')}
+                  {translate('OFFLINE_Step2_Label_5')}
                   <Help
                     size="x1"
                     link="https://support.mycrypto.com/transactions/what-is-nonce.html"

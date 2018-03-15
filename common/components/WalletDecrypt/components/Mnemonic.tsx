@@ -1,6 +1,6 @@
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import React, { PureComponent } from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
 import { InsecureWalletName } from 'config';
@@ -55,7 +55,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             <TogglablePassword
               value={phrase}
               rows={4}
-              placeholder={translateRaw('x_Mnemonic')}
+              placeholder={translate('x_Mnemonic')}
               isValid={isValidMnemonic}
               isTextareaWhenVisible={true}
               onChange={this.onMnemonicChange}
@@ -67,7 +67,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             <Input
               value={pass}
               onChange={this.onPasswordChange}
-              placeholder={translateRaw('x_Password')}
+              placeholder={translate('INPUT_PASSWORD_LABEL')}
               type="password"
             />
           </div>
@@ -78,7 +78,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               className="btn btn-primary btn-lg"
               disabled={!isValidMnemonic}
             >
-              {translateRaw('Choose Address')}
+              {translate('MNEMONIC_CHOOSE_ADDR')}
             </button>
           </div>
         </div>

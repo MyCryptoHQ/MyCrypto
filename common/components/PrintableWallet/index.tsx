@@ -1,6 +1,6 @@
 import { PaperWallet } from 'components';
 import React from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import printElement from 'utils/printElement';
 import { stripHexPrefix } from 'libs/values';
 
@@ -38,13 +38,13 @@ const PrintableWallet: React.SFC<Props> = ({ address, privateKey }) => {
       <PaperWallet address={address} privateKey={pkey} />
       <a
         role="button"
-        aria-label={translateRaw('x_Print')}
+        aria-label={translate('x_Print')}
         aria-describedby="x_PrintDesc"
         className="btn btn-lg btn-primary btn-block"
         onClick={print(address, pkey)}
         style={{ margin: '10px auto 0', maxWidth: '260px' }}
       >
-        {translateRaw('x_Print')}
+        {translate('x_Print')}
       </a>
     </div>
   );

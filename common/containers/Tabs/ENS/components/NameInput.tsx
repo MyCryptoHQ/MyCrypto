@@ -5,7 +5,7 @@ import { resolveDomainRequested, TResolveDomainRequested } from 'actions/ens';
 import { isValidENSName } from 'libs/validators';
 import './NameInput.scss';
 import { Input } from 'components/ui';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 
 interface State {
   domainToCheck: string;
@@ -51,14 +51,14 @@ class NameInput extends Component<Props, State> {
           </label>
           {domainToCheck &&
             !isValidDomain && (
-              <p className="help-block is-invalid">{translateRaw('ENS_INVALID_INPUT')}</p>
+              <p className="help-block is-invalid">{translate('ENS_INVALID_INPUT')}</p>
             )}
         </div>
         <button
           className="ENSInput-button btn btn-primary btn-block"
           disabled={!isValidDomain || isLoading}
         >
-          {translateRaw('ACTION_9')}
+          {translate('ACTION_9')}
         </button>
       </form>
     );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
 import './index.scss';
@@ -39,7 +39,7 @@ export class VerifyMessage extends Component<Props, State> {
         <div className="Tab-content-pane">
           <div className="input-group-wrapper ">
             <label className="input-group">
-              <div className="input-group-header">{translateRaw('MSG_signature')}</div>
+              <div className="input-group-header">{translate('MSG_signature')}</div>
               <TextArea
                 className={`VerifyMessage-inputBox ${signature ? 'is-valid' : 'is-invalid'}`}
                 placeholder={signaturePlaceholder}
@@ -55,7 +55,7 @@ export class VerifyMessage extends Component<Props, State> {
             onClick={this.handleVerifySignedMessage}
             disabled={false}
           >
-            {translateRaw('MSG_verify')}
+            {translate('MSG_verify')}
           </button>
 
           {!!verifiedAddress &&
@@ -89,10 +89,10 @@ export class VerifyMessage extends Component<Props, State> {
         verifiedAddress: address,
         verifiedMessage: msg
       });
-      this.props.showNotification('success', translateRaw('SUCCESS_7'));
+      this.props.showNotification('success', translate('SUCCESS_7'));
     } catch (err) {
       this.clearVerifiedData();
-      this.props.showNotification('danger', translateRaw('ERROR_12'));
+      this.props.showNotification('danger', translate('ERROR_12'));
     }
   };
 

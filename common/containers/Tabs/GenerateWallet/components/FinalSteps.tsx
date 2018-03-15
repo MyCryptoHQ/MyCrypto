@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { WalletType } from '../GenerateWallet';
 import SiteImage from 'assets/images/unlock-guide/site.png';
 import TabImage from 'assets/images/unlock-guide/tab.png';
@@ -17,42 +17,42 @@ interface Props {
 const FinalSteps: React.SFC<Props> = ({ walletType }) => {
   const steps = [
     {
-      name: translateRaw('MNEMONIC_FINAL_STEP_1'),
+      name: translate('MNEMONIC_FINAL_STEP_1'),
       image: SiteImage
     },
     {
-      name: translateRaw('MNEMONIC_FINAL_STEP_2'),
+      name: translate('MNEMONIC_FINAL_STEP_2'),
       image: TabImage
     }
   ];
 
   if (walletType === WalletType.Keystore) {
     steps.push({
-      name: translateRaw('MNEMONIC_FINAL_STEP_3'),
+      name: translate('MNEMONIC_FINAL_STEP_3'),
       image: SelectKeystoreImage
     });
     steps.push({
-      name: translateRaw('MNEMONIC_FINAL_STEP_5'),
+      name: translate('MNEMONIC_FINAL_STEP_5'),
       image: ProvideKeystoreImage
     });
   } else if (walletType === WalletType.Mnemonic) {
     steps.push({
-      name: translateRaw('MNEMONIC_FINAL_STEP_3'),
+      name: translate('MNEMONIC_FINAL_STEP_3'),
       image: SelectMnemonicImage
     });
     steps.push({
-      name: translateRaw('MNEMONIC_FINAL_STEP_4'),
+      name: translate('MNEMONIC_FINAL_STEP_4'),
       image: ProvideMnemonicImage
     });
   }
 
   return (
     <div className="FinalSteps">
-      <h1 className="FinalSteps-title">{translateRaw('ADD_Label_6')}</h1>
-      <p className="FinalSteps-help">{translateRaw('MNEMONIC_FINAL_DESCRIPTION')}</p>
+      <h1 className="FinalSteps-title">{translate('ADD_Label_6')}</h1>
+      <p className="FinalSteps-help">{translate('MNEMONIC_FINAL_DESCRIPTION')}</p>
       <div className="FinalSteps-steps row">
         {steps.map((step, index) => (
-          <div key={step.name} className="StepBox col-lg-3 col-sm-6 col-xs-12">
+          <div key={index} className="StepBox col-lg-3 col-sm-6 col-xs-12">
             <h4 className="StepBox-title">{step.name}</h4>
             <div className="StepBox-screen">
               <img className="StepBox-screen-img" src={step.image} />
@@ -63,7 +63,7 @@ const FinalSteps: React.SFC<Props> = ({ walletType }) => {
       </div>
       <div className="FinalSteps-buttons">
         <Link to="/account" className="FinalSteps-buttons-btn btn btn-primary btn-lg">
-          {translateRaw('GO_TO_ACCOUNT')}
+          {translate('GO_TO_ACCOUNT')}
         </Link>
       </div>
     </div>

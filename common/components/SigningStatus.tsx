@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { signaturePending } from 'selectors/transaction';
 import { Spinner } from 'components/ui';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 interface StateProps {
   isSignaturePending: boolean;
   isHardwareWallet: boolean;
@@ -16,7 +16,7 @@ class SigningStatusClass extends Component<StateProps> {
     const HWWalletPrompt: React.SFC<{}> = _ =>
       isHardwareWallet ? (
         <p>
-          <b>{translateRaw('CONFIRM_HARDWARE_WALLET_TRANSACTION')}</b>
+          <b>{translate('CONFIRM_HARDWARE_WALLET_TRANSACTION')}</b>
         </p>
       ) : null;
 

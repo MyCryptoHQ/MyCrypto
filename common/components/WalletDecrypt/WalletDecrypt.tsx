@@ -18,7 +18,7 @@ import {
   TResetWallet
 } from 'actions/wallet';
 import { reset, TReset, ResetAction } from 'actions/transaction';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import {
   KeystoreDecrypt,
   LedgerNanoSDecrypt,
@@ -246,7 +246,7 @@ const WalletDecrypt = withRouter<Props>(
         return (
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
-              walletType={translateRaw(selectedWallet.lid)}
+              walletType={translate(selectedWallet.lid)}
               onContinue={this.handleAcknowledgeInsecure}
               onCancel={this.clearWalletChoice}
             />
@@ -257,10 +257,10 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="WalletDecrypt-decrypt">
           <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
-            <i className="fa fa-arrow-left" /> {translateRaw('Change Wallet')}
+            <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly && 'Unlock your'} {translateRaw(selectedWallet.lid)}
+            {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
             <selectedWallet.component
@@ -299,7 +299,7 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-wallets">
-          <h2 className="WalletDecrypt-wallets-title">{translateRaw('decrypt_Access')}</h2>
+          <h2 className="WalletDecrypt-wallets-title">{translate('decrypt_Access')}</h2>
 
           <div className="WalletDecrypt-wallets-row">
             {SECURE_WALLETS.map((walletType: SecureWalletName) => {
@@ -307,8 +307,8 @@ const WalletDecrypt = withRouter<Props>(
               return (
                 <WalletButton
                   key={walletType}
-                  name={translateRaw(wallet.lid)}
-                  description={translateRaw(wallet.description)}
+                  name={translate(wallet.lid)}
+                  description={translate(wallet.description)}
                   icon={wallet.icon}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
@@ -326,7 +326,7 @@ const WalletDecrypt = withRouter<Props>(
               return (
                 <WalletButton
                   key={walletType}
-                  name={translateRaw(wallet.lid)}
+                  name={translate(wallet.lid)}
                   example={wallet.example}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
@@ -343,7 +343,7 @@ const WalletDecrypt = withRouter<Props>(
               return (
                 <WalletButton
                   key={walletType}
-                  name={translateRaw(wallet.lid)}
+                  name={translate(wallet.lid)}
                   example={wallet.example}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
@@ -358,7 +358,7 @@ const WalletDecrypt = withRouter<Props>(
 
           {this.props.showGenerateLink && (
             <div className="WalletDecrypt-wallets-generate">
-              <Link to="/generate">{translateRaw('DONT_HAVE_WALLET_PROMPT')}</Link>
+              <Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link>
             </div>
           )}
         </div>

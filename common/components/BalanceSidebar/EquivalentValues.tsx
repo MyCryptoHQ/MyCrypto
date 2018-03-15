@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { UnitDisplay, Spinner } from 'components/ui';
 import Select from 'react-select';
 import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'actions/rates';
@@ -169,7 +169,7 @@ class EquivalentValues extends React.Component<Props, State> {
     return (
       <div className="EquivalentValues">
         <div className="EquivalentValues-header">
-          <h5 className="EquivalentValues-title">{translateRaw('sidebar_Equiv')}</h5>
+          <h5 className="EquivalentValues-title">{translate('sidebar_Equiv')}</h5>
           <Select
             name="equivalentValues"
             // TODO: Update type

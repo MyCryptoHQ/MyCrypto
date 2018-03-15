@@ -1,7 +1,7 @@
 import React from 'react';
 import { AddressFieldFactory } from './AddressFieldFactory';
 import { donationAddressMap } from 'config';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { Input } from 'components/ui';
 
 interface Props {
@@ -13,7 +13,7 @@ export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
     withProps={({ currentTo, isValid, onChange, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translateRaw('SEND_addr')}</div>
+          <div className="input-group-header">{translate('SEND_addr_short')}</div>
           <Input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}
             type="text"

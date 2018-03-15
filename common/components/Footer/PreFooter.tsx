@@ -1,6 +1,6 @@
 import React from 'react';
 import './PreFooter.scss';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 
 interface Props {
   openModal(): void;
@@ -11,8 +11,8 @@ const PreFooter: React.SFC<Props> = ({ openModal }) => {
     <section className="pre-footer">
       <div className="container">
         <p>
-          {translateRaw('PREFOOTER_WARNING')}{' '}
-          <a onClick={openModal}>{translateRaw('PREFOOTER_SECURITY_WARNING')}</a>
+          {translate('PREFOOTER_WARNING')}{' '}
+          <a onClick={openModal}>{translate('PREFOOTER_SECURITY_WARNING')}</a>
         </p>
       </div>
     </section>

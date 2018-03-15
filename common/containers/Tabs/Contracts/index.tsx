@@ -1,4 +1,4 @@
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import { Interact } from './components/Interact';
 import { Deploy } from './components/Deploy';
 import { reset, TReset } from 'actions/transaction';
@@ -18,11 +18,11 @@ interface Props {
 const tabs = [
   {
     path: 'interact',
-    name: translateRaw('Interact')
+    name: translate('Interact')
   },
   {
     path: 'deploy',
-    name: translateRaw('Deploy')
+    name: translate('Deploy')
   }
 ];
 

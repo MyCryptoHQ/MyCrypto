@@ -52,12 +52,10 @@ export function getTranslators() {
     'TranslatorName_4',
     'TranslatorName_5'
   ].filter(x => {
-    const translated = translateMarkdown(x);
+    const translated = translate(x);
     return !!translated;
   });
 }
-
-export type TranslateType = React.ReactElement<any> | string;
 
 export const translateRaw = (key: string, variables?: { [name: string]: string }) => {
   // redux store isn't initialized in time which throws errors, instead we get the language selection from localstorage
@@ -68,7 +66,7 @@ export const translateRaw = (key: string, variables?: { [name: string]: string }
       repository[fallbackLanguage][key] ||
       key) + ' 🎉';
 
-  if (variables) {
+  if (!!variables) {
     // Find each variable and replace it in the translated string
     let str = translatedString;
     Object.keys(variables).forEach(v => {
@@ -79,6 +77,24 @@ export const translateRaw = (key: string, variables?: { [name: string]: string }
 
   return translatedString;
 };
-export const translateMarkdown = (key: string, variables?: { [name: string]: string }) => {
-  return <TranslateMarkdown source={translateRaw(key, variables)} />;
-};
+
+export type TranslatedText = React.ReactElement<any> | string;
+function translate(key: string, variable?: { [name: string]: string }, md?: false): string;
+function translate(
+  key: string,
+  variables?: { [name: string]: string },
+  md?: true
+): React.ReactElement<any>;
+function translate(
+  key: string,
+  variables: { [name: string]: string } = {},
+  md: boolean = false
+): string | React.ReactElement<any> {
+  return !!md ? (
+    <TranslateMarkdown source={translateRaw(key, variables)} />
+  ) : (
+    translateRaw(key, variables)
+  );
+}
+
+export default translate;
