@@ -33,10 +33,12 @@ class NameInput extends Component<Props, State> {
     return (
       <form className="ENSInput" onSubmit={this.onSubmit}>
         <div className="input-group-wrapper">
-          <label className="input-group input-group-inline-dropdown ENSInput-name">
+          <label className="input-group input-group-inline ENSInput-name">
             <Input
               value={domainToCheck}
-              className={!domainToCheck ? '' : isValidDomain ? 'is-valid' : 'is-invalid'}
+              className={`${
+                !domainToCheck ? '' : isValidDomain ? '' : 'invalid'
+              } border-rad-right-0`}
               type="text"
               placeholder="mycrypto"
               onChange={this.onChange}

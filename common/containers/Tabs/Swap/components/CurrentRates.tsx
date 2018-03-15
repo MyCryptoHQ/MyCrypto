@@ -132,7 +132,7 @@ class CurrentRates extends PureComponent<Props> {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={providerLogo} width={120} height={49} />
+            <img src={providerLogo} width={120} height={49} alt="Shapeshift Logo" />
           </a>
         </section>
       </article>

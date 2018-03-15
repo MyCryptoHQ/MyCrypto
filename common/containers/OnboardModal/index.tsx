@@ -120,7 +120,11 @@ class OnboardModal extends React.Component<Props, State> {
 
     return (
       <div className="OnboardModal">
-        <Modal isOpen={isOpen} buttons={buttons} ref={el => (this.modal = el)}>
+        <Modal
+          isOpen={isOpen}
+          buttons={buttons}
+          handleClose={() => (slideNumber === NUMBER_OF_SLIDES ? this.closeModal : null)}
+        >
           <div className="OnboardModal-stepper">
             <Stepper
               steps={steps}
@@ -171,7 +175,7 @@ class OnboardModal extends React.Component<Props, State> {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(prevSlideNum));
     this.props.decrementSlide();
     if (this.modal) {
-      this.modal.scrollContentToTop();
+      this.modal.modalBody.scrollContentToTop();
     }
   };
 
@@ -180,7 +184,7 @@ class OnboardModal extends React.Component<Props, State> {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(nextSlideNum));
     this.props.incrementSlide();
     if (this.modal) {
-      this.modal.scrollContentToTop();
+      this.modal.modalBody.scrollContentToTop();
     }
   };
 }
