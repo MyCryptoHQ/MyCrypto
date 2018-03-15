@@ -52,9 +52,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
           <button className="btn btn-primary btn-block" onClick={this.handleSetWalletTokens}>
             <span>{translate('x_Save')}</span>
           </button>
-          <p className="TokenBalances-buttons-help">
-            {translate('Missing tokens? You can add custom tokens next.')}
-          </p>
+          <p className="TokenBalances-buttons-help">{translate('PROMPT_ADD_CUSTOM_TKN')}</p>
         </div>
       );
     } else if (showCustomTokenForm) {

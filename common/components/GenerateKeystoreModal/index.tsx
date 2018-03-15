@@ -55,7 +55,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
 
     return (
       <Modal
-        title={translate('Generate Keystore File')}
+        title={translate('GENERATE_KEYSTORE_ACTION')}
         isOpen={this.props.isOpen}
         handleClose={this.handleClose}
       >

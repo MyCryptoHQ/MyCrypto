@@ -22,6 +22,7 @@
     "NAV_SignMsg": "Sign Message ",
     "NAV_Swap": "Swap ",
     "NAV_ViewWallet": "View Wallet Info ",
+    "NAV_RECENT_TX": "Recent Transactions",
     "x_Access": "Access ",
     "x_Address": "Your Address ",
     "x_Cipher": "Cipher Browser",
@@ -542,6 +543,12 @@
     "SELECT_RECENT_TX_BY_TXHASH": "You cannot use an address, you must use a transaction hash",
     "EQUIV_VALS_OFFLINE": "Unavailable while offline",
     "EQUIV_VALS_TESTNET": "On test network, equivalent values will not be displayed.",
-    "EQUIV_VALS_UNSUPPORTED_UNIT": "Equivalent values aren't supported for this unit."
+    "EQUIV_VALS_UNSUPPORTED_UNIT": "Equivalent values aren't supported for this unit.",
+    "PROMPT_ADD_CUSTOM_TKN": "Missing tokens? You can add custom tokens next.",
+    "NEW_CONTRACT_ADDR": "New contract address",
+    "TOOLTIP_READ_ONLY_WALLET": "View an address in a read-only state",
+    "TOOLTIP_MORE_INFO": "More info",
+    "TOOLTIP_INSECURE_WALLET_TYPE": "This wallet type is insecure",
+    "TOOLTIP_SECURE_WALLET_TYPE": "This wallet type is secure"
   }
 }

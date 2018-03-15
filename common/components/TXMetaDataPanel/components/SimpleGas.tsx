@@ -80,7 +80,7 @@ class SimpleGas extends React.Component<Props> {
       <div className="SimpleGas row form-group">
         <div className="SimpleGas-title">
           <div className="flex-wrapper">
-            <label>{translate('Transaction Fee')} </label>
+            <label>{translate('CONFIRM_TX_FEE')} </label>
             <div className="flex-spacer" />
             <InlineSpinner active={noncePending || gasLimitPending} text="Calculating" />
           </div>

@@ -74,7 +74,7 @@ class TokenBalances extends React.Component<Props> {
           className="TokenBalances-scan btn btn-primary btn-block"
           onClick={this.scanWalletForTokens}
         >
-          {translate('Scan for my Tokens')}
+          {translate('SCAN_TOKENS')}
         </button>
       );
     } else {

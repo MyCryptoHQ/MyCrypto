@@ -51,20 +51,20 @@ export class WalletButton extends React.PureComponent<Props> {
     if (isReadOnly) {
       icons.push({
         icon: 'eye',
-        tooltip: translate('You cannot send using address only'),
+        tooltip: translate('TOOLTIP_READ_ONLY_WALLET'),
         arialabel: 'Read Only'
       });
     } else {
       if (isSecure) {
         icons.push({
           icon: 'shield',
-          tooltip: translate('This wallet type is secure'),
+          tooltip: translate('TOOLTIP_SECURE_WALLET_TYPE'),
           arialabel: 'Secure wallet type'
         });
       } else {
         icons.push({
           icon: 'exclamation-triangle',
-          tooltip: translate('This wallet type is insecure'),
+          tooltip: translate('TOOLTIP_INSECURE_WALLET_TYPE'),
           arialabel: 'Insecure wallet type'
         });
       }
@@ -72,7 +72,7 @@ export class WalletButton extends React.PureComponent<Props> {
     if (helpLink) {
       icons.push({
         icon: 'question-circle',
-        tooltip: translate('NAV_Help'),
+        tooltip: translate('TOOLTIP_MORE_INFO'),
         href: helpLink,
         arialabel: 'More info'
       });

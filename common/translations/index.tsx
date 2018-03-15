@@ -2,6 +2,7 @@ import TranslateMarkdown from 'components/Translate';
 import React from 'react';
 import { State as ConfigState } from 'reducers/config';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
+const en = require('./lang/en.json');
 const fallbackLanguage = 'en';
 const repository: {
   [language: string]: {
@@ -17,9 +18,9 @@ interface ILanguage {
 }
 
 const languages: ILanguage[] = [
+  en,
   require('./lang/de.json'),
   require('./lang/el.json'),
-  require('./lang/en.json'),
   require('./lang/es.json'),
   require('./lang/fi.json'),
   require('./lang/fr.json'),
@@ -79,6 +80,7 @@ export const translateRaw = (key: string, variables?: { [name: string]: string }
 };
 
 export type TranslatedText = React.ReactElement<any> | string;
+
 function translate(key: string, variable?: { [name: string]: string }, md?: false): string;
 function translate(
   key: string,

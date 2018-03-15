@@ -54,7 +54,7 @@ class SendTransaction extends React.Component<Props> {
       },
       {
         path: 'recent-txs',
-        name: translate('Recent Transactions')
+        name: translate('NAV_RECENT_TX')
       }
     ];
 

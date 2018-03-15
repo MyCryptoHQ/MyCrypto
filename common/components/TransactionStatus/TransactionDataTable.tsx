@@ -138,7 +138,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translate('New contract address'),
+      label: translate('NEW_CONTRACT_ADDR'),
       data: receipt &&
         receipt.contractAddress && (
           <MaybeLink href={explorer.contract}>
