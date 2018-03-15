@@ -66,7 +66,7 @@ const WalletTypes: React.SFC<{}> = () => {
                 className="WalletType-select-btn btn btn-primary btn-block"
                 to={`/generate/${type}`}
               >
-                {translate('GENERATE_THING', { $thing: typeInfo[type].name })}
+                {translate('GENERATE_THING', { $thing: translate(typeInfo[type].name) })}
               </Link>
             </div>
           </div>

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { getRecentWalletTransactions } from 'selectors/transactions';
 import { getNetworkConfig } from 'selectors/config';
-import { NewTabLink } from 'components/ui';
 import RecentTransaction from './RecentTransaction';
 import { TransactionStatus } from 'components';
 import { IWallet } from 'libs/wallet';

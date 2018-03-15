@@ -110,15 +110,15 @@ interface MiscWalletInfo extends InsecureWalletInfo {}
 
 const WEB3_TYPES = {
   CipherProvider: {
-    lid: 'x_Cipher',
+    lid: 'X_CIPHER',
     icon: CipherIcon
   },
   MetamaskInpageProvider: {
-    lid: 'x_MetaMask',
+    lid: 'X_METAMASK',
     icon: MetamaskIcon
   },
   EthereumProvider: {
-    lid: 'x_Mist',
+    lid: 'X_MIST',
     icon: MistIcon
   }
 };
@@ -141,9 +141,9 @@ const WalletDecrypt = withRouter<Props>(
     // index signature should become [key: Wallets] (from config) once typescript bug is fixed
     public WALLETS: Wallets = {
       [SecureWalletName.WEB3]: {
-        lid: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] ? WEB3_TYPES[WEB3_TYPE].lid : 'x_Web3',
+        lid: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] ? WEB3_TYPES[WEB3_TYPE].lid : 'X_WEB3',
         icon: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] && WEB3_TYPES[WEB3_TYPE].icon,
-        description: 'ADD_Web3Desc',
+        description: 'ADD_WEB3DESC',
         component: Web3Decrypt,
         initialParams: {},
         unlock: this.props.unlockWeb3,
@@ -151,25 +151,25 @@ const WalletDecrypt = withRouter<Props>(
         helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
       },
       [SecureWalletName.LEDGER_NANO_S]: {
-        lid: 'x_Ledger',
+        lid: 'X_LEDGER',
         icon: LedgerIcon,
-        description: 'ADD_HardwareDesc',
+        description: 'ADD_HARDWAREDESC',
         component: LedgerNanoSDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009'
       },
       [SecureWalletName.TREZOR]: {
-        lid: 'x_Trezor',
+        lid: 'X_TREZOR',
         icon: TrezorIcon,
-        description: 'ADD_HardwareDesc',
+        description: 'ADD_HARDWAREDESC',
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
       },
       [InsecureWalletName.KEYSTORE_FILE]: {
-        lid: 'x_Keystore2',
+        lid: 'X_KEYSTORE2',
         example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
         component: KeystoreDecrypt,
         initialParams: {
@@ -180,7 +180,7 @@ const WalletDecrypt = withRouter<Props>(
         helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
       },
       [InsecureWalletName.MNEMONIC_PHRASE]: {
-        lid: 'x_Mnemonic',
+        lid: 'X_MNEMONIC',
         example: 'brain surround have swap horror cheese file distinct',
         component: MnemonicDecrypt,
         initialParams: {},
@@ -188,7 +188,7 @@ const WalletDecrypt = withRouter<Props>(
         helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
       },
       [InsecureWalletName.PRIVATE_KEY]: {
-        lid: 'x_PrivKey2',
+        lid: 'X_PRIVKEY2',
         example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
         component: PrivateKeyDecrypt,
         initialParams: {
@@ -199,7 +199,7 @@ const WalletDecrypt = withRouter<Props>(
         helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
       },
       [MiscWalletName.VIEW_ONLY]: {
-        lid: 'View Address',
+        lid: 'VIEW_ADDR',
         example: donationAddressMap.ETH,
         component: ViewOnlyDecrypt,
         initialParams: {},

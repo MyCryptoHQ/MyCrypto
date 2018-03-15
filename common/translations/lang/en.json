@@ -591,6 +591,9 @@
       "WARNING: Your ether or token balance isn't high enough to complete this transaction. Please send more funds or switch to a different wallet.",
     "NEW_SWAP": "Start New Swap",
     "ERROR_GAS_LIMIT_LOW": "Gas limit must be at least $limit for transactions",
-    "ERROR_GAS_LIMIT_HIGH": "Gas price too high. Please contact support if this was not a mistake."
+    "ERROR_GAS_LIMIT_HIGH": "Gas price too high. Please contact support if this was not a mistake.",
+    "VIEW_ADDR": "View Address",
+    "X_JSONDESC":
+      "This is the unencrypted, JSON format of your private key. This means you do not need the password but anyone who finds your JSON can access your wallet & Ether without the password. "
   }
 }

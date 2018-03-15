@@ -4,7 +4,7 @@ import OnboardSlide from './OnboardSlide';
 import onboardIconSix from 'assets/images/onboarding/slide-06.svg';
 
 const WhyMewSlide = () => {
-  const header = translate('ONBOARD_whymyc_title');
+  const header = translate('ONBOARD_WHYMYC_TITLE');
 
   const content = (
     <ul>

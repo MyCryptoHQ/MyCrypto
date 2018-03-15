@@ -68,17 +68,17 @@ export default class EnterPassword extends Component<Props, State> {
               <TogglablePassword
                 className={!isConfirmValid && password.length > 0 ? 'invalid' : ''}
                 value={confirmedPassword}
-                placeholder={translate('GEN_Placeholder_1')}
+                placeholder={translate('GEN_PLACEHOLDER_1')}
                 onChange={this.onConfirmChange}
               />
             </label>
           </div>
 
           <button disabled={!canSubmit} className="EnterPw-submit btn btn-primary btn-lg btn-block">
-            {isGenerating ? <Spinner light={true} /> : translate('NAV_GenerateWallet')}
+            {isGenerating ? <Spinner light={true} /> : translate('NAV_GENERATEWALLET')}
           </button>
 
-          <p className="EnterPw-warning">{translate('INPUT_PASSWORD_LABELDesc')}</p>
+          <p className="EnterPw-warning">{translate('X_JSONDESC')}</p>
         </form>
       </Template>
     );

@@ -74,7 +74,6 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
-          Guide:{' '}
           <NewTabLink href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08">
             How to use TREZOR with MyCrypto
           </NewTabLink>
