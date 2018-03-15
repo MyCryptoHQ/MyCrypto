@@ -539,6 +539,9 @@
     "ACCOUNT": "Account",
     "OR": "or",
     "SELECT_RECENT_TX": "Select a recent transaction",
-    "SELECT_RECENT_TX_BY_TXHASH": "You cannot use an address, you must use a transaction hash"
+    "SELECT_RECENT_TX_BY_TXHASH": "You cannot use an address, you must use a transaction hash",
+    "EQUIV_VALS_OFFLINE": "Unavailable while offline",
+    "EQUIV_VALS_TESTNET": "On test network, equivalent values will not be displayed.",
+    "EQUIV_VALS_UNSUPPORTED_UNIT": "Equivalent values aren't supported for this unit."
   }
 }
