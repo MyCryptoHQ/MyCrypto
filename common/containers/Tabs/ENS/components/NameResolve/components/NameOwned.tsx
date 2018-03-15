@@ -18,7 +18,9 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
 }) => (
   <section>
     <div className="ens-title">
-      <h1 className="text-center">{translate('ENS_DOMAIN_OWNED', { $name: name + '.eth' })}</h1>
+      <h1 className="text-center">
+        {translate('ENS_DOMAIN_OWNED', { $name: name + '.eth' }, true)}
+      </h1>
     </div>
     <div className="ens-table-wrapper">
       <table className="table table-striped">

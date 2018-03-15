@@ -11,7 +11,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     <div className="auction-info text-center">
       <div className="ens-title">
         <h2>
-          {translate('ENS_DOMAIN_REVEAL', { $name: props.name + '.eth' })}
+          {translate('ENS_DOMAIN_REVEAL', { $name: props.name + '.eth' }, true)}
           <br />
           {translate('ENS_DOMAIN_HIGHEST_BID')}
           <strong>
@@ -34,10 +34,14 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     </div>
 
     <p>
-      {translate('ENS_DOMAIN_PROMPT_REVEAL', {
-        $name: props.name + '.eth',
-        $link: ensV3Url(props.name)
-      })}
+      {translate(
+        'ENS_DOMAIN_PROMPT_REVEAL',
+        {
+          $name: props.name + '.eth',
+          $link: ensV3Url(props.name)
+        },
+        true
+      )}
     </p>
   </section>
 );

@@ -112,17 +112,21 @@ export default class SwapProgress extends PureComponent<Props, State> {
       // 1
       translate('SWAP_progress_1'),
       // 2
-      <span key="1">{translate('SWAP_progress_2', { $origin_id: originId })}</span>,
+      <span key="1">{translate('SWAP_progress_2', { $origin_id: originId }, true)}</span>,
       // 3
-      <span key="2">{translate('SWAP_progress_3', { $origin_id: originId })}</span>,
+      <span key="2">{translate('SWAP_progress_3', { $origin_id: originId }, true)}</span>,
       // 4 TODO: Translate me
       <span key="3">
-        {translate('SWAP_progress_4', { $destination_id: destinationId })}
+        {translate('SWAP_progress_4', { $destination_id: destinationId }, true)}
         <br />
         <small>
-          {translate('SWAP_progress_confirmations', {
-            $number_confirmations: numberOfConfirmations
-          })}
+          {translate(
+            'SWAP_progress_confirmations',
+            {
+              $number_confirmations: numberOfConfirmations
+            },
+            true
+          )}
         </small>
       </span>,
       // 5

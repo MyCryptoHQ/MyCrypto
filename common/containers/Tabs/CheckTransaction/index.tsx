@@ -52,10 +52,14 @@ class CheckTransaction extends React.Component<Props, State> {
             <p className="CheckTransaction-form-desc">
               {translate('CHECK_TX_STATUS_DESCRIPTION_1')}
               {!network.isCustom &&
-                translate('CHECK_TX_STATUS_DESCRIPTION_2', {
-                  $block_explorer: network.blockExplorer.name,
-                  $block_explorer_link: network.blockExplorer.origin
-                })}
+                translate(
+                  'CHECK_TX_STATUS_DESCRIPTION_2',
+                  {
+                    $block_explorer: network.blockExplorer.name,
+                    $block_explorer_link: network.blockExplorer.origin
+                  },
+                  true
+                )}
             </p>
             <TxHashInput hash={hash} onSubmit={this.handleHashSubmit} />
           </section>

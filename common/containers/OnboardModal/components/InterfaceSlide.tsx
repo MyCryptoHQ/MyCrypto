@@ -8,13 +8,13 @@ const InterfaceSlide = () => {
 
   const content = (
     <ul>
-      <li>{translate('ONBOARD_interface_content__1')}</li>
-      <li>{translate('ONBOARD_interface_content__2')}</li>
-      <li>{translate('ONBOARD_interface_content__3')}</li>
-      <li>{translate('ONBOARD_interface_content__4')}</li>
-      <li>{translate('ONBOARD_interface_content__5')}</li>
-      <li>{translate('ONBOARD_interface_content__6')}</li>
-      <li>{translate('ONBOARD_interface_content__7')}</li>
+      <li>{translate('ONBOARD_interface_content__1', {}, true)}</li>
+      <li>{translate('ONBOARD_interface_content__2', {}, true)}</li>
+      <li>{translate('ONBOARD_interface_content__3', {}, true)}</li>
+      <li>{translate('ONBOARD_interface_content__4', {}, true)}</li>
+      <li>{translate('ONBOARD_interface_content__5', {}, true)}</li>
+      <li>{translate('ONBOARD_interface_content__6', {}, true)}</li>
+      <li>{translate('ONBOARD_interface_content__7', {}, true)}</li>
     </ul>
   );
   return (

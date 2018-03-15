@@ -21,7 +21,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
     <section className="row">
       <div className="auction-info text-center">
         <div className="ens-title">
-          <h1>{translate('ENS_DOMAIN_AUCTION', { $name: name + '.eth' })}</h1>
+          <h1>{translate('ENS_DOMAIN_AUCTION', { $name: name + '.eth' }, true)}</h1>
         </div>
 
         <div className="ens-panel-wrapper">

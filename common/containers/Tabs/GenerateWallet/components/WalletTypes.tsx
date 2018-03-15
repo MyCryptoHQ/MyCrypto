@@ -35,11 +35,15 @@ const WalletTypes: React.SFC<{}> = () => {
       <h1 className="WalletTypes-title">{translate('NAV_GenerateWallet')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
         <strong>{translate('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
-        {translate('GENERATE_WALLET_WARNING', {
-          $metamask_link: 'https://metamask.io/',
-          $ledger_link: ledgerReferralURL,
-          $trezor_link: trezorReferralURL
-        })}
+        {translate(
+          'GENERATE_WALLET_WARNING',
+          {
+            $metamask_link: 'https://metamask.io/',
+            $ledger_link: ledgerReferralURL,
+            $trezor_link: trezorReferralURL
+          },
+          true
+        )}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
           {translate('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>

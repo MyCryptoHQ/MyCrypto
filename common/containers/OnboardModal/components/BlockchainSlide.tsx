@@ -7,12 +7,12 @@ const BlockchainSlide = () => {
   const header = translate('ONBOARD_blockchain_title');
   const content = (
     <ul>
-      <li>{translate('ONBOARD_blockchain_content__1')}</li>
-      <li>{translate('ONBOARD_blockchain_content__2')}</li>
-      <li>{translate('ONBOARD_blockchain_content__3')}</li>
-      <li>{translate('ONBOARD_blockchain_content__4')}</li>
-      <li>{translate('ONBOARD_blockchain_content__5')}</li>
-      <li>{translate('ONBOARD_blockchain_content__6')}</li>
+      <li>{translate('ONBOARD_blockchain_content__1', {}, true)}</li>
+      <li>{translate('ONBOARD_blockchain_content__2', {}, true)}</li>
+      <li>{translate('ONBOARD_blockchain_content__3', {}, true)}</li>
+      <li>{translate('ONBOARD_blockchain_content__4', {}, true)}</li>
+      <li>{translate('ONBOARD_blockchain_content__5', {}, true)}</li>
+      <li>{translate('ONBOARD_blockchain_content__6', {}, true)}</li>
     </ul>
   );
   return (

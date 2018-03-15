@@ -134,7 +134,9 @@ class AccountInfo extends React.Component<Props, State> {
                   });
               }}
             >
-              {confirmAddr ? null : 'Display address on ' + wallet.getWalletType()}
+              {confirmAddr
+                ? null
+                : translate('sidebar_display_addr', { $wallet: wallet.getWalletType() })}
             </a>
             {confirmAddr ? (
               <span className="AccountInfo-address-confirm">

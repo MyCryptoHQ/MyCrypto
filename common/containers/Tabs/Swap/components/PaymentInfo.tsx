@@ -15,10 +15,14 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
     return (
       <section className="SwapPayment">
         <h2>
-          {translate('SWAP_SEND_TO', {
-            $origin_amount: origin.amount.toString(),
-            $origin_label: origin.label
-          })}
+          {translate(
+            'SWAP_SEND_TO',
+            {
+              $origin_amount: origin.amount.toString(),
+              $origin_label: origin.label
+            },
+            true
+          )}
           <Input
             className="SwapPayment-address"
             value={this.props.paymentAddress || undefined}

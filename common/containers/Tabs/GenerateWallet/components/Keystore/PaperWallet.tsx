@@ -37,9 +37,9 @@ const PaperWallet: React.SFC<Props> = props => (
 
       {/* Warning */}
       <div className="GenPaper-warning">
-        <p>{translate('DL_WALLET_WARNING_1')}</p>
-        <p>{translate('DL_WALLET_WARNING_2')}</p>
-        <p>{translate('DL_WALLET_WARNING_3')}</p>
+        <p>{translate('DL_WALLET_WARNING_1', {}, true)}</p>
+        <p>{translate('DL_WALLET_WARNING_2', {}, true)}</p>
+        <p>{translate('DL_WALLET_WARNING_3', {}, true)}</p>
       </div>
 
       {/* Continue button */}

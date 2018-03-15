@@ -87,10 +87,10 @@ function translate(
 ): React.ReactElement<any>;
 function translate(
   key: string,
-  variables: { [name: string]: string } = {},
-  md: boolean = false
+  variables?: { [name: string]: string },
+  md?: boolean
 ): string | React.ReactElement<any> {
-  return !!md ? (
+  return md ? (
     <TranslateMarkdown source={translateRaw(key, variables)} />
   ) : (
     translateRaw(key, variables)

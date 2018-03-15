@@ -8,14 +8,14 @@ const SecureSlideOne = () => {
 
   const content = (
     <div>
-      <p>{translate('ONBOARD_secure_1_content__1')}</p>
+      <p>{translate('ONBOARD_secure_1_content__1', {}, true)}</p>
       <ul>
-        <li>{translate('ONBOARD_secure_1_content__2')}</li>
-        <li>{translate('ONBOARD_secure_1_content__3')} </li>
-        <li>{translate('ONBOARD_secure_1_content__4')}</li>
-        <li>{translate('ONBOARD_secure_1_content__5')}</li>
-        <li>{translate('ONBOARD_secure_1_content__6')}</li>
-        <li>{translate('ONBOARD_secure_1_content__7')}</li>
+        <li>{translate('ONBOARD_secure_1_content__2', {}, true)}</li>
+        <li>{translate('ONBOARD_secure_1_content__3', {}, true)} </li>
+        <li>{translate('ONBOARD_secure_1_content__4', {}, true)}</li>
+        <li>{translate('ONBOARD_secure_1_content__5', {}, true)}</li>
+        <li>{translate('ONBOARD_secure_1_content__6', {}, true)}</li>
+        <li>{translate('ONBOARD_secure_1_content__7', {}, true)}</li>
       </ul>
     </div>
   );

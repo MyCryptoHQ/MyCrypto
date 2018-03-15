@@ -27,7 +27,7 @@ export default class DownloadWallet extends Component<Props, State> {
     return (
       <Template>
         <div className="DlWallet">
-          <h1 className="DlWallet-title">{translate('GEN_Label_2')}</h1>
+          <h1 className="DlWallet-title">{translate('GEN_Label_2', {}, true)}</h1>
 
           <a
             role="button"
@@ -53,7 +53,7 @@ export default class DownloadWallet extends Component<Props, State> {
             onClick={this.handleContinue}
             disabled={!hasDownloadedWallet}
           >
-            {translate('GET_ConfButton')}
+            {translate('ACTION_14')}
           </button>
         </div>
       </Template>

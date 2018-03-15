@@ -105,7 +105,9 @@ class CustomNodeModal extends React.Component<Props, State> {
         handleClose={handleClose}
         maxWidth={580}
       >
-        {isHttps && <div className="alert alert-warning small">{translate('NODE_Warning')}</div>}
+        {isHttps && (
+          <div className="alert alert-warning small">{translate('NODE_Warning', {}, true)}</div>
+        )}
 
         {conflictedNode && (
           <div className="alert alert-warning small">

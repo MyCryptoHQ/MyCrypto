@@ -14,10 +14,14 @@ export default class ENSClass extends React.Component<{}> {
             <div className="ENS">
               <h1 className="ENS-title">Ethereum Name Service</h1>
               <p className="ENS-description">
-                {translate('ENS_DESCRIPTION', {
-                  $ens_docs: 'https://ens.readthedocs.io/en/latest/introduction.html',
-                  $example_donation_addr: donationAddressMap.ETH.substr(0, 8)
-                })}
+                {translate(
+                  'ENS_DESCRIPTION',
+                  {
+                    $ens_docs: 'https://ens.readthedocs.io/en/latest/introduction.html',
+                    $example_donation_addr: donationAddressMap.ETH.substr(0, 8)
+                  },
+                  true
+                )}
               </p>
               <NameInput />
             </div>

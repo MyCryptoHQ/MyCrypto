@@ -8,7 +8,7 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
   <section className="row">
     <section className="auction-info text-center">
       <div className="ens-title">
-        <h1>{translate('ENS_DOMAIN_OPEN', { $name: props.name + '.eth' })}</h1>
+        <h1>{translate('ENS_DOMAIN_OPEN', { $name: props.name + '.eth' }, true)}</h1>
       </div>
       <p>
         Do you want {props.name}.eth?{' '}

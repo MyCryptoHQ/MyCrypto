@@ -58,7 +58,7 @@ class TransactionStatus extends React.Component<Props> {
             <li>{translate('tx_notFound_5')}</li>
             <li>{translate('tx_notFound_2')}</li>
             <li>{translate('tx_notFound_3')}</li>
-            <li>{translate('tx_notFound_4')}</li>
+            <li>{translate('tx_notFound_4', {}, true)}</li>
           </ul>
         </div>
       );

@@ -19,9 +19,13 @@ export default class BitcoinQR extends PureComponent<Props, {}> {
           </div>
           <br />
           <p className="text-danger">{translate('SWAP_TIME_LIMIT_WARNING')}</p>
-          {translate('SWAP_RECOMMENDED_TX_FEES', {
-            $link: 'https://shapeshift.io/#/btcfee'
-          })}
+          {translate(
+            'SWAP_RECOMMENDED_TX_FEES',
+            {
+              $link: 'https://shapeshift.io/#/btcfee'
+            },
+            true
+          )}
         </section>
       </div>
     );
