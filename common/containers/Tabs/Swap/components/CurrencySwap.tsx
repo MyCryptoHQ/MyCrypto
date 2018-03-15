@@ -357,7 +357,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder={translate('SEND_amount_short')}
+                    placeholder={translate('SEND_AMOUNT_SHORT')}
                     value={isNaN(origin.amount) ? '' : origin.amount}
                     onChange={this.onChangeAmount}
                   />
@@ -382,7 +382,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder={translate('SEND_amount_short')}
+                    placeholder={translate('SEND_AMOUNT_SHORT')}
                     value={isNaN(destination.amount) ? '' : destination.amount}
                     onChange={this.onChangeAmount}
                   />
@@ -401,7 +401,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
             <div className="CurrencySwap-submit">
               <SimpleButton
                 onClick={this.onClickStartSwap}
-                text={translate('SWAP_init_CTA')}
+                text={translate('SWAP_INIT_CTA')}
                 disabled={this.state.disabled}
                 type="primary"
               />

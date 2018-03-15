@@ -40,17 +40,17 @@ class SendTransaction extends React.Component<Props> {
     const tabs: Tab[] = [
       {
         path: 'send',
-        name: translate('NAV_SendEther'),
+        name: translate('NAV_SENDETHER'),
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
         path: 'request',
-        name: translate('NAV_RequestPayment'),
+        name: translate('NAV_REQUESTPAYMENT'),
         disabled: this.props.requestDisabled
       },
       {
         path: 'info',
-        name: translate('NAV_ViewWallet')
+        name: translate('NAV_VIEWWALLET')
       },
       {
         path: 'recent-txs',

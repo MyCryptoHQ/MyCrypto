@@ -31,7 +31,7 @@ class DeployClass extends Component<DispatchProps> {
 
         <div className="input-group-wrapper Deploy-field">
           <label className="input-group">
-            <div className="input-group-header">{translate('CONTRACT_ByteCode')}</div>
+            <div className="input-group-header">{translate('CONTRACT_BYTECODE')}</div>
             <DataFieldFactory
               withProps={({ data: { raw, value }, onChange, readOnly }) => (
                 <TextArea
@@ -76,7 +76,7 @@ class DeployClass extends Component<DispatchProps> {
           Modal={ConfirmationModal}
           withProps={({ onClick }) => (
             <button className="Deploy-submit btn btn-primary" onClick={onClick}>
-              {translate('NAV_DeployContract')}
+              {translate('NAV_DEPLOYCONTRACT')}
             </button>
           )}
         />

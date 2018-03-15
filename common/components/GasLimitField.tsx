@@ -17,7 +17,7 @@ export const GasLimitField: React.SFC<Props> = ({ customLabel, disabled }) => (
       <div className="input-group-wrapper AdvancedGas-gas-price">
         <label className="input-group">
           <div className="input-group-header">
-            {customLabel ? customLabel : translate('TRANS_gas')}
+            {customLabel ? customLabel : translate('TRANS_GAS')}
             <div className="flex-spacer" />
             <InlineSpinner active={gasEstimationPending} text="Calculating" />
           </div>

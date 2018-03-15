@@ -75,7 +75,7 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
           <div className="col-sm-8 col-sm-offset-2 col-xs-12">
             <label className="SwapAddress-address">
               <h4 className="SwapAddress-address-label">
-                {translate('SWAP_rec_add')} ({destinationId})
+                {translate('SWAP_REC_ADD')} ({destinationId})
               </h4>
 
               <Input
@@ -95,7 +95,7 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
 
         <section className="SwapAddress-submit row">
           <SimpleButton
-            text={translate('SWAP_start_CTA')}
+            text={translate('SWAP_START_CTA')}
             onClick={this.onClickPartTwoComplete}
             disabled={!validAddress}
             loading={isPostingOrder}

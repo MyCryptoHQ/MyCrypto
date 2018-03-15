@@ -74,7 +74,7 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
 
-        const onboardResumeMessage = translate('ONBOARD_resume');
+        const onboardResumeMessage = translate('ONBOARD_RESUME');
 
         // Wait a sec so it doesn't get lost in the page-load
         setTimeout(() => {

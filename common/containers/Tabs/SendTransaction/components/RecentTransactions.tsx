@@ -39,7 +39,7 @@ class RecentTransactions extends React.Component<Props> {
         <React.Fragment>
           <TransactionStatus txHash={activeTxHash} />
           <button className="RecentTxs-back btn btn-default" onClick={this.clearActiveTxHash}>
-            <i className="fa fa-arrow-left" /> Back to Recent Transactions
+            <i className="fa fa-arrow-left" /> {translate('BACK_TO_RECENT_TXS')}
           </button>
         </React.Fragment>
       );
@@ -53,15 +53,13 @@ class RecentTransactions extends React.Component<Props> {
   private renderTxList() {
     const { wallet, recentTransactions, network } = this.props;
 
-    let explorer: React.ReactElement<string>;
+    let explorer: string;
     if (network.isCustom) {
-      explorer = <span>an explorer for the {network.name} network</span>;
+      explorer = translate('RECENT_TX_NETWORK_EXPLORER', { $network_name: network.name });
     } else {
-      explorer = (
-        <NewTabLink href={network.blockExplorer.addressUrl(wallet.getAddressString())}>
-          {network.blockExplorer.name}
-        </NewTabLink>
-      );
+      explorer = `[${network.blockExplorer.name}](${network.blockExplorer.addressUrl(
+        wallet.getAddressString()
+      )})`;
     }
 
     return (
@@ -69,9 +67,9 @@ class RecentTransactions extends React.Component<Props> {
         {recentTransactions.length ? (
           <table className="RecentTxs-txs">
             <thead>
-              <td>{translate('SEND_addr')}</td>
-              <td>{translate('SEND_amount_short')}</td>
-              <td>{translate('Sent')}</td>
+              <td>{translate('SEND_ADDR')}</td>
+              <td>{translate('SEND_AMOUNT_SHORT')}</td>
+              <td>{translate('SENT')}</td>
               <td />
             </thead>
             <tbody>
@@ -88,13 +86,12 @@ class RecentTransactions extends React.Component<Props> {
         ) : (
           <div className="RecentTxs-empty well">
             <h2 className="RecentTxs-empty-text">
-              No recent MyCrypto transactions found, try checking on {explorer}.
+              {translate('NO_RECENT_TX_FOUND', { $explorer: explorer }, true)}
             </h2>
           </div>
         )}
         <p className="RecentTxs-help">
-          Only recent transactions sent from this address via MyCrypto on the {network.name} network
-          are listed here. If you don't see your transaction, you can view all of them on {explorer}.
+          {translate('RECENT_TX_HELP', { $explorer: explorer }, true)}
         </p>
       </React.Fragment>
     );

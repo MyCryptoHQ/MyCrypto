@@ -15,7 +15,7 @@ export default class SignMessageButton extends React.Component<Props, {}> {
   public render() {
     return (
       <button className="SignMessage-sign btn btn-primary btn-lg" onClick={this.handleSignMessage}>
-        {translate('NAV_SignMsg')}
+        {translate('NAV_SIGNMSG')}
       </button>
     );
   }
@@ -34,10 +34,10 @@ export default class SignMessageButton extends React.Component<Props, {}> {
       onSignMessage(signedMessage);
       showNotification(
         'success',
-        `Successfully signed message with address ${signedMessage.address}.`
+        translate('SIGN_MSG_SUCCESS', { $address: signedMessage.address })
       );
     } catch (err) {
-      showNotification('danger', `Error signing message: ${err.message}`);
+      showNotification('danger', translate('SIGN_MSG_FAIL', { $err: err.message }));
     }
   };
 }

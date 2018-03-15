@@ -169,7 +169,7 @@ class EquivalentValues extends React.Component<Props, State> {
     return (
       <div className="EquivalentValues">
         <div className="EquivalentValues-header">
-          <h5 className="EquivalentValues-title">{translate('sidebar_Equiv')}</h5>
+          <h5 className="EquivalentValues-title">{translate('SIDEBAR_EQUIV')}</h5>
           <Select
             name="equivalentValues"
             // TODO: Update type

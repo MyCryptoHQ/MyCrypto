@@ -63,7 +63,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
               Unlocking...
             </div>
           ) : (
-            translate('ADD_Trezor_scan')
+            translate('ADD_TREZOR_SCAN')
           )}
         </button>
 

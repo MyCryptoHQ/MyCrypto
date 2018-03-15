@@ -27,18 +27,18 @@ export default class DownloadWallet extends Component<Props, State> {
     return (
       <Template>
         <div className="DlWallet">
-          <h1 className="DlWallet-title">{translate('GEN_Label_2', {}, true)}</h1>
+          <h1 className="DlWallet-title">{translate('GEN_LABEL_2', {}, true)}</h1>
 
           <a
             role="button"
             className="DlWallet-download btn btn-primary btn-lg"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-            aria-describedby={translate('x_KeystoreDesc')}
+            aria-describedby={translate('X_KEYSTOREDESC')}
             download={filename}
             href={this.getBlob()}
             onClick={this.handleDownloadKeystore}
           >
-            {translate('ACTION_13', { $thing: translate('x_Keystore2') })}
+            {translate('ACTION_13', { $thing: translate('X_KEYSTORE2') })}
           </a>
 
           <div className="DlWallet-warning">

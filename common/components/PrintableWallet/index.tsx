@@ -38,13 +38,13 @@ const PrintableWallet: React.SFC<Props> = ({ address, privateKey }) => {
       <PaperWallet address={address} privateKey={pkey} />
       <a
         role="button"
-        aria-label={translate('x_Print')}
+        aria-label={translate('X_PRINT')}
         aria-describedby="x_PrintDesc"
         className="btn btn-lg btn-primary btn-block"
         onClick={print(address, pkey)}
         style={{ margin: '10px auto 0', maxWidth: '260px' }}
       >
-        {translate('x_Print')}
+        {translate('X_PRINT')}
       </a>
     </div>
   );

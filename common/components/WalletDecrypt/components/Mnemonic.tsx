@@ -55,7 +55,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             <TogglablePassword
               value={phrase}
               rows={4}
-              placeholder={translate('x_Mnemonic')}
+              placeholder={translate('X_MNEMONIC')}
               isValid={isValidMnemonic}
               isTextareaWhenVisible={true}
               onChange={this.onMnemonicChange}
@@ -63,7 +63,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             />
           </div>
           <div className="form-group">
-            <p>Password (optional):</p>
+            <p>{translate('ADD_LABEL_8')}</p>
             <Input
               value={pass}
               onChange={this.onPasswordChange}

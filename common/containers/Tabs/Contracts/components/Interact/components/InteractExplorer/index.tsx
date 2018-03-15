@@ -78,7 +78,7 @@ class InteractExplorerClass extends Component<Props, State> {
         className="InteractExplorer-func-submit btn btn-primary"
         onClick={this.handleFunctionSend}
       >
-        {translate('CONTRACT_Write')}
+        {translate('CONTRACT_WRITE')}
       </button>
     );
 
@@ -87,7 +87,7 @@ class InteractExplorerClass extends Component<Props, State> {
         <div className="input-group-wrapper">
           <label className="input-group">
             <div className="input-group-header">
-              {translate('CONTRACT_Interact_Title')}
+              {translate('CONTRACT_INTERACT_TITLE')}
               <div className="flex-spacer" />
               <span className="small">{to.raw}</span>
             </div>
@@ -147,7 +147,7 @@ class InteractExplorerClass extends Component<Props, State> {
                 className="InteractExplorer-func-submit btn btn-primary"
                 onClick={this.handleFunctionCall}
               >
-                {translate('CONTRACT_Read')}
+                {translate('CONTRACT_READ')}
               </button>
             ) : (
               <React.Fragment>

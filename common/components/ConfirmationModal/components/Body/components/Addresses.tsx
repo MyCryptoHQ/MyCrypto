@@ -46,7 +46,9 @@ class AddressesClass extends Component<StateProps> {
                     <img src={arrow} alt="arrow" />
                   </div>
                   <div className="tx-modal-address-tkn-contract-content">
-                    <p className="tx-modal-address-tkn-contract-title">via the {unit} contract</p>
+                    <p className="tx-modal-address-tkn-contract-title">
+                      {translate('CONFIRM_TX_VIA_CONTRACT', { unit })}
+                    </p>
                     <a
                       className="small tx-modal-address-tkn-contract-link"
                       href={ETHAddressExplorer(to)}

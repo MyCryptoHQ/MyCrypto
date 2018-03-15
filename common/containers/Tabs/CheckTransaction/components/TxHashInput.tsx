@@ -87,7 +87,7 @@ class TxHashInput extends React.Component<Props, State> {
         )}
 
         <button className="TxHashInput-submit btn btn-primary btn-block">
-          {translate('NAV_CheckTxStatus')}
+          {translate('NAV_CHECKTXSTATUS')}
         </button>
       </form>
     );

@@ -48,7 +48,7 @@ const FinalSteps: React.SFC<Props> = ({ walletType }) => {
 
   return (
     <div className="FinalSteps">
-      <h1 className="FinalSteps-title">{translate('ADD_Label_6')}</h1>
+      <h1 className="FinalSteps-title">{translate('ADD_LABEL_6')}</h1>
       <p className="FinalSteps-help">{translate('MNEMONIC_FINAL_DESCRIPTION')}</p>
       <div className="FinalSteps-steps row">
         {steps.map((step, index) => (

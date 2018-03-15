@@ -86,7 +86,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translate('x_TxHash'),
+      label: translate('X_TXHASH'),
       data: <MaybeLink href={explorer.tx}>{data.hash}</MaybeLink>
     },
     {
@@ -94,7 +94,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: receipt && <MaybeLink href={explorer.block}>{receipt.blockNumber}</MaybeLink>
     },
     {
-      label: translate('OFFLINE_Step1_Label_1'),
+      label: translate('OFFLINE_STEP1_LABEL_1'),
       data: (
         <MaybeLink href={explorer.from}>
           <Identicon address={data.from} size="26px" />
@@ -103,7 +103,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translate('OFFLINE_Step2_Label_1'),
+      label: translate('OFFLINE_STEP2_LABEL_1'),
       data: (
         <MaybeLink href={explorer.to}>
           <Identicon address={data.to} size="26px" />
@@ -112,15 +112,15 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       )
     },
     {
-      label: translate('SEND_amount_short'),
+      label: translate('SEND_AMOUNT_SHORT'),
       data: <UnitDisplay value={data.value} unit="ether" symbol={network.unit} />
     },
     {
-      label: translate('OFFLINE_Step2_Label_3'),
+      label: translate('OFFLINE_STEP2_LABEL_3'),
       data: <UnitDisplay value={data.gasPrice} unit="gwei" symbol="Gwei" />
     },
     {
-      label: translate('OFFLINE_Step2_Label_4'),
+      label: translate('OFFLINE_STEP2_LABEL_4'),
       data: <UnitDisplay value={data.gas} unit="wei" />
     },
     {
@@ -147,11 +147,11 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
         )
     },
     {
-      label: translate('OFFLINE_Step2_Label_5'),
+      label: translate('OFFLINE_STEP2_LABEL_5'),
       data: data.nonce
     },
     {
-      label: translate('TRANS_data'),
+      label: translate('TRANS_DATA'),
       data: hasInputData ? <TextArea value={data.input} disabled={true} /> : null
     }
   ];

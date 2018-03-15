@@ -9,7 +9,7 @@ import { HELP_ARTICLE, ledgerReferralURL, trezorReferralURL } from 'config';
 const WalletTypes: React.SFC<{}> = () => {
   const typeInfo = {
     [WalletType.Keystore]: {
-      name: 'x_Keystore2',
+      name: 'X_KEYSTORE2',
       bullets: [
         'An encrypted JSON file, protected by a password',
         'Back it up on a USB drive',
@@ -19,7 +19,7 @@ const WalletTypes: React.SFC<{}> = () => {
       ]
     },
     [WalletType.Mnemonic]: {
-      name: 'x_Mnemonic',
+      name: 'X_MNEMONIC',
       bullets: [
         'A 12-word private seed phrase',
         'Back it up on paper or USB drive',
@@ -32,7 +32,7 @@ const WalletTypes: React.SFC<{}> = () => {
 
   return (
     <div className="WalletTypes Tab-content-pane">
-      <h1 className="WalletTypes-title">{translate('NAV_GenerateWallet')}</h1>
+      <h1 className="WalletTypes-title">{translate('NAV_GENERATEWALLET')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
         <strong>{translate('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
         {translate(
@@ -66,7 +66,7 @@ const WalletTypes: React.SFC<{}> = () => {
                 className="WalletType-select-btn btn btn-primary btn-block"
                 to={`/generate/${type}`}
               >
-                Generate a {translate(typeInfo[type].name)}
+                {translate('GENERATE_THING', { $thing: typeInfo[type].name })}
               </Link>
             </div>
           </div>

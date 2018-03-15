@@ -4,15 +4,15 @@ import OnboardSlide from './OnboardSlide';
 import onboardIconFour from 'assets/images/onboarding/slide-04.svg';
 
 const BlockchainSlide = () => {
-  const header = translate('ONBOARD_blockchain_title');
+  const header = translate('ONBOARD_BLOCKCHAIN_TITLE');
   const content = (
     <ul>
-      <li>{translate('ONBOARD_blockchain_content__1', {}, true)}</li>
-      <li>{translate('ONBOARD_blockchain_content__2', {}, true)}</li>
-      <li>{translate('ONBOARD_blockchain_content__3', {}, true)}</li>
-      <li>{translate('ONBOARD_blockchain_content__4', {}, true)}</li>
-      <li>{translate('ONBOARD_blockchain_content__5', {}, true)}</li>
-      <li>{translate('ONBOARD_blockchain_content__6', {}, true)}</li>
+      <li>{translate('ONBOARD_BLOCKCHAIN_CONTENT__1', {}, true)}</li>
+      <li>{translate('ONBOARD_BLOCKCHAIN_CONTENT__2', {}, true)}</li>
+      <li>{translate('ONBOARD_BLOCKCHAIN_CONTENT__3', {}, true)}</li>
+      <li>{translate('ONBOARD_BLOCKCHAIN_CONTENT__4', {}, true)}</li>
+      <li>{translate('ONBOARD_BLOCKCHAIN_CONTENT__5', {}, true)}</li>
+      <li>{translate('ONBOARD_BLOCKCHAIN_CONTENT__6', {}, true)}</li>
     </ul>
   );
   return (

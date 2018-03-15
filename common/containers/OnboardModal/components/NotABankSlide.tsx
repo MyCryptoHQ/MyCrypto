@@ -4,15 +4,15 @@ import OnboardSlide from './OnboardSlide';
 import onboardIconTwo from 'assets/images/onboarding/slide-02.svg';
 
 const NotABankSlide = () => {
-  const header = translate('ONBOARD_bank_title');
+  const header = translate('ONBOARD_BANK_TITLE');
 
   const content = (
     <ul>
-      <li>{translate('ONBOARD_bank_content__1', {}, true)}</li>
-      <li>{translate('ONBOARD_bank_content__2', {}, true)}</li>
-      <li>{translate('ONBOARD_bank_content__3', {}, true)}</li>
-      <li>{translate('ONBOARD_bank_content__4', {}, true)}</li>
-      <li>{translate('ONBOARD_bank_content__5', {}, true)}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__1', {}, true)}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__2', {}, true)}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__3', {}, true)}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__4', {}, true)}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__5', {}, true)}</li>
     </ul>
   );
 

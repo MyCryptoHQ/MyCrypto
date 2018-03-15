@@ -11,10 +11,10 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
         <h1>{translate('ENS_DOMAIN_OPEN', { $name: props.name + '.eth' }, true)}</h1>
       </div>
       <p>
-        Do you want {props.name}.eth?{' '}
+        {translate('OPEN_AUCTION_PROMPT_1')}
         <strong>
           <NewTabLink className="text-center" href={ensV3Url(props.name)}>
-            Open an auction on MyCrypto v3!
+            {translate('OPEN_AUCTION_PROMPT_2')}
           </NewTabLink>
         </strong>
       </p>

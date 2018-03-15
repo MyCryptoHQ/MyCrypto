@@ -16,7 +16,7 @@ export const SendButton: React.SFC<{
       <div className="row form-group">
         <div className="col-xs-12">
           <button disabled={disabled} className="btn btn-primary btn-block" onClick={onClick}>
-            {translate('SEND_trans')}
+            {translate('SEND_TRANS')}
           </button>
         </div>
       </div>

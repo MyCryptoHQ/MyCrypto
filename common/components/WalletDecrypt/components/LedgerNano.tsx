@@ -86,7 +86,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
               {translate('WALLET_UNLOCKING')}
             </div>
           ) : (
-            translate('ADD_Ledger_scan')
+            translate('ADD_LEDGER_SCAN')
           )}
         </button>
 

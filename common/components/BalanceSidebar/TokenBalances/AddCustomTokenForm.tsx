@@ -47,17 +47,17 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
       {
         name: 'symbol',
         value: symbol,
-        label: translate('TOKEN_Symbol')
+        label: translate('TOKEN_SYMBOL')
       },
       {
         name: 'address',
         value: address,
-        label: translate('TOKEN_Addr')
+        label: translate('TOKEN_ADDR')
       },
       {
         name: 'decimal',
         value: decimal,
-        label: translate('TOKEN_Dec')
+        label: translate('TOKEN_DEC')
       }
     ];
 
@@ -97,7 +97,7 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
             className="AddCustom-buttons-btn btn btn-primary btn-sm"
             disabled={!this.isValid()}
           >
-            {translate('x_Save')}
+            {translate('X_SAVE')}
           </button>
         </div>
       </form>

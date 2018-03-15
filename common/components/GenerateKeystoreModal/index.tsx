@@ -62,7 +62,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
         <form className="GenKeystore" onSubmit={this.handleSubmit}>
           <div className="input-group-wrapper GenKeystore-field">
             <label className="input-group input-group-inline">
-              <div className="input-group-header">{translate('x_PrivKey2')}</div>
+              <div className="input-group-header">{translate('X_PRIVKEY2')}</div>
               <TogglablePassword
                 name="privateKey"
                 value={privateKey}
@@ -102,8 +102,8 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
               onClick={this.handleClose}
               href={keystoreFile.blob}
               className="GenKeystore-button btn btn-success btn-block"
-              aria-label={translate('x_Keystore')}
-              aria-describedby={translate('x_KeystoreDesc')}
+              aria-label={translate('X_KEYSTORE')}
+              aria-describedby={translate('X_KEYSTOREDESC')}
               download={keystoreFile.filename}
             >
               {translate('ACTION_12')}

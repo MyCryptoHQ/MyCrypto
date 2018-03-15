@@ -11,19 +11,19 @@ export interface TabLink {
 
 const tabs: TabLink[] = [
   {
-    name: 'Account View & Send',
+    name: 'NAV_VIEW',
     to: '/account'
   },
   {
-    name: 'NAV_GenerateWallet',
+    name: 'NAV_GENERATEWALLET',
     to: '/generate'
   },
   {
-    name: 'NAV_Swap',
+    name: 'NAV_SWAP',
     to: '/swap'
   },
   {
-    name: 'NAV_Contracts',
+    name: 'NAV_CONTRACTS',
     to: '/contracts'
   },
   {
@@ -31,19 +31,19 @@ const tabs: TabLink[] = [
     to: '/ens'
   },
   {
-    name: 'Sign & Verify Message',
+    name: 'NAV_SIGN',
     to: '/sign-and-verify-message'
   },
   {
-    name: 'NAV_TxStatus',
+    name: 'NAV_TXSTATUS',
     to: '/tx-status'
   },
   {
-    name: 'Broadcast Transaction',
+    name: 'NAV_BROADCAST',
     to: '/pushTx'
   },
   {
-    name: 'NAV_Help',
+    name: 'NAV_HELP',
     to: `${knowledgeBaseURL}`,
     external: true
   }

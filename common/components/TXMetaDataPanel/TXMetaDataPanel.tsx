@@ -114,8 +114,8 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             <div className="help-block">
               <a className="Gas-toggle" onClick={this.toggleAdvanced}>
                 {showAdvanced
-                  ? `- ${translate('TRANS_simple')}`
-                  : `+ ${translate('TRANS_advanced')}`}
+                  ? `- ${translate('TRANS_SIMPLE')}`
+                  : `+ ${translate('TRANS_ADVANCED')}`}
               </a>
             </div>
           )}

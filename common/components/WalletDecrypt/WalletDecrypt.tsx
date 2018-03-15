@@ -299,7 +299,7 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-wallets">
-          <h2 className="WalletDecrypt-wallets-title">{translate('decrypt_Access')}</h2>
+          <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
 
           <div className="WalletDecrypt-wallets-row">
             {SECURE_WALLETS.map((walletType: SecureWalletName) => {

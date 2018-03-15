@@ -56,7 +56,7 @@ export class SignMessage extends Component<Props, State> {
 
             <div className="input-group-wrapper Deploy-field">
               <label className="input-group">
-                <div className="input-group-header">{translate('MSG_message')}</div>
+                <div className="input-group-header">{translate('MSG_MESSAGE')}</div>
                 <TextArea
                   className={`SignMessage-inputBox ${message ? 'is-valid' : 'is-invalid'}`}
                   placeholder={messagePlaceholder}
@@ -64,7 +64,7 @@ export class SignMessage extends Component<Props, State> {
                   onChange={this.handleMessageChange}
                 />
               </label>
-              <div className="SignMessage-help">{translate('MSG_info2')}</div>
+              <div className="SignMessage-help">{translate('MSG_INFO2')}</div>
             </div>
 
             <SignButton
@@ -77,7 +77,7 @@ export class SignMessage extends Component<Props, State> {
             {!!signedMessage && (
               <div className="input-group-wrapper SignMessage-inputBox">
                 <label className="input-group">
-                  <div className="input-group-header">{translate('MSG_signature')}</div>
+                  <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>
                   <TextArea
                     className="SignMessage-inputBox"
                     value={JSON.stringify(signedMessage, null, 2)}

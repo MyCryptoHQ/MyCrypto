@@ -13,7 +13,7 @@ export default class BitcoinQR extends PureComponent<Props, {}> {
     return (
       <div>
         <section className="row block swap-address text-center">
-          <label>{translate('x_Address')}</label>
+          <label>{translate('X_ADDRESS')}</label>
           <div className="qr-code">
             <QRCode value={`bitcoin:${paymentAddress}amount=${destinationAmount}`} />
           </div>

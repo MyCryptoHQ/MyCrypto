@@ -106,20 +106,19 @@ class CustomNodeModal extends React.Component<Props, State> {
         maxWidth={580}
       >
         {isHttps && (
-          <div className="alert alert-warning small">{translate('NODE_Warning', {}, true)}</div>
+          <div className="alert alert-warning small">{translate('NODE_WARNING', {}, true)}</div>
         )}
 
         {conflictedNode && (
           <div className="alert alert-warning small">
-            You already have a node called '{conflictedNode.name}' that matches this one, saving
-            this will overwrite it
+            {translate('CUSTOM_NODE_CONFLICT', { conflictedNode: conflictedNode.name })}
           </div>
         )}
 
         <form className="CustomNodeModal">
           <div className="flex-wrapper">
             <label className="col-sm-9 input-group flex-grow-1">
-              <div className="input-group-header">Node Name</div>
+              <div className="input-group-header">{translate('CUSTOM_NODE_NAME')}</div>
               <Input
                 className={`input-group-input ${this.state.name && invalids.name ? 'invalid' : ''}`}
                 type="text"
@@ -145,7 +144,7 @@ class CustomNodeModal extends React.Component<Props, State> {
           {network === CUSTOM.value && (
             <div className="flex-wrapper">
               <label className="col-sm-6 input-group input-group-inline">
-                <div className="input-group-header">Network Name</div>
+                <div className="input-group-header">{translate('CUSTOM_NETWORK_NAME')}</div>
                 <Input
                   className={`input-group-input ${
                     this.state.customNetworkId && invalids.customNetworkId ? 'invalid' : ''
@@ -157,7 +156,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                 />
               </label>
               <label className="col-sm-3 input-group input-group-inline">
-                <div className="input-group-header">Currency</div>
+                <div className="input-group-header">{translate('CUSTOM_NETWORK_CURRENCY')}</div>
                 <Input
                   className={`input-group-input ${
                     this.state.customNetworkUnit && invalids.customNetworkUnit ? 'invalid' : ''
@@ -169,7 +168,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                 />
               </label>
               <label className="col-sm-3 input-group input-group-inline">
-                <div className="input-group-header">Chain ID</div>
+                <div className="input-group-header">{translate('CUSTOM_NETWORK_CHAIN_ID')}</div>
                 <Input
                   className={`input-group-input ${
                     this.state.customNetworkChainId && invalids.customNetworkChainId
@@ -186,7 +185,7 @@ class CustomNodeModal extends React.Component<Props, State> {
           )}
 
           <label className="input-group input-group-inline">
-            <div className="input-group-header">URL</div>
+            <div className="input-group-header">{translate('CUSTOM_NETWORK_URL')}</div>
             <Input
               className={`input-group-input ${this.state.url && invalids.url ? 'invalid' : ''}`}
               type="text"
@@ -204,13 +203,13 @@ class CustomNodeModal extends React.Component<Props, State> {
               checked={this.state.hasAuth}
               onChange={() => this.setState({ hasAuth: !this.state.hasAuth })}
             />
-            <span>HTTP Basic Authentication</span>
+            <span>{translate('CUSTOM_NETWORK_HTTP_AUTH')}</span>
           </label>
 
           {this.state.hasAuth && (
             <div className="flex-wrapper ">
               <label className="col-sm-6 input-group input-group-inline">
-                <div className="input-group-header">Username</div>
+                <div className="input-group-header">{translate('INPUT_USERNAME_LABEL')}</div>
                 <Input
                   className={`input-group-input ${
                     this.state.username && invalids.username ? 'invalid' : ''
@@ -221,7 +220,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                 />
               </label>
               <label className="col-sm-6 input-group input-group-inline">
-                <div className="input-group-header">Password</div>
+                <div className="input-group-header">{translate('INPUT_PASSWORD_LABEL')}</div>
                 <Input
                   className={`input-group-input ${
                     this.state.password && invalids.password ? 'invalid' : ''

@@ -19,10 +19,10 @@ const PaperWallet: React.SFC<Props> = props => (
       {/* Private Key */}
       <label className="input-group GenPaper-private">
         {/* translateRaw isn't used here because it wont properly render the ` characters as a string of code in markdown*/}
-        <h1 className="input-group-header">{translate('GEN_Label_5')}</h1>
+        <h1 className="input-group-header">{translate('GEN_LABEL_5')}</h1>
         <Input
           value={stripHexPrefix(props.privateKey)}
-          aria-label={translate('x_PrivKey')}
+          aria-label={translate('X_PRIVKEY')}
           aria-describedby="x_PrivKeyDesc"
           type="text"
           readOnly={true}
@@ -30,7 +30,7 @@ const PaperWallet: React.SFC<Props> = props => (
       </label>
 
       {/* Download Paper Wallet */}
-      <h2 className="GenPaper-title">{translate('x_Print')}</h2>
+      <h2 className="GenPaper-title">{translate('X_PRINT')}</h2>
       <div className="GenPaper-paper">
         <PrintableWallet address={props.keystore.address} privateKey={props.privateKey} />
       </div>
@@ -44,7 +44,7 @@ const PaperWallet: React.SFC<Props> = props => (
 
       {/* Continue button */}
       <button className="GenPaper-continue btn btn-default" onClick={props.continue}>
-        {translate('NAV_ViewWallet')} →
+        {translate('NAV_VIEWWALLET')} →
       </button>
     </div>
   </Template>
