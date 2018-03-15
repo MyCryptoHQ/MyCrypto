@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import { UnlockHeader } from 'components/ui';
-import { SideBar } from './components/index';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { RouteComponentProps, Route, Switch, Redirect } from 'react-router';
@@ -11,9 +10,11 @@ import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import {
   WalletInfo,
   RequestPayment,
+  RecentTransactions,
   Fields,
-  UnavailableWallets
-} from 'containers/Tabs/SendTransaction/components';
+  UnavailableWallets,
+  SideBar
+} from './components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
@@ -34,7 +35,7 @@ type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match } = this.props;
+    const { wallet, match, location, history } = this.props;
     const currentPath = match.url;
     const tabs: Tab[] = [
       {
@@ -50,6 +51,10 @@ class SendTransaction extends React.Component<Props> {
       {
         path: 'info',
         name: translate('NAV_ViewWallet')
+      },
+      {
+        path: 'recent-txs',
+        name: translate('Recent Transactions')
       }
     ];
 
@@ -60,7 +65,7 @@ class SendTransaction extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                <SubTabs tabs={tabs} match={match} />
+                <SubTabs tabs={tabs} match={match} location={location} history={history} />
               </div>
               <div className="col-sm-8">
                 <Switch>
@@ -90,6 +95,11 @@ class SendTransaction extends React.Component<Props> {
                     path={`${currentPath}/request`}
                     exact={true}
                     render={() => <RequestPayment wallet={wallet} />}
+                  />
+                  <Route
+                    path={`${currentPath}/recent-txs`}
+                    exact={true}
+                    render={() => <RecentTransactions wallet={wallet} />}
                   />
                   <RouteNotFound />
                 </Switch>

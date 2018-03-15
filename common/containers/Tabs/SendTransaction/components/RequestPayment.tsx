@@ -12,7 +12,7 @@ import {
   ICurrentValue
 } from 'selectors/transaction/current';
 import BN from 'bn.js';
-import { validNumber, validDecimal } from 'libs/validators';
+import { validPositiveNumber, validDecimal } from 'libs/validators';
 import { getGasLimit } from 'selectors/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
@@ -45,7 +45,7 @@ interface ActionProps {
 type Props = OwnProps & StateProps & ActionProps;
 
 const isValidAmount = (decimal: number) => (amount: string) =>
-  validNumber(+amount) && validDecimal(amount, decimal);
+  validPositiveNumber(+amount) && validDecimal(amount, decimal);
 
 class RequestPayment extends React.Component<Props, {}> {
   public state = {
