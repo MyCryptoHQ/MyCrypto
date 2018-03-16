@@ -52,8 +52,8 @@ class InteractForm extends Component<Props, State> {
       abiJson: '',
       contract: null,
       contractPlaceholder: this.isContractsValid()
-        ? 'Please select a contract...'
-        : 'No contracts available'
+        ? translate('SELECT_A_THING', { $thing: 'contract' })
+        : translate('NO_CONTRACTS_AVAILABLE')
     };
   }
 

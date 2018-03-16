@@ -596,6 +596,8 @@
     "X_JSONDESC":
       "This is the unencrypted, JSON format of your private key. This means you do not need the password but anyone who finds your JSON can access your wallet & Ether without the password. ",
     "CONTRACTS_INTERACT": "Interact",
-    "CONTRACTS_DEPLOY": "Deploy"
+    "CONTRACTS_DEPLOY": "Deploy",
+    "SELECT_A_THING": "Select a $thing",
+    "NO_CONTRACTS_AVAILABLE": "No contracts available"
   }
 }

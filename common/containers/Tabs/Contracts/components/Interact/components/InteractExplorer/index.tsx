@@ -94,7 +94,7 @@ class InteractExplorerClass extends Component<Props, State> {
             <Dropdown
               name="exploreContract"
               value={selectedFunction as any}
-              placeholder="Please select a function..."
+              placeholder={translate('SELECT_A_THING', { $thing: 'function' })}
               onChange={this.handleFunctionSelect}
               options={contractFunctionsOptions}
               clearable={false}
