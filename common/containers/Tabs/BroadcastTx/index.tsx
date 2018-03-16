@@ -66,7 +66,11 @@ class BroadcastTx extends Component<Props> {
                     </label>
                   </div>
 
-                  <SendButton toggleDisabled={true} onlyTransactionParameters={true} />
+                  <SendButton
+                    className="row form-group"
+                    toggleDisabled={true}
+                    onlyTransactionParameters={true}
+                  />
 
                   <div className="BroadcastTx-qr">
                     {stateTransaction && <QRCode data={bufferToHex(stateTransaction)} />}

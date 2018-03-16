@@ -22,7 +22,7 @@ export class Fields extends Component<OwnProps> {
         />
         {this.props.button}
         <SigningStatus />
-        <SendButton />
+        <SendButton className="row form-group" />
       </React.Fragment>
     );
 

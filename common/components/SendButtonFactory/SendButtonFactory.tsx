@@ -8,8 +8,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import { TextArea } from 'components/ui';
 import { getSerializedTransaction } from 'selectors/transaction';
+import Code from 'components/ui/Code';
 
 export interface CallbackProps {
   disabled: boolean;
@@ -41,16 +41,15 @@ class SendButtonFactoryClass extends Component<Props> {
       toggleDisabled,
       walletType
     } = this.props;
-    const columnSize = onlyTransactionParameters ? 12 : 6;
 
     /* Left and right transaction comparision boxes, only displayed when a serialized transaction
     exists in state */
 
     // shows the json representation of the transaction
     const leftTxCompare = serializedTransaction && (
-      <div className={`col-sm-${columnSize}`}>
+      <div className="col-xs-12">
         <label>{walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_raw')}</label>
-        <TextArea value={getStringifiedTx(serializedTransaction)} rows={4} readOnly={true} />
+        <Code>{getStringifiedTx(serializedTransaction)}</Code>
       </div>
     );
 
@@ -59,17 +58,13 @@ class SendButtonFactoryClass extends Component<Props> {
     // displayed
     const rightTxCompare = serializedTransaction &&
       !onlyTransactionParameters && (
-        <div className="col-sm-6">
+        <div className="col-xs-12">
           <label>
             {walletType.isWeb3Wallet
               ? 'Serialized Transaction Parameters'
               : translate('SEND_signed')}
           </label>
-          <TextArea
-            value={addHexPrefix(serializedTransaction.toString('hex'))}
-            rows={4}
-            readOnly={true}
-          />
+          <Code>{addHexPrefix(serializedTransaction.toString('hex'))}</Code>
         </div>
       );
 

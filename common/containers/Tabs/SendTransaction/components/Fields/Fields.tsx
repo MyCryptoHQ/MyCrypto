@@ -43,7 +43,7 @@ const content = (
     </div>
     <SigningStatus />
     <div className="row form-group">
-      <SendButton />
+      <SendButton className="row form-group" />
     </div>
   </div>
 );

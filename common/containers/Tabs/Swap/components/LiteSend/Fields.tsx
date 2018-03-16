@@ -92,7 +92,7 @@ class FieldsClass extends Component<Props> {
           </div>
         </div>
         <div className="row form-group">
-          <SendButton />
+          <SendButton className="row form-group" />
         </div>
       </div>
     );

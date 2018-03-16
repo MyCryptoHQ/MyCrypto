@@ -267,7 +267,7 @@ export class WalletDecrypt extends Component<Props, State> {
           <selectedWallet.component
             value={this.state.value}
             onChange={this.onChange}
-            onUnlock={value => {
+            onUnlock={(value: any) => {
               if (selectedWallet.redirect) {
                 this.props.history.push(selectedWallet.redirect);
               }
