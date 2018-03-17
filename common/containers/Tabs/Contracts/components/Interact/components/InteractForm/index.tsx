@@ -95,7 +95,8 @@ class InteractForm extends Component<Props, State> {
                 placeholder={this.state.contractPlaceholder}
                 onChange={this.handleSelectContract}
                 options={options}
-                clearable={false}
+                searchable={true}
+                clearable={true}
                 labelKey="name"
               />
             </label>
@@ -164,7 +165,7 @@ class InteractForm extends Component<Props, State> {
   private handleSelectContract = (contract: ContractOption) => {
     this.props.resetState();
     const fullContract = this.props.contracts.find(currContract => {
-      return this.makeContractValue(currContract) === contract.value;
+      return contract && this.makeContractValue(currContract) === contract.value;
     });
 
     this.setState({

@@ -97,7 +97,8 @@ class InteractExplorerClass extends Component<Props, State> {
               placeholder="Please select a function..."
               onChange={this.handleFunctionSelect}
               options={contractFunctionsOptions}
-              clearable={false}
+              clearable={true}
+              searchable={true}
               labelKey="name"
               valueKey="contract"
             />
