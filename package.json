@@ -32,7 +32,7 @@
     "normalizr": "3.2.4",
     "qrcode": "1.2.0",
     "qrcode.react": "0.8.0",
-    "query-string": "5.1.0",
+    "query-string": "6.0.0",
     "rc-slider": "8.6.1",
     "react": "16.2.0",
     "react-copy-to-clipboard": "5.0.1",
