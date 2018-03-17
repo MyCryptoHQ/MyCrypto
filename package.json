@@ -84,7 +84,7 @@
     "check-node-version": "3.2.0",
     "concurrently": "3.5.1",
     "copy-webpack-plugin": "4.5.1",
-    "css-loader": "0.28.10",
+    "css-loader": "0.28.11",
     "electron": "1.8.4",
     "electron-builder": "20.5.1",
     "empty": "0.10.1",
