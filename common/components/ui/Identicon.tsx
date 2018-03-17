@@ -1,6 +1,6 @@
-import makeBlockie from 'ethereum-blockies-base64';
 import { isValidETHAddress } from 'libs/validators';
 import React from 'react';
+import makeBlockie from 'ethereum-blockies-base64';
 
 interface Props {
   address: string;
