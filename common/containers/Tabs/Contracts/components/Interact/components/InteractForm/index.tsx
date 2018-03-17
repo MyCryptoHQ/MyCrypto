@@ -9,6 +9,7 @@ import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
 import { Input, TextArea } from 'components/ui';
 import Dropdown from 'components/ui/Dropdown';
+import Code from 'components/ui/Code';
 
 interface ContractOption {
   name: string;
@@ -68,22 +69,38 @@ class InteractForm extends Component<Props, State> {
     const validEthAddress = isValidETHAddress(address);
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
-    let contractOptions: ContractOption[] = [];
+    let options: ContractOption[] = [];
 
     if (this.isContractsValid()) {
-      contractOptions = contracts.map(con => {
+      const contractOptions = contracts.map(con => {
         const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
         return {
           name: `${con.name} ${addr}`,
           value: this.makeContractValue(con)
         };
       });
+      options = [{ name: 'Custom', value: '' }, ...contractOptions];
     }
 
     // TODO: Use common components for address, abi json
     return (
       <div className="InteractForm">
         <div className="InteractForm-address row">
+          <div className="input-group-wrapper InteractForm-address-field col-sm-6">
+            <label className="input-group">
+              <div className="input-group-header">{translate('CONTRACT_Title_2')}</div>
+              <Dropdown
+                className={`${!contract ? 'invalid' : ''}`}
+                value={contract as any}
+                placeholder={this.state.contractPlaceholder}
+                onChange={this.handleSelectContract}
+                options={options}
+                clearable={false}
+                labelKey="name"
+              />
+            </label>
+          </div>
+
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <label className="input-group">
               <div className="input-group-header">{translate('CONTRACT_Title')}</div>
@@ -99,26 +116,23 @@ class InteractForm extends Component<Props, State> {
               />
             </label>
           </div>
-
-          <div className="input-group-wrapper InteractForm-address-field col-sm-6">
-            <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_Title_2')}</div>
-              <Dropdown
-                className={`${!contract ? 'invalid' : ''}`}
-                value={contract as any}
-                placeholder={this.state.contractPlaceholder}
-                onChange={this.handleSelectContract}
-                options={contractOptions}
-                clearable={false}
-                labelKey="name"
-              />
-            </label>
-          </div>
         </div>
 
-        <div className="input-group-wrapper InteractForm-interface">
-          <label className="input-group">
-            <div className="input-group-header">{translate('CONTRACT_Json')}</div>
+        <label className="input-group">
+          <div className="input-group-header">{translate('CONTRACT_Json')}</div>
+          {!!contract ? (
+            contract.name === 'Custom' ? (
+              <TextArea
+                placeholder={this.abiJsonPlaceholder}
+                className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
+                onChange={this.handleInput('abiJson')}
+                value={abiJson}
+                rows={6}
+              />
+            ) : (
+              <Code className="wrap">{abiJson}</Code>
+            )
+          ) : (
             <TextArea
               placeholder={this.abiJsonPlaceholder}
               className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
@@ -126,8 +140,8 @@ class InteractForm extends Component<Props, State> {
               value={abiJson}
               rows={6}
             />
-          </label>
-        </div>
+          )}
+        </label>
 
         <button
           className="InteractForm-submit btn btn-primary"

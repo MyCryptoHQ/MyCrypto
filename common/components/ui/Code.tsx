@@ -1,8 +1,13 @@
 import React from 'react';
 import './Code.scss';
 
-const Code = ({ children }: React.Props<{}>) => (
-  <pre>
+interface Props {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+const Code = ({ children, className }: Props) => (
+  <pre className={className}>
     <code>{children}</code>
   </pre>
 );

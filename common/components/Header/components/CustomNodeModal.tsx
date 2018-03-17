@@ -129,7 +129,6 @@ class CustomNodeModal extends React.Component<Props, State> {
             <label className="col-sm-3 input-group">
               <div className="input-group-header">Network</div>
               <Dropdown
-                className="input-group-dropdown"
                 value={network}
                 options={options}
                 clearable={false}

@@ -23,7 +23,7 @@ export default class ENSClass extends React.Component<{}> {
               <p className="ENS-description">
                 The <ENSDocsLink /> is a distributed, open, and extensible naming system based on
                 the Ethereum blockchain. Once you have a name, you can tell your friends to send ETH
-                to <code>ensdomain.eth</code> instead of
+                to <code>ensdomain.eth</code> instead of{' '}
                 <code>{donationAddressMap.ETH.substr(0, 12)}...</code>
               </p>
 
