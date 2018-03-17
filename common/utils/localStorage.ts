@@ -1,8 +1,9 @@
-export const REDUX_STATE = 'REDUX_STATE';
+import { sha256 } from 'ethereumjs-util';
 import { State as SwapState } from 'reducers/swap';
 import { IWallet, WalletConfig } from 'libs/wallet';
-import { sha256 } from 'ethereumjs-util';
 import { AppState } from 'reducers';
+
+export const REDUX_STATE = 'REDUX_STATE';
 
 export function loadState<T>(): T | undefined {
   try {

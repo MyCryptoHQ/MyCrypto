@@ -8,7 +8,7 @@ import { Spinner } from 'components/ui';
 import TransactionDataTable from './TransactionDataTable';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
-import { TransactionState } from 'reducers/transactions';
+import { TransactionState } from 'types/transactions';
 import './TransactionStatus.scss';
 
 interface OwnProps {

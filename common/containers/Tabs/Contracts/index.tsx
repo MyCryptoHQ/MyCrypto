@@ -28,14 +28,12 @@ const tabs = [
 
 class Contracts extends Component<Props & RouteComponentProps<{}>> {
   public render() {
-    const { match } = this.props;
+    const { match, location, history } = this.props;
     const currentPath = match.url;
 
     return (
       <TabSection isUnavailableOffline={true}>
-        <div className="SubTabs-tabs">
-          <SubTabs tabs={tabs} match={match} />
-        </div>
+        <SubTabs tabs={tabs} match={match} location={location} history={history} />
         <section className="Tab-content Contracts">
           <div className="Contracts-content">
             <Switch>
