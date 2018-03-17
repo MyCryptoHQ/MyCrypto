@@ -28,6 +28,7 @@ exports[`snapshot test ENS component 1`] = `
             ensdomain.eth
           </code>
            instead of
+           
           <code>
             0x4bbeEB066e
             ...
