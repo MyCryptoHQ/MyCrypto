@@ -43,7 +43,7 @@ module.exports = {
     'bip39',
     'bn.js',
     'classnames',
-    'ethereum-blockies',
+    'ethereum-blockies-base64',
     'ethereumjs-abi',
     'ethereumjs-tx',
     'ethereumjs-util',
