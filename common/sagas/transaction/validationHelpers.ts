@@ -28,7 +28,7 @@ export function* rebaseUserInput(value: IInput): SagaIterator {
   // get decimal
   const newDecimal: number = yield select(getDecimalFromUnit, unit);
 
-  if (validNumber(+value.raw) && validDecimal(value.raw, newDecimal)) {
+  if (validNumber(parseInt(value.raw, 10)) && validDecimal(value.raw, newDecimal)) {
     return {
       raw: value.raw,
       value: toTokenBase(value.raw, newDecimal)

@@ -4,6 +4,10 @@ import {
   INITIAL_STATE as transactionInitialState,
   State as TransactionState
 } from 'reducers/transaction';
+import {
+  INITIAL_STATE as initialTransactionsState,
+  State as TransactionsState
+} from 'reducers/transactions';
 import { State as SwapState, INITIAL_STATE as swapInitialState } from 'reducers/swap';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -44,6 +48,7 @@ const configureStore = () => {
       : { ...swapInitialState };
 
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
+  const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
 
   const persistedInitialState: Partial<AppState> = {
     transaction: {
@@ -62,6 +67,10 @@ const configureStore = () => {
 
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState,
+    transactions: {
+      ...initialTransactionsState,
+      ...savedTransactionsState
+    },
     ...rehydrateConfigAndCustomTokenState()
   };
 
@@ -75,6 +84,7 @@ const configureStore = () => {
   store.subscribe(
     throttle(() => {
       const state: AppState = store.getState();
+
       saveState({
         transaction: {
           fields: {
@@ -95,6 +105,9 @@ const configureStore = () => {
             byId: {},
             allIds: []
           }
+        },
+        transactions: {
+          recent: state.transactions.recent
         },
         ...getConfigAndCustomTokensStateToSubscribe(state)
       });

@@ -5,15 +5,17 @@ import { ConfirmationModal } from 'components/ConfirmationModal';
 
 export const SendButton: React.SFC<{
   onlyTransactionParameters?: boolean;
+  toggleDisabled?: boolean;
   customModal?: typeof ConfirmationModal;
-}> = ({ onlyTransactionParameters, customModal }) => (
+}> = ({ onlyTransactionParameters, toggleDisabled, customModal }) => (
   <SendButtonFactory
     onlyTransactionParameters={!!onlyTransactionParameters}
+    toggleDisabled={toggleDisabled}
     Modal={customModal ? customModal : ConfirmationModal}
-    withProps={({ onClick }) => (
+    withProps={({ disabled, onClick }) => (
       <div className="row form-group">
         <div className="col-xs-12">
-          <button className="btn btn-primary btn-block" onClick={onClick}>
+          <button disabled={disabled} className="btn btn-primary btn-block" onClick={onClick}>
             {translate('SEND_trans')}
           </button>
         </div>
