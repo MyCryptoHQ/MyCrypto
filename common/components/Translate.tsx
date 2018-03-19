@@ -5,17 +5,13 @@ interface Props {
   source: string;
 }
 
-const unwrapped = (e: any) => {
-  return e.children;
-};
-
 const TranslateMarkdown = ({ source }: Props) => {
   return (
     <Markdown
       escapeHtml={true}
       unwrapDisallowed={true}
       allowedTypes={['link', 'emphasis', 'strong', 'code', 'root', 'inlineCode']}
-      renderers={{ root: unwrapped }}
+      renderers={{ root: React.Fragment }}
       source={source}
     />
   );
