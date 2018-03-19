@@ -33,7 +33,6 @@ export default class EnterPassword extends Component<Props, State> {
     const isPasswordValid = passwordValidity === 'valid';
     const isConfirmValid = confirmedPassword ? password === confirmedPassword : undefined;
     const canSubmit = isPasswordValid && isConfirmValid && !isGenerating;
-
     return (
       <Template>
         <form className="EnterPw" onSubmit={canSubmit ? this.handleSubmit : undefined}>
@@ -45,7 +44,7 @@ export default class EnterPassword extends Component<Props, State> {
             <label className="input-group">
               <div className="input-group-header">{translate('INPUT_PASSWORD_LABEL')}</div>
               <TogglablePassword
-                className={!isPasswordValid && password.length > 0 ? 'invalid' : ''}
+                isValid={isPasswordValid && password.length > 0}
                 value={password}
                 placeholder={translate('INPUT_PASSWORD_PLACEHOLDER', {
                   $pass_length: MINIMUM_PASSWORD_LENGTH.toString()
@@ -66,7 +65,7 @@ export default class EnterPassword extends Component<Props, State> {
             <label className="input-group">
               <div className="input-group-header">{translate('INPUT_CONFIRM_PASSWORD_LABEL')}</div>
               <TogglablePassword
-                className={!isConfirmValid && password.length > 0 ? 'invalid' : ''}
+                isValid={isConfirmValid && password.length > 0}
                 value={confirmedPassword}
                 placeholder={translate('GEN_PLACEHOLDER_1')}
                 onChange={this.onConfirmChange}
@@ -78,7 +77,7 @@ export default class EnterPassword extends Component<Props, State> {
             {isGenerating ? <Spinner light={true} /> : translate('NAV_GENERATEWALLET')}
           </button>
 
-          <p className="EnterPw-warning">{translate('X_JSONDESC')}</p>
+          <p className="EnterPw-warning">{translate('X_PASSWORDDESC', {}, true)}</p>
         </form>
       </Template>
     );

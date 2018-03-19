@@ -46,7 +46,7 @@ const styles: any = {
     left: '100%',
     width: '100%',
     margin: 0,
-    transform: 'translateRaw(-50%, -50%) rotate(-90deg)',
+    transform: 'translate(-50%, -50%) rotate(-90deg)',
     fontSize: '13px',
     fontWeight: '600',
     color: '#0b7290',

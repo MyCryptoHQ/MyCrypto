@@ -90,7 +90,7 @@ class RecentTransactions extends React.Component<Props> {
           </div>
         )}
         <p className="RecentTxs-help">
-          {translate('RECENT_TX_HELP', { $explorer: explorer }, true)}
+          {translate('RECENT_TX_HELP', { $network: network.name, $explorer: explorer }, true)}
         </p>
       </React.Fragment>
     );

@@ -2,6 +2,8 @@
   "code": "en",
   "data": {
     "X_TXHASH": "TX Hash",
+    "X_PASSWORDDESC":
+      "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**",
     "NAV_CHECKTXSTATUS": "Check TX Status",
     "NAV_TXSTATUS": "TX Status",
     "TX_NOTFOUND": "Transaction Not Found",
@@ -410,7 +412,7 @@
       "Managing your own keys can be risky and a single mistake can lead to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using [MetaMask]($metamask_link) or purchasing a [Ledger]($ledger_link) or [TREZOR]($trezor_link) hardware wallet.",
     "GENERATE_WALLET_HELPLINK_1": "Learn more about different wallet types & staying secure",
     "PREFOOTER_WARNING":
-      "MyCrypto.com does not hold your keys for you. We cannot access accounts, recover keys, reset passwords, nor reverse transactions. Protect your keys & always check that you are on correct URL.",
+      "MyCrypto.com does not hold your keys for you. We cannot access accounts, recover keys, reset passwords, nor reverse transactions. Protect your keys & always check that you are on the correct URL.",
     "PREFOOTER_SECURITY_WARNING": "You are responsible for your security.",
     "FOOTER_ABOUT":
       "MyCrypto is an open-source, client-side tool for generating Ether Wallets, handling ERC-20 tokens, and interacting with the blockchain more easily. Developed by and for the community since 2015, we’re focused on building awesome products that put the power in people’s hands.",
@@ -422,7 +424,7 @@
     "ETHERSCAMDB": "EtherScamDB",
     "ETHER_SECURITY_LOOKUP": "Ether Security Lookup",
     "ETHER_ADDRESS_LOOKUP": "Ether Address Lookup",
-    "LEDGER_REFERAL_1": "Buy a Ledger",
+    "LEDGER_REFERAL_1": "Buy a Ledger Wallet",
     "LEDGER_REFERAL_2": "Don’t have a Ledger? Order one now!",
     "TREZOR_REFERAL": "Buy a TREZOR",
     "ETHERCARD_REFERAL": "Get an ether.card",
@@ -581,7 +583,7 @@
     "LINK": "[$name]($link)",
     "RECENT_TX_NETWORK_EXPLORER": "an explorer for the $network_name network",
     "RECENT_TX_HELP":
-      "Only recent transactions sent from this address via MyCrypto on the {network.name} network are listed here. If you don't see your transaction, you can view all of them on $explorer.",
+      "Only recent transactions sent from this address via MyCrypto on the $network network are listed here. If you don't see your transaction, you can view all of them on $explorer.",
     "NO_RECENT_TX_FOUND": "No recent MyCrypto transactions found, try checking on $explorer.",
     "BACK_TO_RECENT_TXS": "Back to Recent Transactions",
     "WALLET_INFO_UTILITIES": "Utilities",

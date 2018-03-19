@@ -18,8 +18,7 @@ const PaperWallet: React.SFC<Props> = props => (
     <div className="GenPaper">
       {/* Private Key */}
       <label className="input-group GenPaper-private">
-        {/* translateRaw isn't used here because it wont properly render the ` characters as a string of code in markdown*/}
-        <h1 className="input-group-header">{translate('GEN_LABEL_5')}</h1>
+        <h1 className="GenPaper-title">{translate('GEN_LABEL_5')}</h1>
         <Input
           value={stripHexPrefix(props.privateKey)}
           aria-label={translate('X_PRIVKEY')}
