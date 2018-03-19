@@ -63,9 +63,7 @@ export const translateRaw = (key: string, variables?: { [name: string]: string }
   const lsConfig = loadStatePropertyOrEmptyObject('config');
   const language = !!lsConfig ? (lsConfig as ConfigState).meta.languageSelection : fallbackLanguage;
   const translatedString =
-    ((repository[language] && repository[language][key]) ||
-      repository[fallbackLanguage][key] ||
-      key) + ' 🎉';
+    (repository[language] && repository[language][key]) || repository[fallbackLanguage][key] || key;
 
   if (!!variables) {
     // Find each variable and replace it in the translated string

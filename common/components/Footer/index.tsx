@@ -14,7 +14,6 @@ import DisclaimerModal from './DisclaimerModal';
 import { NewTabLink } from 'components/ui';
 import OnboardModal from 'containers/OnboardModal';
 import './index.scss';
-import far from 'utils/findandreplace';
 import translate from 'translations';
 
 const SocialMediaLink = ({ link, text }: Link) => {
@@ -128,23 +127,6 @@ export default class Footer extends React.PureComponent<Props, State> {
   public state: State = {
     isDisclaimerOpen: false
   };
-
-  public componentDidMount() {
-    const elements = document.querySelectorAll('*');
-    /* tslint:disable:prefer-for-of */
-    for (let i = 0; i < elements.length; i++) {
-      far(elements[i], {
-        find: /^((?!(🎉|☠)).)*$/,
-        filterElements: (el: HTMLElement) => {
-          const condition = !!el.innerText && !!el.innerText.length;
-          return condition;
-        },
-        replace: (portion: any) => {
-          return portion.text + ' ☠';
-        }
-      });
-    }
-  }
 
   public render() {
     return (
