@@ -12,7 +12,7 @@ import translate from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown, Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { merge, reject, debounce } from 'lodash';
+import { merge, debounce } from 'lodash';
 import './CurrencySwap.scss';
 
 export interface StateProps {
@@ -29,11 +29,10 @@ export interface ActionProps {
 }
 
 interface State {
+  options: any[];
   disabled: boolean;
   origin: SwapOpt;
   destination: SwapOpt;
-  originKindOptions: any[];
-  destinationKindOptions: any[];
   originErr: string;
   destinationErr: string;
   timeout: boolean;
@@ -50,6 +49,7 @@ interface SwapOpt extends SwapInput {
 
 export default class CurrencySwap extends PureComponent<Props, State> {
   public state: State = {
+    options: [],
     disabled: true,
     origin: {
       label: 'BTC',
@@ -65,8 +65,6 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       image: 'https://shapeshift.io/images/coins/ether.png',
       amount: NaN
     },
-    originKindOptions: [],
-    destinationKindOptions: [],
     originErr: '',
     destinationErr: '',
     timeout: false
@@ -104,20 +102,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       });
     }, 10000);
 
-    const { origin } = this.state;
-    const { options } = this.props;
-
-    if (options.allIds && options.byId) {
-      const originKindOptions: any[] = Object.values(options.byId);
-      const destinationKindOptions: any[] = Object.values(
-        reject<any>(options.byId, o => o.id === origin.label)
-      );
-
-      this.setState({
-        originKindOptions,
-        destinationKindOptions
-      });
-    }
+    this.setState({ options: Object.values(this.props.options.byId) });
   }
 
   public componentWillUnmount() {
@@ -126,23 +111,16 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     }
   }
 
-  public componentDidUpdate(prevProps: Props, prevState: State) {
+  public componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.options !== this.props.options) {
+      this.setState({ options: Object.values(nextProps.options.byId) });
+    }
+  }
+
+  public componentDidUpdate(_: Props, prevState: State) {
     const { origin, destination } = this.state;
-    const { options } = this.props;
     if (origin !== prevState.origin) {
       this.setDisabled(origin, destination);
-    }
-
-    if (options.allIds !== prevProps.options.allIds && options.byId) {
-      const originKindOptions: any[] = Object.values(options.byId);
-      const destinationKindOptions: any[] = Object.values(
-        reject<any>(options.byId, o => o.id === origin.label)
-      );
-
-      this.setState({
-        originKindOptions,
-        destinationKindOptions
-      });
     }
   }
 
@@ -274,8 +252,8 @@ export default class CurrencySwap extends PureComponent<Props, State> {
   };
 
   public onChangeOriginKind = (newOption: any) => {
-    const { origin, destination, destinationKindOptions } = this.state;
-    const { options, initSwap } = this.props;
+    const { origin, destination } = this.state;
+    const { initSwap } = this.props;
 
     const newOrigin = { ...origin, label: newOption.label, value: newOption.value, amount: 0 };
     const newDest = {
@@ -288,11 +266,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
     this.setState({
       origin: newOrigin,
-      destination: newDest,
-      destinationKindOptions: reject(
-        [...destinationKindOptions, options.byId[origin.label]],
-        o => o.id === newOption.label
-      )
+      destination: newDest
     });
 
     initSwap({ origin: newOrigin, destination: newDest });
@@ -318,15 +292,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
   public render() {
     const { bityRates, shapeshiftRates, provider } = this.props;
-    const {
-      origin,
-      destination,
-      originKindOptions,
-      destinationKindOptions,
-      originErr,
-      destinationErr,
-      timeout
-    } = this.state;
+    const { options, origin, destination, originErr, destinationErr, timeout } = this.state;
     const pairName = combineAndUpper(origin.label, destination.label);
     const bityLoaded = bityRates.byId && bityRates.byId[pairName] ? true : false;
     const shapeshiftLoaded = shapeshiftRates.byId && shapeshiftRates.byId[pairName] ? true : false;
@@ -356,7 +322,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                     onChange={this.onChangeAmount}
                   />
                   <SwapDropdown
-                    options={originKindOptions}
+                    options={options}
                     value={origin.value}
                     onChange={this.onChangeOriginKind}
                   />
@@ -381,7 +347,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                     onChange={this.onChangeAmount}
                   />
                   <SwapDropdown
-                    options={originKindOptions}
+                    options={options}
                     disabledOption={origin.value}
                     value={destination.value}
                     onChange={this.onChangeDestinationKind}
