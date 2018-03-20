@@ -1,24 +1,32 @@
-import translate from 'translations';
-import { getTransactionFields, makeTransaction } from 'libs/transaction';
-import { OfflineBroadcast } from './OfflineBroadcast';
+import EthTx from 'ethereumjs-tx';
 import { OnlineSend } from './OnlineSend';
-import { addHexPrefix } from 'ethereumjs-util';
 import { getWalletType, IWalletType } from 'selectors/wallet';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import { getSerializedTransaction } from 'selectors/transaction';
-import Code from 'components/ui/Code';
+import {
+  getSerializedTransaction,
+  getTransaction,
+  isNetworkRequestPending,
+  isValidGasPrice,
+  isValidGasLimit
+} from 'selectors/transaction';
 
 export interface CallbackProps {
   disabled: boolean;
-  onClick(): void;
+  signTx(): void;
+  openModal(): void;
 }
 
 interface StateProps {
   walletType: IWalletType;
   serializedTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
+  transaction: EthTx;
+  isFullTransaction: boolean;
+  networkRequestPending: boolean;
+  validGasPrice: boolean;
+  validGasLimit: boolean;
 }
 
 interface OwnProps {
@@ -28,70 +36,46 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const getStringifiedTx = (serializedTransaction: Buffer) =>
-  JSON.stringify(getTransactionFields(makeTransaction(serializedTransaction)), null, 2);
-
 type Props = StateProps & OwnProps;
 
 class SendButtonFactoryClass extends Component<Props> {
   public render() {
     const {
-      onlyTransactionParameters,
-      serializedTransaction,
       toggleDisabled,
-      walletType
+      transaction,
+      isFullTransaction,
+      serializedTransaction,
+      networkRequestPending,
+      validGasPrice,
+      validGasLimit
     } = this.props;
 
-    /* Left and right transaction comparision boxes, only displayed when a serialized transaction
-    exists in state */
-
-    // shows the json representation of the transaction
-    const leftTxCompare = serializedTransaction && (
-      <div className="col-xs-12">
-        <label>{walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_raw')}</label>
-        <Code>{getStringifiedTx(serializedTransaction)}</Code>
-      </div>
-    );
-
-    // shows the serialized representation of the transaction
-    // "onlyTransactionParameters" used in broadcast tx so the same serialized tx isnt redundantly
-    // displayed
-    const rightTxCompare = serializedTransaction &&
-      !onlyTransactionParameters && (
-        <div className="col-xs-12">
-          <label>
-            {walletType.isWeb3Wallet
-              ? 'Serialized Transaction Parameters'
-              : translate('SEND_signed')}
-          </label>
-          <Code>{addHexPrefix(serializedTransaction.toString('hex'))}</Code>
-        </div>
-      );
-
-    const shouldDisplayOnlineSend = toggleDisabled || serializedTransaction;
-
     return (
-      <>
-        {leftTxCompare}
-        {rightTxCompare}
-        <OfflineBroadcast />
-        {shouldDisplayOnlineSend && (
-          <OnlineSend
-            withOnClick={({ onClick }) =>
-              this.props.withProps({
-                disabled: !!(toggleDisabled && !serializedTransaction),
-                onClick
-              })
-            }
-            Modal={this.props.Modal}
-          />
-        )}
-      </>
+      <OnlineSend
+        withOnClick={({ openModal, signer }) =>
+          this.props.withProps({
+            disabled: toggleDisabled
+              ? !!(toggleDisabled && !serializedTransaction)
+              : !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit,
+            signTx: () => signer(transaction),
+            openModal
+          })
+        }
+        Modal={this.props.Modal}
+      />
     );
   }
 }
 
-export const SendButtonFactory = connect((state: AppState) => ({
-  walletType: getWalletType(state),
-  serializedTransaction: getSerializedTransaction(state)
-}))(SendButtonFactoryClass);
+const mapStateToProps = (state: AppState) => {
+  return {
+    walletType: getWalletType(state),
+    serializedTransaction: getSerializedTransaction(state),
+    ...getTransaction(state),
+    networkRequestPending: isNetworkRequestPending(state),
+    validGasPrice: isValidGasPrice(state),
+    validGasLimit: isValidGasLimit(state)
+  };
+};
+
+export const SendButtonFactory = connect(mapStateToProps)(SendButtonFactoryClass);

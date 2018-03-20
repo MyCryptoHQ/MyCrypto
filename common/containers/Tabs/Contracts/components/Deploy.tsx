@@ -2,7 +2,6 @@ import translate from 'translations';
 import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
-import { SigningStatus } from 'components/SigningStatus';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
@@ -71,11 +70,16 @@ class DeployClass extends Component<DispatchProps> {
             <GenerateTransaction />
           </div>
         </div>
-        <SigningStatus />
         <SendButtonFactory
           Modal={ConfirmationModal}
-          withProps={({ onClick }) => (
-            <button className="Deploy-submit btn btn-primary" onClick={onClick}>
+          withProps={({ signTx, openModal }) => (
+            <button
+              className="Deploy-submit btn btn-primary"
+              onClick={() => {
+                signTx();
+                openModal();
+              }}
+            >
               {translate('NAV_DeployContract')}
             </button>
           )}
