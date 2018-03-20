@@ -1,4 +1,8 @@
-import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
+import EthTx from 'ethereumjs-tx';
+import {
+  SetBalanceFullfilledAction,
+  SetWalletQrTransactionAction
+} from 'actions/wallet/actionTypes';
 import {
   SetTokenBalancesFulfilledAction,
   SetWalletAction,
@@ -14,6 +18,7 @@ import { IWallet, Balance, WalletConfig } from 'libs/wallet';
 export interface State {
   inst?: IWallet | null;
   config?: WalletConfig | null;
+  signViaQr?: QrSignatureState | null;
   // in ETH
   balance: Balance;
   tokens: {
@@ -29,9 +34,21 @@ export interface State {
   hasSavedWalletTokens: boolean;
 }
 
+export type QrTransaction = EthTx;
+export type QrSignature = string;
+export type QrAddress = string;
+
+export interface QrSignatureState {
+  tx: QrTransaction;
+  from: QrAddress;
+  onSignature(signature: QrSignature): void;
+  onCancel(): void;
+}
+
 export const INITIAL_STATE: State = {
   inst: null,
   config: null,
+  signViaQr: null,
   balance: { isPending: false, wei: null },
   tokens: {},
   isWalletPending: false,
@@ -144,6 +161,20 @@ function setWalletConfig(state: State, action: SetWalletConfigAction): State {
   };
 }
 
+function setQrTransaction(state: State, action: SetWalletQrTransactionAction): State {
+  return {
+    ...state,
+    signViaQr: action.payload
+  };
+}
+
+function finalizeQrTx(state: State): State {
+  return {
+    ...state,
+    signViaQr: null
+  };
+}
+
 export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
     case TypeKeys.WALLET_SET:
@@ -178,6 +209,10 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setWalletConfig(state, action);
     case TypeKeys.WALLET_SET_PASSWORD_PENDING:
       return setPasswordPending(state);
+    case TypeKeys.WALLET_SET_QR_TRANSACTION:
+      return setQrTransaction(state, action);
+    case TypeKeys.WALLET_FINALIZE_QR_TX:
+      return finalizeQrTx(state);
     default:
       return state;
   }

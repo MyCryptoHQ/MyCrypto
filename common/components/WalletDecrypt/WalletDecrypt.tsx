@@ -27,6 +27,7 @@ import {
   PrivateKeyValue,
   TrezorDecrypt,
   ViewOnlyDecrypt,
+  ParitySignerDecrypt,
   Web3Decrypt,
   WalletButton,
   InsecureWalletWarning
@@ -161,6 +162,15 @@ export class WalletDecrypt extends Component<Props, State> {
       icon: TrezorIcon,
       description: 'ADD_HardwareDesc',
       component: TrezorDecrypt,
+      initialParams: {},
+      unlock: this.props.setWallet,
+      helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+    },
+    [SecureWalletName.PARITY_SIGNER]: {
+      lid: 'x_ParitySigner',
+      icon: TrezorIcon,
+      description: 'ADD_ParityDesc',
+      component: ParitySignerDecrypt,
       initialParams: {},
       unlock: this.props.setWallet,
       helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'

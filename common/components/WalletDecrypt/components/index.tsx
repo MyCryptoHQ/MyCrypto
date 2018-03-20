@@ -9,3 +9,7 @@ export * from './Trezor';
 export * from './ViewOnly';
 export * from './WalletButton';
 export * from './Web3';
+
+import Foo from './ParitySigner';
+
+export const ParitySignerDecrypt = Foo;

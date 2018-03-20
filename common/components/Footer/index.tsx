@@ -12,6 +12,7 @@ import React from 'react';
 import PreFooter from './PreFooter';
 import DisclaimerModal from './DisclaimerModal';
 import { NewTabLink } from 'components/ui';
+import QrSignerModal from 'containers/QrSignerModal';
 import OnboardModal from 'containers/OnboardModal';
 import './index.scss';
 
@@ -217,6 +218,7 @@ export default class Footer extends React.PureComponent<Props, State> {
           </div>
         </footer>
 
+        <QrSignerModal />
         <OnboardModal />
         <DisclaimerModal isOpen={this.state.isDisclaimerOpen} handleClose={this.toggleModal} />
       </div>
