@@ -341,7 +341,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
               <div className="flex-spacer" />
               <div className="input-group-wrapper">
                 <div className="input-group-header">Deposit</div>
-                <label className="input-group input-group-inline">
+                <div className="input-group input-group-inline">
                   <Input
                     id="origin-swap-input"
                     className={`input-group-input ${
@@ -360,12 +360,12 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                     value={origin.value}
                     onChange={this.onChangeOriginKind}
                   />
-                </label>
+                </div>
                 {originErr && <span className="CurrencySwap-error-message">{originErr}</span>}
               </div>
 
               <div className="input-group-wrapper">
-                <label className="input-group input-group-inline">
+                <div className="input-group input-group-inline">
                   <div className="input-group-header">Recieve</div>
                   <Input
                     id="destination-swap-input"
@@ -385,7 +385,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                     value={destination.value}
                     onChange={this.onChangeDestinationKind}
                   />
-                </label>
+                </div>
                 {destinationErr && (
                   <span className="CurrencySwap-error-message">{destinationErr}</span>
                 )}
