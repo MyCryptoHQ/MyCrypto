@@ -2,7 +2,6 @@ import TranslateMarkdown from 'components/Translate';
 import React from 'react';
 import { State as ConfigState } from 'reducers/config';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
-const en = require('./lang/en.json');
 const fallbackLanguage = 'en';
 const repository: {
   [language: string]: {
@@ -18,7 +17,7 @@ interface ILanguage {
 }
 
 const languages: ILanguage[] = [
-  en,
+  require('./lang/en.json'),
   require('./lang/de.json'),
   require('./lang/el.json'),
   require('./lang/es.json'),
@@ -58,7 +57,9 @@ export function getTranslators() {
   });
 }
 
-export const translateRaw = (key: string, variables?: { [name: string]: string }) => {
+export type TranslatedText = React.ReactElement<any> | string;
+
+function translate(key: string, variables?: { [name: string]: string }): string {
   // redux store isn't initialized in time which throws errors, instead we get the language selection from localstorage
   const lsConfig = loadStatePropertyOrEmptyObject('config');
   const language = !!lsConfig ? (lsConfig as ConfigState).meta.languageSelection : fallbackLanguage;
@@ -75,19 +76,13 @@ export const translateRaw = (key: string, variables?: { [name: string]: string }
   }
 
   return translatedString;
-};
-
-export type TranslatedText = React.ReactElement<any> | string;
-
-function translate(key: string, variables?: { [name: string]: string }): string {
-  return translateRaw(key, variables);
 }
 
 export function translateMd(
   key: string,
   variables?: { [name: string]: string }
 ): React.ReactElement<any> {
-  return <TranslateMarkdown source={translateRaw(key, variables)} />;
+  return <TranslateMarkdown source={translate(key, variables)} />;
 }
 
 export default translate;
