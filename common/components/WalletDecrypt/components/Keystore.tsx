@@ -40,6 +40,7 @@ export class KeystoreDecrypt extends PureComponent {
     const { isWalletPending, value: { file, password } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
+    const unlockPasswordField = !file;
 
     return (
       <form id="selectedUploadKey" onSubmit={this.unlock}>
@@ -60,6 +61,7 @@ export class KeystoreDecrypt extends PureComponent {
             className={`${password.length > 0 ? 'is-valid' : 'is-invalid'} ${
               file.length && isWalletPending ? 'hidden' : ''
             }`}
+            disabled={unlockPasswordField}
             value={password}
             onChange={this.onPasswordChange}
             onKeyDown={this.onKeyDown}
