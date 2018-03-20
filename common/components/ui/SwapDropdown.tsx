@@ -12,6 +12,7 @@ export interface SingleCoin {
 
 interface Props {
   options: SingleCoin[];
+  disabledOption?: string;
   value: string;
   onChange(value: SingleCoin): void;
 }
@@ -49,7 +50,7 @@ class SwapDropdown extends PureComponent<Props, State> {
   }
 
   public render() {
-    const { options, value } = this.props;
+    const { options, value, disabledOption } = this.props;
     const { isOpen, mainOptions, otherOptions } = this.state;
 
     const selectedOption = options.find(opt => opt.name === value);
@@ -72,10 +73,22 @@ class SwapDropdown extends PureComponent<Props, State> {
             <i className="SwapDropdown-menu-triangle" />
             <div className="SwapDropdown-menu-content">
               {mainOptions.map(opt => (
-                <SwapOption key={opt.id} option={opt} isMain={true} onChange={this.handleChange} />
+                <SwapOption
+                  key={opt.name}
+                  option={opt}
+                  isMain={true}
+                  isDisabled={opt.name === disabledOption}
+                  onChange={this.handleChange}
+                />
               ))}
               {otherOptions.map(opt => (
-                <SwapOption key={opt.id} option={opt} isMain={false} onChange={this.handleChange} />
+                <SwapOption
+                  key={opt.name}
+                  option={opt}
+                  isMain={false}
+                  isDisabled={opt.name === disabledOption}
+                  onChange={this.handleChange}
+                />
               ))}
             </div>
           </div>
@@ -133,10 +146,11 @@ class SwapDropdown extends PureComponent<Props, State> {
 interface SwapOptionProps {
   option: SingleCoin;
   isMain?: boolean;
+  isDisabled?: boolean;
   onChange(opt: Option): void;
 }
 
-const SwapOption: React.SFC<SwapOptionProps> = ({ option, isMain, onChange }) => {
+const SwapOption: React.SFC<SwapOptionProps> = ({ option, isMain, isDisabled, onChange }) => {
   const handleChange = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
     onChange({
@@ -145,8 +159,10 @@ const SwapOption: React.SFC<SwapOptionProps> = ({ option, isMain, onChange }) =>
     });
   };
 
+  const classNames = classnames('SwapOption', isMain && 'is-main', isDisabled && 'is-disabled');
+
   return (
-    <button className={classnames('SwapOption', isMain && 'is-main')} onClick={handleChange}>
+    <button className={classNames} disabled={isDisabled} onClick={handleChange}>
       {isMain ? (
         <React.Fragment>
           <img src={option.image} className="SwapOption-logo" alt={`${option.name} logo`} />

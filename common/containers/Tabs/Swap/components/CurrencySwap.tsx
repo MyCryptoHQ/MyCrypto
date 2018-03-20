@@ -381,7 +381,8 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                     onChange={this.onChangeAmount}
                   />
                   <SwapDropdown
-                    options={destinationKindOptions}
+                    options={originKindOptions}
+                    disabledOption={origin.value}
                     value={destination.value}
                     onChange={this.onChangeDestinationKind}
                   />

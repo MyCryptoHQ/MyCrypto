@@ -4,8 +4,11 @@
 $menu-max-width: 540px;
 $menu-padding: 10px;
 $menu-triangle-size: 14px;
+$menu-offset: 40px;
 $option-width: ($menu-max-width - $menu-padding * 2) / 3;
 $option-width-main: ($menu-max-width - $menu-padding * 2) / 2;
+$option-width-small: $option-width-main;
+$option-width-main-small: 100%;
 
 .SwapDropdown {
   position: relative;
@@ -39,7 +42,7 @@ $option-width-main: ($menu-max-width - $menu-padding * 2) / 2;
   &-menu {
     position: absolute;
     top: 100%;
-    right: -20px;
+    right: -$menu-offset;
     z-index: $zindex-popover;
 
     &-content {
@@ -58,7 +61,7 @@ $option-width-main: ($menu-max-width - $menu-padding * 2) / 2;
     &-triangle {
       position: absolute;
       top: -($menu-triangle-size / 2);
-      right: 55px;
+      right: $menu-offset + 40px;
       width: $menu-triangle-size;
       height: $menu-triangle-size;
       background: #FFF;
@@ -81,6 +84,11 @@ $option-width-main: ($menu-max-width - $menu-padding * 2) / 2;
   color: $text-color;
   transition: $transition;
 
+  @media (max-width: $screen-sm) {
+    width: 50%;
+    max-width: none;
+  }
+
   &:hover {
     color: #FFF;
     background: rgba($brand-info, 0.9);
@@ -93,7 +101,7 @@ $option-width-main: ($menu-max-width - $menu-padding * 2) / 2;
   }
 
   &-logo {
-    height: 1.4rem;
+    height: 1.2rem;
     width: auto;
     margin-right: $space-xs;
 
@@ -116,5 +124,16 @@ $option-width-main: ($menu-max-width - $menu-padding * 2) / 2;
     max-width: $option-width-main;
     padding: $space $space-md;
     font-size: 1rem;
+
+    @media (max-width: $screen-sm) {
+      width: 50%;
+      max-width: none;
+    }
+  }
+
+  &.is-disabled {
+    filter: grayscale(1);
+    opacity: 0.3;
+    pointer-events: none;
   }
 }
