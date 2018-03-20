@@ -1,5 +1,5 @@
 import React from 'react';
-import translate from 'translations';
+import translate, { translateMd } from 'translations';
 import OnboardSlide from './OnboardSlide';
 import onboardIconTwo from 'assets/images/onboarding/slide-02.svg';
 
@@ -8,11 +8,11 @@ const NotABankSlide = () => {
 
   const content = (
     <ul>
-      <li>{translate('ONBOARD_BANK_CONTENT__1', {}, true)}</li>
-      <li>{translate('ONBOARD_BANK_CONTENT__2', {}, true)}</li>
-      <li>{translate('ONBOARD_BANK_CONTENT__3', {}, true)}</li>
-      <li>{translate('ONBOARD_BANK_CONTENT__4', {}, true)}</li>
-      <li>{translate('ONBOARD_BANK_CONTENT__5', {}, true)}</li>
+      <li>{translateMd('ONBOARD_BANK_CONTENT__1')}</li>
+      <li>{translateMd('ONBOARD_BANK_CONTENT__2')}</li>
+      <li>{translateMd('ONBOARD_BANK_CONTENT__3')}</li>
+      <li>{translateMd('ONBOARD_BANK_CONTENT__4')}</li>
+      <li>{translateMd('ONBOARD_BANK_CONTENT__5')}</li>
     </ul>
   );
 

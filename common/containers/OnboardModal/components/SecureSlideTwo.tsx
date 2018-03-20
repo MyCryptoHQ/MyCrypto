@@ -1,5 +1,5 @@
 import React from 'react';
-import translate from 'translations';
+import translate, { translateMd } from 'translations';
 import OnboardSlide from './OnboardSlide';
 import onboardIconEight from 'assets/images/onboarding/slide-08.svg';
 
@@ -9,10 +9,10 @@ const SecureSlideTwo = () => {
 
   const content = (
     <ul>
-      <li>{translate('ONBOARD_SECURE_2_CONTENT__2', {}, true)}</li>
-      <li>{translate('ONBOARD_SECURE_2_CONTENT__3', {}, true)}</li>
-      <li>{translate('ONBOARD_SECURE_2_CONTENT__4', {}, true)}</li>
-      <li>{translate('ONBOARD_SECURE_2_CONTENT__5', {}, true)}</li>
+      <li>{translateMd('ONBOARD_SECURE_2_CONTENT__2')}</li>
+      <li>{translateMd('ONBOARD_SECURE_2_CONTENT__3')}</li>
+      <li>{translateMd('ONBOARD_SECURE_2_CONTENT__4')}</li>
+      <li>{translateMd('ONBOARD_SECURE_2_CONTENT__5')}</li>
     </ul>
   );
 

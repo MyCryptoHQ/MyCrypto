@@ -79,22 +79,15 @@ export const translateRaw = (key: string, variables?: { [name: string]: string }
 
 export type TranslatedText = React.ReactElement<any> | string;
 
-function translate(key: string, variable?: { [name: string]: string }, md?: false): string;
-function translate(
+function translate(key: string, variables?: { [name: string]: string }): string {
+  return translateRaw(key, variables);
+}
+
+export function translateMd(
   key: string,
-  variables?: { [name: string]: string },
-  md?: true
-): React.ReactElement<any>;
-function translate(
-  key: string,
-  variables?: { [name: string]: string },
-  md?: boolean
-): string | React.ReactElement<any> {
-  return md ? (
-    <TranslateMarkdown source={translateRaw(key, variables)} />
-  ) : (
-    translateRaw(key, variables)
-  );
+  variables?: { [name: string]: string }
+): React.ReactElement<any> {
+  return <TranslateMarkdown source={translateRaw(key, variables)} />;
 }
 
 export default translate;

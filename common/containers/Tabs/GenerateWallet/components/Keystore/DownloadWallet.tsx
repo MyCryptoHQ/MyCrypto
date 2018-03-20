@@ -1,6 +1,6 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateMd } from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from '../Template';
@@ -27,7 +27,7 @@ export default class DownloadWallet extends Component<Props, State> {
     return (
       <Template>
         <div className="DlWallet">
-          <h1 className="DlWallet-title">{translate('GEN_LABEL_2', {}, true)}</h1>
+          <h1 className="DlWallet-title">{translateMd('GEN_LABEL_2')}</h1>
 
           <a
             role="button"
@@ -42,9 +42,9 @@ export default class DownloadWallet extends Component<Props, State> {
           </a>
 
           <div className="DlWallet-warning">
-            <p>{translate('DL_WALLET_WARNING_1', {}, true)}</p>
-            <p>{translate('DL_WALLET_WARNING_2', {}, true)}</p>
-            <p>{translate('DL_WALLET_WARNING_3', {}, true)}</p>
+            <p>{translateMd('DL_WALLET_WARNING_1')}</p>
+            <p>{translateMd('DL_WALLET_WARNING_2')}</p>
+            <p>{translateMd('DL_WALLET_WARNING_3')}</p>
           </div>
 
           <button

@@ -1,5 +1,5 @@
 import React from 'react';
-import translate from 'translations';
+import translate, { translateMd } from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
@@ -35,15 +35,11 @@ const WalletTypes: React.SFC<{}> = () => {
       <h1 className="WalletTypes-title">{translate('NAV_GENERATEWALLET')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
         <strong>{translate('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
-        {translate(
-          'GENERATE_WALLET_WARNING',
-          {
-            $metamask_link: 'https://metamask.io/',
-            $ledger_link: ledgerReferralURL,
-            $trezor_link: trezorReferralURL
-          },
-          true
-        )}
+        {translateMd('GENERATE_WALLET_WARNING', {
+          $metamask_link: 'https://metamask.io/',
+          $ledger_link: ledgerReferralURL,
+          $trezor_link: trezorReferralURL
+        })}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
           {translate('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>

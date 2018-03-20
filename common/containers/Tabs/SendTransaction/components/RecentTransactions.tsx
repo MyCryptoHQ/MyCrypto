@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate from 'translations';
+import translate, { translateMd } from 'translations';
 import { getRecentWalletTransactions } from 'selectors/transactions';
 import { getNetworkConfig } from 'selectors/config';
 import RecentTransaction from './RecentTransaction';
@@ -85,12 +85,12 @@ class RecentTransactions extends React.Component<Props> {
         ) : (
           <div className="RecentTxs-empty well">
             <h2 className="RecentTxs-empty-text">
-              {translate('NO_RECENT_TX_FOUND', { $explorer: explorer }, true)}
+              {translateMd('NO_RECENT_TX_FOUND', { $explorer: explorer })}
             </h2>
           </div>
         )}
         <p className="RecentTxs-help">
-          {translate('RECENT_TX_HELP', { $network: network.name, $explorer: explorer }, true)}
+          {translateMd('RECENT_TX_HELP', { $network: network.name, $explorer: explorer })}
         </p>
       </React.Fragment>
     );
