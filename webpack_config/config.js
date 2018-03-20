@@ -30,7 +30,7 @@ module.exports = {
 
   // File resolution
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
+    extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
     modules: [
       paths.src,
       paths.modules,
