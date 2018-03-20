@@ -17,9 +17,22 @@ import translate from 'translations';
 
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
+import { NewTabLink } from 'components/ui';
+
+const EACLink = () => (
+  <NewTabLink href="https://chronologic.network" content="Ethereum Alarm Clock" />
+);
 
 const content = (
   <div className="Tab-content-pane">
+    <div className="row form-group">
+      <div className="col-xs-12">
+        <h3>ChronoLogic Scheduler</h3>
+        Powered by the <EACLink />, ChronoLogic Scheduler is a decentralized scheduling protocol
+        based on the Ethereum blockchain.
+      </div>
+    </div>
+    <div className="row form-group" />
     <AddressField />
     <div className="row form-group">
       <div className="col-xs-12">
