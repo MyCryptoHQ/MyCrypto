@@ -1,24 +1,32 @@
 import { GenerateTransactionFactory } from './GenerateTransactionFactory';
 import React from 'react';
 import translate from 'translations';
-import { SigningStatus } from 'components';
-import './GenerateTransaction.scss';
+import { ScheduleTransactionFactory } from './ScheduleTransactionFactory';
 
-export const GenerateTransaction: React.SFC<{}> = () => (
-  <React.Fragment>
+interface Props {
+  scheduling?: boolean;
+}
+
+export const GenerateTransaction: React.SFC<Props> = props => {
+  if (props.scheduling) {
+    return (
+      <ScheduleTransactionFactory
+        withProps={({ disabled, isWeb3Wallet, onClick }) => (
+          <button disabled={disabled} className="btn btn-info btn-block" onClick={onClick}>
+            {isWeb3Wallet ? translate('SCHEDULE_schedule') : translate('DEP_signtx')}
+          </button>
+        )}
+      />
+    );
+  }
+
+  return (
     <GenerateTransactionFactory
       withProps={({ disabled, isWeb3Wallet, onClick }) => (
-        <React.Fragment>
-          <button
-            disabled={disabled}
-            className="btn btn-info btn-block GenerateTransaction"
-            onClick={onClick}
-          >
-            {isWeb3Wallet ? translate('SEND_GENERATE') : translate('DEP_SIGNTX')}
-          </button>
-        </React.Fragment>
+        <button disabled={disabled} className="btn btn-info btn-block" onClick={onClick}>
+          {isWeb3Wallet ? translate('SEND_generate') : translate('DEP_signtx')}
+        </button>
       )}
     />
-    <SigningStatus />
-  </React.Fragment>
-);
+  );
+};

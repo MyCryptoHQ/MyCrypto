@@ -7,14 +7,17 @@ import {
   TXMetaDataPanel,
   CurrentCustomMessage,
   GenerateTransaction,
-  SendButton
+  SendButton,
+  SigningStatus,
+  WindowStartField
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
-import { getOffline } from 'selectors/config';
+import { getCurrentWindowStart, ICurrentWindowStart } from 'selectors/transaction';
+import { getNetworkConfig } from 'selectors/config';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -27,13 +30,57 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 interface StateProps {
+  schedulingDisabled: boolean;
   shouldDisplay: boolean;
   offline: boolean;
+  windowStart: ICurrentWindowStart;
 }
 
 class FieldsClass extends Component<StateProps> {
   public render() {
-    const { shouldDisplay, offline } = this.props;
+    const { schedulingDisabled, shouldDisplay, windowStart } = this.props;
+
+    const scheduling = Boolean(windowStart.value);
+
+    const content = (
+      <div className="Tab-content-pane">
+        <AddressField />
+        <div className="row form-group">
+          <div className="col-xs-12">
+            <AmountField hasUnitDropdown={true} />
+            <SendEverything />
+          </div>
+        </div>
+
+        {!schedulingDisabled && (
+          <div className="row form-group">
+            <div className="col-xs-12">
+              <WindowStartField />
+            </div>
+          </div>
+        )}
+
+        <div className="row form-group">
+          <div className="col-xs-12">
+            <TXMetaDataPanel scheduling={scheduling} />
+          </div>
+        </div>
+
+        <CurrentCustomMessage />
+        <NonStandardTransaction />
+
+        <div className="row form-group">
+          <div className="col-xs-12 clearfix">
+            <GenerateTransaction scheduling={scheduling} />
+          </div>
+        </div>
+        <SigningStatus />
+        <div className="row form-group">
+          <SendButton />
+        </div>
+      </div>
+    );
+
     return (
       <OnlyUnlocked
         whenUnlocked={
@@ -69,5 +116,7 @@ class FieldsClass extends Component<StateProps> {
 
 export const Fields = connect((state: AppState) => ({
   shouldDisplay: !isAnyOfflineWithWeb3(state),
-  offline: getOffline(state)
+  offline: getOffline(state),
+  windowStart: getCurrentWindowStart(state),
+  schedulingDisabled: getNetworkConfig(state).name !== 'Kovan'
 }))(FieldsClass);

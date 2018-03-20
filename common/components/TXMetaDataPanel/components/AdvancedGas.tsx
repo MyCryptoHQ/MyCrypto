@@ -57,8 +57,8 @@ class AdvancedGas extends React.Component<Props, State> {
   };
 
   public render() {
-    const { autoGasLimitEnabled, gasPrice, validGasPrice, scheduling } = this.props;
-    const { gasPriceField, gasLimitField, nonceField, dataField, feeSummary } = this.state.options;
+    const { autoGasLimitEnabled, gasPrice, validGasPrice } = this.props;
+    const { gasPriceField, gasLimitField, nonceField, dataField } = this.state.options;
 
     return (
       <div className="AdvancedGas row form-group">
@@ -111,39 +111,50 @@ class AdvancedGas extends React.Component<Props, State> {
           </div>
         )}
 
-        {!scheduling &&
-          feeSummary && (
-            <div className="AdvancedGas-fee-summary">
-              <FeeSummary
-                gasPrice={gasPrice}
-                render={({ gasPriceWei, gasLimit, fee, usd }) => (
-                  <span>
-                    {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}
-                  </span>
-                )}
-              />
-            </div>
-          )}
+        {this.renderFee()}
+      </div>
+    );
+  }
 
-        {scheduling &&
-          feeSummary && (
-            <div className="AdvancedGas-fee-summary">
-              <SchedulingFeeSummary
-                gasPrice={gasPrice}
-                render={({ gasPriceWei, gasLimit, fee, usd }) => (
-                  <div>
-                    <span>
-                      {EAC_SCHEDULING_CONFIG.PAYMENT} + {gasPriceWei} * ({
-                        EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
-                      }{' '}
-                      + {EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST} + {gasLimit}) = {fee}{' '}
-                      {usd && <span>~= ${usd} USD</span>}
-                    </span>
-                  </div>
-                )}
-              />
-            </div>
+  private renderFee() {
+    const { gasPrice, scheduling } = this.props;
+    const { feeSummary } = this.state.options;
+
+    if (!feeSummary) {
+      return;
+    }
+
+    if (scheduling) {
+      return (
+        <div className="AdvancedGas-fee-summary">
+          <SchedulingFeeSummary
+            gasPrice={gasPrice}
+            render={({ gasPriceWei, gasLimit, fee, usd }) => (
+              <div>
+                <span>
+                  {EAC_SCHEDULING_CONFIG.PAYMENT} + {gasPriceWei} * ({
+                    EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
+                  }{' '}
+                  + {EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST} + {gasLimit}) = {fee}{' '}
+                  {usd && <span>~= ${usd} USD</span>}
+                </span>
+              </div>
+            )}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="AdvancedGas-fee-summary">
+        <FeeSummary
+          gasPrice={gasPrice}
+          render={({ gasPriceWei, gasLimit, fee, usd }) => (
+            <span>
+              {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}
+            </span>
           )}
+        />
       </div>
     );
   }

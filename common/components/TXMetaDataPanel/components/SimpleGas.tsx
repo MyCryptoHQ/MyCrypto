@@ -17,6 +17,7 @@ import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import { TInputGasPrice } from 'actions/transaction';
 import SchedulingFeeSummary from './SchedulingFeeSummary';
+import FeeSummary from './FeeSummary';
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
@@ -114,16 +115,37 @@ class SimpleGas extends React.Component<Props> {
               <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
             </div>
           </div>
-          <SchedulingFeeSummary
-            gasPrice={gasPrice}
-            render={({ fee, usd }) => (
-              <span>
-                {fee} {usd && <span>/ ${usd}</span>}
-              </span>
-            )}
-          />
+          {this.renderFee()}
         </div>
       </div>
+    );
+  }
+
+  private renderFee() {
+    const { gasPrice, scheduling } = this.props;
+
+    if (scheduling) {
+      return (
+        <SchedulingFeeSummary
+          gasPrice={gasPrice}
+          render={({ fee, usd }) => (
+            <span>
+              {fee} {usd && <span>/ ${usd}</span>}
+            </span>
+          )}
+        />
+      );
+    }
+
+    return (
+      <FeeSummary
+        gasPrice={gasPrice}
+        render={({ fee, usd }) => (
+          <span>
+            {fee} {usd && <span>/ ${usd}</span>}
+          </span>
+        )}
+      />
     );
   }
 

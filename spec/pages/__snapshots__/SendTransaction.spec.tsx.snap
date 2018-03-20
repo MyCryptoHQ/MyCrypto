@@ -42,6 +42,5 @@ exports[`render snapshot 1`] = `
     }
   }
   requestDisabled={false}
-  scheduleDisabled={true}
 />
 `;

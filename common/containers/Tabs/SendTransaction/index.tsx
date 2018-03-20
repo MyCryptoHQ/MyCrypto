@@ -12,13 +12,11 @@ import {
   RequestPayment,
   RecentTransactions,
   Fields,
-  UnavailableWallets,
-  SchedulePayment
+  UnavailableWallets
 } from 'containers/Tabs/SendTransaction/components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
-import { getNetworkConfig } from 'selectors/config/networks';
 
 const Send = () => (
   <React.Fragment>
@@ -30,7 +28,6 @@ const Send = () => (
 interface StateProps {
   wallet: AppState['wallet']['inst'];
   requestDisabled: boolean;
-  scheduleDisabled: boolean;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
@@ -44,11 +41,6 @@ class SendTransaction extends React.Component<Props> {
         path: 'send',
         name: translate('NAV_SENDETHER'),
         disabled: !!wallet && !!wallet.isReadOnly
-      },
-      {
-        path: 'schedule',
-        name: translate('NAV_SchedulePayment'),
-        disabled: (!!wallet && !!wallet.isReadOnly) || this.props.scheduleDisabled
       },
       {
         path: 'request',
@@ -104,15 +96,9 @@ class SendTransaction extends React.Component<Props> {
                     render={() => <RequestPayment wallet={wallet} />}
                   />
                   <Route
-                    path={`${currentPath}/schedule`}
+                    path={`${currentPath}/recent-txs`}
                     exact={true}
-                    render={() => {
-                      return wallet.isReadOnly || this.props.scheduleDisabled ? (
-                        <Redirect to={`${currentPath}/info`} />
-                      ) : (
-                        <SchedulePayment />
-                      );
-                    }}
+                    render={() => <RecentTransactions wallet={wallet} />}
                   />
                   <RouteNotFound />
                 </Switch>
@@ -128,6 +114,5 @@ class SendTransaction extends React.Component<Props> {
 
 export default connect((state: AppState) => ({
   wallet: getWalletInst(state),
-  requestDisabled: !isNetworkUnit(state, 'ETH'),
-  scheduleDisabled: getNetworkConfig(state).name !== 'Kovan'
+  requestDisabled: !isNetworkUnit(state, 'ETH')
 }))(SendTransaction);
