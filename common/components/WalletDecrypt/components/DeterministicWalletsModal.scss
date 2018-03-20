@@ -25,14 +25,17 @@
     &-custom {
       flex: 1;
       margin-left: $space-md;
+
+      .input-group-input {
+        margin: 0;
+      }
     }
 
     &-submit {
-      height: 100%;
       margin-left: $space-md;
-      border: none;
       padding-left: $space;
       padding-right: $space;
+      border: none;
     }
 
     .form-control {
