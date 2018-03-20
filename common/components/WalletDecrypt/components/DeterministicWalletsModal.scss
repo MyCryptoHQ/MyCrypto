@@ -27,6 +27,14 @@
       margin-left: $space-md;
     }
 
+    &-submit {
+      height: 100%;
+      margin-left: $space-md;
+      border: none;
+      padding-left: $space;
+      padding-right: $space;
+    }
+
     .form-control {
       display: inline-block;
       width: auto;

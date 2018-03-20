@@ -121,7 +121,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
         handleClose={onCancel}
       >
         <div className="DWModal">
-          <div className="DWModal-path form-group-sm flex-wrapper">
+          <form
+            className="DWModal-path form-group-sm flex-wrapper"
+            onSubmit={this.handleSubmitCustomPath}
+          >
             <span className="DWModal-path-label">Addresses </span>
             <div className="DWModal-path-select">
               <Select
@@ -137,16 +140,24 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
               />
             </div>
             {this.state.currentLabel === customDPath.label && (
-              <div className="DWModal-path-custom">
-                <Input
-                  className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
-                  value={customPath}
-                  placeholder="m/44'/60'/0'/0"
-                  onChange={this.handleChangeCustomPath}
-                />
-              </div>
+              <React.Fragment>
+                <div className="DWModal-path-custom">
+                  <Input
+                    className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
+                    value={customPath}
+                    placeholder="m/44'/60'/0'/0"
+                    onChange={this.handleChangeCustomPath}
+                  />
+                </div>
+                <button
+                  className="DWModal-path-submit btn btn-success"
+                  disabled={!isValidPath(customPath)}
+                >
+                  <i className="fa fa-check" />
+                </button>
+              </React.Fragment>
             )}
-          </div>
+          </form>
 
           <div className="DWModal-addresses">
             <table className="DWModal-addresses-table table table-striped table-hover">
@@ -227,10 +238,14 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   };
 
   private handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
-    const customPath = ev.currentTarget.value;
-    this.setState({ customPath });
+    this.setState({ customPath: ev.currentTarget.value });
+  };
 
-    if (isValidPath(customPath)) {
+  private handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
+    const { customPath, currentLabel } = this.state;
+    ev.preventDefault();
+
+    if (currentLabel === customDPath.label && isValidPath(customPath)) {
       this.props.onPathChange(customPath);
     }
   };
