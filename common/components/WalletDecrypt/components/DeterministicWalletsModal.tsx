@@ -1,3 +1,6 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import Select, { Option } from 'react-select';
 import {
   DeterministicWalletData,
   getDeterministicWallets,
@@ -9,14 +12,11 @@ import {
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
-import React from 'react';
-import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
 import { UnitDisplay, Input } from 'components/ui';
-import './DeterministicWalletsModal.scss';
 import { StaticNetworkConfig } from 'types/network';
-import Select from 'react-select';
+import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -131,6 +131,8 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
               value={this.state.currentLabel || this.findDPath('value', dPath).value}
               onChange={this.handleChangePath}
               options={dPaths}
+              optionRenderer={this.renderDPathOption}
+              valueRenderer={this.renderDPathOption}
               clearable={false}
               searchable={false}
             />
@@ -256,6 +258,14 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private prevPage = () => {
     this.setState({ page: Math.max(this.state.page - 1, 0) }, this.getAddresses);
   };
+
+  private renderDPathOption(option: Option) {
+    return (
+      <React.Fragment>
+        {option.label} {option.value && <small>({option.value.toString().replace(' ', '')})</small>}
+      </React.Fragment>
+    );
+  }
 
   private renderWalletRow(wallet: DeterministicWalletData) {
     const { desiredToken, network } = this.props;
