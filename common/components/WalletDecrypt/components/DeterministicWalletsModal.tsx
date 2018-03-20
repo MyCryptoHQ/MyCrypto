@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
+import translate from 'translations';
 import {
   DeterministicWalletData,
   getDeterministicWallets,
@@ -120,32 +121,32 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
         handleClose={onCancel}
       >
         <div className="DWModal">
-          <form
-            className="DWModal-path form-group-sm flex-wrapper"
-            onSubmit={this.handleSubmitCustomPath}
-          >
+          <div className="DWModal-path form-group-sm flex-wrapper">
             <span className="DWModal-path-label">Addresses </span>
-            <Select
-              name="fieldDPath"
-              className=""
-              value={this.state.currentLabel || this.findDPath('value', dPath).value}
-              onChange={this.handleChangePath}
-              options={dPaths}
-              optionRenderer={this.renderDPathOption}
-              valueRenderer={this.renderDPathOption}
-              clearable={false}
-              searchable={false}
-            />
-            {/* TODO/Hack - Custom Paths are temporarily disabled. `false` is used for smallest diff */}
-            {false && (
-              <Input
-                className={isValidPath(customPath) ? '' : 'invalid'}
-                value={customPath}
-                placeholder="m/44'/60'/0'/0"
-                onChange={this.handleChangeCustomPath}
+            <div className="DWModal-path-select">
+              <Select
+                name="fieldDPath"
+                className=""
+                value={this.state.currentLabel || this.findDPath('value', dPath).value}
+                onChange={this.handleChangePath}
+                options={dPaths.concat([customDPath])}
+                optionRenderer={this.renderDPathOption}
+                valueRenderer={this.renderDPathOption}
+                clearable={false}
+                searchable={false}
               />
+            </div>
+            {this.state.currentLabel === customDPath.label && (
+              <div className="DWModal-path-custom">
+                <Input
+                  className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
+                  value={customPath}
+                  placeholder="m/44'/60'/0'/0"
+                  onChange={this.handleChangeCustomPath}
+                />
+              </div>
             )}
-          </form>
+          </div>
 
           <div className="DWModal-addresses">
             <table className="DWModal-addresses-table table table-striped table-hover">
@@ -217,7 +218,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     const { value: dPathLabel } = newPath;
     const { value } = this.findDPath('value', dPathLabel);
 
-    if (value === 'custom') {
+    if (value === customDPath.value) {
       this.setState({ isCustomPath: true, currentLabel: dPathLabel });
     } else {
       this.setState({ isCustomPath: false, currentLabel: dPathLabel });
@@ -226,15 +227,12 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   };
 
   private handleChangeCustomPath = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.setState({ customPath: ev.currentTarget.value });
-  };
+    const customPath = ev.currentTarget.value;
+    this.setState({ customPath });
 
-  private handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
-    if (!isValidPath(this.state.customPath)) {
-      return;
+    if (isValidPath(customPath)) {
+      this.props.onPathChange(customPath);
     }
-    this.props.onPathChange(this.state.customPath);
   };
 
   private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
@@ -260,6 +258,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   };
 
   private renderDPathOption(option: Option) {
+    if (option.value === customDPath.value) {
+      return translate('ADD_Radio_5_PathCustom');
+    }
+
     return (
       <React.Fragment>
         {option.label} {option.value && <small>({option.value.toString().replace(' ', '')})</small>}
