@@ -3,7 +3,7 @@ import { bufferToHex } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { isValidETHAddress } from 'libs/validators';
 import { IFullWallet } from 'libs/wallet';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
 import { TransactionFieldValues } from 'selectors/transaction/helpers';
@@ -58,19 +58,19 @@ const validGasLimit = (t: ITransaction) =>
  */
 const gasParamsInRange = (t: ITransaction) => {
   if (t.gasLimit.ltn(21000)) {
-    throw Error(translate('ERROR_GAS_LIMIT_LOW', { $limit: '21000' }));
+    throw Error(translateRaw('ERROR_GAS_LIMIT_LOW', { $limit: '21000' }));
   }
   if (t.gasLimit.gtn(5000000)) {
-    throw Error(translate('GETH_GASLIMIT'));
+    throw Error(translateRaw('GETH_GASLIMIT'));
   }
   if (t.gasPrice.gt(Wei('1000000000000'))) {
-    throw Error(translate('ERROR_GAS_LIMIT_HIGH'));
+    throw Error(translateRaw('ERROR_GAS_LIMIT_HIGH'));
   }
 };
 
 const validAddress = (t: ITransaction) => {
   if (!isValidETHAddress(bufferToHex(t.to))) {
-    throw Error(translate('ERROR_5'));
+    throw Error(translateRaw('ERROR_5'));
   }
 };
 
@@ -97,7 +97,7 @@ const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean) =>
     throw Error('Not enough gas supplied');
   }
   if (!enoughBalanceViaTx(t, accountBalance)) {
-    throw Error(translate('GETH_BALANCE'));
+    throw Error(translateRaw('GETH_BALANCE'));
   }
   validAddress(t);
 };

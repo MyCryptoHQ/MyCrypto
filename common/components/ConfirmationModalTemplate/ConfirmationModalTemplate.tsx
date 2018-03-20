@@ -11,7 +11,7 @@ import {
   TBroadcastWeb3TransactionRequested
 } from 'actions/transaction';
 import { currentTransactionBroadcasting } from 'selectors/transaction';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import './ConfirmationModalTemplate.scss';
 import { AppState } from 'reducers';
 
@@ -73,7 +73,7 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
     const { timeToRead } = this.state;
     const buttonPrefix = timeToRead > 0 ? `(${timeToRead}) ` : '';
     const defaultConfirmButton = {
-      text: buttonPrefix + translate('ACTION_11'),
+      text: buttonPrefix + translateRaw('ACTION_11'),
       type: 'primary' as IButton['type'],
       disabled: timeToRead > 0,
       onClick: this.confirm
@@ -85,7 +85,7 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
           timeLeft: timeToRead,
           timePrefix: buttonPrefix,
           timeLocked: defaultConfirmButton.disabled,
-          defaultText: translate('ACTION_11'),
+          defaultText: translateRaw('ACTION_11'),
           type: defaultConfirmButton.type
         })
       : defaultConfirmButton;
@@ -101,7 +101,7 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
 
     return (
       <Modal
-        title={translate('CONFIRM_TX_MODAL_TITLE')}
+        title={translateRaw('CONFIRM_TX_MODAL_TITLE')}
         buttons={buttons}
         handleClose={onClose}
         disableButtons={transactionBroadcasting}

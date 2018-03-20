@@ -1,5 +1,5 @@
 import React from 'react';
-import translate, { translateMd } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
@@ -35,7 +35,7 @@ const WalletTypes: React.SFC<{}> = () => {
       <h1 className="WalletTypes-title">{translate('NAV_GENERATEWALLET')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
         <strong>{translate('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
-        {translateMd('GENERATE_WALLET_WARNING', {
+        {translate('GENERATE_WALLET_WARNING', {
           $metamask_link: 'https://metamask.io/',
           $ledger_link: ledgerReferralURL,
           $trezor_link: trezorReferralURL
@@ -62,7 +62,7 @@ const WalletTypes: React.SFC<{}> = () => {
                 className="WalletType-select-btn btn btn-primary btn-block"
                 to={`/generate/${type}`}
               >
-                {translate('GENERATE_THING', { $thing: translate(typeInfo[type].name) })}
+                {translate('GENERATE_THING', { $thing: translateRaw(typeInfo[type].name) })}
               </Link>
             </div>
           </div>

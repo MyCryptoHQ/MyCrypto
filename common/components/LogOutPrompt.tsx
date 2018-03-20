@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { resetWallet, TResetWallet } from 'actions/wallet';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 
 interface Props extends RouteComponentProps<{}> {
   // State
@@ -43,8 +43,8 @@ class LogOutPromptClass extends React.Component<Props, State> {
 
   public render() {
     const buttons: IButton[] = [
-      { text: translateRaw('ACTION_7'), type: 'primary', onClick: this.onConfirm },
-      { text: translateRaw('ACTION_2'), type: 'default', onClick: this.onCancel }
+      { text: translate('ACTION_7'), type: 'primary', onClick: this.onConfirm },
+      { text: translate('ACTION_2'), type: 'default', onClick: this.onCancel }
     ];
     return (
       <Modal
@@ -53,7 +53,7 @@ class LogOutPromptClass extends React.Component<Props, State> {
         handleClose={this.onCancel}
         buttons={buttons}
       >
-        <p>{translateRaw('WALLET_LOGOUT_MODAL_DESC')}</p>
+        <p>{translate('WALLET_LOGOUT_MODAL_DESC')}</p>
       </Modal>
     );
   }

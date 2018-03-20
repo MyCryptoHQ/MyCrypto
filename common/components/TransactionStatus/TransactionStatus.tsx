@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate, { translateMd } from 'translations';
+import translate from 'translations';
 import { fetchTransactionData, TFetchTransactionData } from 'actions/transactions';
 import { getTransactionDatas } from 'selectors/transactions';
 import { getNetworkConfig } from 'selectors/config';
@@ -58,7 +58,7 @@ class TransactionStatus extends React.Component<Props> {
             <li>{translate('TX_NOTFOUND_5')}</li>
             <li>{translate('TX_NOTFOUND_2')}</li>
             <li>{translate('TX_NOTFOUND_3')}</li>
-            <li>{translateMd('TX_NOTFOUND_4')}</li>
+            <li>{translate('TX_NOTFOUND_4')}</li>
           </ul>
         </div>
       );

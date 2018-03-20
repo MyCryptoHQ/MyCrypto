@@ -4,7 +4,7 @@ import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { getTransactionFields } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 
 export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   private ethApp: ledger.eth;
@@ -87,6 +87,6 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   };
 
   public getWalletType(): string {
-    return translate('X_LEDGER');
+    return translateRaw('X_LEDGER');
   }
 }

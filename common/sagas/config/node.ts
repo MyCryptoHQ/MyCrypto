@@ -32,7 +32,7 @@ import {
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { resetWallet } from 'actions/wallet';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 
@@ -152,7 +152,7 @@ export function* handleNodeChangeIntent({
   }
 
   if (timeout) {
-    return yield* bailOut(translate('ERROR_32'));
+    return yield* bailOut(translateRaw('ERROR_32'));
   }
 
   const nextNetwork: StaticNetworkConfig | CustomNetworkConfig = yield select(

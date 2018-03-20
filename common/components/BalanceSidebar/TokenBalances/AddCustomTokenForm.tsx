@@ -1,7 +1,7 @@
 import React from 'react';
 import { HELP_ARTICLE } from 'config';
 import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { HelpLink, Input } from 'components/ui';
 import './AddCustomTokenForm.scss';
 import { Token } from 'types/network';
@@ -47,17 +47,17 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
       {
         name: 'symbol',
         value: symbol,
-        label: translate('TOKEN_SYMBOL')
+        label: translateRaw('TOKEN_SYMBOL')
       },
       {
         name: 'address',
         value: address,
-        label: translate('TOKEN_ADDR')
+        label: translateRaw('TOKEN_ADDR')
       },
       {
         name: 'decimal',
         value: decimal,
-        label: translate('TOKEN_DEC')
+        label: translateRaw('TOKEN_DEC')
       }
     ];
 

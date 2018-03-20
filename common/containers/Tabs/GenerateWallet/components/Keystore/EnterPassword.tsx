@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
-import translate, { translateMd } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { Spinner } from 'components/ui';
 import Template from '../Template';
@@ -46,7 +46,7 @@ export default class EnterPassword extends Component<Props, State> {
               <TogglablePassword
                 isValid={isPasswordValid && password.length > 0}
                 value={password}
-                placeholder={translate('INPUT_PASSWORD_PLACEHOLDER', {
+                placeholder={translateRaw('INPUT_PASSWORD_PLACEHOLDER', {
                   $pass_length: MINIMUM_PASSWORD_LENGTH.toString()
                 })}
                 onChange={this.onPasswordChange}
@@ -67,7 +67,7 @@ export default class EnterPassword extends Component<Props, State> {
               <TogglablePassword
                 isValid={isConfirmValid && password.length > 0}
                 value={confirmedPassword}
-                placeholder={translate('GEN_PLACEHOLDER_1')}
+                placeholder={translateRaw('GEN_PLACEHOLDER_1')}
                 onChange={this.onConfirmChange}
               />
             </label>
@@ -77,7 +77,7 @@ export default class EnterPassword extends Component<Props, State> {
             {isGenerating ? <Spinner light={true} /> : translate('NAV_GENERATEWALLET')}
           </button>
 
-          <p className="EnterPw-warning">{translateMd('X_PASSWORDDESC')}</p>
+          <p className="EnterPw-warning">{translate('X_PASSWORDDESC')}</p>
         </form>
       </Template>
     );
@@ -109,13 +109,13 @@ export default class EnterPassword extends Component<Props, State> {
       const { password, passwordValidation } = this.state;
 
       if (password.length < MINIMUM_PASSWORD_LENGTH) {
-        feedback = translate('INPUT_PASSWORD_PLACEHOLDER', {
+        feedback = translateRaw('INPUT_PASSWORD_PLACEHOLDER', {
           $pass_length: MINIMUM_PASSWORD_LENGTH.toString()
         });
       } else if (passwordValidation && passwordValidation.feedback) {
-        feedback = translate('WEAK_PASSWORD') + ' ' + passwordValidation.feedback.warning;
+        feedback = translateRaw('WEAK_PASSWORD') + ' ' + passwordValidation.feedback.warning;
       } else {
-        feedback = translate('INVALID_PASSWORD');
+        feedback = translateRaw('INVALID_PASSWORD');
       }
     }
 

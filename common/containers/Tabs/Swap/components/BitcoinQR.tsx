@@ -1,6 +1,6 @@
 import QRCode from 'qrcode.react';
 import React, { PureComponent } from 'react';
-import translate, { translateMd } from 'translations';
+import translate from 'translations';
 
 interface Props {
   paymentAddress: string | null;
@@ -19,7 +19,7 @@ export default class BitcoinQR extends PureComponent<Props, {}> {
           </div>
           <br />
           <p className="text-danger">{translate('SWAP_TIME_LIMIT_WARNING')}</p>
-          {translateMd('SWAP_RECOMMENDED_TX_FEES', {
+          {translate('SWAP_RECOMMENDED_TX_FEES', {
             $link: 'https://shapeshift.io/#/btcfee'
           })}
         </section>

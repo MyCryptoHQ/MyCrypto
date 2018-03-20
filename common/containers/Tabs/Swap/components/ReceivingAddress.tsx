@@ -10,7 +10,7 @@ import SimpleButton from 'components/ui/SimpleButton';
 import { donationAddressMap } from 'config';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import './ReceivingAddress.scss';
 import { Input } from 'components/ui';
@@ -95,7 +95,7 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
 
         <section className="SwapAddress-submit row">
           <SimpleButton
-            text={translate('SWAP_START_CTA')}
+            text={translateRaw('SWAP_START_CTA')}
             onClick={this.onClickPartTwoComplete}
             disabled={!validAddress}
             loading={isPostingOrder}

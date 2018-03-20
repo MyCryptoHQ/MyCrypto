@@ -18,7 +18,7 @@ import {
   TResetWallet
 } from 'actions/wallet';
 import { reset, TReset, ResetAction } from 'actions/transaction';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import {
   KeystoreDecrypt,
   LedgerNanoSDecrypt,
@@ -307,8 +307,8 @@ const WalletDecrypt = withRouter<Props>(
               return (
                 <WalletButton
                   key={walletType}
-                  name={translate(wallet.lid)}
-                  description={translate(wallet.description)}
+                  name={translateRaw(wallet.lid)}
+                  description={translateRaw(wallet.description)}
                   icon={wallet.icon}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
@@ -326,7 +326,7 @@ const WalletDecrypt = withRouter<Props>(
               return (
                 <WalletButton
                   key={walletType}
-                  name={translate(wallet.lid)}
+                  name={translateRaw(wallet.lid)}
                   example={wallet.example}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
@@ -343,7 +343,7 @@ const WalletDecrypt = withRouter<Props>(
               return (
                 <WalletButton
                   key={walletType}
-                  name={translate(wallet.lid)}
+                  name={translateRaw(wallet.lid)}
                   example={wallet.example}
                   helpLink={wallet.helpLink}
                   walletType={walletType}

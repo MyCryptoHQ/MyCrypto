@@ -1,7 +1,7 @@
 import PrintableWallet from 'components/PrintableWallet';
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React from 'react';
-import translate, { translateMd } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { stripHexPrefix } from 'libs/values';
 import './PaperWallet.scss';
 import Template from '../Template';
@@ -21,7 +21,7 @@ const PaperWallet: React.SFC<Props> = props => (
         <h1 className="GenPaper-title">{translate('GEN_LABEL_5')}</h1>
         <Input
           value={stripHexPrefix(props.privateKey)}
-          aria-label={translate('X_PRIVKEY')}
+          aria-label={translateRaw('X_PRIVKEY')}
           aria-describedby="x_PrivKeyDesc"
           type="text"
           readOnly={true}
@@ -36,9 +36,9 @@ const PaperWallet: React.SFC<Props> = props => (
 
       {/* Warning */}
       <div className="GenPaper-warning">
-        <p>{translateMd('DL_WALLET_WARNING_1')}</p>
-        <p>{translateMd('DL_WALLET_WARNING_2')}</p>
-        <p>{translateMd('DL_WALLET_WARNING_3')}</p>
+        <p>{translate('DL_WALLET_WARNING_1')}</p>
+        <p>{translate('DL_WALLET_WARNING_2')}</p>
+        <p>{translate('DL_WALLET_WARNING_3')}</p>
       </div>
 
       {/* Continue button */}

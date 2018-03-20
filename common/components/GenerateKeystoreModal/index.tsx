@@ -2,7 +2,7 @@ import React from 'react';
 import { generateKeystoreFileInfo, KeystoreFile } from 'utils/keystore';
 import Modal from 'components/ui/Modal';
 import { TogglablePassword } from 'components';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
 import { isValidPrivKey } from 'libs/validators';
 import './index.scss';
@@ -55,7 +55,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
 
     return (
       <Modal
-        title={translate('GENERATE_KEYSTORE_ACTION')}
+        title={translateRaw('GENERATE_KEYSTORE_ACTION')}
         isOpen={this.props.isOpen}
         handleClose={this.handleClose}
       >
@@ -80,7 +80,7 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
                 name="password"
                 value={password}
                 onChange={this.handleInput}
-                placeholder={translate('INPUT_PASSWORD_PLACEHOLDER', {
+                placeholder={translateRaw('INPUT_PASSWORD_PLACEHOLDER', {
                   $pass_length: MINIMUM_PASSWORD_LENGTH.toString()
                 })}
                 isValid={isPasswordValid}
@@ -102,8 +102,8 @@ export default class GenerateKeystoreModal extends React.Component<Props, State>
               onClick={this.handleClose}
               href={keystoreFile.blob}
               className="GenKeystore-button btn btn-success btn-block"
-              aria-label={translate('X_KEYSTORE')}
-              aria-describedby={translate('X_KEYSTOREDESC')}
+              aria-label={translateRaw('X_KEYSTORE')}
+              aria-describedby={translateRaw('X_KEYSTOREDESC')}
               download={keystoreFile.filename}
             >
               {translate('ACTION_12')}

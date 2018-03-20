@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal, { IButton } from 'components/ui/Modal';
-import translate, { translateMd } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
@@ -99,13 +99,13 @@ class CustomNodeModal extends React.Component<Props, State> {
     const options = [...staticNetwrks, ...customNetwrks, CUSTOM];
     return (
       <Modal
-        title={translate('NODE_Title')}
+        title={translateRaw('NODE_Title')}
         isOpen={isOpen}
         buttons={buttons}
         handleClose={handleClose}
         maxWidth={580}
       >
-        {isHttps && <div className="alert alert-warning small">{translateMd('NODE_WARNING')}</div>}
+        {isHttps && <div className="alert alert-warning small">{translate('NODE_WARNING')}</div>}
 
         {conflictedNode && (
           <div className="alert alert-warning small">

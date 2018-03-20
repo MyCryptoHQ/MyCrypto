@@ -4,14 +4,14 @@ import ENSTime from './components/ENSTime';
 import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
 import { ensV3Url } from 'utils/formatters';
-import translate, { translateMd } from 'translations';
+import translate from 'translations';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
   <section className="row text-center">
     <div className="auction-info text-center">
       <div className="ens-title">
         <h2>
-          {translateMd('ENS_DOMAIN_REVEAL', { $name: props.name + '.eth' })}
+          {translate('ENS_DOMAIN_REVEAL', { $name: props.name + '.eth' })}
           <br />
           {translate('ENS_DOMAIN_HIGHEST_BID')}
           <strong>
@@ -34,7 +34,7 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     </div>
 
     <p>
-      {translateMd('ENS_DOMAIN_PROMPT_REVEAL', {
+      {translate('ENS_DOMAIN_PROMPT_REVEAL', {
         $name: props.name + '.eth',
         $link: ensV3Url(props.name)
       })}

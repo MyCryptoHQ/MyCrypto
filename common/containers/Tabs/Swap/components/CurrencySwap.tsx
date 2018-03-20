@@ -8,7 +8,7 @@ import {
 import SimpleButton from 'components/ui/SimpleButton';
 import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown, Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
@@ -81,12 +81,12 @@ export default class CurrencySwap extends PureComponent<Props, State> {
       const rate = this.getMinMax(originKind, destKind);
       let errString;
       if (amount > rate.max) {
-        errString = translate('SWAP_MAX_ERROR', {
+        errString = translateRaw('SWAP_MAX_ERROR', {
           $rate_max: rate.max.toString(),
           $origin_id: originKind
         });
       } else {
-        errString = translate('SWAP_MIN_ERROR', {
+        errString = translateRaw('SWAP_MIN_ERROR', {
           $rate_max: rate.min.toString(),
           $origin_id: originKind
         });
@@ -357,7 +357,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder={translate('SEND_AMOUNT_SHORT')}
+                    placeholder={translateRaw('SEND_AMOUNT_SHORT')}
                     value={isNaN(origin.amount) ? '' : origin.amount}
                     onChange={this.onChangeAmount}
                   />
@@ -382,7 +382,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                         : 'invalid'
                     }`}
                     type="number"
-                    placeholder={translate('SEND_AMOUNT_SHORT')}
+                    placeholder={translateRaw('SEND_AMOUNT_SHORT')}
                     value={isNaN(destination.amount) ? '' : destination.amount}
                     onChange={this.onChangeAmount}
                   />
@@ -401,7 +401,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
             <div className="CurrencySwap-submit">
               <SimpleButton
                 onClick={this.onClickStartSwap}
-                text={translate('SWAP_INIT_CTA')}
+                text={translateRaw('SWAP_INIT_CTA')}
                 disabled={this.state.disabled}
                 type="primary"
               />

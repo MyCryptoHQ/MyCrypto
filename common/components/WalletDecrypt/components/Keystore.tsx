@@ -1,6 +1,6 @@
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
 import { Input } from 'components/ui';
@@ -63,7 +63,7 @@ export class KeystoreDecrypt extends PureComponent {
             value={password}
             onChange={this.onPasswordChange}
             onKeyDown={this.onKeyDown}
-            placeholder={translate('INPUT_PASSWORD_LABEL')}
+            placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
             type="password"
           />
         </div>
@@ -116,7 +116,7 @@ export class KeystoreDecrypt extends PureComponent {
     if (isValidFile(inputFile)) {
       fileReader.readAsText(inputFile, 'utf-8');
     } else {
-      this.props.showNotification('danger', translate('ERROR_3'));
+      this.props.showNotification('danger', translateRaw('ERROR_3'));
     }
   };
 }

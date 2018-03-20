@@ -1,6 +1,6 @@
 import React from 'react';
 import { toChecksumAddress } from 'ethereumjs-util';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
 import { Identicon, QRCode, Input } from 'components/ui';
@@ -64,7 +64,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
                   disabled={true}
                   value={privateKey}
                   isVisible={isPrivateKeyVisible}
-                  toggleAriaLabel={translate('GEN_ARIA_2')}
+                  toggleAriaLabel={translateRaw('GEN_ARIA_2')}
                   handleToggleVisibility={this.togglePrivateKey}
                 />
               </div>

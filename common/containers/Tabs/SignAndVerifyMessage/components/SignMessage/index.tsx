@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { ISignedMessage } from 'libs/signing';
@@ -29,7 +29,7 @@ const initialState: State = {
   signedMessage: null
 };
 
-const messagePlaceholder = translate('SIGN_MSG_PLACEHOLDER');
+const messagePlaceholder = translateRaw('SIGN_MSG_PLACEHOLDER');
 
 export class SignMessage extends Component<Props, State> {
   public state: State = initialState;

@@ -1,7 +1,7 @@
 import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/values';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 
@@ -59,7 +59,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
             <TogglablePassword
               value={key}
               rows={4}
-              placeholder={translate('X_PRIVKEY2')}
+              placeholder={translateRaw('X_PRIVKEY2')}
               isValid={isValidPkey}
               onChange={this.onPkeyChange}
               onEnter={this.props.onUnlock}
@@ -76,7 +76,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
                   value={password}
                   onChange={this.onPasswordChange}
                   onKeyDown={this.onKeyDown}
-                  placeholder={translate('INPUT_PASSWORD_LABEL')}
+                  placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
                   type="password"
                 />
               </label>

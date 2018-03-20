@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -52,8 +52,8 @@ class InteractForm extends Component<Props, State> {
       abiJson: '',
       contract: null,
       contractPlaceholder: this.isContractsValid()
-        ? translate('SELECT_A_THING', { $thing: 'contract' })
-        : translate('NO_CONTRACTS_AVAILABLE')
+        ? translateRaw('SELECT_A_THING', { $thing: 'contract' })
+        : translateRaw('NO_CONTRACTS_AVAILABLE')
     };
   }
 

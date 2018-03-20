@@ -8,7 +8,7 @@ import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
 
 import { IFullWallet } from '../IWallet';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 
 export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 
@@ -77,7 +77,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   };
 
   public getWalletType(): string {
-    return translate('X_TREZOR');
+    return translateRaw('X_TREZOR');
   }
 
   // works, but returns a signature that can only be verified with a Trezor device

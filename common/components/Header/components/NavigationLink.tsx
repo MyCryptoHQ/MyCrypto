@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { TabLink } from './Navigation';
 import './NavigationLink.scss';
 
@@ -31,7 +31,7 @@ class NavigationLink extends React.PureComponent<Props, {}> {
       'is-disabled': !link.to,
       'is-active': isActive
     });
-    const linkLabel = `nav item: ${translate(link.name)}`;
+    const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
     const linkEl =
       link.external || !link.to ? (

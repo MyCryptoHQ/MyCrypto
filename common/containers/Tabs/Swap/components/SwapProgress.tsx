@@ -1,7 +1,7 @@
 import { TShowNotification } from 'actions/notifications';
 import { bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
-import translate, { translateMd } from 'translations';
+import translate, { translateRaw } from 'translations';
 import './SwapProgress.scss';
 
 export interface Props {
@@ -44,7 +44,7 @@ export default class SwapProgress extends PureComponent<Props, State> {
       if (!hasShownViewTx) {
         let linkElement: React.ReactElement<HTMLAnchorElement>;
         let link;
-        const notificationMessage = translate('SUCCESS_3') + outputTx;
+        const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
         // everything but BTC is a token
         if (destinationId !== 'BTC') {
           link = bityConfig.ETHTxExplorer(outputTx);
@@ -112,15 +112,15 @@ export default class SwapProgress extends PureComponent<Props, State> {
       // 1
       translate('SWAP_PROGRESS_1'),
       // 2
-      <span key="1">{translateMd('SWAP_PROGRESS_2', { $origin_id: originId })}</span>,
+      <span key="1">{translate('SWAP_PROGRESS_2', { $origin_id: originId })}</span>,
       // 3
-      <span key="2">{translateMd('SWAP_PROGRESS_3', { $origin_id: originId })}</span>,
+      <span key="2">{translate('SWAP_PROGRESS_3', { $origin_id: originId })}</span>,
       // 4 TODO: Translate me
       <span key="3">
-        {translateMd('SWAP_PROGRESS_4', { $destination_id: destinationId })}
+        {translate('SWAP_PROGRESS_4', { $destination_id: destinationId })}
         <br />
         <small>
-          {translateMd('SWAP_PROGRESS_CONFIRMATIONS', {
+          {translate('SWAP_PROGRESS_CONFIRMATIONS', {
             $number_confirmations: numberOfConfirmations
           })}
         </small>

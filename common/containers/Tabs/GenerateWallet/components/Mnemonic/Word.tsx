@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import './Word.scss';
 import { Input } from 'components/ui';
 
@@ -39,7 +39,7 @@ export default class MnemonicWord extends React.Component<Props, State> {
           {!isReadOnly && (
             <span
               onClick={this.toggleShow}
-              aria-label={translate('GEN_ARIA_2')}
+              aria-label={translateRaw('GEN_ARIA_2')}
               role="button"
               className="MnemonicWord-word-toggle input-group-addon"
             >

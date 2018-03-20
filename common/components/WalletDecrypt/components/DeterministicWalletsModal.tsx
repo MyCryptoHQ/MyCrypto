@@ -17,7 +17,7 @@ import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 import { StaticNetworkConfig } from 'types/network';
 import Select from 'react-select';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -115,7 +115,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
     return (
       <Modal
-        title={translate(`DECRYPT_PROMPT_UNLOCK_${walletType}`)}
+        title={translateRaw(`DECRYPT_PROMPT_UNLOCK_${walletType}`)}
         isOpen={this.props.isOpen}
         buttons={buttons}
         handleClose={onCancel}
@@ -125,7 +125,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             className="DWModal-path form-group-sm flex-wrapper"
             onSubmit={this.handleSubmitCustomPath}
           >
-            <span className="DWModal-path-label">{translate('DECRYPT_DROPDOWN_LABEL')} </span>
+            <span className="DWModal-path-label">{translateRaw('DECRYPT_DROPDOWN_LABEL')} </span>
             <Select
               name="fieldDPath"
               className=""

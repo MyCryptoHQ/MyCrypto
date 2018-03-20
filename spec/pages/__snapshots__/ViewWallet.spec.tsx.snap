@@ -16,7 +16,9 @@ exports[`render snapshot 1`] = `
         >
           <div>
             <h1>
-              Wallet Info 
+              <TranslateMarkdown
+                source="Wallet Info "
+              />
             </h1>
           </div>
           <div>

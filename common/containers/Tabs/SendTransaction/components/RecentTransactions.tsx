@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate, { translateMd } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { getRecentWalletTransactions } from 'selectors/transactions';
 import { getNetworkConfig } from 'selectors/config';
 import RecentTransaction from './RecentTransaction';
@@ -54,7 +54,7 @@ class RecentTransactions extends React.Component<Props> {
 
     let explorer: string;
     if (network.isCustom) {
-      explorer = translate('RECENT_TX_NETWORK_EXPLORER', { $network_name: network.name });
+      explorer = translateRaw('RECENT_TX_NETWORK_EXPLORER', { $network_name: network.name });
     } else {
       explorer = `[${network.blockExplorer.name}](${network.blockExplorer.addressUrl(
         wallet.getAddressString()
@@ -85,12 +85,12 @@ class RecentTransactions extends React.Component<Props> {
         ) : (
           <div className="RecentTxs-empty well">
             <h2 className="RecentTxs-empty-text">
-              {translateMd('NO_RECENT_TX_FOUND', { $explorer: explorer })}
+              {translate('NO_RECENT_TX_FOUND', { $explorer: explorer })}
             </h2>
           </div>
         )}
         <p className="RecentTxs-help">
-          {translateMd('RECENT_TX_HELP', { $network: network.name, $explorer: explorer })}
+          {translate('RECENT_TX_HELP', { $network: network.name, $explorer: explorer })}
         </p>
       </React.Fragment>
     );

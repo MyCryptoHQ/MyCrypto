@@ -4,7 +4,7 @@ import ENSTime from './components/ENSTime';
 import moment from 'moment';
 import { NewTabLink } from 'components/ui';
 import { ensV3Url } from 'utils/formatters';
-import translate, { translateMd } from 'translations';
+import translate from 'translations';
 
 const getDeadlines = (registrationDate: string) => {
   // Get the time to reveal bids, and the time when the action closes
@@ -21,7 +21,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
     <section className="row">
       <div className="auction-info text-center">
         <div className="ens-title">
-          <h1>{translateMd('ENS_DOMAIN_AUCTION', { $name: name + '.eth' })}</h1>
+          <h1>{translate('ENS_DOMAIN_AUCTION', { $name: name + '.eth' })}</h1>
         </div>
 
         <div className="ens-panel-wrapper">
