@@ -1,0 +1,5 @@
+@import 'common/sass/mixins';
+
+.mono {
+  @include mono;
+}
