@@ -1,6 +1,6 @@
 import { AmountField } from './AmountField';
 import React, { Component } from 'react';
-import { SendButton, SigningStatus, TXMetaDataPanel } from 'components';
+import { SendButton, TXMetaDataPanel } from 'components';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { FullWalletOnly } from 'components/renderCbs';
 
@@ -21,8 +21,7 @@ export class Fields extends Component<OwnProps> {
           resetIncludeExcludeProperties={{ exclude: { fields: ['to'] }, include: {} }}
         />
         {this.props.button}
-        <SigningStatus />
-        <SendButton className="row form-group" />
+        <SendButton />
       </React.Fragment>
     );
 

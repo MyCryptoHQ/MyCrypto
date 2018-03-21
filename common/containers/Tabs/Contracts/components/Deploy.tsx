@@ -3,13 +3,12 @@ import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-import { GenerateTransaction } from 'components/GenerateTransaction';
 import React, { Component } from 'react';
 import { setToField, TSetToField } from 'actions/transaction';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
-import { NonceField, TXMetaDataPanel } from 'components';
+import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
 import './Deploy.scss';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { TextArea } from 'components/ui';
@@ -39,7 +38,7 @@ class DeployClass extends Component<DispatchProps> {
                   rows={6}
                   onChange={onChange}
                   disabled={readOnly}
-                  className={classnames('Deploy-field-input', 'form-control', {
+                  className={classnames('Deploy-field-input', {
                     'is-valid': value && value.length > 0
                   })}
                   value={raw}
@@ -65,16 +64,13 @@ class DeployClass extends Component<DispatchProps> {
           </div>
         </div>
 
-        <div className="row form-group">
-          <div className="col-xs-12 clearfix">
-            <GenerateTransaction />
-          </div>
-        </div>
         <SendButtonFactory
+          signing={true}
           Modal={ConfirmationModal}
-          withProps={({ signTx, openModal }) => (
+          withProps={({ disabled, signTx, openModal }) => (
             <button
-              className="Deploy-submit btn btn-primary"
+              disabled={disabled}
+              className="Deploy-submit btn btn-primary btn-block"
               onClick={() => {
                 signTx();
                 openModal();
@@ -84,6 +80,7 @@ class DeployClass extends Component<DispatchProps> {
             </button>
           )}
         />
+        <SigningStatus />
       </main>
     );
 

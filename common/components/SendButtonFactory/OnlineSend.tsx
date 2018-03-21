@@ -6,7 +6,8 @@ import {
   getCurrentTransactionStatus,
   currentTransactionBroadcasted,
   signaturePending,
-  getSignedTx
+  getSignedTx,
+  getWeb3Tx
 } from 'selectors/transaction';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ITransactionStatus } from 'reducers/transaction/broadcast';
@@ -42,7 +43,6 @@ interface OwnProps {
     openModal(): void;
     signer(signer: any): void;
   }): React.ReactElement<any> | null;
-  // withSigner(signer: TSignTransactionRequested): React.ReactElement<any> | null;
 }
 
 const INITIAL_STATE: State = {
@@ -98,7 +98,7 @@ export const OnlineSend = connect(
     currentTransaction: getCurrentTransactionStatus(state),
     transactionBroadcasted: currentTransactionBroadcasted(state),
     signaturePending: signaturePending(state).isSignaturePending,
-    signedTx: !!getSignedTx(state)
+    signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
   }),
   { showNotification, reset, signTransactionRequested }
 )(OnlineSendClass);

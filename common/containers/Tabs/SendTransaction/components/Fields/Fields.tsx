@@ -59,7 +59,7 @@ class FieldsClass extends Component<StateProps> {
                 <CurrentCustomMessage />
                 <NonStandardTransaction />
 
-                {offline ? <GenerateTransaction /> : <SendButton />}
+                {offline ? <GenerateTransaction /> : <SendButton signing={true} />}
               </div>
             )}
           </React.Fragment>

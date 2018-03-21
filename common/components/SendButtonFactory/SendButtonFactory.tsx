@@ -10,7 +10,9 @@ import {
   getTransaction,
   isNetworkRequestPending,
   isValidGasPrice,
-  isValidGasLimit
+  isValidGasLimit,
+  getSignedTx,
+  getWeb3Tx
 } from 'selectors/transaction';
 
 export interface CallbackProps {
@@ -27,11 +29,12 @@ interface StateProps {
   networkRequestPending: boolean;
   validGasPrice: boolean;
   validGasLimit: boolean;
+  signedTx: boolean;
 }
 
 interface OwnProps {
   onlyTransactionParameters?: boolean;
-  signedTx?: boolean;
+  signing?: boolean;
   Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
@@ -41,6 +44,7 @@ type Props = StateProps & OwnProps;
 class SendButtonFactoryClass extends Component<Props> {
   public render() {
     const {
+      signing,
       signedTx,
       transaction,
       isFullTransaction,
@@ -50,19 +54,22 @@ class SendButtonFactoryClass extends Component<Props> {
       validGasLimit
     } = this.props;
 
+    // return signing ? true : signedTx ? true : false
     return (
-      <OnlineSend
-        withOnClick={({ openModal, signer }) =>
-          this.props.withProps({
-            disabled: signedTx
-              ? !!(signedTx && !serializedTransaction)
-              : !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit,
-            signTx: () => signer(transaction),
-            openModal
-          })
-        }
-        Modal={this.props.Modal}
-      />
+      (signing || (!signing && signedTx)) && (
+        <OnlineSend
+          withOnClick={({ openModal, signer }) =>
+            this.props.withProps({
+              disabled: signing
+                ? !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit
+                : !!(signing && !serializedTransaction),
+              signTx: () => signer(transaction),
+              openModal
+            })
+          }
+          Modal={this.props.Modal}
+        />
+      )
     );
   }
 }
@@ -74,7 +81,8 @@ const mapStateToProps = (state: AppState) => {
     ...getTransaction(state),
     networkRequestPending: isNetworkRequestPending(state),
     validGasPrice: isValidGasPrice(state),
-    validGasLimit: isValidGasLimit(state)
+    validGasLimit: isValidGasLimit(state),
+    signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
   };
 };
 

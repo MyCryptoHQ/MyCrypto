@@ -7,12 +7,12 @@ import './SendButton.scss';
 
 export const SendButton: React.SFC<{
   className?: string;
-  signedTx?: boolean;
+  signing?: boolean;
   customModal?: typeof ConfirmationModal;
-}> = ({ signedTx, customModal, className }) => (
+}> = ({ signing, customModal, className }) => (
   <React.Fragment>
     <SendButtonFactory
-      signedTx={signedTx}
+      signing={signing}
       Modal={customModal ? customModal : ConfirmationModal}
       withProps={({ disabled, openModal, signTx }) => (
         <React.Fragment>
@@ -20,7 +20,7 @@ export const SendButton: React.SFC<{
             disabled={disabled}
             className={`SendButton btn btn-primary btn-block ${className}`}
             onClick={() => {
-              signedTx ? openModal() : (signTx(), openModal());
+              !!signing ? (signTx(), openModal()) : openModal();
             }}
           >
             {translate('SEND_trans')}
