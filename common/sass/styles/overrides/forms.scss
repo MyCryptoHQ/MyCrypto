@@ -1,5 +1,6 @@
 // Form overrides
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 label {
   margin-bottom: $space-xs;
@@ -32,6 +33,7 @@ input[readonly] {
   margin-bottom: $space-sm;
   transition: $transition;
   padding: $input-padding;
+  @include mono;
 
   &:focus {
     border-color: $input-border-focus;
