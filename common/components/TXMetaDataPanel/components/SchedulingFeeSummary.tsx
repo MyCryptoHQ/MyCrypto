@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { getIsEstimating } from 'selectors/gas';
-import { getGasLimit } from 'selectors/transaction';
+import { getGasLimit, getTimeBounty } from 'selectors/transaction';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import { calcEACTotalCost } from 'libs/scheduling';
 
 interface RenderData {
   gasPriceWei: string;
@@ -24,6 +24,7 @@ interface ReduxStateProps {
   network: NetworkConfig;
   isOffline: AppState['config']['meta']['offline'];
   isGasEstimating: AppState['gas']['isEstimating'];
+  timeBounty: AppState['transaction']['fields']['timeBounty'];
 }
 
 interface OwnProps {
@@ -35,7 +36,15 @@ type Props = OwnProps & ReduxStateProps;
 
 class SchedulingFeeSummary extends React.Component<Props> {
   public render() {
-    const { gasPrice, gasLimit, rates, network, isOffline, isGasEstimating } = this.props;
+    const {
+      gasPrice,
+      gasLimit,
+      rates,
+      network,
+      isOffline,
+      isGasEstimating,
+      timeBounty
+    } = this.props;
 
     if (isGasEstimating) {
       return (
@@ -48,13 +57,8 @@ class SchedulingFeeSummary extends React.Component<Props> {
     const feeBig =
       gasPrice.value &&
       gasLimit.value &&
-      gasPrice.value
-        .mul(
-          gasLimit.value
-            .add(new BN(EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT))
-            .add(new BN(EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST))
-        )
-        .add(new BN(EAC_SCHEDULING_CONFIG.PAYMENT));
+      timeBounty.value &&
+      calcEACTotalCost(gasLimit.value, gasPrice.value, timeBounty.value);
 
     const fee = (
       <UnitDisplay
@@ -80,7 +84,7 @@ class SchedulingFeeSummary extends React.Component<Props> {
     );
 
     return (
-      <div className="FeeSummary">
+      <div className="FeeSummary SchedulingFeeSummary">
         {this.props.render({
           gasPriceWei: gasPrice.value.toString(),
           gasPriceGwei: gasPrice.raw,
@@ -99,7 +103,8 @@ function mapStateToProps(state: AppState): ReduxStateProps {
     rates: state.rates.rates,
     network: getNetworkConfig(state),
     isOffline: getOffline(state),
-    isGasEstimating: getIsEstimating(state)
+    isGasEstimating: getIsEstimating(state),
+    timeBounty: getTimeBounty(state)
   };
 }
 

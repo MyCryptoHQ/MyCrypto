@@ -1,6 +1,6 @@
 import { AppState } from 'reducers';
 import { getCurrentTo, getCurrentValue } from './current';
-import { getFields, getData, getWindowStart, getNonce } from './fields';
+import { getFields, getData, getWindowStart, getNonce, getTimeBounty } from './fields';
 import { makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 import { getUnit } from 'selectors/transaction/meta';
@@ -17,8 +17,12 @@ import { Wei, Address } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
 import { getNetworkConfig, getLatestBlock } from 'selectors/config';
 import BN from 'bn.js';
-import abi from 'ethereumjs-abi';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import {
+  EAC_SCHEDULING_CONFIG,
+  calcEACEndowment,
+  EAC_ADDRESSES,
+  getScheduleData
+} from 'libs/scheduling';
 
 const getTransactionState = (state: AppState) => state.transaction;
 
@@ -55,54 +59,6 @@ const getTransaction = (state: AppState): IGetTransaction => {
   return { transaction, isFullTransaction };
 };
 
-const getScheduleData = (
-  toAddress: string,
-  callData = '',
-  callGas: number,
-  callValue: BN | null,
-  windowSize: number,
-  windowStart: any,
-  gasPrice: BN | null,
-  fee: number,
-  payment: any,
-  requiredDeposit: any
-) => {
-  if (!callValue || !gasPrice || !windowStart) {
-    return;
-  }
-
-  return abi.simpleEncode('schedule(address,bytes,uint[8]):(address)', toAddress, callData, [
-    callGas,
-    callValue,
-    windowSize,
-    windowStart,
-    gasPrice,
-    fee,
-    payment,
-    requiredDeposit
-  ]);
-};
-
-const calcEACEndowment = (
-  callGas: number | string | BN,
-  callValue: number | string | BN,
-  gasPrice: number | string | BN,
-  fee: number | string | BN,
-  payment: number | string | BN
-) => {
-  const callGasBN = new BN(callGas);
-  const callValueBN = new BN(callValue);
-  const gasPriceBN = new BN(gasPrice);
-  const feeBN = new BN(fee);
-  const paymentBN = new BN(payment);
-
-  return paymentBN
-    .add(feeBN.mul(new BN(2)))
-    .add(callGasBN.mul(gasPriceBN))
-    .add(gasPriceBN.mul(new BN(EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST)))
-    .add(callValueBN);
-};
-
 const getSchedulingTransaction = (state: AppState): IGetSchedulingTransaction => {
   const currentTo = getCurrentTo(state);
   const currentValue = getCurrentValue(state);
@@ -115,6 +71,7 @@ const getSchedulingTransaction = (state: AppState): IGetSchedulingTransaction =>
   const gasLimit = getGasLimit(state);
   const nonce = getNonce(state);
   const gasPrice = getGasPrice(state);
+  const timeBounty = getTimeBounty(state);
 
   const isFullTransaction = isFullTx(
     state,
@@ -126,43 +83,29 @@ const getSchedulingTransaction = (state: AppState): IGetSchedulingTransaction =>
     unit
   );
 
-  const WINDOW_SIZE_IN_BLOCKS = EAC_SCHEDULING_CONFIG.WINDOW_SIZE_IN_BLOCKS;
-  const SCHEDULING_GAS_LIMIT = new BN(EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT);
-  const EAC_FEE = 0;
-  const PAYMENT = EAC_SCHEDULING_CONFIG.PAYMENT;
-  const REQUIRED_DEPOSIT = 0;
-
-  const EAC_ADDRESSES = {
-    KOVAN: {
-      blockScheduler: '0x1afc19a7e642761ba2b55d2a45b32c7ef08269d1'
-    }
-  };
-
   const transactionData = getScheduleData(
     currentTo.raw,
     callData.raw,
     parseInt(gasLimit.raw, 10),
     currentValue.value,
-    WINDOW_SIZE_IN_BLOCKS,
+    EAC_SCHEDULING_CONFIG.WINDOW_SIZE_IN_BLOCKS,
     windowStart.value,
     gasPrice.value,
-    EAC_FEE,
-    PAYMENT,
-    REQUIRED_DEPOSIT
+    timeBounty.value,
+    EAC_SCHEDULING_CONFIG.REQUIRED_DEPOSIT
   );
 
   const endowment = calcEACEndowment(
-    gasLimit.value || 21000,
-    currentValue.value || 0,
+    gasLimit.value || new BN(21000),
+    currentValue.value || new BN(0),
     gasPrice.value,
-    EAC_FEE,
-    PAYMENT
+    timeBounty.value
   );
 
   const transactionOptions = {
     to: Address(EAC_ADDRESSES.KOVAN.blockScheduler),
     data: transactionData,
-    gasLimit: SCHEDULING_GAS_LIMIT,
+    gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
     gasPrice: gasPrice.value,
     nonce: new BN(0),
     value: endowment
@@ -229,6 +172,5 @@ export {
   getTransactionState,
   getGasCost,
   nonStandardTransaction,
-  serializedAndTransactionFieldsMatch,
-  getScheduleData
+  serializedAndTransactionFieldsMatch
 };

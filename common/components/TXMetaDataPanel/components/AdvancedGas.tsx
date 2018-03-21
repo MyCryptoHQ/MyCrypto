@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { getAutoGasLimitEnabled } from 'selectors/config';
 import { isValidGasPrice } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
-import { Input } from 'components/ui';
+import { Input, UnitDisplay } from 'components/ui';
 import SchedulingFeeSummary from './SchedulingFeeSummary';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
@@ -27,6 +27,7 @@ interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   options?: AdvancedOptions;
   scheduling?: boolean;
+  timeBounty?: AppState['transaction']['fields']['timeBounty'];
 }
 
 interface StateProps {
@@ -117,7 +118,7 @@ class AdvancedGas extends React.Component<Props, State> {
   }
 
   private renderFee() {
-    const { gasPrice, scheduling } = this.props;
+    const { gasPrice, scheduling, timeBounty } = this.props;
     const { feeSummary } = this.state.options;
 
     if (!feeSummary) {
@@ -132,11 +133,17 @@ class AdvancedGas extends React.Component<Props, State> {
             render={({ gasPriceWei, gasLimit, fee, usd }) => (
               <div>
                 <span>
-                  {EAC_SCHEDULING_CONFIG.PAYMENT} + {gasPriceWei} * ({
-                    EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
-                  }{' '}
-                  + {EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST} + {gasLimit}) = {fee}{' '}
-                  {usd && <span>~= ${usd} USD</span>}
+                  <UnitDisplay
+                    value={EAC_SCHEDULING_CONFIG.FEE.mul(EAC_SCHEDULING_CONFIG.FEE_MULTIPLIER)}
+                    unit={'ether'}
+                    displayShortBalance={true}
+                    checkOffline={true}
+                    symbol="ETH"
+                  />{' '}
+                  + {timeBounty && timeBounty.value.toString()} + {gasPriceWei} * ({EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.add(
+                    EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST
+                  ).toString()}{' '}
+                  + {gasLimit}) = {fee} {usd && <span>~= ${usd} USD</span>}
                 </span>
               </div>
             )}

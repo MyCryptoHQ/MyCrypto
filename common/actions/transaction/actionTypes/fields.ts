@@ -14,6 +14,14 @@ interface InputGasPriceIntentAction {
   type: TypeKeys.GAS_PRICE_INPUT_INTENT;
   payload: string;
 }
+interface InputTimeBountyAction {
+  type: TypeKeys.TIME_BOUNTY_INPUT;
+  payload: string;
+}
+interface InputTimeBountyIntentAction {
+  type: TypeKeys.TIME_BOUNTY_INPUT_INTENT;
+  payload: string;
+}
 interface InputDataAction {
   type: TypeKeys.DATA_FIELD_INPUT;
   payload: string;
@@ -37,6 +45,14 @@ interface SetGasLimitFieldAction {
 
 interface SetGasPriceFieldAction {
   type: TypeKeys.GAS_PRICE_FIELD_SET;
+  payload: {
+    raw: string;
+    value: Wei | null;
+  };
+}
+
+interface SetTimeBountyFieldAction {
+  type: TypeKeys.TIME_BOUNTY_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -92,12 +108,15 @@ type FieldAction =
   | SetNonceFieldAction
   | SetValueFieldAction
   | SetGasPriceFieldAction
+  | SetTimeBountyFieldAction
   | SetWindowStartFieldAction;
 
 export {
   InputGasLimitAction,
   InputGasPriceAction,
   InputGasPriceIntentAction,
+  InputTimeBountyAction,
+  InputTimeBountyIntentAction,
   InputDataAction,
   InputNonceAction,
   SetGasLimitFieldAction,
@@ -108,5 +127,6 @@ export {
   FieldAction,
   InputFieldAction,
   SetGasPriceFieldAction,
+  SetTimeBountyFieldAction,
   SetWindowStartFieldAction
 };

@@ -1,8 +1,9 @@
 import { TypeKeys } from 'actions/transaction/constants';
-import { gasPricetoBase } from 'libs/units';
+import { gasPriceToBase, timeBountyRawToValue } from 'libs/units';
 import { fields, State } from 'reducers/transaction/fields';
 import * as txActions from 'actions/transaction';
 import BN from 'bn.js';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
 describe('fields reducer', () => {
   const INITIAL_STATE: State = {
@@ -11,7 +12,11 @@ describe('fields reducer', () => {
     nonce: { raw: '', value: null },
     value: { raw: '', value: null },
     gasLimit: { raw: '21000', value: new BN(21000) },
-    gasPrice: { raw: '20', value: gasPricetoBase(20) },
+    gasPrice: { raw: '20', value: gasPriceToBase(20) },
+    timeBounty: {
+      raw: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT.toString(),
+      value: timeBountyRawToValue(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT)
+    },
     windowStart: { raw: '', value: null }
   };
   const testPayload = { raw: 'test', value: null };

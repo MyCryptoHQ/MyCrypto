@@ -40,6 +40,10 @@ describe('fields selector', () => {
       raw: '1500',
       value: Wei('1500')
     },
+    timeBounty: {
+      raw: '1500',
+      value: Wei('1500')
+    },
     windowStart: {
       raw: '',
       value: null

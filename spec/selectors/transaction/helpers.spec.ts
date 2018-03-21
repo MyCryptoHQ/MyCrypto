@@ -44,6 +44,10 @@ describe('helpers selector', () => {
         raw: '1500',
         value: Wei('1500')
       },
+      timeBounty: {
+        raw: '1500',
+        value: Wei('1500')
+      },
       windowStart: {
         raw: '',
         value: null
@@ -59,6 +63,7 @@ describe('helpers selector', () => {
       nonce: new BN('0'),
       to: new Buffer([0, 1, 2, 3]),
       value: Wei('1000000000'),
+      timeBounty: Wei('1500'),
       windowStart: null
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);

@@ -10,8 +10,9 @@ import {
 } from 'actions/transaction';
 import { Reducer } from 'redux';
 import { State } from './typings';
-import { gasPricetoBase } from 'libs/units';
+import { gasPriceToBase, timeBountyRawToValue } from 'libs/units';
 import { resetHOF } from 'reducers/transaction/shared';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -20,7 +21,11 @@ const INITIAL_STATE: State = {
   value: { raw: '', value: null },
   windowStart: { raw: '', value: null },
   gasLimit: { raw: '21000', value: new BN(21000) },
-  gasPrice: { raw: '20', value: gasPricetoBase(20) }
+  gasPrice: { raw: '20', value: gasPriceToBase(20) },
+  timeBounty: {
+    raw: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT.toString(),
+    value: timeBountyRawToValue(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT)
+  }
 };
 
 const updateField = (key: keyof State): Reducer<State> => (state: State, action: FieldAction) => ({
@@ -70,6 +75,8 @@ export const fields = (
       return updateField('nonce')(state, action);
     case TK.GAS_PRICE_FIELD_SET:
       return updateField('gasPrice')(state, action);
+    case TK.TIME_BOUNTY_FIELD_SET:
+      return updateField('timeBounty')(state, action);
     case TK.WINDOW_START_FIELD_SET:
       return updateField('windowStart')(state, action);
     case TK.TOKEN_TO_ETHER_SWAP:
