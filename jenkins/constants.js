@@ -18,6 +18,7 @@ const FLAVOR = (() => {
 })();
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
 const ETH_SIGNING_KEY = process.env.ETH_SIGNING_KEY;
+const IS_CODE_SIGNING = process.env.CSC_LINK.length && process.env.CSC_KEY_PASSWORD.length;
 
 module.exports = {
   VERSION,
@@ -29,5 +30,6 @@ module.exports = {
   OSX_FILES,
   FLAVOR,
   S3_BUCKET,
-  ETH_SIGNING_KEY
+  ETH_SIGNING_KEY,
+  IS_CODE_SIGNING
 };

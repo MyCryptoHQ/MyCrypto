@@ -11,7 +11,8 @@ const {
   OSX_FILES,
   S3_BUCKET,
   JENKINS_BUILD_ID,
-  ETH_SIGNING_KEY
+  ETH_SIGNING_KEY,
+  IS_CODE_SIGNING
 } = require('./constants');
 
 const {
@@ -35,7 +36,8 @@ const manifest = genManifest(
   JENKINS_BUILD_ID,
   GIT_COMMIT,
   GIT_COMMIT_SHORT,
-  S3_BUCKET
+  S3_BUCKET,
+  IS_CODE_SIGNING
 );
 
 const manifestFile = genManifestFile(manifest);

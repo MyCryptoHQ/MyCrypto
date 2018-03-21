@@ -5,9 +5,15 @@ const { spawn } = require('child_process');
 
 const { hashPersonalMessage, ecsign, toBuffer, addHexPrefix } = require('ethereumjs-util');
 
-const genCommitFilename = (name, version, commit, buildId) => {
+const genCommitFilename = (name, version, commit, buildId, isCodeSigning) => {
+  const winRegex = /exe$/;
+  const macRegex = /dmg$/;
   const split = name.split(version);
-  return `${split[0]}${version}-${commit}-${buildId}${split[1]}`;
+  const signed = winRegex.test(name) || macRegex.test(name)
+    ? isCodeSigning ? '-signed' : '-unsigned'
+    : '';
+
+  return `${split[0]}${version}-${commit}-${buildId}${signed}${split[1]}`;
 };
 
 const genFileList = (linux, windows, osx) => {
@@ -70,10 +76,10 @@ const genSignatureFile = (manifestHash, pKeyString) => {
 const genSignatureFilename = (flavor, version, commit, buildId) =>
   `manifest.${flavor}.v${version}.${commit}.${buildId}.signature`;
 
-const genManifest = (fileList, version, jenkinsBuildId, gitCommit, gitCommitShort, s3Bucket) =>
+const genManifest = (fileList, version, jenkinsBuildId, gitCommit, gitCommitShort, s3Bucket, isCodeSigning) =>
   fileList.map(filename => {
     const fullPath = path.resolve('dist/electron-builds/', filename);
-    const commitFilename = genCommitFilename(filename, version, gitCommitShort, jenkinsBuildId);
+    const commitFilename = genCommitFilename(filename, version, gitCommitShort, jenkinsBuildId, isCodeSigning);
 
     return {
       fullPath,
