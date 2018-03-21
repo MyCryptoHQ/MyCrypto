@@ -32,12 +32,14 @@ class AddressesClass extends Component<StateProps> {
             <div className="tx-modal-address">
               <div className="tx-modal-address-from">
                 {from && (
-                  <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
+                  <React.Fragment>
+                    <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
+                    <div className="tx-modal-address-from-content">
+                      <h5 className="tx-modal-address-from-title">From </h5>
+                      <h5 className="tx-modal-address-from-address small">{from}</h5>
+                    </div>
+                  </React.Fragment>
                 )}
-                <div className="tx-modal-address-from-content">
-                  <h5 className="tx-modal-address-from-title">From </h5>
-                  <h5 className="tx-modal-address-from-address small">{from}</h5>
-                </div>
               </div>
               {isToken && (
                 <div className="tx-modal-address-tkn-contract">

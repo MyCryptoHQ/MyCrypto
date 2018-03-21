@@ -31,7 +31,7 @@ interface StateProps {
 
 interface OwnProps {
   onlyTransactionParameters?: boolean;
-  toggleDisabled?: boolean;
+  signedTx?: boolean;
   Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
@@ -41,7 +41,7 @@ type Props = StateProps & OwnProps;
 class SendButtonFactoryClass extends Component<Props> {
   public render() {
     const {
-      toggleDisabled,
+      signedTx,
       transaction,
       isFullTransaction,
       serializedTransaction,
@@ -54,8 +54,8 @@ class SendButtonFactoryClass extends Component<Props> {
       <OnlineSend
         withOnClick={({ openModal, signer }) =>
           this.props.withProps({
-            disabled: toggleDisabled
-              ? !!(toggleDisabled && !serializedTransaction)
+            disabled: signedTx
+              ? !!(signedTx && !serializedTransaction)
               : !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit,
             signTx: () => signer(transaction),
             openModal
