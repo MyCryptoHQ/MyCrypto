@@ -27,11 +27,11 @@ import {
   PrivateKeyValue,
   TrezorDecrypt,
   ViewOnlyDecrypt,
-  ParitySignerDecrypt,
   Web3Decrypt,
   WalletButton,
   InsecureWalletWarning
 } from './components';
+import ParitySignerDecrypt from 'containers/ParitySignerDecrypt';
 import { AppState } from 'reducers';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { getDisabledWallets } from 'selectors/wallet';

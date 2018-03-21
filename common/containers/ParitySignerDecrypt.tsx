@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import QrSigner from '@parity/qr-signer';
-// import translate from 'translations';
-// import { donationAddressMap } from 'config';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
 import {
