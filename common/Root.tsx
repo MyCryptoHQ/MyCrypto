@@ -4,6 +4,7 @@ import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from '
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
+import Schedule from 'containers/Tabs/Schedule';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import Swap from 'containers/Tabs/Swap';
@@ -81,6 +82,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
+          <Route path="/schedule" component={Schedule} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
