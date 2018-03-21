@@ -57,11 +57,17 @@ textarea {
   line-height: inherit;
 }
 
+textarea {
+  resize: vertical;
+}
+
 figure {
   margin: 0;
 }
 
 img {
+  max-width: 100%;
+  height: auto;
   vertical-align: middle;
 }
 

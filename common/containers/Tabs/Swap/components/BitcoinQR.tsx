@@ -1,6 +1,7 @@
-import QRCode from 'qrcode.react';
 import React, { PureComponent } from 'react';
 import translate from 'translations';
+import QRCode from 'qrcode.react';
+import './BitcoinQR.scss';
 
 interface Props {
   paymentAddress: string | null;
@@ -11,10 +12,10 @@ export default class BitcoinQR extends PureComponent<Props, {}> {
   public render() {
     const { paymentAddress, destinationAmount } = this.props;
     return (
-      <div>
+      <div className="BitcoinQR">
         <section className="row block swap-address text-center">
           <label>{translate('X_ADDRESS')}</label>
-          <div className="qr-code">
+          <div className="BitcoinQR-qr">
             <QRCode value={`bitcoin:${paymentAddress}amount=${destinationAmount}`} />
           </div>
           <br />
