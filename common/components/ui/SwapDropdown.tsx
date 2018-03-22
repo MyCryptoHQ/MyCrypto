@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import './SwapDropdown.scss';
-import { DropDown } from 'components/ui';
+import { Dropdown } from 'components/ui';
 
 export interface SingleCoin {
   id: string;
@@ -59,7 +59,7 @@ class SwapDropdown<T> extends PureComponent<Props<T>> {
       return { label: opt.id, value: opt.name, img: opt.image, status: opt.status };
     });
     return (
-      <DropDown
+      <Dropdown
         className="Swap-dropdown"
         options={mappedOptions}
         optionComponent={(props: any) => {

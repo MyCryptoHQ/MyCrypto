@@ -7,7 +7,7 @@ import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
 import { getNetworkUnit } from 'selectors/config';
 import { Option } from 'react-select';
-import { DropDown } from 'components/ui';
+import { Dropdown } from 'components/ui';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
@@ -30,7 +30,7 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
       <Query
         params={['readOnly']}
         withQuery={({ readOnly }) => (
-          <DropDown
+          <Dropdown
             options={options}
             value={unit === 'ether' ? networkUnit : unit}
             onChange={this.handleOnChange}

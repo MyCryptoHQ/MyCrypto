@@ -7,7 +7,7 @@ import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
 import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
-import { Input, TextArea, CodeBlock, DropDown } from 'components/ui';
+import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 
 interface ContractOption {
   name: string;
@@ -87,7 +87,7 @@ class InteractForm extends Component<Props, State> {
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <label className="input-group">
               <div className="input-group-header">{translate('CONTRACT_TITLE_2')}</div>
-              <DropDown
+              <Dropdown
                 className={`${!contract ? 'invalid' : ''}`}
                 value={contract as any}
                 placeholder={this.state.contractPlaceholder}

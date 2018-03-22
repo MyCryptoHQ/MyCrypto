@@ -7,7 +7,7 @@ interface Props extends ReactSelectProps {
   onChange: any;
 }
 
-export default class DropDown extends React.Component<Props> {
+export default class Dropdown extends React.Component<Props> {
   public state = {
     selectedOption: { value: '', label: '' },
     hasBlurred: false
