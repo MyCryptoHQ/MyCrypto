@@ -14,7 +14,7 @@ interface Props {
 export const GasLimitField: React.SFC<Props> = ({ customLabel, disabled }) => (
   <GasLimitFieldFactory
     withProps={({ gasLimit: { raw }, onChange, readOnly, gasEstimationPending }) => (
-      <div className="input-group-wrapper AdvancedGas-gas-price">
+      <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
             {customLabel ? customLabel : translate('TRANS_GAS')}

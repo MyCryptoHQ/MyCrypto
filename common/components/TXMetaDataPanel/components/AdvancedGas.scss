@@ -5,6 +5,8 @@
   margin-bottom: 0;
 
   &-calculate-limit {
+    font-size: $font-size-small;
+
     .checkbox {
       display: flex;
       align-items: center;
@@ -15,7 +17,6 @@
         margin-right: 8px;
       }
       span {
-        font-size: 1rem;
         font-weight: 400;
       }
     }
