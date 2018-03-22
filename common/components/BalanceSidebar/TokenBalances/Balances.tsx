@@ -49,7 +49,10 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
       help = 'Select which tokens you would like to keep track of';
       bottom = (
         <div className="TokenBalances-buttons">
-          <button className="btn btn-primary btn-block" onClick={this.handleSetWalletTokens}>
+          <button
+            className="TokenBalances-buttons-btn btn btn-primary btn-block"
+            onClick={this.handleSetWalletTokens}
+          >
             <span>{translate('X_SAVE')}</span>
           </button>
           <p className="TokenBalances-buttons-help">{translate('PROMPT_ADD_CUSTOM_TKN')}</p>
@@ -68,10 +71,16 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     } else {
       bottom = (
         <div className="TokenBalances-buttons">
-          <button className="btn btn-default btn-xs" onClick={this.toggleShowCustomTokenForm}>
+          <button
+            className="TokenBalances-buttons-btn btn btn-default btn-xs"
+            onClick={this.toggleShowCustomTokenForm}
+          >
             <span>{translate('SEND_CUSTOM')}</span>
           </button>
-          <button className="btn btn-default btn-xs" onClick={this.props.scanWalletForTokens}>
+          <button
+            className="TokenBalances-buttons-btn btn btn-default btn-xs"
+            onClick={this.props.scanWalletForTokens}
+          >
             <span>{translate('SCAN_TOKENS')}</span>
           </button>
         </div>
