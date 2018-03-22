@@ -5,7 +5,6 @@ import {
   AddressField,
   AmountField,
   TXMetaDataPanel,
-  SendEverything,
   CurrentCustomMessage,
   GenerateTransaction,
   SendButton,
@@ -22,8 +21,7 @@ const content = (
     <AddressField />
     <div className="row form-group">
       <div className="col-xs-12">
-        <AmountField hasUnitDropdown={true} />
-        <SendEverything />
+        <AmountField hasUnitDropdown={true} hasSendEverything={true} />
       </div>
     </div>
 
