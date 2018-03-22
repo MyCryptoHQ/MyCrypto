@@ -1,6 +1,6 @@
 import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
 
-type StaticNetworkIds = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
+type StaticNetworkIds = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP' | 'POA';
 
 export interface BlockExplorerConfig {
   name: string;

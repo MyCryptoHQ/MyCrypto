@@ -13,7 +13,8 @@ import {
   ETC_TREZOR,
   ETH_TESTNET,
   EXP_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  POA_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { StaticNetworkIds, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
@@ -170,6 +171,26 @@ export const INITIAL_STATE: State = {
       min: 0.1,
       max: 20,
       initial: 2
+    }
+  },
+  POA: {
+    name: 'POA',
+    unit: 'POA',
+    chainId: 99,
+    isCustom: false,
+    color: '#8978ea',
+    blockExplorer: makeExplorer('POAExplorer', 'https://www.poaexplorer.com'),
+    tokens: require('config/tokens/poa.json'),
+    contracts: require('config/contracts/poa.json'),
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: POA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: POA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: POA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 21,
+      initial: 1
     }
   }
 };

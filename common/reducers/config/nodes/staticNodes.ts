@@ -81,6 +81,13 @@ export const INITIAL_STATE: State = {
     service: 'Expanse.tech',
     lib: new RPCNode('https://node.expanse.tech/'),
     estimateGas: true
+  },
+  poa: {
+    network: 'POA',
+    isCustom: false,
+    service: 'poa.network',
+    lib: new RPCNode('https://core.poa.network/'),
+    estimateGas: true
   }
 };
 
