@@ -6,8 +6,10 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
 import { addHexPrefix } from 'ethereumjs-util';
+import { getWalletInst } from 'selectors/wallet';
 import { getResolvingDomain } from 'selectors/ens';
 import { isValidENSAddress } from 'libs/validators';
+import { Address } from 'libs/units';
 import './AddressInputFactory.scss';
 
 interface StateProps {
@@ -17,6 +19,7 @@ interface StateProps {
 }
 
 interface OwnProps {
+  isSelfAddress?: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
@@ -43,7 +46,7 @@ type Props = OwnProps & StateProps;
 
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentTo, onChange, isValid, withProps, isResolving } = this.props;
+    const { currentTo, onChange, isValid, withProps, isSelfAddress, isResolving } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     return (
@@ -56,7 +59,7 @@ class AddressInputFactoryClass extends Component<Props> {
                 currentTo,
                 isValid,
                 onChange,
-                readOnly: !!readOnly || this.props.isResolving
+                readOnly: !!(readOnly || this.props.isResolving || isSelfAddress)
               })
             }
           />
@@ -70,8 +73,22 @@ class AddressInputFactoryClass extends Component<Props> {
   }
 }
 
-export const AddressInputFactory = connect((state: AppState) => ({
-  currentTo: getCurrentTo(state),
-  isResolving: getResolvingDomain(state),
-  isValid: isValidCurrentTo(state)
-}))(AddressInputFactoryClass);
+export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps) => {
+  let currentTo: ICurrentTo;
+  if (ownProps.isSelfAddress) {
+    const wallet = getWalletInst(state);
+    const addr = wallet ? wallet.getAddressString() : '';
+    currentTo = {
+      raw: addr,
+      value: Address(addr)
+    };
+  } else {
+    currentTo = getCurrentTo(state);
+  }
+
+  return {
+    currentTo,
+    isResolving: getResolvingDomain(state),
+    isValid: isValidCurrentTo(state)
+  };
+})(AddressInputFactoryClass);
