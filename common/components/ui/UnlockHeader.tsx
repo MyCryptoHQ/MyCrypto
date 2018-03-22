@@ -8,7 +8,7 @@ import closeIcon from 'assets/images/close.svg';
 import './UnlockHeader.scss';
 
 interface Props {
-  title: string;
+  title?: string;
   wallet: IWallet;
   disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
@@ -35,7 +35,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
 
     return (
       <article className="UnlockHeader">
-        <h1 className="UnlockHeader-title">{title}</h1>
+        {title && <h1 className="UnlockHeader-title">{title}</h1>}
         {wallet &&
           !isExpanded && (
             <button

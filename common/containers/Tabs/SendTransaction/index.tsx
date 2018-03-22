@@ -61,7 +61,7 @@ class SendTransaction extends React.Component<Props> {
     return (
       <TabSection>
         <section className="Tab-content">
-          <UnlockHeader title={translateRaw('ACCOUNT')} showGenerateLink={true} />
+          <UnlockHeader showGenerateLink={true} />
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
