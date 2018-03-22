@@ -1,5 +1,6 @@
 import React from 'react';
 import './PreFooter.scss';
+import translate from 'translations';
 
 interface Props {
   openModal(): void;
@@ -10,9 +11,8 @@ const PreFooter: React.SFC<Props> = ({ openModal }) => {
     <section className="pre-footer">
       <div className="container">
         <p>
-          MyCrypto.com does not hold your keys for you. We cannot access accounts, recover keys,
-          reset passwords, nor reverse transactions. Protect your keys & always check that you are
-          on correct URL. <a onClick={openModal}>You are responsible for your security.</a>
+          {translate('PREFOOTER_WARNING')}{' '}
+          <a onClick={openModal}>{translate('PREFOOTER_SECURITY_WARNING')}</a>
         </p>
       </div>
     </section>

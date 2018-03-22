@@ -1,5 +1,5 @@
 import React from 'react';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import FeeSummary from './FeeSummary';
 import './AdvancedGas.scss';
 import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'actions/config';
@@ -74,7 +74,7 @@ class AdvancedGas extends React.Component<Props, State> {
             <div className="input-group-wrapper AdvancedGas-gas-price">
               <label className="input-group">
                 <div className="input-group-header">
-                  {translate('OFFLINE_Step2_Label_3')} (gwei)
+                  {translateRaw('OFFLINE_STEP2_LABEL_3')} (gwei)
                 </div>
                 <Input
                   className={!!gasPrice.raw && !validGasPrice ? 'is-invalid' : ''}
@@ -89,7 +89,7 @@ class AdvancedGas extends React.Component<Props, State> {
 
           {gasLimitField && (
             <div className="AdvancedGas-gas-limit">
-              <GasLimitField customLabel={translateRaw('OFFLINE_Step2_Label_4')} />
+              <GasLimitField customLabel={translateRaw('OFFLINE_STEP2_LABEL_4')} />
             </div>
           )}
           {nonceField && (

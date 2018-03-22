@@ -12,11 +12,11 @@ export const SendButton: React.SFC<{
     onlyTransactionParameters={!!onlyTransactionParameters}
     toggleDisabled={toggleDisabled}
     Modal={customModal ? customModal : ConfirmationModal}
-    withProps={({ disabled, onClick }) => (
+    withProps={({ disabled, onClick }: { disabled: boolean; onClick(): void }) => (
       <div className="row form-group">
         <div className="col-xs-12">
           <button disabled={disabled} className="btn btn-primary btn-block" onClick={onClick}>
-            {translate('SEND_trans')}
+            {translate('SEND_TRANS')}
           </button>
         </div>
       </div>

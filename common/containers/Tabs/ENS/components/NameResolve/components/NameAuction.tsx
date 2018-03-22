@@ -4,6 +4,7 @@ import ENSTime from './components/ENSTime';
 import moment from 'moment';
 import { NewTabLink } from 'components/ui';
 import { ensV3Url } from 'utils/formatters';
+import translate from 'translations';
 
 const getDeadlines = (registrationDate: string) => {
   // Get the time to reveal bids, and the time when the action closes
@@ -20,9 +21,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
     <section className="row">
       <div className="auction-info text-center">
         <div className="ens-title">
-          <h1>
-            An auction has started for <strong>{name}.eth</strong>
-          </h1>
+          <h1>{translate('ENS_DOMAIN_AUCTION', { $name: name + '.eth' })}</h1>
         </div>
 
         <div className="ens-panel-wrapper">
@@ -35,11 +34,9 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
         </div>
 
         <p>
-          Do you want to place a bid on {name}.eth?{' '}
+          {translate('NAME_AUCTION_PROMPT_BID')}
           <strong>
-            <NewTabLink href={ensV3Url(name)}>
-              You can do that on MyCrypto V3 by clicking here!
-            </NewTabLink>
+            <NewTabLink href={ensV3Url(name)}>{translate('NAME_AUCTION_PROMPT_BID_2')}</NewTabLink>
           </strong>
         </p>
       </div>

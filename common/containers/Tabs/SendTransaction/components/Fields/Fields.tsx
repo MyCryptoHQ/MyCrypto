@@ -52,7 +52,7 @@ const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
     whenQueryExists={
       <div className="alert alert-info">
-        <p>{translate('WARN_Send_Link')}</p>
+        <p>{translate('WARN_SEND_LINK')}</p>
       </div>
     }
   />

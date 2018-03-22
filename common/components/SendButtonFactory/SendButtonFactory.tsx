@@ -49,7 +49,7 @@ class SendButtonFactoryClass extends Component<Props> {
     // shows the json representation of the transaction
     const leftTxCompare = serializedTransaction && (
       <div className={`col-sm-${columnSize}`}>
-        <label>{walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_raw')}</label>
+        <label>{walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_RAW')}</label>
         <TextArea value={getStringifiedTx(serializedTransaction)} rows={4} readOnly={true} />
       </div>
     );
@@ -63,7 +63,7 @@ class SendButtonFactoryClass extends Component<Props> {
           <label>
             {walletType.isWeb3Wallet
               ? 'Serialized Transaction Parameters'
-              : translate('SEND_signed')}
+              : translate('SEND_SIGNED')}
           </label>
           <TextArea
             value={addHexPrefix(serializedTransaction.toString('hex'))}

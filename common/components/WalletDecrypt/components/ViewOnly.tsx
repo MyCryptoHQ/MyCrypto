@@ -35,7 +35,7 @@ export class ViewOnlyDecrypt extends PureComponent<Props, State> {
           />
 
           <button className="btn btn-primary btn-block" disabled={!isValid}>
-            {translate('NAV_ViewWallet')}
+            {translate('NAV_VIEWWALLET')}
           </button>
         </form>
       </div>

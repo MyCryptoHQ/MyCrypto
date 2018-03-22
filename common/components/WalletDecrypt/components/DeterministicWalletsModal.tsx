@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import {
   DeterministicWalletData,
   getDeterministicWallets,
@@ -101,13 +101,13 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
     const buttons: IButton[] = [
       {
-        text: 'Unlock this Address',
+        text: translate('ACTION_3'),
         type: 'primary',
         onClick: this.handleConfirmAddress,
         disabled: !selectedAddress
       },
       {
-        text: 'Cancel',
+        text: translate('ACTION_2'),
         type: 'default',
         onClick: onCancel
       }
@@ -115,7 +115,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
     return (
       <Modal
-        title={`Unlock your ${walletType || ''} Wallet`}
+        title={translateRaw(`DECRYPT_PROMPT_UNLOCK_${walletType}`)}
         isOpen={this.props.isOpen}
         buttons={buttons}
         handleClose={onCancel}
@@ -125,7 +125,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             className="DWModal-path form-group-sm flex-wrapper"
             onSubmit={this.handleSubmitCustomPath}
           >
-            <span className="DWModal-path-label">Addresses </span>
+            <span className="DWModal-path-label">{translate('DECRYPT_DROPDOWN_LABEL')} </span>
             <div className="DWModal-path-select">
               <Select
                 name="fieldDPath"
@@ -180,7 +180,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
                       ))}
                     </select>
                   </td>
-                  <td>More</td>
+                  <td>{translate('ACTION_5')}</td>
                 </tr>
               </thead>
               <tbody>{wallets.map(wallet => this.renderWalletRow(wallet))}</tbody>
@@ -192,13 +192,13 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
               disabled={page === 0}
               onClick={this.prevPage}
             >
-              ← Back
+              ← {translate('ACTION_4')}
             </button>
             <button
               className="DWModal-addresses-nav-btn btn btn-sm btn-default"
               onClick={this.nextPage}
             >
-              More →
+              {translate('ACTION_5')} →
             </button>
           </div>
         </div>

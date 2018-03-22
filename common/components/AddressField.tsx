@@ -13,7 +13,7 @@ export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
     withProps={({ currentTo, isValid, onChange, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translate('SEND_addr')}</div>
+          <div className="input-group-header">{translate('SEND_ADDR_SHORT')}</div>
           <Input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}
             type="text"

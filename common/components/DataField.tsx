@@ -9,7 +9,7 @@ export const DataField: React.SFC<{}> = () => (
     withProps={({ data: { raw }, dataExists, onChange, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translate('OFFLINE_Step2_Label_6')}</div>
+          <div className="input-group-header">{translate('OFFLINE_STEP2_LABEL_6')}</div>
           <Input
             className={dataExists ? 'is-valid' : 'is-invalid'}
             type="text"

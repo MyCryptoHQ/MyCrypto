@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
@@ -80,7 +80,7 @@ class SimpleGas extends React.Component<Props> {
       <div className="SimpleGas row form-group">
         <div className="SimpleGas-title">
           <div className="flex-wrapper">
-            <label>{translateRaw('Transaction Fee')} </label>
+            <label>{translate('CONFIRM_TX_FEE')} </label>
             <div className="flex-spacer" />
             <InlineSpinner active={noncePending || gasLimitPending} text="Calculating" />
           </div>
@@ -108,8 +108,8 @@ class SimpleGas extends React.Component<Props> {
               disabled={isGasEstimating}
             />
             <div className="SimpleGas-slider-labels">
-              <span>{translate('Cheap')}</span>
-              <span>{translate('Fast')}</span>
+              <span>{translate('TX_FEE_SCALE_LEFT')}</span>
+              <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
             </div>
           </div>
           <FeeSummary

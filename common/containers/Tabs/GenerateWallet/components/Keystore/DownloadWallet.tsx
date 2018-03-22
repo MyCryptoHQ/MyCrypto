@@ -1,6 +1,6 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { makeBlob } from 'utils/blob';
 import './DownloadWallet.scss';
 import Template from '../Template';
@@ -27,32 +27,24 @@ export default class DownloadWallet extends Component<Props, State> {
     return (
       <Template>
         <div className="DlWallet">
-          <h1 className="DlWallet-title">{translate('GEN_Label_2')}</h1>
+          <h1 className="DlWallet-title">{translate('GEN_LABEL_2')}</h1>
 
           <a
             role="button"
             className="DlWallet-download btn btn-primary btn-lg"
             aria-label="Download Keystore File (UTC / JSON · Recommended · Encrypted)"
-            aria-describedby={translate('x_KeystoreDesc', true)}
+            aria-describedby={translateRaw('X_KEYSTOREDESC')}
             download={filename}
             href={this.getBlob()}
             onClick={this.handleDownloadKeystore}
           >
-            {translate('x_Download')} {translate('x_Keystore2')}
+            {translate('ACTION_13', { $thing: translateRaw('X_KEYSTORE2') })}
           </a>
 
           <div className="DlWallet-warning">
-            <p>
-              <strong>Do not lose it!</strong> It cannot be recovered if you lose it.
-            </p>
-            <p>
-              <strong>Do not share it!</strong> Your funds will be stolen if you use this file on a
-              malicious/phishing site.
-            </p>
-            <p>
-              <strong>Make a backup!</strong> Secure it like the millions of dollars it may one day
-              be worth.
-            </p>
+            <p>{translate('DL_WALLET_WARNING_1')}</p>
+            <p>{translate('DL_WALLET_WARNING_2')}</p>
+            <p>{translate('DL_WALLET_WARNING_3')}</p>
           </div>
 
           <button
@@ -61,7 +53,7 @@ export default class DownloadWallet extends Component<Props, State> {
             onClick={this.handleContinue}
             disabled={!hasDownloadedWallet}
           >
-            I understand. Continue.
+            {translate('ACTION_14')}
           </button>
         </div>
       </Template>
