@@ -8,6 +8,7 @@ import { CallbackProps } from 'components/AddressFieldFactory';
 import { addHexPrefix } from 'ethereumjs-util';
 import { getResolvingDomain } from 'selectors/ens';
 import { isValidENSAddress } from 'libs/validators';
+import './AddressInputFactory.scss';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -29,12 +30,12 @@ const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress:
   const text = 'Loading ENS address...';
   if (isLoading) {
     return (
-      <>
+      <React.Fragment>
         <Spinner /> {text}
-      </>
+      </React.Fragment>
     );
   } else {
-    return isENS ? <>{`Resolved Address: ${rawAddress}`}</> : null;
+    return isENS ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
   }
 };
 
@@ -46,8 +47,8 @@ class AddressInputFactoryClass extends Component<Props> {
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     return (
-      <div className="row form-group">
-        <div className="col-xs-11">
+      <div className="AddressInput form-group">
+        <div className="AddressInput-input">
           <Query
             params={['readOnly']}
             withQuery={({ readOnly }) =>
@@ -61,7 +62,7 @@ class AddressInputFactoryClass extends Component<Props> {
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
         </div>
-        <div className="col-xs-1" style={{ padding: 0 }}>
+        <div className="AddressInput-identicon">
           <Identicon address={addr} />
         </div>
       </div>
