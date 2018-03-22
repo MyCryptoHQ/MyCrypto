@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import { UnlockHeader } from 'components/ui';
 import { getWalletInst } from 'selectors/wallet';
