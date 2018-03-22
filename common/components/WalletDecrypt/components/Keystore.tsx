@@ -8,6 +8,7 @@ import { Input } from 'components/ui';
 export interface KeystoreValue {
   file: string;
   password: string;
+  filename: string;
   valid: boolean;
 }
 
@@ -37,7 +38,7 @@ export class KeystoreDecrypt extends PureComponent {
   };
 
   public render() {
-    const { isWalletPending, value: { file, password } } = this.props;
+    const { isWalletPending, value: { file, password, filename } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
@@ -55,6 +56,11 @@ export class KeystoreDecrypt extends PureComponent {
               {translate('ADD_Radio_2_short')}
             </a>
           </label>
+
+          <label className="WalletDecrypt-decrypt-label" hidden={!file}>
+            <span>{filename}</span>
+          </label>
+
           {isWalletPending ? <Spinner /> : ''}
           <Input
             className={`${password.length > 0 ? 'is-valid' : 'is-invalid'} ${
@@ -101,6 +107,7 @@ export class KeystoreDecrypt extends PureComponent {
     const fileReader = new FileReader();
     const target = e.target;
     const inputFile = target.files[0];
+    const fileName = inputFile.name;
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
@@ -110,7 +117,8 @@ export class KeystoreDecrypt extends PureComponent {
         ...this.props.value,
         file: keystore,
         valid: keystore.length && !passReq,
-        password: ''
+        password: '',
+        filename: fileName
       });
       this.props.onUnlock();
     };
