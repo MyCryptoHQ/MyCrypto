@@ -39,7 +39,7 @@ export class VerifyMessage extends Component<Props, State> {
         <div className="Tab-content-pane">
           <div className="input-group-wrapper ">
             <label className="input-group">
-              <div className="input-group-header">{translate('MSG_signature')}</div>
+              <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>
               <TextArea
                 className={`VerifyMessage-inputBox ${signature ? 'is-valid' : 'is-invalid'}`}
                 placeholder={signaturePlaceholder}
@@ -55,13 +55,13 @@ export class VerifyMessage extends Component<Props, State> {
             onClick={this.handleVerifySignedMessage}
             disabled={false}
           >
-            {translate('MSG_verify')}
+            {translate('MSG_VERIFY')}
           </button>
 
           {!!verifiedAddress &&
             !!verifiedMessage && (
               <div className="VerifyMessage-success alert alert-success">
-                <strong>{verifiedAddress}</strong> did sign the message{' '}
+                <strong>{verifiedAddress}</strong> {translate('SIGNED')}
                 <strong>{verifiedMessage}</strong>.
               </div>
             )}

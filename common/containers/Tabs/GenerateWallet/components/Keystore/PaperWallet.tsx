@@ -18,11 +18,10 @@ const PaperWallet: React.SFC<Props> = props => (
     <div className="GenPaper">
       {/* Private Key */}
       <label className="input-group GenPaper-private">
-        {/* translateRaw isn't used here because it wont properly render the ` characters as a string of code in markdown*/}
-        <h1 className="input-group-header">{translate('GEN_Label_5')}</h1>
+        <h1 className="GenPaper-title">{translate('GEN_LABEL_5')}</h1>
         <Input
           value={stripHexPrefix(props.privateKey)}
-          aria-label={translateRaw('x_PrivKey')}
+          aria-label={translateRaw('X_PRIVKEY')}
           aria-describedby="x_PrivKeyDesc"
           type="text"
           readOnly={true}
@@ -30,29 +29,21 @@ const PaperWallet: React.SFC<Props> = props => (
       </label>
 
       {/* Download Paper Wallet */}
-      <h2 className="GenPaper-title">{translate('x_Print')}</h2>
+      <h2 className="GenPaper-title">{translate('X_PRINT')}</h2>
       <div className="GenPaper-paper">
         <PrintableWallet address={props.keystore.address} privateKey={props.privateKey} />
       </div>
 
       {/* Warning */}
       <div className="GenPaper-warning">
-        <p>
-          <strong>Do not lose it!</strong> It cannot be recovered if you lose it.
-        </p>
-        <p>
-          <strong>Do not share it!</strong> Your funds will be stolen if you use this file on a
-          malicious/phishing site.
-        </p>
-        <p>
-          <strong>Make a backup!</strong> Secure it like the millions of dollars it may one day be
-          worth.
-        </p>
+        <p>{translate('DL_WALLET_WARNING_1')}</p>
+        <p>{translate('DL_WALLET_WARNING_2')}</p>
+        <p>{translate('DL_WALLET_WARNING_3')}</p>
       </div>
 
       {/* Continue button */}
       <button className="GenPaper-continue btn btn-default" onClick={props.continue}>
-        {translate('NAV_ViewWallet')} →
+        {translate('NAV_VIEWWALLET')} →
       </button>
     </div>
   </Template>

@@ -17,7 +17,6 @@ interface Props {
   toggleAriaLabel?: string;
   isValid?: boolean;
   isVisible?: boolean;
-  validity?: 'valid' | 'invalid' | 'semivalid';
   readOnly?: boolean;
 
   // Textarea-only props
@@ -56,7 +55,6 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       disabled,
       ariaLabel,
       toggleAriaLabel,
-      validity,
       isTextareaWhenVisible,
       isValid,
       onChange,
@@ -68,10 +66,10 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
     const { isVisible } = this.state;
 
     return (
-      <div className={`TogglablePassword input-group input-group-inline ${className}`}>
+      <div className={`TogglablePassword input-group input-group-inline`}>
         {isTextareaWhenVisible && isVisible ? (
           <TextArea
-            className={validity || !isValid ? 'invalid' : ''}
+            className={`${className} ${!isValid ? 'invalid' : ''}`}
             value={value}
             name={name}
             disabled={disabled}
@@ -90,7 +88,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
             name={name}
             disabled={disabled}
             type={isVisible ? 'text' : 'password'}
-            className={`${validity || !isValid ? 'invalid' : ''} border-rad-right-0`}
+            className={`${className} ${!isValid ? 'invalid' : ''} border-rad-right-0`}
             placeholder={placeholder}
             onChange={onChange}
             onFocus={onFocus}

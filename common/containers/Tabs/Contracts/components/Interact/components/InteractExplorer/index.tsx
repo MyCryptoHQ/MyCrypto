@@ -78,7 +78,7 @@ class InteractExplorerClass extends Component<Props, State> {
         className="InteractExplorer-func-submit btn btn-primary"
         onClick={this.handleFunctionSend}
       >
-        {translate('CONTRACT_Write')}
+        {translate('CONTRACT_WRITE')}
       </button>
     );
 
@@ -87,14 +87,14 @@ class InteractExplorerClass extends Component<Props, State> {
         <div className="input-group-wrapper">
           <label className="input-group">
             <div className="input-group-header">
-              {translate('CONTRACT_Interact_Title')}
+              {translate('CONTRACT_INTERACT_TITLE')}
               <div className="flex-spacer" />
               <span className="small">{to.raw}</span>
             </div>
             <Dropdown
               name="exploreContract"
               value={selectedFunction as any}
-              placeholder="Please select a function..."
+              placeholder={translate('SELECT_A_THING', { $thing: 'function' })}
               onChange={this.handleFunctionSelect}
               options={contractFunctionsOptions}
               clearable={false}
@@ -147,7 +147,7 @@ class InteractExplorerClass extends Component<Props, State> {
                 className="InteractExplorer-func-submit btn btn-primary"
                 onClick={this.handleFunctionCall}
               >
-                {translate('CONTRACT_Read')}
+                {translate('CONTRACT_READ')}
               </button>
             ) : (
               <React.Fragment>

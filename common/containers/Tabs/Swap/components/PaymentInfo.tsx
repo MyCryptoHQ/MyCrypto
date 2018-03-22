@@ -14,19 +14,17 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
     const { origin } = this.props;
     return (
       <section className="SwapPayment">
-        <h1>
-          <span>{translate('SWAP_order_CTA')}</span>
-          <strong>
-            {' '}
-            {origin.amount} {origin.label}
-          </strong>
-          <span> {translate('SENDModal_Content_2')}</span>
+        <h2>
+          {translate('SWAP_SEND_TO', {
+            $origin_amount: origin.amount.toString(),
+            $origin_label: origin.label
+          })}
           <Input
             className="SwapPayment-address"
             value={this.props.paymentAddress || undefined}
             disabled={true}
           />
-        </h1>
+        </h2>
       </section>
     );
   }

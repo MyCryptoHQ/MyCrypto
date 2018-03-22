@@ -98,7 +98,7 @@ class AccountInfo extends React.Component<Props, State> {
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div className="AccountInfo">
-        <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
+        <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">
             <Identicon address={address} size="100%" />
@@ -134,7 +134,9 @@ class AccountInfo extends React.Component<Props, State> {
                   });
               }}
             >
-              {confirmAddr ? null : 'Display address on ' + wallet.getWalletType()}
+              {confirmAddr
+                ? null
+                : translate('SIDEBAR_DISPLAY_ADDR', { $wallet: wallet.getWalletType() })}
             </a>
             {confirmAddr ? (
               <span className="AccountInfo-address-confirm">
@@ -145,7 +147,7 @@ class AccountInfo extends React.Component<Props, State> {
         )}
 
         <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
+          <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTBAL')}</h5>
           <ul className="AccountInfo-list">
             <li className="AccountInfo-list-item AccountInfo-balance">
               <span
@@ -182,7 +184,7 @@ class AccountInfo extends React.Component<Props, State> {
 
         {(!!blockExplorer || !!tokenExplorer) && (
           <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">{translate('sidebar_TransHistory')}</h5>
+            <h5 className="AccountInfo-section-header">{translate('SIDEBAR_TRANSHISTORY')}</h5>
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">

@@ -6,7 +6,7 @@ export const GenerateTransaction: React.SFC<{}> = () => (
   <GenerateTransactionFactory
     withProps={({ disabled, isWeb3Wallet, onClick }) => (
       <button disabled={disabled} className="btn btn-info btn-block" onClick={onClick}>
-        {isWeb3Wallet ? translate('SEND_generate') : translate('DEP_signtx')}
+        {isWeb3Wallet ? translate('SEND_GENERATE') : translate('DEP_SIGNTX')}
       </button>
     )}
   />

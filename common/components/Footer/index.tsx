@@ -14,6 +14,7 @@ import DisclaimerModal from './DisclaimerModal';
 import { NewTabLink } from 'components/ui';
 import OnboardModal from 'containers/OnboardModal';
 import './index.scss';
+import { translateRaw } from 'translations';
 
 const SocialMediaLink = ({ link, text }: Link) => {
   return (
@@ -58,39 +59,39 @@ const PRODUCT_INFO: Link[] = [
   {
     link:
       'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-    text: 'Ether Address Lookup'
+    text: translateRaw('ETHER_ADDRESS_LOOKUP')
   },
   {
     link:
       'https://chrome.google.com/webstore/detail/ethersecuritylookup/bhhfhgpgmifehjdghlbbijjaimhmcgnf',
-    text: 'Ether Security Lookup'
+    text: translateRaw('ETHER_SECURITY_LOOKUP')
   },
   {
     link: 'https://etherscamdb.info/',
-    text: 'EtherScamDB'
+    text: translateRaw('ETHERSCAMDB')
   },
   {
     link: 'https://www.mycrypto.com/helpers.html',
-    text: 'Helpers & ENS Debugging'
+    text: translateRaw('FOOTER_HELP_AND_DEBUGGING')
   },
   {
     link: 'mailto:press@mycrypto.com',
-    text: 'Press Inquiries'
+    text: translateRaw('FOOTER_PRESS')
   }
 ];
 
 const AFFILIATES: Link[] = [
   {
     link: ledgerReferralURL,
-    text: 'Buy a Ledger Wallet'
+    text: translateRaw('LEDGER_REFERAL_1')
   },
   {
     link: trezorReferralURL,
-    text: 'Buy a TREZOR'
+    text: translateRaw('TREZOR_REFERAL')
   },
   {
     link: ethercardReferralURL,
-    text: 'Get an ether.card'
+    text: translateRaw('ETHERCARD_REFERAL')
   }
 ];
 
@@ -165,51 +166,52 @@ export default class Footer extends React.PureComponent<Props, State> {
 
             <div className="Footer-about-links">
               <a href="https://mycrypto.com">MyCrypto.com</a>
-              <NewTabLink href={knowledgeBaseURL}>Help & Support</NewTabLink>
-              <NewTabLink href="https://about.mycrypto.com">Our Team</NewTabLink>
+              <NewTabLink href={knowledgeBaseURL}>{translateRaw('FOOTER_SUPPORT')}</NewTabLink>
+              <NewTabLink href="https://about.mycrypto.com">
+                {translateRaw('FOOTER_TEAM')}
+              </NewTabLink>
             </div>
 
-            <p className="Footer-about-text">
-              MyCrypto is an open-source, client-side tool for generating Ether Wallets, handling
-              ERC-20 tokens, and interacting with the blockchain more easily. Developed by and for
-              the community since 2015, we’re focused on building awesome products that put the
-              power in people’s hands.
-            </p>
+            <p className="Footer-about-text">{translateRaw('FOOTER_ABOUT')}</p>
 
             <div className="Footer-about-legal">
               <div className="Footer-about-legal-text">
                 © {new Date().getFullYear()} MyCrypto, Inc.
               </div>
               <div className="Footer-about-legal-text">
-                <a onClick={this.toggleModal}>Disclaimer</a>
+                <a onClick={this.toggleModal}>{translateRaw('DISCLAIMER')}</a>
               </div>
               <div className="Footer-about-legal-text">v{VERSION}</div>
             </div>
           </div>
 
           <div className="Footer-support Footer-section">
-            <h5 className="Footer-support-title">Support Us & Our Friends</h5>
+            <h5 className="Footer-support-title">{translateRaw('FOOTER_AFFILIATE_TITLE')}</h5>
             <div className="Footer-support-affiliates">
-              {AFFILIATES.map(link => (
-                <NewTabLink key={link.text} href={link.link}>
+              {AFFILIATES.map((link, i) => (
+                <NewTabLink key={i} href={link.link}>
                   {link.text}
                 </NewTabLink>
               ))}
             </div>
 
             <div className="Footer-support-donate">
-              <div className="Footer-support-donate-currency">Donate ETH</div>
+              <div className="Footer-support-donate-currency">
+                {translateRaw('DONATE_CURRENCY', { $currency: 'ETH' })}
+              </div>
               <div className="Footer-support-donate-address">{donationAddressMap.ETH}</div>
             </div>
 
             <div className="Footer-support-donate">
-              <div className="Footer-support-donate-currency">Donate BTC</div>
+              <div className="Footer-support-donate-currency">
+                {translateRaw('DONATE_CURRENCY', { $currency: 'BTC' })}
+              </div>
               <div className="Footer-support-donate-address">{donationAddressMap.BTC}</div>
             </div>
 
             <div className="Footer-support-friends">
-              {FRIENDS.map(link => (
-                <NewTabLink key={link.text} href={link.link}>
+              {FRIENDS.map((link, i) => (
+                <NewTabLink key={i} href={link.link}>
                   {link.text}
                 </NewTabLink>
               ))}

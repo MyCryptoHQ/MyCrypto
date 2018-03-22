@@ -74,7 +74,7 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
 
-        const onboardResumeMessage = translate('ONBOARD_resume');
+        const onboardResumeMessage = translate('ONBOARD_RESUME');
 
         // Wait a sec so it doesn't get lost in the page-load
         setTimeout(() => {
@@ -91,25 +91,25 @@ class OnboardModal extends React.Component<Props, State> {
     const firstButtons: IButton[] = [
       {
         disabled: slideNumber === NUMBER_OF_SLIDES,
-        text: 'Next',
+        text: translate('ACTION_6'),
         type: 'primary',
         onClick: this.handleNextSlide
       },
       {
         disabled: slideNumber === 1,
-        text: 'Back',
+        text: translate('ACTION_4'),
         type: 'default',
         onClick: this.handlePreviousSlide
       }
     ];
     const lastButtons: IButton[] = [
       {
-        text: 'Finish',
+        text: translate('ACTION_10'),
         type: 'primary',
         onClick: this.closeModal
       },
       {
-        text: 'Back',
+        text: translate('ACTION_4'),
         type: 'default',
         onClick: this.handlePreviousSlide
       }

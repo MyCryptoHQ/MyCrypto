@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TabSection from 'containers/TabSection';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import {
   signLocalTransactionSucceeded,
   TSignLocalTransactionSucceeded,
@@ -49,14 +49,12 @@ class BroadcastTx extends Component<Props> {
               path={currentPath}
               render={() => (
                 <div className="BroadcastTx">
-                  <h1 className="BroadcastTx-title">Broadcast Signed Transaction</h1>
-                  <p className="BroadcastTx-help">
-                    Paste a signed transaction and press the "SEND TRANSACTION" button.
-                  </p>
+                  <h1 className="BroadcastTx-title">{translate('BROADCAST_TX_TITLE')}</h1>
+                  <p className="BroadcastTx-help">{translate('BROADCAST_TX_DESCRIPTION')}</p>
 
                   <div className="input-group-wrapper InteractForm-interface">
                     <label className="input-group">
-                      <div className="input-group-header">{translateRaw('SEND_signed')}</div>
+                      <div className="input-group-header">{translate('SEND_SIGNED')}</div>
                       <TextArea
                         className={stateTransaction ? '' : 'invalid'}
                         rows={7}

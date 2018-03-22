@@ -3,6 +3,7 @@ import Modal, { IButton } from 'components/ui/Modal';
 import { HelpLink } from 'components/ui';
 import { HELP_ARTICLE } from 'config';
 import './DisclaimerModal.scss';
+import translate from 'translations';
 
 interface Props {
   isOpen: boolean;
@@ -10,7 +11,9 @@ interface Props {
 }
 
 const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
-  const buttons: IButton[] = [{ text: 'Okay', type: 'default', onClick: handleClose }];
+  const buttons: IButton[] = [
+    { text: translate('ACTION_10'), type: 'default', onClick: handleClose }
+  ];
   return (
     <Modal isOpen={isOpen} title="Disclaimer" buttons={buttons} handleClose={handleClose}>
       <p>

@@ -110,23 +110,23 @@ export default class SwapProgress extends PureComponent<Props, State> {
     const numberOfConfirmations = originId === 'BTC' ? '3' : '10';
     const steps = [
       // 1
-      translate('SWAP_progress_1'),
+      translate('SWAP_PROGRESS_1'),
       // 2
-      <span key="1">
-        {translate('SWAP_progress_2')} {originId}...
-      </span>,
+      <span key="1">{translate('SWAP_PROGRESS_2', { $origin_id: originId })}</span>,
       // 3
-      <span key="2">
-        {originId} {translate('SWAP_progress_3')}
-      </span>,
+      <span key="2">{translate('SWAP_PROGRESS_3', { $origin_id: originId })}</span>,
       // 4 TODO: Translate me
       <span key="3">
-        Sending your {destinationId}
+        {translate('SWAP_PROGRESS_4', { $destination_id: destinationId })}
         <br />
-        <small>Waiting for {numberOfConfirmations} confirmations...</small>
+        <small>
+          {translate('SWAP_PROGRESS_CONFIRMATIONS', {
+            $number_confirmations: numberOfConfirmations
+          })}
+        </small>
       </span>,
       // 5
-      translate('SWAP_progress_5')
+      translate('SWAP_PROGRESS_5')
     ];
 
     return (
