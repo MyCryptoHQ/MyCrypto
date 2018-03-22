@@ -1,4 +1,9 @@
-import { getWeb3Tx, getSignedTx, getTransactionStatus } from 'selectors/transaction';
+import {
+  getWeb3Tx,
+  getSignedTx,
+  getTransactionStatus,
+  getWindowStart
+} from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
@@ -118,6 +123,10 @@ describe('broadcastTransactionWrapper*', () => {
     );
   });
 
+  it('select getWindowStart', () => {
+    expect(gens.gen.next().value).toEqual(select(getWindowStart));
+  });
+
   it('select getNetworkConfig', () => {
     expect(gens.gen.next().value).toEqual(select(getNetworkConfig));
   });
@@ -127,7 +136,11 @@ describe('broadcastTransactionWrapper*', () => {
       put(
         showNotification(
           'success',
-          <TransactionSucceeded txHash={broadcastedHash} blockExplorer={network.blockExplorer} />,
+          <TransactionSucceeded
+            txHash={broadcastedHash}
+            blockExplorer={network.blockExplorer}
+            scheduling={false}
+          />,
           Infinity
         )
       )

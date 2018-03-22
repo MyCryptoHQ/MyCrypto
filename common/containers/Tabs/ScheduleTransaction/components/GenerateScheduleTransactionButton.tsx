@@ -1,13 +1,13 @@
-import { GenerateTransactionFactory } from './GenerateTransactionFactory';
 import React from 'react';
 import translate from 'translations';
+import { ScheduleTransactionFactory } from './ScheduleTransactionFactory';
 
-export const GenerateTransaction: React.SFC<{}> = () => {
+export const GenerateScheduleTransactionButton: React.SFC<{}> = () => {
   return (
-    <GenerateTransactionFactory
+    <ScheduleTransactionFactory
       withProps={({ disabled, isWeb3Wallet, onClick }) => (
         <button disabled={disabled} className="btn btn-info btn-block" onClick={onClick}>
-          {isWeb3Wallet ? translate('SEND_generate') : translate('DEP_signtx')}
+          {isWeb3Wallet ? translate('SCHEDULE_schedule') : translate('DEP_signtx')}
         </button>
       )}
     />

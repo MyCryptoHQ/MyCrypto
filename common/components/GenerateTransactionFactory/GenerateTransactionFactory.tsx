@@ -42,7 +42,7 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps;
 
-class GenerateTransactionFactoryClass extends Component<Props> {
+export class GenerateTransactionFactoryClass extends Component<Props> {
   public render() {
     const {
       walletType,

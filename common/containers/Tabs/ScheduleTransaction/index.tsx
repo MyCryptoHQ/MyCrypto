@@ -7,8 +7,8 @@ import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { RouteComponentProps, Redirect } from 'react-router';
 import { UnavailableWallets, SchedulingFields } from 'containers/Tabs/SendTransaction/components';
-import { isNetworkUnit } from 'selectors/config/wallet';
 import { SideBar } from '../SendTransaction/components/SideBar';
+import { getNetworkConfig } from 'selectors/config';
 
 const ScheduleMain = () => (
   <React.Fragment>
@@ -18,16 +18,19 @@ const ScheduleMain = () => (
 );
 
 interface StateProps {
+  schedulingDisabled: boolean;
   wallet: AppState['wallet']['inst'];
-  requestDisabled: boolean;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
 
 class Schedule extends React.Component<Props> {
   public render() {
-    const { wallet, match } = this.props;
-    const currentPath = match.url;
+    const { schedulingDisabled, wallet } = this.props;
+
+    if (schedulingDisabled && wallet) {
+      return <Redirect to="account/info" />;
+    }
 
     return (
       <TabSection>
@@ -36,7 +39,7 @@ class Schedule extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                {wallet.isReadOnly ? <Redirect to={`${currentPath}/info`} /> : <ScheduleMain />};
+                {wallet.isReadOnly ? <Redirect to="schedule/info" /> : <ScheduleMain />};
               </div>
               <SideBar />
             </div>
@@ -49,5 +52,5 @@ class Schedule extends React.Component<Props> {
 
 export default connect((state: AppState) => ({
   wallet: getWalletInst(state),
-  requestDisabled: !isNetworkUnit(state, 'ETH')
+  schedulingDisabled: getNetworkConfig(state).name !== 'Kovan'
 }))(Schedule);

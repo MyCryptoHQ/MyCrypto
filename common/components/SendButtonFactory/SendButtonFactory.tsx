@@ -41,7 +41,7 @@ interface OwnProps {
 
 type Props = StateProps & OwnProps;
 
-class SendButtonFactoryClass extends Component<Props> {
+export class SendButtonFactoryClass extends Component<Props> {
   public render() {
     const {
       signing,

@@ -1,5 +1,11 @@
 import { SagaIterator } from 'redux-saga';
-import { getWeb3Tx, getSignedTx, getTransactionStatus } from 'selectors/transaction';
+import {
+  getWeb3Tx,
+  getSignedTx,
+  getTransactionStatus,
+  getWindowStart,
+  ICurrentWindowStart
+} from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
@@ -50,7 +56,10 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       const broadcastedHash: string = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
       yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
 
+      const windowStart: ICurrentWindowStart = yield select(getWindowStart);
       const network: NetworkConfig = yield select(getNetworkConfig);
+
+      const scheduling = Boolean(windowStart && windowStart.value);
 
       yield put(
         showNotification(
@@ -58,6 +67,7 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
           <TransactionSucceeded
             txHash={broadcastedHash}
             blockExplorer={network.isCustom ? undefined : network.blockExplorer}
+            scheduling={scheduling}
           />,
           Infinity
         )

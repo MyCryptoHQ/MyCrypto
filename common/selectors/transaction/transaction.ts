@@ -31,12 +31,6 @@ export interface IGetTransaction {
   isFullTransaction: boolean; //if the user has filled all the fields
 }
 
-export interface IGetSchedulingTransaction {
-  transaction: EthTx;
-  isFullTransaction: boolean;
-  isWindowStartValid: boolean;
-}
-
 const getTransaction = (state: AppState): IGetTransaction => {
   const currentTo = getCurrentTo(state);
   const currentValue = getCurrentValue(state);
@@ -59,7 +53,7 @@ const getTransaction = (state: AppState): IGetTransaction => {
   return { transaction, isFullTransaction };
 };
 
-const getSchedulingTransaction = (state: AppState): IGetSchedulingTransaction => {
+const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const currentTo = getCurrentTo(state);
   const currentValue = getCurrentValue(state);
   const transactionFields = getFields(state);
@@ -72,16 +66,11 @@ const getSchedulingTransaction = (state: AppState): IGetSchedulingTransaction =>
   const nonce = getNonce(state);
   const gasPrice = getGasPrice(state);
   const timeBounty = getTimeBounty(state);
+  const windowStartValid = isWindowStartValid(transactionFields, getLatestBlock(state));
 
-  const isFullTransaction = isFullTx(
-    state,
-    transactionFields,
-    currentTo,
-    currentValue,
-    dataExists,
-    validGasCost,
-    unit
-  );
+  const isFullTransaction =
+    isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
+    windowStartValid;
 
   const transactionData = getScheduleData(
     currentTo.raw,
@@ -119,8 +108,7 @@ const getSchedulingTransaction = (state: AppState): IGetSchedulingTransaction =>
 
   return {
     transaction,
-    isFullTransaction,
-    isWindowStartValid: isWindowStartValid(transactionFields, getLatestBlock(state))
+    isFullTransaction
   };
 };
 

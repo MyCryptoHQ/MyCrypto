@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 
 export const EAC_SCHEDULING_CONFIG = {
+  DAPP_ADDRESS: 'https://app.chronologic.network',
   FEE: new BN('2242000000000000'), // $2
   FEE_MULTIPLIER: new BN('2'),
   FUTURE_EXECUTION_COST: new BN('180000'),
@@ -64,4 +65,8 @@ export const getScheduleData = (
     timeBounty,
     requiredDeposit
   ]);
+};
+
+export const getTXDetailsCheckURL = (txHash: string) => {
+  return `${EAC_SCHEDULING_CONFIG.DAPP_ADDRESS}/awaiting/scheduler/${txHash}`;
 };

@@ -8,16 +8,23 @@ import {
   CurrentCustomMessage,
   GenerateTransaction,
   SendButton,
-  SigningStatus,
-  WindowStartField
+  WindowStartField,
+  ScheduleTimestampField,
+  ScheduleTimezoneDropDown,
+  TimeBountyField,
+  ScheduleType,
+  WindowSizeField,
+  ScheduleGasPriceField
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
-import { getCurrentWindowStart, ICurrentWindowStart } from 'selectors/transaction';
-import { getNetworkConfig } from 'selectors/config';
+import { getOffline } from 'selectors/config';
+import { SendScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButton';
+import { GenerateScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/GenerateScheduleTransactionButton';
+import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -30,56 +37,15 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 interface StateProps {
-  schedulingDisabled: boolean;
+  scheduling: boolean;
   shouldDisplay: boolean;
   offline: boolean;
-  windowStart: ICurrentWindowStart;
+  schedulingType: ICurrentScheduleType;
 }
 
 class FieldsClass extends Component<StateProps> {
   public render() {
-    const { schedulingDisabled, shouldDisplay, windowStart } = this.props;
-
-    const scheduling = Boolean(windowStart.value);
-
-    const content = (
-      <div className="Tab-content-pane">
-        <AddressField />
-        <div className="row form-group">
-          <div className="col-xs-12">
-            <AmountField hasUnitDropdown={true} />
-            <SendEverything />
-          </div>
-        </div>
-
-        {!schedulingDisabled && (
-          <div className="row form-group">
-            <div className="col-xs-12">
-              <WindowStartField />
-            </div>
-          </div>
-        )}
-
-        <div className="row form-group">
-          <div className="col-xs-12">
-            <TXMetaDataPanel scheduling={scheduling} />
-          </div>
-        </div>
-
-        <CurrentCustomMessage />
-        <NonStandardTransaction />
-
-        <div className="row form-group">
-          <div className="col-xs-12 clearfix">
-            <GenerateTransaction scheduling={scheduling} />
-          </div>
-        </div>
-        <SigningStatus />
-        <div className="row form-group">
-          <SendButton />
-        </div>
-      </div>
-    );
+    const { shouldDisplay, scheduling, schedulingType } = this.props;
 
     return (
       <OnlyUnlocked
@@ -95,16 +61,61 @@ class FieldsClass extends Component<StateProps> {
                   </div>
                 </div>
 
+                {scheduling && (
+                  <div className="scheduled-tx-settings">
+                    <h6>Scheduled Transaction Settings</h6>
+                    <br />
+
+                    <div className="row form-group">
+                      <div className="col-xs-3">
+                        <ScheduleType />
+                      </div>
+
+                      {schedulingType.value === 'time' && (
+                        <div>
+                          <div className="col-xs-12 col-md-3">
+                            <ScheduleTimestampField />
+                          </div>
+                          <div className="col-xs-12 col-md-3">
+                            <ScheduleTimezoneDropDown />
+                          </div>
+                        </div>
+                      )}
+
+                      {schedulingType.value === 'block' && (
+                        <div>
+                          <div className="col-xs-12 col-md-6">
+                            <WindowStartField />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="col-xs-12 col-md-3">
+                        <WindowSizeField />
+                      </div>
+                    </div>
+
+                    <div className="row form-group">
+                      <div className="col-xs-6">
+                        <ScheduleGasPriceField />
+                      </div>
+                      <div className="col-xs-6">
+                        <TimeBountyField />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="row form-group">
                   <div className="col-xs-12">
-                    <TXMetaDataPanel />
+                    <TXMetaDataPanel scheduling={scheduling} />
                   </div>
                 </div>
 
                 <CurrentCustomMessage />
                 <NonStandardTransaction />
 
-                {offline ? <GenerateTransaction /> : <SendButton signing={true} />}
+                {this.getTxButton()}
               </div>
             )}
           </React.Fragment>
@@ -112,11 +123,29 @@ class FieldsClass extends Component<StateProps> {
       />
     );
   }
+
+  private getTxButton() {
+    const { offline, scheduling } = this.props;
+
+    if (scheduling) {
+      if (offline) {
+        return <GenerateScheduleTransactionButton />;
+      }
+
+      return <SendScheduleTransactionButton signing={true} />;
+    }
+
+    if (offline) {
+      return <GenerateTransaction />;
+    }
+
+    return <SendButton signing={true} />;
+  }
 }
 
 export const Fields = connect((state: AppState) => ({
+  scheduling: true,
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
-  windowStart: getCurrentWindowStart(state),
-  schedulingDisabled: getNetworkConfig(state).name !== 'Kovan'
+  schedulingType: getCurrentScheduleType(state)
 }))(FieldsClass);
