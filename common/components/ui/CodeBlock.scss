@@ -1,18 +1,7 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-code {
-  text-align: left;
-  color: #333;
-  background-color: #eff5fe;
-  font-size: 14px;
-  line-height: inherit;
-  border-radius: 2px;
-  padding: 2px 0.25rem;
-  border: 1px solid $border-idle;
-}
-
-pre {
+.CodeBlock {
   font-weight: 400;
   font-size: 1rem;
   color: rgba(0, 0, 0, 0.87);
@@ -24,19 +13,20 @@ pre {
   margin-bottom: 1rem;
   font-size: 1rem;
   border-radius: 2px;
-  &.wrap {
-    code {
-      white-space: normal;
-    }
-  }
-  code {
+  overflow: auto;
+  & > code {
     display: block;
-    overflow: scroll;
+    text-align: left;
     max-height: 320px;
     border: none;
     background-color: inherit;
     font-size: 14px;
     white-space: pre;
     @include mono;
+  }
+  &.wrap {
+    & > code {
+      white-space: normal;
+    }
   }
 }

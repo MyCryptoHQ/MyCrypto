@@ -12,8 +12,7 @@ import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
 import { Web3Node } from 'libs/nodes';
 import RpcNode from 'libs/nodes/rpc';
-import { Input } from 'components/ui';
-import Dropdown from 'components/ui/Dropdown';
+import { Input, DropDown } from 'components/ui';
 
 interface StateProps {
   nodeLib: RpcNode | Web3Node;
@@ -91,7 +90,7 @@ class InteractExplorerClass extends Component<Props, State> {
               <div className="flex-spacer" />
               <span className="small">{to.raw}</span>
             </div>
-            <Dropdown
+            <DropDown
               name="exploreContract"
               value={selectedFunction as any}
               placeholder={translate('SELECT_A_THING', { $thing: 'function' })}

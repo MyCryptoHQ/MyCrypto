@@ -13,10 +13,10 @@ import {
 } from 'selectors/transaction';
 import { getWalletType, IWalletType } from 'selectors/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
-import Code from 'components/ui/Code';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import translate from 'translations';
 import { addHexPrefix } from 'ethereumjs-util';
+import { CodeBlock } from 'components/ui';
 
 export interface CallbackProps {
   disabled: boolean;
@@ -80,16 +80,16 @@ class GenerateTransactionFactoryClass extends Component<Props> {
               <label>
                 {walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_RAW')}
               </label>
-              <Code>{getStringifiedTx(serializedTransaction as Buffer)}</Code>
+              <CodeBlock>{getStringifiedTx(serializedTransaction as Buffer)}</CodeBlock>
             </div>
             {serializedTransaction && (
               <div className="col-xs-12">
                 <label>
                   {walletType.isWeb3Wallet
                     ? 'Serialized Transaction Parameters'
-                    : translate('SEND_signed')}
+                    : translate('SEND_SIGNED')}
                 </label>
-                <Code>{addHexPrefix(serializedTransaction.toString('hex'))}</Code>
+                <CodeBlock>{addHexPrefix(serializedTransaction.toString('hex'))}</CodeBlock>
               </div>
             )}
             <OfflineBroadcast />

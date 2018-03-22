@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet';
-import { QRCode } from 'components/ui';
+import { QRCode, CodeBlock } from 'components/ui';
 import { getUnit, getDecimal } from 'selectors/transaction/meta';
 import {
   getCurrentTo,
@@ -21,7 +21,6 @@ import { getNetworkConfig, getSelectedTokenContractAddress, isNetworkUnit } from
 import './RequestPayment.scss';
 import { reset, TReset, setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { NetworkConfig } from 'types/network';
-import Code from 'components/ui/Code';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];
@@ -133,7 +132,7 @@ class RequestPayment extends React.Component<Props, {}> {
                 </div>
               </div>
               <div className="col-xs-6 RequestPayment-codeContainer">
-                <Code className="wrap">{eip681String}</Code>
+                <CodeBlock className="wrap">{eip681String}</CodeBlock>
               </div>
             </div>
           )}

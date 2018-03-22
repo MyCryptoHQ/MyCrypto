@@ -1,10 +1,9 @@
 import React from 'react';
 import translate from 'translations';
-import { Identicon, UnitDisplay, NewTabLink, Address } from 'components/ui';
+import { Identicon, UnitDisplay, NewTabLink, Address, CodeBlock } from 'components/ui';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
 import { NetworkConfig } from 'types/network';
 import './TransactionDataTable.scss';
-import Code from 'components/ui/Code';
 
 interface TableRow {
   label: React.ReactElement<string> | string;
@@ -153,7 +152,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
     },
     {
       label: translate('TRANS_DATA'),
-      data: hasInputData ? <Code>{data.input}</Code> : null
+      data: hasInputData ? <CodeBlock>{data.input}</CodeBlock> : null
     }
   ];
 

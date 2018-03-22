@@ -10,8 +10,7 @@ import { AppState } from 'reducers';
 import SignButton from './SignButton';
 import { isWalletFullyUnlocked } from 'selectors/wallet';
 import './index.scss';
-import { TextArea } from 'components/ui';
-import Code from 'components/ui/Code';
+import { TextArea, CodeBlock } from 'components/ui';
 
 interface Props {
   wallet: IFullWallet;
@@ -79,9 +78,9 @@ export class SignMessage extends Component<Props, State> {
               <div className="input-group-wrapper SignMessage-inputBox">
                 <label className="input-group">
                   <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>
-                  <Code className="SignMessage-inputBox">
+                  <CodeBlock className="SignMessage-inputBox">
                     {JSON.stringify(signedMessage, null, 2)}
-                  </Code>
+                  </CodeBlock>
                 </label>
               </div>
             )}

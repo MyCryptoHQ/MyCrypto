@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Code from 'components/ui/Code';
 import './Details.scss';
 import { SerializedTransaction } from 'components/renderCbs';
 import { AppState } from 'reducers';
@@ -7,7 +6,8 @@ import { getNodeConfig } from 'selectors/config';
 import { connect } from 'react-redux';
 import { NodeConfig } from 'types/node';
 import translate from 'translations';
-import { Input } from 'components/ui';
+import { CodeBlock, Input } from 'components/ui';
+import { addHexPrefix } from 'ethereumjs-util';
 
 interface StateProps {
   node: NodeConfig;
@@ -29,11 +29,11 @@ class DetailsClass extends Component<StateProps> {
               <React.Fragment>
                 <label className="input-group">
                   <div className="input-group-header">{translate('SEND_RAW')}</div>
-                  <Code>{JSON.stringify({ ...fields }, null, 2)} </Code>
+                  <CodeBlock>{JSON.stringify(fields, null, 2)} </CodeBlock>
                 </label>
                 <label className="input-group">
-                  <div className="input-group-header">{translate('SEND_signed')}</div>
-                  <Code>{'0x' + _} </Code>
+                  <div className="input-group-header">{translate('SEND_SIGNED')}</div>
+                  <CodeBlock>{addHexPrefix(_)} </CodeBlock>
                 </label>
               </React.Fragment>
             );

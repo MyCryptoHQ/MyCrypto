@@ -9,7 +9,7 @@ import {
   TSignTransactionFailed
 } from 'actions/transaction';
 import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
-import { QRCode, Input } from 'components/ui';
+import { QRCode, Input, CodeBlock } from 'components/ui';
 import EthTx from 'ethereumjs-tx';
 import { SendButton } from 'components/SendButton';
 import { toBuffer, bufferToHex } from 'ethereumjs-util';
@@ -18,7 +18,6 @@ import { AppState } from 'reducers';
 import './index.scss';
 import { Switch, Route, RouteComponentProps } from 'react-router';
 import { RouteNotFound } from 'components/RouteNotFound';
-import Code from 'components/ui/Code';
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -53,8 +52,12 @@ class BroadcastTx extends Component<Props> {
               path={currentPath}
               render={() => (
                 <div className="BroadcastTx">
-                  <h1 className="BroadcastTx-title">{translate('BROADCAST_TX_TITLE')}</h1>
-                  <p className="BroadcastTx-help">{translate('BROADCAST_TX_DESCRIPTION')}</p>
+                  <h1 className="BroadcastTx-title text-center">
+                    {translate('BROADCAST_TX_TITLE')}
+                  </h1>
+                  <p className="BroadcastTx-help text-center">
+                    {translate('BROADCAST_TX_DESCRIPTION')}
+                  </p>
 
                   <div className="input-group-wrapper InteractForm-interface">
                     <label className="input-group">
@@ -72,7 +75,7 @@ class BroadcastTx extends Component<Props> {
                   {stateTransaction && (
                     <React.Fragment>
                       <label>{translate('SEND_RAW')}</label>
-                      <Code>{getStringifiedTx(stateTransaction)}</Code>
+                      <CodeBlock>{getStringifiedTx(stateTransaction)}</CodeBlock>
                     </React.Fragment>
                   )}
 
