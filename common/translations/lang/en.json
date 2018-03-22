@@ -572,7 +572,7 @@
     "BROADCAST_TX_DESCRIPTION": "Paste a signed transaction and click 'send transaction'",
     "NAME_AUCTION_PROMPT_BID_1": "Want to place a bid on {name}.eth? ",
     "NAME_AUCTION_PROMPT_BID_2": "You can do that on MyCrypto V3 by clicking here!",
-    "OPEN_AUCTION_PROMPT_1": "Want {name}.eth?",
+    "OPEN_AUCTION_PROMPT_1": "Want $name.eth? ",
     "OPEN_AUCTION_PROMPT_2": "Open an auction on MyCrypto v3!",
     "NAME_OWNED_NAME": "Name",
     "NAME_OWNED_LABELHASH": "Labelhash $name",

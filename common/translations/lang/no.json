@@ -273,7 +273,7 @@
     "SWAP_PROGRESS_1": "Ordre initiert ",
     "SWAP_PROGRESS_2": "Venter på dine ",
     "SWAP_PROGRESS_3": "Mottatt! ",
-    "SWAP_PROGRESS_4": "Sender dine {{orderResult.output.currency}} ",
+    "SWAP_PROGRESS_4": "Sender dine $destination_id ",
     "SWAP_PROGRESS_5": "Ordre fullført ",
     "SWAP_ORDER_CTA": "Vennligst send ",
     "SWAP_UNLOCK": "Lås opp din lommebok for å sende ETH eller Tokens direkte fra denne siden. ",

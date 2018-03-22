@@ -284,7 +284,7 @@
     "SWAP_PROGRESS_1": "Ordine creato ",
     "SWAP_PROGRESS_2": "In attesa dei tuoi ",
     "SWAP_PROGRESS_3": "ricevuti! ",
-    "SWAP_PROGRESS_4": "Invio dei tuoi {{orderResult.output.currency}} ",
+    "SWAP_PROGRESS_4": "Invio dei tuoi $destination_id ",
     "SWAP_PROGRESS_5": "Ordine completato ",
     "SWAP_ORDER_CTA": "Invia ",
     "SWAP_UNLOCK": "Sblocca il tuo portafoglio per inviare ETH o token direttamente da questa pagina. ",

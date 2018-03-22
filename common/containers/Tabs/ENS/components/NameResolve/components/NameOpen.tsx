@@ -11,7 +11,7 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
         <h1>{translate('ENS_DOMAIN_OPEN', { $name: props.name + '.eth' })}</h1>
       </div>
       <p>
-        {translate('OPEN_AUCTION_PROMPT_1')}
+        {translate('OPEN_AUCTION_PROMPT_1', { $name: props.name })}
         <strong>
           <NewTabLink className="text-center" href={ensV3Url(props.name)}>
             {translate('OPEN_AUCTION_PROMPT_2')}

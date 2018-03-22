@@ -11,9 +11,9 @@ import {
   TBroadcastWeb3TransactionRequested
 } from 'actions/transaction';
 import { currentTransactionBroadcasting } from 'selectors/transaction';
-import translate, { translateRaw } from 'translations';
 import './ConfirmationModalTemplate.scss';
 import { AppState } from 'reducers';
+import { translateRaw, translate } from 'translations';
 
 interface DispatchProps {
   broadcastLocalTransactionRequested: TBroadcastLocalTransactionRequested;

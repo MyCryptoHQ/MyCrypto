@@ -272,7 +272,7 @@
     "SWAP_PROGRESS_1": "訂單已產生 ",
     "SWAP_PROGRESS_2": "正在等待你的 ",
     "SWAP_PROGRESS_3": "收到了! ",
-    "SWAP_PROGRESS_4": "正在傳送你的 {{orderResult.output.currency}} ",
+    "SWAP_PROGRESS_4": "正在傳送你的 $destination_id ",
     "SWAP_PROGRESS_5": "訂單完成 ",
     "SWAP_ORDER_CTA": "請傳送 ",
     "SWAP_UNLOCK": "解鎖你的錢包來從這個頁面轉錢或轉代幣 ",
