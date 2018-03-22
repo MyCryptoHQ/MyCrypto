@@ -1,3 +1,7 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import Select, { Option } from 'react-select';
+import translate from 'translations';
 import {
   DeterministicWalletData,
   getDeterministicWallets,
@@ -9,14 +13,11 @@ import {
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
-import React from 'react';
-import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
 import { UnitDisplay, Input } from 'components/ui';
-import './DeterministicWalletsModal.scss';
 import { StaticNetworkConfig } from 'types/network';
-import Select from 'react-select';
+import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -125,23 +126,36 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             onSubmit={this.handleSubmitCustomPath}
           >
             <span className="DWModal-path-label">Addresses </span>
-            <Select
-              name="fieldDPath"
-              className=""
-              value={this.state.currentLabel || this.findDPath('value', dPath).value}
-              onChange={this.handleChangePath}
-              options={dPaths}
-              clearable={false}
-              searchable={false}
-            />
-            {/* TODO/Hack - Custom Paths are temporarily disabled. `false` is used for smallest diff */}
-            {false && (
-              <Input
-                className={isValidPath(customPath) ? '' : 'invalid'}
-                value={customPath}
-                placeholder="m/44'/60'/0'/0"
-                onChange={this.handleChangeCustomPath}
+            <div className="DWModal-path-select">
+              <Select
+                name="fieldDPath"
+                className=""
+                value={this.state.currentLabel || this.findDPath('value', dPath).value}
+                onChange={this.handleChangePath}
+                options={dPaths.concat([customDPath])}
+                optionRenderer={this.renderDPathOption}
+                valueRenderer={this.renderDPathOption}
+                clearable={false}
+                searchable={false}
               />
+            </div>
+            {this.state.currentLabel === customDPath.label && (
+              <React.Fragment>
+                <div className="DWModal-path-custom">
+                  <Input
+                    className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
+                    value={customPath}
+                    placeholder="m/44'/60'/0'/0"
+                    onChange={this.handleChangeCustomPath}
+                  />
+                </div>
+                <button
+                  className="DWModal-path-submit btn btn-success"
+                  disabled={!isValidPath(customPath)}
+                >
+                  <i className="fa fa-check" />
+                </button>
+              </React.Fragment>
             )}
           </form>
 
@@ -215,7 +229,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     const { value: dPathLabel } = newPath;
     const { value } = this.findDPath('value', dPathLabel);
 
-    if (value === 'custom') {
+    if (value === customDPath.value) {
       this.setState({ isCustomPath: true, currentLabel: dPathLabel });
     } else {
       this.setState({ isCustomPath: false, currentLabel: dPathLabel });
@@ -228,11 +242,12 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   };
 
   private handleSubmitCustomPath = (ev: React.FormEvent<HTMLFormElement>) => {
+    const { customPath, currentLabel } = this.state;
     ev.preventDefault();
-    if (!isValidPath(this.state.customPath)) {
-      return;
+
+    if (currentLabel === customDPath.label && isValidPath(customPath)) {
+      this.props.onPathChange(customPath);
     }
-    this.props.onPathChange(this.state.customPath);
   };
 
   private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
@@ -256,6 +271,18 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private prevPage = () => {
     this.setState({ page: Math.max(this.state.page - 1, 0) }, this.getAddresses);
   };
+
+  private renderDPathOption(option: Option) {
+    if (option.value === customDPath.value) {
+      return translate('ADD_Radio_5_PathCustom');
+    }
+
+    return (
+      <React.Fragment>
+        {option.label} {option.value && <small>({option.value.toString().replace(' ', '')})</small>}
+      </React.Fragment>
+    );
+  }
 
   private renderWalletRow(wallet: DeterministicWalletData) {
     const { desiredToken, network } = this.props;
