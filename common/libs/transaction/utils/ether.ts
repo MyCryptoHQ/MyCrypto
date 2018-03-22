@@ -58,13 +58,13 @@ const validGasLimit = (t: ITransaction) =>
  */
 const gasParamsInRange = (t: ITransaction) => {
   if (t.gasLimit.ltn(21000)) {
-    throw Error('Gas limit must be at least 21000 for transactions');
+    throw Error(translateRaw('ERROR_GAS_LIMIT_LOW', { $limit: '21000' }));
   }
   if (t.gasLimit.gtn(5000000)) {
-    throw Error(translateRaw('GETH_GasLimit'));
+    throw Error(translateRaw('GETH_GASLIMIT'));
   }
   if (t.gasPrice.gt(Wei('1000000000000'))) {
-    throw Error('Gas price too high. Please contact support if this was not a mistake.');
+    throw Error(translateRaw('ERROR_GAS_LIMIT_HIGH'));
   }
 };
 
@@ -97,7 +97,7 @@ const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean) =>
     throw Error('Not enough gas supplied');
   }
   if (!enoughBalanceViaTx(t, accountBalance)) {
-    throw Error(translateRaw('GETH_Balance'));
+    throw Error(translateRaw('GETH_BALANCE'));
   }
   validAddress(t);
 };

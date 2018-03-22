@@ -49,12 +49,13 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
       help = 'Select which tokens you would like to keep track of';
       bottom = (
         <div className="TokenBalances-buttons">
-          <button className="btn btn-primary btn-block" onClick={this.handleSetWalletTokens}>
-            <span>{translate('x_Save')}</span>
+          <button
+            className="TokenBalances-buttons-btn btn btn-primary btn-block"
+            onClick={this.handleSetWalletTokens}
+          >
+            <span>{translate('X_SAVE')}</span>
           </button>
-          <p className="TokenBalances-buttons-help">
-            {translate('Missing tokens? You can add custom tokens next.')}
-          </p>
+          <p className="TokenBalances-buttons-help">{translate('PROMPT_ADD_CUSTOM_TKN')}</p>
         </div>
       );
     } else if (showCustomTokenForm) {
@@ -70,11 +71,17 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     } else {
       bottom = (
         <div className="TokenBalances-buttons">
-          <button className="btn btn-default btn-xs" onClick={this.toggleShowCustomTokenForm}>
-            <span>{translate('SEND_custom')}</span>
-          </button>{' '}
-          <button className="btn btn-default btn-xs" onClick={this.props.scanWalletForTokens}>
-            <span>Scan for New Tokens</span>
+          <button
+            className="TokenBalances-buttons-btn btn btn-default btn-xs"
+            onClick={this.toggleShowCustomTokenForm}
+          >
+            <span>{translate('SEND_CUSTOM')}</span>
+          </button>
+          <button
+            className="TokenBalances-buttons-btn btn btn-default btn-xs"
+            onClick={this.props.scanWalletForTokens}
+          >
+            <span>{translate('SCAN_TOKENS')}</span>
           </button>
         </div>
       );
@@ -105,7 +112,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
             </tbody>
           </table>
         ) : (
-          <div className="well well-sm text-center">No tokens found</div>
+          <div className="well well-sm text-center">{translate('SCAN_TOKENS_FAIL_NO_TOKENS')}</div>
         )}
         {bottom}
       </div>

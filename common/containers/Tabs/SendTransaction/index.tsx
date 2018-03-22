@@ -40,28 +40,28 @@ class SendTransaction extends React.Component<Props> {
     const tabs: Tab[] = [
       {
         path: 'send',
-        name: translate('NAV_SendEther'),
+        name: translate('NAV_SENDETHER'),
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
         path: 'request',
-        name: translate('Request Payment'),
+        name: translate('NAV_REQUESTPAYMENT'),
         disabled: this.props.requestDisabled
       },
       {
         path: 'info',
-        name: translate('NAV_ViewWallet')
+        name: translate('NAV_VIEWWALLET')
       },
       {
         path: 'recent-txs',
-        name: translate('Recent Transactions')
+        name: translate('NAV_RECENT_TX')
       }
     ];
 
     return (
       <TabSection>
         <section className="Tab-content">
-          <UnlockHeader title={translate('Account')} showGenerateLink={true} />
+          <UnlockHeader showGenerateLink={true} />
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">

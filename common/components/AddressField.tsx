@@ -6,14 +6,18 @@ import { Input } from 'components/ui';
 
 interface Props {
   isReadOnly?: boolean;
+  isSelfAddress?: boolean;
 }
 
-export const AddressField: React.SFC<Props> = ({ isReadOnly }) => (
+export const AddressField: React.SFC<Props> = ({ isReadOnly, isSelfAddress }) => (
   <AddressFieldFactory
+    isSelfAddress={isSelfAddress}
     withProps={({ currentTo, isValid, onChange, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translate('SEND_addr')}</div>
+          <div className="input-group-header">
+            {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
+          </div>
           <Input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}
             type="text"

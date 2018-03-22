@@ -87,6 +87,6 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   };
 
   public getWalletType(): string {
-    return translateRaw('x_Ledger');
+    return translateRaw('X_LEDGER');
   }
 }

@@ -97,7 +97,7 @@ class RequestPayment extends React.Component<Props, {}> {
           <AddressField isReadOnly={true} />
 
           <div className="row form-group">
-            <div className="col-xs-11">
+            <div className="col-xs-12">
               <AmountField
                 hasUnitDropdown={true}
                 showAllTokens={true}
@@ -107,7 +107,7 @@ class RequestPayment extends React.Component<Props, {}> {
           </div>
 
           <div className="row form-group">
-            <div className="col-xs-11">
+            <div className="col-xs-12">
               <TXMetaDataPanel
                 initialState="advanced"
                 disableToggle={true}
@@ -123,7 +123,9 @@ class RequestPayment extends React.Component<Props, {}> {
 
           {!!eip681String.length && (
             <div className="row form-group">
-              <label className="RequestPayment-title">{translate('Payment QR & Code')}</label>
+              <label className="RequestPayment-title">
+                {translate('REQUEST_PAYMENT_QR_TITLE')}
+              </label>
               <div className="col-xs-6">
                 <div className="RequestPayment-qr well well-lg">
                   <QRCode data={eip681String} />

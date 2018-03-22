@@ -20,11 +20,11 @@ export default class SwapInfoHeaderTitle extends PureComponent<SwapInfoHeaderTit
         <div className="col-xs-3 text-left">
           <button className="SwapInfo-top-back" onClick={this.props.restartSwap}>
             <i className="fa fa-arrow-left" />
-            Start New Swap
+            {translate('NEW_SWAP')}
           </button>
         </div>
         <div className="col-xs-6">
-          <h3 className="SwapInfo-top-title">{translate('SWAP_information')}</h3>
+          <h3 className="SwapInfo-top-title">{translate('SWAP_INFORMATION')}</h3>
         </div>
         <div className="col-xs-3">
           <a
