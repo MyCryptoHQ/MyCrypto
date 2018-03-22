@@ -1,0 +1,25 @@
+@import 'common/sass/variables';
+
+.AddressInput {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  &-input {
+    flex-grow: 1;
+  }
+
+  &-identicon {
+    padding-top: .75rem;
+    transform: translateX(20%);
+
+    @media (max-width: $screen-sm) {
+      padding-top: 1.5rem;
+
+      .Identicon {
+        width: 3.4rem !important;
+        height: 3.4rem !important;
+      }
+    }
+  }
+}

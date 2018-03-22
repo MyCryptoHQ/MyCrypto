@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import { UnlockHeader } from 'components/ui';
 import { getWalletInst } from 'selectors/wallet';
@@ -61,7 +61,7 @@ class SendTransaction extends React.Component<Props> {
     return (
       <TabSection>
         <section className="Tab-content">
-          <UnlockHeader title={translateRaw('ACCOUNT')} showGenerateLink={true} />
+          <UnlockHeader showGenerateLink={true} />
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">

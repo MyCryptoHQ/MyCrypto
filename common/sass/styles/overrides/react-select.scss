@@ -9,7 +9,8 @@
   font-size: 1rem;
   box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
   transition: border-color 120ms, box-shadow 120ms;
-  height: 3rem;
+  height: $input-height-base;
+
   &-control {
     min-width: 7.5rem;
     height: inherit;
