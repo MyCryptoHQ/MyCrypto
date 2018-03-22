@@ -14,7 +14,7 @@ export const GenerateTransaction: React.SFC<{}> = () => (
             className="btn btn-info btn-block GenerateTransaction"
             onClick={onClick}
           >
-            {isWeb3Wallet ? translate('SEND_generate') : translate('DEP_signtx')}
+            {isWeb3Wallet ? translate('SEND_GENERATE') : translate('DEP_SIGNTX')}
           </button>
         </React.Fragment>
       )}

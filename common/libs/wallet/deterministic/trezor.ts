@@ -77,7 +77,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   };
 
   public getWalletType(): string {
-    return translateRaw('x_Trezor');
+    return translateRaw('X_TREZOR');
   }
 
   // works, but returns a signature that can only be verified with a Trezor device

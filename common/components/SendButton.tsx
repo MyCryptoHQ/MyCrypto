@@ -23,7 +23,7 @@ export const SendButton: React.SFC<{
               !!signing ? (signTx(), openModal()) : openModal();
             }}
           >
-            {translate('SEND_trans')}
+            {translate('SEND_TRANS')}
           </button>
         </React.Fragment>
       )}

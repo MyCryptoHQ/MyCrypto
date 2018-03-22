@@ -52,7 +52,7 @@ export class KeystoreDecrypt extends PureComponent {
           />
           <label htmlFor="fselector" style={{ width: '100%' }}>
             <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              {translate('ADD_Radio_2_short')}
+              {translate('ADD_RADIO_2_SHORT')}
             </a>
           </label>
           {isWalletPending ? <Spinner /> : ''}
@@ -63,13 +63,13 @@ export class KeystoreDecrypt extends PureComponent {
             value={password}
             onChange={this.onPasswordChange}
             onKeyDown={this.onKeyDown}
-            placeholder={translateRaw('x_Password')}
+            placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
             type="password"
           />
         </div>
 
         <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-          {translate('ADD_Label_6_short')}
+          {translate('ADD_LABEL_6_SHORT')}
         </button>
       </form>
     );

@@ -4,6 +4,7 @@ import { AppState } from 'reducers';
 import { signaturePending } from 'selectors/transaction';
 import { Spinner } from 'components/ui';
 import './SigningStatus.scss';
+import { translate } from 'translations';
 interface StateProps {
   isSignaturePending: boolean;
   isHardwareWallet: boolean;
@@ -16,7 +17,7 @@ class SigningStatusClass extends Component<StateProps> {
     const HWWalletPrompt: React.SFC<{}> = () =>
       isHardwareWallet ? (
         <p>
-          <b>Confirm transaction on hardware wallet</b>
+          <b>{translate('CONFIRM_HARDWARE_WALLET_TRANSACTION')}</b>
         </p>
       ) : null;
 

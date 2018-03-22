@@ -1,15 +1,15 @@
 import React from 'react';
 import classnames from 'classnames';
-import { translateRaw, TranslateType } from 'translations';
 import { NewTabLink, Tooltip } from 'components/ui';
 import './WalletButton.scss';
 
 import { WalletName } from 'config';
+import { translateRaw } from 'translations';
 
 interface OwnProps {
-  name: TranslateType;
-  description?: TranslateType;
-  example?: TranslateType;
+  name: string;
+  description?: string;
+  example?: string;
   icon?: string;
   helpLink: string;
   walletType: WalletName;
@@ -51,20 +51,20 @@ export class WalletButton extends React.PureComponent<Props> {
     if (isReadOnly) {
       icons.push({
         icon: 'eye',
-        tooltip: translateRaw('You cannot send using address only'),
+        tooltip: translateRaw('TOOLTIP_READ_ONLY_WALLET'),
         arialabel: 'Read Only'
       });
     } else {
       if (isSecure) {
         icons.push({
           icon: 'shield',
-          tooltip: translateRaw('This wallet type is secure'),
+          tooltip: translateRaw('TOOLTIP_SECURE_WALLET_TYPE'),
           arialabel: 'Secure wallet type'
         });
       } else {
         icons.push({
           icon: 'exclamation-triangle',
-          tooltip: translateRaw('This wallet type is insecure'),
+          tooltip: translateRaw('TOOLTIP_INSECURE_WALLET_TYPE'),
           arialabel: 'Insecure wallet type'
         });
       }
@@ -72,7 +72,7 @@ export class WalletButton extends React.PureComponent<Props> {
     if (helpLink) {
       icons.push({
         icon: 'question-circle',
-        tooltip: translateRaw('NAV_Help'),
+        tooltip: translateRaw('TOOLTIP_MORE_INFO'),
         href: helpLink,
         arialabel: 'More info'
       });

@@ -17,45 +17,42 @@ interface Props {
 const FinalSteps: React.SFC<Props> = ({ walletType }) => {
   const steps = [
     {
-      name: 'Open MyCrypto',
+      name: translate('MNEMONIC_FINAL_STEP_1'),
       image: SiteImage
     },
     {
-      name: 'Go to the account tab',
+      name: translate('MNEMONIC_FINAL_STEP_2'),
       image: TabImage
     }
   ];
 
   if (walletType === WalletType.Keystore) {
     steps.push({
-      name: 'Select your wallet type',
+      name: translate('MNEMONIC_FINAL_STEP_3'),
       image: SelectKeystoreImage
     });
     steps.push({
-      name: 'Provide file & password',
+      name: translate('MNEMONIC_FINAL_STEP_5'),
       image: ProvideKeystoreImage
     });
   } else if (walletType === WalletType.Mnemonic) {
     steps.push({
-      name: 'Select your wallet type',
+      name: translate('MNEMONIC_FINAL_STEP_3'),
       image: SelectMnemonicImage
     });
     steps.push({
-      name: 'Enter your phrase',
+      name: translate('MNEMONIC_FINAL_STEP_4'),
       image: ProvideMnemonicImage
     });
   }
 
   return (
     <div className="FinalSteps">
-      <h1 className="FinalSteps-title">{translate('ADD_Label_6')}</h1>
-      <p className="FinalSteps-help">
-        All done, you’re now ready to access your wallet. Just follow these 4 steps whenever you
-        want to access your wallet.
-      </p>
+      <h1 className="FinalSteps-title">{translate('ADD_LABEL_6')}</h1>
+      <p className="FinalSteps-help">{translate('MNEMONIC_FINAL_DESCRIPTION')}</p>
       <div className="FinalSteps-steps row">
         {steps.map((step, index) => (
-          <div key={step.name} className="StepBox col-lg-3 col-sm-6 col-xs-12">
+          <div key={index} className="StepBox col-lg-3 col-sm-6 col-xs-12">
             <h4 className="StepBox-title">{step.name}</h4>
             <div className="StepBox-screen">
               <img className="StepBox-screen-img" src={step.image} />
@@ -66,7 +63,7 @@ const FinalSteps: React.SFC<Props> = ({ walletType }) => {
       </div>
       <div className="FinalSteps-buttons">
         <Link to="/account" className="FinalSteps-buttons-btn btn btn-primary btn-lg">
-          Go to Account
+          {translate('GO_TO_ACCOUNT')}
         </Link>
       </div>
     </div>

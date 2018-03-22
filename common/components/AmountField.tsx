@@ -1,7 +1,7 @@
 import React from 'react';
 import { AmountFieldFactory } from './AmountFieldFactory';
 import { UnitDropDown } from 'components';
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import { Input } from 'components/ui';
 
 interface Props {
@@ -19,13 +19,13 @@ export const AmountField: React.SFC<Props> = ({
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group input-group-inline">
-          <div className="input-group-header">{translate('SEND_amount')}</div>
+          <div className="input-group-header">{translate('SEND_AMOUNT_SHORT')}</div>
           <Input
             className={`input-group-input ${
               isAmountValid(raw, customValidator, isValid) ? '' : 'invalid'
             }`}
             type="number"
-            placeholder={translateRaw('SEND_amount_short')}
+            placeholder={'1'}
             value={raw}
             readOnly={!!readOnly}
             onChange={onChange}

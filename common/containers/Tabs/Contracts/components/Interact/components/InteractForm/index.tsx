@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -53,8 +53,8 @@ class InteractForm extends Component<Props, State> {
       abiJson: '',
       contract: null,
       contractPlaceholder: this.isContractsValid()
-        ? 'Please select a contract...'
-        : 'No contracts available'
+        ? translateRaw('SELECT_A_THING', { $thing: 'contract' })
+        : translateRaw('NO_CONTRACTS_AVAILABLE')
     };
   }
 
@@ -88,7 +88,7 @@ class InteractForm extends Component<Props, State> {
         <div className="InteractForm-address row">
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_Title_2')}</div>
+              <div className="input-group-header">{translate('CONTRACT_TITLE_2')}</div>
               <Dropdown
                 className={`${!contract ? 'invalid' : ''}`}
                 value={contract as any}
@@ -104,7 +104,7 @@ class InteractForm extends Component<Props, State> {
 
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_Title')}</div>
+              <div className="input-group-header">{translate('CONTRACT_TITLE')}</div>
               <Input
                 placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
                 name="contract_address"
@@ -120,7 +120,7 @@ class InteractForm extends Component<Props, State> {
         </div>
 
         <label className="input-group">
-          <div className="input-group-header">{translate('CONTRACT_Json')}</div>
+          <div className="input-group-header">{translate('CONTRACT_JSON')}</div>
           {!!contract ? (
             contract.name === 'Custom' ? (
               <TextArea
@@ -149,7 +149,7 @@ class InteractForm extends Component<Props, State> {
           disabled={!showContractAccessButton}
           onClick={accessContract(abiJson, address)}
         >
-          {translate('x_Access')}
+          {translate('X_ACCESS')}
         </button>
       </div>
     );

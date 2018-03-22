@@ -28,7 +28,7 @@ class DetailsClass extends Component<StateProps> {
             return (
               <React.Fragment>
                 <label className="input-group">
-                  <div className="input-group-header">{translate('SEND_raw')}</div>
+                  <div className="input-group-header">{translate('SEND_RAW')}</div>
                   <Code>{JSON.stringify({ ...fields }, null, 2)} </Code>
                 </label>
                 <label className="input-group">

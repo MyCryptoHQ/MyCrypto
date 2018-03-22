@@ -78,7 +78,7 @@ class GenerateTransactionFactoryClass extends Component<Props> {
             {/* shows the json representation of the transaction */}
             <div className="col-xs-12">
               <label>
-                {walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_raw')}
+                {walletType.isWeb3Wallet ? 'Transaction Parameters' : translate('SEND_RAW')}
               </label>
               <Code>{getStringifiedTx(serializedTransaction as Buffer)}</Code>
             </div>
