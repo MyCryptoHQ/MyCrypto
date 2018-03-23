@@ -13,10 +13,10 @@ interface Props {
 }
 
 export default class ModalBody extends React.Component<Props> {
+  public firstTabStop: HTMLElement;
   private modal: HTMLElement;
   private modalContent: HTMLElement;
   private focusedElementBeforeModal: HTMLElement;
-  private firstTabStop: HTMLElement;
   private lastTabStop: HTMLElement;
 
   public componentDidMount() {
@@ -31,9 +31,6 @@ export default class ModalBody extends React.Component<Props> {
     // Convert NodeList to Array
     this.firstTabStop = focusableElements[0];
     this.lastTabStop = focusableElements[focusableElements.length - 1];
-
-    // Focus first child
-    this.firstTabStop.focus();
 
     this.modal.addEventListener('keydown', this.keyDownListener);
   }

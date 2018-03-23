@@ -25,7 +25,7 @@ input[type='checkbox'] {
 }
 
 input[readonly] {
-  background-color: #fafafa;
+  background-color: $gray-lightest;
   cursor: text !important;
 }
 

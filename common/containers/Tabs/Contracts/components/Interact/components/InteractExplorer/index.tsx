@@ -12,8 +12,7 @@ import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
 import { Web3Node } from 'libs/nodes';
 import RpcNode from 'libs/nodes/rpc';
-import { Input } from 'components/ui';
-import Dropdown from 'components/ui/Dropdown';
+import { Input, Dropdown } from 'components/ui';
 
 interface StateProps {
   nodeLib: RpcNode | Web3Node;
@@ -97,7 +96,8 @@ class InteractExplorerClass extends Component<Props, State> {
               placeholder={translate('SELECT_A_THING', { $thing: 'function' })}
               onChange={this.handleFunctionSelect}
               options={contractFunctionsOptions}
-              clearable={false}
+              clearable={true}
+              searchable={true}
               labelKey="name"
               valueKey="contract"
             />

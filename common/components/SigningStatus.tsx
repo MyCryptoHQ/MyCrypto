@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { signaturePending } from 'selectors/transaction';
 import { Spinner } from 'components/ui';
-import translate from 'translations';
+import './SigningStatus.scss';
+import { translate } from 'translations';
 interface StateProps {
   isSignaturePending: boolean;
   isHardwareWallet: boolean;
@@ -13,7 +14,7 @@ class SigningStatusClass extends Component<StateProps> {
   public render() {
     const { isHardwareWallet, isSignaturePending } = this.props;
 
-    const HWWalletPrompt: React.SFC<{}> = _ =>
+    const HWWalletPrompt: React.SFC<{}> = () =>
       isHardwareWallet ? (
         <p>
           <b>{translate('CONFIRM_HARDWARE_WALLET_TRANSACTION')}</b>
@@ -21,11 +22,9 @@ class SigningStatusClass extends Component<StateProps> {
       ) : null;
 
     return isSignaturePending ? (
-      <div className="container">
-        <div className="row form-group text-center">
-          <HWWalletPrompt />
-          <Spinner size="x2" />
-        </div>
+      <div className="SigningStatus text-center">
+        <HWWalletPrompt />
+        <Spinner size="x2" />
       </div>
     ) : null;
   }
