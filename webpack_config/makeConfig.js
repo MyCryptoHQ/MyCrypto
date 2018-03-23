@@ -6,12 +6,13 @@ const threadLoader = require('thread-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+// const AutoDllPlugin = require('autodll-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const ClearDistPlugin = require('./plugins/clearDist');
 const SortCachePlugin = require('./plugins/sortCache');
 
@@ -70,17 +71,18 @@ module.exports = function(opts = {}) {
     rules.push(
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader'
-        })
+        use: [
+          MiniCSSExtractPlugin.loader,
+          'css-loader'
+        ]
       },
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
+        use: [
+          MiniCSSExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
+        ]
       }
     );
   } else {
@@ -185,35 +187,46 @@ module.exports = function(opts = {}) {
 
   if (options.isProduction) {
     plugins.push(
-      new BabelMinifyPlugin(
-        {
-          // Mangle seems to be reusing variable identifiers, causing errors
-          mangle: false,
-          // These two on top of a lodash file are causing illegal characters for
-          // safari and ios browsers
-          evaluate: false,
-          propertyLiterals: false
-        },
-        {
-          comments: false
-        }
-      ),
-      new ExtractTextPlugin('[name].[chunkhash:8].css'),
-      new FaviconsWebpackPlugin({
-        logo: path.resolve(config.path.assets, 'images/favicon.png'),
-        background: '#163151',
-        inject: true
+      // new BabelMinifyPlugin(
+      //   {
+      //     // Mangle seems to be reusing variable identifiers, causing errors
+      //     mangle: false,
+      //     // These two on top of a lodash file are causing illegal characters for
+      //     // safari and ios browsers
+      //     evaluate: false,
+      //     propertyLiterals: false
+      //   },
+      //   {
+      //     comments: false
+      //   }
+      // ),
+      new MiniCSSExtractPlugin({
+        filename: '[name].[chunkhash:8].css'
       }),
+      // new FaviconsWebpackPlugin({
+      //   logo: path.resolve(config.path.assets, 'images/favicon.png'),
+      //   background: '#163151',
+      //   inject: true
+      // }),
       new SriPlugin({
         hashFuncNames: ['sha256', 'sha384'],
         enabled: true
       }),
       new ProgressPlugin(),
       new ClearDistPlugin(),
-      new SortCachePlugin()
+      // new SortCachePlugin()
     );
   } else {
     plugins.push(
+      // new AutoDllPlugin({
+      //   inject: true, // will inject the DLL bundles to index.html
+      //   filename: '[name]_[hash].js',
+      //   debug: true,
+      //   context: path.join(config.path.root),
+      //   entry: {
+      //     vendor: [...config.vendorModules, 'babel-polyfill', 'bootstrap-sass', 'font-awesome']
+      //   }
+      // }),
       new HardSourceWebpackPlugin({
         environmentHash: {
           root: process.cwd(),
