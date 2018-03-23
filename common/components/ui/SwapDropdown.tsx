@@ -18,22 +18,22 @@ interface Props<T> {
 const ValueComp: React.SFC = (props: any) => {
   return (
     <div className={`${props.className} swap-option-wrapper`}>
-      <img src={props.value.img} className="swap-option-img" />
+      <img src={props.value.img} className="swap-option-img" alt={props.value.label + ' logo'} />
       <span className="swap-option-label">{props.value.label}</span>
     </div>
   );
 };
 
 const OptionComp: React.SFC = (props: any) => {
-  const handleMouseDown = event => {
+  const handleMouseDown = (event: React.MouseEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
     props.onSelect(props.option, event);
   };
-  const handleMouseEnter = event => {
+  const handleMouseEnter = (event: React.MouseEvent<any>) => {
     props.onFocus(props.option, event);
   };
-  const handleMouseMove = event => {
+  const handleMouseMove = (event: React.MouseEvent<any>) => {
     if (props.isFocused) {
       return;
     }
@@ -46,7 +46,7 @@ const OptionComp: React.SFC = (props: any) => {
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
     >
-      <img src={props.option.img} className="swap-option-img" />
+      <img src={props.option.img} className="swap-option-img" alt={props.option.label + ' logo'} />
       <span className="swap-option-label">{props.option.label}</span>
     </div>
   );

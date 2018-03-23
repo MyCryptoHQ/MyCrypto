@@ -7,11 +7,11 @@ import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
 
 export class LedgerWallet extends DeterministicWallet implements IFullWallet {
-  private ethApp: any;
+  private ethApp: ledger.eth;
 
   constructor(address: string, dPath: string, index: number) {
     super(address, dPath, index);
-    ledger.comm_u2f.create_async().then(comm => {
+    ledger.comm_u2f.create_async().then((comm: any) => {
       this.ethApp = new ledger.eth(comm);
     });
   }
@@ -50,18 +50,22 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     const msgHex = Buffer.from(msg).toString('hex');
 
     return new Promise((resolve, reject) => {
-      this.ethApp.signPersonalMessage_async(this.getPath(), msgHex, async (signed, error) => {
-        if (error) {
-          return reject(this.ethApp.getError(error));
-        }
+      this.ethApp.signPersonalMessage_async(
+        this.getPath(),
+        msgHex,
+        async (signed: any, error: any) => {
+          if (error) {
+            return reject((this.ethApp as any).getError(error));
+          }
 
-        try {
-          const combined = signed.r + signed.s + signed.v;
-          resolve(bufferToHex(combined));
-        } catch (err) {
-          reject(err);
+          try {
+            const combined = signed.r + signed.s + signed.v;
+            resolve(bufferToHex(combined));
+          } catch (err) {
+            reject(err);
+          }
         }
-      });
+      );
     });
   }
 
@@ -83,6 +87,6 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   };
 
   public getWalletType(): string {
-    return translateRaw('x_Ledger');
+    return translateRaw('X_LEDGER');
   }
 }

@@ -20,7 +20,7 @@ export const OfflineBroadcast = connect((state: AppState) => ({ offline: getOffl
 const BroadCast: React.SFC<{}> = () => (
   <p>
     To broadcast this transaction, paste the above into the{' '}
-    <Link to="pushTx">Broadcast Transaction tab</Link> or{' '}
+    <Link to="/pushTx">Broadcast Transaction tab</Link> or{' '}
     <NewTabLink href="https://etherscan.io/pushTx">etherscan.io/pushTx</NewTabLink>
   </p>
 );

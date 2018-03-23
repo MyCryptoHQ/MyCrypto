@@ -1,0 +1,26 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'Dockerfile'
+            dir 'jenkins/Docker'
+            args '--env ETH_SIGNING_KEY=$ETH_SIGNING_KEY --env S3_BUCKET_NAME=$S3_BUCKET_NAME'
+        }
+    }
+    stages {
+        stage('Build') { 
+            environment {
+                ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = 1
+            }
+            steps {
+                sh 'rm -rf node_modules'
+                sh 'npm install'
+                sh 'npm run jenkins:build:linux'
+            }
+        }
+        stage('Upload') {
+            steps {
+                sh 'npm run jenkins:upload'
+            }
+        }
+    }
+}

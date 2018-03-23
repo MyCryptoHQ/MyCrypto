@@ -28,10 +28,10 @@ export default class MnemonicWord extends React.Component<Props, State> {
 
     return (
       <div className="input-group-wrapper MnemonicWord">
-        <label className="input-group input-group-inline-dropdown ENSInput-name">
+        <label className="input-group input-group-inline ENSInput-name">
           <span className="input-group-addon input-group-addon--transparent">{index + 1}.</span>
           <Input
-            className={classnames('MnemonicWord-word-input', word === value && 'valid')}
+            className={`MnemonicWord-word-input ${!isReadOnly && 'border-rad-right-0'}`}
             value={readOnly ? word : value}
             onChange={this.handleChange}
             readOnly={readOnly}
@@ -39,7 +39,7 @@ export default class MnemonicWord extends React.Component<Props, State> {
           {!isReadOnly && (
             <span
               onClick={this.toggleShow}
-              aria-label={translateRaw('GEN_Aria_2')}
+              aria-label={translateRaw('GEN_ARIA_2')}
               role="button"
               className="MnemonicWord-word-toggle input-group-addon"
             >

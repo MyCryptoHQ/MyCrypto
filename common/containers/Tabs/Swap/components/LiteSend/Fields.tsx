@@ -31,7 +31,7 @@ class FieldsClass extends Component<Props> {
               onClick={this.changeWallet}
             >
               <i className="fa fa-refresh" />
-              {translate('Change Wallet')}
+              {translate('CHANGE_WALLET')}
             </button>
           </div>
           <div className="col-xs-12">
@@ -46,7 +46,7 @@ class FieldsClass extends Component<Props> {
 
         <div className="row form-group">
           <div className="col-xs-12">
-            <label>{translate('SEND_amount')}</label>
+            <label>{translate('SEND_AMOUNT')}</label>
             {currentBalance === null ? (
               <div className="row text-center">
                 <Spinner />
@@ -56,10 +56,7 @@ class FieldsClass extends Component<Props> {
                 withProps={({ currentValue, isValid }) => (
                   <React.Fragment>
                     {!isValid && (
-                      <h5 style={{ color: 'red' }}>
-                        WARNING: Your ether or token balance is not high enough to complete this
-                        transaction! Please send more funds or switch to a different wallet
-                      </h5>
+                      <h5 style={{ color: 'red' }}>{translate('INSUFFICIENT_FUNDS')}</h5>
                     )}
                     {isValid && (
                       <Input

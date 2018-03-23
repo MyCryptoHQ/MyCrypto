@@ -18,7 +18,7 @@ import {
   TResetWallet
 } from 'actions/wallet';
 import { reset, TReset, ResetAction } from 'actions/transaction';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import {
   KeystoreDecrypt,
   LedgerNanoSDecrypt,
@@ -50,6 +50,7 @@ import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import './WalletDecrypt.scss';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 interface OwnProps {
   hidden?: boolean;
@@ -75,7 +76,7 @@ interface StateProps {
   isPasswordPending: AppState['wallet']['isPasswordPending'];
 }
 
-type Props = OwnProps & StateProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
 
 type UnlockParams = {} | PrivateKeyValue;
 interface State {
@@ -92,6 +93,7 @@ interface BaseWalletInfo {
   helpLink: string;
   isReadOnly?: boolean;
   attemptUnlock?: boolean;
+  redirect?: string;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -108,15 +110,15 @@ interface MiscWalletInfo extends InsecureWalletInfo {}
 
 const WEB3_TYPES = {
   CipherProvider: {
-    lid: 'x_Cipher',
+    lid: 'X_CIPHER',
     icon: CipherIcon
   },
   MetamaskInpageProvider: {
-    lid: 'x_MetaMask',
+    lid: 'X_METAMASK',
     icon: MetamaskIcon
   },
   EthereumProvider: {
-    lid: 'x_Mist',
+    lid: 'X_MIST',
     icon: MistIcon
   }
 };
@@ -126,318 +128,326 @@ type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
 type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
 type Wallets = SecureWallets & InsecureWallets & MiscWallet;
 
-const WEB3_TYPE: string | false =
+const WEB3_TYPE: keyof typeof WEB3_TYPES | false =
   (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
 
 const SECURE_WALLETS = Object.values(SecureWalletName);
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
 const MISC_WALLETS = Object.values(MiscWalletName);
 
-export class WalletDecrypt extends Component<Props, State> {
-  // https://github.com/Microsoft/TypeScript/issues/13042
-  // index signature should become [key: Wallets] (from config) once typescript bug is fixed
-  public WALLETS: Wallets = {
-    [SecureWalletName.WEB3]: {
-      lid: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] ? WEB3_TYPES[WEB3_TYPE].lid : 'x_Web3',
-      icon: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] && WEB3_TYPES[WEB3_TYPE].icon,
-      description: 'ADD_Web3Desc',
-      component: Web3Decrypt,
-      initialParams: {},
-      unlock: this.props.unlockWeb3,
-      attemptUnlock: true,
-      helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
-    },
-    [SecureWalletName.LEDGER_NANO_S]: {
-      lid: 'x_Ledger',
-      icon: LedgerIcon,
-      description: 'ADD_HardwareDesc',
-      component: LedgerNanoSDecrypt,
-      initialParams: {},
-      unlock: this.props.setWallet,
-      helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009'
-    },
-    [SecureWalletName.TREZOR]: {
-      lid: 'x_Trezor',
-      icon: TrezorIcon,
-      description: 'ADD_HardwareDesc',
-      component: TrezorDecrypt,
-      initialParams: {},
-      unlock: this.props.setWallet,
-      helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
-    },
-    [InsecureWalletName.KEYSTORE_FILE]: {
-      lid: 'x_Keystore2',
-      example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
-      component: KeystoreDecrypt,
-      initialParams: {
-        file: '',
-        password: ''
+const WalletDecrypt = withRouter<Props>(
+  class WalletDecryptClass extends Component<RouteComponentProps<{}> & Props, State> {
+    // https://github.com/Microsoft/TypeScript/issues/13042
+    // index signature should become [key: Wallets] (from config) once typescript bug is fixed
+    public WALLETS: Wallets = {
+      [SecureWalletName.WEB3]: {
+        lid: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] ? WEB3_TYPES[WEB3_TYPE].lid : 'X_WEB3',
+        icon: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] && WEB3_TYPES[WEB3_TYPE].icon,
+        description: 'ADD_WEB3DESC',
+        component: Web3Decrypt,
+        initialParams: {},
+        unlock: this.props.unlockWeb3,
+        attemptUnlock: true,
+        helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
       },
-      unlock: this.props.unlockKeystore,
-      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-    },
-    [InsecureWalletName.MNEMONIC_PHRASE]: {
-      lid: 'x_Mnemonic',
-      example: 'brain surround have swap horror cheese file distinct',
-      component: MnemonicDecrypt,
-      initialParams: {},
-      unlock: this.props.unlockMnemonic,
-      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-    },
-    [InsecureWalletName.PRIVATE_KEY]: {
-      lid: 'x_PrivKey2',
-      example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
-      component: PrivateKeyDecrypt,
-      initialParams: {
-        key: '',
-        password: ''
+      [SecureWalletName.LEDGER_NANO_S]: {
+        lid: 'X_LEDGER',
+        icon: LedgerIcon,
+        description: 'ADD_HARDWAREDESC',
+        component: LedgerNanoSDecrypt,
+        initialParams: {},
+        unlock: this.props.setWallet,
+        helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009'
       },
-      unlock: this.props.unlockPrivateKey,
-      helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-    },
-    [MiscWalletName.VIEW_ONLY]: {
-      lid: 'View Address',
-      example: donationAddressMap.ETH,
-      component: ViewOnlyDecrypt,
-      initialParams: {},
-      unlock: this.props.setWallet,
-      helpLink: '',
-      isReadOnly: true
+      [SecureWalletName.TREZOR]: {
+        lid: 'X_TREZOR',
+        icon: TrezorIcon,
+        description: 'ADD_HARDWAREDESC',
+        component: TrezorDecrypt,
+        initialParams: {},
+        unlock: this.props.setWallet,
+        helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+      },
+      [InsecureWalletName.KEYSTORE_FILE]: {
+        lid: 'X_KEYSTORE2',
+        example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
+        component: KeystoreDecrypt,
+        initialParams: {
+          file: '',
+          password: ''
+        },
+        unlock: this.props.unlockKeystore,
+        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      },
+      [InsecureWalletName.MNEMONIC_PHRASE]: {
+        lid: 'X_MNEMONIC',
+        example: 'brain surround have swap horror cheese file distinct',
+        component: MnemonicDecrypt,
+        initialParams: {},
+        unlock: this.props.unlockMnemonic,
+        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      },
+      [InsecureWalletName.PRIVATE_KEY]: {
+        lid: 'X_PRIVKEY2',
+        example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
+        component: PrivateKeyDecrypt,
+        initialParams: {
+          key: '',
+          password: ''
+        },
+        unlock: this.props.unlockPrivateKey,
+        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+      },
+      [MiscWalletName.VIEW_ONLY]: {
+        lid: 'VIEW_ADDR',
+        example: donationAddressMap.ETH,
+        component: ViewOnlyDecrypt,
+        initialParams: {},
+        unlock: this.props.setWallet,
+        helpLink: '',
+        isReadOnly: true,
+        redirect: '/account/info'
+      }
+    };
+
+    public state: State = {
+      selectedWalletKey: null,
+      value: null,
+      hasAcknowledgedInsecure: false
+    };
+
+    public componentWillReceiveProps(nextProps: Props) {
+      // Reset state when unlock is hidden / revealed
+      if (nextProps.hidden !== this.props.hidden) {
+        this.setState({
+          value: null,
+          selectedWalletKey: null
+        });
+      }
     }
-  };
 
-  public state: State = {
-    selectedWalletKey: null,
-    value: null,
-    hasAcknowledgedInsecure: false
-  };
+    public getSelectedWallet() {
+      const { selectedWalletKey } = this.state;
+      if (!selectedWalletKey) {
+        return null;
+      }
 
-  public componentWillReceiveProps(nextProps: Props) {
-    // Reset state when unlock is hidden / revealed
-    if (nextProps.hidden !== this.props.hidden) {
-      this.setState({
-        value: null,
-        selectedWalletKey: null
-      });
-    }
-  }
-
-  public getSelectedWallet() {
-    const { selectedWalletKey } = this.state;
-    if (!selectedWalletKey) {
-      return null;
+      return this.WALLETS[selectedWalletKey];
     }
 
-    return this.WALLETS[selectedWalletKey];
-  }
+    public getDecryptionComponent() {
+      const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
+      const selectedWallet = this.getSelectedWallet();
+      if (!selectedWalletKey || !selectedWallet) {
+        return null;
+      }
 
-  public getDecryptionComponent() {
-    const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
-    const selectedWallet = this.getSelectedWallet();
-    if (!selectedWalletKey || !selectedWallet) {
-      return null;
-    }
+      if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
+        return (
+          <div className="WalletDecrypt-decrypt">
+            <InsecureWalletWarning
+              walletType={translate(selectedWallet.lid)}
+              onContinue={this.handleAcknowledgeInsecure}
+              onCancel={this.clearWalletChoice}
+            />
+          </div>
+        );
+      }
 
-    if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
       return (
         <div className="WalletDecrypt-decrypt">
-          <InsecureWalletWarning
-            walletType={translate(selectedWallet.lid)}
-            onContinue={this.handleAcknowledgeInsecure}
-            onCancel={this.clearWalletChoice}
-          />
+          <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
+            <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
+          </button>
+          <h2 className="WalletDecrypt-decrypt-title">
+            {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
+          </h2>
+          <section className="WalletDecrypt-decrypt-form">
+            <selectedWallet.component
+              value={this.state.value}
+              onChange={this.onChange}
+              onUnlock={(value: any) => {
+                if (selectedWallet.redirect) {
+                  this.props.history.push(selectedWallet.redirect);
+                }
+                this.onUnlock(value);
+              }}
+              showNotification={this.props.showNotification}
+              isWalletPending={
+                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                  ? this.props.isWalletPending
+                  : undefined
+              }
+              isPasswordPending={
+                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                  ? this.props.isPasswordPending
+                  : undefined
+              }
+            />
+          </section>
         </div>
       );
     }
 
-    return (
-      <div className="WalletDecrypt-decrypt">
-        <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
-          <i className="fa fa-arrow-left" /> {translate('Change Wallet')}
-        </button>
-        <h2 className="WalletDecrypt-decrypt-title">
-          {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
-        </h2>
-        <section className="WalletDecrypt-decrypt-form">
-          <selectedWallet.component
-            value={this.state.value}
-            onChange={this.onChange}
-            onUnlock={this.onUnlock}
-            showNotification={this.props.showNotification}
-            isWalletPending={
-              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                ? this.props.isWalletPending
-                : undefined
-            }
-            isPasswordPending={
-              this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                ? this.props.isPasswordPending
-                : undefined
-            }
-          />
-        </section>
-      </div>
-    );
-  }
+    public handleAcknowledgeInsecure = () => {
+      this.setState({ hasAcknowledgedInsecure: true });
+    };
 
-  public handleAcknowledgeInsecure = () => {
-    this.setState({ hasAcknowledgedInsecure: true });
-  };
+    public buildWalletOptions() {
+      const { computedDisabledWallets } = this.props;
+      const { reasons } = computedDisabledWallets;
 
-  public buildWalletOptions() {
-    const { computedDisabledWallets } = this.props;
-    const { reasons } = computedDisabledWallets;
+      return (
+        <div className="WalletDecrypt-wallets">
+          <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
 
-    return (
-      <div className="WalletDecrypt-wallets">
-        <h2 className="WalletDecrypt-wallets-title">{translate('decrypt_Access')}</h2>
-
-        <div className="WalletDecrypt-wallets-row">
-          {SECURE_WALLETS.map((walletType: SecureWalletName) => {
-            const wallet = this.WALLETS[walletType];
-            return (
-              <WalletButton
-                key={walletType}
-                name={translate(wallet.lid)}
-                description={translate(wallet.description)}
-                icon={wallet.icon}
-                helpLink={wallet.helpLink}
-                walletType={walletType}
-                isSecure={true}
-                isDisabled={this.isWalletDisabled(walletType)}
-                disableReason={reasons[walletType]}
-                onClick={this.handleWalletChoice}
-              />
-            );
-          })}
-        </div>
-        <div className="WalletDecrypt-wallets-row">
-          {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
-            const wallet = this.WALLETS[walletType];
-            return (
-              <WalletButton
-                key={walletType}
-                name={translate(wallet.lid)}
-                example={wallet.example}
-                helpLink={wallet.helpLink}
-                walletType={walletType}
-                isSecure={false}
-                isDisabled={this.isWalletDisabled(walletType)}
-                disableReason={reasons[walletType]}
-                onClick={this.handleWalletChoice}
-              />
-            );
-          })}
-
-          {MISC_WALLETS.map((walletType: MiscWalletName) => {
-            const wallet = this.WALLETS[walletType];
-            return (
-              <WalletButton
-                key={walletType}
-                name={translate(wallet.lid)}
-                example={wallet.example}
-                helpLink={wallet.helpLink}
-                walletType={walletType}
-                isReadOnly={true}
-                isDisabled={this.isWalletDisabled(walletType)}
-                disableReason={reasons[walletType]}
-                onClick={this.handleWalletChoice}
-              />
-            );
-          })}
-        </div>
-
-        {this.props.showGenerateLink && (
-          <div className="WalletDecrypt-wallets-generate">
-            Don’t have an account yet? <Link to="/generate">Click here to get one</Link>.
+          <div className="WalletDecrypt-wallets-row">
+            {SECURE_WALLETS.map((walletType: SecureWalletName) => {
+              const wallet = this.WALLETS[walletType];
+              return (
+                <WalletButton
+                  key={walletType}
+                  name={translateRaw(wallet.lid)}
+                  description={translateRaw(wallet.description)}
+                  icon={wallet.icon}
+                  helpLink={wallet.helpLink}
+                  walletType={walletType}
+                  isSecure={true}
+                  isDisabled={this.isWalletDisabled(walletType)}
+                  disableReason={reasons[walletType]}
+                  onClick={this.handleWalletChoice}
+                />
+              );
+            })}
           </div>
-        )}
-      </div>
-    );
-  }
+          <div className="WalletDecrypt-wallets-row">
+            {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
+              const wallet = this.WALLETS[walletType];
+              return (
+                <WalletButton
+                  key={walletType}
+                  name={translateRaw(wallet.lid)}
+                  example={wallet.example}
+                  helpLink={wallet.helpLink}
+                  walletType={walletType}
+                  isSecure={false}
+                  isDisabled={this.isWalletDisabled(walletType)}
+                  disableReason={reasons[walletType]}
+                  onClick={this.handleWalletChoice}
+                />
+              );
+            })}
 
-  public handleWalletChoice = async (walletType: WalletName) => {
-    const wallet = this.WALLETS[walletType];
+            {MISC_WALLETS.map((walletType: MiscWalletName) => {
+              const wallet = this.WALLETS[walletType];
+              return (
+                <WalletButton
+                  key={walletType}
+                  name={translateRaw(wallet.lid)}
+                  example={wallet.example}
+                  helpLink={wallet.helpLink}
+                  walletType={walletType}
+                  isReadOnly={true}
+                  isDisabled={this.isWalletDisabled(walletType)}
+                  disableReason={reasons[walletType]}
+                  onClick={this.handleWalletChoice}
+                />
+              );
+            })}
+          </div>
 
-    if (!wallet) {
-      return;
+          {this.props.showGenerateLink && (
+            <div className="WalletDecrypt-wallets-generate">
+              <Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link>
+            </div>
+          )}
+        </div>
+      );
     }
 
-    let timeout = 0;
-    const web3Available = await isWeb3NodeAvailable();
-    if (wallet.attemptUnlock && web3Available) {
-      // timeout is only the maximum wait time before secondary view is shown
-      // send view will be shown immediately on web3 resolve
-      timeout = 1000;
-      wallet.unlock();
-    }
+    public handleWalletChoice = async (walletType: WalletName) => {
+      const wallet = this.WALLETS[walletType];
 
-    window.setTimeout(() => {
+      if (!wallet) {
+        return;
+      }
+
+      let timeout = 0;
+      const web3Available = await isWeb3NodeAvailable();
+      if (wallet.attemptUnlock && web3Available) {
+        // timeout is only the maximum wait time before secondary view is shown
+        // send view will be shown immediately on web3 resolve
+        timeout = 1000;
+        wallet.unlock();
+      }
+
+      window.setTimeout(() => {
+        this.setState({
+          selectedWalletKey: walletType,
+          value: wallet.initialParams,
+          hasAcknowledgedInsecure: false
+        });
+      }, timeout);
+    };
+
+    public clearWalletChoice = () => {
       this.setState({
-        selectedWalletKey: walletType,
-        value: wallet.initialParams,
+        selectedWalletKey: null,
+        value: null,
         hasAcknowledgedInsecure: false
       });
-    }, timeout);
-  };
+    };
 
-  public clearWalletChoice = () => {
-    this.setState({
-      selectedWalletKey: null,
-      value: null,
-      hasAcknowledgedInsecure: false
-    });
-  };
-
-  public render() {
-    const { hidden } = this.props;
-    const selectedWallet = this.getSelectedWallet();
-    const decryptionComponent = this.getDecryptionComponent();
-    return (
-      <div>
-        {!hidden && (
-          <article className="Tab-content-pane">
-            <div className="WalletDecrypt">
-              <TransitionGroup>
-                {decryptionComponent && selectedWallet ? (
-                  <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
-                    {decryptionComponent}
-                  </CSSTransition>
-                ) : (
-                  <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
-                    {this.buildWalletOptions()}
-                  </CSSTransition>
-                )}
-              </TransitionGroup>
-            </div>
-          </article>
-        )}
-      </div>
-    );
-  }
-
-  public onChange = (value: UnlockParams) => {
-    this.setState({ value });
-  };
-
-  public onUnlock = (payload: any) => {
-    const { value, selectedWalletKey } = this.state;
-    if (!selectedWalletKey) {
-      return;
+    public render() {
+      const { hidden } = this.props;
+      const selectedWallet = this.getSelectedWallet();
+      const decryptionComponent = this.getDecryptionComponent();
+      return (
+        <div>
+          {!hidden && (
+            <article className="Tab-content-pane">
+              <div className="WalletDecrypt">
+                <TransitionGroup>
+                  {decryptionComponent && selectedWallet ? (
+                    <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
+                      {decryptionComponent}
+                    </CSSTransition>
+                  ) : (
+                    <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
+                      {this.buildWalletOptions()}
+                    </CSSTransition>
+                  )}
+                </TransitionGroup>
+              </div>
+            </article>
+          )}
+        </div>
+      );
     }
 
-    // some components (TrezorDecrypt) don't take an onChange prop, and thus
-    // this.state.value will remain unpopulated. in this case, we can expect
-    // the payload to contain the unlocked wallet info.
-    const unlockValue = value && !isEmpty(value) ? value : payload;
-    this.WALLETS[selectedWalletKey].unlock(unlockValue);
-    this.props.resetTransactionState(this.props.resetIncludeExcludeProperties);
-  };
+    public onChange = (value: UnlockParams) => {
+      this.setState({ value });
+    };
 
-  private isWalletDisabled = (walletKey: WalletName) => {
-    return this.props.computedDisabledWallets.wallets.indexOf(walletKey) !== -1;
-  };
-}
+    public onUnlock = (payload: any) => {
+      const { value, selectedWalletKey } = this.state;
+      if (!selectedWalletKey) {
+        return;
+      }
+
+      // some components (TrezorDecrypt) don't take an onChange prop, and thus
+      // this.state.value will remain unpopulated. in this case, we can expect
+      // the payload to contain the unlocked wallet info.
+      const unlockValue = value && !isEmpty(value) ? value : payload;
+      this.WALLETS[selectedWalletKey].unlock(unlockValue);
+      this.props.resetTransactionState(this.props.resetIncludeExcludeProperties);
+    };
+
+    private isWalletDisabled = (walletKey: WalletName) => {
+      return this.props.computedDisabledWallets.wallets.indexOf(walletKey) !== -1;
+    };
+  }
+);
 
 function mapStateToProps(state: AppState, ownProps: Props) {
   const { disabledWallets } = ownProps;
@@ -460,7 +470,7 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   };
 }
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, {
+export default connect(mapStateToProps, {
   unlockKeystore,
   unlockMnemonic,
   unlockPrivateKey,
@@ -469,4 +479,4 @@ export default connect<StateProps, DispatchProps>(mapStateToProps, {
   resetWallet,
   resetTransactionState: reset,
   showNotification
-})(WalletDecrypt);
+})(WalletDecrypt) as React.ComponentClass<OwnProps>;

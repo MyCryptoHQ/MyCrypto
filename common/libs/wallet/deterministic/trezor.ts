@@ -30,7 +30,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
         cleanedTx.data,
         chainId,
         // Callback
-        result => {
+        (result: any) => {
           if (!result.success) {
             return reject(Error(result.error));
           }
@@ -64,7 +64,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
     return new Promise((resolve, reject) => {
       (TrezorConnect as any).ethereumGetAddress(
         dPath + '/' + index,
-        res => {
+        (res: any) => {
           if (res.error) {
             reject(res.error);
           } else {
@@ -77,7 +77,7 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
   };
 
   public getWalletType(): string {
-    return translateRaw('x_Trezor');
+    return translateRaw('X_TREZOR');
   }
 
   // works, but returns a signature that can only be verified with a Trezor device

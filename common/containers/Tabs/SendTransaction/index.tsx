@@ -3,17 +3,18 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import { UnlockHeader } from 'components/ui';
-import { SideBar } from './components/index';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
-import { RouteComponentProps, Route, Switch } from 'react-router';
+import { RouteComponentProps, Route, Switch, Redirect } from 'react-router';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import {
   WalletInfo,
   RequestPayment,
+  RecentTransactions,
   Fields,
-  UnavailableWallets
-} from 'containers/Tabs/SendTransaction/components';
+  UnavailableWallets,
+  SideBar
+} from './components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
@@ -34,33 +35,37 @@ type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match } = this.props;
+    const { wallet, match, location, history } = this.props;
     const currentPath = match.url;
     const tabs: Tab[] = [
       {
         path: 'send',
-        name: translate('NAV_SendEther'),
+        name: translate('NAV_SENDETHER'),
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
         path: 'request',
-        name: translate('Request Payment'),
+        name: translate('NAV_REQUESTPAYMENT'),
         disabled: this.props.requestDisabled
       },
       {
         path: 'info',
-        name: translate('NAV_ViewWallet')
+        name: translate('NAV_VIEWWALLET')
+      },
+      {
+        path: 'recent-txs',
+        name: translate('NAV_RECENT_TX')
       }
     ];
 
     return (
       <TabSection>
         <section className="Tab-content">
-          <UnlockHeader title={translate('Account')} showGenerateLink={true} />
+          <UnlockHeader showGenerateLink={true} />
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                <SubTabs tabs={tabs} match={match} />
+                <SubTabs tabs={tabs} match={match} location={location} history={history} />
               </div>
               <div className="col-sm-8">
                 <Switch>
@@ -74,7 +79,13 @@ class SendTransaction extends React.Component<Props> {
                       />
                     )}
                   />
-                  <Route exact={true} path={`${currentPath}/send`} component={Send} />
+                  <Route
+                    exact={true}
+                    path={`${currentPath}/send`}
+                    render={() => {
+                      return wallet.isReadOnly ? <Redirect to={`${currentPath}/info`} /> : <Send />;
+                    }}
+                  />
                   <Route
                     path={`${currentPath}/info`}
                     exact={true}
@@ -84,6 +95,11 @@ class SendTransaction extends React.Component<Props> {
                     path={`${currentPath}/request`}
                     exact={true}
                     render={() => <RequestPayment wallet={wallet} />}
+                  />
+                  <Route
+                    path={`${currentPath}/recent-txs`}
+                    exact={true}
+                    render={() => <RecentTransactions wallet={wallet} />}
                   />
                   <RouteNotFound />
                 </Switch>

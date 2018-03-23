@@ -65,7 +65,7 @@ module.exports = function(opts = {}) {
     });
   }
 
-  // Styles (CSS, SCSS, LESS)
+  // Styles (CSS, SCSS)
   if (options.isProduction) {
     rules.push(
       {
@@ -80,13 +80,6 @@ module.exports = function(opts = {}) {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: ['css-loader', 'sass-loader']
-        })
-      },
-      {
-        test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'less-loader']
         })
       }
     );
@@ -104,11 +97,6 @@ module.exports = function(opts = {}) {
           .concat([config.path.modules]),
 
         use: ['style-loader', 'css-loader', 'sass-loader']
-      },
-      {
-        test: /\.less$/,
-        include: path.resolve(config.path.assets, 'styles'),
-        use: ['style-loader', 'css-loader', 'less-loader']
       }
     );
   }

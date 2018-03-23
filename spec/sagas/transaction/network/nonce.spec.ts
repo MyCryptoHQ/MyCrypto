@@ -21,7 +21,7 @@ describe('handleNonceRequest*', () => {
 
   const gens: any = {};
   gens.gen = cloneableGenerator(handleNonceRequest)();
-  let random;
+  let random: () => number;
 
   beforeAll(() => {
     random = Math.random;

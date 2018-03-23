@@ -30,7 +30,7 @@ module.exports = {
 
   // File resolution
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss', '.less'],
+    extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
     modules: [
       paths.src,
       paths.modules,
@@ -43,7 +43,7 @@ module.exports = {
     'bip39',
     'bn.js',
     'classnames',
-    'ethereum-blockies',
+    'ethereum-blockies-base64',
     'ethereumjs-abi',
     'ethereumjs-tx',
     'ethereumjs-util',

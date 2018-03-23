@@ -56,12 +56,7 @@ const nonStandardTransaction = (state: AppState): boolean => {
 const getGasCost = (state: AppState) => {
   const gasPrice = getGasPrice(state);
   const gasLimit = getGasLimit(state);
-  if (!gasLimit.value) {
-    return Wei('0');
-  }
-  const cost = gasLimit.value.mul(gasPrice.value);
-
-  return cost;
+  return gasLimit.value ? gasPrice.value.mul(gasLimit.value) : Wei('0');
 };
 
 const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: boolean) => {
@@ -81,7 +76,10 @@ const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: b
 
   const t2 = getTransactionFields(makeTransaction(serialzedTransaction));
   const checkValidity = (tx: IHexStrTransaction) =>
-    Object.keys(tx).reduce((match, currField) => match && t1[currField] === t2[currField], true);
+    Object.keys(tx).reduce(
+      (match, currField: keyof IHexStrTransaction) => match && t1[currField] === t2[currField],
+      true
+    );
   //reduce both ways to make sure both are exact same
   const transactionsMatch = checkValidity(t1) && checkValidity(t2);
   // if its signed then verify the signature too
