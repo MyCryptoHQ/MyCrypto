@@ -11,6 +11,7 @@ interface DispatchProps {
 
 interface OwnProps {
   to: string | null;
+  isSelfAddress?: boolean;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -33,7 +34,13 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   }
 
   public render() {
-    return <AddressInputFactory onChange={this.setAddress} withProps={this.props.withProps} />;
+    return (
+      <AddressInputFactory
+        isSelfAddress={this.props.isSelfAddress}
+        onChange={this.setAddress}
+        withProps={this.props.withProps}
+      />
+    );
   }
 
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
@@ -45,13 +52,16 @@ class AddressFieldFactoryClass extends React.Component<Props> {
 const AddressFieldFactory = connect(null, { setCurrentTo })(AddressFieldFactoryClass);
 
 interface DefaultAddressFieldProps {
+  isSelfAddress?: boolean;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({ withProps }) => (
+const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({ isSelfAddress, withProps }) => (
   <Query
     params={['to']}
-    withQuery={({ to }) => <AddressFieldFactory to={to} withProps={withProps} />}
+    withQuery={({ to }) => (
+      <AddressFieldFactory to={to} isSelfAddress={isSelfAddress} withProps={withProps} />
+    )}
   />
 );
 

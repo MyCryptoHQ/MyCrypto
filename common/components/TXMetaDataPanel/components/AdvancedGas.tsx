@@ -71,19 +71,21 @@ class AdvancedGas extends React.Component<Props, State> {
 
         <div className="AdvancedGas-flex-wrapper flex-wrapper">
           {gasPriceField && (
-            <div className="input-group-wrapper AdvancedGas-gas-price">
-              <label className="input-group">
-                <div className="input-group-header">
-                  {translateRaw('OFFLINE_STEP2_LABEL_3')} (gwei)
-                </div>
-                <Input
-                  className={!!gasPrice.raw && !validGasPrice ? 'is-invalid' : ''}
-                  type="number"
-                  placeholder="40"
-                  value={gasPrice.raw}
-                  onChange={this.handleGasPriceChange}
-                />
-              </label>
+            <div className="AdvancedGas-gas-price">
+              <div className="input-group-wrapper">
+                <label className="input-group">
+                  <div className="input-group-header">
+                    {translateRaw('OFFLINE_STEP2_LABEL_3')} (gwei)
+                  </div>
+                  <Input
+                    className={!!gasPrice.raw && !validGasPrice ? 'is-invalid' : ''}
+                    type="number"
+                    placeholder="40"
+                    value={gasPrice.raw}
+                    onChange={this.handleGasPriceChange}
+                  />
+                </label>
+              </div>
             </div>
           )}
 

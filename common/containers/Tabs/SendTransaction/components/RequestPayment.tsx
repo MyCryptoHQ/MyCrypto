@@ -97,7 +97,7 @@ class RequestPayment extends React.Component<Props, {}> {
           <AddressField isReadOnly={true} />
 
           <div className="row form-group">
-            <div className="col-xs-11">
+            <div className="col-xs-12">
               <AmountField
                 hasUnitDropdown={true}
                 showAllTokens={true}
@@ -107,7 +107,7 @@ class RequestPayment extends React.Component<Props, {}> {
           </div>
 
           <div className="row form-group">
-            <div className="col-xs-11">
+            <div className="col-xs-12">
               <TXMetaDataPanel
                 initialState="advanced"
                 disableToggle={true}
