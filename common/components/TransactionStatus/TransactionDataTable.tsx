@@ -1,6 +1,6 @@
 import React from 'react';
 import translate from 'translations';
-import { Identicon, UnitDisplay, NewTabLink, TextArea, Address } from 'components/ui';
+import { Identicon, UnitDisplay, NewTabLink, Address, CodeBlock } from 'components/ui';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
 import { NetworkConfig } from 'types/network';
 import './TransactionDataTable.scss';
@@ -152,7 +152,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
     },
     {
       label: translate('TRANS_DATA'),
-      data: hasInputData ? <TextArea value={data.input} disabled={true} /> : null
+      data: hasInputData ? <CodeBlock>{data.input}</CodeBlock> : null
     }
   ];
 

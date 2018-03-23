@@ -12,8 +12,7 @@ import {
   getStaticNetworkConfigs
 } from 'selectors/config';
 import { CustomNode } from 'libs/nodes';
-import { Input } from 'components/ui';
-import Dropdown from 'components/ui/Dropdown';
+import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
@@ -128,7 +127,6 @@ class CustomNodeModal extends React.Component<Props, State> {
             <label className="col-sm-3 input-group">
               <div className="input-group-header">Network</div>
               <Dropdown
-                className="input-group-dropdown"
                 value={network}
                 options={options}
                 clearable={false}

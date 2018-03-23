@@ -33,12 +33,16 @@ class AddressesClass extends Component<StateProps> {
             <div className="tx-modal-address">
               <div className="tx-modal-address-from">
                 {from && (
-                  <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
+                  <React.Fragment>
+                    <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
+                    <div className="tx-modal-address-from-content">
+                      <h5 className="tx-modal-address-from-title">
+                        {translate('CONFIRM_TX_FROM')}{' '}
+                      </h5>
+                      <h5 className="tx-modal-address-from-address small">{from}</h5>
+                    </div>
+                  </React.Fragment>
                 )}
-                <div className="tx-modal-address-from-content">
-                  <h5 className="tx-modal-address-from-title">{translate('CONFIRM_TX_FROM')} </h5>
-                  <h5 className="tx-modal-address-from-address small">{from}</h5>
-                </div>
               </div>
               {isToken && (
                 <div className="tx-modal-address-tkn-contract">
@@ -59,15 +63,19 @@ class AddressesClass extends Component<StateProps> {
                 </div>
               )}
               <div className="tx-modal-address-to">
-                <Identicon
-                  className="tx-modal-address-from-icon"
-                  size={size}
-                  address={toFormatted}
-                />
-                <div className="tx-modal-address-to-content">
-                  <h5 className="tx-modal-address-to-title">{translate('CONFIRM_TX_TO')} </h5>
-                  <h5 className="small tx-modal-address-to-address">{toFormatted}</h5>
-                </div>
+                {to && (
+                  <React.Fragment>
+                    <Identicon
+                      className="tx-modal-address-from-icon"
+                      size={size}
+                      address={toFormatted}
+                    />
+                    <div className="tx-modal-address-to-content">
+                      <h5 className="tx-modal-address-to-title">{translate('CONFIRM_TX_TO')} </h5>
+                      <h5 className="small tx-modal-address-to-address">{toFormatted}</h5>
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
             </div>
           );

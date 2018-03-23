@@ -12,6 +12,11 @@
   > .TogglablePassword {
     width: 100%;
   }
+  & > pre,
+  & > .Select,
+  &-input {
+    margin-bottom: 1rem;
+  }
   &-inline {
     display: flex;
     flex-direction: row;
@@ -45,12 +50,9 @@
       color: rgba(0, 0, 0, 0.54);
     }
   }
-  &-dropdown {
-    margin-bottom: 1rem;
-  }
   &-input {
     width: 100%;
-    border: 1px solid #e5ecf3;
+    border: 1px solid $border-idle;
     border-radius: 2px;
     height: $input-height-base;
     padding: 0.75rem 1rem;

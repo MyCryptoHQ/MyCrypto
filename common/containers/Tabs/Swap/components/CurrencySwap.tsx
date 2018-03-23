@@ -317,7 +317,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                   <Input
                     id="origin-swap-input"
                     className={`input-group-input ${
-                      !origin.amount &&
+                      !!origin.amount &&
                       this.isMinMaxValid(origin.amount, origin.label, destination.label)
                         ? ''
                         : 'invalid'
@@ -342,7 +342,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                   <Input
                     id="destination-swap-input"
                     className={`${
-                      !destination.amount &&
+                      !!destination.amount &&
                       this.isMinMaxValid(origin.amount, origin.label, destination.label)
                         ? ''
                         : 'invalid'
