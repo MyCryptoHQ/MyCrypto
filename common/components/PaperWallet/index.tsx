@@ -100,8 +100,8 @@ export default class PaperWallet extends React.Component<Props, {}> {
 
     return (
       <div style={styles.container}>
-        <img src={sidebarImg} style={styles.sidebar} />
-        <img src={ethLogo} style={styles.ethLogo} />
+        <img src={sidebarImg} style={styles.sidebar} alt="MyCrypto Logo" />
+        <img src={ethLogo} style={styles.ethLogo} alt="ETH Logo" />
 
         <div style={styles.block}>
           <div style={styles.box}>
@@ -111,7 +111,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
         </div>
 
         <div style={styles.block}>
-          <img src={notesBg} style={styles.box} />
+          <img src={notesBg} style={styles.box} aria-hidden={true} />
           <p style={styles.blockText}>AMOUNT / NOTES</p>
         </div>
 

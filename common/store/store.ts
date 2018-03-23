@@ -4,8 +4,12 @@ import {
   INITIAL_STATE as transactionInitialState,
   State as TransactionState
 } from 'reducers/transaction';
+import {
+  INITIAL_STATE as initialTransactionsState,
+  State as TransactionsState
+} from 'reducers/transactions';
 import { State as SwapState, INITIAL_STATE as swapInitialState } from 'reducers/swap';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
@@ -24,7 +28,7 @@ const configureStore = () => {
   });
   const sagaMiddleware = createSagaMiddleware();
   let middleware;
-  let store;
+  let store: Store<AppState>;
 
   if (process.env.NODE_ENV !== 'production') {
     middleware = composeWithDevTools(
@@ -44,8 +48,9 @@ const configureStore = () => {
       : { ...swapInitialState };
 
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
+  const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
 
-  const persistedInitialState = {
+  const persistedInitialState: Partial<AppState> = {
     transaction: {
       ...transactionInitialState,
       fields: {
@@ -62,19 +67,24 @@ const configureStore = () => {
 
     // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState,
+    transactions: {
+      ...initialTransactionsState,
+      ...savedTransactionsState
+    },
     ...rehydrateConfigAndCustomTokenState()
   };
 
-  store = createStore(RootReducer, persistedInitialState, middleware);
+  store = createStore<AppState>(RootReducer, persistedInitialState as any, middleware);
 
   // Add all of the sagas to the middleware
-  Object.keys(sagas).forEach(saga => {
+  Object.keys(sagas).forEach((saga: keyof typeof sagas) => {
     sagaMiddleware.run(sagas[saga]);
   });
 
   store.subscribe(
     throttle(() => {
       const state: AppState = store.getState();
+
       saveState({
         transaction: {
           fields: {
@@ -95,6 +105,9 @@ const configureStore = () => {
             byId: {},
             allIds: []
           }
+        },
+        transactions: {
+          recent: state.transactions.recent
         },
         ...getConfigAndCustomTokensStateToSubscribe(state)
       });

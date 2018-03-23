@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { SerializedTransaction } from 'components/renderCbs';
 import { AppState } from 'reducers';
 import { getFrom, getUnit, isEtherTransaction } from 'selectors/transaction';
+import { toChecksumAddress } from 'ethereumjs-util';
+import translate from 'translations';
 
 interface StateProps {
   from: AppState['transaction']['meta']['from'];
@@ -24,17 +26,23 @@ class AddressesClass extends Component<StateProps> {
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {
-          const toFormatted = isToken ? ERC20.transfer.decodeInput(data)._to : to;
+          const toFormatted = toChecksumAddress(
+            isToken ? ERC20.transfer.decodeInput(data)._to : to
+          );
           return (
             <div className="tx-modal-address">
               <div className="tx-modal-address-from">
                 {from && (
-                  <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
+                  <React.Fragment>
+                    <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
+                    <div className="tx-modal-address-from-content">
+                      <h5 className="tx-modal-address-from-title">
+                        {translate('CONFIRM_TX_FROM')}{' '}
+                      </h5>
+                      <h5 className="tx-modal-address-from-address small">{from}</h5>
+                    </div>
+                  </React.Fragment>
                 )}
-                <div className="tx-modal-address-from-content">
-                  <h5 className="tx-modal-address-from-title">From </h5>
-                  <h5 className="tx-modal-address-from-address small">{from}</h5>
-                </div>
               </div>
               {isToken && (
                 <div className="tx-modal-address-tkn-contract">
@@ -42,7 +50,9 @@ class AddressesClass extends Component<StateProps> {
                     <img src={arrow} alt="arrow" />
                   </div>
                   <div className="tx-modal-address-tkn-contract-content">
-                    <p className="tx-modal-address-tkn-contract-title">via the {unit} contract</p>
+                    <p className="tx-modal-address-tkn-contract-title">
+                      {translate('CONFIRM_TX_VIA_CONTRACT', { unit })}
+                    </p>
                     <a
                       className="small tx-modal-address-tkn-contract-link"
                       href={ETHAddressExplorer(to)}
@@ -53,15 +63,19 @@ class AddressesClass extends Component<StateProps> {
                 </div>
               )}
               <div className="tx-modal-address-to">
-                <Identicon
-                  className="tx-modal-address-from-icon"
-                  size={size}
-                  address={toFormatted}
-                />
-                <div className="tx-modal-address-to-content">
-                  <h5 className="tx-modal-address-to-title">To </h5>
-                  <h5 className="small tx-modal-address-to-address">{toFormatted}</h5>
-                </div>
+                {to && (
+                  <React.Fragment>
+                    <Identicon
+                      className="tx-modal-address-from-icon"
+                      size={size}
+                      address={toFormatted}
+                    />
+                    <div className="tx-modal-address-to-content">
+                      <h5 className="tx-modal-address-to-title">{translate('CONFIRM_TX_TO')} </h5>
+                      <h5 className="small tx-modal-address-to-address">{toFormatted}</h5>
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
             </div>
           );

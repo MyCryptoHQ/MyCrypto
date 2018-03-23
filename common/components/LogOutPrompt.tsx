@@ -4,6 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { resetWallet, TResetWallet } from 'actions/wallet';
+import translate, { translateRaw } from 'translations';
 
 interface Props extends RouteComponentProps<{}> {
   // State
@@ -18,7 +19,7 @@ interface State {
 }
 
 class LogOutPromptClass extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       nextLocation: null,
@@ -42,17 +43,17 @@ class LogOutPromptClass extends React.Component<Props, State> {
 
   public render() {
     const buttons: IButton[] = [
-      { text: 'Log Out', type: 'primary', onClick: this.onConfirm },
-      { text: 'Cancel', type: 'default', onClick: this.onCancel }
+      { text: translate('ACTION_7'), type: 'primary', onClick: this.onConfirm },
+      { text: translate('ACTION_2'), type: 'default', onClick: this.onCancel }
     ];
     return (
       <Modal
-        title="You are about to log out"
+        title={translateRaw('WALLET_LOGOUT_MODAL_TITLE')}
         isOpen={this.state.openModal}
         handleClose={this.onCancel}
         buttons={buttons}
       >
-        <p>Leaving this page will log you out. Are you sure you want to continue?</p>
+        <p>{translate('WALLET_LOGOUT_MODAL_DESC')}</p>
       </Modal>
     );
   }

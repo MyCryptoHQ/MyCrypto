@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TabSection from 'containers/TabSection';
-import { translateRaw } from 'translations';
+import translate from 'translations';
 import {
   signLocalTransactionSucceeded,
   TSignLocalTransactionSucceeded,
   signTransactionFailed,
   TSignTransactionFailed
 } from 'actions/transaction';
-import { computeIndexingHash } from 'libs/transaction';
-import { QRCode, TextArea } from 'components/ui';
+import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
+import { QRCode, Input, CodeBlock } from 'components/ui';
 import EthTx from 'ethereumjs-tx';
 import { SendButton } from 'components/SendButton';
 import { toBuffer, bufferToHex } from 'ethereumjs-util';
@@ -33,6 +33,9 @@ const INITIAL_STATE: State = { userInput: '' };
 
 type Props = DispatchProps & StateProps & RouteComponentProps<{}>;
 
+const getStringifiedTx = (serializedTx: Buffer) =>
+  JSON.stringify(getTransactionFields(makeTransaction(serializedTx)), null, 2);
+
 class BroadcastTx extends Component<Props> {
   public state: State = INITIAL_STATE;
 
@@ -42,31 +45,41 @@ class BroadcastTx extends Component<Props> {
     const currentPath = this.props.match.url;
     return (
       <TabSection isUnavailableOffline={true}>
-        <div className="Tab-content-pane row block text-center">
+        <div className="Tab-content-pane row block">
           <Switch>
             <Route
               exact={true}
               path={currentPath}
               render={() => (
                 <div className="BroadcastTx">
-                  <h1 className="BroadcastTx-title">Broadcast Signed Transaction</h1>
-                  <p className="BroadcastTx-help">
-                    Paste a signed transaction and press the "SEND TRANSACTION" button.
+                  <h1 className="BroadcastTx-title text-center">
+                    {translate('BROADCAST_TX_TITLE')}
+                  </h1>
+                  <p className="BroadcastTx-help text-center">
+                    {translate('BROADCAST_TX_DESCRIPTION')}
                   </p>
 
                   <div className="input-group-wrapper InteractForm-interface">
                     <label className="input-group">
-                      <div className="input-group-header">{translateRaw('SEND_signed')}</div>
-                      <TextArea
+                      <div className="input-group-header">{translate('SEND_SIGNED')}</div>
+                      <Input
+                        type="text"
+                        placeholder="0xf86b0284ee6b2800825208944bbeeb066ed09b7aed07bf39eee0460dfa26152088016345785d8a00008029a03ba7a0cc6d1756cd771f2119cf688b6d4dc9d37096089f0331fe0de0d1cc1254a02f7bcd19854c8d46f8de09e457aec25b127ab4328e1c0d24bfbff8702ee1f474"
                         className={stateTransaction ? '' : 'invalid'}
-                        rows={7}
                         value={userInput}
                         onChange={this.handleChange}
                       />
                     </label>
                   </div>
 
-                  <SendButton onlyTransactionParameters={true} />
+                  {stateTransaction && (
+                    <React.Fragment>
+                      <label>{translate('SEND_RAW')}</label>
+                      <CodeBlock>{getStringifiedTx(stateTransaction)}</CodeBlock>
+                    </React.Fragment>
+                  )}
+
+                  <SendButton className="form-group" />
 
                   <div className="BroadcastTx-qr">
                     {stateTransaction && <QRCode data={bufferToHex(stateTransaction)} />}
@@ -81,7 +94,7 @@ class BroadcastTx extends Component<Props> {
     );
   }
 
-  protected handleChange = ({ currentTarget }: React.FormEvent<HTMLTextAreaElement>) => {
+  protected handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
     const { value } = currentTarget;
     this.setState({ userInput: value });
     try {

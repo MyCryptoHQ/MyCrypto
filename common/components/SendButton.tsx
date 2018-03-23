@@ -2,22 +2,32 @@ import React from 'react';
 import { SendButtonFactory } from './SendButtonFactory';
 import translate from 'translations';
 import { ConfirmationModal } from 'components/ConfirmationModal';
+import { SigningStatus } from 'components';
+import './SendButton.scss';
 
 export const SendButton: React.SFC<{
-  onlyTransactionParameters?: boolean;
+  className?: string;
+  signing?: boolean;
   customModal?: typeof ConfirmationModal;
-}> = ({ onlyTransactionParameters, customModal }) => (
-  <SendButtonFactory
-    onlyTransactionParameters={!!onlyTransactionParameters}
-    Modal={customModal ? customModal : ConfirmationModal}
-    withProps={({ onClick }) => (
-      <div className="row form-group">
-        <div className="col-xs-12">
-          <button className="btn btn-primary btn-block" onClick={onClick}>
-            {translate('SEND_trans')}
+}> = ({ signing, customModal, className }) => (
+  <React.Fragment>
+    <SendButtonFactory
+      signing={signing}
+      Modal={customModal ? customModal : ConfirmationModal}
+      withProps={({ disabled, openModal, signTx }) => (
+        <React.Fragment>
+          <button
+            disabled={disabled}
+            className={`SendButton btn btn-primary btn-block ${className}`}
+            onClick={() => {
+              !!signing ? (signTx(), openModal()) : openModal();
+            }}
+          >
+            {translate('SEND_TRANS')}
           </button>
-        </div>
-      </div>
-    )}
-  />
+        </React.Fragment>
+      )}
+    />
+    <SigningStatus />
+  </React.Fragment>
 );

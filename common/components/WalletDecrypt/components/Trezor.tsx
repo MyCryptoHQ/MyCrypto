@@ -1,6 +1,6 @@
 import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
@@ -63,7 +63,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
               Unlocking...
             </div>
           ) : (
-            translate('ADD_Trezor_scan')
+            translate('ADD_TREZOR_SCAN')
           )}
         </button>
 
@@ -74,7 +74,6 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
-          Guide:{' '}
           <NewTabLink href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08">
             How to use TREZOR with MyCrypto
           </NewTabLink>
@@ -89,7 +88,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={translateRaw('x_Trezor')}
+          walletType={'TREZOR'}
         />
       </div>
     );
@@ -108,7 +107,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     (TrezorConnect as any).getXPubKey(
       dPath,
-      res => {
+      (res: any) => {
         if (res.success) {
           this.setState({
             dPath,

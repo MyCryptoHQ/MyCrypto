@@ -6,6 +6,7 @@ import { IFullWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
+import { TransactionFieldValues } from 'selectors/transaction/helpers';
 
 // we dont include the signature paramaters because web3 transactions are unsigned
 const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));
@@ -14,7 +15,6 @@ const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash
 const getTransactionFields = (t: Tx): IHexStrTransaction => {
   // For some crazy reason, toJSON spits out an array, not keyed values.
   const { data, gasLimit, gasPrice, to, nonce, value } = t;
-
   const chainId = t.getChainId();
 
   return {
@@ -58,13 +58,13 @@ const validGasLimit = (t: ITransaction) =>
  */
 const gasParamsInRange = (t: ITransaction) => {
   if (t.gasLimit.ltn(21000)) {
-    throw Error('Gas limit must be at least 21000 for transactions');
+    throw Error(translateRaw('ERROR_GAS_LIMIT_LOW', { $limit: '21000' }));
   }
   if (t.gasLimit.gtn(5000000)) {
-    throw Error(translateRaw('GETH_GasLimit'));
+    throw Error(translateRaw('GETH_GASLIMIT'));
   }
   if (t.gasPrice.gt(Wei('1000000000000'))) {
-    throw Error('Gas price too high. Please contact support if this was not a mistake.');
+    throw Error(translateRaw('ERROR_GAS_LIMIT_HIGH'));
   }
 };
 
@@ -75,7 +75,13 @@ const validAddress = (t: ITransaction) => {
 };
 
 const makeTransaction = (
-  t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
+  t:
+    | Partial<Tx>
+    | Partial<ITransaction>
+    | Partial<IHexStrTransaction>
+    | Buffer
+    | string
+    | TransactionFieldValues
 ) => new Tx(t);
 
 //TODO: check that addresses are always checksummed
@@ -91,7 +97,7 @@ const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean) =>
     throw Error('Not enough gas supplied');
   }
   if (!enoughBalanceViaTx(t, accountBalance)) {
-    throw Error(translateRaw('GETH_Balance'));
+    throw Error(translateRaw('GETH_BALANCE'));
   }
   validAddress(t);
 };

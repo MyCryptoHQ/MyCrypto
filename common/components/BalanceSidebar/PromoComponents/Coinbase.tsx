@@ -17,7 +17,7 @@ export const Coinbase: React.SFC<Props> = ({ address }) => (
         <h5 key="2">Buy ETH with USD</h5>
       </div>
       <div className="Promos-promo-images">
-        <img src={CoinbaseLogo} />
+        <img src={CoinbaseLogo} alt="Coinbase logo" />
       </div>
     </div>
   </NewTabLink>

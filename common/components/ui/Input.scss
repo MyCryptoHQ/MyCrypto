@@ -12,6 +12,27 @@
   > .TogglablePassword {
     width: 100%;
   }
+  & > pre,
+  & > .Select,
+  &-input {
+    margin-bottom: 1rem;
+  }
+  &-inline {
+    display: flex;
+    flex-direction: row;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    > .input-group-header {
+      width: 100%;
+    }
+    > .input-group-input {
+      flex-grow: 1;
+      width: auto;
+    }
+    > .Select {
+      margin-left: 8px;
+    }
+  }
   &-header {
     display: flex;
     font-size: 1rem;
@@ -31,15 +52,28 @@
   }
   &-input {
     width: 100%;
-    border: 1px solid #e5ecf3;
+    border: 1px solid $border-idle;
     border-radius: 2px;
+    height: $input-height-base;
     padding: 0.75rem 1rem;
     font-weight: 400;
-    font-size: 1rem;
+    font-size: $input-margin-bottom;
     color: rgba(0, 0, 0, 0.87);
     box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
     transition: border-color 120ms, box-shadow 120ms;
     margin-bottom: 1rem;
+
+    &.border-rad-right-0 {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &.border-rad-left-0 {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    &-small {
+      padding: 0.5rem 0.75rem;
+    }
     &::placeholder {
       color: rgba(0, 0, 0, 0.3);
     }
@@ -57,23 +91,6 @@
         }
       }
     }
-  }
-}
-
-.input-group-inline-dropdown {
-  display: flex;
-  flex-direction: row;
-  font-size: 1rem;
-  flex-wrap: wrap;
-  > .input-group-header {
-    width: 100%;
-  }
-  > .input-group-input {
-    flex-grow: 1;
-    width: auto;
-  }
-  > .Select {
-    margin-left: 8px;
   }
 }
 

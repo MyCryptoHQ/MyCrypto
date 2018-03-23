@@ -8,5 +8,11 @@
 
 .tx-modal-testnet-warn {
   text-align: center;
-  margin: 0;
+  background-color: $brand-warning;
+  border-radius: 2px;
+  padding: 0.5rem 0.75rem;
+  font-weight: 400;
+  color: white;
+  margin: auto;
+  margin-bottom: 1rem;
 }
