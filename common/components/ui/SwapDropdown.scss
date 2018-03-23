@@ -1,124 +1,139 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+$menu-max-width: 540px;
+$menu-padding: 10px;
+$menu-triangle-size: 14px;
+$menu-offset: 40px;
+$option-width: ($menu-max-width - $menu-padding * 2) / 3;
+$option-width-main: ($menu-max-width - $menu-padding * 2) / 2;
+$option-width-small: $option-width-main;
+$option-width-main-small: 100%;
 
 .SwapDropdown {
   position: relative;
-  button {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    border: 1px solid #ccc;
-    padding: 0.4rem 1rem;
-    border-radius: 2px;
-    height: 2.5rem;
-    &:active,
-    &:hover {
-      opacity: 0.8;
+  margin-left: $space-xs;
+
+  &-button {
+    height: 3rem;
+    padding-left: $space;
+    padding-right: $space;
+
+    &-logo {
+      height: 1.4rem;
+      margin: -.2rem .3rem 0 -.2rem;
+      width: auto;
     }
-    > li {
-      margin: 0;
-      &:first-child {
-        padding-top: 4px;
-      }
-      &:last-child {
-        padding-bottom: 4px;
-      }
-      > a {
-        font-weight: 300;
-        &.active {
-          color: $link-color;
-        }
+
+    &-label {
+      padding-right: .75rem;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: .75rem;
+        // transform: translateY(-50%);
+        @include triangle(8px, $text-color, down);
       }
     }
   }
-}
 
-.SwapDropdown-grid {
-  position: absolute;
-  display: none;
-  padding: 0;
-  margin-bottom: 0;
-  min-width: 500px;
-  left: 50%;
-
-  top: 50px;
-  transform: translateX(-50%);
-  list-style: none;
-  font-size: 0.8rem;
-  text-align: left;
-  z-index: 500;
-  background: white;
-  box-shadow: 2px 1px 60px rgba(0, 0, 0, 0.175);
-
-  &::before {
-    content: '';
+  &-menu {
     position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-right: 10px solid transparent;
-    border-left: 10px solid transparent;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid #fff;
-  }
+    top: 100%;
+    right: -$menu-offset;
+    z-index: $zindex-popover;
 
-  &.open {
-    display: block;
-  }
-  li {
-    display: inline-block;
-    width: 33.3%;
-    margin-bottom: 0;
-  }
-  li > a {
-    display: block;
-    clear: both;
-    padding: 5px 20px;
-    color: #163151;
-    &:hover {
-      opacity: 0.8;
-      background-color: #163151;
-      color: #fff;
+    &-content {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      width: calc(100vw - 30px);
+      max-width: $menu-max-width;
+      padding: $menu-padding;
+      background: #FFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      font-size: 0.8rem;
     }
-  }
-  .inactive {
-    a {
-      color: grey;
-      &:hover {
-        background-color: #fff;
-        color: #163151;
-        cursor: not-allowed;
-      }
+
+    &-triangle {
+      position: absolute;
+      top: -($menu-triangle-size / 2);
+      right: $menu-offset + 40px;
+      width: $menu-triangle-size;
+      height: $menu-triangle-size;
+      background: #FFF;
+      box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+      transform: rotate(45deg);
     }
-    img {
-      filter: grayscale(100%);
-    }
-  }
-  strong {
-    margin-left: 5px;
-  }
-  @media screen and (max-width: 800px) {
-    min-width: 300px;
   }
 }
 
-.SwapDropdown-desc {
-  display: inline-block;
-}
+.SwapOption {
+  @include reset-button;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: $option-width;
+  padding: $space-sm $space-md;
+  text-align: left;
+  background: rgba($brand-info, 0);
+  color: $text-color;
+  transition: $transition;
 
-.SwapDropdown-item {
-  position: relative;
-  img {
-    padding-right: 1px;
+  @media (max-width: $screen-sm) {
+    width: 50%;
+    max-width: none;
   }
-}
 
-.swap-option {
-  &-wrapper {
-    font-size: 1rem;
+  &:hover {
+    color: #FFF;
+    background: rgba($brand-info, 0.9);
+  }
+
+  &-top {
     display: flex;
-    align-items: center;
-    padding: 0.75rem 1rem;
+    flex-direction: row;
+    margin-bottom: $space-xs;
   }
-  &-img {
-    width: 1rem;
-    margin-right: 8px;
+
+  &-logo {
+    height: 1.2rem;
+    width: auto;
+    margin-right: $space-xs;
+
+    .is-main > & {
+      height: 2.6rem;
+      margin-right: $space-md;
+    }
+  }
+
+  &-ticker {
+  }
+
+  &-name {
+    font-weight: 300;
+  }
+
+  &.is-main {
+    flex-direction: row;
+    justify-content: center;
+    max-width: $option-width-main;
+    padding: $space $space-md;
+    font-size: 1rem;
+
+    @media (max-width: $screen-sm) {
+      width: 50%;
+      max-width: none;
+    }
+  }
+
+  &.is-disabled {
+    filter: grayscale(1);
+    opacity: 0.3;
+    pointer-events: none;
   }
 }
