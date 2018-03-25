@@ -26,7 +26,7 @@ const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededPro
       </p>
       {verifyBtn}
       <Link to={`/tx-status?txHash=${txHash}`} className="btn btn-xs">
-        {translate('NAV_CheckTxStatus')}
+        {translate('NAV_CHECKTXSTATUS')}
       </Link>
     </div>
   );

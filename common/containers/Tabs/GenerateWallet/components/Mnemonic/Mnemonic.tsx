@@ -55,8 +55,8 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
 
           <p className="GenerateMnemonic-help">
             {isConfirming
-              ? translate('MNEMONIC_DESCRIPTOION_1')
-              : translate('MNEMONIC_DESCRIPTOION_2')}
+              ? translate('MNEMONIC_DESCRIPTION_1')
+              : translate('MNEMONIC_DESCRIPTION_2')}
           </p>
 
           <div className="GenerateMnemonic-words">

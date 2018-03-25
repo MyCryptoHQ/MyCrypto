@@ -83,7 +83,7 @@ const PRODUCT_INFO: Link[] = [
 const AFFILIATES: Link[] = [
   {
     link: ledgerReferralURL,
-    text: translateRaw('LEDGER_REFERAL_1')
+    text: translateRaw('LEDGER_REFERRAL_1')
   },
   {
     link: trezorReferralURL,
