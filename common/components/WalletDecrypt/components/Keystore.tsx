@@ -8,6 +8,7 @@ import { Input } from 'components/ui';
 export interface KeystoreValue {
   file: string;
   password: string;
+  filename: string;
   valid: boolean;
 }
 
@@ -37,7 +38,7 @@ export class KeystoreDecrypt extends PureComponent {
   };
 
   public render() {
-    const { isWalletPending, value: { file, password } } = this.props;
+    const { isWalletPending, value: { file, password, filename } } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
@@ -52,24 +53,30 @@ export class KeystoreDecrypt extends PureComponent {
           />
           <label htmlFor="fselector" style={{ width: '100%' }}>
             <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              {translate('ADD_Radio_2_short')}
+              {translate('ADD_RADIO_2_SHORT')}
             </a>
           </label>
+
+          <label className="WalletDecrypt-decrypt-label" hidden={!file}>
+            <span>{filename}</span>
+          </label>
+
           {isWalletPending ? <Spinner /> : ''}
           <Input
             className={`${password.length > 0 ? 'is-valid' : 'is-invalid'} ${
               file.length && isWalletPending ? 'hidden' : ''
             }`}
+            disabled={!file}
             value={password}
             onChange={this.onPasswordChange}
             onKeyDown={this.onKeyDown}
-            placeholder={translateRaw('x_Password')}
+            placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
             type="password"
           />
         </div>
 
         <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-          {translate('ADD_Label_6_short')}
+          {translate('ADD_LABEL_6_SHORT')}
         </button>
       </form>
     );
@@ -100,6 +107,7 @@ export class KeystoreDecrypt extends PureComponent {
     const fileReader = new FileReader();
     const target = e.target;
     const inputFile = target.files[0];
+    const fileName = inputFile.name;
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
@@ -109,7 +117,8 @@ export class KeystoreDecrypt extends PureComponent {
         ...this.props.value,
         file: keystore,
         valid: keystore.length && !passReq,
-        password: ''
+        password: '',
+        filename: fileName
       });
       this.props.onUnlock();
     };

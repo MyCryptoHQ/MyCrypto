@@ -13,11 +13,11 @@ interface Props {
 }
 
 export default class ModalBody extends React.Component<Props> {
+  public firstTabStop: HTMLElement;
   private modal: HTMLElement;
   private modalContent: HTMLElement;
   private focusedElementBeforeModal: HTMLElement;
-  private firstTabStop: HTMLElement | null;
-  private lastTabStop: HTMLElement | null;
+  private lastTabStop: HTMLElement;
 
   public componentDidMount() {
     this.focusedElementBeforeModal = document.activeElement as HTMLElement;
@@ -28,30 +28,17 @@ export default class ModalBody extends React.Component<Props> {
       this.modal.querySelectorAll(focusableElementsString)
     );
 
-    // Do nothing if there are no focusable elements within the modal
-    if (focusableElements.length === 0) {
-      this.firstTabStop = null;
-      this.lastTabStop = null;
-      return;
-    }
-
     const first = focusableElements[0];
 
     // Convert NodeList to Array
     this.firstTabStop = first;
     this.lastTabStop = focusableElements[focusableElements.length - 1];
 
-    // Focus first child
-    first.focus();
-
     this.modal.addEventListener('keydown', this.keyDownListener);
   }
 
   public componentWillUnmount() {
-    // Remove the event listener if bound
-    if (this.firstTabStop) {
-      document.removeEventListener('keydown', this.keyDownListener);
-    }
+    document.removeEventListener('keydown', this.keyDownListener);
   }
 
   public scrollContentToTop = () => {
@@ -120,14 +107,14 @@ export default class ModalBody extends React.Component<Props> {
     if (e.keyCode === 9) {
       // SHIFT + TAB
       if (e.shiftKey) {
-        if (document.activeElement === this.firstTabStop && this.lastTabStop) {
+        if (document.activeElement === this.firstTabStop) {
           e.preventDefault();
           this.lastTabStop.focus();
         }
 
         // TAB
       } else {
-        if (document.activeElement === this.lastTabStop && this.firstTabStop) {
+        if (document.activeElement === this.lastTabStop) {
           e.preventDefault();
           this.firstTabStop.focus();
         }

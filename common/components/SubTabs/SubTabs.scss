@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 
 .SubTabs {
-  margin-top: 15px;
+  margin-top: $space-xs;
 
   &-tabs {
     display: inline-block;

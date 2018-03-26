@@ -3,8 +3,8 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
-import { Identicon, QRCode, Input } from 'components/ui';
-import { GenerateKeystoreModal, TogglablePassword } from 'components';
+import { QRCode } from 'components/ui';
+import { GenerateKeystoreModal, TogglablePassword, AddressField } from 'components';
 import './WalletInfo.scss';
 
 interface Props {
@@ -42,29 +42,17 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     return (
       <div className="WalletInfo">
         <div className="Tab-content-pane">
-          <div className="row form-group">
-            <div className="col-xs-11">
-              <div className="input-group-wrapper">
-                <label className="input-group">
-                  <div className="input-group-header">{translate('x_Address')}</div>
-                  <Input readOnly={true} value={address} />
-                </label>
-              </div>
-            </div>
-            <div className="col-xs-1" style={{ padding: 0 }}>
-              <Identicon address={address} />
-            </div>
-          </div>
+          <AddressField isSelfAddress={true} />
 
           {privateKey && (
             <div className="row form-group">
               <div className="col-xs-12">
-                <label>{translate('x_PrivKey')}</label>
+                <label>{translate('X_PRIVKEY')}</label>
                 <TogglablePassword
                   disabled={true}
                   value={privateKey}
                   isVisible={isPrivateKeyVisible}
-                  toggleAriaLabel={translateRaw('GEN_Aria_2')}
+                  toggleAriaLabel={translateRaw('GEN_ARIA_2')}
                   handleToggleVisibility={this.togglePrivateKey}
                 />
               </div>
@@ -75,7 +63,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
         <div className="Tab-content-pane">
           <div className="row">
             <div className="col-xs-6">
-              <label>Public Address</label>
+              <label>{translate('TOKEN_ADDR')}</label>
               <div className="WalletInfo-qr well well-lg">
                 <QRCode data={address} />
               </div>
@@ -83,7 +71,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
             {privateKey && (
               <div>
                 <div className="col-xs-6">
-                  <label>Private Key</label>
+                  <label>{translate('X_PRIVKEY2')}</label>
                   <div className="WalletInfo-qr well well-lg" onClick={this.togglePrivateKey}>
                     <QRCode data={isPrivateKeyVisible ? privateKey : '0'} />
                     {!isPrivateKeyVisible && (
@@ -95,14 +83,14 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
                 </div>
 
                 <div className="col-xs-6">
-                  <label>Utilities</label>
+                  <label>{translate('WALLET_INFO_UTILITIES')}</label>
 
                   <button className="btn btn-info btn-block" onClick={print(address, privateKey)}>
-                    {translate('x_Print')}
+                    {translate('X_PRINT')}
                   </button>
 
                   <button className="btn btn-info btn-block" onClick={this.toggleKeystoreModal}>
-                    Generate Keystore File
+                    {translate('GENERATE_KEYSTORE_TITLE')}
                   </button>
                 </div>
               </div>

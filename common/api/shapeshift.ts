@@ -193,8 +193,7 @@ class ShapeshiftService {
   private mapMarketInfo(marketInfo: (IPairData & IAvailablePairData)[]) {
     const tokenMap: TokenMap = {};
     marketInfo.forEach(m => {
-      const originKind = m.pair.substring(0, 3);
-      const destinationKind = m.pair.substring(4, 7);
+      const [originKind, destinationKind] = m.pair.split('_');
       if (this.isWhitelisted(originKind) && this.isWhitelisted(destinationKind)) {
         const pairName = originKind + destinationKind;
         const { rate, limit, min } = m;

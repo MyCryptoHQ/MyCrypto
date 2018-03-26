@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ModalBody from './ModalBody';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.scss';
 
 export interface IButton {
@@ -23,10 +23,8 @@ interface ModalStyle {
   maxWidth?: string;
 }
 
-const Fade = ({ children, ...props }: any) => (
-  <CSSTransition {...props} timeout={300} classNames="animate-modal">
-    {children}
-  </CSSTransition>
+const Fade = ({ ...props }: any) => (
+  <CSSTransition {...props} timeout={300} classNames="animate-modal" />
 );
 
 export default class Modal extends PureComponent<Props, {}> {
@@ -57,7 +55,8 @@ export default class Modal extends PureComponent<Props, {}> {
     return (
       <TransitionGroup>
         {isOpen && (
-          <Fade>
+          // Trap focus in modal by focusing the first element after the animation is complete
+          <Fade onEntered={() => this.modalBody.firstTabStop.focus()}>
             <div>
               <div className="Modal-overlay" onClick={handleClose} />
               <ModalBody {...modalBodyProps} ref={div => (this.modalBody = div as ModalBody)} />

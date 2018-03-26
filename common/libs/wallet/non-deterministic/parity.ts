@@ -24,7 +24,7 @@ export default class ParityWallet implements IFullWallet {
 
       const onCancel = () => {
         this.finalizeQrTransaction();
-        reject(new Error(translateRaw('ADD_Parity_1')));
+        reject(new Error(translateRaw('ADD_PARITY_1')));
       };
 
       const onSignature = (signature: string) => {

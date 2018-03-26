@@ -32,7 +32,7 @@ class ParitySignerDecrypt extends PureComponent<Props> {
             styles={{ display: 'inline-block' }}
           />
         </div>
-        <p>{translate('ADD_Parity_2')}</p>
+        <p>{translate('ADD_PARITY_2')}</p>
         <p>
           <a href="https://itunes.apple.com/us/app/parity-signer/id1218174838" rel="nofollow">
             <img src={AppStoreBadge} alt="App Store" />

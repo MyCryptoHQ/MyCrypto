@@ -25,11 +25,11 @@ export default class SignAndVerifyMessage extends Component<RouteComponentProps<
     const tabs = [
       {
         path: 'sign',
-        name: translate('NAV_SignMsg')
+        name: translate('NAV_SIGNMSG')
       },
       {
         path: 'verify',
-        name: translate('MSG_verify')
+        name: translate('MSG_VERIFY')
       }
     ];
 

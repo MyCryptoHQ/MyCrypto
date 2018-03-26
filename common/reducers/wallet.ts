@@ -14,6 +14,7 @@ import {
 } from 'actions/wallet';
 import { TokenValue } from 'libs/units';
 import { IWallet, Balance, WalletConfig } from 'libs/wallet';
+import { translateRaw } from 'translations';
 
 export interface State {
   inst?: IWallet | null;
@@ -136,7 +137,7 @@ function setTokenBalancesRejected(state: State): State {
   return {
     ...state,
     isTokensLoading: false,
-    tokensError: 'Failed to fetch token values'
+    tokensError: translateRaw('SCAN_TOKENS_FAIL')
   };
 }
 

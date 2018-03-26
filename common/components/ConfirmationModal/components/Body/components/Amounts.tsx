@@ -7,6 +7,7 @@ import { SerializedTxParams, getParamsFromSerializedTx } from 'selectors/transac
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
+import translate from 'translations';
 
 interface StateProps extends SerializedTxParams, AllUSDValues {
   network: NetworkConfig;
@@ -32,7 +33,7 @@ class AmountsClass extends Component<StateProps> {
       <table className="tx-modal-amount">
         <tbody>
           <tr className="tx-modal-amount-send">
-            <td>You'll Send</td>
+            <td>{translate('CONFIRM_TX_SENDING')}</td>
             <td>
               <UnitDisplay
                 value={currentValue}
@@ -54,7 +55,7 @@ class AmountsClass extends Component<StateProps> {
             )}
           </tr>
           <tr className="tx-modal-amount-fee">
-            <td>Transaction Fee</td>
+            <td>{translate('CONFIRM_TX_FEE')}</td>
             <td>
               <UnitDisplay
                 value={fee}
@@ -77,7 +78,7 @@ class AmountsClass extends Component<StateProps> {
           </tr>
           {!isToken && (
             <tr className="tx-modal-amount-total">
-              <td>Total</td>
+              <td>{translate('CONFIRM_TX_TOTAL')}</td>
               <td>
                 <UnitDisplay
                   value={total}

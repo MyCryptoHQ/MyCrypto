@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import EthTx from 'ethereumjs-tx';
 import QrSigner from '@parity/qr-signer';
 import { AppState } from 'reducers';
@@ -52,13 +52,13 @@ class QrSignerModal extends React.Component<Props, State> {
     const buttons: IButton[] = [
       {
         disabled: false,
-        text: translate(scan ? 'ADD_Parity_5' : 'ADD_Parity_4'),
+        text: translate(scan ? 'ACTION_4' : 'ADD_PARITY_3'),
         type: 'primary',
         onClick: () => this.setState({ scan: !scan })
       },
       {
         disabled: false,
-        text: translate('SENDModal_No'),
+        text: translate('ACTION_2'),
         type: 'default',
         onClick: this.onClose
       }
@@ -66,9 +66,12 @@ class QrSignerModal extends React.Component<Props, State> {
 
     return (
       <div className="QrSignerModal">
-        <Modal isOpen={true} buttons={buttons} handleClose={this.onClose}>
-          <h5>{translate('ADD_Parity_3')}</h5>
-
+        <Modal
+          title={translateRaw('DEP_SIGNTX')}
+          isOpen={true}
+          buttons={buttons}
+          handleClose={this.onClose}
+        >
           <div className="qr-bounds">
             <QrSigner size={300} scan={scan} account={from} rlp={rlp} onScan={this.onScan} />
           </div>
