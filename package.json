@@ -93,7 +93,7 @@
     "enzyme-to-json": "3.3.3",
     "express": "4.16.2",
     "extract-text-webpack-plugin": "3.0.2",
-    "favicons-webpack-plugin": "0.0.7",
+    "favicons-webpack-plugin": "0.0.8",
     "file-loader": "1.1.11",
     "friendly-errors-webpack-plugin": "1.6.1",
     "glob": "7.1.2",
