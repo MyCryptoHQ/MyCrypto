@@ -10,7 +10,6 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 // const AutoDllPlugin = require('autodll-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const ClearDistPlugin = require('./plugins/clearDist');
@@ -254,19 +253,7 @@ module.exports = function(opts = {}) {
     optimization.splitChunks = {
       chunks: 'all'
     };
-    optimization.minimizer = [
-      new UglifyJSPlugin({
-        exclude: /node_modules/,
-        uglifyOptions: {
-          // Mangle seems to be reusing variable identifiers, causing errors
-          mangle: false,
-          // These two on top of a lodash file are causing illegal characters for
-          // safari and ios browsers
-          evaluate: false,
-          propertyLiterals: false
-        }
-      })
-    ];
+    optimization.concatenateModules = false;
   }
 
   // ====================
