@@ -39,7 +39,7 @@
     "react-dom": "16.2.0",
     "react-markdown": "3.3.0",
     "react-redux": "5.0.7",
-    "react-router-dom": "4.2.2",
+    "react-router-dom": "4.3.0-rc.1",
     "react-router-redux": "4.0.8",
     "react-select": "1.2.1",
     "react-stepper-horizontal": "1.0.9",
