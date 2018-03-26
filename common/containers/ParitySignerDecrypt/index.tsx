@@ -34,10 +34,18 @@ class ParitySignerDecrypt extends PureComponent<Props> {
         </div>
         <p>{translate('ADD_PARITY_2')}</p>
         <p>
-          <a href="https://itunes.apple.com/us/app/parity-signer/id1218174838" rel="nofollow">
+          <a
+            href="https://itunes.apple.com/us/app/parity-signer/id1218174838"
+            rel="nofollow"
+            target="_blank"
+          >
             <img src={AppStoreBadge} alt="App Store" />
           </a>
-          <a href="https://play.google.com/store/apps/details?id=com.nativesigner" rel="nofollow">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.nativesigner"
+            rel="nofollow"
+            target="_blank"
+          >
             <img src={GooglePlayBadge} alt="Google Play" />
           </a>
         </p>
