@@ -6,7 +6,7 @@ const threadLoader = require('thread-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-// const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 // const AutoDllPlugin = require('autodll-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
@@ -189,18 +189,18 @@ module.exports = function(opts = {}) {
       new MiniCSSExtractPlugin({
         filename: '[name].[chunkhash:8].css'
       }),
-      // new FaviconsWebpackPlugin({
-      //   logo: path.resolve(config.path.assets, 'images/favicon.png'),
-      //   background: '#163151',
-      //   inject: true
-      // }),
+      new FaviconsWebpackPlugin({
+        logo: path.resolve(config.path.assets, 'images/favicon.png'),
+        background: '#163151',
+        inject: true
+      }),
       new SriPlugin({
         hashFuncNames: ['sha256', 'sha384'],
         enabled: true
       }),
       new ProgressPlugin(),
       new ClearDistPlugin(),
-      // new SortCachePlugin()
+      new SortCachePlugin()
     );
   } else {
     plugins.push(
