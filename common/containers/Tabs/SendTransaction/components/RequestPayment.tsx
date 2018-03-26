@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet';
-import { QRCode, TextArea } from 'components/ui';
+import { QRCode, CodeBlock } from 'components/ui';
 import { getUnit, getDecimal } from 'selectors/transaction/meta';
 import {
   getCurrentTo,
@@ -132,7 +132,7 @@ class RequestPayment extends React.Component<Props, {}> {
                 </div>
               </div>
               <div className="col-xs-6 RequestPayment-codeContainer">
-                <TextArea className="RequestPayment-codeBox" value={eip681String} disabled={true} />
+                <CodeBlock className="wrap">{eip681String}</CodeBlock>
               </div>
             </div>
           )}

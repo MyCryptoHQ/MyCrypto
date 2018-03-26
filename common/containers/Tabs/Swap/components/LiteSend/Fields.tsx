@@ -3,7 +3,7 @@ import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { GenerateTransaction, SendButton, SigningStatus, TXMetaDataPanel } from 'components';
+import { SendButton, TXMetaDataPanel } from 'components';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import translate from 'translations';
 import { getUnit } from 'selectors/transaction';
@@ -76,7 +76,6 @@ class FieldsClass extends Component<Props> {
             <TXMetaDataPanel initialState={'simple'} disableToggle={true} />
           </div>
         </div>
-        <SigningStatus />
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
             {currentBalance === null ? (
@@ -84,12 +83,9 @@ class FieldsClass extends Component<Props> {
                 <Spinner />
               </div>
             ) : (
-              <GenerateTransaction />
+              <SendButton signing={true} />
             )}
           </div>
-        </div>
-        <div className="row form-group">
-          <SendButton />
         </div>
       </div>
     );

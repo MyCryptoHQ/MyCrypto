@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-import Dropdown from 'components/ui/Dropdown';
 import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'selectors/wallet';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
@@ -8,6 +7,7 @@ import { AppState } from 'reducers';
 import { getUnit } from 'selectors/transaction';
 import { getNetworkUnit } from 'selectors/config';
 import { Option } from 'react-select';
+import { Dropdown } from 'components/ui';
 
 interface DispatchProps {
   setUnitMeta: TSetUnitMeta;
