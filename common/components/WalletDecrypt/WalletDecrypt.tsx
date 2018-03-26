@@ -50,6 +50,7 @@ import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import ParitySignerIcon from 'assets/images/wallets/paritysigner.svg';
 import './WalletDecrypt.scss';
 
 interface OwnProps {
@@ -168,12 +169,12 @@ export class WalletDecrypt extends Component<Props, State> {
     },
     [SecureWalletName.PARITY_SIGNER]: {
       lid: 'x_ParitySigner',
-      icon: TrezorIcon,
+      icon: ParitySignerIcon,
       description: 'ADD_ParityDesc',
       component: ParitySignerDecrypt,
       initialParams: {},
       unlock: this.props.setWallet,
-      helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+      helpLink: 'https://github.com/paritytech/parity-signer/blob/master/README.md'
     },
     [InsecureWalletName.KEYSTORE_FILE]: {
       lid: 'x_Keystore2',
