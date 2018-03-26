@@ -122,7 +122,7 @@
     "url-search-params-polyfill": "3.0.0",
     "webpack": "4.2.0",
     "webpack-cli": "2.0.13",
-    "webpack-dev-middleware": "3.0.1",
+    "webpack-dev-middleware": "3.1.0",
     "webpack-hot-middleware": "2.21.2",
     "webpack-sources": "1.1.0",
     "webpack-subresource-integrity": "1.1.0-rc.4",
