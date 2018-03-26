@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
 import EthTx from 'ethereumjs-tx';
+import { transactionToRLP } from 'utils/helpers';
 import QrSigner from '@parity/qr-signer';
 import { AppState } from 'reducers';
 import Modal, { IButton } from 'components/ui/Modal';
@@ -41,14 +42,7 @@ class QrSignerModal extends React.Component<Props, State> {
     const { scan } = this.state;
     const { tx, from } = this.props;
 
-    // Poor man's serialize without signature.
-    // All those values are later overriden by actual signature
-    // values in: wallets/non-deterministic/parity.ts
-    tx.v = Buffer.from([tx._chainId]);
-    tx.r = Buffer.from([0]);
-    tx.s = Buffer.from([0]);
-
-    const rlp = '0x' + tx.serialize().toString('hex');
+    const rlp = transactionToRLP(tx);
     const buttons: IButton[] = [
       {
         disabled: false,
@@ -72,7 +66,7 @@ class QrSignerModal extends React.Component<Props, State> {
           buttons={buttons}
           handleClose={this.onClose}
         >
-          <div className="qr-bounds">
+          <div className="QrSignerModal-qr-bounds">
             <QrSigner size={300} scan={scan} account={from} rlp={rlp} onScan={this.onScan} />
           </div>
         </Modal>

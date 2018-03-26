@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
+import { NewTabLink } from 'components/ui';
 import QrSigner from '@parity/qr-signer';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
@@ -24,7 +25,7 @@ class ParitySignerDecrypt extends PureComponent<Props> {
   public render() {
     return (
       <div className="ParitySignerUnlock">
-        <div className="qr-bounds">
+        <div className="ParitySignerUnlock-qr-bounds">
           <QrSigner
             size={300}
             scan={true}
@@ -34,20 +35,12 @@ class ParitySignerDecrypt extends PureComponent<Props> {
         </div>
         <p>{translate('ADD_PARITY_2')}</p>
         <p>
-          <a
-            href="https://itunes.apple.com/us/app/parity-signer/id1218174838"
-            rel="nofollow"
-            target="_blank"
-          >
-            <img src={AppStoreBadge} alt="App Store" />
-          </a>
-          <a
-            href="https://play.google.com/store/apps/details?id=com.nativesigner"
-            rel="nofollow"
-            target="_blank"
-          >
-            <img src={GooglePlayBadge} alt="Google Play" />
-          </a>
+          <NewTabLink href="https://itunes.apple.com/us/app/parity-signer/id1218174838">
+            <img className="ParitySignerUnlock-badge" src={AppStoreBadge} alt="App Store" />
+          </NewTabLink>
+          <NewTabLink href="https://play.google.com/store/apps/details?id=com.nativesigner">
+            <img className="ParitySignerUnlock-badge" src={GooglePlayBadge} alt="Google Play" />
+          </NewTabLink>
         </p>
       </div>
     );

@@ -1,11 +1,11 @@
 .ParitySignerUnlock {
-    a img {
+    &-badge {
         display: inline-block;
         height: 3em;
         margin: 0 0.4em;
     }
 
-    .qr-bounds {
+    &-qr-bounds {
         width: 300px;
         height: 300px;
         display: inline-block;
