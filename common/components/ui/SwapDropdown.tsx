@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
+import { Option } from 'react-select';
 import './SwapDropdown.scss';
-import { DropDown } from 'components/ui';
 
 export interface SingleCoin {
   id: string;
@@ -9,71 +10,178 @@ export interface SingleCoin {
   status: string;
 }
 
-interface Props<T> {
+interface Props {
   options: SingleCoin[];
+  disabledOption?: string;
   value: string;
-  onChange(value: T): void;
+  onChange(value: SingleCoin): void;
 }
 
-const ValueComp: React.SFC = (props: any) => {
-  return (
-    <div className={`${props.className} swap-option-wrapper`}>
-      <img src={props.value.img} className="swap-option-img" alt={props.value.label + ' logo'} />
-      <span className="swap-option-label">{props.value.label}</span>
-    </div>
-  );
-};
+interface State {
+  isOpen: boolean;
+  mainOptions: SingleCoin[];
+  otherOptions: SingleCoin[];
+}
 
-const OptionComp: React.SFC = (props: any) => {
-  const handleMouseDown = (event: React.MouseEvent<any>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    props.onSelect(props.option, event);
+const MAIN_OPTIONS = ['ETH', 'BTC'];
+
+class SwapDropdown extends PureComponent<Props, State> {
+  public state: State = {
+    isOpen: false,
+    mainOptions: [],
+    otherOptions: []
   };
-  const handleMouseEnter = (event: React.MouseEvent<any>) => {
-    props.onFocus(props.option, event);
-  };
-  const handleMouseMove = (event: React.MouseEvent<any>) => {
-    if (props.isFocused) {
-      return;
+
+  public dropdown: HTMLDivElement | null;
+
+  public componentWillMount() {
+    this.buildOptions(this.props.options);
+    document.addEventListener('click', this.handleBodyClick);
+  }
+
+  public componentWillUnmount() {
+    document.removeEventListener('click', this.handleBodyClick);
+  }
+
+  public componentWillReceiveProps(nextProps: Props) {
+    if (this.props.options !== nextProps.options) {
+      this.buildOptions(nextProps.options);
     }
-    props.onFocus(props.option, event);
-  };
-  return (
-    <div
-      className={`${props.className} swap-option-wrapper`}
-      onMouseDown={handleMouseDown}
-      onMouseEnter={handleMouseEnter}
-      onMouseMove={handleMouseMove}
-    >
-      <img src={props.option.img} className="swap-option-img" alt={props.option.label + ' logo'} />
-      <span className="swap-option-label">{props.option.label}</span>
-    </div>
-  );
-};
+  }
 
-class SwapDropdown<T> extends PureComponent<Props<T>> {
   public render() {
-    const { options, value, onChange } = this.props;
-    const mappedOptions = options.map(opt => {
-      return { label: opt.id, value: opt.name, img: opt.image, status: opt.status };
-    });
+    const { options, value, disabledOption } = this.props;
+    const { isOpen, mainOptions, otherOptions } = this.state;
+
+    const selectedOption = options.find(opt => opt.name === value);
+
     return (
-      <DropDown
-        className="Swap-dropdown"
-        options={mappedOptions}
-        optionComponent={(props: any) => {
-          return <OptionComp {...props} />;
-        }}
-        value={value}
-        clearable={false}
-        onChange={onChange}
-        valueComponent={(props: any) => {
-          return <ValueComp {...props} />;
-        }}
-      />
+      <div className="SwapDropdown" ref={el => (this.dropdown = el)}>
+        <button className="SwapDropdown-button btn btn-default" onClick={this.toggleMenu}>
+          {selectedOption ? (
+            <React.Fragment>
+              <img src={selectedOption.image} className="SwapDropdown-button-logo" />
+              <span className="SwapDropdown-button-label">{selectedOption.id}</span>
+            </React.Fragment>
+          ) : (
+            'Unknown'
+          )}
+        </button>
+
+        {isOpen && (
+          <div className="SwapDropdown-menu">
+            <i className="SwapDropdown-menu-triangle" />
+            <div className="SwapDropdown-menu-content">
+              {mainOptions.map(opt => (
+                <SwapOption
+                  key={opt.name}
+                  option={opt}
+                  isMain={true}
+                  isDisabled={opt.name === disabledOption}
+                  onChange={this.handleChange}
+                />
+              ))}
+              {otherOptions.map(opt => (
+                <SwapOption
+                  key={opt.name}
+                  option={opt}
+                  isMain={false}
+                  isDisabled={opt.name === disabledOption}
+                  onChange={this.handleChange}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
+
+  private toggleMenu = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  private handleChange = (coin: SingleCoin) => {
+    this.props.onChange(coin);
+    if (this.state.isOpen) {
+      this.toggleMenu();
+    }
+  };
+
+  private handleBodyClick = (ev: MouseEvent) => {
+    if (!this.state.isOpen || !this.dropdown) {
+      return;
+    }
+
+    if (
+      ev.target !== this.dropdown &&
+      ev.target instanceof HTMLElement &&
+      !this.dropdown.contains(ev.target)
+    ) {
+      this.toggleMenu();
+    }
+  };
+
+  private buildOptions(options: Props['options']) {
+    const mainOptions: SingleCoin[] = [];
+    let otherOptions: SingleCoin[] = [];
+
+    options.forEach(opt => {
+      if (MAIN_OPTIONS.includes(opt.id)) {
+        mainOptions.push(opt);
+      } else {
+        otherOptions.push(opt);
+      }
+    });
+
+    // Sort non-main coins alphabetically
+    otherOptions = otherOptions.sort(
+      (opt1, opt2) => (opt1.id.toLowerCase() > opt2.id.toLowerCase() ? 1 : -1)
+    );
+
+    this.setState({ mainOptions, otherOptions });
+  }
 }
+
+interface SwapOptionProps {
+  option: SingleCoin;
+  isMain?: boolean;
+  isDisabled?: boolean;
+  onChange(opt: Option): void;
+}
+
+const SwapOption: React.SFC<SwapOptionProps> = ({ option, isMain, isDisabled, onChange }) => {
+  const handleChange = (ev: React.MouseEvent<HTMLButtonElement>) => {
+    ev.preventDefault();
+    onChange({
+      label: option.id,
+      value: option.name
+    });
+  };
+
+  const classNames = classnames('SwapOption', isMain && 'is-main', isDisabled && 'is-disabled');
+
+  return (
+    <button className={classNames} disabled={isDisabled} onClick={handleChange}>
+      {isMain ? (
+        <React.Fragment>
+          <img src={option.image} className="SwapOption-logo" alt={`${option.name} logo`} />
+          <div className="SwapOption-info">
+            <div className="SwapOption-ticker">{option.id}</div>
+            <div className="SwapOption-name">{option.name}</div>
+          </div>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <div className="SwapOption-top">
+            <img src={option.image} className="SwapOption-logo" alt={`${option.name} logo`} />
+            <div className="SwapOption-ticker">{option.id}</div>
+          </div>
+          <div className="SwapOption-name">{option.name}</div>
+        </React.Fragment>
+      )}
+    </button>
+  );
+};
 
 export default SwapDropdown;

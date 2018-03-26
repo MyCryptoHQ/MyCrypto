@@ -4,12 +4,12 @@ import { RouteComponentProps } from 'react-router';
 import TabSection from 'containers/TabSection';
 import TxHashInput from './components/TxHashInput';
 import { TransactionStatus as TransactionStatusComponent } from 'components';
-import { NewTabLink } from 'components/ui';
 import { getNetworkConfig } from 'selectors/config';
 import { getParamFromURL } from 'utils/helpers';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import './index.scss';
+import translate from 'translations';
 
 interface StateProps {
   network: NetworkConfig;
@@ -48,18 +48,14 @@ class CheckTransaction extends React.Component<Props, State> {
       <TabSection>
         <div className="CheckTransaction Tab-content">
           <section className="CheckTransaction-form Tab-content-pane">
-            <h1 className="CheckTransaction-form-title">Check Transaction Status</h1>
+            <h1 className="CheckTransaction-form-title">{translate('CHECK_TX_STATUS_TITLE')}</h1>
             <p className="CheckTransaction-form-desc">
-              Enter your Transaction Hash to check on its status.{' '}
-              {!network.isCustom && (
-                <React.Fragment>
-                  If you don’t know your Transaction Hash, you can look it up on the{' '}
-                  <NewTabLink href={network.blockExplorer.origin}>
-                    {network.blockExplorer.name} explorer
-                  </NewTabLink>{' '}
-                  by looking up your address.
-                </React.Fragment>
-              )}
+              {translate('CHECK_TX_STATUS_DESCRIPTION_1')}
+              {!network.isCustom &&
+                translate('CHECK_TX_STATUS_DESCRIPTION_2', {
+                  $block_explorer: network.blockExplorer.name,
+                  $block_explorer_link: network.blockExplorer.origin
+                })}
             </p>
             <TxHashInput hash={hash} onSubmit={this.handleHashSubmit} />
           </section>

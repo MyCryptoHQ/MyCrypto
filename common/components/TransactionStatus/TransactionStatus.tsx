@@ -44,7 +44,6 @@ class TransactionStatus extends React.Component<Props> {
     if (tx && tx.data) {
       content = (
         <React.Fragment>
-          <h2 className="TxStatus-title">Transaction Found</h2>
           <div className="TxStatus-data">
             <TransactionDataTable network={network} data={tx.data} receipt={tx.receipt} />
           </div>
@@ -53,13 +52,13 @@ class TransactionStatus extends React.Component<Props> {
     } else if (tx && tx.error) {
       content = (
         <div className="TxStatus-error">
-          <h2 className="TxStatus-error-title">{translate('tx_notFound')}</h2>
-          <p className="TxStatus-error-desc">{translate('tx_notFound_1')}</p>
+          <h2 className="TxStatus-error-title">{translate('TX_NOTFOUND')}</h2>
+          <p className="TxStatus-error-desc">{translate('TX_NOTFOUND_1')}</p>
           <ul className="TxStatus-error-list">
-            <li>Make sure you copied the Transaction Hash correctly</li>
-            <li>{translate('tx_notFound_2')}</li>
-            <li>{translate('tx_notFound_3')}</li>
-            <li>{translate('tx_notFound_4')}</li>
+            <li>{translate('TX_NOTFOUND_5')}</li>
+            <li>{translate('TX_NOTFOUND_2')}</li>
+            <li>{translate('TX_NOTFOUND_3')}</li>
+            <li>{translate('TX_NOTFOUND_4')}</li>
           </ul>
         </div>
       );

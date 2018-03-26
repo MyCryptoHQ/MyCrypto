@@ -39,7 +39,7 @@ export default class MnemonicWord extends React.Component<Props, State> {
           {!isReadOnly && (
             <span
               onClick={this.toggleShow}
-              aria-label={translateRaw('GEN_Aria_2')}
+              aria-label={translateRaw('GEN_ARIA_2')}
               role="button"
               className="MnemonicWord-word-toggle input-group-addon"
             >

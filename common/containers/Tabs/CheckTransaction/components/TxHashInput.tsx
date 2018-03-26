@@ -66,10 +66,10 @@ class TxHashInput extends React.Component<Props, State> {
               value={hash}
               onChange={this.handleSelectTx}
               options={selectOptions}
-              placeholder="Select a recent transaction..."
+              placeholder={translate('SELECT_RECENT_TX')}
               searchable={false}
             />
-            <em className="TxHashInput-recent-separator">or</em>
+            <em className="TxHashInput-recent-separator">{translate('OR')}</em>
           </div>
         )}
 
@@ -82,12 +82,12 @@ class TxHashInput extends React.Component<Props, State> {
 
         {isValidETHAddress(hash) && (
           <p className="TxHashInput-message help-block is-invalid">
-            You cannot use an address, you must use a transaction hash
+            {translate('SELECT_RECENT_TX_BY_TXHASH')}
           </p>
         )}
 
         <button className="TxHashInput-submit btn btn-primary btn-block">
-          {translate('NAV_CheckTxStatus')}
+          {translate('NAV_CHECKTXSTATUS')}
         </button>
       </form>
     );

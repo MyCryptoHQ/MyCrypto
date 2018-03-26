@@ -18,11 +18,11 @@ interface Props {
 const tabs = [
   {
     path: 'interact',
-    name: translate('Interact')
+    name: translate('CONTRACTS_INTERACT')
   },
   {
     path: 'deploy',
-    name: translate('Deploy')
+    name: translate('CONTRACTS_DEPLOY')
   }
 ];
 

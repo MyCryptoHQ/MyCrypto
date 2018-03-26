@@ -169,7 +169,7 @@ class EquivalentValues extends React.Component<Props, State> {
     return (
       <div className="EquivalentValues">
         <div className="EquivalentValues-header">
-          <h5 className="EquivalentValues-title">{translate('sidebar_Equiv')}</h5>
+          <h5 className="EquivalentValues-title">{translate('SIDEBAR_EQUIV')}</h5>
           <Select
             name="equivalentValues"
             // TODO: Update type
@@ -183,13 +183,11 @@ class EquivalentValues extends React.Component<Props, State> {
 
         {isOffline ? (
           <div className="EquivalentValues-offline well well-sm">
-            Equivalent values are unavailable offline
+            {translate('EQUIV_VALS_OFFLINE')}
           </div>
         ) : network.isTestnet ? (
           <div className="text-center">
-            <h5 style={{ color: 'red' }}>
-              On test network, equivalent values will not be displayed.
-            </h5>
+            <h5 style={{ color: 'red' }}>{translate('EQUIV_VALS_TESTNET')}</h5>
           </div>
         ) : ratesError ? (
           <h5>{ratesError}</h5>
@@ -228,7 +226,7 @@ class EquivalentValues extends React.Component<Props, State> {
                 )}
               </React.Fragment>
             ) : (
-              <p>Sorry, equivalent values are not supported for this unit.</p>
+              <p>{translate('EQUIV_VALS_UNSUPPORTED_UNIT')}</p>
             )}
           </div>
         )}

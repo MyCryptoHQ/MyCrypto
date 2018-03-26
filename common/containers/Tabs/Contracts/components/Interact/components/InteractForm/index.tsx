@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -7,8 +7,7 @@ import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
 import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
-import { Input, TextArea } from 'components/ui';
-import Dropdown from 'components/ui/Dropdown';
+import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 
 interface ContractOption {
   name: string;
@@ -52,8 +51,8 @@ class InteractForm extends Component<Props, State> {
       abiJson: '',
       contract: null,
       contractPlaceholder: this.isContractsValid()
-        ? 'Please select a contract...'
-        : 'No contracts available'
+        ? translateRaw('SELECT_A_THING', { $thing: 'contract' })
+        : translateRaw('NO_CONTRACTS_AVAILABLE')
     };
   }
 
@@ -68,16 +67,17 @@ class InteractForm extends Component<Props, State> {
     const validEthAddress = isValidETHAddress(address);
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
-    let contractOptions: ContractOption[] = [];
+    let options: ContractOption[] = [];
 
     if (this.isContractsValid()) {
-      contractOptions = contracts.map(con => {
+      const contractOptions = contracts.map(con => {
         const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
         return {
           name: `${con.name} ${addr}`,
           value: this.makeContractValue(con)
         };
       });
+      options = [{ name: 'Custom', value: '' }, ...contractOptions];
     }
 
     // TODO: Use common components for address, abi json
@@ -86,7 +86,23 @@ class InteractForm extends Component<Props, State> {
         <div className="InteractForm-address row">
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_Title')}</div>
+              <div className="input-group-header">{translate('CONTRACT_TITLE_2')}</div>
+              <Dropdown
+                className={`${!contract ? 'invalid' : ''}`}
+                value={contract as any}
+                placeholder={this.state.contractPlaceholder}
+                onChange={this.handleSelectContract}
+                options={options}
+                searchable={true}
+                clearable={true}
+                labelKey="name"
+              />
+            </label>
+          </div>
+
+          <div className="input-group-wrapper InteractForm-address-field col-sm-6">
+            <label className="input-group">
+              <div className="input-group-header">{translate('CONTRACT_TITLE')}</div>
               <Input
                 placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
                 name="contract_address"
@@ -99,26 +115,23 @@ class InteractForm extends Component<Props, State> {
               />
             </label>
           </div>
-
-          <div className="input-group-wrapper InteractForm-address-field col-sm-6">
-            <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_Title_2')}</div>
-              <Dropdown
-                className={`${!contract ? 'invalid' : ''}`}
-                value={contract as any}
-                placeholder={this.state.contractPlaceholder}
-                onChange={this.handleSelectContract}
-                options={contractOptions}
-                clearable={false}
-                labelKey="name"
-              />
-            </label>
-          </div>
         </div>
 
-        <div className="input-group-wrapper InteractForm-interface">
-          <label className="input-group">
-            <div className="input-group-header">{translate('CONTRACT_Json')}</div>
+        <label className="input-group">
+          <div className="input-group-header">{translate('CONTRACT_JSON')}</div>
+          {!!contract ? (
+            contract.name === 'Custom' ? (
+              <TextArea
+                placeholder={this.abiJsonPlaceholder}
+                className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
+                onChange={this.handleInput('abiJson')}
+                value={abiJson}
+                rows={6}
+              />
+            ) : (
+              <CodeBlock className="wrap">{abiJson}</CodeBlock>
+            )
+          ) : (
             <TextArea
               placeholder={this.abiJsonPlaceholder}
               className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
@@ -126,15 +139,15 @@ class InteractForm extends Component<Props, State> {
               value={abiJson}
               rows={6}
             />
-          </label>
-        </div>
+          )}
+        </label>
 
         <button
           className="InteractForm-submit btn btn-primary"
           disabled={!showContractAccessButton}
           onClick={accessContract(abiJson, address)}
         >
-          {translate('x_Access')}
+          {translate('X_ACCESS')}
         </button>
       </div>
     );
@@ -150,7 +163,7 @@ class InteractForm extends Component<Props, State> {
   private handleSelectContract = (contract: ContractOption) => {
     this.props.resetState();
     const fullContract = this.props.contracts.find(currContract => {
-      return this.makeContractValue(currContract) === contract.value;
+      return contract && this.makeContractValue(currContract) === contract.value;
     });
 
     this.setState({
