@@ -17,7 +17,8 @@ describe('fields reducer', () => {
       raw: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT.toString(),
       value: timeBountyRawToValue(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT)
     },
-    windowStart: { raw: '', value: null }
+    windowStart: { raw: '', value: null },
+    scheduleTimestamp: { raw: '', value: null }
   };
   const testPayload = { raw: 'test', value: null };
 

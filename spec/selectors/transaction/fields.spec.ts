@@ -47,6 +47,10 @@ describe('fields selector', () => {
     windowStart: {
       raw: '',
       value: null
+    },
+    scheduleTimestamp: {
+      raw: '',
+      value: null
     }
   };
 

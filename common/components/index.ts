@@ -9,6 +9,7 @@ export * from './GenerateTransaction';
 export * from './SendButton';
 export * from './SigningStatus';
 export * from './WindowStartField';
+export * from './ScheduleTimestampField';
 export { default as NonceField } from './NonceField';
 export { default as Header } from './Header';
 export { default as Footer } from './Footer';

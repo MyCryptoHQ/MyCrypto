@@ -21,7 +21,8 @@ export type Param =
   | 'value'
   | 'gaslimit'
   | 'limit'
-  | 'windowStart';
+  | 'windowStart'
+  | 'scheduleTimestamp';
 
 interface Props extends RouteComponentProps<{}> {
   params: Param[];

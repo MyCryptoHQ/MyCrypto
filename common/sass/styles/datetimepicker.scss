@@ -1,0 +1,51 @@
+$border-color: #e5ecf3;
+$datetimepicker-border: 2px solid $border-color;
+
+.pika-single {
+	background-color: #fff;
+	border: $datetimepicker-border;
+	padding: 20px;
+}
+.pika-single.is-hidden {
+	display: none;
+}
+
+.pika-next {
+	@extend .pull-right;
+}
+
+.pika-button, .pika-prev, .pika-next {
+	@extend .btn;
+	@extend .btn-sm;
+}
+:not(.is-disabled) > .pika-button:hover, .pika-prev:hover, .pika-next:hover {
+	@extend .btn-primary;
+}
+
+.is-disabled > .pika-button:hover {
+	color: $border-color;
+}
+
+.pika-time-container {
+	margin-top: 20px;
+}
+
+.pika-label {
+	margin-bottom: 20px;
+}
+.pika-label select {
+	@extend .pull-right;
+}
+
+.pika-title {
+	margin-bottom: 20px;
+	border-bottom: $datetimepicker-border;
+}
+
+.pika-lendar {
+	border-bottom: $datetimepicker-border;
+}
+
+tr.pika-row > td.is-disabled {
+	color: $border-color;
+}

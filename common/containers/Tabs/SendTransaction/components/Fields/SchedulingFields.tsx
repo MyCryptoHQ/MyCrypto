@@ -6,7 +6,8 @@ import {
   AmountField,
   TXMetaDataPanel,
   CurrentCustomMessage,
-  WindowStartField
+  WindowStartField,
+  ScheduleTimestampField
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
@@ -67,6 +68,12 @@ class SchedulingFieldsClass extends Component<StateProps> {
                 <div className="row form-group">
                   <div className="col-xs-12">
                     <WindowStartField />
+                  </div>
+                </div>
+
+                <div className="row form-group">
+                  <div className="col-xs-12">
+                    <ScheduleTimestampField />
                   </div>
                 </div>
 

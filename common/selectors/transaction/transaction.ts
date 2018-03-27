@@ -1,10 +1,22 @@
 import { AppState } from 'reducers';
 import { getCurrentTo, getCurrentValue } from './current';
-import { getFields, getData, getWindowStart, getNonce, getTimeBounty } from './fields';
+import {
+  getFields,
+  getData,
+  getWindowStart,
+  getNonce,
+  getTimeBounty,
+  getScheduleTimestamp
+} from './fields';
 import { makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 import { getUnit } from 'selectors/transaction/meta';
-import { reduceToValues, isFullTx, isWindowStartValid } from 'selectors/transaction/helpers';
+import {
+  reduceToValues,
+  isFullTx,
+  isWindowStartValid,
+  isScheduleTimestampValid
+} from 'selectors/transaction/helpers';
 import {
   getGasPrice,
   getGasLimit,
@@ -62,15 +74,18 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const callData = getData(state);
   const validGasCost = getValidGasCost(state);
   const windowStart = getWindowStart(state);
+  const scheduleTimestamp = getScheduleTimestamp(state);
   const gasLimit = getGasLimit(state);
   const nonce = getNonce(state);
   const gasPrice = getGasPrice(state);
   const timeBounty = getTimeBounty(state);
   const windowStartValid = isWindowStartValid(transactionFields, getLatestBlock(state));
+  const scheduleTimestampValid = isScheduleTimestampValid(transactionFields);
 
   const isFullTransaction =
     isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
-    windowStartValid;
+    windowStartValid &&
+    scheduleTimestampValid;
 
   const transactionData = getScheduleData(
     currentTo.raw,
@@ -81,7 +96,8 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     windowStart.value,
     gasPrice.value,
     timeBounty.value,
-    EAC_SCHEDULING_CONFIG.REQUIRED_DEPOSIT
+    EAC_SCHEDULING_CONFIG.REQUIRED_DEPOSIT,
+    scheduleTimestamp.value
   );
 
   const endowment = calcEACEndowment(

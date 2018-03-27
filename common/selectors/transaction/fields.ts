@@ -12,6 +12,7 @@ const getValue = (state: AppState) => getFields(state).value;
 const getNonce = (state: AppState) => getFields(state).nonce;
 const getTimeBounty = (state: AppState) => getFields(state).timeBounty;
 const getWindowStart = (state: AppState) => getFields(state).windowStart;
+const getScheduleTimestamp = (state: AppState) => getFields(state).scheduleTimestamp;
 
 const getDataExists = (state: AppState) => {
   const { value } = getData(state);
@@ -39,5 +40,6 @@ export {
   getDataExists,
   getValidGasCost,
   getTimeBounty,
-  getWindowStart
+  getWindowStart,
+  getScheduleTimestamp
 };

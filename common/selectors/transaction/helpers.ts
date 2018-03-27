@@ -30,6 +30,7 @@ export const isFullTx = (
   const partialParamsToCheck = { ...rest };
 
   delete partialParamsToCheck.windowStart;
+  delete partialParamsToCheck.scheduleTimestamp;
 
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
     (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
@@ -67,4 +68,11 @@ export const isWindowStartValid = (
   const { windowStart } = transactionFields;
 
   return Boolean(windowStart && windowStart.value && windowStart.value > parseInt(latestBlock, 10));
+};
+
+export const isScheduleTimestampValid = (transactionFields: AppState['transaction']['fields']) => {
+  const { scheduleTimestamp } = transactionFields;
+  const now = new Date();
+
+  return Boolean(scheduleTimestamp && scheduleTimestamp.value && scheduleTimestamp.value > now);
 };

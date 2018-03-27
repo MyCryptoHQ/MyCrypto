@@ -12,12 +12,14 @@ export const EAC_SCHEDULING_CONFIG = {
   TIME_BOUNTY_DEFAULT: 10, // $1
   TIME_BOUNTY_MAX: 100, // $10
   TIME_BOUNTY_TO_WEI_MULTIPLIER: new BN('100000000000000'),
-  WINDOW_SIZE_IN_BLOCKS: 90
+  WINDOW_SIZE_IN_BLOCKS: 90,
+  SCHEDULE_TIMESTAMP_FORMAT: 'YYYY-MM-DD HH:mm:ss'
 };
 
 export const EAC_ADDRESSES = {
   KOVAN: {
-    blockScheduler: '0x1afc19a7e642761ba2b55d2a45b32c7ef08269d1'
+    blockScheduler: '0x1afc19a7e642761ba2b55d2a45b32c7ef08269d1',
+    timestampScheduler: '0xc6370807f0164bdf10a66c08d0dab1028dbe80a3'
   }
 };
 
@@ -49,9 +51,10 @@ export const getScheduleData = (
   windowStart: any,
   gasPrice: BN | null,
   timeBounty: any,
-  requiredDeposit: any
+  requiredDeposit: any,
+  scheduleTimestamp: Date | null
 ) => {
-  if (!callValue || !gasPrice || !windowStart) {
+  if (!callValue || !gasPrice || !windowStart || !scheduleTimestamp) {
     return;
   }
 
@@ -63,7 +66,8 @@ export const getScheduleData = (
     gasPrice,
     EAC_SCHEDULING_CONFIG.FEE,
     timeBounty,
-    requiredDeposit
+    requiredDeposit,
+    scheduleTimestamp
   ]);
 };
 

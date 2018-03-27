@@ -51,6 +51,10 @@ describe('helpers selector', () => {
       windowStart: {
         raw: '',
         value: null
+      },
+      scheduleTimestamp: {
+        raw: '',
+        value: null
       }
     }
   };
@@ -64,7 +68,8 @@ describe('helpers selector', () => {
       to: new Buffer([0, 1, 2, 3]),
       value: Wei('1000000000'),
       timeBounty: Wei('1500'),
-      windowStart: null
+      windowStart: null,
+      scheduleTimestamp: null
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);
   });

@@ -39,7 +39,7 @@ class Schedule extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                {wallet.isReadOnly ? <Redirect to="schedule/info" /> : <ScheduleMain />};
+                {wallet.isReadOnly ? <Redirect to="schedule/info" /> : <ScheduleMain />}
               </div>
               <SideBar />
             </div>

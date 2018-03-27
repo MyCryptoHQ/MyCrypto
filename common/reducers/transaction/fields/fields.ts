@@ -20,6 +20,7 @@ const INITIAL_STATE: State = {
   nonce: { raw: '', value: null },
   value: { raw: '', value: null },
   windowStart: { raw: '', value: null },
+  scheduleTimestamp: { raw: '', value: null },
   gasLimit: { raw: '21000', value: new BN(21000) },
   gasPrice: { raw: '20', value: gasPriceToBase(20) },
   timeBounty: {
@@ -79,6 +80,8 @@ export const fields = (
       return updateField('timeBounty')(state, action);
     case TK.WINDOW_START_FIELD_SET:
       return updateField('windowStart')(state, action);
+    case TK.SCHEDULE_TIMESTAMP_FIELD_SET:
+      return updateField('scheduleTimestamp')(state, action);
     case TK.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
     case TK.ETHER_TO_TOKEN_SWAP:
