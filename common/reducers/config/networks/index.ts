@@ -1,6 +1,7 @@
-import { customNetworks, State as CustomNetworksState } from './customNetworks';
-import { staticNetworks, State as StaticNetworksState } from './staticNetworks';
 import { combineReducers } from 'redux';
+import { customNetworks } from './customNetworks';
+import { staticNetworks } from './staticNetworks';
+import { StaticNetworksState, CustomNetworksState } from './types';
 
 interface State {
   customNetworks: CustomNetworksState;
