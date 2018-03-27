@@ -51,10 +51,9 @@ export const getScheduleData = (
   windowStart: any,
   gasPrice: BN | null,
   timeBounty: any,
-  requiredDeposit: any,
-  scheduleTimestamp: Date | null
+  requiredDeposit: any
 ) => {
-  if (!callValue || !gasPrice || !windowStart || !scheduleTimestamp) {
+  if (!callValue || !gasPrice || !windowStart) {
     return;
   }
 
@@ -66,8 +65,7 @@ export const getScheduleData = (
     gasPrice,
     EAC_SCHEDULING_CONFIG.FEE,
     timeBounty,
-    requiredDeposit,
-    scheduleTimestamp
+    requiredDeposit
   ]);
 };
 

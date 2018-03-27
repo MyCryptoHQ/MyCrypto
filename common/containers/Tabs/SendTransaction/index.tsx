@@ -12,8 +12,7 @@ import {
   RequestPayment,
   RecentTransactions,
   Fields,
-  UnavailableWallets,
-  SchedulingFields
+  UnavailableWallets
 } from 'containers/Tabs/SendTransaction/components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
@@ -22,13 +21,6 @@ import { isNetworkUnit } from 'selectors/config/wallet';
 const Send = () => (
   <React.Fragment>
     <Fields />
-    <UnavailableWallets />
-  </React.Fragment>
-);
-
-const Schedule = () => (
-  <React.Fragment>
-    <SchedulingFields />
     <UnavailableWallets />
   </React.Fragment>
 );
@@ -107,17 +99,6 @@ class SendTransaction extends React.Component<Props> {
                     path={`${currentPath}/recent-txs`}
                     exact={true}
                     render={() => <RecentTransactions wallet={wallet} />}
-                  />
-                  <Route
-                    exact={true}
-                    path={`${currentPath}/schedule`}
-                    render={() => {
-                      return wallet.isReadOnly ? (
-                        <Redirect to={`${currentPath}/info`} />
-                      ) : (
-                        <Schedule />
-                      );
-                    }}
                   />
                   <RouteNotFound />
                 </Switch>

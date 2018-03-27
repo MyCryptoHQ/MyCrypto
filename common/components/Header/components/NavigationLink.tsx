@@ -8,12 +8,11 @@ import './NavigationLink.scss';
 interface Props extends RouteComponentProps<{}> {
   link: TabLink;
   isHomepage: boolean;
-  activeOnlyWhenExact?: boolean;
 }
 
 class NavigationLink extends React.PureComponent<Props, {}> {
   public render() {
-    const { activeOnlyWhenExact, link, location, isHomepage } = this.props;
+    const { link, location, isHomepage } = this.props;
     const isExternalLink = link.to.includes('http');
     let isActive = false;
 
@@ -22,8 +21,7 @@ class NavigationLink extends React.PureComponent<Props, {}> {
       // 1) Current path is the same as link
       // 2) the first path is the same for both links (/account and /account/send)
       // 3) we're at the root path and this is the "homepage" nav item
-      const isSubRoute =
-        !activeOnlyWhenExact && location.pathname.split('/')[1] === link.to.split('/')[1];
+      const isSubRoute = location.pathname.split('/')[1] === link.to.split('/')[1];
       isActive =
         location.pathname === link.to || isSubRoute || (isHomepage && location.pathname === '/');
     }
