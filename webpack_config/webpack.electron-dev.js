@@ -7,6 +7,7 @@ const makeConfig = require('./makeConfig');
 
 const electronConfig = {
   target: 'electron-main',
+  mode: 'development',
   entry: {
     main: path.join(config.path.electron, 'main/index.ts')
   },
