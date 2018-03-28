@@ -4,7 +4,12 @@ import {
   CustomNetworkAction,
   TypeKeys
 } from 'actions/config';
-import { CustomNetworksState as State } from './types';
+import { CustomNetworkConfig } from 'types/network';
+
+// TODO: this doesn't accurately represent state, as
+export interface State {
+  [customNetworkId: string]: CustomNetworkConfig;
+}
 
 const addCustomNetwork = (state: State, { payload }: AddCustomNetworkAction): State => ({
   ...state,
