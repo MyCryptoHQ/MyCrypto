@@ -79,7 +79,7 @@ export function* shouldBroadcastTransaction(indexingHash: string): SagaIterator 
   }
   return true;
 }
-export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction): SagaIterator {
+export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction) {
   const isWeb3Req = type === TK.BROADCAST_WEB3_TRANSACTION_REQUESTED;
   const txSelector = isWeb3Req ? getWeb3Tx : getSignedTx;
   const serializedTransaction: StateSerializedTx = yield select(txSelector);
