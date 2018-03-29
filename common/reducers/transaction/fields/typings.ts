@@ -4,7 +4,8 @@ import {
   SetNonceFieldAction,
   SetGasLimitFieldAction,
   SetWindowStartFieldAction,
-  SetScheduleTimestampFieldAction
+  SetScheduleTimestampFieldAction,
+  SetScheduleTypeAction
 } from 'actions/transaction';
 import { Wei } from 'libs/units';
 
@@ -18,4 +19,5 @@ export interface State {
   timeBounty: { raw: string; value: Wei };
   windowStart: SetWindowStartFieldAction['payload'];
   scheduleTimestamp: SetScheduleTimestampFieldAction['payload'];
+  scheduleType: SetScheduleTypeAction['payload'];
 }

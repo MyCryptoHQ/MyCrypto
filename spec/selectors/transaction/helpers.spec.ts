@@ -55,6 +55,10 @@ describe('helpers selector', () => {
       scheduleTimestamp: {
         raw: '',
         value: null
+      },
+      scheduleType: {
+        raw: 'time',
+        value: 'time'
       }
     }
   };
@@ -69,7 +73,8 @@ describe('helpers selector', () => {
       value: Wei('1000000000'),
       timeBounty: Wei('1500'),
       windowStart: null,
-      scheduleTimestamp: null
+      scheduleTimestamp: null,
+      scheduleType: 'time'
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);
   });

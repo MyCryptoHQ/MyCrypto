@@ -26,6 +26,10 @@ const INITIAL_STATE: State = {
   timeBounty: {
     raw: fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'),
     value: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT
+  },
+  scheduleType: {
+    raw: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD,
+    value: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD
   }
 };
 
@@ -82,6 +86,8 @@ export const fields = (
       return updateField('windowStart')(state, action);
     case TK.SCHEDULE_TIMESTAMP_FIELD_SET:
       return updateField('scheduleTimestamp')(state, action);
+    case TK.SCHEDULE_TYPE_SET:
+      return updateField('scheduleType')(state, action);
     case TK.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
     case TK.ETHER_TO_TOKEN_SWAP:

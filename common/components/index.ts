@@ -10,6 +10,7 @@ export * from './SendButton';
 export * from './SigningStatus';
 export * from './ScheduleTimestampField';
 export * from './ScheduleTimezoneDropDown';
+export * from './ScheduleType';
 export * from '../containers/Tabs/ScheduleTransaction/components';
 export { default as NonceField } from './NonceField';
 export { default as Header } from './Header';

@@ -1,6 +1,13 @@
 import { AppState } from 'reducers';
 import { getCurrentTo, getCurrentValue } from './current';
-import { getFields, getData, getWindowStart, getNonce, getTimeBounty } from './fields';
+import {
+  getFields,
+  getData,
+  getWindowStart,
+  getNonce,
+  getTimeBounty,
+  getScheduleType
+} from './fields';
 import { makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 import { getUnit } from 'selectors/transaction/meta';
@@ -66,6 +73,7 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const dataExists = getDataExists(state);
   const callData = getData(state);
   const validGasCost = getValidGasCost(state);
+  const scheduleType = getScheduleType(state);
   const windowStart = getWindowStart(state);
   const gasLimit = getGasLimit(state);
   const nonce = getNonce(state);
@@ -98,7 +106,11 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   );
 
   const transactionOptions = {
-    to: Address(EAC_ADDRESSES.KOVAN.blockScheduler),
+    to: Address(
+      scheduleType.value === 'time'
+        ? EAC_ADDRESSES.KOVAN.timestampScheduler
+        : EAC_ADDRESSES.KOVAN.blockScheduler
+    ),
     data: transactionData,
     gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
     gasPrice: gasPrice.value,

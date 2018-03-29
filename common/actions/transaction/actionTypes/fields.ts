@@ -107,6 +107,14 @@ interface SetScheduleTimestampFieldAction {
   };
 }
 
+interface SetScheduleTypeAction {
+  type: TypeKeys.SCHEDULE_TYPE_SET;
+  payload: {
+    raw: string;
+    value: string | null;
+  };
+}
+
 type InputFieldAction = InputNonceAction | InputGasLimitAction | InputDataAction;
 
 type FieldAction =
@@ -118,7 +126,8 @@ type FieldAction =
   | SetGasPriceFieldAction
   | SetTimeBountyFieldAction
   | SetWindowStartFieldAction
-  | SetScheduleTimestampFieldAction;
+  | SetScheduleTimestampFieldAction
+  | SetScheduleTypeAction;
 
 export {
   InputGasLimitAction,
@@ -138,5 +147,6 @@ export {
   SetGasPriceFieldAction,
   SetTimeBountyFieldAction,
   SetWindowStartFieldAction,
-  SetScheduleTimestampFieldAction
+  SetScheduleTimestampFieldAction,
+  SetScheduleTypeAction
 };

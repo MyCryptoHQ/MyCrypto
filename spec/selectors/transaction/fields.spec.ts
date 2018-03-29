@@ -51,6 +51,10 @@ describe('fields selector', () => {
     scheduleTimestamp: {
       raw: '',
       value: null
+    },
+    scheduleType: {
+      raw: 'time',
+      value: 'time'
     }
   };
 
