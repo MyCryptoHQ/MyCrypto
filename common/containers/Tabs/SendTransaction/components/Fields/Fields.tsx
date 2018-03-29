@@ -22,7 +22,7 @@ import translate from 'translations';
 
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
-import { getOffline } from 'selectors/config';
+import { getOffline, getNetworkConfig } from 'selectors/config';
 import { SendScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButton';
 import { GenerateScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/GenerateScheduleTransactionButton';
 import {
@@ -31,6 +31,7 @@ import {
   getCurrentSchedulingToggle,
   ICurrentSchedulingToggle
 } from 'selectors/transaction';
+import './Fields.scss';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -43,7 +44,7 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 interface StateProps {
-  scheduling: boolean;
+  schedulingAvailable: boolean;
   shouldDisplay: boolean;
   offline: boolean;
   schedulingType: ICurrentScheduleType;
@@ -52,7 +53,7 @@ interface StateProps {
 
 class FieldsClass extends Component<StateProps> {
   public render() {
-    const { shouldDisplay, scheduling, useScheduling, schedulingType } = this.props;
+    const { shouldDisplay, schedulingAvailable, useScheduling, schedulingType } = this.props;
 
     return (
       <OnlyUnlocked
@@ -63,10 +64,10 @@ class FieldsClass extends Component<StateProps> {
               <div className="Tab-content-pane">
                 <AddressField />
                 <div className="row form-group">
-                  <div className="col-xs-10">
+                  <div className={schedulingAvailable ? 'col-xs-10' : 'col-xs-12'}>
                     <AmountField hasUnitDropdown={true} hasSendEverything={true} />
                   </div>
-                  {scheduling && (
+                  {schedulingAvailable && (
                     <div className="col-xs-2">
                       <SchedulingToggle />
                     </div>
@@ -75,34 +76,36 @@ class FieldsClass extends Component<StateProps> {
 
                 {useScheduling && (
                   <div className="scheduled-tx-settings">
-                    <h6>Scheduled Transaction Settings</h6>
+                    <div className="scheduled-tx-settings_title">
+                      Scheduled Transaction Settings
+                    </div>
                     <br />
 
                     <div className="row form-group">
-                      <div className="col-xs-3">
+                      <div className="col-xs-12 col-sm-6 col-md-3 col-md-push-9">
                         <ScheduleType />
                       </div>
 
                       {schedulingType.value === 'time' && (
-                        <div>
-                          <div className="col-xs-12 col-md-3">
+                        <>
+                          <div className="col-xs-12 col-md-3 col-md-pull-3">
                             <ScheduleTimestampField />
                           </div>
-                          <div className="col-xs-12 col-md-3">
+                          <div className="col-xs-12 col-md-3 col-md-pull-3">
                             <ScheduleTimezoneDropDown />
                           </div>
-                        </div>
+                        </>
                       )}
 
                       {schedulingType.value === 'block' && (
-                        <div>
-                          <div className="col-xs-12 col-md-6">
+                        <>
+                          <div className="col-xs-12 col-md-6 col-md-pull-3">
                             <WindowStartField />
                           </div>
-                        </div>
+                        </>
                       )}
 
-                      <div className="col-xs-12 col-md-3">
+                      <div className="col-xs-12 col-md-3 col-md-pull-3">
                         <WindowSizeField />
                       </div>
                     </div>
@@ -156,7 +159,7 @@ class FieldsClass extends Component<StateProps> {
 }
 
 export const Fields = connect((state: AppState) => ({
-  scheduling: true,
+  schedulingAvailable: getNetworkConfig(state).name === 'Kovan',
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
   schedulingType: getCurrentScheduleType(state),
