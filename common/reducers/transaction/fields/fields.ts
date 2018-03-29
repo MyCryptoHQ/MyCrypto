@@ -19,6 +19,7 @@ const INITIAL_STATE: State = {
   data: { raw: '', value: null },
   nonce: { raw: '', value: null },
   value: { raw: '', value: null },
+  windowSize: { raw: '', value: null },
   windowStart: { raw: '', value: null },
   scheduleTimestamp: { raw: '', value: null },
   gasLimit: { raw: '21000', value: new BN(21000) },
@@ -82,6 +83,8 @@ export const fields = (
       return updateField('gasPrice')(state, action);
     case TK.TIME_BOUNTY_FIELD_SET:
       return updateField('timeBounty')(state, action);
+    case TK.WINDOW_SIZE_FIELD_SET:
+      return updateField('windowSize')(state, action);
     case TK.WINDOW_START_FIELD_SET:
       return updateField('windowStart')(state, action);
     case TK.SCHEDULE_TIMESTAMP_FIELD_SET:

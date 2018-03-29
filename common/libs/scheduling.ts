@@ -14,7 +14,6 @@ export const EAC_SCHEDULING_CONFIG = {
   TIME_BOUNTY_MIN,
   TIME_BOUNTY_DEFAULT: TIME_BOUNTY_MIN,
   TIME_BOUNTY_MAX: toWei('900', Units.ether.length - 1), // 900 ETH
-  WINDOW_SIZE_IN_BLOCKS: 90,
   SCHEDULE_TIMESTAMP_FORMAT: 'YYYY-MM-DD HH:mm:ss',
   DEFAULT_SCHEDULING_METHOD: 'time'
 };
@@ -54,13 +53,20 @@ export const getScheduleData = (
   callData = '',
   callGas: number,
   callValue: BN | null,
-  windowSize: number,
+  windowSize: number | null,
   windowStart: any,
   gasPrice: BN | null,
   timeBounty: BN | null,
   requiredDeposit: any
 ) => {
-  if (!callValue || !gasPrice || !windowStart || !timeBounty || timeBounty.lt(new BN(0))) {
+  if (
+    !callValue ||
+    !gasPrice ||
+    !windowStart ||
+    !windowSize ||
+    !timeBounty ||
+    timeBounty.lt(new BN(0))
+  ) {
     return;
   }
 

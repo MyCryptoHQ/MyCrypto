@@ -5,6 +5,7 @@ export * from './sign';
 export * from './broadcast';
 export * from './current';
 export * from './timeBounty';
+export * from './windowSize';
 export * from './windowStart';
 export * from './scheduleTimestamp';
 export * from './scheduleType';

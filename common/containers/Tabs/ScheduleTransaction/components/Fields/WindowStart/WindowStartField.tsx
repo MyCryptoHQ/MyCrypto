@@ -12,12 +12,12 @@ export const WindowStartField: React.SFC<Props> = ({ isReadOnly }) => (
     withProps={({ currentWindowStart, isValid, onChange, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translate('SCHEDULE_block')}</div>
+          <div className="input-group-header">{translate('SCHEDULE_BLOCK')}</div>
           <Input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}
             type="text"
             value={currentWindowStart.raw}
-            placeholder={translate('SCHEDULE_block_placeholder', true)}
+            placeholder={translateRaw('SCHEDULE_BLOCK_PLACEHOLDER')}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
             onChange={onChange}

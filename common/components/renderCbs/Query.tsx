@@ -21,6 +21,7 @@ export type Param =
   | 'value'
   | 'gaslimit'
   | 'limit'
+  | 'windowSize'
   | 'windowStart'
   | 'scheduleTimestamp'
   | 'timeBounty';

@@ -25,7 +25,7 @@ const TransactionSucceeded = ({ txHash, blockExplorer, scheduling }: Transaction
   if (scheduling) {
     scheduleDetailsBtn = (
       <a href={getTXDetailsCheckURL(txHash)} className="btn btn-xs">
-        {translate('SCHEDULE_check')}
+        {translate('SCHEDULE_CHECK')}
       </a>
     );
   }

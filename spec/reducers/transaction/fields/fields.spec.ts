@@ -17,6 +17,7 @@ describe('fields reducer', () => {
       raw: fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'),
       value: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT
     },
+    windowSize: { raw: '', value: null },
     windowStart: { raw: '', value: null },
     scheduleTimestamp: { raw: '', value: null },
     scheduleType: {

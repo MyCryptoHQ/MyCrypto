@@ -12,6 +12,7 @@ import {
   ResetAction,
   SetGasPriceFieldAction,
   SetTimeBountyFieldAction,
+  SetWindowSizeFieldAction,
   SetWindowStartFieldAction,
   SetScheduleTimestampFieldAction,
   SetScheduleTypeAction
@@ -92,6 +93,14 @@ const setGasPriceField = (payload: SetGasPriceFieldAction['payload']): SetGasPri
   payload
 });
 
+type TSetWindowSizeField = typeof setWindowSizeField;
+const setWindowSizeField = (
+  payload: SetWindowSizeFieldAction['payload']
+): SetWindowSizeFieldAction => ({
+  type: TypeKeys.WINDOW_SIZE_FIELD_SET,
+  payload
+});
+
 type TSetWindowStartField = typeof setWindowStartField;
 const setWindowStartField = (
   payload: SetWindowStartFieldAction['payload']
@@ -132,6 +141,7 @@ export {
   TSetNonceField,
   TSetValueField,
   TSetGasPriceField,
+  TSetWindowSizeField,
   TSetWindowStartField,
   TSetTimeBountyField,
   TSetScheduleTimestampField,
@@ -149,6 +159,7 @@ export {
   setNonceField,
   setValueField,
   setGasPriceField,
+  setWindowSizeField,
   setWindowStartField,
   setScheduleTimestampField,
   setScheduleType,

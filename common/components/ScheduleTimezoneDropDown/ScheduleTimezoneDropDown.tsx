@@ -20,7 +20,7 @@ class ScheduleTimezoneDropDownClass extends Component<DispatchProps> {
     return (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translate('SCHEDULE_timezone')}</div>
+          <div className="input-group-header">{translate('SCHEDULE_TIMEZONE')}</div>
           <Query
             params={['readOnly']}
             withQuery={({ readOnly }) => (

@@ -30,6 +30,7 @@ export const isFullTx = (
   const partialParamsToCheck = { ...rest };
 
   delete partialParamsToCheck.windowStart;
+  delete partialParamsToCheck.windowSize;
   delete partialParamsToCheck.scheduleTimestamp;
 
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
@@ -59,6 +60,12 @@ export const isFullTx = (
       currentTo.value
     );
   }
+};
+
+export const isWindowSizeValid = (transactionFields: AppState['transaction']['fields']) => {
+  const { windowSize } = transactionFields;
+
+  return Boolean(windowSize && windowSize.value);
 };
 
 export const isWindowStartValid = (

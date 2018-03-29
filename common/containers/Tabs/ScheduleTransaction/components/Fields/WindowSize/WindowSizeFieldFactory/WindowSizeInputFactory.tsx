@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
 import {
-  getCurrentWindowStart,
-  ICurrentWindowStart,
-  isValidCurrentWindowStart
+  getCurrentWindowSize,
+  ICurrentWindowSize,
+  isValidCurrentWindowSize
 } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getResolvingDomain } from 'selectors/ens';
-import { CallbackProps } from './WindowStartFieldFactory';
+import { CallbackProps } from './WindowSizeFieldFactory';
 
 interface StateProps {
-  currentWindowStart: ICurrentWindowStart;
+  currentWindowSize: ICurrentWindowSize;
   isValid: boolean;
   isResolving: boolean;
 }
@@ -23,9 +23,9 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps;
 
-class WindowStartInputFactoryClass extends Component<Props> {
+class WindowSizeInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentWindowStart, onChange, isValid, withProps } = this.props;
+    const { currentWindowSize, onChange, isValid, withProps } = this.props;
 
     return (
       <div className="row form-group">
@@ -34,7 +34,7 @@ class WindowStartInputFactoryClass extends Component<Props> {
             params={['readOnly']}
             withQuery={({ readOnly }) =>
               withProps({
-                currentWindowStart,
+                currentWindowSize,
                 isValid,
                 onChange,
                 readOnly: !!readOnly || this.props.isResolving
@@ -47,8 +47,8 @@ class WindowStartInputFactoryClass extends Component<Props> {
   }
 }
 
-export const WindowStartInputFactory = connect((state: AppState) => ({
-  currentWindowStart: getCurrentWindowStart(state),
+export const WindowSizeInputFactory = connect((state: AppState) => ({
+  currentWindowSize: getCurrentWindowSize(state),
   isResolving: getResolvingDomain(state),
-  isValid: isValidCurrentWindowStart(state)
-}))(WindowStartInputFactoryClass);
+  isValid: isValidCurrentWindowSize(state)
+}))(WindowSizeInputFactoryClass);

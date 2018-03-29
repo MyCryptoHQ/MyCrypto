@@ -6,7 +6,8 @@ import {
   getWindowStart,
   getNonce,
   getTimeBounty,
-  getScheduleType
+  getScheduleType,
+  getWindowSize
 } from './fields';
 import { makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
@@ -15,7 +16,8 @@ import {
   reduceToValues,
   isFullTx,
   isWindowStartValid,
-  isScheduleTimestampValid
+  isScheduleTimestampValid,
+  isWindowSizeValid
 } from 'selectors/transaction/helpers';
 import {
   getGasPrice,
@@ -75,23 +77,26 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const validGasCost = getValidGasCost(state);
   const scheduleType = getScheduleType(state);
   const windowStart = getWindowStart(state);
+  const windowSize = getWindowSize(state);
   const gasLimit = getGasLimit(state);
   const nonce = getNonce(state);
   const gasPrice = getGasPrice(state);
   const timeBounty = getTimeBounty(state);
+  const windowSizeValid = isWindowSizeValid(transactionFields);
   const windowStartValid = isWindowStartValid(transactionFields, getLatestBlock(state));
   const scheduleTimestampValid = isScheduleTimestampValid(transactionFields);
 
   const isFullTransaction =
     isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
-    (windowStartValid || scheduleTimestampValid);
+    (windowStartValid || scheduleTimestampValid) &&
+    windowSizeValid;
 
   const transactionData = getScheduleData(
     currentTo.raw,
     callData.raw,
     parseInt(gasLimit.raw, 10),
     currentValue.value,
-    EAC_SCHEDULING_CONFIG.WINDOW_SIZE_IN_BLOCKS,
+    windowSize.value,
     windowStart.value,
     gasPrice.value,
     timeBounty.value,

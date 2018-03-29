@@ -91,6 +91,14 @@ interface SetValueFieldAction {
   };
 }
 
+interface SetWindowSizeFieldAction {
+  type: TypeKeys.WINDOW_SIZE_FIELD_SET;
+  payload: {
+    raw: string;
+    value: number | null;
+  };
+}
+
 interface SetWindowStartFieldAction {
   type: TypeKeys.WINDOW_START_FIELD_SET;
   payload: {
@@ -125,6 +133,7 @@ type FieldAction =
   | SetValueFieldAction
   | SetGasPriceFieldAction
   | SetTimeBountyFieldAction
+  | SetWindowSizeFieldAction
   | SetWindowStartFieldAction
   | SetScheduleTimestampFieldAction
   | SetScheduleTypeAction;
@@ -146,6 +155,7 @@ export {
   InputFieldAction,
   SetGasPriceFieldAction,
   SetTimeBountyFieldAction,
+  SetWindowSizeFieldAction,
   SetWindowStartFieldAction,
   SetScheduleTimestampFieldAction,
   SetScheduleTypeAction

@@ -44,6 +44,10 @@ describe('fields selector', () => {
       raw: '1500',
       value: Wei('1500')
     },
+    windowSize: {
+      raw: '',
+      value: null
+    },
     windowStart: {
       raw: '',
       value: null

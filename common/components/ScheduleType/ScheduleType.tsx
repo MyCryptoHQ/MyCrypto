@@ -33,7 +33,7 @@ class ScheduleTypeClass extends Component<Props> {
                     onChange={this.handleOnChange}
                     checked={currentScheduleType.value === 'time'}
                   />
-                  {translate('SCHEDULE_type_time')}
+                  {translate('SCHEDULE_TYPE_TIME')}
                 </label>
               </div>
             </div>
@@ -47,7 +47,7 @@ class ScheduleTypeClass extends Component<Props> {
                     onChange={this.handleOnChange}
                     checked={currentScheduleType.value === 'block'}
                   />
-                  {translate('SCHEDULE_type_block')}
+                  {translate('SCHEDULE_TYPE_BLOCK')}
                 </label>
               </div>
             </div>

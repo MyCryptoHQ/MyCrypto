@@ -22,7 +22,7 @@ export const SendScheduleTransactionButton: React.SFC<{
               !!signing ? (signTx(), openModal()) : openModal();
             }}
           >
-            {translate('SCHEDULE_schedule')}
+            {translate('SCHEDULE_SCHEDULE')}
           </button>
         </React.Fragment>
       )}
