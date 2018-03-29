@@ -31,6 +31,10 @@ const INITIAL_STATE: State = {
   scheduleType: {
     raw: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD,
     value: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD
+  },
+  scheduleGasPrice: {
+    raw: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK.toString(),
+    value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
   }
 };
 
@@ -91,6 +95,8 @@ export const fields = (
       return updateField('scheduleTimestamp')(state, action);
     case TK.SCHEDULE_TYPE_SET:
       return updateField('scheduleType')(state, action);
+    case TK.SCHEDULE_GAS_PRICE_FIELD_SET:
+      return updateField('scheduleGasPrice')(state, action);
     case TK.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
     case TK.ETHER_TO_TOKEN_SWAP:

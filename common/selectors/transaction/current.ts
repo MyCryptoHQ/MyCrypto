@@ -1,4 +1,4 @@
-import { getTo, getValue } from './fields';
+import { getTo, getValue, getScheduleGasPrice } from './fields';
 import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { TokenValue, Wei, Address } from 'libs/units';
@@ -44,6 +44,9 @@ const isValidGasPrice = (state: AppState): boolean => gasPriceValidator(getGasPr
 
 const isValidGasLimit = (state: AppState): boolean => gasLimitValidator(getGasLimit(state).raw);
 
+const isValidScheduleGasPrice = (state: AppState): boolean =>
+  gasPriceValidator(getScheduleGasPrice(state).raw);
+
 function getCurrentToAddressMessage(state: AppState): AddressMessage | undefined {
   const to = getCurrentTo(state);
   return getAddressMessage(to.raw);
@@ -58,5 +61,6 @@ export {
   isValidCurrentTo,
   isValidGasPrice,
   isValidGasLimit,
+  isValidScheduleGasPrice,
   getCurrentToAddressMessage
 };

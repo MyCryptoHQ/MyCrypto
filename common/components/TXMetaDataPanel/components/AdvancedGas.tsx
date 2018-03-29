@@ -8,7 +8,7 @@ import { TInputGasPrice } from 'actions/transaction';
 import { NonceField, GasLimitField, DataField } from 'components';
 import { connect } from 'react-redux';
 import { getAutoGasLimitEnabled } from 'selectors/config';
-import { isValidGasPrice, getTimeBounty } from 'selectors/transaction';
+import { isValidGasPrice, getTimeBounty, getScheduleGasPrice } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
 import { Input, UnitDisplay } from 'components/ui';
 import SchedulingFeeSummary from './SchedulingFeeSummary';
@@ -27,6 +27,7 @@ interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   options?: AdvancedOptions;
   scheduling?: boolean;
+  scheduleGasPrice: AppState['transaction']['fields']['scheduleGasPrice'];
   timeBounty: AppState['transaction']['fields']['timeBounty'];
 }
 
@@ -83,7 +84,7 @@ class AdvancedGas extends React.Component<Props, State> {
                     {translateRaw('OFFLINE_STEP2_LABEL_3')} (gwei)
                   </div>
                   <Input
-                    className={!!gasPrice.raw && !validGasPrice ? 'is-invalid' : ''}
+                    className={!!gasPrice.raw && !validGasPrice ? 'invalid' : ''}
                     type="number"
                     placeholder="40"
                     value={gasPrice.raw}
@@ -118,7 +119,7 @@ class AdvancedGas extends React.Component<Props, State> {
   }
 
   private renderFee() {
-    const { gasPrice, scheduling, timeBounty } = this.props;
+    const { gasPrice, scheduling, scheduleGasPrice, timeBounty } = this.props;
     const { feeSummary } = this.state.options;
 
     if (!feeSummary) {
@@ -130,6 +131,7 @@ class AdvancedGas extends React.Component<Props, State> {
         <div className="AdvancedGas-fee-summary">
           <SchedulingFeeSummary
             gasPrice={gasPrice}
+            scheduleGasPrice={scheduleGasPrice}
             render={({ gasPriceWei, gasLimit, fee, usd }) => (
               <div>
                 <span>
@@ -141,10 +143,10 @@ class AdvancedGas extends React.Component<Props, State> {
                     symbol="ETH"
                   />{' '}
                   + {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei}{' '}
-                  * ({EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.add(
-                    EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST
-                  ).toString()}{' '}
-                  + {gasLimit}) = {fee} {usd && <span>~= ${usd} USD</span>}
+                  * {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
+                  {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()}{' '}
+                  * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()} + {gasLimit}) = {fee}{' '}
+                  {usd && <span>~= ${usd} USD</span>}
                 </span>
               </div>
             )}
@@ -180,6 +182,7 @@ class AdvancedGas extends React.Component<Props, State> {
 export default connect(
   (state: AppState) => ({
     autoGasLimitEnabled: getAutoGasLimitEnabled(state),
+    scheduleGasPrice: getScheduleGasPrice(state),
     timeBounty: getTimeBounty(state),
     validGasPrice: isValidGasPrice(state)
   }),

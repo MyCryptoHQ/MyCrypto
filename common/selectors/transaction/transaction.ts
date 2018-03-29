@@ -25,9 +25,11 @@ import {
   getDataExists,
   getSerializedTransaction,
   getValidGasCost,
-  isEtherTransaction
+  isEtherTransaction,
+  getScheduleGasPrice,
+  isValidScheduleGasPrice
 } from 'selectors/transaction';
-import { Wei, Address } from 'libs/units';
+import { Wei, Address, gasPriceToBase } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
 import { getNetworkConfig, getLatestBlock } from 'selectors/config';
 import BN from 'bn.js';
@@ -85,11 +87,14 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const windowSizeValid = isWindowSizeValid(transactionFields);
   const windowStartValid = isWindowStartValid(transactionFields, getLatestBlock(state));
   const scheduleTimestampValid = isScheduleTimestampValid(transactionFields);
+  const scheduleGasPrice = getScheduleGasPrice(state);
+  const scheduleGasPriceValid = isValidScheduleGasPrice(state);
 
   const isFullTransaction =
     isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
     (windowStartValid || scheduleTimestampValid) &&
-    windowSizeValid;
+    windowSizeValid &&
+    scheduleGasPriceValid;
 
   const transactionData = getScheduleData(
     currentTo.raw,
@@ -98,7 +103,7 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     currentValue.value,
     windowSize.value,
     windowStart.value,
-    gasPrice.value,
+    scheduleGasPrice.value,
     timeBounty.value,
     EAC_SCHEDULING_CONFIG.REQUIRED_DEPOSIT
   );
@@ -106,7 +111,7 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const endowment = calcEACEndowment(
     gasLimit.value || new BN(21000),
     currentValue.value || new BN(0),
-    gasPrice.value,
+    scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
     timeBounty.value
   );
 

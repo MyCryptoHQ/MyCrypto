@@ -14,6 +14,7 @@ import {
   Fields,
   UnavailableWallets
 } from 'containers/Tabs/SendTransaction/components';
+import { SideBar } from './components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
@@ -44,7 +45,7 @@ class SendTransaction extends React.Component<Props> {
       },
       {
         path: 'request',
-        name: translate('Request Payment'),
+        name: translate('NAV_REQUESTPAYMENT'),
         disabled: this.props.requestDisabled
       },
       {

@@ -8,7 +8,8 @@ import { getGasLimit, getTimeBounty } from 'selectors/transaction';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
-import { calcEACTotalCost } from 'libs/scheduling';
+import { calcEACTotalCost, EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import { gasPriceToBase } from 'libs/units';
 
 interface RenderData {
   gasPriceWei: string;
@@ -29,6 +30,8 @@ interface ReduxStateProps {
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
+  scheduleGasPrice: AppState['transaction']['fields']['scheduleGasPrice'];
+
   render(data: RenderData): React.ReactElement<string> | string;
 }
 
@@ -43,10 +46,11 @@ class SchedulingFeeSummary extends React.Component<Props> {
       network,
       isOffline,
       isGasEstimating,
+      scheduleGasPrice,
       timeBounty
     } = this.props;
 
-    if (isGasEstimating) {
+    if (isGasEstimating || !scheduleGasPrice) {
       return (
         <div className="FeeSummary is-loading">
           <Spinner />
@@ -58,7 +62,12 @@ class SchedulingFeeSummary extends React.Component<Props> {
       gasPrice.value &&
       gasLimit.value &&
       timeBounty.value &&
-      calcEACTotalCost(gasLimit.value, gasPrice.value, timeBounty.value);
+      calcEACTotalCost(
+        gasLimit.value,
+        gasPrice.value,
+        scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
+        timeBounty.value
+      );
 
     const fee = (
       <UnitDisplay

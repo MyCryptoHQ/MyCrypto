@@ -6,6 +6,7 @@ const TIME_BOUNTY_MIN = new BN('1');
 
 export const EAC_SCHEDULING_CONFIG = {
   DAPP_ADDRESS: 'https://app.chronologic.network',
+  SCHEDULE_GAS_PRICE_FALLBACK: 20, // Gwei
   FEE: new BN('2242000000000000'), // $2
   FEE_MULTIPLIER: new BN('2'),
   FUTURE_EXECUTION_COST: new BN('180000'),
@@ -25,7 +26,11 @@ export const EAC_ADDRESSES = {
   }
 };
 
-export const calcEACFutureExecutionCost = (callGas: BN, gasPrice: BN, timeBounty: BN | null) => {
+export const calcEACFutureExecutionCost = (
+  callGas: BN,
+  callGasPrice: BN,
+  timeBounty: BN | null
+) => {
   const totalGas = callGas.add(EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST);
 
   if (!timeBounty) {
@@ -34,16 +39,21 @@ export const calcEACFutureExecutionCost = (callGas: BN, gasPrice: BN, timeBounty
 
   return timeBounty
     .add(EAC_SCHEDULING_CONFIG.FEE.mul(EAC_SCHEDULING_CONFIG.FEE_MULTIPLIER))
-    .add(totalGas.mul(gasPrice));
+    .add(totalGas.mul(callGasPrice));
 };
 
-export const calcEACEndowment = (callGas: BN, callValue: BN, gasPrice: BN, timeBounty: BN) =>
-  callValue.add(calcEACFutureExecutionCost(callGas, gasPrice, timeBounty));
+export const calcEACEndowment = (callGas: BN, callValue: BN, callGasPrice: BN, timeBounty: BN) =>
+  callValue.add(calcEACFutureExecutionCost(callGas, callGasPrice, timeBounty));
 
-export const calcEACTotalCost = (callGas: BN, gasPrice: BN, timeBounty: BN | null) => {
+export const calcEACTotalCost = (
+  callGas: BN,
+  gasPrice: BN,
+  callGasPrice: BN,
+  timeBounty: BN | null
+) => {
   const deployCost = gasPrice.mul(EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT);
 
-  const futureExecutionCost = calcEACFutureExecutionCost(callGas, gasPrice, timeBounty);
+  const futureExecutionCost = calcEACFutureExecutionCost(callGas, callGasPrice, timeBounty);
 
   return deployCost.add(futureExecutionCost);
 };
@@ -55,17 +65,18 @@ export const getScheduleData = (
   callValue: BN | null,
   windowSize: number | null,
   windowStart: any,
-  gasPrice: BN | null,
+  callGasPrice: BN | null,
   timeBounty: BN | null,
   requiredDeposit: any
 ) => {
   if (
     !callValue ||
-    !gasPrice ||
+    !callGasPrice ||
     !windowStart ||
     !windowSize ||
     !timeBounty ||
-    timeBounty.lt(new BN(0))
+    timeBounty.lt(new BN(0)) ||
+    callGasPrice.lt(new BN(0))
   ) {
     return;
   }
@@ -75,7 +86,7 @@ export const getScheduleData = (
     callValue,
     windowSize,
     windowStart,
-    gasPrice,
+    callGasPrice,
     EAC_SCHEDULING_CONFIG.FEE,
     timeBounty,
     requiredDeposit

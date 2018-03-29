@@ -123,6 +123,14 @@ interface SetScheduleTypeAction {
   };
 }
 
+interface SetScheduleGasPriceFieldAction {
+  type: TypeKeys.SCHEDULE_GAS_PRICE_FIELD_SET;
+  payload: {
+    raw: string;
+    value: Wei | null;
+  };
+}
+
 type InputFieldAction = InputNonceAction | InputGasLimitAction | InputDataAction;
 
 type FieldAction =
@@ -136,7 +144,8 @@ type FieldAction =
   | SetWindowSizeFieldAction
   | SetWindowStartFieldAction
   | SetScheduleTimestampFieldAction
-  | SetScheduleTypeAction;
+  | SetScheduleTypeAction
+  | SetScheduleGasPriceFieldAction;
 
 export {
   InputGasLimitAction,
@@ -158,5 +167,6 @@ export {
   SetWindowSizeFieldAction,
   SetWindowStartFieldAction,
   SetScheduleTimestampFieldAction,
-  SetScheduleTypeAction
+  SetScheduleTypeAction,
+  SetScheduleGasPriceFieldAction
 };

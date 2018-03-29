@@ -1,12 +1,13 @@
 import React from 'react';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
 import {
   getGasLimitEstimationTimedOut,
   getGasEstimationPending,
-  nonceRequestPending
+  nonceRequestPending,
+  getScheduleGasPrice
 } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { fetchGasEstimates, TFetchGasEstimates } from 'actions/gas';
@@ -16,8 +17,9 @@ import { Wei, fromWei } from 'libs/units';
 import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import { TInputGasPrice } from 'actions/transaction';
-import SchedulingFeeSummary from './SchedulingFeeSummary';
 import FeeSummary from './FeeSummary';
+import SchedulingFeeSummary from './SchedulingFeeSummary';
+
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
@@ -35,6 +37,7 @@ interface StateProps {
   gasLimitPending: boolean;
   isWeb3Node: boolean;
   gasLimitEstimationTimedOut: boolean;
+  scheduleGasPrice: AppState['transaction']['fields']['scheduleGasPrice'];
 }
 
 interface ActionProps {
@@ -122,12 +125,13 @@ class SimpleGas extends React.Component<Props> {
   }
 
   private renderFee() {
-    const { gasPrice, scheduling } = this.props;
+    const { gasPrice, scheduling, scheduleGasPrice } = this.props;
 
     if (scheduling) {
       return (
         <SchedulingFeeSummary
           gasPrice={gasPrice}
+          scheduleGasPrice={scheduleGasPrice}
           render={({ fee, usd }) => (
             <span>
               {fee} {usd && <span>/ ${usd}</span>}
@@ -175,7 +179,8 @@ export default connect(
     noncePending: nonceRequestPending(state),
     gasLimitPending: getGasEstimationPending(state),
     gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
-    isWeb3Node: getIsWeb3Node(state)
+    isWeb3Node: getIsWeb3Node(state),
+    scheduleGasPrice: getScheduleGasPrice(state)
   }),
   {
     fetchGasEstimates

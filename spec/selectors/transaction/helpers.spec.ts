@@ -63,6 +63,10 @@ describe('helpers selector', () => {
       scheduleType: {
         raw: 'time',
         value: 'time'
+      },
+      scheduleGasPrice: {
+        raw: '1500',
+        value: Wei('1500')
       }
     }
   };
@@ -79,7 +83,8 @@ describe('helpers selector', () => {
       windowSize: null,
       windowStart: null,
       scheduleTimestamp: null,
-      scheduleType: 'time'
+      scheduleType: 'time',
+      scheduleGasPrice: Wei('1500')
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);
   });

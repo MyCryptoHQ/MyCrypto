@@ -15,6 +15,7 @@ const getWindowSize = (state: AppState) => getFields(state).windowSize;
 const getWindowStart = (state: AppState) => getFields(state).windowStart;
 const getScheduleTimestamp = (state: AppState) => getFields(state).scheduleTimestamp;
 const getScheduleType = (state: AppState) => getFields(state).scheduleType;
+const getScheduleGasPrice = (state: AppState) => getFields(state).scheduleGasPrice;
 
 const getDataExists = (state: AppState) => {
   const { value } = getData(state);
@@ -45,5 +46,6 @@ export {
   getWindowSize,
   getWindowStart,
   getScheduleTimestamp,
-  getScheduleType
+  getScheduleType,
+  getScheduleGasPrice
 };

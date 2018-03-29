@@ -23,6 +23,10 @@ describe('fields reducer', () => {
     scheduleType: {
       raw: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD,
       value: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD
+    },
+    scheduleGasPrice: {
+      raw: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK.toString(),
+      value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
     }
   };
   const testPayload = { raw: 'test', value: null };

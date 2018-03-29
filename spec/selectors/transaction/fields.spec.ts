@@ -59,6 +59,10 @@ describe('fields selector', () => {
     scheduleType: {
       raw: 'time',
       value: 'time'
+    },
+    scheduleGasPrice: {
+      raw: '1500',
+      value: Wei('1500')
     }
   };
 
