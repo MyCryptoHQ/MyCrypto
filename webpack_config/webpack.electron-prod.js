@@ -13,8 +13,6 @@ const jsConfig = makeConfig({
 });
 
 // Redefine plugins with prod specific stuff
-electronConfig.mode = 'production';
-
 electronConfig.plugins = [
   new ClearDistPlugin(),
   new webpack.DefinePlugin({

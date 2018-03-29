@@ -8,7 +8,7 @@ interface Props {
 }
 
 const HelpLink: React.SFC<AAttributes & Props> = ({ article, children, ...rest }) => (
-  <NewTabLink {...rest} href={`${knowledgeBaseURL}/${article}`}>
+  <NewTabLink {...rest} href={`${knowledgeBaseURL}/${article}`} onClick={this.handleClick}>
     {children}
   </NewTabLink>
 );
