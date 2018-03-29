@@ -11,7 +11,6 @@ import {
   getCustomNodeConfigs,
   getStaticNetworkConfigs
 } from 'selectors/config';
-import { CustomNode } from 'libs/nodes';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
 
@@ -329,7 +328,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         : {})
     };
 
-    const lib = new CustomNode(node);
+    const lib = {};
 
     return { ...node, lib };
   }

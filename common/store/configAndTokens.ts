@@ -14,7 +14,6 @@ import {
   getCustomNetworkConfigs
 } from 'selectors/config';
 import RootReducer, { AppState } from 'reducers';
-import CustomNode from 'libs/nodes/custom';
 import { CustomNodeConfig } from 'types/node';
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 

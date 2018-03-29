@@ -5,7 +5,6 @@ import { select, put, takeEvery, call } from 'redux-saga/effects';
 import { changeNodeForce, TypeKeys, web3SetNode } from 'actions/config';
 import { getNodeId, getStaticAltNodeIdToWeb3, getNetworkNameByChainId } from 'selectors/config';
 import { setupWeb3Node, Web3Service } from 'libs/nodes/web3';
-import { Web3NodeConfig } from 'types/node';
 import { SetWalletAction } from 'actions/wallet';
 
 export function* initWeb3Node(): SagaIterator {

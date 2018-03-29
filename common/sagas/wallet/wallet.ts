@@ -51,7 +51,6 @@ import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { getTokenBalances, filterScannedTokenBalances } from './helpers';
 import { Token } from 'types/network';
-import { Web3NodeConfig } from '../../../shared/types/node';
 import { initWeb3Node } from 'sagas/config/web3';
 
 export interface TokenBalanceLookup {

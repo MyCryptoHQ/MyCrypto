@@ -35,60 +35,56 @@ import { resetWallet } from 'actions/wallet';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
-
-let hasCheckedOnline = false;
+import { redux } from 'myc-shepherd';
+const { store } = redux;
 export function* pollOfflineStatus(): SagaIterator {
+  let hasCheckedOnline = false;
+  yield call(delay, 1000);
   while (true) {
-    const nodeConfig: StaticNodeConfig = yield select(getNodeConfig);
     const isOffline: boolean = yield select(getOffline);
+    if (document.hidden) {
+      yield call(delay, 1000);
+      continue;
+    }
 
-    // If our offline state disagrees with the browser, run a check
-    // Don't check if the user is in another tab or window
-    const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
-    if (shouldPing && !document.hidden) {
-      const { pingSucceeded } = yield race({
-        pingSucceeded: call(nodeConfig.lib.ping.bind(nodeConfig.lib)),
-        timeout: call(delay, 5000)
-      });
+    const balancerOffline = store.getState().providerBalancer.balancerConfig.offline;
 
-      if (pingSucceeded && isOffline) {
-        // If we were able to ping but redux says we're offline, mark online
+    if (!balancerOffline && isOffline) {
+      // If we were able to ping but redux says we're offline, mark online
+      yield put(
+        showNotification('success', 'Your connection to the network has been restored!', 3000)
+      );
+      yield put(toggleOffline());
+    } else if (balancerOffline && !isOffline) {
+      // If we were unable to ping but redux says we're online, mark offline
+      // If they had been online, show an error.
+      // If they hadn't been online, just inform them with a warning.
+      if (hasCheckedOnline) {
         yield put(
-          showNotification('success', 'Your connection to the network has been restored!', 3000)
-        );
-        yield put(toggleOffline());
-      } else if (!pingSucceeded && !isOffline) {
-        // If we were unable to ping but redux says we're online, mark offline
-        // If they had been online, show an error.
-        // If they hadn't been online, just inform them with a warning.
-        if (hasCheckedOnline) {
-          yield put(
-            showNotification(
-              'danger',
-              `You’ve lost your connection to the network, check your internet
+          showNotification(
+            'danger',
+            `You’ve lost your connection to the network, check your internet
               connection or try changing networks from the dropdown at the
               top right of the page.`,
-              Infinity
-            )
-          );
-        } else {
-          yield put(
-            showNotification(
-              'info',
-              'You are currently offline. Some features will be unavailable.',
-              5000
-            )
-          );
-        }
-        yield put(toggleOffline());
+            Infinity
+          )
+        );
       } else {
-        // If neither case was true, try again in 5s
-        yield call(delay, 5000);
+        yield put(
+          showNotification(
+            'info',
+            'You are currently offline. Some features will be unavailable.',
+            5000
+          )
+        );
       }
-      hasCheckedOnline = true;
-    } else {
-      yield call(delay, 1000);
+      yield put(toggleOffline());
     }
+
+    // If neither case was true, try again in 1s
+    yield call(delay, 1000);
+
+    hasCheckedOnline = true;
   }
 }
 
