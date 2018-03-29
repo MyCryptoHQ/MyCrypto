@@ -40,6 +40,10 @@ describe('fields selector', () => {
       raw: '1500',
       value: Wei('1500')
     },
+    schedulingToggle: {
+      raw: 'false',
+      value: false
+    },
     timeBounty: {
       raw: '1500',
       value: Wei('1500')

@@ -14,6 +14,7 @@ import {
   TimeBountyField,
   ScheduleType,
   WindowSizeField,
+  SchedulingToggle,
   ScheduleGasPriceField
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
@@ -24,7 +25,12 @@ import { NonStandardTransaction } from './components';
 import { getOffline } from 'selectors/config';
 import { SendScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButton';
 import { GenerateScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/GenerateScheduleTransactionButton';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/transaction';
+import {
+  getCurrentScheduleType,
+  ICurrentScheduleType,
+  getCurrentSchedulingToggle,
+  ICurrentSchedulingToggle
+} from 'selectors/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -41,11 +47,12 @@ interface StateProps {
   shouldDisplay: boolean;
   offline: boolean;
   schedulingType: ICurrentScheduleType;
+  useScheduling: ICurrentSchedulingToggle['value'];
 }
 
 class FieldsClass extends Component<StateProps> {
   public render() {
-    const { shouldDisplay, scheduling, schedulingType } = this.props;
+    const { shouldDisplay, scheduling, useScheduling, schedulingType } = this.props;
 
     return (
       <OnlyUnlocked
@@ -56,12 +63,17 @@ class FieldsClass extends Component<StateProps> {
               <div className="Tab-content-pane">
                 <AddressField />
                 <div className="row form-group">
-                  <div className="col-xs-12">
+                  <div className="col-xs-10">
                     <AmountField hasUnitDropdown={true} hasSendEverything={true} />
                   </div>
+                  {scheduling && (
+                    <div className="col-xs-2">
+                      <SchedulingToggle />
+                    </div>
+                  )}
                 </div>
 
-                {scheduling && (
+                {useScheduling && (
                   <div className="scheduled-tx-settings">
                     <h6>Scheduled Transaction Settings</h6>
                     <br />
@@ -108,7 +120,7 @@ class FieldsClass extends Component<StateProps> {
 
                 <div className="row form-group">
                   <div className="col-xs-12">
-                    <TXMetaDataPanel scheduling={scheduling} />
+                    <TXMetaDataPanel scheduling={useScheduling} />
                   </div>
                 </div>
 
@@ -125,9 +137,9 @@ class FieldsClass extends Component<StateProps> {
   }
 
   private getTxButton() {
-    const { offline, scheduling } = this.props;
+    const { offline, useScheduling } = this.props;
 
-    if (scheduling) {
+    if (useScheduling) {
       if (offline) {
         return <GenerateScheduleTransactionButton />;
       }
@@ -147,5 +159,6 @@ export const Fields = connect((state: AppState) => ({
   scheduling: true,
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
-  schedulingType: getCurrentScheduleType(state)
+  schedulingType: getCurrentScheduleType(state),
+  useScheduling: getCurrentSchedulingToggle(state).value
 }))(FieldsClass);

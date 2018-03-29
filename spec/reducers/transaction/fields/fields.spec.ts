@@ -13,6 +13,7 @@ describe('fields reducer', () => {
     value: { raw: '', value: null },
     gasLimit: { raw: '21000', value: new BN(21000) },
     gasPrice: { raw: '20', value: gasPriceToBase(20) },
+    schedulingToggle: { raw: 'false', value: false },
     timeBounty: {
       raw: fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'),
       value: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT

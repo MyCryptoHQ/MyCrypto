@@ -123,6 +123,14 @@ interface SetScheduleTypeAction {
   };
 }
 
+interface SetSchedulingToggleAction {
+  type: TypeKeys.SCHEDULING_TOGGLE_SET;
+  payload: {
+    raw: string;
+    value: boolean;
+  };
+}
+
 interface SetScheduleGasPriceFieldAction {
   type: TypeKeys.SCHEDULE_GAS_PRICE_FIELD_SET;
   payload: {
@@ -145,6 +153,7 @@ type FieldAction =
   | SetWindowStartFieldAction
   | SetScheduleTimestampFieldAction
   | SetScheduleTypeAction
+  | SetSchedulingToggleAction
   | SetScheduleGasPriceFieldAction;
 
 export {
@@ -168,5 +177,6 @@ export {
   SetWindowStartFieldAction,
   SetScheduleTimestampFieldAction,
   SetScheduleTypeAction,
+  SetSchedulingToggleAction,
   SetScheduleGasPriceFieldAction
 };

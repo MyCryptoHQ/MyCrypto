@@ -19,6 +19,7 @@ const INITIAL_STATE: State = {
   data: { raw: '', value: null },
   nonce: { raw: '', value: null },
   value: { raw: '', value: null },
+  schedulingToggle: { raw: 'false', value: false },
   windowSize: { raw: '', value: null },
   windowStart: { raw: '', value: null },
   scheduleTimestamp: { raw: '', value: null },
@@ -95,6 +96,8 @@ export const fields = (
       return updateField('scheduleTimestamp')(state, action);
     case TK.SCHEDULE_TYPE_SET:
       return updateField('scheduleType')(state, action);
+    case TK.SCHEDULING_TOGGLE_SET:
+      return updateField('schedulingToggle')(state, action);
     case TK.SCHEDULE_GAS_PRICE_FIELD_SET:
       return updateField('scheduleGasPrice')(state, action);
     case TK.TOKEN_TO_ETHER_SWAP:

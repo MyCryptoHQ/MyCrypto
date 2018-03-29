@@ -44,6 +44,10 @@ describe('helpers selector', () => {
         raw: '1500',
         value: Wei('1500')
       },
+      schedulingToggle: {
+        raw: 'false',
+        value: false
+      },
       timeBounty: {
         raw: '1500',
         value: Wei('1500')
@@ -79,6 +83,7 @@ describe('helpers selector', () => {
       nonce: new BN('0'),
       to: new Buffer([0, 1, 2, 3]),
       value: Wei('1000000000'),
+      schedulingToggle: false,
       timeBounty: Wei('1500'),
       windowSize: null,
       windowStart: null,

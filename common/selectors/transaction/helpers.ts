@@ -32,6 +32,7 @@ export const isFullTx = (
   delete partialParamsToCheck.windowStart;
   delete partialParamsToCheck.windowSize;
   delete partialParamsToCheck.scheduleTimestamp;
+  delete partialParamsToCheck.schedulingToggle;
 
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
     (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
