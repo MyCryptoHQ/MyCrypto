@@ -3,11 +3,9 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { SagaIterator, delay } from 'redux-saga';
 import {
   inputGasPrice,
-  inputTimeBounty,
   setDataField,
   setGasLimitField,
   setGasPriceField,
-  setTimeBountyField,
   setNonceField
 } from 'actions/transaction/actionCreators';
 import {
@@ -16,18 +14,10 @@ import {
   InputGasPriceAction,
   InputGasPriceIntentAction,
   InputNonceAction,
-  TypeKeys,
-  InputTimeBountyIntentAction,
-  InputTimeBountyAction
+  TypeKeys
 } from 'actions/transaction';
-import {
-  isValidHex,
-  isValidNonce,
-  gasPriceValidator,
-  gasLimitValidator,
-  timeBountyValidator
-} from 'libs/validators';
-import { Data, Wei, Nonce, gasPriceToBase, timeBountyRawToValue } from 'libs/units';
+import { isValidHex, isValidNonce, gasPriceValidator, gasLimitValidator } from 'libs/validators';
+import { Data, Wei, Nonce, gasPriceToBase } from 'libs/units';
 
 const SLIDER_DEBOUNCE_INPUT_DELAY = 300;
 
@@ -64,32 +54,10 @@ export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
   yield put(setNonceField({ raw: payload, value: validNonce ? Nonce(payload) : null }));
 }
 
-export function* handleTimeBountyInputIntent({
-  payload
-}: InputTimeBountyIntentAction): SagaIterator {
-  yield call(delay, SLIDER_DEBOUNCE_INPUT_DELAY);
-
-  yield put(inputTimeBounty(payload));
-}
-
-export function* handleTimeBountyInput({ payload }: InputTimeBountyAction): SagaIterator {
-  const timeBountyFloat = parseFloat(payload);
-  const validTimeBounty: boolean = yield call(timeBountyValidator, timeBountyFloat);
-
-  yield put(
-    setTimeBountyField({
-      raw: payload,
-      value: validTimeBounty ? timeBountyRawToValue(timeBountyFloat) : new BN(0)
-    })
-  );
-}
-
 export const fields = [
   takeEvery(TypeKeys.DATA_FIELD_INPUT, handleDataInput),
   takeEvery(TypeKeys.GAS_LIMIT_INPUT, handleGasLimitInput),
   takeEvery(TypeKeys.GAS_PRICE_INPUT, handleGasPriceInput),
-  takeEvery(TypeKeys.TIME_BOUNTY_INPUT, handleTimeBountyInput),
   takeEvery(TypeKeys.NONCE_INPUT, handleNonceInput),
-  takeLatest(TypeKeys.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent),
-  takeLatest(TypeKeys.TIME_BOUNTY_INPUT_INTENT, handleTimeBountyInputIntent)
+  takeLatest(TypeKeys.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent)
 ];

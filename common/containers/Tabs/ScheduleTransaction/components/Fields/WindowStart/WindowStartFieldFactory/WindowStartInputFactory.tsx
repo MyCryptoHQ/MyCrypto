@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
 import {
   getCurrentWindowStart,
-  isValidCurrentWindowStart,
-  ICurrentWindowStart
+  ICurrentWindowStart,
+  isValidCurrentWindowStart
 } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { CallbackProps } from 'components/WindowStartFieldFactory';
 import { getResolvingDomain } from 'selectors/ens';
+import { CallbackProps } from 'containers/Tabs/ScheduleTransaction/components/Fields/WindowStart/WindowStartFieldFactory';
 
 interface StateProps {
   currentWindowStart: ICurrentWindowStart;

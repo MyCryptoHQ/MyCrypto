@@ -4,6 +4,7 @@ export * from './network';
 export * from './sign';
 export * from './broadcast';
 export * from './current';
+export * from './timeBounty';
 export * from './windowStart';
 export * from './scheduleTimestamp';
 export * from './sendEverything';

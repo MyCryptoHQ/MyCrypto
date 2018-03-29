@@ -7,7 +7,6 @@ import {
   InputGasLimitAction,
   InputGasPriceAction,
   InputGasPriceIntentAction,
-  InputTimeBountyAction,
   InputDataAction,
   InputNonceAction,
   ResetAction,
@@ -17,7 +16,6 @@ import {
   SetScheduleTimestampFieldAction
 } from '../actionTypes';
 import { TypeKeys } from 'actions/transaction/constants';
-import { InputTimeBountyIntentAction } from 'actions/transaction';
 
 type TInputGasLimit = typeof inputGasLimit;
 const inputGasLimit = (payload: InputGasLimitAction['payload']) => ({
@@ -34,18 +32,6 @@ const inputGasPrice = (payload: InputGasPriceAction['payload']) => ({
 type TInputGasPriceIntent = typeof inputGasPrice;
 const inputGasPriceIntent = (payload: InputGasPriceIntentAction['payload']) => ({
   type: TypeKeys.GAS_PRICE_INPUT_INTENT,
-  payload
-});
-
-type TInputTimeBounty = typeof inputTimeBounty;
-const inputTimeBounty = (payload: InputTimeBountyAction['payload']) => ({
-  type: TypeKeys.TIME_BOUNTY_INPUT,
-  payload
-});
-
-type TInputTimeBountyIntent = typeof inputTimeBounty;
-const inputTimeBountyIntent = (payload: InputTimeBountyIntentAction['payload']) => ({
-  type: TypeKeys.TIME_BOUNTY_INPUT_INTENT,
   payload
 });
 
@@ -131,8 +117,6 @@ export {
   TInputGasLimit,
   TInputGasPrice,
   TInputGasPriceIntent,
-  TInputTimeBounty,
-  TInputTimeBountyIntent,
   TInputNonce,
   TInputData,
   TSetGasLimitField,
@@ -148,8 +132,6 @@ export {
   inputGasLimit,
   inputGasPrice,
   inputGasPriceIntent,
-  inputTimeBounty,
-  inputTimeBountyIntent,
   setTimeBountyField,
   inputNonce,
   inputData,

@@ -10,7 +10,7 @@ import {
 } from 'actions/transaction';
 import { Reducer } from 'redux';
 import { State } from './typings';
-import { gasPriceToBase, timeBountyRawToValue } from 'libs/units';
+import { gasPriceToBase, fromWei } from 'libs/units';
 import { resetHOF } from 'reducers/transaction/shared';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
@@ -24,8 +24,8 @@ const INITIAL_STATE: State = {
   gasLimit: { raw: '21000', value: new BN(21000) },
   gasPrice: { raw: '20', value: gasPriceToBase(20) },
   timeBounty: {
-    raw: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT.toString(),
-    value: timeBountyRawToValue(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT)
+    raw: fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'),
+    value: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT
   }
 };
 

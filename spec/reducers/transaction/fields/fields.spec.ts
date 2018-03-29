@@ -1,5 +1,5 @@
 import { TypeKeys } from 'actions/transaction/constants';
-import { gasPriceToBase, timeBountyRawToValue } from 'libs/units';
+import { gasPriceToBase, fromWei } from 'libs/units';
 import { fields, State } from 'reducers/transaction/fields';
 import * as txActions from 'actions/transaction';
 import BN from 'bn.js';
@@ -14,8 +14,8 @@ describe('fields reducer', () => {
     gasLimit: { raw: '21000', value: new BN(21000) },
     gasPrice: { raw: '20', value: gasPriceToBase(20) },
     timeBounty: {
-      raw: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT.toString(),
-      value: timeBountyRawToValue(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT)
+      raw: fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'),
+      value: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT
     },
     windowStart: { raw: '', value: null },
     scheduleTimestamp: { raw: '', value: null }

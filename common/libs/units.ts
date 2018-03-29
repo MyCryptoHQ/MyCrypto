@@ -1,7 +1,6 @@
 import BN from 'bn.js';
 import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
-import { EAC_SCHEDULING_CONFIG } from './scheduling';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -113,18 +112,6 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
 
 const gasPriceToBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
-const timeBountyRawToValue = (timeBounty: number) =>
-  toWei(
-    timeBounty.toString(),
-    EAC_SCHEDULING_CONFIG.TIME_BOUNTY_TO_WEI_MULTIPLIER.toString().length - 1
-  );
-
-const timeBountyValueToRaw = (timeBounty: BN) =>
-  baseToConvertedUnit(
-    timeBounty.toString(),
-    EAC_SCHEDULING_CONFIG.TIME_BOUNTY_TO_WEI_MULTIPLIER.toString().length - 1
-  );
-
 export {
   Data,
   Address,
@@ -139,7 +126,5 @@ export {
   UnitKey,
   Nonce,
   handleValues,
-  gasPriceToBase,
-  timeBountyRawToValue,
-  timeBountyValueToRaw
+  gasPriceToBase
 };

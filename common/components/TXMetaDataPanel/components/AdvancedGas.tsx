@@ -8,7 +8,7 @@ import { TInputGasPrice } from 'actions/transaction';
 import { NonceField, GasLimitField, DataField } from 'components';
 import { connect } from 'react-redux';
 import { getAutoGasLimitEnabled } from 'selectors/config';
-import { isValidGasPrice } from 'selectors/transaction';
+import { isValidGasPrice, getTimeBounty } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
 import { Input, UnitDisplay } from 'components/ui';
 import SchedulingFeeSummary from './SchedulingFeeSummary';
@@ -27,7 +27,7 @@ interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   options?: AdvancedOptions;
   scheduling?: boolean;
-  timeBounty?: AppState['transaction']['fields']['timeBounty'];
+  timeBounty: AppState['transaction']['fields']['timeBounty'];
 }
 
 interface StateProps {
@@ -140,7 +140,8 @@ class AdvancedGas extends React.Component<Props, State> {
                     checkOffline={true}
                     symbol="ETH"
                   />{' '}
-                  + {timeBounty && timeBounty.value.toString()} + {gasPriceWei} * ({EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.add(
+                  + {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei}{' '}
+                  * ({EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.add(
                     EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST
                   ).toString()}{' '}
                   + {gasLimit}) = {fee} {usd && <span>~= ${usd} USD</span>}
@@ -179,6 +180,7 @@ class AdvancedGas extends React.Component<Props, State> {
 export default connect(
   (state: AppState) => ({
     autoGasLimitEnabled: getAutoGasLimitEnabled(state),
+    timeBounty: getTimeBounty(state),
     validGasPrice: isValidGasPrice(state)
   }),
   { toggleAutoGasLimit }

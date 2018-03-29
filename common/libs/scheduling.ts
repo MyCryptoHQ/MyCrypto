@@ -1,5 +1,8 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
+import { toWei, Units } from './units';
+
+const TIME_BOUNTY_MIN = new BN('1');
 
 export const EAC_SCHEDULING_CONFIG = {
   DAPP_ADDRESS: 'https://app.chronologic.network',
@@ -8,10 +11,9 @@ export const EAC_SCHEDULING_CONFIG = {
   FUTURE_EXECUTION_COST: new BN('180000'),
   REQUIRED_DEPOSIT: 0,
   SCHEDULING_GAS_LIMIT: new BN('1500000'),
-  TIME_BOUNTY_MIN: 1, // $0.1
-  TIME_BOUNTY_DEFAULT: 10, // $1
-  TIME_BOUNTY_MAX: 100, // $10
-  TIME_BOUNTY_TO_WEI_MULTIPLIER: new BN('100000000000000'),
+  TIME_BOUNTY_MIN,
+  TIME_BOUNTY_DEFAULT: TIME_BOUNTY_MIN,
+  TIME_BOUNTY_MAX: toWei('900', Units.ether.length - 1), // 900 ETH
   WINDOW_SIZE_IN_BLOCKS: 90,
   SCHEDULE_TIMESTAMP_FORMAT: 'YYYY-MM-DD HH:mm:ss'
 };
@@ -23,8 +25,12 @@ export const EAC_ADDRESSES = {
   }
 };
 
-export const calcEACFutureExecutionCost = (callGas: BN, gasPrice: BN, timeBounty: BN) => {
+export const calcEACFutureExecutionCost = (callGas: BN, gasPrice: BN, timeBounty: BN | null) => {
   const totalGas = callGas.add(EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST);
+
+  if (!timeBounty) {
+    timeBounty = EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN;
+  }
 
   return timeBounty
     .add(EAC_SCHEDULING_CONFIG.FEE.mul(EAC_SCHEDULING_CONFIG.FEE_MULTIPLIER))
@@ -34,7 +40,7 @@ export const calcEACFutureExecutionCost = (callGas: BN, gasPrice: BN, timeBounty
 export const calcEACEndowment = (callGas: BN, callValue: BN, gasPrice: BN, timeBounty: BN) =>
   callValue.add(calcEACFutureExecutionCost(callGas, gasPrice, timeBounty));
 
-export const calcEACTotalCost = (callGas: BN, gasPrice: BN, timeBounty: BN) => {
+export const calcEACTotalCost = (callGas: BN, gasPrice: BN, timeBounty: BN | null) => {
   const deployCost = gasPrice.mul(EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT);
 
   const futureExecutionCost = calcEACFutureExecutionCost(callGas, gasPrice, timeBounty);
@@ -50,10 +56,10 @@ export const getScheduleData = (
   windowSize: number,
   windowStart: any,
   gasPrice: BN | null,
-  timeBounty: any,
+  timeBounty: BN | null,
   requiredDeposit: any
 ) => {
-  if (!callValue || !gasPrice || !windowStart) {
+  if (!callValue || !gasPrice || !windowStart || !timeBounty || timeBounty.lt(new BN(0))) {
     return;
   }
 

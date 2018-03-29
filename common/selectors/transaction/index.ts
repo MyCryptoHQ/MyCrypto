@@ -5,5 +5,6 @@ export * from './meta';
 export * from './sign';
 export * from './current';
 export * from './windowStart';
+export * from './timeBounty';
 export * from './scheduleTimestamp';
 export * from './network';

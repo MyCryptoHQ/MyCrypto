@@ -13,6 +13,7 @@ import {
 } from 'config/constants';
 import { dPathRegex } from 'config/dpaths';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
+import BN from 'bn.js';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -149,13 +150,17 @@ export const gasPriceValidator = (gasPrice: number | string): boolean => {
   );
 };
 
-export const timeBountyValidator = (timeBounty: number | string): boolean => {
+export const timeBountyValidator = (timeBounty: BN | number | string): boolean => {
+  if (timeBounty instanceof BN) {
+    return (
+      timeBounty.gte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN) &&
+      timeBounty.lte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MAX)
+    );
+  }
+
   const timeBountyFloat = typeof timeBounty === 'string' ? parseFloat(timeBounty) : timeBounty;
-  return (
-    validNumber(timeBountyFloat) &&
-    timeBountyFloat >= EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN &&
-    timeBountyFloat <= EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MAX
-  );
+
+  return validNumber(timeBountyFloat);
 };
 
 export const isValidByteCode = (byteCode: string) =>
