@@ -3,7 +3,9 @@ import { Query } from 'components/renderCbs';
 import {
   getCurrentWindowSize,
   ICurrentWindowSize,
-  isValidCurrentWindowSize
+  isValidCurrentWindowSize,
+  getCurrentScheduleType,
+  ICurrentScheduleType
 } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -11,6 +13,7 @@ import { getResolvingDomain } from 'selectors/ens';
 import { CallbackProps } from './WindowSizeFieldFactory';
 
 interface StateProps {
+  currentScheduleType: ICurrentScheduleType;
   currentWindowSize: ICurrentWindowSize;
   isValid: boolean;
   isResolving: boolean;
@@ -25,23 +28,22 @@ type Props = OwnProps & StateProps;
 
 class WindowSizeInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentWindowSize, onChange, isValid, withProps } = this.props;
+    const { currentWindowSize, currentScheduleType, onChange, isValid, withProps } = this.props;
 
     return (
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <Query
-            params={['readOnly']}
-            withQuery={({ readOnly }) =>
-              withProps({
-                currentWindowSize,
-                isValid,
-                onChange,
-                readOnly: !!readOnly || this.props.isResolving
-              })
-            }
-          />
-        </div>
+      <div className="form-group">
+        <Query
+          params={['readOnly']}
+          withQuery={({ readOnly }) =>
+            withProps({
+              currentWindowSize,
+              currentScheduleType,
+              isValid,
+              onChange,
+              readOnly: !!readOnly || this.props.isResolving
+            })
+          }
+        />
       </div>
     );
   }
@@ -49,6 +51,7 @@ class WindowSizeInputFactoryClass extends Component<Props> {
 
 export const WindowSizeInputFactory = connect((state: AppState) => ({
   currentWindowSize: getCurrentWindowSize(state),
+  currentScheduleType: getCurrentScheduleType(state),
   isResolving: getResolvingDomain(state),
   isValid: isValidCurrentWindowSize(state)
 }))(WindowSizeInputFactoryClass);

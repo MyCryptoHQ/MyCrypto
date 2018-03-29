@@ -3,7 +3,7 @@ import { setCurrentWindowSize, TSetCurrentWindowSize } from 'actions/transaction
 import { WindowSizeInputFactory } from './WindowSizeInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentWindowSize } from 'selectors/transaction';
+import { ICurrentWindowSize, ICurrentScheduleType } from 'selectors/transaction';
 
 interface DispatchProps {
   setCurrentWindowSize: TSetCurrentWindowSize;
@@ -15,9 +15,10 @@ interface OwnProps {
 }
 
 export interface CallbackProps {
+  currentWindowSize: ICurrentWindowSize;
+  currentScheduleType: ICurrentScheduleType;
   isValid: boolean;
   readOnly: boolean;
-  currentWindowSize: ICurrentWindowSize;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 

@@ -50,20 +50,18 @@ class ScheduleTimestampInputFactoryClass extends Component<Props> {
     const { currentScheduleTimestamp, onChange, isValid, withProps } = this.props;
 
     return (
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <Query
-            params={['readOnly']}
-            withQuery={({ readOnly }) =>
-              withProps({
-                currentScheduleTimestamp,
-                isValid,
-                onChange,
-                readOnly: !!readOnly || this.props.isResolving
-              })
-            }
-          />
-        </div>
+      <div className="form-group">
+        <Query
+          params={['readOnly']}
+          withQuery={({ readOnly }) =>
+            withProps({
+              currentScheduleTimestamp,
+              isValid,
+              onChange,
+              readOnly: !!readOnly || this.props.isResolving
+            })
+          }
+        />
       </div>
     );
   }
