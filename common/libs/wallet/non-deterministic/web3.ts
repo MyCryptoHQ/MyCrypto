@@ -31,9 +31,10 @@ export default class Web3Wallet implements IFullWallet {
     if (!nodeLib) {
       throw new Error('');
     }
+    /*
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Web3 wallets can only be used with a Web3 node.');
-    }
+    }*/
 
     return nodeLib.signMessage(msgHex, this.address);
   }
@@ -59,9 +60,10 @@ export default class Web3Wallet implements IFullWallet {
     const state = configuredStore.getState();
     const nodeLib: Web3Node | INode | undefined = getNodeLib(state);
 
+    /*
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Web3 wallets can only be used with a Web3 node.');
-    }
+    }*/
     await this.networkCheck(nodeLib);
 
     return nodeLib.sendTransaction(web3Tx);

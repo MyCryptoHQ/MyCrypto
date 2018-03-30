@@ -13,6 +13,7 @@ import {
 } from 'selectors/config';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
+import { shepherdProvider, shepherd, makeProviderConfig } from 'libs/nodes';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 
@@ -328,9 +329,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         : {})
     };
 
-    const lib = {};
-
-    return { ...node, lib };
+    return { ...node, lib: shepherdProvider };
   }
 
   private getConflictedNode(): CustomNodeConfig | undefined {
@@ -342,6 +341,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
   private saveAndAdd = () => {
     const node = this.makeCustomNodeConfigFromState();
+    shepherd.useProvider('myccustom', node.id, makeProviderConfig({ network: node.network }), node);
 
     if (this.state.network === CUSTOM.value) {
       const network = this.makeCustomNetworkConfigFromState();

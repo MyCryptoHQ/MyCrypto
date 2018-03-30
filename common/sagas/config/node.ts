@@ -7,7 +7,6 @@ import {
   take,
   takeEvery,
   select,
-  race,
   apply,
   takeLatest
 } from 'redux-saga/effects';
@@ -35,56 +34,62 @@ import { resetWallet } from 'actions/wallet';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
-import { redux } from 'myc-shepherd';
-const { store } = redux;
+import {
+  getShepherdOffline,
+  isAutoNode,
+  shepherd,
+  shepherdProvider,
+  stripWeb3Network
+} from 'libs/nodes';
+
 export function* pollOfflineStatus(): SagaIterator {
   let hasCheckedOnline = false;
-  yield call(delay, 1000);
   while (true) {
     const isOffline: boolean = yield select(getOffline);
-    if (document.hidden) {
-      yield call(delay, 1000);
-      continue;
-    }
 
-    const balancerOffline = store.getState().providerBalancer.balancerConfig.offline;
-
-    if (!balancerOffline && isOffline) {
-      // If we were able to ping but redux says we're offline, mark online
-      yield put(
-        showNotification('success', 'Your connection to the network has been restored!', 3000)
-      );
-      yield put(toggleOffline());
-    } else if (balancerOffline && !isOffline) {
-      // If we were unable to ping but redux says we're online, mark offline
-      // If they had been online, show an error.
-      // If they hadn't been online, just inform them with a warning.
-      if (hasCheckedOnline) {
+    // If our offline state disagrees with the browser, run a check
+    // Don't check if the user is in another tab or window
+    const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
+    if (shouldPing && !document.hidden) {
+      const pingSucceeded = getShepherdOffline();
+      if (pingSucceeded && isOffline) {
+        // If we were able to ping but redux says we're offline, mark online
         yield put(
-          showNotification(
-            'danger',
-            `You’ve lost your connection to the network, check your internet
+          showNotification('success', 'Your connection to the network has been restored!', 3000)
+        );
+        yield put(toggleOffline());
+      } else if (!pingSucceeded && !isOffline) {
+        // If we were unable to ping but redux says we're online, mark offline
+        // If they had been online, show an error.
+        // If they hadn't been online, just inform them with a warning.
+        if (hasCheckedOnline) {
+          yield put(
+            showNotification(
+              'danger',
+              `You’ve lost your connection to the network, check your internet
               connection or try changing networks from the dropdown at the
               top right of the page.`,
-            Infinity
-          )
-        );
+              Infinity
+            )
+          );
+        } else {
+          yield put(
+            showNotification(
+              'info',
+              'You are currently offline. Some features will be unavailable.',
+              5000
+            )
+          );
+        }
+        yield put(toggleOffline());
       } else {
-        yield put(
-          showNotification(
-            'info',
-            'You are currently offline. Some features will be unavailable.',
-            5000
-          )
-        );
+        // If neither case was true, try again in 5s
+        yield call(delay, 5000);
       }
-      yield put(toggleOffline());
+      hasCheckedOnline = true;
+    } else {
+      yield call(delay, 1000);
     }
-
-    // If neither case was true, try again in 1s
-    yield call(delay, 1000);
-
-    hasCheckedOnline = true;
   }
 }
 
@@ -130,30 +135,9 @@ export function* handleNodeChangeIntent({
     nextNodeConfig = yield select(getStaticNodeFromId, nodeIdToSwitchTo);
   }
 
-  // Grab current block from the node, before switching, to confirm it's online
-  // Give it 5 seconds before we call it offline
-  let currentBlock;
-  let timeout;
-  try {
-    const { lb, to } = yield race({
-      lb: apply(nextNodeConfig.lib, nextNodeConfig.lib.getCurrentBlock),
-      to: call(delay, 5000)
-    });
-    currentBlock = lb;
-    timeout = to;
-  } catch (err) {
-    console.error(err);
-    // Whether it times out or errors, same message
-    timeout = true;
-  }
-
-  if (timeout) {
-    return yield* bailOut(translateRaw('ERROR_32'));
-  }
-
   const nextNetwork: StaticNetworkConfig | CustomNetworkConfig = yield select(
     getNetworkConfigById,
-    nextNodeConfig.network
+    stripWeb3Network(nextNodeConfig.network)
   );
 
   if (!nextNetwork) {
@@ -162,11 +146,33 @@ export function* handleNodeChangeIntent({
     );
   }
 
+  if (isAutoNode(nodeIdToSwitchTo)) {
+    shepherd.auto();
+    if (currentConfig.network !== nextNodeConfig.network) {
+      yield apply(shepherd, shepherd.switchNetworks, [nextNodeConfig.network]);
+    }
+  } else {
+    try {
+      yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, false]);
+    } catch (err) {
+      console.error(err);
+      return yield* bailOut(translateRaw('ERROR_32'));
+    }
+  }
+
+  let currentBlock;
+  try {
+    currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);
+  } catch (err) {
+    console.error(err);
+    return yield* bailOut(translateRaw('ERROR_32'));
+  }
+
   yield put(setLatestBlock(currentBlock));
   yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
 
   if (currentConfig.network !== nextNodeConfig.network) {
-    yield fork(handleNewNetwork);
+    yield fork(handleNewNetwork, nextNodeConfig.network);
   }
 }
 

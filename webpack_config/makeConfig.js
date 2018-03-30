@@ -228,13 +228,14 @@ module.exports = function(opts = {}) {
           vendor: [...config.vendorModules, 'babel-polyfill', 'bootstrap-sass', 'font-awesome']
         }
       }),
+      /*
       new HardSourceWebpackPlugin({
         environmentHash: {
           root: process.cwd(),
           directories: ['webpack_config'],
           files: ['package.json']
         }
-      }),
+      }),*/
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new FriendlyErrorsPlugin()
