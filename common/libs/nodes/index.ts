@@ -1,6 +1,6 @@
 import { shepherd, redux } from 'myc-shepherd';
 import { INode } from '.';
-
+import { tokenBalanceHandler } from './tokenBalanceProxy';
 export interface IProviderConfig {
   concurrency: number;
   requestFailureThreshold: number;
@@ -43,7 +43,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
 };
 let shepherdProvider: INode;
 shepherd.enableLogging();
-shepherd.init().then(provider => (shepherdProvider = provider));
+shepherd.init().then(provider => (shepherdProvider = new Proxy(provider, tokenBalanceHandler)));
 
 export const getShepherdManualMode = () =>
   redux.store.getState().providerBalancer.balancerConfig.manual;
