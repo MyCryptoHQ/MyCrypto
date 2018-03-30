@@ -3,7 +3,7 @@ import { IFullWallet } from '../IWallet';
 import { bufferToHex } from 'ethereumjs-util';
 import { configuredStore } from 'store';
 import { getNodeLib, getNetworkNameByChainId } from 'selectors/config';
-import Web3Node, { isWeb3Node } from 'libs/nodes/web3';
+import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 
 export default class Web3Wallet implements IFullWallet {

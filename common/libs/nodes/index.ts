@@ -5,7 +5,11 @@ export interface IProviderConfig {
   concurrency: number;
   requestFailureThreshold: number;
   timeoutThresholdMs: number;
-  supportedMethods: { [rpcMethod in keyof INode]: boolean };
+  supportedMethods: { [rpcMethod in keyof INode]: boolean } & {
+    getNetVersion: boolean;
+    signMessage: boolean;
+    sendTransaction: boolean;
+  };
   network: string;
 }
 
@@ -17,6 +21,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
     network: 'ETH',
     requestFailureThreshold: 3,
     supportedMethods: {
+      getNetVersion: true,
       ping: true,
       sendCallRequest: true,
       getBalance: true,
@@ -27,7 +32,11 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
       getTokenBalance: true,
       getTokenBalances: true,
       getTransactionByHash: true,
-      getTransactionReceipt: true
+      getTransactionReceipt: true,
+
+      /*web3 methods*/
+      signMessage: true,
+      sendTransaction: true
     },
     timeoutThresholdMs: 5000
   };
@@ -89,7 +98,7 @@ shepherd.useProvider('rpc', 'exp_tech', regExpConf, 'https://node.expanse.tech/'
  */
 const web3EthConf = makeProviderConfig({
   network: makeWeb3Network('ETH'),
-  supportedMethods: { sendRawTx: false }
+  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
 });
 shepherd.useProvider('rpc', 'web3_eth_mycrypto', web3EthConf, 'https://api.mycryptoapi.com/eth');
 shepherd.useProvider('etherscan', 'web3_eth_ethscan', web3EthConf, 'https://api.etherscan.io/api');
@@ -108,7 +117,7 @@ shepherd.useProvider(
 
 const web3RopConf = makeProviderConfig({
   network: makeWeb3Network('Ropsten'),
-  supportedMethods: { sendRawTx: false }
+  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
 });
 shepherd.useProvider(
   'infura',
@@ -119,7 +128,7 @@ shepherd.useProvider(
 
 const web3KovConf = makeProviderConfig({
   network: makeWeb3Network('Kovan'),
-  supportedMethods: { sendRawTx: false }
+  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
 });
 shepherd.useProvider(
   'etherscan',
@@ -130,7 +139,7 @@ shepherd.useProvider(
 
 const web3RinConf = makeProviderConfig({
   network: makeWeb3Network('Rinkeby'),
-  supportedMethods: { sendRawTx: false }
+  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
 });
 shepherd.useProvider(
   'infura',
