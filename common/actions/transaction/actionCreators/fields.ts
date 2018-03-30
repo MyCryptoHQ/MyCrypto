@@ -17,7 +17,8 @@ import {
   SetScheduleTimestampFieldAction,
   SetScheduleTypeAction,
   SetSchedulingToggleAction,
-  SetScheduleGasPriceFieldAction
+  SetScheduleGasPriceFieldAction,
+  SetScheduleGasLimitFieldAction
 } from '../actionTypes';
 import { TypeKeys } from 'actions/transaction/constants';
 
@@ -139,6 +140,12 @@ const setScheduleGasPriceField = (payload: SetScheduleGasPriceFieldAction['paylo
   payload
 });
 
+type TSetScheduleGasLimitField = typeof setScheduleGasLimitField;
+const setScheduleGasLimitField = (payload: SetScheduleGasLimitFieldAction['payload']) => ({
+  type: TypeKeys.SCHEDULE_GAS_LIMIT_FIELD_SET,
+  payload
+});
+
 type TReset = typeof reset;
 const reset = (payload: ResetAction['payload'] = { include: {}, exclude: {} }): ResetAction => ({
   type: TypeKeys.RESET,
@@ -164,6 +171,7 @@ export {
   TSetScheduleType,
   TSetSchedulingToggle,
   TSetScheduleGasPriceField,
+  TSetScheduleGasLimitField,
   TReset,
   inputGasLimit,
   inputGasPrice,
@@ -183,5 +191,6 @@ export {
   setScheduleType,
   setSchedulingToggle,
   setScheduleGasPriceField,
+  setScheduleGasLimitField,
   reset
 };

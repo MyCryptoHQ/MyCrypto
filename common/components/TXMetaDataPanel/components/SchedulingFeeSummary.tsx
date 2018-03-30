@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { getIsEstimating } from 'selectors/gas';
-import { getGasLimit, getTimeBounty } from 'selectors/transaction';
+import { getTimeBounty, getScheduleGasLimit } from 'selectors/transaction';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
@@ -14,13 +14,13 @@ import { gasPriceToBase } from 'libs/units';
 interface RenderData {
   gasPriceWei: string;
   gasPriceGwei: string;
-  gasLimit: string;
+  scheduleGasLimit: string;
   fee: React.ReactElement<string>;
   usd: React.ReactElement<string> | null;
 }
 
 interface ReduxStateProps {
-  gasLimit: AppState['transaction']['fields']['gasLimit'];
+  scheduleGasLimit: AppState['transaction']['fields']['scheduleGasLimit'];
   rates: AppState['rates']['rates'];
   network: NetworkConfig;
   isOffline: AppState['config']['meta']['offline'];
@@ -41,7 +41,7 @@ class SchedulingFeeSummary extends React.Component<Props> {
   public render() {
     const {
       gasPrice,
-      gasLimit,
+      scheduleGasLimit,
       rates,
       network,
       isOffline,
@@ -60,10 +60,10 @@ class SchedulingFeeSummary extends React.Component<Props> {
 
     const feeBig =
       gasPrice.value &&
-      gasLimit.value &&
+      scheduleGasLimit.value &&
       timeBounty.value &&
       calcEACTotalCost(
-        gasLimit.value,
+        scheduleGasLimit.value,
         gasPrice.value,
         scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
         timeBounty.value
@@ -99,7 +99,7 @@ class SchedulingFeeSummary extends React.Component<Props> {
           gasPriceGwei: gasPrice.raw,
           fee,
           usd,
-          gasLimit: gasLimit.raw
+          scheduleGasLimit: scheduleGasLimit.raw
         })}
       </div>
     );
@@ -108,7 +108,7 @@ class SchedulingFeeSummary extends React.Component<Props> {
 
 function mapStateToProps(state: AppState): ReduxStateProps {
   return {
-    gasLimit: getGasLimit(state),
+    scheduleGasLimit: getScheduleGasLimit(state),
     rates: state.rates.rates,
     network: getNetworkConfig(state),
     isOffline: getOffline(state),

@@ -3,7 +3,12 @@ import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { TokenValue, Wei, Address } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
-import { getDataExists, getGasPrice, getGasLimit } from 'selectors/transaction';
+import {
+  getDataExists,
+  getGasPrice,
+  getGasLimit,
+  getScheduleGasLimit
+} from 'selectors/transaction';
 import { isNetworkUnit } from 'selectors/config';
 import { getAddressMessage, AddressMessage } from 'config';
 
@@ -47,6 +52,9 @@ const isValidGasLimit = (state: AppState): boolean => gasLimitValidator(getGasLi
 const isValidScheduleGasPrice = (state: AppState): boolean =>
   gasPriceValidator(getScheduleGasPrice(state).raw);
 
+const isValidScheduleGasLimit = (state: AppState): boolean =>
+  gasLimitValidator(getScheduleGasLimit(state).raw);
+
 function getCurrentToAddressMessage(state: AppState): AddressMessage | undefined {
   const to = getCurrentTo(state);
   return getAddressMessage(to.raw);
@@ -61,6 +69,7 @@ export {
   isValidCurrentTo,
   isValidGasPrice,
   isValidGasLimit,
+  isValidScheduleGasLimit,
   isValidScheduleGasPrice,
   getCurrentToAddressMessage
 };

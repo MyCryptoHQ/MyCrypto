@@ -59,21 +59,23 @@ class AdvancedGas extends React.Component<Props, State> {
   };
 
   public render() {
-    const { autoGasLimitEnabled, gasPrice, validGasPrice } = this.props;
+    const { autoGasLimitEnabled, gasPrice, scheduling, validGasPrice } = this.props;
     const { gasPriceField, gasLimitField, nonceField, dataField } = this.state.options;
 
     return (
       <div className="AdvancedGas row form-group">
-        <div className="AdvancedGas-calculate-limit">
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              defaultChecked={autoGasLimitEnabled}
-              onChange={this.handleToggleAutoGasLimit}
-            />
-            <span>Automatically Calculate Gas Limit</span>
-          </label>
-        </div>
+        {!scheduling && (
+          <div className="AdvancedGas-calculate-limit">
+            <label className="checkbox">
+              <input
+                type="checkbox"
+                defaultChecked={autoGasLimitEnabled}
+                onChange={this.handleToggleAutoGasLimit}
+              />
+              <span>Automatically Calculate Gas Limit</span>
+            </label>
+          </div>
+        )}
 
         <div className="AdvancedGas-flex-wrapper flex-wrapper">
           {gasPriceField && (
@@ -97,7 +99,10 @@ class AdvancedGas extends React.Component<Props, State> {
 
           {gasLimitField && (
             <div className="AdvancedGas-gas-limit">
-              <GasLimitField customLabel={translateRaw('OFFLINE_STEP2_LABEL_4')} />
+              <GasLimitField
+                customLabel={translateRaw('OFFLINE_STEP2_LABEL_4')}
+                disabled={scheduling}
+              />
             </div>
           )}
           {nonceField && (
@@ -107,11 +112,12 @@ class AdvancedGas extends React.Component<Props, State> {
           )}
         </div>
 
-        {dataField && (
-          <div className="AdvancedGas-data">
-            <DataField />
-          </div>
-        )}
+        {dataField &&
+          !scheduling && (
+            <div className="AdvancedGas-data">
+              <DataField />
+            </div>
+          )}
 
         {this.renderFee()}
       </div>
@@ -132,7 +138,7 @@ class AdvancedGas extends React.Component<Props, State> {
           <SchedulingFeeSummary
             gasPrice={gasPrice}
             scheduleGasPrice={scheduleGasPrice}
-            render={({ gasPriceWei, gasLimit, fee, usd }) => (
+            render={({ gasPriceWei, scheduleGasLimit, fee, usd }) => (
               <div>
                 <span>
                   <UnitDisplay
@@ -145,8 +151,8 @@ class AdvancedGas extends React.Component<Props, State> {
                   + {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei}{' '}
                   * {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
                   {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()}{' '}
-                  * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()} + {gasLimit}) = {fee}{' '}
-                  {usd && <span>~= ${usd} USD</span>}
+                  * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()} + {scheduleGasLimit})
+                  = {fee} {usd && <span>~= ${usd} USD</span>}
                 </span>
               </div>
             )}

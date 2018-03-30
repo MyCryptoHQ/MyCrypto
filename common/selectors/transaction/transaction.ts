@@ -27,7 +27,9 @@ import {
   getValidGasCost,
   isEtherTransaction,
   getScheduleGasPrice,
-  isValidScheduleGasPrice
+  isValidScheduleGasPrice,
+  isValidScheduleGasLimit,
+  getScheduleGasLimit
 } from 'selectors/transaction';
 import { Wei, Address, gasPriceToBase } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
@@ -80,7 +82,6 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const scheduleType = getScheduleType(state);
   const windowStart = getWindowStart(state);
   const windowSize = getWindowSize(state);
-  const gasLimit = getGasLimit(state);
   const nonce = getNonce(state);
   const gasPrice = getGasPrice(state);
   const timeBounty = getTimeBounty(state);
@@ -89,17 +90,20 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const scheduleTimestampValid = isScheduleTimestampValid(transactionFields);
   const scheduleGasPrice = getScheduleGasPrice(state);
   const scheduleGasPriceValid = isValidScheduleGasPrice(state);
+  const scheduleGasLimit = getScheduleGasLimit(state);
+  const scheduleGasLimitValid = isValidScheduleGasLimit(state);
 
   const isFullTransaction =
     isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
     (windowStartValid || scheduleTimestampValid) &&
     windowSizeValid &&
-    scheduleGasPriceValid;
+    scheduleGasPriceValid &&
+    scheduleGasLimitValid;
 
   const transactionData = getScheduleData(
     currentTo.raw,
     callData.raw,
-    parseInt(gasLimit.raw, 10),
+    scheduleGasLimit.value,
     currentValue.value,
     windowSize.value,
     windowStart.value,
@@ -109,7 +113,7 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   );
 
   const endowment = calcEACEndowment(
-    gasLimit.value || new BN(21000),
+    scheduleGasLimit.value || EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK,
     currentValue.value || new BN(0),
     scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
     timeBounty.value

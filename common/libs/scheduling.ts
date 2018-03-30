@@ -6,6 +6,7 @@ const TIME_BOUNTY_MIN = new BN('1');
 
 export const EAC_SCHEDULING_CONFIG = {
   DAPP_ADDRESS: 'https://app.chronologic.network',
+  SCHEDULE_GAS_LIMIT_FALLBACK: new BN('21000'),
   SCHEDULE_GAS_PRICE_FALLBACK: 20, // Gwei
   FEE: new BN('2242000000000000'), // $2
   FEE_MULTIPLIER: new BN('2'),
@@ -61,7 +62,7 @@ export const calcEACTotalCost = (
 export const getScheduleData = (
   toAddress: string,
   callData = '',
-  callGas: number,
+  callGas: BN | null,
   callValue: BN | null,
   windowSize: number | null,
   windowStart: any,
@@ -71,12 +72,14 @@ export const getScheduleData = (
 ) => {
   if (
     !callValue ||
+    !callGas ||
     !callGasPrice ||
     !windowStart ||
     !windowSize ||
     !timeBounty ||
     timeBounty.lt(new BN(0)) ||
-    callGasPrice.lt(new BN(0))
+    callGasPrice.lt(new BN(0)) ||
+    windowSize < 0
   ) {
     return;
   }

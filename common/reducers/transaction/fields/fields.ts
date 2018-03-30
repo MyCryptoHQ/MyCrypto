@@ -33,6 +33,10 @@ const INITIAL_STATE: State = {
     raw: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD,
     value: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD
   },
+  scheduleGasLimit: {
+    raw: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK.toString(),
+    value: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK
+  },
   scheduleGasPrice: {
     raw: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK.toString(),
     value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
@@ -98,6 +102,8 @@ export const fields = (
       return updateField('scheduleType')(state, action);
     case TK.SCHEDULING_TOGGLE_SET:
       return updateField('schedulingToggle')(state, action);
+    case TK.SCHEDULE_GAS_LIMIT_FIELD_SET:
+      return updateField('scheduleGasLimit')(state, action);
     case TK.SCHEDULE_GAS_PRICE_FIELD_SET:
       return updateField('scheduleGasPrice')(state, action);
     case TK.TOKEN_TO_ETHER_SWAP:
