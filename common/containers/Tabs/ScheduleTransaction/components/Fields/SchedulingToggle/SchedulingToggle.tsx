@@ -21,13 +21,14 @@ class SchedulingToggleClass extends Component<Props> {
 
     return (
       <div className="input-group-wrapper">
-        <label className="checkbox">
+        <span>{translate('SCHEDULING_TOGGLE')}</span>
+        <label className="switch checkbox">
           <input
             type="checkbox"
             checked={currentSchedulingToggle.value}
             onChange={this.handleOnChange}
           />
-          <span>{translate('SCHEDULING_TOGGLE')}</span>
+          <span className="slider round" />
         </label>
       </div>
     );

@@ -25,7 +25,7 @@ class ScheduleGasPriceFieldClass extends React.Component<Props> {
     return (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translateRaw('OFFLINE_STEP2_LABEL_3')} (gwei)</div>
+          <div className="input-group-header">{translateRaw('SCHEDULE_GAS_PRICE')} (gwei)</div>
           <Input
             className={!!scheduleGasPrice.raw && !validScheduleGasPrice ? 'invalid' : ''}
             type="number"

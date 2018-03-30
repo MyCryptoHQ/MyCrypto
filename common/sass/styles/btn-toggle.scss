@@ -1,0 +1,65 @@
+/* TOGGLE BUTTON */
+$slider-radius: 26px;
+$transition-time: .4s;
+$toggle-color: #0C6482;
+$travel-distance: 38px;
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 72px;
+  height: 34px;
+
+  & input {
+    display: none;
+  }
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: $transition-time;
+  transition: $transition-time;
+
+  &:before {
+    position: absolute;
+    content: "";
+    height: $slider-radius;
+    width: $slider-radius;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: $transition-time;
+    transition: $transition-time;
+  }
+}
+
+input {
+  &:checked + .slider {
+    background-color: $toggle-color;
+  }
+
+  &:focus + .slider {
+    box-shadow: 0 0 1px $toggle-color;
+  }
+  
+  &:checked + .slider:before {
+    -webkit-transform: translateX($travel-distance);
+    -ms-transform: translateX($travel-distance);
+    transform: translateX($travel-distance);
+  }
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+
+  &:before {
+    border-radius: 50%;
+  }
+}

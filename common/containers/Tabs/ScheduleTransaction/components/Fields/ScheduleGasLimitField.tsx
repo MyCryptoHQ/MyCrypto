@@ -26,7 +26,7 @@ class ScheduleGasLimitFieldClass extends React.Component<Props> {
     return (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translateRaw('TRANS_GAS')}</div>
+          <div className="input-group-header">{translateRaw('SCHEDULE_GAS_LIMIT')}</div>
           <Input
             className={!!scheduleGasLimit.raw && !validScheduleGasLimit ? 'invalid' : ''}
             type="number"
