@@ -103,7 +103,7 @@
     "image-webpack-loader": "4.2.0",
     "jest": "22.1.4",
     "klaw-sync": "3.0.2",
-    "lint-staged": "7.0.0",
+    "lint-staged": "7.0.1",
     "minimist": "1.2.0",
     "node-sass": "4.8.3",
     "nodemon": "1.17.2",
