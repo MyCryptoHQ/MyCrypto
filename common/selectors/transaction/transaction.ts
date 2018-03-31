@@ -29,7 +29,9 @@ import {
   getScheduleGasPrice,
   isValidScheduleGasPrice,
   isValidScheduleGasLimit,
-  getScheduleGasLimit
+  getScheduleGasLimit,
+  isValidScheduleDeposit,
+  getScheduleDeposit
 } from 'selectors/transaction';
 import { Wei, Address, gasPriceToBase } from 'libs/units';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
@@ -92,13 +94,16 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const scheduleGasPriceValid = isValidScheduleGasPrice(state);
   const scheduleGasLimit = getScheduleGasLimit(state);
   const scheduleGasLimitValid = isValidScheduleGasLimit(state);
+  const depositValid = isValidScheduleDeposit(state);
+  const deposit = getScheduleDeposit(state);
 
   const isFullTransaction =
     isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
     (windowStartValid || scheduleTimestampValid) &&
     windowSizeValid &&
     scheduleGasPriceValid &&
-    scheduleGasLimitValid;
+    scheduleGasLimitValid &&
+    depositValid;
 
   const transactionData = getScheduleData(
     currentTo.raw,
@@ -109,7 +114,7 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     windowStart.value,
     scheduleGasPrice.value,
     timeBounty.value,
-    EAC_SCHEDULING_CONFIG.REQUIRED_DEPOSIT
+    deposit.value
   );
 
   const endowment = calcEACEndowment(

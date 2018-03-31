@@ -11,7 +11,7 @@ export const ScheduleTimestampField: React.SFC<Props> = ({ isReadOnly }) => (
     withProps={({ currentScheduleTimestamp, isValid, onChange, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translate('SCHEDULE_timestamp')}</div>
+          <div className="input-group-header">{translate('SCHEDULE_TIMESTAMP')}</div>
           <input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}
             type="text"

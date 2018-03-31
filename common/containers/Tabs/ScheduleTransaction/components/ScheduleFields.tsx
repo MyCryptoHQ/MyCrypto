@@ -7,7 +7,8 @@ import {
   TimeBountyField,
   WindowStartField,
   ScheduleGasPriceField,
-  ScheduleGasLimitField
+  ScheduleGasLimitField,
+  ScheduleDepositField
 } from '.';
 import { ScheduleTimezoneDropDown, ScheduleTimestampField, ScheduleType } from 'components';
 import './ScheduleFields.scss';
@@ -25,7 +26,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
         <div className="scheduled-tx-settings_title">Scheduled Transaction Settings</div>
         <br />
 
-        <div className="row form-group vcenter">
+        <div className="row form-group vcenter-sm">
           <div className="col-xs-12 col-sm-6 col-md-3 col-md-push-9">
             <ScheduleType />
           </div>
@@ -57,6 +58,9 @@ class ScheduleFieldsClass extends React.Component<Props> {
         <div className="row form-group">
           <div className="col-xs-6">
             <TimeBountyField />
+          </div>
+          <div className="col-xs-6">
+            <ScheduleDepositField />
           </div>
         </div>
 

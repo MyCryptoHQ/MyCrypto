@@ -1,3 +1,5 @@
+@import 'common/sass/variables';
+
 .scheduled-tx-settings {
   padding: 0 20px 20px 20px;
   border: 1px solid #e5ecf3;
@@ -11,7 +13,9 @@
   }
 }
 
-.vcenter {
-  display: flex;
-  align-items: center;
+.vcenter-sm {
+  @media (min-width: $screen-sm) {
+    display: flex;
+    align-items: center;
+  }
 }

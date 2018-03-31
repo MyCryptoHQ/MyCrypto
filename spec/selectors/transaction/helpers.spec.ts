@@ -75,6 +75,10 @@ describe('helpers selector', () => {
       scheduleGasLimit: {
         raw: '21000',
         value: Wei('21000')
+      },
+      scheduleDeposit: {
+        raw: '1000000000',
+        value: Wei('1000000000')
       }
     }
   };
@@ -94,7 +98,8 @@ describe('helpers selector', () => {
       scheduleTimestamp: null,
       scheduleType: 'time',
       scheduleGasPrice: Wei('1500'),
-      scheduleGasLimit: Wei('21000')
+      scheduleGasLimit: Wei('21000'),
+      scheduleDeposit: Wei('1000000000')
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);
   });

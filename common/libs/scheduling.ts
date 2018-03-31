@@ -11,7 +11,6 @@ export const EAC_SCHEDULING_CONFIG = {
   FEE: new BN('2242000000000000'), // $2
   FEE_MULTIPLIER: new BN('2'),
   FUTURE_EXECUTION_COST: new BN('180000'),
-  REQUIRED_DEPOSIT: 0,
   SCHEDULING_GAS_LIMIT: new BN('1500000'),
   TIME_BOUNTY_MIN,
   TIME_BOUNTY_DEFAULT: TIME_BOUNTY_MIN,
@@ -68,8 +67,12 @@ export const getScheduleData = (
   windowStart: any,
   callGasPrice: BN | null,
   timeBounty: BN | null,
-  requiredDeposit: any
+  requiredDeposit: BN | null
 ) => {
+  if (!requiredDeposit || requiredDeposit.lt(new BN(0))) {
+    requiredDeposit = new BN(0);
+  }
+
   if (
     !callValue ||
     !callGas ||

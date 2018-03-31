@@ -43,7 +43,7 @@ class ScheduleGasPriceFieldClass extends React.Component<Props> {
 
     this.props.setScheduleGasPriceField({
       raw: value,
-      value: gasPriceToBase(parseInt(value, 10))
+      value: value ? gasPriceToBase(parseInt(value, 10)) : null
     });
   };
 }

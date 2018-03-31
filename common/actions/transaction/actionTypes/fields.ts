@@ -147,6 +147,14 @@ interface SetScheduleGasLimitFieldAction {
   };
 }
 
+interface SetScheduleDepositFieldAction {
+  type: TypeKeys.SCHEDULE_DEPOSIT_FIELD_SET;
+  payload: {
+    raw: string;
+    value: Wei | null;
+  };
+}
+
 type InputFieldAction = InputNonceAction | InputGasLimitAction | InputDataAction;
 
 type FieldAction =
@@ -163,7 +171,8 @@ type FieldAction =
   | SetScheduleTypeAction
   | SetSchedulingToggleAction
   | SetScheduleGasPriceFieldAction
-  | SetScheduleGasLimitFieldAction;
+  | SetScheduleGasLimitFieldAction
+  | SetScheduleDepositFieldAction;
 
 export {
   InputGasLimitAction,
@@ -188,5 +197,6 @@ export {
   SetScheduleTypeAction,
   SetSchedulingToggleAction,
   SetScheduleGasPriceFieldAction,
-  SetScheduleGasLimitFieldAction
+  SetScheduleGasLimitFieldAction,
+  SetScheduleDepositFieldAction
 };

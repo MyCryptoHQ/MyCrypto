@@ -7,10 +7,12 @@ import {
   getDataExists,
   getGasPrice,
   getGasLimit,
-  getScheduleGasLimit
+  getScheduleGasLimit,
+  getScheduleDeposit
 } from 'selectors/transaction';
 import { isNetworkUnit } from 'selectors/config';
 import { getAddressMessage, AddressMessage } from 'config';
+import BN from 'bn.js';
 
 interface ICurrentValue {
   raw: string;
@@ -55,6 +57,16 @@ const isValidScheduleGasPrice = (state: AppState): boolean =>
 const isValidScheduleGasLimit = (state: AppState): boolean =>
   gasLimitValidator(getScheduleGasLimit(state).raw);
 
+const isValidScheduleDeposit = (state: AppState): boolean => {
+  const depositValue = getScheduleDeposit(state).value;
+
+  if (!depositValue) {
+    return true;
+  }
+
+  return depositValue.gte(new BN('0'));
+};
+
 function getCurrentToAddressMessage(state: AppState): AddressMessage | undefined {
   const to = getCurrentTo(state);
   return getAddressMessage(to.raw);
@@ -71,5 +83,6 @@ export {
   isValidGasLimit,
   isValidScheduleGasLimit,
   isValidScheduleGasPrice,
+  isValidScheduleDeposit,
   getCurrentToAddressMessage
 };

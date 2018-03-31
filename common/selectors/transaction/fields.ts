@@ -18,6 +18,7 @@ const getScheduleType = (state: AppState) => getFields(state).scheduleType;
 const getSchedulingToggle = (state: AppState) => getFields(state).schedulingToggle;
 const getScheduleGasLimit = (state: AppState) => getFields(state).scheduleGasLimit;
 const getScheduleGasPrice = (state: AppState) => getFields(state).scheduleGasPrice;
+const getScheduleDeposit = (state: AppState) => getFields(state).scheduleDeposit;
 
 const getDataExists = (state: AppState) => {
   const { value } = getData(state);
@@ -51,5 +52,6 @@ export {
   getScheduleType,
   getSchedulingToggle,
   getScheduleGasLimit,
-  getScheduleGasPrice
+  getScheduleGasPrice,
+  getScheduleDeposit
 };

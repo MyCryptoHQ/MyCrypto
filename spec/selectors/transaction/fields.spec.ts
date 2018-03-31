@@ -71,6 +71,10 @@ describe('fields selector', () => {
     scheduleGasLimit: {
       raw: '21000',
       value: Wei('21000')
+    },
+    scheduleDeposit: {
+      raw: '1000000000',
+      value: Wei('1000000000')
     }
   };
 

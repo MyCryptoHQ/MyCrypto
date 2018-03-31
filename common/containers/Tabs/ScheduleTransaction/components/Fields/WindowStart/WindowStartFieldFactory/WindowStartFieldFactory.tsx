@@ -4,6 +4,8 @@ import { WindowStartInputFactory } from './WindowStartInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
 import { ICurrentWindowStart } from 'selectors/transaction';
+import { getLatestBlock } from 'selectors/config';
+import { AppState } from 'reducers';
 
 interface DispatchProps {
   setCurrentWindowStart: TSetCurrentWindowStart;
@@ -11,6 +13,7 @@ interface DispatchProps {
 
 interface OwnProps {
   windowStart: string | null;
+  latestBlock: string;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -25,9 +28,12 @@ type Props = DispatchProps & OwnProps;
 
 class WindowStartFieldFactoryClass extends React.Component<Props> {
   public componentDidMount() {
-    const { windowStart } = this.props;
+    const { latestBlock, windowStart } = this.props;
+
     if (windowStart) {
       this.props.setCurrentWindowStart(windowStart);
+    } else {
+      this.props.setCurrentWindowStart(latestBlock);
     }
   }
 
@@ -43,9 +49,12 @@ class WindowStartFieldFactoryClass extends React.Component<Props> {
   };
 }
 
-const WindowStartFieldFactory = connect(null, { setCurrentWindowStart })(
-  WindowStartFieldFactoryClass
-);
+const WindowStartFieldFactory = connect(
+  (state: AppState) => ({
+    latestBlock: getLatestBlock(state)
+  }),
+  { setCurrentWindowStart }
+)(WindowStartFieldFactoryClass);
 
 interface DefaultWindowStartFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
