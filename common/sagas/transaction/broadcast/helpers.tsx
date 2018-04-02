@@ -3,8 +3,8 @@ import {
   getWeb3Tx,
   getSignedTx,
   getTransactionStatus,
-  getWindowStart,
-  ICurrentWindowStart
+  getSchedulingToggle,
+  ICurrentSchedulingToggle
 } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
@@ -56,10 +56,10 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       const broadcastedHash: string = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
       yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
 
-      const windowStart: ICurrentWindowStart = yield select(getWindowStart);
+      const schedulingToggle: ICurrentSchedulingToggle = yield select(getSchedulingToggle);
       const network: NetworkConfig = yield select(getNetworkConfig);
 
-      const scheduling = Boolean(windowStart && windowStart.value);
+      const scheduling = Boolean(schedulingToggle && schedulingToggle.value);
 
       yield put(
         showNotification(

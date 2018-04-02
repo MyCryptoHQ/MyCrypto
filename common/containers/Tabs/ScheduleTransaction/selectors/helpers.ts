@@ -21,3 +21,17 @@ export const isScheduleTimestampValid = (transactionFields: AppState['transactio
 
   return Boolean(scheduleTimestamp && scheduleTimestamp.value && scheduleTimestamp.value > now);
 };
+
+export const dateToUnixTimestamp = (dateObject: Date | null) => {
+  if (dateObject) {
+    return dateObject.getTime() / 1000;
+  }
+  return dateObject;
+};
+
+export const windowSizeBlockToMin = (numberInput: number | null, scheduleType: string | null) => {
+  if (numberInput && scheduleType && scheduleType === 'time') {
+    return numberInput * 60;
+  }
+  return numberInput;
+};

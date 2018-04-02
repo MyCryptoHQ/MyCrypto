@@ -19,7 +19,8 @@ import {
   getScheduleGasLimit,
   isValidScheduleGasLimit,
   isValidScheduleDeposit,
-  getScheduleDeposit
+  getScheduleDeposit,
+  getScheduleTimestamp
 } from 'selectors/transaction';
 import { Address, gasPriceToBase } from 'libs/units';
 import {
@@ -34,7 +35,9 @@ import {
   isFullTx,
   isWindowSizeValid,
   isWindowStartValid,
-  isScheduleTimestampValid
+  isScheduleTimestampValid,
+  dateToUnixTimestamp,
+  windowSizeBlockToMin
 } from 'selectors/transaction/helpers';
 import EthTx from 'ethereumjs-tx';
 import { getLatestBlock } from 'selectors/config';
@@ -55,6 +58,7 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const timeBounty = getTimeBounty(state);
   const windowSizeValid = isWindowSizeValid(transactionFields);
   const windowStartValid = isWindowStartValid(transactionFields, getLatestBlock(state));
+  const scheduleTimestamp = getScheduleTimestamp(state);
   const scheduleTimestampValid = isScheduleTimestampValid(transactionFields);
   const scheduleGasPrice = getScheduleGasPrice(state);
   const scheduleGasPriceValid = isValidScheduleGasPrice(state);
@@ -76,8 +80,10 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     callData.raw,
     scheduleGasLimit.value,
     currentValue.value,
-    windowSize.value,
-    windowStart.value,
+    windowSizeBlockToMin(windowSize.value, scheduleType.value),
+    scheduleType.value === 'time'
+      ? dateToUnixTimestamp(scheduleTimestamp.value)
+      : windowStart.value,
     scheduleGasPrice.value,
     timeBounty.value,
     deposit.value

@@ -2,7 +2,7 @@ import {
   getWeb3Tx,
   getSignedTx,
   getTransactionStatus,
-  getWindowStart
+  getSchedulingToggle
 } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
@@ -123,8 +123,8 @@ describe('broadcastTransactionWrapper*', () => {
     );
   });
 
-  it('select getWindowStart', () => {
-    expect(gens.gen.next().value).toEqual(select(getWindowStart));
+  it('select getSchedulingToggle', () => {
+    expect(gens.gen.next().value).toEqual(select(getSchedulingToggle));
   });
 
   it('select getNetworkConfig', () => {
