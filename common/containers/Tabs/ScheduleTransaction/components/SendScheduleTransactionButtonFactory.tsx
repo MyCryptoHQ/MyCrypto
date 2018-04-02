@@ -7,10 +7,10 @@ import {
   isValidGasPrice,
   isValidGasLimit,
   getSignedTx,
-  getWeb3Tx,
-  getSchedulingTransaction
+  getWeb3Tx
 } from 'selectors/transaction';
 import { SendButtonFactoryClass } from 'components/SendButtonFactory';
+import { getSchedulingTransaction } from '../selectors/transaction';
 
 const mapStateToProps = (state: AppState) => {
   return {

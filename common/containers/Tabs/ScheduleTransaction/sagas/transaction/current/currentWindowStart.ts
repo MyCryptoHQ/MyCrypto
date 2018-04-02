@@ -3,7 +3,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { TypeKeys } from 'actions/transaction/constants';
 import { SetWindowStartFieldAction } from 'actions/transaction';
-import { SetCurrentWindowStartAction } from 'actions/transaction/actionTypes/windowStart';
+import { SetCurrentWindowStartAction } from '../../../actions/transaction/actionTypes/windowStart';
 
 export function* setCurrentWindowStart({
   payload: raw

@@ -1,4 +1,4 @@
-import { TypeKeys } from '../constants';
+import { TypeKeys } from 'actions/transaction';
 
 /* user input */
 

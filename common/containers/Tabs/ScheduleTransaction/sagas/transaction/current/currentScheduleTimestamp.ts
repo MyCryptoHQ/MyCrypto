@@ -3,7 +3,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { TypeKeys } from 'actions/transaction/constants';
 import { SetScheduleTimestampFieldAction } from 'actions/transaction';
-import { SetCurrentScheduleTimestampAction } from 'actions/transaction/actionTypes/scheduleTimestamp';
+import { SetCurrentScheduleTimestampAction } from '../../../actions/transaction/actionTypes/scheduleTimestamp';
 
 export function* setCurrentScheduleTimestamp({
   payload: raw

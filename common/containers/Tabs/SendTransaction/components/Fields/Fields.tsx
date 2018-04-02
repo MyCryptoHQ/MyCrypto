@@ -9,7 +9,9 @@ import {
   GenerateTransaction,
   SendButton,
   SchedulingToggle,
-  ScheduleFields
+  ScheduleFields,
+  GenerateScheduleTransactionButton,
+  SendScheduleTransactionButton
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
@@ -17,8 +19,6 @@ import translate from 'translations';
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
 import { getOffline, getNetworkConfig } from 'selectors/config';
-import { SendScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButton';
-import { GenerateScheduleTransactionButton } from 'containers/Tabs/ScheduleTransaction/components/GenerateScheduleTransactionButton';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (

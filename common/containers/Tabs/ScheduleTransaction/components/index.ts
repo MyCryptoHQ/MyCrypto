@@ -6,3 +6,5 @@ export * from './Fields/ScheduleGasPriceField';
 export * from './Fields/ScheduleGasLimitField';
 export * from './Fields/ScheduleDepositField';
 export * from './ScheduleFields';
+export * from './GenerateScheduleTransactionButton';
+export * from './SendScheduleTransactionButton';

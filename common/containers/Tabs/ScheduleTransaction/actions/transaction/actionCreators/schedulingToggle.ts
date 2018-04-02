@@ -1,5 +1,5 @@
 import { SetCurrentSchedulingToggleAction } from '../actionTypes/schedulingToggle';
-import { TypeKeys } from '../';
+import { TypeKeys } from 'actions/transaction';
 
 type TSetCurrentSchedulingToggle = typeof setCurrentSchedulingToggle;
 const setCurrentSchedulingToggle = (

@@ -1,5 +1,5 @@
 import { AppState } from 'reducers';
-import { ICurrentTo, ICurrentValue } from 'selectors/transaction';
+import { ICurrentTo, ICurrentValue, schedulingFields } from 'selectors/transaction';
 import { isNetworkUnit } from 'selectors/config';
 
 type TransactionFields = AppState['transaction']['fields'];
@@ -29,13 +29,9 @@ export const isFullTx = (
   const { data, value, to, ...rest } = transactionFields;
   const partialParamsToCheck = { ...rest };
 
-  delete partialParamsToCheck.windowStart;
-  delete partialParamsToCheck.windowSize;
-  delete partialParamsToCheck.scheduleTimestamp;
-  delete partialParamsToCheck.schedulingToggle;
-  delete partialParamsToCheck.scheduleDeposit;
-  delete partialParamsToCheck.scheduleGasLimit;
-  delete partialParamsToCheck.scheduleGasPrice;
+  for (const param of schedulingFields) {
+    delete (partialParamsToCheck as any)[param];
+  }
 
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
     (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
@@ -66,24 +62,4 @@ export const isFullTx = (
   }
 };
 
-export const isWindowSizeValid = (transactionFields: AppState['transaction']['fields']) => {
-  const { windowSize } = transactionFields;
-
-  return Boolean(windowSize && windowSize.value);
-};
-
-export const isWindowStartValid = (
-  transactionFields: AppState['transaction']['fields'],
-  latestBlock: string
-) => {
-  const { windowStart } = transactionFields;
-
-  return Boolean(windowStart && windowStart.value && windowStart.value > parseInt(latestBlock, 10));
-};
-
-export const isScheduleTimestampValid = (transactionFields: AppState['transaction']['fields']) => {
-  const { scheduleTimestamp } = transactionFields;
-  const now = new Date();
-
-  return Boolean(scheduleTimestamp && scheduleTimestamp.value && scheduleTimestamp.value > now);
-};
+export * from '../../containers/Tabs/ScheduleTransaction/selectors/helpers';

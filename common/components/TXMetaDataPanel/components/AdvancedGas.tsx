@@ -112,12 +112,11 @@ class AdvancedGas extends React.Component<Props, State> {
           )}
         </div>
 
-        {dataField &&
-          !scheduling && (
-            <div className="AdvancedGas-data">
-              <DataField />
-            </div>
-          )}
+        {dataField && (
+          <div className="AdvancedGas-data">
+            <DataField />
+          </div>
+        )}
 
         {this.renderFee()}
       </div>

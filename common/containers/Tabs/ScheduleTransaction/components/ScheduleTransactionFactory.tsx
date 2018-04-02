@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import {
-  getSchedulingTransaction,
   isNetworkRequestPending,
   isValidGasPrice,
   isValidGasLimit,
@@ -10,6 +9,7 @@ import {
 } from 'selectors/transaction';
 import { getWalletType } from 'selectors/wallet';
 import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionFactory';
+import { getSchedulingTransaction } from '../selectors/transaction';
 
 export const ScheduleTransactionFactory = connect((state: AppState) => ({
   ...getSchedulingTransaction(state),

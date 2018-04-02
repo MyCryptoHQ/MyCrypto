@@ -3,7 +3,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { TypeKeys } from 'actions/transaction/constants';
 import { SetWindowSizeFieldAction } from 'actions/transaction';
-import { SetCurrentWindowSizeAction } from 'actions/transaction/actionTypes/windowSize';
+import { SetCurrentWindowSizeAction } from '../../../actions/transaction/actionTypes/windowSize';
 
 export function* setCurrentWindowSize({ payload: raw }: SetCurrentWindowSizeAction): SagaIterator {
   let value: number | null = null;

@@ -1,5 +1,5 @@
 import { SetCurrentTimeBountyAction } from '../actionTypes/timeBounty';
-import { TypeKeys } from '../';
+import { TypeKeys } from 'actions/transaction';
 
 type TSetCurrentTimeBounty = typeof setCurrentTimeBounty;
 const setCurrentTimeBounty = (

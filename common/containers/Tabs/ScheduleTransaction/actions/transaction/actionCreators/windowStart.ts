@@ -1,5 +1,5 @@
 import { SetCurrentWindowStartAction } from '../actionTypes/windowStart';
-import { TypeKeys } from '../';
+import { TypeKeys } from 'actions/transaction';
 
 type TSetCurrentWindowStart = typeof setCurrentWindowStart;
 const setCurrentWindowStart = (

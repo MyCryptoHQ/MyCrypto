@@ -10,15 +10,6 @@ const getGasLimit = (state: AppState) => getFields(state).gasLimit;
 const getGasPrice = (state: AppState) => getFields(state).gasPrice;
 const getValue = (state: AppState) => getFields(state).value;
 const getNonce = (state: AppState) => getFields(state).nonce;
-const getTimeBounty = (state: AppState) => getFields(state).timeBounty;
-const getWindowSize = (state: AppState) => getFields(state).windowSize;
-const getWindowStart = (state: AppState) => getFields(state).windowStart;
-const getScheduleTimestamp = (state: AppState) => getFields(state).scheduleTimestamp;
-const getScheduleType = (state: AppState) => getFields(state).scheduleType;
-const getSchedulingToggle = (state: AppState) => getFields(state).schedulingToggle;
-const getScheduleGasLimit = (state: AppState) => getFields(state).scheduleGasLimit;
-const getScheduleGasPrice = (state: AppState) => getFields(state).scheduleGasPrice;
-const getScheduleDeposit = (state: AppState) => getFields(state).scheduleDeposit;
 
 const getDataExists = (state: AppState) => {
   const { value } = getData(state);
@@ -44,14 +35,7 @@ export {
   getNonce,
   getGasPrice,
   getDataExists,
-  getValidGasCost,
-  getTimeBounty,
-  getWindowSize,
-  getWindowStart,
-  getScheduleTimestamp,
-  getScheduleType,
-  getSchedulingToggle,
-  getScheduleGasLimit,
-  getScheduleGasPrice,
-  getScheduleDeposit
+  getValidGasCost
 };
+
+export * from '../../containers/Tabs/ScheduleTransaction/selectors/fields';

@@ -1,5 +1,5 @@
 import { SetCurrentWindowSizeAction } from '../actionTypes/windowSize';
-import { TypeKeys } from '../';
+import { TypeKeys } from 'actions/transaction';
 
 type TSetCurrentWindowSize = typeof setCurrentWindowSize;
 const setCurrentWindowSize = (

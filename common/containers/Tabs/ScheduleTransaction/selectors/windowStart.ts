@@ -1,6 +1,6 @@
 import { AppState } from 'reducers';
+import { getLatestBlock } from 'selectors/config';
 import { getWindowStart } from './fields';
-import { getLatestBlock } from '../config';
 
 interface ICurrentWindowStart {
   raw: string;
