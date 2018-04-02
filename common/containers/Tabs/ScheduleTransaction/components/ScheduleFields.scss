@@ -14,7 +14,7 @@
 }
 
 .vcenter-sm {
-  @media (min-width: $screen-sm) {
+  @media (min-width: $screen-lg) {
     display: flex;
     align-items: center;
   }

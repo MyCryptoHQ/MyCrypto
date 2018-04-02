@@ -51,11 +51,13 @@ class FieldsClass extends Component<StateProps> {
               <div className="Tab-content-pane">
                 <AddressField />
                 <div className="row form-group">
-                  <div className={schedulingAvailable ? 'col-xs-10' : 'col-xs-12'}>
+                  <div
+                    className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
+                  >
                     <AmountField hasUnitDropdown={true} hasSendEverything={true} />
                   </div>
                   {schedulingAvailable && (
-                    <div className="col-xs-2">
+                    <div className="col-sm-3 col-md-2">
                       <SchedulingToggle />
                     </div>
                   )}

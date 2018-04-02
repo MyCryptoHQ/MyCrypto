@@ -27,16 +27,17 @@ class ScheduleFieldsClass extends React.Component<Props> {
         <br />
 
         <div className="row form-group vcenter-sm">
-          <div className="col-xs-12 col-sm-6 col-md-3 col-md-push-9">
+          <div className="col-lg-3 col-lg-push-9">
             <ScheduleType />
+            <hr className="hidden-lg" />
           </div>
 
           {schedulingType.value === 'time' && (
             <>
-              <div className="col-xs-12 col-md-3 col-md-pull-3">
+              <div className="col-md-5 col-lg-3 col-lg-pull-3">
                 <ScheduleTimestampField />
               </div>
-              <div className="col-xs-12 col-md-3 col-md-pull-3">
+              <div className="col-md-4 col-lg-3 col-lg-pull-3">
                 <ScheduleTimezoneDropDown />
               </div>
             </>
@@ -44,13 +45,13 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
           {schedulingType.value === 'block' && (
             <>
-              <div className="col-xs-12 col-md-6 col-md-pull-3">
+              <div className="col-md-9 col-lg-6 col-lg-pull-3">
                 <WindowStartField />
               </div>
             </>
           )}
 
-          <div className="col-xs-12 col-md-3 col-md-pull-3">
+          <div className="col-lg-3 col-lg-pull-3">
             <WindowSizeField />
           </div>
         </div>

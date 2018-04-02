@@ -21,7 +21,7 @@ class SchedulingToggleClass extends Component<Props> {
 
     return (
       <div className="input-group-wrapper">
-        <span>{translate('SCHEDULING_TOGGLE')}</span>
+        <span className="input-group-header">{translate('SCHEDULING_TOGGLE')}</span>
         <label className="switch checkbox">
           <input
             type="checkbox"
