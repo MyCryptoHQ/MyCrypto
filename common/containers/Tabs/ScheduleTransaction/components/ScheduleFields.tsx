@@ -51,7 +51,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
             </>
           )}
 
-          <div className="col-lg-3 col-lg-pull-3">
+          <div className="col-md-3 col-lg-3 col-lg-pull-3">
             <WindowSizeField />
           </div>
         </div>
