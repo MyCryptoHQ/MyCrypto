@@ -18,6 +18,7 @@
     height: 46px;
     background-image: url('~assets/images/chronologic-logo.svg');
     background-repeat: no-repeat;
+    display: block;
 
     @media (min-width: $screen-xs) {
       margin-left: 15px;
