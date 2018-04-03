@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { setScheduleTimezone, TSetScheduleTimezone } from 'actions/transaction';
+import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'selectors/transaction';
+import { AppState } from 'reducers';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { Option } from 'react-select';
@@ -12,9 +14,15 @@ interface DispatchProps {
   setScheduleTimezone: TSetScheduleTimezone;
 }
 
-class ScheduleTimezoneDropDownClass extends Component<DispatchProps> {
+interface StateProps {
+  currentScheduleTimezone: ICurrentScheduleTimezone;
+}
+
+type Props = DispatchProps & StateProps;
+
+class ScheduleTimezoneDropDownClass extends Component<Props> {
   public render() {
-    const userTimezone = moment.tz.guess();
+    const { currentScheduleTimezone } = this.props;
     const allTimezones = moment.tz.names();
 
     return (
@@ -26,7 +34,7 @@ class ScheduleTimezoneDropDownClass extends Component<DispatchProps> {
             withQuery={({ readOnly }) => (
               <Dropdown
                 options={allTimezones}
-                value={userTimezone}
+                value={currentScheduleTimezone.value}
                 onChange={this.handleOnChange}
                 clearable={false}
                 searchable={true}
@@ -43,10 +51,16 @@ class ScheduleTimezoneDropDownClass extends Component<DispatchProps> {
     if (!timezone.value) {
       throw Error('No timezone value found');
     }
-    this.props.setScheduleTimezone(timezone.value);
+    this.props.setScheduleTimezone({
+      value: timezone.value,
+      raw: timezone.value
+    });
   };
 }
 
-export const ScheduleTimezoneDropDown = connect(null, { setScheduleTimezone })(
-  ScheduleTimezoneDropDownClass
-);
+export const ScheduleTimezoneDropDown = connect(
+  (state: AppState) => ({
+    currentScheduleTimezone: getCurrentScheduleTimezone(state)
+  }),
+  { setScheduleTimezone }
+)(ScheduleTimezoneDropDownClass);

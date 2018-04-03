@@ -17,6 +17,7 @@ import {
   SetScheduleTimestampFieldAction,
   SetScheduleTypeAction,
   SetSchedulingToggleAction,
+  SetScheduleTimezoneAction,
   SetScheduleGasPriceFieldAction,
   SetScheduleGasLimitFieldAction,
   SetScheduleDepositFieldAction
@@ -135,6 +136,14 @@ const setSchedulingToggle = (
   payload
 });
 
+type TSetScheduleTimezone = typeof setScheduleTimezone;
+const setScheduleTimezone = (
+  payload: SetScheduleTimezoneAction['payload']
+): SetScheduleTimezoneAction => ({
+  type: TypeKeys.SCHEDULE_TIMEZONE_SET,
+  payload
+});
+
 type TSetScheduleGasPriceField = typeof setScheduleGasPriceField;
 const setScheduleGasPriceField = (payload: SetScheduleGasPriceFieldAction['payload']) => ({
   type: TypeKeys.SCHEDULE_GAS_PRICE_FIELD_SET,
@@ -177,6 +186,7 @@ export {
   TSetScheduleTimestampField,
   TSetScheduleType,
   TSetSchedulingToggle,
+  TSetScheduleTimezone,
   TSetScheduleGasPriceField,
   TSetScheduleGasLimitField,
   TSetScheduleDepositField,
@@ -198,6 +208,7 @@ export {
   setScheduleTimestampField,
   setScheduleType,
   setSchedulingToggle,
+  setScheduleTimezone,
   setScheduleGasPriceField,
   setScheduleGasLimitField,
   setScheduleDepositField,

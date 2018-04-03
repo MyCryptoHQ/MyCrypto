@@ -4,4 +4,5 @@ export * from './windowStart';
 export * from './timeBounty';
 export * from './scheduleTimestamp';
 export * from './scheduleType';
+export * from './scheduleTimezone';
 export * from './schedulingToggle';

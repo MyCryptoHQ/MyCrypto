@@ -3,14 +3,22 @@ import { Query } from 'components/renderCbs';
 import {
   getCurrentScheduleTimestamp,
   isValidCurrentScheduleTimestamp,
-  ICurrentScheduleTimestamp
+  ICurrentScheduleTimestamp,
+  fiveMinFromNow
 } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { CallbackProps } from 'components/ScheduleTimestampFieldFactory';
+import { CallbackProps } from './ScheduleTimestampFieldFactory';
 import { getResolvingDomain } from 'selectors/ens';
 import Pikaday from 'pikaday-time';
+import moment from 'moment';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+
+import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'actions/transaction';
+
+interface DispatchProps {
+  setCurrentScheduleTimestamp: TSetCurrentScheduleTimestamp;
+}
 
 interface StateProps {
   currentScheduleTimestamp: ICurrentScheduleTimestamp;
@@ -23,27 +31,32 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-type Props = OwnProps & StateProps;
+type Props = DispatchProps & OwnProps & StateProps;
 
 class ScheduleTimestampInputFactoryClass extends Component<Props> {
   public componentDidMount() {
-    const now = new Date();
+    const datetimepickerElement = document.getElementById('datepicker');
+    const { currentScheduleTimestamp, onChange } = this.props;
 
     const picker = new Pikaday({
-      field: document.getElementById('datepicker'),
+      field: datetimepickerElement,
       format: EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT,
-      minDate: now,
-      defaultDate: now,
+      defaultDate: fiveMinFromNow,
       setDefaultDate: true,
       yearRange: [2016, 2100],
       showTime: true,
       showMinutes: true,
       showSeconds: false,
-      use24hour: false,
+      use24hour: true,
       incrementMinuteBy: 5,
-      onSelect: this.props.onChange
+      onSelect: onChange
     });
-    picker.setDate(Date.now());
+    picker.setMinDate(fiveMinFromNow);
+
+    if (!currentScheduleTimestamp.value) {
+      const value = moment(fiveMinFromNow).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT);
+      this.props.setCurrentScheduleTimestamp(value);
+    }
   }
 
   public render() {
@@ -67,8 +80,11 @@ class ScheduleTimestampInputFactoryClass extends Component<Props> {
   }
 }
 
-export const ScheduleTimestampInputFactory = connect((state: AppState) => ({
-  currentScheduleTimestamp: getCurrentScheduleTimestamp(state),
-  isResolving: getResolvingDomain(state),
-  isValid: isValidCurrentScheduleTimestamp(state)
-}))(ScheduleTimestampInputFactoryClass);
+export const ScheduleTimestampInputFactory = connect(
+  (state: AppState) => ({
+    currentScheduleTimestamp: getCurrentScheduleTimestamp(state),
+    isResolving: getResolvingDomain(state),
+    isValid: isValidCurrentScheduleTimestamp(state)
+  }),
+  { setCurrentScheduleTimestamp }
+)(ScheduleTimestampInputFactoryClass);

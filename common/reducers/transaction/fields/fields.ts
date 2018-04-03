@@ -13,6 +13,8 @@ import { State } from './typings';
 import { gasPriceToBase, fromWei } from 'libs/units';
 import { resetHOF } from 'reducers/transaction/shared';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import moment from 'moment';
+import 'moment-timezone';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -23,6 +25,7 @@ const INITIAL_STATE: State = {
   windowSize: { raw: '', value: null },
   windowStart: { raw: '', value: null },
   scheduleTimestamp: { raw: '', value: null },
+  scheduleTimezone: { raw: moment.tz.guess(), value: moment.tz.guess() },
   gasLimit: { raw: '21000', value: new BN(21000) },
   gasPrice: { raw: '20', value: gasPriceToBase(20) },
   timeBounty: {
@@ -99,6 +102,8 @@ export const fields = (
       return updateField('windowStart')(state, action);
     case TK.SCHEDULE_TIMESTAMP_FIELD_SET:
       return updateField('scheduleTimestamp')(state, action);
+    case TK.SCHEDULE_TIMEZONE_SET:
+      return updateField('scheduleTimezone')(state, action);
     case TK.SCHEDULE_TYPE_SET:
       return updateField('scheduleType')(state, action);
     case TK.SCHEDULING_TOGGLE_SET:

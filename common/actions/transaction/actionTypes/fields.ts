@@ -131,6 +131,14 @@ interface SetSchedulingToggleAction {
   };
 }
 
+interface SetScheduleTimezoneAction {
+  type: TypeKeys.SCHEDULE_TIMEZONE_SET;
+  payload: {
+    raw: string;
+    value: string;
+  };
+}
+
 interface SetScheduleGasPriceFieldAction {
   type: TypeKeys.SCHEDULE_GAS_PRICE_FIELD_SET;
   payload: {
@@ -172,7 +180,8 @@ type FieldAction =
   | SetSchedulingToggleAction
   | SetScheduleGasPriceFieldAction
   | SetScheduleGasLimitFieldAction
-  | SetScheduleDepositFieldAction;
+  | SetScheduleDepositFieldAction
+  | SetScheduleTimezoneAction;
 
 export {
   InputGasLimitAction,
@@ -198,5 +207,6 @@ export {
   SetSchedulingToggleAction,
   SetScheduleGasPriceFieldAction,
   SetScheduleGasLimitFieldAction,
-  SetScheduleDepositFieldAction
+  SetScheduleDepositFieldAction,
+  SetScheduleTimezoneAction
 };

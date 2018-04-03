@@ -8,3 +8,6 @@ export * from './Fields/ScheduleDepositField';
 export * from './ScheduleFields';
 export * from './GenerateScheduleTransactionButton';
 export * from './SendScheduleTransactionButton';
+export * from './Fields/ScheduleTimestamp/ScheduleTimestampField';
+export * from './Fields/ScheduleTimezoneDropDown';
+export * from './Fields/ScheduleType';

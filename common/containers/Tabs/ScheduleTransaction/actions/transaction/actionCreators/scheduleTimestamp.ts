@@ -1,6 +1,6 @@
 import {
   SetCurrentScheduleTimestampAction,
-  SetScheduleTimezoneAction
+  SetCurrentScheduleTimezoneAction
 } from '../actionTypes/scheduleTimestamp';
 import { TypeKeys } from 'actions/transaction';
 
@@ -12,10 +12,10 @@ export const setCurrentScheduleTimestamp = (
   payload
 });
 
-export type TSetScheduleTimezone = typeof setScheduleTimezone;
-export const setScheduleTimezone = (
-  payload: SetScheduleTimezoneAction['payload']
-): SetScheduleTimezoneAction => ({
-  type: TypeKeys.SCHEDULE_TIMEZONE_SET,
+export type TSetCurrentScheduleTimezone = typeof setCurrentScheduleTimezone;
+export const setCurrentScheduleTimezone = (
+  payload: SetCurrentScheduleTimezoneAction['payload']
+): SetCurrentScheduleTimezoneAction => ({
+  type: TypeKeys.CURRENT_SCHEDULE_TIMEZONE_SET,
   payload
 });

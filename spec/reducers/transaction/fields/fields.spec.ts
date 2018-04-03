@@ -4,6 +4,8 @@ import { fields, State } from 'reducers/transaction/fields';
 import * as txActions from 'actions/transaction';
 import BN from 'bn.js';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import moment from 'moment';
+import 'moment-timezone';
 
 describe('fields reducer', () => {
   const INITIAL_STATE: State = {
@@ -21,6 +23,7 @@ describe('fields reducer', () => {
     windowSize: { raw: '', value: null },
     windowStart: { raw: '', value: null },
     scheduleTimestamp: { raw: '', value: null },
+    scheduleTimezone: { raw: moment.tz.guess(), value: moment.tz.guess() },
     scheduleType: {
       raw: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD,
       value: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD

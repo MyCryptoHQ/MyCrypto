@@ -1,4 +1,6 @@
 import { AppState } from 'reducers';
+import moment from 'moment';
+import 'moment-timezone';
 
 export const isWindowSizeValid = (transactionFields: AppState['transaction']['fields']) => {
   const { windowSize } = transactionFields;
@@ -22,11 +24,11 @@ export const isScheduleTimestampValid = (transactionFields: AppState['transactio
   return Boolean(scheduleTimestamp && scheduleTimestamp.value && scheduleTimestamp.value > now);
 };
 
-export const dateToUnixTimestamp = (dateObject: Date | null) => {
-  if (dateObject) {
-    return dateObject.getTime() / 1000;
+export const dateTimeToUnixTimestamp = (scheduleTimestamp: any, timezone: string) => {
+  if (scheduleTimestamp.value) {
+    return moment.tz(scheduleTimestamp.raw, timezone).unix();
   }
-  return dateObject;
+  return scheduleTimestamp.value;
 };
 
 export const windowSizeBlockToMin = (numberInput: number | null, scheduleType: string | null) => {

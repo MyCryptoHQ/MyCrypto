@@ -10,6 +10,8 @@ import {
   getValidGasCost
 } from 'selectors/transaction';
 import { getInitialState } from '../helpers';
+import moment from 'moment';
+import 'moment-timezone';
 
 describe('helpers selector', () => {
   const state = getInitialState();
@@ -64,6 +66,10 @@ describe('helpers selector', () => {
         raw: '',
         value: null
       },
+      scheduleTimezone: {
+        raw: moment.tz.guess(),
+        value: moment.tz.guess()
+      },
       scheduleType: {
         raw: 'time',
         value: 'time'
@@ -97,6 +103,7 @@ describe('helpers selector', () => {
       windowStart: null,
       scheduleTimestamp: null,
       scheduleType: 'time',
+      scheduleTimezone: moment.tz.guess(),
       scheduleGasPrice: Wei('1500'),
       scheduleGasLimit: Wei('21000'),
       scheduleDeposit: Wei('1000000000')

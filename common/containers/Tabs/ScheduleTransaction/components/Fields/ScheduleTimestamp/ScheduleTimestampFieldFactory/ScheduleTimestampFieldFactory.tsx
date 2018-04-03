@@ -26,13 +26,6 @@ export interface CallbackProps {
 type Props = DispatchProps & OwnProps;
 
 class ScheduleTimestampFieldFactoryClass extends React.Component<Props> {
-  public componentDidMount() {
-    const { scheduleTimestamp } = this.props;
-    if (scheduleTimestamp) {
-      this.props.setCurrentScheduleTimestamp(scheduleTimestamp);
-    }
-  }
-
   public render() {
     return (
       <ScheduleTimestampInputFactory
@@ -42,10 +35,8 @@ class ScheduleTimestampFieldFactoryClass extends React.Component<Props> {
     );
   }
 
-  private setScheduleTimestamp = (ev: any) => {
-    const value = ev.currentTarget
-      ? ev.currentTarget.value
-      : moment(ev).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT);
+  private setScheduleTimestamp = (val: any) => {
+    const value = moment(val).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT);
     this.props.setCurrentScheduleTimestamp(value);
   };
 }

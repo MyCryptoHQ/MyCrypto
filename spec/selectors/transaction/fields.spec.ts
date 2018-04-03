@@ -12,6 +12,8 @@ import {
   getValidGasCost
 } from 'selectors/transaction';
 import { getInitialState } from '../helpers';
+import moment from 'moment';
+import 'moment-timezone';
 
 describe('fields selector', () => {
   const state = getInitialState();
@@ -59,6 +61,10 @@ describe('fields selector', () => {
     scheduleTimestamp: {
       raw: '',
       value: null
+    },
+    scheduleTimezone: {
+      raw: moment.tz.guess(),
+      value: moment.tz.guess()
     },
     scheduleType: {
       raw: 'time',

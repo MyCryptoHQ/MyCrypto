@@ -9,9 +9,9 @@ interface SetCurrentScheduleTimestampAction {
 
 type CurrentAction = SetCurrentScheduleTimestampAction;
 
-interface SetScheduleTimezoneAction {
-  type: TypeKeys.SCHEDULE_TIMEZONE_SET;
+interface SetCurrentScheduleTimezoneAction {
+  type: TypeKeys.CURRENT_SCHEDULE_TIMEZONE_SET;
   payload: string;
 }
 
-export { SetCurrentScheduleTimestampAction, CurrentAction, SetScheduleTimezoneAction };
+export { SetCurrentScheduleTimestampAction, CurrentAction, SetCurrentScheduleTimezoneAction };
