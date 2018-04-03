@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 import { toWei, Units } from './units';
+import { toBuffer } from 'ethereumjs-util';
 
 const TIME_BOUNTY_MIN = new BN('1');
 
@@ -60,7 +61,7 @@ export const calcEACTotalCost = (
 
 export const getScheduleData = (
   toAddress: string,
-  callData = '',
+  callData: string | Buffer = '',
   callGas: BN | null,
   callValue: BN | null,
   windowSize: number | null,
@@ -71,6 +72,10 @@ export const getScheduleData = (
 ) => {
   if (!requiredDeposit || requiredDeposit.lt(new BN(0))) {
     requiredDeposit = new BN(0);
+  }
+
+  if (typeof callData === 'string') {
+    callData = toBuffer(callData);
   }
 
   if (
