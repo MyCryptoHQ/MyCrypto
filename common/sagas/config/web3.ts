@@ -16,7 +16,7 @@ import {
   getNetworkConfig,
   getWeb3Node
 } from 'selectors/config';
-import Web3Node, { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
+import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
 import { SetWalletAction, setWallet } from 'actions/wallet';
 import {
   shepherd,

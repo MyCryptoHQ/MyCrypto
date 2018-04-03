@@ -36,7 +36,7 @@ export default class Web3Wallet implements IFullWallet {
       throw new Error('Web3 wallets can only be used with a Web3 node.');
     }*/
 
-    return nodeLib.signMessage(msgHex, this.address);
+    return (nodeLib as Web3Node).signMessage(msgHex, this.address);
   }
 
   public async sendTransaction(serializedTransaction: string): Promise<string> {
@@ -58,7 +58,11 @@ export default class Web3Wallet implements IFullWallet {
     };
 
     const state = configuredStore.getState();
-    const nodeLib: Web3Node | INode | undefined = getNodeLib(state);
+    const nodeLib: Web3Node = getNodeLib(state) as any;
+
+    if (!nodeLib) {
+      throw new Error('');
+    }
 
     /*
     if (!isWeb3Node(nodeLib)) {

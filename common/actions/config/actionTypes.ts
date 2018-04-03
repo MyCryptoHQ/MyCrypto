@@ -1,5 +1,5 @@
 import { TypeKeys } from './constants';
-import { CustomNodeConfig, Web3NodeConfig } from 'types/node';
+import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
 import { CustomNetworkConfig } from 'types/network';
 
 /*** Toggle Offline ***/
@@ -80,7 +80,7 @@ export interface Web3UnsetNodeAction {
 /*** Set Web3 as a Node ***/
 export interface Web3setNodeAction {
   type: TypeKeys.CONFIG_NODE_WEB3_SET;
-  payload: { id: 'web3'; config: Web3NodeConfig };
+  payload: { id: 'web3'; config: StaticNodeConfig };
 }
 
 export type CustomNetworkAction = AddCustomNetworkAction | RemoveCustomNetworkAction;

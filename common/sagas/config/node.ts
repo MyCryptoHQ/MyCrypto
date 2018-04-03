@@ -51,7 +51,7 @@ export function* pollOfflineStatus(): SagaIterator {
     // Don't check if the user is in another tab or window
     const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
     if (shouldPing && !document.hidden) {
-      const pingSucceeded = getShepherdOffline();
+      const pingSucceeded = yield call(getShepherdOffline);
       if (pingSucceeded && isOffline) {
         // If we were able to ping but redux says we're offline, mark online
         yield put(
@@ -172,7 +172,7 @@ export function* handleNodeChangeIntent({
   yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
 
   if (currentConfig.network !== nextNodeConfig.network) {
-    yield fork(handleNewNetwork, nextNodeConfig.network);
+    yield fork(handleNewNetwork);
   }
 }
 

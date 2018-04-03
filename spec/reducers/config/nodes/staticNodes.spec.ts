@@ -1,8 +1,6 @@
 import { configuredStore } from 'store';
 import { web3SetNode, web3UnsetNode } from 'actions/config';
 import { staticNodes, INITIAL_STATE } from 'reducers/config/nodes/staticNodes';
-import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
-import { Web3NodeConfig } from 'types/node';
 import { Web3Service } from 'libs/nodes/web3';
 configuredStore.getState();
 
@@ -10,7 +8,7 @@ const expectedInitialState = {
   eth_mycrypto: {
     network: 'ETH',
     isCustom: false,
-    lib: new RPCNode('https://api.mycryptoapi.com/eth'),
+    lib: {},
     service: 'MyCrypto',
     estimateGas: true
   },
@@ -18,20 +16,20 @@ const expectedInitialState = {
     network: 'ETH',
     isCustom: false,
     service: 'Etherscan.io',
-    lib: new EtherscanNode('https://api.etherscan.io/api'),
+    lib: {},
     estimateGas: false
   },
   eth_infura: {
     network: 'ETH',
     isCustom: false,
     service: 'infura.io',
-    lib: new InfuraNode('https://mainnet.infura.io/mycrypto'),
+    lib: {},
     estimateGas: false
   },
   eth_blockscale: {
     network: 'ETH',
     isCustom: false,
-    lib: new RPCNode('https://api.dev.blockscale.net/dev/parity'),
+    lib: {},
     service: 'Blockscale beta',
     estimateGas: true
   },
@@ -39,55 +37,55 @@ const expectedInitialState = {
     network: 'Ropsten',
     isCustom: false,
     service: 'infura.io',
-    lib: new InfuraNode('https://ropsten.infura.io/mycrypto'),
+    lib: {},
     estimateGas: false
   },
   kov_ethscan: {
     network: 'Kovan',
     isCustom: false,
     service: 'Etherscan.io',
-    lib: new EtherscanNode('https://kovan.etherscan.io/api'),
+    lib: {},
     estimateGas: false
   },
   rin_ethscan: {
     network: 'Rinkeby',
     isCustom: false,
     service: 'Etherscan.io',
-    lib: new EtherscanNode('https://rinkeby.etherscan.io/api'),
+    lib: {},
     estimateGas: false
   },
   rin_infura: {
     network: 'Rinkeby',
     isCustom: false,
     service: 'infura.io',
-    lib: new InfuraNode('https://rinkeby.infura.io/mycrypto'),
+    lib: {},
     estimateGas: false
   },
   etc_epool: {
     network: 'ETC',
     isCustom: false,
     service: 'Epool.io',
-    lib: new RPCNode('https://mewapi.epool.io'),
+    lib: {},
     estimateGas: false
   },
   ubq: {
     network: 'UBQ',
     isCustom: false,
     service: 'ubiqscan.io',
-    lib: new RPCNode('https://pyrus2.ubiqscan.io'),
+    lib: {},
     estimateGas: true
   },
   exp_tech: {
     network: 'EXP',
     isCustom: false,
     service: 'Expanse.tech',
-    lib: new RPCNode('https://node.expanse.tech/'),
+    lib: {},
     estimateGas: true
   }
 };
 
 const web3Id = 'web3';
-const web3Node: Web3NodeConfig = {
+const web3Node = {
   isCustom: false,
   network: 'ETH',
   service: Web3Service,
@@ -108,11 +106,6 @@ const actions = {
 };
 
 describe('static nodes reducer', () => {
-  it('should return the inital state', () =>
-    // turn the JSON into a string because we're storing function in the state
-    expect(JSON.stringify(staticNodes(undefined, {} as any))).toEqual(
-      JSON.stringify(expectedState.initialState)
-    ));
   it('should handle setting the web3 node', () =>
     expect(staticNodes(INITIAL_STATE, actions.web3SetNode)).toEqual(expectedState.setWeb3));
 
