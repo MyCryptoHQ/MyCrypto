@@ -201,9 +201,9 @@ module.exports = function(opts = {}) {
       ),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename: 'vendor.[chunkhash:8].js'
+        filename: 'vendor.[hash:8].js'
       }),
-      new ExtractTextPlugin('[name].[chunkhash:8].css'),
+      new ExtractTextPlugin('[name].[hash:8].css'),
       new FaviconsWebpackPlugin({
         logo: path.resolve(config.path.assets, 'images/favicon.png'),
         background: '#163151',
@@ -278,7 +278,7 @@ module.exports = function(opts = {}) {
   // ====================
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
-    filename: options.isProduction ? '[name].[chunkhash:8].js' : '[name].js',
+    filename: options.isProduction ? '[name].[hash:8].js' : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
     crossOriginLoading: 'anonymous'
   };
