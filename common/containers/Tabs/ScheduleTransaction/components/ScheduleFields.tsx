@@ -76,7 +76,12 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
         <div className="row">
           <div className="col-12">
-            <div className="scheduled-tx-settings_logo" />
+            <a
+              href="https://blog.chronologic.network/announcing-the-ethereum-alarm-clock-chronologic-partnership-b3d7545bea3b"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="scheduled-tx-settings_logo"
+            />
           </div>
         </div>
       </div>
