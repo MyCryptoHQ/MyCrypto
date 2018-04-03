@@ -86,7 +86,7 @@
     "copy-webpack-plugin": "4.5.1",
     "css-loader": "0.28.11",
     "electron": "1.8.4",
-    "electron-builder": "20.6.2",
+    "electron-builder": "20.8.1",
     "empty": "0.10.1",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
