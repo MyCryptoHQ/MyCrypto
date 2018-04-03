@@ -50,7 +50,7 @@ export const MINIMUM_PASSWORD_LENGTH = 12;
 
 export const knowledgeBaseURL = 'https://support.mycrypto.com';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
-export const trezorReferralURL = 'https://trezor.io/?a=mycrypto.com';
+export const trezorReferralURL = 'https://shop.trezor.io?a=mycrypto.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
 // TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
