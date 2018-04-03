@@ -73,6 +73,12 @@ class ScheduleFieldsClass extends React.Component<Props> {
             <ScheduleGasLimitField />
           </div>
         </div>
+
+        <div className="row">
+          <div className="col-12">
+            <div className="scheduled-tx-settings_logo" />
+          </div>
+        </div>
       </div>
     );
   }

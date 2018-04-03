@@ -11,6 +11,18 @@
     display: block;
     width: 250px;
   }
+
+  &_logo {
+    max-width: 230px;
+    width: 100%;
+    height: 46px;
+    background-image: url('~assets/images/chronologic-logo.svg');
+    background-repeat: no-repeat;
+
+    @media (min-width: $screen-xs) {
+      margin-left: 15px;
+    }
+  }
 }
 
 .vcenter-sm {
