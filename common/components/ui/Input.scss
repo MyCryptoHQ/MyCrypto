@@ -62,6 +62,9 @@
     box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
     transition: border-color 120ms, box-shadow 120ms;
     margin-bottom: 1rem;
+    &[placeholder] {
+      text-overflow: ellipsis;
+    }
 
     &.border-rad-right-0 {
       border-top-right-radius: 0;
@@ -98,4 +101,8 @@
   .Select-input {
     left: 24px;
   }
+}
+
+textarea.input-group-input {
+  height: initial;
 }
