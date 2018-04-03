@@ -6,12 +6,13 @@ const threadLoader = require('thread-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-// const AutoDllPlugin = require('autodll-webpack-plugin');
+const AutoDllPlugin = require('autodll-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
+const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const ClearDistPlugin = require('./plugins/clearDist');
 const SortCachePlugin = require('./plugins/sortCache');
 
@@ -70,18 +71,17 @@ module.exports = function(opts = {}) {
     rules.push(
       {
         test: /\.css$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader'
-        ]
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
       },
       {
         test: /\.scss$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader',
-          'sass-loader'
-        ]
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
       }
     );
   } else {
@@ -186,9 +186,24 @@ module.exports = function(opts = {}) {
 
   if (options.isProduction) {
     plugins.push(
-      new MiniCSSExtractPlugin({
-        filename: '[name].[chunkhash:8].css'
+      new BabelMinifyPlugin(
+        {
+          // Mangle seems to be reusing variable identifiers, causing errors
+          mangle: false,
+          // These two on top of a lodash file are causing illegal characters for
+          // safari and ios browsers
+          evaluate: false,
+          propertyLiterals: false
+        },
+        {
+          comments: false
+        }
+      ),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        filename: 'vendor.[chunkhash:8].js'
       }),
+      new ExtractTextPlugin('[name].[chunkhash:8].css'),
       new FaviconsWebpackPlugin({
         logo: path.resolve(config.path.assets, 'images/favicon.png'),
         background: '#163151',
@@ -204,23 +219,24 @@ module.exports = function(opts = {}) {
     );
   } else {
     plugins.push(
-      // new AutoDllPlugin({
-      //   inject: true, // will inject the DLL bundles to index.html
-      //   filename: '[name]_[hash].js',
-      //   debug: true,
-      //   context: path.join(config.path.root),
-      //   entry: {
-      //     vendor: [...config.vendorModules, 'babel-polyfill', 'bootstrap-sass', 'font-awesome']
-      //   }
-      // }),
+      new AutoDllPlugin({
+        inject: true, // will inject the DLL bundles to index.html
+        filename: '[name]_[hash].js',
+        debug: true,
+        context: path.join(config.path.root),
+        entry: {
+          vendor: [...config.vendorModules, 'babel-polyfill', 'bootstrap-sass', 'font-awesome']
+        }
+      }),
       new HardSourceWebpackPlugin({
         environmentHash: {
           root: process.cwd(),
-          directories: ['common/webpack_config'],
+          directories: ['webpack_config'],
           files: ['package.json']
         }
       }),
       new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new FriendlyErrorsPlugin()
     );
   }
@@ -243,17 +259,6 @@ module.exports = function(opts = {}) {
         'shell'
       ])
     );
-  }
-
-  // ====================
-  // === Optimization ===
-  // ====================
-  const optimization = {};
-  if (options.isProduction) {
-    optimization.splitChunks = {
-      chunks: 'all'
-    };
-    optimization.concatenateModules = false;
   }
 
   // ====================
@@ -290,8 +295,6 @@ module.exports = function(opts = {}) {
     performance: {
       hints: options.isProduction ? 'warning' : false
     },
-    optimization,
-    mode: options.isProduction ? 'production' : 'development',
     stats: {
       // Reduce build output
       children: false,
