@@ -29,14 +29,14 @@ const DEFAULT_OPTIONS = {
 module.exports = function(opts = {}) {
   const options = Object.assign({}, DEFAULT_OPTIONS, opts);
   const isDownloadable = options.isHTMLBuild || options.isElectronBuild;
-  const client = hashFiles.sync({ files: __dirname + '/../common/**/*' });
-  console.log('clientHash', client);
-  const vendor = hashFiles.sync({
+  const clientHash = hashFiles.sync({ files: __dirname + '/../common/**/*' });
+  console.log('clientHash', clientHash);
+  const vendorHash = hashFiles.sync({
     files: __dirname + '/../node_modules/**/index.js'
   });
-  console.log('vendorHash', vendor);
-  const css = hashFiles.sync({ files: __dirname + '/../common/*.(css|scss)' });
-  console.log('cssHash', css);
+  console.log('vendorHash', vendorHash);
+  const cssHash = hashFiles.sync({ files: __dirname + '/../common/*.(css|scss)' });
+  console.log('cssHash', cssHash);
 
   // ====================
   // ====== Entry =======
@@ -210,9 +210,9 @@ module.exports = function(opts = {}) {
       ),
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        filename: `vendor.${vendor}.js`
+        filename: `vendor.${vendorHash}.js`
       }),
-      new ExtractTextPlugin(`[name].${css}.css`),
+      new ExtractTextPlugin(`[name].${cssHash}.css`),
       new FaviconsWebpackPlugin({
         logo: path.resolve(config.path.assets, 'images/favicon.png'),
         background: '#163151',
@@ -287,7 +287,7 @@ module.exports = function(opts = {}) {
   // ====================
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
-    filename: options.isProduction ? `[name].${client}.js` : '[name].js',
+    filename: options.isProduction ? `[name].${clientHash}.js` : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
     crossOriginLoading: 'anonymous'
   };
@@ -313,5 +313,4 @@ module.exports = function(opts = {}) {
       modules: false
     }
   };
-  // });
 };
