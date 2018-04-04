@@ -208,7 +208,7 @@ describe('handleNodeChangeIntent*', () => {
   });
 
   it('should get the current block', () => {
-    data.gen.next().value;
+    data.gen.next();
   });
 
   it('should put setLatestBlock', () => {

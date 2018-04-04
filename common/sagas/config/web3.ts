@@ -50,7 +50,11 @@ export function* initWeb3Node(): SagaIterator {
   if (getShepherdManualMode()) {
     yield apply(shepherd, shepherd.auto);
   }
-  !web3Added && shepherd.useProvider('web3', 'web3', makeProviderConfig({ network: web3Network }));
+
+  if (!web3Added) {
+    shepherd.useProvider('web3', 'web3', makeProviderConfig({ network: web3Network }));
+  }
+
   web3Added = true;
 
   yield put(web3SetNode({ id: 'web3', config }));

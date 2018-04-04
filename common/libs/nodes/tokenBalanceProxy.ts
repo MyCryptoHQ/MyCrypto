@@ -70,8 +70,8 @@ export const tokenBalanceHandler: ProxyHandler<any> = {
     } else if (propKey.toString() === 'getTokenBalances') {
       return (address: string, tokens: Token[]) =>
         Promise.all(
-          splitBatches(address, tokens).map(({ address, tokens }) =>
-            tokenBalancesShim(address, tokens)
+          splitBatches(address, tokens).map(({ address: addr, tokens: tkns }) =>
+            tokenBalancesShim(addr, tkns)
           )
         ).then(res => res.reduce((acc, curr) => [...acc, ...curr], []));
     } else {
