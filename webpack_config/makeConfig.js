@@ -30,14 +30,16 @@ module.exports = function(opts = {}) {
   const options = Object.assign({}, DEFAULT_OPTIONS, opts);
   const isDownloadable = options.isHTMLBuild || options.isElectronBuild;
 
-  return hasher.hashElement(__dirname + '/../common', {algo: 'sha256'}).then(function(clientHashObj) {
-    const client = clientHashObj.hash;
+  return hasher.hashElement(__dirname + '/../common').then(function(clientHashObj) {
+    const client = clientHashObj.hash.replace(/[^A-Za-z0-9]/g, '');
     console.log('clientHash', client);
-    return hasher.hashElement(__dirname + '/../node_modules', {algo: 'sha256'}).then(function(vendorHashObj) {
-      const vendor = vendorHashObj.hash;
+    x;
+    return hasher.hashElement(__dirname + '/../node_modules').then(function(vendorHashObj) {
+      const vendor = vendorHashObj.hash.replace(/[^A-Za-z0-9]/g, '');
       console.log('vendorHash', vendor);
-      return hasher.hashElement(__dirname + '/../common/sass', {algo: 'sha256'}).then(function(cssHashObj) {
-        const css = cssHashObj.hash;
+
+      return hasher.hashElement(__dirname + '/../common/sass').then(function(cssHashObj) {
+        const css = cssHashObj.hash.replace(/[^A-Za-z0-9]/g, '');
         console.log('cssHash', css);
 
         // ====================
