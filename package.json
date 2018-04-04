@@ -54,6 +54,7 @@
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
+    "folder-hash": "^1.1.2",
     "@types/bip39": "2.4.0",
     "@types/classnames": "2.2.3",
     "@types/enzyme": "3.1.8",
@@ -154,8 +155,10 @@
     "build:electron:linux":
       "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=linux node webpack_config/buildElectron.js",
     "prebuild:electron": "check-node-version --package",
-    "jenkins:build:linux": "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_LINUX node webpack_config/buildElectron.js",
-    "jenkins:build:mac": "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_MAC node webpack_config/buildElectron.js",
+    "jenkins:build:linux":
+      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_LINUX node webpack_config/buildElectron.js",
+    "jenkins:build:mac":
+      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_MAC node webpack_config/buildElectron.js",
     "jenkins:upload": "node jenkins/upload",
     "test:coverage": "jest --config=jest_config/jest.config.json --coverage",
     "test": "jest --config=jest_config/jest.config.json",
