@@ -33,7 +33,6 @@ module.exports = function(opts = {}) {
   return hasher.hashElement(__dirname + '/../common').then(function(clientHashObj) {
     const client = clientHashObj.hash.replace(/[^A-Za-z0-9]/g, '');
     console.log('clientHash', client);
-    x;
     return hasher.hashElement(__dirname + '/../node_modules').then(function(vendorHashObj) {
       const vendor = vendorHashObj.hash.replace(/[^A-Za-z0-9]/g, '');
       console.log('vendorHash', vendor);
