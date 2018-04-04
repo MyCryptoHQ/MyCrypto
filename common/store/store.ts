@@ -32,7 +32,7 @@ const configureStore = () => {
 
   if (process.env.NODE_ENV !== 'production') {
     middleware = composeWithDevTools(
-      applyMiddleware(sagaMiddleware, routerMiddleware(history as any))
+      applyMiddleware(sagaMiddleware, logger, routerMiddleware(history as any))
     );
   } else {
     middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history as any));
