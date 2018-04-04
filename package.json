@@ -53,6 +53,7 @@
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
+    "hash-files": "1.1.1",
     "@types/bip39": "2.4.0",
     "@types/classnames": "2.2.3",
     "@types/enzyme": "3.1.8",
