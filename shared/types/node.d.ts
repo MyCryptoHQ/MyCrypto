@@ -47,6 +47,6 @@ declare enum StaticNodeId {
   EXP_TECH = 'exp_tech'
 }
 
-type StaticNodeConfigs = { [key in StaticNodeId]: StaticNodeConfig };
+type StaticNodeConfigs = { [key in StaticNodeId]: StaticNodeConfig } & { web3?: StaticNodeConfig };
 
 type NodeConfig = StaticNodesState[StaticNodeId] | CustomNodesState[string];

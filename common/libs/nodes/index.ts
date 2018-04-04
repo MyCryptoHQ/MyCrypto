@@ -1,17 +1,7 @@
 import { shepherd, redux } from 'myc-shepherd';
 import { INode } from '.';
 import { tokenBalanceHandler } from './tokenBalanceProxy';
-export interface IProviderConfig {
-  concurrency: number;
-  requestFailureThreshold: number;
-  timeoutThresholdMs: number;
-  supportedMethods: { [rpcMethod in keyof INode]: boolean } & {
-    getNetVersion: boolean;
-    signMessage: boolean;
-    sendTransaction: boolean;
-  };
-  network: string;
-}
+import { IProviderConfig } from 'myc-shepherd/dist/lib/ducks/providerConfigs';
 
 type DeepPartial<T> = Partial<{ [key in keyof T]: Partial<T[key]> }>;
 
@@ -24,13 +14,13 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
       getNetVersion: true,
       ping: true,
       sendCallRequest: true,
+      sendCallRequests: true,
       getBalance: true,
       estimateGas: true,
       getTransactionCount: true,
       getCurrentBlock: true,
       sendRawTx: true,
-      getTokenBalance: true,
-      getTokenBalances: true,
+
       getTransactionByHash: true,
       getTransactionReceipt: true,
 

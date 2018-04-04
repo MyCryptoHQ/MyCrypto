@@ -5,6 +5,7 @@ import {
   isStaticNetworkId
 } from 'selectors/config';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
+import { StaticNetworkIds } from 'types/network';
 
 const getConfig = (state: AppState) => state.config;
 
@@ -118,7 +119,8 @@ export interface NodeOption {
 export function getStaticNodeOptions(state: AppState): NodeOption[] {
   const staticNetworkConfigs = getStaticNetworkConfigs(state);
   return Object.entries(getStaticNodes(state)).map(([nodeId, node]: [string, StaticNodeConfig]) => {
-    const associatedNetwork = staticNetworkConfigs[stripWeb3Network(node.network)];
+    const associatedNetwork =
+      staticNetworkConfigs[stripWeb3Network(node.network) as StaticNetworkIds];
     const opt: NodeOption = {
       isCustom: node.isCustom,
       value: nodeId,

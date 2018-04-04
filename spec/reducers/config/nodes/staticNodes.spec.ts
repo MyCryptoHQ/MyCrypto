@@ -2,6 +2,7 @@ import { configuredStore } from 'store';
 import { web3SetNode, web3UnsetNode } from 'actions/config';
 import { staticNodes, INITIAL_STATE } from 'reducers/config/nodes/staticNodes';
 import { Web3Service } from 'libs/nodes/web3';
+import { StaticNodeConfig } from 'types/node';
 configuredStore.getState();
 
 const expectedInitialState = {
@@ -85,7 +86,7 @@ const expectedInitialState = {
 };
 
 const web3Id = 'web3';
-const web3Node = {
+const web3Node: StaticNodeConfig = {
   isCustom: false,
   network: 'ETH',
   service: Web3Service,
