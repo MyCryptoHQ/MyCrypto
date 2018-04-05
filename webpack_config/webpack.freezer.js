@@ -5,6 +5,7 @@ const config = require('./config');
 
 const freezerConfig = {
   target: 'node',
+  mode: 'development',
   entry: './common/freezer',
   output: {
     path: config.path.output,

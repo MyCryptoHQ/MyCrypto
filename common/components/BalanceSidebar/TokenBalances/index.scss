@@ -33,6 +33,19 @@
     margin-top: $space;
   }
 
+  &-error {
+    color: $brand-danger;
+    text-align: center;
+
+    &-message {
+      margin-top: 0;
+    }
+
+    .fa {
+      margin-left: $space-md;
+    }
+  }
+
   &-buttons {
     display: flex;
     flex-wrap: wrap;

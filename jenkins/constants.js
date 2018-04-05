@@ -4,7 +4,7 @@ const GIT_COMMIT_SHORT = GIT_COMMIT.substring(0, 7);
 const JENKINS_BUILD_ID = process.env.BUILD_ID;
 const LINUX_FILES = [`MyCrypto-${VERSION}-i386.AppImage`, `MyCrypto-${VERSION}-x86_64.AppImage`];
 const WINDOWS_FILES = [`MyCrypto Setup ${VERSION}.exe`, `MyCrypto Setup ${VERSION}.exe.blockmap`];
-const OSX_FILES = [];
+const OSX_FILES = [`MyCrypto-${VERSION}-mac.zip`, `MyCrypto-${VERSION}.dmg`, `MyCrypto-${VERSION}.dmg.blockmap`];
 const FLAVOR = (() => {
   const { platform } = process;
 
@@ -18,6 +18,7 @@ const FLAVOR = (() => {
 })();
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
 const ETH_SIGNING_KEY = process.env.ETH_SIGNING_KEY;
+const IS_CODE_SIGNING = process.env.CSC_LINK && process.env.CSC_KEY_PASSWORD;
 
 module.exports = {
   VERSION,
@@ -29,5 +30,6 @@ module.exports = {
   OSX_FILES,
   FLAVOR,
   S3_BUCKET,
-  ETH_SIGNING_KEY
+  ETH_SIGNING_KEY,
+  IS_CODE_SIGNING
 };
