@@ -10,8 +10,7 @@ type StaticNetworkIds =
   | 'EXP'
   | 'POA'
   | 'TOMO'
-  | 'ELLA'
-  | 'ETSC';
+  | 'ELLA';
 
 export interface BlockExplorerConfig {
   name: string;

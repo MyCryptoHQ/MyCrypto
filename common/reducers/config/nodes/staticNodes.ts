@@ -102,13 +102,6 @@ export const INITIAL_STATE: State = {
     service: 'ellaism.org',
     lib: new RPCNode('https://jsonrpc.ellaism.org'),
     estimateGas: true
-  },
-  etsc: {
-    network: 'ETSC',
-    isCustom: false,
-    service: 'ethereumsocial.kr',
-    lib: new RPCNode('https://node.ethereumsocial.kr'),
-    estimateGas: true
   }
 };
 

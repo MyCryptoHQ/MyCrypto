@@ -44,8 +44,7 @@ declare enum StaticNodeId {
   EXP_TECH = 'exp_tech',
   POA = 'poa',
   TOMO = 'tomo',
-  ELLA = 'ella',
-  ETSC = 'etsc'
+  ELLA = 'ella'
 }
 
 type StaticNodeWithWeb3Id = StaticNodeId | 'web3';
