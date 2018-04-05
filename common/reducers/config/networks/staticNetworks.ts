@@ -1,41 +1,25 @@
 import {
   ethPlorer,
   ETHTokenExplorer,
-  SecureWalletName,
+  gasPriceDefaults,
   InsecureWalletName,
-  gasPriceDefaults
+  SecureWalletName
 } from 'config/data';
 import {
-  ETH_DEFAULT,
-  ETH_TREZOR,
-  ETH_LEDGER,
   ETC_LEDGER,
   ETC_TREZOR,
+  ETH_DEFAULT,
+  ETH_LEDGER,
   ETH_TESTNET,
+  ETH_TREZOR,
   EXP_DEFAULT,
   UBQ_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
-import { StaticNetworkIds, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
+import { StaticNetworkConfig, StaticNetworkIds } from 'types/network';
+import { makeExplorer } from 'utils/helpers';
 
 export type State = { [key in StaticNetworkIds]: StaticNetworkConfig };
-
-// Must be a website that follows the ethplorer convention of /tx/[hash] and
-// address/[address] to generate the correct functions.
-// TODO: put this in utils / libs
-export function makeExplorer(
-  name: string,
-  origin: string,
-  addressPath: string = 'address'
-): BlockExplorerConfig {
-  return {
-    name,
-    origin,
-    txUrl: hash => `${origin}/tx/${hash}`,
-    addressUrl: address => `${origin}/${addressPath}/${address}`,
-    blockUrl: blockNum => `${origin}/block/${blockNum}`
-  };
-}
 
 const testnetDefaultGasPrice = {
   min: 0.1,

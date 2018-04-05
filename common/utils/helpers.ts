@@ -1,5 +1,6 @@
 import qs from 'query-string';
 import has from 'lodash/has';
+import { BlockExplorerConfig } from 'types/network';
 
 interface IObjectValue {
   [key: string]: any;
@@ -37,3 +38,17 @@ export function isPositiveInteger(n: number) {
 
 export const getValues = (...args: any[]) =>
   args.reduce((acc, currArg) => [...acc, ...Object.values(currArg)], []);
+
+export function makeExplorer(
+  name: string,
+  origin: string,
+  addressPath: string = 'address'
+): BlockExplorerConfig {
+  return {
+    name,
+    origin,
+    txUrl: hash => `${origin}/tx/${hash}`,
+    addressUrl: address => `${origin}/${addressPath}/${address}`,
+    blockUrl: blockNum => `${origin}/block/${blockNum}`
+  };
+}
