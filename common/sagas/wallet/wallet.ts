@@ -82,7 +82,6 @@ export function* updateAccountBalance(): SagaIterator {
 
 export function* updateTokenBalances(): SagaIterator {
   try {
-    console.log('Update at me bro');
     const isOffline = yield select(getOffline);
     if (isOffline) {
       return;
