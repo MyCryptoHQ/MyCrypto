@@ -6,6 +6,7 @@ import { translateRaw } from 'translations';
 import { Input } from 'components/ui';
 import { getScheduleDeposit, isValidScheduleDeposit, getDecimal } from 'selectors/transaction';
 import { toWei } from 'libs/units';
+import Help from 'components/ui/Help';
 
 interface OwnProps {
   decimal: number;
@@ -26,7 +27,10 @@ class ScheduleDepositFieldClass extends Component<Props> {
     return (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">{translateRaw('SCHEDULE_DEPOSIT')}</div>
+          <div className="input-group-header">
+            {translateRaw('SCHEDULE_DEPOSIT')}
+            <Help tooltip="Require TimeNode to deposit a given amount of ETH in order to gain an exclusive time window for execution." />
+          </div>
           <Input
             className={!!scheduleDeposit.raw && !validScheduleDeposit ? 'invalid' : ''}
             type="number"
