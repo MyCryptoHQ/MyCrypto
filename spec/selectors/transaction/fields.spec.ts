@@ -12,8 +12,7 @@ import {
   getValidGasCost
 } from 'selectors/transaction';
 import { getInitialState } from '../helpers';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 describe('fields selector', () => {
   const state = getInitialState();

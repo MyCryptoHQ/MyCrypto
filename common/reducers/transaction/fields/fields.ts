@@ -13,8 +13,7 @@ import { State } from './typings';
 import { gasPriceToBase, fromWei } from 'libs/units';
 import { resetHOF } from 'reducers/transaction/shared';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },

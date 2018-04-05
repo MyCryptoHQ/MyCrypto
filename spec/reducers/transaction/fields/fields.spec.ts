@@ -4,8 +4,7 @@ import { fields, State } from 'reducers/transaction/fields';
 import * as txActions from 'actions/transaction';
 import BN from 'bn.js';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 describe('fields reducer', () => {
   const INITIAL_STATE: State = {
