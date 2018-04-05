@@ -4,13 +4,15 @@ import BN from 'bn.js';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getTransaction, getCurrentToAddressMessage } from 'selectors/transaction';
+import { getSchedulingToggle } from 'containers/Tabs/ScheduleTransaction/selectors/fields';
 import {
   setGasLimitField,
   estimateGasFailed,
   estimateGasSucceeded,
   TypeKeys,
   estimateGasRequested,
-  estimateGasTimedout
+  estimateGasTimedout,
+  setScheduleGasLimitField
 } from 'actions/transaction';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import {
@@ -113,6 +115,10 @@ describe('estimateGas*', () => {
   const unsuccessfulGasEstimationResult = {
     gasLimit: null
   };
+  const gasSetOptions = {
+    raw: gasLimit.toString(),
+    value: gasLimit
+  };
 
   const gens: { [name: string]: any } = {};
   gens.successCase = cloneableGenerator(estimateGas)();
@@ -175,15 +181,25 @@ describe('estimateGas*', () => {
     );
   });
 
-  it('should put setGasLimitField', () => {
+  it('should select getSchedulingToggle', () => {
     gens.timeOutCase = gens.successCase.clone();
     expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
-      put(
-        setGasLimitField({
-          raw: gasLimit.toString(),
-          value: gasLimit
-        })
-      )
+      select(getSchedulingToggle)
+    );
+  });
+
+  it('should put setGasLimitField', () => {
+    gens.scheduleCase = gens.successCase.clone();
+    const notScheduling = null as any;
+    expect(gens.successCase.next(notScheduling).value).toEqual(
+      put(setGasLimitField(gasSetOptions))
+    );
+  });
+
+  it('should put setScheduleGasLimitField', () => {
+    const scheduling = { value: true } as any;
+    expect(gens.scheduleCase.next(scheduling).value).toEqual(
+      put(setScheduleGasLimitField(gasSetOptions))
     );
   });
 

@@ -15,10 +15,10 @@ import { INode } from 'libs/nodes/INode';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getTransaction, IGetTransaction, getCurrentToAddressMessage } from 'selectors/transaction';
+import { getSchedulingToggle } from 'containers/Tabs/ScheduleTransaction/selectors/fields';
 import {
   EstimateGasRequestedAction,
   setGasLimitField,
-  estimateGasFailed,
   estimateGasTimedout,
   estimateGasSucceeded,
   TypeKeys,
@@ -27,7 +27,10 @@ import {
   SetDataFieldAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
-  SwapTokenToEtherAction
+  SwapTokenToEtherAction,
+  SetSchedulingToggleAction,
+  setScheduleGasLimitField,
+  estimateGasFailed
 } from 'actions/transaction';
 import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'actions/config';
 import { IWallet } from 'libs/wallet';
@@ -104,7 +107,19 @@ export function* estimateGas(): SagaIterator {
         timeout: call(delay, 10000)
       });
       if (gasLimit) {
-        yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
+        const gasSetOptions = {
+          raw: gasLimit.toString(),
+          value: gasLimit
+        };
+
+        const scheduling: SetSchedulingToggleAction['payload'] = yield select(getSchedulingToggle);
+
+        if (scheduling && scheduling.value) {
+          yield put(setScheduleGasLimitField(gasSetOptions));
+        } else {
+          yield put(setGasLimitField(gasSetOptions));
+        }
+
         yield put(estimateGasSucceeded());
       } else {
         yield put(estimateGasTimedout());
