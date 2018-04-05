@@ -160,9 +160,16 @@ export function setWalletConfig(config: WalletConfig): types.SetWalletConfigActi
   };
 }
 
-export type TSetAccountBalance = typeof setAccountBalance;
-export function setAccountBalance(): types.SetAccountBalanceAction {
+export type TRefreshAccountBalance = typeof refreshAccountBalance;
+export function refreshAccountBalance(): types.RefreshAccountBalanceAction {
   return {
-    type: TypeKeys.WALLET_SET_ACCOUNT_BALANCE
+    type: TypeKeys.WALLET_REFRESH_ACCOUNT_BALANCE
+  };
+}
+
+export type TRefreshTokenBalances = typeof refreshTokenBalances;
+export function refreshTokenBalances(): types.RefreshTokenBalancesAction {
+  return {
+    type: TypeKeys.WALLET_REFRESH_TOKEN_BALANCES
   };
 }
