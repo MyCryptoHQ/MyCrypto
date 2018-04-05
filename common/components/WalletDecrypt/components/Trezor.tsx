@@ -1,6 +1,6 @@
 import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import UnsupportedNetwork from './UnsupportedNetwork';
