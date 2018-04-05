@@ -78,7 +78,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
           {statusSeeMore &&
             explorer.tx &&
             !network.isCustom && (
-              <NewTabLink className="TxData-row-data-more" href={explorer.tx as string}>
+              <NewTabLink className="TxData-row-data-more" href={explorer.tx}>
                 (See more on {network.blockExplorer.name})
               </NewTabLink>
             )}

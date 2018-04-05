@@ -16,10 +16,8 @@ import {
   UBQ_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
-import { StaticNetworkConfig, StaticNetworkIds } from 'types/network';
 import { makeExplorer } from 'utils/helpers';
-
-export type State = { [key in StaticNetworkIds]: StaticNetworkConfig };
+import { StaticNetworksState as State } from './types';
 
 const testnetDefaultGasPrice = {
   min: 0.1,
