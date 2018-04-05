@@ -4,23 +4,23 @@ import OnboardSlide from './OnboardSlide';
 import onboardIconFive from 'assets/images/onboarding/slide-05.svg';
 
 const WhySlide = () => {
-  const header = translate('ONBOARD_why_title');
+  const header = translate('ONBOARD_WHY_TITLE');
 
   const content = (
     <div>
-      <h5>{translate('ONBOARD_why_content__1')}</h5>
+      <h5>{translate('ONBOARD_WHY_CONTENT__1')}</h5>
       <ul>
-        <li className="text-danger">{translate('ONBOARD_why_content__2')}</li>
-        <li className="text-danger">{translate('ONBOARD_why_content__3')}</li>
-        <li className="text-danger">{translate('ONBOARD_why_content__4')}</li>
-        <li className="text-danger">{translate('ONBOARD_why_content__5')}</li>
-        <li className="text-danger">{translate('ONBOARD_why_content__6')}</li>
+        <li className="text-danger">{translate('ONBOARD_WHY_CONTENT__2')}</li>
+        <li className="text-danger">{translate('ONBOARD_WHY_CONTENT__3')}</li>
+        <li className="text-danger">{translate('ONBOARD_WHY_CONTENT__4')}</li>
+        <li className="text-danger">{translate('ONBOARD_WHY_CONTENT__5')}</li>
+        <li className="text-danger">{translate('ONBOARD_WHY_CONTENT__6')}</li>
       </ul>
-      <h5>{translate('ONBOARD_why_content__7')}</h5>
+      <h5>{translate('ONBOARD_WHY_CONTENT__7')}</h5>
       <ul>
-        <li>{translate('ONBOARD_why_content__8')}</li>
-        <li>{translate('ONBOARD_why_content__9')}</li>
-        <li>{translate('ONBOARD_why_content__10')}</li>
+        <li>{translate('ONBOARD_WHY_CONTENT__8')}</li>
+        <li>{translate('ONBOARD_WHY_CONTENT__9')}</li>
+        <li>{translate('ONBOARD_WHY_CONTENT__10')}</li>
       </ul>
     </div>
   );

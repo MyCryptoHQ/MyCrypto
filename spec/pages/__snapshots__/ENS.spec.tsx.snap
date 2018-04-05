@@ -21,17 +21,9 @@ exports[`snapshot test ENS component 1`] = `
         <p
           className="ENS-description"
         >
-          The 
-          <ENSDocsLink />
-           is a distributed, open, and extensible naming system based on the Ethereum blockchain. Once you have a name, you can tell your friends to send ETH to 
-          <code>
-            ensdomain.eth
-          </code>
-           instead of
-          <code>
-            0x4bbeEB066e
-            ...
-          </code>
+          <TranslateMarkdown
+            source="The [Ethereum Name Service](https://ens.readthedocs.io/en/latest/introduction.html) (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain. Once you have a name, you can tell your friends to send ETH to \`ensdomain.eth\` instead of \`0x4bbeEB...\`"
+          />
         </p>
         <Connect(NameInput) />
       </div>

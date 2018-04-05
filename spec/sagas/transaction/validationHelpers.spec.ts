@@ -10,8 +10,9 @@ import {
 } from 'sagas/transaction/validationHelpers';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { getOffline, isNetworkUnit } from 'selectors/config';
+import { SagaIterator } from 'redux-saga';
 
-const itShouldBeDone = gen => {
+const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
   });
@@ -23,8 +24,8 @@ describe('rebaseUserInput*', () => {
     value: Wei('1')
   };
   const notValidNumberValue: any = {
-    raw: '0x0',
-    value: '0x0'
+    raw: '-1',
+    value: '-1'
   };
   const unit = 'unit';
   const newDecimal = 1;

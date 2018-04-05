@@ -14,7 +14,7 @@ const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededPro
   if (blockExplorer) {
     verifyBtn = (
       <NewTabLink className="btn btn-xs" href={blockExplorer.txUrl(txHash)}>
-        Verify Transaction on {blockExplorer.name}
+        {translate('VERIFY_TX', { $block_explorer: blockExplorer.name })}
       </NewTabLink>
     );
   }
@@ -26,7 +26,7 @@ const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededPro
       </p>
       {verifyBtn}
       <Link to={`/tx-status?txHash=${txHash}`} className="btn btn-xs">
-        {translate('NAV_CheckTxStatus')}
+        {translate('NAV_CHECKTXSTATUS')}
       </Link>
     </div>
   );

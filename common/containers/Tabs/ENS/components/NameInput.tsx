@@ -5,6 +5,7 @@ import { resolveDomainRequested, TResolveDomainRequested } from 'actions/ens';
 import { isValidENSName } from 'libs/validators';
 import './NameInput.scss';
 import { Input } from 'components/ui';
+import translate from 'translations';
 
 interface State {
   domainToCheck: string;
@@ -26,17 +27,19 @@ class NameInput extends Component<Props, State> {
 
   public render() {
     const { domainRequests } = this.props;
-    const { isValidDomain, domainToCheck, isFocused } = this.state;
+    const { isValidDomain, domainToCheck } = this.state;
     const req = domainRequests[domainToCheck];
     const isLoading = req && !req.data && !req.error;
 
     return (
       <form className="ENSInput" onSubmit={this.onSubmit}>
         <div className="input-group-wrapper">
-          <label className="input-group input-group-inline-dropdown ENSInput-name">
+          <label className="input-group input-group-inline ENSInput-name">
             <Input
               value={domainToCheck}
-              className={!domainToCheck ? '' : isValidDomain ? 'is-valid' : 'is-invalid'}
+              className={`${
+                !domainToCheck ? '' : isValidDomain ? '' : 'invalid'
+              } border-rad-right-0`}
               type="text"
               placeholder="mycrypto"
               onChange={this.onChange}
@@ -46,19 +49,16 @@ class NameInput extends Component<Props, State> {
             />
             <span className="input-group-addon">.eth</span>
           </label>
+          {domainToCheck &&
+            !isValidDomain && (
+              <p className="help-block is-invalid">{translate('ENS_INVALID_INPUT')}</p>
+            )}
         </div>
-        {domainToCheck &&
-          !isValidDomain &&
-          !isFocused && (
-            <p className="help-block is-invalid">
-              Must be at least 7 characters, no special characters
-            </p>
-          )}
         <button
           className="ENSInput-button btn btn-primary btn-block"
           disabled={!isValidDomain || isLoading}
         >
-          Check Availability
+          {translate('ACTION_9')}
         </button>
       </form>
     );

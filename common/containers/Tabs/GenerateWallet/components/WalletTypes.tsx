@@ -1,15 +1,15 @@
 import React from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { WalletType } from '../GenerateWallet';
-import { NewTabLink, HelpLink } from 'components/ui';
-import { HELP_ARTICLE, trezorReferralURL, ledgerReferralURL } from 'config';
 import { Link } from 'react-router-dom';
 import './WalletTypes.scss';
+import { HelpLink } from 'components/ui';
+import { HELP_ARTICLE, ledgerReferralURL, trezorReferralURL } from 'config';
 
 const WalletTypes: React.SFC<{}> = () => {
   const typeInfo = {
     [WalletType.Keystore]: {
-      name: 'x_Keystore2',
+      name: 'X_KEYSTORE2',
       bullets: [
         'An encrypted JSON file, protected by a password',
         'Back it up on a USB drive',
@@ -19,7 +19,7 @@ const WalletTypes: React.SFC<{}> = () => {
       ]
     },
     [WalletType.Mnemonic]: {
-      name: 'x_Mnemonic',
+      name: 'X_MNEMONIC',
       bullets: [
         'A 12-word private seed phrase',
         'Back it up on paper or USB drive',
@@ -32,21 +32,22 @@ const WalletTypes: React.SFC<{}> = () => {
 
   return (
     <div className="WalletTypes Tab-content-pane">
-      <h1 className="WalletTypes-title">{translate('NAV_GenerateWallet')}</h1>
+      <h1 className="WalletTypes-title">{translate('NAV_GENERATEWALLET')}</h1>
       <p className="WalletTypes-subtitle alert alert-warning">
-        <strong>Warning</strong>: Managing your own keys can be risky and a single mistake can lead
-        to irrecoverable loss. If you are new to cryptocurrencies, we strongly recommend using{' '}
-        <NewTabLink href="https://metamask.io/">MetaMask</NewTabLink>, or purchasing a{' '}
-        <NewTabLink href={ledgerReferralURL}>Ledger</NewTabLink> or{' '}
-        <NewTabLink href={trezorReferralURL}>TREZOR</NewTabLink> hardware wallet.{' '}
+        <strong>{translate('NOTIFICATION_TYPE_WARNING')}</strong>:{' '}
+        {translate('GENERATE_WALLET_WARNING', {
+          $metamask_link: 'https://metamask.io/',
+          $ledger_link: ledgerReferralURL,
+          $trezor_link: trezorReferralURL
+        })}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
-          Learn more about different wallet types & staying secure.
+          {translate('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>
       </p>
 
       <div className="WalletTypes-types row">
         <div className="col-md-1" />
-        {Object.keys(typeInfo).map(type => (
+        {Object.keys(typeInfo).map((type: keyof typeof typeInfo) => (
           <div key={type} className="WalletType col-md-5">
             <h2 className="WalletType-title">{translate(typeInfo[type].name)}</h2>
             <ul className="WalletType-features">
@@ -61,7 +62,7 @@ const WalletTypes: React.SFC<{}> = () => {
                 className="WalletType-select-btn btn btn-primary btn-block"
                 to={`/generate/${type}`}
               >
-                Generate a {translate(typeInfo[type].name)}
+                {translate('GENERATE_THING', { $thing: translateRaw(typeInfo[type].name) })}
               </Link>
             </div>
           </div>

@@ -19,24 +19,24 @@ export default class SignAndVerifyMessage extends Component<RouteComponentProps<
   public changeTab = (activeTab: State['activeTab']) => () => this.setState({ activeTab });
 
   public render() {
-    const { match } = this.props;
+    const { match, location, history } = this.props;
     const currentPath = match.url;
 
     const tabs = [
       {
         path: 'sign',
-        name: translate('NAV_SignMsg')
+        name: translate('NAV_SIGNMSG')
       },
       {
         path: 'verify',
-        name: translate('MSG_verify')
+        name: translate('MSG_VERIFY')
       }
     ];
 
     return (
       <TabSection>
         <section className="Tab-content SignAndVerifyMsg">
-          <SubTabs tabs={tabs} match={match} />
+          <SubTabs tabs={tabs} match={match} location={location} history={history} />
           <Switch>
             <Route
               exact={true}

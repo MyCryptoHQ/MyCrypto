@@ -24,6 +24,7 @@ import { getOffline } from 'selectors/config';
 import Rates from './Rates';
 import { AppState } from 'reducers';
 import './CurrentRates.scss';
+import { Optional } from 'utils/types';
 
 interface StateProps {
   isOffline: boolean;
@@ -40,7 +41,7 @@ interface ActionProps {
 type Props = StateProps & ActionProps;
 
 class CurrentRates extends PureComponent<Props> {
-  private shapeShiftRateCache = null;
+  private shapeShiftRateCache: any = null;
 
   public componentDidMount() {
     if (!this.props.isOffline) {
@@ -79,7 +80,7 @@ class CurrentRates extends PureComponent<Props> {
 
   public buildSSPairs = (shapeshiftRates: NormalizedShapeshiftRates, n: number = 4) => {
     const pairCollection = times(n, () => this.getRandomSSPairData(shapeshiftRates));
-    const byId = pairCollection.reduce((acc, cur) => {
+    const byId = pairCollection.reduce<{ [id: string]: NormalizedShapeshiftRate }>((acc, cur) => {
       acc[cur.id] = cur;
       return acc;
     }, {});
@@ -90,7 +91,7 @@ class CurrentRates extends PureComponent<Props> {
     };
   };
 
-  public isValidRates = rates => {
+  public isValidRates = (rates: Optional<NormalizedShapeshiftRates>) => {
     return rates && rates.allIds && rates.allIds.length > 0;
   };
 
@@ -118,10 +119,10 @@ class CurrentRates extends PureComponent<Props> {
     return fixedRates;
   };
 
-  public swapEl = (providerURL, providerLogo, children) => {
+  public swapEl = (providerURL: string, providerLogo: string, children: any) => {
     return (
       <article className="SwapRates">
-        <h3 className="SwapRates-title">{translate('SWAP_rates')}</h3>
+        <h3 className="SwapRates-title">{translate('SWAP_RATES')}</h3>
 
         <section className="SwapRates-panel row">
           {children}
@@ -131,7 +132,7 @@ class CurrentRates extends PureComponent<Props> {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={providerLogo} width={120} height={49} />
+            <img src={providerLogo} width={120} height={49} alt="Shapeshift Logo" />
           </a>
         </section>
       </article>

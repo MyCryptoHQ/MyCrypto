@@ -8,10 +8,15 @@ import {
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
-import { SetCurrentValueAction, TypeKeys } from 'actions/transaction';
+import {
+  SetCurrentValueAction,
+  TypeKeys,
+  TSetValueField,
+  TSetTokenValue
+} from 'actions/transaction';
 import { toTokenBase } from 'libs/units';
 import { validateInput, IInput } from 'sagas/transaction/validationHelpers';
-import { validNumber, validDecimal } from 'libs/validators';
+import { validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
 
 export function* setCurrentValue(action: SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(isEtherTransaction);
@@ -19,11 +24,16 @@ export function* setCurrentValue(action: SetCurrentValueAction): SagaIterator {
   return yield call(valueHandler, action, setter);
 }
 
-export function* valueHandler({ payload }: SetCurrentValueAction, setter) {
+export function* valueHandler(
+  { payload }: SetCurrentValueAction,
+  setter: TSetValueField | TSetTokenValue
+) {
   const decimal: number = yield select(getDecimal);
   const unit: string = yield select(getUnit);
+  const isEth = yield select(isEtherTransaction);
+  const validNum = isEth ? validNumber : validPositiveNumber;
 
-  if (!validNumber(+payload) || !validDecimal(payload, decimal)) {
+  if (!validNum(parseInt(payload, 10)) || !validDecimal(payload, decimal)) {
     return yield put(setter({ raw: payload, value: null }));
   }
   const value = toTokenBase(payload, decimal);
@@ -45,9 +55,11 @@ export function* revalidateCurrentValue(): SagaIterator {
 }
 
 export function* reparseCurrentValue(value: IInput): SagaIterator {
+  const isEth = yield select(isEtherTransaction);
   const decimal = yield select(getDecimal);
+  const validNum = isEth ? validNumber : validPositiveNumber;
 
-  if (validNumber(+value.raw) && validDecimal(value.raw, decimal)) {
+  if (validNum(parseInt(value.raw, 10)) && validDecimal(value.raw, decimal)) {
     return {
       raw: value.raw,
       value: toTokenBase(value.raw, decimal)

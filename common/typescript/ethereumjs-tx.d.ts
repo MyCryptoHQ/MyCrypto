@@ -92,7 +92,7 @@ declare module 'ethereumjs-tx' {
      * sign a transaction with a given a private key
      * @param {Buffer} privateKey
      */
-    public sign(privateKey: Buffer);
+    public sign(privateKey: Buffer): void;
 
     /**
      * The amount of gas paid for the data in this tx

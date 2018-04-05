@@ -1,6 +1,5 @@
 import React from 'react';
 import BN from 'bn.js';
-import { translateRaw } from 'translations';
 import { connect } from 'react-redux';
 import {
   inputGasPrice,
@@ -22,6 +21,7 @@ import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import './TXMetaDataPanel.scss';
 import { getGasPrice } from 'selectors/transaction';
 import { NetworkConfig } from 'types/network';
+import { translateRaw } from 'translations';
 
 type SliderStates = 'simple' | 'advanced';
 
@@ -114,8 +114,8 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             <div className="help-block">
               <a className="Gas-toggle" onClick={this.toggleAdvanced}>
                 {showAdvanced
-                  ? `- ${translateRaw('Back to simple')}`
-                  : `+ ${translateRaw('Advanced Settings')}`}
+                  ? `- ${translateRaw('TRANS_SIMPLE')}`
+                  : `+ ${translateRaw('TRANS_ADVANCED')}`}
               </a>
             </div>
           )}

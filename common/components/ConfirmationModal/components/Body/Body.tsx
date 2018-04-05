@@ -7,6 +7,7 @@ import { AppState } from 'reducers';
 import './Body.scss';
 import { getNetworkConfig } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
+import translate from 'translations';
 
 interface State {
   showDetails: boolean;
@@ -43,7 +44,7 @@ class BodyClass extends React.Component<StateProps, State> {
           }`}
           onClick={this.toggleDetails}
         >
-          Details
+          {translate('ACTION_8')}
         </button>
         {showDetails && <Details />}
       </div>

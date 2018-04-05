@@ -18,8 +18,9 @@ export const ANNOUNCEMENT_TYPE = '';
 export const ANNOUNCEMENT_MESSAGE = (
   <React.Fragment>
     This is a Beta version of MyCrypto. Please submit any bug reports to our{' '}
-    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink>, and join
-    the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
+    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink> and use{' '}
+    <NewTabLink href="https://hackerone.com/mycrypto">HackerOne</NewTabLink> for critical
+    vulnerabilities. Join the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
   </React.Fragment>
 );
 
@@ -49,7 +50,7 @@ export const MINIMUM_PASSWORD_LENGTH = 12;
 
 export const knowledgeBaseURL = 'https://support.mycrypto.com';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
-export const trezorReferralURL = 'https://trezor.io/?a=mycrypto.com';
+export const trezorReferralURL = 'https://shop.trezor.io?a=mycrypto.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
 // TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';

@@ -55,19 +55,19 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             <TogglablePassword
               value={phrase}
               rows={4}
-              placeholder={translateRaw('x_Mnemonic')}
+              placeholder={translateRaw('X_MNEMONIC')}
               isValid={isValidMnemonic}
               isTextareaWhenVisible={true}
               onChange={this.onMnemonicChange}
-              onEnter={isValidMnemonic && this.onDWModalOpen}
+              onEnter={isValidMnemonic ? this.onDWModalOpen : undefined}
             />
           </div>
           <div className="form-group">
-            <p>Password (optional):</p>
+            <p>{translate('ADD_LABEL_8')}</p>
             <Input
               value={pass}
               onChange={this.onPasswordChange}
-              placeholder={translateRaw('x_Password')}
+              placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
               type="password"
             />
           </div>
@@ -78,7 +78,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               className="btn btn-primary btn-lg"
               disabled={!isValidMnemonic}
             >
-              {translate('Choose Address')}
+              {translate('MNEMONIC_CHOOSE_ADDR')}
             </button>
           </div>
         </div>
@@ -91,7 +91,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={translateRaw('x_Mnemonic')}
+          walletType={'MNEMONIC'}
         />
       </div>
     );
@@ -134,7 +134,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     this.setState({ dPath });
   };
 
-  private handleUnlock = (address, index) => {
+  private handleUnlock = (address: string, index: number) => {
     const { formattedPhrase, pass, dPath } = this.state;
 
     this.props.onUnlock({

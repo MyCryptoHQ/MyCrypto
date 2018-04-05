@@ -9,7 +9,8 @@
   font-size: 1rem;
   box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
   transition: border-color 120ms, box-shadow 120ms;
-  height: 3rem;
+  height: $input-height-base;
+
   &-control {
     min-width: 7.5rem;
     height: inherit;
@@ -60,6 +61,9 @@
     border-bottom-right-radius: 2px;
     border-color: inherit;
   }
+  &-menu {
+    max-height: 10.0625rem;
+  }
   &.invalid.has-blurred {
     border-color: $brand-danger;
     box-shadow: inset 0px 0px 0px 1px $brand-danger;
@@ -88,5 +92,13 @@
     display: block;
     position: relative;
     height: inherit;
+  }
+
+  // Identicons need to fit into the select
+  .Identicon {
+    display: inline-block;
+    width: 22px !important;
+    height: 22px !important;
+    top: -1px;
   }
 }

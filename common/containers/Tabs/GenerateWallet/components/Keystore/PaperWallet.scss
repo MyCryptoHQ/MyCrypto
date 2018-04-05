@@ -1,4 +1,4 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
 
 .GenPaper {
   &-title {
@@ -6,8 +6,17 @@
   }
 
   &-private {
-    max-width: 700px;
+    max-width: 680px;
     margin: 0 auto $space * 3;
+    margin-top: 12px;
+    > .input-group-header {
+      margin-bottom: 1rem;
+      // This selector is an exception, it targets the span returned using `translate`.
+      > span {
+        font-size: 2rem;
+        margin: auto;
+      }
+    }
   }
 
   &-paper,
