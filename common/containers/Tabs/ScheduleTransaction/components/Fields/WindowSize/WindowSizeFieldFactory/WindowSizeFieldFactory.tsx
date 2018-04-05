@@ -3,15 +3,25 @@ import { setCurrentWindowSize, TSetCurrentWindowSize } from 'actions/transaction
 import { WindowSizeInputFactory } from './WindowSizeInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentWindowSize, ICurrentScheduleType } from 'selectors/transaction';
+import {
+  ICurrentWindowSize,
+  ICurrentScheduleType,
+  getCurrentScheduleType
+} from 'selectors/transaction';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import { AppState } from 'reducers';
 
 interface DispatchProps {
   setCurrentWindowSize: TSetCurrentWindowSize;
 }
 
 interface OwnProps {
-  windowSize: string | null;
+  currentScheduleType: ICurrentScheduleType;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
+}
+
+interface OwnState {
+  selectedScheduleType: ICurrentScheduleType;
 }
 
 export interface CallbackProps {
@@ -23,12 +33,27 @@ export interface CallbackProps {
 }
 
 type Props = DispatchProps & OwnProps;
+type State = OwnState;
 
-class WindowSizeFieldFactoryClass extends React.Component<Props> {
+class WindowSizeFieldFactoryClass extends React.Component<Props, State> {
+  public constructor(props: Props) {
+    super(props);
+    this.state = {
+      selectedScheduleType: props.currentScheduleType
+    };
+  }
+
   public componentDidMount() {
-    const { windowSize } = this.props;
-    if (windowSize) {
-      this.props.setCurrentWindowSize(windowSize);
+    this.adjustWindowSize(this.state.selectedScheduleType.value);
+  }
+
+  public componentDidUpdate() {
+    const { currentScheduleType } = this.props;
+    if (currentScheduleType !== this.state.selectedScheduleType) {
+      this.adjustWindowSize(currentScheduleType.value);
+      this.setState({
+        selectedScheduleType: currentScheduleType
+      });
     }
   }
 
@@ -42,9 +67,24 @@ class WindowSizeFieldFactoryClass extends React.Component<Props> {
     const { value } = ev.currentTarget;
     this.props.setCurrentWindowSize(value);
   };
+
+  private adjustWindowSize = (schedulingType: string | null) => {
+    if (schedulingType) {
+      this.props.setCurrentWindowSize(
+        schedulingType === 'time'
+          ? EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_TIME.toString()
+          : EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_BLOCK.toString()
+      );
+    }
+  };
 }
 
-const WindowSizeFieldFactory = connect(null, { setCurrentWindowSize })(WindowSizeFieldFactoryClass);
+const WindowSizeFieldFactory = connect(
+  (state: AppState) => ({
+    currentScheduleType: getCurrentScheduleType(state)
+  }),
+  { setCurrentWindowSize }
+)(WindowSizeFieldFactoryClass);
 
 interface DefaultWindowSizeFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
@@ -53,9 +93,7 @@ interface DefaultWindowSizeFieldProps {
 const DefaultWindowSizeField: React.SFC<DefaultWindowSizeFieldProps> = ({ withProps }) => (
   <Query
     params={['windowSize']}
-    withQuery={({ windowSize }) => (
-      <WindowSizeFieldFactory windowSize={windowSize} withProps={withProps} />
-    )}
+    withQuery={() => <WindowSizeFieldFactory withProps={withProps} />}
   />
 );
 
