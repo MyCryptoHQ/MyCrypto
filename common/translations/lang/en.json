@@ -438,6 +438,7 @@
     "CHECK_TX_STATUS_TITLE": "Check Transaction Status",
     "CHECK_TX_STATUS_DESCRIPTION_1": "Enter your Transaction Hash to check on its status. ",
     "CHECK_TX_STATUS_DESCRIPTION_2": "If you don’t know your Transaction Hash, you can look it up on [$block_explorer]($block_explorer_link) by looking up your address.",
+    "CHECK_TX_STATUS_DESCRIPTION_MULTIPLE": "If you don’t know your Transaction Hash, you can look it up on [$block_explorer]($block_explorer_link) or [$block_explorer_2]($block_explorer_link_2) by looking up your address.",
     "CHECK_TX_TITLE": "Transaction Found",
     "TX_STATUS": "Status",
     "TX_BLOCK_NUMB": "Block Number",

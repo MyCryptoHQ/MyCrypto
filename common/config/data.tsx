@@ -36,7 +36,7 @@ export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/addre
 
 export const etherChainExplorerInst = makeExplorer(
   'Etherchain',
-  'https://www.etherchain.org/',
+  'https://www.etherchain.org',
   'account'
 );
 
