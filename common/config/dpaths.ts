@@ -40,7 +40,7 @@ export const UBQ_DEFAULT: DPath = {
 
 export const POA_DEFAULT: DPath = {
   label: 'Default (POA)',
-  value: "m/44'/1'/0'/0"
+  value: "m/44'/60'/0'/0"
 };
 
 export const TOMO_DEFAULT: DPath = {
