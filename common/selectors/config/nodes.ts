@@ -54,10 +54,10 @@ export const getStaticNodeConfig = (state: AppState) => {
 };
 
 export const getWeb3Node = (state: AppState): StaticNodeConfig | null => {
-  const isWeb3Node = (nodeId: string, _: StaticNodeConfig) => nodeId === 'web3';
+  const isWeb3Node = (nodeId: string) => nodeId === 'web3';
   const currNode = getStaticNodeConfig(state);
   const currNodeId = getNodeId(state);
-  if (currNode && currNodeId && isWeb3Node(currNodeId, currNode)) {
+  if (currNode && currNodeId && isWeb3Node(currNodeId)) {
     return currNode;
   }
   return null;
