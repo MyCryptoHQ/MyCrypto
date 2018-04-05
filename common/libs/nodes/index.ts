@@ -41,7 +41,6 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
   };
 };
 let shepherdProvider: INode;
-shepherd.enableLogging();
 shepherd.init().then(provider => (shepherdProvider = new Proxy(provider, tokenBalanceHandler)));
 
 export const getShepherdManualMode = () =>
