@@ -2,7 +2,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const threadLoader = require('thread-loader');
-const hashFiles = require('hash-files');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
