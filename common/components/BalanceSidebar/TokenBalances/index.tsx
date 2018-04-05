@@ -11,7 +11,9 @@ import {
   scanWalletForTokens,
   TScanWalletForTokens,
   setWalletTokens,
-  TSetWalletTokens
+  TSetWalletTokens,
+  refreshTokenBalances,
+  TRefreshTokenBalances
 } from 'actions/wallet';
 import { getAllTokens, getOffline } from 'selectors/config';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
@@ -36,6 +38,7 @@ interface ActionProps {
   removeCustomToken: TRemoveCustomToken;
   scanWalletForTokens: TScanWalletForTokens;
   setWalletTokens: TSetWalletTokens;
+  refreshTokenBalances: TRefreshTokenBalances;
 }
 type Props = StateProps & ActionProps;
 
@@ -56,12 +59,18 @@ class TokenBalances extends React.Component<Props> {
     let content;
     if (isOffline) {
       content = (
-        <div className="TokenBalances-offline well well-sm">
-          Token balances are unavailable offline
-        </div>
+        <div className="TokenBalances-offline well well-sm">{translate('SCAN_TOKENS_OFFLINE')}</div>
       );
     } else if (tokensError) {
-      content = <h5>{tokensError}</h5>;
+      content = (
+        <div className="TokenBalances-error well well-md">
+          <h5 className="TokenBalances-error-message">{tokensError}</h5>
+          <button onClick={this.props.refreshTokenBalances} className="btn btn-default btn-sm">
+            {translate('X_TRY_AGAIN')}
+            <i className="fa fa-refresh" />
+          </button>
+        </div>
+      );
     } else if (isTokensLoading) {
       content = (
         <div className="TokenBalances-loader">
@@ -126,5 +135,6 @@ export default connect(mapStateToProps, {
   addCustomToken,
   removeCustomToken,
   scanWalletForTokens,
-  setWalletTokens
+  setWalletTokens,
+  refreshTokenBalances
 })(TokenBalances);
