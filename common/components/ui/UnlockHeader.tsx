@@ -25,7 +25,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
 
   public componentDidUpdate(prevProps: Props) {
     if (this.props.wallet !== prevProps.wallet) {
-      this.setState({ isExpanded: !this.state.isExpanded });
+      this.setState({ isExpanded: !this.props.wallet });
     }
   }
 

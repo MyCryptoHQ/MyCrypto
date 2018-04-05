@@ -9,7 +9,7 @@ import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
-import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
+import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import './AccountInfo.scss';
 
 interface OwnProps {
@@ -30,7 +30,7 @@ interface State {
 }
 
 interface DispatchProps {
-  setAccountBalance: TSetAccountBalance;
+  refreshAccountBalance: TRefreshAccountBalance;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -170,7 +170,7 @@ class AccountInfo extends React.Component<Props, State> {
                     !isOffline && (
                       <button
                         className="AccountInfo-section-refresh"
-                        onClick={this.props.setAccountBalance}
+                        onClick={this.props.refreshAccountBalance}
                       >
                         <i className="fa fa-refresh" />
                       </button>
@@ -214,5 +214,5 @@ function mapStateToProps(state: AppState): StateProps {
     isOffline: getOffline(state)
   };
 }
-const mapDispatchToProps: DispatchProps = { setAccountBalance };
+const mapDispatchToProps: DispatchProps = { refreshAccountBalance };
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

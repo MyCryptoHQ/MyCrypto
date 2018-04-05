@@ -1,8 +1,6 @@
 import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 import { TypeKeys, NodeAction } from 'actions/config';
-import { NonWeb3NodeConfigs, Web3NodeConfigs } from 'types/node';
-
-export type State = NonWeb3NodeConfigs & Web3NodeConfigs;
+import { StaticNodesState as State } from './types';
 
 export const INITIAL_STATE: State = {
   eth_mycrypto: {
