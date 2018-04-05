@@ -28,14 +28,7 @@ const DEFAULT_OPTIONS = {
 module.exports = function(opts = {}) {
   const options = Object.assign({}, DEFAULT_OPTIONS, opts);
   const isDownloadable = options.isHTMLBuild || options.isElectronBuild;
-  const clientHash = hashFiles.sync({ files: __dirname + '/../common/**/*' });
-  console.log('clientHash', clientHash);
-  const vendorHash = hashFiles.sync({
-    files: __dirname + '/../node_modules/**/index.js'
-  });
-  console.log('vendorHash', vendorHash);
-  const cssHash = hashFiles.sync({ files: __dirname + '/../common/*.(css|scss)' });
-  console.log('cssHash', cssHash);
+  const commitHash = process.env.npm_package_gitHead;
 
   // ====================
   // ====== Entry =======
@@ -196,7 +189,7 @@ module.exports = function(opts = {}) {
   if (options.isProduction) {
     plugins.push(
       new MiniCSSExtractPlugin({
-        filename: `[name].${cssHash}.css`
+        filename: `[name].[contenthash:8].css`
       }),
       new FaviconsWebpackPlugin({
         logo: path.resolve(config.path.assets, 'images/favicon.png'),
@@ -282,7 +275,7 @@ module.exports = function(opts = {}) {
   // ====================
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
-    filename: options.isProduction ? `[name].${clientHash}.js` : '[name].js',
+    filename: options.isProduction ? `[name].${commitHash}.js` : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
     crossOriginLoading: 'anonymous'
   };
