@@ -1,8 +1,9 @@
 import { Token } from 'shared/types/network';
 import ERC20 from 'libs/erc20';
 import { TokenValue } from 'libs/units';
+import { IProvider } from 'myc-shepherd/dist/lib/types';
 
-export const tokenBalanceHandler: ProxyHandler<any> = {
+export const tokenBalanceHandler: ProxyHandler<IProvider> = {
   get(target, propKey) {
     const tokenBalanceShim = (address: string, token: Token) => {
       const sendCallRequest: (...rpcArgs: any[]) => Promise<string> = Reflect.get(
@@ -16,7 +17,7 @@ export const tokenBalanceHandler: ProxyHandler<any> = {
         .then(result => ({ balance: TokenValue(result), error: null }))
         .catch(err => ({
           balance: TokenValue('0'),
-          error: 'Caught error:' + err
+          error: `Caught error: ${err}`
         }));
     };
 
