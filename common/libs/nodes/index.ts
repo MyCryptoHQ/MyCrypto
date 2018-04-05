@@ -41,7 +41,11 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
   };
 };
 let shepherdProvider: INode;
-shepherd.init().then(provider => (shepherdProvider = new Proxy(provider, tokenBalanceHandler)));
+shepherd
+  .init()
+  .then(
+    provider => (shepherdProvider = (new Proxy(provider, tokenBalanceHandler) as any) as INode)
+  );
 
 export const getShepherdManualMode = () =>
   redux.store.getState().providerBalancer.balancerConfig.manual;
