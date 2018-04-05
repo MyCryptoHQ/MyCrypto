@@ -1,6 +1,5 @@
 import { AppState } from 'reducers';
 import {
-  IGetTransaction,
   getCurrentTo,
   getCurrentValue,
   getFields,
@@ -21,7 +20,8 @@ import {
   isValidScheduleDeposit,
   getScheduleDeposit,
   getScheduleTimestamp,
-  getScheduleTimezone
+  getScheduleTimezone,
+  IGetTransaction
 } from 'selectors/transaction';
 import { Address, gasPriceToBase } from 'libs/units';
 import {
@@ -43,7 +43,7 @@ import {
 import EthTx from 'ethereumjs-tx';
 import { getLatestBlock } from 'selectors/config';
 
-const getSchedulingTransaction = (state: AppState): IGetTransaction => {
+export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const currentTo = getCurrentTo(state);
   const currentValue = getCurrentValue(state);
   const transactionFields = getFields(state);
@@ -69,6 +69,13 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const depositValid = isValidScheduleDeposit(state);
   const deposit = getScheduleDeposit(state);
 
+  const endowment = calcEACEndowment(
+    scheduleGasLimit.value || EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK,
+    currentValue.value || new BN(0),
+    scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
+    timeBounty.value
+  );
+
   const isFullTransaction =
     isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
     (windowStartValid || scheduleTimestampValid) &&
@@ -77,26 +84,23 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     scheduleGasLimitValid &&
     depositValid;
 
-  const transactionData = getScheduleData(
-    currentTo.raw,
-    callData.raw,
-    scheduleGasLimit.value,
-    currentValue.value,
-    windowSizeBlockToMin(windowSize.value, scheduleType.value),
-    scheduleType.value === 'time'
-      ? dateTimeToUnixTimestamp(scheduleTimestamp, scheduleTimezone.value)
-      : windowStart.value,
-    scheduleGasPrice.value,
-    timeBounty.value,
-    deposit.value
-  );
+  let transactionData = null;
 
-  const endowment = calcEACEndowment(
-    scheduleGasLimit.value || EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK,
-    currentValue.value || new BN(0),
-    scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
-    timeBounty.value
-  );
+  if (isFullTransaction) {
+    transactionData = getScheduleData(
+      currentTo.raw,
+      callData.raw,
+      scheduleGasLimit.value,
+      currentValue.value,
+      windowSizeBlockToMin(windowSize.value, scheduleType.value),
+      scheduleType.value === 'time'
+        ? dateTimeToUnixTimestamp(scheduleTimestamp, scheduleTimezone.value)
+        : windowStart.value,
+      scheduleGasPrice.value,
+      timeBounty.value,
+      deposit.value
+    );
+  }
 
   const transactionOptions = {
     to: Address(
@@ -122,5 +126,3 @@ const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     isFullTransaction
   };
 };
-
-export { getSchedulingTransaction };

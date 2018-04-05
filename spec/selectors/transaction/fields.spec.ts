@@ -81,6 +81,10 @@ describe('fields selector', () => {
     scheduleDeposit: {
       raw: '1000000000',
       value: Wei('1000000000')
+    },
+    scheduleParamsValidity: {
+      raw: false,
+      value: false
     }
   };
 

@@ -1,7 +1,8 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
-import { toWei, Units } from './units';
+import { toWei, Units } from '../units';
 import { toBuffer } from 'ethereumjs-util';
+import RequestFactory from './contracts/RequestFactory';
 
 const TIME_BOUNTY_MIN = new BN('1');
 
@@ -25,6 +26,7 @@ export const EAC_SCHEDULING_CONFIG = {
 export const EAC_ADDRESSES = {
   KOVAN: {
     blockScheduler: '0x1afc19a7e642761ba2b55d2a45b32c7ef08269d1',
+    requestFactory: '0x496e2b6089bde77293a994469b08e9f266d87adb',
     timestampScheduler: '0xc6370807f0164bdf10a66c08d0dab1028dbe80a3'
   }
 };
@@ -104,6 +106,67 @@ export const getScheduleData = (
     timeBounty,
     requiredDeposit
   ]);
+};
+
+export const parseSchedulingParametersValidity = (isValid: boolean[]) => {
+  const Errors = [
+    'InsufficientEndowment',
+    'ReservedWindowBiggerThanExecutionWindow',
+    'InvalidTemporalUnit',
+    'ExecutionWindowTooSoon',
+    'CallGasTooHigh',
+    'EmptyToAddress'
+  ];
+  const errors: string[] = [];
+
+  isValid.forEach((boolIsTrue, index) => {
+    if (!boolIsTrue) {
+      errors.push(Errors[index]);
+    }
+  });
+
+  return errors;
+};
+
+export const getValidateRequestParamsData = (
+  toAddress: string,
+  callData = '',
+  callGas: BN,
+  callValue: any,
+  windowSize: number,
+  windowStart: BN,
+  gasPrice: BN,
+  timeBounty: BN,
+  requiredDeposit: BN,
+  isTimestamp: boolean,
+  endowment: BN,
+  fromAddress: string
+): string => {
+  const temporalUnit = isTimestamp ? 2 : 1;
+  const freezePeriod = isTimestamp ? 3 * 60 : 10; // 3 minutes or 10 blocks
+  const reservedWindowSize = isTimestamp ? 5 * 60 : 16; // 5 minutes or 16 blocks
+  const claimWindowSize = isTimestamp ? 60 * 60 : 255; // 60 minutes or 255 blocks
+  const feeRecipient = '0x0'; // stub
+
+  return RequestFactory.validateRequestParams.encodeInput({
+    _addressArgs: [fromAddress, feeRecipient, toAddress],
+    _uintArgs: [
+      EAC_SCHEDULING_CONFIG.FEE,
+      timeBounty,
+      claimWindowSize,
+      freezePeriod,
+      reservedWindowSize,
+      temporalUnit,
+      windowSize,
+      windowStart,
+      callGas,
+      callValue,
+      gasPrice,
+      requiredDeposit
+    ],
+    _callData: callData,
+    _endowment: endowment
+  });
 };
 
 export const getTXDetailsCheckURL = (txHash: string) => {

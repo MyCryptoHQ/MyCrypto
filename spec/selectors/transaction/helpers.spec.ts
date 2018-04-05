@@ -85,6 +85,10 @@ describe('helpers selector', () => {
       scheduleDeposit: {
         raw: '1000000000',
         value: Wei('1000000000')
+      },
+      scheduleParamsValidity: {
+        raw: false,
+        value: false
       }
     }
   };
@@ -106,7 +110,8 @@ describe('helpers selector', () => {
       scheduleTimezone: moment.tz.guess(),
       scheduleGasPrice: Wei('1500'),
       scheduleGasLimit: Wei('21000'),
-      scheduleDeposit: Wei('1000000000')
+      scheduleDeposit: Wei('1000000000'),
+      scheduleParamsValidity: false
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);
   });

@@ -163,6 +163,14 @@ interface SetScheduleDepositFieldAction {
   };
 }
 
+interface SetScheduleParamsValidityAction {
+  type: TypeKeys.SCHEDULE_PARAMS_VALIDITY_SET;
+  payload: {
+    raw: boolean;
+    value: boolean;
+  };
+}
+
 type InputFieldAction = InputNonceAction | InputGasLimitAction | InputDataAction;
 
 type FieldAction =
@@ -181,7 +189,8 @@ type FieldAction =
   | SetScheduleGasPriceFieldAction
   | SetScheduleGasLimitFieldAction
   | SetScheduleDepositFieldAction
-  | SetScheduleTimezoneAction;
+  | SetScheduleTimezoneAction
+  | SetScheduleParamsValidityAction;
 
 export {
   InputGasLimitAction,
@@ -208,5 +217,6 @@ export {
   SetScheduleGasPriceFieldAction,
   SetScheduleGasLimitFieldAction,
   SetScheduleDepositFieldAction,
-  SetScheduleTimezoneAction
+  SetScheduleTimezoneAction,
+  SetScheduleParamsValidityAction
 };

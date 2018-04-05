@@ -44,7 +44,8 @@ const INITIAL_STATE: State = {
     raw: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK.toString(),
     value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
   },
-  scheduleDeposit: { raw: '', value: null }
+  scheduleDeposit: { raw: '', value: null },
+  scheduleParamsValidity: { raw: true, value: true }
 };
 
 const updateField = (key: keyof State): Reducer<State> => (state: State, action: FieldAction) => ({
@@ -114,6 +115,8 @@ export const fields = (
       return updateField('scheduleGasPrice')(state, action);
     case TK.SCHEDULE_DEPOSIT_FIELD_SET:
       return updateField('scheduleDeposit')(state, action);
+    case TK.SCHEDULE_PARAMS_VALIDITY_SET:
+      return updateField('scheduleParamsValidity')(state, action);
     case TK.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
     case TK.ETHER_TO_TOKEN_SWAP:

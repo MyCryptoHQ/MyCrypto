@@ -11,6 +11,7 @@ const getSchedulingToggle = (state: AppState) => getFields(state).schedulingTogg
 const getScheduleGasLimit = (state: AppState) => getFields(state).scheduleGasLimit;
 const getScheduleGasPrice = (state: AppState) => getFields(state).scheduleGasPrice;
 const getScheduleDeposit = (state: AppState) => getFields(state).scheduleDeposit;
+const getScheduleParamsValidity = (state: AppState) => getFields(state).scheduleParamsValidity;
 
 const schedulingFields = [
   'windowStart',
@@ -20,7 +21,8 @@ const schedulingFields = [
   'schedulingToggle',
   'scheduleDeposit',
   'scheduleGasLimit',
-  'scheduleGasPrice'
+  'scheduleGasPrice',
+  'scheduleParamsValidity'
 ];
 
 export {
@@ -34,5 +36,6 @@ export {
   getScheduleGasLimit,
   getScheduleGasPrice,
   getScheduleDeposit,
-  schedulingFields
+  schedulingFields,
+  getScheduleParamsValidity
 };

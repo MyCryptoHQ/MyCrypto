@@ -33,7 +33,8 @@ describe('fields reducer', () => {
       value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
     },
     scheduleGasLimit: { raw: '21000', value: new BN(21000) },
-    scheduleDeposit: { raw: '', value: null }
+    scheduleDeposit: { raw: '', value: null },
+    scheduleParamsValidity: { raw: true, value: true }
   };
   const testPayload = { raw: 'test', value: null };
 

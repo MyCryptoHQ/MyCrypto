@@ -11,7 +11,8 @@ import {
   SetScheduleGasPriceFieldAction,
   SetScheduleGasLimitFieldAction,
   SetScheduleDepositFieldAction,
-  SetScheduleTimezoneAction
+  SetScheduleTimezoneAction,
+  SetScheduleParamsValidityAction
 } from 'actions/transaction';
 import { Wei } from 'libs/units';
 
@@ -32,4 +33,5 @@ export interface State {
   scheduleGasLimit: SetScheduleGasLimitFieldAction['payload'];
   scheduleGasPrice: SetScheduleGasPriceFieldAction['payload'];
   scheduleDeposit: SetScheduleDepositFieldAction['payload'];
+  scheduleParamsValidity: SetScheduleParamsValidityAction['payload'];
 }
