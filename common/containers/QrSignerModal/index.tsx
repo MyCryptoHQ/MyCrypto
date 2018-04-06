@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
-import QrSigner from '@parity/qr-signer';
 import { AppState } from 'reducers';
+import { ParityQrSigner } from 'components';
 import Modal, { IButton } from 'components/ui/Modal';
-import { TFinalize, finalize } from 'actions/paritySigner';
-import './index.scss';
+import { TFinalizeSignature, finalizeSignature } from 'actions/paritySigner';
 
 interface State {
   scan: boolean;
@@ -13,17 +12,19 @@ interface State {
 
 interface PropsClosed {
   isOpen: false;
-  finalize: TFinalize;
 }
 
 interface PropsOpen {
   isOpen: true;
   rlp: string;
   from: string;
-  finalize: TFinalize;
 }
 
-type Props = PropsClosed | PropsOpen;
+interface ActionProps {
+  finalizeSignature: TFinalizeSignature;
+}
+
+type Props = (PropsClosed | PropsOpen) & ActionProps;
 
 class QrSignerModal extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -65,7 +66,11 @@ class QrSignerModal extends React.Component<Props, State> {
           handleClose={this.onClose}
         >
           <div className="QrSignerModal-qr-bounds">
-            <QrSigner size={300} scan={scan} account={from} rlp={rlp} onScan={this.onScan} />
+            {scan ? (
+              <ParityQrSigner scan={true} onScan={this.onScan} />
+            ) : (
+              <ParityQrSigner scan={false} account={from} rlp={rlp} />
+            )}
           </div>
         </Modal>
       </div>
@@ -77,7 +82,7 @@ class QrSignerModal extends React.Component<Props, State> {
       return;
     }
 
-    this.props.finalize(null);
+    this.props.finalizeSignature(null);
     this.setState({ scan: false });
   };
 
@@ -86,12 +91,12 @@ class QrSignerModal extends React.Component<Props, State> {
       return;
     }
 
-    this.props.finalize(signature);
+    this.props.finalizeSignature(signature);
     this.setState({ scan: false });
   };
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState): PropsClosed | PropsOpen {
   const { requested } = state.paritySigner;
 
   if (!requested) {
@@ -107,4 +112,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps, { finalize })(QrSignerModal);
+export default connect(mapStateToProps, { finalizeSignature })(QrSignerModal);

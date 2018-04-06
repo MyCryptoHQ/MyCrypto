@@ -14,7 +14,11 @@ import {
 import { computeIndexingHash } from 'libs/transaction';
 import { serializedAndTransactionFieldsMatch } from 'selectors/transaction';
 import { showNotification } from 'actions/notifications';
-import { requestSignature, TypeKeys as ParityKeys } from 'actions/paritySigner';
+import {
+  requestSignature,
+  FinalizeSignatureAction,
+  TypeKeys as ParityKeys
+} from 'actions/paritySigner';
 import { getWalletType, IWalletType } from 'selectors/wallet';
 
 export function* signLocalTransactionHandler({
@@ -51,7 +55,9 @@ export function* signParitySignerTransactionHandler({
 
   yield put(requestSignature(from, rlp));
 
-  const { payload }: { payload: string } = yield take(ParityKeys.PARITY_SIGNER_FINALIZE);
+  const { payload }: FinalizeSignatureAction = yield take(
+    ParityKeys.PARITY_SIGNER_FINALIZE_SIGNATURE
+  );
   const signedTransaction: Buffer = yield call(signTransactionWithSignature, tx, payload);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
 

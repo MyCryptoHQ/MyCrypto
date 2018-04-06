@@ -1,5 +1,4 @@
-import { RequestSignatureAction } from 'actions/paritySigner/actionTypes';
-import { ParitySignerAction, TypeKeys } from 'actions/paritySigner';
+import { ParitySignerAction, RequestSignatureAction, TypeKeys } from 'actions/paritySigner';
 
 export interface State {
   requested?: QrSignatureState | null;
@@ -21,7 +20,7 @@ function requestSignature(state: State, action: RequestSignatureAction): State {
   };
 }
 
-function finalize(state: State): State {
+function finalizeSignature(state: State): State {
   return {
     ...state,
     requested: null
@@ -32,8 +31,8 @@ export function paritySigner(state: State = INITIAL_STATE, action: ParitySignerA
   switch (action.type) {
     case TypeKeys.PARITY_SIGNER_REQUEST_SIGNATURE:
       return requestSignature(state, action);
-    case TypeKeys.PARITY_SIGNER_FINALIZE:
-      return finalize(state);
+    case TypeKeys.PARITY_SIGNER_FINALIZE_SIGNATURE:
+      return finalizeSignature(state);
     default:
       return state;
   }

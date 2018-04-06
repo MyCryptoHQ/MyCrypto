@@ -66,4 +66,11 @@
   &-submit {
     margin-top: 0.5rem;
   }
+
+  &-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 175px;
+  }
 }

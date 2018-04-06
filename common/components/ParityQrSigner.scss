@@ -1,0 +1,30 @@
+@import 'common/sass/variables';
+
+.ParityQrSigner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 300px;
+  text-align: center;
+  margin: 0 auto 1.5em;
+  border-radius: 4px;
+  overflow: hidden;
+
+  &.is-disabled {
+    background: $gray-lighter;
+  }
+
+  &-error {
+    padding: $space;
+    font-size: $font-size-small;
+    color: $gray-light;
+
+    &-icon {
+      display: block;
+      font-size: 60px;
+      margin-bottom: $space-md;
+      opacity: 0.8;
+    }
+  }
+}

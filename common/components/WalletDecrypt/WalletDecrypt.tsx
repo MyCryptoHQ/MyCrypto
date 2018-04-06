@@ -29,9 +29,9 @@ import {
   ViewOnlyDecrypt,
   Web3Decrypt,
   WalletButton,
+  ParitySignerDecrypt,
   InsecureWalletWarning
 } from './components';
-import ParitySignerDecrypt from 'containers/ParitySignerDecrypt';
 import { AppState } from 'reducers';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { getDisabledWallets } from 'selectors/wallet';
