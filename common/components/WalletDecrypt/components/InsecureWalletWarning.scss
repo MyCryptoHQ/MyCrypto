@@ -1,36 +1,45 @@
 @import 'common/sass/variables';
 
 .WalletWarning {
-  max-width: 780px;
+  max-width: 760px;
   margin: 0 auto;
-  text-align: left;
+  text-align: center;
 
   &-title {
     color: $brand-danger;
-    margin-top: 0;
+    margin: 0 0 $space;
   }
 
   &-desc {
-    margin-bottom: $space;
-  }
-
-  &-check {
-    margin-bottom: $space * 2;
-  }
-
-  &-checkboxes {
     margin-bottom: $space * 2;
   }
 
   &-buttons {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    margin-bottom: -$space-sm;
+    justify-content: center;
+    max-width: 440px;
+    margin: 0 auto #{-$space-sm};
 
-    .btn {
-      flex: 1;
-      min-width: 280px;
-      margin: 0 $space-sm $space-sm;
+    &-btn {
+      width: 100%;
+      margin: 0 0 $space-sm;
+
+      &.btn-link {
+        opacity: 0.6;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        .fa {
+          position: relative;
+          top: -1px;
+          margin-right: $space-xs;
+          font-size: $font-size-xs-bump;
+        }
+      }
     }
   }
 }

@@ -82,7 +82,6 @@ type UnlockParams = {} | PrivateKeyValue;
 interface State {
   selectedWalletKey: WalletName | null;
   value: UnlockParams | null;
-  hasAcknowledgedInsecure: boolean;
 }
 
 interface BaseWalletInfo {
@@ -212,8 +211,7 @@ const WalletDecrypt = withRouter<Props>(
 
     public state: State = {
       selectedWalletKey: null,
-      value: null,
-      hasAcknowledgedInsecure: false
+      value: null
     };
 
     public componentWillReceiveProps(nextProps: Props) {
@@ -236,18 +234,17 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public getDecryptionComponent() {
-      const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
+      const { selectedWalletKey } = this.state;
       const selectedWallet = this.getSelectedWallet();
       if (!selectedWalletKey || !selectedWallet) {
         return null;
       }
 
-      if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
+      if (INSECURE_WALLETS.includes(selectedWalletKey) && !process.env.BUILD_DOWNLOADABLE) {
         return (
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
-              walletType={translate(selectedWallet.lid)}
-              onContinue={this.handleAcknowledgeInsecure}
+              walletType={translateRaw(selectedWallet.lid)}
               onCancel={this.clearWalletChoice}
             />
           </div>
@@ -288,10 +285,6 @@ const WalletDecrypt = withRouter<Props>(
         </div>
       );
     }
-
-    public handleAcknowledgeInsecure = () => {
-      this.setState({ hasAcknowledgedInsecure: true });
-    };
 
     public buildWalletOptions() {
       const { computedDisabledWallets } = this.props;
@@ -384,8 +377,7 @@ const WalletDecrypt = withRouter<Props>(
       window.setTimeout(() => {
         this.setState({
           selectedWalletKey: walletType,
-          value: wallet.initialParams,
-          hasAcknowledgedInsecure: false
+          value: wallet.initialParams
         });
       }, timeout);
     };
@@ -393,8 +385,7 @@ const WalletDecrypt = withRouter<Props>(
     public clearWalletChoice = () => {
       this.setState({
         selectedWalletKey: null,
-        value: null,
-        hasAcknowledgedInsecure: false
+        value: null
       });
     };
 
