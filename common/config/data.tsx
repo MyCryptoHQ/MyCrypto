@@ -34,11 +34,11 @@ export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/$
 export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
 export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
 
-export const etherChainExplorerInst = makeExplorer(
-  'Etherchain',
-  'https://www.etherchain.org',
-  'account'
-);
+export const etherChainExplorerInst = makeExplorer({
+  name: 'Etherchain',
+  origin: 'https://www.etherchain.org',
+  addressPath: 'account'
+});
 
 export const donationAddressMap = {
   BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',

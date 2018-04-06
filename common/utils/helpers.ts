@@ -39,16 +39,28 @@ export function isPositiveInteger(n: number) {
 export const getValues = (...args: any[]) =>
   args.reduce((acc, currArg) => [...acc, ...Object.values(currArg)], []);
 
-export function makeExplorer(
-  name: string,
-  origin: string,
-  addressPath: string = 'address'
-): BlockExplorerConfig {
+interface ExplorerConfig {
+  name: string;
+  origin: string;
+  txPath?: string;
+  addressPath?: string;
+  blockPath?: string;
+}
+
+export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
+  const config: ExplorerConfig = {
+    // Defaults
+    txPath: 'tx',
+    addressPath: 'address',
+    blockPath: 'block',
+    ...expConfig
+  };
+
   return {
-    name,
-    origin,
-    txUrl: hash => `${origin}/tx/${hash}`,
-    addressUrl: address => `${origin}/${addressPath}/${address}`,
-    blockUrl: blockNum => `${origin}/block/${blockNum}`
+    name: config.origin,
+    origin: config.origin,
+    txUrl: hash => `${config.origin}/${config.txPath}/${hash}`,
+    addressUrl: address => `${config.origin}/${config.addressPath}/${address}`,
+    blockUrl: blockNum => `${config.origin}/${config.blockPath}/${blockNum}`
   };
 }
