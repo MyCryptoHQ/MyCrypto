@@ -65,7 +65,7 @@ class NameInput extends Component<Props, State> {
   }
 
   // add delay to namehash computation / getting the availability
-  private onChange = (event: React.FormEvent<HTMLButtonElement>) => {
+  private onChange = (event: React.FormEvent<HTMLInputElement>) => {
     const domainToCheck = event.currentTarget.value.toLowerCase().trim();
     const isValidDomain = isValidENSName(domainToCheck);
     this.setState({

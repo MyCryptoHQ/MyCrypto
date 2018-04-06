@@ -16,19 +16,22 @@ import {
   UBQ_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
-import { StaticNetworkIds, StaticNetworkConfig, BlockExplorerConfig } from 'types/network';
-
-export type State = { [key in StaticNetworkIds]: StaticNetworkConfig };
+import { BlockExplorerConfig } from 'types/network';
+import { StaticNetworksState as State } from './types';
 
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
 // TODO: put this in utils / libs
-export function makeExplorer(name: string, origin: string): BlockExplorerConfig {
+export function makeExplorer(
+  name: string,
+  origin: string,
+  addressPath: string = 'address'
+): BlockExplorerConfig {
   return {
     name,
     origin,
     txUrl: hash => `${origin}/tx/${hash}`,
-    addressUrl: address => `${origin}/address/${address}`,
+    addressUrl: address => `${origin}/${addressPath}/${address}`,
     blockUrl: blockNum => `${origin}/block/${blockNum}`
   };
 }
@@ -118,7 +121,7 @@ export const INITIAL_STATE: State = {
     chainId: 61,
     isCustom: false,
     color: '#669073',
-    blockExplorer: makeExplorer('GasTracker', 'https://gastracker.io'),
+    blockExplorer: makeExplorer('GasTracker', 'https://gastracker.io', 'addr'),
     tokens: require('config/tokens/etc.json'),
     contracts: require('config/contracts/etc.json'),
     dPathFormats: {
