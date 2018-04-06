@@ -19,7 +19,11 @@ import translate from 'translations';
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
 import { getOffline, getNetworkConfig } from 'selectors/config';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/transaction';
+import {
+  getCurrentSchedulingToggle,
+  ICurrentSchedulingToggle,
+  getUnit
+} from 'selectors/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -103,7 +107,7 @@ class FieldsClass extends Component<StateProps> {
 }
 
 export const Fields = connect((state: AppState) => ({
-  schedulingAvailable: getNetworkConfig(state).name === 'Kovan',
+  schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
   useScheduling: getCurrentSchedulingToggle(state).value

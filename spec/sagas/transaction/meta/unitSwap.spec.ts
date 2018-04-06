@@ -22,6 +22,7 @@ import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
 import { isNetworkUnit } from 'selectors/config';
 import { SagaIterator } from 'redux-saga';
 import BN from 'bn.js';
+import { setSchedulingToggle } from 'actions/transaction';
 
 const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
@@ -206,6 +207,17 @@ describe('handleSetUnitMeta*', () => {
       });
 
       sharedLogicB(gens.gen, input, raw, value, currentUnit, isValid);
+
+      it('should put setSchedulingToogle', () => {
+        expect(gens.gen.next(to).value).toEqual(
+          put(
+            setSchedulingToggle({
+              raw: 'false',
+              value: false
+            })
+          )
+        );
+      });
 
       it('should put swapEtherToToken', () => {
         const data = encodeTransfer(to.value, value);

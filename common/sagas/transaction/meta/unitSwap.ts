@@ -1,6 +1,6 @@
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { SetUnitMetaAction, TypeKeys } from 'actions/transaction';
+import { SetUnitMetaAction, TypeKeys, setSchedulingToggle } from 'actions/transaction';
 import {
   getTokenTo,
   getTokenValue,
@@ -84,6 +84,13 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
     };
     // need to set meta fields for tokenTo and tokenValue
     if (etherToToken) {
+      yield put(
+        setSchedulingToggle({
+          raw: 'false',
+          value: false
+        })
+      );
+
       return yield put(
         swapEtherToToken({
           ...basePayload,
