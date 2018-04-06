@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
-import { toWei, Units } from '../units';
+import { toWei, Units, gasPriceToBase, Address } from '../units';
 import { toBuffer } from 'ethereumjs-util';
 import RequestFactory from './contracts/RequestFactory';
 
@@ -47,8 +47,22 @@ export const calcEACFutureExecutionCost = (
     .add(totalGas.mul(callGasPrice));
 };
 
-export const calcEACEndowment = (callGas: BN, callValue: BN, callGasPrice: BN, timeBounty: BN) =>
-  callValue.add(calcEACFutureExecutionCost(callGas, callGasPrice, timeBounty));
+export const calcEACEndowment = (
+  callGas: BN | null,
+  callValue: BN | null,
+  callGasPrice: BN | null,
+  timeBounty: BN
+) => {
+  callValue = callValue || new BN(0);
+
+  return callValue.add(
+    calcEACFutureExecutionCost(
+      callGas || EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK,
+      callGasPrice || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
+      timeBounty
+    )
+  );
+};
 
 export const calcEACTotalCost = (
   callGas: BN,
@@ -68,7 +82,7 @@ export const getScheduleData = (
   callData: string | Buffer = '',
   callGas: BN | null,
   callValue: BN | null,
-  windowSize: number | null,
+  windowSize: BN | null,
   windowStart: any,
   callGasPrice: BN | null,
   timeBounty: BN | null,
@@ -91,7 +105,8 @@ export const getScheduleData = (
     !timeBounty ||
     timeBounty.lt(new BN(0)) ||
     callGasPrice.lt(new BN(0)) ||
-    windowSize < 0
+    windowSize.lt(new BN(0)) ||
+    windowSize.bitLength() > 256
   ) {
     return;
   }
@@ -133,8 +148,8 @@ export const getValidateRequestParamsData = (
   callData = '',
   callGas: BN,
   callValue: any,
-  windowSize: number,
-  windowStart: BN,
+  windowSize: BN | null,
+  windowStart: number,
   gasPrice: BN,
   timeBounty: BN,
   requiredDeposit: BN,
@@ -142,6 +157,8 @@ export const getValidateRequestParamsData = (
   endowment: BN,
   fromAddress: string
 ): string => {
+  windowSize = windowSize || new BN(0);
+
   const temporalUnit = isTimestamp ? 2 : 1;
   const freezePeriod = isTimestamp ? 3 * 60 : 10; // 3 minutes or 10 blocks
   const reservedWindowSize = isTimestamp ? 5 * 60 : 16; // 5 minutes or 16 blocks
@@ -172,3 +189,10 @@ export const getValidateRequestParamsData = (
 export const getTXDetailsCheckURL = (txHash: string) => {
   return `${EAC_SCHEDULING_CONFIG.DAPP_ADDRESS}/awaiting/scheduler/${txHash}`;
 };
+
+export const getSchedulerAddress = (scheduleType: string | null): Address =>
+  Address(
+    scheduleType === 'time'
+      ? EAC_ADDRESSES.KOVAN.timestampScheduler
+      : EAC_ADDRESSES.KOVAN.blockScheduler
+  );

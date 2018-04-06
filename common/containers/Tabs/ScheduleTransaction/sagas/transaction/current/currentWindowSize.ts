@@ -4,11 +4,17 @@ import { SagaIterator } from 'redux-saga';
 import { TypeKeys } from 'actions/transaction/constants';
 import { SetWindowSizeFieldAction } from 'actions/transaction';
 import { SetCurrentWindowSizeAction } from '../../../actions/transaction/actionTypes/windowSize';
+import { validNumber } from 'libs/validators';
+import BN from 'bn.js';
 
 export function* setCurrentWindowSize({ payload: raw }: SetCurrentWindowSizeAction): SagaIterator {
-  let value: number | null = null;
+  let value: BN | null = null;
 
-  value = parseInt(raw, 10);
+  if (!validNumber(parseInt(raw, 10))) {
+    yield call(setField, { raw, value: null });
+  }
+
+  value = new BN(raw);
 
   yield call(setField, { value, raw });
 }

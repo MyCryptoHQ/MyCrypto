@@ -3,7 +3,12 @@ import { select, fork, call, take, apply, put } from 'redux-saga/effects';
 import { getOffline, getNodeLib } from 'selectors/config';
 import {
   ICurrentSchedulingToggle,
-  ICurrentWindowSize
+  ICurrentWindowSize,
+  ICurrentWindowStart,
+  ICurrentScheduleType,
+  ICurrentScheduleTimezone,
+  ICurrentScheduleTimestamp,
+  ICurrentTimeBounty
 } from 'containers/Tabs/ScheduleTransaction/selectors';
 import {
   getSchedulingToggle,
@@ -39,7 +44,7 @@ import { gasPriceToBase } from 'libs/units';
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
-import { dateTimeToUnixTimestamp, windowSizeBlockToMin } from 'selectors/transaction/helpers';
+import { windowSizeBlockToMin, calculateWindowStart } from 'selectors/transaction/helpers';
 
 export function* shouldValidateParams(): SagaIterator {
   while (true) {
@@ -74,24 +79,25 @@ function* checkSchedulingParametersValidity() {
   const currentTo = yield select(getCurrentTo);
   const currentValue = yield select(getCurrentValue);
   const callData = yield select(getData);
-  const scheduleType = yield select(getScheduleType);
-  const windowStart = yield select(getWindowStart);
+  const scheduleType: ICurrentScheduleType = yield select(getScheduleType);
+  const windowStart: ICurrentWindowStart = yield select(getWindowStart);
   const windowSize: ICurrentWindowSize = yield select(getWindowSize);
-  const timeBounty = yield select(getTimeBounty);
+  const timeBounty: ICurrentTimeBounty = yield select(getTimeBounty);
   const scheduleGasPrice = yield select(getScheduleGasPrice);
   const scheduleGasLimit = yield select(getScheduleGasLimit);
   const deposit = yield select(getScheduleDeposit);
   const node = yield select(getNodeLib);
   const wallet = yield select(getWalletInst);
-  const scheduleTimestamp = yield select(getScheduleTimestamp);
-  const scheduleTimezone = yield select(getScheduleTimezone);
+  const scheduleTimestamp: ICurrentScheduleTimestamp = yield select(getScheduleTimestamp);
+  const scheduleTimezone: ICurrentScheduleTimezone = yield select(getScheduleTimezone);
 
   if (
     !currentValue.value ||
     !currentTo.value ||
     !scheduleGasPrice.value ||
     !wallet ||
-    !windowSize.value
+    !windowSize.value ||
+    !windowStart.value
   ) {
     return;
   }
@@ -112,10 +118,13 @@ function* checkSchedulingParametersValidity() {
     callData.value ? bufferToHex(callData.value) : '',
     callGasLimit,
     currentValue.value,
-    windowSizeBlockToMin(windowSize.value, scheduleType.value) || 0,
-    scheduleType.value === 'time'
-      ? dateTimeToUnixTimestamp(scheduleTimestamp, scheduleTimezone.value)
-      : windowStart.value,
+    windowSizeBlockToMin(windowSize.value, scheduleType.value),
+    calculateWindowStart(
+      scheduleType.value,
+      scheduleTimestamp,
+      scheduleTimezone.value,
+      windowStart.value
+    ),
     scheduleGasPrice.value,
     timeBounty.value,
     deposit.value || new BN(0),

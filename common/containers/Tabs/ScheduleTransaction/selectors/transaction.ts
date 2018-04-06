@@ -3,10 +3,7 @@ import {
   getCurrentTo,
   getCurrentValue,
   getFields,
-  getUnit,
-  getDataExists,
   getData,
-  getValidGasCost,
   getScheduleType,
   getWindowStart,
   getNonce,
@@ -21,81 +18,71 @@ import {
   getScheduleDeposit,
   getScheduleTimestamp,
   getScheduleTimezone,
-  IGetTransaction
+  IGetTransaction,
+  getTransaction,
+  isValidCurrentTimeBounty,
+  isWindowSizeValid
 } from 'selectors/transaction';
-import { Address, gasPriceToBase } from 'libs/units';
 import {
   EAC_SCHEDULING_CONFIG,
   getScheduleData,
   calcEACEndowment,
-  EAC_ADDRESSES
+  getSchedulerAddress
 } from 'libs/scheduling';
 import BN from 'bn.js';
 import { makeTransaction } from 'libs/transaction';
 import {
-  isFullTx,
-  isWindowSizeValid,
   isWindowStartValid,
   isScheduleTimestampValid,
-  dateTimeToUnixTimestamp,
-  windowSizeBlockToMin
+  windowSizeBlockToMin,
+  calculateWindowStart
 } from 'selectors/transaction/helpers';
 import EthTx from 'ethereumjs-tx';
 import { getLatestBlock } from 'selectors/config';
 
 export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
+  const { isFullTransaction } = getTransaction(state);
+
   const currentTo = getCurrentTo(state);
   const currentValue = getCurrentValue(state);
-  const transactionFields = getFields(state);
-  const unit = getUnit(state);
-  const dataExists = getDataExists(state);
-  const callData = getData(state);
-  const validGasCost = getValidGasCost(state);
-  const scheduleType = getScheduleType(state);
-  const windowStart = getWindowStart(state);
-  const windowSize = getWindowSize(state);
   const nonce = getNonce(state);
   const gasPrice = getGasPrice(state);
   const timeBounty = getTimeBounty(state);
-  const windowSizeValid = isWindowSizeValid(transactionFields);
-  const windowStartValid = isWindowStartValid(transactionFields, getLatestBlock(state));
-  const scheduleTimestamp = getScheduleTimestamp(state);
-  const scheduleTimestampValid = isScheduleTimestampValid(transactionFields);
-  const scheduleTimezone = getScheduleTimezone(state);
   const scheduleGasPrice = getScheduleGasPrice(state);
-  const scheduleGasPriceValid = isValidScheduleGasPrice(state);
   const scheduleGasLimit = getScheduleGasLimit(state);
-  const scheduleGasLimitValid = isValidScheduleGasLimit(state);
-  const depositValid = isValidScheduleDeposit(state);
-  const deposit = getScheduleDeposit(state);
+  const scheduleType = getScheduleType(state);
 
   const endowment = calcEACEndowment(
-    scheduleGasLimit.value || EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK,
-    currentValue.value || new BN(0),
-    scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
+    scheduleGasLimit.value,
+    currentValue.value,
+    scheduleGasPrice.value,
     timeBounty.value
   );
 
-  const isFullTransaction =
-    isFullTx(state, transactionFields, currentTo, currentValue, dataExists, validGasCost, unit) &&
-    (windowStartValid || scheduleTimestampValid) &&
-    windowSizeValid &&
-    scheduleGasPriceValid &&
-    scheduleGasLimitValid &&
-    depositValid;
-
   let transactionData = null;
 
-  if (isFullTransaction) {
+  const transactionFullAndValid = isFullTransaction && isSchedulingTransactionValid(state);
+
+  if (transactionFullAndValid) {
+    const deposit = getScheduleDeposit(state);
+    const scheduleTimestamp = getScheduleTimestamp(state);
+    const windowSize = getWindowSize(state);
+    const callData = getData(state);
+    const scheduleTimezone = getScheduleTimezone(state);
+    const windowStart = getWindowStart(state);
+
     transactionData = getScheduleData(
       currentTo.raw,
       callData.raw,
       scheduleGasLimit.value,
       currentValue.value,
       windowSizeBlockToMin(windowSize.value, scheduleType.value),
-      scheduleType.value === 'time'
-        ? dateTimeToUnixTimestamp(scheduleTimestamp, scheduleTimezone.value)
-        : windowStart.value,
+      calculateWindowStart(
+        scheduleType.value,
+        scheduleTimestamp,
+        scheduleTimezone.value,
+        windowStart.value
+      ),
       scheduleGasPrice.value,
       timeBounty.value,
       deposit.value
@@ -103,11 +90,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   }
 
   const transactionOptions = {
-    to: Address(
-      scheduleType.value === 'time'
-        ? EAC_ADDRESSES.KOVAN.timestampScheduler
-        : EAC_ADDRESSES.KOVAN.blockScheduler
-    ),
+    to: getSchedulerAddress(scheduleType.value),
     data: transactionData,
     gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
     gasPrice: gasPrice.value,
@@ -119,10 +102,30 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     transactionOptions.nonce = new BN(nonce.raw);
   }
 
-  const transaction: EthTx = makeTransaction(transactionOptions);
+  const schedulingTransaction: EthTx = makeTransaction(transactionOptions);
 
   return {
-    transaction,
-    isFullTransaction
+    transaction: schedulingTransaction,
+    isFullTransaction: transactionFullAndValid
   };
+};
+
+const isSchedulingTransactionValid = (state: AppState): boolean => {
+  const transactionFields = getFields(state);
+  const windowSizeValid = isWindowSizeValid(state);
+  const windowStartValid = isWindowStartValid(transactionFields, getLatestBlock(state));
+  const scheduleTimestampValid = isScheduleTimestampValid(transactionFields);
+  const scheduleGasPriceValid = isValidScheduleGasPrice(state);
+  const scheduleGasLimitValid = isValidScheduleGasLimit(state);
+  const depositValid = isValidScheduleDeposit(state);
+  const timeBountyValid = isValidCurrentTimeBounty(state);
+
+  return (
+    (windowStartValid || scheduleTimestampValid) &&
+    windowSizeValid &&
+    scheduleGasPriceValid &&
+    scheduleGasLimitValid &&
+    depositValid &&
+    timeBountyValid
+  );
 };

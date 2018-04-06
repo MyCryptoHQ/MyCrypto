@@ -1,4 +1,4 @@
-import { getTo, getValue, getScheduleGasPrice } from './fields';
+import { getTo, getValue, getScheduleGasPrice, getWindowSize } from './fields';
 import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { TokenValue, Wei, Address } from 'libs/units';
@@ -64,7 +64,13 @@ const isValidScheduleDeposit = (state: AppState): boolean => {
     return true;
   }
 
-  return depositValue.gte(new BN('0'));
+  return depositValue.gte(new BN('0')) && depositValue.bitLength() <= 256;
+};
+
+const isWindowSizeValid = (state: AppState): boolean => {
+  const windowSize = getWindowSize(state);
+
+  return Boolean(windowSize && windowSize.value && windowSize.value.bitLength() <= 256);
 };
 
 function getCurrentToAddressMessage(state: AppState): AddressMessage | undefined {
@@ -84,5 +90,6 @@ export {
   isValidScheduleGasLimit,
   isValidScheduleGasPrice,
   isValidScheduleDeposit,
+  isWindowSizeValid,
   getCurrentToAddressMessage
 };

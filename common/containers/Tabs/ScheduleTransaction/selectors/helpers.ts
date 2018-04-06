@@ -1,12 +1,8 @@
 import { AppState } from 'reducers';
 import moment from 'moment';
 import 'moment-timezone';
-
-export const isWindowSizeValid = (transactionFields: AppState['transaction']['fields']) => {
-  const { windowSize } = transactionFields;
-
-  return Boolean(windowSize && windowSize.value);
-};
+import { ICurrentScheduleTimestamp } from '.';
+import BN from 'bn.js';
 
 export const isWindowStartValid = (
   transactionFields: AppState['transaction']['fields'],
@@ -24,16 +20,29 @@ export const isScheduleTimestampValid = (transactionFields: AppState['transactio
   return Boolean(scheduleTimestamp && scheduleTimestamp.value && scheduleTimestamp.value > now);
 };
 
-export const dateTimeToUnixTimestamp = (scheduleTimestamp: any, timezone: string) => {
+export const dateTimeToUnixTimestamp = (
+  scheduleTimestamp: ICurrentScheduleTimestamp,
+  timezone: string
+) => {
   if (scheduleTimestamp.value) {
     return moment.tz(scheduleTimestamp.raw, timezone).unix();
   }
   return scheduleTimestamp.value;
 };
 
-export const windowSizeBlockToMin = (numberInput: number | null, scheduleType: string | null) => {
+export const windowSizeBlockToMin = (numberInput: BN | null, scheduleType: string | null) => {
   if (numberInput && scheduleType && scheduleType === 'time') {
-    return numberInput * 60;
+    return numberInput.mul(new BN(60));
   }
   return numberInput;
 };
+
+export const calculateWindowStart = (
+  scheduleType: string | null,
+  scheduleTimestamp: any,
+  scheduleTimezone: string,
+  blockWindowStart: number | null
+): number =>
+  (scheduleType === 'time'
+    ? dateTimeToUnixTimestamp(scheduleTimestamp, scheduleTimezone)
+    : blockWindowStart) || 0;

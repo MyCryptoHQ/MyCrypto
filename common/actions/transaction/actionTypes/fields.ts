@@ -95,7 +95,7 @@ interface SetWindowSizeFieldAction {
   type: TypeKeys.WINDOW_SIZE_FIELD_SET;
   payload: {
     raw: string;
-    value: number | null;
+    value: Wei | null;
   };
 }
 
