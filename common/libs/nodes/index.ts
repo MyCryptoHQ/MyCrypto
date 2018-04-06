@@ -51,6 +51,8 @@ export const getShepherdManualMode = () =>
   redux.store.getState().providerBalancer.balancerConfig.manual;
 export const getShepherdOffline = () =>
   redux.store.getState().providerBalancer.balancerConfig.offline;
+export const getShepherdNetwork = () =>
+  redux.store.getState().providerBalancer.balancerConfig.network;
 
 export const makeWeb3Network = (network: string) => `WEB3_${network}`;
 export const stripWeb3Network = (network: string) => network.replace('WEB3_', '');

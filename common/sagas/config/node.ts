@@ -40,7 +40,8 @@ import {
   shepherd,
   shepherdProvider,
   stripWeb3Network,
-  makeProviderConfig
+  makeProviderConfig,
+  getShepherdNetwork
 } from 'libs/nodes';
 
 export function* pollOfflineStatus(): SagaIterator {
@@ -149,7 +150,7 @@ export function* handleNodeChangeIntent({
 
   if (isAutoNode(nodeIdToSwitchTo)) {
     shepherd.auto();
-    if (currentConfig.network !== nextNodeConfig.network) {
+    if (getShepherdNetwork() !== nextNodeConfig.network) {
       yield apply(shepherd, shepherd.switchNetworks, [nextNodeConfig.network]);
     }
   } else {
