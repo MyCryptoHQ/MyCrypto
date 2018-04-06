@@ -1,55 +1,26 @@
 import {
   ethPlorer,
   ETHTokenExplorer,
-  SecureWalletName,
+  gasPriceDefaults,
   InsecureWalletName,
-  gasPriceDefaults
+  SecureWalletName
 } from 'config/data';
 import {
-  ETH_DEFAULT,
-  ETH_TREZOR,
-  ETH_LEDGER,
+  ELLA_DEFAULT,
   ETC_LEDGER,
   ETC_TREZOR,
+  ETH_DEFAULT,
+  ETH_LEDGER,
   ETH_TESTNET,
+  ETH_TREZOR,
   EXP_DEFAULT,
-  UBQ_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  ELLA_DEFAULT
+  UBQ_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
-import { BlockExplorerConfig } from 'types/network';
+import { makeExplorer } from 'utils/helpers';
 import { StaticNetworksState as State } from './types';
-
-// Must be a website that follows the ethplorer convention of /tx/[hash] and
-// address/[address] to generate the correct functions.
-// TODO: put this in utils / libs
-interface ExplorerConfig {
-  name: string;
-  origin: string;
-  txPath?: string;
-  addressPath?: string;
-  blockPath?: string;
-}
-
-export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
-  const config: ExplorerConfig = {
-    // Defaults
-    txPath: 'tx',
-    addressPath: 'address',
-    blockPath: 'block',
-    ...expConfig
-  };
-
-  return {
-    name: config.origin,
-    origin: config.origin,
-    txUrl: hash => `${config.origin}/${config.txPath}/${hash}`,
-    addressUrl: address => `${config.origin}/${config.addressPath}/${address}`,
-    blockUrl: blockNum => `${config.origin}/${config.blockPath}/${blockNum}`
-  };
-}
 
 const testnetDefaultGasPrice = {
   min: 0.1,

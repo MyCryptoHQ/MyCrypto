@@ -3,6 +3,7 @@ import NewTabLink from 'components/ui/NewTabLink';
 import { getValues } from '../utils/helpers';
 import packageJson from '../../package.json';
 import { GasPriceSetting } from 'types/network';
+import { makeExplorer } from 'utils/helpers';
 
 export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
@@ -32,6 +33,12 @@ export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHa
 export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
 export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
 export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
+
+export const etherChainExplorerInst = makeExplorer({
+  name: 'Etherchain',
+  origin: 'https://www.etherchain.org',
+  addressPath: 'account'
+});
 
 export const donationAddressMap = {
   BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',
