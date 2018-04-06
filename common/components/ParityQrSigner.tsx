@@ -102,7 +102,7 @@ export default class ParityQrSigner extends React.PureComponent<Props, State> {
             {webcamError}
           </div>
         ) : (
-          <QrSigner {...this.props} />
+          <QrSigner {...this.props} size={size} />
         )}
       </div>
     );

@@ -6,6 +6,7 @@ import { NewTabLink } from 'components/ui';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
 import { showNotification, TShowNotification } from 'actions/notifications';
+import { wikiLink } from 'libs/wallet/non-deterministic/parity';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
 import './ParitySigner.scss';
@@ -20,6 +21,7 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
     return (
       <div className="ParitySignerUnlock">
         <ParityQrSigner scan={true} onScan={this.unlockAddress} />
+        <p>{translate('ADD_PARITY_5', { $wiki_link: wikiLink })}</p>
         <p>{translate('ADD_PARITY_2')}</p>
         <p>
           <NewTabLink href="https://itunes.apple.com/us/app/parity-signer/id1218174838">
