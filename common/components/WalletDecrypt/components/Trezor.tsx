@@ -1,14 +1,15 @@
 import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
-import './Trezor.scss';
+import UnsupportedNetwork from './UnsupportedNetwork';
 import { Spinner, NewTabLink } from 'components/ui';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName, trezorReferralURL } from 'config';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import './Trezor.scss';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -16,7 +17,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  dPath: DPath;
+  dPath: DPath | undefined;
   dPaths: DPath[];
 }
 
@@ -35,20 +36,24 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath.value,
+    dPath: this.props.dPath ? this.props.dPath.value : '',
     error: null,
     isLoading: false
   };
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath.value });
+      this.setState({ dPath: nextProps.dPath ? nextProps.dPath.value : '' });
     }
   }
 
   public render() {
     const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
+
+    if (!dPath) {
+      return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} />;
+    }
 
     return (
       <div className="TrezorDecrypt">
@@ -141,7 +146,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath.value
+      dPath: this.props.dPath ? this.props.dPath.value : ''
     });
   }
 }

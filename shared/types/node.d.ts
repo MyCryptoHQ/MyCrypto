@@ -41,7 +41,10 @@ declare enum StaticNodeId {
   RIN_INFURA = 'rin_infura',
   ETC_EPOOL = 'etc_epool',
   UBQ = 'ubq',
-  EXP_TECH = 'exp_tech'
+  EXP_TECH = 'exp_tech',
+  POA = 'poa',
+  TOMO = 'tomo',
+  ELLA = 'ella'
 }
 
 type StaticNodeWithWeb3Id = StaticNodeId | 'web3';
