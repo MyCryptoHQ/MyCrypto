@@ -38,6 +38,7 @@ import {
 } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
 import { connect } from 'react-redux';
+import { stripWeb3Network } from 'libs/nodes';
 
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
@@ -119,7 +120,7 @@ class Header extends Component<Props, State> {
           ...rest,
           name: (
             <span>
-              {label.network} <small>({label.service})</small>
+              {stripWeb3Network(label.network)} <small>({label.service})</small>
             </span>
           )
         };
@@ -160,7 +161,7 @@ class Header extends Component<Props, State> {
                   color="white"
                 />
               </div>
-
+              {console.log(nodeSelection)}
               <div
                 className={classnames({
                   'Header-branding-right-dropdown': true,

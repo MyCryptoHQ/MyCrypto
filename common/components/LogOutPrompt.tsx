@@ -5,13 +5,18 @@ import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import translate, { translateRaw } from 'translations';
+import { TWeb3UnsetNode, web3UnsetNode } from 'actions/config';
 
-interface Props extends RouteComponentProps<{}> {
-  // State
-  wallet: AppState['wallet']['inst'];
-  // Actions
+interface DispatchProps {
+  web3UnsetNode: TWeb3UnsetNode;
   resetWallet: TResetWallet;
 }
+
+interface StateProps {
+  wallet: AppState['wallet']['inst'];
+}
+
+type Props = DispatchProps & StateProps & RouteComponentProps<{}>;
 
 interface State {
   nextLocation: RouteComponentProps<{}>['location'] | null;
@@ -65,6 +70,7 @@ class LogOutPromptClass extends React.Component<Props, State> {
   private onConfirm = () => {
     const { nextLocation: next } = this.state;
     this.props.resetWallet();
+    this.props.web3UnsetNode();
     this.setState(
       {
         openModal: false,
@@ -84,5 +90,6 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  resetWallet
+  resetWallet,
+  web3UnsetNode
 })(withRouter<Props>(LogOutPromptClass));
