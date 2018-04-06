@@ -41,10 +41,15 @@ declare enum StaticNodeId {
   ETC_AUTO = 'etc_auto',
   ETC_EPOOL = 'etc_epool',
   UBQ_AUTO = 'ubq_auto',
-
   UBQ = 'ubq',
   EXP_AUTO = 'exp_auto',
-  EXP_TECH = 'exp_tech'
+  EXP_TECH = 'exp_tech',
+  POA_AUTO = 'poa_auto',
+  POA = 'poa',
+  TOMO_AUTO = 'tomo_auto',
+  TOMO = 'tomo',
+  ELLA_AUTO = 'ella_auto',
+  ELLA = 'ella'
 }
 
 type StaticNodeConfigs = { [key in StaticNodeId]: StaticNodeConfig } & { web3?: StaticNodeConfig };

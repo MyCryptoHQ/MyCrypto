@@ -135,6 +135,48 @@ export const INITIAL_STATE: StaticNodesState = {
     service: 'Expanse.tech',
     lib: shepherdProvider,
     estimateGas: true
+  },
+  poa_auto: {
+    network: 'POA',
+    isCustom: false,
+    service: 'AUTO',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  poa: {
+    network: 'POA',
+    isCustom: false,
+    service: 'poa.network',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  tomo_auto: {
+    network: 'TOMO',
+    isCustom: false,
+    service: 'AUTO',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  tomo: {
+    network: 'TOMO',
+    isCustom: false,
+    service: 'tomocoin.io',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  ella_auto: {
+    network: 'ELLA',
+    isCustom: false,
+    service: 'AUTO',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  ella: {
+    network: 'ELLA',
+    isCustom: false,
+    service: 'ellaism.org',
+    lib: shepherdProvider,
+    estimateGas: true
   }
 };
 

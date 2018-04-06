@@ -86,6 +86,15 @@ shepherd.useProvider('rpc', 'ubq', regUbqConf, 'https://pyrus2.ubiqscan.io');
 const regExpConf = makeProviderConfig({ network: 'EXP' });
 shepherd.useProvider('rpc', 'exp_tech', regExpConf, 'https://node.expanse.tech/');
 
+const regPoaConf = makeProviderConfig({ network: 'POA' });
+shepherd.useProvider('rpc', 'poa', regPoaConf, 'https://core.poa.network');
+
+const regTomoConf = makeProviderConfig({ network: 'TOMO' });
+shepherd.useProvider('rpc', 'tomo', regTomoConf, 'https://core.tomocoin.io');
+
+const regEllaConf = makeProviderConfig({ network: 'ELLA' });
+shepherd.useProvider('rpc', 'ella', regEllaConf, 'https://jsonrpc.ellaism.org');
+
 /**
  * Pseudo-networks to support metamask / web3 interaction
  */

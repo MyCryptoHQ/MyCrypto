@@ -1,21 +1,22 @@
-import './LedgerNano.scss';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import { LedgerWallet } from 'libs/wallet';
 import ledger from 'ledgerco';
+import translate, { translateRaw } from 'translations';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
+import UnsupportedNetwork from './UnsupportedNetwork';
+import { LedgerWallet } from 'libs/wallet';
 import { Spinner, NewTabLink } from 'components/ui';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { SecureWalletName, ledgerReferralURL } from 'config';
 import { getPaths, getSingleDPath } from 'selectors/config/wallet';
+import './LedgerNano.scss';
 
 interface OwnProps {
   onUnlock(param: any): void;
 }
 
 interface StateProps {
-  dPath: DPath;
+  dPath: DPath | undefined;
   dPaths: DPath[];
 }
 
@@ -34,7 +35,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath.value,
+    dPath: this.props.dPath ? this.props.dPath.value : '',
     error: null,
     isLoading: false,
     showTip: false
@@ -48,13 +49,17 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath.value });
+      this.setState({ dPath: nextProps.dPath ? nextProps.dPath.value : '' });
     }
   }
 
   public render() {
     const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
     const showErr = error ? 'is-showing' : '';
+
+    if (!dPath) {
+      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
+    }
 
     if (window.location.protocol !== 'https:') {
       return (
@@ -167,7 +172,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath.value
+      dPath: this.props.dPath ? this.props.dPath.value : ''
     });
   }
 }
