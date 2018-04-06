@@ -152,25 +152,25 @@ class CurrentRates extends PureComponent<Props> {
     } else {
       // TODO - de-dup
       children = (
-        <>
+        <React.Fragment>
           <div className="SwapRates-panel-side col-sm-6">
-            <div className="SwapRates-panel-rate">
+            <div className="SwapRates-panel-rate is-loading">
               <Spinner size="x1" light={true} />
             </div>
-            <div className="SwapRates-panel-rate">
+            <div className="SwapRates-panel-rate is-loading">
               <Spinner size="x1" light={true} />
             </div>
           </div>
 
           <div className="SwapRates-panel-side col-sm-6">
-            <div className="SwapRates-panel-rate">
+            <div className="SwapRates-panel-rate is-loading">
               <Spinner size="x1" light={true} />
             </div>
-            <div className="SwapRates-panel-rate">
+            <div className="SwapRates-panel-rate is-loading">
               <Spinner size="x1" light={true} />
             </div>
           </div>
-        </>
+        </React.Fragment>
       );
     }
 

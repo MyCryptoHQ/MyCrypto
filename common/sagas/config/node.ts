@@ -7,7 +7,6 @@ import {
   take,
   takeEvery,
   select,
-  race,
   apply,
   takeLatest
 } from 'redux-saga/effects';
@@ -35,22 +34,25 @@ import { resetWallet } from 'actions/wallet';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
+import {
+  getShepherdOffline,
+  isAutoNode,
+  shepherd,
+  shepherdProvider,
+  stripWeb3Network,
+  makeProviderConfig
+} from 'libs/nodes';
 
-let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
+  let hasCheckedOnline = false;
   while (true) {
-    const nodeConfig: StaticNodeConfig = yield select(getNodeConfig);
     const isOffline: boolean = yield select(getOffline);
 
     // If our offline state disagrees with the browser, run a check
     // Don't check if the user is in another tab or window
     const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
     if (shouldPing && !document.hidden) {
-      const { pingSucceeded } = yield race({
-        pingSucceeded: call(nodeConfig.lib.ping.bind(nodeConfig.lib)),
-        timeout: call(delay, 5000)
-      });
-
+      const pingSucceeded = yield call(getShepherdOffline);
       if (pingSucceeded && isOffline) {
         // If we were able to ping but redux says we're offline, mark online
         yield put(
@@ -134,36 +136,37 @@ export function* handleNodeChangeIntent({
     nextNodeConfig = yield select(getStaticNodeFromId, nodeIdToSwitchTo);
   }
 
-  // Grab current block from the node, before switching, to confirm it's online
-  // Give it 5 seconds before we call it offline
-  let currentBlock;
-  let timeout;
-  try {
-    const { lb, to } = yield race({
-      lb: apply(nextNodeConfig.lib, nextNodeConfig.lib.getCurrentBlock),
-      to: call(delay, 5000)
-    });
-    currentBlock = lb;
-    timeout = to;
-  } catch (err) {
-    console.error(err);
-    // Whether it times out or errors, same message
-    timeout = true;
-  }
-
-  if (timeout) {
-    return yield* bailOut(translateRaw('ERROR_32'));
-  }
-
   const nextNetwork: StaticNetworkConfig | CustomNetworkConfig = yield select(
     getNetworkConfigById,
-    nextNodeConfig.network
+    stripWeb3Network(nextNodeConfig.network)
   );
 
   if (!nextNetwork) {
     return yield* bailOut(
       `Unknown custom network for your node '${nodeIdToSwitchTo}', try re-adding it`
     );
+  }
+
+  if (isAutoNode(nodeIdToSwitchTo)) {
+    shepherd.auto();
+    if (currentConfig.network !== nextNodeConfig.network) {
+      yield apply(shepherd, shepherd.switchNetworks, [nextNodeConfig.network]);
+    }
+  } else {
+    try {
+      yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, false]);
+    } catch (err) {
+      console.error(err);
+      return yield* bailOut(translateRaw('ERROR_32'));
+    }
+  }
+
+  let currentBlock;
+  try {
+    currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);
+  } catch (err) {
+    console.error(err);
+    return yield* bailOut(translateRaw('ERROR_32'));
   }
 
   yield put(setLatestBlock(currentBlock));
@@ -174,7 +177,14 @@ export function* handleNodeChangeIntent({
   }
 }
 
-export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
+export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator {
+  const { payload: { config } } = action;
+  shepherd.useProvider(
+    'myccustom',
+    config.id,
+    makeProviderConfig({ network: config.network }),
+    config
+  );
   yield put(changeNodeIntent(action.payload.id));
 }
 
@@ -208,5 +218,5 @@ export const node = [
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
-  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode)
+  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode)
 ];

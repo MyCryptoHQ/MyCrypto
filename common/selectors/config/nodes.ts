@@ -4,17 +4,13 @@ import {
   getCustomNetworkConfigs,
   isStaticNetworkId
 } from 'selectors/config';
-import {
-  CustomNodeConfig,
-  StaticNodeConfig,
-  StaticNodeId,
-  Web3NodeConfig,
-  StaticNodeWithWeb3Id
-} from 'types/node';
+import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
+import { StaticNetworkIds } from 'types/network';
 
 const getConfig = (state: AppState) => state.config;
 
 import { INITIAL_STATE as SELECTED_NODE_INITIAL_STATE } from 'reducers/config/nodes/selectedNode';
+import { shepherdProvider, INode, stripWeb3Network } from 'libs/nodes';
 
 export const getNodes = (state: AppState) => getConfig(state).nodes;
 
@@ -33,7 +29,8 @@ export const getStaticAltNodeIdToWeb3 = (state: AppState) => {
     return SELECTED_NODE_INITIAL_STATE.nodeId;
   }
   const res = Object.entries(configs).find(
-    ([_, config]: [StaticNodeId, StaticNodeConfig]) => web3.network === config.network
+    ([_, config]: [StaticNodeId, StaticNodeConfig]) =>
+      stripWeb3Network(web3.network) === config.network
   );
   if (res) {
     return res[0];
@@ -44,7 +41,7 @@ export const getStaticAltNodeIdToWeb3 = (state: AppState) => {
 export const getStaticNodeFromId = (state: AppState, nodeId: StaticNodeId) =>
   getStaticNodeConfigs(state)[nodeId];
 
-export const isStaticNodeId = (state: AppState, nodeId: string): nodeId is StaticNodeWithWeb3Id =>
+export const isStaticNodeId = (state: AppState, nodeId: string): nodeId is StaticNodeId =>
   Object.keys(getStaticNodeConfigs(state)).includes(nodeId);
 
 const getStaticNodeConfigs = (state: AppState) => getNodes(state).staticNodes;
@@ -56,12 +53,11 @@ export const getStaticNodeConfig = (state: AppState) => {
   return defaultNetwork;
 };
 
-export const getWeb3Node = (state: AppState): Web3NodeConfig | null => {
-  const isWeb3Node = (nodeId: string, _: StaticNodeConfig | Web3NodeConfig): _ is Web3NodeConfig =>
-    nodeId === 'web3';
+export const getWeb3Node = (state: AppState): StaticNodeConfig | null => {
+  const isWeb3Node = (nodeId: string) => nodeId === 'web3';
   const currNode = getStaticNodeConfig(state);
   const currNodeId = getNodeId(state);
-  if (currNode && currNodeId && isWeb3Node(currNodeId, currNode)) {
+  if (currNode && currNodeId && isWeb3Node(currNodeId)) {
     return currNode;
   }
   return null;
@@ -108,12 +104,8 @@ export function getNodeConfig(state: AppState): StaticNodeConfig | CustomNodeCon
   return config;
 }
 
-export function getNodeLib(state: AppState) {
-  const config = getNodeConfig(state);
-  if (!config) {
-    throw Error('No node lib found when trying to select from state');
-  }
-  return config.lib;
+export function getNodeLib(_: AppState): INode {
+  return shepherdProvider;
 }
 
 export interface NodeOption {
@@ -127,7 +119,8 @@ export interface NodeOption {
 export function getStaticNodeOptions(state: AppState): NodeOption[] {
   const staticNetworkConfigs = getStaticNetworkConfigs(state);
   return Object.entries(getStaticNodes(state)).map(([nodeId, node]: [string, StaticNodeConfig]) => {
-    const associatedNetwork = staticNetworkConfigs[node.network];
+    const associatedNetwork =
+      staticNetworkConfigs[stripWeb3Network(node.network) as StaticNetworkIds];
     const opt: NodeOption = {
       isCustom: node.isCustom,
       value: nodeId,

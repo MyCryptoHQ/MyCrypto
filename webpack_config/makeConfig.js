@@ -280,7 +280,9 @@ module.exports = function(opts = {}) {
     path: path.resolve(config.path.output, options.outputDir),
     filename: options.isProduction ? `[name].${commitHash}.js` : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
-    crossOriginLoading: 'anonymous'
+    crossOriginLoading: 'anonymous',
+    // Fix workers & HMR https://github.com/webpack/webpack/issues/6642
+    globalObject: options.isProduction ? undefined : 'self'
   };
 
   // The final bundle

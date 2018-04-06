@@ -1,9 +1,7 @@
-import { RPCNode } from '../../common/libs/nodes';
 import { Validator, ValidatorResult } from 'jsonschema';
 import { schema } from '../../common/libs/validators';
 import 'url-search-params-polyfill';
-import EtherscanNode from 'libs/nodes/etherscan';
-import InfuraNode from 'libs/nodes/infura';
+import RPCNode from 'libs/nodes/rpc';
 import RpcNodeTestConfig from './RpcNodeTestConfig';
 import { StaticNodeConfig } from 'types/node';
 import { staticNodesExpectedState } from '../reducers/config/nodes/staticNodes.spec';
@@ -69,18 +67,10 @@ function testRpcRequests(node: RPCNode, service: string) {
 }
 
 const mapNodeEndpoints = (nodes: { [key: string]: StaticNodeConfig }) => {
-  const { RpcNodes, EtherscanNodes, InfuraNodes } = RpcNodeTestConfig;
+  const { RpcNodes } = RpcNodeTestConfig;
 
   RpcNodes.forEach(n => {
     testRpcRequests(nodes[n].lib as RPCNode, `${nodes[n].service} ${nodes[n].network}`);
-  });
-
-  EtherscanNodes.forEach(n => {
-    testRpcRequests(nodes[n].lib as EtherscanNode, `${nodes[n].service} ${nodes[n].network}`);
-  });
-
-  InfuraNodes.forEach(n => {
-    testRpcRequests(nodes[n].lib as InfuraNode, `${nodes[n].service} ${nodes[n].network}`);
   });
 };
 
