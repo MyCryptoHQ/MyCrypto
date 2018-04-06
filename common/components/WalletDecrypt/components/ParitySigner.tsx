@@ -21,7 +21,7 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
     return (
       <div className="ParitySignerUnlock">
         <ParityQrSigner scan={true} onScan={this.unlockAddress} />
-        <p>{translate('ADD_PARITY_5', { $wiki_link: wikiLink })}</p>
+        <p>{translate('ADD_PARITY_4', { $wiki_link: wikiLink })}</p>
         <p>{translate('ADD_PARITY_2')}</p>
         <p>
           <NewTabLink href="https://itunes.apple.com/us/app/parity-signer/id1218174838">
