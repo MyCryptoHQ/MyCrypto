@@ -22,8 +22,7 @@ import {
   isStaticNodeId,
   getStaticNodeFromId,
   getCustomNodeFromId,
-  getStaticAltNodeIdToWeb3,
-  getNetworkConfig
+  getStaticAltNodeIdToWeb3
 } from 'selectors/config';
 import { Web3Wallet } from 'libs/wallet';
 import { showNotification } from 'actions/notifications';
@@ -270,25 +269,17 @@ describe('handleNodeChangeIntent*', () => {
 });
 
 describe('unsetWeb3Node*', () => {
-  const node = 'web3';
   const alternativeNodeId = 'eth_mycrypto';
+  const mockNodeId = 'web3';
   const gen = unsetWeb3Node();
 
   it('should select getNode', () => {
     expect(gen.next().value).toEqual(select(getNodeId));
   });
 
-  it('should get the current network', () => {
-    expect(gen.next(node).value).toEqual(select(getNetworkConfig));
-  });
-
-  it('should switch networks', () => {
-    expect(gen.next({ name: '' }).value).toEqual(apply(shepherd, shepherd.switchNetworks, ['']));
-  });
-
   it('should select an alternative node to web3', () => {
     // get a 'no visual difference' error here
-    expect(gen.next().value).toEqual(select(getStaticAltNodeIdToWeb3));
+    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
   it('should put changeNodeForce', () => {
@@ -315,14 +306,6 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
 
   it('should select getNode', () => {
     expect(gen.next().value).toEqual(select(getNodeId));
-  });
-
-  it('should get the current network', () => {
-    expect(gen.next(mockNodeId).value).toEqual(select(getNetworkConfig));
-  });
-
-  it('should switch networks', () => {
-    expect(gen.next({ name: '' }).value).toEqual(apply(shepherd, shepherd.switchNetworks, ['']));
   });
 
   it('should select an alternative node to web3', () => {

@@ -13,7 +13,6 @@ import {
   getNodeId,
   getStaticAltNodeIdToWeb3,
   getNetworkNameByChainId,
-  getNetworkConfig,
   getWeb3Node
 } from 'selectors/config';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
@@ -26,7 +25,6 @@ import {
   stripWeb3Network,
   shepherdProvider
 } from 'libs/nodes';
-import { NetworkConfig } from 'shared/types/network';
 import { StaticNodeConfig } from 'shared/types/node';
 import { showNotification } from 'actions/notifications';
 import translate from 'translations';
@@ -108,16 +106,10 @@ export function* unsetWeb3NodeOnWalletEvent(action: SetWalletAction): SagaIterat
     return;
   }
 
-  const network: NetworkConfig = yield select(getNetworkConfig);
+  const altNodeId: string = yield select(getStaticAltNodeIdToWeb3);
 
-  if (getShepherdManualMode()) {
-    yield apply(shepherd, shepherd.auto);
-  }
-  yield apply(shepherd, shepherd.switchNetworks, [stripWeb3Network(network.name)]);
-
-  const altNode = yield select(getStaticAltNodeIdToWeb3);
   // forcefully switch back to a node with the same network as MetaMask/Mist
-  yield put(changeNodeForce(altNode));
+  yield put(changeNodeForce(altNodeId));
 }
 
 export function* unsetWeb3Node(): SagaIterator {
@@ -127,16 +119,10 @@ export function* unsetWeb3Node(): SagaIterator {
     return;
   }
 
-  const network: NetworkConfig = yield select(getNetworkConfig);
+  const altNodeId: string = yield select(getStaticAltNodeIdToWeb3);
 
-  if (getShepherdManualMode()) {
-    yield apply(shepherd, shepherd.auto);
-  }
-  yield apply(shepherd, shepherd.switchNetworks, [stripWeb3Network(network.name)]);
-
-  const altNode = yield select(getStaticAltNodeIdToWeb3);
   // forcefully switch back to a node with the same network as MetaMask/Mist
-  yield put(changeNodeForce(altNode));
+  yield put(changeNodeForce(altNodeId));
 }
 
 export const web3 = [
