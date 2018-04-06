@@ -129,8 +129,7 @@ function getSavedSelectedNode(
   // necessary because web3 is only initialized as a node upon MetaMask / Mist unlock
 
   if (savedNodeId === 'web3') {
-    const nodeId = initialState.nodeId;
-    return { nodeId, prevNode: nodeId, pending: false };
+    return { nodeId: initialState.nodeId, prevNode: initialState.nodeId, pending: false };
   }
 
   const nodeConfigExists = isStaticNodeId(appInitialState, savedNodeId)
