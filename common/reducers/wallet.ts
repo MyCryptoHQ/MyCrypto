@@ -104,7 +104,7 @@ function setTokenBalanceRejected(state: State): State {
   return {
     ...state,
     isTokensLoading: false,
-    tokensError: 'Failed to fetch token value'
+    tokensError: translateRaw('SCAN_TOKENS_FAIL')
   };
 }
 
