@@ -1,8 +1,5 @@
 import EthTx from 'ethereumjs-tx';
-import {
-  SetBalanceFullfilledAction,
-  SetWalletQrTransactionAction
-} from 'actions/wallet/actionTypes';
+import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
 import {
   SetTokenBalancesFulfilledAction,
   SetWalletAction,
@@ -162,20 +159,6 @@ function setWalletConfig(state: State, action: SetWalletConfigAction): State {
   };
 }
 
-function setQrTransaction(state: State, action: SetWalletQrTransactionAction): State {
-  return {
-    ...state,
-    signViaQr: action.payload
-  };
-}
-
-function finalizeQrTx(state: State): State {
-  return {
-    ...state,
-    signViaQr: null
-  };
-}
-
 export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
     case TypeKeys.WALLET_SET:
@@ -210,10 +193,6 @@ export function wallet(state: State = INITIAL_STATE, action: WalletAction): Stat
       return setWalletConfig(state, action);
     case TypeKeys.WALLET_SET_PASSWORD_PENDING:
       return setPasswordPending(state);
-    case TypeKeys.WALLET_SET_QR_TRANSACTION:
-      return setQrTransaction(state, action);
-    case TypeKeys.WALLET_FINALIZE_QR_TX:
-      return finalizeQrTx(state);
     default:
       return state;
   }

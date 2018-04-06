@@ -1,6 +1,5 @@
 import { Wei, TokenValue } from 'libs/units';
 import { IWallet, WalletConfig } from 'libs/wallet';
-import { QrSignatureState } from 'reducers/wallet';
 import { TypeKeys } from './constants';
 
 /*** Unlock Private Key ***/
@@ -130,15 +129,6 @@ export interface SetAccountBalanceAction {
   type: TypeKeys.WALLET_SET_ACCOUNT_BALANCE;
 }
 
-export interface SetWalletQrTransactionAction {
-  type: TypeKeys.WALLET_SET_QR_TRANSACTION;
-  payload: QrSignatureState;
-}
-
-export interface FinalizeWalletQrTransactionAction {
-  type: TypeKeys.WALLET_FINALIZE_QR_TX;
-}
-
 /*** Union Type ***/
 export type WalletAction =
   | UnlockPrivateKeyAction
@@ -158,6 +148,4 @@ export type WalletAction =
   | SetWalletTokensAction
   | SetWalletConfigAction
   | SetPasswordPendingAction
-  | SetAccountBalanceAction
-  | SetWalletQrTransactionAction
-  | FinalizeWalletQrTransactionAction;
+  | SetAccountBalanceAction;

@@ -5,19 +5,13 @@ import { NewTabLink } from 'components/ui';
 import QrSigner from '@parity/qr-signer';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
-import {
-  setWalletQrTransaction,
-  TSetWalletQrTransaction,
-  finalizeQrTransaction,
-  TFinalizeQrTransaction
-} from 'actions/wallet';
+import { showNotification, TShowNotification } from 'actions/notifications';
 import './index.scss';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
 
 interface Props {
-  setWalletQrTransaction: TSetWalletQrTransaction;
-  finalizeQrTransaction: TFinalizeQrTransaction;
+  showNotification: TShowNotification;
   onUnlock(param: any): void;
 }
 
@@ -48,21 +42,12 @@ class ParitySignerDecrypt extends PureComponent<Props> {
 
   private unlockAddress = (address: string) => {
     if (!isValidETHAddress(address)) {
-      console.error('Invalid address!');
+      this.props.showNotification('danger', 'Not a valid address!');
       return;
     }
 
-    this.props.onUnlock(
-      new ParitySignerWallet(
-        address,
-        this.props.setWalletQrTransaction,
-        this.props.finalizeQrTransaction
-      )
-    );
+    this.props.onUnlock(new ParitySignerWallet(address));
   };
 }
 
-export default connect(() => ({}), {
-  setWalletQrTransaction,
-  finalizeQrTransaction
-})(ParitySignerDecrypt);
+export default connect(() => ({}), { showNotification })(ParitySignerDecrypt);

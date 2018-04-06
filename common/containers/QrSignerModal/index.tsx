@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
-import EthTx from 'ethereumjs-tx';
-import { transactionToRLP } from 'utils/helpers';
 import QrSigner from '@parity/qr-signer';
 import { AppState } from 'reducers';
 import Modal, { IButton } from 'components/ui/Modal';
+import { TFinalize, finalize } from 'actions/paritySigner';
 import './index.scss';
 
 interface State {
@@ -14,14 +13,14 @@ interface State {
 
 interface PropsClosed {
   isOpen: false;
+  finalize: TFinalize;
 }
 
 interface PropsOpen {
   isOpen: true;
+  rlp: string;
   from: string;
-  tx: EthTx;
-  onSignature(signature: string): void;
-  onCancel(): void;
+  finalize: TFinalize;
 }
 
 type Props = PropsClosed | PropsOpen;
@@ -40,9 +39,8 @@ class QrSignerModal extends React.Component<Props, State> {
     }
 
     const { scan } = this.state;
-    const { tx, from } = this.props;
+    const { from, rlp } = this.props;
 
-    const rlp = transactionToRLP(tx);
     const buttons: IButton[] = [
       {
         disabled: false,
@@ -79,7 +77,7 @@ class QrSignerModal extends React.Component<Props, State> {
       return;
     }
 
-    this.props.onCancel();
+    this.props.finalize(null);
     this.setState({ scan: false });
   };
 
@@ -88,27 +86,25 @@ class QrSignerModal extends React.Component<Props, State> {
       return;
     }
 
-    this.props.onSignature(signature);
+    this.props.finalize(signature);
     this.setState({ scan: false });
   };
 }
 
 function mapStateToProps(state: AppState) {
-  const { signViaQr } = state.wallet;
+  const { requested } = state.paritySigner;
 
-  if (!signViaQr) {
+  if (!requested) {
     return { isOpen: false };
   }
 
-  const { tx, from, onSignature, onCancel } = signViaQr;
+  const { from, rlp } = requested;
 
   return {
     isOpen: true,
-    tx,
     from,
-    onSignature,
-    onCancel
+    rlp
   };
 }
 
-export default connect(mapStateToProps, {})(QrSignerModal);
+export default connect(mapStateToProps, { finalize })(QrSignerModal);

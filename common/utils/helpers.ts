@@ -56,3 +56,20 @@ export function transactionToRLP(tx: EthTx): string {
 
   return rlp;
 }
+
+export function signTransactionWithSignature(tx: EthTx, signature: string): Buffer {
+  const sigBuf = Buffer.from(signature.substr(2), 'hex');
+
+  // Mimicking the way tx.sign() works
+  let v = sigBuf[64] + 27;
+
+  if (tx._chainId > 0) {
+    v += tx._chainId * 2 + 8;
+  }
+
+  tx.r = sigBuf.slice(0, 32);
+  tx.s = sigBuf.slice(32, 64);
+  tx.v = Buffer.from([v]);
+
+  return tx.serialize();
+}

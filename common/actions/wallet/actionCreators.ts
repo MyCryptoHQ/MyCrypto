@@ -1,4 +1,3 @@
-import EthTx from 'ethereumjs-tx';
 import { Wei, TokenValue } from 'libs/units';
 import { IWallet, WalletConfig } from 'libs/wallet';
 import * as types from './actionTypes';
@@ -165,30 +164,5 @@ export type TSetAccountBalance = typeof setAccountBalance;
 export function setAccountBalance(): types.SetAccountBalanceAction {
   return {
     type: TypeKeys.WALLET_SET_ACCOUNT_BALANCE
-  };
-}
-
-export type TSetWalletQrTransaction = typeof setWalletQrTransaction;
-export function setWalletQrTransaction(
-  tx: EthTx,
-  from: string,
-  onSignature: (signature: string) => void,
-  onCancel: () => void
-): types.SetWalletQrTransactionAction {
-  return {
-    type: TypeKeys.WALLET_SET_QR_TRANSACTION,
-    payload: {
-      tx,
-      from,
-      onSignature,
-      onCancel
-    }
-  };
-}
-
-export type TFinalizeQrTransaction = typeof finalizeQrTransaction;
-export function finalizeQrTransaction(): types.FinalizeWalletQrTransactionAction {
-  return {
-    type: TypeKeys.WALLET_FINALIZE_QR_TX
   };
 }
