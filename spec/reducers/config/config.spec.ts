@@ -22,8 +22,7 @@ import {
   isStaticNodeId,
   getStaticNodeFromId,
   getCustomNodeFromId,
-  getStaticAltNodeIdToWeb3,
-  getNetworkConfig
+  getStaticAltNodeIdToWeb3
 } from 'selectors/config';
 import { Web3Wallet } from 'libs/wallet';
 import { showNotification } from 'actions/notifications';
