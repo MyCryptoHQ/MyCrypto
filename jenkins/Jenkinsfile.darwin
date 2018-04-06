@@ -5,13 +5,27 @@ pipeline {
         }
     }
     stages {
-        stage('Build') { 
+        stage('Install') { 
             environment {
-                ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = 1
+                AWS_ACCESS_KEY_ID = 'REDACTED'
+                AWS_SECRET_ACCESS_KEY = 'REDACTED'
+                ETH_SIGNING_KEY = 'REDACTED'
+                S3_BUCKET_NAME = 'REDACTED'
             }
             steps {
                 sh 'rm -rf node_modules'
                 sh 'npm install'
+            }
+        }
+        stage('Build') {
+            environment {
+                ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = 1   
+                AWS_ACCESS_KEY_ID = 'REDACTED'
+                AWS_SECRET_ACCESS_KEY = 'REDACTED'
+                ETH_SIGNING_KEY = 'REDACTED'
+                S3_BUCKET_NAME = 'REDACTED'
+            }
+            steps {
                 sh 'npm run jenkins:build:mac'
             }
         }

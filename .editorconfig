@@ -1,7 +1,7 @@
 # http://editorconfig.org
 root = true
 
-[{*.js,*.jsx}]
+[*]
 end_of_line = lf
 charset = utf-8
 indent_size = 2
