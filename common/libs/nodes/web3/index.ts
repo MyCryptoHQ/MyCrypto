@@ -60,9 +60,7 @@ export async function setupWeb3Node() {
   const { web3 } = window as any;
 
   if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
-    throw new Error(
-      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
-    );
+    throw new Error('Web3 not found. Please check that MetaMask is installed');
   }
 
   const lib = new Web3Node();

@@ -14,8 +14,8 @@ import {
   getCustomNetworkConfigs
 } from 'selectors/config';
 import RootReducer, { AppState } from 'reducers';
-import CustomNode from 'libs/nodes/custom';
 import { CustomNodeConfig } from 'types/node';
+import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
@@ -113,6 +113,7 @@ function rehydrateNodes(
     customNodes,
     staticNodes
   );
+
   return nextNodeState;
 }
 
@@ -135,6 +136,13 @@ function getSavedSelectedNode(
     ? staticNodes[savedNodeId]
     : customNodes[savedNodeId];
 
+  if (nodeConfigExists) {
+    if (isAutoNode(savedNodeId)) {
+      shepherd.switchNetworks(nodeConfigExists.network);
+    } else {
+      shepherd.manual(savedNodeId, false);
+    }
+  }
   return { nodeId: nodeConfigExists ? savedNodeId : initialState.nodeId, pending: false };
 }
 
@@ -152,7 +160,14 @@ function rehydrateCustomNodes(
         return hydratedNodes;
       }
 
-      const lib = new CustomNode(configToHydrate);
+      shepherd.useProvider(
+        'myccustom',
+        configToHydrate.id,
+        makeProviderConfig({ network: configToHydrate.network }),
+        configToHydrate
+      );
+
+      const lib = shepherdProvider;
       const hydratedNode: CustomNodeConfig = { ...configToHydrate, lib };
       return { ...hydratedNodes, [customNodeId]: hydratedNode };
     },

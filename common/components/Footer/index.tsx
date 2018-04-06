@@ -107,6 +107,10 @@ const FRIENDS: Link[] = [
   {
     link: 'https://etherscan.io/',
     text: 'Etherscan'
+  },
+  {
+    link: 'https://etherchain.org/',
+    text: 'Etherchain'
   }
 ];
 

@@ -1,6 +1,6 @@
 import { configuredStore } from 'store';
 import { delay, SagaIterator } from 'redux-saga';
-import { call, cancel, fork, put, take, select } from 'redux-saga/effects';
+import { call, cancel, fork, put, take, select, apply } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import {
   toggleOffline,
@@ -21,7 +21,6 @@ import {
   getOffline,
   isStaticNodeId,
   getStaticNodeFromId,
-  getNetworkConfigById,
   getCustomNodeFromId,
   getStaticAltNodeIdToWeb3
 } from 'selectors/config';
@@ -34,6 +33,7 @@ import { metaExpectedState } from './meta/meta.spec';
 import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
 import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
 import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
+import { shepherd } from 'mycrypto-shepherd';
 
 // init module
 configuredStore.getState();
@@ -52,10 +52,6 @@ describe('pollOfflineStatus*', () => {
   const raceSuccess = {
     pingSucceeded: true,
     timeout: false
-  };
-  const raceFailure = {
-    pingSucceeded: false,
-    timeout: true
   };
 
   let originalHidden: any;
@@ -87,10 +83,6 @@ describe('pollOfflineStatus*', () => {
     Math.random = originalRandom;
   });
 
-  it('should select getNodeConfig', () => {
-    expect(data.gen.next().value).toEqual(select(getNodeConfig));
-  });
-
   it('should select getOffline', () => {
     expect(data.gen.next(node).value).toEqual(select(getOffline));
   });
@@ -98,17 +90,16 @@ describe('pollOfflineStatus*', () => {
   it('should call delay if document is hidden', () => {
     data.hiddenDoc = data.gen.clone();
     doc.hidden = true;
+    data.isOfflineClone = data.gen.clone();
+    data.shouldDelayClone = data.gen.clone();
     expect(data.hiddenDoc.next(togglingToOnline.offline).value).toEqual(call(delay, 1000));
+
     doc.hidden = false;
   });
 
-  it('should race pingSucceeded and timeout', () => {
-    data.isOfflineClone = data.gen.clone();
-    data.shouldDelayClone = data.gen.clone();
-    expect(data.gen.next(togglingToOffline.offline).value).toMatchSnapshot();
-  });
-
   it('should toggle offline and show notification if navigator disagrees with isOffline and ping succeeds', () => {
+    data.gen.next(raceSuccess);
+
     expect(data.gen.next(raceSuccess).value).toEqual(
       put(showNotification('success', 'Your connection to the network has been restored!', 3000))
     );
@@ -117,10 +108,10 @@ describe('pollOfflineStatus*', () => {
 
   it('should toggle offline and show notification if navigator agrees with isOffline and ping fails', () => {
     nav.onLine = togglingToOffline.offline;
-    expect(data.isOfflineClone.next(togglingToOnline.offline));
-    expect(data.isOfflineClone.next(raceFailure).value).toMatchSnapshot();
+
+    data.isOfflineClone.next(false);
+    data.isOfflineClone.next(false);
     expect(data.isOfflineClone.next().value).toEqual(put(toggleOffline()));
-    nav.onLine = togglingToOnline.offline;
   });
 });
 
@@ -158,12 +149,6 @@ describe('handleNodeChangeIntent*', () => {
 
   const changeNodeIntentAction = changeNodeIntent(newNodeId);
   const latestBlock = '0xa';
-  const raceSuccess = {
-    lb: latestBlock
-  };
-  const raceFailure = {
-    to: true
-  };
 
   const data = {} as any;
   data.gen = cloneableGenerator(handleNodeChangeIntent)(changeNodeIntentAction);
@@ -198,21 +183,35 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.gen.next(defaultNodeConfig).value).toEqual(select(getStaticNodeFromId, newNodeId));
   });
 
-  it('should race getCurrentBlock and delay', () => {
+  it('should get the next network', () => {
     expect(data.gen.next(newNodeConfig).value).toMatchSnapshot();
   });
 
   it('should show error and revert to previous node if check times out', () => {
     data.clone1 = data.gen.clone();
-    shouldBailOut(data.clone1, raceFailure, translateRaw('ERROR_32'));
+    data.clone1.next(true);
+    expect(data.clone1.throw('err').value).toEqual(select(getNodeId));
+    expect(data.clone1.next(defaultNodeId).value).toEqual(
+      put(showNotification('danger', translateRaw('ERROR_32'), 5000))
+    );
+    expect(data.clone1.next().value).toEqual(
+      put(changeNode({ networkId: defaultNodeConfig.network, nodeId: defaultNodeId }))
+    );
+    expect(data.clone1.next().done).toEqual(true);
   });
-  it('should getNetworkConfigById', () => {
-    expect(data.gen.next(raceSuccess).value).toEqual(
-      select(getNetworkConfigById, newNodeConfig.network)
+
+  it('should sucessfully switch to the manual node', () => {
+    expect(data.gen.next(latestBlock).value).toEqual(
+      apply(shepherd, shepherd.manual, [newNodeId, false])
     );
   });
+
+  it('should get the current block', () => {
+    data.gen.next();
+  });
+
   it('should put setLatestBlock', () => {
-    expect(data.gen.next(raceSuccess).value).toEqual(put(setLatestBlock(latestBlock)));
+    expect(data.gen.next(latestBlock).value).toEqual(put(setLatestBlock(latestBlock)));
   });
 
   it('should put changeNode', () => {
@@ -241,7 +240,7 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.customNode.next(defaultNodeConfig).value).toEqual(
       select(getCustomNodeFromId, firstCustomNodeId)
     );
-    expect(data.customNode.next(customNodeConfigs).value).toMatchSnapshot();
+    expect(data.customNode.next(customNodeConfigs.customNode1).value).toMatchSnapshot();
   });
 
   const customNodeIdNotFound = firstCustomNodeId + 'notFound';
@@ -270,8 +269,8 @@ describe('handleNodeChangeIntent*', () => {
 });
 
 describe('unsetWeb3Node*', () => {
-  const node = 'web3';
   const alternativeNodeId = 'eth_mycrypto';
+  const mockNodeId = 'web3';
   const gen = unsetWeb3Node();
 
   it('should select getNode', () => {
@@ -279,7 +278,8 @@ describe('unsetWeb3Node*', () => {
   });
 
   it('should select an alternative node to web3', () => {
-    expect(gen.next(node).value).toEqual(select(getStaticAltNodeIdToWeb3));
+    // get a 'no visual difference' error here
+    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
   });
 
   it('should put changeNodeForce', () => {

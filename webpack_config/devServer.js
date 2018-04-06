@@ -45,7 +45,7 @@ const devMiddleWare = require('webpack-dev-middleware')(compiler, {
 app.use(devMiddleWare);
 app.use(
   require('webpack-hot-middleware')(compiler, {
-    log: console.info
+    log: false
   })
 );
 
