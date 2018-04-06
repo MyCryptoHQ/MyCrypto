@@ -161,7 +161,6 @@ class Header extends Component<Props, State> {
                   color="white"
                 />
               </div>
-              {console.log(nodeSelection)}
               <div
                 className={classnames({
                   'Header-branding-right-dropdown': true,
