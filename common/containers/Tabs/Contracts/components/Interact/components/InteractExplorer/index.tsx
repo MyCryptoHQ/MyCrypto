@@ -128,7 +128,7 @@ class InteractExplorerClass extends Component<Props, State> {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
               const rawFieldValue = outputs[parsedName] || '';
-              const decoddedFieldValue = Buffer.isBuffer(rawFieldValue)
+              const decodedFieldValue = Buffer.isBuffer(rawFieldValue)
                 ? bufferToHex(rawFieldValue)
                 : rawFieldValue;
 
@@ -138,7 +138,7 @@ class InteractExplorerClass extends Component<Props, State> {
                     <div className="input-group-header"> ↳ {name + ' ' + type}</div>
                     <Input
                       className="InteractExplorer-func-out-input "
-                      value={decoddedFieldValue}
+                      value={decodedFieldValue}
                       disabled={true}
                     />
                   </label>
