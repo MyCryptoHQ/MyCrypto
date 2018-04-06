@@ -22,7 +22,7 @@ import {
   isStaticNodeId,
   getStaticNodeFromId,
   getCustomNodeFromId,
-  getStaticAltNodeIdToWeb3
+  getPreviouslySelectedNode
 } from 'selectors/config';
 import { Web3Wallet } from 'libs/wallet';
 import { showNotification } from 'actions/notifications';
@@ -269,7 +269,7 @@ describe('handleNodeChangeIntent*', () => {
 });
 
 describe('unsetWeb3Node*', () => {
-  const alternativeNodeId = 'eth_mycrypto';
+  const previousNodeId = 'eth_mycrypto';
   const mockNodeId = 'web3';
   const gen = unsetWeb3Node();
 
@@ -279,11 +279,11 @@ describe('unsetWeb3Node*', () => {
 
   it('should select an alternative node to web3', () => {
     // get a 'no visual difference' error here
-    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
+    expect(gen.next(mockNodeId).value).toEqual(select(getPreviouslySelectedNode));
   });
 
   it('should put changeNodeForce', () => {
-    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeForce(alternativeNodeId)));
+    expect(gen.next(previousNodeId).value).toEqual(put(changeNodeForce(previousNodeId)));
   });
 
   it('should be done', () => {
@@ -301,7 +301,7 @@ describe('unsetWeb3Node*', () => {
 describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction: any = {};
   const mockNodeId = 'web3';
-  const alternativeNodeId = 'eth_mycrypto';
+  const previousNodeId = 'eth_mycrypto';
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {
@@ -309,11 +309,11 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
   });
 
   it('should select an alternative node to web3', () => {
-    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
+    expect(gen.next(mockNodeId).value).toEqual(select(getPreviouslySelectedNode));
   });
 
   it('should put changeNodeForce', () => {
-    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeForce(alternativeNodeId)));
+    expect(gen.next(previousNodeId).value).toEqual(put(changeNodeForce(previousNodeId)));
   });
 
   it('should be done', () => {
