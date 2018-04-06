@@ -97,7 +97,7 @@ function* checkSchedulingParametersValidity() {
     !scheduleGasPrice.value ||
     !wallet ||
     !windowSize.value ||
-    !windowStart.value
+    !(windowStart.value || scheduleTimestamp.value)
   ) {
     return;
   }
