@@ -69,7 +69,8 @@ export const ethercardReferralURL =
 export enum SecureWalletName {
   WEB3 = 'web3',
   LEDGER_NANO_S = 'ledgerNanoS',
-  TREZOR = 'trezor'
+  TREZOR = 'trezor',
+  PARITY_SIGNER = 'paritySigner'
 }
 
 export enum HardwareWalletName {
