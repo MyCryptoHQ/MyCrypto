@@ -1,7 +1,8 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .WalletWarning {
-  max-width: 760px;
+  max-width: 820px;
   margin: 0 auto;
   text-align: center;
 
@@ -20,14 +21,16 @@
     flex-wrap: wrap;
     justify-content: center;
     max-width: 440px;
-    margin: 0 auto #{-$space-sm};
+    margin: 0 auto #{-$space};
 
     &-btn {
       width: 100%;
-      margin: 0 0 $space-sm;
+      margin: 0 0 $space;
 
-      &.btn-link {
-        opacity: 0.6;
+      &.is-cancel {
+        @include reset-button;
+        opacity: 0.4;
+        transition: $transition;
 
         &:hover {
           opacity: 1;
@@ -37,7 +40,7 @@
           position: relative;
           top: -1px;
           margin-right: $space-xs;
-          font-size: $font-size-xs-bump;
+          font-size: 11px;
         }
       }
     }

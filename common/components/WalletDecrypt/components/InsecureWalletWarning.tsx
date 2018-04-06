@@ -28,11 +28,11 @@ export class InsecureWalletWarning extends React.Component<Props> {
         <div className="WalletWarning-buttons">
           <NewTabLink
             href="https://download.mycrypto.com/"
-            className="WalletWarning-buttons-btn btn btn-lg btn-primary"
+            className="WalletWarning-buttons-btn is-download btn btn-lg btn-primary"
           >
             {translate('WALLET_SUGGESTION_DESKTOP_APP')}
           </NewTabLink>
-          <button className="WalletWarning-buttons-btn btn btn-sm btn-link" onClick={onCancel}>
+          <button className="WalletWarning-buttons-btn is-cancel" onClick={onCancel}>
             <i className="fa fa-arrow-left" />
             {translate('INSECURE_WALLET_GO_BACK')}
           </button>
