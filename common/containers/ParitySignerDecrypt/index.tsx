@@ -6,6 +6,7 @@ import QrSigner from '@parity/qr-signer';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
 import { showNotification, TShowNotification } from 'actions/notifications';
+import { wikiLink } from 'libs/wallet/non-deterministic/parity';
 import './index.scss';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
@@ -19,6 +20,8 @@ class ParitySignerDecrypt extends PureComponent<Props> {
   public render() {
     return (
       <div className="ParitySignerUnlock">
+        <p>{translate('ADD_PARITY_4')}</p>
+        <p>{translate('ADD_PARITY_5', { $wiki_link: wikiLink })}</p>
         <div className="ParitySignerUnlock-qr-bounds">
           <QrSigner
             size={300}

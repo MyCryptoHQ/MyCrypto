@@ -1,5 +1,7 @@
 import { IFullWallet } from '../IWallet';
 
+export const wikiLink = 'https://wiki.parity.io/Parity-Signer-Mobile-App-MyCrypto-tutorial.md';
+
 export default class ParitySignerWallet implements IFullWallet {
   public address: string;
 
