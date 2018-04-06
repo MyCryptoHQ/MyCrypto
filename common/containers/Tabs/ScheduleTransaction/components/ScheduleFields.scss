@@ -13,16 +13,25 @@
   }
 
   &_logo {
-    max-width: 230px;
+    float: right;
+    max-width: 160px;
     width: 100%;
-    height: 46px;
-    background-image: url('~assets/images/chronologic-logo.svg');
+    height: 32px;
+    background-image: url(~assets/images/chronologic-logo.svg);
     background-repeat: no-repeat;
     display: block;
+    background-size: cover;
 
     @media (min-width: $screen-xs) {
-      margin-left: 15px;
+      margin-right: 15px;
     }
+  }
+
+  &_description {
+    font-weight: 300;
+    font-size: 16px;
+    padding: 20px 0 30px;
+    text-align: justify;
   }
 }
 

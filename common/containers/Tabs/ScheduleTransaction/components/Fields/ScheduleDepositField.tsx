@@ -29,7 +29,7 @@ class ScheduleDepositFieldClass extends Component<Props> {
         <label className="input-group">
           <div className="input-group-header">
             {translateRaw('SCHEDULE_DEPOSIT')}
-            <Help tooltip="Require TimeNode to deposit a given amount of ETH in order to gain an exclusive time window for execution." />
+            <Help tooltip={translateRaw('SCHEDULE_DEPOSIT_TOOLTIP')} />
           </div>
           <Input
             className={!!scheduleDeposit.raw && !validScheduleDeposit ? 'invalid' : ''}

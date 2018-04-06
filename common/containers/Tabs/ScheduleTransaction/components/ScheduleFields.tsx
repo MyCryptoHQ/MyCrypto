@@ -12,6 +12,7 @@ import {
 } from '.';
 import { ScheduleTimezoneDropDown, ScheduleTimestampField, ScheduleType } from 'components';
 import './ScheduleFields.scss';
+import translate from 'translations';
 
 interface Props {
   schedulingType: ICurrentScheduleType;
@@ -23,8 +24,11 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
     return (
       <div className="scheduled-tx-settings">
-        <div className="scheduled-tx-settings_title">Scheduled Transaction Settings</div>
-        <br />
+        <div className="scheduled-tx-settings_title">{translate('SCHEDULING_TITLE')}</div>
+
+        <div className="scheduled-tx-settings_description">
+          {translate('SCHEDULING_DESCRIPTION')}
+        </div>
 
         <div className="row form-group vcenter-sm">
           <div className="col-lg-3 col-lg-push-9">

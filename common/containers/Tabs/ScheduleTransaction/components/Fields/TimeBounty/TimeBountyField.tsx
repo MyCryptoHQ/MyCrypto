@@ -15,7 +15,7 @@ export const TimeBountyField: React.SFC<Props> = ({ isReadOnly }) => (
         <label className="input-group">
           <div className="input-group-header">
             {translate('SCHEDULE_TIMEBOUNTY')}
-            <Help tooltip="The amount of ETH you wish to offer to TimeNodes in exchange for execution. The higher the Time Bounty, the likelier your transaction will get executed." />
+            <Help tooltip={translateRaw('SCHEDULE_TIMEBOUNTY_TOOLTIP')} />
           </div>
           <Input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}
