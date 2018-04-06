@@ -25,7 +25,7 @@ jobs:
     - stage: test
       script: npm run prettier:diff
     - stage: test
-      script: npm run test
+      script: npm run test:coverage -- --maxWorkers=2 && npm run report-coverage
     - stage: test
       script: npm run tslint && npm run tscheck && npm run freezer && npm run freezer:validate
 
