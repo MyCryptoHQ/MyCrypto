@@ -10,6 +10,7 @@ import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import './index.scss';
 import translate from 'translations';
+import { etherChainExplorerInst } from 'config/data';
 
 interface StateProps {
   network: NetworkConfig;
@@ -43,6 +44,11 @@ class CheckTransaction extends React.Component<Props, State> {
   public render() {
     const { network } = this.props;
     const { hash } = this.state;
+    console.log(network);
+    const CHECK_TX_KEY =
+      network.name === 'ETH'
+        ? 'CHECK_TX_STATUS_DESCRIPTION_MULTIPLE'
+        : 'CHECK_TX_STATUS_DESCRIPTION_2';
 
     return (
       <TabSection>
@@ -52,9 +58,12 @@ class CheckTransaction extends React.Component<Props, State> {
             <p className="CheckTransaction-form-desc">
               {translate('CHECK_TX_STATUS_DESCRIPTION_1')}
               {!network.isCustom &&
-                translate('CHECK_TX_STATUS_DESCRIPTION_2', {
+                translate(CHECK_TX_KEY, {
                   $block_explorer: network.blockExplorer.name,
-                  $block_explorer_link: network.blockExplorer.origin
+                  $block_explorer_link: network.blockExplorer.origin,
+                  // On ETH networks, we also show Etherchain. Otherwise, these variables are ignored
+                  $block_explorer_2: etherChainExplorerInst.name,
+                  $block_explorer_link_2: etherChainExplorerInst.origin
                 })}
             </p>
             <TxHashInput hash={hash} onSubmit={this.handleHashSubmit} />

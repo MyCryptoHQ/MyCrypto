@@ -2,7 +2,14 @@ import { TokenValue, Wei } from 'libs/units';
 import { SecureWalletName, WalletName } from 'config';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline, getStaticNetworkConfig } from 'selectors/config';
-import { IWallet, Web3Wallet, LedgerWallet, TrezorWallet, WalletConfig } from 'libs/wallet';
+import {
+  IWallet,
+  Web3Wallet,
+  LedgerWallet,
+  TrezorWallet,
+  ParitySignerWallet,
+  WalletConfig
+} from 'libs/wallet';
 import { isEtherTransaction, getUnit } from './transaction';
 import { DisabledWallets } from 'components/WalletDecrypt';
 import { Token } from 'types/network';
@@ -96,6 +103,7 @@ export const getTokenWithBalance = (state: AppState, unit: string): TokenBalance
 export interface IWalletType {
   isWeb3Wallet: boolean;
   isHardwareWallet: boolean;
+  isParitySignerWallet: boolean;
 }
 
 export const getWallet = (state: AppState) => state.wallet;
@@ -105,8 +113,9 @@ export const getWalletType = (state: AppState): IWalletType => {
   const isWeb3Wallet = wallet instanceof Web3Wallet;
   const isLedgerWallet = wallet instanceof LedgerWallet;
   const isTrezorWallet = wallet instanceof TrezorWallet;
+  const isParitySignerWallet = wallet instanceof ParitySignerWallet;
   const isHardwareWallet = isLedgerWallet || isTrezorWallet;
-  return { isWeb3Wallet, isHardwareWallet };
+  return { isWeb3Wallet, isHardwareWallet, isParitySignerWallet };
 };
 
 export const isUnlocked = (state: AppState) => !!getWalletInst(state);
@@ -166,7 +175,7 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
   // Some wallets don't support some networks
   addReason(
     unSupportedWalletFormatsOnNetwork(state),
-    `${network.name} does not support this wallet`
+    `This wallet doesn’t support the ${network.name} network`
   );
 
   // Some wallets are unavailable offline

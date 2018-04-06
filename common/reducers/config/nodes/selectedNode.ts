@@ -6,21 +6,10 @@ import {
   RemoveCustomNodeAction,
   CustomNodeAction
 } from 'actions/config';
+import { SelectedNodeState as State } from './types';
 
-interface NodeLoaded {
-  pending: false;
-  nodeId: string;
-}
-
-interface NodeChangePending {
-  pending: true;
-  nodeId: string;
-}
-
-export type State = NodeLoaded | NodeChangePending;
-
-export const INITIAL_STATE: NodeLoaded = {
-  nodeId: 'eth_mycrypto',
+export const INITIAL_STATE: State = {
+  nodeId: 'eth_auto',
   pending: false
 };
 

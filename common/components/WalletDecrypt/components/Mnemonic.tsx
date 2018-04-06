@@ -155,7 +155,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    dPath: getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE),
+    // Mnemonic dPath is guaranteed to always be provided
+    dPath: getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE) as DPath,
     dPaths: getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
   };
 }

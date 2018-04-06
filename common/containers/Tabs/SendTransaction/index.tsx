@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
+import QrSignerModal from 'containers/QrSignerModal';
 import { UnlockHeader } from 'components/ui';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
@@ -108,6 +109,7 @@ class SendTransaction extends React.Component<Props> {
             </div>
           )}
         </section>
+        <QrSignerModal />
       </TabSection>
     );
   }
