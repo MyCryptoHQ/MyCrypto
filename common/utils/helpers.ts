@@ -1,6 +1,7 @@
 import qs from 'query-string';
 import has from 'lodash/has';
 import EthTx from 'ethereumjs-tx';
+import { BlockExplorerConfig } from 'types/network';
 
 interface IObjectValue {
   [key: string]: any;
@@ -72,4 +73,30 @@ export function signTransactionWithSignature(tx: EthTx, signature: string): Buff
   tx.v = Buffer.from([v]);
 
   return tx.serialize();
+}
+
+interface ExplorerConfig {
+  name: string;
+  origin: string;
+  txPath?: string;
+  addressPath?: string;
+  blockPath?: string;
+}
+
+export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
+  const config: ExplorerConfig = {
+    // Defaults
+    txPath: 'tx',
+    addressPath: 'address',
+    blockPath: 'block',
+    ...expConfig
+  };
+
+  return {
+    name: config.name,
+    origin: config.origin,
+    txUrl: hash => `${config.origin}/${config.txPath}/${hash}`,
+    addressUrl: address => `${config.origin}/${config.addressPath}/${address}`,
+    blockUrl: blockNum => `${config.origin}/${config.blockPath}/${blockNum}`
+  };
 }

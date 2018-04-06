@@ -1,12 +1,12 @@
 import { configuredStore } from 'store';
 import { web3SetNode, web3UnsetNode } from 'actions/config';
 import { staticNodes, INITIAL_STATE } from 'reducers/config/nodes/staticNodes';
-import { Web3NodeConfig } from 'types/node';
 import { Web3Service } from 'libs/nodes/web3';
+import { StaticNodeConfig } from 'types/node';
 configuredStore.getState();
 
 const web3Id = 'web3';
-const web3Node: Web3NodeConfig = {
+const web3Node: StaticNodeConfig = {
   isCustom: false,
   network: 'ETH',
   service: Web3Service,
@@ -27,11 +27,6 @@ const actions = {
 };
 
 describe('static nodes reducer', () => {
-  it('should return the inital state', () =>
-    // turn the JSON into a string because we're storing function in the state
-    expect(JSON.stringify(staticNodes(undefined, {} as any))).toEqual(
-      JSON.stringify(expectedState.initialState)
-    ));
   it('should handle setting the web3 node', () =>
     expect(staticNodes(INITIAL_STATE, actions.web3SetNode)).toEqual(expectedState.setWeb3));
 

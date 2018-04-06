@@ -1,37 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`handleNodeChangeIntent* should race getCurrentBlock and delay 1`] = `
+exports[`handleNodeChangeIntent* should get the next network 1`] = `
 Object {
   "@@redux-saga/IO": true,
-  "RACE": Object {
-    "lb": Object {
-      "@@redux-saga/IO": true,
-      "CALL": Object {
-        "args": Array [],
-        "context": RpcNode {
-          "client": RPCClient {
-            "batch": [Function],
-            "call": [Function],
-            "createHeaders": [Function],
-            "decorateRequest": [Function],
-            "endpoint": "https://jsonrpc.ellaism.org",
-            "headers": Object {},
-          },
-          "requests": RPCRequests {},
-        },
-        "fn": [Function],
-      },
-    },
-    "to": Object {
-      "@@redux-saga/IO": true,
-      "CALL": Object {
-        "args": Array [
-          5000,
-        ],
-        "context": null,
-        "fn": [Function],
-      },
-    },
+  "SELECT": Object {
+    "args": Array [
+      "ELLA",
+    ],
+    "selector": [Function],
   },
 }
 `;
@@ -40,52 +16,10 @@ exports[`handleNodeChangeIntent* should select getCustomNodeConfig and match rac
 Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {
-    "args": Array [],
+    "args": Array [
+      "CustomNetworkId",
+    ],
     "selector": [Function],
-  },
-}
-`;
-
-exports[`pollOfflineStatus* should race pingSucceeded and timeout 1`] = `
-Object {
-  "@@redux-saga/IO": true,
-  "RACE": Object {
-    "pingSucceeded": Object {
-      "@@redux-saga/IO": true,
-      "CALL": Object {
-        "args": Array [],
-        "context": null,
-        "fn": [Function],
-      },
-    },
-    "timeout": Object {
-      "@@redux-saga/IO": true,
-      "CALL": Object {
-        "args": Array [
-          5000,
-        ],
-        "context": null,
-        "fn": [Function],
-      },
-    },
-  },
-}
-`;
-
-exports[`pollOfflineStatus* should toggle offline and show notification if navigator agrees with isOffline and ping fails 1`] = `
-Object {
-  "@@redux-saga/IO": true,
-  "PUT": Object {
-    "action": Object {
-      "payload": Object {
-        "duration": 5000,
-        "id": 0.001,
-        "level": "info",
-        "msg": "You are currently offline. Some features will be unavailable.",
-      },
-      "type": "SHOW_NOTIFICATION",
-    },
-    "channel": null,
   },
 }
 `;
