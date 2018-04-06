@@ -9,6 +9,7 @@ export function* fetchRatesSaga(action: FetchCCRatesRequested): SagaIterator {
     const rates: CCResponse = yield call(fetchRates, action.payload);
     yield put(fetchCCRatesSucceeded(rates));
   } catch (e) {
+    console.error('Failed to fetch rates:', e);
     yield put(fetchCCRatesFailed());
     return;
   }
