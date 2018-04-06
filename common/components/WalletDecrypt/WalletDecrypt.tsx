@@ -50,7 +50,7 @@ import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
-import ParitySignerIcon from 'assets/images/wallets/paritysigner.svg';
+import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import './WalletDecrypt.scss';
 import { withRouter, RouteComponentProps } from 'react-router';
 
@@ -177,7 +177,7 @@ const WalletDecrypt = withRouter<Props>(
         component: ParitySignerDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: 'https://github.com/paritytech/parity-signer/blob/master/README.md'
+        helpLink: 'https://wiki.parity.io/Parity-Signer-Mobile-App-MyCrypto-tutorial.md'
       },
       [InsecureWalletName.KEYSTORE_FILE]: {
         lid: 'X_KEYSTORE2',
