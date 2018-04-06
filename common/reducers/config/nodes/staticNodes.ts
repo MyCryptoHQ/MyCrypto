@@ -79,6 +79,27 @@ export const INITIAL_STATE: State = {
     service: 'Expanse.tech',
     lib: new RPCNode('https://node.expanse.tech/'),
     estimateGas: true
+  },
+  poa: {
+    network: 'POA',
+    isCustom: false,
+    service: 'poa.network',
+    lib: new RPCNode('https://core.poa.network'),
+    estimateGas: true
+  },
+  tomo: {
+    network: 'TOMO',
+    isCustom: false,
+    service: 'tomocoin.io',
+    lib: new RPCNode('https://core.tomocoin.io'),
+    estimateGas: true
+  },
+  ella: {
+    network: 'ELLA',
+    isCustom: false,
+    service: 'ellaism.org',
+    lib: new RPCNode('https://jsonrpc.ellaism.org'),
+    estimateGas: true
   }
 };
 

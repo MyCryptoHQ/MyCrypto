@@ -13,7 +13,10 @@ import {
   ETC_TREZOR,
   ETH_TESTNET,
   EXP_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  POA_DEFAULT,
+  TOMO_DEFAULT,
+  ELLA_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { BlockExplorerConfig } from 'types/network';
@@ -22,17 +25,29 @@ import { StaticNetworksState as State } from './types';
 // Must be a website that follows the ethplorer convention of /tx/[hash] and
 // address/[address] to generate the correct functions.
 // TODO: put this in utils / libs
-export function makeExplorer(
-  name: string,
-  origin: string,
-  addressPath: string = 'address'
-): BlockExplorerConfig {
+interface ExplorerConfig {
+  name: string;
+  origin: string;
+  txPath?: string;
+  addressPath?: string;
+  blockPath?: string;
+}
+
+export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
+  const config: ExplorerConfig = {
+    // Defaults
+    txPath: 'tx',
+    addressPath: 'address',
+    blockPath: 'block',
+    ...expConfig
+  };
+
   return {
-    name,
-    origin,
-    txUrl: hash => `${origin}/tx/${hash}`,
-    addressUrl: address => `${origin}/${addressPath}/${address}`,
-    blockUrl: blockNum => `${origin}/block/${blockNum}`
+    name: config.origin,
+    origin: config.origin,
+    txUrl: hash => `${config.origin}/${config.txPath}/${hash}`,
+    addressUrl: address => `${config.origin}/${config.addressPath}/${address}`,
+    blockUrl: blockNum => `${config.origin}/${config.blockPath}/${blockNum}`
   };
 }
 
@@ -49,7 +64,10 @@ export const INITIAL_STATE: State = {
     chainId: 1,
     isCustom: false,
     color: '#007896',
-    blockExplorer: makeExplorer('Etherscan', 'https://etherscan.io'),
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://etherscan.io'
+    }),
     tokenExplorer: {
       name: ethPlorer,
       address: ETHTokenExplorer
@@ -70,7 +88,10 @@ export const INITIAL_STATE: State = {
     chainId: 3,
     isCustom: false,
     color: '#adc101',
-    blockExplorer: makeExplorer('Etherscan', 'https://ropsten.etherscan.io'),
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://ropsten.etherscan.io'
+    }),
     tokens: require('config/tokens/ropsten.json'),
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
@@ -87,7 +108,10 @@ export const INITIAL_STATE: State = {
     chainId: 42,
     isCustom: false,
     color: '#adc101',
-    blockExplorer: makeExplorer('Etherscan', 'https://kovan.etherscan.io'),
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://kovan.etherscan.io'
+    }),
     tokens: require('config/tokens/ropsten.json'),
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
@@ -104,7 +128,10 @@ export const INITIAL_STATE: State = {
     chainId: 4,
     isCustom: false,
     color: '#adc101',
-    blockExplorer: makeExplorer('Etherscan', 'https://rinkeby.etherscan.io'),
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://rinkeby.etherscan.io'
+    }),
     tokens: require('config/tokens/rinkeby.json'),
     contracts: require('config/contracts/rinkeby.json'),
     isTestnet: true,
@@ -121,7 +148,11 @@ export const INITIAL_STATE: State = {
     chainId: 61,
     isCustom: false,
     color: '#669073',
-    blockExplorer: makeExplorer('GasTracker', 'https://gastracker.io', 'addr'),
+    blockExplorer: makeExplorer({
+      name: 'GasTracker',
+      origin: 'https://gastracker.io',
+      addressPath: 'addr'
+    }),
     tokens: require('config/tokens/etc.json'),
     contracts: require('config/contracts/etc.json'),
     dPathFormats: {
@@ -141,7 +172,10 @@ export const INITIAL_STATE: State = {
     chainId: 8,
     isCustom: false,
     color: '#b37aff',
-    blockExplorer: makeExplorer('Ubiqscan', 'https://ubiqscan.io/en'),
+    blockExplorer: makeExplorer({
+      name: 'Ubiqscan',
+      origin: 'https://ubiqscan.io/en'
+    }),
     tokens: require('config/tokens/ubq.json'),
     contracts: require('config/contracts/ubq.json'),
     dPathFormats: {
@@ -161,7 +195,10 @@ export const INITIAL_STATE: State = {
     chainId: 2,
     isCustom: false,
     color: '#673ab7',
-    blockExplorer: makeExplorer('Gander', 'https://www.gander.tech'),
+    blockExplorer: makeExplorer({
+      name: 'Gander',
+      origin: 'https://www.gander.tech'
+    }),
     tokens: require('config/tokens/exp.json'),
     contracts: require('config/contracts/exp.json'),
     dPathFormats: {
@@ -173,6 +210,76 @@ export const INITIAL_STATE: State = {
       min: 0.1,
       max: 20,
       initial: 2
+    }
+  },
+  POA: {
+    name: 'POA',
+    unit: 'POA',
+    chainId: 99,
+    isCustom: false,
+    color: '#6d2eae',
+    blockExplorer: makeExplorer({
+      name: 'Etherchain Light',
+      origin: 'https://poaexplorer.com',
+      addressPath: 'address/search',
+      blockPath: 'blocks/block'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: POA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: POA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: POA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 10,
+      initial: 1
+    }
+  },
+  TOMO: {
+    name: 'TOMO',
+    unit: 'TOMO',
+    chainId: 40686,
+    isCustom: false,
+    color: '#6a488d',
+    blockExplorer: makeExplorer({
+      name: 'Tomochain Explorer',
+      origin: 'https://explorer.tomocoin.io/#'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: TOMO_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: TOMO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: TOMO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ELLA: {
+    name: 'ELLA',
+    unit: 'ELLA',
+    chainId: 64,
+    isCustom: false,
+    color: '#046111',
+    blockExplorer: makeExplorer({
+      name: 'Ellaism Explorer',
+      origin: 'https://explorer.ellaism.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ELLA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
     }
   }
 };
