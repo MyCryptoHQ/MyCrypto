@@ -1,4 +1,3 @@
-import EthTx from 'ethereumjs-tx';
 import { SetBalanceFullfilledAction } from 'actions/wallet/actionTypes';
 import {
   SetTokenBalancesFulfilledAction,
@@ -16,7 +15,6 @@ import { translateRaw } from 'translations';
 export interface State {
   inst?: IWallet | null;
   config?: WalletConfig | null;
-  signViaQr?: QrSignatureState | null;
   // in ETH
   balance: Balance;
   tokens: {
@@ -32,21 +30,9 @@ export interface State {
   hasSavedWalletTokens: boolean;
 }
 
-export type QrTransaction = EthTx;
-export type QrSignature = string;
-export type QrAddress = string;
-
-export interface QrSignatureState {
-  tx: QrTransaction;
-  from: QrAddress;
-  onSignature(signature: QrSignature): void;
-  onCancel(): void;
-}
-
 export const INITIAL_STATE: State = {
   inst: null,
   config: null,
-  signViaQr: null,
   balance: { isPending: false, wei: null },
   tokens: {},
   isWalletPending: false,

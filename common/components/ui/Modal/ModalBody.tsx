@@ -28,10 +28,8 @@ export default class ModalBody extends React.Component<Props> {
       this.modal.querySelectorAll(focusableElementsString)
     );
 
-    const first = focusableElements[0];
-
     // Convert NodeList to Array
-    this.firstTabStop = first;
+    this.firstTabStop = focusableElements[0];
     this.lastTabStop = focusableElements[focusableElements.length - 1];
 
     this.modal.addEventListener('keydown', this.keyDownListener);
