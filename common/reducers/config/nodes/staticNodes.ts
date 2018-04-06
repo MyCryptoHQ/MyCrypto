@@ -1,9 +1,8 @@
 import { TypeKeys, NodeAction } from 'actions/config';
 import { shepherdProvider } from 'libs/nodes';
-import { StaticNodeConfigs } from 'shared/types/node';
+import { StaticNodesState } from './types';
 
-type State = StaticNodeConfigs;
-export const INITIAL_STATE: State = {
+export const INITIAL_STATE: StaticNodesState = {
   eth_auto: {
     network: 'ETH',
     isCustom: false,
@@ -139,7 +138,7 @@ export const INITIAL_STATE: State = {
   }
 };
 
-export const staticNodes = (state: State = INITIAL_STATE, action: NodeAction) => {
+const staticNodes = (state: StaticNodesState = INITIAL_STATE, action: NodeAction) => {
   switch (action.type) {
     case TypeKeys.CONFIG_NODE_WEB3_SET:
       return { ...state, [action.payload.id]: action.payload.config };
@@ -152,4 +151,4 @@ export const staticNodes = (state: State = INITIAL_STATE, action: NodeAction) =>
   }
 };
 
-export { State };
+export { StaticNodesState, staticNodes };
