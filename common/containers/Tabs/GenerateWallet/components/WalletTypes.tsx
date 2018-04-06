@@ -4,6 +4,7 @@ import translate, { translateRaw } from 'translations';
 import { WalletType } from '../GenerateWallet';
 import { NewTabLink } from 'components/ui';
 import { ledgerReferralURL, trezorReferralURL } from 'config';
+import Template from './Template';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import HardwareWalletIcon from 'assets/images/wallets/hardware.svg';
 import ParitySignerIcon from 'assets/images/wallets/paritysigner.svg';
@@ -20,19 +21,25 @@ export default class WalletTypes extends React.Component<{}, State> {
   };
 
   public render() {
+    const { isShowingGenerate } = this.state;
     return (
-      <div className="WalletTypes Tab-content-pane">
-        {this.state.isShowingGenerate ? (
+      <Template hideBack={!isShowingGenerate} onBack={this.handleBack}>
+        {isShowingGenerate ? (
           <GenerateOptions />
         ) : (
           <WalletSuggestions showGenerate={this.showGenerate} />
         )}
-      </div>
+      </Template>
     );
   }
 
   private showGenerate = () => {
     this.setState({ isShowingGenerate: true });
+  };
+
+  private handleBack = (ev: React.MouseEvent<HTMLAnchorElement>) => {
+    ev.preventDefault();
+    this.setState({ isShowingGenerate: false });
   };
 }
 
