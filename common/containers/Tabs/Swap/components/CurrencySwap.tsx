@@ -375,7 +375,9 @@ export default class CurrencySwap extends PureComponent<Props, State> {
             </div>
           </React.Fragment>
         ) : (
-          <Spinner />
+          <div className="CurrencySwap-loader">
+            <Spinner size="x3" />
+          </div>
         )}
       </article>
     );

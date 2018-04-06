@@ -27,6 +27,14 @@
     &-rate {
       color: #fff;
 
+      &.is-loading {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        justify-content: center;
+        height: 50px;
+      }
+
       &-input {
         display: inline-block;
         width: 16%;
