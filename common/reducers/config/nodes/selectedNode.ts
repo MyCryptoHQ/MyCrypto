@@ -9,7 +9,7 @@ import {
 import { SelectedNodeState as State } from './types';
 
 export const INITIAL_STATE: State = {
-  nodeId: 'eth_mycrypto',
+  nodeId: 'eth_auto',
   pending: false
 };
 

@@ -6,6 +6,7 @@ import {
   NetworkContract
 } from 'types/network';
 import { getNodeConfig } from 'selectors/config';
+import { stripWeb3Network } from 'libs/nodes';
 const getConfig = (state: AppState) => state.config;
 
 export const getNetworks = (state: AppState) => getConfig(state).networks;
@@ -31,7 +32,8 @@ export const getStaticNetworkIds = (state: AppState): StaticNetworkIds[] =>
 export const isStaticNetworkId = (
   state: AppState,
   networkId: string
-): networkId is StaticNetworkIds => Object.keys(getStaticNetworkConfigs(state)).includes(networkId);
+): networkId is StaticNetworkIds =>
+  Object.keys(getStaticNetworkConfigs(state)).includes(stripWeb3Network(networkId));
 
 export const getStaticNetworkConfig = (state: AppState): StaticNetworkConfig | undefined => {
   const selectedNetwork = getSelectedNetwork(state);
@@ -44,7 +46,8 @@ export const getStaticNetworkConfig = (state: AppState): StaticNetworkConfig | u
   return defaultNetwork;
 };
 
-export const getSelectedNetwork = (state: AppState) => getNodeConfig(state).network;
+export const getSelectedNetwork = (state: AppState) =>
+  stripWeb3Network(getNodeConfig(state).network);
 
 export const getCustomNetworkConfig = (state: AppState): CustomNetworkConfig | undefined => {
   const selectedNetwork = getSelectedNetwork(state);

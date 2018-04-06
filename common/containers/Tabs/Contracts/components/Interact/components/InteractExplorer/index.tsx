@@ -10,12 +10,11 @@ import { connect } from 'react-redux';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
-import { Web3Node } from 'libs/nodes';
-import RpcNode from 'libs/nodes/rpc';
 import { Input, Dropdown } from 'components/ui';
+import { INode } from 'libs/nodes';
 
 interface StateProps {
-  nodeLib: RpcNode | Web3Node;
+  nodeLib: INode;
   to: AppState['transaction']['fields']['to'];
   dataExists: boolean;
 }
