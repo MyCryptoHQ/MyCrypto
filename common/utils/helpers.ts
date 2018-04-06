@@ -57,7 +57,7 @@ export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
   };
 
   return {
-    name: config.origin,
+    name: config.name,
     origin: config.origin,
     txUrl: hash => `${config.origin}/${config.txPath}/${hash}`,
     addressUrl: address => `${config.origin}/${config.addressPath}/${address}`,
