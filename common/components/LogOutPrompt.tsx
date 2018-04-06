@@ -70,7 +70,6 @@ class LogOutPromptClass extends React.Component<Props, State> {
   private onConfirm = () => {
     const { nextLocation: next } = this.state;
     this.props.resetWallet();
-    this.props.web3UnsetNode();
     this.setState(
       {
         openModal: false,
