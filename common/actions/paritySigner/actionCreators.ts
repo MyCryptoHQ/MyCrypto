@@ -12,10 +12,10 @@ export function requestSignature(from: string, rlp: string): types.RequestSignat
   };
 }
 
-export type TFinalize = typeof finalize;
-export function finalize(signature: string | null): types.FinalizeAction {
+export type TFinalizeSignature = typeof finalizeSignature;
+export function finalizeSignature(signature: string | null): types.FinalizeSignatureAction {
   return {
-    type: TypeKeys.PARITY_SIGNER_FINALIZE,
+    type: TypeKeys.PARITY_SIGNER_FINALIZE_SIGNATURE,
     payload: signature
   };
 }

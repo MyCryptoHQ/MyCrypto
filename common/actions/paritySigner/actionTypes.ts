@@ -8,10 +8,10 @@ export interface RequestSignatureAction {
   };
 }
 
-export interface FinalizeAction {
-  type: TypeKeys.PARITY_SIGNER_FINALIZE;
+export interface FinalizeSignatureAction {
+  type: TypeKeys.PARITY_SIGNER_FINALIZE_SIGNATURE;
   payload: string | null;
 }
 
 /*** Union Type ***/
-export type ParitySignerAction = RequestSignatureAction | FinalizeAction;
+export type ParitySignerAction = RequestSignatureAction | FinalizeSignatureAction;
