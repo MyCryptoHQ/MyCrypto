@@ -14,7 +14,7 @@ Object {
             "call": [Function],
             "createHeaders": [Function],
             "decorateRequest": [Function],
-            "endpoint": "https://node.expanse.tech/",
+            "endpoint": "https://jsonrpc.ellaism.org",
             "headers": Object {},
           },
           "requests": RPCRequests {},

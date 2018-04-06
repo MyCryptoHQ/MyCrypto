@@ -1,8 +1,6 @@
 import { EtherscanNode, InfuraNode, RPCNode } from 'libs/nodes';
 import { TypeKeys, NodeAction } from 'actions/config';
-import { NonWeb3NodeConfigs, Web3NodeConfigs } from 'types/node';
-
-export type State = NonWeb3NodeConfigs & Web3NodeConfigs;
+import { StaticNodesState as State } from './types';
 
 export const INITIAL_STATE: State = {
   eth_mycrypto: {
@@ -80,6 +78,27 @@ export const INITIAL_STATE: State = {
     isCustom: false,
     service: 'Expanse.tech',
     lib: new RPCNode('https://node.expanse.tech/'),
+    estimateGas: true
+  },
+  poa: {
+    network: 'POA',
+    isCustom: false,
+    service: 'poa.network',
+    lib: new RPCNode('https://core.poa.network'),
+    estimateGas: true
+  },
+  tomo: {
+    network: 'TOMO',
+    isCustom: false,
+    service: 'tomocoin.io',
+    lib: new RPCNode('https://core.tomocoin.io'),
+    estimateGas: true
+  },
+  ella: {
+    network: 'ELLA',
+    isCustom: false,
+    service: 'ellaism.org',
+    lib: new RPCNode('https://jsonrpc.ellaism.org'),
     estimateGas: true
   }
 };

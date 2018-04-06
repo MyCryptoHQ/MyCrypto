@@ -338,7 +338,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
               <div className="input-group-wrapper">
                 <div className="input-group input-group-inline">
-                  <div className="input-group-header">{translate('SWAP_RECIEVE_INPUT_LABEL')}</div>
+                  <div className="input-group-header">{translate('SWAP_RECEIVE_INPUT_LABEL')}</div>
                   <Input
                     id="destination-swap-input"
                     className={`${

@@ -39,7 +39,9 @@ class AddressesClass extends Component<StateProps> {
                       <h5 className="tx-modal-address-from-title">
                         {translate('CONFIRM_TX_FROM')}{' '}
                       </h5>
-                      <h5 className="tx-modal-address-from-address small">{from}</h5>
+                      <h5 className="tx-modal-address-from-address small">
+                        {toChecksumAddress(from)}
+                      </h5>
                     </div>
                   </React.Fragment>
                 )}
@@ -57,7 +59,7 @@ class AddressesClass extends Component<StateProps> {
                       className="small tx-modal-address-tkn-contract-link"
                       href={ETHAddressExplorer(to)}
                     >
-                      {to}
+                      {toChecksumAddress(to)}
                     </a>
                   </div>
                 </div>

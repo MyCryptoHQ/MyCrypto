@@ -19,5 +19,6 @@
   ],
   "automock": false,
   "snapshotSerializers": ["enzyme-to-json/serializer"],
-  "browser": true
+  "browser": true,
+  "collectCoverage": true
 }

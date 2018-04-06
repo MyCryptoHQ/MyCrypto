@@ -1,6 +1,16 @@
 import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
 
-type StaticNetworkIds = 'ETH' | 'Ropsten' | 'Kovan' | 'Rinkeby' | 'ETC' | 'UBQ' | 'EXP';
+type StaticNetworkIds =
+  | 'ETH'
+  | 'Ropsten'
+  | 'Kovan'
+  | 'Rinkeby'
+  | 'ETC'
+  | 'UBQ'
+  | 'EXP'
+  | 'POA'
+  | 'TOMO'
+  | 'ELLA';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -24,8 +34,8 @@ interface NetworkContract {
 }
 
 interface DPathFormats {
-  trezor: DPath;
-  ledgerNanoS: DPath;
+  trezor?: DPath;
+  ledgerNanoS?: DPath;
   mnemonicPhrase: DPath;
 }
 

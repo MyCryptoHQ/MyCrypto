@@ -39,7 +39,9 @@ const signTransactionWrapper = (func: (IWalletAndTx: IFullWalletAndTransaction) 
  * the rest of the tx parameters from the action
  * @param partialTx
  */
-function* getWalletAndTransaction(partialTx: SignTransactionRequestedAction['payload']) {
+function* getWalletAndTransaction(
+  partialTx: SignTransactionRequestedAction['payload']
+): SagaIterator {
   // get the wallet we're going to sign with
   const wallet: null | IFullWallet = yield select(getWalletInst);
   if (!wallet) {
