@@ -10,6 +10,7 @@ import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
+import { etherChainExplorerInst } from 'config/data';
 import './AccountInfo.scss';
 
 interface OwnProps {
@@ -190,6 +191,13 @@ class AccountInfo extends React.Component<Props, State> {
                 <li className="AccountInfo-list-item">
                   <NewTabLink href={blockExplorer.addressUrl(address)}>
                     {`${network.name} (${blockExplorer.origin})`}
+                  </NewTabLink>
+                </li>
+              )}
+              {network.name === 'ETH' && (
+                <li className="AccountInfo-list-item">
+                  <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
+                    {`${network.name} (${etherChainExplorerInst.origin})`}
                   </NewTabLink>
                 </li>
               )}
