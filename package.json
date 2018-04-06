@@ -118,7 +118,7 @@
     "tslint-microsoft-contrib": "5.0.3",
     "tslint-react": "3.5.1",
     "types-rlp": "0.0.1",
-    "typescript": "2.7.2",
+    "typescript": "2.8.1",
     "uglifyjs-webpack-plugin": "1.2.4",
     "url-search-params-polyfill": "3.0.0",
     "webapp-webpack-plugin": "2.0.1",
