@@ -1,32 +1,25 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
+import { ParityQrSigner } from 'components';
 import { NewTabLink } from 'components/ui';
-import QrSigner from '@parity/qr-signer';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import './index.scss';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
+import './ParitySigner.scss';
 
 interface Props {
   showNotification: TShowNotification;
   onUnlock(param: any): void;
 }
 
-class ParitySignerDecrypt extends PureComponent<Props> {
+class ParitySignerDecryptClass extends PureComponent<Props> {
   public render() {
     return (
       <div className="ParitySignerUnlock">
-        <div className="ParitySignerUnlock-qr-bounds">
-          <QrSigner
-            size={300}
-            scan={true}
-            onScan={this.unlockAddress}
-            styles={{ display: 'inline-block' }}
-          />
-        </div>
+        <ParityQrSigner scan={true} onScan={this.unlockAddress} />
         <p>{translate('ADD_PARITY_2')}</p>
         <p>
           <NewTabLink href="https://itunes.apple.com/us/app/parity-signer/id1218174838">
@@ -50,4 +43,6 @@ class ParitySignerDecrypt extends PureComponent<Props> {
   };
 }
 
-export default connect(() => ({}), { showNotification })(ParitySignerDecrypt);
+export const ParitySignerDecrypt = connect(() => ({}), { showNotification })(
+  ParitySignerDecryptClass
+);

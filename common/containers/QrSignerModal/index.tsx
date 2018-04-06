@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
-import QrSigner from '@parity/qr-signer';
 import { AppState } from 'reducers';
+import { ParityQrSigner } from 'components';
 import Modal, { IButton } from 'components/ui/Modal';
 import { TFinalizeSignature, finalizeSignature } from 'actions/paritySigner';
-import './index.scss';
 
 interface State {
   scan: boolean;
@@ -67,7 +66,11 @@ class QrSignerModal extends React.Component<Props, State> {
           handleClose={this.onClose}
         >
           <div className="QrSignerModal-qr-bounds">
-            <QrSigner size={300} scan={scan} account={from} rlp={rlp} onScan={this.onScan} />
+            {scan ? (
+              <ParityQrSigner scan={true} onScan={this.onScan} />
+            ) : (
+              <ParityQrSigner scan={false} account={from} rlp={rlp} />
+            )}
           </div>
         </Modal>
       </div>
