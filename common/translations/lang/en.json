@@ -125,7 +125,7 @@
     "SCHEDULE_GAS_PRICE": "Future Gas Price",
     "SCHEDULE_GAS_LIMIT": "Future Gas Limit",
     "SCHEDULE_WINDOW_SIZE": "Window ",
-    "SCHEDULE_WINDOW_SIZE_TOOLTIP": "Window ",
+    "SCHEDULE_WINDOW_SIZE_TOOLTIP": "Range of blocks or minutes during which the transaction may be executed. ",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Send Entire Balance ",
     "SEND_GENERATE": "Generate Transaction ",

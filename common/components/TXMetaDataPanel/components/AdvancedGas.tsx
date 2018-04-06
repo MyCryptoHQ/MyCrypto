@@ -152,7 +152,7 @@ class AdvancedGas extends React.Component<Props, State> {
                   * {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
                   {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()}{' '}
                   * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()} + {scheduleGasLimit})
-                  = {fee} {usd && <span>~= ${usd} USD</span>}
+                  =&nbsp;{fee}&nbsp;{usd && <span>~=&nbsp;${usd}&nbsp;USD</span>}
                 </span>
               </div>
             )}
