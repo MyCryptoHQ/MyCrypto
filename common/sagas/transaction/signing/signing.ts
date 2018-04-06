@@ -1,6 +1,7 @@
 import { SagaIterator } from 'redux-saga';
-import { put, apply, takeEvery, call, select } from 'redux-saga/effects';
+import { put, apply, take, takeEvery, call, select } from 'redux-saga/effects';
 import { IFullWalletAndTransaction, signTransactionWrapper } from './helpers';
+import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import {
   signLocalTransactionSucceeded,
   signWeb3TransactionSucceeded,
@@ -13,6 +14,11 @@ import {
 import { computeIndexingHash } from 'libs/transaction';
 import { serializedAndTransactionFieldsMatch } from 'selectors/transaction';
 import { showNotification } from 'actions/notifications';
+import {
+  requestSignature,
+  FinalizeSignatureAction,
+  TypeKeys as ParityKeys
+} from 'actions/paritySigner';
 import { getWalletType, IWalletType } from 'selectors/wallet';
 
 export function* signLocalTransactionHandler({
@@ -39,6 +45,26 @@ export function* signWeb3TransactionHandler({ tx }: IFullWalletAndTransaction): 
 }
 
 const signWeb3Transaction = signTransactionWrapper(signWeb3TransactionHandler);
+
+export function* signParitySignerTransactionHandler({
+  tx,
+  wallet
+}: IFullWalletAndTransaction): SagaIterator {
+  const from = yield apply(wallet, wallet.getAddressString);
+  const rlp = yield call(transactionToRLP, tx);
+
+  yield put(requestSignature(from, rlp));
+
+  const { payload }: FinalizeSignatureAction = yield take(
+    ParityKeys.PARITY_SIGNER_FINALIZE_SIGNATURE
+  );
+  const signedTransaction: Buffer = yield call(signTransactionWithSignature, tx, payload);
+  const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
+
+  yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash, noVerify: false }));
+}
+
+const signParitySignerTransaction = signTransactionWrapper(signParitySignerTransactionHandler);
 
 /**
  * @description Verifies that the transaction matches the fields, and if its a locally signed transaction (so it has a signature) it will verify the signature too
@@ -69,7 +95,11 @@ function* verifyTransaction({
 
 function* handleTransactionRequest(action: SignTransactionRequestedAction): SagaIterator {
   const walletType: IWalletType = yield select(getWalletType);
-  const signingHandler = walletType.isWeb3Wallet ? signWeb3Transaction : signLocalTransaction;
+
+  const signingHandler = walletType.isWeb3Wallet
+    ? signWeb3Transaction
+    : walletType.isParitySignerWallet ? signParitySignerTransaction : signLocalTransaction;
+
   return yield call(signingHandler, action);
 }
 

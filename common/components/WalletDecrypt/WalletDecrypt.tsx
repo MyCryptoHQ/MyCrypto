@@ -29,6 +29,7 @@ import {
   ViewOnlyDecrypt,
   Web3Decrypt,
   WalletButton,
+  ParitySignerDecrypt,
   InsecureWalletWarning
 } from './components';
 import { AppState } from 'reducers';
@@ -49,6 +50,8 @@ import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
+import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import './WalletDecrypt.scss';
 import { withRouter, RouteComponentProps } from 'react-router';
 
@@ -167,6 +170,15 @@ const WalletDecrypt = withRouter<Props>(
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+      },
+      [SecureWalletName.PARITY_SIGNER]: {
+        lid: 'X_PARITYSIGNER',
+        icon: ParitySignerIcon,
+        description: 'ADD_PARITY_DESC',
+        component: ParitySignerDecrypt,
+        initialParams: {},
+        unlock: this.props.setWallet,
+        helpLink: paritySignerHelpLink
       },
       [InsecureWalletName.KEYSTORE_FILE]: {
         lid: 'X_KEYSTORE2',
