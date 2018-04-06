@@ -39,7 +39,8 @@ import {
   isAutoNode,
   shepherd,
   shepherdProvider,
-  stripWeb3Network
+  stripWeb3Network,
+  makeProviderConfig
 } from 'libs/nodes';
 
 export function* pollOfflineStatus(): SagaIterator {
@@ -176,7 +177,14 @@ export function* handleNodeChangeIntent({
   }
 }
 
-export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
+export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator {
+  const { payload: { config } } = action;
+  shepherd.useProvider(
+    'myccustom',
+    config.id,
+    makeProviderConfig({ network: config.network }),
+    config
+  );
   yield put(changeNodeIntent(action.payload.id));
 }
 
@@ -210,5 +218,5 @@ export const node = [
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
-  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode)
+  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode)
 ];
