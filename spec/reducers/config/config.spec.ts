@@ -33,7 +33,7 @@ import { metaExpectedState } from './meta/meta.spec';
 import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
 import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
 import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
-import { shepherd } from 'myc-shepherd';
+import { shepherd } from 'mycrypto-shepherd';
 
 // init module
 configuredStore.getState();
