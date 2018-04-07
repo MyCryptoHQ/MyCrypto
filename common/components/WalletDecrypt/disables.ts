@@ -22,9 +22,10 @@ export const DISABLE_WALLETS: { [key in WalletMode]: DisabledWallets } = {
     }
   },
   [WalletMode.UNABLE_TO_SIGN]: {
-    wallets: [SecureWalletName.TREZOR, MiscWalletName.VIEW_ONLY],
+    wallets: [SecureWalletName.TREZOR, SecureWalletName.PARITY_SIGNER, MiscWalletName.VIEW_ONLY],
     reasons: {
       [SecureWalletName.TREZOR]: 'This wallet can’t sign messages',
+      [SecureWalletName.PARITY_SIGNER]: 'This wallet can’t sign messages',
       [MiscWalletName.VIEW_ONLY]: 'This wallet can’t sign messages'
     }
   }

@@ -24,7 +24,6 @@ import {
   unlockPrivateKey,
   unlockKeystore,
   unlockMnemonic,
-  unlockWeb3,
   getTokenBalances,
   startLoadingSpinner,
   stopLoadingSpinner
@@ -37,7 +36,7 @@ import { showNotification } from 'actions/notifications';
 import translate from 'translations';
 import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
 import { Token } from 'types/network';
-import { initWeb3Node } from 'sagas/config/web3';
+import { initWeb3Node, unlockWeb3 } from 'sagas/config/web3';
 
 // init module
 configuredStore.getState();
@@ -328,7 +327,7 @@ describe('unlockWeb3*', () => {
   });
 
   it('should put changeNodeIntent', () => {
-    expect(data.gen.next(accounts).value).toEqual(put(changeNodeIntent('web3')));
+    expect(data.gen.next(nodeLib).value).toEqual(put(changeNodeIntent('web3')));
   });
 
   it('should yield take on node change', () => {
@@ -346,7 +345,10 @@ describe('unlockWeb3*', () => {
 
   it('should throw & catch if node is not web3 node', () => {
     data.clone = data.gen.clone();
-    expect(data.clone.next(nodeLib).value).toEqual(put(web3UnsetNode()));
+
+    expect(data.clone.throw(Error('Cannot use Web3 wallet without a Web3 node.')).value).toEqual(
+      put(web3UnsetNode())
+    );
     expect(data.clone.next().value).toEqual(
       put(showNotification('danger', translate('Cannot use Web3 wallet without a Web3 node.')))
     );
