@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { setScheduleType, TSetScheduleType } from 'actions/transaction';
+import { setScheduleType, TSetScheduleType } from 'actions/schedule';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/transaction';
+import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/schedule';
 import { AppState } from 'reducers';
 
 interface DispatchProps {

@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { AppState } from 'reducers';
-import { setScheduleDepositField, TSetScheduleDepositField } from 'actions/transaction';
+import { setScheduleDepositField, TSetScheduleDepositField } from 'actions/schedule';
 import { translateRaw } from 'translations';
 import { Input } from 'components/ui';
-import { getScheduleDeposit, isValidScheduleDeposit, getDecimal } from 'selectors/transaction';
+import { getDecimal } from 'selectors/transaction';
+import { getScheduleDeposit, isValidScheduleDeposit } from 'selectors/schedule/fields';
 import { toWei } from 'libs/units';
 import Help from 'components/ui/Help';
 

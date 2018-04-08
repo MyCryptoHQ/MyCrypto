@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { getIsEstimating } from 'selectors/gas';
-import { getTimeBounty, getScheduleGasLimit } from 'selectors/transaction';
+import { getTimeBounty, getScheduleGasLimit } from 'selectors/schedule';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
@@ -20,17 +20,17 @@ interface RenderData {
 }
 
 interface ReduxStateProps {
-  scheduleGasLimit: AppState['transaction']['fields']['scheduleGasLimit'];
+  scheduleGasLimit: AppState['schedule']['scheduleGasLimit'];
   rates: AppState['rates']['rates'];
   network: NetworkConfig;
   isOffline: AppState['config']['meta']['offline'];
   isGasEstimating: AppState['gas']['isEstimating'];
-  timeBounty: AppState['transaction']['fields']['timeBounty'];
+  timeBounty: AppState['schedule']['timeBounty'];
 }
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
-  scheduleGasPrice: AppState['transaction']['fields']['scheduleGasPrice'];
+  scheduleGasPrice: AppState['schedule']['scheduleGasPrice'];
 
   render(data: RenderData): React.ReactElement<string> | string;
 }

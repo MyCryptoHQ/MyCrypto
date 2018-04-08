@@ -5,7 +5,7 @@ import { inputGasLimit, TInputGasLimit } from 'actions/transaction';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { sanitizeNumericalInput } from 'libs/values';
-import { getSchedulingToggle } from 'selectors/transaction';
+import { getSchedulingToggle } from 'selectors/schedule/fields';
 
 const defaultGasLimit = '21000';
 

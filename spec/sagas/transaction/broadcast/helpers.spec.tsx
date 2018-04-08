@@ -1,9 +1,4 @@
-import {
-  getWeb3Tx,
-  getSignedTx,
-  getTransactionStatus,
-  getSchedulingToggle
-} from 'selectors/transaction';
+import { getWeb3Tx, getSignedTx, getTransactionStatus } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
@@ -30,6 +25,7 @@ import {
   getSerializedTxAndIndexingHash,
   shouldBroadcastTransaction
 } from 'sagas/transaction/broadcast/helpers';
+import { getSchedulingToggle } from 'selectors/schedule';
 
 describe('broadcastTransactionWrapper*', () => {
   const indexingHash = 'indexingHash';

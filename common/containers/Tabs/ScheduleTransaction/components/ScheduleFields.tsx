@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import { AppState } from 'reducers';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/transaction';
+import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/schedule/fields';
 import {
   WindowSizeField,
   TimeBountyField,
@@ -23,12 +23,10 @@ class ScheduleFieldsClass extends React.Component<Props> {
     const { schedulingType } = this.props;
 
     return (
-      <div className="scheduled-tx-settings">
-        <div className="scheduled-tx-settings_title">{translate('SCHEDULING_TITLE')}</div>
+      <div className="ScheduleFields">
+        <div className="ScheduleFields-title">{translate('SCHEDULING_TITLE')}</div>
 
-        <div className="scheduled-tx-settings_description">
-          {translate('SCHEDULING_DESCRIPTION')}
-        </div>
+        <div className="ScheduleFields-description">{translate('SCHEDULING_DESCRIPTION')}</div>
 
         <div className="row form-group vcenter-sm">
           <div className="col-lg-3 col-lg-push-9">
@@ -84,7 +82,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
               href="https://blog.chronologic.network/announcing-the-ethereum-alarm-clock-chronologic-partnership-b3d7545bea3b"
               target="_blank"
               rel="noopener noreferrer"
-              className="scheduled-tx-settings_logo"
+              className="ScheduleFields-logo"
             />
           </div>
         </div>

@@ -15,7 +15,6 @@ import { INode } from 'libs/nodes/INode';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getTransaction, IGetTransaction, getCurrentToAddressMessage } from 'selectors/transaction';
-import { getSchedulingToggle } from 'containers/Tabs/ScheduleTransaction/selectors/fields';
 import {
   EstimateGasRequestedAction,
   setGasLimitField,
@@ -28,14 +27,14 @@ import {
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapTokenToEtherAction,
-  SetSchedulingToggleAction,
-  setScheduleGasLimitField,
   estimateGasFailed
 } from 'actions/transaction';
 import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'actions/config';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { AddressMessage } from 'config';
+import { getSchedulingToggle } from 'selectors/schedule';
+import { setScheduleGasLimitField, SetSchedulingToggleAction } from 'actions/schedule';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {

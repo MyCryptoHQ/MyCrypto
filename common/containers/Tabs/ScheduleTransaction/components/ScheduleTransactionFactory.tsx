@@ -9,7 +9,7 @@ import {
 } from 'selectors/transaction';
 import { getWalletType } from 'selectors/wallet';
 import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionFactory';
-import { getSchedulingTransaction } from '../selectors/transaction';
+import { getSchedulingTransaction } from 'selectors/schedule/transaction';
 
 export const ScheduleTransactionFactory = connect((state: AppState) => ({
   ...getSchedulingTransaction(state),

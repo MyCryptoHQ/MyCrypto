@@ -6,7 +6,7 @@ import {
   isValidCurrentWindowSize,
   getCurrentScheduleType,
   ICurrentScheduleType
-} from 'selectors/transaction';
+} from 'selectors/schedule';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getResolvingDomain } from 'selectors/ens';

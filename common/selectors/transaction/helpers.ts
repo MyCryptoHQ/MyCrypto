@@ -1,6 +1,7 @@
 import { AppState } from 'reducers';
-import { ICurrentTo, ICurrentValue, schedulingFields } from 'selectors/transaction';
+import { ICurrentTo, ICurrentValue } from 'selectors/transaction';
 import { isNetworkUnit } from 'selectors/config';
+import { schedulingFields } from 'selectors/schedule/fields';
 
 type TransactionFields = AppState['transaction']['fields'];
 
@@ -61,5 +62,3 @@ export const isFullTx = (
     );
   }
 };
-
-export * from '../../containers/Tabs/ScheduleTransaction/selectors/helpers';

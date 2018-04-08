@@ -12,7 +12,6 @@ import {
   getValidGasCost
 } from 'selectors/transaction';
 import { getInitialState } from '../helpers';
-import moment from 'moment-timezone';
 
 describe('fields selector', () => {
   const state = getInitialState();
@@ -40,50 +39,6 @@ describe('fields selector', () => {
     gasPrice: {
       raw: '1500',
       value: Wei('1500')
-    },
-    schedulingToggle: {
-      raw: 'false',
-      value: false
-    },
-    timeBounty: {
-      raw: '1500',
-      value: Wei('1500')
-    },
-    windowSize: {
-      raw: '',
-      value: null
-    },
-    windowStart: {
-      raw: '',
-      value: null
-    },
-    scheduleTimestamp: {
-      raw: '',
-      value: null
-    },
-    scheduleTimezone: {
-      raw: moment.tz.guess(),
-      value: moment.tz.guess()
-    },
-    scheduleType: {
-      raw: 'time',
-      value: 'time'
-    },
-    scheduleGasPrice: {
-      raw: '1500',
-      value: Wei('1500')
-    },
-    scheduleGasLimit: {
-      raw: '21000',
-      value: Wei('21000')
-    },
-    scheduleDeposit: {
-      raw: '1000000000',
-      value: Wei('1000000000')
-    },
-    scheduleParamsValidity: {
-      raw: false,
-      value: false
     }
   };
 

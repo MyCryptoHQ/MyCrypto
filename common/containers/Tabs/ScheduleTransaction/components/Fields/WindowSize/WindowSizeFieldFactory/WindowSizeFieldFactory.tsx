@@ -1,5 +1,5 @@
 import { Query } from 'components/renderCbs';
-import { setCurrentWindowSize, TSetCurrentWindowSize } from 'actions/transaction';
+import { setCurrentWindowSize, TSetCurrentWindowSize } from 'actions/schedule';
 import { WindowSizeInputFactory } from './WindowSizeInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import {
   ICurrentWindowSize,
   ICurrentScheduleType,
   getCurrentScheduleType
-} from 'selectors/transaction';
+} from 'selectors/schedule';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'reducers';
 

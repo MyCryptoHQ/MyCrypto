@@ -5,4 +5,3 @@ export * from './sign';
 export * from './broadcast';
 export * from './current';
 export * from './sendEverything';
-export * from '../../../containers/Tabs/ScheduleTransaction/actions/transaction/actionCreators';

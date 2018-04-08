@@ -2,17 +2,7 @@ import {
   SetToFieldAction,
   SetDataFieldAction,
   SetNonceFieldAction,
-  SetGasLimitFieldAction,
-  SetWindowSizeFieldAction,
-  SetWindowStartFieldAction,
-  SetScheduleTimestampFieldAction,
-  SetScheduleTypeAction,
-  SetSchedulingToggleAction,
-  SetScheduleGasPriceFieldAction,
-  SetScheduleGasLimitFieldAction,
-  SetScheduleDepositFieldAction,
-  SetScheduleTimezoneAction,
-  SetScheduleParamsValidityAction
+  SetGasLimitFieldAction
 } from 'actions/transaction';
 import { Wei } from 'libs/units';
 
@@ -23,15 +13,4 @@ export interface State {
   value: { raw: string; value: Wei | null }; // TODO: fix this workaround since some of the payload is optional
   gasLimit: SetGasLimitFieldAction['payload'];
   gasPrice: { raw: string; value: Wei };
-  schedulingToggle: SetSchedulingToggleAction['payload'];
-  timeBounty: { raw: string; value: Wei };
-  windowSize: SetWindowSizeFieldAction['payload'];
-  windowStart: SetWindowStartFieldAction['payload'];
-  scheduleTimestamp: SetScheduleTimestampFieldAction['payload'];
-  scheduleTimezone: SetScheduleTimezoneAction['payload'];
-  scheduleType: SetScheduleTypeAction['payload'];
-  scheduleGasLimit: SetScheduleGasLimitFieldAction['payload'];
-  scheduleGasPrice: SetScheduleGasPriceFieldAction['payload'];
-  scheduleDeposit: SetScheduleDepositFieldAction['payload'];
-  scheduleParamsValidity: SetScheduleParamsValidityAction['payload'];
 }

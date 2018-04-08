@@ -1,9 +1,9 @@
 import { Query } from 'components/renderCbs';
-import { setCurrentWindowStart, TSetCurrentWindowStart } from 'actions/transaction';
+import { setCurrentWindowStart, TSetCurrentWindowStart } from 'actions/schedule';
 import { WindowStartInputFactory } from './WindowStartInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentWindowStart } from 'selectors/transaction';
+import { ICurrentWindowStart } from 'selectors/schedule';
 import { getLatestBlock } from 'selectors/config';
 import { AppState } from 'reducers';
 

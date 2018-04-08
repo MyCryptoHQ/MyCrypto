@@ -5,7 +5,7 @@ import {
   isValidCurrentScheduleTimestamp,
   ICurrentScheduleTimestamp,
   fiveMinFromNow
-} from 'selectors/transaction';
+} from 'selectors/schedule';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from './ScheduleTimestampFieldFactory';
@@ -14,7 +14,7 @@ import Pikaday from 'pikaday-time';
 import moment from 'moment';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
-import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'actions/transaction';
+import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'actions/schedule';
 
 interface DispatchProps {
   setCurrentScheduleTimestamp: TSetCurrentScheduleTimestamp;

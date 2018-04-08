@@ -10,7 +10,7 @@ import {
   getWeb3Tx
 } from 'selectors/transaction';
 import { SendButtonFactoryClass } from 'components/SendButtonFactory';
-import { getSchedulingTransaction } from '../selectors/transaction';
+import { getSchedulingTransaction } from 'selectors/schedule/transaction';
 
 const mapStateToProps = (state: AppState) => {
   return {

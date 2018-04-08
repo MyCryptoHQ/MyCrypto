@@ -1,18 +1,11 @@
-import { getTo, getValue, getScheduleGasPrice, getWindowSize } from './fields';
+import { getTo, getValue } from './fields';
 import { getUnit, getTokenTo, getTokenValue } from './meta';
 import { AppState } from 'reducers';
 import { TokenValue, Wei, Address } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
-import {
-  getDataExists,
-  getGasPrice,
-  getGasLimit,
-  getScheduleGasLimit,
-  getScheduleDeposit
-} from 'selectors/transaction';
+import { getDataExists, getGasPrice, getGasLimit } from 'selectors/transaction';
 import { isNetworkUnit } from 'selectors/config';
 import { getAddressMessage, AddressMessage } from 'config';
-import BN from 'bn.js';
 
 interface ICurrentValue {
   raw: string;
@@ -51,28 +44,6 @@ const isValidGasPrice = (state: AppState): boolean => gasPriceValidator(getGasPr
 
 const isValidGasLimit = (state: AppState): boolean => gasLimitValidator(getGasLimit(state).raw);
 
-const isValidScheduleGasPrice = (state: AppState): boolean =>
-  gasPriceValidator(getScheduleGasPrice(state).raw);
-
-const isValidScheduleGasLimit = (state: AppState): boolean =>
-  gasLimitValidator(getScheduleGasLimit(state).raw);
-
-const isValidScheduleDeposit = (state: AppState): boolean => {
-  const depositValue = getScheduleDeposit(state).value;
-
-  if (!depositValue) {
-    return true;
-  }
-
-  return depositValue.gte(new BN('0')) && depositValue.bitLength() <= 256;
-};
-
-const isWindowSizeValid = (state: AppState): boolean => {
-  const windowSize = getWindowSize(state);
-
-  return Boolean(windowSize && windowSize.value && windowSize.value.bitLength() <= 256);
-};
-
 function getCurrentToAddressMessage(state: AppState): AddressMessage | undefined {
   const to = getCurrentTo(state);
   return getAddressMessage(to.raw);
@@ -87,9 +58,5 @@ export {
   isValidCurrentTo,
   isValidGasPrice,
   isValidGasLimit,
-  isValidScheduleGasLimit,
-  isValidScheduleGasPrice,
-  isValidScheduleDeposit,
-  isWindowSizeValid,
   getCurrentToAddressMessage
 };

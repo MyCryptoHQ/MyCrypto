@@ -4,15 +4,13 @@ import BN from 'bn.js';
 import { getNodeLib, getOffline, getAutoGasLimitEnabled } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getTransaction, getCurrentToAddressMessage } from 'selectors/transaction';
-import { getSchedulingToggle } from 'containers/Tabs/ScheduleTransaction/selectors/fields';
 import {
   setGasLimitField,
   estimateGasFailed,
   estimateGasSucceeded,
   TypeKeys,
   estimateGasRequested,
-  estimateGasTimedout,
-  setScheduleGasLimitField
+  estimateGasTimedout
 } from 'actions/transaction';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import {
@@ -24,6 +22,8 @@ import {
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
+import { getSchedulingToggle } from 'selectors/schedule/fields';
+import { setScheduleGasLimitField } from 'actions/schedule';
 
 describe('shouldEstimateGas*', () => {
   const offline = false;

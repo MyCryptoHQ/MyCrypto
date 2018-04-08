@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { setScheduleTimezone, TSetScheduleTimezone } from 'actions/transaction';
-import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'selectors/transaction';
+import { setScheduleTimezone, TSetScheduleTimezone } from 'actions/schedule';
+import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'selectors/schedule';
 import { AppState } from 'reducers';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
@@ -47,10 +47,15 @@ class ScheduleTimezoneDropDownClass extends Component<Props> {
     );
   }
 
-  private handleOnChange = (timezone: Option<string>) => {
+  private handleOnChange = (timezone: Option<string> | null) => {
+    if (!timezone) {
+      return;
+    }
+
     if (!timezone.value) {
       throw Error('No timezone value found');
     }
+
     this.props.setScheduleTimezone({
       value: timezone.value,
       raw: timezone.value

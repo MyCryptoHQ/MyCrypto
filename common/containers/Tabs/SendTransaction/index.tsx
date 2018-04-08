@@ -12,9 +12,9 @@ import {
   RequestPayment,
   RecentTransactions,
   Fields,
-  UnavailableWallets
-} from 'containers/Tabs/SendTransaction/components';
-import { SideBar } from './components';
+  UnavailableWallets,
+  SideBar
+} from './components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';

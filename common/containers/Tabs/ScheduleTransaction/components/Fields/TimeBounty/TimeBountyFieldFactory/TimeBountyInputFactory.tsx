@@ -4,7 +4,7 @@ import {
   getCurrentTimeBounty,
   ICurrentTimeBounty,
   isValidCurrentTimeBounty
-} from 'selectors/transaction';
+} from 'selectors/schedule';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'containers/Tabs/ScheduleTransaction/components/Fields/TimeBounty/TimeBountyFieldFactory';

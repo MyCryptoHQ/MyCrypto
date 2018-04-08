@@ -1,6 +1,6 @@
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { SetUnitMetaAction, TypeKeys, setSchedulingToggle } from 'actions/transaction';
+import { SetUnitMetaAction, TypeKeys } from 'actions/transaction';
 import {
   getTokenTo,
   getTokenValue,
@@ -21,6 +21,7 @@ import { encodeTransfer } from 'libs/transaction';
 import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
 import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/validationHelpers';
+import { setSchedulingToggle } from 'actions/schedule';
 
 export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
   const previousUnit: string = yield select(getPreviousUnit);
@@ -86,7 +87,6 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
     if (etherToToken) {
       yield put(
         setSchedulingToggle({
-          raw: 'false',
           value: false
         })
       );

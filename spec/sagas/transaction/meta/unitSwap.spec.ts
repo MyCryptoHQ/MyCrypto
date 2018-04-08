@@ -22,7 +22,7 @@ import { handleSetUnitMeta } from 'sagas/transaction/meta/unitSwap';
 import { isNetworkUnit } from 'selectors/config';
 import { SagaIterator } from 'redux-saga';
 import BN from 'bn.js';
-import { setSchedulingToggle } from 'actions/transaction';
+import { setSchedulingToggle } from 'actions/schedule';
 
 const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
@@ -212,7 +212,6 @@ describe('handleSetUnitMeta*', () => {
         expect(gens.gen.next(to).value).toEqual(
           put(
             setSchedulingToggle({
-              raw: 'false',
               value: false
             })
           )

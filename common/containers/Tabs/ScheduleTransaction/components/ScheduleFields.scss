@@ -1,10 +1,10 @@
 @import 'common/sass/variables';
 
-.scheduled-tx-settings {
+.ScheduleFields {
   padding: 0 20px 20px 20px;
   border: 1px solid #e5ecf3;
 
-  &_title {
+  &-title {
     margin-top: -10px;
     background: white;
     padding: 0 15px;
@@ -12,7 +12,7 @@
     width: 250px;
   }
 
-  &_logo {
+  &-logo {
     float: right;
     max-width: 160px;
     width: 100%;
@@ -27,7 +27,7 @@
     }
   }
 
-  &_description {
+  &-description {
     font-weight: 300;
     font-size: 16px;
     padding: 20px 0 30px;

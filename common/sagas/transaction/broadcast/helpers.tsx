@@ -1,11 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import {
-  getWeb3Tx,
-  getSignedTx,
-  getTransactionStatus,
-  getSchedulingToggle,
-  ICurrentSchedulingToggle
-} from 'selectors/transaction';
+import { getWeb3Tx, getSignedTx, getTransactionStatus } from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import {
   broadcastTransactionFailed,
@@ -27,6 +21,7 @@ import { getNetworkConfig } from 'selectors/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { computeIndexingHash } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
+import { ICurrentSchedulingToggle, getSchedulingToggle } from 'selectors/schedule';
 
 export const broadcastTransactionWrapper = (func: (serializedTx: string) => SagaIterator) =>
   function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
@@ -60,7 +55,6 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       const network: NetworkConfig = yield select(getNetworkConfig);
 
       const scheduling = Boolean(schedulingToggle && schedulingToggle.value);
-
       yield put(
         showNotification(
           'success',

@@ -1,16 +1,13 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import { AppState } from 'reducers';
-import { setScheduleGasLimitField, TSetScheduleGasLimitField } from 'actions/transaction';
+import { setScheduleGasLimitField, TSetScheduleGasLimitField } from 'actions/schedule';
 import { translateRaw } from 'translations';
 import { Input, InlineSpinner } from 'components/ui';
-import {
-  getScheduleGasLimit,
-  isValidScheduleGasLimit,
-  getGasEstimationPending
-} from 'selectors/transaction';
+import { getGasEstimationPending } from 'selectors/transaction';
 import { Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import { getScheduleGasLimit, isValidScheduleGasLimit } from 'selectors/schedule/fields';
 
 interface OwnProps {
   gasEstimationPending: boolean;

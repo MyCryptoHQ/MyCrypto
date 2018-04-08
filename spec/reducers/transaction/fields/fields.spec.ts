@@ -1,10 +1,8 @@
 import { TypeKeys } from 'actions/transaction/constants';
-import { gasPriceToBase, fromWei } from 'libs/units';
+import { gasPriceToBase } from 'libs/units';
 import { fields, State } from 'reducers/transaction/fields';
 import * as txActions from 'actions/transaction';
 import BN from 'bn.js';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import moment from 'moment-timezone';
 
 describe('fields reducer', () => {
   const INITIAL_STATE: State = {
@@ -13,27 +11,7 @@ describe('fields reducer', () => {
     nonce: { raw: '', value: null },
     value: { raw: '', value: null },
     gasLimit: { raw: '21000', value: new BN(21000) },
-    gasPrice: { raw: '20', value: gasPriceToBase(20) },
-    schedulingToggle: { raw: 'false', value: false },
-    timeBounty: {
-      raw: fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'),
-      value: EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT
-    },
-    windowSize: { raw: '', value: null },
-    windowStart: { raw: '', value: null },
-    scheduleTimestamp: { raw: '', value: null },
-    scheduleTimezone: { raw: moment.tz.guess(), value: moment.tz.guess() },
-    scheduleType: {
-      raw: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD,
-      value: EAC_SCHEDULING_CONFIG.DEFAULT_SCHEDULING_METHOD
-    },
-    scheduleGasPrice: {
-      raw: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK.toString(),
-      value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
-    },
-    scheduleGasLimit: { raw: '21000', value: new BN(21000) },
-    scheduleDeposit: { raw: '', value: null },
-    scheduleParamsValidity: { raw: true, value: true }
+    gasPrice: { raw: '20', value: gasPriceToBase(20) }
   };
   const testPayload = { raw: 'test', value: null };
 

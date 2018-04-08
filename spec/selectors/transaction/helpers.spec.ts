@@ -10,7 +10,6 @@ import {
   getValidGasCost
 } from 'selectors/transaction';
 import { getInitialState } from '../helpers';
-import moment from 'moment-timezone';
 
 describe('helpers selector', () => {
   const state = getInitialState();
@@ -44,50 +43,6 @@ describe('helpers selector', () => {
       gasPrice: {
         raw: '1500',
         value: Wei('1500')
-      },
-      schedulingToggle: {
-        raw: 'false',
-        value: false
-      },
-      timeBounty: {
-        raw: '1500',
-        value: Wei('1500')
-      },
-      windowSize: {
-        raw: '',
-        value: null
-      },
-      windowStart: {
-        raw: '',
-        value: null
-      },
-      scheduleTimestamp: {
-        raw: '',
-        value: null
-      },
-      scheduleTimezone: {
-        raw: moment.tz.guess(),
-        value: moment.tz.guess()
-      },
-      scheduleType: {
-        raw: 'time',
-        value: 'time'
-      },
-      scheduleGasPrice: {
-        raw: '1500',
-        value: Wei('1500')
-      },
-      scheduleGasLimit: {
-        raw: '21000',
-        value: Wei('21000')
-      },
-      scheduleDeposit: {
-        raw: '1000000000',
-        value: Wei('1000000000')
-      },
-      scheduleParamsValidity: {
-        raw: false,
-        value: false
       }
     }
   };
@@ -99,18 +54,7 @@ describe('helpers selector', () => {
       gasPrice: Wei('1500'),
       nonce: new BN('0'),
       to: new Buffer([0, 1, 2, 3]),
-      value: Wei('1000000000'),
-      schedulingToggle: false,
-      timeBounty: Wei('1500'),
-      windowSize: null,
-      windowStart: null,
-      scheduleTimestamp: null,
-      scheduleType: 'time',
-      scheduleTimezone: moment.tz.guess(),
-      scheduleGasPrice: Wei('1500'),
-      scheduleGasLimit: Wei('21000'),
-      scheduleDeposit: Wei('1000000000'),
-      scheduleParamsValidity: false
+      value: Wei('1000000000')
     };
     expect(reduceToValues(state.transaction.fields)).toEqual(values);
   });

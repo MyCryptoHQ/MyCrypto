@@ -6,8 +6,7 @@ import { AppState } from 'reducers';
 import {
   getGasLimitEstimationTimedOut,
   getGasEstimationPending,
-  nonceRequestPending,
-  getScheduleGasPrice
+  nonceRequestPending
 } from 'selectors/transaction';
 import { connect } from 'react-redux';
 import { fetchGasEstimates, TFetchGasEstimates } from 'actions/gas';
@@ -19,6 +18,7 @@ import { InlineSpinner } from 'components/ui/InlineSpinner';
 import { TInputGasPrice } from 'actions/transaction';
 import FeeSummary from './FeeSummary';
 import SchedulingFeeSummary from './SchedulingFeeSummary';
+import { getScheduleGasPrice } from 'selectors/schedule';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
@@ -37,7 +37,7 @@ interface StateProps {
   gasLimitPending: boolean;
   isWeb3Node: boolean;
   gasLimitEstimationTimedOut: boolean;
-  scheduleGasPrice: AppState['transaction']['fields']['scheduleGasPrice'];
+  scheduleGasPrice: AppState['schedule']['scheduleGasPrice'];
 }
 
 interface ActionProps {
@@ -134,7 +134,7 @@ class SimpleGas extends React.Component<Props> {
           scheduleGasPrice={scheduleGasPrice}
           render={({ fee, usd }) => (
             <span>
-              {fee}&nbsp;{usd && <span>/&nbsp;${usd}</span>}
+              {fee}&nbsp;{usd && <span>/&nbsp;{usd}</span>}
             </span>
           )}
         />
@@ -146,7 +146,7 @@ class SimpleGas extends React.Component<Props> {
         gasPrice={gasPrice}
         render={({ fee, usd }) => (
           <span>
-            {fee} {usd && <span>/ ${usd}</span>}
+            {fee} {usd && <span>/ {usd}</span>}
           </span>
         )}
       />

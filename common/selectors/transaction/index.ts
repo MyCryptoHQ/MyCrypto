@@ -5,4 +5,3 @@ export * from './meta';
 export * from './sign';
 export * from './current';
 export * from './network';
-export * from '../../containers/Tabs/ScheduleTransaction/selectors';

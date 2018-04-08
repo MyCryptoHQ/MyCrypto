@@ -37,5 +37,3 @@ export {
   getDataExists,
   getValidGasCost
 };
-
-export * from '../../containers/Tabs/ScheduleTransaction/selectors/fields';

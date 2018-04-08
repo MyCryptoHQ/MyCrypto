@@ -1,9 +1,9 @@
 import { Query } from 'components/renderCbs';
-import { setCurrentTimeBounty, TSetCurrentTimeBounty } from 'actions/transaction';
+import { setCurrentTimeBounty, TSetCurrentTimeBounty } from 'actions/schedule';
 import { TimeBountyInputFactory } from './TimeBountyInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentTimeBounty } from 'selectors/transaction';
+import { ICurrentTimeBounty } from 'selectors/schedule';
 
 interface DispatchProps {
   setCurrentTimeBounty: TSetCurrentTimeBounty;

@@ -1,9 +1,9 @@
 import { Query } from 'components/renderCbs';
-import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'actions/transaction';
+import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'actions/schedule';
 import { ScheduleTimestampInputFactory } from './ScheduleTimestampInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentScheduleTimestamp } from 'selectors/transaction';
+import { ICurrentScheduleTimestamp } from 'selectors/schedule';
 import moment from 'moment';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 

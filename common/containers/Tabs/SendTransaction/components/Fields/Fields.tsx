@@ -19,11 +19,8 @@ import translate from 'translations';
 import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
 import { getOffline, getNetworkConfig } from 'selectors/config';
-import {
-  getCurrentSchedulingToggle,
-  ICurrentSchedulingToggle,
-  getUnit
-} from 'selectors/transaction';
+import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
+import { getUnit } from 'selectors/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { setSchedulingToggle, TSetSchedulingToggle } from 'actions/transaction';
+import { setSchedulingToggle, TSetSchedulingToggle } from 'actions/schedule';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/transaction';
+import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
 import { AppState } from 'reducers';
 
 interface DispatchProps {
@@ -36,7 +36,7 @@ class SchedulingToggleClass extends Component<Props> {
 
   private handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const checked = ev.currentTarget.checked;
-    this.props.setSchedulingToggle({ raw: checked.toString(), value: checked });
+    this.props.setSchedulingToggle({ value: checked });
   };
 }
 
