@@ -164,6 +164,7 @@ export function* handleNodeChangeIntent({
     }
   }
 
+  yield call(delay, 10);
   let currentBlock;
   try {
     currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);
