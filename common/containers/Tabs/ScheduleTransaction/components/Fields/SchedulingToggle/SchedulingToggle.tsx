@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
 import { AppState } from 'reducers';
+import { Toggle } from 'components/ui';
 
 interface DispatchProps {
   setSchedulingToggle: TSetSchedulingToggle;
@@ -22,14 +23,7 @@ class SchedulingToggleClass extends Component<Props> {
     return (
       <div className="input-group-wrapper">
         <span className="input-group-header">{translate('SCHEDULING_TOGGLE')}</span>
-        <label className="switch checkbox">
-          <input
-            type="checkbox"
-            checked={currentSchedulingToggle.value}
-            onChange={this.handleOnChange}
-          />
-          <span className="slider round" />
-        </label>
+        <Toggle checked={currentSchedulingToggle.value} onChangeHandler={this.handleOnChange} />
       </div>
     );
   }

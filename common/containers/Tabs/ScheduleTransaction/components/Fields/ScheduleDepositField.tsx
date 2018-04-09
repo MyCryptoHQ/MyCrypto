@@ -35,7 +35,7 @@ class ScheduleDepositFieldClass extends Component<Props> {
           <Input
             className={!!scheduleDeposit.raw && !validScheduleDeposit ? 'invalid' : ''}
             type="number"
-            placeholder={translateRaw('SCHEDULE_DEPOSIT_PLACEHOLDER')}
+            placeholder="0.00001"
             value={scheduleDeposit.raw}
             onChange={this.handleDepositChange}
           />

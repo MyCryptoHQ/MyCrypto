@@ -67,9 +67,13 @@ export const calcEACEndowment = (
 export const calcEACTotalCost = (
   callGas: BN,
   gasPrice: BN,
-  callGasPrice: BN,
+  callGasPrice: BN | null,
   timeBounty: BN | null
 ) => {
+  if (!callGasPrice) {
+    callGasPrice = gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK);
+  }
+
   const deployCost = gasPrice.mul(EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT);
 
   const futureExecutionCost = calcEACFutureExecutionCost(callGas, callGasPrice, timeBounty);
@@ -123,20 +127,30 @@ export const getScheduleData = (
   ]);
 };
 
+enum SchedulingParamsError {
+  InsufficientEndowment,
+  ReservedWindowBiggerThanExecutionWindow,
+  InvalidTemporalUnit,
+  ExecutionWindowTooSoon,
+  CallGasTooHigh,
+  EmptyToAddress
+}
+
 export const parseSchedulingParametersValidity = (isValid: boolean[]) => {
-  const Errors = [
-    'InsufficientEndowment',
-    'ReservedWindowBiggerThanExecutionWindow',
-    'InvalidTemporalUnit',
-    'ExecutionWindowTooSoon',
-    'CallGasTooHigh',
-    'EmptyToAddress'
+  const errorsIndexMapping = [
+    SchedulingParamsError.InsufficientEndowment,
+    SchedulingParamsError.ReservedWindowBiggerThanExecutionWindow,
+    SchedulingParamsError.InvalidTemporalUnit,
+    SchedulingParamsError.ExecutionWindowTooSoon,
+    SchedulingParamsError.CallGasTooHigh,
+    SchedulingParamsError.EmptyToAddress
   ];
-  const errors: string[] = [];
+
+  const errors: SchedulingParamsError[] = [];
 
   isValid.forEach((boolIsTrue, index) => {
     if (!boolIsTrue) {
-      errors.push(Errors[index]);
+      errors.push(errorsIndexMapping[index]);
     }
   });
 

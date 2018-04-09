@@ -17,7 +17,6 @@ import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import { TInputGasPrice } from 'actions/transaction';
 import FeeSummary from './FeeSummary';
-import SchedulingFeeSummary from './SchedulingFeeSummary';
 import { getScheduleGasPrice } from 'selectors/schedule';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
@@ -25,7 +24,6 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   setGasPrice: TInputGasPrice;
-  scheduling?: boolean;
 
   inputGasPrice(rawGas: string): void;
 }
@@ -74,7 +72,8 @@ class SimpleGas extends React.Component<Props> {
       gasLimitEstimationTimedOut,
       isWeb3Node,
       noncePending,
-      gasLimitPending
+      gasLimitPending,
+      scheduleGasPrice
     } = this.props;
 
     const bounds = {
@@ -118,38 +117,17 @@ class SimpleGas extends React.Component<Props> {
               <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
             </div>
           </div>
-          {this.renderFee()}
+          <FeeSummary
+            gasPrice={gasPrice}
+            scheduleGasPrice={scheduleGasPrice}
+            render={({ fee, usd }) => (
+              <span>
+                {fee} {usd && <span>/ ${usd}</span>}
+              </span>
+            )}
+          />
         </div>
       </div>
-    );
-  }
-
-  private renderFee() {
-    const { gasPrice, scheduling, scheduleGasPrice } = this.props;
-
-    if (scheduling) {
-      return (
-        <SchedulingFeeSummary
-          gasPrice={gasPrice}
-          scheduleGasPrice={scheduleGasPrice}
-          render={({ fee, usd }) => (
-            <span>
-              {fee}&nbsp;{usd && <span>/&nbsp;{usd}</span>}
-            </span>
-          )}
-        />
-      );
-    }
-
-    return (
-      <FeeSummary
-        gasPrice={gasPrice}
-        render={({ fee, usd }) => (
-          <span>
-            {fee} {usd && <span>/ {usd}</span>}
-          </span>
-        )}
-      />
     );
   }
 

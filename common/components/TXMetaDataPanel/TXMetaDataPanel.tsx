@@ -110,7 +110,6 @@ class TXMetaDataPanel extends React.Component<Props, State> {
             gasPrice={gasPrice}
             inputGasPrice={this.handleGasPriceInput}
             setGasPrice={this.props.inputGasPrice}
-            scheduling={scheduling}
           />
         )}
 

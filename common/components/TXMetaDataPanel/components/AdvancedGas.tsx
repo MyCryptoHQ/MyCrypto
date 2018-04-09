@@ -1,6 +1,6 @@
 import React from 'react';
 import { translateRaw } from 'translations';
-import FeeSummary from './FeeSummary';
+import FeeSummary, { RenderData } from './FeeSummary';
 import './AdvancedGas.scss';
 import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'actions/config';
 import { AppState } from 'reducers';
@@ -11,7 +11,6 @@ import { getAutoGasLimitEnabled } from 'selectors/config';
 import { isValidGasPrice } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
 import { Input, UnitDisplay } from 'components/ui';
-import SchedulingFeeSummary from './SchedulingFeeSummary';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { getScheduleGasPrice, getTimeBounty } from 'selectors/schedule';
 
@@ -126,52 +125,58 @@ class AdvancedGas extends React.Component<Props, State> {
   }
 
   private renderFee() {
-    const { gasPrice, scheduling, scheduleGasPrice, timeBounty } = this.props;
+    const { gasPrice, scheduleGasPrice } = this.props;
     const { feeSummary } = this.state.options;
 
     if (!feeSummary) {
       return;
     }
 
-    if (scheduling) {
-      return (
-        <div className="AdvancedGas-fee-summary">
-          <SchedulingFeeSummary
-            gasPrice={gasPrice}
-            scheduleGasPrice={scheduleGasPrice}
-            render={({ gasPriceWei, scheduleGasLimit, fee, usd }) => (
-              <div>
-                <span>
-                  <UnitDisplay
-                    value={EAC_SCHEDULING_CONFIG.FEE.mul(EAC_SCHEDULING_CONFIG.FEE_MULTIPLIER)}
-                    unit={'ether'}
-                    displayShortBalance={true}
-                    checkOffline={true}
-                    symbol="ETH"
-                  />{' '}
-                  + {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei}{' '}
-                  * {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
-                  {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()}{' '}
-                  * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()} + {scheduleGasLimit})
-                  =&nbsp;{fee}&nbsp;{usd && <span>~=&nbsp;{usd}&nbsp;USD</span>}
-                </span>
-              </div>
-            )}
-          />
-        </div>
-      );
-    }
-
     return (
       <div className="AdvancedGas-fee-summary">
         <FeeSummary
           gasPrice={gasPrice}
-          render={({ gasPriceWei, gasLimit, fee, usd }) => (
-            <span>
-              {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= {usd} USD</span>}
-            </span>
-          )}
+          scheduleGasPrice={scheduleGasPrice}
+          render={(data: RenderData) => this.printFeeFormula(data)}
         />
+      </div>
+    );
+  }
+
+  private printFeeFormula(data: RenderData) {
+    if (this.props.scheduling) {
+      return this.getScheduleFeeFormula(data);
+    }
+
+    return this.getStandardFeeFormula(data);
+  }
+
+  private getStandardFeeFormula({ gasPriceWei, gasLimit, fee, usd }: RenderData) {
+    return (
+      <span>
+        {gasPriceWei} * {gasLimit} = {fee} {usd && <span>~= ${usd} USD</span>}
+      </span>
+    );
+  }
+
+  private getScheduleFeeFormula({ gasPriceWei, scheduleGasLimit, fee, usd }: RenderData) {
+    const { scheduleGasPrice, timeBounty } = this.props;
+
+    return (
+      <div>
+        <span>
+          <UnitDisplay
+            value={EAC_SCHEDULING_CONFIG.FEE.mul(EAC_SCHEDULING_CONFIG.FEE_MULTIPLIER)}
+            unit={'ether'}
+            displayShortBalance={true}
+            checkOffline={true}
+            symbol="ETH"
+          />{' '}
+          + {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei} *{' '}
+          {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
+          {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()} * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()}{' '}
+          + {scheduleGasLimit}) =&nbsp;{fee}&nbsp;{usd && <span>~=&nbsp;${usd}&nbsp;USD</span>}
+        </span>
       </div>
     );
   }
