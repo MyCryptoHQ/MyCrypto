@@ -1,35 +1,25 @@
 import { AppState } from 'reducers';
-import moment from 'moment';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { getScheduleTimestamp } from 'selectors/schedule';
-
-const fiveMinFromNow = moment()
-  .add(5, 'm')
-  .toDate();
+import { getScheduleTimestamp, getScheduleTimezone } from 'selectors/schedule';
+import { dateTimeToTimezone, minFromNow } from 'selectors/schedule/helpers';
 
 interface ICurrentScheduleTimestamp {
   raw: string;
-  value: Date | null;
+  value: Date;
 }
 
 const isValidCurrentScheduleTimestamp = (state: AppState) => {
   const currentScheduleTimestamp = getScheduleTimestamp(state);
-  const raw = currentScheduleTimestamp.raw;
-  const value = currentScheduleTimestamp.value;
+  const currentScheduleTimezone = getScheduleTimezone(state);
 
-  return value && value > fiveMinFromNow && isCorrectFormat(raw);
-};
+  const currentScheduleDatetime = dateTimeToTimezone(
+    currentScheduleTimestamp,
+    currentScheduleTimezone.value
+  );
 
-const isCorrectFormat = (dateString: string) => {
-  return moment(dateString, EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT, true).isValid();
+  return currentScheduleDatetime >= minFromNow(5);
 };
 
 const getCurrentScheduleTimestamp = (state: AppState): ICurrentScheduleTimestamp =>
   getScheduleTimestamp(state);
 
-export {
-  getCurrentScheduleTimestamp,
-  ICurrentScheduleTimestamp,
-  isValidCurrentScheduleTimestamp,
-  fiveMinFromNow
-};
+export { getCurrentScheduleTimestamp, ICurrentScheduleTimestamp, isValidCurrentScheduleTimestamp };

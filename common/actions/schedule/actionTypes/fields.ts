@@ -29,7 +29,7 @@ interface SetScheduleTimestampFieldAction {
   type: TypeKeys.SCHEDULE_TIMESTAMP_FIELD_SET;
   payload: {
     raw: string;
-    value: Date | null;
+    value: Date;
   };
 }
 

@@ -4,45 +4,60 @@ import 'moment-timezone';
 import { ICurrentScheduleTimestamp } from '.';
 import BN from 'bn.js';
 
-export const isWindowStartValid = (
-  transactionFields: AppState['schedule'],
-  latestBlock: string
-) => {
+const isWindowStartValid = (transactionFields: AppState['schedule'], latestBlock: string) => {
   const { windowStart } = transactionFields;
 
   return Boolean(windowStart && windowStart.value && windowStart.value > parseInt(latestBlock, 10));
 };
 
-export const isScheduleTimestampValid = (transactionFields: AppState['schedule']) => {
-  const { scheduleTimestamp } = transactionFields;
+const isScheduleTimestampValid = (transactionFields: AppState['schedule']) => {
+  const { scheduleTimestamp, scheduleTimezone } = transactionFields;
   const now = new Date();
 
-  return Boolean(scheduleTimestamp && scheduleTimestamp.value && scheduleTimestamp.value > now);
+  const selectedDate = dateTimeToTimezone(scheduleTimestamp, scheduleTimezone.value);
+
+  return Boolean(selectedDate >= now);
 };
 
-export const dateTimeToUnixTimestamp = (
+const dateTimeToTimezone = (
   scheduleTimestamp: ICurrentScheduleTimestamp,
   timezone: string
-) => {
-  if (scheduleTimestamp.value) {
-    return moment.tz(scheduleTimestamp.raw, timezone).unix();
-  }
-  return scheduleTimestamp.value;
+): Date => {
+  return moment.tz(scheduleTimestamp.raw, timezone).toDate();
 };
 
-export const windowSizeBlockToMin = (numberInput: BN | null, scheduleType: string | null) => {
+const dateTimeToUnixTimestamp = (dateTime: Date): number => {
+  return moment(dateTime).unix();
+};
+
+const minFromNow = (minutes: number): Date => {
+  return moment()
+    .add(minutes, 'm')
+    .toDate();
+};
+
+const windowSizeBlockToMin = (numberInput: BN | null, scheduleType: string | null) => {
   if (numberInput && scheduleType && scheduleType === 'time') {
     return numberInput.mul(new BN(60));
   }
   return numberInput;
 };
 
-export const calculateWindowStart = (
+const calculateWindowStart = (
   scheduleType: string | null,
   scheduleTimestamp: any,
   scheduleTimezone: string,
   blockWindowStart: number | null
 ): number =>
   (scheduleType === 'time'
-    ? dateTimeToUnixTimestamp(scheduleTimestamp, scheduleTimezone)
+    ? dateTimeToUnixTimestamp(dateTimeToTimezone(scheduleTimestamp, scheduleTimezone))
     : blockWindowStart) || 0;
+
+export {
+  isWindowStartValid,
+  isScheduleTimestampValid,
+  dateTimeToTimezone,
+  windowSizeBlockToMin,
+  calculateWindowStart,
+  minFromNow
+};
