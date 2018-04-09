@@ -1,6 +1,6 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
-import { Input } from 'components/ui';
+import { Input, Tooltip } from 'components/ui';
 import { WindowSizeFieldFactory } from './WindowSizeFieldFactory';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import Help from 'components/ui/Help';
@@ -15,8 +15,11 @@ export const WindowSizeField: React.SFC<Props> = ({ isReadOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
-            {translate('SCHEDULE_WINDOW_SIZE')}
-            <Help tooltip={translateRaw('SCHEDULE_WINDOW_SIZE_TOOLTIP')} />
+            <span className="ScheduleFields-field-title">
+              {translate('SCHEDULE_WINDOW_SIZE')}
+              <Tooltip>{translateRaw('SCHEDULE_WINDOW_SIZE_TOOLTIP')}</Tooltip>
+              <Help className="ScheduleFields-field-title-help" />
+            </span>
           </div>
           <Input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}

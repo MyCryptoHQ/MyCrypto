@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { AppState } from 'reducers';
 import { setScheduleDepositField, TSetScheduleDepositField } from 'actions/schedule';
 import { translateRaw } from 'translations';
-import { Input } from 'components/ui';
+import { Input, Tooltip } from 'components/ui';
 import { getDecimal } from 'selectors/transaction';
 import { getScheduleDeposit, isValidScheduleDeposit } from 'selectors/schedule/fields';
 import { toWei } from 'libs/units';
@@ -29,8 +29,11 @@ class ScheduleDepositFieldClass extends Component<Props> {
       <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
-            {translateRaw('SCHEDULE_DEPOSIT')}
-            <Help tooltip={translateRaw('SCHEDULE_DEPOSIT_TOOLTIP')} />
+            <span className="ScheduleFields-field-title">
+              {translateRaw('SCHEDULE_DEPOSIT')}
+              <Tooltip>{translateRaw('SCHEDULE_DEPOSIT_TOOLTIP')}</Tooltip>
+              <Help className="ScheduleFields-field-title-help" />
+            </span>
           </div>
           <Input
             className={!!scheduleDeposit.raw && !validScheduleDeposit ? 'invalid' : ''}

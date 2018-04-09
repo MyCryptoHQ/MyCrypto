@@ -1,4 +1,5 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .ScheduleFields {
   padding: 0 20px 20px 20px;
@@ -32,6 +33,18 @@
     font-size: 16px;
     padding: 20px 0 30px;
     text-align: justify;
+  }
+
+  &-field-title {
+    position: relative;
+
+    @include show-tooltip-on-hover;
+
+    &-help {
+      margin-top: 3px;
+      margin-left: 5px;
+      pointer-events: none;
+    }
   }
 }
 

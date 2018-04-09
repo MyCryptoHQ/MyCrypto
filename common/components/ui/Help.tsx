@@ -7,17 +7,16 @@ type Size = 'x1' | 'x2' | 'x3';
 interface Props {
   link?: string;
   size?: Size;
-  tooltip?: string;
+  className?: string;
 }
 
-const Help = ({ size = 'x1', link, tooltip }: Props) => {
+const Help = ({ size = 'x1', link, className }: Props) => {
   return (
     <a
       href={link}
-      className={`Help Help-${size}`}
+      className={`Help Help-${size} ${className}`}
       target="_blank"
       rel="noopener noreferrer"
-      title={tooltip}
     >
       <img src={icon} alt="help" />
     </a>
