@@ -50,7 +50,7 @@
     "redux-saga": "0.16.0",
     "scryptsy": "2.0.0",
     "uuid": "3.2.1",
-    "wallet-address-validator": "0.1.5",
+    "wallet-address-validator": "0.1.6",
     "whatwg-fetch": "2.0.3",
     "zxcvbn": "4.4.2"
   },
