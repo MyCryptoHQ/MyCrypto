@@ -22,10 +22,17 @@ function changeLanguage(state: State, action: ChangeLanguageAction): State {
   };
 }
 
-function toggleOffline(state: State): State {
+function setOnline(state: State): State {
   return {
     ...state,
-    offline: !state.offline
+    offline: false
+  };
+}
+
+function setOffline(state: State): State {
+  return {
+    ...state,
+    offline: true
   };
 }
 
@@ -48,8 +55,11 @@ export function meta(state: State = INITIAL_STATE, action: MetaAction): State {
     case TypeKeys.CONFIG_LANGUAGE_CHANGE:
       return changeLanguage(state, action);
 
-    case TypeKeys.CONFIG_TOGGLE_OFFLINE:
-      return toggleOffline(state);
+    case TypeKeys.CONFIG_SET_ONLINE:
+      return setOnline(state);
+    case TypeKeys.CONFIG_SET_OFFLINE:
+      return setOffline(state);
+
     case TypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT:
       return toggleAutoGasLimitEstimation(state);
 
