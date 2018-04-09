@@ -19,9 +19,12 @@ import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
+import { Query } from 'components/renderCbs';
 import 'what-input';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
 import { getNetworkUnit } from 'selectors/config';
+import { StaticNetworkIds } from 'types/network';
+import { translate } from './translations';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -40,6 +43,10 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
+}
+
+class SetNetwork extends Component<> {
+  // set network with shepherd here
 }
 
 class RootClass extends Component<Props, State> {
@@ -73,20 +80,28 @@ class RootClass extends Component<Props, State> {
     });
 
     const routes = (
-      <CaptureRouteNotFound>
-        <Switch>
-          <Redirect exact={true} from="/" to="/account" />
-          <Route path="/account" component={SendTransaction} />
-          <Route path="/generate" component={GenerateWallet} />
-          <Route path="/swap" component={Swap} />
-          <Route path="/contracts" component={Contracts} />
-          <Route path="/ens" component={ENS} exact={true} />
-          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-          <Route path="/tx-status" component={CheckTransaction} exact={true} />
-          <Route path="/pushTx" component={BroadcastTx} />
-          <RouteNotFound />
-        </Switch>
-      </CaptureRouteNotFound>
+      <Query
+        params={['network']}
+        withQuery={({ network }) => (
+          <>
+            <SetNetwork network={network} />
+            <CaptureRouteNotFound>
+              <Switch>
+                <Redirect exact={true} from="/" to="/account" />
+                <Route path="/account" component={SendTransaction} />
+                <Route path="/generate" component={GenerateWallet} />
+                <Route path="/swap" component={Swap} />
+                <Route path="/contracts" component={Contracts} />
+                <Route path="/ens" component={ENS} exact={true} />
+                <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+                <Route path="/tx-status" component={CheckTransaction} exact={true} />
+                <Route path="/pushTx" component={BroadcastTx} />
+                <RouteNotFound />
+              </Switch>
+            </CaptureRouteNotFound>
+          </>
+        )}
+      />
     );
 
     const Router =

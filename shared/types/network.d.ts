@@ -1,6 +1,6 @@
 import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
 
-type StaticNetworkIds =
+export type StaticNetworkIds =
   | 'ETH'
   | 'Ropsten'
   | 'Kovan'
