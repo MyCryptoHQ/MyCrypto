@@ -158,7 +158,9 @@ export function* handleNodeChangeIntent({
       yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, false]);
     } catch (err) {
       console.error(err);
-      return yield* bailOut(translateRaw('ERROR_32'));
+      return yield* bailOut(
+        translateRaw('ERROR_32_DEFAULT_NETWORK', { $network: nodeIdToSwitchTo.toUpperCase() })
+      );
     }
   }
 
@@ -167,7 +169,9 @@ export function* handleNodeChangeIntent({
     currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);
   } catch (err) {
     console.error(err);
-    return yield* bailOut(translateRaw('ERROR_32'));
+    return yield* bailOut(
+      translateRaw('ERROR_32_DEFAULT_NETWORK', { $network: nodeIdToSwitchTo.toUpperCase() })
+    );
   }
 
   yield put(setLatestBlock(currentBlock));

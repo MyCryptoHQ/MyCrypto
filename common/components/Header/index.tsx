@@ -36,9 +36,14 @@ import {
   getNodeOptions,
   getNetworkConfig
 } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
+import { NetworkConfig, StaticNetworkIds } from 'types/network';
 import { connect } from 'react-redux';
 import { stripWeb3Network } from 'libs/nodes';
+import { getStaticNetworkIds } from 'selectors/config/networks';
+
+interface PassedProps {
+  networkParam: string | null;
+}
 
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
@@ -50,6 +55,7 @@ interface DispatchProps {
 }
 
 interface StateProps {
+  staticNetworkIds: StaticNetworkIds[];
   network: NetworkConfig;
   languageSelection: AppState['config']['meta']['languageSelection'];
   node: NodeConfig;
@@ -60,6 +66,7 @@ interface StateProps {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
+  staticNetworkIds: getStaticNetworkIds(state),
   isOffline: getOffline(state),
   isChangingNode: isNodeChanging(state),
   languageSelection: getLanguageSelection(state),
@@ -82,12 +89,19 @@ interface State {
   isAddingCustomNode: boolean;
 }
 
-type Props = StateProps & DispatchProps;
+type Props = PassedProps & StateProps & DispatchProps;
 
 class Header extends Component<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
+
+  public componentDidMount() {
+    const { networkParam, staticNetworkIds } = this.props;
+    if (networkParam && staticNetworkIds.includes(networkParam.toUpperCase() as any)) {
+      this.props.changeNodeIntent(`${networkParam.toLowerCase()}_auto`);
+    }
+  }
 
   public render() {
     const {
