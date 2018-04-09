@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { getAutoGasLimitEnabled } from 'selectors/config';
 import { isValidGasPrice } from 'selectors/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
-import { Input, UnitDisplay } from 'components/ui';
+import { Input } from 'components/ui';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { getScheduleGasPrice, getTimeBounty } from 'selectors/schedule';
 
@@ -164,19 +164,10 @@ class AdvancedGas extends React.Component<Props, State> {
 
     return (
       <div>
-        <span>
-          <UnitDisplay
-            value={EAC_SCHEDULING_CONFIG.FEE.mul(EAC_SCHEDULING_CONFIG.FEE_MULTIPLIER)}
-            unit={'ether'}
-            displayShortBalance={true}
-            checkOffline={true}
-            symbol="ETH"
-          />{' '}
-          + {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei} *{' '}
-          {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
-          {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()} * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()}{' '}
-          + {scheduleGasLimit}) =&nbsp;{fee}&nbsp;{usd && <span>~=&nbsp;${usd}&nbsp;USD</span>}
-        </span>
+        {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei} *{' '}
+        {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
+        {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()} * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()}{' '}
+        + {scheduleGasLimit}) =&nbsp;{fee}&nbsp;{usd && <span>~=&nbsp;${usd}&nbsp;USD</span>}
       </div>
     );
   }

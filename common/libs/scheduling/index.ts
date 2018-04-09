@@ -10,8 +10,7 @@ export const EAC_SCHEDULING_CONFIG = {
   DAPP_ADDRESS: 'https://app.chronologic.network',
   SCHEDULE_GAS_LIMIT_FALLBACK: new BN('21000'),
   SCHEDULE_GAS_PRICE_FALLBACK: 20, // Gwei
-  FEE: new BN('2242000000000000'), // $2
-  FEE_MULTIPLIER: new BN('2'),
+  FEE: new BN('0'),
   FUTURE_EXECUTION_COST: new BN('180000'),
   SCHEDULING_GAS_LIMIT: new BN('1500000'),
   WINDOW_SIZE_DEFAULT_TIME: 10,
@@ -42,9 +41,7 @@ export const calcEACFutureExecutionCost = (
     timeBounty = EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN;
   }
 
-  return timeBounty
-    .add(EAC_SCHEDULING_CONFIG.FEE.mul(EAC_SCHEDULING_CONFIG.FEE_MULTIPLIER))
-    .add(totalGas.mul(callGasPrice));
+  return timeBounty.add(EAC_SCHEDULING_CONFIG.FEE).add(totalGas.mul(callGasPrice));
 };
 
 export const calcEACEndowment = (
