@@ -86,6 +86,7 @@ export function* pollOfflineStatus(): SagaIterator {
         yield put(offlineNotif);
       }
     }
+    hasCheckedOnline = true;
   }
 }
 
