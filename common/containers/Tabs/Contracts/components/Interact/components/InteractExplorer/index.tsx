@@ -10,12 +10,12 @@ import { connect } from 'react-redux';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
-import { Web3Node } from 'libs/nodes';
-import RpcNode from 'libs/nodes/rpc';
 import { Input, Dropdown } from 'components/ui';
+import { INode } from 'libs/nodes';
+import { bufferToHex } from 'ethereumjs-util';
 
 interface StateProps {
-  nodeLib: RpcNode | Web3Node;
+  nodeLib: INode;
   to: AppState['transaction']['fields']['to'];
   dataExists: boolean;
 }
@@ -127,6 +127,10 @@ class InteractExplorerClass extends Component<Props, State> {
             {selectedFunction.contract.outputs.map((output: any, index: number) => {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
+              const rawFieldValue = outputs[parsedName] || '';
+              const decodedFieldValue = Buffer.isBuffer(rawFieldValue)
+                ? bufferToHex(rawFieldValue)
+                : rawFieldValue;
 
               return (
                 <div key={parsedName} className="input-group-wrapper InteractExplorer-func-out">
@@ -134,7 +138,7 @@ class InteractExplorerClass extends Component<Props, State> {
                     <div className="input-group-header"> ↳ {name + ' ' + type}</div>
                     <Input
                       className="InteractExplorer-func-out-input "
-                      value={outputs[parsedName] || ''}
+                      value={decodedFieldValue}
                       disabled={true}
                     />
                   </label>
@@ -188,6 +192,7 @@ class InteractExplorerClass extends Component<Props, State> {
       const results = await nodeLib.sendCallRequest(callData);
 
       const parsedResult = selectedFunction!.contract.decodeOutput(results);
+
       this.setState({ outputs: parsedResult });
     } catch (e) {
       this.props.showNotification(
