@@ -3,6 +3,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import { ICurrentScheduleTimestamp } from '.';
 import BN from 'bn.js';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
 const isWindowStartValid = (transactionFields: AppState['schedule'], latestBlock: string) => {
   const { windowStart } = transactionFields;
@@ -12,11 +13,8 @@ const isWindowStartValid = (transactionFields: AppState['schedule'], latestBlock
 
 const isScheduleTimestampValid = (transactionFields: AppState['schedule']) => {
   const { scheduleTimestamp, scheduleTimezone } = transactionFields;
-  const now = new Date();
-
   const selectedDate = dateTimeToTimezone(scheduleTimestamp, scheduleTimezone.value);
-
-  return Boolean(selectedDate >= now);
+  return Boolean(selectedDate >= minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW));
 };
 
 const dateTimeToTimezone = (

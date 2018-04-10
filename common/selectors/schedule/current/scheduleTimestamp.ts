@@ -1,6 +1,7 @@
 import { AppState } from 'reducers';
 import { getScheduleTimestamp, getScheduleTimezone } from 'selectors/schedule';
 import { dateTimeToTimezone, minFromNow } from 'selectors/schedule/helpers';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
 interface ICurrentScheduleTimestamp {
   raw: string;
@@ -16,7 +17,9 @@ const isValidCurrentScheduleTimestamp = (state: AppState) => {
     currentScheduleTimezone.value
   );
 
-  return currentScheduleDatetime >= minFromNow(5);
+  return (
+    currentScheduleDatetime >= minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW)
+  );
 };
 
 const getCurrentScheduleTimestamp = (state: AppState): ICurrentScheduleTimestamp =>
