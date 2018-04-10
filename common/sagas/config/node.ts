@@ -110,7 +110,7 @@ export function* reload(): SagaIterator {
 
 export function* handleNodeChangeIntentOneTime(): SagaIterator {
   const action = yield take(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME);
-  yield call(handleNodeChangeIntent, action);
+  yield put(changeNodeIntent(action.payload));
 }
 
 export function* handleNodeChangeIntent({
