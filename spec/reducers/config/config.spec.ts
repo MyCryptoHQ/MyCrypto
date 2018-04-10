@@ -1,7 +1,7 @@
 import { configuredStore } from 'store';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, select, apply } from 'redux-saga/effects';
-import { cloneableGenerator, createMockTask, SagaIteratorClone } from 'redux-saga/utils';
+import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import {
   setOffline,
   setOnline,
