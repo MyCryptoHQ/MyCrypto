@@ -238,7 +238,6 @@
     "ERROR_30": "Please enter a valid name (7+ characters, limited punctuation) ",
     "ERROR_31": "Please enter a valid secret phrase. ",
     "ERROR_32": "Could not connect to the node. Refresh your page, try a different node (upper right corner), check your firewall settings. If custom node, check your configs.",
-    "ERROR_32_DEFAULT_NETWORK": "Oops! We were not able to connect to the default network '$network'. Please try again, or contact support@mycrypto.com",
     "ERROR_33": "The wallet you have unlocked does not match the owner's address. ",
     "ERROR_34": "The name you are attempting to reveal does not match the name you have entered. ",
     "ERROR_36": "Enter valid TX hash",
