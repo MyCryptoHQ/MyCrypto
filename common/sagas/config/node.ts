@@ -6,6 +6,7 @@ import {
   put,
   take,
   takeEvery,
+  takeLeading,
   select,
   apply,
   takeLatest
@@ -24,10 +25,12 @@ import {
   toggleOffline,
   changeNode,
   changeNodeIntent,
+  changeNodeIntentOneTime,
   setLatestBlock,
   AddCustomNodeAction,
   ChangeNodeForceAction,
-  ChangeNodeIntentAction
+  ChangeNodeIntentAction,
+  ChangeNodeIntentOneTimeAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { resetWallet } from 'actions/wallet';
@@ -220,6 +223,7 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
 }
 
 export const node = [
+  takeLeading(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME, handleNodeChangeIntent),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
