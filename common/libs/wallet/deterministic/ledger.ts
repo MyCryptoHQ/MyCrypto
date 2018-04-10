@@ -1,6 +1,6 @@
 import ledger from 'ledgerco';
 import EthTx, { TxObj } from 'ethereumjs-tx';
-import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
+import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { getTransactionFields } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
