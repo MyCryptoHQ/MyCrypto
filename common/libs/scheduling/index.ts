@@ -3,6 +3,7 @@ import abi from 'ethereumjs-abi';
 import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import { toBuffer } from 'ethereumjs-util';
 import RequestFactory from './contracts/RequestFactory';
+import { ICurrentValue } from 'selectors/transaction';
 
 const TIME_BOUNTY_MIN = Wei('1');
 
@@ -164,7 +165,7 @@ export const getValidateRequestParamsData = (
   toAddress: string,
   callData = '',
   callGas: Wei,
-  callValue: any,
+  callValue: ICurrentValue['value'],
   windowSize: BN | null,
   windowStart: number,
   gasPrice: Wei,
