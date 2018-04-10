@@ -150,7 +150,11 @@ export const gasPriceValidator = (gasPrice: number | string): boolean => {
   );
 };
 
-export const timeBountyValidator = (timeBounty: BN | number | string): boolean => {
+export const timeBountyValidator = (timeBounty: BN | number | string | null): boolean => {
+  if (!timeBounty) {
+    return false;
+  }
+
   if (timeBounty instanceof BN) {
     return (
       timeBounty.gte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN) &&

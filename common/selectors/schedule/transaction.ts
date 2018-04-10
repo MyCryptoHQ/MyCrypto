@@ -28,7 +28,9 @@ import {
   EAC_SCHEDULING_CONFIG,
   getScheduleData,
   calcEACEndowment,
-  getSchedulerAddress
+  getSchedulerAddress,
+  EAC_ADDRESSES,
+  getValidateRequestParamsData
 } from 'libs/scheduling';
 import { makeTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
@@ -40,7 +42,9 @@ import {
   isScheduleTimestampValid
 } from 'selectors/schedule/helpers';
 import { getScheduleState } from 'selectors/schedule/fields';
-import { Nonce } from 'libs/units';
+import { Nonce, Wei } from 'libs/units';
+import { getWalletInst } from 'selectors/wallet';
+import { bufferToHex } from 'ethereumjs-util';
 
 export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const { isFullTransaction } = getTransaction(state);
@@ -122,7 +126,9 @@ const isSchedulingTransactionValid = (state: AppState): boolean => {
   const depositValid = isValidScheduleDeposit(state);
   const timeBountyValid = isValidCurrentTimeBounty(state);
 
+  // return true if all fields are valid
   return (
+    // either windowStart or scheduleTimestamp is used for scheduling
     (windowStartValid || scheduleTimestampValid) &&
     windowSizeValid &&
     scheduleGasPriceValid &&
@@ -130,4 +136,79 @@ const isSchedulingTransactionValid = (state: AppState): boolean => {
     depositValid &&
     timeBountyValid
   );
+};
+
+export interface IGetValidateScheduleParamsCallPayload {
+  to: string;
+  data: string;
+}
+
+export const getValidateScheduleParamsCallPayload = (
+  state: AppState
+): IGetValidateScheduleParamsCallPayload | undefined => {
+  const wallet = getWalletInst(state);
+  const currentTo = getCurrentTo(state);
+  const currentValue = getCurrentValue(state);
+  const timeBounty = getTimeBounty(state);
+  const scheduleGasPrice = getScheduleGasPrice(state);
+  const scheduleGasLimit = getScheduleGasLimit(state);
+  const scheduleType = getScheduleType(state);
+  const deposit = getScheduleDeposit(state);
+  const scheduleTimestamp = getScheduleTimestamp(state);
+  const windowSize = getWindowSize(state);
+  const callData = getData(state);
+  const scheduleTimezone = getScheduleTimezone(state);
+  const windowStart = getWindowStart(state);
+
+  /*
+   * Checks if any of these values are null or invalid
+   * due to an user input.
+   */
+  if (
+    !currentValue.value ||
+    !currentTo.value ||
+    !scheduleGasPrice.value ||
+    !wallet ||
+    !windowSize.value ||
+    // we need either windowStart or scheduleTimestamp for scheduling
+    !(windowStart.value || scheduleTimestamp.value)
+  ) {
+    return;
+  }
+
+  const callGasLimit = scheduleGasLimit.value || EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK;
+
+  const endowment = calcEACEndowment(
+    callGasLimit,
+    currentValue.value,
+    scheduleGasPrice.value,
+    timeBounty.value
+  );
+
+  const fromAddress = wallet.getAddressString();
+
+  const data = getValidateRequestParamsData(
+    bufferToHex(currentTo.value),
+    callData.value ? bufferToHex(callData.value) : '',
+    callGasLimit,
+    currentValue.value,
+    windowSizeBlockToMin(windowSize.value, scheduleType.value),
+    calculateWindowStart(
+      scheduleType.value,
+      scheduleTimestamp,
+      scheduleTimezone.value,
+      windowStart.value
+    ),
+    scheduleGasPrice.value,
+    timeBounty.value,
+    deposit.value || Wei('0'),
+    scheduleType.value === 'time',
+    endowment,
+    fromAddress
+  );
+
+  return {
+    to: EAC_ADDRESSES.KOVAN.requestFactory,
+    data
+  };
 };

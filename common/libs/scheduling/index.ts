@@ -49,9 +49,10 @@ export const calcEACEndowment = (
   callGas: Wei | null,
   callValue: Wei | null,
   callGasPrice: Wei | null,
-  timeBounty: Wei
+  timeBounty: Wei | null
 ) => {
   callValue = callValue || Wei('0');
+  timeBounty = timeBounty || Wei('0');
 
   return callValue.add(
     calcEACFutureExecutionCost(
@@ -85,7 +86,7 @@ export const getScheduleData = (
   callGas: Wei | null,
   callValue: Wei | null,
   windowSize: BN | null,
-  windowStart: any,
+  windowStart: number,
   callGasPrice: Wei | null,
   timeBounty: Wei | null,
   requiredDeposit: Wei | null
@@ -98,6 +99,10 @@ export const getScheduleData = (
     callData = toBuffer(callData);
   }
 
+  /*
+   * Checks if any of these values are null or invalid
+   * due to an user input.
+   */
   if (
     !callValue ||
     !callGas ||
@@ -160,16 +165,17 @@ export const getValidateRequestParamsData = (
   callData = '',
   callGas: Wei,
   callValue: any,
-  windowSize: BN | null,
+  windowSize: Wei | null,
   windowStart: number,
   gasPrice: Wei,
-  timeBounty: Wei,
+  timeBounty: Wei | null,
   requiredDeposit: Wei,
   isTimestamp: boolean,
   endowment: Wei,
   fromAddress: string
 ): string => {
-  windowSize = windowSize || new BN(0);
+  windowSize = windowSize || Wei('0');
+  timeBounty = timeBounty || Wei('0');
 
   const temporalUnit = isTimestamp ? 2 : 1;
   const freezePeriod = isTimestamp ? 3 * 60 : 10; // 3 minutes or 10 blocks

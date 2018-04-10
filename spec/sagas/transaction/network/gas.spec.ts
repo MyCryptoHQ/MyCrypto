@@ -22,7 +22,7 @@ import {
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
-import { getSchedulingToggle } from 'selectors/schedule/fields';
+import { isSchedulingEnabled } from 'selectors/schedule/fields';
 import { setScheduleGasLimitField } from 'actions/schedule';
 
 describe('shouldEstimateGas*', () => {
@@ -181,10 +181,10 @@ describe('estimateGas*', () => {
     );
   });
 
-  it('should select getSchedulingToggle', () => {
+  it('should select isSchedulingEnabled', () => {
     gens.timeOutCase = gens.successCase.clone();
     expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
-      select(getSchedulingToggle)
+      select(isSchedulingEnabled)
     );
   });
 

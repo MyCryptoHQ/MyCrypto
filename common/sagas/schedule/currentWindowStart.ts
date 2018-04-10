@@ -1,8 +1,8 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { TypeKeys } from 'actions/schedule/constants';
 import { SetCurrentWindowStartAction } from 'actions/schedule/actionTypes/windowStart';
-import { SetWindowStartFieldAction, setWindowStartField } from 'actions/schedule';
+import { setWindowStartField } from 'actions/schedule';
 
 export function* setCurrentWindowStart({
   payload: raw
@@ -11,11 +11,7 @@ export function* setCurrentWindowStart({
 
   value = parseInt(raw, 10);
 
-  yield call(setField, { value, raw });
-}
-
-export function* setField(payload: SetWindowStartFieldAction['payload']) {
-  yield put(setWindowStartField(payload));
+  yield put(setWindowStartField({ value, raw }));
 }
 
 export const currentWindowStart = takeLatest(

@@ -22,10 +22,6 @@
     background-repeat: no-repeat;
     display: block;
     background-size: cover;
-
-    @media (min-width: $screen-xs) {
-      margin-right: 15px;
-    }
   }
 
   &-description {

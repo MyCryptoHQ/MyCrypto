@@ -21,7 +21,7 @@ import { getNetworkConfig } from 'selectors/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { computeIndexingHash } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
-import { ICurrentSchedulingToggle, getSchedulingToggle } from 'selectors/schedule';
+import { isSchedulingEnabled } from 'selectors/schedule/fields';
 
 export const broadcastTransactionWrapper = (func: (serializedTx: string) => SagaIterator) =>
   function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
@@ -51,10 +51,9 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       const broadcastedHash: string = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
       yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
 
-      const schedulingToggle: ICurrentSchedulingToggle = yield select(getSchedulingToggle);
       const network: NetworkConfig = yield select(getNetworkConfig);
 
-      const scheduling = Boolean(schedulingToggle && schedulingToggle.value);
+      const scheduling: boolean = yield select(isSchedulingEnabled);
       yield put(
         showNotification(
           'success',

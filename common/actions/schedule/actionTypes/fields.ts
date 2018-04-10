@@ -83,7 +83,6 @@ interface SetScheduleDepositFieldAction {
 interface SetScheduleParamsValidityAction {
   type: TypeKeys.SCHEDULE_PARAMS_VALIDITY_SET;
   payload: {
-    raw: boolean;
     value: boolean;
   };
 }

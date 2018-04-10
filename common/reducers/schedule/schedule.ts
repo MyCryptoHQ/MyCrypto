@@ -1,5 +1,5 @@
 import { ScheduleFieldAction, TypeKeys as TK } from 'actions/schedule';
-import { Reducer, combineReducers } from 'redux';
+import { Reducer } from 'redux';
 import { State } from './typings';
 import { gasPriceToBase, fromWei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
@@ -32,7 +32,7 @@ const INITIAL_STATE: State = {
     value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
   },
   scheduleDeposit: { raw: '', value: null },
-  scheduleParamsValidity: { raw: true, value: true }
+  scheduleParamsValidity: { value: true }
 };
 
 const updateScheduleField = (key: keyof State): Reducer<State> => (
@@ -74,6 +74,4 @@ export const schedule = (state: State = INITIAL_STATE, action: ScheduleFieldActi
 
 export { State };
 
-export default combineReducers({
-  schedule
-});
+export default schedule;

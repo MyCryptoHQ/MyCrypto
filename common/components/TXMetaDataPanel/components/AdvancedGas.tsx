@@ -64,18 +64,16 @@ class AdvancedGas extends React.Component<Props, State> {
 
     return (
       <div className="AdvancedGas row form-group">
-        {!scheduling && (
-          <div className="AdvancedGas-calculate-limit">
-            <label className="checkbox">
-              <input
-                type="checkbox"
-                defaultChecked={autoGasLimitEnabled}
-                onChange={this.handleToggleAutoGasLimit}
-              />
-              <span>Automatically Calculate Gas Limit</span>
-            </label>
-          </div>
-        )}
+        <div className="AdvancedGas-calculate-limit">
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              defaultChecked={autoGasLimitEnabled}
+              onChange={this.handleToggleAutoGasLimit}
+            />
+            <span>Automatically Calculate Gas Limit</span>
+          </label>
+        </div>
 
         <div className="AdvancedGas-flex-wrapper flex-wrapper">
           {gasPriceField && (
@@ -113,11 +111,12 @@ class AdvancedGas extends React.Component<Props, State> {
           )}
         </div>
 
-        {dataField && (
-          <div className="AdvancedGas-data">
-            <DataField />
-          </div>
-        )}
+        {!scheduling &&
+          dataField && (
+            <div className="AdvancedGas-data">
+              <DataField />
+            </div>
+          )}
 
         {this.renderFee()}
       </div>

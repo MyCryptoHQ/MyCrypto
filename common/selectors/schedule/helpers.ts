@@ -43,7 +43,7 @@ const windowSizeBlockToMin = (numberInput: BN | null, scheduleType: string | nul
 
 const calculateWindowStart = (
   scheduleType: string | null,
-  scheduleTimestamp: any,
+  scheduleTimestamp: ICurrentScheduleTimestamp,
   scheduleTimezone: string,
   blockWindowStart: number | null
 ): number =>

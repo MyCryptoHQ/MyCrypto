@@ -45,6 +45,12 @@ const isValidScheduleDeposit = (state: AppState): boolean => {
   return depositValue.gte(new BN('0')) && depositValue.bitLength() <= 256;
 };
 
+const isSchedulingEnabled = (state: AppState): boolean => {
+  const schedulingToggle = getSchedulingToggle(state);
+
+  return schedulingToggle && schedulingToggle.value;
+};
+
 export {
   getScheduleState,
   getTimeBounty,
@@ -61,7 +67,8 @@ export {
   getScheduleParamsValidity,
   isValidScheduleDeposit,
   isValidScheduleGasLimit,
-  isValidScheduleGasPrice
+  isValidScheduleGasPrice,
+  isSchedulingEnabled
 };
 
 export * from './current/windowSize';

@@ -5,7 +5,7 @@ import { Wei } from 'libs/units';
 
 interface ICurrentTimeBounty {
   raw: string;
-  value: Wei;
+  value: Wei | null;
 }
 
 const isValidCurrentTimeBounty = (state: AppState) => {

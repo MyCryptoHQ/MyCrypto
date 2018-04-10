@@ -8,13 +8,13 @@ import {
   SetScheduleGasLimitFieldAction,
   SetScheduleDepositFieldAction,
   SetScheduleTimezoneAction,
-  SetScheduleParamsValidityAction
+  SetScheduleParamsValidityAction,
+  SetTimeBountyFieldAction
 } from 'actions/schedule';
-import { Wei } from 'libs/units';
 
 export interface State {
   schedulingToggle: SetSchedulingToggleAction['payload'];
-  timeBounty: { raw: string; value: Wei };
+  timeBounty: SetTimeBountyFieldAction['payload'];
   windowSize: SetWindowSizeFieldAction['payload'];
   windowStart: SetWindowStartFieldAction['payload'];
   scheduleTimestamp: SetScheduleTimestampFieldAction['payload'];

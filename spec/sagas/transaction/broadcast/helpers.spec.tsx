@@ -25,7 +25,7 @@ import {
   getSerializedTxAndIndexingHash,
   shouldBroadcastTransaction
 } from 'sagas/transaction/broadcast/helpers';
-import { getSchedulingToggle } from 'selectors/schedule';
+import { isSchedulingEnabled } from 'selectors/schedule/fields';
 
 describe('broadcastTransactionWrapper*', () => {
   const indexingHash = 'indexingHash';
@@ -119,16 +119,16 @@ describe('broadcastTransactionWrapper*', () => {
     );
   });
 
-  it('select getSchedulingToggle', () => {
-    expect(gens.gen.next().value).toEqual(select(getSchedulingToggle));
-  });
-
   it('select getNetworkConfig', () => {
     expect(gens.gen.next().value).toEqual(select(getNetworkConfig));
   });
 
+  it('select isSchedulingEnabled', () => {
+    expect(gens.gen.next(network).value).toEqual(select(isSchedulingEnabled));
+  });
+
   it('should put showNotification', () => {
-    expect(gens.gen.next(network).value).toEqual(
+    expect(gens.gen.next(false).value).toEqual(
       put(
         showNotification(
           'success',

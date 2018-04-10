@@ -33,8 +33,8 @@ import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'actions/co
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { AddressMessage } from 'config';
-import { getSchedulingToggle } from 'selectors/schedule';
-import { setScheduleGasLimitField, SetSchedulingToggleAction } from 'actions/schedule';
+import { isSchedulingEnabled } from 'selectors/schedule/fields';
+import { setScheduleGasLimitField } from 'actions/schedule';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
@@ -111,9 +111,9 @@ export function* estimateGas(): SagaIterator {
           value: gasLimit
         };
 
-        const scheduling: SetSchedulingToggleAction['payload'] = yield select(getSchedulingToggle);
+        const scheduling: boolean = yield select(isSchedulingEnabled);
 
-        if (scheduling && scheduling.value) {
+        if (scheduling) {
           yield put(setScheduleGasLimitField(gasSetOptions));
         } else {
           yield put(setGasLimitField(gasSetOptions));

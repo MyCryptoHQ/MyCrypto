@@ -6,14 +6,14 @@ import { validDecimal, validNumber } from 'libs/validators';
 import { toTokenBase, Wei } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
 import { SetCurrentTimeBountyAction } from 'actions/schedule/actionTypes/timeBounty';
-import { SetTimeBountyFieldAction, setTimeBountyField } from 'actions/schedule';
+import { setTimeBountyField } from 'actions/schedule';
 
 export function* setCurrentTimeBounty({ payload: raw }: SetCurrentTimeBountyAction): SagaIterator {
   const decimal: number = yield select(getDecimal);
   const unit: string = yield select(getUnit);
 
   if (!validNumber(parseInt(raw, 10)) || !validDecimal(raw, decimal)) {
-    yield call(setField, { raw, value: null });
+    yield put(setTimeBountyField({ raw, value: null }));
   }
 
   const value = toTokenBase(raw, decimal);
@@ -21,11 +21,7 @@ export function* setCurrentTimeBounty({ payload: raw }: SetCurrentTimeBountyActi
 
   const isValid = isInputValid && value.gte(Wei('0'));
 
-  yield call(setField, { raw, value: isValid ? value : null });
-}
-
-export function* setField(payload: SetTimeBountyFieldAction['payload']) {
-  yield put(setTimeBountyField(payload));
+  yield put(setTimeBountyField({ raw, value: isValid ? value : null }));
 }
 
 export const currentTimeBounty = takeLatest(

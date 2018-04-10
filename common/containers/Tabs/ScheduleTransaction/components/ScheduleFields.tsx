@@ -10,7 +10,12 @@ import {
   ScheduleGasLimitField,
   ScheduleDepositField
 } from '.';
-import { ScheduleTimezoneDropDown, ScheduleTimestampField, ScheduleType } from 'components';
+import {
+  ScheduleTimezoneDropDown,
+  ScheduleTimestampField,
+  ScheduleType,
+  DataField
+} from 'components';
 import './ScheduleFields.scss';
 import translate from 'translations';
 
@@ -76,8 +81,14 @@ class ScheduleFieldsClass extends React.Component<Props> {
           </div>
         </div>
 
+        <div className="row form-group">
+          <div className="col-xs-12 AdvancedGas-data">
+            <DataField />
+          </div>
+        </div>
+
         <div className="row">
-          <div className="col-12">
+          <div className="col-xs-12">
             <a
               href="https://blog.chronologic.network/announcing-the-ethereum-alarm-clock-chronologic-partnership-b3d7545bea3b"
               target="_blank"
