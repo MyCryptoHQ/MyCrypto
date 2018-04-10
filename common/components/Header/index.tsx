@@ -1,12 +1,14 @@
 import {
   TChangeLanguage,
   TChangeNodeIntent,
+  TChangeNodeIntentOneTime,
   TAddCustomNode,
   TRemoveCustomNode,
   TAddCustomNetwork,
   AddCustomNodeAction,
   changeLanguage,
   changeNodeIntent,
+  changeNodeIntentOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
@@ -48,6 +50,7 @@ interface PassedProps {
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
+  changeNodeIntentOneTime: TChangeNodeIntentOneTime;
   setGasPriceField: TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
@@ -80,6 +83,7 @@ const mapDispatchToProps: DispatchProps = {
   setGasPriceField,
   changeLanguage,
   changeNodeIntent,
+  changeNodeIntentOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
@@ -99,7 +103,7 @@ class Header extends Component<Props, State> {
   public componentDidMount() {
     const { networkParam, staticNetworkIds } = this.props;
     if (networkParam && staticNetworkIds.includes(networkParam.toUpperCase() as any)) {
-      this.props.changeNodeIntent(`${networkParam.toLowerCase()}_auto`);
+      this.props.changeNodeIntentOneTime(`${networkParam.toLowerCase()}_auto`);
     }
   }
 

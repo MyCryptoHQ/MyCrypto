@@ -6,7 +6,6 @@ import {
   put,
   take,
   takeEvery,
-  takeLeading,
   select,
   apply,
   takeLatest
@@ -25,12 +24,10 @@ import {
   toggleOffline,
   changeNode,
   changeNodeIntent,
-  changeNodeIntentOneTime,
   setLatestBlock,
   AddCustomNodeAction,
   ChangeNodeForceAction,
-  ChangeNodeIntentAction,
-  ChangeNodeIntentOneTimeAction
+  ChangeNodeIntentAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { resetWallet } from 'actions/wallet';
@@ -111,6 +108,11 @@ export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 1150);
 }
 
+export function* handleNodeChangeIntentOneTime(): SagaIterator {
+  const action = yield take(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME);
+  yield call(handleNodeChangeIntent, action);
+}
+
 export function* handleNodeChangeIntent({
   payload: nodeIdToSwitchTo
 }: ChangeNodeIntentAction): SagaIterator {
@@ -167,6 +169,7 @@ export function* handleNodeChangeIntent({
     }
   }
 
+  // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
   yield call(delay, 10);
   let currentBlock;
   try {
@@ -223,7 +226,7 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
 }
 
 export const node = [
-  takeLeading(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME, handleNodeChangeIntent),
+  fork(handleNodeChangeIntentOneTime),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
