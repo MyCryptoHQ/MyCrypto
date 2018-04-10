@@ -112,7 +112,7 @@ export const getScheduleData = (
     !timeBounty ||
     timeBounty.lt(Wei('0')) ||
     callGasPrice.lt(Wei('0')) ||
-    windowSize.lt(Wei('0')) ||
+    windowSize.lt(new BN(0)) ||
     windowSize.bitLength() > 256
   ) {
     return;
@@ -165,7 +165,7 @@ export const getValidateRequestParamsData = (
   callData = '',
   callGas: Wei,
   callValue: any,
-  windowSize: Wei | null,
+  windowSize: BN | null,
   windowStart: number,
   gasPrice: Wei,
   timeBounty: Wei | null,
@@ -174,7 +174,7 @@ export const getValidateRequestParamsData = (
   endowment: Wei,
   fromAddress: string
 ): string => {
-  windowSize = windowSize || Wei('0');
+  windowSize = windowSize || new BN(0);
   timeBounty = timeBounty || Wei('0');
 
   const temporalUnit = isTimestamp ? 2 : 1;
