@@ -30,7 +30,6 @@ import {
   calcEACEndowment,
   getSchedulerAddress
 } from 'libs/scheduling';
-import BN from 'bn.js';
 import { makeTransaction } from 'libs/transaction';
 import EthTx from 'ethereumjs-tx';
 import { getLatestBlock } from 'selectors/config';
@@ -41,6 +40,7 @@ import {
   isScheduleTimestampValid
 } from 'selectors/schedule/helpers';
 import { getScheduleState } from 'selectors/schedule/fields';
+import { Nonce } from 'libs/units';
 
 export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const { isFullTransaction } = getTransaction(state);
@@ -96,12 +96,12 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     data: transactionData,
     gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
     gasPrice: gasPrice.value,
-    nonce: new BN(0),
+    nonce: Nonce('0'),
     value: endowment
   };
 
   if (nonce) {
-    transactionOptions.nonce = new BN(nonce.raw);
+    transactionOptions.nonce = Nonce(nonce.raw);
   }
 
   const schedulingTransaction: EthTx = makeTransaction(transactionOptions);

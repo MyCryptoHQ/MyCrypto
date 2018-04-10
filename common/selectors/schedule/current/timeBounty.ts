@@ -1,11 +1,11 @@
 import { AppState } from 'reducers';
 import { getTimeBounty } from '../fields';
-import BN from 'bn.js';
 import { timeBountyValidator } from 'libs/validators';
+import { Wei } from 'libs/units';
 
 interface ICurrentTimeBounty {
   raw: string;
-  value: BN;
+  value: Wei;
 }
 
 const isValidCurrentTimeBounty = (state: AppState) => {

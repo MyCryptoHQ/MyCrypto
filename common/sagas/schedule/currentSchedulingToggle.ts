@@ -4,13 +4,13 @@ import { SagaIterator } from 'redux-saga';
 import { TypeKeys } from 'actions/schedule/constants';
 import { SetGasLimitFieldAction } from 'actions/transaction';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import BN from 'bn.js';
 import { SetSchedulingToggleAction } from 'actions/schedule/actionTypes';
+import { Wei } from 'libs/units';
 
 export function* setGasLimitForScheduling({
   payload: { value: useScheduling }
 }: SetSchedulingToggleAction): SagaIterator {
-  const gasLimit = useScheduling ? EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT : new BN('21000');
+  const gasLimit = useScheduling ? EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT : Wei('21000');
 
   yield call(setGasLimit, {
     raw: gasLimit.toString(),

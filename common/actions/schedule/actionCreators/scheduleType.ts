@@ -1,5 +1,5 @@
 import { TypeKeys } from 'actions/schedule';
-import { SetCurrentScheduleTypeAction } from '../../actionTypes/scheduleType';
+import { SetCurrentScheduleTypeAction } from '../actionTypes/scheduleType';
 
 export type TSetCurrentScheduleType = typeof setCurrentScheduleType;
 export const setCurrentScheduleType = (

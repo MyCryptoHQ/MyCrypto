@@ -1,4 +1,4 @@
-import { SetCurrentWindowSizeAction } from '../../actionTypes/windowSize';
+import { SetCurrentWindowSizeAction } from '../actionTypes/windowSize';
 import { TypeKeys } from 'actions/schedule';
 
 type TSetCurrentWindowSize = typeof setCurrentWindowSize;

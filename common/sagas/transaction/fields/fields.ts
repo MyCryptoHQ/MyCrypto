@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { SagaIterator, delay } from 'redux-saga';
 import {
@@ -37,7 +36,7 @@ export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIter
   yield put(
     setGasPriceField({
       raw: payload,
-      value: validGasPrice ? gasPriceToBase(priceFloat) : new BN(0)
+      value: validGasPrice ? gasPriceToBase(priceFloat) : Wei('0')
     })
   );
 }

@@ -1,4 +1,4 @@
-import { SetCurrentTimeBountyAction } from '../../actionTypes/timeBounty';
+import { SetCurrentTimeBountyAction } from '../actionTypes/timeBounty';
 import { TypeKeys } from 'actions/schedule';
 
 type TSetCurrentTimeBounty = typeof setCurrentTimeBounty;

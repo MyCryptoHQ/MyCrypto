@@ -1,18 +1,18 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
-import { toWei, Units, gasPriceToBase, Address } from '../units';
+import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import { toBuffer } from 'ethereumjs-util';
 import RequestFactory from './contracts/RequestFactory';
 
-const TIME_BOUNTY_MIN = new BN('1');
+const TIME_BOUNTY_MIN = Wei('1');
 
 export const EAC_SCHEDULING_CONFIG = {
   DAPP_ADDRESS: 'https://app.chronologic.network',
-  SCHEDULE_GAS_LIMIT_FALLBACK: new BN('21000'),
+  SCHEDULE_GAS_LIMIT_FALLBACK: Wei('21000'),
   SCHEDULE_GAS_PRICE_FALLBACK: 20, // Gwei
-  FEE: new BN('0'),
-  FUTURE_EXECUTION_COST: new BN('180000'),
-  SCHEDULING_GAS_LIMIT: new BN('1500000'),
+  FEE: Wei('0'),
+  FUTURE_EXECUTION_COST: Wei('180000'),
+  SCHEDULING_GAS_LIMIT: Wei('1500000'),
   WINDOW_SIZE_DEFAULT_TIME: 10,
   WINDOW_SIZE_DEFAULT_BLOCK: 90,
   TIME_BOUNTY_MIN,
@@ -32,9 +32,9 @@ export const EAC_ADDRESSES = {
 };
 
 export const calcEACFutureExecutionCost = (
-  callGas: BN,
-  callGasPrice: BN,
-  timeBounty: BN | null
+  callGas: Wei,
+  callGasPrice: Wei,
+  timeBounty: Wei | null
 ) => {
   const totalGas = callGas.add(EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST);
 
@@ -46,12 +46,12 @@ export const calcEACFutureExecutionCost = (
 };
 
 export const calcEACEndowment = (
-  callGas: BN | null,
-  callValue: BN | null,
-  callGasPrice: BN | null,
-  timeBounty: BN
+  callGas: Wei | null,
+  callValue: Wei | null,
+  callGasPrice: Wei | null,
+  timeBounty: Wei
 ) => {
-  callValue = callValue || new BN(0);
+  callValue = callValue || Wei('0');
 
   return callValue.add(
     calcEACFutureExecutionCost(
@@ -63,10 +63,10 @@ export const calcEACEndowment = (
 };
 
 export const calcEACTotalCost = (
-  callGas: BN,
-  gasPrice: BN,
-  callGasPrice: BN | null,
-  timeBounty: BN | null
+  callGas: Wei,
+  gasPrice: Wei,
+  callGasPrice: Wei | null,
+  timeBounty: Wei | null
 ) => {
   if (!callGasPrice) {
     callGasPrice = gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK);
@@ -82,16 +82,16 @@ export const calcEACTotalCost = (
 export const getScheduleData = (
   toAddress: string,
   callData: string | Buffer = '',
-  callGas: BN | null,
-  callValue: BN | null,
+  callGas: Wei | null,
+  callValue: Wei | null,
   windowSize: BN | null,
   windowStart: any,
-  callGasPrice: BN | null,
-  timeBounty: BN | null,
-  requiredDeposit: BN | null
+  callGasPrice: Wei | null,
+  timeBounty: Wei | null,
+  requiredDeposit: Wei | null
 ) => {
-  if (!requiredDeposit || requiredDeposit.lt(new BN(0))) {
-    requiredDeposit = new BN(0);
+  if (!requiredDeposit || requiredDeposit.lt(Wei('0'))) {
+    requiredDeposit = Wei('0');
   }
 
   if (typeof callData === 'string') {
@@ -105,9 +105,9 @@ export const getScheduleData = (
     !windowStart ||
     !windowSize ||
     !timeBounty ||
-    timeBounty.lt(new BN(0)) ||
-    callGasPrice.lt(new BN(0)) ||
-    windowSize.lt(new BN(0)) ||
+    timeBounty.lt(Wei('0')) ||
+    callGasPrice.lt(Wei('0')) ||
+    windowSize.lt(Wei('0')) ||
     windowSize.bitLength() > 256
   ) {
     return;
@@ -158,15 +158,15 @@ export const parseSchedulingParametersValidity = (isValid: boolean[]) => {
 export const getValidateRequestParamsData = (
   toAddress: string,
   callData = '',
-  callGas: BN,
+  callGas: Wei,
   callValue: any,
   windowSize: BN | null,
   windowStart: number,
-  gasPrice: BN,
-  timeBounty: BN,
-  requiredDeposit: BN,
+  gasPrice: Wei,
+  timeBounty: Wei,
+  requiredDeposit: Wei,
   isTimestamp: boolean,
-  endowment: BN,
+  endowment: Wei,
   fromAddress: string
 ): string => {
   windowSize = windowSize || new BN(0);

@@ -35,8 +35,7 @@ import {
   EAC_ADDRESSES,
   parseSchedulingParametersValidity
 } from 'libs/scheduling';
-import { gasPriceToBase } from 'libs/units';
-import BN from 'bn.js';
+import { gasPriceToBase, Wei } from 'libs/units';
 import { bufferToHex } from 'ethereumjs-util';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { windowSizeBlockToMin, calculateWindowStart } from 'selectors/schedule/helpers';
@@ -102,7 +101,7 @@ function* checkSchedulingParametersValidity() {
 
   const endowment = calcEACEndowment(
     callGasLimit,
-    currentValue.value || new BN(0),
+    currentValue.value || Wei('0'),
     scheduleGasPrice.value || gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK),
     timeBounty.value
   );
@@ -123,7 +122,7 @@ function* checkSchedulingParametersValidity() {
     ),
     scheduleGasPrice.value,
     timeBounty.value,
-    deposit.value || new BN(0),
+    deposit.value || Wei('0'),
     scheduleType.value === 'time',
     endowment,
     fromAddress

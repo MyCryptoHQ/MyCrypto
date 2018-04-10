@@ -1,4 +1,4 @@
-import { SetCurrentWindowStartAction } from '../../actionTypes/windowStart';
+import { SetCurrentWindowStartAction } from '../actionTypes/windowStart';
 import { TypeKeys } from 'actions/schedule';
 
 type TSetCurrentWindowStart = typeof setCurrentWindowStart;

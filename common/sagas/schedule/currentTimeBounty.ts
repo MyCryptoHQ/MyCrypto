@@ -3,9 +3,8 @@ import { SagaIterator } from 'redux-saga';
 import { TypeKeys } from 'actions/schedule/constants';
 import { getDecimal, getUnit } from 'selectors/transaction';
 import { validDecimal, validNumber } from 'libs/validators';
-import { toTokenBase } from 'libs/units';
+import { toTokenBase, Wei } from 'libs/units';
 import { validateInput } from 'sagas/transaction/validationHelpers';
-import BN from 'bn.js';
 import { SetCurrentTimeBountyAction } from 'actions/schedule/actionTypes/timeBounty';
 import { SetTimeBountyFieldAction, setTimeBountyField } from 'actions/schedule';
 
@@ -20,7 +19,7 @@ export function* setCurrentTimeBounty({ payload: raw }: SetCurrentTimeBountyActi
   const value = toTokenBase(raw, decimal);
   const isInputValid: boolean = yield call(validateInput, value, unit);
 
-  const isValid = isInputValid && value.gte(new BN(0));
+  const isValid = isInputValid && value.gte(Wei('0'));
 
   yield call(setField, { raw, value: isValid ? value : null });
 }

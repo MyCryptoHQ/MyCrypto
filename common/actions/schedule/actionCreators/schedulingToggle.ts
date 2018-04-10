@@ -1,4 +1,4 @@
-import { SetCurrentSchedulingToggleAction } from '../../actionTypes/schedulingToggle';
+import { SetCurrentSchedulingToggleAction } from '../actionTypes/schedulingToggle';
 import { TypeKeys } from 'actions/schedule';
 
 type TSetCurrentSchedulingToggle = typeof setCurrentSchedulingToggle;

@@ -2,7 +2,7 @@ import { TypeKeys } from 'actions/schedule';
 import {
   SetCurrentScheduleTimestampAction,
   SetCurrentScheduleTimezoneAction
-} from '../../actionTypes/scheduleTimestamp';
+} from '../actionTypes/scheduleTimestamp';
 
 export type TSetCurrentScheduleTimestamp = typeof setCurrentScheduleTimestamp;
 export const setCurrentScheduleTimestamp = (
