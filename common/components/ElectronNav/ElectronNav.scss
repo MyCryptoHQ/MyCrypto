@@ -12,13 +12,18 @@
   }
 
   &-branding {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
     padding: 36px 10px 18px;
+    background: #FFF;
+    z-index: $zindex-navbar;
+    border-bottom: 1px solid $gray-lighter;
   }
 
   &-links {
     padding: 0;
     margin: 0 auto;
-    border-top: 1px solid $gray-lighter;
   }
 
   &-status {
@@ -54,12 +59,13 @@
     position: absolute;
     top: 0;
     left: 100%;
-    bottom: 0;
     width: 100%;
     z-index: $zindex-navbar - 1;
 
     &-back {
       @include reset-button;
+      position: sticky;
+      top: 0;
       display: flex;
       align-items: center;
       width: 100%;
@@ -67,6 +73,7 @@
       padding: 30px 0 8px 10px;
       border-bottom: 1px solid $gray-lighter;
       color: rgba($text-color, 0.4);
+      background: #FFF;
 
       &-icon {
         font-size: 12px;
