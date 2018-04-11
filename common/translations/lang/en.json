@@ -378,6 +378,7 @@
     "GENERATE_THING": "Generate a $thing",
     "REGENERATE_MNEMONIC": "Regenerate Phrase",
     "CONFIRM_MNEMONIC": "Confirm Phrase",
+    "PEEK_MNEMONIC": "Peek",
     "MNEMONIC_CHOOSE_ADDR": "Choose address",
     "MNEMONIC_DESCRIPTION_1": "Click the words of your phrase in order. If you've forgotten the next word, click the 'Peek' button below.",
     "MNEMONIC_DESCRIPTION_2": "Write these words down. Do not copy them to your clipboard, or save them anywhere online.",

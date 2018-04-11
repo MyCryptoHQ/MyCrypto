@@ -8,6 +8,8 @@ interface Props {
   index: number;
   showIndex: boolean;
   isNext: boolean;
+  isPeeked: boolean;
+  isConfirming: boolean;
   word: string;
   value: string;
   hasBeenConfirmed: boolean;
@@ -26,15 +28,26 @@ export default class MnemonicWord extends React.Component<Props, State> {
   };
 
   public render() {
-    const { index, showIndex, word, hasBeenConfirmed, confirmIndex } = this.props;
+    const {
+      index,
+      showIndex,
+      word,
+      isConfirming,
+      hasBeenConfirmed,
+      confirmIndex,
+      isPeeked
+    } = this.props;
     const { flashingError } = this.state;
+    const btnClassName = classnames({
+      btn: true,
+      'btn-default': !(hasBeenConfirmed || isPeeked || flashingError),
+      'btn-success': hasBeenConfirmed || isPeeked,
+      'btn-danger': flashingError
+    });
 
     return (
       <div className="input-group-wrapper MnemonicWord">
-        <label
-          className="input-group input-group-inline ENSInput-name"
-          style={{ cursor: 'pointer' }}
-        >
+        <label className="input-group input-group-inline ENSInput-name">
           {showIndex && (
             <span className="input-group-addon input-group-addon--transparent">{index + 1}.</span>
           )}
@@ -43,15 +56,22 @@ export default class MnemonicWord extends React.Component<Props, State> {
               {confirmIndex + 1}.
             </span>
           )}
-          <Input
-            className={`MnemonicWord-word-input ${
-              hasBeenConfirmed ? 'MnemonicWord-word-input-confirmed' : ''
-            } ${flashingError ? 'MnemonicWord-word-input-error' : ''}`}
-            value={word}
-            onChange={this.handleChange}
-            onClick={this.handleClick}
-            readOnly={true}
-          />
+          {isConfirming ? (
+            <button
+              className={btnClassName}
+              onClick={() => this.handleClick(word)}
+              disabled={hasBeenConfirmed}
+            >
+              {word}
+            </button>
+          ) : (
+            <Input
+              className="MnemonicWord-word-input"
+              value={word}
+              onChange={this.handleChange}
+              readOnly={true}
+            />
+          )}
         </label>
       </div>
     );
@@ -61,12 +81,12 @@ export default class MnemonicWord extends React.Component<Props, State> {
     this.props.onChange(this.props.index, ev.currentTarget.value);
   };
 
-  private handleClick = (ev: React.FormEvent<HTMLInputElement>) => {
-    const { isNext } = this.props;
+  private handleClick = (value: string) => {
+    const { isNext, index, onClick } = this.props;
 
     if (!isNext) this.flashError();
 
-    this.props.onClick(this.props.index, ev.currentTarget.value);
+    onClick(index, value);
   };
 
   private flashError = () => {

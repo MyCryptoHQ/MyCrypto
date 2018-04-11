@@ -13,6 +13,7 @@ interface State {
   shuffledWords: WordTuple[][];
   isConfirming: boolean;
   isConfirmed: boolean;
+  isPeeking: boolean;
 }
 
 interface WordTuple {
@@ -26,7 +27,8 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     confirmValues: [],
     shuffledWords: [],
     isConfirming: false,
-    isConfirmed: false
+    isConfirmed: false,
+    isPeeking: false
   };
 
   public componentDidMount() {
@@ -80,6 +82,15 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
                 <i className="fa fa-refresh" /> {translate('REGENERATE_MNEMONIC')}
               </button>
             )}
+            {isConfirming && (
+              <button
+                className="GenerateMnemonic-buttons-btn btn btn-default"
+                disabled={canContinue}
+                onClick={this.peek}
+              >
+                <i className="fa fa-eye" /> {translate('PEEK_MNEMONIC')}
+              </button>
+            )}
             <button
               className="GenerateMnemonic-buttons-btn btn btn-primary"
               disabled={!canContinue}
@@ -117,7 +128,10 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     if (this.state.isConfirming) {
       this.setState({ isConfirmed: true });
     } else {
-      this.setState({ isConfirming: true, shuffledWords: this.getShuffledWords(this.state.words) });
+      this.setState({
+        isConfirming: true,
+        shuffledWords: this.getShuffledWords([...this.state.words])
+      });
     }
   };
 
@@ -134,10 +148,12 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   };
 
   private makeWord = (word: WordTuple) => {
+    const { isConfirming } = this.state;
     const hasBeenConfirmed = this.getWordConfirmed(word.word);
     const confirmIndex = this.state.words.indexOf(word.word);
     const nextIndex = this.state.confirmValues.length;
     const isNext = confirmIndex === nextIndex;
+    const isPeeked = this.state.isPeeking && isNext;
 
     return (
       <Word
@@ -145,6 +161,8 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
         index={word.index}
         showIndex={!this.state.isConfirming}
         isNext={isNext}
+        isPeeked={isPeeked}
+        isConfirming={isConfirming}
         word={word.word}
         value={this.state.confirmValues[word.index] || ''}
         hasBeenConfirmed={hasBeenConfirmed}
@@ -174,8 +192,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     this.setState({ isConfirmed: true });
   };
 
-  private getShuffledWords = (_array: Array<string>) => {
-    const array = [..._array];
+  private getShuffledWords = (array: string[]) => {
     const firstHalf: Array<WordTuple> = [];
     const lastHalf: Array<WordTuple> = [];
 
@@ -193,5 +210,21 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     });
 
     return [firstHalf, lastHalf];
+  };
+
+  private peek = () => {
+    this.setState(
+      {
+        isPeeking: true
+      },
+      () =>
+        setTimeout(
+          () =>
+            this.setState({
+              isPeeking: false
+            }),
+          400
+        )
+    );
   };
 }
