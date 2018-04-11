@@ -2,9 +2,12 @@ import { TypeKeys } from './constants';
 import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
 import { CustomNetworkConfig } from 'types/network';
 
-/*** Toggle Offline ***/
-export interface ToggleOfflineAction {
-  type: TypeKeys.CONFIG_TOGGLE_OFFLINE;
+export interface SetOnlineAction {
+  type: TypeKeys.CONFIG_SET_ONLINE;
+}
+
+export interface SetOfflineAction {
+  type: TypeKeys.CONFIG_SET_OFFLINE;
 }
 
 export interface ToggleAutoGasLimitAction {
@@ -95,7 +98,8 @@ export type NodeAction =
 
 export type MetaAction =
   | ChangeLanguageAction
-  | ToggleOfflineAction
+  | SetOnlineAction
+  | SetOfflineAction
   | ToggleAutoGasLimitAction
   | PollOfflineStatus
   | SetLatestBlockAction;
