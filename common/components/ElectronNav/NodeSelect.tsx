@@ -1,13 +1,16 @@
 import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import translate from 'translations';
+import CustomNodeModal from 'components/CustomNodeModal';
 import {
   TChangeNodeIntent,
   TAddCustomNode,
   TRemoveCustomNode,
   changeNodeIntent,
   addCustomNode,
-  removeCustomNode
+  removeCustomNode,
+  AddCustomNodeAction
 } from 'actions/config';
 import {
   isNodeChanging,
@@ -37,14 +40,24 @@ interface DispatchProps {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-class NodeSelect extends React.Component<Props> {
+interface State {
+  isAddingCustomNode: boolean;
+}
+
+class NodeSelect extends React.Component<Props, State> {
+  public state: State = {
+    isAddingCustomNode: false
+  };
+
   public render() {
     const { nodeSelection, nodeOptions } = this.props;
+    const { isAddingCustomNode } = this.state;
 
     return (
       <div className="NodeSelect">
         {nodeOptions.map(node => (
           <button
+            key={node.value}
             className={classnames({
               'NodeSelect-node': true,
               'is-active': node.value === nodeSelection
@@ -55,6 +68,15 @@ class NodeSelect extends React.Component<Props> {
             {this.renderNodeLabel(node)}
           </button>
         ))}
+        <button className="NodeSelect-node is-add" onClick={this.openCustomNodeModal}>
+          {translate('NODE_ADD')}
+        </button>
+
+        <CustomNodeModal
+          isOpen={isAddingCustomNode}
+          addCustomNode={this.addCustomNode}
+          handleClose={this.closeCustomNodeModal}
+        />
       </div>
     );
   }
@@ -75,6 +97,19 @@ class NodeSelect extends React.Component<Props> {
       </span>
     );
   }
+
+  private openCustomNodeModal = () => {
+    this.setState({ isAddingCustomNode: true });
+  };
+
+  private closeCustomNodeModal = () => {
+    this.setState({ isAddingCustomNode: false });
+  };
+
+  private addCustomNode = (payload: AddCustomNodeAction['payload']) => {
+    this.props.addCustomNode(payload);
+    this.closeCustomNodeModal();
+  };
 }
 
 export default connect(

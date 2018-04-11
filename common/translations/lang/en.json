@@ -172,6 +172,7 @@
     "NODE_NAME": "Node Name",
     "NODE_PORT": "Node Port",
     "NODE_CTA": "Save & Use Custom Node",
+    "NODE_ADD": "Add Custom Node",
     "SWAP_RATES": "Current Rates ",
     "SWAP_INIT_1": "I want to swap my ",
     "SWAP_INIT_2": " for ",

@@ -95,16 +95,19 @@ class RootClass extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <Provider store={store} key={Math.random()}>
-        <Router key={Math.random()}>
-          <React.Fragment>
-            {process.env.BUILD_ELECTRON && <TitleBar />}
-            {routes}
-            <LegacyRoutes />
-            <LogOutPrompt />
-          </React.Fragment>
-        </Router>
-      </Provider>
+      <React.Fragment>
+        <Provider store={store} key={Math.random()}>
+          <Router key={Math.random()}>
+            <React.Fragment>
+              {process.env.BUILD_ELECTRON && <TitleBar />}
+              {routes}
+              <LegacyRoutes />
+              <LogOutPrompt />
+            </React.Fragment>
+          </Router>
+        </Provider>
+        <div id="ModalContainer" />
+      </React.Fragment>
     );
   }
 }
