@@ -39,25 +39,13 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
       content = <FinalSteps walletType={WalletType.Mnemonic} />;
     } else {
       const canContinue = this.checkCanContinue();
-      const firstHalf: WordTuple[] = [];
-      const lastHalf: WordTuple[] = [];
-      words.forEach((word, index) => {
-        if (index < words.length / 2) {
-          firstHalf.push({ word, index });
-        } else {
-          lastHalf.push({ word, index });
-        }
-      });
+      const [firstHalf, lastHalf] = this.shuffle(words);
 
       content = (
         <div className="GenerateMnemonic">
           <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
 
-          <p className="GenerateMnemonic-help">
-            {isConfirming
-              ? translate('MNEMONIC_DESCRIPTION_1')
-              : translate('MNEMONIC_DESCRIPTION_2')}
-          </p>
+          <p className="GenerateMnemonic-help">Select the words in order.</p>
 
           <div className="GenerateMnemonic-words">
             {[firstHalf, lastHalf].map((ws, i) => (
@@ -88,6 +76,46 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
           <button className="GenerateMnemonic-skip" onClick={this.skip} />
         </div>
       );
+
+      // content = (
+      //   <div className="GenerateMnemonic">
+      //     <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
+
+      //     <p className="GenerateMnemonic-help">
+      //       {isConfirming
+      //         ? translate('MNEMONIC_DESCRIPTION_1')
+      //         : translate('MNEMONIC_DESCRIPTION_2')}
+      //     </p>
+
+      //     <div className="GenerateMnemonic-words">
+      //       {[firstHalf, lastHalf].map((ws, i) => (
+      //         <div key={i} className="GenerateMnemonic-words-column">
+      //           {ws.map(this.makeWord)}
+      //         </div>
+      //       ))}
+      //     </div>
+
+      //     <div className="GenerateMnemonic-buttons">
+      //       {!isConfirming && (
+      //         <button
+      //           className="GenerateMnemonic-buttons-btn btn btn-default"
+      //           onClick={this.regenerateWordArray}
+      //         >
+      //           <i className="fa fa-refresh" /> {translate('REGENERATE_MNEMONIC')}
+      //         </button>
+      //       )}
+      //       <button
+      //         className="GenerateMnemonic-buttons-btn btn btn-primary"
+      //         disabled={!canContinue}
+      //         onClick={this.goToNextStep}
+      //       >
+      //         {translate('CONFIRM_MNEMONIC')}
+      //       </button>
+      //     </div>
+
+      //     <button className="GenerateMnemonic-skip" onClick={this.skip} />
+      //   </div>
+      // );
     }
 
     return <Template>{content}</Template>;
@@ -133,14 +161,39 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     <Word
       key={`${word.word}${word.index}`}
       index={word.index}
+      showIndex={!this.state.isConfirming}
       word={word.word}
       value={this.state.confirmValues[word.index] || ''}
-      isReadOnly={!this.state.isConfirming}
       onChange={this.handleConfirmChange}
+      onClick={this.handleWordClick}
     />
   );
 
+  private handleWordClick = (index: number, value: string) => {
+    console.log('Index', index, 'value', value);
+  };
+
   private skip = () => {
     this.setState({ isConfirmed: true });
+  };
+
+  private shuffle = (array: Array<string>) => {
+    const firstHalf: Array<WordTuple> = [];
+    const lastHalf: Array<WordTuple> = [];
+
+    // Fisher-Yates shuffle
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    array.forEach((word: string, index: number) => {
+      const inFirstColumn = index < array.length / 2;
+      const half = inFirstColumn ? firstHalf : lastHalf;
+
+      half.push({ word, index });
+    });
+
+    return [firstHalf, lastHalf];
   };
 }
