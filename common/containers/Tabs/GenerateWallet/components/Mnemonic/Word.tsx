@@ -9,6 +9,8 @@ interface Props {
   showIndex: boolean;
   word: string;
   value: string;
+  hasBeenConfirmed: boolean;
+  confirmIndex: number;
   onChange(index: number, value: string): void;
   onClick(index: number, value: string): void;
 }
@@ -23,7 +25,7 @@ export default class MnemonicWord extends React.Component<Props, State> {
   };
 
   public render() {
-    const { index, showIndex, word } = this.props;
+    const { index, showIndex, word, hasBeenConfirmed, confirmIndex } = this.props;
 
     return (
       <div className="input-group-wrapper MnemonicWord">
@@ -34,8 +36,15 @@ export default class MnemonicWord extends React.Component<Props, State> {
           {showIndex && (
             <span className="input-group-addon input-group-addon--transparent">{index + 1}.</span>
           )}
+          {hasBeenConfirmed && (
+            <span className="input-group-addon input-group-addon--transparent">
+              {confirmIndex + 1}.
+            </span>
+          )}
           <Input
-            className={`MnemonicWord-word-input`}
+            className={`MnemonicWord-word-input ${
+              hasBeenConfirmed ? 'MnemonicWord-word-input-confirmed' : ''
+            }`}
             value={word}
             onChange={this.handleChange}
             onClick={this.handleClick}

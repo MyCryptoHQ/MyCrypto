@@ -10,6 +10,7 @@ import './Mnemonic.scss';
 interface State {
   words: string[];
   confirmValues: string[];
+  shuffledWords: WordTuple[][];
   isConfirming: boolean;
   isConfirmed: boolean;
 }
@@ -23,6 +24,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   public state: State = {
     words: [],
     confirmValues: [],
+    shuffledWords: [],
     isConfirming: false,
     isConfirmed: false
   };
@@ -32,14 +34,24 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   }
 
   public render() {
-    const { words, isConfirming, isConfirmed } = this.state;
+    const { words, shuffledWords, isConfirming, isConfirmed } = this.state;
     let content;
 
     if (isConfirmed) {
       content = <FinalSteps walletType={WalletType.Mnemonic} />;
     } else {
       const canContinue = this.checkCanContinue();
-      const [firstHalf, lastHalf] = this.shuffle(words);
+      const [firstHalf = [], lastHalf = []] = shuffledWords;
+
+      if (firstHalf.length === 0) {
+        words.forEach((word, index) => {
+          if (index < words.length / 2) {
+            firstHalf.push({ word, index });
+          } else {
+            lastHalf.push({ word, index });
+          }
+        });
+      }
 
       content = (
         <div className="GenerateMnemonic">
@@ -76,46 +88,6 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
           <button className="GenerateMnemonic-skip" onClick={this.skip} />
         </div>
       );
-
-      // content = (
-      //   <div className="GenerateMnemonic">
-      //     <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
-
-      //     <p className="GenerateMnemonic-help">
-      //       {isConfirming
-      //         ? translate('MNEMONIC_DESCRIPTION_1')
-      //         : translate('MNEMONIC_DESCRIPTION_2')}
-      //     </p>
-
-      //     <div className="GenerateMnemonic-words">
-      //       {[firstHalf, lastHalf].map((ws, i) => (
-      //         <div key={i} className="GenerateMnemonic-words-column">
-      //           {ws.map(this.makeWord)}
-      //         </div>
-      //       ))}
-      //     </div>
-
-      //     <div className="GenerateMnemonic-buttons">
-      //       {!isConfirming && (
-      //         <button
-      //           className="GenerateMnemonic-buttons-btn btn btn-default"
-      //           onClick={this.regenerateWordArray}
-      //         >
-      //           <i className="fa fa-refresh" /> {translate('REGENERATE_MNEMONIC')}
-      //         </button>
-      //       )}
-      //       <button
-      //         className="GenerateMnemonic-buttons-btn btn btn-primary"
-      //         disabled={!canContinue}
-      //         onClick={this.goToNextStep}
-      //       >
-      //         {translate('CONFIRM_MNEMONIC')}
-      //       </button>
-      //     </div>
-
-      //     <button className="GenerateMnemonic-skip" onClick={this.skip} />
-      //   </div>
-      // );
     }
 
     return <Template>{content}</Template>;
@@ -141,7 +113,8 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     if (this.state.isConfirming) {
       this.setState({ isConfirmed: true });
     } else {
-      this.setState({ isConfirming: true });
+      console.log('To confirming mode');
+      this.setState({ isConfirming: true, shuffledWords: this.getShuffledWords(this.state.words) });
     }
   };
 
@@ -157,27 +130,45 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     }
   };
 
-  private makeWord = (word: WordTuple) => (
-    <Word
-      key={`${word.word}${word.index}`}
-      index={word.index}
-      showIndex={!this.state.isConfirming}
-      word={word.word}
-      value={this.state.confirmValues[word.index] || ''}
-      onChange={this.handleConfirmChange}
-      onClick={this.handleWordClick}
-    />
-  );
+  private makeWord = (word: WordTuple) => {
+    const hasBeenConfirmed = this.getWordConfirmed(word.word);
+
+    return (
+      <Word
+        key={`${word.word}${word.index}`}
+        index={word.index}
+        showIndex={!this.state.isConfirming}
+        word={word.word}
+        value={this.state.confirmValues[word.index] || ''}
+        hasBeenConfirmed={hasBeenConfirmed}
+        confirmIndex={this.state.confirmValues.indexOf(word.word)}
+        onChange={this.handleConfirmChange}
+        onClick={this.handleWordClick}
+      />
+    );
+  };
 
   private handleWordClick = (index: number, value: string) => {
-    console.log('Index', index, 'value', value);
+    const { words, isConfirming, confirmValues: previousConfirmValues } = this.state;
+    const wordAlreadyConfirmed = previousConfirmValues.includes(value);
+    const activeIndex = previousConfirmValues.length;
+    const isCorrectChoice = words[activeIndex] === value;
+
+    if (isConfirming && !wordAlreadyConfirmed && isCorrectChoice) {
+      const confirmValues = previousConfirmValues.concat(value);
+
+      this.setState({ confirmValues }, () => console.log('!', this.state.confirmValues));
+    }
   };
+
+  private getWordConfirmed = (word: string) => this.state.confirmValues.includes(word);
 
   private skip = () => {
     this.setState({ isConfirmed: true });
   };
 
-  private shuffle = (array: Array<string>) => {
+  private getShuffledWords = (_array: Array<string>) => {
+    const array = [..._array];
     const firstHalf: Array<WordTuple> = [];
     const lastHalf: Array<WordTuple> = [];
 
