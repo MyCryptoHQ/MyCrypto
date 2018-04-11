@@ -13,10 +13,9 @@ interface Props extends RouteComponentProps<{}> {
 class NavigationLinkClass extends React.PureComponent<Props, {}> {
   public render() {
     const { link, location, isHomepage, className } = this.props;
-    const isExternalLink = link.to.includes('http');
     let isActive = false;
 
-    if (!isExternalLink) {
+    if (!link.external) {
       // isActive if
       // 1) Current path is the same as link
       // 2) the first path is the same for both links (/account and /account/send)
@@ -43,6 +42,7 @@ class NavigationLinkClass extends React.PureComponent<Props, {}> {
           rel="noopener noreferrer"
         >
           {translate(link.name)}
+          <i className={`${className}-link-icon fa fa-external-link`} />
         </a>
       ) : (
         <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>

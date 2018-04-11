@@ -514,6 +514,9 @@
     "CONTRACTS_INTERACT": "Interact",
     "CONTRACTS_DEPLOY": "Deploy",
     "SELECT_A_THING": "Select a $thing",
-    "NO_CONTRACTS_AVAILABLE": "No contracts available"
+    "NO_CONTRACTS_AVAILABLE": "No contracts available",
+    "NETWORK_STATUS_ONLINE": "Connected to $network network",
+    "NETWORK_STATUS_OFFLINE": "Disconnected from $network network",
+    "NETWORK_STATUS_CONNECTING": "Connecting..."
   }
 }
