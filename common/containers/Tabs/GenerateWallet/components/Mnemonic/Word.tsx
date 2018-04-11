@@ -7,6 +7,7 @@ import { Input } from 'components/ui';
 interface Props {
   index: number;
   showIndex: boolean;
+  isNext: boolean;
   word: string;
   value: string;
   hasBeenConfirmed: boolean;
@@ -16,16 +17,17 @@ interface Props {
 }
 
 interface State {
-  derp: boolean;
+  flashingError: boolean;
 }
 
 export default class MnemonicWord extends React.Component<Props, State> {
   public state = {
-    derp: false
+    flashingError: false
   };
 
   public render() {
     const { index, showIndex, word, hasBeenConfirmed, confirmIndex } = this.props;
+    const { flashingError } = this.state;
 
     return (
       <div className="input-group-wrapper MnemonicWord">
@@ -44,7 +46,7 @@ export default class MnemonicWord extends React.Component<Props, State> {
           <Input
             className={`MnemonicWord-word-input ${
               hasBeenConfirmed ? 'MnemonicWord-word-input-confirmed' : ''
-            }`}
+            } ${flashingError ? 'MnemonicWord-word-input-error' : ''}`}
             value={word}
             onChange={this.handleChange}
             onClick={this.handleClick}
@@ -60,6 +62,26 @@ export default class MnemonicWord extends React.Component<Props, State> {
   };
 
   private handleClick = (ev: React.FormEvent<HTMLInputElement>) => {
+    const { isNext } = this.props;
+
+    if (!isNext) this.flashError();
+
     this.props.onClick(this.props.index, ev.currentTarget.value);
+  };
+
+  private flashError = () => {
+    this.setState(
+      {
+        flashingError: true
+      },
+      () =>
+        setTimeout(
+          () =>
+            this.setState({
+              flashingError: false
+            }),
+          200
+        )
+    );
   };
 }

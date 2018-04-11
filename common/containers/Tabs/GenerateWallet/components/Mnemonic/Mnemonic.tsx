@@ -57,7 +57,11 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
         <div className="GenerateMnemonic">
           <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
 
-          <p className="GenerateMnemonic-help">Select the words in order.</p>
+          <p className="GenerateMnemonic-help">
+            {isConfirming
+              ? translate('MNEMONIC_DESCRIPTION_1')
+              : translate('MNEMONIC_DESCRIPTION_2')}
+          </p>
 
           <div className="GenerateMnemonic-words">
             {[firstHalf, lastHalf].map((ws, i) => (
@@ -113,7 +117,6 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     if (this.state.isConfirming) {
       this.setState({ isConfirmed: true });
     } else {
-      console.log('To confirming mode');
       this.setState({ isConfirming: true, shuffledWords: this.getShuffledWords(this.state.words) });
     }
   };
@@ -132,16 +135,20 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
 
   private makeWord = (word: WordTuple) => {
     const hasBeenConfirmed = this.getWordConfirmed(word.word);
+    const confirmIndex = this.state.words.indexOf(word.word);
+    const nextIndex = this.state.confirmValues.length;
+    const isNext = confirmIndex === nextIndex;
 
     return (
       <Word
         key={`${word.word}${word.index}`}
         index={word.index}
         showIndex={!this.state.isConfirming}
+        isNext={isNext}
         word={word.word}
         value={this.state.confirmValues[word.index] || ''}
         hasBeenConfirmed={hasBeenConfirmed}
-        confirmIndex={this.state.confirmValues.indexOf(word.word)}
+        confirmIndex={confirmIndex}
         onChange={this.handleConfirmChange}
         onClick={this.handleWordClick}
       />
@@ -157,7 +164,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     if (isConfirming && !wordAlreadyConfirmed && isCorrectChoice) {
       const confirmValues = previousConfirmValues.concat(value);
 
-      this.setState({ confirmValues }, () => console.log('!', this.state.confirmValues));
+      this.setState({ confirmValues });
     }
   };
 

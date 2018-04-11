@@ -39,9 +39,14 @@ $number-margin: 6px;
     &-input {
       animation: word-fade 400ms ease 1;
       animation-fill-mode: both;
+      transition: border 0.2s ease-in;
 
       &-confirmed {
         border: 1px solid green;
+      }
+
+      &-error {
+        border: 1px solid red;
       }
     }
 
