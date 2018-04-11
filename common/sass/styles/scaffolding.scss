@@ -38,16 +38,6 @@ body {
   height: 100%;
 }
 
-.page-layout {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  > .flex-spacer {
-    flex-grow: 2;
-  }
-}
-
 input,
 button,
 select,

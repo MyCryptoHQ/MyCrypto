@@ -21,9 +21,8 @@ export default function getWindow() {
     height: 800,
     minWidth: 320,
     minHeight: 400,
-    // TODO - Implement styles for custom title bar in components/ui/TitleBar.scss
-    // frame: false,
-    // titleBarStyle: 'hidden',
+    frame: false,
+    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
