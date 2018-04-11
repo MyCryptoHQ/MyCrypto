@@ -12,7 +12,7 @@
   }
 
   &-sidebar {
-    width: 170px;
+    width: $electron-sidebar-width;
     background: #FFF;
     border-right: 1px solid $gray-lighter;
   }

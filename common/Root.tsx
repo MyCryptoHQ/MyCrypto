@@ -50,6 +50,7 @@ class RootClass extends Component<Props, State> {
   public componentDidMount() {
     this.props.pollOfflineStatus();
     this.props.setUnitMeta(this.props.networkUnit);
+    this.addBodyClasses();
   }
 
   public componentDidCatch(error: Error) {
@@ -109,6 +110,26 @@ class RootClass extends Component<Props, State> {
         <div id="ModalContainer" />
       </React.Fragment>
     );
+  }
+
+  private addBodyClasses() {
+    const classes = [];
+
+    console.log(process);
+
+    if (process.env.BUILD_ELECTRON) {
+      classes.push('is-electron');
+
+      if (navigator.appVersion.includes('Win')) {
+        classes.push('is-windows');
+      } else if (navigator.appVersion.includes('Mac')) {
+        classes.push('is-osx');
+      } else {
+        classes.push('is-linux');
+      }
+    }
+
+    document.body.className += ` ${classes.join(' ')}`;
   }
 }
 

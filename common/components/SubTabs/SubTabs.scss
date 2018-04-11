@@ -3,6 +3,10 @@
 .SubTabs {
   margin-top: $space-xs;
 
+  .is-electron & {
+    margin-top: 0;
+  }
+
   &-tabs {
     display: inline-block;
     white-space: nowrap;

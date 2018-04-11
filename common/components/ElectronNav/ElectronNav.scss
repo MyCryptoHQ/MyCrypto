@@ -3,6 +3,8 @@
 
 // Prefer pixels of rem in this file, Electron shouldn't be responsive in the
 // same way the content is.
+$branding-spacing: 14px;
+$back-spacing: 10px;
 
 .ElectronNav {
   transition: transform 300ms ease;
@@ -15,10 +17,18 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    padding: 36px 10px 18px;
+    padding: $branding-spacing 10px;
     background: #FFF;
     z-index: $zindex-navbar;
     border-bottom: 1px solid $gray-lighter;
+
+    .is-osx & {
+      padding-top: $electron-osx-control-spacing + $branding-spacing;
+    }
+
+    &-logo {
+      margin-left: -1px;
+    }
   }
 
   &-links {
@@ -70,10 +80,14 @@
       align-items: center;
       width: 100%;
       text-align: left;
-      padding: 30px 0 8px 10px;
+      padding: $back-spacing 0 8px $back-spacing;
       border-bottom: 1px solid $gray-lighter;
       color: rgba($text-color, 0.4);
       background: #FFF;
+
+      .is-osx & {
+        padding-top: $electron-osx-control-spacing + $back-spacing;
+      }
 
       &-icon {
         font-size: 12px;
