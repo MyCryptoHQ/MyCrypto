@@ -13,6 +13,7 @@ import { State as GasState, gas } from './gas';
 import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 import { State as TransactionsState, transactions } from './transactions';
 import { schedule, State as ScheduleState } from './schedule';
+import { State as ParitySignerState, paritySigner } from './paritySigner';
 
 export interface AppState {
   // Custom reducers
@@ -27,6 +28,7 @@ export interface AppState {
   swap: SwapState;
   transaction: TransactionState;
   transactions: TransactionsState;
+  paritySigner: ParitySignerState;
   gas: GasState;
   schedule: ScheduleState;
   // Third party reducers (TODO: Fill these out)
@@ -45,6 +47,7 @@ export default combineReducers<AppState>({
   deterministicWallets,
   transaction,
   transactions,
+  paritySigner,
   gas,
   schedule,
   routing: routerReducer

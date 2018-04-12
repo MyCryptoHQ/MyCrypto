@@ -11,9 +11,9 @@ import {
   getCustomNodeConfigs,
   getStaticNetworkConfigs
 } from 'selectors/config';
-import { CustomNode } from 'libs/nodes';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
+import { shepherdProvider } from 'libs/nodes';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 
@@ -329,9 +329,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         : {})
     };
 
-    const lib = new CustomNode(node);
-
-    return { ...node, lib };
+    return { ...node, lib: shepherdProvider };
   }
 
   private getConflictedNode(): CustomNodeConfig | undefined {

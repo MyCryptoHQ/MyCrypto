@@ -7,7 +7,6 @@ import {
   take,
   takeEvery,
   select,
-  race,
   apply,
   takeLatest
 } from 'redux-saga/effects';
@@ -22,7 +21,8 @@ import {
 } from 'selectors/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
-  toggleOffline,
+  setOnline,
+  setOffline,
   changeNode,
   changeNodeIntent,
   setLatestBlock,
@@ -35,60 +35,58 @@ import { resetWallet } from 'actions/wallet';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
+import {
+  getShepherdOffline,
+  isAutoNode,
+  shepherd,
+  shepherdProvider,
+  stripWeb3Network,
+  makeProviderConfig,
+  getShepherdNetwork
+} from 'libs/nodes';
 
-let hasCheckedOnline = false;
 export function* pollOfflineStatus(): SagaIterator {
+  let hasCheckedOnline = false;
+
+  const restoreNotif = showNotification(
+    'success',
+    'Your connection to the network has been restored!',
+    3000
+  );
+  const lostNetworkNotif = showNotification(
+    'danger',
+    `You’ve lost your connection to the network, check your internet
+      connection or try changing networks from the dropdown at the
+      top right of the page.`,
+    Infinity
+  );
+  const offlineNotif = showNotification(
+    'info',
+    'You are currently offline. Some features will be unavailable.',
+    5000
+  );
+
   while (true) {
-    const nodeConfig: StaticNodeConfig = yield select(getNodeConfig);
+    yield call(delay, 2500);
+
     const isOffline: boolean = yield select(getOffline);
-
-    // If our offline state disagrees with the browser, run a check
-    // Don't check if the user is in another tab or window
-    const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
-    if (shouldPing && !document.hidden) {
-      const { pingSucceeded } = yield race({
-        pingSucceeded: call(nodeConfig.lib.ping.bind(nodeConfig.lib)),
-        timeout: call(delay, 5000)
-      });
-
-      if (pingSucceeded && isOffline) {
-        // If we were able to ping but redux says we're offline, mark online
-        yield put(
-          showNotification('success', 'Your connection to the network has been restored!', 3000)
-        );
-        yield put(toggleOffline());
-      } else if (!pingSucceeded && !isOffline) {
-        // If we were unable to ping but redux says we're online, mark offline
-        // If they had been online, show an error.
-        // If they hadn't been online, just inform them with a warning.
-        if (hasCheckedOnline) {
-          yield put(
-            showNotification(
-              'danger',
-              `You’ve lost your connection to the network, check your internet
-              connection or try changing networks from the dropdown at the
-              top right of the page.`,
-              Infinity
-            )
-          );
-        } else {
-          yield put(
-            showNotification(
-              'info',
-              'You are currently offline. Some features will be unavailable.',
-              5000
-            )
-          );
-        }
-        yield put(toggleOffline());
+    const balancerOffline = yield call(getShepherdOffline);
+    if (!balancerOffline && isOffline) {
+      // If we were able to ping but redux says we're offline, mark online
+      yield put(restoreNotif);
+      yield put(setOnline());
+    } else if (balancerOffline && !isOffline) {
+      // If we were unable to ping but redux says we're online, mark offline
+      // If they had been online, show an error.
+      // If they hadn't been online, just inform them with a warning.
+      yield put(setOffline());
+      if (hasCheckedOnline) {
+        yield put(lostNetworkNotif);
       } else {
-        // If neither case was true, try again in 5s
-        yield call(delay, 5000);
+        yield put(offlineNotif);
       }
-      hasCheckedOnline = true;
-    } else {
-      yield call(delay, 1000);
     }
+    hasCheckedOnline = true;
   }
 }
 
@@ -134,36 +132,37 @@ export function* handleNodeChangeIntent({
     nextNodeConfig = yield select(getStaticNodeFromId, nodeIdToSwitchTo);
   }
 
-  // Grab current block from the node, before switching, to confirm it's online
-  // Give it 5 seconds before we call it offline
-  let currentBlock;
-  let timeout;
-  try {
-    const { lb, to } = yield race({
-      lb: apply(nextNodeConfig.lib, nextNodeConfig.lib.getCurrentBlock),
-      to: call(delay, 5000)
-    });
-    currentBlock = lb;
-    timeout = to;
-  } catch (err) {
-    console.error(err);
-    // Whether it times out or errors, same message
-    timeout = true;
-  }
-
-  if (timeout) {
-    return yield* bailOut(translateRaw('ERROR_32'));
-  }
-
   const nextNetwork: StaticNetworkConfig | CustomNetworkConfig = yield select(
     getNetworkConfigById,
-    nextNodeConfig.network
+    stripWeb3Network(nextNodeConfig.network)
   );
 
   if (!nextNetwork) {
     return yield* bailOut(
       `Unknown custom network for your node '${nodeIdToSwitchTo}', try re-adding it`
     );
+  }
+
+  if (isAutoNode(nodeIdToSwitchTo)) {
+    shepherd.auto();
+    if (getShepherdNetwork() !== nextNodeConfig.network) {
+      yield apply(shepherd, shepherd.switchNetworks, [nextNodeConfig.network]);
+    }
+  } else {
+    try {
+      yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, false]);
+    } catch (err) {
+      console.error(err);
+      return yield* bailOut(translateRaw('ERROR_32'));
+    }
+  }
+
+  let currentBlock;
+  try {
+    currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);
+  } catch (err) {
+    console.error(err);
+    return yield* bailOut(translateRaw('ERROR_32'));
   }
 
   yield put(setLatestBlock(currentBlock));
@@ -174,7 +173,14 @@ export function* handleNodeChangeIntent({
   }
 }
 
-export function* switchToNewNode(action: AddCustomNodeAction): SagaIterator {
+export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator {
+  const { payload: { config } } = action;
+  shepherd.useProvider(
+    'myccustom',
+    config.id,
+    makeProviderConfig({ network: config.network }),
+    config
+  );
   yield put(changeNodeIntent(action.payload.id));
 }
 
@@ -208,5 +214,5 @@ export const node = [
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
-  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, switchToNewNode)
+  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode)
 ];

@@ -1,6 +1,6 @@
 import ledger from 'ledgerco';
 import EthTx, { TxObj } from 'ethereumjs-tx';
-import { addHexPrefix, bufferToHex, toBuffer } from 'ethereumjs-util';
+import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { DeterministicWallet } from './deterministic';
 import { getTransactionFields } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
@@ -46,27 +46,15 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
 
   // modeled after
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/controllers/signMsgCtrl.js#L53
-  public signMessage(msg: string): Promise<string> {
+  public async signMessage(msg: string): Promise<string> {
     const msgHex = Buffer.from(msg).toString('hex');
-
-    return new Promise((resolve, reject) => {
-      this.ethApp.signPersonalMessage_async(
-        this.getPath(),
-        msgHex,
-        async (signed: any, error: any) => {
-          if (error) {
-            return reject((this.ethApp as any).getError(error));
-          }
-
-          try {
-            const combined = signed.r + signed.s + signed.v;
-            resolve(bufferToHex(combined));
-          } catch (err) {
-            reject(err);
-          }
-        }
-      );
-    });
+    try {
+      const signed = await this.ethApp.signPersonalMessage_async(this.getPath(), msgHex);
+      const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
+      return combined;
+    } catch (error) {
+      throw (this.ethApp as any).getError(error);
+    }
   }
 
   public displayAddress = (

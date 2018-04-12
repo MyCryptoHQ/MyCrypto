@@ -170,11 +170,7 @@ Object {
   "@@redux-saga/IO": true,
   "PUT": Object {
     "action": Object {
-      "payload": Web3Wallet {
-        "address": "0xe2EdC95134bbD88443bc6D55b809F7d0C2f0C854",
-        "network": undefined,
-      },
-      "type": "WALLET_SET",
+      "type": "CONFIG_NODE_WEB3_UNSET",
     },
     "channel": null,
   },
