@@ -11,21 +11,23 @@ import './ElectronNav.scss';
 
 interface State {
   panelContent: React.ReactElement<any> | null;
+  isPanelOpen: boolean;
 }
 
 export default class ElectronNav extends React.Component<{}, State> {
   public state: State = {
-    panelContent: null
+    panelContent: null,
+    isPanelOpen: false
   };
 
   public render() {
-    const { panelContent } = this.state;
+    const { panelContent, isPanelOpen } = this.state;
 
     return (
       <div
         className={classnames({
           ElectronNav: true,
-          'is-panel-open': !!panelContent
+          'is-panel-open': isPanelOpen
         })}
       >
         <div className="ElectronNav-branding">
@@ -71,15 +73,31 @@ export default class ElectronNav extends React.Component<{}, State> {
 
   private openLanguageSelect = () => {
     const panelContent = <LanguageSelect closePanel={this.closePanel} />;
-    this.setState({ panelContent });
+    this.setState({
+      panelContent,
+      isPanelOpen: true
+    });
   };
 
   private openNodeSelect = () => {
     const panelContent = <NodeSelect closePanel={this.closePanel} />;
-    this.setState({ panelContent });
+    this.setState({
+      panelContent,
+      isPanelOpen: true
+    });
   };
 
   private closePanel = () => {
-    this.setState({ panelContent: null });
+    const { panelContent } = this.state;
+
+    // Start closing panel
+    this.setState({ isPanelOpen: false });
+
+    // Remove content when out of sight
+    setTimeout(() => {
+      if (this.state.panelContent === panelContent) {
+        this.setState({ panelContent: null });
+      }
+    }, 300);
   };
 }
