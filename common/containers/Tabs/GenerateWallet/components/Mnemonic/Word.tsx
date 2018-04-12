@@ -8,7 +8,7 @@ interface Props {
   index: number;
   showIndex: boolean;
   isNext: boolean;
-  isPeeked: boolean;
+  isBeingRevealed: boolean;
   isConfirming: boolean;
   word: string;
   value: string;
@@ -35,13 +35,13 @@ export default class MnemonicWord extends React.Component<Props, State> {
       isConfirming,
       hasBeenConfirmed,
       confirmIndex,
-      isPeeked
+      isBeingRevealed
     } = this.props;
     const { flashingError } = this.state;
     const btnClassName = classnames({
       btn: true,
-      'btn-default': !(hasBeenConfirmed || isPeeked || flashingError),
-      'btn-success': hasBeenConfirmed || isPeeked,
+      'btn-default': !(hasBeenConfirmed || isBeingRevealed || flashingError),
+      'btn-success': hasBeenConfirmed || isBeingRevealed,
       'btn-danger': flashingError
     });
 

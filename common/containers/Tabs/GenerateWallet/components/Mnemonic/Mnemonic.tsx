@@ -13,7 +13,7 @@ interface State {
   shuffledWords: WordTuple[][];
   isConfirming: boolean;
   isConfirmed: boolean;
-  isPeeking: boolean;
+  isRevealingNextWord: boolean;
 }
 
 interface WordTuple {
@@ -28,7 +28,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     shuffledWords: [],
     isConfirming: false,
     isConfirmed: false,
-    isPeeking: false
+    isRevealingNextWord: false
   };
 
   public componentDidMount() {
@@ -86,9 +86,9 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
               <button
                 className="GenerateMnemonic-buttons-btn btn btn-default"
                 disabled={canContinue}
-                onClick={this.peek}
+                onClick={this.revealNextWord}
               >
-                <i className="fa fa-eye" /> {translate('PEEK_MNEMONIC')}
+                <i className="fa fa-eye" /> {translate('REVEAL_NEXT_MNEMONIC')}
               </button>
             )}
             <button
@@ -153,7 +153,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     const confirmIndex = this.state.words.indexOf(word.word);
     const nextIndex = this.state.confirmValues.length;
     const isNext = confirmIndex === nextIndex;
-    const isPeeked = this.state.isPeeking && isNext;
+    const isRevealed = this.state.isRevealingNextWord && isNext;
 
     return (
       <Word
@@ -161,7 +161,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
         index={word.index}
         showIndex={!this.state.isConfirming}
         isNext={isNext}
-        isPeeked={isPeeked}
+        isBeingRevealed={isRevealed}
         isConfirming={isConfirming}
         word={word.word}
         value={this.state.confirmValues[word.index] || ''}
@@ -193,8 +193,8 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   };
 
   private getShuffledWords = (array: string[]) => {
-    const firstHalf: Array<WordTuple> = [];
-    const lastHalf: Array<WordTuple> = [];
+    const firstHalf: WordTuple[] = [];
+    const lastHalf: WordTuple[] = [];
 
     // Fisher-Yates shuffle
     for (let i = array.length - 1; i > 0; i--) {
@@ -212,16 +212,16 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     return [firstHalf, lastHalf];
   };
 
-  private peek = () => {
+  private revealNextWord = () => {
     this.setState(
       {
-        isPeeking: true
+        isRevealingNextWord: true
       },
       () =>
         setTimeout(
           () =>
             this.setState({
-              isPeeking: false
+              isRevealingNextWord: false
             }),
           400
         )
