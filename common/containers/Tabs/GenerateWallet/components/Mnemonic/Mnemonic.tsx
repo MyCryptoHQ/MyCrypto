@@ -10,7 +10,7 @@ import './Mnemonic.scss';
 interface State {
   words: string[];
   confirmValues: string[];
-  shuffledWords: WordTuple[][];
+  confirmWords: WordTuple[][];
   isConfirming: boolean;
   isConfirmed: boolean;
   isRevealingNextWord: boolean;
@@ -25,7 +25,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   public state: State = {
     words: [],
     confirmValues: [],
-    shuffledWords: [],
+    confirmWords: [],
     isConfirming: false,
     isConfirmed: false,
     isRevealingNextWord: false
@@ -36,24 +36,15 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   }
 
   public render() {
-    const { words, shuffledWords, isConfirming, isConfirmed } = this.state;
+    const { words, confirmWords, isConfirming, isConfirmed } = this.state;
     let content;
 
     if (isConfirmed) {
       content = <FinalSteps walletType={WalletType.Mnemonic} />;
     } else {
       const canContinue = this.checkCanContinue();
-      const [firstHalf = [], lastHalf = []] = shuffledWords;
-
-      if (firstHalf.length === 0) {
-        words.forEach((word, index) => {
-          if (index < words.length / 2) {
-            firstHalf.push({ word, index });
-          } else {
-            lastHalf.push({ word, index });
-          }
-        });
-      }
+      const [firstHalf, lastHalf] =
+        confirmWords.length === 0 ? this.splitWordsIntoHalves(words) : confirmWords;
 
       content = (
         <div className="GenerateMnemonic">
@@ -112,14 +103,6 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     this.setState({ words: generateMnemonic().split(' ') });
   };
 
-  private handleConfirmChange = (index: number, value: string) => {
-    this.setState((state: State) => {
-      const confirmValues = [...state.confirmValues];
-      confirmValues[index] = value;
-      this.setState({ confirmValues });
-    });
-  };
-
   private goToNextStep = () => {
     if (!this.checkCanContinue()) {
       return;
@@ -128,9 +111,12 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     if (this.state.isConfirming) {
       this.setState({ isConfirmed: true });
     } else {
+      const shuffledWords = this.getShuffledWords([...this.state.words]);
+      const confirmWords = this.splitWordsIntoHalves(shuffledWords);
+
       this.setState({
         isConfirming: true,
-        shuffledWords: this.getShuffledWords([...this.state.words])
+        confirmWords
       });
     }
   };
@@ -148,33 +134,32 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   };
 
   private makeWord = (word: WordTuple) => {
-    const { isConfirming } = this.state;
-    const hasBeenConfirmed = this.getWordConfirmed(word.word);
-    const confirmIndex = this.state.words.indexOf(word.word);
-    const nextIndex = this.state.confirmValues.length;
+    const { words, confirmValues, isRevealingNextWord, isConfirming } = this.state;
+    const confirmIndex = words.indexOf(word.word);
+    const nextIndex = confirmValues.length;
     const isNext = confirmIndex === nextIndex;
-    const isRevealed = this.state.isRevealingNextWord && isNext;
+    const isRevealed = isRevealingNextWord && isNext;
+    const hasBeenConfirmed = this.getWordConfirmed(word.word);
 
     return (
       <Word
         key={`${word.word}${word.index}`}
         index={word.index}
-        showIndex={!this.state.isConfirming}
+        confirmIndex={confirmIndex}
+        word={word.word}
+        value={confirmValues[word.index] || ''}
+        showIndex={!isConfirming}
         isNext={isNext}
         isBeingRevealed={isRevealed}
         isConfirming={isConfirming}
-        word={word.word}
-        value={this.state.confirmValues[word.index] || ''}
         hasBeenConfirmed={hasBeenConfirmed}
-        confirmIndex={confirmIndex}
-        onChange={this.handleConfirmChange}
         onClick={this.handleWordClick}
       />
     );
   };
 
   private handleWordClick = (_: number, value: string) => {
-    const { words, isConfirming, confirmValues: previousConfirmValues } = this.state;
+    const { confirmValues: previousConfirmValues, words, isConfirming } = this.state;
     const wordAlreadyConfirmed = previousConfirmValues.includes(value);
     const activeIndex = previousConfirmValues.length;
     const isCorrectChoice = words[activeIndex] === value;
@@ -192,24 +177,14 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     this.setState({ isConfirmed: true });
   };
 
-  private getShuffledWords = (array: string[]) => {
-    const firstHalf: WordTuple[] = [];
-    const lastHalf: WordTuple[] = [];
-
+  private getShuffledWords = (words: string[]) => {
     // Fisher-Yates shuffle
-    for (let i = array.length - 1; i > 0; i--) {
+    for (let i = words.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+      [words[i], words[j]] = [words[j], words[i]];
     }
 
-    array.forEach((word: string, index: number) => {
-      const inFirstColumn = index < array.length / 2;
-      const half = inFirstColumn ? firstHalf : lastHalf;
-
-      half.push({ word, index });
-    });
-
-    return [firstHalf, lastHalf];
+    return words;
   };
 
   private revealNextWord = () => {
@@ -226,5 +201,19 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
           400
         )
     );
+  };
+
+  private splitWordsIntoHalves = (words: string[]) => {
+    const firstHalf: WordTuple[] = [];
+    const lastHalf: WordTuple[] = [];
+
+    words.forEach((word: string, index: number) => {
+      const inFirstColumn = index < words.length / 2;
+      const half = inFirstColumn ? firstHalf : lastHalf;
+
+      half.push({ word, index });
+    });
+
+    return [firstHalf, lastHalf];
   };
 }

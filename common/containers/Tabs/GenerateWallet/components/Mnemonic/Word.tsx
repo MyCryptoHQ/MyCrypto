@@ -5,15 +5,14 @@ import { Input } from 'components/ui';
 
 interface Props {
   index: number;
+  confirmIndex: number;
+  word: string;
+  value: string;
   showIndex: boolean;
   isNext: boolean;
   isBeingRevealed: boolean;
   isConfirming: boolean;
-  word: string;
-  value: string;
   hasBeenConfirmed: boolean;
-  confirmIndex: number;
-  onChange(index: number, value: string): void;
   onClick(index: number, value: string): void;
 }
 
@@ -28,19 +27,20 @@ export default class MnemonicWord extends React.Component<Props, State> {
 
   public render() {
     const {
-      index,
-      showIndex,
-      word,
-      isConfirming,
       hasBeenConfirmed,
+      isBeingRevealed,
+      showIndex,
+      index,
+      isConfirming,
       confirmIndex,
-      isBeingRevealed
+      word
     } = this.props;
     const { flashingError } = this.state;
+    const isSuccessful = hasBeenConfirmed || isBeingRevealed;
     const btnClassName = classnames({
       btn: true,
-      'btn-default': !(hasBeenConfirmed || isBeingRevealed || flashingError),
-      'btn-success': hasBeenConfirmed || isBeingRevealed,
+      'btn-default': !(isSuccessful || flashingError),
+      'btn-success': isSuccessful,
       'btn-danger': flashingError
     });
 
@@ -64,21 +64,12 @@ export default class MnemonicWord extends React.Component<Props, State> {
               {word}
             </button>
           ) : (
-            <Input
-              className="MnemonicWord-word-input"
-              value={word}
-              onChange={this.handleChange}
-              readOnly={true}
-            />
+            <Input className="MnemonicWord-word-input" value={word} readOnly={true} />
           )}
         </label>
       </div>
     );
   }
-
-  private handleChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.props.onChange(this.props.index, ev.currentTarget.value);
-  };
 
   private handleClick = (value: string) => {
     const { isNext, index, onClick } = this.props;
