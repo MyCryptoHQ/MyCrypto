@@ -93,6 +93,12 @@
     position: relative;
     min-height: 2.75rem;
 
+    &-icon {
+      font-size: 0.7rem;
+      margin-left: 2px;
+      opacity: 0.8;
+    }
+
     &:after {
       content: '';
       background: $brand-primary;

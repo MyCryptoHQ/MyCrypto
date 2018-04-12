@@ -10,6 +10,7 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
+import SupportPage from 'containers/Tabs/SupportPage';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
@@ -85,6 +86,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/support-us" component={SupportPage} exact={true} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
