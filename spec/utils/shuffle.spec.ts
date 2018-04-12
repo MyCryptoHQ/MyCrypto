@@ -5,7 +5,7 @@ describe('shuffle', () => {
     const zeroExample: any[] = [];
     const oneExample: number[] = [1];
 
-    expect(shuffle(zeroExample)[0]).toBeUndefined;
+    expect(shuffle(zeroExample)[0]).toBeUndefined();
     expect(shuffle(oneExample)[0]).toBe(1);
   });
 
