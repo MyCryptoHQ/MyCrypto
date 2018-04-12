@@ -18,8 +18,8 @@ export default function getWindow() {
     title: APP_TITLE,
     backgroundColor: '#fbfbfb',
     width: 1220,
-    height: 800,
-    minWidth: 320,
+    height: 670,
+    minWidth: 480,
     minHeight: 400,
     titleBarStyle: 'hidden',
     webPreferences: {
