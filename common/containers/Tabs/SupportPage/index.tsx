@@ -2,13 +2,7 @@ import React from 'react';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import logo from 'assets/images/logo-mycrypto-transparent.svg';
-import {
-  donationAddressMap,
-  socialMediaLinks,
-  productLinks,
-  affiliateLinks,
-  partnerLinks
-} from 'config';
+import { donationAddressMap, socialMediaLinks, productLinks, affiliateLinks } from 'config';
 import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
 import './index.scss';
