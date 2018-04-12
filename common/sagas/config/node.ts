@@ -28,7 +28,8 @@ import {
   setLatestBlock,
   AddCustomNodeAction,
   ChangeNodeForceAction,
-  ChangeNodeIntentAction
+  ChangeNodeIntentAction,
+  ChangeNodeIntentOneTimeAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { resetWallet } from 'actions/wallet';
@@ -104,7 +105,11 @@ export function* reload(): SagaIterator {
 }
 
 export function* handleNodeChangeIntentOneTime(): SagaIterator {
-  const action = yield take(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME);
+  const action: ChangeNodeIntentOneTimeAction = yield take(
+    TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME
+  );
+  // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
+  yield call(delay, 100);
   yield put(changeNodeIntent(action.payload));
 }
 
@@ -162,8 +167,6 @@ export function* handleNodeChangeIntent({
     }
   }
 
-  // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
-  yield call(delay, 10);
   let currentBlock;
   try {
     currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);

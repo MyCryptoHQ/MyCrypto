@@ -27,7 +27,9 @@ class TabSection extends Component<Props, {}> {
       <div className="page-layout">
         <Query
           params={['network']}
-          withQuery={({ network }) => <Header networkParam={network} />}
+          withQuery={({ network }) => (
+            <Header networkParam={network && `${network.toLowerCase()}_auto`} />
+          )}
         />
         <div className="Tab container">
           {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
