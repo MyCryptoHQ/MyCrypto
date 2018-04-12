@@ -21,7 +21,8 @@ import {
 } from 'selectors/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
-  toggleOffline,
+  setOnline,
+  setOffline,
   changeNode,
   changeNodeIntent,
   setLatestBlock,
@@ -46,52 +47,46 @@ import {
 
 export function* pollOfflineStatus(): SagaIterator {
   let hasCheckedOnline = false;
-  while (true) {
-    const isOffline: boolean = yield select(getOffline);
 
-    // If our offline state disagrees with the browser, run a check
-    // Don't check if the user is in another tab or window
-    const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
-    if (shouldPing && !document.hidden) {
-      const pingSucceeded = yield call(getShepherdOffline);
-      if (pingSucceeded && isOffline) {
-        // If we were able to ping but redux says we're offline, mark online
-        yield put(
-          showNotification('success', 'Your connection to the network has been restored!', 3000)
-        );
-        yield put(toggleOffline());
-      } else if (!pingSucceeded && !isOffline) {
-        // If we were unable to ping but redux says we're online, mark offline
-        // If they had been online, show an error.
-        // If they hadn't been online, just inform them with a warning.
-        if (hasCheckedOnline) {
-          yield put(
-            showNotification(
-              'danger',
-              `You’ve lost your connection to the network, check your internet
-              connection or try changing networks from the dropdown at the
-              top right of the page.`,
-              Infinity
-            )
-          );
-        } else {
-          yield put(
-            showNotification(
-              'info',
-              'You are currently offline. Some features will be unavailable.',
-              5000
-            )
-          );
-        }
-        yield put(toggleOffline());
+  const restoreNotif = showNotification(
+    'success',
+    'Your connection to the network has been restored!',
+    3000
+  );
+  const lostNetworkNotif = showNotification(
+    'danger',
+    `You’ve lost your connection to the network, check your internet
+      connection or try changing networks from the dropdown at the
+      top right of the page.`,
+    Infinity
+  );
+  const offlineNotif = showNotification(
+    'info',
+    'You are currently offline. Some features will be unavailable.',
+    5000
+  );
+
+  while (true) {
+    yield call(delay, 2500);
+
+    const isOffline: boolean = yield select(getOffline);
+    const balancerOffline = yield call(getShepherdOffline);
+    if (!balancerOffline && isOffline) {
+      // If we were able to ping but redux says we're offline, mark online
+      yield put(restoreNotif);
+      yield put(setOnline());
+    } else if (balancerOffline && !isOffline) {
+      // If we were unable to ping but redux says we're online, mark offline
+      // If they had been online, show an error.
+      // If they hadn't been online, just inform them with a warning.
+      yield put(setOffline());
+      if (hasCheckedOnline) {
+        yield put(lostNetworkNotif);
       } else {
-        // If neither case was true, try again in 5s
-        yield call(delay, 5000);
+        yield put(offlineNotif);
       }
-      hasCheckedOnline = true;
-    } else {
-      yield call(delay, 1000);
     }
+    hasCheckedOnline = true;
   }
 }
 

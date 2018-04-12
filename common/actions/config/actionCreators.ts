@@ -1,10 +1,15 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
 
-export type TToggleOffline = typeof toggleOffline;
-export function toggleOffline(): interfaces.ToggleOfflineAction {
+export function setOnline(): interfaces.SetOnlineAction {
   return {
-    type: TypeKeys.CONFIG_TOGGLE_OFFLINE
+    type: TypeKeys.CONFIG_SET_ONLINE
+  };
+}
+
+export function setOffline(): interfaces.SetOfflineAction {
+  return {
+    type: TypeKeys.CONFIG_SET_OFFLINE
   };
 }
 
