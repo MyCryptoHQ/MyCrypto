@@ -98,7 +98,7 @@ class CustomNodeModal extends React.Component<Props, State> {
     const options = [...staticNetwrks, ...customNetwrks, CUSTOM];
     return (
       <Modal
-        title={translateRaw('NODE_Title')}
+        title={translateRaw('NODE_TITLE')}
         isOpen={isOpen}
         buttons={buttons}
         handleClose={handleClose}
@@ -125,7 +125,7 @@ class CustomNodeModal extends React.Component<Props, State> {
               />
             </label>
             <label className="col-sm-3 input-group">
-              <div className="input-group-header">Network</div>
+              <div className="input-group-header">{translate('CUSTOM_NETWORK')}</div>
               <Dropdown
                 value={network}
                 options={options}

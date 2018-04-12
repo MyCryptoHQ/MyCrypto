@@ -24,7 +24,6 @@ const WALLETS_PER_PAGE = 5;
 interface Props {
   // Passed props
   isOpen?: boolean;
-  walletType?: string;
   dPath: string;
   dPaths: DPath[];
   publicKey?: string;
@@ -87,16 +86,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const {
-      wallets,
-      desiredToken,
-      network,
-      tokens,
-      dPath,
-      dPaths,
-      onCancel,
-      walletType
-    } = this.props;
+    const { wallets, desiredToken, network, tokens, dPath, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
 
     const buttons: IButton[] = [
@@ -115,7 +105,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
     return (
       <Modal
-        title={translateRaw(`DECRYPT_PROMPT_UNLOCK_${walletType}`)}
+        title={translateRaw('DECRYPT_PROMPT_SELECT_ADDRESS')}
         isOpen={this.props.isOpen}
         buttons={buttons}
         handleClose={onCancel}
@@ -274,7 +264,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
   private renderDPathOption(option: Option) {
     if (option.value === customDPath.value) {
-      return translate('ADD_Radio_5_PathCustom');
+      return translate('X_CUSTOM');
     }
 
     return (

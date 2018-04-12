@@ -169,7 +169,7 @@ export default class Footer extends React.PureComponent<Props, State> {
             </NewTabLink>
 
             <div className="Footer-about-links">
-              <a href="https://mycrypto.com">MyCrypto.com</a>
+              <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
               <NewTabLink href={knowledgeBaseURL}>{translateRaw('FOOTER_SUPPORT')}</NewTabLink>
               <NewTabLink href="https://about.mycrypto.com">
                 {translateRaw('FOOTER_TEAM')}
