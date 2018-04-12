@@ -1,21 +1,26 @@
+import { GitCommit } from './types/GitCommit';
+import { CommitStatus } from './types/CommitStatus';
+import { RawTokenJSON } from './types/TokensJson';
+
+const { processTokenJson } = require('./update-tokens-utils');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-function httpsGet(opts) {
+function httpsGet(opts): Promise<string> {
   return new Promise(resolve => {
     https.get(opts, res => {
       let body = '';
       res.setEncoding('utf8');
-      res.on('data', data => body += data);
+      res.on('data', data => (body += data));
       res.on('end', () => {
         resolve(body);
       });
-    })
+    });
   });
 }
 
-function githubApi(path) {
+function githubApi<T extends Object>(path: string): Promise<T> {
   return httpsGet({
     hostname: 'api.github.com',
     path: `/repos/ethereum-lists/tokens${path}`,
@@ -23,36 +28,39 @@ function githubApi(path) {
       'user-agent': 'node',
       'content-type': 'application/json; charset=utf-8'
     }
-  })
-  .then(body => JSON.parse(body));
+  }).then(body => JSON.parse(body));
 }
 
 async function run() {
   // First we fetch the latest commit from ethereum-lists/tokens
   console.log('Fetching ethereum-lists/tokens commits...');
-  const commits = await githubApi('/commits');
+  const commits = await githubApi<GitCommit[]>('/commits');
   const commit = commits[0];
 
   // Then we fetch its build status
   console.log('Fetching commits statuses...');
-  const statuses = await githubApi(`/statuses/${commit.sha}`);
+  const statuses = await githubApi<CommitStatus[]>(`/statuses/${commit.sha}`);
 
   // Fetch the IPFS link, which is a page of links to other IPFS links
   console.log('Fetching IPFS output HTML...');
-  const ipfsUrl = statuses.find((status) => status.target_url.includes('ipfs')).target_url;
-  const ipfsHtml = await httpsGet(ipfsUrl);
+  const ipfsUrl = statuses.find(status => status.target_url.includes('ipfs'));
+  if (!ipfsUrl) {
+    throw Error('ipfs url not found');
+  }
+  const ipfsTargetUrl = ipfsUrl.target_url;
+  const ipfsHtml = await httpsGet(ipfsTargetUrl);
 
   // Get the IPFS url for the eth tokens json. Regexxing HTML hurts, but w/e
   console.log('Fetching IPFS ETH Tokens JSON...');
-  const tokensUrl = ipfsHtml.match(/<a href='([^']+)'>output\/minified\/eth\.json<\/a>/)[1];
-  const tokensJson = JSON.parse(await httpsGet(tokensUrl));
+  const tokenUrlMatch = ipfsHtml.match(/<a href='([^']+)'>output\/minified\/eth\.json<\/a>/);
+  if (!tokenUrlMatch) {
+    throw Error('No match found for token url');
+  }
+  const tokensUrl = tokenUrlMatch[1];
+  const tokensJson: RawTokenJSON[] = JSON.parse(await httpsGet(tokensUrl));
 
   // Format the json to match our format in common/config/tokens/eth.json
-  const tokens = tokensJson.map(t => ({
-    address: t.address,
-    symbol: t.symbol,
-    decimal: parseInt(t.decimals, 10)
-  }));
+  const tokens = processTokenJson(tokensJson);
 
   // Write to the file
   console.log('Writing Tokens JSON to common/config/tokens/eth.json...');
