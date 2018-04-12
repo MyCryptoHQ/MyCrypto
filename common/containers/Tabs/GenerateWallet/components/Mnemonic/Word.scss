@@ -16,10 +16,14 @@ $number-margin: 6px;
 .MnemonicWord {
   display: flex;
   width: $width;
-  margin-bottom: $space-md;
+  margin-bottom: $space-xs;
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  & .input-group-addon {
+    margin-bottom: $space-md;
   }
 
   &-word {
@@ -29,18 +33,30 @@ $number-margin: 6px;
       animation: word-fade 400ms ease 1;
       animation-fill-mode: both;
       transition: border 0.2s ease-in;
+      margin-bottom: 0;
     }
   }
 
   &-button {
     position: relative;
     width: 300px;
+    margin-bottom: $space-sm;
 
     &-index {
       position: absolute;
-      top: 0;
-      left: 3px;
-      color: black;
+      top: -4px;
+      left: -7px;
+      z-index: 1;
+      color: #fff;
+      width: 26px;
+      height: 26px;
+      border-radius: 100%;
+      background: linear-gradient(
+        to top,
+        lighten($brand-success, 10%),
+        lighten($brand-success, 5%)
+      );
+      line-height: 24px;
     }
   }
 

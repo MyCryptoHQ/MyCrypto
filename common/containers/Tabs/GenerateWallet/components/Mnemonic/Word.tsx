@@ -36,11 +36,10 @@ export default class MnemonicWord extends React.Component<Props, State> {
       word
     } = this.props;
     const { flashingError } = this.state;
-    const isSuccessful = hasBeenConfirmed || isBeingRevealed;
     const btnClassName = classnames({
       btn: true,
-      'btn-default': !(isSuccessful || flashingError),
-      'btn-success': isSuccessful,
+      'btn-default': !(isBeingRevealed || flashingError),
+      'btn-success': isBeingRevealed,
       'btn-danger': flashingError
     });
     const indexClassName = 'input-group-addon input-group-addon--transparent';
@@ -49,15 +48,16 @@ export default class MnemonicWord extends React.Component<Props, State> {
       <div className="input-group-wrapper MnemonicWord">
         <label className="input-group input-group-inline ENSInput-name">
           {showIndex && <span className={indexClassName}>{index + 1}.</span>}
+          {hasBeenConfirmed && (
+            <span className="MnemonicWord-button-index">{confirmIndex + 1}</span>
+          )}
           {isConfirming ? (
             <button
-              className={`MnemonicWord-button ${btnClassName}`}
+              className={`MnemonicWord-button ${btnClassName} ${
+                hasBeenConfirmed ? 'disabled' : ''
+              }`}
               onClick={() => this.handleClick(word)}
-              disabled={hasBeenConfirmed}
             >
-              {hasBeenConfirmed && (
-                <span className="MnemonicWord-button-index">{confirmIndex + 1}</span>
-              )}{' '}
               {word}
             </button>
           ) : (
