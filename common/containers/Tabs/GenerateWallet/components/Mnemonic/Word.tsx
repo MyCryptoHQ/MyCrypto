@@ -84,7 +84,9 @@ export default class MnemonicWord extends React.Component<Props, State> {
   private handleClick = (value: string) => {
     const { isNext, index, onClick } = this.props;
 
-    if (!isNext) this.flashError();
+    if (!isNext) {
+      this.flashError();
+    }
 
     onClick(index, value);
   };
