@@ -181,6 +181,10 @@ describe('handleNodeChangeIntent*', () => {
     );
   });
 
+  it(`should delay for 10 ms to allow shepherdProvider async init to complete`, () => {
+    expect(data.gen.next().value).toEqual(call(delay, 10));
+  });
+
   it('should get the current block', () => {
     data.gen.next();
   });
