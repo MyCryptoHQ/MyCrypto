@@ -7,7 +7,7 @@ import { ledgerReferralURL, trezorReferralURL } from 'config';
 import Template from './Template';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import HardwareWalletIcon from 'assets/images/wallets/hardware.svg';
-import ParitySignerIcon from 'assets/images/wallets/paritysigner.svg';
+import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import FileIcon from 'assets/images/wallets/file.svg';
 import './WalletTypes.scss';
 
@@ -49,6 +49,7 @@ interface WalletSuggestionsProps {
 
 interface WalletSuggestion {
   name: React.ReactElement<string>;
+  type: string;
   icon: string;
   bullets: React.ReactElement<string>[];
   links: {
@@ -62,6 +63,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
   const suggestions: WalletSuggestion[] = [
     {
       name: translate('X_HARDWARE_WALLET'),
+      type: 'hardware',
       icon: HardwareWalletIcon,
       bullets: [
         translate('WALLET_SUGGESTION_HARDWARE_1'),
@@ -82,6 +84,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
     },
     {
       name: translate('X_METAMASK'),
+      type: 'metamask',
       icon: MetamaskIcon,
       bullets: [
         translate('WALLET_SUGGESTION_METAMASK_1'),
@@ -101,6 +104,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
     },
     {
       name: translate('X_PARITYSIGNER'),
+      type: 'parity',
       icon: ParitySignerIcon,
       bullets: [
         translate('WALLET_SUGGESTION_PARITYSIGNER_1'),
@@ -121,16 +125,20 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
     }
   ];
 
-  if (process.env.BUILD_ELECTRON) {
+  if (process.env.BUILD_DOWNLOADABLE) {
     suggestions[1] = {
       name: translate('NAV_GENERATEWALLET'),
+      type: 'generate',
       icon: FileIcon,
       bullets: [
         translate('WALLET_SUGGESTION_GENERATE_1'),
         translate('WALLET_SUGGESTION_GENERATE_2'),
         translate('WALLET_SUGGESTION_GENERATE_3'),
         translate('WALLET_SUGGESTION_GENERATE_4'),
-        translate('WALLET_SUGGESTION_GENERATE_5')
+        <span key="warning" className="is-danger">
+          <i className="fa fa-exclamation-triangle" />
+          {translate('WALLET_SUGGESTION_GENERATE_5')}
+        </span>
       ],
       links: [
         {
@@ -148,7 +156,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
 
       <div className="WalletTypes-suggestions">
         {suggestions.map(sug => (
-          <div className="WalletSuggestion">
+          <div className={`WalletSuggestion is-${sug.type}`}>
             <h3 className="WalletSuggestion-name">
               <img className="WalletSuggestion-name-icon" src={sug.icon} />
               {sug.name}
@@ -190,7 +198,7 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
         ))}
       </div>
 
-      {!process.env.BUILD_ELECTRON && (
+      {!process.env.BUILD_DOWNLOADABLE && (
         <React.Fragment>
           <div className="WalletTypes-divider">{translate('OR')}</div>
 

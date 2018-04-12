@@ -93,6 +93,7 @@ $divider-size: 60px;
   flex-direction: column;
   border: 1px solid $gray-lighter;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.12);
+  background: #FFF;
   border-radius: 4px;
   transition: transform 100ms ease, box-shadow 100ms ease;
 
@@ -114,6 +115,23 @@ $divider-size: 60px;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   transition: transform 100ms ease, box-shadow 100ms ease;
+  border-top: 3px solid;
+
+  &.is-hardware {
+    border-top-color: #41ccb4;
+  }
+
+  &.is-metamask {
+    border-top-color: #F79220;
+  }
+
+  &.is-parity {
+    border-top-color: #444;
+  }
+
+  &.is-generate {
+    border-top-color: $brand-danger;
+  }
 
   @media (max-width: $screen-sm) {
     flex: auto;
@@ -138,12 +156,21 @@ $divider-size: 60px;
     &-icon {
       height: 28px;
       margin-right: $space-md;
+      opacity: 0.8;
     }
   }
 
   &-features {
     flex: 1;
     padding-left: 1.25rem;
+
+    .fa {
+      margin-right: 4px;
+    }
+
+    .is-danger {
+      color: $brand-danger;
+    }
   }
 
   &-buttons {
