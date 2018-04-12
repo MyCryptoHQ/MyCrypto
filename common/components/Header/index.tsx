@@ -36,14 +36,14 @@ import {
   CustomNodeOption,
   NodeOption,
   getNodeOptions,
-  getNetworkConfig
+  getNetworkConfig,
+  isStaticNodeId
 } from 'selectors/config';
-import { NetworkConfig, StaticNetworkIds } from 'types/network';
-import { connect } from 'react-redux';
+import { NetworkConfig } from 'types/network';
+import { connect, MapStateToProps } from 'react-redux';
 import { stripWeb3Network } from 'libs/nodes';
-import { getStaticNetworkIds } from 'selectors/config/networks';
 
-interface PassedProps {
+interface OwnProps {
   networkParam: string | null;
 }
 
@@ -58,7 +58,7 @@ interface DispatchProps {
 }
 
 interface StateProps {
-  staticNetworkIds: StaticNetworkIds[];
+  shouldSetNodeFromQS: boolean;
   network: NetworkConfig;
   languageSelection: AppState['config']['meta']['languageSelection'];
   node: NodeConfig;
@@ -68,8 +68,11 @@ interface StateProps {
   nodeOptions: (CustomNodeOption | NodeOption)[];
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  staticNetworkIds: getStaticNetworkIds(state),
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
+  state,
+  { networkParam }
+): StateProps => ({
+  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
   isOffline: getOffline(state),
   isChangingNode: isNodeChanging(state),
   languageSelection: getLanguageSelection(state),
@@ -93,26 +96,15 @@ interface State {
   isAddingCustomNode: boolean;
 }
 
-type Props = PassedProps & StateProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 class Header extends Component<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
 
-  public setNodeFromQueryParameter() {
-    const { networkParam, staticNetworkIds, network } = this.props;
-    // If the network set via query parameter is a known network
-    if (networkParam && staticNetworkIds.includes(networkParam.toUpperCase() as StaticNetworkIds)) {
-      // don't redundantly change networks
-      if (networkParam.toUpperCase() !== network.name) {
-        this.props.changeNodeIntentOneTime(`${networkParam.toLowerCase()}_auto`);
-      }
-    }
-  }
-
   public componentDidMount() {
-    this.setNodeFromQueryParameter();
+    this.attemptSetNodeFromQueryParameter();
   }
 
   public render() {
@@ -246,6 +238,13 @@ class Header extends Component<Props, State> {
     this.setState({ isAddingCustomNode: false });
     this.props.addCustomNode(payload);
   };
+
+  private attemptSetNodeFromQueryParameter() {
+    const { shouldSetNodeFromQS, networkParam } = this.props;
+    if (shouldSetNodeFromQS) {
+      this.props.changeNodeIntentOneTime(networkParam!);
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
