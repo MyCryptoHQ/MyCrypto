@@ -1,5 +1,11 @@
 import { meta } from 'reducers/config/meta';
-import { changeLanguage, toggleOffline, toggleAutoGasLimit, setLatestBlock } from 'actions/config';
+import {
+  changeLanguage,
+  setOnline,
+  setOffline,
+  toggleAutoGasLimit,
+  setLatestBlock
+} from 'actions/config';
 
 const expectedInitialState = {
   languageSelection: 'en',
@@ -38,7 +44,8 @@ const expectedState = {
 
 const actions = {
   changeLangauge: changeLanguage('langaugeToChange'),
-  toggleOffline: toggleOffline(),
+  setOnline: setOnline(),
+  setOffline: setOffline(),
   toggleAutoGasLimit: toggleAutoGasLimit(),
   setLatestBlock: setLatestBlock('12345')
 };
@@ -48,12 +55,12 @@ describe('meta reducer', () => {
     expect(meta(undefined, {} as any)).toEqual(expectedState.initialState));
 
   it('should handle toggling to offline', () =>
-    expect(meta(expectedState.initialState, actions.toggleOffline)).toEqual(
+    expect(meta(expectedState.initialState, actions.setOffline)).toEqual(
       expectedState.togglingToOffline
     ));
 
   it('should handle toggling back to online', () =>
-    expect(meta(expectedState.togglingToOffline, actions.toggleOffline)).toEqual(
+    expect(meta(expectedState.togglingToOffline, actions.setOnline)).toEqual(
       expectedState.togglingToOnline
     ));
 

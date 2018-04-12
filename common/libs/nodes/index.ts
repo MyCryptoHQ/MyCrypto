@@ -40,6 +40,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
     }
   };
 };
+
 let shepherdProvider: INode;
 shepherd
   .init()
@@ -102,7 +103,12 @@ shepherd.useProvider('rpc', 'ella', regEllaConf, 'https://jsonrpc.ellaism.org');
  */
 const web3EthConf = makeProviderConfig({
   network: makeWeb3Network('ETH'),
-  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
+  supportedMethods: {
+    sendRawTx: false,
+    sendTransaction: false,
+    signMessage: false,
+    getNetVersion: false
+  }
 });
 shepherd.useProvider('rpc', 'web3_eth_mycrypto', web3EthConf, 'https://api.mycryptoapi.com/eth');
 shepherd.useProvider('etherscan', 'web3_eth_ethscan', web3EthConf, 'https://api.etherscan.io/api');
@@ -121,7 +127,12 @@ shepherd.useProvider(
 
 const web3RopConf = makeProviderConfig({
   network: makeWeb3Network('Ropsten'),
-  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
+  supportedMethods: {
+    sendRawTx: false,
+    sendTransaction: false,
+    signMessage: false,
+    getNetVersion: false
+  }
 });
 shepherd.useProvider(
   'infura',
@@ -132,7 +143,12 @@ shepherd.useProvider(
 
 const web3KovConf = makeProviderConfig({
   network: makeWeb3Network('Kovan'),
-  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
+  supportedMethods: {
+    sendRawTx: false,
+    sendTransaction: false,
+    signMessage: false,
+    getNetVersion: false
+  }
 });
 shepherd.useProvider(
   'etherscan',
@@ -143,7 +159,12 @@ shepherd.useProvider(
 
 const web3RinConf = makeProviderConfig({
   network: makeWeb3Network('Rinkeby'),
-  supportedMethods: { sendRawTx: false, sendTransaction: false, signMessage: false }
+  supportedMethods: {
+    sendRawTx: false,
+    sendTransaction: false,
+    signMessage: false,
+    getNetVersion: false
+  }
 });
 shepherd.useProvider(
   'infura',
