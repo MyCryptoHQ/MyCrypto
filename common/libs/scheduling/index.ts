@@ -3,6 +3,7 @@ import abi from 'ethereumjs-abi';
 import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import { toBuffer } from 'ethereumjs-util';
 import RequestFactory from './contracts/RequestFactory';
+import { ICurrentValue } from 'selectors/transaction';
 
 const TIME_BOUNTY_MIN = Wei('1');
 
@@ -112,7 +113,7 @@ export const getScheduleData = (
     !timeBounty ||
     timeBounty.lt(Wei('0')) ||
     callGasPrice.lt(Wei('0')) ||
-    windowSize.lt(Wei('0')) ||
+    windowSize.lt(new BN(0)) ||
     windowSize.bitLength() > 256
   ) {
     return;
@@ -164,8 +165,8 @@ export const getValidateRequestParamsData = (
   toAddress: string,
   callData = '',
   callGas: Wei,
-  callValue: any,
-  windowSize: Wei | null,
+  callValue: ICurrentValue['value'],
+  windowSize: BN | null,
   windowStart: number,
   gasPrice: Wei,
   timeBounty: Wei | null,
@@ -174,7 +175,7 @@ export const getValidateRequestParamsData = (
   endowment: Wei,
   fromAddress: string
 ): string => {
-  windowSize = windowSize || Wei('0');
+  windowSize = windowSize || new BN(0);
   timeBounty = timeBounty || Wei('0');
 
   const temporalUnit = isTimestamp ? 2 : 1;
