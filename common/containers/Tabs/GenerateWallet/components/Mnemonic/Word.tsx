@@ -43,18 +43,13 @@ export default class MnemonicWord extends React.Component<Props, State> {
       'btn-success': isSuccessful,
       'btn-danger': flashingError
     });
+    const indexClassName = 'input-group-addon input-group-addon--transparent';
 
     return (
       <div className="input-group-wrapper MnemonicWord">
         <label className="input-group input-group-inline ENSInput-name">
-          {showIndex && (
-            <span className="input-group-addon input-group-addon--transparent">{index + 1}.</span>
-          )}
-          {hasBeenConfirmed && (
-            <span className="input-group-addon input-group-addon--transparent">
-              {confirmIndex + 1}.
-            </span>
-          )}
+          {showIndex && <span className={indexClassName}>{index + 1}.</span>}
+          {hasBeenConfirmed && <span className={indexClassName}>{confirmIndex + 1}.</span>}
           {isConfirming ? (
             <button
               className={btnClassName}
@@ -82,6 +77,8 @@ export default class MnemonicWord extends React.Component<Props, State> {
   };
 
   private flashError = () => {
+    const errorDuration = 200;
+
     this.setState(
       {
         flashingError: true
@@ -92,7 +89,7 @@ export default class MnemonicWord extends React.Component<Props, State> {
             this.setState({
               flashingError: false
             }),
-          200
+          errorDuration
         )
     );
   };

@@ -37,64 +37,56 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
 
   public render() {
     const { words, confirmWords, isConfirming, isConfirmed } = this.state;
-    let content;
+    const defaultBtnClassName = 'GenerateMnemonic-buttons-btn btn btn-default';
+    const canContinue = this.checkCanContinue();
+    const [firstHalf, lastHalf] =
+      confirmWords.length === 0 ? this.splitWordsIntoHalves(words) : confirmWords;
 
-    if (isConfirmed) {
-      content = <FinalSteps walletType={WalletType.Mnemonic} />;
-    } else {
-      const canContinue = this.checkCanContinue();
-      const [firstHalf, lastHalf] =
-        confirmWords.length === 0 ? this.splitWordsIntoHalves(words) : confirmWords;
+    const content = isConfirmed ? (
+      <FinalSteps walletType={WalletType.Mnemonic} />
+    ) : (
+      <div className="GenerateMnemonic">
+        <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
 
-      content = (
-        <div className="GenerateMnemonic">
-          <h1 className="GenerateMnemonic-title">{translate('GENERATE_MNEMONIC_TITLE')}</h1>
+        <p className="GenerateMnemonic-help">
+          {isConfirming ? translate('MNEMONIC_DESCRIPTION_1') : translate('MNEMONIC_DESCRIPTION_2')}
+        </p>
 
-          <p className="GenerateMnemonic-help">
-            {isConfirming
-              ? translate('MNEMONIC_DESCRIPTION_1')
-              : translate('MNEMONIC_DESCRIPTION_2')}
-          </p>
-
-          <div className="GenerateMnemonic-words">
-            {[firstHalf, lastHalf].map((ws, i) => (
-              <div key={i} className="GenerateMnemonic-words-column">
-                {ws.map(this.makeWord)}
-              </div>
-            ))}
-          </div>
-
-          <div className="GenerateMnemonic-buttons">
-            {!isConfirming && (
-              <button
-                className="GenerateMnemonic-buttons-btn btn btn-default"
-                onClick={this.regenerateWordArray}
-              >
-                <i className="fa fa-refresh" /> {translate('REGENERATE_MNEMONIC')}
-              </button>
-            )}
-            {isConfirming && (
-              <button
-                className="GenerateMnemonic-buttons-btn btn btn-default"
-                disabled={canContinue}
-                onClick={this.revealNextWord}
-              >
-                <i className="fa fa-eye" /> {translate('REVEAL_NEXT_MNEMONIC')}
-              </button>
-            )}
-            <button
-              className="GenerateMnemonic-buttons-btn btn btn-primary"
-              disabled={!canContinue}
-              onClick={this.goToNextStep}
-            >
-              {translate('CONFIRM_MNEMONIC')}
-            </button>
-          </div>
-
-          <button className="GenerateMnemonic-skip" onClick={this.skip} />
+        <div className="GenerateMnemonic-words">
+          {[firstHalf, lastHalf].map((ws, i) => (
+            <div key={i} className="GenerateMnemonic-words-column">
+              {ws.map(this.makeWord)}
+            </div>
+          ))}
         </div>
-      );
-    }
+
+        <div className="GenerateMnemonic-buttons">
+          {!isConfirming && (
+            <button className={defaultBtnClassName} onClick={this.regenerateWordArray}>
+              <i className="fa fa-refresh" /> {translate('REGENERATE_MNEMONIC')}
+            </button>
+          )}
+          {isConfirming && (
+            <button
+              className={defaultBtnClassName}
+              disabled={canContinue}
+              onClick={this.revealNextWord}
+            >
+              <i className="fa fa-eye" /> {translate('REVEAL_NEXT_MNEMONIC')}
+            </button>
+          )}
+          <button
+            className="GenerateMnemonic-buttons-btn btn btn-primary"
+            disabled={!canContinue}
+            onClick={this.goToNextStep}
+          >
+            {translate('CONFIRM_MNEMONIC')}
+          </button>
+        </div>
+
+        <button className="GenerateMnemonic-skip" onClick={this.skip} />
+      </div>
+    );
 
     return <Template>{content}</Template>;
   }
@@ -188,6 +180,8 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
   };
 
   private revealNextWord = () => {
+    const revealDuration = 400;
+
     this.setState(
       {
         isRevealingNextWord: true
@@ -198,7 +192,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
             this.setState({
               isRevealingNextWord: false
             }),
-          400
+          revealDuration
         )
     );
   };

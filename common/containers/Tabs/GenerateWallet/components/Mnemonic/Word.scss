@@ -22,17 +22,6 @@ $number-margin: 6px;
     margin-bottom: 0;
   }
 
-  &-number {
-    display: inline-block;
-    width: $number-width;
-    margin-right: $number-margin;
-    text-align: right;
-    font-size: 26px;
-    font-weight: 100;
-    line-height: 40px;
-    vertical-align: bottom;
-  }
-
   &-word {
     width: $width - $number-width - $number-margin;
 
@@ -40,14 +29,6 @@ $number-margin: 6px;
       animation: word-fade 400ms ease 1;
       animation-fill-mode: both;
       transition: border 0.2s ease-in;
-    }
-
-    &-toggle {
-      color: $gray-light;
-
-      &:hover {
-        color: $gray;
-      }
     }
   }
 
