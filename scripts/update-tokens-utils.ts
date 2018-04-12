@@ -38,6 +38,7 @@ function checkForDuplicateAddresses(tokens: NormalizedTokenJSON[]) {
   const errors: string[] = [];
   for (const token of tokens) {
     const { address } = token;
+    // We might want to strip hex prefixes here, and make all characters lowercase
     if (map[address]) {
       errors.push(`Token ${token.symbol} has a duplicate address of ${token.address}`);
     }
