@@ -13,6 +13,7 @@
 
   &-sidebar {
     width: $electron-sidebar-width;
+    overflow-x: hidden;
     background: #FFF;
     border-right: 1px solid $gray-lighter;
   }
@@ -27,11 +28,17 @@
   }
 
   &-draggable {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: 16px;
     -webkit-app-region: drag;
+
+    // Only needed on OSX, Linux and Windows have title bars
+    .is-osx & {
+      display: block;
+    }
   }
 }

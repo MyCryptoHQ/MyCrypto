@@ -21,7 +21,6 @@ export default function getWindow() {
     height: 800,
     minWidth: 320,
     minHeight: 400,
-    frame: false,
     titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
