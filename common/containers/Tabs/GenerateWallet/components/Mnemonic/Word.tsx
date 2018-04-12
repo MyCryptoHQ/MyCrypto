@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import { translateRaw } from 'translations';
 import './Word.scss';
 import { Input } from 'components/ui';
 

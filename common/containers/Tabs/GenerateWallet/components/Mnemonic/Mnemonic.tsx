@@ -173,7 +173,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     );
   };
 
-  private handleWordClick = (index: number, value: string) => {
+  private handleWordClick = (_: number, value: string) => {
     const { words, isConfirming, confirmValues: previousConfirmValues } = this.state;
     const wordAlreadyConfirmed = previousConfirmValues.includes(value);
     const activeIndex = previousConfirmValues.length;
