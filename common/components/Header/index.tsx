@@ -100,11 +100,19 @@ class Header extends Component<Props, State> {
     isAddingCustomNode: false
   };
 
-  public componentDidMount() {
-    const { networkParam, staticNetworkIds } = this.props;
-    if (networkParam && staticNetworkIds.includes(networkParam.toUpperCase() as any)) {
-      this.props.changeNodeIntentOneTime(`${networkParam.toLowerCase()}_auto`);
+  public setNodeFromQueryParameter() {
+    const { networkParam, staticNetworkIds, network } = this.props;
+    // If the network set via query parameter is a known network
+    if (networkParam && staticNetworkIds.includes(networkParam.toUpperCase() as StaticNetworkIds)) {
+      // don't redundantly change networks
+      if (networkParam.toUpperCase() !== network.name) {
+        this.props.changeNodeIntentOneTime(`${networkParam.toLowerCase()}_auto`);
+      }
     }
+  }
+
+  public componentDidMount() {
+    this.setNodeFromQueryParameter();
   }
 
   public render() {
