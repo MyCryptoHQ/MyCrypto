@@ -32,6 +32,18 @@ $number-margin: 6px;
     }
   }
 
+  &-button {
+    position: relative;
+    width: 300px;
+
+    &-index {
+      position: absolute;
+      top: 0;
+      left: 3px;
+      color: black;
+    }
+  }
+
   // Fade-in animation
   @for $i from 1 to 12 {
     &:nth-child(#{$i}) {

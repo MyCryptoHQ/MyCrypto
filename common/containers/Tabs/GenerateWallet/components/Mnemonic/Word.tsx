@@ -49,13 +49,15 @@ export default class MnemonicWord extends React.Component<Props, State> {
       <div className="input-group-wrapper MnemonicWord">
         <label className="input-group input-group-inline ENSInput-name">
           {showIndex && <span className={indexClassName}>{index + 1}.</span>}
-          {hasBeenConfirmed && <span className={indexClassName}>{confirmIndex + 1}.</span>}
           {isConfirming ? (
             <button
-              className={btnClassName}
+              className={`MnemonicWord-button ${btnClassName}`}
               onClick={() => this.handleClick(word)}
               disabled={hasBeenConfirmed}
             >
+              {hasBeenConfirmed && (
+                <span className="MnemonicWord-button-index">{confirmIndex + 1}</span>
+              )}{' '}
               {word}
             </button>
           ) : (
