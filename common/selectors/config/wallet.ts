@@ -65,11 +65,6 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
     return !!dPath;
   }
 
-  // Ensure Web3 is only enabled on ETH or ETH Testnets (MetaMask does not support other networks)
-  if (format === SecureWalletName.WEB3) {
-    return isNetworkUnit(state, 'ETH');
-  }
-
   // All other wallet formats are supported
   return true;
 }
