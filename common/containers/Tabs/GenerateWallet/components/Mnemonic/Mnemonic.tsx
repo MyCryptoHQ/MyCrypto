@@ -1,7 +1,7 @@
 import React from 'react';
 import { generateMnemonic } from 'bip39';
 import translate from 'translations';
-import shuffle from 'utils/shuffle';
+import shuffle from 'lodash/shuffle';
 import Word from './Word';
 import FinalSteps from '../FinalSteps';
 import Template from '../Template';
