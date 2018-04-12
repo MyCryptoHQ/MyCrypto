@@ -1,6 +1,7 @@
 import React from 'react';
 import { generateMnemonic } from 'bip39';
 import translate from 'translations';
+import shuffle from 'utils/shuffle';
 import Word from './Word';
 import FinalSteps from '../FinalSteps';
 import Template from '../Template';
@@ -103,7 +104,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     if (this.state.isConfirming) {
       this.setState({ isConfirmed: true });
     } else {
-      const shuffledWords = this.getShuffledWords([...this.state.words]);
+      const shuffledWords = shuffle([...this.state.words]);
       const confirmWords = this.splitWordsIntoHalves(shuffledWords);
 
       this.setState({
@@ -167,16 +168,6 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
 
   private skip = () => {
     this.setState({ isConfirmed: true });
-  };
-
-  private getShuffledWords = (words: string[]) => {
-    // Fisher-Yates shuffle
-    for (let i = words.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [words[i], words[j]] = [words[j], words[i]];
-    }
-
-    return words;
   };
 
   private revealNextWord = () => {
