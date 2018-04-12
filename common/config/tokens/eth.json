@@ -126,7 +126,7 @@
   },
   {
     "address": "0xF6B55acBBC49f4524Aa48D19281A9A77c54DE10f",
-    "symbol": "WOLK",
+    "symbol": "WOLK (2)",
     "decimal": 18
   },
   {
@@ -536,7 +536,7 @@
   },
   {
     "address": "0x65Be44C747988fBF606207698c944Df4442efE19",
-    "symbol": "FUCK",
+    "symbol": "FUCK (1)",
     "decimal": 4
   },
   {
@@ -631,7 +631,7 @@
   },
   {
     "address": "0x6f539a9456A5BCb6334A1A41207c3788f5825207",
-    "symbol": "OHNI",
+    "symbol": "OHNI (1)",
     "decimal": 18
   },
   {
@@ -641,7 +641,7 @@
   },
   {
     "address": "0x04cC783b450b8D11F3C7d00DD03fDF7FB51fE9F2",
-    "symbol": "FLMC",
+    "symbol": "FLMC (1)",
     "decimal": 18
   },
   {
@@ -741,7 +741,7 @@
   },
   {
     "address": "0xB15fE5a123e647ba594CEa7A1E648646f95EB4AA",
-    "symbol": "SS",
+    "symbol": "SS (2)",
     "decimal": 18
   },
   {
@@ -811,7 +811,7 @@
   },
   {
     "address": "0x728781E75735dc0962Df3a51d7Ef47E798A7107E",
-    "symbol": "WOLK",
+    "symbol": "WOLK (1)",
     "decimal": 18
   },
   {
@@ -846,7 +846,7 @@
   },
   {
     "address": "0x2799D90C6d44Cb9Aa5fBC377177F16C33E056b82",
-    "symbol": "DRP",
+    "symbol": "DRP (1)",
     "decimal": 0
   },
   {
@@ -891,7 +891,7 @@
   },
   {
     "address": "0xbbFF862d906E348E9946Bfb2132ecB157Da3D4b4",
-    "symbol": "SS",
+    "symbol": "SS (1)",
     "decimal": 18
   },
   {
@@ -926,7 +926,7 @@
   },
   {
     "address": "0x7F2176cEB16dcb648dc924eff617c3dC2BEfd30d",
-    "symbol": "OHNI",
+    "symbol": "OHNI (2)",
     "decimal": 0
   },
   {
@@ -1091,7 +1091,7 @@
   },
   {
     "address": "0xe8Ff5C9c75dEb346acAc493C463C8950Be03Dfba",
-    "symbol": "VIBEX",
+    "symbol": "VIBEX (1)",
     "decimal": 18
   },
   {
@@ -1171,7 +1171,7 @@
   },
   {
     "address": "0x65292EeadF1426Cd2dF1C4793a3d7519f253913b",
-    "symbol": "COSS",
+    "symbol": "COSS (1)",
     "decimal": 18
   },
   {
@@ -1251,7 +1251,7 @@
   },
   {
     "address": "0x76974C7B79dC8a6a109Fd71fd7cEb9E40eff5382",
-    "symbol": "DOW",
+    "symbol": "DOW (1)",
     "decimal": 18
   },
   {
@@ -1331,7 +1331,7 @@
   },
   {
     "address": "0xEEF6E90034eEa89E31Eb4B8eaCd323F28A92eaE4",
-    "symbol": "DOW",
+    "symbol": "DOW (2)",
     "decimal": 18
   },
   {
@@ -1361,7 +1361,7 @@
   },
   {
     "address": "0xfdFE8b7aB6CF1bD1E3d14538Ef40686296C42052",
-    "symbol": "SKRP",
+    "symbol": "SKRP (3)",
     "decimal": 18
   },
   {
@@ -1681,7 +1681,7 @@
   },
   {
     "address": "0xAb16E0d25c06CB376259cc18C1de4ACA57605589",
-    "symbol": "FUCK",
+    "symbol": "FUCK (2)",
     "decimal": 4
   },
   {
@@ -1791,7 +1791,7 @@
   },
   {
     "address": "0x9e96604445Ec19fFed9a5e8dd7B50a29C899A10C",
-    "symbol": "COSS",
+    "symbol": "COSS (2)",
     "decimal": 18
   },
   {
@@ -1921,7 +1921,7 @@
   },
   {
     "address": "0x5976F7dac1525eF3277836043bA474a35E6B4272",
-    "symbol": "FLMC",
+    "symbol": "FLMC (2)",
     "decimal": 0
   },
   {
@@ -2186,7 +2186,7 @@
   },
   {
     "address": "0x621d78f2EF2fd937BFca696CabaF9A779F59B3Ed",
-    "symbol": "DRP",
+    "symbol": "DRP (2)",
     "decimal": 2
   },
   {
@@ -2416,7 +2416,7 @@
   },
   {
     "address": "0x324A48eBCbB46e61993931eF9D35F6697CD2901b",
-    "symbol": "SKRP",
+    "symbol": "SKRP (1)",
     "decimal": 18
   },
   {
@@ -2531,7 +2531,7 @@
   },
   {
     "address": "0x882448f83d90B2bf477Af2eA79327fDEA1335D93",
-    "symbol": "VIBEX",
+    "symbol": "VIBEX (2)",
     "decimal": 18
   },
   {
@@ -2731,12 +2731,12 @@
   },
   {
     "address": "0xe200641890772FCe8eE6EDc5354cCEa30ac92F49",
-    "symbol": "WHO",
+    "symbol": "WHO (1)",
     "decimal": 18
   },
   {
     "address": "0x6E34d8d84764D40f6D7b39cd569Fd017bF53177D",
-    "symbol": "SKRP",
+    "symbol": "SKRP (2)",
     "decimal": 18
   },
   {
@@ -2796,7 +2796,7 @@
   },
   {
     "address": "0xe933c0Cd9784414d5F278C114904F5A84b396919",
-    "symbol": "WHO",
+    "symbol": "WHO (2)",
     "decimal": 18
   },
   {
@@ -2931,7 +2931,7 @@
   },
   {
     "address": "0x4CC19356f2D37338b9802aa8E8fc58B0373296E7",
-    "symbol": "KEY",
+    "symbol": "KEY (1)",
     "decimal": 18
   },
   {
@@ -2941,7 +2941,7 @@
   },
   {
     "address": "0x4Cd988AfBad37289BAAf53C13e98E2BD46aAEa8c",
-    "symbol": "KEY",
+    "symbol": "KEY (2)",
     "decimal": 18
   }
 ]
