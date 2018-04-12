@@ -29,10 +29,12 @@ class ScheduleDepositFieldClass extends Component<Props> {
       <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
-            <span className="ScheduleFields-field-title">
+            <span className="ScheduleFields-field-title-wrap">
               {translateRaw('SCHEDULE_DEPOSIT')}
-              <Tooltip>{translateRaw('SCHEDULE_DEPOSIT_TOOLTIP')}</Tooltip>
-              <Help className="ScheduleFields-field-title-help" />
+              <div className="ScheduleFields-field-title-tooltip">
+                <Tooltip>{translateRaw('SCHEDULE_DEPOSIT_TOOLTIP')}</Tooltip>
+                <Help className="ScheduleFields-field-title-help" />
+              </div>
             </span>
           </div>
           <Input

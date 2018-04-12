@@ -15,9 +15,13 @@ export const TimeBountyField: React.SFC<Props> = ({ isReadOnly }) => (
         <label className="input-group">
           <div className="input-group-header">
             <span className="ScheduleFields-field-title">
-              {translate('SCHEDULE_TIMEBOUNTY')}
-              <Tooltip>{translateRaw('SCHEDULE_TIMEBOUNTY_TOOLTIP')}</Tooltip>
-              <Help className="ScheduleFields-field-title-help" />
+              <div className="ScheduleFields-field-title-text">
+                {translate('SCHEDULE_TIMEBOUNTY')}
+              </div>
+              <div className="ScheduleFields-field-title-tooltip">
+                <Tooltip>{translateRaw('SCHEDULE_TIMEBOUNTY_TOOLTIP')}</Tooltip>
+                <Help className="ScheduleFields-field-title-help" />
+              </div>
             </span>
           </div>
           <Input

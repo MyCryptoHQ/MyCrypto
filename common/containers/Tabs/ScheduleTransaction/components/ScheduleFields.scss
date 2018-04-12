@@ -33,13 +33,25 @@
 
   &-field-title {
     position: relative;
-
-    @include show-tooltip-on-hover;
+    white-space: nowrap;
 
     &-help {
       margin-top: 3px;
       margin-left: 5px;
       pointer-events: none;
+    }
+
+    &-text {
+      display: inline-block;
+    }
+
+    &-tooltip {
+      display: inline-block;
+      @include show-tooltip-on-hover;
+    }
+
+    &-wrap {
+      white-space: normal;
     }
   }
 }

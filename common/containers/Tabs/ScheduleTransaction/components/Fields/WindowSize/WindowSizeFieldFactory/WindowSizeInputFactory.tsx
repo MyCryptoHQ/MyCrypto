@@ -31,20 +31,18 @@ class WindowSizeInputFactoryClass extends Component<Props> {
     const { currentWindowSize, currentScheduleType, onChange, isValid, withProps } = this.props;
 
     return (
-      <div className="form-group">
-        <Query
-          params={['readOnly']}
-          withQuery={({ readOnly }) =>
-            withProps({
-              currentWindowSize,
-              currentScheduleType,
-              isValid,
-              onChange,
-              readOnly: !!readOnly || this.props.isResolving
-            })
-          }
-        />
-      </div>
+      <Query
+        params={['readOnly']}
+        withQuery={({ readOnly }) =>
+          withProps({
+            currentWindowSize,
+            currentScheduleType,
+            isValid,
+            onChange,
+            readOnly: !!readOnly || this.props.isResolving
+          })
+        }
+      />
     );
   }
 }

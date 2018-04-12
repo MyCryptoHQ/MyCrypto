@@ -16,9 +16,19 @@ export const WindowSizeField: React.SFC<Props> = ({ isReadOnly }) => (
         <label className="input-group">
           <div className="input-group-header">
             <span className="ScheduleFields-field-title">
-              {translate('SCHEDULE_WINDOW_SIZE')}
-              <Tooltip>{translateRaw('SCHEDULE_WINDOW_SIZE_TOOLTIP')}</Tooltip>
-              <Help className="ScheduleFields-field-title-help" />
+              <div className="ScheduleFields-field-title-text">
+                {translate('SCHEDULE_WINDOW_SIZE')}
+              </div>
+              <div className="ScheduleFields-field-title-tooltip">
+                <Tooltip>
+                  {translateRaw(
+                    `SCHEDULE_WINDOW_SIZE_TOOLTIP_${
+                      currentScheduleType.value === 'time' ? 'TIME' : 'BLOCK'
+                    }`
+                  )}
+                </Tooltip>
+                <Help className="ScheduleFields-field-title-help" />
+              </div>
             </span>
           </div>
           <Input

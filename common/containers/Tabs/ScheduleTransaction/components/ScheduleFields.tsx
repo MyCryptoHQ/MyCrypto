@@ -41,7 +41,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
           {schedulingType.value === 'time' && (
             <>
-              <div className="col-md-5 col-lg-3 col-lg-pull-3">
+              <div className="col-md-6 col-lg-4 col-lg-pull-3">
                 <ScheduleTimestampField />
               </div>
               <div className="col-md-4 col-lg-3 col-lg-pull-3">
@@ -52,13 +52,17 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
           {schedulingType.value === 'block' && (
             <>
-              <div className="col-md-9 col-lg-6 col-lg-pull-3">
+              <div className="col-md-6 col-lg-6 col-lg-pull-3">
                 <WindowStartField />
               </div>
             </>
           )}
 
-          <div className="col-md-3 col-lg-3 col-lg-pull-3">
+          <div
+            className={`${
+              schedulingType.value === 'block' ? 'col-md-6 col-lg-3' : 'col-md-2 col-lg-2'
+            } col-lg-pull-3`}
+          >
             <WindowSizeField />
           </div>
         </div>

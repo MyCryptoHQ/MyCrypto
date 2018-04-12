@@ -28,19 +28,17 @@ class WindowStartInputFactoryClass extends Component<Props> {
     const { currentWindowStart, onChange, isValid, withProps } = this.props;
 
     return (
-      <div className="form-group">
-        <Query
-          params={['readOnly']}
-          withQuery={({ readOnly }) =>
-            withProps({
-              currentWindowStart,
-              isValid,
-              onChange,
-              readOnly: !!readOnly || this.props.isResolving
-            })
-          }
-        />
-      </div>
+      <Query
+        params={['readOnly']}
+        withQuery={({ readOnly }) =>
+          withProps({
+            currentWindowStart,
+            isValid,
+            onChange,
+            readOnly: !!readOnly || this.props.isResolving
+          })
+        }
+      />
     );
   }
 }
