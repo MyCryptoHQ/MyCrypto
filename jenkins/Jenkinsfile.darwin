@@ -14,7 +14,7 @@ pipeline {
             }
             steps {
                 sh 'rm -rf node_modules'
-                sh 'npm install'
+                sh 'yarn'
             }
         }
         stage('Build') {
