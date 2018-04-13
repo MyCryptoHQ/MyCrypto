@@ -59,3 +59,6 @@ package-lock.json
 
 # Favicon cache
 .wwp-cache
+
+# MacOSX
+.DS_Store

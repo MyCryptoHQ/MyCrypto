@@ -1,67 +1,98 @@
 import React from 'react';
 import classnames from 'classnames';
-import { translateRaw } from 'translations';
 import './Word.scss';
 import { Input } from 'components/ui';
 
 interface Props {
   index: number;
+  confirmIndex: number;
   word: string;
   value: string;
-  isReadOnly: boolean;
-  onChange(index: number, value: string): void;
+  showIndex: boolean;
+  isNext: boolean;
+  isBeingRevealed: boolean;
+  isConfirming: boolean;
+  hasBeenConfirmed: boolean;
+  onClick(index: number, value: string): void;
 }
 
 interface State {
-  isShowingWord: boolean;
+  flashingError: boolean;
 }
 
 export default class MnemonicWord extends React.Component<Props, State> {
   public state = {
-    isShowingWord: false
+    flashingError: false
   };
 
   public render() {
-    const { index, word, value, isReadOnly } = this.props;
-    const { isShowingWord } = this.state;
-    const readOnly = isReadOnly || isShowingWord;
+    const {
+      hasBeenConfirmed,
+      isBeingRevealed,
+      showIndex,
+      index,
+      isConfirming,
+      confirmIndex,
+      word
+    } = this.props;
+    const { flashingError } = this.state;
+    const btnClassName = classnames({
+      btn: true,
+      'btn-default': !(isBeingRevealed || flashingError),
+      'btn-success': isBeingRevealed,
+      'btn-danger': flashingError
+    });
+    const indexClassName = 'input-group-addon input-group-addon--transparent';
 
     return (
       <div className="input-group-wrapper MnemonicWord">
         <label className="input-group input-group-inline ENSInput-name">
-          <span className="input-group-addon input-group-addon--transparent">{index + 1}.</span>
-          <Input
-            className={`MnemonicWord-word-input ${!isReadOnly && 'border-rad-right-0'}`}
-            value={readOnly ? word : value}
-            onChange={this.handleChange}
-            readOnly={readOnly}
-          />
-          {!isReadOnly && (
-            <span
-              onClick={this.toggleShow}
-              aria-label={translateRaw('GEN_ARIA_2')}
-              role="button"
-              className="MnemonicWord-word-toggle input-group-addon"
+          {showIndex && <span className={indexClassName}>{index + 1}.</span>}
+          {hasBeenConfirmed && (
+            <span className="MnemonicWord-button-index">{confirmIndex + 1}</span>
+          )}
+          {isConfirming ? (
+            <button
+              className={`MnemonicWord-button ${btnClassName} ${
+                hasBeenConfirmed ? 'disabled' : ''
+              }`}
+              onClick={() => this.handleClick(word)}
             >
-              <i
-                className={classnames(
-                  'fa',
-                  isShowingWord && 'fa-eye-slash',
-                  !isShowingWord && 'fa-eye'
-                )}
-              />
-            </span>
+              {word}
+            </button>
+          ) : (
+            <Input className="MnemonicWord-word-input" value={word} readOnly={true} />
           )}
         </label>
       </div>
     );
   }
 
-  private handleChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.props.onChange(this.props.index, ev.currentTarget.value);
+  private handleClick = (value: string) => {
+    const { isNext, index, onClick } = this.props;
+
+    if (!isNext) {
+      this.flashError();
+    }
+
+    onClick(index, value);
   };
 
-  private toggleShow = () => {
-    this.setState({ isShowingWord: !this.state.isShowingWord });
+  private flashError = () => {
+    const errorDuration = 200;
+
+    this.setState(
+      {
+        flashingError: true
+      },
+      () =>
+        setTimeout(
+          () =>
+            this.setState({
+              flashingError: false
+            }),
+          errorDuration
+        )
+    );
   };
 }
