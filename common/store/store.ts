@@ -8,7 +8,8 @@ import {
   INITIAL_STATE as initialTransactionsState,
   State as TransactionsState
 } from 'reducers/transactions';
-import { State as SwapState, INITIAL_STATE as swapInitialState } from 'reducers/swap';
+import { State as SwapState, INITIAL_STATE as initialSwapState } from 'reducers/swap';
+import { State as WalletState, INITIAL_STATE as initialWalletState } from 'reducers/wallet';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
@@ -38,17 +39,19 @@ const configureStore = () => {
     middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history as any));
   }
 
+  // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
   const localSwapState = loadStatePropertyOrEmptyObject<SwapState>('swap');
   const swapState =
     localSwapState && localSwapState.step === 3
       ? {
-          ...swapInitialState,
+          ...initialSwapState,
           ...localSwapState
         }
-      : { ...swapInitialState };
+      : { ...initialSwapState };
 
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
+  const savedWalletState = loadStatePropertyOrEmptyObject<WalletState>('wallet');
 
   const persistedInitialState: Partial<AppState> = {
     transaction: {
@@ -64,12 +67,14 @@ const configureStore = () => {
             : transactionInitialState.fields.gasPrice
       }
     },
-
-    // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
     swap: swapState,
     transactions: {
       ...initialTransactionsState,
       ...savedTransactionsState
+    },
+    wallet: {
+      ...initialWalletState,
+      ...savedWalletState
     },
     ...rehydrateConfigAndCustomTokenState()
   };
@@ -108,6 +113,9 @@ const configureStore = () => {
         },
         transactions: {
           recent: state.transactions.recent
+        },
+        wallet: {
+          recentAddresses: state.wallet.recentAddresses
         },
         ...getConfigAndCustomTokensStateToSubscribe(state)
       });

@@ -418,6 +418,8 @@
     "MNEMONIC_FINAL_STEP_3": "Select your wallet type",
     "MNEMONIC_FINAL_STEP_4": "Enter your phrase",
     "MNEMONIC_FINAL_STEP_5": "Provide file & password",
+    "VIEW_ONLY_RECENT": "Select a recent address",
+    "VIEW_ONLY_ENTER": "Enter an address (e.g. 0x4bbeEB066eD09...)",
     "GO_TO_ACCOUNT": "Go to Account",
     "INSECURE_WALLET_TYPE_TITLE": "This is not a recommended way to access your wallet",
     "INSECURE_WALLET_TYPE_DESC": "Entering your $wallet_type on a website is dangerous. If our website is compromised, or you accidentally visit a phishing website, you could lose your funds. Before you continue, consider:",
