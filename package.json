@@ -118,6 +118,7 @@
     "thread-loader": "1.1.5",
     "ts-jest": "22.4.1",
     "ts-loader": "3.3.1",
+    "ts-node": "5.0.1",
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.9.0",
     "tslint-microsoft-contrib": "5.0.3",
@@ -131,8 +132,8 @@
     "webpack-hot-middleware": "2.21.0",
     "webpack-sources": "1.0.1",
     "webpack-subresource-integrity": "1.0.4",
-    "worker-loader": "1.1.1",
-    "what-input": "5.0.5"
+    "what-input": "5.0.5",
+    "worker-loader": "1.1.1"
   },
   "scripts": {
     "freezer": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js",
@@ -166,7 +167,7 @@
     "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
     "prepush": "npm run tslint && npm run tscheck",
-    "update:tokens": "node scripts/update-tokens.js"
+    "update:tokens": "ts-node scripts/update-tokens"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

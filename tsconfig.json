@@ -20,6 +20,7 @@
     "noUnusedParameters": true
   },
   "include": [
+    "./scripts",
     "./common/",
     "./electron-app/",
     "./shared/",
