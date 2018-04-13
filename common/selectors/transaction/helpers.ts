@@ -1,7 +1,6 @@
 import { AppState } from 'reducers';
 import { ICurrentTo, ICurrentValue } from 'selectors/transaction';
 import { isNetworkUnit } from 'selectors/config';
-import { schedulingFields } from 'selectors/schedule/fields';
 
 type TransactionFields = AppState['transaction']['fields'];
 
@@ -29,10 +28,6 @@ export const isFullTx = (
 ) => {
   const { data, value, to, ...rest } = transactionFields;
   const partialParamsToCheck = { ...rest };
-
-  for (const param of schedulingFields) {
-    delete (partialParamsToCheck as any)[param];
-  }
 
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
     (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>

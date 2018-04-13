@@ -17,18 +17,6 @@ const getScheduleDeposit = (state: AppState) => getScheduleState(state).schedule
 const getScheduleParamsValidity = (state: AppState) =>
   getScheduleState(state).scheduleParamsValidity;
 
-const schedulingFields = [
-  'windowStart',
-  'windowSize',
-  'scheduleTimestamp',
-  'scheduleTimezone',
-  'schedulingToggle',
-  'scheduleDeposit',
-  'scheduleGasLimit',
-  'scheduleGasPrice',
-  'scheduleParamsValidity'
-];
-
 const isValidScheduleGasPrice = (state: AppState): boolean =>
   gasPriceValidator(getScheduleGasPrice(state).raw);
 
@@ -63,7 +51,6 @@ export {
   getScheduleGasLimit,
   getScheduleGasPrice,
   getScheduleDeposit,
-  schedulingFields,
   getScheduleParamsValidity,
   isValidScheduleDeposit,
   isValidScheduleGasLimit,
