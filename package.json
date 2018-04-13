@@ -116,6 +116,7 @@
     "thread-loader": "1.1.5",
     "ts-jest": "22.4.2",
     "ts-loader": "4.1.0",
+    "ts-node": "5.0.1",
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.10.0",
     "tslint-microsoft-contrib": "5.0.3",
@@ -172,7 +173,8 @@
     "precommit": "lint-staged",
     "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
-    "prepush": "npm run tslint && npm run tscheck"
+    "prepush": "npm run tslint && npm run tscheck",
+    "update:tokens": "ts-node scripts/update-tokens"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
