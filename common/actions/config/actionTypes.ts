@@ -39,6 +39,13 @@ export interface ChangeNodeIntentAction {
   type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
   payload: string;
 }
+
+/*** Change Node Onetime ***/
+export interface ChangeNodeIntentOneTimeAction {
+  type: TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME;
+  payload: string;
+}
+
 /*** Force Change Node ***/
 export interface ChangeNodeForceAction {
   type: TypeKeys.CONFIG_NODE_CHANGE_FORCE;
