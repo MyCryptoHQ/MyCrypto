@@ -6,7 +6,6 @@ import NavigationLink from 'components/NavigationLink';
 import LanguageSelect from './LanguageSelect';
 import NodeSelect from './NodeSelect';
 import NetworkStatus from './NetworkStatus';
-import logo from 'assets/images/logo-mycrypto-transparent.svg';
 import './ElectronNav.scss';
 
 interface State {
@@ -31,7 +30,8 @@ export default class ElectronNav extends React.Component<{}, State> {
         })}
       >
         <div className="ElectronNav-branding">
-          <img className="ElectronNav-branding-logo" src={logo} />
+          <div className="ElectronNav-branding-logo" />
+          <div className="ElectronNav-branding-beta">Beta Release</div>
         </div>
 
         <ul className="ElectronNav-links">

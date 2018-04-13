@@ -18,7 +18,7 @@ export default function getWindow() {
     title: APP_TITLE,
     backgroundColor: '#fbfbfb',
     width: 1220,
-    height: 670,
+    height: 680,
     minWidth: 480,
     minHeight: 400,
     titleBarStyle: 'hidden',

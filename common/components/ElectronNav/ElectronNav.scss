@@ -3,7 +3,7 @@
 
 // Prefer pixels of rem in this file, Electron shouldn't be responsive in the
 // same way the content is.
-$branding-spacing: 14px;
+$branding-spacing-top: 12px;
 $back-spacing: 10px;
 
 .ElectronNav {
@@ -17,17 +17,36 @@ $back-spacing: 10px;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    padding: $branding-spacing 10px;
+    padding-top: $branding-spacing-top;
     background: #FFF;
     z-index: 1;
     border-bottom: 1px solid $gray-lighter;
 
     .is-osx & {
-      padding-top: $electron-osx-control-spacing + $branding-spacing;
+      padding-top: $electron-osx-control-spacing + $branding-spacing-top - 5;
     }
 
     &-logo {
       margin-left: -1px;
+      height: 35px;
+      margin-bottom: 10px;
+      background-image: url('~assets/images/logo-mycrypto-transparent.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+    }
+
+    &-beta {
+      text-align: center;
+      letter-spacing: 4px;
+      height: 20px;
+      line-height: 20px;
+      color: #FFF;
+      background: $brand-info;
+      text-transform: uppercase;
+      font-size: 8px;
+      opacity: 0.8;
+      pointer-events: none;
     }
   }
 
