@@ -7,12 +7,12 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-function httpsGet(opts): Promise<string> {
+function httpsGet(opts: any): Promise<string> {
   return new Promise(resolve => {
-    https.get(opts, res => {
+    https.get(opts, (res: any) => {
       let body = '';
       res.setEncoding('utf8');
-      res.on('data', data => (body += data));
+      res.on('data', (data: any) => (body += data));
       res.on('end', () => {
         resolve(body);
       });
@@ -65,7 +65,7 @@ async function run() {
   // Write to the file
   console.log('Writing Tokens JSON to common/config/tokens/eth.json...');
   const filePath = path.resolve(__dirname, '../common/config/tokens/eth.json');
-  fs.writeFile(filePath, JSON.stringify(tokens, null, 2), 'utf8', err => {
+  fs.writeFile(filePath, JSON.stringify(tokens, null, 2), 'utf8', (err: any) => {
     if (err) {
       console.error(err);
       throw new Error('Failed to write tokens json to file, see above error');
