@@ -104,7 +104,7 @@ export default class GenerateMnemonic extends React.Component<{}, State> {
     if (this.state.isConfirming) {
       this.setState({ isConfirmed: true });
     } else {
-      const shuffledWords = shuffle([...this.state.words]);
+      const shuffledWords = shuffle(this.state.words);
       const confirmWords = this.splitWordsIntoHalves(shuffledWords);
 
       this.setState({
