@@ -126,7 +126,12 @@
   },
   {
     "address": "0xF6B55acBBC49f4524Aa48D19281A9A77c54DE10f",
-    "symbol": "WOLK (2)",
+    "symbol": "WOLK (Wolk Token)",
+    "decimal": 18
+  },
+  {
+    "address": "0x728781E75735dc0962Df3a51d7Ef47E798A7107E",
+    "symbol": "WOLK (WOLK)",
     "decimal": 18
   },
   {
@@ -401,7 +406,12 @@
   },
   {
     "address": "0x55F93985431Fc9304077687a35A1BA103dC1e081",
-    "symbol": "SMT (1)",
+    "symbol": "SMT (SmartMesh)",
+    "decimal": 18
+  },
+  {
+    "address": "0x2dCFAAc11c9EebD8C6C42103Fe9e2a6AD237aF27",
+    "symbol": "SMT (Smart Node)",
     "decimal": 18
   },
   {
@@ -463,11 +473,6 @@
     "address": "0x6aEB95F06CDA84cA345c2dE0F3B7f96923a44f4c",
     "symbol": "BERRY",
     "decimal": 14
-  },
-  {
-    "address": "0x2dCFAAc11c9EebD8C6C42103Fe9e2a6AD237aF27",
-    "symbol": "SMT (2)",
-    "decimal": 18
   },
   {
     "address": "0xB110eC7B1dcb8FAB8dEDbf28f53Bc63eA5BEdd84",
@@ -536,7 +541,12 @@
   },
   {
     "address": "0x65Be44C747988fBF606207698c944Df4442efE19",
-    "symbol": "FUCK (1)",
+    "symbol": "FUCK (Finally Usable Crypto Karma)",
+    "decimal": 4
+  },
+  {
+    "address": "0xAb16E0d25c06CB376259cc18C1de4ACA57605589",
+    "symbol": "FUCK (FinallyUsableCryptoKarma)",
     "decimal": 4
   },
   {
@@ -631,8 +641,13 @@
   },
   {
     "address": "0x6f539a9456A5BCb6334A1A41207c3788f5825207",
-    "symbol": "OHNI (1)",
+    "symbol": "OHNI (Ohni)",
     "decimal": 18
+  },
+  {
+    "address": "0x7F2176cEB16dcb648dc924eff617c3dC2BEfd30d",
+    "symbol": "OHNI (OHNI)",
+    "decimal": 0
   },
   {
     "address": "0x0947b0e6D821378805c9598291385CE7c791A6B2",
@@ -643,6 +658,11 @@
     "address": "0x04cC783b450b8D11F3C7d00DD03fDF7FB51fE9F2",
     "symbol": "FLMC (1)",
     "decimal": 18
+  },
+  {
+    "address": "0x5976F7dac1525eF3277836043bA474a35E6B4272",
+    "symbol": "FLMC (2)",
+    "decimal": 0
   },
   {
     "address": "0xe3818504c1B32bF1557b16C238B2E01Fd3149C17",
@@ -741,6 +761,11 @@
   },
   {
     "address": "0xB15fE5a123e647ba594CEa7A1E648646f95EB4AA",
+    "symbol": "SS (1)",
+    "decimal": 18
+  },
+  {
+    "address": "0xbbFF862d906E348E9946Bfb2132ecB157Da3D4b4",
     "symbol": "SS (2)",
     "decimal": 18
   },
@@ -810,11 +835,6 @@
     "decimal": 2
   },
   {
-    "address": "0x728781E75735dc0962Df3a51d7Ef47E798A7107E",
-    "symbol": "WOLK (1)",
-    "decimal": 18
-  },
-  {
     "address": "0x7654915A1b82D6D2D0AFc37c52Af556eA8983c7E",
     "symbol": "IFT",
     "decimal": 18
@@ -846,8 +866,13 @@
   },
   {
     "address": "0x2799D90C6d44Cb9Aa5fBC377177F16C33E056b82",
-    "symbol": "DRP (1)",
+    "symbol": "DRP (Dripcoin)",
     "decimal": 0
+  },
+  {
+    "address": "0x621d78f2EF2fd937BFca696CabaF9A779F59B3Ed",
+    "symbol": "DRP (DCorp)",
+    "decimal": 2
   },
   {
     "address": "0x0Aaf561eFF5BD9c8F911616933F84166A17cfE0C",
@@ -890,11 +915,6 @@
     "decimal": 18
   },
   {
-    "address": "0xbbFF862d906E348E9946Bfb2132ecB157Da3D4b4",
-    "symbol": "SS (1)",
-    "decimal": 18
-  },
-  {
     "address": "0xb5C33F965C8899D255c34CDD2A3efA8AbCbB3DeA",
     "symbol": "KPR",
     "decimal": 18
@@ -923,11 +943,6 @@
     "address": "0x5B8D43FfdE4a2982B9A5387cDF21D54Ead64Ac8d",
     "symbol": "MEST",
     "decimal": 18
-  },
-  {
-    "address": "0x7F2176cEB16dcb648dc924eff617c3dC2BEfd30d",
-    "symbol": "OHNI (2)",
-    "decimal": 0
   },
   {
     "address": "0xeB7C20027172E5d143fB030d50f91Cece2D1485D",
@@ -1091,7 +1106,12 @@
   },
   {
     "address": "0xe8Ff5C9c75dEb346acAc493C463C8950Be03Dfba",
-    "symbol": "VIBEX (1)",
+    "symbol": "VIBEX (VIBEX)",
+    "decimal": 18
+  },
+  {
+    "address": "0x882448f83d90B2bf477Af2eA79327fDEA1335D93",
+    "symbol": "VIBEX (VIBEX Exchange Token)",
     "decimal": 18
   },
   {
@@ -1175,6 +1195,11 @@
     "decimal": 18
   },
   {
+    "address": "0x9e96604445Ec19fFed9a5e8dd7B50a29C899A10C",
+    "symbol": "COSS (2)",
+    "decimal": 18
+  },
+  {
     "address": "0x5102791cA02FC3595398400BFE0e33d7B6C82267",
     "symbol": "LDC",
     "decimal": 18
@@ -1255,6 +1280,11 @@
     "decimal": 18
   },
   {
+    "address": "0xEEF6E90034eEa89E31Eb4B8eaCd323F28A92eaE4",
+    "symbol": "DOW (2)",
+    "decimal": 18
+  },
+  {
     "address": "0x9541FD8B9b5FA97381783783CeBF2F5fA793C262",
     "symbol": "KZN",
     "decimal": 8
@@ -1330,11 +1360,6 @@
     "decimal": 18
   },
   {
-    "address": "0xEEF6E90034eEa89E31Eb4B8eaCd323F28A92eaE4",
-    "symbol": "DOW (2)",
-    "decimal": 18
-  },
-  {
     "address": "0x81c9151de0C8bafCd325a57E3dB5a5dF1CEBf79c",
     "symbol": "DAT",
     "decimal": 18
@@ -1361,6 +1386,16 @@
   },
   {
     "address": "0xfdFE8b7aB6CF1bD1E3d14538Ef40686296C42052",
+    "symbol": "SKRP (1)",
+    "decimal": 18
+  },
+  {
+    "address": "0x324A48eBCbB46e61993931eF9D35F6697CD2901b",
+    "symbol": "SKRP (2)",
+    "decimal": 18
+  },
+  {
+    "address": "0x6E34d8d84764D40f6D7b39cd569Fd017bF53177D",
     "symbol": "SKRP (3)",
     "decimal": 18
   },
@@ -1680,11 +1715,6 @@
     "decimal": 18
   },
   {
-    "address": "0xAb16E0d25c06CB376259cc18C1de4ACA57605589",
-    "symbol": "FUCK (2)",
-    "decimal": 4
-  },
-  {
     "address": "0xd4c435F5B09F855C3317c8524Cb1F586E42795fa",
     "symbol": "CND",
     "decimal": 18
@@ -1788,11 +1818,6 @@
     "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
     "symbol": "CK",
     "decimal": 0
-  },
-  {
-    "address": "0x9e96604445Ec19fFed9a5e8dd7B50a29C899A10C",
-    "symbol": "COSS (2)",
-    "decimal": 18
   },
   {
     "address": "0x1e49fF77c355A3e38D6651ce8404AF0E48c5395f",
@@ -1918,11 +1943,6 @@
     "address": "0x80BC5512561c7f85A3A9508c7df7901b370Fa1DF",
     "symbol": "TIO",
     "decimal": 18
-  },
-  {
-    "address": "0x5976F7dac1525eF3277836043bA474a35E6B4272",
-    "symbol": "FLMC (2)",
-    "decimal": 0
   },
   {
     "address": "0x9501BFc48897DCEEadf73113EF635d2fF7ee4B97",
@@ -2185,11 +2205,6 @@
     "decimal": 18
   },
   {
-    "address": "0x621d78f2EF2fd937BFca696CabaF9A779F59B3Ed",
-    "symbol": "DRP (2)",
-    "decimal": 2
-  },
-  {
     "address": "0x24083Bb30072643C3bB90B44B7285860a755e687",
     "symbol": "GELD",
     "decimal": 18
@@ -2258,6 +2273,11 @@
     "address": "0xaAAf91D9b90dF800Df4F55c205fd6989c977E73a",
     "symbol": "TKN",
     "decimal": 8
+  },
+  {
+    "address": "0xCc80C051057B774cD75067Dc48f8987C4Eb97A5e",
+    "symbol": "NEC",
+    "decimal": 18
   },
   {
     "address": "0x1c4481750daa5Ff521A2a7490d9981eD46465Dbd",
@@ -2415,11 +2435,6 @@
     "decimal": 8
   },
   {
-    "address": "0x324A48eBCbB46e61993931eF9D35F6697CD2901b",
-    "symbol": "SKRP (1)",
-    "decimal": 18
-  },
-  {
     "address": "0x8f3470A7388c05eE4e7AF3d01D8C722b0FF52374",
     "symbol": "VERI",
     "decimal": 18
@@ -2527,11 +2542,6 @@
   {
     "address": "0xB4b1D2C217EC0776584CE08D3DD98F90EDedA44b",
     "symbol": "CO2",
-    "decimal": 18
-  },
-  {
-    "address": "0x882448f83d90B2bf477Af2eA79327fDEA1335D93",
-    "symbol": "VIBEX (2)",
     "decimal": 18
   },
   {
@@ -2735,8 +2745,8 @@
     "decimal": 18
   },
   {
-    "address": "0x6E34d8d84764D40f6D7b39cd569Fd017bF53177D",
-    "symbol": "SKRP (2)",
+    "address": "0xe933c0Cd9784414d5F278C114904F5A84b396919",
+    "symbol": "WHO (2)",
     "decimal": 18
   },
   {
@@ -2792,11 +2802,6 @@
   {
     "address": "0xCeD4E93198734dDaFf8492d525Bd258D49eb388E",
     "symbol": "EDO",
-    "decimal": 18
-  },
-  {
-    "address": "0xe933c0Cd9784414d5F278C114904F5A84b396919",
-    "symbol": "WHO (2)",
     "decimal": 18
   },
   {
@@ -2931,17 +2936,17 @@
   },
   {
     "address": "0x4CC19356f2D37338b9802aa8E8fc58B0373296E7",
-    "symbol": "KEY (1)",
+    "symbol": "KEY (SelfKey)",
+    "decimal": 18
+  },
+  {
+    "address": "0x4Cd988AfBad37289BAAf53C13e98E2BD46aAEa8c",
+    "symbol": "KEY (BihuKey)",
     "decimal": 18
   },
   {
     "address": "0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5",
     "symbol": "ARC",
-    "decimal": 18
-  },
-  {
-    "address": "0x4Cd988AfBad37289BAAf53C13e98E2BD46aAEa8c",
-    "symbol": "KEY (2)",
     "decimal": 18
   }
 ]
