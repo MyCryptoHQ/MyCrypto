@@ -19,7 +19,7 @@ $back-spacing: 10px;
     top: 0;
     padding: $branding-spacing 10px;
     background: #FFF;
-    z-index: $zindex-navbar;
+    z-index: 1;
     border-bottom: 1px solid $gray-lighter;
 
     .is-osx & {
