@@ -1,6 +1,8 @@
 import { RawTokenJSON, ValidatedTokenJSON, NormalizedTokenJSON } from './types/TokensJson';
 import { Token } from '../shared/types/network';
-type StrIdx<T> = { [key: string]: T };
+interface StrIdx<T> {
+  [key: string]: T;
+}
 
 function processTokenJson(tokensJson: RawTokenJSON[]): Token[] {
   const normalizedTokens = tokensJson.map(validateTokenJSON).map(normalizeTokenJSON);
@@ -13,7 +15,7 @@ function validateTokenJSON(token: RawTokenJSON): ValidatedTokenJSON {
     !!(t.address && (t.decimals || t.decimals === 0) && t.name && t.symbol);
 
   if (isValid(token)) {
-    return token as ValidatedTokenJSON;
+    return token;
   }
   throw Error(`Token failed validation, missing part of schema
     Symbol: ${token.symbol}

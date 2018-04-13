@@ -20,10 +20,10 @@ function httpsGet(opts): Promise<string> {
   });
 }
 
-function githubApi<T extends Object>(path: string): Promise<T> {
+function githubApi<T extends object>(pathTail: string): Promise<T> {
   return httpsGet({
     hostname: 'api.github.com',
-    path: `/repos/ethereum-lists/tokens${path}`,
+    path: `/repos/ethereum-lists/tokens${pathTail}`,
     headers: {
       'user-agent': 'node',
       'content-type': 'application/json; charset=utf-8'
