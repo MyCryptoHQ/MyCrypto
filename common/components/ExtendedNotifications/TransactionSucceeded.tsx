@@ -35,9 +35,9 @@ const TransactionSucceeded = ({ txHash, blockExplorer, scheduling }: Transaction
   let scheduleDetailsBtn: React.ReactElement<string> | undefined;
   if (scheduling) {
     scheduleDetailsBtn = (
-      <a href={getTXDetailsCheckURL(txHash)} className="btn btn-xs">
+      <NewTabLink className="btn btn-xs" href={getTXDetailsCheckURL(txHash)}>
         {translate('SCHEDULE_CHECK')}
-      </a>
+      </NewTabLink>
     );
   }
 

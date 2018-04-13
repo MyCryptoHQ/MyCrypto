@@ -14,14 +14,6 @@ interface InputGasPriceIntentAction {
   type: TypeKeys.GAS_PRICE_INPUT_INTENT;
   payload: string;
 }
-interface InputTimeBountyAction {
-  type: TypeKeys.TIME_BOUNTY_INPUT;
-  payload: string;
-}
-interface InputTimeBountyIntentAction {
-  type: TypeKeys.TIME_BOUNTY_INPUT_INTENT;
-  payload: string;
-}
 interface InputDataAction {
   type: TypeKeys.DATA_FIELD_INPUT;
   payload: string;
@@ -97,8 +89,6 @@ export {
   InputGasLimitAction,
   InputGasPriceAction,
   InputGasPriceIntentAction,
-  InputTimeBountyAction,
-  InputTimeBountyIntentAction,
   InputDataAction,
   InputNonceAction,
   SetGasLimitFieldAction,
