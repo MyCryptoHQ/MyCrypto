@@ -29,8 +29,7 @@ export default function getWindow() {
     }
   });
 
-  const port = process.env.HTTPS ? '3443' : '3000';
-  const appUrl = isDevelopment ? `http://localhost:${port}` : `file://${__dirname}/index.html`;
+  const appUrl = isDevelopment ? `http://localhost:3000` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {
