@@ -99,7 +99,7 @@ export default class Footer extends React.PureComponent<Props, State> {
 
           <div className="Footer-support Footer-section">
             <h5 className="Footer-support-title">{translateRaw('FOOTER_AFFILIATE_TITLE')}</h5>
-            <div className="Footer-support-affiliateLinks">
+            <div className="Footer-support-affiliates">
               {affiliateLinks.map((link, i) => (
                 <NewTabLink key={i} href={link.link}>
                   {link.text}
