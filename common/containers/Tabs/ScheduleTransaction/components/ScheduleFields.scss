@@ -47,6 +47,7 @@
 
     &-tooltip {
       display: inline-block;
+      white-space: normal;
       @include show-tooltip-on-hover;
     }
 
