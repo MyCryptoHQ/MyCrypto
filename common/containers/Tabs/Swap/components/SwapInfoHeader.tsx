@@ -72,7 +72,7 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
               <h3 className="SwapInfo-details-block-value">{` ${origin.amount} ${
                 origin.label
               }`}</h3>
-              <p className="SwapInfo-details-block-label">{translate('SEND_amount')}</p>
+              <p className="SwapInfo-details-block-label">{translate('SEND_AMOUNT')}</p>
             </div>
           )}
 
@@ -80,7 +80,7 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
           {this.isExpanded() && (
             <div className={this.computedClass()}>
               <h3 className={referenceClass}>{reference}</h3>
-              <p className="SwapInfo-details-block-label">{translate('SWAP_ref_num')}</p>
+              <p className="SwapInfo-details-block-label">{translate('SWAP_REF_NUM')}</p>
             </div>
           )}
 
@@ -88,7 +88,7 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
           {this.isExpanded() && (
             <div className={this.computedClass()}>
               <h3 className="SwapInfo-details-block-value">{this.formattedTime()}</h3>
-              <p className="SwapInfo-details-block-label">{translate('SWAP_time')}</p>
+              <p className="SwapInfo-details-block-label">{translate('SWAP_TIME')}</p>
             </div>
           )}
 
@@ -97,7 +97,7 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
             <h3 className="SwapInfo-details-block-value">
               {` ${toFixedIfLarger(destination.amount as number, 4)} ${destination.label}`}
             </h3>
-            <p className="SwapInfo-details-block-label">{translate('SWAP_rec_amt')}</p>
+            <p className="SwapInfo-details-block-label">{translate('SWAP_REC_AMT')}</p>
           </div>
 
           {/*Your rate*/}
@@ -108,7 +108,7 @@ export default class SwapInfoHeader extends PureComponent<SwapInfoHeaderProps, {
                 origin.label
               }`}
             </h3>
-            <p className="SwapInfo-details-block-label">{translate('SWAP_your_rate')}</p>
+            <p className="SwapInfo-details-block-label">{translate('SWAP_YOUR_RATE')}</p>
           </div>
         </section>
       </div>

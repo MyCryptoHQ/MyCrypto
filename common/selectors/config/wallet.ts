@@ -15,17 +15,17 @@ type DPathFormat =
 
 export function getPaths(state: AppState, pathType: PathType): DPath[] {
   const paths = Object.values(getStaticNetworkConfigs(state))
-    .reduce(
-      (networkPaths: DPath[], { dPathFormats }) =>
-        dPathFormats ? [...networkPaths, dPathFormats[pathType]] : networkPaths,
-
-      []
-    )
+    .reduce((networkPaths: DPath[], { dPathFormats }): DPath[] => {
+      if (dPathFormats && dPathFormats[pathType]) {
+        return [...networkPaths, dPathFormats[pathType] as DPath];
+      }
+      return networkPaths;
+    }, [])
     .concat(EXTRA_PATHS);
   return sortedUniq(paths);
 }
 
-export function getSingleDPath(state: AppState, format: DPathFormat): DPath {
+export function getSingleDPath(state: AppState, format: DPathFormat): DPath | undefined {
   const network = getStaticNetworkConfig(state);
   if (!network) {
     throw Error('No static network config loaded');
@@ -65,17 +65,12 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
     return !!dPath;
   }
 
-  // Ensure Web3 is only enabled on ETH or ETH Testnets (MetaMask does not support other networks)
-  if (format === SecureWalletName.WEB3) {
-    return isNetworkUnit(state, 'ETH');
-  }
-
   // All other wallet formats are supported
   return true;
 }
 
 export function unSupportedWalletFormatsOnNetwork(state: AppState): WalletName[] {
-  const supportedFormats = walletNames.filter(walletName =>
+  const supportedFormats = walletNames.filter((walletName: WalletName) =>
     isWalletFormatSupportedOnNetwork(state, walletName)
   );
   return difference(walletNames, supportedFormats);

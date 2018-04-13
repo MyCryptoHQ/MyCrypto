@@ -1,7 +1,7 @@
 import { RestartSwapAction } from 'actions/swap';
 import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
-import { bityReferralURL } from 'config';
+import { shapeshiftReferralURL, bitboxReferralURL } from 'config';
 import React, { PureComponent } from 'react';
 import translate from 'translations';
 import './SwapInfoHeader.scss';
@@ -20,20 +20,20 @@ export default class SwapInfoHeaderTitle extends PureComponent<SwapInfoHeaderTit
         <div className="col-xs-3 text-left">
           <button className="SwapInfo-top-back" onClick={this.props.restartSwap}>
             <i className="fa fa-arrow-left" />
-            Start New Swap
+            {translate('NEW_SWAP')}
           </button>
         </div>
         <div className="col-xs-6">
-          <h3 className="SwapInfo-top-title">{translate('SWAP_information')}</h3>
+          <h3 className="SwapInfo-top-title">{translate('SWAP_INFORMATION')}</h3>
         </div>
         <div className="col-xs-3">
           <a
             className="SwapInfo-top-logo"
-            href={bityReferralURL}
+            href={provider === 'shapeshift' ? shapeshiftReferralURL : bitboxReferralURL}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img className="SwapInfo-top-logo-img" src={logoToRender} />
+            <img className="SwapInfo-top-logo-img" src={logoToRender} alt={provider + ' logo'} />
           </a>
         </div>
       </section>

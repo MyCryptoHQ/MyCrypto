@@ -1,7 +1,9 @@
-export const REDUX_STATE = 'REDUX_STATE';
+import { sha256 } from 'ethereumjs-util';
 import { State as SwapState } from 'reducers/swap';
 import { IWallet, WalletConfig } from 'libs/wallet';
-import { sha256 } from 'ethereumjs-util';
+import { AppState } from 'reducers';
+
+export const REDUX_STATE = 'REDUX_STATE';
 
 export function loadState<T>(): T | undefined {
   try {
@@ -26,8 +28,8 @@ export const saveState = (state: any) => {
 
 export type SwapLocalStorage = SwapState;
 
-export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
-  const localStorageState = loadState();
+export function loadStatePropertyOrEmptyObject<T>(key: keyof AppState): T | undefined {
+  const localStorageState: Partial<AppState> | undefined = loadState();
   if (localStorageState) {
     if (localStorageState.hasOwnProperty(key)) {
       return localStorageState[key] as T;

@@ -6,26 +6,18 @@ import {
   RemoveCustomNodeAction,
   CustomNodeAction
 } from 'actions/config';
+import { SelectedNodeState as State } from './types';
 
-interface NodeLoaded {
-  pending: false;
-  nodeId: string;
-}
-
-interface NodeChangePending {
-  pending: true;
-  nodeId: string;
-}
-
-export type State = NodeLoaded | NodeChangePending;
-
-export const INITIAL_STATE: NodeLoaded = {
-  nodeId: 'eth_mycrypto',
+export const INITIAL_STATE: State = {
+  nodeId: 'eth_auto',
+  prevNode: 'eth_auto',
   pending: false
 };
 
-const changeNode = (_: State, { payload }: ChangeNodeAction): State => ({
+const changeNode = (state: State, { payload }: ChangeNodeAction): State => ({
   nodeId: payload.nodeId,
+  // make sure we dont accidentally switch back to a web3 node
+  prevNode: state.nodeId === 'web3' ? state.prevNode : state.nodeId,
   pending: false
 });
 

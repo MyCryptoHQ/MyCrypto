@@ -4,13 +4,19 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { resetWallet, TResetWallet } from 'actions/wallet';
+import translate, { translateRaw } from 'translations';
+import { TWeb3UnsetNode, web3UnsetNode } from 'actions/config';
 
-interface Props extends RouteComponentProps<{}> {
-  // State
-  wallet: AppState['wallet']['inst'];
-  // Actions
+interface DispatchProps {
+  web3UnsetNode: TWeb3UnsetNode;
   resetWallet: TResetWallet;
 }
+
+interface StateProps {
+  wallet: AppState['wallet']['inst'];
+}
+
+type Props = DispatchProps & StateProps & RouteComponentProps<{}>;
 
 interface State {
   nextLocation: RouteComponentProps<{}>['location'] | null;
@@ -18,7 +24,7 @@ interface State {
 }
 
 class LogOutPromptClass extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       nextLocation: null,
@@ -42,17 +48,17 @@ class LogOutPromptClass extends React.Component<Props, State> {
 
   public render() {
     const buttons: IButton[] = [
-      { text: 'Log Out', type: 'primary', onClick: this.onConfirm },
-      { text: 'Cancel', type: 'default', onClick: this.onCancel }
+      { text: translate('ACTION_7'), type: 'primary', onClick: this.onConfirm },
+      { text: translate('ACTION_2'), type: 'default', onClick: this.onCancel }
     ];
     return (
       <Modal
-        title="You are about to log out"
+        title={translateRaw('WALLET_LOGOUT_MODAL_TITLE')}
         isOpen={this.state.openModal}
         handleClose={this.onCancel}
         buttons={buttons}
       >
-        <p>Leaving this page will log you out. Are you sure you want to continue?</p>
+        <p>{translate('WALLET_LOGOUT_MODAL_DESC')}</p>
       </Modal>
     );
   }
@@ -62,7 +68,7 @@ class LogOutPromptClass extends React.Component<Props, State> {
   };
 
   private onConfirm = () => {
-    const { nextLocation } = this.state;
+    const { nextLocation: next } = this.state;
     this.props.resetWallet();
     this.setState(
       {
@@ -70,8 +76,9 @@ class LogOutPromptClass extends React.Component<Props, State> {
         nextLocation: null
       },
       () => {
-        if (nextLocation) {
-          this.props.history.push(nextLocation.pathname);
+        if (next) {
+          this.props.history.push(`${next.pathname}${next.search}${next.hash}`);
+          this.props.web3UnsetNode();
         }
       }
     );
@@ -83,5 +90,6 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  resetWallet
+  resetWallet,
+  web3UnsetNode
 })(withRouter<Props>(LogOutPromptClass));

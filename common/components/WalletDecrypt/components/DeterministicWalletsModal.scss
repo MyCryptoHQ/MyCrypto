@@ -7,18 +7,41 @@
 
     &-label {
       font-size: $font-size-medium;
-      margin-right: 16px;
+      margin-right: $space-md;
       line-height: $input-height-base;
+    }
+
+    &-select {
+      flex: 1;
+
+      small {
+        padding-left: 5px;
+        opacity: 0.5;
+        font-size: 11px;
+        @include mono;
+      }
+    }
+
+    &-custom {
+      flex: 1;
+      margin-left: $space-md;
+
+      .input-group-input {
+        margin: 0;
+      }
+    }
+
+    &-submit {
+      margin-left: $space-md;
+      padding-left: $space;
+      padding-right: $space;
+      border: none;
     }
 
     .form-control {
       display: inline-block;
       width: auto;
       margin: 0 0 0 10px;
-    }
-
-    .Select {
-      flex-grow: 1;
     }
   }
 

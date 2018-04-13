@@ -27,10 +27,11 @@
     justify-content: center;
     margin: 0 -8px;
     margin-bottom: 2rem;
+
     > .input-group-wrapper {
       margin: 0 8px;
       width: 100%;
-      max-width: 400px;
+      max-width: 320px;
     }
   }
   @media (max-width: $screen-sm) {
@@ -64,5 +65,12 @@
 
   &-submit {
     margin-top: 0.5rem;
+  }
+
+  &-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 175px;
   }
 }

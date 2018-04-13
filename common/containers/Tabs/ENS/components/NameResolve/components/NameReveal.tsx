@@ -1,18 +1,19 @@
 import React from 'react';
 import { IRevealDomainRequest } from 'libs/ens';
 import ENSTime from './components/ENSTime';
-import { UnitDisplay, NewTabLink } from 'components/ui';
+import { UnitDisplay } from 'components/ui';
 import { Wei } from 'libs/units';
 import { ensV3Url } from 'utils/formatters';
+import translate from 'translations';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
   <section className="row text-center">
     <div className="auction-info text-center">
       <div className="ens-title">
         <h2>
-          It's time to reveal the bids for <strong>{props.name}.eth</strong>
+          {translate('ENS_DOMAIN_REVEAL', { $name: props.name + '.eth' })}
           <br />
-          The current highest bid is{' '}
+          {translate('ENS_DOMAIN_HIGHEST_BID')}
           <strong>
             <UnitDisplay
               value={Wei(props.highestBid)}
@@ -33,12 +34,10 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
     </div>
 
     <p>
-      Did you bid on {props.name}.eth? You must reveal your bid now.{' '}
-      <strong>
-        <NewTabLink href={ensV3Url(props.name)}>
-          You can do that on MyCrypto v3 by clicking here!
-        </NewTabLink>
-      </strong>
+      {translate('ENS_DOMAIN_PROMPT_REVEAL', {
+        $name: props.name + '.eth',
+        $link: ensV3Url(props.name)
+      })}
     </p>
   </section>
 );

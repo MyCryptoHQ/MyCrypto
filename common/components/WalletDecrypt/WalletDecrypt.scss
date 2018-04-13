@@ -40,7 +40,6 @@ $speed: 500ms;
         margin: 0;
       }
 
-
       &:last-child {
         margin: 0;
       }
@@ -80,7 +79,6 @@ $speed: 500ms;
       }
 
       &:active {
-        outline: none;
         opacity: 1;
       }
 
@@ -99,6 +97,14 @@ $speed: 500ms;
       max-width: 360px;
       margin: 0 auto;
     }
+    &-label{
+      opacity: 0.8;
+      font-weight: 300;
+      white-space: nowrap;
+      width: 60%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 
@@ -106,7 +112,7 @@ $speed: 500ms;
 .DecryptContent {
   &-enter {
     opacity: 0;
-    transition: opacity $speed * .25 ease $speed * .125;
+    transition: opacity $speed * 0.25 ease $speed * 0.125;
 
     &-active {
       opacity: 1;
@@ -119,7 +125,7 @@ $speed: 500ms;
     left: 0;
     width: 100%;
     opacity: 1;
-    transition: opacity $speed * .25 ease;
+    transition: opacity $speed * 0.25 ease;
     pointer-events: none;
 
     &-active {

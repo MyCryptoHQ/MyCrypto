@@ -8,9 +8,3 @@
 .btn-group > .btn-group {
   float: left;
 }
-
-// On active and open, don't show outline
-.btn-group .dropdown-toggle:active,
-.btn-group.open .dropdown-toggle {
-  outline: 0;
-}

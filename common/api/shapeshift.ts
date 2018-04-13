@@ -28,6 +28,44 @@ export const SHAPESHIFT_TOKEN_WHITELIST = [
 ];
 export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC', 'BTC'];
 
+interface IPairData {
+  limit: number;
+  maxLimit: number;
+  min: number;
+  minerFee: number;
+  pair: string;
+  rate: string;
+}
+
+interface IExtraPairData {
+  status: string;
+  image: string;
+  name: string;
+}
+
+interface IAvailablePairData {
+  [pairName: string]: IExtraPairData;
+}
+
+interface ShapeshiftMarketInfo {
+  rate: string;
+  limit: number;
+  pair: string;
+  maxLimit: number;
+  min: number;
+  minerFee: number;
+}
+
+interface TokenMap {
+  [pairName: string]: {
+    id: string;
+    rate: string;
+    limit: number;
+    min: number;
+    options: (IExtraPairData & { id: string })[];
+  };
+}
+
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
@@ -36,13 +74,18 @@ class ShapeshiftService {
     'Content-Type': 'application/json'
   };
 
-  public checkStatus(address) {
+  public checkStatus(address: string) {
     return fetch(`${this.url}/txStat/${address}`)
       .then(checkHttpStatus)
       .then(parseJSON);
   }
 
-  public sendAmount(withdrawal, originKind, destinationKind, destinationAmount) {
+  public sendAmount(
+    withdrawal: string,
+    originKind: string,
+    destinationKind: string,
+    destinationAmount: number
+  ) {
     const pair = `${originKind.toLowerCase()}_${destinationKind.toLowerCase()}`;
 
     return fetch(`${this.url}/sendamount`, {
@@ -75,29 +118,23 @@ class ShapeshiftService {
 
   public getAllRates = async () => {
     const marketInfo = await this.getMarketInfo();
-    const pairRates = await this.getPairRates(marketInfo);
+    const pairRates = await this.filterPairs(marketInfo);
     const checkAvl = await this.checkAvl(pairRates);
     const mappedRates = this.mapMarketInfo(checkAvl);
     return mappedRates;
   };
 
-  private getPairRates(marketInfo) {
-    const filteredMarketInfo = marketInfo.filter(obj => {
+  private filterPairs(marketInfo: ShapeshiftMarketInfo[]) {
+    return marketInfo.filter(obj => {
       const { pair } = obj;
       const pairArr = pair.split('_');
       return this.whitelist.includes(pairArr[0]) && this.whitelist.includes(pairArr[1])
         ? true
         : false;
     });
-    const pairRates = filteredMarketInfo.map(p => {
-      const { pair } = p;
-      const singlePair = Promise.resolve(this.getSinglePairRate(pair));
-      return { ...p, ...singlePair };
-    });
-    return pairRates;
   }
 
-  private async checkAvl(pairRates) {
+  private async checkAvl(pairRates: IPairData[]) {
     const avlCoins = await this.getAvlCoins();
     const mapAvl = pairRates.map(p => {
       const { pair } = p;
@@ -121,17 +158,12 @@ class ShapeshiftService {
         };
       }
     });
-    return mapAvl;
+    const filered = mapAvl.filter(v => v);
+    return filered as (IPairData & IAvailablePairData)[];
   }
 
   private getAvlCoins() {
     return fetch(`${this.url}/getcoins`)
-      .then(checkHttpStatus)
-      .then(parseJSON);
-  }
-
-  private getSinglePairRate(pair) {
-    return fetch(`${this.url}/rate/${pair}`)
       .then(checkHttpStatus)
       .then(parseJSON);
   }
@@ -142,15 +174,14 @@ class ShapeshiftService {
       .then(parseJSON);
   }
 
-  private isWhitelisted(coin) {
+  private isWhitelisted(coin: string) {
     return this.whitelist.includes(coin);
   }
 
-  private mapMarketInfo(marketInfo) {
-    const tokenMap = {};
+  private mapMarketInfo(marketInfo: (IPairData & IAvailablePairData)[]) {
+    const tokenMap: TokenMap = {};
     marketInfo.forEach(m => {
-      const originKind = m.pair.substring(0, 3);
-      const destinationKind = m.pair.substring(4, 7);
+      const [originKind, destinationKind] = m.pair.split('_');
       if (this.isWhitelisted(originKind) && this.isWhitelisted(destinationKind)) {
         const pairName = originKind + destinationKind;
         const { rate, limit, min } = m;

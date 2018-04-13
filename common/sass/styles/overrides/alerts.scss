@@ -1,7 +1,7 @@
 // Extends Bootstrap's `.alert`
-@import "common/sass/variables";
-@import "common/sass/mixins";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/alerts";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap/alerts';
 
 .alert {
   margin-bottom: 1rem;
@@ -15,6 +15,13 @@
       color: #FFF;
       opacity: 0.8;
     }
+  }
+
+  // Alerts have their own button style
+  .btn {
+    @include button-variant($text-color, #FFF, darken(#FFF, 5%));
+    text-decoration: none;
+    margin-right: $space-xs;
   }
 }
 

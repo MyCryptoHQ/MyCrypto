@@ -9,7 +9,8 @@ import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
-import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
+import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
+import { etherChainExplorerInst } from 'config/data';
 import './AccountInfo.scss';
 
 interface OwnProps {
@@ -30,7 +31,7 @@ interface State {
 }
 
 interface DispatchProps {
-  setAccountBalance: TSetAccountBalance;
+  refreshAccountBalance: TRefreshAccountBalance;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -98,7 +99,7 @@ class AccountInfo extends React.Component<Props, State> {
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div className="AccountInfo">
-        <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
+        <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">
             <Identicon address={address} size="100%" />
@@ -134,7 +135,9 @@ class AccountInfo extends React.Component<Props, State> {
                   });
               }}
             >
-              {confirmAddr ? null : 'Display address on ' + wallet.getWalletType()}
+              {confirmAddr
+                ? null
+                : translate('SIDEBAR_DISPLAY_ADDR', { $wallet: wallet.getWalletType() })}
             </a>
             {confirmAddr ? (
               <span className="AccountInfo-address-confirm">
@@ -145,7 +148,7 @@ class AccountInfo extends React.Component<Props, State> {
         )}
 
         <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
+          <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTBAL')}</h5>
           <ul className="AccountInfo-list">
             <li className="AccountInfo-list-item AccountInfo-balance">
               <span
@@ -168,7 +171,7 @@ class AccountInfo extends React.Component<Props, State> {
                     !isOffline && (
                       <button
                         className="AccountInfo-section-refresh"
-                        onClick={this.props.setAccountBalance}
+                        onClick={this.props.refreshAccountBalance}
                       >
                         <i className="fa fa-refresh" />
                       </button>
@@ -182,12 +185,19 @@ class AccountInfo extends React.Component<Props, State> {
 
         {(!!blockExplorer || !!tokenExplorer) && (
           <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">{translate('sidebar_TransHistory')}</h5>
+            <h5 className="AccountInfo-section-header">{translate('SIDEBAR_TRANSHISTORY')}</h5>
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
                   <NewTabLink href={blockExplorer.addressUrl(address)}>
                     {`${network.name} (${blockExplorer.origin})`}
+                  </NewTabLink>
+                </li>
+              )}
+              {network.name === 'ETH' && (
+                <li className="AccountInfo-list-item">
+                  <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
+                    {`${network.name} (${etherChainExplorerInst.origin})`}
                   </NewTabLink>
                 </li>
               )}
@@ -212,5 +222,5 @@ function mapStateToProps(state: AppState): StateProps {
     isOffline: getOffline(state)
   };
 }
-const mapDispatchToProps: DispatchProps = { setAccountBalance };
+const mapDispatchToProps: DispatchProps = { refreshAccountBalance };
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

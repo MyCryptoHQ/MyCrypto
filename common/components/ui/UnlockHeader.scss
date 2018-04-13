@@ -6,10 +6,9 @@
 
   &-open {
     position: absolute;
-    top: 50%;
+    top: 0;
     right: 0;
     padding-right: none;
-    transform: translateY(-50%);
 
     &-text {
       padding-right: 8px;
@@ -19,7 +18,7 @@
   &-close {
     @include reset-button;
     position: absolute;
-    top: 56px;
+    top: 6px;
     right: 6px;
     margin: 0.5rem 1rem;
     z-index: 1;

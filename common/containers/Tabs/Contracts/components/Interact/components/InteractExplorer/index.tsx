@@ -10,13 +10,12 @@ import { connect } from 'react-redux';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';
 import { Data } from 'libs/units';
-import { Web3Node } from 'libs/nodes';
-import RpcNode from 'libs/nodes/rpc';
-import { Input } from 'components/ui';
-import Dropdown from 'components/ui/Dropdown';
+import { Input, Dropdown } from 'components/ui';
+import { INode } from 'libs/nodes';
+import { bufferToHex } from 'ethereumjs-util';
 
 interface StateProps {
-  nodeLib: RpcNode | Web3Node;
+  nodeLib: INode;
   to: AppState['transaction']['fields']['to'];
   dataExists: boolean;
 }
@@ -36,7 +35,7 @@ interface State {
   inputs: {
     [key: string]: { rawData: string; parsedData: string[] | string };
   };
-  outputs;
+  outputs: any;
   selectedFunction: null | ContractOption;
 }
 
@@ -78,7 +77,7 @@ class InteractExplorerClass extends Component<Props, State> {
         className="InteractExplorer-func-submit btn btn-primary"
         onClick={this.handleFunctionSend}
       >
-        {translate('CONTRACT_Write')}
+        {translate('CONTRACT_WRITE')}
       </button>
     );
 
@@ -87,17 +86,18 @@ class InteractExplorerClass extends Component<Props, State> {
         <div className="input-group-wrapper">
           <label className="input-group">
             <div className="input-group-header">
-              {translate('CONTRACT_Interact_Title')}
+              {translate('CONTRACT_INTERACT_TITLE')}
               <div className="flex-spacer" />
               <span className="small">{to.raw}</span>
             </div>
             <Dropdown
               name="exploreContract"
               value={selectedFunction as any}
-              placeholder="Please select a function..."
+              placeholder={translate('SELECT_A_THING', { $thing: 'function' })}
               onChange={this.handleFunctionSelect}
               options={contractFunctionsOptions}
-              clearable={false}
+              clearable={true}
+              searchable={true}
               labelKey="name"
               valueKey="contract"
             />
@@ -124,9 +124,13 @@ class InteractExplorerClass extends Component<Props, State> {
                 </div>
               );
             })}
-            {selectedFunction.contract.outputs.map((output, index) => {
+            {selectedFunction.contract.outputs.map((output: any, index: number) => {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
+              const rawFieldValue = outputs[parsedName] || '';
+              const decodedFieldValue = Buffer.isBuffer(rawFieldValue)
+                ? bufferToHex(rawFieldValue)
+                : rawFieldValue;
 
               return (
                 <div key={parsedName} className="input-group-wrapper InteractExplorer-func-out">
@@ -134,7 +138,7 @@ class InteractExplorerClass extends Component<Props, State> {
                     <div className="input-group-header"> ↳ {name + ' ' + type}</div>
                     <Input
                       className="InteractExplorer-func-out-input "
-                      value={outputs[parsedName] || ''}
+                      value={decodedFieldValue}
                       disabled={true}
                     />
                   </label>
@@ -147,7 +151,7 @@ class InteractExplorerClass extends Component<Props, State> {
                 className="InteractExplorer-func-submit btn btn-primary"
                 onClick={this.handleFunctionCall}
               >
-                {translate('CONTRACT_Read')}
+                {translate('CONTRACT_READ')}
               </button>
             ) : (
               <React.Fragment>
@@ -188,6 +192,7 @@ class InteractExplorerClass extends Component<Props, State> {
       const results = await nodeLib.sendCallRequest(callData);
 
       const parsedResult = selectedFunction!.contract.decodeOutput(results);
+
       this.setState({ outputs: parsedResult });
     } catch (e) {
       this.props.showNotification(

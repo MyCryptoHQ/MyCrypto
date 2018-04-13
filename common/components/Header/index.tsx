@@ -1,12 +1,14 @@
 import {
   TChangeLanguage,
   TChangeNodeIntent,
+  TChangeNodeIntentOneTime,
   TAddCustomNode,
   TRemoveCustomNode,
   TAddCustomNetwork,
   AddCustomNodeAction,
   changeLanguage,
   changeNodeIntent,
+  changeNodeIntentOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
@@ -34,14 +36,21 @@ import {
   CustomNodeOption,
   NodeOption,
   getNodeOptions,
-  getNetworkConfig
+  getNetworkConfig,
+  isStaticNodeId
 } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
-import { connect } from 'react-redux';
+import { connect, MapStateToProps } from 'react-redux';
+import { stripWeb3Network } from 'libs/nodes';
+
+interface OwnProps {
+  networkParam: string | null;
+}
 
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
   changeNodeIntent: TChangeNodeIntent;
+  changeNodeIntentOneTime: TChangeNodeIntentOneTime;
   setGasPriceField: TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
@@ -49,6 +58,7 @@ interface DispatchProps {
 }
 
 interface StateProps {
+  shouldSetNodeFromQS: boolean;
   network: NetworkConfig;
   languageSelection: AppState['config']['meta']['languageSelection'];
   node: NodeConfig;
@@ -58,7 +68,11 @@ interface StateProps {
   nodeOptions: (CustomNodeOption | NodeOption)[];
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
+  state,
+  { networkParam }
+): StateProps => ({
+  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
   isOffline: getOffline(state),
   isChangingNode: isNodeChanging(state),
   languageSelection: getLanguageSelection(state),
@@ -72,6 +86,7 @@ const mapDispatchToProps: DispatchProps = {
   setGasPriceField,
   changeLanguage,
   changeNodeIntent,
+  changeNodeIntentOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
@@ -81,12 +96,16 @@ interface State {
   isAddingCustomNode: boolean;
 }
 
-type Props = StateProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 class Header extends Component<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
+
+  public componentDidMount() {
+    this.attemptSetNodeFromQueryParameter();
+  }
 
   public render() {
     const {
@@ -119,7 +138,7 @@ class Header extends Component<Props, State> {
           ...rest,
           name: (
             <span>
-              {label.network} <small>({label.service})</small>
+              {stripWeb3Network(label.network)} <small>({label.service})</small>
             </span>
           )
         };
@@ -160,7 +179,6 @@ class Header extends Component<Props, State> {
                   color="white"
                 />
               </div>
-
               <div
                 className={classnames({
                   'Header-branding-right-dropdown': true,
@@ -192,12 +210,11 @@ class Header extends Component<Props, State> {
 
         <Navigation color={!network.isCustom && network.color} />
 
-        {isAddingCustomNode && (
-          <CustomNodeModal
-            addCustomNode={this.addCustomNode}
-            handleClose={this.closeCustomNodeModal}
-          />
-        )}
+        <CustomNodeModal
+          isOpen={isAddingCustomNode}
+          addCustomNode={this.addCustomNode}
+          handleClose={this.closeCustomNodeModal}
+        />
       </div>
     );
   }
@@ -221,6 +238,13 @@ class Header extends Component<Props, State> {
     this.setState({ isAddingCustomNode: false });
     this.props.addCustomNode(payload);
   };
+
+  private attemptSetNodeFromQueryParameter() {
+    const { shouldSetNodeFromQS, networkParam } = this.props;
+    if (shouldSetNodeFromQS) {
+      this.props.changeNodeIntentOneTime(networkParam!);
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

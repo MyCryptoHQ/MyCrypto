@@ -61,15 +61,15 @@ export default class DropdownComponent<T> extends PureComponent<Props<T>, State>
     });
     const searchableStyle = {
       maxHeight: '300px',
-      overflowY: 'auto'
+      overflowY: 'auto' as 'auto'
     };
     const searchRegex = new RegExp(search, 'gi');
-    const onSearchChange = e => {
-      this.setState({ search: e.target.value });
+    const onSearchChange = (e: React.FormEvent<HTMLInputElement>) => {
+      this.setState({ search: e.currentTarget.value });
     };
 
     return (
-      <ul className={menuClass} style={searchable ? searchableStyle : {}}>
+      <ul className={menuClass} style={searchable ? searchableStyle : undefined}>
         {searchable && (
           <input
             className="form-control"

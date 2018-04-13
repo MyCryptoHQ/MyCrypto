@@ -1,21 +1,22 @@
-import './LedgerNano.scss';
 import React, { PureComponent } from 'react';
+import ledger from 'ledgerco';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
+import UnsupportedNetwork from './UnsupportedNetwork';
 import { LedgerWallet } from 'libs/wallet';
-import ledger from 'ledgerco';
 import { Spinner, NewTabLink } from 'components/ui';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { SecureWalletName, ledgerReferralURL } from 'config';
 import { getPaths, getSingleDPath } from 'selectors/config/wallet';
+import './LedgerNano.scss';
 
 interface OwnProps {
   onUnlock(param: any): void;
 }
 
 interface StateProps {
-  dPath: DPath;
+  dPath: DPath | undefined;
   dPaths: DPath[];
 }
 
@@ -34,7 +35,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath.value,
+    dPath: this.props.dPath ? this.props.dPath.value : '',
     error: null,
     isLoading: false,
     showTip: false
@@ -48,7 +49,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath.value });
+      this.setState({ dPath: nextProps.dPath ? nextProps.dPath.value : '' });
     }
   }
 
@@ -56,12 +57,16 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
     const showErr = error ? 'is-showing' : '';
 
+    if (!dPath) {
+      return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
+    }
+
     if (window.location.protocol !== 'https:') {
       return (
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
             Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
-            unlock your wallet at <a href="https://mycrypto.com">MyCrypto.com</a>
+            unlock your wallet at <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
           </div>
         </div>
       );
@@ -83,23 +88,22 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           {isLoading ? (
             <div className="LedgerDecrypt-message">
               <Spinner light={true} />
-              Unlocking...
+              {translate('WALLET_UNLOCKING')}
             </div>
           ) : (
-            translate('ADD_Ledger_scan')
+            translate('ADD_LEDGER_SCAN')
           )}
         </button>
 
         <NewTabLink className="LedgerDecrypt-buy btn btn-sm btn-default" href={ledgerReferralURL}>
-          {translate('Don’t have a Ledger? Order one now!')}
+          {translate('LEDGER_REFERRAL_2')}
         </NewTabLink>
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="LedgerDecrypt-help">
-          Guide:{' '}
           <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
-            How to use MyCrypto with your Nano S
+            {translate('HELP_ARTICLE_1')}
           </NewTabLink>
         </div>
 
@@ -112,7 +116,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={translateRaw('x_Ledger')}
         />
       </div>
     );
@@ -129,7 +132,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       showTip: false
     });
 
-    ledger.comm_u2f.create_async().then(comm => {
+    ledger.comm_u2f.create_async().then((comm: any) => {
       new ledger.eth(comm)
         .getAddress_async(dPath, false, true)
         .then(res => {
@@ -139,7 +142,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
             isLoading: false
           });
         })
-        .catch(err => {
+        .catch((err: any) => {
           if (err && err.metaData && err.metaData.code === 5) {
             this.showTip();
           }
@@ -168,7 +171,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath.value
+      dPath: this.props.dPath ? this.props.dPath.value : ''
     });
   }
 }

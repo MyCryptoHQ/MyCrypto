@@ -3,12 +3,13 @@ import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
-import './Trezor.scss';
+import UnsupportedNetwork from './UnsupportedNetwork';
 import { Spinner, NewTabLink } from 'components/ui';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName, trezorReferralURL } from 'config';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import './Trezor.scss';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -16,7 +17,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  dPath: DPath;
+  dPath: DPath | undefined;
   dPaths: DPath[];
 }
 
@@ -35,20 +36,24 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath.value,
+    dPath: this.props.dPath ? this.props.dPath.value : '',
     error: null,
     isLoading: false
   };
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath.value });
+      this.setState({ dPath: nextProps.dPath ? nextProps.dPath.value : '' });
     }
   }
 
   public render() {
     const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
+
+    if (!dPath) {
+      return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} />;
+    }
 
     return (
       <div className="TrezorDecrypt">
@@ -63,7 +68,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
               Unlocking...
             </div>
           ) : (
-            translate('ADD_Trezor_scan')
+            translate('ADD_TREZOR_SCAN')
           )}
         </button>
 
@@ -74,7 +79,6 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
-          Guide:{' '}
           <NewTabLink href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08">
             How to use TREZOR with MyCrypto
           </NewTabLink>
@@ -89,7 +93,6 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={translateRaw('x_Trezor')}
         />
       </div>
     );
@@ -108,7 +111,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     (TrezorConnect as any).getXPubKey(
       dPath,
-      res => {
+      (res: any) => {
         if (res.success) {
           this.setState({
             dPath,
@@ -142,7 +145,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath.value
+      dPath: this.props.dPath ? this.props.dPath.value : ''
     });
   }
 }

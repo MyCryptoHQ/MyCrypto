@@ -1,14 +1,25 @@
-import Translate from 'components/Translate';
+import TranslateMarkdown from 'components/Translate';
 import React from 'react';
-import { getLanguageSelection } from 'selectors/config';
-import { configuredStore } from '../store';
+import { State as ConfigState } from 'reducers/config';
+import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 const fallbackLanguage = 'en';
-const repository = {};
+const repository: {
+  [language: string]: {
+    [translationName: string]: string;
+  };
+} = {};
 
-const languages = [
+interface ILanguage {
+  code: string;
+  data: {
+    [translationName: string]: string;
+  };
+}
+
+const languages: ILanguage[] = [
+  require('./lang/en.json'),
   require('./lang/de.json'),
   require('./lang/el.json'),
-  require('./lang/en.json'),
   require('./lang/es.json'),
   require('./lang/fi.json'),
   require('./lang/fr.json'),
@@ -41,24 +52,37 @@ export function getTranslators() {
     'TranslatorName_4',
     'TranslatorName_5'
   ].filter(x => {
-    const translated = translate(x);
+    const translated = translateRaw(x);
     return !!translated;
   });
 }
 
-export type TranslateType = React.ReactElement<any> | string;
+export type TranslatedText = React.ReactElement<any> | string;
 
-function translate(key: string, textOnly?: false): React.ReactElement<any>;
-function translate(key: string, textOnly: true): string;
+export function translateRaw(key: string, variables?: { [name: string]: string }): string {
+  // redux store isn't initialized in time which throws errors, instead we get the language selection from localstorage
+  const lsConfig = loadStatePropertyOrEmptyObject('config');
+  const language = !!lsConfig ? (lsConfig as ConfigState).meta.languageSelection : fallbackLanguage;
+  const translatedString =
+    (repository[language] && repository[language][key]) || repository[fallbackLanguage][key] || key;
 
-function translate(key: string, textOnly: boolean = false) {
-  return textOnly ? translateRaw(key) : <Translate translationKey={key} />;
+  if (!!variables) {
+    // Find each variable and replace it in the translated string
+    let str = translatedString;
+    Object.keys(variables).forEach(v => {
+      str = str.replace(v, variables[v]);
+    });
+    return str;
+  }
+
+  return translatedString;
+}
+
+export function translate(
+  key: string,
+  variables?: { [name: string]: string }
+): React.ReactElement<any> {
+  return <TranslateMarkdown source={translateRaw(key, variables)} />;
 }
 
 export default translate;
-
-export function translateRaw(key: string) {
-  const lang = getLanguageSelection(configuredStore.getState());
-
-  return (repository[lang] && repository[lang][key]) || repository[fallbackLanguage][key] || key;
-}

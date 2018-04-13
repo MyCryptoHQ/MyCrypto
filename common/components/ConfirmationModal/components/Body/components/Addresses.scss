@@ -1,11 +1,11 @@
 @import 'common/sass/variables';
 
 .tx-modal-address {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
+  // Table is necessary here so the size of the div fits to it's content, and margins can be applied to it.
+  // width: fit-content; margin: auto; isn't widely supported, so for now, this is the best option
+  display: table;
   padding: 1rem 0;
-  align-items: center;
+  margin: auto;
   .Identicon {
     margin-right: 1rem;
   }

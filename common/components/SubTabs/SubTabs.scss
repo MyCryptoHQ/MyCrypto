@@ -1,9 +1,12 @@
 @import 'common/sass/variables';
 
 .SubTabs {
-  margin-top: 15px;
+  margin-top: $space-xs;
 
   &-tabs {
+    display: inline-block;
+    white-space: nowrap;
+
     &-link {
       display: inline-block;
       padding: 8px;
@@ -25,5 +28,9 @@
         text-decoration: line-through;
       }
     }
+  }
+
+  &-select {
+    margin-bottom: $space-md;
   }
 }

@@ -14,17 +14,17 @@ interface Props {
 export const GasLimitField: React.SFC<Props> = ({ customLabel, disabled }) => (
   <GasLimitFieldFactory
     withProps={({ gasLimit: { raw }, onChange, readOnly, gasEstimationPending }) => (
-      <div className="input-group-wrapper AdvancedGas-gas-price">
+      <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
-            {customLabel ? customLabel : translate('TRANS_gas')}
+            {customLabel ? customLabel : translate('TRANS_GAS')}
             <div className="flex-spacer" />
             <InlineSpinner active={gasEstimationPending} text="Calculating" />
           </div>
           <Input
             className={gasLimitValidator(raw) ? 'is-valid' : 'is-invalid'}
             type="number"
-            placeholder="e.g. 21000"
+            placeholder="21000"
             readOnly={!!readOnly}
             value={raw}
             onChange={onChange}

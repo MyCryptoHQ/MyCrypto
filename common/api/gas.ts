@@ -1,4 +1,5 @@
 import { checkHttpStatus, parseJSON } from './utils';
+import { Omit } from 'react-redux';
 
 const MAX_GAS_FAST = 250;
 
@@ -21,15 +22,29 @@ export interface GasEstimates {
   isDefault: boolean;
 }
 
+interface GasExpressResponse {
+  block_time: number;
+  blockNum: number;
+  fast: number;
+  fastest: number;
+  safeLow: number;
+  standard: number;
+}
+
 export function fetchGasEstimates(): Promise<GasEstimates> {
   return fetch('https://dev.blockscale.net/api/gasexpress.json', {
     mode: 'cors'
   })
     .then(checkHttpStatus)
     .then(parseJSON)
-    .then((res: object) => {
+    .then((res: GasExpressResponse) => {
       // Make sure it looks like a raw gas estimate, and it has valid values
-      const keys = ['safeLow', 'standard', 'fast', 'fastest'];
+      const keys: (keyof Omit<GasExpressResponse, 'block_time' | 'blockNum'>)[] = [
+        'safeLow',
+        'standard',
+        'fast',
+        'fastest'
+      ];
       keys.forEach(key => {
         if (typeof res[key] !== 'number') {
           throw new Error(

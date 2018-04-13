@@ -3,6 +3,7 @@ import NewTabLink from 'components/ui/NewTabLink';
 import { getValues } from '../utils/helpers';
 import packageJson from '../../package.json';
 import { GasPriceSetting } from 'types/network';
+import { makeExplorer } from 'utils/helpers';
 
 export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
@@ -18,8 +19,9 @@ export const ANNOUNCEMENT_TYPE = '';
 export const ANNOUNCEMENT_MESSAGE = (
   <React.Fragment>
     This is a Beta version of MyCrypto. Please submit any bug reports to our{' '}
-    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink>, and join
-    the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
+    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink> and use{' '}
+    <NewTabLink href="https://hackerone.com/mycrypto">HackerOne</NewTabLink> for critical
+    vulnerabilities. Join the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
   </React.Fragment>
 );
 
@@ -31,6 +33,12 @@ export const ETHTxExplorer = (txHash: string): string => `${etherScan}/tx/${txHa
 export const BTCTxExplorer = (txHash: string): string => `${blockChainInfo}/tx/${txHash}`;
 export const ETHAddressExplorer = (address: string): string => `${etherScan}/address/${address}`;
 export const ETHTokenExplorer = (address: string): string => `${ethPlorer}/address/${address}`;
+
+export const etherChainExplorerInst = makeExplorer({
+  name: 'Etherchain',
+  origin: 'https://www.etherchain.org',
+  addressPath: 'account'
+});
 
 export const donationAddressMap = {
   BTC: '32oirLEzZRhi33RCXDF9WHJjEb8RsrSss3',
@@ -49,7 +57,7 @@ export const MINIMUM_PASSWORD_LENGTH = 12;
 
 export const knowledgeBaseURL = 'https://support.mycrypto.com';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
-export const trezorReferralURL = 'https://trezor.io/?a=mycrypto.com';
+export const trezorReferralURL = 'https://shop.trezor.io?a=mycrypto.com';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
 // TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
@@ -61,7 +69,8 @@ export const ethercardReferralURL =
 export enum SecureWalletName {
   WEB3 = 'web3',
   LEDGER_NANO_S = 'ledgerNanoS',
-  TREZOR = 'trezor'
+  TREZOR = 'trezor',
+  PARITY_SIGNER = 'paritySigner'
 }
 
 export enum HardwareWalletName {
