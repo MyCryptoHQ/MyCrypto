@@ -2,13 +2,37 @@ import React from 'react';
 import { IWallet } from 'libs/wallet';
 import { AddressField } from 'components';
 import { Input } from 'components/ui';
-import AddressBookTable from './Table/AddressBookTable';
+import AddressBookTable from './AddressBookTable';
 
 interface Props {
   wallet: IWallet;
 }
 
 const EXAMPLE_DATA = [
+  {
+    label: 'Main',
+    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
+  },
+  {
+    label: 'Second',
+    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
+  },
+  {
+    label: 'Third',
+    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
+  },
+  {
+    label: 'Main',
+    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
+  },
+  {
+    label: 'Second',
+    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
+  },
+  {
+    label: 'Third',
+    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
+  },
   {
     label: 'Main',
     address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
