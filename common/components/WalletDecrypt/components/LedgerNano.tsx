@@ -66,7 +66,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
             Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
-            unlock your wallet at <a href="https://mycrypto.com">MyCrypto.com</a>
+            unlock your wallet at <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
           </div>
         </div>
       );
@@ -116,7 +116,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={'LEDGER'}
         />
       </div>
     );
