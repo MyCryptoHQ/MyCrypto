@@ -91,7 +91,6 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={'MNEMONIC'}
         />
       </div>
     );
