@@ -13,7 +13,15 @@ interface IQueryResults {
   [key: string]: string | null;
 }
 
-export type Param = 'to' | 'data' | 'readOnly' | 'tokenSymbol' | 'value' | 'gaslimit' | 'limit';
+export type Param =
+  | 'to'
+  | 'data'
+  | 'readOnly'
+  | 'tokenSymbol'
+  | 'value'
+  | 'gaslimit'
+  | 'limit'
+  | 'network';
 
 interface Props extends RouteComponentProps<{}> {
   params: Param[];

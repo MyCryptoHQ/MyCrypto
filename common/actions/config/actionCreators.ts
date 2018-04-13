@@ -53,6 +53,14 @@ export function changeNodeIntent(payload: string): interfaces.ChangeNodeIntentAc
   };
 }
 
+export type TChangeNodeIntentOneTime = typeof changeNodeIntentOneTime;
+export function changeNodeIntentOneTime(payload: string): interfaces.ChangeNodeIntentOneTimeAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME,
+    payload
+  };
+}
+
 export type TChangeNodeForce = typeof changeNodeForce;
 export function changeNodeForce(payload: string): interfaces.ChangeNodeForceAction {
   return {

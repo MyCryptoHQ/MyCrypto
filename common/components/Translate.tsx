@@ -1,5 +1,6 @@
 import React from 'react';
 import Markdown from 'react-markdown';
+import NewTabLink from 'components/ui/NewTabLink';
 
 interface Props {
   source: string;
@@ -11,7 +12,10 @@ const TranslateMarkdown = ({ source }: Props) => {
       escapeHtml={true}
       unwrapDisallowed={true}
       allowedTypes={['link', 'emphasis', 'strong', 'code', 'root', 'inlineCode']}
-      renderers={{ root: React.Fragment }}
+      renderers={{
+        root: React.Fragment,
+        link: NewTabLink
+      }}
       source={source}
     />
   );
