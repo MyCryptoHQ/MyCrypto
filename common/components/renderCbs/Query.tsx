@@ -24,7 +24,8 @@ export type Param =
   | 'windowSize'
   | 'windowStart'
   | 'scheduleTimestamp'
-  | 'timeBounty';
+  | 'timeBounty'
+  | 'network';
 
 interface Props extends RouteComponentProps<{}> {
   params: Param[];

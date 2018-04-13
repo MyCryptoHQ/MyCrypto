@@ -8,13 +8,17 @@ import {
   changeNode,
   changeNodeIntent,
   changeNodeForce,
-  setLatestBlock
+  setLatestBlock,
+  TypeKeys,
+  ChangeNodeIntentOneTimeAction,
+  changeNodeIntentOneTime
 } from 'actions/config';
 import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
   pollOfflineStatus,
-  handleNewNetwork
+  handleNewNetwork,
+  handleNodeChangeIntentOneTime
 } from 'sagas/config/node';
 import {
   getNodeId,
@@ -240,6 +244,23 @@ describe('handleNodeChangeIntent*', () => {
       null,
       `Attempted to switch to unknown node '${customNodeNotFoundAction.payload}'`
     );
+  });
+});
+
+describe('handleNodeChangeIntentOneTime', () => {
+  const saga = handleNodeChangeIntentOneTime();
+  const action: ChangeNodeIntentOneTimeAction = changeNodeIntentOneTime('eth_auto');
+  it('should take a one time action based on the url containing a valid network to switch to', () => {
+    expect(saga.next().value).toEqual(take(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME));
+  });
+  it(`should delay for 10 ms to allow shepherdProvider async init to complete`, () => {
+    expect(saga.next(action).value).toEqual(call(delay, 100));
+  });
+  it('should dispatch the change node intent', () => {
+    expect(saga.next().value).toEqual(put(changeNodeIntent(action.payload)));
+  });
+  it('should be done', () => {
+    expect(saga.next().done).toEqual(true);
   });
 });
 
