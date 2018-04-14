@@ -17,7 +17,7 @@ import createSagaMiddleware from 'redux-saga';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import RootReducer, { AppState } from 'reducers';
 import sagas from 'sagas';
-import { gasPricetoBase } from 'libs/units';
+import { gasPriceToBase } from 'libs/units';
 import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
@@ -62,7 +62,7 @@ const configureStore = () => {
           savedTransactionState && savedTransactionState.fields.gasPrice
             ? {
                 raw: savedTransactionState.fields.gasPrice.raw,
-                value: gasPricetoBase(+savedTransactionState.fields.gasPrice.raw)
+                value: gasPriceToBase(+savedTransactionState.fields.gasPrice.raw)
               }
             : transactionInitialState.fields.gasPrice
       }
