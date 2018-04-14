@@ -11,7 +11,7 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'config/constants';
-import { dPathRegex } from 'config/dpaths';
+import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -124,6 +124,16 @@ export function isPositiveIntegerOrZero(num: number): boolean {
 }
 
 export function isValidPath(dPath: string) {
+  // ETC Ledger is incorrect up due to an extra ' at the end of it
+  if (dPath === ETC_LEDGER.value) {
+    return true;
+  }
+
+  // SingularDTV is incorrect due to using a 0 instead of a 44 as the purpose
+  if (dPath === ETH_SINGULAR.value) {
+    return true;
+  }
+
   return dPathRegex.test(dPath);
 }
 
