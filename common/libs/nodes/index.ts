@@ -82,6 +82,7 @@ shepherd.useProvider('etherscan', 'rin_infura', regRinConf, 'https://rinkeby.eth
 
 const regEtcConf = makeProviderConfig({ network: 'ETC' });
 shepherd.useProvider('rpc', 'etc_epool', regEtcConf, 'https://mewapi.epool.io');
+shepherd.useProvider('rpc', 'etc_commonwealth', regEtcConf, 'https://etc-geth.0xinfra.com/');
 
 const regUbqConf = makeProviderConfig({ network: 'UBQ' });
 shepherd.useProvider('rpc', 'ubq', regUbqConf, 'https://pyrus2.ubiqscan.io');

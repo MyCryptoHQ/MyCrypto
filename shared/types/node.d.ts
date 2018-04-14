@@ -40,6 +40,7 @@ declare enum StaticNodeId {
   RIN_INFURA = 'rin_infura',
   ETC_AUTO = 'etc_auto',
   ETC_EPOOL = 'etc_epool',
+  ETC_COMMONWEALTH = 'etc_commonwealth',
   UBQ_AUTO = 'ubq_auto',
   UBQ = 'ubq',
   EXP_AUTO = 'exp_auto',
