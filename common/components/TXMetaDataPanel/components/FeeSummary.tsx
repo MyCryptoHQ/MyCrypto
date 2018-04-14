@@ -2,6 +2,7 @@ import React from 'react';
 import BN from 'bn.js';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
+import classNames from 'classnames';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { getIsEstimating } from 'selectors/gas';
 import { getGasLimit } from 'selectors/transaction';
@@ -85,8 +86,13 @@ class FeeSummary extends React.Component<Props> {
       />
     );
 
+    const feeSummaryClasses = classNames({
+      FeeSummary: true,
+      SchedulingFeeSummary: scheduling
+    });
+
     return (
-      <div className={`FeeSummary ${scheduling && 'SchedulingFeeSummary'}`}>
+      <div className={feeSummaryClasses}>
         {this.props.render({
           gasPriceWei: gasPrice.value.toString(),
           gasPriceGwei: gasPrice.raw,
