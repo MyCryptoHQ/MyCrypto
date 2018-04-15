@@ -28,7 +28,7 @@
     "jsonschema": "1.2.4",
     "ledgerco": "1.2.1",
     "lodash": "4.17.5",
-    "moment": "2.22.0",
+    "moment": "2.22.1",
     "moment-timezone": "0.5.14",
     "mycrypto-shepherd": "1.0.2",
     "normalizr": "3.2.4",
