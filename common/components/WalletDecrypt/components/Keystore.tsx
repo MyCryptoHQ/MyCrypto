@@ -43,7 +43,7 @@ export class KeystoreDecrypt extends PureComponent {
     const unlockDisabled = !file || (passReq && !password);
 
     return (
-      <form id="selectedUploadKey" onSubmit={this.unlock}>
+      <form onSubmit={this.unlock}>
         <div className="form-group">
           <input
             className="hidden"

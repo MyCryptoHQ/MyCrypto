@@ -201,3 +201,7 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
 
   return disabledWallets;
 }
+
+export function getRecentAddresses(state: AppState) {
+  return state.wallet.recentAddresses;
+}

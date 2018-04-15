@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { SagaIterator, delay } from 'redux-saga';
 import {
@@ -17,7 +16,9 @@ import {
   TypeKeys
 } from 'actions/transaction';
 import { isValidHex, isValidNonce, gasPriceValidator, gasLimitValidator } from 'libs/validators';
-import { Data, Wei, Nonce, gasPricetoBase } from 'libs/units';
+import { Data, Wei, Nonce, gasPriceToBase } from 'libs/units';
+
+const SLIDER_DEBOUNCE_INPUT_DELAY = 300;
 
 export function* handleDataInput({ payload }: InputDataAction): SagaIterator {
   const validData: boolean = yield call(isValidHex, payload);
@@ -35,13 +36,13 @@ export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIter
   yield put(
     setGasPriceField({
       raw: payload,
-      value: validGasPrice ? gasPricetoBase(priceFloat) : new BN(0)
+      value: validGasPrice ? gasPriceToBase(priceFloat) : Wei('0')
     })
   );
 }
 
 export function* handleGasPriceInputIntent({ payload }: InputGasPriceIntentAction): SagaIterator {
-  yield call(delay, 300);
+  yield call(delay, SLIDER_DEBOUNCE_INPUT_DELAY);
   // Important to put and not fork handleGasPriceInput, we want
   // action to go to reducers.
   yield put(inputGasPrice(payload));
