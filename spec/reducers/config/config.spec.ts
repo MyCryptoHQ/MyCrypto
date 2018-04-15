@@ -27,7 +27,8 @@ import {
   isStaticNodeId,
   getStaticNodeFromId,
   getCustomNodeFromId,
-  getPreviouslySelectedNode
+  getPreviouslySelectedNode,
+  getSelectedNode
 } from 'selectors/config';
 import { Web3Wallet } from 'libs/wallet';
 import { showNotification } from 'actions/notifications';
@@ -57,8 +58,14 @@ describe('pollOfflineStatus*', () => {
     expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
   });
 
+  it('should skip if a node change is pending', () => {
+    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getSelectedNode));
+    expect(offlineOnFirstTimeCase.next({ pending: true }).value).toEqual(call(delay, 2500));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getSelectedNode));
+  });
+
   it('should select offline', () => {
-    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next({ pending: false }).value).toEqual(select(getOffline));
   });
 
   it('should select shepherd"s offline', () => {
@@ -75,7 +82,8 @@ describe('pollOfflineStatus*', () => {
 
   it('should loop around then go back online, putting a restore msg', () => {
     expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
-    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getSelectedNode));
+    expect(offlineOnFirstTimeCase.next({ pending: false }).value).toEqual(select(getOffline));
     expect(offlineOnFirstTimeCase.next(true).value).toEqual(call(getShepherdOffline));
     expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
       restoreNotif
@@ -85,7 +93,8 @@ describe('pollOfflineStatus*', () => {
 
   it('should put a generic lost connection notif on every time afterwards', () => {
     expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
-    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getSelectedNode));
+    expect(offlineOnFirstTimeCase.next({ pending: false }).value).toEqual(select(getOffline));
     expect(offlineOnFirstTimeCase.next(false).value).toEqual(call(getShepherdOffline));
     expect(offlineOnFirstTimeCase.next(true).value).toEqual(put(setOffline()));
     expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(

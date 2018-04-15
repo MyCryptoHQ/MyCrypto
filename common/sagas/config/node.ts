@@ -17,7 +17,8 @@ import {
   isStaticNodeId,
   getCustomNodeFromId,
   getStaticNodeFromId,
-  getNetworkConfigById
+  getNetworkConfigById,
+  getSelectedNode
 } from 'selectors/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
@@ -70,8 +71,14 @@ export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     yield call(delay, 2500);
 
+    const { pending }: ReturnType<typeof getSelectedNode> = yield select(getSelectedNode);
+    if (pending) {
+      continue;
+    }
+
     const isOffline: boolean = yield select(getOffline);
     const balancerOffline = yield call(getShepherdOffline);
+
     if (!balancerOffline && isOffline) {
       // If we were able to ping but redux says we're offline, mark online
       yield put(restoreNotif);
