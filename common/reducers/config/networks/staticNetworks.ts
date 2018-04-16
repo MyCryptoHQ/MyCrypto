@@ -268,6 +268,7 @@ export const INITIAL_STATE: State = {
     tokens: [],
     contracts: [],
     dPathFormats: {
+      [SecureWalletName.TREZOR]: MUSIC_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: MUSIC_DEFAULT
     },
     gasPriceSettings: {
