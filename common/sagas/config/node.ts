@@ -44,7 +44,8 @@ import {
   shepherdProvider,
   stripWeb3Network,
   makeProviderConfig,
-  getShepherdNetwork
+  getShepherdNetwork,
+  getShepherdPending
 } from 'libs/nodes';
 
 export function* pollOfflineStatus(): SagaIterator {
@@ -71,7 +72,7 @@ export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     yield call(delay, 2500);
 
-    const { pending }: ReturnType<typeof getSelectedNode> = yield select(getSelectedNode);
+    const pending: ReturnType<typeof getShepherdPending> = yield call(getShepherdPending);
     if (pending) {
       continue;
     }
