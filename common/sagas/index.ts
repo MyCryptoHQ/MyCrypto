@@ -10,6 +10,7 @@ import { ens } from './ens';
 import { transaction } from './transaction';
 import transactions from './transactions';
 import gas from './gas';
+import { schedule } from './schedule';
 
 export default {
   ens,
@@ -23,5 +24,6 @@ export default {
   deterministicWallets,
   rates,
   transactions,
-  gas
+  gas,
+  schedule
 };

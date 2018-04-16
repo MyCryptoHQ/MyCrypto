@@ -120,7 +120,7 @@ export default class AbiFunction {
     this.inputNames.map(name => {
       const type = this.funcParams[name].type;
       //TODO: parse args based on type
-      if (!suppliedArgs[name]) {
+      if (typeof suppliedArgs[name] === 'undefined') {
         throw Error(
           `Expected argument "${name}" of type "${type}" missing, suppliedArgs: ${JSON.stringify(
             suppliedArgs,

@@ -1,7 +1,6 @@
 import React from 'react';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
 import translate from 'translations';
-import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
 import { AppState } from 'reducers';
 import {
@@ -17,11 +16,15 @@ import { Wei, fromWei } from 'libs/units';
 import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import { TInputGasPrice } from 'actions/transaction';
+import FeeSummary from './FeeSummary';
+import { getScheduleGasPrice } from 'selectors/schedule';
+
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   setGasPrice: TInputGasPrice;
+
   inputGasPrice(rawGas: string): void;
 }
 
@@ -32,6 +35,7 @@ interface StateProps {
   gasLimitPending: boolean;
   isWeb3Node: boolean;
   gasLimitEstimationTimedOut: boolean;
+  scheduleGasPrice: AppState['schedule']['scheduleGasPrice'];
 }
 
 interface ActionProps {
@@ -68,7 +72,8 @@ class SimpleGas extends React.Component<Props> {
       gasLimitEstimationTimedOut,
       isWeb3Node,
       noncePending,
-      gasLimitPending
+      gasLimitPending,
+      scheduleGasPrice
     } = this.props;
 
     const bounds = {
@@ -114,6 +119,7 @@ class SimpleGas extends React.Component<Props> {
           </div>
           <FeeSummary
             gasPrice={gasPrice}
+            scheduleGasPrice={scheduleGasPrice}
             render={({ fee, usd }) => (
               <span>
                 {fee} {usd && <span>/ ${usd}</span>}
@@ -151,7 +157,8 @@ export default connect(
     noncePending: nonceRequestPending(state),
     gasLimitPending: getGasEstimationPending(state),
     gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
-    isWeb3Node: getIsWeb3Node(state)
+    isWeb3Node: getIsWeb3Node(state),
+    scheduleGasPrice: getScheduleGasPrice(state)
   }),
   {
     fetchGasEstimates

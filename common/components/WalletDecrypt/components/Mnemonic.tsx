@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
+import DeprecationWarning from './DeprecationWarning';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -49,7 +50,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     const isValidMnemonic = validateMnemonic(formattedPhrase);
 
     return (
-      <div>
+      <React.Fragment>
+        <DeprecationWarning />
         <div id="selectedTypeKey">
           <div className="form-group">
             <TogglablePassword
@@ -92,7 +94,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
         />
-      </div>
+      </React.Fragment>
     );
   }
 
