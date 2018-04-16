@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { createPortal } from 'react-dom';
 import ModalBody from './ModalBody';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.scss';
@@ -28,6 +29,7 @@ const Fade = ({ ...props }: any) => (
 );
 
 export default class Modal extends PureComponent<Props, {}> {
+  public modalParent: HTMLElement;
   public modalBody: ModalBody;
 
   public componentDidUpdate(prevProps: Props) {
@@ -36,8 +38,20 @@ export default class Modal extends PureComponent<Props, {}> {
     }
   }
 
+  public componentDidMount() {
+    const modalEl = document.getElementById('ModalContainer');
+    if (modalEl) {
+      this.modalParent = document.createElement('div');
+      modalEl.appendChild(this.modalParent);
+    }
+  }
+
   public componentWillUnmount() {
     document.body.classList.remove('no-scroll');
+    const modalEl = document.getElementById('ModalContainer');
+    if (modalEl) {
+      modalEl.removeChild(this.modalParent);
+    }
   }
 
   public render() {
@@ -52,7 +66,7 @@ export default class Modal extends PureComponent<Props, {}> {
 
     const modalBodyProps = { title, children, modalStyle, hasButtons, buttons, handleClose };
 
-    return (
+    const modal = (
       <TransitionGroup>
         {isOpen && (
           // Trap focus in modal by focusing the first element after the animation is complete
@@ -65,5 +79,11 @@ export default class Modal extends PureComponent<Props, {}> {
         )}
       </TransitionGroup>
     );
+
+    if (this.modalParent) {
+      return createPortal(modal, this.modalParent);
+    } else {
+      return modal;
+    }
   }
 }

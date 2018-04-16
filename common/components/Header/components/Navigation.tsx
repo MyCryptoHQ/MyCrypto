@@ -1,53 +1,7 @@
 import React, { PureComponent } from 'react';
-import NavigationLink from './NavigationLink';
-import { knowledgeBaseURL } from 'config';
+import NavigationLink from 'components/NavigationLink';
+import { navigationLinks } from 'config';
 import './Navigation.scss';
-
-export interface TabLink {
-  name: string;
-  to: string;
-  external?: boolean;
-}
-
-const tabs: TabLink[] = [
-  {
-    name: 'NAV_VIEW',
-    to: '/account'
-  },
-  {
-    name: 'NAV_GENERATEWALLET',
-    to: '/generate'
-  },
-  {
-    name: 'NAV_SWAP',
-    to: '/swap'
-  },
-  {
-    name: 'NAV_CONTRACTS',
-    to: '/contracts'
-  },
-  {
-    name: 'NAV_ENS',
-    to: '/ens'
-  },
-  {
-    name: 'NAV_SIGN',
-    to: '/sign-and-verify-message'
-  },
-  {
-    name: 'NAV_TXSTATUS',
-    to: '/tx-status'
-  },
-  {
-    name: 'NAV_BROADCAST',
-    to: '/pushTx'
-  },
-  {
-    name: 'NAV_HELP',
-    to: `${knowledgeBaseURL}`,
-    external: true
-  }
-];
 
 interface Props {
   color?: string | false;
@@ -97,9 +51,14 @@ export default class Navigation extends PureComponent<Props, State> {
 
         <div className="Navigation-scroll container">
           <ul className="Navigation-links">
-            {tabs.map(link => {
-              return <NavigationLink key={link.name} link={link} isHomepage={link === tabs[0]} />;
-            })}
+            {navigationLinks.map(link => (
+              <NavigationLink
+                key={link.name}
+                link={link}
+                isHomepage={link === navigationLinks[0]}
+                className="NavigationLink"
+              />
+            ))}
           </ul>
         </div>
 

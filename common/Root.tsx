@@ -10,6 +10,7 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
+import SupportPage from 'containers/Tabs/SupportPage';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
@@ -51,6 +52,7 @@ class RootClass extends Component<Props, State> {
   public componentDidMount() {
     this.props.pollOfflineStatus();
     this.props.setUnitMeta(this.props.networkUnit);
+    this.addBodyClasses();
   }
 
   public componentDidCatch(error: Error) {
@@ -85,6 +87,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/support-us" component={SupportPage} exact={true} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
@@ -96,18 +99,39 @@ class RootClass extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <Provider store={store} key={Math.random()}>
-        <Router key={Math.random()}>
-          <React.Fragment>
-            {process.env.BUILD_ELECTRON && <TitleBar />}
-            {routes}
-            <LegacyRoutes />
-            <LogOutPrompt />
-            <QrSignerModal />
-          </React.Fragment>
-        </Router>
-      </Provider>
+      <React.Fragment>
+        <Provider store={store} key={Math.random()}>
+          <Router key={Math.random()}>
+            <React.Fragment>
+              {process.env.BUILD_ELECTRON && <TitleBar />}
+              {routes}
+              <LegacyRoutes />
+              <LogOutPrompt />
+              <QrSignerModal />
+            </React.Fragment>
+          </Router>
+        </Provider>
+        <div id="ModalContainer" />
+      </React.Fragment>
     );
+  }
+
+  private addBodyClasses() {
+    const classes = [];
+
+    if (process.env.BUILD_ELECTRON) {
+      classes.push('is-electron');
+
+      if (navigator.appVersion.includes('Win')) {
+        classes.push('is-windows');
+      } else if (navigator.appVersion.includes('Mac')) {
+        classes.push('is-osx');
+      } else {
+        classes.push('is-linux');
+      }
+    }
+
+    document.body.className += ` ${classes.join(' ')}`;
   }
 }
 

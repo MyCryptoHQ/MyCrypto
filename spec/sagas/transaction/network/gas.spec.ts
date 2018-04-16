@@ -22,6 +22,8 @@ import {
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { Wei } from 'libs/units';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config';
+import { isSchedulingEnabled } from 'selectors/schedule/fields';
+import { setScheduleGasLimitField } from 'actions/schedule';
 
 describe('shouldEstimateGas*', () => {
   const offline = false;
@@ -113,6 +115,10 @@ describe('estimateGas*', () => {
   const unsuccessfulGasEstimationResult = {
     gasLimit: null
   };
+  const gasSetOptions = {
+    raw: gasLimit.toString(),
+    value: gasLimit
+  };
 
   const gens: { [name: string]: any } = {};
   gens.successCase = cloneableGenerator(estimateGas)();
@@ -175,15 +181,25 @@ describe('estimateGas*', () => {
     );
   });
 
-  it('should put setGasLimitField', () => {
+  it('should select isSchedulingEnabled', () => {
     gens.timeOutCase = gens.successCase.clone();
     expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
-      put(
-        setGasLimitField({
-          raw: gasLimit.toString(),
-          value: gasLimit
-        })
-      )
+      select(isSchedulingEnabled)
+    );
+  });
+
+  it('should put setGasLimitField', () => {
+    gens.scheduleCase = gens.successCase.clone();
+    const notScheduling = null as any;
+    expect(gens.successCase.next(notScheduling).value).toEqual(
+      put(setGasLimitField(gasSetOptions))
+    );
+  });
+
+  it('should put setScheduleGasLimitField', () => {
+    const scheduling = { value: true } as any;
+    expect(gens.scheduleCase.next(scheduling).value).toEqual(
+      put(setScheduleGasLimitField(gasSetOptions))
     );
   });
 
