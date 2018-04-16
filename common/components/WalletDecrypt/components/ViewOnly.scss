@@ -1,0 +1,26 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.ViewOnly {
+  &-recent {
+    text-align: left;
+
+    &-separator {
+      display: block;
+      margin: $space-sm 0;
+      text-align: center;
+      color: $gray-light;
+    }
+
+    .Select {
+      &-option {
+        @include ellipsis;
+      }
+
+      .Identicon {
+        display: inline-block;
+        margin-right: $space-sm;
+      }
+    }
+  }
+}

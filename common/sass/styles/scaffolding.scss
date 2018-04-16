@@ -78,6 +78,10 @@ hr {
   border-top: 1px solid $hr-border;
 }
 
+a {
+  text-decoration-skip-ink: none;
+}
+
 #app {
   overflow-x: hidden;
 }

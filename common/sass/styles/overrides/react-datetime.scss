@@ -1,0 +1,23 @@
+@import 'common/sass/variables';
+
+.rdt input {
+  font-family: inherit;
+}
+
+.rdtPicker {
+  td {
+    &.rdtActive,
+    &.rdtActive:hover {
+      background-color: $brand-primary;
+    }
+  }
+  td.rdtToday::before {
+    border-bottom: 7px solid $brand-primary;
+  }
+}
+
+.rdtCounter .rdtBtn,
+.rdtNext,
+.rdtPrev {
+  color: $brand-primary;
+}
