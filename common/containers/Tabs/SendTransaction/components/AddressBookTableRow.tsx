@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import noop from 'lodash/noop';
 import { Input } from 'components/ui';
 import onClickOutside from 'react-onclickoutside';
 
@@ -14,24 +15,12 @@ interface Props {
 }
 
 class AddressBookTableRow extends React.Component<Props> {
-  state = {
+  public state = {
     label: this.props.label,
     address: this.props.address
   };
 
-  handleSave = () => {
-    const { onSave } = this.props;
-    const { label, address } = this.state;
-
-    onSave(label, address);
-  };
-
-  handleClickOutside = () => this.props.isEditing && this.handleSave();
-
-  setLabel = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ label: e.target.value });
-
-  setAddress = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ address: e.target.value });
+  public handleClickOutside = () => this.props.isEditing && this.handleSave();
 
   public render() {
     const { index, isEditing, onEditClick, onRemoveClick } = this.props;
@@ -42,7 +31,7 @@ class AddressBookTableRow extends React.Component<Props> {
     });
     const labelCell = isEditing ? <Input value={label} onChange={this.setLabel} /> : label;
     const addressCell = isEditing ? <Input value={address} onChange={this.setAddress} /> : address;
-    const trOnClick = isEditing ? () => {} : onEditClick;
+    const trOnClick = isEditing ? noop : onEditClick;
 
     return (
       <tr className={className} onClick={trOnClick}>
@@ -62,6 +51,19 @@ class AddressBookTableRow extends React.Component<Props> {
       </tr>
     );
   }
+
+  private handleSave = () => {
+    const { onSave } = this.props;
+    const { label, address } = this.state;
+
+    onSave(label, address);
+  };
+
+  private setLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ label: e.target.value });
+
+  private setAddress = (e: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ address: e.target.value });
 }
 
 export default onClickOutside(AddressBookTableRow);

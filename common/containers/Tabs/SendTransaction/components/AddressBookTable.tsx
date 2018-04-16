@@ -38,8 +38,8 @@ export default class AddressBookTable extends React.Component<Props> {
     );
   }
 
-  handleSave = (index: number, label: string, address: string) => {
-    console.log(`Setting ${index} to Label: ${label} and Address: ${address}`);
+  private handleSave = (index: number, label: string, address: string) => {
+    console.log(index, label, address);
     this.setEditingRow(null);
   };
 
@@ -58,7 +58,9 @@ export default class AddressBookTable extends React.Component<Props> {
         label={label.label}
         address={label.address}
         isEditing={isEditingRow}
-        onSave={(label: string, address: string) => this.handleSave(index, label, address)}
+        onSave={(labelToSave: string, addressToSave: string) =>
+          this.handleSave(index, labelToSave, addressToSave)
+        }
         onEditClick={() => this.setEditingRow(index)}
         onRemoveClick={() => this.removeEntry(index)}
       />
