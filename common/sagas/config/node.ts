@@ -17,8 +17,7 @@ import {
   isStaticNodeId,
   getCustomNodeFromId,
   getStaticNodeFromId,
-  getNetworkConfigById,
-  getSelectedNode
+  getNetworkConfigById
 } from 'selectors/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
