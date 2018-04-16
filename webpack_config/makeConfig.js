@@ -66,6 +66,13 @@ module.exports = function(opts = {}) {
   }
 
   // Styles (CSS, SCSS)
+  const sassLoader = {
+    loader: 'sass-loader',
+    options: {
+      data: `$is-electron: ${options.isElectronBuild};`
+    }
+  };
+
   if (options.isProduction) {
     rules.push(
       {
@@ -80,7 +87,7 @@ module.exports = function(opts = {}) {
         use: [
           MiniCSSExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
+          sassLoader
         ]
       }
     );
@@ -97,7 +104,7 @@ module.exports = function(opts = {}) {
           .map(dir => path.resolve(config.path.src, dir))
           .concat([config.path.modules]),
 
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', sassLoader]
       }
     );
   }
