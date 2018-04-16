@@ -221,7 +221,7 @@ export const INITIAL_STATE: State = {
     tokens: [],
     contracts: [],
     dPathFormats: {
-      [SecureWalletName.TREZOR]: TOMO_DEFAULT,
+      [SecureWalletName.TREZOR]: ETH_TREZOR,
       [SecureWalletName.LEDGER_NANO_S]: TOMO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: TOMO_DEFAULT
     },
