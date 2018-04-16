@@ -9,9 +9,14 @@ import { Input } from 'components/ui';
 interface Props {
   customLabel?: string;
   disabled?: boolean;
+  hideGasCalculationSpinner?: boolean;
 }
 
-export const GasLimitField: React.SFC<Props> = ({ customLabel, disabled }) => (
+export const GasLimitField: React.SFC<Props> = ({
+  customLabel,
+  disabled,
+  hideGasCalculationSpinner
+}) => (
   <GasLimitFieldFactory
     withProps={({ gasLimit: { raw }, onChange, readOnly, gasEstimationPending }) => (
       <div className="input-group-wrapper">
@@ -19,7 +24,10 @@ export const GasLimitField: React.SFC<Props> = ({ customLabel, disabled }) => (
           <div className="input-group-header">
             {customLabel ? customLabel : translate('TRANS_GAS')}
             <div className="flex-spacer" />
-            <InlineSpinner active={gasEstimationPending} text="Calculating" />
+            <InlineSpinner
+              active={!hideGasCalculationSpinner && gasEstimationPending}
+              text="Calculating"
+            />
           </div>
           <Input
             className={gasLimitValidator(raw) ? 'is-valid' : 'is-invalid'}

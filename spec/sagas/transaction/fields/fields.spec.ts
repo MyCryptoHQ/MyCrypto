@@ -3,7 +3,7 @@ import { SagaIterator, delay } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import { setDataField, setGasLimitField, setNonceField } from 'actions/transaction/actionCreators';
 import { isValidHex, isValidNonce, gasPriceValidator, gasLimitValidator } from 'libs/validators';
-import { Data, Wei, Nonce, gasPricetoBase } from 'libs/units';
+import { Data, Wei, Nonce, gasPriceToBase } from 'libs/units';
 import {
   handleDataInput,
   handleGasLimitInput,
@@ -129,7 +129,7 @@ describe('handleGasPriceInput*', () => {
       put(
         setGasPriceField({
           raw: payload,
-          value: gasPricetoBase(priceFloat)
+          value: gasPriceToBase(priceFloat)
         })
       )
     );
