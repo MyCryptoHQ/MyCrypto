@@ -8,45 +8,6 @@ interface Props {
   wallet: IWallet;
 }
 
-const EXAMPLE_DATA = [
-  {
-    label: 'Main',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Second',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Third',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Main',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Second',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Third',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Main',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Second',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  },
-  {
-    label: 'Third',
-    address: '0x004160cffF97850Ad7d5aec67E321782a0B62786'
-  }
-];
-
 export default class AddressBook extends React.Component<Props> {
   public render() {
     return (
@@ -68,7 +29,7 @@ export default class AddressBook extends React.Component<Props> {
           </div>
         </div>
         <div className="Tab-content-pane">
-          <AddressBookTable rows={EXAMPLE_DATA} />
+          <AddressBookTable />
         </div>
       </div>
     );

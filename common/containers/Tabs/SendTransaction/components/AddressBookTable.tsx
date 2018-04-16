@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
+import { getAddressToLabels } from 'selectors/addressBook';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
 
@@ -82,7 +83,7 @@ class AddressBookTable extends React.Component<Props> {
 
 function mapStateToProps(state) {
   return {
-    addressBook: state.addressBook
+    rows: getAddressToLabels(state)
   };
 }
 
