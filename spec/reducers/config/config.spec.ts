@@ -38,7 +38,7 @@ import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
 import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
 import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
 import { shepherd } from 'mycrypto-shepherd';
-import { getShepherdOffline } from 'libs/nodes';
+import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 
 // init module
 configuredStore.getState();
@@ -57,8 +57,14 @@ describe('pollOfflineStatus*', () => {
     expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
   });
 
+  it('should skip if a node change is pending', () => {
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
+    expect(offlineOnFirstTimeCase.next(true).value).toEqual(call(delay, 2500));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
+  });
+
   it('should select offline', () => {
-    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
   });
 
   it('should select shepherd"s offline', () => {
@@ -75,7 +81,8 @@ describe('pollOfflineStatus*', () => {
 
   it('should loop around then go back online, putting a restore msg', () => {
     expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
-    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
     expect(offlineOnFirstTimeCase.next(true).value).toEqual(call(getShepherdOffline));
     expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
       restoreNotif
@@ -85,7 +92,8 @@ describe('pollOfflineStatus*', () => {
 
   it('should put a generic lost connection notif on every time afterwards', () => {
     expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
-    expect(offlineOnFirstTimeCase.next().value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
     expect(offlineOnFirstTimeCase.next(false).value).toEqual(call(getShepherdOffline));
     expect(offlineOnFirstTimeCase.next(true).value).toEqual(put(setOffline()));
     expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(

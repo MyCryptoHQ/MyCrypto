@@ -15,7 +15,7 @@ export const ETH_LEDGER: DPath = {
 
 export const ETC_LEDGER: DPath = {
   label: 'Ledger (ETC)',
-  value: "m/44'/60'/160720'/0"
+  value: "m/44'/60'/160720'/0'"
 };
 
 export const ETC_TREZOR: DPath = {
@@ -86,5 +86,5 @@ export const EXTRA_PATHS = [ETH_SINGULAR];
 
 // whitespace strings are evaluated the same way as nospace strings, except they allow optional spaces between each portion of the string
 // ie. "m / 44' / 0' / 0'" is valid, "m / 4 4' / 0' / 0'" is invalid
-export const dPathRegex = /m\/(44|0)'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
+export const dPathRegex = /m\/44'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
 // export const whitespaceDPathRegex = /m\s*\/\s*44'\s*\/\s*[0-9]+\'\s*\/\s*[0-9]+(\'+$|\'+\s*(\/\s*[0-1]+$))/;

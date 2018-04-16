@@ -4,6 +4,8 @@ import { tokenBalanceHandler } from './tokenBalanceProxy';
 import { IProviderConfig } from 'mycrypto-shepherd/dist/lib/ducks/providerConfigs';
 
 type DeepPartial<T> = Partial<{ [key in keyof T]: Partial<T[key]> }>;
+const { selectors, store } = redux;
+const { providerBalancerSelectors: { balancerConfigSelectors } } = selectors;
 
 export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): IProviderConfig => {
   const defaultConfig: IProviderConfig = {
@@ -48,12 +50,14 @@ shepherd
     provider => (shepherdProvider = (new Proxy(provider, tokenBalanceHandler) as any) as INode)
   );
 
-export const getShepherdManualMode = () =>
-  redux.store.getState().providerBalancer.balancerConfig.manual;
-export const getShepherdOffline = () =>
-  redux.store.getState().providerBalancer.balancerConfig.offline;
-export const getShepherdNetwork = () =>
-  redux.store.getState().providerBalancer.balancerConfig.network;
+export const getShepherdManualMode = () => balancerConfigSelectors.getManualMode(store.getState());
+
+export const getShepherdOffline = () => balancerConfigSelectors.isOffline(store.getState());
+
+export const getShepherdNetwork = () => balancerConfigSelectors.getNetwork(store.getState());
+
+export const getShepherdPending = () =>
+  balancerConfigSelectors.isSwitchingNetworks(store.getState());
 
 export const makeWeb3Network = (network: string) => `WEB3_${network}`;
 export const stripWeb3Network = (network: string) => network.replace('WEB3_', '');
@@ -82,6 +86,7 @@ shepherd.useProvider('etherscan', 'rin_infura', regRinConf, 'https://rinkeby.eth
 
 const regEtcConf = makeProviderConfig({ network: 'ETC' });
 shepherd.useProvider('rpc', 'etc_epool', regEtcConf, 'https://mewapi.epool.io');
+shepherd.useProvider('rpc', 'etc_commonwealth', regEtcConf, 'https://etc-geth.0xinfra.com/');
 
 const regUbqConf = makeProviderConfig({ network: 'UBQ' });
 shepherd.useProvider('rpc', 'ubq', regUbqConf, 'https://pyrus2.ubiqscan.io');

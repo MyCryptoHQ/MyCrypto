@@ -14,6 +14,7 @@ import SupportPage from 'containers/Tabs/SupportPage';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
+import QrSignerModal from 'containers/QrSignerModal';
 import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
@@ -106,6 +107,7 @@ class RootClass extends Component<Props, State> {
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
+              <QrSignerModal />
             </React.Fragment>
           </Router>
         </Provider>

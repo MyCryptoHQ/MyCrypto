@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { SecureWalletName, ledgerReferralURL } from 'config';
 import { getPaths, getSingleDPath } from 'selectors/config/wallet';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 import './LedgerNano.scss';
 
 interface OwnProps {
@@ -18,6 +20,7 @@ interface OwnProps {
 interface StateProps {
   dPath: DPath | undefined;
   dPaths: DPath[];
+  network: NetworkConfig;
 }
 
 interface State {
@@ -54,6 +57,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   }
 
   public render() {
+    const { network } = this.props;
     const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
     const showErr = error ? 'is-showing' : '';
 
@@ -66,7 +70,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
             Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
-            unlock your wallet at <a href="https://mycrypto.com">MyCrypto.com</a>
+            unlock your wallet at <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
           </div>
         </div>
       );
@@ -74,12 +78,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="LedgerDecrypt">
-        {showTip && (
-          <p>
-            <strong>Tip: </strong>Make sure you're logged into the ethereum app on your hardware
-            wallet
-          </p>
-        )}
         <button
           className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
           onClick={this.handleNullConnect}
@@ -101,6 +99,10 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
+        {showTip && (
+          <p className="LedgerDecrypt-tip">{translate('LEDGER_TIP', { $network: network.unit })}</p>
+        )}
+
         <div className="LedgerDecrypt-help">
           <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
             {translate('HELP_ARTICLE_1')}
@@ -116,7 +118,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={'LEDGER'}
         />
       </div>
     );
@@ -144,13 +145,34 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           });
         })
         .catch((err: any) => {
+          let showTip;
+          let errMsg;
+          // Timeout
           if (err && err.metaData && err.metaData.code === 5) {
-            this.showTip();
+            showTip = true;
+            errMsg = translateRaw('LEDGER_TIMEOUT');
           }
+          // Wrong app logged into
+          if (err && err.includes && err.includes('6804')) {
+            showTip = true;
+            errMsg = translateRaw('LEDGER_WRONG_APP');
+          }
+          // Ledger locked
+          if (err && err.includes && err.includes('6801')) {
+            errMsg = translateRaw('LEDGER_LOCKED');
+          }
+          // Other
+          if (!errMsg) {
+            errMsg = err && err.metaData ? err.metaData.type : err.toString();
+          }
+
           this.setState({
-            error: err && err.metaData ? err.metaData.type : err.toString(),
+            error: errMsg,
             isLoading: false
           });
+          if (showTip) {
+            this.showTip();
+          }
         });
     });
   };
@@ -180,7 +202,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     dPath: getSingleDPath(state, SecureWalletName.LEDGER_NANO_S),
-    dPaths: getPaths(state, SecureWalletName.LEDGER_NANO_S)
+    dPaths: getPaths(state, SecureWalletName.LEDGER_NANO_S),
+    network: getNetworkConfig(state)
   };
 }
 
