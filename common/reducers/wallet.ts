@@ -28,6 +28,7 @@ export interface State {
   isPasswordPending: boolean;
   tokensError: string | null;
   hasSavedWalletTokens: boolean;
+  recentAddresses: string[];
 }
 
 export const INITIAL_STATE: State = {
@@ -39,8 +40,23 @@ export const INITIAL_STATE: State = {
   isPasswordPending: false,
   isTokensLoading: false,
   tokensError: null,
-  hasSavedWalletTokens: true
+  hasSavedWalletTokens: true,
+  recentAddresses: []
 };
+
+export const RECENT_ADDRESS_LIMIT = 10;
+
+function addRecentAddress(addresses: string[], newWallet: IWallet | null) {
+  if (!newWallet) {
+    return addresses;
+  }
+  // Push new address onto the front
+  const newAddresses = [newWallet.getAddressString(), ...addresses];
+  // Dedupe addresses, limit length
+  return newAddresses
+    .filter((addr, idx) => newAddresses.indexOf(addr) === idx)
+    .splice(0, RECENT_ADDRESS_LIMIT);
+}
 
 function setWallet(state: State, action: SetWalletAction): State {
   return {
@@ -48,7 +64,8 @@ function setWallet(state: State, action: SetWalletAction): State {
     inst: action.payload,
     config: INITIAL_STATE.config,
     balance: INITIAL_STATE.balance,
-    tokens: INITIAL_STATE.tokens
+    tokens: INITIAL_STATE.tokens,
+    recentAddresses: addRecentAddress(state.recentAddresses, action.payload)
   };
 }
 
@@ -145,12 +162,19 @@ function setWalletConfig(state: State, action: SetWalletConfigAction): State {
   };
 }
 
+function resetWallet(state: State): State {
+  return {
+    ...INITIAL_STATE,
+    recentAddresses: state.recentAddresses
+  };
+}
+
 export function wallet(state: State = INITIAL_STATE, action: WalletAction): State {
   switch (action.type) {
     case TypeKeys.WALLET_SET:
       return setWallet(state, action);
     case TypeKeys.WALLET_RESET:
-      return INITIAL_STATE;
+      return resetWallet(state);
     case TypeKeys.WALLET_SET_BALANCE_PENDING:
       return setBalancePending(state);
     case TypeKeys.WALLET_SET_BALANCE_FULFILLED:

@@ -25,28 +25,6 @@
   }
 }
 
-// Alert icons
-.alert:after {
-  content: '';
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-size: contain;
-  display: block;
-  color: #fff;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 1%;
-  width: $space * 2;
-
-  @media screen and (max-width: $screen-sm) {
-    left: 3%;
-  }
-  @media screen and (max-width: $screen-xs) {
-    left: 1%;
-  }
-}
-
 .alert,
 .alert-info {
   @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
