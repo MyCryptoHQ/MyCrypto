@@ -117,8 +117,6 @@ class RootClass extends Component<Props, State> {
   private addBodyClasses() {
     const classes = [];
 
-    console.log(process);
-
     if (process.env.BUILD_ELECTRON) {
       classes.push('is-electron');
 

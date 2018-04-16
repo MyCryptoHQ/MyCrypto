@@ -47,7 +47,7 @@ export const navigationLinks: NavigationLink[] = [
   },
   {
     name: 'NAV_HELP',
-    to: `${knowledgeBaseURL}`,
+    to: knowledgeBaseURL,
     external: true
   }
 ].filter(link => !link.disabled);

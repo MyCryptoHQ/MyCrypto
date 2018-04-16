@@ -6,6 +6,12 @@ import { NetworkConfig } from 'types/network';
 import { AppState } from 'reducers';
 import './NetworkStatus.scss';
 
+enum NETWORK_STATUS {
+  CONNECTING = 'NETWORK_STATUS_CONNECTING',
+  OFFLINE = 'NETWORK_STATUS_OFFLINE',
+  ONLINE = 'NETWORK_STATUS_ONLINE'
+}
+
 interface StateProps {
   network: NetworkConfig;
   isOffline: boolean;
@@ -19,13 +25,13 @@ const NetworkStatus: React.SFC<StateProps> = ({ isOffline, isChangingNode, netwo
 
   if (isChangingNode) {
     statusClass = 'is-connecting';
-    statusText = 'NETWORK_STATUS_CONNECTING';
+    statusText = NETWORK_STATUS.CONNECTING;
   } else if (isOffline) {
     statusClass = 'is-offline';
-    statusText = 'NETWORK_STATUS_OFFLINE';
+    statusText = NETWORK_STATUS.OFFLINE;
   } else {
     statusClass = 'is-online';
-    statusText = 'NETWORK_STATUS_ONLINE';
+    statusText = NETWORK_STATUS.ONLINE;
   }
 
   return (
