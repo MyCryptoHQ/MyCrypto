@@ -68,7 +68,7 @@ export const INITIAL_STATE: State = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
-      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
     },
     gasPriceSettings: testnetDefaultGasPrice
@@ -88,7 +88,7 @@ export const INITIAL_STATE: State = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
-      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
     },
     gasPriceSettings: testnetDefaultGasPrice
@@ -108,7 +108,7 @@ export const INITIAL_STATE: State = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
-      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
     },
     gasPriceSettings: testnetDefaultGasPrice
@@ -199,7 +199,7 @@ export const INITIAL_STATE: State = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: POA_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: POA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: POA_DEFAULT
     },
     gasPriceSettings: {
@@ -221,6 +221,7 @@ export const INITIAL_STATE: State = {
     tokens: [],
     contracts: [],
     dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [SecureWalletName.TREZOR]: ETH_TREZOR,
       [SecureWalletName.LEDGER_NANO_S]: TOMO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: TOMO_DEFAULT
