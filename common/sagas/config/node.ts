@@ -43,7 +43,8 @@ import {
   shepherdProvider,
   stripWeb3Network,
   makeProviderConfig,
-  getShepherdNetwork
+  getShepherdNetwork,
+  getShepherdPending
 } from 'libs/nodes';
 
 export function* pollOfflineStatus(): SagaIterator {
@@ -70,8 +71,14 @@ export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     yield call(delay, 2500);
 
+    const pending: ReturnType<typeof getShepherdPending> = yield call(getShepherdPending);
+    if (pending) {
+      continue;
+    }
+
     const isOffline: boolean = yield select(getOffline);
     const balancerOffline = yield call(getShepherdOffline);
+
     if (!balancerOffline && isOffline) {
       // If we were able to ping but redux says we're offline, mark online
       yield put(restoreNotif);
