@@ -1,14 +1,15 @@
 import React from 'react';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
+import { Address } from 'libs/units';
 
-interface Label {
+interface AddressToLabel {
   address: string;
   label: string;
 }
 
 interface Props {
-  rows: Label[];
+  rows: AddressToLabel[];
 }
 
 interface State {
@@ -38,16 +39,19 @@ export default class AddressBookTable extends React.Component<Props> {
     );
   }
 
-  private handleSave = (index: number, label: string, address: string) => {
-    console.log(index, label, address);
+  private handleSave = (addressToLabel: AddressToLabel) => {
+    const { label, address } = addressToLabel;
+
+    console.log(label, address);
+
     this.setEditingRow(null);
   };
 
   private setEditingRow = (editingRow: number | null) => this.setState({ editingRow });
 
-  private removeEntry = (index: number) => alert(`Removing #${index}`);
+  private removeEntry = (address: string) => alert(`Removing ${address}`);
 
-  private makeLabelRow = (label: Label, index: number) => {
+  private makeLabelRow = (addressToLabel: AddressToLabel, index: number) => {
     const { editingRow } = this.state;
     const isEditingRow = index === editingRow;
 
@@ -55,14 +59,14 @@ export default class AddressBookTable extends React.Component<Props> {
       <AddressBookTableRow
         key={index}
         index={index}
-        label={label.label}
-        address={label.address}
+        label={addressToLabel.label}
+        address={addressToLabel.address}
         isEditing={isEditingRow}
         onSave={(labelToSave: string, addressToSave: string) =>
-          this.handleSave(index, labelToSave, addressToSave)
+          this.handleSave({ label: labelToSave, address: addressToSave })
         }
         onEditClick={() => this.setEditingRow(index)}
-        onRemoveClick={() => this.removeEntry(index)}
+        onRemoveClick={() => this.removeEntry(addressToLabel.address)}
       />
     );
   };
