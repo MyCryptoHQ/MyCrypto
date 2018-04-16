@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
-import { Address } from 'libs/units';
 
 interface AddressToLabel {
   address: string;
@@ -10,13 +11,15 @@ interface AddressToLabel {
 
 interface Props {
   rows: AddressToLabel[];
+  addLabelForAddress(addressToLabel: AddressToLabel): void;
+  removeLabelForAddress(address: string): void;
 }
 
 interface State {
   editingRow: number | null;
 }
 
-export default class AddressBookTable extends React.Component<Props> {
+class AddressBookTable extends React.Component<Props> {
   public state: State = {
     editingRow: null
   };
@@ -40,16 +43,21 @@ export default class AddressBookTable extends React.Component<Props> {
   }
 
   private handleSave = (addressToLabel: AddressToLabel) => {
+    const { addLabelForAddress } = this.props;
     const { label, address } = addressToLabel;
 
-    console.log(label, address);
+    addLabelForAddress({ label, address });
 
     this.setEditingRow(null);
   };
 
   private setEditingRow = (editingRow: number | null) => this.setState({ editingRow });
 
-  private removeEntry = (address: string) => alert(`Removing ${address}`);
+  private removeEntry = (address: string) => {
+    const { removeLabelForAddress } = this.props;
+
+    removeLabelForAddress(address);
+  };
 
   private makeLabelRow = (addressToLabel: AddressToLabel, index: number) => {
     const { editingRow } = this.state;
@@ -71,3 +79,13 @@ export default class AddressBookTable extends React.Component<Props> {
     );
   };
 }
+
+function mapStateToProps(state) {
+  return {
+    addressBook: state.addressBook
+  };
+}
+
+const mapDispatchToProps = { addLabelForAddress, removeLabelForAddress };
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);

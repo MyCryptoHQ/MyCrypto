@@ -14,10 +14,12 @@ export const INITIAL_STATE: State = {
 };
 
 export function addressBook(state: State = INITIAL_STATE, action: AddressBookAction): State {
+  console.log('FIRING', action.type);
+
   switch (action.type) {
     case TypeKeys.ADD_LABEL_FOR_ADDRESS: {
       const { address, label } = action.payload;
-
+      console.log('Add', label, 'to', address, '?');
       return {
         ...state,
         labels: {

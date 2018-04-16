@@ -1,10 +1,7 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
 
-export function addLabelForAddress(
-  address: string,
-  label: string
-): interfaces.AddLabelForAddressAction {
+export function addLabelForAddress({ address, label }): interfaces.AddLabelForAddressAction {
   return {
     type: TypeKeys.ADD_LABEL_FOR_ADDRESS,
     payload: {
