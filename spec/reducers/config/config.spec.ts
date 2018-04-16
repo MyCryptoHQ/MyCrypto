@@ -37,7 +37,7 @@ import { staticNodesExpectedState } from './nodes/staticNodes.spec';
 import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
 import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
 import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
-import { shepherd } from 'mycrypto-shepherd';
+import { shepherd } from 'myc-shepherd';
 import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 
 // init module
