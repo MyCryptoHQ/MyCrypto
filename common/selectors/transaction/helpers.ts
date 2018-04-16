@@ -28,11 +28,13 @@ export const isFullTx = (
 ) => {
   const { data, value, to, ...rest } = transactionFields;
   const partialParamsToCheck = { ...rest };
+
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
     (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
       isValid && !!v.value,
     true
   );
+
   if (isNetworkUnit(state, unit)) {
     // if theres data we can have no current value, and we dont have to check for a to address
     if (dataExists && validGasCost && !currentValue.value && currentValue.raw === '') {

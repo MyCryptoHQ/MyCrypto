@@ -12,6 +12,8 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'config/constants';
 import { dPathRegex } from 'config/dpaths';
+import { EAC_SCHEDULING_CONFIG } from './scheduling';
+import BN from 'bn.js';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -146,6 +148,23 @@ export const gasPriceValidator = (gasPrice: number | string): boolean => {
     gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
     gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND
   );
+};
+
+export const timeBountyValidator = (timeBounty: BN | number | string | null): boolean => {
+  if (!timeBounty) {
+    return false;
+  }
+
+  if (timeBounty instanceof BN) {
+    return (
+      timeBounty.gte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN) &&
+      timeBounty.lte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MAX)
+    );
+  }
+
+  const timeBountyFloat = typeof timeBounty === 'string' ? parseFloat(timeBounty) : timeBounty;
+
+  return validNumber(timeBountyFloat);
 };
 
 export const isValidByteCode = (byteCode: string) =>
