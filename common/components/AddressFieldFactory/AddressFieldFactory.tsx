@@ -1,9 +1,11 @@
 import { Query } from 'components/renderCbs';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressInputFactory } from './AddressInputFactory';
+import AddressFieldDropdown from './AddressFieldDropdown';
 import React from 'react';
 import { connect } from 'react-redux';
 import { ICurrentTo } from 'selectors/transaction';
+import './AddressFieldFactory.scss';
 
 interface DispatchProps {
   setCurrentTo: TSetCurrentTo;
@@ -35,11 +37,14 @@ class AddressFieldFactoryClass extends React.Component<Props> {
 
   public render() {
     return (
-      <AddressInputFactory
-        isSelfAddress={this.props.isSelfAddress}
-        onChange={this.setAddress}
-        withProps={this.props.withProps}
-      />
+      <div className="AddressField">
+        <AddressInputFactory
+          isSelfAddress={this.props.isSelfAddress}
+          onChange={this.setAddress}
+          withProps={this.props.withProps}
+        />
+        <AddressFieldDropdown onSelect={this.setAddress} />
+      </div>
     );
   }
 

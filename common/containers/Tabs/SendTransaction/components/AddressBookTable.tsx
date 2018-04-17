@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import KeyCodes from 'shared/keycodes';
+import { isValidETHAddress } from 'libs/validators';
 import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
 import { getAddressToLabels } from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
@@ -94,7 +95,7 @@ class AddressBookTable extends React.Component<Props> {
   private handleAddEntry = () => {
     const { temporaryLabel: label, temporaryAddress: address } = this.state;
 
-    if (label && address) {
+    if (label && isValidETHAddress(address)) {
       this.handleSave({ label, address });
       this.clearTemporaryFields();
     }
