@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
 import { getAddressToLabels } from 'selectors/addressBook';
-// import { Input } from 'components/ui';
+import { Input } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
 
@@ -23,6 +23,8 @@ interface State {
   temporaryAddress: string;
 }
 
+const ENTER_KEY: number = 13;
+
 class AddressBookTable extends React.Component<Props> {
   public state: State = {
     editingRow: null,
@@ -35,34 +37,36 @@ class AddressBookTable extends React.Component<Props> {
     const { temporaryLabel, temporaryAddress } = this.state;
 
     return (
-      <table className="AddressBookTable table">
+      <table className="AddressBookTable table" onKeyDown={this.handleKeyDown}>
         <thead>
           <tr>
-            <th scope="col">Label</th>
             <th scope="col">Address</th>
+            <th scope="col">Label</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <input
-                className="input-group-input"
-                placeholder="New label"
-                value={temporaryLabel}
-                onChange={this.setTemporaryLabel}
-              />
-            </td>
-            <td>
-              <input
-                className="input-group-input"
+              <Input
                 placeholder="New address"
                 value={temporaryAddress}
                 onChange={this.setTemporaryAddress}
               />
             </td>
             <td>
-              <button className="btn btn-sm btn-default" onClick={this.handleAddEntry}>
+              <Input
+                placeholder="New label"
+                value={temporaryLabel}
+                onChange={this.setTemporaryLabel}
+              />
+            </td>
+            <td>
+              <button
+                title="Add an entry"
+                className="btn btn-sm btn-default"
+                onClick={this.handleAddEntry}
+              >
                 <i className="fa fa-plus" />
               </button>
             </td>
@@ -91,6 +95,12 @@ class AddressBookTable extends React.Component<Props> {
     }
   };
 
+  private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
+    if (e.keyCode === ENTER_KEY) {
+      this.handleAddEntry();
+    }
+  };
+
   private setEditingRow = (editingRow: number | null) => this.setState({ editingRow });
 
   private removeEntry = (address: string) => {
@@ -107,11 +117,14 @@ class AddressBookTable extends React.Component<Props> {
       <AddressBookTableRow
         key={index}
         index={index}
-        label={addressToLabel.label}
         address={addressToLabel.address}
+        label={addressToLabel.label}
         isEditing={isEditingRow}
-        onSave={(labelToSave: string, addressToSave: string) =>
-          this.handleSave({ label: labelToSave, address: addressToSave })
+        onSave={(labelToSave: string) =>
+          this.handleSave({
+            label: labelToSave,
+            address: addressToLabel.address
+          })
         }
         onEditClick={() => this.setEditingRow(index)}
         onRemoveClick={() => this.removeEntry(addressToLabel.address)}
@@ -132,11 +145,9 @@ class AddressBookTable extends React.Component<Props> {
     });
 }
 
-function mapStateToProps(state) {
-  return {
-    rows: getAddressToLabels(state)
-  };
-}
+const mapStateToProps = state => ({
+  rows: getAddressToLabels(state)
+});
 
 const mapDispatchToProps = { addLabelForAddress, removeLabelForAddress };
 

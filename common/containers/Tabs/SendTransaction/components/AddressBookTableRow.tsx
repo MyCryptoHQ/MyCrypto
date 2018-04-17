@@ -8,45 +8,45 @@ interface Props {
   label: string;
   address: string;
   isEditing: boolean;
-  onSave(label: string, address: string): void;
+  onSave(thing: any): void;
   onEditClick(): void;
   onRemoveClick(): void;
 }
 
+interface State {
+  label: string;
+}
+
 class AddressBookTableRow extends React.Component<Props> {
-  public state = {
-    label: this.props.label,
-    address: this.props.address
+  public state: State = {
+    label: this.props.label
   };
 
   public handleClickOutside = () => this.props.isEditing && this.handleSave();
 
-  public componentWillReceiveProps(nextProps: Props) {
-    this.setState({
-      label: nextProps.label,
-      address: nextProps.address
-    });
-  }
-
   public render() {
-    const { isEditing, onEditClick, onRemoveClick } = this.props;
-    const { label, address } = this.state;
+    const { address, isEditing, onEditClick, onRemoveClick } = this.props;
+    const { label } = this.state;
     const labelCell = isEditing ? <Input value={label} onChange={this.setLabel} /> : label;
-    const addressCell = isEditing ? <Input value={address} onChange={this.setAddress} /> : address;
     const trOnClick = isEditing ? noop : onEditClick;
 
     return (
       <tr onClick={trOnClick}>
+        <td>{address}</td>
         <td>{labelCell}</td>
-        <td>{addressCell}</td>
         <td>
           <button
+            title={isEditing ? 'Save this entry' : 'Edit this entry'}
             className="btn btn-sm btn-default"
             onClick={isEditing ? this.handleSave : onEditClick}
           >
             {isEditing ? <i className="fa fa-save" /> : <i className="fa fa-pencil" />}
           </button>
-          <button className="btn btn-sm  btn-danger" onClick={onRemoveClick}>
+          <button
+            title="Remove this entry"
+            className="btn btn-sm  btn-danger"
+            onClick={onRemoveClick}
+          >
             <i className="fa fa-close" />
           </button>
         </td>
@@ -56,16 +56,13 @@ class AddressBookTableRow extends React.Component<Props> {
 
   private handleSave = () => {
     const { onSave } = this.props;
-    const { label, address } = this.state;
+    const { label } = this.state;
 
-    onSave(label, address);
+    onSave(label);
   };
 
   private setLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ label: e.target.value });
-
-  private setAddress = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ address: e.target.value });
 }
 
 export default onClickOutside(AddressBookTableRow);
