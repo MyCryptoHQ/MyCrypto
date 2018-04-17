@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import noop from 'lodash/noop';
 import { Input } from 'components/ui';
 import onClickOutside from 'react-onclickoutside';
@@ -22,27 +21,32 @@ class AddressBookTableRow extends React.Component<Props> {
 
   public handleClickOutside = () => this.props.isEditing && this.handleSave();
 
-  public render() {
-    const { index, isEditing, onEditClick, onRemoveClick } = this.props;
-    const { label, address } = this.state;
-    const className = classnames({
-      'AddressBookTable-row': true,
-      'AddressBookTable-row--active': isEditing
+  public componentWillReceiveProps(nextProps: Props) {
+    this.setState({
+      label: nextProps.label,
+      address: nextProps.address
     });
+  }
+
+  public render() {
+    const { isEditing, onEditClick, onRemoveClick } = this.props;
+    const { label, address } = this.state;
     const labelCell = isEditing ? <Input value={label} onChange={this.setLabel} /> : label;
     const addressCell = isEditing ? <Input value={address} onChange={this.setAddress} /> : address;
     const trOnClick = isEditing ? noop : onEditClick;
 
     return (
-      <tr className={className} onClick={trOnClick}>
-        <td>{index + 1}</td>
+      <tr onClick={trOnClick}>
         <td>{labelCell}</td>
         <td>{addressCell}</td>
         <td>
-          <button className="btn btn-default" onClick={isEditing ? this.handleSave : onEditClick}>
+          <button
+            className="btn btn-sm btn-default"
+            onClick={isEditing ? this.handleSave : onEditClick}
+          >
             {isEditing ? <i className="fa fa-save" /> : <i className="fa fa-pencil" />}
           </button>
-          <button className="btn btn-danger" onClick={onRemoveClick}>
+          <button className="btn btn-sm  btn-danger" onClick={onRemoveClick}>
             <i className="fa fa-close" />
           </button>
         </td>

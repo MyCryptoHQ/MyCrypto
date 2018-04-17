@@ -50,6 +50,8 @@ const configureStore = () => {
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
 
+  const localAddressBook = loadStatePropertyOrEmptyObject('addressBook');
+
   const persistedInitialState: Partial<AppState> = {
     transaction: {
       ...transactionInitialState,
@@ -71,6 +73,7 @@ const configureStore = () => {
       ...initialTransactionsState,
       ...savedTransactionsState
     },
+    addressBook: localAddressBook,
     ...rehydrateConfigAndCustomTokenState()
   };
 
@@ -109,6 +112,7 @@ const configureStore = () => {
         transactions: {
           recent: state.transactions.recent
         },
+        addressBook: state.addressBook,
         ...getConfigAndCustomTokensStateToSubscribe(state)
       });
     }, 50)

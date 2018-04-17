@@ -38,7 +38,6 @@ class AddressBookTable extends React.Component<Props> {
       <table className="AddressBookTable table">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Label</th>
             <th scope="col">Address</th>
             <th scope="col">Actions</th>
@@ -46,7 +45,6 @@ class AddressBookTable extends React.Component<Props> {
         </thead>
         <tbody>
           <tr>
-            <td />
             <td>
               <input
                 className="input-group-input"
