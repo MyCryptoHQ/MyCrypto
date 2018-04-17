@@ -1,15 +1,7 @@
 import React from 'react';
 import { UnitInput } from './components';
 import TabSection from 'containers/TabSection';
-import {
-  toWei,
-  UnitKey,
-  Units,
-  getDecimalFromEtherUnit,
-  fromWei,
-  Wei,
-  unitToUnit
-} from 'libs/units';
+import { UnitKey, unitToUnit } from 'libs/units';
 
 import './index.scss';
 

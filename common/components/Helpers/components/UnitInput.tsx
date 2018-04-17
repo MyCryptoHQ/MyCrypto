@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './UnitInput.scss';
 import { Input } from 'components/ui';
 
-// import { toWei, getDecimalFromEtherUnit, fromWei, Wei } from 'libs/units';
-
 interface Props {
   displayUnit: string;
   onUnitChange: ((unit: string, value: string) => void);
