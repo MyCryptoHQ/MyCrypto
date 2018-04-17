@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
 import { getAddressToLabels } from 'selectors/addressBook';
+// import { Input } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
 
@@ -18,18 +19,23 @@ interface Props {
 
 interface State {
   editingRow: number | null;
+  temporaryLabel: string;
+  temporaryAddress: string;
 }
 
 class AddressBookTable extends React.Component<Props> {
   public state: State = {
-    editingRow: null
+    editingRow: null,
+    temporaryLabel: '',
+    temporaryAddress: ''
   };
 
   public render() {
     const { rows } = this.props;
+    const { temporaryLabel, temporaryAddress } = this.state;
 
     return (
-      <table className="AddressBookTable table table-hover">
+      <table className="AddressBookTable table">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -38,7 +44,33 @@ class AddressBookTable extends React.Component<Props> {
             <th scope="col">Actions</th>
           </tr>
         </thead>
-        <tbody>{rows.map(this.makeLabelRow)}</tbody>
+        <tbody>
+          <tr>
+            <td />
+            <td>
+              <input
+                className="input-group-input"
+                placeholder="New label"
+                value={temporaryLabel}
+                onChange={this.setTemporaryLabel}
+              />
+            </td>
+            <td>
+              <input
+                className="input-group-input"
+                placeholder="New address"
+                value={temporaryAddress}
+                onChange={this.setTemporaryAddress}
+              />
+            </td>
+            <td>
+              <button className="btn btn-sm btn-default" onClick={this.handleAddEntry}>
+                <i className="fa fa-plus" />
+              </button>
+            </td>
+          </tr>
+          {rows.map(this.makeLabelRow)}
+        </tbody>
       </table>
     );
   }
@@ -50,6 +82,15 @@ class AddressBookTable extends React.Component<Props> {
     addLabelForAddress({ label, address });
 
     this.setEditingRow(null);
+  };
+
+  private handleAddEntry = () => {
+    const { temporaryLabel: label, temporaryAddress: address } = this.state;
+
+    if (label && address) {
+      this.handleSave({ label, address });
+      this.clearTemporaryFields();
+    }
   };
 
   private setEditingRow = (editingRow: number | null) => this.setState({ editingRow });
@@ -79,6 +120,18 @@ class AddressBookTable extends React.Component<Props> {
       />
     );
   };
+
+  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ temporaryLabel: e.target.value });
+
+  private setTemporaryAddress = (e: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ temporaryAddress: e.target.value });
+
+  private clearTemporaryFields = () =>
+    this.setState({
+      temporaryLabel: '',
+      temporaryAddress: ''
+    });
 }
 
 function mapStateToProps(state) {

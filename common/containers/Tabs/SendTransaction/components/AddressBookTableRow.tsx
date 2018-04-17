@@ -39,14 +39,12 @@ class AddressBookTableRow extends React.Component<Props> {
         <td>{labelCell}</td>
         <td>{addressCell}</td>
         <td>
-          <div className="btn-group">
-            <button className="btn btn-default" onClick={isEditing ? this.handleSave : onEditClick}>
-              {isEditing ? <i className="fa fa-save" /> : <i className="fa fa-pencil" />}
-            </button>
-            <button className="btn btn-danger" onClick={onRemoveClick}>
-              <i className="fa fa-close" />
-            </button>
-          </div>
+          <button className="btn btn-default" onClick={isEditing ? this.handleSave : onEditClick}>
+            {isEditing ? <i className="fa fa-save" /> : <i className="fa fa-pencil" />}
+          </button>
+          <button className="btn btn-danger" onClick={onRemoveClick}>
+            <i className="fa fa-close" />
+          </button>
         </td>
       </tr>
     );

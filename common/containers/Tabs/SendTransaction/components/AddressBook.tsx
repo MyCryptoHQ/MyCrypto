@@ -13,22 +13,6 @@ export default class AddressBook extends React.Component<Props> {
     return (
       <div className="AddressBook">
         <div className="Tab-content-pane">
-          <div className="row form-group">
-            <div className="col-sm-12">
-              <label>Label</label>
-              <Input />
-            </div>
-            <div className="col-sm-12">
-              <AddressField />
-            </div>
-            <div className="col-xs-12">
-              <button className="btn btn-primary pull-right">
-                <i className="fa fa-plus" /> Add Entry
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="Tab-content-pane">
           <AddressBookTable />
         </div>
       </div>
