@@ -4,7 +4,8 @@ import {
   ledgerReferralURL,
   trezorReferralURL,
   ethercardReferralURL,
-  keepkeyReferralURL
+  keepkeyReferralURL,
+  steelyReferralURL
 } from './data';
 
 interface Link {
@@ -76,6 +77,10 @@ export const affiliateLinks: Link[] = [
   {
     link: keepkeyReferralURL,
     text: translateRaw('KEEPKEY_REFERRAL')
+  },
+  {
+    link: steelyReferralURL,
+    text: translateRaw('STEELY_REFERRAL')
   },
   {
     link: ethercardReferralURL,

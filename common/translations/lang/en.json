@@ -395,6 +395,7 @@
     "LEDGER_LOCKED": "Your Ledger device is locked",
     "TREZOR_REFERAL": "Buy a TREZOR",
     "KEEPKEY_REFERRAL": "Buy a Keepkey",
+    "STEELY_REFERRAL": "Get a Steely",
     "ETHERCARD_REFERAL": "Get an ether.card",
     "DISCLAIMER": "Disclaimer",
     "INPUT_CONFIRM_PASSWORD_LABEL": "Confirm password",
