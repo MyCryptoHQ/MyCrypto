@@ -1,4 +1,6 @@
 import BN from 'bn.js';
+import { BigNumber } from 'bignumber.js';
+
 import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'libs/values';
 
@@ -112,8 +114,13 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
 
 const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
-const unitToUnit = (number, from, to) => {
-  const returnValue = new BigNumber(String(number))
+const getValueOfUnit = (unit: UnitKey) => {
+  const unitValue = Units[unit];
+  return new BigNumber(unitValue, 10);
+};
+
+const unitToUnit = (value: number, from: UnitKey, to: UnitKey) => {
+  const returnValue = new BigNumber(String(value))
     .times(getValueOfUnit(from))
     .div(getValueOfUnit(to));
   return returnValue.toString(10);

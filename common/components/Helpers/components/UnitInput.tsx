@@ -1,32 +1,24 @@
 import React, { Component } from 'react';
 import './UnitInput.scss';
 import { Input } from 'components/ui';
-// import { toWei, getDecimalFromEtherUnit, fromWei, Wei } from 'libs/units';
 
-interface State {
-  unit: any;
-}
+// import { toWei, getDecimalFromEtherUnit, fromWei, Wei } from 'libs/units';
 
 interface Props {
   displayUnit: string;
-  handleUnitChange: ((unit: string) => string);
+  onUnitChange: ((unit: string, value: string) => void);
+  unitValue: string;
 }
 
-class UnitInput extends Component<Props, State> {
-  public state = {
-    unit: {
-      ether: 1
-    }
-  };
-
+class UnitInput extends Component<Props> {
   public render() {
     const { displayUnit } = this.props;
 
     return (
-      <form className="ENSInput">
+      <form className="UnitInput">
         <div className="input-group-wrapper">
-          <label className="input-group input-group-inline ENSInput-name">
-            <Input value={0} type="text" onChange={this.onChange} />
+          <label className="input-group input-group-inline UnitInput-name">
+            <Input value={this.props.unitValue} type="number" onChange={this.onChange} />
             <span className="input-group-addon">{displayUnit}</span>
           </label>
         </div>
@@ -35,8 +27,11 @@ class UnitInput extends Component<Props, State> {
   }
 
   // add delay to namehash computation / getting the availability
-  private onChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.props.handleUnitChange(this.props.displayUnit);
+  private onChange = (event: any) => {
+    let nextValue;
+
+    nextValue = event.currentTarget.value === undefined ? '' : event.currentTarget.value;
+    this.props.onUnitChange(this.props.displayUnit, nextValue);
   };
 }
 
