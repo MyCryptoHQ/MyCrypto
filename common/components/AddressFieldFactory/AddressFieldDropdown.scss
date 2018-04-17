@@ -1,8 +1,35 @@
+@import 'common/sass/variables';
+@import 'common/sass/variables/colors';
+
 .AddressFieldDropdown {
   position: absolute;
   top: calc(100% - 16px);
-  width: 80%;
-  border: 1px solid;
+  border: 1px solid $gray-lighter;
+  border-top: none;
   background: white;
   z-index: 1;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  &-dropdown-item {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+      background: $gray-lightest;
+    }
+
+    strong {
+      max-width: 15rem;
+      overflow: hidden;
+    }
+
+    .Identicon {
+      margin: 0 1rem 0 2rem;
+    }
+  }
 }

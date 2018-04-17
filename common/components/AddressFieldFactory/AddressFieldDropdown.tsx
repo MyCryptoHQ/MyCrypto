@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { setCurrentTo } from 'actions/transaction';
 import { getLabels } from 'selectors/addressBook';
 import { getTransactionToRaw } from 'selectors/transactions';
+import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
 interface ReversedAddressToLabelDictionary {
@@ -25,7 +26,15 @@ class AddressFieldDropdown extends React.Component<Props> {
 
   private renderDropdownItems = () =>
     this.getFilteredLabels().map(label => (
-      <li onClick={() => this.props.setCurrentTo(this.props.labels[label])}>{label}</li>
+      <li
+        key={this.props.labels[label]}
+        className="AddressFieldDropdown-dropdown-item"
+        onClick={() => this.props.setCurrentTo(this.props.labels[label])}
+      >
+        <strong>{label}</strong>
+        <Identicon address={this.props.labels[label]} size="2rem" />
+        <Address address={this.props.labels[label]} />
+      </li>
     ));
 
   private getFilteredLabels = () =>
