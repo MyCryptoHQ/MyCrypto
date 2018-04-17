@@ -6,10 +6,7 @@ import {
 } from 'selectors/config';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
 import { StaticNetworkIds } from 'types/network';
-
 const getConfig = (state: AppState) => state.config;
-
-import { INITIAL_STATE as SELECTED_NODE_INITIAL_STATE } from 'reducers/config/nodes/selectedNode';
 import { shepherdProvider, INode, stripWeb3Network } from 'libs/nodes';
 
 export const getNodes = (state: AppState) => getConfig(state).nodes;
@@ -22,21 +19,6 @@ export const getCustomNodeFromId = (
   state: AppState,
   nodeId: string
 ): CustomNodeConfig | undefined => getCustomNodeConfigs(state)[nodeId];
-
-export const getStaticAltNodeIdToWeb3 = (state: AppState) => {
-  const { web3, ...configs } = getStaticNodeConfigs(state);
-  if (!web3) {
-    return SELECTED_NODE_INITIAL_STATE.nodeId;
-  }
-  const res = Object.entries(configs).find(
-    ([_, config]: [StaticNodeId, StaticNodeConfig]) =>
-      stripWeb3Network(web3.network) === config.network
-  );
-  if (res) {
-    return res[0];
-  }
-  return SELECTED_NODE_INITIAL_STATE.nodeId;
-};
 
 export const getStaticNodeFromId = (state: AppState, nodeId: StaticNodeId) =>
   getStaticNodeConfigs(state)[nodeId];
@@ -82,6 +64,10 @@ export function getSelectedNode(state: AppState) {
   return getNodes(state).selectedNode;
 }
 
+export function getPreviouslySelectedNode(state: AppState) {
+  return getSelectedNode(state).prevNode;
+}
+
 export function isNodeChanging(state: AppState): boolean {
   return getSelectedNode(state).pending;
 }
@@ -125,7 +111,7 @@ export function getStaticNodeOptions(state: AppState): NodeOption[] {
       isCustom: node.isCustom,
       value: nodeId,
       label: {
-        network: node.network,
+        network: stripWeb3Network(node.network),
         service: node.service
       },
       color: associatedNetwork.color,

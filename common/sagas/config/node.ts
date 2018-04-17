@@ -21,13 +21,15 @@ import {
 } from 'selectors/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
-  toggleOffline,
+  setOnline,
+  setOffline,
   changeNode,
   changeNodeIntent,
   setLatestBlock,
   AddCustomNodeAction,
   ChangeNodeForceAction,
-  ChangeNodeIntentAction
+  ChangeNodeIntentAction,
+  ChangeNodeIntentOneTimeAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { resetWallet } from 'actions/wallet';
@@ -41,57 +43,58 @@ import {
   shepherdProvider,
   stripWeb3Network,
   makeProviderConfig,
-  getShepherdNetwork
+  getShepherdNetwork,
+  getShepherdPending
 } from 'libs/nodes';
 
 export function* pollOfflineStatus(): SagaIterator {
   let hasCheckedOnline = false;
-  while (true) {
-    const isOffline: boolean = yield select(getOffline);
 
-    // If our offline state disagrees with the browser, run a check
-    // Don't check if the user is in another tab or window
-    const shouldPing = !hasCheckedOnline || navigator.onLine === isOffline;
-    if (shouldPing && !document.hidden) {
-      const pingSucceeded = yield call(getShepherdOffline);
-      if (pingSucceeded && isOffline) {
-        // If we were able to ping but redux says we're offline, mark online
-        yield put(
-          showNotification('success', 'Your connection to the network has been restored!', 3000)
-        );
-        yield put(toggleOffline());
-      } else if (!pingSucceeded && !isOffline) {
-        // If we were unable to ping but redux says we're online, mark offline
-        // If they had been online, show an error.
-        // If they hadn't been online, just inform them with a warning.
-        if (hasCheckedOnline) {
-          yield put(
-            showNotification(
-              'danger',
-              `You’ve lost your connection to the network, check your internet
-              connection or try changing networks from the dropdown at the
-              top right of the page.`,
-              Infinity
-            )
-          );
-        } else {
-          yield put(
-            showNotification(
-              'info',
-              'You are currently offline. Some features will be unavailable.',
-              5000
-            )
-          );
-        }
-        yield put(toggleOffline());
-      } else {
-        // If neither case was true, try again in 5s
-        yield call(delay, 5000);
-      }
-      hasCheckedOnline = true;
-    } else {
-      yield call(delay, 1000);
+  const restoreNotif = showNotification(
+    'success',
+    'Your connection to the network has been restored!',
+    3000
+  );
+  const lostNetworkNotif = showNotification(
+    'danger',
+    `You’ve lost your connection to the network, check your internet
+      connection or try changing networks from the dropdown at the
+      top right of the page.`,
+    Infinity
+  );
+  const offlineNotif = showNotification(
+    'info',
+    'You are currently offline. Some features will be unavailable.',
+    5000
+  );
+
+  while (true) {
+    yield call(delay, 2500);
+
+    const pending: ReturnType<typeof getShepherdPending> = yield call(getShepherdPending);
+    if (pending) {
+      continue;
     }
+
+    const isOffline: boolean = yield select(getOffline);
+    const balancerOffline = yield call(getShepherdOffline);
+
+    if (!balancerOffline && isOffline) {
+      // If we were able to ping but redux says we're offline, mark online
+      yield put(restoreNotif);
+      yield put(setOnline());
+    } else if (balancerOffline && !isOffline) {
+      // If we were unable to ping but redux says we're online, mark offline
+      // If they had been online, show an error.
+      // If they hadn't been online, just inform them with a warning.
+      yield put(setOffline());
+      if (hasCheckedOnline) {
+        yield put(lostNetworkNotif);
+      } else {
+        yield put(offlineNotif);
+      }
+    }
+    hasCheckedOnline = true;
   }
 }
 
@@ -106,6 +109,15 @@ export function* handlePollOfflineStatus(): SagaIterator {
 // data to reload. Also the use of timeout to avoid using additional actions for now.
 export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 1150);
+}
+
+export function* handleNodeChangeIntentOneTime(): SagaIterator {
+  const action: ChangeNodeIntentOneTimeAction = yield take(
+    TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME
+  );
+  // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
+  yield call(delay, 100);
+  yield put(changeNodeIntent(action.payload));
 }
 
 export function* handleNodeChangeIntent({
@@ -215,6 +227,7 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
 }
 
 export const node = [
+  fork(handleNodeChangeIntentOneTime),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),

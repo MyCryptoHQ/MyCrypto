@@ -1,10 +1,15 @@
 import * as interfaces from './actionTypes';
 import { TypeKeys } from './constants';
 
-export type TToggleOffline = typeof toggleOffline;
-export function toggleOffline(): interfaces.ToggleOfflineAction {
+export function setOnline(): interfaces.SetOnlineAction {
   return {
-    type: TypeKeys.CONFIG_TOGGLE_OFFLINE
+    type: TypeKeys.CONFIG_SET_ONLINE
+  };
+}
+
+export function setOffline(): interfaces.SetOfflineAction {
+  return {
+    type: TypeKeys.CONFIG_SET_OFFLINE
   };
 }
 
@@ -44,6 +49,14 @@ export type TChangeNodeIntent = typeof changeNodeIntent;
 export function changeNodeIntent(payload: string): interfaces.ChangeNodeIntentAction {
   return {
     type: TypeKeys.CONFIG_NODE_CHANGE_INTENT,
+    payload
+  };
+}
+
+export type TChangeNodeIntentOneTime = typeof changeNodeIntentOneTime;
+export function changeNodeIntentOneTime(payload: string): interfaces.ChangeNodeIntentOneTimeAction {
+  return {
+    type: TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME,
     payload
   };
 }

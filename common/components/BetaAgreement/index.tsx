@@ -25,12 +25,13 @@ export default class BetaAgreement extends React.PureComponent<{}, State> {
     return (
       <div className={`BetaAgreement ${isFading}`}>
         <div className="BetaAgreement-content">
-          <h2>Welcome to the New MyCrypto Beta!</h2>
+          <h2>Welcome to the New MyCrypto Beta Release Candidate!</h2>
           <p>
-            You are about to use a version of MyCrypto that hasn't been released yet. While we are
-            confident that it is close to being production ready, you may want to use the current
-            production site for larger or more time-sensitive transactions.
+            You are about to use the new MyCrypto Beta Release Candidate. Although this is a release
+            candidate for production, we encourage caution while using this unreleased version of
+            MyCrypto.
           </p>
+          <p>We hope to move this version of MyCrypto into production in the near future!</p>
           <p>
             Feedback and bug reports are greatly appreciated. You can file issues on our{' '}
             <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">
@@ -46,7 +47,7 @@ export default class BetaAgreement extends React.PureComponent<{}, State> {
               className="BetaAgreement-content-buttons-btn is-continue"
               onClick={this.doContinue}
             >
-              Yes, continue to the Beta
+              Yes, continue to the Beta RC
             </button>
             <button className="BetaAgreement-content-buttons-btn is-reject" onClick={this.reject}>
               No, take me to the production site

@@ -93,7 +93,6 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          walletType={'TREZOR'}
         />
       </div>
     );

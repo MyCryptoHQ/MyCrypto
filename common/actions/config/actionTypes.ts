@@ -2,9 +2,12 @@ import { TypeKeys } from './constants';
 import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
 import { CustomNetworkConfig } from 'types/network';
 
-/*** Toggle Offline ***/
-export interface ToggleOfflineAction {
-  type: TypeKeys.CONFIG_TOGGLE_OFFLINE;
+export interface SetOnlineAction {
+  type: TypeKeys.CONFIG_SET_ONLINE;
+}
+
+export interface SetOfflineAction {
+  type: TypeKeys.CONFIG_SET_OFFLINE;
 }
 
 export interface ToggleAutoGasLimitAction {
@@ -36,6 +39,13 @@ export interface ChangeNodeIntentAction {
   type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
   payload: string;
 }
+
+/*** Change Node Onetime ***/
+export interface ChangeNodeIntentOneTimeAction {
+  type: TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME;
+  payload: string;
+}
+
 /*** Force Change Node ***/
 export interface ChangeNodeForceAction {
   type: TypeKeys.CONFIG_NODE_CHANGE_FORCE;
@@ -95,7 +105,8 @@ export type NodeAction =
 
 export type MetaAction =
   | ChangeLanguageAction
-  | ToggleOfflineAction
+  | SetOnlineAction
+  | SetOfflineAction
   | ToggleAutoGasLimitAction
   | PollOfflineStatus
   | SetLatestBlockAction;

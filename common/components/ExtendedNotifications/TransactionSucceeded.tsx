@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import translate from 'translations';
 import { NewTabLink } from 'components/ui';
 import { BlockExplorerConfig } from 'types/network';
+import { getTXDetailsCheckURL } from 'libs/scheduling';
 import { etherChainExplorerInst } from 'config/data';
 
 export interface TransactionSucceededProps {
   txHash: string;
   blockExplorer?: BlockExplorerConfig;
+  scheduling?: boolean;
 }
 
-const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededProps) => {
+const TransactionSucceeded = ({ txHash, blockExplorer, scheduling }: TransactionSucceededProps) => {
   let verifyBtn: React.ReactElement<string> | undefined;
   let altVerifyBtn: React.ReactElement<string> | undefined;
   if (blockExplorer) {
@@ -30,11 +32,21 @@ const TransactionSucceeded = ({ txHash, blockExplorer }: TransactionSucceededPro
     );
   }
 
+  let scheduleDetailsBtn: React.ReactElement<string> | undefined;
+  if (scheduling) {
+    scheduleDetailsBtn = (
+      <NewTabLink className="btn btn-xs" href={getTXDetailsCheckURL(txHash)}>
+        {translate('SCHEDULE_CHECK')}
+      </NewTabLink>
+    );
+  }
+
   return (
     <div>
       <p>
         {translate('SUCCESS_3')} {txHash}
       </p>
+      {scheduleDetailsBtn}
       {verifyBtn}
       {altVerifyBtn}
       <Link to={`/tx-status?txHash=${txHash}`} className="btn btn-xs">

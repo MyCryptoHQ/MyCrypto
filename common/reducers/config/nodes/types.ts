@@ -8,11 +8,13 @@ export interface CustomNodesState {
 
 interface NodeLoaded {
   pending: false;
+  prevNode: string;
   nodeId: string;
 }
 
 interface NodeChangePending {
   pending: true;
+  prevNode: string;
   nodeId: string;
 }
 

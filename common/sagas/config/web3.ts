@@ -11,7 +11,7 @@ import {
 } from 'actions/config';
 import {
   getNodeId,
-  getStaticAltNodeIdToWeb3,
+  getPreviouslySelectedNode,
   getNetworkNameByChainId,
   getWeb3Node
 } from 'selectors/config';
@@ -106,10 +106,10 @@ export function* unsetWeb3NodeOnWalletEvent(action: SetWalletAction): SagaIterat
     return;
   }
 
-  const altNodeId: string = yield select(getStaticAltNodeIdToWeb3);
+  const prevNodeId: string = yield select(getPreviouslySelectedNode);
 
   // forcefully switch back to a node with the same network as MetaMask/Mist
-  yield put(changeNodeForce(altNodeId));
+  yield put(changeNodeForce(prevNodeId));
 }
 
 export function* unsetWeb3Node(): SagaIterator {
@@ -119,10 +119,10 @@ export function* unsetWeb3Node(): SagaIterator {
     return;
   }
 
-  const altNodeId: string = yield select(getStaticAltNodeIdToWeb3);
+  const prevNodeId: string = yield select(getPreviouslySelectedNode);
 
   // forcefully switch back to a node with the same network as MetaMask/Mist
-  yield put(changeNodeForce(altNodeId));
+  yield put(changeNodeForce(prevNodeId));
 }
 
 export const web3 = [

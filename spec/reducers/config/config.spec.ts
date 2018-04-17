@@ -3,17 +3,22 @@ import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, select, apply } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import {
-  toggleOffline,
+  setOffline,
+  setOnline,
   changeNode,
   changeNodeIntent,
   changeNodeForce,
-  setLatestBlock
+  setLatestBlock,
+  TypeKeys,
+  ChangeNodeIntentOneTimeAction,
+  changeNodeIntentOneTime
 } from 'actions/config';
 import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
   pollOfflineStatus,
-  handleNewNetwork
+  handleNewNetwork,
+  handleNodeChangeIntentOneTime
 } from 'sagas/config/node';
 import {
   getNodeId,
@@ -22,96 +27,78 @@ import {
   isStaticNodeId,
   getStaticNodeFromId,
   getCustomNodeFromId,
-  getStaticAltNodeIdToWeb3
+  getPreviouslySelectedNode
 } from 'selectors/config';
 import { Web3Wallet } from 'libs/wallet';
 import { showNotification } from 'actions/notifications';
 import { translateRaw } from 'translations';
 import { StaticNodeConfig } from 'types/node';
 import { staticNodesExpectedState } from './nodes/staticNodes.spec';
-import { metaExpectedState } from './meta/meta.spec';
 import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
 import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
 import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
 import { shepherd } from 'mycrypto-shepherd';
+import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 
 // init module
 configuredStore.getState();
 
 describe('pollOfflineStatus*', () => {
-  const { togglingToOffline, togglingToOnline } = metaExpectedState;
-  const nav = navigator as any;
-  const doc = document as any;
-  const data = {} as any;
-  data.gen = cloneableGenerator(pollOfflineStatus)();
-  const node = {
-    lib: {
-      ping: jest.fn()
-    }
-  };
-  const raceSuccess = {
-    pingSucceeded: true,
-    timeout: false
-  };
+  const restoreNotif = 'Your connection to the network has been restored!';
 
-  let originalHidden: any;
-  let originalOnLine: any;
-  let originalRandom: any;
+  const lostNetworkNotif = `You’ve lost your connection to the network, check your internet
+      connection or try changing networks from the dropdown at the
+      top right of the page.`;
 
-  beforeAll(() => {
-    // backup global config
-    originalHidden = document.hidden;
-    originalOnLine = navigator.onLine;
-    originalRandom = Math.random;
+  const offlineNotif = 'You are currently offline. Some features will be unavailable.';
 
-    // mock config
-    Object.defineProperty(document, 'hidden', { value: false, writable: true });
-    Object.defineProperty(navigator, 'onLine', { value: true, writable: true });
-    Math.random = () => 0.001;
+  const offlineOnFirstTimeCase = pollOfflineStatus();
+  it('should delay by 2.5 seconds', () => {
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
   });
 
-  afterAll(() => {
-    // restore global config
-    Object.defineProperty(document, 'hidden', {
-      value: originalHidden,
-      writable: false
-    });
-    Object.defineProperty(navigator, 'onLine', {
-      value: originalOnLine,
-      writable: false
-    });
-    Math.random = originalRandom;
+  it('should skip if a node change is pending', () => {
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
+    expect(offlineOnFirstTimeCase.next(true).value).toEqual(call(delay, 2500));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
   });
 
-  it('should select getOffline', () => {
-    expect(data.gen.next(node).value).toEqual(select(getOffline));
+  it('should select offline', () => {
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
   });
 
-  it('should call delay if document is hidden', () => {
-    data.hiddenDoc = data.gen.clone();
-    doc.hidden = true;
-    data.isOfflineClone = data.gen.clone();
-    data.shouldDelayClone = data.gen.clone();
-    expect(data.hiddenDoc.next(togglingToOnline.offline).value).toEqual(call(delay, 1000));
-
-    doc.hidden = false;
+  it('should select shepherd"s offline', () => {
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(call(getShepherdOffline));
   });
 
-  it('should toggle offline and show notification if navigator disagrees with isOffline and ping succeeds', () => {
-    data.gen.next(raceSuccess);
-
-    expect(data.gen.next(raceSuccess).value).toEqual(
-      put(showNotification('success', 'Your connection to the network has been restored!', 3000))
+  // .PUT.action.payload.msg is used because the action creator uses an random ID, cant to a showNotif comparision
+  it('should put a different notif if online for the first time ', () => {
+    expect(offlineOnFirstTimeCase.next(true).value).toEqual(put(setOffline()));
+    expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
+      offlineNotif
     );
-    expect(data.gen.next().value).toEqual(put(toggleOffline()));
   });
 
-  it('should toggle offline and show notification if navigator agrees with isOffline and ping fails', () => {
-    nav.onLine = togglingToOffline.offline;
+  it('should loop around then go back online, putting a restore msg', () => {
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next(true).value).toEqual(call(getShepherdOffline));
+    expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
+      restoreNotif
+    );
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(put(setOnline()));
+  });
 
-    data.isOfflineClone.next(false);
-    data.isOfflineClone.next(false);
-    expect(data.isOfflineClone.next().value).toEqual(put(toggleOffline()));
+  it('should put a generic lost connection notif on every time afterwards', () => {
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
+    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
+    expect(offlineOnFirstTimeCase.next(false).value).toEqual(call(getShepherdOffline));
+    expect(offlineOnFirstTimeCase.next(true).value).toEqual(put(setOffline()));
+    expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
+      lostNetworkNotif
+    );
   });
 });
 
@@ -268,8 +255,25 @@ describe('handleNodeChangeIntent*', () => {
   });
 });
 
+describe('handleNodeChangeIntentOneTime', () => {
+  const saga = handleNodeChangeIntentOneTime();
+  const action: ChangeNodeIntentOneTimeAction = changeNodeIntentOneTime('eth_auto');
+  it('should take a one time action based on the url containing a valid network to switch to', () => {
+    expect(saga.next().value).toEqual(take(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME));
+  });
+  it(`should delay for 10 ms to allow shepherdProvider async init to complete`, () => {
+    expect(saga.next(action).value).toEqual(call(delay, 100));
+  });
+  it('should dispatch the change node intent', () => {
+    expect(saga.next().value).toEqual(put(changeNodeIntent(action.payload)));
+  });
+  it('should be done', () => {
+    expect(saga.next().done).toEqual(true);
+  });
+});
+
 describe('unsetWeb3Node*', () => {
-  const alternativeNodeId = 'eth_mycrypto';
+  const previousNodeId = 'eth_mycrypto';
   const mockNodeId = 'web3';
   const gen = unsetWeb3Node();
 
@@ -279,11 +283,11 @@ describe('unsetWeb3Node*', () => {
 
   it('should select an alternative node to web3', () => {
     // get a 'no visual difference' error here
-    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
+    expect(gen.next(mockNodeId).value).toEqual(select(getPreviouslySelectedNode));
   });
 
   it('should put changeNodeForce', () => {
-    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeForce(alternativeNodeId)));
+    expect(gen.next(previousNodeId).value).toEqual(put(changeNodeForce(previousNodeId)));
   });
 
   it('should be done', () => {
@@ -301,7 +305,7 @@ describe('unsetWeb3Node*', () => {
 describe('unsetWeb3NodeOnWalletEvent*', () => {
   const fakeAction: any = {};
   const mockNodeId = 'web3';
-  const alternativeNodeId = 'eth_mycrypto';
+  const previousNodeId = 'eth_mycrypto';
   const gen = unsetWeb3NodeOnWalletEvent(fakeAction);
 
   it('should select getNode', () => {
@@ -309,11 +313,11 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
   });
 
   it('should select an alternative node to web3', () => {
-    expect(gen.next(mockNodeId).value).toEqual(select(getStaticAltNodeIdToWeb3));
+    expect(gen.next(mockNodeId).value).toEqual(select(getPreviouslySelectedNode));
   });
 
   it('should put changeNodeForce', () => {
-    expect(gen.next(alternativeNodeId).value).toEqual(put(changeNodeForce(alternativeNodeId)));
+    expect(gen.next(previousNodeId).value).toEqual(put(changeNodeForce(previousNodeId)));
   });
 
   it('should be done', () => {

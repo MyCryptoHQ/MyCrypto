@@ -16,21 +16,14 @@ $number-margin: 6px;
 .MnemonicWord {
   display: flex;
   width: $width;
-  margin-bottom: $space-md;
+  margin-bottom: $space-xs;
 
   &:last-child {
     margin-bottom: 0;
   }
 
-  &-number {
-    display: inline-block;
-    width: $number-width;
-    margin-right: $number-margin;
-    text-align: right;
-    font-size: 26px;
-    font-weight: 100;
-    line-height: 40px;
-    vertical-align: bottom;
+  & .input-group-addon {
+    margin-bottom: $space-md;
   }
 
   &-word {
@@ -39,14 +32,31 @@ $number-margin: 6px;
     &-input {
       animation: word-fade 400ms ease 1;
       animation-fill-mode: both;
+      transition: border 0.2s ease-in;
+      margin-bottom: 0;
     }
+  }
 
-    &-toggle {
-      color: $gray-light;
+  &-button {
+    position: relative;
+    width: 300px;
+    margin-bottom: $space-sm;
 
-      &:hover {
-        color: $gray;
-      }
+    &-index {
+      position: absolute;
+      top: -4px;
+      left: -7px;
+      z-index: 1;
+      color: #fff;
+      width: 26px;
+      height: 26px;
+      border-radius: 100%;
+      background: linear-gradient(
+        to top,
+        lighten($brand-success, 10%),
+        lighten($brand-success, 5%)
+      );
+      line-height: 24px;
     }
   }
 

@@ -9,18 +9,21 @@ describe('Tokens JSON', () => {
       const tokens = (TOKENS as any)[network];
       const addressCollisionMap: any = {};
       const symbolCollisionMap: any = {};
+      const validationErrors: string[] = [];
 
       tokens.forEach((token: any) => {
         if (!isValidETHAddress(token.address)) {
-          throw Error(`Token ${token.symbol} has invalid contract address '${token.address}'`);
+          validationErrors.push(
+            `Token ${token.symbol} has invalid contract address '${token.address}'`
+          );
         }
         if (addressCollisionMap[token.address]) {
-          throw Error(
+          validationErrors.push(
             `Token ${token.symbol} has the same address as ${addressCollisionMap[token.address]}`
           );
         }
         if (symbolCollisionMap[token.symbol]) {
-          throw Error(
+          validationErrors.push(
             `Symbol ${token.symbol} is repeated between tokens at ${token.address} and ${
               symbolCollisionMap[token.symbol]
             }`
@@ -32,11 +35,14 @@ describe('Tokens JSON', () => {
           token.decimal === null ||
           token.decimal === undefined
         ) {
-          throw Error(`Token ${token.symbol} has invalid decimal '${token.decimal}'`);
+          validationErrors.push(`Token ${token.symbol} has invalid decimal '${token.decimal}'`);
         }
         addressCollisionMap[token.address] = token.symbol;
         symbolCollisionMap[token.symbol] = token.address;
       });
+      if (validationErrors.length > 0) {
+        throw Error(validationErrors.join('\n'));
+      }
     });
   });
 });

@@ -5,13 +5,14 @@ import * as walletActions from 'actions/wallet';
 configuredStore.getState();
 
 describe('wallet reducer', () => {
-  it('should handle WALLET_SET', () => {
+  describe('WALLET_SET', () => {
+    const address = '0x123';
     const doSomething = new Promise<string>(resolve => {
       setTimeout(() => resolve('Success'), 10);
     });
 
     const walletInstance = {
-      getAddressString: () => doSomething,
+      getAddressString: () => address,
       signRawTransaction: () => doSomething,
       signMessage: () => doSomething
     };
@@ -19,7 +20,8 @@ describe('wallet reducer', () => {
     //@ts-ignore
     expect(wallet(undefined, walletActions.setWallet(walletInstance))).toEqual({
       ...INITIAL_STATE,
-      inst: walletInstance
+      inst: walletInstance,
+      recentAddresses: [address]
     });
   });
 

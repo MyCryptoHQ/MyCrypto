@@ -26,6 +26,8 @@ $speed: 500ms;
   position: relative;
 
   &-wallets {
+    margin: 0 -$space-md;
+
     &-title {
       @include decrypt-title;
     }

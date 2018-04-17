@@ -1,0 +1,19 @@
+pipeline {
+    agent {
+        node {
+            label 'master'
+        }
+    }
+    stages {
+        stage('Install') { 
+            steps {
+                sh 'yarn'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build:electron'
+            }
+        }
+    }
+}
