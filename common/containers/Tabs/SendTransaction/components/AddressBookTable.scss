@@ -4,4 +4,14 @@
   input {
     margin-bottom: 0;
   }
+
+  &-cell {
+    display: flex;
+    align-items: center;
+    height: 4rem;
+
+    .Identicon {
+      margin-left: 0.66rem;
+    }
+  }
 }

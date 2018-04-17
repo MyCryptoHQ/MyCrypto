@@ -1,6 +1,7 @@
 import React from 'react';
+import KeyCodes from 'shared/keycodes';
 import noop from 'lodash/noop';
-import { Input } from 'components/ui';
+import { Input, Identicon } from 'components/ui';
 import onClickOutside from 'react-onclickoutside';
 
 interface Props {
@@ -24,31 +25,38 @@ class AddressBookTableRow extends React.Component<Props> {
 
   public handleClickOutside = () => this.props.isEditing && this.handleSave();
 
+  public componentWillReceiveProps(nextProps: Props) {
+    this.setState({ label: nextProps.label });
+  }
+
   public render() {
     const { address, isEditing, onEditClick, onRemoveClick } = this.props;
     const { label } = this.state;
-    const labelCell = isEditing ? <Input value={label} onChange={this.setLabel} /> : label;
     const trOnClick = isEditing ? noop : onEditClick;
 
     return (
       <tr onClick={trOnClick}>
-        <td>{address}</td>
-        <td>{labelCell}</td>
         <td>
-          <button
-            title={isEditing ? 'Save this entry' : 'Edit this entry'}
-            className="btn btn-sm btn-default"
-            onClick={isEditing ? this.handleSave : onEditClick}
-          >
-            {isEditing ? <i className="fa fa-save" /> : <i className="fa fa-pencil" />}
-          </button>
-          <button
-            title="Remove this entry"
-            className="btn btn-sm  btn-danger"
-            onClick={onRemoveClick}
-          >
-            <i className="fa fa-close" />
-          </button>
+          <div className="AddressBookTable-cell">
+            <Input value={address} readOnly={true} />
+            <Identicon address={address} />
+          </div>
+        </td>
+        <td>
+          <div className="AddressBookTable-cell">
+            <Input value={label} onChange={this.setLabel} onKeyDown={this.handleKeyDown} />
+          </div>
+        </td>
+        <td>
+          <div className="AddressBookTable-cell">
+            <button
+              title="Remove this entry"
+              className="btn btn-sm  btn-danger"
+              onClick={onRemoveClick}
+            >
+              <i className="fa fa-close" />
+            </button>
+          </div>
         </td>
       </tr>
     );
@@ -59,6 +67,12 @@ class AddressBookTableRow extends React.Component<Props> {
     const { label } = this.state;
 
     onSave(label);
+  };
+
+  private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
+    if (e.keyCode === KeyCodes.ENTER) {
+      this.handleSave();
+    }
   };
 
   private setLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
