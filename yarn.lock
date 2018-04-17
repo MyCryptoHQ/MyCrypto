@@ -186,13 +186,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@16.3.4":
-  version "16.3.4"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.4.tgz#9bbb301cd38270ae200bed329a342bd2f140c3ea"
-  dependencies:
-    csstype "^2.0.0"
-
-"@types/react@16.3.11":
+"@types/react@*", "@types/react@16.3.11":
   version "16.3.11"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.11.tgz#345a17f1c96420f10b9f0dc696c31091ff9d66ea"
   dependencies:
@@ -2848,7 +2842,7 @@ cssom@0.3.x, "cssom@>= 0.3.2 < 0.4.0":
   dependencies:
     cssom "0.3.x"
 
-csstype@^2.0.0, csstype@^2.2.0:
+csstype@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.2.0.tgz#1656ef97553ac53b77090844a2531c6660ebd902"
 
@@ -6573,9 +6567,9 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-"jsqr@git+https://github.com/cozmo/jsQR.git":
+"jsqr@https://github.com/cozmo/jsQR.git":
   version "1.0.4"
-  resolved "git+https://github.com/cozmo/jsQR.git#d37c764bf43a41ed7c6aa1c17cbdf21b7f9cb69e"
+  resolved "https://github.com/cozmo/jsQR.git#d37c764bf43a41ed7c6aa1c17cbdf21b7f9cb69e"
 
 jssha@2.3.1:
   version "2.3.1"
