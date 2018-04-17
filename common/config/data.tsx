@@ -9,7 +9,7 @@ export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
-export const VERSION = `${packageJson.version} (BETA)`;
+export const VERSION = `${packageJson.version} (Release Candidate)`;
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
@@ -18,7 +18,7 @@ export const N_FACTOR = 8192;
 export const ANNOUNCEMENT_TYPE = '';
 export const ANNOUNCEMENT_MESSAGE = (
   <React.Fragment>
-    This is a Beta version of MyCrypto. Please submit any bug reports to our{' '}
+    This is a Beta Release Candidate of the new MyCrypto. Please submit any bug reports to our{' '}
     <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink> and use{' '}
     <NewTabLink href="https://hackerone.com/mycrypto">HackerOne</NewTabLink> for critical
     vulnerabilities. Join the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
@@ -65,6 +65,8 @@ export const bityReferralURL = 'https://bity.com/af/jshkb37v';
 export const shapeshiftReferralURL = 'https://shapeshift.io';
 export const ethercardReferralURL =
   'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
+export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';
+export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
 
 export enum SecureWalletName {
   WEB3 = 'web3',

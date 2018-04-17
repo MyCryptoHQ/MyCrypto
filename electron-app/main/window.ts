@@ -18,12 +18,10 @@ export default function getWindow() {
     title: APP_TITLE,
     backgroundColor: '#fbfbfb',
     width: 1220,
-    height: 800,
-    minWidth: 320,
+    height: 680,
+    minWidth: 480,
     minHeight: 400,
-    // TODO - Implement styles for custom title bar in components/ui/TitleBar.scss
-    // frame: false,
-    // titleBarStyle: 'hidden',
+    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
@@ -31,8 +29,7 @@ export default function getWindow() {
     }
   });
 
-  const port = process.env.HTTPS ? '3443' : '3000';
-  const appUrl = isDevelopment ? `http://localhost:${port}` : `file://${__dirname}/index.html`;
+  const appUrl = isDevelopment ? `http://localhost:3000` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {
