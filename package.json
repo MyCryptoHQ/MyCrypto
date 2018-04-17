@@ -120,7 +120,7 @@
     "thread-loader": "1.1.5",
     "ts-jest": "22.4.3",
     "ts-loader": "4.1.0",
-    "ts-node": "5.0.1",
+    "ts-node": "6.0.0",
     "tslint": "5.9.1",
     "tslint-config-prettier": "1.10.0",
     "tslint-microsoft-contrib": "5.0.3",
