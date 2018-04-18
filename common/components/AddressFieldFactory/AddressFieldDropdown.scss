@@ -31,5 +31,9 @@
     .Identicon {
       margin: 0 1rem 0 2rem;
     }
+
+    &--active {
+      background: $gray-lighter;
+    }
   }
 }
