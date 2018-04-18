@@ -117,7 +117,7 @@
     "redux-test-utils": "0.2.2",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.7",
-    "style-loader": "0.20.3",
+    "style-loader": "0.21.0",
     "thread-loader": "1.1.5",
     "ts-jest": "22.4.3",
     "ts-loader": "4.1.0",
