@@ -14,7 +14,7 @@ interface Props {
 export const AddressField: React.SFC<Props> = ({ isReadOnly, isSelfAddress, isCheckSummed }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
-    withProps={({ currentTo, isValid, onChange, readOnly }) => (
+    withProps={({ currentTo, isValid, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
@@ -28,6 +28,8 @@ export const AddressField: React.SFC<Props> = ({ isReadOnly, isSelfAddress, isCh
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
             onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         </label>
       </div>

@@ -21,6 +21,8 @@ interface StateProps {
 interface OwnProps {
   isSelfAddress?: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
+  onFocus(ev: React.FormEvent<HTMLInputElement>): void;
+  onBlur(ev: React.FormEvent<HTMLInputElement>): void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -49,7 +51,8 @@ class AddressInputFactoryClass extends Component<Props> {
     const {
       currentTo,
       onChange,
-      onKeyDown,
+      onFocus,
+      onBlur,
       isValid,
       withProps,
       isSelfAddress,
@@ -67,7 +70,8 @@ class AddressInputFactoryClass extends Component<Props> {
                 currentTo,
                 isValid,
                 onChange,
-                onKeyDown,
+                onFocus,
+                onBlur,
                 readOnly: !!(readOnly || this.props.isResolving || isSelfAddress)
               })
             }

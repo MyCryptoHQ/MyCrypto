@@ -13,11 +13,20 @@ interface ReversedAddressToLabelDictionary {
 interface Props {
   labels: ReversedAddressToLabelDictionary;
   currentTo: string;
+  isFocused: boolean;
   setCurrentTo(to: string): void;
   onSelect(e: React.ChangeEvent<HTMLInputElement>): void;
 }
 
 class AddressFieldDropdown extends React.Component<Props> {
+  public componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
   public render() {
     return this.getIsVisible() ? (
       <ul className="AddressFieldDropdown">{this.renderDropdownItems()}</ul>
@@ -46,6 +55,14 @@ class AddressFieldDropdown extends React.Component<Props> {
 
   private getIsVisible = () =>
     this.props.currentTo.length > 1 && this.getFilteredLabels().length > 0;
+
+  private handleKeyDown = (e: KeyboardEvent) => {
+    const { isFocused } = this.props;
+
+    if (isFocused) {
+      alert(e.keyCode);
+    }
+  };
 }
 
 export default connect(
