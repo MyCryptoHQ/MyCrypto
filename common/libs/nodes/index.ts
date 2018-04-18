@@ -82,7 +82,8 @@ Object.entries(NODE_CONFIGS).forEach(([network, nodes]) => {
         supportedMethods: {
           sendRawTx: false,
           sendTransaction: false,
-          signMessage: false
+          signMessage: false,
+          getNetVersion: false
         }
       })
     : null;
