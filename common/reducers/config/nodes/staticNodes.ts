@@ -1,12 +1,12 @@
 import { TypeKeys, NodeAction } from 'actions/config';
-import { NODE_CONFIGS, makeNodeName } from 'libs/nodes';
+import { NODE_CONFIGS, makeAutoNodeName } from 'libs/nodes';
 import { StaticNodesState } from './types';
 import { RawNodeConfig } from 'types/node';
 import { StaticNetworkIds } from 'types/network';
 
 function makeStateFromNodeConfigs(prev: Partial<StaticNodesState>, network: StaticNetworkIds) {
   // Auto network
-  prev[makeNodeName(network, 'auto')] = {
+  prev[makeAutoNodeName(network)] = {
     network,
     isAuto: true,
     isCustom: false,
