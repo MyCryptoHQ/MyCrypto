@@ -14,11 +14,17 @@ interface Props {
 export const AddressField: React.SFC<Props> = ({ isReadOnly, isSelfAddress, isCheckSummed }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
-    withProps={({ currentTo, isValid, onChange, onFocus, onBlur, readOnly }) => (
+    withProps={({ currentLabel, currentTo, isValid, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
-            {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
+            {currentLabel ? (
+              <span>
+                <i className="fa fa-check" /> Sending to {currentLabel}
+              </span>
+            ) : (
+              translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')
+            )}
           </div>
           <Input
             className={`input-group-input ${isValid ? '' : 'invalid'}`}

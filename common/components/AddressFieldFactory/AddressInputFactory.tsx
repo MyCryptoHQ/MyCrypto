@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
+import { getCurrentLabel } from 'selectors/addressBook';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
@@ -14,6 +15,7 @@ import './AddressInputFactory.scss';
 
 interface StateProps {
   currentTo: ICurrentTo;
+  currentLabel: string | null;
   isValid: boolean;
   isResolving: boolean;
 }
@@ -49,6 +51,7 @@ type Props = OwnProps & StateProps;
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
     const {
+      currentLabel,
       currentTo,
       onChange,
       onFocus,
@@ -60,6 +63,7 @@ class AddressInputFactoryClass extends Component<Props> {
     } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
+
     return (
       <div className="AddressInput form-group">
         <div className="AddressInput-input">
@@ -68,6 +72,7 @@ class AddressInputFactoryClass extends Component<Props> {
             withQuery={({ readOnly }) =>
               withProps({
                 currentTo,
+                currentLabel,
                 isValid,
                 onChange,
                 onFocus,
@@ -101,6 +106,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
 
   return {
     currentTo,
+    currentLabel: getCurrentLabel(state),
     isResolving: getResolvingDomain(state),
     isValid: isValidCurrentTo(state)
   };

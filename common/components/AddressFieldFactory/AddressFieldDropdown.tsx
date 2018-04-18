@@ -52,11 +52,7 @@ class AddressFieldDropdown extends React.Component<Props> {
       }`;
 
       return (
-        <li
-          key={address}
-          className={className}
-          onClick={() => console.log(address) || setCurrentTo(address)}
-        >
+        <li key={address} className={className} onClick={() => setCurrentTo(address)}>
           <strong>{label}</strong>
           <Identicon address={address} size="2rem" />
           <strong>

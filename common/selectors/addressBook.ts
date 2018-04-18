@@ -1,12 +1,16 @@
-export function getLabels(state, options) {
+import { getCurrentTo } from './transaction';
+
+export function getLabels(state, options = {}) {
   const { addressBook: { labels } } = state;
   const finalLabels = options.reversed
-    ? Object.keys(labels).reduce((prev, next) => {
+    ? // Label: Address
+      Object.keys(labels).reduce((prev, next) => {
         prev[labels[next]] = next;
 
         return prev;
       }, {})
-    : labels;
+    : // Address: Label
+      labels;
 
   return finalLabels;
 }
@@ -20,4 +24,11 @@ export function getAddressToLabels(state) {
   }));
 
   return collection;
+}
+
+export function getCurrentLabel(state) {
+  const labels = getLabels(state);
+  const currentTo = getCurrentTo(state);
+
+  return labels[currentTo.raw] || null;
 }
