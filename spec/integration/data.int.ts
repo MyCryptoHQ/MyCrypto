@@ -1,10 +1,10 @@
 import { Validator, ValidatorResult } from 'jsonschema';
 import { schema } from '../../common/libs/validators';
 import 'url-search-params-polyfill';
-import RPCNode from 'libs/nodes/rpc';
-import RpcNodeTestConfig from './RpcNodeTestConfig';
+import INodeTestConfig from './RpcNodeTestConfig';
 import { StaticNodeConfig } from 'types/node';
 import { staticNodesExpectedState } from '../reducers/config/nodes/staticNodes.spec';
+import { INode, shepherd, shepherdProvider } from 'libs/nodes';
 
 const v = new Validator();
 
@@ -24,26 +24,20 @@ const validRequests = {
 };
 
 interface RPCTestList {
-  [key: string]: ((n: RPCNode) => Promise<ValidatorResult>);
+  [key: string]: ((n: INode) => Promise<ValidatorResult>);
 }
 
-const testGetBalance = (n: RPCNode) => {
-  return n.client
-    .call(n.requests.getBalance(validRequests.address))
-    .then(data => v.validate(data, schema.RpcNode));
+const testGetBalance = (n: INode) => {
+  return n.getBalance(validRequests.address).then(data => v.validate(data, schema.RpcNode));
 };
 
-const testEstimateGas = (n: RPCNode) => {
-  return n.client
-    .call(n.requests.estimateGas(validRequests.transaction))
-    .then(data => v.validate(data, schema.RpcNode));
+const testEstimateGas = (n: INode) => {
+  return n.estimateGas(validRequests.transaction).then(data => v.validate(data, schema.RpcNode));
 };
 
-const testGetTokenBalance = (n: RPCNode) => {
+const testGetTokenBalance = (n: INode) => {
   const { address, token } = validRequests;
-  return n.client
-    .call(n.requests.getTokenBalance(address, token))
-    .then(data => v.validate(data, schema.RpcNode));
+  return n.getTokenBalance(address, token).then(data => v.validate(data, schema.RpcNode));
 };
 
 const RPCTests: RPCTestList = {
@@ -52,7 +46,7 @@ const RPCTests: RPCTestList = {
   getTokenBalance: testGetTokenBalance
 };
 
-function testRpcRequests(node: RPCNode, service: string) {
+function testRpcRequests(node: INode, service: string) {
   Object.keys(RPCTests).forEach(testType => {
     describe(`RPC (${service}) should work`, () => {
       it(
@@ -67,10 +61,11 @@ function testRpcRequests(node: RPCNode, service: string) {
 }
 
 const mapNodeEndpoints = (nodes: { [key: string]: StaticNodeConfig }) => {
-  const { RpcNodes } = RpcNodeTestConfig;
+  const { INodes } = INodeTestConfig;
 
-  RpcNodes.forEach(n => {
-    testRpcRequests(nodes[n].lib as RPCNode, `${nodes[n].service} ${nodes[n].network}`);
+  INodes.forEach((n: string) => {
+    shepherd.manual(n, true);
+    testRpcRequests(shepherdProvider, `${nodes[n].service} ${nodes[n].network}`);
   });
 };
 

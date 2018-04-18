@@ -10,7 +10,6 @@ const web3Node: StaticNodeConfig = {
   isCustom: false,
   network: 'ETH',
   service: Web3Service,
-  lib: jest.fn() as any,
   estimateGas: false,
   hidden: true
 };

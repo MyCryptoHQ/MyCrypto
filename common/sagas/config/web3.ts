@@ -22,8 +22,7 @@ import {
   makeProviderConfig,
   getShepherdManualMode,
   makeWeb3Network,
-  stripWeb3Network,
-  shepherdProvider
+  stripWeb3Network
 } from 'libs/nodes';
 import { StaticNodeConfig } from 'shared/types/node';
 import { showNotification } from 'actions/notifications';
@@ -40,7 +39,6 @@ export function* initWeb3Node(): SagaIterator {
     isCustom: false,
     network: web3Network as any,
     service: Web3Service,
-    lib: shepherdProvider,
     estimateGas: false,
     hidden: true
   };
