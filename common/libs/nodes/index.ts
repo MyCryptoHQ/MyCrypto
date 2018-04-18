@@ -103,6 +103,9 @@ shepherd.useProvider('rpc', 'tomo', regTomoConf, 'https://core.tomocoin.io');
 const regEllaConf = makeProviderConfig({ network: 'ELLA' });
 shepherd.useProvider('rpc', 'ella', regEllaConf, 'https://jsonrpc.ellaism.org');
 
+const regETSCConf = makeProviderConfig({ network: 'ETSC' });
+shepherd.useProvider('rpc', 'etsc', regETSCConf, 'https://node.ethereumsocial.kr');
+
 /**
  * Pseudo-networks to support metamask / web3 interaction
  */

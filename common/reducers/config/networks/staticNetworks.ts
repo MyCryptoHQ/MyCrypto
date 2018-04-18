@@ -16,7 +16,8 @@ import {
   EXP_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  ETSC_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
@@ -247,6 +248,28 @@ export const INITIAL_STATE: State = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ETSC: {
+    name: 'ETSC',
+    unit: 'ETSC',
+    chainId: 28,
+    isCustom: false,
+    color: '#4295d1',
+    blockExplorer: makeExplorer({
+      name: 'Ethereum Social Explorer',
+      origin: 'https://explorer.ethereumsocial.kr'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETSC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETSC_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
