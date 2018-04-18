@@ -62,16 +62,12 @@ class AddressBookTableRow extends React.Component<Props> {
     );
   }
 
-  private handleSave = () => {
-    const { onSave } = this.props;
-    const { label } = this.state;
-
-    onSave(label);
-  };
+  private handleSave = () => this.props.onSave(this.state.label);
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
     if (e.keyCode === KeyCodes.ENTER) {
       this.handleSave();
+      window.document.activeElement.blur();
     }
   };
 

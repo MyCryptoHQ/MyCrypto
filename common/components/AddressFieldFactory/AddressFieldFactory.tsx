@@ -46,11 +46,17 @@ class AddressFieldFactoryClass extends React.Component<Props> {
     }
   }
 
+  public componentWillUnmount() {
+    if (this.goingToBlur) {
+      window.clearTimeout(this.goingToBlur);
+    }
+  }
+
   public render() {
     const { isFocused } = this.state;
 
     // Allow the click event on a dropdown item to process before hiding the dropdown.
-    const onBlur = () => setTimeout(this.blur, 150);
+    const onBlur = () => (this.goingToBlur = window.setTimeout(this.blur, 150));
 
     return (
       <div className="AddressField">
@@ -65,6 +71,8 @@ class AddressFieldFactoryClass extends React.Component<Props> {
       </div>
     );
   }
+
+  private goingToBlur: number;
 
   private focus = () => this.setState({ isFocused: true });
 
