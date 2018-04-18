@@ -41,6 +41,7 @@ class AddressFieldFactoryClass extends React.Component<Props> {
         <AddressInputFactory
           isSelfAddress={this.props.isSelfAddress}
           onChange={this.setAddress}
+          onKeyDown={e => alert(e.keyCode)}
           withProps={this.props.withProps}
         />
         <AddressFieldDropdown onSelect={this.setAddress} />

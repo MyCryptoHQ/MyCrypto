@@ -23,7 +23,7 @@
       background: $gray-lightest;
     }
 
-    strong {
+    strong:first-of-type {
       max-width: 15rem;
       overflow: hidden;
     }

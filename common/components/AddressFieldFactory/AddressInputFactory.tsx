@@ -46,7 +46,15 @@ type Props = OwnProps & StateProps;
 
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentTo, onChange, isValid, withProps, isSelfAddress, isResolving } = this.props;
+    const {
+      currentTo,
+      onChange,
+      onKeyDown,
+      isValid,
+      withProps,
+      isSelfAddress,
+      isResolving
+    } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     return (
@@ -59,6 +67,7 @@ class AddressInputFactoryClass extends Component<Props> {
                 currentTo,
                 isValid,
                 onChange,
+                onKeyDown,
                 readOnly: !!(readOnly || this.props.isResolving || isSelfAddress)
               })
             }

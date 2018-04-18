@@ -33,18 +33,19 @@ class AddressFieldDropdown extends React.Component<Props> {
       >
         <strong>{label}</strong>
         <Identicon address={this.props.labels[label]} size="2rem" />
-        <Address address={this.props.labels[label]} />
+        <strong>
+          <Address address={this.props.labels[label]} />
+        </strong>
       </li>
     ));
 
   private getFilteredLabels = () =>
-    Object.keys(this.props.labels).filter(label => label.includes(this.props.currentTo));
+    Object.keys(this.props.labels).filter(label =>
+      label.toLowerCase().includes(this.props.currentTo.toLowerCase())
+    );
 
-  private getIsVisible = () => {
-    const { currentTo } = this.props;
-
-    return currentTo.length > 1 && this.getFilteredLabels().length > 0;
-  };
+  private getIsVisible = () =>
+    this.props.currentTo.length > 1 && this.getFilteredLabels().length > 0;
 }
 
 export default connect(
