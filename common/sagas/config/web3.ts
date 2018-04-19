@@ -39,7 +39,6 @@ export function* initWeb3Node(): SagaIterator {
     isCustom: false,
     network: web3Network as any,
     service: Web3Service,
-    estimateGas: false,
     hidden: true
   };
 

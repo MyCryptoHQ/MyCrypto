@@ -311,7 +311,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         ? this.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
         : network;
 
-    const node: CustomNodeConfig = {
+    return {
       isCustom: true,
       service: 'your custom node',
       id: url,
@@ -327,8 +327,6 @@ class CustomNodeModal extends React.Component<Props, State> {
           }
         : {})
     };
-
-    return { ...node };
   }
 
   private getConflictedNode(): CustomNodeConfig | undefined {

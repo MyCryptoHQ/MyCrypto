@@ -19,7 +19,6 @@ interface StaticNodeConfig {
   isAuto?: boolean;
   network: StaticNetworkIds;
   service: string;
-  estimateGas?: boolean;
   hidden?: boolean;
 }
 

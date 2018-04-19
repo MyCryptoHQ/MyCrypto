@@ -10,8 +10,7 @@ function makeStateFromNodeConfigs(prev: Partial<StaticNodesState>, network: Stat
     network,
     isAuto: true,
     isCustom: false,
-    service: 'AUTO',
-    estimateGas: NODE_CONFIGS[network].reduce((bool, node) => bool || node.estimateGas, false)
+    service: 'AUTO'
   };
 
   // Static networks
@@ -19,8 +18,7 @@ function makeStateFromNodeConfigs(prev: Partial<StaticNodesState>, network: Stat
     prev[config.name] = {
       network,
       isCustom: false,
-      service: config.service,
-      estimateGas: config.estimateGas
+      service: config.service
     };
   });
 
