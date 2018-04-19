@@ -10,11 +10,11 @@
     opacity: 0.5;
     transition: $transition;
 
-    &:hover{
+    &:hover {
       opacity: 1;
     }
 
-    &.is-copied{
+    &.is-copied {
       color: $brand-success;
       opacity: 1;
     }
@@ -72,6 +72,7 @@
       max-width: 100%;
       flex-direction: row;
       flex-wrap: nowrap;
+      align-items: center;
     }
 
     &-wrapper {

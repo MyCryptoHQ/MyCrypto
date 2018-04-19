@@ -37,7 +37,9 @@ class AddressFieldDropdown extends React.Component<Props> {
 
   public render() {
     return this.getIsVisible() ? (
-      <ul className="AddressFieldDropdown">{this.renderDropdownItems()}</ul>
+      <ul className="AddressFieldDropdown" role="listbox">
+        {this.renderDropdownItems()}
+      </ul>
     ) : null;
   }
 

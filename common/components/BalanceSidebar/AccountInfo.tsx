@@ -7,6 +7,7 @@ import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
+import { getLabels } from 'selectors/addressBook';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
@@ -86,8 +87,10 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, balance, isOffline } = this.props;
+    const { network, balance, isOffline, labels } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
+    const label = labels[address] || null;
+
     let blockExplorer;
     let tokenExplorer;
     if (!network.isCustom) {
@@ -106,6 +109,7 @@ class AccountInfo extends React.Component<Props, State> {
           </div>
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">
+              <p>{label}</p>
               <Address address={address} />
             </div>
             <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>
@@ -219,7 +223,8 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
     network: getNetworkConfig(state),
-    isOffline: getOffline(state)
+    isOffline: getOffline(state),
+    labels: getLabels(state)
   };
 }
 const mapDispatchToProps: DispatchProps = { refreshAccountBalance };

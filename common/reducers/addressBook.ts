@@ -22,7 +22,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
         ...state,
         labels: {
           ...state.labels,
-          [address]: label
+          [address.toLowerCase()]: label
         }
       };
     }
@@ -32,7 +32,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
       const { labels: previousLabels } = state;
       const labels = { ...previousLabels };
 
-      delete labels[address];
+      delete labels[address.toLowerCase()];
 
       return {
         ...state,
