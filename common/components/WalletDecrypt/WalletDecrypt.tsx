@@ -258,7 +258,7 @@ const WalletDecrypt = withRouter<Props>(
         return (
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
-              walletType={translate(selectedWallet.lid)}
+              walletType={translateRaw(selectedWallet.lid)}
               onContinue={this.handleAcknowledgeInsecure}
               onCancel={this.clearWalletChoice}
             />
