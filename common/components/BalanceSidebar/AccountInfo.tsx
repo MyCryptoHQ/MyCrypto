@@ -12,6 +12,7 @@ import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
+import AddressLabel from '../AddressLabel';
 import './AccountInfo.scss';
 
 interface OwnProps {
@@ -103,13 +104,13 @@ class AccountInfo extends React.Component<Props, State> {
     return (
       <div className="AccountInfo">
         <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
+        <AddressLabel address={address} />
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">
             <Identicon address={address} size="100%" />
           </div>
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">
-              <p>{label}</p>
               <Address address={address} />
             </div>
             <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>

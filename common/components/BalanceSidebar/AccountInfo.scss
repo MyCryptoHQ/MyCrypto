@@ -24,8 +24,12 @@
     }
   }
 
+  .AddressLabel {
+    margin-top: $space;
+  }
+
   &-section {
-    margin-top: $space * 1.5;
+    margin: $space 0;
 
     &:first-child {
       margin-top: 0;

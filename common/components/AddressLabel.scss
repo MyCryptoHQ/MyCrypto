@@ -1,0 +1,18 @@
+@import 'common/sass/variables/spacing.scss';
+@import 'common/sass/variables/colors.scss';
+
+.AddressLabel {
+  font-family: Lato, sans-serif;
+
+  button {
+    margin-bottom: $space-sm;
+  }
+
+  label {
+    cursor: pointer;
+  }
+
+  &-button-label {
+    padding-right: $space-sm;
+  }
+}
