@@ -8,6 +8,9 @@ import classnames from 'classnames';
 import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
+import { AddressFieldFactory } from 'components/AddressFieldFactory';
+import { getCurrentTo } from 'selectors/transaction';
+import { addHexPrefix } from 'ethereumjs-util';
 
 interface ContractOption {
   name: string;
@@ -15,18 +18,18 @@ interface ContractOption {
 }
 
 interface StateProps {
+  currentTo: ReturnType<typeof getCurrentTo>;
   contracts: NetworkContract[];
 }
 
 interface OwnProps {
-  accessContract(contractAbi: string, address: string): (ev: any) => void;
+  accessContract(contractAbi: string): (ev: any) => void;
   resetState(): void;
 }
 
 type Props = OwnProps & StateProps;
 
 interface State {
-  address: string;
   abiJson: string;
   contract: ContractOption | null;
   contractPlaceholder: string;
@@ -47,7 +50,6 @@ class InteractForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      address: '',
       abiJson: '',
       contract: null,
       contractPlaceholder: this.isContractsValid()
@@ -62,9 +64,11 @@ class InteractForm extends Component<Props, State> {
   };
 
   public render() {
-    const { contracts, accessContract } = this.props;
-    const { address, abiJson, contract } = this.state;
-    const validEthAddress = isValidETHAddress(address);
+    const { contracts, accessContract, currentTo } = this.props;
+    const { abiJson, contract } = this.state;
+    const validEthAddress = isValidETHAddress(
+      currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : ''
+    );
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
     let options: ContractOption[] = [];
@@ -80,7 +84,7 @@ class InteractForm extends Component<Props, State> {
       options = [{ name: 'Custom', value: '' }, ...contractOptions];
     }
 
-    // TODO: Use common components for address, abi json
+    // TODO: Use common components for abi json
     return (
       <div className="InteractForm">
         <div className="InteractForm-address row">
@@ -101,19 +105,24 @@ class InteractForm extends Component<Props, State> {
           </div>
 
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
-            <label className="input-group">
-              <div className="input-group-header">{translate('CONTRACT_TITLE')}</div>
-              <Input
-                placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
-                name="contract_address"
-                autoComplete="off"
-                value={address}
-                className={classnames('InteractForm-address-field-input', {
-                  invalid: !validEthAddress
-                })}
-                onChange={this.handleInput('address')}
-              />
-            </label>
+            <AddressFieldFactory
+              withProps={({ currentTo, isValid, onChange }) => (
+                <label className="input-group">
+                  <div className="input-group-header">{translate('CONTRACT_TITLE')}</div>
+                  <Input
+                    placeholder={`ensdomain.eth or ${donationAddressMap.ETH}`}
+                    name="contract_address"
+                    autoComplete="off"
+                    value={currentTo.raw}
+                    className={classnames('InteractForm-address-field-input', {
+                      invalid: !isValid
+                    })}
+                    spellCheck={false}
+                    onChange={onChange}
+                  />
+                </label>
+              )}
+            />
           </div>
         </div>
 
@@ -145,7 +154,7 @@ class InteractForm extends Component<Props, State> {
         <button
           className="InteractForm-submit btn btn-primary"
           disabled={!showContractAccessButton}
-          onClick={accessContract(abiJson, address)}
+          onClick={accessContract(abiJson)}
         >
           {translate('X_ACCESS')}
         </button>
@@ -167,7 +176,6 @@ class InteractForm extends Component<Props, State> {
     });
 
     this.setState({
-      address: fullContract && fullContract.address ? fullContract.address : '',
       abiJson: fullContract && fullContract.abi ? fullContract.abi : '',
       contract
     });
@@ -179,7 +187,8 @@ class InteractForm extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  contracts: getNetworkContracts(state) || []
+  contracts: getNetworkContracts(state) || [],
+  currentTo: getCurrentTo(state)
 });
 
-export default connect<StateProps, {}>(mapStateToProps)(InteractForm);
+export default connect<StateProps>(mapStateToProps)(InteractForm);
