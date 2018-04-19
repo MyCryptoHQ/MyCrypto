@@ -199,4 +199,4 @@ const mapStateToProps = (state: AppState) => ({
   currentTo: getCurrentTo(state)
 });
 
-export default connect<StateProps>(mapStateToProps, { setCurrentTo })(InteractForm);
+export default connect(mapStateToProps, { setCurrentTo })(InteractForm);

@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import InteractForm from './components/InteractForm';
 import { InteractExplorer } from './components//InteractExplorer';
 import Contract from 'libs/contracts';
-
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { connect } from 'react-redux';
 import { getCurrentTo } from 'selectors/transaction';
-import { AppState } from 'reducers';
 
 interface State {
   currentContract: Contract | null;
@@ -59,8 +57,7 @@ class InteractClass extends Component<Props, State> {
       <main className="Interact Tab-content-pane" role="main">
         <InteractForm {...interactProps} />
         <hr />
-        {this.props.currentTo.value &&
-          showExplorer &&
+        {showExplorer &&
           currentContract && (
             <InteractExplorer contractFunctions={Contract.getFunctions(currentContract)} />
           )}
@@ -71,6 +68,4 @@ class InteractClass extends Component<Props, State> {
   private resetState = () => this.setState(this.initialState);
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({ currentTo: getCurrentTo(state) });
-
-export const Interact = connect(mapStateToProps, { showNotification })(InteractClass);
+export const Interact = connect(null, { showNotification })(InteractClass);
