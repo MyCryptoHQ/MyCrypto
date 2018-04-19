@@ -1,1 +1,2 @@
-export { default as UnitInput } from './UnitInput';
+export { default as UnitConverter } from './UnitConverter';
+export { default as ETHReferenceGuide } from './ETHReferenceGuide';
