@@ -11,6 +11,7 @@ import SignButton from './SignButton';
 import { isWalletFullyUnlocked } from 'selectors/wallet';
 import './index.scss';
 import { TextArea, CodeBlock } from 'components/ui';
+import { toChecksumAddress } from 'ethereumjs-util';
 
 interface Props {
   wallet: IFullWallet;
@@ -74,12 +75,16 @@ export class SignMessage extends Component<Props, State> {
               onSignMessage={this.onSignMessage}
             />
 
-            {!!signedMessage && (
+            {signedMessage && (
               <div className="input-group-wrapper SignMessage-inputBox">
                 <label className="input-group">
                   <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>
                   <CodeBlock className="SignMessage-inputBox">
-                    {JSON.stringify(signedMessage, null, 2)}
+                    {JSON.stringify(
+                      { ...signedMessage, address: toChecksumAddress(signedMessage.address) },
+                      null,
+                      2
+                    )}
                   </CodeBlock>
                 </label>
               </div>
