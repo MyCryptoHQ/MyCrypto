@@ -17,7 +17,8 @@ import {
   isStaticNodeId,
   getCustomNodeFromId,
   getStaticNodeFromId,
-  getNetworkConfigById
+  getNetworkConfigById,
+  getAllNodes
 } from 'selectors/config';
 import { TypeKeys } from 'actions/config/constants';
 import {
@@ -232,13 +233,32 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
 }
 
 export function* handleNetworkChangeIntent({ payload: network }: ChangeNetworkIntentAction) {
-  const desiredNodeName = makeAutoNodeName(network);
-  const isStaticNode: boolean = yield select(isStaticNodeId, desiredNodeName);
+  let desiredNode = '';
+  const autoNodeName = makeAutoNodeName(network);
+  const isStaticNode: boolean = yield select(isStaticNodeId, autoNodeName);
+
   if (isStaticNode) {
-    yield put(changeNodeIntent(desiredNodeName));
+    desiredNode = autoNodeName;
   } else {
-    // TODO - Search for nodes from the node list that match network?
-    console.error(`Attempted to change to unknown network '${network}'`);
+    const allNodes: { [id: string]: NodeConfig } = yield select(getAllNodes);
+    const networkNode = Object.values(allNodes).find(n => n.network === network);
+    if (networkNode) {
+      desiredNode = networkNode.id;
+    }
+  }
+
+  if (desiredNode) {
+    yield put(changeNodeIntent(desiredNode));
+  } else {
+    yield put(
+      showNotification(
+        'danger',
+        translateRaw('NETWORK_UNKNOWN_ERROR', {
+          $network: network
+        }),
+        5000
+      )
+    );
   }
 }
 

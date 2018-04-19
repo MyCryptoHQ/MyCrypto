@@ -6,7 +6,7 @@ import {
   handleRemoveCustomNode
 } from 'sagas/config/node';
 import { put, select } from 'redux-saga/effects';
-import { isStaticNodeId, getStaticNodeFromId, getNodeId } from 'selectors/config';
+import { isStaticNodeId, getStaticNodeFromId, getNodeId, getAllNodes } from 'selectors/config';
 import {
   TypeKeys,
   changeNode,
@@ -17,6 +17,7 @@ import {
 } from 'actions/config';
 import { makeAutoNodeName } from 'libs/nodes';
 import { INITIAL_STATE as selectedNodeInitialState } from 'reducers/config/nodes/selectedNode';
+import { CustomNodeConfig } from 'types/node';
 
 // init module
 configuredStore.getState();
@@ -66,22 +67,41 @@ describe('handleNetworkChangeIntent*', () => {
     type: TypeKeys.CONFIG_NETWORK_CHANGE_INTENT
   };
   const nextNodeName = makeAutoNodeName(action.payload);
+  const customNode: CustomNodeConfig = {
+    id: 'id',
+    url: 'url',
+    name: 'Custom Node',
+    service: 'your custom node',
+    network: action.payload,
+    isCustom: true
+  };
   const gen = cloneableGenerator(handleNetworkChangeIntent);
-  const successCase = gen(action);
+  const staticCase = gen(action);
+  let customCase: SagaIteratorClone;
   let failureCase: SagaIteratorClone;
 
   it('should select isStaticNodeId', () => {
-    expect(successCase.next().value).toEqual(select(isStaticNodeId, nextNodeName));
+    expect(staticCase.next().value).toEqual(select(isStaticNodeId, nextNodeName));
   });
 
-  it('should put changeNodeIntent if valid network', () => {
-    failureCase = successCase.clone();
-    expect(successCase.next(true).value).toEqual(put(changeNodeIntent(nextNodeName)));
-    expect(successCase.next().done).toBeTruthy();
+  it('should put changeNodeIntent for auto node if static network', () => {
+    customCase = staticCase.clone();
+    expect(staticCase.next(true).value).toEqual(put(changeNodeIntent(nextNodeName)));
+    expect(staticCase.next().done).toBeTruthy();
   });
 
-  it('should do nothing if not a valid network', () => {
-    expect(failureCase.next(false).done).toBeTruthy();
+  it('should select getAllNodes if non-static network', () => {
+    expect(customCase.next(false).value).toEqual(select(getAllNodes));
+  });
+
+  it('should put changeNodeIntent on the first custom node if found', () => {
+    failureCase = customCase.clone();
+    expect(customCase.next([customNode]).value).toEqual(put(changeNodeIntent(customNode.id)));
+  });
+
+  it('should put showNotification if not a valid network', () => {
+    const value = failureCase.next([]).value as any;
+    expect(value.PUT.action.type).toBe('SHOW_NOTIFICATION');
   });
 });
 

@@ -174,8 +174,9 @@ class NetworkSelector extends React.Component<Props> {
     );
   };
 
-  private selectNetwork = (network: NetworkConfig) => {
-    this.props.changeNetworkIntent(network.name);
+  private selectNetwork = (net: NetworkConfig) => {
+    // TODO - Implement network.id so that we don't have to do shit like this
+    this.props.changeNetworkIntent(net.isCustom ? net.chainId.toString() : net.name);
     if (this.dropdown) {
       this.dropdown.close();
     }
