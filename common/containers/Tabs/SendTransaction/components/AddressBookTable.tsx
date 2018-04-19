@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import KeyCodes from 'shared/keycodes';
+import { AppState } from 'reducers';
 import { isValidETHAddress } from 'libs/validators';
 import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
 import { getAddressToLabels } from 'selectors/addressBook';
@@ -53,6 +54,7 @@ class AddressBookTable extends React.Component<Props> {
                   placeholder="New address"
                   value={temporaryAddress}
                   onChange={this.setTemporaryAddress}
+                  setInnerRef={this.setAddressInputRef}
                 />
                 <Identicon address={temporaryAddress} />
               </div>
@@ -63,6 +65,7 @@ class AddressBookTable extends React.Component<Props> {
                   placeholder="New label"
                   value={temporaryLabel}
                   onChange={this.setTemporaryLabel}
+                  setInnerRef={this.setLabelInputRef}
                 />
               </div>
             </td>
@@ -84,6 +87,10 @@ class AddressBookTable extends React.Component<Props> {
     );
   }
 
+  private addressInput: HTMLInputElement | null = null;
+
+  private labelInput: HTMLInputElement | null = null;
+
   private handleSave = (addressToLabel: AddressToLabel) => {
     const { label, address } = addressToLabel;
 
@@ -94,6 +101,14 @@ class AddressBookTable extends React.Component<Props> {
 
   private handleAddEntry = () => {
     const { temporaryLabel: label, temporaryAddress: address } = this.state;
+
+    if (!isValidETHAddress(address) && this.addressInput) {
+      return this.addressInput.focus();
+    }
+
+    if (!label && this.labelInput) {
+      return this.labelInput.focus();
+    }
 
     if (label && isValidETHAddress(address)) {
       this.handleSave({ label, address });
@@ -145,9 +160,13 @@ class AddressBookTable extends React.Component<Props> {
       temporaryLabel: '',
       temporaryAddress: ''
     });
+
+  private setAddressInputRef = (node: HTMLInputElement) => (this.addressInput = node);
+
+  private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   rows: getAddressToLabels(state)
 });
 

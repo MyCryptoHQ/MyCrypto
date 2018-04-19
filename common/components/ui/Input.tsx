@@ -1,19 +1,26 @@
 import React, { HTMLProps } from 'react';
 import './Input.scss';
 
+interface OwnProps extends HTMLProps<HTMLInputElement> {
+  setInnerRef?: (ref: HTMLInputElement | null) => void;
+}
+
 interface State {
   hasBlurred: boolean;
 }
 
-class Input extends React.Component<HTMLProps<HTMLInputElement>, State> {
+class Input extends React.Component<OwnProps, State> {
   public state: State = {
     hasBlurred: false
   };
 
   public render() {
+    const { setInnerRef, ...props } = this.props;
+
     return (
       <input
-        {...this.props}
+        {...props}
+        ref={node => setInnerRef && setInnerRef(node)}
         onBlur={e => {
           this.setState({ hasBlurred: true });
           if (this.props && this.props.onBlur) {

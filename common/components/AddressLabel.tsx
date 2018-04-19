@@ -77,12 +77,13 @@ class AddressLabel extends React.Component<Props> {
 
   private renderInput = () => {
     const { labels, address } = this.props;
-    const label = labels[address];
+    const label = labels[address] || '';
 
     return (
       <Input
         type="text"
         placeholder="Enter a label for your address"
+        setInnerRef={this.setInputRef}
         value={label}
         onChange={this.handleChange}
         onBlur={this.switchToLabelMode}
@@ -95,9 +96,13 @@ class AddressLabel extends React.Component<Props> {
 
   private switchToLabelMode = () => this.setState({ mode: AddressLabelModes.Label });
 
-  private switchToInputMode = () => this.setState({ mode: AddressLabelModes.Input });
+  private switchToInputMode = () =>
+    this.setState(
+      { mode: AddressLabelModes.Input },
+      () => this.input.focus() || this.input.select()
+    );
 
-  private handleChange = e => {
+  private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { address, addLabelForAddress } = this.props;
     const { target: { value: label } } = e;
 
@@ -107,7 +112,7 @@ class AddressLabel extends React.Component<Props> {
     });
   };
 
-  private handleKeyDown = e => {
+  private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.keyCode) {
       case KeyCodes.ENTER:
         return this.handleEnterKeyDown();
@@ -116,7 +121,9 @@ class AddressLabel extends React.Component<Props> {
     }
   };
 
-  private handleEnterKeyDown = () => window.document.activeElement.blur();
+  private handleEnterKeyDown = () => this.input && this.input.blur();
+
+  private setInputRef = (node: HTMLInputElement) => (this.input = node);
 }
 
 export default connect(

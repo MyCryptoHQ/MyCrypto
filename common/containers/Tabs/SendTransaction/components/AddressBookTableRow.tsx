@@ -44,7 +44,12 @@ class AddressBookTableRow extends React.Component<Props> {
         </td>
         <td>
           <div className="AddressBookTable-cell">
-            <Input value={label} onChange={this.setLabel} onKeyDown={this.handleKeyDown} />
+            <Input
+              value={label}
+              onChange={this.setLabel}
+              onKeyDown={this.handleKeyDown}
+              setInnerRef={this.setLabelInputRef}
+            />
           </div>
         </td>
         <td>
@@ -62,17 +67,21 @@ class AddressBookTableRow extends React.Component<Props> {
     );
   }
 
+  private labelInput: HTMLInputElement | null = null;
+
   private handleSave = () => this.props.onSave(this.state.label);
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
     if (e.keyCode === KeyCodes.ENTER) {
       this.handleSave();
-      window.document.activeElement.blur();
+      this.labelInput && this.labelInput.blur();
     }
   };
 
   private setLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
     this.setState({ label: e.target.value });
+
+  private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 }
 
 export default onClickOutside(AddressBookTableRow);
