@@ -1,5 +1,5 @@
 import React from 'react';
-import { HELP_ARTICLE } from 'config';
+import { HELP_ARTICLE, DOWNLOAD_MYCRYPTO_LINK } from 'config';
 import './InsecureWalletWarning.scss';
 import translate from 'translations';
 import { knowledgeBaseURL } from 'config/data';
@@ -76,7 +76,7 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
           </li>
           <li>
             {translate('INSECURE_WALLET_RECOMMEND_2', {
-              $run_local_article: knowledgeBaseURL + '/' + HELP_ARTICLE.RUNNING_LOCALLY
+              $download_mycrypto: DOWNLOAD_MYCRYPTO_LINK
             })}
           </li>
           <li>
