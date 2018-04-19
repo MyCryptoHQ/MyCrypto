@@ -21,7 +21,7 @@ export const socialMediaLinks: Link[] = [
     text: 'twitter'
   },
   {
-    link: 'https://www.facebook.com/MyCrypto/',
+    link: 'https://www.facebook.com/mycryptoHQ/',
     text: 'facebook'
   },
   {
