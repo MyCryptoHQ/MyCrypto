@@ -5,17 +5,24 @@ import Contract from 'libs/contracts';
 
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { connect } from 'react-redux';
+import { getCurrentTo } from 'selectors/transaction';
+import { AppState } from 'reducers';
 
 interface State {
   currentContract: Contract | null;
   showExplorer: boolean;
 }
 
+interface StateProps {
+  currentTo: ReturnType<typeof getCurrentTo>;
+}
+
 interface DispatchProps {
   showNotification: TShowNotification;
 }
 
-class InteractClass extends Component<DispatchProps, State> {
+type Props = StateProps & DispatchProps;
+class InteractClass extends Component<Props, State> {
   public initialState: State = {
     currentContract: null,
     showExplorer: false
@@ -52,7 +59,8 @@ class InteractClass extends Component<DispatchProps, State> {
       <main className="Interact Tab-content-pane" role="main">
         <InteractForm {...interactProps} />
         <hr />
-        {showExplorer &&
+        {this.props.currentTo.value &&
+          showExplorer &&
           currentContract && (
             <InteractExplorer contractFunctions={Contract.getFunctions(currentContract)} />
           )}
@@ -62,4 +70,7 @@ class InteractClass extends Component<DispatchProps, State> {
 
   private resetState = () => this.setState(this.initialState);
 }
-export const Interact = connect(null, { showNotification })(InteractClass);
+
+const mapStateToProps = (state: AppState): StateProps => ({ currentTo: getCurrentTo(state) });
+
+export const Interact = connect(mapStateToProps, { showNotification })(InteractClass);

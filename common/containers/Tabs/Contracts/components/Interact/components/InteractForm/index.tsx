@@ -11,6 +11,7 @@ import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { getCurrentTo } from 'selectors/transaction';
 import { addHexPrefix } from 'ethereumjs-util';
+import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 
 interface ContractOption {
   name: string;
@@ -27,7 +28,11 @@ interface OwnProps {
   resetState(): void;
 }
 
-type Props = OwnProps & StateProps;
+interface DispatchProps {
+  setCurrentTo: TSetCurrentTo;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   abiJson: string;
@@ -175,10 +180,13 @@ class InteractForm extends Component<Props, State> {
       return contract && this.makeContractValue(currContract) === contract.value;
     });
 
-    this.setState({
-      abiJson: fullContract && fullContract.abi ? fullContract.abi : '',
-      contract
-    });
+    if (fullContract) {
+      this.props.setCurrentTo(fullContract.address || '');
+      this.setState({
+        abiJson: fullContract.abi || '',
+        contract
+      });
+    }
   };
 
   private makeContractValue(contract: NetworkContract) {
@@ -191,4 +199,4 @@ const mapStateToProps = (state: AppState) => ({
   currentTo: getCurrentTo(state)
 });
 
-export default connect<StateProps>(mapStateToProps)(InteractForm);
+export default connect<StateProps>(mapStateToProps, { setCurrentTo })(InteractForm);
