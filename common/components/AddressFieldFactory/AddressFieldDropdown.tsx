@@ -52,7 +52,13 @@ class AddressFieldDropdown extends React.Component<Props> {
       }`;
 
       return (
-        <li key={address} className={className} onClick={() => setCurrentTo(address)}>
+        <li
+          key={address}
+          className={className}
+          onClick={() => setCurrentTo(address)}
+          role="option"
+          title={`Send to ${label}`}
+        >
           <strong>{label}</strong>
           <Identicon address={address} size="2rem" />
           <strong>
@@ -110,6 +116,7 @@ class AddressFieldDropdown extends React.Component<Props> {
     let activeIndex =
       previousActiveIndex === null ? filteredLabelCount - 1 : previousActiveIndex - 1;
 
+    // Loop back to end
     if (activeIndex < 0) {
       activeIndex = filteredLabelCount - 1;
     }
@@ -123,6 +130,7 @@ class AddressFieldDropdown extends React.Component<Props> {
 
     let activeIndex = previousActiveIndex === null ? 0 : previousActiveIndex + 1;
 
+    // Loop back to beginning
     if (activeIndex >= filteredLabelCount) {
       activeIndex = 0;
     }

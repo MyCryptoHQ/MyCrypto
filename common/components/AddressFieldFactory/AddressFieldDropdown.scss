@@ -24,8 +24,10 @@
     }
 
     strong:first-of-type {
-      max-width: 15rem;
+      width: 12rem;
+      white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .Identicon {
