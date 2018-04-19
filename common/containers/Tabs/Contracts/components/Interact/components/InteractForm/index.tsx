@@ -111,7 +111,7 @@ class InteractForm extends Component<Props, State> {
 
           <div className="input-group-wrapper InteractForm-address-field col-sm-6">
             <AddressFieldFactory
-              withProps={({ currentTo, isValid, onChange }) => (
+              withProps={({ isValid, onChange }) => (
                 <label className="input-group">
                   <div className="input-group-header">{translate('CONTRACT_TITLE')}</div>
                   <Input
