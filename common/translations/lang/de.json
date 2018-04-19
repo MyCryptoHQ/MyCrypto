@@ -3,7 +3,7 @@
   "data": {
     "X_CANCELREPLACETX": "Transaktion ersetzen oder zurückziehen",
     "X_CANCELTX": "Transaktion zurückziehen",
-    "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**",
+    "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your keystore file to unlock your wallet.**",
     "X_READMORE": "Weiter lesen",
     "X_REPLACETX": "Transaktion ersetzen",
     "X_TRANSHASH": "Transaktions Hash",
