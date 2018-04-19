@@ -123,7 +123,7 @@
     "ts-loader": "4.1.0",
     "ts-node": "5.0.1",
     "tslint": "5.9.1",
-    "tslint-config-prettier": "1.10.0",
+    "tslint-config-prettier": "1.11.0",
     "tslint-microsoft-contrib": "5.0.3",
     "tslint-react": "3.5.1",
     "types-rlp": "0.0.1",
