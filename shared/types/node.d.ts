@@ -15,6 +15,7 @@ interface CustomNodeConfig {
 }
 
 interface StaticNodeConfig {
+  id: string;
   isCustom: false;
   isAuto?: boolean;
   network: StaticNetworkIds;

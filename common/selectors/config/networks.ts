@@ -82,6 +82,11 @@ export const getCustomNetworkConfigs = (state: AppState) => getNetworks(state).c
 
 export const getStaticNetworkConfigs = (state: AppState) => getNetworks(state).staticNetworks;
 
+export const getAllNetworkConfigs = (state: AppState) => ({
+  ...getStaticNetworkConfigs(state),
+  ...getCustomNetworkConfigs(state)
+});
+
 export const isNetworkUnit = (state: AppState, unit: string) => {
   return unit === getNetworkUnit(state);
 };

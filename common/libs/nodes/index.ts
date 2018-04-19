@@ -3,7 +3,7 @@ import { INode } from '.';
 import { tokenBalanceHandler } from './tokenBalanceProxy';
 import { IProviderConfig } from 'mycrypto-shepherd/dist/lib/ducks/providerConfigs';
 import { NODE_CONFIGS, makeNodeName } from './configs';
-import { StaticNetworkIds } from 'types/network';
+import { NodeConfig } from 'types/node';
 
 type DeepPartial<T> = Partial<{ [key in keyof T]: Partial<T[key]> }>;
 const { selectors, store } = redux;
@@ -67,8 +67,8 @@ export const makeWeb3Network = (network: string) => `${web3NodePrefix}${network}
 export const stripWeb3Network = (network: string) => network.replace(web3NodePrefix, '');
 export const isAutoNode = (nodeName: string) =>
   nodeName.endsWith(autoNodeSuffix) || nodeName === 'web3';
-export const makeAutoNodeName = (network: StaticNetworkIds) =>
-  makeNodeName(network, autoNodeSuffix);
+export const isAutoNodeConfig = (node: NodeConfig) => !node.isCustom && node.isAuto;
+export const makeAutoNodeName = (network: string) => makeNodeName(network, autoNodeSuffix);
 
 /**
  * Assemble shepherd providers from node configs. Includes pseudo-configs

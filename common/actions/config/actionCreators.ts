@@ -69,6 +69,16 @@ export function changeNodeForce(payload: string): interfaces.ChangeNodeForceActi
   };
 }
 
+export type TChangeNetworkIntent = typeof changeNetworkIntent;
+export function changeNetworkIntent(
+  payload: interfaces.ChangeNetworkIntentAction['payload']
+): interfaces.ChangeNetworkIntentAction {
+  return {
+    type: TypeKeys.CONFIG_NETWORK_CHANGE_INTENT,
+    payload
+  };
+}
+
 export type TAddCustomNode = typeof addCustomNode;
 export function addCustomNode(
   payload: interfaces.AddCustomNodeAction['payload']

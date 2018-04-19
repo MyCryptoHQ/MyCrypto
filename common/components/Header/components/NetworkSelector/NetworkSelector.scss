@@ -1,0 +1,43 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.NetworkSelector {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 180px;
+  text-align: left;
+  z-index: $zindex-dropdown;
+  background: #FFF;
+  box-shadow: $dropdown-shadow;
+  transform: translateY(2px);
+  color: $text-color;
+  font-size: $font-size-base;
+
+  &-add,
+  &-alts {
+    @include reset-button;
+    display: block;
+    width: 100%;
+    padding: $space-xs $space-md;
+    text-align: center;
+    color: $text-color;
+    font-size: $font-size-small;
+
+    &:hover {
+      color: $link-hover-color;
+    }
+
+    .fa {
+      font-size: 12px;
+      width: 11px;
+      text-align: center;
+      opacity: 0.8;
+      margin-right: $space-xs;
+    }
+  }
+
+  &-alts {
+    border-bottom: 1px solid $gray-lighter;
+  }
+}

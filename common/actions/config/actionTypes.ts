@@ -52,6 +52,12 @@ export interface ChangeNodeForceAction {
   payload: string;
 }
 
+/*** Change Network Intent ***/
+export interface ChangeNetworkIntentAction {
+  type: TypeKeys.CONFIG_NETWORK_CHANGE_INTENT;
+  payload: string;
+}
+
 /*** Add Custom Node ***/
 export interface AddCustomNodeAction {
   type: TypeKeys.CONFIG_ADD_CUSTOM_NODE;

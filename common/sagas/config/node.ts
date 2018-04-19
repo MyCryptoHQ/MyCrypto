@@ -25,11 +25,14 @@ import {
   setOffline,
   changeNode,
   changeNodeIntent,
+  changeNodeForce,
   setLatestBlock,
   AddCustomNodeAction,
   ChangeNodeForceAction,
   ChangeNodeIntentAction,
-  ChangeNodeIntentOneTimeAction
+  ChangeNodeIntentOneTimeAction,
+  ChangeNetworkIntentAction,
+  RemoveCustomNodeAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { resetWallet } from 'actions/wallet';
@@ -44,8 +47,10 @@ import {
   stripWeb3Network,
   makeProviderConfig,
   getShepherdNetwork,
-  getShepherdPending
+  getShepherdPending,
+  makeAutoNodeName
 } from 'libs/nodes';
+import { INITIAL_STATE as selectedNodeInitialState } from 'reducers/config/nodes/selectedNode';
 
 export function* pollOfflineStatus(): SagaIterator {
   let hasCheckedOnline = false;
@@ -226,11 +231,32 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
   yield put(changeNodeIntent(staticNodeIdToSwitchTo));
 }
 
+export function* handleNetworkChangeIntent({ payload: network }: ChangeNetworkIntentAction) {
+  const desiredNodeName = makeAutoNodeName(network);
+  const isStaticNode: boolean = yield select(isStaticNodeId, desiredNodeName);
+  if (isStaticNode) {
+    yield put(changeNodeIntent(desiredNodeName));
+  } else {
+    // TODO - Search for nodes from the node list that match network?
+    console.error(`Attempted to change to unknown network '${network}'`);
+  }
+}
+
+export function* handleRemoveCustomNode({ payload }: RemoveCustomNodeAction): SagaIterator {
+  // If custom node is currently selected, go back to default node
+  const currentNodeId = yield select(getNodeId);
+  if (payload.id === currentNodeId) {
+    yield put(changeNodeForce(selectedNodeInitialState.nodeId));
+  }
+}
+
 export const node = [
   fork(handleNodeChangeIntentOneTime),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
+  takeEvery(TypeKeys.CONFIG_NETWORK_CHANGE_INTENT, handleNetworkChangeIntent),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
-  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode)
+  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode),
+  takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, handleRemoveCustomNode)
 ];

@@ -34,8 +34,10 @@ export function* initWeb3Node(): SagaIterator {
   const { networkId, lib } = yield call(setupWeb3Node);
   const network: string = yield select(getNetworkNameByChainId, networkId);
   const web3Network = makeWeb3Network(network);
+  const id = 'web3';
 
   const config: StaticNodeConfig = {
+    id,
     isCustom: false,
     network: web3Network as any,
     service: Web3Service,
@@ -47,12 +49,12 @@ export function* initWeb3Node(): SagaIterator {
   }
 
   if (!web3Added) {
-    shepherd.useProvider('web3', 'web3', makeProviderConfig({ network: web3Network }));
+    shepherd.useProvider('web3', id, makeProviderConfig({ network: web3Network }));
   }
 
   web3Added = true;
 
-  yield put(web3SetNode({ id: 'web3', config }));
+  yield put(web3SetNode({ id, config }));
   return lib;
 }
 

@@ -3,7 +3,6 @@ import {
   ChangeNodeIntentAction,
   NodeAction,
   TypeKeys,
-  RemoveCustomNodeAction,
   CustomNodeAction
 } from 'actions/config';
 import { makeAutoNodeName } from 'libs/nodes';
@@ -27,8 +26,6 @@ const changeNodeIntent = (state: State, _: ChangeNodeIntentAction): State => ({
   pending: true
 });
 
-const handleRemoveCustomNode = (_: State, _1: RemoveCustomNodeAction): State => INITIAL_STATE;
-
 export const selectedNode = (
   state: State = INITIAL_STATE,
   action: NodeAction | CustomNodeAction
@@ -38,8 +35,6 @@ export const selectedNode = (
       return changeNode(state, action);
     case TypeKeys.CONFIG_NODE_CHANGE_INTENT:
       return changeNodeIntent(state, action);
-    case TypeKeys.CONFIG_REMOVE_CUSTOM_NODE:
-      return handleRemoveCustomNode(state, action);
     default:
       return state;
   }
