@@ -333,7 +333,8 @@ describe('unlockWeb3*', () => {
   it('should yield take on node change', () => {
     const expected = take(
       (action: any) =>
-        action.type === ConfigTypeKeys.CONFIG_CHANGE_NODE && action.payload.nodeSelection === 'web3'
+        action.type === ConfigTypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED &&
+        action.payload.nodeSelection === 'web3'
     );
     const result = data.gen.next().value;
     expect(JSON.stringify(expected)).toEqual(JSON.stringify(result));

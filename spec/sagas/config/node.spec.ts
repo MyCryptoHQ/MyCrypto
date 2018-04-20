@@ -9,7 +9,7 @@ import { put, select } from 'redux-saga/effects';
 import { isStaticNodeId, getStaticNodeFromId, getNodeId, getAllNodes } from 'selectors/config';
 import {
   TypeKeys,
-  changeNode,
+  changeNodeSucceeded,
   changeNodeRequested,
   changeNodeForce,
   ChangeNetworkRequestedAction,
@@ -44,7 +44,7 @@ describe('handleNodeChangeForce*', () => {
   it('should force the node change', () => {
     expect(gen.next(nodeConfig).value).toEqual(
       put(
-        changeNode({
+        changeNodeSucceeded({
           networkId: nodeConfig.network,
           nodeId: payload
         })
