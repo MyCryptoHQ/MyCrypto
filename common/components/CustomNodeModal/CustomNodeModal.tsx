@@ -303,12 +303,12 @@ class CustomNodeModal extends React.Component<Props, State> {
       return false;
     }
 
-    if (this.props.customNetworks[chainId]) {
-      return this.props.customNetworks[chainId];
-    }
-
     const chainIdInt = parseInt(chainId, 10);
-    return Object.values(this.props.staticNetworks).reduce(
+    const allNetworks = [
+      ...Object.values(this.props.staticNetworks),
+      ...Object.values(this.props.customNetworks)
+    ];
+    return allNetworks.reduce(
       (collision, network) => (network.chainId === chainIdInt ? network : collision),
       null
     );
