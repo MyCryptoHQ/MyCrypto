@@ -197,14 +197,14 @@ export function* handleNodeChangeIntent({
 }
 
 export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator {
-  const { payload: { config } } = action;
+  const config = action.payload;
   shepherd.useProvider(
     'myccustom',
     config.id,
     makeProviderConfig({ network: config.network }),
     config
   );
-  yield put(changeNodeIntent(action.payload.id));
+  yield put(changeNodeIntent(config.id));
 }
 
 export function* handleNewNetwork() {
@@ -262,10 +262,10 @@ export function* handleNetworkChangeIntent({ payload: network }: ChangeNetworkIn
   }
 }
 
-export function* handleRemoveCustomNode({ payload }: RemoveCustomNodeAction): SagaIterator {
+export function* handleRemoveCustomNode({ payload: nodeId }: RemoveCustomNodeAction): SagaIterator {
   // If custom node is currently selected, go back to default node
   const currentNodeId = yield select(getNodeId);
-  if (payload.id === currentNodeId) {
+  if (nodeId === currentNodeId) {
     yield put(changeNodeForce(selectedNodeInitialState.nodeId));
   }
 }

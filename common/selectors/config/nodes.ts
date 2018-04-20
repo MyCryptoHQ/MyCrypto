@@ -138,10 +138,10 @@ export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
   const customNetworkConfigs = getCustomNetworkConfigs(state);
   return Object.entries(getCustomNodeConfigs(state)).map(
     ([_, node]: [string, CustomNodeConfig]) => {
-      const chainId = node.network;
-      const associatedNetwork = isStaticNetworkId(state, chainId)
-        ? staticNetworkConfigs[chainId]
-        : customNetworkConfigs[chainId];
+      const networkId = node.network;
+      const associatedNetwork = isStaticNetworkId(state, networkId)
+        ? staticNetworkConfigs[networkId]
+        : customNetworkConfigs[networkId];
       const opt: CustomNodeOption = {
         isCustom: node.isCustom,
         value: node.id,

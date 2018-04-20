@@ -35,7 +35,7 @@ import { translateRaw } from 'translations';
 import { StaticNodeConfig } from 'types/node';
 import { staticNodesExpectedState } from './nodes/staticNodes.spec';
 import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
-import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
+import { customNodesExpectedState, firstCustomNode } from './nodes/customNodes.spec';
 import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
 import { shepherd } from 'mycrypto-shepherd';
 import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
@@ -217,7 +217,7 @@ describe('handleNodeChangeIntent*', () => {
 
   // custom node variables
   const customNodeConfigs = customNodesExpectedState.addFirstCustomNode;
-  const customNodeAction = changeNodeIntent(firstCustomNodeId);
+  const customNodeAction = changeNodeIntent(firstCustomNode.id);
   data.customNode = handleNodeChangeIntent(customNodeAction);
 
   // test custom node
@@ -225,12 +225,12 @@ describe('handleNodeChangeIntent*', () => {
     data.customNode.next();
     data.customNode.next(false);
     expect(data.customNode.next(defaultNodeConfig).value).toEqual(
-      select(getCustomNodeFromId, firstCustomNodeId)
+      select(getCustomNodeFromId, firstCustomNode.id)
     );
     expect(data.customNode.next(customNodeConfigs.customNode1).value).toMatchSnapshot();
   });
 
-  const customNodeIdNotFound = firstCustomNodeId + 'notFound';
+  const customNodeIdNotFound = firstCustomNode.id + 'notFound';
   const customNodeNotFoundAction = changeNodeIntent(customNodeIdNotFound);
   data.customNodeNotFound = handleNodeChangeIntent(customNodeNotFoundAction);
 

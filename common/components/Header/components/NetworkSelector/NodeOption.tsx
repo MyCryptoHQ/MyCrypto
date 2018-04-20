@@ -48,7 +48,7 @@ class NodeOption extends React.PureComponent<Props> {
 
   private handleRemove = () => {
     if (this.props.node.isCustom) {
-      this.props.removeCustomNode({ id: this.props.node.id });
+      this.props.removeCustomNode(this.props.node.id);
     }
   };
 }

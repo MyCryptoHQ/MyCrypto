@@ -278,9 +278,9 @@ class CustomNodeModal extends React.Component<Props, State> {
         invalids.customNetworkUnit = true;
       }
 
-      // Numeric chain ID (if provided)
+      // Numeric chain ID
       const iChainId = parseInt(customNetworkChainId, 10);
-      if (!iChainId || iChainId < 0) {
+      if (!customNetworkChainId || !iChainId || iChainId < 0) {
         invalids.customNetworkChainId = true;
       }
     }
@@ -296,9 +296,10 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     return {
       isCustom: true,
+      id: this.state.customNetworkChainId,
       name: this.state.customNetworkId,
       unit: this.state.customNetworkUnit,
-      chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0,
+      chainId: parseInt(this.state.customNetworkChainId, 10),
       dPathFormats
     };
   }
@@ -342,14 +343,14 @@ class CustomNodeModal extends React.Component<Props, State> {
     if (this.state.network === CUSTOM.value) {
       const network = this.makeCustomNetworkConfigFromState();
 
-      this.props.addCustomNetwork({ config: network, id: node.network });
+      this.props.addCustomNetwork(network);
     }
 
-    this.props.addCustomNode({ config: node, id: node.id });
+    this.props.addCustomNode(node);
   };
 
   private makeCustomNetworkId(config: CustomNetworkConfig): string {
-    return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
+    return config.chainId.toString();
   }
 }
 

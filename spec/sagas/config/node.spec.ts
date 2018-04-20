@@ -109,7 +109,7 @@ describe('handleRemoveCustomNode*', () => {
   const customNodeUrl = 'https://mycustomnode.com';
   const action: RemoveCustomNodeAction = {
     type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE,
-    payload: { id: customNodeUrl }
+    payload: customNodeUrl
   };
   const sameCase = cloneableGenerator(handleRemoveCustomNode)(action);
   let diffCase: SagaIteratorClone;

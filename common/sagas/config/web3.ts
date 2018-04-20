@@ -31,8 +31,8 @@ import translate from 'translations';
 let web3Added = false;
 
 export function* initWeb3Node(): SagaIterator {
-  const { networkId, lib } = yield call(setupWeb3Node);
-  const network: string = yield select(getNetworkNameByChainId, networkId);
+  const { chainId, lib } = yield call(setupWeb3Node);
+  const network: string = yield select(getNetworkNameByChainId, chainId);
   const web3Network = makeWeb3Network(network);
   const id = 'web3';
 
