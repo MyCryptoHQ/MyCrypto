@@ -9,7 +9,13 @@ import {
   TChangeNetworkIntent,
   changeNetworkIntent
 } from 'actions/config';
-import { getNodeId, getNodeConfig, getAllNodes, getAllNetworkConfigs } from 'selectors/config';
+import {
+  getNodeId,
+  getNodeConfig,
+  getNetworkConfig,
+  getAllNodes,
+  getAllNetworkConfigs
+} from 'selectors/config';
 import { isAutoNodeConfig } from 'libs/nodes';
 import { NodeConfig } from 'types/node';
 import { NetworkConfig } from 'types/network';
@@ -23,8 +29,9 @@ interface OwnProps {
 }
 
 interface StateProps {
+  nodeSelection: string;
   node: NodeConfig;
-  nodeSelection: AppState['config']['nodes']['selectedNode']['nodeId'];
+  network: NetworkConfig;
   allNodes: { [key: string]: NodeConfig };
   allNetworks: { [key: string]: NetworkConfig };
 }
@@ -81,9 +88,7 @@ class NetworkSelector extends React.Component<Props> {
   }
 
   private renderLabel = () => {
-    const { allNodes, allNetworks, nodeSelection } = this.props;
-    const node = allNodes[nodeSelection];
-    const network = allNetworks[node.network];
+    const { allNodes, network, node } = this.props;
     let suffix;
 
     if (node.isCustom) {
@@ -211,6 +216,7 @@ export default connect(
   (state: AppState): StateProps => ({
     nodeSelection: getNodeId(state),
     node: getNodeConfig(state),
+    network: getNetworkConfig(state),
     allNodes: getAllNodes(state),
     allNetworks: getAllNetworkConfigs(state)
   }),
