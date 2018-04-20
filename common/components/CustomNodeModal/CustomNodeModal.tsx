@@ -4,7 +4,7 @@ import translate, { translateRaw } from 'translations';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
-import { connect, Omit } from 'react-redux';
+import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import {
   getCustomNetworkConfigs,
@@ -13,7 +13,6 @@ import {
 } from 'selectors/config';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
-import { shepherdProvider } from 'libs/nodes';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 
@@ -312,7 +311,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         ? this.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
         : network;
 
-    const node: Omit<CustomNodeConfig, 'lib'> = {
+    return {
       isCustom: true,
       service: 'your custom node',
       id: url,
@@ -328,8 +327,6 @@ class CustomNodeModal extends React.Component<Props, State> {
           }
         : {})
     };
-
-    return { ...node, lib: shepherdProvider };
   }
 
   private getConflictedNode(): CustomNodeConfig | undefined {

@@ -6,7 +6,6 @@ export const firstCustomNodeId = 'customNode1';
 const firstCustomNode: CustomNodeConfig = {
   isCustom: true,
   id: firstCustomNodeId,
-  lib: jest.fn() as any,
   name: 'My cool custom node',
   network: 'CustomNetworkId',
   service: 'your custom node',

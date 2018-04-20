@@ -4,7 +4,7 @@ import {
   getCustomNetworkConfigs,
   isStaticNetworkId
 } from 'selectors/config';
-import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
+import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
 import { StaticNetworkIds } from 'types/network';
 const getConfig = (state: AppState) => state.config;
 import { shepherdProvider, INode, stripWeb3Network } from 'libs/nodes';
@@ -160,4 +160,11 @@ export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
 
 export function getNodeOptions(state: AppState) {
   return [...getStaticNodeOptions(state), ...getCustomNodeOptions(state)];
+}
+
+export function getAllNodes(state: AppState): { [key: string]: NodeConfig } {
+  return {
+    ...getStaticNodes(state),
+    ...getCustomNodeConfigs(state)
+  };
 }
