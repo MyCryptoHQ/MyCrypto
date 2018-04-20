@@ -15,6 +15,7 @@ import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens, MergedToken } from 'selectors/wallet';
+import { getLabels } from 'selectors/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import { StaticNetworkConfig } from 'types/network';
 import './DeterministicWalletsModal.scss';
@@ -279,8 +280,9 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private renderWalletRow(wallet: DeterministicWalletData) {
-    const { desiredToken, network } = this.props;
+    const { desiredToken, network, labels } = this.props;
     const { selectedAddress } = this.state;
+    const label = labels[wallet.address.toLowerCase()];
 
     // Get renderable values, but keep 'em short
     const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
@@ -292,6 +294,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
       >
         <td>{wallet.index + 1}</td>
         <td className="DWModal-addresses-table-address">
+          {label && <label>{label}</label>}
           <input
             type="radio"
             name="selectedAddress"
@@ -338,6 +341,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState) {
   return {
+    labels: getLabels(state),
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),

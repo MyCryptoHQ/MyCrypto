@@ -77,6 +77,11 @@
       tbody {
         tr {
           cursor: pointer;
+
+          label {
+            display: block;
+            font-family: $font-family-sans-serif;
+          }
         }
 
         td {

@@ -20,7 +20,7 @@ export const AddressField: React.SFC<Props> = ({ isReadOnly, isSelfAddress, isCh
           <div className="input-group-header">
             {currentLabel ? (
               <span>
-                <i className="fa fa-check" /> Sending to {currentLabel}
+                <i className="fa fa-check" /> {currentLabel}
               </span>
             ) : (
               translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')
