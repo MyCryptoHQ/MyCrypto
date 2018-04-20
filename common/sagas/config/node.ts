@@ -155,6 +155,8 @@ export function* handleNodeChangeIntent({
     nextNodeConfig = yield select(getStaticNodeFromId, nodeIdToSwitchTo);
   }
 
+  console.log(nextNodeConfig.network);
+  console.log(stripWeb3Network(nextNodeConfig.network));
   const nextNetwork: StaticNetworkConfig | CustomNetworkConfig = yield select(
     getNetworkConfigById,
     stripWeb3Network(nextNodeConfig.network)

@@ -16,14 +16,14 @@ export const getNetworkConfigById = (state: AppState, networkId: string) =>
     ? getStaticNetworkConfigs(state)[networkId]
     : getCustomNetworkConfigs(state)[networkId];
 
-export const getNetworkNameByChainId = (state: AppState, chainId: number | string) => {
+export const getNetworkByChainId = (state: AppState, chainId: number | string) => {
   const network =
     Object.values(getStaticNetworkConfigs(state)).find(n => +n.chainId === +chainId) ||
     Object.values(getCustomNetworkConfigs(state)).find(n => +n.chainId === +chainId);
   if (!network) {
     return null;
   }
-  return network.name;
+  return network;
 };
 
 export const getStaticNetworkIds = (state: AppState): StaticNetworkIds[] =>
